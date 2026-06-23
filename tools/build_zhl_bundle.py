@@ -3,7 +3,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 html = (ROOT / "index.html").read_text(encoding="utf-8")
+ccr_path = ROOT / "zhl-ccr-core.js"
 core_path = ROOT / "zhl-schedule-core.js"
+if not ccr_path.is_file():
+    raise SystemExit("zhl-ccr-core.js missing")
+ccr_core = ccr_path.read_text(encoding="utf-8")
+if ccr_core.startswith("/**"):
+    end = ccr_core.find("*/")
+    ccr_core = ccr_core[end + 2 :].lstrip()
 if not core_path.is_file():
     raise SystemExit("zhl-schedule-core.js missing — run tools/extract_zhl_core.py first")
 core_fn = core_path.read_text(encoding="utf-8")
@@ -57,6 +64,7 @@ preamble = r'''/**
   ];
   const OTU_EXPONENT = 0.8333;
   const SEA_LEVEL_P = 1.01325;
+  const PSCR_MIN_PPO2 = 0.16;
 
   let altSurfaceP = SEA_LEVEL_P;
   let BAR_PER_METRE = 0.1;
@@ -293,6 +301,23 @@ postamble = r'''
       minDecoProfile: { enabled: false, m9: 1, m6: 3, isMetric: true },
       decoGases: gases,
       environment: environment || defaultEnvironment(),
+      ccr: {
+        circuit: s.circuit || 'OC',
+        setpoint: s.setpoint,
+        descentSetpoint: s.descentSetpoint,
+        bottomSetpoint: s.bottomSetpoint,
+        decoSetpoint: s.decoSetpoint != null ? s.decoSetpoint : s.setpoint,
+        bailout: !!s.bailout,
+        bailoutGfLow: s.bailoutGfLow,
+        bailoutGfHigh: s.bailoutGfHigh,
+        scrLoopVolume: s.scrLoopVolume,
+        scrMetabolicO2: s.scrMetabolicO2,
+        sacStress: s.sacStress,
+        sacDecoCcr: s.sacDecoCcr,
+        stressTimeMin: s.stressTimeMin,
+        problemSolveMin: s.problemSolveMin,
+      },
+      onLoop: isRebreatherCircuit(s.circuit || 'OC') && !s.bailout,
     };
   }
 
@@ -399,6 +424,6 @@ postamble = r'''
 })(typeof self !== 'undefined' ? self : globalThis);
 '''
 
-out = preamble + "\n" + gas_helpers + "\n\n" + enforce + "\n\n" + core_fn + "\n" + postamble
+out = preamble + "\n" + ccr_core + "\n\n" + gas_helpers + "\n\n" + enforce + "\n\n" + core_fn + "\n" + postamble
 (ROOT / "zhl-engine-bundle.js").write_text(out, encoding="utf-8")
 print("Wrote zhl-engine-bundle.js", len(out), "bytes")

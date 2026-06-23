@@ -19,6 +19,7 @@
   ];
   const OTU_EXPONENT = 0.8333;
   const SEA_LEVEL_P = 1.01325;
+  const PSCR_MIN_PPO2 = 0.16;
 
   let altSurfaceP = SEA_LEVEL_P;
   let BAR_PER_METRE = 0.1;
@@ -136,6 +137,244 @@
   }
 
 
+function normalizeCCRSettings(s) {
+  s = s || {};
+  return {
+    circuit: s.circuit || 'OC',
+    setpoint: s.setpoint != null ? s.setpoint : s.decoSetpoint,
+    decoSetpoint: s.decoSetpoint != null ? s.decoSetpoint : s.setpoint,
+    bottomSetpoint: s.bottomSetpoint,
+    descentSetpoint: s.descentSetpoint,
+    bailout: !!s.bailout,
+    bailoutGfLow: s.bailoutGfLow,
+    bailoutGfHigh: s.bailoutGfHigh,
+    scrLoopVolume: s.scrLoopVolume,
+    scrMetabolicO2: s.scrMetabolicO2,
+    sacStress: s.sacStress,
+    sacDecoCcr: s.sacDecoCcr,
+    stressTimeMin: s.stressTimeMin,
+    problemSolveMin: s.problemSolveMin,
+    ccrPhase: s.ccrPhase || null,
+    scrRuntimeMin: s.scrRuntimeMin || 0,
+  };
+}
+
+function mergeCCRSettings(ccr) {
+  return normalizeCCRSettings(ccr);
+}
+
+function isRebreatherCircuit(circuit) {
+  return circuit === 'CCR' || circuit === 'pSCR';
+}
+
+function loopMixLabelForCore(diluentLabel, ccr) {
+  const cfg = normalizeCCRSettings(ccr);
+  if (!isRebreatherCircuit(cfg.circuit) || cfg.bailout) return diluentLabel;
+  if (typeof diluentLabel === 'string' && /^(CCR|pSCR)\s/i.test(diluentLabel)) return diluentLabel;
+  const prefix = cfg.circuit === 'pSCR' ? 'pSCR' : 'CCR';
+  return `${prefix} ${diluentLabel}`;
+}
+
+function depthAtSetpointCrossing(setpoint, surfP) {
+  if (!setpoint || setpoint <= 0) return null;
+  return Math.max(0, (setpoint + WATER_VAPOR - (surfP || altSurfaceP)) / BAR_PER_METRE);
+}
+
+function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
+  if (!ccr || ccr.bailout || !isRebreatherCircuit(ccr.circuit)) return 0;
+  if (ccr.circuit === 'pSCR') return 0;
+  const descSP = ccr.descentSetpoint != null ? ccr.descentSetpoint : 0.7;
+  const bottomSP = ccr.bottomSetpoint != null ? ccr.bottomSetpoint : 1.2;
+  const decoSP = ccr.decoSetpoint != null ? ccr.decoSetpoint : (ccr.setpoint != null ? ccr.setpoint : 1.3);
+  if (phase === 'descent') return descSP;
+  if (phase === 'bottom') return bottomSP;
+  if (phase === 'deco' || phase === 'ascent') return decoSP;
+  const pAmb = (surfP || altSurfaceP) + depthM * BAR_PER_METRE;
+  if (pAmb <= descSP + WATER_VAPOR) return descSP;
+  if (pAmb <= bottomSP + WATER_VAPOR) return bottomSP;
+  return decoSP;
+}
+
+function getCcrMetabolicO2Rate(ccr) {
+  const cfg = normalizeCCRSettings(ccr);
+  const v = parseFloat(cfg.scrMetabolicO2);
+  return v > 0 ? v : 1.5;
+}
+
+function computePSCRFractions(pAmb, fO2, fHe, runtimeMin, ccr) {
+  fO2 = Math.max(0, Math.min(1, fO2 || 0));
+  fHe = Math.max(0, Math.min(1 - fO2, fHe || 0));
+  const fN2src = Math.max(0, 1 - fO2 - fHe);
+  const sourceInert = Math.max(0.001, fHe + fN2src);
+  if (sourceInert <= 0.001 && fO2 >= 0.999) return { fO2: 1, fHe: 0, fN2: 0 };
+  const loopVol = ccr.scrLoopVolume || 7.0;
+  const metO2 = getCcrMetabolicO2Rate(ccr);
+  const o2Consumed = metO2 * Math.max(0, runtimeMin || 0);
+  const loopO2BarLiters = fO2 * loopVol * pAmb;
+  const minLoopO2BarLiters = PSCR_MIN_PPO2 * loopVol;
+  const newLoopO2 = Math.max(minLoopO2BarLiters, loopO2BarLiters - o2Consumed);
+  const newFO2 = Math.min(0.999, newLoopO2 / Math.max(0.001, loopVol * pAmb));
+  const inertTotal = Math.max(0, 1 - newFO2);
+  const heShare = fHe / sourceInert;
+  const n2Share = fN2src / sourceInert;
+  return {
+    fO2: newFO2,
+    fHe: inertTotal * heShare,
+    fN2: inertTotal * n2Share,
+  };
+}
+
+function getInspiredInertPressures(pAmb, setpoint, fO2, fHe, ccr) {
+  const ppH2O = WATER_VAPOR;
+  const cfg = normalizeCCRSettings(ccr);
+  if (cfg.bailout || !isRebreatherCircuit(cfg.circuit)) {
+    const fN2 = Math.max(0, 1 - fO2 - fHe);
+    return { pN2: (pAmb - ppH2O) * fN2, pHe: (pAmb - ppH2O) * fHe, fO2, fHe, fN2 };
+  }
+  if (cfg.circuit === 'pSCR') {
+    const fr = computePSCRFractions(pAmb, fO2, fHe, cfg.scrRuntimeMin, cfg);
+    return {
+      pN2: (pAmb - ppH2O) * fr.fN2,
+      pHe: (pAmb - ppH2O) * fr.fHe,
+      fO2: fr.fO2, fHe: fr.fHe, fN2: fr.fN2,
+    };
+  }
+  if (!setpoint || setpoint <= 0 || pAmb <= setpoint + ppH2O) {
+    return { pN2: 0, pHe: 0, fO2, fHe, fN2: 0 };
+  }
+  const pInert = pAmb - setpoint - ppH2O;
+  const den = Math.max(0.001, 1 - fO2);
+  const fN2d = Math.max(0, 1 - fO2 - fHe);
+  return {
+    pN2: pInert * fN2d / den,
+    pHe: pInert * fHe / den,
+    fO2, fHe, fN2: fN2d,
+  };
+}
+
+function getCCRInertSchreinerParams(pAmbStart, setpoint, fO2, fHe, pressureRate, ccr) {
+  const cfg = normalizeCCRSettings(ccr);
+  if (cfg.bailout || !isRebreatherCircuit(cfg.circuit)) {
+    const fN2 = Math.max(0, 1 - fO2 - fHe);
+    const ppH2O = WATER_VAPOR;
+    return {
+      inspN2Start: (pAmbStart - ppH2O) * fN2,
+      inspHeStart: (pAmbStart - ppH2O) * fHe,
+      rN2: fN2 * pressureRate,
+      rHe: fHe * pressureRate,
+    };
+  }
+  if (cfg.circuit === 'pSCR') {
+    const fr0 = computePSCRFractions(pAmbStart, fO2, fHe, cfg.scrRuntimeMin, cfg);
+    const pEnd = pAmbStart + pressureRate * 1;
+    const fr1 = computePSCRFractions(pEnd, fO2, fHe, cfg.scrRuntimeMin, cfg);
+    const ppH2O = WATER_VAPOR;
+    const inspN2Start = (pAmbStart - ppH2O) * fr0.fN2;
+    const inspHeStart = (pAmbStart - ppH2O) * fr0.fHe;
+    return {
+      inspN2Start,
+      inspHeStart,
+      rN2: (pEnd - ppH2O) * fr1.fN2 - inspN2Start,
+      rHe: (pEnd - ppH2O) * fr1.fHe - inspHeStart,
+    };
+  }
+  if (!setpoint || setpoint <= 0 || pAmbStart <= setpoint + WATER_VAPOR) {
+    return { inspN2Start: 0, inspHeStart: 0, rN2: 0, rHe: 0 };
+  }
+  const den = Math.max(0.001, 1 - fO2);
+  const fN2d = Math.max(0, 1 - fO2 - fHe);
+  const coeffN2 = fN2d / den;
+  const coeffHe = fHe / den;
+  const inspN2Start = Math.max(0, pAmbStart - setpoint - WATER_VAPOR) * coeffN2;
+  const inspHeStart = Math.max(0, pAmbStart - setpoint - WATER_VAPOR) * coeffHe;
+  return {
+    inspN2Start,
+    inspHeStart,
+    rN2: coeffN2 * pressureRate,
+    rHe: coeffHe * pressureRate,
+  };
+}
+
+function splitSegmentAtSetpoint(fromDepth, toDepth, setpoint, surfP) {
+  if (!setpoint || setpoint <= 0) return [{ fromDepth, toDepth }];
+  const cross = depthAtSetpointCrossing(setpoint, surfP);
+  if (cross == null) return [{ fromDepth, toDepth }];
+  const lo = Math.min(fromDepth, toDepth);
+  const hi = Math.max(fromDepth, toDepth);
+  if (cross <= lo + 1e-6 || cross >= hi - 1e-6) return [{ fromDepth, toDepth }];
+  if (cross > lo && cross < hi) {
+    return [
+      { fromDepth, toDepth: cross },
+      { fromDepth: cross, toDepth },
+    ];
+  }
+  return [{ fromDepth, toDepth }];
+}
+
+function schreinerLinearCCR(p0, ht, t, p0Amb, R, setpoint, fO2, fHe, ccr, isHe) {
+  const params = getCCRInertSchreinerParams(p0Amb, setpoint, fO2, fHe, R, ccr);
+  const pStart = isHe ? params.inspHeStart : params.inspN2Start;
+  const rate = isHe ? params.rHe : params.rN2;
+  const k = Math.LN2 / ht;
+  return pStart + rate * (t - 1 / k) - (pStart - p0 - rate / k) * Math.exp(-k * t);
+}
+
+function saturateLinearCCR(tissues, fromDepth, toDepth, t, fO2, fHe, ccr) {
+  if (t <= 0) return tissues;
+  const cfg = normalizeCCRSettings(ccr);
+  const surfP = altSurfaceP;
+  const phase = cfg.ccrPhase || null;
+  const sp = getEffectiveSetpointAtDepth((fromDepth + toDepth) / 2, cfg, surfP, phase);
+  const segments = splitSegmentAtSetpoint(fromDepth, toDepth, sp, surfP);
+  let out = tissues;
+  const totalTime = t;
+  for (const seg of segments) {
+    const segTime = Math.abs(seg.toDepth - seg.fromDepth) / Math.abs(toDepth - fromDepth) * totalTime;
+    if (segTime <= 0) continue;
+    const p0Amb = depthBar(seg.fromDepth);
+    const pEndAmb = depthBar(seg.toDepth);
+    const R = (pEndAmb - p0Amb) / segTime;
+    const midDepth = (seg.fromDepth + seg.toDepth) / 2;
+    const segSP = getEffectiveSetpointAtDepth(midDepth, cfg, surfP, phase);
+    const segCcr = { ...cfg, setpoint: segSP };
+    out = out.map((t0, i) => ({
+      pN2: schreinerLinearCCR(t0.pN2, ZHL16C[i][0], segTime, p0Amb, R, segSP, fO2, fHe, segCcr, false),
+      pHe: fHe > 0 ? schreinerLinearCCR(t0.pHe, ZHL16C_HE_HT[i], segTime, p0Amb, R, segSP, fO2, fHe, segCcr, true) : t0.pHe,
+    }));
+  }
+  return out;
+}
+
+function saturateCCR(tissues, depthM, t, fO2, fHe, ccr) {
+  if (t <= 0) return tissues;
+  const cfg = normalizeCCRSettings(ccr);
+  const pAmb = depthBar(depthM);
+  const phase = cfg.ccrPhase || null;
+  const sp = getEffectiveSetpointAtDepth(depthM, cfg, altSurfaceP, phase);
+  const segCcr = { ...cfg, setpoint: sp };
+  const insp = getInspiredInertPressures(pAmb, sp, fO2, fHe, segCcr);
+  return tissues.map((t0, i) => ({
+    pN2: schreiner(t0.pN2, insp.pN2, ZHL16C[i][0], t),
+    pHe: schreiner(t0.pHe, insp.pHe, ZHL16C_HE_HT[i], t),
+  }));
+}
+
+function loadTissuesWithCCR(tissues, fromDepth, toDepth, time, fO2, fHe, ccr, constantDepth) {
+  const cfg = normalizeCCRSettings(ccr);
+  if (!isRebreatherCircuit(cfg.circuit) || cfg.bailout) {
+    const fN2 = Math.max(0, 1 - fO2 - fHe);
+    if (constantDepth || Math.abs(fromDepth - toDepth) < 1e-6) {
+      return saturate(tissues, fromDepth, time, fN2, fHe);
+    }
+    return saturateLinear(tissues, fromDepth, toDepth, time, fN2, fHe);
+  }
+  if (constantDepth || Math.abs(fromDepth - toDepth) < 1e-6) {
+    return saturateCCR(tissues, fromDepth, time, fO2, fHe, cfg);
+  }
+  return saturateLinearCCR(tissues, fromDepth, toDepth, time, fO2, fHe, cfg);
+}
+
+
 function getActiveGas(curDepthM, bottomFN2, decoGases, getPPO2LimitFn, bottomLabel) {
   let best = null;
   let bestFO2 = -1;
@@ -165,10 +404,18 @@ function getActiveGas(curDepthM, bottomFN2, decoGases, getPPO2LimitFn, bottomLab
 
 // Truncate ppO2 to 1 decimal place (floor, not round) — 1.67 → 1.6
 
-function ppO2Check(depthM, fN2, fHe) {
+function ppO2Check(depthM, fN2, fHe, opts) {
   // He is inert: fO2 = 1 - fN2 - fHe (trimix-safe)
-  const o2frac = Math.max(0, 1 - fN2 - (fHe || 0));
-  return ((altSurfaceP + depthM * BAR_PER_METRE) * o2frac).toFixed(2);
+  const fHeVal = fHe || 0;
+  const o2frac = Math.max(0, 1 - fN2 - fHeVal);
+  const pAmb = altSurfaceP + depthM * BAR_PER_METRE;
+  if (opts && opts.onLoop && opts.ccr && isRebreatherCircuit(opts.ccr.circuit) && !opts.ccr.bailout) {
+    const fO2 = opts.fO2 != null ? opts.fO2 : o2frac;
+    const surfP = opts.surfP != null ? opts.surfP : altSurfaceP;
+    const sp = opts.setpoint != null ? opts.setpoint : getEffectiveSetpointAtDepth(depthM, opts.ccr, surfP);
+    return getEffectivePpo2(pAmb, sp, fO2, opts.ccr, depthM, fHeVal).toFixed(2);
+  }
+  return (pAmb * o2frac).toFixed(2);
 }
 
 function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackGas, fallbackFN2, fallbackFHe) {
@@ -307,6 +554,34 @@ function runZhlScheduleCore(params) {
   const bottomFO2 = params.bottomFO2;
   const bottomMixLabel = params.bottomMixLabel;
   const decoGases = params.decoGases;
+  const ccrSettings = params.ccr ? normalizeCCRSettings(params.ccr) : null;
+  const _zhlOnLoop = !!(params.onLoop && ccrSettings && isRebreatherCircuit(ccrSettings.circuit) && !ccrSettings.bailout);
+  const loopMixLabel = params.loopMixLabel || (ccrSettings ? loopMixLabelForCore(bottomMixLabel, ccrSettings) : bottomMixLabel);
+  let _diveRuntimeMin = 0;
+
+  function zhlLoadLinear(tissues, from, to, t, fO2, fHe, onLoop, phase) {
+    if (onLoop && ccrSettings) {
+      const out = loadTissuesWithCCR(tissues, from, to, t, fO2, fHe, { ...ccrSettings, scrRuntimeMin: _diveRuntimeMin, ccrPhase: phase });
+      _diveRuntimeMin += t;
+      return out;
+    }
+    return saturateLinear(tissues, from, to, t, Math.max(0, 1 - fO2 - (fHe || 0)), fHe || 0);
+  }
+  function zhlLoadConst(tissues, depth, t, fO2, fHe, onLoop, phase) {
+    if (onLoop && ccrSettings) {
+      const out = loadTissuesWithCCR(tissues, depth, depth, t, fO2, fHe, { ...ccrSettings, scrRuntimeMin: _diveRuntimeMin, ccrPhase: phase });
+      _diveRuntimeMin += t;
+      return out;
+    }
+    return saturate(tissues, depth, t, Math.max(0, 1 - fO2 - (fHe || 0)), fHe || 0);
+  }
+  function zhlOnLoopAt() { return !!_zhlOnLoop; }
+  function zhlGasAt(depthM) {
+    if (_zhlOnLoop) {
+      return { fN2: bottomFN2, fHe: bottomFHe, fO2: bottomFO2, label: bottomMixLabel };
+    }
+    return getActiveGas(depthM, bottomFN2, decoGases, getPPO2Limit, bottomMixLabel);
+  }
 
   function getPPO2Limit(fO2) {
     const fO2pct = fO2 * 100;
@@ -348,19 +623,19 @@ function runZhlScheduleCore(params) {
   if (travelInfo && travelSwitchM > 0 && travelSwitchM < depthM) {
     // Phase 1: surface → travel switch depth on travel gas
     const travelDescentTime = travelSwitchM / descentRate;
-    tissues = saturateLinear(tissues, 0, travelSwitchM, travelDescentTime, travelInfo.fN2);
+    tissues = zhlLoadLinear(tissues, 0, travelSwitchM, travelDescentTime, 1 - travelInfo.fN2, 0, _zhlOnLoop, 'descent');
     // Phase 2: travel switch depth → bottom on bottom gas
     const bottomDescentTime = (depthM - travelSwitchM) / descentRate;
-    tissues = saturateLinear(tissues, travelSwitchM, depthM, bottomDescentTime, bottomFN2, bottomFHe);
+    tissues = zhlLoadLinear(tissues, travelSwitchM, depthM, bottomDescentTime, bottomFO2, bottomFHe, _zhlOnLoop, 'descent');
   } else {
     // No travel gas or switch depth >= bottom: entire descent on bottom gas
-    tissues = saturateLinear(tissues, 0, depthM, descentTime, bottomFN2, bottomFHe);
+    tissues = zhlLoadLinear(tissues, 0, depthM, descentTime, bottomFO2, bottomFHe, _zhlOnLoop, 'descent');
   }
 
   // Bottom time input = total time from leaving surface (industry standard).
   // Subtract descent time to get actual time spent at depth.
   const btAtDepth = Math.max(0, bt - descentTime);
-  tissues = saturate(tissues, depthM, btAtDepth, bottomFN2, bottomFHe);
+  tissues = zhlLoadConst(tissues, depthM, btAtDepth, bottomFO2, bottomFHe, _zhlOnLoop, 'bottom');
   const tissuesAtBottom = [...tissues]; // snapshot for ceiling graph overlay
 
   // ── Decozone start (GF-INDEPENDENT) ──────────────────────────────────────
@@ -439,7 +714,7 @@ function runZhlScheduleCore(params) {
     let simPrevGas = bottomMixLabel;
     for (const sd of stopDepths) {
       if (simCur > sd) simCur = sd;
-      const gas2 = getActiveGas(simCur, bottomFN2, decoGases, getPPO2Limit, bottomMixLabel);
+      const gas2 = zhlGasAt(simCur);
       if (gas2.label !== simPrevGas) { firstSwitchDepth = simCur; break; }
       simPrevGas = gas2.label;
     }
@@ -458,19 +733,22 @@ function runZhlScheduleCore(params) {
     // - Before first deco stop: use main ascent rate
     // - Between deco stops: use decoRate
     if (cur > stopDepth) {
-      const travelGas = getActiveGas(cur, bottomFN2, decoGases, getPPO2Limit, bottomMixLabel);
+      const travelGas = zhlGasAt(cur);
       const travelRate = decoZoneEntered ? decoRate : rate;
       const travelDur = (cur - stopDepth) / travelRate;
+      const travelOnLoop = zhlOnLoopAt();
       if (decoZoneEntered && mdCompatMode) {
         // MultiDeco-compatible mode: treat deco-zone transit as instant for tissue loading.
         // Transit time is still counted in RT and added to the displayed stop duration below.
         // (Schreiner mode: tissues off-gas normally during transit — more accurate.)
       } else {
-        tissues = saturateLinear(tissues, cur, stopDepth, travelDur, travelGas.fN2, travelGas.fHe || 0);
+        const tFO2 = travelOnLoop ? bottomFO2 : (travelGas.fO2 != null ? travelGas.fO2 : Math.max(0, 1 - travelGas.fN2 - (travelGas.fHe || 0)));
+        const tFHe = travelOnLoop ? bottomFHe : (travelGas.fHe || 0);
+        tissues = zhlLoadLinear(tissues, cur, stopDepth, travelDur, tFO2, tFHe, travelOnLoop, decoZoneEntered ? 'deco' : 'bottom');
       }
       steps.push({
         type: 'ascent', from: cur, to: stopDepth,
-        dur: travelDur, gas: travelGas.label,
+        dur: travelDur, gas: travelOnLoop ? loopMixLabel : travelGas.label,
         pO2: ppO2Check(cur, travelGas.fN2, travelGas.fHe || 0), fN2: travelGas.fN2, fHe: travelGas.fHe || 0,
         decoTransit: decoZoneEntered && mdCompatMode
       });
@@ -484,14 +762,16 @@ function runZhlScheduleCore(params) {
     const transitDur = (si === 0) ? 0 : (stopDepths[si - 1] - stopDepth) / decoRate;
 
     // Select best gas available at this stop depth
-    const stopGas  = getActiveGas(cur, bottomFN2, decoGases, getPPO2Limit, bottomMixLabel);
-    const stopFN2  = stopGas.fN2;
-    const stopFHe  = stopGas.fHe || 0;
-    const gasLabel = stopGas.label;
+    const stopGas  = zhlGasAt(cur);
+    const onLoop = zhlOnLoopAt();
+    const stopFN2  = onLoop ? bottomFN2 : stopGas.fN2;
+    const stopFHe  = onLoop ? bottomFHe : (stopGas.fHe || 0);
+    const stopFO2  = onLoop ? bottomFO2 : (stopGas.fO2 != null ? stopGas.fO2 : Math.max(0, 1 - stopFN2 - stopFHe));
+    const gasLabel = onLoop ? loopMixLabel : stopGas.label;
 
     // Gas switch pause — saturate tissues at this depth during the switch
     if (gasLabel !== prevEngineGas && switchPauseT > 0) {
-      tissues = saturate(tissues, cur, switchPauseT, stopFN2, stopFHe);
+      tissues = zhlLoadConst(tissues, cur, switchPauseT, stopFO2, stopFHe, onLoop, 'deco');
       rt += switchPauseT;
     }
     prevEngineGas = gasLabel;
@@ -538,7 +818,7 @@ function runZhlScheduleCore(params) {
       const rtOnArrival = rt;
       let stopT = 0;
       while (ceiling(tissues, gfForClear) > ceilTarget && stopT < 360) {
-        tissues = saturate(tissues, cur, holdStep, stopFN2, stopFHe);
+        tissues = zhlLoadConst(tissues, cur, holdStep, stopFO2, stopFHe, onLoop, 'deco');
         stopT += holdStep; rt += holdStep;
       }
       if (isFirstDecoStop) {
@@ -549,10 +829,10 @@ function runZhlScheduleCore(params) {
         const actualStop = Math.max(rawRounded, minFirstStop);
         if (actualStop > stopT) {
           const extra = actualStop - stopT;
-          tissues = saturate(tissues, cur, extra, stopFN2, stopFHe);
+          tissues = zhlLoadConst(tissues, cur, extra, stopFO2, stopFHe, onLoop, 'deco');
           rt += extra; stopT = actualStop;
         }
-        if (stopT < 1/60) { tissues = saturate(tissues, cur, 1/60 - stopT, stopFN2, stopFHe); rt += 1/60 - stopT; stopT = 1/60; }
+        if (stopT < 1/60) { tissues = zhlLoadConst(tissues, cur, 1/60 - stopT, stopFO2, stopFHe, onLoop, 'deco'); rt += 1/60 - stopT; stopT = 1/60; }
       } else {
         let roundedStop;
         {
@@ -561,13 +841,13 @@ function runZhlScheduleCore(params) {
         }
         if (roundedStop > stopT) {
           const extra = roundedStop - stopT;
-          tissues = saturate(tissues, cur, extra, stopFN2, stopFHe);
+          tissues = zhlLoadConst(tissues, cur, extra, stopFO2, stopFHe, onLoop, 'deco');
           rt += extra; stopT = roundedStop;
         }
         // Enforce minimum stop time — every non-first deco stop gets at least minStopT
         if (stopT < minStopT) {
           const extra = minStopT - stopT;
-          tissues = saturate(tissues, cur, extra, stopFN2, stopFHe);
+          tissues = zhlLoadConst(tissues, cur, extra, stopFO2, stopFHe, onLoop, 'deco');
           rt += extra; stopT = minStopT;
         }
       }
@@ -588,11 +868,11 @@ function runZhlScheduleCore(params) {
         stopT = needed;
       }
       if (stopT > 0) {
-        tissues = saturate(tissues, cur, stopT, stopFN2, stopFHe);
+        tissues = zhlLoadConst(tissues, cur, stopT, stopFO2, stopFHe, onLoop, 'deco');
         rt += stopT;
       }
       while (ceiling(tissues, gfForClear) > ceilTarget && stopT < 360) {
-        tissues = saturate(tissues, cur, minStopT, stopFN2, stopFHe);
+        tissues = zhlLoadConst(tissues, cur, minStopT, stopFO2, stopFHe, onLoop, 'deco');
         stopT += minStopT; rt += minStopT;
       }
       if (!isFirstDecoStop) {
@@ -601,12 +881,12 @@ function runZhlScheduleCore(params) {
         const roundedStop = totalAtLevel - transitDur;
         if (roundedStop > stopT) {
           const extra = roundedStop - stopT;
-          tissues = saturate(tissues, cur, extra, stopFN2, stopFHe);
+          tissues = zhlLoadConst(tissues, cur, extra, stopFO2, stopFHe, onLoop, 'deco');
           rt += extra; stopT = roundedStop;
         }
         if (stopT < minStopT) {
           const extra = minStopT - stopT;
-          tissues = saturate(tissues, cur, extra, stopFN2, stopFHe);
+          tissues = zhlLoadConst(tissues, cur, extra, stopFO2, stopFHe, onLoop, 'deco');
           rt += extra; stopT = minStopT;
         }
       }
@@ -622,7 +902,7 @@ function runZhlScheduleCore(params) {
       if (isDecoNeeded) {
         transitToLastStop = (stopDepths.length > 1) ? (stopDepths[stopDepths.length - 2] - lastStop) / decoRate : 0;
         while (ceiling(tissues, gfAt(0)) > 0.01 && stopT < 180) {
-          tissues = saturate(tissues, cur, minStopT, stopFN2, stopFHe);
+          tissues = zhlLoadConst(tissues, cur, minStopT, stopFO2, stopFHe, onLoop, 'deco');
           stopT += minStopT; rt += minStopT;
         }
         let roundedLastStop;
@@ -632,17 +912,17 @@ function runZhlScheduleCore(params) {
         }
         if (roundedLastStop > stopT) {
           const extra = roundedLastStop - stopT;
-          tissues = saturate(tissues, cur, extra, stopFN2, stopFHe);
+          tissues = zhlLoadConst(tissues, cur, extra, stopFO2, stopFHe, onLoop, 'deco');
           stopT += extra; rt += extra;
         }
         if (stopT < minStopT) {
           const extra = minStopT - stopT;
-          tissues = saturate(tissues, cur, extra, stopFN2, stopFHe);
+          tissues = zhlLoadConst(tissues, cur, extra, stopFO2, stopFHe, onLoop, 'deco');
           stopT += extra; rt += extra;
         }
       } else {
         stopT = Math.max(3, minStopT);
-        tissues = saturate(tissues, cur, stopT, stopFN2, stopFHe);
+        tissues = zhlLoadConst(tissues, cur, stopT, stopFO2, stopFHe, onLoop, 'deco');
         rt += stopT;
       }
       const lastStopDisplay = mdCompatMode ? stopT + transitToLastStop : stopT;
@@ -655,22 +935,28 @@ function runZhlScheduleCore(params) {
   if (_zhlAscentFloor > 0 && cur > _zhlAscentFloor) {
     const travelRate = decoZoneEntered ? decoRate : rate;
     const travelDur = (cur - _zhlAscentFloor) / travelRate;
-    const travelGas = getActiveGas(cur, bottomFN2, decoGases, getPPO2Limit, bottomMixLabel);
-    tissues = saturateLinear(tissues, cur, _zhlAscentFloor, travelDur, travelGas.fN2, travelGas.fHe || 0);
+    const travelGas = zhlGasAt(cur);
+    const travelOnLoop = zhlOnLoopAt();
+    const tFO2 = travelOnLoop ? bottomFO2 : (travelGas.fO2 != null ? travelGas.fO2 : Math.max(0, 1 - travelGas.fN2 - (travelGas.fHe || 0)));
+    const tFHe = travelOnLoop ? bottomFHe : (travelGas.fHe || 0);
+    tissues = zhlLoadLinear(tissues, cur, _zhlAscentFloor, travelDur, tFO2, tFHe, travelOnLoop, 'deco');
     steps.push({
       type: 'ascent', from: cur, to: _zhlAscentFloor,
-      dur: travelDur, gas: travelGas.label,
+      dur: travelDur, gas: travelOnLoop ? loopMixLabel : travelGas.label,
       pO2: ppO2Check(cur, travelGas.fN2, travelGas.fHe || 0), fN2: travelGas.fN2, fHe: travelGas.fHe || 0,
     });
     rt += travelDur;
     cur = _zhlAscentFloor;
   } else if (_zhlAscentFloor === 0 && cur > 0) {
     const finalAscentDur = cur / surfaceRate;
-    const finalGas = getActiveGas(cur, bottomFN2, decoGases, getPPO2Limit, bottomMixLabel);
-    tissues = saturateLinear(tissues, cur, 0, finalAscentDur, finalGas.fN2, finalGas.fHe || 0);
+    const finalGas = zhlGasAt(cur);
+    const finalOnLoop = zhlOnLoopAt();
+    const fFO2 = finalOnLoop ? bottomFO2 : (finalGas.fO2 != null ? finalGas.fO2 : Math.max(0, 1 - finalGas.fN2 - (finalGas.fHe || 0)));
+    const fFHe = finalOnLoop ? bottomFHe : (finalGas.fHe || 0);
+    tissues = zhlLoadLinear(tissues, cur, 0, finalAscentDur, fFO2, fFHe, finalOnLoop, 'deco');
     steps.push({
       type: 'ascent', from: cur, to: 0,
-      dur: finalAscentDur, gas: finalGas.label,
+      dur: finalAscentDur, gas: finalOnLoop ? loopMixLabel : finalGas.label,
       pO2: ppO2Check(cur, finalGas.fN2, finalGas.fHe || 0), fN2: finalGas.fN2, fHe: finalGas.fHe || 0,
     });
     rt += finalAscentDur;
@@ -683,7 +969,7 @@ function runZhlScheduleCore(params) {
     const cO2 = cont.o2 / 100;
     const cHe = (cont.he || 0) / 100;
     const cN2 = Math.max(0, 1 - cO2 - cHe);
-    tissues = saturate(tissues, cur, cont.time, cN2, cHe);
+    tissues = zhlLoadConst(tissues, cur, cont.time, cO2, cHe, _zhlOnLoop, 'bottom');
     rt += cont.time;
     steps.push({
       type: 'bottom', depth: cur, dur: cont.time,
@@ -887,6 +1173,23 @@ function runZhlScheduleCore(params) {
       minDecoProfile: { enabled: false, m9: 1, m6: 3, isMetric: true },
       decoGases: gases,
       environment: environment || defaultEnvironment(),
+      ccr: {
+        circuit: s.circuit || 'OC',
+        setpoint: s.setpoint,
+        descentSetpoint: s.descentSetpoint,
+        bottomSetpoint: s.bottomSetpoint,
+        decoSetpoint: s.decoSetpoint != null ? s.decoSetpoint : s.setpoint,
+        bailout: !!s.bailout,
+        bailoutGfLow: s.bailoutGfLow,
+        bailoutGfHigh: s.bailoutGfHigh,
+        scrLoopVolume: s.scrLoopVolume,
+        scrMetabolicO2: s.scrMetabolicO2,
+        sacStress: s.sacStress,
+        sacDecoCcr: s.sacDecoCcr,
+        stressTimeMin: s.stressTimeMin,
+        problemSolveMin: s.problemSolveMin,
+      },
+      onLoop: isRebreatherCircuit(s.circuit || 'OC') && !s.bailout,
     };
   }
 

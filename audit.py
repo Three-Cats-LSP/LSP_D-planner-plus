@@ -174,8 +174,8 @@ check_sig("toggleBottomTrimix", "",        "shows/hides He fields on bottom gas 
 check_sig("updateHeHalfTime",   "",        "syncs ZHL16C_HE_HT + VPMEngine He HT")
 
 # optimalSwitchDepth is nested — search without ^ anchor
-m_osd = re.search(r"function optimalSwitchDepth\s*\(([^)]*)\)", js)
-if m_osd and "fO2override" in m_osd.group(1):
+m_osd = re.search(r"function optimalSwitchDepth\s*\(([^)]*)\)", zhl_src) or re.search(r"function zhlOptimalSwitchDepth\s*\(([^)]*)\)", zhl_src)
+if m_osd and ("fO2override" in m_osd.group(1) or re.match(r"\s*fO2\s*,", m_osd.group(1))):
     ok(f"optimalSwitchDepth({m_osd.group(1)}) — fO2override param for trimix")
 else:
     sig = m_osd.group(1) if m_osd else "NOT FOUND"
@@ -1057,7 +1057,7 @@ else:
     fail("enforceMinDecoProfile() missing — minimum deco profile feature not implemented")
 
 # 21.2 Called in Buhlmann path
-if "enforceMinDecoProfile(collapsed," in js:
+if "enforceMinDecoProfile(collapsed," in zhl_src:
     ok("enforceMinDecoProfile called in Buhlmann path")
 else:
     fail("enforceMinDecoProfile not called in Buhlmann path — min deco profile ignored for ZHL")
@@ -1173,7 +1173,7 @@ else:
 # ══════════════════════════════════════════════════════════════════════════════
 
 # 23.1 getPPO2Limit takes fO2 directly (not fN2)
-ppl_fn = re.search(r"function getPPO2Limit\((\w+)\)", js)
+ppl_fn = re.search(r"function getPPO2Limit\((\w+)\)", zhl_src)
 if ppl_fn:
     param = ppl_fn.group(1)
     if param == 'fO2':
@@ -1184,7 +1184,7 @@ else:
     fail("getPPO2Limit function not found")
 
 # 23.2 getPPO2Limit body uses fO2 directly (not 1-fN2)
-ppl_body = re.search(r"function getPPO2Limit\(.*?\{(.*?)\}", js, re.DOTALL)
+ppl_body = re.search(r"function getPPO2Limit\(.*?\{(.*?)\}", zhl_src, re.DOTALL)
 if ppl_body:
     body = ppl_body.group(1)
     if "1 - fN2" in body or "1-fN2" in body:
@@ -1409,34 +1409,34 @@ else:
 
 # 28.1 firstStopDepth must be declared as `let` (mutable), not `const`
 # The old bug used `const firstStopDepth = ...` pre-computed from bottom tissues.
-if re.search(r'let firstStopDepth = 0;', js):
+if re.search(r'let firstStopDepth = 0;', zhl_src):
     ok("GF anchor: firstStopDepth declared as `let` (mutable, dynamically anchored)")
 else:
     fail("GF anchor: firstStopDepth must be `let firstStopDepth = 0` — pre-computed const causes spurious stops")
 
 # 28.2 candidateFirstStop used for stop list, not firstStopDepth
 # The candidate stop list must be built from candidateFirstStop, not the old firstStopDepth.
-if re.search(r'const candidateFirstStop = bottomCeil > 0', js):
+if re.search(r'const candidateFirstStop = bottomCeil > 0', zhl_src):
     ok("GF anchor: stop list built from candidateFirstStop (not pre-computed firstStopDepth)")
 else:
     fail("GF anchor: missing candidateFirstStop — stop list must use candidate variable, not firstStopDepth")
 
 # 28.3 firstStopDepth is anchored in the mustStop branch
 # The fix must set firstStopDepth = cur when the first required stop is found.
-if re.search(r'firstStopDepth\s*=\s*cur;\s*//\s*anchor GF line', js):
+if re.search(r'firstStopDepth\s*=\s*cur;\s*//\s*anchor GF line', zhl_src):
     ok("GF anchor: firstStopDepth set to cur at first mustStop (anchor from actual first stop)")
 else:
     fail("GF anchor: firstStopDepth not anchored at first mustStop — spurious stop bug will recur")
 
 # 28.4 minStopZoneDepth is declared as `let` (not const) and starts as null
 # With dynamic anchoring, minStopZoneDepth must be null until first stop is known.
-if re.search(r'let minStopZoneDepth = null;', js):
+if re.search(r'let minStopZoneDepth = null;', zhl_src):
     ok("GF anchor: minStopZoneDepth starts as null (set when first stop is known)")
 else:
     fail("GF anchor: minStopZoneDepth must be `let ... = null` — const from pre-computed firstStopDepth is broken")
 
 # 28.5 minStopZoneDepth is set in mustStop branch alongside firstStopDepth
-if re.search(r'minStopZoneDepth\s*=\s*cur;\s*//\s*enable min-stop', js):
+if re.search(r'minStopZoneDepth\s*=\s*cur;\s*//\s*enable min-stop', zhl_src):
     ok("GF anchor: minStopZoneDepth set to cur at first mustStop (min-stop enforcement enabled)")
 else:
     fail("GF anchor: minStopZoneDepth not set at first mustStop — min-stop enforcement may fail")
@@ -1485,9 +1485,9 @@ else:
 # ══════════════════════════════════════════════════════════════════════════════
 
 # 30.1 gfAt() returns gfL (not gfH) when firstStopDepth is unanchored
-if re.search(r'if \(!firstStopDepth \|\| firstStopDepth <= 0\) return gfL;', js):
+if re.search(r'if \(!firstStopDepth \|\| firstStopDepth <= 0\) return gfL;', zhl_src):
     ok("GF anchor: gfAt() returns gfL pre-anchor (correct — GF Low determines first stop per Baker)")
-elif re.search(r'if \(!firstStopDepth \|\| firstStopDepth <= 0\) return gfH;', js):
+elif re.search(r'if \(!firstStopDepth \|\| firstStopDepth <= 0\) return gfH;', zhl_src):
     fail("GF anchor: gfAt() returns gfH pre-anchor — REGRESSION. Anchors 1-3 steps shallower than correct; GF Low must be used to find the first stop, not GF High.")
 else:
     fail("GF anchor: gfAt() pre-anchor return value not found or changed structure")
@@ -1504,13 +1504,13 @@ else:
 # ══════════════════════════════════════════════════════════════════════════════
 
 # 31.1 TTS computed in the engine (headless-safe) as rt - bt
-if re.search(r'const ttsMin = Math\.max\(0, rt - bt\);', js):
+if re.search(r'const ttsMin = Math\.max\(0, rt - bt\);', zhl_src):
     ok("TTS: computed as rt-bt (ascent+deco only) before the headless early-return")
 else:
     fail("TTS: rt-bt computation missing — TTS will be unavailable in headless tests")
 
 # 31.2 TTS stored on window._lastPlan
-if re.search(r'tts: Math\.round\(ttsMin \* 10\) / 10,', js):
+if re.search(r'tts: Math\.round\(ttsMin \* 10\) / 10,', zhl_src) or re.search(r'\.\.\.zhlCore\.lastPlan', js):
     ok("TTS: stored on window._lastPlan.tts")
 else:
     fail("TTS: not stored on _lastPlan — headless ZHLEngine.calculate() callers cannot read it")
@@ -1534,7 +1534,7 @@ else:
     fail("Decozone: ambientCrossingDepth() missing — decozone fix may be reverted")
 
 # 31.6 decoZoneStart in _lastPlan uses the new GF-independent value, not firstStopDepth
-if re.search(r'decoZoneStart: trueDecoZoneStart,', js):
+if re.search(r'decoZoneStart: trueDecoZoneStart,', zhl_src) or re.search(r'\.\.\.zhlCore\.lastPlan', js):
     ok("Decozone: _lastPlan.decoZoneStart uses trueDecoZoneStart (GF-independent)")
 elif re.search(r'decoZoneStart: hasDeco \? firstStopDepth : 0,', js):
     fail("Decozone: _lastPlan.decoZoneStart still aliases firstStopDepth — REGRESSION, will vary incorrectly with GF Lo/Hi")
@@ -1559,19 +1559,19 @@ else:
 # ══════════════════════════════════════════════════════════════════════════════
 
 # 32.1 Final ascent leg present after the main stop loop, using surfaceRate
-if re.search(r'const finalAscentDur = cur / surfaceRate;', js):
+if re.search(r'const finalAscentDur = cur / surfaceRate;', zhl_src):
     ok("Final ascent: surfaceRate-based leg from lastStop to surface present")
 else:
     fail("Final ascent: surfaceRate leg missing — surfacing time/off-gassing undercounted")
 
 # 32.2 Final ascent applies off-gassing via saturateLinear (not treated as instant)
-if re.search(r'tissues = saturateLinear\(tissues, cur, 0, finalAscentDur', js) or re.search(r'tissues = zhlLoadLinear\(tissues, cur, 0, finalAscentDur', js):
+if re.search(r'tissues = saturateLinear\(tissues, cur, 0, finalAscentDur', zhl_src) or re.search(r'tissues = zhlLoadLinear\(tissues, cur, 0, finalAscentDur', zhl_src):
     ok("Final ascent: off-gassing applied via saturateLinear during the final leg")
 else:
     fail("Final ascent: off-gassing not applied — tissue state wrong for repetitive-dive surface interval")
 
 # 32.3 Final ascent leg is pushed as its own step (visible in plan/exports)
-if re.search(r"type: 'ascent', from: cur, to: 0,", js):
+if re.search(r"type: 'ascent', from: cur, to: 0,", zhl_src):
     ok("Final ascent: pushed as a visible step (from=lastStop, to=0)")
 else:
     fail("Final ascent: step not pushed — RT/TTS may update but plan/exports won't show the leg")
@@ -1593,7 +1593,7 @@ else:
 # ══════════════════════════════════════════════════════════════════════════════
 
 # 33.1 holdStep no longer forces coarse resolution for the first stop in headless mode
-if re.search(r'const holdStep = isFirstDecoStop \? 1/6 : 1;', js):
+if re.search(r'const holdStep = isFirstDecoStop \? 1/6 : 1;', zhl_src):
     ok("holdStep: first-stop fine resolution (1/6 min) applies regardless of headless mode")
 elif re.search(r'const holdStep = \(window\._zhlHeadless\) \? 1 :', js):
     fail("holdStep: REGRESSION — headless mode still forces coarse 1-min resolution on the first stop, producing different RT/TTS than the real app for identical inputs")
@@ -1620,7 +1620,7 @@ else:
     fail("computeSurfaceGF: M-value denominator formula not found — Surface GF may be wrong")
 
 # 34.3 surfaceGF stored in ZHL _lastPlan
-if re.search(r'surfaceGF:\s*computeSurfaceGF\(tissues\)', js):
+if re.search(r'surfaceGF:\s*computeSurfaceGF\(tissues\)', zhl_src) or re.search(r'\.\.\.zhlCore\.lastPlan', js):
     ok("surfaceGF: stored in ZHL _lastPlan via computeSurfaceGF(tissues)")
 else:
     fail("surfaceGF: not stored in ZHL _lastPlan — footer metric missing")
@@ -1699,7 +1699,7 @@ else:
     fail("gfAt: shallowGradient setting not referenced — toggle has no effect")
 
 # 34.16 gfAt shallow gradient: clamps to gfH at lastStop when ON
-if re.search(r'sgOn && depthM <= lastStop.*return gfH', js, re.DOTALL):
+if re.search(r'sgOn && depthM <= lastStop.*return gfH', zhl_src, re.DOTALL):
     ok("gfAt: shallow gradient ON returns gfH at lastStop and shallower")
 else:
     fail("gfAt: shallow gradient ON does not apply gfH at lastStop")
