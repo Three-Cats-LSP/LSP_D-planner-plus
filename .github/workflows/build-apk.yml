@@ -1,0 +1,108 @@
+name: Build Android APK (Capacitor)
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'Android Apk/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-apk
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract app version from index.html
+        id: version
+        run: |
+          VERSION=$(grep -oP "APP_VERSION\s*=\s*'\K[^']+" index.html)
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          IFS='.' read -ra PARTS <<< "$VERSION"
+          MAJOR="${PARTS[0]:-0}"
+          MINOR="${PARTS[1]:-0}"
+          PATCH="${PARTS[2]:-0}"
+          VERSION_CODE=$(( MAJOR * 10000 + MINOR * 100 + PATCH ))
+          echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_OUTPUT
+          echo "Detected version: $VERSION (code: $VERSION_CODE)"
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Capacitor dependencies
+        run: npm ci
+
+      - name: Prepare web assets (www/)
+        run: python tools/sync_www.py
+
+      - name: Capacitor sync (copies web assets + updates plugins)
+        run: npx cap sync android
+
+      - name: Patch build.gradle with extracted version
+        run: |
+          sed -i "s/versionCode [0-9]*/versionCode ${{ steps.version.outputs.VERSION_CODE }}/" android/app/build.gradle
+          sed -i "s/versionName \"[^\"]*\"/versionName \"${{ steps.version.outputs.VERSION }}\"/" android/app/build.gradle
+          echo "build.gradle after patch:"
+          grep -E "versionCode|versionName" android/app/build.gradle
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('android/**/*.gradle', 'android/gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build debug APK
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: Place APK at output location
+        run: |
+          mkdir -p "Android Apk"
+          cp android/app/build/outputs/apk/debug/app-debug.apk "Android Apk/LSP_D-planner-plus.apk"
+
+      - name: Commit APK back to main
+        run: |
+          git config user.email "sns@rvm.cc"
+          git config user.name "Three Cats LSP"
+          git add "Android Apk/LSP_D-planner-plus.apk"
+          git commit -m "build(android): update LSP_D-planner-plus.apk v${{ steps.version.outputs.VERSION }} [skip ci]" --allow-empty
+          git checkout -- android/app/build.gradle
+          git reset --hard HEAD
+          git pull --rebase origin main
+          git push
+
+      - name: Notify homepage to sync APK
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.SYNC_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/Three-Cats-LSP/threecats-lsp.com/dispatches \
+            -d '{"event_type":"sync-apk-d-planner-plus"}'

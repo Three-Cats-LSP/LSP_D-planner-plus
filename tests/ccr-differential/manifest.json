@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 2,
+  "fixtureIds": [
+    "CCR-C1",
+    "CCR-C2",
+    "CCR-C3",
+    "CCR-NDL",
+    "CCR-SP",
+    "CCR-ML",
+    "CCR-GF-A",
+    "CCR-GF-B",
+    "CCR-LAST-A",
+    "CCR-LAST-B",
+    "CCR-BO",
+    "CCR-LOST-GAS",
+    "CCR-REP",
+    "CCR-ALT",
+    "CCR-PRECISE-A",
+    "CCR-PRECISE-B",
+    "CCR-SP-CROSSING",
+    "CCR-INVALID-SP",
+    "CCR-INVALID-GAS-SUM",
+    "CCR-INVALID-GAS-NEGATIVE",
+    "CCR-INVALID-PROFILE"
+  ],
+  "multidecoCaptured": [
+    "CCR-C1",
+    "CCR-C2",
+    "CCR-C3"
+  ],
+  "divekitCaptured": [
+    "CCR-C1",
+    "CCR-C2",
+    "CCR-C3"
+  ],
+  "abysnerCaptured": [
+    "CCR-C1",
+    "CCR-C2",
+    "CCR-C3"
+  ],
+  "subsurfaceCaptured": [
+    "CCR-C1",
+    "CCR-C2",
+    "CCR-C3"
+  ],
+  "requiredGoldens": {
+    "multideco": [
+      "CCR-C1",
+      "CCR-C2",
+      "CCR-C3"
+    ],
+    "divekit": [
+      "CCR-C1",
+      "CCR-C2",
+      "CCR-C3"
+    ],
+    "abysner": [
+      "CCR-C1",
+      "CCR-C2",
+      "CCR-C3"
+    ],
+    "subsurface": [
+      "CCR-C1",
+      "CCR-C2",
+      "CCR-C3"
+    ]
+  },
+  "fixtureEffectiveness": {
+    "CCR-REP": {
+      "baseline": "CCR-C1",
+      "fields": [
+        "runtimeMin"
+      ]
+    },
+    "CCR-ALT": {
+      "baseline": "CCR-C1",
+      "fields": [
+        "runtimeMin"
+      ]
+    }
+  },
+  "inputsChecksum": "5d7955d44da527267803c9bf9ec7322b9529bc5e9c471f1a51706a2f3f704ffd",
+  "multidecoChecksum": "8cbd006f85bd8504684486f9aedb9bb26f6e6e16e6d5f081b4ce89f09cb122be"
+}

@@ -1,0 +1,79 @@
+{
+  "engine": "DiveKit",
+  "engineVersion": "divekit.app-capture",
+  "scenarioId": "CCR-C2",
+  "provenance": {
+    "source": "divekit.app-open-reference",
+    "note": "Open-source ApexDeco-family reference capture from divekit.app",
+    "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQImABYAAQ0jSwESLZYA6AEJAwYUHh4GAAAAAAAUDwBCDhQFAQ0NBxItHgDIHgDIVTwtHv__AA0OMi44LjUgKDQyKSBpb3MBND4eAAAAAAAAAAAADg8Q_wAAAAAB?r=U0tSUwcBAV3PsUvDQBTH8d97d-lwcEjoUeoSikoIgqJ1zVhcXAQnu4iC0N0l-HeE_iESdPcPcOjk2E2X6oGxLaVDkxbK9W644cuHx3vy4f7pEU1wzChQaN24ue6cn15QFYIkSLaBYWvxsQ2yDilSR4wEAOOIESND5ojCF4Uvhr4Y-iLzRVbtBuuIvi_6TAMaOCL1Rco0prEjIrFznETEnHPuCKzPV2oTzugFPRxxk2PQs5hU8-vXqb8Ywa06UG0VKt093g-TsKv3FqpszMSv-hOl-Zb_ZiLmxop5sDz8kYvIRlOxPLF3X5cliHv03v5s5XhtaXOFtxU"
+  },
+  "stops": [
+    {
+      "depthM": 24,
+      "durationMin": 1,
+      "runtimeMin": 29,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 21,
+      "durationMin": 2,
+      "runtimeMin": 31,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 18,
+      "durationMin": 2,
+      "runtimeMin": 34,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 15,
+      "durationMin": 2,
+      "runtimeMin": 36,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 12,
+      "durationMin": 4,
+      "runtimeMin": 40,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 9,
+      "durationMin": 6,
+      "runtimeMin": 47,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 6,
+      "durationMin": 8,
+      "runtimeMin": 55,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 3,
+      "durationMin": 11,
+      "runtimeMin": 67,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    }
+  ],
+  "summary": {
+    "firstStopDepthM": 24,
+    "ttsMin": 43.4,
+    "runtimeMin": 68,
+    "cnsPercent": 37.8,
+    "otu": 100.5,
+    "decozoneStartM": 41.2
+  },
+  "gasSwitches": [],
+  "tissuesN2": "not_available",
+  "tissuesHe": "not_available"
+}

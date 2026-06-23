@@ -1,0 +1,14 @@
+{
+  "appId": "com.threecats.lsp.dplannerplus",
+  "appName": "LSP+",
+  "webDir": "www",
+  "android": {
+    "buildOptions": {
+      "keystorePath": null,
+      "keystoreAlias": null
+    }
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}

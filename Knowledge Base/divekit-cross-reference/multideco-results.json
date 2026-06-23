@@ -1,0 +1,2197 @@
+{
+  "schemaVersion": 1,
+  "results": {
+    "S1": {
+      "stops": [
+        {
+          "depthM": 12,
+          "stopMin": 1,
+          "runMin": 28,
+          "gasLabel": "21",
+          "ppO2": 0.46,
+          "eadM": 12
+        },
+        {
+          "depthM": 9,
+          "stopMin": 3,
+          "runMin": 31,
+          "gasLabel": "21",
+          "ppO2": 0.4,
+          "eadM": 9
+        },
+        {
+          "depthM": 6,
+          "stopMin": 4,
+          "runMin": 35,
+          "gasLabel": "21",
+          "ppO2": 0.34,
+          "eadM": 6
+        },
+        {
+          "depthM": 3,
+          "stopMin": 11,
+          "runMin": 46,
+          "gasLabel": "21",
+          "ppO2": 0.27,
+          "eadM": 3
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 22,
+        "runtimeMin": 47,
+        "firstStopDepthM": 12,
+        "cnsPercent": 6,
+        "otu": 18,
+        "decozoneStartM": 21,
+        "gasDensityGPerL": 4.8
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "liters": 2420
+        }
+      ]
+    },
+    "S2": {
+      "stops": [
+        {
+          "depthM": 21,
+          "stopMin": 1.33,
+          "runMin": 29,
+          "gasLabel": "21",
+          "ppO2": 0.65,
+          "eadM": 21
+        },
+        {
+          "depthM": 18,
+          "stopMin": 2,
+          "runMin": 31,
+          "gasLabel": "21",
+          "ppO2": 0.59,
+          "eadM": 18
+        },
+        {
+          "depthM": 15,
+          "stopMin": 3,
+          "runMin": 34,
+          "gasLabel": "21",
+          "ppO2": 0.52,
+          "eadM": 15
+        },
+        {
+          "depthM": 12,
+          "stopMin": 5,
+          "runMin": 39,
+          "gasLabel": "21",
+          "ppO2": 0.46,
+          "eadM": 12
+        },
+        {
+          "depthM": 9,
+          "stopMin": 7,
+          "runMin": 46,
+          "gasLabel": "21",
+          "ppO2": 0.4,
+          "eadM": 9
+        },
+        {
+          "depthM": 6,
+          "stopMin": 16,
+          "runMin": 62,
+          "gasLabel": "21",
+          "ppO2": 0.34,
+          "eadM": 6
+        },
+        {
+          "depthM": 3,
+          "stopMin": 33,
+          "runMin": 95,
+          "gasLabel": "21",
+          "ppO2": 0.27,
+          "eadM": 3
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 71,
+        "runtimeMin": 96,
+        "firstStopDepthM": 21,
+        "cnsPercent": 12,
+        "otu": 33,
+        "decozoneStartM": 32,
+        "gasDensityGPerL": 6.6
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "liters": 4403
+        }
+      ]
+    },
+    "S3": {
+      "stops": [
+        {
+          "depthM": 12,
+          "stopMin": 0.67,
+          "runMin": 33,
+          "gasLabel": "32",
+          "ppO2": 0.7,
+          "eadM": 9
+        },
+        {
+          "depthM": 9,
+          "stopMin": 1,
+          "runMin": 34,
+          "gasLabel": "32",
+          "ppO2": 0.61,
+          "eadM": 6
+        },
+        {
+          "depthM": 6,
+          "stopMin": 4,
+          "runMin": 38,
+          "gasLabel": "32",
+          "ppO2": 0.51,
+          "eadM": 4
+        },
+        {
+          "depthM": 3,
+          "stopMin": 9,
+          "runMin": 47,
+          "gasLabel": "32",
+          "ppO2": 0.42,
+          "eadM": 1
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 18,
+        "runtimeMin": 48,
+        "firstStopDepthM": 12,
+        "cnsPercent": 20,
+        "otu": 49,
+        "decozoneStartM": 18,
+        "gasDensityGPerL": 5.2
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "32",
+          "liters": 2876
+        }
+      ]
+    },
+    "S4": {
+      "stops": [
+        {
+          "depthM": 18,
+          "stopMin": 0.55,
+          "runMin": 28,
+          "gasLabel": "50",
+          "ppO2": 1.39,
+          "eadM": 8
+        },
+        {
+          "depthM": 15,
+          "stopMin": 1,
+          "runMin": 29,
+          "gasLabel": "50",
+          "ppO2": 1.24,
+          "eadM": 6
+        },
+        {
+          "depthM": 12,
+          "stopMin": 3,
+          "runMin": 32,
+          "gasLabel": "50",
+          "ppO2": 1.1,
+          "eadM": 4
+        },
+        {
+          "depthM": 9,
+          "stopMin": 3,
+          "runMin": 35,
+          "gasLabel": "50",
+          "ppO2": 0.95,
+          "eadM": 2
+        },
+        {
+          "depthM": 6,
+          "stopMin": 5,
+          "runMin": 40,
+          "gasLabel": "50",
+          "ppO2": 0.8,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 13,
+          "runMin": 53,
+          "gasLabel": "50",
+          "ppO2": 0.65,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 21,
+          "toGasLabel": "50"
+        }
+      ],
+      "summary": {
+        "ttsMin": 29,
+        "runtimeMin": 54,
+        "firstStopDepthM": 18,
+        "cnsPercent": 16,
+        "otu": 44,
+        "decozoneStartM": 28,
+        "gasDensityGPerL": 6
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "liters": 2446
+        },
+        {
+          "gasLabel": "50",
+          "liters": 664
+        }
+      ]
+    },
+    "S5": {
+      "stops": [
+        {
+          "depthM": 33,
+          "stopMin": 1,
+          "runMin": 24,
+          "gasLabel": "18/45",
+          "ppO2": 0.77,
+          "eadM": 10
+        },
+        {
+          "depthM": 30,
+          "stopMin": 1,
+          "runMin": 25,
+          "gasLabel": "18/45",
+          "ppO2": 0.72,
+          "eadM": 9
+        },
+        {
+          "depthM": 27,
+          "stopMin": 1,
+          "runMin": 26,
+          "gasLabel": "18/45",
+          "ppO2": 0.66,
+          "eadM": 7
+        },
+        {
+          "depthM": 24,
+          "stopMin": 1,
+          "runMin": 27,
+          "gasLabel": "18/45",
+          "ppO2": 0.61,
+          "eadM": 6
+        },
+        {
+          "depthM": 21,
+          "stopMin": 2,
+          "runMin": 29,
+          "gasLabel": "50",
+          "ppO2": 1.54,
+          "eadM": 10
+        },
+        {
+          "depthM": 18,
+          "stopMin": 1,
+          "runMin": 30,
+          "gasLabel": "50",
+          "ppO2": 1.39,
+          "eadM": 8
+        },
+        {
+          "depthM": 15,
+          "stopMin": 3,
+          "runMin": 33,
+          "gasLabel": "50",
+          "ppO2": 1.24,
+          "eadM": 6
+        },
+        {
+          "depthM": 12,
+          "stopMin": 4,
+          "runMin": 37,
+          "gasLabel": "50",
+          "ppO2": 1.1,
+          "eadM": 4
+        },
+        {
+          "depthM": 9,
+          "stopMin": 5,
+          "runMin": 42,
+          "gasLabel": "50",
+          "ppO2": 0.95,
+          "eadM": 2
+        },
+        {
+          "depthM": 6,
+          "stopMin": 8,
+          "runMin": 50,
+          "gasLabel": "100",
+          "ppO2": 1.6,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 14,
+          "runMin": 64,
+          "gasLabel": "100",
+          "ppO2": 1.3,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 21,
+          "toGasLabel": "50"
+        },
+        {
+          "atDepthM": 6,
+          "toGasLabel": "100"
+        }
+      ],
+      "summary": {
+        "ttsMin": 45,
+        "runtimeMin": 65,
+        "firstStopDepthM": 33,
+        "cnsPercent": 40,
+        "otu": 85,
+        "decozoneStartM": 44,
+        "gasDensityGPerL": 5.2
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "18/45",
+          "liters": 3067
+        },
+        {
+          "gasLabel": "50",
+          "liters": 514
+        },
+        {
+          "gasLabel": "100",
+          "liters": 470
+        }
+      ]
+    },
+    "S6": {
+      "stops": [
+        {
+          "depthM": 48,
+          "stopMin": 0.45,
+          "runMin": 24,
+          "gasLabel": "21/35",
+          "ppO2": 1.21,
+          "eadM": 22
+        },
+        {
+          "depthM": 45,
+          "stopMin": 1,
+          "runMin": 25,
+          "gasLabel": "21/35",
+          "ppO2": 1.15,
+          "eadM": 21
+        },
+        {
+          "depthM": 42,
+          "stopMin": 1,
+          "runMin": 26,
+          "gasLabel": "21/35",
+          "ppO2": 1.09,
+          "eadM": 19
+        },
+        {
+          "depthM": 39,
+          "stopMin": 1,
+          "runMin": 27,
+          "gasLabel": "21/35",
+          "ppO2": 1.02,
+          "eadM": 17
+        },
+        {
+          "depthM": 36,
+          "stopMin": 1,
+          "runMin": 28,
+          "gasLabel": "21/35",
+          "ppO2": 0.96,
+          "eadM": 16
+        },
+        {
+          "depthM": 33,
+          "stopMin": 1,
+          "runMin": 29,
+          "gasLabel": "21/35",
+          "ppO2": 0.9,
+          "eadM": 14
+        },
+        {
+          "depthM": 30,
+          "stopMin": 1,
+          "runMin": 30,
+          "gasLabel": "21/35",
+          "ppO2": 0.84,
+          "eadM": 12
+        },
+        {
+          "depthM": 27,
+          "stopMin": 2,
+          "runMin": 32,
+          "gasLabel": "21/35",
+          "ppO2": 0.77,
+          "eadM": 11
+        },
+        {
+          "depthM": 24,
+          "stopMin": 4,
+          "runMin": 36,
+          "gasLabel": "21/35",
+          "ppO2": 0.71,
+          "eadM": 9
+        },
+        {
+          "depthM": 21,
+          "stopMin": 3,
+          "runMin": 39,
+          "gasLabel": "50",
+          "ppO2": 1.54,
+          "eadM": 10
+        },
+        {
+          "depthM": 18,
+          "stopMin": 3,
+          "runMin": 42,
+          "gasLabel": "50",
+          "ppO2": 1.39,
+          "eadM": 8
+        },
+        {
+          "depthM": 15,
+          "stopMin": 4,
+          "runMin": 46,
+          "gasLabel": "50",
+          "ppO2": 1.24,
+          "eadM": 6
+        },
+        {
+          "depthM": 12,
+          "stopMin": 7,
+          "runMin": 53,
+          "gasLabel": "50",
+          "ppO2": 1.1,
+          "eadM": 4
+        },
+        {
+          "depthM": 9,
+          "stopMin": 10,
+          "runMin": 63,
+          "gasLabel": "50",
+          "ppO2": 0.95,
+          "eadM": 2
+        },
+        {
+          "depthM": 6,
+          "stopMin": 13,
+          "runMin": 76,
+          "gasLabel": "100",
+          "ppO2": 1.6,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 24,
+          "runMin": 100,
+          "gasLabel": "100",
+          "ppO2": 1.3,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 57,
+          "toGasLabel": "21/35"
+        },
+        {
+          "atDepthM": 21,
+          "toGasLabel": "50"
+        },
+        {
+          "atDepthM": 6,
+          "toGasLabel": "100"
+        }
+      ],
+      "summary": {
+        "ttsMin": 81,
+        "runtimeMin": 101,
+        "firstStopDepthM": 48,
+        "cnsPercent": 65,
+        "otu": 136,
+        "decozoneStartM": 62,
+        "gasDensityGPerL": 5.7
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "15/55",
+          "liters": 3473
+        },
+        {
+          "gasLabel": "21/35",
+          "liters": 937
+        },
+        {
+          "gasLabel": "50",
+          "liters": 921
+        },
+        {
+          "gasLabel": "100",
+          "liters": 784
+        }
+      ]
+    },
+    "S7": {
+      "stops": [
+        {
+          "depthM": 18,
+          "stopMin": 1,
+          "runMin": 29,
+          "gasLabel": "21",
+          "ppO2": 0.59,
+          "eadM": 18
+        },
+        {
+          "depthM": 15,
+          "stopMin": 1,
+          "runMin": 30,
+          "gasLabel": "21",
+          "ppO2": 0.52,
+          "eadM": 15
+        },
+        {
+          "depthM": 12,
+          "stopMin": 4,
+          "runMin": 34,
+          "gasLabel": "21",
+          "ppO2": 0.46,
+          "eadM": 12
+        },
+        {
+          "depthM": 9,
+          "stopMin": 6,
+          "runMin": 40,
+          "gasLabel": "21",
+          "ppO2": 0.4,
+          "eadM": 9
+        },
+        {
+          "depthM": 6,
+          "stopMin": 11,
+          "runMin": 51,
+          "gasLabel": "21",
+          "ppO2": 0.34,
+          "eadM": 6
+        },
+        {
+          "depthM": 3,
+          "stopMin": 25,
+          "runMin": 76,
+          "gasLabel": "21",
+          "ppO2": 0.27,
+          "eadM": 3
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 52,
+        "runtimeMin": 77,
+        "firstStopDepthM": 18,
+        "cnsPercent": 12,
+        "otu": 32,
+        "decozoneStartM": 32,
+        "gasDensityGPerL": 6.6
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "liters": 3900
+        }
+      ]
+    },
+    "FS1": {
+      "stops": [
+        {
+          "depthM": 12,
+          "stopMin": 0.75,
+          "runMin": 26,
+          "gasLabel": "21",
+          "ppO2": 0.45,
+          "eadM": 12
+        },
+        {
+          "depthM": 9,
+          "stopMin": 1,
+          "runMin": 27,
+          "gasLabel": "21",
+          "ppO2": 0.39,
+          "eadM": 9
+        },
+        {
+          "depthM": 6,
+          "stopMin": 4,
+          "runMin": 31,
+          "gasLabel": "21",
+          "ppO2": 0.33,
+          "eadM": 6
+        },
+        {
+          "depthM": 3,
+          "stopMin": 8,
+          "runMin": 39,
+          "gasLabel": "21",
+          "ppO2": 0.27,
+          "eadM": 3
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 16,
+        "runtimeMin": 39,
+        "firstStopDepthM": 12,
+        "cnsPercent": 5,
+        "otu": 16,
+        "decozoneStartM": 21,
+        "gasDensityGPerL": 4.7
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "liters": 2206
+        }
+      ]
+    },
+    "FS2": {
+      "stops": [
+        {
+          "depthM": 21,
+          "stopMin": 1,
+          "runMin": 26,
+          "gasLabel": "21",
+          "ppO2": 0.64,
+          "eadM": 21
+        },
+        {
+          "depthM": 18,
+          "stopMin": 1,
+          "runMin": 27,
+          "gasLabel": "21",
+          "ppO2": 0.58,
+          "eadM": 18
+        },
+        {
+          "depthM": 15,
+          "stopMin": 2,
+          "runMin": 29,
+          "gasLabel": "21",
+          "ppO2": 0.51,
+          "eadM": 15
+        },
+        {
+          "depthM": 12,
+          "stopMin": 4,
+          "runMin": 33,
+          "gasLabel": "21",
+          "ppO2": 0.45,
+          "eadM": 12
+        },
+        {
+          "depthM": 9,
+          "stopMin": 6,
+          "runMin": 39,
+          "gasLabel": "21",
+          "ppO2": 0.39,
+          "eadM": 9
+        },
+        {
+          "depthM": 6,
+          "stopMin": 11,
+          "runMin": 50,
+          "gasLabel": "21",
+          "ppO2": 0.33,
+          "eadM": 6
+        },
+        {
+          "depthM": 3,
+          "stopMin": 26,
+          "runMin": 76,
+          "gasLabel": "21",
+          "ppO2": 0.27,
+          "eadM": 3
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 54,
+        "runtimeMin": 76,
+        "firstStopDepthM": 21,
+        "cnsPercent": 11,
+        "otu": 28,
+        "decozoneStartM": 32,
+        "gasDensityGPerL": 6.4
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "liters": 3757
+        }
+      ]
+    },
+    "FS3": {
+      "stops": [
+        {
+          "depthM": 12,
+          "stopMin": 0.38,
+          "runMin": 31,
+          "gasLabel": "32",
+          "ppO2": 0.69,
+          "eadM": 9
+        },
+        {
+          "depthM": 9,
+          "stopMin": 1,
+          "runMin": 32,
+          "gasLabel": "32",
+          "ppO2": 0.6,
+          "eadM": 6
+        },
+        {
+          "depthM": 6,
+          "stopMin": 3,
+          "runMin": 35,
+          "gasLabel": "32",
+          "ppO2": 0.51,
+          "eadM": 4
+        },
+        {
+          "depthM": 3,
+          "stopMin": 8,
+          "runMin": 43,
+          "gasLabel": "32",
+          "ppO2": 0.41,
+          "eadM": 1
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 15,
+        "runtimeMin": 43,
+        "firstStopDepthM": 12,
+        "cnsPercent": 18,
+        "otu": 45,
+        "decozoneStartM": 19,
+        "gasDensityGPerL": 5.1
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "32",
+          "liters": 2740
+        }
+      ]
+    },
+    "FS4": {
+      "stops": [
+        {
+          "depthM": 18,
+          "stopMin": 0.25,
+          "runMin": 26,
+          "gasLabel": "50",
+          "ppO2": 1.37,
+          "eadM": 8
+        },
+        {
+          "depthM": 15,
+          "stopMin": 1,
+          "runMin": 27,
+          "gasLabel": "50",
+          "ppO2": 1.23,
+          "eadM": 6
+        },
+        {
+          "depthM": 12,
+          "stopMin": 2,
+          "runMin": 29,
+          "gasLabel": "50",
+          "ppO2": 1.08,
+          "eadM": 4
+        },
+        {
+          "depthM": 9,
+          "stopMin": 3,
+          "runMin": 32,
+          "gasLabel": "50",
+          "ppO2": 0.94,
+          "eadM": 2
+        },
+        {
+          "depthM": 6,
+          "stopMin": 5,
+          "runMin": 37,
+          "gasLabel": "50",
+          "ppO2": 0.79,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 10,
+          "runMin": 47,
+          "gasLabel": "50",
+          "ppO2": 0.65,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 18,
+          "toGasLabel": "50"
+        }
+      ],
+      "summary": {
+        "ttsMin": 24,
+        "runtimeMin": 47,
+        "firstStopDepthM": 18,
+        "cnsPercent": 14,
+        "otu": 38,
+        "decozoneStartM": 28,
+        "gasDensityGPerL": 5.8
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "liters": 2350
+        },
+        {
+          "gasLabel": "50",
+          "liters": 543
+        }
+      ]
+    },
+    "FS5": {
+      "stops": [
+        {
+          "depthM": 27,
+          "stopMin": 0.13,
+          "runMin": 28,
+          "gasLabel": "21/35",
+          "ppO2": 0.76,
+          "eadM": 10
+        },
+        {
+          "depthM": 24,
+          "stopMin": 1,
+          "runMin": 29,
+          "gasLabel": "21/35",
+          "ppO2": 0.7,
+          "eadM": 9
+        },
+        {
+          "depthM": 21,
+          "stopMin": 1,
+          "runMin": 30,
+          "gasLabel": "50",
+          "ppO2": 1.52,
+          "eadM": 9
+        },
+        {
+          "depthM": 18,
+          "stopMin": 1,
+          "runMin": 31,
+          "gasLabel": "50",
+          "ppO2": 1.37,
+          "eadM": 8
+        },
+        {
+          "depthM": 15,
+          "stopMin": 2,
+          "runMin": 33,
+          "gasLabel": "50",
+          "ppO2": 1.23,
+          "eadM": 6
+        },
+        {
+          "depthM": 12,
+          "stopMin": 3,
+          "runMin": 36,
+          "gasLabel": "50",
+          "ppO2": 1.08,
+          "eadM": 4
+        },
+        {
+          "depthM": 9,
+          "stopMin": 5,
+          "runMin": 41,
+          "gasLabel": "50",
+          "ppO2": 0.94,
+          "eadM": 2
+        },
+        {
+          "depthM": 6,
+          "stopMin": 9,
+          "runMin": 50,
+          "gasLabel": "50",
+          "ppO2": 0.79,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 17,
+          "runMin": 67,
+          "gasLabel": "50",
+          "ppO2": 0.65,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 21,
+          "toGasLabel": "50"
+        }
+      ],
+      "summary": {
+        "ttsMin": 42,
+        "runtimeMin": 67,
+        "firstStopDepthM": 27,
+        "cnsPercent": 22,
+        "otu": 61,
+        "decozoneStartM": 36,
+        "gasDensityGPerL": 5
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21/35",
+          "liters": 3146
+        },
+        {
+          "gasLabel": "50",
+          "liters": 934
+        }
+      ]
+    },
+    "A1": {
+      "stops": [
+        {
+          "depthM": 15,
+          "stopMin": 0.67,
+          "runMin": 29,
+          "gasLabel": "50",
+          "ppO2": 1.24,
+          "eadM": 6
+        },
+        {
+          "depthM": 12,
+          "stopMin": 1,
+          "runMin": 30,
+          "gasLabel": "50",
+          "ppO2": 1.1,
+          "eadM": 4
+        },
+        {
+          "depthM": 9,
+          "stopMin": 2,
+          "runMin": 32,
+          "gasLabel": "50",
+          "ppO2": 0.95,
+          "eadM": 2
+        },
+        {
+          "depthM": 6,
+          "stopMin": 5,
+          "runMin": 37,
+          "gasLabel": "50",
+          "ppO2": 0.8,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 10,
+          "runMin": 47,
+          "gasLabel": "50",
+          "ppO2": 0.65,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 21,
+          "toGasLabel": "50"
+        }
+      ],
+      "summary": {
+        "ttsMin": 22,
+        "runtimeMin": 48,
+        "firstStopDepthM": 15,
+        "cnsPercent": 13,
+        "otu": 36,
+        "decozoneStartM": 22,
+        "gasDensityGPerL": 4.6
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21/35",
+          "liters": 2413
+        },
+        {
+          "gasLabel": "50",
+          "liters": 494
+        }
+      ]
+    },
+    "A2": {
+      "stops": [
+        {
+          "depthM": 39,
+          "stopMin": 0.55,
+          "runMin": 24,
+          "gasLabel": "18/45",
+          "ppO2": 0.88,
+          "eadM": 13
+        },
+        {
+          "depthM": 36,
+          "stopMin": 1,
+          "runMin": 25,
+          "gasLabel": "18/45",
+          "ppO2": 0.82,
+          "eadM": 12
+        },
+        {
+          "depthM": 33,
+          "stopMin": 1,
+          "runMin": 26,
+          "gasLabel": "35/25",
+          "ppO2": 1.5,
+          "eadM": 12
+        },
+        {
+          "depthM": 30,
+          "stopMin": 1,
+          "runMin": 27,
+          "gasLabel": "35/25",
+          "ppO2": 1.39,
+          "eadM": 10
+        },
+        {
+          "depthM": 27,
+          "stopMin": 1,
+          "runMin": 28,
+          "gasLabel": "35/25",
+          "ppO2": 1.29,
+          "eadM": 9
+        },
+        {
+          "depthM": 24,
+          "stopMin": 2,
+          "runMin": 30,
+          "gasLabel": "35/25",
+          "ppO2": 1.18,
+          "eadM": 7
+        },
+        {
+          "depthM": 21,
+          "stopMin": 1,
+          "runMin": 31,
+          "gasLabel": "50",
+          "ppO2": 1.54,
+          "eadM": 10
+        },
+        {
+          "depthM": 18,
+          "stopMin": 3,
+          "runMin": 34,
+          "gasLabel": "50",
+          "ppO2": 1.39,
+          "eadM": 8
+        },
+        {
+          "depthM": 15,
+          "stopMin": 3,
+          "runMin": 37,
+          "gasLabel": "50",
+          "ppO2": 1.24,
+          "eadM": 6
+        },
+        {
+          "depthM": 12,
+          "stopMin": 5,
+          "runMin": 42,
+          "gasLabel": "50",
+          "ppO2": 1.1,
+          "eadM": 4
+        },
+        {
+          "depthM": 9,
+          "stopMin": 7,
+          "runMin": 49,
+          "gasLabel": "50",
+          "ppO2": 0.95,
+          "eadM": 2
+        },
+        {
+          "depthM": 6,
+          "stopMin": 9,
+          "runMin": 58,
+          "gasLabel": "100",
+          "ppO2": 1.6,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 17,
+          "runMin": 75,
+          "gasLabel": "100",
+          "ppO2": 1.3,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 33,
+          "toGasLabel": "35/25"
+        },
+        {
+          "atDepthM": 21,
+          "toGasLabel": "50"
+        },
+        {
+          "atDepthM": 6,
+          "toGasLabel": "100"
+        }
+      ],
+      "summary": {
+        "ttsMin": 56,
+        "runtimeMin": 76,
+        "firstStopDepthM": 39,
+        "cnsPercent": 52,
+        "otu": 109,
+        "decozoneStartM": 52,
+        "gasDensityGPerL": 5.9
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "18/45",
+          "liters": 3522
+        },
+        {
+          "gasLabel": "35/25",
+          "liters": 277
+        },
+        {
+          "gasLabel": "50",
+          "liters": 642
+        },
+        {
+          "gasLabel": "100",
+          "liters": 556
+        }
+      ]
+    },
+    "A3": {
+      "stops": [
+        {
+          "depthM": 30,
+          "stopMin": 0.67,
+          "runMin": 28,
+          "gasLabel": "21/35",
+          "ppO2": 0.84,
+          "eadM": 12
+        },
+        {
+          "depthM": 27,
+          "stopMin": 1,
+          "runMin": 29,
+          "gasLabel": "21/35",
+          "ppO2": 0.77,
+          "eadM": 11
+        },
+        {
+          "depthM": 24,
+          "stopMin": 1,
+          "runMin": 30,
+          "gasLabel": "21/35",
+          "ppO2": 0.71,
+          "eadM": 9
+        },
+        {
+          "depthM": 21,
+          "stopMin": 1,
+          "runMin": 31,
+          "gasLabel": "50",
+          "ppO2": 1.54,
+          "eadM": 10
+        },
+        {
+          "depthM": 18,
+          "stopMin": 1,
+          "runMin": 32,
+          "gasLabel": "50",
+          "ppO2": 1.39,
+          "eadM": 8
+        },
+        {
+          "depthM": 15,
+          "stopMin": 2,
+          "runMin": 34,
+          "gasLabel": "50",
+          "ppO2": 1.24,
+          "eadM": 6
+        },
+        {
+          "depthM": 12,
+          "stopMin": 3,
+          "runMin": 37,
+          "gasLabel": "50",
+          "ppO2": 1.1,
+          "eadM": 4
+        },
+        {
+          "depthM": 9,
+          "stopMin": 5,
+          "runMin": 42,
+          "gasLabel": "50",
+          "ppO2": 0.95,
+          "eadM": 2
+        },
+        {
+          "depthM": 6,
+          "stopMin": 9,
+          "runMin": 51,
+          "gasLabel": "50",
+          "ppO2": 0.8,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 16,
+          "runMin": 67,
+          "gasLabel": "50",
+          "ppO2": 0.65,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 21,
+          "toGasLabel": "50"
+        }
+      ],
+      "summary": {
+        "ttsMin": 43,
+        "runtimeMin": 68,
+        "firstStopDepthM": 30,
+        "cnsPercent": 24,
+        "otu": 64,
+        "decozoneStartM": 37,
+        "gasDensityGPerL": 5.2
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21/35",
+          "liters": 3312
+        },
+        {
+          "gasLabel": "50",
+          "liters": 936
+        }
+      ]
+    },
+    "A4": {
+      "stops": [
+        {
+          "depthM": 21,
+          "stopMin": 0.33,
+          "runMin": 25,
+          "gasLabel": "21",
+          "ppO2": 0.65,
+          "eadM": 21
+        },
+        {
+          "depthM": 18,
+          "stopMin": 2,
+          "runMin": 27,
+          "gasLabel": "21",
+          "ppO2": 0.59,
+          "eadM": 18
+        },
+        {
+          "depthM": 15,
+          "stopMin": 2,
+          "runMin": 29,
+          "gasLabel": "21",
+          "ppO2": 0.52,
+          "eadM": 15
+        },
+        {
+          "depthM": 12,
+          "stopMin": 4,
+          "runMin": 33,
+          "gasLabel": "21",
+          "ppO2": 0.46,
+          "eadM": 12
+        },
+        {
+          "depthM": 9,
+          "stopMin": 6,
+          "runMin": 39,
+          "gasLabel": "21",
+          "ppO2": 0.4,
+          "eadM": 9
+        },
+        {
+          "depthM": 6,
+          "stopMin": 61,
+          "runMin": 100,
+          "gasLabel": "21",
+          "ppO2": 0.34,
+          "eadM": 6
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 80,
+        "runtimeMin": 102,
+        "firstStopDepthM": 21,
+        "cnsPercent": 11,
+        "otu": 28,
+        "decozoneStartM": 32,
+        "gasDensityGPerL": 6.6
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "liters": 4515
+        }
+      ]
+    },
+    "A5": {
+      "stops": [
+        {
+          "depthM": 15,
+          "stopMin": 0.33,
+          "runMin": 27,
+          "gasLabel": "21",
+          "ppO2": 0.47,
+          "eadM": 13
+        },
+        {
+          "depthM": 12,
+          "stopMin": 1,
+          "runMin": 28,
+          "gasLabel": "21",
+          "ppO2": 0.41,
+          "eadM": 10
+        },
+        {
+          "depthM": 9,
+          "stopMin": 3,
+          "runMin": 31,
+          "gasLabel": "21",
+          "ppO2": 0.35,
+          "eadM": 7
+        },
+        {
+          "depthM": 6,
+          "stopMin": 40,
+          "runMin": 71,
+          "gasLabel": "21",
+          "ppO2": 0.29,
+          "eadM": 4
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 48,
+        "runtimeMin": 73,
+        "firstStopDepthM": 15,
+        "cnsPercent": 5,
+        "otu": 15,
+        "decozoneStartM": 22,
+        "gasDensityGPerL": 4.4
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "liters": 2867
+        }
+      ]
+    },
+    "A6": {
+      "stops": [
+        {
+          "depthM": 27,
+          "stopMin": 0.88,
+          "runMin": 24,
+          "gasLabel": "21",
+          "ppO2": 0.77,
+          "eadM": 27
+        },
+        {
+          "depthM": 24,
+          "stopMin": 1,
+          "runMin": 25,
+          "gasLabel": "21",
+          "ppO2": 0.71,
+          "eadM": 24
+        },
+        {
+          "depthM": 21,
+          "stopMin": 1,
+          "runMin": 26,
+          "gasLabel": "50",
+          "ppO2": 1.54,
+          "eadM": 10
+        },
+        {
+          "depthM": 18,
+          "stopMin": 1,
+          "runMin": 27,
+          "gasLabel": "50",
+          "ppO2": 1.39,
+          "eadM": 8
+        },
+        {
+          "depthM": 15,
+          "stopMin": 3,
+          "runMin": 30,
+          "gasLabel": "50",
+          "ppO2": 1.24,
+          "eadM": 6
+        },
+        {
+          "depthM": 12,
+          "stopMin": 2,
+          "runMin": 32,
+          "gasLabel": "50",
+          "ppO2": 1.1,
+          "eadM": 4
+        },
+        {
+          "depthM": 9,
+          "stopMin": 5,
+          "runMin": 37,
+          "gasLabel": "50",
+          "ppO2": 0.95,
+          "eadM": 2
+        },
+        {
+          "depthM": 6,
+          "stopMin": 8,
+          "runMin": 45,
+          "gasLabel": "50",
+          "ppO2": 0.8,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 17,
+          "runMin": 62,
+          "gasLabel": "50",
+          "ppO2": 0.65,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 21,
+          "toGasLabel": "50"
+        }
+      ],
+      "summary": {
+        "ttsMin": 43,
+        "runtimeMin": 63,
+        "firstStopDepthM": 27,
+        "cnsPercent": 23,
+        "otu": 59,
+        "decozoneStartM": 38,
+        "gasDensityGPerL": 7.7
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "liters": 2881
+        },
+        {
+          "gasLabel": "50",
+          "liters": 936
+        }
+      ]
+    },
+    "C1": {
+      "stops": [
+        {
+          "depthM": 15,
+          "stopMin": 0.22,
+          "runMin": 33,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 5
+        },
+        {
+          "depthM": 12,
+          "stopMin": 1,
+          "runMin": 34,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 2
+        },
+        {
+          "depthM": 9,
+          "stopMin": 3,
+          "runMin": 37,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 0
+        },
+        {
+          "depthM": 6,
+          "stopMin": 4,
+          "runMin": 41,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 7,
+          "runMin": 48,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 19,
+        "runtimeMin": 49,
+        "firstStopDepthM": 15,
+        "cnsPercent": 27,
+        "otu": 70,
+        "decozoneStartM": 26,
+        "gasDensityGPerL": 6
+      },
+      "gasUsed": []
+    },
+    "C2": {
+      "stops": [
+        {
+          "depthM": 27,
+          "stopMin": 0.88,
+          "runMin": 29,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 4
+        },
+        {
+          "depthM": 24,
+          "stopMin": 1,
+          "runMin": 30,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 2
+        },
+        {
+          "depthM": 21,
+          "stopMin": 1,
+          "runMin": 31,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 0
+        },
+        {
+          "depthM": 18,
+          "stopMin": 2,
+          "runMin": 33,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 0
+        },
+        {
+          "depthM": 15,
+          "stopMin": 3,
+          "runMin": 36,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 0
+        },
+        {
+          "depthM": 12,
+          "stopMin": 4,
+          "runMin": 40,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 0
+        },
+        {
+          "depthM": 9,
+          "stopMin": 6,
+          "runMin": 46,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 0
+        },
+        {
+          "depthM": 6,
+          "stopMin": 8,
+          "runMin": 54,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 14,
+          "runMin": 68,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 44,
+        "runtimeMin": 69,
+        "firstStopDepthM": 27,
+        "cnsPercent": 37,
+        "otu": 99,
+        "decozoneStartM": 39,
+        "gasDensityGPerL": 4.9
+      },
+      "gasUsed": []
+    },
+    "C3": {
+      "stops": [
+        {
+          "depthM": 45,
+          "stopMin": 0.12,
+          "runMin": 24,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 7
+        },
+        {
+          "depthM": 42,
+          "stopMin": 1,
+          "runMin": 25,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 6
+        },
+        {
+          "depthM": 39,
+          "stopMin": 1,
+          "runMin": 26,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 4
+        },
+        {
+          "depthM": 36,
+          "stopMin": 1,
+          "runMin": 27,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 3
+        },
+        {
+          "depthM": 33,
+          "stopMin": 1,
+          "runMin": 28,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 2
+        },
+        {
+          "depthM": 30,
+          "stopMin": 1,
+          "runMin": 29,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 1
+        },
+        {
+          "depthM": 27,
+          "stopMin": 2,
+          "runMin": 31,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 0
+        },
+        {
+          "depthM": 24,
+          "stopMin": 3,
+          "runMin": 34,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 0
+        },
+        {
+          "depthM": 21,
+          "stopMin": 3,
+          "runMin": 37,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 0
+        },
+        {
+          "depthM": 18,
+          "stopMin": 4,
+          "runMin": 41,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 0
+        },
+        {
+          "depthM": 15,
+          "stopMin": 5,
+          "runMin": 46,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 0
+        },
+        {
+          "depthM": 12,
+          "stopMin": 7,
+          "runMin": 53,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 0
+        },
+        {
+          "depthM": 9,
+          "stopMin": 9,
+          "runMin": 62,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 0
+        },
+        {
+          "depthM": 6,
+          "stopMin": 13,
+          "runMin": 75,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 22,
+          "runMin": 97,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 78,
+        "runtimeMin": 98,
+        "firstStopDepthM": 45,
+        "cnsPercent": 53,
+        "otu": 140,
+        "decozoneStartM": 62,
+        "gasDensityGPerL": 5.4
+      },
+      "gasUsed": []
+    },
+    "R1": {
+      "stops": [
+        {
+          "depthM": 12,
+          "stopMin": 1,
+          "runMin": 28,
+          "gasLabel": "21",
+          "ppO2": 0.46,
+          "eadM": 12
+        },
+        {
+          "depthM": 9,
+          "stopMin": 3,
+          "runMin": 31,
+          "gasLabel": "21",
+          "ppO2": 0.4,
+          "eadM": 9
+        },
+        {
+          "depthM": 6,
+          "stopMin": 53,
+          "runMin": 84,
+          "gasLabel": "21",
+          "ppO2": 0.34,
+          "eadM": 6
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 61,
+        "runtimeMin": 86,
+        "firstStopDepthM": 12,
+        "cnsPercent": 10,
+        "otu": 18,
+        "decozoneStartM": 21,
+        "gasDensityGPerL": 4.8
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "liters": 3504
+        }
+      ]
+    },
+    "B1": {
+      "stops": [
+        {
+          "depthM": 24,
+          "stopMin": 0.33,
+          "runMin": 28,
+          "gasLabel": "45",
+          "ppO2": 1.52,
+          "eadM": 14
+        },
+        {
+          "depthM": 21,
+          "stopMin": 1,
+          "runMin": 29,
+          "gasLabel": "45",
+          "ppO2": 1.39,
+          "eadM": 12
+        },
+        {
+          "depthM": 18,
+          "stopMin": 1,
+          "runMin": 30,
+          "gasLabel": "45",
+          "ppO2": 1.25,
+          "eadM": 9
+        },
+        {
+          "depthM": 15,
+          "stopMin": 3,
+          "runMin": 33,
+          "gasLabel": "45",
+          "ppO2": 1.12,
+          "eadM": 7
+        },
+        {
+          "depthM": 12,
+          "stopMin": 3,
+          "runMin": 36,
+          "gasLabel": "45",
+          "ppO2": 0.99,
+          "eadM": 5
+        },
+        {
+          "depthM": 9,
+          "stopMin": 5,
+          "runMin": 41,
+          "gasLabel": "45",
+          "ppO2": 0.85,
+          "eadM": 3
+        },
+        {
+          "depthM": 6,
+          "stopMin": 6,
+          "runMin": 47,
+          "gasLabel": "100",
+          "ppO2": 1.6,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 10,
+          "runMin": 57,
+          "gasLabel": "100",
+          "ppO2": 1.3,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 24,
+          "toGasLabel": "45"
+        },
+        {
+          "atDepthM": 6,
+          "toGasLabel": "100"
+        }
+      ],
+      "summary": {
+        "ttsMin": 33,
+        "runtimeMin": 58,
+        "firstStopDepthM": 24,
+        "cnsPercent": 34,
+        "otu": 75,
+        "decozoneStartM": 35,
+        "gasDensityGPerL": 6.9
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "liters": 3010
+        },
+        {
+          "gasLabel": "45",
+          "liters": 475
+        },
+        {
+          "gasLabel": "100",
+          "liters": 348
+        }
+      ]
+    },
+    "P1": {
+      "stops": [
+        {
+          "depthM": 27,
+          "stopMin": 0.02,
+          "runMin": 34.68,
+          "gasLabel": "35/25",
+          "ppO2": 1.29,
+          "eadM": 9
+        },
+        {
+          "depthM": 24,
+          "stopMin": 1.65,
+          "runMin": 36.33,
+          "gasLabel": "35/25",
+          "ppO2": 1.18,
+          "eadM": 7
+        },
+        {
+          "depthM": 21,
+          "stopMin": 1.78,
+          "runMin": 38.12,
+          "gasLabel": "50",
+          "ppO2": 1.54,
+          "eadM": 10
+        },
+        {
+          "depthM": 18,
+          "stopMin": 2.28,
+          "runMin": 40.4,
+          "gasLabel": "50",
+          "ppO2": 1.39,
+          "eadM": 8
+        },
+        {
+          "depthM": 15,
+          "stopMin": 3.68,
+          "runMin": 44.08,
+          "gasLabel": "50",
+          "ppO2": 1.24,
+          "eadM": 6
+        },
+        {
+          "depthM": 12,
+          "stopMin": 4.93,
+          "runMin": 49.02,
+          "gasLabel": "50",
+          "ppO2": 1.1,
+          "eadM": 4
+        },
+        {
+          "depthM": 9,
+          "stopMin": 8.05,
+          "runMin": 57.07,
+          "gasLabel": "50",
+          "ppO2": 0.95,
+          "eadM": 2
+        },
+        {
+          "depthM": 6,
+          "stopMin": 10.15,
+          "runMin": 67.22,
+          "gasLabel": "100",
+          "ppO2": 1.6,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 19.07,
+          "runMin": 86.28,
+          "gasLabel": "100",
+          "ppO2": 1.3,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 30,
+          "toGasLabel": "18/45"
+        },
+        {
+          "atDepthM": 27,
+          "toGasLabel": "35/25"
+        },
+        {
+          "atDepthM": 21,
+          "toGasLabel": "50"
+        },
+        {
+          "atDepthM": 6,
+          "toGasLabel": "100"
+        }
+      ],
+      "summary": {
+        "ttsMin": 54,
+        "runtimeMin": 87,
+        "firstStopDepthM": 27,
+        "cnsPercent": 54,
+        "otu": 117,
+        "decozoneStartM": 45,
+        "gasDensityGPerL": 5.2
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "18/45",
+          "liters": 4109
+        },
+        {
+          "gasLabel": "35/25",
+          "liters": 229
+        },
+        {
+          "gasLabel": "50",
+          "liters": 702
+        },
+        {
+          "gasLabel": "100",
+          "liters": 624
+        }
+      ]
+    },
+    "G1": {
+      "stops": [
+        {
+          "depthM": 18,
+          "stopMin": 0.02,
+          "runMin": 25.02,
+          "gasLabel": "21",
+          "ppO2": 0.59,
+          "eadM": 18
+        },
+        {
+          "depthM": 15,
+          "stopMin": 0.62,
+          "runMin": 25.63,
+          "gasLabel": "21",
+          "ppO2": 0.52,
+          "eadM": 15
+        },
+        {
+          "depthM": 12,
+          "stopMin": 2.8,
+          "runMin": 28.43,
+          "gasLabel": "21",
+          "ppO2": 0.46,
+          "eadM": 12
+        },
+        {
+          "depthM": 9,
+          "stopMin": 4.27,
+          "runMin": 32.7,
+          "gasLabel": "21",
+          "ppO2": 0.4,
+          "eadM": 9
+        },
+        {
+          "depthM": 6,
+          "stopMin": 38.4,
+          "runMin": 71.1,
+          "gasLabel": "21",
+          "ppO2": 0.34,
+          "eadM": 6
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 51,
+        "runtimeMin": 73,
+        "firstStopDepthM": 18,
+        "cnsPercent": 10,
+        "otu": 28,
+        "decozoneStartM": 32,
+        "gasDensityGPerL": 6.6
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "liters": 3749
+        }
+      ]
+    },
+    "G2": {
+      "stops": [
+        {
+          "depthM": 18,
+          "stopMin": 0.02,
+          "runMin": 25.02,
+          "gasLabel": "21",
+          "ppO2": 0.59,
+          "eadM": 18
+        },
+        {
+          "depthM": 15,
+          "stopMin": 2.33,
+          "runMin": 27.35,
+          "gasLabel": "21",
+          "ppO2": 0.52,
+          "eadM": 15
+        },
+        {
+          "depthM": 12,
+          "stopMin": 5.22,
+          "runMin": 32.57,
+          "gasLabel": "21",
+          "ppO2": 0.46,
+          "eadM": 12
+        },
+        {
+          "depthM": 9,
+          "stopMin": 8.82,
+          "runMin": 41.38,
+          "gasLabel": "21",
+          "ppO2": 0.4,
+          "eadM": 9
+        },
+        {
+          "depthM": 6,
+          "stopMin": 174.58,
+          "runMin": 215.97,
+          "gasLabel": "21",
+          "ppO2": 0.34,
+          "eadM": 6
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 196,
+        "runtimeMin": 218,
+        "firstStopDepthM": 18,
+        "cnsPercent": 10,
+        "otu": 28,
+        "decozoneStartM": 32,
+        "gasDensityGPerL": 6.6
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "liters": 7281
+        }
+      ]
+    }
+  }
+}

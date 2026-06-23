@@ -1,0 +1,51 @@
+{
+  "id": "CCR-LAST-B",
+  "description": "Last stop 6 m (C1 profile)",
+  "profile": {
+    "levels": [
+      {
+        "depthM": 40,
+        "timeMin": 28
+      }
+    ],
+    "timeConvention": "at-depth"
+  },
+  "circuit": {
+    "type": "CCR",
+    "diluent": {
+      "o2": 0.21,
+      "he": 0.0
+    },
+    "setpointsBar": {
+      "descent": 0.7,
+      "bottom": 1.3,
+      "deco": 1.3
+    }
+  },
+  "decompression": {
+    "model": "ZHLC_GF",
+    "gfLow": 50,
+    "gfHigh": 80,
+    "stepM": 3,
+    "lastStopM": 6
+  },
+  "environment": {
+    "surfacePressureBar": 1.01325,
+    "waterColumnMPerBar": 10.0,
+    "waterVaporPressureBar": 0.0577,
+    "altitudeM": 0,
+    "acclimatized": true
+  },
+  "ratesMPerMin": {
+    "descent": 20,
+    "deepAscent": 9,
+    "decoAscent": 9,
+    "surfaceAscent": 3
+  },
+  "rounding": {
+    "mode": "whole-minute",
+    "minimumStopSec": 60,
+    "gasSwitchSec": 0
+  },
+  "bailoutGases": []
+}

@@ -1,0 +1,51 @@
+{
+  "engine": "DiveKit",
+  "engineVersion": "divekit.app-capture",
+  "scenarioId": "CCR-C1",
+  "provenance": {
+    "source": "divekit.app-open-reference",
+    "note": "Open-source ApexDeco-family reference capture from divekit.app",
+    "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQGQABwAAQ0yUAEVAJYA6AEJAwYUHh4GAAAAAAAUDwBCDhQFAQ0NBxUAHgDIHgDIVTwtHv__AA0OMi44LjUgKDQyKSBpb3MBND4eAAAAAAAAAAAADg8Q_wAAAAAB?r=U0tSUwcBAWNJSixOZeBmYJzAxFDBUMHLyxYcoGCoZ8wIFGCbwDYBLgCUZmLYwrALLsACEkDWwsQQxczAwCCCpCIKXYUNugobJoYPDB-QVMgxM9gw2CCpkGNi1GHUQVLBADSGwYaLCyJgwLCHwZCBl6mLcQIDIx_TOaD5ICACIgIYWPXkxCV55DjNxQIE-X9wfGf-KvKO-ZvIR5YfGq-4vut-Yv3NxcDAyDiLMUPihrgdw26x2aLGDLsA"
+  },
+  "stops": [
+    {
+      "depthM": 12,
+      "durationMin": 2,
+      "runtimeMin": 35,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 9,
+      "durationMin": 2,
+      "runtimeMin": 38,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 6,
+      "durationMin": 4,
+      "runtimeMin": 42,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 3,
+      "durationMin": 5,
+      "runtimeMin": 48,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    }
+  ],
+  "summary": {
+    "firstStopDepthM": 12,
+    "ttsMin": 18.8,
+    "runtimeMin": 49,
+    "cnsPercent": 27,
+    "otu": 71.8,
+    "decozoneStartM": 26.3
+  },
+  "gasSwitches": [],
+  "tissuesN2": "not_available",
+  "tissuesHe": "not_available"
+}

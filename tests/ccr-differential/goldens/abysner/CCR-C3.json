@@ -1,0 +1,101 @@
+{
+  "engine": "Abysner",
+  "engineVersion": "open-reference",
+  "scenarioId": "CCR-C3",
+  "provenance": {
+    "source": "open-reference-planner",
+    "note": "ZHL-16C CCR reference with Abysner preset (WV 0.0627, Schreiner, fixture rates)",
+    "repository": "https://github.com/NeoTech-Software/Abysner"
+  },
+  "stops": [
+    {
+      "depthM": 39.0,
+      "durationMin": 1.0,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 36.0,
+      "durationMin": 1.0,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 33.0,
+      "durationMin": 2.0,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 30.0,
+      "durationMin": 2.0,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 27.0,
+      "durationMin": 3.0,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 24.0,
+      "durationMin": 3.0,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 21.0,
+      "durationMin": 4.0,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 18.0,
+      "durationMin": 6.0,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 15.0,
+      "durationMin": 7.0,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 12.0,
+      "durationMin": 9.0,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 9.0,
+      "durationMin": 9.0,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 6.0,
+      "durationMin": 12.0,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 3.0,
+      "durationMin": 20.0,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    }
+  ],
+  "summary": {
+    "firstStopDepthM": 39.0,
+    "ttsMin": 88.6,
+    "runtimeMin": 108.6,
+    "cnsPercent": 58.8,
+    "otu": 156.5,
+    "decozoneStartM": 1.4
+  },
+  "gasSwitches": [],
+  "tissuesN2": "not_available",
+  "tissuesHe": "not_available"
+}

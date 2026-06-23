@@ -1,0 +1,53 @@
+name: Release gates
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run audit.py
+        run: python audit.py index.html
+
+  browser-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Playwright
+        run: |
+          pip install playwright
+          playwright install --with-deps chromium
+
+      - name: Run browser regression suites
+        run: python dev/run_browser_regression.py
+
+      - name: Run pSCR E2E release gate
+        env:
+          SKIP_AUDIT: "1"
+        run: python dev/validate_pscr_e2e.py
+
+      - name: Run CCR differential comparison suite
+        run: python dev/run_ccr_differential.py

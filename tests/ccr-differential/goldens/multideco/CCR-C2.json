@@ -1,0 +1,86 @@
+{
+  "engine": "MultiDeco",
+  "engineVersion": "2.26",
+  "scenarioId": "CCR-C2",
+  "provenance": {
+    "source": "captured-application-output",
+    "note": "CAPTURED. MultiDeco CCR: 55 m / 25 min, diluent 18/45, SP 1.3; deco mixes empty. GF 35/75, change depth 6. Entered 25 min => 22 at depth.",
+    "checksum": null
+  },
+  "stops": [
+    {
+      "depthM": 27,
+      "durationMin": 0.88,
+      "runtimeMin": 29,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 24,
+      "durationMin": 1,
+      "runtimeMin": 30,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 21,
+      "durationMin": 1,
+      "runtimeMin": 31,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 18,
+      "durationMin": 2,
+      "runtimeMin": 33,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 15,
+      "durationMin": 3,
+      "runtimeMin": 36,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 12,
+      "durationMin": 4,
+      "runtimeMin": 40,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 9,
+      "durationMin": 6,
+      "runtimeMin": 46,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 6,
+      "durationMin": 8,
+      "runtimeMin": 54,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 3,
+      "durationMin": 14,
+      "runtimeMin": 68,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    }
+  ],
+  "summary": {
+    "firstStopDepthM": 27,
+    "ttsMin": 44,
+    "runtimeMin": 69,
+    "cnsPercent": 37,
+    "otu": 99,
+    "decozoneStartM": 39
+  },
+  "gasSwitches": [],
+  "tissuesN2": "not_available",
+  "tissuesHe": "not_available"
+}

@@ -1,0 +1,1271 @@
+{
+  "schemaVersion": 1,
+  "sharedSettings": {
+    "descentRate": 20,
+    "lastStopDepth": 3,
+    "decoStepSize": 3,
+    "minDecoStopTimeSec": 60,
+    "gasSwitchTimeSec": 60,
+    "switchGasAtMod": true,
+    "maxPO2Lean": 1.4,
+    "maxPO2Mid": 1.5,
+    "maxPO2Rich": 1.6,
+    "workingRmv": 20,
+    "decoRmv": 15,
+    "endThresholdM": 30,
+    "airBreaksEnabled": false,
+    "roundStopsToMinutes": true
+  },
+  "divekitAscentDefaults": {
+    "ascentRateDeep": 9,
+    "ascentRateShallow": 3,
+    "ascentRateChangeDepth": 3
+  },
+  "tests": [
+    {
+      "id": "S1",
+      "title": "Air 30 m / 23 min, GF 30/70 (salt)",
+      "purpose": "Basic single-gas Buhlmann validation",
+      "category": "salt",
+      "dive": {
+        "waterType": "salt",
+        "gfLow": 30,
+        "gfHigh": 70,
+        "levels": [
+          {
+            "depthM": 30,
+            "bottomTimeMin": 23,
+            "gasRef": "air"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "air",
+            "o2": 0.21,
+            "he": 0,
+            "volumeL": 12,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 6,
+        "surfaceAscentMPerMin": 3,
+        "enteredBottomTimeMin": 25,
+        "bottomTimeIsDescentInclusive": true,
+        "note": "MultiDeco bottom time includes descent: enter 25 min => ~23 min at depth. Algorithm ZH-L16C, salt."
+      }
+    },
+    {
+      "id": "S2",
+      "title": "Air 45 m / 22 min, GF 30/70 (salt)",
+      "purpose": "More stops; validates GF slope across multiple depths",
+      "category": "salt",
+      "dive": {
+        "waterType": "salt",
+        "gfLow": 30,
+        "gfHigh": 70,
+        "levels": [
+          {
+            "depthM": 45,
+            "bottomTimeMin": 22,
+            "gasRef": "air"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "air",
+            "o2": 0.21,
+            "he": 0,
+            "volumeL": 12,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 6,
+        "surfaceAscentMPerMin": 3,
+        "enteredBottomTimeMin": 25,
+        "bottomTimeIsDescentInclusive": true,
+        "note": "Same dive as S7 but GF 30/70. Decozone start (32 m) is GF-independent so matches S7."
+      }
+    },
+    {
+      "id": "S3",
+      "title": "EAN32 33 m / 28 min, GF 30/70 (salt)",
+      "purpose": "Nitrox gas handling and CNS tracking",
+      "category": "salt",
+      "dive": {
+        "waterType": "salt",
+        "gfLow": 30,
+        "gfHigh": 70,
+        "levels": [
+          {
+            "depthM": 33,
+            "bottomTimeMin": 28,
+            "gasRef": "ean32"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "ean32",
+            "o2": 0.32,
+            "he": 0,
+            "volumeL": 12,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 6,
+        "surfaceAscentMPerMin": 3,
+        "enteredBottomTimeMin": 30,
+        "bottomTimeIsDescentInclusive": true,
+        "note": "EAN32 at 33 m; ZH-L16C, salt."
+      }
+    },
+    {
+      "id": "S4",
+      "title": "Air + EAN50 40 m / 23 min, GF 30/70 (salt)",
+      "purpose": "Gas switch at MOD",
+      "category": "salt",
+      "dive": {
+        "waterType": "salt",
+        "gfLow": 30,
+        "gfHigh": 70,
+        "levels": [
+          {
+            "depthM": 40,
+            "bottomTimeMin": 23,
+            "gasRef": "air"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "air",
+            "o2": 0.21,
+            "he": 0,
+            "volumeL": 12,
+            "startPressureBar": 200
+          },
+          {
+            "ref": "ean50",
+            "o2": 0.5,
+            "he": 0,
+            "volumeL": 11,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 6,
+        "surfaceAscentMPerMin": 3,
+        "enteredBottomTimeMin": 25,
+        "bottomTimeIsDescentInclusive": true,
+        "note": "EAN50 MOD at ppO2 1.6 = 22 m -> switch at 21 m (3 m grid)."
+      }
+    },
+    {
+      "id": "S5",
+      "title": "Tx18/45 + EAN50 + O2, 60 m / 17 min, GF 30/70 (salt)",
+      "purpose": "Trimix weighted params, multi-gas switching, CNS with deco gases",
+      "category": "salt",
+      "dive": {
+        "waterType": "salt",
+        "gfLow": 30,
+        "gfHigh": 70,
+        "levels": [
+          {
+            "depthM": 60,
+            "bottomTimeMin": 17,
+            "gasRef": "tx1845"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "tx1845",
+            "o2": 0.18,
+            "he": 0.45,
+            "volumeL": 12,
+            "startPressureBar": 200
+          },
+          {
+            "ref": "ean50",
+            "o2": 0.5,
+            "he": 0,
+            "volumeL": 11,
+            "startPressureBar": 200
+          },
+          {
+            "ref": "o2",
+            "o2": 1,
+            "he": 0,
+            "volumeL": 3,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 6,
+        "surfaceAscentMPerMin": 3,
+        "enteredBottomTimeMin": 20,
+        "bottomTimeIsDescentInclusive": true,
+        "note": "EAN50 switch ~21 m, O2 switch ~6 m."
+      }
+    },
+    {
+      "id": "S6",
+      "title": "Tx15/55 + Tx21/35 + EAN50 + O2, 80 m / 16 min, GF 30/70 (salt)",
+      "purpose": "Deep deco, many stops, long schedule, three gas switches",
+      "category": "salt",
+      "dive": {
+        "waterType": "salt",
+        "gfLow": 30,
+        "gfHigh": 70,
+        "levels": [
+          {
+            "depthM": 80,
+            "bottomTimeMin": 16,
+            "gasRef": "tx1555"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "tx1555",
+            "o2": 0.15,
+            "he": 0.55,
+            "volumeL": 12,
+            "startPressureBar": 200
+          },
+          {
+            "ref": "tx2135",
+            "o2": 0.21,
+            "he": 0.35,
+            "volumeL": 11,
+            "startPressureBar": 200
+          },
+          {
+            "ref": "ean50",
+            "o2": 0.5,
+            "he": 0,
+            "volumeL": 11,
+            "startPressureBar": 200
+          },
+          {
+            "ref": "o2",
+            "o2": 1,
+            "he": 0,
+            "volumeL": 3,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 6,
+        "surfaceAscentMPerMin": 3,
+        "enteredBottomTimeMin": 20,
+        "bottomTimeIsDescentInclusive": true,
+        "note": "Tx21/35 travel switch ~57 m in MultiDeco. CNS differs notably (ambient vs inspired ppO2) — see notes.json."
+      }
+    },
+    {
+      "id": "S7",
+      "title": "Air 45 m / 22 min, GF 50/80 (salt)",
+      "purpose": "Same profile as S2 with looser GF — validates GF slope effect; decozone start unchanged",
+      "category": "salt",
+      "dive": {
+        "waterType": "salt",
+        "gfLow": 50,
+        "gfHigh": 80,
+        "levels": [
+          {
+            "depthM": 45,
+            "bottomTimeMin": 22,
+            "gasRef": "air"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "air",
+            "o2": 0.21,
+            "he": 0,
+            "volumeL": 12,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 6,
+        "surfaceAscentMPerMin": 3,
+        "enteredBottomTimeMin": 25,
+        "bottomTimeIsDescentInclusive": true,
+        "note": "Identical dive to S2; GF 50/80 shifts the first STOP shallower (18 vs 21 m) but decozone start stays 32 m (GF-independent)."
+      }
+    },
+    {
+      "id": "FS1",
+      "title": "Air 30 m / 21 min, GF 30/70 (fresh)",
+      "purpose": "Fresh-water mirror of S1 — validates water-type metersPerBar",
+      "category": "fresh",
+      "dive": {
+        "waterType": "fresh",
+        "gfLow": 30,
+        "gfHigh": 70,
+        "levels": [
+          {
+            "depthM": 30,
+            "bottomTimeMin": 21,
+            "gasRef": "air"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "air",
+            "o2": 0.21,
+            "he": 0,
+            "volumeL": 12,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 6,
+        "surfaceAscentMPerMin": 3,
+        "enteredBottomTimeMin": 23,
+        "bottomTimeIsDescentInclusive": true,
+        "waterType": "fresh",
+        "note": "MultiDeco Water type = Fresh. Fresh deco is slightly less than salt for the same gauge depth."
+      }
+    },
+    {
+      "id": "FS2",
+      "title": "Air 45 m / 19 min, GF 30/70 (fresh)",
+      "purpose": "Fresh-water mirror of S2",
+      "category": "fresh",
+      "dive": {
+        "waterType": "fresh",
+        "gfLow": 30,
+        "gfHigh": 70,
+        "levels": [
+          {
+            "depthM": 45,
+            "bottomTimeMin": 19,
+            "gasRef": "air"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "air",
+            "o2": 0.21,
+            "he": 0,
+            "volumeL": 12,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 6,
+        "surfaceAscentMPerMin": 3,
+        "enteredBottomTimeMin": 22,
+        "bottomTimeIsDescentInclusive": true,
+        "waterType": "fresh",
+        "note": "MultiDeco Water type = Fresh."
+      }
+    },
+    {
+      "id": "FS3",
+      "title": "EAN32 33 m / 26 min, GF 30/70 (fresh)",
+      "purpose": "Fresh-water mirror of S3",
+      "category": "fresh",
+      "dive": {
+        "waterType": "fresh",
+        "gfLow": 30,
+        "gfHigh": 70,
+        "levels": [
+          {
+            "depthM": 33,
+            "bottomTimeMin": 26,
+            "gasRef": "ean32"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "ean32",
+            "o2": 0.32,
+            "he": 0,
+            "volumeL": 12,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 6,
+        "surfaceAscentMPerMin": 3,
+        "enteredBottomTimeMin": 28,
+        "bottomTimeIsDescentInclusive": true,
+        "waterType": "fresh",
+        "note": "MultiDeco Water type = Fresh."
+      }
+    },
+    {
+      "id": "FS4",
+      "title": "Air + EAN50 40 m / 21 min, GF 30/70 (fresh)",
+      "purpose": "Fresh-water mirror of S4 — gas switch in fresh water",
+      "category": "fresh",
+      "dive": {
+        "waterType": "fresh",
+        "gfLow": 30,
+        "gfHigh": 70,
+        "levels": [
+          {
+            "depthM": 40,
+            "bottomTimeMin": 21,
+            "gasRef": "air"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "air",
+            "o2": 0.21,
+            "he": 0,
+            "volumeL": 12,
+            "startPressureBar": 200
+          },
+          {
+            "ref": "ean50",
+            "o2": 0.5,
+            "he": 0,
+            "volumeL": 11,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 6,
+        "surfaceAscentMPerMin": 3,
+        "enteredBottomTimeMin": 23,
+        "bottomTimeIsDescentInclusive": true,
+        "waterType": "fresh",
+        "note": "MultiDeco Water type = Fresh; EAN50 switches at 18 m in MultiDeco."
+      }
+    },
+    {
+      "id": "FS5",
+      "title": "Tx21/35 + EAN50 50 m / 22 min, GF 30/70 (fresh)",
+      "purpose": "Fresh-water trimix with deco gas",
+      "category": "fresh",
+      "dive": {
+        "waterType": "fresh",
+        "gfLow": 30,
+        "gfHigh": 70,
+        "levels": [
+          {
+            "depthM": 50,
+            "bottomTimeMin": 22,
+            "gasRef": "tx2135"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "tx2135",
+            "o2": 0.21,
+            "he": 0.35,
+            "volumeL": 12,
+            "startPressureBar": 200
+          },
+          {
+            "ref": "ean50",
+            "o2": 0.5,
+            "he": 0,
+            "volumeL": 11,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 6,
+        "surfaceAscentMPerMin": 3,
+        "enteredBottomTimeMin": 25,
+        "bottomTimeIsDescentInclusive": true,
+        "waterType": "fresh",
+        "note": "MultiDeco Water type = Fresh; EAN50 switches at 21 m."
+      }
+    },
+    {
+      "id": "A1",
+      "title": "Multi-level 45 m / 10 min then 30 m / 15 min, Tx21/35 + EAN50, GF 30/70 (salt)",
+      "purpose": "NEW: multi-level profile (every seed scenario is single-level)",
+      "category": "new",
+      "pendingMultideco": false,
+      "divekitSettings": {
+        "ascentRateDeep": 9,
+        "ascentRateShallow": 3,
+        "ascentRateChangeDepth": 3,
+        "note": "Exact-match config: 9 m/min down to the 3 m last stop, then 3 m/min to the surface — mirrors MultiDeco run with deep = deco = 9 and surface = 3."
+      },
+      "dive": {
+        "waterType": "salt",
+        "gfLow": 30,
+        "gfHigh": 70,
+        "levels": [
+          {
+            "depthM": 45,
+            "bottomTimeMin": 7.75,
+            "gasRef": "tx2135"
+          },
+          {
+            "depthM": 30,
+            "bottomTimeMin": 15,
+            "gasRef": "tx2135"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "tx2135",
+            "o2": 0.21,
+            "he": 0.35,
+            "volumeL": 12,
+            "startPressureBar": 200
+          },
+          {
+            "ref": "ean50",
+            "o2": 0.5,
+            "he": 0,
+            "volumeL": 11,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 9,
+        "surfaceAscentMPerMin": 3,
+        "extendedStops7to30Min": 1,
+        "extendedStops30plusMin": 1,
+        "bottomTimeIsDescentInclusive": true,
+        "note": "CAPTURED. MultiDeco: deep=deco=9, surface=3, Extended Stops 1/1, RMV 20/15. Entered 45 m for 10 min (incl. ~2.25 min descent => 7.75 min at depth, per the Lvl row) + 30 m for 15 min. Dive Kit level 1 set to 7.75 min to match at-depth time."
+      }
+    },
+    {
+      "id": "A2",
+      "title": "Tx18/45 + Tx35/25 + EAN50 + O2, 70 m / 20 min, GF 30/70 (salt)",
+      "purpose": "NEW: deep trimix with travel gas + accelerated deco (three switches, O2 at 6 m)",
+      "category": "new",
+      "pendingMultideco": false,
+      "divekitSettings": {
+        "ascentRateDeep": 9,
+        "ascentRateShallow": 3,
+        "ascentRateChangeDepth": 3,
+        "note": "Exact-match config: 9 m/min to the 3 m last stop, then 3 m/min to surface."
+      },
+      "dive": {
+        "waterType": "salt",
+        "gfLow": 30,
+        "gfHigh": 70,
+        "levels": [
+          {
+            "depthM": 70,
+            "bottomTimeMin": 16,
+            "gasRef": "tx1845"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "tx1845",
+            "o2": 0.18,
+            "he": 0.45,
+            "volumeL": 12,
+            "startPressureBar": 200
+          },
+          {
+            "ref": "tx3525",
+            "o2": 0.35,
+            "he": 0.25,
+            "volumeL": 11,
+            "startPressureBar": 200
+          },
+          {
+            "ref": "ean50",
+            "o2": 0.5,
+            "he": 0,
+            "volumeL": 11,
+            "startPressureBar": 200
+          },
+          {
+            "ref": "o2",
+            "o2": 1,
+            "he": 0,
+            "volumeL": 3,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 9,
+        "surfaceAscentMPerMin": 3,
+        "extendedStops7to30Min": 1,
+        "extendedStops30plusMin": 1,
+        "bottomTimeIsDescentInclusive": true,
+        "note": "CAPTURED. deep=deco=9, surface=3, Extended Stops 1/1, RMV 20/15. Entered ~20 min at 70 m (=> 16 at depth per Lvl row). Tx35/25 switch at 33 m (MultiDeco) vs 30 m (Dive Kit) — see notes.json/A2 for why. EAN50 at 21 m and O2 at 6 m match exactly."
+      }
+    },
+    {
+      "id": "A3",
+      "title": "Tx21/35 + EAN50, 51 m / 25 min, GF 20/75 (salt)",
+      "purpose": "NEW: low GF Low on a deep trimix profile — contrasts GF-slope vs the GF 30/70 seeds",
+      "category": "new",
+      "pendingMultideco": false,
+      "divekitSettings": {
+        "ascentRateDeep": 9,
+        "ascentRateShallow": 3,
+        "ascentRateChangeDepth": 3,
+        "note": "Exact-match config: 9 m/min to the 3 m last stop, then 3 m/min to surface."
+      },
+      "dive": {
+        "waterType": "salt",
+        "gfLow": 20,
+        "gfHigh": 75,
+        "levels": [
+          {
+            "depthM": 51,
+            "bottomTimeMin": 22,
+            "gasRef": "tx2135"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "tx2135",
+            "o2": 0.21,
+            "he": 0.35,
+            "volumeL": 12,
+            "startPressureBar": 200
+          },
+          {
+            "ref": "ean50",
+            "o2": 0.5,
+            "he": 0,
+            "volumeL": 11,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 6,
+        "surfaceAscentMPerMin": 3,
+        "extendedStops7to30Min": 1,
+        "extendedStops30plusMin": 1,
+        "bottomTimeIsDescentInclusive": true,
+        "note": "CAPTURED. GF 20/75, deep=deco=9, surface=3, Extended Stops 1/1, RMV 20/15. Entered ~25 min at 51 m (=> 22 at depth per Lvl row). Decozone 37 m — GF-independent, as predicted. EAN50 switch 21 m matches Dive Kit."
+      }
+    },
+    {
+      "id": "A4",
+      "title": "Air 45 m / 22 min, 6 m last stop, GF 30/70 (salt)",
+      "purpose": "NEW: 6 m last stop (every seed uses 3 m) — cold-water / rough-surface protocol",
+      "category": "new",
+      "pendingMultideco": false,
+      "settings": {
+        "lastStopDepth": 6
+      },
+      "divekitSettings": {
+        "ascentRateDeep": 9,
+        "ascentRateShallow": 3,
+        "ascentRateChangeDepth": 6,
+        "note": "6 m last stop: surface rate kicks in at 6 m, so change depth = 6 (9 m/min to the 6 m last stop, then 3 m/min to surface)."
+      },
+      "dive": {
+        "waterType": "salt",
+        "gfLow": 30,
+        "gfHigh": 70,
+        "levels": [
+          {
+            "depthM": 45,
+            "bottomTimeMin": 19,
+            "gasRef": "air"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "air",
+            "o2": 0.21,
+            "he": 0,
+            "volumeL": 12,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 6,
+        "surfaceAscentMPerMin": 3,
+        "extendedStops7to30Min": 1,
+        "extendedStops30plusMin": 1,
+        "bottomTimeIsDescentInclusive": true,
+        "note": "CAPTURED. Same as S2 (45 m air) but Last stop depth = 6 m. deep=deco=9, surface=3, Extended Stops 1/1, RMV 20/15. Entered ~22 min at 45 m (=> 19 at depth per Lvl row). Decozone 32 m — unchanged from S2 (last stop doesn't move it)."
+      }
+    },
+    {
+      "id": "A5",
+      "title": "Air 30 m / 25 min at 2000 m altitude (~795 mbar), GF 30/70 (fresh)",
+      "purpose": "NEW: altitude — exercises the surface-pressure path end to end",
+      "category": "new",
+      "pendingMultideco": false,
+      "settings": {
+        "altitudeM": 2025,
+        "lastStopDepth": 6
+      },
+      "divekitSettings": {
+        "ascentRateDeep": 9,
+        "ascentRateShallow": 3,
+        "ascentRateChangeDepth": 6,
+        "note": "9 m/min to the 6 m last stop, then 3 m/min to surface. MultiDeco's A5 run used a 6 m last stop, so change depth = 6 here too."
+      },
+      "dive": {
+        "waterType": "fresh",
+        "gfLow": 30,
+        "gfHigh": 70,
+        "levels": [
+          {
+            "depthM": 30,
+            "bottomTimeMin": 23,
+            "gasRef": "air"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "air",
+            "o2": 0.21,
+            "he": 0,
+            "volumeL": 12,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 6,
+        "surfaceAscentMPerMin": 3,
+        "extendedStops7to30Min": 1,
+        "extendedStops30plusMin": 1,
+        "bottomTimeIsDescentInclusive": true,
+        "waterType": "fresh",
+        "note": "CAPTURED. MultiDeco Elevation 2025 m, Fresh, LAST STOP 6 m, GF 30/70, deep=deco=9, surface=3, Extended Stops 1/1, RMV 20/15. Entered ~25 min at 30 m (=> 23 at depth). (Earlier apparent divergence was a 6 m-vs-3 m last-stop mismatch, now resolved — see notes.json A5.)"
+      }
+    },
+    {
+      "id": "A6",
+      "title": "Air + EAN50, 55 m / 20 min, GF 30/70 (salt)",
+      "purpose": "NEW: deep air — exercises gas-density and END (narcosis) warnings",
+      "category": "new",
+      "pendingMultideco": false,
+      "divekitSettings": {
+        "ascentRateDeep": 9,
+        "ascentRateShallow": 3,
+        "ascentRateChangeDepth": 3,
+        "note": "Exact-match config: 9 m/min to the 3 m last stop, then 3 m/min to surface."
+      },
+      "dive": {
+        "waterType": "salt",
+        "gfLow": 30,
+        "gfHigh": 70,
+        "levels": [
+          {
+            "depthM": 55,
+            "bottomTimeMin": 17,
+            "gasRef": "air"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "air",
+            "o2": 0.21,
+            "he": 0,
+            "volumeL": 12,
+            "startPressureBar": 200
+          },
+          {
+            "ref": "ean50",
+            "o2": 0.5,
+            "he": 0,
+            "volumeL": 11,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 6,
+        "surfaceAscentMPerMin": 3,
+        "extendedStops7to30Min": 1,
+        "extendedStops30plusMin": 1,
+        "bottomTimeIsDescentInclusive": true,
+        "note": "CAPTURED. Salt, GF 30/70, air 21/0 + EAN50, deep=deco=9, surface=3, Extended Stops 1/1, RMV 20/15. Entered ~20 min at 55 m (=> 17 at depth). EAN50 switch 21 m matches Dive Kit. Density 7.7 g/L (MultiDeco) vs Dive Kit's higher value — temperature-assumption offset."
+      }
+    },
+    {
+      "id": "C1",
+      "title": "CCR air diluent, 40 m / 28 min, SP 1.3, GF 50/80 (salt)",
+      "purpose": "NEW: CCR (rebreather) loop deco — air diluent. Data from CCR_CROSS_VALIDATION_SCENARIOS.md.",
+      "category": "ccr",
+      "ccr": {
+        "setpoint": 1.3,
+        "diluent": {
+          "o2": 0.21,
+          "he": 0
+        }
+      },
+      "dive": {
+        "waterType": "salt",
+        "gfLow": 50,
+        "gfHigh": 80,
+        "levels": [
+          {
+            "depthM": 40,
+            "bottomTimeMin": 28,
+            "gasRef": "dil",
+            "setpoint": 1.3
+          }
+        ],
+        "gases": [
+          {
+            "ref": "dil",
+            "o2": 0.21,
+            "he": 0,
+            "volumeL": 11.1,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "divekitSettings": {
+        "ascentRateDeep": 9,
+        "ascentRateShallow": 3,
+        "ascentRateChangeDepth": 6,
+        "note": "CCR cross-val config: deep 9 / shallow 3, change depth 6 (matches the CCR doc + test_ccr_deco)."
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 9,
+        "surfaceAscentMPerMin": 3,
+        "extendedStops7to30Min": 1,
+        "extendedStops30plusMin": 1,
+        "bottomTimeIsDescentInclusive": true,
+        "note": "CAPTURED. MultiDeco CCR mode: left column 40 m / 30 min, diluent 21/0, SP 1.3 (CCR leg); deco mixes empty (pure loop). GF 50/80, last stop 3 m, change depth 6. Entered 30 min => 28 at depth."
+      }
+    },
+    {
+      "id": "C2",
+      "title": "CCR Tx18/45 diluent, 55 m / 22 min, SP 1.3, GF 35/75 (salt)",
+      "purpose": "NEW: CCR loop deco — trimix diluent tech dive.",
+      "category": "ccr",
+      "ccr": {
+        "setpoint": 1.3,
+        "diluent": {
+          "o2": 0.18,
+          "he": 0.45
+        }
+      },
+      "dive": {
+        "waterType": "salt",
+        "gfLow": 35,
+        "gfHigh": 75,
+        "levels": [
+          {
+            "depthM": 55,
+            "bottomTimeMin": 22,
+            "gasRef": "dil",
+            "setpoint": 1.3
+          }
+        ],
+        "gases": [
+          {
+            "ref": "dil",
+            "o2": 0.18,
+            "he": 0.45,
+            "volumeL": 11.1,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "divekitSettings": {
+        "ascentRateDeep": 9,
+        "ascentRateShallow": 3,
+        "ascentRateChangeDepth": 6,
+        "note": "CCR cross-val config: deep 9 / shallow 3, change depth 6."
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 9,
+        "surfaceAscentMPerMin": 3,
+        "extendedStops7to30Min": 1,
+        "extendedStops30plusMin": 1,
+        "bottomTimeIsDescentInclusive": true,
+        "note": "CAPTURED. MultiDeco CCR: 55 m / 25 min, diluent 18/45, SP 1.3; deco mixes empty. GF 35/75, change depth 6. Entered 25 min => 22 at depth."
+      }
+    },
+    {
+      "id": "C3",
+      "title": "CCR Tx12/60 diluent, 80 m / 16 min, SP 1.3, GF 40/80 (salt)",
+      "purpose": "NEW: deep CCR loop deco — high-helium diluent.",
+      "category": "ccr",
+      "ccr": {
+        "setpoint": 1.3,
+        "diluent": {
+          "o2": 0.12,
+          "he": 0.6
+        }
+      },
+      "dive": {
+        "waterType": "salt",
+        "gfLow": 40,
+        "gfHigh": 80,
+        "levels": [
+          {
+            "depthM": 80,
+            "bottomTimeMin": 16,
+            "gasRef": "dil",
+            "setpoint": 1.3
+          }
+        ],
+        "gases": [
+          {
+            "ref": "dil",
+            "o2": 0.12,
+            "he": 0.6,
+            "volumeL": 11.1,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "divekitSettings": {
+        "ascentRateDeep": 9,
+        "ascentRateShallow": 3,
+        "ascentRateChangeDepth": 6,
+        "note": "CCR cross-val config: deep 9 / shallow 3, change depth 6."
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 9,
+        "surfaceAscentMPerMin": 3,
+        "extendedStops7to30Min": 1,
+        "extendedStops30plusMin": 1,
+        "bottomTimeIsDescentInclusive": true,
+        "note": "CAPTURED. MultiDeco CCR: 80 m / 20 min, diluent 12/60, SP 1.3; deco mixes empty. GF 40/80, change depth 6. Entered 20 min => 16 at depth."
+      }
+    },
+    {
+      "id": "R1",
+      "title": "Repetitive: 30 m / 23 min air x2, 60 min SI, 6 m last stop, GF 30/70 (salt)",
+      "purpose": "NEW: repetitive dive — residual nitrogen carried across a surface interval. The COMPARED dive is the second (repeat); dive1 + SI precede it.",
+      "category": "repetitive",
+      "pendingMultideco": false,
+      "settings": {
+        "lastStopDepth": 6
+      },
+      "surfaceIntervalMin": 60,
+      "dive1": {
+        "waterType": "salt",
+        "gfLow": 30,
+        "gfHigh": 70,
+        "levels": [
+          {
+            "depthM": 30,
+            "bottomTimeMin": 23,
+            "gasRef": "air"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "air",
+            "o2": 0.21,
+            "he": 0,
+            "volumeL": 12,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "dive": {
+        "waterType": "salt",
+        "gfLow": 30,
+        "gfHigh": 70,
+        "levels": [
+          {
+            "depthM": 30,
+            "bottomTimeMin": 23,
+            "gasRef": "air"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "air",
+            "o2": 0.21,
+            "he": 0,
+            "volumeL": 12,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "divekitSettings": {
+        "ascentRateDeep": 9,
+        "ascentRateShallow": 3,
+        "ascentRateChangeDepth": 6,
+        "note": "9 to the 6 m last stop, then 3 to surface (MultiDeco run used a 6 m last stop). The orchestrator chains dive1 -> 60 min SI -> dive2 via the engine's tissue-state I/O."
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 9,
+        "surfaceAscentMPerMin": 3,
+        "extendedStops7to30Min": 1,
+        "extendedStops30plusMin": 1,
+        "bottomTimeIsDescentInclusive": true,
+        "note": "CAPTURED. dive 1 = 30 m / 25 min air (=> 23 at depth), 60 min surface interval, dive 2 = 30 m / 25 min air. LAST STOP 6 m (note: MultiDeco still had 6 m set). Recorded dive 2. Residual N2 shows clearly: dive 2's 6 m stop is 53 min vs dive 1's 22 (TTS 61 vs 30, CNS 10 vs 6)."
+      }
+    },
+    {
+      "id": "B1",
+      "title": "Air 48 m / 22 min, EAN45 + O2, GF 30/70 (salt)",
+      "purpose": "NEW: ppO2 band boundary — EAN45 sits exactly on the 45% mid/rich edge and must cap at 1.6 (rich, switch 24 m), not 1.5 (mid, switch 21 m)",
+      "category": "new",
+      "pendingMultideco": false,
+      "divekitSettings": {
+        "ascentRateDeep": 9,
+        "ascentRateShallow": 3,
+        "ascentRateChangeDepth": 3,
+        "note": "Exact-match config: 9 m/min to the 3 m last stop, then 3 m/min to surface."
+      },
+      "dive": {
+        "waterType": "salt",
+        "gfLow": 30,
+        "gfHigh": 70,
+        "levels": [
+          {
+            "depthM": 48,
+            "bottomTimeMin": 22,
+            "gasRef": "air"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "air",
+            "o2": 0.21,
+            "he": 0,
+            "volumeL": 12,
+            "startPressureBar": 200
+          },
+          {
+            "ref": "ean45",
+            "o2": 0.45,
+            "he": 0,
+            "volumeL": 11,
+            "startPressureBar": 200
+          },
+          {
+            "ref": "o2",
+            "o2": 1,
+            "he": 0,
+            "volumeL": 11,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 9,
+        "surfaceAscentMPerMin": 3,
+        "extendedStops7to30Min": 1,
+        "extendedStops30plusMin": 1,
+        "bottomTimeIsDescentInclusive": true,
+        "note": "CAPTURED. deep=deco=9, surface=3, Extended Stops 1/1, RMV 20/15. Entered 48 m for ~25 min (=> 22 at depth per Lvl row). KEY RESULT: EAN45 (exactly 45% O2) switches at 24 m with pO2 1.52 in BOTH tools — MultiDeco lets it run above 1.5, so it caps EAN45 at 1.6 (rich), confirming the >=45% -> rich boundary convention. O2 at 6 m exact. See notes.json/B1."
+      }
+    },
+    {
+      "id": "P1",
+      "title": "PRECISE Tx18/45 + Tx35/25 travel + EAN50 + O2, 60 m / 20 min + 42 m / 8 min, GF 30/70 (salt)",
+      "purpose": "NEW: precise (1-second) stop times cross-checked against MultiDeco (min stop = 1 s) — the only sub-minute scenario; also exercises a travel-gas descent switch and a multi-level profile",
+      "category": "new",
+      "pendingMultideco": false,
+      "settings": {
+        "roundStopsToMinutes": false,
+        "minDecoStopTimeSec": 1
+      },
+      "divekitSettings": {
+        "ascentRateDeep": 9,
+        "ascentRateShallow": 3,
+        "ascentRateChangeDepth": 3,
+        "note": "Exact-match config: 9 m/min to the 3 m last stop, then 3 m/min to surface. PRECISE mode (settings.roundStopsToMinutes=false => stopRoundingSeconds=0) with a 1 s minimum stop to match MultiDeco's min stop = 1 s. The first level (30 m / 0 min on Tx35/25) models the travel-gas descent: the engine breathes the first level's gas down to 30 m, then switches to Tx18/45 (the next level's gas) for the rest of the descent."
+      },
+      "dive": {
+        "waterType": "salt",
+        "gfLow": 30,
+        "gfHigh": 70,
+        "levels": [
+          {
+            "depthM": 30,
+            "bottomTimeMin": 0,
+            "gasRef": "tx3525"
+          },
+          {
+            "depthM": 60,
+            "bottomTimeMin": 20,
+            "gasRef": "tx1845"
+          },
+          {
+            "depthM": 42,
+            "bottomTimeMin": 8,
+            "gasRef": "tx1845"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "tx1845",
+            "o2": 0.18,
+            "he": 0.45,
+            "volumeL": 12,
+            "startPressureBar": 200
+          },
+          {
+            "ref": "tx3525",
+            "o2": 0.35,
+            "he": 0.25,
+            "volumeL": 11,
+            "startPressureBar": 200
+          },
+          {
+            "ref": "ean50",
+            "o2": 0.5,
+            "he": 0,
+            "volumeL": 11,
+            "startPressureBar": 200
+          },
+          {
+            "ref": "o2",
+            "o2": 1,
+            "he": 0,
+            "volumeL": 11,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 9,
+        "surfaceAscentMPerMin": 3,
+        "extendedStops7to30Min": 1,
+        "extendedStops30plusMin": 1,
+        "bottomTimeIsDescentInclusive": true,
+        "note": "CAPTURED in PRECISE mode (MultiDeco min stop = 1 s). Descend on Tx35/25, switch to Tx18/45 at 30 m; multi-level 60 m (20 at depth) then 42 m (8). Sub-minute stops align closely with Dive Kit; switches EAN50 21 m and O2 6 m match exactly, Tx35/25 within one stop. Documented differences (NOT bugs): Dive Kit adds an explicit 1-min gas-switch hold per switch (MultiDeco folds it in) so DK runtime is a few min longer; ambient-ppO2 CNS runs higher; decozone differs on this multi-level dive by definition (DK uses the end-of-bottom state). See notes.json/P1."
+      }
+    },
+    {
+      "id": "G1",
+      "title": "PRECISE Air 45 m / 22 min entered, 6 m last stop, GF 50/80 (salt)",
+      "purpose": "NEW: GF-high sensitivity pair from the June 2026 unsurfaceable-stop investigation — same dive at GF 50/80 vs 50/50 shows the 6 m hold stretching ~4.5x (engine and MultiDeco agree). Also the first tests using the ENTERED-time convention (descent folded into the first level, like MultiDeco's input) via includeTravelInLevelTime.",
+      "category": "new",
+      "pendingMultideco": false,
+      "settings": {
+        "lastStopDepth": 6,
+        "roundStopsToMinutes": false,
+        "minDecoStopTimeSec": 1
+      },
+      "divekitSettings": {
+        "ascentRateDeep": 9,
+        "ascentRateShallow": 3,
+        "ascentRateChangeDepth": 6,
+        "includeTravelInLevelTime": 1,
+        "note": "6 m last stop => surface rate kicks in at 6 m (change depth 6; 9 m/min above, 3 m/min after). PRECISE mode (stopRoundingSeconds=0, min stop 1 s) to match MultiDeco at min stop = 1 s. includeTravelInLevelTime=1: bottomTimeMin holds the ENTERED 22:00 exactly as typed into MultiDeco (descent-inclusive); both tools derive 19:45 at depth (45 m at 20 m/min = 2:15 descent). In the app this is Settings > Behaviour > Include travel in level time = ON with 22 min entered."
+      },
+      "dive": {
+        "waterType": "salt",
+        "gfLow": 50,
+        "gfHigh": 80,
+        "levels": [
+          {
+            "depthM": 45,
+            "bottomTimeMin": 22,
+            "gasRef": "air"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "air",
+            "o2": 0.21,
+            "he": 0,
+            "volumeL": 12,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 9,
+        "surfaceAscentMPerMin": 3,
+        "extendedStops7to30Min": 1,
+        "extendedStops30plusMin": 1,
+        "bottomTimeIsDescentInclusive": true,
+        "note": "CAPTURED in PRECISE mode (min stop = 1 s). ZH-L16C, salt, GF 50/80, last stop 6 m, deep=deco=9 / surface=3, Extended Stops 1/1, RMV 20/15. Entered 22:00 at 45 m => Lvl 19:45 at depth (descent 2:15 at 20 m/min). Single gas (air), so the Extended Stops setting never engages."
+      }
+    },
+    {
+      "id": "G2",
+      "title": "PRECISE Air 45 m / 22 min entered, 6 m last stop, GF 50/50 (salt)",
+      "purpose": "NEW: GF-high sensitivity pair from the June 2026 unsurfaceable-stop investigation — same dive at GF 50/80 vs 50/50 shows the 6 m hold stretching ~4.5x (engine and MultiDeco agree). Also the first tests using the ENTERED-time convention (descent folded into the first level, like MultiDeco's input) via includeTravelInLevelTime.",
+      "category": "new",
+      "pendingMultideco": false,
+      "settings": {
+        "lastStopDepth": 6,
+        "roundStopsToMinutes": false,
+        "minDecoStopTimeSec": 1
+      },
+      "divekitSettings": {
+        "ascentRateDeep": 9,
+        "ascentRateShallow": 3,
+        "ascentRateChangeDepth": 6,
+        "includeTravelInLevelTime": 1,
+        "note": "6 m last stop => surface rate kicks in at 6 m (change depth 6; 9 m/min above, 3 m/min after). PRECISE mode (stopRoundingSeconds=0, min stop 1 s) to match MultiDeco at min stop = 1 s. includeTravelInLevelTime=1: bottomTimeMin holds the ENTERED 22:00 exactly as typed into MultiDeco (descent-inclusive); both tools derive 19:45 at depth (45 m at 20 m/min = 2:15 descent). In the app this is Settings > Behaviour > Include travel in level time = ON with 22 min entered."
+      },
+      "dive": {
+        "waterType": "salt",
+        "gfLow": 50,
+        "gfHigh": 50,
+        "levels": [
+          {
+            "depthM": 45,
+            "bottomTimeMin": 22,
+            "gasRef": "air"
+          }
+        ],
+        "gases": [
+          {
+            "ref": "air",
+            "o2": 0.21,
+            "he": 0,
+            "volumeL": 12,
+            "startPressureBar": 200
+          }
+        ]
+      },
+      "multidecoSettings": {
+        "deepAscentMPerMin": 9,
+        "decoAscentMPerMin": 9,
+        "surfaceAscentMPerMin": 3,
+        "extendedStops7to30Min": 1,
+        "extendedStops30plusMin": 1,
+        "bottomTimeIsDescentInclusive": true,
+        "note": "CAPTURED in PRECISE mode (min stop = 1 s). ZH-L16C, salt, GF 50/50, last stop 6 m, deep=deco=9 / surface=3, Extended Stops 1/1, RMV 20/15. Entered 22:00 at 45 m => Lvl 19:45 at depth (descent 2:15 at 20 m/min). Single gas (air), so the Extended Stops setting never engages."
+      }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+name: Notify Site on Push
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'tests.html'
+      - 'tests-extended.html'
+      - 'tests-massive.html'
+      - 'tests-massive-main.html'
+      - 'tests-pscr-otu-cns.html'
+      - 'tests-ccr-differential.html'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger site sync
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.SYNC_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/Three-Cats-LSP/threecats-lsp.com/dispatches \
+            -d '{"event_type":"sync-d-planner-plus"}'

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">LSP+</string>
+    <string name="title_activity_main">LSP+</string>
+    <string name="package_name">com.threecats.lsp.dplannerplus</string>
+    <string name="custom_url_scheme">com.threecats.lsp.dplannerplus</string>
+</resources>

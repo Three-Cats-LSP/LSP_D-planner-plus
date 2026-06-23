@@ -1,0 +1,58 @@
+{
+  "engine": "MultiDeco",
+  "engineVersion": "2.26",
+  "scenarioId": "CCR-C1",
+  "provenance": {
+    "source": "captured-application-output",
+    "note": "CAPTURED. MultiDeco CCR mode: left column 40 m / 30 min, diluent 21/0, SP 1.3 (CCR leg); deco mixes empty (pure loop). GF 50/80, last stop 3 m, change depth 6. Entered 30 min => 28 at depth.",
+    "checksum": null
+  },
+  "stops": [
+    {
+      "depthM": 15,
+      "durationMin": 0.22,
+      "runtimeMin": 33,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 12,
+      "durationMin": 1,
+      "runtimeMin": 34,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 9,
+      "durationMin": 3,
+      "runtimeMin": 37,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 6,
+      "durationMin": 4,
+      "runtimeMin": 41,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 3,
+      "durationMin": 7,
+      "runtimeMin": 48,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    }
+  ],
+  "summary": {
+    "firstStopDepthM": 15,
+    "ttsMin": 19,
+    "runtimeMin": 49,
+    "cnsPercent": 27,
+    "otu": 70,
+    "decozoneStartM": 26
+  },
+  "gasSwitches": [],
+  "tissuesN2": "not_available",
+  "tissuesHe": "not_available"
+}

@@ -1,0 +1,47 @@
+{
+  "engine": "Abysner",
+  "engineVersion": "open-reference",
+  "scenarioId": "CCR-C1",
+  "provenance": {
+    "source": "open-reference-planner",
+    "note": "ZHL-16C CCR reference with Abysner preset (WV 0.0627, Schreiner, fixture rates)",
+    "repository": "https://github.com/NeoTech-Software/Abysner"
+  },
+  "stops": [
+    {
+      "depthM": 12.0,
+      "durationMin": 2.0,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 9.0,
+      "durationMin": 2.0,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 6.0,
+      "durationMin": 4.0,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 3.0,
+      "durationMin": 6.0,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    }
+  ],
+  "summary": {
+    "firstStopDepthM": 12.0,
+    "ttsMin": 19.1,
+    "runtimeMin": 49.1,
+    "cnsPercent": 26.5,
+    "otu": 70.6,
+    "decozoneStartM": 0.2
+  },
+  "gasSwitches": [],
+  "tissuesN2": "not_available",
+  "tissuesHe": "not_available"
+}

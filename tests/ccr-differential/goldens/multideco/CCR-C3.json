@@ -1,0 +1,128 @@
+{
+  "engine": "MultiDeco",
+  "engineVersion": "2.26",
+  "scenarioId": "CCR-C3",
+  "provenance": {
+    "source": "captured-application-output",
+    "note": "CAPTURED. MultiDeco CCR: 80 m / 20 min, diluent 12/60, SP 1.3; deco mixes empty. GF 40/80, change depth 6. Entered 20 min => 16 at depth.",
+    "checksum": null
+  },
+  "stops": [
+    {
+      "depthM": 45,
+      "durationMin": 0.12,
+      "runtimeMin": 24,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 42,
+      "durationMin": 1,
+      "runtimeMin": 25,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 39,
+      "durationMin": 1,
+      "runtimeMin": 26,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 36,
+      "durationMin": 1,
+      "runtimeMin": 27,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 33,
+      "durationMin": 1,
+      "runtimeMin": 28,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 30,
+      "durationMin": 1,
+      "runtimeMin": 29,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 27,
+      "durationMin": 2,
+      "runtimeMin": 31,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 24,
+      "durationMin": 3,
+      "runtimeMin": 34,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 21,
+      "durationMin": 3,
+      "runtimeMin": 37,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 18,
+      "durationMin": 4,
+      "runtimeMin": 41,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 15,
+      "durationMin": 5,
+      "runtimeMin": 46,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 12,
+      "durationMin": 7,
+      "runtimeMin": 53,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 9,
+      "durationMin": 9,
+      "runtimeMin": 62,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 6,
+      "durationMin": 13,
+      "runtimeMin": 75,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    },
+    {
+      "depthM": 3,
+      "durationMin": 22,
+      "runtimeMin": 97,
+      "gasLabel": "loop",
+      "ppO2": 1.3
+    }
+  ],
+  "summary": {
+    "firstStopDepthM": 45,
+    "ttsMin": 78,
+    "runtimeMin": 98,
+    "cnsPercent": 53,
+    "otu": 140,
+    "decozoneStartM": 62
+  },
+  "gasSwitches": [],
+  "tissuesN2": "not_available",
+  "tissuesHe": "not_available"
+}

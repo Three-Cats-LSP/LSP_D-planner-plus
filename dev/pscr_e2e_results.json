@@ -1,0 +1,678 @@
+{
+  "audit": {
+    "all_passed": true,
+    "passed": null,
+    "failed": 0
+  },
+  "results": {
+    "profiles": [
+      {
+        "profile": {
+          "id": "P1",
+          "depth": 15,
+          "o2": 32,
+          "he": 0,
+          "bt": 60,
+          "label": "15 m \u00b7 EAN32 \u00b7 60 min (shallow long)"
+        },
+        "data": {
+          "appVersion": "2.30.30",
+          "ppLoop": 0.16,
+          "ppDil": 0.8106,
+          "gas": {
+            "ambLitres": 2221.875,
+            "o2Delivered": 284.40000000000003,
+            "metO2": 88.875,
+            "surfLpm": 15
+          },
+          "vpm": {
+            "totalOTU": 0,
+            "totalCNS": 0.2,
+            "totalRuntime": 65,
+            "tts": null,
+            "planOTU": 0,
+            "planCNS": 0.2,
+            "decoMin": 0,
+            "firstStop": 0,
+            "stopCount": 0
+          },
+          "zhl": {
+            "totalOTU": 0,
+            "totalCNS": 0.1,
+            "totalRuntime": 67,
+            "tts": 6.6,
+            "planOTU": 0,
+            "planCNS": 0.1,
+            "decoMin": 4.666666666666666,
+            "firstStop": 6,
+            "stopCount": 2
+          }
+        },
+        "checks": [
+          {
+            "name": "Gas: diluent O\u2082 \u2265 metabolic demand",
+            "pass": true,
+            "detail": "delivered 284.4 L vs met 88.9 L"
+          },
+          {
+            "name": "Loop ppO\u2082 < diluent ppO\u2082",
+            "pass": true,
+            "detail": "loop 0.160 \u00b7 dil 0.811 bar"
+          },
+          {
+            "name": "VPM OTU vs plan walk (\u00b12.5)",
+            "pass": true,
+            "detail": "footer 0 \u00b7 plan 0"
+          },
+          {
+            "name": "ZHL OTU vs plan walk (\u00b13)",
+            "pass": true,
+            "detail": "footer 0 \u00b7 plan 0"
+          },
+          {
+            "name": "ZHL CNS vs plan walk (\u00b11.5%)",
+            "pass": true,
+            "detail": "footer 0.1% \u00b7 plan 0.1%"
+          },
+          {
+            "name": "VPM vs ZHL OTU (\u00b112)",
+            "pass": true,
+            "detail": "VPM 0 \u00b7 ZHL 0 OTU"
+          },
+          {
+            "name": "VPM OTU below diluent-regression ceiling",
+            "pass": true,
+            "detail": "VPM 0 OTU (diluent-only bottom \u2248 40)"
+          },
+          {
+            "name": "Deco: both engines produce valid runtime",
+            "pass": true,
+            "detail": "VPM RT 65 \u00b7 ZHL RT 67 min"
+          }
+        ]
+      },
+      {
+        "profile": {
+          "id": "P2",
+          "depth": 20,
+          "o2": 36,
+          "he": 0,
+          "bt": 40,
+          "label": "20 m \u00b7 EAN36 \u00b7 40 min (shallow nitrox)"
+        },
+        "data": {
+          "appVersion": "2.30.30",
+          "ppLoop": 0.16,
+          "ppDil": 1.09431,
+          "gas": {
+            "ambLitres": 1755,
+            "o2Delivered": 210.6,
+            "metO2": 58.5,
+            "surfLpm": 15
+          },
+          "vpm": {
+            "totalOTU": 2,
+            "totalCNS": 0.9,
+            "totalRuntime": 47,
+            "tts": null,
+            "planOTU": 2,
+            "planCNS": 0.9,
+            "decoMin": 0,
+            "firstStop": 0,
+            "stopCount": 0
+          },
+          "zhl": {
+            "totalOTU": 2,
+            "totalCNS": 0.9,
+            "totalRuntime": 55,
+            "tts": 14.6,
+            "planOTU": 2,
+            "planCNS": 0.9,
+            "decoMin": 12.166666666666666,
+            "firstStop": 6,
+            "stopCount": 2
+          }
+        },
+        "checks": [
+          {
+            "name": "Gas: diluent O\u2082 \u2265 metabolic demand",
+            "pass": true,
+            "detail": "delivered 210.6 L vs met 58.5 L"
+          },
+          {
+            "name": "Loop ppO\u2082 < diluent ppO\u2082",
+            "pass": true,
+            "detail": "loop 0.160 \u00b7 dil 1.094 bar"
+          },
+          {
+            "name": "VPM OTU vs plan walk (\u00b12.5)",
+            "pass": true,
+            "detail": "footer 2 \u00b7 plan 2"
+          },
+          {
+            "name": "ZHL OTU vs plan walk (\u00b13)",
+            "pass": true,
+            "detail": "footer 2 \u00b7 plan 2"
+          },
+          {
+            "name": "ZHL CNS vs plan walk (\u00b11.5%)",
+            "pass": true,
+            "detail": "footer 0.9% \u00b7 plan 0.9%"
+          },
+          {
+            "name": "VPM vs ZHL OTU (\u00b112)",
+            "pass": true,
+            "detail": "VPM 2 \u00b7 ZHL 2 OTU"
+          },
+          {
+            "name": "VPM OTU below diluent-regression ceiling",
+            "pass": true,
+            "detail": "VPM 2 OTU (diluent-only bottom \u2248 46)"
+          },
+          {
+            "name": "Deco: both engines produce valid runtime",
+            "pass": true,
+            "detail": "VPM RT 47 \u00b7 ZHL RT 55 min"
+          }
+        ]
+      },
+      {
+        "profile": {
+          "id": "P3",
+          "depth": 30,
+          "o2": 32,
+          "he": 0,
+          "bt": 25,
+          "label": "30 m \u00b7 EAN32 \u00b7 25 min (mid-depth)"
+        },
+        "data": {
+          "appVersion": "2.30.30",
+          "ppLoop": 0.16,
+          "ppDil": 1.2969600000000001,
+          "gas": {
+            "ambLitres": 1410,
+            "o2Delivered": 112.8,
+            "metO2": 35.25,
+            "surfLpm": 15
+          },
+          "vpm": {
+            "totalOTU": 4,
+            "totalCNS": 1.5,
+            "totalRuntime": 32,
+            "tts": null,
+            "planOTU": 4,
+            "planCNS": 1.5,
+            "decoMin": 2.6000000000000014,
+            "firstStop": 6,
+            "stopCount": 2
+          },
+          "zhl": {
+            "totalOTU": 4,
+            "totalCNS": 1.5,
+            "totalRuntime": 50,
+            "tts": 25,
+            "planOTU": 4,
+            "planCNS": 1.5,
+            "decoMin": 22.166666666666664,
+            "firstStop": 12,
+            "stopCount": 4
+          }
+        },
+        "checks": [
+          {
+            "name": "Gas: diluent O\u2082 \u2265 metabolic demand",
+            "pass": true,
+            "detail": "delivered 112.8 L vs met 35.2 L"
+          },
+          {
+            "name": "Loop ppO\u2082 < diluent ppO\u2082",
+            "pass": true,
+            "detail": "loop 0.160 \u00b7 dil 1.297 bar"
+          },
+          {
+            "name": "VPM OTU vs plan walk (\u00b12.5)",
+            "pass": true,
+            "detail": "footer 4 \u00b7 plan 4"
+          },
+          {
+            "name": "ZHL OTU vs plan walk (\u00b13)",
+            "pass": true,
+            "detail": "footer 4 \u00b7 plan 4"
+          },
+          {
+            "name": "ZHL CNS vs plan walk (\u00b11.5%)",
+            "pass": true,
+            "detail": "footer 1.5% \u00b7 plan 1.5%"
+          },
+          {
+            "name": "VPM vs ZHL OTU (\u00b112)",
+            "pass": true,
+            "detail": "VPM 4 \u00b7 ZHL 4 OTU"
+          },
+          {
+            "name": "VPM OTU below diluent-regression ceiling",
+            "pass": true,
+            "detail": "VPM 4 OTU (diluent-only bottom \u2248 37)"
+          },
+          {
+            "name": "Deco: both engines produce valid runtime",
+            "pass": true,
+            "detail": "VPM RT 32 \u00b7 ZHL RT 50 min"
+          }
+        ]
+      },
+      {
+        "profile": {
+          "id": "P4",
+          "depth": 40,
+          "o2": 32,
+          "he": 0,
+          "bt": 30,
+          "label": "40 m \u00b7 EAN32 \u00b7 30 min (moderate deco)"
+        },
+        "data": {
+          "appVersion": "2.30.30",
+          "ppLoop": 0.16,
+          "ppDil": 1.6212,
+          "gas": {
+            "ambLitres": 2100,
+            "o2Delivered": 134.4,
+            "metO2": 42,
+            "surfLpm": 15
+          },
+          "vpm": {
+            "totalOTU": 8,
+            "totalCNS": 3.2,
+            "totalRuntime": 81,
+            "tts": null,
+            "planOTU": 8,
+            "planCNS": 3.2,
+            "decoMin": 42.8,
+            "firstStop": 18,
+            "stopCount": 6
+          },
+          "zhl": {
+            "totalOTU": 8,
+            "totalCNS": 3.2,
+            "totalRuntime": 136,
+            "tts": 106.2,
+            "planOTU": 8,
+            "planCNS": 3.2,
+            "decoMin": 103,
+            "firstStop": 18,
+            "stopCount": 6
+          }
+        },
+        "checks": [
+          {
+            "name": "Gas: diluent O\u2082 \u2265 metabolic demand",
+            "pass": true,
+            "detail": "delivered 134.4 L vs met 42.0 L"
+          },
+          {
+            "name": "Loop ppO\u2082 < diluent ppO\u2082",
+            "pass": true,
+            "detail": "loop 0.160 \u00b7 dil 1.621 bar"
+          },
+          {
+            "name": "VPM OTU vs plan walk (\u00b12.5)",
+            "pass": true,
+            "detail": "footer 8 \u00b7 plan 8"
+          },
+          {
+            "name": "ZHL OTU vs plan walk (\u00b13)",
+            "pass": true,
+            "detail": "footer 8 \u00b7 plan 8"
+          },
+          {
+            "name": "ZHL CNS vs plan walk (\u00b11.5%)",
+            "pass": true,
+            "detail": "footer 3.2% \u00b7 plan 3.2%"
+          },
+          {
+            "name": "VPM vs ZHL OTU (\u00b112)",
+            "pass": true,
+            "detail": "VPM 8 \u00b7 ZHL 8 OTU"
+          },
+          {
+            "name": "VPM OTU below diluent-regression ceiling",
+            "pass": true,
+            "detail": "VPM 8 OTU (diluent-only bottom \u2248 59)"
+          },
+          {
+            "name": "Deco: both engines produce valid runtime",
+            "pass": true,
+            "detail": "VPM RT 81 \u00b7 ZHL RT 136 min"
+          }
+        ]
+      },
+      {
+        "profile": {
+          "id": "P5",
+          "depth": 60,
+          "o2": 36,
+          "he": 0,
+          "bt": 20,
+          "label": "60 m \u00b7 EAN36 \u00b7 20 min (deep nitrox)"
+        },
+        "data": {
+          "appVersion": "2.30.30",
+          "ppLoop": 0.16,
+          "ppDil": 2.55339,
+          "gas": {
+            "ambLitres": 1785,
+            "o2Delivered": 91.8,
+            "metO2": 25.5,
+            "surfLpm": 15
+          },
+          "vpm": {
+            "totalOTU": 24,
+            "totalCNS": 16.7,
+            "totalRuntime": 109,
+            "tts": null,
+            "planOTU": 24,
+            "planCNS": 16.7,
+            "decoMin": 76,
+            "firstStop": 30,
+            "stopCount": 10
+          },
+          "zhl": {
+            "totalOTU": 24,
+            "totalCNS": 16.7,
+            "totalRuntime": 175,
+            "tts": 155.4,
+            "planOTU": 24,
+            "planCNS": 16.7,
+            "decoMin": 150.83333333333331,
+            "firstStop": 24,
+            "stopCount": 8
+          }
+        },
+        "checks": [
+          {
+            "name": "Gas: diluent O\u2082 \u2265 metabolic demand",
+            "pass": true,
+            "detail": "delivered 91.8 L vs met 25.5 L"
+          },
+          {
+            "name": "Loop ppO\u2082 < diluent ppO\u2082",
+            "pass": true,
+            "detail": "loop 0.160 \u00b7 dil 2.553 bar"
+          },
+          {
+            "name": "VPM OTU vs plan walk (\u00b12.5)",
+            "pass": true,
+            "detail": "footer 24 \u00b7 plan 24"
+          },
+          {
+            "name": "ZHL OTU vs plan walk (\u00b13)",
+            "pass": true,
+            "detail": "footer 24 \u00b7 plan 24"
+          },
+          {
+            "name": "ZHL CNS vs plan walk (\u00b11.5%)",
+            "pass": true,
+            "detail": "footer 16.7% \u00b7 plan 16.7%"
+          },
+          {
+            "name": "VPM vs ZHL OTU (\u00b112)",
+            "pass": true,
+            "detail": "VPM 24 \u00b7 ZHL 24 OTU"
+          },
+          {
+            "name": "VPM OTU below diluent-regression ceiling",
+            "pass": true,
+            "detail": "VPM 24 OTU (diluent-only bottom \u2248 65)"
+          },
+          {
+            "name": "Deco: both engines produce valid runtime",
+            "pass": true,
+            "detail": "VPM RT 109 \u00b7 ZHL RT 175 min"
+          }
+        ]
+      }
+    ],
+    "pscr_suite": {
+      "version": "2.30.30",
+      "pass": 39,
+      "fail": 0,
+      "rows": [
+        {
+          "section": "A \u00b7 getEffectivePpo2 unit (corrected loop model)",
+          "name": "20 m \u00b7 EAN32 \u00b7 45 min \u2014 loop ppO\u2082 @ BT end",
+          "pass": true,
+          "detail": "loop=0.160 bar \u00b7 diluent=0.973 bar \u2713"
+        },
+        {
+          "section": "A \u00b7 getEffectivePpo2 unit (corrected loop model)",
+          "name": "40 m \u00b7 EAN32 \u00b7 30 min \u2014 loop ppO\u2082 @ BT end",
+          "pass": true,
+          "detail": "loop=0.160 bar \u00b7 diluent=1.621 bar \u2713"
+        },
+        {
+          "section": "A \u00b7 getEffectivePpo2 unit (corrected loop model)",
+          "name": "60 m \u00b7 EAN32 \u00b7 20 min \u2014 loop ppO\u2082 @ BT end",
+          "pass": true,
+          "detail": "loop=0.160 bar \u00b7 diluent=2.270 bar \u2713"
+        },
+        {
+          "section": "A \u00b7 getEffectivePpo2 unit (corrected loop model)",
+          "name": "20 m \u00b7 EAN36 \u00b7 40 min \u2014 loop ppO\u2082 @ BT end",
+          "pass": true,
+          "detail": "loop=0.160 bar \u00b7 diluent=1.094 bar \u2713"
+        },
+        {
+          "section": "A \u00b7 getEffectivePpo2 unit (corrected loop model)",
+          "name": "40 m \u00b7 EAN36 \u00b7 25 min \u2014 loop ppO\u2082 @ BT end",
+          "pass": true,
+          "detail": "loop=0.160 bar \u00b7 diluent=1.824 bar \u2713"
+        },
+        {
+          "section": "A \u00b7 getEffectivePpo2 unit (corrected loop model)",
+          "name": "60 m \u00b7 EAN36 \u00b7 20 min \u2014 loop ppO\u2082 @ BT end",
+          "pass": true,
+          "detail": "loop=0.160 bar \u00b7 diluent=2.553 bar \u2713"
+        },
+        {
+          "section": "B \u00b7 Bottom-phase OTU reference (getEffectivePpo2 integration)",
+          "name": "20 m \u00b7 EAN32 \u00b7 45 min \u2014 bottom OTU",
+          "pass": true,
+          "detail": "OTU=0.0 (diluent bug would be 42.9) \u2713"
+        },
+        {
+          "section": "B \u00b7 Bottom-phase OTU reference (getEffectivePpo2 integration)",
+          "name": "40 m \u00b7 EAN32 \u00b7 30 min \u2014 bottom OTU",
+          "pass": true,
+          "detail": "OTU=0.0 (diluent bug would be 58.8) \u2713"
+        },
+        {
+          "section": "B \u00b7 Bottom-phase OTU reference (getEffectivePpo2 integration)",
+          "name": "60 m \u00b7 EAN32 \u00b7 20 min \u2014 bottom OTU",
+          "pass": true,
+          "detail": "OTU=0.0 (diluent bug would be 57.3) \u2713"
+        },
+        {
+          "section": "B \u00b7 Bottom-phase OTU reference (getEffectivePpo2 integration)",
+          "name": "20 m \u00b7 EAN36 \u00b7 40 min \u2014 bottom OTU",
+          "pass": true,
+          "detail": "OTU=0.0 (diluent bug would be 46.2) \u2713"
+        },
+        {
+          "section": "B \u00b7 Bottom-phase OTU reference (getEffectivePpo2 integration)",
+          "name": "40 m \u00b7 EAN36 \u00b7 25 min \u2014 bottom OTU",
+          "pass": true,
+          "detail": "OTU=0.0 (diluent bug would be 56.3) \u2713"
+        },
+        {
+          "section": "B \u00b7 Bottom-phase OTU reference (getEffectivePpo2 integration)",
+          "name": "60 m \u00b7 EAN36 \u00b7 20 min \u2014 bottom OTU",
+          "pass": true,
+          "detail": "OTU=0.0 (diluent bug would be 64.9) \u2713"
+        },
+        {
+          "section": "C \u00b7 VPM-B full dive OTU vs plan re-integration",
+          "name": "VPM \u00b7 20 m \u00b7 EAN32 \u00b7 45 min",
+          "pass": true,
+          "detail": "OTU=1 \u00b7 plan-check=1 \u00b7 RT=52min \u2713"
+        },
+        {
+          "section": "C \u00b7 VPM-B full dive OTU vs plan re-integration",
+          "name": "VPM \u00b7 40 m \u00b7 EAN32 \u00b7 30 min",
+          "pass": true,
+          "detail": "OTU=8 \u00b7 plan-check=8 \u00b7 RT=93min \u2713"
+        },
+        {
+          "section": "C \u00b7 VPM-B full dive OTU vs plan re-integration",
+          "name": "VPM \u00b7 60 m \u00b7 EAN32 \u00b7 20 min",
+          "pass": true,
+          "detail": "OTU=18 \u00b7 plan-check=18 \u00b7 RT=138min \u2713"
+        },
+        {
+          "section": "C \u00b7 VPM-B full dive OTU vs plan re-integration",
+          "name": "VPM \u00b7 20 m \u00b7 EAN36 \u00b7 40 min",
+          "pass": true,
+          "detail": "OTU=2 \u00b7 plan-check=2 \u00b7 RT=47min \u2713"
+        },
+        {
+          "section": "C \u00b7 VPM-B full dive OTU vs plan re-integration",
+          "name": "VPM \u00b7 40 m \u00b7 EAN36 \u00b7 25 min",
+          "pass": true,
+          "detail": "OTU=10 \u00b7 plan-check=10 \u00b7 RT=64min \u2713"
+        },
+        {
+          "section": "C \u00b7 VPM-B full dive OTU vs plan re-integration",
+          "name": "VPM \u00b7 60 m \u00b7 EAN36 \u00b7 20 min",
+          "pass": true,
+          "detail": "OTU=24 \u00b7 plan-check=24 \u00b7 RT=117min \u2713"
+        },
+        {
+          "section": "D \u00b7 B\u00fchlmann ZHL full dive OTU/CNS vs plan re-integration",
+          "name": "ZHL \u00b7 20 m \u00b7 EAN32 \u00b7 45 min",
+          "pass": true,
+          "detail": "OTU=1 \u00b7 CNS=1.6% \u00b7 plan OTU=1 \u2713"
+        },
+        {
+          "section": "D \u00b7 B\u00fchlmann ZHL full dive OTU/CNS vs plan re-integration",
+          "name": "ZHL \u00b7 40 m \u00b7 EAN32 \u00b7 30 min",
+          "pass": true,
+          "detail": "OTU=8 \u00b7 CNS=3.2% \u00b7 plan OTU=8 \u2713"
+        },
+        {
+          "section": "D \u00b7 B\u00fchlmann ZHL full dive OTU/CNS vs plan re-integration",
+          "name": "ZHL \u00b7 60 m \u00b7 EAN32 \u00b7 20 min",
+          "pass": true,
+          "detail": "OTU=18 \u00b7 CNS=35.8% \u00b7 plan OTU=18 \u2713"
+        },
+        {
+          "section": "D \u00b7 B\u00fchlmann ZHL full dive OTU/CNS vs plan re-integration",
+          "name": "ZHL \u00b7 20 m \u00b7 EAN36 \u00b7 40 min",
+          "pass": true,
+          "detail": "OTU=2 \u00b7 CNS=0.9% \u00b7 plan OTU=2 \u2713"
+        },
+        {
+          "section": "D \u00b7 B\u00fchlmann ZHL full dive OTU/CNS vs plan re-integration",
+          "name": "ZHL \u00b7 40 m \u00b7 EAN36 \u00b7 25 min",
+          "pass": true,
+          "detail": "OTU=10 \u00b7 CNS=6.2% \u00b7 plan OTU=10 \u2713"
+        },
+        {
+          "section": "D \u00b7 B\u00fchlmann ZHL full dive OTU/CNS vs plan re-integration",
+          "name": "ZHL \u00b7 60 m \u00b7 EAN36 \u00b7 20 min",
+          "pass": true,
+          "detail": "OTU=24 \u00b7 CNS=16.7% \u00b7 plan OTU=24 \u2713"
+        },
+        {
+          "section": "E \u00b7 Metabolic O\u2082 vs diluent gas draw (pSCR consumption model)",
+          "name": "Gas \u00b7 20 m \u00b7 EAN32 \u00b7 45 min",
+          "pass": true,
+          "detail": "met O\u2082=67.5L \u00b7 dil O\u2082\u2248216L surf-eq \u00b7 amb gas=2025L \u2713"
+        },
+        {
+          "section": "E \u00b7 Metabolic O\u2082 vs diluent gas draw (pSCR consumption model)",
+          "name": "Gas \u00b7 40 m \u00b7 EAN32 \u00b7 30 min",
+          "pass": true,
+          "detail": "met O\u2082=45.0L \u00b7 dil O\u2082\u2248144L surf-eq \u00b7 amb gas=2250L \u2713"
+        },
+        {
+          "section": "E \u00b7 Metabolic O\u2082 vs diluent gas draw (pSCR consumption model)",
+          "name": "Gas \u00b7 60 m \u00b7 EAN32 \u00b7 20 min",
+          "pass": true,
+          "detail": "met O\u2082=30.0L \u00b7 dil O\u2082\u224896L surf-eq \u00b7 amb gas=2100L \u2713"
+        },
+        {
+          "section": "E \u00b7 Metabolic O\u2082 vs diluent gas draw (pSCR consumption model)",
+          "name": "Gas \u00b7 20 m \u00b7 EAN36 \u00b7 40 min",
+          "pass": true,
+          "detail": "met O\u2082=60.0L \u00b7 dil O\u2082\u2248216L surf-eq \u00b7 amb gas=1800L \u2713"
+        },
+        {
+          "section": "E \u00b7 Metabolic O\u2082 vs diluent gas draw (pSCR consumption model)",
+          "name": "Gas \u00b7 40 m \u00b7 EAN36 \u00b7 25 min",
+          "pass": true,
+          "detail": "met O\u2082=37.5L \u00b7 dil O\u2082\u2248135L surf-eq \u00b7 amb gas=1875L \u2713"
+        },
+        {
+          "section": "E \u00b7 Metabolic O\u2082 vs diluent gas draw (pSCR consumption model)",
+          "name": "Gas \u00b7 60 m \u00b7 EAN36 \u00b7 20 min",
+          "pass": true,
+          "detail": "met O\u2082=30.0L \u00b7 dil O\u2082\u2248108L surf-eq \u00b7 amb gas=2100L \u2713"
+        },
+        {
+          "section": "F \u00b7 Cross-engine OTU consistency (same ppO\u2082 inputs)",
+          "name": "VPM vs ZHL OTU \u00b7 20 m \u00b7 EAN32 \u00b7 45 min",
+          "pass": true,
+          "detail": "VPM=1 \u00b7 ZHL=1 OTU \u2713"
+        },
+        {
+          "section": "F \u00b7 Cross-engine OTU consistency (same ppO\u2082 inputs)",
+          "name": "VPM vs ZHL OTU \u00b7 40 m \u00b7 EAN32 \u00b7 30 min",
+          "pass": true,
+          "detail": "VPM=8 \u00b7 ZHL=8 OTU \u2713"
+        },
+        {
+          "section": "F \u00b7 Cross-engine OTU consistency (same ppO\u2082 inputs)",
+          "name": "VPM vs ZHL OTU \u00b7 60 m \u00b7 EAN32 \u00b7 20 min",
+          "pass": true,
+          "detail": "VPM=18 \u00b7 ZHL=18 OTU \u2713"
+        },
+        {
+          "section": "F \u00b7 Cross-engine OTU consistency (same ppO\u2082 inputs)",
+          "name": "VPM vs ZHL OTU \u00b7 20 m \u00b7 EAN36 \u00b7 40 min",
+          "pass": true,
+          "detail": "VPM=2 \u00b7 ZHL=2 OTU \u2713"
+        },
+        {
+          "section": "F \u00b7 Cross-engine OTU consistency (same ppO\u2082 inputs)",
+          "name": "VPM vs ZHL OTU \u00b7 40 m \u00b7 EAN36 \u00b7 25 min",
+          "pass": true,
+          "detail": "VPM=10 \u00b7 ZHL=10 OTU \u2713"
+        },
+        {
+          "section": "F \u00b7 Cross-engine OTU consistency (same ppO\u2082 inputs)",
+          "name": "VPM vs ZHL OTU \u00b7 60 m \u00b7 EAN36 \u00b7 20 min",
+          "pass": true,
+          "detail": "VPM=24 \u00b7 ZHL=24 OTU \u2713"
+        },
+        {
+          "section": "G \u00b7 pSCR trimix fraction normalization",
+          "name": "40 m 18/45 \u2014 fresh loop preserves diluent fractions",
+          "pass": true,
+          "detail": "18/45/37 at runtime 0 \u2713"
+        },
+        {
+          "section": "G \u00b7 pSCR trimix fraction normalization",
+          "name": "40 m 18/45 @ 4 bar \u2014 depleted fractions still sum to 1",
+          "pass": true,
+          "detail": "sum=1.0000 \u2713"
+        },
+        {
+          "section": "G \u00b7 pSCR trimix fraction normalization",
+          "name": "60 m 18/45 \u2014 inspired inert pressures use normalized fractions",
+          "pass": true,
+          "detail": "He/N2 inspired fractions match diluent \u2713"
+        }
+      ]
+    },
+    "app_version": "2.30.30"
+  }
+}

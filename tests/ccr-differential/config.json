@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 2,
+  "lsp": {
+    "engine": "production",
+    "entry": "index.html"
+  },
+  "comparatorEngines": ["multideco", "divekit", "abysner", "subsurface"],
+  "multideco": {
+    "applicationVersion": "2.26",
+    "source": "captured-application-output",
+    "evidenceRoot": "Knowledge Base/divekit-cross-reference"
+  },
+  "divekit": {
+    "source": "divekit.app-open-capture",
+    "evidenceRoot": "Knowledge Base/divekit-cross-reference",
+    "note": "ApexDeco-family open reference captures"
+  },
+  "abysner": {
+    "repository": "https://github.com/NeoTech-Software/Abysner",
+    "source": "open-reference-planner",
+    "plannerModule": "tests/ccr-differential/lib/ccr_open_reference.py",
+    "preset": "abysner",
+    "note": "ZHL-16C CCR reference with Abysner preset (WV 0.0627, Schreiner, fixture rates)"
+  },
+  "subsurface": {
+    "repository": "https://github.com/subsurface/subsurface",
+    "source": "open-reference-planner",
+    "plannerModule": "tests/ccr-differential/lib/ccr_open_reference.py",
+    "preset": "subsurface",
+    "note": "ZHL-16C CCR reference with Subsurface preset (WV 0.0627, 9/6/3 ascent)"
+  },
+  "tolerances": {
+    "firstStopStepM": 3,
+    "roundedStopSec": 60,
+    "roundedTtsMin": { "floor": 2, "pct": 0.05 },
+    "preciseStopSec": 15,
+    "preciseTtsSec": 60,
+    "tissueBar": 0.01,
+    "cnsPercent": 3,
+    "otu": 5
+  },
+  "requiredGoldens": {
+    "multideco": ["CCR-C1", "CCR-C2", "CCR-C3"],
+    "divekit": ["CCR-C1", "CCR-C2", "CCR-C3"],
+    "abysner": ["CCR-C1", "CCR-C2", "CCR-C3"],
+    "subsurface": ["CCR-C1", "CCR-C2", "CCR-C3"]
+  }
+}

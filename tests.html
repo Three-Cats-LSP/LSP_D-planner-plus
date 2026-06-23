@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LSP D-Planner — Test Suite</title>
+<style>
+  :root {
+    --bg: #0f0f0f; --surface: #1a1a1a; --border: #2a2a2a;
+    --text: #d0d0d0; --muted: #666; --accent: #00d9ff;
+    --green: #26d07c; --red: #ff4757; --yellow: #ffb703;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 13px; padding: 20px; }
+  h1 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 3px; color: var(--accent); margin-bottom: 4px; }
+  .subtitle { color: var(--muted); font-size: 11px; letter-spacing: 1px; margin-bottom: 24px; }
+  #status { font-size: 13px; color: var(--muted); margin-bottom: 16px; min-height: 20px; }
+  #status.ready { color: var(--green); }
+  #status.error { color: var(--red); }
+  #summary {
+    display: flex; gap: 24px; margin-bottom: 24px; padding: 16px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  }
+  .sum-stat { text-align: center; }
+  .sum-val { font-size: 32px; font-family: 'Bebas Neue', sans-serif; }
+  .sum-lbl { font-size: 10px; letter-spacing: 1px; color: var(--muted); }
+  .sum-val.pass { color: var(--green); }
+  .sum-val.fail { color: var(--red); }
+  .group { margin-bottom: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .group-header { padding: 10px 16px; background: rgba(0,217,255,0.05); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .group-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); }
+  .group-badge { font-size: 11px; font-weight: 700; }
+  .group-badge.all-pass { color: var(--green); }
+  .group-badge.has-fail { color: var(--red); }
+  .test-row { display: flex; align-items: flex-start; gap: 12px; padding: 8px 16px; border-bottom: 1px solid rgba(42,42,42,0.5); }
+  .test-row:last-child { border-bottom: none; }
+  .icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+  .icon.pass { color: var(--green); }
+  .icon.fail { color: var(--red); }
+  .test-name { flex: 1; color: var(--text); }
+  .test-detail { font-size: 11px; color: var(--muted); flex: 2; }
+  .test-detail.fail { color: #ff8080; }
+  iframe { display: none; }
+  #run-btn {
+    padding: 8px 24px; background: rgba(0,217,255,0.1); border: 1px solid var(--accent);
+    border-radius: 6px; color: var(--accent); font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 1px; cursor: pointer; transition: background 0.2s;
+    margin-bottom: 20px;
+  }
+  #run-btn:hover { background: rgba(0,217,255,0.2); }
+  #run-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+</style>
+</head>
+<body>
+
+<h1>LSP D-PLANNER</h1>
+<div class="subtitle">TEST SUITE — VPMEngine + Bühlmann ZH-L16C</div>
+
+<div id="status">Waiting…</div>
+
+<div id="summary" style="display:none">
+  <div class="sum-stat"><div class="sum-val pass" id="sum-pass">0</div><div class="sum-lbl">PASSED</div></div>
+  <div class="sum-stat"><div class="sum-val fail" id="sum-fail">0</div><div class="sum-lbl">FAILED</div></div>
+  <div class="sum-stat"><div class="sum-val" id="sum-total" style="color:var(--text)">0</div><div class="sum-lbl">TOTAL</div></div>
+  <div class="sum-stat"><div class="sum-val" id="sum-time" style="color:var(--muted)">0ms</div><div class="sum-lbl">TIME</div></div>
+</div>
+
+<button id="run-btn" onclick="startTests()">▶ RUN TESTS</button>
+<button id="export-btn" onclick="exportLog()" style="margin-left:10px;padding:8px 16px;background:#2a2a3a;color:#aaa;border:1px solid #444;border-radius:6px;cursor:pointer;font-size:13px;">⬇ Export Log</button>
+
+<div id="results"></div>
+
+<iframe id="app-frame" src="about:blank"></iframe>
+
+<script>
+/* inlined from lsp-test-harness.js — keep in sync */
+var LSPTestHarness = (function () {
+  'use strict';
+
+  function clone(v) {
+    return JSON.parse(JSON.stringify(v));
+  }
+
+  function hookIframe(iframe, onErr) {
+    iframe.addEventListener('load', function () {
+      try {
+        var w = iframe.contentWindow;
+        if (!w || w.__lspHarnessHooked) return;
+        w.__lspHarnessHooked = true;
+        w.addEventListener('error', function (e) {
+          onErr((e && e.message) || 'Script error');
+        });
+        w.addEventListener('unhandledrejection', function (e) {
+          var r = e.reason;
+          onErr((r && r.message) || String(r) || 'Unhandled rejection');
+        });
+      } catch (_) {}
+    });
+  }
+
+  function appReady(w) {
+    return !!(w
+      && w.VPMEngine && typeof w.VPMEngine.calculate === 'function'
+      && w.ZHLEngine && typeof w.ZHLEngine.calculate === 'function');
+  }
+
+  function readPhys(win) {
+    var surf = isFinite(win.altSurfaceP) ? win.altSurfaceP : 1.01325;
+    var bar = win.BAR_PER_METRE;
+    if (bar == null || !isFinite(bar)) bar = 0.1;
+    return { surf: surf, barPerM: bar };
+  }
+
+  function waitForApp(iframe, timeoutMs, cb) {
+    var bootErr = null;
+    var settled = false;
+    hookIframe(iframe, function (msg) { bootErr = msg; });
+
+    function finish(err, ctx) {
+      if (settled) return;
+      settled = true;
+      cb(err, ctx);
+    }
+
+    function check() {
+      try {
+        var w = iframe.contentWindow;
+        if (appReady(w)) {
+          w._zhlHeadless = true;
+          var phys = readPhys(w);
+          setTimeout(function () {
+            finish(null, {
+              win: w,
+              vpm: w.VPMEngine,
+              zhl: w.ZHLEngine,
+              version: w.APP_VERSION || null,
+              surf: phys.surf,
+              barPerM: phys.barPerM,
+            });
+          }, 1500);
+          return;
+        }
+      } catch (_) {}
+      if (bootErr) return finish(new Error('Boot: ' + bootErr));
+      if (Date.now() - start > timeoutMs) {
+        return finish(new Error('Timed out waiting for VPMEngine + ZHLEngine in index.html'));
+      }
+      setTimeout(check, 250);
+    }
+
+    var start = Date.now();
+    if (!iframe.src || iframe.src === 'about:blank') {
+      iframe.src = 'index.html?ts=' + Date.now();
+    }
+    setTimeout(check, 300);
+  }
+
+  function calc(ctx, levels, gases, settings, model) {
+    if (!ctx || !ctx.vpm || !ctx.zhl) throw new Error('Harness not booted — call waitForApp first');
+    var lv = clone(levels || []);
+    var gs = clone(gases || []);
+    var st = clone(settings || {});
+    if (ctx.win) ctx.win._zhlHeadless = true;
+    var r = (model === 'ZHLC_GF')
+      ? ctx.zhl.calculate(lv, gs, st)
+      : ctx.vpm.calculate(lv, gs, st, model);
+    if (ctx.win) ctx.win._zhlHeadless = true;
+    if (!r || typeof r !== 'object') throw new Error('Engine returned no result');
+    if (r.error) throw new Error(r.error);
+    return r;
+  }
+
+  function reloadApp(iframe) {
+    iframe.src = 'index.html?ts=' + Date.now();
+  }
+
+  return {
+    clone: clone,
+    waitForApp: waitForApp,
+    calc: calc,
+    readPhys: readPhys,
+    reloadApp: reloadApp,
+    appReady: appReady,
+  };
+})();
+</script>
+<script>
+// ─── INFRASTRUCTURE ──────────────────────────────────────────────────────────
+
+let E = null;
+let WIN_APP = null;
+let HARNESS_CTX = null;
+let SURF, BAR;
+
+function calc(levels, gases, settings, model) {
+  return LSPTestHarness.calc(HARNESS_CTX, levels, gases, settings, model);
+}
+
+function assert(cond, msg) {
+  if (!cond) throw new Error(msg || 'Assertion failed');
+}
+
+function approx(a, b, tol) {
+  return Math.abs(a - b) <= (tol || 0.005);
+}
+
+function runTest(name, fn) {
+  try {
+    const detail = fn();
+    return { name, pass: true, detail: detail !== undefined ? String(detail) : '✓' };
+  } catch(e) {
+    return { name, pass: false, detail: e.message };
+  }
+}
+
+function makeSettings(overrides) {
+  return Object.assign({
+    metric: true,
+    waterType: 0,
+    descentRate: 20,
+    ascentRate: 10,
+    decoAscentRate: 3,
+    surfaceAscentRate: 3,
+    stepSize: 3,
+    lastStop: 3,
+    minStopTime: 1,
+    ppO2Bottom: 1.4,
+    ppO2Deco: 1.6,
+    ppO2Low: 1.4,
+    ppO2Mid: 1.5,
+    ppO2High: 1.6,
+    o2MaxDepth: 6,
+    conservatism: 0,
+    gfHi: 85,
+    gfs: 85,
+    firstStop30sec: false,
+    extendedStops: false,
+  }, overrides || {});
+}
+
+// NDL tests: GF 100/100 — "no deco" means no tissue ceiling, not GF 30/85 conservatism.
+function ndlSettings(overrides) {
+  return makeSettings(Object.assign({ gfLo: 100, gfHi: 100 }, overrides || {}));
+}
+
+function makeLevel(depth, time, o2, he) {
+  return [{ depth: depth, time: time, o2: o2 || 21, he: he || 0 }];
+}
+
+var NODECO = [];
+var EAN50 = [{ o2: 50, he: 0 }];
+
+// ─── TEST GROUPS ─────────────────────────────────────────────────────────────
+
+var GROUPS = [
+
+  {
+    name: 'Engine Presence',
+    tests: [
+      ['Engine object found', function() {
+        assert(E !== null && typeof E === 'object', 'Engine not found on window');
+      }],
+      ['Engine.calculate is a function', function() {
+        assert(typeof E.calculate === 'function', 'calculate is ' + typeof E.calculate);
+      }],
+      ['Engine.MODELS exists', function() {
+        assert(E.MODELS != null, 'MODELS missing');
+        var keys = Array.isArray(E.MODELS) ? E.MODELS : Object.keys(E.MODELS);
+        return 'Models: ' + keys.join(', ');
+      }],
+      ['ZHLC_GF model callable', function() {
+        var r = calc(makeLevel(20, 20), NODECO, makeSettings(), 'ZHLC_GF');
+        assert(!r.error, r.error); assert(r.totalRuntime > 0);
+        return 'RT=' + r.totalRuntime.toFixed(1);
+      }],
+      ['VPMB model callable', function() {
+        var r = calc(makeLevel(20, 20), NODECO, makeSettings(), 'VPMB');
+        assert(!r.error, r.error); assert(r.totalRuntime > 0);
+        return 'RT=' + r.totalRuntime.toFixed(1);
+      }],
+      ['VPMB_GFS model callable', function() {
+        var r = calc(makeLevel(20, 20), NODECO, makeSettings(), 'VPMB_GFS');
+        assert(!r.error, r.error); assert(r.totalRuntime > 0);
+        return 'RT=' + r.totalRuntime.toFixed(1);
+      }],
+    ]
+  },
+
+  {
+    name: 'Physical Constants',
+    tests: [
+      ['altSurfaceP ≈ 1.013 bar', function() {
+        assert(approx(SURF, 1.013, 0.01), 'Got ' + SURF);
+        return SURF.toFixed(4) + ' bar';
+      }],
+      ['BAR_PER_METRE in salt range (0.099–0.101)', function() {
+        assert(BAR != null && BAR >= 0.095 && BAR <= 0.105, 'Got ' + BAR);
+        return BAR.toFixed(5) + ' bar/m';
+      }],
+    ]
+  },
+
+  {
+    name: 'Bühlmann: No-Deco Dives',
+    tests: [
+      ['20m / 20min → 0 deco stops', function() {
+        var r = calc(makeLevel(20, 20), NODECO, ndlSettings(), 'ZHLC_GF');
+        assert(!r.error, r.error);
+        var deco = (r.stops || []).filter(function(s){ return s.time > 0; });
+        assert(deco.length === 0, 'Expected 0 stops, got ' + deco.length);
+        return 'RT=' + r.totalRuntime.toFixed(1) + ' min';
+      }],
+      ['15m / 60min → 0 deco stops', function() {
+        var r = calc(makeLevel(15, 60), NODECO, ndlSettings(), 'ZHLC_GF');
+        assert(!r.error, r.error);
+        var deco = (r.stops || []).filter(function(s){ return s.time > 0; });
+        assert(deco.length === 0, 'Expected 0 stops, got ' + deco.length);
+        return 'RT=' + r.totalRuntime.toFixed(1) + ' min';
+      }],
+      ['10m / 90min → 0 deco stops', function() {
+        var r = calc(makeLevel(10, 90), NODECO, ndlSettings(), 'ZHLC_GF');
+        assert(!r.error, r.error);
+        var deco = (r.stops || []).filter(function(s){ return s.time > 0; });
+        assert(deco.length === 0, 'Got ' + deco.length + ' stops');
+        return 'RT=' + r.totalRuntime.toFixed(1) + ' min';
+      }],
+    ]
+  },
+
+  {
+    name: 'Bühlmann: Deco Dives',
+    tests: [
+      ['40m / 25min → deco required, plan present', function() {
+        var r = calc(makeLevel(40, 25), NODECO, makeSettings(), 'ZHLC_GF');
+        assert(!r.error, r.error);
+        assert(r.plan && r.plan.length > 0, 'plan is empty');
+        assert(r.totalRuntime > 25, 'Runtime ' + r.totalRuntime + ' <= BT 25');
+        return 'RT=' + r.totalRuntime.toFixed(1) + ' min, ' + r.plan.length + ' segs';
+      }],
+      ['40m / 25min → RT in range (28–90 min)', function() {
+        var r = calc(makeLevel(40, 25), NODECO, makeSettings(), 'ZHLC_GF');
+        assert(!r.error, r.error);
+        assert(r.totalRuntime >= 28 && r.totalRuntime <= 90,
+          'RT=' + r.totalRuntime.toFixed(1) + ' out of expected 28–90 min');
+        return 'RT=' + r.totalRuntime.toFixed(1) + ' min';
+      }],
+      ['50m / 30min → deco required', function() {
+        var r = calc(makeLevel(50, 30), NODECO, makeSettings(), 'ZHLC_GF');
+        assert(!r.error, r.error);
+        assert(r.totalRuntime > 30, 'RT ' + r.totalRuntime + ' <= BT');
+        var deco = (r.stops || []).filter(function(s){ return s.time > 0; });
+        assert(deco.length > 0, 'No deco stops');
+        return 'RT=' + r.totalRuntime.toFixed(1) + ' min, ' + deco.length + ' stops';
+      }],
+      ['50m/30min RT > 40m/25min RT', function() {
+        var r1 = calc(makeLevel(40, 25), NODECO, makeSettings(), 'ZHLC_GF');
+        var r2 = calc(makeLevel(50, 30), NODECO, makeSettings(), 'ZHLC_GF');
+        assert(!r1.error && !r2.error, 'Engine errors');
+        assert(r2.totalRuntime > r1.totalRuntime,
+          '50m/30 RT ' + r2.totalRuntime.toFixed(1) + ' <= 40m/25 RT ' + r1.totalRuntime.toFixed(1));
+        return '40/25→' + r1.totalRuntime.toFixed(1) + '  50/30→' + r2.totalRuntime.toFixed(1);
+      }],
+      ['40m / 25min with EAN50 deco gas → valid plan', function() {
+        var r = calc(makeLevel(40, 25), EAN50, makeSettings(), 'ZHLC_GF');
+        assert(!r.error, r.error);
+        assert(r.totalRuntime > 0, 'RT is 0');
+        return 'RT=' + r.totalRuntime.toFixed(1) + ' min';
+      }],
+    ]
+  },
+
+  {
+    name: 'Monotonicity',
+    tests: [
+      ['Deeper dive → more deco (30m vs 40m at 25min)', function() {
+        var r1 = calc(makeLevel(30, 25), NODECO, makeSettings(), 'ZHLC_GF');
+        var r2 = calc(makeLevel(40, 25), NODECO, makeSettings(), 'ZHLC_GF');
+        assert(!r1.error && !r2.error, 'Engine error');
+        assert(r2.totalRuntime >= r1.totalRuntime,
+          '40m RT ' + r2.totalRuntime.toFixed(1) + ' < 30m RT ' + r1.totalRuntime.toFixed(1));
+        return '30m→' + r1.totalRuntime.toFixed(1) + '  40m→' + r2.totalRuntime.toFixed(1);
+      }],
+      ['Longer BT → more deco (20 vs 30 min at 40m)', function() {
+        var r1 = calc(makeLevel(40, 20), NODECO, makeSettings(), 'ZHLC_GF');
+        var r2 = calc(makeLevel(40, 30), NODECO, makeSettings(), 'ZHLC_GF');
+        assert(!r1.error && !r2.error, 'Engine error');
+        assert(r2.totalRuntime >= r1.totalRuntime,
+          '30min RT ' + r2.totalRuntime.toFixed(1) + ' < 20min RT ' + r1.totalRuntime.toFixed(1));
+        return '20min→' + r1.totalRuntime.toFixed(1) + '  30min→' + r2.totalRuntime.toFixed(1);
+      }],
+      ['Tighter GFHi (70 vs 85) → more deco', function() {
+        var rL = calc(makeLevel(40, 25), NODECO, makeSettings({ gfHi: 85 }), 'ZHLC_GF');
+        var rT = calc(makeLevel(40, 25), NODECO, makeSettings({ gfHi: 70 }), 'ZHLC_GF');
+        assert(!rL.error && !rT.error, 'Engine error');
+        assert(rT.totalRuntime >= rL.totalRuntime,
+          'GFHi70 RT ' + rT.totalRuntime.toFixed(1) + ' < GFHi85 RT ' + rL.totalRuntime.toFixed(1));
+        return 'GFHi85→' + rL.totalRuntime.toFixed(1) + '  GFHi70→' + rT.totalRuntime.toFixed(1);
+      }],
+      ['EAN32 vs Air at 30m/30min → EAN32 ≤ Air RT', function() {
+        var rA = calc(makeLevel(30, 30, 21), NODECO, makeSettings(), 'ZHLC_GF');
+        var rE = calc(makeLevel(30, 30, 32), NODECO, makeSettings(), 'ZHLC_GF');
+        assert(!rA.error && !rE.error, 'Engine error');
+        assert(rE.totalRuntime <= rA.totalRuntime + 0.5,
+          'EAN32 RT ' + rE.totalRuntime.toFixed(1) + ' > Air RT ' + rA.totalRuntime.toFixed(1));
+        return 'Air→' + rA.totalRuntime.toFixed(1) + '  EAN32→' + rE.totalRuntime.toFixed(1);
+      }],
+    ]
+  },
+
+  {
+    name: 'Result Object Shape',
+    tests: [
+      ['result.totalRuntime is a finite number', function() {
+        var r = calc(makeLevel(40, 25), NODECO, makeSettings(), 'ZHLC_GF');
+        assert(typeof r.totalRuntime === 'number' && isFinite(r.totalRuntime),
+          'totalRuntime is ' + r.totalRuntime);
+        return r.totalRuntime.toFixed(1) + ' min';
+      }],
+      ['result.plan is an array', function() {
+        var r = calc(makeLevel(40, 25), NODECO, makeSettings(), 'ZHLC_GF');
+        assert(Array.isArray(r.plan), 'plan is ' + typeof r.plan);
+        return r.plan.length + ' segments';
+      }],
+      ['result.stops is an array', function() {
+        var r = calc(makeLevel(40, 25), NODECO, makeSettings(), 'ZHLC_GF');
+        assert(Array.isArray(r.stops), 'stops is ' + typeof r.stops);
+        return r.stops.length + ' entries';
+      }],
+      ['plan has descent segment', function() {
+        var r = calc(makeLevel(40, 25), NODECO, makeSettings(), 'ZHLC_GF');
+        var has = r.plan.some(function(s){ return s.type === 'descent'; });
+        assert(has, 'Types: ' + r.plan.map(function(s){ return s.type; }).join(', '));
+      }],
+      ['plan has bottom segment', function() {
+        var r = calc(makeLevel(40, 25), NODECO, makeSettings(), 'ZHLC_GF');
+        var has = r.plan.some(function(s){ return s.type === 'bottom'; });
+        assert(has, 'Types: ' + r.plan.map(function(s){ return s.type; }).join(', '));
+      }],
+      ['stop segments have depth and time fields', function() {
+        var r = calc(makeLevel(40, 25), NODECO, makeSettings(), 'ZHLC_GF');
+        var stops = r.plan.filter(function(s){ return s.type === 'stop'; });
+        if (stops.length === 0) return 'no stops (NDL dive)';
+        var s = stops[0];
+        assert('depth' in s && 'time' in s, 'Missing depth or time in stop');
+        return 'depth=' + s.depth + ' time=' + s.time.toFixed(1);
+      }],
+    ]
+  },
+
+  {
+    name: 'CNS / OTU',
+    tests: [
+      ['totalCNS is a finite number ≥ 0', function() {
+        var r = calc(makeLevel(40, 25), NODECO, makeSettings(), 'ZHLC_GF');
+        assert(r.totalCNS !== null && r.totalCNS !== undefined, 'totalCNS null/undefined');
+        assert(isFinite(r.totalCNS) && r.totalCNS >= 0, 'Unrealistic CNS: ' + r.totalCNS);
+        return r.totalCNS.toFixed(1) + '%';
+      }],
+      ['totalOTU is a finite number ≥ 0', function() {
+        var r = calc(makeLevel(40, 25), NODECO, makeSettings(), 'ZHLC_GF');
+        assert(r.totalOTU !== null && r.totalOTU !== undefined, 'totalOTU null/undefined');
+        assert(isFinite(r.totalOTU) && r.totalOTU >= 0, 'Unrealistic OTU: ' + r.totalOTU);
+        return Math.round(r.totalOTU) + ' OTU';
+      }],
+      ['EAN50 deco gas raises OTU vs no deco gas', function() {
+        var r1 = calc(makeLevel(40, 25), NODECO, makeSettings(), 'ZHLC_GF');
+        var r2 = calc(makeLevel(40, 25), EAN50,  makeSettings(), 'ZHLC_GF');
+        assert(!r1.error && !r2.error, 'Engine error');
+        assert(r2.totalOTU >= r1.totalOTU,
+          'EAN50 OTU ' + r2.totalOTU + ' < no-deco OTU ' + r1.totalOTU);
+        return 'NoDeco→' + Math.round(r1.totalOTU) + '  EAN50→' + Math.round(r2.totalOTU);
+      }],
+      ['Longer dive accumulates more CNS', function() {
+        var r1 = calc(makeLevel(40, 20), NODECO, makeSettings(), 'ZHLC_GF');
+        var r2 = calc(makeLevel(40, 40), NODECO, makeSettings(), 'ZHLC_GF');
+        assert(!r1.error && !r2.error, 'Engine error');
+        assert(r2.totalCNS >= r1.totalCNS,
+          '40min CNS ' + r2.totalCNS.toFixed(1) + ' < 20min CNS ' + r1.totalCNS.toFixed(1));
+        return '20min→' + r1.totalCNS.toFixed(1) + '%  40min→' + r2.totalCNS.toFixed(1) + '%';
+      }],
+    ]
+  },
+
+  {
+    name: 'VPM-B Models',
+    tests: [
+      ['VPM-B: 40m/25min returns valid plan', function() {
+        var r = calc(makeLevel(40, 25), NODECO, makeSettings(), 'VPMB');
+        assert(!r.error, r.error || 'Engine error');
+        assert(r.plan && r.plan.length > 0, 'Empty plan');
+        assert(r.totalRuntime > 25, 'RT ' + r.totalRuntime + ' <= BT');
+        return 'RT=' + r.totalRuntime.toFixed(1) + ' min';
+      }],
+      ['VPM-B/GFS: 40m/25min returns valid plan', function() {
+        var r = calc(makeLevel(40, 25), NODECO, makeSettings(), 'VPMB_GFS');
+        assert(!r.error, r.error || 'Engine error');
+        assert(r.plan && r.plan.length > 0, 'Empty plan');
+        return 'RT=' + r.totalRuntime.toFixed(1) + ' min';
+      }],
+      ['VPM-B vs VPM-B/GFS RT within 90 min of each other', function() {
+        var rB  = calc(makeLevel(40, 25), NODECO, makeSettings(), 'VPMB');
+        var rGFS = calc(makeLevel(40, 25), NODECO, makeSettings(), 'VPMB_GFS');
+        assert(!rB.error && !rGFS.error, 'Engine error');
+        var diff = Math.abs(rB.totalRuntime - rGFS.totalRuntime);
+        assert(diff < 90, 'Diff ' + diff.toFixed(1) + ' min too large');
+        return 'VPMB→' + rB.totalRuntime.toFixed(1) + '  GFS→' + rGFS.totalRuntime.toFixed(1);
+      }],
+      ['VPM-B: deeper dive (50m) → more deco than 40m', function() {
+        var r1 = calc(makeLevel(40, 25), NODECO, makeSettings(), 'VPMB');
+        var r2 = calc(makeLevel(50, 25), NODECO, makeSettings(), 'VPMB');
+        assert(!r1.error && !r2.error, 'Engine error');
+        assert(r2.totalRuntime >= r1.totalRuntime,
+          '50m RT ' + r2.totalRuntime.toFixed(1) + ' < 40m RT ' + r1.totalRuntime.toFixed(1));
+        return '40m→' + r1.totalRuntime.toFixed(1) + '  50m→' + r2.totalRuntime.toFixed(1);
+      }],
+    ]
+  },
+
+  {
+    name: 'Water Type',
+    tests: [
+      ['Salt (waterType=0) runs without error', function() {
+        var r = calc(makeLevel(40, 25), NODECO, makeSettings({ waterType: 0 }), 'ZHLC_GF');
+        assert(!r.error, r.error);
+        return 'RT=' + r.totalRuntime.toFixed(1) + ' min';
+      }],
+      ['Fresh (waterType=1) runs without error', function() {
+        var r = calc(makeLevel(40, 25), NODECO, makeSettings({ waterType: 1 }), 'ZHLC_GF');
+        assert(!r.error, r.error);
+        return 'RT=' + r.totalRuntime.toFixed(1) + ' min';
+      }],
+      ['Salt vs fresh RT within 10 min (same dive)', function() {
+        var rS = calc(makeLevel(40, 25), NODECO, makeSettings({ waterType: 0 }), 'ZHLC_GF');
+        var rF = calc(makeLevel(40, 25), NODECO, makeSettings({ waterType: 1 }), 'ZHLC_GF');
+        assert(!rS.error && !rF.error, 'Engine error');
+        var diff = Math.abs(rS.totalRuntime - rF.totalRuntime);
+        assert(diff < 10, 'Unexpected diff ' + diff.toFixed(1) + ' min');
+        return 'Salt→' + rS.totalRuntime.toFixed(1) + '  Fresh→' + rF.totalRuntime.toFixed(1);
+      }],
+    ]
+  },
+
+  {
+    name: 'Edge Cases',
+    tests: [
+      ['Shallow dive (5m/10min) → no error, short RT', function() {
+        var r = calc(makeLevel(5, 10), NODECO, makeSettings(), 'ZHLC_GF');
+        assert(!r.error, r.error);
+        assert(r.totalRuntime >= 10 && r.totalRuntime < 30, 'RT=' + r.totalRuntime);
+        return 'RT=' + r.totalRuntime.toFixed(1) + ' min';
+      }],
+      ['Deep dive (80m/20min) → completes without crash', function() {
+        var r = calc(makeLevel(80, 20), NODECO, makeSettings(), 'ZHLC_GF');
+        assert(!r.error, r.error);
+        assert(r.totalRuntime > 20, 'RT ' + r.totalRuntime + ' <= BT');
+        return 'RT=' + r.totalRuntime.toFixed(1) + ' min';
+      }],
+      ['Multiple sequential calls → identical results (no state leak)', function() {
+        var r1 = calc(makeLevel(40, 25), NODECO, makeSettings(), 'ZHLC_GF');
+        var r2 = calc(makeLevel(40, 25), NODECO, makeSettings(), 'ZHLC_GF');
+        assert(!r1.error && !r2.error, 'Error on repeated call');
+        var diff = Math.abs(r1.totalRuntime - r2.totalRuntime);
+        assert(diff < 0.01, 'Results differ: ' + r1.totalRuntime.toFixed(2) + ' vs ' + r2.totalRuntime.toFixed(2));
+        return 'Identical: ' + r1.totalRuntime.toFixed(1) + ' min';
+      }],
+      ['Imperial mode (130ft/25min) → plausible RT', function() {
+        var depthM = 130 / 3.28084;
+        var r = calc(
+          [{ depth: depthM, time: 25, o2: 21, he: 0 }],
+          NODECO,
+          makeSettings({ metric: true, waterType: 0, lastStop: 3, stepSize: 3, gfLo: 30 }),
+          'ZHLC_GF'
+        );
+        assert(!r.error, r.error);
+        assert(r.totalRuntime > 50 && r.totalRuntime < 80,
+          'RT ' + r.totalRuntime + ' outside plausible range for ~40m/25min GF30/85');
+        return 'RT=' + r.totalRuntime.toFixed(1) + ' min (~130ft as ' + depthM.toFixed(1) + 'm)';
+      }],
+    ]
+  },
+
+
+  {
+    name: 'VPM-B Physical Invariants',
+    tests: [
+      // GFS always ≥ VPM-B (GF cap adds time at shallow stops)
+      ['VPMB_GFS RT ≥ VPMB for 40m/25min', function() {
+        var a = calc(makeLevel(40,25), NODECO, makeSettings(), 'VPMB');
+        var b = calc(makeLevel(40,25), NODECO, makeSettings(), 'VPMB_GFS');
+        assert(!a.error && !b.error, 'Engine error');
+        assert(b.totalRuntime + 0.5 >= a.totalRuntime,
+          'VPMB_GFS RT ' + b.totalRuntime.toFixed(1) + ' < VPMB RT ' + a.totalRuntime.toFixed(1));
+        return 'VPMB→' + a.totalRuntime.toFixed(1) + '  GFS→' + b.totalRuntime.toFixed(1);
+      }],
+      // Conservatism monotonicity: C2 ≥ C0
+      ['VPM-B C2 RT ≥ C0 RT (40m/25min)', function() {
+        var r0 = calc(makeLevel(40,25), NODECO, makeSettings({conservatism:0}), 'VPMB');
+        var r2 = calc(makeLevel(40,25), NODECO, makeSettings({conservatism:2}), 'VPMB');
+        assert(!r0.error && !r2.error, 'Engine error');
+        assert(r2.totalRuntime + 0.5 >= r0.totalRuntime,
+          'C2 RT ' + r2.totalRuntime.toFixed(1) + ' < C0 RT ' + r0.totalRuntime.toFixed(1));
+        return 'C0→' + r0.totalRuntime.toFixed(1) + '  C2→' + r2.totalRuntime.toFixed(1);
+      }],
+      // Conservatism monotonicity: C4 ≥ C2
+      ['VPM-B C4 RT ≥ C2 RT (45m/25min)', function() {
+        var r2 = calc(makeLevel(45,25), NODECO, makeSettings({conservatism:2}), 'VPMB');
+        var r4 = calc(makeLevel(45,25), NODECO, makeSettings({conservatism:4}), 'VPMB');
+        assert(!r2.error && !r4.error, 'Engine error');
+        assert(r4.totalRuntime + 0.5 >= r2.totalRuntime,
+          'C4 RT ' + r4.totalRuntime.toFixed(1) + ' < C2 RT ' + r2.totalRuntime.toFixed(1));
+        return 'C2→' + r2.totalRuntime.toFixed(1) + '  C4→' + r4.totalRuntime.toFixed(1);
+      }],
+      // He-rich trimix: VPM-B shorter than air at same depth (VPM credits deep stops; He fast off-gas)
+      ['VPM-B: TMX 21/35 gives ≤ air RT at 60m/20min', function() {
+        var air = calc(makeLevel(60,20,21,0), NODECO, makeSettings(), 'VPMB');
+        var tmx = calc(makeLevel(60,20,21,35), NODECO, makeSettings(), 'VPMB');
+        assert(!air.error && !tmx.error, 'Engine error');
+        // He off-gasses faster (shorter half-times) so trimix should produce ≤ or similar runtime
+        assert(tmx.totalRuntime <= air.totalRuntime + 5,
+          'TMX RT ' + tmx.totalRuntime.toFixed(1) + ' much longer than air RT ' + air.totalRuntime.toFixed(1));
+        return 'Air→' + air.totalRuntime.toFixed(1) + '  TMX21/35→' + tmx.totalRuntime.toFixed(1);
+      }],
+      // Deeper first stop for deeper dive (VPM-B places stops based on bubble mechanics)
+      ['VPM-B: 60m dive first stop deeper than 40m dive first stop', function() {
+        var r40 = calc(makeLevel(40,25), NODECO, makeSettings(), 'VPMB');
+        var r60 = calc(makeLevel(60,20), NODECO, makeSettings(), 'VPMB');
+        assert(!r40.error && !r60.error, 'Engine error');
+        var stops40 = (r40.stops || []).filter(function(s){ return s.time > 0; });
+        var stops60 = (r60.stops || []).filter(function(s){ return s.time > 0; });
+        if (stops40.length === 0 || stops60.length === 0) return 'insufficient stops to compare';
+        var first40 = Math.max.apply(null, stops40.map(function(s){ return s.depth; }));
+        var first60 = Math.max.apply(null, stops60.map(function(s){ return s.depth; }));
+        assert(first60 >= first40,
+          '60m first stop ' + first60 + 'm not deeper than 40m first stop ' + first40 + 'm');
+        return '40m first stop=' + first40 + 'm  60m first stop=' + first60 + 'm';
+      }],
+    ]
+  },
+
+  {
+    name: 'Constants & Physical Sanity',
+    tests: [
+      // Water vapour pressure at 37°C ≈ 0.0627 bar (used in alveolar pO2 correction)
+      ['altSurfaceP sea level ≈ 1.013 bar (within 0.01)', function() {
+        assert(approx(SURF, 1.013, 0.01), 'Got ' + SURF);
+        return SURF.toFixed(4) + ' bar';
+      }],
+      // BAR_PER_METRE: canonical m/bar-derived constants (MultiDeco/DiveKit aligned).
+      // WATER_DENSITY.salt = 0.10000 (10.000 m/bar), fresh = 0.09681, EN13319 = 0.09921.
+      // Strict SI: 1025 kg/m³ → ~0.10052, 1000 kg/m³ → ~0.09807.
+      // The test reads BAR_PER_METRE AFTER setWater('salt') so WATER_DENSITY.salt is in effect.
+      ['BAR_PER_METRE in salt range after setWater (0.0993–0.1007)', function() {
+        var w = WIN_APP;
+        if (!w) return 'WIN_APP not ready (warn)';
+        if (w.setWaterType) w.setWaterType('salt');
+        else if (w.setWater) w.setWater('salt');
+        var live = w.BAR_PER_METRE;
+        var v = (live != null && isFinite(live)) ? ((live > 1) ? 1/live : live) : BAR;
+        assert(v != null && v >= 0.0993 && v <= 0.1007,
+          'Got ' + v + ' — expected WATER_DENSITY.salt ≈ 0.10000 (MultiDeco/DiveKit)');
+        return v.toFixed(5) + ' bar/m (salt: 10.000 m/bar)';
+      }],
+      // 10m salt water depth ≈ 1.0 bar absolute pressure increase
+      ['10m salt water pressure ≈ 1.0 bar (±0.015)', function() {
+        var p10 = BAR * 10;
+        assert(approx(p10, 1.0, 0.015), '10m pressure = ' + p10.toFixed(4) + ' bar');
+        return '10m = ' + p10.toFixed(4) + ' bar';
+      }],
+      // Engine handles conservatism 0 through 5 without error
+      ['VPM-B conservatism 5 runs without error', function() {
+        var r = calc(makeLevel(40,25), NODECO, makeSettings({conservatism:5}), 'VPMB');
+        assert(!r.error, r.error || 'Engine error');
+        assert(r.totalRuntime > 25);
+        return 'C5 RT=' + r.totalRuntime.toFixed(1) + ' min';
+      }],
+    ]
+  },
+
+];
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+
+function renderResults(groups) {
+  var container = document.getElementById('results');
+  container.innerHTML = '';
+  var totalPass = 0, totalFail = 0;
+
+  groups.forEach(function(g) {
+    var passCount = g.results.filter(function(r){ return r.pass; }).length;
+    var allPass = passCount === g.results.length;
+    totalPass += passCount;
+    totalFail += g.results.length - passCount;
+
+    var div = document.createElement('div');
+    div.className = 'group';
+    div.innerHTML = '<div class="group-header">' +
+      '<span class="group-title">' + g.name + '</span>' +
+      '<span class="group-badge ' + (allPass ? 'all-pass' : 'has-fail') + '">' + passCount + '/' + g.results.length + '</span>' +
+      '</div>';
+
+    g.results.forEach(function(r) {
+      var row = document.createElement('div');
+      row.className = 'test-row';
+      row.innerHTML =
+        '<span class="icon ' + (r.pass ? 'pass' : 'fail') + '">' + (r.pass ? '✓' : '✗') + '</span>' +
+        '<span class="test-name">' + r.name + '</span>' +
+        '<span class="test-detail ' + (r.pass ? '' : 'fail') + '">' + r.detail + '</span>';
+      div.appendChild(row);
+    });
+    container.appendChild(div);
+  });
+
+  document.getElementById('sum-pass').textContent = totalPass;
+  document.getElementById('sum-fail').textContent = totalFail;
+  document.getElementById('sum-total').textContent = totalPass + totalFail;
+  document.getElementById('sum-fail').className = 'sum-val ' + (totalFail > 0 ? 'fail' : 'pass');
+  document.getElementById('summary').style.display = 'flex';
+}
+
+// ─── BOOT ─────────────────────────────────────────────────────────────────────
+
+function startTests() {
+  var btn = document.getElementById('run-btn');
+  var statusEl = document.getElementById('status');
+  if (typeof LSPTestHarness === 'undefined') {
+    statusEl.className = 'error';
+    statusEl.textContent = '✗ Test harness failed to load — refresh or redeploy tests.html';
+    if (btn) btn.disabled = false;
+    return;
+  }
+  btn.disabled = true;
+  statusEl.className = '';
+  statusEl.textContent = 'Loading index.html…';
+  document.getElementById('results').innerHTML = '';
+  document.getElementById('summary').style.display = 'none';
+
+  var frame = document.getElementById('app-frame');
+  frame.src = 'index.html?ts=' + Date.now();
+
+  LSPTestHarness.waitForApp(frame, 45000, function(err, ctx) {
+    if (err) {
+      statusEl.className = 'error';
+      statusEl.textContent = '✗ ' + err.message + ' — ensure tests.html is in the same folder as index.html';
+      btn.disabled = false;
+      return;
+    }
+
+    HARNESS_CTX = ctx;
+    E = ctx.vpm;
+    WIN_APP = ctx.win;
+    SURF = ctx.surf;
+    BAR = ctx.barPerM;
+
+    statusEl.className = 'ready';
+    statusEl.textContent = '✓ Engine ready  |  APP: ' + (ctx.version || '?') +
+      '  |  altSurfaceP: ' + SURF.toFixed(4) + '  |  BAR/m: ' + BAR.toFixed(5);
+
+    var t0 = performance.now();
+    var groupsWithResults = GROUPS.map(function(g) {
+      return {
+        name: g.name,
+        results: g.tests.map(function(t) { return runTest(t[0], t[1]); }),
+      };
+    });
+    var elapsed = (performance.now() - t0).toFixed(0);
+
+    document.getElementById('sum-time').textContent = elapsed + 'ms';
+    LAST_RESULTS = { groups: groupsWithResults, elapsed: elapsed, ts: new Date().toISOString() };
+    renderResults(groupsWithResults);
+    btn.disabled = false;
+    btn.textContent = '↻ RUN AGAIN';
+  });
+}
+
+var LAST_RESULTS = null;
+
+function exportLog() {
+  if (!LAST_RESULTS) { alert('Run the tests first.'); return; }
+  var lines = [];
+  var d = new Date(LAST_RESULTS.ts);
+  var totalPass = 0, totalFail = 0;
+  LAST_RESULTS.groups.forEach(function(g) {
+    g.results.forEach(function(r) { if (r.pass) totalPass++; else totalFail++; });
+  });
+  lines.push('LSP D-Planner — Test Log');
+  lines.push('Generated : ' + d.toLocaleString());
+  lines.push('Duration  : ' + LAST_RESULTS.elapsed + ' ms');
+  lines.push('Result    : ' + totalPass + ' passed, ' + totalFail + ' failed, ' + (totalPass + totalFail) + ' total');
+  lines.push('');
+  lines.push('='.repeat(60));
+  LAST_RESULTS.groups.forEach(function(g) {
+    var gPass = g.results.filter(function(r){ return r.pass; }).length;
+    lines.push('');
+    lines.push('GROUP: ' + g.name + '  [' + gPass + '/' + g.results.length + ']');
+    lines.push('-'.repeat(56));
+    g.results.forEach(function(r) {
+      var icon = r.pass ? 'PASS' : 'FAIL';
+      lines.push('  [' + icon + '] ' + r.name);
+      if (r.detail) lines.push('         ' + r.detail);
+    });
+  });
+  lines.push('');
+  lines.push('='.repeat(60));
+  lines.push('End of log');
+  var blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'lsp-test-log-' + d.toISOString().slice(0,19).replace(/[:T]/g,'-') + '.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+window.addEventListener('load', function() { setTimeout(startTests, 300); });
+</script>
+</body>
+</html>

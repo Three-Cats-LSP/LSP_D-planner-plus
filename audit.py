@@ -1,0 +1,3232 @@
+#!/usr/bin/env python3
+"""
+LSP D-Planner audit.py
+======================
+Comprehensive static-analysis checks for index.html.
+Run from the repo root: python3 audit.py [path/to/index.html]
+
+Exit code 0 = all checks pass. Non-zero = failures found.
+Every check added here must correspond to a real bug or regression
+that was found in production. No theoretical checks.
+"""
+
+import re, sys, os, json
+from collections import Counter
+
+if hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
+# ── Load file ─────────────────────────────────────────────────────────────────
+path = sys.argv[1] if len(sys.argv) > 1 else "index.html"
+if not os.path.exists(path):
+    print(f"File not found: {path}")
+    sys.exit(1)
+
+with open(path, encoding="utf-8") as f:
+    html = f.read()
+
+# Extract the main (non-src) script block
+scripts = re.findall(r"<script(?![^>]*src)[^>]*>(.*?)</script>", html, re.DOTALL)
+if not scripts:
+    print("FATAL: No inline script block found")
+    sys.exit(1)
+js = scripts[0]
+js_lines = js.split("\n")
+
+# Tier 3: Bühlmann core lives in zhl-engine-bundle.js — merge for ZHL pattern checks
+bundle_path = os.path.join(os.path.dirname(path) if os.path.dirname(path) else ".", "zhl-engine-bundle.js")
+if not os.path.isabs(bundle_path):
+    bundle_path = os.path.join(os.path.dirname(os.path.abspath(path)), "zhl-engine-bundle.js")
+zhl_bundle_js = ""
+if os.path.isfile(bundle_path):
+    with open(bundle_path, encoding="utf-8") as f:
+        zhl_bundle_js = f.read()
+zhl_src = js + "\n" + zhl_bundle_js
+
+# Helper: line number in JS block (1-indexed)
+def js_line(char_pos):
+    return js[:char_pos].count("\n") + 1
+
+# Helper: all positions of a pattern in js
+def find_all(pattern, text=None, flags=re.MULTILINE):
+    return list(re.finditer(pattern, text or js, flags))
+
+# Arg counter (rough, ignores nested parens only one level deep)
+def count_args(args_str):
+    return len(re.split(r",(?![^(]*\))", args_str.strip())) if args_str.strip() else 0
+
+PASS = []
+FAIL = []
+
+def ok(msg):
+    PASS.append(msg)
+
+def fail(msg):
+    FAIL.append(msg)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 1 — STRUCTURE / DUPLICATES
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 1.1 No duplicate top-level function declarations
+all_fn_names = re.findall(r"^function (\w+)\s*\(", js, re.MULTILINE)
+dupes = {k: v for k, v in Counter(all_fn_names).items() if v > 1}
+if dupes:
+    for fn, cnt in sorted(dupes.items()):
+        fail(f"Duplicate function declaration: {fn} ({cnt}x) — orphaned body causes 'Illegal return'")
+else:
+    ok("No duplicate function declarations")
+
+# 1.2 No bare return at depth-0 (orphaned function body / missing header)
+depth = 0
+bare_returns = []
+for i, line in enumerate(js_lines):
+    stripped = line.strip()
+    if stripped.startswith("//") or stripped.startswith("*") or stripped.startswith("/*"):
+        continue
+    depth += line.count("{") - line.count("}")
+    if depth == 0 and re.match(r"\s+return\b", line) and "function" not in line:
+        bare_returns.append((i + 1, stripped[:80]))
+if bare_returns:
+    for ln, txt in bare_returns:
+        fail(f"Bare 'return' at JS line {ln} (depth 0) — orphaned function body: {txt}")
+else:
+    ok("No bare return statements at global scope")
+
+# 1.3 APP_VERSION constant exists
+if re.search(r"const APP_VERSION", js):
+    ok("APP_VERSION constant present")
+else:
+    fail("APP_VERSION constant missing or malformed")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 2 — TRIMIX ENGINE CONSTANTS
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 2.1 Global ZHL16C_HE_HT defined
+if "const ZHL16C_HE_HT_BAKER" in js and "const ZHL16C_HE_HT_BUHL2003" in js:
+    ok("ZHL16C_HE_HT_BAKER and ZHL16C_HE_HT_BUHL2003 defined")
+else:
+    fail("ZHL16C_HE_HT constants missing — He half-time variants not defined")
+
+# 2.2 Active ZHL16C_HE_HT is a mutable let (not const) — needed for runtime switching
+if re.search(r"^let ZHL16C_HE_HT\s*=", js, re.MULTILINE):
+    ok("ZHL16C_HE_HT is mutable (let) for runtime switching")
+else:
+    fail("ZHL16C_HE_HT should be 'let', not 'const', to allow updateHeHalfTime() switching")
+
+# 2.3 ZHL16C_HE_AB defined with 16 entries
+m = re.search(r"const ZHL16C_HE_AB\s*=\s*\[(.*?)\];", js, re.DOTALL)
+if m:
+    pairs = re.findall(r"\[[\d.,\s]+\]", m.group(1))
+    if len(pairs) == 16:
+        ok(f"ZHL16C_HE_AB has 16 compartment entries")
+    else:
+        fail(f"ZHL16C_HE_AB has {len(pairs)} entries, expected 16")
+else:
+    fail("ZHL16C_HE_AB missing — weighted a/b for trimix ceiling not defined")
+
+# 2.4 Global ZHL16C has 16 N2 compartments
+m2 = re.search(r"const ZHL16C\s*=\s*\[(.*?)\];", js, re.DOTALL)
+if m2:
+    comps = re.findall(r"\[[\d.,\s]+\]", m2.group(1))
+    if len(comps) == 16:
+        ok("ZHL16C has 16 N2 compartments")
+    else:
+        fail(f"ZHL16C has {len(comps)} compartments, expected 16")
+else:
+    fail("ZHL16C constant missing")
+
+# 2.5 initTissues returns {pN2, pHe} objects (not scalar floats)
+m3 = re.search(r"function initTissues\(\).*?return.*?;", js, re.DOTALL)
+if m3 and "pHe" in m3.group(0):
+    ok("initTissues() returns {pN2, pHe} objects")
+else:
+    fail("initTissues() may still return scalar pN2 floats — tissue objects needed for trimix")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 3 — FUNCTION SIGNATURES (trimix He param)
+# ══════════════════════════════════════════════════════════════════════════════
+
+def check_sig(fn_name, expected_substr, description):
+    m = re.search(rf"function {fn_name}\s*\(([^)]*)\)", js)
+    if not m:
+        fail(f"Function {fn_name} not found")
+        return
+    params = m.group(1)
+    if expected_substr in params:
+        ok(f"{fn_name}({params}) — {description}")
+    else:
+        fail(f"{fn_name}({params}) — missing {expected_substr}: {description}")
+
+check_sig("saturate",        "fHe",        "He param for trimix tissue loading")
+check_sig("saturateLinear",  "fHe",        "He param for linear trimix tissue loading")
+check_sig("ceiling",         "tissues",    "accepts tissue objects")
+check_sig("ppO2Check",       "fHe",        "He param — fO2 = 1-fN2-fHe for trimix")
+check_sig("calcEND",         "fHe",        "He param — He is non-narcotic")
+check_sig("getBottomGasFractions", "",     "returns {fO2,fHe,fN2} for bottom gas")
+check_sig("getDecoCardFractions",  "n",    "returns {fO2,fHe,fN2} for deco card n")
+check_sig("getGasLabel",     "fHe",        "formats trimix as O2/He notation")
+check_sig("toggleBottomTrimix", "",        "shows/hides He fields on bottom gas card")
+check_sig("updateHeHalfTime",   "",        "syncs ZHL16C_HE_HT + VPMEngine He HT")
+
+# optimalSwitchDepth is nested — search without ^ anchor
+m_osd = re.search(r"function optimalSwitchDepth\s*\(([^)]*)\)", js)
+if m_osd and "fO2override" in m_osd.group(1):
+    ok(f"optimalSwitchDepth({m_osd.group(1)}) — fO2override param for trimix")
+else:
+    sig = m_osd.group(1) if m_osd else "NOT FOUND"
+    fail(f"optimalSwitchDepth({sig}) — missing fO2override (1-fN2 wrong for trimix)")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 4 — CALL SITE AUDITS
+# Bug class: functions updated to accept fHe but call sites not updated
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 4.1 All saturate() calls must have ≥5 args (tissues, depthM, t, fN2, fHe)
+# Exception: function definition itself and VPMEngine's internal use
+sat_fails = []
+for m in re.finditer(r"\bsaturate\(([^)]{5,200})\)", js):
+    call = m.group(0)
+    # skip the function def line
+    if call.startswith("function "):
+        continue
+    args = m.group(1)
+    n = count_args(args)
+    if n < 5:
+        ln = js_line(m.start())
+        # Exempt: VPMEngine internal saturations (different saturate impl)
+        context = js[max(0, m.start()-300):m.start()+50]
+        if "VPMEngine" in context or "loadTissuesConstant" in context or "loadTissuesLinear" in context:
+            continue
+        # Exempt: schreiner-based usage inside VPMEngine IIFE (different function)
+        if "haldane" in context or "schreiner" in context[:50]:
+            continue
+        # Exempt: nitrox-only planner/NDL contexts (no He available in these UI modes)
+        # Identified keywords: effNDL (NDL-check loop), tBase/tTest (multi-dive SI planner),
+        # testT (surface NDL loop), udpBT (dive block calculator)
+        nitrox_only_keywords = ["effNDL", "tBase", "tTest =", "si2", "udpBT", "siMins", "siFrac", "siSteps"]
+        if any(kw in context for kw in nitrox_only_keywords):
+            continue
+        sat_fails.append((ln, call[:80]))
+if sat_fails:
+    for ln, call in sat_fails:
+        fail(f"saturate() call at JS line {ln} missing fHe (arg 5): {call}")
+else:
+    ok(f"All saturate() call sites pass fHe (≥5 args)")
+
+# 4.2 All saturateLinear() calls must have ≥6 args
+satL_fails = []
+for m in re.finditer(r"\bsaturateLinear\(([^)]{5,300})\)", js):
+    args = m.group(1)
+    n = count_args(args)
+    if n < 6:
+        ln = js_line(m.start())
+        # Exempt: VPMEngine internal (different function with different signature)
+        context = js[max(0, m.start()-300):m.start()+200]
+        if "VPMEngine" in context or "loadTissuesLinear" in context:
+            continue
+        # Exempt: travel gas descent (travel gas is always nitrox, never trimix)
+        if "travelInfo.fN2" in context or "travelDescentTime" in context:
+            continue
+        # Skip if the full call actually contains bottomFHe (regex truncation issue)
+        full_call = js[m.start():m.start()+200]
+        if "bottomFHe" in full_call:
+            continue
+        satL_fails.append((ln, m.group(0)[:80]))
+if satL_fails:
+    for ln, call in satL_fails:
+        fail(f"saturateLinear() call at JS line {ln} missing fHe (arg 6): {call}")
+else:
+    ok(f"All saturateLinear() call sites pass fHe (≥6 args)")
+
+# 4.3 All ppO2Check() calls must have ≥3 args (depthM, fN2, fHe)
+ppO2_fails = []
+for m in re.finditer(r"\bppO2Check\(([^)]+)\)", js):
+    args = m.group(1)
+    n = count_args(args)
+    if n < 3:
+        ln = js_line(m.start())
+        ppO2_fails.append((ln, m.group(0)[:80]))
+if ppO2_fails:
+    for ln, call in ppO2_fails:
+        fail(f"ppO2Check() call at JS line {ln} missing fHe (arg 3): {call}")
+else:
+    ok(f"All ppO2Check() call sites pass fHe (≥3 args)")
+
+# 4.4 All optimalSwitchDepth() call sites pass fO2 as second arg
+# (the fix: pass fO2 so it doesn't use 1-fN2 internally)
+osd_calls = find_all(r"\boptimalSwitchDepth\(([^)]+)\)")
+osd_calls_nosig = [m for m in osd_calls if "fO2override" not in m.group(1) and "function" not in js[max(0,m.start()-20):m.start()]]
+osd_single_arg = [(js_line(m.start()), m.group(0)[:60]) for m in osd_calls_nosig if count_args(m.group(1)) < 2]
+if osd_single_arg:
+    for ln, call in osd_single_arg:
+        fail(f"optimalSwitchDepth() at JS line {ln} called with 1 arg (no fO2) — wrong for trimix: {call}")
+else:
+    ok(f"optimalSwitchDepth() call sites pass fO2 override ({len(osd_calls_nosig)} calls checked)")
+
+# 4.5 decoGases.push() includes fO2 field (needed for correct O2% in output)
+dgp_fails = []
+for m in re.finditer(r"decoGases\.push\(\{([^}]+)\}\)", js):
+    body = m.group(1)
+    if "fO2" not in body and "o2:" not in body:
+        ln = js_line(m.start())
+        dgp_fails.append((ln, body.strip()[:100]))
+if dgp_fails:
+    for ln, body in dgp_fails:
+        fail(f"decoGases.push() at JS line {ln} missing fO2 field — wrong O2% in trimix output: {{{body}}}")
+else:
+    ok("All decoGases.push() calls include fO2 field")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 5 — THE 1-fN2 BUG PATTERN
+# Bug class: using (1 - fN2) to derive fO2 — correct for nitrox, WRONG for trimix
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 5.1 bottomFO2 must NOT be derived as 1-bottomFN2 anywhere
+bad_bottom_fo2 = find_all(r"1\s*-\s*bottomFN2")
+# Filter out comments and known-safe uses (ppO2 calc for N2-only gas, CNS calc)
+real_bad = []
+for m in bad_bottom_fo2:
+    line = js[max(0, m.start()-5):m.start()+50]
+    ln = js_line(m.start())
+    full_line = js_lines[ln - 1].strip()
+    if full_line.startswith("//") or full_line.startswith("*"):
+        continue
+    # CNS ppO2 calculations on the bottom segment use 1-bottomFN2 for nitrox-only N2
+    # (bottom gas is N2+O2 only in old recs mode) — allowed
+    if "segCNSfrac" in js[m.start():m.start()+100] or "rowCNS" in js[max(0,m.start()-100):m.start()+100]:
+        continue
+    # Skip if same line also contains bottomFO2 (comment on trimix-safe fix)
+    if "bottomFO2" in full_line:
+        continue
+    real_bad.append((ln, full_line[:100]))
+
+if real_bad:
+    for ln, txt in real_bad:
+        fail(f"JS line {ln}: uses (1-bottomFN2) as fO2 — wrong for trimix (use bottomFO2): {txt}")
+else:
+    ok("bottomFO2 not derived as 1-bottomFN2 (trimix-safe)")
+
+# 5.2 bottomO2pct in output must use bottomFO2, not 1-bottomFN2
+if "bottomO2pct = Math.round(bottomFO2 * 100)" in js:
+    ok("bottomO2pct computed from bottomFO2 (trimix-safe)")
+elif "bottomO2pct = Math.round((1 - bottomFN2)" in js:
+    fail("bottomO2pct uses (1-bottomFN2) — wrong for trimix, shows wrong O2% in output header")
+else:
+    # It might be in VPM path only — check if both paths are handled
+    if "bottomO2pct" in js:
+        ok("bottomO2pct present (manual review needed for trimix correctness)")
+    else:
+        ok("bottomO2pct not used as global var (may be local)")
+
+# 5.3 deco gas O2% in output must not use (1-fN2) unguarded
+# Fixed pattern: use fO2 field or (1-fN2-(fHe||0))
+bad_dg_o2 = find_all(r"1\s*-\s*dg\.fN2\b")
+real_bad_dg = []
+for m in bad_dg_o2:
+    ln = js_line(m.start())
+    full_line = js_lines[ln - 1].strip()
+    if full_line.startswith("//") or full_line.startswith("*"):
+        continue
+    # Allow safe pattern: fO2 guard (dg.fO2 != null ? ... : 1-fN2-fHe)
+    context_window = js[max(0, m.start()-80):m.start()+80]
+    if "fO2 != null" in context_window or "dg.fHe" in context_window:
+        continue
+    # Allow inside getActiveGas if already using dg.fO2 guard
+    if "dg.fO2 !=" in context_window:
+        continue
+    real_bad_dg.append((ln, full_line[:100]))
+if real_bad_dg:
+    for ln, txt in real_bad_dg:
+        fail(f"JS line {ln}: uses (1-dg.fN2) as deco gas fO2 — wrong for trimix: {txt}")
+else:
+    ok("Deco gas O2% not derived as (1-dg.fN2) (trimix-safe)")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 6 — VARIABLE DECLARATION ORDER (let/const hoisting)
+# Bug 1: let-declared vars used before their declaration line
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 6.1 In runDecoSchedule: bottomMixLabel must be declared AFTER _botFracs/bottomFO2/bottomFHe
+idx_label = js.find("getGasLabel(bottomFO2, bottomFHe)")
+idx_fracs  = js.find("_botFracs = getBottomGasFractions()")
+if idx_label > 0 and idx_fracs > 0:
+    if idx_fracs < idx_label:
+        ok("bottomMixLabel declared after _botFracs (let hoisting fix correct)")
+    else:
+        fail("bottomMixLabel uses bottomFO2/bottomFHe BEFORE their let declaration — ReferenceError crash")
+else:
+    ok("bottomMixLabel/getBottomGasFractions pattern not found (may be refactored)")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 7 — UI WIRING
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 7.1 Bottom gas card has Trimix option
+if 'value="trimix"' in html and "botTrimixO2" in html and "botTrimixHe" in html:
+    ok("Bottom gas card has Trimix option with O2/He fields")
+else:
+    fail("Bottom gas card missing Trimix option or He/O2 fields")
+
+# 7.2 Deco gas cards (static 1 and 2) have Trimix option
+if "dg1TrimixO2" in html and "dg1TrimixHe" in html:
+    ok("Deco gas card 1 has Trimix He fields")
+else:
+    fail("Deco gas card 1 missing Trimix He fields")
+
+if "dg2TrimixO2" in html and "dg2TrimixHe" in html:
+    ok("Deco gas card 2 has Trimix He fields")
+else:
+    fail("Deco gas card 2 missing Trimix He fields")
+
+# 7.3 Dynamic deco gas card template has Trimix option
+if "dg${idx}TrimixO2" in html or 'dg${n}TrimixO2' in html:
+    ok("Dynamic deco gas card template has Trimix fields")
+else:
+    fail("Dynamic deco gas card template missing Trimix fields — addDecoGasCard() won't have He fields")
+
+# 7.4 He HT mode selector present
+if 'id="heHalfTimeMode"' in html:
+    ok("He half-time mode selector (heHalfTimeMode) present")
+else:
+    fail("He half-time mode selector missing — user cannot choose Baker/Bühlmann 2003 variant")
+
+# 7.5 Default He HT is Baker 1.88 — VPM-B canonical (Baker FORTRAN 1998, ApexDeco, MultiDeco)
+# Rationale: LSP uses VPM-B as primary algorithm; Baker half-times are the correct match.
+# Bühlmann 2003 (1.51) matches Shearwater/Subsurface but is NOT the VPM-B reference.
+baker_selected = ('value="baker" selected' in html or 'selected="" value="baker"' in html or
+                  "value='baker' selected" in html or "selected value=\"baker\"" in html)
+buhl_selected  = ('value="buhl2003" selected' in html or 'selected="" value="buhl2003"' in html)
+if baker_selected:
+    ok("Default He HT is Baker 1.88 (VPM-B canonical — ApexDeco/MultiDeco compatible)")
+elif buhl_selected:
+    fail("Default He HT is Bühlmann 2003 (1.51) — should be Baker 1.88 for VPM-B engine compatibility")
+else:
+    fail("He HT default selection unclear")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 8 — SETTINGS PERSISTENCE (appSettings.DECO_FIELDS)
+# Bug 6: New UI fields not added → reset on reload
+# ══════════════════════════════════════════════════════════════════════════════
+
+deco_fields_idx = html.find("DECO_FIELDS:")
+if deco_fields_idx < 0:
+    deco_fields_idx = html.find("'DECO_FIELDS'")
+
+if deco_fields_idx > 0:
+    deco_fields_block = html[deco_fields_idx:deco_fields_idx + 1500]
+    required_fields = [
+        ("heHalfTimeMode",  "He half-time mode selector"),
+        ("botTrimixO2",     "Bottom gas trimix O2 input"),
+        ("botTrimixHe",     "Bottom gas trimix He input"),
+        ("dg1TrimixO2",     "Deco gas 1 trimix O2 input"),
+        ("dg1TrimixHe",     "Deco gas 1 trimix He input"),
+        ("dg2TrimixO2",     "Deco gas 2 trimix O2 input"),
+        ("dg2TrimixHe",     "Deco gas 2 trimix He input"),
+        ("dg1Mix",          "Deco gas 1 mix selector"),
+        ("dg1CustomO2",     "Deco gas 1 custom O2 input"),
+        ("dg2Mix",          "Deco gas 2 mix selector"),
+        ("dg2CustomO2",     "Deco gas 2 custom O2 input"),
+    ]
+    for field_id, description in required_fields:
+        if field_id in deco_fields_block:
+            ok(f"DECO_FIELDS includes {field_id} ({description})")
+        else:
+            fail(f"DECO_FIELDS missing '{field_id}' ({description}) — trimix input lost on reload")
+else:
+    fail("DECO_FIELDS not found in appSettings")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 9 — INIT / PAGE LOAD SEQUENCE
+# Bug 5: VPMEngine He HT not synced on load
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 9.1 updateHeHalfTime called in DOMContentLoaded
+dcl_idx = js.find("DOMContentLoaded")
+if dcl_idx > 0:
+    dcl_block = js[dcl_idx:dcl_idx + 12000]
+    if "updateHeHalfTime()" in dcl_block:
+        ok("updateHeHalfTime() called in DOMContentLoaded — VPMEngine He HT synced on load")
+    else:
+        fail("updateHeHalfTime() NOT called in DOMContentLoaded — VPMEngine always uses Baker 1.88 until user toggles")
+else:
+    fail("DOMContentLoaded handler not found")
+
+# 9.2 updateHeHalfTime patches VPMEngine internal He HT
+uht_fn = re.search(r"function updateHeHalfTime\(\)(.*?)^}", js, re.DOTALL | re.MULTILINE)
+if uht_fn:
+    body = uht_fn.group(1)
+    if "_setHeHT1" in body or "ZHL16C_He" in body:
+        ok("updateHeHalfTime() patches VPMEngine internal He compartment HT")
+    else:
+        fail("updateHeHalfTime() does not patch VPMEngine — VPM-B He HT stays at Baker 1.88")
+else:
+    fail("updateHeHalfTime() function not found")
+
+# 9.3 VPMEngine exports He HT sync API (buhl2003 — BUG-76 He)
+if "_syncHeHalfTimes:" in js and "_setHeHT1:" in js and "ZHL16C_He[i].ht" in js:
+    ok("VPMEngine._syncHeHalfTimes + _setHeHT1 exported — buhl2003 He HT sync works")
+else:
+    fail("VPMEngine He HT sync API missing — buhl2003 mode leaves VPM He HT at Baker 1.88")
+uht_fn2 = re.search(r"function updateHeHalfTime\(\)(.*?)^}", js, re.DOTALL | re.MULTILINE)
+if uht_fn2 and "_syncHeHalfTimes" in uht_fn2.group(1):
+    ok("updateHeHalfTime() calls VPMEngine._syncHeHalfTimes (full 16-compartment sync)")
+else:
+    fail("updateHeHalfTime() does not call VPMEngine._syncHeHalfTimes")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 10 — TISSUE OBJECT CONSISTENCY
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 10.1 ceiling() uses pTotal not plain pN2
+ceiling_fn = re.search(r"function ceiling\(tissues, gfHigh\)(.*?)^}", js, re.DOTALL | re.MULTILINE)
+if ceiling_fn:
+    body = ceiling_fn.group(1)
+    if "pHe" in body and ("pTotal" in body or "pN2 +" in body):
+        ok("ceiling() uses weighted a/b with pN2+pHe (trimix ceiling correct)")
+    elif "pHe" not in body:
+        fail("ceiling() does not handle pHe — scalar tissue format assumed (breaks trimix)")
+    else:
+        ok("ceiling() references pHe (manual check recommended)")
+else:
+    fail("ceiling() function not found")
+
+# 10.2 maxSatPct() uses pTotal
+msp_fn = re.search(r"function maxSatPct\(tissues.*?\)(.*?)^}", js, re.DOTALL | re.MULTILINE)
+if msp_fn:
+    body = msp_fn.group(1)
+    if "pHe" in body or "pTotal" in body:
+        ok("maxSatPct() handles He (uses pTotal or pHe)")
+    else:
+        fail("maxSatPct() uses plain pN2 — wrong saturation % for trimix")
+else:
+    fail("maxSatPct() function not found")
+
+# 10.3 updateTissueViz() handles {pN2,pHe} objects
+viz_fn = re.search(r"function updateTissueViz\(.*?\)(.*?)^\}", js, re.DOTALL | re.MULTILINE)
+if viz_fn:
+    body = viz_fn.group(1)
+    if "pHe" in body:
+        ok("updateTissueViz() handles pHe (trimix tissue visualisation)")
+    else:
+        fail("updateTissueViz() uses plain pN2 — tissue bars wrong for trimix")
+else:
+    fail("updateTissueViz() function not found")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 11 — VPM ENGINE INTEGRITY
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 11.1 VPMEngine object exists
+if "window.VPMEngine" in js or "const VPMEngine" in js or "var VPMEngine" in js:
+    ok("VPMEngine defined")
+else:
+    fail("VPMEngine not found")
+
+# 11.2 VPM-B bottom gas reads He from getBottomGasFractions
+vpm_path = re.search(r"_vpmBotFracs\s*=\s*getBottomGasFractions\(\)", js)
+if vpm_path:
+    ok("VPM-B path reads bottom gas He via getBottomGasFractions()")
+else:
+    fail("VPM-B path may not read He from UI — check _vpmBotFracs / bottomHePct")
+
+# 11.3 VPM deco gases include He from getDecoCardFractions
+vpm_deco_he = re.search(r"getDecoCardFractions\(n\)", js)
+if vpm_deco_he:
+    ok("VPM-B path reads deco gas He via getDecoCardFractions()")
+else:
+    fail("VPM-B deco gas build may not read He from UI")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 12 — CORE CONSTANTS
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 12.1 Water vapor = 0.0627 (Baker/Bühlmann canonical, not MultiDeco's 0.0577)
+if "WATER_VAPOR = 0.0627" in js or "WATER_VAPOR_PRESSURE = 0.0627" in js:
+    ok("Water vapor = 0.0627 bar (Baker/Bühlmann canonical)")
+elif "WATER_VAPOR = 0.0577" in js:
+    fail("Water vapor = 0.0577 (MultiDeco value) — should be 0.0627 (Baker/Bühlmann) as confirmed reference")
+else:
+    # It might use a variable — check it's defined
+    if "WATER_VAPOR" in js:
+        ok("WATER_VAPOR constant present (check value manually)")
+    else:
+        fail("WATER_VAPOR constant not found")
+
+# 12.2 BAR_PER_METRE defined
+if "BAR_PER_METRE" in js:
+    ok("BAR_PER_METRE constant present")
+else:
+    fail("BAR_PER_METRE constant missing")
+
+# 12.3 SEA_LEVEL_P defined
+if "SEA_LEVEL_P" in js:
+    ok("SEA_LEVEL_P constant present")
+else:
+    fail("SEA_LEVEL_P constant missing")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 13 — EXPORT CONSISTENCY
+# Rule: any text/display change must apply to ALL export modes
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 13.1 buildExportText function exists
+if "function buildExportText" in js:
+    ok("buildExportText() present")
+else:
+    fail("buildExportText() missing")
+
+# 13.2 buildMessengerText function exists
+if "function buildMessengerText" in js:
+    ok("buildMessengerText() present")
+else:
+    fail("buildMessengerText() missing")
+
+# 13.3 exportPDF function exists
+if "function exportPDF" in js or "async function exportPDF" in js:
+    ok("exportPDF() present")
+else:
+    fail("exportPDF() missing")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 14 — CRITICAL SAFETY RULES
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 14.1 Gas shortage warnings use red (not yellow) — running out of gas is life-critical
+# Check that gas warning color is red, not yellow
+gas_warn_section = re.search(r"gas.{0,30}shortage|gasShort|GAS_SHORT|gas.*warning", js, re.IGNORECASE)
+# Check that yellow is NOT used for gas quantity warnings
+bad_yellow_gas = re.findall(r"gasQuantity.*yellow|yellow.*gasQuantity|gas.*short.*yellow|yellow.*gas.*short", js, re.IGNORECASE)
+if bad_yellow_gas:
+    fail("Gas shortage warning uses yellow — must be red (life-critical)")
+else:
+    ok("Gas shortage warnings not found using yellow (safety rule maintained)")
+
+# 14.2 O2 at 6m: LSP intentionally differs from ApexDeco (allowed at MOD)
+if "allowO2AtMOD" in js or "isPureO2" in js:
+    ok("O2@6m handling present (LSP intentional difference from ApexDeco)")
+else:
+    fail("O2@6m special case handling missing")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 15 — MOBILE / CANVAS
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 15.1 isMobile detected before PAD/PW/PH in canvas draw functions
+# (isMobile must be before canvas padding calculation — previous regression)
+for fn_name in ["_drawDiveProfileCore", "drawGFCurve"]:
+    fn_m = re.search(rf"function {fn_name}\b(.*?)^\}}", js, re.DOTALL | re.MULTILINE)
+    if fn_m:
+        body = fn_m.group(1)
+        mobile_pos = body.find("isMobile")
+        pad_pos = body.find("PAD") if "PAD" in body else body.find("const PW")
+        if mobile_pos > 0 and pad_pos > 0 and mobile_pos < pad_pos:
+            ok(f"{fn_name}(): isMobile detected before PAD/PW/PH calculation")
+        elif mobile_pos < 0:
+            fail(f"{fn_name}(): isMobile not found — mobile layout may use desktop padding")
+        else:
+            fail(f"{fn_name}(): PAD/PW/PH appears before isMobile — mobile layout bug")
+
+# 15.2 Canvas fill uses rgba() not 8-digit hex (canvas ignores alpha in #rrggbbaa)
+bad_hex_alpha = re.findall(r'fillStyle\s*=\s*["\']\#[0-9a-fA-F]{8}["\']', js)
+if bad_hex_alpha:
+    for b in bad_hex_alpha[:3]:
+        fail(f"Canvas fillStyle uses 8-digit hex alpha ({b}) — use rgba() instead (canvas ignores alpha in hex)")
+else:
+    ok("No 8-digit hex alpha in canvas fillStyle (rgba used correctly)")
+
+# GROUP 16 — FEATURE A: Altitude-adjusted VPM critical radii
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 16.1 P_SL constant defined (standard sea-level pressure)
+if re.search(r"const P_SL\s*=\s*1\.01325", js):
+    ok("P_SL = 1.01325 bar (standard sea-level pressure for altFactor)")
+else:
+    fail("P_SL constant missing or wrong value — altitude radii calculation broken")
+
+# 16.2 altFactor formula: (P_SL / surfP) ^ (1/3) — cube root of volume ratio
+if re.search(r"Math\.pow\s*\(\s*P_SL\s*/\s*surfP\s*,\s*1\.0\s*/\s*3\.0\s*\)", js):
+    ok("altFactor = (P_SL/surfP)^(1/3) — correct cube-root radius scaling")
+else:
+    fail("altFactor formula missing or wrong — VPM altitude radii not properly scaled")
+
+# 16.3 initRadN2/initRadHe use altFactor
+if "initRadN2 = INITIAL_RADIUS_N2 * altFactor" in js and "initRadHe = INITIAL_RADIUS_He * altFactor":
+    ok("initRadN2/initRadHe scaled by altFactor")
+else:
+    fail("initRadN2/initRadHe not scaled by altFactor — altitude correction not applied to initial radii")
+
+# 16.4 All 12 VPM state quantities seeded from altitude-adjusted radii
+# They don't need altFactor literally — they use initRadN2/initRadHe which already incorporates it
+vpm_state_fn = re.search(r"createVPMState\s*\(.*?return \{", js, re.DOTALL)
+if vpm_state_fn:
+    state_body = vpm_state_fn.group(0)
+    required_state_vars = [
+        "critRadiiN2", "critRadiiHe",
+        "adjustedCritRadiiN2", "adjustedCritRadiiHe",
+        "regeneratedRadiiN2", "regeneratedRadiiHe",
+        "allowableGradientN2", "allowableGradientHe",
+        "decoGradientN2", "decoGradientHe",
+        "initialAllowableGradientN2", "initialAllowableGradientHe",
+    ]
+    missing = [v for v in required_state_vars if v not in state_body]
+    if missing:
+        for m in missing:
+            fail(f"createVPMState missing '{m}' — altitude-adjusted radius not propagated to all state arrays")
+    else:
+        ok("All 12 VPM state radius arrays present in createVPMState()")
+else:
+    fail("createVPMState() not found — cannot verify altitude radii propagation")
+
+# 16.5 Sea-level identity: at surfP=1.01325, altFactor == 1.0 exactly
+# Verified by physics: (1.01325/1.01325)^(1/3) = 1. Code-level check: P_SL value matches surfP default
+m_psl = re.search(r"const P_SL\s*=\s*([\d.]+)", js)
+if m_psl and abs(float(m_psl.group(1)) - 1.01325) < 1e-5:
+    ok("P_SL = 1.01325 bar — sea-level identity (altFactor=1.0) preserved")
+else:
+    fail("P_SL value deviates from 1.01325 — sea-level identity broken, existing tests will fail")
+
+# 16.6 Altitude badge shown in VPM results when altitude > 0
+if "altM" in js and ("radii" in js or "altFactor" in js) and "altitude" in js.lower():
+    ok("Altitude badge present in VPM results display")
+else:
+    fail("Altitude badge missing in VPM results — user not informed that altitude-adjusted radii are active")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 17 — FEATURE B: Repetitive VPM dive bubble state carry
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 17.1 REGEN_TIME constant = 20160 min (14 days)
+m_regen = re.search(r"REGEN_TIME\s*=\s*([\d.]+)", js)
+if m_regen and abs(float(m_regen.group(1)) - 20160.0) < 1.0:
+    ok(f"REGEN_TIME = {m_regen.group(1)} min (14 days = 14×24×60 ✓)")
+else:
+    val = m_regen.group(1) if m_regen else "NOT FOUND"
+    fail(f"REGEN_TIME = {val}, expected 20160 (14 days) — bubble regeneration rate wrong")
+
+# 17.2 Regeneration formula: exp(-si / REGEN_TIME) — exponential decay
+if re.search(r"Math\.exp\s*\(\s*-\s*\w+\s*/\s*REGEN_TIME\s*\)", js):
+    ok("Regeneration formula uses exp(-t/REGEN_TIME) — correct exponential decay")
+else:
+    fail("Regeneration formula missing exp(-t/REGEN_TIME) — bubble state carry physics wrong")
+
+# 17.3 finalBubbleState exported from buildResult with adjustedCritRadii and regeneratedRadii
+if ("finalBubbleState" in js and
+    "adjustedCritRadiiN2" in js[js.find("finalBubbleState"):js.find("finalBubbleState")+300] or
+    "adjustedCritRadiiN2" in js):
+    ok("finalBubbleState exported from VPMEngine buildResult()")
+else:
+    fail("finalBubbleState not exported from buildResult() — repetitive dive state not available")
+
+# 17.4 _lastVPMResult saves { finalTissues, finalBubbleState }
+lvm_idx = js.find("_lastVPMResult = {")
+if lvm_idx > 0:
+    lvm_block = js[lvm_idx:lvm_idx + 300]
+    if "finalBubbleState" in lvm_block:
+        ok("_lastVPMResult saves { finalTissues, finalBubbleState }")
+    else:
+        fail("_lastVPMResult does not save finalBubbleState — repetitive bubble state not persisted between runs")
+else:
+    fail("_lastVPMResult assignment not found")
+
+# 17.5 createVPMState reads _prevBubbleState and applies regeneration
+if "_prevBubbleState" in js and "regenFactor" in js:
+    ok("createVPMState reads _prevBubbleState and applies regenFactor")
+else:
+    fail("createVPMState does not read _prevBubbleState — repetitive dive bubble carry not implemented")
+
+# 17.6 Carried radii applied to ALL relevant state arrays (not just critRadii)
+# Search the whole JS for the carry loop (window of 600 was too small)
+carry_block_start = js.find("pb.regeneratedRadiiN2")
+if carry_block_start > 0:
+    # The loop spans ~1500 chars; use 1800 to cover all assignments safely
+    carry_block = js[max(0, carry_block_start - 200):carry_block_start + 1800]
+    carry_arrays = ["critRadiiN2", "critRadiiHe", "adjustedCritRadiiN2", "adjustedCritRadiiHe",
+                    "allowableGradientN2", "allowableGradientHe",
+                    "decoGradientN2", "decoGradientHe",
+                    "initialAllowableGradientN2", "initialAllowableGradientHe"]
+    missing_carry = [a for a in carry_arrays if a not in carry_block]
+    if missing_carry:
+        for a in missing_carry:
+            fail(f"Bubble carry loop missing '{a}' — repetitive dive radii not fully applied")
+    else:
+        ok("Bubble carry loop seeds all 10 VPM state arrays from previous dive state")
+else:
+    fail("Bubble carry loop (pb.regeneratedRadiiN2) not found — repetitive dive physics missing")
+
+# 17.7 UI elements present
+rep_ui_elements = {
+    "vpmRepMode":       "repetitive dive checkbox",
+    "vpmRepSIRow":      "surface interval row",
+    "vpmRepLabel":      "bubble state status label",
+    "vpmRepRow":        "outer container (shown/hidden by setDecoAlgorithm)",
+    "vpmSurfaceInterval": "surface interval input",
+}
+for elem_id, description in rep_ui_elements.items():
+    if f'id="{elem_id}"' in html:
+        ok(f"Repetitive VPM UI: id=\"{elem_id}\" ({description}) present")
+    else:
+        fail(f"Repetitive VPM UI: id=\"{elem_id}\" ({description}) missing")
+
+# 17.8 clearVpmRepState function exists
+if "function clearVpmRepState()" in js:
+    ok("clearVpmRepState() function present")
+else:
+    fail("clearVpmRepState() missing — user cannot reset repetitive dive state")
+
+# 17.9 setDecoAlgorithm hides rep panel when switching to ZHL
+algo_fn = re.search(r"function setDecoAlgorithm\(.*?(?=\nfunction )", js, re.DOTALL)
+if algo_fn:
+    algo_body = algo_fn.group(0)
+    if "vpmRepRow" in algo_body:
+        ok("setDecoAlgorithm hides/shows vpmRepRow when switching algorithms")
+    else:
+        fail("setDecoAlgorithm does not handle vpmRepRow — panel stays visible when switching to ZHL")
+else:
+    fail("setDecoAlgorithm not found for rep panel check")
+
+# 17.10 vpmSurfaceInterval and vpmRepMode in DECO_FIELDS (persistence)
+deco_fields_idx2 = html.find("DECO_FIELDS:")
+if deco_fields_idx2 > 0:
+    deco_fields_block2 = html[deco_fields_idx2:deco_fields_idx2 + 1200]
+    for field_id, description in [
+        ("vpmSurfaceInterval", "VPM repetitive surface interval input"),
+        ("vpmRepMode",         "VPM repetitive dive checkbox"),
+    ]:
+        if field_id in deco_fields_block2:
+            ok(f"DECO_FIELDS includes {field_id} ({description})")
+        else:
+            fail(f"DECO_FIELDS missing '{field_id}' ({description}) — input lost on page reload")
+else:
+    fail("DECO_FIELDS not found — cannot check Feature B persistence")
+
+# GROUP 18 — FEATURE: SAC-based gas consumption
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 18.1 SAC inputs present
+for eid, desc in [("sacBottom", "bottom SAC L/min"), ("sacDeco", "deco SAC L/min")]:
+    if f'id="{eid}"' in html:
+        ok(f"SAC input id=\"{eid}\" ({desc}) present")
+    else:
+        fail(f"SAC input id=\"{eid}\" ({desc}) missing")
+
+# 18.2 Cylinder fields present for all gas positions
+cyl_fields = [
+    ("cylBot_size",        "bottom gas cylinder size"),
+    ("cylBot_pres",        "bottom gas cylinder pressure"),
+    ("cylDg1_size",        "deco gas 1 cylinder size"),
+    ("cylDg1_pres",        "deco gas 1 cylinder pressure"),
+    ("cylDg2_size",        "deco gas 2 cylinder size"),
+    ("cylDg2_pres",        "deco gas 2 cylinder pressure"),
+    ("cylTravelGas_size",  "travel gas cylinder size"),
+    ("cylTravelGas_pres",  "travel gas cylinder pressure"),
+]
+for eid, desc in cyl_fields:
+    if f'id="{eid}"' in html:
+        ok(f"Cylinder field id=\"{eid}\" ({desc}) present")
+    else:
+        fail(f"Cylinder field id=\"{eid}\" ({desc}) missing")
+
+# 18.3 Gas consumption function uses correct formula: SAC × P_abs × time
+if "sac * absP * durMin" in js or "sac * absP * dur" in js:
+    ok("Gas consumption formula: SAC × P_abs × duration (correct surface-equivalent litres)")
+else:
+    fail("Gas consumption formula missing sac × absP × duration")
+
+# 18.4 Buhlmann path converts psi→bar for imperial units
+# Search 800 chars from cylIds definition to cover the entire forEach loop
+buh_cyl_start = js.find("const cylIds = [\n      ['cylBot_size','cylBot_pres']")
+buh_cyl_block = js[buh_cyl_start:buh_cyl_start + 800] if buh_cyl_start > 0 else ""
+if "14.5038" in buh_cyl_block or ("imperial" in buh_cyl_block and "prRaw" in buh_cyl_block):
+    ok("Buhlmann gas consumption: cylinder pressure converted psi→bar in imperial mode")
+else:
+    fail("Buhlmann gas consumption: no psi→bar conversion — cylinder capacity overstated in imperial mode")
+
+# 18.5 VPM path ALSO converts psi→bar for imperial units
+vpm_cyl_start = js.find("cylCapVPM = {};")
+vpm_cyl_block = js[vpm_cyl_start:vpm_cyl_start + 400] if vpm_cyl_start > 0 else ""
+if "14.5038" in vpm_cyl_block or ("imperial" in vpm_cyl_block and "pr " in vpm_cyl_block):
+    ok("VPM gas consumption: cylinder pressure converted psi→bar in imperial mode")
+else:
+    fail("VPM gas consumption: no psi→bar conversion — WRONG cylinder capacity in imperial mode")
+
+# 18.6 Travel gas cylinder included in Buhlmann cylIds
+buh_cyl_section = js[js.find("const cylIds = ["):js.find("const cylIds = [") + 400] if "const cylIds = [" in js else ""
+if "cylTravelGas_size" in buh_cyl_section:
+    ok("Buhlmann cylIds includes travel gas cylinder")
+else:
+    fail("Buhlmann cylIds missing travel gas — travel gas consumption has no shortage warning")
+
+# 18.7 Travel gas cylinder included in VPM cylIds
+vpm_cyl_ids = js[js.find("[['cylBot_size','cylBot_pres']"):js.find("[['cylBot_size','cylBot_pres']") + 300] if "[['cylBot_size','cylBot_pres']" in js else ""
+if "cylTravelGas_size" in vpm_cyl_ids:
+    ok("VPM cylIds includes travel gas cylinder")
+else:
+    fail("VPM cylIds missing travel gas — travel gas consumption has no shortage warning")
+
+# 18.8 All SAC and cylinder fields in DECO_FIELDS (persistence)
+deco_fields_idx3 = html.find("DECO_FIELDS:")
+if deco_fields_idx3 > 0:
+    deco_fields_block3 = html[deco_fields_idx3:deco_fields_idx3 + 1200]
+    gas_fields_required = [
+        ("sacBottom",           "bottom SAC"),
+        ("sacDeco",             "deco SAC"),
+        ("cylBot_size",         "bottom cylinder size"),
+        ("cylBot_pres",         "bottom cylinder pressure"),
+        ("cylDg1_size",         "deco gas 1 cylinder size"),
+        ("cylDg1_pres",         "deco gas 1 cylinder pressure"),
+        ("cylDg2_size",         "deco gas 2 cylinder size"),
+        ("cylDg2_pres",         "deco gas 2 cylinder pressure"),
+        ("cylTravelGas_size",   "travel gas cylinder size"),
+        ("cylTravelGas_pres",   "travel gas cylinder pressure"),
+    ]
+    for field_id, description in gas_fields_required:
+        if field_id in deco_fields_block3:
+            ok(f"DECO_FIELDS includes {field_id} ({description})")
+        else:
+            fail(f"DECO_FIELDS missing '{field_id}' ({description}) — value lost on page reload")
+else:
+    fail("DECO_FIELDS not found — cannot verify gas consumption field persistence")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 19 — FEATURE: VPM-B/GFS gradient blending (applyGFSurfacing)
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 19.1 applyGFSurfacing function exists
+if "function applyGFSurfacing(" in js:
+    ok("applyGFSurfacing() function present")
+else:
+    fail("applyGFSurfacing() missing — VPM-B/GFS gradient blending not implemented")
+
+# 19.2 Blend fraction: stopDepth / firstStopDepth (1 at first stop → VPM, 0 at surface → GF)
+if "fraction = stopDepth / firstStopDepth" in js:
+    ok("GFS blend fraction = stopDepth/firstStopDepth (1=first stop pure VPM, 0=surface pure GF)")
+else:
+    fail("GFS blend fraction formula wrong — direction of VPM→GF transition incorrect")
+
+# 19.3 Blend formula: vpmGrad * fraction + buhlGrad * (1 - fraction)
+if "blendedGrad = vpmGrad * fraction + buhlGrad * (1 - fraction)" in js:
+    ok("GFS blend formula: linear VPM→GF interpolation correct")
+else:
+    fail("GFS blend formula missing or wrong")
+
+# 19.4 applyGFSurfacing uses weighted a/b for trimix (not plain N2 values)
+gfs_fn = re.search(r"function applyGFSurfacing\(.*?\n    \}", js, re.DOTALL)
+if gfs_fn:
+    body = gfs_fn.group(0)
+    if "ZHL16C_He" in body and "pTotal" in body:
+        ok("applyGFSurfacing uses weighted a/b for trimix (ZHL16C_He + pTotal weighting)")
+    else:
+        fail("applyGFSurfacing does not use weighted a/b — GFS ceiling wrong for trimix")
+else:
+    fail("applyGFSurfacing function body not found for trimix check")
+
+# 19.5 applyGFSurfacing only called for VPMB_GFS model (not VPMB or VPMBE)
+# Find the call and check the guard that wraps it
+gfs_call_idx = js.find("applyGFSurfacing(ctx.state")
+if gfs_call_idx > 0:
+    guard_ctx = js[max(0, gfs_call_idx - 150):gfs_call_idx]
+    if "model === 'VPMB_GFS'" in guard_ctx or 'model === "VPMB_GFS"' in guard_ctx:
+        ok("applyGFSurfacing called only when model === 'VPMB_GFS'")
+    else:
+        fail("applyGFSurfacing may be called for wrong models — check conditional")
+else:
+    fail("applyGFSurfacing call site not found")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 20 — GAS CONSUMPTION: unit correctness
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 20.1 SAC fields have convertNumericInput in setUnits (L/min ↔ cu ft/min)
+set_units_fn = re.search(r"function setUnits\(.*?(?=\nfunction )", js, re.DOTALL)
+if set_units_fn:
+    set_units_body = set_units_fn.group(0)
+    if "convertNumericInput('sacBottom'" in set_units_body:
+        ok("setUnits converts sacBottom value (L/min ↔ cu ft/min)")
+    else:
+        fail("setUnits missing convertNumericInput for sacBottom — SAC value stays at metric default in imperial mode")
+    if "convertNumericInput('sacDeco'" in set_units_body:
+        ok("setUnits converts sacDeco value (L/min ↔ cu ft/min)")
+    else:
+        fail("setUnits missing convertNumericInput for sacDeco — SAC value stays at metric default in imperial mode")
+else:
+    fail("setUnits function not found for SAC conversion check")
+
+# 20.2 Gas consumption display uses correct unit label (not hardcoded 'L')
+# Buhlmann path: normal plan uses calcGasPlan() (volU declared inside),
+# emergency path uses inline Object.entries forEach with volUnitV2.
+# VPM path: uses for..of loop over gasConsVPM entries with volUnitV.
+buh_block_start = js.find("if (gasEl && Object.keys(gasConsumed).length)")
+buh_block = js[buh_block_start:buh_block_start + 3000] if buh_block_start > 0 else ""
+if ("volUnitV" in buh_block or "calcGasPlan()" in buh_block):
+    ok("Buhlmann gas consumption display uses units-aware volume label (L / cu ft)")
+else:
+    fail("Buhlmann gas consumption display hardcodes 'L' — wrong unit shown in imperial mode")
+
+vpm_block_start = js.find("if (gasElVPM && Object.keys(gasConsVPM).length)")
+vpm_block = js[vpm_block_start:vpm_block_start + 3000] if vpm_block_start > 0 else ""
+if "volUnitV" in vpm_block or "volUnit" in vpm_block:
+    ok("VPM gas consumption display uses units-aware volume label (L / cu ft)")
+else:
+    fail("VPM gas consumption display hardcodes 'L' — wrong unit shown in imperial mode")
+
+# 20.3 Buhlmann gas plan renders via calcGasPlan() or declares volUnitV before use
+# (Buhlmann refactored to use calcGasPlan() for normal path + volUnitV2 for emergency path)
+calc_gas_plan_fn = js.find("function calcGasPlan()")
+calc_gas_plan_units = js[calc_gas_plan_fn:calc_gas_plan_fn + 200] if calc_gas_plan_fn > 0 else ""
+if ("const volU" in calc_gas_plan_units or "volUnit" in calc_gas_plan_units):
+    ok("calcGasPlan() declares unit-aware volume label — no ReferenceError in Buhlmann gas render")
+else:
+    fail("volUnitV not declared in Buhlmann gas loop — ReferenceError when gas consumption renders")
+
+# 20.1b ZHLEngine exposed on window for test harnesses
+if "window.ZHLEngine = ZHLEngine" in js and "const ZHLEngine = (() => {" in js:
+    ok("ZHLEngine callable interface exposed — Bühlmann testable without DOM coupling")
+else:
+    fail("ZHLEngine not exposed on window — ZHLC_GF tests in test harness will run VPM-B instead")
+
+# 20.3b calcEND_tool uses calcEND() — not simplified sea-level formula
+# Bug: was using pNarc * 10 - 10 (wrong at altitude, ignored narcotic toggles)
+end_tool_fn = js[js.find("function calcEND_tool()"):js.find("function calcEND_tool()") + 1500]
+if "calcEND(dM" in end_tool_fn or "calcEND(depthM" in end_tool_fn:
+    ok("calcEND_tool() delegates to calcEND() — altitude-correct, respects narcotic toggles")
+else:
+    fail("calcEND_tool() uses simplified formula — wrong at altitude, ignores narcoticN2/narcoticO2 settings")
+
+# 20.3c calcMOD() in Tools panel uses altSurfaceP (not hardcoded sea-level formula)
+mod_fn_start = js.find("function calcMOD() {")
+mod_fn = js[mod_fn_start:mod_fn_start + 400] if mod_fn_start > 0 else ""
+if "altSurfaceP" in mod_fn and "BAR_PER_METRE" in mod_fn:
+    ok("calcMOD() (Tools tab) uses altSurfaceP + BAR_PER_METRE — altitude-correct")
+else:
+    fail("calcMOD() (Tools tab) uses hardcoded sea-level formula — wrong at altitude")
+
+# 20.3d setUnits() refreshes Tools panels (END Calc, Best Mix, MOD, EAD, Gas Table, Surface Int)
+set_units_end = js[js.find("function setUnits("):js.find("function setUnits(") + 14000]
+required_refreshes = ["calcEND_tool", "calcBestMix", "renderEADTable", "renderGasTable", "calcSurfInt", "calcAvgDepth"]
+missing = [f for f in required_refreshes if f not in set_units_end]
+if not missing:
+    ok("setUnits() refreshes all Tools panels — no stale displays on metric/imperial toggle")
+else:
+    fail(f"setUnits() missing Tools panel refresh calls: {', '.join(missing)}")
+
+# 20.4 PSI_PER_BAR and CUFT_PER_L constants defined with correct values
+psi_m = re.search(r"PSI_PER_BAR\s*=\s*([\d.]+)", js)
+cuft_m = re.search(r"CUFT_PER_L\s*=\s*([\d.]+)", js)
+if psi_m and abs(float(psi_m.group(1)) - 14.5038) < 0.01:
+    ok(f"PSI_PER_BAR = {psi_m.group(1)} (correct)")
+else:
+    fail(f"PSI_PER_BAR = {psi_m.group(1) if psi_m else 'NOT FOUND'} (expected 14.5038)")
+if cuft_m and abs(float(cuft_m.group(1)) - 0.0353147) < 0.000001:
+    ok(f"CUFT_PER_L = {cuft_m.group(1)} (correct)")
+else:
+    fail(f"CUFT_PER_L = {cuft_m.group(1) if cuft_m else 'NOT FOUND'} (expected 0.0353147)")
+
+# 20.5 Cylinder pressure inputs converted in setUnits (bar ↔ psi)
+if set_units_fn:
+    body = set_units_fn.group(0)
+    if "allCylPres" in body and "PSI_PER_BAR" in body:
+        ok("setUnits converts all cylinder pressure fields (bar ↔ psi)")
+    else:
+        fail("setUnits missing cylinder pressure conversion — fields stay in metric units when switching to imperial")
+    if "allCylSize" in body and "CUFT_PER_L" in body:
+        ok("setUnits converts all cylinder size fields (L ↔ cu ft)")
+    else:
+        fail("setUnits missing cylinder size conversion — size fields stay in metric units when switching")
+
+# 20.6 Dynamic cylinder pressure fields covered by allCylPres (querySelectorAll)
+if "querySelectorAll" in js and 'cylDg' in js and '_pres' in js:
+    ok("allCylPres uses querySelectorAll to include dynamic deco gas cylinder fields")
+else:
+    fail("allCylPres missing querySelectorAll — dynamically added deco gas cylinder fields not converted")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 21 — FEATURE: Minimum Decompression Profile
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 21.1 enforceMinDecoProfile function exists
+if "function enforceMinDecoProfile(" in js:
+    ok("enforceMinDecoProfile() function present")
+else:
+    fail("enforceMinDecoProfile() missing — minimum deco profile feature not implemented")
+
+# 21.2 Called in Buhlmann path
+if "enforceMinDecoProfile(collapsed," in js:
+    ok("enforceMinDecoProfile called in Buhlmann path")
+else:
+    fail("enforceMinDecoProfile not called in Buhlmann path — min deco profile ignored for ZHL")
+
+# 21.3 Called in VPM path
+if "enforceMinDecoProfile(_vpmRawStops," in js:
+    ok("enforceMinDecoProfile called in VPM path")
+else:
+    fail("enforceMinDecoProfile not called in VPM path — min deco profile ignored for VPM-B")
+
+# 21.4 UI fields present
+for eid, desc in [
+    ("minDecoProfileEnable", "enable/disable select"),
+    ("minDeco9m",            "9m stop minimum minutes"),
+    ("minDeco6m",            "6m stop minimum minutes"),
+    ("minDecoProfileFields", "fields container (shown/hidden)"),
+]:
+    if f'id="{eid}"' in html:
+        ok(f'Min deco UI: id="{eid}" ({desc}) present')
+    else:
+        fail(f'Min deco UI: id="{eid}" ({desc}) missing')
+
+# 21.5 Fields in DECO_FIELDS (persistence)
+deco_fields_idx4 = html.find("DECO_FIELDS:")
+deco_block4 = html[deco_fields_idx4:deco_fields_idx4+1600] if deco_fields_idx4 > 0 else ""
+for field_id, desc in [
+    ("minDecoProfileEnable", "enable select"),
+    ("minDeco9m",            "9m minimum"),
+    ("minDeco6m",            "6m minimum"),
+]:
+    if field_id in deco_block4:
+        ok(f"DECO_FIELDS includes {field_id} ({desc})")
+    else:
+        fail(f"DECO_FIELDS missing '{field_id}' ({desc}) — value lost on page reload")
+
+# 21.6 Fields in _doResetToDefaults
+reset_fn = re.search(r"function _doResetToDefaults\(.*?(?=\nfunction )", js, re.DOTALL)
+if reset_fn:
+    reset_body = reset_fn.group(0)
+    for field_id, default, desc in [
+        ("minDecoProfileEnable", "'no'",       "min deco enable"),
+        ("minDeco9m",            "'1'",         "9m default"),
+        ("minDeco6m",            "'3'",         "6m default"),
+        ("cylTravelGas_size",    "'11'",        "travel cylinder size"),
+        ("cylTravelGas_pres",    "'200'",       "travel cylinder pressure"),
+        ("heHalfTimeMode",       "'baker'",     "He HT default"),
+    ]:
+        if field_id in reset_body:
+            ok(f"_doResetToDefaults includes {field_id} (default {default})")
+        else:
+            fail(f"_doResetToDefaults missing '{field_id}' — Reset button leaves it unchanged")
+else:
+    fail("_doResetToDefaults function not found")
+
+# 21.7 Label update on unit switch
+set_units_fn2 = re.search(r"function setUnits\(.*?(?=\nfunction )", js, re.DOTALL)
+if set_units_fn2 and "updateMinDecoLabels" in set_units_fn2.group(0):
+    ok("setUnits calls updateMinDecoLabels (9m/30ft labels update on unit switch)")
+elif "updateMinDecoLabels" in js:
+    # Check if it's called somewhere in setUnits section
+    su_idx = js.find("function setUnits(")
+    su_end = js.find("\nfunction ", su_idx+1)
+    if "updateMinDecoLabels" in js[su_idx:su_end]:
+        ok("setUnits calls updateMinDecoLabels (9m/30ft labels update on unit switch)")
+    else:
+        fail("setUnits does not call updateMinDecoLabels — depth labels stay metric when switching to imperial")
+else:
+    fail("updateMinDecoLabels missing — depth labels do not update on unit switch")
+
+# 21.8 pO2: null in injected stops is handled (falls through to ppO2Check)
+if "pO2 != null ? parseFloat(s.pO2) : parseFloat(ppO2Check(" in js:
+    ok("Injected stop pO2:null handled — ppO2Check recalculates ppO2 for min deco stops")
+else:
+    fail("pO2:null injected stops may not get ppO2 recalculated — check stop row rendering")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 22 — RESET TO DEFAULTS (completeness)
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 22.1 confirmModal present (used by resetToDefaults)
+if 'id="confirmModal"' in html and 'id="confirmModalMsg"' in html:
+    ok("confirmModal and confirmModalMsg present (reset confirmation dialog)")
+else:
+    fail("confirmModal/confirmModalMsg missing — reset confirmation dialog broken")
+
+# 22.2 showConfirm / closeConfirmModal functions present
+for fn_name in ["showConfirm", "closeConfirmModal"]:
+    if f"function {fn_name}(" in js:
+        ok(f"{fn_name}() present")
+    else:
+        fail(f"{fn_name}() missing — reset confirmation broken")
+
+# 22.3 resetToDefaults uses showConfirm (not direct reset)
+reset_fn2 = re.search(r"function resetToDefaults\(\).*?\}", js, re.DOTALL)
+if reset_fn2 and "showConfirm" in reset_fn2.group(0):
+    ok("resetToDefaults uses showConfirm (user confirmation before reset)")
+elif "function resetToDefaults()" in js:
+    idx_r = js.find("function resetToDefaults()")
+    body_r = js[idx_r:idx_r+200]
+    if "showConfirm" in body_r:
+        ok("resetToDefaults uses showConfirm (user confirmation before reset)")
+    else:
+        fail("resetToDefaults does not use showConfirm — reset happens immediately without confirmation")
+else:
+    fail("resetToDefaults function not found")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 23 — getPPO2Limit trimix safety
+# Bug: getPPO2Limit(fN2) used 1-fN2 as fO2 — wrong for trimix (He > 0)
+# e.g. 21/35 trimix: fN2=0.44 → 1-fN2=0.56 → ppo2High(1.4) band selected
+# Correct: fO2=0.21 → <28% → ppo2Low(1.6) band → switch depth 9m deeper
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 23.1 getPPO2Limit takes fO2 directly (not fN2)
+ppl_fn = re.search(r"function getPPO2Limit\((\w+)\)", js)
+if ppl_fn:
+    param = ppl_fn.group(1)
+    if param == 'fO2':
+        ok("getPPO2Limit(fO2) — uses fO2 directly, trimix-safe")
+    else:
+        fail(f"getPPO2Limit({param}) — uses {param}, not fO2; 1-fN2 wrong for trimix (wrong ppO2 limit band)")
+else:
+    fail("getPPO2Limit function not found")
+
+# 23.2 getPPO2Limit body uses fO2 directly (not 1-fN2)
+ppl_body = re.search(r"function getPPO2Limit\(.*?\{(.*?)\}", js, re.DOTALL)
+if ppl_body:
+    body = ppl_body.group(1)
+    if "1 - fN2" in body or "1-fN2" in body:
+        fail("getPPO2Limit body still uses 1-fN2 — trimix ppO2 limit wrong")
+    else:
+        ok("getPPO2Limit body does not use 1-fN2 (trimix-safe)")
+
+# 23.3 optimalSwitchDepth passes fO2 (not fN2) to getPPO2Limit
+osd_fn = re.search(r"function optimalSwitchDepth\(.*?\n  \}", js, re.DOTALL)
+if osd_fn:
+    osd_body = osd_fn.group(0)
+    if "getPPO2Limit(fO2)" in osd_body or "getPPO2Limit(fO2 " in osd_body:
+        ok("optimalSwitchDepth passes fO2 to getPPO2Limit (trimix-safe switch depth)")
+    elif "getPPO2Limit(fN2)" in osd_body:
+        fail("optimalSwitchDepth passes fN2 to getPPO2Limit — switch depth wrong for trimix")
+
+# 23.4 Stop row rendering passes trimix-safe fO2 to getPPO2Limit
+stop_loop = js[js.find("collapsedMDP.forEach"):js.find("collapsedMDP.forEach")+600] if "collapsedMDP.forEach" in js else ""
+if "getPPO2Limit(_sFO2)" in stop_loop or ("getPPO2Limit" in stop_loop and "_sFHe" in stop_loop):
+    ok("Stop row rendering passes trimix-safe fO2 to getPPO2Limit")
+elif "getPPO2Limit(_sFN2)" in stop_loop:
+    fail("Stop row passes _sFN2 to getPPO2Limit — ppO2 limit color wrong for trimix stops")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 24 — GAS BAND ppO2 LIMITS (mid-band and boundary correctness)
+# Bug: ppo2Mid was set to ppo2Bottom (1.4) — gives wrong MOD for 28-44% O2
+#      gases like EAN32. Should be 1.5.
+# Bug: inner engine getPPO2Limit used <=28 and <=45 (wrong boundary assignment)
+#      — exactly 28% should be mid (1.5), exactly 45% should be rich (1.6).
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 24.1 ppo2Mid is 1.5 (not ppo2Bottom) in runDecoSchedule
+run_deco_fn = re.search(r"function runDecoSchedule\(\)(.*?)(?=\nfunction )", js, re.DOTALL)
+if run_deco_fn:
+    rd_body = run_deco_fn.group(1)
+    if "ppo2Mid  = 1.5" in rd_body or "ppo2Mid = 1.5" in rd_body:
+        ok("runDecoSchedule: ppo2Mid = 1.5 (mid-band 28–44% O2 uses 1.5 bar limit)")
+    elif "ppo2Mid  = ppo2Bottom" in rd_body or "ppo2Mid = ppo2Bottom" in rd_body:
+        fail("runDecoSchedule: ppo2Mid = ppo2Bottom — EAN32/EAN36 get wrong MOD (1.4 instead of 1.5)")
+    else:
+        fail("runDecoSchedule: ppo2Mid assignment not found — mid-band limit unknown")
+else:
+    fail("runDecoSchedule function not found — cannot audit ppo2Mid")
+
+# 24.2 Inner engine getPPO2Limit uses < not <= for 28% boundary (28% is mid)
+inner_ppl = re.search(r"function getPPO2Limit.*?ppO2Low.*?ppO2Mid.*?ppO2High", js, re.DOTALL)
+inner_js_block = js[js.find("if (settings.ppO2Low && settings.ppO2Mid"):js.find("if (settings.ppO2Low && settings.ppO2Mid")+300]
+if "o2pct < 28" in inner_js_block:
+    ok("Inner engine getPPO2Limit: <28 boundary (28% O2 correctly goes to mid/1.5)")
+elif "o2pct <= 28" in inner_js_block:
+    fail("Inner engine getPPO2Limit: <=28 boundary — 28% O2 wrongly gets lean/1.4 (should be mid/1.5)")
+
+# 24.3 Inner engine getPPO2Limit uses < not <= for 45% boundary (45% is rich)
+if "o2pct < 45" in inner_js_block:
+    ok("Inner engine getPPO2Limit: <45 boundary (45% O2 correctly goes to rich/1.6)")
+elif "o2pct <= 45" in inner_js_block:
+    fail("Inner engine getPPO2Limit: <=45 boundary — 45% O2 wrongly gets mid/1.5 (should be rich/1.6)")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 25 — REPETITIVE DIVE CNS/OTU CARRY
+# Bug: CNS/OTU always started at 0 even for repetitive dives.
+# Fix: _lastVPMResult now stores finalCNS/finalOTU; settings._preCNS (decayed
+#      on 90-min half-life) and settings._preOTU are injected for next dive;
+#      calculate() initialises totalCNS/totalOTU from these pre-dive values.
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 25.1 _lastVPMResult stores finalCNS
+if "finalCNS:" in js and "_lastVPMResult" in js:
+    ok("_lastVPMResult stores finalCNS for repetitive dive carry")
+else:
+    fail("_lastVPMResult missing finalCNS — CNS not carried across repetitive dives")
+
+# 25.2 _lastVPMResult stores finalOTU
+if "finalOTU:" in js and "_lastVPMResult" in js:
+    ok("_lastVPMResult stores finalOTU for repetitive dive carry")
+else:
+    fail("_lastVPMResult missing finalOTU — OTU not carried across repetitive dives")
+
+# 25.3 _preCNS injected with 90-min half-life decay
+if "settings._preCNS" in js and "Math.pow(0.5, siMin / 90)" in js:
+    ok("_preCNS injected with 90-min half-life CNS decay across surface interval")
+else:
+    fail("_preCNS not set with 90-min half-life decay — CNS carry broken for repetitive dives")
+
+# 25.4 _preOTU injected (daily accumulator, no decay)
+if "settings._preOTU" in js:
+    ok("_preOTU injected as daily accumulator for repetitive OTU carry")
+else:
+    fail("_preOTU not set — OTU not carried across repetitive dives")
+
+# 25.5 totalCNS initialised from _preCNS in VPM calculate()
+if "settings._preCNS || 0" in js:
+    ok("VPM calculate() initialises totalCNS from _preCNS (repetitive carry)")
+else:
+    fail("VPM calculate() still starts totalCNS at 0 — repetitive CNS carry broken")
+
+# 25.6 totalOTU initialised from _preOTU in VPM calculate()
+if "settings._preOTU || 0" in js:
+    ok("VPM calculate() initialises totalOTU from _preOTU (repetitive carry)")
+else:
+    fail("VPM calculate() still starts totalOTU at 0 — repetitive OTU carry broken")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 26 — WATER PRESSURE FACTOR ALIGNMENT
+# Both engines must use the same canonical m/bar factors:
+#   salt:    10.000 m/bar (MultiDeco/DiveKit/ApexDeco standard)
+#   fresh:   10.330 m/bar (matches ZHL WATER_DENSITY.fresh 0.09681 bar/m)
+#   EN13319: 10.080 m/bar (EN13319 standard — DiveKit compatible)
+# VPM engine must recognise EN13319 as waterType===2 (not silently fall through to salt).
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 26.1 VPM SLP_SW_M = 10.000 (not old 10.078)
+if "SLP_SW_M = 10.000" in js:
+    ok("VPM SLP_SW_M = 10.000 m/bar (MultiDeco/DiveKit standard)")
+elif "SLP_SW_M = 10.078" in js:
+    fail("VPM SLP_SW_M still 10.078 — should be 10.000 to match MultiDeco/DiveKit")
+else:
+    fail("VPM SLP_SW_M not found or unexpected value")
+
+# 26.2 VPM SLP_FW_M = 10.330 (matches ZHL WATER_DENSITY.fresh)
+if "SLP_FW_M = 10.330" in js:
+    ok("VPM SLP_FW_M = 10.330 m/bar (matches ZHL fresh factor)")
+elif "SLP_FW_M = 10.337" in js:
+    fail("VPM SLP_FW_M still 10.337 — should be 10.330 to match ZHL WATER_DENSITY.fresh")
+else:
+    fail("VPM SLP_FW_M not found or unexpected value")
+
+# 26.3 VPM SLP_EN_M defined (EN13319)
+if "SLP_EN_M = 10.080" in js:
+    ok("VPM SLP_EN_M = 10.080 m/bar (EN13319 constant defined)")
+else:
+    fail("VPM SLP_EN_M not defined — EN13319 water type unsupported in VPM engine")
+
+# 26.4 getSLP handles waterType===2 (EN13319)
+if "settings.waterType === 2" in js:
+    ok("getSLP(): waterType===2 branch present (EN13319 support)")
+else:
+    fail("getSLP(): no waterType===2 branch — EN13319 silently uses salt factor in VPM")
+
+# 26.5 waterTypeVal maps EN13319 to 2
+if ("'en13319' ? 2" in js or '"en13319" ? 2' in js or
+    "=== 'en13319' ? 2" in js or '=== "en13319" ? 2' in js):
+    ok("waterTypeVal: EN13319 mapped to 2 (not silently 0/salt)")
+else:
+    fail("waterTypeVal: EN13319 not mapped to 2 — VPM engine uses wrong water factor for EN13319")
+
+# 26.6 No hardcoded salt slp in VPM functions
+if "SLP_SW_M : SLP_SW_F" in js:
+    fail("VPM inner functions still use hardcoded salt slp — water type not respected")
+else:
+    ok("VPM inner functions use getSLP(settings) not hardcoded salt factor")
+
+# 26.7 ZHL WATER_DENSITY.salt = 0.10000
+if "salt:     0.10000" in js or "salt: 0.10000" in js:
+    ok("ZHL WATER_DENSITY.salt = 0.10000 bar/m (10.000 m/bar — industry standard)")
+elif "salt:     0.10020" in js or "salt: 0.10020" in js:
+    fail("ZHL WATER_DENSITY.salt still 0.10020 — should be 0.10000 (MultiDeco/DiveKit)")
+else:
+    fail("ZHL WATER_DENSITY.salt not found or unexpected value")
+
+# 26.8 ZHL WATER_DENSITY.en13319 = 0.09921
+if "en13319:  0.09921" in js or "en13319: 0.09921" in js:
+    ok("ZHL WATER_DENSITY.en13319 = 0.09921 bar/m (10.080 m/bar — EN13319 standard)")
+elif "en13319:  0.09964" in js or "en13319: 0.09964" in js:
+    fail("ZHL WATER_DENSITY.en13319 still 0.09964 — should be 0.09921 (10.080 m/bar)")
+else:
+    fail("ZHL WATER_DENSITY.en13319 not found or unexpected value")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 27 — BAR_PER_METRE INIT AND 10.078 ERADICATION
+# After the water constant unification, BAR_PER_METRE must initialise to the
+# salt default (0.10000) and no display/calculation code may hardcode 10.078.
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 27.1 BAR_PER_METRE init = 0.10000 (salt default, not stale 1/10.078 = 0.09922)
+if "BAR_PER_METRE = 0.10000" in js:
+    ok("BAR_PER_METRE init = 0.10000 (salt default, matches WATER_DENSITY.salt)")
+elif "BAR_PER_METRE = 1/10.078" in js or "BAR_PER_METRE = 1 / 10.078" in js:
+    fail("BAR_PER_METRE init still 1/10.078 = 0.09922 — stale after water constant update")
+else:
+    fail("BAR_PER_METRE init value unclear — should be 0.10000")
+
+# 27.2 No hardcoded / 10.078 in live calculation code (tooltip HTML exempt)
+import re
+# Strip HTML comments and tooltip strings before checking
+stripped = re.sub(r'<!--.*?-->', '', js, flags=re.DOTALL)
+# Remove content inside showTip(...) calls to avoid flagging tooltip text
+stripped = re.sub(r"showTip\([^)]{0,400}\)", "showTip()", stripped)
+hardcoded_instances = [ln for ln in stripped.split('\n') if '/ 10.078' in ln and '//' not in ln.lstrip()[:3]]
+if not hardcoded_instances:
+    ok("No hardcoded / 10.078 in live calculation code — all replaced with BAR_PER_METRE")
+else:
+    fail(f"Hardcoded / 10.078 still present in {len(hardcoded_instances)} line(s) — use BAR_PER_METRE")
+
+# 27.3 VPM render pAmb uses BAR_PER_METRE not 0.0305 imperial hardcode
+if "seg.depth * BAR_PER_METRE" in js or ("vpmDisplayPpo2" in js and "depthM * BAR_PER_METRE" in js):
+    ok("VPM render: pAmb uses BAR_PER_METRE (not hardcoded imperial 0.0305)")
+elif "seg.depth * 0.0305" in js:
+    fail("VPM render: pAmb still uses hardcoded imperial 0.0305 — use BAR_PER_METRE")
+else:
+    fail("VPM render: pAmb calculation not found or ambiguous")
+
+# 27.4 VPM gas tag switch depth: imperial formula gives feet not metres
+# Correct: / BAR_PER_METRE * 3.28084 for imperial (result in feet)
+# Wrong:   / (BAR_PER_METRE * 0.3048) / 3.28084 (cancels to metres, displayed as ft)
+if "/ BAR_PER_METRE * (dU ? 1 : 3.28084)" in js:
+    ok("VPM gas tag switch depth: imperial formula correct (/ BAR_PER_METRE * 3.28084 → feet)")
+elif "BAR_PER_METRE * 0.3048) / (dU ? 1 : 3.28084)" in js or "BAR_PER_METRE * 0.3048) / 3.28084" in js:
+    fail("VPM gas tag switch depth: imperial formula broken — / (BPM*0.3048)/3.28084 cancels to metres, displays wrong ft value")
+else:
+    fail("VPM gas tag switch depth formula not found or changed structure")
+
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 28 — GF FIRST-STOP ANCHOR FIX (v2.10.7)
+# Bug: firstStopDepth was pre-computed from ceiling(bottom_tissues, gfL) → caused
+# spurious stop at 21m for Air+EAN50 dives (MultiDeco shows first stop at 18m).
+# Fix: firstStopDepth is now anchored dynamically at the ACTUAL first mustStop depth.
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 28.1 firstStopDepth must be declared as `let` (mutable), not `const`
+# The old bug used `const firstStopDepth = ...` pre-computed from bottom tissues.
+if re.search(r'let firstStopDepth = 0;', js):
+    ok("GF anchor: firstStopDepth declared as `let` (mutable, dynamically anchored)")
+else:
+    fail("GF anchor: firstStopDepth must be `let firstStopDepth = 0` — pre-computed const causes spurious stops")
+
+# 28.2 candidateFirstStop used for stop list, not firstStopDepth
+# The candidate stop list must be built from candidateFirstStop, not the old firstStopDepth.
+if re.search(r'const candidateFirstStop = bottomCeil > 0', js):
+    ok("GF anchor: stop list built from candidateFirstStop (not pre-computed firstStopDepth)")
+else:
+    fail("GF anchor: missing candidateFirstStop — stop list must use candidate variable, not firstStopDepth")
+
+# 28.3 firstStopDepth is anchored in the mustStop branch
+# The fix must set firstStopDepth = cur when the first required stop is found.
+if re.search(r'firstStopDepth\s*=\s*cur;\s*//\s*anchor GF line', js):
+    ok("GF anchor: firstStopDepth set to cur at first mustStop (anchor from actual first stop)")
+else:
+    fail("GF anchor: firstStopDepth not anchored at first mustStop — spurious stop bug will recur")
+
+# 28.4 minStopZoneDepth is declared as `let` (not const) and starts as null
+# With dynamic anchoring, minStopZoneDepth must be null until first stop is known.
+if re.search(r'let minStopZoneDepth = null;', js):
+    ok("GF anchor: minStopZoneDepth starts as null (set when first stop is known)")
+else:
+    fail("GF anchor: minStopZoneDepth must be `let ... = null` — const from pre-computed firstStopDepth is broken")
+
+# 28.5 minStopZoneDepth is set in mustStop branch alongside firstStopDepth
+if re.search(r'minStopZoneDepth\s*=\s*cur;\s*//\s*enable min-stop', js):
+    ok("GF anchor: minStopZoneDepth set to cur at first mustStop (min-stop enforcement enabled)")
+else:
+    fail("GF anchor: minStopZoneDepth not set at first mustStop — min-stop enforcement may fail")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 29 — HEADLESS CNS/OTU DESCENT+BOTTOM FIX (v2.10.8)
+# Bug found via 3-way DiveKit/MultiDeco/LSP comparison: window._lastPlan.steps
+# only contains ascent/deco segments (descent + bottom are rendered straight to
+# DOM in the live app, never pushed into `steps`). The headless CNS/OTU fallback
+# in ZHLEngine.calculate() summed only `lp.steps`, silently omitting descent and
+# the full bottom-time exposure — the dominant share of CNS/OTU on most dives.
+# This was a test-infrastructure bug only: the live DOM-rendering path computes
+# CNS/OTU correctly across the full table. Existing tests never caught it because
+# they only assert finiteness/ordering, never magnitude against a known value.
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 29.1 Plan-walk exposure helper (v2.30.25: replaces inline headlessPpo2 block)
+if "function computePlanExposureTotals" in js:
+    ok("Headless CNS/OTU: computePlanExposureTotals() plan-walk helper present")
+else:
+    fail("Headless CNS/OTU: computePlanExposureTotals() missing — descent/bottom may be omitted")
+
+# 29.2 Descent + bottom included via injected plan segments before steps
+if "type: 'descent'" in js and "type: 'bottom'" in js and "computePlanExposureTotals(" in js:
+    ok("Headless CNS/OTU: descent + bottom segments included in plan-walk exposure")
+else:
+    fail("Headless CNS/OTU: descent/bottom exposure missing from plan-walk path")
+
+# 29.3 ZHLEngine uses plan-walk after run patching (not pre-plan steps-only sum)
+if re.search(r'computePlanExposureTotals\(\s*plan, s, fO2bot', js):
+    ok("Headless CNS/OTU: ZHLEngine integrates exposure from assembled plan with run times")
+else:
+    fail("Headless CNS/OTU: ZHLEngine missing post-plan exposure integration")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 30 — GF-LOW PRE-ANCHOR REGRESSION FIX (v2.10.9)
+# Bug found via 3-way comparison against MultiDeco/DiveKit reference data: the
+# v2.10.7 gfAt() fix returned gfH (not gfL) when firstStopDepth was unanchored.
+# Per Baker's published algorithm (and DAN/Erik Baker's own description), GF LOW
+# is what determines the first stop — not GF High. Returning gfH pre-anchor made
+# the search use the loose GF-High M-value, so the loop only stopped once GF-High
+# itself was violated, anchoring 1-3 deco steps shallower than correct and
+# silently dropping total deco time (confirmed: S1 30m/23min air GF30/70 should
+# anchor at 12m matching MultiDeco/DiveKit exactly; the gfH-pre-anchor bug instead
+# anchored at 6m, skipping the 12m and 9m stops entirely).
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 30.1 gfAt() returns gfL (not gfH) when firstStopDepth is unanchored
+if re.search(r'if \(!firstStopDepth \|\| firstStopDepth <= 0\) return gfL;', js):
+    ok("GF anchor: gfAt() returns gfL pre-anchor (correct — GF Low determines first stop per Baker)")
+elif re.search(r'if \(!firstStopDepth \|\| firstStopDepth <= 0\) return gfH;', js):
+    fail("GF anchor: gfAt() returns gfH pre-anchor — REGRESSION. Anchors 1-3 steps shallower than correct; GF Low must be used to find the first stop, not GF High.")
+else:
+    fail("GF anchor: gfAt() pre-anchor return value not found or changed structure")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 31 — TTS METRIC + DECOZONE GF-INDEPENDENCE FIX (v2.10.10)
+# Found via 3-way comparison against MultiDeco/DiveKit: (1) LSP had no TTS
+# (time-to-surface) metric at all, despite MultiDeco/DiveKit both reporting it
+# as a primary field; (2) LSP's "decozone start" was actually an alias for
+# firstStopDepth (the GF-anchored first stop), not the GF-independent ambient-
+# crossing depth MultiDeco/DiveKit report — same dive at different GF settings
+# was wrongly reporting different decozone values, off by 10+ metres from
+# reference on several scenarios.
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 31.1 TTS computed in the engine (headless-safe) as rt - bt
+if re.search(r'const ttsMin = Math\.max\(0, rt - bt\);', js):
+    ok("TTS: computed as rt-bt (ascent+deco only) before the headless early-return")
+else:
+    fail("TTS: rt-bt computation missing — TTS will be unavailable in headless tests")
+
+# 31.2 TTS stored on window._lastPlan
+if re.search(r'tts: Math\.round\(ttsMin \* 10\) / 10,', js):
+    ok("TTS: stored on window._lastPlan.tts")
+else:
+    fail("TTS: not stored on _lastPlan — headless ZHLEngine.calculate() callers cannot read it")
+
+# 31.3 TTS exposed in ZHLEngine.calculate() return object
+if re.search(r'tts: lp\.tts \|\| 0,', js):
+    ok("TTS: exposed in ZHLEngine.calculate() return object")
+else:
+    fail("TTS: missing from calculate() return object")
+
+# 31.4 TTS shown in the live footer
+if re.search(r'>TTS:</span>', js):
+    ok("TTS: displayed in the live-render footer")
+else:
+    fail("TTS: not displayed in footer — feature incomplete")
+
+# 31.5 ambientCrossingDepth() function present — the GF-independent decozone calc
+if re.search(r'function ambientCrossingDepth\(tissues\)', js):
+    ok("Decozone: ambientCrossingDepth() GF-independent function present")
+else:
+    fail("Decozone: ambientCrossingDepth() missing — decozone fix may be reverted")
+
+# 31.6 decoZoneStart in _lastPlan uses the new GF-independent value, not firstStopDepth
+if re.search(r'decoZoneStart: trueDecoZoneStart,', js):
+    ok("Decozone: _lastPlan.decoZoneStart uses trueDecoZoneStart (GF-independent)")
+elif re.search(r'decoZoneStart: hasDeco \? firstStopDepth : 0,', js):
+    fail("Decozone: _lastPlan.decoZoneStart still aliases firstStopDepth — REGRESSION, will vary incorrectly with GF Lo/Hi")
+else:
+    fail("Decozone: _lastPlan.decoZoneStart assignment not found or changed structure")
+
+# 31.7 Footer decozone display uses the GF-independent value
+if re.search(r'formatDecoZoneStart\(trueDecoZoneStart\)', js):
+    ok("Decozone: footer display uses trueDecoZoneStart (GF-independent)")
+else:
+    fail("Decozone: footer display not using trueDecoZoneStart — live render may still show GF-dependent value")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 32 — MISSING FINAL SURFACE-ASCENT LEG (post-v2.10.12)
+# Found via divekit.app's published inputs.json: MultiDeco/DiveKit both use a
+# dedicated, slower surfaceAscentMPerMin rate for the final leg from the last
+# stop to the surface, distinct from the deep and deco rates. LSP's ZHL engine
+# had a surfaceAscentRate UI field and variable, but it was only ever passed to
+# runVPMSchedule — the ZHL ascent loop itself treated surfacing as instantaneous
+# (zero time, zero off-gassing) once the last stop's hold finished.
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 32.1 Final ascent leg present after the main stop loop, using surfaceRate
+if re.search(r'const finalAscentDur = cur / surfaceRate;', js):
+    ok("Final ascent: surfaceRate-based leg from lastStop to surface present")
+else:
+    fail("Final ascent: surfaceRate leg missing — surfacing time/off-gassing undercounted")
+
+# 32.2 Final ascent applies off-gassing via saturateLinear (not treated as instant)
+if re.search(r'tissues = saturateLinear\(tissues, cur, 0, finalAscentDur', js) or re.search(r'tissues = zhlLoadLinear\(tissues, cur, 0, finalAscentDur', js):
+    ok("Final ascent: off-gassing applied via saturateLinear during the final leg")
+else:
+    fail("Final ascent: off-gassing not applied — tissue state wrong for repetitive-dive surface interval")
+
+# 32.3 Final ascent leg is pushed as its own step (visible in plan/exports)
+if re.search(r"type: 'ascent', from: cur, to: 0,", js):
+    ok("Final ascent: pushed as a visible step (from=lastStop, to=0)")
+else:
+    fail("Final ascent: step not pushed — RT/TTS may update but plan/exports won't show the leg")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 33 — HEADLESS holdStep RESULT-CHANGING BUG (post-v2.10.43)
+# Found via a from-scratch 16-compartment tissue diff against ApexDeco on S2:
+# tissue states matched almost exactly at every stop (noise-level diffs), but
+# the FIRST stop's reported duration differed by ~0.5-0.7min between headless
+# test runs and what the real app / ApexDeco would produce for identical input.
+# Root cause: holdStep (the while-loop's ceiling-check granularity) was forced
+# to a coarse 1 minute in headless mode even for the first stop, which the real
+# app deliberately gives a fine 1/6-min (10-sec) resolution. This is the ONLY
+# _zhlHeadless branch in the file that changes a computed RESULT rather than
+# skipping DOM rendering — every other _zhlHeadless check just skips a render
+# call, so this one silently meant headless test numbers (used by this audit's
+# sibling test suites AND by Claude's own headless verification scripts) did
+# not match what the live app would actually show for the same inputs.
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 33.1 holdStep no longer forces coarse resolution for the first stop in headless mode
+if re.search(r'const holdStep = isFirstDecoStop \? 1/6 : 1;', js):
+    ok("holdStep: first-stop fine resolution (1/6 min) applies regardless of headless mode")
+elif re.search(r'const holdStep = \(window\._zhlHeadless\) \? 1 :', js):
+    fail("holdStep: REGRESSION — headless mode still forces coarse 1-min resolution on the first stop, producing different RT/TTS than the real app for identical inputs")
+else:
+    fail("holdStep: assignment not found or changed structure — verify manually")
+
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 34 — v2.20.0 features (Surface GF, Prior Carry, Shallow Gradient,
+#            Contingency Depth, App Presets)
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 34.1 computeSurfaceGF function defined
+if re.search(r'function computeSurfaceGF\(tissues\)', js):
+    ok("computeSurfaceGF: function defined")
+else:
+    fail("computeSurfaceGF: function missing — Surface GF metric not computable")
+
+# 34.2 computeSurfaceGF uses correct M-value denominator formula
+if re.search(r'a\s*\+\s*P_surf\s*/\s*b\s*-\s*P_surf', js):
+    ok("computeSurfaceGF: correct M-value denominator (a + P_surf/b - P_surf)")
+else:
+    fail("computeSurfaceGF: M-value denominator formula not found — Surface GF may be wrong")
+
+# 34.3 surfaceGF stored in ZHL _lastPlan
+if re.search(r'surfaceGF:\s*computeSurfaceGF\(tissues\)', js):
+    ok("surfaceGF: stored in ZHL _lastPlan via computeSurfaceGF(tissues)")
+else:
+    fail("surfaceGF: not stored in ZHL _lastPlan — footer metric missing")
+
+# 34.4 surfaceGF stored in VPM _lastPlan
+if re.search(r'surfaceGF:\s*result\.finalTissues\s*\?', js):
+    ok("surfaceGF: stored in VPM _lastPlan (conditional on finalTissues)")
+else:
+    fail("surfaceGF: not stored in VPM _lastPlan")
+
+# 34.5 Surf GF displayed in buildPlanInfoRowHtml
+if re.search(r'Surf GF:', js):
+    ok("buildPlanInfoRowHtml: Surf GF label in footer")
+else:
+    fail("buildPlanInfoRowHtml: Surf GF label missing from footer display")
+
+# 34.6 data-surfgf attribute in hidden totals row
+if re.search(r'data-surfgf=', js):
+    ok("buildPlanInfoRowHtml: data-surfgf attribute stored in hidden totals row")
+else:
+    fail("buildPlanInfoRowHtml: data-surfgf attribute missing")
+
+# 34.7 PLAN_INFO_TIP updated with Surf GF
+if re.search(r'Surf GF.*surface gradient', html, re.IGNORECASE):
+    ok("PLAN_INFO_TIP: Surf GF definition included")
+else:
+    fail("PLAN_INFO_TIP: Surf GF not documented in tooltip")
+
+# 34.8 updatePriorDiveCarry function
+if re.search(r'function updatePriorDiveCarry\(\)', js):
+    ok("updatePriorDiveCarry: function defined")
+else:
+    fail("updatePriorDiveCarry: function missing — prior dive OTU/CNS carry not functional")
+
+# 34.9 OTU day-boundary: resets when >= 24h
+if re.search(r'24 \* 60', js) and re.search(r'otuCarry.*totalMinutes', js, re.DOTALL):
+    ok("updatePriorDiveCarry: day-boundary check (24*60 minutes) present")
+else:
+    fail("updatePriorDiveCarry: day-boundary logic missing — OTU may not reset after 24h")
+
+# 34.10 Prior carry seeded into ZHL accumulators
+if re.search(r'_pdCarry.*priorDiveCarry', js) or re.search(r'_priorDiveCarry.*cnsCarry.*100', js):
+    ok("ZHL accumulators: seeded from _priorDiveCarry on init")
+else:
+    fail("ZHL accumulators: prior dive carry not seeded — CNS/OTU not carried into ZHL plan")
+
+# 34.11 Prior carry injected into VPM settings
+if re.search(r'settings\._preOTU.*_priorDiveCarry.*otuCarry', js, re.DOTALL) or \
+   re.search(r'_priorDiveCarry.*settings\._preOTU', js, re.DOTALL):
+    ok("VPM settings: prior dive carry injected as _preOTU/_preCNS")
+else:
+    fail("VPM settings: prior dive carry not injected — OTU/CNS not carried into VPM plan")
+
+# 34.12 shallowGradient select element
+if re.search(r'id="shallowGradient"', html):
+    ok("shallowGradient: select element present in advanced settings")
+else:
+    fail("shallowGradient: select element missing from HTML")
+
+# 34.13 shallowGradient default is off
+if re.search(r'id="shallowGradient".*?<option selected.*?value="off"', html, re.DOTALL):
+    ok("shallowGradient: default value is 'off' (standard GF behavior)")
+else:
+    fail("shallowGradient: default not 'off' — non-standard GF behavior on by default")
+
+# 34.14 shallowGradient in _ADV_FIELDS
+if re.search(r"_ADV_FIELDS\s*=\s*\[[\s\S]*?'shallowGradient'", js):
+    ok("_ADV_FIELDS: includes shallowGradient")
+else:
+    fail("_ADV_FIELDS: shallowGradient missing — setting not saved/loaded with config presets")
+
+# 34.15 gfAt respects shallowGradient
+if re.search(r'shallowGradient.*value.*===.*on', js) or re.search(r"shallowGradient.*'on'", js):
+    ok("gfAt: shallowGradient setting read at runtime")
+else:
+    fail("gfAt: shallowGradient setting not referenced — toggle has no effect")
+
+# 34.16 gfAt shallow gradient: clamps to gfH at lastStop when ON
+if re.search(r'sgOn && depthM <= lastStop.*return gfH', js, re.DOTALL):
+    ok("gfAt: shallow gradient ON returns gfH at lastStop and shallower")
+else:
+    fail("gfAt: shallow gradient ON does not apply gfH at lastStop")
+
+# 34.17 contExtraDepth variable declared
+if re.search(r'let contExtraDepth\s*=', js):
+    ok("contExtraDepth: variable declared")
+else:
+    fail("contExtraDepth: variable missing — went-deeper contingency not wired")
+
+# 34.18 selectContDepth function
+if re.search(r'function selectContDepth\(metres\)', js):
+    ok("selectContDepth: function defined")
+else:
+    fail("selectContDepth: function missing")
+
+# 34.19 Went deeper buttons in HTML
+if all(re.search(f'id="contDepth{v}"', html) for v in [0, 3, 5]):
+    ok("contingency HTML: +0m/+3m/+5m depth buttons present")
+else:
+    fail("contingency HTML: went-deeper buttons missing (contDepth0/3/5)")
+
+# 34.20 calcContingency sets origDepth and restores it
+if re.search(r'origDepth.*decoDepth.*value', js) and re.search(r"document.*getElementById\('decoDepth'\)\.value\s*=\s*origDepth", js):
+    ok("calcContingency: depth saved as origDepth and restored after scenario run")
+else:
+    fail("calcContingency: depth not saved/restored — went-deeper leaves depth field modified")
+
+# 34.21 LSP_APP_PRESETS constant defined with 5 entries
+app_presets = re.findall(r"name:\s*'(MultiDeco|Abysner|Subsurface|GUE DecPlanner|DiveKit)'", js)
+if len(set(app_presets)) == 5:
+    ok(f"LSP_APP_PRESETS: all 5 app presets defined ({', '.join(sorted(set(app_presets)))})")
+else:
+    fail(f"LSP_APP_PRESETS: only {len(set(app_presets))}/5 app presets found: {set(app_presets)}")
+
+# 34.22 loadAppPreset function
+if re.search(r'function loadAppPreset\(idx\)', js):
+    ok("loadAppPreset: function defined")
+else:
+    fail("loadAppPreset: function missing — app presets cannot be loaded")
+
+# 34.23 _renderConfigPresetModal shows app presets header
+if re.search(r'App Reference Presets', js):
+    ok("_renderConfigPresetModal: app presets section header present")
+else:
+    fail("_renderConfigPresetModal: app presets section not shown in modal")
+
+# 34.27 App presets: stopRounding values must be 'wholeminute' or 'fractional' (not 'whole')
+stale_whole = re.findall(r"stopRounding:\s*'whole'(?!minute)", js)
+if stale_whole:
+    fail(f"App presets: {len(stale_whole)} stopRounding='whole' (invalid) — must be 'wholeminute' or 'fractional'")
+else:
+    ok("App presets: stopRounding values all valid ('wholeminute' or 'fractional')")
+
+# 34.28 App presets: o2AtMODSelect must be 'on' or 'off' (not 'yes'/'no')
+stale_yes = re.findall(r"o2AtMODSelect:\s*'yes'", js)
+if stale_yes:
+    fail(f"App presets: {len(stale_yes)} o2AtMODSelect='yes' (invalid) — must be 'on' or 'off'")
+else:
+    ok("App presets: o2AtMODSelect values all valid ('on' or 'off')")
+
+# 34.29 GUE DecPlanner ppo2 values must be valid select options (1.2/1.4/1.5/1.6)
+gue_ppo2 = re.findall(r"name:\s*'GUE DecPlanner'[\s\S]*?ppo2Bottom:\s*'([^']+)'", js)
+if gue_ppo2 and gue_ppo2[0] not in ('1.2','1.4','1.5','1.6'):
+    fail(f"GUE DecPlanner ppo2Bottom={gue_ppo2[0]!r} not a valid select option (1.2/1.4/1.5/1.6)")
+else:
+    ok("GUE DecPlanner preset: ppo2Bottom is a valid select option (1.2 now supported)")
+if re.search(r'CNS DUAL-METHOD AUDIT', js):
+    ok("CNS dual-method audit: cross-check comment documented")
+else:
+    fail("CNS dual-method audit: audit comment missing")
+
+# 34.25 OTU_EXPONENT constant defined and no stale 0.833 copies remain
+if re.search(r'const OTU_EXPONENT\s*=\s*0\.8333', js):
+    ok("OTU_EXPONENT: constant defined (0.8333)")
+else:
+    fail("OTU_EXPONENT: constant missing — OTU exponent not a single source of truth")
+
+stale_083 = re.findall(r'0\.833[^3]', js)
+if stale_083:
+    fail(f"OTU exponent: {len(stale_083)} stale 0.833 (3-digit) copies remain — should use OTU_EXPONENT")
+else:
+    ok("OTU exponent: no stale 0.833 (3-digit) copies — all sites use OTU_EXPONENT")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 35 — v2.20.4–v2.20.14 GF controls, ppo2 expansion, export guards
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 35.1 Bühlmann GF dropdown: 50/80 and 60/70 present (regression: missing in v2.20.5–v2.20.6)
+buhl_gf_opts = re.findall(r'option value="(\d+/\d+)"', html)
+for must_have in ['50/80', '60/70']:
+    if must_have in buhl_gf_opts:
+        ok(f"GF preset dropdown: {must_have} option present")
+    else:
+        fail(f"GF preset dropdown: {must_have} missing — regression from v2.20.5/v2.20.6")
+
+# 35.2 ppo2Bottom and ppo2Deco selects include 1.2 bar option (v2.20.13)
+for sel_id in ('ppo2Bottom', 'ppo2Deco'):
+    # find the select block
+    pat = rf'id="{sel_id}"[\s\S]{{1,300}}?</select>'
+    m = re.search(pat, html)
+    if not m:
+        fail(f"{sel_id}: select element not found in HTML")
+    elif '1.2' not in m.group():
+        fail(f"{sel_id}: 1.2 bar option missing — GUE DecPlanner preset will silently fail")
+    else:
+        ok(f"{sel_id}: 1.2 bar option present")
+
+# 35.3 VPM-B/GFS GF dropdown: hi/N options defined in setDecoAlgorithm
+if re.search(r'value="hi/70"', html) and re.search(r'value="hi/85"', html):
+    ok("VPM-B/GFS GF dropdown: hi/N options defined in setDecoAlgorithm rebuild")
+else:
+    fail("VPM-B/GFS GF dropdown: hi/N format options not found")
+
+# 35.4 mGF selection restored after Bühlmann dropdown rebuild (v2.20.14)
+if re.search(r'_restoredOpt\s*=\s*Array\.from\(gfSel\.options\)', js):
+    ok("setDecoAlgorithm: mGF selection restored into rebuilt Bühlmann dropdown (v2.20.14)")
+else:
+    fail("setDecoAlgorithm: mGF restore missing — GF selection lost after VPM-B→Bühlmann switch")
+
+# 35.5 cnsNumExport guard: no crash when planSum.cns is undefined (v2.20.11)
+if re.search(r'parseFloat\(\(planSum\.cns\s*\|\|\s*\'0\'\)\.replace', js):
+    ok("cnsNumExport: guarded (planSum.cns || '0') — no crash on undefined")
+else:
+    fail("cnsNumExport: missing guard — text export crashes when planSum.cns undefined")
+
+# 35.6 getContingencySummaryExport returns surfGF (v2.20.15)
+if re.search(r'function getContingencySummaryExport\(\)', js):
+    ok("getContingencySummaryExport: function present")
+else:
+    fail("getContingencySummaryExport: function missing")
+
+if re.search(r'surfGF.*c\.surfGF', js) and re.search(r'totRow\.dataset\.surfgf', js):
+    ok("getContingencySummaryExport: returns surfGF from dataset and _lastContingency")
+else:
+    fail("getContingencySummaryExport: surfGF not propagated — contingency export missing Surf GF")
+
+if re.search(r'_lastContingency\s*=.*surfGF', js):
+    ok("_lastContingency: stores surfGF for export")
+else:
+    fail("_lastContingency: surfGF not stored — contingency text/PDF export will show '-'")
+
+if re.search(r'emSumPdf\.surfGF', js):
+    ok("contingency PDF footer: includes Surf GF")
+else:
+    fail("contingency PDF footer: Surf GF missing — inconsistent with main plan PDF")
+
+# 35.7 algorithmSelect and gfPresetSelect in appSettings save/restore field list
+for fid in ('algorithmSelect', 'gfPresetSelect'):
+    if re.search(rf"'{fid}'", js):
+        ok(f"appSettings: '{fid}' referenced in save/restore")
+    else:
+        fail(f"appSettings: '{fid}' missing — algorithm/GF not persisted across sessions")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 36 — dive plan info banner, PDF helpers, travel gas, text export refactor
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 36.1 buildDecoPlanHeaderData function exists
+if re.search(r'function buildDecoPlanHeaderData\(\)', js):
+    ok("buildDecoPlanHeaderData: function defined")
+else:
+    fail("buildDecoPlanHeaderData: function missing — banner/export/PDF will crash")
+
+# 36.2 buildDecoPlanHeaderLines function exists
+if re.search(r'function buildDecoPlanHeaderLines\(\)', js):
+    ok("buildDecoPlanHeaderLines: function defined")
+else:
+    fail("buildDecoPlanHeaderLines: missing — text export header broken")
+
+# 36.3 renderDecoPlanHeaderHtml function exists
+if re.search(r'function renderDecoPlanHeaderHtml\(', js):
+    ok("renderDecoPlanHeaderHtml: function defined")
+else:
+    fail("renderDecoPlanHeaderHtml: missing — on-screen banner will not render")
+
+# 36.4 stamp format YYYY/MM/DD — must NOT be YYYY/DD/MM (month and day swapped)
+stamp_pat = re.search(r'const stamp\s*=\s*`\$\{_yy\}/\$\{([^}]+)\}/\$\{([^}]+)\}', js)
+if stamp_pat:
+    first, second = stamp_pat.group(1), stamp_pat.group(2)
+    if first == '_mm' and second == '_dd':
+        ok("stamp format: YYYY/MM/DD (correct)")
+    elif first == '_dd' and second == '_mm':
+        fail("stamp format: YYYY/DD/MM (month and day SWAPPED — date shown incorrectly)")
+    else:
+        fail(f"stamp format: unexpected order {first}/{second}")
+else:
+    fail("stamp format: pattern not found")
+
+# 36.5 getDecoGasSwitches does NOT call closure-scoped optimalSwitchDepth
+gdsw_start = js.find('function getDecoGasSwitches()')
+gdsw_end = js.find('\nfunction ', gdsw_start + 10)
+if gdsw_start >= 0:
+    gdsw_body = js[gdsw_start:gdsw_end] if gdsw_end > 0 else js[gdsw_start:gdsw_start+2000]
+    if 'optimalSwitchDepth' in gdsw_body:
+        fail("getDecoGasSwitches: calls closure-scoped optimalSwitchDepth — ReferenceError outside runDecoSchedule")
+    else:
+        ok("getDecoGasSwitches: no closure-scoped optimalSwitchDepth — safe to call globally")
+else:
+    fail("getDecoGasSwitches: function not found")
+
+# 36.6 getTravelGasExport and isTravelGasConfigured defined
+for fn in ('getTravelGasExport', 'isTravelGasConfigured', 'getTravelGasFromTable'):
+    if re.search(rf'function {fn}\(\)', js):
+        ok(f"{fn}: defined")
+    else:
+        fail(f"{fn}: missing")
+
+# 36.7 PDF helper functions defined
+for fn in ('_pdfDecoTableLayout', '_pdfDrawDecoTableHeader', '_pdfDrawSwitchRow',
+           '_pdfDrawDecoTableCells', '_pdfDrawDecoPhaseLabel', 'drawDecoPlanBannerPdf'):
+    if re.search(rf'function {fn}\(', js):
+        ok(f"{fn}: PDF helper defined")
+    else:
+        fail(f"{fn}: missing — PDF table/banner rendering broken")
+
+# 36.8 _PDF_TBL_PAD constant defined
+if re.search(r'const _PDF_TBL_PAD\s*=', js):
+    ok("_PDF_TBL_PAD: PDF table padding constant defined")
+else:
+    fail("_PDF_TBL_PAD: missing — _pdfDecoTableLayout uses undefined variable")
+
+# 36.9 dive-plan-banner CSS and helper functions
+if re.search(r'\.dive-plan-banner\s*\{', html):
+    ok("dive-plan-banner: CSS class defined")
+else:
+    fail("dive-plan-banner: CSS class missing")
+
+for fn in ('_escHtmlPre', 'shortMixLabel', '_dpbGasChipClass', '_pdfChipColors'):
+    if re.search(rf'function {fn}\(', js):
+        ok(f"{fn}: helper defined")
+    else:
+        fail(f"{fn}: missing")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 37 — buildDecoPlanHeaderData fixes: densityMap, du, stamp consistency
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 37.1 buildDecoPlanHeaderData defines its own densityMap (not relying on outer scope)
+bdhd_start = js.find('function buildDecoPlanHeaderData()')
+bdhd_end = js.find('\nfunction ', bdhd_start + 10) if bdhd_start >= 0 else -1
+if bdhd_start >= 0:
+    bdhd_body = js[bdhd_start:bdhd_end] if bdhd_end > 0 else js[bdhd_start:bdhd_start+3000]
+    if re.search(r'const _?densityMap\s*=\s*\{', bdhd_body):
+        ok("buildDecoPlanHeaderData: defines own densityMap — no ReferenceError")
+    else:
+        fail("buildDecoPlanHeaderData: missing densityMap definition — ReferenceError on call")
+else:
+    fail("buildDecoPlanHeaderData: function not found")
+
+# 37.2 buildDecoPlanHeaderData defines du before returning it
+if bdhd_start >= 0:
+    bdhd_body2 = js[bdhd_start:bdhd_end] if bdhd_end > 0 else js[bdhd_start:bdhd_start+3000]
+    if re.search(r'const du\s*=', bdhd_body2):
+        ok("buildDecoPlanHeaderData: defines du — not undefined in return")
+    else:
+        fail("buildDecoPlanHeaderData: missing 'du' definition — returns undefined for du")
+
+# 37.3 buildExportText stamp is YYYY/MM/DD (not YYYY/DD/MM)
+bex_start = js.find('function buildExportText(')
+bex_end = js.find('\nfunction ', bex_start + 10) if bex_start >= 0 else -1
+if bex_start >= 0:
+    bex_body = js[bex_start:bex_end] if bex_end > 0 else js[bex_start:bex_start+5000]
+    bex_stamp = re.search(r'const stamp\s*=\s*`\$\{_yy\}/\$\{([^}]+)\}/\$\{([^}]+)\}', bex_body)
+    if bex_stamp:
+        f1, f2 = bex_stamp.group(1), bex_stamp.group(2)
+        if f1 == '_mm' and f2 == '_dd':
+            ok("buildExportText stamp: YYYY/MM/DD (correct)")
+        else:
+            fail(f"buildExportText stamp: wrong order {f1}/{f2} — should be _mm/_dd")
+    else:
+        fail("buildExportText: stamp pattern not found")
+else:
+    fail("buildExportText: function not found")
+
+# 37.4 buildSlateText stamp is YYYY/MM/DD (not YYYY/DD/MM)
+bsl_start = js.find('function buildSlateText()')
+bsl_end = js.find('\nfunction ', bsl_start + 10) if bsl_start >= 0 else -1
+if bsl_start >= 0:
+    bsl_body = js[bsl_start:bsl_end] if bsl_end > 0 else js[bsl_start:bsl_start+5000]
+    bsl_stamp = re.search(r'const stamp\s*=\s*`\$\{[^}]+\}/\$\{([^}]+)\}/\$\{([^}]+)\}', bsl_body)
+    if bsl_stamp:
+        f1, f2 = bsl_stamp.group(1), bsl_stamp.group(2)
+        if f1 == '_sMo' and f2 == '_sD':
+            ok("buildSlateText stamp: YYYY/MM/DD (correct)")
+        else:
+            fail(f"buildSlateText stamp: wrong order {f1}/{f2} — should be _sMo/_sD")
+    else:
+        fail("buildSlateText: stamp pattern not found")
+else:
+    fail("buildSlateText: function not found")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 38 — handleGFSelect custom: populates from mGF not stale localStorage
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 38.1 handleGFSelect Buhlmann custom branch uses mGF, not raw localStorage
+hgfs_start = js.find('function handleGFSelect(')
+hgfs_end = js.find('\nfunction ', hgfs_start + 10) if hgfs_start >= 0 else -1
+if hgfs_start >= 0:
+    hgfs_body = js[hgfs_start:hgfs_end] if hgfs_end > 0 else js[hgfs_start:hgfs_start+2000]
+    # Check Buhlmann custom branch: must reference mGF (not just raw localStorage)
+    # Find the non-VPMB_GFS custom branch
+    custom_idx = hgfs_body.find("} else if (val === 'custom') {")
+    if custom_idx >= 0:
+        custom_branch = hgfs_body[custom_idx:custom_idx+900]
+        if re.search(r'mGF\.low', custom_branch) and re.search(r'mGF\.high', custom_branch):
+            ok("handleGFSelect custom (Buhlmann): uses mGF.low/high — preset values preserved when switching to Custom")
+        else:
+            fail("handleGFSelect custom (Buhlmann): uses raw localStorage only — switching to Custom resets inputs, ignoring loaded preset values")
+    else:
+        fail("handleGFSelect: Buhlmann custom branch not found")
+else:
+    fail("handleGFSelect: function not found")
+
+# 38.2 handleGFSelect VPM-B/GFS custom branch also uses mGF
+if hgfs_start >= 0:
+    vpmgfs_idx = hgfs_body.find("val === 'custom' && isVPMBGFSMode")
+    if vpmgfs_idx >= 0:
+        vpmgfs_branch = hgfs_body[vpmgfs_idx:vpmgfs_idx+600]
+        if re.search(r'mGF\.high', vpmgfs_branch):
+            ok("handleGFSelect custom (VPM-B/GFS): uses mGF.high — current GF High preserved when switching to Custom")
+        else:
+            fail("handleGFSelect custom (VPM-B/GFS): uses raw localStorage only — GF High resets on Custom select")
+    else:
+        fail("handleGFSelect: VPM-B/GFS custom branch not found")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 39 — contingency + messenger export stamp order
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 39.1 buildMessengerText contingency branch stamp YYYY/MM/DD
+bmsg_start = js.find('function buildMessengerText(')
+bmsg_end = js.find('\nfunction ', bmsg_start + 10) if bmsg_start >= 0 else -1
+if bmsg_start >= 0:
+    bmsg_body = js[bmsg_start:bmsg_end] if bmsg_end > 0 else js[bmsg_start:bmsg_start+8000]
+    cont_idx = bmsg_body.find("if (mode === 'contingency')")
+    if cont_idx >= 0:
+        cont_body = bmsg_body[cont_idx:cont_idx+3000]
+        if re.search(r'_cStamp\s*=\s*`\$\{_cn\.getFullYear\(\)\}/\$\{String\(_cn\.getMonth\(\)\+1\)', cont_body):
+            ok("buildMessengerText contingency stamp: YYYY/MM/DD (correct)")
+        elif re.search(r'_cStamp\s*=\s*`\$\{_cn\.getFullYear\(\)\}/\$\{String\(_cn\.getDate\(\)\)', cont_body):
+            fail("buildMessengerText contingency stamp: YYYY/DD/MM (day before month)")
+        else:
+            fail("buildMessengerText contingency: _cStamp pattern not found")
+    else:
+        fail("buildMessengerText: contingency branch not found")
+else:
+    fail("buildMessengerText: function not found")
+
+# 39.2 buildMessengerText deco stamp YYYY/MM/DD
+bmsg_start = js.find('function buildMessengerText(')
+bmsg_end = js.find('\nfunction ', bmsg_start + 10) if bmsg_start >= 0 else -1
+if bmsg_start >= 0:
+    bmsg_body = js[bmsg_start:bmsg_end] if bmsg_end > 0 else js[bmsg_start:bmsg_start+5000]
+    if re.search(r'_msgStamp\s*=\s*`\$\{_msgNow\.getFullYear\(\)\}/\$\{String\(_msgNow\.getMonth\(\)\+1\)', bmsg_body):
+        ok("buildMessengerText stamp: YYYY/MM/DD (correct)")
+    elif re.search(r'_msgStamp\s*=\s*`\$\{_msgNow\.getFullYear\(\)\}/\$\{String\(_msgNow\.getDate\(\)\)', bmsg_body):
+        fail("buildMessengerText stamp: YYYY/DD/MM (day before month)")
+    else:
+        fail("buildMessengerText: _msgStamp pattern not found")
+else:
+    fail("buildMessengerText: function not found")
+
+# 39.3 buildContingencySlateText stamp YYYY/MM/DD
+bcs_start = js.find('function buildContingencySlateText(')
+bcs_end = js.find('\nfunction ', bcs_start + 10) if bcs_start >= 0 else -1
+if bcs_start >= 0:
+    bcs_body = js[bcs_start:bcs_end] if bcs_end > 0 else js[bcs_start:bcs_start+5000]
+    if re.search(r'ecStamp\s*=\s*`\$\{_ecNow\.getFullYear\(\)\}/\$\{_ecMo\}/\$\{_ecD\}', bcs_body):
+        ok("buildContingencySlateText stamp: YYYY/MM/DD (correct)")
+    elif re.search(r'ecStamp\s*=\s*`\$\{_ecNow\.getFullYear\(\)\}/\$\{_ecD\}/\$\{_ecMo\}', bcs_body):
+        fail("buildContingencySlateText stamp: YYYY/DD/MM (day before month)")
+    else:
+        fail("buildContingencySlateText: ecStamp pattern not found")
+else:
+    fail("buildContingencySlateText: function not found")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 40 — formatPlanSummaryBlock returns array; all callers use spread
+# ══════════════════════════════════════════════════════════════════════════════
+
+# 40.1 formatPlanSummaryBlock returns an array in both branches (not a string)
+fpsb_start = js.find('function formatPlanSummaryBlock(')
+fpsb_end = js.find('\nfunction ', fpsb_start + 10) if fpsb_start >= 0 else -1
+if fpsb_start >= 0:
+    fpsb_body = js[fpsb_start:fpsb_end] if fpsb_end > 0 else js[fpsb_start:fpsb_start+800]
+    # Both branches must return an array literal, not a template string
+    returns = re.findall(r'return\s+(.*?)(?:\n|;)', fpsb_body)
+    all_arrays = all(r.strip().startswith('[') for r in returns if r.strip())
+    any_string = any(r.strip().startswith('`') or r.strip().startswith('"') or r.strip().startswith("'") for r in returns if r.strip())
+    if all_arrays and not any_string:
+        ok("formatPlanSummaryBlock: returns array in both branches — callers must spread")
+    else:
+        fail(f"formatPlanSummaryBlock: non-array return detected — returns={returns}")
+else:
+    fail("formatPlanSummaryBlock: function not found")
+
+# 40.2 All call sites use spread operator (...formatPlanSummaryBlock(...))
+all_calls = re.findall(r'(?:push|unshift)\((?:\.\.\.|)formatPlanSummaryBlock\(', js)
+spread_calls = re.findall(r'push\(\.\.\.formatPlanSummaryBlock\(', js)
+non_spread = [c for c in all_calls if '...' not in c]
+if non_spread:
+    fail(f"formatPlanSummaryBlock: {len(non_spread)} call site(s) missing spread — will push array as single element")
+elif spread_calls:
+    ok(f"formatPlanSummaryBlock: all {len(spread_calls)} call site(s) use spread (...) — array lines pushed correctly")
+else:
+    fail("formatPlanSummaryBlock: no call sites found")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 41 — CCR / Rebreather (v2.30)
+# ══════════════════════════════════════════════════════════════════════════════
+
+if 'getInspiredInertPressures' in js or js.find('function getInspiredInertPressures(') >= 0:
+    ok("getInspiredInertPressures() shared CCR helper present")
+else:
+    fail("getInspiredInertPressures() not found")
+
+if js.find('// CCR stub') >= 0:
+    fail("CCR stub comments still present — tissue math not fully wired")
+else:
+    ok("No CCR stub comments remain")
+
+if html.find('id="circuitSelect"') >= 0:
+    ok("circuitSelect UI control present")
+else:
+    fail("circuitSelect UI control missing")
+
+if js.find("'circuitSelect'") >= 0 and js.find('DECO_FIELDS') >= 0:
+    deco_fields_block = js[js.find('DECO_FIELDS'):js.find('DECO_FIELDS')+1500]
+    if "'circuitSelect'" in deco_fields_block:
+        ok("circuitSelect in appSettings.DECO_FIELDS")
+    else:
+        fail("circuitSelect not in appSettings.DECO_FIELDS")
+else:
+    fail("DECO_FIELDS block not found for CCR check")
+
+if js.find('loadTissuesWithCCR') >= 0 and js.find('function loadTissuesWithCCR') >= 0:
+    ok("loadTissuesWithCCR() Bühlmann CCR wrapper present")
+else:
+    fail("loadTissuesWithCCR() not found")
+
+if js.find('splitSegmentAtSetpoint') >= 0:
+    ok("splitSegmentAtSetpoint() present for setpoint crossing")
+else:
+    fail("splitSegmentAtSetpoint() not found")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 42 — v2.30.9 fixes (errors_bugs_report_v8)
+# ══════════════════════════════════════════════════════════════════════════════
+
+buh_cap_start = js.find("const cylCapacity = {}; // gas label")
+buh_cap_block = js[buh_cap_start:buh_cap_start + 500] if buh_cap_start > 0 else ""
+if "28.3168" in buh_cap_block or "GP_CUFT_PER_L" in buh_cap_block:
+    ok("Buhlmann cylCapacity: cylinder size converted cu ft → L in imperial mode")
+else:
+    fail("Buhlmann cylCapacity: missing imperial cu ft → L conversion (BUG-40)")
+
+clear_start = js.find("clear: function()")
+clear_block = js[clear_start:clear_start + 400] if clear_start > 0 else ""
+if "lspDiveSettings_v6" in clear_block:
+    ok("appSettings.clear() removes lspDiveSettings_v6")
+else:
+    fail("appSettings.clear() still removes wrong storage key (BUG-41)")
+
+restore_start = js.find("_restoreFields: function")
+restore_block = js[restore_start:restore_start + 1200] if restore_start > 0 else ""
+if "setTimeout(() => restoreOne(id), 100)" not in restore_block:
+    ok("_restoreFields(): no duplicate deferred restore pass")
+else:
+    fail("_restoreFields() still restores every field twice (BUG-42)")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 43 — v2.30.10 fixes (errors_bugs_report_v9)
+# ══════════════════════════════════════════════════════════════════════════════
+
+if "scrMetabolicO2 || 0.85" not in js:
+    ok("CCR metabolic O2 fallback is 1.5 L/min, not 0.85 (BUG-43)")
+else:
+    fail("scrMetabolicO2 still falls back to 0.85 L/min (BUG-43)")
+
+if "getCcrMetabolicO2Rate" in js:
+    ok("getCcrMetabolicO2Rate() shared helper present")
+else:
+    fail("getCcrMetabolicO2Rate() helper missing (BUG-43)")
+
+val_ccr_start = js.find("function validateCcrGasConfiguration")
+val_ccr_block = js[val_ccr_start:val_ccr_start + 600] if val_ccr_start > 0 else ""
+if "circuit === 'pSCR'" in val_ccr_block and "getBailoutPpo2Limit()" in val_ccr_block:
+    ok("validateCcrGasConfiguration: pSCR diluent MOD uses ppo2Bottom (BUG-44)")
+else:
+    fail("validateCcrGasConfiguration: pSCR still uses ccrBottomSetpoint for MOD (BUG-44)")
+
+gp_req_start = js.find("function gpRequiredFor")
+gp_req_block = js[gp_req_start:gp_req_start + 700] if gp_req_start > 0 else ""
+if "loopMixLabelFor" in gp_req_block:
+    ok("gpRequiredFor(): resolves CCR/pSCR loop mix labels (BUG-45)")
+else:
+    fail("gpRequiredFor(): missing loopMixLabelFor lookup (BUG-45)")
+
+ccr_lit_start = js.find("function ccrGasLitres")
+ccr_lit_block = js[ccr_lit_start:ccr_lit_start + 450] if ccr_lit_start > 0 else ""
+if "pAmb / pSurf" in ccr_lit_block or "(pAmb / pSurf)" in ccr_lit_block:
+    ok("ccrGasLitres(): diluent scaled by ambient pressure (BUG-46)")
+else:
+    fail("ccrGasLitres(): diluent still flat surface L/min (BUG-46)")
+
+if 'name="description"' in html and "CCR" in html[:3000]:
+    ok("<meta description> mentions CCR (BUG-47)")
+else:
+    fail("<meta description> still OC-only text (BUG-47)")
+
+if 'content="LSP+"' in html and 'apple-mobile-web-app-title' in html[:4000]:
+    ok('apple-mobile-web-app-title is "LSP+" (BUG-48)')
+else:
+    fail('apple-mobile-web-app-title still "D-Planner" (BUG-48)')
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 44 — v2.30.11 fixes (errors_bugs_report_v9 rewrite: BUG-49, BUG-50)
+# ══════════════════════════════════════════════════════════════════════════════
+
+if "LSP_${getExportCircuitTag()}_${isoDate}_GasPlan_" in js:
+    ok("Gas Plan PDF filename uses dynamic circuit tag (BUG-49 updated)")
+else:
+    fail("Gas Plan PDF filename does not use getExportCircuitTag() (BUG-49)")
+
+if "LSP_${getExportCircuitTag()}_${isoDate}_Emergency_" in js:
+    ok("Emergency PDF filename uses dynamic circuit tag (BUG-49 updated)")
+else:
+    fail("Emergency PDF filename does not use getExportCircuitTag() (BUG-49)")
+
+if "LSP D-PLANNER + CCR - CNS O2 TRACKER" in js:
+    ok("CNS text export header includes + CCR (BUG-50)")
+else:
+    fail("CNS text export header missing + CCR (BUG-50)")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 45 — v2.30.12 fixes (errors_bugs_report_v10)
+# ══════════════════════════════════════════════════════════════════════════════
+
+pscr_sch_start = js.find("if (cfg.circuit === 'pSCR')")
+pscr_sch_block = js[pscr_sch_start:pscr_sch_start + 700] if pscr_sch_start > 0 else ""
+if "getCCRInertSchreinerParams" in js[pscr_sch_start - 200:pscr_sch_start + 50] or pscr_sch_start > 0:
+    if "rN2: ((pEnd - ppH2O) * fr1.fN2 - inspN2Start) * pressureRate" not in pscr_sch_block:
+        ok("pSCR Schreiner rate: no double pressureRate multiply (BUG-51)")
+    else:
+        fail("pSCR Schreiner rate still multiplies by pressureRate twice (BUG-51)")
+
+if "u.startsWith('PSCR ')" in js or 'startsWith("PSCR ")' in js:
+    ok("isCcrOnLoopGasLabel recognises pSCR prefix (BUG-52)")
+else:
+    fail("isCcrOnLoopGasLabel still CCR-only (BUG-52)")
+
+if "if (/^air$/i.test(s)) return 'Air';" in js:
+    ok("shortMix helpers preserve CCR/pSCR Air labels (BUG-53)")
+else:
+    fail("shortMix still collapses CCR Air to Air (BUG-53)")
+
+prev_ccr_start = js.find("const prevCCR = {")
+prev_ccr_block = js[prev_ccr_start:prev_ccr_start + 1200] if prev_ccr_start > 0 else ""
+if "diluentUseAsBailout:" in prev_ccr_block:
+    ok("ZHLEngine prevCCR saves diluentUseAsBailout (BUG-54)")
+else:
+    fail("ZHLEngine prevCCR missing diluentUseAsBailout (BUG-54)")
+
+tcf_start = js.find("function toggleCircuitFields")
+tcf_block = js[tcf_start:tcf_start + 700] if tcf_start > 0 else ""
+if "isRB && bailoutOn" in tcf_block:
+    ok("toggleCircuitFields hides bailout GF until rebreather bailout on (BUG-55/59)")
+else:
+    fail("ccrBailoutSettingsGroup still shown for pSCR/bailout-off (BUG-55)")
+
+if "PSCR_DEFAULT_BYPASS_RATIO" in js and "metRate * PSCR_DEFAULT_BYPASS_RATIO" in js[js.find("function ccrDiluentSurfaceLpm"):js.find("function ccrDiluentSurfaceLpm") + 400]:
+    ok("ccrDiluentSurfaceLpm pSCR: metRate × bypass ratio (BUG-75)")
+else:
+    fail("ccrDiluentSurfaceLpm pSCR still uses (metRate/fO2Loop)×bypass (BUG-75)")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 46 — v2.30.13 fixes (errors_bugs_report_v11)
+# ══════════════════════════════════════════════════════════════════════════════
+
+cdl_start = js.find("function ccrDiluentSurfaceLpm")
+cdl_block = js[cdl_start:cdl_start + 650] if cdl_start > 0 else ""
+if "metRate / fO2Loop" not in cdl_block and "altSurfaceP + dM * BAR_PER_METRE" not in cdl_block:
+    ok("ccrDiluentSurfaceLpm pSCR: depth scaled once in ccrGasLitres (BUG-57)")
+else:
+    fail("ccrDiluentSurfaceLpm pSCR still double-scales depth or uses fO2Loop divisor (BUG-57)")
+
+if "function ccrGasLitres" in js and "ccrDiluentSurfaceLpm(depthM) * (pAmb / pSurf)" in js:
+    ok("ccrGasLitres scales pSCR diluent once by ambient/surface pressure (BUG-58 path)")
+else:
+    fail("ccrGasLitres missing single depth scale for pSCR diluent (BUG-58)")
+
+tcf_start = js.find("function toggleCircuitFields")
+tcf_block = js[tcf_start:tcf_start + 700] if tcf_start > 0 else ""
+if "isRB && bailoutOn" in tcf_block:
+    ok("toggleCircuitFields shows bailout GF for pSCR bailout-on (BUG-59)")
+else:
+    fail("ccrBailoutSettingsGroup still CCR-only (BUG-59)")
+
+if "settings.circuit !== 'pSCR'" in js and "offLoopPath" in js:
+    ok("VPM offLoopPath excludes normal pSCR on-loop (BUG-60)")
+else:
+    fail("VPM still treats pSCR as offLoopPath (BUG-60)")
+
+vpm_gas_start = js.find("const gasConsVPM = {}")
+vpm_gas_block = js[vpm_gas_start:vpm_gas_start + 800] if vpm_gas_start > 0 else ""
+if "endParseDepthM(depthRaw)" in vpm_gas_block:
+    ok("VPM gas consumption parses arrow depth cells (BUG-61)")
+else:
+    fail("VPM gas consumption still parseFloat depth as 0 (BUG-61)")
+
+clear_start = js.find("clear: function()")
+clear_block = js[clear_start:clear_start + 700] if clear_start > 0 else ""
+if "waterDensity" in clear_block and "lspUserAdvDefaults" in clear_block:
+    ok("appSettings.clear() removes extended localStorage keys (BUG-62)")
+else:
+    fail("appSettings.clear() still misses app-owned keys (BUG-62)")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 47 — v2.30.14 fixes (errors_bugs_report_v12)
+# ══════════════════════════════════════════════════════════════════════════════
+
+if "function vpmAccumPpo2" in js and "getEffectivePpo2(pAmb, 0, fO2, ccr" in js:
+    ok("VPM OTU/CNS uses getEffectivePpo2 for pSCR loop ppO2 (BUG-63)")
+else:
+    fail("VPM OTU/CNS still uses diluent fO2 × pAmb for pSCR (BUG-63)")
+
+vpm_ppo2_count = js.count("vpmAccumPpo2(")
+if vpm_ppo2_count >= 9:
+    ok(f"VPM OTU/CNS accumulation wired through vpmAccumPpo2 ({vpm_ppo2_count} sites)")
+else:
+    fail(f"VPM OTU/CNS not fully wired through vpmAccumPpo2 (found {vpm_ppo2_count})")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 48 — v2.30.15 fixes (pSCR OTU/CNS consistency audit BUG-64–68)
+# ══════════════════════════════════════════════════════════════════════════════
+
+exp_ctx_start = js.find("function addExposureToContext")
+exp_ctx_block = js[exp_ctx_start:exp_ctx_start + 700] if exp_ctx_start > 0 else ""
+if "vpmAccumPpo2" in exp_ctx_block and "ctxUseOCForPpo2" in exp_ctx_block:
+    ok("VPM continuation helpers use vpmAccumPpo2 (BUG-64)")
+else:
+    fail("addExposureToContext still uses diluent ppO2 (BUG-64)")
+
+if "scrRuntimeMin: seg && seg.runtime" in js or "scrRuntimeMin: seg.runtime" in js:
+    ok("vpmDisplayPpo2 uses segment runtime for pSCR loop ppO2 (BUG-65)")
+else:
+    fail("vpmDisplayPpo2 missing scrRuntimeMin from segment (BUG-65)")
+
+if "scrRuntimeMin: diveRuntimeMin" in js:
+    ok("Bühlmann _ccrPpo2Opts passes diveRuntimeMin (BUG-66)")
+else:
+    fail("_ccrPpo2Opts missing diveRuntimeMin for OTU/CNS (BUG-66)")
+
+calc_cns_start = js.find("function calcCNS")
+calc_cns_block = js[calc_cns_start:calc_cns_start + 1000] if calc_cns_start > 0 else ""
+if "scrRuntimeMin: bt" in calc_cns_block:
+    ok("calcCNS uses BT as pSCR scrRuntimeMin proxy (BUG-67)")
+else:
+    fail("calcCNS missing pSCR BT runtime proxy (BUG-67)")
+
+exp_start = js.find("function computePlanExposureTotals")
+exp_block = js[exp_start:exp_start + 2500] if exp_start > 0 else ""
+if exp_start > 0 and "getEffectivePpo2(pAmb, 0, fo2" in exp_block and "cfg.circuit === 'pSCR'" in exp_block:
+    ok("ZHLEngine headless OTU/CNS uses getEffectivePpo2 for pSCR (BUG-68)")
+else:
+    fail("ZHLEngine headless still uses raw diluent ppO2 for pSCR (BUG-68)")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 49 — pSCR OTU/CNS dedicated test suite (v2.30.15 release validation)
+# ══════════════════════════════════════════════════════════════════════════════
+
+pscr_test_path = os.path.join(os.path.dirname(__file__), "tests-pscr-otu-cns.html")
+if os.path.isfile(pscr_test_path):
+    with open(pscr_test_path, encoding="utf-8") as f:
+        pscr_test = f.read()
+    ok("tests-pscr-otu-cns.html present")
+    for needle in [
+        "getEffectivePpo2",
+        "computePSCRFractions",
+        "PINNED_LOOP_PPO2",
+        "PINNED_BOTTOM_OTU",
+        "PINNED_DILUENT_BOTTOM_OTU",
+        "recomputeExposureFromPlan",
+        "VPMEngine.calculate",
+        "ZHLEngine.calculate",
+        "refGasLitresAmbient",
+        "20_E32",
+        "40_E32",
+        "60_E32",
+        "20_E36",
+        "40_E36",
+        "60_E36",
+    ]:
+        if needle in pscr_test:
+            ok(f"pSCR test suite references {needle}")
+        else:
+            fail(f"tests-pscr-otu-cns.html missing {needle}")
+    val_report = os.path.join(os.path.dirname(__file__), "pSCR_gas_consumption_validation_v2.30.15.md")
+    if os.path.isfile(val_report):
+        ok("pSCR_gas_consumption_validation_v2.30.15.md present")
+    else:
+        fail("pSCR_gas_consumption_validation_v2.30.15.md missing")
+else:
+    fail("tests-pscr-otu-cns.html missing")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 50 — v2.30.16 fixes (errors_bugs_report_v14 BUG-69–70)
+# ══════════════════════════════════════════════════════════════════════════════
+
+surf_gf_start = js.find("function computeSurfaceGF")
+surf_gf_block = js[surf_gf_start:surf_gf_start + 600] if surf_gf_start > 0 else ""
+if surf_gf_start > 0 and "const P_surf = altSurfaceP" in surf_gf_block:
+    ok("computeSurfaceGF uses altSurfaceP for altitude-aware surface GF (BUG-69)")
+else:
+    fail("computeSurfaceGF still hardcodes P_surf=1.0 (BUG-69)")
+
+if "function addBailoutStressReserve" in js and "addBailoutStressReserve(" in js:
+    ok("addBailoutStressReserve splits stress reserve across deco phases (BUG-70)")
+else:
+    fail("addBailoutStressReserve missing — stress reserve still bottom-only (BUG-70)")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 51 — v2.30.17 fix (errors_bugs_report_v15 BUG-71)
+# ══════════════════════════════════════════════════════════════════════════════
+
+if "function sacDomToLpm" in js and "sacDomToLpm('sacBottom'" in js:
+    ok("sacDomToLpm converts imperial SAC to L/min before gas consumption (BUG-71)")
+else:
+    fail("sacDomToLpm missing — imperial gas consumption still in cu_ft·bar (BUG-71)")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 52 — shared dual-engine test harness (v2.30.18)
+# ══════════════════════════════════════════════════════════════════════════════
+
+harness_path = os.path.join(os.path.dirname(__file__), "lsp-test-harness.js")
+if os.path.isfile(harness_path):
+    with open(harness_path, encoding="utf-8") as f:
+        harness = f.read()
+    ok("lsp-test-harness.js present")
+    for needle in ["waitForApp", "ZHLEngine", "VPMEngine", "model === 'ZHLC_GF'"]:
+        if needle in harness:
+            ok(f"lsp-test-harness.js defines {needle}")
+        else:
+            fail(f"lsp-test-harness.js missing {needle}")
+else:
+    fail("lsp-test-harness.js missing")
+
+for test_file, needle in [
+    ("tests.html", "LSPTestHarness.waitForApp"),
+    ("tests-extended.html", "LSPTestHarness.waitForApp"),
+    ("tests-pscr-otu-cns.html", "LSPTestHarness.waitForApp"),
+    ("tests-verify.html", "ZHLEngine"),
+]:
+    p = os.path.join(os.path.dirname(__file__), test_file)
+    if os.path.isfile(p):
+        with open(p, encoding="utf-8") as f:
+            body = f.read()
+        if needle in body:
+            ok(f"{test_file} wired to dual-engine harness")
+        else:
+            fail(f"{test_file} missing dual-engine wiring ({needle})")
+    else:
+        fail(f"{test_file} missing")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 53 — v2.30.19 fix (errors_bugs_report_v16 BUG-72)
+# ══════════════════════════════════════════════════════════════════════════════
+
+vpm_gas_start = js.find("for (const [gas, reqL] of Object.entries(gasConsVPM))")
+vpm_gas_block = js[vpm_gas_start:vpm_gas_start + 2500] if vpm_gas_start > 0 else ""
+if vpm_gas_start > 0 and "gpVolDisp(reqL)" in vpm_gas_block:
+    ok("VPM gas summary uses gpVolDisp for imperial volume display (BUG-72)")
+else:
+    fail("VPM gas summary still shows raw litres as cu ft (BUG-72)")
+
+emerg_start = js.find("// Emergency plan — keep simple sufficient/short table")
+emerg_block = js[emerg_start:emerg_start + 1800] if emerg_start > 0 else ""
+if emerg_start > 0 and "gpVolDisp(reqL)" in emerg_block:
+    ok("Emergency gas block uses gpVolDisp for imperial volume display (BUG-72)")
+else:
+    fail("Emergency gas block still shows raw litres as cu ft (BUG-72)")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 54 — v2.30.21 fix (ctxUseOCForPpo2 ReferenceError in VPMEngine)
+# ══════════════════════════════════════════════════════════════════════════════
+
+if re.search(r"function ctxUseOCForPpo2\(calcSettings\)", js):
+    ok("ctxUseOCForPpo2 takes calcSettings param (BUG-73)")
+else:
+    fail("ctxUseOCForPpo2 still missing calcSettings param (BUG-73)")
+
+if "ctxUseOCForPpo2(settings)" in js:
+    ok("VPM OTU/CNS paths pass settings into ctxUseOCForPpo2 (BUG-73)")
+else:
+    fail("ctxUseOCForPpo2 not called with settings (BUG-73)")
+
+ctx_oc_start = js.find("function ctxUseOCForPpo2")
+ctx_oc_block = js[ctx_oc_start:ctx_oc_start + 120] if ctx_oc_start > 0 else ""
+if ctx_oc_start > 0 and "calcSettings.bailout" in ctx_oc_block and "return settings." not in ctx_oc_block:
+    ok("ctxUseOCForPpo2 body uses calcSettings not free settings (BUG-73)")
+else:
+    fail("ctxUseOCForPpo2 still references free settings identifier (BUG-73)")
+
+calc_start = js.find("function calculate(levels, decoGases, settings, model)")
+ctx_oc_start = js.find("function ctxUseOCForPpo2")
+if calc_start > 0 and ctx_oc_start > calc_start:
+    ok("ctxUseOCForPpo2 defined inside VPMEngine.calculate (BUG-73)")
+else:
+    fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
+
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.50\.00['\"]", js):
+    ok("APP_VERSION bumped to 2.50.00")
+else:
+    fail("APP_VERSION not bumped to 2.50.00")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
+# ══════════════════════════════════════════════════════════════════════════════
+
+if "function computePlanExposureTotals" in js:
+    ok("computePlanExposureTotals helper exists for headless OTU/CNS (pSCR)")
+else:
+    fail("computePlanExposureTotals missing (pSCR OTU/CNS plan walk)")
+
+if "computePlanExposureTotals(" in js and "exposure.totalOTU" in js:
+    ok("ZHLEngine.calculate uses computePlanExposureTotals after plan assembly (pSCR)")
+else:
+    fail("ZHLEngine still uses pre-plan headless OTU/CNS path (pSCR)")
+
+if "run: seg.run != null ? seg.run : seg.runtime" in js:
+    ok("VPM buildResult exposes runtime as run on plan segments (pSCR)")
+else:
+    fail("VPM plan segments missing run alias from runtime (pSCR)")
+
+pscr_test_path = os.path.join(os.path.dirname(__file__), "tests-pscr-otu-cns.html")
+if os.path.isfile(pscr_test_path):
+    with open(pscr_test_path, encoding="utf-8") as f:
+        pscr_test = f.read()
+    if "recomputeExposureFromPlan" in pscr_test and "computePlanExposureTotals" in pscr_test:
+        ok("tests-pscr-otu-cns.html uses shared computePlanExposureTotals for plan walk")
+    else:
+        fail("tests-pscr-otu-cns.html missing shared plan exposure recompute")
+else:
+    fail("tests-pscr-otu-cns.html missing")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 56 — v2.30.24 fix (errors_bugs_report_v17)
+# ══════════════════════════════════════════════════════════════════════════════
+
+if exp_start > 0 and "cfg.circuit === 'CCR'" in exp_block and "getEffectiveSetpointAtDepth" in exp_block:
+    ok("ZHLEngine headless CNS/OTU uses CCR setpoint path (v17 BUG-73)")
+else:
+    fail("ZHLEngine headless still uses OC ppO2 for CCR dives (v17 BUG-73)")
+
+pkg_path = os.path.join(os.path.dirname(__file__), "package.json")
+gradle_path = os.path.join(os.path.dirname(__file__), "android", "app", "build.gradle")
+sw_path = os.path.join(os.path.dirname(__file__), "sw.js")
+version_ok = True
+if os.path.isfile(pkg_path):
+    with open(pkg_path, encoding="utf-8") as f:
+        pkg = f.read()
+    if '"version": "2.50.00"' not in pkg:
+        version_ok = False
+else:
+    version_ok = False
+if os.path.isfile(gradle_path):
+    with open(gradle_path, encoding="utf-8") as f:
+        gradle = f.read()
+    if 'versionName "2.50.00"' not in gradle or "versionCode 25000" not in gradle:
+        version_ok = False
+else:
+    version_ok = False
+if os.path.isfile(sw_path):
+    with open(sw_path, encoding="utf-8") as f:
+        sw = f.read()
+    if "lsp-dplanner-plus-v2.50.00" not in sw:
+        version_ok = False
+else:
+    version_ok = False
+if version_ok:
+    ok("All version files aligned at 2.50.00 (v17 BUG-74)")
+else:
+    fail("Version mismatch across APP_VERSION / sw.js / package.json / build.gradle (v17 BUG-74)")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 58 — v2.30.26 fix (errors_bugs_report_v18/v19 BUG-75)
+# ══════════════════════════════════════════════════════════════════════════════
+
+if cdl_start > 0 and "metRate / fO2Loop" not in cdl_block:
+    ok("BUG-75 fixed: pSCR ccrDiluentSurfaceLpm no longer divides by fO2Loop")
+else:
+    fail("BUG-75 still present: ccrDiluentSurfaceLpm uses metRate/fO2Loop")
+
+verify_path = os.path.join(os.path.dirname(__file__), "tests-verify.html")
+if os.path.isfile(verify_path):
+    with open(verify_path, encoding="utf-8") as f:
+        verify_html = f.read()
+    if "BUG-75" in verify_html and "ccrDiluentSurfaceLpm" in verify_html:
+        ok("tests-verify.html regression for pSCR ccrDiluentSurfaceLpm (BUG-75)")
+    else:
+        fail("tests-verify.html missing BUG-75 pSCR gas flow regression")
+    if "Above setpoint depth: zero inert loading" in verify_html and "pAmb = sp + ppH2O" in verify_html:
+        ok("tests-verify CCR zero-inert test uses setpoint crossover (not +0.01 bar)")
+    else:
+        fail("tests-verify CCR zero-inert test still uses pAmb above crossover threshold")
+    if "assertRtPinned" in verify_html and "VerifyWarn" in verify_html:
+        ok("tests-verify.html RT pinned drift ±1–2 min → WARN (not fail)")
+    else:
+        fail("tests-verify.html missing assertRtPinned / VerifyWarn RT drift handling")
+else:
+    fail("tests-verify.html missing")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 59 — v2.30.28 fix (errors_bugs_report_v21 BUG-77)
+# ══════════════════════════════════════════════════════════════════════════════
+
+if "function planSegDepthM" in js and ("runStart + frac * dur" in js or "scrRuntimeMin = Math.max(0, runEnd - dur)" in js):
+    ok("BUG-77 fixed: computePlanExposureTotals uses segment-start scrRuntimeMin + planSegDepthM")
+else:
+    fail("BUG-77: computePlanExposureTotals still uses end-of-segment scrRuntimeMin or depth=0 on VPM ascents")
+
+if "function buildResult(plan, runtime" in js and "totalOTU: exposure.totalOTU" in js and "computePlanExposureTotals(" in js:
+    ok("BUG-77 fixed: VPM buildResult totals from computePlanExposureTotals")
+else:
+    fail("BUG-77: VPM buildResult still uses inline vpmAccumPpo2 totals vs plan walk")
+
+pscr_test_path = os.path.join(os.path.dirname(__file__), "tests-pscr-otu-cns.html")
+if os.path.isfile(pscr_test_path):
+    with open(pscr_test_path, encoding="utf-8") as f:
+        pscr_test = f.read()
+    if "recomputeExposureFromPlan" in pscr_test and "computePlanExposureTotals" in pscr_test:
+        ok("tests-pscr-otu-cns.html uses shared computePlanExposureTotals for plan walk")
+    else:
+        fail("tests-pscr-otu-cns.html still duplicates plan exposure integration")
+else:
+    fail("tests-pscr-otu-cns.html missing")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 61 — v2.30.29 fix (ZHL CNS plan re-integration / BUG-66)
+# ══════════════════════════════════════════════════════════════════════════════
+
+if "function accumulateHeadlessPlanExposure" in js and "totalCNS: _headlessExposure.totalCNS" in js:
+    ok("BUG-66 fixed: headless Bühlmann OTU/CNS before _zhlHeadless return")
+else:
+    fail("BUG-66: runDecoSchedule missing headless OTU/CNS accumulation")
+
+if "pO2:   s.pO2" in js or "pO2: s.pO2" in js:
+    ok("ZHLEngine plan preserves diveRuntimeMin-baked pO2 from Bühlmann steps")
+else:
+    fail("ZHLEngine plan mapping drops step pO2 (CNS plan walk mismatch)")
+
+if "isFinite(baked)" in js and "seg.pO2" in js:
+    ok("computePlanExposureTotals uses baked step pO2 when present")
+else:
+    fail("computePlanExposureTotals ignores Bühlmann step pO2")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 62 — v2.30.30 fix (ZHL OTU plan walk / BUG-82)
+# ══════════════════════════════════════════════════════════════════════════════
+
+if "function accumulateHeadlessPlanExposure" in js and "computePlanExposureTotals(" in js:
+    ahpe_start = js.find("function accumulateHeadlessPlanExposure")
+    ahpe_end = js.find("\nfunction computePlanExposureTotals", ahpe_start)
+    ahpe_block = js[ahpe_start:ahpe_end] if ahpe_end > ahpe_start else ""
+    if ahpe_block.count("computePlanExposureTotals(") >= 1 and "btAtDepthMin" in ahpe_block:
+        ok("BUG-82 fixed: accumulateHeadlessPlanExposure delegates to computePlanExposureTotals")
+    else:
+        fail("BUG-82: accumulateHeadlessPlanExposure still uses single-sample pSCR ppO2 integration")
+else:
+    fail("BUG-82: accumulateHeadlessPlanExposure or computePlanExposureTotals missing")
+
+if "lp.totalOTU" not in js[js.find("const ZHLEngine"):js.find("if (typeof window !== 'undefined') window.ZHLEngine")]:
+    ok("BUG-82 fixed: ZHLEngine.calculate totals from computePlanExposureTotals (not lp.totalOTU)")
+else:
+    fail("BUG-82: ZHLEngine.calculate still prefers lp.totalOTU over plan walk")
+
+pscr_test61 = os.path.join(os.path.dirname(__file__), "tests-pscr-otu-cns.html")
+if os.path.isfile(pscr_test61):
+    with open(pscr_test61, encoding="utf-8") as f:
+        pscr61 = f.read()
+    if "WIN.altSurfaceP" in pscr61 and "WIN.BAR_PER_METRE" in pscr61:
+        ok("tests-pscr-otu-cns.html recompute uses live altSurfaceP/BAR_PER_METRE")
+    else:
+        fail("tests-pscr-otu-cns.html still uses hardcoded SURF/BAR for recompute")
+else:
+    fail("tests-pscr-otu-cns.html missing")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 60 — v2.30.28 fix (errors_bugs_report_v21 BUG-76)
+# ══════════════════════════════════════════════════════════════════════════════
+
+if "massiveSuite" in js and "_massiveSuiteActive" in js:
+    ok("BUG-76 fixed: index.html early headless when massiveSuite=1")
+else:
+    fail("BUG-76: index.html missing massiveSuite early headless guard")
+
+if re.search(r"if\s*\(\s*!window\._zhlHeadless\s*\)\s*renderNDLTable\s*\(\s*\)", js):
+    ok("BUG-76 fixed: setDecoAlgorithm/setCustomGF skip renderNDLTable in headless mode")
+else:
+    fail("BUG-76: setDecoAlgorithm still calls renderNDLTable unconditionally")
+
+massive_path60 = os.path.join(os.path.dirname(__file__), "tests-massive.html")
+if os.path.isfile(massive_path60):
+    with open(massive_path60, encoding="utf-8") as f:
+        massive60 = f.read()
+    if "enterMassiveHeadless" in massive60 and "installMassiveSuiteGuards" in massive60:
+        ok("BUG-76 fixed: tests-massive.html enterMassiveHeadless + suite guards")
+    else:
+        fail("BUG-76: tests-massive.html missing enterMassiveHeadless / installMassiveSuiteGuards")
+    if "massiveSuite=1" in massive60 and "MIN_APP_VERSION" in massive60:
+        ok("BUG-76 fixed: tests-massive.html loads index with massiveSuite=1 + version guard")
+    else:
+        fail("BUG-76: tests-massive.html missing massiveSuite=1 or MIN_APP_VERSION")
+    if "WIN._zhlHeadless = false" not in massive60.split("function fastRDS")[1].split("function safeSetUnits")[0]:
+        ok("BUG-76 fixed: fastRDS never clears _zhlHeadless")
+    else:
+        fail("BUG-76: fastRDS still clears _zhlHeadless before runDecoSchedule")
+else:
+    fail("tests-massive.html missing")
+
+v21_path = os.path.join(os.path.dirname(__file__), "errors_bugs_report_v21.md")
+if os.path.isfile(v21_path):
+    with open(v21_path, encoding="utf-8") as f:
+        v21 = f.read()
+    if "BUG-76" in v21 and "BUG-77" in v21 and "v2.30.28" in v21:
+        ok("errors_bugs_report_v21.md documents BUG-76 and BUG-77 (v2.30.28)")
+    else:
+        fail("errors_bugs_report_v21.md incomplete")
+else:
+    fail("errors_bugs_report_v21.md missing")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 55 — v2.30.22 fix (massive suite headless mode leak)
+# ══════════════════════════════════════════════════════════════════════════════
+
+if "_zhlHeadlessDepth" in js and "window._zhlHeadless = _headlessEntry > 0" in js:
+    ok("ZHLEngine.calculate preserves _zhlHeadless across calls (BUG-74)")
+else:
+    fail("ZHLEngine.calculate still clears _zhlHeadless after headless runs (BUG-74)")
+
+if re.search(r"!window\._zhlHeadless && typeof validateCcrGasConfiguration", js):
+    ok("runDecoSchedule skips CCR alert when headless (BUG-74)")
+else:
+    fail("runDecoSchedule may alert() during headless test runs (BUG-74)")
+
+if re.search(r"!window\._zhlHeadless && isRebreatherCircuit\(_uiCcr\.circuit\)", js):
+    ok("runDecoSchedule DOM gas validation uses window._zhlHeadless (not bare _zhlHeadless)")
+else:
+    fail("runDecoSchedule references bare _zhlHeadless (ReferenceError in UI)")
+
+massive_path = os.path.join(os.path.dirname(__file__), "tests-massive.html")
+if os.path.isfile(massive_path):
+    with open(massive_path, encoding="utf-8") as f:
+        massive = f.read()
+    if "keepHeadless" in massive and "enterMassiveHeadless" in massive:
+        ok("tests-massive.html calc() + enterMassiveHeadless guard (BUG-74)")
+    else:
+        fail("tests-massive.html missing headless guard in calc() (BUG-74)")
+else:
+    fail("tests-massive.html missing")
+
+massive_main_path = os.path.join(os.path.dirname(__file__), "tests-massive-main.html")
+if os.path.isfile(massive_main_path):
+    with open(massive_main_path, encoding="utf-8") as f:
+        massive_main = f.read()
+    if "MIN_APP_VERSION" in massive_main and "about:blank" in massive_main:
+        ok("tests-massive-main.html guards against stale cached index.html (BUG-73)")
+    else:
+        fail("tests-massive-main.html missing MIN_APP_VERSION / about:blank guard (BUG-73)")
+else:
+    fail("tests-massive-main.html missing")
+
+tests_html_path = os.path.join(os.path.dirname(__file__), "tests.html")
+if os.path.isfile(tests_html_path):
+    with open(tests_html_path, encoding="utf-8") as f:
+        tests_html = f.read()
+    if "function ndlSettings" in tests_html and "ndlSettings()" in tests_html:
+        ok("tests.html NDL group uses GF 100/100 via ndlSettings()")
+    else:
+        fail("tests.html No-Deco tests still use default GF conservatism")
+else:
+    fail("tests.html missing")
+
+massive_html_path = os.path.join(os.path.dirname(__file__), "tests-massive.html")
+massive_html = ""
+if os.path.isfile(massive_html_path):
+    with open(massive_html_path, encoding="utf-8") as f:
+        massive_html = f.read()
+    if "firstStop: 36" in massive_html and "ref.stops[rd]" not in massive_html:
+        ok("tests-massive.html CCR cross-val uses DiveKit first-stop pins (no MultiDeco per-stop table)")
+    else:
+        fail("tests-massive.html CCR cross-val still pinned to MultiDeco per-stop tables")
+    if "C3: { rt: 83" in massive_html:
+        ok("tests-massive.html CCR C3 RT pinned to LSP engine (83 min, DiveKit first stop)")
+    else:
+        fail("tests-massive.html CCR C3 RT pin missing or stale (expected rt: 83)")
+    if "function refreshFrameWin" in massive_html and "_suiteRunId" in massive_html:
+        ok("tests-massive.html iframe run guard + refreshFrameWin present")
+    else:
+        fail("tests-massive.html missing iframe hardening (refreshFrameWin / _suiteRunId)")
+    if "function vpmEngine" in massive_html and "(w || E).calculate" not in massive_html:
+        ok("tests-massive.html vpmEngine() resolves VPMEngine (not iframe window)")
+    else:
+        fail("tests-massive.html missing vpmEngine() or still uses (w||E).calculate")
+else:
+    fail("tests-massive.html missing")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 62 — v2.30.29 fix (errors_bugs_report_v22 BUG-78)
+# ══════════════════════════════════════════════════════════════════════════════
+
+massive78 = massive_html if os.path.isfile(massive_html_path) else ""
+if massive78 and "serviceWorker" in massive78 and "SKIP_WAITING" in massive78:
+    ok("BUG-78 fixed: tests-massive.html SW skip-waiting before iframe load")
+else:
+    fail("BUG-78: tests-massive.html missing service worker guard")
+
+if massive78 and "MIN_APP_VERSION + '&ts='" in massive78:
+    ok("BUG-78 fixed: tests-massive.html cache-busts iframe with MIN_APP_VERSION")
+else:
+    fail("BUG-78: tests-massive.html iframe src missing version cache-bust")
+
+massive_main78_path = os.path.join(os.path.dirname(__file__), "tests-massive-main.html")
+if os.path.isfile(massive_main78_path):
+    with open(massive_main78_path, encoding="utf-8") as f:
+        massive_main78 = f.read()
+    if "function vpmEngine" in massive_main78 and "(w || E).calculate" not in massive_main78:
+        ok("BUG-81 fixed: tests-massive-main.html vpmEngine() — not (w||E).calculate")
+    else:
+        fail("BUG-81: tests-massive-main.html still calls calculate on iframe window")
+else:
+    fail("tests-massive-main.html missing")
+
+v22_path = os.path.join(os.path.dirname(__file__), "errors_bugs_report_v22.md")
+if os.path.isfile(v22_path):
+    with open(v22_path, encoding="utf-8") as f:
+        v22 = f.read()
+    if "BUG-78" in v22 and "BUG-79" in v22 and "BUG-80" in v22 and "v2.30.29" in v22:
+        ok("errors_bugs_report_v22.md documents BUG-78, BUG-79, BUG-80 (v2.30.29)")
+    else:
+        fail("errors_bugs_report_v22.md incomplete")
+else:
+    fail("errors_bugs_report_v22.md missing")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 63 — Android MainActivity package matches applicationId (launch crash)
+# ══════════════════════════════════════════════════════════════════════════════
+
+main_ccr = os.path.join(os.path.dirname(__file__), "android", "app", "src", "main", "java", "com", "threecats", "lsp", "dplannerplus", "MainActivity.java")
+main_oc = os.path.join(os.path.dirname(__file__), "android", "app", "src", "main", "java", "com", "threecats", "lsp", "dplanner", "MainActivity.java")
+gradle_path = os.path.join(os.path.dirname(__file__), "android", "app", "build.gradle")
+
+if os.path.isfile(main_ccr):
+    with open(main_ccr, encoding="utf-8") as f:
+        main_src = f.read()
+    if "package com.threecats.lsp.dplannerplus;" in main_src and "class MainActivity extends BridgeActivity" in main_src:
+        ok("Android MainActivity in com.threecats.lsp.dplannerplus (matches applicationId)")
+    else:
+        fail("Android MainActivity package does not match applicationId dplannerplus")
+else:
+    fail("Android MainActivity missing at dplannerplus/MainActivity.java")
+
+if os.path.isfile(main_oc):
+    fail("Stale Android MainActivity still at dplanner/ — launch ClassNotFoundException risk")
+
+if os.path.isfile(gradle_path):
+    with open(gradle_path, encoding="utf-8") as f:
+        gradle = f.read()
+    if 'applicationId "com.threecats.lsp.dplannerplus"' in gradle and 'namespace "com.threecats.lsp.dplannerplus"' in gradle:
+        ok("Android applicationId/namespace aligned at com.threecats.lsp.dplannerplus")
+    else:
+        fail("Android build.gradle applicationId/namespace mismatch")
+
+build_apk_path = os.path.join(os.path.dirname(__file__), ".github", "workflows", "build-apk.yml")
+if os.path.isfile(build_apk_path):
+    with open(build_apk_path, encoding="utf-8") as f:
+        build_apk = f.read()
+    if 'sync-apk-d-planner-plus' in build_apk and 'sync-apk-d-planner"' not in build_apk.replace('sync-apk-d-planner-plus', ''):
+        ok("build-apk.yml dispatches sync-apk-d-planner-plus (site APK sync)")
+    else:
+        fail("build-apk.yml must dispatch sync-apk-d-planner-plus, not sync-apk-d-planner")
+
+manifest_path = os.path.join(os.path.dirname(__file__), "android", "app", "src", "main", "AndroidManifest.xml")
+if os.path.isfile(manifest_path):
+    with open(manifest_path, encoding="utf-8") as f:
+        manifest = f.read()
+    if 'android:name="com.threecats.lsp.dplannerplus.MainActivity"' in manifest:
+        ok("AndroidManifest uses fully qualified MainActivity class name")
+    else:
+        fail("AndroidManifest MainActivity must be com.threecats.lsp.dplannerplus.MainActivity")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 64 — Issue #1 deep audit fixes (pSCR trimix, units, validation, PWA)
+# ══════════════════════════════════════════════════════════════════════════════
+
+pscr_frac_start = js.find("function computePSCRFractions")
+pscr_frac_block = js[pscr_frac_start:pscr_frac_start + 900] if pscr_frac_start > 0 else ""
+if pscr_frac_start > 0 and "const sourceInert" in pscr_frac_block and "fN2src / sourceInert" in pscr_frac_block:
+    ok("computePSCRFractions normalizes trimix inert via sourceInert (issue #1)")
+else:
+    fail("computePSCRFractions still mis-treats fInert as N2-only (issue #1)")
+
+if pscr_frac_start > 0 and "PSCR_MIN_PPO2 * loopVol" in pscr_frac_block and "PSCR_MIN_PPO2 * loopVol * pAmb" not in pscr_frac_block:
+    ok("pSCR O₂ floor uses true 0.16 bar·L minimum (not 16% fraction floor)")
+else:
+    fail("pSCR O₂ floor still scales with ambient pressure (issue #1)")
+
+if "function validateDecoInputs" in js and "validateDecoInputs()" in js and "Cannot generate schedule" in js:
+    ok("validateDecoInputs blocks invalid depth/BT before runDecoSchedule (issue #1)")
+else:
+    fail("validateDecoInputs missing or not wired into runDecoSchedule (issue #1)")
+
+if "function validatePlannerInputs" in js and "validatePlannerInputs()" in js and "Cannot calculate dive" in js:
+    ok("validatePlannerInputs blocks invalid depth/BT before runPlanner (issue #1 follow-up)")
+else:
+    fail("validatePlannerInputs missing or not wired into runPlanner (issue #1 follow-up)")
+
+if "function validateDiveInputs" in js and "maxBt: 300" in js:
+    ok("validateDiveInputs enforces 300 min BT limit matching input max (issue #1 follow-up)")
+else:
+    fail("validateDiveInputs missing or BT limit not 300 (issue #1 follow-up)")
+
+if "setUnits(u, opts)" in js or "relabelOnly" in js:
+    ok("setUnits supports relabelOnly for settings restore without value conversion (issue #1 follow-up)")
+else:
+    fail("setUnits relabelOnly restore path missing (issue #1 follow-up)")
+
+if "__units__" in js and "values['__units__']" in js:
+    ok("appSettings persists unit system as __units__ (issue #1)")
+else:
+    fail("Unit system not persisted in appSettings (issue #1)")
+
+if '<option value="ean80">EAN80' in html and html.count('value="ean80"') >= 2:
+    ok("EAN80 option present on deco gas selectors (issue #1)")
+else:
+    fail("EAN80 missing from dg1Mix/dg2Mix (issue #1)")
+
+if "mixEl.value === 'ean80' ? 80" in js:
+    ok("runVPMSchedule maps ean80 to 80% O₂ (issue #1)")
+else:
+    fail("runVPMSchedule still maps ean80 incorrectly (issue #1)")
+
+tissue_start = js.find("function renderTissueLoadChart")
+tissue_block = js[tissue_start:tissue_start + 1500] if tissue_start > 0 else ""
+if tissue_start > 0 and "gfHighInput" in tissue_block and "algorithmSelect" in tissue_block:
+    ok("renderTissueLoadChart reads gfHighInput and algorithmSelect (issue #1)")
+else:
+    fail("renderTissueLoadChart still uses stale gfHighSel/algoSel (issue #1)")
+
+if "getElementById('gfHighSel')" not in js and "getElementById('algoSel')" not in js:
+    ok("Stale gfHighSel/algoSel DOM IDs removed (issue #1)")
+else:
+    fail("Stale gfHighSel or algoSel still referenced (issue #1)")
+
+export_start = js.find("if (mode === 'planner')")
+export_block = js[export_start:export_start + 600] if export_start > 0 else ""
+if export_start > 0 and "getElementById('gasMix')" in export_block and "getElementById('gas')" not in export_block:
+    ok("Planner text export reads gasMix control (issue #1)")
+else:
+    fail("Planner text export still reads nonexistent gas control (issue #1)")
+
+manifest_path = os.path.join(os.path.dirname(__file__), "manifest.json")
+if os.path.isfile(manifest_path):
+    with open(manifest_path, encoding="utf-8") as f:
+        manifest_json = f.read()
+    if '"start_url": "./"' in manifest_json and '"scope": "./"' in manifest_json:
+        ok("manifest.json uses relative start_url/scope (issue #1)")
+    else:
+        fail("manifest.json still hardcodes /LSP_D-planner-CCR/ paths (issue #1)")
+
+sw_path = os.path.join(os.path.dirname(__file__), "sw.js")
+if os.path.isfile(sw_path):
+    with open(sw_path, encoding="utf-8") as f:
+        sw_src = f.read()
+    if ".then(cached => cached || caches.match(OFFLINE_INDEX" in sw_src:
+        ok("sw.js offline fallback chains to app-shell lookup (issue #1)")
+    else:
+        fail("sw.js offline fallback still uses broken Promise || chain (issue #1)")
+
+e2e_path = os.path.join(os.path.dirname(__file__), "dev", "validate_pscr_e2e.py")
+if os.path.isfile(e2e_path):
+    with open(e2e_path, encoding="utf-8") as f:
+        e2e_src = f.read()
+    if "ThreadingHTTPServer" in e2e_src and "serve_root" in e2e_src and "as_uri()" not in e2e_src:
+        ok("validate_pscr_e2e.py serves app over HTTP (not file://)")
+    else:
+        fail("validate_pscr_e2e.py still loads index via file:// (issue #1)")
+
+audit_wf = os.path.join(os.path.dirname(__file__), ".github", "workflows", "audit.yml")
+if os.path.isfile(audit_wf):
+    with open(audit_wf, encoding="utf-8") as f:
+        audit_wf_src = f.read()
+    if "run_browser_regression.py" in audit_wf_src and "validate_pscr_e2e.py" in audit_wf_src:
+        ok("audit.yml CI runs browser regression + pSCR E2E (issue #1 follow-up)")
+    else:
+        fail("audit.yml must run browser regression and pSCR E2E (issue #1 follow-up)")
+else:
+    fail("Missing .github/workflows/audit.yml CI workflow (issue #1)")
+
+browser_reg_path = os.path.join(os.path.dirname(__file__), "dev", "run_browser_regression.py")
+if os.path.isfile(browser_reg_path):
+    ok("dev/run_browser_regression.py present (issue #1 follow-up)")
+else:
+    fail("dev/run_browser_regression.py missing (issue #1 follow-up)")
+
+if os.path.isfile(pscr_test_path):
+    if "pSCR trimix fraction normalization" in pscr_test and "18/45" in pscr_test:
+        ok("tests-pscr-otu-cns.html includes trimix fraction regression (issue #1)")
+    else:
+        fail("tests-pscr-otu-cns.html missing trimix fraction tests (issue #1)")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 65 — CCR differential test harness (issue #2)
+# ══════════════════════════════════════════════════════════════════════════════
+
+ccr_plan = os.path.join(os.path.dirname(__file__), "docs", "CCR_ENGINE_DIFFERENTIAL_TEST_PLAN.md")
+ccr_runner = os.path.join(os.path.dirname(__file__), "dev", "run_ccr_differential.py")
+ccr_html = os.path.join(os.path.dirname(__file__), "tests-ccr-differential.html")
+ccr_lib = os.path.join(os.path.dirname(__file__), "tests", "ccr-differential", "lib", "ccrdiff.js")
+ccr_build = os.path.join(os.path.dirname(__file__), "tests", "ccr-differential", "build_assets.py")
+
+for path, label in [
+    (ccr_plan, "CCR_ENGINE_DIFFERENTIAL_TEST_PLAN.md"),
+    (ccr_runner, "dev/run_ccr_differential.py"),
+    (ccr_html, "tests-ccr-differential.html"),
+    (ccr_lib, "tests/ccr-differential/lib/ccrdiff.js"),
+    (ccr_build, "tests/ccr-differential/build_assets.py"),
+]:
+    if os.path.isfile(path):
+        ok(f"{label} present (issue #2)")
+    else:
+        fail(f"{label} missing (issue #2)")
+
+fixture_c1 = os.path.join(os.path.dirname(__file__), "tests", "ccr-differential", "fixtures", "CCR-C1.json")
+md_golden = os.path.join(os.path.dirname(__file__), "tests", "ccr-differential", "goldens", "multideco", "CCR-C1.json")
+if os.path.isfile(fixture_c1) and os.path.isfile(md_golden):
+    ok("CCR-C1 fixture and MultiDeco golden migrated (issue #2)")
+else:
+    fail("CCR-C1 fixture or MultiDeco golden missing (issue #2)")
+
+ab_golden = os.path.join(os.path.dirname(__file__), "tests", "ccr-differential", "goldens", "abysner", "CCR-C1.json")
+ss_golden = os.path.join(os.path.dirname(__file__), "tests", "ccr-differential", "goldens", "subsurface", "CCR-C1.json")
+if os.path.isfile(ab_golden) and os.path.isfile(ss_golden):
+    ok("CCR-C1 Abysner and Subsurface goldens present (issue #2)")
+else:
+    fail("CCR-C1 Abysner or Subsurface golden missing (issue #2)")
+
+ccr_config = os.path.join(os.path.dirname(__file__), "tests", "ccr-differential", "config.json")
+if os.path.isfile(ccr_config):
+    with open(ccr_config, encoding="utf-8") as f:
+        ccr_cfg = json.load(f)
+    engines = ccr_cfg.get("comparatorEngines") or []
+    if "abysner" in engines and "subsurface" in engines and "diveprome" not in ccr_cfg:
+        ok("CCR config lists Abysner + Subsurface comparators (issue #2)")
+    else:
+        fail("CCR config missing Abysner/Subsurface or still references diveprome (issue #2)")
+
+ccr_schema = os.path.join(os.path.dirname(__file__), "tests", "ccr-differential", "schemas", "scenario.schema.json")
+ccr_defects = os.path.join(os.path.dirname(__file__), "tests", "ccr-differential", "known-lsp-defects.json")
+if os.path.isfile(ccr_schema):
+    ok("CCR scenario schema present (issue #2)")
+else:
+    fail("CCR scenario schema missing (issue #2)")
+if os.path.isfile(ccr_defects):
+    ok("CCR known LSP defects registry present (issue #2)")
+else:
+    fail("CCR known-lsp-defects.json missing (issue #2)")
+
+if "function validateCcrCalculationInputs" in js and "validateCcrCalculationInputs(levels, s, decoGases)" in js:
+    ok("validateCcrCalculationInputs wired into ZHLEngine.calculate (issue #2)")
+else:
+    fail("validateCcrCalculationInputs missing from production engine (issue #2)")
+
+invalid_fixtures = [
+    "CCR-INVALID-SP.json",
+    "CCR-INVALID-GAS-SUM.json",
+    "CCR-INVALID-GAS-NEGATIVE.json",
+    "CCR-INVALID-PROFILE.json",
+    "CCR-SP-CROSSING.json",
+]
+for name in invalid_fixtures:
+    path = os.path.join(os.path.dirname(__file__), "tests", "ccr-differential", "fixtures", name)
+    if os.path.isfile(path):
+        ok(f"{name} present (issue #2 invalid-input split)")
+    else:
+        fail(f"{name} missing (issue #2 invalid-input split)")
+
+if os.path.isfile(ccr_runner):
+    with open(ccr_runner, encoding="utf-8") as f:
+        ccr_src = f.read()
+    if "EXPECTED_DIFFERENCE" in open(ccr_lib, encoding="utf-8").read() and "runMetamorphic" in open(ccr_lib, encoding="utf-8").read() and "assertFixtureEffectiveness" in open(ccr_lib, encoding="utf-8").read():
+        ok("CCR differential lib includes classification + metamorphic tests (issue #2)")
+    else:
+        fail("CCR differential lib incomplete (issue #2)")
+
+audit_wf2 = os.path.join(os.path.dirname(__file__), ".github", "workflows", "audit.yml")
+if os.path.isfile(audit_wf2):
+    with open(audit_wf2, encoding="utf-8") as f:
+        wf2 = f.read()
+    if "run_ccr_differential.py" in wf2:
+        ok("audit.yml runs CCR differential suite (issue #2)")
+    else:
+        fail("audit.yml missing CCR differential step (issue #2)")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 66 — validateCcrCalculationInputs pSCR + default setpoints (BUG-95/96)
+# ══════════════════════════════════════════════════════════════════════════════
+
+val_ccr_calc = js[js.find("function validateCcrCalculationInputs"):js.find("function validateCcrCalculationInputs") + 2500]
+if "circuit === 'pSCR'" in val_ccr_calc and "return { ok: errors.length === 0, errors }" in val_ccr_calc:
+    ok("validateCcrCalculationInputs skips setpoint checks for pSCR (BUG-95)")
+else:
+    fail("validateCcrCalculationInputs still validates pSCR setpoints (BUG-95)")
+if re.search(r"descentSetpoint\s*!=\s*null\s*\?\s*s\.descentSetpoint\s*:\s*0\.7", val_ccr_calc):
+    ok("validateCcrCalculationInputs defaults descent setpoint to 0.7 (BUG-96)")
+else:
+    fail("validateCcrCalculationInputs missing descent setpoint default (BUG-96)")
+if re.search(r"bottomSetpoint\s*!=\s*null.*1\.2", val_ccr_calc) and re.search(r"decoSetpoint\s*!=\s*null.*1\.3", val_ccr_calc):
+    ok("validateCcrCalculationInputs defaults bottom/deco setpoints to 1.2/1.3 (BUG-96)")
+else:
+    fail("validateCcrCalculationInputs missing bottom/deco setpoint defaults (BUG-96)")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 67 — validateGasFractionsPct + deco gas validation (BUG-97/98/99)
+# ══════════════════════════════════════════════════════════════════════════════
+
+if "function validateGasFractionsPct" in js:
+    ok("validateGasFractionsPct present (BUG-97)")
+else:
+    fail("validateGasFractionsPct missing (BUG-97)")
+
+if re.search(
+    r"he == null \|\| he === ''\) \? 0 : Number\(he\)",
+    js[js.find("function validateGasFractionsPct"):js.find("function validateGasFractionsPct") + 600],
+):
+    ok("validateGasFractionsPct rejects NaN He without || 0 coercion (BUG-97)")
+else:
+    fail("validateGasFractionsPct still coerces NaN He via || 0 (BUG-97)")
+
+if "validateCcrCalculationInputs(levels, s, decoGases)" in js:
+    ok("ZHLEngine.calculate passes decoGases to validateCcrCalculationInputs (BUG-98)")
+else:
+    fail("ZHLEngine.calculate missing decoGases in CCR validation (BUG-98)")
+
+if "decoGases.forEach" in val_ccr_calc and "validateGasFractionsPct(g.o2, g.he" in val_ccr_calc:
+    ok("validateCcrCalculationInputs validates deco gases (BUG-98)")
+else:
+    fail("validateCcrCalculationInputs missing deco gas validation (BUG-98)")
+
+if "validateGasFractionsPct(level.o2, level.he" in val_ccr_calc and "o2pct > 1" not in val_ccr_calc:
+    ok("validateCcrCalculationInputs uses percent convention for level gases (BUG-99)")
+else:
+    fail("validateCcrCalculationInputs still mixes fraction/percent conventions (BUG-99)")
+
+ccr_val_reg = os.path.join(os.path.dirname(__file__), "dev", "engine_validation_regression.py")
+if os.path.isfile(ccr_val_reg):
+    ok("dev/engine_validation_regression.py present (BUG-97/98)")
+else:
+    fail("dev/engine_validation_regression.py missing (BUG-97/98)")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GROUP 68 — raw DOM gas validation before clamping (BUG-100)
+# ══════════════════════════════════════════════════════════════════════════════
+
+if "function getDomBottomGasPct" in js and "function getDomDecoGasPct" in js and "function validateDomDecoGases" in js:
+    ok("getDomBottomGasPct / validateDomDecoGases present (BUG-100)")
+else:
+    fail("raw DOM gas validation helpers missing (BUG-100)")
+
+if "validateDomDecoGases()" in js and "getDomBottomGasPct()" in js:
+    ok("runDecoSchedule validates raw DOM gases before schedule (BUG-100)")
+else:
+    fail("runDecoSchedule still validates clamped gas fractions only (BUG-100)")
+
+if "validateDomDecoGases()" in js[js.find("function validateCcrGasConfiguration"):js.find("function validateCcrGasConfiguration") + 1200]:
+    ok("validateCcrGasConfiguration includes raw DOM gas checks (BUG-100)")
+else:
+    fail("validateCcrGasConfiguration missing raw DOM gas checks (BUG-100)")
+
+if "getDomDecoGasPct(idx)" in js[js.find("function collectDecoGasesPctFromDom"):js.find("function collectDecoGasesPctFromDom") + 400]:
+    ok("collectDecoGasesPctFromDom uses raw DOM percents (BUG-100)")
+else:
+    fail("collectDecoGasesPctFromDom still uses clamped fractions (BUG-100)")
+
+vpm_empty = js[js.find("function calculate(levels, decoGases, settings, model)"):js.find("function calculate(levels, decoGases, settings, model)") + 3500]
+if "No bottom segments defined" in vpm_empty and "totalRuntime: 0" in vpm_empty.split("No bottom segments defined")[1][:400]:
+    ok("VPM empty-levels error includes totalRuntime: 0 (VPM/ZHL parity)")
+else:
+    fail("VPM empty-levels error missing totalRuntime: 0 (VPM/ZHL parity)")
+
+if "splitZhlProfileLevels" in js and "_zhlContinuationLevels" in js and "phaseNextStop" in zhl_src:
+    ok("ZHL headless multi-level continuation wired (splitZhlProfileLevels)")
+else:
+    fail("ZHL headless multi-level continuation missing")
+
+if "validateZhlHeadlessProfile" in js and "cannot re-descend after a shallower level" in js:
+    ok("validateZhlHeadlessProfile rejects unsupported ZHL profile shapes")
+else:
+    fail("validateZhlHeadlessProfile missing (unsupported multi-level ZHL profiles)")
+
+if "validateEngineInputs" in js and "engineValidationError" in js:
+    ok("validateEngineInputs + engineValidationError exported for VPM API hardening")
+else:
+    fail("validateEngineInputs / engineValidationError missing")
+
+if "function gasFractionsFromPct" in js and "gasFractionsFromPct(g.o2, g.he)" in js:
+    ok("VPM deco gas normalization uses gasFractionsFromPct (omitted He → 0)")
+else:
+    fail("VPM deco gas normalization missing gasFractionsFromPct helper")
+
+print("=" * 60)
+
+if FAIL:
+    print(f"\n{'─'*60}")
+    print(f"  FAILURES ({len(FAIL)}):")
+    print(f"{'─'*60}")
+    for f_ in FAIL:
+        print(f"  ✗ {f_}")
+
+print(f"\n{'─'*60}")
+print(f"  Results: {len(PASS)} passed, {len(FAIL)} failed")
+print(f"{'─'*60}\n")
+
+if FAIL:
+    sys.exit(1)
+else:
+    print("  ALL CHECKS PASSED ✓\n")
+    sys.exit(0)

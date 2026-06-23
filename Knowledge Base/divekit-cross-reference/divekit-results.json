@@ -1,0 +1,2686 @@
+{
+  "schemaVersion": 1,
+  "appVersion": "2.8.5",
+  "results": {
+    "S1": {
+      "stops": [
+        {
+          "depthM": 12,
+          "stopMin": 3,
+          "runMin": 30,
+          "gasLabel": "21",
+          "ppO2": 0.46,
+          "eadM": 12
+        },
+        {
+          "depthM": 9,
+          "stopMin": 4,
+          "runMin": 34,
+          "gasLabel": "21",
+          "ppO2": 0.4,
+          "eadM": 9
+        },
+        {
+          "depthM": 6,
+          "stopMin": 6,
+          "runMin": 41,
+          "gasLabel": "21",
+          "ppO2": 0.34,
+          "eadM": 6
+        },
+        {
+          "depthM": 3,
+          "stopMin": 7,
+          "runMin": 48,
+          "gasLabel": "21",
+          "ppO2": 0.28,
+          "eadM": 3
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 24,
+        "runtimeMin": 49,
+        "decoTimeMin": 20,
+        "firstStopDepthM": 12,
+        "cnsPercent": 6,
+        "otu": 17.9,
+        "decozoneStartM": 20.7,
+        "gasDensityGPerL": 5.17,
+        "gasDensityMaxDepthM": 30,
+        "gasDensityMaxGasLabel": "21",
+        "turnPressureBar": 159
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "usedLiters": 2731,
+          "usedBar": 103,
+          "remainingBar": 129,
+          "remainingLiters": 3841
+        }
+      ],
+      "warnings": [],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQEsABcAAAseRgEVAJYA6AEJAwMUHh4GAAAAAAAUDwBCDhQFAA4yLjguNSAoNDIpIGlvcwE0Ph4AAAAAAAAAAAAODxD_AAAAAAE?r=U0tSUwcBAVWNIQ7CQBBF_2x3EyiiiIakpgaDaAKtXs0h1kFKKBpTy0kwdeDooXC0iAZDYLZbBKP--28yI7eb4w4TUAKUKEciS4mzylVus-DS9kpm6XIlLdWoHQkYAhDKwRmgQeNIQPfOG5wGFVQ4Eoj_XAyqqPo5Hg396YnvpQiFooS4vPH3M2HvX3AKKLoCU7ttoNZREI0PM_89v3uPRSufuvU63alXwP4L"
+    },
+    "S2": {
+      "stops": [
+        {
+          "depthM": 21,
+          "stopMin": 2,
+          "runMin": 29,
+          "gasLabel": "21",
+          "ppO2": 0.65,
+          "eadM": 21
+        },
+        {
+          "depthM": 18,
+          "stopMin": 2,
+          "runMin": 31,
+          "gasLabel": "21",
+          "ppO2": 0.59,
+          "eadM": 18
+        },
+        {
+          "depthM": 15,
+          "stopMin": 3,
+          "runMin": 35,
+          "gasLabel": "21",
+          "ppO2": 0.53,
+          "eadM": 15
+        },
+        {
+          "depthM": 12,
+          "stopMin": 5,
+          "runMin": 40,
+          "gasLabel": "21",
+          "ppO2": 0.46,
+          "eadM": 12
+        },
+        {
+          "depthM": 9,
+          "stopMin": 8,
+          "runMin": 48,
+          "gasLabel": "21",
+          "ppO2": 0.4,
+          "eadM": 9
+        },
+        {
+          "depthM": 6,
+          "stopMin": 17,
+          "runMin": 66,
+          "gasLabel": "21",
+          "ppO2": 0.34,
+          "eadM": 6
+        },
+        {
+          "depthM": 3,
+          "stopMin": 29,
+          "runMin": 95,
+          "gasLabel": "21",
+          "ppO2": 0.28,
+          "eadM": 3
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 71.7,
+        "runtimeMin": 96,
+        "decoTimeMin": 66,
+        "firstStopDepthM": 21,
+        "cnsPercent": 12.1,
+        "otu": 32.6,
+        "decozoneStartM": 32.3,
+        "gasDensityGPerL": 7.1,
+        "gasDensityMaxDepthM": 45,
+        "gasDensityMaxGasLabel": "21",
+        "turnPressureBar": 136
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "usedLiters": 5072,
+          "usedBar": 182,
+          "remainingBar": 50,
+          "remainingLiters": 1500
+        }
+      ],
+      "warnings": [
+        {
+          "code": 11,
+          "name": "levelGasDensityCritical",
+          "severity": "critical",
+          "params": {
+            "gasIndex": 0,
+            "depth": 45,
+            "density": 7.10283894,
+            "threshold": 6.2
+          }
+        },
+        {
+          "code": 13,
+          "name": "endHigh",
+          "severity": "warning",
+          "params": {
+            "gasIndex": 0,
+            "depth": 45,
+            "end": 45,
+            "threshold": 30
+          }
+        }
+      ],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQHCABYAAAseRgEVAJYA6AEJAwMUHh4GAAAAAAAUDwBCDhQFAA4yLjguNSAoNDIpIGlvcwE0Ph4AAAAAAAAAAAAODxD_AAAAAAE?r=U0tSUwcBAX3QvUrDUBQH8P-59yalEhrUDEYwi0uHWm1AXTI5OBaXLp2s5kILtUrbIXkDn6CzD-AYfIAO4lBBnB06Kgh-QbFG0HwV6eK9wz1_fvec4YijRk9iETQEPHgasysU1UpRKcY1wz0Q4CIn7MrmlohT9CtNDAEBMNTMgsTSxDBITMlsEE8J0sTgzZkHKlFpZvXERGZ10JjGaWJwEuOZOeDf0c3MmjML6kgdzSw6DpyfNN3iEHvsmoYEn_Zxg3PC1fIdbOXBvGRME9qx3251XNmtNk4kRUtQXHnWb8ZTNnKu7PRafZ_4brmS7ze7stc8bbvEd8o2Ff5t5bLjJsVfWxwtrMXPNpTqgqGv6Et6wSiYmpVfV828Hq4-infjhU-sVz4xP8ypmB488bD2VvvkoR1-PQO_"
+    },
+    "S3": {
+      "stops": [
+        {
+          "depthM": 12,
+          "stopMin": 1,
+          "runMin": 33,
+          "gasLabel": "32",
+          "ppO2": 0.71,
+          "eadM": 9
+        },
+        {
+          "depthM": 9,
+          "stopMin": 3,
+          "runMin": 36,
+          "gasLabel": "32",
+          "ppO2": 0.61,
+          "eadM": 6
+        },
+        {
+          "depthM": 6,
+          "stopMin": 5,
+          "runMin": 42,
+          "gasLabel": "32",
+          "ppO2": 0.52,
+          "eadM": 4
+        },
+        {
+          "depthM": 3,
+          "stopMin": 6,
+          "runMin": 48,
+          "gasLabel": "32",
+          "ppO2": 0.42,
+          "eadM": 1
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 19.3,
+        "runtimeMin": 49,
+        "decoTimeMin": 15,
+        "firstStopDepthM": 12,
+        "cnsPercent": 20.5,
+        "otu": 50.2,
+        "decozoneStartM": 18.6,
+        "gasDensityGPerL": 5.64,
+        "gasDensityMaxDepthM": 33,
+        "gasDensityMaxGasLabel": "32",
+        "turnPressureBar": 140
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "32",
+          "usedLiters": 3150,
+          "usedBar": 115,
+          "remainingBar": 117,
+          "remainingLiters": 3516
+        }
+      ],
+      "warnings": [
+        {
+          "code": 12,
+          "name": "levelGasDensityHigh",
+          "severity": "warning",
+          "params": {
+            "gasIndex": 0,
+            "depth": 33,
+            "density": 5.64123148,
+            "threshold": 5.2
+          }
+        }
+      ],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQFKABwAAAseRgEgAJYA6AEJAwMUHh4GAAAAAAAUDwBCDhQFAA4yLjguNSAoNDIpIGlvcwE0Ph4AAAAAAAAAAAAODxD_AAAAAAE?r=U0tSUwcBAS2Ov4rCQBDGv9lsInp6wnHVHQSul1PXf016wcIHsFOzsIJGMRGiz2Dhw1ja-AA-iygoNqK7SWCK7ze_YWb4aBhKfIB6QIz4kzUE6ezsnJ3JTDd1bXO8Iao1bsiDlxLDgAB8O5kbAHvsU2LwEmdnzgNVqJISg5s4njkXpEilxLQwF14J4Yg6yqxJPcKJ7giwJYTFPlalw0-BqMSL4_V0Evhy2R_OJOmHbV8uImW2_OV8GYSTaE1W67-dj9RShmo-9Q0KlM3IBnY3_u3kC8-vi3V2r_wqLtZN3O2H0W8"
+    },
+    "S4": {
+      "stops": [
+        {
+          "depthM": 18,
+          "stopMin": 1,
+          "runMin": 29,
+          "gasLabel": "50",
+          "ppO2": 1.41,
+          "eadM": 8
+        },
+        {
+          "depthM": 15,
+          "stopMin": 1,
+          "runMin": 31,
+          "gasLabel": "50",
+          "ppO2": 1.26,
+          "eadM": 6
+        },
+        {
+          "depthM": 12,
+          "stopMin": 2,
+          "runMin": 33,
+          "gasLabel": "50",
+          "ppO2": 1.11,
+          "eadM": 4
+        },
+        {
+          "depthM": 9,
+          "stopMin": 4,
+          "runMin": 37,
+          "gasLabel": "50",
+          "ppO2": 0.96,
+          "eadM": 2
+        },
+        {
+          "depthM": 6,
+          "stopMin": 6,
+          "runMin": 44,
+          "gasLabel": "50",
+          "ppO2": 0.81,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 11,
+          "runMin": 55,
+          "gasLabel": "50",
+          "ppO2": 0.66,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 21,
+          "toGasLabel": "50"
+        }
+      ],
+      "summary": {
+        "ttsMin": 31.1,
+        "runtimeMin": 56,
+        "decoTimeMin": 25,
+        "firstStopDepthM": 18,
+        "cnsPercent": 16.9,
+        "otu": 47.5,
+        "decozoneStartM": 28.5,
+        "gasDensityGPerL": 6.46,
+        "gasDensityMaxDepthM": 40,
+        "gasDensityMaxGasLabel": "21",
+        "turnPressureBar": 141
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "usedLiters": 2563,
+          "usedBar": 97,
+          "remainingBar": 135,
+          "remainingLiters": 4009
+        },
+        {
+          "gasLabel": "50",
+          "usedLiters": 744,
+          "usedBar": 70,
+          "remainingBar": 130,
+          "remainingLiters": 1451
+        }
+      ],
+      "warnings": [
+        {
+          "code": 11,
+          "name": "levelGasDensityCritical",
+          "severity": "critical",
+          "params": {
+            "gasIndex": 0,
+            "depth": 40,
+            "density": 6.45864894,
+            "threshold": 6.2
+          }
+        },
+        {
+          "code": 13,
+          "name": "endHigh",
+          "severity": "warning",
+          "params": {
+            "gasIndex": 0,
+            "depth": 40,
+            "end": 40,
+            "threshold": 30
+          }
+        }
+      ],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQGQABcAAAseRgIVAJYA6AEyAG4AyAAJAwMUHh4GAAAAAAAUDwBCDhQFAA4yLjguNSAoNDIpIGlvcwE0Ph4AAAAAAAAAAAAODxD_AAAAAAE?r=U0tSUwcBAX3QvUoDQRSG4W_OzhKz-RWCsAgDYmNlfiBqsXU6vYB00RnYQIySpNg0FhZaCQFD7iFomSux9QZsxKBGXFB0Z2bBzu68-3B2huHHnaHCOtgEiBDlqFFnyexKV-qZ8KC_X2R4o16tOboCBGXerFVrhAUDUCma4lgYs0WYGSukNjNmixAZy6UW2ZNTaxvzUmsDSyxtEQJja6kFYCELbRGEsUxqAjSlqS1KQJ_-Y4rt4wA-XbEJw5w9Jre-IXQ8B9eluX-PFj3h0r1buyXK8_zJuNftSzU46pwqljyHK9X5KNT_28lI1R92R2Pm7O02s6NwoIbhWU_qbLDiv6uO6ksz_K3pFNi0N3UP_S1_o5L3s0FhO-d9l1eFZ_7ifTjvlaWz8mLxyj_Fm4idWMStlftVSrZ-AQ"
+    },
+    "S5": {
+      "stops": [
+        {
+          "depthM": 27,
+          "stopMin": 2,
+          "runMin": 25,
+          "gasLabel": "18/45",
+          "ppO2": 0.67,
+          "eadM": 7
+        },
+        {
+          "depthM": 24,
+          "stopMin": 1,
+          "runMin": 27,
+          "gasLabel": "18/45",
+          "ppO2": 0.61,
+          "eadM": 6
+        },
+        {
+          "depthM": 21,
+          "stopMin": 1,
+          "runMin": 29,
+          "gasLabel": "50",
+          "ppO2": 1.56,
+          "eadM": 10
+        },
+        {
+          "depthM": 18,
+          "stopMin": 1,
+          "runMin": 30,
+          "gasLabel": "50",
+          "ppO2": 1.41,
+          "eadM": 8
+        },
+        {
+          "depthM": 15,
+          "stopMin": 3,
+          "runMin": 34,
+          "gasLabel": "50",
+          "ppO2": 1.26,
+          "eadM": 6
+        },
+        {
+          "depthM": 12,
+          "stopMin": 3,
+          "runMin": 37,
+          "gasLabel": "50",
+          "ppO2": 1.11,
+          "eadM": 4
+        },
+        {
+          "depthM": 9,
+          "stopMin": 6,
+          "runMin": 43,
+          "gasLabel": "50",
+          "ppO2": 0.96,
+          "eadM": 2
+        },
+        {
+          "depthM": 6,
+          "stopMin": 6,
+          "runMin": 51,
+          "gasLabel": "100",
+          "ppO2": 1.61,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 13,
+          "runMin": 64,
+          "gasLabel": "100",
+          "ppO2": 1.31,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 21,
+          "toGasLabel": "50"
+        },
+        {
+          "atDepthM": 6,
+          "toGasLabel": "100"
+        }
+      ],
+      "summary": {
+        "ttsMin": 45.3,
+        "runtimeMin": 65,
+        "decoTimeMin": 36,
+        "firstStopDepthM": 27,
+        "cnsPercent": 44.2,
+        "otu": 83.2,
+        "decozoneStartM": 46.1,
+        "gasDensityGPerL": 5.61,
+        "gasDensityMaxDepthM": 60,
+        "gasDensityMaxGasLabel": "18/45",
+        "turnPressureBar": 133
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "18/45",
+          "usedLiters": 3238,
+          "usedBar": 122,
+          "remainingBar": 110,
+          "remainingLiters": 3202
+        },
+        {
+          "gasLabel": "50",
+          "usedLiters": 572,
+          "usedBar": 55,
+          "remainingBar": 145,
+          "remainingLiters": 1622
+        },
+        {
+          "gasLabel": "100",
+          "usedLiters": 444,
+          "usedBar": 38,
+          "remainingBar": 162,
+          "remainingLiters": 1888
+        }
+      ],
+      "warnings": [
+        {
+          "code": 7,
+          "name": "icdRisk",
+          "severity": "warning",
+          "params": {
+            "depth": 21,
+            "n2Increase": 13,
+            "heDecrease": 45,
+            "ratio": 29,
+            "fromGasIndex": 0,
+            "toGasIndex": 1
+          }
+        },
+        {
+          "code": 12,
+          "name": "levelGasDensityHigh",
+          "severity": "warning",
+          "params": {
+            "gasIndex": 0,
+            "depth": 60,
+            "density": 5.61362598,
+            "threshold": 5.2
+          }
+        }
+      ],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQJYABEAAAseRgMSLZYA6AEyAG4AyABkAG4AyAAJAwMUHh4GAAAAAAAUDwBCDhQFAA4yLjguNSAoNDIpIGlvcwE0Ph4AAAAAAAAAAAAODxD_AAAAAAE?r=U0tSUwcBAVXRP0v7QBzH8c_d5Zp6v1R-SMVff2gGFXFRW7HqkEFBEBdHERG02pNUNJU0Q3UUfAA6-AAcfASdxNUn4OLiqJOD_7EWQXuX81-mvHl9k--RWCuFikQH6DxQQy3Fc-NDI3nSTPbG3kxS0qr00o7TUllF1STFHQGQThjFHeDBM0lx_lMZzrX-tfLZoaz1qyhqerTVWE1bXBSH2lLGDuPjGqtq-2Osqi0uigVtwtgCiE_8uCg8bUldrLlMn4XnsnrU06MmKdx4_6e6YA5zTNImqWff4yRnmEQvzdF5Qk7YBBnFHsOOc4zA2c30Y4x62E_MJQ_QR05xZC-3dFKSTPCi3Ip89aZ2EQzPBKuhVP-meaWEL6fkdw_wsBCVyuq2y14Ly5vThQqJvy-PyipoPktSlrO6vVEKijKcLWzKz4GvLZ5dlEGlFG0Tlh8cbYn8UFb88kZR5TC61YgLvsj_8w7RIzKiLf3PTWfa3bZMUjTEI6_b1-lr9izq7EW8iFvrSTywunvFXt1bq-Her18s3Qw0gA8"
+    },
+    "S6": {
+      "stops": [
+        {
+          "depthM": 36,
+          "stopMin": 1,
+          "runMin": 27,
+          "gasLabel": "21/35",
+          "ppO2": 0.97,
+          "eadM": 16
+        },
+        {
+          "depthM": 33,
+          "stopMin": 2,
+          "runMin": 30,
+          "gasLabel": "21/35",
+          "ppO2": 0.91,
+          "eadM": 14
+        },
+        {
+          "depthM": 30,
+          "stopMin": 1,
+          "runMin": 31,
+          "gasLabel": "21/35",
+          "ppO2": 0.84,
+          "eadM": 12
+        },
+        {
+          "depthM": 27,
+          "stopMin": 2,
+          "runMin": 33,
+          "gasLabel": "21/35",
+          "ppO2": 0.78,
+          "eadM": 11
+        },
+        {
+          "depthM": 24,
+          "stopMin": 3,
+          "runMin": 37,
+          "gasLabel": "21/35",
+          "ppO2": 0.72,
+          "eadM": 9
+        },
+        {
+          "depthM": 21,
+          "stopMin": 2,
+          "runMin": 40,
+          "gasLabel": "50",
+          "ppO2": 1.56,
+          "eadM": 10
+        },
+        {
+          "depthM": 18,
+          "stopMin": 3,
+          "runMin": 43,
+          "gasLabel": "50",
+          "ppO2": 1.41,
+          "eadM": 8
+        },
+        {
+          "depthM": 15,
+          "stopMin": 4,
+          "runMin": 48,
+          "gasLabel": "50",
+          "ppO2": 1.26,
+          "eadM": 6
+        },
+        {
+          "depthM": 12,
+          "stopMin": 7,
+          "runMin": 55,
+          "gasLabel": "50",
+          "ppO2": 1.11,
+          "eadM": 4
+        },
+        {
+          "depthM": 9,
+          "stopMin": 10,
+          "runMin": 65,
+          "gasLabel": "50",
+          "ppO2": 0.96,
+          "eadM": 2
+        },
+        {
+          "depthM": 6,
+          "stopMin": 12,
+          "runMin": 79,
+          "gasLabel": "100",
+          "ppO2": 1.61,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 23,
+          "runMin": 102,
+          "gasLabel": "100",
+          "ppO2": 1.31,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 54,
+          "toGasLabel": "21/35"
+        },
+        {
+          "atDepthM": 21,
+          "toGasLabel": "50"
+        },
+        {
+          "atDepthM": 6,
+          "toGasLabel": "100"
+        }
+      ],
+      "summary": {
+        "ttsMin": 82.6,
+        "runtimeMin": 103,
+        "decoTimeMin": 70,
+        "firstStopDepthM": 36,
+        "cnsPercent": 77.4,
+        "otu": 136.1,
+        "decozoneStartM": 65,
+        "gasDensityGPerL": 6.2,
+        "gasDensityMaxDepthM": 80,
+        "gasDensityMaxGasLabel": "15/55",
+        "turnPressureBar": 109
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "15/55",
+          "usedLiters": 3681,
+          "usedBar": 139,
+          "remainingBar": 93,
+          "remainingLiters": 2711
+        },
+        {
+          "gasLabel": "21/35",
+          "usedLiters": 870,
+          "usedBar": 87,
+          "remainingBar": 113,
+          "remainingLiters": 1216
+        },
+        {
+          "gasLabel": "50",
+          "usedLiters": 983,
+          "usedBar": 92,
+          "remainingBar": 108,
+          "remainingLiters": 1212
+        },
+        {
+          "gasLabel": "100",
+          "usedLiters": 782,
+          "usedBar": 67,
+          "remainingBar": 133,
+          "remainingLiters": 1550
+        }
+      ],
+      "warnings": [
+        {
+          "code": 7,
+          "name": "icdRisk",
+          "severity": "warning",
+          "params": {
+            "depth": 54,
+            "n2Increase": 14,
+            "heDecrease": 20,
+            "ratio": 70,
+            "fromGasIndex": 0,
+            "toGasIndex": 1
+          }
+        },
+        {
+          "code": 8,
+          "name": "hypoxiaCritical",
+          "severity": "critical",
+          "params": {
+            "gasIndex": 0,
+            "depth": 0,
+            "pO2": 0.15195,
+            "threshold": 0.16
+          }
+        },
+        {
+          "code": 16,
+          "name": "hypoxicGasMinOD",
+          "severity": "info",
+          "params": {
+            "gasIndex": 0,
+            "minOD": 1,
+            "fO2": 15
+          }
+        },
+        {
+          "code": 12,
+          "name": "levelGasDensityHigh",
+          "severity": "warning",
+          "params": {
+            "gasIndex": 0,
+            "depth": 80,
+            "density": 6.19986244,
+            "threshold": 5.2
+          }
+        },
+        {
+          "code": 15,
+          "name": "levelHpnsRisk",
+          "severity": "warning",
+          "params": {
+            "gasIndex": 0,
+            "depth": 80,
+            "threshold": 80
+          }
+        }
+      ],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQMgABAAAAseRgQPN5YA6AEVI24AyAAyAG4AyABkAG4AyAAJAwMUHh4GAAAAAAAUDwBCDhQFAA4yLjguNSAoNDIpIGlvcwE0Ph4AAAAAAAAAAAAODxD_AAAAAAE?r=U0tSUwcBAYWSTWsTQRjH_zOzk5ex2day0AhhrSjioeRlZXOQ3CwVe2gUD5aih9jdmEBe6iaH9APoxaNSv0Cv3nIUiXcPpRfBiwfBNxSD1SrxoLszk6aFQvey8-P3_Od5dmeMe5WOj7Ng88AQwxQvuDnXJSGyARtopDQD9PFcKGQRllBKcaeQu-xSUgN66AmFRoSh1UjJMgFgJcd2WRZrpGRB2sTYLsisRkrMo9aU2bHFUNq4tuH84ZB9jRS7hy3Drtx5xnDzubwRUbiTIoq-LDW168t9FFFsSZfSbkv9Ju160p3SrgeyTbYVUaxJJ7RbA12lq4ooSuqzJLFwLDkZL-RlaQl0h-5opLBV_7G1wT3uaaShirL_FLIruI8l2mDzhMX4TfIaTQOPzQruimfpP7jNqnhgDBIXcYe9QcN4kXiCq8zEw5iZzHCSiHHP3-iGpwcURcu53loP_Oh2hI8pav6iP2GLB5VuvR0tl-LVoN28VukQdTt4ty1BnULSmFrfbNRbnh-sVJr-uOagEdhG2SFGPltwk91a4Hdq7YYnuYhZdmy2WW-VF6MoYdWyEy2mSeqENjfint_q1LubhBWzzqFOzM06ZOb4RpP0JCARl6JXeBKBuMXP8QyfE-dFWswK0zptX7DnzkyJkflF_OI_p1-J72zfem_siz322_rKRvYnY2R_CN-f2V_rR3pv5d3Tt48-vvwG_Ac"
+    },
+    "S7": {
+      "stops": [
+        {
+          "depthM": 15,
+          "stopMin": 2,
+          "runMin": 30,
+          "gasLabel": "21",
+          "ppO2": 0.53,
+          "eadM": 15
+        },
+        {
+          "depthM": 12,
+          "stopMin": 4,
+          "runMin": 34,
+          "gasLabel": "21",
+          "ppO2": 0.46,
+          "eadM": 12
+        },
+        {
+          "depthM": 9,
+          "stopMin": 6,
+          "runMin": 40,
+          "gasLabel": "21",
+          "ppO2": 0.4,
+          "eadM": 9
+        },
+        {
+          "depthM": 6,
+          "stopMin": 11,
+          "runMin": 52,
+          "gasLabel": "21",
+          "ppO2": 0.34,
+          "eadM": 6
+        },
+        {
+          "depthM": 3,
+          "stopMin": 21,
+          "runMin": 73,
+          "gasLabel": "21",
+          "ppO2": 0.28,
+          "eadM": 3
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 49.7,
+        "runtimeMin": 74,
+        "decoTimeMin": 44,
+        "firstStopDepthM": 15,
+        "cnsPercent": 11.4,
+        "otu": 31.3,
+        "decozoneStartM": 32.3,
+        "gasDensityGPerL": 7.1,
+        "gasDensityMaxDepthM": 45,
+        "gasDensityMaxGasLabel": "21",
+        "turnPressureBar": 136
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "usedLiters": 4271,
+          "usedBar": 155,
+          "remainingBar": 77,
+          "remainingLiters": 2301
+        }
+      ],
+      "warnings": [
+        {
+          "code": 11,
+          "name": "levelGasDensityCritical",
+          "severity": "critical",
+          "params": {
+            "gasIndex": 0,
+            "depth": 45,
+            "density": 7.10283894,
+            "threshold": 6.2
+          }
+        },
+        {
+          "code": 13,
+          "name": "endHigh",
+          "severity": "warning",
+          "params": {
+            "gasIndex": 0,
+            "depth": 45,
+            "end": 45,
+            "threshold": 30
+          }
+        }
+      ],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQHCABYAAAsyUAEVAJYA6AEJAwMUHh4GAAAAAAAUDwBCDhQFAA4yLjguNSAoNDIpIGlvcwE0Ph4AAAAAAAAAAAAODxD_AAAAAAE?r=U0tSUwcBAX2PPUrEYBCG3_l-UJcoFp-ChWlsUqy7JoWi5ASCHiDdaj7IwholSZG9gQdYbGw8gGDjCbYQD-EBFBeJWKjrb342iM1OM-_DMzMw4qATa8yDhkCK1GCOTXmWlrSKzHAGXONWCsdub4iC8qmKGFICoGqXAhmy2nmlExPngQIKKmJwS8cnzgUbsEFFDOY_Z0KMxKh2eblwf0qiZ-yiyW5oSIhoGxc4JZwvXmFv9mvlkjFDGIf9Xjf0dbTfOdKUPyN9fZIExZX1GV-HcTfpE99q2XNJEOk4OO75xDdbDi1MXeU69Mvwt1agiaWi7UC21apSa8ths_HdGMtP_qKe-Kv1IN7cRz5W717GP-7ugV8"
+    },
+    "FS1": {
+      "stops": [
+        {
+          "depthM": 12,
+          "stopMin": 2,
+          "runMin": 27,
+          "gasLabel": "21",
+          "ppO2": 0.46,
+          "eadM": 12
+        },
+        {
+          "depthM": 9,
+          "stopMin": 3,
+          "runMin": 30,
+          "gasLabel": "21",
+          "ppO2": 0.4,
+          "eadM": 9
+        },
+        {
+          "depthM": 6,
+          "stopMin": 4,
+          "runMin": 35,
+          "gasLabel": "21",
+          "ppO2": 0.34,
+          "eadM": 6
+        },
+        {
+          "depthM": 3,
+          "stopMin": 4,
+          "runMin": 39,
+          "gasLabel": "21",
+          "ppO2": 0.27,
+          "eadM": 3
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 17,
+        "runtimeMin": 40,
+        "decoTimeMin": 13,
+        "firstStopDepthM": 12,
+        "cnsPercent": 5.3,
+        "otu": 15.6,
+        "decozoneStartM": 20.5,
+        "gasDensityGPerL": 5.06,
+        "gasDensityMaxDepthM": 30,
+        "gasDensityMaxGasLabel": "21",
+        "turnPressureBar": 166
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "usedLiters": 2305,
+          "usedBar": 88,
+          "remainingBar": 144,
+          "remainingLiters": 4268
+        }
+      ],
+      "warnings": [],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQEsABUAAAseRgEVAJYA6AEJAwMUHh4GAQAAAAAUDwBCDhQFAA4yLjguNSAoNDIpIGlvcwE0Ph4AAAAAAAAAAAAODxD_AAAAAAE?r=U0tSUwcBAVWKvQqCUACFv3u9QhmRRIuLS4uDUQptvkFLY7gVtba0-Bg9QHND1OZjGYkQQkN1_Vk80_nOd9RuezowQPiQkPRkGAjdVaayqks9VrupwmC-UB2SxAKYqNbFkJI2JIlqZ7Qugpy8IYnbcW7H6UREv5q44TEUH-ELllw4chVs-oKzfXceMKree8zVbLy2ra_zMp5uoQqvMN7T0iwtbf8"
+    },
+    "FS2": {
+      "stops": [
+        {
+          "depthM": 21,
+          "stopMin": 1,
+          "runMin": 25,
+          "gasLabel": "21",
+          "ppO2": 0.64,
+          "eadM": 21
+        },
+        {
+          "depthM": 18,
+          "stopMin": 1,
+          "runMin": 26,
+          "gasLabel": "21",
+          "ppO2": 0.58,
+          "eadM": 18
+        },
+        {
+          "depthM": 15,
+          "stopMin": 2,
+          "runMin": 29,
+          "gasLabel": "21",
+          "ppO2": 0.52,
+          "eadM": 15
+        },
+        {
+          "depthM": 12,
+          "stopMin": 4,
+          "runMin": 33,
+          "gasLabel": "21",
+          "ppO2": 0.46,
+          "eadM": 12
+        },
+        {
+          "depthM": 9,
+          "stopMin": 6,
+          "runMin": 39,
+          "gasLabel": "21",
+          "ppO2": 0.4,
+          "eadM": 9
+        },
+        {
+          "depthM": 6,
+          "stopMin": 11,
+          "runMin": 51,
+          "gasLabel": "21",
+          "ppO2": 0.34,
+          "eadM": 6
+        },
+        {
+          "depthM": 3,
+          "stopMin": 20,
+          "runMin": 71,
+          "gasLabel": "21",
+          "ppO2": 0.27,
+          "eadM": 3
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 50.7,
+        "runtimeMin": 72,
+        "decoTimeMin": 45,
+        "firstStopDepthM": 21,
+        "cnsPercent": 10,
+        "otu": 27,
+        "decozoneStartM": 31.8,
+        "gasDensityGPerL": 6.93,
+        "gasDensityMaxDepthM": 45,
+        "gasDensityMaxGasLabel": "21",
+        "turnPressureBar": 149
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "usedLiters": 3960,
+          "usedBar": 145,
+          "remainingBar": 87,
+          "remainingLiters": 2612
+        }
+      ],
+      "warnings": [
+        {
+          "code": 11,
+          "name": "levelGasDensityCritical",
+          "severity": "critical",
+          "params": {
+            "gasIndex": 0,
+            "depth": 45,
+            "density": 6.9339736,
+            "threshold": 6.2
+          }
+        },
+        {
+          "code": 13,
+          "name": "endHigh",
+          "severity": "warning",
+          "params": {
+            "gasIndex": 0,
+            "depth": 45,
+            "end": 45,
+            "threshold": 30
+          }
+        }
+      ],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQHCABMAAAseRgEVAJYA6AEJAwMUHh4GAQAAAAAUDwBCDhQFAA4yLjguNSAoNDIpIGlvcwE0Ph4AAAAAAAAAAAAODxD_AAAAAAE?r=U0tSUwcBAX3QPUvDQBzH8d__7qJYa1shgxHJ4uJStcEHhLwAQXEVulVzkEKN0mRIX4ZQO_sCHDrE1aG7i-9CEFqLViRgzSOSxVvu_-XDHceJi5YrsQoaAT78ZWY0KJqFJ7x4ZngBAtwvCKOxsyviMmGmxRAQADW3oGCDxJTMBsntaTH4BfOBCSa5NRMTmTVBNtlpMZiJ8cxMsD7rp8WgF0yHGIphbtGKXjZPikIco84eaUSwqIIn3BFuqz7OS3vaA2NlUb7sddqOJbtnrStJ0Scolrzx7PiW-qIlHbft9YgfbB8teXZXuvZ1x4rToMq_R7l0rGT4OxanjvV424dyWlKra9qGWtVWzJoa1qbivfTFp-qYz7bexEz5ORzz783Pkw8eKvPnV-AX"
+    },
+    "FS3": {
+      "stops": [
+        {
+          "depthM": 12,
+          "stopMin": 1,
+          "runMin": 31,
+          "gasLabel": "32",
+          "ppO2": 0.7,
+          "eadM": 9
+        },
+        {
+          "depthM": 9,
+          "stopMin": 2,
+          "runMin": 33,
+          "gasLabel": "32",
+          "ppO2": 0.6,
+          "eadM": 6
+        },
+        {
+          "depthM": 6,
+          "stopMin": 4,
+          "runMin": 38,
+          "gasLabel": "32",
+          "ppO2": 0.51,
+          "eadM": 4
+        },
+        {
+          "depthM": 3,
+          "stopMin": 4,
+          "runMin": 42,
+          "gasLabel": "32",
+          "ppO2": 0.42,
+          "eadM": 1
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 15.3,
+        "runtimeMin": 43,
+        "decoTimeMin": 11,
+        "firstStopDepthM": 12,
+        "cnsPercent": 18,
+        "otu": 45.2,
+        "decozoneStartM": 18.5,
+        "gasDensityGPerL": 5.52,
+        "gasDensityMaxDepthM": 33,
+        "gasDensityMaxGasLabel": "32",
+        "turnPressureBar": 148
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "32",
+          "usedLiters": 2800,
+          "usedBar": 103,
+          "remainingBar": 129,
+          "remainingLiters": 3866
+        }
+      ],
+      "warnings": [
+        {
+          "code": 12,
+          "name": "levelGasDensityHigh",
+          "severity": "warning",
+          "params": {
+            "gasIndex": 0,
+            "depth": 33,
+            "density": 5.515514936,
+            "threshold": 5.2
+          }
+        }
+      ],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQFKABoAAAseRgEgAJYA6AEJAwMUHh4GAQAAAAAUDwBCDhQFAA4yLjguNSAoNDIpIGlvcwE0Ph4AAAAAAAAAAAAODxD_AAAAAAE?r=U0tSUwcBAWNJSixOZeBmYPRiYKhgqOBlMjZiBLLZJNgkQGwmoCAQ9bCzGBvpG7CAeDYMNhAeE0MUIwMDgwgbVC4KbAKEx8RgA5ZjhcrZMDB8YPgA4TExyIHlWKBycmA5CI8JKAGy4T-YxzCTQZuBm0mD0YuRYQvjEYYUhimMDOlcHxga-aWkuBgZeVl4kitzMvNSUov8EnNTGYEOZk1JLSjJAJmiyJ6SmlecWVLJyGyqZ8pZklGUWpyRn5MC4hox8IGU1DOwuk-T5_or9In5ncg3lk8aH5m_yn1n_cEPlAMA"
+    },
+    "FS4": {
+      "stops": [
+        {
+          "depthM": 18,
+          "stopMin": 1,
+          "runMin": 27,
+          "gasLabel": "50",
+          "ppO2": 1.38,
+          "eadM": 8
+        },
+        {
+          "depthM": 15,
+          "stopMin": 1,
+          "runMin": 29,
+          "gasLabel": "50",
+          "ppO2": 1.23,
+          "eadM": 6
+        },
+        {
+          "depthM": 12,
+          "stopMin": 1,
+          "runMin": 30,
+          "gasLabel": "50",
+          "ppO2": 1.09,
+          "eadM": 4
+        },
+        {
+          "depthM": 9,
+          "stopMin": 3,
+          "runMin": 33,
+          "gasLabel": "50",
+          "ppO2": 0.94,
+          "eadM": 2
+        },
+        {
+          "depthM": 6,
+          "stopMin": 5,
+          "runMin": 39,
+          "gasLabel": "50",
+          "ppO2": 0.8,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 8,
+          "runMin": 47,
+          "gasLabel": "50",
+          "ppO2": 0.65,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 21,
+          "toGasLabel": "50"
+        }
+      ],
+      "summary": {
+        "ttsMin": 25.1,
+        "runtimeMin": 48,
+        "decoTimeMin": 19,
+        "firstStopDepthM": 18,
+        "cnsPercent": 14.1,
+        "otu": 40.1,
+        "decozoneStartM": 28.2,
+        "gasDensityGPerL": 6.31,
+        "gasDensityMaxDepthM": 40,
+        "gasDensityMaxGasLabel": "21",
+        "turnPressureBar": 150
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "usedLiters": 2311,
+          "usedBar": 89,
+          "remainingBar": 143,
+          "remainingLiters": 4261
+        },
+        {
+          "gasLabel": "50",
+          "usedLiters": 593,
+          "usedBar": 57,
+          "remainingBar": 143,
+          "remainingLiters": 1602
+        }
+      ],
+      "warnings": [
+        {
+          "code": 11,
+          "name": "levelGasDensityCritical",
+          "severity": "critical",
+          "params": {
+            "gasIndex": 0,
+            "depth": 40,
+            "density": 6.308546416,
+            "threshold": 6.2
+          }
+        },
+        {
+          "code": 13,
+          "name": "endHigh",
+          "severity": "warning",
+          "params": {
+            "gasIndex": 0,
+            "depth": 40,
+            "end": 40,
+            "threshold": 30
+          }
+        }
+      ],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQGQABUAAAseRgIVAJYA6AEyAG4AyAAJAwMUHh4GAQAAAAAUDwBCDhQFAA4yLjguNSAoNDIpIGlvcwE0Ph4AAAAAAAAAAAAODxD_AAAAAAE?r=U0tSUwcBAX3Qz0oCURTH8d85czUdzZSkmM1AuxaS40RBMKu2QtAyd9ZcUDALFRo3vUFoBL5Bm2jpk_QE7pNqYWC4sLn3DrRrd77zmfuHKy6bfYkSaAxEiGz2axTPYi7mama8qe_3aeHXqp6lKkCwJY68qseYEoByQZfAVJspxkRbPrGJNlOMSFsusUibKUZDWzaxBuJtp6YYgbZMYgGoQhVTDFdbOjEXNKOZKY5BnbDWhRU8bPMdjQkP9IgXTBgX2Q2Mis_OK074HKP0aeaJOS_yV8NOuxvK3lnzWlL8HKlQ3g5aar_9jVB2--3BkKzjg8PsoNWT_dZNJ1TpU-HfpZbshnr4W6bSxa65aaru7Dk75Zxj10v2uvi9-SE-7YW1sJfWwp2Lpf9u_dS_Uis7_vsX"
+    },
+    "FS5": {
+      "stops": [
+        {
+          "depthM": 21,
+          "stopMin": 1,
+          "runMin": 30,
+          "gasLabel": "50",
+          "ppO2": 1.53,
+          "eadM": 9
+        },
+        {
+          "depthM": 18,
+          "stopMin": 1,
+          "runMin": 31,
+          "gasLabel": "50",
+          "ppO2": 1.38,
+          "eadM": 8
+        },
+        {
+          "depthM": 15,
+          "stopMin": 1,
+          "runMin": 33,
+          "gasLabel": "50",
+          "ppO2": 1.23,
+          "eadM": 6
+        },
+        {
+          "depthM": 12,
+          "stopMin": 3,
+          "runMin": 36,
+          "gasLabel": "50",
+          "ppO2": 1.09,
+          "eadM": 4
+        },
+        {
+          "depthM": 9,
+          "stopMin": 4,
+          "runMin": 40,
+          "gasLabel": "50",
+          "ppO2": 0.94,
+          "eadM": 2
+        },
+        {
+          "depthM": 6,
+          "stopMin": 8,
+          "runMin": 49,
+          "gasLabel": "50",
+          "ppO2": 0.8,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 15,
+          "runMin": 64,
+          "gasLabel": "50",
+          "ppO2": 0.65,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 21,
+          "toGasLabel": "50"
+        }
+      ],
+      "summary": {
+        "ttsMin": 40.2,
+        "runtimeMin": 65,
+        "decoTimeMin": 33,
+        "firstStopDepthM": 21,
+        "cnsPercent": 22.3,
+        "otu": 59.8,
+        "decozoneStartM": 36.5,
+        "gasDensityGPerL": 5.36,
+        "gasDensityMaxDepthM": 50,
+        "gasDensityMaxGasLabel": "21/35",
+        "turnPressureBar": 129
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21/35",
+          "usedLiters": 3001,
+          "usedBar": 113,
+          "remainingBar": 119,
+          "remainingLiters": 3487
+        },
+        {
+          "gasLabel": "50",
+          "usedLiters": 936,
+          "usedBar": 88,
+          "remainingBar": 112,
+          "remainingLiters": 1258
+        }
+      ],
+      "warnings": [
+        {
+          "code": 12,
+          "name": "levelGasDensityHigh",
+          "severity": "warning",
+          "params": {
+            "gasIndex": 0,
+            "depth": 50,
+            "density": 5.35714253,
+            "threshold": 5.2
+          }
+        }
+      ],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQH0ABYAAAseRgIVI5YA6AEyAG4AyAAJAwMUHh4GAQAAAAAUDwBCDhQFAA4yLjguNSAoNDIpIGlvcwE0Ph4AAAAAAAAAAAAODxD_AAAAAAE?r=U0tSUwcBAVXQP04CQRTH8d_8QxhAiVKIBcZss5UgSrcNF7A0hEp0N4EEEYFEKE04AQWtrQfYxtIreAGpLCjMRlaNUdTdmWksv_lM3rw8ftYceNgECQEffkZUDkqHVRKlsIVtkuIx1oeEThanA2eDV8ulMv9XFD4BkF835ivTRTFTljE2U6aLYqQsbWyk1tFF0VCWMtYAAgS6KBxlSWMOyJzMdVEUlSWMFcEmbKKLRhD__quKTFHDHt0mIcETPYnG31Bcpe9xnb0t1FFnd-jxRXJKSJZnzseddtf1-sfNC4_oiwjX6w1b8cjKmut1B-3hmLDq_lFq2Op7g9Zlx42zgt34iQ1xKgtyK7-Tz9UsK2un5SoXJJ5lKF94KJfsTYbsvbjgn2JlBexL_Fiv9gf7dpbuEvgD"
+    },
+    "A1": {
+      "stops": [
+        {
+          "depthM": 12,
+          "stopMin": 2,
+          "runMin": 32,
+          "gasLabel": "50",
+          "ppO2": 1.11,
+          "eadM": 4
+        },
+        {
+          "depthM": 9,
+          "stopMin": 2,
+          "runMin": 34,
+          "gasLabel": "50",
+          "ppO2": 0.96,
+          "eadM": 2
+        },
+        {
+          "depthM": 6,
+          "stopMin": 6,
+          "runMin": 41,
+          "gasLabel": "50",
+          "ppO2": 0.81,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 7,
+          "runMin": 48,
+          "gasLabel": "50",
+          "ppO2": 0.66,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 21,
+          "toGasLabel": "50"
+        }
+      ],
+      "summary": {
+        "ttsMin": 22,
+        "runtimeMin": 49,
+        "decoTimeMin": 17,
+        "firstStopDepthM": 12,
+        "cnsPercent": 13.4,
+        "otu": 37.8,
+        "decozoneStartM": 21.3,
+        "gasDensityGPerL": 5.03,
+        "gasDensityMaxDepthM": 45,
+        "gasDensityMaxGasLabel": "21/35",
+        "turnPressureBar": 146
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21/35",
+          "usedLiters": 2317,
+          "usedBar": 89,
+          "remainingBar": 143,
+          "remainingLiters": 4171
+        },
+        {
+          "gasLabel": "50",
+          "usedLiters": 530,
+          "usedBar": 51,
+          "remainingBar": 149,
+          "remainingLiters": 1664
+        }
+      ],
+      "warnings": [],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAgHCAAgAAAsBLAAPAAALHkYCFSOWAOgBMgBuAMgACQMDFB4eBgAAAAAAFA8AQg4UBQAOMi44LjUgKDQyKSBpb3MBND4eAAAAAAAAAAAADg8Q_wAAAAAB?r=U0tSUwcBATXNO2pCQRTG8e-cmavXyeOacAlJI4E0IQhqxG6a1NlAtEsgYJ9GUlmIlSAI7sCVuAOtXYFWPlBUfMydGcsf__OQP99_v4hAQ6CBxnXwXiqUK2RIIxp5MuVtDS81D9ESLU_GGNDQaUfhmZWVYqHIZi_RlZVMZA45MWoEIFa-1WxzYmjbQt80qE51J0bOtrRvOdCABk5sQvLvZIUJSrijDQ0JbfpHBz1GNXODbvbz6Qtlvkc_1Qx7wGOy94agmomjh9soUs_Ll-3rQQt1VPvUWs7jmVjFK7HWU7n9WAQ7ZebP"
+    },
+    "A2": {
+      "stops": [
+        {
+          "depthM": 33,
+          "stopMin": 1,
+          "runMin": 25,
+          "gasLabel": "18/45",
+          "ppO2": 0.78,
+          "eadM": 10
+        },
+        {
+          "depthM": 27,
+          "stopMin": 1,
+          "runMin": 27,
+          "gasLabel": "35/25",
+          "ppO2": 1.3,
+          "eadM": 9
+        },
+        {
+          "depthM": 24,
+          "stopMin": 2,
+          "runMin": 30,
+          "gasLabel": "35/25",
+          "ppO2": 1.19,
+          "eadM": 7
+        },
+        {
+          "depthM": 18,
+          "stopMin": 2,
+          "runMin": 33,
+          "gasLabel": "50",
+          "ppO2": 1.41,
+          "eadM": 8
+        },
+        {
+          "depthM": 15,
+          "stopMin": 3,
+          "runMin": 37,
+          "gasLabel": "50",
+          "ppO2": 1.26,
+          "eadM": 6
+        },
+        {
+          "depthM": 12,
+          "stopMin": 5,
+          "runMin": 42,
+          "gasLabel": "50",
+          "ppO2": 1.11,
+          "eadM": 4
+        },
+        {
+          "depthM": 9,
+          "stopMin": 7,
+          "runMin": 49,
+          "gasLabel": "50",
+          "ppO2": 0.96,
+          "eadM": 2
+        },
+        {
+          "depthM": 6,
+          "stopMin": 8,
+          "runMin": 59,
+          "gasLabel": "100",
+          "ppO2": 1.61,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 15,
+          "runMin": 74,
+          "gasLabel": "100",
+          "ppO2": 1.31,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 30,
+          "toGasLabel": "35/25"
+        },
+        {
+          "atDepthM": 21,
+          "toGasLabel": "50"
+        },
+        {
+          "atDepthM": 6,
+          "toGasLabel": "100"
+        }
+      ],
+      "summary": {
+        "ttsMin": 55.4,
+        "runtimeMin": 75,
+        "decoTimeMin": 44,
+        "firstStopDepthM": 33,
+        "cnsPercent": 57.4,
+        "otu": 104.7,
+        "decozoneStartM": 54,
+        "gasDensityGPerL": 6.41,
+        "gasDensityMaxDepthM": 70,
+        "gasDensityMaxGasLabel": "18/45",
+        "turnPressureBar": 124
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "18/45",
+          "usedLiters": 3454,
+          "usedBar": 130,
+          "remainingBar": 102,
+          "remainingLiters": 2986
+        },
+        {
+          "gasLabel": "35/25",
+          "usedLiters": 268,
+          "usedBar": 27,
+          "remainingBar": 173,
+          "remainingLiters": 1862
+        },
+        {
+          "gasLabel": "50",
+          "usedLiters": 661,
+          "usedBar": 63,
+          "remainingBar": 137,
+          "remainingLiters": 1533
+        },
+        {
+          "gasLabel": "100",
+          "usedLiters": 531,
+          "usedBar": 46,
+          "remainingBar": 154,
+          "remainingLiters": 1801
+        }
+      ],
+      "warnings": [
+        {
+          "code": 10,
+          "name": "levelExceedsMOD",
+          "severity": "critical",
+          "params": {
+            "gasIndex": 0,
+            "depth": 70,
+            "mod": 68,
+            "pO2": 1.44234,
+            "maxPO2": 1.4
+          }
+        },
+        {
+          "code": 11,
+          "name": "levelGasDensityCritical",
+          "severity": "critical",
+          "params": {
+            "gasIndex": 0,
+            "depth": 70,
+            "density": 6.41408598,
+            "threshold": 6.2
+          }
+        }
+      ],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQK8ABAAAAseRgQSLZYA6AEjGW4AyAAyAG4AyABkAG4AyAAJAwMUHh4GAAAAAAAUDwBCDhQFAA4yLjguNSAoNDIpIGlvcwE0Ph4AAAAAAAAAAAAODxD_AAAAAAE?r=U0tSUwcBAYXRv2sTYRzH8c_zfZ7Hyz1J7kRP_FXiECgiIb9MxCHoIh0UVBw7Gb3TFJK0JBmuIILSxVWwg3MnwS1jh_4NnR06aAeHkjT0F6W0d8_z7J3uXryfH9_jxLv2MMId0CYwwcSTtceVRpMl5Ft8y5LYc2CMw4yhSNlCy5JYiQEIHEPOSrp68mGzUk-qp2veUDBPV0vCRNecrckMiBFbErZ1zRpybOu9V0WzWqkSxjp6WiKZL91pRFg3l9q2no4_NiLE5lDbYiTzl4wIi7op2xbBNtiGEaGlW0aLJ4PoWWStqpe2wHbYjiWhYD_a1gL4Gl-zpCSle88tH-AFSvSFNhk9ETfZAJ8EvuY_40P21-37uMty-O0sZN7gKf3AN3mW-Y4yXcdPx3XniLIy9361u9QPo8HLdi9i5ifIMFoZddJ7FnhvOUxfnvGVV3UmauVG40qvHb-2qFJOXHKCE0b94dJolfFH5YY76gyiYWe5G6asYz5dUoB8K4uyIG-peTWnAv-G7wf54r3iNXWqZu6es6umfKam4iB5HgS7_EjNxHHwn5_4-_4hP63_dU8-_un-60-BCw"
+    },
+    "A3": {
+      "stops": [
+        {
+          "depthM": 24,
+          "stopMin": 2,
+          "runMin": 30,
+          "gasLabel": "21/35",
+          "ppO2": 0.72,
+          "eadM": 9
+        },
+        {
+          "depthM": 18,
+          "stopMin": 2,
+          "runMin": 33,
+          "gasLabel": "50",
+          "ppO2": 1.41,
+          "eadM": 8
+        },
+        {
+          "depthM": 15,
+          "stopMin": 1,
+          "runMin": 35,
+          "gasLabel": "50",
+          "ppO2": 1.26,
+          "eadM": 6
+        },
+        {
+          "depthM": 12,
+          "stopMin": 3,
+          "runMin": 38,
+          "gasLabel": "50",
+          "ppO2": 1.11,
+          "eadM": 4
+        },
+        {
+          "depthM": 9,
+          "stopMin": 5,
+          "runMin": 43,
+          "gasLabel": "50",
+          "ppO2": 0.96,
+          "eadM": 2
+        },
+        {
+          "depthM": 6,
+          "stopMin": 8,
+          "runMin": 52,
+          "gasLabel": "50",
+          "ppO2": 0.81,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 15,
+          "runMin": 67,
+          "gasLabel": "50",
+          "ppO2": 0.66,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 21,
+          "toGasLabel": "50"
+        }
+      ],
+      "summary": {
+        "ttsMin": 43.3,
+        "runtimeMin": 68,
+        "decoTimeMin": 36,
+        "firstStopDepthM": 24,
+        "cnsPercent": 23.9,
+        "otu": 64.3,
+        "decozoneStartM": 37.3,
+        "gasDensityGPerL": 5.58,
+        "gasDensityMaxDepthM": 51,
+        "gasDensityMaxGasLabel": "21/35",
+        "turnPressureBar": 125
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21/35",
+          "usedLiters": 3272,
+          "usedBar": 123,
+          "remainingBar": 109,
+          "remainingLiters": 3216
+        },
+        {
+          "gasLabel": "50",
+          "usedLiters": 972,
+          "usedBar": 91,
+          "remainingBar": 109,
+          "remainingLiters": 1223
+        }
+      ],
+      "warnings": [
+        {
+          "code": 12,
+          "name": "levelGasDensityHigh",
+          "severity": "warning",
+          "params": {
+            "gasIndex": 0,
+            "depth": 51,
+            "density": 5.58141352,
+            "threshold": 5.2
+          }
+        }
+      ],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQH-ABYAAAsUSwIVI5YA6AEyAG4AyAAJAwMUHh4GAAAAAAAUDwBCDhQFAA4yLjguNSAoNDIpIGlvcwE0Ph4AAAAAAAAAAAAODxD_AAAAAAE?r=U0tSUwcBAS3QT0sCQRjH8d_8WbTNtaIN8qAQFBiImmKnPUnnzmEnaxcU1ML1sBKd8gUEge8j2PdQh06-Ai9d9pItgRuitTszxw_fmXkeht-0XQf7IBvAh29otbNKvUFiakWtqEixADz4KUku6SlSzAgAU5FhBliwdnmjWqlS-CJmhXg8I7kpRTEVzVBtKu5JUXiibavmifWkKFqi6aq1QEqkJEVhiZZWzQKZk7kURUEuqloBbMImUjQOyfQ_IfKKCxzTMtkQfNEncohHiofMO_qZ59wVrtkH-vwt_UKIwTO34153YDvDy3bfIfIPNNu5H3WSJ-sp2xm43dGYsEb5fGvUGTpu565nJ6zhKDlyCtakTT2vH5h5cy-XdU_0tfHNAr4wAxbqEQvNT_6jL9myELDfWsBXZmSFbFWM7FBb78Qv_AM"
+    },
+    "A4": {
+      "stops": [
+        {
+          "depthM": 21,
+          "stopMin": 1,
+          "runMin": 25,
+          "gasLabel": "21",
+          "ppO2": 0.65,
+          "eadM": 21
+        },
+        {
+          "depthM": 18,
+          "stopMin": 2,
+          "runMin": 28,
+          "gasLabel": "21",
+          "ppO2": 0.59,
+          "eadM": 18
+        },
+        {
+          "depthM": 15,
+          "stopMin": 2,
+          "runMin": 30,
+          "gasLabel": "21",
+          "ppO2": 0.53,
+          "eadM": 15
+        },
+        {
+          "depthM": 12,
+          "stopMin": 4,
+          "runMin": 34,
+          "gasLabel": "21",
+          "ppO2": 0.46,
+          "eadM": 12
+        },
+        {
+          "depthM": 9,
+          "stopMin": 6,
+          "runMin": 41,
+          "gasLabel": "21",
+          "ppO2": 0.4,
+          "eadM": 9
+        },
+        {
+          "depthM": 6,
+          "stopMin": 56,
+          "runMin": 97,
+          "gasLabel": "21",
+          "ppO2": 0.34,
+          "eadM": 6
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 77.3,
+        "runtimeMin": 99,
+        "decoTimeMin": 71,
+        "firstStopDepthM": 21,
+        "cnsPercent": 10.5,
+        "otu": 28.4,
+        "decozoneStartM": 31.8,
+        "gasDensityGPerL": 7.1,
+        "gasDensityMaxDepthM": 45,
+        "gasDensityMaxGasLabel": "21",
+        "turnPressureBar": 147
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "usedLiters": 5025,
+          "usedBar": 180,
+          "remainingBar": 52,
+          "remainingLiters": 1547
+        }
+      ],
+      "warnings": [
+        {
+          "code": 11,
+          "name": "levelGasDensityCritical",
+          "severity": "critical",
+          "params": {
+            "gasIndex": 0,
+            "depth": 45,
+            "density": 7.10283894,
+            "threshold": 6.2
+          }
+        },
+        {
+          "code": 13,
+          "name": "endHigh",
+          "severity": "warning",
+          "params": {
+            "gasIndex": 0,
+            "depth": 45,
+            "end": 45,
+            "threshold": 30
+          }
+        }
+      ],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQHCABMAAAseRgEVAJYA6AEJAwYUPB4GAAAAAAAUDwBCDhQFAA4yLjguNSAoNDIpIGlvcwE0Ph4AAAAAAAAAAAAODxD_AAAAAAE?r=U0tSUwcBAX2PsU7CUBSG_3PvLUQFIfEOEglhdBFto7J0d-MB2JDepE2wGtqhPIcJM-6OnR0YfACfw4RKjERI1Pa2xrgwnf_Ll_-cHHE9CBRqoDkQIaowy6Q0i1CEWWZ4AWLMysIyT89ERjbsnBhiAiBLhYv1hpwYptoZhZtqlxND9M9FQILk1_W1E4Xrg1xyc2KwteOFs1FtV9s5sVRkF741cQNDXLFnmhM8auIJ94T44AHnpb3GI2MVURlORp7vqHFvcKMofdRw1F3oZltOyo7yAy-cEO92zJ3QHavAvR05xC87Fu1vrXLlOzr81TJs4SgbFzB6u7J22GjKWqNq1-WmvhRvcsGX8p1_HL-KlfHVTfhnaxUs1slsY6xl2voB"
+    },
+    "A5": {
+      "stops": [
+        {
+          "depthM": 12,
+          "stopMin": 2,
+          "runMin": 28,
+          "gasLabel": "21",
+          "ppO2": 0.41,
+          "eadM": 12
+        },
+        {
+          "depthM": 9,
+          "stopMin": 4,
+          "runMin": 33,
+          "gasLabel": "21",
+          "ppO2": 0.35,
+          "eadM": 9
+        },
+        {
+          "depthM": 6,
+          "stopMin": 30,
+          "runMin": 63,
+          "gasLabel": "21",
+          "ppO2": 0.29,
+          "eadM": 6
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 40.7,
+        "runtimeMin": 65,
+        "decoTimeMin": 36,
+        "firstStopDepthM": 12,
+        "cnsPercent": 5.2,
+        "otu": 14.9,
+        "decozoneStartM": 21.1,
+        "gasDensityGPerL": 4.77,
+        "gasDensityMaxDepthM": 30,
+        "gasDensityMaxGasLabel": "21",
+        "turnPressureBar": 164
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "usedLiters": 2949,
+          "usedBar": 111,
+          "remainingBar": 121,
+          "remainingLiters": 3623
+        }
+      ],
+      "warnings": [
+        {
+          "code": 9,
+          "name": "hypoxiaRisk",
+          "severity": "warning",
+          "params": {
+            "gasIndex": 0,
+            "depth": 0,
+            "pO2": 0.16653,
+            "threshold": 0.18
+          }
+        },
+        {
+          "code": 16,
+          "name": "hypoxicGasMinOD",
+          "severity": "info",
+          "params": {
+            "gasIndex": 0,
+            "minOD": 0,
+            "fO2": 21
+          }
+        }
+      ],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQEsABcAAAseRgEVAJYA6AEJAwYUPB4GAQfpAAAUDwBCDhQFAA4yLjguNSAoNDIpIGlvcwE0Ph4AAAAAAAAAAAAODxD_AAAAAAE?r=U0tSUwcBAWNJSixOZeBkYNRhYKhgqOBgMjJkBLJZU1hTQGwmoCBInJXFyFDfgAWFx8QQxcjAwCDCApWLYmD4wPABwmNisAHLMUPlbBjYOdg5IDwmoATIlP9gHuN0BkcGFca7jDqMDCYMU4ESSxgZ8rlbGSr51CXXMDFysfAkV-Zk5qWkFvkl5qYyAh3FmpJaUJIBMoWBucDfiJHFQM_QnLMkoyi1OCM_JwXMt2AQYsbUmJuZ5-8C0ZjmbwSiRRmEQZQ3A6sjP48knyRnpijPH-YPIp-YP2l8YPnK_yvgfeb3-D-s30SAqgA"
+    },
+    "A6": {
+      "stops": [
+        {
+          "depthM": 24,
+          "stopMin": 1,
+          "runMin": 25,
+          "gasLabel": "21",
+          "ppO2": 0.72,
+          "eadM": 24
+        },
+        {
+          "depthM": 21,
+          "stopMin": 1,
+          "runMin": 27,
+          "gasLabel": "50",
+          "ppO2": 1.56,
+          "eadM": 10
+        },
+        {
+          "depthM": 18,
+          "stopMin": 1,
+          "runMin": 28,
+          "gasLabel": "50",
+          "ppO2": 1.41,
+          "eadM": 8
+        },
+        {
+          "depthM": 15,
+          "stopMin": 2,
+          "runMin": 31,
+          "gasLabel": "50",
+          "ppO2": 1.26,
+          "eadM": 6
+        },
+        {
+          "depthM": 12,
+          "stopMin": 2,
+          "runMin": 33,
+          "gasLabel": "50",
+          "ppO2": 1.11,
+          "eadM": 4
+        },
+        {
+          "depthM": 9,
+          "stopMin": 5,
+          "runMin": 38,
+          "gasLabel": "50",
+          "ppO2": 0.96,
+          "eadM": 2
+        },
+        {
+          "depthM": 6,
+          "stopMin": 8,
+          "runMin": 47,
+          "gasLabel": "50",
+          "ppO2": 0.81,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 14,
+          "runMin": 61,
+          "gasLabel": "50",
+          "ppO2": 0.66,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 21,
+          "toGasLabel": "50"
+        }
+      ],
+      "summary": {
+        "ttsMin": 41.8,
+        "runtimeMin": 62,
+        "decoTimeMin": 34,
+        "firstStopDepthM": 24,
+        "cnsPercent": 23.4,
+        "otu": 59.8,
+        "decozoneStartM": 39,
+        "gasDensityGPerL": 8.39,
+        "gasDensityMaxDepthM": 55,
+        "gasDensityMaxGasLabel": "21",
+        "turnPressureBar": 141
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "usedLiters": 2815,
+          "usedBar": 106,
+          "remainingBar": 126,
+          "remainingLiters": 3757
+        },
+        {
+          "gasLabel": "50",
+          "usedLiters": 961,
+          "usedBar": 90,
+          "remainingBar": 110,
+          "remainingLiters": 1233
+        }
+      ],
+      "warnings": [
+        {
+          "code": 11,
+          "name": "levelGasDensityCritical",
+          "severity": "critical",
+          "params": {
+            "gasIndex": 0,
+            "depth": 55,
+            "density": 8.39121894,
+            "threshold": 6.2
+          }
+        },
+        {
+          "code": 13,
+          "name": "endHigh",
+          "severity": "warning",
+          "params": {
+            "gasIndex": 0,
+            "depth": 55,
+            "end": 55,
+            "threshold": 30
+          }
+        }
+      ],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQImABEAAAseRgIVAJYA6AEyAG4AyAAJAwMUHh4GAAAAAAAUDwBCDhQFAA4yLjguNSAoNDIpIGlvcwE0Ph4AAAAAAAAAAAAODxD_AAAAAAE?r=U0tSUwcBAX3QPU_CQBzH8d_d1QAnUIdiwmBNjGGRIDQ-DY2jEgdHBza0TcBgNcBQFt-BiwMvwFm3vgHfgIm8AjaNiQExYEQicndNdHLq_9vP3eVy2nG54cIAzQABgiS1CmQ2swmbiJmiL_4_RDSrsJ7XRNmwVVF0CABDFUNH2oK2mRcr_xZFIFcmQwukqaJoS0uE1gZ8-KoofGnzofnSVFGUpPHQSiBZklVFYUuLhmaDdElXFYUZ3lqZCVZkRVV0BuJmU1nkBrtYYfs0Q_BCjzDGFcUpn-IyeZe-RYndw9Meo9eUxrX4SatW9Ry3flg-c8ns4eYc96JZEedtRxzXa1SbLcJ2chuxZqXuNirnNYewrZxFkv9uZa7nyOF3m0gTy-KzhrkDbuqr-pKeMhYNPZ0wY_w71WMDPmLvfMjftAEfspHRYx9GX_u0ntmYf-29skn7CfgB"
+    },
+    "C1": {
+      "stops": [
+        {
+          "depthM": 12,
+          "stopMin": 2,
+          "runMin": 35,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 9,
+          "stopMin": 2,
+          "runMin": 38,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 6,
+          "stopMin": 4,
+          "runMin": 42,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 3,
+          "stopMin": 5,
+          "runMin": 48,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 18.8,
+        "runtimeMin": 49,
+        "decoTimeMin": 13,
+        "firstStopDepthM": 12,
+        "cnsPercent": 27,
+        "otu": 71.8,
+        "decozoneStartM": 26.3,
+        "gasDensityGPerL": 6.5,
+        "gasDensityMaxDepthM": 40,
+        "gasDensityMaxGasLabel": null,
+        "turnPressureBar": 0
+      },
+      "gasUsed": [],
+      "warnings": [],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQGQABwAAQ0yUAEVAJYA6AEJAwYUHh4GAAAAAAAUDwBCDhQFAQ0NBxUAHgDIHgDIVTwtHv__AA0OMi44LjUgKDQyKSBpb3MBND4eAAAAAAAAAAAADg8Q_wAAAAAB?r=U0tSUwcBAWNJSixOZeBmYJzAxFDBUMHLyxYcoGCoZ8wIFGCbwDYBLgCUZmLYwrALLsACEkDWwsQQxczAwCCCpCIKXYUNugobJoYPDB-QVMgxM9gw2CCpkGNi1GHUQVLBADSGwYaLCyJgwLCHwZCBl6mLcQIDIx_TOaD5ICACIgIYWPXkxCV55DjNxQIE-X9wfGf-KvKO-ZvIR5YfGq-4vut-Yv3NxcDAyDiLMUPihrgdw26x2aLGDLsA"
+    },
+    "C2": {
+      "stops": [
+        {
+          "depthM": 24,
+          "stopMin": 1,
+          "runMin": 29,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 21,
+          "stopMin": 2,
+          "runMin": 31,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 18,
+          "stopMin": 2,
+          "runMin": 34,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 15,
+          "stopMin": 2,
+          "runMin": 36,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 12,
+          "stopMin": 4,
+          "runMin": 40,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 9,
+          "stopMin": 6,
+          "runMin": 47,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 6,
+          "stopMin": 8,
+          "runMin": 55,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 3,
+          "stopMin": 11,
+          "runMin": 67,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 43.4,
+        "runtimeMin": 68,
+        "decoTimeMin": 36,
+        "firstStopDepthM": 24,
+        "cnsPercent": 37.8,
+        "otu": 100.5,
+        "decozoneStartM": 41.2,
+        "gasDensityGPerL": 5.31,
+        "gasDensityMaxDepthM": 55,
+        "gasDensityMaxGasLabel": null,
+        "turnPressureBar": 0
+      },
+      "gasUsed": [],
+      "warnings": [],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQImABYAAQ0jSwESLZYA6AEJAwYUHh4GAAAAAAAUDwBCDhQFAQ0NBxItHgDIHgDIVTwtHv__AA0OMi44LjUgKDQyKSBpb3MBND4eAAAAAAAAAAAADg8Q_wAAAAAB?r=U0tSUwcBAV3PsUvDQBTH8d97d-lwcEjoUeoSikoIgqJ1zVhcXAQnu4iC0N0l-HeE_iESdPcPcOjk2E2X6oGxLaVDkxbK9W644cuHx3vy4f7pEU1wzChQaN24ue6cn15QFYIkSLaBYWvxsQ2yDilSR4wEAOOIESND5ojCF4Uvhr4Y-iLzRVbtBuuIvi_6TAMaOCL1Rco0prEjIrFznETEnHPuCKzPV2oTzugFPRxxk2PQs5hU8-vXqb8Ywa06UG0VKt093g-TsKv3FqpszMSv-hOl-Zb_ZiLmxop5sDz8kYvIRlOxPLF3X5cliHv03v5s5XhtaXOFtxU"
+    },
+    "C3": {
+      "stops": [
+        {
+          "depthM": 36,
+          "stopMin": 1,
+          "runMin": 26,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 33,
+          "stopMin": 1,
+          "runMin": 27,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 30,
+          "stopMin": 2,
+          "runMin": 29,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 27,
+          "stopMin": 1,
+          "runMin": 31,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 24,
+          "stopMin": 2,
+          "runMin": 33,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 21,
+          "stopMin": 3,
+          "runMin": 36,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 18,
+          "stopMin": 4,
+          "runMin": 41,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 15,
+          "stopMin": 4,
+          "runMin": 45,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 12,
+          "stopMin": 7,
+          "runMin": 52,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 9,
+          "stopMin": 9,
+          "runMin": 62,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 6,
+          "stopMin": 13,
+          "runMin": 75,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        },
+        {
+          "depthM": 3,
+          "stopMin": 20,
+          "runMin": 96,
+          "gasLabel": "loop",
+          "ppO2": 1.3,
+          "eadM": null
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 77.2,
+        "runtimeMin": 97,
+        "decoTimeMin": 67,
+        "firstStopDepthM": 36,
+        "cnsPercent": 53.9,
+        "otu": 143.4,
+        "decozoneStartM": 65.6,
+        "gasDensityGPerL": 5.87,
+        "gasDensityMaxDepthM": 80,
+        "gasDensityMaxGasLabel": null,
+        "turnPressureBar": 0
+      },
+      "gasUsed": [],
+      "warnings": [],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQMgABAAAQ0oUAEMPJYA6AEJAwYUHh4GAAAAAAAUDwBCDhQFAQ0NBww8HgDIHgDIVTwtHv__AA0OMi44LjUgKDQyKSBpb3MBND4eAAAAAAAAAAAADg8Q_wAAAAAB?r=U0tSUwcBAV3QsUoDURAF0Ptm3lo8kqzEDcQkhEVQVBZRbBct7CKIYJdCiCBY2aTZWvAXUqROLRH2A-IvBEWxtLEwxQpmiWjhxkB4mSmmuBwuzOiLVvsSVbBPSJDk80tnp_7ezr7KAh7wYB6QuiIVqPV5oLMAIUJLNBiAZ4mGFIEUASFCZImCFAXRgUQIJKIDQymGhBixJWIp4sXzCR0pOlJEUkSkeqpniaYUTaIa1SwRShES5zhniTovnK9RJ93XfUvg_0HGzIJd1mjhiI7ZB1WdbtY_nY3p2rx2tpw1p2q2nWVTNkW36Fa8Sr2yWjDsfrkfemIeTcJjk-ix98apSXnijfS3--mm_HP4dP7Mv7evN-_xCIoP6KT8UurirvSw0sb9Hw"
+    },
+    "R1": {
+      "stops": [
+        {
+          "depthM": 12,
+          "stopMin": 3,
+          "runMin": 29,
+          "gasLabel": "21",
+          "ppO2": 0.46,
+          "eadM": 12
+        },
+        {
+          "depthM": 9,
+          "stopMin": 4,
+          "runMin": 34,
+          "gasLabel": "21",
+          "ppO2": 0.4,
+          "eadM": 9
+        },
+        {
+          "depthM": 6,
+          "stopMin": 47,
+          "runMin": 81,
+          "gasLabel": "21",
+          "ppO2": 0.34,
+          "eadM": 6
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 58.7,
+        "runtimeMin": 83,
+        "decoTimeMin": 54,
+        "firstStopDepthM": 12,
+        "cnsPercent": 9.8,
+        "otu": 35.7,
+        "decozoneStartM": 20.7,
+        "gasDensityGPerL": 5.17,
+        "gasDensityMaxDepthM": 30,
+        "gasDensityMaxGasLabel": "21",
+        "turnPressureBar": 159
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "usedLiters": 3875,
+          "usedBar": 142,
+          "remainingBar": 90,
+          "remainingLiters": 2698
+        }
+      ],
+      "warnings": [],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQEsABcAAAseRgEVAJYA6AEJAwYUPB4GAAAAADwUDwBDBJMAAAVHAAAF4QAABisAAAYYAAAFxgAABVMAAATaAAAEawAABBsAAAPiAAADsgAAA4sAAANrAAADUgAAAz0AAAABALMD9QAAAAAOFAUADjIuOC41ICg0MikgaW9zATQ-HgAAAAAAAAAAAA4PEP8AAAAAAQ?r=U0tSUwcBAWNJSixOZeBkYNRhYKhgqOBgMjJkBLJZU1hTQGwmoCBInJXFyFDfgAXE28KwBcJjYohiZGBgEGGBykUxMHxg-ADhMTHYgOWYoXI2DNws3CwQHhNQAmTmfwjPmyGYwYyJlVGHkSGJMRUoMZ-RoY9fmSGKq0tyLQODIEh1FAOrmyS_JGemGNdf5RfM7zU-snzW_ar7a-m3S79Yv4oAVQAA"
+    },
+    "B1": {
+      "stops": [
+        {
+          "depthM": 21,
+          "stopMin": 1,
+          "runMin": 29,
+          "gasLabel": "45",
+          "ppO2": 1.4,
+          "eadM": 12
+        },
+        {
+          "depthM": 18,
+          "stopMin": 1,
+          "runMin": 30,
+          "gasLabel": "45",
+          "ppO2": 1.27,
+          "eadM": 9
+        },
+        {
+          "depthM": 15,
+          "stopMin": 2,
+          "runMin": 33,
+          "gasLabel": "45",
+          "ppO2": 1.13,
+          "eadM": 7
+        },
+        {
+          "depthM": 12,
+          "stopMin": 3,
+          "runMin": 36,
+          "gasLabel": "45",
+          "ppO2": 1,
+          "eadM": 5
+        },
+        {
+          "depthM": 9,
+          "stopMin": 6,
+          "runMin": 42,
+          "gasLabel": "45",
+          "ppO2": 0.86,
+          "eadM": 3
+        },
+        {
+          "depthM": 6,
+          "stopMin": 5,
+          "runMin": 49,
+          "gasLabel": "100",
+          "ppO2": 1.61,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 8,
+          "runMin": 57,
+          "gasLabel": "100",
+          "ppO2": 1.31,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 24,
+          "toGasLabel": "45"
+        },
+        {
+          "atDepthM": 6,
+          "toGasLabel": "100"
+        }
+      ],
+      "summary": {
+        "ttsMin": 34,
+        "runtimeMin": 58,
+        "decoTimeMin": 26,
+        "firstStopDepthM": 21,
+        "cnsPercent": 37.4,
+        "otu": 73.5,
+        "decozoneStartM": 34.6,
+        "gasDensityGPerL": 7.49,
+        "gasDensityMaxDepthM": 48,
+        "gasDensityMaxGasLabel": "21",
+        "turnPressureBar": 131
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "usedLiters": 2929,
+          "usedBar": 110,
+          "remainingBar": 122,
+          "remainingLiters": 3644
+        },
+        {
+          "gasLabel": "45",
+          "usedLiters": 555,
+          "usedBar": 54,
+          "remainingBar": 146,
+          "remainingLiters": 1626
+        },
+        {
+          "gasLabel": "100",
+          "usedLiters": 323,
+          "usedBar": 28,
+          "remainingBar": 172,
+          "remainingLiters": 2009
+        }
+      ],
+      "warnings": [
+        {
+          "code": 11,
+          "name": "levelGasDensityCritical",
+          "severity": "critical",
+          "params": {
+            "gasIndex": 0,
+            "depth": 48,
+            "density": 7.48935294,
+            "threshold": 6.2
+          }
+        },
+        {
+          "code": 13,
+          "name": "endHigh",
+          "severity": "warning",
+          "params": {
+            "gasIndex": 0,
+            "depth": 48,
+            "end": 48,
+            "threshold": 30
+          }
+        }
+      ],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQHgABYAAAseRgMVAJYA6AEtAG4AyABkAG4AyAAJAwMUHh4GAAAAAAAUDwBCDhQFAA4yLjguNSAoNDIpIGlvcwE0Ph4AAAAAAAAAAAAODxD_AAAAAAE?r=U0tSUwcBAX2QMUvDQBiG37tLjE1roxKRSshcsLRJsRUkizgrDk7dqgmkUKO2RVJX8Q84dPYH6JZf0k0Q7CIoKLSCBbGguUvEzem-h-fee-9OOmx2PeggIyBEmKNVm8SzXJSLfKYYAxFuFKlqVyzGyYGjSRu1ikUxJAD0vCAJQ-ESooiEW0hdJFxCFAPhsqkbiOaEKELh1NSFvD1KiKIhXCZ1DRCf-AlROMIpglhcxvsWZduy-FYHpERKKVKYyd1-rRm_noxSpLHi2e8EyQG2sEbf4h3knD7iAZcMQfYMF3mncIc6Xcf1XGP-CgbZwa1ynzEozUm5o367FbheZ6957JH4H2XXO-35_GhLcb2g2-r1Cdss1zI9v-N1_ZO2S1i9XCX5f6PMC1wx_MU4mjD4YkPeVVc1Q1vRVwrLhey2pivabOmdjdUJm6gf0lQfs6n5yj6dJ-nLeWaz_Rc1zv0A"
+    },
+    "P1": {
+      "stops": [
+        {
+          "depthM": 27,
+          "stopMin": 0.8,
+          "runMin": 38,
+          "gasLabel": "35/25",
+          "ppO2": 1.3,
+          "eadM": 9
+        },
+        {
+          "depthM": 24,
+          "stopMin": 1.4,
+          "runMin": 39,
+          "gasLabel": "35/25",
+          "ppO2": 1.19,
+          "eadM": 7
+        },
+        {
+          "depthM": 21,
+          "stopMin": 1.1,
+          "runMin": 42,
+          "gasLabel": "50",
+          "ppO2": 1.56,
+          "eadM": 10
+        },
+        {
+          "depthM": 18,
+          "stopMin": 2.2,
+          "runMin": 44,
+          "gasLabel": "50",
+          "ppO2": 1.41,
+          "eadM": 8
+        },
+        {
+          "depthM": 15,
+          "stopMin": 3.6,
+          "runMin": 48,
+          "gasLabel": "50",
+          "ppO2": 1.26,
+          "eadM": 6
+        },
+        {
+          "depthM": 12,
+          "stopMin": 5.3,
+          "runMin": 54,
+          "gasLabel": "50",
+          "ppO2": 1.11,
+          "eadM": 4
+        },
+        {
+          "depthM": 9,
+          "stopMin": 8.1,
+          "runMin": 62,
+          "gasLabel": "50",
+          "ppO2": 0.96,
+          "eadM": 2
+        },
+        {
+          "depthM": 6,
+          "stopMin": 9.6,
+          "runMin": 73,
+          "gasLabel": "100",
+          "ppO2": 1.61,
+          "eadM": 0
+        },
+        {
+          "depthM": 3,
+          "stopMin": 18.5,
+          "runMin": 92,
+          "gasLabel": "100",
+          "ppO2": 1.31,
+          "eadM": 0
+        }
+      ],
+      "gasSwitches": [
+        {
+          "atDepthM": 30,
+          "toGasLabel": "35/25"
+        },
+        {
+          "atDepthM": 21,
+          "toGasLabel": "50"
+        },
+        {
+          "atDepthM": 6,
+          "toGasLabel": "100"
+        }
+      ],
+      "summary": {
+        "ttsMin": 58.8,
+        "runtimeMin": 93,
+        "decoTimeMin": 50,
+        "firstStopDepthM": 27,
+        "cnsPercent": 66.8,
+        "otu": 124.4,
+        "decozoneStartM": 35,
+        "gasDensityGPerL": 5.61,
+        "gasDensityMaxDepthM": 60,
+        "gasDensityMaxGasLabel": "18/45",
+        "turnPressureBar": 193
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "18/45",
+          "usedLiters": 3985,
+          "usedBar": 148,
+          "remainingBar": 84,
+          "remainingLiters": 2455
+        },
+        {
+          "gasLabel": "35/25",
+          "usedLiters": 376,
+          "usedBar": 38,
+          "remainingBar": 162,
+          "remainingLiters": 1755
+        },
+        {
+          "gasLabel": "50",
+          "usedLiters": 778,
+          "usedBar": 73,
+          "remainingBar": 127,
+          "remainingLiters": 1417
+        },
+        {
+          "gasLabel": "100",
+          "usedLiters": 638,
+          "usedBar": 55,
+          "remainingBar": 145,
+          "remainingLiters": 1694
+        }
+      ],
+      "warnings": [
+        {
+          "code": 12,
+          "name": "levelGasDensityHigh",
+          "severity": "warning",
+          "params": {
+            "gasIndex": 0,
+            "depth": 60,
+            "density": 5.61362598,
+            "threshold": 5.2
+          }
+        }
+      ],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAwEsAAABAAsCWAAUAAALAaQACAAACx5GBBItlgDoASMZbgDIADIAbgDIAGQAbgDIAAkDAxQeHgYAAAAAABQPAAIOFAUADjIuOC41ICg0MikgaW9zATQ-HgAAAAAAAAAAAA4PEP8AAAAAAQ?r=U0tSUwcBAS3RPUscURQG4Pece0d3N7tjCBPRECbkg7BFyOxuMjHFgGAXCCEhC4qQwrgDKzEmuFuMTQJ2KSXBNGIh_gAL_4D4DyxstLBxRRBU_ABR0Zl7z-0e3nPvOdyjv461YvigF0CCxHVehUEtpIzpEYJHTNpnqTJGiEpO9W3wOqSUekWvCJmWTXFe0pS0QztCzl6O8LHbUllG0ojJpbStV7LU5AIBAiHjyKRFSXEE1FEXMjZMekeGxIZ5-a4OK0FFZxrEoBVj1ZS6kq0Cs5i1YszbESSbBzaxacVIbAvJElBEkRVj1GQFyUZBHepYMSKT5YxUOpaZzKlWTGkEHuIhIcOXL5DUhx7Ww0LOtpLevRG-xxfUuMojxAt6O_2uNY1_PXOo5__3l_GcEix1beU-450q4LfzJ_cXA_wLc12L-YdEJV0cn5mcmGrE0x_GvsdkV-I04p_tpunT3YinWhPtGVLhyzf5dnM6bjV_TDYy1vA0KynDGXceOL2FJ4W-nn7P84rlR75bLg1s-yfe5b2z4rE6cQ_V-f0Ddd57oC6e7asL7-zxqbr8tKeuvnXU9foucAs"
+    },
+    "G1": {
+      "stops": [
+        {
+          "depthM": 15,
+          "stopMin": 1.1,
+          "runMin": 26,
+          "gasLabel": "21",
+          "ppO2": 0.53,
+          "eadM": 15
+        },
+        {
+          "depthM": 12,
+          "stopMin": 2.9,
+          "runMin": 29,
+          "gasLabel": "21",
+          "ppO2": 0.46,
+          "eadM": 12
+        },
+        {
+          "depthM": 9,
+          "stopMin": 4.6,
+          "runMin": 34,
+          "gasLabel": "21",
+          "ppO2": 0.4,
+          "eadM": 9
+        },
+        {
+          "depthM": 6,
+          "stopMin": 36.4,
+          "runMin": 71,
+          "gasLabel": "21",
+          "ppO2": 0.34,
+          "eadM": 6
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 51.3,
+        "runtimeMin": 73,
+        "decoTimeMin": 45,
+        "firstStopDepthM": 15,
+        "cnsPercent": 10.3,
+        "otu": 28.4,
+        "decozoneStartM": 32,
+        "gasDensityGPerL": 7.1,
+        "gasDensityMaxDepthM": 45,
+        "gasDensityMaxGasLabel": "21",
+        "turnPressureBar": 144
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "usedLiters": 4163,
+          "usedBar": 152,
+          "remainingBar": 80,
+          "remainingLiters": 2409
+        }
+      ],
+      "warnings": [
+        {
+          "code": 11,
+          "name": "levelGasDensityCritical",
+          "severity": "critical",
+          "params": {
+            "gasIndex": 0,
+            "depth": 45,
+            "density": 7.10283894,
+            "threshold": 6.2
+          }
+        },
+        {
+          "code": 13,
+          "name": "endHigh",
+          "severity": "warning",
+          "params": {
+            "gasIndex": 0,
+            "depth": 45,
+            "end": 45,
+            "threshold": 30
+          }
+        }
+      ],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQHCABYAAAsyUAEVAJYA6AEJAwYUPB4GAAAAAAAUDwAiDhQFAA4yLjguNSAoNDIpIGlvcwE0Ph4AAAAAAAAAAAAODxD_AAAAAAE?r=U0tSUwcBAWNJSixOZeBmYDzEwFDBUMHDZGTICGSzbGDZAGIzMUxjYNjCcIKVxchQ34AFxHNgcIDwmBgqGBkYGERgchUMDOsY1sHkosByLFC5KAZGEUYoj4nBBizHDJWzYeDo4OiA8JiAEiB3_IfwGBk8GXSZjjEeYmRIZ5QB2j6BkWGGgDNDAGem5BomJh4WnuTKnMy8lNQiv8TcVEagg1lTUgtKMkCm6LKnpOYVZ5ZUMjKb6xlylmQUpRZn5OekMDKb6Rkx8uHVypyalwJmILSBuHIMEiDKkoFVT0RWRERJXINXR4yLkesv1w_mL9xfmb_IvmP5Ifde4DfzL92Pme8ufWT5JQJUDwA"
+    },
+    "G2": {
+      "stops": [
+        {
+          "depthM": 15,
+          "stopMin": 2,
+          "runMin": 27,
+          "gasLabel": "21",
+          "ppO2": 0.53,
+          "eadM": 15
+        },
+        {
+          "depthM": 12,
+          "stopMin": 4.8,
+          "runMin": 33,
+          "gasLabel": "21",
+          "ppO2": 0.46,
+          "eadM": 12
+        },
+        {
+          "depthM": 9,
+          "stopMin": 8.3,
+          "runMin": 41,
+          "gasLabel": "21",
+          "ppO2": 0.4,
+          "eadM": 9
+        },
+        {
+          "depthM": 6,
+          "stopMin": 159.5,
+          "runMin": 201,
+          "gasLabel": "21",
+          "ppO2": 0.34,
+          "eadM": 6
+        }
+      ],
+      "gasSwitches": [],
+      "summary": {
+        "ttsMin": 180.9,
+        "runtimeMin": 203,
+        "decoTimeMin": 175,
+        "firstStopDepthM": 15,
+        "cnsPercent": 10.4,
+        "otu": 28.4,
+        "decozoneStartM": 32,
+        "gasDensityGPerL": 7.1,
+        "gasDensityMaxDepthM": 45,
+        "gasDensityMaxGasLabel": "21",
+        "turnPressureBar": 144
+      },
+      "gasUsed": [
+        {
+          "gasLabel": "21",
+          "usedLiters": 8349,
+          "usedBar": 291,
+          "remainingBar": -59,
+          "remainingLiters": 0
+        }
+      ],
+      "warnings": [
+        {
+          "code": 1,
+          "name": "insufficientGas",
+          "severity": "critical",
+          "params": {
+            "gasIndex": 0,
+            "shortage": 59
+          }
+        },
+        {
+          "code": 11,
+          "name": "levelGasDensityCritical",
+          "severity": "critical",
+          "params": {
+            "gasIndex": 0,
+            "depth": 45,
+            "density": 7.10283894,
+            "threshold": 6.2
+          }
+        },
+        {
+          "code": 13,
+          "name": "endHigh",
+          "severity": "warning",
+          "params": {
+            "gasIndex": 0,
+            "depth": 45,
+            "end": 45,
+            "threshold": 30
+          }
+        }
+      ],
+      "url": "https://divekit.app/share/deco-plan/U0tVQgcAAQHCABYAAAsyMgEVAJYA6AEJAwYUPB4GAAAAAAAUDwAiDhQFAA4yLjguNSAoNDIpIGlvcwE0Ph4AAAAAAAAAAAAODxD_AAAAAAE?r=U0tSUwcBAWNJSixOZeBmYDzEwFDBUMHDZGTICGSzbGDZAGIzMUxjYNjCcIKVxchQ34AFxCtlKIXwmBgqGBkYGERgchUMjAqMCjC5KLAcC1QuioHxC-MXCI-JwQYsxwyVs2FQTVBNgPCYgBIgd_wH89gFGU4zrGc6xniIkSGDUQZo-wRGRmWFuSBFCnOZmRiZeJIrczLzUlKL_BJzUxmBDuYozsgvKklMTwWpsWbiYcFQwZqSWlCSAZLWZU9JzSvOLKlkZDbXM-QsyShKBerOSWFkNtMzYuTDq5U5NS8FzEBoA3HlGCRAlCoDKyu_goi8iLiwgCSvMreOGBcj_y-Vu853Ux8Xv2v_0f7j4a_2f-1_X_5_9e_lfwYGAA"
+    }
+  }
+}

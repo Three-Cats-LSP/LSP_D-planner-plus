@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>LSP CCR Differential Tests</title>
+
+<style>
+
+  body { background:#0b0e17; color:#e4e8f0; font-family:'JetBrains Mono',monospace; font-size:12px; padding:20px; }
+
+  h1 { color:#00d9ff; font-size:20px; }
+
+  .pass { color:#26d07c; } .fail { color:#ff4757; } .warn { color:#ffd32a; } .inc { color:#a78bfa; }
+
+</style>
+
+</head>
+
+<body>
+
+<h1>CCR Engine Differential Suite</h1>
+
+<div id="status">Waiting…</div>
+
+<pre id="log"></pre>
+
+<iframe id="app-frame"></iframe>
+
+<script src="tests/ccr-differential/lib/ccrdiff.js"></script>
+
+<script>
+
+let WIN, CONFIG, EXPECTED, MANIFEST;
+
+
+
+async function loadJson(url) {
+
+  const r = await fetch(url);
+
+  if (!r.ok) throw new Error('Failed to load ' + url);
+
+  return r.json();
+
+}
+
+
+
+async function loadFixture(id) {
+
+  return loadJson('tests/ccr-differential/fixtures/' + id + '.json');
+
+}
+
+
+
+async function loadGolden(engine, id) {
+
+  try {
+
+    const r = await fetch('tests/ccr-differential/goldens/' + engine + '/' + id + '.json');
+
+    if (!r.ok) return null;
+
+    return r.json();
+
+  } catch (_) { return null; }
+
+}
+
+
+
+function waitForApp(iframe, timeoutMs) {
+
+  return new Promise((resolve, reject) => {
+
+    const start = Date.now();
+
+    iframe.src = 'index.html?massiveSuite=1&ts=' + Date.now();
+
+    function enginesReady(w) {
+
+      return !!(w && w.ZHLEngine && w.ZHLEngine.calculate && w.validateEngineInputs);
+
+    }
+
+    function armHeadless(w) {
+
+      w._zhlHeadless = true;
+
+      w._zhlHeadlessDepth = (w._zhlHeadlessDepth || 0) + 1;
+
+    }
+
+    const check = () => {
+
+      try {
+
+        const w = iframe.contentWindow;
+
+        if (enginesReady(w)) {
+
+          armHeadless(w);
+
+          return setTimeout(() => {
+
+            try {
+
+              const w2 = iframe.contentWindow;
+
+              if (enginesReady(w2)) {
+
+                armHeadless(w2);
+
+                return resolve(w2);
+
+              }
+
+            } catch (_) {}
+
+            setTimeout(check, 250);
+
+          }, 1200);
+
+        }
+
+      } catch (_) {}
+
+      if (Date.now() - start > timeoutMs) return reject(new Error('Timed out waiting for LSP engines'));
+
+      setTimeout(check, 250);
+
+    };
+
+    setTimeout(check, 250);
+
+  });
+
+}
+
+
+
+function isRequiredGolden(config, engine, scenarioId) {
+
+  const req = (config.requiredGoldens && config.requiredGoldens[engine]) || [];
+
+  return req.indexOf(scenarioId) >= 0;
+
+}
+
+
+
+async function runAll() {
+
+  const logEl = document.getElementById('log');
+
+  const statusEl = document.getElementById('status');
+
+  statusEl.textContent = 'Loading config…';
+
+  CONFIG = await loadJson('tests/ccr-differential/config.json');
+
+  EXPECTED = await loadJson('tests/ccr-differential/expected-differences.json');
+
+  MANIFEST = await loadJson('tests/ccr-differential/manifest.json');
+
+
+
+  statusEl.textContent = 'Booting LSP…';
+
+  WIN = await waitForApp(document.getElementById('app-frame'), 180000);
+
+  const meta = {
+
+    version: WIN.APP_VERSION,
+
+    commit: 'not_available',
+
+    inputChecksum: MANIFEST.inputsChecksum,
+
+  };
+
+
+
+  const rows = [];
+
+  let failures = 0;
+
+  let inconclusive = 0;
+
+  let missingRequired = 0;
+
+
+
+  for (const id of MANIFEST.fixtureIds) {
+
+    const fx = await loadFixture(id);
+
+    CCRDiff.validateFixtureShape(fx);
+
+    const row = { scenarioId: id, description: fx.description, lsp: null, comparisons: [], metamorphic: [], integrity: 'PASS' };
+
+
+
+    try {
+
+      if (fx.expectInvalid) {
+
+        row.lsp = CCRDiff.runLspScenario(WIN, fx, meta);
+
+        row.integrity = row.lsp.error ? 'PASS' : 'FAIL';
+
+        if (!row.lsp.error) failures++;
+
+      } else {
+
+        row.lsp = CCRDiff.runLspScenario(WIN, fx, meta);
+
+      }
+
+    } catch (e) {
+
+      row.integrity = 'FAIL';
+
+      row.error = e.message;
+
+      failures++;
+
+      rows.push(row);
+
+      continue;
+
+    }
+
+
+
+    const comparators = (CONFIG.comparatorEngines && CONFIG.comparatorEngines.length)
+      ? CONFIG.comparatorEngines
+      : ['multideco', 'divekit', 'abysner', 'subsurface'];
+
+    for (const engine of comparators) {
+
+      const golden = await loadGolden(engine, id);
+
+      if (!golden) {
+
+        const required = isRequiredGolden(CONFIG, engine, id);
+
+        row.comparisons.push({
+
+          engine: engine,
+
+          classification: CCRDiff.CLASS.INCONCLUSIVE,
+
+          detail: required ? 'required golden capture missing' : 'no golden capture',
+
+          required: required,
+
+        });
+
+        inconclusive++;
+
+        if (required) {
+
+          missingRequired++;
+
+          failures++;
+
+        }
+
+        continue;
+
+      }
+
+      const cmp = CCRDiff.compareSummaries(row.lsp, golden, fx, CONFIG, EXPECTED);
+
+      row.comparisons.push({
+
+        engine: golden.engine,
+
+        classification: cmp.classification,
+
+        issues: cmp.issues,
+
+      });
+
+      if (cmp.classification === CCRDiff.CLASS.LSP_SUSPECT) failures++;
+
+    }
+
+
+
+    if (id === 'CCR-C1' && !fx.expectInvalid) {
+
+      try {
+
+        row.metamorphic = CCRDiff.runMetamorphic(WIN, fx, meta);
+
+      } catch (e) {
+
+        row.metamorphic = [e.message];
+
+        failures++;
+
+      }
+
+    }
+
+
+
+    rows.push(row);
+
+  }
+
+
+
+  const effectiveness = CCRDiff.assertFixtureEffectiveness(rows, MANIFEST.fixtureEffectiveness || {});
+
+  effectiveness.forEach(msg => {
+
+    failures++;
+
+    rows.push({ scenarioId: '_effectiveness', integrity: 'FAIL', error: msg, comparisons: [], metamorphic: [] });
+
+  });
+
+
+
+  const summary = {
+
+    appVersion: WIN.APP_VERSION,
+
+    scenarios: MANIFEST.fixtureIds.length,
+
+    failures,
+
+    inconclusive,
+
+    missingRequired,
+
+    pass: failures === 0,
+
+    rows,
+
+    generatedAt: new Date().toISOString(),
+
+  };
+
+
+
+  logEl.textContent = JSON.stringify(summary, null, 2);
+
+  statusEl.innerHTML = failures
+
+    ? '<span class="fail">FAIL — ' + failures + ' issue(s)</span>'
+
+    : '<span class="pass">PASS — ' + MANIFEST.fixtureIds.length + ' scenarios (' + inconclusive + ' inconclusive)</span>';
+
+  return summary;
+
+}
+
+
+
+window.runCCRDiffAll = runAll;
+
+if (location.search.includes('autorun=1')) {
+
+  runAll().catch(e => {
+
+    document.getElementById('status').innerHTML = '<span class="fail">' + e.message + '</span>';
+
+    throw e;
+
+  });
+
+}
+
+</script>
+
+</body>
+
+</html>
+

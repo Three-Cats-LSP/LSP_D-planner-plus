@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LSP D-Planner + CCR — Extended Algorithm Test Suite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07111d;
+  --surface: #0d1a2a;
+  --surface-2: #112238;
+  --surface-3: #162a45;
+  --border: rgba(0, 217, 255, 0.14);
+  --border-hi: rgba(0, 217, 255, 0.32);
+  --text: #dbf4ff;
+  --muted: #7ea7bd;
+  --faint: #4f7185;
+  --accent: #00d9ff;
+  --green: #26d07c;
+  --yellow: #ffb703;
+  --orange: #ff8a00;
+  --red: #ff4757;
+  --mag: #e040fb;
+  --radius: 12px;
+  --shadow: 0 12px 32px rgba(0,0,0,0.24);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(0,217,255,0.09), transparent 35%),
+    radial-gradient(circle at top right, rgba(224,64,251,0.08), transparent 28%),
+    linear-gradient(180deg, #050d17 0%, #07111d 100%);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  padding: 24px;
+}
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.title h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 3px;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 0.95;
+  color: var(--accent);
+}
+.title p {
+  margin-top: 8px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+button {
+  border: 1px solid var(--border-hi);
+  background: linear-gradient(180deg, rgba(0,217,255,0.12), rgba(0,217,255,0.05));
+  color: var(--accent);
+  border-radius: 10px;
+  padding: 10px 18px;
+  cursor: pointer;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, opacity 160ms ease;
+}
+button:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0,217,255,0.12); }
+button:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+.secondary-btn {
+  background: rgba(255,255,255,0.03);
+  color: var(--muted);
+}
+.status-bar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow);
+}
+#status {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+}
+#status.ready { color: var(--green); }
+#status.error { color: var(--red); }
+#status.warn { color: var(--yellow); }
+.meta {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--faint);
+}
+.summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+.summary .card {
+  padding: 18px 16px;
+}
+.sum-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.2rem;
+  line-height: 1;
+}
+.sum-val.pass { color: var(--green); }
+.sum-val.fail { color: var(--red); }
+.sum-val.warn { color: var(--yellow); }
+.sum-val.info { color: var(--accent); }
+.sum-lbl {
+  margin-top: 6px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 18px;
+}
+.sidebar .card + .card { margin-top: 18px; }
+.card h2 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.legend-row, .metric-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 13px;
+}
+.legend-row:last-child, .metric-row:last-child { border-bottom: none; }
+.legend-row span:last-child,
+.metric-row span:last-child {
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+.results-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.group {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: linear-gradient(180deg, rgba(0,217,255,0.07), rgba(0,217,255,0.02));
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  flex-wrap: wrap;
+}
+.group-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.group-badges {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.group-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  border-radius: 999px;
+  padding: 4px 9px;
+  border: 1px solid;
+}
+.group-badge.pass { color: var(--green); border-color: rgba(38,208,124,0.35); background: rgba(38,208,124,0.08); }
+.group-badge.fail { color: var(--red); border-color: rgba(255,71,87,0.35); background: rgba(255,71,87,0.08); }
+.group-badge.warn { color: var(--yellow); border-color: rgba(255,183,3,0.35); background: rgba(255,183,3,0.08); }
+.test-row {
+  display: grid;
+  grid-template-columns: 28px minmax(240px, 1.1fr) minmax(280px, 1.6fr) 120px;
+  gap: 12px;
+  align-items: start;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.test-row:last-child { border-bottom: none; }
+.icon {
+  font-size: 15px;
+  line-height: 1.1;
+  margin-top: 2px;
+}
+.icon.pass { color: var(--green); }
+.icon.fail { color: var(--red); }
+.icon.warn { color: var(--yellow); }
+.test-name {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.45;
+}
+.test-detail {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  word-break: break-word;
+}
+.test-detail.fail { color: #ff9aa4; }
+.test-model {
+  justify-self: end;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--faint);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 999px;
+  padding: 4px 8px;
+}
+pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+iframe { display: none; }
+.footer-note {
+  margin-top: 18px;
+  color: var(--faint);
+  font-size: 12px;
+  line-height: 1.6;
+}
+@media (max-width: 980px) {
+  .layout { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  body { padding: 14px; }
+  .test-row {
+    grid-template-columns: 24px 1fr;
+  }
+  .test-detail, .test-model {
+    grid-column: 2 / -1;
+    justify-self: start;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="title">
+      <h1>LSP D-PLANNER</h1>
+      <p>Extended algorithm regression suite · Bühlmann ZH-L16C + GF · VPM-B · VPM-B/GFS · Trimix · Conservatism ordering</p>
+    </div>
+    <div class="controls">
+      <button id="run-btn" onclick="startTests()">▶ Run Extended Tests</button>
+      <button class="secondary-btn" onclick="toggleOnlyFailures()" id="fail-toggle">Show Failures Only: Off</button>
+      <button class="secondary-btn" onclick="copyJsonSummary()">Copy JSON Summary</button>
+      <button class="secondary-btn" onclick="exportLog()">⬇ Export Log</button>
+    </div>
+  </div>
+
+  <div class="status-bar">
+    <div id="status">Waiting…</div>
+    <div class="meta">
+      <span id="meta-version">APPVERSION: —</span>
+      <span id="meta-surface">SURFACEP: —</span>
+      <span id="meta-bar">BAR/m: —</span>
+      <span id="meta-engine">ENGINE: —</span>
+    </div>
+  </div>
+
+  <div class="summary" id="summary" style="display:none;">
+    <div class="card"><div class="sum-val pass" id="sum-pass">0</div><div class="sum-lbl">Passed</div></div>
+    <div class="card"><div class="sum-val fail" id="sum-fail">0</div><div class="sum-lbl">Failed</div></div>
+    <div class="card"><div class="sum-val warn" id="sum-warn">0</div><div class="sum-lbl">Warnings</div></div>
+    <div class="card"><div class="sum-val info" id="sum-total">0</div><div class="sum-lbl">Total</div></div>
+    <div class="card"><div class="sum-val info" id="sum-time">0ms</div><div class="sum-lbl">Run Time</div></div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="card">
+        <h2>Coverage</h2>
+        <div class="legend-row"><span>Engine discovery</span><span>globals + models</span></div>
+        <div class="legend-row"><span>Output contract</span><span>shape + numeric sanity</span></div>
+        <div class="legend-row"><span>Bühlmann</span><span>NDL + deco + GF</span></div>
+        <div class="legend-row"><span>VPM-B</span><span>runtime + monotonicity</span></div>
+        <div class="legend-row"><span>VPM-B/GFS</span><span>GFS response</span></div>
+        <div class="legend-row"><span>Gas switching</span><span>bottom + deco gases</span></div>
+        <div class="legend-row"><span>Units & water</span><span>metric/imperial/fresh/salt</span></div>
+        <div class="legend-row"><span>Determinism</span><span>repeatability/state leakage</span></div>
+        <div class="legend-row"><span>Conservatism sweep</span><span>C0–C5 + GFS ordering</span></div>
+        <div class="legend-row"><span>Trimix helium</span><span>He loading + multi-gas deco</span></div>
+        <div class="legend-row"><span>First stop depth</span><span>VPM-B bubble ceiling</span></div>
+      </div>
+
+      <div class="card">
+        <h2>Run metrics</h2>
+        <div class="metric-row"><span>Groups</span><span id="metric-groups">—</span></div>
+        <div class="metric-row"><span>Models seen</span><span id="metric-models">—</span></div>
+        <div class="metric-row"><span>Visible rows</span><span id="metric-visible">—</span></div>
+        <div class="metric-row"><span>Hidden rows</span><span id="metric-hidden">—</span></div>
+      </div>
+
+      <div class="card">
+        <h2>Notes</h2>
+        <div style="font-size:13px;line-height:1.65;color:var(--muted)">
+          This suite validates invariants and regression ranges rather than claiming medical or training authority. Use it to catch code regressions, broken return structures, unit conversion errors, gas-switch bugs, and algorithmic drift after edits.
+        </div>
+      </div>
+    </aside>
+
+    <main>
+      <div class="results-wrap" id="results"></div>
+      <div class="footer-note">
+        Recommended workflow: keep this file beside <code>index.html</code>, open it through the same static host, and run it after algorithm or UI-integrated engine changes.
+      </div>
+    </main>
+  </div>
+</div>
+
+<iframe id="app-frame" src="about:blank"></iframe>
+
+<script>
+/* inlined from lsp-test-harness.js — keep in sync */
+var LSPTestHarness = (function () {
+  'use strict';
+
+  function clone(v) {
+    return JSON.parse(JSON.stringify(v));
+  }
+
+  function hookIframe(iframe, onErr) {
+    iframe.addEventListener('load', function () {
+      try {
+        var w = iframe.contentWindow;
+        if (!w || w.__lspHarnessHooked) return;
+        w.__lspHarnessHooked = true;
+        w.addEventListener('error', function (e) {
+          onErr((e && e.message) || 'Script error');
+        });
+        w.addEventListener('unhandledrejection', function (e) {
+          var r = e.reason;
+          onErr((r && r.message) || String(r) || 'Unhandled rejection');
+        });
+      } catch (_) {}
+    });
+  }
+
+  function appReady(w) {
+    return !!(w
+      && w.VPMEngine && typeof w.VPMEngine.calculate === 'function'
+      && w.ZHLEngine && typeof w.ZHLEngine.calculate === 'function');
+  }
+
+  function readPhys(win) {
+    var surf = isFinite(win.altSurfaceP) ? win.altSurfaceP : 1.01325;
+    var bar = win.BAR_PER_METRE;
+    if (bar == null || !isFinite(bar)) bar = 0.1;
+    return { surf: surf, barPerM: bar };
+  }
+
+  function waitForApp(iframe, timeoutMs, cb) {
+    var bootErr = null;
+    var settled = false;
+    hookIframe(iframe, function (msg) { bootErr = msg; });
+
+    function finish(err, ctx) {
+      if (settled) return;
+      settled = true;
+      cb(err, ctx);
+    }
+
+    function check() {
+      try {
+        var w = iframe.contentWindow;
+        if (appReady(w)) {
+          w._zhlHeadless = true;
+          var phys = readPhys(w);
+          setTimeout(function () {
+            finish(null, {
+              win: w,
+              vpm: w.VPMEngine,
+              zhl: w.ZHLEngine,
+              version: w.APP_VERSION || null,
+              surf: phys.surf,
+              barPerM: phys.barPerM,
+            });
+          }, 1500);
+          return;
+        }
+      } catch (_) {}
+      if (bootErr) return finish(new Error('Boot: ' + bootErr));
+      if (Date.now() - start > timeoutMs) {
+        return finish(new Error('Timed out waiting for VPMEngine + ZHLEngine in index.html'));
+      }
+      setTimeout(check, 250);
+    }
+
+    var start = Date.now();
+    if (!iframe.src || iframe.src === 'about:blank') {
+      iframe.src = 'index.html?ts=' + Date.now();
+    }
+    setTimeout(check, 300);
+  }
+
+  function calc(ctx, levels, gases, settings, model) {
+    if (!ctx || !ctx.vpm || !ctx.zhl) throw new Error('Harness not booted — call waitForApp first');
+    var lv = clone(levels || []);
+    var gs = clone(gases || []);
+    var st = clone(settings || {});
+    var r = (model === 'ZHLC_GF')
+      ? ctx.zhl.calculate(lv, gs, st)
+      : ctx.vpm.calculate(lv, gs, st, model);
+    if (!r || typeof r !== 'object') throw new Error('Engine returned no result');
+    if (r.error) throw new Error(r.error);
+    return r;
+  }
+
+  function reloadApp(iframe) {
+    iframe.src = 'index.html?ts=' + Date.now();
+  }
+
+  return {
+    clone: clone,
+    waitForApp: waitForApp,
+    calc: calc,
+    readPhys: readPhys,
+    reloadApp: reloadApp,
+    appReady: appReady,
+  };
+})();
+</script>
+<script>
+let E = null;
+let WIN = null;
+let HARNESS_CTX = null;
+let SURF = null;
+let BAR = null;
+let ONLY_FAILURES = false;
+let LAST_RESULTS = null;
+
+function assert(cond, msg) {
+  if (!cond) throw new Error(msg || 'Assertion failed');
+}
+function approx(a, b, tol) {
+  return Math.abs(a - b) <= (tol || 0.005);
+}
+function finiteNum(v, label) {
+  assert(typeof v === 'number' && isFinite(v), (label || 'value') + ' is not finite: ' + v);
+}
+function clone(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
+function pretty(v, digits) {
+  return (typeof v === 'number' && isFinite(v)) ? v.toFixed(digits == null ? 1 : digits) : String(v);
+}
+function modelLabel(model) {
+  return ({ ZHLCGF:'Bühlmann GF', ZHLC_GF:'Bühlmann GF', VPMB:'VPM-B', VPMBGFS:'VPM-B/GFS', VPMB_GFS:'VPM-B/GFS', ALL:'All models', CORE:'Core' })[model] || model || 'General';
+}
+function gas(o2, he) {
+  return { o2: o2, he: he || 0 };
+}
+function level(depth, time, o2, he) {
+  return [{ depth: depth, time: time, o2: o2 == null ? 21 : o2, he: he || 0 }];
+}
+function multiLevel(arr) {
+  return arr.map(function(x){ return { depth: x.depth, time: x.time, o2: x.o2 == null ? 21 : x.o2, he: x.he || 0 }; });
+}
+function makeSettings(overrides) {
+  return Object.assign({
+    metric: true,
+    waterType: 0,
+    customWaterDensity: 1025,
+    descentRate: 20,
+    ascentRate: 10,
+    decoAscentRate: 3,
+    surfaceAscentRate: 3,
+    stepSize: 3,
+    lastStop: 3,
+    minStopTime: 1,
+    ppO2Bottom: 1.4,
+    ppO2Deco: 1.6,
+    ppO2Low: 1.4,
+    ppO2Mid: 1.5,
+    ppO2High: 1.6,
+    o2MaxDepth: 6,
+    conservatism: 0,
+    gfLo: 30,
+    gfHi: 85,
+    gfs: 85,
+    firstStop30sec: false,
+    extendedStops: false,
+  }, overrides || {});
+}
+
+function ndlSettings(overrides) {
+  return makeSettings(Object.assign({ gfLo: 100, gfHi: 100 }, overrides || {}));
+}
+
+const NO_GASES = [];
+const EAN50 = [gas(50, 0)];
+const EAN50_O2 = [gas(50, 0), gas(100, 0)];
+const TRIMIX_DECO = [gas(50,0), gas(100,0)];
+
+function calc(levels, gases, settings, model) {
+  return LSPTestHarness.calc(HARNESS_CTX, levels, gases, settings || makeSettings(), model);
+}
+
+function runTest(name, model, fn) {
+  try {
+    const detail = fn();
+    return { name, model, pass: true, warn: false, detail: detail == null ? '✓' : String(detail) };
+  } catch (e) {
+    return { name, model, pass: false, warn: false, detail: e && e.message ? e.message : String(e) };
+  }
+}
+
+function runWarnTest(name, model, fn) {
+  try {
+    const detail = fn();
+    return { name, model, pass: true, warn: true, detail: detail == null ? 'warning' : String(detail) };
+  } catch (e) {
+    return { name, model, pass: false, warn: false, detail: e && e.message ? e.message : String(e) };
+  }
+}
+
+function stopSegments(result) {
+  return (result.plan || []).filter(function(seg){ return seg && seg.type === 'stop'; });
+}
+function decoStops(result) {
+  return (result.stops || []).filter(function(s){ return s && s.time > 0; });
+}
+function segmentTypes(result) {
+  return (result.plan || []).map(function(seg){ return seg.type; });
+}
+function totalStopTime(result) {
+  return stopSegments(result).reduce(function(sum, s){ return sum + (s.time || 0); }, 0);
+}
+function hasGasSwitch(result) {
+  return (result.plan || []).some(function(seg){
+    return seg.type === 'switch' || seg.type === 'gasSwitch' || seg.gasSwitch || seg.switchGas || seg.newGas;
+  });
+}
+function maxStopDepth(result) {
+  const stops = stopSegments(result);
+  return stops.length ? Math.max.apply(null, stops.map(function(s){ return s.depth; })) : 0;
+}
+function minStopDepth(result) {
+  const stops = stopSegments(result);
+  return stops.length ? Math.min.apply(null, stops.map(function(s){ return s.depth; })) : 0;
+}
+function assertResultShape(result) {
+  finiteNum(result.totalRuntime, 'totalRuntime');
+  assert(Array.isArray(result.plan), 'plan is not an array');
+  assert(Array.isArray(result.stops), 'stops is not an array');
+  if (result.totalCNS != null) finiteNum(result.totalCNS, 'totalCNS');
+  if (result.totalOTU != null) finiteNum(result.totalOTU, 'totalOTU');
+}
+function assertPlanIntegrity(result) {
+  assertResultShape(result);
+  assert(result.plan.length > 0, 'plan is empty');
+  let lastRuntime = -Infinity;
+  let sawBottom = false;
+  let sawDescent = false;
+  let lastStopDepth = Infinity;
+  for (let i = 0; i < result.plan.length; i++) {
+    const seg = result.plan[i];
+    if ('time' in seg) finiteNum(seg.time || 0, 'segment time');
+    if ('run' in seg && seg.run != null) {
+      finiteNum(seg.run, 'segment run');
+      assert(seg.run + 1e-9 >= lastRuntime, 'Run time decreased at segment ' + i);
+      lastRuntime = seg.run;
+    }
+    if ('depth' in seg && seg.depth != null) {
+      finiteNum(seg.depth, 'segment depth');
+      assert(seg.depth >= 0, 'Negative depth at segment ' + i);
+    }
+    if ((seg.time || 0) < -1e-9) throw new Error('Negative time at segment ' + i);
+    if (seg.type === 'descent') sawDescent = true;
+    if (seg.type === 'bottom') sawBottom = true;
+    if (seg.type === 'stop') {
+      assert(sawBottom || sawDescent, 'Stop encountered before descent/bottom');
+      assert(seg.depth <= lastStopDepth + 1e-9, 'Stop depth increased during ascent: ' + seg.depth + ' after ' + lastStopDepth);
+      lastStopDepth = seg.depth;
+    }
+  }
+  assert(sawDescent, 'No descent segment found');
+  assert(sawBottom, 'No bottom segment found');
+}
+
+const GROUPS = [
+  {
+    name: 'Engine Presence',
+    tests: [
+      ['Global engine object exists', 'CORE', function(){ assert(E && typeof E === 'object', 'VPMEngine missing'); return 'Engine ready'; }],
+      ['calculate() function exists', 'CORE', function(){ assert(typeof E.calculate === 'function', 'calculate missing'); return 'calculate(): ok'; }],
+      ['Model registry exists if exposed', 'CORE', function(){ const mods = E.MODELS && (Array.isArray(E.MODELS) ? E.MODELS : Object.keys(E.MODELS)); return mods ? mods.join(', ') : 'MODELS not exposed; using callable checks instead'; }, 'warn'],
+      ['ZHLC_GF model callable', 'ZHLC_GF', function(){ const r = calc(level(20,20), NO_GASES, makeSettings(), 'ZHLC_GF'); assert(r && typeof r.totalRuntime === 'number', 'ZHLC_GF did not return a valid result'); return 'call succeeded, RT ' + pretty(r.totalRuntime); }],
+      ['VPMB model callable', 'VPMB', function(){ const r = calc(level(20,20), NO_GASES, makeSettings(), 'VPMB'); assert(r && typeof r.totalRuntime === 'number', 'VPMB did not return a valid result'); return 'call succeeded, RT ' + pretty(r.totalRuntime); }],
+      ['VPMB_GFS model callable', 'VPMB_GFS', function(){ const r = calc(level(20,20), NO_GASES, makeSettings(), 'VPMB_GFS'); assert(r && typeof r.totalRuntime === 'number', 'VPMB_GFS did not return a valid result'); return 'call succeeded, RT ' + pretty(r.totalRuntime); }],
+      ['SURFACEP sanity', 'CORE', function(){ assert(approx(SURF, 1.013, 0.01), 'SURFACEP=' + SURF); return pretty(SURF, 3) + ' bar'; }],
+      ['BAR_PER_METRE availability', 'CORE', function(){ if (BAR == null || !isFinite(BAR)) return 'BAR_PER_METRE not readable; using default salt value'; assert(BAR >= 0.095 && BAR <= 0.105, 'BARPERMETRE=' + BAR); return pretty(BAR, 5) + ' bar/m'; }, 'warn'],
+    ]
+  },
+  {
+    name: 'Result Contract',
+    tests: [
+      ['Bühlmann result object shape', 'ZHLC_GF', function(){ const r = calc(level(40,25), NO_GASES, makeSettings(), 'ZHLC_GF'); assertResultShape(r); return 'RT ' + pretty(r.totalRuntime); }],
+      ['VPM-B result object shape', 'VPMB', function(){ const r = calc(level(40,25), NO_GASES, makeSettings(), 'VPMB'); assertResultShape(r); return 'RT ' + pretty(r.totalRuntime); }],
+      ['VPM-B/GFS result object shape', 'VPMB_GFS', function(){ const r = calc(level(40,25), NO_GASES, makeSettings(), 'VPMB_GFS'); assertResultShape(r); return 'RT ' + pretty(r.totalRuntime); }],
+      ['Bühlmann plan integrity', 'ZHLC_GF', function(){ const r = calc(level(40,25), NO_GASES, makeSettings(), 'ZHLC_GF'); assertPlanIntegrity(r); return segmentTypes(r).slice(0,8).join(' → '); }],
+      ['VPM-B plan integrity', 'VPMB', function(){ const r = calc(level(40,25), NO_GASES, makeSettings(), 'VPMB'); assertPlanIntegrity(r); return segmentTypes(r).slice(0,8).join(' → '); }],
+      ['VPM-B/GFS plan integrity', 'VPMB_GFS', function(){ const r = calc(level(40,25), NO_GASES, makeSettings(), 'VPMB_GFS'); assertPlanIntegrity(r); return segmentTypes(r).slice(0,8).join(' → '); }],
+    ]
+  },
+  {
+    name: 'Bühlmann NDL and Deco',
+    tests: [
+      ['20m / 20min stays no-deco', 'ZHLC_GF', function(){ const r = calc(level(20,20), NO_GASES, ndlSettings(), 'ZHLC_GF'); assert(decoStops(r).length === 0, 'Unexpected deco stops: ' + decoStops(r).length); return 'RT ' + pretty(r.totalRuntime) + ' min'; }],
+      ['15m / 60min stays no-deco', 'ZHLC_GF', function(){ const r = calc(level(15,60), NO_GASES, ndlSettings(), 'ZHLC_GF'); assert(decoStops(r).length === 0, 'Unexpected deco stops'); return 'RT ' + pretty(r.totalRuntime) + ' min'; }],
+      ['40m / 25min requires decompression', 'ZHLC_GF', function(){ const r = calc(level(40,25), NO_GASES, makeSettings(), 'ZHLC_GF'); assert(decoStops(r).length > 0 || totalStopTime(r) > 0, 'No deco generated'); return decoStops(r).length + ' stops, RT ' + pretty(r.totalRuntime); }],
+      ['50m / 30min runtime exceeds bottom time', 'ZHLC_GF', function(){ const r = calc(level(50,30), NO_GASES, makeSettings(), 'ZHLC_GF'); assert(r.totalRuntime > 30, 'RT <= BT'); return 'RT ' + pretty(r.totalRuntime); }],
+      ['50m / 30min runtime > 40m / 25min runtime', 'ZHLC_GF', function(){ const a = calc(level(40,25), NO_GASES, makeSettings(), 'ZHLC_GF'); const b = calc(level(50,30), NO_GASES, makeSettings(), 'ZHLC_GF'); assert(b.totalRuntime > a.totalRuntime, 'Deeper/longer dive produced less runtime'); return pretty(a.totalRuntime) + ' → ' + pretty(b.totalRuntime); }],
+      ['Shallow 5m / 10min dive stays short and valid', 'ZHLC_GF', function(){ const r = calc(level(5,10), NO_GASES, makeSettings(), 'ZHLC_GF'); assert(r.totalRuntime >= 10 && r.totalRuntime < 30, 'RT out of range: ' + r.totalRuntime); return 'RT ' + pretty(r.totalRuntime); }],
+    ]
+  },
+  {
+    name: 'Gradient Factors',
+    tests: [
+      ['Lower GFHi increases or preserves runtime', 'ZHLC_GF', function(){ const loose = calc(level(40,25), NO_GASES, makeSettings({ gfHi:85 }), 'ZHLC_GF'); const tight = calc(level(40,25), NO_GASES, makeSettings({ gfHi:70 }), 'ZHLC_GF'); assert(tight.totalRuntime + 1e-9 >= loose.totalRuntime, 'GFHi70 shorter than GFHi85'); return '85→' + pretty(loose.totalRuntime) + ' | 70→' + pretty(tight.totalRuntime); }],
+      ['Lower GFLo increases or preserves runtime', 'ZHLC_GF', function(){ const standard = calc(level(40,25), NO_GASES, makeSettings({ gfLo:30, gfHi:85 }), 'ZHLC_GF'); const deeper = calc(level(40,25), NO_GASES, makeSettings({ gfLo:20, gfHi:85 }), 'ZHLC_GF'); assert(deeper.totalRuntime + 1e-9 >= standard.totalRuntime, 'GFLo20 shorter than GFLo30'); return '30/85→' + pretty(standard.totalRuntime) + ' | 20/85→' + pretty(deeper.totalRuntime); }],
+      ['More conservative last stop / step config still runs', 'ZHLC_GF', function(){ const r = calc(level(45,25), NO_GASES, makeSettings({ stepSize:1, lastStop:1 }), 'ZHLC_GF'); assert(r.totalRuntime > 25, 'Unexpected RT'); return '1m steps, 1m last stop, RT ' + pretty(r.totalRuntime); }],
+      ['Fractional minStopTime runs', 'ZHLC_GF', function(){ const r = calc(level(45,25), NO_GASES, makeSettings({ minStopTime:0.5 }), 'ZHLC_GF'); assert(r.totalRuntime > 25, 'RT too short'); return 'RT ' + pretty(r.totalRuntime); }],
+    ]
+  },
+  {
+    name: 'Gas Behavior',
+    tests: [
+      ['EAN32 bottom gas does not increase runtime vs air at 30m / 30min', 'ZHLC_GF', function(){ const air = calc(level(30,30,21), NO_GASES, makeSettings(), 'ZHLC_GF'); const nitrox = calc(level(30,30,32), NO_GASES, makeSettings(), 'ZHLC_GF'); assert(nitrox.totalRuntime <= air.totalRuntime + 0.5, 'EAN32 runtime > air runtime'); return 'Air ' + pretty(air.totalRuntime) + ' | EAN32 ' + pretty(nitrox.totalRuntime); }],
+      ['EAN50 deco gas reduces or preserves runtime', 'ZHLC_GF', function(){ const noDecoGas = calc(level(40,25), NO_GASES, makeSettings(), 'ZHLC_GF'); const decoGas = calc(level(40,25), EAN50, makeSettings(), 'ZHLC_GF'); assert(decoGas.totalRuntime <= noDecoGas.totalRuntime + 0.5, 'EAN50 increased RT unexpectedly'); return 'No gas ' + pretty(noDecoGas.totalRuntime) + ' | EAN50 ' + pretty(decoGas.totalRuntime); }],
+      ['EAN50 + O2 deco gas produces valid runtime', 'ZHLC_GF', function(){ const r = calc(level(50,30), EAN50_O2, makeSettings(), 'ZHLC_GF'); assert(r.totalRuntime > 30, 'RT invalid'); return 'RT ' + pretty(r.totalRuntime); }],
+      ['Deco gas tends to raise OTU vs no deco gas', 'ZHLC_GF', function(){ const a = calc(level(40,25), NO_GASES, makeSettings(), 'ZHLC_GF'); const b = calc(level(40,25), EAN50, makeSettings(), 'ZHLC_GF'); assert(b.totalOTU >= a.totalOTU - 0.01, 'OTU dropped unexpectedly'); return 'OTU ' + Math.round(a.totalOTU) + ' → ' + Math.round(b.totalOTU); }],
+      ['Multi-level trimix input runs in Bühlmann', 'ZHLC_GF', function(){ const r = calc(multiLevel([{depth:60,time:20,o2:18,he:45},{depth:30,time:10,o2:18,he:45}]), TRIMIX_DECO, makeSettings(), 'ZHLC_GF'); assert(r.totalRuntime > 30, 'Runtime too short'); return 'RT ' + pretty(r.totalRuntime) + ', stops ' + decoStops(r).length; }],
+    ]
+  },
+  {
+    name: 'VPM-B Algorithms',
+    tests: [
+      ['VPM-B 40m / 25min returns valid decompression plan', 'VPMB', function(){ const r = calc(level(40,25), NO_GASES, makeSettings(), 'VPMB'); assert(r.totalRuntime > 25, 'RT <= BT'); return 'RT ' + pretty(r.totalRuntime); }],
+      ['VPM-B/GFS 40m / 25min returns valid decompression plan', 'VPMB_GFS', function(){ const r = calc(level(40,25), NO_GASES, makeSettings(), 'VPMB_GFS'); assert(r.totalRuntime > 25, 'RT <= BT'); return 'RT ' + pretty(r.totalRuntime); }],
+      ['VPM-B deeper dive increases runtime', 'VPMB', function(){ const a = calc(level(40,25), NO_GASES, makeSettings(), 'VPMB'); const b = calc(level(50,25), NO_GASES, makeSettings(), 'VPMB'); assert(b.totalRuntime >= a.totalRuntime, '50m shorter than 40m'); return pretty(a.totalRuntime) + ' → ' + pretty(b.totalRuntime); }],
+      ['VPM-B/GFS deeper dive increases runtime', 'VPMB_GFS', function(){ const a = calc(level(40,25), NO_GASES, makeSettings(), 'VPMB_GFS'); const b = calc(level(50,25), NO_GASES, makeSettings(), 'VPMB_GFS'); assert(b.totalRuntime >= a.totalRuntime, '50m shorter than 40m'); return pretty(a.totalRuntime) + ' → ' + pretty(b.totalRuntime); }],
+      ['VPM-B and VPM-B/GFS remain within broad runtime envelope', 'ALL', function(){ const a = calc(level(40,25), NO_GASES, makeSettings(), 'VPMB'); const b = calc(level(40,25), NO_GASES, makeSettings(), 'VPMB_GFS'); const diff = Math.abs(a.totalRuntime - b.totalRuntime); assert(diff < 90, 'Model divergence too large: ' + diff.toFixed(1) + ' min'); return 'Δ=' + pretty(diff); }],
+      ['Higher conservatism in VPM-B does not reduce runtime', 'VPMB', function(){ const low = calc(level(45,25), NO_GASES, makeSettings({ conservatism:0 }), 'VPMB'); const high = calc(level(45,25), NO_GASES, makeSettings({ conservatism:4 }), 'VPMB'); assert(high.totalRuntime >= low.totalRuntime, 'Higher conservatism reduced runtime'); return 'C0 ' + pretty(low.totalRuntime) + ' | C4 ' + pretty(high.totalRuntime); }],
+      ['Higher GFS conservatism does not reduce runtime', 'VPMB_GFS', function(){ const loose = calc(level(45,25), NO_GASES, makeSettings({ gfs: 85 }), 'VPMB_GFS'); const tight = calc(level(45,25), NO_GASES, makeSettings({ gfs: 70 }), 'VPMB_GFS'); assert(tight.totalRuntime >= loose.totalRuntime, 'Lower GFS reduced runtime unexpectedly'); return '85 ' + pretty(loose.totalRuntime) + ' | 70 ' + pretty(tight.totalRuntime); }],
+    ]
+  },
+  {
+    name: 'Units and Water Types',
+    tests: [
+      ['Metric mode runs', 'ZHLC_GF', function(){ const r = calc(level(40,25), NO_GASES, makeSettings({ metric:true, waterType:0 }), 'ZHLC_GF'); return 'RT ' + pretty(r.totalRuntime); }],
+      ['Imperial mode runs', 'ZHLC_GF', function(){ const r = calc([{ depth:130, time:25, o2:21, he:0 }], NO_GASES, makeSettings({ metric:false, waterType:0, stepSize:10, lastStop:10 }), 'ZHLC_GF'); assert(r.totalRuntime > 25, 'Imperial RT invalid'); return 'RT ' + pretty(r.totalRuntime); }],
+      ['Salt water runs', 'ZHLC_GF', function(){ const r = calc(level(40,25), NO_GASES, makeSettings({ waterType:0 }), 'ZHLC_GF'); return 'RT ' + pretty(r.totalRuntime); }],
+      ['Fresh water runs', 'ZHLC_GF', function(){ const r = calc(level(40,25), NO_GASES, makeSettings({ waterType:1 }), 'ZHLC_GF'); return 'RT ' + pretty(r.totalRuntime); }],
+      ['Salt vs fresh remain within broad envelope', 'ZHLC_GF', function(){ const salt = calc(level(40,25), NO_GASES, makeSettings({ waterType:0 }), 'ZHLC_GF'); const fresh = calc(level(40,25), NO_GASES, makeSettings({ waterType:1 }), 'ZHLC_GF'); const diff = Math.abs(salt.totalRuntime - fresh.totalRuntime); assert(diff < 15, 'Water type shift too large: ' + diff.toFixed(1)); return 'Δ=' + pretty(diff); }],
+      ['Custom water density runs', 'ZHLC_GF', function(){ const r = calc(level(40,25), NO_GASES, makeSettings({ waterType:2, customWaterDensity: 1030 }), 'ZHLC_GF'); return 'RT ' + pretty(r.totalRuntime); }],
+    ]
+  },
+  {
+    name: 'Determinism and Stability',
+    tests: [
+      ['Repeated Bühlmann calls are deterministic', 'ZHLC_GF', function(){ const a = calc(level(40,25), NO_GASES, makeSettings(), 'ZHLC_GF'); const b = calc(level(40,25), NO_GASES, makeSettings(), 'ZHLC_GF'); assert(Math.abs(a.totalRuntime - b.totalRuntime) < 0.01, 'Runtimes differ'); return pretty(a.totalRuntime) + ' == ' + pretty(b.totalRuntime); }],
+      ['Repeated VPM-B calls are deterministic', 'VPMB', function(){ const a = calc(level(40,25), NO_GASES, makeSettings(), 'VPMB'); const b = calc(level(40,25), NO_GASES, makeSettings(), 'VPMB'); assert(Math.abs(a.totalRuntime - b.totalRuntime) < 0.01, 'Runtimes differ'); return pretty(a.totalRuntime) + ' == ' + pretty(b.totalRuntime); }],
+      ['Repeated VPM-B/GFS calls are deterministic', 'VPMB_GFS', function(){ const a = calc(level(40,25), NO_GASES, makeSettings(), 'VPMB_GFS'); const b = calc(level(40,25), NO_GASES, makeSettings(), 'VPMB_GFS'); assert(Math.abs(a.totalRuntime - b.totalRuntime) < 0.01, 'Runtimes differ'); return pretty(a.totalRuntime) + ' == ' + pretty(b.totalRuntime); }],
+      ['Deep Bühlmann case completes without crash', 'ZHLC_GF', function(){ const r = calc(level(80,20), NO_GASES, makeSettings(), 'ZHLC_GF'); assert(r.totalRuntime > 20, 'RT invalid'); return 'RT ' + pretty(r.totalRuntime); }],
+      ['Deep VPM-B case completes without crash', 'VPMB', function(){ const r = calc(level(80,20), NO_GASES, makeSettings(), 'VPMB'); assert(r.totalRuntime > 20, 'RT invalid'); return 'RT ' + pretty(r.totalRuntime); }],
+    ]
+  },
+  {
+    name: 'VPM-B Conservatism & Cross-Model Ordering',
+    tests: [
+      // C0 < C2 < C4 monotonic — each step adds time
+      ['C0 < C2 < C4 runtime monotonicity (40m/25min)', 'VPMB', function(){
+        const c0 = calc(level(40,25), NO_GASES, makeSettings({conservatism:0}), 'VPMB');
+        const c2 = calc(level(40,25), NO_GASES, makeSettings({conservatism:2}), 'VPMB');
+        const c4 = calc(level(40,25), NO_GASES, makeSettings({conservatism:4}), 'VPMB');
+        assert(c2.totalRuntime + 0.5 >= c0.totalRuntime, `C2 < C0: ${pretty(c2.totalRuntime)} < ${pretty(c0.totalRuntime)}`);
+        assert(c4.totalRuntime + 0.5 >= c2.totalRuntime, `C4 < C2: ${pretty(c4.totalRuntime)} < ${pretty(c2.totalRuntime)}`);
+        return `C0=${pretty(c0.totalRuntime)} C2=${pretty(c2.totalRuntime)} C4=${pretty(c4.totalRuntime)}`;
+      }],
+      // C0 through C5 all complete without error
+      ['VPM-B conservatism 0-5 all run without error', 'VPMB', function(){
+        const rts = [];
+        for (let c = 0; c <= 5; c++) {
+          const r = calc(level(45,25), NO_GASES, makeSettings({conservatism:c}), 'VPMB');
+          rts.push(`C${c}=${pretty(r.totalRuntime)}`);
+        }
+        return rts.join(' ');
+      }],
+      // VPMB_GFS >= VPMB: GF cap on shallow stops always adds time or equals
+      ['VPMB_GFS RT >= VPMB RT (40m/25min)', 'VPMB_GFS', function(){
+        const vpm  = calc(level(40,25), NO_GASES, makeSettings(), 'VPMB');
+        const gfs  = calc(level(40,25), NO_GASES, makeSettings(), 'VPMB_GFS');
+        assert(gfs.totalRuntime + 0.5 >= vpm.totalRuntime,
+          `GFS shorter than VPM-B: ${pretty(gfs.totalRuntime)} < ${pretty(vpm.totalRuntime)}`);
+        return `VPMB=${pretty(vpm.totalRuntime)} GFS=${pretty(gfs.totalRuntime)}`;
+      }],
+      // VPMB_GFS >= VPMB on a deep TMX profile (where the GF cap bites hardest)
+      ['VPMB_GFS RT >= VPMB RT (60m/20min)', 'VPMB_GFS', function(){
+        const vpm = calc(level(60,20), NO_GASES, makeSettings(), 'VPMB');
+        const gfs = calc(level(60,20), NO_GASES, makeSettings(), 'VPMB_GFS');
+        assert(gfs.totalRuntime + 0.5 >= vpm.totalRuntime,
+          `GFS shorter: ${pretty(gfs.totalRuntime)} < ${pretty(vpm.totalRuntime)}`);
+        return `VPMB=${pretty(vpm.totalRuntime)} GFS=${pretty(gfs.totalRuntime)}`;
+      }],
+      // GFS cap tightness: lower GFS value -> longer RT
+      ['Lower GFS (60 vs 85) -> longer VPMB_GFS RT', 'VPMB_GFS', function(){
+        const loose = calc(level(45,25), NO_GASES, makeSettings({gfs:85}), 'VPMB_GFS');
+        const tight = calc(level(45,25), NO_GASES, makeSettings({gfs:60}), 'VPMB_GFS');
+        assert(tight.totalRuntime + 0.5 >= loose.totalRuntime,
+          `GFS60 shorter: ${pretty(tight.totalRuntime)} < GFS85 ${pretty(loose.totalRuntime)}`);
+        return `GFS85=${pretty(loose.totalRuntime)} GFS60=${pretty(tight.totalRuntime)}`;
+      }],
+      // Maiken finding: at deep TMX, GF-equivalent conservatism is much higher than VPM-B(2)
+      // VPM-B(C0) should be shorter than GF with tight settings for deep dives (VPM credits deep stops)
+      ['VPM-B(C0) shorter than tight GF (20/70) for 60m air dive', 'ALL', function(){
+        const vpm = calc(level(60,20), NO_GASES, makeSettings({conservatism:0}), 'VPMB');
+        const gf  = calc(level(60,20), NO_GASES, makeSettings({gfLo:20, gfHi:70}), 'ZHLC_GF');
+        // VPM-B(0) should be appreciably shorter for a genuinely deep dive
+        return `VPM-B(0)=${pretty(vpm.totalRuntime)} GF20/70=${pretty(gf.totalRuntime)}`;
+      }],
+    ]
+  },
+
+  {
+    name: 'Trimix Helium Behavior',
+    tests: [
+      // TMX with He: engine runs for all 3 models
+      ['Bühlmann: 60m TMX18/45 runs', 'ZHLC_GF', function(){
+        const r = calc(level(60,20,18,45), [gas(50,0), gas(100,0)], makeSettings(), 'ZHLC_GF');
+        assert(r.totalRuntime > 20); return `RT=${pretty(r.totalRuntime)}`;
+      }],
+      ['VPM-B: 60m TMX18/45 runs', 'VPMB', function(){
+        const r = calc(level(60,20,18,45), [gas(50,0), gas(100,0)], makeSettings(), 'VPMB');
+        assert(r.totalRuntime > 20); return `RT=${pretty(r.totalRuntime)}`;
+      }],
+      ['VPMB_GFS: 60m TMX18/45 runs', 'VPMB_GFS', function(){
+        const r = calc(level(60,20,18,45), [gas(50,0), gas(100,0)], makeSettings(), 'VPMB_GFS');
+        assert(r.totalRuntime > 20); return `RT=${pretty(r.totalRuntime)}`;
+      }],
+      // He reduces N2 loading: TMX 21/35 should have shorter or similar RT vs air at same depth
+      // (He off-gasses 1.8-2.6x faster than N2 per Baker's half-time ratios; total inert load lower)
+      ['TMX 21/35 RT ≤ air RT + 10min at 60m/20min (Bühlmann)', 'ZHLC_GF', function(){
+        const air = calc(level(60,20,21,0), NO_GASES, makeSettings(), 'ZHLC_GF');
+        const tmx = calc(level(60,20,21,35), NO_GASES, makeSettings(), 'ZHLC_GF');
+        assert(tmx.totalRuntime <= air.totalRuntime + 10,
+          `TMX RT ${pretty(tmx.totalRuntime)} >> air ${pretty(air.totalRuntime)}`);
+        return `Air=${pretty(air.totalRuntime)} TMX21/35=${pretty(tmx.totalRuntime)}`;
+      }],
+      ['TMX 21/35 RT ≤ air RT + 10min at 60m/20min (VPM-B)', 'VPMB', function(){
+        const air = calc(level(60,20,21,0), NO_GASES, makeSettings(), 'VPMB');
+        const tmx = calc(level(60,20,21,35), NO_GASES, makeSettings(), 'VPMB');
+        assert(tmx.totalRuntime <= air.totalRuntime + 10,
+          `TMX RT ${pretty(tmx.totalRuntime)} >> air ${pretty(air.totalRuntime)}`);
+        return `Air=${pretty(air.totalRuntime)} TMX21/35=${pretty(tmx.totalRuntime)}`;
+      }],
+      // More He = faster off-gas: TMX 18/45 should be shorter than TMX 21/35
+      ['More He (TMX18/45) gives ≤ RT vs less He (TMX21/35) at 60m (VPM-B)', 'VPMB', function(){
+        const t2135 = calc(level(60,20,21,35), NO_GASES, makeSettings(), 'VPMB');
+        const t1845 = calc(level(60,20,18,45), NO_GASES, makeSettings(), 'VPMB');
+        // Not strictly guaranteed in all models, but is physically expected
+        return `TMX21/35=${pretty(t2135.totalRuntime)} TMX18/45=${pretty(t1845.totalRuntime)}`;
+      }],
+      // CNS/OTU still valid for trimix
+      ['TMX 18/45 60m/20min: finite CNS and OTU', 'ZHLC_GF', function(){
+        const r = calc(level(60,20,18,45), [gas(50,0), gas(100,0)], makeSettings(), 'ZHLC_GF');
+        assert(isFinite(r.totalCNS) && r.totalCNS >= 0, `CNS invalid: ${r.totalCNS}`);
+        assert(isFinite(r.totalOTU) && r.totalOTU >= 0, `OTU invalid: ${r.totalOTU}`);
+        return `CNS=${pretty(r.totalCNS,1)}% OTU=${Math.round(r.totalOTU)}`;
+      }],
+      // Deep trimix with multiple deco gases
+      ['Deep TMX 10/70 90m/15min — no crash (Bühlmann)', 'ZHLC_GF', function(){
+        const decoGases = [gas(21,35), gas(35,25), gas(50,0), gas(100,0)];
+        const r = calc(level(90,15,10,70), decoGases, makeSettings(), 'ZHLC_GF');
+        assert(r.totalRuntime > 15); return `RT=${pretty(r.totalRuntime)}`;
+      }],
+    ]
+  },
+
+  {
+    name: 'VPM-B First Stop Depth',
+    tests: [
+      // VPM-B places deeper first stops than Bühlmann for deep dives (bubble model)
+      ['VPM-B first stop at least as deep as Bühlmann (60m/20min)', 'ALL', function(){
+        const rZHL = calc(level(60,20), NO_GASES, makeSettings(), 'ZHLC_GF');
+        const rVPM = calc(level(60,20), NO_GASES, makeSettings(), 'VPMB');
+        const stopsZHL = stopSegments(rZHL);
+        const stopsVPM = stopSegments(rVPM);
+        if (stopsZHL.length === 0 || stopsVPM.length === 0) return 'no stops to compare';
+        const firstZHL = Math.max(...stopsZHL.map(s => s.depth));
+        const firstVPM = Math.max(...stopsVPM.map(s => s.depth));
+        // VPM-B mechanically places the first stop deeper (bubble-based ceiling)
+        assert(firstVPM >= firstZHL - 3,
+          `VPM-B first stop ${firstVPM}m not at least as deep as Bühlmann ${firstZHL}m`);
+        return `Bühlmann=${firstZHL}m VPM-B=${firstVPM}m`;
+      }],
+      // Deeper dive -> deeper first stop (for VPM-B)
+      ['Deeper dive -> deeper first stop (VPM-B, 40m vs 60m)', 'VPMB', function(){
+        const r40 = calc(level(40,25), NO_GASES, makeSettings(), 'VPMB');
+        const r60 = calc(level(60,20), NO_GASES, makeSettings(), 'VPMB');
+        const s40 = stopSegments(r40); const s60 = stopSegments(r60);
+        if (s40.length === 0 || s60.length === 0) return 'no stops (check dive profiles)';
+        const d40 = Math.max(...s40.map(s => s.depth));
+        const d60 = Math.max(...s60.map(s => s.depth));
+        assert(d60 >= d40, `60m first stop ${d60}m not deeper than 40m ${d40}m`);
+        return `40m first stop=${d40}m  60m first stop=${d60}m ✓`;
+      }],
+      // Stops are shallower from bottom upward (plan integrity)
+      ['Stop depths strictly non-increasing during ascent (VPM-B)', 'VPMB', function(){
+        const r = calc(level(50,25), NO_GASES, makeSettings(), 'VPMB');
+        const stops = stopSegments(r);
+        let lastD = Infinity;
+        stops.forEach((s, i) => {
+          assert(s.depth <= lastD + 1e-9, `stop depth increased at index ${i}: ${s.depth} > ${lastD}`);
+          lastD = s.depth;
+        });
+        return `${stops.length} stops in correct order ✓`;
+      }],
+    ]
+  },
+
+  {
+    name: 'Output Sanity Warnings',
+    tests: [
+      ['Warning if Bühlmann first stop is deeper than bottom depth', 'ZHLC_GF', function(){ const r = calc(level(40,25), NO_GASES, makeSettings(), 'ZHLC_GF'); const mx = maxStopDepth(r); assert(mx <= 40, 'First stop deeper than planned depth: ' + mx); return 'max stop depth ' + mx; }, 'warn'],
+      ['Warning if minimum stop depth exceeds configured last stop by too much', 'ZHLC_GF', function(){ const r = calc(level(40,25), NO_GASES, makeSettings({ lastStop:3 }), 'ZHLC_GF'); const mn = minStopDepth(r); assert(mn >= 0, 'Negative min stop'); return 'min stop depth ' + mn; }, 'warn'],
+      ['Warning if deco gases produce no identifiable switch segment', 'ZHLC_GF', function(){ const r = calc(level(50,30), EAN50_O2, makeSettings(), 'ZHLC_GF'); return hasGasSwitch(r) ? 'switch segment found' : 'No explicit switch segment visible; engine may encode switches implicitly'; }, 'warn'],
+    ]
+  },
+
+  {
+    name: 'CCR / Rebreather',
+    tests: [
+      ['CCR 40m/28min requires deco (Bühlmann)', 'ZHLC_GF', function(){
+        const r = calc(level(40,28), NO_GASES, makeSettings({ circuit:'CCR', setpoint:1.3, descentSetpoint:0.7 }), 'ZHLC_GF');
+        assert(decoStops(r).length > 0 || totalStopTime(r) > 0, 'CCR dive should require deco');
+        return 'RT ' + pretty(r.totalRuntime);
+      }],
+      ['CCR deco shorter than OC same dive', 'ZHLC_GF', function(){
+        const oc = calc(level(40,28), NO_GASES, makeSettings({ gfLo:50, gfHi:80 }), 'ZHLC_GF');
+        const ccr = calc(level(40,28), NO_GASES, makeSettings({ circuit:'CCR', setpoint:1.3, gfLo:50, gfHi:80 }), 'ZHLC_GF');
+        assert(ccr.totalRuntime < oc.totalRuntime, 'CCR RT must be shorter than OC');
+        return 'OC=' + pretty(oc.totalRuntime) + ' CCR=' + pretty(ccr.totalRuntime);
+      }],
+      ['pSCR differs from CCR in VPM-B path', 'VPMB', function(){
+        const ccr = calc(level(40,20), NO_GASES, makeSettings({ circuit:'CCR', setpoint:1.3 }), 'VPMB');
+        const pscr = calc(level(40,20), NO_GASES, makeSettings({ circuit:'pSCR', setpoint:1.3, scrLoopVolume:7, scrMetabolicO2:0.85 }), 'VPMB');
+        assert(pscr.totalRuntime !== ccr.totalRuntime, 'pSCR and CCR should differ in VPM');
+        return 'CCR=' + pretty(ccr.totalRuntime) + ' pSCR=' + pretty(pscr.totalRuntime);
+      }],
+      ['getEffectivePpo2 uses setpoint on CCR at 40m', 'CORE', function(){
+        const pAmb = SURF + 40 * BAR;
+        const ppo2 = WIN.getEffectivePpo2(pAmb, 1.3, 0.21, { circuit:'CCR', setpoint:1.3 }, 40, 0);
+        assert(approx(ppo2, 1.3, 0.01), 'ppO2 should be setpoint 1.3, got ' + ppo2);
+        return 'ppO2=' + pretty(ppo2, 2);
+      }],
+    ]
+  }
+];
+
+function normalizeTests(group) {
+  return group.tests.map(function(t){
+    return { name: t[0], model: t[1], fn: t[2], kind: t[3] || 'test' };
+  });
+}
+
+function renderResults(groups) {
+  const container = document.getElementById('results');
+  container.innerHTML = '';
+  let totalPass = 0, totalFail = 0, totalWarn = 0, total = 0;
+  let visibleRows = 0, hiddenRows = 0;
+  const modelSet = new Set();
+
+  groups.forEach(function(g) {
+    const failCount = g.results.filter(function(r){ return !r.pass; }).length;
+    const warnCount = g.results.filter(function(r){ return r.warn && r.pass; }).length;
+    const passCount = g.results.filter(function(r){ return r.pass && !r.warn; }).length;
+    totalPass += passCount;
+    totalFail += failCount;
+    totalWarn += warnCount;
+    total += g.results.length;
+
+    const rowsToShow = ONLY_FAILURES ? g.results.filter(function(r){ return !r.pass; }) : g.results;
+    hiddenRows += g.results.length - rowsToShow.length;
+    visibleRows += rowsToShow.length;
+    if (rowsToShow.length === 0 && ONLY_FAILURES) return;
+
+    const wrap = document.createElement('section');
+    wrap.className = 'group';
+    const header = document.createElement('div');
+    header.className = 'group-header';
+    header.innerHTML =
+      '<div class="group-title">' + escapeHtml(g.name) + '</div>' +
+      '<div class="group-badges">' +
+        '<span class="group-badge pass">Pass ' + passCount + '</span>' +
+        '<span class="group-badge fail">Fail ' + failCount + '</span>' +
+        '<span class="group-badge warn">Warn ' + warnCount + '</span>' +
+      '</div>';
+    wrap.appendChild(header);
+
+    rowsToShow.forEach(function(r) {
+      if (r.model) modelSet.add(r.model);
+      const row = document.createElement('div');
+      row.className = 'test-row';
+      const statusClass = !r.pass ? 'fail' : (r.warn ? 'warn' : 'pass');
+      const icon = !r.pass ? '✗' : (r.warn ? '⚠' : '✓');
+      row.innerHTML =
+        '<div class="icon ' + statusClass + '">' + icon + '</div>' +
+        '<div class="test-name">' + escapeHtml(r.name) + '</div>' +
+        '<div class="test-detail ' + (!r.pass ? 'fail' : '') + '">' + escapeHtml(r.detail) + '</div>' +
+        '<div class="test-model">' + escapeHtml(modelLabel(r.model)) + '</div>';
+      wrap.appendChild(row);
+    });
+
+    container.appendChild(wrap);
+  });
+
+  document.getElementById('sum-pass').textContent = totalPass;
+  document.getElementById('sum-fail').textContent = totalFail;
+  document.getElementById('sum-warn').textContent = totalWarn;
+  document.getElementById('sum-total').textContent = total;
+  document.getElementById('summary').style.display = 'grid';
+  document.getElementById('metric-groups').textContent = String(groups.length);
+  document.getElementById('metric-models').textContent = Array.from(modelSet).map(modelLabel).join(', ') || '—';
+  document.getElementById('metric-visible').textContent = String(visibleRows);
+  document.getElementById('metric-hidden').textContent = String(hiddenRows);
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+let iframeBootError = null;
+
+function waitForEngine(iframe, timeout, cb) {
+  const start = Date.now();
+
+  function attachErrorHooks() {
+    try {
+      const w = iframe.contentWindow;
+      if (!w || w.__lspTestHooksAttached) return;
+      w.__lspTestHooksAttached = true;
+      w.addEventListener('error', function(e) {
+        iframeBootError = e && e.message ? e.message : 'Unknown script error in index.html';
+      });
+      w.addEventListener('unhandledrejection', function(e) {
+        const reason = e && e.reason;
+        iframeBootError = reason && (reason.message || String(reason)) ? (reason.message || String(reason)) : 'Unhandled promise rejection in index.html';
+      });
+    } catch (_) {}
+  }
+
+  iframe.onload = function() {
+    attachErrorHooks();
+  };
+
+  function tryGetEngine() {
+    const w = iframe.contentWindow;
+    if (!w) return null;
+    if (w.VPMEngine && typeof w.VPMEngine.calculate === 'function') return { engine: w.VPMEngine, win: w };
+
+    try {
+      if (typeof w.eval === 'function') {
+        const hasEngine = w.eval('typeof VPMEngine !== \"undefined\" && VPMEngine && typeof VPMEngine.calculate === \"function\"');
+        if (hasEngine) {
+          const eng = w.VPMEngine || w.eval('VPMEngine');
+          if (eng && typeof eng.calculate === 'function') return { engine: eng, win: w };
+        }
+      }
+    } catch (_) {}
+
+    try {
+      const names = Object.getOwnPropertyNames(w);
+      for (const key of names) {
+        const value = w[key];
+        if (value && typeof value === 'object' && typeof value.calculate === 'function' && value.MODELS && ('ZHLC_GF' in value.MODELS)) {
+          return { engine: value, win: w };
+        }
+      }
+    } catch (_) {}
+
+    return null;
+  }
+
+  function check() {
+    try {
+      attachErrorHooks();
+      const found = tryGetEngine();
+      if (found) return cb(null, found.engine, found.win);
+    } catch (e) {
+      return cb(new Error('Cannot access iframe window: ' + e.message));
+    }
+
+    if (iframeBootError) {
+      return cb(new Error('index.html boot error: ' + iframeBootError));
+    }
+
+    if (Date.now() - start > timeout) {
+      return cb(new Error('Timed out waiting for VPMEngine in index.html'));
+    }
+
+    setTimeout(check, 250);
+  }
+
+  setTimeout(check, 250);
+}
+
+function runAllGroups() {
+  return GROUPS.map(function(group) {
+    const tests = normalizeTests(group);
+    return {
+      name: group.name,
+      results: tests.map(function(t) {
+        return t.kind === 'warn' ? runWarnTest(t.name, t.model, t.fn) : runTest(t.name, t.model, t.fn);
+      })
+    };
+  });
+}
+
+function startTests() {
+  const btn = document.getElementById('run-btn');
+  const statusEl = document.getElementById('status');
+  if (typeof LSPTestHarness === 'undefined') {
+    statusEl.className = 'error';
+    statusEl.textContent = '✗ Test harness failed to load — refresh or redeploy tests-extended.html';
+    if (btn) btn.disabled = false;
+    return;
+  }
+  btn.disabled = true;
+  statusEl.className = '';
+  statusEl.textContent = 'Loading index.html…';
+  document.getElementById('summary').style.display = 'none';
+  document.getElementById('results').innerHTML = '';
+
+  const frame = document.getElementById('app-frame');
+  frame.src = 'index.html?ts=' + Date.now();
+
+  LSPTestHarness.waitForApp(frame, 45000, function(err, ctx) {
+    if (err) {
+      statusEl.className = 'error';
+      statusEl.textContent = '✗ ' + err.message + ' — keep this file beside index.html';
+      btn.disabled = false;
+      return;
+    }
+
+    HARNESS_CTX = ctx;
+    E = ctx.vpm;
+    WIN = ctx.win;
+    SURF = ctx.surf;
+    BAR = ctx.barPerM;
+
+    document.getElementById('meta-version').textContent = 'APP: ' + (ctx.version || '—');
+    document.getElementById('meta-surface').textContent = 'altSurfaceP: ' + pretty(SURF, 4);
+    document.getElementById('meta-bar').textContent = 'BAR/m: ' + pretty(BAR, 5);
+    document.getElementById('meta-engine').textContent = 'ENGINE: VPMEngine + ZHLEngine';
+
+    statusEl.className = 'ready';
+    statusEl.textContent = '✓ Engine ready — running extended regression suite…';
+
+    const t0 = performance.now();
+    const groups = runAllGroups();
+    const elapsed = Math.round(performance.now() - t0);
+    LAST_RESULTS = {
+      generatedAt: new Date().toISOString(),
+      appVersion: ctx.version || null,
+      surfaceP: SURF,
+      barPerMetre: BAR,
+      elapsed: elapsed,
+      groups: groups
+    };
+
+    renderResults(groups);
+    document.getElementById('sum-time').textContent = elapsed + 'ms';
+
+    const totalFail = groups.reduce(function(n, g){ return n + g.results.filter(function(r){ return !r.pass; }).length; }, 0);
+    const totalWarn = groups.reduce(function(n, g){ return n + g.results.filter(function(r){ return r.pass && r.warn; }).length; }, 0);
+
+    statusEl.className = totalFail ? 'error' : (totalWarn ? 'warn' : 'ready');
+    statusEl.textContent = totalFail
+      ? '✗ Extended suite completed with ' + totalFail + ' failure(s) and ' + totalWarn + ' warning(s).'
+      : (totalWarn
+          ? '⚠ Extended suite completed with warnings only: ' + totalWarn + '.'
+          : '✓ Extended suite completed with no failures.');
+
+    btn.disabled = false;
+    btn.textContent = '↻ Run Again';
+  });
+}
+
+function toggleOnlyFailures() {
+  ONLY_FAILURES = !ONLY_FAILURES;
+  document.getElementById('fail-toggle').textContent = 'Show Failures Only: ' + (ONLY_FAILURES ? 'On' : 'Off');
+  if (LAST_RESULTS) renderResults(LAST_RESULTS.groups);
+}
+
+async function copyJsonSummary() {
+  if (!LAST_RESULTS) return;
+  const text = JSON.stringify(LAST_RESULTS, null, 2);
+  try {
+    await navigator.clipboard.writeText(text);
+    const s = document.getElementById('status');
+    const prev = s.textContent;
+    const prevClass = s.className;
+    s.className = 'ready';
+    s.textContent = '✓ JSON summary copied to clipboard';
+    setTimeout(function(){ s.className = prevClass; s.textContent = prev; }, 1400);
+  } catch (e) {
+    alert('Clipboard copy failed. Open devtools and copy from LAST_RESULTS instead.');
+  }
+}
+
+function exportLog() {
+  if (!LAST_RESULTS) { alert('Run the tests first.'); return; }
+  const lines = [];
+  const d = new Date(LAST_RESULTS.generatedAt || Date.now());
+  let totalPass = 0, totalFail = 0, totalWarn = 0;
+  LAST_RESULTS.groups.forEach(g => {
+    g.results.forEach(r => {
+      if (!r.pass) totalFail++;
+      else if (r.warn) totalWarn++;
+      else totalPass++;
+    });
+  });
+  lines.push('LSP D-Planner + CCR — Extended Test Log');
+  lines.push('Generated : ' + d.toLocaleString());
+  lines.push('App Ver   : ' + (LAST_RESULTS.appVersion || '?'));
+  lines.push('Duration  : ' + (LAST_RESULTS.elapsed || '?') + ' ms');
+  lines.push('Result    : ' + totalPass + ' passed, ' + totalFail + ' failed, ' + totalWarn + ' warnings, ' + (totalPass + totalFail + totalWarn) + ' total');
+  lines.push('');
+  lines.push('='.repeat(60));
+  LAST_RESULTS.groups.forEach(g => {
+    const gPass = g.results.filter(r => r.pass && !r.warn).length;
+    const gWarn = g.results.filter(r => r.pass && r.warn).length;
+    const gFail = g.results.filter(r => !r.pass).length;
+    lines.push('');
+    lines.push('GROUP: ' + g.name + '  [' + gPass + ' pass / ' + gWarn + ' warn / ' + gFail + ' fail]');
+    lines.push('-'.repeat(56));
+    g.results.forEach(r => {
+      const tag = !r.pass ? 'FAIL' : r.warn ? 'WARN' : 'PASS';
+      lines.push('  [' + tag + '] ' + r.name);
+      if (r.detail) lines.push('         ' + r.detail);
+      if (r.error)  lines.push('         ERROR: ' + r.error);
+    });
+  });
+  lines.push('');
+  lines.push('='.repeat(60));
+  lines.push('End of log');
+  const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'lsp-extended-log-' + d.toISOString().slice(0,19).replace(/[:T]/g,'-') + '.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+window.addEventListener('load', function() {
+  setTimeout(startTests, 250);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LSP D-Planner+CCR — pSCR OTU/CNS &amp; Gas Validation</title>
+<style>
+  :root {
+    --bg:#0b0e17; --surface:#141824; --border:#1e2535; --border-hi:#2a3550;
+    --text:#e4e8f0; --muted:#7a8aaa; --accent:#00d9ff; --green:#26d07c;
+    --red:#ff4757; --orange:#ff9f40; --yellow:#ffd32a; --purple:#a78bfa;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:'JetBrains Mono',monospace; font-size:13px; padding:24px; }
+  h1 { color:var(--accent); font-family:'Bebas Neue',sans-serif; font-size:32px; letter-spacing:2px; margin-bottom:4px; }
+  .subtitle { color:var(--muted); font-size:11px; margin-bottom:20px; text-transform:uppercase; letter-spacing:1px; line-height:1.6; }
+  .controls { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px; align-items:center; }
+  button { background:var(--surface); border:1px solid var(--border-hi); color:var(--accent);
+           padding:8px 18px; border-radius:6px; cursor:pointer; font-family:inherit; font-size:12px;
+           font-weight:700; letter-spacing:1px; text-transform:uppercase; transition:all .15s; }
+  button:hover { background:var(--accent); color:#000; }
+  .status { padding:10px 16px; border-radius:8px; background:var(--surface);
+            border:1px solid var(--border); font-size:12px; flex:1; min-width:200px; }
+  .status.running { border-color:var(--accent); color:var(--accent); }
+  .status.pass    { border-color:var(--green);  color:var(--green);  }
+  .status.fail    { border-color:var(--red);    color:var(--red);    }
+  .meta { font-size:11px; color:var(--muted); margin-left:auto; }
+  .section { margin-bottom:28px; }
+  .section-title { font-size:11px; font-weight:700; letter-spacing:2px; color:var(--muted);
+                   text-transform:uppercase; border-bottom:1px solid var(--border);
+                   padding-bottom:6px; margin-bottom:12px; }
+  .section-desc { font-size:11px; color:var(--muted); margin-bottom:10px; line-height:1.5; }
+  .test-row { display:grid; grid-template-columns:22px 1fr auto; gap:8px; align-items:start;
+              padding:6px 0; border-bottom:1px solid var(--border); }
+  .icon::before { font-weight:700; }
+  .pass .icon::before { content:'✓'; color:var(--green); }
+  .fail .icon::before { content:'✗'; color:var(--red); }
+  .pending .icon::before { content:'·'; color:var(--muted); }
+  .test-name { color:var(--text); }
+  .test-detail { color:var(--muted); font-size:11px; white-space:pre-wrap; grid-column:2; }
+  .fail .test-detail { color:var(--red); }
+  .badge { font-size:10px; padding:2px 7px; border-radius:10px; font-weight:700;
+           letter-spacing:.5px; white-space:nowrap; align-self:start; }
+  .badge-pscr { background:rgba(255,159,64,.12); color:var(--orange); border:1px solid rgba(255,159,64,.25); }
+  .badge-vpm  { background:rgba(0,217,255,.12); color:var(--accent); border:1px solid rgba(0,217,255,.25); }
+  .badge-zhl  { background:rgba(167,139,250,.12); color:var(--purple); border:1px solid rgba(167,139,250,.25); }
+  .badge-gas  { background:rgba(38,208,124,.12); color:var(--green); border:1px solid rgba(38,208,124,.25); }
+  iframe { display:none; }
+</style>
+</head>
+<body>
+<h1>pSCR OTU/CNS VALIDATION</h1>
+<div class="subtitle">
+  Safety-critical regression suite · dual-engine harness · getEffectivePpo2 / computePSCRFractions<br>
+  Scenarios: 20 m / 40 m / 60 m × EAN32 &amp; EAN36 · VPM-B + Bühlmann ZHL-16C+GF · metabolic gas draw
+</div>
+
+<div class="controls">
+  <button onclick="startTests()">▶ RUN pSCR VALIDATION</button>
+  <div class="status" id="status">Waiting…</div>
+  <div class="meta" id="meta"></div>
+</div>
+<div id="results"></div>
+<iframe id="app-frame" src="about:blank"></iframe>
+
+<script>
+/* inlined from lsp-test-harness.js — keep in sync */
+var LSPTestHarness = (function () {
+  'use strict';
+
+  function clone(v) {
+    return JSON.parse(JSON.stringify(v));
+  }
+
+  function hookIframe(iframe, onErr) {
+    iframe.addEventListener('load', function () {
+      try {
+        var w = iframe.contentWindow;
+        if (!w || w.__lspHarnessHooked) return;
+        w.__lspHarnessHooked = true;
+        w.addEventListener('error', function (e) {
+          onErr((e && e.message) || 'Script error');
+        });
+        w.addEventListener('unhandledrejection', function (e) {
+          var r = e.reason;
+          onErr((r && r.message) || String(r) || 'Unhandled rejection');
+        });
+      } catch (_) {}
+    });
+  }
+
+  function appReady(w) {
+    return !!(w
+      && w.VPMEngine && typeof w.VPMEngine.calculate === 'function'
+      && w.ZHLEngine && typeof w.ZHLEngine.calculate === 'function');
+  }
+
+  function readPhys(win) {
+    var surf = isFinite(win.altSurfaceP) ? win.altSurfaceP : 1.01325;
+    var bar = win.BAR_PER_METRE;
+    if (bar == null || !isFinite(bar)) bar = 0.1;
+    return { surf: surf, barPerM: bar };
+  }
+
+  function waitForApp(iframe, timeoutMs, cb) {
+    var bootErr = null;
+    var settled = false;
+    hookIframe(iframe, function (msg) { bootErr = msg; });
+
+    function finish(err, ctx) {
+      if (settled) return;
+      settled = true;
+      cb(err, ctx);
+    }
+
+    function check() {
+      try {
+        var w = iframe.contentWindow;
+        if (appReady(w)) {
+          w._zhlHeadless = true;
+          var phys = readPhys(w);
+          setTimeout(function () {
+            finish(null, {
+              win: w,
+              vpm: w.VPMEngine,
+              zhl: w.ZHLEngine,
+              version: w.APP_VERSION || null,
+              surf: phys.surf,
+              barPerM: phys.barPerM,
+            });
+          }, 1500);
+          return;
+        }
+      } catch (_) {}
+      if (bootErr) return finish(new Error('Boot: ' + bootErr));
+      if (Date.now() - start > timeoutMs) {
+        return finish(new Error('Timed out waiting for VPMEngine + ZHLEngine in index.html'));
+      }
+      setTimeout(check, 250);
+    }
+
+    var start = Date.now();
+    if (!iframe.src || iframe.src === 'about:blank') {
+      iframe.src = 'index.html?ts=' + Date.now();
+    }
+    setTimeout(check, 300);
+  }
+
+  function calc(ctx, levels, gases, settings, model) {
+    if (!ctx || !ctx.vpm || !ctx.zhl) throw new Error('Harness not booted — call waitForApp first');
+    var lv = clone(levels || []);
+    var gs = clone(gases || []);
+    var st = clone(settings || {});
+    var r = (model === 'ZHLC_GF')
+      ? ctx.zhl.calculate(lv, gs, st)
+      : ctx.vpm.calculate(lv, gs, st, model);
+    if (!r || typeof r !== 'object') throw new Error('Engine returned no result');
+    if (r.error) throw new Error(r.error);
+    return r;
+  }
+
+  function reloadApp(iframe) {
+    iframe.src = 'index.html?ts=' + Date.now();
+  }
+
+  return {
+    clone: clone,
+    waitForApp: waitForApp,
+    calc: calc,
+    readPhys: readPhys,
+    reloadApp: reloadApp,
+    appReady: appReady,
+  };
+})();
+</script>
+<script>
+// ─── Constants (must match index.html) ───────────────────────────────────────
+const SURF = 1.01325;
+const BAR  = 0.101325;
+const OTU_EXP = 0.8333;
+const PSCR_MIN = 0.16;
+const BYPASS = 10;
+const MET_DEFAULT = 1.5;
+const LOOP_VOL = 10;
+const DESC_RATE = 20;
+
+/** Six primary scenarios: depth × diluent (EAN32 / EAN36) */
+const SCENARIOS = [
+  { id:'20_E32', depth:20, o2:32, he:0, bt:45, label:'20 m · EAN32 · 45 min' },
+  { id:'40_E32', depth:40, o2:32, he:0, bt:30, label:'40 m · EAN32 · 30 min' },
+  { id:'60_E32', depth:60, o2:32, he:0, bt:20, label:'60 m · EAN32 · 20 min' },
+  { id:'20_E36', depth:20, o2:36, he:0, bt:40, label:'20 m · EAN36 · 40 min' },
+  { id:'40_E36', depth:40, o2:36, he:0, bt:25, label:'40 m · EAN36 · 25 min' },
+  { id:'60_E36', depth:60, o2:36, he:0, bt:20, label:'60 m · EAN36 · 20 min' },
+];
+
+/** Pinned loop ppO₂ @ end of bottom — true 0.16 bar ppO₂ floor (depleted loop) */
+const PINNED_LOOP_PPO2 = {
+  '20_E32': 0.16, '40_E32': 0.16, '60_E32': 0.16,
+  '20_E36': 0.16, '40_E36': 0.16, '60_E36': 0.16,
+};
+/** Pinned bottom-phase OTU @ loop ppO₂ (≤0.5 bar → 0 OTU) */
+const PINNED_BOTTOM_OTU = {
+  '20_E32': 0.0, '40_E32': 0.0, '60_E32': 0.0,
+  '20_E36': 0.0, '40_E36': 0.0, '60_E36': 0.0,
+};
+/** Diluent-only bottom OTU (fO2×pAmb integration — engine must stay well below) */
+const PINNED_DILUENT_BOTTOM_OTU = {
+  '20_E32': 42.9, '40_E32': 58.8, '60_E32': 57.3,
+  '20_E36': 46.2, '40_E36': 56.3, '60_E36': 64.9,
+};
+
+let WIN;
+
+function lv(d, t, o2 = 21, he = 0) { return [{ depth: d, time: t, o2, he }]; }
+function fO2frac(o2pct) { return o2pct / 100; }
+
+function pscrSettings(extra = {}) {
+  return Object.assign({
+    metric: true, waterType: 0, circuit: 'pSCR', bailout: false,
+    scrLoopVolume: LOOP_VOL, scrMetabolicO2: MET_DEFAULT,
+    setpoint: 0, descentSetpoint: 0, bottomSetpoint: 0, decoSetpoint: 0,
+    descentRate: DESC_RATE, ascentRate: 10, decoAscentRate: 3,
+    stepSize: 3, lastStop: 3, minStopTime: 1,
+    gfLo: 30, gfHi: 70, ppO2Bottom: 1.4, ppO2Deco: 1.6,
+    conservatism: 0,
+  }, extra);
+}
+
+function pAmb(depthM) { return SURF + depthM * BAR; }
+
+function segOTU(ppo2, dur) {
+  if (ppo2 <= 0.5) return 0;
+  return dur * Math.pow((ppo2 - 0.5) / 0.5, OTU_EXP);
+}
+
+function segCNSfrac(ppo2, dur) {
+  if (ppo2 <= 0.5) return 0;
+  const limits = { 6:720,7:570,8:450,9:360,10:300,11:240,12:210,13:180,14:150,15:120,16:45 };
+  const lo = Math.floor(ppo2 * 10), hi = lo + 1;
+  const vLo = limits[lo] || 0, vHi = limits[hi] || 0;
+  const lim = vLo + (vHi - vLo) * (ppo2 * 10 - lo);
+  return lim > 0 ? dur / lim : dur / 45;
+}
+
+function ccrAtRuntime(scrRuntimeMin) {
+  return {
+    circuit: 'pSCR', bailout: false,
+    scrLoopVolume: LOOP_VOL, scrMetabolicO2: MET_DEFAULT,
+    scrRuntimeMin,
+  };
+}
+
+function refLoopPpo2(depth, fO2, fHe, scrRuntimeMin) {
+  return WIN.getEffectivePpo2(pAmb(depth), 0, fO2, ccrAtRuntime(scrRuntimeMin), depth, fHe);
+}
+
+function refDiluentPpo2(depth, fO2) { return fO2 * pAmb(depth); }
+
+function bottomRuntimeMin(depth, bt) { return depth / DESC_RATE + bt; }
+
+function refBottomPhase(sc) {
+  const fO2 = fO2frac(sc.o2);
+  const rt = bottomRuntimeMin(sc.depth, sc.bt);
+  const ppLoop = refLoopPpo2(sc.depth, fO2, sc.he / 100, rt);
+  const ppDil  = refDiluentPpo2(sc.depth, fO2);
+  return {
+    rt, ppLoop, ppDil,
+    otuBottom: segOTU(ppLoop, sc.bt),
+    cnsBottomPct: segCNSfrac(ppLoop, sc.bt) * 100,
+    otuDiluent: segOTU(ppDil, sc.bt),
+  };
+}
+
+/** pSCR diluent litres — metRate × bypass, depth via ccrGasLitres (BUG-75) */
+function refGasLitresAmbient(depth, durMin, fO2, fHe, scrRuntimeMin) {
+  const pSurf = SURF;
+  const surfLpm = MET_DEFAULT * BYPASS;
+  return surfLpm * (pAmb(depth) / pSurf) * durMin;
+}
+
+function refGasSurfaceEquiv(depth, durMin, fO2, fHe, scrRuntimeMin) {
+  const surfLpm = MET_DEFAULT * BYPASS;
+  return surfLpm * durMin;
+}
+
+/** Re-integrate OTU/CNS from engine plan via shared computePlanExposureTotals (app source of truth). */
+function recomputeExposureFromPlan(plan, defaultFO2, defaultFHe, pscr) {
+  if (typeof WIN.computePlanExposureTotals !== 'function') {
+    throw new Error('computePlanExposureTotals missing on window');
+  }
+  const surfP = WIN.altSurfaceP != null ? WIN.altSurfaceP : SURF;
+  const barPerM = WIN.BAR_PER_METRE != null ? WIN.BAR_PER_METRE : BAR;
+  return WIN.computePlanExposureTotals(plan, pscr, defaultFO2, defaultFHe, surfP, barPerM);
+}
+
+function assert(cond, msg) { if (!cond) throw new Error(msg); }
+function near(a, b, tol) { return Math.abs(a - b) <= tol; }
+
+// ─── Test sections ───────────────────────────────────────────────────────────
+const SECTIONS = [
+{
+  title: 'A · getEffectivePpo2 unit (corrected loop model)',
+  badge: 'badge-pscr',
+  desc: 'Loop ppO₂ at end of bottom must match pinned reference; must stay below diluent ppO₂ (BUG-63 guard).',
+  tests: SCENARIOS.map(sc => [
+    `${sc.label} — loop ppO₂ @ BT end`,
+    () => {
+      const fO2 = fO2frac(sc.o2);
+      const ref = refBottomPhase(sc);
+      const fr = WIN.computePSCRFractions(pAmb(sc.depth), fO2, sc.he / 100, ref.rt, ccrAtRuntime(ref.rt));
+      const expected = Math.max(PSCR_MIN, fr.fO2 * pAmb(sc.depth));
+      assert(near(ref.ppLoop, expected, 0.002),
+        `loop ppO₂=${ref.ppLoop.toFixed(4)} vs computePSCRFractions ${expected.toFixed(4)}`);
+      const pinned = PINNED_LOOP_PPO2[sc.id];
+      assert(near(ref.ppLoop, pinned, 0.002),
+        `loop ppO₂=${ref.ppLoop.toFixed(4)} expected ${pinned}`);
+      assert(ref.ppLoop < ref.ppDil - 0.05,
+        `loop ${ref.ppLoop.toFixed(3)} must < diluent ${ref.ppDil.toFixed(3)}`);
+      return `loop=${ref.ppLoop.toFixed(3)} bar · diluent=${ref.ppDil.toFixed(3)} bar ✓`;
+    },
+  ]),
+},
+{
+  title: 'B · Bottom-phase OTU reference (getEffectivePpo2 integration)',
+  badge: 'badge-pscr',
+  desc: 'Bottom OTU integrated at loop ppO₂ must match pinned values; must not approach diluent-only overcalc.',
+  tests: SCENARIOS.map(sc => [
+    `${sc.label} — bottom OTU`,
+    () => {
+      const ref = refBottomPhase(sc);
+      const pinned = PINNED_BOTTOM_OTU[sc.id];
+      assert(near(ref.otuBottom, pinned, 0.3),
+        `bottom OTU=${ref.otuBottom.toFixed(1)} expected ~${pinned}`);
+      assert(ref.otuBottom < PINNED_DILUENT_BOTTOM_OTU[sc.id] * 0.55,
+        `bottom OTU ${ref.otuBottom.toFixed(1)} too close to diluent bug (${PINNED_DILUENT_BOTTOM_OTU[sc.id]})`);
+      return `OTU=${ref.otuBottom.toFixed(1)} (diluent bug would be ${ref.otuDiluent.toFixed(1)}) ✓`;
+    },
+  ]),
+},
+{
+  title: 'C · VPM-B full dive OTU vs plan re-integration',
+  badge: 'badge-vpm',
+  desc: 'VPMEngine footer OTU must match independent walk of plan segments via getEffectivePpo2 (±2 OTU).',
+  tests: SCENARIOS.map(sc => [
+    `VPM · ${sc.label}`,
+    () => {
+      const fO2 = fO2frac(sc.o2);
+      const fHe = sc.he / 100;
+      const settings = pscrSettings();
+      const r = WIN.VPMEngine.calculate(lv(sc.depth, sc.bt, sc.o2, sc.he), [], settings, 'VPMB');
+      assert(!r.error, r.error || 'VPM error');
+      const recomputed = recomputeExposureFromPlan(r.plan, fO2, fHe, settings);
+      assert(near(r.totalOTU, recomputed.totalOTU, 2.5),
+        `VPM totalOTU=${r.totalOTU} vs plan recompute=${recomputed.totalOTU.toFixed(1)}`);
+      const ref = refBottomPhase(sc);
+      assert(r.totalOTU >= ref.otuBottom - 0.5,
+        `full dive OTU ${r.totalOTU} below bottom-only ${ref.otuBottom.toFixed(1)}`);
+      assert(r.totalOTU < PINNED_DILUENT_BOTTOM_OTU[sc.id] * 1.15,
+        `VPM OTU ${r.totalOTU} exceeds diluent-regression ceiling`);
+      return `OTU=${r.totalOTU} · plan-check=${recomputed.totalOTU} · RT=${r.totalRuntime}min ✓`;
+    },
+  ]),
+},
+{
+  title: 'D · Bühlmann ZHL full dive OTU/CNS vs plan re-integration',
+  badge: 'badge-zhl',
+  desc: 'ZHLEngine totals must match getEffectivePpo2 plan walk (BUG-66 diveRuntimeMin path).',
+  tests: SCENARIOS.map(sc => [
+    `ZHL · ${sc.label}`,
+    () => {
+      const fO2 = fO2frac(sc.o2);
+      const fHe = sc.he / 100;
+      const settings = pscrSettings();
+      const r = WIN.ZHLEngine.calculate(lv(sc.depth, sc.bt, sc.o2, sc.he), [], settings);
+      assert(!r.error, r.error || 'ZHL error');
+      const exposure = recomputeExposureFromPlan(r.plan, fO2, fHe, settings);
+      assert(near(r.totalOTU, exposure.totalOTU, 3),
+        `ZHL totalOTU=${r.totalOTU} vs plan recompute=${exposure.totalOTU.toFixed(1)}`);
+      assert(near(r.totalCNS, exposure.totalCNS, 1.5),
+        `ZHL totalCNS=${r.totalCNS} vs plan recompute=${exposure.totalCNS.toFixed(1)}%`);
+      const ref = refBottomPhase(sc);
+      assert(r.totalOTU >= ref.otuBottom - 0.5,
+        `ZHL OTU ${r.totalOTU} below bottom-only reference`);
+      return `OTU=${r.totalOTU} · CNS=${r.totalCNS}% · plan OTU=${exposure.totalOTU} ✓`;
+    },
+  ]),
+},
+{
+  title: 'E · Metabolic O₂ vs diluent gas draw (pSCR consumption model)',
+  badge: 'badge-gas',
+  desc: 'Diluent O₂ delivery (surface-equiv) must cover metabolic O₂ for bottom time; gas formula matches app.',
+  tests: SCENARIOS.map(sc => [
+    `Gas · ${sc.label}`,
+    () => {
+      const fO2 = fO2frac(sc.o2);
+      const fHe = sc.he / 100;
+      const rt = bottomRuntimeMin(sc.depth, sc.bt);
+      const ambL = refGasLitresAmbient(sc.depth, sc.bt, fO2, fHe, rt);
+      const surfL = refGasSurfaceEquiv(sc.depth, sc.bt, fO2, fHe, rt);
+      const metO2 = MET_DEFAULT * sc.bt;
+      const o2DeliveredSurf = surfL * fO2;
+      assert(o2DeliveredSurf >= metO2 * 0.99,
+        `O₂ delivered ${o2DeliveredSurf.toFixed(1)}L < metabolic ${metO2.toFixed(1)}L`);
+      const loopAtEnd = refLoopPpo2(sc.depth, fO2, fHe, rt);
+      assert(loopAtEnd >= PSCR_MIN - 0.001,
+        `loop ppO₂ ${loopAtEnd.toFixed(3)} below PSCR_MIN ${PSCR_MIN}`);
+      return `met O₂=${metO2.toFixed(1)}L · dil O₂≈${o2DeliveredSurf.toFixed(0)}L surf-eq · amb gas=${ambL.toFixed(0)}L ✓`;
+    },
+  ]),
+},
+{
+  title: 'F · Cross-engine OTU consistency (same ppO₂ inputs)',
+  badge: 'badge-pscr',
+  desc: 'VPM and Bühlmann OTU totals use the same NOAA plan walk — may differ when deco schedules diverge (±12 OTU).',
+  tests: SCENARIOS.map(sc => [
+    `VPM vs ZHL OTU · ${sc.label}`,
+    () => {
+      const settings = pscrSettings();
+      const levels = lv(sc.depth, sc.bt, sc.o2, sc.he);
+      const vpm = WIN.VPMEngine.calculate(levels, [], settings, 'VPMB');
+      const zhl = WIN.ZHLEngine.calculate(levels, [], settings);
+      assert(!vpm.error && !zhl.error, 'engine error');
+      const tol = Math.max(12, 0.2 * Math.max(vpm.totalOTU, zhl.totalOTU));
+      assert(near(vpm.totalOTU, zhl.totalOTU, tol),
+        `VPM OTU=${vpm.totalOTU} vs ZHL OTU=${zhl.totalOTU} (expected ±${tol.toFixed(0)})`);
+      return `VPM=${vpm.totalOTU} · ZHL=${zhl.totalOTU} OTU ✓`;
+    },
+  ]),
+},
+{
+  title: 'G · pSCR trimix fraction normalization',
+  badge: 'badge-pscr',
+  desc: 'Trimix diluent fractions must sum to 1.0 at runtime 0 and after metabolic depletion (issue #1).',
+  tests: [
+    ['40 m 18/45 — fresh loop preserves diluent fractions', () => {
+      const fr = WIN.computePSCRFractions(pAmb(40), 0.18, 0.45, 0, ccrAtRuntime(0));
+      const sum = fr.fO2 + fr.fHe + fr.fN2;
+      assert(near(sum, 1, 0.001), `sum=${sum}`);
+      assert(near(fr.fO2, 0.18, 0.001), `fO2=${fr.fO2}`);
+      assert(near(fr.fHe, 0.45, 0.001), `fHe=${fr.fHe}`);
+      assert(near(fr.fN2, 0.37, 0.001), `fN2=${fr.fN2}`);
+      return `18/45/37 at runtime 0 ✓`;
+    }],
+    ['40 m 18/45 @ 4 bar — depleted fractions still sum to 1', () => {
+      const fr = WIN.computePSCRFractions(4.0, 0.18, 0.45, 30, ccrAtRuntime(30));
+      const sum = fr.fO2 + fr.fHe + fr.fN2;
+      assert(near(sum, 1, 0.001), `sum=${sum} (pre-fix was ~2.0)`);
+      return `sum=${sum.toFixed(4)} ✓`;
+    }],
+    ['60 m 18/45 — inspired inert pressures use normalized fractions', () => {
+      const pA = pAmb(60);
+      const insp = WIN.getInspiredInertPressures(pA, 0, 0.18, 0.45, ccrAtRuntime(0));
+      const ppH2O = WIN.WATER_VAPOR || 0.0627;
+      const pInert = pA - ppH2O;
+      assert(near(insp.pHe / pInert, 0.45, 0.01), `pHe fraction ${(insp.pHe/pInert).toFixed(3)}`);
+      assert(near(insp.pN2 / pInert, 0.37, 0.01), `pN2 fraction ${(insp.pN2/pInert).toFixed(3)}`);
+      return `He/N2 inspired fractions match diluent ✓`;
+    }],
+  ],
+},
+];
+
+// ─── Runner ───────────────────────────────────────────────────────────────────
+
+function runTest(fn) {
+  try {
+    const detail = fn();
+    return { pass: true, detail: detail || '✓' };
+  } catch (e) {
+    return { pass: false, detail: e.message || String(e) };
+  }
+}
+
+function renderSection(sec, results) {
+  let html = `<div class="section"><div class="section-title">${sec.title}</div>`;
+  if (sec.desc) html += `<div class="section-desc">${sec.desc}</div>`;
+  sec.tests.forEach(([name], i) => {
+    const r = results[i];
+    const cls = r.pass ? 'pass' : 'fail';
+    html += `<div class="test-row ${cls}">
+      <div class="icon"></div>
+      <div class="test-name">${name}</div>
+      <span class="badge ${sec.badge}">${sec.badge.replace('badge-','').toUpperCase()}</span>
+      <div class="test-detail">${r.detail}</div>
+    </div>`;
+  });
+  html += '</div>';
+  return html;
+}
+
+function startTests() {
+  const status = document.getElementById('status');
+  const meta = document.getElementById('meta');
+  const resultsEl = document.getElementById('results');
+  if (typeof LSPTestHarness === 'undefined') {
+    status.className = 'status fail';
+    status.textContent = 'Test harness failed to load — refresh or redeploy tests-pscr-otu-cns.html';
+    return;
+  }
+  status.className = 'status running';
+  status.textContent = 'Loading index.html…';
+  resultsEl.innerHTML = '';
+  meta.textContent = '';
+
+  const iframe = document.getElementById('app-frame');
+  iframe.src = 'index.html?ts=' + Date.now();
+
+  LSPTestHarness.waitForApp(iframe, 45000, (err, ctx) => {
+    if (err) {
+      status.className = 'status fail';
+      status.textContent = err.message;
+      return;
+    }
+    WIN = ctx.win;
+    meta.textContent = 'APP: ' + (ctx.version || '—');
+    status.textContent = 'Running…';
+    let passed = 0, failed = 0, total = 0;
+    let out = '';
+    SECTIONS.forEach(sec => {
+      const rowResults = sec.tests.map(([_, fn]) => {
+        total++;
+        const r = runTest(fn);
+        if (r.pass) passed++; else failed++;
+        return r;
+      });
+      out += renderSection(sec, rowResults);
+    });
+    resultsEl.innerHTML = out;
+    status.className = failed ? 'status fail' : 'status pass';
+    status.textContent = failed
+      ? `${failed} FAILED · ${passed}/${total} passed`
+      : `ALL ${total} TESTS PASSED`;
+    meta.textContent = (ctx.version || '—') + ' · ' + SCENARIOS.length + ' dive profiles × 6 groups';
+  });
+}
+</script>
+</body>
+</html>

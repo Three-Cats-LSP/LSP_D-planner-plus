@@ -1,0 +1,226 @@
+{
+  "schemaVersion": 1,
+  "general": {
+    "ascentRateMatch": {
+      "summary": "We run Dive Kit at the same ascent speeds we used in MultiDeco, so the comparison is fair. The deep speed that sets the first stop is 9 m/min in both.",
+      "detail": "Dive Kit and MultiDeco climb at the same speeds in these runs. The speed that decides where your first stop lands is the deep ascent, from the bottom up to the first stop, and that is 9 m/min in both tools, so that part is a like-for-like comparison. On the S and FS dives, MultiDeco moves a little slower between the shallower stops (6 m/min) than Dive Kit does, but that does not change where the first stop lands. We tested this directly: the difference in the first stop stays the same when we match the deep speed, so it comes from how Dive Kit recomputes your tissues while you climb, not from climbing faster or slower (see general/stopDistribution).",
+      "tags": [
+        "ascent-rate",
+        "methodology",
+        "validated"
+      ]
+    },
+    "decozoneStart": {
+      "summary": "Decozone start is GF-independent by design and matches MultiDeco within about one deco step on every scenario except the deep multi-level P1, where it reads ~10 m shallower — a definition difference, not a model error.",
+      "detail": "Dive Kit computes a 'decozone start', the depth where your decompression obligation begins. We use it here as a clean cross-check; it is not shown in the app. It is the deepest depth where a tissue's total inert-gas pressure (nitrogen plus helium) passes the surrounding pressure, and it does not depend on your gradient factors, because gradient factors move the M-value line, not the ambient line. You can see this in the data: S2 (GF 30/70) and S7 (GF 50/80) are the same 45 m / 22 min air dive and both show about 32 m, even though their first stops differ (21 vs 15 m). Across the 26 scenarios Dive Kit lands within about one 3 m step of MultiDeco (at most 3.6 m, on the deepest high-helium CCR dive, C3) — with one exception, the deep multi-level dive P1 (35 m vs 45 m). There Dive Kit computes the decozone from the end-of-bottom tissue state, after the shallow second level (42 m) off-gasses the fast compartments, while MultiDeco appears to use the deepest-point value; that is a definition difference on a multi-level profile, and the operational first stop still matches at 27 m (see P1).",
+      "tags": [
+        "decozone",
+        "gradient-factors",
+        "validated"
+      ]
+    },
+    "stopDistribution": {
+      "summary": "Dive Kit's first stop can be shallower than MultiDeco's. The total decompression is the same; it just sits at different depths.",
+      "detail": "MultiDeco lists a short stop at almost every 3 m step from the deepest stop up, often well under a minute. Dive Kit holds fewer, longer stops and skips the deepest ones, so its first listed stop is shallower (S6: 36 vs 48 m; S5: 27 vs 33; FS5: 21 vs 27). Both tools agree on the deepest depth where you owe a stop. They differ on the way up: Dive Kit recomputes all your tissues every second as you climb, the way the computer on your wrist does, so it counts the gas you breathe off during the climb itself. Helium leaves the fast tissues quickly, so on a helium dive the ceiling drops faster than you climb, and there is nothing to stop for in those first few metres. The gap is biggest on deep, high-helium dives (12 m on S6, 6 m on S5 and FS5) and at most one 3 m step on air and nitrox. The total time to surface stays within a minute or two either way (S6 82.6 vs 81, S5 45.3 vs 45, FS5 40.2 vs 42, A2 55.4 vs 56), and Dive Kit's leading tissue still reaches the surface exactly at your GF-High, so it never shortcuts your decompression. Compare total time to surface, not the depth of the first stop. The one exception is a dive with a long 6 m last stop, where Dive Kit finishes a few minutes sooner (see A4 and A5).",
+      "tags": [
+        "stop-distribution",
+        "continuous-integration",
+        "helium",
+        "ascent-rate"
+      ]
+    },
+    "cnsBasis": {
+      "summary": "Dive Kit uses ambient ppO2 for CNS (the more conservative, NOAA/Baker-aligned choice).",
+      "detail": "CNS oxygen-toxicity % is accumulated against the NOAA exposure limits using the AMBIENT ppO2 (fO2 x absolute pressure), with no alveolar water-vapour subtraction. This is Erik Baker's published method and matches Shearwater, Garmin and Subsurface; it is slightly more conservative than a water-vapour-reduced value. It runs ~1-3% higher than MultiDeco on most dives, and noticeably higher when a high-ppO2 deco gas sits right at a steep bracket of the NOAA curve (see S6).",
+      "tags": [
+        "cns",
+        "ambient-ppo2",
+        "more-conservative"
+      ]
+    },
+    "gasSwitchCap": {
+      "summary": "Each gas switches at a depth set by its oxygen content (caps 1.4/1.5/1.6 bar). These match MultiDeco's switches within one stop.",
+      "detail": "Dive Kit caps each gas by its oxygen content: a lean mix (under 28% oxygen) at 1.4 bar, a mid mix (28 to 45%) at 1.5, a rich mix (45% or more) at 1.6. The same cap sets both the switch depth and the hyperoxia warning. MultiDeco caps gases the same way, so at its default 1.4/1.5/1.6 every gas switch in these scenarios matches within one 3 m stop: Tx21/35 at 54 vs 57 m, Tx35/25 at 30 vs 33 m, and EAN50 (21 m) and oxygen (6 m) exactly. The small differences are only which 3 m stop the switch lands on.",
+      "tags": [
+        "gas-switch",
+        "ppo2",
+        "validated",
+        "band-cap"
+      ]
+    },
+    "gasDensity": {
+      "summary": "Small gas-density offset (~7-9%) from differing gas-temperature assumptions.",
+      "detail": "Dive Kit's worst-case gas density (e.g. S1 air at 30 m ~5.2 g/L) runs slightly above MultiDeco's (4.8 g/L) because the two tools assume different gas temperatures in the ideal-gas density calculation. Both flag the same density warning thresholds; the absolute number is a reference, not a safety boundary.",
+      "tags": [
+        "gas-density",
+        "minor"
+      ]
+    },
+    "gasUsage": {
+      "summary": "Litres used depend on your breathing rate, so this is not a comparison of the deco math.",
+      "detail": "Gas consumption depends entirely on the breathing-rate (RMV/SAC) settings, which are a user preference, not a deco-model output. Dive Kit's figures here use RMV 20 (working) / 15 (deco) L/min, so absolute litres differ from a MultiDeco run configured with a different SAC. Match the SACs before comparing litres.",
+      "tags": [
+        "gas-usage",
+        "rmv",
+        "not-comparable"
+      ]
+    },
+    "ccr": {
+      "summary": "CCR (rebreather) loop deco matches MultiDeco closely. CNS and OTU are near-exact, decozone within a step.",
+      "detail": "Pure-loop CCR deco (constant setpoint 1.3, no open-circuit switches) holds up well across air, trimix and deep high-helium diluents (C1 to C3): CNS within 1 percentage point (27/27, 37.8/37, 53.9/53), OTU within 2 to 3 units (71.8/70, 100.5/99, 143.4/140), and time to surface within 1 to 3 min. Decozone is within one 3 m step except on the deep 80 m high-helium dive C3 (65.6 vs 62, the same wider spread seen on the deep trimix dive S6). The first listed stop is shallower than MultiDeco, the usual stop-distribution effect on a helium diluent (see general/stopDistribution). Gas density runs about 8% higher (temperature assumption). CCR is also covered by our automated tests.",
+      "tags": [
+        "ccr",
+        "validated"
+      ]
+    }
+  },
+  "notes": {
+    "A1": {
+      "summary": "Multi-level dive. Time to surface matches exactly; first stop one step apart.",
+      "detail": "With both tools running the same at-depth profile (45 m for about 8 min, then 30 m for 15 min; MultiDeco folds the 2 min descent into the entered first-level time), the time to surface (22 vs 22 min), CNS (13.2 vs 13%) and the EAN50 switch (21 m) all match. Decozone is within 1 m (21.3 vs 22 m). The first listed stop is 12 m vs MultiDeco's 15 m, one 3 m step, the stop-distribution effect (small here, with little fast gas). Gas density shows the usual temperature offset. See general/stopDistribution and general/gasDensity.",
+      "tags": [
+        "multi-level",
+        "stop-distribution",
+        "validated"
+      ]
+    },
+    "A2": {
+      "summary": "Deep trimix. The first deco-gas switch is one stop apart; everything else lines up. Time to surface within a minute.",
+      "detail": "The first switch, to Tx35/25, lands one stop apart: Dive Kit switches at 30 m, MultiDeco at 33 m. That gas sits right at its oxygen cap around 33 m, and the two tools round to a different 3 m stop (Dive Kit stays just under the cap, MultiDeco sits right on it). The EAN50 and oxygen switches match exactly, at 21 m and 6 m. Dive Kit's first stop is 33 m against MultiDeco's 39 m, the usual stop-distribution effect on a dive with helium (see general/stopDistribution). Total time to surface is within a minute (55.4 vs 56). CNS reads about 5% higher, from our more cautious oxygen method (see general/cnsBasis).",
+      "tags": [
+        "gas-switch",
+        "stop-distribution",
+        "cns",
+        "validated"
+      ]
+    },
+    "A3": {
+      "summary": "Low GF (20/75). Near-exact match, and the decozone confirms it does not move with your gradient factors.",
+      "detail": "At GF 20/75 the decozone is 37 m (Dive Kit 37.3 vs MultiDeco 37), the same depth this dive would show at any GF, which confirms the decozone does not move with your gradient factors while the first stop does. CNS (24.1 vs 24%), OTU (63.5 vs 64) and the EAN50 switch (21 m) match closely, and time to surface is within 1.5 min. Dive Kit's first stop is 24 m vs MultiDeco's 30 m (MultiDeco lists short stops at 30 and 27 m that Dive Kit climbs through; see general/stopDistribution). See also general/decozoneStart.",
+      "tags": [
+        "gradient-factors",
+        "decozone",
+        "stop-distribution",
+        "validated"
+      ]
+    },
+    "A4": {
+      "summary": "6 m last stop. The deep stops match; Dive Kit holds the 6 m stop about 5 minutes less, for 2.7 min less total.",
+      "detail": "Both tools run the deep stops the same way and reach 6 m equally loaded. The only real difference is the 6 m hold: Dive Kit holds about 56 minutes, MultiDeco about 61. Dive Kit leaves as soon as you can surface within your GF-High setting; MultiDeco holds a little longer. Total time to surface is 77.3 vs 80 min. The first stop (21 m), decozone and CNS all match. This is the one kind of dive where MultiDeco is the more conservative of the two (see general/stopDistribution).",
+      "tags": [
+        "last-stop-6m",
+        "stop-distribution",
+        "validated"
+      ]
+    },
+    "A5": {
+      "summary": "Altitude (2025 m) with a 6 m last stop. Same pattern as A4, a bit larger: Dive Kit holds the 6 m stop about 10 minutes less.",
+      "detail": "Like A4, both tools match down to 6 m, then Dive Kit leaves the 6 m stop sooner (about 30 minutes vs 40) once you can surface within your GF-High setting. Total time to surface is 40.7 vs 48 min. The gap is bigger than at sea level. Part of that is altitude stretching the final hold for both tools, and part may be a small difference in how each tool handles altitude pressure. The first stop and decozone match (decozone 21 vs 22 m). See general/stopDistribution.",
+      "tags": [
+        "altitude",
+        "fresh-water",
+        "stop-distribution",
+        "validated"
+      ]
+    },
+    "A6": {
+      "summary": "Deep air. The gas-density hazard and the gas switch both check out.",
+      "detail": "Decozone (39 vs 38 m), CNS (23.1 vs 23%) and the EAN50 switch (21 m) match. First stop 24 vs 27 m, one step, the stop-distribution effect (small on air, with no fast helium to drive it). The point of this dive shows clearly: gas density at 55 m on air is 8.4 g/L in Dive Kit and 7.7 in MultiDeco, both far above the ~6.2 g/L danger line (the ~9% gap is the temperature offset), and Dive Kit also raises a narcosis (END) warning. See general/gasDensity.",
+      "tags": [
+        "deep-air",
+        "gas-density",
+        "end",
+        "validated"
+      ]
+    },
+    "R1": {
+      "summary": "Repetitive dive. Leftover nitrogen carries across correctly; OTU is added up across both dives.",
+      "detail": "Dive 2, after a 60-minute surface interval, is much heavier than dive 1, which confirms the leftover nitrogen carries across: its 6 m stop is 47 min against dive 1's 22 (a much longer time to surface), while the first stop (12 m, exact), decozone (20.7 vs 21 m) and CNS (9.8 vs 10%) match. Both tools carry CNS across the surface interval and let it decay. The one figure that differs by design is OTU: Dive Kit adds it up across both dives (35.7, about 18 from dive 1 plus 18 from dive 2), the right way to read OTU as a daily dose, while MultiDeco shows it per dive (18). See general/stopDistribution.",
+      "tags": [
+        "repetitive",
+        "otu-cumulative",
+        "validated"
+      ]
+    },
+    "S5": {
+      "summary": "First stop 27 m vs 33 m. Same total deco, placed shallower.",
+      "detail": "MultiDeco holds a minute each at 33 and 30 m. Dive Kit climbs through those and holds longer below, so its first listed stop is 27 m. The total time to surface is about the same (45.3 vs 45 min), and the gas switches match exactly (EAN50 at 21 m, O2 at 6 m). This is the stop-distribution effect on a helium dive (see general/stopDistribution).",
+      "tags": [
+        "stop-distribution",
+        "ascent-rate"
+      ]
+    },
+    "S6": {
+      "summary": "Two differences on this deep 55%-helium dive: first stop 36 m vs 48 m (same total deco, placed shallower), and CNS 76% vs 65% (our more cautious oxygen method).",
+      "detail": "The stops: MultiDeco lists deep stops from 48 m down. Dive Kit climbs through them and starts holding at 36 m, because on a 55%-helium dive the fast tissues breathe off so fast that the ceiling drops faster than you climb. The total decompression is the same and the time to surface is within about a minute (82.6 vs 81 min); the deco is just placed shallower (see general/stopDistribution). The CNS: Dive Kit reads 76% against MultiDeco's 65%. This is the one difference that looks large, and it is deliberate. At the 6 m oxygen stop the oxygen pressure sits in a steep part of the NOAA toxicity curve, and Dive Kit uses the more cautious ambient-pressure method, so its oxygen clock ticks faster there (see general/cnsBasis). All three gas switches match MultiDeco within one stop: Tx21/35 at 54 vs 57 m, EAN50 at 21 m, oxygen at 6 m.",
+      "tags": [
+        "cns",
+        "gas-switch",
+        "stop-distribution",
+        "ascent-rate",
+        "validated"
+      ]
+    },
+    "S7": {
+      "summary": "Same dive as S2 with looser GF. First stop shallower (15 vs 18 m), identical decozone (32 m).",
+      "detail": "This shows the gradient-factor setting working as expected: GF 50/80 gives a shallower first stop and a shorter schedule than S2's 30/70, while the decozone start stays at 32 m because it does not depend on your gradient factors. CNS and OTU match closely (11.3 vs 12%, 31.2 vs 32). See general/decozoneStart.",
+      "tags": [
+        "gradient-factors",
+        "decozone"
+      ]
+    },
+    "FS5": {
+      "summary": "First stop 21 m vs 27 m, on a helium dive in fresh water. Same total deco, placed shallower.",
+      "detail": "MultiDeco lists a stop at 27 m (only 8 seconds) and another at 24 m. Dive Kit climbs through both, because the fast helium tissues breathe off during the climb and the ceiling has already dropped below them, so its first real hold is 21 m and it holds longer below. The total time to surface is close (40.2 vs 42 min) and the EAN50 switch matches at 21 m. This is the stop-distribution effect (see general/stopDistribution).",
+      "tags": [
+        "stop-distribution",
+        "ascent-rate"
+      ]
+    },
+    "B1": {
+      "summary": "ppO2 band boundary at 45% O2: EAN45 switches at 24 m in both tools, confirming the >=45% -> rich (1.6) convention.",
+      "detail": "EAN45 sits exactly on the mid/rich band edge (45% O2). Dive Kit caps a gas at 1.6 bar once its O2 is >= 45% (rich), so EAN45's MOD is ~25.6 m and it switches at the 24 m stop; if it were treated as mid (1.5) it would wait until 21 m. MultiDeco switches EAN45 at 24 m with pO2 1.52 — it lets the gas run above 1.5, so it also caps at 1.6, meaning the >= boundary is inclusive-to-rich in both tools. O2 switches at 6 m exactly. (Dive Kit lists the 24 m point as a gas-switch stage and its first deco stop as 21 m, while MultiDeco lists 24 m as the first stop — but both switch EAN45 at 24 m.) CNS reads a few % higher in Dive Kit (ambient-ppO2 method) and gas density carries the usual temperature offset.",
+      "tags": [
+        "ppo2-bands",
+        "gas-switch",
+        "boundary",
+        "validated"
+      ]
+    },
+    "P1": {
+      "summary": "Precise (1-second) stop times validated against MultiDeco at min stop = 1 s. Sub-minute stops track closely; switches and TTS agree once the gas-switch-time accounting is allowed for.",
+      "detail": "The only scenario run in PRECISE mode (Dive Kit stopRoundingSeconds=0, MultiDeco min stop = 1 s), so it cross-checks Dive Kit's second-resolution output directly. It also exercises a travel-gas descent (descend on Tx35/25, switch to Tx18/45 at 30 m) and a multi-level profile (60 m then 42 m). The sub-minute stops align within about 30 s at each depth and both tools start holding at 27 m; the EAN50 (21 m) and O2 (6 m) switches match exactly and Tx35/25 is within one stop. Three documented differences, none of them engine errors: (1) Dive Kit adds an explicit ~1-min gas-switch hold at each of the three switches, which MultiDeco folds into the adjacent stop, so Dive Kit's runtime runs a few minutes longer (strip those 3 min and TTS is within ~1.5 min); (2) CNS reads higher in Dive Kit (the ambient-ppO2 method, see general/cnsBasis), pronounced here because of the long 1.6-bar O2 stop; (3) decozone start differs (Dive Kit 35 m vs MultiDeco 45 m) because Dive Kit computes it from the end-of-bottom tissue state, after the 42 m level off-gasses the fast tissues, whereas on a single-level dive the two coincide — the operational first stop still matches at 27 m. See general/gasSwitchCap, general/cnsBasis, general/decozoneStart.",
+      "tags": [
+        "precise",
+        "sub-minute",
+        "travel-gas",
+        "multi-level",
+        "gas-switch",
+        "cns",
+        "decozone",
+        "validated"
+      ]
+    },
+    "G1": {
+      "summary": "GF-high sensitivity baseline (50/80): precise-mode air dive with a 6 m last stop. Pairs with G2 to publish how much the surfacing gradient moves the shallow hold.",
+      "detail": "Half of the GF-high pair born from the June 2026 unsurfaceable-stop investigation. Same dive as G2 with GF 50/80: both tools agree on the stop set (18/15/12/9/6) and on the 6 m hold dominating the schedule. Entered-time convention: 22:00 typed into both tools, descent folded in (Lvl 19:45 at depth) — in Dive Kit via 'Include travel in level time' = ON, the first cross-reference scenarios to exercise that setting end-to-end including the share URL.",
+      "tags": [
+        "precise",
+        "last-stop-6m",
+        "gradient-factors",
+        "validated"
+      ]
+    },
+    "G2": {
+      "summary": "GF-high sensitivity extreme (50/50): the 6 m hold stretches to ~3 hours in both tools. The base plan completes; with more loading it would tip into 'deco cannot complete'.",
+      "detail": "At GF high 50 on air with a 6 m last stop, tissues at the stop converge toward ~1.22 bar inspired pN2 — above what a 50% surfacing gradient tolerates for the mid compartments — so the hold balloons (MultiDeco 174:35 vs Dive Kit's comparable figure) and only barely clears. Add ~5 more minutes of bottom time and the stop never clears at all: that configuration is what drove Dive Kit's stop-never-clears detection and GF-high auto-raise (engine warning 18). The published pair documents the cliff edge from the completable side.",
+      "tags": [
+        "precise",
+        "last-stop-6m",
+        "gradient-factors",
+        "stop-distribution",
+        "validated"
+      ]
+    }
+  }
+}

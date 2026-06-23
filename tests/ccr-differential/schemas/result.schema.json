@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://threecats-lsp.com/schemas/ccr-differential/result.schema.json",
+  "title": "CCR differential normalized engine result",
+  "type": "object",
+  "required": ["engine", "engineVersion", "scenarioId", "summary"],
+  "properties": {
+    "engine": { "type": "string" },
+    "engineVersion": { "type": "string" },
+    "scenarioId": { "type": "string" },
+    "commit": { "type": "string" },
+    "inputChecksum": { "type": "string" },
+    "segments": { "type": "array" },
+    "stops": { "type": "array" },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "firstStopDepthM": {},
+        "ttsMin": {},
+        "runtimeMin": {},
+        "cnsPercent": {},
+        "otu": {},
+        "totalStopMin": {},
+        "validationNote": { "type": "string" }
+      }
+    },
+    "tissuesN2": {},
+    "tissuesHe": {},
+    "warnings": { "type": "array" },
+    "error": { "type": "string" }
+  }
+}

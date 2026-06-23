@@ -1,0 +1,23 @@
+{
+  "name": "lsp-d-planner-plus",
+  "version": "2.50.00",
+  "description": "LSP D-Planner+ \u2014 unified OC + CCR decompression planning app",
+  "private": true,
+  "scripts": {
+    "vendor:offline": "python tools/vendor_offline_assets.py",
+    "sync:www": "python tools/sync_www.py",
+    "cap:sync": "npm run sync:www && npx cap sync android",
+    "cap:open": "npx cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/core": "^6.2.0",
+    "@capacitor/filesystem": "^6.0.1",
+    "@capacitor/share": "^6.0.4",
+    "@capacitor/status-bar": "^6.0.3",
+    "@capawesome-team/capacitor-file-opener": "^6.1.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.0"
+  }
+}

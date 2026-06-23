@@ -1,0 +1,51 @@
+{
+  "id": "CCR-C2",
+  "description": "Tx18/45 trimix",
+  "profile": {
+    "levels": [
+      {
+        "depthM": 55,
+        "timeMin": 22
+      }
+    ],
+    "timeConvention": "at-depth"
+  },
+  "circuit": {
+    "type": "CCR",
+    "diluent": {
+      "o2": 0.18,
+      "he": 0.45
+    },
+    "setpointsBar": {
+      "descent": 0.7,
+      "bottom": 1.3,
+      "deco": 1.3
+    }
+  },
+  "decompression": {
+    "model": "ZHLC_GF",
+    "gfLow": 35,
+    "gfHigh": 75,
+    "stepM": 3,
+    "lastStopM": 3
+  },
+  "environment": {
+    "surfacePressureBar": 1.01325,
+    "waterColumnMPerBar": 10.0,
+    "waterVaporPressureBar": 0.0577,
+    "altitudeM": 0,
+    "acclimatized": true
+  },
+  "ratesMPerMin": {
+    "descent": 20,
+    "deepAscent": 9,
+    "decoAscent": 9,
+    "surfaceAscent": 3
+  },
+  "rounding": {
+    "mode": "whole-minute",
+    "minimumStopSec": 60,
+    "gasSwitchSec": 0
+  },
+  "bailoutGases": []
+}

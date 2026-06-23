@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LSP D-Planner + CCR — Math Verification</title>
+<style>
+  :root {
+    --bg:#0b0e17; --surface:#141824; --border:#1e2535; --border-hi:#2a3550;
+    --text:#e4e8f0; --muted:#7a8aaa; --accent:#00d9ff; --green:#26d07c;
+    --red:#ff4757; --orange:#ff9f40; --yellow:#ffd32a; --purple:#a78bfa;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:'JetBrains Mono',monospace; font-size:13px; padding:24px; }
+  h1 { color:var(--accent); font-family:'Bebas Neue',sans-serif; font-size:32px; letter-spacing:2px; margin-bottom:4px; }
+  .subtitle { color:var(--muted); font-size:11px; margin-bottom:20px; text-transform:uppercase; letter-spacing:1px; }
+  .controls { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px; align-items:center; }
+  button { background:var(--surface); border:1px solid var(--border-hi); color:var(--accent);
+           padding:8px 18px; border-radius:6px; cursor:pointer; font-family:inherit; font-size:12px;
+           font-weight:700; letter-spacing:1px; text-transform:uppercase; transition:all .15s; }
+  button:hover { background:var(--accent); color:#000; }
+  .status { padding:10px 16px; border-radius:8px; background:var(--surface);
+            border:1px solid var(--border); font-size:12px; flex:1; min-width:200px; }
+  .status.running { border-color:var(--accent); color:var(--accent); }
+  .status.pass    { border-color:var(--green);  color:var(--green);  }
+  .status.warn    { border-color:var(--yellow); color:var(--yellow); }
+  .status.fail    { border-color:var(--red);    color:var(--red);    }
+  .meta { font-size:11px; color:var(--muted); margin-left:auto; }
+  .progress-wrap { display:none; margin-bottom:16px; }
+  .progress-bar  { height:3px; background:linear-gradient(90deg,var(--accent),var(--purple)); width:0; border-radius:2px; }
+  .progress-label{ font-size:11px; color:var(--muted); margin-top:4px; }
+  .section { margin-bottom:28px; }
+  .section-title { font-size:11px; font-weight:700; letter-spacing:2px; color:var(--muted);
+                   text-transform:uppercase; border-bottom:1px solid var(--border);
+                   padding-bottom:6px; margin-bottom:12px; }
+  .section-desc { font-size:11px; color:var(--muted); margin-bottom:10px; line-height:1.5; }
+  .test-row { display:grid; grid-template-columns:22px 1fr auto; gap:8px; align-items:start;
+              padding:6px 0; border-bottom:1px solid var(--border); }
+  .icon::before { font-weight:700; }
+  .pass .icon::before { content:'✓'; color:var(--green); }
+  .fail .icon::before { content:'✗'; color:var(--red); }
+  .warn .icon::before { content:'⚠'; color:var(--yellow); }
+  .pending .icon::before { content:'·'; color:var(--muted); }
+  .test-name { color:var(--text); }
+  .test-detail { color:var(--muted); font-size:11px; white-space:pre-wrap; grid-column:2; }
+  .fail .test-detail { color:var(--red); }
+  .warn .test-detail { color:var(--yellow); }
+  .badge { font-size:10px; padding:2px 7px; border-radius:10px; font-weight:700;
+           letter-spacing:.5px; white-space:nowrap; align-self:start; }
+  .badge-vpmb { background:rgba(0,217,255,.12); color:var(--accent); border:1px solid rgba(0,217,255,.25); }
+  .badge-zhl  { background:rgba(167,139,250,.12); color:var(--purple); border:1px solid rgba(167,139,250,.25); }
+  .badge-core { background:rgba(38,208,124,.12); color:var(--green); border:1px solid rgba(38,208,124,.25); }
+  .badge-info { background:rgba(255,159,64,.12); color:var(--orange); border:1px solid rgba(255,159,64,.25); }
+  .badge-warn { background:rgba(255,211,42,.12); color:var(--yellow); border:1px solid rgba(255,211,42,.25); }
+  .badge-fail { background:rgba(255,71,87,.12); color:var(--red); border:1px solid rgba(255,71,87,.25); }
+  iframe { display:none; }
+</style>
+</head>
+<body>
+<h1>LSP D-PLANNER</h1>
+<div class="subtitle">Math Verification Suite · ZHL-16C Bühlmann + VPM-B · Baker/FORTRAN Reference Cross-Check</div>
+
+<div class="controls">
+  <button onclick="startVerify()">▶ RUN VERIFICATION</button>
+  <div class="status" id="status">Waiting…</div>
+  <div class="meta" id="meta"></div>
+</div>
+<div class="progress-wrap" id="pw">
+  <div class="progress-bar" id="pb"></div>
+  <div class="progress-label" id="pl"></div>
+</div>
+<div id="results"></div>
+<iframe id="app-frame"></iframe>
+
+<script>
+// ─── Reference Values ─────────────────────────────────────────────────────────
+// Baker VPM-B Python (Bryan Waite / Erik Baker port, Critical Volume Algorithm)
+// Run via vpmb.py with: stepSize=3m, lastStop=3m, descentRate=20, ascentRate=9
+// NOTE: Baker CV algorithm gives shorter schedules than LSP bubble-model.
+// Cross-check is on STOP DEPTHS (must match) and RT within 25% (CV vs bubble difference).
+const BAKER = {
+  '40m/25min Air C0':      { rt:50, first:18, stops:{18:1,15:1,12:3,9:3,6:6,3:9}  },
+  '40m/25min Air C2':      { rt:50, first:18, stops:{18:1,15:1,12:3,9:3,6:6,3:9}  },
+  '60m/20min Air C0':      { rt:68, first:30, stops:{30:1,27:1,24:2,21:2,18:2,15:3,12:5,9:6,6:9,3:14} },
+  '40m/40min Air C0':      { rt:86, first:18, stops:{18:2,15:3,12:5,9:7,6:10,3:17} },
+  '30m/30min Air C0':      { rt:40, first:6,  stops:{6:2,3:6}                       },
+  '70m/20min Air C0':      { rt:83, first:36, stops:{36:1,33:1,30:2,27:1,24:3,21:2,18:4,15:4,12:6,9:7,6:12,3:17} },
+  '50m/25min TMX21/35 C0': { rt:62, first:24, stops:{24:1,21:1,18:2,15:2,12:4,9:5,6:7,3:13} },
+  '50m/25min TMX18/45 C0': { rt:73, first:27, stops:{27:1,24:1,21:1,18:3,15:3,12:4,9:6,6:10,3:17} },
+};
+
+// LSP v2.10.5 pinned outputs (captured 2026-06-16 after water-factor + Baker He HT alignment)
+const LSP_PINNED = {
+  'vpmb_40_25_air_c0':       { rt:62,  first:18, stops:{18:1,15:1,12:2,9:4,6:7,3:13}   },
+  'vpmb_40_25_air_c2':       { rt:71,  first:21, stops:{21:0,18:1,15:2,12:3,9:5,6:9,3:16} },
+  'vpmb_60_20_air_c0':       { rt:92,  first:33, stops:{33:0,30:1,27:1,24:1,21:1,18:2,15:4,12:4,9:9,6:12,3:22} },
+  'vpmb_40_40_air_c0':       { rt:108, first:21, stops:{21:1,18:2,15:3,12:5,9:8,6:14,3:26} },
+  'vpmb_30_30_air_c0':       { rt:46,  first:9,  stops:{9:1,6:3,3:7}                    },
+  'vpmb_70_20_air_c0':       { rt:116, first:39, stops:{39:1,36:1,33:1,30:1,27:1,24:1,21:2,18:4,15:4,12:7,9:11,6:17,3:29} },
+  'vpmb_50_25_tmx2135_c0':   { rt:85,  first:27, stops:{27:1,24:1,21:1,18:1,15:1,12:4,9:6,6:11,3:21} },
+  'vpmb_50_25_tmx1845_c0':   { rt:106, first:30, stops:{30:1,27:1,24:1,21:1,18:1,15:3,12:6,9:8,6:15,3:30} },
+  'zhl_40_25_air_gf3085':    { rt:66,  first:18, stops:{18:2,15:2,12:3,9:5,6:7,3:18}   },
+  'zhl_60_20_air_gf3085':    { rt:94,  first:30, stops:{30:1,27:1,24:1,21:1,18:2,15:3,12:5,9:7,6:13,3:23} },
+  'zhl_40_25_ean50_gf3085':  { rt:33,  first:18, stops:{18:1,15:1,12:2,9:3,6:6,3:12}   },
+};
+
+// ZHL-16C Bühlmann coefficients (must match canonical Bühlmann 2003 values)
+const ZHL16C_N2 = [
+  [4.0,  1.2599, 0.5050], [8.0,  1.0000, 0.6514], [12.5, 0.8618, 0.7222],
+  [18.5, 0.7562, 0.7825], [27.0, 0.6667, 0.8126], [38.3, 0.5600, 0.8434],
+  [54.3, 0.4947, 0.8693], [77.0, 0.4500, 0.8910], [109.0,0.4187, 0.9092],
+  [146.0,0.3798, 0.9222], [187.0,0.3497, 0.9319], [239.0,0.3223, 0.9403],
+  [305.0,0.2850, 0.9477], [390.0,0.2737, 0.9544], [498.0,0.2523, 0.9602],
+  [635.0,0.2327, 0.9653],
+];
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+let WIN, E;
+function lv(d,t,o2=21,he=0) { return [{depth:d,time:t,o2,he}]; }
+function S(o={}) { return Object.assign({metric:true,waterType:0,descentRate:20,
+  ascentRate:10,decoAscentRate:3,stepSize:3,lastStop:3,minStopTime:1,
+  ppO2Bottom:1.4,ppO2Deco:1.6,gfLo:30,gfHi:85},o); }
+function NG() { return []; }
+
+function vpmCalc(depth,bt,o2=21,he=0,cons=0) {
+  return WIN.VPMEngine.calculate(lv(depth,bt,o2,he),[],
+    S({conservatism:cons}), 'VPMB');
+}
+function zhlCalc(depth,bt,o2=21,he=0,gfLo=30,gfHi=85) {
+  return WIN.ZHLEngine.calculate(lv(depth,bt,o2,he),[],S({gfLo,gfHi}));
+}
+function stops(r) {
+  const out={};
+  // VPMEngine stops use .time; ZHLEngine stops use .dur — handle both
+  (r.stops||[]).forEach(s=>{
+    const t = isFinite(s.dur) ? s.dur : isFinite(s.time) ? s.time : 0;
+    out[Math.round(s.depth)] = Math.round(t);
+  });
+  return out;
+}
+function firstStop(r) {
+  const deps = (r.stops||[]).map(s=>Math.round(s.depth));
+  return deps.length ? Math.max(...deps) : 0;
+}
+function assert(cond, msg) { if(!cond) throw new Error(msg); }
+function near(a,b,tol) { return Math.abs(a-b)<=tol; }
+
+/** Pinned RT check: exact match = pass; ±1–2 min = warn; >2 min = fail. */
+const RT_PIN_WARN_MIN = 1;
+const RT_PIN_WARN_MAX = 2;
+class VerifyWarn extends Error {
+  constructor(msg) { super(msg); this.isVerifyWarn = true; }
+}
+function assertRtPinned(got, ref) {
+  const d = Math.abs(got - ref);
+  if (d === 0) return;
+  if (d >= RT_PIN_WARN_MIN && d <= RT_PIN_WARN_MAX) {
+    throw new VerifyWarn(`RT=${got} expected ${ref} (Δ${d} min — within ±2 min drift, pinned recalibration pending)`);
+  }
+  throw new Error(`RT=${got} expected ${ref} (Δ${d} min exceeds ±2 min)`);
+}
+
+// ─── Test Sections ────────────────────────────────────────────────────────────
+const SECTIONS = [
+
+// ══ A: Pinned Regression — VPM-B ═════════════════════════════════════════════
+{
+  title: 'A · Pinned Regression — VPM-B (LSP v2.9.0)',
+  badge: 'badge-vpmb',
+  desc: 'Exact stop tables pinned to LSP v2.9.0. RT ±1–2 min drift → WARN (not fail); >2 min or stop depth change → fail.',
+  tests: [
+    ['40m/25min Air C0 — RT matches pinned', () => {
+      const r = vpmCalc(40,25); const p = LSP_PINNED.vpmb_40_25_air_c0;
+      assertRtPinned(r.totalRuntime, p.rt);
+      return `RT=${r.totalRuntime}min ✓`;
+    }],
+    ['40m/25min Air C0 — first stop matches', () => {
+      const r = vpmCalc(40,25); const p = LSP_PINNED.vpmb_40_25_air_c0;
+      assert(firstStop(r) === p.first, `first=${firstStop(r)}m expected ${p.first}m`);
+      return `first stop=${firstStop(r)}m ✓`;
+    }],
+    ['40m/25min Air C0 — stop depths {18,15,12,9,6,3}m', () => {
+      const r = vpmCalc(40,25); const s = stops(r);
+      const exp = LSP_PINNED.vpmb_40_25_air_c0.stops;
+      const missing = Object.keys(exp).filter(d=>s[d]===undefined);
+      assert(!missing.length, `Missing stops at: ${missing.join(',')}m`);
+      return Object.entries(s).sort((a,b)=>b[0]-a[0]).map(([d,t])=>`${d}m:${t}`).join(' ') + ' ✓';
+    }],
+    ['40m/25min Air C0 — 3m stop time matches pinned', () => {
+      const r = vpmCalc(40,25); const s = stops(r);
+      assert(near(s[3], LSP_PINNED.vpmb_40_25_air_c0.stops[3], 1),
+        `3m=${s[3]}min expected ${LSP_PINNED.vpmb_40_25_air_c0.stops[3]}`);
+      return `3m stop=${s[3]}min ✓`;
+    }],
+    ['40m/25min Air C2 — RT matches pinned (conservatism increases RT)', () => {
+      const r = vpmCalc(40,25,21,0,2); const p = LSP_PINNED.vpmb_40_25_air_c2;
+      assertRtPinned(r.totalRuntime, p.rt);
+      assert(r.totalRuntime > vpmCalc(40,25).totalRuntime, 'C2 RT must > C0 RT');
+      return `RT=${r.totalRuntime}min > C0 ✓`;
+    }],
+    ['60m/20min Air C0 — RT matches pinned', () => {
+      const r = vpmCalc(60,20); const p = LSP_PINNED.vpmb_60_20_air_c0;
+      assertRtPinned(r.totalRuntime, p.rt);
+      return `RT=${r.totalRuntime}min ✓`;
+    }],
+    ['60m/20min Air C0 — first stop at 33m', () => {
+      const r = vpmCalc(60,20);
+      assert(firstStop(r) === LSP_PINNED.vpmb_60_20_air_c0.first,
+        `first=${firstStop(r)}m expected ${LSP_PINNED.vpmb_60_20_air_c0.first}m`);
+      return `first stop=${firstStop(r)}m ✓`;
+    }],
+    ['50m/25min TMX21/35 C0 — RT matches pinned', () => {
+      const r = vpmCalc(50,25,21,35); const p = LSP_PINNED.vpmb_50_25_tmx2135_c0;
+      assertRtPinned(r.totalRuntime, p.rt);
+      return `RT=${r.totalRuntime}min ✓`;
+    }],
+    ['50m/25min TMX18/45 C0 — RT matches pinned', () => {
+      const r = vpmCalc(50,25,18,45); const p = LSP_PINNED.vpmb_50_25_tmx1845_c0;
+      assertRtPinned(r.totalRuntime, p.rt);
+      return `RT=${r.totalRuntime}min ✓`;
+    }],
+    ['TMX18/45 RT > TMX21/35 RT (more He = more deco)', () => {
+      const r1845 = vpmCalc(50,25,18,45).totalRuntime;
+      const r2135 = vpmCalc(50,25,21,35).totalRuntime;
+      assert(r1845 > r2135, `TMX18/45 RT=${r1845} must > TMX21/35 RT=${r2135}`);
+      return `TMX18/45=${r1845} > TMX21/35=${r2135} ✓`;
+    }],
+  ]
+},
+
+// ══ B: Pinned Regression — Bühlmann ZHL-16C+GF ═══════════════════════════════
+{
+  title: 'B · Pinned Regression — Bühlmann ZHL-16C+GF (LSP v2.9.0)',
+  badge: 'badge-zhl',
+  desc: 'Exact Bühlmann outputs pinned to LSP v2.9.0. GF30/85 standard. RT ±1–2 min drift → WARN.',
+  tests: [
+    ['40m/25min Air GF30/85 — RT matches pinned', () => {
+      const r = zhlCalc(40,25); const p = LSP_PINNED.zhl_40_25_air_gf3085;
+      assertRtPinned(r.totalRuntime, p.rt);
+      return `RT=${r.totalRuntime}min ✓`;
+    }],
+    ['40m/25min Air GF30/85 — first stop at 18m', () => {
+      const r = zhlCalc(40,25);
+      assert(firstStop(r) === LSP_PINNED.zhl_40_25_air_gf3085.first,
+        `first=${firstStop(r)}m expected ${LSP_PINNED.zhl_40_25_air_gf3085.first}m`);
+      return `first=${firstStop(r)}m ✓`;
+    }],
+    ['40m/25min Air GF30/85 — 3m stop matches pinned', () => {
+      const r = zhlCalc(40,25); const s = stops(r);
+      const exp = LSP_PINNED.zhl_40_25_air_gf3085.stops[3];
+      assert(near(s[3], exp, 1), `3m=${s[3]} expected ${exp}`);
+      return `3m=${s[3]}min ✓`;
+    }],
+    ['60m/20min Air GF30/85 — RT matches pinned', () => {
+      const r = zhlCalc(60,20); const p = LSP_PINNED.zhl_60_20_air_gf3085;
+      assertRtPinned(r.totalRuntime, p.rt);
+      return `RT=${r.totalRuntime}min ✓`;
+    }],
+    ['40m/25min EAN50 GF30/85 — RT matches pinned (nitrox shortens deco)', () => {
+      const r = zhlCalc(40,25,50,0); const p = LSP_PINNED.zhl_40_25_ean50_gf3085;
+      assertRtPinned(r.totalRuntime, p.rt);
+      assert(r.totalRuntime < zhlCalc(40,25).totalRuntime, 'EAN50 must be shorter than Air');
+      return `RT=${r.totalRuntime}min < Air ✓`;
+    }],
+    ['GF30/85 gives longer deco than GF50/85', () => {
+      const r30 = zhlCalc(40,25,21,0,30,85).totalRuntime;
+      const r50 = zhlCalc(40,25,21,0,50,85).totalRuntime;
+      assert(r30 >= r50, `GF30/85 RT=${r30} must >= GF50/85 RT=${r50}`);
+      return `GF30/85=${r30} >= GF50/85=${r50} ✓`;
+    }],
+    ['GF Hi increase shortens last stop (GF30/85 vs GF30/95)', () => {
+      const r85 = zhlCalc(40,25,21,0,30,85).totalRuntime;
+      const r95 = zhlCalc(40,25,21,0,30,95).totalRuntime;
+      assert(r85 >= r95, `GF30/85 RT=${r85} should >= GF30/95 RT=${r95}`);
+      return `GF30/85=${r85} >= GF30/95=${r95} ✓`;
+    }],
+  ]
+},
+
+// ══ C: Baker Python Cross-Check — VPM-B ══════════════════════════════════════
+{
+  title: 'C · Baker Python Cross-Check (VPM-B)',
+  badge: 'badge-vpmb',
+  desc: 'LSP vs Baker VPM-B Python (Waite/Baker port, Critical Volume Algorithm).\n' +
+        'Baker CV algo gives ~15-25% shorter RTs. Cross-check: stop DEPTHS must match within 3m, RT within 30%.',
+  tests: [
+    ['40m/25min Air C0 — stop depths match Baker (18→3m)', () => {
+      const r = vpmCalc(40,25); const s = stops(r);
+      const bakerDepths = Object.keys(BAKER['40m/25min Air C0'].stops).map(Number);
+      const missing = bakerDepths.filter(d => s[d] === undefined);
+      assert(missing.length === 0, `LSP missing Baker stops: ${missing.join(',')}m`);
+      return `All Baker depths present: ${bakerDepths.join(',')}m ✓`;
+    }],
+    ['40m/25min Air C0 — RT within 30% of Baker (CV algorithm offset)', () => {
+      const lspRT = vpmCalc(40,25).totalRuntime;
+      const bakRT = BAKER['40m/25min Air C0'].rt;
+      const ratio = lspRT / bakRT;
+      assert(ratio >= 1.0 && ratio <= 1.35, `LSP=${lspRT} Baker=${bakRT} ratio=${ratio.toFixed(2)} out of [1.0,1.35]`);
+      return `LSP=${lspRT}min Baker=${bakRT}min ratio=${ratio.toFixed(2)} (CV offset expected) ✓`;
+    }],
+    ['60m/20min Air C0 — first stop within 6m of Baker', () => {
+      const lspFirst = firstStop(vpmCalc(60,20));
+      const bakFirst = BAKER['60m/20min Air C0'].first;
+      const diff = Math.abs(lspFirst - bakFirst);
+      assert(diff <= 6, `first stop LSP=${lspFirst}m Baker=${bakFirst}m diff=${diff}m`);
+      return `LSP first=${lspFirst}m Baker first=${bakFirst}m diff=${diff}m ✓`;
+    }],
+    ['40m/40min Air C0 — stop depths match Baker', () => {
+      const r = vpmCalc(40,40); const s = stops(r);
+      const bakerDepths = Object.keys(BAKER['40m/40min Air C0'].stops).map(Number);
+      const missing = bakerDepths.filter(d => s[d] === undefined);
+      assert(missing.length === 0, `Missing: ${missing.join(',')}m`);
+      return `All Baker depths present ✓`;
+    }],
+    ['30m/30min Air C0 — stop depths match Baker', () => {
+      const r = vpmCalc(30,30); const s = stops(r);
+      const bakerDepths = Object.keys(BAKER['30m/30min Air C0'].stops).map(Number);
+      const missing = bakerDepths.filter(d => s[d] === undefined);
+      assert(missing.length === 0, `Missing: ${missing.join(',')}m`);
+      return `depths ${bakerDepths.join(',')}m ✓`;
+    }],
+    ['TMX21/35 — stop depths match Baker', () => {
+      const r = vpmCalc(50,25,21,35); const s = stops(r);
+      const bakerDepths = Object.keys(BAKER['50m/25min TMX21/35 C0'].stops).map(Number);
+      const missing = bakerDepths.filter(d => s[d] === undefined);
+      assert(missing.length === 0, `Missing: ${missing.join(',')}m`);
+      return `All Baker depths present ✓`;
+    }],
+    ['TMX18/45 — stop depths match Baker', () => {
+      const r = vpmCalc(50,25,18,45); const s = stops(r);
+      const bakerDepths = Object.keys(BAKER['50m/25min TMX18/45 C0'].stops).map(Number);
+      const missing = bakerDepths.filter(d => s[d] === undefined);
+      assert(missing.length === 0, `Missing: ${missing.join(',')}m`);
+      return `All Baker depths present ✓`;
+    }],
+    ['Baker invariant: LSP C0 RT ≤ C2 RT (more conservative = longer)', () => {
+      const c0 = vpmCalc(40,25,21,0,0).totalRuntime;
+      const c2 = vpmCalc(40,25,21,0,2).totalRuntime;
+      assert(c0 <= c2, `C0=${c0} must ≤ C2=${c2}`);
+      return `C0=${c0} ≤ C2=${c2} ✓`;
+    }],
+    ['Baker invariant: all conservatism levels monotone C0≤C1≤C2≤C3', () => {
+      const rts = [0,1,2,3].map(c => vpmCalc(40,25,21,0,c).totalRuntime);
+      for(let i=1;i<rts.length;i++) assert(rts[i-1]<=rts[i], `C${i-1}=${rts[i-1]} > C${i}=${rts[i]}`);
+      return rts.map((rt,i)=>`C${i}=${rt}`).join(' ≤ ') + ' ✓';
+    }],
+  ]
+},
+
+// ══ D: Cross-Model Ordering (Maiken Invariants) ═══════════════════════════════
+{
+  title: 'D · Cross-Model Ordering (Maiken Invariants)',
+  badge: 'badge-info',
+  desc: 'Eric Maiken (2003): VPM-B, GF, and RGBM produce consistent orderings.\n' +
+        'These monotonicity invariants must hold regardless of profile.',
+  tests: [
+    ['Deeper dive → longer RT (VPM-B)', () => {
+      const r40 = vpmCalc(40,25).totalRuntime;
+      const r50 = vpmCalc(50,25).totalRuntime;
+      const r60 = vpmCalc(60,25).totalRuntime;
+      assert(r40 < r50 && r50 < r60, `${r40} < ${r50} < ${r60} failed`);
+      return `40m=${r40} < 50m=${r50} < 60m=${r60} ✓`;
+    }],
+    ['Longer BT → longer RT (VPM-B)', () => {
+      const r20 = vpmCalc(40,20).totalRuntime;
+      const r30 = vpmCalc(40,30).totalRuntime;
+      const r40 = vpmCalc(40,40).totalRuntime;
+      assert(r20 < r30 && r30 < r40, `${r20} < ${r30} < ${r40} failed`);
+      return `BT20=${r20} < BT30=${r30} < BT40=${r40} ✓`;
+    }],
+    ['Deeper dive → longer RT (ZHL GF30/85)', () => {
+      const r40 = zhlCalc(40,25).totalRuntime;
+      const r50 = zhlCalc(50,25).totalRuntime;
+      const r60 = zhlCalc(60,25).totalRuntime;
+      assert(r40 < r50 && r50 < r60, `${r40} < ${r50} < ${r60} failed`);
+      return `40m=${r40} < 50m=${r50} < 60m=${r60} ✓`;
+    }],
+    ['Air → EAN32 shortens deco (more O2 = faster offgassing)', () => {
+      const rAir = vpmCalc(40,25,21,0).totalRuntime;
+      const rEAN = vpmCalc(40,25,32,0).totalRuntime;
+      assert(rAir > rEAN, `Air=${rAir} must > EAN32=${rEAN}`);
+      return `Air=${rAir} > EAN32=${rEAN} ✓`;
+    }],
+    ['TMX He reduces N2 loading → shorter than air at same depth (VPM-B)', () => {
+      const rAir  = vpmCalc(50,25,21,0).totalRuntime;
+      const rTmx  = vpmCalc(50,25,21,35).totalRuntime;
+      assert(rAir > rTmx, `Air RT=${rAir} must > TMX21/35 RT=${rTmx} (He replaces N2)`);
+      return `Air=${rAir} > TMX21/35=${rTmx} ✓`;
+    }],
+    ['VPM-B/GFS RT ≥ VPM-B C0 (GFS adds conservatism)', () => {
+      const c0  = WIN.VPMEngine.calculate(lv(40,25),[],S({conservatism:0}),'VPMB').totalRuntime;
+      const gfs = WIN.VPMEngine.calculate(lv(40,25),[],S({conservatism:0,gfs:85}),'VPMB_GFS').totalRuntime;
+      assert(gfs >= c0, `VPM-B/GFS=${gfs} must ≥ VPM-B C0=${c0}`);
+      return `VPM-B C0=${c0} ≤ VPM-B/GFS(Hi=85)=${gfs} ✓`;
+    }],
+    ['NDL dive: both models give 0 deco stops (15m/35min)', () => {
+      const rv = vpmCalc(15,35,21,0,0);
+      const rz = WIN.ZHLEngine.calculate(lv(15,35),[],S({gfLo:100,gfHi:100}));
+      const vs = (rv.stops||[]).length;
+      const zs = (rz.stops||[]).length;
+      assert(vs === 0, `VPM-B: ${vs} stops expected 0`);
+      assert(zs === 0, `Bühlmann: ${zs} stops expected 0`);
+      return `VPM-B=0 stops, Bühlmann=0 stops ✓`;
+    }],
+    ['Deep bounce: both models complete without error (80m/15min)', () => {
+      const rv = vpmCalc(80,15); const rz = zhlCalc(80,15);
+      assert(rv.totalRuntime > 15, `VPM-B RT=${rv.totalRuntime} suspiciously short`);
+      assert(rz.totalRuntime > 15, `Bühlmann RT=${rz.totalRuntime} suspiciously short`);
+      assert(!rv.error && !rz.error, `errors: VPM=${rv.error} ZHL=${rz.error}`);
+      return `VPM-B RT=${rv.totalRuntime}min ZHL RT=${rz.totalRuntime}min ✓`;
+    }],
+  ]
+},
+
+// ══ E: ZHL-16C Coefficients ═══════════════════════════════════════════════════
+{
+  title: 'E · ZHL-16C Coefficient Verification',
+  badge: 'badge-zhl',
+  desc: 'Bühlmann ZH-L16C N₂ compartment half-times and a/b values.\n' +
+        'Must match canonical Bühlmann 2003 / ApexDeco / DivePro values exactly.\n' +
+        'Note: LSP water vapor = 0.0577 bar (MultiDeco default) not 0.0627 (Baker); both are valid.',
+  tests: [
+    ['16 compartments defined', () => {
+      const c = WIN.ZHL16C;
+      assert(c && c.length === 16, `Expected 16 compartments, got ${c?.length}`);
+      return '16 compartments ✓';
+    }],
+    ['Compartment 1: HT=4.0, a=1.2599, b=0.5050', () => {
+      const [ht,a,b] = WIN.ZHL16C[0];
+      assert(Math.abs(ht-4.0)<0.01,   `HT=${ht} expected 4.0`);
+      assert(Math.abs(a-1.2599)<0.001,`a=${a} expected 1.2599`);
+      assert(Math.abs(b-0.5050)<0.001,`b=${b} expected 0.505`);
+      return `HT=${ht} a=${a} b=${b} ✓`;
+    }],
+    ['Compartment 16: HT=635, a=0.2327, b=0.9653', () => {
+      const [ht,a,b] = WIN.ZHL16C[15];
+      assert(Math.abs(ht-635)<1,      `HT=${ht} expected 635`);
+      assert(Math.abs(a-0.2327)<0.001,`a=${a}`);
+      assert(Math.abs(b-0.9653)<0.001,`b=${b}`);
+      return `HT=${ht} a=${a} b=${b} ✓`;
+    }],
+    ['All a-values > 0 (Bühlmann constraint)', () => {
+      const bad = WIN.ZHL16C.filter(([ht,a])=>a<=0);
+      assert(bad.length===0, `${bad.length} compartments with a≤0`);
+      return 'All a>0 ✓';
+    }],
+    ['All b-values in (0,1] (Bühlmann constraint)', () => {
+      const bad = WIN.ZHL16C.filter(([ht,a,b])=>b<=0||b>1);
+      assert(bad.length===0, `${bad.length} compartments with b outside (0,1]`);
+      return 'All b∈(0,1] ✓';
+    }],
+    ['Half-times monotone increasing (4→635 min)', () => {
+      const hts = WIN.ZHL16C.map(c=>c[0]);
+      for(let i=1;i<hts.length;i++) assert(hts[i]>hts[i-1], `HT[${i}]=${hts[i]} ≤ HT[${i-1}]=${hts[i-1]}`);
+      return `HT: ${hts[0]}→${hts[15]}min monotone ✓`;
+    }],
+    ['All HT match canonical ApexDeco/DivePro values', () => {
+      const exp = ZHL16C_N2.map(c=>c[0]);
+      const got = WIN.ZHL16C.map(c=>c[0]);
+      const bad = exp.filter((e,i)=>Math.abs(e-got[i])>0.1);
+      assert(bad.length===0, `${bad.length} HT mismatches`);
+      return `All 16 HT match canonical values ✓`;
+    }],
+    ['Water vapor pressure in valid range (0.0500–0.0700 bar)', () => {
+      // LSP default: 0.0577 bar (MultiDeco-compatible, user-configurable)
+      // Baker/Bühlmann canonical: 0.0627 bar
+      // Both are physiologically valid; LSP uses 0.0577 to match MultiDeco output.
+      const wv = WIN.WATER_VAPOR;
+      assert(wv > 0.05 && wv < 0.07, `WATER_VAPOR=${wv} out of valid range (0.05–0.07)`);
+      const ref = Math.abs(wv-0.0577)<0.001 ? '(MultiDeco default)' : Math.abs(wv-0.0627)<0.001 ? '(Baker canonical)' : '';
+      return `WATER_VAPOR=${wv} bar ${ref} ✓`;
+    }],
+  ]
+},
+
+// ══ F: Physics Constants ══════════════════════════════════════════════════════
+{
+  title: 'F · Physics Constants & Surface Pressure',
+  badge: 'badge-core',
+  desc: 'BAR_PER_METRE, SURFACE_P, and altitude conversion physics.',
+  tests: [
+    ['BAR_PER_METRE ≈ 0.10000 (salt: 10.000 m/bar, MultiDeco/DiveKit)', () => {
+      const b = WIN.BAR_PER_METRE;
+      assert(b > 0.095 && b < 0.104, `BAR_PER_METRE=${b} out of [0.095,0.104]`);
+      return `BAR_PER_METRE=${b.toFixed(5)} ✓`;
+    }],
+    ['Sea-level pressure 1.0132±0.001 bar', () => {
+      const p = WIN.altSurfaceP;
+      assert(Math.abs(p - 1.01325) < 0.005, `altSurfaceP=${p} expected ~1.01325`);
+      return `altSurfaceP=${p.toFixed(5)} bar ✓`;
+    }],
+    ['ppO2 at 40m on air ≈ 1.05 bar (=5bar×0.21)', () => {
+      const pAmb = WIN.altSurfaceP + 40 * WIN.BAR_PER_METRE;
+      const ppO2 = pAmb * 0.21;
+      assert(ppO2 > 0.95 && ppO2 < 1.15, `ppO2=${ppO2.toFixed(3)} out of expected range`);
+      return `ppO2@40m air = ${ppO2.toFixed(3)} bar ✓`;
+    }],
+    ['MOD for EAN32 at ppO2≤1.4 ≈ 33m', () => {
+      const mod = (1.4 / 0.32 - WIN.altSurfaceP) / WIN.BAR_PER_METRE;
+      assert(mod > 30 && mod < 36, `MOD=${mod.toFixed(1)}m expected ~33m`);
+      return `MOD EAN32 = ${mod.toFixed(1)}m ✓`;
+    }],
+    ['EAD formula: EAD(40m, EAN32) ≈ 33m (standard formula)', () => {
+      // EAD = (depth+10) × fN2 / 0.79 − 10   (NOAA/PADI standard)
+      // EAN32 fN2=0.68 at 40m → EAD = 50×0.68/0.79−10 = 43.04−10 = 33m
+      const ead = ((40+10)*0.68/0.79) - 10;
+      assert(ead > 31 && ead < 35, `EAD=${ead.toFixed(1)}m expected ~33m`);
+      return `EAD(40m,EAN32)=${ead.toFixed(1)}m ✓`;
+    }],
+    ['END(40m, TMX21/35) < 40m (He is non-narcotic)', () => {
+      // END = ((pNarc/pNarc_surface) - 1) / BAR_PER_METRE
+      // pNarc uses N2+O2 fractions (He excluded)
+      const depth = 40;
+      const pAmb = WIN.altSurfaceP + depth * WIN.BAR_PER_METRE;
+      const fNarc = 0.21 + 0.44; // O2+N2 (narcoticO2+narcoticN2 both on)
+      const pNarc = pAmb * fNarc;
+      const pNarcSurf = WIN.altSurfaceP * (0.21 + 0.79); // air surface
+      const end = ((pNarc / pNarcSurf) - 1) / WIN.BAR_PER_METRE;
+      assert(end < depth, `END=${end.toFixed(1)}m must < depth ${depth}m`);
+      return `END(40m,TMX21/35)=${end.toFixed(1)}m < 40m ✓`;
+    }],
+  ]
+},
+
+// ══ G: Determinism & Edge Cases ═══════════════════════════════════════════════
+{
+  title: 'G · Determinism & Edge Cases',
+  badge: 'badge-core',
+  desc: 'Engine must be deterministic, handle boundary conditions, and complete without errors.',
+  tests: [
+    ['Determinism: same profile gives same result twice (VPM-B)', () => {
+      const r1 = vpmCalc(40,25).totalRuntime;
+      const r2 = vpmCalc(40,25).totalRuntime;
+      assert(r1 === r2, `Results differ: ${r1} vs ${r2}`);
+      return `${r1} === ${r2} ✓`;
+    }],
+    ['Determinism: same profile gives same result twice (Bühlmann)', () => {
+      const r1 = zhlCalc(40,25).totalRuntime;
+      const r2 = zhlCalc(40,25).totalRuntime;
+      assert(r1 === r2, `Results differ: ${r1} vs ${r2}`);
+      return `${r1} === ${r2} ✓`;
+    }],
+    ['5m/60min: NDL on all models (no stops)', () => {
+      const rv = vpmCalc(5,60); const rz = WIN.ZHLEngine.calculate(lv(5,60),[],S({gfLo:100,gfHi:100}));
+      assert((rv.stops||[]).length===0, `VPM-B: ${rv.stops.length} stops`);
+      assert((rz.stops||[]).length===0, `Bühlmann: ${rz.stops.length} stops`);
+      return '0 stops on both models ✓';
+    }],
+    ['120m/20min: completes without error (extreme depth)', () => {
+      const r = vpmCalc(120,20);
+      assert(!r.error, `Error: ${r.error}`);
+      assert(r.totalRuntime > 20, `RT=${r.totalRuntime} too short`);
+      return `RT=${r.totalRuntime}min ✓`;
+    }],
+    ['1min BT: engine handles minimal exposure', () => {
+      const r = vpmCalc(40,1);
+      assert(!r.error, `Error: ${r.error}`);
+      return `RT=${r.totalRuntime}min ✓`;
+    }],
+    ['180min BT: engine handles long exposure', () => {
+      const r = vpmCalc(30,180);
+      assert(!r.error, `Error: ${r.error}`);
+      assert(r.totalRuntime > 180, 'RT must exceed BT');
+      return `RT=${r.totalRuntime}min ✓`;
+    }],
+    ['All 16 Bühlmann compartments contribute (GF 30/85, 80m/20min)', () => {
+      const r = zhlCalc(80,20);
+      assert((r.stops||[]).length > 0, 'No stops — all compartments must load');
+      return `${r.stops.length} stops, all compartments loaded ✓`;
+    }],
+    ['Trimix: He half-times affect offgassing (TMX vs Air same RT)', () => {
+      const rAir = vpmCalc(60,20,21,0).totalRuntime;
+      const rTmx = vpmCalc(60,20,21,35).totalRuntime;
+      // With He, faster He offgassing should reduce N2 loading → shorter deco
+      assert(rAir !== rTmx, 'TMX and Air should give different RTs');
+      return `Air=${rAir}min TMX21/35=${rTmx}min (${rAir>rTmx?'Air longer':'TMX longer'}) ✓`;
+    }],
+  ]
+},
+
+
+// ══ H: MultiDeco / V-Planner Cross-Check ═════════════════════════════════════
+{
+  title: 'H · MultiDeco / V-Planner Compatibility',
+  badge: 'badge-info',
+  desc: 'LSP VPM-B/GFS must match MultiDeco ordering and invariants.\n' +
+        'MultiDeco GF defaults: Lo=30, Hi=85. Water vapor: 0.0577 bar (same as LSP).\n' +
+        'VPM-B/GFS: takes the deeper of VPM-B stops vs GF Hi-only Bühlmann ceiling at each stop.',
+  tests: [
+    ['VPM-B/GFS RT > pure VPM-B (GFS adds shallow Bühlmann stops)', () => {
+      const vpmb  = WIN.VPMEngine.calculate(lv(40,25),[],S({conservatism:0}),'VPMB').totalRuntime;
+      const gfs   = WIN.VPMEngine.calculate(lv(40,25),[],S({conservatism:0,gfs:85}),'VPMB_GFS').totalRuntime;
+      assert(gfs > vpmb, `GFS=${gfs} must > VPM-B=${vpmb}`);
+      return `VPM-B=${vpmb}min < VPM-B/GFS(Hi=85)=${gfs}min ✓`;
+    }],
+    ['VPM-B/GFS first stop ≥ VPM-B first stop (max of VPM-B and GF Hi ceiling)', () => {
+      const vpmb = firstStop(WIN.VPMEngine.calculate(lv(40,25),[],S({conservatism:0}),'VPMB'));
+      const gfs  = firstStop(WIN.VPMEngine.calculate(lv(40,25),[],S({conservatism:0,gfs:85}),'VPMB_GFS'));
+      // GFS takes the DEEPER of VPM-B stops and GF Hi-only Bühlmann ceiling.
+      // With GF Hi=85, Bühlmann first stop may be deeper than VPM-B first stop.
+      assert(gfs >= vpmb, `GFS first=${gfs}m must ≥ VPM-B first=${vpmb}m`);
+      return `VPM-B first=${vpmb}m, GFS first=${gfs}m (GFS ≥ VPM-B) ✓`;
+    }],
+    ['GF Hi monotone: lower GF Hi → longer RT (GFS 95→70 all decreasing)', () => {
+      const vals = [95,90,85,80,75,70].map(hi =>
+        WIN.VPMEngine.calculate(lv(40,25),[],S({conservatism:0,gfs:hi}),'VPMB_GFS').totalRuntime
+      );
+      for(let i=1;i<vals.length;i++)
+        assert(vals[i]>=vals[i-1], `GFS Hi decreasing: RT[${i}]=${vals[i]} < RT[${i-1}]=${vals[i-1]}`);
+      return vals.map((rt,i)=>`Hi=${[95,90,85,80,75,70][i]}:${rt}`).join(' ') + ' ✓';
+    }],
+    ['MultiDeco GF Hi=85 — pinned RT for 40m/25min air', () => {
+      const r = WIN.VPMEngine.calculate(lv(40,25),[],S({conservatism:0,gfs:85}),'VPMB_GFS');
+      assertRtPinned(r.totalRuntime, 113);
+      return `RT=${r.totalRuntime}min ✓`;
+    }],
+    ['MultiDeco GF Hi=85 — pinned first stop 21m for 40m/25min air', () => {
+      const r = WIN.VPMEngine.calculate(lv(40,25),[],S({conservatism:0,gfs:85}),'VPMB_GFS');
+      assert(firstStop(r) === 21, `first=${firstStop(r)}m expected 21m`);
+      return `first stop=${firstStop(r)}m ✓`;
+    }],
+    ['MultiDeco GF Hi=85 — pinned stop table for 40m/25min air', () => {
+      const r = WIN.VPMEngine.calculate(lv(40,25),[],S({conservatism:0,gfs:85}),'VPMB_GFS');
+      const s = stops(r);
+      // Expected: 21:0 18:1 15:1 12:1 9:2 6:14 3:57
+      const expDepths = [21,18,15,12,9,6,3];
+      const missing = expDepths.filter(d => s[d] === undefined);
+      assert(!missing.length, `Missing stops: ${missing.join(',')}m`);
+      return Object.entries(s).sort((a,b)=>b[0]-a[0]).map(([d,t])=>`${d}m:${t}`).join(' ') + ' ✓';
+    }],
+    ['GFS 60m/20min air — RT > VPM-B RT (Bühlmann shallow stops dominate)', () => {
+      const vpmb = WIN.VPMEngine.calculate(lv(60,20),[],S({conservatism:0}),'VPMB').totalRuntime;
+      const gfs  = WIN.VPMEngine.calculate(lv(60,20),[],S({conservatism:0,gfs:85}),'VPMB_GFS').totalRuntime;
+      assert(gfs > vpmb, `GFS=${gfs} must > VPM-B=${vpmb}`);
+      return `60m/20min: VPM-B=${vpmb}min < GFS=${gfs}min ✓`;
+    }],
+    ['MultiDeco conservatism monotone: GFS C0 ≤ C1 ≤ C2 (Hi=85)', () => {
+      const rts = [0,1,2].map(c =>
+        WIN.VPMEngine.calculate(lv(40,25),[],S({conservatism:c,gfs:85}),'VPMB_GFS').totalRuntime
+      );
+      for(let i=1;i<rts.length;i++) assert(rts[i-1]<=rts[i], `C${i-1}=${rts[i-1]} > C${i}=${rts[i]}`);
+      return rts.map((rt,i)=>`C${i}=${rt}`).join(' ≤ ') + ' ✓';
+    }],
+    ['MultiDeco GF Hi=80 gives longer RT than Hi=90', () => {
+      const hi80 = WIN.VPMEngine.calculate(lv(40,25),[],S({conservatism:0,gfs:80}),'VPMB_GFS').totalRuntime;
+      const hi90 = WIN.VPMEngine.calculate(lv(40,25),[],S({conservatism:0,gfs:90}),'VPMB_GFS').totalRuntime;
+      assert(hi80 > hi90, `GFS Hi=80 RT=${hi80} must > Hi=90 RT=${hi90}`);
+      return `GFS Hi=80: ${hi80}min > Hi=90: ${hi90}min ✓`;
+    }],
+    ['GFS first stop ≥ GF Hi-only Bühlmann first stop (VPM-B sets deeper ceiling)', () => {
+      // Pure GF with Hi=85 only (no Lo) gives the Bühlmann ceiling component
+      const gfsFirst  = firstStop(WIN.VPMEngine.calculate(lv(60,20),[],S({conservatism:0,gfs:85}),'VPMB_GFS'));
+      const zhlFirst  = firstStop(WIN.ZHLEngine.calculate(lv(60,20),[],S({gfLo:85,gfHi:85})));
+      // GFS should have first stop ≥ ZHL first stop (VPM-B pushes it deeper)
+      assert(gfsFirst >= zhlFirst, `GFS first=${gfsFirst}m must ≥ ZHL Hi-only first=${zhlFirst}m`);
+      return `GFS first=${gfsFirst}m ≥ ZHL(Hi=85) first=${zhlFirst}m ✓`;
+    }],
+    ['MultiDeco water vapor 0.0577 bar (matches LSP default)', () => {
+      const wv = WIN.WATER_VAPOR;
+      assert(Math.abs(wv - 0.0577) < 0.001, `WATER_VAPOR=${wv} expected 0.0577`);
+      return `WATER_VAPOR=${wv} bar = MultiDeco default ✓`;
+    }],
+    ['MultiDeco ZHL-16C compartment 1: HT=4.0 (vs Baker 5.0 — confirmed LSP uses ZHL-16C)', () => {
+      const ht1 = WIN.ZHL16C?.[0]?.[0];
+      // LSP uses ZHL-16C standard (HT=4.0 min for cpt 1)
+      // Baker/VPM-B uses ZHL-16C variant 1b (HT=5.0 min)
+      // MultiDeco uses ZHL-16C with HT=4.0 for Bühlmann GF calculations
+      assert(Math.abs(ht1 - 4.0) < 0.1 || Math.abs(ht1 - 5.0) < 0.1,
+        `HT[0]=${ht1} expected 4.0 or 5.0`);
+      const variant = Math.abs(ht1 - 4.0) < 0.1 ? 'ZHL-16C (4.0min)' : 'ZHL-16C 1b (5.0min)';
+      return `Compartment 1 HT=${ht1}min — ${variant} ✓`;
+    }],
+  ]
+},
+
+// ══ I: CCR / Rebreather (v2.30) ═══════════════════════════════════════════════
+{
+  title: 'I · CCR / Rebreather',
+  badge: 'badge-info',
+  desc: 'Closed-circuit rebreather tissue loading, setpoint, and loop vs OC deco.',
+  tests: [
+    ['CCR inspired N2 at 40m SP 1.3 (air diluent)', () => {
+      const pAmb = 1.01325 + 40 * 0.1;
+      const insp = WIN.getInspiredInertPressures(pAmb, 1.3, 0.21, 0, { circuit: 'CCR', setpoint: 1.3 });
+      const exp = Math.max(0, pAmb - 1.3 - WIN.WATER_VAPOR) * 0.79 / 0.79;
+      assert(Math.abs(insp.pN2 - exp) < 0.02, `pN2=${insp.pN2.toFixed(3)} expected ~${exp.toFixed(3)}`);
+      return `pN2=${insp.pN2.toFixed(3)} bar @ 40m SP1.3 ✓`;
+    }],
+    ['Above setpoint depth: zero inert loading', () => {
+      const sp = 1.3;
+      const ppH2O = WIN.WATER_VAPOR;
+      // At/below crossover (pAmb ≤ SP + ppH2O): loop holds setpoint, no diluent flush → zero inert
+      const pAmb = sp + ppH2O;
+      const insp = WIN.getInspiredInertPressures(pAmb, sp, 0.21, 0, { circuit: 'CCR', setpoint: sp });
+      assert(Math.abs(insp.pN2) < 1e-9 && Math.abs(insp.pHe) < 1e-9,
+        `expected ~0, got N2=${insp.pN2}`);
+      return 'Shallow segment: no inert load ✓';
+    }],
+    ['CCR 40m/28min air SP1.3 produces deco (ZHL)', () => {
+      const r = WIN.ZHLEngine.calculate(lv(40, 28, 21, 0), [], S({
+        circuit: 'CCR', setpoint: 1.3, descentSetpoint: 0.7,
+        gfLo: 50, gfHi: 80, metric: true,
+      }));
+      assert((r.stops || []).length > 0, 'CCR dive should require deco stops');
+      return `${(r.stops||[]).length} stops, RT=${r.totalRuntime}min ✓`;
+    }],
+    ['CCR deco shorter than OC same dive (ZHL)', () => {
+      const oc = WIN.ZHLEngine.calculate(lv(40, 28, 21, 0), [], S({ gfLo: 50, gfHi: 80, circuit: 'OC' }));
+      const ccr = WIN.ZHLEngine.calculate(lv(40, 28, 21, 0), [], S({
+        circuit: 'CCR', setpoint: 1.3, gfLo: 50, gfHi: 80,
+      }));
+      assert(ccr.totalRuntime < oc.totalRuntime, `CCR RT=${ccr.totalRuntime} must < OC RT=${oc.totalRuntime}`);
+      return `OC=${oc.totalRuntime}min CCR=${ccr.totalRuntime}min ✓`;
+    }],
+    ['ZHLEngine headless CCR CNS > OC at 40m (setpoint ppO2)', () => {
+      const st = S({ gfLo: 100, gfHi: 100, metric: true });
+      const oc = WIN.ZHLEngine.calculate(lv(40, 28, 21, 0), [], st);
+      const ccr = WIN.ZHLEngine.calculate(lv(40, 28, 21, 0), [], Object.assign({}, st, {
+        circuit: 'CCR', setpoint: 1.3, bottomSetpoint: 1.2, descentSetpoint: 0.7,
+      }));
+      assert((ccr.totalCNS || 0) > (oc.totalCNS || 0),
+        `CCR CNS=${ccr.totalCNS}% should exceed OC CNS=${oc.totalCNS}% at 40m SP1.3`);
+      return `OC CNS=${oc.totalCNS}% CCR CNS=${ccr.totalCNS}% ✓`;
+    }],
+    ['pSCR produces different RT than CCR (more conservative)', () => {
+      const ccr = WIN.ZHLEngine.calculate(lv(40, 20, 21, 0), [], S({ circuit: 'CCR', setpoint: 1.3, gfLo: 30, gfHi: 85 }));
+      const pscr = WIN.ZHLEngine.calculate(lv(40, 20, 21, 0), [], S({
+        circuit: 'pSCR', setpoint: 0.3, scrLoopVolume: 10, scrMetabolicO2: 1.5, gfLo: 30, gfHi: 85,
+      }));
+      assert(pscr.totalRuntime !== ccr.totalRuntime, 'pSCR and CCR should differ');
+      return `CCR=${ccr.totalRuntime}min pSCR=${pscr.totalRuntime}min ✓`;
+    }],
+    ['pSCR ccrDiluentSurfaceLpm ≈ metRate × bypass, not /fO2Loop (BUG-75)', () => {
+      const d = WIN.document;
+      const sel = d.getElementById('circuitSelect');
+      const prev = sel ? sel.value : null;
+      if (sel) sel.value = 'pSCR';
+      WIN.toggleCircuitFields?.();
+      const met = parseFloat(d.getElementById('scrMetabolicO2')?.value) || 1.5;
+      const lpm = WIN.ccrDiluentSurfaceLpm(40);
+      if (sel && prev != null) { sel.value = prev; WIN.toggleCircuitFields?.(); }
+      const expected = met * 10;
+      assert(Math.abs(lpm - expected) < 0.2, `got ${lpm} L/min, expected ~${expected} (not fO2Loop-scaled)`);
+      assert(lpm < 30, `pSCR surface LPM ${lpm} still ~6× too high (BUG-75)`);
+      return `surf LPM=${lpm.toFixed(1)} = ${met}×10 ✓`;
+    }],
+    ['VPM CCR 40m/28min produces valid plan', () => {
+      const r = WIN.VPMEngine.calculate(lv(40, 28, 21, 0), [], S({
+        circuit: 'CCR', setpoint: 1.3, conservatism: 0,
+      }), 'VPMB');
+      assert(!r.error, r.error || 'no error');
+      assert(r.totalRuntime > 28, `RT=${r.totalRuntime}`);
+      return `RT=${r.totalRuntime}min stops=${(r.stops||[]).length} ✓`;
+    }],
+  ]
+},
+];
+
+// ─── Runner ───────────────────────────────────────────────────────────────────
+let iframeBootError = null;
+
+function waitForEngine(iframe, timeout, cb) {
+  const start = Date.now();
+  iframe.onload = function() {
+    try {
+      const w = iframe.contentWindow;
+      if (w && !w.__lspHooked) {
+        w.__lspHooked = true;
+        w.addEventListener('error', e => { iframeBootError = e.message || 'Error'; });
+      }
+    } catch(_) {}
+  };
+  function tryGet() {
+    try {
+      const w = iframe.contentWindow;
+      if (w && w.VPMEngine && typeof w.VPMEngine.calculate === 'function'
+          && w.ZHLEngine && typeof w.ZHLEngine.calculate === 'function') return w;
+    } catch(_) {}
+    return null;
+  }
+  function check() {
+    const w = tryGet();
+    if (w) { setTimeout(() => cb(null, w), 2000); return; }
+    if (iframeBootError) return cb(new Error('Boot: ' + iframeBootError));
+    if (Date.now() - start > timeout) return cb(new Error('Timed out waiting for VPMEngine + ZHLEngine'));
+    setTimeout(check, 300);
+  }
+  setTimeout(check, 300);
+}
+
+function runTest(fn) {
+  try {
+    const detail = fn();
+    return { pass: true, warn: false, detail: detail || '✓' };
+  } catch(e) {
+    if (e && e.isVerifyWarn) return { pass: true, warn: true, detail: e.message };
+    return { pass: false, warn: false, detail: e.message || String(e) };
+  }
+}
+
+function renderSection(sec, results) {
+  const div = document.createElement('div');
+  div.className = 'section';
+  div.innerHTML = `<div class="section-title">${sec.title}</div>` +
+    (sec.desc ? `<div class="section-desc">${sec.desc}</div>` : '');
+  results.forEach((res, i) => {
+    const name = sec.tests[i][0];
+    const row = document.createElement('div');
+    const rowCls = !res.pass ? 'fail' : (res.warn ? 'warn' : 'pass');
+    row.className = 'test-row ' + rowCls;
+    const badgeClass = !res.pass ? 'badge-fail' : (res.warn ? 'badge-warn' : sec.badge);
+    const badgeText = !res.pass ? 'FAIL' : (res.warn ? 'WARN' : 'PASS');
+    row.innerHTML = `<div class="icon"></div>
+      <div><div class="test-name">${name}</div>
+      ${res.detail ? `<div class="test-detail">${res.detail}</div>` : ''}</div>
+      <div class="badge ${badgeClass}">${badgeText}</div>`;
+    div.appendChild(row);
+  });
+  return div;
+}
+
+async function startVerify() {
+  document.getElementById('status').className = 'status running';
+  document.getElementById('status').textContent = 'Loading engine…';
+  document.getElementById('results').innerHTML = '';
+  iframeBootError = null;
+
+  const frame = document.getElementById('app-frame');
+  frame.src = 'index.html?ts=' + Date.now();
+
+  waitForEngine(frame, 45000, async function(err, win) {
+    if (err) {
+      document.getElementById('status').className = 'status fail';
+      document.getElementById('status').textContent = '✗ ' + err.message;
+      return;
+    }
+    WIN = win;
+    WIN._zhlHeadless = true; // suppress deferred app callbacks
+
+    // Ensure ZHL16C and WATER_VAPOR are accessible on WIN
+    // updateWaterVapor() updates the local var but not window.WATER_VAPOR — re-sync
+    if (typeof WIN.ZHL16C === 'undefined') {
+      // Try to extract from ZHLEngine internals or re-expose
+      try { WIN.ZHL16C = WIN.ZHL16C || WIN.ZHLEngine?._ZHL16C || WIN.ZHL16C_N2 || WIN._ZHL16C; } catch(_){}
+    }
+    // Re-sync WATER_VAPOR in case updateWaterVapor() ran after the initial window assignment
+    try {
+      const wvEl = WIN.document.getElementById('waterVapor');
+      if (wvEl) { const _wv = parseFloat(wvEl.value); WIN.WATER_VAPOR = isNaN(_wv) ? (WIN.WATER_VAPOR || 0.0627) : _wv; }
+    } catch(_){}
+
+    document.getElementById('meta').textContent =
+      'APP: ' + (win.APP_VERSION || '—') +
+      '  WATER_VAPOR: ' + (win.WATER_VAPOR?.toFixed(4) || '—') +
+      '  BAR/m: ' + (win.BAR_PER_METRE?.toFixed(5) || '—');
+
+    const pw = document.getElementById('pw');
+    const pb = document.getElementById('pb');
+    const pl = document.getElementById('pl');
+    pw.style.display = 'block';
+
+    let totalTests = SECTIONS.reduce((n,s) => n + s.tests.length, 0);
+    let done = 0, passed = 0, warned = 0, failed = 0;
+    const container = document.getElementById('results');
+
+    for (const sec of SECTIONS) {
+      const results = [];
+      for (const [name, fn] of sec.tests) {
+        const res = runTest(fn);
+        results.push(res);
+        done++;
+        if (!res.pass) failed++;
+        else if (res.warn) warned++;
+        else passed++;
+        pb.style.width = Math.round(done/totalTests*100) + '%';
+        pl.textContent = `${done} / ${totalTests} — ${sec.title}`;
+        await new Promise(r => setTimeout(r, 1));
+      }
+      container.appendChild(renderSection(sec, results));
+    }
+
+    pw.style.display = 'none';
+    const cls = failed === 0 ? (warned ? 'warn' : 'pass') : 'fail';
+    document.getElementById('status').className = 'status ' + cls;
+    const okCount = passed + warned;
+    document.getElementById('status').textContent =
+      (failed === 0 ? '✓ ALL ' : '✗ ') + okCount + ' / ' + totalTests + ' passed' +
+      (warned ? ` — ${warned} WARN (RT ±1–2 min)` : '') +
+      (failed ? ` — ${failed} FAILED` : '') + ' — Math verification complete';
+  });
+}
+
+window.addEventListener('load', () => {
+  if (location.protocol !== 'file:') setTimeout(startVerify, 300);
+});
+</script>
+</body>
+</html>

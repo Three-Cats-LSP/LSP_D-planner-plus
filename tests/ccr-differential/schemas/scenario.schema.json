@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://threecats-lsp.com/schemas/ccr-differential/scenario.schema.json",
+  "title": "CCR differential scenario fixture",
+  "type": "object",
+  "required": ["id", "description", "profile", "circuit", "decompression", "environment", "ratesMPerMin", "rounding"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^CCR-" },
+    "description": { "type": "string" },
+    "profile": {
+      "type": "object",
+      "required": ["levels", "timeConvention"],
+      "properties": {
+        "levels": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["depthM", "timeMin"],
+            "properties": {
+              "depthM": { "type": "number", "minimum": 0 },
+              "timeMin": { "type": "number", "minimum": 0 }
+            }
+          }
+        },
+        "timeConvention": { "enum": ["at-depth"] }
+      }
+    },
+    "circuit": {
+      "type": "object",
+      "required": ["type", "diluent", "setpointsBar"],
+      "properties": {
+        "type": { "enum": ["CCR"] },
+        "diluent": {
+          "type": "object",
+          "required": ["o2", "he"],
+          "properties": {
+            "o2": { "type": "number", "minimum": 0, "maximum": 1 },
+            "he": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "setpointsBar": {
+          "type": "object",
+          "properties": {
+            "descent": { "type": "number" },
+            "bottom": { "type": "number" },
+            "deco": { "type": "number" }
+          }
+        }
+      }
+    },
+    "decompression": {
+      "type": "object",
+      "required": ["model", "gfLow", "gfHigh", "stepM", "lastStopM"]
+    },
+    "environment": { "type": "object" },
+    "ratesMPerMin": { "type": "object" },
+    "rounding": { "type": "object" },
+    "bailoutGases": { "type": "array" },
+    "repetitive": { "type": "object" },
+    "expectInvalid": { "type": "boolean" },
+    "invalidReason": { "type": "string" }
+  }
+}

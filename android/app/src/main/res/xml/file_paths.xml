@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Internal cache dir — used by Filesystem CACHE + FileOpener -->
+    <cache-path name="my_cache" path="." />
+    <!-- App internal files dir — used by Filesystem DATA/LIBRARY -->
+    <files-path name="my_files" path="." />
+    <!-- App-scoped external files dir — used by Filesystem EXTERNAL -->
+    <external-files-path name="my_external_files" path="." />
+    <!-- Legacy external storage (API ≤ 28 only) -->
+    <external-path name="my_external" path="." />
+</paths>

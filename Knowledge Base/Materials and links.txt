@@ -1,0 +1,125 @@
+Lets add some new material into our library and memory for better app and algos implementations:
+
+Multideco FAQ's with all explanations 
+https://www.hhssoftware.com/multideco/faqhelp.php
+
+The VPM model
+https://www.hhssoftware.com/multideco/vpmdetail.php
+
+Varying Permeability Model (VPM) References
+https://www.hhssoftware.com/multideco/vpmrefnce.php
+
+Information on the VPM model and how it works can be found here.
+https://deco.hhssoftware.com/decompression.org/Maiken/vpm_program_site_map.html
+
+Additional articles of VPM design:
+https://www.hhssoftware.com/multideco/vpm_deco_reinders.pdf
+https://www.hhssoftware.com/multideco/vpm_expl_corado.pdf
+
+V-Planner Live & MultiDeco Dive Database
+https://database.hhssoftware.com
+this is good for making comparison of different profiles with real dive plans made by other divers
+
+This is good manual how dive computer works
+https://www.tdc-3.com/content/files/TDC-3_manual.pdf
+
+VPM For Dummies
+https://scubatechphilippines.com/scuba_blog/varying-permeability-model-vpm-for-dummies/
+
+Understanding M-Values By Erik C. Baker
+https://scubatechphilippines.com/scuba_blog/understanding-m-values-eric-baker/
+
+VPM decompression site: Site with extensive bubble model mechanics, and early VPM model designs
+https://deco.hhssoftware.com/decompression.org/Maiken/vpm_program_site_map.html
+
+VPM Algorithm Details
+https://deco.hhssoftware.com/decompression.org/Maiken/vpm_algorithm.html
+
+Here are links to articles and publications on the VPM and decompression modeling
+https://deco.hhssoftware.com/decompression.org/Maiken/vpm_publications.html
+
+"VPMechanics" Series of Mathematica Notebooks
+
+The following pages were created from Mathematica notebooks that I put together during discussions with David and Erik as we prepared for the Reverse Diving Profiles Workshop (RDPW). The pages need some work to fix broken fonts that were created by saving the original Mathematica notebooks in html.
+
+RDPW3A.htm Tracks the compartment tensions and supersaturation gradients of a reverse dive profile posted by Erik Baker on the deco mailing list. 9/13/99
+https://deco.hhssoftware.com/decompression.org/Maiken/rdpw3a.html
+
+VPMechanics1.htm Discusses the VPM algorithm, with application to a 100 fsw air dive. 9/14/99
+https://deco.hhssoftware.com/decompression.org/Maiken/vpmech1.html
+
+VPMechanics2.htm Looks at the time dependence of the supersaturation gradient for the air dive in VPM1 and evaluates the integral of Pss as a risk function. 9/15/99
+https://deco.hhssoftware.com/decompression.org/Maiken/vpmech2.html
+
+VPMechanics3.htm Considers the roles of actual dive depth and equivalent air depth in setting ascent schedules in air and nitrox diving. 10/22/99
+https://deco.hhssoftware.com/decompression.org/Maiken/vpmech3.html
+
+VPMMechanics4.htm Evaluates VPM supersaturation gradients throughout the permeable and impermeable regimes. 9/23/99 
+https://deco.hhssoftware.com/decompression.org/Maiken/vpmech4.html
+
+VPMechanics5.htm Joins the hypobaric and hyperbaric forms of the VPM M-values. 9/26/99 
+https://deco.hhssoftware.com/decompression.org/Maiken/vpmech5.html
+
+VPMechanics6.htm Looks at how the VPM parameters and dive conditions affect the allowed supersaturation gradients. 10/4/99
+https://deco.hhssoftware.com/decompression.org/Maiken/vpmech6.html
+
+VPMechanics7.htm How a diver's descent rate influences the minimum ascent gradients.  10/23/99
+https://deco.hhssoftware.com/decompression.org/Maiken/vpmech7.html
+
+VPMechanics8.htm How a diver's ascent rate affects the minimum ascent gradients. 10/14/99
+https://deco.hhssoftware.com/decompression.org/Maiken/vpmech8.html
+
+VPMechanics9.htm A close look at the dynamic critical volume method for non-decompression diving. 11/1/99
+https://deco.hhssoftware.com/decompression.org/Maiken/vpmech9.html
+
+VPMechanics10.htm Repetitive diving and the VPM. 11/1/99
+https://deco.hhssoftware.com/decompression.org/Maiken/vpm10.html
+
+Some Notes on the VPM Model
+Technical VPM
+https://deco.hhssoftware.com/decompression.org/Maiken/technical_vpm.html
+
+Deco 101:  Slides that show basic on / off gassing, and model designs, and slow tissue reactions.
+https://deco.hhssoftware.com/deco_101/index.html
+
+
+DecoList A mailing list discussion group from 1999 to 2004. This is where modern VPM was brought together and finalized by the industry experts and reseachers.
+https://deco.hhssoftware.com/decolist
+
+decompression.org: This is a copy of Rob Murray's decompression.org. Here is the files and papers and studies of numerous researchers and contributors, that brought VPM from theory and test design, to a working model that became the VPM-B we use today.
+https://deco.hhssoftware.com/decompression.org/index.html
+
+Open Source Code Programs
+VPM Programs
+https://deco.hhssoftware.com/decompression.org/Maiken/vpm_programs.html
+
+Open source  Subsurface planner
+https://github.com/subsurface/subsurface
+
+
+--- DiveKit (MultiDeco cross-validation, June 2026) ---
+
+DiveKit engine documentation
+https://divekit.app/docs/
+
+MultiDeco comparison (primary reference for LSP alignment work)
+https://divekit.app/docs/engine/compared-to-multideco/
+
+26-scenario cross-reference JSON (inputs + MultiDeco + DiveKit results)
+https://divekit.app/data/cross-reference/
+
+Local copies: Knowledge Base/divekit-cross-reference/ and DiveKit_Engine_Knowledge_Base.md
+
+
+ VPM-B Source Gist
+https://gist.github.com/eskil/a1b8365b31cb95253f78186125c89fda
+
+
+vpmb
+https://github.com/bwaite/vpmb
+
+
+VPM-B Gradients as Gradient factors
+https://thetheoreticaldiver.org/wordpress/index.php/2017/11/02/vpm-b-gradients-as-gradient-factors/
+
+

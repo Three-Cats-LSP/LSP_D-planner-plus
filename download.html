@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LSP D-Planner+ — Download APK</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #030c18;
+      color: #e0f7ff;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      background: #071a2e;
+      border: 1px solid rgba(0,200,255,0.2);
+      border-radius: 20px;
+      padding: 40px 32px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+    .logo { width: 72px; height: 72px; margin: 0 auto 8px; display: block; border-radius: 16px; }
+    h1 { font-size: 22px; color: #00c8ff; margin-bottom: 6px; }
+    p { font-size: 14px; color: #7fb8cc; margin-bottom: 28px; line-height: 1.5; }
+    .btn {
+      display: inline-block;
+      background: #00c8ff;
+      color: #000;
+      font-weight: 700;
+      font-size: 16px;
+      padding: 14px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      margin-bottom: 16px;
+      transition: opacity 0.2s;
+    }
+    .btn:active { opacity: 0.8; }
+    .note { font-size: 12px; color: #4a7a8a; line-height: 1.6; margin-top: 20px; }
+    .status { font-size: 13px; color: #00c8ff; margin-top: 12px; min-height: 20px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img alt="LSP D-Planner+" class="logo" height="72" src="icon-192.png" width="72"/>
+    <h1>LSP D-Planner+</h1>
+    <p>Open-circuit and rebreather decompression planner for Android</p>
+
+    <a class="btn" id="dlBtn"
+       href="https://threecats-lsp.com/d-planner-plus/LSP_D-planner-plus.apk"
+       download="LSP_D-planner-plus.apk">
+      ⬇ Download APK
+    </a>
+
+    <div class="status" id="status"></div>
+
+    <div class="note">
+      After downloading, open the APK file to install.<br>
+      You may need to allow <em>Install from unknown sources</em> in Settings.
+    </div>
+  </div>
+
+  <script>
+    const btn = document.getElementById('dlBtn');
+    const status = document.getElementById('status');
+    const APK_URL = 'https://threecats-lsp.com/d-planner-plus/LSP_D-planner-plus.apk';
+
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      status.textContent = 'Starting download…';
+      btn.style.opacity = '0.6';
+      btn.style.pointerEvents = 'none';
+
+      fetch(APK_URL)
+        .then(r => {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.blob();
+        })
+        .then(blob => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'LSP_D-planner-plus.apk';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+          status.textContent = 'Download started.';
+        })
+        .catch(() => {
+          window.location.href = APK_URL;
+          status.textContent = 'Opening direct link…';
+        })
+        .finally(() => {
+          btn.style.opacity = '1';
+          btn.style.pointerEvents = '';
+        });
+    });
+  </script>
+</body>
+</html>
