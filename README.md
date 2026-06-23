@@ -102,12 +102,32 @@ Built with [Capacitor](https://capacitorjs.com). Direct APK — no Play Store re
 
 ## Test Suites
 
+Open any HTML suite from a local HTTP server (or the [live app](https://threecats-lsp.com/d-planner-plus/) path) so `index.html` loads correctly in the iframe.
+
+### Browser suites
+
 | Suite | Scope |
 |-------|-------|
-| [`tests-verify.html`](https://three-cats-lsp.github.io/LSP_D-planner/tests-verify.html) | Baker/FORTRAN cross-val, coefficient checks, determinism |
-| [`tests-massive.html`](https://three-cats-lsp.github.io/LSP_D-planner/tests-massive.html) | Full engine plans, UI, gas plan, MultiDeco RT cross-val |
-| [`tests-massive-main.html`](https://three-cats-lsp.github.io/LSP_D-planner/tests-massive-main.html) | Mobile-optimised |
-| `audit.py` | Static analysis — structure, safety rules, regression guards |
+| [`tests.html`](tests.html) | Core regression — tissue math, GF/VPM helpers, UI wiring |
+| [`tests-verify.html`](tests-verify.html) | Baker/FORTRAN cross-val, coefficient checks, determinism |
+| [`tests-extended.html`](tests-extended.html) | Extended algorithm coverage — CCR setpoints, multi-gas, edge cases |
+| [`tests-massive.html`](tests-massive.html) | Full engine plans, gas plan, MultiDeco RT cross-val, headless paths |
+| [`tests-massive-main.html`](tests-massive-main.html) | Mobile-optimised massive suite (version guard + cache bust) |
+| [`tests-pscr-otu-cns.html`](tests-pscr-otu-cns.html) | pSCR OTU/CNS accumulation, loop gas labels, consumption refs |
+| [`tests-ccr-differential.html`](tests-ccr-differential.html) | CCR engine differential vs reference manifests |
+
+### Python gates (CI: [`.github/workflows/audit.yml`](.github/workflows/audit.yml))
+
+| Script | Scope |
+|--------|-------|
+| [`audit.py`](audit.py) | Static analysis — structure, safety rules, regression guards (~440 checks) |
+| [`dev/run_browser_regression.py`](dev/run_browser_regression.py) | Playwright runner for `tests-verify.html` + `tests-pscr-otu-cns.html` |
+| [`dev/validate_pscr_e2e.py`](dev/validate_pscr_e2e.py) | pSCR end-to-end release gate (audit + Playwright) |
+| [`dev/run_ccr_differential.py`](dev/run_ccr_differential.py) | CCR differential comparison suite |
+| [`dev/engine_validation_regression.py`](dev/engine_validation_regression.py) | Malformed gas/profile validation (CCR + ZHL + VPM) |
+| [`engine_validation_regression.py`](engine_validation_regression.py) | Same validation gate (repo-root entry point) |
+
+**Quick local run:** `python audit.py` then `python dev/run_browser_regression.py` (requires `pip install playwright && playwright install chromium`).
 
 ---
 

@@ -431,12 +431,9 @@ def main() -> int:
         print(f"Playwright validation failed: {e}", file=sys.stderr)
         return 1
 
-    out_md = ROOT / "pSCR_validation_v2.30.30_release.md"
     out_json = ROOT / "dev" / "pscr_e2e_results.json"
     md = render_markdown(audit, results)
-    out_md.write_text(md, encoding="utf-8")
-    out_json.write_text(json.dumps({"audit": audit, "results": results}, indent=2), encoding="utf-8")
-    print(f"Wrote {out_md}")
+    out_json.write_text(json.dumps({"audit": audit, "results": results, "report_md": md}, indent=2), encoding="utf-8")
     print(f"Wrote {out_json}")
     print(f"Verdict: {'PASS' if all_checks_pass(results) and audit.get('all_passed') else 'FAIL'}")
     return 0 if all_checks_pass(results) and audit.get("all_passed") else 1

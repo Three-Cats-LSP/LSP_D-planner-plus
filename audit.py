@@ -2399,11 +2399,6 @@ if os.path.isfile(pscr_test_path):
             ok(f"pSCR test suite references {needle}")
         else:
             fail(f"tests-pscr-otu-cns.html missing {needle}")
-    val_report = os.path.join(os.path.dirname(__file__), "pSCR_gas_consumption_validation_v2.30.15.md")
-    if os.path.isfile(val_report):
-        ok("pSCR_gas_consumption_validation_v2.30.15.md present")
-    else:
-        fail("pSCR_gas_consumption_validation_v2.30.15.md missing")
 else:
     fail("tests-pscr-otu-cns.html missing")
 
@@ -2722,17 +2717,6 @@ if os.path.isfile(massive_path60):
 else:
     fail("tests-massive.html missing")
 
-v21_path = os.path.join(os.path.dirname(__file__), "errors_bugs_report_v21.md")
-if os.path.isfile(v21_path):
-    with open(v21_path, encoding="utf-8") as f:
-        v21 = f.read()
-    if "BUG-76" in v21 and "BUG-77" in v21 and "v2.30.28" in v21:
-        ok("errors_bugs_report_v21.md documents BUG-76 and BUG-77 (v2.30.28)")
-    else:
-        fail("errors_bugs_report_v21.md incomplete")
-else:
-    fail("errors_bugs_report_v21.md missing")
-
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 55 — v2.30.22 fix (massive suite headless mode leak)
 # ══════════════════════════════════════════════════════════════════════════════
@@ -2834,17 +2818,6 @@ if os.path.isfile(massive_main78_path):
         fail("BUG-81: tests-massive-main.html still calls calculate on iframe window")
 else:
     fail("tests-massive-main.html missing")
-
-v22_path = os.path.join(os.path.dirname(__file__), "errors_bugs_report_v22.md")
-if os.path.isfile(v22_path):
-    with open(v22_path, encoding="utf-8") as f:
-        v22 = f.read()
-    if "BUG-78" in v22 and "BUG-79" in v22 and "BUG-80" in v22 and "v2.30.29" in v22:
-        ok("errors_bugs_report_v22.md documents BUG-78, BUG-79, BUG-80 (v2.30.29)")
-    else:
-        fail("errors_bugs_report_v22.md incomplete")
-else:
-    fail("errors_bugs_report_v22.md missing")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 63 — Android MainActivity package matches applicationId (launch crash)
