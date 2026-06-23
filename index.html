@@ -4618,6 +4618,29 @@ function switchTab(name, btn) {
 // ═══════════════════════════════════════════════
 function mToFt(m)    { return Math.round(m * 3.28084); }
 function depthDisp(m, u) { return u === 'metric' ? `${m} m` : `${mToFt(m)} ft`; }
+/** DOM depth input → metres (handles imperial ft stored in .value). */
+function domDepthToM(idOrVal) {
+  const raw = (typeof idOrVal === 'string' && document.getElementById(idOrVal))
+    ? document.getElementById(idOrVal).value
+    : idOrVal;
+  const v = parseFloat(raw);
+  if (Number.isNaN(v)) return 0;
+  return units === 'imperial' ? v / 3.28084 : v;
+}
+/** PrT from depth (m) and bottom time (min). */
+function calcPrTBarMin(depthM, btMin) {
+  return depthM * BAR_PER_METRE * Math.sqrt(parseFloat(btMin) || 0);
+}
+/** Select .value stored in metric → display number for current units. */
+function domMetricValToDisp(val) {
+  const n = parseFloat(val);
+  if (Number.isNaN(n)) return val;
+  return units === 'imperial' ? Math.round(n * 3.28084) : n;
+}
+function altLabelDisp(altM) {
+  if (!altM) return units === 'imperial' ? 'Sea level (0 ft)' : 'Sea level (0 m)';
+  return units === 'imperial' ? `${mToFt(altM)} ft` : `${altM} m`;
+}
 function formatDecoZoneStart(depthM) {
   if (!depthM || depthM <= 0) return '—';
   const dU = units === 'metric';
@@ -4832,19 +4855,19 @@ function buildDecoPlanHeaderData() {
   const density = _densityMap[localStorage.getItem('waterDensity') || 'en13319'];
   const du = units === 'imperial' ? 'ft' : 'm';
   const altM = typeof altitudeM !== 'undefined' ? altitudeM : 0;
-  const altLabel = altM === 0 ? 'Sea level (0 m)' : `${altM} m`;
+  const altLabel = altLabelDisp(altM);
   const acclLabel = (typeof altAcclimatized !== 'undefined' ? altAcclimatized : true) ? 'Yes' : 'No';
 
   const depth = document.getElementById('decoDepth')?.value || '-';
   const bt = document.getElementById('decoBT')?.value || '-';
   const gfLow = mGF?.low ?? '-';
   const gfHigh = mGF?.high ?? '-';
-  const ascentRate = document.getElementById('ascentRate')?.value || '-';
-  const decoAscentRate = document.getElementById('decoAscentRate')?.value || '-';
-  const surfAscentRate = document.getElementById('surfaceAscentRate')?.value || '-';
-  const descentRate = document.getElementById('descentRate')?.value || '-';
-  const lastStop = document.getElementById('lastDecoStop')?.value || '-';
-  const decoStep = document.getElementById('decoStep')?.value || '-';
+  const ascentRate = domMetricValToDisp(document.getElementById('ascentRate')?.value || '-');
+  const decoAscentRate = domMetricValToDisp(document.getElementById('decoAscentRate')?.value || '-');
+  const surfAscentRate = domMetricValToDisp(document.getElementById('surfaceAscentRate')?.value || '-');
+  const descentRate = domMetricValToDisp(document.getElementById('descentRate')?.value || '-');
+  const lastStop = domMetricValToDisp(document.getElementById('lastDecoStop')?.value || '-');
+  const decoStep = domMetricValToDisp(document.getElementById('decoStep')?.value || '-');
 
   const decoModelSel = document.getElementById('algorithmSelect')?.value || 'ZHLC_GF';
   const isVPMExport = decoModelSel === 'VPMB' || decoModelSel === 'VPMB_GFS';
@@ -4884,8 +4907,8 @@ function buildDecoPlanHeaderData() {
   const wvLblTxt = wvTxt <= 0.058 ? 'M' : 'B';
 
   const _expMdpEn = document.getElementById('minDecoProfileEnable')?.value === 'yes';
-  const _expMdp9m = document.getElementById('minDeco9m')?.value || '1';
-  const _expMdp6m = document.getElementById('minDeco6m')?.value || '3';
+  const _expMdp9m = domMetricValToDisp(document.getElementById('minDeco9m')?.value || '1');
+  const _expMdp6m = domMetricValToDisp(document.getElementById('minDeco6m')?.value || '3');
   const _depthUnit = units === 'imperial' ? 'ft' : 'm';
   const _ccrHdr = getCCRSettingsFromDOM();
   const _ccrLabel = _ccrHdr.bailout
@@ -10156,6 +10179,7 @@ function runDecoSchedule() {
   bottomFHe = zhlCore.bottomFHe;
   bottomFO2 = zhlCore.bottomFO2;
   bottomMixLabel = zhlCore.bottomMixLabel;
+  const dU = zhlCore.dU;
   const loopMixLabel = loopMixLabelFor(bottomMixLabel, _ccrSettings);
   const runTimeMin = zhlCore.lastPlan.rt;
   const ttsMin = zhlCore.lastPlan.tts;
@@ -10169,6 +10193,12 @@ function runDecoSchedule() {
   };
   const bottomMix = document.getElementById('decoGas')?.value || 'air';
   const maxPPO2 = Math.max(ppo2Deco, 1.5, ppo2Bottom);
+  function getPPO2Limit(fO2) {
+    const fO2pct = fO2 * 100;
+    if (fO2pct >= 45) return ppo2Deco;
+    if (fO2pct >= 28) return 1.5;
+    return ppo2Bottom;
+  }
 
   // ── Headless mode early return: skip ceiling/graph/DOM work ─────────────
   // Guard moved before ceiling waypoints — the intermediate saturate() calls
@@ -11462,6 +11492,24 @@ const ZHLEngine = (() => {
     return typeof isRebreatherCircuit === 'function' && isRebreatherCircuit(circuit);
   }
 
+  function applyPlanExposureTotals(result, levels, settings) {
+    if (!result || result.error || !levels || !levels.length) return result;
+    const level = levels[0];
+    const s = settings || {};
+    const fO2bot = level.o2 / 100;
+    const fHeBot = (level.he || 0) / 100;
+    const exposure = computePlanExposureTotals(
+      result.plan, s, fO2bot, fHeBot, altSurfaceP || 1.01325, BAR_PER_METRE || 0.1
+    );
+    const _pdCarry = window._priorDiveCarry;
+    const otuCarry = _pdCarry ? (_pdCarry.otuCarry || 0) : 0;
+    const cnsCarry = _pdCarry ? (_pdCarry.cnsCarry || 0) : 0;
+    return Object.assign({}, result, {
+      totalOTU: Math.round(exposure.totalOTU + otuCarry),
+      totalCNS: parseFloat((exposure.totalCNS + cnsCarry).toFixed(1)),
+    });
+  }
+
   function calculate(levels, decoGases, settings) {
     const s = settings || {};
     const ccrVal = validateCcrCalculationInputs(levels, s, decoGases);
@@ -11473,7 +11521,11 @@ const ZHLEngine = (() => {
       return engineValidationError({ ok: false, errors: [profileVal] });
     }
     const profileSplit = ZhlEngineBundle.splitZhlProfileLevels(levels);
-    return ZhlEngineBundle.calculate(levels, decoGases, s, profileSplit, getZhlEnvironment());
+    return applyPlanExposureTotals(
+      ZhlEngineBundle.calculate(levels, decoGases, s, profileSplit, getZhlEnvironment()),
+      levels,
+      s
+    );
   }
 
   async function calculateInWorker(levels, decoGases, settings) {
@@ -11488,9 +11540,10 @@ const ZHLEngine = (() => {
     }
     const profileSplit = ZhlEngineBundle.splitZhlProfileLevels(levels);
     try {
-      return await ZhlWorkerBridge.calculateInWorker(
+      const result = await ZhlWorkerBridge.calculateInWorker(
         levels, decoGases, s, profileSplit, getZhlEnvironment()
       );
+      return applyPlanExposureTotals(result, levels, s);
     } catch (e) {
       return { error: e.message, stops: [], plan: [], totalRuntime: 0 };
     }
@@ -14492,7 +14545,7 @@ function buildExportText(mode) {
 
     // PrT fallback if not in totals row
     if (planSum.prt === '-') {
-      const prtN = (parseFloat(depth) * BAR_PER_METRE) * Math.sqrt(parseFloat(bt));
+      const prtN = calcPrTBarMin(domDepthToM('decoDepth'), bt);
       if (!isNaN(prtN)) planSum.prt = prtN.toFixed(1);
     }
 
@@ -15293,7 +15346,7 @@ function buildMessengerText(mode) {
     const dtV  = document.getElementById('decoDecoTimeDisplay')?.textContent?.trim().replace(/\s*min\s*/,'') || '-';
     const cnsV = document.getElementById('decoCNSDisplay')?.textContent?.trim() || '-';
     const otuV = document.getElementById('decoOTUDisplay')?.textContent?.trim() || '-';
-    const prtN = (parseFloat(document.getElementById('decoDepth')?.value||'0') * BAR_PER_METRE) * Math.sqrt(parseFloat(document.getElementById('decoBT')?.value||'0'));
+    const prtN = calcPrTBarMin(domDepthToM('decoDepth'), document.getElementById('decoBT')?.value || '0');
     planSumCopy.runTime = `${rtV}'00"`;
     planSumCopy.decoTime = `${dtV}'00"`;
     planSumCopy.cns = cnsV;
@@ -15301,7 +15354,7 @@ function buildMessengerText(mode) {
     planSumCopy.prt = isNaN(prtN) ? '-' : prtN.toFixed(1);
   }
   if (planSumCopy.prt === '-') {
-    const prtN = (parseFloat(document.getElementById('decoDepth')?.value||'0') * BAR_PER_METRE) * Math.sqrt(parseFloat(document.getElementById('decoBT')?.value||'0'));
+    const prtN = calcPrTBarMin(domDepthToM('decoDepth'), document.getElementById('decoBT')?.value || '0');
     if (!isNaN(prtN)) planSumCopy.prt = prtN.toFixed(1);
   }
   result.push('-'.repeat(28));
@@ -15621,9 +15674,9 @@ function calcContingency() {
   resultEl.style.display = 'block';
   const _emRunFmt  = lastRunFmt  || `${lastRun}'00"`;
   const _emDecoFmt = decoTimeFmt || `${decoTime}'00"`;
-  const _emDepth   = parseFloat(document.getElementById('decoDepth')?.value || '0');
+  const _emDepthM  = domDepthToM('decoDepth') + (contExtraDepth || 0);
   const _emBT      = parseFloat(document.getElementById('decoBT')?.value || '0') + (contExtraBT || 0);
-  const _emPrT     = (_emDepth * BAR_PER_METRE * Math.sqrt(_emBT)).toFixed(1);
+  const _emPrT     = calcPrTBarMin(_emDepthM, _emBT).toFixed(1);
   const _emOTU     = totalOTUc || '—';
   const cnsColor   = totalCNS && parseFloat(totalCNS) >= 100 ? 'var(--red)' : totalCNS && parseFloat(totalCNS) >= 80 ? 'var(--orange)' : 'var(--text)';
   const prtColorEm = parseFloat(_emPrT) < 15 ? 'var(--green)' : parseFloat(_emPrT) < 25 ? 'var(--yellow)' : parseFloat(_emPrT) < 40 ? 'var(--orange)' : 'var(--red)';
