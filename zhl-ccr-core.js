@@ -55,8 +55,13 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
   if (phase === 'bottom') return bottomSP;
   if (phase === 'deco' || phase === 'ascent') return decoSP;
   const pAmb = (surfP || altSurfaceP) + depthM * BAR_PER_METRE;
-  if (pAmb <= descSP + WATER_VAPOR) return descSP;
-  if (pAmb <= bottomSP + WATER_VAPOR) return bottomSP;
+  // Phase-inferred fallback: use the setpoint appropriate for the current depth.
+  // descSP activates when ambient hasn't reached the bottomSP level (shallow/descent);
+  // bottomSP activates between those levels; decoSP at depth or on ascent.
+  // Previous code used pAmb <= descSP + WATER_VAPOR (~0.76 bar) which is always
+  // below surface pressure and made the descent setpoint unreachable.
+  if (pAmb <= bottomSP) return descSP;
+  if (pAmb <= decoSP) return bottomSP;
   return decoSP;
 }
 
@@ -74,11 +79,14 @@ function computePSCRFractions(pAmb, fO2, fHe, runtimeMin, ccr) {
   if (sourceInert <= 0.001 && fO2 >= 0.999) return { fO2: 1, fHe: 0, fN2: 0 };
   const loopVol = ccr.scrLoopVolume || 7.0;
   const metO2 = getCcrMetabolicO2Rate(ccr);
-  const o2Consumed = metO2 * Math.max(0, runtimeMin || 0);
-  const loopO2BarLiters = fO2 * loopVol * pAmb;
-  const minLoopO2BarLiters = PSCR_MIN_PPO2 * loopVol;
-  const newLoopO2 = Math.max(minLoopO2BarLiters, loopO2BarLiters - o2Consumed);
-  const newFO2 = Math.min(0.999, newLoopO2 / Math.max(0.001, loopVol * pAmb));
+  // Steady-state pSCR model: ppO2_loop = ppO2_supply - VO2/loopVol (Baker drop formula).
+  // Previous model subtracted cumulative dive runtime × VO2 from a fixed loop volume,
+  // which drove loop O2 to near-zero after a few minutes, zeroing N2 loading for the
+  // rest of the dive. The steady-state formula is time-independent and depth-correct.
+  const ppO2Drop = metO2 / loopVol;
+  const ppO2Supply = fO2 * pAmb;
+  const newPpO2 = Math.max(PSCR_MIN_PPO2, ppO2Supply - ppO2Drop);
+  const newFO2 = Math.min(0.999, newPpO2 / Math.max(0.001, pAmb));
   const inertTotal = Math.max(0, 1 - newFO2);
   const heShare = fHe / sourceInert;
   const n2Share = fN2src / sourceInert;
