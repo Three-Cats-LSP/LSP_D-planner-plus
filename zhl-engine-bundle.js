@@ -610,8 +610,8 @@ function runZhlScheduleCore(params) {
       const wv = WATER_VAPOR || 0.0627;
       const inspN2 = 0.7902 * ((altSurfaceP || 1.01325) - wv);
       for (let i = 0; i < tissues.length; i++) {
-        const kN2 = Math.LN2 / ZHL16C_N2[i].ht;
-        const kHe = Math.LN2 / (ZHL16C_He[i].ht || 1);
+        const kN2 = Math.LN2 / ZHL16C[i][0];
+        const kHe = Math.LN2 / (ZHL16C_HE_HT[i] || 1);
         tissues[i].pN2 = inspN2 + (tissues[i].pN2 - inspN2) * Math.exp(-kN2 * siMin);
         tissues[i].pHe = (tissues[i].pHe || 0) * Math.exp(-kHe * siMin);
       }

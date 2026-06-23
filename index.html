@@ -9900,12 +9900,19 @@ function validateDecoInputs() {
 // ZHL SCHEDULE CORE — Tier 3 (bundle + DOM param builder)
 // ═══════════════════════════════════════════════
 
-function getZhlEnvironment() {
+function getZhlEnvironment(settings) {
+  const s = settings || {};
+  let surfP = typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325;
+  let accl = typeof altAcclimatized !== 'undefined' ? altAcclimatized : true;
+  if (s.altitude != null && Number(s.altitude) > 0) {
+    surfP = altToPressure(Number(s.altitude));
+    if (s.acclimatized != null) accl = s.acclimatized !== false;
+  }
   return {
-    altSurfaceP: typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325,
+    altSurfaceP: surfP,
     barPerMetre: BAR_PER_METRE,
     waterVapor: WATER_VAPOR,
-    altAcclimatized: typeof altAcclimatized !== 'undefined' ? altAcclimatized : true,
+    altAcclimatized: accl,
     allowO2AtMOD: typeof allowO2AtMOD !== 'undefined' ? allowO2AtMOD : true,
   };
 }
@@ -11522,7 +11529,7 @@ const ZHLEngine = (() => {
     }
     const profileSplit = ZhlEngineBundle.splitZhlProfileLevels(levels);
     return applyPlanExposureTotals(
-      ZhlEngineBundle.calculate(levels, decoGases, s, profileSplit, getZhlEnvironment()),
+      ZhlEngineBundle.calculate(levels, decoGases, s, profileSplit, getZhlEnvironment(s)),
       levels,
       s
     );
@@ -11541,7 +11548,7 @@ const ZHLEngine = (() => {
     const profileSplit = ZhlEngineBundle.splitZhlProfileLevels(levels);
     try {
       const result = await ZhlWorkerBridge.calculateInWorker(
-        levels, decoGases, s, profileSplit, getZhlEnvironment()
+        levels, decoGases, s, profileSplit, getZhlEnvironment(s)
       );
       return applyPlanExposureTotals(result, levels, s);
     } catch (e) {
