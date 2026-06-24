@@ -43,9 +43,9 @@ def check_tree(reference: Path, target: Path) -> list[str]:
     ref = rel_files(reference)
     tgt = rel_files(target)
     errors: list[str] = []
-    skip = {"about.html", "LSP_D-planner-plus.apk", ".nojekyll"}
+    skip = {"about.html", ".nojekyll"}
     for rel, ref_hash in sorted(ref.items()):
-        if rel in skip:
+        if rel in skip or rel.endswith(".apk"):
             continue
         if rel not in tgt:
             errors.append(f"missing: {rel}")
@@ -75,8 +75,8 @@ def probe_url(url: str, rel: str, timeout: float) -> str | None:
 
 def check_live(base_url: str, reference: Path) -> list[str]:
     base = base_url.rstrip("/") + "/"
-    skip = {"about.html", "LSP_D-planner-plus.apk", ".nojekyll"}
-    rels = [rel for rel in rel_paths(reference) if rel not in skip]
+    skip = {"about.html", ".nojekyll"}
+    rels = [rel for rel in rel_paths(reference) if rel not in skip and not rel.endswith(".apk")]
     errors: list[str] = []
     with ThreadPoolExecutor(max_workers=LIVE_WORKERS) as pool:
         futures = {

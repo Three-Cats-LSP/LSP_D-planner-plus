@@ -51,9 +51,7 @@
     <h1>LSP D-Planner+</h1>
     <p>Open-circuit and rebreather decompression planner for Android</p>
 
-    <a class="btn" id="dlBtn"
-       href="https://threecats-lsp.com/d-planner-plus/LSP_D-planner-plus.apk"
-       download="LSP_D-planner-plus.apk">
+    <a class="btn" id="dlBtn" href="#" download>
       ⬇ Download APK
     </a>
 
@@ -65,10 +63,15 @@
     </div>
   </div>
 
+  <script src="app-version.js"></script>
   <script>
     const btn = document.getElementById('dlBtn');
     const status = document.getElementById('status');
-    const APK_URL = 'https://threecats-lsp.com/d-planner-plus/LSP_D-planner-plus.apk';
+    const APK_FILE = 'LSP_D-planner-plus-v' + APP_VERSION + '.apk';
+    const APK_URL = APK_FILE;
+
+    btn.href = APK_URL;
+    btn.download = APK_FILE;
 
     btn.addEventListener('click', function(e) {
       e.preventDefault();
@@ -85,7 +88,7 @@
           const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;
-          a.download = 'LSP_D-planner-plus.apk';
+          a.download = APK_FILE;
           document.body.appendChild(a);
           a.click();
           a.remove();
