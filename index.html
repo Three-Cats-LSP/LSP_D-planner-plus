@@ -988,6 +988,24 @@ body.light-theme .ok { background:#f0fff4; border-color:#116622; color:#116622; 
 .t-col { display:flex; flex-direction:column; align-items:center; gap:4px; }
 
 /* ── DECO TABLE ── */
+.deco-schedule-stack {
+ display: inline-grid;
+ width: max-content;
+ max-width: 100%;
+ vertical-align: top;
+}
+.deco-schedule-stack > * { min-width: 0; }
+.deco-schedule-stack .dive-plan-banner,
+.deco-schedule-stack .alert { width: 100%; box-sizing: border-box; }
+.deco-schedule-stack .deco-contingency-calc { width: 100%; box-sizing: border-box; }
+.deco-table-wrap { overflow-x: auto; max-width: 100%; }
+.deco-schedule-stack__actions {
+ display: flex;
+ justify-content: flex-end;
+ gap: 8px;
+ margin-top: 12px;
+ width: 100%;
+}
 .deco-table { table-layout:auto; width:min-content; border-collapse:collapse; font-family:'JetBrains Mono',monospace; font-size:12px; margin-top:10px; }
 .deco-table th { padding:4px 6px; text-align:left; font-size:9px; letter-spacing:1px; text-transform:uppercase; color:var(--accent); border-bottom:1px solid var(--border-hi); background:rgba(0,200,255,0.05); vertical-align:middle; white-space:nowrap; overflow:hidden; }
 .deco-table td { padding:4px 6px; border-bottom:1px solid var(--border); color:var(--text); vertical-align:middle; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -2381,12 +2399,14 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <button id="contingencyJumpBtn" onclick="(function(){ const card=document.getElementById('contingencyCard'); if(card &amp;&amp; card.style.display!=='none'){ card.scrollIntoView({behavior:'smooth',block:'start'}); } })()" style="display:none;padding:8px 12px;background:rgba(255,71,87,0.08);color:var(--red);border:1px solid rgba(255,71,87,0.25);border-radius:4px;cursor:pointer;font-weight:600;font-size:11px;letter-spacing:0.5px;" title="Scroll to Contingency Plans">⚠ Contingency</button>
 </div>
 </div>
+<div class="deco-schedule-stack">
 <div id="decoSummary"></div>
-<div style="overflow-x:auto;max-width:100%;"><table class="deco-table">
+<div class="deco-table-wrap"><table class="deco-table">
 <thead><tr><th>Phase</th><th>Depth</th><th>Stop</th><th>Mix</th><th>Run</th><th>TTS</th><th>PPO2</th><th class="end-col">END</th><th>EAD</th><th>CNS%</th></tr></thead>
 <tbody id="decoTableBody"></tbody>
 </table></div>
 <div id="decoTotals" style="margin-top:4px;"></div>
+</div>
 <!-- Icon legend -->
 <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;padding:12px 14px;background:var(--card2);border-radius:8px;border:1px solid var(--border);">
 <div class="u17">
@@ -2444,8 +2464,10 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 </div>
 <!-- Calculate Button -->
-<button onclick="calcContingency()" onmouseout="this.style.background='linear-gradient(135deg,rgba(255,71,87,0.12),rgba(255,100,50,0.16))'" onmouseover="this.style.background='rgba(255,71,87,0.22)'" style="width:100%;padding:11px;background:linear-gradient(135deg,rgba(255,71,87,0.12),rgba(255,100,50,0.16));color:var(--red);border:1px solid var(--red);border-radius:8px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;transition:all 0.2s;">Calculate Emergency Plan</button>
-<div id="contingencyResult" style="display:none;overflow-x:auto;max-width:100%;"></div>
+<div class="deco-schedule-stack" id="contingencyScheduleStack">
+<button class="deco-contingency-calc" onclick="calcContingency()" onmouseout="this.style.background='linear-gradient(135deg,rgba(255,71,87,0.12),rgba(255,100,50,0.16))'" onmouseover="this.style.background='rgba(255,71,87,0.22)'" style="padding:11px;background:linear-gradient(135deg,rgba(255,71,87,0.12),rgba(255,100,50,0.16));color:var(--red);border:1px solid var(--red);border-radius:8px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;transition:all 0.2s;">Calculate Emergency Plan</button>
+<div id="contingencyResult" style="display:none;"></div>
+</div>
 <div id="emergencyGasConsumption" style="display:none;"></div>
 </div><!-- /card-collapsible-body contingency -->
 </div>
@@ -13556,14 +13578,14 @@ function calcContingency() {
       <div><strong>${label}</strong> — Run ≈ <strong>${_emRunFmt}</strong> · Deco ≈ <strong>${_emDecoFmt}</strong>
       <div style="font-size:11px;margin-top:3px;opacity:0.85;">${msg}</div></div>
     </div>
-    <div style="overflow-x:auto;">
+    <div class="deco-table-wrap">
       <table class="deco-table table-view" style="font-size:10px;">
         <thead><tr><th>Phase</th><th>Depth</th><th>Stop</th><th>Mix</th><th>Run</th><th>TTS</th><th>PPO2</th><th class="end-col">END</th><th>EAD</th><th>CNS%</th></tr></thead>
         <tbody id="contingencyTableBody">${newRows.replace(/<tr[^>]*data-phase="totals"[^>]*>[\s\S]*?<\/tr>/, '')}${emInfoRow}</tbody>
       </table>
     </div>
     <div id="decoAlertsEmergency" style="margin-top:4px;"></div>
-    <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end;">
+    <div class="deco-schedule-stack__actions">
       <div class="export-row">
         <button class="btn-export" onclick="copyDiveProfile('contingency')" title="Copy to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
         <button class="btn-export" onclick="showContingencySlate()" title="Emergency slate (waterproof format)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="13" y2="16"/></svg></button>
