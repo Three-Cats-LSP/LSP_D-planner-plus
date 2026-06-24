@@ -42,7 +42,7 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -50,6 +50,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
@@ -86,6 +87,12 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: _pages
+
+      - name: Wait for GitHub Pages publish
+        if: steps.deploy-cache.outputs.cache-hit != 'true'
+        run: |
+          echo "Upload complete. GitHub Pages often stays in deployment_queued for several minutes."
+          echo "The workflow is not stuck — deploy-pages polls until the CDN publish finishes."
 
       - name: Deploy to GitHub Pages
         if: steps.deploy-cache.outputs.cache-hit != 'true'
