@@ -2485,8 +2485,8 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <span class="switch-legend-icon" style="font-size:15px;color:#FFD700;">⇄</span> Gas Switch
         </div>
 </div>
-<div id="decoAlerts" style="margin-top:0;"></div>
 </div>
+<div id="decoAlerts" style="margin-top:8px;"></div>
 </div>
 <!-- ── Gas Consumption ── -->
 <div id="gasConsumptionSummary" style="display:none;"></div>
@@ -13701,7 +13701,6 @@ function calcContingency() {
         <thead><tr><th>Phase</th><th>Depth</th><th>Stop</th><th>Mix</th><th>Run</th><th>TTS</th><th>PPO2</th><th class="end-col">END</th><th>EAD</th><th>CNS%</th></tr></thead>
         <tbody id="contingencyTableBody">${newRows.replace(/<tr[^>]*data-phase="totals"[^>]*>[\s\S]*?<\/tr>/gi, '')}${emInfoRow}</tbody>
       </table>
-      <div id="decoAlertsEmergency" style="margin-top:4px;"></div>
       <div class="deco-schedule-stack__actions">
         <div class="export-row">
           <button class="btn-export" onclick="copyDiveProfile('contingency')" title="Copy to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
@@ -13710,7 +13709,8 @@ function calcContingency() {
           <button class="btn-export" onclick="showContingencyPDFDialog()" title="Export PDF"><span style="display:inline-block;width:16px;height:16px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0px;line-height:16px;text-align:center;overflow:visible;white-space:nowrap;">PDF</span></button>
         </div>
       </div>
-    </div>`;
+    </div>
+    <div id="decoAlertsEmergency" style="margin-top:8px;"></div>`;
 
   // Store for export
   window._lastContingency = { label, lastRun, decoTime, lastRunFmt, decoTimeFmt, totalCNS, totalOTU: _emOTU, totalPrT: _emPrT, decoZoneStart, decozoneDisp: _emDecozone, decoStop: _emDecoStop, tts: _emTts, newRows, severity, icon, msg, surfGF: contSurfaceGF != null ? Math.round(contSurfaceGF) + '%' : '-' };
