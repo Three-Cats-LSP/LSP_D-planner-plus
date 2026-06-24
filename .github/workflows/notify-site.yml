@@ -5,21 +5,39 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - 'app-version.js'
+      - 'sw.js'
+      - 'capacitor-bridge.js'
+      - 'zhl-engine-bundle.js'
+      - 'vpm-engine-bundle.js'
+      - 'zhl-worker-bridge.js'
+      - 'zhl-schedule-worker.js'
+      - 'manifest.json'
+      - 'download.html'
+      - 'site-assets-manifest.txt'
+      - 'vendor/**'
       - 'tests.html'
       - 'tests-extended.html'
       - 'tests-massive.html'
       - 'tests-massive-main.html'
       - 'tests-pscr-otu-cns.html'
       - 'tests-ccr-differential.html'
+      - 'tests/ccr-differential/**'
 
 jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger site sync
+        env:
+          SYNC_TOKEN: ${{ secrets.SYNC_TOKEN }}
         run: |
-          curl -X POST \
-            -H "Authorization: token ${{ secrets.SYNC_TOKEN }}" \
+          if [ -z "$SYNC_TOKEN" ]; then
+            echo "::error::SYNC_TOKEN secret is missing — cannot trigger threecats-lsp.com sync"
+            exit 1
+          fi
+          curl -sfS -X POST \
+            -H "Authorization: token ${SYNC_TOKEN}" \
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/Three-Cats-LSP/threecats-lsp.com/dispatches \
             -d '{"event_type":"sync-d-planner-plus"}'

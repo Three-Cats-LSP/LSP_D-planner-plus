@@ -104,9 +104,15 @@ jobs:
           git push
 
       - name: Notify homepage to sync APK
+        env:
+          SYNC_TOKEN: ${{ secrets.SYNC_TOKEN }}
         run: |
-          curl -X POST \
-            -H "Authorization: token ${{ secrets.SYNC_TOKEN }}" \
+          if [ -z "$SYNC_TOKEN" ]; then
+            echo "::error::SYNC_TOKEN secret is missing — cannot trigger threecats-lsp.com APK sync"
+            exit 1
+          fi
+          curl -sfS -X POST \
+            -H "Authorization: token ${SYNC_TOKEN}" \
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/Three-Cats-LSP/threecats-lsp.com/dispatches \
             -d '{"event_type":"sync-apk-d-planner-plus"}'
