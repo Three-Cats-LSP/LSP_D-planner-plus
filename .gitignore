@@ -8,6 +8,7 @@
 # Node / Capacitor
 node_modules/
 www/
+_pages/
 
 # Android build artifacts
 android/.gradle/

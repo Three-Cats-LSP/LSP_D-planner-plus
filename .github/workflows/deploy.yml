@@ -4,6 +4,35 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      # Reference PDFs / analysis — not served by the web app
+      - 'Knowledge Base/**'
+      - 'GUE DecPlanner Binary/**'
+      - 'MultiDeco Binary/**'
+      - 'App Icon/**'
+      # APK is hosted on threecats-lsp.com; skip redeploy on APK-only commits
+      - 'Android Apk/**'
+      - 'android/**'
+      # CI / dev / docs — not part of the static site
+      - 'dev/**'
+      - 'docs/**'
+      - 'audit.py'
+      - 'vpmb.py'
+      - 'export_regression.py'
+      - 'engine_validation_regression.py'
+      - 'lsp-test-harness.js'
+      - 'CHANGELOG.md'
+      - 'README.md'
+      - 'DIVERS_TOOLKIT.md'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'capacitor.config.json'
+      - 'wrangler.jsonc'
+      - '.cursor/**'
+      - '.github/workflows/build-apk.yml'
+      - '.github/workflows/audit.yml'
+      - '.github/workflows/ci.yml'
+      - '.github/workflows/notify-site.yml'
   workflow_dispatch:
 
 permissions:
@@ -27,14 +56,49 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Build Pages site
+        run: python tools/build_pages_site.py
+
+      - name: Hash site contents
+        id: sitehash
+        run: |
+          HASH=$(find _pages -type f -print0 | sort -z | xargs -0 sha256sum | sha256sum | cut -d' ' -f1)
+          echo "hash=$HASH" >> $GITHUB_OUTPUT
+          echo "Site content hash: $HASH"
+
+      - name: Check for unchanged site
+        id: deploy-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .pages-deploy-marker
+          key: pages-deploy-${{ steps.sitehash.outputs.hash }}
+
+      - name: Skip deploy (site unchanged)
+        if: steps.deploy-cache.outputs.cache-hit == 'true'
+        run: echo "Site content unchanged — skipping Pages artifact upload and deploy."
+
       - name: Setup Pages
+        if: steps.deploy-cache.outputs.cache-hit != 'true'
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
+        if: steps.deploy-cache.outputs.cache-hit != 'true'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: _pages
 
       - name: Deploy to GitHub Pages
+        if: steps.deploy-cache.outputs.cache-hit != 'true'
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Record deploy marker
+        if: steps.deploy-cache.outputs.cache-hit != 'true'
+        run: mkdir -p .pages-deploy-marker && date -u +%Y-%m-%dT%H:%M:%SZ > .pages-deploy-marker/deployed-at
+
+      - name: Save deploy cache
+        if: steps.deploy-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .pages-deploy-marker
+          key: pages-deploy-${{ steps.sitehash.outputs.hash }}
