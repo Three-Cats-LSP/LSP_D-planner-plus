@@ -2712,10 +2712,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.05['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.05")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.06['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.06")
 else:
-    fail("APP_VERSION not bumped to 2.51.05 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.06 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -3674,6 +3674,16 @@ if app_version_js and "\r" not in app_version_js:
     ok("app-version.js uses Unix line endings (code-review OBS-3)")
 else:
     fail("app-version.js has CRLF/CR line endings (code-review OBS-3)")
+
+if android_picker_js and "patchSelectValueSetters" in android_picker_js and "LspAndroidSelect" in android_picker_js:
+    ok("android-select-picker syncs on programmatic .value changes (issue #22)")
+else:
+    fail("android-select-picker missing value setter sync (issue #22)")
+
+if worker_bridge_js and "killWorker" in worker_bridge_js and "ZHL worker timeout" in worker_bridge_js:
+    ok("zhl-worker-bridge recreates worker after timeout (issue #22)")
+else:
+    fail("zhl-worker-bridge missing worker recovery on timeout (issue #22)")
 
 if "__lspAppFullyReady = true" in html:
     ok("index.html sets __lspAppFullyReady after init (issue #21 CR-3)")

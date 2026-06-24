@@ -38,12 +38,23 @@
     return worker;
   }
 
+  function killWorker() {
+    if (worker) {
+      worker.terminate();
+      worker = null;
+    }
+  }
+
   function calculateInWorker(levels, decoGases, settings, profileSplit, environment) {
     return new Promise((resolve, reject) => {
       const id = nextId++;
       const timer = setTimeout(() => {
         if (!pending.has(id)) return;
-        settlePending(id, false, new Error('ZHL worker timeout'));
+        const err = new Error('ZHL worker timeout');
+        [...pending.keys()].forEach((pendingId) => {
+          settlePending(pendingId, false, new Error(err.message));
+        });
+        killWorker();
       }, WORKER_TIMEOUT_MS);
       pending.set(id, {
         resolve,
@@ -58,10 +69,7 @@
     [...pending.entries()].forEach(([id]) => {
       settlePending(id, false, new Error('ZHL worker terminated'));
     });
-    if (worker) {
-      worker.terminate();
-      worker = null;
-    }
+    killWorker();
   }
 
   global.ZhlWorkerBridge = { calculateInWorker, terminate };

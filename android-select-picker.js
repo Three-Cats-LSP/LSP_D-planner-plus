@@ -26,6 +26,55 @@
     window.addEventListener('beforeunload', disconnectAllObservers);
   }
 
+  /** Wrapped select -> syncBtn(); used when .value / .selectedIndex change without change event. */
+  var selectSyncFns = typeof WeakMap !== 'undefined' ? new WeakMap() : null;
+  var valueSetterPatched = false;
+
+  function patchSelectValueSetters() {
+    if (valueSetterPatched || !selectSyncFns) return;
+    valueSetterPatched = true;
+    var proto = HTMLSelectElement.prototype;
+    var valueDesc = Object.getOwnPropertyDescriptor(proto, 'value');
+    var idxDesc = Object.getOwnPropertyDescriptor(proto, 'selectedIndex');
+    if (valueDesc && valueDesc.set) {
+      Object.defineProperty(proto, 'value', {
+        configurable: true,
+        enumerable: valueDesc.enumerable,
+        get: valueDesc.get,
+        set: function (v) {
+          valueDesc.set.call(this, v);
+          var sync = selectSyncFns.get(this);
+          if (sync) sync();
+        }
+      });
+    }
+    if (idxDesc && idxDesc.set) {
+      Object.defineProperty(proto, 'selectedIndex', {
+        configurable: true,
+        enumerable: idxDesc.enumerable,
+        get: idxDesc.get,
+        set: function (v) {
+          idxDesc.set.call(this, v);
+          var sync = selectSyncFns.get(this);
+          if (sync) sync();
+        }
+      });
+    }
+  }
+
+  function syncSelect(sel) {
+    if (!selectSyncFns || !sel) return;
+    var sync = selectSyncFns.get(sel);
+    if (sync) sync();
+  }
+
+  function syncAllSelects() {
+    if (!selectSyncFns) return;
+    selectSyncFns.forEach(function (sync) { sync(); });
+  }
+
+  global.LspAndroidSelect = { sync: syncSelect, syncAll: syncAllSelects };
+
   function labelForSelect(sel) {
     var idx = sel.selectedIndex;
     if (idx < 0) return '—';
@@ -130,6 +179,8 @@
     }
     syncBtn();
 
+    if (selectSyncFns) selectSyncFns.set(sel, syncBtn);
+
     btn.addEventListener('click', function () {
       if (sel.disabled) return;
       openSheet(sel, syncBtn);
@@ -166,6 +217,7 @@
   }
 
   function boot() {
+    patchSelectValueSetters();
     enhanceAll(document);
     var domObserver = new MutationObserver(function (mutations) {
       mutations.forEach(function (m) {
