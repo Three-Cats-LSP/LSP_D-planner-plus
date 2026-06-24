@@ -5472,6 +5472,32 @@ function syncDecoScheduleStackWidths() {
       stack.style.width = '';
     }
   }
+  const mainWrap = document.querySelector('#decoResult .deco-table-wrap');
+  const decoAlerts = document.getElementById('decoAlerts');
+  if (mainWrap && decoAlerts) {
+    if (mainWrap.style.width) {
+      decoAlerts.style.width = mainWrap.style.width;
+      decoAlerts.style.maxWidth = '100%';
+      decoAlerts.style.boxSizing = 'border-box';
+    } else {
+      decoAlerts.style.width = '';
+      decoAlerts.style.maxWidth = '';
+      decoAlerts.style.boxSizing = '';
+    }
+  }
+  const emergWrap = document.querySelector('#contingencyResult .deco-table-wrap');
+  const emergAlerts = document.getElementById('decoAlertsEmergency');
+  if (emergWrap && emergAlerts) {
+    if (emergWrap.style.width) {
+      emergAlerts.style.width = emergWrap.style.width;
+      emergAlerts.style.maxWidth = '100%';
+      emergAlerts.style.boxSizing = 'border-box';
+    } else {
+      emergAlerts.style.width = '';
+      emergAlerts.style.maxWidth = '';
+      emergAlerts.style.boxSizing = '';
+    }
+  }
 }
 
 function scheduleDecoScheduleStackSync() {
