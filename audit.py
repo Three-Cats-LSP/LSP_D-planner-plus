@@ -3213,10 +3213,22 @@ else:
 
 sync_start = js.find("function syncDecoScheduleStackWidths")
 sync_block = js[sync_start:sync_start + 700] if sync_start > 0 else ""
-if "void wrap.offsetHeight" in sync_block and "table.getBoundingClientRect().width" in sync_block:
-    ok("syncDecoScheduleStackWidths flushes layout before reading table width (issue #12)")
+measure_start = js.find("function measureDecoScheduleColumnWidth")
+measure_block = js[measure_start:measure_start + 700] if measure_start > 0 else ""
+if (
+    "void wrap.offsetHeight" in sync_block
+    and "measureDecoScheduleColumnWidth(table)" in sync_block
+    and "tr:not(.deco-totals-row)" in measure_block
+    and "cell.getBoundingClientRect()" in measure_block
+):
+    ok("syncDecoScheduleStackWidths measures schedule columns and ignores totals width (issue #12)")
 else:
-    fail("syncDecoScheduleStackWidths missing layout flush/rect read before width stamp (issue #12)")
+    fail("syncDecoScheduleStackWidths must flush layout and measure non-totals schedule columns (issue #12)")
+
+if "--deco-table-width" in html and ".deco-totals-inner > span" in html:
+    ok("deco summary, alerts, legend, and totals wrap to measured table width (issue #12 follow-up)")
+else:
+    fail("deco schedule sibling blocks must use measured table width and wrap totals text (issue #12 follow-up)")
 
 if os.path.isfile(pscr_test_path):
     if "pSCR trimix fraction normalization" in pscr_test and "18/45" in pscr_test:

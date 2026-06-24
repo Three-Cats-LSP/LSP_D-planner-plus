@@ -1037,7 +1037,9 @@ body.light-theme .ok { background:#f0fff4; border-color:#116622; color:#116622; 
 .deco-table-wrap .deco-table-legend,
 .deco-table-wrap #decoAlerts,
 .deco-table-wrap #decoAlertsEmergency {
-  width: 100%;
+  width: min(var(--deco-table-width, 100%), 100%);
+  max-width: 100%;
+  min-width: 0;
   box-sizing: border-box;
 }
 .deco-table-legend {
@@ -1051,6 +1053,8 @@ body.light-theme .ok { background:#f0fff4; border-color:#116622; color:#116622; 
  border: 1px solid var(--border);
 }
 .deco-totals-inner {
+ width: min(var(--deco-table-width, 100%), 100%);
+ min-width: 0;
  padding: 8px 10px;
  font-family: 'JetBrains Mono', monospace;
  font-size: 11px;
@@ -1063,6 +1067,7 @@ body.light-theme .ok { background:#f0fff4; border-color:#116622; color:#116622; 
  box-sizing: border-box;
  overflow-wrap: anywhere;
 }
+.deco-totals-inner > span { min-width: 0; overflow-wrap: anywhere; }
 .deco-table { table-layout:auto; width:min-content; max-width:100%; border-collapse:collapse; font-family:'JetBrains Mono',monospace; font-size:12px; margin-top:10px; }
 .deco-table th { padding:4px 6px; text-align:left; font-size:9px; letter-spacing:1px; text-transform:uppercase; color:var(--accent); border-bottom:1px solid var(--border-hi); background:rgba(0,200,255,0.05); vertical-align:middle; white-space:nowrap; overflow:hidden; }
 .deco-table td { padding:4px 6px; border-bottom:1px solid var(--border); color:var(--text); vertical-align:middle; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -5411,17 +5416,37 @@ function updateDecoSummaryHtml(hasDeco, endM, noDecoNote) {
   scheduleDecoScheduleStackSync();
 }
 
+function measureDecoScheduleColumnWidth(table) {
+  let left = Infinity;
+  let right = -Infinity;
+  table.querySelectorAll('tr:not(.deco-totals-row)').forEach(row => {
+    Array.from(row.cells || []).forEach(cell => {
+      const rect = cell.getBoundingClientRect();
+      if (rect.width <= 0) return;
+      left = Math.min(left, rect.left);
+      right = Math.max(right, rect.right);
+    });
+  });
+  return right > left ? right - left : (table.getBoundingClientRect().width || table.offsetWidth);
+}
+
 function syncDecoScheduleStackWidths() {
   document.querySelectorAll('.deco-table-wrap').forEach(wrap => {
     const table = wrap.querySelector('.deco-table');
     if (!table?.tBodies[0]?.rows.length) {
       wrap.style.width = '';
+      wrap.style.removeProperty('--deco-table-width');
       return;
     }
     wrap.style.width = '';
+    wrap.style.removeProperty('--deco-table-width');
     void wrap.offsetHeight;
-    const w = table.getBoundingClientRect().width || table.offsetWidth;
-    if (w > 0) wrap.style.width = w + 'px';
+    const w = measureDecoScheduleColumnWidth(table);
+    if (w > 0) {
+      const px = w + 'px';
+      wrap.style.setProperty('--deco-table-width', px);
+      wrap.style.width = px;
+    }
   });
   const stack = document.getElementById('contingencyScheduleStack');
   const wrap = stack?.querySelector('#contingencyResult .deco-table-wrap');
