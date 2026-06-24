@@ -28,6 +28,17 @@ from playwright_boot import boot_app_page  # noqa: E402
 PASS = []
 FAIL = []
 
+TEST_SETTINGS = {
+    "metric": True,
+    "gfLo": 30,
+    "gfHi": 85,
+    "stepSize": 3,
+    "lastStop": 3,
+    "minStopTime": 1,
+}
+
+WORKER_TIMEOUT_OVERRIDE_MS = 400
+
 
 def ok(msg):
     PASS.append(msg)
@@ -56,14 +67,7 @@ def start_server():
 def run_checks(page, port):
     boot_app_page(page, f"http://127.0.0.1:{port}")
 
-    settings = {
-        "metric": True,
-        "gfLo": 30,
-        "gfHi": 85,
-        "stepSize": 3,
-        "lastStop": 3,
-        "minStopTime": 1,
-    }
+    settings = TEST_SETTINGS
 
     results = page.evaluate(
         """(settings) => {
@@ -310,14 +314,7 @@ def run_checks(page, port):
 
 
 def run_worker_timeout_check(page, port):
-    settings = {
-        "metric": True,
-        "gfLo": 30,
-        "gfHi": 85,
-        "stepSize": 3,
-        "lastStop": 3,
-        "minStopTime": 1,
-    }
+    settings = TEST_SETTINGS
     hung_worker = "self.onmessage=function(e){};"
     page.route(
         "**/zhl-schedule-worker.js",
@@ -327,8 +324,20 @@ def run_worker_timeout_check(page, port):
             body=hung_worker,
         ),
     )
-    page.add_init_script("window.__LSP_ZHL_WORKER_TIMEOUT_MS = 400;")
+    page.add_init_script(f"window.__LSP_ZHL_WORKER_TIMEOUT_MS = {WORKER_TIMEOUT_OVERRIDE_MS};")
     boot_app_page(page, f"http://127.0.0.1:{port}")
+    override_ok = page.evaluate(
+        f"() => window.__LSP_ZHL_WORKER_TIMEOUT_MS === {WORKER_TIMEOUT_OVERRIDE_MS}"
+    )
+    if override_ok:
+        ok("ZHL worker timeout override active before hung-worker test (issue #25)")
+    else:
+        fail(
+            f"ZHL worker timeout override missing (expected {WORKER_TIMEOUT_OVERRIDE_MS}ms) — "
+            "add_init_script must run before boot_app_page"
+        )
+        page.unroute("**/zhl-schedule-worker.js")
+        return
     timeout_result = page.evaluate(
         """async (settings) => {
       const levels = [{ depth: 40, time: 25, o2: 21, he: 0 }];
@@ -352,14 +361,7 @@ def run_worker_timeout_check(page, port):
 
 
 def run_worker_recovery_check(page, port):
-    settings = {
-        "metric": True,
-        "gfLo": 30,
-        "gfHi": 85,
-        "stepSize": 3,
-        "lastStop": 3,
-        "minStopTime": 1,
-    }
+    settings = TEST_SETTINGS
     boot_app_page(page, f"http://127.0.0.1:{port}")
     recovery = page.evaluate(
         """async (settings) => {

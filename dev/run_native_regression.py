@@ -73,7 +73,7 @@ async () => {
   assert(!sheet.textContent.includes('EAN50'), 'disabled option not offered in sheet');
 
   sel.options[1].disabled = true;
-  await new Promise(r => requestAnimationFrame(r));
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
   const sheetAfterDisable = document.getElementById('lsp-android-select-sheet');
   assert(!!sheetAfterDisable, 'sheet stays open after option disabled');
   assert(!sheetAfterDisable.textContent.includes('EAN32'), 'disabled option removed from open sheet (issue #24)');
@@ -162,7 +162,7 @@ async () => {
   if (window.__capBridgeTest.writes.length) {
     throw new Error('failed blob read must not save via Capacitor (issue #24)');
   }
-  return ['blob read failure does not swallow download (falls back to native click)'];
+  return ['blob read failure does not save via Capacitor bridge (issue #24)'];
 }
 """
 

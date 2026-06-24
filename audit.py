@@ -3693,15 +3693,20 @@ if android_picker_js and "syncAllSelects" in android_picker_js and "selectSyncFn
 else:
     fail("android-select-picker syncAll still calls WeakMap.forEach (issue #23)")
 
-if android_picker_js and "openSheetSelect" in android_picker_js and "openSheet(sel, syncBtn)" in android_picker_js.split("selObserver", 1)[-1][:400]:
+if android_picker_js and "openSheetSelect" in android_picker_js and "scheduleSheetRebuild" in android_picker_js:
     ok("android-select-picker rebuilds open sheet when options mutate (issue #24)")
 else:
     fail("android-select-picker missing open-sheet rebuild on mutation (issue #24)")
 
-if capacitor_bridge_js and "falling back to browser download" in capacitor_bridge_js and "return false" in capacitor_bridge_js.split("interceptBlobDownload", 1)[-1][:500]:
-    ok("capacitor-bridge falls back to native click when blob read fails (issue #24)")
+if android_picker_js and "sheetRebuildScheduled" in android_picker_js and "requestAnimationFrame" in android_picker_js.split("scheduleSheetRebuild", 1)[-1][:400]:
+    ok("android-select-picker debounces sheet rebuild per frame (issue #25)")
 else:
-    fail("capacitor-bridge still swallows download on blob read failure (issue #24)")
+    fail("android-select-picker missing debounced sheet rebuild (issue #25)")
+
+if capacitor_bridge_js and "falling back to browser download" not in capacitor_bridge_js and "return false" in capacitor_bridge_js.split("interceptBlobDownload", 1)[-1][:500]:
+    ok("capacitor-bridge does not swallow download when blob read fails (issue #24)")
+else:
+    fail("capacitor-bridge still swallows download or claims false fallback (issue #24/#25)")
 
 if capacitor_bridge_js and "handleBlobDownload(blob, dl).catch" in capacitor_bridge_js:
     ok("capacitor-bridge handleBlobDownload errors caught via .catch (issue #24)")
@@ -3722,6 +3727,14 @@ if os.path.isfile(eng_val_path):
             ok("engine_validation_regression.py page lifecycle owned by main (issue #24)")
         else:
             fail("engine_validation_regression.py missing explicit page.close in main (issue #24)")
+        if "TEST_SETTINGS" in eng_val_lifecycle and eng_val_lifecycle.count('"gfLo": 30') <= 1:
+            ok("engine_validation_regression.py uses shared TEST_SETTINGS (issue #25)")
+        else:
+            fail("engine_validation_regression.py duplicates settings dict (issue #25)")
+        if "timeout override active" in eng_val_lifecycle:
+            ok("engine_validation_regression.py asserts worker timeout override (issue #25)")
+        else:
+            fail("engine_validation_regression.py missing timeout override assertion (issue #25)")
     else:
         fail("engine_validation_regression.py missing split worker timeout/recovery helpers (issue #24)")
 else:

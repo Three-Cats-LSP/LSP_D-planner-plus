@@ -214,7 +214,7 @@
       });
       return true;
     }
-    notify('Export error: could not read export file — falling back to browser download', true);
+    notify('Export error: could not read export file', true);
     return false;
   }
 

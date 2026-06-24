@@ -96,6 +96,20 @@
     return 'Choose option';
   }
 
+  /** Coalesce async-tick option mutations into one sheet rebuild per frame. */
+  var sheetRebuildScheduled = false;
+
+  function scheduleSheetRebuild(sel, syncBtn) {
+    if (sheetRebuildScheduled) return;
+    sheetRebuildScheduled = true;
+    requestAnimationFrame(function () {
+      sheetRebuildScheduled = false;
+      if (openSheetSelect === sel && openSheetSyncBtn === syncBtn) {
+        openSheet(sel, syncBtn);
+      }
+    });
+  }
+
   function closeSheet() {
     var sheet = document.getElementById('lsp-android-select-sheet');
     if (sheet) sheet.remove();
@@ -212,7 +226,7 @@
     var selObserver = new MutationObserver(function () {
       syncBtn();
       if (openSheetSelect === sel && openSheetSyncBtn) {
-        openSheet(sel, syncBtn);
+        scheduleSheetRebuild(sel, syncBtn);
       }
     });
     selObserver.observe(sel, {

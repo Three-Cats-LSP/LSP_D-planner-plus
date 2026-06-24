@@ -18,7 +18,7 @@
     "capacitor-bridge: click() intercept writes blob to Filesystem",
     "capacitor-bridge: dispatchEvent(MouseEvent click) intercept (jsPDF path)",
     "capacitor-bridge: uniqueFilename avoids overwrite when file exists",
-    "capacitor-bridge: blob read failure does not swallow download (falls back to native click)",
+    "capacitor-bridge: blob read failure does not save via Capacitor bridge (issue #24)",
     "capacitor-bridge: handleBlobDownload rejection handled via .catch (issue #24)"
   ],
   "failed": []
