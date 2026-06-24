@@ -1498,6 +1498,14 @@ if ("'en13319' ? 2" in js or '"en13319" ? 2' in js or
 else:
     fail("waterTypeVal: EN13319 not mapped to 2 — VPM engine uses wrong water factor for EN13319")
 
+# 26.5b custom water density maps to waterType 3 + barPerM in VPM
+if ("sel === 'custom') return 3" in js
+        and "waterType === 3" in vpm_src
+        and "settings.barPerM" in vpm_src):
+    ok("waterTypeVal: custom maps to waterType 3 with barPerM in VPM engine (Issue #2 MEDIUM-2)")
+else:
+    fail("waterTypeVal: custom water density not mapped for VPM (Issue #2 MEDIUM-2)")
+
 # 26.6 No hardcoded salt slp in VPM functions
 if "SLP_SW_M : SLP_SW_F" in vpm_src:
     fail("VPM inner functions still use hardcoded salt slp — water type not respected")

@@ -63,6 +63,15 @@ const VPMEngine = (() => {
     const SLP_FW_F = 33.891;  // fresh, imperial — 10.330 × 3.28084
     const SLP_EN_F = 33.071;  // EN13319, imperial — 10.080 × 3.28084
     function getSLP(settings) {
+        if (settings.waterType === 3) {
+            const barPerM = settings.barPerM
+                || (settings.customWaterDensity
+                    ? (settings.customWaterDensity * 9.80665) / 100000 : 0);
+            if (barPerM > 0) {
+                const slpM = 1 / barPerM;
+                return settings.metric ? slpM : slpM * 3.28084;
+            }
+        }
         if (settings.metric) {
             if (settings.waterType === 2) return SLP_EN_M;
             return settings.waterType === 0 ? SLP_SW_M : SLP_FW_M;

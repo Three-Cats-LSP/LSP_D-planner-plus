@@ -7397,12 +7397,13 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
   }
 
   // Build settings object for VPMEngine
-  // IMPORTANT: waterType 0=salt, 1=fresh, 2=EN13319 (VPM engine uses its own SLP constants)
+  // IMPORTANT: waterType 0=salt, 1=fresh, 2=EN13319, 3=custom (uses barPerM)
   const waterTypeVal = getWaterTypeForVPM();
 
   const settings = {
     metric:            dU,
     waterType:         waterTypeVal,
+    barPerM:           BAR_PER_METRE,
     descentRate,
     ascentRate,
     decoAscentRate,
@@ -8365,10 +8366,12 @@ function getWaterTypeForVPM() {
   if (sel === 'fresh') return 1;
   if (sel === 'en13319') return 2;
   if (sel === 'salt') return 0;
+  if (sel === 'custom') return 3;
   const bpm = BAR_PER_METRE || 0.1;
   if (Math.abs(bpm - WATER_DENSITY.fresh) < 0.0001) return 1;
   if (Math.abs(bpm - WATER_DENSITY.en13319) < 0.0001) return 2;
-  return 0;
+  if (Math.abs(bpm - WATER_DENSITY.salt) < 0.0001) return 0;
+  return 3;
 }
 
 function buildZhlScheduleParamsFromEngine(levels, decoGases, settings, profileSplit) {
