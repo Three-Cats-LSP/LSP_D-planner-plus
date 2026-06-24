@@ -14,10 +14,8 @@ ENGINE_WAIT_JS = """() => window._lspEngineReady === true
   && typeof window.ZhlEngineBundle !== 'undefined'"""
 
 
-def boot_app_page(page, base_url: str, *, extra_wait_ms: int = 500) -> None:
+def boot_app_page(page, base_url: str) -> None:
     """Navigate to index.html in headless test mode and wait for engines."""
     page.goto(f"{base_url.rstrip('/')}{APP_URL}", wait_until="domcontentloaded", timeout=180000)
     page.wait_for_function(ENGINE_WAIT_JS, timeout=180000)
     page.evaluate("() => { window._zhlHeadless = true; }")
-    if extra_wait_ms > 0:
-        page.wait_for_timeout(extra_wait_ms)

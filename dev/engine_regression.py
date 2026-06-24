@@ -228,6 +228,7 @@ ENGINE_SUITE_JS = """
 WORKER_SUITE_JS = """
 async () => {
   const lv = [{ depth: 40, time: 25, o2: 21, he: 0 }];
+  const dive1Lv = [{ depth: 40, time: 20, o2: 21, he: 0 }];
   const base = {
     metric: true, gfLo: 30, gfHi: 85, stepSize: 3, lastStop: 3, minStopTime: 1,
   };
@@ -235,7 +236,8 @@ async () => {
     ...base, circuit: 'CCR', setpoint: 1.3, descentSetpoint: 0.7,
     bottomSetpoint: 1.2, decoSetpoint: 1.3,
   };
-  const repTissues = Array.from({ length: 16 }, (_, i) => ({ pN2: 0.75 + i * 0.01, pHe: 0 }));
+  const dive1 = window.ZHLEngine.calculate(dive1Lv, [], base);
+  const repTissues = (dive1.finalTissues || []).map(t => ({ pN2: t.pN2, pHe: t.pHe || 0 }));
   const repSettings = {
     ...base,
     _preTissues: repTissues,
@@ -246,10 +248,12 @@ async () => {
     const worker = await window.ZHLEngine.calculateInWorker(lv, [], settings);
     const stopsMatch = (sync.stops || []).length === (worker.stops || []).length;
     return {
-      ok: !sync.error && !worker.error && sync.totalRuntime === worker.totalRuntime
+      ok: !sync.error && !worker.error && repTissues.length === 16
+        && sync.totalRuntime === worker.totalRuntime
         && sync.tts === worker.tts && stopsMatch,
       syncRt: sync.totalRuntime, workerRt: worker.totalRuntime,
       syncErr: sync.error, workerErr: worker.error,
+      tissueCount: repTissues.length,
     };
   };
   const rep = await parity(repSettings);

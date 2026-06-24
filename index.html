@@ -16601,6 +16601,19 @@ window.addEventListener('beforeunload', function() {
 });
 
 // Load settings when page loads
+function markLspEngineReadyWhenReady(attempt) {
+  if (window.ZHLEngine && window.VPMEngine
+      && typeof window.ZHLEngine.calculate === 'function'
+      && typeof window.VPMEngine.calculate === 'function'
+      && typeof window.ZhlEngineBundle !== 'undefined') {
+    window._lspEngineReady = true;
+    return;
+  }
+  if ((attempt || 0) < 120) {
+    setTimeout(() => markLspEngineReadyWhenReady((attempt || 0) + 1), 250);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   if (window.__lspInitDone) return;
   window.__lspInitDone = true;
@@ -16687,7 +16700,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateWaterVapor();
     updateHeHalfTime(); // re-sync after VPMEngine fully ready
     syncGfPresetFromValues();
-    window._lspEngineReady = true;
+    markLspEngineReadyWhenReady(0);
   }, 1000);
 });
 
@@ -16699,6 +16712,7 @@ window.addEventListener('load', function() {
     appSettings.load();
     updateWaterVapor();
     syncGfPresetFromValues();
+    markLspEngineReadyWhenReady(0);
   }, 500);
 });
 </script>

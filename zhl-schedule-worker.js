@@ -5,10 +5,6 @@ importScripts('zhl-engine-bundle.js');
 
 self.onmessage = function (e) {
   const msg = e.data || {};
-  if (msg.type === 'terminate') {
-    self.close();
-    return;
-  }
   const { id, levels, decoGases, settings, profileSplit, environment } = msg;
   try {
     const result = ZhlEngineBundle.calculate(

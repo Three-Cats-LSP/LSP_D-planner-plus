@@ -19,6 +19,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+ENGINE_VALIDATION_SCRIPT = ROOT / "engine_validation_regression.py"
 CCR_VALIDATION_SCRIPT = ROOT / "dev" / "engine_validation_regression.py"
 
 SUITES = {
@@ -34,8 +35,9 @@ SUITES = {
     },
     "engine_validation": {
         "tiers": {"ci", "release", "all"},
-        "cmd": [sys.executable, "engine_validation_regression.py"],
+        "cmd": [sys.executable, str(ENGINE_VALIDATION_SCRIPT)],
         "cwd": ROOT,
+        "script": ENGINE_VALIDATION_SCRIPT,
     },
     "engine_full": {
         "tiers": {"ci", "release", "all"},
@@ -74,7 +76,7 @@ def run_suite(name: str, spec: dict) -> dict:
     script = spec.get("script")
     if script and not Path(script).is_file():
         print(f"  → SKIP (missing {script})")
-        return {"name": name, "ok": True, "skipped": True, "reason": f"missing {script}"}
+        return {"name": name, "ok": False, "skipped": True, "reason": f"missing {script}"}
     env = {**os.environ, **spec.get("env", {})}
     proc = subprocess.run(
         spec["cmd"],
@@ -120,16 +122,21 @@ def main() -> int:
     out = ROOT / "dev" / "regression_summary.json"
     summary = {
         "tier": args.tier,
-        "passed": sum(1 for r in results if r["ok"]),
-        "failed": sum(1 for r in results if not r["ok"]),
+        "passed": sum(1 for r in results if r.get("ok")),
+        "failed": sum(1 for r in results if not r.get("ok") and not r.get("skipped")),
+        "skipped": sum(1 for r in results if r.get("skipped")),
         "suites": results,
     }
     out.write_text(json.dumps(summary, indent=2), encoding="utf-8")
     print(f"\nWrote {out}")
     print(f"\n{'─' * 60}")
-    print(f"  {summary['passed']}/{len(results)} suites passed")
+    ran = summary["passed"] + summary["failed"]
+    print(f"  {summary['passed']}/{ran} suites passed", end="")
+    if summary["skipped"]:
+        print(f", {summary['skipped']} skipped", end="")
+    print()
     print(f"{'─' * 60}\n")
-    return 0 if summary["failed"] == 0 else 1
+    return 0 if summary["failed"] == 0 and summary["skipped"] == 0 else 1
 
 
 if __name__ == "__main__":
