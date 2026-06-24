@@ -2665,7 +2665,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <span class="u5" id="modO2Display">32%</span>
 </div>
 <div class="slider-wrap">
-<input class="lsp-slider" id="modO2" max="100" min="1" oninput="updateSliderFill(this);document.getElementById('modO2Display').textContent=this.value+'%';calcMOD()" step="1" type="range" value="32"/>
+<input class="lsp-slider" id="modO2" max="100" min="1" oninput="updateSliderFill(this);document.getElementById('modO2Display').textContent=this.value+'%';calcMODTool()" step="1" type="range" value="32"/>
 <div class="slider-ticks-abs">
 <span style="left:0%">1%</span><span style="left:20.2%">21%</span><span style="left:31.3%">32%</span><span style="left:49.5%">50%</span><span style="left:79.8%">80%</span><span style="left:100%">100%</span>
 </div>
@@ -2677,7 +2677,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <span class="u5" id="modPPO2Display">1.4</span>
 </div>
 <div class="slider-wrap">
-<input class="lsp-slider" id="modPPO2" max="20" min="10" oninput="updateSliderFill(this);document.getElementById('modPPO2Display').textContent=(this.value/10).toFixed(1);calcMOD()" step="1" type="range" value="14"/>
+<input class="lsp-slider" id="modPPO2" max="20" min="10" oninput="updateSliderFill(this);document.getElementById('modPPO2Display').textContent=(this.value/10).toFixed(1);calcMODTool()" step="1" type="range" value="14"/>
 <div class="slider-ticks"><span>1.0</span><span>1.2</span><span>1.4</span><span>1.6</span><span>1.8</span><span>2.0</span></div>
 </div>
 </div>
@@ -3491,6 +3491,13 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
       window._massiveSuiteActive = true;
     }
   } catch (e) {}
+})();
+(function installLspGlobalErrorHandlers() {
+  if (window.__lspErrorHandlersInstalled) return;
+  window.__lspErrorHandlersInstalled = true;
+  window.addEventListener('unhandledrejection', e => {
+    console.error('[LSP] Unhandled rejection:', e.reason);
+  });
 })();
 // _zhlPrewarmed: set true by test harness after first headless run to skip
 // DOM warm-up cost on subsequent calls. Kept as a no-op flag for compatibility.
@@ -5635,7 +5642,7 @@ function setUnits(u, opts) {
   calcEND_tool?.();
   calcSurfInt?.();
   calcAvgDepth?.();
-  calcMOD?.();
+  calcMODTool?.();
   renderModRefTable?.();
 }
 
@@ -8021,7 +8028,7 @@ function updateGasMODDisplays() {
     return isMetric ? m + ' m' : Math.round(m * 3.28084) + ' ft';
   }
 
-  function calcMOD(fO2, ppO2limit) {
+  function calcGasMOD(fO2, ppO2limit) {
     if (fO2 <= 0) return 0;
     // Pure O2: if allowO2AtMOD, use the fixed 6 m switch depth (same as planner)
     if (fO2 >= 0.995 && o2AtMOD) return o2MODm;
@@ -8038,7 +8045,7 @@ function updateGasMODDisplays() {
   // Bottom gas MOD — unified getBottomGasFractions() handles trimix
   const botFracs = getBottomGasFractions();
   const botFO2   = botFracs.fO2;
-  const botMOD   = calcMOD(botFO2, ppO2Limit);
+  const botMOD   = calcGasMOD(botFO2, ppO2Limit);
   const botEl    = document.getElementById('botMODDisplay');
   if (botEl) {
     const botLabel = getGasLabel(botFO2, botFracs.fHe);
@@ -8057,7 +8064,7 @@ function updateGasMODDisplays() {
     if (!dgFracs) { disp.value = '—'; continue; }
     const fO2 = dgFracs.fO2;
     const bailoutPpo2 = ccrUi ? getBailoutPpo2Limit() : ppO2Deco;
-    const mod = calcMOD(fO2, bailoutPpo2);
+    const mod = calcGasMOD(fO2, bailoutPpo2);
     const heNote = dgFracs.fHe > 0 ? '  (' + getGasLabel(fO2, dgFracs.fHe) + ')' : '';
     disp.value = fmtDepth(mod) + heNote;
     disp.title = tooltipText(fO2, bailoutPpo2, ccrUi ? 'Bailout' : 'Deco');
@@ -8843,14 +8850,7 @@ function runDecoSchedule() {
     const lim = vLo + (vHi-vLo)*(ppo2*10-lo);
     return lim > 0 ? dur / lim : dur / 45; // ppO2>1.6: clamp to 45-min limit (1.6 bar row) — avoids 100%-per-segment blowup
   }
-  // ── mm'ss" formatter ──
-  function toMMSS(minutes) {
-    const totalSec = Math.round(minutes * 60);
-    const m = Math.floor(totalSec / 60);
-    const s = totalSec % 60;
-    return `${m}'${String(s).padStart(2,'0')}"`;
-  }
-
+  // ── mm'ss" formatter — uses global toMMSS (L4714)
   // Accumulators for footer — seed with prior dive carry if set (v2.20.0)
   const _pdCarry = window._priorDiveCarry;
   let totalCNSfrac = _pdCarry ? (_pdCarry.cnsCarry / 100) : 0;
@@ -10924,7 +10924,7 @@ function updateSliderFill(el) {
   el.style.setProperty('--fill', pct + '%');
 }
 
-function calcMOD() {
+function calcMODTool() {
   const o2   = parseFloat(document.getElementById('modO2')?.value) || 0;
   const ppo2 = (parseFloat(document.getElementById('modPPO2')?.value) || 14) / 10;
   if (!o2 || o2 <= 0 || o2 > 100) return;
@@ -11851,7 +11851,7 @@ function switchTool(name, btn) {
     if (tab) tab.classList.toggle('active', t === name);
   });
   document.querySelectorAll('#tool-panel-' + name + ' .lsp-slider').forEach(s => updateSliderFill(s));
-  if (name === 'mod')       { calcMOD(); renderModRefTable(); }
+  if (name === 'mod')       { calcMODTool(); renderModRefTable(); }
   if (name === 'bestmix')   { calcBestMix(); renderToolsBmtRefTable(); }
   if (name === 'endcalc')   calcEND_tool();
   if (name === 'eadtable')  renderEADTable();
@@ -12411,7 +12411,7 @@ async function buildGasPlanPDF() {
   if (!gp || !gp.rows.length) { alert('Configure a bottom gas cylinder first.'); return; }
 
   const doc = new jsPDF({ unit:'mm', format:'a4', orientation:'portrait' });
-  await loadPDFFonts(doc);
+  if (!(await ensurePDFFontsForPDF(doc))) return;
   const now = new Date();
   const dateStr = now.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
   const timeStr = now.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
@@ -13959,6 +13959,20 @@ async function loadPDFFonts(doc) {
     return false;
   }
 }
+async function ensurePDFFontsForPDF(doc) {
+  try {
+    const ok = await loadPDFFonts(doc);
+    if (!ok) {
+      alert('PDF fonts could not be loaded. Check your network connection and try again.');
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.error('[LSP] PDF font load failed:', e);
+    alert('PDF fonts could not be loaded. Check your network connection and try again.');
+    return false;
+  }
+}
 function showContingencyPDFDialog() {
   const old = document.getElementById('contingencyPDFDialog');
   if (old) old.remove();
@@ -14027,7 +14041,7 @@ async function exportContingencyPDF(opts) {
   if (!c) return;
 
   const doc = new jsPDF({ unit:'mm', format:'a4', orientation:'portrait' });
-  await loadPDFFonts(doc);
+  if (!(await ensurePDFFontsForPDF(doc))) return;
   const now = new Date();
   const dateStr = now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
   const timeStr = now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
@@ -14051,7 +14065,7 @@ async function exportContingencyPDF(opts) {
     s = s.replace(/[^\x20-\x7E\xA0-\u024F\u2190-\u2193\u2713\u2717\u26A0]/g,'');
     return s.replace(/^\s*[!&*#^~]+\s*/,'').trim();
   }
-  function checkY(n) { if(y+n>PH-MB){ doc.addPage(); y=MT; drawHeader(); } }
+  function checkY(n) { if(y+n>PH-MB){ drawFooter(); doc.addPage(); y=MT; drawHeader(); } }
   function drawHeader() {
     doc.setFillColor(180,30,30); doc.rect(0,0,PW,8,'F');
     doc.setFontSize(8); doc.setFont('DejaVuSans','bold'); doc.setTextColor(255,255,255);
@@ -15151,7 +15165,7 @@ async function exportPDF(opts) {
   const { jsPDF } = window.jspdf;
 
   const doc = new jsPDF({ unit:'mm', format:'a4', orientation:'portrait' });
-  await loadPDFFonts(doc);
+  if (!(await ensurePDFFontsForPDF(doc))) return;
   const now = new Date();
   const dateStr = now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
   const timeStr = now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
@@ -15219,7 +15233,7 @@ async function exportPDF(opts) {
     s = s.replace(/[^\x20-\x7E\xA0-\u024F\u2190-\u2193\u2713\u2717\u26A0]/g,'');
     return s.replace(/^\s*[!&*#^~]+\s*/,'').trim();
   }
-  function checkY(n) { if(y+n>PH-MB){ doc.addPage(); y=MT; drawHeader(); } }
+  function checkY(n) { if(y+n>PH-MB){ drawFooter(); doc.addPage(); y=MT; drawHeader(); } }
   function drawHeader() {
     doc.setFillColor(0,85,170); doc.rect(0,0,PW,8,'F');
     doc.setFontSize(8); doc.setFont('DejaVuSans','bold'); doc.setTextColor(255,255,255);

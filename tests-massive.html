@@ -1450,7 +1450,7 @@ function safeSetUnits(u) {
   if (plannerEl) plannerEl.innerHTML = '';
   // Stub out all heavy synchronous functions called by setUnits
   const stubs = ['renderNDLTable','buildUnifiedPlan','runPlanner','renderGasTable',
-                 'calcBestMix','calcEND_tool','calcSurfInt','calcAvgDepth','calcMOD',
+                 'calcBestMix','calcEND_tool','calcSurfInt','calcAvgDepth','calcMODTool',
                  'renderModRefTable','renderEADTable','updateGasMODDisplays','updateTravelGasMOD'];
   const origFns = {};
   stubs.forEach(fn => { origFns[fn] = WIN[fn]; WIN[fn] = function(){}; });
@@ -3187,16 +3187,16 @@ const TIER3_GROUPS = [
   {
     tier: 3, name: 'T3-NEW-O · Tools — MOD Calculator',
     tests: [
-      ['calcMOD function exists on WIN', 'SCN', function(){
-        assert(typeof WIN.calcMOD === 'function', 'calcMOD not found on window');
+      ['calcMODTool function exists on WIN', 'SCN', function(){
+        assert(typeof WIN.calcMODTool === 'function', 'calcMODTool not found on window');
         return 'found ✓';
       }],
       ['renderModRefTable function exists on WIN', 'SCN', function(){
         assert(typeof WIN.renderModRefTable === 'function', 'renderModRefTable not found');
         return 'found ✓';
       }],
-      ['calcMOD() runs without crash', 'SCN', function(){
-        try { WIN.calcMOD(); } catch(e){ return 'threw: ' + e.message + ' (warn)'; }
+      ['calcMODTool() runs without crash', 'SCN', function(){
+        try { WIN.calcMODTool(); } catch(e){ return 'threw: ' + e.message + ' (warn)'; }
         return 'no throw ✓';
       }],
       ['renderModRefTable() runs without crash', 'SCN', function(){

@@ -1163,13 +1163,40 @@ if "calcEND(dM" in end_tool_fn or "calcEND(depthM" in end_tool_fn:
 else:
     fail("calcEND_tool() uses simplified formula — wrong at altitude, ignores narcoticN2/narcoticO2 settings")
 
-# 20.3c calcMOD() in Tools panel uses altSurfaceP (not hardcoded sea-level formula)
-mod_fn_start = js.find("function calcMOD() {")
+# 20.3c calcMODTool() in Tools panel uses altSurfaceP (not hardcoded sea-level formula)
+mod_fn_start = js.find("function calcMODTool() {")
 mod_fn = js[mod_fn_start:mod_fn_start + 400] if mod_fn_start > 0 else ""
 if "altSurfaceP" in mod_fn and "BAR_PER_METRE" in mod_fn:
-    ok("calcMOD() (Tools tab) uses altSurfaceP + BAR_PER_METRE — altitude-correct")
+    ok("calcMODTool() (Tools tab) uses altSurfaceP + BAR_PER_METRE — altitude-correct")
 else:
-    fail("calcMOD() (Tools tab) uses hardcoded sea-level formula — wrong at altitude")
+    fail("calcMODTool() (Tools tab) uses hardcoded sea-level formula — wrong at altitude")
+
+if "function calcGasMOD(" in js and "function calcMODTool()" in js and "function calcMOD(" not in js:
+    ok("calcMOD name collision resolved — calcGasMOD vs calcMODTool (issue #4 BUG-1)")
+else:
+    fail("calcMOD name collision still present — local and global share name (issue #4 BUG-1)")
+
+if "async function ensurePDFFontsForPDF(doc)" in js and js.count("ensurePDFFontsForPDF(doc)") >= 3:
+    ok("PDF builders guard font load via ensurePDFFontsForPDF (issue #4 BUG-2)")
+else:
+    fail("PDF builders call unguarded loadPDFFonts (issue #4 BUG-2)")
+
+if js.count("drawFooter(); doc.addPage()") >= 3:
+    ok("All PDF checkY helpers call drawFooter before page break (issue #4 BUG-3)")
+else:
+    fail("exportContingencyPDF or exportPDF checkY missing drawFooter (issue #4 BUG-3)")
+
+run_deco_start = js.find("function runDecoSchedule(")
+run_deco_chunk = js[run_deco_start:run_deco_start + 12000] if run_deco_start > 0 else ""
+if run_deco_chunk and "function toMMSS(" not in run_deco_chunk:
+    ok("runDecoSchedule uses global toMMSS — no nested redefinition (issue #4 BUG-4)")
+else:
+    fail("runDecoSchedule still nests redundant toMMSS (issue #4 BUG-4)")
+
+if "unhandledrejection" in js and "__lspErrorHandlersInstalled" in js:
+    ok("Global unhandledrejection handler installed (issue #4 LOW)")
+else:
+    fail("No global unhandledrejection handler (issue #4 LOW)")
 
 # 20.3d setUnits() refreshes Tools panels (END Calc, Best Mix, MOD, EAD, Gas Table, Surface Int)
 set_units_end = js[js.find("function setUnits("):js.find("function setUnits(") + 14000]
