@@ -1006,18 +1006,32 @@ body.light-theme .ok { background:#f0fff4; border-color:#116622; color:#116622; 
 .deco-plan-caption .alert { margin-left: 0; margin-right: 0; }
 .deco-plan-caption .dive-plan-banner .dpb-meta,
 .deco-plan-caption .dive-plan-banner .dpb-chips { overflow-wrap: anywhere; }
-#contingencyScheduleStack {
+#contingencyScheduleStack,
+.deco-schedule-stack {
  display: inline-block;
+ width: fit-content;
  max-width: 100%;
  vertical-align: top;
 }
-#contingencyScheduleStack .deco-contingency-calc { width: 100%; box-sizing: border-box; }
+#contingencyScheduleStack .deco-contingency-calc { width: auto; max-width: 100%; box-sizing: border-box; }
 .deco-schedule-stack__actions {
  display: flex;
  justify-content: flex-end;
  gap: 8px;
  margin-top: 12px;
- width: 100%;
+ width: auto;
+ max-width: 100%;
+}
+.deco-schedule-stack .alert,
+.deco-schedule-stack .deco-plan-caption,
+.deco-schedule-stack .deco-table-legend,
+.deco-schedule-stack .deco-totals-inner,
+#contingencyScheduleStack .alert,
+#contingencyScheduleStack .deco-plan-caption,
+#contingencyScheduleStack .deco-table-legend,
+#contingencyScheduleStack .deco-totals-inner {
+ width: fit-content;
+ max-width: 100%;
 }
 .deco-totals-row td {
  padding: 0 !important;
