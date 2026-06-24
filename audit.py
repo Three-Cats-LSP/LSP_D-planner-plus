@@ -3609,7 +3609,7 @@ if android_picker_js and "if (opt.disabled) return" in android_picker_js and "sc
 else:
     fail("android-select-picker missing disabled guard or scrollIntoView (issue #20)")
 
-if android_picker_js and "new MutationObserver(function () { syncBtn(); })" in android_picker_js:
+if android_picker_js and "new MutationObserver(function () {" in android_picker_js and "syncBtn();" in android_picker_js.split("selObserver", 1)[-1][:300]:
     ok("android-select-picker: MutationObserver wraps syncBtn callback (issue #20)")
 else:
     fail("android-select-picker MutationObserver callback not wrapped (issue #20)")
@@ -3693,6 +3693,40 @@ if android_picker_js and "syncAllSelects" in android_picker_js and "selectSyncFn
 else:
     fail("android-select-picker syncAll still calls WeakMap.forEach (issue #23)")
 
+if android_picker_js and "openSheetSelect" in android_picker_js and "openSheet(sel, syncBtn)" in android_picker_js.split("selObserver", 1)[-1][:400]:
+    ok("android-select-picker rebuilds open sheet when options mutate (issue #24)")
+else:
+    fail("android-select-picker missing open-sheet rebuild on mutation (issue #24)")
+
+if capacitor_bridge_js and "falling back to browser download" in capacitor_bridge_js and "return false" in capacitor_bridge_js.split("interceptBlobDownload", 1)[-1][:500]:
+    ok("capacitor-bridge falls back to native click when blob read fails (issue #24)")
+else:
+    fail("capacitor-bridge still swallows download on blob read failure (issue #24)")
+
+if capacitor_bridge_js and "handleBlobDownload(blob, dl).catch" in capacitor_bridge_js:
+    ok("capacitor-bridge handleBlobDownload errors caught via .catch (issue #24)")
+else:
+    fail("capacitor-bridge handleBlobDownload fire-and-forget without .catch (issue #24)")
+
+if worker_bridge_js and "function rejectAll" in worker_bridge_js:
+    ok("zhl-worker-bridge rejectAll helper deduplicates pending rejection (issue #24)")
+else:
+    fail("zhl-worker-bridge missing rejectAll helper (issue #24)")
+
+eng_val_path = os.path.join(os.path.dirname(__file__), "engine_validation_regression.py")
+if os.path.isfile(eng_val_path):
+    with open(eng_val_path, encoding="utf-8") as f:
+        eng_val_lifecycle = f.read()
+    if "run_worker_timeout_check" in eng_val_lifecycle and "run_worker_recovery_check" in eng_val_lifecycle:
+        if "page.close()" in eng_val_lifecycle.split("def main", 1)[-1]:
+            ok("engine_validation_regression.py page lifecycle owned by main (issue #24)")
+        else:
+            fail("engine_validation_regression.py missing explicit page.close in main (issue #24)")
+    else:
+        fail("engine_validation_regression.py missing split worker timeout/recovery helpers (issue #24)")
+else:
+    fail("engine_validation_regression.py missing")
+
 if worker_bridge_js and "killWorker" in worker_bridge_js and "ZHL worker timeout" in worker_bridge_js:
     ok("zhl-worker-bridge recreates worker after timeout (issue #22)")
 else:
@@ -3715,7 +3749,7 @@ if os.path.isfile(native_reg) and os.path.isfile(native_select_fixture):
 else:
     fail("dev/run_native_regression.py or native-select fixture missing")
 
-eng_val = os.path.join(os.path.dirname(__file__), "engine_validation_regression.py")
+eng_val = eng_val_path
 if os.path.isfile(eng_val):
     with open(eng_val, encoding="utf-8") as f:
         eng_val_src = f.read()
@@ -3735,10 +3769,15 @@ if os.path.isfile(run_all_reg):
         fail("run_all_regression.py missing native_bridge suite or build_pages pre-step")
 
 ci_wf = os.path.join(os.path.dirname(__file__), ".github", "workflows", "ci.yml")
-if os.path.isfile(ci_wf) and "run_native_regression.py" in open(ci_wf, encoding="utf-8").read():
-    ok("ci.yml runs native bridge regression on push/PR")
+if os.path.isfile(ci_wf):
+    with open(ci_wf, encoding="utf-8") as f:
+        ci_wf_src = f.read()
+    if "run_native_regression.py" in ci_wf_src:
+        ok("ci.yml runs native bridge regression on push/PR")
+    else:
+        fail("ci.yml missing native bridge regression job")
 else:
-    fail("ci.yml missing native bridge regression job")
+    fail("ci.yml missing")
 
 if "__lspAppFullyReady = true" in html:
     ok("index.html sets __lspAppFullyReady after init (issue #21 CR-3)")

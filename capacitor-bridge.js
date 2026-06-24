@@ -209,11 +209,13 @@
     const dl = anchor.download;
     const blob = readBlobFromHref(href);
     if (blob) {
-      handleBlobDownload(blob, dl);
+      handleBlobDownload(blob, dl).catch(function (err) {
+        notify('Export error: ' + (err && err.message ? err.message : err), true);
+      });
       return true;
     }
-    notify('Export error: could not read export file', true);
-    return true;
+    notify('Export error: could not read export file — falling back to browser download', true);
+    return false;
   }
 
   // ── patch a.click() — used by exportTXT ──────────────────────────────────

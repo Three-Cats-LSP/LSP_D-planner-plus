@@ -53,7 +53,7 @@ def start_server():
     return httpd, port
 
 
-def run_checks(page, port, browser):
+def run_checks(page, port):
     boot_app_page(page, f"http://127.0.0.1:{port}")
 
     settings = {
@@ -308,6 +308,16 @@ def run_checks(page, port, browser):
     else:
         fail(f"ZHL worker parity failed: {worker_parity}")
 
+
+def run_worker_timeout_check(page, port):
+    settings = {
+        "metric": True,
+        "gfLo": 30,
+        "gfHi": 85,
+        "stepSize": 3,
+        "lastStop": 3,
+        "minStopTime": 1,
+    }
     hung_worker = "self.onmessage=function(e){};"
     page.route(
         "**/zhl-schedule-worker.js",
@@ -334,16 +344,24 @@ def run_checks(page, port, browser):
     }""",
         settings,
     )
+    page.unroute("**/zhl-schedule-worker.js")
     if timeout_result.get("ok"):
         ok("ZHL worker rejects hung worker after timeout (issue #22)")
     else:
         fail(f"ZHL worker timeout failed: {timeout_result}")
 
-    page.unroute("**/zhl-schedule-worker.js")
-    page.close()
-    recovery_page = browser.new_page()
-    boot_app_page(recovery_page, f"http://127.0.0.1:{port}")
-    recovery = recovery_page.evaluate(
+
+def run_worker_recovery_check(page, port):
+    settings = {
+        "metric": True,
+        "gfLo": 30,
+        "gfHi": 85,
+        "stepSize": 3,
+        "lastStop": 3,
+        "minStopTime": 1,
+    }
+    boot_app_page(page, f"http://127.0.0.1:{port}")
+    recovery = page.evaluate(
         """async (settings) => {
       const levels = [{ depth: 40, time: 25, o2: 21, he: 0 }];
       const worker = await window.ZHLEngine.calculateInWorker(levels, [], settings);
@@ -372,7 +390,12 @@ def main():
         with sync_playwright() as p:
             browser = p.chromium.launch()
             page = browser.new_page()
-            run_checks(page, port, browser)
+            run_checks(page, port)
+            run_worker_timeout_check(page, port)
+            page.close()
+            recovery_page = browser.new_page()
+            run_worker_recovery_check(recovery_page, port)
+            recovery_page.close()
             browser.close()
     finally:
         httpd.shutdown()

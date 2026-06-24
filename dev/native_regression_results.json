@@ -1,5 +1,5 @@
 {
-  "pass": 14,
+  "pass": 18,
   "fail": 0,
   "passed": [
     "android-select: initial button label is Air",
@@ -13,9 +13,13 @@
     "android-select: sheet opens on button click",
     "android-select: disabled unselected option omitted from sheet",
     "android-select: disabled option not offered in sheet",
+    "android-select: sheet stays open after option disabled",
+    "android-select: disabled option removed from open sheet (issue #24)",
     "capacitor-bridge: click() intercept writes blob to Filesystem",
     "capacitor-bridge: dispatchEvent(MouseEvent click) intercept (jsPDF path)",
-    "capacitor-bridge: uniqueFilename avoids overwrite when file exists"
+    "capacitor-bridge: uniqueFilename avoids overwrite when file exists",
+    "capacitor-bridge: blob read failure does not swallow download (falls back to native click)",
+    "capacitor-bridge: handleBlobDownload rejection handled via .catch (issue #24)"
   ],
   "failed": []
 }

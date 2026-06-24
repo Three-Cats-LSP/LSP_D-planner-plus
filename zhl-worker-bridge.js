@@ -22,6 +22,12 @@
     else p.reject(value);
   }
 
+  function rejectAll(msg) {
+    [...pending.keys()].forEach((pendingId) => {
+      settlePending(pendingId, false, new Error(msg));
+    });
+  }
+
   function getWorker() {
     if (!worker) {
       worker = new Worker('zhl-schedule-worker.js');
@@ -32,9 +38,7 @@
       };
       worker.onerror = function (err) {
         const msg = (err && err.message) || 'Worker error';
-        [...pending.entries()].forEach(([id]) => {
-          settlePending(id, false, new Error(msg));
-        });
+        rejectAll(msg);
         worker = null;
       };
     }
@@ -53,10 +57,7 @@
       const id = nextId++;
       const timer = setTimeout(() => {
         if (!pending.has(id)) return;
-        const err = new Error('ZHL worker timeout');
-        [...pending.keys()].forEach((pendingId) => {
-          settlePending(pendingId, false, new Error(err.message));
-        });
+        rejectAll('ZHL worker timeout');
         killWorker();
       }, WORKER_TIMEOUT_MS);
       pending.set(id, {
@@ -69,9 +70,7 @@
   }
 
   function terminate() {
-    [...pending.entries()].forEach(([id]) => {
-      settlePending(id, false, new Error('ZHL worker terminated'));
-    });
+    rejectAll('ZHL worker terminated');
     killWorker();
   }
 

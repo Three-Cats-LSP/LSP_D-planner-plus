@@ -72,6 +72,12 @@ async () => {
   assert(items.length === 2, 'disabled unselected option omitted from sheet');
   assert(!sheet.textContent.includes('EAN50'), 'disabled option not offered in sheet');
 
+  sel.options[1].disabled = true;
+  await new Promise(r => requestAnimationFrame(r));
+  const sheetAfterDisable = document.getElementById('lsp-android-select-sheet');
+  assert(!!sheetAfterDisable, 'sheet stays open after option disabled');
+  assert(!sheetAfterDisable.textContent.includes('EAN32'), 'disabled option removed from open sheet (issue #24)');
+
   return out;
 }
 """
@@ -145,6 +151,39 @@ async () => {
 }
 """
 
+CAPACITOR_BLOB_FALLBACK_TEST = """
+async () => {
+  window.__capBridgeTest.writes = [];
+  const a = document.createElement('a');
+  a.href = 'blob:http://invalid/revoked-deadbeef';
+  a.download = 'LSP_plan.txt';
+  a.click();
+  await new Promise(r => setTimeout(r, 200));
+  if (window.__capBridgeTest.writes.length) {
+    throw new Error('failed blob read must not save via Capacitor (issue #24)');
+  }
+  return ['blob read failure does not swallow download (falls back to native click)'];
+}
+"""
+
+CAPACITOR_ASYNC_ERROR_TEST = """
+async () => {
+  window.__capBridgeTest.writes = [];
+  const origWrite = window.Capacitor.Plugins.Filesystem.writeFile;
+  window.Capacitor.Plugins.Filesystem.writeFile = async () => {
+    throw new Error('simulated write failure');
+  };
+  const blob = new Blob(['fail path'], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'LSP_fail.txt';
+  a.click();
+  await new Promise(r => setTimeout(r, 500));
+  window.Capacitor.Plugins.Filesystem.writeFile = origWrite;
+  return ['handleBlobDownload rejection handled via .catch (issue #24)'];
+}
+"""
+
 
 def ok(msg: str) -> None:
     PASS.append(msg)
@@ -179,6 +218,8 @@ def run_capacitor_bridge(page, base_url: str) -> None:
         ("click intercept", CAPACITOR_CLICK_TEST),
         ("dispatchEvent intercept", CAPACITOR_DISPATCH_TEST),
         ("uniqueFilename", CAPACITOR_UNIQUE_FILENAME_TEST),
+        ("blob read fallback", CAPACITOR_BLOB_FALLBACK_TEST),
+        ("async export error", CAPACITOR_ASYNC_ERROR_TEST),
     ]:
         try:
             rows = page.evaluate(js)

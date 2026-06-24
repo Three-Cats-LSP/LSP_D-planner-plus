@@ -14,6 +14,9 @@
   if (!isAndroidNative()) return;
 
   var selectObservers = [];
+  /** Select whose picker sheet is open (rebuild list when options mutate). */
+  var openSheetSelect = null;
+  var openSheetSyncBtn = null;
 
   function disconnectAllObservers() {
     selectObservers.forEach(function (obs) {
@@ -97,10 +100,14 @@
     var sheet = document.getElementById('lsp-android-select-sheet');
     if (sheet) sheet.remove();
     document.body.classList.remove('lsp-android-select-open');
+    openSheetSelect = null;
+    openSheetSyncBtn = null;
   }
 
   function openSheet(sel, syncBtn) {
     closeSheet();
+    openSheetSelect = sel;
+    openSheetSyncBtn = syncBtn;
 
     var overlay = document.createElement('div');
     overlay.id = 'lsp-android-select-sheet';
@@ -202,7 +209,12 @@
     sel.addEventListener('touchstart', blockNative, { passive: false });
     sel.addEventListener('focus', function () { sel.blur(); });
 
-    var selObserver = new MutationObserver(function () { syncBtn(); });
+    var selObserver = new MutationObserver(function () {
+      syncBtn();
+      if (openSheetSelect === sel && openSheetSyncBtn) {
+        openSheet(sel, syncBtn);
+      }
+    });
     selObserver.observe(sel, {
       childList: true,
       subtree: true,
