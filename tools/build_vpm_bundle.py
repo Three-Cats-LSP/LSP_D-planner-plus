@@ -49,6 +49,21 @@ def extract_core_from_index(html: str) -> str:
     return chunk[:close].rstrip() + "\n"
 
 
+CORE_HEADER = """/**
+ * VPM engine core (Tier 3) — BUILD SOURCE ONLY.
+ * Not loaded by index.html at runtime.
+ * Rebuilt into vpm-engine-bundle.js via tools/build_vpm_bundle.py.
+ */
+
+"""
+
+
+def ensure_core_header(core: str) -> str:
+    if "BUILD SOURCE ONLY" in core[:500]:
+        return core
+    return CORE_HEADER + core.lstrip("\n")
+
+
 def build_bundle(core: str) -> str:
     return HEADER + "const VPMEngine = (() => {\n" + core + "})();\n" + FOOTER
 
@@ -67,11 +82,19 @@ def main() -> None:
             raise SystemExit(f"{INDEX_PATH} missing")
         html = INDEX_PATH.read_text(encoding="utf-8")
         core = extract_core_from_index(html)
+        core = ensure_core_header(core)
         CORE_PATH.write_text(core, encoding="utf-8")
         print(f"Wrote {CORE_PATH.name}", len(core), "bytes")
 
     core = CORE_PATH.read_text(encoding="utf-8")
-    out = build_bundle(core)
+    core = ensure_core_header(core)
+    # Bundle body is IIFE only — strip BUILD SOURCE header from runtime bundle
+    body = core
+    if body.startswith("/**"):
+        end = body.find("*/")
+        if end >= 0:
+            body = body[end + 2 :].lstrip("\n")
+    out = build_bundle(body)
     BUNDLE_PATH.write_text(out, encoding="utf-8")
     print(f"Wrote {BUNDLE_PATH.name}", len(out), "bytes")
 

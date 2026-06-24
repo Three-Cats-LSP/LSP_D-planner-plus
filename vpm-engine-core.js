@@ -1,3 +1,8 @@
+/**
+ * VPM engine core (Tier 3) — BUILD SOURCE ONLY.
+ * Not loaded by index.html at runtime.
+ * Rebuilt into vpm-engine-bundle.js via tools/build_vpm_bundle.py.
+ */
 
     const ZHL16C_N2 = [
         { ht: 5.0,    a: 1.2599, b: 0.5050 },
@@ -727,20 +732,20 @@
         };
         return getEffectiveSetpointAtDepth(depthM != null ? depthM : 0, ccr, surfP);
     }
-        function vpmAccumPpo2(pAmb, sp, fO2, fHe, settings, depthM, useOC) {
-            if (sp > 0) return Math.min(sp, pAmb);
-            if (!useOC && settings.circuit === 'pSCR' && !settings.bailout && typeof getEffectivePpo2 === 'function') {
-                const ccr = mergeCCRSettings({
-                    ...settings,
-                    circuit: 'pSCR',
-                    bailout: false,
-                    scrRuntimeMin: settings._scrRuntimeMin || 0,
-                });
-                return getEffectivePpo2(pAmb, 0, fO2, ccr, depthM, fHe);
-            }
-            return fO2 * pAmb;
+    function vpmAccumPpo2(pAmb, sp, fO2, fHe, settings, depthM, useOC) {
+        if (sp > 0) return Math.min(sp, pAmb);
+        if (!useOC && settings.circuit === 'pSCR' && !settings.bailout && typeof getEffectivePpo2 === 'function') {
+            const ccr = mergeCCRSettings({
+                ...settings,
+                circuit: 'pSCR',
+                bailout: false,
+                scrRuntimeMin: settings._scrRuntimeMin || 0,
+            });
+            return getEffectivePpo2(pAmb, 0, fO2, ccr, depthM, fHe);
         }
-        function calculateOTU(ppO2, time) {
+        return fO2 * pAmb;
+    }
+    function calculateOTU(ppO2, time) {
         if (ppO2 <= 0.5) return 0;
         return time * Math.pow((ppO2 - 0.5) / 0.5, 0.8333);
     }
@@ -1333,7 +1338,7 @@
                 if (nextStopClamped < stopDepth) {
                     settings._scrRuntimeMin = runtime;
                     const ascSegTime = loadTissuesLinear(state, stopDepth, nextStopClamped, decoAscentRate, curO2, curHe, settings, curSP);
-                    runtime += Math.abs(stopDepth - nextStopClamped) / decoAscentRate;
+                    runtime += ascSegTime;
                     const stepsA = Math.max(1, Math.ceil(Math.abs(stopDepth - nextStopClamped)));
                     const dtA = ascSegTime / stepsA;
                     for (let s = 0; s < stepsA; s++) {

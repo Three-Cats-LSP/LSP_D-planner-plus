@@ -615,7 +615,7 @@ function runZhlScheduleCore(params) {
     }
     if (rep.surfaceIntervalMin > 0) {
       const siMin = rep.surfaceIntervalMin;
-      const wv = WATER_VAPOR;
+      const wv = WATER_VAPOR || 0.0627;
       const inspN2 = 0.7902 * ((altSurfaceP || 1.01325) - wv);
       for (let i = 0; i < tissues.length; i++) {
         const kN2 = Math.LN2 / ZHL16C[i][0];
@@ -973,6 +973,9 @@ function runZhlScheduleCore(params) {
 
   if (_zhlPhaseIdx < _zhlContLevels.length) {
     const cont = _zhlContLevels[_zhlPhaseIdx];
+    if (cont.depth > cur) {
+      throw new Error('continuationLevel must be shallower than current depth');
+    }
     cur = cont.depth;
     const cO2 = cont.o2 / 100;
     const cHe = (cont.he || 0) / 100;
@@ -1206,11 +1209,7 @@ function runZhlScheduleCore(params) {
       hOTU.v += dur * Math.pow((ppO2 - 0.5) / 0.5, OTU_EXPONENT);
       const lims = {6:720,7:570,8:450,9:360,10:300,11:240,12:210,13:180,14:150,15:120,16:45};
       const lo = Math.floor(ppO2 * 10), hi = lo + 1;
-      // For ppO2 > 1.6 bar (NOAA table maximum), treat missing entries as 45 min
-      // to avoid undefined || 0 producing lim=0 and then a nonsense safeLim=45.
-      const limLo = lims[lo] ?? (lo >= 16 ? 45 : 0);
-      const limHi = lims[hi] ?? (hi >= 16 ? 45 : 0);
-      const lim = limLo + (limHi - limLo) * (ppO2 * 10 - lo);
+      const lim = (lims[lo] || 0) + ((lims[hi] || 0) - (lims[lo] || 0)) * (ppO2 * 10 - lo);
       const safeLim = lim > 0 ? lim : 45;
       hCNSfrac.v += dur / safeLim;
     }

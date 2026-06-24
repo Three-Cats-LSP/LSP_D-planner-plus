@@ -55,6 +55,16 @@ if os.path.isfile(vpm_bundle_path):
     with open(vpm_bundle_path, encoding="utf-8") as f:
         vpm_bundle_js = f.read()
 vpm_src = vpm_bundle_js if vpm_bundle_js else js
+vpm_core_path = os.path.join(os.path.dirname(os.path.abspath(path)), "vpm-engine-core.js")
+vpm_core_js = ""
+if os.path.isfile(vpm_core_path):
+    with open(vpm_core_path, encoding="utf-8") as f:
+        vpm_core_js = f.read()
+worker_bridge_path = os.path.join(os.path.dirname(os.path.abspath(path)), "zhl-worker-bridge.js")
+worker_bridge_js = ""
+if os.path.isfile(worker_bridge_path):
+    with open(worker_bridge_path, encoding="utf-8") as f:
+        worker_bridge_js = f.read()
 
 # Helper: line number in JS block (1-indexed)
 def js_line(char_pos):
@@ -538,6 +548,46 @@ elif "window.VPMEngine" in js or "const VPMEngine" in js or "var VPMEngine" in j
     ok("VPMEngine defined")
 else:
     fail("VPMEngine not found")
+
+if "BUILD SOURCE ONLY" in vpm_core_js and "vpm-engine-core.js" not in html:
+    ok("vpm-engine-core.js marked BUILD SOURCE ONLY (not loaded by index.html)")
+elif "BUILD SOURCE ONLY" in vpm_core_js:
+    ok("vpm-engine-core.js marked BUILD SOURCE ONLY")
+else:
+    fail("vpm-engine-core.js missing BUILD SOURCE ONLY header")
+
+if re.search(r"function vpmAccumPpo2\([^)]*\)[^{]*\{", vpm_src) and "function calculate(levels" in vpm_src:
+    vpm_fn_pos = vpm_src.find("function vpmAccumPpo2")
+    calc_pos = vpm_src.find("function calculate(levels")
+    if vpm_fn_pos >= 0 and calc_pos >= 0 and vpm_fn_pos < calc_pos:
+        ok("vpmAccumPpo2 at module scope (before calculate)")
+    else:
+        fail("vpmAccumPpo2 not at module scope before calculate()")
+else:
+    fail("vpmAccumPpo2 helper missing from VPM bundle")
+
+if "runtime += ascSegTime" in vpm_src:
+    ok("VPM inter-level deco ascent uses loadTissuesLinear return for runtime")
+else:
+    fail("VPM runInterLevelDecoAscent may recalculate ascent time instead of ascSegTime")
+
+if "continuationLevel must be shallower than current depth" in open(
+    os.path.join(os.path.dirname(os.path.abspath(path)), "zhl-schedule-core.js"),
+    encoding="utf-8",
+).read():
+    ok("ZHL continuation levels guarded for monotonic shallower depth")
+else:
+    fail("ZHL continuation level depth-order guard missing")
+
+if "terminate" in worker_bridge_js and "ZhlWorkerBridge = { calculateInWorker, terminate }" in worker_bridge_js:
+    ok("ZhlWorkerBridge exposes terminate() for worker lifecycle")
+else:
+    fail("ZhlWorkerBridge missing terminate() API")
+
+if os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(path)), "tools", "update_sw_version.py")):
+    ok("tools/update_sw_version.py syncs sw.js CACHE_VERSION from APP_VERSION")
+else:
+    fail("tools/update_sw_version.py missing for SW cache version sync")
 
 # 11.2 VPM-B bottom gas reads He from getBottomGasFractions
 vpm_path = re.search(r"_vpmBotFracs\s*=\s*getBottomGasFractions\(\)", js)

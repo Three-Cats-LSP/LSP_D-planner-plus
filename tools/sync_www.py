@@ -2,7 +2,13 @@
 from __future__ import annotations
 
 import shutil
+import sys
 from pathlib import Path
+
+_TOOLS = Path(__file__).resolve().parent
+if str(_TOOLS) not in sys.path:
+    sys.path.insert(0, str(_TOOLS))
+from update_sw_version import sync_sw_cache_version
 
 ROOT = Path(__file__).resolve().parents[1]
 WWW = ROOT / "www"
@@ -28,6 +34,7 @@ ROOT_DIRS = [
 
 
 def sync_www() -> None:
+    sync_sw_cache_version(ROOT / "sw.js")
     if WWW.exists():
         shutil.rmtree(WWW)
     WWW.mkdir(parents=True)

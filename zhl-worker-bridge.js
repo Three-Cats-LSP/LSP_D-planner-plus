@@ -37,5 +37,15 @@
     });
   }
 
-  global.ZhlWorkerBridge = { calculateInWorker };
+  function terminate() {
+    if (worker) {
+      worker.terminate();
+      worker = null;
+    }
+    const err = new Error('ZHL worker terminated');
+    pending.forEach(p => p.reject(err));
+    pending.clear();
+  }
+
+  global.ZhlWorkerBridge = { calculateInWorker, terminate };
 })(typeof window !== 'undefined' ? window : self);

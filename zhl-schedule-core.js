@@ -439,6 +439,9 @@ function runZhlScheduleCore(params) {
 
   if (_zhlPhaseIdx < _zhlContLevels.length) {
     const cont = _zhlContLevels[_zhlPhaseIdx];
+    if (cont.depth > cur) {
+      throw new Error('continuationLevel must be shallower than current depth');
+    }
     cur = cont.depth;
     const cO2 = cont.o2 / 100;
     const cHe = (cont.he || 0) / 100;
