@@ -261,13 +261,6 @@
             state.tissues[i].pHe = tissues[i].pHe;
         }
     }
-    function getInertFractions(o2Frac, heFrac, pAmb, setpoint, settings) {
-        if (!setpoint || setpoint <= 0) {
-            return { n2: 1 - o2Frac - heFrac, he: heFrac };
-        }
-        const den = Math.max(0.001, 1 - o2Frac);
-        return { n2: Math.max(0, 1 - o2Frac - heFrac) / den, he: heFrac / den };
-    }
     function loadTissuesConstant(state, depth, time, o2Frac, heFrac, settings, setpoint) {
         const pAmb = getAmbientPressure(depth, settings);
         const ccr = {
@@ -393,7 +386,9 @@
             } else if (pN2 <= surfaceInspiredN2 && pHe + pN2 >= surfaceInspiredN2 && pHe > 0) {
                 const kHe = Math.LN2 / ZHL16C_He[i].ht;
                 const kN2 = Math.LN2 / ZHL16C_N2[i].ht;
-                const decayTime = Math.log((surfaceInspiredN2 - pN2) / pHe) / (kN2 - kHe);
+                const logArg = (surfaceInspiredN2 - pN2) / pHe;
+                if (logArg <= 0 || Math.abs(kN2 - kHe) < 1e-12) { state.surfacePhaseVolumeTime[i] = 0; continue; }
+                const decayTime = Math.log(logArg) / (kN2 - kHe);
                 const integral = pHe / kHe * (1 - Math.exp(-kHe * decayTime))
                     + (pN2 - surfaceInspiredN2) / kN2 * (1 - Math.exp(-kN2 * decayTime));
                 state.surfacePhaseVolumeTime[i] = integral / (pHe + pN2 - surfaceInspiredN2);
@@ -515,11 +510,13 @@
         1.35, 
         1.50  
     ];
-    function setCriticalRadiiForConservatism(state, conservatism) {
+    function setCriticalRadiiForConservatism(state, conservatism, settings) {
         const consIdx = Math.max(0, Math.min(5, Math.round(conservatism || 0)));
         const factor = VPM_CRITICAL_RADIUS_FACTOR[consIdx];
-        const rN2 = INITIAL_RADIUS_N2 * factor;
-        const rHe = INITIAL_RADIUS_He * factor;
+        const surfP = settings ? getSurfacePressure(settings) : 1.01325;
+        const altFactor = Math.pow(1.01325 / surfP, 1.0 / 3.0);
+        const rN2 = INITIAL_RADIUS_N2 * altFactor * factor;
+        const rHe = INITIAL_RADIUS_He * altFactor * factor;
         for (let i = 0; i < NC; i++) {
             state.critRadiiN2[i] = rN2;
             state.critRadiiHe[i] = rHe;
@@ -705,7 +702,7 @@
             const limit = getGasPpO2Limit(gas, settings);
             if (gas.o2 >= 0.995 && depth > o2MaxDepth) continue;
             // Pure O2: allowed at o2MaxDepth if allowO2AtMOD is on
-            const pureO2Ok = gas.o2 >= 0.995 && allowO2AtMOD;
+            const pureO2Ok = gas.o2 >= 0.995 && (settings.allowO2AtMOD !== false);
             if (pureO2Ok || ppO2 <= limit) {
                 if (gas.o2 > bestO2) { bestO2 = gas.o2; bestGas = gas; }
             }
@@ -745,7 +742,7 @@
         }
         function calculateOTU(ppO2, time) {
         if (ppO2 <= 0.5) return 0;
-        return time * Math.pow((ppO2 - 0.5) / 0.5, OTU_EXPONENT);
+        return time * Math.pow((ppO2 - 0.5) / 0.5, 0.8333);
     }
     const CNS_RATE_ANDROID = [
         0.120, 0.122, 0.125, 0.127, 0.129, 0.130, 0.132, 0.134, 0.135, 0.138,
@@ -812,7 +809,7 @@
         const firstStop30sec = settings.firstStop30sec || false;
         const firstStopDoubleStep = settings.firstStopDoubleStep || false;
         const state = createVPMState(settings);
-        setCriticalRadiiForConservatism(state, conservatism);
+        setCriticalRadiiForConservatism(state, conservatism, settings);
         const normalizedDecoGases = safeDecoGases.map(g => {
             const f = gasFractionsFromPct(g.o2, g.he);
             return {
@@ -1377,9 +1374,7 @@
                 });
                 curO2 = o2Frac; curHe = heFrac; curGasLabel = `${level.o2}/${level.he}`; curSP = sp;
             } else if (depth < currentDepth) {
-                const ascResult = runInterLevelDecoAscent(depth);
-                curO2 = ascResult.o2; curHe = ascResult.he;
-                curGasLabel = ascResult.gasLabel; curSP = ascResult.sp;
+                runInterLevelDecoAscent(depth);
                 curO2 = o2Frac; curHe = heFrac; curGasLabel = `${level.o2}/${level.he}`; curSP = sp;
             }
             if (level.oc) forcedOCMode = true;
@@ -1402,7 +1397,7 @@
             }
             currentDepth = depth;
         }
-        setCriticalRadiiForConservatism(state, conservatism);
+        setCriticalRadiiForConservatism(state, conservatism, settings);
         calcCrushing(state, settings);
         applyNuclearRegeneration(state, runtime);
         calcAllowableGradients(state, model, settings, conservatism);
