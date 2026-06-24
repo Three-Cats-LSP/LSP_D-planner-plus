@@ -53,7 +53,7 @@ def start_server():
     return httpd, port
 
 
-def run_checks(page, port):
+def run_checks(page, port, browser):
     boot_app_page(page, f"http://127.0.0.1:{port}")
 
     settings = {
@@ -308,6 +308,58 @@ def run_checks(page, port):
     else:
         fail(f"ZHL worker parity failed: {worker_parity}")
 
+    hung_worker = "self.onmessage=function(e){};"
+    page.route(
+        "**/zhl-schedule-worker.js",
+        lambda route: route.fulfill(
+            status=200,
+            content_type="application/javascript",
+            body=hung_worker,
+        ),
+    )
+    page.add_init_script("window.__LSP_ZHL_WORKER_TIMEOUT_MS = 400;")
+    boot_app_page(page, f"http://127.0.0.1:{port}")
+    timeout_result = page.evaluate(
+        """async (settings) => {
+      const levels = [{ depth: 40, time: 25, o2: 21, he: 0 }];
+      const profileSplit = window.ZhlEngineBundle.splitZhlProfileLevels(levels);
+      try {
+        await window.ZhlWorkerBridge.calculateInWorker(
+          levels, [], settings, profileSplit, getZhlEnvironment(settings)
+        );
+        return { ok: false, msg: 'expected rejection' };
+      } catch (e) {
+        return { ok: (e && e.message || '').includes('ZHL worker timeout'), msg: e && e.message };
+      }
+    }""",
+        settings,
+    )
+    if timeout_result.get("ok"):
+        ok("ZHL worker rejects hung worker after timeout (issue #22)")
+    else:
+        fail(f"ZHL worker timeout failed: {timeout_result}")
+
+    page.unroute("**/zhl-schedule-worker.js")
+    page.close()
+    recovery_page = browser.new_page()
+    boot_app_page(recovery_page, f"http://127.0.0.1:{port}")
+    recovery = recovery_page.evaluate(
+        """async (settings) => {
+      const levels = [{ depth: 40, time: 25, o2: 21, he: 0 }];
+      const worker = await window.ZHLEngine.calculateInWorker(levels, [], settings);
+      return {
+        ok: !worker.error && worker.totalRuntime > 0,
+        rt: worker.totalRuntime,
+        err: worker.error,
+      };
+    }""",
+        settings,
+    )
+    if recovery.get("ok"):
+        ok("ZHL worker recovers after timeout — subsequent calculateInWorker succeeds")
+    else:
+        fail(f"ZHL worker recovery failed: {recovery}")
+
 
 def main():
     from playwright.sync_api import sync_playwright
@@ -320,7 +372,7 @@ def main():
         with sync_playwright() as p:
             browser = p.chromium.launch()
             page = browser.new_page()
-            run_checks(page, port)
+            run_checks(page, port, browser)
             browser.close()
     finally:
         httpd.shutdown()

@@ -3195,10 +3195,14 @@ audit_wf = os.path.join(os.path.dirname(__file__), ".github", "workflows", "audi
 if os.path.isfile(audit_wf):
     with open(audit_wf, encoding="utf-8") as f:
         audit_wf_src = f.read()
-    if "run_browser_regression.py" in audit_wf_src and "validate_pscr_e2e.py" in audit_wf_src:
-        ok("audit.yml CI runs browser regression + pSCR E2E (issue #1 follow-up)")
+    if (
+        "run_browser_regression.py" in audit_wf_src
+        and "validate_pscr_e2e.py" in audit_wf_src
+        and "run_native_regression.py" in audit_wf_src
+    ):
+        ok("audit.yml CI runs browser + native bridge regression + pSCR E2E")
     else:
-        fail("audit.yml must run browser regression and pSCR E2E (issue #1 follow-up)")
+        fail("audit.yml must run browser, native bridge, and pSCR E2E regression")
 else:
     fail("Missing .github/workflows/audit.yml CI workflow (issue #1)")
 
@@ -3632,6 +3636,10 @@ else:
 
 if capacitor_bridge_js and "readBlobFromHref" in capacitor_bridge_js and "xhr.open('GET', href, false)" in capacitor_bridge_js:
     ok("capacitor-bridge: sync blob read before revoke (issue #21 CR-1)")
+    if "typeof xhr.response === 'string'" in capacitor_bridge_js:
+        ok("capacitor-bridge: sync blob read fallback for WebViews without sync Blob XHR")
+    else:
+        fail("capacitor-bridge missing sync blob read string fallback")
 else:
     fail("capacitor-bridge missing sync blob read (issue #21 CR-1)")
 
@@ -3680,10 +3688,57 @@ if android_picker_js and "patchSelectValueSetters" in android_picker_js and "Lsp
 else:
     fail("android-select-picker missing value setter sync (issue #22)")
 
+if android_picker_js and "syncAllSelects" in android_picker_js and "selectSyncFns.forEach" not in android_picker_js:
+    ok("android-select-picker syncAll iterates wrapped selects, not WeakMap (issue #23)")
+else:
+    fail("android-select-picker syncAll still calls WeakMap.forEach (issue #23)")
+
 if worker_bridge_js and "killWorker" in worker_bridge_js and "ZHL worker timeout" in worker_bridge_js:
     ok("zhl-worker-bridge recreates worker after timeout (issue #22)")
 else:
     fail("zhl-worker-bridge missing worker recovery on timeout (issue #22)")
+
+if worker_bridge_js and "__LSP_ZHL_WORKER_TIMEOUT_MS" in worker_bridge_js:
+    ok("zhl-worker-bridge supports __LSP_ZHL_WORKER_TIMEOUT_MS regression override")
+else:
+    fail("zhl-worker-bridge missing __LSP_ZHL_WORKER_TIMEOUT_MS test hook")
+
+native_reg = os.path.join(os.path.dirname(__file__), "dev", "run_native_regression.py")
+native_select_fixture = os.path.join(os.path.dirname(__file__), "dev", "fixtures", "native-select.html")
+if os.path.isfile(native_reg) and os.path.isfile(native_select_fixture):
+    with open(native_reg, encoding="utf-8") as f:
+        native_reg_src = f.read()
+    if "android-select" in native_reg_src and "capacitor-bridge" in native_reg_src:
+        ok("dev/run_native_regression.py covers Android select + Capacitor bridge")
+    else:
+        fail("dev/run_native_regression.py missing Android select or Capacitor coverage")
+else:
+    fail("dev/run_native_regression.py or native-select fixture missing")
+
+eng_val = os.path.join(os.path.dirname(__file__), "engine_validation_regression.py")
+if os.path.isfile(eng_val):
+    with open(eng_val, encoding="utf-8") as f:
+        eng_val_src = f.read()
+    if "ZHL worker timeout" in eng_val_src and "worker recovers after timeout" in eng_val_src:
+        ok("engine_validation_regression.py tests ZHL worker timeout + recovery")
+    else:
+        fail("engine_validation_regression.py missing ZHL worker timeout/recovery tests")
+else:
+    fail("engine_validation_regression.py missing")
+
+if os.path.isfile(run_all_reg):
+    with open(run_all_reg, encoding="utf-8") as f:
+        run_all_native_src = f.read()
+    if "native_bridge" in run_all_native_src and "build_pages_site" in run_all_native_src:
+        ok("run_all_regression.py includes native_bridge suite + build_pages pre-step")
+    else:
+        fail("run_all_regression.py missing native_bridge suite or build_pages pre-step")
+
+ci_wf = os.path.join(os.path.dirname(__file__), ".github", "workflows", "ci.yml")
+if os.path.isfile(ci_wf) and "run_native_regression.py" in open(ci_wf, encoding="utf-8").read():
+    ok("ci.yml runs native bridge regression on push/PR")
+else:
+    fail("ci.yml missing native bridge regression job")
 
 if "__lspAppFullyReady = true" in html:
     ok("index.html sets __lspAppFullyReady after init (issue #21 CR-3)")

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Capacitor bridge fixture</title>
+</head>
+<body>
+  <p id="status">ready</p>
+  <script>
+    window.__capBridgeTest = { writes: [], shareCalls: 0 };
+    window.Capacitor = {
+      isNativePlatform: function () { return true; },
+      Plugins: {
+        Filesystem: {
+          requestPermissions: async function () { return { publicStorage: 'granted' }; },
+          stat: async function () { throw new Error('ENOENT'); },
+          writeFile: async function (opts) {
+            window.__capBridgeTest.writes.push(opts);
+            return { uri: 'file:///mock/Download/' + (opts.path || 'file') };
+          }
+        },
+        Share: {
+          share: async function () { window.__capBridgeTest.shareCalls += 1; }
+        }
+      }
+    };
+  </script>
+  <script src="/capacitor-bridge.js"></script>
+</body>
+</html>

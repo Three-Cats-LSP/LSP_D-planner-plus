@@ -55,6 +55,9 @@ jobs:
       - name: Run browser regression suites
         run: python dev/run_browser_regression.py
 
+      - name: Run native bridge regression (Android select + Capacitor export)
+        run: python dev/run_native_regression.py
+
       - name: Run pSCR E2E release gate
         env:
           SKIP_AUDIT: "1"

@@ -190,6 +190,16 @@
       xhr.send();
       if (xhr.status === 200 && xhr.response) return xhr.response;
     } catch (_) {}
+    try {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', href, false);
+      xhr.send();
+      if (xhr.status === 200 && xhr.response) {
+        if (xhr.response instanceof Blob) return xhr.response;
+        if (typeof xhr.response === 'string') return new Blob([xhr.response]);
+        if (xhr.response instanceof ArrayBuffer) return new Blob([xhr.response]);
+      }
+    } catch (_) {}
     return null;
   }
 

@@ -99,3 +99,26 @@ jobs:
 
       - name: Run engine validation regression
         run: python engine_validation_regression.py
+
+  native-bridge-regression:
+    name: Native bridge regression (Android select + Capacitor)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Playwright
+        run: |
+          sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list /etc/apt/sources.list.d/microsoft-*.list
+          sudo apt-get update -q
+          python -m pip install --upgrade pip
+          pip install playwright
+          playwright install chromium --with-deps
+
+      - name: Run native bridge regression
+        run: python dev/run_native_regression.py

@@ -69,8 +69,9 @@
   }
 
   function syncAllSelects() {
-    if (!selectSyncFns) return;
-    selectSyncFns.forEach(function (sync) { sync(); });
+    document.querySelectorAll('select[data-lsp-android-select="1"]').forEach(function (sel) {
+      syncSelect(sel);
+    });
   }
 
   global.LspAndroidSelect = { sync: syncSelect, syncAll: syncAllSelects };

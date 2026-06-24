@@ -28,9 +28,12 @@ JS_RUN_SUITE = """
         const check = () => {
           try {
             const w = frame.contentWindow;
+            if (w && w.VPMEngine && w.ZHLEngine && w.__lspAppFullyReady === true) {
+              w._zhlHeadless = true;
+              return cb(null, { win: w, version: w.APP_VERSION });
+            }
             if (w && w.VPMEngine && w.ZHLEngine) {
               w._zhlHeadless = true;
-              return setTimeout(() => cb(null, { win: w, version: w.APP_VERSION }), 1500);
             }
           } catch (_) {}
           if (bootErr) return cb(new Error('Boot: ' + bootErr));

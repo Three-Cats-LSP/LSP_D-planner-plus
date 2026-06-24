@@ -116,18 +116,28 @@ Open any HTML suite from a local HTTP server (or the [live app](https://threecat
 | [`tests-pscr-otu-cns.html`](tests-pscr-otu-cns.html) | pSCR OTU/CNS accumulation, loop gas labels, consumption refs |
 | [`tests-ccr-differential.html`](tests-ccr-differential.html) | CCR engine differential vs reference manifests |
 
-### Python gates (CI: [`.github/workflows/audit.yml`](.github/workflows/audit.yml))
+### Python gates (CI: [`.github/workflows/ci.yml`](.github/workflows/ci.yml) + release: [`.github/workflows/audit.yml`](.github/workflows/audit.yml))
 
 | Script | Scope |
 |--------|-------|
-| [`audit.py`](audit.py) | Static analysis — structure, safety rules, regression guards (~440 checks) |
+| [`audit.py`](audit.py) | Static analysis — structure, safety rules, regression guards (~520 checks) |
+| [`dev/run_all_regression.py`](dev/run_all_regression.py) | Unified orchestrator — `--tier ci` (4 suites) or `--tier release` (9 suites) |
 | [`dev/run_browser_regression.py`](dev/run_browser_regression.py) | Playwright runner for `tests-verify.html` + `tests-pscr-otu-cns.html` |
+| [`dev/run_native_regression.py`](dev/run_native_regression.py) | Android select picker + Capacitor blob-export bridge (Playwright) |
 | [`dev/validate_pscr_e2e.py`](dev/validate_pscr_e2e.py) | pSCR end-to-end release gate (audit + Playwright) |
 | [`dev/run_ccr_differential.py`](dev/run_ccr_differential.py) | CCR differential comparison suite |
 | [`dev/ccr_engine_validation_regression.py`](dev/ccr_engine_validation_regression.py) | CCR/pSCR malformed gas/profile validation |
-| [`engine_validation_regression.py`](engine_validation_regression.py) | Malformed-input validation gate (repo-root CI entry) |
+| [`engine_validation_regression.py`](engine_validation_regression.py) | Malformed-input validation + ZHL worker timeout/recovery |
 
-**Quick local run:** `python audit.py` then `python dev/run_browser_regression.py` (requires `pip install playwright && playwright install chromium`).
+**Quick local run:**
+
+```bash
+python tools/build_pages_site.py
+python dev/run_all_regression.py              # CI tier
+python dev/run_all_regression.py --tier release  # full release gates
+```
+
+Requires `pip install playwright && playwright install chromium` for browser/native suites.
 
 ---
 

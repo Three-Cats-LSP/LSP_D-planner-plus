@@ -4,7 +4,10 @@
 (function (global) {
   'use strict';
 
-  const WORKER_TIMEOUT_MS = 30000;
+  const WORKER_TIMEOUT_MS = (
+    typeof global.__LSP_ZHL_WORKER_TIMEOUT_MS === 'number'
+    && global.__LSP_ZHL_WORKER_TIMEOUT_MS > 0
+  ) ? global.__LSP_ZHL_WORKER_TIMEOUT_MS : 30000;
 
   let worker = null;
   let nextId = 1;

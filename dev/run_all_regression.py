@@ -26,6 +26,7 @@ if hasattr(sys.stderr, "reconfigure"):
 ROOT = Path(__file__).resolve().parents[1]
 ENGINE_VALIDATION_SCRIPT = ROOT / "engine_validation_regression.py"
 CCR_VALIDATION_SCRIPT = ROOT / "dev" / "ccr_engine_validation_regression.py"
+BUILD_PAGES_SCRIPT = ROOT / "tools" / "build_pages_site.py"
 
 SUITES = {
     "audit": {
@@ -77,7 +78,34 @@ SUITES = {
         "cwd": ROOT,
         "script": ROOT / "dev" / "run_ccr_differential.py",
     },
+    "native_bridge": {
+        "tiers": {"release", "all"},
+        "cmd": [sys.executable, "dev/run_native_regression.py"],
+        "cwd": ROOT,
+        "script": ROOT / "dev" / "run_native_regression.py",
+    },
 }
+
+
+def ensure_pages_built() -> None:
+    if not BUILD_PAGES_SCRIPT.is_file():
+        print(f"  -> SKIP build_pages (missing {BUILD_PAGES_SCRIPT})")
+        return
+    print("\n" + "=" * 60)
+    print("  Pre-step: build Pages site (_pages/)")
+    print("=" * 60)
+    proc = subprocess.run(
+        [sys.executable, str(BUILD_PAGES_SCRIPT)],
+        cwd=str(ROOT),
+        text=True,
+        capture_output=True,
+    )
+    if proc.stdout:
+        print(proc.stdout, end="" if proc.stdout.endswith("\n") else "\n")
+    if proc.stderr:
+        print(proc.stderr, end="" if proc.stderr.endswith("\n") else "\n", file=sys.stderr)
+    if proc.returncode != 0:
+        raise SystemExit(f"build_pages_site.py failed (exit {proc.returncode})")
 
 
 def run_suite(name: str, spec: dict) -> dict:
@@ -130,6 +158,8 @@ def main() -> int:
 
     print("LSP D-Planner — unified regression")
     print(f"Tier: {args.tier}")
+
+    ensure_pages_built()
 
     results = []
     for name, spec in SUITES.items():

@@ -1,0 +1,21 @@
+{
+  "pass": 14,
+  "fail": 0,
+  "passed": [
+    "android-select: initial button label is Air",
+    "android-select: value setter syncs button (issue #22)",
+    "android-select: selectedIndex setter syncs button",
+    "android-select: LspAndroidSelect.sync updates label",
+    "android-select: dynamically added select is wrapped",
+    "android-select: dynamic select value setter syncs",
+    "android-select: LspAndroidSelect.syncAll updates all buttons (issue #23)",
+    "android-select: syncAll also refreshes earlier selects",
+    "android-select: sheet opens on button click",
+    "android-select: disabled unselected option omitted from sheet",
+    "android-select: disabled option not offered in sheet",
+    "capacitor-bridge: click() intercept writes blob to Filesystem",
+    "capacitor-bridge: dispatchEvent(MouseEvent click) intercept (jsPDF path)",
+    "capacitor-bridge: uniqueFilename avoids overwrite when file exists"
+  ],
+  "failed": []
+}
