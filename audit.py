@@ -28,12 +28,13 @@ if not os.path.exists(path):
 with open(path, encoding="utf-8") as f:
     html = f.read()
 
-# Extract the main (non-src) script block
+# Extract all inline (non-src) script blocks — main app is the largest; do not use scripts[0]
+# alone (v2.51+ adds a small <head> bootstrap before the main block).
 scripts = re.findall(r"<script(?![^>]*src)[^>]*>(.*?)</script>", html, re.DOTALL)
 if not scripts:
     print("FATAL: No inline script block found")
     sys.exit(1)
-js = scripts[0]
+js = "\n\n".join(scripts)
 js_lines = js.split("\n")
 
 # Tier 3: Bühlmann core lives in zhl-engine-bundle.js — merge for ZHL pattern checks
