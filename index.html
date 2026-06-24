@@ -993,9 +993,9 @@ body.light-theme .ok { background:#f0fff4; border-color:#116622; color:#116622; 
  max-width: 100%;
  vertical-align: top;
  overflow-x: auto;
+ overflow-y: visible;
 }
 .deco-plan-caption {
- caption-side: top;
  text-align: left;
  padding: 0;
  margin: 0 0 10px;
@@ -1033,11 +1033,12 @@ body.light-theme .ok { background:#f0fff4; border-color:#116622; color:#116622; 
  font-size: 10px;
  gap: 4px 8px;
 }
+.deco-table-wrap .deco-plan-caption,
 .deco-table-wrap .deco-table-legend,
 .deco-table-wrap #decoAlerts,
 .deco-table-wrap #decoAlertsEmergency {
- width: 100%;
- box-sizing: border-box;
+  width: 100%;
+  box-sizing: border-box;
 }
 .deco-table-legend {
  display: flex;
@@ -2460,8 +2461,8 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 </div>
 <div class="deco-table-wrap">
+<div id="decoSummary" class="deco-plan-caption"></div>
 <table class="deco-table">
-<caption id="decoSummary" class="deco-plan-caption"></caption>
 <thead><tr><th>Phase</th><th>Depth</th><th>Stop</th><th>Mix</th><th>Run</th><th>TTS</th><th>PPO2</th><th class="end-col">END</th><th>EAD</th><th>CNS%</th></tr></thead>
 <tbody id="decoTableBody"></tbody>
 </table>
@@ -5418,7 +5419,8 @@ function syncDecoScheduleStackWidths() {
       return;
     }
     wrap.style.width = '';
-    const w = table.offsetWidth;
+    void wrap.offsetHeight;
+    const w = table.getBoundingClientRect().width || table.offsetWidth;
     if (w > 0) wrap.style.width = w + 'px';
   });
   const stack = document.getElementById('contingencyScheduleStack');
@@ -13669,14 +13671,14 @@ function calcContingency() {
   });
   resultEl.innerHTML = `
     <div class="deco-table-wrap">
+      <div class="deco-plan-caption">
+        <div class="alert ${severity}" style="margin:0;${contGasLose==='both'?'border-width:2px;':''}">
+          <span>${icon}</span>
+          <div><strong>${label}</strong> — Run ≈ <strong>${_emRunFmt}</strong> · Deco ≈ <strong>${_emDecoFmt}</strong>
+          <div style="font-size:11px;margin-top:3px;opacity:0.85;">${msg}</div></div>
+        </div>
+      </div>
       <table class="deco-table table-view" style="font-size:10px;">
-        <caption class="deco-plan-caption">
-          <div class="alert ${severity}" style="margin:0;${contGasLose==='both'?'border-width:2px;':''}">
-            <span>${icon}</span>
-            <div><strong>${label}</strong> — Run ≈ <strong>${_emRunFmt}</strong> · Deco ≈ <strong>${_emDecoFmt}</strong>
-            <div style="font-size:11px;margin-top:3px;opacity:0.85;">${msg}</div></div>
-          </div>
-        </caption>
         <thead><tr><th>Phase</th><th>Depth</th><th>Stop</th><th>Mix</th><th>Run</th><th>TTS</th><th>PPO2</th><th class="end-col">END</th><th>EAD</th><th>CNS%</th></tr></thead>
         <tbody id="contingencyTableBody">${newRows.replace(/<tr[^>]*data-phase="totals"[^>]*>[\s\S]*?<\/tr>/gi, '')}${emInfoRow}</tbody>
       </table>

@@ -3201,6 +3201,23 @@ if "function isAutomatedTestMode()" in html and "massiveSuite') === '1'" in html
 else:
     fail("index.html missing isAutomatedTestMode SW guard (issue #3)")
 
+if '<caption id="decoSummary"' not in html and '<div id="decoSummary" class="deco-plan-caption"></div>' in html:
+    ok("decoSummary is a div sibling, not a table caption (issue #12)")
+else:
+    fail("decoSummary must not be rendered as a table caption (issue #12)")
+
+if re.search(r"<caption[^>]*class=\"deco-plan-caption\"", html) is None and "deco-table-wrap .deco-plan-caption" in html:
+    ok("deco plan captions are div-based and width-constrained by deco-table-wrap (issue #12)")
+else:
+    fail("deco plan caption layout still allows caption-driven table widening (issue #12)")
+
+sync_start = js.find("function syncDecoScheduleStackWidths")
+sync_block = js[sync_start:sync_start + 700] if sync_start > 0 else ""
+if "void wrap.offsetHeight" in sync_block and "table.getBoundingClientRect().width" in sync_block:
+    ok("syncDecoScheduleStackWidths flushes layout before reading table width (issue #12)")
+else:
+    fail("syncDecoScheduleStackWidths missing layout flush/rect read before width stamp (issue #12)")
+
 if os.path.isfile(pscr_test_path):
     if "pSCR trimix fraction normalization" in pscr_test and "18/45" in pscr_test:
         ok("tests-pscr-otu-cns.html includes trimix fraction regression (issue #1)")
