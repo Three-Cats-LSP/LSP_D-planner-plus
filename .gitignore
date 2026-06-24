@@ -24,3 +24,8 @@ audit-out.txt
 dev/browser_regression_results.json
 dev/ccr_differential_report.json
 dev/pscr_e2e_results.json
+docs/CCR_DIFFERENTIAL_REPORT.md
+
+# Python bytecode (must not be tracked — recompiled on every test run)
+__pycache__/
+*.py[cod]
