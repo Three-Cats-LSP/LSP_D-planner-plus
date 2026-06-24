@@ -24,10 +24,12 @@ function isHTMLRequest(request) {
 function getAppBasePath() {
   const p = self.location.pathname || '/';
   if (p.includes('/d-planner-plus')) return '/d-planner-plus/';
+  if (p.includes('/d-planner-ccr')) return '/d-planner-ccr/';
   if (p.includes('/d-planner')) return '/d-planner/';
+  if (p.includes('/LSP_D-planner-plus')) return '/LSP_D-planner-plus/';
   if (p.includes('/LSP_D-planner')) return '/LSP_D-planner/';
   const swDir = p.replace(/[^/]*$/, '');
-  return swDir || '/LSP_D-planner/';
+  return swDir || '/LSP_D-planner-plus/';
 }
 
 const APP_BASE = getAppBasePath();

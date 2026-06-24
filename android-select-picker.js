@@ -67,7 +67,13 @@
         item.setAttribute('role', 'option');
         if (index === sel.selectedIndex) item.classList.add('is-selected');
         item.textContent = opt.textContent || opt.label || opt.value;
+        if (opt.disabled) {
+          item.disabled = true;
+          item.setAttribute('aria-disabled', 'true');
+          item.classList.add('is-disabled-option');
+        }
         item.addEventListener('click', function () {
+          if (opt.disabled) return;
           sel.selectedIndex = index;
           sel.dispatchEvent(new Event('change', { bubbles: true }));
           syncBtn();
@@ -82,6 +88,12 @@
     overlay.appendChild(panel);
     document.body.appendChild(overlay);
     document.body.classList.add('lsp-android-select-open');
+    var selectedItem = list.querySelector('.is-selected');
+    if (selectedItem) {
+      requestAnimationFrame(function () {
+        selectedItem.scrollIntoView({ block: 'nearest' });
+      });
+    }
   }
 
   function wrapSelect(sel) {
@@ -125,7 +137,7 @@
     sel.addEventListener('touchstart', blockNative, { passive: false });
     sel.addEventListener('focus', function () { sel.blur(); });
 
-    new MutationObserver(syncBtn).observe(sel, {
+    new MutationObserver(function () { syncBtn(); }).observe(sel, {
       childList: true,
       subtree: true,
       attributes: true,

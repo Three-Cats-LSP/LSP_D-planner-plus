@@ -2712,10 +2712,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.03['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.03")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.04['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.04")
 else:
-    fail("APP_VERSION not bumped to 2.51.03 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.04 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -3599,6 +3599,36 @@ if "lsp-android-select-btn" in html:
     ok("Android custom select picker CSS present")
 else:
     fail("Android custom select picker CSS missing")
+
+if android_picker_js and "if (opt.disabled) return" in android_picker_js and "scrollIntoView" in android_picker_js:
+    ok("android-select-picker: disabled options non-interactive + scroll to selected (issue #20)")
+else:
+    fail("android-select-picker missing disabled guard or scrollIntoView (issue #20)")
+
+if android_picker_js and "new MutationObserver(function () { syncBtn(); })" in android_picker_js:
+    ok("android-select-picker: MutationObserver wraps syncBtn callback (issue #20)")
+else:
+    fail("android-select-picker MutationObserver callback not wrapped (issue #20)")
+
+sw_path = os.path.join(os.path.dirname(__file__), "sw.js")
+sw_js = ""
+if os.path.isfile(sw_path):
+    with open(sw_path, encoding="utf-8") as f:
+        sw_js = f.read()
+if sw_js and "/LSP_D-planner-plus" in sw_js and "return swDir || '/LSP_D-planner-plus/'" in sw_js:
+    ok("sw.js getAppBasePath checks LSP_D-planner-plus before LSP_D-planner (issue #20)")
+else:
+    fail("sw.js getAppBasePath missing LSP_D-planner-plus path ordering (issue #20)")
+
+if worker_bridge_js and "pending.forEach(p => p.reject(new Error(msg)))" in worker_bridge_js:
+    ok("zhl-worker-bridge onerror rejects with fresh Error per pending (issue #20)")
+else:
+    fail("zhl-worker-bridge onerror shares single Error across pending (issue #20)")
+
+if capacitor_bridge_js and "uniqueFilename" in capacitor_bridge_js and "return null" in capacitor_bridge_js.split("async function saveFile", 1)[-1][:1200]:
+    ok("capacitor-bridge saveFile: uniqueFilename + three-tier fallback complete")
+else:
+    fail("capacitor-bridge saveFile missing uniqueFilename or tier fallback")
 
 if "android-webview" in html and "isAndroidWebView" in html:
     ok("Early Android WebView detection script present")

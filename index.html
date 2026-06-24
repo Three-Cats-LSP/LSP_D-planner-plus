@@ -840,6 +840,17 @@ html.capacitor-native .lsp-android-select-native {
  font-weight: 600;
 }
 .lsp-android-select-item:active { background: rgba(0, 200, 255, 0.22); }
+.lsp-android-select-item:disabled,
+.lsp-android-select-item[aria-disabled="true"],
+.lsp-android-select-item.is-disabled-option {
+ opacity: 0.55;
+ cursor: default;
+}
+.lsp-android-select-item:disabled:active,
+.lsp-android-select-item[aria-disabled="true"]:active,
+.lsp-android-select-item.is-disabled-option:active {
+ background: transparent;
+}
 body.light-theme .lsp-android-select-panel { background: #fff; border-color: rgba(0, 0, 0, 0.12); }
 body.light-theme .lsp-android-select-title { color: #0077aa; }
 body.light-theme .lsp-android-select-item { color: #1a1a1a; }

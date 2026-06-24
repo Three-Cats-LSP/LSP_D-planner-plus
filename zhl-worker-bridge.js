@@ -20,8 +20,8 @@
         else p.reject(new Error(error || 'Worker calculation failed'));
       };
       worker.onerror = function (err) {
-        const error = new Error((err && err.message) || 'Worker error');
-        pending.forEach(p => p.reject(error));
+        const msg = (err && err.message) || 'Worker error';
+        pending.forEach(p => p.reject(new Error(msg)));
         pending.clear();
         worker = null;
       };
