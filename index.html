@@ -2346,6 +2346,23 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <button onclick="clearVpmRepState()" style="padding:3px 10px;background:none;border:1px solid var(--border);border-radius:5px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;cursor:pointer;letter-spacing:0.5px;" title="Clear saved dive state">× CLEAR</button>
 <span id="vpmRepLabel" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);"></span>
 </div>
+<!-- Feature B: Bühlmann repetitive dive panel — hidden until first ZHL result available -->
+<div id="zhlRepRow" style="display:none;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px;padding:10px 12px;background:var(--card2);border:1px solid var(--border);border-radius:8px;">
+<label style="display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);cursor:pointer;">
+<input id="zhlRepMode" onchange="updateZhlRepUI()" style="width:14px;height:14px;accent-color:var(--accent);cursor:pointer;" type="checkbox"/>
+<span>Repetitive Bühlmann Dive</span>
+<span class="tip-icon" onclick="showTip('Repetitive Bühlmann Dive','Carries end-of-dive tissue loading (N₂/He) from the previous Bühlmann schedule.\n\nDuring the surface interval, tissues off-gas using Haldane kinetics before the next dive begins.\n\nEnable after generating a Bühlmann schedule, then set surface interval minutes.')">
+<svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg>
+</span>
+</label>
+<div id="zhlRepSIRow" style="display:none;align-items:center;gap:6px;">
+<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">Surface interval:</span>
+<input id="zhlSurfaceInterval" max="10080" min="0" step="5" style="width:60px;padding:3px 6px;border-radius:5px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;" type="number" value="60"/>
+<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">min</span>
+</div>
+<button onclick="clearZhlRepState()" style="padding:3px 10px;background:none;border:1px solid var(--border);border-radius:5px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;cursor:pointer;letter-spacing:0.5px;" title="Clear saved dive state">× CLEAR</button>
+<span id="zhlRepLabel" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);"></span>
+</div>
 <div id="decoResult" style="display:none;margin-top:8px;">
 <div class="card">
 <div class="u9">
@@ -3962,13 +3979,27 @@ function updateHeHalfTime() {
   // Update global array in-place (preserves all references)
   for (let i = 0; i < 16; i++) ZHL16C_HE_HT[i] = src[i];
   // Patch VPMEngine's internal ZHL16C_He[].ht to match (comp [0] differs: 1.88 vs 1.51)
+  _vpmHeHtSyncFailed = false;
   if (window.VPMEngine && typeof window.VPMEngine._syncHeHalfTimes === 'function') {
     window.VPMEngine._syncHeHalfTimes(src);
   } else if (window.VPMEngine && typeof window.VPMEngine._setHeHT1 === 'function') {
     window.VPMEngine._setHeHT1(src[0]);
   } else if (window.VPMEngine) {
     console.warn('[LSP] VPMEngine He half-time sync skipped — _syncHeHalfTimes not available');
+    _vpmHeHtSyncFailed = true;
   }
+}
+let _vpmHeHtSyncFailed = false;
+function appendHeHtSyncAlert(container) {
+  if (!_vpmHeHtSyncFailed || !container) return;
+  container.insertAdjacentHTML('beforeend',
+    '<div class="alert" style="margin-top:8px;background:rgba(255,165,0,0.15);border-color:orange;color:var(--text);">' +
+    '<span>⚠</span><div><strong>He half-time sync unavailable.</strong> VPM engine could not receive Bühlmann He HT updates — VPM schedules may use stale He compartment times until refresh.</div></div>');
+}
+function renderDecoAlerts(container, cnsHtml) {
+  if (!container) return;
+  container.innerHTML = cnsHtml || '';
+  appendHeHtSyncAlert(container);
 }
 const FN2_AIR   = 0.79;
 const FN2_EAN32 = 0.68;
@@ -4360,14 +4391,21 @@ function setDecoAlgorithm(model, skipSave) {
   // Conservatism row: show for VPM-B and VPM-B/GFS
   document.getElementById('conservatismRow').style.display = isVPM ? 'flex' : 'none';
 
-  // Repetitive dive panel: only meaningful for VPM; hide when switching to Bühlmann
-  if (!isVPM) {
+  // Repetitive dive panels: VPM vs Bühlmann
+  if (isVPM) {
+    const zhlRepRow = document.getElementById('zhlRepRow');
+    if (zhlRepRow) zhlRepRow.style.display = 'none';
+    if (_lastVPMResult) {
+      const vpmRepRow = document.getElementById('vpmRepRow');
+      if (vpmRepRow) vpmRepRow.style.display = 'flex';
+    }
+  } else {
     const vpmRepRow = document.getElementById('vpmRepRow');
     if (vpmRepRow) vpmRepRow.style.display = 'none';
-  } else if (_lastVPMResult) {
-    // Re-show if we already have a result and switched back to VPM
-    const vpmRepRow = document.getElementById('vpmRepRow');
-    if (vpmRepRow) vpmRepRow.style.display = 'flex';
+    if (peekZhlRepState()) {
+      const zhlRepRow = document.getElementById('zhlRepRow');
+      if (zhlRepRow) zhlRepRow.style.display = 'flex';
+    }
   }
 
   // (algoRow in the Deco card contains algo select + conservatism; envRow in header contains ENV settings)
@@ -7307,6 +7345,32 @@ function clearVpmRepState() {
   const row = document.getElementById('vpmRepRow');
   if (row) row.style.display = 'none';
 }
+
+function updateZhlRepUI() {
+  const cb = document.getElementById('zhlRepMode');
+  const siRow = document.getElementById('zhlRepSIRow');
+  const lbl = document.getElementById('zhlRepLabel');
+  if (!cb) return;
+  if (cb.checked) {
+    if (siRow) siRow.style.display = 'flex';
+    if (lbl && peekZhlRepState()) lbl.textContent = '● tissue state loaded';
+  } else {
+    if (siRow) siRow.style.display = 'none';
+    if (lbl) lbl.textContent = '';
+  }
+}
+
+function clearZhlRepState() {
+  window._zhlRepState = null;
+  const cb = document.getElementById('zhlRepMode');
+  if (cb) cb.checked = false;
+  const siRow = document.getElementById('zhlRepSIRow');
+  if (siRow) siRow.style.display = 'none';
+  const lbl = document.getElementById('zhlRepLabel');
+  if (lbl) lbl.textContent = '';
+  const row = document.getElementById('zhlRepRow');
+  if (row) row.style.display = 'none';
+}
 // ───────────────────────────────────────────────────────────────────────────────
 
 function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, surfaceAscentRate,
@@ -7320,9 +7384,8 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
 
   // Gather deco gases from DOM (same as Bühlmann)
   const decoGases = [];
-  for (let n = 1; n <= 3; n++) {
-    const mixId = n === 1 ? 'dg1Mix' : `dg${n}Mix`;
-    const mixEl = document.getElementById(mixId);
+  for (const n of getAllDecoGasIds()) {
+    const mixEl = document.getElementById(`dg${n}Mix`);
     if (!mixEl || mixEl.value === 'none' || !mixEl.value) continue;
     const o2pct = mixEl.value === 'o2'    ? 100
                 : mixEl.value === 'ean50' ? 50
@@ -7335,8 +7398,7 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
 
   // Build settings object for VPMEngine
   // IMPORTANT: waterType 0=salt, 1=fresh, 2=EN13319 (VPM engine uses its own SLP constants)
-  const _wdSel = document.getElementById('waterDensitySelect')?.value;
-  const waterTypeVal = _wdSel === 'fresh' ? 1 : _wdSel === 'en13319' ? 2 : 0;
+  const waterTypeVal = getWaterTypeForVPM();
 
   const settings = {
     metric:            dU,
@@ -7405,8 +7467,7 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
   }];
 
   let result;
-  const vpmApi = (typeof window !== 'undefined' && window.VPMEngine) ||
-    (typeof VPMEngine !== 'undefined' ? VPMEngine : null);
+  const vpmApi = (typeof window !== 'undefined' && window.VPMEngine) ? window.VPMEngine : null;
   if (!vpmApi || typeof vpmApi.calculate !== 'function') {
     const msg = 'VPM engine failed to load (vpm-engine-bundle.js). Check network or refresh.';
     console.error('[VPM]', msg);
@@ -7430,7 +7491,7 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
   }
 
   // ── Feature B: save dive result for next repetitive dive ───────────────────────
-  if (result.finalTissues) {
+  if (result.finalTissues && !window._contingencyRunning) {
     _lastVPMResult = {
       finalTissues:    result.finalTissues,
       finalBubbleState: result.finalBubbleState,
@@ -7864,11 +7925,10 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   });
   const alertsContainer = document.getElementById('decoAlerts');
   if (alertsContainer) {
-    if (result.totalCNS != null && result.totalCNS >= 80) {
-      alertsContainer.innerHTML = `<div class="alert" style="margin-top:8px;background:#ffff00;border-color:#cccc00;color:#111;font-weight:700;"><span>☢</span><div><strong>HIGH CNS%.</strong> CNS oxygen load ${result.totalCNS.toFixed(0)}% exceeds 80%. Reduce deco gas ppO₂, switch depth, or bottom time.</div></div>`;
-    } else {
-      alertsContainer.innerHTML = '';
-    }
+    const cnsAlert = result.totalCNS != null && result.totalCNS >= 80
+      ? `<div class="alert" style="margin-top:8px;background:#ffff00;border-color:#cccc00;color:#111;font-weight:700;"><span>☢</span><div><strong>HIGH CNS%.</strong> CNS oxygen load ${result.totalCNS.toFixed(0)}% exceeds 80%. Reduce deco gas ppO₂, switch depth, or bottom time.</div></div>`
+      : '';
+    renderDecoAlerts(alertsContainer, cnsAlert);
   }
 
   // ── Min Deco Profile enforcement (VPM) ──────────────
@@ -8276,11 +8336,39 @@ function zhlOptimalSwitchDepth(fO2, ctx) {
   return ZhlEngineBundle.zhlOptimalSwitchDepth(fO2, ctx);
 }
 
-function takeZhlRepStateSnapshot() {
-  const snap = (window._zhlRepState && Array.isArray(window._zhlRepState.tissues))
+function peekZhlRepState() {
+  return (window._zhlRepState && Array.isArray(window._zhlRepState.tissues))
     ? window._zhlRepState : null;
-  window._zhlRepState = null;
-  return snap;
+}
+
+function saveZhlRepState(tissues, surfaceIntervalMin) {
+  if (tissues && tissues.length) {
+    window._zhlRepState = { tissues, surfaceIntervalMin: surfaceIntervalMin || 0 };
+  }
+}
+
+function getZhlRepStateForSchedule() {
+  const zhlRepEl = document.getElementById('zhlRepMode');
+  const snap = peekZhlRepState();
+  if (!zhlRepEl?.checked || !snap) return null;
+  const siMin = parseFloat(document.getElementById('zhlSurfaceInterval')?.value || '60') || 0;
+  return { tissues: snap.tissues, surfaceIntervalMin: siMin };
+}
+
+function takeZhlRepStateSnapshot() {
+  return getZhlRepStateForSchedule();
+}
+
+function getWaterTypeForVPM() {
+  const sel = document.getElementById('waterDensitySelect')?.value
+    || document.getElementById('waterDensitySelectRec')?.value;
+  if (sel === 'fresh') return 1;
+  if (sel === 'en13319') return 2;
+  if (sel === 'salt') return 0;
+  const bpm = BAR_PER_METRE || 0.1;
+  if (Math.abs(bpm - WATER_DENSITY.fresh) < 0.0001) return 1;
+  if (Math.abs(bpm - WATER_DENSITY.en13319) < 0.0001) return 2;
+  return 0;
 }
 
 function buildZhlScheduleParamsFromEngine(levels, decoGases, settings, profileSplit) {
@@ -8465,7 +8553,7 @@ function runDecoSchedule() {
 
   // ── VPM-B / VPM-B+GFS branch ──────────────────────────────────────
   const decoModelSel = document.getElementById('algorithmSelect')?.value || 'ZHLC_GF';
-  if ((decoModelSel === 'VPMB' || decoModelSel === 'VPMB_GFS') && typeof VPMEngine !== 'undefined') {
+  if ((decoModelSel === 'VPMB' || decoModelSel === 'VPMB_GFS') && window.VPMEngine) {
     return runVPMSchedule(depthM, bt, descentRate, rate, decoRate, surfaceRate,
                           decoStep, lastStop, minStopT, ppo2Bottom, ppo2Deco,
                           decoModelSel);
@@ -8559,6 +8647,11 @@ function runDecoSchedule() {
     totalOTU: _headlessExposure.totalOTU,
     totalCNS: _headlessExposure.totalCNS,
   };
+  if (!_contingencyRunning && tissues && tissues.length) {
+    saveZhlRepState(tissues, 0);
+    const zhlRepRow = document.getElementById('zhlRepRow');
+    if (zhlRepRow) zhlRepRow.style.display = 'flex';
+  }
   const bottomMix = document.getElementById('decoGas')?.value || 'air';
   const maxPPO2 = Math.max(ppo2Deco, 1.5, ppo2Bottom);
   function getPPO2Limit(fO2) {
@@ -9034,11 +9127,10 @@ function runDecoSchedule() {
   const decoAlertsEl = document.getElementById('decoAlerts');
   if (decoAlertsEl && !_contingencyRunning) {
     const cnsPctNum = totalCNSfrac * 100;
-    if (cnsPctNum > 80) {
-      decoAlertsEl.innerHTML = `<div class="alert" style="margin-top:8px;background:#ffff00;border-color:#cccc00;color:#111;font-weight:700;"><span>☢</span><div><strong>HIGH CNS%.</strong> CNS oxygen load ${cnsPctNum.toFixed(0)}% exceeds 80%. Reduce deco gas ppO₂, switch depth, or bottom time.</div></div>`;
-    } else {
-      decoAlertsEl.innerHTML = '';
-    }
+    const cnsAlert = cnsPctNum > 80
+      ? `<div class="alert" style="margin-top:8px;background:#ffff00;border-color:#cccc00;color:#111;font-weight:700;"><span>☢</span><div><strong>HIGH CNS%.</strong> CNS oxygen load ${cnsPctNum.toFixed(0)}% exceeds 80%. Reduce deco gas ppO₂, switch depth, or bottom time.</div></div>`
+      : '';
+    renderDecoAlerts(decoAlertsEl, cnsAlert);
   }
 
   // Expose consumption for the Gas Plan tab (deco/travel one-way requirements).
@@ -9517,8 +9609,9 @@ if (typeof window !== 'undefined') window.validateZhlHeadlessProfile = validateZ
 const ZHLEngine = (() => {
   function mergeRepSettings(settings) {
     const s = settings || {};
-    const repSnap = takeZhlRepStateSnapshot();
-    if (repSnap && !(s._preTissues && s._preTissues.length)) {
+    if (s._preTissues && s._preTissues.length) return s;
+    const repSnap = peekZhlRepState();
+    if (repSnap) {
       return { ...s, _preTissues: repSnap.tissues, _surfaceInterval: repSnap.surfaceIntervalMin || 0 };
     }
     return s;
@@ -12308,8 +12401,8 @@ function copyGasPlan() {
 }
 
 async function buildGasPlanPDF() {
+  if (!window.jspdf || !window.jspdf.jsPDF) { alert('PDF library not loaded.'); return; }
   const { jsPDF } = window.jspdf;
-  if (!jsPDF) { alert('PDF library not loaded.'); return; }
   calcGasPlan();
   const gp = window._lastGasPlan;
   if (!gp || !gp.rows.length) { alert('Configure a bottom gas cylinder first.'); return; }
@@ -15051,8 +15144,8 @@ async function exportPDF(opts) {
   const _incGFCurve  = opts.gfCurve  !== false;
   const _incTissue   = opts.tissue   !== false;
 
+  if (!window.jspdf || !window.jspdf.jsPDF) { alert('PDF library not loaded. Please check your internet connection.'); return; }
   const { jsPDF } = window.jspdf;
-  if (!jsPDF) { alert('PDF library not loaded. Please check your internet connection.'); return; }
 
   const doc = new jsPDF({ unit:'mm', format:'a4', orientation:'portrait' });
   await loadPDFFonts(doc);
@@ -16597,6 +16690,7 @@ window.addEventListener('load', function() {
   const SW_MIGRATION_FLAG = `lspSwMigrated:${APP_VERSION}`;
   (async () => {
     try {
+      if (new URLSearchParams(location.search).get('regression') === '1') return;
       const prev = localStorage.getItem(SW_VERSION_KEY);
       if (prev === APP_VERSION || sessionStorage.getItem(SW_MIGRATION_FLAG) === '1') return;
       sessionStorage.setItem(SW_MIGRATION_FLAG, '1');
@@ -16606,7 +16700,7 @@ window.addEventListener('load', function() {
       }
       if (window.caches && typeof caches.keys === 'function') {
         const keys = await caches.keys();
-        await Promise.all(keys.filter(k => /^lsp-dplanner-ccr-v/i.test(k)).map(k => caches.delete(k)));
+        await Promise.all(keys.filter(k => /^lsp-dplanner-(ccr|plus)-v/i.test(k)).map(k => caches.delete(k)));
       }
       localStorage.setItem(SW_VERSION_KEY, APP_VERSION);
       window.location.reload();
@@ -16615,7 +16709,7 @@ window.addEventListener('load', function() {
     }
   })();
 
-  if ('serviceWorker' in navigator) {
+  if ('serviceWorker' in navigator && new URLSearchParams(location.search).get('regression') !== '1') {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register(`sw.js?v=${APP_VERSION}`, { updateViaCache: 'none' })
         .then(r => {

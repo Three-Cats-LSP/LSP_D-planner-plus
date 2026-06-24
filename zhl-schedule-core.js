@@ -71,8 +71,8 @@ function runZhlScheduleCore(params) {
   let tissues = initTissues();
 
   // ── Repetitive dive tissue carry (ZHL) ───────────────────────────────────
-  // ZHLEngine.calculate() sets window._zhlRepState before calling runDecoSchedule
-  // to carry end-of-dive tissues from a previous dive with a surface interval.
+  // DOM schedule writes window._zhlRepState after each Bühlmann run; repState is
+  // injected when the user enables the repetitive-dive checkbox.
   if (params.repState && Array.isArray(params.repState.tissues)) {
     const rep = params.repState;
     for (let i = 0; i < tissues.length && i < rep.tissues.length; i++) {

@@ -1630,6 +1630,7 @@
     }
     return {
         calculate,
+        load: function load() { return true; },
         createVPMState,
         /** Sync all 16 He compartment half-times from ZHL16C_HE_HT array (Baker / Bühlmann 2003). */
         _syncHeHalfTimes: function(htArray) {

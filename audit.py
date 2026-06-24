@@ -601,6 +601,62 @@ if "VPMEngine He half-time sync skipped" in js:
 else:
     fail("updateHeHalfTime silent no-op when VPM sync unavailable (BUG-D)")
 
+if "function saveZhlRepState(" in js and "saveZhlRepState(tissues" in js:
+    ok("ZHL repetitive dive writes window._zhlRepState after schedule (Issue #2)")
+else:
+    fail("ZHL repetitive dive never saves window._zhlRepState (Issue #2)")
+
+if 'id="zhlRepRow"' in html and "function updateZhlRepUI()" in js:
+    ok("Bühlmann repetitive dive UI panel present (Issue #2)")
+else:
+    fail("Bühlmann repetitive dive UI missing (Issue #2)")
+
+if "function peekZhlRepState()" in js and "peekZhlRepState()" in js[js.find("function mergeRepSettings"):js.find("function mergeRepSettings") + 500]:
+    snap_fn = js[js.find("function takeZhlRepStateSnapshot()"):js.find("function takeZhlRepStateSnapshot()") + 300]
+    if "getZhlRepStateForSchedule()" in snap_fn and "window._zhlRepState = null" not in snap_fn:
+        ok("mergeRepSettings peeks _zhlRepState without destructive clear (Issue #2)")
+    else:
+        fail("takeZhlRepStateSnapshot still clears window._zhlRepState (Issue #2)")
+else:
+    fail("peekZhlRepState / non-destructive rep merge missing (Issue #2)")
+
+if "result.finalTissues && !window._contingencyRunning" in js:
+    ok("VPM repetitive state skipped during contingency runs (Issue #2)")
+else:
+    fail("Contingency may overwrite _lastVPMResult (Issue #2)")
+
+if ("load: function load()" in vpm_src) or ("function load()" in vpm_src and "load," in vpm_src):
+    ok("VPMEngine.load() noop API present (Issue #2)")
+else:
+    fail("VPMEngine.load() missing from bundle (Issue #2)")
+
+if "for (const n of getAllDecoGasIds())" in js and "runVPMSchedule" in js:
+    ok("runVPMSchedule deco gas loop uses getAllDecoGasIds() (Issue #2)")
+else:
+    fail("runVPMSchedule still hardcodes deco gas slots 1..3 (Issue #2)")
+
+if "function getWaterTypeForVPM()" in js:
+    ok("VPM waterType derived from BAR_PER_METRE when select missing (Issue #2)")
+else:
+    fail("getWaterTypeForVPM helper missing (Issue #2)")
+
+if "function renderDecoAlerts(" in js and "_vpmHeHtSyncFailed" in js:
+    ok("He HT sync failure surfaces in decoAlerts UI (Issue #2)")
+else:
+    fail("He HT sync failure console-only (Issue #2)")
+
+if "window.VPMEngine) {" in js and "typeof VPMEngine !== 'undefined'" not in js:
+    ok("VPM branch uses window.VPMEngine consistently (Issue #2)")
+elif "window.VPMEngine" in js:
+    ok("VPM branch uses window.VPMEngine (Issue #2)")
+else:
+    fail("Bare VPMEngine reference may throw in strict scope (Issue #2)")
+
+if re.search(r"lsp-dplanner-\(ccr\|plus\)-v", html):
+    ok("SW cache migration regex covers ccr and plus prefixes (Issue #2)")
+else:
+    fail("SW cache migration still only matches lsp-dplanner-ccr-v (Issue #2)")
+
 if "Mirrors VPMEngine.calculate(" not in js:
     ok("ZHLEngine header comment avoids VPMEngine.calculate linter false positive")
 else:
@@ -1436,7 +1492,8 @@ else:
 
 # 26.5 waterTypeVal maps EN13319 to 2
 if ("'en13319' ? 2" in js or '"en13319" ? 2' in js or
-    "=== 'en13319' ? 2" in js or '=== "en13319" ? 2' in js):
+    "=== 'en13319' ? 2" in js or '=== "en13319" ? 2' in js or
+    "sel === 'en13319') return 2" in js):
     ok("waterTypeVal: EN13319 mapped to 2 (not silently 0/salt)")
 else:
     fail("waterTypeVal: EN13319 not mapped to 2 — VPM engine uses wrong water factor for EN13319")
