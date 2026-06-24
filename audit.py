@@ -2706,10 +2706,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.00['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.00")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.01['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.01")
 else:
-    fail("APP_VERSION not bumped to 2.51.00 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.01 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -3560,6 +3560,25 @@ if os.path.isfile(manifest_path):
         fail("site-assets-manifest missing app-version.js or vpm-engine-bundle.js")
 else:
     fail("site-assets-manifest.txt missing — run tools/build_pages_site.py")
+
+if "html.capacitor-native select" in html and "menulist-button" in html:
+    ok("Capacitor native select uses system menulist (Android picker fix)")
+else:
+    fail("Capacitor native select menulist CSS missing (Android picker fix)")
+
+if re.search(r'id="dg1Mix"[\s\S]*?ean50[\s\S]*?selected', html) or re.search(
+    r'id="dg1Mix"[\s\S]*?selected[\s\S]*?value="ean50"', html
+):
+    ok("dg1Mix defaults to EAN50 (50%) on first load")
+else:
+    fail("dg1Mix missing selected EAN50 default")
+
+if "document.documentElement.classList.add('capacitor-native')" in open(
+    os.path.join(os.path.dirname(__file__), "capacitor-bridge.js"), encoding="utf-8"
+).read():
+    ok("capacitor-bridge.js marks html.capacitor-native on Android")
+else:
+    fail("capacitor-bridge.js missing capacitor-native class hook")
 
 print("=" * 60)
 

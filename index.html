@@ -732,6 +732,23 @@ body.algo-buh .buh-only { display: flex !important; }
  cursor: pointer;
 }
 
+/* Capacitor/Android WebView: appearance:none + web fonts break the native select picker (blank list). */
+html.capacitor-native select {
+ -webkit-appearance: menulist-button;
+ appearance: auto;
+ font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+ color: #000;
+ background-color: #fff;
+}
+html.capacitor-native .field select {
+ background-image: none;
+ padding-right: 10px;
+}
+html.capacitor-native body.light-theme select {
+ color: #000 !important;
+ background-color: #fff;
+}
+
 /* ── BUTTON ── */
 .btn-calc { width: 100%;
  padding: 12px;
@@ -2342,7 +2359,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <label>Gas Mix</label>
 <select id="dg1Mix" onchange="toggleDecoCustomO2('dg1Mix','dg1CustomField');toggleDecoTrimix(1);updateGasMODDisplays()">
 <option value="none">— None —</option>
-<option value="ean50">EAN50 (50%)</option>
+<option selected="" value="ean50">EAN50 (50%)</option>
 <option value="ean80">EAN80 (80%)</option>
 <option value="o2">100% O₂</option>
 <option value="custom">Custom O₂ %</option>
@@ -3570,6 +3587,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
   }
   // Primary: userAgent flag injected by MainActivity
   if (window.Capacitor && window.Capacitor.isNativePlatform()) {
+    document.documentElement.classList.add('capacitor-native');
     hideApkIcons();
   } else {
     document.addEventListener('deviceready', hideApkIcons);
@@ -16644,6 +16662,14 @@ document.addEventListener('DOMContentLoaded', function() {
       if (el) el.value = __lspDefaults[id];
     });
     handleGFSelect('20/85');
+    var __lspGasDefaults = {decoGas:'air', dg1Mix:'ean50', dg2Mix:'o2'};
+    Object.keys(__lspGasDefaults).forEach(function(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.value = __lspGasDefaults[id];
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+    updateGasMODDisplays();
   }
   updateWaterVapor(); // apply after settings loaded
   setDecoAlgorithm(document.getElementById('algorithmSelect')?.value || 'ZHLC_GF', true);
