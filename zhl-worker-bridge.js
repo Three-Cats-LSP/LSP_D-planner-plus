@@ -4,25 +4,34 @@
 (function (global) {
   'use strict';
 
+  const WORKER_TIMEOUT_MS = 30000;
+
   let worker = null;
   let nextId = 1;
   const pending = new Map();
+
+  function settlePending(id, ok, value) {
+    const p = pending.get(id);
+    if (!p) return;
+    pending.delete(id);
+    clearTimeout(p.timer);
+    if (ok) p.resolve(value);
+    else p.reject(value);
+  }
 
   function getWorker() {
     if (!worker) {
       worker = new Worker('zhl-schedule-worker.js');
       worker.onmessage = function (e) {
         const { id, ok, result, error } = e.data || {};
-        const p = pending.get(id);
-        if (!p) return;
-        pending.delete(id);
-        if (ok) p.resolve(result);
-        else p.reject(new Error(error || 'Worker calculation failed'));
+        if (ok) settlePending(id, true, result);
+        else settlePending(id, false, new Error(error || 'Worker calculation failed'));
       };
       worker.onerror = function (err) {
         const msg = (err && err.message) || 'Worker error';
-        pending.forEach(p => p.reject(new Error(msg)));
-        pending.clear();
+        [...pending.entries()].forEach(([id]) => {
+          settlePending(id, false, new Error(msg));
+        });
         worker = null;
       };
     }
@@ -32,16 +41,23 @@
   function calculateInWorker(levels, decoGases, settings, profileSplit, environment) {
     return new Promise((resolve, reject) => {
       const id = nextId++;
-      pending.set(id, { resolve, reject });
+      const timer = setTimeout(() => {
+        if (!pending.has(id)) return;
+        settlePending(id, false, new Error('ZHL worker timeout'));
+      }, WORKER_TIMEOUT_MS);
+      pending.set(id, {
+        resolve,
+        reject,
+        timer,
+      });
       getWorker().postMessage({ id, levels, decoGases, settings, profileSplit, environment });
     });
   }
 
   function terminate() {
-    const err = new Error('ZHL worker terminated');
-    const rejects = [...pending.values()];
-    pending.clear();
-    rejects.forEach(p => p.reject(err));
+    [...pending.entries()].forEach(([id]) => {
+      settlePending(id, false, new Error('ZHL worker terminated'));
+    });
     if (worker) {
       worker.terminate();
       worker = null;

@@ -45,8 +45,8 @@
     div.textContent = msg;
     div.style.cssText = [
       'position:fixed','bottom:24px','left:50%','transform:translateX(-50%)',
-      'background:' + (isError ? 'rgba(220,50,50,0.95)' : 'rgba(0,200,255,0.92)'),
-      'color:' + (isError ? '#fff' : '#000'),
+      'background:' + (isError ? 'rgba(220,50,50,0.95)' : 'rgba(30,30,30,0.92)'),
+      'color:#fff',
       'padding:10px 22px','border-radius:20px','font-size:13px','z-index:99999',
       'pointer-events:none','max-width:85vw','text-align:center',
       'font-family:sans-serif','line-height:1.4'
@@ -108,7 +108,7 @@
     const dot = filename.lastIndexOf('.');
     const base = dot > -1 ? filename.slice(0, dot) : filename;
     const ext  = dot > -1 ? filename.slice(dot)    : '';
-    const checkPath = p => fileExists(dirPath ? dirPath + p : p, directory);
+    const checkPath = p => fileExists(dirPath != null && dirPath !== '' ? dirPath + p : p, directory);
 
     if (!(await checkPath(filename))) return filename;
     for (let i = 1; i <= 999; i++) {
@@ -181,17 +181,36 @@
     await shareFile(saved.uri, filename);
   }
 
+  // Read blob synchronously — caller may revoke the blob: URL before async fetch completes.
+  function readBlobFromHref(href) {
+    try {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', href, false);
+      xhr.responseType = 'blob';
+      xhr.send();
+      if (xhr.status === 200 && xhr.response) return xhr.response;
+    } catch (_) {}
+    return null;
+  }
+
+  function interceptBlobDownload(anchor) {
+    if (!anchor.download || !anchor.href || !anchor.href.startsWith('blob:')) return false;
+    const href = anchor.href;
+    const dl = anchor.download;
+    const blob = readBlobFromHref(href);
+    if (blob) {
+      handleBlobDownload(blob, dl);
+      return true;
+    }
+    notify('Export error: could not read export file', true);
+    return true;
+  }
+
   // ── patch a.click() — used by exportTXT ──────────────────────────────────
 
   const _origClick = HTMLAnchorElement.prototype.click;
   HTMLAnchorElement.prototype.click = function () {
-    if (this.download && this.href && this.href.startsWith('blob:')) {
-      console.log('[CapBridge] a.click() intercepted:', this.download);
-      const href = this.href, dl = this.download;
-      fetch(href).then(r => r.blob()).then(b => handleBlobDownload(b, dl))
-        .catch(err => { notify('Export error: ' + err, true); _origClick.call(this); });
-      return;
-    }
+    if (interceptBlobDownload(this)) return;
     _origClick.call(this);
   };
 
@@ -201,12 +220,8 @@
   HTMLAnchorElement.prototype.dispatchEvent = function (event) {
     if (
       event instanceof MouseEvent && event.type === 'click' &&
-      this.download && this.href && this.href.startsWith('blob:')
+      interceptBlobDownload(this)
     ) {
-      console.log('[CapBridge] a.dispatchEvent(click) intercepted:', this.download);
-      const href = this.href, dl = this.download;
-      fetch(href).then(r => r.blob()).then(b => handleBlobDownload(b, dl))
-        .catch(err => { notify('Export error: ' + err, true); _origDispatch.call(this, event); });
       return true;
     }
     return _origDispatch.call(this, event);

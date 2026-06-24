@@ -16,7 +16,7 @@ GRADLE = ROOT / "android" / "app" / "build.gradle"
 
 def read_app_version() -> str:
     text = APP_VERSION_JS.read_text(encoding="utf-8")
-    m = re.search(r"const APP_VERSION\s*=\s*'([^']+)'", text)
+    m = re.search(r"(?:const APP_VERSION\s*=\s*|\.APP_VERSION\s*=\s*)'([^']+)'", text)
     if not m:
         raise SystemExit("APP_VERSION not found in app-version.js")
     return m.group(1)

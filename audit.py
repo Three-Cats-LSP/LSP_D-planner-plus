@@ -128,7 +128,7 @@ else:
     ok("No bare return statements at global scope")
 
 # 1.3 APP_VERSION constant exists (single source: app-version.js)
-if re.search(r"const APP_VERSION", app_version_js) and ('src="app-version.js"' in html or "src='app-version.js'" in html):
+if re.search(r"(?:const\s+APP_VERSION|\.APP_VERSION\s*=)", app_version_js) and ('src="app-version.js"' in html or "src='app-version.js'" in html):
     ok("APP_VERSION in app-version.js (loaded by index.html)")
 else:
     fail("APP_VERSION missing from app-version.js or not loaded by index.html")
@@ -2712,10 +2712,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.04['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.04")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.05['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.05")
 else:
-    fail("APP_VERSION not bumped to 2.51.04 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.05 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -2761,7 +2761,7 @@ gradle_path = os.path.join(os.path.dirname(__file__), "android", "app", "build.g
 sw_path = os.path.join(os.path.dirname(__file__), "sw.js")
 app_ver_path = os.path.join(os.path.dirname(__file__), "app-version.js")
 version_ok = True
-app_ver_m = re.search(r"const APP_VERSION\s*=\s*'([^']+)'", app_version_js) if app_version_js else None
+app_ver_m = re.search(r"APP_VERSION\s*=\s*['\"]([^'\"]+)['\"]", app_version_js) if app_version_js else None
 app_ver = app_ver_m.group(1) if app_ver_m else None
 if not app_ver:
     version_ok = False
@@ -3620,15 +3620,60 @@ if sw_js and "/LSP_D-planner-plus" in sw_js and "return swDir || '/LSP_D-planner
 else:
     fail("sw.js getAppBasePath missing LSP_D-planner-plus path ordering (issue #20)")
 
-if worker_bridge_js and "pending.forEach(p => p.reject(new Error(msg)))" in worker_bridge_js:
-    ok("zhl-worker-bridge onerror rejects with fresh Error per pending (issue #20)")
+if worker_bridge_js and "settlePending" in worker_bridge_js and "ZHL worker timeout" in worker_bridge_js:
+    ok("zhl-worker-bridge settles pending with timeout + fresh errors (issue #20/#21)")
 else:
-    fail("zhl-worker-bridge onerror shares single Error across pending (issue #20)")
+    fail("zhl-worker-bridge onerror/timeout handling incomplete (issue #20)")
 
 if capacitor_bridge_js and "uniqueFilename" in capacitor_bridge_js and "return null" in capacitor_bridge_js.split("async function saveFile", 1)[-1][:1200]:
     ok("capacitor-bridge saveFile: uniqueFilename + three-tier fallback complete")
 else:
     fail("capacitor-bridge saveFile missing uniqueFilename or tier fallback")
+
+if capacitor_bridge_js and "readBlobFromHref" in capacitor_bridge_js and "xhr.open('GET', href, false)" in capacitor_bridge_js:
+    ok("capacitor-bridge: sync blob read before revoke (issue #21 CR-1)")
+else:
+    fail("capacitor-bridge missing sync blob read (issue #21 CR-1)")
+
+if capacitor_bridge_js and "dirPath != null && dirPath !== ''" in capacitor_bridge_js:
+    ok("capacitor-bridge uniqueFilename dirPath guard (issue #21 CR-2)")
+else:
+    fail("capacitor-bridge uniqueFilename dirPath guard missing (issue #21 CR-2)")
+
+if harness and "__lspAppFullyReady" in harness and "1500" not in harness:
+    ok("lsp-test-harness polls __lspAppFullyReady, no hardcoded 1500ms delay (issue #21 CR-3/4)")
+else:
+    fail("lsp-test-harness still uses 1500ms delay or missing ready poll (issue #21 CR-3)")
+
+if harness and "reloadApp(iframe, qs)" in harness:
+    ok("lsp-test-harness reloadApp accepts optional query string (issue #21 CR-9)")
+else:
+    fail("lsp-test-harness reloadApp missing optional qs (issue #21 CR-9)")
+
+if worker_bridge_js and "WORKER_TIMEOUT_MS" in worker_bridge_js and "ZHL worker timeout" in worker_bridge_js:
+    ok("zhl-worker-bridge per-request timeout (issue #21 CR-5)")
+else:
+    fail("zhl-worker-bridge missing per-request timeout (issue #21 CR-5)")
+
+if sw_js and "android-select-picker.js" in sw_js.split("PRECACHE_ASSETS", 1)[-1][:800]:
+    ok("sw.js precaches android-select-picker.js (issue #21 CR-6)")
+else:
+    fail("sw.js missing android-select-picker.js in PRECACHE_ASSETS (issue #21 CR-6)")
+
+if android_picker_js and "selectObservers" in android_picker_js and "beforeunload" in android_picker_js:
+    ok("android-select-picker disconnects observers on unload (issue #21 CR-8)")
+else:
+    fail("android-select-picker missing observer cleanup (issue #21 CR-8)")
+
+if app_version_js and "g.APP_VERSION" in app_version_js and "const APP_VERSION" not in app_version_js:
+    ok("app-version.js sets APP_VERSION on globalThis only (issue #21 CR-10)")
+else:
+    fail("app-version.js still uses bare const APP_VERSION global (issue #21 CR-10)")
+
+if "__lspAppFullyReady = true" in html:
+    ok("index.html sets __lspAppFullyReady after init (issue #21 CR-3)")
+else:
+    fail("index.html missing __lspAppFullyReady sentinel (issue #21 CR-3)")
 
 if "android-webview" in html and "isAndroidWebView" in html:
     ok("Early Android WebView detection script present")

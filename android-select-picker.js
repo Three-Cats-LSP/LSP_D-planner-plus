@@ -13,6 +13,19 @@
 
   if (!isAndroidNative()) return;
 
+  var selectObservers = [];
+
+  function disconnectAllObservers() {
+    selectObservers.forEach(function (obs) {
+      try { obs.disconnect(); } catch (_) {}
+    });
+    selectObservers = [];
+  }
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener('beforeunload', disconnectAllObservers);
+  }
+
   function labelForSelect(sel) {
     var idx = sel.selectedIndex;
     if (idx < 0) return '—';
@@ -137,12 +150,14 @@
     sel.addEventListener('touchstart', blockNative, { passive: false });
     sel.addEventListener('focus', function () { sel.blur(); });
 
-    new MutationObserver(function () { syncBtn(); }).observe(sel, {
+    var selObserver = new MutationObserver(function () { syncBtn(); });
+    selObserver.observe(sel, {
       childList: true,
       subtree: true,
       attributes: true,
       attributeFilter: ['disabled']
     });
+    selectObservers.push(selObserver);
   }
 
   function enhanceAll(root) {
@@ -152,7 +167,7 @@
 
   function boot() {
     enhanceAll(document);
-    new MutationObserver(function (mutations) {
+    var domObserver = new MutationObserver(function (mutations) {
       mutations.forEach(function (m) {
         m.addedNodes.forEach(function (node) {
           if (node.nodeType !== 1) return;
@@ -160,7 +175,9 @@
           else enhanceAll(node);
         });
       });
-    }).observe(document.documentElement, { childList: true, subtree: true });
+    });
+    domObserver.observe(document.documentElement, { childList: true, subtree: true });
+    selectObservers.push(domObserver);
   }
 
   if (document.readyState === 'loading') {

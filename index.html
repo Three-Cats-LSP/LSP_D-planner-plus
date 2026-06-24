@@ -16786,6 +16786,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Apply persisted END column state on load (button label + table class)
   applyEndColumn();
 
+  window.__lspAppFullyReady = true;
+
   // Try again after elements render
   setTimeout(() => {
     console.log('[LSP] Retry load after render');
