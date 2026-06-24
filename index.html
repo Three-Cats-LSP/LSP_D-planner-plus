@@ -6467,14 +6467,7 @@ function padiGroup(depthM, time, mix) {
 // PLANNER
 // ═══════════════════════════════════════════════
 function runPlanner() {
-  if (window._lspEngineError) {
-    if (typeof showEngineLoadErrorBanner === 'function') showEngineLoadErrorBanner();
-    return;
-  }
-  if (!window._lspEngineReady && !window._zhlHeadless) {
-    alert('Dive engines are still loading. Please wait a moment and try again.');
-    return;
-  }
+  if (!guardEngineBootForCalculate()) return;
   if (!window._zhlHeadless) {
     const inputVal = validatePlannerInputs();
     if (!inputVal.ok) {
@@ -8509,6 +8502,7 @@ function runZhlScheduleCore(params) {
 function runDecoSchedule() {
   let _zhlPrevGF = null;
   try {
+  if (!guardEngineBootForCalculate()) return;
   if (!window._zhlHeadless) {
     const inputVal = validateDecoInputs();
     if (!inputVal.ok) {
@@ -16627,6 +16621,18 @@ function hideEngineLoadErrorBanner() {
   const el = document.getElementById('lspEngineErrorBanner');
   if (el) el.style.display = 'none';
   document.querySelectorAll('.btn-calc').forEach(function(btn) { btn.disabled = false; });
+}
+
+function guardEngineBootForCalculate() {
+  if (window._lspEngineError) {
+    if (typeof showEngineLoadErrorBanner === 'function') showEngineLoadErrorBanner();
+    return false;
+  }
+  if (!window._lspEngineReady && !window._zhlHeadless) {
+    alert('Dive engines are still loading. Please wait a moment and try again.');
+    return false;
+  }
+  return true;
 }
 
 function markLspEngineReadyWhenReady(attempt) {

@@ -283,10 +283,10 @@ def run_tests(page, port):
             while (Date.now() < deadline) {
               const totals = document.querySelector('#decoTableBody tr[data-phase="totals"]');
               hdrLines = buildDecoPlanHeaderLines().join('\\n');
-              if (totals && /131\\s*ft|131ft/i.test(hdrLines)) break;
+              if (totals && /131\\s*ft|131ft/i.test(hdrLines) && /\\d+ft\\/min/i.test(hdrLines)) break;
               await new Promise(r => setTimeout(r, 100));
             }
-            if (!/131\\s*ft|131ft/i.test(hdrLines)) {
+            if (!/131\\s*ft|131ft/i.test(hdrLines) || !/\\d+ft\\/min/i.test(hdrLines)) {
               throw new Error('imperial header not ready: ' + hdrLines.slice(0, 240));
             }
             const txt = buildExportText('deco');

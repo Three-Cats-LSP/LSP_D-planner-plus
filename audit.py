@@ -10,7 +10,7 @@ Every check added here must correspond to a real bug or regression
 that was found in production. No theoretical checks.
 """
 
-import re, sys, os, json
+import re, sys, os, json, ast
 from collections import Counter
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -3196,16 +3196,10 @@ if os.path.isfile(audit_wf):
 else:
     fail("Missing .github/workflows/audit.yml CI workflow (issue #1)")
 
-browser_reg_path = os.path.join(os.path.dirname(__file__), "dev", "run_browser_regression.py")
 if "function isAutomatedTestMode()" in html and "massiveSuite') === '1'" in html:
     ok("index.html skips SW migration/registration in automated test mode (issue #3)")
 else:
     fail("index.html missing isAutomatedTestMode SW guard (issue #3)")
-
-if os.path.isfile(browser_reg_path):
-    ok("dev/run_browser_regression.py present (issue #1 follow-up)")
-else:
-    fail("dev/run_browser_regression.py missing (issue #1 follow-up)")
 
 if os.path.isfile(pscr_test_path):
     if "pSCR trimix fraction normalization" in pscr_test and "18/45" in pscr_test:
@@ -3367,6 +3361,11 @@ if "_lspEngineError" in html and "startLspEngineReadyPolling" in html and "showE
 else:
     fail("Engine boot sentinel missing timeout error handling")
 
+if "function guardEngineBootForCalculate" in html and html.count("guardEngineBootForCalculate()") >= 2:
+    ok("runPlanner and runDecoSchedule gate on engine boot readiness")
+else:
+    fail("guardEngineBootForCalculate missing from planner/deco entry points")
+
 pb = os.path.join(os.path.dirname(__file__), "dev", "playwright_boot.py")
 if os.path.isfile(pb) and "_lspEngineError" in open(pb, encoding="utf-8").read():
     ok("playwright_boot fails fast when _lspEngineError is set")
@@ -3393,42 +3392,59 @@ else:
 if os.path.isfile(run_all_reg):
     with open(run_all_reg, encoding="utf-8") as f:
         run_all_src = f.read()
-    release_suites_ok = True
-    for script, label in [
+    try:
+        run_all_tree = ast.parse(run_all_src)
+    except SyntaxError:
+        run_all_tree = None
+        fail("dev/run_all_regression.py has syntax errors")
+    release_suites_ok = run_all_tree is not None
+    release_suite_specs = [
         ("run_browser_regression.py", "browser"),
         ("run_ccr_differential.py", "ccr_differential"),
-    ]:
+        ("ccr_engine_validation_regression.py", "engine_ccr_validation"),
+    ]
+    suites_dict = None
+    if run_all_tree is not None:
+        for node in ast.walk(run_all_tree):
+            if not isinstance(node, ast.Assign):
+                continue
+            for target in node.targets:
+                if isinstance(target, ast.Name) and target.id == "SUITES" and isinstance(node.value, ast.Dict):
+                    suites_dict = node.value
+                    break
+        if suites_dict is None:
+            fail("dev/run_all_regression.py missing SUITES dict")
+            release_suites_ok = False
+    for script, label in release_suite_specs:
         path = os.path.join(os.path.dirname(__file__), "dev", script)
         if not os.path.isfile(path):
             fail(f"dev/{script} missing (release suite {label})")
             release_suites_ok = False
             continue
-        suite_m = re.search(rf'"{re.escape(label)}"\s*:\s*\{{', run_all_src)
-        if not suite_m:
+        if suites_dict is None:
+            release_suites_ok = False
+            continue
+        suite_entry = None
+        for key, val in zip(suites_dict.keys, suites_dict.values):
+            if isinstance(key, ast.Constant) and key.value == label:
+                suite_entry = val
+                break
+        if suite_entry is None:
             fail(f"dev/run_all_regression.py missing {label} suite entry")
             release_suites_ok = False
             continue
-        i = suite_m.end() - 1
-        depth = 0
-        suite_block = None
-        while i < len(run_all_src):
-            ch = run_all_src[i]
-            if ch == "{":
-                depth += 1
-            elif ch == "}":
-                depth -= 1
-                if depth == 0:
-                    suite_block = run_all_src[suite_m.start(): i + 1]
-                    break
-            i += 1
-        if not suite_block:
-            fail(f"dev/run_all_regression.py {label} suite block malformed")
+        if not isinstance(suite_entry, ast.Dict):
+            fail(f"dev/run_all_regression.py {label} suite entry malformed")
             release_suites_ok = False
-        elif re.search(r'"optional"\s*:\s*True', suite_block):
-            fail(f"dev/run_all_regression.py marks {label} optional but script is present")
-            release_suites_ok = False
+            continue
+        for sk, sv in zip(suite_entry.keys, suite_entry.values):
+            if isinstance(sk, ast.Constant) and sk.value == "optional":
+                if isinstance(sv, ast.Constant) and sv.value is True:
+                    fail(f"dev/run_all_regression.py marks {label} optional but script is present")
+                    release_suites_ok = False
+                break
     if release_suites_ok:
-        ok("browser + ccr_differential release suites required when scripts present")
+        ok("browser, ccr_differential, and engine_ccr_validation required when scripts present")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 68 — raw DOM gas validation before clamping (BUG-100)
