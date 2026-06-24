@@ -1,8 +1,9 @@
 // LSP D-Planner — Service Worker
 // Network-first for HTML (always fresh), cache-first for static assets.
-// Bump CACHE_VERSION on every deploy to force old SW replacement.
+// CACHE_VERSION is derived from app-version.js (same source as index.html APP_VERSION).
 
-const CACHE_VERSION = 'lsp-dplanner-plus-v2.50.00';
+importScripts('app-version.js');
+const CACHE_VERSION = 'lsp-dplanner-plus-v' + APP_VERSION;
 
 // These are never cached — always fetched live or passed through
 const NEVER_CACHE = [
@@ -35,6 +36,7 @@ const OFFLINE_INDEX = APP_BASE + 'index.html';
 // Required for offline/PWA startup (Tier-3 ZHL + self-hosted fonts/icons)
 const PRECACHE_ASSETS = [
   OFFLINE_INDEX,
+  APP_BASE + 'app-version.js',
   APP_BASE + 'capacitor-bridge.js',
   APP_BASE + 'zhl-engine-bundle.js',
   APP_BASE + 'vpm-engine-bundle.js',

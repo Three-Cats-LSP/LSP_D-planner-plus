@@ -1295,6 +1295,8 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 .u21{margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
 </style>
 <!-- jsPDF: vendored locally — defer so app startup is not blocked on CDN -->
+<!-- App version (single source of truth — also importScripts'd by sw.js) -->
+<script src="app-version.js"></script>
 <script src="capacitor-bridge.js"></script>
 <script src="zhl-engine-bundle.js"></script>
 <script src="vpm-engine-bundle.js"></script>
@@ -3463,8 +3465,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
   }
 })();
 
-const APP_VERSION = '2.50.00';
-window.APP_VERSION = APP_VERSION;
+// APP_VERSION — loaded from app-version.js (head)
 // Test harness: skip DOM recalc storms when loaded inside tests-massive.html iframe
 (function() {
   try {

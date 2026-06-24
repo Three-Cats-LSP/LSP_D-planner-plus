@@ -8,7 +8,6 @@ from pathlib import Path
 _TOOLS = Path(__file__).resolve().parent
 if str(_TOOLS) not in sys.path:
     sys.path.insert(0, str(_TOOLS))
-from update_sw_version import sync_sw_cache_version
 
 ROOT = Path(__file__).resolve().parents[1]
 WWW = ROOT / "www"
@@ -16,6 +15,7 @@ WWW = ROOT / "www"
 # Single files at repo root required for offline app + ZHL engine
 ROOT_FILES = [
     "index.html",
+    "app-version.js",
     "capacitor-bridge.js",
     "manifest.json",
     "icon-192.png",
@@ -34,7 +34,8 @@ ROOT_DIRS = [
 
 
 def sync_www() -> None:
-    sync_sw_cache_version(ROOT / "sw.js")
+    from update_sw_version import main as verify_app_version
+    verify_app_version()
     if WWW.exists():
         shutil.rmtree(WWW)
     WWW.mkdir(parents=True)

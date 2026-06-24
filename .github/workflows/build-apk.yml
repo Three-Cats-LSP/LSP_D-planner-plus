@@ -25,10 +25,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Extract app version from index.html
+      - name: Extract app version from app-version.js
         id: version
         run: |
-          VERSION=$(grep -oP "APP_VERSION\s*=\s*'\K[^']+" index.html)
+          VERSION=$(grep -oP "APP_VERSION\s*=\s*'\K[^']+" app-version.js)
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           IFS='.' read -ra PARTS <<< "$VERSION"
           MAJOR="${PARTS[0]:-0}"

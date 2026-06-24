@@ -55,6 +55,11 @@ if os.path.isfile(vpm_bundle_path):
     with open(vpm_bundle_path, encoding="utf-8") as f:
         vpm_bundle_js = f.read()
 vpm_src = vpm_bundle_js if vpm_bundle_js else js
+app_version_path = os.path.join(os.path.dirname(os.path.abspath(path)), "app-version.js")
+app_version_js = ""
+if os.path.isfile(app_version_path):
+    with open(app_version_path, encoding="utf-8") as f:
+        app_version_js = f.read()
 vpm_core_path = os.path.join(os.path.dirname(os.path.abspath(path)), "vpm-engine-core.js")
 vpm_core_js = ""
 if os.path.isfile(vpm_core_path):
@@ -116,11 +121,11 @@ if bare_returns:
 else:
     ok("No bare return statements at global scope")
 
-# 1.3 APP_VERSION constant exists
-if re.search(r"const APP_VERSION", js):
-    ok("APP_VERSION constant present")
+# 1.3 APP_VERSION constant exists (single source: app-version.js)
+if re.search(r"const APP_VERSION", app_version_js) and ('src="app-version.js"' in html or "src='app-version.js'" in html):
+    ok("APP_VERSION in app-version.js (loaded by index.html)")
 else:
-    fail("APP_VERSION constant missing or malformed")
+    fail("APP_VERSION missing from app-version.js or not loaded by index.html")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 2 — TRIMIX ENGINE CONSTANTS
@@ -585,9 +590,21 @@ else:
     fail("ZhlWorkerBridge missing terminate() API")
 
 if os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(path)), "tools", "update_sw_version.py")):
-    ok("tools/update_sw_version.py syncs sw.js CACHE_VERSION from APP_VERSION")
+    ok("tools/update_sw_version.py verifies release version alignment")
 else:
-    fail("tools/update_sw_version.py missing for SW cache version sync")
+    fail("tools/update_sw_version.py missing for version alignment checks")
+
+sw_path_early = os.path.join(os.path.dirname(os.path.abspath(path)), "sw.js")
+if os.path.isfile(sw_path_early):
+    with open(sw_path_early, encoding="utf-8") as f:
+        sw_early = f.read()
+    if ("importScripts('app-version.js')" in sw_early and
+            "const CACHE_VERSION = 'lsp-dplanner-plus-v' + APP_VERSION" in sw_early):
+        ok("sw.js CACHE_VERSION derived from app-version.js APP_VERSION")
+    else:
+        fail("sw.js must importScripts app-version.js and derive CACHE_VERSION")
+else:
+    fail("sw.js missing")
 
 # 11.2 VPM-B bottom gas reads He from getBottomGasFractions
 vpm_path = re.search(r"_vpmBotFracs\s*=\s*getBottomGasFractions\(\)", js)
@@ -2569,10 +2586,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.50\.00['\"]", js):
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.50\.00['\"]", app_version_js):
     ok("APP_VERSION bumped to 2.50.00")
 else:
-    fail("APP_VERSION not bumped to 2.50.00")
+    fail("APP_VERSION not bumped to 2.50.00 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -2616,32 +2633,45 @@ else:
 pkg_path = os.path.join(os.path.dirname(__file__), "package.json")
 gradle_path = os.path.join(os.path.dirname(__file__), "android", "app", "build.gradle")
 sw_path = os.path.join(os.path.dirname(__file__), "sw.js")
+app_ver_path = os.path.join(os.path.dirname(__file__), "app-version.js")
 version_ok = True
+app_ver_m = re.search(r"const APP_VERSION\s*=\s*'([^']+)'", app_version_js) if app_version_js else None
+app_ver = app_ver_m.group(1) if app_ver_m else None
+if not app_ver:
+    version_ok = False
 if os.path.isfile(pkg_path):
     with open(pkg_path, encoding="utf-8") as f:
         pkg = f.read()
-    if '"version": "2.50.00"' not in pkg:
+    if app_ver and f'"version": "{app_ver}"' not in pkg:
         version_ok = False
 else:
     version_ok = False
 if os.path.isfile(gradle_path):
     with open(gradle_path, encoding="utf-8") as f:
         gradle = f.read()
-    if 'versionName "2.50.00"' not in gradle or "versionCode 25000" not in gradle:
+    if app_ver and (f'versionName "{app_ver}"' not in gradle):
         version_ok = False
+    if app_ver:
+        parts = app_ver.split(".")
+        if len(parts) == 3 and all(p.isdigit() for p in parts):
+            vc = int(parts[0]) * 10000 + int(parts[1]) * 100 + int(parts[2])
+            if f"versionCode {vc}" not in gradle:
+                version_ok = False
+        else:
+            version_ok = False
 else:
     version_ok = False
 if os.path.isfile(sw_path):
     with open(sw_path, encoding="utf-8") as f:
         sw = f.read()
-    if "lsp-dplanner-plus-v2.50.00" not in sw:
+    if "importScripts('app-version.js')" not in sw or "lsp-dplanner-plus-v' + APP_VERSION" not in sw:
         version_ok = False
 else:
     version_ok = False
-if version_ok:
-    ok("All version files aligned at 2.50.00 (v17 BUG-74)")
+if version_ok and app_ver:
+    ok(f"All version files aligned at {app_ver} (app-version.js drives SW cache)")
 else:
-    fail("Version mismatch across APP_VERSION / sw.js / package.json / build.gradle (v17 BUG-74)")
+    fail("Version mismatch across app-version.js / sw.js / package.json / build.gradle (v17 BUG-74)")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 58 — v2.30.26 fix (errors_bugs_report_v18/v19 BUG-75)
