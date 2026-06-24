@@ -989,14 +989,16 @@ body.light-theme .ok { background:#f0fff4; border-color:#116622; color:#116622; 
 
 /* ── DECO TABLE ── */
 .deco-schedule-stack {
- display: inline-grid;
- width: max-content;
+ display: flex;
+ flex-direction: column;
+ align-items: stretch;
  max-width: 100%;
- vertical-align: top;
 }
 .deco-schedule-stack > * { min-width: 0; }
 .deco-schedule-stack .dive-plan-banner,
 .deco-schedule-stack .alert { width: 100%; box-sizing: border-box; }
+.deco-schedule-stack .dive-plan-banner .dpb-meta,
+.deco-schedule-stack .dive-plan-banner .dpb-chips { overflow-wrap: anywhere; }
 .deco-schedule-stack .deco-contingency-calc { width: 100%; box-sizing: border-box; }
 .deco-table-wrap { overflow-x: auto; max-width: 100%; }
 .deco-schedule-stack__actions {
@@ -1005,6 +1007,22 @@ body.light-theme .ok { background:#f0fff4; border-color:#116622; color:#116622; 
  gap: 8px;
  margin-top: 12px;
  width: 100%;
+}
+.deco-totals-row td {
+ padding: 0 !important;
+ border-bottom: none !important;
+ white-space: normal !important;
+ vertical-align: top;
+}
+.deco-totals-inner {
+ padding: 8px 10px;
+ font-family: 'JetBrains Mono', monospace;
+ font-size: 11px;
+ background: rgba(0,200,255,0.04);
+ border-top: 2px solid var(--border-hi);
+ display: flex;
+ flex-wrap: wrap;
+ gap: 4px 12px;
 }
 .deco-table { table-layout:auto; width:min-content; border-collapse:collapse; font-family:'JetBrains Mono',monospace; font-size:12px; margin-top:10px; }
 .deco-table th { padding:4px 6px; text-align:left; font-size:9px; letter-spacing:1px; text-transform:uppercase; color:var(--accent); border-bottom:1px solid var(--border-hi); background:rgba(0,200,255,0.05); vertical-align:middle; white-space:nowrap; overflow:hidden; }
@@ -1193,6 +1211,10 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
  body.light-theme .deco-table tr.gas-tight-row td span,
  body.light-theme .deco-table tr.gas-tight-row td * { color:#000 !important; }
  .deco-table.table-view tr[data-phase="switch"] td { border-bottom: 1px solid var(--border) !important; }
+
+ .deco-table:not(.table-view) tr.deco-totals-row { margin-bottom: 0; border: none; background: transparent; }
+ .deco-table:not(.table-view) tr.deco-totals-row td { display: block !important; width: 100% !important; padding: 0 !important; border: none !important; background: transparent !important; }
+ .deco-table:not(.table-view) tr.deco-totals-row td::before { display: none !important; }
 }
 
 /* ── LSP SLIDER ── */
@@ -2405,7 +2427,6 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <thead><tr><th>Phase</th><th>Depth</th><th>Stop</th><th>Mix</th><th>Run</th><th>TTS</th><th>PPO2</th><th class="end-col">END</th><th>EAD</th><th>CNS%</th></tr></thead>
 <tbody id="decoTableBody"></tbody>
 </table></div>
-<div id="decoTotals" style="margin-top:4px;"></div>
 </div>
 <!-- Icon legend -->
 <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;padding:12px 14px;background:var(--card2);border-radius:8px;border:1px solid var(--border);">
@@ -4197,6 +4218,7 @@ function toggleTableView() {
   btn.style.color = isTable ? 'var(--accent)' : 'var(--muted)';
   btn.style.borderColor = isTable ? 'var(--accent)' : 'var(--border)';
   localStorage.setItem('decoTableView', isTable ? 'table' : 'cards');
+  scheduleDecoScheduleStackSync();
 }
 
 function loadTableViewPreference() {
@@ -5350,6 +5372,27 @@ function updateDecoSummaryHtml(hasDeco, endM, noDecoNote) {
   if (!el) return;
   const alerts = buildDecoSummaryAlerts(hasDeco, endM, noDecoNote);
   el.innerHTML = renderDecoPlanHeaderHtml(buildDecoPlanHeaderData(), { hasDeco, ...alerts });
+  scheduleDecoScheduleStackSync();
+}
+
+function syncDecoScheduleStackWidths() {
+  document.querySelectorAll('.deco-schedule-stack').forEach(stack => {
+    const table = stack.querySelector('.deco-table');
+    if (!table || !table.tBodies[0]?.rows.length) {
+      stack.style.width = '';
+      return;
+    }
+    stack.style.width = '';
+    const w = Math.ceil(table.getBoundingClientRect().width);
+    if (w > 0) stack.style.width = w + 'px';
+  });
+}
+
+function scheduleDecoScheduleStackSync() {
+  requestAnimationFrame(() => {
+    syncDecoScheduleStackWidths();
+    requestAnimationFrame(syncDecoScheduleStackWidths);
+  });
 }
 
 function planInfoTipIconHtml() {
@@ -5363,7 +5406,7 @@ function buildPlanInfoRowHtml(o) {
   const surfGFColor = surfGFVal == null ? 'var(--muted)' :
     surfGFVal >= 100 ? 'var(--red)' : surfGFVal >= 85 ? 'var(--orange)' :
     surfGFVal >= 70 ? 'var(--yellow)' : 'var(--green)';
-  const visibleHtml = `<div style="padding:8px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(0,200,255,0.04);border-top:2px solid var(--border-hi);display:flex;flex-wrap:wrap;gap:4px 12px;">
+  const innerHtml = `<div class="deco-totals-inner">
       ${planInfoTipIconHtml()}
       <span><span style="color:var(--muted);">Run time:</span> <span style="color:var(--text);font-weight:700;">${o.runTime}</span></span>
       <span><span style="color:var(--muted);">TTS:</span> <span style="color:var(--text);font-weight:700;">${o.tts}</span></span>
@@ -5375,12 +5418,11 @@ function buildPlanInfoRowHtml(o) {
       <span><span style="color:var(--muted);">Decozone:</span> <span style="color:var(--text);font-weight:700;">${o.decozone}</span></span>
       <span><span style="color:var(--muted);">First deco:</span> <span style="color:var(--text);font-weight:700;">${o.decoStop}</span></span>
     </div>`;
-  if (!window._contingencyRunning) {
-    const totalsEl = document.getElementById('decoTotals');
-    if (totalsEl) totalsEl.innerHTML = visibleHtml;
-  }
-  // Hidden row kept in tbody for all downstream readers (getPlanSummaryExport etc.)
-  return `<tr style="display:none;" data-phase="totals"><td colspan="20" data-run="${o.runTime}" data-tts="${o.tts}" data-deco="${o.decoTime}" data-cns="${o.cns}" data-otu="${o.otu}" data-prt="${o.prt}" data-decozone="${o.decozone}" data-decostop="${o.decoStop}" data-surfgf="${surfGFDisp}"></td></tr>`;
+  const totalsEl = document.getElementById('decoTotals');
+  if (totalsEl) totalsEl.innerHTML = '';
+  const rowHtml = `<tr class="deco-totals-row" data-phase="totals"><td colspan="20" data-run="${o.runTime}" data-tts="${o.tts}" data-deco="${o.decoTime}" data-cns="${o.cns}" data-otu="${o.otu}" data-prt="${o.prt}" data-decozone="${o.decozone}" data-decostop="${o.decoStop}" data-surfgf="${surfGFDisp}">${innerHtml}</td></tr>`;
+  scheduleDecoScheduleStackSync();
+  return rowHtml;
 }
 
 function formatPlanSummaryBlock(p, compact) {
@@ -7724,6 +7766,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   // ── END column (Feature): inject cells + apply toggle state ──
   injectTtsCells('decoTableBody', vpmRtAtBottomEnd);
   applyEndColumn();
+  scheduleDecoScheduleStackSync();
 
   // Surface Interval panel (collapsed) — pre-fill Dive 1 from this dive
   if (!_contingencyRunning) renderSurfIntPanel('tecSurfIntContainer', 'tecSi', depthM, bt);
@@ -9149,6 +9192,7 @@ function runDecoSchedule() {
   // ── END column (Feature): inject cells + apply toggle state ──
   injectTtsCells('decoTableBody', rtAtBottomEnd);
   applyEndColumn();
+  scheduleDecoScheduleStackSync();
 
   // ── CNS% high warning (post-render, totalCNSfrac now known) ──
   const decoAlertsEl = document.getElementById('decoAlerts');
@@ -10001,6 +10045,11 @@ function spawnBubbles() {
 spawnBubbles();
 renderNDLTable();
 buildUnifiedPlan();
+let _decoStackResizeT;
+window.addEventListener('resize', () => {
+  clearTimeout(_decoStackResizeT);
+  _decoStackResizeT = setTimeout(scheduleDecoScheduleStackSync, 100);
+});
 
 // ═══════════════════════════════════════════════
 // PWA — MANIFEST + ICON + SERVICE WORKER
@@ -13607,6 +13656,7 @@ function calcContingency() {
       emAlerts.innerHTML = '';
     }
   }
+  scheduleDecoScheduleStackSync();
 }
 // Redirected to unified exportTXT — kept for backward compat
 
