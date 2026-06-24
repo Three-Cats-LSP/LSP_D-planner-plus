@@ -1,0 +1,15 @@
+---
+description: Commit and push completed work by default; skip only when user says not to
+alwaysApply: true
+---
+
+# Commit and push by default
+
+After completing intentional code or repo-hygiene changes in this project:
+
+1. **Commit** with a concise message focused on why.
+2. **Push** to the tracked remote branch (`origin`).
+
+Do this **without asking**, unless the user explicitly says not to commit, not to push, or to leave changes uncommitted.
+
+Still follow git safety: no force-push to main, no `--no-verify`, no secrets in commits, no amend of pushed commits unless the user requests it.
