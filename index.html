@@ -3,6 +3,15 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
+<script>
+(function () {
+  var ua = navigator.userAgent || '';
+  var isAndroidWebView = /Android/i.test(ua) && (/; wv\)/.test(ua) || /Capacitor/i.test(ua));
+  if (isAndroidWebView || (window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform())) {
+    document.documentElement.classList.add('android-webview', 'capacitor-native');
+  }
+})();
+</script>
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <title>LSP D-Planner+ · Rec &amp; Tec</title>
 <!-- PWA -->
@@ -710,7 +719,7 @@ body.algo-buh .buh-only { display: flex !important; }
  margin-bottom: 5px;
 }
 
-.field input, .field select { width: 100%;
+.field input { width: 100%;
  background: var(--surface);
  border: 1px solid var(--border);
  border-radius: 8px;
@@ -722,6 +731,17 @@ body.algo-buh .buh-only { display: flex !important; }
  transition: border-color 0.2s, box-shadow 0.2s;
  appearance: none;
 }
+.field select { width: 100%;
+ background: var(--surface);
+ border: 1px solid var(--border);
+ border-radius: 8px;
+ padding: 8px 10px;
+ color: var(--text);
+ font-family: 'JetBrains Mono', monospace;
+ font-size: 13px;
+ outline: none;
+ transition: border-color 0.2s, box-shadow 0.2s;
+}
 .field input:focus, .field select:focus { border-color: var(--accent);
  box-shadow: 0 0 0 3px rgba(0,200,255,0.08);
 }
@@ -732,21 +752,26 @@ body.algo-buh .buh-only { display: flex !important; }
  cursor: pointer;
 }
 
-/* Capacitor/Android WebView: appearance:none + web fonts break the native select picker (blank list). */
+/* Android WebView/Capacitor: custom-styled selects break the native picker (blank option list). */
+html.android-webview select,
 html.capacitor-native select {
- -webkit-appearance: menulist-button;
- appearance: auto;
- font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
- color: #000;
- background-color: #fff;
+ -webkit-appearance: menulist-button !important;
+ appearance: auto !important;
+ font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif !important;
+ color: #111 !important;
+ background-color: #fff !important;
+ background-image: none !important;
 }
-html.capacitor-native .field select {
- background-image: none;
- padding-right: 10px;
+html.android-webview select option,
+html.capacitor-native select option {
+ color: #111 !important;
+ background-color: #fff !important;
+ font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif !important;
 }
+html.android-webview body.light-theme select,
 html.capacitor-native body.light-theme select {
- color: #000 !important;
- background-color: #fff;
+ color: #111 !important;
+ background-color: #fff !important;
 }
 
 /* ── BUTTON ── */

@@ -2706,10 +2706,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.01['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.01")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.02['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.02")
 else:
-    fail("APP_VERSION not bumped to 2.51.01 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.02 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -3561,10 +3561,15 @@ if os.path.isfile(manifest_path):
 else:
     fail("site-assets-manifest.txt missing — run tools/build_pages_site.py")
 
-if "html.capacitor-native select" in html and "menulist-button" in html:
-    ok("Capacitor native select uses system menulist (Android picker fix)")
+if "html.android-webview select" in html and "menulist-button" in html:
+    ok("Android WebView select uses system menulist (Android picker fix)")
 else:
-    fail("Capacitor native select menulist CSS missing (Android picker fix)")
+    fail("Android WebView select menulist CSS missing (Android picker fix)")
+
+if "android-webview" in html and "isAndroidWebView" in html:
+    ok("Early Android WebView detection script present")
+else:
+    fail("Early Android WebView detection script missing")
 
 if re.search(r'id="dg1Mix"[\s\S]*?ean50[\s\S]*?selected', html) or re.search(
     r'id="dg1Mix"[\s\S]*?selected[\s\S]*?value="ean50"', html
