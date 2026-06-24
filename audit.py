@@ -3206,8 +3206,12 @@ if '<caption id="decoSummary"' not in html and '<div id="decoSummary" class="dec
 else:
     fail("decoSummary must not be rendered as a table caption (issue #12)")
 
-if re.search(r"<caption[^>]*class=\"deco-plan-caption\"", html) is None and re.search(r"\.deco-plan-caption\s*\{[^}]*width\s*:\s*max-content", html):
-    ok("deco plan captions are div-based and width-constrained via max-content (issue #12)")
+if (
+    re.search(r"<caption[^>]*class=\"deco-plan-caption\"", html) is None
+    and re.search(r"\.deco-plan-caption\s*\{[^}]*width\s*:\s*max-content", html) is None
+    and re.search(r"\.deco-table-wrap\s*\{[^}]*display\s*:\s*inline-block", html)
+):
+    ok("deco plan caption div-based, no max-content inflation; table-wrap is inline-block (issue #12)")
 else:
     fail("deco plan caption layout still allows caption-driven table widening (issue #12)")
 
