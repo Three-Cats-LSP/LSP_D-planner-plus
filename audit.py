@@ -3670,6 +3670,11 @@ if app_version_js and "g.APP_VERSION" in app_version_js and "const APP_VERSION" 
 else:
     fail("app-version.js still uses bare const APP_VERSION global (issue #21 CR-10)")
 
+if app_version_js and "\r" not in app_version_js:
+    ok("app-version.js uses Unix line endings (code-review OBS-3)")
+else:
+    fail("app-version.js has CRLF/CR line endings (code-review OBS-3)")
+
 if "__lspAppFullyReady = true" in html:
     ok("index.html sets __lspAppFullyReady after init (issue #21 CR-3)")
 else:
