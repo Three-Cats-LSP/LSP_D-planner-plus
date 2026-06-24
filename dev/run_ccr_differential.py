@@ -22,7 +22,7 @@ def render_markdown(summary: dict) -> str:
         f"**LSP version:** {summary.get('appVersion', '?')}  ",
         f"**Scenarios:** {summary.get('scenarios', 0)}  ",
         f"**Failures:** {summary.get('failures', 0)}  ",
-        f"**Inconclusive:** {summary.get('inconclusive', 0)}  ",
+        f"**Inconclusive:** {summary.get('inconclusive', 0)} (optional comparator goldens missing — not failures)  ",
         "",
         "---",
         "",
@@ -97,7 +97,8 @@ def main() -> int:
     print(f"Wrote {REPORT_MD}")
     print(
         f"Verdict: {'PASS' if summary.get('failures', 1) == 0 else 'FAIL'} "
-        f"({summary.get('scenarios', 0)} scenarios, {summary.get('inconclusive', 0)} inconclusive, "
+        f"({summary.get('scenarios', 0)} scenarios, "
+        f"{summary.get('inconclusive', 0)} inconclusive optional goldens, "
         f"{summary.get('missingRequired', 0)} missing required goldens)"
     )
     return 0 if summary.get("failures", 1) == 0 else 1

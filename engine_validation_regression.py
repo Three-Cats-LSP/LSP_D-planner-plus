@@ -49,7 +49,7 @@ def start_server():
 
 
 def run_checks(page, port):
-    page.goto(f"http://127.0.0.1:{port}/index.html?massiveSuite=1", wait_until="domcontentloaded")
+    page.goto(f"http://127.0.0.1:{port}/index.html?regression=1&massiveSuite=1", wait_until="domcontentloaded")
     page.wait_for_function(
         "() => window.ZHLEngine && window.VPMEngine && window.validateEngineInputs && window.ZhlEngineBundle",
         timeout=60000,

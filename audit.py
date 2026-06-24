@@ -3145,7 +3145,15 @@ e2e_path = os.path.join(os.path.dirname(__file__), "dev", "validate_pscr_e2e.py"
 if os.path.isfile(e2e_path):
     with open(e2e_path, encoding="utf-8") as f:
         e2e_src = f.read()
-    if "ThreadingHTTPServer" in e2e_src and "serve_root" in e2e_src and "as_uri()" not in e2e_src:
+    if "ThreadingHTTPServer" in open(os.path.join(os.path.dirname(__file__), "dev", "test_http.py"), encoding="utf-8").read():
+        ok("test harness uses quiet ThreadingHTTPServer (issue #3)")
+    else:
+        fail("dev/test_http.py quiet server missing (issue #3)")
+    if "regression=1" in e2e_src and "wait_app_engines" in e2e_src:
+        ok("validate_pscr_e2e.py loads app with regression=1 and re-waits before evaluate (issue #3)")
+    else:
+        fail("validate_pscr_e2e.py missing regression=1 reload guard (issue #3)")
+    if "serve_root" in e2e_src and "as_uri()" not in e2e_src:
         ok("validate_pscr_e2e.py serves app over HTTP (not file://)")
     else:
         fail("validate_pscr_e2e.py still loads index via file:// (issue #1)")
@@ -3162,6 +3170,11 @@ else:
     fail("Missing .github/workflows/audit.yml CI workflow (issue #1)")
 
 browser_reg_path = os.path.join(os.path.dirname(__file__), "dev", "run_browser_regression.py")
+if "function isAutomatedTestMode()" in html and "massiveSuite') === '1'" in html:
+    ok("index.html skips SW migration/registration in automated test mode (issue #3)")
+else:
+    fail("index.html missing isAutomatedTestMode SW guard (issue #3)")
+
 if os.path.isfile(browser_reg_path):
     ok("dev/run_browser_regression.py present (issue #1 follow-up)")
 else:

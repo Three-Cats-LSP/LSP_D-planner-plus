@@ -37,7 +37,7 @@ JS_RUN_SUITE = """
           if (Date.now() - start > 180000) return cb(new Error('Timed out waiting for engines'));
           setTimeout(check, 300);
         };
-        frame.src = 'index.html?massiveSuite=1&ts=' + Date.now();
+        frame.src = 'index.html?regression=1&massiveSuite=1&ts=' + Date.now();
         setTimeout(check, 300);
       };
   wait(iframe, 180000, (err, ctx) => {

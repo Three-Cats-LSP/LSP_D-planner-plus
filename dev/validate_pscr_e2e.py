@@ -7,14 +7,16 @@ import os
 import re
 import subprocess
 import sys
-import threading
-from contextlib import contextmanager
 from datetime import datetime, timezone
-from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urljoin
 
 ROOT = Path(__file__).resolve().parents[1]
+_DEV = Path(__file__).resolve().parent
+if str(_DEV) not in sys.path:
+    sys.path.insert(0, str(_DEV))
+from test_http import serve_root  # noqa: F401 — re-exported for run_browser_regression / run_ccr_differential
+
 INDEX = ROOT / "index.html"
 PSCR_TEST = ROOT / "tests-pscr-otu-cns.html"
 
@@ -52,21 +54,14 @@ def ref_gas_surface_equiv(bt_min: float) -> tuple[float, float]:
     return surf_lpm * bt_min, met_o2
 
 
-@contextmanager
-def serve_root(root: Path, port: int = 8765):
-    prev = os.getcwd()
-    os.chdir(root)
-    server = ThreadingHTTPServer(("127.0.0.1", port), SimpleHTTPRequestHandler)
-    thread = threading.Thread(target=server.serve_forever, daemon=True)
-    thread.start()
-    try:
-        yield f"http://127.0.0.1:{port}/"
-    finally:
-        server.shutdown()
-        thread.join(timeout=2)
-        os.chdir(prev)
-
-
+def wait_app_engines(page) -> None:
+    """Wait until core globals survive any late boot; safe to call before each evaluate."""
+    page.wait_for_function(
+        """() => window.VPMEngine && window.ZHLEngine
+          && typeof window.getEffectivePpo2 === 'function'
+          && typeof window.computePlanExposureTotals === 'function'""",
+        timeout=180000,
+    )
 def run_audit() -> dict:
     proc = subprocess.run(
         [sys.executable, str(ROOT / "audit.py")],
@@ -177,7 +172,7 @@ def run_playwright_validation() -> dict:
           rows,
         });
       });
-      iframe.src = 'index.html?massiveSuite=1&ts=' + Date.now();
+      iframe.src = 'index.html?regression=1&massiveSuite=1&ts=' + Date.now();
     })
     """
 
@@ -191,16 +186,14 @@ def run_playwright_validation() -> dict:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
 
-            page.goto(app_url + "?massiveSuite=1", wait_until="domcontentloaded", timeout=180000)
-            page.wait_for_function(
-                """() => window.VPMEngine && window.ZHLEngine && window.getEffectivePpo2""",
-                timeout=180000,
-            )
+            page.goto(app_url + "?regression=1&massiveSuite=1", wait_until="domcontentloaded", timeout=180000)
+            wait_app_engines(page)
             page.evaluate("window._zhlHeadless = true")
             page.wait_for_timeout(3000)
             results["app_version"] = page.evaluate("window.APP_VERSION")
 
             for prof in PROFILES:
+                wait_app_engines(page)
                 raw = page.evaluate(js_eval_profile, prof)
                 checks = validate_profile(prof, raw)
                 results["profiles"].append({"profile": prof, "data": raw, "checks": checks})

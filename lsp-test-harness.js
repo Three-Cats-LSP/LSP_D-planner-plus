@@ -84,7 +84,7 @@ var LSPTestHarness = (function () {
 
     var start = Date.now();
     if (!iframe.src || iframe.src === 'about:blank') {
-      iframe.src = 'index.html?ts=' + Date.now();
+      iframe.src = 'index.html?regression=1&massiveSuite=1&ts=' + Date.now();
     }
     setTimeout(check, 300);
   }
@@ -106,7 +106,7 @@ var LSPTestHarness = (function () {
   }
 
   function reloadApp(iframe) {
-    iframe.src = 'index.html?ts=' + Date.now();
+    iframe.src = 'index.html?regression=1&massiveSuite=1&ts=' + Date.now();
   }
 
   return {

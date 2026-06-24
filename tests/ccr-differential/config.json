@@ -44,5 +44,6 @@
     "divekit": ["CCR-C1", "CCR-C2", "CCR-C3"],
     "abysner": ["CCR-C1", "CCR-C2", "CCR-C3"],
     "subsurface": ["CCR-C1", "CCR-C2", "CCR-C3"]
-  }
+  },
+  "optionalGoldensNote": "Fixtures without comparator goldens are reported inconclusive (not failures). Expand requiredGoldens as captures are added."
 }

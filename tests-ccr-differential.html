@@ -82,7 +82,7 @@ function waitForApp(iframe, timeoutMs) {
 
     const start = Date.now();
 
-    iframe.src = 'index.html?massiveSuite=1&ts=' + Date.now();
+    iframe.src = 'index.html?regression=1&massiveSuite=1&ts=' + Date.now();
 
     function enginesReady(w) {
 

@@ -16689,11 +16689,15 @@ window.addEventListener('load', function() {
 </script>
 <!-- PWA: service worker registration -->
 <script>
+  function isAutomatedTestMode() {
+    const q = new URLSearchParams(location.search);
+    return q.get('regression') === '1' || q.get('massiveSuite') === '1';
+  }
   const SW_VERSION_KEY = 'lspSwVersion';
   const SW_MIGRATION_FLAG = `lspSwMigrated:${APP_VERSION}`;
   (async () => {
     try {
-      if (new URLSearchParams(location.search).get('regression') === '1') return;
+      if (isAutomatedTestMode()) return;
       const prev = localStorage.getItem(SW_VERSION_KEY);
       if (prev === APP_VERSION || sessionStorage.getItem(SW_MIGRATION_FLAG) === '1') return;
       sessionStorage.setItem(SW_MIGRATION_FLAG, '1');
@@ -16712,7 +16716,7 @@ window.addEventListener('load', function() {
     }
   })();
 
-  if ('serviceWorker' in navigator && new URLSearchParams(location.search).get('regression') !== '1') {
+  if ('serviceWorker' in navigator && !isAutomatedTestMode()) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register(`sw.js?v=${APP_VERSION}`, { updateViaCache: 'none' })
         .then(r => {
