@@ -38,11 +38,14 @@
   }
 
   function terminate() {
+    const err = new Error('ZHL worker terminated');
     if (worker) {
+      try {
+        worker.postMessage({ type: 'terminate' });
+      } catch (_) {}
       worker.terminate();
       worker = null;
     }
-    const err = new Error('ZHL worker terminated');
     pending.forEach(p => p.reject(err));
     pending.clear();
   }

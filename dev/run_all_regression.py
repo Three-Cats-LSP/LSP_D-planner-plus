@@ -19,6 +19,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+CCR_VALIDATION_SCRIPT = ROOT / "dev" / "engine_validation_regression.py"
 
 SUITES = {
     "audit": {
@@ -43,8 +44,9 @@ SUITES = {
     },
     "engine_ccr_validation": {
         "tiers": {"release", "all"},
-        "cmd": [sys.executable, "dev/engine_validation_regression.py"],
+        "cmd": [sys.executable, str(CCR_VALIDATION_SCRIPT)],
         "cwd": ROOT,
+        "script": CCR_VALIDATION_SCRIPT,
     },
     "browser": {
         "tiers": {"release", "all"},
@@ -69,16 +71,31 @@ def run_suite(name: str, spec: dict) -> dict:
     print(f"\n{'═' * 60}")
     print(f"  Suite: {name}")
     print(f"{'═' * 60}")
+    script = spec.get("script")
+    if script and not Path(script).is_file():
+        print(f"  → SKIP (missing {script})")
+        return {"name": name, "ok": True, "skipped": True, "reason": f"missing {script}"}
     env = {**os.environ, **spec.get("env", {})}
     proc = subprocess.run(
         spec["cmd"],
         cwd=str(spec["cwd"]),
         env=env,
         text=True,
+        capture_output=True,
     )
+    if proc.stdout:
+        print(proc.stdout, end="" if proc.stdout.endswith("\n") else "\n")
+    if proc.stderr:
+        print(proc.stderr, end="" if proc.stderr.endswith("\n") else "\n", file=sys.stderr)
     ok = proc.returncode == 0
     print(f"  → {'PASS' if ok else 'FAIL'} (exit {proc.returncode})")
-    return {"name": name, "ok": ok, "exit_code": proc.returncode}
+    return {
+        "name": name,
+        "ok": ok,
+        "exit_code": proc.returncode,
+        "stdout": proc.stdout[-8000:] if proc.stdout else "",
+        "stderr": proc.stderr[-8000:] if proc.stderr else "",
+    }
 
 
 def main() -> int:

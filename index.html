@@ -16687,6 +16687,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateWaterVapor();
     updateHeHalfTime(); // re-sync after VPMEngine fully ready
     syncGfPresetFromValues();
+    window._lspEngineReady = true;
   }, 1000);
 });
 

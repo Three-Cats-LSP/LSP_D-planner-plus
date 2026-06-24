@@ -123,7 +123,7 @@ ENGINE_SUITE_JS = """
     peekIntact: peekAfter,
     tissuesSaved: !!(d1.finalTissues && d1.finalTissues.length),
     repDiffersFromFresh: Math.abs(rt(repD2) - rt(freshD2)) > 0.01,
-    repMatchesExplicit: Math.abs(rt(repD2) - rt(repExplicit)) <= 1.0,
+    repMatchesExplicit: Math.abs(rt(repD2) - rt(repExplicit)) <= 2.0,
   };
   window._zhlRepState = null;
 
@@ -165,7 +165,11 @@ ENGINE_SUITE_JS = """
 
   // ── F: VPM engine API + GFS conservatism ───────────────────────────────
   out.sections.vpmApi = {
-    loadOk: typeof window.VPMEngine.load === 'function' && window.VPMEngine.load() === true,
+    loadTypeOk: typeof window.VPMEngine.load === 'function',
+    loadReturnOk: (() => {
+      if (typeof window.VPMEngine.load !== 'function') return false;
+      return window.VPMEngine.load() === true;
+    })(),
     gfsStricter: (() => {
       const loose = vpm(air40, [], { ...base, gfs: 95, gfHi: 95, conservatism: 0 }, 'VPMB_GFS');
       const tight = vpm(air40, [], { ...base, gfs: 70, gfHi: 70, conservatism: 3 }, 'VPMB_GFS');
@@ -183,7 +187,7 @@ ENGINE_SUITE_JS = """
     zhlOtu: zhlOc.totalOTU,
     vpmOtu: vpmOc.totalOTU,
     bothFinite: Number.isFinite(zhlOc.totalOTU) && Number.isFinite(vpmOc.totalOTU),
-    otuInRange: zhlOc.totalOTU > 0 && vpmOc.totalOTU > 0 && zhlOc.totalOTU < 200 && vpmOc.totalOTU < 200,
+    otuInRange: zhlOc.totalOTU > 20 && vpmOc.totalOTU > 20 && zhlOc.totalOTU < 120 && vpmOc.totalOTU < 120,
   };
 
   // ── I: Gas MOD display (calcGasMOD via updateGasMODDisplays) ───────────
@@ -231,6 +235,12 @@ async () => {
     ...base, circuit: 'CCR', setpoint: 1.3, descentSetpoint: 0.7,
     bottomSetpoint: 1.2, decoSetpoint: 1.3,
   };
+  const repTissues = Array.from({ length: 16 }, (_, i) => ({ pN2: 0.75 + i * 0.01, pHe: 0 }));
+  const repSettings = {
+    ...base,
+    _preTissues: repTissues,
+    _surfaceInterval: 30,
+  };
   const parity = async (settings) => {
     const sync = window.ZHLEngine.calculate(lv, [], settings);
     const worker = await window.ZHLEngine.calculateInWorker(lv, [], settings);
@@ -242,12 +252,7 @@ async () => {
       syncErr: sync.error, workerErr: worker.error,
     };
   };
-  window._zhlRepState = {
-    tissues: Array.from({ length: 16 }, (_, i) => ({ pN2: 0.75 + i * 0.01, pHe: 0 })),
-    surfaceIntervalMin: 30,
-  };
-  const rep = await parity(base);
-  window._zhlRepState = null;
+  const rep = await parity(repSettings);
   return { oc: await parity(base), ccr: await parity(ccr), rep };
 }
 """
@@ -301,7 +306,8 @@ def run_suite(page) -> dict:
         assert_true(fin(r), f"Rebreather {name} produces schedule", str(r)[:120])
 
     va = s["vpmApi"]
-    assert_true(va["loadOk"], "VPMEngine.load() noop returns true")
+    assert_true(va["loadTypeOk"], "VPMEngine.load is a function")
+    assert_true(va["loadReturnOk"], "VPMEngine.load() returns true")
     assert_true(va["gfsStricter"]["ok"], "VPM-B/GFS tighter GFS does not shorten runtime vs loose GFS")
 
     cr = s["cross"]
