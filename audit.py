@@ -3393,6 +3393,7 @@ else:
 if os.path.isfile(run_all_reg):
     with open(run_all_reg, encoding="utf-8") as f:
         run_all_src = f.read()
+    release_suites_ok = True
     for script, label in [
         ("run_browser_regression.py", "browser"),
         ("run_ccr_differential.py", "ccr_differential"),
@@ -3400,9 +3401,33 @@ if os.path.isfile(run_all_reg):
         path = os.path.join(os.path.dirname(__file__), "dev", script)
         if not os.path.isfile(path):
             fail(f"dev/{script} missing (release suite {label})")
-        elif f'"{label}"' in run_all_src and "optional" in run_all_src.split(f'"{label}"')[1].split("},")[0]:
+            release_suites_ok = False
+            continue
+        suite_m = re.search(rf'"{re.escape(label)}"\s*:\s*\{{', run_all_src)
+        if not suite_m:
+            fail(f"dev/run_all_regression.py missing {label} suite entry")
+            release_suites_ok = False
+            continue
+        i = suite_m.end() - 1
+        depth = 0
+        suite_block = None
+        while i < len(run_all_src):
+            ch = run_all_src[i]
+            if ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth == 0:
+                    suite_block = run_all_src[suite_m.start(): i + 1]
+                    break
+            i += 1
+        if not suite_block:
+            fail(f"dev/run_all_regression.py {label} suite block malformed")
+            release_suites_ok = False
+        elif re.search(r'"optional"\s*:\s*True', suite_block):
             fail(f"dev/run_all_regression.py marks {label} optional but script is present")
-    if os.path.isfile(os.path.join(os.path.dirname(__file__), "dev", "run_browser_regression.py")):
+            release_suites_ok = False
+    if release_suites_ok:
         ok("browser + ccr_differential release suites required when scripts present")
 
 # ══════════════════════════════════════════════════════════════════════════════
