@@ -49,6 +49,27 @@ jobs:
       - name: Run export regression suite
         run: python export_regression.py
 
+  engine-full:
+    name: Full engine regression (all algos)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Playwright
+        run: |
+          python -m pip install --upgrade pip
+          pip install playwright
+          playwright install chromium --with-deps
+
+      - name: Run full engine regression suite
+        run: python dev/engine_regression.py
+
   engine-validation:
     name: Engine validation (malformed inputs)
     runs-on: ubuntu-latest

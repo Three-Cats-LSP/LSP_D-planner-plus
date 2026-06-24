@@ -3362,6 +3362,23 @@ if os.path.isfile(ccr_val_reg):
 else:
     fail("dev/engine_validation_regression.py missing (BUG-97/98)")
 
+engine_reg = os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py")
+run_all_reg = os.path.join(os.path.dirname(__file__), "dev", "run_all_regression.py")
+if os.path.isfile(engine_reg):
+    with open(engine_reg, encoding="utf-8") as f:
+        eng_reg_src = f.read()
+    if "VPMB_GFS" in eng_reg_src and "zhlRep" in eng_reg_src and "waterType: 3" in eng_reg_src:
+        ok("dev/engine_regression.py covers all algos + rep + custom water (engine suite)")
+    else:
+        fail("dev/engine_regression.py missing algo/rep/water coverage")
+else:
+    fail("dev/engine_regression.py missing (full engine regression)")
+
+if os.path.isfile(run_all_reg) and "engine_full" in open(run_all_reg, encoding="utf-8").read():
+    ok("dev/run_all_regression.py orchestrates unified regression tiers")
+else:
+    fail("dev/run_all_regression.py missing or incomplete")
+
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 68 — raw DOM gas validation before clamping (BUG-100)
 # ══════════════════════════════════════════════════════════════════════════════
