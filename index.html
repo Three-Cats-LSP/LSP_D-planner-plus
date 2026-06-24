@@ -9954,284 +9954,6 @@ function runUnifiedPlan() {
     }
   }
 }
-  const isM = units === 'metric';
-  const du  = isM ? 'm' : 'ft';
-  const defs = isM ? DEFAULT_DEPTHS_M : DEFAULT_DEPTHS_FT;
-  let html = '';
-
-  for (let i = 0; i < diveCount; i++) {
-    const depthVal = defs[i] || 20;
-    const btVal    = 30;
-    html += `
-    <div style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;">
-        Dive ${i+1}
-      </div>
-
-      <div style="margin-bottom:16px;">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
-          <label style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">Depth</label>
-          <span id="slv-d${i}-disp" style="font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1;color:var(--text);">${depthVal} ${du}</span>
-        </div>
-        <div class="slider-wrap">
-          <input type="range" id="slv-d${i}" class="lsp-slider" min="5" max="45" value="${depthVal}" step="1"
-            oninput="updateSliderFill(this);${i===0?'solverSyncDepth()':'runSolver()'}">
-          <div class="slider-ticks"><span>5m</span><span>12m</span><span>20m</span><span>30m</span><span>40m</span><span>45m</span></div>
-        </div>
-      </div>
-
-      ${i === 0 ? `
-      <div style="margin-bottom:8px;">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
-          <label style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">BT Time</label>
-          <span id="slv-bt${i}-disp" style="font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1;color:var(--text);">${btVal} min</span>
-        </div>
-        <div class="slider-wrap">
-          <input type="range" id="slv-bt${i}" class="lsp-slider" min="5" max="90" value="${btVal}" step="1"
-            oninput="updateSliderFill(this);solverSyncBT()">
-          <div class="slider-ticks"><span>5</span><span>20</span><span>40</span><span>60</span><span>90</span></div>
-        </div>
-      </div>` : `
-      <div style="padding:10px;background:var(--bg-alt);border-radius:6px;display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">Max BT Time</span>
-        <span id="slv-maxbt${i}" style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--text);">—</span>
-      </div>
-      <div id="slv-bar${i}" style="margin-top:8px;display:none;">
-        <div style="background:var(--bg-alt);border-radius:4px;height:10px;overflow:hidden;">
-          <div id="slv-barfill${i}" style="height:100%;background:var(--accent);border-radius:4px;transition:width 0.3s;width:0%;"></div>
-        </div>
-      </div>`}
-
-      <div id="slv-advice${i}" style="margin-top:8px;font-size:11px;color:var(--muted);"></div>
-    </div>
-
-    ${i < diveCount-1 ? `
-    <div class="si-connector" style="margin-bottom:12px;">
-      <div class="si-line"></div>
-      <div style="text-align:center;padding:8px;">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Surface Interval</div>
-        <div style="display:flex;align-items:center;gap:8px;justify-content:center;">
-          <input type="range" id="slv-si${i}" class="lsp-slider" min="10" max="240" value="60" step="5"
-            style="width:160px;" oninput="updateSliderFill(this);runSolver()">
-          <span id="slv-si${i}-disp" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent);min-width:60px;">60 min</span>
-        </div>
-      </div>
-      <div class="si-line"></div>
-    </div>` : ''}
-    `;
-  }
-
-// ── Dive 1 bidirectional slider sync ──
-
-// Helper: find NDL at depth (capped at 90 for display purposes)
-function ndlAtDepth(dM) {
-  const n = buhNDL(dM, FN2_AIR, mGF.low, mGF.high);
-  return Math.min(n, 90); // cap at 90 (our slider max)
-}
-
-// Move depth → snap BT down to NDL if BT now exceeds it
-function solverSyncDepth() {
-  const dEl  = document.getElementById('slv-d0');
-  const btEl = document.getElementById('slv-bt0');
-  if (!dEl || !btEl) return;
-  const dM    = parseFloat(dEl.value) || 20;
-  const ndl   = ndlAtDepth(dM);
-  const curBT = parseFloat(btEl.value) || 30;
-  if (curBT > ndl) {
-    btEl.value = Math.max(5, ndl);
-    updateSliderFill(btEl);
-  }
-  runSolver();
-}
-
-// Move BT → snap depth to deepest where NDL >= BT
-function solverSyncBT() {
-  const dEl  = document.getElementById('slv-d0');
-  const btEl = document.getElementById('slv-bt0');
-  if (!dEl || !btEl) return;
-  const bt = parseFloat(btEl.value) || 30;
-  // Find deepest depth (5-45m) where NDL is still >= bt
-  let maxAllowed = 5;
-  for (let d = 5; d <= 45; d++) {
-    const ndl = buhNDL(d, FN2_AIR, mGF.low, mGF.high);
-    if (ndl >= bt) maxAllowed = d;
-    // Don't break early — NDL decreases with depth but not always cleanly at 1m steps
-  }
-  const curD = parseFloat(dEl.value) || 20;
-  if (curD > maxAllowed) {
-    dEl.value = maxAllowed;
-    updateSliderFill(dEl);
-  }
-  runSolver();
-}
-
-// ── Solver: run tissue simulation and fill results ──
-function runSolver() {
-  if (!document.getElementById('solverBlocks')?.innerHTML) return;
-  const isM  = units === 'metric';
-  const conv = isM ? 1 : 3.28084;
-  const du   = isM ? 'm' : 'ft';
-  const fN2  = FN2_AIR;
-
-  // Read all slider values (depths in metres internally, display in user units)
-  const depths = [], sis = [];
-  for (let i = 0; i < diveCount; i++) {
-    const dEl = document.getElementById('slv-d' + i);
-    if (!dEl) return;
-    const dM = parseFloat(dEl.value) || 20;
-    depths.push(dM);
-    const dispEl = document.getElementById('slv-d' + i + '-disp');
-    if (dispEl) dispEl.textContent = Math.round(dM * conv) + ' ' + du;
-    if (i < diveCount - 1) {
-      const siEl = document.getElementById('slv-si' + i);
-      const si = parseFloat(siEl?.value) || 60;
-      sis.push(si);
-      const siDisp = document.getElementById('slv-si' + i + '-disp');
-      if (siDisp) siDisp.textContent = si + ' min';
-    }
-  }
-
-  // Dive 1 BT from its slider
-  const bt1El = document.getElementById('slv-bt0');
-  const bt1   = parseFloat(bt1El?.value) || 30;
-  const bt1Disp = document.getElementById('slv-bt0-disp');
-  if (bt1Disp) bt1Disp.textContent = bt1 + ' min';
-
-  const d1m  = depths[0];
-  const ndl1 = buhNDL(d1m, fN2, mGF.low, mGF.high);
-  const adv0 = document.getElementById('slv-advice0');
-  const pct1 = ndl1 > 0 ? Math.round(bt1 / ndl1 * 100) : 100;
-
-  const margin1  = ndl1 - bt1;  // minutes remaining before NDL
-  const d1Color  = margin1 <= 0  ? 'var(--red)'
-                 : margin1 <= 5  ? 'var(--red)'
-                 : margin1 <= 10 ? 'var(--yellow)'
-                 : 'var(--green)';
-  const d1Disp   = document.getElementById('slv-d0-disp');
-  const bt1Disp2 = document.getElementById('slv-bt0-disp');
-  if (d1Disp)   d1Disp.style.color   = d1Color;
-  if (bt1Disp2) bt1Disp2.style.color = d1Color;
-
-  // Dive 1 advice with colour
-  if (adv0) {
-    if (margin1 <= 0) {
-      adv0.innerHTML = `<span style="color:var(--red);font-weight:700;">⚠ Exceeds NDL! NDL at ${Math.round(d1m*conv)}${du} = ${ndl1} min</span>`;
-    } else if (margin1 <= 5) {
-      adv0.innerHTML = `<span style="color:var(--red);">⚠ ${margin1} min to NDL limit (${ndl1} min) — very close</span>`;
-    } else if (margin1 <= 10) {
-      adv0.innerHTML = `<span style="color:var(--yellow);">NDL: ${ndl1} min · Used: ${bt1} min · ${margin1} min remaining</span>`;
-    } else {
-      adv0.innerHTML = `<span style="color:var(--green);">NDL: ${ndl1} min · Used: ${bt1} min · ${margin1} min remaining</span>`;
-    }
-  }
-
-  // Simulate dive 1 tissues
-  let tissues = initTissues();
-  tissues = saturate(tissues, d1m, bt1, fN2, 0);
-
-  // Subsequent dives
-  for (let i = 1; i < diveCount; i++) {
-    const si = sis[i - 1];
-
-    // Offgas during surface interval (breathe air at surface)
-    const siSteps = Math.floor(si);
-    const siFrac  = si - siSteps;
-    for (let s = 0; s < siSteps; s++) tissues = saturate(tissues, 0, 1, fN2, 0);
-    if (siFrac > 0) tissues = saturate(tissues, 0, siFrac, fN2, 0);
-
-    const dM   = depths[i];
-    const ndlN = buhNDL(dM, fN2, mGF.low, mGF.high);
-
-    // Find max BT at this depth given residual loading
-    let testT = tissues.slice();
-    let maxBT = 0;
-    for (let t = 1; t <= 180; t++) {
-      testT = saturate(testT, dM, 1, fN2);
-      if (ceiling(testT, mGF.high / 100) > 0.5) break;
-      maxBT = t;
-    }
-
-    // Find minimum SI for ≥10 min BT
-    // Re-simulate tissues just before THIS surface interval
-    let tBase = initTissues();
-    tBase = saturate(tBase, d1m, bt1, fN2);
-    for (let j = 1; j < i; j++) {
-      tBase = saturate(tBase, 0, sis[j-1], fN2);
-      // use maxBT as conservative previous dive BT
-      tBase = saturate(tBase, depths[j], Math.min(30, maxBT || 20), fN2);
-    }
-    let minSI = null;
-    for (let si2 = 5; si2 <= 480; si2 += 5) {
-      let tTest = tBase.slice();
-      for (let s = 0; s < si2; s++) tTest = saturate(tTest, 0, 1, fN2);
-      let tt = tTest.slice(); let mb = 0;
-      for (let t = 1; t <= 30; t++) {
-        tt = saturate(tt, dM, 1, fN2);
-        if (ceiling(tt, mGF.high / 100) > 0.5) break;
-        mb = t;
-      }
-      if (mb >= 10) { minSI = si2; break; }
-    }
-
-    // Update UI elements
-    const maxBTEl = document.getElementById('slv-maxbt' + i);
-    const barEl   = document.getElementById('slv-bar' + i);
-    const fillEl  = document.getElementById('slv-barfill' + i);
-    const advEl   = document.getElementById('slv-advice' + i);
-
-    // Depth display colour for subsequent dives
-    const dNDisp = document.getElementById('slv-d' + i + '-disp');
-    if (dNDisp) {
-      const margin = ndlN - maxBT;
-      dNDisp.style.color = maxBT <= 0   ? 'var(--red)'
-                         : margin <= 5  ? 'var(--red)'
-                         : margin <= 10 ? 'var(--yellow)'
-                         : 'var(--green)';
-    }
-
-    // Max BT display with colour
-    if (maxBTEl) {
-      maxBTEl.textContent = maxBT > 0 ? maxBT + ' min' : '0 min';
-      // Mirror Dive 1 colour logic: margin from NDL
-      const margin = ndlN - maxBT;
-      maxBTEl.style.color = maxBT <= 0   ? 'var(--red)'
-                          : margin <= 5  ? 'var(--red)'
-                          : margin <= 10 ? 'var(--yellow)'
-                          : 'var(--green)';
-    }
-
-    // Progress bar — width = maxBT as fraction of practical max (60min)
-    // Colour = same margin logic as Dive 1: green/yellow/red based on minutes to NDL
-    if (barEl && fillEl) {
-      barEl.style.display = 'block';
-      const barPct  = Math.min(100, (maxBT / 60) * 100);
-      const margin  = ndlN - maxBT;
-      fillEl.style.width = barPct + '%';
-      fillEl.style.background = maxBT <= 0   ? 'var(--red)'
-                               : margin <= 5  ? 'var(--red)'
-                               : margin <= 10 ? 'var(--yellow)'
-                               : 'var(--green)';
-    }
-
-    // Advice with colour
-    if (advEl) {
-      if (maxBT < 1) {
-        advEl.innerHTML = `<span style="color:var(--red);font-weight:700;">⚠ No bottom time available. Need at least ${minSI ?? '?'} min SI.</span>`;
-      } else if (si < (minSI ?? 0) || maxBT < 10) {
-        advEl.innerHTML = `<span style="color:var(--yellow);">⚠ Only ${maxBT} min available. Min SI for 10 min BT: <strong>${minSI ?? '?'} min</strong></span>`;
-      } else {
-        advEl.innerHTML = `<span style="color:var(--green);">✓ ${maxBT} min available</span> · NDL ${ndlN} min · Min SI ${minSI ?? '?'} min`;
-      }
-    }
-
-    // Continue chain with conservative BT assumption
-    if (i < diveCount - 1) {
-      const useBT = Math.max(1, Math.min(maxBT, 20));
-      tissues = saturate(tissues, dM, useBT, fN2, 0);
-    }
-  }
-}
-
 
 // ═══════════════════════════════════════════════
 // REFERENCE TABLE
@@ -13934,8 +13656,8 @@ async function loadPDFFonts(doc) {
   }
   try {
     const [rResp, bResp] = await Promise.all([
-      fetch('https://cdn.jsdelivr.net/npm/dejavu-fonts-ttf@2.37.3/ttf/DejaVuSans.ttf'),
-      fetch('https://cdn.jsdelivr.net/npm/dejavu-fonts-ttf@2.37.3/ttf/DejaVuSans-Bold.ttf'),
+      fetch('vendor/fonts/DejaVuSans.ttf'),
+      fetch('vendor/fonts/DejaVuSans-Bold.ttf'),
     ]);
     if (!rResp.ok || !bResp.ok) throw new Error('Font fetch failed');
     const [rBuf, bBuf] = await Promise.all([rResp.arrayBuffer(), bResp.arrayBuffer()]);
@@ -13957,7 +13679,7 @@ async function loadPDFFonts(doc) {
     doc.setFont('DejaVuSans', 'normal');
     return true;
   } catch(e) {
-    console.error('[LSP] DejaVu font load failed — Unicode symbols will not render in PDF. Check network/CDN.', e);
+    console.error('[LSP] DejaVu font load failed — Unicode symbols will not render in PDF. Check vendor/fonts/ assets.', e);
     return false;
   }
 }
@@ -14037,8 +13759,8 @@ async function exportContingencyPDF(opts) {
   const _incTissue  = opts.tissue  !== false;
   const _incEmSlate = opts.emSlate !== false;
 
+  if (!window.jspdf || !window.jspdf.jsPDF) { alert('PDF library not loaded.'); return; }
   const { jsPDF } = window.jspdf;
-  if (!jsPDF) { alert('PDF library not loaded.'); return; }
   const c = window._lastContingency;
   if (!c) return;
 
