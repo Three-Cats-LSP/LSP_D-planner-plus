@@ -4099,9 +4099,10 @@ function appendHeHtSyncAlert(container) {
     '<div class="alert" style="margin-top:8px;background:rgba(255,165,0,0.15);border-color:orange;color:var(--text);">' +
     '<span>⚠</span><div><strong>He half-time sync unavailable.</strong> VPM engine could not receive Bühlmann He HT updates — VPM schedules may use stale He compartment times until refresh.</div></div>');
 }
+let _pendingDecoAlerts = '';
 function renderDecoAlerts(container, cnsHtml) {
   if (!container) return;
-  container.innerHTML = cnsHtml || '';
+  container.innerHTML = (_pendingDecoAlerts || '') + (cnsHtml || '');
   appendHeHtSyncAlert(container);
 }
 const FN2_AIR   = 0.79;
@@ -5423,8 +5424,9 @@ function buildDecoSummaryAlerts(hasDeco, endM, noDecoNote) {
 function updateDecoSummaryHtml(hasDeco, endM, noDecoNote) {
   const el = document.getElementById('decoSummary');
   if (!el) return;
-  const alerts = buildDecoSummaryAlerts(hasDeco, endM, noDecoNote);
-  el.innerHTML = renderDecoPlanHeaderHtml(buildDecoPlanHeaderData(), { hasDeco, ...alerts });
+  const { decoAlertHtml, narcAlertHtml } = buildDecoSummaryAlerts(hasDeco, endM, noDecoNote);
+  _pendingDecoAlerts = (decoAlertHtml || '') + (narcAlertHtml || '');
+  el.innerHTML = renderDecoPlanHeaderHtml(buildDecoPlanHeaderData(), { hasDeco });
   scheduleDecoScheduleStackSync();
 }
 
