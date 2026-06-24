@@ -16,6 +16,7 @@ _DEV = Path(__file__).resolve().parent
 if str(_DEV) not in sys.path:
     sys.path.insert(0, str(_DEV))
 from test_http import serve_root  # noqa: F401 — re-exported for run_browser_regression / run_ccr_differential
+from playwright_boot import boot_app_page, ensure_app_engines, wait_app_engines  # noqa: E402
 
 INDEX = ROOT / "index.html"
 PSCR_TEST = ROOT / "tests-pscr-otu-cns.html"
@@ -54,14 +55,6 @@ def ref_gas_surface_equiv(bt_min: float) -> tuple[float, float]:
     return surf_lpm * bt_min, met_o2
 
 
-def wait_app_engines(page) -> None:
-    """Wait until core globals survive any late boot; safe to call before each evaluate."""
-    page.wait_for_function(
-        """() => window.VPMEngine && window.ZHLEngine
-          && typeof window.getEffectivePpo2 === 'function'
-          && typeof window.computePlanExposureTotals === 'function'""",
-        timeout=180000,
-    )
 def run_audit() -> dict:
     proc = subprocess.run(
         [sys.executable, str(ROOT / "audit.py")],
@@ -186,14 +179,11 @@ def run_playwright_validation() -> dict:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
 
-            page.goto(app_url + "?regression=1&massiveSuite=1", wait_until="domcontentloaded", timeout=180000)
-            wait_app_engines(page)
-            page.evaluate("window._zhlHeadless = true")
-            page.wait_for_timeout(3000)
+            boot_app_page(page, base_url)
             results["app_version"] = page.evaluate("window.APP_VERSION")
 
             for prof in PROFILES:
-                wait_app_engines(page)
+                ensure_app_engines(page)
                 raw = page.evaluate(js_eval_profile, prof)
                 checks = validate_profile(prof, raw)
                 results["profiles"].append({"profile": prof, "data": raw, "checks": checks})

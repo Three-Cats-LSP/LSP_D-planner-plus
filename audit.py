@@ -3176,7 +3176,7 @@ if os.path.isfile(e2e_path):
         ok("test harness uses quiet ThreadingHTTPServer (issue #3)")
     else:
         fail("dev/test_http.py quiet server missing (issue #3)")
-    if "regression=1" in e2e_src and "wait_app_engines" in e2e_src:
+    if "regression=1" in e2e_src and ("wait_app_engines" in e2e_src or "ensure_app_engines" in e2e_src):
         ok("validate_pscr_e2e.py loads app with regression=1 and re-waits before evaluate (issue #3)")
     else:
         fail("validate_pscr_e2e.py missing regression=1 reload guard (issue #3)")
@@ -3356,11 +3356,22 @@ if "validateGasFractionsPct(level.o2, level.he" in val_ccr_calc and "o2pct > 1" 
 else:
     fail("validateCcrCalculationInputs still mixes fraction/percent conventions (BUG-99)")
 
-ccr_val_reg = os.path.join(os.path.dirname(__file__), "dev", "engine_validation_regression.py")
+ccr_val_reg = os.path.join(os.path.dirname(__file__), "dev", "ccr_engine_validation_regression.py")
 if os.path.isfile(ccr_val_reg):
-    ok("dev/engine_validation_regression.py present (BUG-97/98)")
+    ok("dev/ccr_engine_validation_regression.py present (BUG-97/98)")
 else:
-    fail("dev/engine_validation_regression.py missing (BUG-97/98)")
+    fail("dev/ccr_engine_validation_regression.py missing (BUG-97/98)")
+
+if "_lspEngineError" in html and "startLspEngineReadyPolling" in html and "showEngineLoadErrorBanner" in html:
+    ok("Engine boot sentinel sets _lspEngineError and user-visible banner on timeout")
+else:
+    fail("Engine boot sentinel missing timeout error handling")
+
+pb = os.path.join(os.path.dirname(__file__), "dev", "playwright_boot.py")
+if os.path.isfile(pb) and "_lspEngineError" in open(pb, encoding="utf-8").read():
+    ok("playwright_boot fails fast when _lspEngineError is set")
+else:
+    fail("playwright_boot missing fast-fail on engine boot error")
 
 engine_reg = os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py")
 run_all_reg = os.path.join(os.path.dirname(__file__), "dev", "run_all_regression.py")

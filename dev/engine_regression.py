@@ -238,6 +238,7 @@ async () => {
   };
   const dive1 = window.ZHLEngine.calculate(dive1Lv, [], base);
   const repTissues = (dive1.finalTissues || []).map(t => ({ pN2: t.pN2, pHe: t.pHe || 0 }));
+  const dive1Ok = !dive1.error && repTissues.length === 16;
   const repSettings = {
     ...base,
     _preTissues: repTissues,
@@ -248,16 +249,14 @@ async () => {
     const worker = await window.ZHLEngine.calculateInWorker(lv, [], settings);
     const stopsMatch = (sync.stops || []).length === (worker.stops || []).length;
     return {
-      ok: !sync.error && !worker.error && repTissues.length === 16
-        && sync.totalRuntime === worker.totalRuntime
+      ok: !sync.error && !worker.error && sync.totalRuntime === worker.totalRuntime
         && sync.tts === worker.tts && stopsMatch,
       syncRt: sync.totalRuntime, workerRt: worker.totalRuntime,
       syncErr: sync.error, workerErr: worker.error,
-      tissueCount: repTissues.length,
     };
   };
-  const rep = await parity(repSettings);
-  return { oc: await parity(base), ccr: await parity(ccr), rep };
+  const rep = dive1Ok ? await parity(repSettings) : { ok: false, dive1Err: dive1.error, tissueCount: repTissues.length };
+  return { dive1Ok, oc: await parity(base), ccr: await parity(ccr), rep };
 }
 """
 
@@ -322,6 +321,7 @@ def run_suite(page) -> dict:
 
     print("\n── G: Worker parity ──")
     worker = page.evaluate(WORKER_SUITE_JS)
+    assert_true(worker.get("dive1Ok"), "Worker rep dive-1 produces 16 finalTissues", str(worker.get("rep")))
     for label, key in [("OC", "oc"), ("CCR", "ccr"), ("ZHL rep state", "rep")]:
         p = worker.get(key) or {}
         assert_true(p.get("ok"), f"Worker parity {label}", str(p))

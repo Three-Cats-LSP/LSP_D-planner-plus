@@ -19,6 +19,11 @@ if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 ROOT = Path(__file__).resolve().parent
+_DEV = ROOT / "dev"
+if str(_DEV) not in sys.path:
+    sys.path.insert(0, str(_DEV))
+
+from playwright_boot import boot_app_page  # noqa: E402
 
 PASS = []
 FAIL = []
@@ -49,12 +54,7 @@ def start_server():
 
 
 def run_checks(page, port):
-    page.goto(f"http://127.0.0.1:{port}/index.html?regression=1&massiveSuite=1", wait_until="domcontentloaded")
-    page.wait_for_function(
-        "() => window.ZHLEngine && window.VPMEngine && window.validateEngineInputs && window.ZhlEngineBundle",
-        timeout=60000,
-    )
-    page.wait_for_timeout(3000)
+    boot_app_page(page, f"http://127.0.0.1:{port}")
 
     settings = {
         "metric": True,

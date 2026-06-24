@@ -6467,6 +6467,14 @@ function padiGroup(depthM, time, mix) {
 // PLANNER
 // ═══════════════════════════════════════════════
 function runPlanner() {
+  if (window._lspEngineError) {
+    if (typeof showEngineLoadErrorBanner === 'function') showEngineLoadErrorBanner();
+    return;
+  }
+  if (!window._lspEngineReady && !window._zhlHeadless) {
+    alert('Dive engines are still loading. Please wait a moment and try again.');
+    return;
+  }
   if (!window._zhlHeadless) {
     const inputVal = validatePlannerInputs();
     if (!inputVal.ok) {
@@ -16601,18 +16609,57 @@ window.addEventListener('beforeunload', function() {
 });
 
 // Load settings when page loads
+function showEngineLoadErrorBanner() {
+  let el = document.getElementById('lspEngineErrorBanner');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'lspEngineErrorBanner';
+    el.setAttribute('role', 'alert');
+    el.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;padding:12px 16px;background:#8b1a1a;color:#fff;font:600 14px/1.4 system-ui,sans-serif;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.35);';
+    el.textContent = 'Dive engines failed to load. Refresh the page or check your connection.';
+    document.body.prepend(el);
+  }
+  el.style.display = 'block';
+  document.querySelectorAll('.btn-calc').forEach(function(btn) { btn.disabled = true; });
+}
+
+function hideEngineLoadErrorBanner() {
+  const el = document.getElementById('lspEngineErrorBanner');
+  if (el) el.style.display = 'none';
+  document.querySelectorAll('.btn-calc').forEach(function(btn) { btn.disabled = false; });
+}
+
 function markLspEngineReadyWhenReady(attempt) {
+  if (window._lspEngineReady || window._lspEngineError) return;
   if (window.ZHLEngine && window.VPMEngine
       && typeof window.ZHLEngine.calculate === 'function'
       && typeof window.VPMEngine.calculate === 'function'
       && typeof window.ZhlEngineBundle !== 'undefined') {
     window._lspEngineReady = true;
+    hideEngineLoadErrorBanner();
     return;
   }
   if ((attempt || 0) < 120) {
-    setTimeout(() => markLspEngineReadyWhenReady((attempt || 0) + 1), 250);
+    setTimeout(function() { markLspEngineReadyWhenReady((attempt || 0) + 1); }, 250);
+    return;
   }
+  window._lspEngineError = 'timeout';
+  console.error('[LSP] Engine load timed out — ZHLEngine/VPMEngine/ZhlEngineBundle unavailable', {
+    ZHLEngine: !!window.ZHLEngine,
+    VPMEngine: !!window.VPMEngine,
+    ZhlEngineBundle: typeof window.ZhlEngineBundle,
+  });
+  showEngineLoadErrorBanner();
 }
+
+function startLspEngineReadyPolling() {
+  if (window._lspEnginePollingStarted) return;
+  window._lspEnginePollingStarted = true;
+  markLspEngineReadyWhenReady(0);
+}
+
+// Engines are defined earlier in this script — start polling immediately.
+startLspEngineReadyPolling();
 
 document.addEventListener('DOMContentLoaded', function() {
   if (window.__lspInitDone) return;
@@ -16700,19 +16747,19 @@ document.addEventListener('DOMContentLoaded', function() {
     updateWaterVapor();
     updateHeHalfTime(); // re-sync after VPMEngine fully ready
     syncGfPresetFromValues();
-    markLspEngineReadyWhenReady(0);
+    startLspEngineReadyPolling();
   }, 1000);
 });
 
 // Also try loading on window load as fallback
 window.addEventListener('load', function() {
   console.log('[LSP] Window load fired');
-  setTimeout(() => {
+  setTimeout(function() {
     console.log('[LSP] Final retry load');
     appSettings.load();
     updateWaterVapor();
     syncGfPresetFromValues();
-    markLspEngineReadyWhenReady(0);
+    startLspEngineReadyPolling();
   }, 500);
 });
 </script>

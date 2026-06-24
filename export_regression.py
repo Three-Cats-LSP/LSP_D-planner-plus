@@ -23,6 +23,11 @@ if hasattr(sys.stdout, 'reconfigure'):
         pass
 
 ROOT = Path(__file__).resolve().parent
+_DEV = ROOT / "dev"
+if str(_DEV) not in sys.path:
+    sys.path.insert(0, str(_DEV))
+
+from playwright_boot import boot_app_page  # noqa: E402
 
 PASS = []
 FAIL = []
@@ -103,13 +108,7 @@ def start_server():
 
 
 def run_tests(page, port):
-    page.goto(f"http://127.0.0.1:{port}/index.html?regression=1", wait_until="domcontentloaded")
-    page.wait_for_function(
-        "window.VPMEngine && typeof window.VPMEngine.calculate === 'function' "
-        "&& window.ZHLEngine && typeof window.ZHLEngine.calculate === 'function'",
-        timeout=60000,
-    )
-    page.wait_for_timeout(2000)
+    boot_app_page(page, f"http://127.0.0.1:{port}")
 
     # ── A: Pure helper functions (metric + imperial) ─────────────────────
     print("\n── A: PrT helpers (domDepthToM / calcPrTBarMin) ──")

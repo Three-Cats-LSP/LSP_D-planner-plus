@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Engine validation regression for CCR planner — gas fractions, deco gases, profiles."""
+"""CCR engine validation regression — gas fractions, deco gases, CCR/pSCR profiles."""
 from __future__ import annotations
 
 import sys
@@ -10,6 +10,12 @@ from pathlib import Path
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
+_DEV = Path(__file__).resolve().parent
+if str(_DEV) not in sys.path:
+    sys.path.insert(0, str(_DEV))
+
+from playwright_boot import boot_app_page  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 PASS: list[str] = []
@@ -41,12 +47,7 @@ def start_server():
 
 
 def run_checks(page, port: int) -> None:
-    page.goto(f"http://127.0.0.1:{port}/index.html?regression=1&massiveSuite=1", wait_until="domcontentloaded")
-    page.wait_for_function(
-        "() => window.ZHLEngine && window.VPMEngine && window.validateCcrCalculationInputs",
-        timeout=60000,
-    )
-    page.wait_for_timeout(3000)
+    boot_app_page(page, f"http://127.0.0.1:{port}", require_ccr=True)
 
     settings = {
         "metric": True,

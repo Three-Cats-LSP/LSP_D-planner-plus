@@ -124,8 +124,8 @@ Open any HTML suite from a local HTTP server (or the [live app](https://threecat
 | [`dev/run_browser_regression.py`](dev/run_browser_regression.py) | Playwright runner for `tests-verify.html` + `tests-pscr-otu-cns.html` |
 | [`dev/validate_pscr_e2e.py`](dev/validate_pscr_e2e.py) | pSCR end-to-end release gate (audit + Playwright) |
 | [`dev/run_ccr_differential.py`](dev/run_ccr_differential.py) | CCR differential comparison suite |
-| [`dev/engine_validation_regression.py`](dev/engine_validation_regression.py) | Malformed gas/profile validation (CCR + ZHL + VPM) |
-| [`engine_validation_regression.py`](engine_validation_regression.py) | Same validation gate (repo-root entry point) |
+| [`dev/ccr_engine_validation_regression.py`](dev/ccr_engine_validation_regression.py) | CCR/pSCR malformed gas/profile validation |
+| [`engine_validation_regression.py`](engine_validation_regression.py) | Malformed-input validation gate (repo-root CI entry) |
 
 **Quick local run:** `python audit.py` then `python dev/run_browser_regression.py` (requires `pip install playwright && playwright install chromium`).
 

@@ -44,6 +44,9 @@ jobs:
       - name: Run full engine regression (all algos)
         run: python dev/engine_regression.py
 
+      - name: Run CCR engine validation regression
+        run: python dev/ccr_engine_validation_regression.py
+
       - name: Run browser regression suites
         run: python dev/run_browser_regression.py
 
