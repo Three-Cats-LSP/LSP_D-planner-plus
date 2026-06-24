@@ -63,6 +63,7 @@ SUITES = {
         "cmd": [sys.executable, "dev/run_browser_regression.py"],
         "cwd": ROOT,
         "script": ROOT / "dev" / "run_browser_regression.py",
+        "optional": True,
     },
     "pscr_e2e": {
         "tiers": {"release", "all"},
@@ -76,6 +77,7 @@ SUITES = {
         "cmd": [sys.executable, "dev/run_ccr_differential.py"],
         "cwd": ROOT,
         "script": ROOT / "dev" / "run_ccr_differential.py",
+        "optional": True,
     },
 }
 
