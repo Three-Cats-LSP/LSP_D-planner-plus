@@ -3390,6 +3390,21 @@ if os.path.isfile(run_all_reg) and "engine_full" in open(run_all_reg, encoding="
 else:
     fail("dev/run_all_regression.py missing or incomplete")
 
+if os.path.isfile(run_all_reg):
+    with open(run_all_reg, encoding="utf-8") as f:
+        run_all_src = f.read()
+    for script, label in [
+        ("run_browser_regression.py", "browser"),
+        ("run_ccr_differential.py", "ccr_differential"),
+    ]:
+        path = os.path.join(os.path.dirname(__file__), "dev", script)
+        if not os.path.isfile(path):
+            fail(f"dev/{script} missing (release suite {label})")
+        elif f'"{label}"' in run_all_src and "optional" in run_all_src.split(f'"{label}"')[1].split("},")[0]:
+            fail(f"dev/run_all_regression.py marks {label} optional but script is present")
+    if os.path.isfile(os.path.join(os.path.dirname(__file__), "dev", "run_browser_regression.py")):
+        ok("browser + ccr_differential release suites required when scripts present")
+
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 68 — raw DOM gas validation before clamping (BUG-100)
 # ══════════════════════════════════════════════════════════════════════════════

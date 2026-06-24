@@ -23,7 +23,9 @@ android/app/src/main/assets/capacitor.plugins.json
 audit-out.txt
 dev/browser_regression_results.json
 dev/ccr_differential_report.json
+dev/engine_regression_results.json
 dev/pscr_e2e_results.json
+dev/regression_summary.json
 docs/CCR_DIFFERENTIAL_REPORT.md
 
 # Python bytecode (must not be tracked — recompiled on every test run)
