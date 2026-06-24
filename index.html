@@ -756,22 +756,24 @@ body.algo-buh .buh-only { display: flex !important; }
 html.android-webview select,
 html.capacitor-native select {
  -webkit-appearance: menulist-button !important;
- appearance: auto !important;
+ appearance: menulist-button !important;
  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif !important;
- color: #111 !important;
- background-color: #fff !important;
+ color: #eee !important;
+ background-color: #1a2233 !important;
  background-image: none !important;
 }
 html.android-webview select option,
 html.capacitor-native select option {
- color: #111 !important;
- background-color: #fff !important;
+ color: #eee !important;
+ background-color: #1a2233 !important;
  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif !important;
 }
 html.android-webview body.light-theme select,
-html.capacitor-native body.light-theme select {
- color: #111 !important;
- background-color: #fff !important;
+html.capacitor-native body.light-theme select,
+html.android-webview body.light-theme select option,
+html.capacitor-native body.light-theme select option {
+ color: #111;
+ background-color: #fff;
 }
 
 /* ── BUTTON ── */
@@ -3612,7 +3614,6 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
   }
   // Primary: userAgent flag injected by MainActivity
   if (window.Capacitor && window.Capacitor.isNativePlatform()) {
-    document.documentElement.classList.add('capacitor-native');
     hideApkIcons();
   } else {
     document.addEventListener('deviceready', hideApkIcons);

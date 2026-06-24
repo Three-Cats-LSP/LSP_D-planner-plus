@@ -70,6 +70,11 @@ worker_bridge_js = ""
 if os.path.isfile(worker_bridge_path):
     with open(worker_bridge_path, encoding="utf-8") as f:
         worker_bridge_js = f.read()
+capacitor_bridge_path = os.path.join(os.path.dirname(os.path.abspath(path)), "capacitor-bridge.js")
+capacitor_bridge_js = ""
+if os.path.isfile(capacitor_bridge_path):
+    with open(capacitor_bridge_path, encoding="utf-8") as f:
+        capacitor_bridge_js = f.read()
 
 # Helper: line number in JS block (1-indexed)
 def js_line(char_pos):
@@ -3531,35 +3536,51 @@ else:
     fail("VPM deco gas normalization missing gasFractionsFromPct helper")
 
 # GROUP — site runtime asset manifest (Pages + threecats-lsp.com sync parity)
-manifest_path = os.path.join(os.path.dirname(__file__), "site-assets-manifest.txt")
+repo_root = os.path.dirname(__file__)
+pages_dir = os.path.join(repo_root, "_pages")
+manifest_path = os.path.join(repo_root, "site-assets-manifest.txt")
 required_runtime = [
     "app-version.js", "vpm-engine-bundle.js", "zhl-engine-bundle.js",
     "zhl-worker-bridge.js", "zhl-schedule-worker.js", "sw.js",
+    "capacitor-bridge.js",
     "vendor/jspdf.umd.min.js", "vendor/fonts/fonts.css",
     "vendor/icons/giw-icon-192.png",
 ]
 for rel in required_runtime:
-    if os.path.isfile(os.path.join(os.path.dirname(__file__), rel.replace("/", os.sep))):
+    if os.path.isfile(os.path.join(repo_root, rel.replace("/", os.sep))):
         ok(f"runtime asset present: {rel}")
     else:
         fail(f"runtime asset missing in repo: {rel}")
-if os.path.isfile(manifest_path):
+if not os.path.isdir(pages_dir):
+    fail("_pages/ missing — run tools/build_pages_site.py before audit")
+elif not os.path.isfile(manifest_path):
+    fail("site-assets-manifest.txt missing — run tools/build_pages_site.py")
+else:
     with open(manifest_path, encoding="utf-8") as mf:
         manifest_lines = [ln.strip() for ln in mf if ln.strip()]
-    missing_manifest = [
+    missing_in_pages = [
         ln for ln in manifest_lines
-        if ln not in (".nojekyll",) and not os.path.isfile(os.path.join(os.path.dirname(__file__), ln.replace("/", os.sep)))
+        if ln not in (".nojekyll",)
+        and not os.path.isfile(os.path.join(pages_dir, ln.replace("/", os.sep)))
     ]
-    if not missing_manifest:
-        ok(f"site-assets-manifest.txt lists {len(manifest_lines)} files — all present")
+    if not missing_in_pages:
+        ok(f"site-assets-manifest.txt lists {len(manifest_lines)} files — all present in _pages/")
     else:
-        fail(f"site-assets-manifest.txt missing {len(missing_manifest)} file(s), e.g. {missing_manifest[0]}")
+        fail(f"site-assets-manifest/_pages mismatch: missing {len(missing_in_pages)} file(s), e.g. {missing_in_pages[0]}")
+    pages_files = []
+    for dirpath, _dirnames, filenames in os.walk(pages_dir):
+        for fn in filenames:
+            rel = os.path.relpath(os.path.join(dirpath, fn), pages_dir).replace("\\", "/")
+            pages_files.append(rel)
+    extra_in_pages = sorted(set(pages_files) - set(manifest_lines))
+    if not extra_in_pages:
+        ok("_pages/ tree matches manifest (no extra files)")
+    else:
+        fail(f"_pages/ has {len(extra_in_pages)} file(s) not in manifest, e.g. {extra_in_pages[0]}")
     if "vpm-engine-bundle.js" in manifest_lines and "app-version.js" in manifest_lines:
         ok("site-assets-manifest includes app-version.js and vpm-engine-bundle.js")
     else:
         fail("site-assets-manifest missing app-version.js or vpm-engine-bundle.js")
-else:
-    fail("site-assets-manifest.txt missing — run tools/build_pages_site.py")
 
 if "html.android-webview select" in html and "menulist-button" in html:
     ok("Android WebView select uses system menulist (Android picker fix)")
@@ -3578,12 +3599,19 @@ if re.search(r'id="dg1Mix"[\s\S]*?ean50[\s\S]*?selected', html) or re.search(
 else:
     fail("dg1Mix missing selected EAN50 default")
 
-if "document.documentElement.classList.add('capacitor-native')" in open(
-    os.path.join(os.path.dirname(__file__), "capacitor-bridge.js"), encoding="utf-8"
-).read():
-    ok("capacitor-bridge.js marks html.capacitor-native on Android")
+if re.search(
+    r"classList\.add\(['\"]android-webview['\"],\s*['\"]capacitor-native['\"]\)", html
+):
+    ok("index.html early head script marks android-webview + capacitor-native")
 else:
-    fail("capacitor-bridge.js missing capacitor-native class hook")
+    fail("index.html missing early android-webview/capacitor-native class hook")
+
+if capacitor_bridge_js and "classList.add('capacitor-native')" not in capacitor_bridge_js:
+    ok("capacitor-bridge.js does not duplicate capacitor-native class (owned by index.html)")
+elif capacitor_bridge_js:
+    fail("capacitor-bridge.js should not set capacitor-native — use index.html head script only")
+else:
+    fail("capacitor-bridge.js missing")
 
 print("=" * 60)
 

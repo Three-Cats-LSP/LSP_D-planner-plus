@@ -20,7 +20,6 @@
 
 (function () {
   if (!window.Capacitor || !window.Capacitor.isNativePlatform()) return;
-  document.documentElement.classList.add('capacitor-native');
 
   const FS = 'Filesystem';
   const SH = 'Share';
