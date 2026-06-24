@@ -22,6 +22,7 @@ ROOT_FILES = [
     "download.html",
     "app-version.js",
     "capacitor-bridge.js",
+    "android-select-picker.js",
     "manifest.json",
     "icon-192.png",
     "icon-512.png",

@@ -1,4 +1,5 @@
 .nojekyll
+android-select-picker.js
 app-version.js
 capacitor-bridge.js
 download.html

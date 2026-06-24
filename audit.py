@@ -2712,10 +2712,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.02['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.02")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.03['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.03")
 else:
-    fail("APP_VERSION not bumped to 2.51.02 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.03 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -3544,6 +3544,7 @@ required_runtime = [
     "app-version.js", "vpm-engine-bundle.js", "zhl-engine-bundle.js",
     "zhl-worker-bridge.js", "zhl-schedule-worker.js", "sw.js",
     "capacitor-bridge.js",
+    "android-select-picker.js",
     "vendor/jspdf.umd.min.js", "vendor/fonts/fonts.css",
     "vendor/icons/giw-icon-192.png",
 ]
@@ -3583,10 +3584,21 @@ else:
     else:
         fail("site-assets-manifest missing app-version.js or vpm-engine-bundle.js")
 
-if "html.android-webview select" in html and "menulist-button" in html:
-    ok("Android WebView select uses system menulist (Android picker fix)")
+if os.path.isfile(os.path.join(os.path.dirname(__file__), "android-select-picker.js")):
+    with open(os.path.join(os.path.dirname(__file__), "android-select-picker.js"), encoding="utf-8") as f:
+        android_picker_js = f.read()
 else:
-    fail("Android WebView select menulist CSS missing (Android picker fix)")
+    android_picker_js = ""
+
+if "android-select-picker.js" in html and android_picker_js and "lsp-android-select-sheet" in android_picker_js:
+    ok("android-select-picker.js loaded — custom Android select sheet (replaces broken native picker)")
+else:
+    fail("android-select-picker.js missing or not wired in index.html")
+
+if "lsp-android-select-btn" in html:
+    ok("Android custom select picker CSS present")
+else:
+    fail("Android custom select picker CSS missing")
 
 if "android-webview" in html and "isAndroidWebView" in html:
     ok("Early Android WebView detection script present")
