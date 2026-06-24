@@ -2706,10 +2706,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.50\.00['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.50.00")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.00['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.00")
 else:
-    fail("APP_VERSION not bumped to 2.50.00 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.00 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -3209,9 +3209,9 @@ else:
 if (
     re.search(r"<caption[^>]*class=\"deco-plan-caption\"", html) is None
     and re.search(r"\.deco-plan-caption\s*\{[^}]*width\s*:\s*max-content", html) is None
-    and re.search(r"\.deco-table-wrap\s*\{[^}]*display\s*:\s*inline-block", html)
+    and re.search(r"\.deco-table-wrap\s*\{[^}]*width\s*:\s*max-content", html)
 ):
-    ok("deco plan caption div-based, no max-content inflation; table-wrap is inline-block (issue #12)")
+    ok("deco plan caption div-based, no max-content inflation; table-wrap uses width:max-content (issue #12)")
 else:
     fail("deco plan caption layout still allows caption-driven table widening (issue #12)")
 
