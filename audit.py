@@ -576,6 +576,36 @@ if "runtime += ascSegTime" in vpm_src:
 else:
     fail("VPM runInterLevelDecoAscent may recalculate ascent time instead of ascSegTime")
 
+if "function takeZhlRepStateSnapshot()" in js and "repState: takeZhlRepStateSnapshot()" in js:
+    ok("ZHL repState uses atomic takeZhlRepStateSnapshot (BUG-C)")
+else:
+    fail("ZHL repState still reads window._zhlRepState without atomic take (BUG-C)")
+
+if "function mergeRepSettings(settings)" in js and "mergeRepSettings(settings)" in js:
+    ok("ZHLEngine.calculate/worker merge rep state via mergeRepSettings (BUG-C)")
+else:
+    fail("ZHLEngine missing mergeRepSettings for repetitive dive carry (BUG-C)")
+
+if "calculateCcrViaDom" not in js:
+    ok("Dead calculateCcrViaDom DOM-mutation path removed (BUG-B)")
+else:
+    fail("calculateCcrViaDom still present — ZHLEngine mutates DOM on headless calls (BUG-B)")
+
+if "vpmApi.calculate" in js and "VPM engine failed to load" in js:
+    ok("runVPMSchedule guards VPMEngine before calculate (BUG-A)")
+else:
+    fail("runVPMSchedule calls bare VPMEngine.calculate without load guard (BUG-A)")
+
+if "VPMEngine He half-time sync skipped" in js:
+    ok("updateHeHalfTime warns when VPMEngine._syncHeHalfTimes missing (BUG-D)")
+else:
+    fail("updateHeHalfTime silent no-op when VPM sync unavailable (BUG-D)")
+
+if "Mirrors VPMEngine.calculate(" not in js:
+    ok("ZHLEngine header comment avoids VPMEngine.calculate linter false positive")
+else:
+    fail("ZHLEngine comment still uses VPMEngine.calculate() syntax (info)")
+
 if "continuationLevel must be shallower than current depth" in open(
     os.path.join(os.path.dirname(os.path.abspath(path)), "zhl-schedule-core.js"),
     encoding="utf-8",
@@ -1545,7 +1575,7 @@ else:
     fail("Headless CNS/OTU: descent/bottom exposure missing from plan-walk path")
 
 # 29.3 ZHLEngine uses plan-walk after run patching (not pre-plan steps-only sum)
-if re.search(r'computePlanExposureTotals\(\s*plan, s, fO2bot', js):
+if re.search(r'computePlanExposureTotals\(\s*result\.plan, s, fO2bot', js):
     ok("Headless CNS/OTU: ZHLEngine integrates exposure from assembled plan with run times")
 else:
     fail("Headless CNS/OTU: ZHLEngine missing post-plan exposure integration")
@@ -1595,7 +1625,7 @@ else:
     fail("TTS: not stored on _lastPlan — headless ZHLEngine.calculate() callers cannot read it")
 
 # 31.3 TTS exposed in ZHLEngine.calculate() return object
-if re.search(r'tts: lp\.tts \|\| 0,', js):
+if re.search(r'tts: lp\.tts \|\| 0,', js) or re.search(r'tts: lp\.tts \|\| 0,', zhl_bundle_js):
     ok("TTS: exposed in ZHLEngine.calculate() return object")
 else:
     fail("TTS: missing from calculate() return object")
@@ -2337,12 +2367,10 @@ if "if (/^air$/i.test(s)) return 'Air';" in js:
 else:
     fail("shortMix still collapses CCR Air to Air (BUG-53)")
 
-prev_ccr_start = js.find("const prevCCR = {")
-prev_ccr_block = js[prev_ccr_start:prev_ccr_start + 1200] if prev_ccr_start > 0 else ""
-if "diluentUseAsBailout:" in prev_ccr_block:
-    ok("ZHLEngine prevCCR saves diluentUseAsBailout (BUG-54)")
+if "diluentUseAsBailout:" in js and "getCCRSettingsFromDOM" in js:
+    ok("CCR settings include diluentUseAsBailout via getCCRSettingsFromDOM (BUG-54)")
 else:
-    fail("ZHLEngine prevCCR missing diluentUseAsBailout (BUG-54)")
+    fail("getCCRSettingsFromDOM missing diluentUseAsBailout (BUG-54)")
 
 tcf_start = js.find("function toggleCircuitFields")
 tcf_block = js[tcf_start:tcf_start + 700] if tcf_start > 0 else ""
@@ -2813,7 +2841,9 @@ else:
 # GROUP 55 — v2.30.22 fix (massive suite headless mode leak)
 # ══════════════════════════════════════════════════════════════════════════════
 
-if "_zhlHeadlessDepth" in js and "window._zhlHeadless = _headlessEntry > 0" in js:
+if "ZhlEngineBundle.calculate" in js and "calculateCcrViaDom" not in js:
+    ok("ZHLEngine.calculate uses pure bundle path without _zhlHeadlessDepth DOM leak (BUG-74)")
+elif "_zhlHeadlessDepth" in js and "window._zhlHeadless = _headlessEntry > 0" in js:
     ok("ZHLEngine.calculate preserves _zhlHeadless across calls (BUG-74)")
 else:
     fail("ZHLEngine.calculate still clears _zhlHeadless after headless runs (BUG-74)")

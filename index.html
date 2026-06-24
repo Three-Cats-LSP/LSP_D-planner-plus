@@ -3966,6 +3966,8 @@ function updateHeHalfTime() {
     window.VPMEngine._syncHeHalfTimes(src);
   } else if (window.VPMEngine && typeof window.VPMEngine._setHeHT1 === 'function') {
     window.VPMEngine._setHeHT1(src[0]);
+  } else if (window.VPMEngine) {
+    console.warn('[LSP] VPMEngine He half-time sync skipped — _syncHeHalfTimes not available');
   }
 }
 const FN2_AIR   = 0.79;
@@ -7403,8 +7405,17 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
   }];
 
   let result;
+  const vpmApi = (typeof window !== 'undefined' && window.VPMEngine) ||
+    (typeof VPMEngine !== 'undefined' ? VPMEngine : null);
+  if (!vpmApi || typeof vpmApi.calculate !== 'function') {
+    const msg = 'VPM engine failed to load (vpm-engine-bundle.js). Check network or refresh.';
+    console.error('[VPM]', msg);
+    const tbody = document.getElementById('decoTableBody');
+    if (tbody) tbody.innerHTML = `<tr><td colspan="8" style="color:var(--red);padding:12px;">${msg}</td></tr>`;
+    return;
+  }
   try {
-    result = VPMEngine.calculate(levels, decoGases, settings, model);
+    result = vpmApi.calculate(levels, decoGases, settings, model);
   } catch(e) {
     console.error('[VPM] Engine error:', e);
     const tbody = document.getElementById('decoTableBody');
@@ -8265,6 +8276,13 @@ function zhlOptimalSwitchDepth(fO2, ctx) {
   return ZhlEngineBundle.zhlOptimalSwitchDepth(fO2, ctx);
 }
 
+function takeZhlRepStateSnapshot() {
+  const snap = (window._zhlRepState && Array.isArray(window._zhlRepState.tissues))
+    ? window._zhlRepState : null;
+  window._zhlRepState = null;
+  return snap;
+}
+
 function buildZhlScheduleParamsFromEngine(levels, decoGases, settings, profileSplit) {
   return ZhlEngineBundle.buildZhlScheduleParamsFromEngine(
     levels, decoGases, settings, profileSplit, getZhlEnvironment()
@@ -8348,7 +8366,7 @@ function buildZhlScheduleParamsFromDom(rawD, depthM, bt) {
       shallowGradient: document.getElementById('shallowGradient')?.value === 'on',
       bottomFN2, bottomFHe, bottomFO2, bottomMixLabel,
       travelInfo,
-      repState: (window._zhlRepState && Array.isArray(window._zhlRepState.tissues)) ? window._zhlRepState : null,
+      repState: takeZhlRepStateSnapshot(),
       continuationLevels: (window._zhlHeadless && Array.isArray(window._zhlContinuationLevels))
         ? window._zhlContinuationLevels : [],
       minDecoProfile: {
@@ -9494,352 +9512,16 @@ if (typeof window !== 'undefined') window.validateZhlHeadlessProfile = validateZ
 // ═══════════════════════════════════════════════
 // ZHL ENGINE — headless Bühlmann interface for test harnesses
 // Tier 3: ZhlEngineBundle (sync OC + CCR) + ZhlWorkerBridge (async OC + CCR)
-// Mirrors VPMEngine.calculate(levels, gases, settings, 'ZHLC_GF').
+// Provides the same calculate(levels, gases, settings) interface as VPMEngine for tests.
 // ═══════════════════════════════════════════════
 const ZHLEngine = (() => {
-  function setEl(id, val) {
-    const el = document.getElementById(id);
-    if (el) el.value = val;
-  }
-
-  function calculateCcrViaDom(levels, decoGases, settings) {
-      if (!levels || levels.length === 0) {
-        return engineValidationError({
-          ok: false,
-          errors: [{ code: 'INVALID_PROFILE', field: 'levels', message: 'No levels' }],
-        });
-      }
-      const s = settings || {};
-      const ccrVal = validateCcrCalculationInputs(levels, s, decoGases);
-      if (!ccrVal.ok) return engineValidationError(ccrVal);
-      const isMetric = s.metric !== false;
-      const profileVal = validateZhlHeadlessProfile(levels);
-      if (!profileVal.ok) {
-        return engineValidationError({ ok: false, errors: [profileVal] });
-      }
-      const profileSplit = splitZhlProfileLevels(levels);
-      const level = levels[0];
-
-      // ── Temporarily wire DOM to match settings ──────────────────────────────
-      const prevDecoDepth = document.getElementById('decoDepth')?.value;
-      const prevDecoBT = document.getElementById('decoBT')?.value;
-      const prevContLevels = window._zhlContinuationLevels;
-      window._zhlContinuationLevels = profileSplit.continuation.length ? profileSplit.continuation : null;
-      setEl('decoDepth', isMetric ? level.depth : Math.round(level.depth * 3.28084));
-      setEl('decoBT',    level.time);
-      setEl('ascentRate',      s.ascentRate      || 10);
-      setEl('decoAscentRate',  s.decoAscentRate  || 3);
-      setEl('surfaceAscentRate', s.surfaceAscentRate || 3);
-      setEl('descentRate',     s.descentRate     || 20);
-      setEl('minStopTime',     s.minStopTime     || 1);
-      setEl('decoStep',        s.stepSize        || 3);
-      setEl('lastDecoStop',    s.lastStop        || 3);
-      const stopRndEl = document.getElementById('stopRounding');
-      const prevStopRounding = stopRndEl ? stopRndEl.value : 'fractional';
-      if (s.stopRounding === 'wholeminute') {
-        setEl('stopRounding', 'wholeminute');
-      } else {
-        setEl('stopRounding', 'fractional');
-      }
-      const prevAlt = { altitudeM, altSurfaceP, altAcclimatized };
-      if (s.altitude != null) {
-        altitudeM = Math.max(0, Math.min(5000, Number(s.altitude) || 0));
-        altSurfaceP = altToPressure(altitudeM);
-      }
-      if (s.acclimatized != null) altAcclimatized = !!s.acclimatized;
-      setEl('ppo2Bottom',      s.ppO2Bottom      || 1.4);
-      setEl('ppo2Deco',        s.ppO2Deco        || 1.6);
-      const prevCCR = {
-        circuit: document.getElementById('circuitSelect')?.value,
-        setpoint: document.getElementById('ccrDecoSetpoint')?.value || document.getElementById('ccrSetpoint')?.value,
-        descentSetpoint: document.getElementById('ccrDescentSetpoint')?.value,
-        bottomSetpoint: document.getElementById('ccrBottomSetpoint')?.value,
-        bailout: document.getElementById('ccrBailoutToggle')?.value,
-        bailoutGfLow: document.getElementById('ccrBailoutGfLow')?.value,
-        bailoutGfHigh: document.getElementById('ccrBailoutGfHigh')?.value,
-        scrLoopVolume: document.getElementById('ccrLoopVolume')?.value || document.getElementById('scrLoopVolume')?.value,
-        scrMetabolicO2: document.getElementById('ccrMetabolicO2')?.value || document.getElementById('scrMetabolicO2')?.value,
-        sacStress: document.getElementById('ccrSacStress')?.value,
-        sacDecoCcr: document.getElementById('ccrSacDeco')?.value,
-        stressTimeMin: document.getElementById('ccrStressTime')?.value,
-        problemSolveMin: document.getElementById('ccrProblemSolve')?.value,
-        diluentUseAsBailout: document.getElementById('diluentUseAsBailout')?.value,
-      };
-      if (s.circuit) setEl('circuitSelect', s.circuit);
-      if (s.setpoint != null) {
-        setEl('ccrDecoSetpoint', s.setpoint);
-        setEl('ccrSetpoint', s.setpoint);
-      }
-      if (s.descentSetpoint != null) setEl('ccrDescentSetpoint', s.descentSetpoint);
-      if (s.bottomSetpoint != null) setEl('ccrBottomSetpoint', s.bottomSetpoint);
-      if (s.bailout != null) setEl('ccrBailoutToggle', s.bailout ? 'on' : 'off');
-      if (s.bailoutGfLow != null) setEl('ccrBailoutGfLow', s.bailoutGfLow);
-      if (s.bailoutGfHigh != null) setEl('ccrBailoutGfHigh', s.bailoutGfHigh);
-      if (s.scrLoopVolume != null) { setEl('ccrLoopVolume', s.scrLoopVolume); setEl('scrLoopVolume', s.scrLoopVolume); }
-      if (s.scrMetabolicO2 != null) { setEl('ccrMetabolicO2', s.scrMetabolicO2); setEl('scrMetabolicO2', s.scrMetabolicO2); }
-      if (s.sacStress != null) setEl('ccrSacStress', s.sacStress);
-      if (s.sacDecoCcr != null) setEl('ccrSacDeco', s.sacDecoCcr);
-      if (s.stressTimeMin != null) setEl('ccrStressTime', s.stressTimeMin);
-      if (s.problemSolveMin != null) setEl('ccrProblemSolve', s.problemSolveMin);
-
-      // ── GF: set via mGF global (Bühlmann reads from mGF, not settings) ──────
-      const prevGF = { low: mGF.low, high: mGF.high };
-      mGF.low  = s.gfLo  || s.gfLow  || 30;
-      mGF.high = s.gfHi  || s.gfHigh || 85;
-
-      // ── Units ─────────────────────────────────────────────────────────────────
-      // Only call setUnits if we actually need to switch — avoids heavy DOM walk on every call
-      const prevUnits = units;
-      const needUnits = s.metric === false ? 'imperial' : 'metric';
-      if (units !== needUnits) setUnits(needUnits);
-
-      // ── Algorithm: force ZHLC_GF (no DOM event — headless mode skips UI update) ─
-      const algoEl = document.getElementById('algorithmSelect');
-      const prevAlgo = algoEl ? algoEl.value : 'ZHLC_GF';
-      if (algoEl) algoEl.value = 'ZHLC_GF';
-      // Don't dispatchEvent — setDecoAlgorithm() triggers heavy UI updates.
-      // runDecoSchedule reads algorithmSelect.value directly, so just setting .value is enough.
-
-      // ── Bottom gas (first level's o2/he) ────────────────────────────────────
-      const fO2bot = level.o2 / 100;
-      const fHeBot = (level.he || 0) / 100;
-      const fN2bot = Math.max(0, 1 - fO2bot - fHeBot);
-      // Set bottom gas — must use 'trimix' mode when He > 0 so getBottomGasFractions() reads He correctly
-      const decoGasEl = document.getElementById('decoGas');
-      let prevDecoGasVal = decoGasEl ? decoGasEl.value : 'air';
-      if (decoGasEl) {
-        if (fHeBot > 0) {
-          decoGasEl.value = 'trimix';  // BUGFIX: was 'custom' — custom branch in getBottomGasFractions() sets fHe:0
-          setEl('botTrimixO2', Math.round(fO2bot * 100));
-          setEl('botTrimixHe', Math.round(fHeBot * 100));
-        } else if (Math.round(fO2bot * 100) === 21) {
-          decoGasEl.value = 'air';
-        } else if (Math.round(fO2bot * 100) === 32) {
-          decoGasEl.value = 'ean32';
-        } else {
-          decoGasEl.value = 'custom';
-          setEl('decoCustomO2', Math.round(fO2bot * 100));
-        }
-      }
-
-      // ── Deco gases ──────────────────────────────────────────────────────────
-      // Collect current card indices (pre-built slots 1 and 2, plus any dynamic ones)
-      // and record their current state for restore.
-      const prevDGVals = [];
-      const _prevDGCards = [];
-      {
-        const container = document.getElementById('decoGasCards');
-        if (container) {
-          container.querySelectorAll('.deco-gas-card').forEach(card => {
-            const idMatch = card.id.match(/dgCard_(\d+)/);
-            if (idMatch) _prevDGCards.push(parseInt(idMatch[1]));
-          });
-        } else {
-          // fallback: pre-built slots 1 and 2
-          _prevDGCards.push(1, 2);
-        }
-      }
-      // Save and clear all current slots
-      _prevDGCards.forEach(idx => {
-        const mixEl = document.getElementById(`dg${idx}Mix`);
-        if (mixEl) {
-          prevDGVals.push({ id: `dg${idx}Mix`, val: mixEl.value });
-          prevDGVals.push({ id: `dg${idx}CustomO2`, val: document.getElementById(`dg${idx}CustomO2`)?.value });
-          prevDGVals.push({ id: `dg${idx}TrimixO2`, val: document.getElementById(`dg${idx}TrimixO2`)?.value });
-          prevDGVals.push({ id: `dg${idx}TrimixHe`, val: document.getElementById(`dg${idx}TrimixHe`)?.value });
-          mixEl.value = 'none';
-        }
-      });
-      // Track any dynamic cards we add so we can remove them on restore
-      const _addedDGIdxs = [];
-      (decoGases || []).forEach((g, i) => {
-        const n = i + 1;
-        // Resolve the card idx for position n (pre-built cards 1&2 have idx==n; dynamic cards use _dgNextIdx)
-        let cardIdx;
-        const existingMix = document.getElementById(`dg${n}Mix`);
-        if (existingMix) {
-          cardIdx = n;  // pre-built card — slot index matches card number
-        } else {
-          // Add a dynamic card for this extra gas
-          if (typeof addDecoGasCard === 'function') {
-            addDecoGasCard();
-            cardIdx = _dgNextIdx - 1;  // addDecoGasCard increments _dgNextIdx before returning
-            _addedDGIdxs.push(cardIdx);
-          } else {
-            return;  // can't add more slots
-          }
-        }
-        const mixEl = document.getElementById(`dg${cardIdx}Mix`);
-        if (!mixEl) return;
-        const o2pct = g.o2;
-        const hePct = g.he || 0;
-        if (o2pct === 100) {
-          mixEl.value = 'o2';
-        } else if (o2pct === 50 && hePct === 0) {
-          mixEl.value = 'ean50';
-        } else if (o2pct === 80 && hePct === 0) {
-          mixEl.value = 'ean80';
-        } else if (hePct > 0) {
-          // BUGFIX: trimix deco gas — must use 'trimix' mode, NOT 'custom'.
-          // 'custom' branch in getDecoGasFractions() sets fHe:0 unconditionally.
-          mixEl.value = 'trimix';
-          setEl(`dg${cardIdx}TrimixO2`, o2pct);
-          setEl(`dg${cardIdx}TrimixHe`, hePct);
-        } else {
-          mixEl.value = 'custom';
-          setEl(`dg${cardIdx}CustomO2`, o2pct);
-        }
-      });
-
-      // Repetitive carry: settings._preTissues only — never leak stale state between calls
-      if (s._preTissues && s._preTissues.length) {
-        window._zhlRepState = {
-          tissues: s._preTissues,
-          surfaceIntervalMin: s._surfaceInterval || 0,
-        };
-      } else {
-        window._zhlRepState = null;
-      }
-
-      // ── Forward prior-dive O₂ carry into headless run if set (v2.20.0) ───────
-      // The live-app path picks this up via window._priorDiveCarry in runDecoSchedule.
-      // For headless calls we mirror it from the settings object so test harnesses
-      // that pass _preOTU/_preCNS get the same carry behaviour as the live app.
-      const _prevPriorDiveCarry = window._priorDiveCarry;
-      if ((s._preOTU != null && s._preOTU > 0) || (s._preCNS != null && s._preCNS > 0)) {
-        window._priorDiveCarry = {
-          otuCarry: s._preOTU || 0,
-          cnsCarry: s._preCNS || 0,
-        };
-      }
-
-      // ── Run the Bühlmann engine (headless — skip DOM rendering) ─────────────
-      const _headlessEntry = window._zhlHeadlessDepth || 0;
-      window._zhlHeadlessDepth = _headlessEntry + 1;
-      window._zhlHeadless = true;
-      window._lastPlan = null;
-      try {
-        runDecoSchedule();
-      } catch(e) {
-        window._zhlHeadlessDepth = _headlessEntry;
-        window._zhlHeadless = _headlessEntry > 0;
-        window._zhlRepState = null;
-        window._zhlContinuationLevels = prevContLevels;
-        window._priorDiveCarry = _prevPriorDiveCarry;
-        if (prevDecoDepth != null) setEl('decoDepth', prevDecoDepth);
-        if (prevDecoBT != null) setEl('decoBT', prevDecoBT);
-        mGF.low = prevGF.low; mGF.high = prevGF.high;
-        if (units !== prevUnits) setUnits(prevUnits);
-        if (algoEl) algoEl.value = prevAlgo;
-        return { error: e.message, stops: [], plan: [], totalRuntime: 0 };
-      }
-      window._zhlHeadlessDepth = _headlessEntry;
-      window._zhlHeadless = _headlessEntry > 0;
-
-      const lp = window._lastPlan;
-
-      // ── Restore DOM state ─────────────────────────────────────────────────────
-      mGF.low = prevGF.low; mGF.high = prevGF.high;
-      if (units !== prevUnits) setUnits(prevUnits);
-      if (algoEl) algoEl.value = prevAlgo;
-      // Don't fire change event on restore — avoids unnecessary UI repaint after each test call.
-      if (decoGasEl) decoGasEl.value = prevDecoGasVal;
-      prevDGVals.forEach(({ id, val }) => { const el = document.getElementById(id); if (el && val != null) el.value = val; });
-      if (prevCCR.circuit != null) setEl('circuitSelect', prevCCR.circuit);
-      if (prevCCR.setpoint != null) { setEl('ccrDecoSetpoint', prevCCR.setpoint); setEl('ccrSetpoint', prevCCR.setpoint); }
-      if (prevCCR.descentSetpoint != null) setEl('ccrDescentSetpoint', prevCCR.descentSetpoint);
-      if (prevCCR.bottomSetpoint != null) setEl('ccrBottomSetpoint', prevCCR.bottomSetpoint);
-      if (prevCCR.bailout != null) setEl('ccrBailoutToggle', prevCCR.bailout);
-      if (prevCCR.bailoutGfLow != null) setEl('ccrBailoutGfLow', prevCCR.bailoutGfLow);
-      if (prevCCR.bailoutGfHigh != null) setEl('ccrBailoutGfHigh', prevCCR.bailoutGfHigh);
-      if (prevCCR.scrLoopVolume != null) { setEl('ccrLoopVolume', prevCCR.scrLoopVolume); setEl('scrLoopVolume', prevCCR.scrLoopVolume); }
-      if (prevCCR.scrMetabolicO2 != null) { setEl('ccrMetabolicO2', prevCCR.scrMetabolicO2); setEl('scrMetabolicO2', prevCCR.scrMetabolicO2); }
-      if (prevCCR.sacStress != null) setEl('ccrSacStress', prevCCR.sacStress);
-      if (prevCCR.sacDecoCcr != null) setEl('ccrSacDeco', prevCCR.sacDecoCcr);
-      if (prevCCR.stressTimeMin != null) setEl('ccrStressTime', prevCCR.stressTimeMin);
-      if (prevCCR.problemSolveMin != null) setEl('ccrProblemSolve', prevCCR.problemSolveMin);
-      if (prevCCR.diluentUseAsBailout != null) setEl('diluentUseAsBailout', prevCCR.diluentUseAsBailout);
-      if (stopRndEl) stopRndEl.value = prevStopRounding;
-      altitudeM = prevAlt.altitudeM;
-      altSurfaceP = prevAlt.altSurfaceP;
-      altAcclimatized = prevAlt.altAcclimatized;
-      if (typeof toggleCircuitFields === 'function') toggleCircuitFields();
-      // Remove any dynamic deco gas cards we added for this headless call
-      _addedDGIdxs.forEach(idx => { const card = document.getElementById(`dgCard_${idx}`); if (card) card.remove(); });
-      if (_addedDGIdxs.length > 0 && typeof renumberDecoGasCards === 'function') renumberDecoGasCards();
-
-      // Clear repetitive state — must not leak into subsequent calls
-      window._zhlRepState = null;
-      window._zhlContinuationLevels = prevContLevels;
-      window._priorDiveCarry = _prevPriorDiveCarry; // restore prior-dive carry to pre-call state
-      if (prevDecoDepth != null) setEl('decoDepth', prevDecoDepth);
-      if (prevDecoBT != null) setEl('decoBT', prevDecoBT);
-
-      if (!lp) return { error: 'No plan generated', stops: [], plan: [], totalRuntime: 0 };
-
-      // ── Map _lastPlan to VPMEngine-compatible result interface ────────────────
-      const stops = (lp.stops || []).map(s => ({
-        depth: s.depth, time: s.dur, gas: s.gas, type: 'stop'
-      }));
-      const plan = (lp.steps || []).map(s => ({
-        type: s.type === 'deco' ? 'stop' : s.type === 'safety' ? 'stop' : s.type,
-        depth: s.type === 'ascent' ? s.to : s.depth,
-        from: s.type === 'ascent' ? s.from : undefined,
-        to: s.type === 'ascent' ? s.to : undefined,
-        time:  s.dur,
-        run:   null,   // patched below
-        gas:   s.gas,
-        pO2:   s.pO2,
-        o2:    Math.round((s.fN2 !== undefined ? (1 - s.fN2 - (s.fHe||0)) : fO2bot) * 100),
-        he:    Math.round((s.fHe || 0) * 100)
-      }));
-      // Inject descent and bottom segments at front if missing
-      // (Bühlmann steps array only has ascent/deco/safety — descent and bottom are
-      // rendered directly to DOM, not stored in steps. Add them so assertIntegrity passes.)
-      if (plan.length === 0 || plan[0].type !== 'descent') {
-        const descentTime = level.depth / (s.descentRate || 20);
-        const btAtDepth = Math.max(0, level.time - descentTime);
-        const bottomGasLabel = plan.length > 0 ? (plan[0].gas || 'bottom') : 'bottom';
-        const bottomSeg = { type: 'bottom', depth: level.depth, time: btAtDepth, run: descentTime + btAtDepth, gas: bottomGasLabel, o2: level.o2, he: level.he || 0 };
-        const descentSeg = { type: 'descent', depth: level.depth, time: descentTime, run: descentTime, gas: bottomGasLabel, o2: level.o2, he: level.he || 0 };
-        plan.unshift(bottomSeg);   // goes to index 0 first
-        plan.unshift(descentSeg);  // then pushed to index 0, bottomSeg moves to 1
-      }
-      // Patch run times into remaining segments (needed by assertIntegrity run-time monotonicity check)
-      let runAccum = 0;
-      plan.forEach(seg => {
-        if (seg.run == null) {
-          runAccum += (seg.time || 0);
-          seg.run = Math.round(runAccum * 10) / 10;
-        } else {
-          runAccum = seg.run;
-        }
-      });
-
-      const exposure = computePlanExposureTotals(
-        plan, s, fO2bot, fHeBot, altSurfaceP || 1.01325, BAR_PER_METRE || 0.1
-      );
-      const _pdCarry = window._priorDiveCarry;
-      const otuCarry = _pdCarry ? (_pdCarry.otuCarry || 0) : 0;
-      const cnsCarry = _pdCarry ? (_pdCarry.cnsCarry || 0) : 0;
-
-      return {
-        plan,
-        stops,
-        totalRuntime: lp.rt || 0,
-        tts: lp.tts || 0,
-        totalOTU: Math.round(exposure.totalOTU + otuCarry),
-        totalCNS: parseFloat((exposure.totalCNS + cnsCarry).toFixed(1)),
-        finalTissues: lp.finalTissues || null,   // for ZHL repetitive dive carry
-        depthUnit: isMetric ? 'm' : 'ft',
-        error: null
-      };
-  }
-
-  function isCcrCircuit(settings) {
+  function mergeRepSettings(settings) {
     const s = settings || {};
-    const circuit = s.circuit || 'OC';
-    return typeof isRebreatherCircuit === 'function' && isRebreatherCircuit(circuit);
+    const repSnap = takeZhlRepStateSnapshot();
+    if (repSnap && !(s._preTissues && s._preTissues.length)) {
+      return { ...s, _preTissues: repSnap.tissues, _surfaceInterval: repSnap.surfaceIntervalMin || 0 };
+    }
+    return s;
   }
 
   function applyPlanExposureTotals(result, levels, settings) {
@@ -9861,7 +9543,7 @@ const ZHLEngine = (() => {
   }
 
   function calculate(levels, decoGases, settings) {
-    const s = settings || {};
+    const s = mergeRepSettings(settings);
     const ccrVal = validateCcrCalculationInputs(levels, s, decoGases);
     if (!ccrVal.ok) return engineValidationError(ccrVal);
     const validation = validateEngineInputs(levels, decoGases);
@@ -9879,7 +9561,7 @@ const ZHLEngine = (() => {
   }
 
   async function calculateInWorker(levels, decoGases, settings) {
-    const s = settings || {};
+    const s = mergeRepSettings(settings);
     const ccrVal = validateCcrCalculationInputs(levels, s, decoGases);
     if (!ccrVal.ok) return engineValidationError(ccrVal);
     const validation = validateEngineInputs(levels, decoGases);
