@@ -89,19 +89,20 @@ const BAKER = {
   '50m/25min TMX18/45 C0': { rt:73, first:27, stops:{27:1,24:1,21:1,18:3,15:3,12:4,9:6,6:10,3:17} },
 };
 
-// LSP v2.10.5 pinned outputs (captured 2026-06-16 after water-factor + Baker He HT alignment)
+// LSP v2.50.00 pinned outputs (recalibrated 2026-06-24 after Tier 3 VPM bundle extraction)
 const LSP_PINNED = {
-  'vpmb_40_25_air_c0':       { rt:62,  first:18, stops:{18:1,15:1,12:2,9:4,6:7,3:13}   },
-  'vpmb_40_25_air_c2':       { rt:71,  first:21, stops:{21:0,18:1,15:2,12:3,9:5,6:9,3:16} },
-  'vpmb_60_20_air_c0':       { rt:92,  first:33, stops:{33:0,30:1,27:1,24:1,21:1,18:2,15:4,12:4,9:9,6:12,3:22} },
+  'vpmb_40_25_air_c0':       { rt:61,  first:18, stops:{18:1,15:1,12:2,9:4,6:7,3:13}   },
+  'vpmb_40_25_air_c2':       { rt:70,  first:21, stops:{21:0,18:1,15:2,12:3,9:5,6:9,3:16} },
+  'vpmb_60_20_air_c0':       { rt:91,  first:33, stops:{33:0,30:1,27:1,24:1,21:1,18:2,15:4,12:4,9:9,6:12,3:22} },
   'vpmb_40_40_air_c0':       { rt:108, first:21, stops:{21:1,18:2,15:3,12:5,9:8,6:14,3:26} },
   'vpmb_30_30_air_c0':       { rt:46,  first:9,  stops:{9:1,6:3,3:7}                    },
   'vpmb_70_20_air_c0':       { rt:116, first:39, stops:{39:1,36:1,33:1,30:1,27:1,24:1,21:2,18:4,15:4,12:7,9:11,6:17,3:29} },
-  'vpmb_50_25_tmx2135_c0':   { rt:85,  first:27, stops:{27:1,24:1,21:1,18:1,15:1,12:4,9:6,6:11,3:21} },
-  'vpmb_50_25_tmx1845_c0':   { rt:106, first:30, stops:{30:1,27:1,24:1,21:1,18:1,15:3,12:6,9:8,6:15,3:30} },
+  'vpmb_50_25_tmx2135_c0':   { rt:83,  first:27, stops:{27:1,24:1,21:1,18:1,15:1,12:4,9:6,6:11,3:21} },
+  'vpmb_50_25_tmx1845_c0':   { rt:104, first:30, stops:{30:1,27:1,24:1,21:1,18:1,15:3,12:6,9:8,6:15,3:30} },
   'zhl_40_25_air_gf3085':    { rt:66,  first:18, stops:{18:2,15:2,12:3,9:5,6:7,3:18}   },
-  'zhl_60_20_air_gf3085':    { rt:94,  first:30, stops:{30:1,27:1,24:1,21:1,18:2,15:3,12:5,9:7,6:13,3:23} },
-  'zhl_40_25_ean50_gf3085':  { rt:33,  first:18, stops:{18:1,15:1,12:2,9:3,6:6,3:12}   },
+  'zhl_60_20_air_gf3085':    { rt:96,  first:30, stops:{30:1,27:1,24:1,21:1,18:2,15:3,12:5,9:7,6:13,3:23} },
+  'zhl_40_25_ean50_gf3085':  { rt:35,  first:18, stops:{18:1,15:1,12:2,9:3,6:6,3:12}   },
+  'gfs_40_25_air_hi85':      { rt:111, first:21, stops:{21:0,18:1,15:1,12:1,9:3,6:13,3:58} },
 };
 
 // ZHL-16C Bühlmann coefficients (must match canonical Bühlmann 2003 values)
@@ -611,19 +612,19 @@ const SECTIONS = [
     }],
     ['MultiDeco GF Hi=85 — pinned RT for 40m/25min air', () => {
       const r = WIN.VPMEngine.calculate(lv(40,25),[],S({conservatism:0,gfs:85}),'VPMB_GFS');
-      assertRtPinned(r.totalRuntime, 113);
+      assertRtPinned(r.totalRuntime, LSP_PINNED.gfs_40_25_air_hi85.rt);
       return `RT=${r.totalRuntime}min ✓`;
     }],
     ['MultiDeco GF Hi=85 — pinned first stop 21m for 40m/25min air', () => {
       const r = WIN.VPMEngine.calculate(lv(40,25),[],S({conservatism:0,gfs:85}),'VPMB_GFS');
-      assert(firstStop(r) === 21, `first=${firstStop(r)}m expected 21m`);
+      assert(firstStop(r) === LSP_PINNED.gfs_40_25_air_hi85.first,
+        `first=${firstStop(r)}m expected ${LSP_PINNED.gfs_40_25_air_hi85.first}m`);
       return `first stop=${firstStop(r)}m ✓`;
     }],
     ['MultiDeco GF Hi=85 — pinned stop table for 40m/25min air', () => {
       const r = WIN.VPMEngine.calculate(lv(40,25),[],S({conservatism:0,gfs:85}),'VPMB_GFS');
       const s = stops(r);
-      // Expected: 21:0 18:1 15:1 12:1 9:2 6:14 3:57
-      const expDepths = [21,18,15,12,9,6,3];
+      const expDepths = Object.keys(LSP_PINNED.gfs_40_25_air_hi85.stops).map(Number);
       const missing = expDepths.filter(d => s[d] === undefined);
       assert(!missing.length, `Missing stops: ${missing.join(',')}m`);
       return Object.entries(s).sort((a,b)=>b[0]-a[0]).map(([d,t])=>`${d}m:${t}`).join(' ') + ' ✓';

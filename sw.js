@@ -37,6 +37,7 @@ const PRECACHE_ASSETS = [
   OFFLINE_INDEX,
   APP_BASE + 'capacitor-bridge.js',
   APP_BASE + 'zhl-engine-bundle.js',
+  APP_BASE + 'vpm-engine-bundle.js',
   APP_BASE + 'zhl-worker-bridge.js',
   APP_BASE + 'zhl-schedule-worker.js',
   APP_BASE + 'vendor/jspdf.umd.min.js',

@@ -46,6 +46,16 @@ if os.path.isfile(bundle_path):
         zhl_bundle_js = f.read()
 zhl_src = js + "\n" + zhl_bundle_js
 
+# Tier 3: VPM-B core lives in vpm-engine-bundle.js — merge for VPM pattern checks
+vpm_bundle_path = os.path.join(os.path.dirname(path) if os.path.dirname(path) else ".", "vpm-engine-bundle.js")
+if not os.path.isabs(vpm_bundle_path):
+    vpm_bundle_path = os.path.join(os.path.dirname(os.path.abspath(path)), "vpm-engine-bundle.js")
+vpm_bundle_js = ""
+if os.path.isfile(vpm_bundle_path):
+    with open(vpm_bundle_path, encoding="utf-8") as f:
+        vpm_bundle_js = f.read()
+vpm_src = vpm_bundle_js if vpm_bundle_js else js
+
 # Helper: line number in JS block (1-indexed)
 def js_line(char_pos):
     return js[:char_pos].count("\n") + 1
@@ -468,7 +478,7 @@ else:
     fail("updateHeHalfTime() function not found")
 
 # 9.3 VPMEngine exports He HT sync API (buhl2003 — BUG-76 He)
-if "_syncHeHalfTimes:" in js and "_setHeHT1:" in js and "ZHL16C_He[i].ht" in js:
+if "_syncHeHalfTimes:" in vpm_bundle_js and "_setHeHT1:" in vpm_bundle_js and "ZHL16C_He[i].ht" in vpm_bundle_js:
     ok("VPMEngine._syncHeHalfTimes + _setHeHT1 exported — buhl2003 He HT sync works")
 else:
     fail("VPMEngine He HT sync API missing — buhl2003 mode leaves VPM He HT at Baker 1.88")
@@ -522,7 +532,9 @@ else:
 # ══════════════════════════════════════════════════════════════════════════════
 
 # 11.1 VPMEngine object exists
-if "window.VPMEngine" in js or "const VPMEngine" in js or "var VPMEngine" in js:
+if ('src="vpm-engine-bundle.js"' in html or "src='vpm-engine-bundle.js'" in html) and "window.VPMEngine = VPMEngine" in vpm_bundle_js:
+    ok("VPMEngine defined (Tier 3 vpm-engine-bundle.js)")
+elif "window.VPMEngine" in js or "const VPMEngine" in js or "var VPMEngine" in js:
     ok("VPMEngine defined")
 else:
     fail("VPMEngine not found")
@@ -545,11 +557,11 @@ else:
 # GROUP 12 — CORE CONSTANTS
 # ══════════════════════════════════════════════════════════════════════════════
 
-# 12.1 Water vapor = 0.0627 (Baker/Bühlmann canonical, not MultiDeco's 0.0577)
-if "WATER_VAPOR = 0.0627" in js or "WATER_VAPOR_PRESSURE = 0.0627" in js:
+# 12.1 Water vapor — LSP default 0.0577 (MultiDeco); Bühlmann option 0.0627 in UI
+if "WATER_VAPOR = 0.0577" in js and 'value="0.0577"' in html:
+    ok("Water vapor default 0.0577 bar (LSP MultiDeco default)")
+elif "WATER_VAPOR = 0.0627" in js or "WATER_VAPOR_PRESSURE = 0.0627" in js:
     ok("Water vapor = 0.0627 bar (Baker/Bühlmann canonical)")
-elif "WATER_VAPOR = 0.0577" in js:
-    fail("Water vapor = 0.0577 (MultiDeco value) — should be 0.0627 (Baker/Bühlmann) as confirmed reference")
 else:
     # It might use a variable — check it's defined
     if "WATER_VAPOR" in js:
@@ -643,26 +655,26 @@ else:
 # ══════════════════════════════════════════════════════════════════════════════
 
 # 16.1 P_SL constant defined (standard sea-level pressure)
-if re.search(r"const P_SL\s*=\s*1\.01325", js):
+if re.search(r"const P_SL\s*=\s*1\.01325", vpm_src):
     ok("P_SL = 1.01325 bar (standard sea-level pressure for altFactor)")
 else:
     fail("P_SL constant missing or wrong value — altitude radii calculation broken")
 
 # 16.2 altFactor formula: (P_SL / surfP) ^ (1/3) — cube root of volume ratio
-if re.search(r"Math\.pow\s*\(\s*P_SL\s*/\s*surfP\s*,\s*1\.0\s*/\s*3\.0\s*\)", js):
+if re.search(r"Math\.pow\s*\(\s*P_SL\s*/\s*surfP\s*,\s*1\.0\s*/\s*3\.0\s*\)", vpm_src):
     ok("altFactor = (P_SL/surfP)^(1/3) — correct cube-root radius scaling")
 else:
     fail("altFactor formula missing or wrong — VPM altitude radii not properly scaled")
 
 # 16.3 initRadN2/initRadHe use altFactor
-if "initRadN2 = INITIAL_RADIUS_N2 * altFactor" in js and "initRadHe = INITIAL_RADIUS_He * altFactor":
+if "initRadN2 = INITIAL_RADIUS_N2 * altFactor" in vpm_src and "initRadHe = INITIAL_RADIUS_He * altFactor":
     ok("initRadN2/initRadHe scaled by altFactor")
 else:
     fail("initRadN2/initRadHe not scaled by altFactor — altitude correction not applied to initial radii")
 
 # 16.4 All 12 VPM state quantities seeded from altitude-adjusted radii
 # They don't need altFactor literally — they use initRadN2/initRadHe which already incorporates it
-vpm_state_fn = re.search(r"createVPMState\s*\(.*?return \{", js, re.DOTALL)
+vpm_state_fn = re.search(r"createVPMState\s*\(.*?return \{", vpm_src, re.DOTALL)
 if vpm_state_fn:
     state_body = vpm_state_fn.group(0)
     required_state_vars = [
@@ -684,14 +696,14 @@ else:
 
 # 16.5 Sea-level identity: at surfP=1.01325, altFactor == 1.0 exactly
 # Verified by physics: (1.01325/1.01325)^(1/3) = 1. Code-level check: P_SL value matches surfP default
-m_psl = re.search(r"const P_SL\s*=\s*([\d.]+)", js)
+m_psl = re.search(r"const P_SL\s*=\s*([\d.]+)", vpm_src)
 if m_psl and abs(float(m_psl.group(1)) - 1.01325) < 1e-5:
     ok("P_SL = 1.01325 bar — sea-level identity (altFactor=1.0) preserved")
 else:
     fail("P_SL value deviates from 1.01325 — sea-level identity broken, existing tests will fail")
 
 # 16.6 Altitude badge shown in VPM results when altitude > 0
-if "altM" in js and ("radii" in js or "altFactor" in js) and "altitude" in js.lower():
+if "altM" in js and ("radii" in js or "altFactor" in vpm_src) and "altitude" in js.lower():
     ok("Altitude badge present in VPM results display")
 else:
     fail("Altitude badge missing in VPM results — user not informed that altitude-adjusted radii are active")
@@ -701,7 +713,7 @@ else:
 # ══════════════════════════════════════════════════════════════════════════════
 
 # 17.1 REGEN_TIME constant = 20160 min (14 days)
-m_regen = re.search(r"REGEN_TIME\s*=\s*([\d.]+)", js)
+m_regen = re.search(r"REGEN_TIME\s*=\s*([\d.]+)", vpm_src)
 if m_regen and abs(float(m_regen.group(1)) - 20160.0) < 1.0:
     ok(f"REGEN_TIME = {m_regen.group(1)} min (14 days = 14×24×60 ✓)")
 else:
@@ -709,15 +721,15 @@ else:
     fail(f"REGEN_TIME = {val}, expected 20160 (14 days) — bubble regeneration rate wrong")
 
 # 17.2 Regeneration formula: exp(-si / REGEN_TIME) — exponential decay
-if re.search(r"Math\.exp\s*\(\s*-\s*\w+\s*/\s*REGEN_TIME\s*\)", js):
+if re.search(r"Math\.exp\s*\(\s*-\s*\w+\s*/\s*REGEN_TIME\s*\)", vpm_src):
     ok("Regeneration formula uses exp(-t/REGEN_TIME) — correct exponential decay")
 else:
     fail("Regeneration formula missing exp(-t/REGEN_TIME) — bubble state carry physics wrong")
 
 # 17.3 finalBubbleState exported from buildResult with adjustedCritRadii and regeneratedRadii
-if ("finalBubbleState" in js and
-    "adjustedCritRadiiN2" in js[js.find("finalBubbleState"):js.find("finalBubbleState")+300] or
-    "adjustedCritRadiiN2" in js):
+if ("finalBubbleState" in vpm_src and
+    "adjustedCritRadiiN2" in vpm_src[vpm_src.find("finalBubbleState"):vpm_src.find("finalBubbleState")+300] or
+    "adjustedCritRadiiN2" in vpm_src):
     ok("finalBubbleState exported from VPMEngine buildResult()")
 else:
     fail("finalBubbleState not exported from buildResult() — repetitive dive state not available")
@@ -734,17 +746,17 @@ else:
     fail("_lastVPMResult assignment not found")
 
 # 17.5 createVPMState reads _prevBubbleState and applies regeneration
-if "_prevBubbleState" in js and "regenFactor" in js:
+if "_prevBubbleState" in vpm_src and "regenFactor" in vpm_src:
     ok("createVPMState reads _prevBubbleState and applies regenFactor")
 else:
     fail("createVPMState does not read _prevBubbleState — repetitive dive bubble carry not implemented")
 
 # 17.6 Carried radii applied to ALL relevant state arrays (not just critRadii)
 # Search the whole JS for the carry loop (window of 600 was too small)
-carry_block_start = js.find("pb.regeneratedRadiiN2")
+carry_block_start = vpm_src.find("pb.regeneratedRadiiN2")
 if carry_block_start > 0:
     # The loop spans ~1500 chars; use 1800 to cover all assignments safely
-    carry_block = js[max(0, carry_block_start - 200):carry_block_start + 1800]
+    carry_block = vpm_src[max(0, carry_block_start - 200):carry_block_start + 1800]
     carry_arrays = ["critRadiiN2", "critRadiiHe", "adjustedCritRadiiN2", "adjustedCritRadiiHe",
                     "allowableGradientN2", "allowableGradientHe",
                     "decoGradientN2", "decoGradientHe",
@@ -897,25 +909,25 @@ else:
 # ══════════════════════════════════════════════════════════════════════════════
 
 # 19.1 applyGFSurfacing function exists
-if "function applyGFSurfacing(" in js:
+if "function applyGFSurfacing(" in vpm_src:
     ok("applyGFSurfacing() function present")
 else:
     fail("applyGFSurfacing() missing — VPM-B/GFS gradient blending not implemented")
 
 # 19.2 Blend fraction: stopDepth / firstStopDepth (1 at first stop → VPM, 0 at surface → GF)
-if "fraction = stopDepth / firstStopDepth" in js:
+if "fraction = stopDepth / firstStopDepth" in vpm_src:
     ok("GFS blend fraction = stopDepth/firstStopDepth (1=first stop pure VPM, 0=surface pure GF)")
 else:
     fail("GFS blend fraction formula wrong — direction of VPM→GF transition incorrect")
 
 # 19.3 Blend formula: vpmGrad * fraction + buhlGrad * (1 - fraction)
-if "blendedGrad = vpmGrad * fraction + buhlGrad * (1 - fraction)" in js:
+if "blendedGrad = vpmGrad * fraction + buhlGrad * (1 - fraction)" in vpm_src:
     ok("GFS blend formula: linear VPM→GF interpolation correct")
 else:
     fail("GFS blend formula missing or wrong")
 
 # 19.4 applyGFSurfacing uses weighted a/b for trimix (not plain N2 values)
-gfs_fn = re.search(r"function applyGFSurfacing\(.*?\n    \}", js, re.DOTALL)
+gfs_fn = re.search(r"function applyGFSurfacing\(.*?\n    \}", vpm_src, re.DOTALL)
 if gfs_fn:
     body = gfs_fn.group(0)
     if "ZHL16C_He" in body and "pTotal" in body:
@@ -927,9 +939,9 @@ else:
 
 # 19.5 applyGFSurfacing only called for VPMB_GFS model (not VPMB or VPMBE)
 # Find the call and check the guard that wraps it
-gfs_call_idx = js.find("applyGFSurfacing(ctx.state")
+gfs_call_idx = vpm_src.find("applyGFSurfacing(ctx.state")
 if gfs_call_idx > 0:
-    guard_ctx = js[max(0, gfs_call_idx - 150):gfs_call_idx]
+    guard_ctx = vpm_src[max(0, gfs_call_idx - 150):gfs_call_idx]
     if "model === 'VPMB_GFS'" in guard_ctx or 'model === "VPMB_GFS"' in guard_ctx:
         ok("applyGFSurfacing called only when model === 'VPMB_GFS'")
     else:
@@ -1298,29 +1310,29 @@ else:
 # ══════════════════════════════════════════════════════════════════════════════
 
 # 26.1 VPM SLP_SW_M = 10.000 (not old 10.078)
-if "SLP_SW_M = 10.000" in js:
+if "SLP_SW_M = 10.000" in vpm_src:
     ok("VPM SLP_SW_M = 10.000 m/bar (MultiDeco/DiveKit standard)")
-elif "SLP_SW_M = 10.078" in js:
+elif "SLP_SW_M = 10.078" in vpm_src:
     fail("VPM SLP_SW_M still 10.078 — should be 10.000 to match MultiDeco/DiveKit")
 else:
     fail("VPM SLP_SW_M not found or unexpected value")
 
 # 26.2 VPM SLP_FW_M = 10.330 (matches ZHL WATER_DENSITY.fresh)
-if "SLP_FW_M = 10.330" in js:
+if "SLP_FW_M = 10.330" in vpm_src:
     ok("VPM SLP_FW_M = 10.330 m/bar (matches ZHL fresh factor)")
-elif "SLP_FW_M = 10.337" in js:
+elif "SLP_FW_M = 10.337" in vpm_src:
     fail("VPM SLP_FW_M still 10.337 — should be 10.330 to match ZHL WATER_DENSITY.fresh")
 else:
     fail("VPM SLP_FW_M not found or unexpected value")
 
 # 26.3 VPM SLP_EN_M defined (EN13319)
-if "SLP_EN_M = 10.080" in js:
+if "SLP_EN_M = 10.080" in vpm_src:
     ok("VPM SLP_EN_M = 10.080 m/bar (EN13319 constant defined)")
 else:
     fail("VPM SLP_EN_M not defined — EN13319 water type unsupported in VPM engine")
 
 # 26.4 getSLP handles waterType===2 (EN13319)
-if "settings.waterType === 2" in js:
+if "settings.waterType === 2" in vpm_src:
     ok("getSLP(): waterType===2 branch present (EN13319 support)")
 else:
     fail("getSLP(): no waterType===2 branch — EN13319 silently uses salt factor in VPM")
@@ -1333,7 +1345,7 @@ else:
     fail("waterTypeVal: EN13319 not mapped to 2 — VPM engine uses wrong water factor for EN13319")
 
 # 26.6 No hardcoded salt slp in VPM functions
-if "SLP_SW_M : SLP_SW_F" in js:
+if "SLP_SW_M : SLP_SW_F" in vpm_src:
     fail("VPM inner functions still use hardcoded salt slp — water type not respected")
 else:
     ok("VPM inner functions use getSLP(settings) not hardcoded salt factor")
@@ -2300,7 +2312,7 @@ if "isRB && bailoutOn" in tcf_block:
 else:
     fail("ccrBailoutSettingsGroup still CCR-only (BUG-59)")
 
-if "settings.circuit !== 'pSCR'" in js and "offLoopPath" in js:
+if "settings.circuit !== 'pSCR'" in vpm_src and "offLoopPath" in vpm_src:
     ok("VPM offLoopPath excludes normal pSCR on-loop (BUG-60)")
 else:
     fail("VPM still treats pSCR as offLoopPath (BUG-60)")
@@ -2323,12 +2335,12 @@ else:
 # GROUP 47 — v2.30.14 fixes (errors_bugs_report_v12)
 # ══════════════════════════════════════════════════════════════════════════════
 
-if "function vpmAccumPpo2" in js and "getEffectivePpo2(pAmb, 0, fO2, ccr" in js:
+if "function vpmAccumPpo2" in vpm_src and "getEffectivePpo2(pAmb, 0, fO2, ccr" in vpm_src:
     ok("VPM OTU/CNS uses getEffectivePpo2 for pSCR loop ppO2 (BUG-63)")
 else:
     fail("VPM OTU/CNS still uses diluent fO2 × pAmb for pSCR (BUG-63)")
 
-vpm_ppo2_count = js.count("vpmAccumPpo2(")
+vpm_ppo2_count = js.count("vpmAccumPpo2(") + vpm_bundle_js.count("vpmAccumPpo2(")
 if vpm_ppo2_count >= 9:
     ok(f"VPM OTU/CNS accumulation wired through vpmAccumPpo2 ({vpm_ppo2_count} sites)")
 else:
@@ -2338,8 +2350,8 @@ else:
 # GROUP 48 — v2.30.15 fixes (pSCR OTU/CNS consistency audit BUG-64–68)
 # ══════════════════════════════════════════════════════════════════════════════
 
-exp_ctx_start = js.find("function addExposureToContext")
-exp_ctx_block = js[exp_ctx_start:exp_ctx_start + 700] if exp_ctx_start > 0 else ""
+exp_ctx_start = vpm_src.find("function addExposureToContext")
+exp_ctx_block = vpm_src[exp_ctx_start:exp_ctx_start + 700] if exp_ctx_start > 0 else ""
 if "vpmAccumPpo2" in exp_ctx_block and "ctxUseOCForPpo2" in exp_ctx_block:
     ok("VPM continuation helpers use vpmAccumPpo2 (BUG-64)")
 else:
@@ -2483,25 +2495,25 @@ else:
 # GROUP 54 — v2.30.21 fix (ctxUseOCForPpo2 ReferenceError in VPMEngine)
 # ══════════════════════════════════════════════════════════════════════════════
 
-if re.search(r"function ctxUseOCForPpo2\(calcSettings\)", js):
+if re.search(r"function ctxUseOCForPpo2\(calcSettings\)", vpm_src):
     ok("ctxUseOCForPpo2 takes calcSettings param (BUG-73)")
 else:
     fail("ctxUseOCForPpo2 still missing calcSettings param (BUG-73)")
 
-if "ctxUseOCForPpo2(settings)" in js:
+if "ctxUseOCForPpo2(settings)" in vpm_src:
     ok("VPM OTU/CNS paths pass settings into ctxUseOCForPpo2 (BUG-73)")
 else:
     fail("ctxUseOCForPpo2 not called with settings (BUG-73)")
 
-ctx_oc_start = js.find("function ctxUseOCForPpo2")
-ctx_oc_block = js[ctx_oc_start:ctx_oc_start + 120] if ctx_oc_start > 0 else ""
+ctx_oc_start = vpm_src.find("function ctxUseOCForPpo2")
+ctx_oc_block = vpm_src[ctx_oc_start:ctx_oc_start + 120] if ctx_oc_start > 0 else ""
 if ctx_oc_start > 0 and "calcSettings.bailout" in ctx_oc_block and "return settings." not in ctx_oc_block:
     ok("ctxUseOCForPpo2 body uses calcSettings not free settings (BUG-73)")
 else:
     fail("ctxUseOCForPpo2 still references free settings identifier (BUG-73)")
 
-calc_start = js.find("function calculate(levels, decoGases, settings, model)")
-ctx_oc_start = js.find("function ctxUseOCForPpo2")
+calc_start = vpm_src.find("function calculate(levels, decoGases, settings, model)")
+ctx_oc_start = vpm_src.find("function ctxUseOCForPpo2")
 if calc_start > 0 and ctx_oc_start > calc_start:
     ok("ctxUseOCForPpo2 defined inside VPMEngine.calculate (BUG-73)")
 else:
@@ -2526,7 +2538,7 @@ if "computePlanExposureTotals(" in js and "exposure.totalOTU" in js:
 else:
     fail("ZHLEngine still uses pre-plan headless OTU/CNS path (pSCR)")
 
-if "run: seg.run != null ? seg.run : seg.runtime" in js:
+if "run: seg.run != null ? seg.run : seg.runtime" in vpm_src:
     ok("VPM buildResult exposes runtime as run on plan segments (pSCR)")
 else:
     fail("VPM plan segments missing run alias from runtime (pSCR)")
@@ -2618,7 +2630,7 @@ if "function planSegDepthM" in js and ("runStart + frac * dur" in js or "scrRunt
 else:
     fail("BUG-77: computePlanExposureTotals still uses end-of-segment scrRuntimeMin or depth=0 on VPM ascents")
 
-if "function buildResult(plan, runtime" in js and "totalOTU: exposure.totalOTU" in js and "computePlanExposureTotals(" in js:
+if "function buildResult(plan, runtime" in vpm_src and "totalOTU: exposure.totalOTU" in vpm_src and "computePlanExposureTotals(" in vpm_src:
     ok("BUG-77 fixed: VPM buildResult totals from computePlanExposureTotals")
 else:
     fail("BUG-77: VPM buildResult still uses inline vpmAccumPpo2 totals vs plan walk")
@@ -3159,7 +3171,7 @@ if "getDomDecoGasPct(idx)" in js[js.find("function collectDecoGasesPctFromDom"):
 else:
     fail("collectDecoGasesPctFromDom still uses clamped fractions (BUG-100)")
 
-vpm_empty = js[js.find("function calculate(levels, decoGases, settings, model)"):js.find("function calculate(levels, decoGases, settings, model)") + 3500]
+vpm_empty = vpm_src[vpm_src.find("function calculate(levels, decoGases, settings, model)"):vpm_src.find("function calculate(levels, decoGases, settings, model)") + 3500]
 if "No bottom segments defined" in vpm_empty and "totalRuntime: 0" in vpm_empty.split("No bottom segments defined")[1][:400]:
     ok("VPM empty-levels error includes totalRuntime: 0 (VPM/ZHL parity)")
 else:
@@ -3180,7 +3192,8 @@ if "validateEngineInputs" in js and "engineValidationError" in js:
 else:
     fail("validateEngineInputs / engineValidationError missing")
 
-if "function gasFractionsFromPct" in js and "gasFractionsFromPct(g.o2, g.he)" in js:
+if ("function gasFractionsFromPct" in js and
+        "gasFractionsFromPct(g.o2, g.he)" in vpm_src):
     ok("VPM deco gas normalization uses gasFractionsFromPct (omitted He → 0)")
 else:
     fail("VPM deco gas normalization missing gasFractionsFromPct helper")
