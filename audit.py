@@ -3530,6 +3530,37 @@ if ("function gasFractionsFromPct" in js and
 else:
     fail("VPM deco gas normalization missing gasFractionsFromPct helper")
 
+# GROUP — site runtime asset manifest (Pages + threecats-lsp.com sync parity)
+manifest_path = os.path.join(os.path.dirname(__file__), "site-assets-manifest.txt")
+required_runtime = [
+    "app-version.js", "vpm-engine-bundle.js", "zhl-engine-bundle.js",
+    "zhl-worker-bridge.js", "zhl-schedule-worker.js", "sw.js",
+    "vendor/jspdf.umd.min.js", "vendor/fonts/fonts.css",
+    "vendor/icons/giw-icon-192.png",
+]
+for rel in required_runtime:
+    if os.path.isfile(os.path.join(os.path.dirname(__file__), rel.replace("/", os.sep))):
+        ok(f"runtime asset present: {rel}")
+    else:
+        fail(f"runtime asset missing in repo: {rel}")
+if os.path.isfile(manifest_path):
+    with open(manifest_path, encoding="utf-8") as mf:
+        manifest_lines = [ln.strip() for ln in mf if ln.strip()]
+    missing_manifest = [
+        ln for ln in manifest_lines
+        if ln not in (".nojekyll",) and not os.path.isfile(os.path.join(os.path.dirname(__file__), ln.replace("/", os.sep)))
+    ]
+    if not missing_manifest:
+        ok(f"site-assets-manifest.txt lists {len(manifest_lines)} files — all present")
+    else:
+        fail(f"site-assets-manifest.txt missing {len(missing_manifest)} file(s), e.g. {missing_manifest[0]}")
+    if "vpm-engine-bundle.js" in manifest_lines and "app-version.js" in manifest_lines:
+        ok("site-assets-manifest includes app-version.js and vpm-engine-bundle.js")
+    else:
+        fail("site-assets-manifest missing app-version.js or vpm-engine-bundle.js")
+else:
+    fail("site-assets-manifest.txt missing — run tools/build_pages_site.py")
+
 print("=" * 60)
 
 if FAIL:

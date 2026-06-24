@@ -94,7 +94,14 @@ def build_pages_site() -> Path:
 
     file_count = sum(1 for p in OUT.rglob("*") if p.is_file())
     total_bytes = sum(p.stat().st_size for p in OUT.rglob("*") if p.is_file())
+    manifest = ROOT / "site-assets-manifest.txt"
+    manifest.write_text(
+        "\n".join(sorted(p.relative_to(OUT).as_posix() for p in OUT.rglob("*") if p.is_file()))
+        + "\n",
+        encoding="utf-8",
+    )
     print(f"Built Pages site: {file_count} files, {total_bytes / 1024 / 1024:.2f} MB -> {OUT}")
+    print(f"Wrote asset manifest ({file_count} paths) -> {manifest}")
     return OUT
 
 
