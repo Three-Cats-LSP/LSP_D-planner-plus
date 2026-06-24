@@ -211,7 +211,15 @@ def run_tests(page, port):
             document.getElementById('dg1Mix').value = 'ean50';
             document.getElementById('dg2Mix').value = 'o2';
             runDecoSchedule();
-            await new Promise(r => setTimeout(r, 800));
+            const ready = await (async () => {
+              const deadline = Date.now() + 15000;
+              while (Date.now() < deadline) {
+                if (document.querySelector('#decoTableBody tr[data-phase="totals"]')) return true;
+                await new Promise(r => setTimeout(r, 100));
+              }
+              return false;
+            })();
+            if (!ready) throw new Error('metric deco schedule did not finish');
             const txt = buildExportText('deco');
             const msg = buildMessengerText('deco');
             const slate = typeof buildSlateText === 'function' ? buildSlateText() : '';
@@ -262,18 +270,28 @@ def run_tests(page, port):
 
     imp = page.evaluate(
         """async () => {
-            window.units = 'imperial';
             if (typeof setUnits === 'function') setUnits('imperial');
+            window.units = 'imperial';
             window._zhlHeadless = true;
             window._lastContingency = null;
             document.getElementById('decoDepth').value = '131';
             document.getElementById('decoBT').value = '30';
             document.getElementById('decoGas').value = 'air';
             runDecoSchedule();
-            await new Promise(r => setTimeout(r, 500));
+            const deadline = Date.now() + 15000;
+            let hdrLines = '';
+            while (Date.now() < deadline) {
+              const totals = document.querySelector('#decoTableBody tr[data-phase="totals"]');
+              hdrLines = buildDecoPlanHeaderLines().join('\\n');
+              if (totals && /131\\s*ft|131ft/i.test(hdrLines)) break;
+              await new Promise(r => setTimeout(r, 100));
+            }
+            if (!/131\\s*ft|131ft/i.test(hdrLines)) {
+              throw new Error('imperial header not ready: ' + hdrLines.slice(0, 240));
+            }
             const txt = buildExportText('deco');
             const msg = buildMessengerText('deco');
-            const hdrLines = buildDecoPlanHeaderLines().join('\\n');
+            hdrLines = buildDecoPlanHeaderLines().join('\\n');
             const sum = getPlanSummaryExport();
             return { txt, msg, hdrLines, sumPrt: sum.prt };
         }"""
