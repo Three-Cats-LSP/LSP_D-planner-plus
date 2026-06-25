@@ -631,7 +631,14 @@ function runZhlScheduleCore(params) {
   const descentTime = depthM / descentRate;
   if (travelInfo && travelSwitchM > 0 && travelSwitchM < depthM) {
     const travelFHe = travelInfo.fHe || 0;
-    const travelFO2 = travelInfo.fO2 != null ? travelInfo.fO2 : Math.max(0, 1 - travelInfo.fN2 - travelFHe);
+    let travelFO2;
+    if (travelInfo.fO2 != null) {
+      travelFO2 = travelInfo.fO2;
+    } else {
+      const inferred = 1 - travelInfo.fN2 - travelFHe;
+      if (inferred < -1e-9) throw new Error('travelInfo gas fractions invalid: fN2 + fHe > 1');
+      travelFO2 = inferred;
+    }
     // Phase 1: surface → travel switch depth on travel gas
     const travelDescentTime = travelSwitchM / descentRate;
     tissues = zhlLoadLinear(tissues, 0, travelSwitchM, travelDescentTime, travelFO2, travelFHe, _zhlOnLoop, 'descent');

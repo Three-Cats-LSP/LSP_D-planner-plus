@@ -8735,13 +8735,14 @@ function buildZhlScheduleParamsFromDom(rawD, depthM, bt) {
     const botMODm = bottomFO2 > 0
       ? Math.floor((ppo2Bottom / bottomFO2 - altSurfaceP) / BAR_PER_METRE)
       : depthM;
-    const travelFO2 = 1 - travelInfo.fN2;
+    const travelFHe = travelInfo.fHe || 0;
+    const travelFO2 = travelInfo.fO2 != null ? travelInfo.fO2 : (1 - travelInfo.fN2 - travelFHe);
     const ppO2AtBotMOD = (altSurfaceP + botMODm * BAR_PER_METRE) * travelFO2;
     if (ppO2AtBotMOD <= ppo2Bottom + 0.01) {
       decoGases.push({
         depth: botMODm,
         fN2: travelInfo.fN2,
-        fHe: 0,
+        fHe: travelFHe,
         fO2: travelFO2,
         label: travelInfo.label,
         isTravelGas: true,

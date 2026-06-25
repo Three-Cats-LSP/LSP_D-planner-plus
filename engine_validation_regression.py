@@ -363,17 +363,57 @@ def run_checks(page, port):
         ...base,
         travelInfo: { fN2: 0.44, fHe: 0.35, switchDepthM: 30, label: 'TX21/35' },
       });
+      function tissuesClose(a, b, tol) {
+        if (!a || !b || a.length !== b.length) return false;
+        for (let i = 0; i < a.length; i++) {
+          if (Math.abs((a[i].pN2 || 0) - (b[i].pN2 || 0)) > tol) return false;
+          if (Math.abs((a[i].pHe || 0) - (b[i].pHe || 0)) > tol) return false;
+        }
+        return true;
+      }
+      const tol = 1e-4;
+      const expT = explicit.lastPlan?.finalTissues || [];
+      const legT = legacy.lastPlan?.finalTissues || [];
+      const implicitFo2 = 1 - 0.44 - 0.35;
       return {
-        ok: explicit.totalRuntime === legacy.totalRuntime && explicit.tts === legacy.tts,
-        explicitRt: explicit.totalRuntime,
-        legacyRt: legacy.totalRuntime,
+        ok: tissuesClose(expT, legT, tol),
+        floatMismatch: implicitFo2 !== 0.21,
+        implicitFo2,
       };
     }"""
     )
     if travel_fo2_legacy.get("ok"):
-        ok("ZHL travelFO2 legacy fallback matches explicit fO2 for trimix (issue #28)")
+        ok("ZHL travelFO2 legacy fallback matches explicit fO2 for trimix (issue #28/#29 tissue parity)")
     else:
-        fail(f"ZHL travelFO2 legacy fallback mismatch: {travel_fo2_legacy}")
+        fail(f"ZHL travelFO2 legacy fallback tissue mismatch: {travel_fo2_legacy}")
+
+    travel_gas_invalid = page.evaluate(
+        """() => {
+      const settings = {
+        metric: true, gfLo: 30, gfHi: 85, stepSize: 3, lastStop: 3, minStopTime: 1,
+        descentRate: 20, ascentRate: 10, decoAscentRate: 3, surfaceAscentRate: 3,
+      };
+      const levels = [{ depth: 60, time: 20, o2: 18, he: 45 }];
+      const env = typeof getZhlEnvironment === 'function' ? getZhlEnvironment(settings) : null;
+      const split = window.ZhlEngineBundle.splitZhlProfileLevels(levels);
+      const base = window.ZhlEngineBundle.buildZhlScheduleParamsFromEngine(
+        levels, [], settings, split, env
+      );
+      try {
+        window.ZhlEngineBundle.runZhlScheduleCore({
+          ...base,
+          travelInfo: { fN2: 0.6, fHe: 0.5, switchDepthM: 30, label: 'invalid' },
+        });
+        return { ok: false, reason: 'no throw' };
+      } catch (e) {
+        return { ok: (e && e.message || '').includes('travelInfo gas fractions invalid'), msg: e && e.message };
+      }
+    }"""
+    )
+    if travel_gas_invalid.get("ok"):
+        ok("ZHL travel gas rejects impossible fN2 + fHe > 1 (issue #29)")
+    else:
+        fail(f"ZHL travel gas invalid-fraction guard failed: {travel_gas_invalid}")
 
 
 def run_worker_timeout_check(page, port):

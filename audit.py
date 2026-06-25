@@ -688,6 +688,10 @@ if os.path.isfile(_zhl_core_path):
         ok("ZHL travelFO2 fallback subtracts fHe when fO2 omitted (issue #28)")
     else:
         fail("ZHL travelFO2 fallback overcounts O2 for trimix (issue #28)")
+    if "travelInfo gas fractions invalid" in _zhl_core_src:
+        ok("ZHL travel gas rejects fN2 + fHe > 1 instead of silent fO2 clamp (issue #29)")
+    else:
+        fail("ZHL travel gas still clamps impossible fractions to fO2=0 (issue #29)")
 else:
     fail("zhl-schedule-core.js missing")
 
@@ -727,8 +731,18 @@ if zhl_bundle_js:
         ok("zhl-engine-bundle travelFO2 fallback subtracts fHe when fO2 omitted (issue #28)")
     else:
         fail("zhl-engine-bundle travelFO2 fallback overcounts O2 for trimix (issue #28)")
+    if "travelInfo gas fractions invalid" in zhl_bundle_js:
+        ok("zhl-engine-bundle rejects impossible travel gas fractions (issue #29)")
+    else:
+        fail("zhl-engine-bundle still silently clamps impossible travel gas (issue #29)")
 else:
     fail("zhl-engine-bundle.js missing")
+
+_travel_deco_block = js.split("const travelInfo = getTravelGasInfo()", 1)
+if len(_travel_deco_block) > 1 and "1 - travelInfo.fN2 - travelFHe" in _travel_deco_block[1][:800]:
+    ok("index.html travelFO2 in decoGases subtracts fHe (issue #29)")
+else:
+    fail("index.html travelFO2 still uses 1 - fN2 only (issue #29)")
 
 if worker_bridge_js and "nextId = 1" in worker_bridge_js and worker_bridge_js.count("nextId = 1") >= 2:
     ok("ZhlWorkerBridge resets nextId on terminate/error/timeout (issue #27 BUG-E)")
