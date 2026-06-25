@@ -3802,10 +3802,26 @@ def _harness_fn_body(src, fn_name, *end_markers):
     if len(parts) < 2:
         return ""
     rest = parts[1]
-    m_body = re.search(r"\)\s*\{", rest)
+    p0 = rest.find("(")
+    if p0 < 0:
+        return ""
+    depth = 0
+    close_paren = -1
+    for j in range(p0, len(rest)):
+        if rest[j] == "(":
+            depth += 1
+        elif rest[j] == ")":
+            depth -= 1
+            if depth == 0:
+                close_paren = j
+                break
+    if close_paren < 0:
+        return ""
+    after = rest[close_paren + 1:]
+    m_body = re.search(r"\s*\{", after)
     if not m_body:
         return ""
-    body = rest[m_body.end():]
+    body = after[m_body.end():]
     for marker in end_markers:
         if marker in body:
             body = body.split(marker, 1)[0]
