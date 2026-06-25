@@ -39,7 +39,8 @@
       worker.onerror = function (err) {
         const msg = (err && err.message) || 'Worker error';
         rejectAll(msg);
-        worker = null;
+        killWorker();
+        nextId = 1;
       };
     }
     return worker;
@@ -59,6 +60,7 @@
         if (!pending.has(id)) return;
         rejectAll('ZHL worker timeout');
         killWorker();
+        nextId = 1;
       }, WORKER_TIMEOUT_MS);
       pending.set(id, {
         resolve,
@@ -72,6 +74,7 @@
   function terminate() {
     rejectAll('ZHL worker terminated');
     killWorker();
+    nextId = 1;
   }
 
   global.ZhlWorkerBridge = { calculateInWorker, terminate };

@@ -695,8 +695,17 @@ if os.path.isfile(_ccr_core_path):
         ok("CCR saturateLinearCCR uses segment entry depth for setpoint (issue #27 BUG-C)")
     else:
         fail("CCR saturateLinearCCR still uses midpoint setpoint (issue #27 BUG-C)")
+    if "function computePSCRFractions(pAmb, fO2, fHe, ccr)" in _ccr_core_src:
+        ok("computePSCRFractions drops unused runtimeMin param (issue #27 BUG-F)")
+    else:
+        fail("computePSCRFractions still accepts dead runtimeMin param (issue #27 BUG-F)")
 else:
     fail("zhl-ccr-core.js missing")
+
+if worker_bridge_js and "nextId = 1" in worker_bridge_js and worker_bridge_js.count("nextId = 1") >= 2:
+    ok("ZhlWorkerBridge resets nextId on terminate/error/timeout (issue #27 BUG-E)")
+else:
+    fail("ZhlWorkerBridge missing nextId reset on worker session end (issue #27 BUG-E)")
 
 if "function getTravelGasInfo" in js and "fHe: 0" in js.split("function getTravelGasInfo", 1)[-1][:2500]:
     ok("getTravelGasInfo exposes fHe field for travel gas schema (issue #27 BUG-B)")

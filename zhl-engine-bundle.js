@@ -206,7 +206,7 @@ function getCcrMetabolicO2Rate(ccr) {
   return v > 0 ? v : 1.5;
 }
 
-function computePSCRFractions(pAmb, fO2, fHe, runtimeMin, ccr) {
+function computePSCRFractions(pAmb, fO2, fHe, ccr) {
   fO2 = Math.max(0, Math.min(1, fO2 || 0));
   fHe = Math.max(0, Math.min(1 - fO2, fHe || 0));
   const fN2src = Math.max(0, 1 - fO2 - fHe);
@@ -240,7 +240,7 @@ function getInspiredInertPressures(pAmb, setpoint, fO2, fHe, ccr) {
     return { pN2: (pAmb - ppH2O) * fN2, pHe: (pAmb - ppH2O) * fHe, fO2, fHe, fN2 };
   }
   if (cfg.circuit === 'pSCR') {
-    const fr = computePSCRFractions(pAmb, fO2, fHe, cfg.scrRuntimeMin, cfg);
+    const fr = computePSCRFractions(pAmb, fO2, fHe, cfg);
     return {
       pN2: (pAmb - ppH2O) * fr.fN2,
       pHe: (pAmb - ppH2O) * fr.fHe,
@@ -273,9 +273,9 @@ function getCCRInertSchreinerParams(pAmbStart, setpoint, fO2, fHe, pressureRate,
     };
   }
   if (cfg.circuit === 'pSCR') {
-    const fr0 = computePSCRFractions(pAmbStart, fO2, fHe, cfg.scrRuntimeMin, cfg);
+    const fr0 = computePSCRFractions(pAmbStart, fO2, fHe, cfg);
     const pEnd = pAmbStart + pressureRate * 1;
-    const fr1 = computePSCRFractions(pEnd, fO2, fHe, cfg.scrRuntimeMin, cfg);
+    const fr1 = computePSCRFractions(pEnd, fO2, fHe, cfg);
     const ppH2O = WATER_VAPOR;
     const inspN2Start = (pAmbStart - ppH2O) * fr0.fN2;
     const inspHeStart = (pAmbStart - ppH2O) * fr0.fHe;
