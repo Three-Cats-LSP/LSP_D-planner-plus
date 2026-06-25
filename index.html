@@ -1346,9 +1346,6 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 
  .deco-table:not(.table-view) td:last-child { border-bottom:none; }
 
- /* END column — always visible (mobile card layout) */
- .deco-table .end-col { display:flex !important; }
-
  /* Table view on mobile — force standard table layout */
  .deco-table.table-view { font-size:10px !important;
  table-layout:auto !important;
@@ -3926,27 +3923,6 @@ function calcEND(depthM, fN2, fHe) {
   return Math.max(0, end);
 }
 
-// ── END (Equivalent Narcotic Depth) column — always shown ────────────────
-
-// Parse a rendered Mix-cell label into {fN2,fHe}. Handles all label variants:
-// '100%' / '100% O2', 'AIR' / 'Air', 'EAN 50' / 'EAN50', '21/35', '50/00'.
-function endParseFrac(label) {
-  if (!label) return null;
-  const t = label.trim().toUpperCase();
-  if (t.indexOf('100%') !== -1 || t === '100/00') return { fN2: 0, fHe: 0 };
-  if (t.indexOf('AIR') !== -1) return { fN2: FN2_AIR, fHe: 0 };
-  const ean = t.match(/EAN\s*(\d+)/);
-  if (ean) { const fo2 = parseInt(ean[1]) / 100; return { fN2: 1 - fo2, fHe: 0 }; }
-  const tx = t.match(/(\d+)\s*\/\s*(\d+)/);
-  if (tx) {
-    const fo2 = parseInt(tx[1]) / 100, fhe = parseInt(tx[2]) / 100;
-    return { fN2: Math.max(0, 1 - fo2 - fhe), fHe: fhe };
-  }
-  const pct = t.match(/(\d+)\s*%/);
-  if (pct) { const fo2 = parseInt(pct[1]) / 100; return { fN2: 1 - fo2, fHe: 0 }; }
-  return null;
-}
-
 // Parse the deepest depth (m) from a rendered Depth-cell, converting ft→m if needed.
 function endParseDepthM(text) {
   if (!text) return null;
@@ -3957,37 +3933,6 @@ function endParseDepthM(text) {
   if (isFt) d = d / 3.28084;
   return d;
 }
-
-// Inject/refresh an END <td> into each deco table body row (idempotent).
-function injectEndCells() {
-  const dU = units === 'metric';
-  document.querySelectorAll('#decoTableBody tr').forEach(tr => {
-    const ph = tr.dataset.phase;
-    // Switch rows ship with an empty END placeholder — do not strip or re-inject.
-    if (ph === 'switch' || ph === 'totals') return;
-    // Remove any previously-injected END cell so this is idempotent.
-    tr.querySelectorAll('td.end-col').forEach(el => el.remove());
-    const tds = tr.querySelectorAll('td');
-    if (tds.length < 9) return;
-    const ppo2Cell = tds[6]; // PPO2 column — END inserted after it
-    const depthM = endParseDepthM(tds[1]?.textContent || '');
-    const frac   = endParseFrac(tds[3]?.textContent || '');  // Mix is now col 4 (index 3)
-    let disp = '—';
-    if (depthM != null && frac) {
-      const endM = calcEND(depthM, frac.fN2, frac.fHe);
-      disp = dU ? Math.round(endM) + ' m' : Math.round(endM * 3.28084) + ' ft';
-    }
-    const cell = document.createElement('td');
-    cell.className = 'end-col';
-    cell.setAttribute('data-label', 'END');
-    cell.style.color = 'var(--muted)';
-    cell.style.fontSize = '11px';
-    cell.textContent = disp;
-    ppo2Cell.insertAdjacentElement('afterend', cell);
-  });
-}
-
-function applyEndColumn() { /* END column removed from dive profile table */ }
 
 function _updateEnvSummary() {
   const body = document.getElementById('envSettingsBody');
@@ -8002,7 +7947,6 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
 
   // ── END column (Feature): inject cells + apply toggle state ──
   injectTtsCells('decoTableBody', vpmRtAtBottomEnd);
-  applyEndColumn();
   scheduleDecoScheduleStackSync();
 
   // Surface Interval panel (collapsed) — pre-fill Dive 1 from this dive
@@ -8558,8 +8502,11 @@ function resolveTravelGasFractions(travelInfo) {
   if (!isFinite(fN2)) {
     return { valid: false, fHe: 0, reason: 'fN₂ is not a valid number' };
   }
-  if (rawFHe != null && (!isFinite(rawFHe) || rawFHe < -1e-9)) {
+  if (rawFHe != null && !isFinite(rawFHe)) {
     return { valid: false, fHe: 0, reason: 'explicit fHe is not a valid number' };
+  }
+  if (rawFHe != null && rawFHe < -1e-9) {
+    return { valid: false, fHe: 0, reason: 'explicit fHe is negative' };
   }
   const travelFHe = rawFHe != null ? rawFHe : 0;
   if (travelInfo.fO2 != null) {
@@ -9199,19 +9146,6 @@ function runDecoSchedule() {
 
 
 
-  // CNS% helper for a given ppO2 and duration
-  function rowCNS(ppo2, dur) {
-    const key = Math.round(ppo2 * 10);
-    if (key < 6 || ppo2 <= 0.5) return '-';
-    const limits = {6:720,7:570,8:450,9:360,10:300,11:240,12:210,13:180,14:150,15:120,16:45};
-    const lo = Math.floor(ppo2*10), hi = lo+1;
-    const vLo = limits[lo]||0, vHi = limits[hi]||0;
-    const lim = vLo + (vHi-vLo)*(ppo2*10-lo);
-    const safeLim = lim > 0 ? lim : 45; // ppO2>1.6: clamp to 45-min limit
-    const pct = (dur/safeLim)*100;
-    return pct.toFixed(1)+'%';
-  }
-
   // ── OTU per segment (NOAA formula) ──
   function segOTU(ppo2, dur) {
     if (ppo2 <= 0.5) return 0;
@@ -9308,7 +9242,6 @@ function runDecoSchedule() {
   const btAtDepthMin = Math.max(0, bt - descentTimeMin);
   rowRT += btAtDepthMin;
   const btPPO2 = rowDisplayPpo2(rawD, bottomFN2, bottomFHe, bottomFO2, 'bottom');
-  const btCNS  = rowCNS(parseFloat(btPPO2), btAtDepthMin);
   totalCNSfrac += segCNSfrac(parseFloat(btPPO2), btAtDepthMin);
   totalOTU     += segOTU(parseFloat(btPPO2), btAtDepthMin);
   addGas(loopMixLabel, rawD, btAtDepthMin, sacBottom);
@@ -9379,11 +9312,9 @@ function runDecoSchedule() {
 
     // ── DECO STOP ROW ──
     if (s.type === 'deco') {
-      const cnsPct = rowCNS(pO2Val, stepDur);
       totalCNSfrac += segCNSfrac(pO2Val, stepDur);
       totalOTU     += segOTU(pO2Val, stepDur);
       addGas(s.gas, s.depth, stepDur, sacDeco);
-      const cnsColor = parseFloat(cnsPct) > 80 ? 'color:var(--red);font-weight:700;' : parseFloat(cnsPct) > 40 ? 'color:var(--yellow);' : 'color:var(--muted);';
       const eadDisp = fmtEAD(s.depth, _sFN2);
       // Row highlight when cumulative CNS exceeds threshold (like MultiDeco)
       const cumCnsPct = totalCNSfrac * 100;
@@ -9403,7 +9334,6 @@ function runDecoSchedule() {
       </tr>`;
     // ── SAFETY STOP ROW ──
     } else if (s.type === 'safety') {
-      const cnsPct = rowCNS(pO2Val, stepDur);
       totalCNSfrac += segCNSfrac(pO2Val, stepDur);
       totalOTU     += segOTU(pO2Val, stepDur);
       addGas(s.gas, s.depth, stepDur, sacDeco);
@@ -9419,7 +9349,6 @@ function runDecoSchedule() {
     // ── ASCENT ROW ──
     } else {
       if (s.decoTransit) return; // mdCompatMode: transit folded into stop display
-      const cnsPct = rowCNS(pO2Val, stepDur);
       totalCNSfrac += segCNSfrac(pO2Val, stepDur);
       totalOTU     += segOTU(pO2Val, stepDur);
       addGas(s.gas, (s.from + s.to) / 2, stepDur, sacDeco);
@@ -9492,7 +9421,6 @@ function runDecoSchedule() {
 
   // ── END column (Feature): inject cells + apply toggle state ──
   injectTtsCells('decoTableBody', rtAtBottomEnd);
-  applyEndColumn();
   scheduleDecoScheduleStackSync();
 
   // ── CNS% high warning (post-render, totalCNSfrac now known) ──
@@ -10941,18 +10869,7 @@ function drawDecoProfile() {
   const labelledDepths = new Set();
   document.querySelectorAll('#decoTableBody tr[data-phase]').forEach(tr => {
     const phase = tr.dataset.phase;
-    // Gas switch rows
-    if (phase === 'switch') {
-      const tds = tr.querySelectorAll('td');
-      // Find run time from adjacent ascent row (switch row has no run col — use previous wp t)
-      const switchTxt = Array.from(tds).map(td => td.textContent).join(' ').trim();
-      const depM  = switchTxt.match(/@\s*([\d.]+)\s*(m|ft)/i);
-      const gasM  = switchTxt.match(/([^\s@]+(?:\s+[^\s@]+)?)\s*@/);
-      const switchDepth = depM ? parseFloat(depM[1]) : null;
-      const switchGas   = gasM ? gasM[1].trim() : null;
-      // Run time: use run from very next non-switch row
-      return; // handled via separate pass below
-    }
+    if (phase === 'switch') return;
     if (phase !== 'deco' && phase !== 'safety' && phase !== 'ascent') return;
     const tds    = tr.querySelectorAll('td');
     const run    = parseRunMin(tds[4]?.textContent);
@@ -12797,9 +12714,9 @@ function buildExportText(mode) {
         const c   = Array.from(tds).map(td => clean(td.textContent));
         const lbl = (phaseLabel[ph] || ph).padEnd(5);
 
-        // Depth: for ascent show destination only (descent keeps 0→dest)
+        // Depth: descent may use 0→dest; ascent rows are destination-only
         let depRaw = c[1] || '';
-        if (ph === 'ascent') {
+        if (ph === 'descent') {
           const arrowMatch = depRaw.match(/[→>](.+)$/);
           if (arrowMatch) depRaw = arrowMatch[1].trim();
         }
@@ -12979,9 +12896,9 @@ function buildExportText(mode) {
         const c2   = Array.from(tds).map(td => clean(td.textContent));
         const lbl  = (phaseLabel[ph]||ph).padEnd(5);
 
-        // Ascent: show only destination depth
+        // Ascent rows are destination-only; descent may use 0→dest
         let depRaw = c2[1] || '';
-        if (ph === 'ascent') {
+        if (ph === 'descent') {
           const arrowMatch = depRaw.match(/[→>](.+)$/);
           if (arrowMatch) depRaw = arrowMatch[1].trim();
         }
@@ -16845,7 +16762,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // Sync He half-time mode to ZHL16C_HE_HT array and VPMEngine on startup
   updateHeHalfTime();
   // Apply persisted END column state on load (button label + table class)
-  applyEndColumn();
 
   window.__lspAppFullyReady = true;
 

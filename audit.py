@@ -751,7 +751,7 @@ if len(_travel_deco_block) > 1 and "resolveTravelGasFractions" in _travel_deco_b
     ok("index.html travelFO2 in decoGases subtracts fHe (issue #29)")
 else:
     fail("index.html travelFO2 still uses 1 - fN2 only (issue #29)")
-if "function resolveTravelGasFractions" in js and "inferred < -1e-9" in js.split("function resolveTravelGasFractions", 1)[-1][:900]:
+if "function resolveTravelGasFractions" in js and "inferred < -1e-9" in js.split("function resolveTravelGasFractions", 1)[-1][:1500]:
     ok("index.html travel gas skips invalid fractions before decoGases.push (issue #30)")
 else:
     fail("index.html travel gas missing fraction guard before decoGases.push (issue #30)")
@@ -775,8 +775,8 @@ if "function refreshTravelGasFractionWarning" in js and "refreshTravelGasFractio
     ok("index.html travel gas warning refreshed on decoAlerts render (issue #32)")
 else:
     fail("index.html stale _travelGasFractionWarning not cleared on render (issue #32)")
-_res_frac_block = js.split("function resolveTravelGasFractions", 1)[-1][:900] if "function resolveTravelGasFractions" in js else ""
-if _res_frac_block and "travelInfo.fHe || 0" not in _res_frac_block and "rawFHe != null && !isFinite(rawFHe)" not in _res_frac_block and "rawFHe != null && (!isFinite(rawFHe) || rawFHe < -1e-9)" in _res_frac_block:
+_res_frac_block = js.split("function resolveTravelGasFractions", 1)[-1][:1500] if "function resolveTravelGasFractions" in js else ""
+if _res_frac_block and "travelInfo.fHe || 0" not in _res_frac_block and "rawFHe != null && !isFinite(rawFHe)" in _res_frac_block and "explicit fHe is negative" in _res_frac_block:
     ok("index.html fHe validated before defaulting — no NaN || 0 masking (issue #33)")
 else:
     fail("index.html fHe NaN masked by || 0 before isFinite guard (issue #33)")
@@ -784,6 +784,19 @@ if _res_frac_block and "!isFinite(inferred)" not in _res_frac_block and "inferre
     ok("resolveTravelGasFractions drops dead !isFinite(inferred) check (issue #34)")
 else:
     fail("resolveTravelGasFractions still has dead !isFinite(inferred) guard (issue #34)")
+if "function injectEndCells" not in js and "function applyEndColumn" not in js and "applyEndColumn()" not in js:
+    ok("orphaned END column injectEndCells/applyEndColumn removed (issue #35)")
+else:
+    fail("injectEndCells or applyEndColumn still present after column removal (issue #35)")
+if "function rowCNS" not in js:
+    ok("per-row rowCNS helper removed after CNS% column drop (issue #35)")
+else:
+    fail("rowCNS still computed after CNS% column removal (issue #35)")
+_draw_prof = js.split("function drawDecoProfile", 1)[-1][:2500] if "function drawDecoProfile" in js else ""
+if _draw_prof and "switchTxt.match" not in _draw_prof and "if (phase === 'switch') return" in _draw_prof:
+    ok("drawDecoProfile drops dead first-pass switch @-regex (issue #35)")
+else:
+    fail("drawDecoProfile still has dead switch @-regex first pass (issue #35)")
 _mod_travel_block = js.split("function updateTravelGasMOD", 1)[-1].split("function ", 1)[0] if "function updateTravelGasMOD" in js else ""
 if _mod_travel_block and "refreshTravelGasFractionWarning" not in _mod_travel_block:
     ok("updateTravelGasMOD does not redundantly refresh travel gas warning (issue #33)")
