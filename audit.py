@@ -3802,10 +3802,10 @@ def _harness_fn_body(src, fn_name, *end_markers):
     if len(parts) < 2:
         return ""
     rest = parts[1]
-    brace = rest.find("{")
-    if brace < 0:
+    m_body = re.search(r"\)\s*\{", rest)
+    if not m_body:
         return ""
-    body = rest[brace + 1:]
+    body = rest[m_body.end():]
     for marker in end_markers:
         if marker in body:
             body = body.split(marker, 1)[0]
