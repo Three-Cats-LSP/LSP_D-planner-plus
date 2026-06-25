@@ -68,7 +68,28 @@
 var LSPTestHarness = (function () {
   'use strict';
 
+  function assertFiniteNumbers(v, path) {
+    path = path || '';
+    if (typeof v === 'number') {
+      if (!isFinite(v)) {
+        throw new Error('Harness clone: non-finite number at ' + path + ': ' + v);
+      }
+      return;
+    }
+    if (v == null || typeof v !== 'object') return;
+    if (Array.isArray(v)) {
+      v.forEach(function (item, i) {
+        assertFiniteNumbers(item, path + '[' + i + ']');
+      });
+      return;
+    }
+    Object.keys(v).forEach(function (k) {
+      assertFiniteNumbers(v[k], path ? path + '.' + k : k);
+    });
+  }
+
   function clone(v) {
+    assertFiniteNumbers(v, '');
     return JSON.parse(JSON.stringify(v));
   }
 
@@ -95,6 +116,10 @@ var LSPTestHarness = (function () {
       && w.ZHLEngine && typeof w.ZHLEngine.calculate === 'function');
   }
 
+  function appFullyReady(w) {
+    return appReady(w) && w.__lspAppFullyReady === true;
+  }
+
   function readPhys(win) {
     var surf = isFinite(win.altSurfaceP) ? win.altSurfaceP : 1.01325;
     var bar = win.BAR_PER_METRE;
@@ -102,9 +127,16 @@ var LSPTestHarness = (function () {
     return { surf: surf, barPerM: bar };
   }
 
+  /**
+   * Wait for index.html iframe to expose both engines.
+   * @param {HTMLIFrameElement} iframe
+   * @param {number} timeoutMs
+   * @param {function(Error|null, object)} cb ctx: { win, vpm, zhl, version, surf, barPerM }
+   */
   function waitForApp(iframe, timeoutMs, cb) {
     var bootErr = null;
     var settled = false;
+    var start = Date.now();
     hookIframe(iframe, function (msg) { bootErr = msg; });
 
     function finish(err, ctx) {
@@ -116,19 +148,17 @@ var LSPTestHarness = (function () {
     function check() {
       try {
         var w = iframe.contentWindow;
-        if (appReady(w)) {
+        if (appFullyReady(w)) {
           w._zhlHeadless = true;
           var phys = readPhys(w);
-          setTimeout(function () {
-            finish(null, {
-              win: w,
-              vpm: w.VPMEngine,
-              zhl: w.ZHLEngine,
-              version: w.APP_VERSION || null,
-              surf: phys.surf,
-              barPerM: phys.barPerM,
-            });
-          }, 1500);
+          finish(null, {
+            win: w,
+            vpm: w.VPMEngine,
+            zhl: w.ZHLEngine,
+            version: w.APP_VERSION || null,
+            surf: phys.surf,
+            barPerM: phys.barPerM,
+          });
           return;
         }
       } catch (_) {}
@@ -136,21 +166,22 @@ var LSPTestHarness = (function () {
       if (Date.now() - start > timeoutMs) {
         return finish(new Error('Timed out waiting for VPMEngine + ZHLEngine in index.html'));
       }
-      setTimeout(check, 250);
+      setTimeout(check, 50);
     }
 
-    var start = Date.now();
     if (!iframe.src || iframe.src === 'about:blank') {
-      iframe.src = 'index.html?ts=' + Date.now();
+      iframe.src = 'index.html?regression=1&massiveSuite=1&ts=' + Date.now();
     }
-    setTimeout(check, 300);
+    setTimeout(check, 100);
   }
 
+  /** Route ZHLC_GF → ZHLEngine; VPM models → VPMEngine. */
   function calc(ctx, levels, gases, settings, model) {
     if (!ctx || !ctx.vpm || !ctx.zhl) throw new Error('Harness not booted — call waitForApp first');
     var lv = clone(levels || []);
     var gs = clone(gases || []);
     var st = clone(settings || {});
+    if (ctx.win) ctx.win._zhlHeadless = true;
     var r = (model === 'ZHLC_GF')
       ? ctx.zhl.calculate(lv, gs, st)
       : ctx.vpm.calculate(lv, gs, st, model);
@@ -159,8 +190,8 @@ var LSPTestHarness = (function () {
     return r;
   }
 
-  function reloadApp(iframe) {
-    iframe.src = 'index.html?ts=' + Date.now();
+  function reloadApp(iframe, qs) {
+    iframe.src = 'index.html?' + (qs || 'regression=1&massiveSuite=1') + '&ts=' + Date.now();
   }
 
   return {
@@ -172,6 +203,7 @@ var LSPTestHarness = (function () {
     appReady: appReady,
   };
 })();
+
 </script>
 <script>
 // ─── Constants (must match index.html) ───────────────────────────────────────

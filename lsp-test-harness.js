@@ -5,7 +5,28 @@
 var LSPTestHarness = (function () {
   'use strict';
 
+  function assertFiniteNumbers(v, path) {
+    path = path || '';
+    if (typeof v === 'number') {
+      if (!isFinite(v)) {
+        throw new Error('Harness clone: non-finite number at ' + path + ': ' + v);
+      }
+      return;
+    }
+    if (v == null || typeof v !== 'object') return;
+    if (Array.isArray(v)) {
+      v.forEach(function (item, i) {
+        assertFiniteNumbers(item, path + '[' + i + ']');
+      });
+      return;
+    }
+    Object.keys(v).forEach(function (k) {
+      assertFiniteNumbers(v[k], path ? path + '.' + k : k);
+    });
+  }
+
   function clone(v) {
+    assertFiniteNumbers(v, '');
     return JSON.parse(JSON.stringify(v));
   }
 
@@ -52,6 +73,7 @@ var LSPTestHarness = (function () {
   function waitForApp(iframe, timeoutMs, cb) {
     var bootErr = null;
     var settled = false;
+    var start = Date.now();
     hookIframe(iframe, function (msg) { bootErr = msg; });
 
     function finish(err, ctx) {
@@ -84,7 +106,6 @@ var LSPTestHarness = (function () {
       setTimeout(check, 50);
     }
 
-    var start = Date.now();
     if (!iframe.src || iframe.src === 'about:blank') {
       iframe.src = 'index.html?regression=1&massiveSuite=1&ts=' + Date.now();
     }

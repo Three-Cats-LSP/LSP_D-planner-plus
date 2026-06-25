@@ -3804,6 +3804,31 @@ if harness and "reloadApp(iframe, qs)" in harness:
 else:
     fail("lsp-test-harness reloadApp missing optional qs (issue #21 CR-9)")
 
+if harness and "function assertFiniteNumbers" in harness:
+    ok("lsp-test-harness clone rejects non-finite numbers before JSON round-trip")
+else:
+    fail("lsp-test-harness clone still masks NaN/Infinity via JSON.stringify")
+
+_wait_start = harness.split("function waitForApp", 1)[-1][:400] if harness else ""
+if _wait_start and "var start = Date.now()" in _wait_start.split("function check", 1)[0]:
+    ok("lsp-test-harness waitForApp declares start before check()")
+else:
+    fail("lsp-test-harness waitForApp start declared after check()")
+
+for _inline_test in ("tests.html", "tests-extended.html", "tests-pscr-otu-cns.html"):
+    _ip = os.path.join(os.path.dirname(__file__), _inline_test)
+    if os.path.isfile(_ip):
+        with open(_ip, encoding="utf-8") as f:
+            _ib = f.read()
+        _ih = _ib.split("/* inlined from lsp-test-harness.js — keep in sync */", 1)
+        _ih = _ih[1].split("</script>", 1)[0] if len(_ih) > 1 else ""
+        if _ih and "appFullyReady" in _ih and "1500" not in _ih and "reloadApp(iframe, qs)" in _ih:
+            ok(f"{_inline_test} inlined harness synced with lsp-test-harness.js")
+        else:
+            fail(f"{_inline_test} inlined harness stale (missing appFullyReady or still has 1500ms delay)")
+    else:
+        fail(f"{_inline_test} missing for inlined harness sync check")
+
 if worker_bridge_js and "WORKER_TIMEOUT_MS" in worker_bridge_js and "ZHL worker timeout" in worker_bridge_js:
     ok("zhl-worker-bridge per-request timeout (issue #21 CR-5)")
 else:
