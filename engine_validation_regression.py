@@ -343,6 +343,38 @@ def run_checks(page, port):
     else:
         fail(f"ZHL trimix travel gas He loading failed: {travel_trimix}")
 
+    travel_fo2_legacy = page.evaluate(
+        """() => {
+      const settings = {
+        metric: true, gfLo: 30, gfHi: 85, stepSize: 3, lastStop: 3, minStopTime: 1,
+        descentRate: 20, ascentRate: 10, decoAscentRate: 3, surfaceAscentRate: 3,
+      };
+      const levels = [{ depth: 60, time: 20, o2: 18, he: 45 }];
+      const env = typeof getZhlEnvironment === 'function' ? getZhlEnvironment(settings) : null;
+      const split = window.ZhlEngineBundle.splitZhlProfileLevels(levels);
+      const base = window.ZhlEngineBundle.buildZhlScheduleParamsFromEngine(
+        levels, [], settings, split, env
+      );
+      const explicit = window.ZhlEngineBundle.runZhlScheduleCore({
+        ...base,
+        travelInfo: { fN2: 0.44, fO2: 0.21, fHe: 0.35, switchDepthM: 30, label: 'TX21/35' },
+      });
+      const legacy = window.ZhlEngineBundle.runZhlScheduleCore({
+        ...base,
+        travelInfo: { fN2: 0.44, fHe: 0.35, switchDepthM: 30, label: 'TX21/35' },
+      });
+      return {
+        ok: explicit.totalRuntime === legacy.totalRuntime && explicit.tts === legacy.tts,
+        explicitRt: explicit.totalRuntime,
+        legacyRt: legacy.totalRuntime,
+      };
+    }"""
+    )
+    if travel_fo2_legacy.get("ok"):
+        ok("ZHL travelFO2 legacy fallback matches explicit fO2 for trimix (issue #28)")
+    else:
+        fail(f"ZHL travelFO2 legacy fallback mismatch: {travel_fo2_legacy}")
+
 
 def run_worker_timeout_check(page, port):
     settings = TEST_SETTINGS

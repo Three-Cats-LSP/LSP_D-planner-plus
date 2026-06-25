@@ -96,14 +96,14 @@
     return 'Choose option';
   }
 
-  /** Coalesce async-tick option mutations into one sheet rebuild per frame. */
-  var sheetRebuildScheduled = false;
+  /** Coalesce async-tick option mutations into one sheet rebuild per frame (per select). */
+  var sheetRebuildPending = new WeakMap();
 
   function scheduleSheetRebuild(sel, syncBtn) {
-    if (sheetRebuildScheduled) return;
-    sheetRebuildScheduled = true;
+    if (sheetRebuildPending.has(sel)) return;
+    sheetRebuildPending.set(sel, true);
     requestAnimationFrame(function () {
-      sheetRebuildScheduled = false;
+      sheetRebuildPending.delete(sel);
       if (openSheetSelect === sel && openSheetSyncBtn === syncBtn) {
         openSheet(sel, syncBtn);
       }

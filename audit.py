@@ -684,6 +684,10 @@ if os.path.isfile(_zhl_core_path):
         ok("ZHL travel gas descent passes travelInfo.fHe (issue #27 BUG-B)")
     else:
         fail("ZHL travel gas descent missing travelInfo.fHe (issue #27 BUG-B)")
+    if "1 - travelInfo.fN2 - travelFHe" in _zhl_core_src:
+        ok("ZHL travelFO2 fallback subtracts fHe when fO2 omitted (issue #28)")
+    else:
+        fail("ZHL travelFO2 fallback overcounts O2 for trimix (issue #28)")
 else:
     fail("zhl-schedule-core.js missing")
 
@@ -701,6 +705,30 @@ if os.path.isfile(_ccr_core_path):
         fail("computePSCRFractions still accepts dead runtimeMin param (issue #27 BUG-F)")
 else:
     fail("zhl-ccr-core.js missing")
+
+if zhl_bundle_js:
+    if "ZHL16C_HE_HT[i] || 1" not in zhl_bundle_js:
+        ok("zhl-engine-bundle He off-gas uses table half-times, not || 1 (issue #28 bundle parity)")
+    else:
+        fail("zhl-engine-bundle still has || 1 He half-time fallback (issue #28)")
+    if "travelInfo.fHe" in zhl_bundle_js and "travelFO2" in zhl_bundle_js:
+        ok("zhl-engine-bundle travel gas descent passes fHe (issue #28 bundle parity)")
+    else:
+        fail("zhl-engine-bundle missing travel gas fHe (issue #28)")
+    if "getEffectiveSetpointAtDepth(seg.fromDepth" in zhl_bundle_js:
+        ok("zhl-engine-bundle CCR setpoint at segment entry depth (issue #28 bundle parity)")
+    else:
+        fail("zhl-engine-bundle still uses midpoint CCR setpoint (issue #28)")
+    if "function computePSCRFractions(pAmb, fO2, fHe, ccr)" in zhl_bundle_js:
+        ok("zhl-engine-bundle computePSCRFractions drops runtimeMin (issue #28 bundle parity)")
+    else:
+        fail("zhl-engine-bundle computePSCRFractions still has runtimeMin (issue #28)")
+    if "1 - travelInfo.fN2 - travelFHe" in zhl_bundle_js:
+        ok("zhl-engine-bundle travelFO2 fallback subtracts fHe when fO2 omitted (issue #28)")
+    else:
+        fail("zhl-engine-bundle travelFO2 fallback overcounts O2 for trimix (issue #28)")
+else:
+    fail("zhl-engine-bundle.js missing")
 
 if worker_bridge_js and "nextId = 1" in worker_bridge_js and worker_bridge_js.count("nextId = 1") >= 2:
     ok("ZhlWorkerBridge resets nextId on terminate/error/timeout (issue #27 BUG-E)")
@@ -3739,8 +3767,10 @@ if android_picker_js and "openSheetSelect" in android_picker_js and "scheduleShe
 else:
     fail("android-select-picker missing open-sheet rebuild on mutation (issue #24)")
 
-if android_picker_js and "sheetRebuildScheduled" in android_picker_js and "requestAnimationFrame" in android_picker_js.split("scheduleSheetRebuild", 1)[-1][:400]:
-    ok("android-select-picker debounces sheet rebuild per frame (issue #25)")
+if android_picker_js and "sheetRebuildPending" in android_picker_js and "new WeakMap" in android_picker_js:
+    ok("android-select-picker debounces sheet rebuild per select via WeakMap (issue #28)")
+elif android_picker_js and "sheetRebuildScheduled" in android_picker_js:
+    fail("android-select-picker uses module-scoped sheetRebuildScheduled — second select drops rebuild (issue #28)")
 else:
     fail("android-select-picker missing debounced sheet rebuild (issue #25)")
 

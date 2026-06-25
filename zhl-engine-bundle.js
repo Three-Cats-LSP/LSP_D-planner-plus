@@ -630,8 +630,8 @@ function runZhlScheduleCore(params) {
   // Descent phase — split by travel gas switch depth if travel gas is active
   const descentTime = depthM / descentRate;
   if (travelInfo && travelSwitchM > 0 && travelSwitchM < depthM) {
-    const travelFO2 = travelInfo.fO2 != null ? travelInfo.fO2 : (1 - travelInfo.fN2);
     const travelFHe = travelInfo.fHe || 0;
+    const travelFO2 = travelInfo.fO2 != null ? travelInfo.fO2 : Math.max(0, 1 - travelInfo.fN2 - travelFHe);
     // Phase 1: surface → travel switch depth on travel gas
     const travelDescentTime = travelSwitchM / descentRate;
     tissues = zhlLoadLinear(tissues, 0, travelSwitchM, travelDescentTime, travelFO2, travelFHe, _zhlOnLoop, 'descent');
