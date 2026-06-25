@@ -3706,13 +3706,29 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 
 // ── Native APK update check (LSP+ 2.50+ only) ──
 (function() {
-  var VERSION_CHECK_URL = 'https://threecats-lsp.com/d-planner-plus/version.json';
+  var VERSION_CHECK_URLS = [
+    'https://threecats-lsp.com/d-planner-plus/version.json',
+    'https://three-cats-lsp.github.io/LSP_D-planner-plus/version.json'
+  ];
+  var DEFAULT_DOWNLOAD_PAGE = 'https://threecats-lsp.com/d-planner-plus/download.html';
   var MIN_UPDATE_CHECK_VERSION_CODE = 25000;
   var DISMISS_KEY = 'lspApkUpdateDismissed';
 
   function versionToCode(v) {
     var p = String(v).split('.');
     return (parseInt(p[0], 10) || 0) * 10000 + (parseInt(p[1], 10) || 0) * 100 + (parseInt(p[2], 10) || 0);
+  }
+
+  function fetchVersionManifest(index) {
+    if (index >= VERSION_CHECK_URLS.length) {
+      return Promise.reject(new Error('version manifest unavailable'));
+    }
+    return fetch(VERSION_CHECK_URLS[index] + '?t=' + Date.now(), { cache: 'no-store' })
+      .then(function(r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .catch(function() { return fetchVersionManifest(index + 1); });
   }
 
   function openDownloadPage(url) {
@@ -3734,7 +3750,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
       '<button type="button" id="apkUpdateDismissBtn" aria-label="Dismiss" style="background:none;border:1px solid rgba(0,200,255,0.45);color:#00c8ff;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:14px;line-height:1;flex-shrink:0;">✕</button>';
     document.body.appendChild(banner);
     document.getElementById('apkUpdateDownloadBtn').addEventListener('click', function() {
-      openDownloadPage(downloadPage || VERSION_CHECK_URL.replace('version.json', 'download.html'));
+      openDownloadPage(downloadPage || DEFAULT_DOWNLOAD_PAGE);
     });
     document.getElementById('apkUpdateDismissBtn').addEventListener('click', function() {
       try { localStorage.setItem(DISMISS_KEY, remoteVersion); } catch (e) {}
@@ -3749,8 +3765,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
     var localCode = versionToCode(APP_VERSION);
     if (localCode < MIN_UPDATE_CHECK_VERSION_CODE) return;
 
-    fetch(VERSION_CHECK_URL + '?t=' + Date.now(), { cache: 'no-store' })
-      .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    fetchVersionManifest(0)
       .then(function(data) {
         if (!data || !data.version || typeof data.versionCode !== 'number') return;
         if (data.versionCode <= localCode) return;
