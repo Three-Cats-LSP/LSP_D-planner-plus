@@ -1234,10 +1234,6 @@ body.light-theme .ok { background:#f0fff4; border-color:#116622; color:#116622; 
 .deco-table th:nth-child(6), .deco-table td:nth-child(6) { text-align:right; }
 .deco-table th:nth-child(7), .deco-table td:nth-child(7) { text-align:right; }
 .deco-table th:nth-child(8), .deco-table td:nth-child(8) { text-align:right; }
-.deco-table th:nth-child(9), .deco-table td:nth-child(9) { text-align:right; }
-.deco-table th:nth-child(10), .deco-table td:nth-child(10) { text-align:right; }
-/* END column — always visible */
-.deco-table .end-col { display:table-cell; text-align:right; }
 /* Gas switch rows always left-aligned */
 /* Ascent row depth/run/arrow — visible green, not pale */
 .asc-color { color: var(--green) !important; }
@@ -1256,8 +1252,16 @@ body.light-theme .asc-color { color: #1a9e55 !important; }
   font-size: 15px !important;
   text-align: center !important;
 }
-/* Depth cell — gas name + depth */
+/* Depth cell — switch depth only */
 .deco-table tr[data-phase="switch"] td:nth-child(2) {
+  color: #FFD700 !important;
+  font-weight: 600 !important;
+  font-size: 11px !important;
+  letter-spacing: 0.5px !important;
+  text-align: right !important;
+}
+/* Mix cell — gas label */
+.deco-table tr[data-phase="switch"] td[data-label="Mix"] {
   color: #FFD700 !important;
   font-weight: 600 !important;
   font-size: 11px !important;
@@ -1273,6 +1277,7 @@ body.light-theme .asc-color { color: #1a9e55 !important; }
 
 body.light-theme .deco-table tr[data-phase="switch"] td:first-child,
 body.light-theme .deco-table tr[data-phase="switch"] td:nth-child(2),
+body.light-theme .deco-table tr[data-phase="switch"] td[data-label="Mix"],
 body.light-theme .deco-table tr[data-phase="switch"] td[data-label="PPO2"] {
   color: #FFBF00 !important;
 }
@@ -1300,9 +1305,10 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
  .deco-table:not(.table-view) tr[data-phase="switch"] { display:flex !important; align-items:center; gap:0; padding:6px 10px; border-radius:6px; }
  .deco-table:not(.table-view) tr[data-phase="switch"] td { display:inline !important; width:auto !important; padding:0 !important; border:none !important; background:transparent !important; }
  .deco-table:not(.table-view) tr[data-phase="switch"] td:first-child { width:auto !important; flex:none !important; padding-right:6px !important; }
- .deco-table:not(.table-view) tr[data-phase="switch"] td:nth-child(2) { flex:1 !important; }
+ .deco-table:not(.table-view) tr[data-phase="switch"] td:nth-child(2) { flex: none !important; padding-right: 6px !important; }
+ .deco-table:not(.table-view) tr[data-phase="switch"] td[data-label="Mix"] { flex: 1 !important; }
  /* Hide empty cells in switch row on mobile */
- .deco-table:not(.table-view) tr[data-phase="switch"] td:nth-child(n+3):not([data-label="PPO2"]) { display:none !important; }
+ .deco-table:not(.table-view) tr[data-phase="switch"] td:nth-child(n+3):not([data-label="Mix"]):not([data-label="PPO2"]) { display:none !important; }
  .deco-table:not(.table-view) tr[data-phase="switch"] td[data-label="PPO2"]::before { content:"ppO₂ "; color:var(--muted); font-weight:400; }
  .deco-table:not(.table-view) tr[data-phase="switch"] td[data-label="PPO2"] { margin-left:auto; }
 
@@ -2598,7 +2604,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <div class="deco-table-wrap">
 <div id="decoSummary" class="deco-plan-caption"></div>
 <table class="deco-table">
-<thead><tr><th>Phase</th><th>Depth</th><th>Stop</th><th>Mix</th><th>Run</th><th>TTS</th><th>PPO2</th><th class="end-col">END</th><th>EAD</th><th>CNS%</th></tr></thead>
+<thead><tr><th>Phase</th><th>Depth</th><th>Stop</th><th>Mix</th><th>Run</th><th>TTS</th><th>PPO2</th><th>EAD</th></tr></thead>
 <tbody id="decoTableBody"></tbody>
 </table>
 <div class="deco-table-legend">
@@ -2612,7 +2618,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <span style="font-size:16px;color:#80e0a0;">↑</span> Ascent
         </div>
 <div class="u17">
-<span style="font-size:15px;">🔴</span> First Deco
+<span style="font-size:15px;">🔴</span> Deco Stop
         </div>
 <div class="u17">
 <span style="font-size:15px;">🟢</span> Safety Stop
@@ -3981,10 +3987,7 @@ function injectEndCells() {
   });
 }
 
-// END column is always on — just (re)inject the cells after each table render.
-function applyEndColumn() {
-  injectEndCells();
-}
+function applyEndColumn() { /* END column removed from dive profile table */ }
 
 function _updateEnvSummary() {
   const body = document.getElementById('envSettingsBody');
@@ -5474,14 +5477,14 @@ const _PDF_PHASE_PAD = 1.5;
 function _pdfDecoTableLayout(ml, cw, pad = _PDF_TBL_PAD) {
   const tblMl = ml + pad;
   const tblCw = cw - pad * 2;
-  const pct = [5, 12, 9, 10, 9, 9, 10, 9, 9, 9];
+  const pct = [5, 14, 9, 12, 9, 9, 11, 11];
   const sum = pct.reduce((a, b) => a + b, 0);
   const colW = pct.map(p => tblCw * p / sum);
   const colX = [tblMl];
   for (let i = 0; i < colW.length - 1; i++) colX.push(colX[i] + colW[i]);
   return {
     colW, colX, tblMl, tblCw,
-    headers: ['Phase', 'Depth', 'Stop', 'Mix', 'Run', 'TTS', 'PPO2', 'END', 'EAD', 'CNS%'],
+    headers: ['Phase', 'Depth', 'Stop', 'Mix', 'Run', 'TTS', 'PPO2', 'EAD'],
   };
 }
 
@@ -5521,6 +5524,7 @@ function _pdfDrawSwitchRow(doc, y, layout, tr, cleanFn) {
   const { colW, colX, tblMl, tblCw } = layout;
   const tds = Array.from(tr.querySelectorAll('td'));
   const depthTxt = clean(tds[1]?.textContent || '');
+  const mixTxt = clean(tds[3]?.textContent || '');
   const ppo2Txt = clean(tr.querySelector('td[data-label="PPO2"]')?.textContent || '');
   doc.setFillColor(255, 248, 220);
   doc.rect(tblMl, y, tblCw, 5, 'F');
@@ -5529,6 +5533,7 @@ function _pdfDrawSwitchRow(doc, y, layout, tr, cleanFn) {
   doc.setTextColor(140, 100, 0);
   _pdfDrawDecoPhaseLabel(doc, y, layout, '>>');
   if (depthTxt) doc.text(depthTxt, colX[1] + colW[1] / 2, y + 3.5, { align: 'center', maxWidth: colW[1] - 1 });
+  if (mixTxt) doc.text(mixTxt, colX[3] + colW[3] / 2, y + 3.5, { align: 'center', maxWidth: colW[3] - 1 });
   if (ppo2Txt) doc.text(ppo2Txt, colX[6] + colW[6] / 2, y + 3.5, { align: 'center' });
   doc.setTextColor(0, 0, 0);
 }
@@ -7879,18 +7884,18 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
     // Gas switch row
     if (!_vpmOnLoop && segGas !== prevGas && seg.type !== 'descent') {
       const switchDepth = seg.type === 'stop' ? seg.depth : (seg.startDepth || seg.depth || 0);
+      const switchDepthDisp = dU ? switchDepth + du : Math.round(switchDepth * 3.28084) + du;
       const switchPpO2 = vpmDisplayPpo2(switchDepth, o2pct, hepct, seg);
+      const switchMixDisp = gasDisp.replace(/\s+/g, '').toUpperCase();
       html += `<tr data-phase="switch">
         <td style="text-align:center;">⇄</td>
-        <td data-label="Depth">${gasDisp} @ ${switchDepth}${du}</td>
+        <td data-label="Depth">${switchDepthDisp}</td>
         <td data-label="Stop"></td>
-        <td data-label="Mix"></td>
+        <td data-label="Mix">${switchMixDisp}</td>
         <td data-label="Run"></td>
         <td data-label="TTS"></td>
         <td data-label="PPO2">${switchPpO2}</td>
-        <td data-label="END" class="end-col"></td>
         <td data-label="EAD"></td>
-        <td data-label="CNS%"></td>
       </tr>`;
       prevGas = segGas;
     }
@@ -7905,7 +7910,6 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
         <td data-label="Run" style="color:var(--accent);">${rtDisp}</td>
         <td data-label="PPO2" style="color:var(--muted);">${vpmDisplayPpo2(seg.endDepth, o2pct, hepct, seg)}</td>
         <td data-label="EAD" style="color:var(--muted);">—</td>
-        <td data-label="CNS%" style="color:var(--muted);">—</td>
       </tr>`;
       prevGas = segGas;
     } else if (seg.type === 'bottom') {
@@ -7920,22 +7924,19 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
         <td data-label="Run" style="color:var(--accent);">${rtDisp}</td>
         <td data-label="PPO2" style="color:var(--muted);">${ppO2b}</td>
         <td data-label="EAD" style="color:var(--muted);">—</td>
-        <td data-label="CNS%" style="color:var(--muted);">—</td>
       </tr>`;
     } else if (seg.type === 'ascent') {
       const rtDisp = fmtRT(seg.runtime);
       const ppO2a = vpmDisplayPpo2(seg.startDepth, o2pct, hepct, seg);
-      const fromD = dU ? seg.startDepth : Math.round(seg.startDepth * 3.28084);
       const toD   = dU ? seg.endDepth   : Math.round(seg.endDepth   * 3.28084);
       html += `<tr class="asc-row" data-phase="ascent">
         <td><span class="asc-color" style="font-size:18px;">↑</span></td>
-        <td data-label="Depth" class="asc-color">${fromD}→${toD}${du}</td>
+        <td data-label="Depth" class="asc-color">${toD}${du}</td>
         <td data-label="Stop" class="asc-color" style="font-size:11px;color:var(--muted);">${fmtT(seg.time)}</td>
         <td data-label="Mix" style="color:${gc};">${gasDisp}</td>
         <td data-label="Run" class="asc-color">${rtDisp}</td>
         <td data-label="PPO2" style="color:var(--muted);">${ppO2a}</td>
         <td data-label="EAD" style="color:var(--muted);"></td>
-        <td data-label="CNS%" style="color:var(--muted);">—</td>
       </tr>`;
     } else if (seg.type === 'stop') {
       const rtDisp = fmtRT(seg.runtime);
@@ -7956,7 +7957,6 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
         <td data-label="Run" style="color:var(--text);">${rtDisp}</td>
         <td data-label="PPO2" style="${rowBgVPM?'color:#b30000;font-weight:700;':ppO2Color}">${ppO2s}</td>
         <td data-label="EAD" style="color:var(--muted);">—</td>
-        <td data-label="CNS%" style="color:var(--muted);">—</td>
       </tr>`;
     }
 
@@ -8558,7 +8558,7 @@ function resolveTravelGasFractions(travelInfo) {
   if (!isFinite(fN2)) {
     return { valid: false, fHe: 0, reason: 'fN₂ is not a valid number' };
   }
-  if (rawFHe != null && !isFinite(rawFHe)) {
+  if (rawFHe != null && (!isFinite(rawFHe) || rawFHe < -1e-9)) {
     return { valid: false, fHe: 0, reason: 'explicit fHe is not a valid number' };
   }
   const travelFHe = rawFHe != null ? rawFHe : 0;
@@ -8572,7 +8572,7 @@ function resolveTravelGasFractions(travelInfo) {
     return { valid: true, fO2: Math.max(0, travelInfo.fO2), fHe: travelFHe };
   }
   const inferred = 1 - fN2 - travelFHe;
-  if (!isFinite(inferred) || inferred < -1e-9) {
+  if (inferred < -1e-9) {
     return {
       valid: false,
       fHe: travelFHe,
@@ -9267,7 +9267,6 @@ function runDecoSchedule() {
       <td data-label="Run" style="color:#ff8080;">${fmtMM(rowRT)}</td>
       <td data-label="PPO2" style="color:var(--muted);">${travelPPO2}</td>
       <td data-label="EAD" style="color:var(--muted);"></td>
-      <td data-label="CNS%" style="color:var(--muted);">${rowCNS(parseFloat(travelPPO2), travelDescentTimeMin)}</td>
     </tr>`;
 
     // --- Phase 2: bottom gas, switch depth → bottom ---
@@ -9286,7 +9285,6 @@ function runDecoSchedule() {
       <td data-label="Run" style="color:#ff8080;">${fmtMM(rowRT)}</td>
       <td data-label="PPO2" style="color:var(--muted);">${descentPPO2}</td>
       <td data-label="EAD" style="color:var(--muted);"></td>
-      <td data-label="CNS%" style="color:var(--muted);">${rowCNS(parseFloat(descentPPO2), bottomDescentTimeMin)}</td>
     </tr>`;
   } else {
     // No travel gas — single descent row as before
@@ -9303,7 +9301,6 @@ function runDecoSchedule() {
       <td data-label="Run" style="color:#ff8080;">${fmtMM(rowRT)}</td>
       <td data-label="PPO2" style="color:var(--muted);">${descentPPO2}</td>
       <td data-label="EAD" style="color:var(--muted);"></td>
-      <td data-label="CNS%" style="color:var(--muted);">${rowCNS(parseFloat(descentPPO2), descentTimeMin)}</td>
     </tr>`;
   }
 
@@ -9333,7 +9330,6 @@ function runDecoSchedule() {
     <td data-label="Run" style="color:var(--accent);">${fmtMM(rowRT)}</td>
     <td data-label="PPO2" style="color:var(--muted);">${btPPO2}</td>
     <td data-label="EAD" style="color:var(--muted);"></td>
-    <td data-label="CNS%" style="color:var(--muted);">${btCNS}</td>
   </tr>`;
 
   // ── TTS baseline: snapshot rowRT here — this is exactly descent+bottom time.
@@ -9363,17 +9359,16 @@ function runDecoSchedule() {
       const _swFO2  = Math.max(0, 1 - (s.fN2 ?? bottomFN2) - _swFHe);  // trimix-safe
       const switchLimit = getPPO2Limit(_swFO2);
       const sppColor    = sppVal > switchLimit ? 'color:var(--red);font-weight:700;' : sppVal > switchLimit * 0.97 ? 'color:var(--orange);font-weight:700;' : '';
+      const switchMixDisp = s.gas.replace(/\s+/g, '').toUpperCase();
       tbody.innerHTML += `<tr data-phase="switch">
         <td style="text-align:center;">⇄</td>
-        <td data-label="Depth">${s.gas.replace(/\s+/g,'').toUpperCase()} @ ${switchDepthDisp}</td>
+        <td data-label="Depth">${switchDepthDisp}</td>
         <td data-label="Stop"></td>
-        <td data-label="Mix"></td>
+        <td data-label="Mix" style="color:#FFD700;font-weight:600;">${switchMixDisp}</td>
         <td data-label="Run"></td>
         <td data-label="TTS"></td>
         <td data-label="PPO2" style="${sppColor}">${switchPpO2}</td>
-        <td data-label="END" class="end-col"></td>
         <td data-label="EAD"></td>
-        <td data-label="CNS%"></td>
       </tr>`;
     }
     prevGas = s.gas;
@@ -9405,7 +9400,6 @@ function runDecoSchedule() {
         <td data-label="Run">${rtDisp}</td>
         <td data-label="PPO2" style="${rowBg?'color:#b30000;font-weight:700;':pO2Color}">${pO2Val.toFixed(2)}</td>
         <td data-label="EAD" style="color:${rowBg?'#555':'var(--muted)'};font-size:11px;">${eadDisp}</td>
-        <td data-label="CNS%" style="${rowBg?'color:#b30000;font-weight:700;':cnsColor}">${cnsPct}</td>
       </tr>`;
     // ── SAFETY STOP ROW ──
     } else if (s.type === 'safety') {
@@ -9421,7 +9415,6 @@ function runDecoSchedule() {
         <td data-label="Run">${rtDisp}</td>
         <td data-label="PPO2" style="color:var(--muted);">${s.pO2||'—'}</td>
         <td data-label="EAD" style="color:var(--muted);font-size:11px;">${fmtEAD(s.depth, s.fN2)}</td>
-        <td data-label="CNS%" style="color:var(--muted);">${cnsPct}</td>
       </tr>`;
     // ── ASCENT ROW ──
     } else {
@@ -9432,13 +9425,12 @@ function runDecoSchedule() {
       addGas(s.gas, (s.from + s.to) / 2, stepDur, sacDeco);
       tbody.innerHTML += `<tr class="asc-row" data-phase="ascent">
         <td><span style="font-size:18px;" class="asc-color">↑</span></td>
-        <td data-label="Depth" class="asc-color">${dU?s.from+'m':mToFt(s.from)+'ft'}→${dU?s.to+'m':mToFt(s.to)+'ft'}</td>
+        <td data-label="Depth" class="asc-color">${dU?s.to+'m':mToFt(s.to)+'ft'}</td>
         <td data-label="Stop" class="asc-color" style="font-size:11px;color:var(--muted);">${fmtMM(s.dur)}</td>
         <td data-label="Mix" style="color:${gasColor};">${s.gas.toUpperCase()}</td>
         <td data-label="Run" class="asc-color">${rtDisp}</td>
         <td data-label="PPO2" style="${pO2Color}">${s.pO2}</td>
         <td data-label="EAD" style="color:var(--muted);"></td>
-        <td data-label="CNS%" style="color:var(--muted);">${cnsPct}</td>
       </tr>`;
     }
   });
@@ -10965,13 +10957,11 @@ function drawDecoProfile() {
     const tds    = tr.querySelectorAll('td');
     const run    = parseRunMin(tds[4]?.textContent);
     const depthTxt = tds[1]?.textContent?.trim() || '';
-    const ppo2   = parseFloat(tds[6]?.textContent) || 0;  // PPO2 (col 6: icon|Depth|Stop|Mix|Run|TTS|PPO2|END|EAD|CNS%)
+    const ppo2   = parseFloat(tds[6]?.textContent) || 0;  // PPO2 (col 6)
     const gas    = tds[3]?.textContent?.trim() || null;    // Mix (col 3)
-    const cns    = tds[9]?.textContent?.trim() || null;    // CNS% (col 9)
 
     if (phase === 'ascent') {
-      const parts   = depthTxt.split('→');
-      const toDepth = parseFloat(parts[1]) || 0;
+      const toDepth = parseFloat(depthTxt) || 0;
       wps.push({ t: run, depth: toDepth, type: 'ascent', gas });
     } else {
       const depth = parseFloat(depthTxt) || 0;
@@ -10984,7 +10974,6 @@ function drawDecoProfile() {
         num: stopNum,
         label: showLabel ? depth + 'm ' + stopTime : null,
         ppo2: ppo2 > 0 ? ppo2 : null,
-        cns:  cns || null
       });
     }
   });
@@ -10992,12 +10981,12 @@ function drawDecoProfile() {
   // Second pass: inject gas switch markers
   const switchWps = [];
   document.querySelectorAll('#decoTableBody tr[data-phase="switch"]').forEach(tr => {
-    const txt = Array.from(tr.querySelectorAll('td')).map(td => td.textContent).join(' ').trim();
-    const depM  = txt.match(/@\s*([\d.]+)\s*(m|ft)/i);
-    const gasM  = txt.match(/^([^@]+)@/);
+    const tds = tr.querySelectorAll('td');
+    const switchDepthTxt = tds[1]?.textContent?.trim() || '';
+    const switchGas = tds[3]?.textContent?.trim().replace(/[🔵🔴⇄↓↑🤿⚠️]/g, '').trim() || '';
+    const depM = switchDepthTxt.match(/([\d.]+)\s*(m|ft)/i);
     if (!depM) return;
     const switchDepth = parseFloat(depM[1]);
-    const switchGas   = gasM ? gasM[1].trim().replace(/[🔵🔴⇄↓↑🤿⚠️]/g,'').trim() : '';
     // Find the run time of the nearest subsequent wp at this depth
     const nextWp = wps.find(w => w.depth <= switchDepth + 1 && w.depth >= switchDepth - 1 && w.type !== 'bottom');
     if (nextWp) switchWps.push({ t: nextWp.t, depth: switchDepth, type: 'gasswitch', gasLabel: switchGas });
@@ -12791,7 +12780,7 @@ function buildExportText(mode) {
       const shr = '-'.repeat(56);
       lines.push('ASCENT SCHEDULE');
       lines.push(shr);
-      lines.push('Phase Depth  Stop   Mix   Run   TTS   PPO2  END   EAD  CNS%');
+      lines.push('Phase Depth  Stop   Mix   Run   TTS   PPO2  EAD');
       lines.push(shr);
       const phaseLabel = { descent:'Des', bottom:'Lvl', ascent:'Asc', deco:'Stp', safety:'Stp', totals:'TOT' };
       rows.forEach(tr => {
@@ -12799,16 +12788,18 @@ function buildExportText(mode) {
         if (ph === 'totals') return; // handled below
         const tds = tr.querySelectorAll('td');
         if (ph === 'switch') {
-          const info = clean(Array.from(tds).map(c=>c.textContent).join(' '));
-          lines.push(`>> ${info}`);
+          const cSw = Array.from(tds).map(td => clean(td.textContent));
+          const mixSw = shortMix(cSw[3] || '');
+          const depSw = (cSw[1] || '').trim();
+          lines.push(`>> ${mixSw} @ ${depSw}`);
           return;
         }
         const c   = Array.from(tds).map(td => clean(td.textContent));
         const lbl = (phaseLabel[ph] || ph).padEnd(5);
 
-        // Depth: for ascent/descent show only destination
+        // Depth: for ascent show destination only (descent keeps 0→dest)
         let depRaw = c[1] || '';
-        if (ph === 'ascent' || ph === 'descent') {
+        if (ph === 'ascent') {
           const arrowMatch = depRaw.match(/[→>](.+)$/);
           if (arrowMatch) depRaw = arrowMatch[1].trim();
         }
@@ -12816,18 +12807,15 @@ function buildExportText(mode) {
         const stpRaw = c[2] || '';
         const stpVal = /^\d+:\d+$/.test(stpRaw) ? stpRaw : '';
         const stp  = (stpVal.length > 0 && stpVal.length <= 4 ? stpVal.padStart(5) : stpVal).padEnd(7);
-        const runRaw = c[3] || '';
+        const mix  = shortMix(c[3] || '').padEnd(5);
+        const runRaw = c[4] || '';
         const run  = (runRaw.length <= 4 ? runRaw.padStart(5) : runRaw).padEnd(6);
-        const ttsRaw = (c[4] || '').trim() || '-';
+        const ttsRaw = (c[5] || '').trim() || '-';
         const tts  = (ttsRaw.length <= 4 ? ttsRaw.padStart(5) : ttsRaw).padEnd(6);
-        const mix  = shortMix(c[5]).padEnd(5);
-        // c[6]=EAD, c[7]=END, c[8]=PPO2, c[9]=CNS%
-        const eadVal = (c[6] || '-').trim() || '-';
+        const ppo2  = (c[6] || '').padStart(4).padEnd(5);
+        const eadVal = (c[7] || '-').trim() || '-';
         const ead  = (eadVal === '-' ? eadVal.padStart(2) : eadVal.padStart(3)).padEnd(6);
-        const ppo2  = (c[8] || '').padStart(4).padEnd(5);
-        const cnsRaw = (c[9] || '').trim() || '-';
-        const cns   = cnsRaw === '-' ? cnsRaw.padStart(4) : cnsRaw.padStart(5);
-        lines.push(`${lbl} ${dep}${stp}${run}${tts} ${mix} ${ead} ${ppo2}${cns}`);
+        lines.push(`${lbl} ${dep}${stp}${mix}${run}${tts} ${ppo2}${ead}`);
       });
 
       // Totals row — use values already read from table footer (runTimeVal etc.)
@@ -12974,7 +12962,7 @@ function buildExportText(mode) {
     if (rows.length) {
       lines.push('EMERGENCY ASCENT SCHEDULE');
       lines.push('-'.repeat(56));
-      lines.push('Phase Depth  Stop   Mix   Run   TTS   PPO2  END   EAD  CNS%');
+      lines.push('Phase Depth  Stop   Mix   Run   TTS   PPO2  EAD');
       lines.push('-'.repeat(56));
       const phaseLabel = { descent:'Des', bottom:'Lvl', ascent:'Asc', deco:'Stp', safety:'Stp', switch:'>>' };
       rows.forEach(tr => {
@@ -12982,16 +12970,18 @@ function buildExportText(mode) {
         if (ph === 'totals') return;
         const tds = tr.querySelectorAll('td');
         if (ph === 'switch') {
-          const info = clean(Array.from(tds).map(c=>c.textContent).join(' '));
-          lines.push(`>> ${info}`);
+          const cSw = Array.from(tds).map(td => clean(td.textContent));
+          const mixSw = eShortMix(cSw[3] || '');
+          const depSw = (cSw[1] || '').trim();
+          lines.push(`>> ${mixSw} @ ${depSw}`);
           return;
         }
         const c2   = Array.from(tds).map(td => clean(td.textContent));
         const lbl  = (phaseLabel[ph]||ph).padEnd(5);
 
-        // Ascent/descent: show only destination depth
+        // Ascent: show only destination depth
         let depRaw = c2[1] || '';
-        if (ph === 'ascent' || ph === 'descent') {
+        if (ph === 'ascent') {
           const arrowMatch = depRaw.match(/[→>](.+)$/);
           if (arrowMatch) depRaw = arrowMatch[1].trim();
         }
@@ -12999,17 +12989,15 @@ function buildExportText(mode) {
         const stpRaw = c2[2]||'';
         const stpVal = /^\d+:\d+$/.test(stpRaw) ? stpRaw : '';
         const stp  = (stpVal.length > 0 && stpVal.length <= 4 ? stpVal.padStart(5) : stpVal).padEnd(7);
-        const runRaw2 = c2[3]||'';
+        const mix  = eShortMix(c2[3]||'').padEnd(5);
+        const runRaw2 = c2[4]||'';
         const run  = (runRaw2.length <= 4 ? runRaw2.padStart(5) : runRaw2).padEnd(6);
-        const ttsRaw = (c2[4] || '').trim() || '-';
+        const ttsRaw = (c2[5] || '').trim() || '-';
         const tts  = (ttsRaw.length <= 4 ? ttsRaw.padStart(5) : ttsRaw).padEnd(6);
-        const mix  = eShortMix(c2[5]||'').padEnd(5);
-        const eadVal = (c2[6]||'-').trim() || '-';
+        const ppo2  = (c2[6]||'').padStart(4).padEnd(5);
+        const eadVal = (c2[7]||'-').trim() || '-';
         const ead  = (eadVal === '-' ? eadVal.padStart(2) : eadVal.padStart(3)).padEnd(6);
-        const ppo2  = (c2[8]||'').padStart(4).padEnd(5);
-        const cnsRaw = (c2[9]||'').trim() || '-';
-        const cns   = cnsRaw === '-' ? cnsRaw.padStart(4) : cnsRaw.padStart(5);
-        lines.push(`${lbl} ${dep}${stp}${run}${tts} ${mix} ${ead} ${ppo2}${cns}`);
+        lines.push(`${lbl} ${dep}${stp}${mix}${run}${tts} ${ppo2}${ead}`);
       });
 
       // Totals line
@@ -13182,12 +13170,9 @@ function buildSlateText() {
   // Switch gases with depths from rendered switch rows
   const gswRows = Array.from(document.querySelectorAll('#decoTableBody tr[data-phase="switch"]'));
   const switchParts = gswRows.map(tr => {
-    const txt = clean(tr.querySelector('td[data-label="Depth"]')?.textContent || tr.querySelector('td[colspan]')?.textContent || '');
-    const gasM = txt.match(/^([^@]+)@/);
-    const depM = txt.match(/@\s*([\d.]+)\s*(m|ft)/i);
-    const gas = gasM ? shortMix(gasM[1]) : '';
-    const dep = depM ? `${depM[1]}${depM[2] || du}` : '';
-    return gas ? `${gas} @ ${dep}` : '';
+    const dep = clean(tr.querySelector('td[data-label="Depth"]')?.textContent || '');
+    const gas = shortMix(tr.querySelector('td[data-label="Mix"]')?.textContent || '');
+    return gas && dep ? `${gas} @ ${dep}` : '';
   }).filter(Boolean);
   const _slTravel = getTravelGasExport();
   const travelPart = _slTravel ? `${_slTravel.gas} (TRV @ ${_slTravel.depth})` : '';
@@ -13716,7 +13701,7 @@ function runContingencyScenario(modifyFn) {
   const rows    = document.querySelectorAll('#decoTableBody tr[data-phase]');
   let lastRun = 0, decoTime = 0;
   rows.forEach(tr => {
-    const run = parseFloat(tr.querySelectorAll('td')[3]?.textContent) || 0;
+    const run = parseRunMinutes(tr.querySelector('td[data-label="Run"]')?.textContent) || 0;
     if (run > lastRun) lastRun = run;
     if (tr.dataset.phase === 'deco' || tr.dataset.phase === 'safety')
       decoTime += parseFloat(tr.querySelectorAll('td')[2]?.textContent) || 0;
@@ -13940,7 +13925,7 @@ function calcContingency() {
         </div>
       </div>
       <table class="deco-table table-view" style="font-size:10px;">
-        <thead><tr><th>Phase</th><th>Depth</th><th>Stop</th><th>Mix</th><th>Run</th><th>TTS</th><th>PPO2</th><th class="end-col">END</th><th>EAD</th><th>CNS%</th></tr></thead>
+        <thead><tr><th>Phase</th><th>Depth</th><th>Stop</th><th>Mix</th><th>Run</th><th>TTS</th><th>PPO2</th><th>EAD</th></tr></thead>
         <tbody id="contingencyTableBody">${newRows.replace(/<tr[^>]*data-phase="totals"[^>]*>[\s\S]*?<\/tr>/gi, '')}${emInfoRow}</tbody>
       </table>
       <div class="deco-schedule-stack__actions">
@@ -14300,7 +14285,7 @@ async function exportContingencyPDF(opts) {
       const icon=isDeco?'Stp':isAsc?'Asc':isBtm?'Lvl':isSafe?'Stp':isDes?'Des':'---';
       doc.setFontSize(7); doc.setFont('DejaVuSans','normal');
       doc.setTextColor(...txC); _pdfDrawDecoPhaseLabel(doc, y, _emTbl, icon);
-      _pdfDrawDecoTableCells(doc, y, _emTbl, cv.slice(1, 10), txC);
+      _pdfDrawDecoTableCells(doc, y, _emTbl, cv.slice(1, 8), txC);
       doc.setTextColor(0,0,0); y+=5;
     });
     y+=3;
@@ -14926,7 +14911,7 @@ function attachDiveProfileInteraction(canvasId) {
     const dDisp = units === 'imperial' ? Math.round(depth * 3.28084) : Math.round(depth * 10) / 10;
 
     // Build tooltip
-    const phaseLabel = { descent:'Descent', bottom:'Bottom', ascent:'Ascent', deco:'First Deco', safety:'Safety Stop', surface:'Surface' };
+    const phaseLabel = { descent:'Descent', bottom:'Bottom', ascent:'Ascent', deco:'Deco Stop', safety:'Safety Stop', surface:'Surface' };
     let html = `<div style="color:var(--accent);font-size:10px;letter-spacing:1px;margin-bottom:4px;">${phaseLabel[phase] || phase || ''}</div>`;
     html += `<div>⏱ ${Math.round(t * 10) / 10} min</div>`;
     html += `<div>⬇ ${dDisp} ${du}</div>`;
@@ -15460,7 +15445,7 @@ async function exportPDF(opts) {
     const icon=isDeco?'Stp':isAsc?'Asc':isBtm?'Lvl':isSafe?'Stp':isDes?'Des':'---';
     doc.setFontSize(7); doc.setFont('DejaVuSans','normal');
     doc.setTextColor(...txC); _pdfDrawDecoPhaseLabel(doc, y, _pdfTbl, icon);
-    _pdfDrawDecoTableCells(doc, y, _pdfTbl, c.slice(1, 10), txC);
+    _pdfDrawDecoTableCells(doc, y, _pdfTbl, c.slice(1, 8), txC);
     y+=5;
   });
   y+=3; checkY(7); doc.setFontSize(7); doc.setFont('DejaVuSans','normal');

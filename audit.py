@@ -751,7 +751,7 @@ if len(_travel_deco_block) > 1 and "resolveTravelGasFractions" in _travel_deco_b
     ok("index.html travelFO2 in decoGases subtracts fHe (issue #29)")
 else:
     fail("index.html travelFO2 still uses 1 - fN2 only (issue #29)")
-if "function resolveTravelGasFractions" in js and ("inferred < -1e-9" in js.split("function resolveTravelGasFractions", 1)[-1][:800] or "!isFinite(inferred)" in js.split("function resolveTravelGasFractions", 1)[-1][:800]):
+if "function resolveTravelGasFractions" in js and "inferred < -1e-9" in js.split("function resolveTravelGasFractions", 1)[-1][:900]:
     ok("index.html travel gas skips invalid fractions before decoGases.push (issue #30)")
 else:
     fail("index.html travel gas missing fraction guard before decoGases.push (issue #30)")
@@ -776,10 +776,14 @@ if "function refreshTravelGasFractionWarning" in js and "refreshTravelGasFractio
 else:
     fail("index.html stale _travelGasFractionWarning not cleared on render (issue #32)")
 _res_frac_block = js.split("function resolveTravelGasFractions", 1)[-1][:900] if "function resolveTravelGasFractions" in js else ""
-if _res_frac_block and "travelInfo.fHe || 0" not in _res_frac_block and "rawFHe != null && !isFinite(rawFHe)" in _res_frac_block:
+if _res_frac_block and "travelInfo.fHe || 0" not in _res_frac_block and "rawFHe != null && !isFinite(rawFHe)" not in _res_frac_block and "rawFHe != null && (!isFinite(rawFHe) || rawFHe < -1e-9)" in _res_frac_block:
     ok("index.html fHe validated before defaulting — no NaN || 0 masking (issue #33)")
 else:
     fail("index.html fHe NaN masked by || 0 before isFinite guard (issue #33)")
+if _res_frac_block and "!isFinite(inferred)" not in _res_frac_block and "inferred < -1e-9" in _res_frac_block:
+    ok("resolveTravelGasFractions drops dead !isFinite(inferred) check (issue #34)")
+else:
+    fail("resolveTravelGasFractions still has dead !isFinite(inferred) guard (issue #34)")
 _mod_travel_block = js.split("function updateTravelGasMOD", 1)[-1].split("function ", 1)[0] if "function updateTravelGasMOD" in js else ""
 if _mod_travel_block and "refreshTravelGasFractionWarning" not in _mod_travel_block:
     ok("updateTravelGasMOD does not redundantly refresh travel gas warning (issue #33)")
