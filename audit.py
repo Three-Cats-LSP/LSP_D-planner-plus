@@ -788,10 +788,14 @@ if "function injectEndCells" not in js and "function applyEndColumn" not in js a
     ok("orphaned END column injectEndCells/applyEndColumn removed (issue #35)")
 else:
     fail("injectEndCells or applyEndColumn still present after column removal (issue #35)")
-if "END column (Feature)" not in js and "Apply persisted END column state" not in js:
-    ok("stale END column comments removed after applyEndColumn drop (issue #47)")
+if "END column (Feature)" not in js:
+    ok("stale END column (Feature) comment removed (issue #47)")
 else:
-    fail("stale END column comments still in index.html (issue #47)")
+    fail("stale END column (Feature) comment still in index.html (issue #47)")
+if "Apply persisted END column state" not in js:
+    ok("stale Apply persisted END column state comment removed (issue #47)")
+else:
+    fail("stale Apply persisted END column state comment still in index.html (issue #47)")
 if "function rowCNS" not in js:
     ok("per-row rowCNS helper removed after CNS% column drop (issue #35)")
 else:
