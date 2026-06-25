@@ -425,6 +425,27 @@ body.algo-tools .algo-switcher > div:last-child .header-warn { opacity: 1 !impor
  color: #00d9ff;
  border: 1px solid rgba(0,200,255,0.28);
 }
+.algo-btn-icon { padding: 7px 10px;
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ line-height: 0;
+}
+.algo-btn-icon img { width: 16px;
+ height: 16px;
+ display: block;
+ flex-shrink: 0;
+ opacity: 0.72;
+}
+.algo-btn-icon:hover img,
+.algo-btn-icon.active img { opacity: 1;
+}
+body.light-theme .algo-btn-icon img { filter: invert(1);
+ opacity: 0.65;
+}
+body.light-theme .algo-btn-icon:hover img,
+body.light-theme .algo-btn-icon.active img { opacity: 0.9;
+}
 
 .gf-btn { padding: 8px 14px;
  border: 1px solid var(--border);
@@ -736,21 +757,23 @@ body.algo-buh .buh-only { display: flex !important; }
  background: var(--surface);
  border: 1px solid var(--border);
  border-radius: 8px;
- padding: 8px 10px;
+ padding: 8px 28px 8px 10px;
  color: var(--text);
  font-family: 'JetBrains Mono', monospace;
  font-size: 13px;
  outline: none;
  transition: border-color 0.2s, box-shadow 0.2s;
-}
-.field input:focus, .field select:focus { border-color: var(--accent);
- box-shadow: 0 0 0 3px rgba(0,200,255,0.08);
-}
-.field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%2300d9ff' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+ cursor: pointer;
+ -webkit-appearance: none;
+ -moz-appearance: none;
+ appearance: none;
+ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%2300d9ff' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
  background-repeat: no-repeat;
  background-position: right 10px center;
- padding-right: 28px;
- cursor: pointer;
+}
+
+.field input:focus, .field select:focus { border-color: var(--accent);
+ box-shadow: 0 0 0 3px rgba(0,200,255,0.08);
 }
 
 /* Android WebView/Capacitor: native <select> picker is broken — use android-select-picker.js */
@@ -766,6 +789,9 @@ html.capacitor-native .lsp-android-select-native {
  border: 0 !important;
  overflow: hidden !important;
  clip: rect(0, 0, 0, 0) !important;
+ -webkit-appearance: none !important;
+ appearance: none !important;
+ background-image: none !important;
 }
 .lsp-android-select-wrap { position: relative; width: 100%; display: block; }
 .lsp-android-select-btn {
@@ -1560,21 +1586,16 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <button class="algo-btn" id="algoPADI" onclick="setAlgo('padi')">Rec</button>
 <button class="algo-btn active" id="algoBUH" onclick="setAlgo('buh')">Tec</button>
 <div style="width:1px;height:18px;background:var(--border-hi);margin:0 2px;"></div>
-<button class="algo-btn u6" id="algoTools" onclick="setAlgo('tools')">Tools</button>
+<button class="algo-btn algo-btn-icon u6" id="algoTools" onclick="setAlgo('tools')" title="Tools" aria-label="Tools"><img src="vendor/icons/toolbox-204167.png" alt="" width="16" height="16" decoding="async"/></button>
+<div style="width:1px;height:18px;background:var(--border-hi);margin:0 2px;"></div>
+<button class="algo-btn algo-btn-icon" id="envSettingsToggle" onclick="toggleEnvSettings()" title="Environment settings — Water / Units / Altitude" aria-label="Environment settings"><img src="vendor/icons/settings-2099058.png" alt="" width="16" height="16" decoding="async"/></button>
 <div style="width:1px;height:18px;background:var(--border-hi);margin:0 2px;"></div>
 <button class="algo-btn" onclick="toggleReference()" title="Reference &amp; Info">?</button>
 </div>
 </div>
 </div>
-<!-- SINGLE ROW: Algorithm | algo settings | Water | Units | Warning -->
+<!-- SINGLE ROW: Water | Units | Altitude (expanded from ENV button in mode row) -->
 <div class="algo-switcher" id="envRow" style="display:none;align-items:center;gap:8px;padding:1px 14px;flex-wrap:wrap;min-height:0;">
-<!-- Separator + collapsible env settings toggle -->
-<button id="envSettingsToggle" onclick="toggleEnvSettings()" onmouseenter="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseleave="this.style.borderColor='var(--border)';this.style.color='var(--muted)'" style="display:flex;align-items:center;gap:3px;background:none;border:1px solid var(--border);
-             border-radius:5px;padding:3px 7px;cursor:pointer;color:var(--muted);font-family:inherit;
-             font-size:10px;font-weight:700;letter-spacing:.5px;flex-shrink:0;transition:all .15s;" title="Water / Units / Altitude — set once per location">
-<span id="envSettingsChevron" style="transition:transform .2s;display:inline-block;font-size:8px;">▶</span>
-<span id="envSettingsLabel">ENV</span>
-</button>
 <div id="envSettingsBody" style="display:none;align-items:center;gap:10px;flex-wrap:wrap;">
 <!-- Units -->
 <div id="unitsRow" style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
@@ -3602,7 +3623,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <div class="info-box"><strong>VPM-B/GFS (Hybrid):</strong> VPM-B bubble mechanics determine the deep stop schedule; Gradient Factor High then controls the final shallow/surface stops. Combines the nuclei-growth model with a familiar GF ceiling at the top of the ascent. Useful when you want VPM-B deep stops but GF-style control over the last deco stops.</div>
 <div class="info-box"><strong>When to use which:</strong> Rec for simple no-stop recreational dives. Bühlmann+GF for dive computer-style planning and most technical diving. VPM-B or VPM-B/GFS when bubble-mechanics deep stops are preferred — common in trimix and cave diving communities.</div>
 <div style="margin-top:16px;">
-<div class="card-title">Key Depth Limits</div>
+<div class="card-title">Key Safe Depth Limits</div>
 <div class="stats" style="margin-top:0;">
 <div class="stat"><div class="stat-val g" id="refDepthRec">40 m</div><div class="stat-lbl">Rec. Max</div></div>
 <div class="stat"><div class="stat-val" id="refDepthOW">18 m</div><div class="stat-lbl">OW Max</div></div>
@@ -4033,11 +4054,7 @@ function endParseDepthM(text) {
   return d;
 }
 
-function _updateEnvSummary() {
-  const body = document.getElementById('envSettingsBody');
-  if (!body || body.style.display !== 'none') return;
-  const lbl = document.getElementById('envSettingsLabel');
-  if (!lbl) return;
+function _envSettingsSummary() {
   const water = document.getElementById('waterDensitySelect')?.value || 'salt';
   const u     = document.getElementById('unitsSelect')?.value || 'metric';
   const alt   = document.getElementById('altitudeSelect')?.value || '0';
@@ -4045,7 +4062,43 @@ function _updateEnvSummary() {
   if (water !== 'salt') parts.push(water);
   if (u     !== 'metric') parts.push('ft');
   if (alt   !== '0')     parts.push(alt + 'm');
-  lbl.textContent = parts.length ? parts.join(' · ') : 'ENV';
+  return parts.length ? parts.join(' · ') : '';
+}
+
+function _updateEnvToggleTitle() {
+  const btn = document.getElementById('envSettingsToggle');
+  if (!btn) return;
+  const body = document.getElementById('envSettingsBody');
+  const open = body && body.style.display !== 'none';
+  const summary = _envSettingsSummary();
+  btn.title = open
+    ? 'Environment settings — Water / Units / Altitude'
+    : (summary ? 'ENV: ' + summary : 'Environment settings — Water / Units / Altitude');
+}
+
+function syncEnvRowDisplay() {
+  const envRow = document.getElementById('envRow');
+  const body = document.getElementById('envSettingsBody');
+  const algoSettingsRow = document.getElementById('algoSettingsRow');
+  if (!envRow || !body) return;
+  const open = body.style.display !== 'none';
+  if (algo === 'padi') {
+    envRow.style.display = open ? 'flex' : 'none';
+    if (algoSettingsRow) algoSettingsRow.style.display = open ? 'none' : 'flex';
+  } else if (algo === 'buh') {
+    envRow.style.display = open ? 'flex' : 'none';
+    if (algoSettingsRow) algoSettingsRow.style.display = 'none';
+  } else if (algo === 'tools') {
+    envRow.style.display = open ? 'flex' : 'none';
+  } else {
+    envRow.style.display = 'none';
+  }
+}
+
+function _updateEnvSummary() {
+  const body = document.getElementById('envSettingsBody');
+  if (!body || body.style.display !== 'none') return;
+  _updateEnvToggleTitle();
 }
 
 function setWaterDensity(type, customKgM3) {
@@ -4352,6 +4405,7 @@ function setAlgo(a) {
     const toolsPanel = document.getElementById('toolsPanel');
     if (toolsPanel) toolsPanel.classList.add('active');
     if (typeof initTools === 'function') initTools();
+    syncEnvRowDisplay();
     return;
   }
 
@@ -4369,18 +4423,17 @@ function setAlgo(a) {
     setBrandIcon('buh');
     document.getElementById('plannerTitle').textContent = 'Bühlmann Dive Plan';
     document.getElementById('algoRow').style.display         = 'flex';
-    document.getElementById('envRow').style.display           = 'flex';
     document.getElementById('algoSettingsRow').style.display  = 'none';
+    syncEnvRowDisplay();
     setDecoAlgorithm(document.getElementById('algorithmSelect')?.value || 'ZHLC_GF', true);
   } else {
     document.getElementById('algoLabel').textContent    = 'Rec';
     document.getElementById('algoSubtitle').textContent = 'Recreational Dive Planner';
     setBrandIcon('padi');
     document.getElementById('plannerTitle').textContent = 'Single Dive Plan';
-    // Rec mode: hide TEC rows, show REC water/units row
+    // Rec mode: hide TEC rows, show REC water/units row (unless ENV panel open)
     document.getElementById('algoRow').style.display          = 'none';
-    document.getElementById('envRow').style.display           = 'none';
-    document.getElementById('algoSettingsRow').style.display  = 'flex';
+    syncEnvRowDisplay();
     document.getElementById('gfPresetsRow').style.display     = 'none';
     document.getElementById('gfCustomRow').style.display      = 'none';
     document.getElementById('conservatismRow').style.display  = 'none';
@@ -7425,32 +7478,13 @@ function closeConfirmModal(ok) {
 // ── Env Settings collapse (Water / Units / Altitude / Acclimatized) ─────────
 function toggleEnvSettings(forceOpen) {
   const body     = document.getElementById('envSettingsBody');
-  const chevron  = document.getElementById('envSettingsChevron');
   const btn      = document.getElementById('envSettingsToggle');
-  const lbl      = document.getElementById('envSettingsLabel');
   if (!body) return;
   const open = forceOpen !== undefined ? forceOpen : body.style.display === 'none';
   body.style.display = open ? 'flex' : 'none';
-  if (chevron) chevron.style.transform = open ? 'rotate(90deg)' : '';
-  if (btn) {
-    btn.style.borderColor = open ? 'var(--accent)' : 'var(--border)';
-    btn.style.color       = open ? 'var(--accent)' : 'var(--muted)';
-  }
-  // Show summary when collapsed
-  if (lbl) {
-    if (open) {
-      lbl.textContent = 'ENV';
-    } else {
-      const water   = document.getElementById('waterDensitySelect')?.value || 'salt';
-      const units   = document.getElementById('unitsSelect')?.value || 'metric';
-      const alt     = document.getElementById('altitudeSelect')?.value || '0';
-      const parts   = [];
-      if (water !== 'salt') parts.push(water);
-      if (units !== 'metric') parts.push('ft');
-      if (alt   !== '0')     parts.push(alt + 'm');
-      lbl.textContent = parts.length ? parts.join(' · ') : 'ENV';
-    }
-  }
+  if (btn) btn.classList.toggle('active', open);
+  _updateEnvToggleTitle();
+  syncEnvRowDisplay();
   try { localStorage.setItem('lspEnvOpen', open ? '1' : '0'); } catch(e) {}
 }
 

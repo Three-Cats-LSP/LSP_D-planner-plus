@@ -1,0 +1,8 @@
+Mode-row UI icons (Flaticon, free license — attribution required):
+
+- toolbox-204167.png — Toolbox icon by https://www.flaticon.com/free-icon/toolbox_204167
+- settings-2099058.png — Settings icon by https://www.flaticon.com/free-icon/settings_2099058
+
+Source CDN (128px PNG, downloaded for offline use):
+https://cdn-icons-png.flaticon.com/128/204/204167.png
+https://cdn-icons-png.flaticon.com/128/2099/2099058.png

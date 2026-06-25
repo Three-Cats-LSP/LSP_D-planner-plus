@@ -3843,6 +3843,11 @@ if "lsp-android-select-btn" in html:
 else:
     fail("Android custom select picker CSS missing")
 
+if re.search(r"\.field select\s*\{[^}]*appearance:\s*none", html, re.DOTALL):
+    ok(".field select uses appearance:none — single custom chevron (no double arrows)")
+else:
+    fail(".field select missing appearance:none — native + custom chevron overlap")
+
 if android_picker_js and "if (opt.disabled) return" in android_picker_js and "scrollIntoView" in android_picker_js:
     ok("android-select-picker: disabled options non-interactive + scroll to selected (issue #20)")
 else:
@@ -4239,6 +4244,22 @@ if capacitor_bridge_js and "status === 'granted'" in capacitor_bridge_js.split("
     ok("capacitor-bridge ensurePermission requires granted status (issue #55 F10)")
 else:
     fail("capacitor-bridge ensurePermission still treats non-denied as granted (issue #55 F10)")
+
+if re.search(r'id="algoTools"[^<]*<img[^>]+toolbox-204167\.png', html) and re.search(r'id="envSettingsToggle"[^<]*<img[^>]+settings-2099058\.png', html):
+    ok("Mode row uses vendored Flaticon PNG icons for Tools and ENV")
+else:
+    fail("Mode row missing vendored Flaticon PNG icons for Tools/ENV")
+
+if os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "toolbox-204167.png")) and os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "settings-2099058.png")):
+    ok("vendor/icons Flaticon PNG assets present offline")
+else:
+    fail("vendor/icons missing toolbox-204167.png or settings-2099058.png")
+
+_mode_row = html.split('<div class="algo-toggle"', 1)
+if "syncEnvRowDisplay" in js and len(_mode_row) > 1 and 'id="envSettingsToggle"' in _mode_row[1][:3500]:
+    ok("ENV settings toggle lives in mode row (Rec | Tec | Tools | ENV | Ref)")
+else:
+    fail("ENV toggle not in mode row or syncEnvRowDisplay missing")
 
 print("=" * 60)
 

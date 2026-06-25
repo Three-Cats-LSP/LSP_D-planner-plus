@@ -12,3 +12,5 @@ vendor/fonts/tDbV2o-flEEny0FZhsfKu5WU4xD4OwG_TA.woff2
 vendor/fonts/tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2
 vendor/fonts/tDbV2o-flEEny0FZhsfKu5WU4xD_OwG_TA.woff2
 vendor/icons/giw-icon-192.png
+vendor/icons/toolbox-204167.png
+vendor/icons/settings-2099058.png
