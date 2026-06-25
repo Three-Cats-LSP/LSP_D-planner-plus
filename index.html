@@ -8553,10 +8553,15 @@ function getTravelGasInfo() {
 
 /** Resolve travel gas O₂/He for decoGases; null fO2 when fractions are invalid. */
 function resolveTravelGasFractions(travelInfo) {
-  const travelFHe = travelInfo.fHe || 0;
-  if (!isFinite(travelFHe) || !isFinite(travelInfo.fN2)) {
-    return { valid: false, fHe: travelFHe, reason: 'travel gas fractions are not valid numbers' };
+  const fN2 = travelInfo.fN2;
+  const rawFHe = travelInfo.fHe;
+  if (!isFinite(fN2)) {
+    return { valid: false, fHe: 0, reason: 'fN₂ is not a valid number' };
   }
+  if (rawFHe != null && !isFinite(rawFHe)) {
+    return { valid: false, fHe: 0, reason: 'explicit fHe is not a valid number' };
+  }
+  const travelFHe = rawFHe != null ? rawFHe : 0;
   if (travelInfo.fO2 != null) {
     if (!isFinite(travelInfo.fO2)) {
       return { valid: false, fHe: travelFHe, reason: 'explicit fO₂ is not a valid number' };
@@ -8566,12 +8571,12 @@ function resolveTravelGasFractions(travelInfo) {
     }
     return { valid: true, fO2: Math.max(0, travelInfo.fO2), fHe: travelFHe };
   }
-  const inferred = 1 - travelInfo.fN2 - travelFHe;
+  const inferred = 1 - fN2 - travelFHe;
   if (!isFinite(inferred) || inferred < -1e-9) {
     return {
       valid: false,
       fHe: travelFHe,
-      reason: 'fN₂ + fHe exceeds 1 (sum ' + (travelInfo.fN2 + travelFHe).toFixed(3) + ')',
+      reason: 'fN₂ + fHe exceeds 1 (sum ' + (fN2 + travelFHe).toFixed(3) + ')',
     };
   }
   return { valid: true, fO2: Math.max(0, inferred), fHe: travelFHe };
@@ -8625,7 +8630,6 @@ function getTravelGasExport() {
 }
 
 function updateTravelGasMOD() {
-  refreshTravelGasFractionWarning();
   const info = getTravelGasInfo();
   const dispEl = document.getElementById('travelGasMODDisplay');
   const manualField = document.getElementById('travelGasManualDepthField');

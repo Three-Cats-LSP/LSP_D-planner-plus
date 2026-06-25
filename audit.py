@@ -771,10 +771,20 @@ if "function resolveTravelGasFractions" in js and "!isFinite(travelInfo.fO2)" in
     ok("index.html travel gas rejects non-finite explicit fO2 (issue #32)")
 else:
     fail("index.html NaN fO2 bypasses resolveTravelGasFractions (issue #32)")
-if "function refreshTravelGasFractionWarning" in js and "refreshTravelGasFractionWarning()" in js:
-    ok("index.html travel gas warning refreshed on render and field edit (issue #32)")
+if "function refreshTravelGasFractionWarning" in js and "refreshTravelGasFractionWarning()" in js.split("function renderDecoAlerts", 1)[-1].split("function ", 1)[0]:
+    ok("index.html travel gas warning refreshed on decoAlerts render (issue #32)")
 else:
-    fail("index.html stale _travelGasFractionWarning not cleared on UI change (issue #32)")
+    fail("index.html stale _travelGasFractionWarning not cleared on render (issue #32)")
+_res_frac_block = js.split("function resolveTravelGasFractions", 1)[-1][:900] if "function resolveTravelGasFractions" in js else ""
+if _res_frac_block and "travelInfo.fHe || 0" not in _res_frac_block and "rawFHe != null && !isFinite(rawFHe)" in _res_frac_block:
+    ok("index.html fHe validated before defaulting — no NaN || 0 masking (issue #33)")
+else:
+    fail("index.html fHe NaN masked by || 0 before isFinite guard (issue #33)")
+_mod_travel_block = js.split("function updateTravelGasMOD", 1)[-1].split("function ", 1)[0] if "function updateTravelGasMOD" in js else ""
+if _mod_travel_block and "refreshTravelGasFractionWarning" not in _mod_travel_block:
+    ok("updateTravelGasMOD does not redundantly refresh travel gas warning (issue #33)")
+else:
+    fail("updateTravelGasMOD redundantly calls refreshTravelGasFractionWarning (issue #33)")
 if "function escapeHtmlText" in js and "escapeHtmlText(reason)" in js.split("setTravelGasFractionWarning", 1)[-1][:400]:
     ok("index.html travel gas warning escapes reason HTML (issue #32)")
 else:
