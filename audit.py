@@ -3801,14 +3801,18 @@ def _harness_fn_body(src, fn_name, *end_markers):
     parts = src.split(f"function {fn_name}", 1)
     if len(parts) < 2:
         return ""
-    body = parts[1]
+    rest = parts[1]
+    brace = rest.find("{")
+    if brace < 0:
+        return ""
+    body = rest[brace + 1:]
     for marker in end_markers:
         if marker in body:
             body = body.split(marker, 1)[0]
             break
     return body
 
-_harness_wait = _harness_fn_body(harness, "waitForApp", "function calc", "/** Route ZHLC_GF") if harness else ""
+_harness_wait = _harness_fn_body(harness, "waitForApp", "/** Route ZHLC_GF", "function calc") if harness else ""
 _harness_assert = _harness_fn_body(harness, "assertFiniteNumbers", "function clone") if harness else ""
 _harness_clone = _harness_fn_body(harness, "clone", "function hookIframe") if harness else ""
 
@@ -3846,7 +3850,7 @@ for _inline_test in ("tests.html", "tests-extended.html", "tests-pscr-otu-cns.ht
             _ib = f.read()
         _ih = _ib.split("/* inlined from lsp-test-harness.js — keep in sync */", 1)
         _ih = _ih[1].split("</script>", 1)[0] if len(_ih) > 1 else ""
-        _inline_wait = _harness_fn_body(_ih, "waitForApp", "function calc", "/** Route ZHLC_GF")
+        _inline_wait = _harness_fn_body(_ih, "waitForApp", "/** Route ZHLC_GF", "function calc")
         _inline_assert = _harness_fn_body(_ih, "assertFiniteNumbers", "function clone")
         _inline_clone = _harness_fn_body(_ih, "clone", "function hookIframe")
         _inline_start = _inline_wait.split("function check", 1)[0] if _inline_wait else ""
