@@ -312,6 +312,37 @@ def run_checks(page, port):
     else:
         fail(f"ZHL worker parity failed: {worker_parity}")
 
+    travel_trimix = page.evaluate(
+        """() => {
+      const settings = {
+        metric: true, gfLo: 30, gfHi: 85, stepSize: 3, lastStop: 3, minStopTime: 1,
+        descentRate: 20, ascentRate: 10, decoAscentRate: 3, surfaceAscentRate: 3,
+        travelInfo: { fN2: 0.44, fO2: 0.21, fHe: 0.35, switchDepthM: 30, label: 'TX21/35' },
+      };
+      const levels = [{ depth: 60, time: 20, o2: 18, he: 45 }];
+      const env = typeof getZhlEnvironment === 'function' ? getZhlEnvironment(settings) : null;
+      const split = window.ZhlEngineBundle.splitZhlProfileLevels(levels);
+      const base = window.ZhlEngineBundle.buildZhlScheduleParamsFromEngine(
+        levels, [], settings, split, env
+      );
+      const withHe = window.ZhlEngineBundle.runZhlScheduleCore({
+        ...base,
+        travelInfo: { fN2: 0.44, fO2: 0.21, fHe: 0.35, switchDepthM: 30, label: 'TX21/35' },
+      });
+      const noHe = window.ZhlEngineBundle.runZhlScheduleCore({
+        ...base,
+        travelInfo: { fN2: 0.44, fO2: 0.21, fHe: 0, switchDepthM: 30, label: 'EAN21' },
+      });
+      const heWith = (withHe.lastPlan?.finalTissues || []).reduce((s, t) => s + (t.pHe || 0), 0);
+      const heNone = (noHe.lastPlan?.finalTissues || []).reduce((s, t) => s + (t.pHe || 0), 0);
+      return { ok: heWith > heNone + 0.01, heWith, heNone };
+    }"""
+    )
+    if travel_trimix.get("ok"):
+        ok("ZHL travel gas descent loads He when travelInfo.fHe set (issue #27 BUG-B)")
+    else:
+        fail(f"ZHL trimix travel gas He loading failed: {travel_trimix}")
+
 
 def run_worker_timeout_check(page, port):
     settings = TEST_SETTINGS

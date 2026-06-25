@@ -207,8 +207,7 @@ function saturateLinearCCR(tissues, fromDepth, toDepth, t, fO2, fHe, ccr) {
     const p0Amb = depthBar(seg.fromDepth);
     const pEndAmb = depthBar(seg.toDepth);
     const R = (pEndAmb - p0Amb) / segTime;
-    const midDepth = (seg.fromDepth + seg.toDepth) / 2;
-    const segSP = getEffectiveSetpointAtDepth(midDepth, cfg, surfP, phase);
+    const segSP = getEffectiveSetpointAtDepth(seg.fromDepth, cfg, surfP, phase);
     const segCcr = { ...cfg, setpoint: segSP };
     out = out.map((t0, i) => ({
       pN2: schreinerLinearCCR(t0.pN2, ZHL16C[i][0], segTime, p0Amb, R, segSP, fO2, fHe, segCcr, false),

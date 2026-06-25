@@ -293,7 +293,7 @@ postamble = r'''
       bottomFHe: fHeBot,
       bottomFO2: fO2bot,
       bottomMixLabel: getGasLabel(fO2bot, fHeBot),
-      travelInfo: null,
+      travelInfo: s.travelInfo || null,
       repState: (s._preTissues && s._preTissues.length)
         ? { tissues: s._preTissues, surfaceIntervalMin: s._surfaceInterval || 0 }
         : null,

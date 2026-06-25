@@ -676,8 +676,32 @@ if os.path.isfile(_zhl_core_path):
         ok("ZHL continuation levels guarded for monotonic shallower depth")
     else:
         fail("ZHL continuation level depth-order guard missing")
+    if "ZHL16C_HE_HT[i] || 1" not in _zhl_core_src:
+        ok("ZHL surface-interval He off-gas uses table half-times, not || 1 fallback (issue #27 BUG-A)")
+    else:
+        fail("ZHL surface-interval He still uses || 1 half-time fallback (issue #27 BUG-A)")
+    if "travelInfo.fHe" in _zhl_core_src and "travelFO2" in _zhl_core_src:
+        ok("ZHL travel gas descent passes travelInfo.fHe (issue #27 BUG-B)")
+    else:
+        fail("ZHL travel gas descent missing travelInfo.fHe (issue #27 BUG-B)")
 else:
     fail("zhl-schedule-core.js missing")
+
+_ccr_core_path = os.path.join(os.path.dirname(__file__), "zhl-ccr-core.js")
+if os.path.isfile(_ccr_core_path):
+    with open(_ccr_core_path, encoding="utf-8") as f:
+        _ccr_core_src = f.read()
+    if "getEffectiveSetpointAtDepth(seg.fromDepth" in _ccr_core_src:
+        ok("CCR saturateLinearCCR uses segment entry depth for setpoint (issue #27 BUG-C)")
+    else:
+        fail("CCR saturateLinearCCR still uses midpoint setpoint (issue #27 BUG-C)")
+else:
+    fail("zhl-ccr-core.js missing")
+
+if "function getTravelGasInfo" in js and "fHe: 0" in js.split("function getTravelGasInfo", 1)[-1][:2500]:
+    ok("getTravelGasInfo exposes fHe field for travel gas schema (issue #27 BUG-B)")
+else:
+    fail("getTravelGasInfo missing fHe in return object (issue #27 BUG-B)")
 
 if "terminate" in worker_bridge_js and "ZhlWorkerBridge = { calculateInWorker, terminate }" in worker_bridge_js:
     ok("ZhlWorkerBridge exposes terminate() for worker lifecycle")

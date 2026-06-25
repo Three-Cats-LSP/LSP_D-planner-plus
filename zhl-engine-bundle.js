@@ -342,8 +342,7 @@ function saturateLinearCCR(tissues, fromDepth, toDepth, t, fO2, fHe, ccr) {
     const p0Amb = depthBar(seg.fromDepth);
     const pEndAmb = depthBar(seg.toDepth);
     const R = (pEndAmb - p0Amb) / segTime;
-    const midDepth = (seg.fromDepth + seg.toDepth) / 2;
-    const segSP = getEffectiveSetpointAtDepth(midDepth, cfg, surfP, phase);
+    const segSP = getEffectiveSetpointAtDepth(seg.fromDepth, cfg, surfP, phase);
     const segCcr = { ...cfg, setpoint: segSP };
     out = out.map((t0, i) => ({
       pN2: schreinerLinearCCR(t0.pN2, ZHL16C[i][0], segTime, p0Amb, R, segSP, fO2, fHe, segCcr, false),
@@ -605,8 +604,8 @@ function runZhlScheduleCore(params) {
   let tissues = initTissues();
 
   // ── Repetitive dive tissue carry (ZHL) ───────────────────────────────────
-  // ZHLEngine.calculate() sets window._zhlRepState before calling runDecoSchedule
-  // to carry end-of-dive tissues from a previous dive with a surface interval.
+  // DOM schedule writes window._zhlRepState after each Bühlmann run; repState is
+  // injected when the user enables the repetitive-dive checkbox.
   if (params.repState && Array.isArray(params.repState.tissues)) {
     const rep = params.repState;
     for (let i = 0; i < tissues.length && i < rep.tissues.length; i++) {
@@ -619,7 +618,9 @@ function runZhlScheduleCore(params) {
       const inspN2 = 0.7902 * ((altSurfaceP || 1.01325) - wv);
       for (let i = 0; i < tissues.length; i++) {
         const kN2 = Math.LN2 / ZHL16C[i][0];
-        const kHe = Math.LN2 / (ZHL16C_HE_HT[i] || 1);
+        const htHe = ZHL16C_HE_HT[i];
+        if (!(htHe > 0)) throw new Error('ZHL16C_HE_HT missing compartment ' + i);
+        const kHe = Math.LN2 / htHe;
         tissues[i].pN2 = inspN2 + (tissues[i].pN2 - inspN2) * Math.exp(-kN2 * siMin);
         tissues[i].pHe = (tissues[i].pHe || 0) * Math.exp(-kHe * siMin);
       }
@@ -629,9 +630,11 @@ function runZhlScheduleCore(params) {
   // Descent phase — split by travel gas switch depth if travel gas is active
   const descentTime = depthM / descentRate;
   if (travelInfo && travelSwitchM > 0 && travelSwitchM < depthM) {
+    const travelFO2 = travelInfo.fO2 != null ? travelInfo.fO2 : (1 - travelInfo.fN2);
+    const travelFHe = travelInfo.fHe || 0;
     // Phase 1: surface → travel switch depth on travel gas
     const travelDescentTime = travelSwitchM / descentRate;
-    tissues = zhlLoadLinear(tissues, 0, travelSwitchM, travelDescentTime, 1 - travelInfo.fN2, 0, _zhlOnLoop, 'descent');
+    tissues = zhlLoadLinear(tissues, 0, travelSwitchM, travelDescentTime, travelFO2, travelFHe, _zhlOnLoop, 'descent');
     // Phase 2: travel switch depth → bottom on bottom gas
     const bottomDescentTime = (depthM - travelSwitchM) / descentRate;
     tissues = zhlLoadLinear(tissues, travelSwitchM, depthM, bottomDescentTime, bottomFO2, bottomFHe, _zhlOnLoop, 'descent');
@@ -1176,7 +1179,7 @@ function runZhlScheduleCore(params) {
       bottomFHe: fHeBot,
       bottomFO2: fO2bot,
       bottomMixLabel: getGasLabel(fO2bot, fHeBot),
-      travelInfo: null,
+      travelInfo: s.travelInfo || null,
       repState: (s._preTissues && s._preTissues.length)
         ? { tissues: s._preTissues, surfaceIntervalMin: s._surfaceInterval || 0 }
         : null,

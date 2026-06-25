@@ -85,7 +85,9 @@ function runZhlScheduleCore(params) {
       const inspN2 = 0.7902 * ((altSurfaceP || 1.01325) - wv);
       for (let i = 0; i < tissues.length; i++) {
         const kN2 = Math.LN2 / ZHL16C[i][0];
-        const kHe = Math.LN2 / (ZHL16C_HE_HT[i] || 1);
+        const htHe = ZHL16C_HE_HT[i];
+        if (!(htHe > 0)) throw new Error('ZHL16C_HE_HT missing compartment ' + i);
+        const kHe = Math.LN2 / htHe;
         tissues[i].pN2 = inspN2 + (tissues[i].pN2 - inspN2) * Math.exp(-kN2 * siMin);
         tissues[i].pHe = (tissues[i].pHe || 0) * Math.exp(-kHe * siMin);
       }
@@ -95,9 +97,11 @@ function runZhlScheduleCore(params) {
   // Descent phase — split by travel gas switch depth if travel gas is active
   const descentTime = depthM / descentRate;
   if (travelInfo && travelSwitchM > 0 && travelSwitchM < depthM) {
+    const travelFO2 = travelInfo.fO2 != null ? travelInfo.fO2 : (1 - travelInfo.fN2);
+    const travelFHe = travelInfo.fHe || 0;
     // Phase 1: surface → travel switch depth on travel gas
     const travelDescentTime = travelSwitchM / descentRate;
-    tissues = zhlLoadLinear(tissues, 0, travelSwitchM, travelDescentTime, 1 - travelInfo.fN2, 0, _zhlOnLoop, 'descent');
+    tissues = zhlLoadLinear(tissues, 0, travelSwitchM, travelDescentTime, travelFO2, travelFHe, _zhlOnLoop, 'descent');
     // Phase 2: travel switch depth → bottom on bottom gas
     const bottomDescentTime = (depthM - travelSwitchM) / descentRate;
     tissues = zhlLoadLinear(tissues, travelSwitchM, depthM, bottomDescentTime, bottomFO2, bottomFHe, _zhlOnLoop, 'descent');
