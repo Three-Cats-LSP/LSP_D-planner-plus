@@ -123,6 +123,34 @@ body { background: var(--bg);
  padding-right: env(safe-area-inset-right, 0px);
 }
 
+/* Full-screen overlays: clear system status bar on edge-to-edge Android WebView */
+.lsp-modal-overlay {
+ position: fixed;
+ inset: 0;
+ overflow-y: auto;
+ -webkit-overflow-scrolling: touch;
+ box-sizing: border-box;
+ padding: 16px;
+ padding-top: calc(16px + env(safe-area-inset-top, 0px));
+ padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+}
+html.capacitor-native .lsp-modal-overlay {
+ padding-top: calc(16px + max(32px, env(safe-area-inset-top, 0px)));
+}
+.lsp-modal-overlay--pad20 {
+ padding: 20px;
+ padding-top: calc(20px + env(safe-area-inset-top, 0px));
+ padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+}
+html.capacitor-native .lsp-modal-overlay--pad20 {
+ padding-top: calc(20px + max(32px, env(safe-area-inset-top, 0px)));
+}
+.lsp-modal-overlay.lsp-modal-centered {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+}
+
 body::before { content: '';
  position: fixed; inset: 0;
  background:
@@ -3329,12 +3357,9 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 </div>
 <!-- Gas Rule Info Modal -->
-<div id="gasRuleModal" onclick="if(event.target===this)closeGasRuleInfo()" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,0.72);padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom));overflow-y:auto;-webkit-overflow-scrolling:touch;align-items:flex-start;justify-content:center;">
+<div id="gasRuleModal" class="lsp-modal-overlay" onclick="if(event.target===this)closeGasRuleInfo()" style="display:none;z-index:9500;background:rgba(0,0,0,0.72);">
 <div style="max-width:460px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:12px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);margin:12px auto;">
-<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px;">
-<div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);flex:1;min-width:0;">⛽ Gas Management Rules</div>
-<button type="button" onclick="closeGasRuleInfo()" aria-label="Close" style="flex-shrink:0;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;min-width:36px;min-height:36px;padding:4px 10px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:16px;line-height:1;">✕</button>
-</div>
+<div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;">⛽ Gas Management Rules</div>
 <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);line-height:1.8;">
 <div style="font-weight:700;color:var(--accent);margin-bottom:4px;letter-spacing:1px;">RULE OF THIRDS (Thirds)</div>
 <div class="u9">The standard tec diving gas rule. Divide your bottom gas into three equal thirds:
@@ -3360,17 +3385,14 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <button type="button" onclick="closeGasRuleInfo()" style="margin-top:16px;width:100%;padding:10px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.5px;">Close</button>
 </div>
 </div>
-<div id="tipModal" onclick="if(event.target===this)closeTip()" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,0.72);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom));">
+<div id="tipModal" class="lsp-modal-overlay" onclick="if(event.target===this)closeTip()" style="display:none;z-index:9500;background:rgba(0,0,0,0.72);">
 <div style="max-width:420px;width:100%;margin:12px auto;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:16px 18px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
-<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px;">
-<div id="tipModalTitle" style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);flex:1;min-width:0;"></div>
-<button type="button" onclick="closeTip()" aria-label="Close" style="flex-shrink:0;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;min-width:36px;min-height:36px;padding:4px 10px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:16px;line-height:1;">✕</button>
-</div>
+<div id="tipModalTitle" style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;"></div>
 <div id="tipModalBody" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text);line-height:1.7;white-space:pre-wrap;max-height:min(60vh,480px);overflow-y:auto;-webkit-overflow-scrolling:touch;"></div>
 <button type="button" onclick="closeTip()" style="margin-top:14px;width:100%;padding:10px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.5px;">Close</button>
 </div>
 </div>
-<div id="slateModal" onclick="if(event.target===this)closeSlate()" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9550;background:rgba(0,0,0,0.72);padding:20px;align-items:center;justify-content:center;">
+<div id="slateModal" class="lsp-modal-overlay lsp-modal-overlay--pad20 lsp-modal-centered" onclick="if(event.target===this)closeSlate()" style="display:none;z-index:9550;background:rgba(0,0,0,0.72);">
 <div style="max-width:420px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
 <div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Deco Slate</div>
 <pre id="slateModalBody" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text);line-height:1.5;white-space:pre;overflow-x:auto;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;padding:12px;margin:0;"></pre>
@@ -3380,7 +3402,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 </div>
 </div>
-<div id="copyModal" onclick="if(event.target===this)closeCopyModal()" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9550;background:rgba(0,0,0,0.72);padding:20px;align-items:center;justify-content:center;">
+<div id="copyModal" class="lsp-modal-overlay lsp-modal-overlay--pad20 lsp-modal-centered" onclick="if(event.target===this)closeCopyModal()" style="display:none;z-index:9550;background:rgba(0,0,0,0.72);">
 <div style="max-width:480px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
 <div id="copyModalTitle" style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Copy Plan</div>
 <pre id="copyModalBody" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);line-height:1.5;white-space:pre;overflow-x:auto;overflow-y:auto;max-height:60vh;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;padding:12px;margin:0;"></pre>
@@ -3391,7 +3413,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 </div>
 <!-- Dive Profile Presets Modal (depth + BT only) -->
-<div id="profilePresetModal" onclick="if(event.target===this)closeDiveProfilePresets()" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9551;background:rgba(0,0,0,0.72);padding:20px;align-items:center;justify-content:center;">
+<div id="profilePresetModal" class="lsp-modal-overlay lsp-modal-overlay--pad20 lsp-modal-centered" onclick="if(event.target===this)closeDiveProfilePresets()" style="display:none;z-index:9551;background:rgba(0,0,0,0.72);">
 <div style="max-width:400px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
 <div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);">Dive Profiles</div>
@@ -3406,7 +3428,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 </div>
 <!-- Advanced Config Presets Modal (advanced settings only) -->
-<div id="configPresetModal" onclick="if(event.target===this)closeAdvConfigPresets()" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9552;background:rgba(0,0,0,0.72);padding:20px;align-items:center;justify-content:center;">
+<div id="configPresetModal" class="lsp-modal-overlay lsp-modal-overlay--pad20 lsp-modal-centered" onclick="if(event.target===this)closeAdvConfigPresets()" style="display:none;z-index:9552;background:rgba(0,0,0,0.72);">
 <div style="max-width:420px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
 <div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);">Advanced Configs</div>
@@ -3420,7 +3442,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 </div>
 </div>
-<div id="presetModal" onclick="if(event.target===this)closePresetModal()" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9550;background:rgba(0,0,0,0.72);padding:20px;align-items:center;justify-content:center;">
+<div id="presetModal" class="lsp-modal-overlay lsp-modal-overlay--pad20 lsp-modal-centered" onclick="if(event.target===this)closePresetModal()" style="display:none;z-index:9550;background:rgba(0,0,0,0.72);">
 <div style="max-width:460px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
 <div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);">Dive Presets</div>
@@ -3433,7 +3455,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <button onclick="closePresetModal()" style="margin-top:14px;width:100%;padding:8px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.5px;">✕ Close</button>
 </div>
 </div>
-<div id="confirmModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9600;background:rgba(0,0,0,0.72);padding:20px;align-items:center;justify-content:center;">
+<div id="confirmModal" class="lsp-modal-overlay lsp-modal-overlay--pad20 lsp-modal-centered" style="display:none;z-index:9600;background:rgba(0,0,0,0.72);">
 <div style="max-width:340px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:22px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
 <div id="confirmModalMsg" style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;color:var(--text);margin-bottom:20px;text-align:center;line-height:1.5;"></div>
 <div style="display:flex;gap:10px;">
@@ -3442,7 +3464,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 </div>
 </div>
-<div id="settingsHelpModal" onclick="if(event.target===this)this.style.display='none'" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9000;background:rgba(0,0,0,0.75);overflow-y:auto;padding:20px;">
+<div id="settingsHelpModal" class="lsp-modal-overlay lsp-modal-overlay--pad20" onclick="if(event.target===this)this.style.display='none'" style="display:none;z-index:9000;background:rgba(0,0,0,0.75);">
 <div style="max-width:680px;margin:0 auto;position:relative;">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
 <div style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);">⚙ Settings Guide</div>
@@ -3533,8 +3555,8 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 </div>
 </div>
-<div id="warningModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9100;background:rgba(0,0,0,0.82);overflow-y:auto;padding:20px;">
-<div style="max-width:640px;margin:40px auto;background:var(--surface);border-radius:12px;border:2px solid #cc0000;padding:28px 28px 24px;font-family:'JetBrains Mono',monospace;">
+<div id="warningModal" class="lsp-modal-overlay lsp-modal-overlay--pad20" style="display:none;z-index:9100;background:rgba(0,0,0,0.82);">
+<div style="max-width:640px;margin:24px auto;background:var(--surface);border-radius:12px;border:2px solid #cc0000;padding:28px 28px 24px;font-family:'JetBrains Mono',monospace;">
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
 <div style="display:flex;align-items:center;gap:10px;">
 <span style="font-size:24px;">⚠</span>
@@ -3552,11 +3574,11 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 </div>
 </div>
-<div id="referenceModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9000;background:rgba(0,0,0,0.7);overflow-y:auto;padding:20px;">
+<div id="referenceModal" class="lsp-modal-overlay lsp-modal-overlay--pad20" style="display:none;z-index:9000;background:rgba(0,0,0,0.7);">
 <div style="max-width:700px;margin:0 auto;position:relative;">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
 <div style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);">📖 Reference</div>
-<button onclick="toggleReference()" style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 14px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;">✕ Close</button>
+<button onclick="toggleReference()" aria-label="Close" style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 14px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;">X</button>
 </div>
 <!-- DISCLAIMER — shown first, always visible -->
 <div class="card" style="border-left:4px solid var(--red);margin-bottom:16px;">
