@@ -1,3 +1,7 @@
+# Android signing (never commit)
+*.keystore
+keystore.properties
+
 # wrangler files
 .wrangler
 .dev.vars*

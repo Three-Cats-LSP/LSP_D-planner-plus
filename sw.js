@@ -9,6 +9,7 @@ const CACHE_VERSION = 'lsp-dplanner-plus-v' + APP_VERSION;
 const NEVER_CACHE = [
   '.apk',
   '.aab',
+  'version.json',
   'raw.githubusercontent.com'
 ];
 

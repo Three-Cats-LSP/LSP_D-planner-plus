@@ -81,18 +81,34 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Build debug APK
+      - name: Decode release keystore
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$ANDROID_KEYSTORE_BASE64" ]; then
+            echo "::error::ANDROID_KEYSTORE_BASE64 secret is missing — release signing required"
+            exit 1
+          fi
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > android/app/release.keystore
+          test -s android/app/release.keystore
+
+      - name: Build release APK
         working-directory: android
+        env:
+          ANDROID_KEYSTORE_PATH: app/release.keystore
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon --stacktrace
+          ./gradlew assembleRelease --no-daemon --stacktrace
 
       - name: Place APK at output location
         run: |
           mkdir -p "Android Apk"
           APK_NAME="LSP_D-planner-plus-v${{ steps.version.outputs.VERSION }}.apk"
           rm -f "Android Apk"/LSP_D-planner-plus*.apk
-          cp android/app/build/outputs/apk/debug/app-debug.apk "Android Apk/${APK_NAME}"
+          cp android/app/build/outputs/apk/release/app-release.apk "Android Apk/${APK_NAME}"
           echo "APK_NAME=${APK_NAME}" >> "$GITHUB_ENV"
           ls -la "Android Apk/"
 
@@ -100,7 +116,7 @@ jobs:
         run: |
           git config user.email "sns@rvm.cc"
           git config user.name "Three Cats LSP"
-          git add -A "Android Apk/"
+          git add -A "Android Apk/" version.json
           git commit -m "build(android): ${APK_NAME} [skip ci]" --allow-empty
           git checkout -- android/app/build.gradle
           git reset --hard HEAD

@@ -15,6 +15,7 @@ on:
       - 'zhl-schedule-worker.js'
       - 'manifest.json'
       - 'download.html'
+      - 'version.json'
       - 'site-assets-manifest.txt'
       - 'vendor/**'
       - 'tests.html'

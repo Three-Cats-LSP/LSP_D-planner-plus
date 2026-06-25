@@ -3704,6 +3704,71 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
   }
 })();
 
+// ── Native APK update check (LSP+ 2.50+ only) ──
+(function() {
+  var VERSION_CHECK_URL = 'https://threecats-lsp.com/d-planner-plus/version.json';
+  var MIN_UPDATE_CHECK_VERSION_CODE = 25000;
+  var DISMISS_KEY = 'lspApkUpdateDismissed';
+
+  function versionToCode(v) {
+    var p = String(v).split('.');
+    return (parseInt(p[0], 10) || 0) * 10000 + (parseInt(p[1], 10) || 0) * 100 + (parseInt(p[2], 10) || 0);
+  }
+
+  function openDownloadPage(url) {
+    if (window.Capacitor?.Plugins?.Browser?.open) {
+      window.Capacitor.Plugins.Browser.open({ url: url });
+      return;
+    }
+    window.open(url, '_blank');
+  }
+
+  function showUpdateBanner(remoteVersion, downloadPage) {
+    if (document.getElementById('apkUpdateBanner')) return;
+    var banner = document.createElement('div');
+    banner.id = 'apkUpdateBanner';
+    banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99998;background:#071a2e;border-bottom:1px solid rgba(0,200,255,0.35);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:system-ui,sans-serif;font-size:13px;color:#e0f7ff;box-sizing:border-box;';
+    banner.innerHTML =
+      '<span style="flex:1;min-width:0;">New version is available (<strong>' + remoteVersion + '</strong>)</span>' +
+      '<button type="button" id="apkUpdateDownloadBtn" style="background:#00c8ff;border:none;color:#000;border-radius:6px;padding:6px 14px;cursor:pointer;font-size:12px;font-weight:700;flex-shrink:0;">Download</button>' +
+      '<button type="button" id="apkUpdateDismissBtn" aria-label="Dismiss" style="background:none;border:1px solid rgba(0,200,255,0.45);color:#00c8ff;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:14px;line-height:1;flex-shrink:0;">✕</button>';
+    document.body.appendChild(banner);
+    document.getElementById('apkUpdateDownloadBtn').addEventListener('click', function() {
+      openDownloadPage(downloadPage || VERSION_CHECK_URL.replace('version.json', 'download.html'));
+    });
+    document.getElementById('apkUpdateDismissBtn').addEventListener('click', function() {
+      try { localStorage.setItem(DISMISS_KEY, remoteVersion); } catch (e) {}
+      banner.remove();
+    });
+  }
+
+  function checkForApkUpdate() {
+    if (!window.Capacitor || !window.Capacitor.isNativePlatform()) return;
+    if (!navigator.onLine) return;
+    if (typeof APP_VERSION === 'undefined') return;
+    var localCode = versionToCode(APP_VERSION);
+    if (localCode < MIN_UPDATE_CHECK_VERSION_CODE) return;
+
+    fetch(VERSION_CHECK_URL + '?t=' + Date.now(), { cache: 'no-store' })
+      .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function(data) {
+        if (!data || !data.version || typeof data.versionCode !== 'number') return;
+        if (data.versionCode <= localCode) return;
+        try {
+          if (localStorage.getItem(DISMISS_KEY) === data.version) return;
+        } catch (e) {}
+        showUpdateBanner(data.version, data.downloadPage);
+      })
+      .catch(function() {});
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', checkForApkUpdate);
+  } else {
+    checkForApkUpdate();
+  }
+})();
+
 // APP_VERSION — loaded from app-version.js (head)
 // Test harness: skip DOM recalc storms when loaded inside tests-massive.html iframe
 (function() {

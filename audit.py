@@ -2946,12 +2946,29 @@ if os.path.isfile(sw_path):
         sw = f.read()
     if "importScripts('app-version.js')" not in sw or "lsp-dplanner-plus-v' + APP_VERSION" not in sw:
         version_ok = False
+    if "version.json" not in sw:
+        version_ok = False
 else:
     version_ok = False
+version_json_path = os.path.join(os.path.dirname(__file__), "version.json")
+if app_ver and os.path.isfile(version_json_path):
+    with open(version_json_path, encoding="utf-8") as f:
+        vj = f.read()
+    parts = app_ver.split(".")
+    if len(parts) == 3 and all(p.isdigit() for p in parts):
+        vc = int(parts[0]) * 10000 + int(parts[1]) * 100 + int(parts[2])
+        if f'"version": "{app_ver}"' not in vj or f'"versionCode": {vc}' not in vj:
+            version_ok = False
+        if f"LSP_D-planner-plus-v{app_ver}.apk" not in vj:
+            version_ok = False
+    else:
+        version_ok = False
+elif app_ver:
+    version_ok = False
 if version_ok and app_ver:
-    ok(f"All version files aligned at {app_ver} (app-version.js drives SW cache)")
+    ok(f"All version files aligned at {app_ver} (app-version.js drives SW cache + version.json)")
 else:
-    fail("Version mismatch across app-version.js / sw.js / package.json / build.gradle (v17 BUG-74)")
+    fail("Version mismatch across app-version.js / sw.js / package.json / build.gradle / version.json (v17 BUG-74)")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 58 — v2.30.26 fix (errors_bugs_report_v18/v19 BUG-75)
@@ -3230,6 +3247,10 @@ if os.path.isfile(build_apk_path):
         ok("build-apk.yml dispatches sync-apk-d-planner-plus (site APK sync)")
     else:
         fail("build-apk.yml must dispatch sync-apk-d-planner-plus, not sync-apk-d-planner")
+    if "assembleRelease" in build_apk and "ANDROID_KEYSTORE_BASE64" in build_apk:
+        ok("build-apk.yml builds signed release APK")
+    else:
+        fail("build-apk.yml must use assembleRelease with release keystore signing")
 
 manifest_path = os.path.join(os.path.dirname(__file__), "android", "app", "src", "main", "AndroidManifest.xml")
 if os.path.isfile(manifest_path):

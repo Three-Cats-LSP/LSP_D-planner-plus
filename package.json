@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@capacitor/android": "^6.2.0",
+    "@capacitor/browser": "^6.0.4",
     "@capacitor/core": "^6.2.0",
     "@capacitor/filesystem": "^6.0.1",
     "@capacitor/share": "^6.0.4",

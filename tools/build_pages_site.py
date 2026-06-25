@@ -20,6 +20,7 @@ ROOT_FILES = [
     ".nojekyll",
     "index.html",
     "download.html",
+    "version.json",
     "app-version.js",
     "capacitor-bridge.js",
     "android-select-picker.js",
@@ -70,8 +71,12 @@ def _copy_tree_filtered(src: Path, dst: Path) -> None:
 
 def build_pages_site() -> Path:
     from update_sw_version import main as verify_app_version
+    from sync_www import parse_app_version, write_version_json
 
     verify_app_version()
+    app_version = parse_app_version((ROOT / "app-version.js").read_text(encoding="utf-8"))
+    write_version_json(app_version)
+
     if OUT.exists():
         shutil.rmtree(OUT)
     OUT.mkdir(parents=True)

@@ -71,6 +71,7 @@ vendor/fonts/tDbV2o-flEEny0FZhsfKu5WU4xD_OwG_TA.woff2
 vendor/icons/giw-icon-192.png
 vendor/jspdf.umd.min.js
 vendor/offline-manifest.txt
+version.json
 vpm-engine-bundle.js
 zhl-engine-bundle.js
 zhl-schedule-worker.js
