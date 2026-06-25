@@ -2959,7 +2959,7 @@ if app_ver and os.path.isfile(version_json_path):
         vc = int(parts[0]) * 10000 + int(parts[1]) * 100 + int(parts[2])
         if f'"version": "{app_ver}"' not in vj or f'"versionCode": {vc}' not in vj:
             version_ok = False
-        if f"LSP_D-planner-plus-v{app_ver}.apk" not in vj:
+        if '"downloadPage"' not in vj:
             version_ok = False
     else:
         version_ok = False
@@ -2969,6 +2969,43 @@ if version_ok and app_ver:
     ok(f"All version files aligned at {app_ver} (app-version.js drives SW cache + version.json)")
 else:
     fail("Version mismatch across app-version.js / sw.js / package.json / build.gradle / version.json (v17 BUG-74)")
+
+_update_banner = js.split("function showUpdateBanner", 1)[-1].split("function checkForApkUpdate", 1)[0] if "function showUpdateBanner" in js else ""
+if _update_banner and "escapeBannerHtml(remoteVersion)" in _update_banner:
+    _banner_html = _update_banner.split("banner.innerHTML", 1)[-1][:400] if "banner.innerHTML" in _update_banner else ""
+    if _banner_html and "+ remoteVersion +" not in _banner_html:
+        ok("showUpdateBanner escapes remoteVersion before innerHTML (issue #50)")
+    else:
+        fail("showUpdateBanner injects remoteVersion into innerHTML unsanitized (issue #50)")
+elif "function showUpdateBanner" in js:
+    fail("showUpdateBanner missing escapeBannerHtml for remoteVersion (issue #50)")
+if os.path.isfile(version_json_path):
+    with open(version_json_path, encoding="utf-8") as f:
+        _vj50 = f.read()
+    if '"apkUrl"' not in _vj50:
+        ok("version.json omits unused apkUrl field (issue #50)")
+    else:
+        fail("version.json still has unused apkUrl field (issue #50)")
+    if '"minUpdateCheckVersion"' not in _vj50:
+        ok("version.json omits unused minUpdateCheckVersion field (issue #50)")
+    else:
+        fail("version.json still has unused minUpdateCheckVersion field (issue #50)")
+_apk_yml = os.path.join(os.path.dirname(__file__), ".github", "workflows", "build-apk.yml")
+if os.path.isfile(_apk_yml):
+    with open(_apk_yml, encoding="utf-8") as f:
+        _apk_yml_txt = f.read()
+    if "git checkout -- android/app/build.gradle" not in _apk_yml_txt:
+        ok("build-apk.yml omits redundant git checkout before reset --hard (issue #50)")
+    else:
+        fail("build-apk.yml redundant git checkout before reset --hard (issue #50)")
+_sync_www_path = os.path.join(os.path.dirname(__file__), "tools", "sync_www.py")
+if os.path.isfile(_sync_www_path):
+    with open(_sync_www_path, "rb") as f:
+        _sync_www_bytes = f.read()
+    if _sync_www_bytes.endswith(b"\n"):
+        ok("sync_www.py ends with trailing newline (issue #50)")
+    else:
+        fail("sync_www.py missing trailing newline (issue #50)")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 58 — v2.30.26 fix (errors_bugs_report_v18/v19 BUG-75)

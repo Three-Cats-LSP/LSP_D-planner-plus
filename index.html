@@ -3739,13 +3739,22 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
     window.open(url, '_blank');
   }
 
+  function escapeBannerHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
   function showUpdateBanner(remoteVersion, downloadPage) {
     if (document.getElementById('apkUpdateBanner')) return;
+    var safeVersion = escapeBannerHtml(remoteVersion);
     var banner = document.createElement('div');
     banner.id = 'apkUpdateBanner';
     banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99998;background:#071a2e;border-bottom:1px solid rgba(0,200,255,0.35);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:system-ui,sans-serif;font-size:13px;color:#e0f7ff;box-sizing:border-box;';
     banner.innerHTML =
-      '<span style="flex:1;min-width:0;">New version is available (<strong>' + remoteVersion + '</strong>)</span>' +
+      '<span style="flex:1;min-width:0;">New version is available (<strong>' + safeVersion + '</strong>)</span>' +
       '<button type="button" id="apkUpdateDownloadBtn" style="background:#00c8ff;border:none;color:#000;border-radius:6px;padding:6px 14px;cursor:pointer;font-size:12px;font-weight:700;flex-shrink:0;">Download</button>' +
       '<button type="button" id="apkUpdateDismissBtn" aria-label="Dismiss" style="background:none;border:1px solid rgba(0,200,255,0.45);color:#00c8ff;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:14px;line-height:1;flex-shrink:0;">✕</button>';
     document.body.appendChild(banner);

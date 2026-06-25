@@ -118,7 +118,6 @@ jobs:
           git config user.name "Three Cats LSP"
           git add -A "Android Apk/" version.json
           git commit -m "build(android): ${APK_NAME} [skip ci]" --allow-empty
-          git checkout -- android/app/build.gradle
           git reset --hard HEAD
           git pull --rebase origin main
           git push

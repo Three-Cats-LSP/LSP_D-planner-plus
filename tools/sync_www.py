@@ -15,7 +15,6 @@ ROOT = Path(__file__).resolve().parents[1]
 WWW = ROOT / "www"
 
 VERSION_JSON_URL_BASE = "https://threecats-lsp.com/d-planner-plus"
-MIN_UPDATE_CHECK_VERSION = "2.50.00"
 
 # Single files at repo root required for offline app + ZHL engine
 ROOT_FILES = [
@@ -55,12 +54,9 @@ def version_to_code(version: str) -> int:
 
 
 def write_version_json(version: str) -> None:
-    apk_file = f"LSP_D-planner-plus-v{version}.apk"
     payload = {
         "version": version,
         "versionCode": version_to_code(version),
-        "minUpdateCheckVersion": MIN_UPDATE_CHECK_VERSION,
-        "apkUrl": f"{VERSION_JSON_URL_BASE}/{apk_file}",
         "downloadPage": f"{VERSION_JSON_URL_BASE}/download.html",
     }
     text = json.dumps(payload, indent=2) + "\n"
