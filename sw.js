@@ -61,7 +61,7 @@ const PRECACHE_ASSETS = [
   APP_BASE + 'vendor/fonts/tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2',
   APP_BASE + 'vendor/fonts/tDbV2o-flEEny0FZhsfKu5WU4xD_OwG_TA.woff2',
   APP_BASE + 'vendor/icons/giw-icon-192.png',
-  APP_BASE + 'vendor/icons/toolbox-204167.png',
+  APP_BASE + 'vendor/icons/toolbox.svg',
   APP_BASE + 'vendor/icons/settings-2099058.png',
   APP_BASE + 'manifest.json',
   APP_BASE + 'icon-192.png',

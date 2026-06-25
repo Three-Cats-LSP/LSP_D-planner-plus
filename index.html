@@ -431,6 +431,11 @@ body.algo-tools .algo-switcher > div:last-child .header-warn { opacity: 1 !impor
  justify-content: center;
  line-height: 0;
 }
+.algo-btn-icon svg { width: 16px;
+ height: 16px;
+ display: block;
+ flex-shrink: 0;
+}
 .algo-btn-icon img { width: 16px;
  height: 16px;
  display: block;
@@ -1589,7 +1594,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <button class="algo-btn" id="algoPADI" onclick="setAlgo('padi')">Rec</button>
 <button class="algo-btn active" id="algoBUH" onclick="setAlgo('buh')">Tec</button>
 <div style="width:1px;height:18px;background:var(--border-hi);margin:0 2px;"></div>
-<button class="algo-btn algo-btn-icon u6" id="algoTools" onclick="setAlgo('tools')" title="Tools" aria-label="Tools"><img src="vendor/icons/toolbox-204167.png" alt="" width="16" height="16" decoding="async"/></button>
+<button class="algo-btn algo-btn-icon u6" id="algoTools" onclick="setAlgo('tools')" title="Tools" aria-label="Tools"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true" focusable="false"><rect x="2.5" y="8.5" width="19" height="13" rx="2.5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M7.5 8.5V6.75a4.5 4.5 0 0 1 9 0V8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.5 12h19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="10.25" y="10.25" width="3.5" height="3.5" rx="0.75" fill="currentColor"/></svg></button>
 <div style="width:1px;height:18px;background:var(--border-hi);margin:0 2px;"></div>
 <button class="algo-btn algo-btn-icon" id="envSettingsToggle" onclick="toggleEnvSettings()" title="Environment settings — Water / Units / Altitude" aria-label="Environment settings"><img src="vendor/icons/settings-2099058.png" alt="" width="16" height="16" decoding="async"/></button>
 <div style="width:1px;height:18px;background:var(--border-hi);margin:0 2px;"></div>

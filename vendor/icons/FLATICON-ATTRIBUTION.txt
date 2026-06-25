@@ -1,6 +1,6 @@
 Mode-row UI icons (Flaticon, free license — attribution required):
 
-- toolbox-204167.png — Toolbox icon by https://www.flaticon.com/free-icon/toolbox_204167
+- toolbox.svg — custom briefcase/toolbox SVG (mode row Tools button)
 - settings-2099058.png — Settings icon by https://www.flaticon.com/free-icon/settings_2099058
 
 Source CDN (128px PNG, downloaded for offline use):
