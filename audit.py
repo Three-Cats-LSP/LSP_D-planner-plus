@@ -3794,8 +3794,25 @@ if capacitor_bridge_js and "dirPath != null && dirPath !== ''" in capacitor_brid
 else:
     fail("capacitor-bridge uniqueFilename dirPath guard missing (issue #21 CR-2)")
 
-if harness and "__lspAppFullyReady" in harness and "appFullyReady" in harness:
-    _harness_wait = harness.split("function waitForApp", 1)[-1].split("function ", 1)[0]
+def _harness_fn_body(src, fn_name, *end_markers):
+    """Return a named function body; stop at the first end_marker (e.g. next top-level fn)."""
+    if not src:
+        return ""
+    parts = src.split(f"function {fn_name}", 1)
+    if len(parts) < 2:
+        return ""
+    body = parts[1]
+    for marker in end_markers:
+        if marker in body:
+            body = body.split(marker, 1)[0]
+            break
+    return body
+
+_harness_wait = _harness_fn_body(harness, "waitForApp", "function calc", "/** Route ZHLC_GF") if harness else ""
+_harness_assert = _harness_fn_body(harness, "assertFiniteNumbers", "function clone") if harness else ""
+_harness_clone = _harness_fn_body(harness, "clone", "function hookIframe") if harness else ""
+
+if harness and "__lspAppFullyReady" in harness and "appFullyReady" in _harness_wait:
     if not re.search(r",\s*1500\s*\)", _harness_wait):
         ok("lsp-test-harness polls __lspAppFullyReady, no hardcoded 1500ms delay (issue #21 CR-3/4)")
     else:
@@ -3808,13 +3825,16 @@ if harness and "reloadApp(iframe, qs)" in harness:
 else:
     fail("lsp-test-harness reloadApp missing optional qs (issue #21 CR-9)")
 
-if harness and "function assertFiniteNumbers" in harness and "Number.isNaN(v)" in harness:
+if (harness and "function assertFiniteNumbers" in harness
+        and "assertFiniteNumbers(v, '')" in _harness_clone
+        and "!isFinite(v)" in _harness_assert
+        and "Harness clone: non-finite number" in _harness_assert):
     ok("lsp-test-harness clone rejects non-finite numbers before JSON round-trip")
 else:
     fail("lsp-test-harness clone still masks NaN/Infinity via JSON.stringify")
 
-_wait_start = harness.split("function waitForApp", 1)[-1][:400] if harness else ""
-if _wait_start and "var start = Date.now()" in _wait_start.split("function check", 1)[0]:
+_wait_start = _harness_wait.split("function check", 1)[0] if _harness_wait else ""
+if _wait_start and "var start = Date.now()" in _wait_start:
     ok("lsp-test-harness waitForApp declares start before check()")
 else:
     fail("lsp-test-harness waitForApp start declared after check()")
@@ -3826,12 +3846,15 @@ for _inline_test in ("tests.html", "tests-extended.html", "tests-pscr-otu-cns.ht
             _ib = f.read()
         _ih = _ib.split("/* inlined from lsp-test-harness.js — keep in sync */", 1)
         _ih = _ih[1].split("</script>", 1)[0] if len(_ih) > 1 else ""
-        _inline_wait = _ih.split("function waitForApp", 1)[-1].split("function ", 1)[0] if _ih else ""
-        _inline_start = _ih.split("function waitForApp", 1)[-1][:400] if _ih else ""
+        _inline_wait = _harness_fn_body(_ih, "waitForApp", "function calc", "/** Route ZHLC_GF")
+        _inline_assert = _harness_fn_body(_ih, "assertFiniteNumbers", "function clone")
+        _inline_clone = _harness_fn_body(_ih, "clone", "function hookIframe")
+        _inline_start = _inline_wait.split("function check", 1)[0] if _inline_wait else ""
         if (_ih and "appFullyReady" in _ih and "reloadApp(iframe, qs)" in _ih
-                and "Number.isNaN(v)" in _ih
+                and "assertFiniteNumbers(v, '')" in _inline_clone
+                and "!isFinite(v)" in _inline_assert
                 and not re.search(r",\s*1500\s*\)", _inline_wait)
-                and "var start = Date.now()" in _inline_start.split("function check", 1)[0]):
+                and "var start = Date.now()" in _inline_start):
             ok(f"{_inline_test} inlined harness synced with lsp-test-harness.js")
         else:
             fail(f"{_inline_test} inlined harness stale (missing appFullyReady, boot delay, or start order)")
