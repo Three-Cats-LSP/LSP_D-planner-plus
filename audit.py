@@ -2976,12 +2976,15 @@ if "function showUpdateBanner" in js:
     _banner_sig = re.search(r"function showUpdateBanner\s*\(\s*(\w+)", js)
     _banner_ver_param = _banner_sig.group(1) if _banner_sig else ""
 if _update_banner and "banner.innerHTML" in _update_banner:
-    _banner_html = _update_banner.split("banner.innerHTML", 1)[-1][:400]
-    _unsafe_ver_in_html = _banner_ver_param and f"+ {_banner_ver_param} +" in _banner_html
-    if "escapeBannerHtml(" in _update_banner and not _unsafe_ver_in_html:
-        ok("showUpdateBanner escapes version string before innerHTML (issue #50)")
+    if not _banner_ver_param:
+        fail("showUpdateBanner version param name not parsed for innerHTML XSS check (issue #53)")
     else:
-        fail("showUpdateBanner injects version string into innerHTML unsanitized (issue #50)")
+        _banner_html = _update_banner.split("banner.innerHTML", 1)[-1][:400]
+        _unsafe_ver_in_html = f"+ {_banner_ver_param} +" in _banner_html
+        if "escapeBannerHtml(" in _update_banner and not _unsafe_ver_in_html:
+            ok("showUpdateBanner escapes version string before innerHTML (issue #50)")
+        else:
+            fail("showUpdateBanner injects version string into innerHTML unsanitized (issue #50)")
 elif _update_banner and _banner_ver_param and re.search(
         rf"\.textContent\s*=\s*{_banner_ver_param}|createTextNode\s*\(\s*{_banner_ver_param}",
         _update_banner):
