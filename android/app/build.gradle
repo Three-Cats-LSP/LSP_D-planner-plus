@@ -15,8 +15,8 @@ android {
         applicationId "com.threecats.lsp.dplannerplus"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 25108
-        versionName "2.51.08"
+        versionCode 25109
+        versionName "2.51.09"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.

@@ -33,6 +33,7 @@ var LSPTestHarness = (function () {
 
   function hookIframe(iframe, onErr) {
     iframe.addEventListener('load', function () {
+      onErr(null);
       try {
         var w = iframe.contentWindow;
         if (!w || w.__lspHarnessHooked) return;
@@ -76,7 +77,7 @@ var LSPTestHarness = (function () {
     var bootErr = null;
     var settled = false;
     var start = Date.now();
-    hookIframe(iframe, function (msg) { bootErr = msg; });
+    hookIframe(iframe, function (msg) { bootErr = msg || null; });
 
     function finish(err, ctx) {
       if (settled) return;
@@ -130,6 +131,7 @@ var LSPTestHarness = (function () {
   }
 
   function reloadApp(iframe, qs) {
+    iframe.__lspBootErr = null;
     iframe.src = 'index.html?' + (qs || 'regression=1&massiveSuite=1') + '&ts=' + Date.now();
   }
 

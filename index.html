@@ -3762,18 +3762,9 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
     window.open(url, '_blank');
   }
 
-  function escapeBannerHtml(s) {
-    return String(s)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
-  }
-
   function showUpdateBanner(remoteVersion, downloadPage) {
     if (document.getElementById('apkUpdateBanner')) return;
-    var safeVersion = escapeBannerHtml(remoteVersion);
+    var safeVersion = typeof escapeHtmlText === 'function' ? escapeHtmlText(remoteVersion) : String(remoteVersion);
     var banner = document.createElement('div');
     banner.id = 'apkUpdateBanner';
     var topPad = isNativeApk()
@@ -4498,6 +4489,8 @@ function handleNativeBackForModals() {
     return true;
   }
   if (_modalIsOpen('referenceModal')) { toggleReference(); return true; }
+  if (document.getElementById('pdfExportDialog')) { document.getElementById('pdfExportDialog').remove(); return true; }
+  if (document.getElementById('contingencyPDFDialog')) { document.getElementById('contingencyPDFDialog').remove(); return true; }
   return false;
 }
 
@@ -5225,7 +5218,7 @@ function buildDecoPlanHeaderData() {
   const _min = String(now.getMinutes()).padStart(2, '0');
   const stamp = `${_yy}/${_mm}/${_dd} ${_hh}:${_min}`;
   const _densityMap = { fresh: 'Fresh', en13319: 'EN13319', salt: 'Salt' };
-  const density = _densityMap[localStorage.getItem('waterDensity') || 'en13319'];
+  const density = _densityMap[localStorage.getItem('waterDensity') || document.getElementById('waterDensitySelect')?.value || 'salt'];
   const du = units === 'imperial' ? 'ft' : 'm';
   const altM = typeof altitudeM !== 'undefined' ? altitudeM : 0;
   const altLabel = altLabelDisp(altM);
@@ -7258,7 +7251,7 @@ function getBottomGasFractions() {
   if (mix === 'ean36')  return { fO2: 0.36, fHe: 0, fN2: 0.64 };
   if (mix === 'custom') {
     const o2 = parseFloat(document.getElementById('decoCustomO2')?.value) || 21;
-    const fO2 = Math.min(1.00, Math.max(0.21, o2 / 100)); // cap at 100% — MOD display warns if depth > MOD
+    const fO2 = Math.min(1.00, Math.max(0.05, o2 / 100)); // hypoxic custom mixes allowed (match trimix floor)
     return { fO2, fHe: 0, fN2: 1 - fO2 };
   }
   if (mix === 'trimix') {
@@ -7337,7 +7330,7 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
     let activeGas = fallbackGas || '';
     let activeFN2 = fallbackFN2 ?? null;
     let activeFHe = fallbackFHe ?? 0;
-    for (const s of steps) {
+    for (const s of result) {
       if (!s.gas || s.gas.trim() === '') continue;
       // Determine the depth range this step covers
       const stepDepthM = isMetric
@@ -9283,7 +9276,7 @@ function runDecoSchedule() {
   }
   // ── CNS raw fraction per segment ──
   function segCNSfrac(ppo2, dur) {
-    if (ppo2 <= 0.5) return 0;
+    if (ppo2 < 0.6) return 0;
     const limits = {6:720,7:570,8:450,9:360,10:300,11:240,12:210,13:180,14:150,15:120,16:45,17:45};
     const lo = Math.min(Math.floor(ppo2 * 10), 17);
     const hi = Math.min(lo + 1, 17);
@@ -9402,6 +9395,7 @@ function runDecoSchedule() {
   // i.e. ascent+deco only. Matches MultiDeco/DiveKit's published TTS definition.
   const rtAtBottomEnd = rowRT;
 
+  let _decoRowBuf = '';
   collapsedMDP.forEach(s => {
     const _sFN2    = s.fN2 ?? bottomFN2;
     const _sFHe    = s.fHe ?? 0;
@@ -9425,7 +9419,7 @@ function runDecoSchedule() {
       const switchLimit = getPPO2Limit(_swFO2);
       const sppColor    = sppVal > switchLimit ? 'color:var(--red);font-weight:700;' : sppVal > switchLimit * 0.97 ? 'color:var(--orange);font-weight:700;' : '';
       const switchMixDisp = s.gas.replace(/\s+/g, '').toUpperCase();
-      tbody.innerHTML += `<tr data-phase="switch">
+      _decoRowBuf += `<tr data-phase="switch">
         <td style="text-align:center;">⇄</td>
         <td data-label="Depth">${switchDepthDisp}</td>
         <td data-label="Stop"></td>
@@ -9455,7 +9449,7 @@ function runDecoSchedule() {
         : cumCnsPct >= 80
           ? 'background:rgba(255,255,0,0.25);'
           : '';
-      tbody.innerHTML += `<tr class="deco-row" data-phase="deco" style="${rowBg}" ${rowBg ? 'data-cnshi="1"' : ''}>
+      _decoRowBuf += `<tr class="deco-row" data-phase="deco" style="${rowBg}" ${rowBg ? 'data-cnshi="1"' : ''}>
         <td>🔴</td>
         <td data-label="Depth">${dU?s.depth+'m':mToFt(s.depth)+'ft'}</td>
         <td data-label="Stop" style="color:${rowBg?'#b30000':'var(--red)'};">${fmtMM(stepDur)}</td>
@@ -9469,7 +9463,7 @@ function runDecoSchedule() {
       totalCNSfrac += segCNSfrac(pO2Val, stepDur);
       totalOTU     += segOTU(pO2Val, stepDur);
       addGas(s.gas, s.depth, stepDur, sacDeco);
-      tbody.innerHTML += `<tr class="safe-row" data-phase="safety">
+      _decoRowBuf += `<tr class="safe-row" data-phase="safety">
         <td style="font-size:16px;">🟢</td>
         <td data-label="Depth">${dU?s.depth+'m':mToFt(s.depth)+'ft'}</td>
         <td data-label="Stop" style="color:var(--green);">${fmtMM(stepDur)}</td>
@@ -9484,7 +9478,7 @@ function runDecoSchedule() {
       totalCNSfrac += segCNSfrac(pO2Val, stepDur);
       totalOTU     += segOTU(pO2Val, stepDur);
       addGas(s.gas, (s.from + s.to) / 2, stepDur, sacDeco);
-      tbody.innerHTML += `<tr class="asc-row" data-phase="ascent">
+      _decoRowBuf += `<tr class="asc-row" data-phase="ascent">
         <td><span style="font-size:18px;" class="asc-color">↑</span></td>
         <td data-label="Depth" class="asc-color">${dU?s.to+'m':mToFt(s.to)+'ft'}</td>
         <td data-label="Stop" class="asc-color" style="font-size:11px;color:var(--muted);">${fmtMM(s.dur)}</td>
@@ -9495,6 +9489,7 @@ function runDecoSchedule() {
       </tr>`;
     }
   });
+  tbody.innerHTML += _decoRowBuf;
 
   // ── Update Tissue Saturation tab with final deco tissues ──
   if (!_contingencyRunning) {
@@ -9748,10 +9743,11 @@ function planSegRunEndMin(seg) {
 }
 
 function addExposureSample(otu, cnsFrac, ppO2, dur) {
-  if (ppO2 <= 0.5 || dur <= 0) return;
+  if (ppO2 < 0.6 || dur <= 0) return;
   otu.val += dur * Math.pow((ppO2 - 0.5) / 0.5, OTU_EXPONENT);
-  const cnsLimits = { 6:720, 7:570, 8:450, 9:360, 10:300, 11:240, 12:210, 13:180, 14:150, 15:120, 16:45 };
-  const lo = Math.floor(ppO2 * 10), hi = lo + 1;
+  const cnsLimits = { 6:720, 7:570, 8:450, 9:360, 10:300, 11:240, 12:210, 13:180, 14:150, 15:120, 16:45, 17:45 };
+  const lo = Math.min(Math.floor(ppO2 * 10), 17);
+  const hi = Math.min(lo + 1, 17);
   const lim = (cnsLimits[lo] || 0) + ((cnsLimits[hi] || 0) - (cnsLimits[lo] || 0)) * (ppO2 * 10 - lo);
   cnsFrac.val += dur / (lim > 0 ? lim : 45);
 }
@@ -14151,14 +14147,7 @@ function showContingencyPDFDialog() {
         style="padding:9px 18px;background:transparent;color:var(--muted,#8890b0);border:1px solid var(--border,#2a3050);border-radius:6px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;">
         Cancel
       </button>
-      <button onclick="(function(){
-        const opts={};
-        ['gas','slate','profile','gfCurve','tissue','emSlate'].forEach(k=>{
-          opts[k]=!!document.getElementById('emPdfOpt_'+k)?.checked;
-        });
-        document.getElementById('contingencyPDFDialog').remove();
-        exportContingencyPDF(opts);
-      })()"
+      <button onclick="runContingencyPdfExportFromDialog()"
         style="padding:9px 18px;background:#cc0000;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;">
         EXPORT PDF
       </button>
@@ -14167,6 +14156,18 @@ function showContingencyPDFDialog() {
   overlay.appendChild(box);
   overlay.addEventListener('click', e => { if(e.target===overlay) overlay.remove(); });
   document.body.appendChild(overlay);
+}
+
+function runContingencyPdfExportFromDialog() {
+  const opts = {};
+  ['gas', 'slate', 'profile', 'gfCurve', 'tissue', 'emSlate'].forEach(k => {
+    opts[k] = !!document.getElementById('emPdfOpt_' + k)?.checked;
+  });
+  document.getElementById('contingencyPDFDialog')?.remove();
+  exportContingencyPDF(opts).catch(function(e) {
+    console.error('[Contingency PDF export]', e);
+    alert('PDF export failed: ' + (e && e.message ? e.message : e));
+  });
 }
 
 async function exportContingencyPDF(opts) {
@@ -15231,6 +15232,18 @@ function attachGFCurveInteraction() {
 
 
 
+function runPdfExportFromDialog() {
+  const opts = {};
+  ['gas', 'profile', 'slate', 'gfCurve', 'tissue'].forEach(k => {
+    opts[k] = document.getElementById('pdfOpt_' + k)?.checked !== false && !!document.getElementById('pdfOpt_' + k)?.checked;
+  });
+  document.getElementById('pdfExportDialog')?.remove();
+  exportPDF(opts).catch(function(e) {
+    console.error('[PDF export]', e);
+    alert('PDF export failed: ' + (e && e.message ? e.message : e));
+  });
+}
+
 function showPDFExportDialog() {
   // Remove any existing dialog
   const old = document.getElementById('pdfExportDialog');
@@ -15266,14 +15279,7 @@ function showPDFExportDialog() {
         style="padding:9px 18px;background:transparent;color:var(--muted,#8890b0);border:1px solid var(--border,#2a3050);border-radius:6px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;">
         Cancel
       </button>
-      <button onclick="(function(){
-        const opts={};
-        ['gas','profile','slate','gfCurve','tissue'].forEach(k=>{
-          opts[k]=document.getElementById('pdfOpt_'+k)?.checked!==false&&document.getElementById('pdfOpt_'+k)?.checked;
-        });
-        document.getElementById('pdfExportDialog').remove();
-        exportPDF(opts);
-      })()"
+      <button onclick="runPdfExportFromDialog()"
         style="padding:9px 18px;background:var(--accent,#00d9ff);color:#000;border:none;border-radius:6px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;">
         EXPORT PDF
       </button>
@@ -15496,7 +15502,7 @@ async function exportPDF(opts) {
     const icon=isDeco?'Stp':isAsc?'Asc':isBtm?'Lvl':isSafe?'Stp':isDes?'Des':'---';
     doc.setFontSize(7); doc.setFont('DejaVuSans','normal');
     doc.setTextColor(...txC); _pdfDrawDecoPhaseLabel(doc, y, _pdfTbl, icon);
-    _pdfDrawDecoTableCells(doc, y, _pdfTbl, c.slice(1, 8), txC);
+    _pdfDrawDecoTableCells(doc, y, _pdfTbl, c.slice(1, 9), txC);
     y+=5;
   });
   y+=3; checkY(7); doc.setFontSize(7); doc.setFont('DejaVuSans','normal');
@@ -16228,8 +16234,8 @@ function _renderProfilePresetModal() {
   list.innerHTML = presets.map((p, i) => `
     <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;background:var(--bg-alt);">
       <div style="flex:1;min-width:0;">
-        <div style="color:var(--text);font-weight:700;font-size:12px;">${escapePresetHtml(p.name)}</div>
-        <div style="color:var(--muted);font-size:10px;margin-top:1px;">${p.depth}${du} / ${p.bt}min${p.summary ? ' · ' + escapePresetHtml(p.summary) : ''}</div>
+        <div style="color:var(--text);font-weight:700;font-size:12px;">${escapeHtmlText(p.name)}</div>
+        <div style="color:var(--muted);font-size:10px;margin-top:1px;">${p.depth}${du} / ${p.bt}min${p.summary ? ' · ' + escapeHtmlText(p.summary) : ''}</div>
       </div>
       <button onclick="loadProfilePreset(${i})" style="padding:5px 10px;background:var(--accent);border:none;border-radius:6px;color:#000;font-family:inherit;font-size:10px;font-weight:700;cursor:pointer;">Load</button>
       <button onclick="deleteProfilePreset(${i})" style="padding:5px 10px;background:none;border:1px solid var(--border);border-radius:6px;color:var(--red);font-family:inherit;font-size:10px;cursor:pointer;">Del</button>
@@ -16496,8 +16502,8 @@ function _renderConfigPresetModal() {
   html += LSP_APP_PRESETS.map((p, i) => `
     <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid var(--border);border-radius:8px;margin-bottom:5px;background:rgba(0,200,255,0.03);">
       <div style="flex:1;min-width:0;">
-        <div style="color:var(--accent);font-weight:700;font-size:12px;">${escapePresetHtml(p.name)}</div>
-        <div style="color:var(--muted);font-size:10px;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapePresetHtml(p.summary)}</div>
+        <div style="color:var(--accent);font-weight:700;font-size:12px;">${escapeHtmlText(p.name)}</div>
+        <div style="color:var(--muted);font-size:10px;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtmlText(p.summary)}</div>
       </div>
       <button onclick="loadAppPreset(${i})" style="padding:5px 10px;background:rgba(0,200,255,0.12);border:1px solid var(--accent);border-radius:6px;color:var(--accent);font-family:inherit;font-size:10px;font-weight:700;cursor:pointer;">Load</button>
     </div>`).join('');
@@ -16508,8 +16514,8 @@ function _renderConfigPresetModal() {
     html += presets.map((p, i) => `
       <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;background:var(--bg-alt);">
         <div style="flex:1;min-width:0;">
-          <div style="color:var(--text);font-weight:700;font-size:12px;">${escapePresetHtml(p.name)}</div>
-          <div style="color:var(--muted);font-size:10px;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapePresetHtml(p.summary || '')}</div>
+          <div style="color:var(--text);font-weight:700;font-size:12px;">${escapeHtmlText(p.name)}</div>
+          <div style="color:var(--muted);font-size:10px;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtmlText(p.summary || '')}</div>
         </div>
         <button onclick="loadConfigPreset(${i})" style="padding:5px 10px;background:var(--accent);border:none;border-radius:6px;color:#000;font-family:inherit;font-size:10px;font-weight:700;cursor:pointer;">Load</button>
         <button onclick="deleteConfigPreset(${i})" style="padding:5px 10px;background:none;border:1px solid var(--border);border-radius:6px;color:var(--red);font-family:inherit;font-size:10px;cursor:pointer;">Del</button>
@@ -16659,16 +16665,12 @@ function renderPresetList() {
   list.innerHTML = presets.map((p, i) => `
     <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;background:var(--bg-alt);">
       <div style="flex:1;min-width:0;">
-        <div style="color:var(--text);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapePresetHtml(p.name)}</div>
-        <div style="color:var(--muted);font-size:9px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapePresetHtml(p.summary || '')}</div>
+        <div style="color:var(--text);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtmlText(p.name)}</div>
+        <div style="color:var(--muted);font-size:9px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtmlText(p.summary || '')}</div>
       </div>
       <button onclick="loadPreset(${i})" style="padding:6px 10px;background:var(--accent);border:none;border-radius:6px;color:#fff;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;cursor:pointer;flex-shrink:0;">Load</button>
       <button onclick="deletePreset(${i})" style="padding:6px 10px;background:none;border:1px solid var(--border);border-radius:6px;color:var(--red);font-family:'JetBrains Mono',monospace;font-size:10px;cursor:pointer;flex-shrink:0;">Del</button>
     </div>`).join('');
-}
-
-function escapePresetHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function saveNewPreset() {

@@ -2866,10 +2866,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.08['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.08")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.09['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.09")
 else:
-    fail("APP_VERSION not bumped to 2.51.08 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.09 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -2972,6 +2972,8 @@ else:
 
 _update_banner = js.split("function showUpdateBanner", 1)[-1].split("function checkForApkUpdate", 1)[0] if "function showUpdateBanner" in js else ""
 _banner_ver_param = ""
+_banner_inner_expr = ""
+_banner_xss_ok = False
 if _update_banner:
     _banner_sig = re.match(r"\s*\(\s*(\w+)", _update_banner)
     _banner_ver_param = _banner_sig.group(1) if _banner_sig else ""
@@ -2990,14 +2992,16 @@ if _update_banner and "banner.innerHTML" in _update_banner:
             if _pos > 0:
                 _inner_stop = min(_inner_stop, _pos)
         _inner_expr = _inner_tail[:_inner_stop]
+        _banner_inner_expr = _inner_expr
         _uses_escaped_var = bool(re.search(r"\+\s*safe\w*\s*\+", _inner_expr))
         _uses_inline_escape = bool(re.search(
-            rf"escapeBannerHtml\s*\(\s*{_banner_ver_param}\s*\)", _inner_expr))
+            rf"(?:escapeHtmlText|escapeBannerHtml)\s*\(\s*{_banner_ver_param}\s*\)", _inner_expr))
         _raw_param_in_inner = bool(re.search(
-            rf"(?<!escapeBannerHtml\()\b{_banner_ver_param}\b", _inner_expr))
+            rf"(?<!escapeHtmlText\()(?<!escapeBannerHtml\()\b{_banner_ver_param}\b", _inner_expr))
         _unsafe_ver_in_html = _raw_param_in_inner and not (_uses_escaped_var or _uses_inline_escape)
-        if "escapeBannerHtml(" in _update_banner and not _unsafe_ver_in_html:
+        if ("escapeHtmlText(" in _update_banner or "escapeBannerHtml(" in _update_banner) and not _unsafe_ver_in_html:
             ok("showUpdateBanner escapes version string before innerHTML (issue #50)")
+            _banner_xss_ok = True
         else:
             fail("showUpdateBanner injects version string into innerHTML unsanitized (issue #50)")
 elif _update_banner and _banner_ver_param and re.search(
@@ -3006,16 +3010,13 @@ elif _update_banner and _banner_ver_param and re.search(
     ok("showUpdateBanner uses DOM text API for version string (issue #50)")
 elif "function showUpdateBanner" in js:
     fail("showUpdateBanner missing safe version-string handling (issue #50)")
-_open_dl = js.split("function openDownloadPage", 1)[-1].split("function escapeBannerHtml", 1)[0] if "function openDownloadPage" in js else ""
+_open_dl = js.split("function openDownloadPage", 1)[-1].split("function checkForApkUpdate", 1)[0] if "function openDownloadPage" in js else ""
 if _open_dl and "!/^https?:\\/\\//i.test(url)" in _open_dl and "DEFAULT_DOWNLOAD_PAGE" in _open_dl:
     ok("openDownloadPage rejects non-http(s) download URLs from manifest")
 else:
     fail("openDownloadPage missing http(s) URL guard for remote downloadPage")
-_esc_banner = js.split("function escapeBannerHtml", 1)[-1].split("function showUpdateBanner", 1)[0] if "function escapeBannerHtml" in js else ""
-if _esc_banner and ".replace(/'/g, '&#39;')" in _esc_banner:
-    ok("escapeBannerHtml escapes apostrophe for attribute-safe reuse (issue #51)")
-else:
-    fail("escapeBannerHtml missing apostrophe escape (issue #51)")
+if "function escapeBannerHtml" in js:
+    fail("escapeBannerHtml duplicate removed — use escapeHtmlText only (issue #59)")
 _esc_html = js.split("function escapeHtmlText", 1)[-1].split("function setTravelGasFractionWarning", 1)[0] if "function escapeHtmlText" in js else ""
 if _esc_html and ".replace(/'/g, '&#39;')" in _esc_html:
     ok("escapeHtmlText escapes apostrophe for innerHTML reuse")
@@ -4302,22 +4303,75 @@ _audit_src57 = open(__file__, encoding="utf-8").read()
 if (
     "_inner_tail = _update_banner.split(\"banner.innerHTML\", 1)[-1]" in _audit_src57
     and "document.body.appendChild(banner)" in _audit_src57
-    and _update_banner
-    and "banner.innerHTML" in _update_banner
+    and _banner_xss_ok
+    and _banner_inner_expr
+    and re.search(r"\+\s*safe\w*\s*\+", _banner_inner_expr)
 ):
-    _inner_tail57 = _update_banner.split("banner.innerHTML", 1)[-1]
-    _inner_stop57 = len(_inner_tail57)
-    for _m57 in ("document.body.appendChild(banner)",):
-        _p57 = _inner_tail57.find(_m57)
-        if _p57 > 0:
-            _inner_stop57 = min(_inner_stop57, _p57)
-    _inner_expr57 = _inner_tail57[:_inner_stop57]
-    if re.search(r"\+\s*safe\w*\s*\+", _inner_expr57):
-        ok("showUpdateBanner XSS audit spans full innerHTML past CSS semicolons (issue #57)")
-    else:
-        fail("showUpdateBanner XSS audit innerHTML slice missing safeVersion (issue #57)")
+    ok("showUpdateBanner XSS audit spans full innerHTML past CSS semicolons (issue #57)")
 else:
     fail("showUpdateBanner XSS audit missing appendChild-bounded innerHTML slice (issue #57)")
+
+_seg_cns = js.split("function segCNSfrac", 1)[-1].split("function ", 1)[0] if "function segCNSfrac" in js else ""
+if _seg_cns and re.search(r"if\s*\(\s*ppo2\s*<\s*0\.6\s*\)\s*return\s*0", _seg_cns):
+    ok("segCNSfrac returns zero below NOAA table floor 0.6 bar (issue #59 F1)")
+else:
+    fail("segCNSfrac still extrapolates phantom CNS between 0.5–0.6 bar (issue #59 F1)")
+_aes = js.split("function addExposureSample", 1)[-1].split("function ", 1)[0] if "function addExposureSample" in js else ""
+if _aes and "17:45" in _aes and re.search(r"if\s*\(\s*ppO2\s*<\s*0\.6", _aes):
+    ok("addExposureSample CNS table matches segCNSfrac with key 17 (issue #59 F2)")
+else:
+    fail("addExposureSample missing key 17 or 0.6 bar floor (issue #59 F2)")
+_www_bridge = os.path.join(os.path.dirname(__file__), "www", "capacitor-bridge.js")
+if capacitor_bridge_js and os.path.isfile(_www_bridge):
+    with open(_www_bridge, encoding="utf-8") as _wb:
+        _www_bridge_txt = _wb.read()
+    if "saved.finalName || filename" in _www_bridge_txt and "responseType = 'arraybuffer'" in _www_bridge_txt:
+        ok("www/capacitor-bridge.js synced with root share + arraybuffer fallback (issue #59 F3/F10)")
+    else:
+        fail("www/capacitor-bridge.js stale vs root — run sync_www.py (issue #59 F3/F10)")
+elif capacitor_bridge_js:
+    ok("www/capacitor-bridge.js sync check skipped (www/ not built yet)")
+else:
+    fail("capacitor-bridge.js missing")
+if re.search(r"mix === 'custom'[\s\S]{0,200}Math\.max\(0\.05", js):
+    ok("getBottomGasFractions custom O2 floor is 0.05 (issue #59 F4)")
+else:
+    fail("getBottomGasFractions custom path still clamps O2 to 0.21 (issue #59 F4)")
+if "c.slice(1, 9)" in js and "c.slice(1, 8)" not in js.split("function exportPDF", 1)[-1][:8000]:
+    ok("exportPDF includes EAD column via c.slice(1, 9) (issue #59 F5)")
+else:
+    fail("exportPDF still drops EAD column with c.slice(1, 8) (issue #59 F5)")
+if "runPdfExportFromDialog" in js and ".catch(function" in js.split("function runPdfExportFromDialog", 1)[-1][:400]:
+    ok("PDF export dialogs await async export with user-facing .catch (issue #59 F6)")
+else:
+    fail("PDF export dialogs fire-and-forget async exportPDF (issue #59 F6)")
+_emdp = js.split("function enforceMinDecoProfile", 1)[-1].split("let _confirmCallback", 1)[0] if "function enforceMinDecoProfile" in js else ""
+if _emdp and "for (const s of result)" in _emdp.split("function resolveGasAtDepth", 1)[-1][:800]:
+    ok("enforceMinDecoProfile resolveGasAtDepth uses in-progress result array (issue #59 F7)")
+else:
+    fail("enforceMinDecoProfile resolveGasAtDepth still closes over original steps (issue #59 F7)")
+if "_decoRowBuf" in js and "tbody.innerHTML += _decoRowBuf" in js:
+    ok("deco table batches row HTML before single tbody write (issue #59 F8)")
+else:
+    fail("deco table still uses O(N²) tbody.innerHTML += in loop (issue #59 F8)")
+if "pdfExportDialog" in js.split("function handleNativeBackForModals", 1)[-1].split("function initNativeModalBackHandler", 1)[0]:
+    ok("handleNativeBackForModals dismisses pdfExportDialog (issue #59 F9)")
+else:
+    fail("handleNativeBackForModals missing pdfExportDialog back handler (issue #59 F9)")
+_bdhd59 = js.split("function buildDecoPlanHeaderData", 1)[-1].split("function ", 1)[0] if "function buildDecoPlanHeaderData" in js else ""
+if _bdhd59 and "waterDensitySelect" in _bdhd59 and "'salt'" in _bdhd59.split("waterDensitySelect", 1)[-1][:80]:
+    ok("buildDecoPlanHeaderData water density defaults match UI select (issue #59 F12)")
+else:
+    fail("buildDecoPlanHeaderData still defaults density to en13319 only (issue #59 F12)")
+if "function escapePresetHtml" not in js:
+    ok("escapePresetHtml removed — presets use escapeHtmlText (issue #59 F13)")
+else:
+    fail("escapePresetHtml duplicate escaper still present (issue #59 F13)")
+_harness = open(os.path.join(os.path.dirname(__file__), "lsp-test-harness.js"), encoding="utf-8").read() if os.path.isfile(os.path.join(os.path.dirname(__file__), "lsp-test-harness.js")) else ""
+if _harness and "onErr(null)" in _harness and "bootErr = msg || null" in _harness:
+    ok("lsp-test-harness clears stale bootErr on iframe load (issue #59 F11)")
+else:
+    fail("lsp-test-harness may propagate stale bootErr across reloadApp (issue #59 F11)")
 
 _apk_update = js.split("function checkForApkUpdate", 1)[-1].split("// APP_VERSION", 1)[0] if "function checkForApkUpdate" in js else ""
 if _apk_update and "function isNativeApk" in js.split("Native APK update check", 1)[-1].split("// APP_VERSION", 1)[0]:
