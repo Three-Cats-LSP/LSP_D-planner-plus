@@ -1,3 +1,3 @@
 Mode-row icon assets (LSP D-Planner+):
 - tools.svg — filled diagonal double open-end wrench SVG (Tools button)
-- settings.svg — filled gear SVG, open center (ENV / environment settings button)
+- settings-2099058.png — Settings icon by https://www.flaticon.com/free-icon/settings_2099058
