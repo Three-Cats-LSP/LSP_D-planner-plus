@@ -2971,14 +2971,21 @@ else:
     fail("Version mismatch across app-version.js / sw.js / package.json / build.gradle / version.json (v17 BUG-74)")
 
 _update_banner = js.split("function showUpdateBanner", 1)[-1].split("function checkForApkUpdate", 1)[0] if "function showUpdateBanner" in js else ""
-if _update_banner and "escapeBannerHtml(remoteVersion)" in _update_banner:
-    _banner_html = _update_banner.split("banner.innerHTML", 1)[-1][:400] if "banner.innerHTML" in _update_banner else ""
-    if _banner_html and "+ remoteVersion +" not in _banner_html:
+if _update_banner and "banner.innerHTML" in _update_banner:
+    _banner_html = _update_banner.split("banner.innerHTML", 1)[-1][:400]
+    if "escapeBannerHtml(remoteVersion)" in _update_banner and "+ remoteVersion +" not in _banner_html:
         ok("showUpdateBanner escapes remoteVersion before innerHTML (issue #50)")
     else:
         fail("showUpdateBanner injects remoteVersion into innerHTML unsanitized (issue #50)")
+elif _update_banner and re.search(r"\.textContent\s*=\s*remoteVersion|createTextNode\s*\(\s*remoteVersion", _update_banner):
+    ok("showUpdateBanner uses DOM text API for remoteVersion (issue #50)")
 elif "function showUpdateBanner" in js:
-    fail("showUpdateBanner missing escapeBannerHtml for remoteVersion (issue #50)")
+    fail("showUpdateBanner missing safe remoteVersion handling (issue #50)")
+_esc_banner = js.split("function escapeBannerHtml", 1)[-1].split("function showUpdateBanner", 1)[0] if "function escapeBannerHtml" in js else ""
+if _esc_banner and ".replace(/'/g, '&#39;')" in _esc_banner:
+    ok("escapeBannerHtml escapes apostrophe for attribute-safe reuse (issue #51)")
+else:
+    fail("escapeBannerHtml missing apostrophe escape (issue #51)")
 if os.path.isfile(version_json_path):
     with open(version_json_path, encoding="utf-8") as f:
         _vj50 = f.read()

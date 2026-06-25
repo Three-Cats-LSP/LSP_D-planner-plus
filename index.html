@@ -3744,7 +3744,8 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   function showUpdateBanner(remoteVersion, downloadPage) {
