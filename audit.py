@@ -4250,10 +4250,10 @@ if re.search(r'id="algoTools"[^>]*>[\s\S]*?<svg[^>]+viewBox', html) and re.searc
 else:
     fail("Mode row missing inline SVG for Tools or ENV button")
 
-if os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "toolbox.svg")) and os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "settings.svg")):
-    ok("vendor/icons toolbox.svg and settings.svg present offline")
+if os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "tools.svg")) and os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "settings.svg")):
+    ok("vendor/icons tools.svg and settings.svg present offline")
 else:
-    fail("vendor/icons missing toolbox.svg or settings.svg")
+    fail("vendor/icons missing tools.svg or settings.svg")
 
 _mode_row = html.split('<div class="algo-toggle"', 1)
 if "syncEnvRowDisplay" in js and len(_mode_row) > 1 and 'id="envSettingsToggle"' in _mode_row[1][:3500]:
