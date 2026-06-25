@@ -2391,7 +2391,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 <div class="field" id="decoCustomO2Field" style="display:none;">
 <label>O₂ %</label>
-<input id="decoCustomO2" max="100" min="21" oninput="updateGasMODDisplays();if(window._lastContingency) calcContingency()" step="1" type="number" value="21"/>
+<input id="decoCustomO2" max="100" min="5" oninput="updateGasMODDisplays();if(window._lastContingency) calcContingency()" step="1" type="number" value="21"/>
 </div>
 <div class="field" id="botTrimixO2Field" style="display:none;">
 <label>O₂ %</label>
@@ -4125,6 +4125,16 @@ function setWaterDensity(type, customKgM3) {
   if (type === 'custom') localStorage.setItem('waterDensityCustom', customKgM3 || document.getElementById('waterCustomInput')?.value || 1025);
 }
 
+function waterDensityDisplayLabel() {
+  const key = localStorage.getItem('waterDensity') || document.getElementById('waterDensitySelect')?.value || 'salt';
+  if (key === 'custom') {
+    const kg = localStorage.getItem('waterDensityCustom') || document.getElementById('waterCustomInput')?.value;
+    return kg ? 'Custom (' + kg + ' kg/m³)' : 'Custom';
+  }
+  const map = { fresh: 'Fresh', en13319: 'EN13319', salt: 'Salt' };
+  return map[key] || 'Salt';
+}
+
 function applyCustomWaterDensity(inputId) {
   const val = parseFloat(document.getElementById(inputId)?.value);
   if (!val || val < 900 || val > 1100) return;
@@ -5217,8 +5227,7 @@ function buildDecoPlanHeaderData() {
   const _hh = String(now.getHours()).padStart(2, '0');
   const _min = String(now.getMinutes()).padStart(2, '0');
   const stamp = `${_yy}/${_mm}/${_dd} ${_hh}:${_min}`;
-  const _densityMap = { fresh: 'Fresh', en13319: 'EN13319', salt: 'Salt' };
-  const density = _densityMap[localStorage.getItem('waterDensity') || document.getElementById('waterDensitySelect')?.value || 'salt'];
+  const density = waterDensityDisplayLabel();
   const du = units === 'imperial' ? 'ft' : 'm';
   const altM = typeof altitudeM !== 'undefined' ? altitudeM : 0;
   const altLabel = altLabelDisp(altM);
@@ -7144,7 +7153,9 @@ function getDomBottomGasPct() {
   if (mix === 'ean32') return { o2: 32, he: 0 };
   if (mix === 'ean36') return { o2: 36, he: 0 };
   if (mix === 'custom') {
-    return { o2: parseFloat(document.getElementById('decoCustomO2')?.value), he: 0 };
+    const raw = document.getElementById('decoCustomO2')?.value;
+    const o2 = raw === '' || raw == null ? NaN : parseFloat(raw);
+    return { o2: Number.isFinite(o2) ? o2 : NaN, he: 0 };
   }
   if (mix === 'trimix') {
     return {
@@ -8412,16 +8423,30 @@ function updateGasMODDisplays() {
     return `MOD = floor((${ppO2limit} / ${fO2.toFixed(2)} − 1) / BAR_PER_METRE)\n= floor(${exact.toFixed(2)}) = ${Math.floor(exact)} m\nLimit: ${label} ppO₂ ${ppO2limit} bar | ${o2AtMOD ? 'Allow at MOD' : 'Strict ppO₂'}`;
   }
 
-  // Bottom gas MOD — unified getBottomGasFractions() handles trimix
+  // Bottom gas MOD — validate raw DOM % before clamped fractions
+  const botMix = document.getElementById('decoGas')?.value;
+  const botDom = botMix === 'custom' ? getDomBottomGasPct() : null;
   const botFracs = getBottomGasFractions();
   const botFO2   = botFracs.fO2;
   const botMOD   = calcGasMOD(botFO2, ppO2Limit);
   const botEl    = document.getElementById('botMODDisplay');
   if (botEl) {
-    const botLabel = getGasLabel(botFO2, botFracs.fHe);
-    const heNote   = botFracs.fHe > 0 ? '  (' + botLabel + ')' : '';
-    botEl.value    = fmtDepth(botMOD) + heNote;
-    botEl.title    = tooltipText(botFO2, ppO2Limit, ccrUi ? 'Diluent' : 'Bottom');
+    if (botDom && !Number.isFinite(botDom.o2)) {
+      botEl.value = '—';
+      botEl.title = 'Enter a valid O₂ % for custom bottom gas';
+    } else {
+      const botLabel = getGasLabel(botFO2, botFracs.fHe);
+      const heNote   = botFracs.fHe > 0 ? '  (' + botLabel + ')' : '';
+      let clampNote = '';
+      if (botMix === 'custom' && Number.isFinite(botDom.o2) && botDom.o2 > 0 && botDom.o2 < 5) {
+        clampNote = '  (5% used)';
+      }
+      botEl.value    = fmtDepth(botMOD) + heNote + clampNote;
+      botEl.title    = tooltipText(botFO2, ppO2Limit, ccrUi ? 'Diluent' : 'Bottom');
+      if (clampNote) {
+        botEl.title += '\n⚠ O₂ ' + botDom.o2 + '% is below 5% minimum — calculations use 5%.';
+      }
+    }
   }
 
   // Loop over all deco gas cards
@@ -9304,6 +9329,7 @@ function runDecoSchedule() {
   }
 
   // ── DESCENT ROW(S) — split by travel gas if active ──
+  let _decoRowBuf = '';
   const travelInfoRow = getTravelGasInfo(); // null if no travel gas
   const travelSwitchMrow = travelInfoRow ? Math.min(travelInfoRow.switchDepthM, depthM) : 0;
 
@@ -9317,7 +9343,7 @@ function runDecoSchedule() {
     totalOTU     += segOTU(parseFloat(travelPPO2), travelDescentTimeMin);
     addGas(travelInfoRow.label, travelMidM, travelDescentTimeMin, sacBottom);
     const travelSwitchDisp = dU ? travelSwitchMrow+'m' : mToFt(travelSwitchMrow)+'ft';
-    tbody.innerHTML += `<tr class="asc-row" data-phase="descent">
+    _decoRowBuf += `<tr class="asc-row" data-phase="descent">
       <td><span style="font-size:18px;color:#ff8080;">↓</span></td>
       <td data-label="Depth" style="color:#ff8080;">0→${travelSwitchDisp}</td>
       <td data-label="Stop" style="color:#ff8080;"></td>
@@ -9335,7 +9361,7 @@ function runDecoSchedule() {
     totalCNSfrac += segCNSfrac(parseFloat(descentPPO2), bottomDescentTimeMin);
     totalOTU     += segOTU(parseFloat(descentPPO2), bottomDescentTimeMin);
     addGas(loopMixLabel, bottomMidM, bottomDescentTimeMin, sacBottom);
-    tbody.innerHTML += `<tr class="asc-row" data-phase="descent">
+    _decoRowBuf += `<tr class="asc-row" data-phase="descent">
       <td><span style="font-size:18px;color:#ff8080;">↓</span></td>
       <td data-label="Depth" style="color:#ff8080;">${travelSwitchDisp}→${dU?rawD+'m':mToFt(rawD)+'ft'}</td>
       <td data-label="Stop" style="color:#ff8080;"></td>
@@ -9352,7 +9378,7 @@ function runDecoSchedule() {
     totalCNSfrac += segCNSfrac(parseFloat(descentPPO2), descentTimeMin);
     totalOTU     += segOTU(parseFloat(descentPPO2), descentTimeMin);
     addGas(loopMixLabel, descentMidM, descentTimeMin, sacBottom);
-    tbody.innerHTML += `<tr class="asc-row" data-phase="descent">
+    _decoRowBuf += `<tr class="asc-row" data-phase="descent">
       <td><span style="font-size:18px;color:#ff8080;">↓</span></td>
       <td data-label="Depth" style="color:#ff8080;">0→${dU?rawD+'m':mToFt(rawD)+'ft'}</td>
       <td data-label="Stop" style="color:#ff8080;"></td>
@@ -9380,7 +9406,7 @@ function runDecoSchedule() {
       );
     }
   }
-  tbody.innerHTML += `<tr class="asc-row" data-phase="bottom">
+  _decoRowBuf += `<tr class="asc-row" data-phase="bottom">
     <td>🔵</td>
     <td data-label="Depth" style="color:var(--accent);">${dU?rawD+'m':mToFt(rawD)+'ft'}</td>
     <td data-label="Stop" style="color:var(--accent);">${fmtMM(btAtDepthMin)}</td>
@@ -9395,7 +9421,6 @@ function runDecoSchedule() {
   // i.e. ascent+deco only. Matches MultiDeco/DiveKit's published TTS definition.
   const rtAtBottomEnd = rowRT;
 
-  let _decoRowBuf = '';
   collapsedMDP.forEach(s => {
     const _sFN2    = s.fN2 ?? bottomFN2;
     const _sFHe    = s.fHe ?? 0;
@@ -9743,8 +9768,11 @@ function planSegRunEndMin(seg) {
 }
 
 function addExposureSample(otu, cnsFrac, ppO2, dur) {
-  if (ppO2 < 0.6 || dur <= 0) return;
-  otu.val += dur * Math.pow((ppO2 - 0.5) / 0.5, OTU_EXPONENT);
+  if (dur <= 0) return;
+  if (ppO2 > 0.5) {
+    otu.val += dur * Math.pow((ppO2 - 0.5) / 0.5, OTU_EXPONENT);
+  }
+  if (ppO2 < 0.6) return;
   const cnsLimits = { 6:720, 7:570, 8:450, 9:360, 10:300, 11:240, 12:210, 13:180, 14:150, 15:120, 16:45, 17:45 };
   const lo = Math.min(Math.floor(ppO2 * 10), 17);
   const hi = Math.min(lo + 1, 17);
@@ -12696,8 +12724,7 @@ function buildExportText(mode) {
   const _hh  = String(now.getHours()).padStart(2,'0');
   const _min = String(now.getMinutes()).padStart(2,'0');
   const stamp = `${_yy}/${_mm}/${_dd} ${_hh}:${_min}`;
-  const densityMap = { fresh:'Fresh', en13319:'EN13319', salt:'Salt' };
-  const density = densityMap[localStorage.getItem('waterDensity') || 'en13319'];
+  const density = waterDensityDisplayLabel();
   const depthUnit = units === 'imperial' ? 'ft' : 'm';  // use live global
   const du = depthUnit; // shorthand - used without space: `${val}${du}`
 
@@ -15235,7 +15262,7 @@ function attachGFCurveInteraction() {
 function runPdfExportFromDialog() {
   const opts = {};
   ['gas', 'profile', 'slate', 'gfCurve', 'tissue'].forEach(k => {
-    opts[k] = document.getElementById('pdfOpt_' + k)?.checked !== false && !!document.getElementById('pdfOpt_' + k)?.checked;
+    opts[k] = document.getElementById('pdfOpt_' + k)?.checked !== false;
   });
   document.getElementById('pdfExportDialog')?.remove();
   exportPDF(opts).catch(function(e) {
@@ -15343,7 +15370,7 @@ async function exportPDF(opts) {
   const du       = units === 'imperial' ? 'ft' : 'm';
   const depthVal = document.getElementById('decoDepth')?.value || '—';
   const btVal    = document.getElementById('decoBT')?.value    || '—';
-  const densityLabel = { fresh:'Fresh', en13319:'EN13319', salt:'Salt' }[localStorage.getItem('waterDensity')||'en13319']||'Salt';
+  const densityLabel = waterDensityDisplayLabel();
   const _pdfHdr = buildDecoPlanHeaderData();
   const _pdfTravelInfo = _pdfHdr.travelGas;
   // Bottom gas: use fractions directly for accurate trimix label

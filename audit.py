@@ -2299,12 +2299,12 @@ for fn in ('_escHtmlPre', 'shortMixLabel', '_dpbGasChipClass', '_pdfChipColors')
 # GROUP 37 — buildDecoPlanHeaderData fixes: densityMap, du, stamp consistency
 # ══════════════════════════════════════════════════════════════════════════════
 
-# 37.1 buildDecoPlanHeaderData defines its own densityMap (not relying on outer scope)
+# 37.1 buildDecoPlanHeaderData defines its own density label (not relying on outer scope)
 bdhd_start = js.find('function buildDecoPlanHeaderData()')
 bdhd_end = js.find('\nfunction ', bdhd_start + 10) if bdhd_start >= 0 else -1
 if bdhd_start >= 0:
     bdhd_body = js[bdhd_start:bdhd_end] if bdhd_end > 0 else js[bdhd_start:bdhd_start+3000]
-    if re.search(r'const _?densityMap\s*=\s*\{', bdhd_body):
+    if re.search(r'const _?densityMap\s*=\s*\{', bdhd_body) or 'waterDensityDisplayLabel()' in bdhd_body:
         ok("buildDecoPlanHeaderData: defines own densityMap — no ReferenceError")
     else:
         fail("buildDecoPlanHeaderData: missing densityMap definition — ReferenceError on call")
@@ -2866,10 +2866,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.09['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.09")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.10['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.10")
 else:
-    fail("APP_VERSION not bumped to 2.51.09 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.10 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -4317,10 +4317,10 @@ if _seg_cns and re.search(r"if\s*\(\s*ppo2\s*<\s*0\.6\s*\)\s*return\s*0", _seg_c
 else:
     fail("segCNSfrac still extrapolates phantom CNS between 0.5–0.6 bar (issue #59 F1)")
 _aes = js.split("function addExposureSample", 1)[-1].split("function ", 1)[0] if "function addExposureSample" in js else ""
-if _aes and "17:45" in _aes and re.search(r"if\s*\(\s*ppO2\s*<\s*0\.6", _aes):
-    ok("addExposureSample CNS table matches segCNSfrac with key 17 (issue #59 F2)")
+if _aes and "17:45" in _aes and re.search(r"if\s*\(\s*ppO2\s*>\s*0\.5", _aes) and re.search(r"if\s*\(\s*ppO2\s*<\s*0\.6", _aes):
+    ok("addExposureSample OTU/CNS use separate NOAA thresholds (issue #59 F2 / #60 F1)")
 else:
-    fail("addExposureSample missing key 17 or 0.6 bar floor (issue #59 F2)")
+    fail("addExposureSample missing split OTU>0.5 / CNS<0.6 guards (issue #59 F2 / #60 F1)")
 _www_bridge = os.path.join(os.path.dirname(__file__), "www", "capacitor-bridge.js")
 if capacitor_bridge_js and os.path.isfile(_www_bridge):
     with open(_www_bridge, encoding="utf-8") as _wb:
@@ -4359,7 +4359,7 @@ if "pdfExportDialog" in js.split("function handleNativeBackForModals", 1)[-1].sp
 else:
     fail("handleNativeBackForModals missing pdfExportDialog back handler (issue #59 F9)")
 _bdhd59 = js.split("function buildDecoPlanHeaderData", 1)[-1].split("function ", 1)[0] if "function buildDecoPlanHeaderData" in js else ""
-if _bdhd59 and "waterDensitySelect" in _bdhd59 and "'salt'" in _bdhd59.split("waterDensitySelect", 1)[-1][:80]:
+if _bdhd59 and "waterDensityDisplayLabel()" in _bdhd59:
     ok("buildDecoPlanHeaderData water density defaults match UI select (issue #59 F12)")
 else:
     fail("buildDecoPlanHeaderData still defaults density to en13319 only (issue #59 F12)")
@@ -4386,6 +4386,45 @@ if _apk_update and "navigator.onLine" not in _apk_update.split("function checkFo
     ok("Native APK update check does not bail on navigator.onLine alone (issue #58)")
 else:
     fail("Native APK update check still skips when navigator.onLine is false (issue #58)")
+
+_pages_bridge = os.path.join(os.path.dirname(__file__), "_pages", "capacitor-bridge.js")
+if capacitor_bridge_js and os.path.isfile(_pages_bridge):
+    with open(_pages_bridge, encoding="utf-8") as _pb:
+        _pages_bridge_txt = _pb.read()
+    if "saved.finalName || filename" in _pages_bridge_txt and "responseType = 'arraybuffer'" in _pages_bridge_txt:
+        ok("_pages/capacitor-bridge.js synced with root share + arraybuffer fallback (issue #60 F2)")
+    else:
+        fail("_pages/capacitor-bridge.js stale vs root — run build_pages_site.py (issue #60 F2)")
+elif capacitor_bridge_js:
+    ok("_pages/capacitor-bridge.js sync check skipped (_pages/ not built yet)")
+_rpdf = js.split("function runPdfExportFromDialog", 1)[-1].split("function ", 1)[0] if "function runPdfExportFromDialog" in js else ""
+if _rpdf and "?.checked !== false" in _rpdf and "&& !!" not in _rpdf.split("function showPDFExportDialog", 1)[0]:
+    ok("runPdfExportFromDialog opts default to included when checkbox absent (issue #60 F3)")
+else:
+    fail("runPdfExportFromDialog still double-reads checkbox as false when absent (issue #60 F3)")
+if "function waterDensityDisplayLabel" in js and re.search(
+        r"key === 'custom'[\s\S]{0,120}Custom", js.split("function waterDensityDisplayLabel", 1)[-1][:400]):
+    ok("waterDensityDisplayLabel handles custom density (issue #60 F4)")
+else:
+    fail("water density export still shows undefined for custom water type (issue #60 F4)")
+_gdbgp = js.split("function getDomBottomGasPct", 1)[-1].split("function ", 1)[0] if "function getDomBottomGasPct" in js else ""
+if _gdbgp and "NaN" in _gdbgp and "Number.isFinite" in _gdbgp:
+    ok("getDomBottomGasPct returns NaN for empty custom O2 (issue #60 F5)")
+else:
+    fail("getDomBottomGasPct still returns raw parseFloat NaN without explicit guard (issue #60 F5)")
+if _harness and "__lspBootErr" not in _harness:
+    ok("lsp-test-harness removed dead __lspBootErr assignment (issue #60 F6)")
+else:
+    fail("lsp-test-harness still assigns unread __lspBootErr (issue #60 F6)")
+_deco_render = js.split("// ── DESCENT ROW(S)", 1)[-1].split("tbody.innerHTML += _decoRowBuf", 1)[0] if "// ── DESCENT ROW(S)" in js else ""
+if _deco_render and "_decoRowBuf +=" in _deco_render and "tbody.innerHTML +=" not in _deco_render.split("collapsedMDP.forEach", 1)[0]:
+    ok("deco table batches descent/bottom rows in _decoRowBuf (issue #60 F7)")
+else:
+    fail("deco table still uses tbody.innerHTML += before collapsedMDP loop (issue #60 F7)")
+if re.search(r'id="decoCustomO2"[^>]*min="5"', html) and "5% used" in js:
+    ok("custom bottom O2 below 5% shows clamp warning (issue #60 F8)")
+else:
+    fail("custom bottom O2 silently clamps below 5% without user warning (issue #60 F8)")
 
 print("=" * 60)
 

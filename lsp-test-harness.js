@@ -131,7 +131,6 @@ var LSPTestHarness = (function () {
   }
 
   function reloadApp(iframe, qs) {
-    iframe.__lspBootErr = null;
     iframe.src = 'index.html?' + (qs || 'regression=1&massiveSuite=1') + '&ts=' + Date.now();
   }
 
