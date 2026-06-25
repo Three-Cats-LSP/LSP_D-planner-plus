@@ -16632,6 +16632,9 @@ document.addEventListener('input', function(e) {
 // Save before leaving page
 window.addEventListener('beforeunload', function() {
   appSettings.save();
+  if (window.ZhlWorkerBridge && typeof window.ZhlWorkerBridge.terminate === 'function') {
+    ZhlWorkerBridge.terminate();
+  }
 });
 
 // Load settings when page loads

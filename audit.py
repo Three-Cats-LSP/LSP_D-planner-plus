@@ -668,18 +668,26 @@ if "Mirrors VPMEngine.calculate(" not in js:
 else:
     fail("ZHLEngine comment still uses VPMEngine.calculate() syntax (info)")
 
-if "continuationLevel must be shallower than current depth" in open(
-    os.path.join(os.path.dirname(os.path.abspath(path)), "zhl-schedule-core.js"),
-    encoding="utf-8",
-).read():
-    ok("ZHL continuation levels guarded for monotonic shallower depth")
+_zhl_core_path = os.path.join(os.path.dirname(os.path.abspath(path)), "zhl-schedule-core.js")
+if os.path.isfile(_zhl_core_path):
+    with open(_zhl_core_path, encoding="utf-8") as f:
+        _zhl_core_src = f.read()
+    if "continuationLevel must be shallower than current depth" in _zhl_core_src:
+        ok("ZHL continuation levels guarded for monotonic shallower depth")
+    else:
+        fail("ZHL continuation level depth-order guard missing")
 else:
-    fail("ZHL continuation level depth-order guard missing")
+    fail("zhl-schedule-core.js missing")
 
 if "terminate" in worker_bridge_js and "ZhlWorkerBridge = { calculateInWorker, terminate }" in worker_bridge_js:
     ok("ZhlWorkerBridge exposes terminate() for worker lifecycle")
 else:
     fail("ZhlWorkerBridge missing terminate() API")
+
+if "ZhlWorkerBridge.terminate()" in html:
+    ok("beforeunload terminates ZHL worker on page leave (BUG-E lifecycle)")
+else:
+    fail("beforeunload missing ZhlWorkerBridge.terminate()")
 
 if os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(path)), "tools", "update_sw_version.py")):
     ok("tools/update_sw_version.py verifies release version alignment")
