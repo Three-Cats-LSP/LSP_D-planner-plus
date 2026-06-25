@@ -4245,15 +4245,15 @@ if capacitor_bridge_js and "status === 'granted'" in capacitor_bridge_js.split("
 else:
     fail("capacitor-bridge ensurePermission still treats non-denied as granted (issue #55 F10)")
 
-if re.search(r'id="algoTools"[^>]*>[\s\S]*?<svg[^>]+viewBox', html) and re.search(r'id="envSettingsToggle"[^<]*<img[^>]+settings-2099058\.png', html):
-    ok("Mode row uses Tools SVG and ENV Flaticon PNG")
+if re.search(r'id="algoTools"[^<]*<img[^>]+tools-1424252\.png', html) and re.search(r'id="envSettingsToggle"[^<]*<img[^>]+settings-2099058\.png', html):
+    ok("Mode row uses vendored Flaticon PNG icons for Tools and ENV")
 else:
-    fail("Mode row missing Tools SVG or ENV PNG icon")
+    fail("Mode row missing vendored Flaticon PNG for Tools or ENV")
 
-if os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "tools.svg")) and os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "settings-2099058.png")):
-    ok("vendor/icons tools.svg and settings PNG present offline")
+if os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "tools-1424252.png")) and os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "settings-2099058.png")):
+    ok("vendor/icons Flaticon PNG assets present offline")
 else:
-    fail("vendor/icons missing tools.svg or settings-2099058.png")
+    fail("vendor/icons missing tools-1424252.png or settings-2099058.png")
 
 _mode_row = html.split('<div class="algo-toggle"', 1)
 if "syncEnvRowDisplay" in js and len(_mode_row) > 1 and 'id="envSettingsToggle"' in _mode_row[1][:3500]:
@@ -4266,10 +4266,10 @@ if re.search(r'</div><!-- /deco panel -->\s*<div class="panel" id="cns">', html)
 else:
     fail("deco panel not closed before cns — tools mode content would be hidden")
 
-if 'id="algoTools"' in html and "currentColor" in html.split('id="algoTools"', 1)[1][:800] and ".algo-btn-icon img" in html and "brightness(0) invert(1)" in html:
-    ok("Tools SVG uses currentColor; ENV PNG has theme-aware img filters")
+if re.search(r'id="algoTools"[^<]*<img', html) and re.search(r'id="envSettingsToggle"[^<]*<img', html) and ".algo-btn-icon img" in html and "brightness(0) invert(1)" in html:
+    ok("Mode row PNG icons use theme-aware brightness filters")
 else:
-    fail("Mode row icon theme CSS missing for Tools SVG or ENV PNG")
+    fail("Mode row PNG icons missing theme-aware brightness/contrast CSS")
 
 print("=" * 60)
 
