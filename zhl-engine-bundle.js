@@ -637,7 +637,7 @@ function runZhlScheduleCore(params) {
     } else {
       const inferred = 1 - travelInfo.fN2 - travelFHe;
       if (inferred < -1e-9) throw new Error('travelInfo gas fractions invalid: fN2 + fHe > 1');
-      travelFO2 = inferred;
+      travelFO2 = Math.max(0, inferred);
     }
     // Phase 1: surface → travel switch depth on travel gas
     const travelDescentTime = travelSwitchM / descentRate;

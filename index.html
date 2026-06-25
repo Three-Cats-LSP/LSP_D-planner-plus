@@ -8736,7 +8736,15 @@ function buildZhlScheduleParamsFromDom(rawD, depthM, bt) {
       ? Math.floor((ppo2Bottom / bottomFO2 - altSurfaceP) / BAR_PER_METRE)
       : depthM;
     const travelFHe = travelInfo.fHe || 0;
-    const travelFO2 = travelInfo.fO2 != null ? travelInfo.fO2 : (1 - travelInfo.fN2 - travelFHe);
+    let travelFO2;
+    if (travelInfo.fO2 != null) {
+      travelFO2 = travelInfo.fO2;
+    } else {
+      const inferred = 1 - travelInfo.fN2 - travelFHe;
+      if (inferred < -1e-9) travelFO2 = null;
+      else travelFO2 = Math.max(0, inferred);
+    }
+    if (travelFO2 != null) {
     const ppO2AtBotMOD = (altSurfaceP + botMODm * BAR_PER_METRE) * travelFO2;
     if (ppO2AtBotMOD <= ppo2Bottom + 0.01) {
       decoGases.push({
@@ -8748,6 +8756,7 @@ function buildZhlScheduleParamsFromDom(rawD, depthM, bt) {
         isTravelGas: true,
       });
       decoGases.sort((a, b) => b.depth - a.depth);
+    }
     }
   }
   return {

@@ -376,7 +376,9 @@ def run_checks(page, port):
       const legT = legacy.lastPlan?.finalTissues || [];
       const implicitFo2 = 1 - 0.44 - 0.35;
       return {
-        ok: tissuesClose(expT, legT, tol),
+        ok: expT.length > 0 && legT.length > 0 && tissuesClose(expT, legT, tol),
+        expLen: expT.length,
+        legLen: legT.length,
         floatMismatch: implicitFo2 !== 0.21,
         implicitFo2,
       };

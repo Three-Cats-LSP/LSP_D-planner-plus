@@ -692,6 +692,10 @@ if os.path.isfile(_zhl_core_path):
         ok("ZHL travel gas rejects fN2 + fHe > 1 instead of silent fO2 clamp (issue #29)")
     else:
         fail("ZHL travel gas still clamps impossible fractions to fO2=0 (issue #29)")
+    if "Math.max(0, inferred)" in _zhl_core_src:
+        ok("ZHL travelFO2 clamps IEEE float residuals after validation (issue #30)")
+    else:
+        fail("ZHL travelFO2 missing post-validation float clamp (issue #30)")
 else:
     fail("zhl-schedule-core.js missing")
 
@@ -735,14 +739,22 @@ if zhl_bundle_js:
         ok("zhl-engine-bundle rejects impossible travel gas fractions (issue #29)")
     else:
         fail("zhl-engine-bundle still silently clamps impossible travel gas (issue #29)")
+    if "Math.max(0, inferred)" in zhl_bundle_js:
+        ok("zhl-engine-bundle travelFO2 clamps float residuals after validation (issue #30)")
+    else:
+        fail("zhl-engine-bundle missing post-validation float clamp (issue #30)")
 else:
     fail("zhl-engine-bundle.js missing")
 
 _travel_deco_block = js.split("const travelInfo = getTravelGasInfo()", 1)
-if len(_travel_deco_block) > 1 and "1 - travelInfo.fN2 - travelFHe" in _travel_deco_block[1][:800]:
+if len(_travel_deco_block) > 1 and "1 - travelInfo.fN2 - travelFHe" in _travel_deco_block[1][:1200]:
     ok("index.html travelFO2 in decoGases subtracts fHe (issue #29)")
 else:
     fail("index.html travelFO2 still uses 1 - fN2 only (issue #29)")
+if len(_travel_deco_block) > 1 and "inferred < -1e-9" in _travel_deco_block[1][:1200]:
+    ok("index.html travel gas skips invalid fractions before decoGases.push (issue #30)")
+else:
+    fail("index.html travel gas missing fraction guard before decoGases.push (issue #30)")
 
 if worker_bridge_js and "nextId = 1" in worker_bridge_js and worker_bridge_js.count("nextId = 1") >= 2:
     ok("ZhlWorkerBridge resets nextId on terminate/error/timeout (issue #27 BUG-E)")
@@ -3820,6 +3832,10 @@ if os.path.isfile(eng_val_path):
             ok("engine_validation_regression.py asserts worker timeout override (issue #25)")
         else:
             fail("engine_validation_regression.py missing timeout override assertion (issue #25)")
+        if "expT.length > 0" in eng_val_lifecycle:
+            ok("engine_validation_regression.py requires tissue data before tissuesClose (issue #30)")
+        else:
+            fail("engine_validation_regression.py tissuesClose accepts empty arrays (issue #30)")
     else:
         fail("engine_validation_regression.py missing split worker timeout/recovery helpers (issue #24)")
 else:
