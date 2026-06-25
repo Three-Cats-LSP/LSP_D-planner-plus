@@ -2866,10 +2866,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.06['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.06")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.07['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.07")
 else:
-    fail("APP_VERSION not bumped to 2.51.06 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.07 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -2979,8 +2979,13 @@ if _update_banner and "banner.innerHTML" in _update_banner:
     if not _banner_ver_param:
         fail("showUpdateBanner version param name not parsed for innerHTML XSS check (issue #53)")
     else:
-        _banner_html = _update_banner.split("banner.innerHTML", 1)[-1][:400]
-        _unsafe_ver_in_html = _banner_ver_param in _banner_html
+        _inner_expr = _update_banner.split("banner.innerHTML", 1)[-1].split(";", 1)[0]
+        _uses_escaped_var = bool(re.search(r"\+\s*safe\w*\s*\+", _inner_expr))
+        _uses_inline_escape = bool(re.search(
+            rf"escapeBannerHtml\s*\(\s*{_banner_ver_param}\s*\)", _inner_expr))
+        _raw_param_in_inner = bool(re.search(
+            rf"(?<!escapeBannerHtml\()\b{_banner_ver_param}\b", _inner_expr))
+        _unsafe_ver_in_html = _raw_param_in_inner and not (_uses_escaped_var or _uses_inline_escape)
         if "escapeBannerHtml(" in _update_banner and not _unsafe_ver_in_html:
             ok("showUpdateBanner escapes version string before innerHTML (issue #50)")
         else:
@@ -4275,6 +4280,13 @@ if 'id="envSettingsBody"' in html and 'id="algoSettingsRow"' not in html and 'sy
     ok("Rec mode uses global ENV panel only (no duplicate algoSettingsRow)")
 else:
     fail("Rec duplicate algoSettingsRow still present or ENV panel missing")
+
+_bmt_he = js.split("function calcBestMixTec", 1)[-1].split("function ", 1)[0] if "function calcBestMixTec" in js else ""
+if _bmt_he and "effNarco" not in _bmt_he and re.search(
+        r"if\s*\(\s*narcoFracAir\s*>\s*0\s*\)\s*\{[^}]*fHeNeeded", _bmt_he, re.DOTALL):
+    ok("calcBestMixTec skips He when both narcosis flags off (issue #56)")
+else:
+    fail("calcBestMixTec still uses phantom fN2air narcosis fallback when narcoFracAir is 0 (issue #56)")
 
 print("=" * 60)
 

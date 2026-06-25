@@ -11166,10 +11166,11 @@ function calcBestMixTec() {
   if (isTrimix) {
     const fN2air = 0.79, fO2air = 0.21;
     const narcoFracAir = (narcoticN2 ? fN2air : 0) + (narcoticO2 ? fO2air : 0);
-    const effNarco = narcoFracAir > 0 ? narcoFracAir : fN2air;
-    const pTarget = (altSurfaceP + targetENDm * BAR_PER_METRE) * effNarco;
-    const numerator = pAmb * (1 - fO2) + pAmb * (narcoticO2 ? fO2 : 0) - pTarget;
-    fHeNeeded = Math.max(0, Math.min(numerator / pAmb, 1 - fO2));
+    if (narcoFracAir > 0) {
+      const pTarget = (altSurfaceP + targetENDm * BAR_PER_METRE) * narcoFracAir;
+      const numerator = pAmb * (1 - fO2) + pAmb * (narcoticO2 ? fO2 : 0) - pTarget;
+      fHeNeeded = Math.max(0, Math.min(numerator / pAmb, 1 - fO2));
+    }
   }
 
   const fN2    = Math.max(0, 1 - fO2 - fHeNeeded);
