@@ -3794,6 +3794,15 @@ if capacitor_bridge_js and "dirPath != null && dirPath !== ''" in capacitor_brid
 else:
     fail("capacitor-bridge uniqueFilename dirPath guard missing (issue #21 CR-2)")
 
+def _is_regex_start(rest, j):
+    """True if / at j likely begins a regex literal (not division)."""
+    k = j - 1
+    while k >= 0 and rest[k] in " \t\n\r":
+        k -= 1
+    if k < 0:
+        return True
+    return rest[k] in "(=,[!?:;{&|+-*%<>~^"
+
 def _harness_fn_body(src, fn_name, *end_markers):
     """Return a named function body; stop at the first end_marker (e.g. next top-level fn)."""
     if not src:
@@ -3809,10 +3818,30 @@ def _harness_fn_body(src, fn_name, *end_markers):
     close_paren = -1
     quote = None
     escape = False
+    in_regex = False
+    in_char_class = False
+    regex_escape = False
     for j in range(p0, len(rest)):
         c = rest[j]
         if escape:
             escape = False
+            continue
+        if in_regex:
+            if regex_escape:
+                regex_escape = False
+                continue
+            if c == "\\":
+                regex_escape = True
+                continue
+            if in_char_class:
+                if c == "]":
+                    in_char_class = False
+                continue
+            if c == "[":
+                in_char_class = True
+                continue
+            if c == "/":
+                in_regex = False
             continue
         if quote:
             if c == "\\":
@@ -3823,6 +3852,9 @@ def _harness_fn_body(src, fn_name, *end_markers):
             continue
         if c in ("'", '"', "`"):
             quote = c
+            continue
+        if c == "/" and _is_regex_start(rest, j):
+            in_regex = True
             continue
         if c == "(":
             depth += 1
