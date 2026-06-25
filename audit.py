@@ -3801,7 +3801,7 @@ def _is_regex_start(rest, j):
         k -= 1
     if k < 0:
         return True
-    return rest[k] in "(=,[!?:;{&|+-*%<>~^"
+    return rest[k] in "(=,[!?:;{&|+-*%<>~^}"
 
 def _harness_fn_body(src, fn_name, *end_markers):
     """Return a named function body; stop at the first end_marker (e.g. next top-level fn)."""
