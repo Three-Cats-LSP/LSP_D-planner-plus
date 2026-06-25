@@ -2971,16 +2971,23 @@ else:
     fail("Version mismatch across app-version.js / sw.js / package.json / build.gradle / version.json (v17 BUG-74)")
 
 _update_banner = js.split("function showUpdateBanner", 1)[-1].split("function checkForApkUpdate", 1)[0] if "function showUpdateBanner" in js else ""
+_banner_ver_param = ""
+if "function showUpdateBanner" in js:
+    _banner_sig = re.search(r"function showUpdateBanner\s*\(\s*(\w+)", js)
+    _banner_ver_param = _banner_sig.group(1) if _banner_sig else ""
 if _update_banner and "banner.innerHTML" in _update_banner:
     _banner_html = _update_banner.split("banner.innerHTML", 1)[-1][:400]
-    if "escapeBannerHtml(remoteVersion)" in _update_banner and "+ remoteVersion +" not in _banner_html:
-        ok("showUpdateBanner escapes remoteVersion before innerHTML (issue #50)")
+    _unsafe_ver_in_html = _banner_ver_param and f"+ {_banner_ver_param} +" in _banner_html
+    if "escapeBannerHtml(" in _update_banner and not _unsafe_ver_in_html:
+        ok("showUpdateBanner escapes version string before innerHTML (issue #50)")
     else:
-        fail("showUpdateBanner injects remoteVersion into innerHTML unsanitized (issue #50)")
-elif _update_banner and re.search(r"\.textContent\s*=\s*remoteVersion|createTextNode\s*\(\s*remoteVersion", _update_banner):
-    ok("showUpdateBanner uses DOM text API for remoteVersion (issue #50)")
+        fail("showUpdateBanner injects version string into innerHTML unsanitized (issue #50)")
+elif _update_banner and _banner_ver_param and re.search(
+        rf"\.textContent\s*=\s*{_banner_ver_param}|createTextNode\s*\(\s*{_banner_ver_param}",
+        _update_banner):
+    ok("showUpdateBanner uses DOM text API for version string (issue #50)")
 elif "function showUpdateBanner" in js:
-    fail("showUpdateBanner missing safe remoteVersion handling (issue #50)")
+    fail("showUpdateBanner missing safe version-string handling (issue #50)")
 _esc_banner = js.split("function escapeBannerHtml", 1)[-1].split("function showUpdateBanner", 1)[0] if "function escapeBannerHtml" in js else ""
 if _esc_banner and ".replace(/'/g, '&#39;')" in _esc_banner:
     ok("escapeBannerHtml escapes apostrophe for attribute-safe reuse (issue #51)")
