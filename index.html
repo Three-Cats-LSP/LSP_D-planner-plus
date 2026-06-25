@@ -430,29 +430,15 @@ body.algo-tools .algo-switcher > div:last-child .header-warn { opacity: 1 !impor
  align-items: center;
  justify-content: center;
  line-height: 0;
+ color: var(--muted);
+}
+.algo-btn-icon:hover,
+.algo-btn-icon.active { color: #00d9ff;
 }
 .algo-btn-icon svg { width: 16px;
  height: 16px;
  display: block;
  flex-shrink: 0;
-}
-.algo-btn-icon img { width: 16px;
- height: 16px;
- display: block;
- flex-shrink: 0;
- opacity: 0.92;
- filter: brightness(0) invert(1);
-}
-.algo-btn-icon:hover img,
-.algo-btn-icon.active img { opacity: 1;
- filter: brightness(0) invert(1) sepia(1) saturate(4) hue-rotate(160deg);
-}
-body.light-theme .algo-btn-icon img { filter: brightness(0);
- opacity: 0.78;
-}
-body.light-theme .algo-btn-icon:hover img,
-body.light-theme .algo-btn-icon.active img { opacity: 1;
- filter: brightness(0) sepia(1) saturate(5) hue-rotate(160deg);
 }
 
 .gf-btn { padding: 8px 14px;
@@ -1596,7 +1582,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <div style="width:1px;height:18px;background:var(--border-hi);margin:0 2px;"></div>
 <button class="algo-btn algo-btn-icon u6" id="algoTools" onclick="setAlgo('tools')" title="Tools" aria-label="Tools"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true" focusable="false"><rect x="2.5" y="8.5" width="19" height="13" rx="2.5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M7.5 8.5V6.75a4.5 4.5 0 0 1 9 0V8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.5 12h19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="10.25" y="10.25" width="3.5" height="3.5" rx="0.75" fill="currentColor"/></svg></button>
 <div style="width:1px;height:18px;background:var(--border-hi);margin:0 2px;"></div>
-<button class="algo-btn algo-btn-icon" id="envSettingsToggle" onclick="toggleEnvSettings()" title="Environment settings — Water / Units / Altitude" aria-label="Environment settings"><img src="vendor/icons/settings-2099058.png" alt="" width="16" height="16" decoding="async"/></button>
+<button class="algo-btn algo-btn-icon" id="envSettingsToggle" onclick="toggleEnvSettings()" title="Environment settings — Water / Units / Altitude" aria-label="Environment settings"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M9.82 2.24 14.18 2.24 13.27 4.71 16.26 5.95 17.36 3.56 20.44 6.64 18.05 7.74 19.29 10.73 21.76 9.82 21.76 14.18 19.29 13.27 18.05 16.26 20.44 17.36 17.36 20.44 16.26 18.05 13.27 19.29 14.18 21.76 9.82 21.76 10.73 19.29 7.74 18.05 6.64 20.44 3.56 17.36 5.95 16.26 4.71 13.27 2.24 14.18 2.24 9.82 4.71 10.73 5.95 7.74 3.56 6.64 6.64 3.56 7.74 5.95 10.73 4.71ZM12 8.6a3.4 3.4 0 1 0 0 7 3.4 3.4 0 0 0 0-7Z"/></svg></button>
 <div style="width:1px;height:18px;background:var(--border-hi);margin:0 2px;"></div>
 <button class="algo-btn" onclick="toggleReference()" title="Reference &amp; Info">?</button>
 </div>

@@ -4245,15 +4245,15 @@ if capacitor_bridge_js and "status === 'granted'" in capacitor_bridge_js.split("
 else:
     fail("capacitor-bridge ensurePermission still treats non-denied as granted (issue #55 F10)")
 
-if re.search(r'id="algoTools"[^>]*>[\s\S]*?<svg[^>]+viewBox', html) and re.search(r'id="envSettingsToggle"[^<]*<img[^>]+settings-2099058\.png', html):
-    ok("Mode row uses toolbox SVG and ENV PNG icons")
+if re.search(r'id="algoTools"[^>]*>[\s\S]*?<svg[^>]+viewBox', html) and re.search(r'id="envSettingsToggle"[^>]*>[\s\S]*?<svg[^>]+viewBox', html):
+    ok("Mode row uses inline SVG icons for Tools and ENV")
 else:
-    fail("Mode row missing toolbox SVG or ENV PNG icon")
+    fail("Mode row missing inline SVG for Tools or ENV button")
 
-if os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "toolbox.svg")) and os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "settings-2099058.png")):
-    ok("vendor/icons toolbox.svg and settings PNG present offline")
+if os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "toolbox.svg")) and os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "settings.svg")):
+    ok("vendor/icons toolbox.svg and settings.svg present offline")
 else:
-    fail("vendor/icons missing toolbox.svg or settings-2099058.png")
+    fail("vendor/icons missing toolbox.svg or settings.svg")
 
 _mode_row = html.split('<div class="algo-toggle"', 1)
 if "syncEnvRowDisplay" in js and len(_mode_row) > 1 and 'id="envSettingsToggle"' in _mode_row[1][:3500]:
@@ -4266,10 +4266,10 @@ if re.search(r'</div><!-- /deco panel -->\s*<div class="panel" id="cns">', html)
 else:
     fail("deco panel not closed before cns — tools mode content would be hidden")
 
-if ".algo-btn-icon img" in html and "brightness(0) invert(1)" in html and "body.light-theme .algo-btn-icon img" in html and "brightness(0)" in html.split("body.light-theme .algo-btn-icon img", 1)[1][:120]:
-    ok("Mode row icon PNGs use theme-aware brightness filters")
+if 'id="algoTools"' in html and 'id="envSettingsToggle"' in html and "currentColor" in html.split('id="algoTools"', 1)[1][:800] and "currentColor" in html.split('id="envSettingsToggle"', 1)[1][:800]:
+    ok("Mode row SVG icons use currentColor for theme contrast")
 else:
-    fail("Mode row icon PNGs missing theme-aware brightness/contrast CSS")
+    fail("Mode row SVG icons missing currentColor styling")
 
 print("=" * 60)
 
