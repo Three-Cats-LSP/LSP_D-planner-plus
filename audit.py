@@ -4261,6 +4261,16 @@ if "syncEnvRowDisplay" in js and len(_mode_row) > 1 and 'id="envSettingsToggle"'
 else:
     fail("ENV toggle not in mode row or syncEnvRowDisplay missing")
 
+if re.search(r'</div><!-- /deco panel -->\s*<div class="panel" id="cns">', html):
+    ok("CNS and tools panels are siblings outside deco panel (not nested)")
+else:
+    fail("deco panel not closed before cns — tools mode content would be hidden")
+
+if ".algo-btn-icon img" in html and "brightness(0) invert(1)" in html and "body.light-theme .algo-btn-icon img" in html and "brightness(0)" in html.split("body.light-theme .algo-btn-icon img", 1)[1][:120]:
+    ok("Mode row icon PNGs use theme-aware brightness filters")
+else:
+    fail("Mode row icon PNGs missing theme-aware brightness/contrast CSS")
+
 print("=" * 60)
 
 if FAIL:

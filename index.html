@@ -435,16 +435,19 @@ body.algo-tools .algo-switcher > div:last-child .header-warn { opacity: 1 !impor
  height: 16px;
  display: block;
  flex-shrink: 0;
- opacity: 0.72;
+ opacity: 0.92;
+ filter: brightness(0) invert(1);
 }
 .algo-btn-icon:hover img,
 .algo-btn-icon.active img { opacity: 1;
+ filter: brightness(0) invert(1) sepia(1) saturate(4) hue-rotate(160deg);
 }
-body.light-theme .algo-btn-icon img { filter: invert(1);
- opacity: 0.65;
+body.light-theme .algo-btn-icon img { filter: brightness(0);
+ opacity: 0.78;
 }
 body.light-theme .algo-btn-icon:hover img,
-body.light-theme .algo-btn-icon.active img { opacity: 0.9;
+body.light-theme .algo-btn-icon.active img { opacity: 1;
+ filter: brightness(0) sepia(1) saturate(5) hue-rotate(160deg);
 }
 
 .gf-btn { padding: 8px 14px;
@@ -2772,6 +2775,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 <!-- tissueTableCard content merged into tissueLoadCard -->
 <div id="tecSurfIntContainer" style="display:block;"></div>
+</div>
 </div>
 </div><!-- /deco panel -->
 <div class="panel" id="cns">
