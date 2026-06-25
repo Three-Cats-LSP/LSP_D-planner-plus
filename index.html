@@ -4226,6 +4226,7 @@ let _pendingDecoAlerts = '';
 let _travelGasFractionWarning = '';
 function renderDecoAlerts(container, cnsHtml) {
   if (!container) return;
+  refreshTravelGasFractionWarning();
   container.innerHTML = (_pendingDecoAlerts || '') + (_travelGasFractionWarning || '') + (cnsHtml || '');
   appendHeHtSyncAlert(container);
 }
@@ -8553,14 +8554,20 @@ function getTravelGasInfo() {
 /** Resolve travel gas O₂/He for decoGases; null fO2 when fractions are invalid. */
 function resolveTravelGasFractions(travelInfo) {
   const travelFHe = travelInfo.fHe || 0;
+  if (!isFinite(travelFHe) || !isFinite(travelInfo.fN2)) {
+    return { valid: false, fHe: travelFHe, reason: 'travel gas fractions are not valid numbers' };
+  }
   if (travelInfo.fO2 != null) {
+    if (!isFinite(travelInfo.fO2)) {
+      return { valid: false, fHe: travelFHe, reason: 'explicit fO₂ is not a valid number' };
+    }
     if (travelInfo.fO2 < -1e-9) {
       return { valid: false, fHe: travelFHe, reason: 'explicit fO₂ is negative' };
     }
     return { valid: true, fO2: Math.max(0, travelInfo.fO2), fHe: travelFHe };
   }
   const inferred = 1 - travelInfo.fN2 - travelFHe;
-  if (inferred < -1e-9) {
+  if (!isFinite(inferred) || inferred < -1e-9) {
     return {
       valid: false,
       fHe: travelFHe,
@@ -8570,13 +8577,37 @@ function resolveTravelGasFractions(travelInfo) {
   return { valid: true, fO2: Math.max(0, inferred), fHe: travelFHe };
 }
 
-function warnTravelGasFractionIssue(reason) {
-  const msg = 'Travel gas omitted from deco gases: ' + reason + '. Check travel gas mix.';
-  console.warn('[LSP]', msg);
+function escapeHtmlText(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function setTravelGasFractionWarning(reason, log) {
+  const safeReason = escapeHtmlText(reason);
+  if (log) console.warn('[LSP]', 'Travel gas omitted from deco gases: ' + reason + '. Check travel gas mix.');
   _travelGasFractionWarning =
     '<div class="alert" style="margin-top:8px;background:rgba(255,165,0,0.15);border-color:orange;color:var(--text);">' +
-    '<span>⚠</span><div><strong>Travel gas omitted.</strong> ' + reason +
+    '<span>⚠</span><div><strong>Travel gas omitted.</strong> ' + safeReason +
     '. Travel gas was not added to the deco gas list — verify your travel gas mix.</div></div>';
+}
+
+function warnTravelGasFractionIssue(reason) {
+  setTravelGasFractionWarning(reason, true);
+}
+
+/** Drop stale travel-gas warning when UI mix is corrected without recalculating. */
+function refreshTravelGasFractionWarning() {
+  const info = getTravelGasInfo();
+  if (!info) {
+    _travelGasFractionWarning = '';
+    return;
+  }
+  const resolved = resolveTravelGasFractions(info);
+  if (resolved.valid) _travelGasFractionWarning = '';
+  else setTravelGasFractionWarning(resolved.reason, false);
 }
 
 /** Travel gas line for info banner / text export / PDF — null if not configured. */
@@ -8594,6 +8625,7 @@ function getTravelGasExport() {
 }
 
 function updateTravelGasMOD() {
+  refreshTravelGasFractionWarning();
   const info = getTravelGasInfo();
   const dispEl = document.getElementById('travelGasMODDisplay');
   const manualField = document.getElementById('travelGasManualDepthField');

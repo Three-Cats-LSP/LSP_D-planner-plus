@@ -751,7 +751,7 @@ if len(_travel_deco_block) > 1 and "resolveTravelGasFractions" in _travel_deco_b
     ok("index.html travelFO2 in decoGases subtracts fHe (issue #29)")
 else:
     fail("index.html travelFO2 still uses 1 - fN2 only (issue #29)")
-if "function resolveTravelGasFractions" in js and "inferred < -1e-9" in js.split("function resolveTravelGasFractions", 1)[-1][:600]:
+if "function resolveTravelGasFractions" in js and ("inferred < -1e-9" in js.split("function resolveTravelGasFractions", 1)[-1][:800] or "!isFinite(inferred)" in js.split("function resolveTravelGasFractions", 1)[-1][:800]):
     ok("index.html travel gas skips invalid fractions before decoGases.push (issue #30)")
 else:
     fail("index.html travel gas missing fraction guard before decoGases.push (issue #30)")
@@ -767,6 +767,18 @@ if "_travelGasFractionWarning" in js and "_travelGasFractionWarning ||" in js:
     ok("index.html travel gas warning shown in decoAlerts (issue #31)")
 else:
     fail("index.html travel gas warning not wired to decoAlerts (issue #31)")
+if "function resolveTravelGasFractions" in js and "!isFinite(travelInfo.fO2)" in js:
+    ok("index.html travel gas rejects non-finite explicit fO2 (issue #32)")
+else:
+    fail("index.html NaN fO2 bypasses resolveTravelGasFractions (issue #32)")
+if "function refreshTravelGasFractionWarning" in js and "refreshTravelGasFractionWarning()" in js:
+    ok("index.html travel gas warning refreshed on render and field edit (issue #32)")
+else:
+    fail("index.html stale _travelGasFractionWarning not cleared on UI change (issue #32)")
+if "function escapeHtmlText" in js and "escapeHtmlText(reason)" in js.split("setTravelGasFractionWarning", 1)[-1][:400]:
+    ok("index.html travel gas warning escapes reason HTML (issue #32)")
+else:
+    fail("index.html travel gas reason unescaped in innerHTML (issue #32)")
 
 if worker_bridge_js and "nextId = 1" in worker_bridge_js and worker_bridge_js.count("nextId = 1") >= 2:
     ok("ZhlWorkerBridge resets nextId on terminate/error/timeout (issue #27 BUG-E)")
