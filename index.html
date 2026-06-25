@@ -7945,7 +7945,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
     surfaceGF: window._lastPlan ? window._lastPlan.surfaceGF : null,
   });
 
-  // ── END column (Feature): inject cells + apply toggle state ──
+  // Inject TTS cells into deco table rows
   injectTtsCells('decoTableBody', vpmRtAtBottomEnd);
   scheduleDecoScheduleStackSync();
 
@@ -9419,7 +9419,7 @@ function runDecoSchedule() {
   document.getElementById('decoResult').style.display = 'block';
   { const _tBtn=document.getElementById('tissueChartToggleBtn'); const _cBtn=document.getElementById('contingencyJumpBtn'); if(_tBtn)_tBtn.style.display='inline-block'; if(_cBtn)_cBtn.style.display='inline-block'; }
 
-  // ── END column (Feature): inject cells + apply toggle state ──
+  // Inject TTS cells into deco table rows
   injectTtsCells('decoTableBody', rtAtBottomEnd);
   scheduleDecoScheduleStackSync();
 
@@ -16761,7 +16761,6 @@ document.addEventListener('DOMContentLoaded', function() {
   syncGfPresetFromValues();
   // Sync He half-time mode to ZHL16C_HE_HT array and VPMEngine on startup
   updateHeHalfTime();
-  // Apply persisted END column state on load (button label + table class)
 
   window.__lspAppFullyReady = true;
 
