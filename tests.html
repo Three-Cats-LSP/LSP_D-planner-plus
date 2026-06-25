@@ -81,7 +81,8 @@ var LSPTestHarness = (function () {
     path = path || '';
     if (typeof v === 'number') {
       if (!isFinite(v)) {
-        throw new Error('Harness clone: non-finite number at ' + path + ': ' + v);
+        var label = Number.isNaN(v) ? 'NaN' : (v > 0 ? '+Infinity' : '-Infinity');
+        throw new Error('Harness clone: non-finite number' + (path ? ' at ' + path : '') + ': ' + label);
       }
       return;
     }

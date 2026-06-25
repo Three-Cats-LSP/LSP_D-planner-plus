@@ -3794,8 +3794,12 @@ if capacitor_bridge_js and "dirPath != null && dirPath !== ''" in capacitor_brid
 else:
     fail("capacitor-bridge uniqueFilename dirPath guard missing (issue #21 CR-2)")
 
-if harness and "__lspAppFullyReady" in harness and "1500" not in harness:
-    ok("lsp-test-harness polls __lspAppFullyReady, no hardcoded 1500ms delay (issue #21 CR-3/4)")
+if harness and "__lspAppFullyReady" in harness and "appFullyReady" in harness:
+    _harness_wait = harness.split("function waitForApp", 1)[-1].split("function ", 1)[0]
+    if not re.search(r",\s*1500\s*\)", _harness_wait):
+        ok("lsp-test-harness polls __lspAppFullyReady, no hardcoded 1500ms delay (issue #21 CR-3/4)")
+    else:
+        fail("lsp-test-harness still uses 1500ms boot delay in waitForApp (issue #21 CR-3)")
 else:
     fail("lsp-test-harness still uses 1500ms delay or missing ready poll (issue #21 CR-3)")
 
@@ -3804,7 +3808,7 @@ if harness and "reloadApp(iframe, qs)" in harness:
 else:
     fail("lsp-test-harness reloadApp missing optional qs (issue #21 CR-9)")
 
-if harness and "function assertFiniteNumbers" in harness:
+if harness and "function assertFiniteNumbers" in harness and "Number.isNaN(v)" in harness:
     ok("lsp-test-harness clone rejects non-finite numbers before JSON round-trip")
 else:
     fail("lsp-test-harness clone still masks NaN/Infinity via JSON.stringify")
@@ -3822,10 +3826,15 @@ for _inline_test in ("tests.html", "tests-extended.html", "tests-pscr-otu-cns.ht
             _ib = f.read()
         _ih = _ib.split("/* inlined from lsp-test-harness.js — keep in sync */", 1)
         _ih = _ih[1].split("</script>", 1)[0] if len(_ih) > 1 else ""
-        if _ih and "appFullyReady" in _ih and "1500" not in _ih and "reloadApp(iframe, qs)" in _ih:
+        _inline_wait = _ih.split("function waitForApp", 1)[-1].split("function ", 1)[0] if _ih else ""
+        _inline_start = _ih.split("function waitForApp", 1)[-1][:400] if _ih else ""
+        if (_ih and "appFullyReady" in _ih and "reloadApp(iframe, qs)" in _ih
+                and "Number.isNaN(v)" in _ih
+                and not re.search(r",\s*1500\s*\)", _inline_wait)
+                and "var start = Date.now()" in _inline_start.split("function check", 1)[0]):
             ok(f"{_inline_test} inlined harness synced with lsp-test-harness.js")
         else:
-            fail(f"{_inline_test} inlined harness stale (missing appFullyReady or still has 1500ms delay)")
+            fail(f"{_inline_test} inlined harness stale (missing appFullyReady, boot delay, or start order)")
     else:
         fail(f"{_inline_test} missing for inlined harness sync check")
 
