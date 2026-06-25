@@ -4271,6 +4271,11 @@ if re.search(r'id="algoTools"[^<]*<img', html) and re.search(r'id="envSettingsTo
 else:
     fail("Mode row PNG icons missing theme-aware brightness/contrast CSS")
 
+if 'id="envSettingsBody"' in html and 'id="algoSettingsRow"' not in html and 'syncEnvRowDisplay' in js and 'algoSettingsRow' not in js.split('function syncEnvRowDisplay', 1)[1][:600]:
+    ok("Rec mode uses global ENV panel only (no duplicate algoSettingsRow)")
+else:
+    fail("Rec duplicate algoSettingsRow still present or ENV panel missing")
+
 print("=" * 60)
 
 if FAIL:

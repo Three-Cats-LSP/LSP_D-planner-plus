@@ -1553,17 +1553,16 @@ const TIER2_GROUPS = [
         assert(el, '#altitudeSelect not found');
         return `found, value=${el.value}`;
       }],
-      ['Altitude select (Rec) exists', 'UI', function(){
+      ['ENV settings body exists (global)', 'UI', function(){
         const d = getDoc();
-        const el = d.getElementById('altitudeSelectRec');
-        assert(el, '#altitudeSelectRec not found');
-        return `found, value=${el.value}`;
-      }],
-      ['Rec custom altitude row exists', 'UI', function(){
-        const d = getDoc();
-        const el = d.getElementById('altitudeCustomRowRec');
-        assert(el, '#altitudeCustomRowRec not found');
+        const el = d.getElementById('envSettingsBody');
+        assert(el, '#envSettingsBody not found');
         return 'found ✓';
+      }],
+      ['Rec mode has no duplicate algoSettingsRow', 'UI', function(){
+        const d = getDoc();
+        assert(!d.getElementById('algoSettingsRow'), 'algoSettingsRow should be removed — use ENV toggle');
+        return 'removed ✓';
       }],
       ['#tipModal exists in DOM', 'UI', function(){
         const d = getDoc();
@@ -1587,10 +1586,6 @@ const TIER2_GROUPS = [
         assert(visAfterShow, 'tipModal did not become visible after showTip()');
         assert(hidAfterClose, 'tipModal did not close after closeTip()');
         return 'open → close ✓';
-      }],
-      ['applyCustomAltitudeRec function exists', 'UI', function(){
-        assert(typeof WIN.applyCustomAltitudeRec === 'function', 'applyCustomAltitudeRec not found');
-        return 'found ✓';
       }],
       ['Units selector exists', 'UI', function(){
         const d = getDoc();
