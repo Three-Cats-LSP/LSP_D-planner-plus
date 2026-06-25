@@ -319,7 +319,7 @@
         let elapsed = 0;
         for (const seg of segments) {
             const segTime = Math.abs(seg.toDepth - seg.fromDepth) / rate;
-            if (segTime <= 0) continue;
+            if (!(segTime > 0)) continue;
             const pAmbStart = surfP + seg.fromDepth / slp;
             const pAmbEnd = surfP + seg.toDepth / slp;
             const pressureRate = (pAmbEnd - pAmbStart) / segTime;

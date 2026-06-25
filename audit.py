@@ -4193,6 +4193,53 @@ elif capacitor_bridge_js:
 else:
     fail("capacitor-bridge.js missing")
 
+# ── Issue #55: full codebase audit (10 findings) ─────────────────────────────
+if "rowDisplayPpo2(descentMidM" in js and "rawD / 2" not in js.split("No travel gas", 1)[-1][:800]:
+    ok("imperial descent CNS uses depthM/2 not rawD/2 (issue #55 F1)")
+else:
+    fail("single-descent row still uses rawD/2 for pressure (issue #55 F1)")
+
+if re.search(r"limits = \{6:720.*17:45\}", js) and "Math.min(lo + 1, 17)" in js.split("function segCNSfrac", 1)[-1][:500]:
+    ok("segCNSfrac NOAA table extends to ppO2 1.70 (issue #55 F2)")
+else:
+    fail("segCNSfrac CNS limits table missing key 17 / hi clamp (issue #55 F2)")
+
+if "rowDisplayPpo2(travelMidM, travelInfoRow.fN2, travelInfoRow.fHe)" in js:
+    ok("travel-gas descent CNS passes fHe fraction (issue #55 F3)")
+else:
+    fail("travel-gas descent rowDisplayPpo2 still hardcodes fHe=0 (issue #55 F3)")
+
+if "shortMix(cv[3])" in js and "shortMix(c[3])" in js and "shortMix(cv[5])" not in js:
+    ok("buildMessengerText bottom/stop rows use Mix column cv[3] (issue #55 F4)")
+else:
+    fail("buildMessengerText still indexes Mix from TTS column cv[5] (issue #55 F4)")
+
+if re.search(r"if \(isTrimix\) \{[^}]*fHeNeeded", js, re.DOTALL):
+    ok("calcBestMixTec He need not gated on narcoticN2 alone (issue #55 F5)")
+else:
+    fail("calcBestMixTec still skips He when narcoticN2 is false (issue #55 F5)")
+
+if harness and "_lspEngineReady" in harness and "function appReady" in harness:
+    ok("lsp-test-harness appReady accepts _lspEngineReady (issue #55 F6)")
+else:
+    fail("lsp-test-harness appReady missing _lspEngineReady fallback (issue #55 F6)")
+
+_ccr_seg = js.split("function saturateLinearCCR", 1)
+if len(_ccr_seg) > 1 and "if (!(segTime > 0)) continue" in _ccr_seg[1][:1200]:
+    ok("saturateLinearCCR skips NaN/zero segTime (issue #55 F7)")
+else:
+    fail("saturateLinearCCR still uses segTime <= 0 guard (issue #55 F7)")
+
+if capacitor_bridge_js and "saved.finalName || filename" in capacitor_bridge_js and "xhr.responseType = 'blob'" in capacitor_bridge_js.split("readBlobFromHref", 1)[-1][:600]:
+    ok("capacitor-bridge share uses finalName + blob fallback XHR (issue #55 F8/F9)")
+else:
+    fail("capacitor-bridge missing finalName share or blob responseType fallback (issue #55 F8/F9)")
+
+if capacitor_bridge_js and "status === 'granted'" in capacitor_bridge_js.split("function ensurePermission", 1)[-1][:600]:
+    ok("capacitor-bridge ensurePermission requires granted status (issue #55 F10)")
+else:
+    fail("capacitor-bridge ensurePermission still treats non-denied as granted (issue #55 F10)")
+
 print("=" * 60)
 
 if FAIL:

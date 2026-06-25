@@ -63,9 +63,13 @@
     try {
       const result = await plugin.requestPermissions();
       const status = result && result.publicStorage;
+      if (status === 'granted') return true;
       if (status === 'denied') {
         notify('Storage permission denied — cannot save to Downloads', true);
         return false;
+      }
+      if (status != null && status !== 'prompt') {
+        console.warn('[CapBridge] unexpected publicStorage permission status:', status);
       }
       return true;
     } catch (e) {
@@ -178,7 +182,7 @@
     notify('✓ Saved to ' + saved.label + ': ' + (saved.finalName || filename));
 
     // Also open Share sheet so user can forward/open in viewer
-    await shareFile(saved.uri, filename);
+    await shareFile(saved.uri, saved.finalName || filename);
   }
 
   // Read blob synchronously — caller may revoke the blob: URL before async fetch completes.
@@ -193,6 +197,7 @@
     try {
       const xhr = new XMLHttpRequest();
       xhr.open('GET', href, false);
+      xhr.responseType = 'blob';
       xhr.send();
       if (xhr.status === 200 && xhr.response) {
         if (xhr.response instanceof Blob) return xhr.response;

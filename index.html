@@ -3346,9 +3346,12 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 </div>
 <!-- Gas Rule Info Modal -->
-<div id="gasRuleModal" onclick="if(event.target===this)closeGasRuleInfo()" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9500;background:rgba(0,0,0,0.72);padding:16px;align-items:flex-start;justify-content:center;overflow-y:auto;">
-<div style="max-width:460px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:12px;padding:20px 22px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);margin-top:40px;">
-<div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;">⛽ Gas Management Rules</div>
+<div id="gasRuleModal" onclick="if(event.target===this)closeGasRuleInfo()" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,0.72);padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom));overflow-y:auto;-webkit-overflow-scrolling:touch;align-items:flex-start;justify-content:center;">
+<div style="max-width:460px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:12px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);margin:12px auto;">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px;">
+<div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);flex:1;min-width:0;">⛽ Gas Management Rules</div>
+<button type="button" onclick="closeGasRuleInfo()" aria-label="Close" style="flex-shrink:0;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;min-width:36px;min-height:36px;padding:4px 10px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:16px;line-height:1;">✕</button>
+</div>
 <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);line-height:1.8;">
 <div style="font-weight:700;color:var(--accent);margin-bottom:4px;letter-spacing:1px;">RULE OF THIRDS (Thirds)</div>
 <div class="u9">The standard tec diving gas rule. Divide your bottom gas into three equal thirds:
@@ -3371,14 +3374,17 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <span style="color:var(--green);font-weight:700;">✓ OK</span> — &gt;10% margin above requirement.
       </div>
 </div>
-<button onclick="closeGasRuleInfo()" style="margin-top:16px;width:100%;padding:9px;background:var(--bg);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.5px;">✕ Close</button>
+<button type="button" onclick="closeGasRuleInfo()" style="margin-top:16px;width:100%;padding:10px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.5px;">Close</button>
 </div>
 </div>
-<div id="tipModal" onclick="if(event.target===this)closeTip()" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9500;background:rgba(0,0,0,0.72);padding:20px;align-items:center;justify-content:center;">
-<div style="max-width:420px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
-<div id="tipModalTitle" style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;"></div>
-<div id="tipModalBody" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text);line-height:1.7;white-space:pre-wrap;"></div>
-<button onclick="closeTip()" style="margin-top:14px;width:100%;padding:8px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.5px;">✕ Close</button>
+<div id="tipModal" onclick="if(event.target===this)closeTip()" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,0.72);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom));">
+<div style="max-width:420px;width:100%;margin:12px auto;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:16px 18px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px;">
+<div id="tipModalTitle" style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);flex:1;min-width:0;"></div>
+<button type="button" onclick="closeTip()" aria-label="Close" style="flex-shrink:0;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;min-width:36px;min-height:36px;padding:4px 10px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:16px;line-height:1;">✕</button>
+</div>
+<div id="tipModalBody" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text);line-height:1.7;white-space:pre-wrap;max-height:min(60vh,480px);overflow-y:auto;-webkit-overflow-scrolling:touch;"></div>
+<button type="button" onclick="closeTip()" style="margin-top:14px;width:100%;padding:10px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.5px;">Close</button>
 </div>
 </div>
 <div id="slateModal" onclick="if(event.target===this)closeSlate()" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9550;background:rgba(0,0,0,0.72);padding:20px;align-items:center;justify-content:center;">
@@ -4457,11 +4463,57 @@ function loadTableViewPreference() {
 }
 
 // ── Info tip popup (click/tap tooltips) ──
+function _modalIsOpen(id) {
+  const el = document.getElementById(id);
+  if (!el) return false;
+  const d = el.style.display;
+  return d === 'flex' || d === 'block';
+}
+
+function handleNativeBackForModals() {
+  const sheet = document.getElementById('lsp-android-select-sheet');
+  if (sheet) {
+    sheet.remove();
+    document.body.classList.remove('lsp-android-select-open');
+    return true;
+  }
+  if (_modalIsOpen('confirmModal')) { closeConfirmModal(false); return true; }
+  if (_modalIsOpen('configPresetModal')) { closeAdvConfigPresets(); return true; }
+  if (_modalIsOpen('profilePresetModal')) { closeDiveProfilePresets(); return true; }
+  if (_modalIsOpen('slateModal')) { closeSlate(); return true; }
+  if (_modalIsOpen('copyModal')) { closeCopyModal(); return true; }
+  if (_modalIsOpen('presetModal')) { closePresetModal(); return true; }
+  if (_modalIsOpen('tipModal')) { closeTip(); return true; }
+  if (_modalIsOpen('gasRuleModal')) { closeGasRuleInfo(); return true; }
+  if (_modalIsOpen('warningModal')) { toggleWarningModal(); return true; }
+  if (_modalIsOpen('settingsHelpModal')) {
+    document.getElementById('settingsHelpModal').style.display = 'none';
+    return true;
+  }
+  if (_modalIsOpen('referenceModal')) { toggleReference(); return true; }
+  return false;
+}
+
+function initNativeModalBackHandler() {
+  try {
+    if (!window.Capacitor?.isNativePlatform?.()) return;
+    const App = window.Capacitor.Plugins?.App;
+    if (!App || window._lspModalBackHooked) return;
+    window._lspModalBackHooked = true;
+    App.addListener('backButton', function() {
+      if (handleNativeBackForModals()) return;
+      App.exitApp();
+    });
+  } catch (e) {}
+}
+
 function showTip(title, text) {
   document.getElementById('tipModalTitle').textContent = title;
   document.getElementById('tipModalBody').textContent  = text;
   const m = document.getElementById('tipModal');
-  m.style.display = 'flex';
+  m.style.display = 'block';
+  const body = document.getElementById('tipModalBody');
+  if (body) body.scrollTop = 0;
 }
 function closeTip() {
   document.getElementById('tipModal').style.display = 'none';
@@ -4469,7 +4521,7 @@ function closeTip() {
 
 function showGasRuleInfo() {
   const m = document.getElementById('gasRuleModal');
-  m.style.display = 'flex';
+  m.style.display = 'block';
 }
 function closeGasRuleInfo() {
   document.getElementById('gasRuleModal').style.display = 'none';
@@ -4580,6 +4632,7 @@ function loadThemePreference() {
       window.Capacitor.Plugins.App?.addListener('appStateChange', function(state) {
         if (state.isActive) _applyStatusBarTheme();
       });
+      initNativeModalBackHandler();
     }
   } catch(e) {}
 }
@@ -6352,7 +6405,7 @@ function saturateLinearCCR(tissues, fromDepth, toDepth, t, fO2, fHe, ccr) {
   const totalTime = t;
   for (const seg of segments) {
     const segTime = Math.abs(seg.toDepth - seg.fromDepth) / Math.abs(toDepth - fromDepth) * totalTime;
-    if (segTime <= 0) continue;
+    if (!(segTime > 0)) continue;
     const p0Amb = depthBar(seg.fromDepth);
     const pEndAmb = depthBar(seg.toDepth);
     const R = (pEndAmb - p0Amb) / segTime;
@@ -9248,8 +9301,9 @@ function runDecoSchedule() {
   // ── CNS raw fraction per segment ──
   function segCNSfrac(ppo2, dur) {
     if (ppo2 <= 0.5) return 0;
-    const limits = {6:720,7:570,8:450,9:360,10:300,11:240,12:210,13:180,14:150,15:120,16:45};
-    const lo = Math.floor(ppo2*10), hi = lo+1;
+    const limits = {6:720,7:570,8:450,9:360,10:300,11:240,12:210,13:180,14:150,15:120,16:45,17:45};
+    const lo = Math.min(Math.floor(ppo2 * 10), 17);
+    const hi = Math.min(lo + 1, 17);
     const vLo = limits[lo]||0, vHi = limits[hi]||0;
     const lim = vLo + (vHi-vLo)*(ppo2*10-lo);
     return lim > 0 ? dur / lim : dur / 45; // ppO2>1.6: clamp to 45-min limit (1.6 bar row) — avoids 100%-per-segment blowup
@@ -9281,7 +9335,7 @@ function runDecoSchedule() {
     // --- Phase 1: travel gas, surface → switch depth ---
     const travelDescentTimeMin = travelSwitchMrow / descentRate;
     const travelMidM = travelSwitchMrow / 2;
-    const travelPPO2 = rowDisplayPpo2(travelMidM, travelInfoRow.fN2, 0);
+    const travelPPO2 = rowDisplayPpo2(travelMidM, travelInfoRow.fN2, travelInfoRow.fHe);
     rowRT += travelDescentTimeMin;
     totalCNSfrac += segCNSfrac(parseFloat(travelPPO2), travelDescentTimeMin);
     totalOTU     += segOTU(parseFloat(travelPPO2), travelDescentTimeMin);
@@ -9317,10 +9371,11 @@ function runDecoSchedule() {
   } else {
     // No travel gas — single descent row as before
     rowRT += descentTimeMin;
-    const descentPPO2 = rowDisplayPpo2(rawD / 2, bottomFN2, bottomFHe, bottomFO2, 'descent');
+    const descentMidM = depthM / 2;
+    const descentPPO2 = rowDisplayPpo2(descentMidM, bottomFN2, bottomFHe, bottomFO2, 'descent');
     totalCNSfrac += segCNSfrac(parseFloat(descentPPO2), descentTimeMin);
     totalOTU     += segOTU(parseFloat(descentPPO2), descentTimeMin);
-    addGas(loopMixLabel, rawD / 2, descentTimeMin, sacBottom);
+    addGas(loopMixLabel, descentMidM, descentTimeMin, sacBottom);
     tbody.innerHTML += `<tr class="asc-row" data-phase="descent">
       <td><span style="font-size:18px;color:#ff8080;">↓</span></td>
       <td data-label="Depth" style="color:#ff8080;">0→${dU?rawD+'m':mToFt(rawD)+'ft'}</td>
@@ -11165,10 +11220,11 @@ function calcBestMixTec() {
 
   // He calculation (Trimix mode only)
   let fHeNeeded = 0;
-  if (isTrimix && narcoticN2) {
+  if (isTrimix) {
     const fN2air = 0.79, fO2air = 0.21;
     const narcoFracAir = (narcoticN2 ? fN2air : 0) + (narcoticO2 ? fO2air : 0);
-    const pTarget = (altSurfaceP + targetENDm * BAR_PER_METRE) * narcoFracAir;
+    const effNarco = narcoFracAir > 0 ? narcoFracAir : fN2air;
+    const pTarget = (altSurfaceP + targetENDm * BAR_PER_METRE) * effNarco;
     const numerator = pAmb * (1 - fO2) + pAmb * (narcoticO2 ? fO2 : 0) - pTarget;
     fHeNeeded = Math.max(0, Math.min(numerator / pAmb, 1 - fO2));
   }
@@ -13406,9 +13462,9 @@ function buildMessengerText(mode) {
       const cv  = Array.from(tds).map(td => clean(td.textContent));
       if (ph === 'switch') { const switchTxt = Array.from(tds).slice(1).map(t=>clean(t.textContent)).filter(Boolean).join(' '); result.push('>> ' + switchTxt); return; }
       if (ph === 'descent' || ph === 'ascent') return;
-      if (ph === 'bottom') { result.push(`Lvl  ${cv[1]}  ${cv[2]}  ${shortMix(cv[5])}`); return; }
+      if (ph === 'bottom') { result.push(`Lvl  ${cv[1]}  ${cv[2]}  ${shortMix(cv[3])}`); return; }
       const stop = /^\d+:\d+$/.test(cv[2]) ? cv[2] : '';
-      result.push(`Stp  ${cv[1]}  ${stop}  ${cv[3]}  ${shortMix(cv[5])}`);
+      result.push(`Stp  ${cv[1]}  ${stop}  ${cv[4]}  ${shortMix(cv[3])}`);
     });
     result.push('-'.repeat(28));
     result.push(...formatPlanSummaryBlock(getContingencySummaryExport(), true));
@@ -13539,15 +13595,15 @@ function buildMessengerText(mode) {
 
     // bottom level
     if (ph === 'bottom') {
-      result.push(`Lvl  ${c[1]}  ${c[2]}  ${shortMix(c[5])}`);
+      result.push(`Lvl  ${c[1]}  ${c[2]}  ${shortMix(c[3])}`);
       return;
     }
 
     // deco / safety stop
     const dep  = c[1] || '';
     const stop = /^\d+:\d+$/.test(c[2]) ? c[2] : '';
-    const run  = c[3] || '';
-    const mix  = shortMix(c[5]);
+    const run  = c[4] || '';
+    const mix  = shortMix(c[3]);
     result.push(`Stp  ${dep}  ${stop}  ${run}  ${mix}`);
   });
 

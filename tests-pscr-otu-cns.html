@@ -112,8 +112,9 @@ var LSPTestHarness = (function () {
   }
 
   function appReady(w) {
-    return !!(w
-      && w.VPMEngine && typeof w.VPMEngine.calculate === 'function'
+    if (!w) return false;
+    if (w._lspEngineReady) return true;
+    return !!(w.VPMEngine && typeof w.VPMEngine.calculate === 'function'
       && w.ZHLEngine && typeof w.ZHLEngine.calculate === 'function');
   }
 
