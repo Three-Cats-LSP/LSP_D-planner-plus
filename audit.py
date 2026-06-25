@@ -3807,10 +3807,26 @@ def _harness_fn_body(src, fn_name, *end_markers):
         return ""
     depth = 0
     close_paren = -1
+    quote = None
+    escape = False
     for j in range(p0, len(rest)):
-        if rest[j] == "(":
+        c = rest[j]
+        if escape:
+            escape = False
+            continue
+        if quote:
+            if c == "\\":
+                escape = True
+                continue
+            if c == quote:
+                quote = None
+            continue
+        if c in ("'", '"', "`"):
+            quote = c
+            continue
+        if c == "(":
             depth += 1
-        elif rest[j] == ")":
+        elif c == ")":
             depth -= 1
             if depth == 0:
                 close_paren = j
