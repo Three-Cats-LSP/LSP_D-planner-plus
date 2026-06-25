@@ -2979,7 +2979,17 @@ if _update_banner and "banner.innerHTML" in _update_banner:
     if not _banner_ver_param:
         fail("showUpdateBanner version param name not parsed for innerHTML XSS check (issue #53)")
     else:
-        _inner_expr = _update_banner.split("banner.innerHTML", 1)[-1].split(";", 1)[0]
+        _inner_tail = _update_banner.split("banner.innerHTML", 1)[-1]
+        _inner_stop = len(_inner_tail)
+        for _stop_marker in (
+            "document.body.appendChild(banner)",
+            "banner.appendChild(",
+            "getElementById('apkUpdateDownloadBtn')",
+        ):
+            _pos = _inner_tail.find(_stop_marker)
+            if _pos > 0:
+                _inner_stop = min(_inner_stop, _pos)
+        _inner_expr = _inner_tail[:_inner_stop]
         _uses_escaped_var = bool(re.search(r"\+\s*safe\w*\s*\+", _inner_expr))
         _uses_inline_escape = bool(re.search(
             rf"escapeBannerHtml\s*\(\s*{_banner_ver_param}\s*\)", _inner_expr))
@@ -4287,6 +4297,27 @@ if _bmt_he and "effNarco" not in _bmt_he and re.search(
     ok("calcBestMixTec skips He when both narcosis flags off (issue #56)")
 else:
     fail("calcBestMixTec still uses phantom fN2air narcosis fallback when narcoFracAir is 0 (issue #56)")
+
+_audit_src57 = open(__file__, encoding="utf-8").read()
+if (
+    "_inner_tail = _update_banner.split(\"banner.innerHTML\", 1)[-1]" in _audit_src57
+    and "document.body.appendChild(banner)" in _audit_src57
+    and _update_banner
+    and "banner.innerHTML" in _update_banner
+):
+    _inner_tail57 = _update_banner.split("banner.innerHTML", 1)[-1]
+    _inner_stop57 = len(_inner_tail57)
+    for _m57 in ("document.body.appendChild(banner)",):
+        _p57 = _inner_tail57.find(_m57)
+        if _p57 > 0:
+            _inner_stop57 = min(_inner_stop57, _p57)
+    _inner_expr57 = _inner_tail57[:_inner_stop57]
+    if re.search(r"\+\s*safe\w*\s*\+", _inner_expr57):
+        ok("showUpdateBanner XSS audit spans full innerHTML past CSS semicolons (issue #57)")
+    else:
+        fail("showUpdateBanner XSS audit innerHTML slice missing safeVersion (issue #57)")
+else:
+    fail("showUpdateBanner XSS audit missing appendChild-bounded innerHTML slice (issue #57)")
 
 print("=" * 60)
 
