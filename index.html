@@ -3732,6 +3732,9 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
   }
 
   function openDownloadPage(url) {
+    if (!url || typeof url !== 'string' || !/^https?:\/\//i.test(url)) {
+      url = DEFAULT_DOWNLOAD_PAGE;
+    }
     if (window.Capacitor?.Plugins?.Browser?.open) {
       window.Capacitor.Plugins.Browser.open({ url: url });
       return;
@@ -8624,7 +8627,8 @@ function escapeHtmlText(s) {
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 function setTravelGasFractionWarning(reason, log) {

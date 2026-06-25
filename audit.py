@@ -2972,15 +2972,15 @@ else:
 
 _update_banner = js.split("function showUpdateBanner", 1)[-1].split("function checkForApkUpdate", 1)[0] if "function showUpdateBanner" in js else ""
 _banner_ver_param = ""
-if "function showUpdateBanner" in js:
-    _banner_sig = re.search(r"function showUpdateBanner\s*\(\s*(\w+)", js)
+if _update_banner:
+    _banner_sig = re.match(r"\s*\(\s*(\w+)", _update_banner)
     _banner_ver_param = _banner_sig.group(1) if _banner_sig else ""
 if _update_banner and "banner.innerHTML" in _update_banner:
     if not _banner_ver_param:
         fail("showUpdateBanner version param name not parsed for innerHTML XSS check (issue #53)")
     else:
         _banner_html = _update_banner.split("banner.innerHTML", 1)[-1][:400]
-        _unsafe_ver_in_html = f"+ {_banner_ver_param} +" in _banner_html
+        _unsafe_ver_in_html = _banner_ver_param in _banner_html
         if "escapeBannerHtml(" in _update_banner and not _unsafe_ver_in_html:
             ok("showUpdateBanner escapes version string before innerHTML (issue #50)")
         else:
@@ -2991,11 +2991,21 @@ elif _update_banner and _banner_ver_param and re.search(
     ok("showUpdateBanner uses DOM text API for version string (issue #50)")
 elif "function showUpdateBanner" in js:
     fail("showUpdateBanner missing safe version-string handling (issue #50)")
+_open_dl = js.split("function openDownloadPage", 1)[-1].split("function escapeBannerHtml", 1)[0] if "function openDownloadPage" in js else ""
+if _open_dl and "!/^https?:\\/\\//i.test(url)" in _open_dl and "DEFAULT_DOWNLOAD_PAGE" in _open_dl:
+    ok("openDownloadPage rejects non-http(s) download URLs from manifest")
+else:
+    fail("openDownloadPage missing http(s) URL guard for remote downloadPage")
 _esc_banner = js.split("function escapeBannerHtml", 1)[-1].split("function showUpdateBanner", 1)[0] if "function escapeBannerHtml" in js else ""
 if _esc_banner and ".replace(/'/g, '&#39;')" in _esc_banner:
     ok("escapeBannerHtml escapes apostrophe for attribute-safe reuse (issue #51)")
 else:
     fail("escapeBannerHtml missing apostrophe escape (issue #51)")
+_esc_html = js.split("function escapeHtmlText", 1)[-1].split("function setTravelGasFractionWarning", 1)[0] if "function escapeHtmlText" in js else ""
+if _esc_html and ".replace(/'/g, '&#39;')" in _esc_html:
+    ok("escapeHtmlText escapes apostrophe for innerHTML reuse")
+else:
+    fail("escapeHtmlText missing apostrophe escape")
 if os.path.isfile(version_json_path):
     with open(version_json_path, encoding="utf-8") as f:
         _vj50 = f.read()
