@@ -747,14 +747,26 @@ else:
     fail("zhl-engine-bundle.js missing")
 
 _travel_deco_block = js.split("const travelInfo = getTravelGasInfo()", 1)
-if len(_travel_deco_block) > 1 and "1 - travelInfo.fN2 - travelFHe" in _travel_deco_block[1][:1200]:
+if len(_travel_deco_block) > 1 and "resolveTravelGasFractions" in _travel_deco_block[1][:800]:
     ok("index.html travelFO2 in decoGases subtracts fHe (issue #29)")
 else:
     fail("index.html travelFO2 still uses 1 - fN2 only (issue #29)")
-if len(_travel_deco_block) > 1 and "inferred < -1e-9" in _travel_deco_block[1][:1200]:
+if "function resolveTravelGasFractions" in js and "inferred < -1e-9" in js.split("function resolveTravelGasFractions", 1)[-1][:600]:
     ok("index.html travel gas skips invalid fractions before decoGases.push (issue #30)")
 else:
     fail("index.html travel gas missing fraction guard before decoGases.push (issue #30)")
+if "function resolveTravelGasFractions" in js and "warnTravelGasFractionIssue" in js:
+    ok("index.html travel gas invalid fractions warn instead of silent discard (issue #31)")
+else:
+    fail("index.html travel gas silently discards invalid fractions (issue #31)")
+if "function resolveTravelGasFractions" in js and "travelInfo.fO2 < -1e-9" in js:
+    ok("index.html travel gas rejects negative explicit fO2 (issue #31)")
+else:
+    fail("index.html explicit travel fO2 bypasses negativity guard (issue #31)")
+if "_travelGasFractionWarning" in js and "_travelGasFractionWarning ||" in js:
+    ok("index.html travel gas warning shown in decoAlerts (issue #31)")
+else:
+    fail("index.html travel gas warning not wired to decoAlerts (issue #31)")
 
 if worker_bridge_js and "nextId = 1" in worker_bridge_js and worker_bridge_js.count("nextId = 1") >= 2:
     ok("ZhlWorkerBridge resets nextId on terminate/error/timeout (issue #27 BUG-E)")

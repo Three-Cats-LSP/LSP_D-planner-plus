@@ -4223,9 +4223,10 @@ function appendHeHtSyncAlert(container) {
     '<span>⚠</span><div><strong>He half-time sync unavailable.</strong> VPM engine could not receive Bühlmann He HT updates — VPM schedules may use stale He compartment times until refresh.</div></div>');
 }
 let _pendingDecoAlerts = '';
+let _travelGasFractionWarning = '';
 function renderDecoAlerts(container, cnsHtml) {
   if (!container) return;
-  container.innerHTML = (_pendingDecoAlerts || '') + (cnsHtml || '');
+  container.innerHTML = (_pendingDecoAlerts || '') + (_travelGasFractionWarning || '') + (cnsHtml || '');
   appendHeHtSyncAlert(container);
 }
 const FN2_AIR   = 0.79;
@@ -8549,6 +8550,35 @@ function getTravelGasInfo() {
   return { fN2, fO2, fHe: 0, label, switchDepthM };
 }
 
+/** Resolve travel gas O₂/He for decoGases; null fO2 when fractions are invalid. */
+function resolveTravelGasFractions(travelInfo) {
+  const travelFHe = travelInfo.fHe || 0;
+  if (travelInfo.fO2 != null) {
+    if (travelInfo.fO2 < -1e-9) {
+      return { valid: false, fHe: travelFHe, reason: 'explicit fO₂ is negative' };
+    }
+    return { valid: true, fO2: Math.max(0, travelInfo.fO2), fHe: travelFHe };
+  }
+  const inferred = 1 - travelInfo.fN2 - travelFHe;
+  if (inferred < -1e-9) {
+    return {
+      valid: false,
+      fHe: travelFHe,
+      reason: 'fN₂ + fHe exceeds 1 (sum ' + (travelInfo.fN2 + travelFHe).toFixed(3) + ')',
+    };
+  }
+  return { valid: true, fO2: Math.max(0, inferred), fHe: travelFHe };
+}
+
+function warnTravelGasFractionIssue(reason) {
+  const msg = 'Travel gas omitted from deco gases: ' + reason + '. Check travel gas mix.';
+  console.warn('[LSP]', msg);
+  _travelGasFractionWarning =
+    '<div class="alert" style="margin-top:8px;background:rgba(255,165,0,0.15);border-color:orange;color:var(--text);">' +
+    '<span>⚠</span><div><strong>Travel gas omitted.</strong> ' + reason +
+    '. Travel gas was not added to the deco gas list — verify your travel gas mix.</div></div>';
+}
+
 /** Travel gas line for info banner / text export / PDF — null if not configured. */
 function getTravelGasExport() {
   const fromTable = getTravelGasFromTable();
@@ -8690,6 +8720,7 @@ function buildZhlScheduleParamsFromEngine(levels, decoGases, settings, profileSp
 }
 
 function buildZhlScheduleParamsFromDom(rawD, depthM, bt) {
+  _travelGasFractionWarning = '';
   const rate = Math.max(1, parseInt(document.getElementById('ascentRate').value) || 9);
   const decoRate = Math.max(1, parseInt(document.getElementById('decoAscentRate').value) || 9);
   const surfaceRate = Math.max(1, parseInt(document.getElementById('surfaceAscentRate').value) || 9);
@@ -8735,28 +8766,24 @@ function buildZhlScheduleParamsFromDom(rawD, depthM, bt) {
     const botMODm = bottomFO2 > 0
       ? Math.floor((ppo2Bottom / bottomFO2 - altSurfaceP) / BAR_PER_METRE)
       : depthM;
-    const travelFHe = travelInfo.fHe || 0;
-    let travelFO2;
-    if (travelInfo.fO2 != null) {
-      travelFO2 = travelInfo.fO2;
+    const resolved = resolveTravelGasFractions(travelInfo);
+    if (!resolved.valid) {
+      warnTravelGasFractionIssue(resolved.reason);
     } else {
-      const inferred = 1 - travelInfo.fN2 - travelFHe;
-      if (inferred < -1e-9) travelFO2 = null;
-      else travelFO2 = Math.max(0, inferred);
-    }
-    if (travelFO2 != null) {
-    const ppO2AtBotMOD = (altSurfaceP + botMODm * BAR_PER_METRE) * travelFO2;
-    if (ppO2AtBotMOD <= ppo2Bottom + 0.01) {
-      decoGases.push({
-        depth: botMODm,
-        fN2: travelInfo.fN2,
-        fHe: travelFHe,
-        fO2: travelFO2,
-        label: travelInfo.label,
-        isTravelGas: true,
-      });
-      decoGases.sort((a, b) => b.depth - a.depth);
-    }
+      const travelFO2 = resolved.fO2;
+      const travelFHe = resolved.fHe;
+      const ppO2AtBotMOD = (altSurfaceP + botMODm * BAR_PER_METRE) * travelFO2;
+      if (ppO2AtBotMOD <= ppo2Bottom + 0.01) {
+        decoGases.push({
+          depth: botMODm,
+          fN2: travelInfo.fN2,
+          fHe: travelFHe,
+          fO2: travelFO2,
+          label: travelInfo.label,
+          isTravelGas: true,
+        });
+        decoGases.sort((a, b) => b.depth - a.depth);
+      }
     }
   }
   return {
