@@ -3724,6 +3724,15 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
   var DEFAULT_DOWNLOAD_PAGE = 'https://threecats-lsp.com/d-planner-plus/download.html';
   var MIN_UPDATE_CHECK_VERSION_CODE = 25000;
   var DISMISS_KEY = 'lspApkUpdateDismissed';
+  var _apkUpdateCheckInFlight = false;
+
+  function isNativeApk() {
+    try {
+      if (window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) return true;
+    } catch (e) {}
+    return document.documentElement.classList.contains('capacitor-native') ||
+      document.documentElement.classList.contains('android-webview');
+  }
 
   function versionToCode(v) {
     var p = String(v).split('.');
@@ -3767,7 +3776,10 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
     var safeVersion = escapeBannerHtml(remoteVersion);
     var banner = document.createElement('div');
     banner.id = 'apkUpdateBanner';
-    banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99998;background:#071a2e;border-bottom:1px solid rgba(0,200,255,0.35);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:system-ui,sans-serif;font-size:13px;color:#e0f7ff;box-sizing:border-box;';
+    var topPad = isNativeApk()
+      ? 'calc(10px + max(32px, env(safe-area-inset-top, 0px)))'
+      : 'calc(10px + env(safe-area-inset-top, 0px))';
+    banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99998;background:#071a2e;border-bottom:1px solid rgba(0,200,255,0.35);padding:10px 14px;padding-top:' + topPad + ';display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:system-ui,sans-serif;font-size:13px;color:#e0f7ff;box-sizing:border-box;';
     banner.innerHTML =
       '<span style="flex:1;min-width:0;">New version is available (<strong>' + safeVersion + '</strong>)</span>' +
       '<button type="button" id="apkUpdateDownloadBtn" style="background:#00c8ff;border:none;color:#000;border-radius:6px;padding:6px 14px;cursor:pointer;font-size:12px;font-weight:700;flex-shrink:0;">Download</button>' +
@@ -3783,12 +3795,14 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
   }
 
   function checkForApkUpdate() {
-    if (!window.Capacitor || !window.Capacitor.isNativePlatform()) return;
-    if (!navigator.onLine) return;
+    if (!isNativeApk()) return;
+    if (_apkUpdateCheckInFlight) return;
+    if (document.getElementById('apkUpdateBanner')) return;
     if (typeof APP_VERSION === 'undefined') return;
     var localCode = versionToCode(APP_VERSION);
     if (localCode < MIN_UPDATE_CHECK_VERSION_CODE) return;
 
+    _apkUpdateCheckInFlight = true;
     fetchVersionManifest(0)
       .then(function(data) {
         if (!data || !data.version || typeof data.versionCode !== 'number') return;
@@ -3798,13 +3812,39 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
         } catch (e) {}
         showUpdateBanner(data.version, data.downloadPage);
       })
-      .catch(function() {});
+      .catch(function(err) {
+        console.warn('[APK update] version check failed:', err);
+      })
+      .finally(function() {
+        _apkUpdateCheckInFlight = false;
+      });
+  }
+
+  function scheduleApkUpdateCheck() {
+    if (!isNativeApk()) return;
+    checkForApkUpdate();
+  }
+
+  function wireApkUpdateChecks() {
+    if (!isNativeApk()) return;
+    scheduleApkUpdateCheck();
+    window.addEventListener('load', scheduleApkUpdateCheck);
+    document.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'visible') scheduleApkUpdateCheck();
+    });
+    setTimeout(scheduleApkUpdateCheck, 500);
+    setTimeout(scheduleApkUpdateCheck, 2500);
+    try {
+      window.Capacitor?.Plugins?.App?.addListener?.('appStateChange', function(state) {
+        if (state && state.isActive) scheduleApkUpdateCheck();
+      });
+    } catch (e) {}
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', checkForApkUpdate);
+    document.addEventListener('DOMContentLoaded', wireApkUpdateChecks);
   } else {
-    checkForApkUpdate();
+    wireApkUpdateChecks();
   }
 })();
 

@@ -2866,10 +2866,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.07['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.07")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.08['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.08")
 else:
-    fail("APP_VERSION not bumped to 2.51.07 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.08 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -4318,6 +4318,20 @@ if (
         fail("showUpdateBanner XSS audit innerHTML slice missing safeVersion (issue #57)")
 else:
     fail("showUpdateBanner XSS audit missing appendChild-bounded innerHTML slice (issue #57)")
+
+_apk_update = js.split("function checkForApkUpdate", 1)[-1].split("// APP_VERSION", 1)[0] if "function checkForApkUpdate" in js else ""
+if _apk_update and "function isNativeApk" in js.split("Native APK update check", 1)[-1].split("// APP_VERSION", 1)[0]:
+    ok("Native APK update check uses isNativeApk WebView fallback (issue #58)")
+else:
+    fail("Native APK update check missing isNativeApk WebView class fallback (issue #58)")
+if _apk_update and "visibilitychange" in _apk_update and "setTimeout(scheduleApkUpdateCheck, 500)" in _apk_update:
+    ok("Native APK update check retries on load, visibility, and delayed schedule (issue #58)")
+else:
+    fail("Native APK update check missing deferred/retry scheduling (issue #58)")
+if _apk_update and "navigator.onLine" not in _apk_update.split("function checkForApkUpdate", 1)[-1].split("function scheduleApkUpdateCheck", 1)[0]:
+    ok("Native APK update check does not bail on navigator.onLine alone (issue #58)")
+else:
+    fail("Native APK update check still skips when navigator.onLine is false (issue #58)")
 
 print("=" * 60)
 
