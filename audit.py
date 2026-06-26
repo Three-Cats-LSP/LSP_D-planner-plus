@@ -2866,10 +2866,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.13['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.13")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.14['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.14")
 else:
-    fail("APP_VERSION not bumped to 2.51.13 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.14 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -4503,6 +4503,37 @@ if re.search(r"function exportPDF[\s\S]{0,500}validateDomDecoGases\(\)", js):
     ok("exportPDF validates deco gases before building PDF (issue #63 F1)")
 else:
     fail("exportPDF still skips gas validation (issue #63 F1)")
+_bst64 = js.split("function buildSlateText", 1)[-1].split("function showSlate", 1)[0] if "function buildSlateText" in js else ""
+if _bst64 and "if (!botFracs) return null" in _bst64:
+    ok("buildSlateText guards null getBottomGasFractions (issue #64 F1)")
+else:
+    fail("buildSlateText crashes on null getBottomGasFractions (issue #64 F1)")
+_bcs64 = js.split("function buildContingencySlateText", 1)[-1].split("function showContingencySlate", 1)[0] if "function buildContingencySlateText" in js else ""
+if _bcs64 and "if (!botFracs) return null" in _bcs64:
+    ok("buildContingencySlateText guards null getBottomGasFractions (issue #64 F1)")
+else:
+    fail("buildContingencySlateText crashes on null getBottomGasFractions (issue #64 F1)")
+_bmt64 = js.split("function buildMessengerText", 1)[-1].split("function exportTXT", 1)[0] if "function buildMessengerText" in js else ""
+if _bmt64 and "if (!_msgBotFracs) return buildExportText(mode)" in _bmt64:
+    ok("buildMessengerText guards null getBottomGasFractions (issue #64 F1)")
+else:
+    fail("buildMessengerText crashes on null getBottomGasFractions (issue #64 F1)")
+if re.search(r"function runUnifiedPlan[\s\S]{0,400}if\s*\(\s*rbOnLoop\s*&&\s*!bot\s*\)\s*return", js):
+    ok("runUnifiedPlan guards null bottom gas on CCR loop (issue #64 F1)")
+else:
+    fail("runUnifiedPlan crashes on null getBottomGasFractions for CCR (issue #64 F1)")
+if "curFracs && calcEND" in js and "curFracs ? currentEND - actualEND" in js:
+    ok("calcBestMixTec guards null getBottomGasFractions return (issue #64 F2)")
+else:
+    fail("calcBestMixTec still dereferences null getBottomGasFractions (issue #64 F2)")
+if re.search(r"function ccrDiluentSurfaceLpm[\s\S]{0,200}if\s*\(\s*!bot\s*\)\s*return", js):
+    ok("ccrDiluentSurfaceLpm guards null getBottomGasFractions (issue #64 F3)")
+else:
+    fail("ccrDiluentSurfaceLpm crashes on null getBottomGasFractions (issue #64 F3)")
+if re.search(r"function isCcrDiluentGasLabel[\s\S]{0,300}if\s*\(\s*!bot\s*\)\s*return\s*false", js):
+    ok("isCcrDiluentGasLabel guards null getBottomGasFractions (issue #64 F3)")
+else:
+    fail("isCcrDiluentGasLabel crashes on null getBottomGasFractions (issue #64 F3)")
 
 print("=" * 60)
 

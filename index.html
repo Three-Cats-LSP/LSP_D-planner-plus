@@ -6520,6 +6520,7 @@ function ccrDiluentSurfaceLpm(depthM) {
   const ccr = getCCRSettingsFromDOM();
   const metRate = getCcrMetabolicO2Rate(ccr);
   const bot = getBottomGasFractions();
+  if (!bot) return metRate / 0.21;
   const fO2Dil = Math.max(0.01, bot.fO2 || 0.21);
   if (ccr.circuit === 'pSCR' && !ccr.bailout) {
     return metRate * PSCR_DEFAULT_BYPASS_RATIO;
@@ -6532,6 +6533,7 @@ function isCcrDiluentGasLabel(label) {
   const ccr = getCCRSettingsFromDOM();
   if (!isRebreatherCircuit(ccr.circuit) || ccr.bailout) return false;
   const bot = getBottomGasFractions();
+  if (!bot) return false;
   return label.toUpperCase() === getGasLabel(bot.fO2, bot.fHe).toUpperCase();
 }
 function isCcrOnLoopProfile(ccr) {
@@ -8194,7 +8196,8 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   if (_vpmOnLoop) {
     const reserveMin = (_vpmCcr.stressTimeMin || 0) + (_vpmCcr.problemSolveMin || 0);
     if (reserveMin > 0) {
-      const botFracs = _vpmBotFracs || getBottomGasFractions();
+      const botFracs = _vpmBotFracs;
+      if (!botFracs) return;
       const stopDepths = (result.stops || []).map(s => s.depth).filter(d => d != null && d >= 0);
       const stressSac = _vpmCcr.sacStress || sacBotVPM;
       addBailoutStressReserve(
@@ -8404,7 +8407,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   const _vmdp6m       = parseFloat(document.getElementById('minDeco6m')?.value) || 3;
   const _vmdpIsMetric = document.getElementById('unitSel')?.value !== 'imperial';
   let _vpmRawStops    = result.stops?.map(s => ({ type: 'deco', depth: s.depth, dur: s.time, gas: s.gas })) || [];
-  const _vmdpBotFracs  = getBottomGasFractions ? getBottomGasFractions() : { fN2: 0.79, fHe: 0 };
+  const _vmdpBotFracs  = _vpmBotFracs;
   const _vmdpBotLabel  = getGasLabel ? getGasLabel(_vmdpBotFracs.fO2, _vmdpBotFracs.fHe) : '';
   _vpmRawStops        = enforceMinDecoProfile(_vpmRawStops, _vmdpEnabled, _vmdp9m, _vmdp6m, _vmdpIsMetric, _vmdpBotLabel, _vmdpBotFracs.fN2, _vmdpBotFracs.fHe || 0);
 
@@ -10410,6 +10413,7 @@ function runUnifiedPlan() {
   const ccr  = getCCRSettingsFromDOM();
   const rbOnLoop = isRebreatherCircuit(ccr.circuit) && !ccr.bailout;
   const bot  = getBottomGasFractions();
+  if (rbOnLoop && !bot) return;
   const fN2  = rbOnLoop ? bot.fN2 : FN2_AIR;
   const fHe  = rbOnLoop ? (bot.fHe || 0) : 0;
   const fO2  = rbOnLoop ? bot.fO2 : 0.21;
@@ -11281,7 +11285,7 @@ function calcBestMixTec() {
   // ── Read current dive inputs ──
   const depthRaw = parseFloat(document.getElementById('decoDepth')?.value);
   const depthM   = du ? depthRaw : depthRaw / 3.28084;  // always work in metres
-  const fracs    = getBottomGasFractions ? getBottomGasFractions() : null;
+  const fracs    = typeof getBottomGasFractions === 'function' ? getBottomGasFractions() : null;
 
   // ── Update Current Dive card ──
   const hasDive = depthM > 0 && fracs;
@@ -11363,9 +11367,9 @@ function calcBestMixTec() {
     : (o2Pct === 21 ? 'Air' : o2Pct + '/00');
 
   // END improvement vs current plan gas (trimix only)
-  const curFracs   = getBottomGasFractions ? getBottomGasFractions() : { fN2: 0.79, fHe: 0, fO2: 0.21 };
-  const currentEND = calcEND ? calcEND(depthM, curFracs.fN2, curFracs.fHe) : ((depthM + 10) * curFracs.fN2 / 0.79) - 10;
-  const improve    = currentEND - actualEND;
+  const curFracs   = typeof getBottomGasFractions === 'function' ? getBottomGasFractions() : null;
+  const currentEND = curFracs && calcEND ? calcEND(depthM, curFracs.fN2, curFracs.fHe) : actualEND;
+  const improve    = curFracs ? currentEND - actualEND : 0;
   const improveDisp = (du ? Math.round(improve) : Math.round(improve * 3.28084)) + ' ' + dUnit;
   const decoNote   = hePct > 40 ? 'Heavier deco' : hePct > 20 ? 'Moderate deco' : hePct > 0 ? 'Light deco↑' : 'No deco change';
 
@@ -13349,6 +13353,7 @@ function buildSlateText() {
       : `${algoName} GF Hi ${mGF.high}`;
 
   const botFracs = getBottomGasFractions();
+  if (!botFracs) return null;
   const botLabel = shortMix(getGasLabel(botFracs.fO2, botFracs.fHe));
 
   // Switch gases with depths from rendered switch rows
@@ -13473,6 +13478,7 @@ function buildContingencySlateText() {
       ? `${algoName} +${document.getElementById('conservatismSelect')?.value ?? '0'}`
       : `${algoName} GF Hi ${mGF.high}`;
   const botFracs = getBottomGasFractions();
+  if (!botFracs) return null;
   const botLabel = shortMix(getGasLabel(botFracs.fO2, botFracs.fHe));
   const gswRows = Array.from(rows).filter(tr => tr.dataset.phase === 'switch');
   const switchParts = gswRows.map(tr => {
@@ -13624,6 +13630,7 @@ function buildMessengerText(mode) {
 
   // ── bottom gas header for messenger (trimix-aware) ──
   const _msgBotFracs = getBottomGasFractions();
+  if (!_msgBotFracs) return buildExportText(mode);
   const _msgBotLabel = getGasLabel(_msgBotFracs.fO2, _msgBotFracs.fHe);
   const _msgBotHe    = Math.round((_msgBotFracs.fHe || 0) * 100);
   const _msgBotDetail = _msgBotHe > 0
@@ -14726,8 +14733,8 @@ function calcCNS() {
   const dives  = parseInt(document.getElementById('cnsDives')?.value)   || 1;
 
   const fO2frac = fO2 / 100;
-  const botFracs = typeof getBottomGasFractions === 'function' ? getBottomGasFractions() : { fHe: 0 };
-  const fHe = botFracs.fHe || 0;
+  const botFracs = typeof getBottomGasFractions === 'function' ? getBottomGasFractions() : null;
+  const fHe = botFracs ? (botFracs.fHe || 0) : 0;
   const pAmb = altSurfaceP + depth * BAR_PER_METRE;
   const ccr = typeof getCCRSettingsFromDOM === 'function' ? getCCRSettingsFromDOM() : { circuit: 'OC' };
   let ppo2;
