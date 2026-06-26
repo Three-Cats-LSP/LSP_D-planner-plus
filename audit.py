@@ -2869,10 +2869,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.25['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.25")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.52.00")
 else:
-    fail("APP_VERSION not bumped to 2.51.25 in app-version.js")
+    fail("APP_VERSION not bumped to 2.52.00 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -4806,6 +4806,12 @@ if all(s not in js for s in _dead_campaign):
     ok("typeof guard cleanup campaign complete — no dead guards from issues #73–#74 sets (issue #75)")
 else:
     fail("dead typeof guards reintroduced after campaign complete (issue #75)")
+
+# ── v2.52.00 stable release ──
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
+    ok("stable release APP_VERSION is 2.52.00")
+else:
+    fail("stable release requires APP_VERSION 2.52.00")
 
 print("=" * 60)
 

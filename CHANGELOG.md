@@ -4,6 +4,32 @@ All notable changes to LSP D-Planner+ are documented here.
 
 ---
 
+## v2.52.00 — 2026-06-26
+
+### Stable release — roadmap complete
+
+First **stable** milestone after the unified LSP D-Planner+ launch (v2.50.00). All roadmap features are implemented; the v2.51 stabilization series cleared audit findings, hardened exports, and locked regression gates.
+
+#### Highlights
+
+- **Unified OC + CCR/pSCR** — Bühlmann ZHL-16C+GF, VPM-B, recreational NDL, contingency plans, gas consumption, trimix, altitude, and full rebreather loop physics in one offline-capable app.
+- **Tier-3 ZHL engine** — `zhl-engine-bundle.js` + Web Worker bridge; sync and async headless paths with parity probes.
+- **Offline shell** — Self-hosted fonts, vendored jsPDF/DejaVu, local icons; service worker cache keyed from `app-version.js`.
+- **Android APK** — Capacitor build with signed release pipeline, native select bridge, blob-safe export, in-app update check.
+- **Quality gates** — 686+ `audit.py` checks, 9-suite release regression (engine, export, CCR differential, pSCR E2E, native bridge, browser).
+
+#### Stabilization (v2.51.01 → v2.51.25)
+
+- Gas export validation and error toasts (`notifyInvalidGasExport`, `exportNeedsDecoBottomGas`).
+- CCR consumption NaN guards and schedule error toasts (replacing `alert()`).
+- Dead `typeof fn === 'function'` guard cleanup across issues #68–#75 (35+ guards removed).
+- APK update banner XSS hardening; worker timeout recovery; Android `WeakMap` select sync fix.
+- Native bridge regression suite (18 checks).
+
+- **`APP_VERSION`** — bumped to `2.52.00`.
+
+---
+
 ## v2.50.00 — 2026-06-24
 
 ### Release — LSP D-Planner+ unified OC + CCR
