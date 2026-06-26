@@ -1405,7 +1405,9 @@ else:
     fail("getTravelGasInfo() still uses inline MOD formula — missing allowO2AtMOD override")
 
 # 20.3c12 runDecoSchedule travel-gas botMODm uses calcGasMODm
-if "calcGasMODm(bottomFO2" in js:
+_bzhl_sched = js.split("function buildZhlScheduleParamsFromDom", 1)
+_bzhl_body = _bzhl_sched[1][:8000] if len(_bzhl_sched) > 1 else ""
+if len(_bzhl_sched) > 1 and "calcGasMODm(bottomFO2" in _bzhl_body:
     ok("runDecoSchedule botMODm uses calcGasMODm — travel switch depth consistent with gas cards")
 else:
     fail("runDecoSchedule botMODm still uses inline MOD formula")
@@ -1413,10 +1415,10 @@ else:
 # 20.3c13 getDecoGasSwitches ZHL fallback uses calcGasMODm
 dgs_start = js.find("function getDecoGasSwitches()")
 dgs_fn = js[dgs_start:dgs_start + 4500] if dgs_start > 0 else ""
-if dgs_start > 0 and "calcGasMODm" in dgs_fn and "exactMOD = (limit / fO2 - altSurfaceP)" not in dgs_fn:
+if dgs_start > 0 and "calcGasMODm" in dgs_fn and "limit / fO2 - altSurfaceP" not in dgs_fn:
     ok("getDecoGasSwitches() ZHL fallback uses calcGasMODm — export/banner consistent with gas cards")
 else:
-    fail("getDecoGasSwitches() still uses inline exactMOD formula")
+    fail("getDecoGasSwitches() still uses inline MOD formula")
 
 # 20.3c14 vpmDecoSwitchDepthVal pure-O2 path uses calcGasMODm (not hardcoded 6 m)
 vpm_sw_m = re.search(r"function vpmDecoSwitchDepthVal\([^)]*\)\s*\{[\s\S]{0,600}?\}", js)
@@ -1430,8 +1432,10 @@ if "function calcMODTool()" in js and "function calcMOD(" not in js and ugmd_sta
 else:
     fail("calcMOD name collision still present — local and global share name (issue #4 BUG-1)")
 
-# 20.3c8 calcGasMODm clamps negative MOD to zero
-if cgm_m and "Math.max(0" in cgm_m.group(0):
+# 20.3c8 calcGasMODm clamps negative MOD to zero; pure O₂ never below 6 m / lastDecoStop
+if cgm_m and "Math.max(0" in cgm_m.group(0) and ("Math.max(o2MODm, strictM)" in cgm_m.group(0) or "strictM" in cgm_m.group(0)):
+    ok("calcGasMODm() clamps negative MOD to 0; pure O₂ enforces minimum deco-stop floor in Strict mode")
+elif cgm_m and "Math.max(0" in cgm_m.group(0):
     ok("calcGasMODm() clamps negative MOD to 0")
 else:
     fail("calcGasMODm() missing Math.max(0,…) clamp — negative MOD can display at extreme altitude")

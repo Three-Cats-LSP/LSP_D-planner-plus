@@ -5217,14 +5217,14 @@ function _escHtmlPre(s) {
 }
 
 /** VPM deco gas switch depth (metric m or imperial ft per unit mode). */
-function vpmDecoSwitchDepthVal(dgO2pct, ppO2Deco, surfP) {
+function vpmDecoSwitchDepthVal(dgO2pct, ppO2Deco) {
   const dU = units === 'metric';
   const fO2 = dgO2pct / 100;
   if (fO2 >= 0.995) {
     const modM = calcGasMODm(fO2, ppO2Deco || 1.6);
     return dU ? modM : Math.round(modM * 3.28084);
   }
-  return Math.floor(((ppO2Deco || 1.6) / fO2 - surfP) / BAR_PER_METRE * (dU ? 1 : 3.28084));
+  return Math.floor(((ppO2Deco || 1.6) / fO2 - altSurfaceP) / BAR_PER_METRE * (dU ? 1 : 3.28084));
 }
 
 /** Parse gas mix label for export/banner (50/00, 100%, Air, …). */
@@ -5266,7 +5266,7 @@ function getDecoGasSwitches() {
     const gas = shortMixLabel(getGasLabel(dgf.fO2, dgf.fHe));
     let sw;
     if (isVPM) {
-      const switchD = vpmDecoSwitchDepthVal(Math.round(dgf.fO2 * 100), ppO2Deco, altSurfaceP);
+      const switchD = vpmDecoSwitchDepthVal(Math.round(dgf.fO2 * 100), ppO2Deco);
       sw = dU ? Math.max(3, Math.floor(switchD / 3) * 3) : Math.max(10, Math.floor(switchD / 10) * 10);
     } else {
       // Global switch-depth fallback (closure-scoped version not available here):
@@ -6647,8 +6647,12 @@ function calcGasMODm(fO2, ppO2Limit) {
   const o2AtMOD = typeof allowO2AtMOD !== 'undefined' ? allowO2AtMOD : true;
   const lastStop = parseInt(document.getElementById('lastDecoStop')?.value, 10) || 3;
   const o2MODm = Math.max(lastStop, 6);
-  if (fO2 >= 0.995 && o2AtMOD) return o2MODm;
   if (fO2 <= 0) return 0;
+  if (fO2 >= 0.995) {
+    if (o2AtMOD) return o2MODm;
+    const strictM = Math.max(0, Math.floor((ppO2Limit / fO2 - altSurfaceP) / BAR_PER_METRE));
+    return Math.max(o2MODm, strictM);
+  }
   return Math.max(0, Math.floor((ppO2Limit / fO2 - altSurfaceP) / BAR_PER_METRE));
 }
 
