@@ -1396,6 +1396,22 @@ if load_alt_start > 0 and load_alt_fn.rfind("refreshAltitudeDependentUI") > load
 else:
     fail("loadAltitudeFromStorage() refresh inside try/catch — errors silently swallowed on load")
 
+# 20.3c11 getTravelGasInfo auto switch uses calcGasMODm (not inline formula)
+tgi_start = js.find("function getTravelGasInfo()")
+tgi_fn = js[tgi_start:tgi_start + 3500] if tgi_start > 0 else ""
+if tgi_start > 0 and "calcGasMODm" in tgi_fn and "ppO2Bot / fO2 - altSurfaceP" not in tgi_fn:
+    ok("getTravelGasInfo() auto switch uses calcGasMODm — allowO2AtMOD consistent")
+else:
+    fail("getTravelGasInfo() still uses inline MOD formula — missing allowO2AtMOD override")
+
+# 20.3c12 runDecoSchedule travel-gas botMODm uses calcGasMODm
+if _travel_deco_block and len(_travel_deco_block) > 1 and "calcGasMODm(bottomFO2" in _travel_deco_block[1][:1200]:
+    ok("runDecoSchedule botMODm uses calcGasMODm — travel switch depth consistent with gas cards")
+elif _travel_deco_block and len(_travel_deco_block) > 1 and "calcGasMODm" in _travel_deco_block[1][:1200]:
+    ok("runDecoSchedule botMODm uses calcGasMODm — travel switch depth consistent with gas cards")
+else:
+    fail("runDecoSchedule botMODm still uses inline MOD formula")
+
 if "function calcMODTool()" in js and "function calcMOD(" not in js and ugmd_start > 0 and "calcGasMODm" in ugmd_fn:
     ok("calcMOD name collision resolved — calcGasMODm shared, calcMODTool for Tools (issue #4 BUG-1)")
 else:

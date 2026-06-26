@@ -8508,7 +8508,8 @@ function updateGasMODDisplays() {
       return `MOD: ${o2MODm} m (pure O₂ fixed at 6 m — O₂ @ MOD: Allow at MOD)\nFormula: ppO₂ ${ppO2limit} / ${fO2.toFixed(2)} − ${altSurfaceP.toFixed(3)} = ${((ppO2limit/fO2-altSurfaceP)/BAR_PER_METRE).toFixed(1)} m (strict) → overridden to ${o2MODm} m`;
     const modM = calcGasMODm(fO2, ppO2limit);
     const exact = (ppO2limit / fO2 - altSurfaceP) / BAR_PER_METRE;
-    return `MOD = floor((${ppO2limit} / ${fO2.toFixed(2)} − ${altSurfaceP.toFixed(3)}) / BAR_PER_METRE)\n= floor(${exact.toFixed(2)}) = ${modM} m\nLimit: ${label} ppO₂ ${ppO2limit} bar | ${o2AtMOD ? 'Allow at MOD' : 'Strict ppO₂'}`;
+    const exactDisp = Math.max(0, exact);
+    return `MOD = floor((${ppO2limit} / ${fO2.toFixed(2)} − ${altSurfaceP.toFixed(3)}) / BAR_PER_METRE)\n= floor(${exactDisp.toFixed(2)}) = ${modM} m\nLimit: ${label} ppO₂ ${ppO2limit} bar | ${o2AtMOD ? 'Allow at MOD' : 'Strict ppO₂'}`;
   }
 
   // Bottom gas MOD — validate raw DOM % before clamped fractions
@@ -8739,10 +8740,8 @@ function getTravelGasInfo() {
     switchDepthM = units === 'imperial' ? rawVal / 3.28084 : rawVal;
   } else {
     // Auto: MOD based on bottom gas ppO2 limit
-    const fO2 = 1 - fN2;
     if (fO2 <= 0) switchDepthM = 0;
-    else switchDepthM = Math.floor((ppO2Bot / fO2 - altSurfaceP) / BAR_PER_METRE);
-    switchDepthM = Math.max(0, switchDepthM);
+    else switchDepthM = calcGasMODm(fO2, ppO2Bot);
   }
 
   return { fN2, fO2, fHe: 0, label, switchDepthM };
@@ -9007,9 +9006,7 @@ function buildZhlScheduleParamsFromDom(rawD, depthM, bt) {
   decoGases.sort((a, b) => b.depth - a.depth);
   const travelInfo = getTravelGasInfo();
   if (travelInfo) {
-    const botMODm = bottomFO2 > 0
-      ? Math.floor((ppo2Bottom / bottomFO2 - altSurfaceP) / BAR_PER_METRE)
-      : depthM;
+    const botMODm = bottomFO2 > 0 ? calcGasMODm(bottomFO2, ppo2Bottom) : depthM;
     const resolved = resolveTravelGasFractions(travelInfo);
     if (!resolved.valid) {
       warnTravelGasFractionIssue(resolved.reason);
