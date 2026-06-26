@@ -3582,7 +3582,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <div class="card u9">
 <div class="card-title">O₂ @ MOD Setting</div>
 <div class="info-box"><strong>Allow at MOD (default)</strong> — Pure O₂ (100%) is always selectable as a deco gas at its Maximum Operating Depth (6 m). At 6 m, ppO₂ of pure O₂ = 1.608 bar — marginally above 1.6 bar but accepted in real-world practice. Matches Shearwater, V-Planner and most dive computers.</div>
-<div class="info-box"><strong>Strict ppO₂</strong> — Pure O₂ is subject to the same ppO₂ ≤ limit check as every other gas. At 6 m it fails (1.608 &gt; 1.6 bar) so the planner falls back to EAN50 or the next best gas. Use this to match ApexDeco strict-mode output exactly.</div>
+<div class="info-box"><strong>Strict ppO₂</strong> — Pure O₂ still uses a 6 m floor (matching Allow at MOD), but switch depths for other deco gases are derived from the ppO₂ limit formula rather than the fixed override.</div>
 </div>
 <div class="card u9">
 <div class="card-title">Gradient Factors (GF Low / GF High) — Evidence Base</div>
