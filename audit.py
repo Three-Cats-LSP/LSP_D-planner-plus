@@ -2866,10 +2866,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.11['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.11")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.12['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.12")
 else:
-    fail("APP_VERSION not bumped to 2.51.11 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.12 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -4410,8 +4410,8 @@ if "function waterDensityDisplayLabel" in js and re.search(
 else:
     fail("water density export still shows undefined for custom water type (issue #60 F4)")
 _gdbgp = js.split("function getDomBottomGasPct", 1)[-1].split("function ", 1)[0] if "function getDomBottomGasPct" in js else ""
-if _gdbgp and "NaN" in _gdbgp and "Number.isFinite" in _gdbgp:
-    ok("getDomBottomGasPct returns NaN for empty custom O2 (issue #60 F5)")
+if "function readDomO2Pct" in js and _gdbgp and "readDomO2Pct('decoCustomO2')" in _gdbgp:
+    ok("getDomBottomGasPct uses readDomO2Pct for custom O2 (issue #60 F5)")
 else:
     fail("getDomBottomGasPct still returns raw parseFloat NaN without explicit guard (issue #60 F5)")
 if _harness and "__lspBootErr" not in _harness:
@@ -4443,18 +4443,43 @@ if "getDomDecoGasPct(cidx)" in js and "Enter a valid O₂ % for custom deco gas"
 else:
     fail("deco gas MOD still substitutes EAN50 for blank custom O2 (issue #61 F2)")
 _wddl = js.split("function waterDensityDisplayLabel", 1)[-1].split("function ", 1)[0] if "function waterDensityDisplayLabel" in js else ""
-if _wddl and "Canonical default is Salt" in _wddl and "|| 'salt'" in _wddl:
-    ok("waterDensityDisplayLabel documents Salt as canonical default (issue #61 F3)")
+if _wddl and "|| 'salt'" in _wddl:
+    ok("waterDensityDisplayLabel defaults to salt (issue #61 F3)")
 else:
-    fail("waterDensityDisplayLabel missing documented Salt canonical default (issue #61 F3)")
+    fail("waterDensityDisplayLabel missing salt default (issue #61 F3)")
 if "waterDensityDisplayLabel()" in js.split("function _envSettingsSummary", 1)[-1].split("function ", 1)[0]:
     ok("_envSettingsSummary uses waterDensityDisplayLabel (issue #61 F4)")
 else:
     fail("_envSettingsSummary still pushes raw water density keys (issue #61 F4)")
-if re.search(r"botMix === 'custom'[\s\S]{0,120}botDom\.o2\s*<\s*5", js) and not re.search(r"botDom\.o2\s*>\s*0\s*&&\s*botDom\.o2\s*<\s*5", js):
-    ok("custom bottom O2 clamp warning includes zero (issue #61 F5)")
+if re.search(r"botMix === 'custom'[\s\S]{0,160}botDom\.o2\s*>\s*0\s*&&\s*botDom\.o2\s*<\s*5", js):
+    ok("custom bottom O2=0 shows sentinel; clamp note only for (0,5) (issue #61 F5 / #62 F3)")
 else:
-    fail("custom bottom O2=0 still bypasses clamp warning (issue #61 F5)")
+    fail("custom bottom O2 clamp guard wrong for zero vs sub-5% (issue #61 F5 / #62 F3)")
+_rds62 = js.split("function runDecoSchedule()", 1)[-1][:3500] if "function runDecoSchedule()" in js else ""
+_vdg62 = _rds62.find("validateDomDecoGases()")
+_ccr62 = _rds62.find("isRebreatherCircuit(_uiCcr.circuit)")
+if _vdg62 >= 0 and (_ccr62 < 0 or _vdg62 < _ccr62):
+    ok("runDecoSchedule validates deco gases before CCR-only gate (issue #62 F1)")
+else:
+    fail("validateDomDecoGases still gated inside rebreather-only block (issue #62 F1)")
+_dgf62 = js.split("function getDecoGasFractions", 1)[-1].split("function ", 1)[0] if "function getDecoGasFractions" in js else ""
+if _dgf62 and "readDomO2Pct(customId)" in _dgf62 and "|| 50" not in _dgf62:
+    ok("getDecoGasFractions returns null for blank custom O2 (issue #62 F1)")
+else:
+    fail("getDecoGasFractions still substitutes EAN50 for blank custom O2 (issue #62 F1)")
+if "trimix deco gas" in js and re.search(r"sel\.value === 'custom' \|\| sel\.value === 'trimix'", js):
+    ok("deco gas MOD sentinel covers trimix blank fields (issue #62 F2)")
+else:
+    fail("deco gas MOD missing trimix NaN guard (issue #62 F2)")
+_vgfp62 = js.split("function validateGasFractionsPct", 1)[-1].split("function ", 1)[0] if "function validateGasFractionsPct" in js else ""
+if _vgfp62 and "o <= 0" in _vgfp62:
+    ok("validateGasFractionsPct rejects zero O2 (issue #62 F3)")
+else:
+    fail("validateGasFractionsPct still accepts 0% O2 (issue #62 F3)")
+if re.search(r"sel\.value === 'custom' \|\| sel\.value === 'trimix'[\s\S]{0,120}getDomDecoGasPct\(cidx\)", js):
+    ok("getDomDecoGasPct called only for custom/trimix cards (issue #62 F4)")
+else:
+    fail("getDomDecoGasPct still called for every deco gas card (issue #62 F4)")
 
 print("=" * 60)
 

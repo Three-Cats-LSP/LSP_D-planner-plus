@@ -7202,21 +7202,29 @@ function toggleDecoTrimix(idx) {
 }
 
 // Read raw percent inputs from DOM without clamping (for validation only).
+function readDomO2Pct(elementId) {
+  const raw = document.getElementById(elementId)?.value;
+  if (raw === '' || raw == null) return NaN;
+  const o2 = parseFloat(raw);
+  return Number.isFinite(o2) && o2 > 0 ? o2 : NaN;
+}
+function readDomHePct(elementId) {
+  const raw = document.getElementById(elementId)?.value;
+  if (raw === '' || raw == null) return NaN;
+  const he = parseFloat(raw);
+  return Number.isFinite(he) && he >= 0 ? he : NaN;
+}
+
 function getDomBottomGasPct() {
   const mix = document.getElementById('decoGas')?.value;
   if (mix === 'air') return { o2: 21, he: 0 };
   if (mix === 'ean32') return { o2: 32, he: 0 };
   if (mix === 'ean36') return { o2: 36, he: 0 };
   if (mix === 'custom') {
-    const raw = document.getElementById('decoCustomO2')?.value;
-    const o2 = raw === '' || raw == null ? NaN : parseFloat(raw);
-    return { o2: Number.isFinite(o2) ? o2 : NaN, he: 0 };
+    return { o2: readDomO2Pct('decoCustomO2'), he: 0 };
   }
   if (mix === 'trimix') {
-    return {
-      o2: parseFloat(document.getElementById('botTrimixO2')?.value),
-      he: parseFloat(document.getElementById('botTrimixHe')?.value),
-    };
+    return { o2: readDomO2Pct('botTrimixO2'), he: readDomHePct('botTrimixHe') };
   }
   return { o2: 21, he: 0 };
 }
@@ -7228,15 +7236,10 @@ function getDomDecoGasPct(idx) {
   if (mix === 'ean80') return { o2: 80, he: 0 };
   if (mix === 'o2') return { o2: 100, he: 0 };
   if (mix === 'custom') {
-    const raw = document.getElementById(`dg${idx}CustomO2`)?.value;
-    const o2 = raw === '' || raw == null ? NaN : parseFloat(raw);
-    return { o2: Number.isFinite(o2) ? o2 : NaN, he: 0 };
+    return { o2: readDomO2Pct(`dg${idx}CustomO2`), he: 0 };
   }
   if (mix === 'trimix') {
-    return {
-      o2: parseFloat(document.getElementById(`dg${idx}TrimixO2`)?.value),
-      he: parseFloat(document.getElementById(`dg${idx}TrimixHe`)?.value),
-    };
+    return { o2: readDomO2Pct(`dg${idx}TrimixO2`), he: readDomHePct(`dg${idx}TrimixHe`) };
   }
   return null;
 }
@@ -7266,13 +7269,15 @@ function getDecoGasFractions(selectId, customId, trimixO2Id, trimixHeId) {
   if (mix === 'ean80')  return { fO2: 0.80, fHe: 0,    fN2: 0.20 };
   if (mix === 'o2')     return { fO2: 1.00, fHe: 0,    fN2: 0.00 };
   if (mix === 'custom') {
-    const o2 = parseFloat(document.getElementById(customId)?.value) || 50;
+    const o2 = readDomO2Pct(customId);
+    if (!Number.isFinite(o2)) return null;
     const fO2 = Math.min(1, Math.max(0.05, o2 / 100));
     return { fO2, fHe: 0, fN2: Math.max(0, 1 - fO2) };
   }
   if (mix === 'trimix') {
-    const o2 = parseFloat(document.getElementById(trimixO2Id)?.value) || 21;
-    const he = parseFloat(document.getElementById(trimixHeId)?.value) || 35;
+    const o2 = readDomO2Pct(trimixO2Id);
+    const he = readDomHePct(trimixHeId);
+    if (!Number.isFinite(o2) || !Number.isFinite(he)) return null;
     const fO2 = Math.min(0.99, Math.max(0.05, o2 / 100));
     const fHe = Math.min(0.95, Math.max(0, he / 100));
     const fN2 = Math.max(0, 1 - fO2 - fHe);
@@ -8482,20 +8487,22 @@ function updateGasMODDisplays() {
 
   // Bottom gas MOD — validate raw DOM % before clamped fractions
   const botMix = document.getElementById('decoGas')?.value;
-  const botDom = botMix === 'custom' ? getDomBottomGasPct() : null;
+  const botDom = (botMix === 'custom' || botMix === 'trimix') ? getDomBottomGasPct() : null;
   const botFracs = getBottomGasFractions();
   const botFO2   = botFracs.fO2;
   const botMOD   = calcGasMOD(botFO2, ppO2Limit);
   const botEl    = document.getElementById('botMODDisplay');
   if (botEl) {
-    if (botDom && !Number.isFinite(botDom.o2)) {
+    if (botDom && (!Number.isFinite(botDom.o2) || (botMix === 'trimix' && !Number.isFinite(botDom.he)))) {
       botEl.value = '—';
-      botEl.title = 'Enter a valid O₂ % for custom bottom gas';
+      botEl.title = botMix === 'trimix'
+        ? 'Enter valid O₂ and He % for trimix bottom gas'
+        : 'Enter a valid O₂ % for custom bottom gas';
     } else {
       const botLabel = getGasLabel(botFO2, botFracs.fHe);
       const heNote   = botFracs.fHe > 0 ? '  (' + botLabel + ')' : '';
       let clampNote = '';
-      if (botMix === 'custom' && Number.isFinite(botDom.o2) && botDom.o2 < 5) {
+      if (botMix === 'custom' && Number.isFinite(botDom.o2) && botDom.o2 > 0 && botDom.o2 < 5) {
         clampNote = '  (5% used)';
       }
       botEl.value    = fmtDepth(botMOD) + heNote + clampNote;
@@ -8512,11 +8519,15 @@ function updateGasMODDisplays() {
     const disp = document.getElementById(`dg${cidx}MODDisplay`);
     if (!sel || !disp) continue;
     if (sel.value === 'none' || !sel.value) { disp.value = '—'; disp.title = 'Select a gas mix to see MOD'; continue; }
-    const domG = getDomDecoGasPct(cidx);
-    if (sel.value === 'custom' && (!domG || !Number.isFinite(domG.o2))) {
-      disp.value = '—';
-      disp.title = 'Enter a valid O₂ % for custom deco gas';
-      continue;
+    if (sel.value === 'custom' || sel.value === 'trimix') {
+      const domG = getDomDecoGasPct(cidx);
+      if (!domG || !Number.isFinite(domG.o2) || (sel.value === 'trimix' && !Number.isFinite(domG.he))) {
+        disp.value = '—';
+        disp.title = sel.value === 'custom'
+          ? 'Enter a valid O₂ % for custom deco gas'
+          : 'Enter valid O₂ and He % for trimix deco gas';
+        continue;
+      }
     }
     const dgFracs = getDecoCardFractions(cidx);
     if (!dgFracs) { disp.value = '—'; continue; }
@@ -9050,17 +9061,19 @@ function runDecoSchedule() {
       return;
     }
   }
+  if (!window._zhlHeadless) {
+    const domGasVal = validateDomDecoGases();
+    if (!domGasVal.ok) {
+      if (typeof updateCcrGasValidation === 'function') updateCcrGasValidation();
+      alert('Cannot generate schedule:\n\n' + (domGasVal.errors[0].message || 'Invalid gas mixture.'));
+      return;
+    }
+  }
   const rawD   = parseFloat(document.getElementById('decoDepth').value) || 40;
   const depthM = units === 'metric' ? rawD : rawD / 3.28084;
   const bt     = parseInt(document.getElementById('decoBT').value) || 30;
   const _uiCcr = getCCRSettingsFromDOM();
   if (!window._zhlHeadless && isRebreatherCircuit(_uiCcr.circuit)) {
-    const domGasVal = validateDomDecoGases();
-    if (!domGasVal.ok) {
-      updateCcrGasValidation();
-      alert('Cannot generate schedule:\n\n' + (domGasVal.errors[0].message || 'Invalid gas mixture.'));
-      return;
-    }
     const bot = getDomBottomGasPct();
     const ccrVal = validateCcrCalculationInputs(
       [{ depth: depthM, time: bt, o2: bot.o2, he: bot.he }],
@@ -9945,12 +9958,12 @@ if (typeof window !== 'undefined') window.computePlanExposureTotals = computePla
 function validateGasFractionsPct(o2, he, field) {
   const o = Number(o2);
   const h = (he == null || he === '') ? 0 : Number(he);
-  if (!Number.isFinite(o) || !Number.isFinite(h) || o < 0 || o > 100 || h < 0 || h > 100 || o + h > 100) {
+  if (!Number.isFinite(o) || !Number.isFinite(h) || o <= 0 || o > 100 || h < 0 || h > 100 || o + h > 100) {
     return {
       ok: false,
       code: 'INVALID_GAS_FRACTIONS',
       field: field || 'gas',
-      message: 'O2 and He must be between 0 and 100 percent and total no more than 100 percent.',
+      message: 'O2 must be greater than 0 and at most 100 percent; He must be between 0 and 100 percent; total no more than 100 percent.',
     };
   }
   return { ok: true, o2: o, he: h };
