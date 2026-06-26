@@ -8569,7 +8569,7 @@ function updateGasMODDisplays() {
     disp.value = fmtDepth(mod) + heNote;
     disp.title = tooltipText(fO2, bailoutPpo2, ccrUi ? 'Bailout' : 'Deco');
   }
-  if (typeof updateCcrGasValidation === 'function') updateCcrGasValidation();
+  updateCcrGasValidation();
 }
 
 
@@ -8662,7 +8662,7 @@ function removeDecoGasCard(idx) {
   if (card) card.remove();
   renumberDecoGasCards();
   updateGasMODDisplays();
-  if (typeof updateCcrGasValidation === 'function') updateCcrGasValidation();
+  updateCcrGasValidation();
 }
 
 // ── End Dynamic Deco Gas Cards ──────────────────────────────────────────────
@@ -9092,18 +9092,19 @@ function runDecoSchedule() {
       return;
     }
   }
-  if (!window._zhlHeadless && typeof validateCcrGasConfiguration === 'function' && isCcrGasUiMode()) {
+  if (!window._zhlHeadless && isCcrGasUiMode()) {
     const gasVal = validateCcrGasConfiguration();
     if (!gasVal.ok) {
       updateCcrGasValidation();
-      notifyScheduleError(gasVal.errors[0] || 'CCR gas configuration is invalid.');
+      const err0 = gasVal.errors[0];
+      notifyScheduleError((err0 && err0.message) || err0 || 'CCR gas configuration is invalid.');
       return;
     }
   }
   if (!window._zhlHeadless) {
     const domGasVal = validateDomDecoGases();
     if (!domGasVal.ok) {
-      if (typeof updateCcrGasValidation === 'function') updateCcrGasValidation();
+      updateCcrGasValidation();
       notifyScheduleError(domGasVal.errors[0].message || 'Invalid gas mixture.');
       return;
     }
@@ -13809,7 +13810,7 @@ function buildMessengerText(mode) {
 
 // ── Download .txt file ──
 function exportTXT(mode) {
-  if (mode === 'contingency' && !window._lastContingency) { showToast('Run an emergency plan first', 'export'); return; }
+  if (mode === 'contingency' && !window._lastContingency) { showToast('Run an emergency plan first', 'export', true); return; }
   if (exportNeedsDecoBottomGas(mode) && !getBottomGasFractions()) { notifyInvalidGasExport('export'); return; }
   let text = mode === 'gasplan' ? buildGasPlanText() : buildExportText(mode);
   if (!text) return;

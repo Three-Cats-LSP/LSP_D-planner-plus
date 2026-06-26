@@ -2869,10 +2869,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.17['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.17")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.18['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.18")
 else:
-    fail("APP_VERSION not bumped to 2.51.17 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.18 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -3202,7 +3202,8 @@ elif "_zhlHeadlessDepth" in js and "window._zhlHeadless = _headlessEntry > 0" in
 else:
     fail("ZHLEngine.calculate still clears _zhlHeadless after headless runs (BUG-74)")
 
-if re.search(r"!window\._zhlHeadless && typeof validateCcrGasConfiguration", js):
+_rds_bug74 = js.split("function runDecoSchedule", 1)[-1].split("function planSegDepthM", 1)[0] if "function runDecoSchedule" in js else ""
+if _rds_bug74 and re.search(r"!window\._zhlHeadless && isCcrGasUiMode\(\)", _rds_bug74) and "validateCcrGasConfiguration()" in _rds_bug74:
     ok("runDecoSchedule skips CCR alert when headless (BUG-74)")
 else:
     fail("runDecoSchedule may alert() during headless test runs (BUG-74)")
@@ -4640,6 +4641,40 @@ if _rds67 and "notifyScheduleError" in _rds67 and "alert('Cannot generate schedu
     ok("runDecoSchedule uses notifyScheduleError not blocking alert (issue #67 F5)")
 else:
     fail("runDecoSchedule still uses blocking alert for invalid gas (issue #67 F5)")
+
+# ── Issue #68: toast error color, dead typeof cleanup, error extraction, audit gaps ──
+_ext68 = js.split("function exportTXT", 1)[-1].split("function copyFallback", 1)[0] if "function exportTXT" in js else ""
+if _ext68 and re.search(r"Run an emergency plan first['\"],\s*['\"]export['\"],\s*true", _ext68):
+    ok("exportTXT contingency no-plan toast uses error styling (issue #68 F1)")
+else:
+    fail("exportTXT contingency no-plan toast missing isError styling (issue #68 F1)")
+_rds68 = js.split("function runDecoSchedule", 1)[-1].split("function planSegDepthM", 1)[0] if "function runDecoSchedule" in js else ""
+if _rds68 and "typeof validateCcrGasConfiguration" not in _rds68 and "typeof updateCcrGasValidation" not in _rds68:
+    ok("runDecoSchedule calls CCR validators directly without typeof guards (issue #68 F2)")
+else:
+    fail("runDecoSchedule still has dead typeof guards for CCR validators (issue #68 F2)")
+if _rds68 and re.search(r"validateCcrGasConfiguration\(\)[\s\S]{0,200}err0\.message", _rds68):
+    ok("runDecoSchedule CCR gas error uses .message extraction (issue #68 F3)")
+else:
+    fail("runDecoSchedule CCR gas error extraction not forward-compatible (issue #68 F3)")
+if _rds68 and all(p in _rds68 for p in (
+    "validateDecoInputs()",
+    "validateCcrGasConfiguration()",
+    "validateDomDecoGases()",
+    "validateCcrCalculationInputs(",
+)):
+    ok("runDecoSchedule has all four validation paths before schedule run (issue #68 F4)")
+else:
+    fail("runDecoSchedule missing one or more validation paths (issue #68 F4)")
+if _rds68 and _rds68.count("notifyScheduleError(") >= 4:
+    ok("runDecoSchedule routes all validation failures through notifyScheduleError (issue #68 F4)")
+else:
+    fail("runDecoSchedule missing notifyScheduleError on one or more validation paths (issue #68 F4)")
+_vpm68 = js.split("function renderVPMResults", 1)[-1].split("function getAllDecoGasIds", 1)[0] if "function renderVPMResults" in js else ""
+if _vpm68 and "addBailoutStressReserve" in _vpm68 and re.search(r"addBailoutStressReserve[\s\S]{0,250}accumGasLitres\(gasConsVPM", _vpm68):
+    ok("addBailoutStressReserve lambda uses accumGasLitres (issue #68 F4)")
+else:
+    fail("addBailoutStressReserve lambda missing accumGasLitres (issue #68 F4)")
 
 print("=" * 60)
 
