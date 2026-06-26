@@ -2866,10 +2866,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.12['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.12")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.13['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.13")
 else:
-    fail("APP_VERSION not bumped to 2.51.12 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.13 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -3389,7 +3389,8 @@ if '<option value="ean80">EAN80' in html and html.count('value="ean80"') >= 2:
 else:
     fail("EAN80 missing from dg1Mix/dg2Mix (issue #1)")
 
-if "mixEl.value === 'ean80' ? 80" in js:
+_vpm_deco63 = js.split("function runVPMSchedule", 1)[-1].split("function ", 1)[0] if "function runVPMSchedule" in js else ""
+if (_vpm_deco63 and "getDecoCardFractions(n)" in _vpm_deco63) or "mixEl.value === 'ean80' ? 80" in js:
     ok("runVPMSchedule maps ean80 to 80% O₂ (issue #1)")
 else:
     fail("runVPMSchedule still maps ean80 incorrectly (issue #1)")
@@ -4467,7 +4468,7 @@ if _dgf62 and "readDomO2Pct(customId)" in _dgf62 and "|| 50" not in _dgf62:
     ok("getDecoGasFractions returns null for blank custom O2 (issue #62 F1)")
 else:
     fail("getDecoGasFractions still substitutes EAN50 for blank custom O2 (issue #62 F1)")
-if "trimix deco gas" in js and re.search(r"sel\.value === 'custom' \|\| sel\.value === 'trimix'", js):
+if re.search(r"sel\.value === 'trimix'[\s\S]{0,200}getDomDecoGasPct\(cidx\)", js):
     ok("deco gas MOD sentinel covers trimix blank fields (issue #62 F2)")
 else:
     fail("deco gas MOD missing trimix NaN guard (issue #62 F2)")
@@ -4480,6 +4481,28 @@ if re.search(r"sel\.value === 'custom' \|\| sel\.value === 'trimix'[\s\S]{0,120}
     ok("getDomDecoGasPct called only for custom/trimix cards (issue #62 F4)")
 else:
     fail("getDomDecoGasPct still called for every deco gas card (issue #62 F4)")
+_gbf63 = js.split("function getBottomGasFractions", 1)[-1].split("function ", 1)[0] if "function getBottomGasFractions" in js else ""
+if _gbf63 and "readDomO2Pct('decoCustomO2')" in _gbf63 and "return null" in _gbf63:
+    ok("getBottomGasFractions uses readDomO2Pct and returns null for blank custom (issue #63 F1)")
+else:
+    fail("getBottomGasFractions still falls back to Air for blank custom bottom gas (issue #63 F1)")
+if re.search(r"function runVPMSchedule[\s\S]{0,1200}getDecoCardFractions\(n\)", js) and "dg${n}CustomO2" not in js.split("function runVPMSchedule", 1)[-1].split("function runVPMScheduleCore", 1)[0][:2500]:
+    ok("VPM deco gas assembly uses getDecoCardFractions not CustomO2 element (issue #63 F2/F5)")
+else:
+    fail("VPM deco gas still reads dg CustomO2 for trimix cards (issue #63 F2/F5)")
+_bzpd63 = js.split("function buildZhlScheduleParamsFromDom", 1)[-1].split("function ", 1)[0] if "function buildZhlScheduleParamsFromDom" in js else ""
+if _bzpd63 and "throw new Error" in _bzpd63 and "Invalid deco gas" in _bzpd63:
+    ok("buildZhlScheduleParamsFromDom throws on blank trimix deco gas (issue #63 F3)")
+else:
+    fail("buildZhlScheduleParamsFromDom still silently drops blank trimix deco gas (issue #63 F3)")
+if re.search(r"function calcGasPlan[\s\S]{0,400}validateDomDecoGases\(\)", js):
+    ok("calcGasPlan validates deco gases before getBottomGasFractions (issue #63 F4)")
+else:
+    fail("calcGasPlan still uses getBottomGasFractions without gas validation (issue #63 F4)")
+if re.search(r"function exportPDF[\s\S]{0,500}validateDomDecoGases\(\)", js):
+    ok("exportPDF validates deco gases before building PDF (issue #63 F1)")
+else:
+    fail("exportPDF still skips gas validation (issue #63 F1)")
 
 print("=" * 60)
 
