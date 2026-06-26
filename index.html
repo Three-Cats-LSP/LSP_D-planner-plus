@@ -4206,6 +4206,18 @@ function altToPressure(altM) {
   return SEA_LEVEL_P * Math.exp(-altM / 8434);
 }
 
+function refreshAltitudeDependentUI() {
+  if (window._zhlHeadless) return;
+  updateGasMODDisplays?.();
+  updateTravelGasMOD?.();
+  calcMODTool?.();
+  renderModRefTable?.();
+  calcBestMixTec?.();
+  calcBestMix?.();
+  renderEADTable?.();
+  renderGasTable?.();
+}
+
 function setAltitude() {
   // Read altitude from UI
   const sel = document.getElementById('altitudeSelect');
@@ -4249,15 +4261,7 @@ function setAltitude() {
   }
   calcCNS();
 
-  // Refresh gas card MOD displays and Tools panels (mirror setUnits pattern)
-  if (!window._zhlHeadless) {
-    updateGasMODDisplays?.();
-    updateTravelGasMOD?.();
-    calcMODTool?.();
-    renderModRefTable?.();
-    calcBestMixTec?.();
-    renderGasTable?.();
-  }
+  refreshAltitudeDependentUI();
 }
 
 function handleAltitudeSelect(val) {
@@ -4305,6 +4309,7 @@ function loadAltitudeFromStorage() {
     // Update badge
     const badge = document.getElementById('altitudePressureDisplay');
     if (badge && altitudeM > 0) badge.textContent = altSurfaceP.toFixed(3) + ' bar';
+    refreshAltitudeDependentUI();
   } catch(e) {}
 }
 
@@ -6641,7 +6646,7 @@ function calcGasMODm(fO2, ppO2Limit) {
   const o2MODm = Math.max(lastStop, 6);
   if (fO2 >= 0.995 && o2AtMOD) return o2MODm;
   if (fO2 <= 0) return 0;
-  return Math.floor((ppO2Limit / fO2 - altSurfaceP) / BAR_PER_METRE);
+  return Math.max(0, Math.floor((ppO2Limit / fO2 - altSurfaceP) / BAR_PER_METRE));
 }
 
 function getBailoutPpo2Limit() {
@@ -8498,10 +8503,6 @@ function updateGasMODDisplays() {
     return isMetric ? m + ' m' : Math.round(m * 3.28084) + ' ft';
   }
 
-  function calcGasMOD(fO2, ppO2limit) {
-    return calcGasMODm(fO2, ppO2limit);
-  }
-
   function tooltipText(fO2, ppO2limit, label) {
     if (fO2 >= 0.995 && o2AtMOD)
       return `MOD: ${o2MODm} m (pure O₂ fixed at 6 m — O₂ @ MOD: Allow at MOD)\nFormula: ppO₂ ${ppO2limit} / ${fO2.toFixed(2)} − ${altSurfaceP.toFixed(3)} = ${((ppO2limit/fO2-altSurfaceP)/BAR_PER_METRE).toFixed(1)} m (strict) → overridden to ${o2MODm} m`;
@@ -8526,7 +8527,7 @@ function updateGasMODDisplays() {
         botEl.title = 'Enter valid bottom gas mix';
       } else {
       const botFO2   = botFracs.fO2;
-      const botMOD   = calcGasMOD(botFO2, ppO2Limit);
+      const botMOD   = calcGasMODm(botFO2, ppO2Limit);
       const botLabel = getGasLabel(botFO2, botFracs.fHe);
       const heNote   = botFracs.fHe > 0 ? '  (' + botLabel + ')' : '';
       let clampNote = '';
@@ -8562,7 +8563,7 @@ function updateGasMODDisplays() {
     if (!dgFracs) { disp.value = '—'; continue; }
     const fO2 = dgFracs.fO2;
     const bailoutPpo2 = ccrUi ? getBailoutPpo2Limit() : ppO2Deco;
-    const mod = calcGasMOD(fO2, bailoutPpo2);
+    const mod = calcGasMODm(fO2, bailoutPpo2);
     const heNote = dgFracs.fHe > 0 ? '  (' + getGasLabel(fO2, dgFracs.fHe) + ')' : '';
     disp.value = fmtDepth(mod) + heNote;
     disp.title = tooltipText(fO2, bailoutPpo2, ccrUi ? 'Bailout' : 'Deco');
@@ -11210,7 +11211,7 @@ function calcMODTool() {
   const o2   = parseFloat(document.getElementById('modO2')?.value) || 0;
   const ppo2 = (parseFloat(document.getElementById('modPPO2')?.value) || 14) / 10;
   if (!o2 || o2 <= 0 || o2 > 100) return;
-  const modM  = Math.floor((ppo2 / (o2 / 100) - (altSurfaceP || 1.0)) / (BAR_PER_METRE || 0.1));
+  const modM  = calcGasMODm(o2 / 100, ppo2);
   const modFt = Math.floor(modM * 3.281);
   const col = modM < 20 ? 'var(--red)' : modM < 30 ? 'var(--yellow)' : 'var(--accent)';
   document.getElementById('modResult').textContent  = modM + ' m';
@@ -11444,7 +11445,7 @@ function renderBmtRefTable() {
     const pN2    = fN2 * pAmb;
     const eadM   = Math.max(0, (pN2 / 0.79) - (altSurfaceP || 1.0)) / (BAR_PER_METRE || 0.1);
     // MOD at ppO2 limit
-    const modM   = Math.floor((ppO2Lim / fO2 - (altSurfaceP || 1.0)) / (BAR_PER_METRE || 0.1));
+    const modM   = calcGasMODm(fO2, ppO2Lim);
     // ppO2 at this depth
     const actPPO2 = (fO2 * pAmb).toFixed(2);
     // Mix name
@@ -11514,7 +11515,7 @@ function renderToolsBmtRefTable() {
     const fN2    = 1 - fO2;
     const pN2    = fN2 * pAmb;
     const eadM   = Math.max(0, (pN2 / 0.79) - (altSurfaceP || 1.0)) / (BAR_PER_METRE || 0.1);
-    const modM   = Math.floor((ppO2Lim / fO2 - (altSurfaceP || 1.0)) / (BAR_PER_METRE || 0.1));
+    const modM   = calcGasMODm(fO2, ppO2Lim);
     const actPPO2 = (fO2 * pAmb).toFixed(2);
     const mixName = o2Pct === 21 ? 'Air' : 'EAN' + o2Pct + ' (' + o2Pct + '%)';
     const depthDisp = du ? dM + ' m' : Math.round(dM * 3.28084) + ' ft';
@@ -11607,8 +11608,8 @@ function calcEND_tool() {
   else                 { riskLabel = 'Severe';   riskCol = 'var(--red)'; }
 
   // MOD
-  const mod14M = fO2 > 0 ? Math.floor((1.4 / fO2 - (altSurfaceP||1.0)) / (BAR_PER_METRE||0.1)) : null;
-  const mod16M = fO2 > 0 ? Math.floor((1.6 / fO2 - (altSurfaceP||1.0)) / (BAR_PER_METRE||0.1)) : null;
+  const mod14M = fO2 > 0 ? calcGasMODm(fO2, 1.4) : null;
+  const mod16M = fO2 > 0 ? calcGasMODm(fO2, 1.6) : null;
   const mod14d = mod14M != null ? (du ? mod14M + ' m' : Math.round(mod14M * 3.28084) + ' ft') : '\u2014';
   const mod16d = mod16M != null ? (du ? mod16M + ' m' : Math.round(mod16M * 3.28084) + ' ft') : '\u2014';
 
@@ -11755,7 +11756,7 @@ function renderGasTable() {
   };
 
   // MOD (m) = (ppO2 / fO2 - altSurfaceP) / BAR_PER_METRE
-  const modM = (fO2, ppo2) => (ppo2 / fO2 - altSurfaceP) / BAR_PER_METRE;
+  const modM = (fO2, ppo2) => calcGasMODm(fO2, ppo2);
   // MND: END = 3.5 bar. fNarc = fO2 + fN2 (He non-narcotic). MND = (3.5/fNarc - altP)/BAR_PER_METRE
   const mndM = (fO2, fHe) => {
     const fNarc = fO2 + Math.max(0, 1 - fO2 - fHe); // fO2 + fN2
@@ -17034,7 +17035,6 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Load theme preference first
   loadThemePreference();
-  updateGasMODDisplays();
   toggleCircuitFields();
   loadTableViewPreference();
   restoreCardStates();

@@ -1326,7 +1326,9 @@ else:
 # 20.3c calcMODTool() in Tools panel uses altSurfaceP (not hardcoded sea-level formula)
 mod_fn_start = js.find("function calcMODTool() {")
 mod_fn = js[mod_fn_start:mod_fn_start + 400] if mod_fn_start > 0 else ""
-if "altSurfaceP" in mod_fn and "BAR_PER_METRE" in mod_fn:
+if mod_fn_start > 0 and "calcGasMODm" in mod_fn:
+    ok("calcMODTool() (Tools tab) delegates to calcGasMODm — altitude-correct")
+elif mod_fn_start > 0 and "altSurfaceP" in mod_fn and "BAR_PER_METRE" in mod_fn:
     ok("calcMODTool() (Tools tab) uses altSurfaceP + BAR_PER_METRE — altitude-correct")
 else:
     fail("calcMODTool() (Tools tab) uses hardcoded sea-level formula — wrong at altitude")
@@ -1348,7 +1350,7 @@ else:
     fail("nitroxMOD() uses hardcoded sea-level * 10 formula — wrong at altitude")
 
 # 20.3c4 calcGasMODm() CCR bailout MOD uses altSurfaceP
-cgm_m = re.search(r"function calcGasMODm\([^)]*\)\s*\{[^}]{0,400}\}", js)
+cgm_m = re.search(r"function calcGasMODm\([^)]*\)\s*\{[^}]{0,800}\}", js)
 if cgm_m and "altSurfaceP" in cgm_m.group(0) and "(ppO2Limit / fO2 - 1)" not in cgm_m.group(0):
     ok("calcGasMODm() uses altSurfaceP — CCR bailout MOD altitude-correct")
 else:
@@ -1357,15 +1359,39 @@ else:
 # 20.3c5 setAltitude() refreshes MOD displays when altitude changes
 set_alt_start = js.find("function setAltitude()")
 set_alt_fn = js[set_alt_start:set_alt_start + 3500] if set_alt_start > 0 else ""
-if set_alt_start > 0 and "updateGasMODDisplays" in set_alt_fn and "calcMODTool" in set_alt_fn:
+if set_alt_start > 0 and "refreshAltitudeDependentUI" in set_alt_fn:
+    ok("setAltitude() calls refreshAltitudeDependentUI — MOD/EAD/tools refresh on altitude change")
+elif set_alt_start > 0 and "updateGasMODDisplays" in set_alt_fn and "calcMODTool" in set_alt_fn:
     ok("setAltitude() refreshes MOD displays (updateGasMODDisplays + calcMODTool)")
 else:
     fail("setAltitude() missing MOD refresh calls — stale MOD after altitude change")
 
-if "function calcGasMOD(" in js and "function calcMODTool()" in js and "function calcMOD(" not in js:
-    ok("calcMOD name collision resolved — calcGasMOD vs calcMODTool (issue #4 BUG-1)")
+# 20.3c6 loadAltitudeFromStorage() refreshes altitude-dependent UI on page load
+load_alt_start = js.find("function loadAltitudeFromStorage()")
+load_alt_fn = js[load_alt_start:load_alt_start + 2500] if load_alt_start > 0 else ""
+if load_alt_start > 0 and "refreshAltitudeDependentUI" in load_alt_fn:
+    ok("loadAltitudeFromStorage() calls refreshAltitudeDependentUI — saved altitude applies on load")
+else:
+    fail("loadAltitudeFromStorage() missing UI refresh — MOD stale after page load with saved altitude")
+
+# 20.3c7 refreshAltitudeDependentUI includes calcBestMix and renderEADTable
+raf_start = js.find("function refreshAltitudeDependentUI()")
+raf_fn = js[raf_start:raf_start + 1200] if raf_start > 0 else ""
+if raf_start > 0 and "calcBestMix" in raf_fn and "renderEADTable" in raf_fn:
+    ok("refreshAltitudeDependentUI() refreshes calcBestMix + renderEADTable")
+else:
+    fail("refreshAltitudeDependentUI() missing calcBestMix or renderEADTable")
+
+if "function calcMODTool()" in js and "function calcMOD(" not in js and ugmd_start > 0 and "calcGasMODm" in ugmd_fn:
+    ok("calcMOD name collision resolved — calcGasMODm shared, calcMODTool for Tools (issue #4 BUG-1)")
 else:
     fail("calcMOD name collision still present — local and global share name (issue #4 BUG-1)")
+
+# 20.3c8 calcGasMODm clamps negative MOD to zero
+if cgm_m and "Math.max(0" in cgm_m.group(0):
+    ok("calcGasMODm() clamps negative MOD to 0")
+else:
+    fail("calcGasMODm() missing Math.max(0,…) clamp — negative MOD can display at extreme altitude")
 
 if "async function ensurePDFFontsForPDF(doc)" in js and js.count("ensurePDFFontsForPDF(doc)") >= 3:
     ok("PDF builders guard font load via ensurePDFFontsForPDF (issue #4 BUG-2)")
