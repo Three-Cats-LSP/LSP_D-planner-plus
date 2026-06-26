@@ -2866,10 +2866,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.10['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.10")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.11['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.11")
 else:
-    fail("APP_VERSION not bumped to 2.51.10 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.11 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -4398,7 +4398,7 @@ if capacitor_bridge_js and os.path.isfile(_pages_bridge):
 elif capacitor_bridge_js:
     ok("_pages/capacitor-bridge.js sync check skipped (_pages/ not built yet)")
 _rpdf = js.split("function runPdfExportFromDialog", 1)[-1].split("function ", 1)[0] if "function runPdfExportFromDialog" in js else ""
-if _rpdf and "?.checked !== false" in _rpdf and "&& !!" not in _rpdf.split("function showPDFExportDialog", 1)[0]:
+if _rpdf and "?.checked !== false" in _rpdf and "&& !!" not in _rpdf:
     ok("runPdfExportFromDialog opts default to included when checkbox absent (issue #60 F3)")
 else:
     fail("runPdfExportFromDialog still double-reads checkbox as false when absent (issue #60 F3)")
@@ -4425,6 +4425,34 @@ if re.search(r'id="decoCustomO2"[^>]*min="5"', html) and "5% used" in js:
     ok("custom bottom O2 below 5% shows clamp warning (issue #60 F8)")
 else:
     fail("custom bottom O2 silently clamps below 5% without user warning (issue #60 F8)")
+
+_android_bridge = os.path.join(os.path.dirname(__file__), "android", "app", "src", "main", "assets", "public", "capacitor-bridge.js")
+if capacitor_bridge_js and os.path.isfile(_android_bridge):
+    with open(_android_bridge, encoding="utf-8") as _ab:
+        _android_bridge_txt = _ab.read()
+    if "shareFile(saved.uri, saved.finalName || filename)" in _android_bridge_txt:
+        ok("android capacitor-bridge.js share uses finalName (issue #61 F1/F6)")
+    else:
+        fail("android capacitor-bridge.js stale — run cap sync android (issue #61 F1/F6)")
+elif capacitor_bridge_js:
+    ok("android capacitor-bridge.js sync check skipped (cap sync not run yet)")
+if "getDomDecoGasPct(cidx)" in js and "Enter a valid O₂ % for custom deco gas" in js:
+    ok("deco gas MOD shows sentinel for blank custom O2 (issue #61 F2)")
+else:
+    fail("deco gas MOD still substitutes EAN50 for blank custom O2 (issue #61 F2)")
+_wddl = js.split("function waterDensityDisplayLabel", 1)[-1].split("function ", 1)[0] if "function waterDensityDisplayLabel" in js else ""
+if _wddl and "Canonical default is Salt" in _wddl and "|| 'salt'" in _wddl:
+    ok("waterDensityDisplayLabel documents Salt as canonical default (issue #61 F3)")
+else:
+    fail("waterDensityDisplayLabel missing documented Salt canonical default (issue #61 F3)")
+if "waterDensityDisplayLabel()" in js.split("function _envSettingsSummary", 1)[-1].split("function ", 1)[0]:
+    ok("_envSettingsSummary uses waterDensityDisplayLabel (issue #61 F4)")
+else:
+    fail("_envSettingsSummary still pushes raw water density keys (issue #61 F4)")
+if re.search(r"botMix === 'custom'[\s\S]{0,120}botDom\.o2\s*<\s*5", js) and not re.search(r"botDom\.o2\s*>\s*0\s*&&\s*botDom\.o2\s*<\s*5", js):
+    ok("custom bottom O2 clamp warning includes zero (issue #61 F5)")
+else:
+    fail("custom bottom O2=0 still bypasses clamp warning (issue #61 F5)")
 
 print("=" * 60)
 

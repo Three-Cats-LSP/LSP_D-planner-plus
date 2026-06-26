@@ -22,6 +22,18 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install deps and sync Capacitor android assets
+        run: |
+          npm ci
+          python tools/sync_www.py
+          npx cap sync android
+
       - name: Build Pages site (_pages/)
         run: python tools/build_pages_site.py
 

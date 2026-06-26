@@ -64,6 +64,9 @@ jobs:
       - name: Capacitor sync (copies web assets + updates plugins)
         run: npx cap sync android
 
+      - name: Verify capacitor-bridge share uses deduplicated filename
+        run: grep -q 'shareFile(saved.uri, saved.finalName || filename)' android/app/src/main/assets/public/capacitor-bridge.js
+
       - name: Patch build.gradle with extracted version
         run: |
           sed -i "s/versionCode [0-9]*/versionCode ${{ steps.version.outputs.VERSION_CODE }}/" android/app/build.gradle

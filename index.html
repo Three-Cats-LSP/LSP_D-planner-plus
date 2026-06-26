@@ -4070,11 +4070,11 @@ function endParseDepthM(text) {
 }
 
 function _envSettingsSummary() {
-  const water = document.getElementById('waterDensitySelect')?.value || 'salt';
+  const waterLabel = waterDensityDisplayLabel();
   const u     = document.getElementById('unitsSelect')?.value || 'metric';
   const alt   = document.getElementById('altitudeSelect')?.value || '0';
   const parts = [];
-  if (water !== 'salt') parts.push(water);
+  if (waterLabel !== 'Salt') parts.push(waterLabel);
   if (u     !== 'metric') parts.push('ft');
   if (alt   !== '0')     parts.push(alt + 'm');
   return parts.length ? parts.join(' · ') : '';
@@ -4126,6 +4126,7 @@ function setWaterDensity(type, customKgM3) {
 }
 
 function waterDensityDisplayLabel() {
+  // Canonical default is Salt (matches waterDensitySelect, BAR_PER_METRE init, setWaterDensity on load).
   const key = localStorage.getItem('waterDensity') || document.getElementById('waterDensitySelect')?.value || 'salt';
   if (key === 'custom') {
     const kg = localStorage.getItem('waterDensityCustom') || document.getElementById('waterCustomInput')?.value;
@@ -7173,7 +7174,9 @@ function getDomDecoGasPct(idx) {
   if (mix === 'ean80') return { o2: 80, he: 0 };
   if (mix === 'o2') return { o2: 100, he: 0 };
   if (mix === 'custom') {
-    return { o2: parseFloat(document.getElementById(`dg${idx}CustomO2`)?.value), he: 0 };
+    const raw = document.getElementById(`dg${idx}CustomO2`)?.value;
+    const o2 = raw === '' || raw == null ? NaN : parseFloat(raw);
+    return { o2: Number.isFinite(o2) ? o2 : NaN, he: 0 };
   }
   if (mix === 'trimix') {
     return {
@@ -8438,7 +8441,7 @@ function updateGasMODDisplays() {
       const botLabel = getGasLabel(botFO2, botFracs.fHe);
       const heNote   = botFracs.fHe > 0 ? '  (' + botLabel + ')' : '';
       let clampNote = '';
-      if (botMix === 'custom' && Number.isFinite(botDom.o2) && botDom.o2 > 0 && botDom.o2 < 5) {
+      if (botMix === 'custom' && Number.isFinite(botDom.o2) && botDom.o2 < 5) {
         clampNote = '  (5% used)';
       }
       botEl.value    = fmtDepth(botMOD) + heNote + clampNote;
@@ -8455,6 +8458,12 @@ function updateGasMODDisplays() {
     const disp = document.getElementById(`dg${cidx}MODDisplay`);
     if (!sel || !disp) continue;
     if (sel.value === 'none' || !sel.value) { disp.value = '—'; disp.title = 'Select a gas mix to see MOD'; continue; }
+    const domG = getDomDecoGasPct(cidx);
+    if (sel.value === 'custom' && (!domG || !Number.isFinite(domG.o2))) {
+      disp.value = '—';
+      disp.title = 'Enter a valid O₂ % for custom deco gas';
+      continue;
+    }
     const dgFracs = getDecoCardFractions(cidx);
     if (!dgFracs) { disp.value = '—'; continue; }
     const fO2 = dgFracs.fO2;
