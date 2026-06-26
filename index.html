@@ -6520,7 +6520,7 @@ function ccrDiluentSurfaceLpm(depthM) {
   const ccr = getCCRSettingsFromDOM();
   const metRate = getCcrMetabolicO2Rate(ccr);
   const bot = getBottomGasFractions();
-  if (!bot) return 0;
+  if (!bot) return NaN;
   const fO2Dil = Math.max(0.01, bot.fO2 || 0.21);
   if (ccr.circuit === 'pSCR' && !ccr.bailout) {
     return metRate * PSCR_DEFAULT_BYPASS_RATIO;
@@ -6558,7 +6558,9 @@ function ccrGasLitres(label, depthM, durMin, sac) {
   if (isCcrDiluentGasLabel(label)) {
     const pAmb = altSurfaceP + depthM * BAR_PER_METRE;
     const pSurf = altSurfaceP || 1.0;
-    return ccrDiluentSurfaceLpm(depthM) * (pAmb / pSurf) * durMin;
+    const surfLpm = ccrDiluentSurfaceLpm(depthM);
+    if (!Number.isFinite(surfLpm)) return NaN;
+    return surfLpm * (pAmb / pSurf) * durMin;
   }
   const absP = altSurfaceP + depthM * BAR_PER_METRE;
   return sac * absP * durMin; // sac must be L/min → litres at ambient
@@ -8276,14 +8278,15 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
       const reqDisp  = gpVolDisp(reqL);
       const availDisp = usableL != null ? gpVolDisp(usableL) : null;
       const shortVolDisp = (litres) => gpVolDisp(Math.max(0, litres));
-      const short = usableL != null && reqL > usableL;
-      const tight = usableL != null && !short && reqL > usableL * 0.90;
-      const sufficient = usableL != null && !short;
+      const reqValid = Number.isFinite(reqL);
+      const short = reqValid && usableL != null && reqL > usableL;
+      const tight = reqValid && usableL != null && !short && reqL > usableL * 0.90;
+      const sufficient = reqValid && usableL != null && !short;
 
       // Sufficiency colour
-      const sufCol = short ? 'var(--red)' : tight ? 'var(--yellow)' : hasCyl ? 'var(--green)' : 'var(--muted)';
-      const sufIcon = short ? '✗' : tight ? '⚠' : hasCyl ? '✓' : '—';
-      const sufTxt  = short ? `Short ${shortVolDisp(reqL - (usableL || 0))} ${volUnitV}` : tight ? 'Tight' : hasCyl ? 'OK' : 'No cyl data';
+      const sufCol = !reqValid ? 'var(--orange)' : short ? 'var(--red)' : tight ? 'var(--yellow)' : hasCyl ? 'var(--green)' : 'var(--muted)';
+      const sufIcon = !reqValid ? '—' : short ? '✗' : tight ? '⚠' : hasCyl ? '✓' : '—';
+      const sufTxt  = !reqValid ? 'Invalid gas' : short ? `Short ${shortVolDisp(reqL - (usableL || 0))} ${volUnitV}` : tight ? 'Tight' : hasCyl ? 'OK' : 'No cyl data';
 
       // Thirds/Half portion in litres (bottom only)
       const portionDispV = (isBottom && portionL != null) ? `${gpVolDisp(portionL)} ${volUnitV}` : '—';
@@ -9797,12 +9800,13 @@ function runDecoSchedule() {
         const fB = units==='imperial'?fR/14.5038:fR;
         const rB = units==='imperial'?rR/14.5038:rR;
         const avail = sL>0&&fB>rB?(fB-rB)*sL:null;
-        const short2 = avail!=null&&reqL>avail;
-        const sufCol2 = short2?'var(--red)':avail!=null?'var(--green)':'var(--muted)';
+        const reqValid = Number.isFinite(reqL);
+        const short2 = reqValid && avail!=null && reqL>avail;
+        const sufCol2 = !reqValid ? 'var(--orange)' : short2?'var(--red)':avail!=null?'var(--green)':'var(--muted)';
         const reqDispE = gpVolDisp(reqL);
         const availDispE = avail != null ? gpVolDisp(avail) : null;
         const shortDispE = gpVolDisp(Math.max(0, reqL - (avail || 0)));
-        const sufTxt2 = short2?`✗ short ${shortDispE} ${volUnitV2}`:avail!=null?'✓ OK':'—';
+        const sufTxt2 = !reqValid ? 'Invalid gas' : short2?`✗ short ${shortDispE} ${volUnitV2}`:avail!=null?'✓ OK':'—';
         emergRows += `<tr><td style="font-weight:700;">${gas}</td><td style="color:${short2?'var(--red)':'var(--text)'};">${reqDispE} ${volUnitV2}</td><td style="color:${avail!=null?(short2?'var(--red)':'var(--green)'):'var(--muted)'};">${availDispE != null ? availDispE+' '+volUnitV2 : '—'}</td><td style="color:${sufCol2};font-weight:700;">${sufTxt2}</td></tr>`;
         if (short2) emergWarn += `<div class="alert dang" style="margin-top:6px;"><span>⚠</span><div><strong>${gas} insufficient</strong> — need ${reqDispE} ${volUnitV2}, have ${availDispE} ${volUnitV2}.</div></div>`;
       });
@@ -12333,6 +12337,7 @@ function gpSizeL(id) {
 }
 // Display helpers
 function gpVolDisp(litres) {
+  if (!Number.isFinite(litres)) return '—';
   return units === 'imperial' ? (litres * GP_CUFT_PER_L).toFixed(1) : Math.round(litres).toString();
 }
 function gpPresDisp(bar) {
@@ -12463,7 +12468,7 @@ function calcGasPlan() {
     let   shortL    = null;   // > 0 means insufficient
     let   maxBTmin  = null;   // suggested max BT
     let   maxTurnBar = null;  // turn pressure at max BT
-    if (reqL != null && reqL > usableL) {
+    if (Number.isFinite(reqL) && reqL > usableL) {
       shortL = reqL - usableL;
       // Back-calculate max BT from consumption rate
       // Bottom phase time ≈ BT (descent is included in gasConsumed for bottom gas)
@@ -12554,12 +12559,12 @@ function calcGasPlan() {
           if (btSuggest) html += `<tr class="gas-bt-row"><td colspan="7" class="gas-bt-cell">⚠ ${btSuggest} — or use a larger cylinder.</td></tr>`;
         } else {
           // Sufficient — normal turn pressure row with plan check
-          const suffNote = r.reqL != null
+          const suffNote = Number.isFinite(r.reqL)
             ? `<br><span style="color:var(--green) !important;font-size:10px;">✓ ${gpVolDisp(r.reqL)} ${volU} needed</span>`
-            : '';
-          const botVolColor = r.reqL != null ? 'color:var(--green) !important;font-weight:700;' : '';
-          const botMargin = r.reqL != null ? gpVolDisp(r.totalL - r.reqL) + ' ' + volU : '—';
-          const botMarginCol = r.reqL != null ? 'color:var(--green) !important;font-weight:700;' : 'color:var(--muted);';
+            : (r.reqL != null ? '<br><span style="color:var(--orange) !important;font-size:10px;">Invalid gas</span>' : '');
+          const botVolColor = Number.isFinite(r.reqL) ? 'color:var(--green) !important;font-weight:700;' : '';
+          const botMargin = Number.isFinite(r.reqL) ? gpVolDisp(r.totalL - r.reqL) + ' ' + volU : '—';
+          const botMarginCol = Number.isFinite(r.reqL) ? 'color:var(--green) !important;font-weight:700;' : 'color:var(--muted);';
           html += `<tr>
             <td style="white-space:nowrap;">${r.label}</td>
             <td style="${botVolColor}">${gpVolDisp(r.totalL)} ${volU}</td>
@@ -12575,6 +12580,9 @@ function calcGasPlan() {
         if (r.reqL == null) {
           suffCell = '<span style="color:var(--muted);">run plan</span>';
           statusCol = 'var(--muted)';
+        } else if (!Number.isFinite(r.reqL)) {
+          suffCell = '<span style="color:var(--orange) !important;font-weight:700;">invalid gas</span>';
+          statusCol = 'var(--orange)';
         } else if (r.totalL >= r.reqL * 1.10) {
           suffCell = '<span style="color:var(--green) !important;font-weight:700;">✓ ok</span><br><span style="color:var(--muted);font-size:10px;">req ' + gpVolDisp(r.reqL) + ' ' + volU + '</span>';
           statusCol = 'var(--green)';
@@ -13300,18 +13308,22 @@ function buildExportText(mode) {
 function decoPlanRowsExist() {
   return document.querySelectorAll('#decoTableBody tr[data-phase]').length > 0;
 }
-function notifyInvalidGasExport() {
+function notifyInvalidGasExport(toastId) {
   const gasVal = typeof validateDomDecoGases === 'function' ? validateDomDecoGases() : { ok: false, errors: [] };
   const msg = gasVal.errors[0]?.message || 'Invalid gas mixture — check bottom and deco gas fields.';
-  alert('Cannot export:\n\n' + msg);
+  showToast('Invalid gas: ' + msg, toastId || 'copy');
+}
+
+function exportNeedsDecoBottomGas(mode) {
+  return mode === 'deco' || mode === 'contingency'
+    || ((mode === 'planner' || mode === 'cns') && decoPlanRowsExist());
 }
 
 // ── Copy to clipboard - shows preview modal ──
 function copyDiveProfile(mode) {
-  if (mode === 'deco') {
-    if (!decoPlanRowsExist()) { showToast('Run a dive plan first', 'copy'); return; }
-    if (!getBottomGasFractions()) { notifyInvalidGasExport(); return; }
-  }
+  if (mode === 'deco' && !decoPlanRowsExist()) { showToast('Run a dive plan first', 'copy'); return; }
+  if (mode === 'contingency' && !window._lastContingency) { showToast('Run an emergency plan first', 'copy'); return; }
+  if (exportNeedsDecoBottomGas(mode) && !getBottomGasFractions()) { notifyInvalidGasExport('copy'); return; }
   const text = buildMessengerText(mode);
   if (!text) { showToast('Run a dive plan first', 'copy'); return; }
   const titles = { deco: 'Deco Plan', contingency: 'Emergency Plan', planner: 'Dive Plan' };
@@ -13438,7 +13450,7 @@ function buildSlateText() {
 
 function showSlate() {
   if (!decoPlanRowsExist()) { showToast('Run a dive plan first', 'slate'); return; }
-  if (!getBottomGasFractions()) { notifyInvalidGasExport(); return; }
+  if (!getBottomGasFractions()) { notifyInvalidGasExport('slate'); return; }
   const text = buildSlateText();
   if (!text) { showToast('Run a dive plan first', 'slate'); return; }
   document.getElementById('slateModalBody').textContent = text;
@@ -13540,7 +13552,7 @@ function buildContingencySlateText() {
 
 function showContingencySlate() {
   if (!window._lastContingency?.newRows) { showToast('Run an emergency plan first', 'slate'); return; }
-  if (!getBottomGasFractions()) { notifyInvalidGasExport(); return; }
+  if (!getBottomGasFractions()) { notifyInvalidGasExport('slate'); return; }
   const text = buildContingencySlateText();
   if (!text) { showToast('Run an emergency plan first', 'slate'); return; }
   document.getElementById('slateModalBody').textContent = text;
@@ -13788,6 +13800,7 @@ function buildMessengerText(mode) {
 
 // ── Download .txt file ──
 function exportTXT(mode) {
+  if (exportNeedsDecoBottomGas(mode) && !getBottomGasFractions()) { notifyInvalidGasExport('export'); return; }
   let text = mode === 'gasplan' ? buildGasPlanText() : buildExportText(mode);
   if (!text) return;
   if (mode === 'gasplan') {

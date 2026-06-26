@@ -2647,7 +2647,10 @@ if "metRate / fO2Loop" not in cdl_block and "altSurfaceP + dM * BAR_PER_METRE" n
 else:
     fail("ccrDiluentSurfaceLpm pSCR still double-scales depth or uses fO2Loop divisor (BUG-57)")
 
-if "function ccrGasLitres" in js and "ccrDiluentSurfaceLpm(depthM) * (pAmb / pSurf)" in js:
+if "function ccrGasLitres" in js and (
+    "ccrDiluentSurfaceLpm(depthM) * (pAmb / pSurf)" in js
+    or ("surfLpm * (pAmb / pSurf)" in js and "ccrDiluentSurfaceLpm(depthM)" in js.split("function ccrGasLitres", 1)[-1].split("function toggleCircuitFields", 1)[0])
+):
     ok("ccrGasLitres scales pSCR diluent once by ambient/surface pressure (BUG-58 path)")
 else:
     fail("ccrGasLitres missing single depth scale for pSCR diluent (BUG-58)")
@@ -2866,10 +2869,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.15['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.15")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.16['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.16")
 else:
-    fail("APP_VERSION not bumped to 2.51.15 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.16 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -4526,7 +4529,7 @@ if "curFracs && calcEND" in js and "curFracs ? currentEND - actualEND" in js:
     ok("calcBestMixTec guards null getBottomGasFractions return (issue #64 F2)")
 else:
     fail("calcBestMixTec still dereferences null getBottomGasFractions (issue #64 F2)")
-if re.search(r"function ccrDiluentSurfaceLpm[\s\S]{0,200}if\s*\(\s*!bot\s*\)\s*return\s*0", js):
+if re.search(r"function ccrDiluentSurfaceLpm[\s\S]{0,200}if\s*\(\s*!bot\s*\)\s*return\s*NaN", js):
     ok("ccrDiluentSurfaceLpm guards null getBottomGasFractions (issue #64 F3)")
 else:
     fail("ccrDiluentSurfaceLpm crashes on null getBottomGasFractions (issue #64 F3)")
@@ -4540,15 +4543,15 @@ if re.search(r"function ccrDiluentSurfaceLpm[\s\S]{0,250}metRate\s*/\s*0\.21", j
     ok("ccrDiluentSurfaceLpm no silent air-diluent fallback on null bottom gas (issue #65 F1)")
 else:
     fail("ccrDiluentSurfaceLpm still returns metRate/0.21 when bottom gas null (issue #65 F1)")
-if "function notifyInvalidGasExport" in js and re.search(r"function showSlate[\s\S]{0,400}notifyInvalidGasExport\(\)", js):
+if "function notifyInvalidGasExport" in js and re.search(r"function showSlate[\s\S]{0,400}notifyInvalidGasExport\(", js):
     ok("showSlate shows gas validation error not misleading no-plan toast (issue #65 F2)")
 else:
     fail("showSlate misleading toast on blank bottom gas (issue #65 F2)")
-if re.search(r"function showContingencySlate[\s\S]{0,500}notifyInvalidGasExport\(\)", js):
+if re.search(r"function showContingencySlate[\s\S]{0,500}notifyInvalidGasExport\(", js):
     ok("showContingencySlate shows gas validation error on blank bottom gas (issue #65 F2)")
 else:
     fail("showContingencySlate misleading toast on blank bottom gas (issue #65 F2)")
-if re.search(r"function copyDiveProfile[\s\S]{0,600}notifyInvalidGasExport\(\)", js):
+if re.search(r"function copyDiveProfile[\s\S]{0,800}notifyInvalidGasExport\(", js):
     ok("copyDiveProfile shows gas validation error on blank bottom gas (issue #65 F2)")
 else:
     fail("copyDiveProfile misleading toast on blank bottom gas (issue #65 F2)")
@@ -4582,6 +4585,35 @@ if _vccr65 and "getBottomGasFractions()" in _vccr65 and re.search(r"if\s*\(\s*!b
     ok("validateCcrGasConfiguration guards null getBottomGasFractions (issue #65 F5)")
 else:
     fail("validateCcrGasConfiguration missing null guard for getBottomGasFractions (issue #65 F5)")
+
+# ── Issue #66: NaN diluent consumption, export guards, toast UX, audit gaps ──
+if re.search(r"function ccrDiluentSurfaceLpm[\s\S]{0,200}if\s*\(\s*!bot\s*\)\s*return\s*NaN", js):
+    ok("ccrDiluentSurfaceLpm returns NaN not zero for null bottom gas (issue #66 F1)")
+else:
+    fail("ccrDiluentSurfaceLpm still returns 0 for null bottom gas (issue #66 F1)")
+if re.search(r"function ccrGasLitres[\s\S]{0,350}!Number\.isFinite\(surfLpm\)", js):
+    ok("ccrGasLitres propagates invalid diluent surface LPM as NaN (issue #66 F1)")
+else:
+    fail("ccrGasLitres missing NaN guard for invalid diluent surface LPM (issue #66 F1)")
+if re.search(r"function gpVolDisp[\s\S]{0,120}!Number\.isFinite\(litres\)", js):
+    ok("gpVolDisp renders non-finite litres as em dash (issue #66 F1)")
+else:
+    fail("gpVolDisp missing non-finite litres display guard (issue #66 F1)")
+_cdp66 = js.split("function copyDiveProfile", 1)[-1].split("function closeCopyModal", 1)[0] if "function copyDiveProfile" in js else ""
+if _cdp66 and "exportNeedsDecoBottomGas(mode)" in _cdp66 and not re.search(r"if\s*\(\s*mode\s*===\s*['\"]deco['\"]\s*\)\s*\{[^}]*notifyInvalidGasExport", _cdp66):
+    ok("copyDiveProfile gas guard covers all export modes (issue #66 F2/F5)")
+else:
+    fail("copyDiveProfile gas guard still mode-gated to deco only (issue #66 F2/F5)")
+_ext66 = js.split("function exportTXT", 1)[-1].split("function copyFallback", 1)[0] if "function exportTXT" in js else ""
+if _ext66 and "exportNeedsDecoBottomGas(mode)" in _ext66 and "notifyInvalidGasExport" in _ext66:
+    ok("exportTXT guards invalid bottom gas before download (issue #66 F3/F5)")
+else:
+    fail("exportTXT missing gas validation guard (issue #66 F3/F5)")
+_nige66 = js.split("function notifyInvalidGasExport", 1)[-1].split("function exportNeedsDecoBottomGas", 1)[0] if "function notifyInvalidGasExport" in js else ""
+if _nige66 and "showToast(" in _nige66 and "alert(" not in _nige66:
+    ok("notifyInvalidGasExport uses showToast not blocking alert (issue #66 F4)")
+else:
+    fail("notifyInvalidGasExport still uses blocking alert (issue #66 F4)")
 
 print("=" * 60)
 
