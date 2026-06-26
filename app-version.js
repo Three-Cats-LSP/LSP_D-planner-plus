@@ -4,5 +4,5 @@
  */
 (function (g) {
   'use strict';
-  g.APP_VERSION = '2.51.20';
+  g.APP_VERSION = '2.51.21';
 })(typeof self !== 'undefined' ? self : globalThis);

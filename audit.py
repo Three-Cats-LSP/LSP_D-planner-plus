@@ -2869,10 +2869,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.20['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.20")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.21['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.21")
 else:
-    fail("APP_VERSION not bumped to 2.51.20 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.21 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -4653,7 +4653,7 @@ if _rds68 and "typeof validateCcrGasConfiguration" not in _rds68 and "typeof upd
     ok("runDecoSchedule calls CCR validators directly without typeof guards (issue #68 F2)")
 else:
     fail("runDecoSchedule still has dead typeof guards for CCR validators (issue #68 F2)")
-if _rds68 and re.search(r"validateCcrGasConfiguration\(\)[\s\S]{0,200}err0\.message", _rds68):
+if _rds68 and re.search(r"validateCcrGasConfiguration\(\)[\s\S]{0,250}typeof err0 === 'string'", _rds68):
     ok("runDecoSchedule CCR gas error uses .message extraction (issue #68 F3)")
 else:
     fail("runDecoSchedule CCR gas error extraction not forward-compatible (issue #68 F3)")
@@ -4706,6 +4706,21 @@ if "typeof isCcrGasUiMode" not in js:
     ok("no dead typeof isCcrGasUiMode guards remain (issue #70 F3)")
 else:
     fail("dead typeof isCcrGasUiMode guards still present (issue #70 F3)")
+
+# ── Issue #71: storage error toast, typeof cleanup, CCR error extraction audit ──
+if "Could not save defaults — storage unavailable', 'error', true" in js:
+    ok("save-defaults storage error toast uses isError styling (issue #71 F1)")
+else:
+    fail("save-defaults storage error toast missing isError styling (issue #71 F1)")
+if "typeof getAllDecoGasIds" not in js and "typeof validateDomDecoGases" not in js:
+    ok("no dead typeof guards for getAllDecoGasIds or validateDomDecoGases (issue #71 F2)")
+else:
+    fail("dead typeof getAllDecoGasIds or validateDomDecoGases guards remain (issue #71 F2)")
+_rds71 = js.split("function runDecoSchedule", 1)[-1].split("function planSegDepthM", 1)[0] if "function runDecoSchedule" in js else ""
+if _rds71 and re.search(r"validateCcrGasConfiguration\(\)[\s\S]{0,250}typeof err0 === 'string'", _rds71):
+    ok("runDecoSchedule CCR gas error avoids bare object fallback (issue #71 F3)")
+else:
+    fail("runDecoSchedule CCR gas error still has unsafe object passthrough (issue #71 F3)")
 
 print("=" * 60)
 

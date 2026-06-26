@@ -6645,7 +6645,7 @@ function getBailoutPpo2Limit() {
 function getConfiguredBailoutMixes() {
   const ocPpo2 = getBailoutPpo2Limit();
   const mixes = [];
-  const ids = typeof getAllDecoGasIds === 'function' ? getAllDecoGasIds() : [1, 2];
+  const ids = getAllDecoGasIds();
   ids.forEach(cidx => {
     const sel = document.getElementById(`dg${cidx}Mix`);
     if (!sel || sel.value === 'none' || !sel.value) return;
@@ -7267,13 +7267,11 @@ function validateDomDecoGases() {
   const bot = getDomBottomGasPct();
   const botCheck = validateGasFractionsPct(bot.o2, bot.he, 'bottomGas');
   if (!botCheck.ok) errors.push(botCheck);
-  if (typeof getAllDecoGasIds === 'function') {
-    for (const idx of getAllDecoGasIds()) {
-      const g = getDomDecoGasPct(idx);
-      if (!g) continue;
-      const chk = validateGasFractionsPct(g.o2, g.he, `dg${idx}`);
-      if (!chk.ok) errors.push(chk);
-    }
+  for (const idx of getAllDecoGasIds()) {
+    const g = getDomDecoGasPct(idx);
+    if (!g) continue;
+    const chk = validateGasFractionsPct(g.o2, g.he, `dg${idx}`);
+    if (!chk.ok) errors.push(chk);
   }
   return { ok: errors.length === 0, errors };
 }
@@ -7592,7 +7590,7 @@ function saveAsMyDefault() {
       setTimeout(() => { btn.style.color = ''; btn.style.borderColor = ''; }, 1800);
     }
   } catch(e) {
-    showToast('Could not save defaults — storage unavailable', 'error');
+    showToast('Could not save defaults — storage unavailable', 'error', true);
   }
 }
 
@@ -8545,7 +8543,7 @@ function updateGasMODDisplays() {
   }
 
   // Loop over all deco gas cards
-  for (const cidx of (typeof getAllDecoGasIds === 'function' ? getAllDecoGasIds() : [1,2])) {
+  for (const cidx of getAllDecoGasIds()) {
     const sel  = document.getElementById(`dg${cidx}Mix`);
     const disp = document.getElementById(`dg${cidx}MODDisplay`);
     if (!sel || !disp) continue;
@@ -9097,7 +9095,7 @@ function runDecoSchedule() {
     if (!gasVal.ok) {
       updateCcrGasValidation();
       const err0 = gasVal.errors[0];
-      notifyScheduleError((err0 && err0.message) || err0 || 'CCR gas configuration is invalid.');
+      notifyScheduleError(typeof err0 === 'string' ? err0 : (err0?.message || 'CCR gas configuration is invalid.'));
       return;
     }
   }
@@ -10070,7 +10068,6 @@ function engineValidationError(validation) {
 
 function collectDecoGasesPctFromDom() {
   const out = [];
-  if (typeof getAllDecoGasIds !== 'function') return out;
   for (const idx of getAllDecoGasIds()) {
     const gas = getDomDecoGasPct(idx);
     if (!gas) continue;
@@ -12421,7 +12418,7 @@ function _applyGasWarningStyles(container) {
 }
 
 function calcGasPlan() {
-  if (!window._zhlHeadless && typeof validateDomDecoGases === 'function') {
+  if (!window._zhlHeadless) {
     const gasVal = validateDomDecoGases();
     if (!gasVal.ok) return;
   }
@@ -15490,7 +15487,7 @@ function _drawForPDF(drawFn) {
 
 async function exportPDF(opts) {
   opts = opts || {};
-  if (!window._zhlHeadless && typeof validateDomDecoGases === 'function') {
+  if (!window._zhlHeadless) {
     const gasVal = validateDomDecoGases();
     if (!gasVal.ok) {
       throw new Error(gasVal.errors[0]?.message || 'Invalid gas mixture.');
