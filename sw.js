@@ -72,8 +72,11 @@ const PRECACHE_ASSETS = [
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_VERSION)
-      .then(cache => cache.addAll(PRECACHE_ASSETS))
+      .then(cache => Promise.allSettled(PRECACHE_ASSETS.map(url =>
+        cache.add(url).catch(err => console.warn('[SW] precache skip:', url, err))
+      )))
       .then(() => self.skipWaiting())
+      .catch(err => console.error('[SW] install failed:', err))
   );
 });
 
@@ -149,7 +152,8 @@ self.addEventListener('fetch', event => {
               caches.open(CACHE_VERSION).then(cache => cache.put(cacheKey, clone));
             }
             return response;
-          });
+          })
+          .catch(() => caches.match(OFFLINE_INDEX, { ignoreSearch: true }));
       })
   );
 });

@@ -3984,10 +3984,10 @@ let contExtraDepth = 0;   // contingency went deeper: 0 | 3 | 5 (metres)
 const SEA_LEVEL_P = 1.01325; // ISA sea-level pressure (bar)
 const CUFT_PER_LITRE = 0.0353147; // litres per cubic foot — SAC/cylinder conversions
 const OTU_EXPONENT = 0.8333;  // NOAA OTU formula exponent — single source of truth for both VPM and ZHL paths
-const SURFACE_P = 1.013;    // legacy constant — kept for compatibility; engine reads altSurfaceP
+const SURFACE_P = SEA_LEVEL_P; // alias — runtime pressure uses altSurfaceP
 let altSurfaceP   = 1.01325; // actual surface pressure at current altitude (bar)
 let altitudeM     = 0;       // current altitude in metres
-let altAcclimatized = true;  // true = tissues start saturated at altSurfaceP
+let altAcclimatized = false;  // false unless user explicitly saved 'yes'
 // Expose altitude globals for test harnesses (let doesn't land on window automatically)
 if (typeof window !== 'undefined') {
   Object.defineProperties(window, {
@@ -4288,7 +4288,7 @@ function applyCustomAltitude() {
 function loadAltitudeFromStorage() {
   try {
     const savedAlt  = parseFloat(localStorage.getItem('lspAltitude')) || 0;
-    const savedAccl = localStorage.getItem('lspAcclimatized') !== 'no';
+    const savedAccl = localStorage.getItem('lspAcclimatized') === 'yes';
     altitudeM   = savedAlt;
     altSurfaceP = altToPressure(altitudeM);
     altAcclimatized = savedAccl;
@@ -4418,6 +4418,8 @@ function setAlgo(a) {
   });
   { const _tBtn=document.getElementById('tissueChartToggleBtn'); const _cBtn=document.getElementById('contingencyJumpBtn'); if(_tBtn)_tBtn.style.display='none'; if(_cBtn)_cBtn.style.display='none'; }
   const _pr2 = document.getElementById('plannerResult'); if(_pr2){_pr2.style.display='none';_pr2.innerHTML='';}
+  window._lastPlan = null;
+  window._lastVPMResult = null;
   // multiResult removed — multi dive now renders into #unifiedDivePlan
 
   if (isTools) {
@@ -4841,6 +4843,13 @@ function setDecoAlgorithm(model, skipSave) {
     _decoTip.setAttribute('onclick', `showTip('Decompression Schedule','${_decoDesc.replace(/'/g, "\'")}')` );
   }
 
+  const decoRes = document.getElementById('decoResult');
+  if (decoRes) decoRes.style.display = 'none';
+  const decoTbody = document.getElementById('decoTableBody');
+  if (decoTbody) decoTbody.innerHTML = '';
+  window._lastPlan = null;
+  window._lastVPMResult = null;
+
   if (!skipSave && typeof appSettings !== 'undefined' && appSettings.save) {
     setTimeout(() => appSettings.save(false), 100);
   }
@@ -4994,9 +5003,11 @@ function setCustomGF(commit) {
     return;
   }
 
-  // Save custom values for restoration
-  if (lowVal  !== '') localStorage.setItem('gfCustomLow',  lowVal);
-  if (highVal !== '') localStorage.setItem('gfCustomHigh', highVal);
+  // Save custom values for restoration (only on commit — avoid persisting partial input)
+  if (commit !== false) {
+    if (lowVal  !== '') localStorage.setItem('gfCustomLow',  String(low));
+    if (highVal !== '') localStorage.setItem('gfCustomHigh', String(high));
+  }
 
   // Ensure dropdown shows Custom
   const sel = document.getElementById('gfPresetSelect');
@@ -5224,7 +5235,8 @@ function vpmDecoSwitchDepthVal(dgO2pct, ppO2Deco) {
     const modM = calcGasMODm(fO2, ppO2Deco || 1.6);
     return dU ? modM : Math.round(modM * 3.28084);
   }
-  return Math.floor(((ppO2Deco || 1.6) / fO2 - altSurfaceP) / BAR_PER_METRE * (dU ? 1 : 3.28084));
+  const modM = Math.max(0, Math.floor(((ppO2Deco || 1.6) / fO2 - altSurfaceP) / BAR_PER_METRE));
+  return dU ? modM : Math.floor(modM * 3.28084);
 }
 
 /** Parse gas mix label for export/banner (50/00, 100%, Air, …). */
@@ -5271,13 +5283,14 @@ function getDecoGasSwitches() {
     } else {
       // Global switch-depth fallback (closure-scoped version not available here):
       const fO2 = dgf.fO2 != null ? dgf.fO2 : Math.max(0, 1 - dgf.fN2 - (dgf.fHe || 0));
-      if (fO2 <= 0) { sw = 0; }
+      if (fO2 <= 0) continue;
       else {
         const limit = fO2 > 0.60 ? ppO2Deco : ppO2Bot;
         const modM = calcGasMODm(fO2, limit);
         sw = Math.max(_lastStopM, Math.max(0, Math.floor(modM / _decoStepM) * _decoStepM));
       }
     }
+    if (!sw || sw <= 0) continue;
     const depth = dU ? sw + 'm' : Math.round(sw * 3.28084) + 'ft';
     switches.push({ gas, depth });
   }
@@ -6433,6 +6446,36 @@ function getCCRInertSchreinerParams(pAmbStart, setpoint, fO2, fHe, pressureRate,
   };
 }
 
+function gfAdjustedMValue(a, b, pAmb, gf) {
+  return a * gf + pAmb * (1 - gf + gf / b);
+}
+
+function getSetpointBoundaryDepths(ccr, surfP) {
+  const cfg = mergeCCRSettings(ccr);
+  if (!isRebreatherCircuit(cfg.circuit) || cfg.bailout || cfg.circuit === 'pSCR') return [];
+  const descSP = cfg.descentSetpoint != null ? cfg.descentSetpoint : 0.7;
+  const bottomSP = cfg.bottomSetpoint != null ? cfg.bottomSetpoint : 1.2;
+  const decoSP = cfg.decoSetpoint != null ? cfg.decoSetpoint : (cfg.setpoint != null ? cfg.setpoint : 1.3);
+  return [descSP, bottomSP, decoSP]
+    .map(sp => depthAtSetpointCrossing(sp, surfP))
+    .filter(d => d != null);
+}
+
+function splitLinearDepthAtBoundaries(fromDepth, toDepth, boundaryDepths) {
+  const lo = Math.min(fromDepth, toDepth);
+  const hi = Math.max(fromDepth, toDepth);
+  const ascending = toDepth >= fromDepth;
+  const interior = boundaryDepths
+    .filter(d => d > lo + 1e-6 && d < hi - 1e-6)
+    .sort((a, b) => ascending ? a - b : b - a);
+  const pts = [fromDepth, ...interior, toDepth];
+  const segs = [];
+  for (let i = 0; i < pts.length - 1; i++) {
+    if (Math.abs(pts[i] - pts[i + 1]) > 1e-6) segs.push({ fromDepth: pts[i], toDepth: pts[i + 1] });
+  }
+  return segs.length ? segs : [{ fromDepth, toDepth }];
+}
+
 function splitSegmentAtSetpoint(fromDepth, toDepth, setpoint, surfP) {
   if (!setpoint || setpoint <= 0) return [{ fromDepth, toDepth }];
   const cross = depthAtSetpointCrossing(setpoint, surfP);
@@ -6476,12 +6519,14 @@ function saturateLinearCCR(tissues, fromDepth, toDepth, t, fO2, fHe, ccr) {
   const cfg = mergeCCRSettings(ccr);
   const surfP = altSurfaceP;
   const phase = cfg.ccrPhase || null;
-  const sp = getEffectiveSetpointAtDepth((fromDepth + toDepth) / 2, cfg, surfP, phase);
-  const segments = splitSegmentAtSetpoint(fromDepth, toDepth, sp, surfP);
+  const segments = phase
+    ? [{ fromDepth, toDepth }]
+    : splitLinearDepthAtBoundaries(fromDepth, toDepth, getSetpointBoundaryDepths(cfg, surfP));
   let out = tissues;
   const totalTime = t;
+  const totalDist = Math.abs(toDepth - fromDepth) || 1e-9;
   for (const seg of segments) {
-    const segTime = Math.abs(seg.toDepth - seg.fromDepth) / Math.abs(toDepth - fromDepth) * totalTime;
+    const segTime = Math.abs(seg.toDepth - seg.fromDepth) / totalDist * totalTime;
     if (!(segTime > 0)) continue;
     const p0Amb = depthBar(seg.fromDepth);
     const pEndAmb = depthBar(seg.toDepth);
@@ -6548,7 +6593,13 @@ function isCcrDiluentGasLabel(label) {
   if (!isRebreatherCircuit(ccr.circuit) || ccr.bailout) return false;
   const bot = getBottomGasFractions();
   if (!bot) return false;
-  return label.toUpperCase() === getGasLabel(bot.fO2, bot.fHe).toUpperCase();
+  const norm = s => String(s).trim().replace(/^(CCR|PSCR)\s+/i, '').toUpperCase();
+  const a = norm(label);
+  const b = norm(getGasLabel(bot.fO2, bot.fHe));
+  if (a === b) return true;
+  if (a === 'AIR' && b === '21/00') return true;
+  if ((a === '100%' || a === '100') && b.startsWith('100')) return true;
+  return false;
 }
 function isCcrOnLoopProfile(ccr) {
   const cfg = ccr || getCCRSettingsFromDOM();
@@ -6683,7 +6734,7 @@ function resolveCcrSacForGas(label, phaseSac, ccr) {
   const cfg = ccr || getCCRSettingsFromDOM();
   if (!cfg || !isRebreatherCircuit(cfg.circuit)) return phaseSac;
   if (isCcrDiluentGasLabel(label)) return phaseSac;
-  return cfg.sacDecoCcr || phaseSac;
+  return phaseSac;
 }
 
 /** Deepest-capable bailout mix label for stress/problem-solve reserve at depth. */
@@ -6939,7 +6990,7 @@ function maxSatPct(tissues, gfHigh) {
     } else {
       [, a, b] = ZHL16C[i];
     }
-    const mv = a * (gfHigh / 100) + altSurfaceP / b;
+    const mv = gfAdjustedMValue(a, b, altSurfaceP, gfHigh / 100);
     const pct = Math.round((pTotal / mv) * 100);
     if (pct > max) max = pct;
   });
@@ -7182,7 +7233,7 @@ function updateTissueViz(tissues, gfH) {
       a = (pN2 * a_n2 + pHe * ZHL16C_HE_AB[i][0]) / pTotal;
       b = (pN2 * b_n2 + pHe * ZHL16C_HE_AB[i][1]) / pTotal;
     } else { a = a_n2; b = b_n2; }
-    const mv  = a * gfF + altSurfaceP / b;
+    const mv  = gfAdjustedMValue(a, b, altSurfaceP, gfF);
     const pct = Math.min(100, Math.round((pTotal / mv) * 100));
     const col = pct >= 100 ? 'var(--red)' : pct >= 85 ? 'var(--orange)' : pct >= 70 ? 'var(--yellow)' : 'var(--green)';
     const tc  = pct >= 100 ? '#ff7080' : pct >= 85 ? '#ff9a40' : pct >= 70 ? '#ffe060' : '#70f0aa';
@@ -7314,6 +7365,7 @@ function getDecoGasFractions(selectId, customId, trimixO2Id, trimixHeId) {
     if (!Number.isFinite(o2) || !Number.isFinite(he)) return null;
     const fO2 = Math.min(0.99, Math.max(0.05, o2 / 100));
     const fHe = Math.min(0.95, Math.max(0, he / 100));
+    if (fO2 + fHe > 1.0) return null;
     const fN2 = Math.max(0, 1 - fO2 - fHe);
     return { fO2, fHe, fN2 };
   }
@@ -7368,6 +7420,7 @@ function getBottomGasFractions() {
     if (!Number.isFinite(o2) || !Number.isFinite(he)) return null;
     const fO2 = Math.min(0.40, Math.max(0.05, o2 / 100));
     const fHe = Math.min(0.95, Math.max(0, he / 100));
+    if (fO2 + fHe > 1.0) return null;
     return { fO2, fHe, fN2: Math.max(0, 1 - fO2 - fHe) };
   }
   return { fO2: 0.21, fHe: 0, fN2: 0.79 };
@@ -8210,7 +8263,9 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
     const depthM2 = endParseDepthM(depthRaw) ?? (parseFloat(depthRaw) || 0);
     const durMin = (() => { const p = stopRaw.split(':'); return p.length===2 ? parseInt(p[0]) + parseInt(p[1])/60 : parseFloat(stopRaw)||0; })();
     if (!durMin || !mixRaw || mixRaw === '-') return;
-    const gasKey = mixRaw; // labels now always in O2/He format (e.g. '50/00', '21/35', '100/00')
+    const gasKey = (_vpmOnLoop && !isCcrOnLoopGasLabel(mixRaw))
+      ? loopMixLabelFor(mixRaw.replace(/^(CCR|PSCR)\s+/i, ''), _vpmCcr)
+      : mixRaw;
     const sac = resolveCcrSacForGas(gasKey, (ph === 'bottom') ? sacBotVPM : sacDecoVPM, _vpmCcr);
     accumGasLitres(gasConsVPM, gasKey, ccrGasLitres(gasKey, depthM2, durMin, sac));
   });
@@ -8507,7 +8562,7 @@ function updateGasMODDisplays() {
   const o2MODm    = Math.max(lastStop, 6); // 6 m is the standard O2 operating depth
 
   function fmtDepth(m) {
-    return isMetric ? m + ' m' : Math.round(m * 3.28084) + ' ft';
+    return isMetric ? m + ' m' : Math.floor(m * 3.28084) + ' ft';
   }
 
   function tooltipText(fO2, ppO2limit, label) {
@@ -10578,6 +10633,24 @@ const CNS_LIMITS = {
   14: 150, 15: 120, 16: 45
 };
 
+const CNS_DAILY_LIMITS = {
+  6: 720, 7: 720, 8: 720, 9: 720,
+  10: 720, 11: 570, 12: 450, 13: 330,
+  14: 210, 15: 180, 16: 150
+};
+
+function getCNSDailyLimit(ppo2) {
+  const key = Math.round(ppo2 * 10);
+  if (key < 6) return Infinity;
+  if (key > 16) return 0;
+  const lo = Math.floor(ppo2 * 10);
+  const hi = lo + 1;
+  const vLo = CNS_DAILY_LIMITS[lo] || 0;
+  const vHi = CNS_DAILY_LIMITS[hi] || 0;
+  const frac = ppo2 * 10 - lo;
+  return vLo + (vHi - vLo) * frac;
+}
+
 function getCNSLimit(ppo2) {
   const key = Math.round(ppo2 * 10);
   if (key < 6) return Infinity;
@@ -12098,7 +12171,7 @@ function renderTissueLoadChart() {
 
       // GF-adjusted ceiling M-value at this depth
       const gfApplied = useGF ? gfHigh : 1.0;
-      const mVal = pAmb / b + a * gfApplied;
+      const mVal = gfAdjustedMValue(a, b, pAmb, gfApplied);
 
       // Saturation percent relative to M-value
       const pct = mVal > 0 ? Math.round((pTotal / mVal) * 100) : 0;
@@ -13516,7 +13589,7 @@ function buildContingencySlateText() {
     : algoSel === 'VPMB'
       ? `${algoName} +${document.getElementById('conservatismSelect')?.value ?? '0'}`
       : `${algoName} GF Hi ${mGF.high}`;
-  const botFracs = getBottomGasFractions();
+  const botFracs = cc.scenarioBotFracs || getBottomGasFractions();
   if (!botFracs) return null;
   const botLabel = shortMix(getGasLabel(botFracs.fO2, botFracs.fHe));
   const gswRows = Array.from(rows).filter(tr => tr.dataset.phase === 'switch');
@@ -13579,8 +13652,8 @@ function buildMessengerText(mode) {
   if (mode === 'contingency') {
     const c = window._lastContingency;
     if (!c) return null;
-    const depth = document.getElementById('decoDepth')?.value || '-';
-    const bt    = document.getElementById('decoBT')?.value    || '-';
+    const depth = c.scenarioDepth ?? document.getElementById('decoDepth')?.value ?? '-';
+    const bt    = c.scenarioBT    ?? document.getElementById('decoBT')?.value    ?? '-';
     const du    = units === 'metric' ? 'm' : 'ft';
     const shortMix = m => {
       const s = (m||'').trim().replace(/[📋⚠️🤿]/g,'').trim();
@@ -13606,7 +13679,7 @@ function buildMessengerText(mode) {
     result.push(`Stp Rounding: ${cRnd}  WV: ${cWV}(${cWVL})`);
     const _cAltM   = (typeof altitudeM !== 'undefined') ? altitudeM : 0;
     const _cAltLbl = _cAltM === 0 ? 'Sea level' : `${_cAltM}m`;
-    const _cAccl   = (typeof altAcclimatized !== 'undefined') ? altAcclimatized : true;
+    const _cAccl   = (typeof altAcclimatized !== 'undefined') ? altAcclimatized : false;
     result.push(`Altitude    : ${_cAltLbl}  Acclimatized: ${_cAccl ? 'Yes' : 'No'}`);
     const _cLastStop = document.getElementById('lastDecoStop')?.value || '-';
     const _cDecoStep = document.getElementById('decoStep')?.value    || '-';
@@ -13933,6 +14006,9 @@ function runContingencyScenario(modifyFn) {
   _contingencyRunning = false;
 
   // Capture results before restore
+  const scenarioDepth = document.getElementById('decoDepth')?.value;
+  const scenarioBT    = document.getElementById('decoBT')?.value;
+  const scenarioBotFracs = getBottomGasFractions();
   const newRows = document.getElementById('decoTableBody').innerHTML;
   const rows    = document.querySelectorAll('#decoTableBody tr[data-phase]');
   let lastRun = 0, decoTime = 0;
@@ -13961,7 +14037,7 @@ function runContingencyScenario(modifyFn) {
   document.getElementById('decoTableBody').innerHTML = savedBody;
   document.getElementById('decoSummary').innerHTML   = savedSummary;
 
-  return { newRows, lastRun, decoTime: Math.round(decoTime), lastRunFmt, decoTimeFmt, totalCNS, totalOTUc, decoZoneStart, decozoneDisp, decoStop, tts, planSum, contSurfaceGF };
+  return { newRows, lastRun, decoTime: Math.round(decoTime), lastRunFmt, decoTimeFmt, totalCNS, totalOTUc, decoZoneStart, decozoneDisp, decoStop, tts, planSum, contSurfaceGF, scenarioDepth, scenarioBT, scenarioBotFracs };
 }
 
 // Contingency state
@@ -14101,7 +14177,7 @@ function calcContingency() {
                    'Showing standard plan.';
 
   const origDepth = document.getElementById('decoDepth')?.value;
-  const { newRows, lastRun, decoTime, lastRunFmt, decoTimeFmt, totalCNS, totalOTUc, decoZoneStart, decozoneDisp, decoStop, tts, planSum, contSurfaceGF } = runContingencyScenario(() => {
+  const { newRows, lastRun, decoTime, lastRunFmt, decoTimeFmt, totalCNS, totalOTUc, decoZoneStart, decozoneDisp, decoStop, tts, planSum, contSurfaceGF, scenarioDepth, scenarioBT, scenarioBotFracs } = runContingencyScenario(() => {
     if (contExtraBT > 0 && origBT)
       document.getElementById('decoBT').value = parseFloat(origBT) + contExtraBT;
     if (contExtraDepth > 0 && origDepth) {
@@ -14176,7 +14252,7 @@ function calcContingency() {
     <div id="decoAlertsEmergency" style="margin-top:8px;"></div>`;
 
   // Store for export
-  window._lastContingency = { label, lastRun, decoTime, lastRunFmt, decoTimeFmt, totalCNS, totalOTU: _emOTU, totalPrT: _emPrT, decoZoneStart, decozoneDisp: _emDecozone, decoStop: _emDecoStop, tts: _emTts, newRows, severity, icon, msg, surfGF: contSurfaceGF != null ? Math.round(contSurfaceGF) + '%' : '-' };
+  window._lastContingency = { label, lastRun, decoTime, lastRunFmt, decoTimeFmt, totalCNS, totalOTU: _emOTU, totalPrT: _emPrT, decoZoneStart, decozoneDisp: _emDecozone, decoStop: _emDecoStop, tts: _emTts, newRows, severity, icon, msg, surfGF: contSurfaceGF != null ? Math.round(contSurfaceGF) + '%' : '-', scenarioDepth, scenarioBT, scenarioBotFracs };
 
   // CNS alert — goes into emergency card, NOT main decoAlerts
   const emAlerts = document.getElementById('decoAlertsEmergency');
@@ -14793,7 +14869,7 @@ function calcCNS() {
     ppo2 = pAmb * fO2frac;
   }
   const singleLimit = getCNSLimit(ppo2);
-  const dailyLimit  = singleLimit * 2; // NOAA daily ≈ 2× single
+  const dailyLimit  = getCNSDailyLimit(ppo2);
 
   const singleCNS = singleLimit > 0 ? Math.min((bt / singleLimit) * 100, 999) : 999;
   const dailyCNS  = dailyLimit  > 0 ? Math.min((bt * dives / dailyLimit) * 100, 999) : 999;
@@ -16174,6 +16250,8 @@ async function exportPDF(opts) {
 // ═══════════════════════════════════════════════
 
 var appSettings = {
+  _loaded: false,
+  _loadPending: false,
   // All tracked fields organized by mode
   DECO_FIELDS: [
     'decoDepth', 'decoBT', 'decoGas', 'decoCustomO2',
@@ -16277,6 +16355,7 @@ var appSettings = {
 
   // Load all saved values
   load: function() {
+    if (this._loaded || this._loadPending) return this._loaded;
     // Clear old storage keys from previous versions
     try {
       localStorage.removeItem('lspDiveSettings');     // v1
@@ -16308,15 +16387,20 @@ var appSettings = {
         const currentAlgo = window.algo || 'padi';
         if (savedAlgo !== currentAlgo) {
           console.log('[LSP] Switching from ' + currentAlgo + ' to ' + savedAlgo);
+          this._loadPending = true;
           setAlgo(savedAlgo);
-          // Wait for DOM to update with new fields
-          setTimeout(() => this._restoreFields(values), 500);
+          setTimeout(() => {
+            this._restoreFields(values);
+            this._loaded = true;
+            this._loadPending = false;
+          }, 500);
           return true;
         }
       }
       
       // If same algo, restore fields immediately
       this._restoreFields(values);
+      this._loaded = true;
       return true;
     } catch(e) {
       console.error('[LSP] Load failed:', e.message);
@@ -16375,6 +16459,8 @@ var appSettings = {
 
   // Clear all saved values
   clear: function() {
+    this._loaded = false;
+    this._loadPending = false;
     try {
       [
         'lspDiveSettings_v6', 'lspDiveSettings_v5', 'lspDiveSettings_v4',
@@ -16673,8 +16759,8 @@ function loadAppPreset(idx) {
   if (p.values.minDecoProfileEnable) toggleMinDecoProfile?.();
   // Sync GF preset dropdown + custom row + mGF runtime state
   if (p.values.gfLowInput || p.values.gfHighInput) {
-    const _gfLow  = parseInt(p.values.gfLowInput  || mGF?.low  || 20);
-    const _gfHigh = parseInt(p.values.gfHighInput || mGF?.high || 85);
+    const _gfLow  = p.values.gfLowInput != null && p.values.gfLowInput !== '' ? parseInt(p.values.gfLowInput) : (mGF?.low ?? 20);
+    const _gfHigh = p.values.gfHighInput != null && p.values.gfHighInput !== '' ? parseInt(p.values.gfHighInput) : (mGF?.high ?? 85);
     setGF(_gfLow, _gfHigh);
   }
   // Flush to localStorage immediately so deferred appSettings.load() doesn't overwrite
@@ -16751,8 +16837,8 @@ function loadConfigPreset(idx) {
   if (p.values.minDecoProfileEnable) toggleMinDecoProfile?.();
   // Sync GF preset dropdown + custom row + mGF runtime state
   if (p.values.gfLowInput || p.values.gfHighInput) {
-    const _gfLow  = parseInt(p.values.gfLowInput  || mGF?.low  || 20);
-    const _gfHigh = parseInt(p.values.gfHighInput || mGF?.high || 85);
+    const _gfLow  = p.values.gfLowInput != null && p.values.gfLowInput !== '' ? parseInt(p.values.gfLowInput) : (mGF?.low ?? 20);
+    const _gfHigh = p.values.gfHighInput != null && p.values.gfHighInput !== '' ? parseInt(p.values.gfHighInput) : (mGF?.high ?? 85);
     setGF(_gfLow, _gfHigh);
   }
   // Flush to localStorage immediately so deferred appSettings.load() doesn't overwrite
@@ -17045,7 +17131,14 @@ document.addEventListener('DOMContentLoaded', function() {
   restoreCardStates();
   // Load water density
   const savedDensity = localStorage.getItem('waterDensity') || 'salt';
-  setWaterDensity(savedDensity);
+  const savedCustomKg = parseFloat(localStorage.getItem('waterDensityCustom'));
+  if (savedDensity === 'custom' && Number.isFinite(savedCustomKg)) {
+    const customInp = document.getElementById('waterCustomInput');
+    if (customInp) customInp.value = savedCustomKg;
+    setWaterDensity('custom', savedCustomKg);
+  } else {
+    setWaterDensity(savedDensity);
+  }
 
   // Load altitude from storage
   loadAltitudeFromStorage();
@@ -17092,29 +17185,14 @@ document.addEventListener('DOMContentLoaded', function() {
   updateHeHalfTime();
 
   window.__lspAppFullyReady = true;
-
-  // Try again after elements render
-  setTimeout(() => {
-    console.log('[LSP] Retry load after render');
-    appSettings.load();
-    updateWaterVapor();
-    updateHeHalfTime(); // re-sync after VPMEngine fully ready
-    syncGfPresetFromValues();
-    startLspEngineReadyPolling();
-  }, 1000);
 });
 
-// Also try loading on window load as fallback
+// Engine polling on window load (settings load once at DOMContentLoaded)
 window.addEventListener('load', function() {
-  console.log('[LSP] Window load fired');
-  setTimeout(function() {
-    console.log('[LSP] Final retry load');
-    appSettings.load();
-    updateWaterVapor();
-    syncGfPresetFromValues();
-    startLspEngineReadyPolling();
-  }, 500);
-});
+  updateWaterVapor();
+  updateHeHalfTime();
+  syncGfPresetFromValues();
+}, { once: true });
 </script>
 <!-- PWA: service worker registration -->
 <script>
