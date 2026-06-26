@@ -4366,7 +4366,7 @@ function _findGfPresetOption(low, high) {
 }
 
 function syncGfPresetFromValues() {
-  if (typeof setGF === 'function') setGF(mGF.low, mGF.high);
+  setGF(mGF.low, mGF.high);
 }
 let lastTissues = null;
 
@@ -5490,16 +5490,13 @@ function drawDecoPlanBannerPdf(doc, y, layout, data, planSum, hasDeco) {
 
   const chips = [];
   const isCcr = data.circuit === 'CCR' || data.circuit === 'pSCR';
-  const onLoop = typeof isCcrOnLoopProfile === 'function'
-    && isCcrOnLoopProfile({ circuit: data.circuit, bailout: data.ccrBailout });
+  const onLoop = isCcrOnLoopProfile({ circuit: data.circuit, bailout: data.ccrBailout });
   if (data.travelGas) chips.push({ kind: 'travel', lbl: 'TRAVEL', val: `${data.travelGas.gas} @ ${data.travelGas.depth}` });
   if (onLoop) {
     chips.push({
       kind: 'bottom',
       lbl: 'LOOP',
-      val: cleanPDF(typeof loopMixLabelFor === 'function'
-        ? loopMixLabelFor(data.bottomGasShort, { circuit: data.circuit, bailout: data.ccrBailout })
-        : data.bottomGasShort),
+      val: cleanPDF(loopMixLabelFor(data.bottomGasShort, { circuit: data.circuit, bailout: data.ccrBailout })),
     });
   } else {
     chips.push({ kind: 'bottom', lbl: isCcr ? 'DILUENT' : 'BOTTOM', val: cleanPDF(data.bottomGasShort) });
@@ -6320,7 +6317,7 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
 }
 
 function getCcrMetabolicO2Rate(ccr) {
-  const cfg = ccr || (typeof getCCRSettingsFromDOM === 'function' ? getCCRSettingsFromDOM() : {});
+  const cfg = ccr || getCCRSettingsFromDOM();
   const v = parseFloat(cfg.scrMetabolicO2);
   return v > 0 ? v : 1.5;
 }
@@ -6649,7 +6646,7 @@ function getConfiguredBailoutMixes() {
   ids.forEach(cidx => {
     const sel = document.getElementById(`dg${cidx}Mix`);
     if (!sel || sel.value === 'none' || !sel.value) return;
-    const fracs = typeof getDecoCardFractions === 'function' ? getDecoCardFractions(cidx) : null;
+    const fracs = getDecoCardFractions(cidx);
     if (!fracs) return;
     mixes.push({
       cidx,
@@ -6662,9 +6659,9 @@ function getConfiguredBailoutMixes() {
 }
 
 function resolveCcrSacForGas(label, phaseSac, ccr) {
-  const cfg = ccr || (typeof getCCRSettingsFromDOM === 'function' ? getCCRSettingsFromDOM() : null);
+  const cfg = ccr || getCCRSettingsFromDOM();
   if (!cfg || !isRebreatherCircuit(cfg.circuit)) return phaseSac;
-  if (typeof isCcrDiluentGasLabel === 'function' && isCcrDiluentGasLabel(label)) return phaseSac;
+  if (isCcrDiluentGasLabel(label)) return phaseSac;
   return cfg.sacDecoCcr || phaseSac;
 }
 
@@ -7698,7 +7695,7 @@ function _doResetToDefaults(userDefaults) {
   });
 
   // Reset Gas Plan rule to thirds
-  if (typeof setGasRule === 'function') setGasRule('thirds');
+  setGasRule('thirds');
 
   // Reset GF to default preset 20/85
   setGF(20, 85);
@@ -16961,7 +16958,7 @@ function hideEngineLoadErrorBanner() {
 
 function guardEngineBootForCalculate() {
   if (window._lspEngineError) {
-    if (typeof showEngineLoadErrorBanner === 'function') showEngineLoadErrorBanner();
+    showEngineLoadErrorBanner();
     return false;
   }
   if (!window._lspEngineReady && !window._zhlHeadless) {

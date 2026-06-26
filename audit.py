@@ -2869,10 +2869,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.21['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.21")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.22['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.22")
 else:
-    fail("APP_VERSION not bumped to 2.51.21 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.22 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -4721,6 +4721,36 @@ if _rds71 and re.search(r"validateCcrGasConfiguration\(\)[\s\S]{0,250}typeof err
     ok("runDecoSchedule CCR gas error avoids bare object fallback (issue #71 F3)")
 else:
     fail("runDecoSchedule CCR gas error still has unsafe object passthrough (issue #71 F3)")
+
+# ── Issue #72: remaining dead typeof guards for always-present functions ──
+_gcbm72 = js.split("function getConfiguredBailoutMixes", 1)[-1].split("function resolveCcrSacForGas", 1)[0] if "function getConfiguredBailoutMixes" in js else ""
+if _gcbm72 and "getDecoCardFractions(cidx)" in _gcbm72 and "typeof getDecoCardFractions" not in _gcbm72:
+    ok("getConfiguredBailoutMixes calls getDecoCardFractions directly (issue #72 F1)")
+else:
+    fail("getConfiguredBailoutMixes still has dead typeof getDecoCardFractions guard (issue #72 F1)")
+_rcr72 = js.split("function resolveCcrSacForGas", 1)[-1].split("function getBailoutReserveMixLabel", 1)[0] if "function resolveCcrSacForGas" in js else ""
+if _rcr72 and "getCCRSettingsFromDOM()" in _rcr72 and "typeof getCCRSettingsFromDOM" not in _rcr72 and "typeof isCcrDiluentGasLabel" not in _rcr72:
+    ok("resolveCcrSacForGas calls CCR helpers directly without typeof guards (issue #72 F1)")
+else:
+    fail("resolveCcrSacForGas still has dead typeof guards (issue #72 F1)")
+_gcm72 = js.split("function getCcrMetabolicO2Rate", 1)[-1].split("function computePSCRFractions", 1)[0] if "function getCcrMetabolicO2Rate" in js else ""
+if _gcm72 and "getCCRSettingsFromDOM()" in _gcm72 and "typeof getCCRSettingsFromDOM" not in _gcm72:
+    ok("getCcrMetabolicO2Rate calls getCCRSettingsFromDOM directly (issue #72 F1)")
+else:
+    fail("getCcrMetabolicO2Rate still has dead typeof getCCRSettingsFromDOM guard (issue #72 F1)")
+if "typeof setGF" not in js.split("function syncGfPresetFromValues", 1)[-1].split("let lastTissues", 1)[0]:
+    ok("syncGfPresetFromValues calls setGF directly (issue #72 F1)")
+else:
+    fail("syncGfPresetFromValues still has dead typeof setGF guard (issue #72 F1)")
+if "typeof setGasRule" not in js.split("function resetToDefaults", 1)[-1].split("function _doResetToDefaults", 1)[0]:
+    ok("resetToDefaults calls setGasRule directly (issue #72 F1)")
+else:
+    fail("resetToDefaults still has dead typeof setGasRule guard (issue #72 F1)")
+_geb72 = js.split("function guardEngineBootForCalculate", 1)[-1].split("function ", 1)[0] if "function guardEngineBootForCalculate" in js else ""
+if _geb72 and "showEngineLoadErrorBanner()" in _geb72 and "typeof showEngineLoadErrorBanner" not in _geb72:
+    ok("guardEngineBootForCalculate calls showEngineLoadErrorBanner directly (issue #72 F1)")
+else:
+    fail("guardEngineBootForCalculate still has dead typeof showEngineLoadErrorBanner guard (issue #72 F1)")
 
 print("=" * 60)
 
