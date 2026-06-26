@@ -2866,10 +2866,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.14['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.14")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.15['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.15")
 else:
-    fail("APP_VERSION not bumped to 2.51.14 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.15 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -4514,7 +4514,7 @@ if _bcs64 and "if (!botFracs) return null" in _bcs64:
 else:
     fail("buildContingencySlateText crashes on null getBottomGasFractions (issue #64 F1)")
 _bmt64 = js.split("function buildMessengerText", 1)[-1].split("function exportTXT", 1)[0] if "function buildMessengerText" in js else ""
-if _bmt64 and "if (!_msgBotFracs) return buildExportText(mode)" in _bmt64:
+if _bmt64 and "if (!_msgBotFracs) return null" in _bmt64:
     ok("buildMessengerText guards null getBottomGasFractions (issue #64 F1)")
 else:
     fail("buildMessengerText crashes on null getBottomGasFractions (issue #64 F1)")
@@ -4526,7 +4526,7 @@ if "curFracs && calcEND" in js and "curFracs ? currentEND - actualEND" in js:
     ok("calcBestMixTec guards null getBottomGasFractions return (issue #64 F2)")
 else:
     fail("calcBestMixTec still dereferences null getBottomGasFractions (issue #64 F2)")
-if re.search(r"function ccrDiluentSurfaceLpm[\s\S]{0,200}if\s*\(\s*!bot\s*\)\s*return", js):
+if re.search(r"function ccrDiluentSurfaceLpm[\s\S]{0,200}if\s*\(\s*!bot\s*\)\s*return\s*0", js):
     ok("ccrDiluentSurfaceLpm guards null getBottomGasFractions (issue #64 F3)")
 else:
     fail("ccrDiluentSurfaceLpm crashes on null getBottomGasFractions (issue #64 F3)")
@@ -4534,6 +4534,54 @@ if re.search(r"function isCcrDiluentGasLabel[\s\S]{0,300}if\s*\(\s*!bot\s*\)\s*r
     ok("isCcrDiluentGasLabel guards null getBottomGasFractions (issue #64 F3)")
 else:
     fail("isCcrDiluentGasLabel crashes on null getBottomGasFractions (issue #64 F3)")
+
+# ── Issue #65: ccrDiluent air fallback, export toasts, dead guards, audit gaps ──
+if re.search(r"function ccrDiluentSurfaceLpm[\s\S]{0,250}metRate\s*/\s*0\.21", js) is None:
+    ok("ccrDiluentSurfaceLpm no silent air-diluent fallback on null bottom gas (issue #65 F1)")
+else:
+    fail("ccrDiluentSurfaceLpm still returns metRate/0.21 when bottom gas null (issue #65 F1)")
+if "function notifyInvalidGasExport" in js and re.search(r"function showSlate[\s\S]{0,400}notifyInvalidGasExport\(\)", js):
+    ok("showSlate shows gas validation error not misleading no-plan toast (issue #65 F2)")
+else:
+    fail("showSlate misleading toast on blank bottom gas (issue #65 F2)")
+if re.search(r"function showContingencySlate[\s\S]{0,500}notifyInvalidGasExport\(\)", js):
+    ok("showContingencySlate shows gas validation error on blank bottom gas (issue #65 F2)")
+else:
+    fail("showContingencySlate misleading toast on blank bottom gas (issue #65 F2)")
+if re.search(r"function copyDiveProfile[\s\S]{0,600}notifyInvalidGasExport\(\)", js):
+    ok("copyDiveProfile shows gas validation error on blank bottom gas (issue #65 F2)")
+else:
+    fail("copyDiveProfile misleading toast on blank bottom gas (issue #65 F2)")
+_vpm_rr65 = js.split("function renderVPMResults", 1)[-1].split("function getAllDecoGasIds", 1)[0] if "function renderVPMResults" in js else ""
+if _vpm_rr65 and "addBailoutStressReserve" in _vpm_rr65 and "if (!botFracs) return" not in _vpm_rr65:
+    ok("renderVPMResults stress-reserve block has no dead botFracs return (issue #65 F3)")
+else:
+    fail("renderVPMResults still has dead if (!botFracs) return in stress block (issue #65 F3)")
+_cbt65 = js.split("function calcBestMixTec", 1)[-1].split("function ", 1)[0] if "function calcBestMixTec" in js else ""
+if _cbt65 and "typeof getBottomGasFractions === 'function'" not in _cbt65:
+    ok("calcBestMixTec calls getBottomGasFractions directly without typeof guard (issue #65 F4)")
+else:
+    fail("calcBestMixTec still has dead typeof getBottomGasFractions guard (issue #65 F4)")
+_bdph65 = js.split("function buildDecoPlanHeaderData", 1)[-1].split("function ", 1)[0] if "function buildDecoPlanHeaderData" in js else ""
+if _bdph65 and "_expBotFracs ?" in _bdph65:
+    ok("buildDecoPlanHeaderData null-safe bottom gas fractions (issue #65 F5)")
+else:
+    fail("buildDecoPlanHeaderData missing null guard for getBottomGasFractions (issue #65 F5)")
+_bet65 = js.split("function calcGasPlan", 1)[-1].split("function ", 1)[0] if "function calcGasPlan" in js else ""
+if _bet65 and re.search(r"getBottomGasFractions\(\)[\s\S]{0,80}if\s*\(\s*!botFracs\s*\)\s*return", _bet65):
+    ok("calcGasPlan guards null getBottomGasFractions (issue #65 F5)")
+else:
+    fail("calcGasPlan missing null guard for getBottomGasFractions (issue #65 F5)")
+_ccns65 = js.split("function calcCNS", 1)[-1].split("function ", 1)[0] if "function calcCNS" in js else ""
+if _ccns65 and "getBottomGasFractions()" in _ccns65 and "botFracs ?" in _ccns65 and "typeof getBottomGasFractions" not in _ccns65:
+    ok("calcCNS null-safe fHe from getBottomGasFractions (issue #65 F5)")
+else:
+    fail("calcCNS missing null guard for getBottomGasFractions fHe (issue #65 F5)")
+_vccr65 = js.split("function validateCcrGasConfiguration", 1)[-1].split("function updateCcrGasValidation", 1)[0] if "function validateCcrGasConfiguration" in js else ""
+if _vccr65 and "getBottomGasFractions()" in _vccr65 and re.search(r"if\s*\(\s*!bot\s*\)", _vccr65):
+    ok("validateCcrGasConfiguration guards null getBottomGasFractions (issue #65 F5)")
+else:
+    fail("validateCcrGasConfiguration missing null guard for getBottomGasFractions (issue #65 F5)")
 
 print("=" * 60)
 

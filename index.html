@@ -6520,7 +6520,7 @@ function ccrDiluentSurfaceLpm(depthM) {
   const ccr = getCCRSettingsFromDOM();
   const metRate = getCcrMetabolicO2Rate(ccr);
   const bot = getBottomGasFractions();
-  if (!bot) return metRate / 0.21;
+  if (!bot) return 0;
   const fO2Dil = Math.max(0.01, bot.fO2 || 0.21);
   if (ccr.circuit === 'pSCR' && !ccr.bailout) {
     return metRate * PSCR_DEFAULT_BYPASS_RATIO;
@@ -8196,13 +8196,11 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   if (_vpmOnLoop) {
     const reserveMin = (_vpmCcr.stressTimeMin || 0) + (_vpmCcr.problemSolveMin || 0);
     if (reserveMin > 0) {
-      const botFracs = _vpmBotFracs;
-      if (!botFracs) return;
       const stopDepths = (result.stops || []).map(s => s.depth).filter(d => d != null && d >= 0);
       const stressSac = _vpmCcr.sacStress || sacBotVPM;
       addBailoutStressReserve(
         (label, d, min, sac) => { gasConsVPM[label] = (gasConsVPM[label] || 0) + ccrGasLitres(label, d, min, sac); },
-        reserveMin, depthM, stopDepths, botFracs.fO2, botFracs.fHe, stressSac
+        reserveMin, depthM, stopDepths, _vpmBotFracs.fO2, _vpmBotFracs.fHe, stressSac
       );
     }
   }
@@ -11285,7 +11283,7 @@ function calcBestMixTec() {
   // ── Read current dive inputs ──
   const depthRaw = parseFloat(document.getElementById('decoDepth')?.value);
   const depthM   = du ? depthRaw : depthRaw / 3.28084;  // always work in metres
-  const fracs    = typeof getBottomGasFractions === 'function' ? getBottomGasFractions() : null;
+  const fracs    = getBottomGasFractions();
 
   // ── Update Current Dive card ──
   const hasDive = depthM > 0 && fracs;
@@ -11367,7 +11365,7 @@ function calcBestMixTec() {
     : (o2Pct === 21 ? 'Air' : o2Pct + '/00');
 
   // END improvement vs current plan gas (trimix only)
-  const curFracs   = typeof getBottomGasFractions === 'function' ? getBottomGasFractions() : null;
+  const curFracs   = getBottomGasFractions();
   const currentEND = curFracs && calcEND ? calcEND(depthM, curFracs.fN2, curFracs.fHe) : actualEND;
   const improve    = curFracs ? currentEND - actualEND : 0;
   const improveDisp = (du ? Math.round(improve) : Math.round(improve * 3.28084)) + ' ' + dUnit;
@@ -13299,8 +13297,21 @@ function buildExportText(mode) {
   return lines.join('\n');
 }
 
+function decoPlanRowsExist() {
+  return document.querySelectorAll('#decoTableBody tr[data-phase]').length > 0;
+}
+function notifyInvalidGasExport() {
+  const gasVal = typeof validateDomDecoGases === 'function' ? validateDomDecoGases() : { ok: false, errors: [] };
+  const msg = gasVal.errors[0]?.message || 'Invalid gas mixture — check bottom and deco gas fields.';
+  alert('Cannot export:\n\n' + msg);
+}
+
 // ── Copy to clipboard - shows preview modal ──
 function copyDiveProfile(mode) {
+  if (mode === 'deco') {
+    if (!decoPlanRowsExist()) { showToast('Run a dive plan first', 'copy'); return; }
+    if (!getBottomGasFractions()) { notifyInvalidGasExport(); return; }
+  }
   const text = buildMessengerText(mode);
   if (!text) { showToast('Run a dive plan first', 'copy'); return; }
   const titles = { deco: 'Deco Plan', contingency: 'Emergency Plan', planner: 'Dive Plan' };
@@ -13426,6 +13437,8 @@ function buildSlateText() {
 }
 
 function showSlate() {
+  if (!decoPlanRowsExist()) { showToast('Run a dive plan first', 'slate'); return; }
+  if (!getBottomGasFractions()) { notifyInvalidGasExport(); return; }
   const text = buildSlateText();
   if (!text) { showToast('Run a dive plan first', 'slate'); return; }
   document.getElementById('slateModalBody').textContent = text;
@@ -13526,6 +13539,8 @@ function buildContingencySlateText() {
 }
 
 function showContingencySlate() {
+  if (!window._lastContingency?.newRows) { showToast('Run an emergency plan first', 'slate'); return; }
+  if (!getBottomGasFractions()) { notifyInvalidGasExport(); return; }
   const text = buildContingencySlateText();
   if (!text) { showToast('Run an emergency plan first', 'slate'); return; }
   document.getElementById('slateModalBody').textContent = text;
@@ -13630,7 +13645,7 @@ function buildMessengerText(mode) {
 
   // ── bottom gas header for messenger (trimix-aware) ──
   const _msgBotFracs = getBottomGasFractions();
-  if (!_msgBotFracs) return buildExportText(mode);
+  if (!_msgBotFracs) return null;
   const _msgBotLabel = getGasLabel(_msgBotFracs.fO2, _msgBotFracs.fHe);
   const _msgBotHe    = Math.round((_msgBotFracs.fHe || 0) * 100);
   const _msgBotDetail = _msgBotHe > 0
@@ -14733,7 +14748,7 @@ function calcCNS() {
   const dives  = parseInt(document.getElementById('cnsDives')?.value)   || 1;
 
   const fO2frac = fO2 / 100;
-  const botFracs = typeof getBottomGasFractions === 'function' ? getBottomGasFractions() : null;
+  const botFracs = getBottomGasFractions();
   const fHe = botFracs ? (botFracs.fHe || 0) : 0;
   const pAmb = altSurfaceP + depth * BAR_PER_METRE;
   const ccr = typeof getCCRSettingsFromDOM === 'function' ? getCCRSettingsFromDOM() : { circuit: 'OC' };
