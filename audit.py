@@ -2869,10 +2869,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.19['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.19")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.20['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.20")
 else:
-    fail("APP_VERSION not bumped to 2.51.19 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.20 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -4682,7 +4682,7 @@ if js.count("Run an emergency plan first', 'export', true") >= 1 and js.count("R
 else:
     fail("contingency no-plan toast missing isError on copy/slate paths (issue #69 F1)")
 _rds69 = js.split("function runDecoSchedule", 1)[-1].split("function planSegDepthM", 1)[0] if "function runDecoSchedule" in js else ""
-if _rds69 and re.search(r"validateDomDecoGases\(\)[\s\S]{0,200}domErr0\.message", _rds69):
+if _rds69 and re.search(r"validateDomDecoGases\(\)[\s\S]{0,200}domErr0\?\.message", _rds69):
     ok("runDecoSchedule DOM gas error uses safe .message extraction (issue #69 F2)")
 else:
     fail("runDecoSchedule DOM gas error still uses hard errors[0].message access (issue #69 F2)")
@@ -4691,6 +4691,21 @@ if _ugmd69 and "isCcrGasUiMode()" in _ugmd69 and "typeof isCcrGasUiMode" not in 
     ok("updateGasMODDisplays calls isCcrGasUiMode directly without typeof guard (issue #69 F3)")
 else:
     fail("updateGasMODDisplays still has dead typeof isCcrGasUiMode guard (issue #69 F3)")
+
+# ── Issue #70: deco no-plan isError toasts, domErr0 fallback, typeof cleanup, audit ──
+if js.count("Run a dive plan first', 'copy', true") >= 2 and js.count("Run a dive plan first', 'slate', true") >= 2:
+    ok("all deco no-plan toasts use isError styling (issue #70 F1/F4)")
+else:
+    fail("deco no-plan toast missing isError on copy/slate paths (issue #70 F1/F4)")
+_rds70 = js.split("function runDecoSchedule", 1)[-1].split("function planSegDepthM", 1)[0] if "function runDecoSchedule" in js else ""
+if _rds70 and "domErr0?.message || 'Invalid gas configuration.'" in _rds70 and "|| domErr0" not in _rds70.split("domErr0", 1)[-1].split("notifyScheduleError", 1)[0]:
+    ok("runDecoSchedule DOM gas error avoids object fallback in toast (issue #70 F2)")
+else:
+    fail("runDecoSchedule DOM gas error still has unsafe || domErr0 object fallback (issue #70 F2)")
+if "typeof isCcrGasUiMode" not in js:
+    ok("no dead typeof isCcrGasUiMode guards remain (issue #70 F3)")
+else:
+    fail("dead typeof isCcrGasUiMode guards still present (issue #70 F3)")
 
 print("=" * 60)
 

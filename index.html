@@ -5268,7 +5268,7 @@ function getDecoGasSwitches() {
 }
 
 function getDecoGasSwitchLines() {
-  const ccrUi = typeof isCcrGasUiMode === 'function' && isCcrGasUiMode();
+  const ccrUi = isCcrGasUiMode();
   const prefix = ccrUi ? 'Bailout mix' : 'Deco Gas';
   return getDecoGasSwitches().map((g, i) => `${prefix} ${i + 1}  : ${g.gas} (switch @ ${g.depth})`);
 }
@@ -8582,7 +8582,7 @@ function _dgCardCount() {
 }
 
 function renumberDecoGasCards() {
-  const ccrUi = typeof isCcrGasUiMode === 'function' && isCcrGasUiMode();
+  const ccrUi = isCcrGasUiMode();
   document.querySelectorAll('.deco-gas-card').forEach((card, i) => {
     const n = i + 1;
     const mixNum = n + 1;
@@ -8602,7 +8602,7 @@ function addDecoGasCard() {
   const idx = _dgNextIdx++;
   const n = _dgCardCount() + 1;
   const mixNum = n + 1;
-  const ccrUi = typeof isCcrGasUiMode === 'function' && isCcrGasUiMode();
+  const ccrUi = isCcrGasUiMode();
   const cardTitle = ccrUi ? `🟠 BAILOUT MIX ${n}` : `🟢 GAS MIX ${mixNum} — DECO GAS ${n} (optional)`;
 
   const card = document.createElement('div');
@@ -9106,7 +9106,7 @@ function runDecoSchedule() {
     if (!domGasVal.ok) {
       updateCcrGasValidation();
       const domErr0 = domGasVal.errors[0];
-      notifyScheduleError((domErr0 && domErr0.message) || domErr0 || 'Invalid gas configuration.');
+      notifyScheduleError(domErr0?.message || 'Invalid gas configuration.');
       return;
     }
   }
@@ -13332,11 +13332,11 @@ function exportNeedsDecoBottomGas(mode) {
 
 // ── Copy to clipboard - shows preview modal ──
 function copyDiveProfile(mode) {
-  if (mode === 'deco' && !decoPlanRowsExist()) { showToast('Run a dive plan first', 'copy'); return; }
+  if (mode === 'deco' && !decoPlanRowsExist()) { showToast('Run a dive plan first', 'copy', true); return; }
   if (mode === 'contingency' && !window._lastContingency) { showToast('Run an emergency plan first', 'copy', true); return; }
   if (exportNeedsDecoBottomGas(mode) && !getBottomGasFractions()) { notifyInvalidGasExport('copy'); return; }
   const text = buildMessengerText(mode);
-  if (!text) { showToast('Run a dive plan first', 'copy'); return; }
+  if (!text) { showToast('Run a dive plan first', 'copy', true); return; }
   const titles = { deco: 'Deco Plan', contingency: 'Emergency Plan', planner: 'Dive Plan' };
   document.getElementById('copyModalTitle').textContent = titles[mode] || 'Copy Plan';
   document.getElementById('copyModalBody').textContent = text;
@@ -13460,10 +13460,10 @@ function buildSlateText() {
 }
 
 function showSlate() {
-  if (!decoPlanRowsExist()) { showToast('Run a dive plan first', 'slate'); return; }
+  if (!decoPlanRowsExist()) { showToast('Run a dive plan first', 'slate', true); return; }
   if (!getBottomGasFractions()) { notifyInvalidGasExport('slate'); return; }
   const text = buildSlateText();
-  if (!text) { showToast('Run a dive plan first', 'slate'); return; }
+  if (!text) { showToast('Run a dive plan first', 'slate', true); return; }
   document.getElementById('slateModalBody').textContent = text;
   document.getElementById('slateModal').style.display = 'flex';
 }
