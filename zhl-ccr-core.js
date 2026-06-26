@@ -112,8 +112,15 @@ function getInspiredInertPressures(pAmb, setpoint, fO2, fHe, ccr) {
       fO2: fr.fO2, fHe: fr.fHe, fN2: fr.fN2,
     };
   }
-  if (!setpoint || setpoint <= 0 || pAmb <= setpoint + ppH2O) {
-    return { pN2: 0, pHe: 0, fO2, fHe, fN2: 0 };
+  if (!setpoint || setpoint <= 0) {
+    const fN2d = Math.max(0, 1 - fO2 - fHe);
+    const pInert = Math.max(0, pAmb - ppH2O);
+    return { pN2: pInert * fN2d, pHe: pInert * fHe, fO2, fHe, fN2: fN2d };
+  }
+  if (pAmb <= setpoint + ppH2O) {
+    const fN2d = Math.max(0, 1 - fO2 - fHe);
+    const pInert = Math.max(0, pAmb - ppH2O);
+    return { pN2: pInert * fN2d, pHe: pInert * fHe, fO2, fHe, fN2: fN2d };
   }
   const pInert = pAmb - setpoint - ppH2O;
   const den = Math.max(0.001, 1 - fO2);

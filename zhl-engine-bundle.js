@@ -6,7 +6,7 @@
   'use strict';
 
   const ZHL16C = [
-    [4.0,1.2599,0.5050],[8.0,1.0000,0.6514],[12.5,0.8618,0.7222],[18.5,0.7562,0.7825],
+    [5.0,1.2599,0.5050],[8.0,1.0000,0.6514],[12.5,0.8618,0.7222],[18.5,0.7562,0.7825],
     [27.0,0.6200,0.8126],[38.3,0.5043,0.8434],[54.3,0.4410,0.8693],[77.0,0.4000,0.8910],
     [109.0,0.3750,0.9092],[146.0,0.3500,0.9222],[187.0,0.3295,0.9319],[239.0,0.3065,0.9403],
     [305.0,0.2835,0.9477],[390.0,0.2610,0.9544],[498.0,0.2480,0.9602],[635.0,0.2327,0.9653],
@@ -247,8 +247,15 @@ function getInspiredInertPressures(pAmb, setpoint, fO2, fHe, ccr) {
       fO2: fr.fO2, fHe: fr.fHe, fN2: fr.fN2,
     };
   }
-  if (!setpoint || setpoint <= 0 || pAmb <= setpoint + ppH2O) {
-    return { pN2: 0, pHe: 0, fO2, fHe, fN2: 0 };
+  if (!setpoint || setpoint <= 0) {
+    const fN2d = Math.max(0, 1 - fO2 - fHe);
+    const pInert = Math.max(0, pAmb - ppH2O);
+    return { pN2: pInert * fN2d, pHe: pInert * fHe, fO2, fHe, fN2: fN2d };
+  }
+  if (pAmb <= setpoint + ppH2O) {
+    const fN2d = Math.max(0, 1 - fO2 - fHe);
+    const pInert = Math.max(0, pAmb - ppH2O);
+    return { pN2: pInert * fN2d, pHe: pInert * fHe, fO2, fHe, fN2: fN2d };
   }
   const pInert = pAmb - setpoint - ppH2O;
   const den = Math.max(0.001, 1 - fO2);

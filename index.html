@@ -3915,7 +3915,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 window._zhlPrewarmed = window._zhlPrewarmed || false;
 
 const ZHL16C = [
-  [4.0,   1.2599, 0.5050],[8.0,   1.0000, 0.6514],[12.5,  0.8618, 0.7222],
+  [5.0,   1.2599, 0.5050],[8.0,   1.0000, 0.6514],[12.5,  0.8618, 0.7222],
   [18.5,  0.7562, 0.7825],[27.0,  0.6200, 0.8126],[38.3,  0.5043, 0.8434],
   [54.3,  0.4410, 0.8693],[77.0,  0.4000, 0.8910],[109.0, 0.3750, 0.9092],
   [146.0, 0.3500, 0.9222],[187.0, 0.3295, 0.9319],[239.0, 0.3065, 0.9403],
@@ -4419,7 +4419,8 @@ function setAlgo(a) {
   { const _tBtn=document.getElementById('tissueChartToggleBtn'); const _cBtn=document.getElementById('contingencyJumpBtn'); if(_tBtn)_tBtn.style.display='none'; if(_cBtn)_cBtn.style.display='none'; }
   const _pr2 = document.getElementById('plannerResult'); if(_pr2){_pr2.style.display='none';_pr2.innerHTML='';}
   window._lastPlan = null;
-  window._lastVPMResult = null;
+  _lastVPMResult = null;
+  window._lastContingency = null;
   // multiResult removed — multi dive now renders into #unifiedDivePlan
 
   if (isTools) {
@@ -4848,7 +4849,8 @@ function setDecoAlgorithm(model, skipSave) {
   const decoTbody = document.getElementById('decoTableBody');
   if (decoTbody) decoTbody.innerHTML = '';
   window._lastPlan = null;
-  window._lastVPMResult = null;
+  _lastVPMResult = null;
+  window._lastContingency = null;
 
   if (!skipSave && typeof appSettings !== 'undefined' && appSettings.save) {
     setTimeout(() => appSettings.save(false), 100);
@@ -5108,6 +5110,15 @@ const PLAN_INFO_TIP = 'Summary metrics for this dive plan:\n\n• Run time — t
 
 function formatDecoStopDepth(depthM) {
   return formatDecoZoneStart(depthM);
+}
+
+function parseStopDisplayTime(s) {
+  if (!s) return '';
+  s = String(s).trim();
+  if (/^\d+:\d+$/.test(s)) return s;
+  const mm = s.match(/(\d+)[''](\d+)/);
+  if (mm) return `${mm[1]}:${mm[2].padStart(2, '0')}`;
+  return s;
 }
 
 function parseRunMinutes(s) {
@@ -6390,8 +6401,15 @@ function getInspiredInertPressures(pAmb, setpoint, fO2, fHe, ccr) {
       fO2: fr.fO2, fHe: fr.fHe, fN2: fr.fN2,
     };
   }
-  if (!setpoint || setpoint <= 0 || pAmb <= setpoint + ppH2O) {
-    return { pN2: 0, pHe: 0, fO2, fHe, fN2: 0 };
+  if (!setpoint || setpoint <= 0) {
+    const fN2d = Math.max(0, 1 - fO2 - fHe);
+    const pInert = Math.max(0, pAmb - ppH2O);
+    return { pN2: pInert * fN2d, pHe: pInert * fHe, fO2, fHe, fN2: fN2d };
+  }
+  if (pAmb <= setpoint + ppH2O) {
+    const fN2d = Math.max(0, 1 - fO2 - fHe);
+    const pInert = Math.max(0, pAmb - ppH2O);
+    return { pN2: pInert * fN2d, pHe: pInert * fHe, fO2, fHe, fN2: fN2d };
   }
   const pInert = pAmb - setpoint - ppH2O;
   const den = Math.max(0.001, 1 - fO2);
@@ -6971,7 +6989,7 @@ function buhNDL(depthM, fN2, gfLow, gfHigh) {
   let tissues = initTissues();
   for (let t=0; t<=500; t++) {
     const next = saturate(tissues, depthM, 1, fN2, 0);
-    if (ceiling(next, gfHigh/100) > 0) return t;
+    if (ceiling(next, gfLow/100) > 0) return t;
     tissues = next;
   }
   return 500;
@@ -7963,6 +7981,7 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
     conservatism,
     gfHi,
     gfs:               gfHi,
+    waterVapor:        WATER_VAPOR,
     firstStop30sec:    false,
     extendedStops:     false,
     altitude:          altitudeM,   // metres — VPM getSurfacePressure() uses this
@@ -8493,6 +8512,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
     stops: _vpmRawStops.map(s => ({ depth: s.depth, dur: s.dur, gas: s.gas })),
     steps: plan,
     totalOTU: result.totalOTU != null ? result.totalOTU : undefined,
+    totalCNS: result.totalCNS != null ? result.totalCNS : undefined,
     decoZoneStart: result.decoZoneStart || 0,
     firstStopDepth: vpmFirstStop,
     surfaceGF: result.finalTissues ? computeSurfaceGF(result.finalTissues) : null,
@@ -8528,9 +8548,12 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   const summEl = document.getElementById('decoSummary');
   if (summEl) {
     const bottomFN2vpm = _vpmBotFracs.fN2;
-    const endMvpm = ((depthM + 10) * bottomFN2vpm / 0.79) - 10;
+    const endMvpm = calcEND(depthM, bottomFN2vpm, _vpmBotFracs.fHe || 0);
     const hasDeco = (result.stops || []).some(s => s.time > 0);
     updateDecoSummaryHtml(hasDeco, endMvpm, '');
+  }
+  if (result.finalTissues && result.finalTissues.length && !window._contingencyRunning) {
+    updateTissueViz(result.finalTissues, mGF.high);
   }
 }
 
@@ -9447,7 +9470,7 @@ function runDecoSchedule() {
   // EAD = (fN2 × (depth + 10) / 0.79) − 10  [metres]
   function calcEAD(depthM, fN2) {
     if (fN2 >= 0.79) return null; // air — no EAD benefit
-    const ead = (fN2 * (depthM + 10) / 0.79) - 10;
+    const ead = calcEND(depthM, fN2, 0);
     return Math.max(0, Math.round(ead));
   }
   function fmtEAD(depthM, fN2) {
@@ -10643,11 +10666,11 @@ const CNS_DAILY_LIMITS = {
 function getCNSDailyLimit(ppo2) {
   const key = Math.round(ppo2 * 10);
   if (key < 6) return Infinity;
-  if (key > 16) return 0;
+  if (key >= 16) return CNS_DAILY_LIMITS[16] || 150;
   const lo = Math.floor(ppo2 * 10);
   const hi = lo + 1;
   const vLo = CNS_DAILY_LIMITS[lo] || 0;
-  const vHi = CNS_DAILY_LIMITS[hi] || 0;
+  const vHi = CNS_DAILY_LIMITS[hi] ?? CNS_DAILY_LIMITS[16] ?? 150;
   const frac = ppo2 * 10 - lo;
   return vLo + (vHi - vLo) * frac;
 }
@@ -13701,7 +13724,7 @@ function buildMessengerText(mode) {
       if (ph === 'switch') { const switchTxt = Array.from(tds).slice(1).map(t=>clean(t.textContent)).filter(Boolean).join(' '); result.push('>> ' + switchTxt); return; }
       if (ph === 'descent' || ph === 'ascent') return;
       if (ph === 'bottom') { result.push(`Lvl  ${cv[1]}  ${cv[2]}  ${shortMix(cv[3])}`); return; }
-      const stop = /^\d+:\d+$/.test(cv[2]) ? cv[2] : '';
+      const stop = parseStopDisplayTime(cv[2]);
       result.push(`Stp  ${cv[1]}  ${stop}  ${cv[4]}  ${shortMix(cv[3])}`);
     });
     result.push('-'.repeat(28));
@@ -14848,21 +14871,42 @@ function updatePriorDiveCarry() {
     `  (surface interval: ${Math.floor(totalMinutes/60)}h ${Math.round(totalMinutes%60)}m)`;
 }
 
-function calcCnsWidgetOtu(bottomOtu, botFracs, ccr) {
+function calcCnsWidgetExposure(bottomOtu, bottomSingleCns, dailyBottomCns, botFracs, ccr, dives) {
   const lp = window._lastPlan;
   if (lp?.totalOTU != null && isFinite(lp.totalOTU)) {
-    return { otu: lp.totalOTU, fromPlan: true };
+    const planCns = lp.totalCNS != null ? parseFloat(lp.totalCNS) : null;
+    return {
+      otu: lp.totalOTU,
+      singleCns: planCns != null && isFinite(planCns) ? planCns : bottomSingleCns,
+      dailyCns: planCns != null && isFinite(planCns) ? Math.min(planCns * dives, 999) : dailyBottomCns,
+      fromPlan: true,
+    };
   }
   if (lp?.steps?.length && typeof computePlanExposureTotals === 'function') {
     const bot = botFracs || getBottomGasFractions();
     const exp = computePlanExposureTotals(
       lp.steps, ccr, bot?.fO2 ?? 0.21, bot?.fHe ?? 0, altSurfaceP, BAR_PER_METRE
     );
-    if (exp.totalOTU > 0) return { otu: exp.totalOTU, fromPlan: true };
+    if (exp.totalOTU > 0 || exp.totalCNS > 0) {
+      return {
+        otu: exp.totalOTU || bottomOtu,
+        singleCns: exp.totalCNS || bottomSingleCns,
+        dailyCns: Math.min((exp.totalCNS || 0) * dives, 999) || dailyBottomCns,
+        fromPlan: true,
+      };
+    }
   }
   const vpmOtu = parseFloat(window._lastVPMExport?.otu);
-  if (isFinite(vpmOtu)) return { otu: vpmOtu, fromPlan: true };
-  return { otu: bottomOtu, fromPlan: false };
+  const vpmCns = parseFloat(String(window._lastVPMExport?.cns || '').replace('%', ''));
+  if (isFinite(vpmOtu)) {
+    return {
+      otu: vpmOtu,
+      singleCns: isFinite(vpmCns) ? vpmCns : bottomSingleCns,
+      dailyCns: isFinite(vpmCns) ? Math.min(vpmCns * dives, 999) : dailyBottomCns,
+      fromPlan: true,
+    };
+  }
+  return { otu: bottomOtu, singleCns: bottomSingleCns, dailyCns: dailyBottomCns, fromPlan: false };
 }
 
 function calcCNS() {
@@ -14892,25 +14936,27 @@ function calcCNS() {
   const singleCNS = singleLimit > 0 ? Math.min((bt / singleLimit) * 100, 999) : 999;
   const dailyCNS  = dailyLimit  > 0 ? Math.min((bt * dives / dailyLimit) * 100, 999) : 999;
   const bottomOtu = bt * Math.pow(Math.max(0, (ppo2 - 0.5) / 0.5), OTU_EXPONENT);
-  const { otu, fromPlan } = calcCnsWidgetOtu(bottomOtu, botFracs, ccr);
+  const { otu, singleCns, dailyCns, fromPlan } = calcCnsWidgetExposure(
+    bottomOtu, singleCNS, dailyCNS, botFracs, ccr, dives
+  );
 
   // Update stats
   document.getElementById('cnsPPO2').textContent     = ppo2.toFixed(2);
-  document.getElementById('cnsSinglePct').textContent = singleCNS.toFixed(1) + '%';
-  document.getElementById('cnsDailyPct').textContent  = dailyCNS.toFixed(1) + '%';
+  document.getElementById('cnsSinglePct').textContent = singleCns.toFixed(1) + '%';
+  document.getElementById('cnsDailyPct').textContent  = dailyCns.toFixed(1) + '%';
   document.getElementById('cnsOTU').textContent       = Math.round(otu);
-  document.getElementById('cnsSingleLabel').textContent = singleCNS.toFixed(1) + '%';
-  document.getElementById('cnsDailyLabel').textContent  = dailyCNS.toFixed(1) + '%';
+  document.getElementById('cnsSingleLabel').textContent = singleCns.toFixed(1) + '%';
+  document.getElementById('cnsDailyLabel').textContent  = dailyCns.toFixed(1) + '%';
 
   // Color single bar
   const sBar = document.getElementById('cnsSingleBar');
-  sBar.style.width = Math.min(singleCNS, 100) + '%';
-  sBar.style.background = singleCNS < 50 ? 'var(--green)' : singleCNS < 80 ? 'var(--yellow)' : 'var(--red)';
+  sBar.style.width = Math.min(singleCns, 100) + '%';
+  sBar.style.background = singleCns < 50 ? 'var(--green)' : singleCns < 80 ? 'var(--yellow)' : 'var(--red)';
 
   // Color daily bar
   const dBar = document.getElementById('cnsDailyBar');
-  dBar.style.width = Math.min(dailyCNS, 100) + '%';
-  dBar.style.background = dailyCNS < 60 ? 'var(--green)' : dailyCNS < 100 ? 'var(--orange)' : 'var(--red)';
+  dBar.style.width = Math.min(dailyCns, 100) + '%';
+  dBar.style.background = dailyCns < 60 ? 'var(--green)' : dailyCns < 100 ? 'var(--orange)' : 'var(--red)';
 
   // ppO2 color on stat
   const pEl = document.getElementById('cnsPPO2');
@@ -14925,16 +14971,16 @@ function calcCNS() {
     cls = 'c-dang'; msg = `⛔ ppO2 ${ppo2.toFixed(2)} bar EXCEEDS maximum 1.6 bar! Serious seizure risk. Change gas or depth.`;
   } else if (ppo2 > 1.4) {
     cls = 'c-warn'; msg = `⚠️ ppO2 ${ppo2.toFixed(2)} bar is above recreational limit (1.4 bar). Technical divers only.`;
-  } else if (dailyCNS >= 100) {
-    cls = 'c-dang'; msg = `⛔ Daily CNS ${dailyCNS.toFixed(0)}% exceeds 100% limit. No more diving today.`;
-  } else if (singleCNS >= 80) {
-    cls = 'c-warn'; msg = `⚠️ Single dive CNS ${singleCNS.toFixed(0)}% exceeds 80% limit. Reduce bottom time.`;
-  } else if (singleCNS >= 50) {
-    cls = 'c-warn'; msg = `🟡 CNS ${singleCNS.toFixed(0)}% - moderate. Monitor total daily exposure.`;
+  } else if (dailyCns >= 100) {
+    cls = 'c-dang'; msg = `⛔ Daily CNS ${dailyCns.toFixed(0)}% exceeds 100% limit. No more diving today.`;
+  } else if (singleCns >= 80) {
+    cls = 'c-warn'; msg = `⚠️ Single dive CNS ${singleCns.toFixed(0)}% exceeds 80% limit. Reduce bottom time.`;
+  } else if (singleCns >= 50) {
+    cls = 'c-warn'; msg = `🟡 CNS ${singleCns.toFixed(0)}% - moderate. Monitor total daily exposure.`;
   } else {
     msg = fromPlan
-      ? `✅ ppO2 ${ppo2.toFixed(2)} bar - CNS ${singleCNS.toFixed(0)}% single, ${dailyCNS.toFixed(0)}% daily. OTU ${Math.round(otu)} includes deco from last computed plan.`
-      : `✅ ppO2 ${ppo2.toFixed(2)} bar - CNS ${singleCNS.toFixed(0)}% single, ${dailyCNS.toFixed(0)}% daily. OTU is bottom-only — run Calculate for full profile OTU.`;
+      ? `✅ ppO2 ${ppo2.toFixed(2)} bar - CNS ${singleCns.toFixed(0)}% single, ${dailyCns.toFixed(0)}% daily. Exposure from last computed plan (incl. deco).`
+      : `✅ ppO2 ${ppo2.toFixed(2)} bar - CNS ${singleCns.toFixed(0)}% single, ${dailyCns.toFixed(0)}% daily. Run Calculate for full-profile CNS/OTU.`;
   }
 
   statusEl.className = 'result-card ' + cls;
@@ -16277,7 +16323,7 @@ var appSettings = {
   DECO_FIELDS: [
     'decoDepth', 'decoBT', 'decoGas', 'decoCustomO2',
     'descentRate', 'ascentRate', 'decoAscentRate', 'surfaceAscentRate', 'decoStep', 'lastDecoStop',
-    'minStopTime', 'stopRounding', 'waterVapor', 'ppo2Bottom', 'ppo2Deco',
+    'minStopTime', 'stopRounding', 'decoTransitMode', 'waterVapor', 'ppo2Bottom', 'ppo2Deco',
     'shallowGradient',
     'circuitSelect', 'ccrDecoSetpoint', 'ccrBottomSetpoint', 'ccrDescentSetpoint',
     'ccrBailoutToggle', 'diluentUseAsBailout', 'ccrBailoutGfLow', 'ccrBailoutGfHigh',
@@ -16411,9 +16457,14 @@ var appSettings = {
           this._loadPending = true;
           setAlgo(savedAlgo);
           setTimeout(() => {
-            this._restoreFields(values);
-            this._loaded = true;
-            this._loadPending = false;
+            try {
+              this._restoreFields(values);
+            } catch (e) {
+              console.error('[LSP] Deferred restore failed:', e.message);
+            } finally {
+              this._loaded = true;
+              this._loadPending = false;
+            }
           }, 500);
           return true;
         }

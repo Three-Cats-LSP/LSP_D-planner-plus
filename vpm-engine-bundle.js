@@ -50,7 +50,9 @@ const VPMEngine = (() => {
     const INITIAL_RADIUS_N2 = 0.55e-6; 
     const INITIAL_RADIUS_He = 0.45e-6; 
     const REGEN_TIME = 20160.0;      
-    const WATER_VAPOR_PRESSURE = 0.0493; 
+    function getWaterVaporPressure(settings) {
+        return (settings && settings.waterVapor > 0) ? settings.waterVapor : 0.0627;
+    }
     const CONSTANT_PRESSURE_OTHER_GASES = (102.0 / 760.0) * 1.01325; 
     const CRIT_VOLUME_LAMBDA_FSW_MIN = 7500.0;
     function twoGammaOverR(gamma, r) {
@@ -88,7 +90,7 @@ const VPMEngine = (() => {
     }
     function createVPMState(settings) {
         const surfP = getSurfacePressure(settings);
-        const ppH2O = WATER_VAPOR_PRESSURE;
+        const ppH2O = getWaterVaporPressure(settings);
         const inspiredN2 = 0.7902 * (surfP - ppH2O);
         const tissues = [];
         const critRadiiN2 = [];
@@ -175,9 +177,8 @@ const VPMEngine = (() => {
         //  but larger nuclei survive surface interval better → more conservative for next dive).
         // Net effect: carrying state is conservative — correct VPM-B behaviour.
         if (settings._prevBubbleState && settings._prevBubbleState.adjustedCritRadiiN2
-                && settings._prevBubbleState.adjustedCritRadiiN2.length === NC
-                && settings._surfaceInterval >= 0) {
-            const si = settings._surfaceInterval || 0; // minutes on surface
+                && settings._prevBubbleState.adjustedCritRadiiN2.length === NC) {
+            const si = settings._surfaceInterval != null ? settings._surfaceInterval : 0;
             const regenFactor = Math.exp(-si / REGEN_TIME);
             const pb = settings._prevBubbleState;
             for (let i = 0; i < NC; i++) {
@@ -392,7 +393,7 @@ const VPMEngine = (() => {
     }
     function calcSurfacePhaseVolumeTime(state, settings) {
         const surfP = getSurfacePressure(settings);
-        const surfaceInspiredN2 = 0.79 * (surfP - WATER_VAPOR_PRESSURE);
+        const surfaceInspiredN2 = 0.79 * (surfP - getWaterVaporPressure(settings));
         for (let i = 0; i < NC; i++) {
             const pHe = state.tissues[i].pHe;
             const pN2 = state.tissues[i].pN2;

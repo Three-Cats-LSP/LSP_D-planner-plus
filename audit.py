@@ -1117,7 +1117,7 @@ else:
 # 17.10 vpmSurfaceInterval and vpmRepMode in DECO_FIELDS (persistence)
 deco_fields_idx2 = html.find("DECO_FIELDS:")
 if deco_fields_idx2 > 0:
-    deco_fields_block2 = html[deco_fields_idx2:deco_fields_idx2 + 1200]
+    deco_fields_block2 = html[deco_fields_idx2:deco_fields_idx2 + 1800]
     for field_id, description in [
         ("vpmSurfaceInterval", "VPM repetitive surface interval input"),
         ("vpmRepMode",         "VPM repetitive dive checkbox"),
@@ -1196,7 +1196,7 @@ else:
 # 18.8 All SAC and cylinder fields in DECO_FIELDS (persistence)
 deco_fields_idx3 = html.find("DECO_FIELDS:")
 if deco_fields_idx3 > 0:
-    deco_fields_block3 = html[deco_fields_idx3:deco_fields_idx3 + 1200]
+    deco_fields_block3 = html[deco_fields_idx3:deco_fields_idx3 + 1800]
     gas_fields_required = [
         ("sacBottom",           "bottom SAC"),
         ("sacDeco",             "deco SAC"),
