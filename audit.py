@@ -2869,10 +2869,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.24['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.24")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.25['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.25")
 else:
-    fail("APP_VERSION not bumped to 2.51.24 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.25 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -4794,6 +4794,18 @@ if _drd74 and ".switch-depth-display" in _drd74 and "typeof runDecoSchedule" not
     ok("_doResetToDefaults resets switch-depth displays without misleading runDecoSchedule guard (issue #74 F2)")
 else:
     fail("_doResetToDefaults still has misleading typeof runDecoSchedule guard (issue #74 F2)")
+
+# ── Issue #75: typeof guard cleanup campaign complete (v2.51.24 review CLEAN) ──
+_ccm75 = js.split("function closeConfirmModal", 1)[-1].split("function ", 1)[0] if "function closeConfirmModal" in js else ""
+if _ccm75 and "typeof _confirmCallback === 'function'" in _ccm75:
+    ok("closeConfirmModal retains legitimate _confirmCallback typeof guard (issue #75)")
+else:
+    fail("closeConfirmModal missing legitimate _confirmCallback typeof guard (issue #75)")
+_dead_campaign = _dead73 + _dead74
+if all(s not in js for s in _dead_campaign):
+    ok("typeof guard cleanup campaign complete — no dead guards from issues #73–#74 sets (issue #75)")
+else:
+    fail("dead typeof guards reintroduced after campaign complete (issue #75)")
 
 print("=" * 60)
 
