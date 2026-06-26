@@ -7,7 +7,7 @@ Part of the [Three Cats LSP **Diver's Toolkit**](https://threecats-lsp.com) — 
 
 🌐 **Live app:** https://threecats-lsp.com/d-planner-plus/  
 📲 **Android APK:** https://threecats-lsp.com/d-planner-plus/download.html  
-📦 **Current version:** 2.51.24  
+📦 **Current version:** 2.51.25  
 📄 **License:** MIT
 
 ---
