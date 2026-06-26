@@ -8488,7 +8488,7 @@ function updateGasMODDisplays() {
   const ppO2Limit = parseFloat(document.getElementById('ppo2Bottom')?.value) || 1.4;
   const ppO2Deco  = parseFloat(document.getElementById('ppo2Deco')?.value)   || 1.6;
   const isMetric  = units !== 'imperial';
-  const ccrUi     = typeof isCcrGasUiMode === 'function' && isCcrGasUiMode();
+  const ccrUi     = isCcrGasUiMode();
   const o2AtMOD   = typeof allowO2AtMOD !== 'undefined' ? allowO2AtMOD : true;
   const lastStop  = parseInt(document.getElementById('lastDecoStop')?.value) || 3;
   const o2MODm    = Math.max(lastStop, 6); // 6 m is the standard O2 operating depth
@@ -9105,7 +9105,8 @@ function runDecoSchedule() {
     const domGasVal = validateDomDecoGases();
     if (!domGasVal.ok) {
       updateCcrGasValidation();
-      notifyScheduleError(domGasVal.errors[0].message || 'Invalid gas mixture.');
+      const domErr0 = domGasVal.errors[0];
+      notifyScheduleError((domErr0 && domErr0.message) || domErr0 || 'Invalid gas configuration.');
       return;
     }
   }
@@ -13332,7 +13333,7 @@ function exportNeedsDecoBottomGas(mode) {
 // ── Copy to clipboard - shows preview modal ──
 function copyDiveProfile(mode) {
   if (mode === 'deco' && !decoPlanRowsExist()) { showToast('Run a dive plan first', 'copy'); return; }
-  if (mode === 'contingency' && !window._lastContingency) { showToast('Run an emergency plan first', 'copy'); return; }
+  if (mode === 'contingency' && !window._lastContingency) { showToast('Run an emergency plan first', 'copy', true); return; }
   if (exportNeedsDecoBottomGas(mode) && !getBottomGasFractions()) { notifyInvalidGasExport('copy'); return; }
   const text = buildMessengerText(mode);
   if (!text) { showToast('Run a dive plan first', 'copy'); return; }
@@ -13561,10 +13562,10 @@ function buildContingencySlateText() {
 }
 
 function showContingencySlate() {
-  if (!window._lastContingency?.newRows) { showToast('Run an emergency plan first', 'slate'); return; }
+  if (!window._lastContingency?.newRows) { showToast('Run an emergency plan first', 'slate', true); return; }
   if (!getBottomGasFractions()) { notifyInvalidGasExport('slate'); return; }
   const text = buildContingencySlateText();
-  if (!text) { showToast('Run an emergency plan first', 'slate'); return; }
+  if (!text) { showToast('Run an emergency plan first', 'slate', true); return; }
   document.getElementById('slateModalBody').textContent = text;
   document.getElementById('slateModal').style.display = 'flex';
 }

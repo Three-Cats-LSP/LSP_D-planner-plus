@@ -2869,10 +2869,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.18['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.18")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.19['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.19")
 else:
-    fail("APP_VERSION not bumped to 2.51.18 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.19 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -4675,6 +4675,22 @@ if _vpm68 and "addBailoutStressReserve" in _vpm68 and re.search(r"addBailoutStre
     ok("addBailoutStressReserve lambda uses accumGasLitres (issue #68 F4)")
 else:
     fail("addBailoutStressReserve lambda missing accumGasLitres (issue #68 F4)")
+
+# ── Issue #69: isError toast coverage, domGasVal extraction, typeof cleanup ──
+if js.count("Run an emergency plan first', 'export', true") >= 1 and js.count("Run an emergency plan first', 'copy', true") >= 1 and js.count("Run an emergency plan first', 'slate', true") >= 2:
+    ok("all contingency no-plan toasts use isError styling (issue #69 F1)")
+else:
+    fail("contingency no-plan toast missing isError on copy/slate paths (issue #69 F1)")
+_rds69 = js.split("function runDecoSchedule", 1)[-1].split("function planSegDepthM", 1)[0] if "function runDecoSchedule" in js else ""
+if _rds69 and re.search(r"validateDomDecoGases\(\)[\s\S]{0,200}domErr0\.message", _rds69):
+    ok("runDecoSchedule DOM gas error uses safe .message extraction (issue #69 F2)")
+else:
+    fail("runDecoSchedule DOM gas error still uses hard errors[0].message access (issue #69 F2)")
+_ugmd69 = js.split("function updateGasMODDisplays", 1)[-1].split("function _dgCardCount", 1)[0] if "function updateGasMODDisplays" in js else ""
+if _ugmd69 and "isCcrGasUiMode()" in _ugmd69 and "typeof isCcrGasUiMode" not in _ugmd69:
+    ok("updateGasMODDisplays calls isCcrGasUiMode directly without typeof guard (issue #69 F3)")
+else:
+    fail("updateGasMODDisplays still has dead typeof isCcrGasUiMode guard (issue #69 F3)")
 
 print("=" * 60)
 
