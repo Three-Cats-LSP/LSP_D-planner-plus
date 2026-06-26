@@ -104,7 +104,7 @@ All browser suites run live from the deployed app — no local setup needed for 
 
 | Script | CI tier | Scope |
 |--------|---------|-------|
-| [`audit.py`](audit.py) | CI + Release | Static analysis — structure, safety rules, regression guards (684 checks) |
+| [`audit.py`](audit.py) | CI + Release | Static analysis — structure, safety rules, regression guards (687 checks) |
 | [`dev/run_all_regression.py`](dev/run_all_regression.py) | Both | Unified orchestrator — `--tier ci` (4 suites) or `--tier release` (9 suites) |
 | [`dev/run_browser_regression.py`](dev/run_browser_regression.py) | CI | Playwright runner — `tests-verify.html` + `tests-pscr-otu-cns.html` |
 | [`dev/run_native_regression.py`](dev/run_native_regression.py) | Release | Android select picker + Capacitor blob-export bridge (Playwright) |
