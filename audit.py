@@ -2869,10 +2869,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.16['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.16")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.17['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.17")
 else:
-    fail("APP_VERSION not bumped to 2.51.16 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.17 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -4609,11 +4609,37 @@ if _ext66 and "exportNeedsDecoBottomGas(mode)" in _ext66 and "notifyInvalidGasEx
     ok("exportTXT guards invalid bottom gas before download (issue #66 F3/F5)")
 else:
     fail("exportTXT missing gas validation guard (issue #66 F3/F5)")
-_nige66 = js.split("function notifyInvalidGasExport", 1)[-1].split("function exportNeedsDecoBottomGas", 1)[0] if "function notifyInvalidGasExport" in js else ""
-if _nige66 and "showToast(" in _nige66 and "alert(" not in _nige66:
+_nige66 = js.split("function notifyInvalidGasExport", 1)[-1].split("function notifyScheduleError", 1)[0] if "function notifyInvalidGasExport" in js else ""
+if _nige66 and "showToast(" in _nige66 and "alert(" not in _nige66 and "typeof validateDomDecoGases" not in _nige66:
     ok("notifyInvalidGasExport uses showToast not blocking alert (issue #66 F4)")
 else:
     fail("notifyInvalidGasExport still uses blocking alert (issue #66 F4)")
+
+# ── Issue #67: NaN accumulator, exportTXT contingency, toast error style, audit gaps ──
+if "function accumGasLitres" in js and "accumGasLitres(gasConsVPM" in js and "accumGasLitres(gasConsumed" in js:
+    ok("gas consumption accumulators use NaN-preserving accumGasLitres (issue #67 F1)")
+else:
+    fail("gas consumption still uses (acc[label] || 0) NaN-erasing idiom (issue #67 F1)")
+_end67 = js.split("function exportNeedsDecoBottomGas", 1)[-1].split("function copyDiveProfile", 1)[0] if "function exportNeedsDecoBottomGas" in js else ""
+if _end67 and "'cns'" not in _end67 and "mode === 'planner'" in _end67:
+    ok("exportNeedsDecoBottomGas excludes cns mode (issue #67 F4)")
+else:
+    fail("exportNeedsDecoBottomGas still blocks cns export on blank deco gas (issue #67 F4)")
+_ext67 = js.split("function exportTXT", 1)[-1].split("function copyFallback", 1)[0] if "function exportTXT" in js else ""
+if _ext67 and "_lastContingency" in _ext67 and re.search(r"mode\s*===\s*['\"]contingency['\"][\s\S]{0,120}_lastContingency", _ext67):
+    ok("exportTXT guards missing contingency plan with toast (issue #67 F2/F6)")
+else:
+    fail("exportTXT silent no-op when contingency plan not run (issue #67 F2/F6)")
+_st67 = js.split("function showToast", 1)[-1].split("function runContingencyScenario", 1)[0] if "function showToast" in js else ""
+if _st67 and "isError" in _st67 and "var(--red)" in _st67:
+    ok("showToast supports error styling for invalid-gas notifications (issue #67 F3)")
+else:
+    fail("showToast missing error color distinction (issue #67 F3)")
+_rds67 = js.split("function runDecoSchedule", 1)[-1].split("function planSegDepthM", 1)[0] if "function runDecoSchedule" in js else ""
+if _rds67 and "notifyScheduleError" in _rds67 and "alert('Cannot generate schedule" not in _rds67:
+    ok("runDecoSchedule uses notifyScheduleError not blocking alert (issue #67 F5)")
+else:
+    fail("runDecoSchedule still uses blocking alert for invalid gas (issue #67 F5)")
 
 print("=" * 60)
 

@@ -6565,6 +6565,12 @@ function ccrGasLitres(label, depthM, durMin, sac) {
   const absP = altSurfaceP + depthM * BAR_PER_METRE;
   return sac * absP * durMin; // sac must be L/min → litres at ambient
 }
+function accumGasLitres(acc, label, litres) {
+  if (!Number.isFinite(litres)) { acc[label] = NaN; return; }
+  const prev = acc[label];
+  if (prev === undefined || prev === null) { acc[label] = litres; return; }
+  acc[label] = Number.isFinite(prev) ? prev + litres : NaN;
+}
 
 function toggleCircuitFields() {
   const circuit = document.getElementById('circuitSelect')?.value || 'OC';
@@ -8193,7 +8199,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
     if (!durMin || !mixRaw || mixRaw === '-') return;
     const gasKey = mixRaw; // labels now always in O2/He format (e.g. '50/00', '21/35', '100/00')
     const sac = resolveCcrSacForGas(gasKey, (ph === 'bottom') ? sacBotVPM : sacDecoVPM, _vpmCcr);
-    gasConsVPM[gasKey] = (gasConsVPM[gasKey] || 0) + ccrGasLitres(gasKey, depthM2, durMin, sac);
+    accumGasLitres(gasConsVPM, gasKey, ccrGasLitres(gasKey, depthM2, durMin, sac));
   });
   if (_vpmOnLoop) {
     const reserveMin = (_vpmCcr.stressTimeMin || 0) + (_vpmCcr.problemSolveMin || 0);
@@ -8201,7 +8207,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
       const stopDepths = (result.stops || []).map(s => s.depth).filter(d => d != null && d >= 0);
       const stressSac = _vpmCcr.sacStress || sacBotVPM;
       addBailoutStressReserve(
-        (label, d, min, sac) => { gasConsVPM[label] = (gasConsVPM[label] || 0) + ccrGasLitres(label, d, min, sac); },
+        (label, d, min, sac) => { accumGasLitres(gasConsVPM, label, ccrGasLitres(label, d, min, sac)); },
         reserveMin, depthM, stopDepths, _vpmBotFracs.fO2, _vpmBotFracs.fHe, stressSac
       );
     }
@@ -9082,7 +9088,7 @@ function runDecoSchedule() {
   if (!window._zhlHeadless) {
     const inputVal = validateDecoInputs();
     if (!inputVal.ok) {
-      alert('Cannot generate schedule:\n\n' + inputVal.msg);
+      notifyScheduleError(inputVal.msg);
       return;
     }
   }
@@ -9090,7 +9096,7 @@ function runDecoSchedule() {
     const gasVal = validateCcrGasConfiguration();
     if (!gasVal.ok) {
       updateCcrGasValidation();
-      alert('Cannot generate schedule:\n\n' + (gasVal.errors[0] || 'CCR gas configuration is invalid.'));
+      notifyScheduleError(gasVal.errors[0] || 'CCR gas configuration is invalid.');
       return;
     }
   }
@@ -9098,7 +9104,7 @@ function runDecoSchedule() {
     const domGasVal = validateDomDecoGases();
     if (!domGasVal.ok) {
       if (typeof updateCcrGasValidation === 'function') updateCcrGasValidation();
-      alert('Cannot generate schedule:\n\n' + (domGasVal.errors[0].message || 'Invalid gas mixture.'));
+      notifyScheduleError(domGasVal.errors[0].message || 'Invalid gas mixture.');
       return;
     }
   }
@@ -9115,7 +9121,7 @@ function runDecoSchedule() {
     );
     if (!ccrVal.ok) {
       const msg = ccrVal.errors[0].message;
-      alert('Cannot generate schedule:\n\n' + msg);
+      notifyScheduleError(msg);
       return;
     }
   }
@@ -9398,7 +9404,7 @@ function runDecoSchedule() {
   // gasConsumed[gasLabel] = litres
   const gasConsumed = {};
   function addGas(label, depthM, dur, sac) {
-    gasConsumed[label] = (gasConsumed[label] || 0) + ccrGasLitres(label, depthM, dur, resolveCcrSacForGas(label, sac, _ccrSettings));
+    accumGasLitres(gasConsumed, label, ccrGasLitres(label, depthM, dur, resolveCcrSacForGas(label, sac, _ccrSettings)));
   }
 
 
@@ -13309,14 +13315,17 @@ function decoPlanRowsExist() {
   return document.querySelectorAll('#decoTableBody tr[data-phase]').length > 0;
 }
 function notifyInvalidGasExport(toastId) {
-  const gasVal = typeof validateDomDecoGases === 'function' ? validateDomDecoGases() : { ok: false, errors: [] };
+  const gasVal = validateDomDecoGases();
   const msg = gasVal.errors[0]?.message || 'Invalid gas mixture — check bottom and deco gas fields.';
-  showToast('Invalid gas: ' + msg, toastId || 'copy');
+  showToast('Invalid gas: ' + msg, toastId || 'copy', true);
+}
+function notifyScheduleError(msg) {
+  showToast('Cannot generate schedule: ' + msg, 'schedule', true);
 }
 
 function exportNeedsDecoBottomGas(mode) {
   return mode === 'deco' || mode === 'contingency'
-    || ((mode === 'planner' || mode === 'cns') && decoPlanRowsExist());
+    || (mode === 'planner' && decoPlanRowsExist());
 }
 
 // ── Copy to clipboard - shows preview modal ──
@@ -13800,6 +13809,7 @@ function buildMessengerText(mode) {
 
 // ── Download .txt file ──
 function exportTXT(mode) {
+  if (mode === 'contingency' && !window._lastContingency) { showToast('Run an emergency plan first', 'export'); return; }
   if (exportNeedsDecoBottomGas(mode) && !getBottomGasFractions()) { notifyInvalidGasExport('export'); return; }
   let text = mode === 'gasplan' ? buildGasPlanText() : buildExportText(mode);
   if (!text) return;
@@ -13891,17 +13901,19 @@ function copyFallback(text) {
 
 function showCopyToast()   { showToast('📋 Copied!', 'copy'); }
 function showExportToast() { showToast('📥 Saved!',  'export'); }
-function showToast(msg, id) {
+function showToast(msg, id, isError) {
   let toast = document.getElementById('toast-' + id);
   if (!toast) {
     toast = document.createElement('div');
     toast.id = 'toast-' + id;
-    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--accent);color:var(--bg);padding:10px 22px;border-radius:20px;font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:700;letter-spacing:1px;z-index:9999;transition:opacity 0.4s;pointer-events:none;';
+    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:10px 22px;border-radius:20px;font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:700;letter-spacing:1px;z-index:9999;transition:opacity 0.4s;pointer-events:none;max-width:min(90vw,480px);text-align:center;';
     document.body.appendChild(toast);
   }
+  toast.style.background = isError ? 'var(--red)' : 'var(--accent)';
+  toast.style.color = isError ? '#fff' : 'var(--bg)';
   toast.textContent = msg;
   toast.style.opacity = '1';
-  setTimeout(() => { toast.style.opacity = '0'; }, 2200);
+  setTimeout(() => { toast.style.opacity = '0'; }, isError ? 4000 : 2200);
 }
 
 
