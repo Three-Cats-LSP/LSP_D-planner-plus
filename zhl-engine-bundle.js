@@ -303,6 +303,32 @@ function getCCRInertSchreinerParams(pAmbStart, setpoint, fO2, fHe, pressureRate,
   };
 }
 
+function getSetpointBoundaryDepths(ccr, surfP) {
+  const cfg = normalizeCCRSettings(ccr);
+  if (!isRebreatherCircuit(cfg.circuit) || cfg.bailout || cfg.circuit === 'pSCR') return [];
+  const descSP = cfg.descentSetpoint != null ? cfg.descentSetpoint : 0.7;
+  const bottomSP = cfg.bottomSetpoint != null ? cfg.bottomSetpoint : 1.2;
+  const decoSP = cfg.decoSetpoint != null ? cfg.decoSetpoint : (cfg.setpoint != null ? cfg.setpoint : 1.3);
+  return [descSP, bottomSP, decoSP]
+    .map(sp => depthAtSetpointCrossing(sp, surfP))
+    .filter(d => d != null);
+}
+
+function splitLinearDepthAtBoundaries(fromDepth, toDepth, boundaryDepths) {
+  const lo = Math.min(fromDepth, toDepth);
+  const hi = Math.max(fromDepth, toDepth);
+  const ascending = toDepth >= fromDepth;
+  const interior = boundaryDepths
+    .filter(d => d > lo + 1e-6 && d < hi - 1e-6)
+    .sort((a, b) => ascending ? a - b : b - a);
+  const pts = [fromDepth, ...interior, toDepth];
+  const segs = [];
+  for (let i = 0; i < pts.length - 1; i++) {
+    if (Math.abs(pts[i] - pts[i + 1]) > 1e-6) segs.push({ fromDepth: pts[i], toDepth: pts[i + 1] });
+  }
+  return segs.length ? segs : [{ fromDepth, toDepth }];
+}
+
 function splitSegmentAtSetpoint(fromDepth, toDepth, setpoint, surfP) {
   if (!setpoint || setpoint <= 0) return [{ fromDepth, toDepth }];
   const cross = depthAtSetpointCrossing(setpoint, surfP);
@@ -332,12 +358,14 @@ function saturateLinearCCR(tissues, fromDepth, toDepth, t, fO2, fHe, ccr) {
   const cfg = normalizeCCRSettings(ccr);
   const surfP = altSurfaceP;
   const phase = cfg.ccrPhase || null;
-  const sp = getEffectiveSetpointAtDepth((fromDepth + toDepth) / 2, cfg, surfP, phase);
-  const segments = splitSegmentAtSetpoint(fromDepth, toDepth, sp, surfP);
+  const segments = phase
+    ? [{ fromDepth, toDepth }]
+    : splitLinearDepthAtBoundaries(fromDepth, toDepth, getSetpointBoundaryDepths(cfg, surfP));
   let out = tissues;
   const totalTime = t;
+  const totalDist = Math.abs(toDepth - fromDepth) || 1e-9;
   for (const seg of segments) {
-    const segTime = Math.abs(seg.toDepth - seg.fromDepth) / Math.abs(toDepth - fromDepth) * totalTime;
+    const segTime = Math.abs(seg.toDepth - seg.fromDepth) / totalDist * totalTime;
     if (!(segTime > 0)) continue;
     const p0Amb = depthBar(seg.fromDepth);
     const pEndAmb = depthBar(seg.toDepth);
@@ -461,7 +489,7 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
     let activeGas = fallbackGas || '';
     let activeFN2 = fallbackFN2 ?? null;
     let activeFHe = fallbackFHe ?? 0;
-    for (const s of steps) {
+    for (const s of result) {
       if (!s.gas || s.gas.trim() === '') continue;
       // Determine the depth range this step covers
       const stepDepthM = isMetric

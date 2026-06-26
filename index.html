@@ -4898,7 +4898,7 @@ function handleGFSelect(val) {
     // VPM-B/GFS Hi-only preset
     if (customRow) customRow.style.display = 'none';
     const high = parseInt(val.split('/')[1]);
-    setGF(mGF.low || 30, high);  // keep existing Lo, only update Hi
+    setGF(30, high);  // VPM-B/GFS Hi preset — fixed Lo=30, not inherited Bühlmann value
   } else {
     if (customRow) customRow.style.display = 'none';
     const parts = val.split('/').map(Number);
@@ -8492,6 +8492,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
     decoTime: Math.round(deco),
     stops: _vpmRawStops.map(s => ({ depth: s.depth, dur: s.dur, gas: s.gas })),
     steps: plan,
+    totalOTU: result.totalOTU != null ? result.totalOTU : undefined,
     decoZoneStart: result.decoZoneStart || 0,
     firstStopDepth: vpmFirstStop,
     surfaceGF: result.finalTissues ? computeSurfaceGF(result.finalTissues) : null,
@@ -14847,6 +14848,23 @@ function updatePriorDiveCarry() {
     `  (surface interval: ${Math.floor(totalMinutes/60)}h ${Math.round(totalMinutes%60)}m)`;
 }
 
+function calcCnsWidgetOtu(bottomOtu, botFracs, ccr) {
+  const lp = window._lastPlan;
+  if (lp?.totalOTU != null && isFinite(lp.totalOTU)) {
+    return { otu: lp.totalOTU, fromPlan: true };
+  }
+  if (lp?.steps?.length && typeof computePlanExposureTotals === 'function') {
+    const bot = botFracs || getBottomGasFractions();
+    const exp = computePlanExposureTotals(
+      lp.steps, ccr, bot?.fO2 ?? 0.21, bot?.fHe ?? 0, altSurfaceP, BAR_PER_METRE
+    );
+    if (exp.totalOTU > 0) return { otu: exp.totalOTU, fromPlan: true };
+  }
+  const vpmOtu = parseFloat(window._lastVPMExport?.otu);
+  if (isFinite(vpmOtu)) return { otu: vpmOtu, fromPlan: true };
+  return { otu: bottomOtu, fromPlan: false };
+}
+
 function calcCNS() {
   const depth  = parseFloat(document.getElementById('cnsDepth')?.value) || 0;
   const bt     = parseFloat(document.getElementById('cnsBT')?.value)    || 0;
@@ -14873,7 +14891,8 @@ function calcCNS() {
 
   const singleCNS = singleLimit > 0 ? Math.min((bt / singleLimit) * 100, 999) : 999;
   const dailyCNS  = dailyLimit  > 0 ? Math.min((bt * dives / dailyLimit) * 100, 999) : 999;
-  const otu = bt * Math.pow(Math.max(0, (ppo2 - 0.5) / 0.5), OTU_EXPONENT);
+  const bottomOtu = bt * Math.pow(Math.max(0, (ppo2 - 0.5) / 0.5), OTU_EXPONENT);
+  const { otu, fromPlan } = calcCnsWidgetOtu(bottomOtu, botFracs, ccr);
 
   // Update stats
   document.getElementById('cnsPPO2').textContent     = ppo2.toFixed(2);
@@ -14913,7 +14932,9 @@ function calcCNS() {
   } else if (singleCNS >= 50) {
     cls = 'c-warn'; msg = `🟡 CNS ${singleCNS.toFixed(0)}% - moderate. Monitor total daily exposure.`;
   } else {
-    msg = `✅ ppO2 ${ppo2.toFixed(2)} bar - CNS ${singleCNS.toFixed(0)}% single, ${dailyCNS.toFixed(0)}% daily. Within limits.`;
+    msg = fromPlan
+      ? `✅ ppO2 ${ppo2.toFixed(2)} bar - CNS ${singleCNS.toFixed(0)}% single, ${dailyCNS.toFixed(0)}% daily. OTU ${Math.round(otu)} includes deco from last computed plan.`
+      : `✅ ppO2 ${ppo2.toFixed(2)} bar - CNS ${singleCNS.toFixed(0)}% single, ${dailyCNS.toFixed(0)}% daily. OTU is bottom-only — run Calculate for full profile OTU.`;
   }
 
   statusEl.className = 'result-card ' + cls;
@@ -16399,8 +16420,10 @@ var appSettings = {
       }
       
       // If same algo, restore fields immediately
+      this._loadPending = true;
       this._restoreFields(values);
       this._loaded = true;
+      this._loadPending = false;
       return true;
     } catch(e) {
       console.error('[LSP] Load failed:', e.message);
