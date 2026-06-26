@@ -501,6 +501,34 @@ const SECTIONS = [
       assert(mod > 30 && mod < 36, `MOD=${mod.toFixed(1)}m expected ~33m`);
       return `MOD EAN32 = ${mod.toFixed(1)}m ✓`;
     }],
+    ['MOD EAN32 @ 2000m deeper than sea level (~35m vs ~33m)', () => {
+      function setAlt(v) {
+        const sel = WIN.document.getElementById('altitudeSelect');
+        if (sel) sel.value = v;
+        WIN.setAltitude();
+      }
+      setAlt('0');
+      const modSea = Math.floor((1.4 / 0.32 - WIN.altSurfaceP) / WIN.BAR_PER_METRE);
+      setAlt('2000');
+      const modAlt = Math.floor((1.4 / 0.32 - WIN.altSurfaceP) / WIN.BAR_PER_METRE);
+      setAlt('0');
+      assert(modAlt > modSea, `2000m MOD ${modAlt}m not > sea level ${modSea}m`);
+      assert(modAlt >= 34 && modAlt <= 36, `MOD@2000m=${modAlt}m expected ~35m`);
+      return `sea=${modSea}m | 2000m=${modAlt}m ✓`;
+    }],
+    ['nitroxMOD() matches calcGasMODm @ 3000m EAN50 @ 1.6', () => {
+      function setAlt(v) {
+        const sel = WIN.document.getElementById('altitudeSelect');
+        if (sel) sel.value = v;
+        WIN.setAltitude();
+      }
+      setAlt('3000');
+      const expected = WIN.calcGasMODm(0.50, 1.6);
+      const actual = WIN.nitroxMOD(0.50, 1.6);
+      setAlt('0');
+      assert(actual === expected, `nitroxMOD=${actual} expected ${expected}`);
+      return `EAN50@1.6, 3000m → ${actual}m ✓`;
+    }],
     ['EAD formula: EAD(40m, EAN32) ≈ 33m (standard formula)', () => {
       // EAD = (depth+10) × fN2 / 0.79 − 10   (NOAA/PADI standard)
       // EAN32 fN2=0.68 at 40m → EAD = 50×0.68/0.79−10 = 43.04−10 = 33m

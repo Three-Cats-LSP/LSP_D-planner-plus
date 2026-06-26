@@ -3206,6 +3206,39 @@ const TIER3_GROUPS = [
         assert(mod > 30 && mod < 36, 'MOD(EAN32, 1.4) out of range: ' + mod.toFixed(2));
         return 'MOD(EAN32,1.4)=' + mod.toFixed(2) + 'm ✓';
       }],
+      ['MOD EAN32 @ 2000m ≈ 35m (DiveBuddy / ScubaBoard cross-check)', 'SCN', function(){
+        function setAlt(v) {
+          const sel = WIN.document.getElementById('altitudeSelect');
+          if (sel) sel.value = v;
+          WIN.setAltitude();
+        }
+        setAlt('2000');
+        const surfP = WIN.altSurfaceP;
+        const mod = Math.floor((1.4 / 0.32 - surfP) / WIN.BAR_PER_METRE);
+        setAlt('0');
+        assert(mod >= 34 && mod <= 36, 'MOD@2000m=' + mod + 'm expected ~35m (surfP=' + surfP.toFixed(3) + ')');
+        return '2000m MOD EAN32@1.4=' + mod + 'm (surfP=' + surfP.toFixed(3) + ' bar) ✓';
+      }],
+      ['calcGasMODm altitude-correct @ 3000m EAN50 @ 1.6', 'SCN', function(){
+        assert(typeof WIN.calcGasMODm === 'function', 'calcGasMODm not found');
+        function setAlt(v) {
+          const sel = WIN.document.getElementById('altitudeSelect');
+          if (sel) sel.value = v;
+          WIN.setAltitude();
+        }
+        setAlt('3000');
+        const expected = Math.floor((1.6 / 0.50 - WIN.altSurfaceP) / WIN.BAR_PER_METRE);
+        const actual = WIN.calcGasMODm(0.50, 1.6);
+        setAlt('0');
+        assert(actual === expected, 'calcGasMODm=' + actual + ' expected ' + expected);
+        return 'EAN50@1.6, 3000m → ' + actual + 'm ✓';
+      }],
+      ['updateGasMODDisplays delegates to calcGasMODm (no sea-level -1)', 'SCN', function(){
+        const src = WIN.updateGasMODDisplays.toString();
+        assert(src.includes('calcGasMODm'), 'updateGasMODDisplays missing calcGasMODm');
+        assert(!src.includes('ppO2limit / fO2 - 1)'), 'updateGasMODDisplays still has sea-level -1 formula');
+        return 'altitude-correct ✓';
+      }],
       ['tool-panel-mod exists in DOM', 'SCN', function(){
         const d = getDoc();
         assert(d.getElementById('tool-panel-mod'), '#tool-panel-mod not found');

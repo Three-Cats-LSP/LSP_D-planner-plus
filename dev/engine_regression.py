@@ -210,7 +210,7 @@ ENGINE_SUITE_JS = """
       const o2MODm = Math.max(lastStop, 6);
       let expect;
       if (fO2 >= 0.995 && o2AtMOD) expect = o2MODm;
-      else expect = Math.floor((ppLim / fO2 - 1) / (window.BAR_PER_METRE || 0.1));
+      else expect = Math.floor((ppLim / fO2 - (window.altSurfaceP || 1.01325)) / (window.BAR_PER_METRE || 0.1));
       if (ppo2El && prevPpo2 != null) ppo2El.value = prevPpo2;
       if (gasEl && prevGas != null) gasEl.value = prevGas;
       const m = botTxt.match(/(\\d+)/);

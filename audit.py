@@ -1331,6 +1331,37 @@ if "altSurfaceP" in mod_fn and "BAR_PER_METRE" in mod_fn:
 else:
     fail("calcMODTool() (Tools tab) uses hardcoded sea-level formula — wrong at altitude")
 
+# 20.3c2 updateGasMODDisplays() planner gas-card MOD uses altSurfaceP
+ugmd_start = js.find("function updateGasMODDisplays()")
+ugmd_end = js.find("\nfunction ", ugmd_start + 1) if ugmd_start > 0 else -1
+ugmd_fn = js[ugmd_start:ugmd_end] if ugmd_start > 0 and ugmd_end > ugmd_start else ""
+if ugmd_start > 0 and "altSurfaceP" in ugmd_fn and "(ppO2limit / fO2 - 1)" not in ugmd_fn:
+    ok("updateGasMODDisplays() uses altSurfaceP — planner MOD fields altitude-correct")
+else:
+    fail("updateGasMODDisplays() still uses sea-level (ppO2/fO2 - 1) formula — wrong at altitude")
+
+# 20.3c3 nitroxMOD() REC mode uses calcGasMODm (altitude-correct)
+nitrox_mod_m = re.search(r"function nitroxMOD\([^)]*\)\s*\{[^}]{0,200}\}", js)
+if nitrox_mod_m and "calcGasMODm" in nitrox_mod_m.group(0):
+    ok("nitroxMOD() delegates to calcGasMODm — REC altitude-correct")
+else:
+    fail("nitroxMOD() uses hardcoded sea-level * 10 formula — wrong at altitude")
+
+# 20.3c4 calcGasMODm() CCR bailout MOD uses altSurfaceP
+cgm_m = re.search(r"function calcGasMODm\([^)]*\)\s*\{[^}]{0,400}\}", js)
+if cgm_m and "altSurfaceP" in cgm_m.group(0) and "(ppO2Limit / fO2 - 1)" not in cgm_m.group(0):
+    ok("calcGasMODm() uses altSurfaceP — CCR bailout MOD altitude-correct")
+else:
+    fail("calcGasMODm() still uses sea-level (ppO2/fO2 - 1) formula — wrong at altitude")
+
+# 20.3c5 setAltitude() refreshes MOD displays when altitude changes
+set_alt_start = js.find("function setAltitude()")
+set_alt_fn = js[set_alt_start:set_alt_start + 3500] if set_alt_start > 0 else ""
+if set_alt_start > 0 and "updateGasMODDisplays" in set_alt_fn and "calcMODTool" in set_alt_fn:
+    ok("setAltitude() refreshes MOD displays (updateGasMODDisplays + calcMODTool)")
+else:
+    fail("setAltitude() missing MOD refresh calls — stale MOD after altitude change")
+
 if "function calcGasMOD(" in js and "function calcMODTool()" in js and "function calcMOD(" not in js:
     ok("calcMOD name collision resolved — calcGasMOD vs calcMODTool (issue #4 BUG-1)")
 else:

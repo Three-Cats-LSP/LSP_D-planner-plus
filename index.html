@@ -3956,10 +3956,9 @@ const PADI_GROUPS = ['A','B','C','D','E','F','G','H','I','J','K'];
 const NITROX_NDL_EAN32 = [310,230,145,75,55,30,25,20,16,13,9];
 // EAN36 (36% O2) — indexed to match PADI_DEPTHS_M
 const NITROX_NDL_EAN36 = [310,230,170,100,60,40,30,25,20,15,10];
-// MOD for nitrox mixes at ppO2 1.4 bar (recreational limit)
-// MOD (m) = (1.4 / fO2 - 1) * 10  for salt water
+// MOD for nitrox mixes at ppO2 limit (recreational) — delegates to calcGasMODm
 function nitroxMOD(fO2, ppO2limit) {
-  return Math.floor(((ppO2limit / fO2) - 1) * 10);
+  return calcGasMODm(fO2, ppO2limit);
 }
 function getNitroxNDL(depthM, mix) {
   // Return the correct PADI NDL for a given mix at a given depth
@@ -4249,6 +4248,16 @@ function setAltitude() {
     runPlanner();
   }
   calcCNS();
+
+  // Refresh gas card MOD displays and Tools panels (mirror setUnits pattern)
+  if (!window._zhlHeadless) {
+    updateGasMODDisplays?.();
+    updateTravelGasMOD?.();
+    calcMODTool?.();
+    renderModRefTable?.();
+    calcBestMixTec?.();
+    renderGasTable?.();
+  }
 }
 
 function handleAltitudeSelect(val) {
@@ -6632,7 +6641,7 @@ function calcGasMODm(fO2, ppO2Limit) {
   const o2MODm = Math.max(lastStop, 6);
   if (fO2 >= 0.995 && o2AtMOD) return o2MODm;
   if (fO2 <= 0) return 0;
-  return Math.floor((ppO2Limit / fO2 - 1) / BAR_PER_METRE);
+  return Math.floor((ppO2Limit / fO2 - altSurfaceP) / BAR_PER_METRE);
 }
 
 function getBailoutPpo2Limit() {
@@ -8490,17 +8499,14 @@ function updateGasMODDisplays() {
   }
 
   function calcGasMOD(fO2, ppO2limit) {
-    if (fO2 <= 0) return 0;
-    // Pure O2: if allowO2AtMOD, use the fixed 6 m switch depth (same as planner)
-    if (fO2 >= 0.995 && o2AtMOD) return o2MODm;
-    return Math.floor((ppO2limit / fO2 - 1) / BAR_PER_METRE);
+    return calcGasMODm(fO2, ppO2limit);
   }
 
   function tooltipText(fO2, ppO2limit, label) {
     if (fO2 >= 0.995 && o2AtMOD)
-      return `MOD: ${o2MODm} m (pure O₂ fixed at 6 m — O₂ @ MOD: Allow at MOD)\nFormula: ppO₂ ${ppO2limit} / ${fO2.toFixed(2)} − 1 = ${((ppO2limit/fO2-1)/BAR_PER_METRE).toFixed(1)} m (strict) → overridden to ${o2MODm} m`;
-    const exact = (ppO2limit / fO2 - 1) / BAR_PER_METRE;
-    return `MOD = floor((${ppO2limit} / ${fO2.toFixed(2)} − 1) / BAR_PER_METRE)\n= floor(${exact.toFixed(2)}) = ${Math.floor(exact)} m\nLimit: ${label} ppO₂ ${ppO2limit} bar | ${o2AtMOD ? 'Allow at MOD' : 'Strict ppO₂'}`;
+      return `MOD: ${o2MODm} m (pure O₂ fixed at 6 m — O₂ @ MOD: Allow at MOD)\nFormula: ppO₂ ${ppO2limit} / ${fO2.toFixed(2)} − ${altSurfaceP.toFixed(3)} = ${((ppO2limit/fO2-altSurfaceP)/BAR_PER_METRE).toFixed(1)} m (strict) → overridden to ${o2MODm} m`;
+    const exact = (ppO2limit / fO2 - altSurfaceP) / BAR_PER_METRE;
+    return `MOD = floor((${ppO2limit} / ${fO2.toFixed(2)} − ${altSurfaceP.toFixed(3)}) / BAR_PER_METRE)\n= floor(${exact.toFixed(2)}) = ${Math.floor(exact)} m\nLimit: ${label} ppO₂ ${ppO2limit} bar | ${o2AtMOD ? 'Allow at MOD' : 'Strict ppO₂'}`;
   }
 
   // Bottom gas MOD — validate raw DOM % before clamped fractions
@@ -11239,11 +11245,13 @@ Standard ppO₂ limits
 • 1.6 bar — maximum for short deco stops at shallow depth only
 
 Formula
-MOD = (ppO₂ limit ÷ O₂ fraction − 1) × 10 m  (at sea level)
+MOD = (ppO₂ limit ÷ O₂ fraction − surface pressure) ÷ bar per metre
+At sea level surface pressure ≈ 1.013 bar → MOD ≈ (ppO₂ ÷ O₂% − 1) × 10 m
+At altitude subtract local surface pressure (shown in ENV row when altitude > 0).
 
-Example
+Example (sea level)
 EAN32 (32% O₂) at ppO₂ 1.4:
-MOD = (1.4 ÷ 0.32 − 1) × 10 = 33.75 → 33 m
+MOD = (1.4 ÷ 0.32 − 1.013) ÷ 0.1 = 33.67 → 33 m
 
 Why two limits?
 The 1.4 bar limit provides a safety margin for bottom gas where the diver may be working hard and exertion lowers the CNS toxicity threshold. The 1.6 bar limit is only considered acceptable for brief, low-exertion deco stops.
@@ -11746,7 +11754,7 @@ function renderGasTable() {
     return v + ' ' + uLbl;
   };
 
-  // MOD (m) = (ppO2 / fO2 - 1) * 10  — uses current water column (BAR_PER_METRE, altitude)
+  // MOD (m) = (ppO2 / fO2 - altSurfaceP) / BAR_PER_METRE
   const modM = (fO2, ppo2) => (ppo2 / fO2 - altSurfaceP) / BAR_PER_METRE;
   // MND: END = 3.5 bar. fNarc = fO2 + fN2 (He non-narcotic). MND = (3.5/fNarc - altP)/BAR_PER_METRE
   const mndM = (fO2, fHe) => {
