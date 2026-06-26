@@ -2869,10 +2869,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.23['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.23")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.24['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.24")
 else:
-    fail("APP_VERSION not bumped to 2.51.23 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.24 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -4770,6 +4770,30 @@ if _gpr73 and "loopMixLabelFor(label, getCCRSettingsFromDOM())" in _gpr73:
     ok("gpRequiredFor uses loopMixLabelFor and getCCRSettingsFromDOM directly (issue #73 F1)")
 else:
     fail("gpRequiredFor still has dead typeof CCR label guards (issue #73 F1)")
+
+# ── Issue #74: typeof cleanup batch (renderNDLTable, runDecoSchedule, etc.) ──
+_dead74 = (
+    "typeof renderNDLTable",
+    "typeof runDecoSchedule",
+    "typeof runPlanner",
+    "typeof calcCNS",
+    "typeof initTools",
+    "typeof calcGasPlan",
+    "typeof calcContingency",
+    "typeof setAlgo",
+    "typeof toggleCircuitFields",
+    "typeof handleGFSelect",
+    "typeof calcCNS==='function'",
+)
+if all(s not in js for s in _dead74):
+    ok("no dead typeof guards for issue #74 function set (issue #74 F1)")
+else:
+    fail("dead typeof guards remain from issue #74 sweep (issue #74 F1)")
+_drd74 = js.split("function _doResetToDefaults", 1)[-1].split("function ", 1)[0] if "function _doResetToDefaults" in js else ""
+if _drd74 and ".switch-depth-display" in _drd74 and "typeof runDecoSchedule" not in _drd74:
+    ok("_doResetToDefaults resets switch-depth displays without misleading runDecoSchedule guard (issue #74 F2)")
+else:
+    fail("_doResetToDefaults still has misleading typeof runDecoSchedule guard (issue #74 F2)")
 
 print("=" * 60)
 

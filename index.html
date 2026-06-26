@@ -2332,7 +2332,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <div class="form-grid u0">
 <div class="field">
 <label>Circuit</label>
-<select id="circuitSelect" onchange="toggleCircuitFields();if(window._lastContingency) calcContingency();if(typeof calcCNS==='function') calcCNS();">
+<select id="circuitSelect" onchange="toggleCircuitFields();if(window._lastContingency) calcContingency();calcCNS();">
 <option selected="" value="OC">Open Circuit (OC)</option>
 <option value="CCR">Closed Circuit (CCR)</option>
 <option value="pSCR">Passive SCR (pSCR)</option>
@@ -4239,16 +4239,16 @@ function setAltitude() {
   try { localStorage.setItem('lspAcclimatized', altAcclimatized ? 'yes' : 'no'); } catch(e) {}
 
   // Re-run active calculation if result is showing (skip in headless test mode)
-  if (!window._zhlHeadless && typeof renderNDLTable === 'function') renderNDLTable();
+  if (!window._zhlHeadless) renderNDLTable();
   const decoRes = document.getElementById('decoResult');
   if (!window._zhlHeadless && decoRes && decoRes.style.display !== 'none' && decoRes.innerHTML.trim()) {
-    if (typeof runDecoSchedule === 'function') runDecoSchedule();
+    runDecoSchedule();
   }
   const planRes = document.getElementById('plannerResult');
   if (planRes && planRes.style.display !== 'none' && planRes.innerHTML.trim()) {
-    if (typeof runPlanner === 'function') runPlanner();
+    runPlanner();
   }
-  if (typeof calcCNS === 'function') calcCNS();
+  calcCNS();
 }
 
 function handleAltitudeSelect(val) {
@@ -4415,7 +4415,7 @@ function setAlgo(a) {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     const toolsPanel = document.getElementById('toolsPanel');
     if (toolsPanel) toolsPanel.classList.add('active');
-    if (typeof initTools === 'function') initTools();
+    initTools();
     syncEnvRowDisplay();
     return;
   }
@@ -4931,7 +4931,7 @@ function setGF(low, high) {
   // GF FIX: re-run deco schedule with updated GF values instead of hiding result
   const decoRes = document.getElementById('decoResult');
   if (!window._zhlHeadless && decoRes && decoRes.style.display !== 'none' && decoRes.innerHTML.trim()) {
-    if (typeof runDecoSchedule === 'function') runDecoSchedule();
+    runDecoSchedule();
   } else {
     const pr = document.getElementById('plannerResult');
     if (pr) pr.style.display = 'none';
@@ -4995,7 +4995,7 @@ function setCustomGF(commit) {
   // GF FIX: re-run deco schedule with updated GF values instead of hiding result
   const decoResC = document.getElementById('decoResult');
   if (!window._zhlHeadless && decoResC && decoResC.style.display !== 'none' && decoResC.innerHTML.trim()) {
-    if (typeof runDecoSchedule === 'function') runDecoSchedule();
+    runDecoSchedule();
   } else {
     const pr = document.getElementById('plannerResult');
     if (pr) pr.style.display = 'none';
@@ -6003,7 +6003,7 @@ function setUnits(u, opts) {
   ['cylBot_reserve','cylTravelGas_reserve','cylDg1_reserve','cylDg2_reserve'].forEach(id => {
     convertNumericInput(id, v => Math.round(v * PSI_PER_BAR), v => Math.round(v / PSI_PER_BAR), 300, 4351);
   });
-  if (typeof calcGasPlan === 'function' && document.getElementById('gasplan')?.classList.contains('active')) calcGasPlan();
+  if (document.getElementById('gasplan')?.classList.contains('active')) calcGasPlan();
 
   const du = u === 'metric' ? 'm' : 'ft';
   setTxt('depthLbl', `Depth (${du})`);
@@ -6071,7 +6071,7 @@ function setUnits(u, opts) {
 
   if (document.getElementById('plannerResult')?.innerHTML) runPlanner?.();
   if (document.getElementById('decoResult')?.innerHTML) {
-    if (typeof calcContingency === 'function' && window._lastContingency) calcContingency();
+    if (window._lastContingency) calcContingency();
   }
 
   // ── Refresh gas card MOD displays and travel gas switch depth ──
@@ -7735,10 +7735,7 @@ function _doResetToDefaults(userDefaults) {
   if (dr) dr.style.display = 'none';
 
   // Update switch depth displays without running full schedule
-  if (typeof runDecoSchedule === 'function') {
-    // Only update the switch depth display fields, not generate a full plan
-    document.querySelectorAll('.switch-depth-display').forEach(el => { el.value = 'Calculate to see'; });
-  }
+  document.querySelectorAll('.switch-depth-display').forEach(el => { el.value = 'Calculate to see'; });
 
   console.log('[LSP] ↺ Settings reset to defaults (ApexDeco-matched)');
 }
@@ -16348,7 +16345,7 @@ var appSettings = {
     // Apply GF preset last so mGF and UI stay in sync
     const applyGfPreset = () => {
       const sel = document.getElementById('gfPresetSelect');
-      if (!sel || !gfPreset || typeof handleGFSelect !== 'function') return;
+      if (!sel || !gfPreset) return;
       sel.value = gfPreset;
       handleGFSelect(gfPreset);
       restored++;
@@ -16883,7 +16880,7 @@ function loadPreset(idx) {
   // Switch algorithm first if needed (mirrors appSettings.load)
   const savedAlgo = values['__algo__'];
   const currentAlgo = window.algo || 'padi';
-  if (savedAlgo && savedAlgo !== currentAlgo && typeof setAlgo === 'function') {
+  if (savedAlgo && savedAlgo !== currentAlgo) {
     setAlgo(savedAlgo);
     setTimeout(applyAndRun, 500);
   } else {
@@ -17030,7 +17027,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Load theme preference first
   loadThemePreference();
   updateGasMODDisplays();
-  if (typeof toggleCircuitFields === 'function') toggleCircuitFields();
+  toggleCircuitFields();
   loadTableViewPreference();
   restoreCardStates();
   // Load water density
@@ -17054,7 +17051,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Sync mGF to whichever preset the select shows on first load
   // (mGF default and select default must always match — this is the safety net)
   const _gfSel = document.getElementById('gfPresetSelect');
-  if (_gfSel && typeof handleGFSelect === 'function') handleGFSelect(_gfSel.value);
+  if (_gfSel) handleGFSelect(_gfSel.value);
 
   // Try to load immediately
   appSettings.load();
