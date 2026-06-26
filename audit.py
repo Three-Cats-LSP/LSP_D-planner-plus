@@ -2869,10 +2869,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.22['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.51.22")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.51\.23['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.51.23")
 else:
-    fail("APP_VERSION not bumped to 2.51.22 in app-version.js")
+    fail("APP_VERSION not bumped to 2.51.23 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -4751,6 +4751,25 @@ if _geb72 and "showEngineLoadErrorBanner()" in _geb72 and "typeof showEngineLoad
     ok("guardEngineBootForCalculate calls showEngineLoadErrorBanner directly (issue #72 F1)")
 else:
     fail("guardEngineBootForCalculate still has dead typeof showEngineLoadErrorBanner guard (issue #72 F1)")
+
+# ── Issue #73: final typeof cleanup batch ──
+_dead73 = (
+    "typeof escapeHtmlText",
+    "typeof renumberDecoGasCards",
+    "typeof getCCRSettingsFromDOM",
+    "typeof loopMixLabelFor",
+    "typeof setGF",
+    "typeof setCustomGF",
+)
+if all(s not in js for s in _dead73):
+    ok("no dead typeof guards for issue #73 function set (issue #73 F1)")
+else:
+    fail("dead typeof guards remain from issue #73 sweep (issue #73 F1)")
+_gpr73 = js.split("function gpRequiredFor", 1)[-1].split("function _syncCylToGasPlan", 1)[0] if "function gpRequiredFor" in js else ""
+if _gpr73 and "loopMixLabelFor(label, getCCRSettingsFromDOM())" in _gpr73:
+    ok("gpRequiredFor uses loopMixLabelFor and getCCRSettingsFromDOM directly (issue #73 F1)")
+else:
+    fail("gpRequiredFor still has dead typeof CCR label guards (issue #73 F1)")
 
 print("=" * 60)
 

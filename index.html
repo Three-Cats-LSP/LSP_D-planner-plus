@@ -3814,7 +3814,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 
   function showUpdateBanner(remoteVersion, downloadPage, apkUrl) {
     if (document.getElementById('apkUpdateBanner')) return;
-    var safeVersion = typeof escapeHtmlText === 'function' ? escapeHtmlText(remoteVersion) : String(remoteVersion);
+    var safeVersion = escapeHtmlText(remoteVersion);
     var banner = document.createElement('div');
     banner.id = 'apkUpdateBanner';
     var topPad = isNativeApk()
@@ -6623,7 +6623,7 @@ function updateCcrGasCardLabels() {
   if (gpBotTitle) {
     gpBotTitle.textContent = ccrUi ? '🔵 DILUENT CYLINDER' : '🔵 BOTTOM GAS CYLINDER';
   }
-  if (typeof renumberDecoGasCards === 'function') renumberDecoGasCards();
+  renumberDecoGasCards();
 }
 
 function calcGasMODm(fO2, ppO2Limit) {
@@ -8008,7 +8008,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
     return `${m}:${String(s).padStart(2,'0')}`;
   }
 
-  const _vpmCcr = typeof getCCRSettingsFromDOM === 'function' ? getCCRSettingsFromDOM() : { circuit: 'OC' };
+  const _vpmCcr = getCCRSettingsFromDOM();
   const _vpmOnLoop = isRebreatherCircuit(_vpmCcr.circuit) && !_vpmCcr.bailout;
   function vpmDisplayPpo2(depthM, o2pct, hepct, seg) {
     const fO2 = o2pct / 100;
@@ -12356,13 +12356,11 @@ function gpRequiredFor(label) {
   const key = Object.keys(gc).find(k => k.toLowerCase() === label.toLowerCase());
   if (key) return gc[key];
   // CCR/pSCR: consumption keyed as "CCR Air" / "pSCR Air" while Gas Plan uses diluent label
-  if (typeof loopMixLabelFor === 'function' && typeof getCCRSettingsFromDOM === 'function') {
-    const loopKey = loopMixLabelFor(label, getCCRSettingsFromDOM());
-    if (loopKey !== label) {
-      if (gc[loopKey] != null) return gc[loopKey];
-      const loopMatch = Object.keys(gc).find(k => k.toLowerCase() === loopKey.toLowerCase());
-      if (loopMatch) return gc[loopMatch];
-    }
+  const loopKey = loopMixLabelFor(label, getCCRSettingsFromDOM());
+  if (loopKey !== label) {
+    if (gc[loopKey] != null) return gc[loopKey];
+    const loopMatch = Object.keys(gc).find(k => k.toLowerCase() === loopKey.toLowerCase());
+    if (loopMatch) return gc[loopMatch];
   }
   return null;
 }
@@ -14772,7 +14770,7 @@ function calcCNS() {
   const botFracs = getBottomGasFractions();
   const fHe = botFracs ? (botFracs.fHe || 0) : 0;
   const pAmb = altSurfaceP + depth * BAR_PER_METRE;
-  const ccr = typeof getCCRSettingsFromDOM === 'function' ? getCCRSettingsFromDOM() : { circuit: 'OC' };
+  const ccr = getCCRSettingsFromDOM();
   let ppo2;
   if (isRebreatherCircuit(ccr.circuit) && !ccr.bailout) {
     const sp = getEffectiveSetpointAtDepth(depth, ccr, altSurfaceP);
@@ -16666,8 +16664,7 @@ function loadAppPreset(idx) {
   if (p.values.gfLowInput || p.values.gfHighInput) {
     const _gfLow  = parseInt(p.values.gfLowInput  || mGF?.low  || 20);
     const _gfHigh = parseInt(p.values.gfHighInput || mGF?.high || 85);
-    if (typeof setGF === 'function') setGF(_gfLow, _gfHigh);
-    else if (typeof setCustomGF === 'function') setCustomGF();
+    setGF(_gfLow, _gfHigh);
   }
   // Flush to localStorage immediately so deferred appSettings.load() doesn't overwrite
   if (typeof appSettings !== 'undefined' && appSettings.save) appSettings.save(false);
@@ -16745,8 +16742,7 @@ function loadConfigPreset(idx) {
   if (p.values.gfLowInput || p.values.gfHighInput) {
     const _gfLow  = parseInt(p.values.gfLowInput  || mGF?.low  || 20);
     const _gfHigh = parseInt(p.values.gfHighInput || mGF?.high || 85);
-    if (typeof setGF === 'function') setGF(_gfLow, _gfHigh);
-    else if (typeof setCustomGF === 'function') setCustomGF();
+    setGF(_gfLow, _gfHigh);
   }
   // Flush to localStorage immediately so deferred appSettings.load() doesn't overwrite
   if (typeof appSettings !== 'undefined' && appSettings.save) appSettings.save(false);
