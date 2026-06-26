@@ -2317,7 +2317,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </select>
 </div>
 <div class="adv-row">
-<label>O₂ @ MOD <span class="tip-icon" onclick="showTip('O2 @ MOD','Controls how pure O2 (100%) MOD is calculated.\n\n• Allow at MOD: O2 is always usable at 6m — real-world standard (Shearwater, V-Planner).\n• Strict ppO2: O2 subject to the ppO2 limit check; at 1.6 bar limit it still yields 6m, but at 1.5 bar it gives 5m.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<label>O₂ @ MOD <span class="tip-icon" onclick="showTip('O2 @ MOD','Controls how pure O2 (100%) MOD is calculated.\n\n• Allow at MOD: O2 is always usable at 6m — real-world standard (Shearwater, V-Planner).\n• Strict ppO2: O2 subject to the ppO2 limit check, with a 6 m minimum regardless.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
 <select id="o2AtMODSelect" onchange="setAllowO2AtMOD(this.value === 'on');updateGasMODDisplays()">
 <option selected="" value="on">Allow at MOD</option>
 <option value="off">Strict ppO₂</option>
@@ -8512,7 +8512,7 @@ function updateGasMODDisplays() {
 
   function tooltipText(fO2, ppO2limit, label) {
     if (fO2 >= 0.995 && o2AtMOD)
-      return `MOD: ${o2MODm} m (pure O₂ fixed at 6 m — O₂ @ MOD: Allow at MOD)\nFormula: ppO₂ ${ppO2limit} / ${fO2.toFixed(2)} − ${altSurfaceP.toFixed(3)} = ${((ppO2limit/fO2-altSurfaceP)/BAR_PER_METRE).toFixed(1)} m (strict) → overridden to ${o2MODm} m`;
+      return `MOD: ${o2MODm} m (pure O₂ minimum: ${o2MODm} m — O₂ @ MOD: Allow at MOD)\nFormula: ppO₂ ${ppO2limit} / ${fO2.toFixed(2)} − ${altSurfaceP.toFixed(3)} = ${((ppO2limit/fO2-altSurfaceP)/BAR_PER_METRE).toFixed(1)} m (strict) → overridden to ${o2MODm} m`;
     const modM = calcGasMODm(fO2, ppO2limit);
     const exact = (ppO2limit / fO2 - altSurfaceP) / BAR_PER_METRE;
     const exactDisp = Math.max(0, exact);
