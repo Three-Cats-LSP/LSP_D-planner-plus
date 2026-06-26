@@ -1405,12 +1405,25 @@ else:
     fail("getTravelGasInfo() still uses inline MOD formula — missing allowO2AtMOD override")
 
 # 20.3c12 runDecoSchedule travel-gas botMODm uses calcGasMODm
-if _travel_deco_block and len(_travel_deco_block) > 1 and "calcGasMODm(bottomFO2" in _travel_deco_block[1][:1200]:
-    ok("runDecoSchedule botMODm uses calcGasMODm — travel switch depth consistent with gas cards")
-elif _travel_deco_block and len(_travel_deco_block) > 1 and "calcGasMODm" in _travel_deco_block[1][:1200]:
+if "calcGasMODm(bottomFO2" in js:
     ok("runDecoSchedule botMODm uses calcGasMODm — travel switch depth consistent with gas cards")
 else:
     fail("runDecoSchedule botMODm still uses inline MOD formula")
+
+# 20.3c13 getDecoGasSwitches ZHL fallback uses calcGasMODm
+dgs_start = js.find("function getDecoGasSwitches()")
+dgs_fn = js[dgs_start:dgs_start + 4500] if dgs_start > 0 else ""
+if dgs_start > 0 and "calcGasMODm" in dgs_fn and "exactMOD = (limit / fO2 - altSurfaceP)" not in dgs_fn:
+    ok("getDecoGasSwitches() ZHL fallback uses calcGasMODm — export/banner consistent with gas cards")
+else:
+    fail("getDecoGasSwitches() still uses inline exactMOD formula")
+
+# 20.3c14 vpmDecoSwitchDepthVal pure-O2 path uses calcGasMODm (not hardcoded 6 m)
+vpm_sw_m = re.search(r"function vpmDecoSwitchDepthVal\([^)]*\)\s*\{[\s\S]{0,600}?\}", js)
+if vpm_sw_m and "calcGasMODm" in vpm_sw_m.group(0) and "return dU ? 6 : 20" not in vpm_sw_m.group(0):
+    ok("vpmDecoSwitchDepthVal() uses calcGasMODm for pure O₂ — respects lastDecoStop")
+else:
+    fail("vpmDecoSwitchDepthVal() still hardcodes 6 m for pure O₂ deco gas")
 
 if "function calcMODTool()" in js and "function calcMOD(" not in js and ugmd_start > 0 and "calcGasMODm" in ugmd_fn:
     ok("calcMOD name collision resolved — calcGasMODm shared, calcMODTool for Tools (issue #4 BUG-1)")
