@@ -4309,8 +4309,8 @@ function loadAltitudeFromStorage() {
     // Update badge
     const badge = document.getElementById('altitudePressureDisplay');
     if (badge && altitudeM > 0) badge.textContent = altSurfaceP.toFixed(3) + ' bar';
-    refreshAltitudeDependentUI();
   } catch(e) {}
+  refreshAltitudeDependentUI();
 }
 
 function setAllowO2AtMOD(val) {
@@ -8506,8 +8506,9 @@ function updateGasMODDisplays() {
   function tooltipText(fO2, ppO2limit, label) {
     if (fO2 >= 0.995 && o2AtMOD)
       return `MOD: ${o2MODm} m (pure O₂ fixed at 6 m — O₂ @ MOD: Allow at MOD)\nFormula: ppO₂ ${ppO2limit} / ${fO2.toFixed(2)} − ${altSurfaceP.toFixed(3)} = ${((ppO2limit/fO2-altSurfaceP)/BAR_PER_METRE).toFixed(1)} m (strict) → overridden to ${o2MODm} m`;
+    const modM = calcGasMODm(fO2, ppO2limit);
     const exact = (ppO2limit / fO2 - altSurfaceP) / BAR_PER_METRE;
-    return `MOD = floor((${ppO2limit} / ${fO2.toFixed(2)} − ${altSurfaceP.toFixed(3)}) / BAR_PER_METRE)\n= floor(${exact.toFixed(2)}) = ${Math.floor(exact)} m\nLimit: ${label} ppO₂ ${ppO2limit} bar | ${o2AtMOD ? 'Allow at MOD' : 'Strict ppO₂'}`;
+    return `MOD = floor((${ppO2limit} / ${fO2.toFixed(2)} − ${altSurfaceP.toFixed(3)}) / BAR_PER_METRE)\n= floor(${exact.toFixed(2)}) = ${modM} m\nLimit: ${label} ppO₂ ${ppO2limit} bar | ${o2AtMOD ? 'Allow at MOD' : 'Strict ppO₂'}`;
   }
 
   // Bottom gas MOD — validate raw DOM % before clamped fractions
@@ -11272,8 +11273,8 @@ function renderModRefTable() {
   ];
   const rows = mixes.map(m => {
     const fO2   = m.o2 / 100;
-    const mod14 = Math.floor((1.4 / fO2 - (altSurfaceP || 1.0)) / (BAR_PER_METRE || 0.1));
-    const mod16 = Math.floor((1.6 / fO2 - (altSurfaceP || 1.0)) / (BAR_PER_METRE || 0.1));
+    const mod14 = calcGasMODm(fO2, 1.4);
+    const mod16 = calcGasMODm(fO2, 1.6);
     const mod14d = du ? mod14 + ' m' : Math.round(mod14 * 3.28084) + ' ft';
     const mod16d = du ? mod16 + ' m' : Math.round(mod16 * 3.28084) + ' ft';
     const isHL  = currentO2 > 0 && m.o2 === Math.round(currentO2);
@@ -11365,7 +11366,7 @@ function calcBestMixTec() {
   const actualENDdisp = du ? Math.round(actualEND) : Math.round(actualEND * 3.28084);
 
   // MOD at ppO2 limit
-  const modM    = Math.floor((ppO2Limit / fO2 - altSurfaceP) / BAR_PER_METRE);
+  const modM    = calcGasMODm(fO2, ppO2Limit);
   const modDisp = du ? modM + ' m' : Math.round(modM * 3.28084) + ' ft';
 
   // ppO2 at dive depth

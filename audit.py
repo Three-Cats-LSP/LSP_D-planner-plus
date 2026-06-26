@@ -1377,10 +1377,24 @@ else:
 # 20.3c7 refreshAltitudeDependentUI includes calcBestMix and renderEADTable
 raf_start = js.find("function refreshAltitudeDependentUI()")
 raf_fn = js[raf_start:raf_start + 1200] if raf_start > 0 else ""
-if raf_start > 0 and "calcBestMix" in raf_fn and "renderEADTable" in raf_fn:
+if raf_start > 0 and "calcBestMix?.()" in raf_fn and "calcBestMixTec?.()" in raf_fn and "renderEADTable" in raf_fn:
     ok("refreshAltitudeDependentUI() refreshes calcBestMix + renderEADTable")
 else:
     fail("refreshAltitudeDependentUI() missing calcBestMix or renderEADTable")
+
+# 20.3c9 renderModRefTable delegates MOD rows to calcGasMODm
+rmrt_start = js.find("function renderModRefTable()")
+rmrt_fn = js[rmrt_start:rmrt_start + 2000] if rmrt_start > 0 else ""
+if rmrt_start > 0 and "calcGasMODm" in rmrt_fn and "(1.4 / fO2 - (altSurfaceP" not in rmrt_fn:
+    ok("renderModRefTable() uses calcGasMODm — not raw inline formula")
+else:
+    fail("renderModRefTable() still uses raw inline MOD formula — wrong at altitude")
+
+# 20.3c10 loadAltitudeFromStorage refresh is outside try/catch (errors not silently swallowed)
+if load_alt_start > 0 and load_alt_fn.rfind("refreshAltitudeDependentUI") > load_alt_fn.rfind("catch"):
+    ok("loadAltitudeFromStorage() refresh outside try/catch — refresh errors surface")
+else:
+    fail("loadAltitudeFromStorage() refresh inside try/catch — errors silently swallowed on load")
 
 if "function calcMODTool()" in js and "function calcMOD(" not in js and ugmd_start > 0 and "calcGasMODm" in ugmd_fn:
     ok("calcMOD name collision resolved — calcGasMODm shared, calcMODTool for Tools (issue #4 BUG-1)")
