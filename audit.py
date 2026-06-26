@@ -2959,7 +2959,9 @@ if app_ver and os.path.isfile(version_json_path):
         vc = int(parts[0]) * 10000 + int(parts[1]) * 100 + int(parts[2])
         if f'"version": "{app_ver}"' not in vj or f'"versionCode": {vc}' not in vj:
             version_ok = False
-        if '"downloadPage"' not in vj:
+        if f"LSP_D-planner-plus-v{app_ver}.apk" not in vj:
+            version_ok = False
+        if '"downloadPage"' not in vj or '"apkUrl"' not in vj:
             version_ok = False
     else:
         version_ok = False
@@ -3025,10 +3027,10 @@ else:
 if os.path.isfile(version_json_path):
     with open(version_json_path, encoding="utf-8") as f:
         _vj50 = f.read()
-    if '"apkUrl"' not in _vj50:
-        ok("version.json omits unused apkUrl field (issue #50)")
+    if '"apkUrl"' in _vj50 and f"LSP_D-planner-plus-v" in _vj50:
+        ok("version.json includes apkUrl for direct APK download (issue #50)")
     else:
-        fail("version.json still has unused apkUrl field (issue #50)")
+        fail("version.json missing apkUrl for APK download (issue #50)")
     if '"minUpdateCheckVersion"' not in _vj50:
         ok("version.json omits unused minUpdateCheckVersion field (issue #50)")
     else:

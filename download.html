@@ -70,43 +70,50 @@
   <script>
     const btn = document.getElementById('dlBtn');
     const status = document.getElementById('status');
-    const APK_FILE = 'LSP_D-planner-plus-v' + APP_VERSION + '.apk';
-    const APK_URL = APK_FILE;
 
-    btn.href = APK_URL;
-    btn.download = APK_FILE;
+    function setupDownload(version, apkUrl) {
+      const APK_FILE = 'LSP_D-planner-plus-v' + version + '.apk';
+      const APK_URL = apkUrl || APK_FILE;
+      btn.href = APK_URL;
+      btn.download = APK_FILE;
 
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      status.textContent = 'Starting download…';
-      btn.style.opacity = '0.6';
-      btn.style.pointerEvents = 'none';
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        status.textContent = 'Starting download…';
+        btn.style.opacity = '0.6';
+        btn.style.pointerEvents = 'none';
 
-      fetch(APK_URL)
-        .then(r => {
-          if (!r.ok) throw new Error('HTTP ' + r.status);
-          return r.blob();
-        })
-        .then(blob => {
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = APK_FILE;
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          URL.revokeObjectURL(url);
-          status.textContent = 'Download started.';
-        })
-        .catch(() => {
-          window.location.href = APK_URL;
-          status.textContent = 'Opening direct link…';
-        })
-        .finally(() => {
-          btn.style.opacity = '1';
-          btn.style.pointerEvents = '';
-        });
-    });
+        fetch(APK_URL)
+          .then(r => {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.blob();
+          })
+          .then(blob => {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = APK_FILE;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+            status.textContent = 'Download started.';
+          })
+          .catch(() => {
+            window.location.href = APK_URL;
+            status.textContent = 'Opening direct link…';
+          })
+          .finally(() => {
+            btn.style.opacity = '1';
+            btn.style.pointerEvents = '';
+          });
+      }, { once: true });
+    }
+
+    fetch('version.json?t=' + Date.now(), { cache: 'no-store' })
+      .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(data => setupDownload(data.version, data.apkUrl))
+      .catch(() => setupDownload(APP_VERSION));
   </script>
 </body>
 </html>

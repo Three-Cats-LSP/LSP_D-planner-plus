@@ -54,9 +54,11 @@ def version_to_code(version: str) -> int:
 
 
 def write_version_json(version: str) -> None:
+    apk_file = f"LSP_D-planner-plus-v{version}.apk"
     payload = {
         "version": version,
         "versionCode": version_to_code(version),
+        "apkUrl": f"{VERSION_JSON_URL_BASE}/{apk_file}",
         "downloadPage": f"{VERSION_JSON_URL_BASE}/download.html",
     }
     text = json.dumps(payload, indent=2) + "\n"

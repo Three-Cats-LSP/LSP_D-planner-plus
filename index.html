@@ -192,6 +192,52 @@ body.light-theme .warn, body.light-theme .warn * { color:#884400 !important; }
 body.light-theme .ok, body.light-theme .ok * { color:#116622 !important; }
 body.light-theme .info, body.light-theme .info * { color:#0077aa !important; }
 
+/* Native APK update banner — theme-aware (light-theme * rule would break dark inline colors) */
+#apkUpdateBanner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99998;
+  background: var(--surface) !important;
+  border-bottom: 1px solid var(--border-hi) !important;
+  color: var(--text) !important;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-family: system-ui, sans-serif;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+#apkUpdateBanner span,
+#apkUpdateBanner strong {
+  color: var(--text) !important;
+}
+#apkUpdateBanner #apkUpdateDownloadBtn {
+  background: var(--accent) !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 6px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+#apkUpdateBanner #apkUpdateDismissBtn {
+  background: none !important;
+  border: 1px solid var(--border-hi) !important;
+  color: var(--accent) !important;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
 /* Gas consumption — BT suggestion banner row */
 .gas-bt-cell { background:#FF4433 !important; color:#fff !important; font-weight:700; font-size:11px; padding:6px 10px; border-bottom:1px solid var(--border) !important; }
 .gas-bt-cell span, .gas-bt-cell strong, .gas-bt-cell * { color:#fff !important; }
@@ -3751,6 +3797,10 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
       .catch(function() { return fetchVersionManifest(index + 1); });
   }
 
+  function buildApkUrl(version) {
+    return 'https://threecats-lsp.com/d-planner-plus/LSP_D-planner-plus-v' + version + '.apk';
+  }
+
   function openDownloadPage(url) {
     if (!url || typeof url !== 'string' || !/^https?:\/\//i.test(url)) {
       url = DEFAULT_DOWNLOAD_PAGE;
@@ -3762,7 +3812,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
     window.open(url, '_blank');
   }
 
-  function showUpdateBanner(remoteVersion, downloadPage) {
+  function showUpdateBanner(remoteVersion, downloadPage, apkUrl) {
     if (document.getElementById('apkUpdateBanner')) return;
     var safeVersion = typeof escapeHtmlText === 'function' ? escapeHtmlText(remoteVersion) : String(remoteVersion);
     var banner = document.createElement('div');
@@ -3770,14 +3820,18 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
     var topPad = isNativeApk()
       ? 'calc(10px + max(32px, env(safe-area-inset-top, 0px)))'
       : 'calc(10px + env(safe-area-inset-top, 0px))';
-    banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99998;background:#071a2e;border-bottom:1px solid rgba(0,200,255,0.35);padding:10px 14px;padding-top:' + topPad + ';display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:system-ui,sans-serif;font-size:13px;color:#e0f7ff;box-sizing:border-box;';
+    banner.style.paddingTop = topPad;
     banner.innerHTML =
       '<span style="flex:1;min-width:0;">New version is available (<strong>' + safeVersion + '</strong>)</span>' +
-      '<button type="button" id="apkUpdateDownloadBtn" style="background:#00c8ff;border:none;color:#000;border-radius:6px;padding:6px 14px;cursor:pointer;font-size:12px;font-weight:700;flex-shrink:0;">Download</button>' +
-      '<button type="button" id="apkUpdateDismissBtn" aria-label="Dismiss" style="background:none;border:1px solid rgba(0,200,255,0.45);color:#00c8ff;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:14px;line-height:1;flex-shrink:0;">✕</button>';
+      '<button type="button" id="apkUpdateDownloadBtn">Download</button>' +
+      '<button type="button" id="apkUpdateDismissBtn" aria-label="Dismiss">✕</button>';
     document.body.appendChild(banner);
     document.getElementById('apkUpdateDownloadBtn').addEventListener('click', function() {
-      openDownloadPage(downloadPage || DEFAULT_DOWNLOAD_PAGE);
+      var url = apkUrl;
+      if (!url || !/^https?:\/\//i.test(url)) {
+        url = buildApkUrl(remoteVersion);
+      }
+      openDownloadPage(url);
     });
     document.getElementById('apkUpdateDismissBtn').addEventListener('click', function() {
       try { localStorage.setItem(DISMISS_KEY, remoteVersion); } catch (e) {}
@@ -3801,7 +3855,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
         try {
           if (localStorage.getItem(DISMISS_KEY) === data.version) return;
         } catch (e) {}
-        showUpdateBanner(data.version, data.downloadPage);
+        showUpdateBanner(data.version, data.downloadPage, data.apkUrl);
       })
       .catch(function(err) {
         console.warn('[APK update] version check failed:', err);
