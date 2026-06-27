@@ -758,7 +758,7 @@ function runZhlScheduleCore(params) {
 
   for (let _zhlPhaseIdx = 0; _zhlPhaseIdx < _zhlAscentFloors.length; _zhlPhaseIdx++) {
   const _zhlAscentFloor = _zhlAscentFloors[_zhlPhaseIdx];
-  if (_zhlPhaseIdx === 0) firstStopDepth = 0;
+  firstStopDepth = 0;
 
   // ── GF anchor: candidate stop list built from ceiling(bottom_tissues, gfL) ──
   // firstStopDepth is NOT pre-computed here — it is anchored dynamically at the

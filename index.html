@@ -5849,7 +5849,7 @@ function planInfoTipIconHtml() {
   return `<span class="tip-icon" onclick="event.stopPropagation();showTip('Plan summary',PLAN_INFO_TIP)" style="vertical-align:middle;margin-right:12px;cursor:pointer;"><svg fill="none" height="11" viewBox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span>`;
 }
 
-function buildPlanInfoRowHtml(o) {
+function buildPlanInfoRowHtml(o, phase) {
   const decoColor = o.hasDeco ? 'var(--orange)' : 'var(--green)';
   const surfGFVal = o.surfaceGF != null ? Math.round(o.surfaceGF) : null;
   const surfGFDisp = surfGFVal != null ? surfGFVal + '%' : '—';
@@ -5870,7 +5870,7 @@ function buildPlanInfoRowHtml(o) {
     </div>`;
   const totalsEl = document.getElementById('decoTotals');
   if (totalsEl) totalsEl.innerHTML = '';
-  const rowHtml = `<tr class="deco-totals-row" data-phase="totals"><td colspan="20" data-run="${o.runTime}" data-tts="${o.tts}" data-deco="${o.decoTime}" data-cns="${o.cns}" data-otu="${o.otu}" data-prt="${o.prt}" data-decozone="${o.decozone}" data-decostop="${o.decoStop}" data-surfgf="${surfGFDisp}">${innerHtml}</td></tr>`;
+  const rowHtml = `<tr class="deco-totals-row" data-phase="${phase || 'totals'}"><td colspan="20" data-run="${o.runTime}" data-tts="${o.tts}" data-deco="${o.decoTime}" data-cns="${o.cns}" data-otu="${o.otu}" data-prt="${o.prt}" data-decozone="${o.decozone}" data-decostop="${o.decoStop}" data-surfgf="${surfGFDisp}">${innerHtml}</td></tr>`;
   scheduleDecoScheduleStackSync();
   return rowHtml;
 }
@@ -6238,7 +6238,7 @@ function getN2Frac(mix) {
   if (mix === 'ean36') return FN2_EAN36;
   if (mix === 'custom') {
     const o2pct = parseFloat(document.getElementById('customO2')?.value) || 21;
-    return (100 - Math.min(40, Math.max(21, o2pct))) / 100;
+    return (100 - o2pct) / 100;
   }
   if (mix === 'trimix') {
     const o2 = readDomO2Pct('plannerTrimixO2');
@@ -6385,8 +6385,8 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
   if (phase === 'bottom') return bottomSP;
   if (phase === 'deco' || phase === 'ascent') return decoSP;
   const pAmb = (surfP || altSurfaceP) + depthM * BAR_PER_METRE;
-  if (pAmb <= descSP + WATER_VAPOR) return descSP;
-  if (pAmb <= bottomSP + WATER_VAPOR) return bottomSP;
+  if (pAmb <= bottomSP) return descSP;
+  if (pAmb <= decoSP) return bottomSP;
   return decoSP;
 }
 
@@ -8482,7 +8482,9 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
         // Compute max BT suggestion
         const bt = parseFloat(document.getElementById('decoBT')?.value) || 0;
         let btSuggest = '';
-        if (bt > 0 && reqL > 0 && usableL != null) {
+        if (usableL === 0) {
+          btSuggest = 'No usable gas available — fill pressure equals or is below reserve. Use a larger cylinder or higher fill.';
+        } else if (bt > 0 && reqL > 0) {
           const rate = reqL / bt;
           const maxBT = Math.max(1, Math.floor(usableL / rate));
           const maxPortionL = usableL * fraction;
@@ -9041,12 +9043,22 @@ function validatePlannerInputs() {
   } else if (mix === 'custom') {
     const check = validateGasFractionsPct(readDomO2Pct('customO2'), 0, 'customO2');
     if (!check.ok) return { ok: false, msg: check.message };
+    const o2 = check.o2;
+    if (o2 < 21 || o2 > 100) {
+      return { ok: false, msg: 'Custom O₂ must be between 21% and 100%.' };
+    }
   }
   return { ok: true };
 }
 
 function validateDecoInputs() {
-  return validateDiveInputs('decoDepth', 'decoBT', { metric: 120, imperial: 394, maxBt: 300 });
+  const base = validateDiveInputs('decoDepth', 'decoBT', { metric: 120, imperial: 394, maxBt: 300 });
+  if (!base.ok) return base;
+  const decoCheck = validateDomDecoGases();
+  if (!decoCheck.ok) {
+    return { ok: false, msg: decoCheck.errors.map(e => e.message).join('\n') };
+  }
+  return { ok: true };
 }
 
 // ═══════════════════════════════════════════════
@@ -9406,7 +9418,7 @@ function runDecoSchedule() {
     totalCNS: _headlessExposure.totalCNS,
   };
   if (!_contingencyRunning && tissues && tissues.length) {
-    saveZhlRepState(tissues, 0);
+    saveZhlRepState(tissues, parseFloat(document.getElementById('zhlSurfaceInterval')?.value || '0') || 0);
     const zhlRepRow = document.getElementById('zhlRepRow');
     if (zhlRepRow) zhlRepRow.style.display = 'flex';
   }
@@ -10592,8 +10604,7 @@ function runUnifiedPlan() {
     return saturate(tissues, depthM, durMin, fN2, fHe);
   }
   function offgasAtSurface(tissues, durMin) {
-    if (rbOnLoop) return loadTissuesWithCCR(tissues, 0, 0, durMin, fO2, fHe, ccr);
-    return saturate(tissues, 0, durMin, fN2, fHe);
+    return saturate(tissues, 0, durMin, FN2_AIR, 0);
   }
 
   const infoBox = document.querySelector('#multi .info-box');
@@ -10742,8 +10753,7 @@ const CNS_DAILY_LIMITS = {
 
 function getCNSDailyLimit(ppo2) {
   if (ppo2 >= 1.6) return CNS_DAILY_LIMITS[16] || 150;
-  const key = Math.round(ppo2 * 10);
-  if (key < 6) return Infinity;
+  if (ppo2 < 0.6) return Infinity;
   const lo = Math.floor(ppo2 * 10);
   const hi = lo + 1;
   const vLo = CNS_DAILY_LIMITS[lo] || 0;
@@ -11767,7 +11777,17 @@ function calcEND_tool() {
   const fHe  = hePct / 100;
   const fN2  = n2Pct / 100;
 
-  const pAmb = (altSurfaceP || 1.0) + dM * (BAR_PER_METRE || 0.1);
+  const surfP = altSurfaceP || 1.01325;
+  const ppO2Surf = fO2 * surfP;
+  if (ppO2Surf < 0.16) {
+    warnEl.style.display = 'block';
+    warnEl.innerHTML = '<div class="alert dang"><span>\u26a0</span><div><strong>Hypoxic mix.</strong> ppO\u2082 at surface is ' +
+      ppO2Surf.toFixed(2) + ' bar (&lt; 0.16 bar). Do not breathe this gas.</div></div>';
+    document.getElementById('endResults').style.opacity = '0.3';
+    return;
+  }
+
+  const pAmb = surfP + dM * (BAR_PER_METRE || 0.1);
   const ppN2 = fN2 * pAmb;
   const ppO2 = fO2 * pAmb;
   const ppHe = fHe * pAmb;
@@ -13346,7 +13366,7 @@ function buildExportText(mode) {
       const phaseLabel = { descent:'Des', bottom:'Lvl', ascent:'Asc', deco:'Stp', safety:'Stp', switch:'>>' };
       rows.forEach(tr => {
         const ph  = tr.dataset.phase;
-        if (ph === 'totals') return;
+        if (ph === 'totals' || ph === 'info') return;
         const tds = tr.querySelectorAll('td');
         if (ph === 'switch') {
           const cSw = Array.from(tds).map(td => clean(td.textContent));
@@ -14329,7 +14349,7 @@ function calcContingency() {
     decozone: _emDecozone,
     decoStop: _emDecoStop,
     surfaceGF: contSurfaceGF,
-  });
+  }, 'info');
   resultEl.innerHTML = `
     <div class="deco-table-wrap">
       <div class="deco-plan-caption">
@@ -14972,10 +14992,12 @@ function calcCnsWidgetExposure(bottomOtu, bottomSingleCns, dailyBottomCns, botFr
   if (planOtu != null || planCns != null) {
     const otuFromPlan = planOtu != null && isFinite(planOtu);
     const cnsFromPlan = planCns != null && isFinite(planCns);
+    const cnsCarry = window._priorDiveCarry?.cnsCarry || 0;
+    const perDiveCns = cnsFromPlan ? Math.max(0, planCns - cnsCarry) : bottomSingleCns;
     return {
       otu: otuFromPlan ? planOtu : bottomOtu,
       singleCns: cnsFromPlan ? planCns : bottomSingleCns,
-      dailyCns: cnsFromPlan ? Math.min(planCns * dives, 999) : dailyBottomCns,
+      dailyCns: cnsFromPlan ? Math.min(perDiveCns * dives + cnsCarry, 999) : dailyBottomCns,
       otuFromPlan,
       cnsFromPlan,
       fromPlan: otuFromPlan || cnsFromPlan,
@@ -16426,6 +16448,7 @@ var appSettings = {
     'minDecoProfileEnable', 'minDeco9m', 'minDeco6m',
     'algorithmSelect', 'conservatismSelect', 'gfPresetSelect', 'gfLowInput', 'gfHighInput',
     'heHalfTimeMode',
+    'plannerTrimixO2', 'plannerTrimixHe',
     'botTrimixO2', 'botTrimixHe',
     'dg1Mix', 'dg1CustomO2', 'dg2Mix', 'dg2CustomO2',
     'dg1TrimixO2', 'dg1TrimixHe', 'dg2TrimixO2', 'dg2TrimixHe',

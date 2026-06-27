@@ -1322,7 +1322,7 @@ else:
 
 # 20.3b calcEND_tool uses calcEND() — not simplified sea-level formula
 # Bug: was using pNarc * 10 - 10 (wrong at altitude, ignored narcotic toggles)
-end_tool_fn = js[js.find("function calcEND_tool()"):js.find("function calcEND_tool()") + 1500]
+end_tool_fn = js[js.find("function calcEND_tool()"):js.find("function calcEND_tool()") + 2500]
 if "calcEND(dM" in end_tool_fn or "calcEND(depthM" in end_tool_fn:
     ok("calcEND_tool() delegates to calcEND() — altitude-correct, respects narcotic toggles")
 else:
@@ -5030,9 +5030,13 @@ if _vpm_render_idx >= 0 and "contingencyJumpBtn" in js[_vpm_render_idx:_vpm_rend
 else:
     fail("renderVPMResults missing contingencyJumpBtn display (issue #95 M-7)")
 if "if (_zhlPhaseIdx === 0) firstStopDepth = 0" in zhl_src:
-    ok("multi-level ZHL carries firstStopDepth across phases (issue #95 M-9)")
+    fail("multi-level ZHL carries firstStopDepth across phases (issue #99 M-1)")
 else:
-    fail("multi-level ZHL resets firstStopDepth every phase (issue #95 M-9)")
+    _phase_loop = zhl_src.split("for (let _zhlPhaseIdx = 0", 1)[-1][:300] if "for (let _zhlPhaseIdx = 0" in zhl_src else ""
+    if "firstStopDepth = 0;" in _phase_loop:
+        ok("multi-level ZHL resets firstStopDepth at start of each phase (issue #99 M-1)")
+    else:
+        fail("multi-level ZHL missing firstStopDepth = 0 per phase (issue #99 M-1)")
 if "ppO2 >= 1.6" in zhl_src and "addHeadlessExposure" in zhl_src:
     ok("addHeadlessExposure clamps CNS at ppO2 >= 1.6 bar (issue #95 M-3)")
 else:
@@ -5048,12 +5052,15 @@ else:
     fail("VPM inter-level still uses descent rate for upward travel (issue #95 M-11)")
 
 # ── issue #96 fixes ──
-if re.search(r"function getHeFrac\(mix\)[\s\S]{0,400}trimix", js) and "return 0;" not in js.split("function getHeFrac(mix)", 1)[1].split("function ", 1)[0].strip().replace("return 0;", ""):
-    ok("getHeFrac reads He from trimix mix (issue #96 L-1)")
-elif "readDomHePct('plannerTrimixHe')" in js and "mix === 'trimix'" in js.split("function getHeFrac", 1)[1][:500]:
-    ok("getHeFrac reads He from trimix mix (issue #96 L-1)")
+_he_frac_body = ""
+if "function getHeFrac(mix)" in js:
+    _he_frac_body = js.split("function getHeFrac(mix)", 1)[1].split("function ", 1)[0]
+if "function getHeFrac(mix)" in js and "trimix" in _he_frac_body and "plannerTrimixHe" in _he_frac_body and not re.search(r"^\s*return\s+0\s*;", _he_frac_body.strip(), re.M):
+    ok("getHeFrac reads He from trimix mix (issue #96/#99 L-1)")
+elif "readDomHePct('plannerTrimixHe')" in _he_frac_body and "mix === 'trimix'" in _he_frac_body:
+    ok("getHeFrac reads He from trimix mix (issue #96/#99 L-1)")
 else:
-    fail("getHeFrac still stubbed — always returns 0 (issue #96 L-1)")
+    fail("getHeFrac still stubbed — always returns 0 (issue #96/#99 L-1)")
 if "saturate(tissues, depthM, 1, fN2, fH)" in js or "saturate(tissues, depthM, 1, fN2, fHe" in js:
     ok("buhNDL passes fHe to saturate (issue #96 L-1)")
 else:
@@ -5062,6 +5069,62 @@ if "validateGasFractionsPct" in js.split("function validatePlannerInputs", 1)[-1
     ok("validatePlannerInputs rejects invalid trimix totals (issue #98 H-2)")
 else:
     fail("validatePlannerInputs missing trimix fraction validation (issue #98 H-2)")
+
+# ── issue #99 fixes ──
+_gesp = js.split("function getEffectiveSetpointAtDepth", 1)[-1][:800] if "function getEffectiveSetpointAtDepth" in js else ""
+if "if (pAmb <= bottomSP) return descSP;" in _gesp and "if (pAmb <= decoSP) return bottomSP;" in _gesp and "+ WATER_VAPOR" not in _gesp:
+    ok("index.html getEffectiveSetpointAtDepth aligned with zhl-ccr-core (issue #99 H-1)")
+else:
+    fail("index.html getEffectiveSetpointAtDepth still uses +WATER_VAPOR comparisons (issue #99 H-1)")
+if "'plannerTrimixO2'" in js and "'plannerTrimixHe'" in js.split("DECO_FIELDS:", 1)[-1][:1200]:
+    ok("plannerTrimixO2/He in DECO_FIELDS (issue #99 H-2)")
+else:
+    fail("plannerTrimixO2/He missing from DECO_FIELDS (issue #99 H-2)")
+if "if (ppo2 < 0.6) return Infinity;" in js.split("function getCNSDailyLimit", 1)[-1][:300]:
+    ok("getCNSDailyLimit uses float guard ppo2 < 0.6 (issue #99 M-2)")
+else:
+    fail("getCNSDailyLimit still uses rounded key guard (issue #99 M-2)")
+if "if (decayTime < 0) { state.surfacePhaseVolumeTime[i] = 0; continue; }" in vpm_core_95:
+    ok("calcSurfacePhaseVolumeTime guards negative decayTime (issue #99 M-3)")
+else:
+    fail("calcSurfacePhaseVolumeTime missing negative decayTime guard (issue #99 M-3)")
+if "saveZhlRepState(tissues, parseFloat(document.getElementById('zhlSurfaceInterval')" in js:
+    ok("saveZhlRepState reads zhlSurfaceInterval from DOM (issue #99 M-4)")
+else:
+    fail("saveZhlRepState still hardcodes surfaceIntervalMin=0 (issue #99 M-4)")
+if "validateDomDecoGases()" in js.split("function validateDecoInputs", 1)[-1][:400]:
+    ok("validateDecoInputs validates deco gas cards (issue #99 M-5)")
+else:
+    fail("validateDecoInputs missing deco gas card validation (issue #99 M-5)")
+_vpm_ml = vpm_core_95.split("if (level.oc) forcedOCMode = true;", 1)
+if len(_vpm_ml) > 1 and "const sp = (forcedOCMode || nextLevelOffLoop)" in _vpm_ml[1][:400]:
+    ok("VPM multi-level OC bailout sets forcedOCMode before sp (issue #99 M-6)")
+else:
+    fail("VPM multi-level OC bailout still sets forcedOCMode after level processing (issue #99 M-6)")
+if "perDiveCns * dives + cnsCarry" in js.split("function calcCnsWidgetExposure", 1)[-1][:2500]:
+    ok("calcCnsWidgetExposure adds CNS carry once (issue #99 M-7)")
+else:
+    fail("calcCnsWidgetExposure still multiplies carry by dives (issue #99 M-7)")
+if "if (ph === 'totals' || ph === 'info') return;" in js.split("EMERGENCY ASCENT SCHEDULE", 1)[-1][:2000]:
+    ok("buildExportText skips contingency info row (issue #99 M-8)")
+else:
+    fail("buildExportText missing skip for contingency info row (issue #99 M-8)")
+if "ppO2Surf < 0.16" in js.split("function calcEND_tool()", 1)[-1][:2500]:
+    ok("END/EAD tool warns on hypoxic surface ppO2 (issue #99 M-9)")
+else:
+    fail("END/EAD tool missing hypoxic mix warning (issue #99 M-9)")
+if "return saturate(tissues, 0, durMin, FN2_AIR, 0);" in js.split("function offgasAtSurface", 1)[-1][:200]:
+    ok("offgasAtSurface uses ambient air, not CCR loop (issue #99 M-10)")
+else:
+    fail("offgasAtSurface still uses CCR loop gas at surface (issue #99 M-10)")
+if "return (100 - o2pct) / 100;" in js.split("function getN2Frac", 1)[-1][:400] and "Math.min(40, Math.max(21" not in js.split("function getN2Frac", 1)[-1][:400]:
+    ok("getN2Frac custom mix no longer clamps O2 to 21-40% (issue #99 M-11)")
+else:
+    fail("getN2Frac still clamps custom O2 to 21-40% (issue #99 M-11)")
+if "usableL === 0" in js.split("if (short)", 1)[-1][:600]:
+    ok("gas shortage widget shows no-usable-gas when usableL=0 (issue #99 L-2)")
+else:
+    fail("gas shortage widget missing usableL===0 guard (issue #99 L-2)")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):

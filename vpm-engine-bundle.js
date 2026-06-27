@@ -408,6 +408,7 @@ const VPMEngine = (() => {
                 const logArg = (surfaceInspiredN2 - pN2) / pHe;
                 if (logArg <= 0 || Math.abs(kN2 - kHe) < 1e-12) { state.surfacePhaseVolumeTime[i] = 0; continue; }
                 const decayTime = Math.log(logArg) / (kN2 - kHe);
+                if (decayTime < 0) { state.surfacePhaseVolumeTime[i] = 0; continue; }
                 const integral = pHe / kHe * (1 - Math.exp(-kHe * decayTime))
                     + (pN2 - surfaceInspiredN2) / kN2 * (1 - Math.exp(-kN2 * decayTime));
                 state.surfacePhaseVolumeTime[i] = integral / (pHe + pN2 - surfaceInspiredN2);
@@ -1374,6 +1375,7 @@ const VPMEngine = (() => {
             const time = level.time;
             const o2Frac = level.o2 / 100;
             const heFrac = level.he / 100;
+            if (level.oc) forcedOCMode = true;
             const nextLevelOffLoop = isCCR && !!(level.oc || level.scr);
             const sp = (forcedOCMode || nextLevelOffLoop) ? 0 : getEffectiveSetpoint(level, isCCR, settings, depth);
             if (depth > currentDepth) {
@@ -1399,7 +1401,6 @@ const VPMEngine = (() => {
                 runInterLevelDecoAscent(depth);
                 curO2 = o2Frac; curHe = heFrac; curGasLabel = `${level.o2}/${level.he}`; curSP = sp;
             }
-            if (level.oc) forcedOCMode = true;
             const travelRate = depth < currentDepth ? ascentRate : descentRate;
             const descTimeFromLevel = Math.abs(depth - currentDepth) / travelRate;
             const bottomTime = Math.max(0, time - descTimeFromLevel);
