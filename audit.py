@@ -4939,10 +4939,11 @@ if "headlessSegPpo2" in zhl_bundle_js or "onLoop" in zhl_bundle_js.split("functi
     ok("computeHeadlessCnsOtu CCR-aware ppO2 (issue #93 M-4)")
 else:
     fail("computeHeadlessCnsOtu still uses OC-only ppO2 (issue #93 M-4)")
-if "if (ppo2 >= 1.6) return CNS_DAILY_LIMITS[16]" in js:
-    ok("getCNSDailyLimit float clamp before key rounding (issue #93 M-5)")
+_gcnd = js.split("function getCNSDailyLimit", 1)[-1][:500] if "function getCNSDailyLimit" in js else ""
+if "if (ppo2 >= 1.6) return CNS_DAILY_LIMITS[16]" in _gcnd and "if (key >= 16) return CNS_DAILY_LIMITS[16]" not in _gcnd:
+    ok("getCNSDailyLimit float clamp, no post-round key>=16 guard (issue #93/#94)")
 else:
-    fail("getCNSDailyLimit premature key>=16 clamp (issue #93 M-5)")
+    fail("getCNSDailyLimit premature key>=16 clamp after Math.round (issue #93/#94)")
 _deco93 = js[js.find("DECO_FIELDS:"):js.find("DECO_FIELDS:")+2000] if "DECO_FIELDS:" in js else ""
 for _fid, _desc in [
     ("priorDiveDays", "prior dive days"), ("priorDiveOTU", "prior dive OTU"),

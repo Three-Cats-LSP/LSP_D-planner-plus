@@ -10675,7 +10675,6 @@ function getCNSDailyLimit(ppo2) {
   if (ppo2 >= 1.6) return CNS_DAILY_LIMITS[16] || 150;
   const key = Math.round(ppo2 * 10);
   if (key < 6) return Infinity;
-  if (key >= 16) return CNS_DAILY_LIMITS[16] || 150;
   const lo = Math.floor(ppo2 * 10);
   const hi = lo + 1;
   const vLo = CNS_DAILY_LIMITS[lo] || 0;
