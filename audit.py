@@ -5554,6 +5554,40 @@ if "ccrVpm:" in _111_regr and "ccrVpmSetpoints" in _111_regr:
 else:
     fail("issue #111 L-4: engine regression missing CCR VPM coverage")
 
+# ── Issue #98: deep review v2.52.00 — verify 2 HIGH / 1 MEDIUM / 2 LOW resolved ──
+_98_vpm = open(os.path.join(os.path.dirname(__file__), "vpm-engine-core.js"), encoding="utf-8").read()
+_98_ccr = open(os.path.join(os.path.dirname(__file__), "zhl-ccr-core.js"), encoding="utf-8").read()
+_98_regr = open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read()
+_98_pkg = open(os.path.join(os.path.dirname(__file__), "package.json"), encoding="utf-8").read()
+if "pN2: 0, pHe: 0" in _98_ccr.split("function ccrLoopGasBelowSetpoint", 1)[-1][:400]:
+    ok("issue #98 H-1: ccrLoopGasBelowSetpoint zero loop inert below setpoint (zhl-ccr-core)")
+else:
+    fail("issue #98 H-1: CCR below-setpoint still loads full diluent inert")
+if "pN2: 0, pHe: 0" in js.split("function ccrLoopGasBelowSetpoint", 1)[-1][:400]:
+    ok("issue #98 H-1: ccrLoopGasBelowSetpoint zero loop inert in index.html")
+else:
+    fail("issue #98 H-1: index.html below-setpoint branch still assigns diluent inert")
+if "validateGasFractionsPct" in js.split("function validatePlannerInputs", 1)[-1][:800]:
+    ok("issue #98 H-2: validatePlannerInputs rejects invalid trimix O2+He totals")
+else:
+    fail("issue #98 H-2: planner trimix still accepts O2+He>100% silently")
+if "issue98CcrInert" in _98_regr and "issue98TrimixValidate" in _98_regr:
+    ok("issue #98: engine regression covers CCR inert + trimix validation")
+else:
+    fail("issue #98: engine regression missing H-1/H-2 coverage")
+if '"@capacitor/cli": "^8' in _98_pkg:
+    ok("issue #98 M-1: Capacitor 8 CLI resolves patched tar (superseded)")
+else:
+    fail("issue #98 M-1: dev dependency tar advisories unresolved")
+if "5.0 / 1.88" in html and "4.0 / 1.88" not in html:
+    ok("issue #98 L-1: He HT tooltip uses 5.0 min N2 compartment")
+else:
+    fail("issue #98 L-1: He HT tooltip still documents 4.0 min N2 compartment")
+if "'gfs_40_25_air_hi85':      { rt:109" in verify_html:
+    ok("issue #98 L-2: VPM-B/GFS pinned RT updated to 109 min")
+else:
+    fail("issue #98 L-2: VPM-B/GFS pinned RT still stale at 111 min")
+
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
     ok("stable release APP_VERSION is 2.52.00")

@@ -300,6 +300,34 @@ ENGINE_SUITE_JS = """
     return { persisted, mem: window._tecGasMix, ok };
   })();
 
+  // ── E8: CCR below-setpoint loop inert (issue #98 H-1) ─────────────────
+  out.sections.issue98CcrInert = (() => {
+    const surfP = typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325;
+    const pAmb = surfP + 3 * (BAR_PER_METRE || 0.1);
+    const sp = 1.3;
+    const insp = getInspiredInertPressures(pAmb, sp, 0.21, 0, { circuit: 'CCR', setpoint: sp });
+    return { pN2: insp.pN2, pHe: insp.pHe, ok: insp.pN2 === 0 && insp.pHe === 0 };
+  })();
+
+  // ── E9: planner trimix O2+He validation (issue #98 H-2) ────────────────
+  out.sections.issue98TrimixValidate = (() => {
+    const o2El = document.getElementById('plannerTrimixO2');
+    const heEl = document.getElementById('plannerTrimixHe');
+    const mixEl = document.getElementById('gasMix');
+    if (!o2El || !heEl || !mixEl || typeof validatePlannerInputs !== 'function') return { ok: false };
+    const prevMix = mixEl.value;
+    const prevO2 = o2El.value;
+    const prevHe = heEl.value;
+    mixEl.value = 'trimix';
+    o2El.value = '40';
+    heEl.value = '90';
+    const bad = validatePlannerInputs();
+    o2El.value = prevO2;
+    heEl.value = prevHe;
+    mixEl.value = prevMix;
+    return { ok: !!(bad && !bad.ok) };
+  })();
+
   // ── F: VPM engine API + GFS conservatism ───────────────────────────────
   out.sections.vpmApi = {
     loadTypeOk: typeof window.VPMEngine.load === 'function',
@@ -515,6 +543,11 @@ def run_suite(page) -> dict:
 
     tg = s.get("tecGasMixMemory", {})
     assert_true(tg.get("ok"), "Tec gasMix memory tracks EAN32 after trimix (issue #106 verify M-1)", str(tg))
+
+    i98i = s.get("issue98CcrInert", {})
+    assert_true(i98i.get("ok"), "CCR below-setpoint returns zero loop inert (issue #98 H-1)", str(i98i))
+    i98t = s.get("issue98TrimixValidate", {})
+    assert_true(i98t.get("ok"), "validatePlannerInputs rejects O2+He>100% trimix (issue #98 H-2)", str(i98t))
 
     for name, r in s["rebreather"].items():
         assert_true(fin(r), f"Rebreather {name} produces schedule", str(r)[:120])
