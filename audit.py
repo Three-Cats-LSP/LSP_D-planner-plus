@@ -3438,7 +3438,7 @@ if os.path.isfile(main_oc):
 if os.path.isfile(gradle_path):
     with open(gradle_path, encoding="utf-8") as f:
         gradle = f.read()
-    if 'applicationId "com.threecats.lsp.dplannerplus"' in gradle and 'namespace "com.threecats.lsp.dplannerplus"' in gradle:
+    if 'applicationId "com.threecats.lsp.dplannerplus"' in gradle and ('namespace "com.threecats.lsp.dplannerplus"' in gradle or 'namespace = "com.threecats.lsp.dplannerplus"' in gradle):
         ok("Android applicationId/namespace aligned at com.threecats.lsp.dplannerplus")
     else:
         fail("Android build.gradle applicationId/namespace mismatch")
@@ -5443,6 +5443,40 @@ elif '"tar": "^6.2.1"' in _pkg110 and ("issue #110 M-2" in _pkg110 or "_devSecur
     ok("package.json documents Capacitor tar 6.x dev-only override (issue #110 M-2 acknowledged)")
 else:
     fail("package.json tar/Capacitor dev security posture undocumented (issue #110 M-2)")
+_vars_cap8 = open(os.path.join(os.path.dirname(__file__), "android", "variables.gradle"), encoding="utf-8").read()
+if "minSdkVersion = 24" in _vars_cap8 and "compileSdkVersion = 36" in _vars_cap8 and "targetSdkVersion = 36" in _vars_cap8:
+    ok("Android variables.gradle meets Capacitor 8 SDK minimums")
+else:
+    fail("Android variables.gradle below Capacitor 8 SDK 36 / minSdk 24")
+_root_gradle = open(os.path.join(os.path.dirname(__file__), "android", "build.gradle"), encoding="utf-8").read()
+if "gradle:8.13.0" in _root_gradle and "google-services:4.4.4" in _root_gradle:
+    ok("Android root build.gradle uses Capacitor 8 AGP and google-services plugin")
+else:
+    fail("Android root build.gradle missing Capacitor 8 AGP 8.13.0 / google-services 4.4.4")
+_wrapper = open(os.path.join(os.path.dirname(__file__), "android", "gradle", "wrapper", "gradle-wrapper.properties"), encoding="utf-8").read()
+if "gradle-8.14.3-all.zip" in _wrapper:
+    ok("Gradle wrapper pinned to 8.14.3 for Capacitor 8")
+else:
+    fail("Gradle wrapper not updated to 8.14.3 for Capacitor 8")
+_manifest_cap8 = open(os.path.join(os.path.dirname(__file__), "android", "app", "src", "main", "AndroidManifest.xml"), encoding="utf-8").read()
+if "|density" in _manifest_cap8 and "|navigation" in _manifest_cap8.split("configChanges", 1)[-1][:120]:
+    ok("AndroidManifest configChanges includes navigation|density for Capacitor 8")
+else:
+    fail("AndroidManifest missing Capacitor 8 density configChanges")
+if '"node": ">=22"' in _pkg110:
+    ok("package.json engines requires Node 22+ for Capacitor 8")
+else:
+    fail("package.json missing Node 22+ engines field for Capacitor 8")
+_audit_yml = open(os.path.join(os.path.dirname(__file__), ".github", "workflows", "audit.yml"), encoding="utf-8").read()
+_apk_yml_cap8 = open(os.path.join(os.path.dirname(__file__), ".github", "workflows", "build-apk.yml"), encoding="utf-8").read()
+if "node-version: '22'" in _audit_yml and "node-version: '22'" in _apk_yml_cap8:
+    ok("CI Capacitor workflows use Node 22")
+else:
+    fail("CI workflows still use Node 20 with Capacitor 8")
+if "android-36" in _apk_yml_cap8:
+    ok("Android APK workflow targets SDK 36 for Capacitor 8")
+else:
+    fail("Android APK workflow still targets SDK 34")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
