@@ -5038,7 +5038,9 @@ if _vpm_render_idx >= 0 and "contingencyJumpBtn" in js[_vpm_render_idx:_vpm_rend
     ok("renderVPMResults shows contingencyJumpBtn (issue #95 M-7)")
 else:
     fail("renderVPMResults missing contingencyJumpBtn display (issue #95 M-7)")
-if "if (_zhlPhaseIdx === 0) firstStopDepth = 0" in zhl_src:
+if "carriedFirstStopDepth" in zhl_src:
+    ok("multi-level ZHL carries firstStopDepth across phases via carriedFirstStopDepth (issue #108 M-7; supersedes #99 M-1)")
+elif "if (_zhlPhaseIdx === 0) firstStopDepth = 0" in zhl_src:
     fail("multi-level ZHL carries firstStopDepth across phases (issue #99 M-1)")
 else:
     _phase_loop = zhl_src.split("for (let _zhlPhaseIdx = 0", 1)[-1][:300] if "for (let _zhlPhaseIdx = 0" in zhl_src else ""
@@ -5247,7 +5249,9 @@ if "'travelGasTrimixO2'" in js.split("DECO_FIELDS:", 1)[-1][:2500] and "'travelG
     ok("travelGasTrimixO2/He in DECO_FIELDS (issue #104 M-6)")
 else:
     fail("travelGasTrimixO2/He missing from DECO_FIELDS (issue #104 M-6)")
-if "parseStopDisplayTime(tr.querySelectorAll('td')[2]" in js:
+if "decoTime += parseRunMinutes(tr.querySelectorAll('td')[2]" in js.split("function runContingencyScenario", 1)[-1][:1200]:
+    ok("runContingencyScenario uses parseRunMinutes for stop MM:SS decoTime (issue #108 H-1; supersedes #104 M-7)")
+elif "parseStopDisplayTime(tr.querySelectorAll('td')[2]" in js:
     ok("runContingencyScenario uses parseStopDisplayTime for decoTime (issue #104 M-7)")
 else:
     fail("runContingencyScenario still parseFloats MM:SS stop durations (issue #104 M-7)")
@@ -5264,7 +5268,9 @@ if "function syncContDepthLabels" in js and "Math.round(v * 3.28084)" in js.spli
     ok("contingency depth buttons show imperial-converted labels (issue #104 L-2)")
 else:
     fail("contingency depth buttons still label metres as feet (issue #104 L-2)")
-if "margin <= 5 ? 'var(--yellow)'" in js:
+if "margin <= 5 ? 'var(--red)'" in js and "margin <= 10 ? 'var(--yellow)'" in js.split("function statusColor", 1)[-1][:200]:
+    ok("UDP statusColor uses red ≤5 / yellow ≤10 (issue #108 M-1; supersedes #104 L-3)")
+elif "margin <= 5 ? 'var(--yellow)'" in js:
     ok("UDP statusColor uses yellow for within 5% of NDL (issue #104 L-3)")
 else:
     fail("UDP statusColor still red for 1-5% NDL margin (issue #104 L-3)")
@@ -5336,6 +5342,63 @@ if "sync_readme_badge" in open(os.path.join(os.path.dirname(__file__), "tools", 
     ok("tools/update_sw_version.py syncs README badge with APP_VERSION (issue #107)")
 else:
     fail("tools/update_sw_version.py missing README badge sync (issue #107)")
+
+# ── issue #108 fixes ──
+_zhl108 = open(os.path.join(os.path.dirname(__file__), "zhl-schedule-core.js"), encoding="utf-8").read()
+if "decoTime += parseRunMinutes(tr.querySelectorAll('td')[2]" in js.split("function runContingencyScenario", 1)[-1][:1200]:
+    ok("contingency decoTime uses parseRunMinutes not parseStopDisplayTime (issue #108 H-1)")
+else:
+    fail("runContingencyScenario still accumulates decoTime via parseStopDisplayTime (issue #108 H-1)")
+if "regeneratedRadiiN2" in _vpm106.split("settings._prevBubbleState", 1)[-1][:900] and "regeneratedRadiiHe" in _vpm106.split("settings._prevBubbleState", 1)[-1][:900]:
+    ok("VPM bubble carry guards regeneratedRadii arrays (issue #108 H-2)")
+else:
+    fail("VPM bubble carry still missing regeneratedRadii guard (issue #108 H-2)")
+_zwb108 = open(os.path.join(os.path.dirname(__file__), "zhl-worker-bridge.js"), encoding="utf-8").read()
+if "getWorkerScriptUrl" in _zwb108 and "p.timer" in _zwb108 and "clearTimeout(p.timer)" in _zwb108:
+    ok("ZHL worker bridge clears pending timeouts and uses APP_BASE worker URL (issue #108 H-3/L-2)")
+else:
+    fail("ZHL worker bridge missing timeout cleanup or base-path worker URL (issue #108 H-3/L-2)")
+if "margin <= 5 ? 'var(--red)'" in js and "margin <= 10 ? 'var(--yellow)'" in js.split("function statusColor", 1)[-1][:200]:
+    ok("UDP statusColor uses red ≤5 / yellow ≤10 (issue #108 M-1)")
+else:
+    fail("UDP statusColor still has dead yellow branch at margin ≤5 (issue #108 M-1)")
+if "toMMSS(rt * 60)" in js.split("renderVPMResults", 1)[-1][:10000] and "toMMSS(deco * 60)" in js.split("renderVPMResults", 1)[-1][:10000]:
+    ok("VPM plan summary uses toMMSS for run/deco time (issue #108 M-2)")
+else:
+    fail("VPM plan summary still appends raw minutes with '00\" (issue #108 M-2)")
+_ci108 = open(os.path.join(os.path.dirname(__file__), ".github", "workflows", "ci.yml"), encoding="utf-8").read()
+if "engine-full:" in _ci108 and "needs: [bundle-sync]" in _ci108:
+    ok("CI engine-full job depends on bundle-sync (issue #108 M-3)")
+else:
+    fail("CI engine-full still races bundle-sync (issue #108 M-3)")
+if "vpmSi0TissuesOnly" in open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read():
+    ok("engine regression isolates zero-SI bubble carry from tissue-only (issue #108 M-4)")
+else:
+    fail("engine regression repCarriesBubble still compares fresh dive (issue #108 M-4)")
+if "mod14Lbl" in js and "ppO2Limit.toFixed(1)" in js.split("function calcEND_tool", 1)[-1][:4500]:
+    ok("calcEND_tool updates MOD label from ppo2Bottom (issue #108 M-5)")
+else:
+    fail("END tool MOD label still hardcoded @ 1.4 (issue #108 M-5)")
+if "check.o2 < 18" in js.split("function validatePlannerInputs", 1)[-1][:600]:
+    ok("validatePlannerInputs rejects hypoxic trimix O₂ (issue #108 M-6)")
+else:
+    fail("validatePlannerInputs trimix branch missing hypoxic O₂ guard (issue #108 M-6)")
+if "carriedFirstStopDepth" in _zhl108:
+    ok("ZHL multi-level carries firstStopDepth across phases (issue #108 M-7)")
+else:
+    fail("ZHL still resets firstStopDepth each continuation phase (issue #108 M-7)")
+if "repSurfP = altAcclimatized" in _zhl108:
+    ok("ZHL rep surface off-gas respects altAcclimatized (issue #108 M-8)")
+else:
+    fail("ZHL rep off-gas always uses altSurfaceP (issue #108 M-8)")
+if "otu >= 600" in js.split("function calcCNS", 1)[-1][:3500] and "otu >= 300" in js.split("function calcCNS", 1)[-1][:3500]:
+    ok("CNS widget status warns on OTU ≥300/600 (issue #108 M-9)")
+else:
+    fail("CNS widget status ignores OTU overages (issue #108 M-9)")
+if "btAtDepthMin = Math.max(0, level.time - hDescentTime)" in open(os.path.join(os.path.dirname(__file__), "tools", "build_zhl_bundle.py"), encoding="utf-8").read():
+    ok("computeHeadlessCnsOtu subtracts descent from bottom time (issue #108 L-3)")
+else:
+    fail("computeHeadlessCnsOtu still double-counts descent in level.time (issue #108 L-3)")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):

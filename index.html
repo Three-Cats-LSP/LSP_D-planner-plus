@@ -8378,9 +8378,9 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   const vpmTtsMMSS = toMMSS(vpmTtsMin);
   const otuFootColorVPM = (result.totalOTU ?? 0) >= 300 ? 'var(--red)' : (result.totalOTU ?? 0) >= 200 ? 'var(--orange)' : (result.totalOTU ?? 0) >= 100 ? 'var(--yellow)' : 'var(--green)';
   tbody.innerHTML += buildPlanInfoRowHtml({
-    runTime: rt + "'00\"",
+    runTime: toMMSS(rt * 60),
     tts: vpmTtsMMSS,
-    decoTime: Math.round(deco) + "'00\"",
+    decoTime: toMMSS(deco * 60),
     cns: cnsDisp !== '—' ? cnsDisp + '%' : '—',
     otu: otuDisp,
     prt: prtDispVPM,
@@ -9116,6 +9116,9 @@ function validatePlannerInputs() {
     const check = validateGasFractionsPct(
       readDomO2Pct('plannerTrimixO2'), readDomHePct('plannerTrimixHe'), 'plannerTrimix');
     if (!check.ok) return { ok: false, msg: check.message };
+    if (check.o2 < 18) {
+      return { ok: false, msg: 'Trimix O₂ below 18% is hypoxic — use a higher O₂ fraction.' };
+    }
   } else if (mix === 'custom') {
     const check = validateGasFractionsPct(readDomO2Pct('customO2'), 0, 'customO2');
     if (!check.ok) return { ok: false, msg: check.message };
@@ -10708,7 +10711,7 @@ function runUnifiedPlan() {
 
   // Colour helper — margin = NDL - BT
   function statusColor(margin) {
-    return margin <= 0 ? 'var(--red)' : margin <= 5 ? 'var(--yellow)' : margin <= 10 ? 'var(--yellow)' : 'var(--green)';
+    return margin <= 0 ? 'var(--red)' : margin <= 5 ? 'var(--red)' : margin <= 10 ? 'var(--yellow)' : 'var(--green)';
   }
 
   let tissues = initTissues();
@@ -11922,6 +11925,8 @@ function calcEND_tool() {
   document.getElementById('endMixName').textContent   = mixName;
   document.getElementById('endMOD14').textContent     = mod14d;
   document.getElementById('endMOD16').textContent     = mod16d;
+  const mod14Lbl = document.getElementById('endMOD14')?.closest('.stat')?.querySelector('.stat-lbl');
+  if (mod14Lbl) mod14Lbl.textContent = 'MOD @ ' + ppO2Limit.toFixed(1);
 
   // Alert banner
   const alertEl = document.getElementById('endAlert');
@@ -14227,7 +14232,7 @@ function runContingencyScenario(modifyFn) {
     const run = parseRunMinutes(tr.querySelector('td[data-label="Run"]')?.textContent) || 0;
     if (run > lastRun) lastRun = run;
     if (tr.dataset.phase === 'deco' || tr.dataset.phase === 'safety')
-      decoTime += parseStopDisplayTime(tr.querySelectorAll('td')[2]?.textContent) || 0;
+      decoTime += parseRunMinutes(tr.querySelectorAll('td')[2]?.textContent) || 0;
   });
 
   // Capture formatted totals from DOM totals row
@@ -15210,6 +15215,10 @@ function calcCNS() {
     cls = 'c-dang'; msg = `⛔ ppO2 ${ppo2.toFixed(2)} bar EXCEEDS maximum 1.6 bar! Serious seizure risk. Change gas or depth.`;
   } else if (ppo2 > 1.4) {
     cls = 'c-warn'; msg = `⚠️ ppO2 ${ppo2.toFixed(2)} bar is above recreational limit (1.4 bar). Technical divers only.`;
+  } else if (otu >= 600) {
+    cls = 'c-dang'; msg = `⛔ OTU ${Math.round(otu)} exceeds 600 (daily NOAA limit). No more diving today.`;
+  } else if (otu >= 300) {
+    cls = 'c-warn'; msg = `⚠️ OTU ${Math.round(otu)} exceeds 300 (single-dive NOAA limit). Monitor total exposure.`;
   } else if (dailyCns >= 100) {
     cls = 'c-dang'; msg = `⛔ Daily CNS ${dailyCns.toFixed(0)}% exceeds 100% limit. No more diving today.`;
   } else if (singleCns >= 80) {

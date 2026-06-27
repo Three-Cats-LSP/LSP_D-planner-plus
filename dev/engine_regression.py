@@ -170,7 +170,7 @@ ENGINE_SUITE_JS = """
   // ── E2: VPM zero surface interval — bubble carry must not produce NaN ───
   const vpmSi0D1 = vpm(lv(45, 25, 32, 0), [{ o2: 50, he: 0 }], {}, 'VPMB');
   let vpmSi0Rep = null;
-  let vpmSi0FreshCons = null;
+  let vpmSi0TissuesOnly = null;
   if (vpmSi0D1.finalBubbleState) {
     vpmSi0Rep = vpm(lv(45, 20, 32, 0), [{ o2: 50, he: 0 }], {
       _preTissues: vpmSi0D1.finalTissues,
@@ -178,16 +178,20 @@ ENGINE_SUITE_JS = """
       _prevBubbleState: vpmSi0D1.finalBubbleState,
       conservatism: 1,
     }, 'VPMB');
-    vpmSi0FreshCons = vpm(lv(45, 20, 32, 0), [{ o2: 50, he: 0 }], { conservatism: 1 }, 'VPMB');
+    vpmSi0TissuesOnly = vpm(lv(45, 20, 32, 0), [{ o2: 50, he: 0 }], {
+      _preTissues: vpmSi0D1.finalTissues,
+      _surfaceInterval: 0,
+      conservatism: 1,
+    }, 'VPMB');
   }
   out.sections.vpmZeroSi = {
     d1Rt: rt(vpmSi0D1),
     repRt: rt(vpmSi0Rep),
-    freshConsRt: rt(vpmSi0FreshCons),
+    tissueOnlyRt: rt(vpmSi0TissuesOnly),
     repFinite: fin(vpmSi0Rep),
     repNoNan: vpmSi0Rep && Number.isFinite(vpmSi0Rep.totalRuntime),
-    repCarriesBubble: vpmSi0Rep && vpmSi0FreshCons
-      && Math.abs(rt(vpmSi0Rep) - rt(vpmSi0FreshCons)) > 0.01,
+    repCarriesBubble: vpmSi0Rep && vpmSi0TissuesOnly
+      && Math.abs(rt(vpmSi0Rep) - rt(vpmSi0TissuesOnly)) > 0.01,
   };
 
   // ── E3: Repetitive VPM conservatism sensitivity (issue #106 H-1) ─────

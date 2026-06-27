@@ -50,12 +50,23 @@
     }
   }
 
+  function getWorkerScriptUrl() {
+    const p = (typeof location !== 'undefined' && location.pathname) || '/';
+    if (p.includes('/LSP_D-planner-plus/')) return '/LSP_D-planner-plus/zhl-schedule-worker.js';
+    if (p.includes('/LSP_D-planner/')) return '/LSP_D-planner/zhl-schedule-worker.js';
+    if (p.includes('/d-planner-plus/')) return '/d-planner-plus/zhl-schedule-worker.js';
+    if (p.includes('/d-planner-ccr/')) return '/d-planner-ccr/zhl-schedule-worker.js';
+    if (p.includes('/d-planner/')) return '/d-planner/zhl-schedule-worker.js';
+    const base = p.replace(/[^/]*$/, '');
+    return (base || '/LSP_D-planner-plus/') + 'zhl-schedule-worker.js';
+  }
+
   function getWorker() {
     if (workerPermanentlyDisabled) {
       throw new Error('ZHL worker crashed repeatedly — reload required');
     }
     if (!worker) {
-      worker = new Worker('zhl-schedule-worker.js');
+      worker = new Worker(getWorkerScriptUrl());
       worker.onmessage = function (e) {
         const { id, ok, result, error } = e.data || {};
         if (ok) {

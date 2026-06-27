@@ -74,6 +74,7 @@ jobs:
 
   engine-full:
     name: Full engine regression (all algos)
+    needs: [bundle-sync]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

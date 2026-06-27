@@ -178,7 +178,11 @@ const VPMEngine = (() => {
         // Net effect: carrying state is conservative — correct VPM-B behaviour.
         let bubbleCarryApplied = false;
         if (settings._prevBubbleState && settings._prevBubbleState.adjustedCritRadiiN2
-                && settings._prevBubbleState.adjustedCritRadiiN2.length === NC) {
+                && settings._prevBubbleState.adjustedCritRadiiN2.length === NC
+                && settings._prevBubbleState.regeneratedRadiiN2
+                && settings._prevBubbleState.regeneratedRadiiN2.length === NC
+                && settings._prevBubbleState.regeneratedRadiiHe
+                && settings._prevBubbleState.regeneratedRadiiHe.length === NC) {
             const si = Math.max(0, settings._surfaceInterval != null ? settings._surfaceInterval : 0);
             const regenFactor = Math.exp(-si / REGEN_TIME);
             const pb = settings._prevBubbleState;

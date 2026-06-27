@@ -372,7 +372,8 @@ postamble = r'''
       ? headlessSegPpo2(level.depth, fO2bot, fHebot, s)
       : (altSurfaceP + level.depth * BAR_PER_METRE) * fO2bot;
     addHeadlessExposure(hCNSfrac, hOTU, ppO2DescMid, hDescentTime);
-    addHeadlessExposure(hCNSfrac, hOTU, ppO2Bottom, level.time);
+    const btAtDepthMin = Math.max(0, level.time - hDescentTime);
+    addHeadlessExposure(hCNSfrac, hOTU, ppO2Bottom, btAtDepthMin);
     (lp.steps || []).forEach(seg => {
       const d = seg.depth != null ? seg.depth : (seg.type === 'ascent' ? (seg.from + seg.to) / 2 : 0);
       const fHeS = seg.fHe !== undefined ? seg.fHe : fHebot;

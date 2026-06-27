@@ -82,7 +82,8 @@ function runZhlScheduleCore(params) {
     if (rep.surfaceIntervalMin > 0) {
       const siMin = rep.surfaceIntervalMin;
       const wv = WATER_VAPOR || 0.0627;
-      const inspN2 = 0.7902 * ((altSurfaceP || 1.01325) - wv);
+      const repSurfP = altAcclimatized !== false ? (altSurfaceP || SEA_LEVEL_P) : SEA_LEVEL_P;
+      const inspN2 = 0.7902 * (repSurfP - wv);
       for (let i = 0; i < tissues.length; i++) {
         const kN2 = Math.LN2 / ZHL16C[i][0];
         const htHe = ZHL16C_HE_HT[i];
@@ -141,6 +142,7 @@ function runZhlScheduleCore(params) {
     ? _zhlContLevels.map(c => c.depth).concat([0]) : [0];
 
   let firstStopDepth = 0;
+  let carriedFirstStopDepth = 0;
 
   // gfAt must live outside the phase loop — block-scoped function declarations are
   // not visible after the loop in strict mode (Tier 3 bundle uses 'use strict').
@@ -157,7 +159,7 @@ function runZhlScheduleCore(params) {
 
   for (let _zhlPhaseIdx = 0; _zhlPhaseIdx < _zhlAscentFloors.length; _zhlPhaseIdx++) {
   const _zhlAscentFloor = _zhlAscentFloors[_zhlPhaseIdx];
-  firstStopDepth = 0;
+  firstStopDepth = carriedFirstStopDepth;
 
   // ── GF anchor: candidate stop list built from ceiling(bottom_tissues, gfL) ──
   // firstStopDepth is NOT pre-computed here — it is anchored dynamically at the
@@ -297,6 +299,7 @@ function runZhlScheduleCore(params) {
       if (firstDecoDepth === null) {
         firstDecoDepth  = cur;
         firstStopDepth  = cur;   // anchor GF line at real first stop
+        carriedFirstStopDepth = cur;
         minStopZoneDepth = cur;  // enable min-stop enforcement from here down
       }
       decoZoneEntered = true;
