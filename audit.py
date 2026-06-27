@@ -5187,6 +5187,23 @@ if "importScripts('app-version.js')" in open(os.path.join(os.path.dirname(__file
 else:
     fail("sw.js not linked to app-version.js (issue #102 BUG-C/J)")
 
+# ── issue #103 fixes ──
+_zwb = open(os.path.join(os.path.dirname(__file__), "zhl-worker-bridge.js"), "rb").read()
+if b"\r\r\n" not in _zwb and _zwb.count(b"\r\n") == 0:
+    ok("zhl-worker-bridge.js uses LF line endings (issue #103 F-1)")
+else:
+    fail("zhl-worker-bridge.js has double-CRLF or CRLF line endings (issue #103 F-1)")
+_zwb_txt = _zwb.decode("utf-8")
+if "function terminate(resetDisabledFlag)" in _zwb_txt and "if (resetDisabledFlag) workerPermanentlyDisabled = false" in _zwb_txt:
+    ok("terminate() preserves workerPermanentlyDisabled unless explicitly reset (issue #103 F-2)")
+else:
+    fail("terminate() still clears workerPermanentlyDisabled unconditionally (issue #103 F-2)")
+_sw_path = open(os.path.join(os.path.dirname(__file__), "sw.js"), encoding="utf-8").read()
+if "/LSP_D-planner-plus/')" in _sw_path and _sw_path.find("/LSP_D-planner-plus/')") < _sw_path.find("/LSP_D-planner/')"):
+    ok("sw.js getAppBasePath uses trailing-slash prefix checks (issue #103 F-3)")
+else:
+    fail("sw.js getAppBasePath missing trailing-slash disambiguation (issue #103 F-3)")
+
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
     ok("stable release APP_VERSION is 2.52.00")
