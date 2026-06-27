@@ -5153,6 +5153,40 @@ if 'id="customO2" max="100"' in html and "O₂ % (21–100)" in html:
 else:
     fail("custom O2 input still advertises 21-40% (issue #101 L-1)")
 
+# ── issue #102 fixes ──
+if "Math.ceil((bottomCeil + 1e-9) / decoStep)" in zhl_src:
+    ok("ZHL candidateFirstStop uses epsilon guard against float fence-post (issue #102 BUG-A)")
+else:
+    fail("ZHL candidateFirstStop missing epsilon guard (issue #102 BUG-A)")
+if "if (si > 0) {" in vpm_core_95 and "settings._prevBubbleState" in vpm_core_95:
+    ok("VPM skips bubble carry when surface interval <= 0 (issue #102 BUG-B)")
+else:
+    fail("VPM still carries bubble state on zero surface interval (issue #102 BUG-B)")
+if "Math.ceil((depth + 1e-9) / stepSize)" in vpm_core_95:
+    ok("VPM roundUpToStop uses epsilon guard (issue #102 BUG-A)")
+else:
+    fail("VPM roundUpToStop missing epsilon guard (issue #102 BUG-A)")
+if "MAX_WORKER_FAILURES" in open(os.path.join(os.path.dirname(__file__), "zhl-worker-bridge.js"), encoding="utf-8").read():
+    ok("ZHL worker bridge limits consecutive crash recovery (issue #102 BUG-E)")
+else:
+    fail("ZHL worker bridge missing crash recovery limit (issue #102 BUG-E)")
+if "emAlertsHtml" in js and "window._lastContingency.emAlertsHtml" in js:
+    ok("contingency stores emAlertsHtml for PDF export (issue #102 BUG-D)")
+else:
+    fail("contingency missing emAlertsHtml persistence (issue #102 BUG-D)")
+if "git diff --exit-code zhl-engine-bundle.js vpm-engine-bundle.js" in open(os.path.join(os.path.dirname(__file__), ".github", "workflows", "ci.yml"), encoding="utf-8").read():
+    ok("CI guards engine bundle sync (issue #102 BUG-I)")
+else:
+    fail("CI missing engine bundle sync guard (issue #102 BUG-I)")
+if "ccrVpm:" in open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read():
+    ok("engine regression includes CCR VPM test case (issue #102 BUG-H)")
+else:
+    fail("engine regression missing CCR VPM test (issue #102 BUG-H)")
+if "importScripts('app-version.js')" in open(os.path.join(os.path.dirname(__file__), "sw.js"), encoding="utf-8").read():
+    ok("sw.js CACHE_VERSION derived from app-version.js (issue #102 BUG-C/J)")
+else:
+    fail("sw.js not linked to app-version.js (issue #102 BUG-C/J)")
+
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
     ok("stable release APP_VERSION is 2.52.00")

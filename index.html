@@ -1228,6 +1228,10 @@ body.light-theme .ok { background:#f0fff4; border-color:#116622; color:#116622; 
  overflow-x: auto;
  overflow-y: visible;
 }
+.deco-table-wrap .tip-icon {
+ position: relative;
+ z-index: 2;
+}
 .deco-plan-caption {
  text-align: left;
  padding: 0;
@@ -14375,7 +14379,7 @@ function calcContingency() {
     <div id="decoAlertsEmergency" style="margin-top:8px;"></div>`;
 
   // Store for export
-  window._lastContingency = { label, lastRun, decoTime, lastRunFmt, decoTimeFmt, totalCNS, totalOTU: _emOTU, totalPrT: _emPrT, decoZoneStart, decozoneDisp: _emDecozone, decoStop: _emDecoStop, tts: _emTts, newRows, severity, icon, msg, surfGF: contSurfaceGF != null ? Math.round(contSurfaceGF) + '%' : '-', scenarioDepth, scenarioBT, scenarioBotFracs };
+  window._lastContingency = { label, lastRun, decoTime, lastRunFmt, decoTimeFmt, totalCNS, totalOTU: _emOTU, totalPrT: _emPrT, decoZoneStart, decozoneDisp: _emDecozone, decoStop: _emDecoStop, tts: _emTts, newRows, severity, icon, msg, surfGF: contSurfaceGF != null ? Math.round(contSurfaceGF) + '%' : '-', scenarioDepth, scenarioBT, scenarioBotFracs, emAlertsHtml: '' };
 
   // CNS alert — goes into emergency card, NOT main decoAlerts
   const emAlerts = document.getElementById('decoAlertsEmergency');
@@ -14386,6 +14390,7 @@ function calcContingency() {
     } else {
       emAlerts.innerHTML = '';
     }
+    window._lastContingency.emAlertsHtml = emAlerts.innerHTML;
   }
   scheduleDecoScheduleStackSync();
 }
@@ -14900,6 +14905,18 @@ async function exportContingencyPDF(opts) {
 
   // ── SECTION: Emergency Slate ─────────────────────────────────────────────
   if (_incEmSlate) {
+    const emAlertHtml = c.emAlertsHtml || document.getElementById('decoAlertsEmergency')?.innerHTML || '';
+    const emAlertText = emAlertHtml.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    if (emAlertText) {
+      checkY(10);
+      doc.setFillColor(255, 255, 0); doc.setDrawColor(180, 180, 0);
+      const _alertLines = doc.splitTextToSize(cleanPDF(emAlertText), CW - 4);
+      const _alertH = 5.5 * _alertLines.length + 2;
+      doc.roundedRect(ML, y, CW, _alertH, 1.5, 1.5, 'FD');
+      doc.setFontSize(7.5); doc.setFont('DejaVuSans', 'bold'); doc.setTextColor(17, 17, 17);
+      doc.text(_alertLines, ML + 2, y + 4);
+      doc.setTextColor(0, 0, 0); y += _alertH + 4;
+    }
     const slateText = buildContingencySlateText();
     if (slateText) {
       checkY(10);

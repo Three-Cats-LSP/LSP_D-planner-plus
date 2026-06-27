@@ -31,6 +31,24 @@ jobs:
       - name: Run audit.py
         run: python audit.py
 
+  bundle-sync:
+    name: Engine bundle sync guard
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Rebuild bundles and verify no drift
+        run: |
+          python tools/build_zhl_bundle.py
+          python tools/build_vpm_bundle.py
+          git diff --exit-code zhl-engine-bundle.js vpm-engine-bundle.js
+
   export-regression:
     name: Export regression (PrT / units)
     runs-on: ubuntu-latest

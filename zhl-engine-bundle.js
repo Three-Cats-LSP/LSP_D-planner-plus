@@ -767,7 +767,7 @@ function runZhlScheduleCore(params) {
   // ceiling that may be one step above the real first stop.
   const bottomCeil = ceiling(tissues, gfL);
   const candidateFirstStop = bottomCeil > 0
-    ? Math.max(lastStop, Math.ceil(bottomCeil / decoStep) * decoStep)
+    ? Math.max(lastStop, Math.ceil((bottomCeil + 1e-9) / decoStep) * decoStep)
     : 0;
 
   // firstStopDepth: mutable — set when the first ceiling-forced stop is reached.

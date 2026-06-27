@@ -179,6 +179,7 @@ const VPMEngine = (() => {
         if (settings._prevBubbleState && settings._prevBubbleState.adjustedCritRadiiN2
                 && settings._prevBubbleState.adjustedCritRadiiN2.length === NC) {
             const si = settings._surfaceInterval != null ? settings._surfaceInterval : 0;
+            if (si > 0) {
             const regenFactor = Math.exp(-si / REGEN_TIME);
             const pb = settings._prevBubbleState;
             for (let i = 0; i < NC; i++) {
@@ -205,6 +206,7 @@ const VPMEngine = (() => {
                 decoGradientHe[i]             = gHec;
                 initialAllowableGradientN2[i] = gN2c;
                 initialAllowableGradientHe[i] = gHec;
+            }
             }
         }
         // ─────────────────────────────────────────────────────────────────────────────
@@ -730,7 +732,7 @@ const VPMEngine = (() => {
         return bestGas;
     }
     function roundUpToStop(depth, stepSize) {
-        return Math.ceil(depth / stepSize) * stepSize;
+        return Math.ceil((depth + 1e-9) / stepSize) * stepSize;
     }
     function getEffectiveSetpoint(level, isCCR, settings, depthM) {
         if (!isCCR || !level) return 0;
