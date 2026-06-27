@@ -9111,6 +9111,18 @@ function validateDiveInputs(depthId, btId, depthLimits) {
 function validatePlannerInputs() {
   const base = validateDiveInputs('depth', 'bt', { metric: 100, imperial: 330, maxBt: 300 });
   if (!base.ok) return base;
+  const isMetric = units === 'metric';
+  const rawD = parseFloat(document.getElementById('depth')?.value);
+  const bt = parseInt(document.getElementById('bt')?.value, 10);
+  const depthM = isMetric ? rawD : rawD / 3.28084;
+  const descentRate = Math.max(1, parseInt(document.getElementById('descentRate')?.value, 10) || 20);
+  if (Number.isFinite(depthM) && Number.isFinite(bt) && depthM > 0 && bt <= depthM / descentRate + 1e-6) {
+    const descentMin = (depthM / descentRate).toFixed(1);
+    return {
+      ok: false,
+      msg: `Bottom time (${bt} min) is not longer than descent (${descentMin} min); time at depth will be 0.`,
+    };
+  }
   const mix = document.getElementById('gasMix')?.value || 'air';
   if (mix === 'trimix') {
     const check = validateGasFractionsPct(
@@ -9186,7 +9198,11 @@ function peekZhlRepState() {
 
 function saveZhlRepState(tissues, surfaceIntervalMin) {
   if (tissues && tissues.length) {
-    window._zhlRepState = { tissues, surfaceIntervalMin: surfaceIntervalMin || 0 };
+    window._zhlRepState = {
+      tissues,
+      surfaceIntervalMin: surfaceIntervalMin || 0,
+      surfaceP: altSurfaceP || SEA_LEVEL_P,
+    };
   }
 }
 
@@ -9194,7 +9210,11 @@ function getZhlRepStateForSchedule() {
   const zhlRepEl = document.getElementById('zhlRepMode');
   const snap = peekZhlRepState();
   if (!zhlRepEl?.checked || !snap) return null;
-  return { tissues: snap.tissues, surfaceIntervalMin: snap.surfaceIntervalMin ?? 0 };
+  return {
+    tissues: snap.tissues,
+    surfaceIntervalMin: snap.surfaceIntervalMin ?? 0,
+    surfaceP: snap.surfaceP ?? (altSurfaceP || SEA_LEVEL_P),
+  };
 }
 
 function takeZhlRepStateSnapshot() {

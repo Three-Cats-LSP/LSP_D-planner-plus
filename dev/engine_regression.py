@@ -328,6 +328,25 @@ ENGINE_SUITE_JS = """
     return { ok: !!(bad && !bad.ok) };
   })();
 
+  // ── E10: issue #112 planner BT vs descent validation ───────────────────
+  out.sections.issue112PlannerBt = (() => {
+    const depthEl = document.getElementById('depth');
+    const btEl = document.getElementById('bt');
+    const rateEl = document.getElementById('descentRate');
+    if (!depthEl || !btEl || typeof validatePlannerInputs !== 'function') return { ok: false };
+    const prevD = depthEl.value;
+    const prevBt = btEl.value;
+    const prevRate = rateEl ? rateEl.value : null;
+    depthEl.value = '40';
+    btEl.value = '1';
+    if (rateEl) rateEl.value = '20';
+    const bad = validatePlannerInputs();
+    depthEl.value = prevD;
+    btEl.value = prevBt;
+    if (rateEl && prevRate != null) rateEl.value = prevRate;
+    return { ok: !!(bad && !bad.ok) };
+  })();
+
   // ── F: VPM engine API + GFS conservatism ───────────────────────────────
   out.sections.vpmApi = {
     loadTypeOk: typeof window.VPMEngine.load === 'function',
@@ -548,6 +567,9 @@ def run_suite(page) -> dict:
     assert_true(i98i.get("ok"), "CCR below-setpoint returns zero loop inert (issue #98 H-1)", str(i98i))
     i98t = s.get("issue98TrimixValidate", {})
     assert_true(i98t.get("ok"), "validatePlannerInputs rejects O2+He>100% trimix (issue #98 H-2)", str(i98t))
+
+    i112 = s.get("issue112PlannerBt", {})
+    assert_true(i112.get("ok"), "validatePlannerInputs rejects BT shorter than descent (issue #112 L-3)", str(i112))
 
     for name, r in s["rebreather"].items():
         assert_true(fin(r), f"Rebreather {name} produces schedule", str(r)[:120])

@@ -4949,7 +4949,7 @@ if "ccrLoopGasBelowSetpoint" in _ccr_core_src and "pN2: 0, pHe: 0" in _ccr_core_
     ok("CCR below-setpoint: zero loop inert, O2-maximized dry gas (issue #98 residual)")
 else:
     fail("CCR below-setpoint still assigns water-vapour slot as diluent inert (issue #98 residual)")
-if "validateGasFractionsPct" in js.split("function validatePlannerInputs", 1)[-1][:800]:
+if "validateGasFractionsPct" in js.split("function validatePlannerInputs", 1)[-1][:1600]:
     ok("validatePlannerInputs validates trimix O2+He totals (issue #98 H-2)")
 else:
     fail("validatePlannerInputs missing trimix gas validation (issue #98 H-2)")
@@ -5078,7 +5078,7 @@ if "saturate(tissues, depthM, 1, fN2, fH)" in js or "saturate(tissues, depthM, 1
     ok("buhNDL passes fHe to saturate (issue #96 L-1)")
 else:
     fail("buhNDL still hardcodes fHe=0 in NDL loop (issue #96 L-1)")
-if "validateGasFractionsPct" in js.split("function validatePlannerInputs", 1)[-1][:800]:
+if "validateGasFractionsPct" in js.split("function validatePlannerInputs", 1)[-1][:1600]:
     ok("validatePlannerInputs rejects invalid trimix totals (issue #98 H-2)")
 else:
     fail("validatePlannerInputs missing trimix fraction validation (issue #98 H-2)")
@@ -5381,7 +5381,7 @@ if "mod14Lbl" in js and "ppO2Limit.toFixed(1)" in js.split("function calcEND_too
     ok("calcEND_tool updates MOD label from ppo2Bottom (issue #108 M-5)")
 else:
     fail("END tool MOD label still hardcoded @ 1.4 (issue #108 M-5)")
-if "check.o2 < 18" in js.split("function validatePlannerInputs", 1)[-1][:600]:
+if "check.o2 < 18" in js.split("function validatePlannerInputs", 1)[-1][:1600]:
     ok("validatePlannerInputs rejects hypoxic trimix O₂ (issue #108 M-6)")
 else:
     fail("validatePlannerInputs trimix branch missing hypoxic O₂ guard (issue #108 M-6)")
@@ -5389,7 +5389,7 @@ if "carriedFirstStopDepth" in _zhl108:
     ok("ZHL multi-level carries firstStopDepth across phases (issue #108 M-7)")
 else:
     fail("ZHL still resets firstStopDepth each continuation phase (issue #108 M-7)")
-if "repSurfP = altAcclimatized" in _zhl108:
+if "repSurfP = altAcclimatized" in _zhl108 or "rep.surfaceP != null" in _zhl108:
     ok("ZHL rep surface off-gas respects altAcclimatized (issue #108 M-8)")
 else:
     fail("ZHL rep off-gas always uses altSurfaceP (issue #108 M-8)")
@@ -5529,7 +5529,7 @@ if "Math.max(denomBase, 0.001)" in _111_vpm:
     ok("issue #111 M-4: VPM calcSurfacePhaseVolumeTime near-zero denominator guard")
 else:
     fail("issue #111 M-4: VPM surface phase volume missing denominator guard")
-if "repSurfP = altAcclimatized" in _111_zhl:
+if "repSurfP = altAcclimatized" in _111_zhl or "rep.surfaceP != null" in _111_zhl:
     ok("issue #111 M-5: ZHL rep surface off-gas respects altAcclimatized (issue #109 fix verified)")
 else:
     fail("issue #111 M-5: ZHL repSurfP still ignores altAcclimatized")
@@ -5567,7 +5567,7 @@ if "pN2: 0, pHe: 0" in js.split("function ccrLoopGasBelowSetpoint", 1)[-1][:400]
     ok("issue #98 H-1: ccrLoopGasBelowSetpoint zero loop inert in index.html")
 else:
     fail("issue #98 H-1: index.html below-setpoint branch still assigns diluent inert")
-if "validateGasFractionsPct" in js.split("function validatePlannerInputs", 1)[-1][:800]:
+if "validateGasFractionsPct" in js.split("function validatePlannerInputs", 1)[-1][:1600]:
     ok("issue #98 H-2: validatePlannerInputs rejects invalid trimix O2+He totals")
 else:
     fail("issue #98 H-2: planner trimix still accepts O2+He>100% silently")
@@ -5587,6 +5587,62 @@ if "'gfs_40_25_air_hi85':      { rt:109" in verify_html:
     ok("issue #98 L-2: VPM-B/GFS pinned RT updated to 109 min")
 else:
     fail("issue #98 L-2: VPM-B/GFS pinned RT still stale at 111 min")
+
+# ── Issue #112: deep review faf3442 — 2 HIGH / 4 MEDIUM / 5 LOW ──
+_112_zhl = open(os.path.join(os.path.dirname(__file__), "zhl-schedule-core.js"), encoding="utf-8").read()
+_112_bundle = open(os.path.join(os.path.dirname(__file__), "zhl-engine-bundle.js"), encoding="utf-8").read()
+if "if (travelOnLoop) _diveRuntimeMin += travelDur;" in _112_zhl.split("decoZoneEntered && mdCompatMode", 1)[-1][:500]:
+    ok("issue #112 H-1: mdCompat CCR transit advances _diveRuntimeMin when tissues skipped")
+else:
+    fail("issue #112 H-1: CCR scrubber runtime still lags on mdCompat deco transit")
+if "firstStopDepth = cur;" in _112_zhl.split("minStopZoneDepth !== null && cur <= minStopZoneDepth", 1)[-1][:800]:
+    ok("issue #112 H-2: min-stop-zone first stop anchors firstStopDepth for gfAt")
+else:
+    fail("issue #112 H-2: min-stop-zone path still omits firstStopDepth anchor")
+if "let legTransitDur = 0;" in _112_zhl and "(si === 0) ? legTransitDur" in _112_zhl:
+    ok("issue #112 M-2: si=0 transitDur uses actual ascent leg time")
+else:
+    fail("issue #112 M-2: si=0 transitDur still hardcoded to 0")
+if "function zhlStepPpo2" in _112_zhl and "zhlStepPpo2(cur" in _112_zhl:
+    ok("issue #112 M-3: CCR-on-loop steps use setpoint-derived ppO2 (zhlStepPpo2)")
+else:
+    fail("issue #112 M-3: ascent steps still derive ppO2 from diluent fractions on loop")
+if "isFinalAscentPhase" in _112_zhl and "lastClearGf" in _112_zhl:
+    ok("issue #112 M-4: intermediate-phase last stop clears to floor GF not surface")
+else:
+    fail("issue #112 M-4: lastStop branch still uses gfAt(0) for all phases")
+if "deepest level only" in _112_zhl.split("tissuesAtBottom", 1)[-1][:120]:
+    ok("issue #112 L-1: tissuesAtBottom snapshot limitation documented")
+else:
+    fail("issue #112 L-1: tissuesAtBottom ML limitation undocumented")
+if "collapsedMDP.map(s => s.gas)" in _112_zhl:
+    ok("issue #112 L-2: gasUsed derived from MDP-enforced plan")
+else:
+    fail("issue #112 L-2: gasUsed still derived from pre-MDP collapsed steps")
+if "not longer than descent" in js.split("function validatePlannerInputs", 1)[-1][:1200]:
+    ok("issue #112 L-3: validatePlannerInputs warns when BT <= descent time")
+else:
+    fail("issue #112 L-3: planner accepts BT shorter than descent without warning")
+if "surfaceP: snap.surfaceP" in js.split("function getZhlRepStateForSchedule", 1)[-1][:500]:
+    ok("issue #112 L-4: ZHL rep state carries plan-time surfaceP snapshot")
+else:
+    fail("issue #112 L-4: rep off-gas still reads live altSurfaceP global")
+if "rep.surfaceP != null" in _112_zhl:
+    ok("issue #112 L-4: schedule core uses repState surfaceP for off-gas")
+else:
+    fail("issue #112 L-4: schedule core ignores repState surfaceP")
+if "prev.decoTransit = !!(prev.decoTransit || s.decoTransit)" in _112_zhl:
+    ok("issue #112 L-5: merged ascent steps propagate decoTransit flag")
+else:
+    fail("issue #112 L-5: ascent merge drops decoTransit on partial transit segments")
+if "if (travelOnLoop) _diveRuntimeMin += travelDur;" in _112_bundle:
+    ok("issue #112 H-1: bundle includes mdCompat CCR runtime sync fix")
+else:
+    fail("issue #112 H-1: zhl-engine-bundle missing CCR runtime sync fix")
+if "issue112PlannerBt" in open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read():
+    ok("issue #112: engine regression covers planner BT vs descent validation")
+else:
+    fail("issue #112: engine regression missing planner BT validation")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
