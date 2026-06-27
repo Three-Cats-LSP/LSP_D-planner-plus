@@ -239,6 +239,21 @@ function computePSCRFractions(pAmb, fO2, fHe, ccr) {
   };
 }
 
+function ccrLoopGasBelowSetpoint(pAmb, fO2, fHe) {
+  const ppH2O = WATER_VAPOR;
+  const pDry = Math.max(0, pAmb - ppH2O);
+  const fO2eff = Math.min(1, pDry / Math.max(0.001, pAmb));
+  const fN2d = Math.max(0, 1 - fO2 - fHe);
+  const inertTotal = Math.max(0, 1 - fO2eff);
+  const inertDen = Math.max(0.001, fN2d + fHe);
+  const fN2loop = inertTotal * fN2d / inertDen;
+  const fHeloop = inertTotal * fHe / inertDen;
+  return {
+    fO2: fO2eff, fN2: fN2loop, fHe: fHeloop,
+    pN2: pDry * fN2loop, pHe: pDry * fHeloop,
+  };
+}
+
 function getInspiredInertPressures(pAmb, setpoint, fO2, fHe, ccr) {
   const ppH2O = WATER_VAPOR;
   const cfg = normalizeCCRSettings(ccr);
@@ -260,9 +275,8 @@ function getInspiredInertPressures(pAmb, setpoint, fO2, fHe, ccr) {
     return { pN2: pInert * fN2d, pHe: pInert * fHe, fO2, fHe, fN2: fN2d };
   }
   if (pAmb <= setpoint + ppH2O) {
-    const fN2d = Math.max(0, 1 - fO2 - fHe);
-    const pInert = Math.max(0, pAmb - ppH2O);
-    return { pN2: pInert * fN2d, pHe: pInert * fHe, fO2, fHe, fN2: fN2d };
+    const loop = ccrLoopGasBelowSetpoint(pAmb, fO2, fHe);
+    return { pN2: loop.pN2, pHe: loop.pHe, fO2: loop.fO2, fHe: loop.fHe, fN2: loop.fN2 };
   }
   const pInert = pAmb - setpoint - ppH2O;
   const den = Math.max(0.001, 1 - fO2);
@@ -300,7 +314,7 @@ function getCCRInertSchreinerParams(pAmbStart, setpoint, fO2, fHe, pressureRate,
       rHe: (pEnd - ppH2O) * fr1.fHe - inspHeStart,
     };
   }
-  if (!setpoint || setpoint <= 0 || pAmbStart <= setpoint + WATER_VAPOR) {
+  if (!setpoint || setpoint <= 0) {
     const fN2d = Math.max(0, 1 - fO2 - fHe);
     const ppH2O = WATER_VAPOR;
     return {
@@ -308,6 +322,16 @@ function getCCRInertSchreinerParams(pAmbStart, setpoint, fO2, fHe, pressureRate,
       inspHeStart: (pAmbStart - ppH2O) * fHe,
       rN2: fN2d * pressureRate,
       rHe: fHe * pressureRate,
+    };
+  }
+  if (pAmbStart <= setpoint + WATER_VAPOR) {
+    const loop0 = ccrLoopGasBelowSetpoint(pAmbStart, fO2, fHe);
+    const loop1 = ccrLoopGasBelowSetpoint(pAmbStart + pressureRate, fO2, fHe);
+    return {
+      inspN2Start: loop0.pN2,
+      inspHeStart: loop0.pHe,
+      rN2: loop1.pN2 - loop0.pN2,
+      rHe: loop1.pHe - loop0.pHe,
     };
   }
   const den = Math.max(0.001, 1 - fO2);

@@ -3181,10 +3181,10 @@ if os.path.isfile(verify_path):
         ok("tests-verify.html regression for pSCR ccrDiluentSurfaceLpm (BUG-75)")
     else:
         fail("tests-verify.html missing BUG-75 pSCR gas flow regression")
-    if "At/below setpoint crossover: OC-equivalent inert loading" in verify_html and "pAmb = sp + ppH2O" in verify_html:
-        ok("tests-verify CCR shallow test uses setpoint crossover with OC-equivalent inerts")
+    if "At/below setpoint crossover: loop-cap inert loading" in verify_html and "pAmb = sp + ppH2O" in verify_html:
+        ok("tests-verify CCR shallow test uses loop-cap inert loading at crossover")
     else:
-        fail("tests-verify CCR shallow test missing OC-equivalent inert check")
+        fail("tests-verify CCR shallow test missing loop-cap inert check")
     if "assertRtPinned" in verify_html and "VerifyWarn" in verify_html:
         ok("tests-verify.html RT pinned drift ±1–2 min → WARN (not fail)")
     else:
@@ -4936,10 +4936,30 @@ if "window._lastVPMExport = null" in js.split("function setAlgo", 1)[-1][:8000]:
     ok("setAlgo/setDecoAlgorithm clear _lastVPMExport (issue #93 M-2)")
 else:
     fail("_lastVPMExport not cleared on algorithm switch (issue #93 M-2)")
-if "inspN2Start: (pAmbStart - ppH2O) * fN2d" in _ccr_core_src and "return { inspN2Start: 0, inspHeStart: 0, rN2: 0, rHe: 0 }" not in _ccr_core_src.split("function getCCRInertSchreinerParams", 1)[-1][:800]:
-    ok("getCCRInertSchreinerParams OC-equivalent below setpoint (issue #93 M-3)")
+if "ccrLoopGasBelowSetpoint" in _ccr_core_src and "fO2eff = Math.min(1, pDry" in _ccr_core_src:
+    ok("CCR below-setpoint uses loop-cap inert model (issue #98 H-1)")
 else:
-    fail("getCCRInertSchreinerParams still returns zero inerts below setpoint (issue #93 M-3)")
+    fail("CCR below-setpoint still uses full diluent OC loading (issue #98 H-1)")
+if "validateGasFractionsPct" in js.split("function validatePlannerInputs", 1)[-1][:800]:
+    ok("validatePlannerInputs validates trimix O2+He totals (issue #98 H-2)")
+else:
+    fail("validatePlannerInputs missing trimix gas validation (issue #98 H-2)")
+if "5.0 / 1.88" in html and "4.0 / 1.88" not in html:
+    ok("He HT tooltip uses 5.0 min N2 compartment (issue #98 L-1)")
+else:
+    fail("He HT tooltip still documents 4.0 min N2 compartment (issue #98 L-1)")
+if "'gfs_40_25_air_hi85':      { rt:109" in verify_html:
+    ok("VPM-B/GFS pinned RT updated to 109 min (issue #98 L-2)")
+else:
+    fail("VPM-B/GFS pinned RT still stale at 111 min (issue #98 L-2)")
+
+# ── issue #98 MEDIUM-1: dev dependency tar override ──
+_pkg_json = open(os.path.join(os.path.dirname(__file__), "package.json"), encoding="utf-8").read()
+if '"tar": "^7.5.17"' in _pkg_json or '"tar": ">=7.5.17"' in _pkg_json:
+    ok("package.json overrides tar to patched version (issue #98 M-1)")
+else:
+    fail("package.json missing tar override for Capacitor CLI dev dependency (issue #98 M-1)")
+
 if "headlessSegPpo2" in zhl_bundle_js or "onLoop" in zhl_bundle_js.split("function computeHeadlessCnsOtu", 1)[-1][:1200]:
     ok("computeHeadlessCnsOtu CCR-aware ppO2 (issue #93 M-4)")
 else:
@@ -5038,6 +5058,10 @@ if "saturate(tissues, depthM, 1, fN2, fH)" in js or "saturate(tissues, depthM, 1
     ok("buhNDL passes fHe to saturate (issue #96 L-1)")
 else:
     fail("buhNDL still hardcodes fHe=0 in NDL loop (issue #96 L-1)")
+if "validateGasFractionsPct" in js.split("function validatePlannerInputs", 1)[-1][:800]:
+    ok("validatePlannerInputs rejects invalid trimix totals (issue #98 H-2)")
+else:
+    fail("validatePlannerInputs missing trimix fraction validation (issue #98 H-2)")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):

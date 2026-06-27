@@ -2283,7 +2283,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </select>
 </div>
 <div class="adv-row">
-<label>He HT Comp 1 <span class="tip-icon" onclick="showTip('He Half-Time','Helium half-time for the fastest (compartment 1) tissue.\n\nBaker 1.88 min — canonical VPM-B value (Baker FORTRAN 1998, ApexDeco, MultiDeco).\nBühlmann 1.51 min — Bühlmann 2003 textbook value (Subsurface, Shearwater, DivePro).\n\nRatio to N2 comp 1 (4.0 min):\n Baker: 4.0 / 1.88 = 2.13\n Bühlmann: 4.0 / 1.51 = 2.65 (≈ √(28/4), physical diffusion ratio)\n\nPractical difference: negligible for dives &gt;15 min. Only measurable on very short deep bounce dives where fast-compartment He loading is significant.\n\nDefault: Baker 1.88 (matches VPM-B and ApexDeco).')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<label>He HT Comp 1 <span class="tip-icon" onclick="showTip('He Half-Time','Helium half-time for the fastest (compartment 1) tissue.\n\nBaker 1.88 min — canonical VPM-B value (Baker FORTRAN 1998, ApexDeco, MultiDeco).\nBühlmann 1.51 min — Bühlmann 2003 textbook value (Subsurface, Shearwater, DivePro).\n\nRatio to N2 comp 1 (5.0 min):\n Baker: 5.0 / 1.88 = 2.66\n Bühlmann: 5.0 / 1.51 = 3.31 (≈ √(28/4), physical diffusion ratio)\n\nPractical difference: negligible for dives &gt;15 min. Only measurable on very short deep bounce dives where fast-compartment He loading is significant.\n\nDefault: Baker 1.88 (matches VPM-B and ApexDeco).')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
 <select id="heHalfTimeMode" onchange="updateHeHalfTime()">
 <option selected="" value="baker">1.88 min (Baker / VPM-B)</option>
 <option value="buhl2003">1.51 min (Bühlmann 2003)</option>
@@ -6418,6 +6418,21 @@ function computePSCRFractions(pAmb, fO2, fHe, ccr) {
   };
 }
 
+function ccrLoopGasBelowSetpoint(pAmb, fO2, fHe) {
+  const ppH2O = WATER_VAPOR;
+  const pDry = Math.max(0, pAmb - ppH2O);
+  const fO2eff = Math.min(1, pDry / Math.max(0.001, pAmb));
+  const fN2d = Math.max(0, 1 - fO2 - fHe);
+  const inertTotal = Math.max(0, 1 - fO2eff);
+  const inertDen = Math.max(0.001, fN2d + fHe);
+  const fN2loop = inertTotal * fN2d / inertDen;
+  const fHeloop = inertTotal * fHe / inertDen;
+  return {
+    fO2: fO2eff, fN2: fN2loop, fHe: fHeloop,
+    pN2: pDry * fN2loop, pHe: pDry * fHeloop,
+  };
+}
+
 function getInspiredInertPressures(pAmb, setpoint, fO2, fHe, ccr) {
   const ppH2O = WATER_VAPOR;
   const cfg = mergeCCRSettings(ccr);
@@ -6439,9 +6454,8 @@ function getInspiredInertPressures(pAmb, setpoint, fO2, fHe, ccr) {
     return { pN2: pInert * fN2d, pHe: pInert * fHe, fO2, fHe, fN2: fN2d };
   }
   if (pAmb <= setpoint + ppH2O) {
-    const fN2d = Math.max(0, 1 - fO2 - fHe);
-    const pInert = Math.max(0, pAmb - ppH2O);
-    return { pN2: pInert * fN2d, pHe: pInert * fHe, fO2, fHe, fN2: fN2d };
+    const loop = ccrLoopGasBelowSetpoint(pAmb, fO2, fHe);
+    return { pN2: loop.pN2, pHe: loop.pHe, fO2: loop.fO2, fHe: loop.fHe, fN2: loop.fN2 };
   }
   const pInert = pAmb - setpoint - ppH2O;
   const den = Math.max(0.001, 1 - fO2);
@@ -6479,7 +6493,7 @@ function getCCRInertSchreinerParams(pAmbStart, setpoint, fO2, fHe, pressureRate,
       rHe: (pEnd - ppH2O) * fr1.fHe - inspHeStart,
     };
   }
-  if (!setpoint || setpoint <= 0 || pAmbStart <= setpoint + WATER_VAPOR) {
+  if (!setpoint || setpoint <= 0) {
     const fN2d = Math.max(0, 1 - fO2 - fHe);
     const ppH2O = WATER_VAPOR;
     return {
@@ -6487,6 +6501,16 @@ function getCCRInertSchreinerParams(pAmbStart, setpoint, fO2, fHe, pressureRate,
       inspHeStart: (pAmbStart - ppH2O) * fHe,
       rN2: fN2d * pressureRate,
       rHe: fHe * pressureRate,
+    };
+  }
+  if (pAmbStart <= setpoint + WATER_VAPOR) {
+    const loop0 = ccrLoopGasBelowSetpoint(pAmbStart, fO2, fHe);
+    const loop1 = ccrLoopGasBelowSetpoint(pAmbStart + pressureRate, fO2, fHe);
+    return {
+      inspN2Start: loop0.pN2,
+      inspHeStart: loop0.pHe,
+      rN2: loop1.pN2 - loop0.pN2,
+      rHe: loop1.pHe - loop0.pHe,
     };
   }
   const den = Math.max(0.001, 1 - fO2);
@@ -9011,7 +9035,18 @@ function validateDiveInputs(depthId, btId, depthLimits) {
 }
 
 function validatePlannerInputs() {
-  return validateDiveInputs('depth', 'bt', { metric: 100, imperial: 330, maxBt: 300 });
+  const base = validateDiveInputs('depth', 'bt', { metric: 100, imperial: 330, maxBt: 300 });
+  if (!base.ok) return base;
+  const mix = document.getElementById('gasMix')?.value || 'air';
+  if (mix === 'trimix') {
+    const check = validateGasFractionsPct(
+      readDomO2Pct('plannerTrimixO2'), readDomHePct('plannerTrimixHe'), 'plannerTrimix');
+    if (!check.ok) return { ok: false, msg: check.message };
+  } else if (mix === 'custom') {
+    const check = validateGasFractionsPct(readDomO2Pct('customO2'), 0, 'customO2');
+    if (!check.ok) return { ok: false, msg: check.message };
+  }
+  return { ok: true };
 }
 
 function validateDecoInputs() {
