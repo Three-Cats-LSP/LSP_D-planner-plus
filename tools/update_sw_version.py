@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 APP_VERSION_JS = ROOT / "app-version.js"
 INDEX = ROOT / "index.html"
 SW = ROOT / "sw.js"
+README = ROOT / "README.md"
 PACKAGE = ROOT / "package.json"
 GRADLE = ROOT / "android" / "app" / "build.gradle"
 
@@ -66,11 +67,29 @@ def sync_gradle(version: str) -> bool:
     return True
 
 
+def sync_readme_badge(version: str) -> bool:
+    text = README.read_text(encoding="utf-8")
+    updated, n = re.subn(
+        r"(> v)([\d.]+)( · MIT)",
+        rf"\g<1>{version}\3",
+        text,
+        count=1,
+    )
+    if n != 1:
+        raise SystemExit("README badge line not found (> vX.Y.Z · MIT)")
+    if updated == text:
+        return False
+    README.write_text(updated, encoding="utf-8")
+    return True
+
+
 def main() -> None:
     version = read_app_version()
     verify_sw_derives_cache(version)
     verify_index_loads_version_js()
     changed = []
+    if sync_readme_badge(version):
+        changed.append("README.md")
     if sync_package_json(version):
         changed.append("package.json")
     if sync_gradle(version):
@@ -78,7 +97,7 @@ def main() -> None:
     if changed:
         print(f"Synced {', '.join(changed)} to {version}")
     else:
-        print(f"Version {version} aligned (app-version.js, sw.js, package.json, build.gradle)")
+        print(f"Version {version} aligned (app-version.js, README.md, sw.js, package.json, build.gradle)")
 
 
 if __name__ == "__main__":

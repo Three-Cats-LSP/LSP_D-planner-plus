@@ -3062,6 +3062,15 @@ if os.path.isfile(sw_path):
         version_ok = False
 else:
     version_ok = False
+readme_path = os.path.join(os.path.dirname(__file__), "README.md")
+if app_ver and os.path.isfile(readme_path):
+    with open(readme_path, encoding="utf-8") as f:
+        readme_txt = f.read()
+    readme_badge_m = re.search(r"> v([\d.]+)\s·", readme_txt)
+    if not readme_badge_m or readme_badge_m.group(1) != app_ver:
+        version_ok = False
+else:
+    version_ok = False
 version_json_path = os.path.join(os.path.dirname(__file__), "version.json")
 if app_ver and os.path.isfile(version_json_path):
     with open(version_json_path, encoding="utf-8") as f:
@@ -3080,9 +3089,9 @@ if app_ver and os.path.isfile(version_json_path):
 elif app_ver:
     version_ok = False
 if version_ok and app_ver:
-    ok(f"All version files aligned at {app_ver} (app-version.js drives SW cache + version.json)")
+    ok(f"All version files aligned at {app_ver} (app-version.js, README, SW cache, version.json)")
 else:
-    fail("Version mismatch across app-version.js / sw.js / package.json / build.gradle / version.json (v17 BUG-74)")
+    fail("Version mismatch across app-version.js / README / sw.js / package.json / build.gradle / version.json (v17 BUG-74)")
 
 _update_banner = js.split("function showUpdateBanner", 1)[-1].split("function checkForApkUpdate", 1)[0] if "function showUpdateBanner" in js else ""
 _banner_ver_param = ""
@@ -5302,6 +5311,31 @@ if "vpmBubbleCarryIsolated" in open(os.path.join(os.path.dirname(__file__), "dev
     ok("engine regression isolates VPM bubble carry from tissue carry (issue #106 verify H-2)")
 else:
     fail("engine regression missing isolated bubble-carry test (issue #106 verify H-2)")
+
+# ── issue #107: README badge + sw.js cache key sync ──
+if app_ver and os.path.isfile(readme_path):
+    with open(readme_path, encoding="utf-8") as f:
+        _readme107 = f.read()
+    _badge107 = re.search(r"> v([\d.]+)\s·", _readme107)
+    if _badge107 and _badge107.group(1) == app_ver:
+        ok(f"README badge matches APP_VERSION ({app_ver}) (issue #107)")
+    else:
+        fail(f"README badge ({_badge107.group(1) if _badge107 else 'missing'}) != APP_VERSION ({app_ver}) (issue #107)")
+else:
+    fail("README version badge check skipped — APP_VERSION or README.md missing (issue #107)")
+if os.path.isfile(sw_path):
+    with open(sw_path, encoding="utf-8") as f:
+        _sw107 = f.read()
+    if "importScripts('app-version.js')" in _sw107 and "lsp-dplanner-plus-v' + APP_VERSION" in _sw107:
+        ok("sw.js CACHE_VERSION derived from APP_VERSION (issue #107)")
+    else:
+        fail("sw.js CACHE_VERSION hardcoded or not tied to APP_VERSION (issue #107)")
+else:
+    fail("sw.js missing for CACHE_VERSION sync check (issue #107)")
+if "sync_readme_badge" in open(os.path.join(os.path.dirname(__file__), "tools", "update_sw_version.py"), encoding="utf-8").read():
+    ok("tools/update_sw_version.py syncs README badge with APP_VERSION (issue #107)")
+else:
+    fail("tools/update_sw_version.py missing README badge sync (issue #107)")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
