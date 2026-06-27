@@ -813,6 +813,9 @@
         function ctxUseOCForPpo2(calcSettings) {
             return calcSettings.bailout || calcSettings.circuit !== 'pSCR';
         }
+        function ctxOffLoop(ctx) {
+            return !!(ctx.forcedOCMode || ctxUseOCForPpo2(settings));
+        }
         const stepSize = settings.stepSize || (settings.metric ? 3 : 10);
         const lastStop = settings.lastStop || (settings.metric ? 3 : 10);
         const descentRate = settings.descentRate || (settings.metric ? 20 : 60);
@@ -884,7 +887,7 @@
                 const depth = fromDepth + (toDepth - fromDepth) * frac;
                 const pAmb = getAmbientPressure(depth, settings);
                 settings._scrRuntimeMin = ctx.runtime + frac * time;
-                const ppO2 = vpmAccumPpo2(pAmb, ctx.currentSP, ctx.currentO2, ctx.currentHe, settings, depth, ctxUseOCForPpo2(settings));
+                const ppO2 = vpmAccumPpo2(pAmb, ctx.currentSP, ctx.currentO2, ctx.currentHe, settings, depth, ctxOffLoop(ctx));
                 ctx.totalOTU += calculateOTU(ppO2, dt);
                 ctx.totalCNS += calculateCNS(ppO2, dt);
             }
@@ -893,11 +896,11 @@
             if (time <= 0) return;
             const pAmb = getAmbientPressure(depth, settings);
             settings._scrRuntimeMin = ctx.runtime;
-            const ppO2 = vpmAccumPpo2(pAmb, ctx.currentSP, ctx.currentO2, ctx.currentHe, settings, depth, ctxUseOCForPpo2(settings));
+            const ppO2 = vpmAccumPpo2(pAmb, ctx.currentSP, ctx.currentO2, ctx.currentHe, settings, depth, ctxOffLoop(ctx));
             ctx.totalOTU += calculateOTU(ppO2, time);
             ctx.totalCNS += calculateCNS(ppO2, time);
         }
-        function makeScheduleContext(baseState, startDepth, startRuntime, startOTU, startCNS, o2, he, gasLabel, sp, outPlan) {
+        function makeScheduleContext(baseState, startDepth, startRuntime, startOTU, startCNS, o2, he, gasLabel, sp, outPlan, forcedOCModeAtStart) {
             return {
                 state: cloneVPMState(baseState),
                 currentDepth: startDepth,
@@ -908,6 +911,7 @@
                 currentHe: he,
                 currentGasLabel: gasLabel,
                 currentSP: sp,
+                forcedOCMode: !!forcedOCModeAtStart,
                 firstStopDepth: 0,
                 plan: outPlan || null,
                 continuationFinalPhase: false
@@ -985,7 +989,7 @@
                 ctx.runtime += effectiveMinStop;
             }
             settings._scrRuntimeMin = ctx.runtime;
-            const ppO2Stop = vpmAccumPpo2(pAmb, ctx.currentSP, ctx.currentO2, ctx.currentHe, settings, stopDepth, ctxUseOCForPpo2(settings));
+            const ppO2Stop = vpmAccumPpo2(pAmb, ctx.currentSP, ctx.currentO2, ctx.currentHe, settings, stopDepth, ctxOffLoop(ctx));
             ctx.totalOTU += calculateOTU(ppO2Stop, totalStopTime);
             ctx.totalCNS += calculateCNS(ppO2Stop, totalStopTime);
             appendPlan(ctx, {
@@ -1000,7 +1004,7 @@
             return totalStopTime;
         }
         function maybeSwitchDecoGas(ctx, depth) {
-            if (isRebreatherCircuit(settings.circuit) && !settings.bailout) return;
+            if (isRebreatherCircuit(settings.circuit) && !settings.bailout && !ctx.forcedOCMode) return;
             const decoGas = selectDecoGas(depth, normalizedDecoGases, ppO2Deco, settings);
             if (!decoGas) return;
             const pAmb = getAmbientPressure(depth, settings);
@@ -1074,11 +1078,13 @@
             return ctx;
         }
         function appendLevelHold(ctx, level) {
+            if (level.oc) ctx.forcedOCMode = true;
+            const nextLevelOffLoop = isCCR && !!(level.oc || level.scr);
             ctx.currentDepth = level.depth;
             ctx.currentO2 = level.o2 / 100;
             ctx.currentHe = level.he / 100;
             ctx.currentGasLabel = `${level.o2}/${level.he}`;
-            ctx.currentSP = getEffectiveSetpoint(level, isCCR, settings, level.depth);
+            ctx.currentSP = (ctx.forcedOCMode || nextLevelOffLoop) ? 0 : getEffectiveSetpoint(level, isCCR, settings, level.depth);
             if (level.time <= 0) return;
             settings._scrRuntimeMin = ctx.runtime;
             loadTissuesConstant(ctx.state, level.depth, level.time, ctx.currentO2, ctx.currentHe, settings, ctx.currentSP);
@@ -1149,8 +1155,8 @@
             }
             return firstStopDepth;
         }
-        function runContinuationSchedule(baseState, startDepth, startRuntime, startOTU, startCNS, o2, he, gasLabel, sp, outPlan) {
-            const ctx = makeScheduleContext(baseState, startDepth, startRuntime, startOTU, startCNS, o2, he, gasLabel, sp, outPlan);
+        function runContinuationSchedule(baseState, startDepth, startRuntime, startOTU, startCNS, o2, he, gasLabel, sp, outPlan, forcedOCAtStart) {
+            const ctx = makeScheduleContext(baseState, startDepth, startRuntime, startOTU, startCNS, o2, he, gasLabel, sp, outPlan, forcedOCAtStart);
             let phaseFirstStopDepth = 0;
             for (const level of continuationLevels) {
                 const levelFirstStopDepth = calcIntermediateFirstStopDepth(ctx, level.depth);
@@ -1539,7 +1545,8 @@
                     levels[levels.length - 1].he / 100,
                     `${levels[levels.length - 1].o2}/${levels[levels.length - 1].he}`,
                     forcedOCMode ? 0 : getEffectiveSetpoint(levels[levels.length - 1], isCCR, settings, levels[levels.length - 1].depth),
-                    null
+                    null,
+                    forcedOCMode
                 ).ctx;
             } else {
                 trialCtx = makeScheduleContext(
@@ -1582,7 +1589,8 @@
                         levels[levels.length - 1].he / 100,
                         `${levels[levels.length - 1].o2}/${levels[levels.length - 1].he}`,
                         forcedOCMode ? 0 : getEffectiveSetpoint(levels[levels.length - 1], isCCR, settings, levels[levels.length - 1].depth),
-                        plan
+                        plan,
+                        forcedOCMode
                     ).ctx;
                 } else {
                     finalCtx = makeScheduleContext(

@@ -1779,8 +1779,8 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </select>
 </div>
 <div class="field" id="customO2Field" style="display:none;">
-<label>O₂ % (21–40)</label>
-<input id="customO2" max="40" min="21" step="1" type="number" value="32"/>
+<label>O₂ % (21–100)</label>
+<input id="customO2" max="100" min="21" step="1" type="number" value="32"/>
 </div>
 <div class="field" id="plannerTrimixO2Field" style="display:none;">
 <label>O₂ %</label>
@@ -14975,28 +14975,38 @@ function calcCnsWidgetExposure(bottomOtu, bottomSingleCns, dailyBottomCns, botFr
   const bot = botFracs || getBottomGasFractions();
   let planOtu = null;
   let planCns = null;
+  let planCnsFromRecompute = null;
 
   if (lp?.steps?.length && typeof computePlanExposureTotals === 'function') {
     const exp = computePlanExposureTotals(
       lp.steps, ccr, bot?.fO2 ?? 0.21, bot?.fHe ?? 0, altSurfaceP, BAR_PER_METRE
     );
     if (exp.totalOTU > 0) planOtu = exp.totalOTU;
-    if (exp.totalCNS > 0) planCns = exp.totalCNS;
+    if (exp.totalCNS > 0) {
+      planCnsFromRecompute = exp.totalCNS;
+      planCns = exp.totalCNS;
+    }
   }
   if (lp?.totalOTU != null && isFinite(lp.totalOTU)) planOtu = lp.totalOTU;
-  if (lp?.totalCNS != null) {
+  if (lp?.totalCNS != null && planCns == null) {
     const stored = parseFloat(lp.totalCNS);
-    if (isFinite(stored) && planCns == null) planCns = stored;
+    if (isFinite(stored)) planCns = stored;
   }
+
+  const cnsCarry = window._priorDiveCarry?.cnsCarry || 0;
 
   if (planOtu != null || planCns != null) {
     const otuFromPlan = planOtu != null && isFinite(planOtu);
     const cnsFromPlan = planCns != null && isFinite(planCns);
-    const cnsCarry = window._priorDiveCarry?.cnsCarry || 0;
-    const perDiveCns = cnsFromPlan ? Math.max(0, planCns - cnsCarry) : bottomSingleCns;
+    const perDiveCns = cnsFromPlan
+      ? (planCnsFromRecompute != null ? planCnsFromRecompute : Math.max(0, planCns - cnsCarry))
+      : bottomSingleCns;
+    const singleCns = cnsFromPlan
+      ? (planCnsFromRecompute != null ? planCnsFromRecompute + cnsCarry : planCns)
+      : bottomSingleCns;
     return {
       otu: otuFromPlan ? planOtu : bottomOtu,
-      singleCns: cnsFromPlan ? planCns : bottomSingleCns,
+      singleCns,
       dailyCns: cnsFromPlan ? Math.min(perDiveCns * dives + cnsCarry, 999) : dailyBottomCns,
       otuFromPlan,
       cnsFromPlan,
@@ -15008,10 +15018,11 @@ function calcCnsWidgetExposure(bottomOtu, bottomSingleCns, dailyBottomCns, botFr
   const vpmCns = parseFloat(String(window._lastVPMExport?.cns || '').replace('%', ''));
   if (isFinite(vpmOtu)) {
     const cnsFromPlan = isFinite(vpmCns);
+    const vpmPerDiveCns = cnsFromPlan ? Math.max(0, vpmCns - cnsCarry) : bottomSingleCns;
     return {
       otu: vpmOtu,
       singleCns: cnsFromPlan ? vpmCns : bottomSingleCns,
-      dailyCns: cnsFromPlan ? Math.min(vpmCns * dives, 999) : dailyBottomCns,
+      dailyCns: cnsFromPlan ? Math.min(vpmPerDiveCns * dives + cnsCarry, 999) : dailyBottomCns,
       otuFromPlan: true,
       cnsFromPlan,
       fromPlan: true,
@@ -16448,6 +16459,7 @@ var appSettings = {
     'minDecoProfileEnable', 'minDeco9m', 'minDeco6m',
     'algorithmSelect', 'conservatismSelect', 'gfPresetSelect', 'gfLowInput', 'gfHighInput',
     'heHalfTimeMode',
+    'gasMix', 'customO2',
     'plannerTrimixO2', 'plannerTrimixHe',
     'botTrimixO2', 'botTrimixHe',
     'dg1Mix', 'dg1CustomO2', 'dg2Mix', 'dg2CustomO2',

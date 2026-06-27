@@ -2811,7 +2811,7 @@ else:
 
 exp_ctx_start = vpm_src.find("function addExposureToContext")
 exp_ctx_block = vpm_src[exp_ctx_start:exp_ctx_start + 700] if exp_ctx_start > 0 else ""
-if "vpmAccumPpo2" in exp_ctx_block and "ctxUseOCForPpo2" in exp_ctx_block:
+if "vpmAccumPpo2" in exp_ctx_block and ("ctxOffLoop(ctx)" in exp_ctx_block or "ctxUseOCForPpo2" in exp_ctx_block):
     ok("VPM continuation helpers use vpmAccumPpo2 (BUG-64)")
 else:
     fail("addExposureToContext still uses diluent ppO2 (BUG-64)")
@@ -5125,6 +5125,33 @@ if "usableL === 0" in js.split("if (short)", 1)[-1][:600]:
     ok("gas shortage widget shows no-usable-gas when usableL=0 (issue #99 L-2)")
 else:
     fail("gas shortage widget missing usableL===0 guard (issue #99 L-2)")
+
+# ── issue #101 fixes ──
+if "forcedOCMode: !!forcedOCModeAtStart" in vpm_core_95 and "function runContinuationSchedule" in vpm_core_95:
+    _rcs = vpm_core_95.split("function runContinuationSchedule", 1)[-1][:500]
+    if "forcedOCAtStart" in _rcs and "appendLevelHold(ctx, level)" in vpm_core_95:
+        _alh = vpm_core_95.split("function appendLevelHold", 1)[-1][:400]
+        if "if (level.oc) ctx.forcedOCMode = true" in _alh and "ctx.forcedOCMode || nextLevelOffLoop" in _alh:
+            ok("VPM continuation preserves forcedOCMode across levels (issue #101 H-1)")
+        else:
+            fail("VPM appendLevelHold missing persistent forcedOCMode (issue #101 H-1)")
+    else:
+        fail("VPM runContinuationSchedule missing forcedOCAtStart propagation (issue #101 H-1)")
+else:
+    fail("VPM schedule context missing forcedOCMode field (issue #101 H-1)")
+_cnsw = js.split("function calcCnsWidgetExposure", 1)[-1][:3500] if "function calcCnsWidgetExposure" in js else ""
+if "planCnsFromRecompute" in _cnsw and "vpmPerDiveCns" in _cnsw:
+    ok("calcCnsWidgetExposure separates carry from per-dive CNS (issue #101 H-2)")
+else:
+    fail("calcCnsWidgetExposure still mis-accounts repetitive CNS carry (issue #101 H-2)")
+if "'gasMix'" in js.split("DECO_FIELDS:", 1)[-1][:800] and "'customO2'" in js.split("DECO_FIELDS:", 1)[-1][:800]:
+    ok("gasMix and customO2 in DECO_FIELDS (issue #101 M-1)")
+else:
+    fail("gasMix/customO2 missing from DECO_FIELDS (issue #101 M-1)")
+if 'id="customO2" max="100"' in html and "O₂ % (21–100)" in html:
+    ok("custom O2 input range aligned to 21-100% (issue #101 L-1)")
+else:
+    fail("custom O2 input still advertises 21-40% (issue #101 L-1)")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
