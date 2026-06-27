@@ -164,7 +164,9 @@
     }
     let lastRun = -Infinity;
     let lastStopD = Infinity;
+    let sumDur = 0;
     raw.plan.forEach((seg, i) => {
+      sumDur += seg.time || 0;
       if (seg.run != null && seg.run + 1e-9 < lastRun) {
         throw new Error(`${label}: runtime decreased at segment ${i}`);
       }
@@ -175,6 +177,14 @@
         lastStopD = seg.depth;
       }
     });
+    const tr = raw.totalRuntime;
+    const tol = Math.max(0.6, tr * 0.02);
+    if (Number.isFinite(lastRun) && lastRun > -Infinity && Math.abs(lastRun - tr) > tol) {
+      throw new Error(`${label}: final plan run ${lastRun} != totalRuntime ${tr} (tol ${tol})`);
+    }
+    if (Math.abs(sumDur - tr) > tol) {
+      throw new Error(`${label}: plan duration sum ${sumDur} != totalRuntime ${tr} (tol ${tol})`);
+    }
   }
 
   function roundedTtsTol(refTts, cfg) {

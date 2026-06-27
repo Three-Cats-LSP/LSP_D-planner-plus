@@ -5362,10 +5362,10 @@ if "margin <= 5 ? 'var(--red)'" in js and "margin <= 10 ? 'var(--yellow)'" in js
     ok("UDP statusColor uses red ≤5 / yellow ≤10 (issue #108 M-1)")
 else:
     fail("UDP statusColor still has dead yellow branch at margin ≤5 (issue #108 M-1)")
-if "toMMSS(rt * 60)" in js.split("renderVPMResults", 1)[-1][:10000] and "toMMSS(deco * 60)" in js.split("renderVPMResults", 1)[-1][:10000]:
-    ok("VPM plan summary uses toMMSS for run/deco time (issue #108 M-2)")
+if "toMMSS(rt)" in js.split("renderVPMResults", 1)[-1][:10000] and "toMMSS(deco" in js.split("renderVPMResults", 1)[-1][:10000] and "toMMSS(rt * 60)" not in js.split("renderVPMResults", 1)[-1][:10000]:
+    ok("VPM plan summary uses toMMSS with minute values (issue #108 M-2 / #110 H-1)")
 else:
-    fail("VPM plan summary still appends raw minutes with '00\" (issue #108 M-2)")
+    fail("VPM plan summary still double-converts minutes to seconds (issue #110 H-1)")
 _ci108 = open(os.path.join(os.path.dirname(__file__), ".github", "workflows", "ci.yml"), encoding="utf-8").read()
 if "engine-full:" in _ci108 and "needs: [bundle-sync]" in _ci108:
     ok("CI engine-full job depends on bundle-sync (issue #108 M-3)")
@@ -5399,6 +5399,42 @@ if "btAtDepthMin = Math.max(0, level.time - hDescentTime)" in open(os.path.join(
     ok("computeHeadlessCnsOtu subtracts descent from bottom time (issue #108 L-3)")
 else:
     fail("computeHeadlessCnsOtu still double-counts descent in level.time (issue #108 L-3)")
+
+# ── issue #110 fixes ──
+_b110 = open(os.path.join(os.path.dirname(__file__), "tools", "build_zhl_bundle.py"), encoding="utf-8").read()
+if "time: btAtDepthMin" in _b110.split("function mapToEngineReturn", 1)[-1][:1200]:
+    ok("ZHL mapToEngineReturn bottom segment uses time-at-depth only (issue #110 H-2)")
+else:
+    fail("ZHL mapToEngineReturn still assigns full level.time to bottom segment (issue #110 H-2)")
+if ".filter(st => !(st.type === 'ascent' && st.decoTransit))" in _b110:
+    ok("ZHL mapToEngineReturn excludes folded decoTransit ascents (issue #110 H-3)")
+else:
+    fail("ZHL mapToEngineReturn still exports folded MultiDeco transit segments (issue #110 H-3)")
+if "if (seg.decoTransit) return" in _b110.split("computeHeadlessCnsOtu", 1)[-1][:1200]:
+    ok("computeHeadlessCnsOtu skips folded decoTransit segments (issue #110 H-3)")
+else:
+    fail("computeHeadlessCnsOtu still counts folded MultiDeco transit (issue #110 H-3)")
+if "if (s.decoTransit) return" in js.split("function accumulateHeadlessPlanExposure", 1)[-1][:1200]:
+    ok("accumulateHeadlessPlanExposure skips folded decoTransit segments (issue #110 H-3)")
+else:
+    fail("accumulateHeadlessPlanExposure still counts folded MultiDeco transit (issue #110 H-3)")
+if "statusCandidates" in js.split("function calcCNS", 1)[-1][:4500] and "b.sev - a.sev" in js.split("function calcCNS", 1)[-1][:4500]:
+    ok("calcCNS status picks highest-severity condition (issue #110 M-1)")
+else:
+    fail("calcCNS status still ordered by category not severity (issue #110 M-1)")
+if "plan duration sum" in open(os.path.join(os.path.dirname(__file__), "tests", "ccr-differential", "lib", "ccrdiff.js"), encoding="utf-8").read():
+    ok("CCR differential integrity checks plan duration vs totalRuntime (issue #110 L-1)")
+else:
+    fail("CCR differential integrity missing timeline parity checks (issue #110 L-1)")
+if "timeline110" in open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read():
+    ok("engine regression includes timeline110 parity section (issue #110 L-1)")
+else:
+    fail("engine regression missing timeline parity checks (issue #110 L-1)")
+_pkg110 = open(os.path.join(os.path.dirname(__file__), "package.json"), encoding="utf-8").read()
+if '"tar": "^6.2.1"' in _pkg110 and ("issue #110 M-2" in _pkg110 or "_devSecurityNotes" in _pkg110):
+    ok("package.json documents Capacitor tar 6.x dev-only override (issue #110 M-2 acknowledged)")
+else:
+    fail("package.json tar override undocumented (issue #110 M-2)")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):

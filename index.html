@@ -8378,9 +8378,9 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   const vpmTtsMMSS = toMMSS(vpmTtsMin);
   const otuFootColorVPM = (result.totalOTU ?? 0) >= 300 ? 'var(--red)' : (result.totalOTU ?? 0) >= 200 ? 'var(--orange)' : (result.totalOTU ?? 0) >= 100 ? 'var(--yellow)' : 'var(--green)';
   tbody.innerHTML += buildPlanInfoRowHtml({
-    runTime: toMMSS(rt * 60),
+    runTime: toMMSS(rt),
     tts: vpmTtsMMSS,
-    decoTime: toMMSS(deco * 60),
+    decoTime: toMMSS(deco),
     cns: cnsDisp !== '—' ? cnsDisp + '%' : '—',
     otu: otuDisp,
     prt: prtDispVPM,
@@ -10182,6 +10182,7 @@ function accumulateHeadlessPlanExposure(depthM, bt, descentRate, bottomFN2, bott
     plan.push({ type: 'bottom', depth: depthM, time: btAtDepthMin, run: runAccum, o2: o2pct, he: hepct, gas: gasLabel });
   }
   (collapsedSteps || []).forEach(s => {
+    if (s.decoTransit) return; // mdCompatMode: transit folded into stop display
     const dur = typeof s.dur === 'number' ? s.dur : parseFloat(s.dur) || 0;
     if (dur <= 0) return;
     runAccum += dur;
@@ -15206,25 +15207,32 @@ function calcCNS() {
   const pEl = document.getElementById('cnsPPO2');
   pEl.style.color = ppo2 < 1.2 ? 'var(--green)' : ppo2 < 1.4 ? 'var(--yellow)' : ppo2 < 1.6 ? 'var(--orange)' : 'var(--red)';
 
-  // Status message
+  // Status message — pick highest-severity active condition (issue #110 M-1)
   const statusEl  = document.getElementById('cnsStatus');
   const statusTxt = document.getElementById('cnsStatusText');
   let cls = 'c-ok', msg = '';
-
+  const statusCandidates = [];
   if (ppo2 > 1.6) {
-    cls = 'c-dang'; msg = `⛔ ppO2 ${ppo2.toFixed(2)} bar EXCEEDS maximum 1.6 bar! Serious seizure risk. Change gas or depth.`;
+    statusCandidates.push({ sev: 3, cls: 'c-dang', msg: `⛔ ppO2 ${ppo2.toFixed(2)} bar EXCEEDS maximum 1.6 bar! Serious seizure risk. Change gas or depth.` });
   } else if (ppo2 > 1.4) {
-    cls = 'c-warn'; msg = `⚠️ ppO2 ${ppo2.toFixed(2)} bar is above recreational limit (1.4 bar). Technical divers only.`;
-  } else if (otu >= 600) {
-    cls = 'c-dang'; msg = `⛔ OTU ${Math.round(otu)} exceeds 600 (daily NOAA limit). No more diving today.`;
+    statusCandidates.push({ sev: 2, cls: 'c-warn', msg: `⚠️ ppO2 ${ppo2.toFixed(2)} bar is above recreational limit (1.4 bar). Technical divers only.` });
+  }
+  if (otu >= 600) {
+    statusCandidates.push({ sev: 3, cls: 'c-dang', msg: `⛔ OTU ${Math.round(otu)} exceeds 600 (daily NOAA limit). No more diving today.` });
   } else if (otu >= 300) {
-    cls = 'c-warn'; msg = `⚠️ OTU ${Math.round(otu)} exceeds 300 (single-dive NOAA limit). Monitor total exposure.`;
-  } else if (dailyCns >= 100) {
-    cls = 'c-dang'; msg = `⛔ Daily CNS ${dailyCns.toFixed(0)}% exceeds 100% limit. No more diving today.`;
+    statusCandidates.push({ sev: 2, cls: 'c-warn', msg: `⚠️ OTU ${Math.round(otu)} exceeds 300 (single-dive NOAA limit). Monitor total exposure.` });
+  }
+  if (dailyCns >= 100) {
+    statusCandidates.push({ sev: 3, cls: 'c-dang', msg: `⛔ Daily CNS ${dailyCns.toFixed(0)}% exceeds 100% limit. No more diving today.` });
   } else if (singleCns >= 80) {
-    cls = 'c-warn'; msg = `⚠️ Single dive CNS ${singleCns.toFixed(0)}% exceeds 80% limit. Reduce bottom time.`;
+    statusCandidates.push({ sev: 2, cls: 'c-warn', msg: `⚠️ Single dive CNS ${singleCns.toFixed(0)}% exceeds 80% limit. Reduce bottom time.` });
   } else if (singleCns >= 50) {
-    cls = 'c-warn'; msg = `🟡 CNS ${singleCns.toFixed(0)}% - moderate. Monitor total daily exposure.`;
+    statusCandidates.push({ sev: 1, cls: 'c-warn', msg: `🟡 CNS ${singleCns.toFixed(0)}% - moderate. Monitor total daily exposure.` });
+  }
+  if (statusCandidates.length) {
+    statusCandidates.sort((a, b) => b.sev - a.sev);
+    cls = statusCandidates[0].cls;
+    msg = statusCandidates[0].msg;
   } else if (fromPlan && otuFromPlan && !cnsFromPlan) {
     msg = `✅ ppO2 ${ppo2.toFixed(2)} bar - OTU ${Math.round(otu)} from last plan (incl. deco); CNS ${singleCns.toFixed(0)}% from widget inputs.`;
   } else if (fromPlan) {

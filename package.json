@@ -23,5 +23,8 @@
   },
   "overrides": {
     "tar": "^6.2.1"
+  },
+  "_devSecurityNotes": {
+    "tarOverride": "Capacitor CLI 6.x requires tar 6.x (7.x breaks extract). Dev/build-only; see issue #110 M-2."
   }
 }

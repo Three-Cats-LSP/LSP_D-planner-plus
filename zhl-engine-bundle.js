@@ -1333,6 +1333,7 @@ function runZhlScheduleCore(params) {
     const btAtDepthMin = Math.max(0, level.time - hDescentTime);
     addHeadlessExposure(hCNSfrac, hOTU, ppO2Bottom, btAtDepthMin);
     (lp.steps || []).forEach(seg => {
+      if (seg.decoTransit) return; // mdCompatMode: transit folded into stop display
       const d = seg.depth != null ? seg.depth : (seg.type === 'ascent' ? (seg.from + seg.to) / 2 : 0);
       const fHeS = seg.fHe !== undefined ? seg.fHe : fHebot;
       const fO2s = seg.fN2 !== undefined ? Math.max(0, 1 - seg.fN2 - fHeS) : fO2bot;
@@ -1350,7 +1351,9 @@ function runZhlScheduleCore(params) {
     const stops = (lp.stops || []).map(st => ({
       depth: st.depth, time: st.dur, gas: st.gas, type: 'stop',
     }));
-    const plan = (lp.steps || []).map(st => ({
+    const plan = (lp.steps || [])
+      .filter(st => !(st.type === 'ascent' && st.decoTransit))
+      .map(st => ({
       type: st.type === 'deco' ? 'stop' : st.type === 'safety' ? 'stop' : st.type,
       depth: st.type === 'ascent' ? st.to : st.depth,
       time: st.dur,
@@ -1361,8 +1364,9 @@ function runZhlScheduleCore(params) {
     }));
     if (plan.length === 0 || plan[0].type !== 'descent') {
       const descentTime = level.depth / (s.descentRate || 20);
+      const btAtDepthMin = Math.max(0, level.time - descentTime);
       const bottomGasLabel = plan.length > 0 ? (plan[0].gas || 'bottom') : 'bottom';
-      plan.unshift({ type: 'bottom', depth: level.depth, time: level.time, run: descentTime + level.time, gas: bottomGasLabel, o2: level.o2, he: level.he || 0 });
+      plan.unshift({ type: 'bottom', depth: level.depth, time: btAtDepthMin, run: descentTime + btAtDepthMin, gas: bottomGasLabel, o2: level.o2, he: level.he || 0 });
       plan.unshift({ type: 'descent', depth: level.depth, time: descentTime, run: descentTime, gas: bottomGasLabel, o2: level.o2, he: level.he || 0 });
     }
     let runAccum = 0;

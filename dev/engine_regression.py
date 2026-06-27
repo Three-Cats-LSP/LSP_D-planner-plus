@@ -358,6 +358,38 @@ ENGINE_SUITE_JS = """
     }
   })();
 
+  // ── J: Issue #110 timeline / formatter contracts ───────────────────────
+  const planParity = r => {
+    const p = r.plan || [];
+    const tr = r.totalRuntime || 0;
+    let sum = 0;
+    let lastRun = 0;
+    for (const seg of p) {
+      sum += seg.time || 0;
+      if (seg.run != null) lastRun = seg.run;
+    }
+    const tol = Math.max(0.6, tr * 0.02);
+    return { tr, sum, lastRun, ok: Math.abs(lastRun - tr) <= tol && Math.abs(sum - tr) <= tol };
+  };
+  out.sections.timeline110 = {
+    zhl4025: planParity(zhl(air40, [])),
+    zhl3025: planParity(zhl(lv(30, 25, 21, 0), [])),
+    schreiner: planParity(zhl(air40, [], { mdCompatMode: false })),
+    toMMSSvpm: (() => {
+      const rt = 61;
+      const s = typeof toMMSS === 'function' ? toMMSS(rt) : '';
+      const mins = parseInt(String(s).split("'")[0], 10);
+      return { s, mins, ok: mins >= 60 && mins <= 62 };
+    })(),
+    bottomNoDoubleDescent: (() => {
+      const r = zhl(air40, []);
+      const bot = (r.plan || []).find(s => s.type === 'bottom');
+      const descentTime = 40 / 20;
+      const expectBottom = Math.max(0, 25 - descentTime);
+      return { bottomTime: bot?.time, expectBottom, ok: bot && Math.abs(bot.time - expectBottom) < 0.1 };
+    })(),
+  };
+
   return out;
 }
 """
@@ -490,6 +522,12 @@ def run_suite(page) -> dict:
 
     gm = s["gasMod"]
     assert_true(gm.get("ok"), "updateGasMODDisplays bot MOD matches calcGasMOD formula", str(gm))
+
+    t110 = s.get("timeline110", {})
+    assert_true(t110.get("toMMSSvpm", {}).get("ok"), "toMMSS accepts minutes not seconds (issue #110 H-1)", str(t110.get("toMMSSvpm")))
+    assert_true(t110.get("bottomNoDoubleDescent", {}).get("ok"), "ZHL headless bottom excludes descent time (issue #110 H-2)", str(t110.get("bottomNoDoubleDescent")))
+    for key in ("zhl4025", "zhl3025", "schreiner"):
+        assert_true(t110.get(key, {}).get("ok"), f"ZHL plan timeline parity {key} (issue #110 H-3/L-1)", str(t110.get(key)))
 
     print("\n── G: Worker parity ──")
     worker = page.evaluate(WORKER_SUITE_JS)
