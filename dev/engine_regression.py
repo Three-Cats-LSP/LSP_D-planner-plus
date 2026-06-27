@@ -95,10 +95,13 @@ ENGINE_SUITE_JS = """
     fresh: vpm(wLv, [], { ...wBase, waterType: 1 }, 'VPMB'),
     en13319: vpm(wLv, [], { ...wBase, waterType: 2 }, 'VPMB'),
     custom: vpm(wLv, [], {
-      ...wBase, waterType: 3, barPerM: (1030 * 9.80665) / 100000,
+      ...wBase, waterType: 3, barPerM: (1025 * 9.80665) / 100000,
     }, 'VPMB'),
     customBarOnly: vpm(wLv, [], {
       ...wBase, waterType: 3, barPerM: 0.10052,
+    }, 'VPMB'),
+    customDensity: vpm(wLv, [], {
+      ...wBase, waterType: 3, customWaterDensity: 1025,
     }, 'VPMB'),
   };
 
@@ -293,6 +296,12 @@ def run_suite(page) -> dict:
         w["customBarOnly"].get("totalRuntime"),
         0.5,
         "VPM custom waterType 3 barPerM consistent",
+    )
+    assert_near(
+        w["customDensity"].get("totalRuntime"),
+        w["customBarOnly"].get("totalRuntime"),
+        0.5,
+        "VPM customWaterDensity fallback matches barPerM",
     )
 
     zr = s["zhlRep"]
