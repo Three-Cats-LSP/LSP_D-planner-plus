@@ -159,7 +159,14 @@ function getCCRInertSchreinerParams(pAmbStart, setpoint, fO2, fHe, pressureRate,
     };
   }
   if (!setpoint || setpoint <= 0 || pAmbStart <= setpoint + WATER_VAPOR) {
-    return { inspN2Start: 0, inspHeStart: 0, rN2: 0, rHe: 0 };
+    const fN2d = Math.max(0, 1 - fO2 - fHe);
+    const ppH2O = WATER_VAPOR;
+    return {
+      inspN2Start: (pAmbStart - ppH2O) * fN2d,
+      inspHeStart: (pAmbStart - ppH2O) * fHe,
+      rN2: fN2d * pressureRate,
+      rHe: fHe * pressureRate,
+    };
   }
   const den = Math.max(0.001, 1 - fO2);
   const fN2d = Math.max(0, 1 - fO2 - fHe);

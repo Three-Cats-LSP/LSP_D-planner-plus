@@ -4421,6 +4421,7 @@ function setAlgo(a) {
   window._lastPlan = null;
   _lastVPMResult = null;
   window._lastContingency = null;
+  window._lastVPMExport = null;
   // multiResult removed — multi dive now renders into #unifiedDivePlan
 
   if (isTools) {
@@ -4851,6 +4852,7 @@ function setDecoAlgorithm(model, skipSave) {
   window._lastPlan = null;
   _lastVPMResult = null;
   window._lastContingency = null;
+  window._lastVPMExport = null;
 
   if (!skipSave && typeof appSettings !== 'undefined' && appSettings.save) {
     setTimeout(() => appSettings.save(false), 100);
@@ -6363,7 +6365,7 @@ function getCcrMetabolicO2Rate(ccr) {
   return v > 0 ? v : 1.5;
 }
 
-function computePSCRFractions(pAmb, fO2, fHe, runtimeMin, ccr) {
+function computePSCRFractions(pAmb, fO2, fHe, ccr) {
   fO2 = Math.max(0, Math.min(1, fO2 || 0));
   fHe = Math.max(0, Math.min(1 - fO2, fHe || 0));
   const fN2src = Math.max(0, 1 - fO2 - fHe);
@@ -6371,11 +6373,10 @@ function computePSCRFractions(pAmb, fO2, fHe, runtimeMin, ccr) {
   if (sourceInert <= 0.001 && fO2 >= 0.999) return { fO2: 1, fHe: 0, fN2: 0 };
   const loopVol = ccr.scrLoopVolume || 7.0;
   const metO2 = getCcrMetabolicO2Rate(ccr);
-  const o2Consumed = metO2 * Math.max(0, runtimeMin || 0);
-  const loopO2BarLiters = fO2 * loopVol * pAmb;
-  const minLoopO2BarLiters = PSCR_MIN_PPO2 * loopVol;
-  const newLoopO2 = Math.max(minLoopO2BarLiters, loopO2BarLiters - o2Consumed);
-  const newFO2 = Math.min(0.999, newLoopO2 / Math.max(0.001, loopVol * pAmb));
+  const ppO2Drop = metO2 / loopVol;
+  const ppO2Supply = fO2 * pAmb;
+  const newPpO2 = Math.max(PSCR_MIN_PPO2, ppO2Supply - ppO2Drop);
+  const newFO2 = Math.min(0.999, newPpO2 / Math.max(0.001, pAmb));
   const inertTotal = Math.max(0, 1 - newFO2);
   const heShare = fHe / sourceInert;
   const n2Share = fN2src / sourceInert;
@@ -6394,7 +6395,7 @@ function getInspiredInertPressures(pAmb, setpoint, fO2, fHe, ccr) {
     return { pN2: (pAmb - ppH2O) * fN2, pHe: (pAmb - ppH2O) * fHe, fO2, fHe, fN2 };
   }
   if (cfg.circuit === 'pSCR') {
-    const fr = computePSCRFractions(pAmb, fO2, fHe, cfg.scrRuntimeMin, cfg);
+    const fr = computePSCRFractions(pAmb, fO2, fHe, cfg);
     return {
       pN2: (pAmb - ppH2O) * fr.fN2,
       pHe: (pAmb - ppH2O) * fr.fHe,
@@ -6434,9 +6435,9 @@ function getCCRInertSchreinerParams(pAmbStart, setpoint, fO2, fHe, pressureRate,
     };
   }
   if (cfg.circuit === 'pSCR') {
-    const fr0 = computePSCRFractions(pAmbStart, fO2, fHe, cfg.scrRuntimeMin, cfg);
+    const fr0 = computePSCRFractions(pAmbStart, fO2, fHe, cfg);
     const pEnd = pAmbStart + pressureRate * 1;
-    const fr1 = computePSCRFractions(pEnd, fO2, fHe, cfg.scrRuntimeMin, cfg);
+    const fr1 = computePSCRFractions(pEnd, fO2, fHe, cfg);
     const ppH2O = WATER_VAPOR;
     const inspN2Start = (pAmbStart - ppH2O) * fr0.fN2;
     const inspHeStart = (pAmbStart - ppH2O) * fr0.fHe;
@@ -6448,7 +6449,14 @@ function getCCRInertSchreinerParams(pAmbStart, setpoint, fO2, fHe, pressureRate,
     };
   }
   if (!setpoint || setpoint <= 0 || pAmbStart <= setpoint + WATER_VAPOR) {
-    return { inspN2Start: 0, inspHeStart: 0, rN2: 0, rHe: 0 };
+    const fN2d = Math.max(0, 1 - fO2 - fHe);
+    const ppH2O = WATER_VAPOR;
+    return {
+      inspN2Start: (pAmbStart - ppH2O) * fN2d,
+      inspHeStart: (pAmbStart - ppH2O) * fHe,
+      rN2: fN2d * pressureRate,
+      rHe: fHe * pressureRate,
+    };
   }
   const den = Math.max(0.001, 1 - fO2);
   const fN2d = Math.max(0, 1 - fO2 - fHe);
@@ -6515,7 +6523,7 @@ function getEffectivePpo2(pAmb, setpoint, fO2, ccr, depthM, fHe) {
   if (cfg.bailout || !isRebreatherCircuit(cfg.circuit)) return fO2 * pAmb;
   if (cfg.circuit === 'pSCR') {
     const fHeVal = fHe != null ? fHe : 0;
-    const fr = computePSCRFractions(pAmb, fO2, fHeVal, cfg.scrRuntimeMin, cfg);
+    const fr = computePSCRFractions(pAmb, fO2, fHeVal, cfg);
     return Math.max(PSCR_MIN_PPO2, fr.fO2 * pAmb);
   }
   const depthFromAmb = depthM != null ? depthM : (pAmb - altSurfaceP) / BAR_PER_METRE;
@@ -6949,7 +6957,7 @@ function ceiling(tissues, gfHigh) {
 // GF Lo/Hi — same dive at GF30/70 and GF50/80 must report the same decozone start.
 // Matches MultiDeco/DiveKit's published "decozone" definition exactly.
 // Surface GF — maximum tissue loading ratio vs M-value at surface pressure.
-// Formula (tl5915 / Baker): surfGF_i = (pN2+pHe - P_surf) / (a_i + P_surf/b_i - P_surf)
+// Formula (tl5915 / Baker): surfGF_i = (pN2+pHe - P_surf) / (a_i + P_surf/b_i)
 // where P_surf = altSurfaceP (actual surface ambient — altitude-aware). Returns 0–100+ as a percentage.
 // Negative values (all tissues undersaturated at surface) are clamped to 0.
 function computeSurfaceGF(tissues) {
@@ -6967,7 +6975,7 @@ function computeSurfaceGF(tissues) {
     } else {
       [, a, b] = ZHL16C[i];
     }
-    const mValue = a + P_surf / b - P_surf; // M-value denominator at surface
+    const mValue = a + P_surf / b; // M-value denominator at surface (Baker M0 = a + P/b)
     if (mValue <= 0) return;
     const gf = (pTotal - P_surf) / mValue;
     if (gf > maxGF) maxGF = gf;
@@ -8058,7 +8066,7 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
   }
 
   // ── Feature B: save dive result for next repetitive dive ───────────────────────
-  if (result.finalTissues && !window._contingencyRunning) {
+  if (result.finalTissues && !_contingencyRunning) {
     _lastVPMResult = {
       finalTissues:    result.finalTissues,
       finalBubbleState: result.finalBubbleState,
@@ -8552,7 +8560,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
     const hasDeco = (result.stops || []).some(s => s.time > 0);
     updateDecoSummaryHtml(hasDeco, endMvpm, '');
   }
-  if (result.finalTissues && result.finalTissues.length && !window._contingencyRunning) {
+  if (result.finalTissues && result.finalTissues.length && !_contingencyRunning) {
     updateTissueViz(result.finalTissues, mGF.high);
   }
 }
@@ -9401,10 +9409,10 @@ function runDecoSchedule() {
             const midTis = s.type === 'ascent'
               ? (_zhlOnLoop
                 ? zhlLoadLinear([...cTissues2], s.from, s.to, partDur, bottomFO2, bottomFHe, true)
-                : saturateLinear([...cTissues2], s.from, s.to, partDur, s.fN2 || bottomFN2, s.fHe !== undefined ? s.fHe : bottomFHe))
+                : saturateLinear([...cTissues2], s.from, s.to, partDur, s.fN2 != null ? s.fN2 : bottomFN2, s.fHe !== undefined ? s.fHe : bottomFHe))
               : (_zhlOnLoop
                 ? zhlLoadConst([...cTissues2], s.depth || 0, partDur, bottomFO2, bottomFHe, true)
-                : saturate([...cTissues2], s.depth || 0, partDur, s.fN2 || bottomFN2, s.fHe !== undefined ? s.fHe : bottomFHe));
+                : saturate([...cTissues2], s.depth || 0, partDur, s.fN2 != null ? s.fN2 : bottomFN2, s.fHe !== undefined ? s.fHe : bottomFHe));
             const gfMid = gfAt ? gfAt(s.type === 'ascent' ? (s.from + (s.to - s.from) * frac) : (s.depth || 0)) : gfH;
             ceilWps.push({ t: walkT + partDur, ceil: Math.max(0, ceiling(midTis, gfMid)) });
           }
@@ -9412,11 +9420,11 @@ function runDecoSchedule() {
         if (s.type === 'ascent') {
           cTissues2 = _zhlOnLoop
             ? zhlLoadLinear(cTissues2, s.from, s.to, s.dur, bottomFO2, bottomFHe, true)
-            : saturateLinear(cTissues2, s.from, s.to, s.dur, s.fN2 || bottomFN2, s.fHe !== undefined ? s.fHe : bottomFHe);
+            : saturateLinear(cTissues2, s.from, s.to, s.dur, s.fN2 != null ? s.fN2 : bottomFN2, s.fHe !== undefined ? s.fHe : bottomFHe);
         } else {
           cTissues2 = _zhlOnLoop
             ? zhlLoadConst(cTissues2, s.depth || 0, s.dur, bottomFO2, bottomFHe, true)
-            : saturate(cTissues2, s.depth || 0, s.dur, s.fN2 || bottomFN2, s.fHe !== undefined ? s.fHe : bottomFHe);
+            : saturate(cTissues2, s.depth || 0, s.dur, s.fN2 != null ? s.fN2 : bottomFN2, s.fHe !== undefined ? s.fHe : bottomFHe);
         }
         walkT += s.dur;
       }
@@ -10555,7 +10563,7 @@ function runUnifiedPlan() {
     let testT  = tissues.slice();
     for (let t = 1; t <= 200; t++) {
       testT = loadAtDepth(testT, dM, 1);
-      if (ceiling(testT, mGF.high / 100) > 0.5) break;
+      if (ceiling(testT, mGF.low / 100) > 0.5) break;
       effNDL = t;
     }
     // Cap display at 90
@@ -10664,6 +10672,7 @@ const CNS_DAILY_LIMITS = {
 };
 
 function getCNSDailyLimit(ppo2) {
+  if (ppo2 >= 1.6) return CNS_DAILY_LIMITS[16] || 150;
   const key = Math.round(ppo2 * 10);
   if (key < 6) return Infinity;
   if (key >= 16) return CNS_DAILY_LIMITS[16] || 150;
@@ -10679,6 +10688,7 @@ function getCNSLimit(ppo2) {
   const key = Math.round(ppo2 * 10);
   if (key < 6) return Infinity;
   if (key > 16) return 0;
+  if (key >= 16) return CNS_LIMITS[16] || 45;
   // Interpolate between table entries
   const lo = Math.floor(ppo2 * 10);
   const hi = lo + 1;
@@ -14887,7 +14897,7 @@ function calcCnsWidgetExposure(bottomOtu, bottomSingleCns, dailyBottomCns, botFr
   if (lp?.totalOTU != null && isFinite(lp.totalOTU)) planOtu = lp.totalOTU;
   if (lp?.totalCNS != null) {
     const stored = parseFloat(lp.totalCNS);
-    if (isFinite(stored)) planCns = stored;
+    if (isFinite(stored) && planCns == null) planCns = stored;
   }
 
   if (planOtu != null || planCns != null) {
@@ -16351,6 +16361,8 @@ var appSettings = {
     'dg1Mix', 'dg1CustomO2', 'dg2Mix', 'dg2CustomO2',
     'dg1TrimixO2', 'dg1TrimixHe', 'dg2TrimixO2', 'dg2TrimixHe',
     'vpmRepMode', 'vpmSurfaceInterval',
+    'priorDiveDays', 'priorDiveHours', 'priorDiveMinutes', 'priorDiveOTU', 'priorDiveCNS',
+    'travelGasMix', 'travelGasCustomO2', 'travelGasSwitchMode', 'travelGasManualDepth',
     'sacBottom', 'sacDeco',
     'cylBot_size', 'cylBot_pres', 'cylBot_reserve',
     'cylDg1_size', 'cylDg1_pres', 'cylDg1_reserve',

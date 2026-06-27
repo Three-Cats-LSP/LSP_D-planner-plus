@@ -130,10 +130,18 @@ self.addEventListener('fetch', event => {
           }
           return response;
         })
-        .catch(() => {
-          // Network failed — serve cached version as offline fallback
-          return caches.match(event.request, { ignoreSearch: true })
-            .then(cached => cached || caches.match(OFFLINE_INDEX, { ignoreSearch: true }));
+        .catch(async () => {
+          const cached = await caches.match(event.request, { ignoreSearch: true });
+          if (cached) return cached;
+          if (event.request.mode === 'navigate' || event.request.destination === 'document') {
+            const offline = await caches.match(OFFLINE_INDEX, { ignoreSearch: true });
+            if (offline) return offline;
+          }
+          return new Response('Offline — asset unavailable', {
+            status: 503,
+            statusText: 'Offline',
+            headers: { 'Content-Type': 'text/plain' },
+          });
         })
     );
     return;
@@ -153,7 +161,17 @@ self.addEventListener('fetch', event => {
             }
             return response;
           })
-          .catch(() => caches.match(OFFLINE_INDEX, { ignoreSearch: true }));
+          .catch(async () => {
+            if (event.request.mode === 'navigate' || event.request.destination === 'document') {
+              const offline = await caches.match(OFFLINE_INDEX, { ignoreSearch: true });
+              if (offline) return offline;
+            }
+            return new Response('Offline — asset unavailable', {
+              status: 503,
+              statusText: 'Offline',
+              headers: { 'Content-Type': 'text/plain' },
+            });
+          });
       })
   );
 });

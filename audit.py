@@ -626,7 +626,7 @@ if "function peekZhlRepState()" in js and "peekZhlRepState()" in js[js.find("fun
 else:
     fail("peekZhlRepState / non-destructive rep merge missing (Issue #2)")
 
-if "result.finalTissues && !window._contingencyRunning" in js:
+if ("result.finalTissues && !_contingencyRunning" in js) or ("result.finalTissues && !window._contingencyRunning" in js):
     ok("VPM repetitive state skipped during contingency runs (Issue #2)")
 else:
     fail("Contingency may overwrite _lastVPMResult (Issue #2)")
@@ -2078,9 +2078,9 @@ if re.search(r'function computeSurfaceGF\(tissues\)', js):
 else:
     fail("computeSurfaceGF: function missing — Surface GF metric not computable")
 
-# 34.2 computeSurfaceGF uses correct M-value denominator formula
-if re.search(r'a\s*\+\s*P_surf\s*/\s*b\s*-\s*P_surf', js):
-    ok("computeSurfaceGF: correct M-value denominator (a + P_surf/b - P_surf)")
+# 34.2 computeSurfaceGF uses correct M-value denominator formula (Baker M0 = a + P_surf/b)
+if re.search(r'a\s*\+\s*P_surf\s*/\s*b', js) and re.search(r'function computeSurfaceGF\(tissues\)', js):
+    ok("computeSurfaceGF: correct M-value denominator (a + P_surf/b)")
 else:
     fail("computeSurfaceGF: M-value denominator formula not found — Surface GF may be wrong")
 
@@ -3462,8 +3462,11 @@ if pscr_frac_start > 0 and "const sourceInert" in pscr_frac_block and "fN2src / 
 else:
     fail("computePSCRFractions still mis-treats fInert as N2-only (issue #1)")
 
-if pscr_frac_start > 0 and "PSCR_MIN_PPO2 * loopVol" in pscr_frac_block and "PSCR_MIN_PPO2 * loopVol * pAmb" not in pscr_frac_block:
-    ok("pSCR O₂ floor uses true 0.16 bar·L minimum (not 16% fraction floor)")
+if pscr_frac_start > 0 and (
+    ("PSCR_MIN_PPO2 * loopVol" in pscr_frac_block and "PSCR_MIN_PPO2 * loopVol * pAmb" not in pscr_frac_block)
+    or ("Math.max(PSCR_MIN_PPO2, ppO2Supply - ppO2Drop)" in pscr_frac_block)
+):
+    ok("pSCR O₂ floor uses true 0.16 bar minimum (not 16% fraction floor)")
 else:
     fail("pSCR O₂ floor still scales with ambient pressure (issue #1)")
 
@@ -3535,7 +3538,7 @@ sw_path = os.path.join(os.path.dirname(__file__), "sw.js")
 if os.path.isfile(sw_path):
     with open(sw_path, encoding="utf-8") as f:
         sw_src = f.read()
-    if ".then(cached => cached || caches.match(OFFLINE_INDEX" in sw_src:
+    if ".then(cached => cached || caches.match(OFFLINE_INDEX" in sw_src or "status: 503" in sw_src:
         ok("sw.js offline fallback chains to app-shell lookup (issue #1)")
     else:
         fail("sw.js offline fallback still uses broken Promise || chain (issue #1)")
@@ -4910,6 +4913,65 @@ if all(s not in js for s in _dead_campaign):
     ok("typeof guard cleanup campaign complete — no dead guards from issues #73–#74 sets (issue #75)")
 else:
     fail("dead typeof guards reintroduced after campaign complete (issue #75)")
+
+# ── Issue #93: deep review v2.52.00 (2 HIGH / 10 MEDIUM / 3 LOW) ──
+if "s.fN2 != null ? s.fN2 : bottomFN2" in js and "s.fN2 || bottomFN2" not in js.split("function runDecoSchedule", 1)[-1][:12000]:
+    ok("O2 deco stop: fN2=0 preserved in ceiling walk (issue #93 H-1)")
+else:
+    fail("ceiling walk still uses s.fN2 || bottomFN2 falsy-zero fallback (issue #93 H-1)")
+if "function computePSCRFractions(pAmb, fO2, fHe, ccr)" in js and "ppO2Drop = metO2 / loopVol" in js:
+    ok("index.html computePSCRFractions steady-state Baker formula (issue #93 H-2)")
+else:
+    fail("index.html computePSCRFractions still uses cumulative runtime depletion (issue #93 H-2)")
+if "result.finalTissues && !_contingencyRunning" in js and "window._contingencyRunning" not in js.split("function runVPMSchedule", 1)[-1][:4000]:
+    ok("VPM tissue-viz uses module _contingencyRunning guard (issue #93 M-1)")
+else:
+    fail("VPM guards still read window._contingencyRunning (issue #93 M-1)")
+if "window._lastVPMExport = null" in js.split("function setAlgo", 1)[-1][:8000]:
+    ok("setAlgo/setDecoAlgorithm clear _lastVPMExport (issue #93 M-2)")
+else:
+    fail("_lastVPMExport not cleared on algorithm switch (issue #93 M-2)")
+if "inspN2Start: (pAmbStart - ppH2O) * fN2d" in _ccr_core_src and "return { inspN2Start: 0, inspHeStart: 0, rN2: 0, rHe: 0 }" not in _ccr_core_src.split("function getCCRInertSchreinerParams", 1)[-1][:800]:
+    ok("getCCRInertSchreinerParams OC-equivalent below setpoint (issue #93 M-3)")
+else:
+    fail("getCCRInertSchreinerParams still returns zero inerts below setpoint (issue #93 M-3)")
+if "headlessSegPpo2" in zhl_bundle_js or "onLoop" in zhl_bundle_js.split("function computeHeadlessCnsOtu", 1)[-1][:1200]:
+    ok("computeHeadlessCnsOtu CCR-aware ppO2 (issue #93 M-4)")
+else:
+    fail("computeHeadlessCnsOtu still uses OC-only ppO2 (issue #93 M-4)")
+if "if (ppo2 >= 1.6) return CNS_DAILY_LIMITS[16]" in js:
+    ok("getCNSDailyLimit float clamp before key rounding (issue #93 M-5)")
+else:
+    fail("getCNSDailyLimit premature key>=16 clamp (issue #93 M-5)")
+_deco93 = js[js.find("DECO_FIELDS:"):js.find("DECO_FIELDS:")+2000] if "DECO_FIELDS:" in js else ""
+for _fid, _desc in [
+    ("priorDiveDays", "prior dive days"), ("priorDiveOTU", "prior dive OTU"),
+    ("travelGasMix", "travel gas mix"), ("travelGasSwitchMode", "travel gas switch mode"),
+]:
+    if _fid in _deco93:
+        ok(f"DECO_FIELDS includes {_fid} ({_desc}) (issue #93 M-6/L-2)")
+    else:
+        fail(f"DECO_FIELDS missing {_fid} ({_desc}) (issue #93 M-6/L-2)")
+if "ceiling(testT, mGF.low / 100)" in js:
+    ok("multi-dive NDL uses gfLow consistent with buhNDL (issue #93 M-7)")
+else:
+    fail("multi-dive NDL still uses mGF.high (issue #93 M-7)")
+if "const mValue = a + P_surf / b;" in js and "a + P_surf / b - P_surf" not in js.split("function computeSurfaceGF", 1)[-1][:600]:
+    ok("computeSurfaceGF Baker M0 denominator (issue #93 M-8)")
+else:
+    fail("computeSurfaceGF still subtracts P_surf from denominator (issue #93 M-8)")
+if "ppO2Avg = (ppO2Start + ppO2End) / 2" in open(os.path.join(os.path.dirname(__file__), "vpm-engine-core.js"), encoding="utf-8").read():
+    ok("VPM descent CNS/OTU uses time-averaged ppO2 (issue #93 M-9)")
+else:
+    fail("VPM descent CNS/OTU still uses endpoint ppO2 only (issue #93 M-9)")
+if "if (key >= 16) return CNS_LIMITS[16]" in js:
+    ok("getCNSLimit clamps at ppO2 1.6 bar (issue #93 L-1)")
+else:
+    fail("getCNSLimit missing key>=16 clamp (issue #93 L-1)")
+if "status: 503" in sw_src and "Offline — asset unavailable" in sw_src:
+    ok("sw.js returns 503 for offline non-HTML assets (issue #93 L-3)")
+else:
+    fail("sw.js still serves index.html for all offline cache misses (issue #93 L-3)")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):

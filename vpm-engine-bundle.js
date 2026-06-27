@@ -1380,10 +1380,13 @@ const VPMEngine = (() => {
                 settings._scrRuntimeMin = runtime;
                 const descTime = loadTissuesLinear(state, currentDepth, depth, descentRate, o2Frac, heFrac, settings, sp);
                 runtime += descTime;
+                const pAmbStart = getAmbientPressure(currentDepth, settings);
                 const pAmbEnd = getAmbientPressure(depth, settings);
-                const ppO2D = vpmAccumPpo2(pAmbEnd, sp, o2Frac, heFrac, settings, depth, forcedOCMode || nextLevelOffLoop);
-                totalOTU += calculateOTU(ppO2D, descTime);
-                totalCNS += calculateCNS(ppO2D, descTime);
+                const ppO2Start = vpmAccumPpo2(pAmbStart, sp, o2Frac, heFrac, settings, currentDepth, forcedOCMode || nextLevelOffLoop);
+                const ppO2End = vpmAccumPpo2(pAmbEnd, sp, o2Frac, heFrac, settings, depth, forcedOCMode || nextLevelOffLoop);
+                const ppO2Avg = (ppO2Start + ppO2End) / 2;
+                totalOTU += calculateOTU(ppO2Avg, descTime);
+                totalCNS += calculateCNS(ppO2Avg, descTime);
                 plan.push({
                     type: 'descent', startDepth: currentDepth, endDepth: depth,
                     time: Math.round(descTime * 10) / 10,

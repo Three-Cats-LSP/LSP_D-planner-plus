@@ -342,7 +342,7 @@ const SECTIONS = [
     () => {
       const fO2 = fO2frac(sc.o2);
       const ref = refBottomPhase(sc);
-      const fr = WIN.computePSCRFractions(pAmb(sc.depth), fO2, sc.he / 100, ref.rt, ccrAtRuntime(ref.rt));
+      const fr = WIN.computePSCRFractions(pAmb(sc.depth), fO2, sc.he / 100, ccrAtRuntime(ref.rt));
       const expected = Math.max(PSCR_MIN, fr.fO2 * pAmb(sc.depth));
       assert(near(ref.ppLoop, expected, 0.002),
         `loop ppO₂=${ref.ppLoop.toFixed(4)} vs computePSCRFractions ${expected.toFixed(4)}`);
@@ -467,17 +467,16 @@ const SECTIONS = [
   badge: 'badge-pscr',
   desc: 'Trimix diluent fractions must sum to 1.0 at runtime 0 and after metabolic depletion (issue #1).',
   tests: [
-    ['40 m 18/45 — fresh loop preserves diluent fractions', () => {
-      const fr = WIN.computePSCRFractions(pAmb(40), 0.18, 0.45, 0, ccrAtRuntime(0));
+    ['40 m 18/45 — steady-state loop fractions sum to 1', () => {
+      const fr = WIN.computePSCRFractions(pAmb(40), 0.18, 0.45, ccrAtRuntime(0));
       const sum = fr.fO2 + fr.fHe + fr.fN2;
       assert(near(sum, 1, 0.001), `sum=${sum}`);
-      assert(near(fr.fO2, 0.18, 0.001), `fO2=${fr.fO2}`);
-      assert(near(fr.fHe, 0.45, 0.001), `fHe=${fr.fHe}`);
-      assert(near(fr.fN2, 0.37, 0.001), `fN2=${fr.fN2}`);
-      return `18/45/37 at runtime 0 ✓`;
+      assert(fr.fO2 < 0.18, `fO2=${fr.fO2} should be below supply due to Baker drop`);
+      assert(near(fr.fHe, 0.45 * (fr.fHe + fr.fN2), 0.02), `He share preserved in inerts`);
+      return `steady-state 18/45/37 proportions ✓`;
     }],
-    ['40 m 18/45 @ 4 bar — depleted fractions still sum to 1', () => {
-      const fr = WIN.computePSCRFractions(4.0, 0.18, 0.45, 30, ccrAtRuntime(30));
+    ['4 bar ambient — steady-state fractions still sum to 1', () => {
+      const fr = WIN.computePSCRFractions(4.0, 0.18, 0.45, ccrAtRuntime(30));
       const sum = fr.fO2 + fr.fHe + fr.fN2;
       assert(near(sum, 1, 0.001), `sum=${sum} (pre-fix was ~2.0)`);
       return `sum=${sum.toFixed(4)} ✓`;

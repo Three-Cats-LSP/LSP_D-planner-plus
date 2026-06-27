@@ -118,7 +118,7 @@
       } else {
         [, a, b] = ZHL16C[i];
       }
-      const mValue = a + P_surf / b - P_surf;
+      const mValue = a + P_surf / b;
       if (mValue <= 0) return;
       const gf = (pTotal - P_surf) / mValue;
       if (gf > maxGF) maxGF = gf;
@@ -294,7 +294,14 @@ function getCCRInertSchreinerParams(pAmbStart, setpoint, fO2, fHe, pressureRate,
     };
   }
   if (!setpoint || setpoint <= 0 || pAmbStart <= setpoint + WATER_VAPOR) {
-    return { inspN2Start: 0, inspHeStart: 0, rN2: 0, rHe: 0 };
+    const fN2d = Math.max(0, 1 - fO2 - fHe);
+    const ppH2O = WATER_VAPOR;
+    return {
+      inspN2Start: (pAmbStart - ppH2O) * fN2d,
+      inspHeStart: (pAmbStart - ppH2O) * fHe,
+      rN2: fN2d * pressureRate,
+      rHe: fHe * pressureRate,
+    };
   }
   const den = Math.max(0.001, 1 - fO2);
   const fN2d = Math.max(0, 1 - fO2 - fHe);
@@ -1260,19 +1267,43 @@ function runZhlScheduleCore(params) {
     }
   }
 
+  function headlessSegPpo2(depthM, fO2, fHe, s) {
+    const pAmb = altSurfaceP + depthM * BAR_PER_METRE;
+    const cfg = normalizeCCRSettings(s);
+    if (!isRebreatherCircuit(cfg.circuit) || cfg.bailout) return fO2 * pAmb;
+    if (cfg.circuit === 'pSCR') {
+      const fr = computePSCRFractions(pAmb, fO2, fHe, cfg);
+      return Math.max(PSCR_MIN_PPO2, fr.fO2 * pAmb);
+    }
+    const sp = getEffectiveSetpointAtDepth(depthM, cfg, altSurfaceP);
+    return Math.min(pAmb, Math.max(sp, fO2 * pAmb));
+  }
+
   function computeHeadlessCnsOtu(lp, level, s) {
     if (!lp || lp.totalCNS != null) return;
     const fO2bot = level.o2 / 100;
+    const fHebot = (level.he || 0) / 100;
+    const onLoop = isRebreatherCircuit(s.circuit || 'OC') && !s.bailout;
     const hCNSfrac = { v: 0 };
     const hOTU = { v: 0 };
     const hDescentRate = s.descentRate || 20;
     const hDescentTime = level.depth / hDescentRate;
-    addHeadlessExposure(hCNSfrac, hOTU, (altSurfaceP + (level.depth / 2) * BAR_PER_METRE) * fO2bot, hDescentTime);
-    addHeadlessExposure(hCNSfrac, hOTU, (altSurfaceP + level.depth * BAR_PER_METRE) * fO2bot, level.time);
+    const ppO2DescMid = onLoop
+      ? headlessSegPpo2(level.depth / 2, fO2bot, fHebot, s)
+      : (altSurfaceP + (level.depth / 2) * BAR_PER_METRE) * fO2bot;
+    const ppO2Bottom = onLoop
+      ? headlessSegPpo2(level.depth, fO2bot, fHebot, s)
+      : (altSurfaceP + level.depth * BAR_PER_METRE) * fO2bot;
+    addHeadlessExposure(hCNSfrac, hOTU, ppO2DescMid, hDescentTime);
+    addHeadlessExposure(hCNSfrac, hOTU, ppO2Bottom, level.time);
     (lp.steps || []).forEach(seg => {
       const d = seg.depth != null ? seg.depth : (seg.type === 'ascent' ? (seg.from + seg.to) / 2 : 0);
-      const fO2s = seg.fN2 !== undefined ? Math.max(0, 1 - seg.fN2 - (seg.fHe || 0)) : fO2bot;
-      addHeadlessExposure(hCNSfrac, hOTU, fO2s * (altSurfaceP + d * BAR_PER_METRE), seg.dur || 0);
+      const fHeS = seg.fHe !== undefined ? seg.fHe : fHebot;
+      const fO2s = seg.fN2 !== undefined ? Math.max(0, 1 - seg.fN2 - fHeS) : fO2bot;
+      const ppO2 = onLoop
+        ? headlessSegPpo2(d, fO2s, fHeS, s)
+        : fO2s * (altSurfaceP + d * BAR_PER_METRE);
+      addHeadlessExposure(hCNSfrac, hOTU, ppO2, seg.dur || 0);
     });
     lp.totalCNS = parseFloat((hCNSfrac.v * 100).toFixed(1));
     lp.totalOTU = Math.round(hOTU.v);
