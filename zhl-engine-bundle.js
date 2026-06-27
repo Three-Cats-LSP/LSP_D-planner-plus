@@ -11,7 +11,9 @@
     [109.0,0.3750,0.9092],[146.0,0.3500,0.9222],[187.0,0.3295,0.9319],[239.0,0.3065,0.9403],
     [305.0,0.2835,0.9477],[390.0,0.2610,0.9544],[498.0,0.2480,0.9602],[635.0,0.2327,0.9653],
   ];
-  const ZHL16C_HE_HT = [1.88,3.02,4.72,6.99,10.21,14.48,20.53,29.11,41.20,55.19,70.69,90.34,115.29,147.42,188.24,240.03];
+  const ZHL16C_HE_HT_BAKER = [1.88,3.02,4.72,6.99,10.21,14.48,20.53,29.11,41.20,55.19,70.69,90.34,115.29,147.42,188.24,240.03];
+  const ZHL16C_HE_HT_BUHL2003 = [1.51,3.02,4.72,6.99,10.21,14.48,20.53,29.11,41.20,55.19,70.69,90.34,115.29,147.42,188.24,240.03];
+  let ZHL16C_HE_HT = ZHL16C_HE_HT_BAKER.slice();
   const ZHL16C_HE_AB = [
     [1.7424,0.4245],[1.3830,0.5747],[1.1919,0.6527],[1.0458,0.7223],[0.9220,0.7582],[0.8205,0.7957],
     [0.7305,0.8279],[0.6502,0.8553],[0.5950,0.8757],[0.5545,0.8903],[0.5333,0.8997],[0.5189,0.9073],
@@ -44,6 +46,11 @@
       altAcclimatized: true,
       allowO2AtMOD: true,
     };
+  }
+
+  function setHeHalfTimeMode(mode) {
+    const src = mode === 'buhl2003' ? ZHL16C_HE_HT_BUHL2003 : ZHL16C_HE_HT_BAKER;
+    for (let i = 0; i < 16; i++) ZHL16C_HE_HT[i] = src[i];
   }
 
   function depthBar(m) { return altSurfaceP + m * BAR_PER_METRE; }
@@ -731,7 +738,7 @@ function runZhlScheduleCore(params) {
 
   for (let _zhlPhaseIdx = 0; _zhlPhaseIdx < _zhlAscentFloors.length; _zhlPhaseIdx++) {
   const _zhlAscentFloor = _zhlAscentFloors[_zhlPhaseIdx];
-  firstStopDepth = 0;
+  if (_zhlPhaseIdx === 0) firstStopDepth = 0;
 
   // ── GF anchor: candidate stop list built from ceiling(bottom_tissues, gfL) ──
   // firstStopDepth is NOT pre-computed here — it is anchored dynamically at the
@@ -1259,6 +1266,10 @@ function runZhlScheduleCore(params) {
   function addHeadlessExposure(hCNSfrac, hOTU, ppO2, dur) {
     if (ppO2 > 0.5 && dur > 0) {
       hOTU.v += dur * Math.pow((ppO2 - 0.5) / 0.5, OTU_EXPONENT);
+      if (ppO2 >= 1.6) {
+        hCNSfrac.v += dur / 45;
+        return;
+      }
       const lims = {6:720,7:570,8:450,9:360,10:300,11:240,12:210,13:180,14:150,15:120,16:45};
       const lo = Math.floor(ppO2 * 10), hi = lo + 1;
       const lim = (lims[lo] || 0) + ((lims[hi] || 0) - (lims[lo] || 0)) * (ppO2 * 10 - lo);
@@ -1375,6 +1386,7 @@ function runZhlScheduleCore(params) {
     calculate,
     defaultEnvironment,
     applyEnvironment,
+    setHeHalfTimeMode,
     OTU_EXPONENT,
   };
 

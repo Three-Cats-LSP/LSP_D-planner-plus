@@ -4329,6 +4329,9 @@ function updateHeHalfTime() {
   const src = mode === 'baker' ? ZHL16C_HE_HT_BAKER : ZHL16C_HE_HT_BUHL2003;
   // Update global array in-place (preserves all references)
   for (let i = 0; i < 16; i++) ZHL16C_HE_HT[i] = src[i];
+  if (window.ZhlEngineBundle && typeof ZhlEngineBundle.setHeHalfTimeMode === 'function') {
+    ZhlEngineBundle.setHeHalfTimeMode(mode);
+  }
   // Patch VPMEngine's internal ZHL16C_He[].ht to match (comp [0] differs: 1.88 vs 1.51)
   _vpmHeHtSyncFailed = false;
   if (window.VPMEngine && typeof window.VPMEngine._syncHeHalfTimes === 'function') {
@@ -6228,6 +6231,10 @@ function getN2Frac(mix) {
   return FN2_AIR;
 }
 
+function getHeFrac(mix) {
+  return 0;
+}
+
 function depthBar(m)   { return altSurfaceP + m * BAR_PER_METRE; }
 function schreiner(p0, pGas, ht, t) { return pGas + (p0-pGas) * Math.exp(-Math.LN2/ht*t); }
 
@@ -7056,6 +7063,7 @@ function runPlanner() {
   const gfH = mGF.high;
   const mix = document.getElementById('gasMix').value;
   const fN2 = getN2Frac(mix);
+  const fHe = getHeFrac(mix);
   const dDisp = isMetric ? rawD+' m' : rawD+' ft';
   const stopFt = stopDepthM === 3 ? 10 : 20;
 
@@ -7114,7 +7122,7 @@ function runPlanner() {
   } else {
     // Bühlmann
     let tissues = initTissues();
-    tissues = saturate(tissues, depthM, bt, fN2, 0);  // Planner tab: nitrox only (He=0)
+    tissues = saturate(tissues, depthM, bt, fN2, fHe);
     lastTissues = tissues;
     const gfHF = gfH/100;
     const ndl = buhNDL(depthM, fN2, gfL, gfH);
@@ -7165,17 +7173,20 @@ function runPlanner() {
 }
 
 function safetyStopHTML(depthM, depthFt, dur) {
+  const isMetric = units === 'metric';
+  const depthDisp = isMetric ? `${depthM} m` : `${depthFt} ft`;
+  const rateDisp = isMetric ? '9 m/min' : '30 ft/min';
   const desc = depthM === 3
-    ? '3 m standard safety stop. Ascend at max 9 m/min (30 ft/min) and hold for ' + dur + ' min.'
+    ? `${depthDisp} standard safety stop. Ascend at max ${rateDisp} and hold for ${dur} min.`
     : depthM === 6
-      ? '6 m deep stop: recommended for dives below 30 m. Follow with a standard 3 m stop before surfacing.'
-      : '5 m safety stop. Ascend at max 9 m/min (30 ft/min) and hold for ' + dur + ' min.';
+      ? `${depthDisp} deep stop: recommended for dives below 30 m. Follow with a standard 3 m stop before surfacing.`
+      : `${depthDisp} safety stop. Ascend at max ${rateDisp} and hold for ${dur} min.`;
   return `<div style="background:rgba(38,208,124,0.06);border:1px solid rgba(38,208,124,0.2);border-radius:10px;padding:14px;margin-top:14px;">
     <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;color:var(--green);margin-bottom:10px;">SAFETY STOP</div>
     <div class="stats" style="margin-top:0;">
-      <div class="stat" style="padding:10px;"><div class="stat-val g" style="font-size:22px;">${depthM} m</div><div class="stat-lbl">Safety Stop Depth</div></div>
+      <div class="stat" style="padding:10px;"><div class="stat-val g" style="font-size:22px;">${depthDisp}</div><div class="stat-lbl">Safety Stop Depth</div></div>
       <div class="stat" style="padding:10px;"><div class="stat-val g" style="font-size:22px;">${dur}</div><div class="stat-lbl">Duration (min)</div></div>
-      <div class="stat" style="padding:10px;"><div class="stat-val g" style="font-size:22px;">9 m/min</div><div class="stat-lbl">Max Ascent</div></div>
+      <div class="stat" style="padding:10px;"><div class="stat-val g" style="font-size:22px;">${rateDisp}</div><div class="stat-lbl">Max Ascent</div></div>
     </div>
     <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:10px;line-height:1.5;">${desc}</div>
   </div>`;
@@ -8482,6 +8493,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   // Contingency Plans — re-runs Bühlmann internally, works fine with VPM settings
   const contCard = document.getElementById('contingencyCard');
   if (contCard) contCard.style.display = 'block';
+  { const _cBtn=document.getElementById('contingencyJumpBtn'); if(_cBtn)_cBtn.style.display='inline-block'; }
   buildContingencyButtons();
   const contRes = document.getElementById('contingencyResult');
   if (contRes) contRes.style.display = 'none';
@@ -10684,10 +10696,9 @@ function getCNSDailyLimit(ppo2) {
 }
 
 function getCNSLimit(ppo2) {
+  if (ppo2 < 0.6) return Infinity;
+  if (ppo2 >= 1.6) return CNS_LIMITS[16] || 45;
   const key = Math.round(ppo2 * 10);
-  if (key < 6) return Infinity;
-  if (key > 16) return 0;
-  if (key >= 16) return CNS_LIMITS[16] || 45;
   // Interpolate between table entries
   const lo = Math.floor(ppo2 * 10);
   const hi = lo + 1;
@@ -13298,7 +13309,7 @@ function buildExportText(mode) {
         }
         const dep  = (depRaw.length <= 2 ? depRaw.padStart(3) : depRaw).padEnd(6);
         const stpRaw = c2[2]||'';
-        const stpVal = /^\d+:\d+$/.test(stpRaw) ? stpRaw : '';
+        const stpVal = parseStopDisplayTime(stpRaw);
         const stp  = (stpVal.length > 0 && stpVal.length <= 4 ? stpVal.padStart(5) : stpVal).padEnd(7);
         const mix  = eShortMix(c2[3]||'').padEnd(5);
         const runRaw2 = c2[4]||'';
@@ -13872,7 +13883,7 @@ function buildMessengerText(mode) {
 
     // deco / safety stop
     const dep  = c[1] || '';
-    const stop = /^\d+:\d+$/.test(c[2]) ? c[2] : '';
+    const stop = parseStopDisplayTime(c[2]);
     const run  = c[4] || '';
     const mix  = shortMix(c[3]);
     result.push(`Stp  ${dep}  ${stop}  ${run}  ${mix}`);
@@ -14032,6 +14043,7 @@ function showToast(msg, id, isError) {
 function runContingencyScenario(modifyFn) {
   const savedBody    = document.getElementById('decoTableBody').innerHTML;
   const savedSummary = document.getElementById('decoSummary').innerHTML;
+  const savedLastPlan = window._lastPlan;
 
   _contingencyRunning = true;
   modifyFn();
@@ -14069,6 +14081,7 @@ function runContingencyScenario(modifyFn) {
   // Restore original DOM
   document.getElementById('decoTableBody').innerHTML = savedBody;
   document.getElementById('decoSummary').innerHTML   = savedSummary;
+  window._lastPlan = savedLastPlan;
 
   return { newRows, lastRun, decoTime: Math.round(decoTime), lastRunFmt, decoTimeFmt, totalCNS, totalOTUc, decoZoneStart, decozoneDisp, decoStop, tts, planSum, contSurfaceGF, scenarioDepth, scenarioBT, scenarioBotFracs };
 }
@@ -14083,13 +14096,13 @@ function buildContingencyButtons() {
   contGasLose = 'none';
 
   const gases = [];
-  for (let i = 1; i <= 2; i++) {
-    const el    = document.getElementById('dg' + i + 'Mix');
+  for (const idx of getAllDecoGasIds()) {
+    const el    = document.getElementById('dg' + idx + 'Mix');
     const label = el?.selectedOptions[0]?.text || '';
-    console.log('[Contingency] dg'+i+'Mix:', el?.value, 'label:', label);
+    console.log('[Contingency] dg'+idx+'Mix:', el?.value, 'label:', label);
     if (el && el.value !== 'none') {
-      const gasName = label.replace(/\(.*?\)/g,'').trim() || ('Gas ' + i);
-      gases.push({ id: i, name: gasName });
+      const gasName = label.replace(/\(.*?\)/g,'').trim() || ('Gas ' + idx);
+      gases.push({ id: idx, name: gasName });
     }
   }
   console.log('[Contingency] gases found:', gases.length);
@@ -14117,7 +14130,7 @@ function buildContingencyButtons() {
   if (gases.length >= 2) {
     const btn = document.createElement('button');
     btn.id = 'contGas-both';
-    btn.textContent = 'Lose Both';
+    btn.textContent = gases.length > 2 ? 'Lose All' : 'Lose Both';
     btn.className = 'cont-gas-btn';
     btn.style.cssText = 'padding:8px 14px;background:rgba(255,71,87,0.08);color:var(--muted);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;';
     btn.onclick = () => selectContGas('both', gases);
@@ -14172,10 +14185,10 @@ function calcContingency() {
   if (!resultEl) return;
 
   const gases = [];
-  for (let i = 1; i <= 2; i++) {
-    const el = document.getElementById('dg' + i + 'Mix');
-    const label = el?.selectedOptions[0]?.text?.replace(/\(.*?\)/g,'').trim() || ('Gas ' + i);
-    if (el && el.value !== 'none') gases.push({ id: i, name: label });
+  for (const idx of getAllDecoGasIds()) {
+    const el = document.getElementById('dg' + idx + 'Mix');
+    const label = el?.selectedOptions[0]?.text?.replace(/\(.*?\)/g,'').trim() || ('Gas ' + idx);
+    if (el && el.value !== 'none') gases.push({ id: idx, name: label });
   }
 
   const origBT = document.getElementById('decoBT')?.value;
@@ -16359,7 +16372,9 @@ var appSettings = {
     'botTrimixO2', 'botTrimixHe',
     'dg1Mix', 'dg1CustomO2', 'dg2Mix', 'dg2CustomO2',
     'dg1TrimixO2', 'dg1TrimixHe', 'dg2TrimixO2', 'dg2TrimixHe',
+    'n2NarcSel', 'o2NarcSel', 'o2AtMODSelect',
     'vpmRepMode', 'vpmSurfaceInterval',
+    'zhlRepMode', 'zhlSurfaceInterval',
     'priorDiveDays', 'priorDiveHours', 'priorDiveMinutes', 'priorDiveOTU', 'priorDiveCNS',
     'travelGasMix', 'travelGasCustomO2', 'travelGasSwitchMode', 'travelGasManualDepth',
     'sacBottom', 'sacDeco',
@@ -16432,7 +16447,7 @@ var appSettings = {
       
       const el = document.getElementById(id);
       if (el) {
-        values[id] = el.value || '';
+        values[id] = el.type === 'checkbox' ? el.checked : (el.value || '');
       }
     });
     
@@ -16525,7 +16540,11 @@ var appSettings = {
       }
       const el = document.getElementById(id);
       if (!el) return;
-      el.value = values[id];
+      if (el.type === 'checkbox') {
+        el.checked = values[id] === true || values[id] === 'true';
+      } else {
+        el.value = values[id];
+      }
       if (id === 'gfLowInput' || id === 'gfHighInput') {
         restored++;
         return;

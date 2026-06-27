@@ -121,7 +121,7 @@ def main() -> int:
         if fail:
             for row in suite.get("rows", []):
                 if not row.get("pass"):
-                    print(f"    ✗ {row.get('name')}: {row.get('detail')}")
+                    print(f"    FAIL {row.get('name')}: {row.get('detail')}")
 
     if total_fail:
         print(f"\nBrowser regression: {total_fail} failure(s)")

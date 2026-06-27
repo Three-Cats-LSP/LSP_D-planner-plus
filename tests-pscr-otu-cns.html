@@ -228,15 +228,15 @@ const SCENARIOS = [
   { id:'60_E36', depth:60, o2:36, he:0, bt:20, label:'60 m · EAN36 · 20 min' },
 ];
 
-/** Pinned loop ppO₂ @ end of bottom — true 0.16 bar ppO₂ floor (depleted loop) */
+/** Pinned loop ppO₂ @ end of bottom — steady-state Baker drop (metO₂/loopVol) */
 const PINNED_LOOP_PPO2 = {
-  '20_E32': 0.16, '40_E32': 0.16, '60_E32': 0.16,
-  '20_E36': 0.16, '40_E36': 0.16, '60_E36': 0.16,
+  '20_E32': 0.8227, '40_E32': 1.4712, '60_E32': 2.1197,
+  '20_E36': 0.9443, '40_E36': 1.6739, '60_E36': 2.4034,
 };
-/** Pinned bottom-phase OTU @ loop ppO₂ (≤0.5 bar → 0 OTU) */
+/** Pinned bottom-phase OTU @ loop ppO₂ (NOAA formula, ppO₂ > 0.5 bar) */
 const PINNED_BOTTOM_OTU = {
-  '20_E32': 0.0, '40_E32': 0.0, '60_E32': 0.0,
-  '20_E36': 0.0, '40_E36': 0.0, '60_E36': 0.0,
+  '20_E32': 31.2, '40_E32': 52.2, '60_E32': 53.3,
+  '20_E36': 36.3, '40_E36': 50.9, '60_E36': 60.9,
 };
 /** Diluent-only bottom OTU (fO2×pAmb integration — engine must stay well below) */
 const PINNED_DILUENT_BOTTOM_OTU = {
@@ -336,7 +336,7 @@ const SECTIONS = [
 {
   title: 'A · getEffectivePpo2 unit (corrected loop model)',
   badge: 'badge-pscr',
-  desc: 'Loop ppO₂ at end of bottom must match pinned reference; must stay below diluent ppO₂ (BUG-63 guard).',
+  desc: 'Loop ppO₂ at end of bottom must match steady-state Baker drop; must stay below diluent ppO₂.',
   tests: SCENARIOS.map(sc => [
     `${sc.label} — loop ppO₂ @ BT end`,
     () => {
@@ -366,9 +366,9 @@ const SECTIONS = [
       const pinned = PINNED_BOTTOM_OTU[sc.id];
       assert(near(ref.otuBottom, pinned, 0.3),
         `bottom OTU=${ref.otuBottom.toFixed(1)} expected ~${pinned}`);
-      assert(ref.otuBottom < PINNED_DILUENT_BOTTOM_OTU[sc.id] * 0.55,
-        `bottom OTU ${ref.otuBottom.toFixed(1)} too close to diluent bug (${PINNED_DILUENT_BOTTOM_OTU[sc.id]})`);
-      return `OTU=${ref.otuBottom.toFixed(1)} (diluent bug would be ${ref.otuDiluent.toFixed(1)}) ✓`;
+      assert(ref.otuBottom < ref.otuDiluent * 0.99,
+        `bottom OTU ${ref.otuBottom.toFixed(1)} must stay below diluent ${ref.otuDiluent.toFixed(1)}`);
+      return `OTU=${ref.otuBottom.toFixed(1)} (diluent-only would be ${ref.otuDiluent.toFixed(1)}) ✓`;
     },
   ]),
 },
@@ -465,14 +465,15 @@ const SECTIONS = [
 {
   title: 'G · pSCR trimix fraction normalization',
   badge: 'badge-pscr',
-  desc: 'Trimix diluent fractions must sum to 1.0 at runtime 0 and after metabolic depletion (issue #1).',
+  desc: 'Trimix diluent fractions sum to 1.0; steady-state loop preserves inert He/N2 ratio from supply.',
   tests: [
     ['40 m 18/45 — steady-state loop fractions sum to 1', () => {
       const fr = WIN.computePSCRFractions(pAmb(40), 0.18, 0.45, ccrAtRuntime(0));
       const sum = fr.fO2 + fr.fHe + fr.fN2;
       assert(near(sum, 1, 0.001), `sum=${sum}`);
       assert(fr.fO2 < 0.18, `fO2=${fr.fO2} should be below supply due to Baker drop`);
-      assert(near(fr.fHe, 0.45 * (fr.fHe + fr.fN2), 0.02), `He share preserved in inerts`);
+      const heShare = fr.fHe / (fr.fHe + fr.fN2);
+      assert(near(heShare, 0.45 / (0.45 + 0.37), 0.02), `He share ${heShare.toFixed(3)}`);
       return `steady-state 18/45/37 proportions ✓`;
     }],
     ['4 bar ambient — steady-state fractions still sum to 1', () => {
@@ -481,13 +482,14 @@ const SECTIONS = [
       assert(near(sum, 1, 0.001), `sum=${sum} (pre-fix was ~2.0)`);
       return `sum=${sum.toFixed(4)} ✓`;
     }],
-    ['60 m 18/45 — inspired inert pressures use normalized fractions', () => {
+    ['60 m 18/45 — inspired inert pressures use loop fractions', () => {
       const pA = pAmb(60);
+      const fr = WIN.computePSCRFractions(pA, 0.18, 0.45, ccrAtRuntime(0));
       const insp = WIN.getInspiredInertPressures(pA, 0, 0.18, 0.45, ccrAtRuntime(0));
       const ppH2O = WIN.WATER_VAPOR || 0.0627;
       const pInert = pA - ppH2O;
-      assert(near(insp.pHe / pInert, 0.45, 0.01), `pHe fraction ${(insp.pHe/pInert).toFixed(3)}`);
-      assert(near(insp.pN2 / pInert, 0.37, 0.01), `pN2 fraction ${(insp.pN2/pInert).toFixed(3)}`);
+      assert(near(insp.pHe / pInert, fr.fHe, 0.01), `pHe fraction ${(insp.pHe/pInert).toFixed(3)} vs ${fr.fHe.toFixed(3)}`);
+      assert(near(insp.pN2 / pInert, fr.fN2, 0.01), `pN2 fraction ${(insp.pN2/pInert).toFixed(3)} vs ${fr.fN2.toFixed(3)}`);
       return `He/N2 inspired fractions match diluent ✓`;
     }],
   ],

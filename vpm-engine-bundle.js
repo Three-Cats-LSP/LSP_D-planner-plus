@@ -51,7 +51,7 @@ const VPMEngine = (() => {
     const INITIAL_RADIUS_He = 0.45e-6; 
     const REGEN_TIME = 20160.0;      
     function getWaterVaporPressure(settings) {
-        return (settings && settings.waterVapor > 0) ? settings.waterVapor : 0.0627;
+        return (settings && settings.waterVapor != null) ? settings.waterVapor : 0.0627;
     }
     const CONSTANT_PRESSURE_OTHER_GASES = (102.0 / 760.0) * 1.01325; 
     const CRIT_VOLUME_LAMBDA_FSW_MIN = 7500.0;
@@ -1400,7 +1400,8 @@ const VPMEngine = (() => {
                 curO2 = o2Frac; curHe = heFrac; curGasLabel = `${level.o2}/${level.he}`; curSP = sp;
             }
             if (level.oc) forcedOCMode = true;
-            const descTimeFromLevel = Math.abs(depth - currentDepth) / descentRate;
+            const travelRate = depth < currentDepth ? ascentRate : descentRate;
+            const descTimeFromLevel = Math.abs(depth - currentDepth) / travelRate;
             const bottomTime = Math.max(0, time - descTimeFromLevel);
             if (bottomTime > 0) {
                 settings._scrRuntimeMin = runtime;

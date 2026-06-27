@@ -1121,6 +1121,11 @@ if deco_fields_idx2 > 0:
     for field_id, description in [
         ("vpmSurfaceInterval", "VPM repetitive surface interval input"),
         ("vpmRepMode",         "VPM repetitive dive checkbox"),
+        ("zhlSurfaceInterval", "ZHL repetitive surface interval input"),
+        ("zhlRepMode",         "ZHL repetitive dive checkbox"),
+        ("n2NarcSel",          "N2 narcosis mode selector"),
+        ("o2NarcSel",          "O2 narcosis mode selector"),
+        ("o2AtMODSelect",      "allow O2 at MOD selector"),
     ]:
         if field_id in deco_fields_block2:
             ok(f"DECO_FIELDS includes {field_id} ({description})")
@@ -3176,10 +3181,10 @@ if os.path.isfile(verify_path):
         ok("tests-verify.html regression for pSCR ccrDiluentSurfaceLpm (BUG-75)")
     else:
         fail("tests-verify.html missing BUG-75 pSCR gas flow regression")
-    if "Above setpoint depth: zero inert loading" in verify_html and "pAmb = sp + ppH2O" in verify_html:
-        ok("tests-verify CCR zero-inert test uses setpoint crossover (not +0.01 bar)")
+    if "At/below setpoint crossover: OC-equivalent inert loading" in verify_html and "pAmb = sp + ppH2O" in verify_html:
+        ok("tests-verify CCR shallow test uses setpoint crossover with OC-equivalent inerts")
     else:
-        fail("tests-verify CCR zero-inert test still uses pAmb above crossover threshold")
+        fail("tests-verify CCR shallow test missing OC-equivalent inert check")
     if "assertRtPinned" in verify_html and "VerifyWarn" in verify_html:
         ok("tests-verify.html RT pinned drift ±1–2 min → WARN (not fail)")
     else:
@@ -4965,14 +4970,62 @@ if "ppO2Avg = (ppO2Start + ppO2End) / 2" in open(os.path.join(os.path.dirname(__
     ok("VPM descent CNS/OTU uses time-averaged ppO2 (issue #93 M-9)")
 else:
     fail("VPM descent CNS/OTU still uses endpoint ppO2 only (issue #93 M-9)")
-if "if (key >= 16) return CNS_LIMITS[16]" in js:
-    ok("getCNSLimit clamps at ppO2 1.6 bar (issue #93 L-1)")
+if "if (key >= 16) return CNS_LIMITS[16]" in js or "if (ppo2 >= 1.6) return CNS_LIMITS[16]" in js:
+    ok("getCNSLimit clamps at ppO2 1.6 bar (issue #93 L-1 / #95 M-8)")
 else:
-    fail("getCNSLimit missing key>=16 clamp (issue #93 L-1)")
+    fail("getCNSLimit missing ppO2>=1.6 clamp (issue #93 L-1 / #95 M-8)")
 if "status: 503" in sw_src and "Offline — asset unavailable" in sw_src:
     ok("sw.js returns 503 for offline non-HTML assets (issue #93 L-3)")
 else:
     fail("sw.js still serves index.html for all offline cache misses (issue #93 L-3)")
+
+# ── issue #95 fixes ──
+if "el.type === 'checkbox' ? el.checked" in js and "el.checked = values[id]" in js:
+    ok("DECO_FIELDS saves/restores checkbox .checked state (issue #95 H-1)")
+else:
+    fail("DECO_FIELDS still uses el.value for checkboxes (issue #95 H-1)")
+if "setHeHalfTimeMode" in zhl_src and "ZHL16C_HE_HT_BUHL2003" in zhl_src:
+    ok("zhl-engine-bundle exports setHeHalfTimeMode with Buhl2003 table (issue #95 H-2)")
+else:
+    fail("zhl-engine-bundle missing setHeHalfTimeMode (issue #95 H-2)")
+if "ZhlEngineBundle.setHeHalfTimeMode" in js:
+    ok("updateHeHalfTime syncs bundle He half-times (issue #95 H-2)")
+else:
+    fail("updateHeHalfTime does not call ZhlEngineBundle.setHeHalfTimeMode (issue #95 H-2)")
+if "parseStopDisplayTime(stpRaw)" in js and "parseStopDisplayTime(c[2])" in js:
+    ok("export/messenger use parseStopDisplayTime for stop durations (issue #95 M-1)")
+else:
+    fail("export/messenger still use MM:SS-only regex for stops (issue #95 M-1)")
+if "savedLastPlan = window._lastPlan" in js and "window._lastPlan = savedLastPlan" in js:
+    ok("runContingencyScenario restores window._lastPlan (issue #95 M-5)")
+else:
+    fail("runContingencyScenario overwrites window._lastPlan without restore (issue #95 M-5)")
+if "getAllDecoGasIds()" in js.split("function buildContingencyButtons", 1)[-1][:800]:
+    ok("buildContingencyButtons scans all deco gas cards (issue #95 M-6)")
+else:
+    fail("buildContingencyButtons still hardcodes dg1Mix/dg2Mix (issue #95 M-6)")
+_vpm_render_idx = js.find("function renderVPMResults")
+if _vpm_render_idx >= 0 and "contingencyJumpBtn" in js[_vpm_render_idx:_vpm_render_idx + 50000]:
+    ok("renderVPMResults shows contingencyJumpBtn (issue #95 M-7)")
+else:
+    fail("renderVPMResults missing contingencyJumpBtn display (issue #95 M-7)")
+if "if (_zhlPhaseIdx === 0) firstStopDepth = 0" in zhl_src:
+    ok("multi-level ZHL carries firstStopDepth across phases (issue #95 M-9)")
+else:
+    fail("multi-level ZHL resets firstStopDepth every phase (issue #95 M-9)")
+if "ppO2 >= 1.6" in zhl_src and "addHeadlessExposure" in zhl_src:
+    ok("addHeadlessExposure clamps CNS at ppO2 >= 1.6 bar (issue #95 M-3)")
+else:
+    fail("addHeadlessExposure missing ppO2>=1.6 CNS clamp (issue #95 M-3)")
+vpm_core_95 = open(os.path.join(os.path.dirname(__file__), "vpm-engine-core.js"), encoding="utf-8").read()
+if "waterVapor != null" in vpm_core_95:
+    ok("getWaterVaporPressure accepts explicit zero (issue #95 M-4)")
+else:
+    fail("getWaterVaporPressure still treats waterVapor=0 as unset (issue #95 M-4)")
+if "depth < currentDepth ? ascentRate : descentRate" in vpm_core_95:
+    ok("VPM inter-level travel uses ascent rate when shallower (issue #95 M-11)")
+else:
+    fail("VPM inter-level still uses descent rate for upward travel (issue #95 M-11)")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
