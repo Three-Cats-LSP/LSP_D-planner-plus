@@ -218,6 +218,41 @@ ENGINE_SUITE_JS = """
     return { stopCount: stops.length, setpoints: stops.map(p => p.setpoint), allDecoSp };
   })();
 
+  // ── E4b: CCR VPM bottom hold setpoint (issue #106 verification H-1) ──
+  out.sections.ccrVpmBottomSp = (() => {
+    const r = vpm(lv(40, 30, 21, 0), [], ccr, 'VPMB');
+    const bottom = (r.plan || []).find(p => p.type === 'bottom');
+    const descent = (r.plan || []).find(p => p.type === 'descent');
+    return {
+      bottomSp: bottom && bottom.setpoint,
+      descentSp: descent && descent.setpoint,
+      ok: bottom && descent
+        && Math.abs(bottom.setpoint - ccr.bottomSetpoint) < 0.01
+        && Math.abs(descent.setpoint - ccr.descentSetpoint) < 0.01,
+    };
+  })();
+
+  // ── E3b: Bubble carry isolated from tissue carry (issue #106 verification H-2)
+  out.sections.vpmBubbleCarryIsolated = (() => {
+    const d1 = vpm(lv(45, 25, 32, 0), [{ o2: 50, he: 0 }], {}, 'VPMB');
+    if (!d1.finalBubbleState || !d1.finalTissues) return { ok: false };
+    const repBase = {
+      _preTissues: d1.finalTissues,
+      _surfaceInterval: 45,
+      conservatism: 1,
+    };
+    const tissueOnly = vpm(lv(45, 20, 32, 0), [{ o2: 50, he: 0 }], repBase, 'VPMB');
+    const withBubble = vpm(lv(45, 20, 32, 0), [{ o2: 50, he: 0 }], {
+      ...repBase,
+      _prevBubbleState: d1.finalBubbleState,
+    }, 'VPMB');
+    return {
+      tissueOnlyRt: rt(tissueOnly),
+      withBubbleRt: rt(withBubble),
+      ok: Math.abs(rt(tissueOnly) - rt(withBubble)) > 0.01,
+    };
+  })();
+
   // ── E5: buhNDL GF High sensitivity (issue #106 M-1) ───────────────────
   out.sections.buhNdlGf = {
     ndl70: buhNDL(18, 0.79, 30, 70),
@@ -237,6 +272,28 @@ ENGINE_SUITE_JS = """
     if (siEl) siEl.value = prevSi;
     if (repEl) repEl.checked = prevRep;
     return { rejectsNegative: !neg.ok };
+  })();
+
+  // ── E7: Tec gas mix memory across Rec mode (issue #106 verification M-1) ─
+  out.sections.tecGasMixMemory = (() => {
+    const sel = document.getElementById('gasMix');
+    if (!sel) return { ok: false };
+    const savedAlgo = typeof algo !== 'undefined' ? algo : null;
+    window._tecGasMix = null;
+    algo = 'buh';
+    sel.value = 'trimix';
+    toggleCustomO2();
+    algo = 'padi';
+    syncRecGasMixDisplay();
+    algo = 'buh';
+    sel.value = window._tecGasMix || 'trimix';
+    sel.value = 'ean32';
+    toggleCustomO2();
+    algo = 'padi';
+    const persisted = getPersistedGasMix();
+    const ok = persisted === 'ean32' && window._tecGasMix === 'ean32';
+    if (savedAlgo != null) algo = savedAlgo;
+    return { persisted, mem: window._tecGasMix, ok };
   })();
 
   // ── F: VPM engine API + GFS conservatism ───────────────────────────────
@@ -397,6 +454,12 @@ def run_suite(page) -> dict:
     cs = s.get("ccrVpmSetpoints", {})
     assert_true(cs.get("allDecoSp"), "CCR VPM stops use deco setpoint (issue #106 H-2)", str(cs))
 
+    cb = s.get("ccrVpmBottomSp", {})
+    assert_true(cb.get("ok"), "CCR VPM bottom hold uses bottom setpoint (issue #106 verify H-1)", str(cb))
+
+    bi = s.get("vpmBubbleCarryIsolated", {})
+    assert_true(bi.get("ok"), "VPM bubble carry differs from tissue-only carry (issue #106 verify H-2)", str(bi))
+
     ng = s.get("buhNdlGf", {})
     assert_true(
         ng.get("ndl85", 0) > ng.get("ndl70", 0) or ng.get("ndl95", 0) > ng.get("ndl70", 0),
@@ -406,6 +469,9 @@ def run_suite(page) -> dict:
 
     sv = s.get("vpmSiValidate", {})
     assert_true(sv.get("rejectsNegative"), "validateVpmSurfaceInterval rejects negative SI (issue #106 M-2)", str(sv))
+
+    tg = s.get("tecGasMixMemory", {})
+    assert_true(tg.get("ok"), "Tec gasMix memory tracks EAN32 after trimix (issue #106 verify M-1)", str(tg))
 
     for name, r in s["rebreather"].items():
         assert_true(fin(r), f"Rebreather {name} produces schedule", str(r)[:120])

@@ -4005,13 +4005,16 @@ function getPersistedGasMix() {
 function syncRecGasMixDisplay() {
   const gasMixSel = document.getElementById('gasMix');
   if (!gasMixSel || typeof algo === 'undefined' || algo !== 'padi') return;
-  if (gasMixSel.value === 'ean50' || gasMixSel.value === 'trimix') {
-    window._tecGasMix = gasMixSel.value;
-  }
-  if (window._tecGasMix && (window._tecGasMix === 'ean50' || window._tecGasMix === 'trimix')) {
+  if (window._tecGasMix === 'ean50' || window._tecGasMix === 'trimix') {
     gasMixSel.value = 'air';
     toggleCustomO2();
   }
+}
+
+function syncTecGasMixMemory() {
+  if (typeof algo === 'undefined' || algo !== 'buh') return;
+  const gasMixSel = document.getElementById('gasMix');
+  if (gasMixSel) window._tecGasMix = gasMixSel.value || 'air';
 }
 
 const SEA_LEVEL_P = 1.01325; // ISA sea-level pressure (bar)
@@ -6261,6 +6264,7 @@ function toggleCustomO2() {
   const showTrimix = mix === 'trimix';
   document.getElementById('plannerTrimixO2Field').style.display = showTrimix ? 'block' : 'none';
   document.getElementById('plannerTrimixHeField').style.display = showTrimix ? 'block' : 'none';
+  syncTecGasMixMemory();
 }
 
 function getN2Frac(mix) {

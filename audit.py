@@ -5286,6 +5286,22 @@ if "repConsRts" in open(os.path.join(os.path.dirname(__file__), "dev", "engine_r
     ok("engine regression tests repetitive VPM conservatism (issue #106 coverage)")
 else:
     fail("engine regression missing repetitive VPM conservatism test (issue #106 coverage)")
+if "bottomSp" in _vpm106.split("if (bottomTime > 0)", 1)[-1][:600] and "getEffectiveSetpoint(" in _vpm106.split("const bottomSp", 1)[-1][:200]:
+    ok("VPM bottom hold uses bottom setpoint after descent (issue #106 verify H-1)")
+else:
+    fail("VPM bottom hold still reuses descent setpoint (issue #106 verify H-1)")
+if "_conservatismRadiiApplied" in _vpm106.split("function setCriticalRadiiForConservatism", 1)[-1][:500]:
+    ok("setCriticalRadiiForConservatism applies once — bubble carry preserved (issue #106 verify H-2)")
+else:
+    fail("setCriticalRadiiForConservatism still resets carried radii on second call (issue #106 verify H-2)")
+if "function syncTecGasMixMemory" in js and "syncTecGasMixMemory();" in js:
+    ok("Tec gasMix memory updates on every selector change (issue #106 verify M-1)")
+else:
+    fail("Tec gasMix memory still only tracks ean50/trimix (issue #106 verify M-1)")
+if "vpmBubbleCarryIsolated" in open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read():
+    ok("engine regression isolates VPM bubble carry from tissue carry (issue #106 verify H-2)")
+else:
+    fail("engine regression missing isolated bubble-carry test (issue #106 verify H-2)")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):

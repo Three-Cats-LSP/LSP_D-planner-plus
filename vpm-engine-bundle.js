@@ -236,7 +236,8 @@ const VPMEngine = (() => {
             maxAmbientPressure: surfP,
             firstStopDepth: 0,
             useDecoGradients: false,
-            _bubbleCarryApplied: bubbleCarryApplied
+            _bubbleCarryApplied: bubbleCarryApplied,
+            _conservatismRadiiApplied: false
         };
     }
     function cloneVPMState(baseState) {
@@ -535,6 +536,7 @@ const VPMEngine = (() => {
         1.50  
     ];
     function setCriticalRadiiForConservatism(state, conservatism, settings) {
+        if (state._conservatismRadiiApplied) return;
         const consIdx = Math.max(0, Math.min(5, Math.round(conservatism || 0)));
         const factor = VPM_CRITICAL_RADIUS_FACTOR[consIdx];
         const baseFactor = VPM_CRITICAL_RADIUS_FACTOR[0];
@@ -563,6 +565,7 @@ const VPMEngine = (() => {
                 state.regeneratedRadiiHe[i] = rHe;
             }
         }
+        state._conservatismRadiiApplied = true;
         if (scaleCarried) state._bubbleCarryApplied = false;
     }
     function calcAllowableGradients(state, model, settings, conservatism) {
@@ -1426,6 +1429,8 @@ const VPMEngine = (() => {
             const nextLevelOffLoop = isCCR && !!(level.oc || level.scr);
             const sp = (forcedOCMode || nextLevelOffLoop) ? 0 : getEffectiveSetpoint(
                 level, isCCR, settings, depth, depth > currentDepth ? 'descent' : 'bottom');
+            const bottomSp = (forcedOCMode || nextLevelOffLoop) ? 0 : getEffectiveSetpoint(
+                level, isCCR, settings, depth, 'bottom');
             if (depth > currentDepth) {
                 settings._scrRuntimeMin = runtime;
                 const descTime = loadTissuesLinear(state, currentDepth, depth, descentRate, o2Frac, heFrac, settings, sp);
@@ -1454,18 +1459,19 @@ const VPMEngine = (() => {
             const bottomTime = Math.max(0, time - descTimeFromLevel);
             if (bottomTime > 0) {
                 settings._scrRuntimeMin = runtime;
-                loadTissuesConstant(state, depth, bottomTime, o2Frac, heFrac, settings, sp);
+                loadTissuesConstant(state, depth, bottomTime, o2Frac, heFrac, settings, bottomSp);
                 runtime += bottomTime;
                 const pAmbB = getAmbientPressure(depth, settings);
-                const ppO2B = vpmAccumPpo2(pAmbB, sp, o2Frac, heFrac, settings, depth, forcedOCMode || nextLevelOffLoop);
+                const ppO2B = vpmAccumPpo2(pAmbB, bottomSp, o2Frac, heFrac, settings, depth, forcedOCMode || nextLevelOffLoop);
                 totalOTU += calculateOTU(ppO2B, bottomTime);
                 totalCNS += calculateCNS(ppO2B, bottomTime);
                 plan.push({
                     type: 'bottom', depth, time: Math.round(bottomTime * 10) / 10,
                     runtime: Math.round(runtime * 10) / 10,
                     gas: `${level.o2}/${level.he}`, o2: level.o2, he: level.he,
-                    setpoint: sp > 0 ? sp : 0
+                    setpoint: bottomSp > 0 ? bottomSp : 0
                 });
+                curSP = bottomSp;
             }
             currentDepth = depth;
         }
