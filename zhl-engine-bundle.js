@@ -126,8 +126,9 @@
         [, a, b] = ZHL16C[i];
       }
       const mValue = a + P_surf / b;
-      if (mValue <= 0) return;
-      const gf = (pTotal - P_surf) / mValue;
+      const mMargin = mValue - P_surf;
+      if (mMargin <= 0) return;
+      const gf = (pTotal - P_surf) / mMargin;
       if (gf > maxGF) maxGF = gf;
     });
     return maxGF === -Infinity ? 0 : Math.max(0, maxGF * 100);
@@ -196,14 +197,13 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
   if (phase === 'descent') return descSP;
   if (phase === 'bottom') return bottomSP;
   if (phase === 'deco' || phase === 'ascent') return decoSP;
-  const pAmb = (surfP || altSurfaceP) + depthM * BAR_PER_METRE;
-  // Phase-inferred fallback: use the setpoint appropriate for the current depth.
-  // descSP activates when ambient hasn't reached the bottomSP level (shallow/descent);
-  // bottomSP activates between those levels; decoSP at depth or on ascent.
-  // Previous code used pAmb <= descSP + WATER_VAPOR (~0.76 bar) which is always
-  // below surface pressure and made the descent setpoint unreachable.
-  if (pAmb <= bottomSP) return descSP;
-  if (pAmb <= decoSP) return bottomSP;
+  const spSurf = surfP || altSurfaceP;
+  const descCross = depthAtSetpointCrossing(descSP, spSurf);
+  const bottomCross = depthAtSetpointCrossing(bottomSP, spSurf);
+  const decoCross = depthAtSetpointCrossing(decoSP, spSurf);
+  const deepestCross = Math.max(descCross ?? 0, bottomCross ?? 0, decoCross ?? 0);
+  if (depthM > deepestCross) return bottomSP;
+  if (depthM <= (descCross ?? 0)) return descSP;
   return decoSP;
 }
 
@@ -752,6 +752,7 @@ function runZhlScheduleCore(params) {
     const sgOn = !!params.shallowGradient;
     if (sgOn && depthM <= lastStop) return gfH;
     const interpBase = sgOn ? lastStop : 0;
+    if (firstStopDepth <= interpBase) return gfH;
     const gf = gfL + (gfH - gfL) * (firstStopDepth - depthM) / (firstStopDepth - interpBase);
     return Math.min(gfH, Math.max(gfL, gf));
   }

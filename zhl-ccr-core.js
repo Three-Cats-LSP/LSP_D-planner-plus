@@ -54,14 +54,13 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
   if (phase === 'descent') return descSP;
   if (phase === 'bottom') return bottomSP;
   if (phase === 'deco' || phase === 'ascent') return decoSP;
-  const pAmb = (surfP || altSurfaceP) + depthM * BAR_PER_METRE;
-  // Phase-inferred fallback: use the setpoint appropriate for the current depth.
-  // descSP activates when ambient hasn't reached the bottomSP level (shallow/descent);
-  // bottomSP activates between those levels; decoSP at depth or on ascent.
-  // Previous code used pAmb <= descSP + WATER_VAPOR (~0.76 bar) which is always
-  // below surface pressure and made the descent setpoint unreachable.
-  if (pAmb <= bottomSP) return descSP;
-  if (pAmb <= decoSP) return bottomSP;
+  const spSurf = surfP || altSurfaceP;
+  const descCross = depthAtSetpointCrossing(descSP, spSurf);
+  const bottomCross = depthAtSetpointCrossing(bottomSP, spSurf);
+  const decoCross = depthAtSetpointCrossing(decoSP, spSurf);
+  const deepestCross = Math.max(descCross ?? 0, bottomCross ?? 0, decoCross ?? 0);
+  if (depthM > deepestCross) return bottomSP;
+  if (depthM <= (descCross ?? 0)) return descSP;
   return decoSP;
 }
 

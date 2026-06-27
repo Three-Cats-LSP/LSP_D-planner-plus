@@ -4485,11 +4485,12 @@ function setAlgo(a) {
 
   document.getElementById('gasMixField').style.display = (isBuh || isRec) ? 'block' : 'none';
   const gasMixSel = document.getElementById('gasMix');
+  let savedGasMix = null;
   if (gasMixSel) {
+    savedGasMix = gasMixSel.value;
     Array.from(gasMixSel.options).forEach(opt => {
       if (opt.value === 'ean50' || opt.value === 'trimix') opt.style.display = isBuh ? '' : 'none';
     });
-    if (isRec && (gasMixSel.value === 'ean50' || gasMixSel.value === 'trimix')) gasMixSel.value = 'air';
     toggleCustomO2();
   }
 
@@ -4504,7 +4505,13 @@ function setAlgo(a) {
   buildDiveBlocks();
 
   if (typeof appSettings !== 'undefined' && appSettings.save) {
-    setTimeout(() => appSettings.save(false), 100);
+    setTimeout(() => {
+      appSettings.save(false);
+      if (isRec && gasMixSel && (savedGasMix === 'ean50' || savedGasMix === 'trimix')) {
+        gasMixSel.value = 'air';
+        toggleCustomO2();
+      }
+    }, 100);
   }
 }
 
@@ -6118,6 +6125,7 @@ function setUnits(u, opts) {
   relabelFieldLabelsByText();
   refreshMultiDiveDepthDisplays();
   refreshInlineStaticText();
+  syncContDepthLabels?.();
 
   ndlUnits = u;
   multiUnits = u;
@@ -6388,9 +6396,13 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
   if (phase === 'descent') return descSP;
   if (phase === 'bottom') return bottomSP;
   if (phase === 'deco' || phase === 'ascent') return decoSP;
-  const pAmb = (surfP || altSurfaceP) + depthM * BAR_PER_METRE;
-  if (pAmb <= bottomSP) return descSP;
-  if (pAmb <= decoSP) return bottomSP;
+  const spSurf = surfP || altSurfaceP;
+  const descCross = depthAtSetpointCrossing(descSP, spSurf);
+  const bottomCross = depthAtSetpointCrossing(bottomSP, spSurf);
+  const decoCross = depthAtSetpointCrossing(decoSP, spSurf);
+  const deepestCross = Math.max(descCross ?? 0, bottomCross ?? 0, decoCross ?? 0);
+  if (depthM > deepestCross) return bottomSP;
+  if (depthM <= (descCross ?? 0)) return descSP;
   return decoSP;
 }
 
@@ -7031,8 +7043,9 @@ function computeSurfaceGF(tissues) {
       [, a, b] = ZHL16C[i];
     }
     const mValue = a + P_surf / b; // M-value denominator at surface (Baker M0 = a + P/b)
-    if (mValue <= 0) return;
-    const gf = (pTotal - P_surf) / mValue;
+    const mMargin = mValue - P_surf;
+    if (mMargin <= 0) return;
+    const gf = (pTotal - P_surf) / mMargin;
     if (gf > maxGF) maxGF = gf;
   });
   return maxGF === -Infinity ? 0 : Math.max(0, maxGF * 100);
@@ -7050,10 +7063,25 @@ function ambientCrossingDepth(tissues) {
 
 function buhNDL(depthM, fN2, gfLow, gfHigh, fHe) {
   const fH = fHe || 0;
+  const gfL = gfLow / 100;
+  const gfH = gfHigh / 100;
+  const lastStop = 3;
   let tissues = initTissues();
   for (let t=0; t<=500; t++) {
     const next = saturate(tissues, depthM, 1, fN2, fH);
-    if (ceiling(next, gfLow/100) > 0) return t;
+    const ceil = ceiling(next, gfL);
+    if (ceil <= 0) { tissues = next; continue; }
+    const firstStopDepth = Math.max(lastStop, Math.ceil(ceil / 3) * 3);
+    let gf;
+    if (firstStopDepth <= lastStop) {
+      gf = gfH;
+    } else if (depthM >= firstStopDepth) {
+      gf = gfL;
+    } else {
+      gf = gfL + (gfH - gfL) * (firstStopDepth - depthM) / (firstStopDepth - lastStop);
+      gf = Math.min(gfH, Math.max(gfL, gf));
+    }
+    if (ceiling(next, gf) > 0) return t;
     tissues = next;
   }
   return 500;
@@ -9106,8 +9134,7 @@ function getZhlRepStateForSchedule() {
   const zhlRepEl = document.getElementById('zhlRepMode');
   const snap = peekZhlRepState();
   if (!zhlRepEl?.checked || !snap) return null;
-  const siMin = parseFloat(document.getElementById('zhlSurfaceInterval')?.value || '60') || 0;
-  return { tissues: snap.tissues, surfaceIntervalMin: siMin };
+  return { tissues: snap.tissues, surfaceIntervalMin: snap.surfaceIntervalMin ?? 0 };
 }
 
 function takeZhlRepStateSnapshot() {
@@ -10624,7 +10651,7 @@ function runUnifiedPlan() {
 
   // Colour helper — margin = NDL - BT
   function statusColor(margin) {
-    return margin <= 0 ? 'var(--red)' : margin <= 5 ? 'var(--red)' : margin <= 10 ? 'var(--yellow)' : 'var(--green)';
+    return margin <= 0 ? 'var(--red)' : margin <= 5 ? 'var(--yellow)' : margin <= 10 ? 'var(--yellow)' : 'var(--green)';
   }
 
   let tissues = initTissues();
@@ -11811,7 +11838,8 @@ function calcEND_tool() {
   else                 { riskLabel = 'Severe';   riskCol = 'var(--red)'; }
 
   // MOD
-  const mod14M = fO2 > 0 ? calcGasMODm(fO2, 1.4) : null;
+  const ppO2Limit = parseFloat(document.getElementById('ppo2Bottom')?.value) || 1.4;
+  const mod14M = fO2 > 0 ? calcGasMODm(fO2, ppO2Limit) : null;
   const mod16M = fO2 > 0 ? calcGasMODm(fO2, 1.6) : null;
   const mod14d = mod14M != null ? (du ? mod14M + ' m' : Math.round(mod14M * 3.28084) + ' ft') : '\u2014';
   const mod16d = mod16M != null ? (du ? mod16M + ' m' : Math.round(mod16M * 3.28084) + ' ft') : '\u2014';
@@ -11849,7 +11877,7 @@ function calcEND_tool() {
     alertHtml = `<div class="alert" style="background:#FF4433;border-color:#111;border-width:1px;color:#fff;font-weight:700;"><span>\u26a0</span><div><strong>NARCOTIC DEPTH WARNING.</strong> END ${endDisp} exceeds 30 m equivalent.</div></div>`;
   }
   if (mod14M != null && dM > mod14M) {
-    alertHtml += `<div class="alert dang" style="margin-top:6px;"><span>\u26a0</span><div><strong>EXCEEDS MOD.</strong> Depth ${du ? Math.round(dM)+' m' : Math.round(dM*3.28084)+' ft'} is deeper than MOD ${mod14d} at ppO\u2082 1.4.</div></div>`;
+    alertHtml += `<div class="alert dang" style="margin-top:6px;"><span>\u26a0</span><div><strong>EXCEEDS MOD.</strong> Depth ${du ? Math.round(dM)+' m' : Math.round(dM*3.28084)+' ft'} is deeper than MOD ${mod14d} at ppO\u2082 ${ppO2Limit.toFixed(1)}.</div></div>`;
   }
   alertEl.innerHTML = alertHtml;
 }
@@ -14142,7 +14170,7 @@ function runContingencyScenario(modifyFn) {
     const run = parseRunMinutes(tr.querySelector('td[data-label="Run"]')?.textContent) || 0;
     if (run > lastRun) lastRun = run;
     if (tr.dataset.phase === 'deco' || tr.dataset.phase === 'safety')
-      decoTime += parseFloat(tr.querySelectorAll('td')[2]?.textContent) || 0;
+      decoTime += parseStopDisplayTime(tr.querySelectorAll('td')[2]?.textContent) || 0;
   });
 
   // Capture formatted totals from DOM totals row
@@ -14248,8 +14276,19 @@ function selectContBT(mins) {
   });
 }
 
+function syncContDepthLabels() {
+  [0, 3, 5].forEach(v => {
+    const btn = document.getElementById('contDepth' + v);
+    if (!btn) return;
+    const disp = units === 'metric' ? v : Math.round(v * 3.28084);
+    const du = units === 'metric' ? 'm' : 'ft';
+    btn.textContent = '+' + disp + ' ' + du;
+  });
+}
+
 function selectContDepth(metres) {
   contExtraDepth = metres;
+  syncContDepthLabels();
   [0,3,5].forEach(v => {
     const btn = document.getElementById('contDepth' + v);
     if (!btn) return;
@@ -14291,7 +14330,8 @@ function calcContingency() {
   if (contExtraBT > 0) parts.push('+' + contExtraBT + ' min BT');
   if (contExtraDepth > 0) {
     const du2 = units === 'metric' ? 'm' : 'ft';
-    parts.push('+' + contExtraDepth + ' ' + du2 + ' depth');
+    const depthDisp = units === 'metric' ? contExtraDepth : Math.round(contExtraDepth * 3.28084);
+    parts.push('+' + depthDisp + ' ' + du2 + ' depth');
   }
   const label = parts.length ? parts.join(' and ') : 'Standard plan (no changes)';
 
@@ -16485,7 +16525,7 @@ var appSettings = {
     'vpmRepMode', 'vpmSurfaceInterval',
     'zhlRepMode', 'zhlSurfaceInterval',
     'priorDiveDays', 'priorDiveHours', 'priorDiveMinutes', 'priorDiveOTU', 'priorDiveCNS',
-    'travelGasMix', 'travelGasCustomO2', 'travelGasSwitchMode', 'travelGasManualDepth',
+    'travelGasMix', 'travelGasCustomO2', 'travelGasTrimixO2', 'travelGasTrimixHe', 'travelGasSwitchMode', 'travelGasManualDepth',
     'sacBottom', 'sacDeco',
     'cylBot_size', 'cylBot_pres', 'cylBot_reserve',
     'cylDg1_size', 'cylDg1_pres', 'cylDg1_reserve',

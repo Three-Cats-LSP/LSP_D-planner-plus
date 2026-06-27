@@ -170,18 +170,24 @@ ENGINE_SUITE_JS = """
   // ── E2: VPM zero surface interval — bubble carry must not produce NaN ───
   const vpmSi0D1 = vpm(lv(45, 25, 32, 0), [{ o2: 50, he: 0 }], {}, 'VPMB');
   let vpmSi0Rep = null;
+  let vpmSi0FreshCons = null;
   if (vpmSi0D1.finalBubbleState) {
     vpmSi0Rep = vpm(lv(45, 20, 32, 0), [{ o2: 50, he: 0 }], {
       _preTissues: vpmSi0D1.finalTissues,
       _surfaceInterval: 0,
       _prevBubbleState: vpmSi0D1.finalBubbleState,
+      conservatism: 1,
     }, 'VPMB');
+    vpmSi0FreshCons = vpm(lv(45, 20, 32, 0), [{ o2: 50, he: 0 }], { conservatism: 1 }, 'VPMB');
   }
   out.sections.vpmZeroSi = {
     d1Rt: rt(vpmSi0D1),
     repRt: rt(vpmSi0Rep),
+    freshConsRt: rt(vpmSi0FreshCons),
     repFinite: fin(vpmSi0Rep),
     repNoNan: vpmSi0Rep && Number.isFinite(vpmSi0Rep.totalRuntime),
+    repCarriesBubble: vpmSi0Rep && vpmSi0FreshCons
+      && Math.abs(rt(vpmSi0Rep) - rt(vpmSi0FreshCons)) > 0.01,
   };
 
   // ── F: VPM engine API + GFS conservatism ───────────────────────────────
@@ -334,6 +340,7 @@ def run_suite(page) -> dict:
 
     vz = s["vpmZeroSi"]
     assert_true(vz["repFinite"] and vz["repNoNan"], "VPM zero surface interval produces finite schedule (no NaN)")
+    assert_true(vz.get("repCarriesBubble"), "VPM zero-SI repetitive dive carries bubble state (issue #104 H-1)")
 
     for name, r in s["rebreather"].items():
         assert_true(fin(r), f"Rebreather {name} produces schedule", str(r)[:120])

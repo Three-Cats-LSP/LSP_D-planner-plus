@@ -4979,13 +4979,13 @@ for _fid, _desc in [
     else:
         fail(f"DECO_FIELDS missing {_fid} ({_desc}) (issue #93 M-6/L-2)")
 if "ceiling(testT, mGF.low / 100)" in js:
-    ok("multi-dive NDL uses gfLow consistent with buhNDL (issue #93 M-7)")
+    ok("multi-dive NDL uses gfLow for residual loading check (issue #93 M-7)")
 else:
-    fail("multi-dive NDL still uses mGF.high (issue #93 M-7)")
-if "const mValue = a + P_surf / b;" in js and "a + P_surf / b - P_surf" not in js.split("function computeSurfaceGF", 1)[-1][:600]:
-    ok("computeSurfaceGF Baker M0 denominator (issue #93 M-8)")
+    fail("multi-dive NDL missing gfLow ceiling check (issue #93 M-7)")
+if "const mValue = a + P_surf / b;" in js and "const mMargin = mValue - P_surf" in js.split("function computeSurfaceGF", 1)[-1][:1200]:
+    ok("computeSurfaceGF uses (mValue - P_surf) GF denominator (issue #104 M-1)")
 else:
-    fail("computeSurfaceGF still subtracts P_surf from denominator (issue #93 M-8)")
+    fail("computeSurfaceGF still divides by raw mValue (issue #104 M-1)")
 if "ppO2Avg = (ppO2Start + ppO2End) / 2" in open(os.path.join(os.path.dirname(__file__), "vpm-engine-core.js"), encoding="utf-8").read():
     ok("VPM descent CNS/OTU uses time-averaged ppO2 (issue #93 M-9)")
 else:
@@ -5071,11 +5071,11 @@ else:
     fail("validatePlannerInputs missing trimix fraction validation (issue #98 H-2)")
 
 # ── issue #99 fixes ──
-_gesp = js.split("function getEffectiveSetpointAtDepth", 1)[-1][:800] if "function getEffectiveSetpointAtDepth" in js else ""
-if "if (pAmb <= bottomSP) return descSP;" in _gesp and "if (pAmb <= decoSP) return bottomSP;" in _gesp and "+ WATER_VAPOR" not in _gesp:
-    ok("index.html getEffectiveSetpointAtDepth aligned with zhl-ccr-core (issue #99 H-1)")
+_gesp = js.split("function getEffectiveSetpointAtDepth", 1)[-1][:1200] if "function getEffectiveSetpointAtDepth" in js else ""
+if "depthM > deepestCross" in _gesp and "depthAtSetpointCrossing" in _gesp:
+    ok("index.html getEffectiveSetpointAtDepth uses depth-derived phase thresholds (issue #99 H-1 / #104 M-4)")
 else:
-    fail("index.html getEffectiveSetpointAtDepth still uses +WATER_VAPOR comparisons (issue #99 H-1)")
+    fail("index.html getEffectiveSetpointAtDepth still uses pAmb/setpoint comparisons (issue #99 H-1)")
 if "'plannerTrimixO2'" in js and "'plannerTrimixHe'" in js.split("DECO_FIELDS:", 1)[-1][:1200]:
     ok("plannerTrimixO2/He in DECO_FIELDS (issue #99 H-2)")
 else:
@@ -5158,10 +5158,10 @@ if "Math.ceil((bottomCeil + 1e-9) / decoStep)" in zhl_src:
     ok("ZHL candidateFirstStop uses epsilon guard against float fence-post (issue #102 BUG-A)")
 else:
     fail("ZHL candidateFirstStop missing epsilon guard (issue #102 BUG-A)")
-if "if (si > 0) {" in vpm_core_95 and "settings._prevBubbleState" in vpm_core_95:
-    ok("VPM skips bubble carry when surface interval <= 0 (issue #102 BUG-B)")
+if "if (si > 0) {" not in vpm_core_95 and "const regenFactor = Math.exp(-si / REGEN_TIME)" in vpm_core_95:
+    ok("VPM zero-SI bubble carry uses regenFactor=1 (issue #104 H-1 / supersedes #102 BUG-B)")
 else:
-    fail("VPM still carries bubble state on zero surface interval (issue #102 BUG-B)")
+    fail("VPM still skips bubble carry on zero surface interval (issue #104 H-1)")
 if "Math.ceil((depth + 1e-9) / stepSize)" in vpm_core_95:
     ok("VPM roundUpToStop uses epsilon guard (issue #102 BUG-A)")
 else:
@@ -5203,6 +5203,62 @@ if "/LSP_D-planner-plus/')" in _sw_path and _sw_path.find("/LSP_D-planner-plus/'
     ok("sw.js getAppBasePath uses trailing-slash prefix checks (issue #103 F-3)")
 else:
     fail("sw.js getAppBasePath missing trailing-slash disambiguation (issue #103 F-3)")
+
+# ── issue #104 fixes ──
+_vpm104 = vpm_core_95
+if "settings._prevBubbleState" in _vpm104.split("function setCriticalRadiiForConservatism", 1)[-1][:400]:
+    ok("setCriticalRadiiForConservatism skips when _prevBubbleState carry applied (issue #104 H-2)")
+else:
+    fail("setCriticalRadiiForConservatism still overwrites bubble carry (issue #104 H-2)")
+if "Math.max(denomBase, 0.001)" in _vpm104:
+    ok("VPM calcSurfacePhaseVolumeTime guards near-zero denominator (issue #104 M-9)")
+else:
+    fail("VPM surface phase volume missing denominator guard (issue #104 M-9)")
+if "savedGasMix = gasMixSel.value" in js and "appSettings.save(false)" in js.split("function setAlgo", 1)[-1][:4500]:
+    ok("setAlgo persists gasMix before Rec-mode visual reset (issue #104 H-3)")
+else:
+    fail("setAlgo still saves post-reset gasMix in Rec mode (issue #104 H-3)")
+if "if (firstStopDepth <= interpBase) return gfH;" in zhl_src:
+    ok("gfAt guards zero denominator when firstStop equals lastStop (issue #104 M-2)")
+else:
+    fail("gfAt missing firstStopDepth <= lastStop guard (issue #104 M-2)")
+if "snap.surfaceIntervalMin" in js.split("function getZhlRepStateForSchedule", 1)[-1][:400]:
+    ok("getZhlRepStateForSchedule uses stored surfaceIntervalMin snapshot (issue #104 M-3)")
+else:
+    fail("getZhlRepStateForSchedule still reads live DOM SI (issue #104 M-3)")
+if "depthM > deepestCross" in open(os.path.join(os.path.dirname(__file__), "zhl-ccr-core.js"), encoding="utf-8").read():
+    ok("getEffectiveSetpointAtDepth uses depth-derived phase thresholds (issue #104 M-4)")
+else:
+    fail("getEffectiveSetpointAtDepth still compares pAmb to setpoint pressures (issue #104 M-4)")
+if "gfL + (gfH - gfL)" in js.split("function buhNDL", 1)[-1][:800]:
+    ok("buhNDL uses GF interpolation with gfHigh (issue #104 M-5)")
+else:
+    fail("buhNDL still ignores gfHigh in NDL ceiling check (issue #104 M-5)")
+if "'travelGasTrimixO2'" in js.split("DECO_FIELDS:", 1)[-1][:2500] and "'travelGasTrimixHe'" in js.split("DECO_FIELDS:", 1)[-1][:2500]:
+    ok("travelGasTrimixO2/He in DECO_FIELDS (issue #104 M-6)")
+else:
+    fail("travelGasTrimixO2/He missing from DECO_FIELDS (issue #104 M-6)")
+if "parseStopDisplayTime(tr.querySelectorAll('td')[2]" in js:
+    ok("runContingencyScenario uses parseStopDisplayTime for decoTime (issue #104 M-7)")
+else:
+    fail("runContingencyScenario still parseFloats MM:SS stop durations (issue #104 M-7)")
+_zwb104 = open(os.path.join(os.path.dirname(__file__), "zhl-worker-bridge.js"), encoding="utf-8").read()
+if "if (ok) {" in _zwb104.split("worker.onmessage", 1)[-1][:600] and "consecutiveWorkerFailures += 1" in _zwb104.split("worker.onmessage", 1)[-1][:800]:
+    ok("worker bridge increments failures on ok:false replies (issue #104 M-8)")
+else:
+    fail("worker bridge still resets failure counter on ok:false (issue #104 M-8)")
+if "const ppO2Limit = parseFloat(document.getElementById('ppo2Bottom')" in js.split("function calcEND_tool", 1)[-1][:2500]:
+    ok("calcEND_tool MOD uses configured ppO2 limit (issue #104 L-1)")
+else:
+    fail("calcEND_tool MOD still hardcoded to 1.4 bar (issue #104 L-1)")
+if "function syncContDepthLabels" in js and "Math.round(v * 3.28084)" in js.split("function syncContDepthLabels", 1)[-1][:300]:
+    ok("contingency depth buttons show imperial-converted labels (issue #104 L-2)")
+else:
+    fail("contingency depth buttons still label metres as feet (issue #104 L-2)")
+if "margin <= 5 ? 'var(--yellow)'" in js:
+    ok("UDP statusColor uses yellow for within 5% of NDL (issue #104 L-3)")
+else:
+    fail("UDP statusColor still red for 1-5% NDL margin (issue #104 L-3)")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):

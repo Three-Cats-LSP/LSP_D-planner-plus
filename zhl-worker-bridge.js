@@ -57,10 +57,20 @@
     if (!worker) {
       worker = new Worker('zhl-schedule-worker.js');
       worker.onmessage = function (e) {
-        consecutiveWorkerFailures = 0;
         const { id, ok, result, error } = e.data || {};
-        if (ok) settlePending(id, true, result);
-        else settlePending(id, false, new Error(error || 'Worker calculation failed'));
+        if (ok) {
+          consecutiveWorkerFailures = 0;
+          settlePending(id, true, result);
+        } else {
+          consecutiveWorkerFailures += 1;
+          settlePending(id, false, new Error(error || 'Worker calculation failed'));
+          if (consecutiveWorkerFailures >= MAX_WORKER_FAILURES) {
+            workerPermanentlyDisabled = true;
+            rejectAll('ZHL worker crashed repeatedly — reload required');
+            killWorker();
+            nextId = 1;
+          }
+        }
       };
       worker.onerror = function (err) {
         const msg = (err && err.message) || 'Worker error';

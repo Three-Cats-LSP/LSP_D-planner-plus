@@ -171,8 +171,9 @@ preamble = r'''/**
         [, a, b] = ZHL16C[i];
       }
       const mValue = a + P_surf / b;
-      if (mValue <= 0) return;
-      const gf = (pTotal - P_surf) / mValue;
+      const mMargin = mValue - P_surf;
+      if (mMargin <= 0) return;
+      const gf = (pTotal - P_surf) / mMargin;
       if (gf > maxGF) maxGF = gf;
     });
     return maxGF === -Infinity ? 0 : Math.max(0, maxGF * 100);

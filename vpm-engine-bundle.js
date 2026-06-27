@@ -179,7 +179,6 @@ const VPMEngine = (() => {
         if (settings._prevBubbleState && settings._prevBubbleState.adjustedCritRadiiN2
                 && settings._prevBubbleState.adjustedCritRadiiN2.length === NC) {
             const si = settings._surfaceInterval != null ? settings._surfaceInterval : 0;
-            if (si > 0) {
             const regenFactor = Math.exp(-si / REGEN_TIME);
             const pb = settings._prevBubbleState;
             for (let i = 0; i < NC; i++) {
@@ -206,7 +205,6 @@ const VPMEngine = (() => {
                 decoGradientHe[i]             = gHec;
                 initialAllowableGradientN2[i] = gN2c;
                 initialAllowableGradientHe[i] = gHec;
-            }
             }
         }
         // ─────────────────────────────────────────────────────────────────────────────
@@ -399,11 +397,12 @@ const VPMEngine = (() => {
         for (let i = 0; i < NC; i++) {
             const pHe = state.tissues[i].pHe;
             const pN2 = state.tissues[i].pN2;
+            const denomBase = pHe + pN2 - surfaceInspiredN2;
             if (pN2 > surfaceInspiredN2) {
                 state.surfacePhaseVolumeTime[i] = (
                     pHe / (Math.LN2 / ZHL16C_He[i].ht)
                     + (pN2 - surfaceInspiredN2) / (Math.LN2 / ZHL16C_N2[i].ht)
-                ) / (pHe + pN2 - surfaceInspiredN2);
+                ) / Math.max(denomBase, 0.001);
             } else if (pN2 <= surfaceInspiredN2 && pHe + pN2 >= surfaceInspiredN2 && pHe > 0) {
                 const kHe = Math.LN2 / ZHL16C_He[i].ht;
                 const kN2 = Math.LN2 / ZHL16C_N2[i].ht;
@@ -413,7 +412,7 @@ const VPMEngine = (() => {
                 if (decayTime < 0) { state.surfacePhaseVolumeTime[i] = 0; continue; }
                 const integral = pHe / kHe * (1 - Math.exp(-kHe * decayTime))
                     + (pN2 - surfaceInspiredN2) / kN2 * (1 - Math.exp(-kN2 * decayTime));
-                state.surfacePhaseVolumeTime[i] = integral / (pHe + pN2 - surfaceInspiredN2);
+                state.surfacePhaseVolumeTime[i] = integral / Math.max(denomBase, 0.001);
             } else {
                 state.surfacePhaseVolumeTime[i] = 0;
             }
@@ -533,6 +532,10 @@ const VPMEngine = (() => {
         1.50  
     ];
     function setCriticalRadiiForConservatism(state, conservatism, settings) {
+        if (settings && settings._prevBubbleState && settings._prevBubbleState.adjustedCritRadiiN2
+                && settings._prevBubbleState.adjustedCritRadiiN2.length === NC) {
+            return;
+        }
         const consIdx = Math.max(0, Math.min(5, Math.round(conservatism || 0)));
         const factor = VPM_CRITICAL_RADIUS_FACTOR[consIdx];
         const surfP = settings ? getSurfacePressure(settings) : 1.01325;
