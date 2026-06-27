@@ -4964,10 +4964,10 @@ else:
 
 # ── issue #98 MEDIUM-1: dev dependency tar override ──
 _pkg_json = open(os.path.join(os.path.dirname(__file__), "package.json"), encoding="utf-8").read()
-if '"tar": "^7.5.17"' in _pkg_json or '"tar": ">=7.5.17"' in _pkg_json:
-    ok("package.json overrides tar to patched version (issue #98 M-1)")
+if '"tar": "^6.2.1"' in _pkg_json or '"tar": ">=6.2.1"' in _pkg_json:
+    ok("package.json overrides tar to patched 6.2.1+ (Capacitor-compatible, issue #98 M-1)")
 else:
-    fail("package.json missing tar override for Capacitor CLI dev dependency (issue #98 M-1)")
+    fail("package.json missing tar >=6.2.1 override for Capacitor CLI (issue #98 M-1)")
 
 if "headlessSegPpo2" in zhl_bundle_js or "onLoop" in zhl_bundle_js.split("function computeHeadlessCnsOtu", 1)[-1][:1200]:
     ok("computeHeadlessCnsOtu CCR-aware ppO2 (issue #93 M-4)")

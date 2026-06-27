@@ -22,6 +22,6 @@
     "@capacitor/cli": "^6.2.0"
   },
   "overrides": {
-    "tar": "^7.5.17"
+    "tar": "^6.2.1"
   }
 }
