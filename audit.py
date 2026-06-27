@@ -3181,10 +3181,10 @@ if os.path.isfile(verify_path):
         ok("tests-verify.html regression for pSCR ccrDiluentSurfaceLpm (BUG-75)")
     else:
         fail("tests-verify.html missing BUG-75 pSCR gas flow regression")
-    if "At/below setpoint crossover: loop-cap inert loading" in verify_html and "pAmb = sp + ppH2O" in verify_html:
-        ok("tests-verify CCR shallow test uses loop-cap inert loading at crossover")
+    if "At/below setpoint crossover: zero loop inert" in verify_html and "pAmb = sp + ppH2O" in verify_html:
+        ok("tests-verify CCR shallow test expects zero inert at crossover")
     else:
-        fail("tests-verify CCR shallow test missing loop-cap inert check")
+        fail("tests-verify CCR shallow test missing zero-inert crossover check")
     if "assertRtPinned" in verify_html and "VerifyWarn" in verify_html:
         ok("tests-verify.html RT pinned drift ±1–2 min → WARN (not fail)")
     else:
@@ -4936,10 +4936,10 @@ if "window._lastVPMExport = null" in js.split("function setAlgo", 1)[-1][:8000]:
     ok("setAlgo/setDecoAlgorithm clear _lastVPMExport (issue #93 M-2)")
 else:
     fail("_lastVPMExport not cleared on algorithm switch (issue #93 M-2)")
-if "ccrLoopGasBelowSetpoint" in _ccr_core_src and "fO2eff = Math.min(1, pDry" in _ccr_core_src:
-    ok("CCR below-setpoint uses loop-cap inert model (issue #98 H-1)")
+if "ccrLoopGasBelowSetpoint" in _ccr_core_src and "pN2: 0, pHe: 0" in _ccr_core_src.split("function ccrLoopGasBelowSetpoint", 1)[-1][:400]:
+    ok("CCR below-setpoint: zero loop inert, O2-maximized dry gas (issue #98 residual)")
 else:
-    fail("CCR below-setpoint still uses full diluent OC loading (issue #98 H-1)")
+    fail("CCR below-setpoint still assigns water-vapour slot as diluent inert (issue #98 residual)")
 if "validateGasFractionsPct" in js.split("function validatePlannerInputs", 1)[-1][:800]:
     ok("validatePlannerInputs validates trimix O2+He totals (issue #98 H-2)")
 else:

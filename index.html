@@ -6422,14 +6422,10 @@ function ccrLoopGasBelowSetpoint(pAmb, fO2, fHe) {
   const ppH2O = WATER_VAPOR;
   const pDry = Math.max(0, pAmb - ppH2O);
   const fO2eff = Math.min(1, pDry / Math.max(0.001, pAmb));
-  const fN2d = Math.max(0, 1 - fO2 - fHe);
-  const inertTotal = Math.max(0, 1 - fO2eff);
-  const inertDen = Math.max(0.001, fN2d + fHe);
-  const fN2loop = inertTotal * fN2d / inertDen;
-  const fHeloop = inertTotal * fHe / inertDen;
+  // O2 controller maxes dry loop gas; water vapour is alveolar, not diluent inert.
   return {
-    fO2: fO2eff, fN2: fN2loop, fHe: fHeloop,
-    pN2: pDry * fN2loop, pHe: pDry * fHeloop,
+    fO2: fO2eff, fN2: 0, fHe: 0,
+    pN2: 0, pHe: 0,
   };
 }
 
