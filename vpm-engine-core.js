@@ -1386,6 +1386,7 @@
                     loadTissuesConstant(state, stopDepth, effectiveMinStop, curO2, curHe, settings, curSP);
                     stopTime += effectiveMinStop;
                 }
+                const vpmStopCapHit = !isClearToAscendVPM(state, nextStopClamped, firstStopDepth, model, settings);
                 if (stopTime < effectiveMinStop) stopTime = effectiveMinStop;
                 runtime += stopTime;
                 const pAmbStop = getAmbientPressure(stopDepth, settings);
@@ -1398,7 +1399,8 @@
                     gas: curGasLabel,
                     o2: Math.round(curO2 * 100),
                     he: Math.round(curHe * 100),
-                    setpoint: curSP > 0 ? curSP : 0
+                    setpoint: curSP > 0 ? curSP : 0,
+                    vpmStopCapHit: vpmStopCapHit || undefined
                 });
                 if (nextStopClamped < stopDepth) {
                     settings._scrRuntimeMin = runtime;
@@ -1477,7 +1479,8 @@
         }
         setCriticalRadiiForConservatism(state, conservatism, settings);
         calcCrushing(state, settings);
-        applyNuclearRegeneration(state, runtime);
+        const bottomPhaseRuntime = runtime;
+        applyNuclearRegeneration(state, bottomPhaseRuntime);
         calcAllowableGradients(state, model, settings, conservatism);
         if (model === 'VPMBE') {
             extendedCompensation(state, settings);

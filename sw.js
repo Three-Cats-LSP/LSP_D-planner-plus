@@ -75,7 +75,11 @@ self.addEventListener('install', event => {
       .then(cache => Promise.allSettled(PRECACHE_ASSETS.map(url =>
         cache.add(url).catch(err => console.warn('[SW] precache skip:', url, err))
       )))
-      .then(() => self.skipWaiting())
+      .then(results => {
+        const ok = results.filter(r => r.status === 'fulfilled').length;
+        if (ok > 0) self.skipWaiting();
+        else console.error('[SW] precache failed — keeping prior cache until retry');
+      })
       .catch(err => console.error('[SW] install failed:', err))
   );
 });

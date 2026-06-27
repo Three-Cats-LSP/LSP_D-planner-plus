@@ -42,7 +42,8 @@ function loopMixLabelForCore(diluentLabel, ccr) {
 
 function depthAtSetpointCrossing(setpoint, surfP) {
   if (!setpoint || setpoint <= 0) return null;
-  return Math.max(0, (setpoint + WATER_VAPOR - (surfP || altSurfaceP)) / BAR_PER_METRE);
+  const d = (setpoint + WATER_VAPOR - (surfP || altSurfaceP)) / BAR_PER_METRE;
+  return d > 0 ? d : null;
 }
 
 function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
@@ -60,7 +61,9 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
   const decoCross = depthAtSetpointCrossing(decoSP, spSurf);
   const deepestCross = Math.max(descCross ?? 0, bottomCross ?? 0, decoCross ?? 0);
   if (depthM > deepestCross) return bottomSP;
-  if (depthM <= (descCross ?? 0)) return descSP;
+  if (descCross != null && depthM <= descCross) return descSP;
+  if (descCross == null && bottomCross != null && depthM < bottomCross) return descSP;
+  if (decoCross != null && depthM <= decoCross) return bottomSP;
   return decoSP;
 }
 

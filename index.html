@@ -6272,7 +6272,7 @@ function getN2Frac(mix) {
   if (mix === 'ean36') return FN2_EAN36;
   if (mix === 'custom') {
     const o2pct = parseFloat(document.getElementById('customO2')?.value) || 21;
-    return (100 - o2pct) / 100;
+    return Math.max(0, (100 - o2pct) / 100);
   }
   if (mix === 'trimix') {
     const o2 = readDomO2Pct('plannerTrimixO2');
@@ -6378,8 +6378,9 @@ function getCCRSettingsFromDOM() {
 }
 
 function mergeCCRSettings(settings) {
-  const dom = typeof document !== 'undefined' ? getCCRSettingsFromDOM() : {};
   const s = settings || {};
+  const hasSnap = s.circuit != null && s.circuit !== '';
+  const dom = hasSnap ? {} : (typeof document !== 'undefined' ? getCCRSettingsFromDOM() : {});
   return {
     circuit: s.circuit || dom.circuit || 'OC',
     setpoint: s.setpoint != null ? s.setpoint : (s.decoSetpoint != null ? s.decoSetpoint : dom.setpoint),
@@ -6406,7 +6407,8 @@ function isRebreatherCircuit(circuit) {
 
 function depthAtSetpointCrossing(setpoint, surfP) {
   if (!setpoint || setpoint <= 0) return null;
-  return Math.max(0, (setpoint + WATER_VAPOR - (surfP || altSurfaceP)) / BAR_PER_METRE);
+  const d = (setpoint + WATER_VAPOR - (surfP || altSurfaceP)) / BAR_PER_METRE;
+  return d > 0 ? d : null;
 }
 
 function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
@@ -6424,7 +6426,9 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
   const decoCross = depthAtSetpointCrossing(decoSP, spSurf);
   const deepestCross = Math.max(descCross ?? 0, bottomCross ?? 0, decoCross ?? 0);
   if (depthM > deepestCross) return bottomSP;
-  if (depthM <= (descCross ?? 0)) return descSP;
+  if (descCross != null && depthM <= descCross) return descSP;
+  if (descCross == null && bottomCross != null && depthM < bottomCross) return descSP;
+  if (decoCross != null && depthM <= decoCross) return bottomSP;
   return decoSP;
 }
 
@@ -7087,8 +7091,8 @@ function buhNDL(depthM, fN2, gfLow, gfHigh, fHe) {
   const fH = fHe || 0;
   const gfL = gfLow / 100;
   const gfH = gfHigh / 100;
-  const lastStop = 3;
-  const decoStep = 3;
+  const lastStop = parseInt(document.getElementById('lastDecoStop')?.value, 10) || 3;
+  const decoStep = parseInt(document.getElementById('decoStep')?.value, 10) || 3;
   let tissues = initTissues();
   for (let t = 0; t <= 500; t++) {
     const next = saturate(tissues, depthM, 1, fN2, fH);
@@ -7492,6 +7496,14 @@ function validateDomDecoGases() {
     if (!g) continue;
     const chk = validateGasFractionsPct(g.o2, g.he, `dg${idx}`);
     if (!chk.ok) errors.push(chk);
+    else if ((g.he || 0) > 0 && chk.o2 < 18) {
+      errors.push({
+        ok: false,
+        code: 'HYPOXIC_DECO_GAS',
+        field: `dg${idx}`,
+        message: `Deco gas ${idx}: O₂ below 18% is hypoxic at stop depths.`,
+      });
+    }
   }
   return { ok: errors.length === 0, errors };
 }
@@ -15110,7 +15122,7 @@ function updatePriorDiveCarry() {
     `  (surface interval: ${Math.floor(totalMinutes/60)}h ${Math.round(totalMinutes%60)}m)`;
 }
 
-function calcCnsWidgetExposure(bottomOtu, bottomSingleCns, dailyBottomCns, botFracs, ccr, dives) {
+function calcCnsWidgetExposure(bottomOtu, bottomSingleCns, dailyBottomCns, botFracs, ccr, dives, depthM, bt, fN2, gfLow, gfHigh, fHe) {
   const lp = window._lastPlan;
   const bot = botFracs || getBottomGasFractions();
   let planOtu = null;
@@ -15151,6 +15163,7 @@ function calcCnsWidgetExposure(bottomOtu, bottomSingleCns, dailyBottomCns, botFr
       otuFromPlan,
       cnsFromPlan,
       fromPlan: otuFromPlan || cnsFromPlan,
+      otuEstimated: false,
     };
   }
 
@@ -15166,12 +15179,22 @@ function calcCnsWidgetExposure(bottomOtu, bottomSingleCns, dailyBottomCns, botFr
       otuFromPlan: true,
       cnsFromPlan,
       fromPlan: true,
+      otuEstimated: false,
     };
   }
   return {
     otu: bottomOtu, singleCns: bottomSingleCns, dailyCns: dailyBottomCns,
     otuFromPlan: false, cnsFromPlan: false, fromPlan: false,
+    otuEstimated: bottomOtu > 0,
   };
+}
+
+function estimateWidgetOtuWithDeco(bottomOtu, depthM, bt, fN2, gfLow, gfHigh, fHe) {
+  if (typeof buhNDL !== 'function' || !Number.isFinite(depthM) || !Number.isFinite(bt)) return bottomOtu;
+  const ndl = buhNDL(depthM, fN2, gfLow, gfHigh, fHe);
+  if (!Number.isFinite(ndl) || bt <= ndl) return bottomOtu;
+  const decoFactor = 1 + Math.min(1.2, (bt - ndl) / Math.max(5, ndl));
+  return bottomOtu * decoFactor;
 }
 
 function calcCNS() {
@@ -15201,9 +15224,13 @@ function calcCNS() {
   const singleCNS = singleLimit > 0 ? Math.min((bt / singleLimit) * 100, 999) : 999;
   const dailyCNS  = dailyLimit  > 0 ? Math.min((bt * dives / dailyLimit) * 100, 999) : 999;
   const bottomOtu = bt * Math.pow(Math.max(0, (ppo2 - 0.5) / 0.5), OTU_EXPONENT);
-  const { otu, singleCns, dailyCns, otuFromPlan, cnsFromPlan, fromPlan } = calcCnsWidgetExposure(
-    bottomOtu, singleCNS, dailyCNS, botFracs, ccr, dives
+  const fN2 = botFracs ? (1 - (botFracs.fO2 || 0.21) - (botFracs.fHe || 0)) : FN2_AIR;
+  const widgetOtuEst = estimateWidgetOtuWithDeco(bottomOtu, depth, bt, fN2, mGF.low, mGF.high, botFracs?.fHe || 0);
+  const exp = calcCnsWidgetExposure(
+    widgetOtuEst, singleCNS, dailyCNS, botFracs, ccr, dives, depth, bt, fN2, mGF.low, mGF.high, botFracs?.fHe || 0
   );
+  const { otu, singleCns, dailyCns, otuFromPlan, cnsFromPlan, fromPlan } = exp;
+  const otuEstimated = !fromPlan && (exp.otuEstimated || widgetOtuEst > bottomOtu + 0.5);
 
   // Update stats
   document.getElementById('cnsPPO2').textContent     = ppo2.toFixed(2);
@@ -15237,10 +15264,16 @@ function calcCNS() {
   } else if (ppo2 > 1.4) {
     statusCandidates.push({ sev: 2, cls: 'c-warn', msg: `⚠️ ppO2 ${ppo2.toFixed(2)} bar is above recreational limit (1.4 bar). Technical divers only.` });
   }
+  const otuCarry = window._priorDiveCarry?.otuCarry || 0;
+  const perDiveOtu = fromPlan ? Math.max(0, otu - otuCarry) : otu;
   if (otu >= 600) {
     statusCandidates.push({ sev: 3, cls: 'c-dang', msg: `⛔ OTU ${Math.round(otu)} exceeds 600 (daily NOAA limit). No more diving today.` });
-  } else if (otu >= 300) {
-    statusCandidates.push({ sev: 2, cls: 'c-warn', msg: `⚠️ OTU ${Math.round(otu)} exceeds 300 (single-dive NOAA limit). Monitor total exposure.` });
+  } else if (perDiveOtu >= 300) {
+    statusCandidates.push({ sev: 2, cls: 'c-warn', msg: `⚠️ OTU ${Math.round(perDiveOtu)} exceeds 300 (single-dive NOAA limit). Monitor total exposure.` });
+  } else if (otu >= 300 && otuCarry > 0) {
+    statusCandidates.push({ sev: 2, cls: 'c-warn', msg: `⚠️ Cumulative OTU ${Math.round(otu)} exceeds 300 (includes ${Math.round(otuCarry)} OTU carry). Monitor total exposure.` });
+  } else if (!fromPlan && otuEstimated && otu >= 250) {
+    statusCandidates.push({ sev: 1, cls: 'c-warn', msg: `🟡 Estimated OTU ${Math.round(otu)} incl. likely deco — run Calculate for exact profile OTU.` });
   }
   if (dailyCns >= 100) {
     statusCandidates.push({ sev: 3, cls: 'c-dang', msg: `⛔ Daily CNS ${dailyCns.toFixed(0)}% exceeds 100% limit. No more diving today.` });
@@ -16716,6 +16749,8 @@ var appSettings = {
       localStorage.removeItem('lspDiveSettings');     // v1
       localStorage.removeItem('lspDiveSettings_v2');  // v2
       localStorage.removeItem('lspDiveSettings_v3');  // v3
+      localStorage.removeItem('lspDiveSettings_v4');  // v4
+      localStorage.removeItem('lspDiveSettings_v5');  // v5
       localStorage.removeItem('lspDiveDefaults_v2');  // old defaults
       console.log('[LSP] Cleaned up old storage keys');
     } catch(e) {
@@ -16725,7 +16760,7 @@ var appSettings = {
     try {
       const json = localStorage.getItem('lspDiveSettings_v6');
       if (!json) {
-        console.log('[LSP] ℹ️ No saved settings found (v3)');
+        console.log('[LSP] ℹ️ No saved settings found (v6)');
         return false;
       }
       
@@ -16759,9 +16794,14 @@ var appSettings = {
       
       // If same algo, restore fields immediately
       this._loadPending = true;
-      this._restoreFields(values);
-      this._loaded = true;
-      this._loadPending = false;
+      try {
+        this._restoreFields(values);
+      } catch (e) {
+        console.error('[LSP] Immediate restore failed:', e.message);
+      } finally {
+        this._loaded = true;
+        this._loadPending = false;
+      }
       return true;
     } catch(e) {
       console.error('[LSP] Load failed:', e.message);
@@ -16818,6 +16858,7 @@ var appSettings = {
     if (values['__units__']) {
       setUnits(values['__units__'], { relabelOnly: true });
     }
+    syncContDepthLabels?.();
     if ((values['__algo__'] || window.algo) === 'padi') syncRecGasMixDisplay();
 
     console.log('[LSP] ✅ Settings restored (' + restored + ' fields) - Algo: ' + (values['__algo__'] || 'padi'));
@@ -17508,6 +17549,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Load altitude from storage
   loadAltitudeFromStorage();
+  syncContDepthLabels?.();
 
   // Units default metric; appSettings.load() restores saved __units__ when present
   if (!localStorage.getItem('lspDiveSettings_v6')) {

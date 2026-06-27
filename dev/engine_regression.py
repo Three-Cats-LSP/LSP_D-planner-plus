@@ -328,7 +328,43 @@ ENGINE_SUITE_JS = """
     return { ok: !!(bad && !bad.ok) };
   })();
 
-  // ── E10: issue #112 planner BT vs descent validation ───────────────────
+  // ── E10: issue #113 setpoint shallow zone + N2 clamp + hypoxic deco ────
+  out.sections.issue113Setpoint = (() => {
+    if (typeof getEffectiveSetpointAtDepth !== 'function') return { ok: false };
+    const ccr = { circuit: 'CCR', descentSetpoint: 0.7, bottomSetpoint: 1.2, decoSetpoint: 1.3 };
+    const sp2 = getEffectiveSetpointAtDepth(2, ccr, 1.01325);
+    const sp10 = getEffectiveSetpointAtDepth(10, ccr, 1.01325);
+    return { sp2, sp10, ok: sp2 === 0.7 && sp10 === 1.2 };
+  })();
+
+  out.sections.issue113N2Clamp = (() => {
+    const el = document.getElementById('customO2');
+    if (!el || typeof getN2Frac !== 'function') return { ok: false };
+    const prev = el.value;
+    el.value = '105';
+    const fN2 = getN2Frac('custom');
+    el.value = prev;
+    return { fN2, ok: fN2 === 0 };
+  })();
+
+  out.sections.issue113HypoxicDeco = (() => {
+    if (typeof validateDomDecoGases !== 'function') return { ok: false };
+    const sel = document.getElementById('dg1Mix');
+    const o2El = document.getElementById('dg1TrimixO2');
+    const heEl = document.getElementById('dg1TrimixHe');
+    if (!sel || !o2El || !heEl) return { ok: false };
+    const prev = { mix: sel.value, o2: o2El.value, he: heEl.value };
+    sel.value = 'trimix';
+    o2El.value = '10';
+    heEl.value = '60';
+    const bad = validateDomDecoGases();
+    sel.value = prev.mix;
+    o2El.value = prev.o2;
+    heEl.value = prev.he;
+    return { ok: !!(bad && !bad.ok && bad.errors.some(e => e.code === 'HYPOXIC_DECO_GAS')) };
+  })();
+
+  // ── E11: issue #112 planner BT vs descent validation ───────────────────
   out.sections.issue112PlannerBt = (() => {
     const depthEl = document.getElementById('depth');
     const btEl = document.getElementById('bt');
@@ -570,6 +606,13 @@ def run_suite(page) -> dict:
 
     i112 = s.get("issue112PlannerBt", {})
     assert_true(i112.get("ok"), "validatePlannerInputs rejects BT shorter than descent (issue #112 L-3)", str(i112))
+
+    i113s = s.get("issue113Setpoint", {})
+    assert_true(i113s.get("ok"), "CCR shallow zone uses descSP at 2 m sea level (issue #113 H-2)", str(i113s))
+    i113n = s.get("issue113N2Clamp", {})
+    assert_true(i113n.get("ok"), "getN2Frac custom clamps O2>100 to fN2=0 (issue #113 M-7)", str(i113n))
+    i113h = s.get("issue113HypoxicDeco", {})
+    assert_true(i113h.get("ok"), "validateDomDecoGases rejects hypoxic trimix deco (issue #113 H-3)", str(i113h))
 
     for name, r in s["rebreather"].items():
         assert_true(fin(r), f"Rebreather {name} produces schedule", str(r)[:120])

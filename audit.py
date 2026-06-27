@@ -5130,7 +5130,7 @@ if "return saturate(tissues, 0, durMin, FN2_AIR, 0);" in js.split("function offg
     ok("offgasAtSurface uses ambient air, not CCR loop (issue #99 M-10)")
 else:
     fail("offgasAtSurface still uses CCR loop gas at surface (issue #99 M-10)")
-if "return (100 - o2pct) / 100;" in js.split("function getN2Frac", 1)[-1][:400] and "Math.min(40, Math.max(21" not in js.split("function getN2Frac", 1)[-1][:400]:
+if "Math.max(0, (100 - o2pct) / 100)" in js.split("function getN2Frac", 1)[-1][:400] and "Math.min(40, Math.max(21" not in js.split("function getN2Frac", 1)[-1][:400]:
     ok("getN2Frac custom mix no longer clamps O2 to 21-40% (issue #99 M-11)")
 else:
     fail("getN2Frac still clamps custom O2 to 21-40% (issue #99 M-11)")
@@ -5393,7 +5393,7 @@ if "repSurfP = altAcclimatized" in _zhl108 or "rep.surfaceP != null" in _zhl108:
     ok("ZHL rep surface off-gas respects altAcclimatized (issue #108 M-8)")
 else:
     fail("ZHL rep off-gas always uses altSurfaceP (issue #108 M-8)")
-if "otu >= 600" in js.split("function calcCNS", 1)[-1][:3500] and "otu >= 300" in js.split("function calcCNS", 1)[-1][:3500]:
+if "otu >= 600" in js.split("function calcCNS", 1)[-1][:4500] and "perDiveOtu >= 300" in js.split("function calcCNS", 1)[-1][:4500]:
     ok("CNS widget status warns on OTU ≥300/600 (issue #108 M-9)")
 else:
     fail("CNS widget status ignores OTU overages (issue #108 M-9)")
@@ -5420,7 +5420,7 @@ if "if (s.decoTransit) return" in js.split("function accumulateHeadlessPlanExpos
     ok("accumulateHeadlessPlanExposure skips folded decoTransit segments (issue #110 H-3)")
 else:
     fail("accumulateHeadlessPlanExposure still counts folded MultiDeco transit (issue #110 H-3)")
-if "statusCandidates" in js.split("function calcCNS", 1)[-1][:4500] and "b.sev - a.sev" in js.split("function calcCNS", 1)[-1][:4500]:
+if "statusCandidates" in js.split("function calcCNS", 1)[-1][:5500] and "b.sev - a.sev" in js.split("function calcCNS", 1)[-1][:5500]:
     ok("calcCNS status picks highest-severity condition (issue #110 M-1)")
 else:
     fail("calcCNS status still ordered by category not severity (issue #110 M-1)")
@@ -5591,7 +5591,7 @@ else:
 # ── Issue #112: deep review faf3442 — 2 HIGH / 4 MEDIUM / 5 LOW ──
 _112_zhl = open(os.path.join(os.path.dirname(__file__), "zhl-schedule-core.js"), encoding="utf-8").read()
 _112_bundle = open(os.path.join(os.path.dirname(__file__), "zhl-engine-bundle.js"), encoding="utf-8").read()
-if "if (travelOnLoop) _diveRuntimeMin += travelDur;" in _112_zhl.split("decoZoneEntered && mdCompatMode", 1)[-1][:500]:
+if "ccrSettings.circuit === 'CCR') _diveRuntimeMin += travelDur" in _112_zhl.split("decoZoneEntered && mdCompatMode", 1)[-1][:500]:
     ok("issue #112 H-1: mdCompat CCR transit advances _diveRuntimeMin when tissues skipped")
 else:
     fail("issue #112 H-1: CCR scrubber runtime still lags on mdCompat deco transit")
@@ -5635,7 +5635,7 @@ if "prev.decoTransit = !!(prev.decoTransit || s.decoTransit)" in _112_zhl:
     ok("issue #112 L-5: merged ascent steps propagate decoTransit flag")
 else:
     fail("issue #112 L-5: ascent merge drops decoTransit on partial transit segments")
-if "if (travelOnLoop) _diveRuntimeMin += travelDur;" in _112_bundle:
+if "ccrSettings.circuit === 'CCR') _diveRuntimeMin += travelDur" in _112_bundle:
     ok("issue #112 H-1: bundle includes mdCompat CCR runtime sync fix")
 else:
     fail("issue #112 H-1: zhl-engine-bundle missing CCR runtime sync fix")
@@ -5643,6 +5643,87 @@ if "issue112PlannerBt" in open(os.path.join(os.path.dirname(__file__), "dev", "e
     ok("issue #112: engine regression covers planner BT vs descent validation")
 else:
     fail("issue #112: engine regression missing planner BT validation")
+
+# ── Issue #113: deep review 8f1fbd9 — 4 HIGH / 8 MEDIUM / 3 LOW ──
+_113_vpm = open(os.path.join(os.path.dirname(__file__), "vpm-engine-core.js"), encoding="utf-8").read()
+_113_vpm_b = open(os.path.join(os.path.dirname(__file__), "vpm-engine-bundle.js"), encoding="utf-8").read()
+_113_ccr = open(os.path.join(os.path.dirname(__file__), "zhl-ccr-core.js"), encoding="utf-8").read()
+_113_zhl = open(os.path.join(os.path.dirname(__file__), "zhl-schedule-core.js"), encoding="utf-8").read()
+_113_bridge = open(os.path.join(os.path.dirname(__file__), "zhl-worker-bridge.js"), encoding="utf-8").read()
+_113_sw = open(os.path.join(os.path.dirname(__file__), "sw.js"), encoding="utf-8").read()
+_113_regr = open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read()
+if "vpmStopCapHit" in _113_vpm and "vpmStopCapHit" in _113_vpm_b:
+    ok("issue #113 H-1: VPM stop loop sets vpmStopCapHit when 999-min cap reached")
+else:
+    fail("issue #113 H-1: VPM inner stop loop still ascends silently after 999-min cap")
+if "return d > 0 ? d : null;" in _113_ccr.split("function depthAtSetpointCrossing", 1)[-1][:200]:
+    ok("issue #113 H-2: depthAtSetpointCrossing returns null below surface (zhl-ccr-core)")
+else:
+    fail("issue #113 H-2: depthAtSetpointCrossing still clamps unreachable crossing to 0")
+if "return d > 0 ? d : null;" in js.split("function depthAtSetpointCrossing", 1)[-1][:200]:
+    ok("issue #113 H-2: depthAtSetpointCrossing null crossing in index.html")
+else:
+    fail("issue #113 H-2: index.html depthAtSetpointCrossing still clamps to 0")
+if "descCross == null && bottomCross != null" in _113_ccr and "descCross == null && bottomCross != null" in js:
+    ok("issue #113 H-2: shallow zone uses descSP when descent crossing unreachable")
+else:
+    fail("issue #113 H-2: getEffectiveSetpointAtDepth shallow zone still forces decoSP")
+if "HYPOXIC_DECO_GAS" in js.split("function validateDomDecoGases", 1)[-1][:800]:
+    ok("issue #113 H-3: validateDomDecoGases rejects hypoxic trimix deco gases")
+else:
+    fail("issue #113 H-3: deco gas validation still accepts O2 < 18% trimix")
+if "p.timer !== timer" in _113_bridge and "nextId = 1" not in _113_bridge.split("function handleWorkerFailure", 1)[-1][:400]:
+    ok("issue #113 H-4: worker timeout verifies timer identity; nextId not reset on failure")
+else:
+    fail("issue #113 H-4: worker bridge stale timeout can kill healthy requests")
+if "ccrSettings.circuit === 'CCR') _diveRuntimeMin += travelDur" in _113_zhl:
+    ok("issue #113 M-1: mdCompat runtime advance limited to CCR (not pSCR)")
+else:
+    fail("issue #113 M-1: mdCompat transit still advances pSCR scrRuntimeMin without tissues")
+if "bottomPhaseRuntime = runtime" in _113_vpm and "applyNuclearRegeneration(state, bottomPhaseRuntime)" in _113_vpm:
+    ok("issue #113 M-2: applyNuclearRegeneration uses pre-deco bottom runtime")
+else:
+    fail("issue #113 M-2: nuclear regeneration still uses total runtime incl. deco")
+if "const hasSnap = s.circuit != null" in js.split("function mergeCCRSettings", 1)[-1][:400]:
+    ok("issue #113 M-3: mergeCCRSettings skips DOM read when circuit snapshotted")
+else:
+    fail("issue #113 M-3: mergeCCRSettings still reads live DOM on every call")
+if "function estimateWidgetOtuWithDeco" in js and "estimateWidgetOtuWithDeco(bottomOtu" in js.split("function calcCNS", 1)[-1][:1800]:
+    ok("issue #113 M-4: CNS widget estimates OTU incl. likely deco when no plan")
+else:
+    fail("issue #113 M-4: widget OTU still bottom-only without deco estimate")
+if "syncContDepthLabels" in js.split("loadAltitudeFromStorage();", 1)[-1][:200] and "syncContDepthLabels" in js.split("_restoreFields: function", 1)[-1][:2500]:
+    ok("issue #113 M-5: syncContDepthLabels on restore and DOMContentLoaded")
+else:
+    fail("issue #113 M-5: contingency depth labels not synced at startup")
+if "if (ok > 0) self.skipWaiting()" in _113_sw:
+    ok("issue #113 M-6: sw.js skipWaiting only after at least one precache success")
+else:
+    fail("issue #113 M-6: sw.js still calls skipWaiting when all precache fails")
+if "Math.max(0, (100 - o2pct) / 100)" in js.split("function getN2Frac", 1)[-1][:500]:
+    ok("issue #113 M-7: getN2Frac custom branch clamps negative fN2")
+else:
+    fail("issue #113 M-7: getN2Frac custom still allows O2 > 100 negative fN2")
+if "lastDecoStop" in js.split("function buhNDL", 1)[-1][:400] and "decoStep" in js.split("function buhNDL", 1)[-1][:400]:
+    ok("issue #113 M-8: buhNDL reads lastDecoStop and decoStep from DOM")
+else:
+    fail("issue #113 M-8: buhNDL still hardcodes last stop / step to 3 m")
+if "Immediate restore failed" in js.split("load: function()", 1)[-1][:2500]:
+    ok("issue #113 L-1: immediate _restoreFields wrapped in try/catch")
+else:
+    fail("issue #113 L-1: immediate restore path still lacks try/catch")
+if "perDiveOtu >= 300" in js and "Cumulative OTU" in js.split("function calcCNS", 1)[-1][:5500]:
+    ok("issue #113 L-2: OTU warnings separate per-dive vs cumulative carry")
+else:
+    fail("issue #113 L-2: OTU warning still labels carry-inclusive total as single-dive")
+if "No saved settings found (v6)" in js and "removeItem('lspDiveSettings_v5')" in js and "removeItem('lspDiveSettings_v4')" in js:
+    ok("issue #113 L-3: storage log references v6; v4/v5 keys cleaned up")
+else:
+    fail("issue #113 L-3: storage cleanup log or v4/v5 removal regression")
+if "issue113" in _113_regr:
+    ok("issue #113: engine regression covers setpoint / deco-gas / N2 fixes")
+else:
+    fail("issue #113: engine regression missing #113 coverage")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):

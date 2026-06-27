@@ -43,7 +43,6 @@
     consecutiveWorkerFailures += 1;
     rejectAll(msg);
     killWorker();
-    nextId = 1;
     if (consecutiveWorkerFailures >= MAX_WORKER_FAILURES) {
       workerPermanentlyDisabled = true;
       rejectAll('ZHL worker crashed repeatedly — reload required');
@@ -79,7 +78,6 @@
             workerPermanentlyDisabled = true;
             rejectAll('ZHL worker crashed repeatedly — reload required');
             killWorker();
-            nextId = 1;
           }
         }
       };
@@ -98,7 +96,8 @@
     return new Promise((resolve, reject) => {
       const id = nextId++;
       const timer = setTimeout(() => {
-        if (!pending.has(id)) return;
+        const p = pending.get(id);
+        if (!p || p.timer !== timer) return;
         handleWorkerFailure('ZHL worker timeout');
       }, WORKER_TIMEOUT_MS);
       pending.set(id, {

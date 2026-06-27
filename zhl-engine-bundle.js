@@ -185,7 +185,8 @@ function loopMixLabelForCore(diluentLabel, ccr) {
 
 function depthAtSetpointCrossing(setpoint, surfP) {
   if (!setpoint || setpoint <= 0) return null;
-  return Math.max(0, (setpoint + WATER_VAPOR - (surfP || altSurfaceP)) / BAR_PER_METRE);
+  const d = (setpoint + WATER_VAPOR - (surfP || altSurfaceP)) / BAR_PER_METRE;
+  return d > 0 ? d : null;
 }
 
 function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
@@ -203,7 +204,9 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
   const decoCross = depthAtSetpointCrossing(decoSP, spSurf);
   const deepestCross = Math.max(descCross ?? 0, bottomCross ?? 0, decoCross ?? 0);
   if (depthM > deepestCross) return bottomSP;
-  if (depthM <= (descCross ?? 0)) return descSP;
+  if (descCross != null && depthM <= descCross) return descSP;
+  if (descCross == null && bottomCross != null && depthM < bottomCross) return descSP;
+  if (decoCross != null && depthM <= decoCross) return bottomSP;
   return decoSP;
 }
 
@@ -843,7 +846,7 @@ function runZhlScheduleCore(params) {
         // MultiDeco-compatible mode: treat deco-zone transit as instant for tissue loading.
         // Transit time is still counted in RT and added to the displayed stop duration below.
         // (Schreiner mode: tissues off-gas normally during transit — more accurate.)
-        if (travelOnLoop) _diveRuntimeMin += travelDur;
+        if (travelOnLoop && ccrSettings && ccrSettings.circuit === 'CCR') _diveRuntimeMin += travelDur;
       } else {
         const tFO2 = travelOnLoop ? bottomFO2 : (travelGas.fO2 != null ? travelGas.fO2 : Math.max(0, 1 - travelGas.fN2 - (travelGas.fHe || 0)));
         const tFHe = travelOnLoop ? bottomFHe : (travelGas.fHe || 0);
