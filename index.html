@@ -14873,40 +14873,53 @@ function updatePriorDiveCarry() {
 
 function calcCnsWidgetExposure(bottomOtu, bottomSingleCns, dailyBottomCns, botFracs, ccr, dives) {
   const lp = window._lastPlan;
-  if (lp?.totalOTU != null && isFinite(lp.totalOTU)) {
-    const planCns = lp.totalCNS != null ? parseFloat(lp.totalCNS) : null;
-    return {
-      otu: lp.totalOTU,
-      singleCns: planCns != null && isFinite(planCns) ? planCns : bottomSingleCns,
-      dailyCns: planCns != null && isFinite(planCns) ? Math.min(planCns * dives, 999) : dailyBottomCns,
-      fromPlan: true,
-    };
-  }
+  const bot = botFracs || getBottomGasFractions();
+  let planOtu = null;
+  let planCns = null;
+
   if (lp?.steps?.length && typeof computePlanExposureTotals === 'function') {
-    const bot = botFracs || getBottomGasFractions();
     const exp = computePlanExposureTotals(
       lp.steps, ccr, bot?.fO2 ?? 0.21, bot?.fHe ?? 0, altSurfaceP, BAR_PER_METRE
     );
-    if (exp.totalOTU > 0 || exp.totalCNS > 0) {
-      return {
-        otu: exp.totalOTU || bottomOtu,
-        singleCns: exp.totalCNS || bottomSingleCns,
-        dailyCns: Math.min((exp.totalCNS || 0) * dives, 999) || dailyBottomCns,
-        fromPlan: true,
-      };
-    }
+    if (exp.totalOTU > 0) planOtu = exp.totalOTU;
+    if (exp.totalCNS > 0) planCns = exp.totalCNS;
   }
+  if (lp?.totalOTU != null && isFinite(lp.totalOTU)) planOtu = lp.totalOTU;
+  if (lp?.totalCNS != null) {
+    const stored = parseFloat(lp.totalCNS);
+    if (isFinite(stored)) planCns = stored;
+  }
+
+  if (planOtu != null || planCns != null) {
+    const otuFromPlan = planOtu != null && isFinite(planOtu);
+    const cnsFromPlan = planCns != null && isFinite(planCns);
+    return {
+      otu: otuFromPlan ? planOtu : bottomOtu,
+      singleCns: cnsFromPlan ? planCns : bottomSingleCns,
+      dailyCns: cnsFromPlan ? Math.min(planCns * dives, 999) : dailyBottomCns,
+      otuFromPlan,
+      cnsFromPlan,
+      fromPlan: otuFromPlan || cnsFromPlan,
+    };
+  }
+
   const vpmOtu = parseFloat(window._lastVPMExport?.otu);
   const vpmCns = parseFloat(String(window._lastVPMExport?.cns || '').replace('%', ''));
   if (isFinite(vpmOtu)) {
+    const cnsFromPlan = isFinite(vpmCns);
     return {
       otu: vpmOtu,
-      singleCns: isFinite(vpmCns) ? vpmCns : bottomSingleCns,
-      dailyCns: isFinite(vpmCns) ? Math.min(vpmCns * dives, 999) : dailyBottomCns,
+      singleCns: cnsFromPlan ? vpmCns : bottomSingleCns,
+      dailyCns: cnsFromPlan ? Math.min(vpmCns * dives, 999) : dailyBottomCns,
+      otuFromPlan: true,
+      cnsFromPlan,
       fromPlan: true,
     };
   }
-  return { otu: bottomOtu, singleCns: bottomSingleCns, dailyCns: dailyBottomCns, fromPlan: false };
+  return {
+    otu: bottomOtu, singleCns: bottomSingleCns, dailyCns: dailyBottomCns,
+    otuFromPlan: false, cnsFromPlan: false, fromPlan: false,
+  };
 }
 
 function calcCNS() {
@@ -14936,7 +14949,7 @@ function calcCNS() {
   const singleCNS = singleLimit > 0 ? Math.min((bt / singleLimit) * 100, 999) : 999;
   const dailyCNS  = dailyLimit  > 0 ? Math.min((bt * dives / dailyLimit) * 100, 999) : 999;
   const bottomOtu = bt * Math.pow(Math.max(0, (ppo2 - 0.5) / 0.5), OTU_EXPONENT);
-  const { otu, singleCns, dailyCns, fromPlan } = calcCnsWidgetExposure(
+  const { otu, singleCns, dailyCns, otuFromPlan, cnsFromPlan, fromPlan } = calcCnsWidgetExposure(
     bottomOtu, singleCNS, dailyCNS, botFracs, ccr, dives
   );
 
@@ -14977,10 +14990,12 @@ function calcCNS() {
     cls = 'c-warn'; msg = `⚠️ Single dive CNS ${singleCns.toFixed(0)}% exceeds 80% limit. Reduce bottom time.`;
   } else if (singleCns >= 50) {
     cls = 'c-warn'; msg = `🟡 CNS ${singleCns.toFixed(0)}% - moderate. Monitor total daily exposure.`;
+  } else if (fromPlan && otuFromPlan && !cnsFromPlan) {
+    msg = `✅ ppO2 ${ppo2.toFixed(2)} bar - OTU ${Math.round(otu)} from last plan (incl. deco); CNS ${singleCns.toFixed(0)}% from widget inputs.`;
+  } else if (fromPlan) {
+    msg = `✅ ppO2 ${ppo2.toFixed(2)} bar - CNS ${singleCns.toFixed(0)}% single, ${dailyCns.toFixed(0)}% daily. Exposure from last computed plan (incl. deco).`;
   } else {
-    msg = fromPlan
-      ? `✅ ppO2 ${ppo2.toFixed(2)} bar - CNS ${singleCns.toFixed(0)}% single, ${dailyCns.toFixed(0)}% daily. Exposure from last computed plan (incl. deco).`
-      : `✅ ppO2 ${ppo2.toFixed(2)} bar - CNS ${singleCns.toFixed(0)}% single, ${dailyCns.toFixed(0)}% daily. Run Calculate for full-profile CNS/OTU.`;
+    msg = `✅ ppO2 ${ppo2.toFixed(2)} bar - CNS ${singleCns.toFixed(0)}% single, ${dailyCns.toFixed(0)}% daily. Run Calculate for full-profile CNS/OTU.`;
   }
 
   statusEl.className = 'result-card ' + cls;

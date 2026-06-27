@@ -393,7 +393,7 @@ const VPMEngine = (() => {
     }
     function calcSurfacePhaseVolumeTime(state, settings) {
         const surfP = getSurfacePressure(settings);
-        const surfaceInspiredN2 = 0.79 * (surfP - getWaterVaporPressure(settings));
+        const surfaceInspiredN2 = 0.7902 * (surfP - getWaterVaporPressure(settings));
         for (let i = 0; i < NC; i++) {
             const pHe = state.tissues[i].pHe;
             const pN2 = state.tissues[i].pN2;
