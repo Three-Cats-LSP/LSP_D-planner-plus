@@ -190,6 +190,55 @@ ENGINE_SUITE_JS = """
       && Math.abs(rt(vpmSi0Rep) - rt(vpmSi0FreshCons)) > 0.01,
   };
 
+  // ── E3: Repetitive VPM conservatism sensitivity (issue #106 H-1) ─────
+  const vpmRepConsD1 = vpm(lv(45, 25, 32, 0), [{ o2: 50, he: 0 }], {}, 'VPMB');
+  const repConsRts = {};
+  if (vpmRepConsD1.finalBubbleState) {
+    for (const c of [0, 1, 3, 5]) {
+      repConsRts['c' + c] = rt(vpm(lv(45, 20, 32, 0), [{ o2: 50, he: 0 }], {
+        _preTissues: vpmRepConsD1.finalTissues,
+        _surfaceInterval: 45,
+        _prevBubbleState: vpmRepConsD1.finalBubbleState,
+        conservatism: c,
+      }, 'VPMB'));
+    }
+  }
+  out.sections.vpmRepConservatism = {
+    rts: repConsRts,
+    varies: repConsRts.c0 != null && repConsRts.c5 != null
+      && Math.abs(repConsRts.c0 - repConsRts.c5) > 0.01,
+  };
+
+  // ── E4: CCR VPM deco setpoints on stops (issue #106 H-2) ─────────────
+  out.sections.ccrVpmSetpoints = (() => {
+    const r = vpm(lv(40, 30, 21, 0), [], ccr, 'VPMB');
+    const stops = (r.plan || []).filter(p => p.type === 'stop' && p.depth >= 6);
+    const decoSp = ccr.decoSetpoint;
+    const allDecoSp = stops.length > 0 && stops.every(p => (p.setpoint || 0) >= decoSp - 0.01);
+    return { stopCount: stops.length, setpoints: stops.map(p => p.setpoint), allDecoSp };
+  })();
+
+  // ── E5: buhNDL GF High sensitivity (issue #106 M-1) ───────────────────
+  out.sections.buhNdlGf = {
+    ndl70: buhNDL(18, 0.79, 30, 70),
+    ndl85: buhNDL(18, 0.79, 30, 85),
+    ndl95: buhNDL(18, 0.79, 30, 95),
+  };
+
+  // ── E6: VPM surface interval validation (issue #106 M-2) ───────────────
+  out.sections.vpmSiValidate = (() => {
+    const repEl = document.getElementById('vpmRepMode');
+    const siEl = document.getElementById('vpmSurfaceInterval');
+    const prevRep = repEl ? repEl.checked : false;
+    const prevSi = siEl ? siEl.value : '60';
+    if (repEl) repEl.checked = true;
+    if (siEl) siEl.value = '-60';
+    const neg = validateVpmSurfaceInterval();
+    if (siEl) siEl.value = prevSi;
+    if (repEl) repEl.checked = prevRep;
+    return { rejectsNegative: !neg.ok };
+  })();
+
   // ── F: VPM engine API + GFS conservatism ───────────────────────────────
   out.sections.vpmApi = {
     loadTypeOk: typeof window.VPMEngine.load === 'function',
@@ -341,6 +390,22 @@ def run_suite(page) -> dict:
     vz = s["vpmZeroSi"]
     assert_true(vz["repFinite"] and vz["repNoNan"], "VPM zero surface interval produces finite schedule (no NaN)")
     assert_true(vz.get("repCarriesBubble"), "VPM zero-SI repetitive dive carries bubble state (issue #104 H-1)")
+
+    vrc = s.get("vpmRepConservatism", {})
+    assert_true(vrc.get("varies"), "Repetitive VPM runtime responds to conservatism (issue #106 H-1)", str(vrc))
+
+    cs = s.get("ccrVpmSetpoints", {})
+    assert_true(cs.get("allDecoSp"), "CCR VPM stops use deco setpoint (issue #106 H-2)", str(cs))
+
+    ng = s.get("buhNdlGf", {})
+    assert_true(
+        ng.get("ndl85", 0) > ng.get("ndl70", 0) or ng.get("ndl95", 0) > ng.get("ndl70", 0),
+        "buhNDL NDL increases with GF High (issue #106 M-1)",
+        str(ng),
+    )
+
+    sv = s.get("vpmSiValidate", {})
+    assert_true(sv.get("rejectsNegative"), "validateVpmSurfaceInterval rejects negative SI (issue #106 M-2)", str(sv))
 
     for name, r in s["rebreather"].items():
         assert_true(fin(r), f"Rebreather {name} produces schedule", str(r)[:120])

@@ -5206,18 +5206,18 @@ else:
 
 # ── issue #104 fixes ──
 _vpm104 = vpm_core_95
-if "settings._prevBubbleState" in _vpm104.split("function setCriticalRadiiForConservatism", 1)[-1][:400]:
-    ok("setCriticalRadiiForConservatism skips when _prevBubbleState carry applied (issue #104 H-2)")
+if "_bubbleCarryApplied" in _vpm104 and "scaleCarried" in _vpm104.split("function setCriticalRadiiForConservatism", 1)[-1][:900]:
+    ok("setCriticalRadiiForConservatism scales carried radii when bubble carry applied (issue #104 H-2 / #106 H-1)")
 else:
-    fail("setCriticalRadiiForConservatism still overwrites bubble carry (issue #104 H-2)")
+    fail("setCriticalRadiiForConservatism still skips conservatism on bubble carry (issue #104 H-2)")
 if "Math.max(denomBase, 0.001)" in _vpm104:
     ok("VPM calcSurfacePhaseVolumeTime guards near-zero denominator (issue #104 M-9)")
 else:
     fail("VPM surface phase volume missing denominator guard (issue #104 M-9)")
-if "savedGasMix = gasMixSel.value" in js and "appSettings.save(false)" in js.split("function setAlgo", 1)[-1][:4500]:
-    ok("setAlgo persists gasMix before Rec-mode visual reset (issue #104 H-3)")
+if "window._tecGasMix" in js and "function getPersistedGasMix" in js:
+    ok("Tec gasMix stored separately from Rec display (issue #104 H-3 / #106 H-3)")
 else:
-    fail("setAlgo still saves post-reset gasMix in Rec mode (issue #104 H-3)")
+    fail("Rec mode still overwrites persisted Tec gasMix (issue #104 H-3)")
 if "if (firstStopDepth <= interpBase) return gfH;" in zhl_src:
     ok("gfAt guards zero denominator when firstStop equals lastStop (issue #104 M-2)")
 else:
@@ -5230,8 +5230,8 @@ if "depthM > deepestCross" in open(os.path.join(os.path.dirname(__file__), "zhl-
     ok("getEffectiveSetpointAtDepth uses depth-derived phase thresholds (issue #104 M-4)")
 else:
     fail("getEffectiveSetpointAtDepth still compares pAmb to setpoint pressures (issue #104 M-4)")
-if "gfL + (gfH - gfL)" in js.split("function buhNDL", 1)[-1][:800]:
-    ok("buhNDL uses GF interpolation with gfHigh (issue #104 M-5)")
+if "function ndlClearAtDepth" in js.split("function buhNDL", 1)[-1][:1200] or "function ndlClearAtDepth" in js:
+    ok("buhNDL uses GF-line ascent simulation (issue #104 M-5 / #106 M-1)")
 else:
     fail("buhNDL still ignores gfHigh in NDL ceiling check (issue #104 M-5)")
 if "'travelGasTrimixO2'" in js.split("DECO_FIELDS:", 1)[-1][:2500] and "'travelGasTrimixHe'" in js.split("DECO_FIELDS:", 1)[-1][:2500]:
@@ -5259,6 +5259,33 @@ if "margin <= 5 ? 'var(--yellow)'" in js:
     ok("UDP statusColor uses yellow for within 5% of NDL (issue #104 L-3)")
 else:
     fail("UDP statusColor still red for 1-5% NDL margin (issue #104 L-3)")
+
+# ── issue #106 fixes ──
+_vpm106 = vpm_core_95
+if "_bubbleCarryApplied" in _vpm106 and "scaleCarried" in _vpm106.split("function setCriticalRadiiForConservatism", 1)[-1][:900]:
+    ok("setCriticalRadiiForConservatism scales carried radii by conservatism (issue #106 H-1)")
+else:
+    fail("setCriticalRadiiForConservatism still ignores conservatism on bubble carry (issue #106 H-1)")
+if "function vpmSetpointAtDepth" in _vpm106 and "vpmSetpointAtDepth(stopDepth, 'deco'" in _vpm106:
+    ok("VPM ascent/stops recalculate deco setpoint by phase (issue #106 H-2)")
+else:
+    fail("VPM still carries bottom setpoint through deco stops (issue #106 H-2)")
+if "window._tecGasMix" in js and "function getPersistedGasMix" in js and "getPersistedGasMix()" in js.split("save: function", 1)[-1][:1200]:
+    ok("Tec gasMix persisted separately from Rec display (issue #106 H-3)")
+else:
+    fail("Rec mode still overwrites persisted Tec gasMix (issue #106 H-3)")
+if "function ndlClearAtDepth" in js and "function buhNDL" in js:
+    ok("buhNDL uses multi-depth GF-line ascent check (issue #106 M-1)")
+else:
+    fail("buhNDL still ignores GF High in operating range (issue #106 M-1)")
+if "function validateVpmSurfaceInterval" in js and "validateVpmSurfaceInterval()" in js.split("function validateDecoInputs", 1)[-1][:600]:
+    ok("validateVpmSurfaceInterval guards repetitive VPM surface interval (issue #106 M-2)")
+else:
+    fail("VPM surface interval still unvalidated (issue #106 M-2)")
+if "repConsRts" in open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read():
+    ok("engine regression tests repetitive VPM conservatism (issue #106 coverage)")
+else:
+    fail("engine regression missing repetitive VPM conservatism test (issue #106 coverage)")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):

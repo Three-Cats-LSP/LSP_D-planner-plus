@@ -3993,6 +3993,26 @@ let _contingencyRunning = false; // flag to suppress contingency side effects
 let contGasLose = 'none'; // contingency: 'none' | '1' | '2' | 'both'
 let contExtraBT = 0;      // contingency extra BT: 0 | 3 | 5 | 10
 let contExtraDepth = 0;   // contingency went deeper: 0 | 3 | 5 (metres)
+window._tecGasMix = window._tecGasMix || null;
+
+function getPersistedGasMix() {
+  const el = document.getElementById('gasMix');
+  if (!el) return 'air';
+  if (typeof algo !== 'undefined' && algo === 'padi' && window._tecGasMix) return window._tecGasMix;
+  return el.value || 'air';
+}
+
+function syncRecGasMixDisplay() {
+  const gasMixSel = document.getElementById('gasMix');
+  if (!gasMixSel || typeof algo === 'undefined' || algo !== 'padi') return;
+  if (gasMixSel.value === 'ean50' || gasMixSel.value === 'trimix') {
+    window._tecGasMix = gasMixSel.value;
+  }
+  if (window._tecGasMix && (window._tecGasMix === 'ean50' || window._tecGasMix === 'trimix')) {
+    gasMixSel.value = 'air';
+    toggleCustomO2();
+  }
+}
 
 const SEA_LEVEL_P = 1.01325; // ISA sea-level pressure (bar)
 const CUFT_PER_LITRE = 0.0353147; // litres per cubic foot — SAC/cylinder conversions
@@ -4485,12 +4505,16 @@ function setAlgo(a) {
 
   document.getElementById('gasMixField').style.display = (isBuh || isRec) ? 'block' : 'none';
   const gasMixSel = document.getElementById('gasMix');
-  let savedGasMix = null;
   if (gasMixSel) {
-    savedGasMix = gasMixSel.value;
     Array.from(gasMixSel.options).forEach(opt => {
       if (opt.value === 'ean50' || opt.value === 'trimix') opt.style.display = isBuh ? '' : 'none';
     });
+    if (isBuh) {
+      if (window._tecGasMix) gasMixSel.value = window._tecGasMix;
+      else window._tecGasMix = gasMixSel.value;
+    } else if (isRec) {
+      syncRecGasMixDisplay();
+    }
     toggleCustomO2();
   }
 
@@ -4505,13 +4529,7 @@ function setAlgo(a) {
   buildDiveBlocks();
 
   if (typeof appSettings !== 'undefined' && appSettings.save) {
-    setTimeout(() => {
-      appSettings.save(false);
-      if (isRec && gasMixSel && (savedGasMix === 'ean50' || savedGasMix === 'trimix')) {
-        gasMixSel.value = 'air';
-        toggleCustomO2();
-      }
-    }, 100);
+    setTimeout(() => appSettings.save(false), 100);
   }
 }
 
@@ -7066,25 +7084,39 @@ function buhNDL(depthM, fN2, gfLow, gfHigh, fHe) {
   const gfL = gfLow / 100;
   const gfH = gfHigh / 100;
   const lastStop = 3;
+  const decoStep = 3;
   let tissues = initTissues();
-  for (let t=0; t<=500; t++) {
+  for (let t = 0; t <= 500; t++) {
     const next = saturate(tissues, depthM, 1, fN2, fH);
-    const ceil = ceiling(next, gfL);
-    if (ceil <= 0) { tissues = next; continue; }
-    const firstStopDepth = Math.max(lastStop, Math.ceil(ceil / 3) * 3);
-    let gf;
-    if (firstStopDepth <= lastStop) {
-      gf = gfH;
-    } else if (depthM >= firstStopDepth) {
-      gf = gfL;
-    } else {
-      gf = gfL + (gfH - gfL) * (firstStopDepth - depthM) / (firstStopDepth - lastStop);
-      gf = Math.min(gfH, Math.max(gfL, gf));
+    if (ndlClearAtDepth(next, depthM, gfL, gfH, lastStop, decoStep)) {
+      tissues = next;
+      continue;
     }
-    if (ceiling(next, gf) > 0) return t;
-    tissues = next;
+    return t;
   }
   return 500;
+}
+
+function ndlClearAtDepth(tissues, depthM, gfL, gfH, lastStop, decoStep) {
+  const ceilL = ceiling(tissues, gfL);
+  if (ceilL <= 0) return true;
+  const firstStop = Math.max(lastStop, Math.ceil(ceilL / decoStep) * decoStep);
+  const gfAt = (d) => {
+    if (firstStop <= lastStop) return gfH;
+    if (d >= firstStop) return gfL;
+    const gf = gfL + (gfH - gfL) * (firstStop - d) / (firstStop - lastStop);
+    return Math.min(gfH, Math.max(gfL, gf));
+  };
+  const depths = [depthM];
+  for (let d = firstStop; d >= 0; d -= decoStep) {
+    if (d < depthM - 1e-6) depths.push(d);
+  }
+  if (depths[depths.length - 1] !== 0) depths.push(0);
+  for (const d of depths) {
+    const ceil = ceiling(tissues, gfAt(d));
+    if (ceil > d + 0.01) return false;
+  }
+  return true;
 }
 
 function maxSatPct(tissues, gfHigh) {
@@ -8089,7 +8121,15 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
   const vpmRepEl = document.getElementById('vpmRepMode');
   const vpmSIEl  = document.getElementById('vpmSurfaceInterval');
   if (vpmRepEl && vpmRepEl.checked && _lastVPMResult) {
-    const siMin = parseFloat(vpmSIEl?.value || '60');
+    const siCheck = validateVpmSurfaceInterval();
+    if (!siCheck.ok) {
+      const tbody = document.getElementById('decoTableBody');
+      const msg = siCheck.msg || 'Invalid VPM surface interval.';
+      if (tbody) tbody.innerHTML = `<tr><td colspan="8" style="color:var(--red);padding:12px;">${msg}</td></tr>`;
+      else alert(msg);
+      return;
+    }
+    const siMin = siCheck.value;
     settings._preTissues      = _lastVPMResult.finalTissues;
     settings._surfaceInterval = siMin;
     settings._prevBubbleState = _lastVPMResult.finalBubbleState;
@@ -9083,6 +9123,17 @@ function validatePlannerInputs() {
   return { ok: true };
 }
 
+function validateVpmSurfaceInterval() {
+  const vpmRepEl = document.getElementById('vpmRepMode');
+  if (!vpmRepEl?.checked) return { ok: true, value: 0 };
+  const raw = document.getElementById('vpmSurfaceInterval')?.value;
+  const si = parseFloat(raw);
+  if (!Number.isFinite(si) || si < 0 || si > 10080) {
+    return { ok: false, msg: 'Surface interval must be a number from 0 to 10080 minutes.' };
+  }
+  return { ok: true, value: si };
+}
+
 function validateDecoInputs() {
   const base = validateDiveInputs('decoDepth', 'decoBT', { metric: 120, imperial: 394, maxBt: 300 });
   if (!base.ok) return base;
@@ -9090,6 +9141,8 @@ function validateDecoInputs() {
   if (!decoCheck.ok) {
     return { ok: false, msg: decoCheck.errors.map(e => e.message).join('\n') };
   }
+  const vpmSi = validateVpmSurfaceInterval();
+  if (!vpmSi.ok) return vpmSi;
   return { ok: true };
 }
 
@@ -16596,7 +16649,11 @@ var appSettings = {
       
       const el = document.getElementById(id);
       if (el) {
-        values[id] = el.type === 'checkbox' ? el.checked : (el.value || '');
+        if (id === 'gasMix') {
+          values[id] = getPersistedGasMix();
+        } else {
+          values[id] = el.type === 'checkbox' ? el.checked : (el.value || '');
+        }
       }
     });
     
@@ -16637,8 +16694,7 @@ var appSettings = {
       if (values['__units__']) {
         units = values['__units__'];
       }
-      
-      // First, switch to the correct algorithm if different
+      if (values.gasMix) window._tecGasMix = values.gasMix;
       if (values['__algo__']) {
         const savedAlgo = values['__algo__'];
         const currentAlgo = window.algo || 'padi';
@@ -16721,7 +16777,8 @@ var appSettings = {
     if (values['__units__']) {
       setUnits(values['__units__'], { relabelOnly: true });
     }
-    
+    if ((values['__algo__'] || window.algo) === 'padi') syncRecGasMixDisplay();
+
     console.log('[LSP] ✅ Settings restored (' + restored + ' fields) - Algo: ' + (values['__algo__'] || 'padi'));
   },
 

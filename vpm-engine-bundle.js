@@ -176,9 +176,10 @@ const VPMEngine = (() => {
         //  is WRONG; actually smaller nucleus = harder to grow = LESS bubble risk;
         //  but larger nuclei survive surface interval better → more conservative for next dive).
         // Net effect: carrying state is conservative — correct VPM-B behaviour.
+        let bubbleCarryApplied = false;
         if (settings._prevBubbleState && settings._prevBubbleState.adjustedCritRadiiN2
                 && settings._prevBubbleState.adjustedCritRadiiN2.length === NC) {
-            const si = settings._surfaceInterval != null ? settings._surfaceInterval : 0;
+            const si = Math.max(0, settings._surfaceInterval != null ? settings._surfaceInterval : 0);
             const regenFactor = Math.exp(-si / REGEN_TIME);
             const pb = settings._prevBubbleState;
             for (let i = 0; i < NC; i++) {
@@ -206,6 +207,7 @@ const VPMEngine = (() => {
                 initialAllowableGradientN2[i] = gN2c;
                 initialAllowableGradientHe[i] = gHec;
             }
+            bubbleCarryApplied = true;
         }
         // ─────────────────────────────────────────────────────────────────────────────
         return {
@@ -233,7 +235,8 @@ const VPMEngine = (() => {
             maxDepth: 0,
             maxAmbientPressure: surfP,
             firstStopDepth: 0,
-            useDecoGradients: false
+            useDecoGradients: false,
+            _bubbleCarryApplied: bubbleCarryApplied
         };
     }
     function cloneVPMState(baseState) {
@@ -532,24 +535,35 @@ const VPMEngine = (() => {
         1.50  
     ];
     function setCriticalRadiiForConservatism(state, conservatism, settings) {
-        if (settings && settings._prevBubbleState && settings._prevBubbleState.adjustedCritRadiiN2
-                && settings._prevBubbleState.adjustedCritRadiiN2.length === NC) {
-            return;
-        }
         const consIdx = Math.max(0, Math.min(5, Math.round(conservatism || 0)));
         const factor = VPM_CRITICAL_RADIUS_FACTOR[consIdx];
+        const baseFactor = VPM_CRITICAL_RADIUS_FACTOR[0];
         const surfP = settings ? getSurfacePressure(settings) : 1.01325;
         const altFactor = Math.pow(1.01325 / surfP, 1.0 / 3.0);
         const rN2 = INITIAL_RADIUS_N2 * altFactor * factor;
         const rHe = INITIAL_RADIUS_He * altFactor * factor;
+        const scaleCarried = !!state._bubbleCarryApplied;
+        const scale = factor / baseFactor;
         for (let i = 0; i < NC; i++) {
-            state.critRadiiN2[i] = rN2;
-            state.critRadiiHe[i] = rHe;
-            state.adjustedCritRadiiN2[i] = rN2;
-            state.adjustedCritRadiiHe[i] = rHe;
-            state.regeneratedRadiiN2[i] = rN2;
-            state.regeneratedRadiiHe[i] = rHe;
+            if (scaleCarried) {
+                if (scale !== 1) {
+                    state.critRadiiN2[i] *= scale;
+                    state.critRadiiHe[i] *= scale;
+                    state.adjustedCritRadiiN2[i] *= scale;
+                    state.adjustedCritRadiiHe[i] *= scale;
+                    state.regeneratedRadiiN2[i] *= scale;
+                    state.regeneratedRadiiHe[i] *= scale;
+                }
+            } else {
+                state.critRadiiN2[i] = rN2;
+                state.critRadiiHe[i] = rHe;
+                state.adjustedCritRadiiN2[i] = rN2;
+                state.adjustedCritRadiiHe[i] = rHe;
+                state.regeneratedRadiiN2[i] = rN2;
+                state.regeneratedRadiiHe[i] = rHe;
+            }
         }
+        if (scaleCarried) state._bubbleCarryApplied = false;
     }
     function calcAllowableGradients(state, model, settings, conservatism) {
         for (let i = 0; i < NC; i++) {
@@ -737,9 +751,9 @@ const VPMEngine = (() => {
     function roundUpToStop(depth, stepSize) {
         return Math.ceil((depth + 1e-9) / stepSize) * stepSize;
     }
-    function getEffectiveSetpoint(level, isCCR, settings, depthM) {
-        if (!isCCR || !level) return 0;
-        if (level.oc || level.scr) return 0;
+    function getEffectiveSetpoint(level, isCCR, settings, depthM, phase) {
+        if (!isCCR) return 0;
+        if (level && (level.oc || level.scr)) return 0;
         if (settings && settings.bailout) return 0;
         const surfP = settings ? getSurfacePressure(settings) : altSurfaceP;
         const ccr = {
@@ -750,7 +764,24 @@ const VPMEngine = (() => {
             setpoint: settings?.setpoint ?? 1.3,
             bailout: false,
         };
-        return getEffectiveSetpointAtDepth(depthM != null ? depthM : 0, ccr, surfP);
+        return getEffectiveSetpointAtDepth(depthM != null ? depthM : 0, ccr, surfP, phase);
+    }
+    function vpmSetpointAtDepth(depthM, phase, forcedOC, vpmSettings) {
+        const cfg = vpmSettings || {};
+        if (forcedOC || !isRebreatherCircuit(cfg.circuit) || cfg.bailout) return 0;
+        return getEffectiveSetpointAtDepth(
+            depthM != null ? depthM : 0,
+            {
+                circuit: cfg.circuit || 'CCR',
+                descentSetpoint: cfg.descentSetpoint ?? 0.7,
+                bottomSetpoint: cfg.bottomSetpoint ?? 1.2,
+                decoSetpoint: cfg.decoSetpoint ?? cfg.setpoint ?? 1.3,
+                setpoint: cfg.setpoint ?? 1.3,
+                bailout: false,
+            },
+            getSurfacePressure(cfg),
+            phase
+        );
     }
     function vpmAccumPpo2(pAmb, sp, fO2, fHe, settings, depthM, useOC) {
         if (sp > 0) return Math.min(sp, pAmb);
@@ -939,9 +970,11 @@ const VPMEngine = (() => {
             } catch (e) {  }
             ctx.plan.push(segment);
         }
-        function runAscentSegment(ctx, toDepth, rate) {
+        function runAscentSegment(ctx, toDepth, rate, phase) {
             settings._scrRuntimeMin = ctx.runtime;
             const fromDepth = ctx.currentDepth;
+            const midDepth = (fromDepth + toDepth) * 0.5;
+            ctx.currentSP = vpmSetpointAtDepth(midDepth, phase || 'deco', ctx.forcedOCMode, settings);
             const segTime = loadTissuesLinear(
                 ctx.state, fromDepth, toDepth, rate,
                 ctx.currentO2, ctx.currentHe, settings, ctx.currentSP
@@ -963,6 +996,7 @@ const VPMEngine = (() => {
         }
         function runRoundedDecoStop(ctx, stopDepth, nextStop) {
             settings._scrRuntimeMin = ctx.runtime;
+            ctx.currentSP = vpmSetpointAtDepth(stopDepth, 'deco', ctx.forcedOCMode, settings);
             let effectiveMinStop = (firstStop30sec && stopDepth === ctx.firstStopDepth) ? 0.5 : minStopTime;
             const roundedRuntime = (ctx.continuationFinalPhase && stopDepth <= 12)
                 ? ctx.runtime
@@ -1053,12 +1087,13 @@ const VPMEngine = (() => {
         }
         function runStopSequenceToDepth(ctx, firstStopDepth, targetDepth, anchorFirstStopDepth) {
             if (firstStopDepth <= 0 || firstStopDepth <= targetDepth) {
-                runAscentSegment(ctx, targetDepth, ascentRate);
+                runAscentSegment(ctx, targetDepth, ascentRate, 'deco');
                 return ctx;
             }
             const phaseFirstStopDepth = anchorFirstStopDepth || firstStopDepth;
             ctx.firstStopDepth = phaseFirstStopDepth;
-            runAscentSegment(ctx, firstStopDepth, ascentRate);
+            ctx.currentSP = vpmSetpointAtDepth(firstStopDepth, 'deco', ctx.forcedOCMode, settings);
+            runAscentSegment(ctx, firstStopDepth, ascentRate, 'deco');
             let stopDepth = firstStopDepth;
             while (stopDepth > targetDepth) {
                 maybeSwitchDecoGas(ctx, stopDepth);
@@ -1093,7 +1128,7 @@ const VPMEngine = (() => {
             ctx.currentO2 = level.o2 / 100;
             ctx.currentHe = level.he / 100;
             ctx.currentGasLabel = `${level.o2}/${level.he}`;
-            ctx.currentSP = (ctx.forcedOCMode || nextLevelOffLoop) ? 0 : getEffectiveSetpoint(level, isCCR, settings, level.depth);
+            ctx.currentSP = (ctx.forcedOCMode || nextLevelOffLoop) ? 0 : getEffectiveSetpoint(level, isCCR, settings, level.depth, 'bottom');
             if (level.time <= 0) return;
             settings._scrRuntimeMin = ctx.runtime;
             loadTissuesConstant(ctx.state, level.depth, level.time, ctx.currentO2, ctx.currentHe, settings, ctx.currentSP);
@@ -1192,7 +1227,7 @@ const VPMEngine = (() => {
         }
         function runStopSequence(ctx, firstStopDepth, recordSurface, anchorFirstStopDepth) {
             if (firstStopDepth <= 0) {
-                runAscentSegment(ctx, 0, surfaceAscentRate);
+                runAscentSegment(ctx, 0, surfaceAscentRate, 'deco');
                 if (recordSurface) {
                     appendPlan(ctx, { type: 'surface', depth: 0, time: 0, runtime: Math.round(ctx.runtime * 10) / 10, gas: ctx.currentGasLabel });
                 }
@@ -1200,7 +1235,8 @@ const VPMEngine = (() => {
             }
             const phaseFirstStopDepth = anchorFirstStopDepth || firstStopDepth;
             ctx.firstStopDepth = phaseFirstStopDepth;
-            runAscentSegment(ctx, firstStopDepth, ascentRate);
+            ctx.currentSP = vpmSetpointAtDepth(firstStopDepth, 'deco', ctx.forcedOCMode, settings);
+            runAscentSegment(ctx, firstStopDepth, ascentRate, 'deco');
             let stopDepth = firstStopDepth;
             while (stopDepth > 0) {
                 maybeSwitchDecoGas(ctx, stopDepth);
@@ -1214,10 +1250,10 @@ const VPMEngine = (() => {
                 }
                 runRoundedDecoStop(ctx, stopDepth, nextStop);
                 if (nextStop <= 0) {
-                    runAscentSegment(ctx, 0, surfaceAscentRate);
+                    runAscentSegment(ctx, 0, surfaceAscentRate, 'deco');
                     break;
                 }
-                runAscentSegment(ctx, nextStop, decoAscentRate);
+                runAscentSegment(ctx, nextStop, decoAscentRate, 'deco');
                 stopDepth = nextStop;
             }
             if (recordSurface) {
@@ -1230,7 +1266,7 @@ const VPMEngine = (() => {
         let curHe = levels[0].he / 100;
         let curGasLabel = `${levels[0].o2}/${levels[0].he}`;
         let forcedOCMode = isCCR && !!levels[0].oc;
-        let curSP = forcedOCMode ? 0 : getEffectiveSetpoint(levels[0], isCCR, settings, levels[0].depth);
+        let curSP = forcedOCMode ? 0 : getEffectiveSetpoint(levels[0], isCCR, settings, levels[0].depth, 'descent');
         function runInterLevelDecoAscent(targetDepth) {
             calcCrushing(state, settings);
             applyNuclearRegeneration(state, runtime);
@@ -1388,7 +1424,8 @@ const VPMEngine = (() => {
             const heFrac = level.he / 100;
             if (level.oc) forcedOCMode = true;
             const nextLevelOffLoop = isCCR && !!(level.oc || level.scr);
-            const sp = (forcedOCMode || nextLevelOffLoop) ? 0 : getEffectiveSetpoint(level, isCCR, settings, depth);
+            const sp = (forcedOCMode || nextLevelOffLoop) ? 0 : getEffectiveSetpoint(
+                level, isCCR, settings, depth, depth > currentDepth ? 'descent' : 'bottom');
             if (depth > currentDepth) {
                 settings._scrRuntimeMin = runtime;
                 const descTime = loadTissuesLinear(state, currentDepth, depth, descentRate, o2Frac, heFrac, settings, sp);
@@ -1445,7 +1482,7 @@ const VPMEngine = (() => {
         const currentO2 = lastLevel.o2 / 100;
         const currentHe = lastLevel.he / 100;
         const currentGasLabel = `${lastLevel.o2}/${lastLevel.he}`;
-        const currentSP = forcedOCMode ? 0 : getEffectiveSetpoint(lastLevel, isCCR, settings, lastLevel.depth);
+        const currentSP = forcedOCMode ? 0 : getEffectiveSetpoint(lastLevel, isCCR, settings, lastLevel.depth, 'bottom');
         const startOfAscentState = cloneVPMState(state);
         const runtimeStartOfAscent = runtime;
         const totalOTUStartOfAscent = totalOTU;
@@ -1553,7 +1590,7 @@ const VPMEngine = (() => {
                     levels[levels.length - 1].o2 / 100,
                     levels[levels.length - 1].he / 100,
                     `${levels[levels.length - 1].o2}/${levels[levels.length - 1].he}`,
-                    forcedOCMode ? 0 : getEffectiveSetpoint(levels[levels.length - 1], isCCR, settings, levels[levels.length - 1].depth),
+                    forcedOCMode ? 0 : getEffectiveSetpoint(levels[levels.length - 1], isCCR, settings, depthStartOfAscent, 'deco'),
                     null,
                     forcedOCMode
                 ).ctx;
@@ -1597,7 +1634,7 @@ const VPMEngine = (() => {
                         levels[levels.length - 1].o2 / 100,
                         levels[levels.length - 1].he / 100,
                         `${levels[levels.length - 1].o2}/${levels[levels.length - 1].he}`,
-                        forcedOCMode ? 0 : getEffectiveSetpoint(levels[levels.length - 1], isCCR, settings, levels[levels.length - 1].depth),
+                        forcedOCMode ? 0 : getEffectiveSetpoint(levels[levels.length - 1], isCCR, settings, depthStartOfAscent, 'deco'),
                         plan,
                         forcedOCMode
                     ).ctx;
