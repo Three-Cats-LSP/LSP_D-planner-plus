@@ -1775,11 +1775,20 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <option value="ean32">EAN32(32%)</option>
 <option value="ean36">EAN36(36%)</option>
 <option value="custom">Custom O₂ %</option>
+<option style="display:none;" value="trimix">Trimix (O₂/He %)</option>
 </select>
 </div>
 <div class="field" id="customO2Field" style="display:none;">
 <label>O₂ % (21–40)</label>
 <input id="customO2" max="40" min="21" step="1" type="number" value="32"/>
+</div>
+<div class="field" id="plannerTrimixO2Field" style="display:none;">
+<label>O₂ %</label>
+<input id="plannerTrimixO2" max="40" min="10" step="1" type="number" value="21"/>
+</div>
+<div class="field" id="plannerTrimixHeField" style="display:none;">
+<label>He %</label>
+<input id="plannerTrimixHe" max="90" min="0" step="1" type="number" value="35"/>
 </div>
 </div>
 <button class="btn-calc" onclick="runPlanner()">▶ CALCULATE DIVE</button>
@@ -4474,9 +4483,9 @@ function setAlgo(a) {
   const gasMixSel = document.getElementById('gasMix');
   if (gasMixSel) {
     Array.from(gasMixSel.options).forEach(opt => {
-      if (opt.value === 'ean50') opt.style.display = isBuh ? '' : 'none';
+      if (opt.value === 'ean50' || opt.value === 'trimix') opt.style.display = isBuh ? '' : 'none';
     });
-    if (isRec && gasMixSel.value === 'ean50') gasMixSel.value = 'air';
+    if (isRec && (gasMixSel.value === 'ean50' || gasMixSel.value === 'trimix')) gasMixSel.value = 'air';
     toggleCustomO2();
   }
 
@@ -6217,8 +6226,11 @@ function initTissues() {
 }
 
 function toggleCustomO2() {
-  const isCustom = document.getElementById('gasMix').value === 'custom';
-  document.getElementById('customO2Field').style.display = isCustom ? 'block' : 'none';
+  const mix = document.getElementById('gasMix').value;
+  document.getElementById('customO2Field').style.display = mix === 'custom' ? 'block' : 'none';
+  const showTrimix = mix === 'trimix';
+  document.getElementById('plannerTrimixO2Field').style.display = showTrimix ? 'block' : 'none';
+  document.getElementById('plannerTrimixHeField').style.display = showTrimix ? 'block' : 'none';
 }
 
 function getN2Frac(mix) {
@@ -6228,10 +6240,22 @@ function getN2Frac(mix) {
     const o2pct = parseFloat(document.getElementById('customO2')?.value) || 21;
     return (100 - Math.min(40, Math.max(21, o2pct))) / 100;
   }
+  if (mix === 'trimix') {
+    const o2 = readDomO2Pct('plannerTrimixO2');
+    const he = readDomHePct('plannerTrimixHe');
+    if (Number.isFinite(o2) && Number.isFinite(he)) {
+      return Math.max(0, (100 - o2 - he) / 100);
+    }
+    return FN2_AIR;
+  }
   return FN2_AIR;
 }
 
 function getHeFrac(mix) {
+  if (mix === 'trimix') {
+    const he = readDomHePct('plannerTrimixHe');
+    return Number.isFinite(he) ? Math.min(1, Math.max(0, he / 100)) : 0;
+  }
   return 0;
 }
 
@@ -7000,10 +7024,11 @@ function ambientCrossingDepth(tissues) {
   return Math.max(0, maxD);
 }
 
-function buhNDL(depthM, fN2, gfLow, gfHigh) {
+function buhNDL(depthM, fN2, gfLow, gfHigh, fHe) {
+  const fH = fHe || 0;
   let tissues = initTissues();
   for (let t=0; t<=500; t++) {
-    const next = saturate(tissues, depthM, 1, fN2, 0);
+    const next = saturate(tissues, depthM, 1, fN2, fH);
     if (ceiling(next, gfLow/100) > 0) return t;
     tissues = next;
   }
@@ -7125,14 +7150,15 @@ function runPlanner() {
     tissues = saturate(tissues, depthM, bt, fN2, fHe);
     lastTissues = tissues;
     const gfHF = gfH/100;
-    const ndl = buhNDL(depthM, fN2, gfL, gfH);
+    const ndl = buhNDL(depthM, fN2, gfL, gfH, fHe);
     const ceil = ceiling(tissues, gfHF);
     const sat  = maxSatPct(tissues, gfH);
     const rem  = Math.max(0, ndl-bt);
     const pct  = Math.min(100, Math.round((bt/ndl)*100));
     const bc   = pct>=100?'var(--red)':pct>=85?'var(--orange)':pct>=70?'var(--yellow)':'var(--green)';
     const btOk = bt <= ndl && ceil <= 0;
-    const pO2  = parseFloat((depthBar(depthM)*(1-fN2)).toFixed(2));
+    const fO2  = Math.max(0, 1 - fN2 - fHe);
+    const pO2  = parseFloat((depthBar(depthM) * fO2).toFixed(2));
 
     updateTissueViz(tissues, gfH);
 

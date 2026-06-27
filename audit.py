@@ -5027,6 +5027,18 @@ if "depth < currentDepth ? ascentRate : descentRate" in vpm_core_95:
 else:
     fail("VPM inter-level still uses descent rate for upward travel (issue #95 M-11)")
 
+# ── issue #96 fixes ──
+if re.search(r"function getHeFrac\(mix\)[\s\S]{0,400}trimix", js) and "return 0;" not in js.split("function getHeFrac(mix)", 1)[1].split("function ", 1)[0].strip().replace("return 0;", ""):
+    ok("getHeFrac reads He from trimix mix (issue #96 L-1)")
+elif "readDomHePct('plannerTrimixHe')" in js and "mix === 'trimix'" in js.split("function getHeFrac", 1)[1][:500]:
+    ok("getHeFrac reads He from trimix mix (issue #96 L-1)")
+else:
+    fail("getHeFrac still stubbed — always returns 0 (issue #96 L-1)")
+if "saturate(tissues, depthM, 1, fN2, fH)" in js or "saturate(tissues, depthM, 1, fN2, fHe" in js:
+    ok("buhNDL passes fHe to saturate (issue #96 L-1)")
+else:
+    fail("buhNDL still hardcodes fHe=0 in NDL loop (issue #96 L-1)")
+
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
     ok("stable release APP_VERSION is 2.52.00")
