@@ -4962,9 +4962,11 @@ if "'gfs_40_25_air_hi85':      { rt:109" in verify_html:
 else:
     fail("VPM-B/GFS pinned RT still stale at 111 min (issue #98 L-2)")
 
-# ── issue #98 MEDIUM-1: dev dependency tar override ──
+# ── issue #98 MEDIUM-1: dev dependency tar override (superseded by Capacitor 8 in #110 M-2) ──
 _pkg_json = open(os.path.join(os.path.dirname(__file__), "package.json"), encoding="utf-8").read()
-if '"tar": "^6.2.1"' in _pkg_json or '"tar": ">=6.2.1"' in _pkg_json:
+if '"@capacitor/cli": "^8' in _pkg_json:
+    ok("Capacitor 8 CLI resolves patched tar without override (issue #98 M-1 / #110 M-2)")
+elif '"tar": "^6.2.1"' in _pkg_json or '"tar": ">=6.2.1"' in _pkg_json:
     ok("package.json overrides tar to patched 6.2.1+ (Capacitor-compatible, issue #98 M-1)")
 else:
     fail("package.json missing tar >=6.2.1 override for Capacitor CLI (issue #98 M-1)")
@@ -5430,11 +5432,17 @@ if "timeline110" in open(os.path.join(os.path.dirname(__file__), "dev", "engine_
     ok("engine regression includes timeline110 parity section (issue #110 L-1)")
 else:
     fail("engine regression missing timeline parity checks (issue #110 L-1)")
+if "decoTransit: decoZoneEntered && mdCompatMode && firstDecoDepth !== null" in open(os.path.join(os.path.dirname(__file__), "zhl-schedule-core.js"), encoding="utf-8").read():
+    ok("decoTransit only when transit folded into following stop (issue #110 ML continuation)")
+else:
+    fail("decoTransit still blanket-filters continuation-phase first ascents (issue #110 ML)")
 _pkg110 = open(os.path.join(os.path.dirname(__file__), "package.json"), encoding="utf-8").read()
-if '"tar": "^6.2.1"' in _pkg110 and ("issue #110 M-2" in _pkg110 or "_devSecurityNotes" in _pkg110):
+if '"@capacitor/cli": "^8' in _pkg110 and '"tar":' not in _pkg110.split('"overrides"', 1)[-1][:200] if '"overrides"' in _pkg110 else True:
+    ok("Capacitor 8 toolchain resolves patched tar without override (issue #110 M-2)")
+elif '"tar": "^6.2.1"' in _pkg110 and ("issue #110 M-2" in _pkg110 or "_devSecurityNotes" in _pkg110):
     ok("package.json documents Capacitor tar 6.x dev-only override (issue #110 M-2 acknowledged)")
 else:
-    fail("package.json tar override undocumented (issue #110 M-2)")
+    fail("package.json tar/Capacitor dev security posture undocumented (issue #110 M-2)")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):

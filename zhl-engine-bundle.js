@@ -840,7 +840,7 @@ function runZhlScheduleCore(params) {
         type: 'ascent', from: cur, to: stopDepth,
         dur: travelDur, gas: travelOnLoop ? loopMixLabel : travelGas.label,
         pO2: ppO2Check(cur, travelGas.fN2, travelGas.fHe || 0), fN2: travelGas.fN2, fHe: travelGas.fHe || 0,
-        decoTransit: decoZoneEntered && mdCompatMode
+        decoTransit: decoZoneEntered && mdCompatMode && firstDecoDepth !== null
       });
       rt  += travelDur;
       cur  = stopDepth;

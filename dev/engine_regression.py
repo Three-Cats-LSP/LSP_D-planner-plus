@@ -388,6 +388,13 @@ ENGINE_SUITE_JS = """
       const expectBottom = Math.max(0, 25 - descentTime);
       return { bottomTime: bot?.time, expectBottom, ok: bot && Math.abs(bot.time - expectBottom) < 0.1 };
     })(),
+    ccrMl: planParity(zhl([
+      { depth: 60, time: 20, o2: 18, he: 45 },
+      { depth: 42, time: 8, o2: 18, he: 45 },
+    ], [], {
+      circuit: 'CCR', setpoint: 1.3, descentSetpoint: 0.7, bottomSetpoint: 1.3, decoSetpoint: 1.3,
+      gfLo: 35, gfHi: 75, mdCompatMode: true,
+    })),
   };
 
   return out;
@@ -526,7 +533,7 @@ def run_suite(page) -> dict:
     t110 = s.get("timeline110", {})
     assert_true(t110.get("toMMSSvpm", {}).get("ok"), "toMMSS accepts minutes not seconds (issue #110 H-1)", str(t110.get("toMMSSvpm")))
     assert_true(t110.get("bottomNoDoubleDescent", {}).get("ok"), "ZHL headless bottom excludes descent time (issue #110 H-2)", str(t110.get("bottomNoDoubleDescent")))
-    for key in ("zhl4025", "zhl3025", "schreiner"):
+    for key in ("zhl4025", "zhl3025", "schreiner", "ccrMl"):
         assert_true(t110.get(key, {}).get("ok"), f"ZHL plan timeline parity {key} (issue #110 H-3/L-1)", str(t110.get(key)))
 
     print("\n── G: Worker parity ──")

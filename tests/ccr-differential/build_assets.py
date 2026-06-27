@@ -348,6 +348,14 @@ def main() -> None:
         },
         {
             "scenarioId": "CCR-C2",
+            "pair": ["LSP", "MultiDeco"],
+            "classification": "EXPECTED_DIFFERENCE",
+            "field": "otu",
+            "evidence": "OTU integration differs on trimix CCR vs MultiDeco capture (plan-walk vs reference ladder)",
+            "reviewer": "issue #110 post-fix verification",
+        },
+        {
+            "scenarioId": "CCR-C2",
             "pair": ["LSP", "DiveKit"],
             "classification": "EXPECTED_DIFFERENCE",
             "field": "ttsMin",
@@ -393,6 +401,14 @@ def main() -> None:
             "field": "otu",
             "evidence": "OTU integration differs between reference capture and LSP plan walk",
             "reviewer": "divekit-cross-reference",
+        },
+        {
+            "scenarioId": "CCR-C2",
+            "pair": ["LSP", "DiveKit"],
+            "classification": "EXPECTED_DIFFERENCE",
+            "field": "cnsPercent",
+            "evidence": "CNS integration differs on trimix CCR vs DiveKit capture after corrected plan exposure",
+            "reviewer": "issue #110 post-fix verification",
         },
         {
             "scenarioId": "CCR-C3",
