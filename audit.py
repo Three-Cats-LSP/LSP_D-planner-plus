@@ -5478,6 +5478,82 @@ if "android-36" in _apk_yml_cap8:
 else:
     fail("Android APK workflow still targets SDK 34")
 
+# ── Issue #111: full codebase audit v2.52.00 — verify 14 findings resolved at HEAD ──
+_111_vpm = open(os.path.join(os.path.dirname(__file__), "vpm-engine-core.js"), encoding="utf-8").read()
+_111_zhl = open(os.path.join(os.path.dirname(__file__), "zhl-schedule-core.js"), encoding="utf-8").read()
+_111_bundle = open(os.path.join(os.path.dirname(__file__), "zhl-engine-bundle.js"), encoding="utf-8").read()
+_111_ccr = open(os.path.join(os.path.dirname(__file__), "zhl-ccr-core.js"), encoding="utf-8").read()
+_111_ci = open(os.path.join(os.path.dirname(__file__), ".github", "workflows", "ci.yml"), encoding="utf-8").read()
+_111_regr = open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read()
+_111_gesp = js.split("function getEffectiveSetpointAtDepth", 1)[-1][:1200] if "function getEffectiveSetpointAtDepth" in js else ""
+_111_ndl = js.split("function buhNDL", 1)[-1][:1500] if "function buhNDL" in js else ""
+_111_rep = js.split("function getZhlRepStateForSchedule", 1)[-1][:400] if "function getZhlRepStateForSchedule" in js else ""
+_111_end = js.split("function calcEND_tool", 1)[-1][:2500] if "function calcEND_tool" in js else ""
+_111_cont = js.split("function syncContDepthLabels", 1)[-1][:300] if "function syncContDepthLabels" in js else ""
+_111_deco = js.split("DECO_FIELDS:", 1)[-1][:2500] if "DECO_FIELDS:" in js else ""
+_111_zwb = open(os.path.join(os.path.dirname(__file__), "zhl-worker-bridge.js"), encoding="utf-8").read()
+_111_sw = open(os.path.join(os.path.dirname(__file__), "sw.js"), encoding="utf-8").read()
+if "_bubbleCarryApplied" in _111_vpm and "scaleCarried" in _111_vpm.split("function setCriticalRadiiForConservatism", 1)[-1][:900]:
+    ok("issue #111 H-1: VPM conservatism scales carried bubble radii, not flat overwrite")
+else:
+    fail("issue #111 H-1: setCriticalRadiiForConservatism still destroys bubble carry")
+if "const mMargin = mValue - P_surf" in _111_bundle:
+    ok("issue #111 H-2: computeSurfaceGF uses (mValue - P_surf) denominator in bundle")
+else:
+    fail("issue #111 H-2: computeSurfaceGF bundle still divides by raw mValue")
+if "depthM > deepestCross" in _111_gesp and "depthM > deepestCross" in _111_ccr:
+    ok("issue #111 H-3: getEffectiveSetpointAtDepth uses depth/phase thresholds (index + ccr-core)")
+else:
+    fail("issue #111 H-3: getEffectiveSetpointAtDepth still compares pAmb to ppO2 setpoints")
+if "if (firstStopDepth <= interpBase) return gfH;" in _111_zhl and "if (firstStopDepth <= interpBase) return gfH;" in _111_bundle:
+    ok("issue #111 H-5: gfAt zero-denominator guard in schedule core and bundle")
+else:
+    fail("issue #111 H-5: gfAt missing firstStopDepth === lastStop guard")
+if "surfaceIntervalMin: snap.surfaceIntervalMin" in _111_rep:
+    ok("issue #111 H-6: getZhlRepStateForSchedule returns snap surfaceIntervalMin")
+else:
+    fail("issue #111 H-6: getZhlRepStateForSchedule still reads live DOM SI")
+if "function ndlClearAtDepth" in _111_ndl and "gfH" in _111_ndl:
+    ok("issue #111 M-1: buhNDL uses GF-line ndlClearAtDepth with gfHigh")
+else:
+    fail("issue #111 M-1: buhNDL still ignores gfHigh")
+if "'travelGasTrimixO2'" in _111_deco and "'travelGasTrimixHe'" in _111_deco:
+    ok("issue #111 M-2: travelGasTrimixO2/He persisted in DECO_FIELDS")
+else:
+    fail("issue #111 M-2: travel gas trimix missing from DECO_FIELDS")
+if "if (ok) {" in _111_zwb.split("worker.onmessage", 1)[-1][:600] and "consecutiveWorkerFailures += 1" in _111_zwb.split("worker.onmessage", 1)[-1][:800]:
+    ok("issue #111 M-3: worker bridge increments failures only on ok:false")
+else:
+    fail("issue #111 M-3: worker bridge failure counter regression")
+if "Math.max(denomBase, 0.001)" in _111_vpm:
+    ok("issue #111 M-4: VPM calcSurfacePhaseVolumeTime near-zero denominator guard")
+else:
+    fail("issue #111 M-4: VPM surface phase volume missing denominator guard")
+if "repSurfP = altAcclimatized" in _111_zhl:
+    ok("issue #111 M-5: ZHL rep surface off-gas respects altAcclimatized (issue #109 fix verified)")
+else:
+    fail("issue #111 M-5: ZHL repSurfP still ignores altAcclimatized")
+if "const ppO2Limit = parseFloat(document.getElementById('ppo2Bottom')" in _111_end:
+    ok("issue #111 M-6: calcEND_tool MOD uses configured ppO2 limit")
+else:
+    fail("issue #111 M-6: calcEND_tool MOD still hardcoded 1.4 bar")
+if "importScripts('app-version.js')" in _111_sw and re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
+    ok("issue #111 L-1: app-version 2.52.00 synced; SW derives CACHE_VERSION dynamically")
+else:
+    fail("issue #111 L-1: SW/app-version sync regression")
+if "build_vpm_bundle.py" in _111_ci and "git diff --exit-code zhl-engine-bundle.js vpm-engine-bundle.js" in _111_ci:
+    ok("issue #111 L-2: CI bundle-sync guards ZHL and VPM bundle drift")
+else:
+    fail("issue #111 L-2: CI missing VPM bundle sync guard")
+if "Math.round(v * 3.28084)" in _111_cont:
+    ok("issue #111 L-3: contingency depth buttons show imperial-converted labels")
+else:
+    fail("issue #111 L-3: contingency depth labels still show metres as feet")
+if "ccrVpm:" in _111_regr and "ccrVpmSetpoints" in _111_regr:
+    ok("issue #111 L-4: engine regression covers CCR VPM setpoint paths")
+else:
+    fail("issue #111 L-4: engine regression missing CCR VPM coverage")
+
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
     ok("stable release APP_VERSION is 2.52.00")
