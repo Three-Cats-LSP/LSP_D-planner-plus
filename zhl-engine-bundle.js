@@ -145,10 +145,18 @@
   }
 
 
+function canonicalCircuit(circuit) {
+  if (circuit == null || circuit === '') return 'OC';
+  const u = String(circuit).trim().toUpperCase();
+  if (u === 'CCR') return 'CCR';
+  if (u === 'PSCR') return 'pSCR';
+  return String(circuit).trim();
+}
+
 function normalizeCCRSettings(s) {
   s = s || {};
   return {
-    circuit: s.circuit || 'OC',
+    circuit: canonicalCircuit(s.circuit || 'OC'),
     setpoint: s.setpoint != null ? s.setpoint : s.decoSetpoint,
     decoSetpoint: s.decoSetpoint != null ? s.decoSetpoint : s.setpoint,
     bottomSetpoint: s.bottomSetpoint,
@@ -172,7 +180,8 @@ function mergeCCRSettings(ccr) {
 }
 
 function isRebreatherCircuit(circuit) {
-  return circuit === 'CCR' || circuit === 'pSCR';
+  const c = canonicalCircuit(circuit);
+  return c === 'CCR' || c === 'pSCR';
 }
 
 function loopMixLabelForCore(diluentLabel, ccr) {
@@ -202,6 +211,12 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
   const descCross = depthAtSetpointCrossing(descSP, spSurf);
   const bottomCross = depthAtSetpointCrossing(bottomSP, spSurf);
   const decoCross = depthAtSetpointCrossing(decoSP, spSurf);
+  if (descCross == null && bottomCross == null && decoCross == null) {
+    const pDry = (spSurf + depthM * BAR_PER_METRE) - WATER_VAPOR;
+    if (pDry >= decoSP) return decoSP;
+    if (pDry >= bottomSP) return bottomSP;
+    return descSP;
+  }
   const deepestCross = Math.max(descCross ?? 0, bottomCross ?? 0, decoCross ?? 0);
   if (depthM > deepestCross) return bottomSP;
   if (descCross != null && depthM <= descCross) return descSP;
@@ -242,10 +257,11 @@ function computePSCRFractions(pAmb, fO2, fHe, ccr) {
   };
 }
 
-function ccrLoopGasBelowSetpoint(pAmb, fO2, fHe) {
+function ccrLoopGasBelowSetpoint(pAmb, fO2, fHe, setpoint) {
   const ppH2O = WATER_VAPOR;
   const pDry = Math.max(0, pAmb - ppH2O);
-  const fO2eff = Math.min(1, pDry / Math.max(0.001, pAmb));
+  const spTarget = setpoint > 0 ? Math.min(setpoint, pDry) : pDry;
+  const fO2eff = Math.min(1, spTarget / Math.max(0.001, pAmb));
   const fN2d = Math.max(0, 1 - fO2 - fHe);
   const inertSrc = Math.max(0.001, fHe + fN2d);
   const loopInert = Math.max(0, 1 - fO2eff);
@@ -282,7 +298,7 @@ function getInspiredInertPressures(pAmb, setpoint, fO2, fHe, ccr) {
     return { pN2: pInert * fN2d, pHe: pInert * fHe, fO2, fHe, fN2: fN2d };
   }
   if (pAmb <= setpoint + ppH2O) {
-    const loop = ccrLoopGasBelowSetpoint(pAmb, fO2, fHe);
+    const loop = ccrLoopGasBelowSetpoint(pAmb, fO2, fHe, setpoint);
     return { pN2: loop.pN2, pHe: loop.pHe, fO2: loop.fO2, fHe: loop.fHe, fN2: loop.fN2 };
   }
   const pInert = pAmb - setpoint - ppH2O;
@@ -332,8 +348,8 @@ function getCCRInertSchreinerParams(pAmbStart, setpoint, fO2, fHe, pressureRate,
     };
   }
   if (pAmbStart <= setpoint + WATER_VAPOR) {
-    const loop0 = ccrLoopGasBelowSetpoint(pAmbStart, fO2, fHe);
-    const loop1 = ccrLoopGasBelowSetpoint(pAmbStart + pressureRate, fO2, fHe);
+    const loop0 = ccrLoopGasBelowSetpoint(pAmbStart, fO2, fHe, setpoint);
+    const loop1 = ccrLoopGasBelowSetpoint(pAmbStart + pressureRate, fO2, fHe, setpoint);
     return {
       inspN2Start: loop0.pN2,
       inspHeStart: loop0.pHe,
@@ -422,7 +438,7 @@ function saturateLinearCCR(tissues, fromDepth, toDepth, t, fO2, fHe, ccr) {
     const p0Amb = depthBar(seg.fromDepth);
     const pEndAmb = depthBar(seg.toDepth);
     const R = (pEndAmb - p0Amb) / segTime;
-    const segSP = getEffectiveSetpointAtDepth(seg.fromDepth, cfg, surfP, phase);
+    const segSP = getEffectiveSetpointAtDepth(seg.toDepth, cfg, surfP, phase);
     const segCcr = { ...cfg, setpoint: segSP };
     out = out.map((t0, i) => ({
       pN2: schreinerLinearCCR(t0.pN2, ZHL16C[i][0], segTime, p0Amb, R, segSP, fO2, fHe, segCcr, false),

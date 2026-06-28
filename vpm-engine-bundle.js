@@ -1306,7 +1306,6 @@ const VPMEngine = (() => {
         let curSP = forcedOCMode ? 0 : getEffectiveSetpoint(levels[0], isCCR, settings, levels[0].depth, 'descent');
         function runInterLevelDecoAscent(targetDepth) {
             calcCrushing(state, settings);
-            applyNuclearRegeneration(state, bottomPhaseRuntime);
             const offLoopPath = isCCR && settings.circuit !== 'pSCR' && (forcedOCMode || curSP <= 0);
             const interLevelConservatism = offLoopPath ? Math.max(0, conservatism - 1) : conservatism;
             calcAllowableGradients(state, model, settings, interLevelConservatism);

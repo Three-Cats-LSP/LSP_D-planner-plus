@@ -703,7 +703,9 @@ _ccr_core_path = os.path.join(os.path.dirname(__file__), "zhl-ccr-core.js")
 if os.path.isfile(_ccr_core_path):
     with open(_ccr_core_path, encoding="utf-8") as f:
         _ccr_core_src = f.read()
-    if "getEffectiveSetpointAtDepth(seg.fromDepth" in _ccr_core_src:
+    if "getEffectiveSetpointAtDepth(seg.toDepth" in _ccr_core_src:
+        ok("CCR saturateLinearCCR uses segment exit depth for setpoint (issue #27 BUG-C / #118 M-7)")
+    elif "getEffectiveSetpointAtDepth(seg.fromDepth" in _ccr_core_src:
         ok("CCR saturateLinearCCR uses segment entry depth for setpoint (issue #27 BUG-C)")
     else:
         fail("CCR saturateLinearCCR still uses midpoint setpoint (issue #27 BUG-C)")
@@ -723,7 +725,9 @@ if zhl_bundle_js:
         ok("zhl-engine-bundle travel gas descent passes fHe (issue #28 bundle parity)")
     else:
         fail("zhl-engine-bundle missing travel gas fHe (issue #28)")
-    if "getEffectiveSetpointAtDepth(seg.fromDepth" in zhl_bundle_js:
+    if "getEffectiveSetpointAtDepth(seg.toDepth" in zhl_bundle_js:
+        ok("zhl-engine-bundle CCR setpoint at segment exit depth (issue #28 / #118 M-7)")
+    elif "getEffectiveSetpointAtDepth(seg.fromDepth" in zhl_bundle_js:
         ok("zhl-engine-bundle CCR setpoint at segment entry depth (issue #28 bundle parity)")
     else:
         fail("zhl-engine-bundle still uses midpoint CCR setpoint (issue #28)")
@@ -5270,7 +5274,9 @@ if "function syncContDepthLabels" in js and "Math.round(v * 3.28084)" in js.spli
     ok("contingency depth buttons show imperial-converted labels (issue #104 L-2)")
 else:
     fail("contingency depth buttons still label metres as feet (issue #104 L-2)")
-if "margin <= 5 ? 'var(--red)'" in js and "margin <= 10 ? 'var(--yellow)'" in js.split("function statusColor", 1)[-1][:200]:
+if "margin <= 5 ? 'var(--orange)'" in js.split("function statusColor", 1)[-1][:200]:
+    ok("UDP statusColor uses orange for 1–5 min margin (issue #118 L-1; supersedes #104/#108)")
+elif "margin <= 5 ? 'var(--red)'" in js and "margin <= 10 ? 'var(--yellow)'" in js.split("function statusColor", 1)[-1][:200]:
     ok("UDP statusColor uses red ≤5 / yellow ≤10 (issue #108 M-1; supersedes #104 L-3)")
 elif "margin <= 5 ? 'var(--yellow)'" in js:
     ok("UDP statusColor uses yellow for within 5% of NDL (issue #104 L-3)")
@@ -5347,10 +5353,12 @@ else:
 
 # ── issue #108 fixes ──
 _zhl108 = open(os.path.join(os.path.dirname(__file__), "zhl-schedule-core.js"), encoding="utf-8").read()
-if "decoTime += parseRunMinutes(tr.querySelectorAll('td')[2]" in js.split("function runContingencyScenario", 1)[-1][:1200]:
+if "parseStopDisplayTime(tr.querySelectorAll('td')[2]" in js.split("function runContingencyScenario", 1)[-1][:2500]:
+    ok("contingency decoTime uses parseStopDisplayTime on stop column (issue #118 H-3; supersedes #108 H-1)")
+elif "decoTime += parseRunMinutes(tr.querySelectorAll('td')[2]" in js.split("function runContingencyScenario", 1)[-1][:2500]:
     ok("contingency decoTime uses parseRunMinutes not parseStopDisplayTime (issue #108 H-1)")
 else:
-    fail("runContingencyScenario still accumulates decoTime via parseStopDisplayTime (issue #108 H-1)")
+    fail("runContingencyScenario still accumulates decoTime via wrong parser (issue #108/#118)")
 if "regeneratedRadiiN2" in _vpm106.split("settings._prevBubbleState", 1)[-1][:900] and "regeneratedRadiiHe" in _vpm106.split("settings._prevBubbleState", 1)[-1][:900]:
     ok("VPM bubble carry guards regeneratedRadii arrays (issue #108 H-2)")
 else:
@@ -5360,7 +5368,9 @@ if "getWorkerScriptUrl" in _zwb108 and "p.timer" in _zwb108 and "clearTimeout(p.
     ok("ZHL worker bridge clears pending timeouts and uses APP_BASE worker URL (issue #108 H-3/L-2)")
 else:
     fail("ZHL worker bridge missing timeout cleanup or base-path worker URL (issue #108 H-3/L-2)")
-if "margin <= 5 ? 'var(--red)'" in js and "margin <= 10 ? 'var(--yellow)'" in js.split("function statusColor", 1)[-1][:200]:
+if "margin <= 5 ? 'var(--orange)'" in js.split("function statusColor", 1)[-1][:200]:
+    ok("UDP statusColor uses orange for 1–5 min margin (issue #118 L-1; supersedes #108 M-1)")
+elif "margin <= 5 ? 'var(--red)'" in js and "margin <= 10 ? 'var(--yellow)'" in js.split("function statusColor", 1)[-1][:200]:
     ok("UDP statusColor uses red ≤5 / yellow ≤10 (issue #108 M-1)")
 else:
     fail("UDP statusColor still has dead yellow branch at margin ≤5 (issue #108 M-1)")
@@ -5681,7 +5691,10 @@ if "isRebreatherCircuit(ccrSettings.circuit)) _diveRuntimeMin += travelDur" in _
 else:
     fail("issue #113 M-1: mdCompat transit still skips pSCR runtime sync")
 if "let bottomPhaseRuntime = 0" in _113_vpm and "bottomPhaseRuntime += descTime" in _113_vpm and "bottomPhaseRuntime += bottomTime" in _113_vpm:
-    if _113_vpm.count("applyNuclearRegeneration(state, bottomPhaseRuntime)") >= 2:
+    _il_regen = _113_vpm.split("function runInterLevelDecoAscent", 1)[-1].split("function ", 1)[0][:500]
+    if "applyNuclearRegeneration(state, bottomPhaseRuntime)" in _113_vpm and "applyNuclearRegeneration(state, bottomPhaseRuntime)" not in _il_regen:
+        ok("issue #113 M-2: applyNuclearRegeneration once after full bottom phase (excl. inter-level partial)")
+    elif _113_vpm.count("applyNuclearRegeneration(state, bottomPhaseRuntime)") >= 2:
         ok("issue #113 M-2: applyNuclearRegeneration uses tracked bottom-phase runtime (excl. deco)")
     else:
         fail("issue #113 M-2: applyNuclearRegeneration not wired to bottomPhaseRuntime at all call sites")
@@ -5809,6 +5822,73 @@ if "issue117" in _117_regr:
     ok("issue #117: engine regression covers mdCompat pSCR runtime + CCR trimix He")
 else:
     fail("issue #117: engine regression missing #117 coverage")
+
+# ── Issue #118: full codebase audit v2.52.00 — 4 HIGH / 8 MEDIUM / 3 LOW ──
+_118_ccr = open(os.path.join(os.path.dirname(__file__), "zhl-ccr-core.js"), encoding="utf-8").read()
+_118_vpm = open(os.path.join(os.path.dirname(__file__), "vpm-engine-core.js"), encoding="utf-8").read()
+_118_sw = open(os.path.join(os.path.dirname(__file__), "sw.js"), encoding="utf-8").read()
+_118_ci = open(os.path.join(os.path.dirname(__file__), ".github", "workflows", "ci.yml"), encoding="utf-8").read()
+_118_regr = open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read()
+if "descCross == null && bottomCross == null && decoCross == null" in _118_ccr.split("function getEffectiveSetpointAtDepth", 1)[-1][:900]:
+    ok("issue #118 H-1: altitude all-null setpoint crossings use ambient pDry zones")
+else:
+    fail("issue #118 H-1: getEffectiveSetpointAtDepth still assigns bottomSP when all crossings null")
+if "function runInterLevelDecoAscent" in _118_vpm and "applyNuclearRegeneration(state, bottomPhaseRuntime)" not in _118_vpm.split("function runInterLevelDecoAscent", 1)[-1].split("function ", 1)[0][:400]:
+    ok("issue #118 H-2: VPM inter-level deco skips partial nuclear regeneration")
+else:
+    fail("issue #118 H-2: runInterLevelDecoAscent still calls applyNuclearRegeneration with partial runtime")
+if "parseStopDisplayTime(tr.querySelectorAll('td')[2]" in js.split("function runContingencyScenario", 1)[-1][:2500]:
+    ok("issue #118 H-3: contingency deco time uses parseStopDisplayTime on stop column")
+else:
+    fail("issue #118 H-3: runContingencyScenario still parses stop column with parseRunMinutes")
+if "SW_SHELL_READY" in _118_sw and "SW_SHELL_READY" in js:
+    ok("issue #118 H-4: SW activate notifies clients; page listens for shell-ready migration")
+else:
+    fail("issue #118 H-4: SW/client shell-ready migration handshake missing")
+if "parseDomInt('lastDecoStop'" in js.split("function buhNDL", 1)[-1][:400]:
+    ok("issue #118 M-1: buhNDL accepts lastDecoStop/decoStep of 0 (no falsy fallback)")
+else:
+    fail("issue #118 M-1: buhNDL still treats 0 as missing lastDecoStop/decoStep")
+if "zhl-schedule-worker.js" in _118_sw.split("REQUIRED_PRECACHE", 1)[-1][:400]:
+    ok("issue #118 M-2: zhl-schedule-worker.js in REQUIRED_PRECACHE shell list")
+else:
+    fail("issue #118 M-2: ZHL worker script still optional-only precache")
+if "const perDiveOtu = Math.max(0, otu - otuCarry)" in js.split("function calcCNS", 1)[-1][:5500]:
+    ok("issue #118 M-3: single-dive OTU warning excludes carry when no plan")
+else:
+    fail("issue #118 M-3: perDiveOtu still includes carry in widget-only path")
+if "ccrLoopGasBelowSetpoint(pAmb, fO2, fHe, setpoint)" in _118_ccr and "spTarget" in _118_ccr.split("function ccrLoopGasBelowSetpoint", 1)[-1][:400]:
+    ok("issue #118 M-4: ccrLoopGasBelowSetpoint clamps fO2eff to setpoint target")
+else:
+    fail("issue #118 M-4: below-setpoint loop gas still ignores setpoint value")
+if "VPM_STOP_CAP" in _118_vpm and "result.code === 'VPM_STOP_CAP'" in js:
+    ok("issue #118 M-5: VPM stop cap is fatal VPM_STOP_CAP (no silent cap-hit flag)")
+else:
+    fail("issue #118 M-5: VPM stop cap still silently modifies plan")
+if "_restoreInProgress" in js.split("var appSettings", 1)[-1][:800] and "waterDensitySelect" in js.split("DECO_FIELDS:", 1)[-1][:800]:
+    ok("issue #118 M-6/M-8: batch restore suppresses change events; waterDensity in v6 blob")
+else:
+    fail("issue #118 M-6/M-8: settings restore ordering or waterDensity dual-store regression")
+if "getEffectiveSetpointAtDepth(seg.toDepth" in _118_ccr:
+    ok("issue #118 M-7: saturateLinearCCR samples setpoint at segment toDepth")
+else:
+    fail("issue #118 M-7: CCR Schreiner still samples setpoint at fromDepth boundary")
+if "margin <= 5 ? 'var(--orange)'" in js.split("function statusColor", 1)[-1][:200]:
+    ok("issue #118 L-1: UDP statusColor uses orange for 1–5 min margin")
+else:
+    fail("issue #118 L-1: UDP margin 1–5 min still red like exceeded NDL")
+if "export-regression:" in _118_ci and "needs: [bundle-sync]" in _118_ci.split("export-regression:", 1)[-1][:200] and "needs: [bundle-sync]" in _118_ci.split("engine-validation:", 1)[-1][:200]:
+    ok("issue #118 L-2: export-regression and engine-validation gated on bundle-sync")
+else:
+    fail("issue #118 L-2: CI jobs still run against potentially stale bundles")
+if "function canonicalCircuit" in _118_ccr and "canonicalCircuit(circuit)" in _118_ccr.split("function isRebreatherCircuit", 1)[-1][:200]:
+    ok("issue #118 L-3: isRebreatherCircuit normalizes circuit case via canonicalCircuit")
+else:
+    fail("issue #118 L-3: rebreather detection still case-sensitive")
+if "issue118" in _118_regr:
+    ok("issue #118: engine regression covers altitude setpoint + circuit case + buhNDL zero stop")
+else:
+    fail("issue #118: engine regression missing #118 coverage")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):

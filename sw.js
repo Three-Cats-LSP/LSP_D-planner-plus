@@ -42,13 +42,13 @@ const REQUIRED_PRECACHE = [
   APP_BASE + 'zhl-engine-bundle.js',
   APP_BASE + 'vpm-engine-bundle.js',
   APP_BASE + 'zhl-worker-bridge.js',
+  APP_BASE + 'zhl-schedule-worker.js',
 ];
 
 // Required for offline/PWA startup (Tier-3 ZHL + self-hosted fonts/icons)
 const OPTIONAL_PRECACHE = [
   APP_BASE + 'capacitor-bridge.js',
   APP_BASE + 'android-select-picker.js',
-  APP_BASE + 'zhl-schedule-worker.js',
   APP_BASE + 'vendor/jspdf.umd.min.js',
   APP_BASE + 'vendor/fonts/fonts.css',
   APP_BASE + 'vendor/fonts/DejaVuSans.ttf',
@@ -134,6 +134,10 @@ self.addEventListener('activate', event => {
           })
       );
       await self.clients.claim();
+      const clients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+      clients.forEach((client) => {
+        client.postMessage({ type: 'SW_SHELL_READY', version: CACHE_VERSION });
+      });
     })
   );
 });

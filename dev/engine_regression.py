@@ -420,6 +420,32 @@ ENGINE_SUITE_JS = """
     return { pscrOk: fin(pscrMd), heOk, ok: fin(pscrMd) && heOk };
   })();
 
+  // ── E10c: issue #118 altitude setpoint + circuit case + buhNDL zero stop ─
+  out.sections.issue118 = (() => {
+    const altSurf = 0.74;
+    const ccr = { circuit: 'CCR', descentSetpoint: 0.6, bottomSetpoint: 0.65, decoSetpoint: 0.66 };
+    const sp30 = getEffectiveSetpointAtDepth(30, ccr, altSurf);
+    const spShallow = getEffectiveSetpointAtDepth(3, ccr, altSurf);
+    const rbLower = isRebreatherCircuit('ccr') && isRebreatherCircuit('PSCR');
+    const lsEl = document.getElementById('lastDecoStop');
+    const dsEl = document.getElementById('decoStep');
+    let buhZeroOk = false;
+    if (lsEl && dsEl && typeof buhNDL === 'function') {
+      const prevLs = lsEl.value;
+      const prevDs = dsEl.value;
+      lsEl.value = '0';
+      dsEl.value = '0';
+      const ndl0 = buhNDL(20, 0.79, 30, 85, 0);
+      lsEl.value = prevLs;
+      dsEl.value = prevDs;
+      buhZeroOk = Number.isFinite(ndl0) && ndl0 >= 0;
+    }
+    return {
+      sp30, spShallow, rbLower, buhZeroOk,
+      ok: sp30 === 0.66 && spShallow === 0.66 && rbLower && buhZeroOk,
+    };
+  })();
+
   // ── E11: issue #112 planner BT vs descent validation ───────────────────
   out.sections.issue112PlannerBt = (() => {
     const depthEl = document.getElementById('depth');
@@ -677,6 +703,8 @@ def run_suite(page) -> dict:
     assert_true(i113r.get("ok"), "VPM ML inter-level deco excludes deco from nuclear regen path (issue #113 M-2)", str(i113r))
     i117 = s.get("issue117", {})
     assert_true(i117.get("ok"), "mdCompat pSCR schedule + trimix He below setpoint (issue #117)", str(i117))
+    i118 = s.get("issue118", {})
+    assert_true(i118.get("ok"), "altitude setpoint zones + circuit case + buhNDL zero stop (issue #118)", str(i118))
 
     for name, r in s["rebreather"].items():
         assert_true(fin(r), f"Rebreather {name} produces schedule", str(r)[:120])

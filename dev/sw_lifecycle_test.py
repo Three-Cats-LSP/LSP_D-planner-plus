@@ -41,7 +41,9 @@ def main() -> int:
                   const noEagerMigration = !swBlock.includes('getRegistrations()')
                     && !swBlock.includes('caches.delete(k)');
                   const versionOnActivate = swBlock.includes('localStorage.setItem(SW_VERSION_KEY, APP_VERSION)');
-                  return { ok: guards && noBlindSkip && noEagerMigration && versionOnActivate, guards, noBlindSkip, noEagerMigration, versionOnActivate };
+                  const shellReadyMsg = swText.includes('SW_SHELL_READY')
+                    && swBlock.includes("event.data.type === 'SW_SHELL_READY'");
+                  return { ok: guards && noBlindSkip && noEagerMigration && versionOnActivate && shellReadyMsg, guards, noBlindSkip, noEagerMigration, versionOnActivate, shellReadyMsg };
                 }
                 """,
                 base,
