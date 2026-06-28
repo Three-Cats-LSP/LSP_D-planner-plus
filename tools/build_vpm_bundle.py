@@ -16,7 +16,8 @@ BUNDLE_PATH = ROOT / "vpm-engine-bundle.js"
 INDEX_PATH = ROOT / "index.html"
 
 HEADER = """/**
- * VPM Engine Bundle — Tier 3 isolated VPM-B / VPM-B+GFS module.
+ * VPM Engine Bundle — @generated from vpm-engine-core.js via tools/build_vpm_bundle.py
+ * Tier 3 isolated VPM-B / VPM-B+GFS module.
  * Loaded on main thread; exposes window.VPMEngine for tests and runVPMSchedule().
  *
  * Host runtime deps (resolved at calculate() time, not load time):

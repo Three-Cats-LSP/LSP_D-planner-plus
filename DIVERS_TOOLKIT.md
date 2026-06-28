@@ -9,7 +9,7 @@ Free open-source diving software by [Three Cats LSP](https://threecats-lsp.com).
 ## Apps
 
 ### [LSP D-Planner+](https://threecats-lsp.com/d-planner-plus/) — Unified Deco Planner (OC + CCR)
-> [GitHub](https://github.com/Three-Cats-LSP/LSP_D-planner-plus) · v2.52.00 stable
+> [GitHub](https://github.com/Three-Cats-LSP/LSP_D-planner-plus) · v2.53.00 stable
 
 Decompression planning for recreational and technical divers — open-circuit and rebreather in one app.
 

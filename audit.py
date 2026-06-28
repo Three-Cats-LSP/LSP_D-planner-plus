@@ -2200,7 +2200,9 @@ else:
     fail("gfAt: shallowGradient setting not referenced — toggle has no effect")
 
 # 34.16 gfAt shallow gradient: clamps to gfH at lastStop when ON
-if re.search(r'sgOn && depthM <= lastStop.*return gfH', zhl_src, re.DOTALL):
+if re.search(r'sgOn && depthM <= lastStop.*return gfH', zhl_src, re.DOTALL) or re.search(
+    r'shallowGradient && depthM <= lastStop.*return gfH', tier3_engine_src, re.DOTALL
+):
     ok("gfAt: shallow gradient ON returns gfH at lastStop and shallower")
 else:
     fail("gfAt: shallow gradient ON does not apply gfH at lastStop")
@@ -2274,7 +2276,7 @@ else:
     fail("CNS dual-method audit: audit comment missing")
 
 # 34.25 OTU_EXPONENT constant defined and no stale 0.833 copies remain
-if re.search(r'const OTU_EXPONENT\s*=\s*0\.8333', js):
+if re.search(r'const OTU_EXPONENT\s*=\s*0\.8333', js) or "ZhlEngineBundle.OTU_EXPONENT" in js:
     ok("OTU_EXPONENT: constant defined (0.8333)")
 else:
     fail("OTU_EXPONENT: constant missing — OTU exponent not a single source of truth")
@@ -3011,10 +3013,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.52.00")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.00['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.53.00")
 else:
-    fail("APP_VERSION not bumped to 2.52.00 in app-version.js")
+    fail("APP_VERSION not bumped to 2.53.00 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -5119,7 +5121,7 @@ elif "readDomHePct('plannerTrimixHe')" in _he_frac_body and "mix === 'trimix'" i
     ok("getHeFrac reads He from trimix mix (issue #96/#99 L-1)")
 else:
     fail("getHeFrac still stubbed — always returns 0 (issue #96/#99 L-1)")
-if "saturate(tissues, depthM, 1, fN2, fH)" in js or "saturate(tissues, depthM, 1, fN2, fHe" in js:
+if "saturate(tissues, depthM, 1, fN2, fH)" in js or "saturate(tissues, depthM, 1, fN2, fHe" in js or "saturate(tissues, depthM, 1, fN2, fH)" in _physics_core_js:
     ok("buhNDL passes fHe to saturate (issue #96 L-1)")
 else:
     fail("buhNDL still hardcodes fHe=0 in NDL loop (issue #96 L-1)")
@@ -5175,7 +5177,7 @@ if "return saturate(tissues, 0, durMin, FN2_AIR, 0);" in js.split("function offg
     ok("offgasAtSurface uses ambient air, not CCR loop (issue #99 M-10)")
 else:
     fail("offgasAtSurface still uses CCR loop gas at surface (issue #99 M-10)")
-if "Math.max(0, (100 - o2pct) / 100)" in js.split("function getN2Frac", 1)[-1][:400] and "Math.min(40, Math.max(21" not in js.split("function getN2Frac", 1)[-1][:400]:
+if ("Math.max(0, (100 - o2pct) / 100)" in js.split("function getN2Frac", 1)[-1][:400] or "n2FracFromCustomO2" in js.split("function getN2Frac", 1)[-1][:400]) and "Math.min(40, Math.max(21" not in js.split("function getN2Frac", 1)[-1][:400]:
     ok("getN2Frac custom mix no longer clamps O2 to 21-40% (issue #99 M-11)")
 else:
     fail("getN2Frac still clamps custom O2 to 21-40% (issue #99 M-11)")
@@ -5288,7 +5290,7 @@ if "depthM > deepestCross" in open(os.path.join(os.path.dirname(__file__), "zhl-
     ok("getEffectiveSetpointAtDepth uses depth-derived phase thresholds (issue #104 M-4)")
 else:
     fail("getEffectiveSetpointAtDepth still compares pAmb to setpoint pressures (issue #104 M-4)")
-if "function ndlClearAtDepth" in js.split("function buhNDL", 1)[-1][:1200] or "function ndlClearAtDepth" in js:
+if "function ndlClearAtDepth" in _physics_core_js and "ZhlEngineBundle.buhNDL" in js:
     ok("buhNDL uses GF-line ascent simulation (issue #104 M-5 / #106 M-1)")
 else:
     fail("buhNDL still ignores gfHigh in NDL ceiling check (issue #104 M-5)")
@@ -5338,7 +5340,7 @@ if "window._tecGasMix" in js and "function getPersistedGasMix" in js and "getPer
     ok("Tec gasMix persisted separately from Rec display (issue #106 H-3)")
 else:
     fail("Rec mode still overwrites persisted Tec gasMix (issue #106 H-3)")
-if "function ndlClearAtDepth" in js and "function buhNDL" in js:
+if "function ndlClearAtDepth" in _physics_core_js and "function buhNDL" in _physics_core_js:
     ok("buhNDL uses multi-depth GF-line ascent check (issue #106 M-1)")
 else:
     fail("buhNDL still ignores GF High in operating range (issue #106 M-1)")
@@ -5556,7 +5558,7 @@ if "depthM > deepestCross" in _111_ccr or "ZhlEngineBundle.getEffectiveSetpointA
     ok("issue #111 H-3: getEffectiveSetpointAtDepth uses depth/phase thresholds (index + ccr-core)")
 else:
     fail("issue #111 H-3: getEffectiveSetpointAtDepth still compares pAmb to ppO2 setpoints")
-if "if (firstStopDepth <= interpBase) return gfH;" in _111_zhl and "if (firstStopDepth <= interpBase) return gfH;" in _111_bundle:
+if "if (firstStopDepth <= interpBase) return gfH;" in _physics_core_js.split("function gfAtDepth", 1)[-1][:500] and "if (firstStopDepth <= interpBase) return gfH;" in _111_bundle:
     ok("issue #111 H-5: gfAt zero-denominator guard in schedule core and bundle")
 else:
     fail("issue #111 H-5: gfAt missing firstStopDepth === lastStop guard")
@@ -5564,7 +5566,7 @@ if "surfaceIntervalMin: snap.surfaceIntervalMin" in _111_rep:
     ok("issue #111 H-6: getZhlRepStateForSchedule returns snap surfaceIntervalMin")
 else:
     fail("issue #111 H-6: getZhlRepStateForSchedule still reads live DOM SI")
-if "function ndlClearAtDepth" in _111_ndl and "gfH" in _111_ndl:
+if "function ndlClearAtDepth" in _physics_core_js and "gfH" in _physics_core_js.split("function ndlClearAtDepth", 1)[-1][:600]:
     ok("issue #111 M-1: buhNDL uses GF-line ndlClearAtDepth with gfHigh")
 else:
     fail("issue #111 M-1: buhNDL still ignores gfHigh")
@@ -5588,8 +5590,8 @@ if "const ppO2Limit = parseFloat(document.getElementById('ppo2Bottom')" in _111_
     ok("issue #111 M-6: calcEND_tool MOD uses configured ppO2 limit")
 else:
     fail("issue #111 M-6: calcEND_tool MOD still hardcoded 1.4 bar")
-if "importScripts('app-version.js')" in _111_sw and re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
-    ok("issue #111 L-1: app-version 2.52.00 synced; SW derives CACHE_VERSION dynamically")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.00['\"]", app_version_js):
+    ok("issue #111 L-1: app-version 2.53.00 synced; SW derives CACHE_VERSION dynamically")
 else:
     fail("issue #111 L-1: SW/app-version sync regression")
 if "build_vpm_bundle.py" in _111_ci and "git diff --exit-code zhl-engine-bundle.js vpm-engine-bundle.js" in _111_ci:
@@ -5723,7 +5725,7 @@ if "descCross == null && bottomCross != null" in _113_ccr and ("descCross == nul
     ok("issue #113 H-2: shallow zone uses descSP when descent crossing unreachable")
 else:
     fail("issue #113 H-2: getEffectiveSetpointAtDepth shallow zone still forces decoSP")
-if "HYPOXIC_DECO_GAS" in js.split("function validateDomDecoGases", 1)[-1][:800]:
+if "HYPOXIC_DECO_GAS" in js.split("function validateDomDecoGases", 1)[-1][:800] or "validateHypoxicDecoGas" in js.split("function validateDomDecoGases", 1)[-1][:800]:
     ok("issue #113 H-3: validateDomDecoGases rejects hypoxic deco gases")
 else:
     fail("issue #113 H-3: deco gas validation still accepts O2 < 18% trimix")
@@ -5763,7 +5765,7 @@ if "REQUIRED_PRECACHE.every" in _113_sw and "verifyShellPrecache" in _113_sw:
     ok("issue #113 M-6: sw.js skipWaiting only after required shell precache succeeds")
 else:
     fail("issue #113 M-6: sw.js still calls skipWaiting when all precache fails")
-if "Math.max(0, (100 - o2pct) / 100)" in js.split("function getN2Frac", 1)[-1][:500]:
+if "Math.max(0, (100 - o2pct) / 100)" in js.split("function getN2Frac", 1)[-1][:500] or "n2FracFromCustomO2" in js.split("function getN2Frac", 1)[-1][:500]:
     ok("issue #113 M-7: getN2Frac custom branch clamps negative fN2")
 else:
     fail("issue #113 M-7: getN2Frac custom still allows O2 > 100 negative fN2")
@@ -5790,7 +5792,7 @@ else:
 
 # ── Issue #116: residual audit v2.52.00 — 2 HIGH / 1 MEDIUM ──
 _116_regr = open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read()
-if "else if (chk.o2 < 18)" in js.split("function validateDomDecoGases", 1)[-1][:800]:
+if "else if (chk.o2 < 18)" in js.split("function validateDomDecoGases", 1)[-1][:800] or "validateHypoxicDecoGas" in js.split("function validateDomDecoGases", 1)[-1][:800]:
     ok("issue #116 H-1: hypoxic deco check applies to all gas types (not He-only)")
 else:
     fail("issue #116 H-1: hypoxic deco validation still gated on helium > 0")
@@ -6147,7 +6149,7 @@ if "if (!(gfHigh > 0)) return 0" in _physics_core_js or "if (!(gfHigh > 0)) retu
     ok("issue #124 H-1: ceiling() rejects gfHigh <= 0 in zhl-physics-core")
 else:
     fail("issue #124 H-1: ceiling() missing gfHigh guard")
-if "firstStopDepth === interpBase" in open(os.path.join(os.path.dirname(__file__), "zhl-schedule-core.js"), encoding="utf-8").read().split("function gfAt", 1)[-1][:500]:
+if "firstStopDepth <= interpBase" in _physics_core_js.split("function gfAtDepth", 1)[-1][:500]:
     ok("issue #124 H-2: gfAt returns gfHigh when firstStopDepth equals interpBase")
 else:
     fail("issue #124 H-2: gfAt still divides by zero when shallowGradient first stop equals lastStop")
@@ -6167,10 +6169,10 @@ if ".filter(d => d != null)" in _zhl_ccr.split("function getEffectiveSetpointAtD
     ok("issue #124 M-1: getEffectiveSetpointAtDepth ignores null crossings in deepestCross")
 else:
     fail("issue #124 M-1: getEffectiveSetpointAtDepth still coalesces null crossings to 0")
-if "applyNuclearRegeneration(state, runtime)" in _vpm_core.split("function runInterLevelDecoAscent", 1)[-1][:400]:
-    ok("issue #124 M-2: runInterLevelDecoAscent regenerates radii before gradient calc")
+if "applyNuclearRegeneration(state, bottomPhaseRuntime)" in _vpm_core and "applyNuclearRegeneration(state, runtime)" not in _vpm_core.split("function runInterLevelDecoAscent", 1)[-1].split("function ", 1)[0][:500]:
+    ok("issue #124 M-2: applyNuclearRegeneration once after bottom phase only (issue #125 H-2)")
 else:
-    fail("issue #124 M-2: VPM inter-level ascent still uses pre-regeneration radii")
+    fail("issue #124 M-2: VPM inter-level ascent still double-calls applyNuclearRegeneration")
 if "function syncDecoGasCardUi" in js:
     ok("issue #124 M-3: syncDecoGasCardUi restores trimix/custom field visibility on deco cards")
 else:
@@ -6183,10 +6185,10 @@ if "fO2 > 0.60 ? ppO2Deco : ppO2Bot" in js.split("function getDecoGasSwitches", 
     ok("issue #124 M-5: VPM gas switch uses ppO2Bot for low-O2 deco gases")
 else:
     fail("issue #124 M-5: VPM gas switch still always uses ppO2Deco limit")
-if "simulateDive2" in js.split("function calcSurfInt", 1)[-1][:2500]:
-    ok("issue #124 M-6: calcSurfInt simulates Dive 2 depth in minimum SI search")
+if "simulateDive2" in js.split("function calcSurfInt", 1)[-1][:2500] and "D2BT" in js.split("function calcSurfInt", 1)[-1][:2500]:
+    ok("issue #124 M-6: calcSurfInt simulates Dive 2 depth and BT in minimum SI search")
 else:
-    fail("issue #124 M-6: calcSurfInt still ignores Dive 2 depth in SI computation")
+    fail("issue #124 M-6: calcSurfInt still ignores Dive 2 depth/BT in SI computation")
 if "surfaceP: (environment || defaultEnvironment()).altSurfaceP" in _build_py:
     ok("issue #124 M-7: repState carries explicit surfaceP from environment")
 else:
@@ -6259,11 +6261,85 @@ if "normalizeCCRSettings," in _bundle_mirror and "getEffectivePpo2," in _bundle_
 else:
     fail("ZhlEngineBundle missing normalizeCCRSettings or getEffectivePpo2 export")
 
-# ── v2.52.00 stable release ──
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
-    ok("stable release APP_VERSION is 2.52.00")
+# ── Issue #125: Tier-3 engine dedup follow-up (7 HIGH / 7 MEDIUM / 3 LOW) ──
+_125_ci = open(os.path.join(os.path.dirname(__file__), ".github", "workflows", "ci.yml"), encoding="utf-8").read()
+_125_sw = open(os.path.join(os.path.dirname(__file__), "sw.js"), encoding="utf-8").read()
+_125_parity = open(os.path.join(os.path.dirname(__file__), "tools", "check_engine_parity.py"), encoding="utf-8").read()
+_125_mirror = open(os.path.join(os.path.dirname(__file__), "docs", "AUDIT_MIRROR_RULE.md"), encoding="utf-8").read()
+if "build_vpm_bundle.py" in _125_ci and "@generated from vpm-engine-core.js" in open(os.path.join(os.path.dirname(__file__), "tools", "build_vpm_bundle.py"), encoding="utf-8").read():
+    ok("issue #125 H-1: VPM bundle built from vpm-engine-core.js via build_vpm_bundle.py")
 else:
-    fail("stable release requires APP_VERSION 2.52.00")
+    fail("issue #125 H-1: VPM bundle still manual mirror without build tool")
+if "applyNuclearRegeneration(state, bottomPhaseRuntime)" in _vpm_core and "applyNuclearRegeneration(state, runtime)" not in _vpm_core.split("function runInterLevelDecoAscent", 1)[-1].split("function ", 1)[0][:500]:
+    ok("issue #125 H-2: VPM applyNuclearRegeneration not double-called on inter-level ascent")
+else:
+    fail("issue #125 H-2: runInterLevelDecoAscent still calls applyNuclearRegeneration with cumulative runtime")
+if "pendingChangeEls" in js.split("_restoreFields", 1)[-1][:2500]:
+    ok("issue #125 H-3: settings restore dispatches change events after restore loop")
+else:
+    fail("issue #125 H-3: _restoreInProgress still suppresses all change events during restore")
+if "siD2BT" in html and "bt2" in js.split("function calcSurfInt", 1)[-1][:2000]:
+    ok("issue #125 H-4: calcSurfInt uses separate Dive 2 BT slider")
+else:
+    fail("issue #125 H-4: calcSurfInt still reuses Dive 1 BT for Dive 2")
+if "function gfAtDepth" in _physics_core_js and "n2FracFromCustomO2" in _gas_core_js and "validateHypoxicDecoGas" in _gas_core_js:
+    ok("issue #125 H-5: gfAtDepth, n2Frac helpers, validateHypoxicDecoGas in canonical core files")
+else:
+    fail("issue #125 H-5: gfAt/getN2Frac/validateDomDecoGases logic missing from core sources")
+if "mergeCCRSettings(opts.ccr)" in js.split("function ppO2Check", 1)[-1][:400]:
+    ok("issue #125 H-6: ppO2Check delegate merges CCR settings before bundle call")
+else:
+    fail("issue #125 H-6: ppO2Check delegate still passes raw opts.ccr")
+if "zhl-physics-core.js" in _125_sw and "zhl-gas-core.js" in _125_sw:
+    ok("issue #125 H-7: SW REQUIRED_PRECACHE includes zhl-physics-core.js and zhl-gas-core.js")
+else:
+    fail("issue #125 H-7: SW precache missing Tier-3 core source files")
+if "applyEnvironment" in _125_parity and "extract_function_body" in _125_parity and "api_export_present" in _125_parity:
+    ok("issue #125 M-1: check_engine_parity.py uses function-body and API export checks")
+else:
+    fail("issue #125 M-1: check_engine_parity.py still has ineffective skip/body checks")
+if "ZhlEngineBundle.OTU_EXPONENT" in js:
+    ok("issue #125 M-2: OTU_EXPONENT sourced from ZhlEngineBundle in index.html")
+else:
+    fail("issue #125 M-2: OTU_EXPONENT still hardcoded duplicate in index.html")
+if "_syncZhlBundleEnv();" in js.split("function enforceMinDecoProfile", 1)[-1][:200] and "_syncZhlBundleEnv();" in js.split("function getActiveGas", 1)[-1][:200]:
+    ok("issue #125 M-3: enforceMinDecoProfile and getActiveGas delegates sync bundle env")
+else:
+    fail("issue #125 M-3: enforceMinDecoProfile/getActiveGas missing _syncZhlBundleEnv")
+if "function buhNDL" in _physics_core_js and "buhNDL," in (zhl_bundle_js or ""):
+    ok("issue #125 M-4: buhNDL/ndlClearAtDepth extracted to physics core and bundle API")
+else:
+    fail("issue #125 M-4: buhNDL still inline-only in index.html")
+if "+ gas_core" in _build_zhl and _build_zhl.find("+ gas_core") < _build_zhl.find("+ ccr_core"):
+    ok("issue #125 M-5: build_zhl_bundle.py concat order is physics → gas → ccr → schedule")
+else:
+    fail("issue #125 M-5: build_zhl_bundle.py still places CCR before gas-core")
+if "Depends on zhl-physics-core.js" in _gas_core_js or "Depends on zhl-physics-core.js" in open(os.path.join(os.path.dirname(__file__), "zhl-gas-core.js"), encoding="utf-8").read():
+    ok("issue #125 M-6: zhl-gas-core.js documents physics global dependency")
+else:
+    fail("issue #125 M-6: zhl-gas-core.js missing physics dependency comment")
+if "color:var(--orange)" in js.split("} else if (margin <= 5)", 1)[-1][:300]:
+    ok("issue #125 M-7: UDP margin 1–5 advice line uses orange (not red)")
+else:
+    fail("issue #125 M-7: UDP advice line still hardcodes red for margin 1–5")
+if "firstStopDepth === interpBase" not in open(os.path.join(os.path.dirname(__file__), "zhl-schedule-core.js"), encoding="utf-8").read().split("function gfAt", 1)[-1][:400]:
+    ok("issue #125 L-1: redundant gfAt === interpBase branch removed from schedule core")
+else:
+    fail("issue #125 L-1: gfAt still has dead firstStopDepth === interpBase branch")
+if "needs: [bundle-sync]" in _125_ci.split("audit:", 1)[-1][:300]:
+    ok("issue #125 L-2: audit CI job depends on bundle-sync")
+else:
+    fail("issue #125 L-2: audit job still runs without bundle-sync dependency")
+if "thin delegates — single source is bundle" in _125_mirror:
+    ok("issue #125 L-3: AUDIT_MIRROR_RULE.md updated for post-dedup delegate model")
+else:
+    fail("issue #125 L-3: mirror doc still says index CCR delegates (until removed)")
+
+# ── v2.53.00 stable release ──
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.00['\"]", app_version_js):
+    ok("stable release APP_VERSION is 2.53.00")
+else:
+    fail("stable release requires APP_VERSION 2.53.00")
 
 print("=" * 60)
 

@@ -1,7 +1,11 @@
 /**
  * ZHL gas selection and min-deco profile helpers (Tier 3) — pure functions.
  * Concatenated into zhl-engine-bundle.js via tools/build_zhl_bundle.py.
+ *
+ * Depends on zhl-physics-core.js module globals: altSurfaceP, BAR_PER_METRE, allowO2AtMOD
+ * (build order: physics → gas → ccr → schedule).
  */
+// Depends on zhl-physics-core.js: altSurfaceP, BAR_PER_METRE, allowO2AtMOD
 function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackGas, fallbackFN2, fallbackFHe) {
   if (!enabled || (!min9m && !min6m)) return steps;
   const depth9 = 9;
@@ -138,4 +142,29 @@ function ppO2Check(depthM, fN2, fHe, opts) {
     return getEffectivePpo2(pAmb, sp, fO2, opts.ccr, depthM, fHeVal).toFixed(2);
   }
   return (pAmb * o2frac).toFixed(2);
+}
+
+function n2FracFromCustomO2(o2pct) {
+  const o2 = Number.isFinite(o2pct) ? o2pct : 21;
+  return Math.max(0, (100 - o2) / 100);
+}
+
+function n2FracFromPercentages(o2pct, hepct) {
+  if (Number.isFinite(o2pct) && Number.isFinite(hepct)) {
+    return Math.max(0, (100 - o2pct - hepct) / 100);
+  }
+  return null;
+}
+
+function validateHypoxicDecoGas(o2, he, field) {
+  if (o2 < 18) {
+    const label = String(field).replace(/^dg/, '');
+    return {
+      ok: false,
+      code: 'HYPOXIC_DECO_GAS',
+      field,
+      message: `Deco gas ${label}: O₂ below 18% is hypoxic at stop depths.`,
+    };
+  }
+  return null;
 }

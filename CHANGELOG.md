@@ -4,6 +4,24 @@ All notable changes to LSP D-Planner+ are documented here.
 
 ---
 
+## v2.53.00 — 2026-06-29
+
+### Engine dedup follow-up (issue #125) + version bump
+
+Tier-3 engine architecture hardened after the 9b5dcf8 dedup: canonical physics/gas helpers extracted, VPM nuclear-regeneration double-call fixed, settings restore and surface-interval calculator corrected, parity CI strengthened.
+
+#### Highlights
+
+- **`zhl-physics-core.js`** — `gfAtDepth`, `ndlClearAtDepth`, `buhNDL` extracted; bundle API exports NDL path.
+- **`zhl-gas-core.js`** — `n2FracFromCustomO2`, `n2FracFromPercentages`, `validateHypoxicDecoGas`; physics-global dependency documented.
+- **VPM** — Removed inter-level `applyNuclearRegeneration` double-call (#125 H-2); `build_vpm_bundle.py` marks bundle `@generated`.
+- **UI fixes** — Settings restore fires `change` events post-restore; Dive 2 BT slider for surface interval; UDP orange advice for margin 1–5; `ppO2Check` merges CCR settings.
+- **CI / offline** — `audit` job depends on `bundle-sync`; `check_engine_parity.py` rewritten; SW precaches core source files.
+
+- **`APP_VERSION`** — bumped to `2.53.00`.
+
+---
+
 ## v2.52.00 — 2026-06-26
 
 ### Stable release — roadmap complete

@@ -27,6 +27,32 @@ def function_names(src: str) -> list[str]:
     return re.findall(r"^function\s+([A-Za-z_$][\w$]*)\s*\(", src, flags=re.M)
 
 
+def extract_function_body(src: str, name: str) -> str:
+    marker = f"function {name}("
+    start = src.find(marker)
+    if start < 0:
+        return ""
+    brace = src.find("{", start)
+    if brace < 0:
+        return ""
+    depth = 0
+    for i in range(brace, len(src)):
+        ch = src[i]
+        if ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                return src[start : i + 1]
+    return ""
+
+
+def api_export_present(bundle: str, name: str) -> bool:
+    return bool(re.search(rf"\b{re.escape(name)}\b\s*,", bundle)) or bool(
+        re.search(rf"\b{re.escape(name)}\b\s*\n", bundle)
+    )
+
+
 def main() -> int:
     failures: list[str] = []
 
@@ -44,8 +70,6 @@ def main() -> int:
             failures.append(f"zhl-engine-bundle.js missing CCR function {fn}")
 
     for fn in function_names(physics_src):
-        if fn in ("applyEnvironment", "defaultEnvironment", "setHeHalfTimeMode"):
-            continue
         if f"function {fn}(" not in zhl_bundle:
             failures.append(f"zhl-engine-bundle.js missing physics function {fn}")
 
@@ -56,16 +80,11 @@ def main() -> int:
     if "function runZhlScheduleCore(" not in zhl_bundle:
         failures.append("zhl-engine-bundle.js missing runZhlScheduleCore")
 
-    norm_ccr = normalize_js(ccr_src)
-    norm_bundle_ccr_chunk = normalize_js(
-        zhl_bundle.split("function canonicalCircuit", 1)[1].split("function enforceMinDecoProfile", 1)[0]
-        if "function canonicalCircuit" in zhl_bundle and "function enforceMinDecoProfile" in zhl_bundle
-        else ""
-    )
-    if norm_ccr and norm_bundle_ccr_chunk and norm_ccr not in norm_bundle_ccr_chunk:
-        # Allow minor comment drift; function-name checks above are authoritative.
-        if len(norm_ccr) - len(norm_bundle_ccr_chunk) > 50:
-            failures.append("zhl-ccr-core.js body diverges from zhl-engine-bundle.js CCR section")
+    for fn in function_names(ccr_src):
+        src_body = normalize_js(extract_function_body(ccr_src, fn))
+        bundle_body = normalize_js(extract_function_body(zhl_bundle, fn))
+        if src_body and bundle_body and src_body != bundle_body:
+            failures.append(f"zhl-ccr-core.js function {fn} diverges from bundle")
 
     norm_vpm = normalize_js(vpm_src)
     norm_vpm_bundle_body = normalize_js(
@@ -83,14 +102,24 @@ def main() -> int:
         "getActiveGas",
         "enforceMinDecoProfile",
         "ceiling",
+        "gfAtDepth",
+        "buhNDL",
+        "applyEnvironment",
+        "defaultEnvironment",
+        "setHeHalfTimeMode",
+        "OTU_EXPONENT",
     ]
+    api_block = zhl_bundle.split("const api = {", 1)[-1].split("};", 1)[0] if "const api = {" in zhl_bundle else ""
     for name in api_exports:
-        if f"{name}," not in zhl_bundle and f"{name}\n" not in zhl_bundle:
+        if not api_export_present(api_block, name):
             failures.append(f"ZhlEngineBundle API missing export {name}")
 
-    build_py = (ROOT / "tools" / "build_zhl_bundle.py").read_text(encoding="utf-8")
-    if "index.html" in build_py and "read_text" in build_py and "getActiveGas" in build_py:
+    build_zhl = (ROOT / "tools" / "build_zhl_bundle.py").read_text(encoding="utf-8")
+    if "index.html" in build_zhl and "read_text" in build_zhl and "getActiveGas" in build_zhl:
         failures.append("build_zhl_bundle.py still scrapes index.html for engine helpers")
+
+    if not (ROOT / "tools" / "build_vpm_bundle.py").is_file():
+        failures.append("tools/build_vpm_bundle.py missing (VPM bundle not automated)")
 
     if failures:
         print("ENGINE PARITY FAILURES:")

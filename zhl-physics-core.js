@@ -141,3 +141,51 @@ function ambientCrossingDepth(tissues) {
   });
   return Math.max(0, maxD);
 }
+
+function gfAtDepth(depthM, gfL, gfH, firstStopDepth, lastStop, shallowGradient) {
+  if (!firstStopDepth || firstStopDepth <= 0) return gfL;
+  if (depthM >= firstStopDepth) return gfL;
+  if (shallowGradient && depthM <= lastStop) return gfH;
+  const interpBase = shallowGradient ? lastStop : 0;
+  if (firstStopDepth <= interpBase) return gfH;
+  const gf = gfL + (gfH - gfL) * (firstStopDepth - depthM) / (firstStopDepth - interpBase);
+  return Math.min(gfH, Math.max(gfL, gf));
+}
+
+function ndlClearAtDepth(tissues, depthM, gfL, gfH, lastStop, decoStep) {
+  const ceilL = ceiling(tissues, gfL);
+  if (ceilL <= 0) return true;
+  const firstStop = Math.max(lastStop, Math.ceil(ceilL / decoStep) * decoStep);
+  const gfAt = (d) => {
+    if (firstStop <= lastStop) return gfH;
+    if (d >= firstStop) return gfL;
+    const gf = gfL + (gfH - gfL) * (firstStop - d) / (firstStop - lastStop);
+    return Math.min(gfH, Math.max(gfL, gf));
+  };
+  const depths = [depthM];
+  for (let d = firstStop; d >= 0; d -= decoStep) {
+    if (d < depthM - 1e-6) depths.push(d);
+  }
+  if (depths[depths.length - 1] !== 0) depths.push(0);
+  for (const d of depths) {
+    const ceil = ceiling(tissues, gfAt(d));
+    if (ceil > d + 0.01) return false;
+  }
+  return true;
+}
+
+function buhNDL(depthM, fN2, gfLow, gfHigh, fHe, lastStop, decoStep) {
+  const fH = fHe || 0;
+  const gfL = gfLow / 100;
+  const gfH = gfHigh / 100;
+  let tissues = initTissues();
+  for (let t = 0; t <= 500; t++) {
+    const next = saturate(tissues, depthM, 1, fN2, fH);
+    if (ndlClearAtDepth(next, depthM, gfL, gfH, lastStop, decoStep)) {
+      tissues = next;
+      continue;
+    }
+    return t;
+  }
+  return 500;
+}

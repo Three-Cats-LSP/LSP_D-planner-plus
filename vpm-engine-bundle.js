@@ -1,5 +1,6 @@
 /**
- * VPM Engine Bundle — Tier 3 isolated VPM-B / VPM-B+GFS module.
+ * VPM Engine Bundle — @generated from vpm-engine-core.js via tools/build_vpm_bundle.py
+ * Tier 3 isolated VPM-B / VPM-B+GFS module.
  * Loaded on main thread; exposes window.VPMEngine for tests and runVPMSchedule().
  *
  * Host runtime deps (resolved at calculate() time, not load time):
@@ -1430,7 +1431,6 @@ const VPMEngine = (() => {
         let curSP = forcedOCMode ? 0 : getEffectiveSetpoint(levels[0], isCCR, settings, levels[0].depth, 'descent');
         function runInterLevelDecoAscent(targetDepth) {
             calcCrushing(state, settings);
-            applyNuclearRegeneration(state, runtime);
             const offLoopPath = isCCR && settings.circuit !== 'pSCR' && (forcedOCMode || curSP <= 0);
             const interLevelConservatism = offLoopPath ? Math.max(0, conservatism - 1) : conservatism;
             calcAllowableGradients(state, model, settings, interLevelConservatism);

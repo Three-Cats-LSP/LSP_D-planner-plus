@@ -6,7 +6,7 @@ When auditing or fixing bugs in Tier-3 engine code, **always cross-check all mir
 
 | Canonical source | Mirror 1 | Mirror 2 |
 |------------------|----------|----------|
-| `zhl-ccr-core.js` | `zhl-engine-bundle.js` (CCR section) | `index.html` CCR delegates (until removed) |
+| `zhl-ccr-core.js` | `zhl-engine-bundle.js` (CCR section) | `index.html` CCR delegates (thin delegates — single source is bundle) |
 | `zhl-schedule-core.js` | `zhl-engine-bundle.js` (schedule section) | — (`index.html` delegates to `ZhlEngineBundle`) |
 | `zhl-physics-core.js` | `zhl-engine-bundle.js` (physics preamble) | `index.html` via `ZhlEngineBundle.*` |
 | `zhl-gas-core.js` | `zhl-engine-bundle.js` (gas helpers) | `index.html` via `ZhlEngineBundle.*` |

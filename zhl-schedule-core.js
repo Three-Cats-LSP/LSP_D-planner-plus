@@ -156,15 +156,7 @@ function runZhlScheduleCore(params) {
   // gfAt must live outside the phase loop — block-scoped function declarations are
   // not visible after the loop in strict mode (Tier 3 bundle uses 'use strict').
   function gfAt(depthM) {
-    if (!firstStopDepth || firstStopDepth <= 0) return gfL;
-    if (depthM >= firstStopDepth) return gfL;
-    const sgOn = !!params.shallowGradient;
-    if (sgOn && depthM <= lastStop) return gfH;
-    const interpBase = sgOn ? lastStop : 0;
-    if (firstStopDepth === interpBase) return gfH;
-    if (firstStopDepth <= interpBase) return gfH;
-    const gf = gfL + (gfH - gfL) * (firstStopDepth - depthM) / (firstStopDepth - interpBase);
-    return Math.min(gfH, Math.max(gfL, gf));
+    return gfAtDepth(depthM, gfL, gfH, firstStopDepth, lastStop, !!params.shallowGradient);
   }
 
   for (let _zhlPhaseIdx = 0; _zhlPhaseIdx < _zhlAscentFloors.length; _zhlPhaseIdx++) {

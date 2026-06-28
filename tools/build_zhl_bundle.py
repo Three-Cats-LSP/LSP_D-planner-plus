@@ -330,9 +330,15 @@ postamble = r'''
     ceiling,
     computeSurfaceGF,
     ambientCrossingDepth,
+    gfAtDepth,
+    ndlClearAtDepth,
+    buhNDL,
     getActiveGas,
     enforceMinDecoProfile,
     ppO2Check,
+    n2FracFromCustomO2,
+    n2FracFromPercentages,
+    validateHypoxicDecoGas,
     canonicalCircuit,
     normalizeCCRSettings,
     isRebreatherCircuit,
@@ -363,9 +369,9 @@ out = (
     iife_start
     + physics_core
     + "\n\n"
-    + ccr_core
-    + "\n\n"
     + gas_core
+    + "\n\n"
+    + ccr_core
     + "\n\n"
     + core_fn
     + "\n"
