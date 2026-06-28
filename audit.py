@@ -6041,6 +6041,10 @@ if "issue122IdReuse" in _122_regr:
     ok("issue #122 follow-up: engine regression covers ID reuse and dg8 reload")
 else:
     fail("issue #122 follow-up: engine regression missing ID reuse coverage")
+if "_insertDecoGasCardInIdOrder" in js and "insertBefore" in js.split("function _insertDecoGasCardInIdOrder", 1)[-1][:300]:
+    ok("issue #122 follow-up: reused deco cards insert in ID order (stable labels after reload)")
+else:
+    fail("issue #122 follow-up: appendDecoGasCardAtIdx still appends reused cards out of ID order")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):

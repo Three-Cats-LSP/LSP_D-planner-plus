@@ -560,6 +560,9 @@ ENGINE_SUITE_JS = """
     addDecoGasCard();
     const afterReuse = getAllDecoGasIds();
     const reused3 = afterReuse.includes(3) && !afterReuse.includes(9);
+    const domOrderOk = JSON.stringify(afterReuse) === JSON.stringify([...afterReuse].sort((a, b) => a - b));
+    const card3Pos = Array.from(document.querySelectorAll('.deco-gas-card')).findIndex(c => c.id === 'dgCard_3');
+    const card3SlotOk = card3Pos === 2;
     const prevStore = localStorage.getItem('lspDiveSettings_v6');
     const prevHeadless = window._zhlHeadless;
     window._zhlHeadless = false;
@@ -575,8 +578,8 @@ ENGINE_SUITE_JS = """
     else localStorage.removeItem('lspDiveSettings_v6');
     getAllDecoGasIds().filter(id => id > 2).forEach(id => removeDecoGasCard(id));
     return {
-      filled, allLe8, afterReuse, reused3, dg8Saved: saved.dg8Mix === 'ean50', dg8Restored,
-      ok: allLe8 && reused3 && saved.dg8Mix === 'ean50' && dg8Restored,
+      filled, allLe8, afterReuse, reused3, domOrderOk, card3SlotOk, dg8Saved: saved.dg8Mix === 'ean50', dg8Restored,
+      ok: allLe8 && reused3 && domOrderOk && card3SlotOk && saved.dg8Mix === 'ean50' && dg8Restored,
     };
   })();
 
