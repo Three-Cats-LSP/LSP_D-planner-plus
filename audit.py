@@ -6029,6 +6029,18 @@ if "issue122" in _122_regr and "layoutOk" in _122_regr:
     ok("issue #122: engine regression asserts exact restored deco card ID list")
 else:
     fail("issue #122: engine regression missing exact layout restore coverage")
+if "_nextFreeDecoCardIdx" in js and "_syncDgNextIdx" in js and "_dgNextIdx++" not in js.split("function addDecoGasCard", 1)[-1][:200]:
+    ok("issue #122 follow-up: addDecoGasCard reuses free card IDs 3–8 instead of unbounded _dgNextIdx")
+else:
+    fail("issue #122 follow-up: addDecoGasCard still uses unbounded _dgNextIdx++")
+if "values.__decoCardIds" in js.split("_restoreFields", 1)[-1][:2500] and "fieldIds.add" in js.split("_restoreFields", 1)[-1][:2500]:
+    ok("issue #122 follow-up: restore enumerates saved live deco card field IDs")
+else:
+    fail("issue #122 follow-up: restore still limited to static dg3–dg8 field list")
+if "issue122IdReuse" in _122_regr:
+    ok("issue #122 follow-up: engine regression covers ID reuse and dg8 reload")
+else:
+    fail("issue #122 follow-up: engine regression missing ID reuse coverage")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):

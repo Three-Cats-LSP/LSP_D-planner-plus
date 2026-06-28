@@ -8876,6 +8876,18 @@ function _dgCardCount() {
   return document.querySelectorAll('.deco-gas-card').length;
 }
 
+function _nextFreeDecoCardIdx() {
+  for (let i = 3; i <= _DG_MAX; i++) {
+    if (!document.getElementById(`dgCard_${i}`)) return i;
+  }
+  return null;
+}
+
+function _syncDgNextIdx() {
+  const free = _nextFreeDecoCardIdx();
+  _dgNextIdx = free != null ? free : (_DG_MAX + 1);
+}
+
 function renumberDecoGasCards() {
   const ccrUi = isCcrGasUiMode();
   document.querySelectorAll('.deco-gas-card').forEach((card, i) => {
@@ -8893,7 +8905,7 @@ function renumberDecoGasCards() {
 }
 
 function appendDecoGasCardAtIdx(idx) {
-  if (idx <= 2 || document.getElementById(`dgCard_${idx}`)) return;
+  if (idx <= 2 || idx > _DG_MAX || document.getElementById(`dgCard_${idx}`)) return;
   if (_dgCardCount() >= _DG_MAX) return;
   const n = _dgCardCount() + 1;
   const mixNum = n + 1;
@@ -8954,7 +8966,10 @@ function appendDecoGasCardAtIdx(idx) {
 
 function addDecoGasCard() {
   if (_dgCardCount() >= _DG_MAX) return;
-  appendDecoGasCardAtIdx(_dgNextIdx++);
+  const idx = _nextFreeDecoCardIdx();
+  if (idx == null) return;
+  appendDecoGasCardAtIdx(idx);
+  _syncDgNextIdx();
 }
 
 function removeDecoGasCard(idx) {
@@ -8963,17 +8978,19 @@ function removeDecoGasCard(idx) {
   renumberDecoGasCards();
   updateGasMODDisplays();
   updateCcrGasValidation();
+  _syncDgNextIdx();
 }
 
 function restoreDecoGasCardLayout(cardIds, nextIdx) {
   getAllDecoGasIds().filter(id => id > 2).forEach(id => removeDecoGasCard(id));
   _dgNextIdx = 3;
-  const wanted = (Array.isArray(cardIds) ? cardIds : [1, 2]).filter(id => id > 2).sort((a, b) => a - b);
+  const wanted = (Array.isArray(cardIds) ? cardIds : [1, 2])
+    .filter(id => id > 2 && id <= _DG_MAX)
+    .sort((a, b) => a - b);
   for (const id of wanted) {
     appendDecoGasCardAtIdx(id);
-    if (id >= _dgNextIdx) _dgNextIdx = id + 1;
   }
-  if (typeof nextIdx === 'number' && nextIdx > _dgNextIdx) _dgNextIdx = nextIdx;
+  _syncDgNextIdx();
 }
 
 // ── End Dynamic Deco Gas Cards ──────────────────────────────────────────────
@@ -16744,10 +16761,12 @@ var appSettings = {
   // Get all POSSIBLE field IDs (including ones that don't exist yet)
   getAllPossibleFields: function() {
     const fields = [...this.DECO_FIELDS, ...this.REC_FIELDS];
-
-    for (let idx = 3; idx <= this.MAX_DECO_CARD_IDX; idx++) {
+    const cardIdx = new Set();
+    for (let idx = 3; idx <= this.MAX_DECO_CARD_IDX; idx++) cardIdx.add(idx);
+    getAllDecoGasIds().forEach(idx => { if (idx > 2) cardIdx.add(idx); });
+    [...cardIdx].sort((a, b) => a - b).forEach(idx => {
       decoCardPersistFieldIds(idx).forEach(id => fields.push(id));
-    }
+    });
     
     // Add all POSSIBLE multi-dive field IDs (mD0-mD9, mBT0-mBT9, etc.)
     for (let i = 0; i < this.MAX_MULTI_DIVE; i++) {
@@ -16928,6 +16947,12 @@ var appSettings = {
     const allPossible = this.getAllPossibleFields();
     const gfPreset = values.gfPresetSelect;
     const gfIsCustom = gfPreset === 'custom';
+    const fieldIds = new Set(allPossible);
+    if (Array.isArray(values.__decoCardIds)) {
+      values.__decoCardIds.filter(id => id > 2).forEach(idx => {
+        decoCardPersistFieldIds(idx).forEach(id => fieldIds.add(id));
+      });
+    }
     
     const restoreOne = (id) => {
       if (id === '__algo__' || id === 'gfPresetSelect' || !values.hasOwnProperty(id)) {
@@ -16954,7 +16979,7 @@ var appSettings = {
       restored++;
     };
     
-    allPossible.forEach(id => {
+    fieldIds.forEach(id => {
       restoreOne(id);
     });
     

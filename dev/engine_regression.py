@@ -549,6 +549,37 @@ ENGINE_SUITE_JS = """
     return { ids, exact, noPhantom4, ok: exact && noPhantom4 };
   })();
 
+  // ── E10h: issue #122 ID reuse — no card IDs above 8 after add/remove ─────
+  out.sections.issue122IdReuse = (() => {
+    if (typeof addDecoGasCard !== 'function' || typeof removeDecoGasCard !== 'function') return { ok: false };
+    getAllDecoGasIds().filter(id => id > 2).forEach(id => removeDecoGasCard(id));
+    for (let i = 0; i < 6; i++) addDecoGasCard();
+    const filled = getAllDecoGasIds();
+    const allLe8 = filled.every(id => id <= 8);
+    removeDecoGasCard(3);
+    addDecoGasCard();
+    const afterReuse = getAllDecoGasIds();
+    const reused3 = afterReuse.includes(3) && !afterReuse.includes(9);
+    const prevStore = localStorage.getItem('lspDiveSettings_v6');
+    const prevHeadless = window._zhlHeadless;
+    window._zhlHeadless = false;
+    const dg8 = document.getElementById('dg8Mix');
+    if (dg8) dg8.value = 'ean50';
+    appSettings.save(false);
+    const saved = JSON.parse(localStorage.getItem('lspDiveSettings_v6') || '{}');
+    if (dg8) dg8.value = 'none';
+    appSettings._restoreFields(saved);
+    const dg8Restored = document.getElementById('dg8Mix')?.value === 'ean50';
+    window._zhlHeadless = prevHeadless;
+    if (prevStore != null) localStorage.setItem('lspDiveSettings_v6', prevStore);
+    else localStorage.removeItem('lspDiveSettings_v6');
+    getAllDecoGasIds().filter(id => id > 2).forEach(id => removeDecoGasCard(id));
+    return {
+      filled, allLe8, afterReuse, reused3, dg8Saved: saved.dg8Mix === 'ean50', dg8Restored,
+      ok: allLe8 && reused3 && saved.dg8Mix === 'ean50' && dg8Restored,
+    };
+  })();
+
   // ── E11: issue #112 planner BT vs descent validation ───────────────────
   out.sections.issue112PlannerBt = (() => {
     const depthEl = document.getElementById('depth');
@@ -816,6 +847,8 @@ def run_suite(page) -> dict:
     assert_true(i121.get("ok"), "trimix UI sync + dynamic deco card value persistence (issue #121)", str(i121))
     i122 = s.get("issue122", {})
     assert_true(i122.get("ok"), "gapped dynamic deco card layout restores exact ID set (issue #122)", str(i122))
+    i122r = s.get("issue122IdReuse", {})
+    assert_true(i122r.get("ok"), "deco card IDs reuse slots 3–8 and dg8 values persist (issue #122 ID reuse)", str(i122r))
 
     for name, r in s["rebreather"].items():
         assert_true(fin(r), f"Rebreather {name} produces schedule", str(r)[:120])
