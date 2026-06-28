@@ -5,16 +5,14 @@
 importScripts('app-version.js');
 const CACHE_VERSION = 'lsp-dplanner-plus-v' + APP_VERSION;
 
-// These are never cached — always fetched live or passed through
-const NEVER_CACHE = [
-  '.apk',
-  '.aab',
-  'version.json',
-  'raw.githubusercontent.com'
-];
-
+// These URL patterns are never cached — always fetched live or passed through
 function shouldNeverCache(url) {
-  return NEVER_CACHE.some(pattern => url.href.includes(pattern));
+  const path = url.pathname || '';
+  const host = url.hostname || '';
+  if (path.endsWith('.apk') || path.endsWith('.aab')) return true;
+  if (path.endsWith('version.json') || path.includes('/version.json')) return true;
+  if (host.includes('raw.githubusercontent.com')) return true;
+  return false;
 }
 
 function isHTMLRequest(request) {

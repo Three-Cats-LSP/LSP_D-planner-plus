@@ -40,6 +40,7 @@
   }
 
   function handleWorkerFailure(msg) {
+    if (!worker) return;
     consecutiveWorkerFailures += 1;
     rejectAll(msg);
     killWorker();
@@ -82,6 +83,7 @@
         }
       };
       worker.onerror = function (err) {
+        if (!worker) return;
         const msg = (err && err.message) || 'Worker error';
         handleWorkerFailure(msg);
       };

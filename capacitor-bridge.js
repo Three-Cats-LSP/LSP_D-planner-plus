@@ -20,6 +20,8 @@
 
 (function () {
   if (!window.Capacitor || !window.Capacitor.isNativePlatform()) return;
+  if (window.__LSP_CAP_BRIDGE_INSTALLED) return;
+  window.__LSP_CAP_BRIDGE_INSTALLED = true;
 
   const FS = 'Filesystem';
   const SH = 'Share';

@@ -5890,6 +5890,81 @@ if "issue118" in _118_regr:
 else:
     fail("issue #118: engine regression missing #118 coverage")
 
+# ── Issue #119: Kiro audit v2.52.00 — 4 CRITICAL / 5 HIGH / 5 MEDIUM / 3 LOW ──
+_119_ccr = open(os.path.join(os.path.dirname(__file__), "zhl-ccr-core.js"), encoding="utf-8").read()
+_119_bundle = open(os.path.join(os.path.dirname(__file__), "zhl-engine-bundle.js"), encoding="utf-8").read()
+_119_bridge = open(os.path.join(os.path.dirname(__file__), "zhl-worker-bridge.js"), encoding="utf-8").read()
+_119_sw = open(os.path.join(os.path.dirname(__file__), "sw.js"), encoding="utf-8").read()
+_119_apk = open(os.path.join(os.path.dirname(__file__), ".github", "workflows", "build-apk.yml"), encoding="utf-8").read()
+_119_cap = open(os.path.join(os.path.dirname(__file__), "capacitor-bridge.js"), encoding="utf-8").read()
+_119_picker = open(os.path.join(os.path.dirname(__file__), "android-select-picker.js"), encoding="utf-8").read()
+_119_manifest = open(os.path.join(os.path.dirname(__file__), "manifest.json"), encoding="utf-8").read()
+_119_regr = open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read()
+if "--bg-alt:" in html.split(":root", 1)[-1][:800] and "--bg-alt:" in html.split("body.light-theme", 1)[-1][:400]:
+    ok("issue #119 BUG-01: --bg-alt defined in dark and light theme tokens")
+else:
+    fail("issue #119 BUG-01: --bg-alt CSS variable still undefined")
+if "function getEffectivePpo2" in _119_ccr and "function getEffectivePpo2" in _119_bundle:
+    ok("issue #119 BUG-02: getEffectivePpo2 defined in ZHL bundle for worker context")
+else:
+    fail("issue #119 BUG-02: getEffectivePpo2 still missing from zhl-engine-bundle.js")
+if "git reset --hard HEAD" not in _119_apk.split("Commit APK", 1)[-1][:600] and "github-actions[bot]" in _119_apk:
+    ok("issue #119 BUG-03/16: APK commit no longer reset after commit; uses actions bot email")
+else:
+    fail("issue #119 BUG-03: build-apk.yml still destroys APK commit with reset --hard")
+if "test -f www/index.html" in _119_apk:
+    ok("issue #119 BUG-04: build-apk verifies www/index.html after sync_www.py")
+else:
+    fail("issue #119 BUG-04: missing www/ guard after sync_www.py")
+if "stepDepthToM" in js.split("function enforceMinDecoProfile", 1)[-1][:1200] and "stepDepthToM" in _119_bundle.split("function enforceMinDecoProfile", 1)[-1][:1200]:
+    ok("issue #119 BUG-05: enforceMinDecoProfile uses metric depth helpers (imperial-safe)")
+else:
+    fail("issue #119 BUG-05: enforceMinDecoProfile still hardcodes rounded imperial depths")
+if "body.light-theme * { color: inherit" not in html:
+    ok("issue #119 BUG-06: light theme no longer applies color:inherit to all elements")
+else:
+    fail("issue #119 BUG-06: body.light-theme * { color: inherit } still overrides inline colors")
+if "typeof APP_VERSION !== 'undefined'" in html and "APP_VERSION unavailable" in html.split("PWA: service worker registration", 1)[-1][:3500]:
+    ok("issue #119 BUG-07: SW registration guarded when APP_VERSION missing")
+else:
+    fail("issue #119 BUG-07: SW still registers with sw.js?v=undefined")
+if '<script src="android-select-picker.js"></script>' in html and 'defer="" src="android-select-picker.js"' not in html.split("</head>", 1)[0]:
+    ok("issue #119 BUG-08: android-select-picker.js loaded at end of body (non-deferred)")
+else:
+    fail("issue #119 BUG-08: android-select-picker.js still deferred in head")
+if "MAJOR * 1000000" in _119_apk:
+    ok("issue #119 BUG-09: APK versionCode uses expanded MINOR/PATCH headroom")
+else:
+    fail("issue #119 BUG-09: version code formula still overflows at MINOR/PATCH >= 100")
+if '"purpose": "maskable"' in _119_manifest and "512x512" in _119_manifest.split("maskable", 1)[-1][:120]:
+    ok("issue #119 BUG-11: manifest includes 512 maskable icon entry")
+else:
+    fail("issue #119 BUG-11: manifest missing 512x512 maskable icon")
+if "if (!worker) return" in _119_bridge.split("function handleWorkerFailure", 1)[-1][:200]:
+    ok("issue #119 BUG-12: worker failure handler skips double-increment after kill")
+else:
+    fail("issue #119 BUG-12: worker bridge still double-increments failure counter")
+if "selectSyncFns.get(sel)" in _119_picker.split("scheduleSheetRebuild", 1)[-1][:400]:
+    ok("issue #119 BUG-13: android picker rebuild uses live syncBtn from WeakMap")
+else:
+    fail("issue #119 BUG-13: android picker still uses stale syncBtn closure")
+if "__LSP_CAP_BRIDGE_INSTALLED" in _119_cap:
+    ok("issue #119 BUG-14: capacitor-bridge single-install guard prevents revoke patch leak")
+else:
+    fail("issue #119 BUG-14: capacitor-bridge still re-patches revokeObjectURL on hot reload")
+if "path.endsWith('.apk')" in _119_sw and "url.href.includes" not in _119_sw.split("function shouldNeverCache", 1)[-1][:300]:
+    ok("issue #119 BUG-15: shouldNeverCache uses pathname suffix checks")
+else:
+    fail("issue #119 BUG-15: shouldNeverCache still uses href substring matching")
+if '"orientation": "any"' in _119_manifest:
+    ok("issue #119 BUG-17: manifest orientation allows landscape on tablets")
+else:
+    fail("issue #119 BUG-17: manifest still locked to portrait-primary")
+if "issue119" in _119_regr:
+    ok("issue #119: engine regression covers worker getEffectivePpo2")
+else:
+    fail("issue #119: engine regression missing #119 coverage")
+
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
     ok("stable release APP_VERSION is 2.52.00")

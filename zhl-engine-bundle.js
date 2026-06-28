@@ -477,6 +477,20 @@ function loadTissuesWithCCR(tissues, fromDepth, toDepth, time, fO2, fHe, ccr, co
   return saturateLinearCCR(tissues, fromDepth, toDepth, time, fO2, fHe, cfg);
 }
 
+function getEffectivePpo2(pAmb, setpoint, fO2, ccr, depthM, fHe) {
+  const cfg = normalizeCCRSettings(ccr);
+  if (cfg.bailout || !isRebreatherCircuit(cfg.circuit)) return fO2 * pAmb;
+  if (cfg.circuit === 'pSCR') {
+    const fHeVal = fHe != null ? fHe : 0;
+    const fr = computePSCRFractions(pAmb, fO2, fHeVal, cfg);
+    return Math.max(PSCR_MIN_PPO2, fr.fO2 * pAmb);
+  }
+  const depthFromAmb = depthM != null ? depthM : (pAmb - altSurfaceP) / BAR_PER_METRE;
+  const sp = setpoint != null ? setpoint : getEffectiveSetpointAtDepth(depthFromAmb, cfg, altSurfaceP);
+  const dilPpo2 = fO2 * pAmb;
+  return Math.min(pAmb, Math.max(sp, dilPpo2));
+}
+
 
 function getActiveGas(curDepthM, bottomFN2, decoGases, getPPO2LimitFn, bottomLabel) {
   let best = null;
@@ -525,6 +539,16 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
   if (!enabled || (!min9m && !min6m)) return steps;
   const depth9 = 9;  // 9 m / 30 ft
   const depth6 = 6;  // 6 m / 20 ft
+  const FT_PER_M = 3.28084;
+
+  function stepDepthToM(s) {
+    const raw = s.depth ?? s.from ?? s.to;
+    if (raw == null) return null;
+    return isMetric ? raw : raw / FT_PER_M;
+  }
+  function matchesStdMinStop(depthM, targetM) {
+    return depthM != null && Math.abs(depthM - targetM) < 0.25;
+  }
 
   // ── Pass 1: build result, extending existing stops if present ──
   const result = [];
@@ -532,13 +556,13 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
 
   for (const s of steps) {
     if (s.type === 'deco' || s.type === 'safety') {
-      const depthM = isMetric ? s.depth : Math.round(s.depth / 3.28084);
-      if (depthM === depth9 && min9m > 0) {
+      const depthM = stepDepthToM(s);
+      if (matchesStdMinStop(depthM, depth9) && min9m > 0) {
         result.push({ ...s, type: 'deco', dur: Math.max(s.dur, min9m) });
         enforced[9] = true;
         continue;
       }
-      if (depthM === depth6 && min6m > 0) {
+      if (matchesStdMinStop(depthM, depth6) && min6m > 0) {
         result.push({ ...s, type: 'deco', dur: Math.max(s.dur, min6m) });
         enforced[6] = true;
         continue;
@@ -559,12 +583,8 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
     let activeFHe = fallbackFHe ?? 0;
     for (const s of result) {
       if (!s.gas || s.gas.trim() === '') continue;
-      // Determine the depth range this step covers
-      const stepDepthM = isMetric
-        ? (s.depth ?? s.from ?? s.to)
-        : Math.round((s.depth ?? s.from ?? s.to) / 3.28084);
+      const stepDepthM = stepDepthToM(s);
       if (stepDepthM == null) continue;
-      // Update active gas for steps at or deeper than target
       if (stepDepthM >= targetDepthM) {
         activeGas = s.gas;
         activeFN2 = s.fN2 ?? activeFN2;
@@ -584,8 +604,8 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
       if (s.type === 'descent' || s.type === 'bottom') continue;
       const rawD = s.type === 'ascent' ? (s.to ?? s.depth) : s.depth;
       if (rawD == null) continue;
-      const d = isMetric ? rawD : Math.round(rawD / 3.28084);
-      if (d < targetDepthM) { insertIdx = i; break; }
+      const d = isMetric ? rawD : rawD / FT_PER_M;
+      if (d != null && d < targetDepthM) { insertIdx = i; break; }
     }
     // Resolve the gas the diver is breathing at this depth
     const { gas, fN2, fHe } = resolveGasAtDepth(targetDepthM);
@@ -593,8 +613,8 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
     // depth, split it so the stop sits between its deep and shallow pieces.
     const straddle = result[insertIdx];
     if (straddle && straddle.type === 'ascent') {
-      const sFromM = isMetric ? straddle.from : Math.round(straddle.from / 3.28084);
-      const sToM   = isMetric ? straddle.to   : Math.round(straddle.to   / 3.28084);
+      const sFromM = stepDepthToM({ depth: straddle.from, from: straddle.from, to: straddle.to });
+      const sToM = stepDepthToM({ depth: straddle.to, from: straddle.from, to: straddle.to });
       if (sFromM > targetDepthM && sToM < targetDepthM) {
         const lowerDur = straddle.dur * (sFromM - targetDepthM) / (sFromM - sToM);
         const upperDur = straddle.dur * (targetDepthM - sToM) / (sFromM - sToM);

@@ -34,7 +34,7 @@ jobs:
           MAJOR="${PARTS[0]:-0}"
           MINOR="${PARTS[1]:-0}"
           PATCH="${PARTS[2]:-0}"
-          VERSION_CODE=$(( MAJOR * 10000 + MINOR * 100 + PATCH ))
+          VERSION_CODE=$(( MAJOR * 1000000 + MINOR * 1000 + PATCH ))
           echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_OUTPUT
           echo "Detected version: $VERSION (code: $VERSION_CODE)"
 
@@ -60,6 +60,9 @@ jobs:
 
       - name: Prepare web assets (www/)
         run: python tools/sync_www.py
+
+      - name: Verify www/ shell after sync
+        run: test -f www/index.html
 
       - name: Capacitor sync (copies web assets + updates plugins)
         run: npx cap sync android
@@ -117,12 +120,11 @@ jobs:
 
       - name: Commit APK back to main
         run: |
-          git config user.email "sns@rvm.cc"
-          git config user.name "Three Cats LSP"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git pull --rebase origin main
           git add -A "Android Apk/" version.json
           git commit -m "build(android): ${APK_NAME} [skip ci]" --allow-empty
-          git reset --hard HEAD
-          git pull --rebase origin main
           git push
 
       - name: Notify homepage to sync APK

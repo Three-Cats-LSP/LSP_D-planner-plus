@@ -12,7 +12,6 @@
   }
 })();
 </script>
-<script defer="" src="android-select-picker.js"></script>
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <title>LSP D-Planner+ · Rec &amp; Tec</title>
 <!-- PWA -->
@@ -38,6 +37,7 @@
  --surface: #07121f;
  --card: #0a1a2e;
  --card2: #0d2038;
+ --bg-alt: var(--surface);
  --border: rgba(0,200,255,0.09);
  --border-hi: rgba(0,200,255,0.28);
 
@@ -75,6 +75,7 @@ body.light-theme { --bg: #ffffff;
  --surface: #f8f9fa;
  --card: #eff3f8;
  --card2: #e8ecf1;
+ --bg-alt: var(--surface);
  --border: rgba(0,100,200,0.25);
  --border-hi: rgba(0,100,200,0.45);
 
@@ -170,9 +171,6 @@ body.light-theme::before { background:
 
 /* Force dark text in light theme */
 body.light-theme { color: #000000 !important;
-}
-
-body.light-theme * { color: inherit;
 }
 
 body.light-theme h1, body.light-theme h2, body.light-theme h3, body.light-theme h4, body.light-theme h5, body.light-theme h6 { color: #000000 !important;
@@ -7652,6 +7650,16 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
   if (!enabled || (!min9m && !min6m)) return steps;
   const depth9 = 9;  // 9 m / 30 ft
   const depth6 = 6;  // 6 m / 20 ft
+  const FT_PER_M = 3.28084;
+
+  function stepDepthToM(s) {
+    const raw = s.depth ?? s.from ?? s.to;
+    if (raw == null) return null;
+    return isMetric ? raw : raw / FT_PER_M;
+  }
+  function matchesStdMinStop(depthM, targetM) {
+    return depthM != null && Math.abs(depthM - targetM) < 0.25;
+  }
 
   // ── Pass 1: build result, extending existing stops if present ──
   const result = [];
@@ -7659,13 +7667,13 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
 
   for (const s of steps) {
     if (s.type === 'deco' || s.type === 'safety') {
-      const depthM = isMetric ? s.depth : Math.round(s.depth / 3.28084);
-      if (depthM === depth9 && min9m > 0) {
+      const depthM = stepDepthToM(s);
+      if (matchesStdMinStop(depthM, depth9) && min9m > 0) {
         result.push({ ...s, type: 'deco', dur: Math.max(s.dur, min9m) });
         enforced[9] = true;
         continue;
       }
-      if (depthM === depth6 && min6m > 0) {
+      if (matchesStdMinStop(depthM, depth6) && min6m > 0) {
         result.push({ ...s, type: 'deco', dur: Math.max(s.dur, min6m) });
         enforced[6] = true;
         continue;
@@ -7686,12 +7694,8 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
     let activeFHe = fallbackFHe ?? 0;
     for (const s of result) {
       if (!s.gas || s.gas.trim() === '') continue;
-      // Determine the depth range this step covers
-      const stepDepthM = isMetric
-        ? (s.depth ?? s.from ?? s.to)
-        : Math.round((s.depth ?? s.from ?? s.to) / 3.28084);
+      const stepDepthM = stepDepthToM(s);
       if (stepDepthM == null) continue;
-      // Update active gas for steps at or deeper than target
       if (stepDepthM >= targetDepthM) {
         activeGas = s.gas;
         activeFN2 = s.fN2 ?? activeFN2;
@@ -7711,8 +7715,8 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
       if (s.type === 'descent' || s.type === 'bottom') continue;
       const rawD = s.type === 'ascent' ? (s.to ?? s.depth) : s.depth;
       if (rawD == null) continue;
-      const d = isMetric ? rawD : Math.round(rawD / 3.28084);
-      if (d < targetDepthM) { insertIdx = i; break; }
+      const d = isMetric ? rawD : rawD / FT_PER_M;
+      if (d != null && d < targetDepthM) { insertIdx = i; break; }
     }
     // Resolve the gas the diver is breathing at this depth
     const { gas, fN2, fHe } = resolveGasAtDepth(targetDepthM);
@@ -7720,8 +7724,8 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
     // depth, split it so the stop sits between its deep and shallow pieces.
     const straddle = result[insertIdx];
     if (straddle && straddle.type === 'ascent') {
-      const sFromM = isMetric ? straddle.from : Math.round(straddle.from / 3.28084);
-      const sToM   = isMetric ? straddle.to   : Math.round(straddle.to   / 3.28084);
+      const sFromM = stepDepthToM({ depth: straddle.from, from: straddle.from, to: straddle.to });
+      const sToM = stepDepthToM({ depth: straddle.to, from: straddle.from, to: straddle.to });
       if (sFromM > targetDepthM && sToM < targetDepthM) {
         const lowerDur = straddle.dur * (sFromM - targetDepthM) / (sFromM - sToM);
         const upperDur = straddle.dur * (targetDepthM - sToM) / (sFromM - sToM);
@@ -17649,7 +17653,7 @@ window.addEventListener('load', function() {
   // Cache/worker lifecycle on version bump is owned by sw.js (activate after verified shell precache).
   // Do NOT unregister workers or delete caches here — a failed new install would leave users offline.
 
-  if ('serviceWorker' in navigator && !isAutomatedTestMode()) {
+  if ('serviceWorker' in navigator && !isAutomatedTestMode() && typeof APP_VERSION !== 'undefined') {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register(`sw.js?v=${APP_VERSION}`, { updateViaCache: 'none' })
         .then(r => {
@@ -17679,6 +17683,8 @@ window.addEventListener('load', function() {
         })
         .catch(e => console.warn('[SW] registration failed:', e));
     });
+  } else if ('serviceWorker' in navigator && !isAutomatedTestMode()) {
+    console.warn('[SW] APP_VERSION unavailable — skipping service worker registration');
   }
 
   // Install prompt banner (Android Chrome)
@@ -17711,5 +17717,6 @@ window.addEventListener('load', function() {
     }, 2500);
   }
 </script>
+<script src="android-select-picker.js"></script>
 </body>
 </html>

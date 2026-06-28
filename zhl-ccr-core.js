@@ -333,3 +333,17 @@ function loadTissuesWithCCR(tissues, fromDepth, toDepth, time, fO2, fHe, ccr, co
   }
   return saturateLinearCCR(tissues, fromDepth, toDepth, time, fO2, fHe, cfg);
 }
+
+function getEffectivePpo2(pAmb, setpoint, fO2, ccr, depthM, fHe) {
+  const cfg = normalizeCCRSettings(ccr);
+  if (cfg.bailout || !isRebreatherCircuit(cfg.circuit)) return fO2 * pAmb;
+  if (cfg.circuit === 'pSCR') {
+    const fHeVal = fHe != null ? fHe : 0;
+    const fr = computePSCRFractions(pAmb, fO2, fHeVal, cfg);
+    return Math.max(PSCR_MIN_PPO2, fr.fO2 * pAmb);
+  }
+  const depthFromAmb = depthM != null ? depthM : (pAmb - altSurfaceP) / BAR_PER_METRE;
+  const sp = setpoint != null ? setpoint : getEffectiveSetpointAtDepth(depthFromAmb, cfg, altSurfaceP);
+  const dilPpo2 = fO2 * pAmb;
+  return Math.min(pAmb, Math.max(sp, dilPpo2));
+}

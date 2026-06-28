@@ -105,8 +105,9 @@
     sheetRebuildPending.set(sel, true);
     requestAnimationFrame(function () {
       sheetRebuildPending.delete(sel);
-      if (openSheetSelect === sel && openSheetSyncBtn === syncBtn) {
-        openSheet(sel, syncBtn);
+      var liveSync = selectSyncFns ? selectSyncFns.get(sel) : syncBtn;
+      if (openSheetSelect === sel && liveSync) {
+        openSheet(sel, liveSync);
       }
     });
   }
@@ -226,8 +227,9 @@
 
     var selObserver = new MutationObserver(function () {
       syncBtn();
-      if (openSheetSelect === sel && openSheetSyncBtn) {
-        scheduleSheetRebuild(sel, syncBtn);
+      if (openSheetSelect === sel) {
+        var liveSync = selectSyncFns ? selectSyncFns.get(sel) : syncBtn;
+        if (liveSync) scheduleSheetRebuild(sel, liveSync);
       }
     });
     selObserver.observe(sel, {

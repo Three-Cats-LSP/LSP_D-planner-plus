@@ -446,6 +446,15 @@ ENGINE_SUITE_JS = """
     };
   })();
 
+  // ── E10d: issue #119 worker bundle self-contained ppO2 helper ─────────────
+  out.sections.issue119 = (() => {
+    const bundleOk = typeof getEffectivePpo2 === 'function';
+    const ccr = { circuit: 'CCR', setpoint: 1.3, descentSetpoint: 0.7, bottomSetpoint: 1.2, decoSetpoint: 1.3, bailout: false };
+    const pAmb = (typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325) + 40 * (typeof BAR_PER_METRE !== 'undefined' ? BAR_PER_METRE : 0.1);
+    const ppo2 = bundleOk ? getEffectivePpo2(pAmb, 1.3, 0.21, ccr, 40, 0) : NaN;
+    return { bundleOk, ppo2, ok: bundleOk && ppo2 >= 1.2 && ppo2 <= pAmb };
+  })();
+
   // ── E11: issue #112 planner BT vs descent validation ───────────────────
   out.sections.issue112PlannerBt = (() => {
     const depthEl = document.getElementById('depth');
@@ -705,6 +714,8 @@ def run_suite(page) -> dict:
     assert_true(i117.get("ok"), "mdCompat pSCR schedule + trimix He below setpoint (issue #117)", str(i117))
     i118 = s.get("issue118", {})
     assert_true(i118.get("ok"), "altitude setpoint zones + circuit case + buhNDL zero stop (issue #118)", str(i118))
+    i119 = s.get("issue119", {})
+    assert_true(i119.get("ok"), "getEffectivePpo2 available in main bundle (issue #119 BUG-02)", str(i119))
 
     for name, r in s["rebreather"].items():
         assert_true(fin(r), f"Rebreather {name} produces schedule", str(r)[:120])

@@ -807,6 +807,7 @@ const VPMEngine = (() => {
         if (ppO2 <= 0.5) return 0;
         return time * Math.pow((ppO2 - 0.5) / 0.5, 0.8333);
     }
+    // Fine-grained ppO2→CNS rate table (131 steps, 0.50–1.80 bar); aligned to NOAA band structure.
     const CNS_RATE_ANDROID = [
         0.120, 0.122, 0.125, 0.127, 0.129, 0.130, 0.132, 0.134, 0.135, 0.138,
         0.140, 0.140, 0.140, 0.145, 0.150, 0.155, 0.160, 0.165, 0.170, 0.175,
