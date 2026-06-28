@@ -289,6 +289,7 @@ postamble = r'''
   }
 
   function calculate(levels, decoGases, settings, profileSplit, environment) {
+    applyEnvironment(environment || defaultEnvironment());
     const s = settings || {};
     const isMetric = s.metric !== false;
     const level = levels[0];

@@ -265,6 +265,8 @@ const VPMEngine = (() => {
         let bubbleCarryApplied = false;
         if (settings._prevBubbleState && settings._prevBubbleState.adjustedCritRadiiN2
                 && settings._prevBubbleState.adjustedCritRadiiN2.length === NC
+                && settings._prevBubbleState.adjustedCritRadiiHe
+                && settings._prevBubbleState.adjustedCritRadiiHe.length === NC
                 && settings._prevBubbleState.regeneratedRadiiN2
                 && settings._prevBubbleState.regeneratedRadiiN2.length === NC
                 && settings._prevBubbleState.regeneratedRadiiHe
@@ -1033,14 +1035,15 @@ const VPMEngine = (() => {
         let vpmStopCapFailedDepth = null;
         const vpmMaxStopMin = (settings._vpmMaxStopMin != null && Number.isFinite(settings._vpmMaxStopMin))
             ? Math.max(0, settings._vpmMaxStopMin) : 180;
-        function vpmStopCapError(stopDepth) {
+        function vpmStopCapError(stopDepth, partialPlan) {
+            const plan = partialPlan || [];
             return {
                 error: `VPM stop at ${stopDepth} m exceeded safety limit without clearance — schedule invalid`,
                 code: 'VPM_STOP_CAP',
-                stops: [],
-                plan: [],
-                totalRuntime: 0,
-                totalTime: 0,
+                stops: plan,
+                plan,
+                totalRuntime: plan.length ? (plan[plan.length - 1].runtime || 0) : 0,
+                totalTime: plan.length ? (plan[plan.length - 1].runtime || 0) : 0,
                 finalTissues: null,
                 finalBubbleState: null,
             };
@@ -1435,6 +1438,19 @@ const VPMEngine = (() => {
             calcCrushing(state, settings);
             const offLoopPath = isCCR && settings.circuit !== 'pSCR' && (forcedOCMode || curSP <= 0);
             const interLevelConservatism = offLoopPath ? Math.max(0, conservatism - 1) : conservatism;
+            if (offLoopPath && interLevelConservatism < conservatism) {
+                const consIdx = Math.max(0, Math.min(5, Math.round(conservatism || 0)));
+                const interIdx = Math.max(0, Math.min(5, Math.round(interLevelConservatism || 0)));
+                const relax = VPM_CRITICAL_RADIUS_FACTOR[interIdx] / VPM_CRITICAL_RADIUS_FACTOR[consIdx];
+                if (relax < 0.999) {
+                    for (let i = 0; i < NC; i++) {
+                        state.regeneratedRadiiN2[i] *= relax;
+                        state.regeneratedRadiiHe[i] *= relax;
+                        state.adjustedCritRadiiN2[i] *= relax;
+                        state.adjustedCritRadiiHe[i] *= relax;
+                    }
+                }
+            }
             calcAllowableGradients(state, model, settings, interLevelConservatism);
             let rawCeiling = getVPMCeiling(state, settings);
             if (rawCeiling <= targetDepth) {
@@ -1627,7 +1643,7 @@ const VPMEngine = (() => {
                 curO2 = o2Frac; curHe = heFrac; curGasLabel = `${level.o2}/${level.he}`; curSP = sp;
             } else if (depth < currentDepth) {
                 if (runInterLevelDecoAscent(depth) === null) {
-                    return vpmStopCapError(vpmStopCapFailedDepth != null ? vpmStopCapFailedDepth : depth);
+                    return vpmStopCapError(vpmStopCapFailedDepth != null ? vpmStopCapFailedDepth : depth, plan);
                 }
                 curO2 = o2Frac; curHe = heFrac; curGasLabel = `${level.o2}/${level.he}`; curSP = sp;
             }
@@ -1776,7 +1792,7 @@ const VPMEngine = (() => {
                     null,
                     forcedOCMode
                 ).ctx;
-                if (vpmStopCapFailedDepth != null) return vpmStopCapError(vpmStopCapFailedDepth);
+                if (vpmStopCapFailedDepth != null) return vpmStopCapError(vpmStopCapFailedDepth, plan);
             } else {
                 trialCtx = makeScheduleContext(
                     trialBaseState,
@@ -1791,7 +1807,7 @@ const VPMEngine = (() => {
                     null
                 );
                 runStopSequence(trialCtx, firstStopDepth, false);
-                if (vpmStopCapFailedDepth != null) return vpmStopCapError(vpmStopCapFailedDepth);
+                if (vpmStopCapFailedDepth != null) return vpmStopCapError(vpmStopCapFailedDepth, plan);
             }
             const decoPhaseVolumeTime = trialCtx.runtime - decoPhaseRuntimeOrigin;
             calcSurfacePhaseVolumeTime(trialCtx.state, settings);
@@ -1836,18 +1852,18 @@ const VPMEngine = (() => {
                         plan
                     );
                     runStopSequence(finalCtx, firstStopDepth, true);
-                    if (vpmStopCapFailedDepth != null) return vpmStopCapError(vpmStopCapFailedDepth);
+                    if (vpmStopCapFailedDepth != null) return vpmStopCapError(vpmStopCapFailedDepth, plan);
                 }
                 runtime = finalCtx.runtime;
                 totalOTU = finalCtx.totalOTU;
                 totalCNS = finalCtx.totalCNS;
                 restoreTissues(state, finalCtx.state.tissues);
-                if (vpmStopCapFailedDepth != null) return vpmStopCapError(vpmStopCapFailedDepth);
+                if (vpmStopCapFailedDepth != null) return vpmStopCapError(vpmStopCapFailedDepth, plan);
                 return buildResult(plan, runtime, totalOTU, totalCNS, settings, state, decoZoneStart);
             }
             calcCriticalVolume(state, decoPhaseVolumeTime);
         }
-        if (vpmStopCapFailedDepth != null) return vpmStopCapError(vpmStopCapFailedDepth);
+        if (vpmStopCapFailedDepth != null) return vpmStopCapError(vpmStopCapFailedDepth, plan);
         return buildResult(plan, runtime, totalOTU, totalCNS, settings, state, decoZoneStart);
     }
     function buildResult(plan, runtime, totalOTU, totalCNS, settings, state, decoZoneStart) {

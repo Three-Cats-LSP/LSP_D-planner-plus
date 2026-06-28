@@ -3362,7 +3362,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <span class="u5" id="siD1DepthDisplay">30 m</span>
 </div>
 <div class="slider-wrap">
-<input class="lsp-slider" id="siD1Depth" max="60" min="5" oninput="updateSliderFill(this);calcSurfInt()" step="1" type="range" value="30"/>
+<input class="lsp-slider" id="siD1Depth" max="60" min="5" oninput="updateSliderFill(this);calcSurfInt();appSettings.save()" step="1" type="range" value="30"/>
 <div class="slider-ticks"><span>5m</span><span>15m</span><span>30m</span><span>45m</span><span>60m</span></div>
 </div>
 </div>
@@ -3372,7 +3372,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <span class="u5" id="siD1BTDisplay">25 min</span>
 </div>
 <div class="slider-wrap">
-<input class="lsp-slider" id="siD1BT" max="120" min="5" oninput="updateSliderFill(this);calcSurfInt()" step="1" type="range" value="25"/>
+<input class="lsp-slider" id="siD1BT" max="120" min="5" oninput="updateSliderFill(this);calcSurfInt();appSettings.save()" step="1" type="range" value="25"/>
 <div class="slider-ticks"><span>5</span><span>30</span><span>60</span><span>90</span><span>120</span></div>
 </div>
 </div>
@@ -3382,7 +3382,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <span class="u5" id="siD2DepthDisplay">30 m</span>
 </div>
 <div class="slider-wrap">
-<input class="lsp-slider" id="siD2Depth" max="60" min="5" oninput="updateSliderFill(this);calcSurfInt()" step="1" type="range" value="30"/>
+<input class="lsp-slider" id="siD2Depth" max="60" min="5" oninput="updateSliderFill(this);calcSurfInt();appSettings.save()" step="1" type="range" value="30"/>
 <div class="slider-ticks"><span>5m</span><span>15m</span><span>30m</span><span>45m</span><span>60m</span></div>
 </div>
 </div>
@@ -3392,7 +3392,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <span class="u5" id="siD2BTDisplay">25 min</span>
 </div>
 <div class="slider-wrap">
-<input class="lsp-slider" id="siD2BT" max="120" min="5" oninput="updateSliderFill(this);calcSurfInt()" step="1" type="range" value="25"/>
+<input class="lsp-slider" id="siD2BT" max="120" min="5" oninput="updateSliderFill(this);calcSurfInt();appSettings.save()" step="1" type="range" value="25"/>
 <div class="slider-ticks"><span>5</span><span>30</span><span>60</span><span>90</span><span>120</span></div>
 </div>
 </div>
@@ -6740,7 +6740,8 @@ function buhNDL(depthM, fN2, gfLow, gfHigh, fHe) {
   _syncZhlBundleEnv();
   const lastStop = parseDomInt('lastDecoStop', 3);
   const decoStep = parseDomInt('decoStep', 3);
-  return ZhlEngineBundle.buhNDL(depthM, fN2, gfLow, gfHigh, fHe, lastStop, decoStep);
+  const shallowGradient = document.getElementById('shallowGradient')?.value === 'on';
+  return ZhlEngineBundle.buhNDL(depthM, fN2, gfLow, gfHigh, fHe, lastStop, decoStep, shallowGradient);
 }
 
 function maxSatPct(tissues, gfHigh) {
@@ -7483,9 +7484,9 @@ function _doResetToDefaults(userDefaults) {
   console.log('[LSP] ↺ Settings reset to defaults (ApexDeco-matched)');
 }
 
-function getActiveGas(curDepthM, bottomFN2, decoGases, getPPO2LimitFn, bottomLabel) {
+function getActiveGas(curDepthM, bottomFN2, decoGases, getPPO2LimitFn, bottomLabel, bottomFHe) {
   _syncZhlBundleEnv();
-  return ZhlEngineBundle.getActiveGas(curDepthM, bottomFN2, decoGases, getPPO2LimitFn, bottomLabel);
+  return ZhlEngineBundle.getActiveGas(curDepthM, bottomFN2, bottomFHe || 0, decoGases, getPPO2LimitFn, bottomLabel);
 }
 
 function ppO2Check(depthM, fN2, fHe, opts) {
@@ -7680,7 +7681,11 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
     return;
   }
 
-  if (result.error || result.code === 'VPM_STOP_CAP') {
+  if (result.code === 'VPM_STOP_CAP' && result.plan && result.plan.length) {
+    renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct, decoGases, model, _vpmBotFracs);
+    return;
+  }
+  if (result.error) {
     const tbody = document.getElementById('decoTableBody');
     if (tbody) tbody.innerHTML = `<tr><td colspan="8" style="color:var(--red);padding:12px;">VPM Error: ${result.error}</td></tr>`;
     return;
@@ -9045,7 +9050,7 @@ function runDecoSchedule() {
     if (_zhlOnLoop) {
       return { fN2: bottomFN2, fHe: bottomFHe, fO2: bottomFO2, label: bottomMixLabel };
     }
-    return getActiveGas(depthM, bottomFN2, [], () => ppo2Bottom, bottomMixLabel);
+    return getActiveGas(depthM, bottomFN2, [], () => ppo2Bottom, bottomMixLabel, bottomFHe);
   }
   function _ccrPpo2Opts(depthM, onLoop, fO2, phase) {
     if (!onLoop || !_zhlOnLoop) return undefined;
@@ -10332,7 +10337,7 @@ function runUnifiedPlan() {
     // Cap display at 90
     const effNDLCap = Math.min(effNDL, 90);
 
-    const margin = effNDLCap - bt;
+    const margin = effNDL - bt;
     const col    = statusColor(margin);
 
     if (dDisp)  { dDisp.textContent  = Math.round(dM * conv) + ' ' + du;  dDisp.style.color  = col; }
@@ -13819,42 +13824,46 @@ function runContingencyScenario(modifyFn) {
   const savedLastPlan = window._lastPlan;
 
   _contingencyRunning = true;
-  modifyFn();
-  runDecoSchedule();
-  _contingencyRunning = false;
+  let scenarioDepth, scenarioBT, scenarioBotFracs, newRows, lastRun, decoTime;
+  let lastRunFmt, decoTimeFmt, totalCNS, totalOTUc, tts, decoStop, decozoneDisp;
+  let decoZoneStart, contSurfaceGF, planSum;
+  try {
+    modifyFn();
+    runDecoSchedule();
 
-  // Capture results before restore
-  const scenarioDepth = document.getElementById('decoDepth')?.value;
-  const scenarioBT    = document.getElementById('decoBT')?.value;
-  const scenarioBotFracs = getBottomGasFractions();
-  const newRows = document.getElementById('decoTableBody').innerHTML;
-  const rows    = document.querySelectorAll('#decoTableBody tr[data-phase]');
-  let lastRun = 0, decoTime = 0;
-  rows.forEach(tr => {
-    const run = parseRunMinutes(tr.querySelector('td[data-label="Run"]')?.textContent) || 0;
-    if (run > lastRun) lastRun = run;
-    if (tr.dataset.phase === 'deco' || tr.dataset.phase === 'safety')
-      decoTime += parseRunMinutes(tr.querySelectorAll('td')[2]?.textContent) || 0;
-  });
+    scenarioDepth = document.getElementById('decoDepth')?.value;
+    scenarioBT    = document.getElementById('decoBT')?.value;
+    scenarioBotFracs = getBottomGasFractions();
+    newRows = document.getElementById('decoTableBody').innerHTML;
+    const rows    = document.querySelectorAll('#decoTableBody tr[data-phase]');
+    lastRun = 0; decoTime = 0;
+    rows.forEach(tr => {
+      const run = parseRunMinutes(tr.querySelector('td[data-label="Run"]')?.textContent) || 0;
+      if (run > lastRun) lastRun = run;
+      if (tr.dataset.phase === 'deco' || tr.dataset.phase === 'safety') {
+        const stopTxt = tr.querySelector('td[data-label="Stop"]')?.textContent || '';
+        decoTime += parseInt(stopTxt, 10) || 0;
+      }
+    });
 
-  // Capture formatted totals from DOM totals row
-  const totalsRow = document.querySelector('#decoTableBody tr[data-phase="totals"] td');
-  const planSum = getPlanSummaryExport(totalsRow);
-  const lp = window._lastPlan || {};
-  let lastRunFmt = planSum.runTime !== '-' ? planSum.runTime : null;
-  let decoTimeFmt = planSum.decoTime !== '-' ? planSum.decoTime : null;
-  let totalCNS = planSum.cns !== '-' ? planSum.cns : null;
-  let totalOTUc = planSum.otu !== '-' ? planSum.otu : null;
-  let tts = planSum.tts;
-  let decoStop = planSum.decoStop;
-  let decozoneDisp = planSum.decozone;
-  let decoZoneStart = lp.decoZoneStart ?? 0;
-  let contSurfaceGF = lp.surfaceGF ?? null;
-
-  // Restore original DOM
-  document.getElementById('decoTableBody').innerHTML = savedBody;
-  document.getElementById('decoSummary').innerHTML   = savedSummary;
-  window._lastPlan = savedLastPlan;
+    const totalsRow = document.querySelector('#decoTableBody tr[data-phase="totals"] td');
+    planSum = getPlanSummaryExport(totalsRow);
+    const lp = window._lastPlan || {};
+    lastRunFmt = planSum.runTime !== '-' ? planSum.runTime : null;
+    decoTimeFmt = planSum.decoTime !== '-' ? planSum.decoTime : null;
+    totalCNS = planSum.cns !== '-' ? planSum.cns : null;
+    totalOTUc = planSum.otu !== '-' ? planSum.otu : null;
+    tts = planSum.tts;
+    decoStop = planSum.decoStop;
+    decozoneDisp = planSum.decozone;
+    decoZoneStart = lp.decoZoneStart ?? 0;
+    contSurfaceGF = lp.surfaceGF ?? null;
+  } finally {
+    _contingencyRunning = false;
+    document.getElementById('decoTableBody').innerHTML = savedBody;
+    document.getElementById('decoSummary').innerHTML   = savedSummary;
+    window._lastPlan = savedLastPlan;
+  }
 
   return { newRows, lastRun, decoTime: Math.round(decoTime), lastRunFmt, decoTimeFmt, totalCNS, totalOTUc, decoZoneStart, decozoneDisp, decoStop, tts, planSum, contSurfaceGF, scenarioDepth, scenarioBT, scenarioBotFracs };
 }
@@ -16223,6 +16232,7 @@ var appSettings = {
     'zhlRepMode', 'zhlSurfaceInterval',
     'priorDiveDays', 'priorDiveHours', 'priorDiveMinutes', 'priorDiveOTU', 'priorDiveCNS',
     'shallowGradient',
+    'siD1Depth', 'siD1BT', 'siD2Depth', 'siD2BT',
     'travelGasMix', 'travelGasCustomO2', 'travelGasTrimixO2', 'travelGasTrimixHe', 'travelGasSwitchMode', 'travelGasManualDepth',
     'sacBottom', 'sacDeco',
     'cylBot_size', 'cylBot_pres', 'cylBot_reserve',

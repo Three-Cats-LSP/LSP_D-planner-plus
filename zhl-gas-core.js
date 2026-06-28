@@ -111,7 +111,8 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
   return result;
 }
 
-function getActiveGas(curDepthM, bottomFN2, decoGases, getPPO2LimitFn, bottomLabel) {
+function getActiveGas(curDepthM, bottomFN2, bottomFHe, decoGases, getPPO2LimitFn, bottomLabel) {
+  const fHeBottom = bottomFHe || 0;
   let best = null;
   let bestFO2 = -1;
   for (const dg of decoGases) {
@@ -128,12 +129,14 @@ function getActiveGas(curDepthM, bottomFN2, decoGases, getPPO2LimitFn, bottomLab
       bestFO2 = fO2;
     }
   }
-  return best || { fN2: bottomFN2, fHe: 0, label: bottomLabel || 'Bottom' };
+  return best || { fN2: bottomFN2, fHe: fHeBottom, label: bottomLabel || 'Bottom' };
 }
 
 function ppO2Check(depthM, fN2, fHe, opts) {
   const fHeVal = fHe || 0;
-  const o2frac = Math.max(0, 1 - fN2 - fHeVal);
+  const fO2 = 1 - fN2 - fHeVal;
+  if (fO2 < -1e-6) return 'ERR';
+  const o2frac = Math.max(0, fO2);
   const pAmb = altSurfaceP + depthM * BAR_PER_METRE;
   if (opts && opts.onLoop && opts.ccr && isRebreatherCircuit(opts.ccr.circuit) && !opts.ccr.bailout) {
     const fO2 = opts.fO2 != null ? opts.fO2 : o2frac;
@@ -157,7 +160,8 @@ function n2FracFromPercentages(o2pct, hepct) {
 }
 
 function validateHypoxicDecoGas(o2, he, field) {
-  if (o2 < 18) {
+  const heVal = he || 0;
+  if (heVal <= 0 && o2 < 18) {
     const label = String(field).replace(/^dg/, '');
     return {
       ok: false,

@@ -51,7 +51,8 @@ function loopMixLabelForCore(diluentLabel, ccr) {
 
 function depthAtSetpointCrossing(setpoint, surfP) {
   if (!setpoint || setpoint <= 0) return null;
-  const d = (setpoint + WATER_VAPOR - (surfP || altSurfaceP)) / BAR_PER_METRE;
+  const sp = surfP != null ? surfP : altSurfaceP;
+  const d = (setpoint + WATER_VAPOR - sp) / BAR_PER_METRE;
   return d > 0 ? d : null;
 }
 
@@ -64,7 +65,7 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
   if (phase === 'descent') return descSP;
   if (phase === 'bottom') return bottomSP;
   if (phase === 'deco' || phase === 'ascent') return decoSP;
-  const spSurf = surfP || altSurfaceP;
+  const spSurf = surfP != null ? surfP : altSurfaceP;
   const descCross = depthAtSetpointCrossing(descSP, spSurf);
   const bottomCross = depthAtSetpointCrossing(bottomSP, spSurf);
   const decoCross = depthAtSetpointCrossing(decoSP, spSurf);
@@ -119,7 +120,7 @@ function computePSCRFractions(pAmb, fO2, fHe, ccr) {
   // Previous model subtracted cumulative dive runtime × VO2 from a fixed loop volume,
   // which drove loop O2 to near-zero after a few minutes, zeroing N2 loading for the
   // rest of the dive. The steady-state formula is time-independent and depth-correct.
-  const ppO2Drop = (metO2 / loopVol) * (pAmb / (typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325));
+  const ppO2Drop = metO2 / loopVol;
   const ppO2Supply = fO2 * pAmb;
   const cappedDrop = Math.min(ppO2Drop, Math.max(0, ppO2Supply - PSCR_MIN_PPO2));
   const newPpO2 = ppO2Supply - cappedDrop;
@@ -319,8 +320,7 @@ function saturateLinearCCR(tissues, fromDepth, toDepth, t, fO2, fHe, ccr) {
     const p0Amb = depthBar(seg.fromDepth);
     const pEndAmb = depthBar(seg.toDepth);
     const R = (pEndAmb - p0Amb) / segTime;
-    const ascending = seg.toDepth < seg.fromDepth;
-    const endpointDepth = ascending ? seg.toDepth : seg.fromDepth;
+    const endpointDepth = seg.toDepth;
     const segSP = getEffectiveSetpointAtDepth(endpointDepth, cfg, surfP, phase);
     const segCcr = { ...cfg, setpoint: segSP };
     out = out.map((t0, i) => ({

@@ -61,7 +61,7 @@ function runZhlScheduleCore(params) {
     if (_zhlOnLoop) {
       return { fN2: bottomFN2, fHe: bottomFHe, fO2: bottomFO2, label: bottomMixLabel };
     }
-    return getActiveGas(depthM, bottomFN2, decoGases, getPPO2Limit, bottomMixLabel);
+    return getActiveGas(depthM, bottomFN2, bottomFHe, decoGases, getPPO2Limit, bottomMixLabel);
   }
 
   function getPPO2Limit(fO2) {

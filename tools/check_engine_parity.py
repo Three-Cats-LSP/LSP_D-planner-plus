@@ -36,14 +36,82 @@ def extract_function_body(src: str, name: str) -> str:
     if brace < 0:
         return ""
     depth = 0
-    for i in range(brace, len(src)):
+    i = brace
+    in_line_comment = False
+    in_block_comment = False
+    in_single = False
+    in_double = False
+    in_template = False
+    escape = False
+    while i < len(src):
         ch = src[i]
+        nxt = src[i + 1] if i + 1 < len(src) else ""
+        if in_line_comment:
+            if ch == "\n":
+                in_line_comment = False
+            i += 1
+            continue
+        if in_block_comment:
+            if ch == "*" and nxt == "/":
+                in_block_comment = False
+                i += 2
+                continue
+            i += 1
+            continue
+        if in_single:
+            if escape:
+                escape = False
+            elif ch == "\\":
+                escape = True
+            elif ch == "'":
+                in_single = False
+            i += 1
+            continue
+        if in_double:
+            if escape:
+                escape = False
+            elif ch == "\\":
+                escape = True
+            elif ch == '"':
+                in_double = False
+            i += 1
+            continue
+        if in_template:
+            if escape:
+                escape = False
+            elif ch == "\\":
+                escape = True
+            elif ch == "`":
+                in_template = False
+            i += 1
+            continue
+        if ch == "/" and nxt == "/":
+            in_line_comment = True
+            i += 2
+            continue
+        if ch == "/" and nxt == "*":
+            in_block_comment = True
+            i += 2
+            continue
+        if ch == "'":
+            in_single = True
+            i += 1
+            continue
+        if ch == '"':
+            in_double = True
+            i += 1
+            continue
+        if ch == "`":
+            in_template = True
+            i += 1
+            continue
         if ch == "{":
             depth += 1
         elif ch == "}":
             depth -= 1
             if depth == 0:
                 return src[start : i + 1]
+        i += 1
     return ""
 
 
@@ -103,7 +171,11 @@ def main() -> int:
         "enforceMinDecoProfile",
         "ceiling",
         "gfAtDepth",
+        "ndlClearAtDepth",
         "buhNDL",
+        "n2FracFromCustomO2",
+        "n2FracFromPercentages",
+        "validateHypoxicDecoGas",
         "applyEnvironment",
         "defaultEnvironment",
         "setHeHalfTimeMode",

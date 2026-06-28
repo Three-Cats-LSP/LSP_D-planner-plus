@@ -4978,7 +4978,7 @@ if "s.fN2 != null ? s.fN2 : bottomFN2" in js and "s.fN2 || bottomFN2" not in js.
     ok("O2 deco stop: fN2=0 preserved in ceiling walk (issue #93 H-1)")
 else:
     fail("ceiling walk still uses s.fN2 || bottomFN2 falsy-zero fallback (issue #93 H-1)")
-if "function computePSCRFractions(pAmb, fO2, fHe, ccr)" in _ccr_core_src and ("ppO2Drop = (metO2 / loopVol) * (pAmb /" in _ccr_core_src or "cappedDrop = Math.min(ppO2Drop" in _ccr_core_src):
+if "function computePSCRFractions(pAmb, fO2, fHe, ccr)" in _ccr_core_src and ("ppO2Drop = metO2 / loopVol" in _ccr_core_src or "cappedDrop = Math.min(ppO2Drop" in _ccr_core_src):
     ok("zhl-ccr-core computePSCRFractions steady-state Baker formula (issue #93 H-2)")
 else:
     fail("index.html computePSCRFractions still uses cumulative runtime depletion (issue #93 H-2)")
@@ -5302,6 +5302,8 @@ if "decoTime += parseRunMinutes(tr.querySelectorAll('td')[2]" in js.split("funct
     ok("runContingencyScenario uses parseRunMinutes for stop MM:SS decoTime (issue #108 H-1; supersedes #104 M-7)")
 elif "parseStopDisplayTime(tr.querySelectorAll('td')[2]" in js:
     ok("runContingencyScenario uses parseStopDisplayTime for decoTime (issue #104 M-7)")
+elif 'td[data-label="Stop"]' in js.split("function runContingencyScenario", 1)[-1][:2500]:
+    ok("runContingencyScenario reads integer stop minutes from Stop column (issue #127 M-5)")
 else:
     fail("runContingencyScenario still parseFloats MM:SS stop durations (issue #104 M-7)")
 _zwb104 = open(os.path.join(os.path.dirname(__file__), "zhl-worker-bridge.js"), encoding="utf-8").read()
@@ -5400,6 +5402,8 @@ if "parseStopDisplayTime(tr.querySelectorAll('td')[2]" in js.split("function run
     ok("contingency decoTime uses parseStopDisplayTime on stop column (issue #118 H-3; supersedes #108 H-1)")
 elif "decoTime += parseRunMinutes(tr.querySelectorAll('td')[2]" in js.split("function runContingencyScenario", 1)[-1][:2500]:
     ok("contingency decoTime uses parseRunMinutes not parseStopDisplayTime (issue #108 H-1)")
+elif 'td[data-label="Stop"]' in js.split("function runContingencyScenario", 1)[-1][:2500]:
+    ok("runContingencyScenario reads integer stop minutes from Stop column (issue #127 M-5)")
 else:
     fail("runContingencyScenario still accumulates decoTime via wrong parser (issue #108/#118)")
 if "regeneratedRadiiN2" in _vpm106.split("settings._prevBubbleState", 1)[-1][:900] and "regeneratedRadiiHe" in _vpm106.split("settings._prevBubbleState", 1)[-1][:900]:
@@ -5417,7 +5421,7 @@ elif "margin <= 5 ? 'var(--red)'" in js and "margin <= 10 ? 'var(--yellow)'" in 
     ok("UDP statusColor uses red ≤5 / yellow ≤10 (issue #108 M-1)")
 else:
     fail("UDP statusColor still has dead yellow branch at margin ≤5 (issue #108 M-1)")
-if "toMMSS(rt)" in js.split("renderVPMResults", 1)[-1][:10000] and "toMMSS(deco" in js.split("renderVPMResults", 1)[-1][:10000] and "toMMSS(rt * 60)" not in js.split("renderVPMResults", 1)[-1][:10000]:
+if "toMMSS(rt)" in js.split("renderVPMResults", 1)[-1][:20000] and "toMMSS(deco" in js.split("renderVPMResults", 1)[-1][:20000] and "toMMSS(rt * 60)" not in js.split("renderVPMResults", 1)[-1][:20000]:
     ok("VPM plan summary uses toMMSS with minute values (issue #108 M-2 / #110 H-1)")
 else:
     fail("VPM plan summary still double-converts minutes to seconds (issue #110 H-1)")
@@ -5711,7 +5715,7 @@ if "VPM_STOP_CAP" in _113_vpm and "vpmStopCapError" in _113_vpm and "vpmStopCapF
     ok("issue #113 H-1: VPM stop cap aborts with VPM_STOP_CAP error (no silent ascent)")
 else:
     fail("issue #113 H-1: VPM inner stop loop still ascends silently after 999-min cap")
-if "return d > 0 ? d : null;" in _113_ccr.split("function depthAtSetpointCrossing", 1)[-1][:200]:
+if "return d > 0 ? d : null;" in _113_ccr.split("function depthAtSetpointCrossing", 1)[-1][:400]:
     ok("issue #113 H-2: depthAtSetpointCrossing returns null below surface (zhl-ccr-core)")
 else:
     fail("issue #113 H-2: depthAtSetpointCrossing still clamps unreachable crossing to 0")
@@ -5793,7 +5797,7 @@ else:
 # ── Issue #116: residual audit v2.52.00 — 2 HIGH / 1 MEDIUM ──
 _116_regr = open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read()
 if "else if (chk.o2 < 18)" in js.split("function validateDomDecoGases", 1)[-1][:800] or "validateHypoxicDecoGas" in js.split("function validateDomDecoGases", 1)[-1][:800]:
-    ok("issue #116 H-1: hypoxic deco check applies to all gas types (not He-only)")
+    ok("issue #116 H-1: hypoxic deco check applies to nitrox without He (not trimix diluent)")
 else:
     fail("issue #116 H-1: hypoxic deco validation still gated on helium > 0")
 if "VPM_STOP_CAP" in _113_vpm and "return vpmStopCapError" in _113_vpm:
@@ -5890,6 +5894,8 @@ else:
     fail("issue #118 H-2: runInterLevelDecoAscent still calls applyNuclearRegeneration with partial runtime")
 if "parseRunMinutes(tr.querySelectorAll('td')[2]" in js.split("function runContingencyScenario", 1)[-1][:2500]:
     ok("issue #118 H-3: contingency deco time uses parseRunMinutes on stop column (issue #124 H-3)")
+elif 'td[data-label="Stop"]' in js.split("function runContingencyScenario", 1)[-1][:2500]:
+    ok("issue #118 H-3: contingency deco time reads integer Stop column (issue #127 M-5)")
 else:
     fail("issue #118 H-3: runContingencyScenario still parses stop column incorrectly")
 if "SW_SHELL_READY" in _118_sw and "SW_SHELL_READY" in js:
@@ -6101,8 +6107,8 @@ if "pN2: pDry * fN2effDry" in _zhl_ccr and "pHe: pDry * fHeEffDry" in _zhl_ccr:
     ok("issue #123 C-01: ccrLoopGasBelowSetpoint uses dry-basis partial pressures")
 else:
     fail("issue #123 C-01: ccrLoopGasBelowSetpoint still double-scales loop inert partials")
-if "ppO2Drop = (metO2 / loopVol) * (pAmb /" in _zhl_ccr:
-    ok("issue #123 C-02: computePSCRFractions depth-normalises metabolic O2 drop")
+if "ppO2Drop = metO2 / loopVol" in _zhl_ccr:
+    ok("issue #123 C-02: computePSCRFractions uses depth-independent Baker metabolic drop")
 else:
     fail("issue #123 C-02: computePSCRFractions still subtracts dimensionless drop from bar ppO2")
 if "applyExtendedAfterBoyle" in _vpm_core and "state.decoGradientN2[i] *= clampedFactor" in _vpm_core and "state.allowableGradientN2[i] *=" not in _vpm_core.split("function extendedCompensation", 1)[-1][:800]:
@@ -6155,6 +6161,8 @@ else:
     fail("issue #124 H-2: gfAt still divides by zero when shallowGradient first stop equals lastStop")
 if "parseRunMinutes(tr.querySelectorAll" in js.split("function runContingencyScenario", 1)[-1][:2500]:
     ok("issue #124 H-3: runContingencyScenario accumulates deco time as numeric minutes")
+elif 'td[data-label="Stop"]' in js.split("function runContingencyScenario", 1)[-1][:2500]:
+    ok("issue #124 H-3: runContingencyScenario reads integer Stop column for deco minutes")
 else:
     fail("issue #124 H-3: runContingencyScenario still uses parseStopDisplayTime string concat")
 if "typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325" in _zhl_ccr.split("function getEffectivePpo2", 1)[-1][:600]:
@@ -6245,16 +6253,16 @@ else:
     fail("CCR mirror rule: index delegate or bundle missing key zhl-ccr-core function")
 
 if "typeof altSurfaceP !== 'undefined'" in _ccr_src_mirror:
-    _neighbor_guard_fns = ["computePSCRFractions", "getEffectivePpo2"]
+    _neighbor_guard_fns = ["getEffectivePpo2"]
     if all(
         "typeof altSurfaceP" in _ccr_src_mirror.split(f"function {fn}", 1)[-1][:900]
         for fn in _neighbor_guard_fns
     ):
-        ok("neighbor rule: altSurfaceP guard on computePSCRFractions and getEffectivePpo2 (zhl-ccr-core)")
+        ok("neighbor rule: altSurfaceP guard on getEffectivePpo2 (zhl-ccr-core)")
     else:
         fail("neighbor rule: altSurfaceP guard missing on CCR neighbor function")
 else:
-    fail("neighbor rule: computePSCRFractions missing altSurfaceP guard")
+    fail("neighbor rule: getEffectivePpo2 missing altSurfaceP guard")
 
 if "normalizeCCRSettings," in _bundle_mirror and "getEffectivePpo2," in _bundle_mirror:
     ok("ZhlEngineBundle exports CCR API for VPM/index delegates")
@@ -6357,6 +6365,79 @@ if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.00['\"]", app_version_js):
     ok("stable release APP_VERSION is 2.53.00")
 else:
     fail("stable release requires APP_VERSION 2.53.00")
+
+# ── Issue #127: full codebase audit v2.53.00 — 6 HIGH / 7 MEDIUM / 4 LOW ──
+_vpm_core127 = open(os.path.join(os.path.dirname(__file__), "vpm-engine-core.js"), encoding="utf-8").read()
+_worker127 = open(os.path.join(os.path.dirname(__file__), "zhl-schedule-worker.js"), encoding="utf-8").read()
+_parity127 = open(os.path.join(os.path.dirname(__file__), "tools", "check_engine_parity.py"), encoding="utf-8").read()
+if "bottomFHe" in _gas_core_js.split("function getActiveGas", 1)[-1][:600] and "fHe: fHeBottom" in _gas_core_js:
+    ok("issue #127 H-1: getActiveGas fallback preserves bottom helium fraction")
+else:
+    fail("issue #127 H-1: getActiveGas still hardcodes fHe: 0 in fallback")
+if "if (fO2 < -1e-6) return 'ERR'" in _gas_core_js.split("function ppO2Check", 1)[-1][:400]:
+    ok("issue #127 H-2: ppO2Check rejects invalid O2 fraction instead of clamping to zero")
+else:
+    fail("issue #127 H-2: ppO2Check still clamps negative O2 to zero ppO2")
+if "gfAtDepth(" in _physics_core_js.split("function ndlClearAtDepth", 1)[-1][:900]:
+    ok("issue #127 H-3: ndlClearAtDepth uses gfAtDepth with shallowGradient parameter")
+else:
+    fail("issue #127 H-3: ndlClearAtDepth local gfAt ignores shallowGradient")
+if "try {" in js.split("function runContingencyScenario", 1)[-1][:800] and "finally {" in js.split("function runContingencyScenario", 1)[-1][:2500]:
+    ok("issue #127 H-4: runContingencyScenario restores DOM in finally block")
+else:
+    fail("issue #127 H-4: runContingencyScenario missing try/finally DOM restore")
+if "ppO2Drop = metO2 / loopVol" in _ccr_core_src and "* (pAmb /" not in _ccr_core_src.split("function computePSCRFractions", 1)[-1][:500]:
+    ok("issue #127 H-5: computePSCRFractions uses depth-independent Baker ppO2 drop")
+else:
+    fail("issue #127 H-5: computePSCRFractions still scales ppO2 drop by pAmb/altSurfaceP")
+if "applyEnvironment(environment || defaultEnvironment())" in (zhl_bundle_js or "") and "ZhlEngineBundle.applyEnvironment" in _worker127:
+    ok("issue #127 H-6: worker and calculate() apply environment before schedule run")
+else:
+    fail("issue #127 H-6: altitude environment not applied in worker path")
+if "const margin = effNDL - bt" in js.split("effNDLCap", 1)[-1][:200]:
+    ok("issue #127 M-1: UDP margin uses uncapped effNDL")
+else:
+    fail("issue #127 M-1: UDP margin still computed from display-capped NDL")
+if all(f"'{f}'" in js.split("DECO_FIELDS:", 1)[-1][:2500] for f in ("siD1Depth", "siD1BT", "siD2Depth", "siD2BT")):
+    ok("issue #127 M-2: surface-interval sliders in DECO_FIELDS for persistence")
+else:
+    fail("issue #127 M-2: siD1/siD2 sliders missing from DECO_FIELDS")
+if "endpointDepth = seg.toDepth" in _ccr_core_src.split("function saturateLinearCCR", 1)[-1][:900]:
+    ok("issue #127 M-3: saturateLinearCCR uses destination depth for setpoint on descent")
+else:
+    fail("issue #127 M-3: saturateLinearCCR still uses shallow endpoint on descent")
+if "heVal <= 0 && o2 < 18" in _gas_core_js.split("function validateHypoxicDecoGas", 1)[-1][:300]:
+    ok("issue #127 M-4: validateHypoxicDecoGas allows hypoxic trimix (He > 0)")
+else:
+    fail("issue #127 M-4: validateHypoxicDecoGas still blocks all O2 < 18% gases")
+if 'td[data-label="Stop"]' in js.split("function runContingencyScenario", 1)[-1][:2500]:
+    ok("issue #127 M-5: contingency decoTime reads Stop column duration")
+else:
+    fail("issue #127 M-5: contingency decoTime still parses wrong table column")
+if "vpmStopCapError(stopDepth, partialPlan)" in _vpm_core127 and "result.code === 'VPM_STOP_CAP' && result.plan" in js:
+    ok("issue #127 M-6: VPM stop cap returns partial plan for UI warning")
+else:
+    fail("issue #127 M-6: vpmStopCapError still discards partial plan")
+if all(n in _parity127 for n in ("ndlClearAtDepth", "n2FracFromCustomO2", "n2FracFromPercentages", "validateHypoxicDecoGas")):
+    ok("issue #127 M-7: check_engine_parity api_exports includes all dedup helpers")
+else:
+    fail("issue #127 M-7: parity checker missing dedup API export names")
+if "adjustedCritRadiiHe.length === NC" in _vpm_core127.split("bubbleCarryApplied", 1)[-1][:800]:
+    ok("issue #127 L-1: VPM bubble carry guard checks adjustedCritRadiiHe length")
+else:
+    fail("issue #127 L-1: VPM bubble carry missing adjustedCritRadiiHe length guard")
+if "surfP != null ? surfP : altSurfaceP" in _ccr_core_src.split("function depthAtSetpointCrossing", 1)[-1][:200]:
+    ok("issue #127 L-2: CCR setpoint crossing uses surfP != null guard")
+else:
+    fail("issue #127 L-2: surfP || altSurfaceP still treats zero as missing")
+if "VPM_CRITICAL_RADIUS_FACTOR[interIdx]" in _vpm_core127.split("function runInterLevelDecoAscent", 1)[-1][:1200]:
+    ok("issue #127 L-3: inter-level off-loop conservatism relaxes regenerated radii")
+else:
+    fail("issue #127 L-3: interLevelConservatism still no-op in runInterLevelDecoAscent")
+if "in_template" in _parity127 and "in_block_comment" in _parity127:
+    ok("issue #127 L-4: check_engine_parity extract_function_body skips string literals")
+else:
+    fail("issue #127 L-4: parity extractor still blind to braces in strings")
 
 print("=" * 60)
 

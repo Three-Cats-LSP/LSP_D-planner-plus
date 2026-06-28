@@ -7,6 +7,8 @@ self.onmessage = function (e) {
   const msg = e.data || {};
   const { id, levels, decoGases, settings, profileSplit, environment } = msg;
   try {
+    const env = environment || ZhlEngineBundle.defaultEnvironment();
+    ZhlEngineBundle.applyEnvironment(env);
     const result = ZhlEngineBundle.calculate(
       levels,
       decoGases,

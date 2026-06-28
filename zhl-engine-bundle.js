@@ -155,36 +155,30 @@ function gfAtDepth(depthM, gfL, gfH, firstStopDepth, lastStop, shallowGradient) 
   return Math.min(gfH, Math.max(gfL, gf));
 }
 
-function ndlClearAtDepth(tissues, depthM, gfL, gfH, lastStop, decoStep) {
+function ndlClearAtDepth(tissues, depthM, gfL, gfH, lastStop, decoStep, shallowGradient) {
   const ceilL = ceiling(tissues, gfL);
   if (ceilL <= 0) return true;
   const firstStop = Math.max(lastStop, Math.ceil(ceilL / decoStep) * decoStep);
-  const gfAt = (d) => {
-    if (firstStop <= lastStop) return gfH;
-    if (d >= firstStop) return gfL;
-    const gf = gfL + (gfH - gfL) * (firstStop - d) / (firstStop - lastStop);
-    return Math.min(gfH, Math.max(gfL, gf));
-  };
   const depths = [depthM];
   for (let d = firstStop; d >= 0; d -= decoStep) {
     if (d < depthM - 1e-6) depths.push(d);
   }
   if (depths[depths.length - 1] !== 0) depths.push(0);
   for (const d of depths) {
-    const ceil = ceiling(tissues, gfAt(d));
+    const ceil = ceiling(tissues, gfAtDepth(d, gfL, gfH, firstStop, lastStop, !!shallowGradient));
     if (ceil > d + 0.01) return false;
   }
   return true;
 }
 
-function buhNDL(depthM, fN2, gfLow, gfHigh, fHe, lastStop, decoStep) {
+function buhNDL(depthM, fN2, gfLow, gfHigh, fHe, lastStop, decoStep, shallowGradient) {
   const fH = fHe || 0;
   const gfL = gfLow / 100;
   const gfH = gfHigh / 100;
   let tissues = initTissues();
   for (let t = 0; t <= 500; t++) {
     const next = saturate(tissues, depthM, 1, fN2, fH);
-    if (ndlClearAtDepth(next, depthM, gfL, gfH, lastStop, decoStep)) {
+    if (ndlClearAtDepth(next, depthM, gfL, gfH, lastStop, decoStep, shallowGradient)) {
       tissues = next;
       continue;
     }
@@ -300,7 +294,8 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
   return result;
 }
 
-function getActiveGas(curDepthM, bottomFN2, decoGases, getPPO2LimitFn, bottomLabel) {
+function getActiveGas(curDepthM, bottomFN2, bottomFHe, decoGases, getPPO2LimitFn, bottomLabel) {
+  const fHeBottom = bottomFHe || 0;
   let best = null;
   let bestFO2 = -1;
   for (const dg of decoGases) {
@@ -317,12 +312,14 @@ function getActiveGas(curDepthM, bottomFN2, decoGases, getPPO2LimitFn, bottomLab
       bestFO2 = fO2;
     }
   }
-  return best || { fN2: bottomFN2, fHe: 0, label: bottomLabel || 'Bottom' };
+  return best || { fN2: bottomFN2, fHe: fHeBottom, label: bottomLabel || 'Bottom' };
 }
 
 function ppO2Check(depthM, fN2, fHe, opts) {
   const fHeVal = fHe || 0;
-  const o2frac = Math.max(0, 1 - fN2 - fHeVal);
+  const fO2 = 1 - fN2 - fHeVal;
+  if (fO2 < -1e-6) return 'ERR';
+  const o2frac = Math.max(0, fO2);
   const pAmb = altSurfaceP + depthM * BAR_PER_METRE;
   if (opts && opts.onLoop && opts.ccr && isRebreatherCircuit(opts.ccr.circuit) && !opts.ccr.bailout) {
     const fO2 = opts.fO2 != null ? opts.fO2 : o2frac;
@@ -346,7 +343,8 @@ function n2FracFromPercentages(o2pct, hepct) {
 }
 
 function validateHypoxicDecoGas(o2, he, field) {
-  if (o2 < 18) {
+  const heVal = he || 0;
+  if (heVal <= 0 && o2 < 18) {
     const label = String(field).replace(/^dg/, '');
     return {
       ok: false,
@@ -408,7 +406,8 @@ function loopMixLabelForCore(diluentLabel, ccr) {
 
 function depthAtSetpointCrossing(setpoint, surfP) {
   if (!setpoint || setpoint <= 0) return null;
-  const d = (setpoint + WATER_VAPOR - (surfP || altSurfaceP)) / BAR_PER_METRE;
+  const sp = surfP != null ? surfP : altSurfaceP;
+  const d = (setpoint + WATER_VAPOR - sp) / BAR_PER_METRE;
   return d > 0 ? d : null;
 }
 
@@ -421,7 +420,7 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
   if (phase === 'descent') return descSP;
   if (phase === 'bottom') return bottomSP;
   if (phase === 'deco' || phase === 'ascent') return decoSP;
-  const spSurf = surfP || altSurfaceP;
+  const spSurf = surfP != null ? surfP : altSurfaceP;
   const descCross = depthAtSetpointCrossing(descSP, spSurf);
   const bottomCross = depthAtSetpointCrossing(bottomSP, spSurf);
   const decoCross = depthAtSetpointCrossing(decoSP, spSurf);
@@ -476,7 +475,7 @@ function computePSCRFractions(pAmb, fO2, fHe, ccr) {
   // Previous model subtracted cumulative dive runtime × VO2 from a fixed loop volume,
   // which drove loop O2 to near-zero after a few minutes, zeroing N2 loading for the
   // rest of the dive. The steady-state formula is time-independent and depth-correct.
-  const ppO2Drop = (metO2 / loopVol) * (pAmb / (typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325));
+  const ppO2Drop = metO2 / loopVol;
   const ppO2Supply = fO2 * pAmb;
   const cappedDrop = Math.min(ppO2Drop, Math.max(0, ppO2Supply - PSCR_MIN_PPO2));
   const newPpO2 = ppO2Supply - cappedDrop;
@@ -676,8 +675,7 @@ function saturateLinearCCR(tissues, fromDepth, toDepth, t, fO2, fHe, ccr) {
     const p0Amb = depthBar(seg.fromDepth);
     const pEndAmb = depthBar(seg.toDepth);
     const R = (pEndAmb - p0Amb) / segTime;
-    const ascending = seg.toDepth < seg.fromDepth;
-    const endpointDepth = ascending ? seg.toDepth : seg.fromDepth;
+    const endpointDepth = seg.toDepth;
     const segSP = getEffectiveSetpointAtDepth(endpointDepth, cfg, surfP, phase);
     const segCcr = { ...cfg, setpoint: segSP };
     out = out.map((t0, i) => ({
@@ -791,7 +789,7 @@ function runZhlScheduleCore(params) {
     if (_zhlOnLoop) {
       return { fN2: bottomFN2, fHe: bottomFHe, fO2: bottomFO2, label: bottomMixLabel };
     }
-    return getActiveGas(depthM, bottomFN2, decoGases, getPPO2Limit, bottomMixLabel);
+    return getActiveGas(depthM, bottomFN2, bottomFHe, decoGases, getPPO2Limit, bottomMixLabel);
   }
 
   function getPPO2Limit(fO2) {
@@ -1541,6 +1539,7 @@ function runZhlScheduleCore(params) {
   }
 
   function calculate(levels, decoGases, settings, profileSplit, environment) {
+    applyEnvironment(environment || defaultEnvironment());
     const s = settings || {};
     const isMetric = s.metric !== false;
     const level = levels[0];
