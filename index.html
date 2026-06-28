@@ -7496,7 +7496,7 @@ function validateDomDecoGases() {
     if (!g) continue;
     const chk = validateGasFractionsPct(g.o2, g.he, `dg${idx}`);
     if (!chk.ok) errors.push(chk);
-    else if ((g.he || 0) > 0 && chk.o2 < 18) {
+    else if (chk.o2 < 18) {
       errors.push({
         ok: false,
         code: 'HYPOXIC_DECO_GAS',
@@ -8204,7 +8204,7 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
     return;
   }
 
-  if (result.error) {
+  if (result.error || result.code === 'VPM_STOP_CAP') {
     const tbody = document.getElementById('decoTableBody');
     if (tbody) tbody.innerHTML = `<tr><td colspan="8" style="color:var(--red);padding:12px;">VPM Error: ${result.error}</td></tr>`;
     return;

@@ -924,6 +924,21 @@ const VPMEngine = (() => {
         let runtime = 0;
         let bottomPhaseRuntime = 0;
         let currentDepth = 0;
+        let vpmStopCapFailedDepth = null;
+        const vpmMaxStopMin = (settings._vpmMaxStopMin != null && Number.isFinite(settings._vpmMaxStopMin))
+            ? Math.max(0, settings._vpmMaxStopMin) : 999;
+        function vpmStopCapError(stopDepth) {
+            return {
+                error: `VPM stop at ${stopDepth} m exceeded safety limit without clearance — schedule invalid`,
+                code: 'VPM_STOP_CAP',
+                stops: [],
+                plan: [],
+                totalRuntime: 0,
+                totalTime: 0,
+                finalTissues: null,
+                finalBubbleState: null,
+            };
+        }
         let totalOTU = settings._preOTU || 0;  // carry OTU from previous dive if repetitive
         let totalCNS = settings._preCNS || 0;  // carry CNS (decayed) from previous dive if repetitive
         function addExposureToContext(ctx, fromDepth, toDepth, time) {
@@ -1003,6 +1018,10 @@ const VPMEngine = (() => {
             return segTime;
         }
         function runRoundedDecoStop(ctx, stopDepth, nextStop) {
+            if (settings._vpmTestForceStopCap) {
+                vpmStopCapFailedDepth = stopDepth;
+                return;
+            }
             settings._scrRuntimeMin = ctx.runtime;
             ctx.currentSP = vpmSetpointAtDepth(stopDepth, 'deco', ctx.forcedOCMode, settings);
             let effectiveMinStop = (firstStop30sec && stopDepth === ctx.firstStopDepth) ? 0.5 : minStopTime;
@@ -1038,6 +1057,14 @@ const VPMEngine = (() => {
                 segmentTime = effectiveMinStop;
                 totalStopTime += effectiveMinStop;
                 ctx.runtime += effectiveMinStop;
+            }
+            const finalCeiling = getVPMCeiling(ctx.state, settings);
+            const clearToleranceFinal = (ctx.continuationFinalPhase && stopDepth <= 6)
+                ? (nextStop <= 0 ? 0.35 : 0.1)
+                : 1e-9;
+            if (finalCeiling > nextStop + clearToleranceFinal && totalStopTime >= vpmMaxStopMin) {
+                vpmStopCapFailedDepth = stopDepth;
+                return;
             }
             settings._scrRuntimeMin = ctx.runtime;
             const ppO2Stop = vpmAccumPpo2(pAmb, ctx.currentSP, ctx.currentO2, ctx.currentHe, settings, stopDepth, ctxOffLoop(ctx));
@@ -1114,6 +1141,7 @@ const VPMEngine = (() => {
                     boyleLawCompensation(ctx.state, phaseFirstStopDepth, stopDepth + stepSize, stepSize, settings);
                 }
                 runRoundedDecoStop(ctx, stopDepth, nextStop);
+                if (vpmStopCapFailedDepth != null) return ctx;
                 if (nextStop <= targetDepth) {
                     const segTime = loadTissuesLinear(
                         ctx.state, stopDepth, targetDepth, decoAscentRate,
@@ -1257,6 +1285,7 @@ const VPMEngine = (() => {
                     boyleLawCompensation(ctx.state, phaseFirstStopDepth, stopDepth + stepSize, stepSize, settings);
                 }
                 runRoundedDecoStop(ctx, stopDepth, nextStop);
+                if (vpmStopCapFailedDepth != null) return ctx;
                 if (nextStop <= 0) {
                     runAscentSegment(ctx, 0, surfaceAscentRate, 'deco');
                     break;
@@ -1386,12 +1415,15 @@ const VPMEngine = (() => {
                 }
                 const effectiveMinStop = (firstStop30sec && stopDepth === firstStopDepth) ? 0.5 : minStopTime;
                 let stopTime = 0;
-                while (!isClearToAscendVPM(state, nextStopClamped, firstStopDepth, model, settings) && stopTime < 999) {
+                while (!isClearToAscendVPM(state, nextStopClamped, firstStopDepth, model, settings) && stopTime < vpmMaxStopMin) {
                     settings._scrRuntimeMin = runtime;
                     loadTissuesConstant(state, stopDepth, effectiveMinStop, curO2, curHe, settings, curSP);
                     stopTime += effectiveMinStop;
                 }
-                const vpmStopCapHit = !isClearToAscendVPM(state, nextStopClamped, firstStopDepth, model, settings);
+                if (settings._vpmTestForceStopCap || !isClearToAscendVPM(state, nextStopClamped, firstStopDepth, model, settings)) {
+                    vpmStopCapFailedDepth = stopDepth;
+                    return null;
+                }
                 if (stopTime < effectiveMinStop) stopTime = effectiveMinStop;
                 runtime += stopTime;
                 const pAmbStop = getAmbientPressure(stopDepth, settings);
@@ -1404,8 +1436,7 @@ const VPMEngine = (() => {
                     gas: curGasLabel,
                     o2: Math.round(curO2 * 100),
                     he: Math.round(curHe * 100),
-                    setpoint: curSP > 0 ? curSP : 0,
-                    vpmStopCapHit: vpmStopCapHit || undefined
+                    setpoint: curSP > 0 ? curSP : 0
                 });
                 if (nextStopClamped < stopDepth) {
                     settings._scrRuntimeMin = runtime;
@@ -1459,7 +1490,9 @@ const VPMEngine = (() => {
                 });
                 curO2 = o2Frac; curHe = heFrac; curGasLabel = `${level.o2}/${level.he}`; curSP = sp;
             } else if (depth < currentDepth) {
-                runInterLevelDecoAscent(depth);
+                if (runInterLevelDecoAscent(depth) === null) {
+                    return vpmStopCapError(vpmStopCapFailedDepth != null ? vpmStopCapFailedDepth : depth);
+                }
                 curO2 = o2Frac; curHe = heFrac; curGasLabel = `${level.o2}/${level.he}`; curSP = sp;
             }
             const travelRate = depth < currentDepth ? ascentRate : descentRate;
@@ -1609,6 +1642,7 @@ const VPMEngine = (() => {
                     null,
                     forcedOCMode
                 ).ctx;
+                if (vpmStopCapFailedDepth != null) return vpmStopCapError(vpmStopCapFailedDepth);
             } else {
                 trialCtx = makeScheduleContext(
                     trialBaseState,
@@ -1623,6 +1657,7 @@ const VPMEngine = (() => {
                     null
                 );
                 runStopSequence(trialCtx, firstStopDepth, false);
+                if (vpmStopCapFailedDepth != null) return vpmStopCapError(vpmStopCapFailedDepth);
             }
             const decoPhaseVolumeTime = trialCtx.runtime - decoPhaseRuntimeOrigin;
             calcSurfacePhaseVolumeTime(trialCtx.state, settings);
@@ -1667,15 +1702,18 @@ const VPMEngine = (() => {
                         plan
                     );
                     runStopSequence(finalCtx, firstStopDepth, true);
+                    if (vpmStopCapFailedDepth != null) return vpmStopCapError(vpmStopCapFailedDepth);
                 }
                 runtime = finalCtx.runtime;
                 totalOTU = finalCtx.totalOTU;
                 totalCNS = finalCtx.totalCNS;
                 restoreTissues(state, finalCtx.state.tissues);
+                if (vpmStopCapFailedDepth != null) return vpmStopCapError(vpmStopCapFailedDepth);
                 return buildResult(plan, runtime, totalOTU, totalCNS, settings, state, decoZoneStart);
             }
             calcCriticalVolume(state, decoPhaseVolumeTime);
         }
+        if (vpmStopCapFailedDepth != null) return vpmStopCapError(vpmStopCapFailedDepth);
         return buildResult(plan, runtime, totalOTU, totalCNS, settings, state, decoZoneStart);
     }
     function buildResult(plan, runtime, totalOTU, totalCNS, settings, state, decoZoneStart) {

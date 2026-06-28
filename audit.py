@@ -5652,8 +5652,8 @@ _113_zhl = open(os.path.join(os.path.dirname(__file__), "zhl-schedule-core.js"),
 _113_bridge = open(os.path.join(os.path.dirname(__file__), "zhl-worker-bridge.js"), encoding="utf-8").read()
 _113_sw = open(os.path.join(os.path.dirname(__file__), "sw.js"), encoding="utf-8").read()
 _113_regr = open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read()
-if "vpmStopCapHit" in _113_vpm and "vpmStopCapHit" in _113_vpm_b:
-    ok("issue #113 H-1: VPM stop loop sets vpmStopCapHit when 999-min cap reached")
+if "VPM_STOP_CAP" in _113_vpm and "vpmStopCapError" in _113_vpm and "vpmStopCapFailedDepth" in _113_vpm:
+    ok("issue #113 H-1: VPM stop cap aborts with VPM_STOP_CAP error (no silent ascent)")
 else:
     fail("issue #113 H-1: VPM inner stop loop still ascends silently after 999-min cap")
 if "return d > 0 ? d : null;" in _113_ccr.split("function depthAtSetpointCrossing", 1)[-1][:200]:
@@ -5669,7 +5669,7 @@ if "descCross == null && bottomCross != null" in _113_ccr and "descCross == null
 else:
     fail("issue #113 H-2: getEffectiveSetpointAtDepth shallow zone still forces decoSP")
 if "HYPOXIC_DECO_GAS" in js.split("function validateDomDecoGases", 1)[-1][:800]:
-    ok("issue #113 H-3: validateDomDecoGases rejects hypoxic trimix deco gases")
+    ok("issue #113 H-3: validateDomDecoGases rejects hypoxic deco gases")
 else:
     fail("issue #113 H-3: deco gas validation still accepts O2 < 18% trimix")
 if "p.timer !== timer" in _113_bridge and "nextId = 1" not in _113_bridge.split("function handleWorkerFailure", 1)[-1][:400]:
@@ -5701,8 +5701,8 @@ if "syncContDepthLabels" in js.split("loadAltitudeFromStorage();", 1)[-1][:200] 
     ok("issue #113 M-5: syncContDepthLabels on restore and DOMContentLoaded")
 else:
     fail("issue #113 M-5: contingency depth labels not synced at startup")
-if "if (ok > 0) self.skipWaiting()" in _113_sw:
-    ok("issue #113 M-6: sw.js skipWaiting only after at least one precache success")
+if "REQUIRED_PRECACHE.every" in _113_sw and "r.value.ok" in _113_sw:
+    ok("issue #113 M-6: sw.js skipWaiting only after required shell precache succeeds")
 else:
     fail("issue #113 M-6: sw.js still calls skipWaiting when all precache fails")
 if "Math.max(0, (100 - o2pct) / 100)" in js.split("function getN2Frac", 1)[-1][:500]:
@@ -5729,6 +5729,29 @@ if "issue113" in _113_regr:
     ok("issue #113: engine regression covers setpoint / deco-gas / N2 fixes")
 else:
     fail("issue #113: engine regression missing #113 coverage")
+
+# ── Issue #116: residual audit v2.52.00 — 2 HIGH / 1 MEDIUM ──
+_116_regr = open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read()
+if "else if (chk.o2 < 18)" in js.split("function validateDomDecoGases", 1)[-1][:800]:
+    ok("issue #116 H-1: hypoxic deco check applies to all gas types (not He-only)")
+else:
+    fail("issue #116 H-1: hypoxic deco validation still gated on helium > 0")
+if "VPM_STOP_CAP" in _113_vpm and "return vpmStopCapError" in _113_vpm:
+    ok("issue #116 H-2: VPM stop cap returns fatal VPM_STOP_CAP error")
+else:
+    fail("issue #116 H-2: VPM stop cap still treated as valid plan segment")
+if "result.code === 'VPM_STOP_CAP'" in js and "function runVPMSchedule" in js:
+    ok("issue #116 H-2: UI blocks render on VPM_STOP_CAP")
+else:
+    fail("issue #116 H-2: UI still renders VPM cap-hit plans")
+if "REQUIRED_PRECACHE" in _113_sw and ".value.ok" in _113_sw.split("REQUIRED_PRECACHE", 1)[-1][:1200]:
+    ok("issue #116 M-1: SW counts only confirmed cache.add successes")
+else:
+    fail("issue #116 M-1: SW still treats caught precache failures as successes")
+if "issue116" in _116_regr:
+    ok("issue #116: engine regression covers custom hypoxic deco + VPM cap path")
+else:
+    fail("issue #116: engine regression missing #116 coverage")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):

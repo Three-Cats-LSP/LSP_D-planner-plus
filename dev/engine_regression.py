@@ -357,11 +357,35 @@ ENGINE_SUITE_JS = """
     sel.value = 'trimix';
     o2El.value = '10';
     heEl.value = '60';
-    const bad = validateDomDecoGases();
+    const badTrimix = validateDomDecoGases();
     sel.value = prev.mix;
     o2El.value = prev.o2;
     heEl.value = prev.he;
+    return { ok: !!(badTrimix && !badTrimix.ok && badTrimix.errors.some(e => e.code === 'HYPOXIC_DECO_GAS')) };
+  })();
+
+  out.sections.issue116HypoxicCustomDeco = (() => {
+    if (typeof validateDomDecoGases !== 'function') return { ok: false };
+    const sel = document.getElementById('dg1Mix');
+    const o2El = document.getElementById('dg1CustomO2');
+    if (!sel || !o2El) return { ok: false };
+    const prev = { mix: sel.value, o2: o2El.value };
+    sel.value = 'custom';
+    o2El.value = '10';
+    const bad = validateDomDecoGases();
+    sel.value = prev.mix;
+    o2El.value = prev.o2;
     return { ok: !!(bad && !bad.ok && bad.errors.some(e => e.code === 'HYPOXIC_DECO_GAS')) };
+  })();
+
+  out.sections.issue116VpmStopCap = (() => {
+    const ml = [{ depth: 60, time: 40, o2: 18, he: 45 }, { depth: 30, time: 10, o2: 21, he: 35 }];
+    const r = vpm(ml, [{ o2: 50, he: 0, mod: 0 }], { _vpmMaxStopMin: 0, _vpmTestForceStopCap: true }, 'VPMB');
+    return {
+      ok: !!(r && r.code === 'VPM_STOP_CAP' && r.error && !(r.plan || []).length && r.finalTissues == null),
+      code: r && r.code,
+      planLen: (r && r.plan || []).length,
+    };
   })();
 
   out.sections.issue113NuclearRegen = (() => {
@@ -623,6 +647,10 @@ def run_suite(page) -> dict:
     assert_true(i113n.get("ok"), "getN2Frac custom clamps O2>100 to fN2=0 (issue #113 M-7)", str(i113n))
     i113h = s.get("issue113HypoxicDeco", {})
     assert_true(i113h.get("ok"), "validateDomDecoGases rejects hypoxic trimix deco (issue #113 H-3)", str(i113h))
+    i116h = s.get("issue116HypoxicCustomDeco", {})
+    assert_true(i116h.get("ok"), "validateDomDecoGases rejects custom 10% O2 deco (issue #116 H-1)", str(i116h))
+    i116v = s.get("issue116VpmStopCap", {})
+    assert_true(i116v.get("ok"), "VPM stop cap returns VPM_STOP_CAP with empty plan (issue #116 H-2)", str(i116v))
     i113r = s.get("issue113NuclearRegen", {})
     assert_true(i113r.get("ok"), "VPM ML inter-level deco excludes deco from nuclear regen path (issue #113 M-2)", str(i113r))
 

@@ -68,17 +68,34 @@ const PRECACHE_ASSETS = [
   APP_BASE + 'icon-512.png',
 ];
 
+const REQUIRED_PRECACHE = [
+  OFFLINE_INDEX,
+  APP_BASE + 'app-version.js',
+  APP_BASE + 'zhl-engine-bundle.js',
+  APP_BASE + 'vpm-engine-bundle.js',
+  APP_BASE + 'zhl-worker-bridge.js',
+];
+
 // Install — skip waiting immediately so new SW takes over fast
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_VERSION)
       .then(cache => Promise.allSettled(PRECACHE_ASSETS.map(url =>
-        cache.add(url).catch(err => console.warn('[SW] precache skip:', url, err))
+        cache.add(url)
+          .then(() => ({ url, ok: true }))
+          .catch(err => {
+            console.warn('[SW] precache skip:', url, err);
+            return { url, ok: false };
+          })
       )))
       .then(results => {
-        const ok = results.filter(r => r.status === 'fulfilled').length;
-        if (ok > 0) self.skipWaiting();
-        else console.error('[SW] precache failed — keeping prior cache until retry');
+        const succeeded = new Set();
+        for (const r of results) {
+          if (r.status === 'fulfilled' && r.value && r.value.ok) succeeded.add(r.value.url);
+        }
+        const shellReady = REQUIRED_PRECACHE.every(u => succeeded.has(u));
+        if (shellReady) self.skipWaiting();
+        else console.error('[SW] required shell precache incomplete — keeping prior cache until retry');
       })
       .catch(err => console.error('[SW] install failed:', err))
   );
