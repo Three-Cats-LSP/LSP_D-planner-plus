@@ -49,7 +49,8 @@ const VPMEngine = (() => {
     const GAMMA_C = 0.257;           
     const INITIAL_RADIUS_N2 = 0.55e-6; 
     const INITIAL_RADIUS_He = 0.45e-6; 
-    const REGEN_TIME_MIN = 20160.0;      
+    const REGEN_TIME_MIN = 20160.0;
+    const REGEN_TIME = REGEN_TIME_MIN;
     function getWaterVaporPressure(settings) {
         return (settings && settings.waterVapor != null) ? settings.waterVapor : 0.0627;
     }
@@ -184,7 +185,7 @@ const VPMEngine = (() => {
                 && settings._prevBubbleState.regeneratedRadiiHe
                 && settings._prevBubbleState.regeneratedRadiiHe.length === NC) {
             const si = Math.max(0, settings._surfaceInterval != null ? settings._surfaceInterval : 0);
-            const regenFactor = Math.exp(-si / REGEN_TIME_MIN);
+            const regenFactor = Math.exp(-si / REGEN_TIME);
             const pb = settings._prevBubbleState;
             const prevAltFactor = (pb._altFactor != null && pb._altFactor > 0) ? pb._altFactor : altFactor;
             for (let i = 0; i < NC; i++) {
@@ -1189,16 +1190,14 @@ const VPMEngine = (() => {
             return ctx;
         }
         function appendLevelHold(ctx, level) {
-            if (level.oc) {
-                ctx.forcedOCMode = true;
-                maybeSwitchDecoGas(ctx, ctx.currentDepth);
-            }
+            if (level.oc) ctx.forcedOCMode = true;
             const nextLevelOffLoop = isCCR && !!(level.oc || level.scr);
+            ctx.currentSP = (ctx.forcedOCMode || nextLevelOffLoop) ? 0 : getEffectiveSetpoint(level, isCCR, settings, level.depth, 'bottom');
+            if (level.oc) maybeSwitchDecoGas(ctx, ctx.currentDepth);
             ctx.currentDepth = level.depth;
             ctx.currentO2 = level.o2 / 100;
             ctx.currentHe = level.he / 100;
             ctx.currentGasLabel = `${level.o2}/${level.he}`;
-            ctx.currentSP = (ctx.forcedOCMode || nextLevelOffLoop) ? 0 : getEffectiveSetpoint(level, isCCR, settings, level.depth, 'bottom');
             if (level.time <= 0) return;
             settings._scrRuntimeMin = ctx.runtime;
             loadTissuesConstant(ctx.state, level.depth, level.time, ctx.currentO2, ctx.currentHe, settings, ctx.currentSP);
@@ -1500,8 +1499,13 @@ const VPMEngine = (() => {
             const time = level.time;
             const o2Frac = level.o2 / 100;
             const heFrac = level.he / 100;
+            if (level.oc) forcedOCMode = true;
+            const nextLevelOffLoop = isCCR && !!(level.oc || level.scr);
+            const sp = (forcedOCMode || nextLevelOffLoop) ? 0 : getEffectiveSetpoint(
+                level, isCCR, settings, depth, depth > currentDepth ? 'descent' : 'bottom');
+            const bottomSp = (forcedOCMode || nextLevelOffLoop) ? 0 : getEffectiveSetpoint(
+                level, isCCR, settings, depth, 'bottom');
             if (level.oc) {
-                forcedOCMode = true;
                 const decoGas = selectDecoGas(currentDepth, normalizedDecoGases, ppO2Deco, settings);
                 if (decoGas) {
                     curO2 = decoGas.o2;
@@ -1510,11 +1514,6 @@ const VPMEngine = (() => {
                     curSP = 0;
                 }
             }
-            const nextLevelOffLoop = isCCR && !!(level.oc || level.scr);
-            const sp = (forcedOCMode || nextLevelOffLoop) ? 0 : getEffectiveSetpoint(
-                level, isCCR, settings, depth, depth > currentDepth ? 'descent' : 'bottom');
-            const bottomSp = (forcedOCMode || nextLevelOffLoop) ? 0 : getEffectiveSetpoint(
-                level, isCCR, settings, depth, 'bottom');
             if (depth > currentDepth) {
                 settings._scrRuntimeMin = runtime;
                 const descTime = loadTissuesLinear(state, currentDepth, depth, descentRate, o2Frac, heFrac, settings, sp);

@@ -225,13 +225,14 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
     if (pDry >= bottomSP) return bottomSP;
     return descSP;
   }
-  const deepestCross = [descCross, bottomCross, decoCross].filter(d => d != null);
-  if (deepestCross.length === 0) {
+  const crossDepths = [descCross, bottomCross, decoCross].filter(d => d != null);
+  if (crossDepths.length === 0) {
     if (pDry >= decoSP) return decoSP;
     if (pDry >= bottomSP) return bottomSP;
     return descSP;
   }
-  if (depthM > Math.max(...deepestCross)) return bottomSP;
+  const deepestCross = Math.max(...crossDepths);
+  if (depthM > deepestCross) return bottomSP;
   if (descCross != null && depthM <= descCross) {
     if (pDry >= bottomSP + 0.005) return bottomSP;
     return descSP;

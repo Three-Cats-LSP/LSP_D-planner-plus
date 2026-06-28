@@ -4361,7 +4361,7 @@ if re.search(r"limits = \{6:720.*17:45\}", js) and "Math.min(lo + 1, 17)" in js.
 else:
     fail("segCNSfrac CNS limits table missing key 17 / hi clamp (issue #55 F2)")
 
-if "rowDisplayPpo2(travelMidM, travelInfoRow.fN2, travelInfoRow.fHe)" in js:
+if "rowDisplayPpo2(travelMidM, travelInfoRow.fN2, travelInfoRow.fHe" in js:
     ok("travel-gas descent CNS passes fHe fraction (issue #55 F3)")
 else:
     fail("travel-gas descent rowDisplayPpo2 still hardcodes fHe=0 (issue #55 F3)")
