@@ -634,6 +634,27 @@ ENGINE_SUITE_JS = """
     };
   })();
 
+  // ── E10d: issue #124 audit fixes ───────────────────────────────────────
+  out.sections.issue124 = (() => {
+    const tissues = Array.from({ length: 16 }, () => ({ pN2: 1.0, pHe: 0 }));
+    const ceilZero = typeof ceiling === 'function' ? ceiling(tissues, 0) : null;
+    const h1Ok = ceilZero === 0;
+    const parseMin = typeof parseRunMinutes === 'function'
+      ? parseRunMinutes('3:30') : NaN;
+    const h3Ok = Math.abs(parseMin - 3.5) < 0.01;
+    const pscr = typeof computePSCRFractions === 'function'
+      ? computePSCRFractions(1.01325, 0.5, 0, { circuit: 'pSCR', scrLoopVolume: 7, scrMetabolicO2: 1.5 }) : null;
+    const h5Ok = pscr && pscr.fO2 > 0 && pscr.fO2 <= 0.999;
+    const vpmCapNote = !!document.getElementById('vpmStopCapNote');
+    const l1Ok = vpmCapNote;
+    const syncUi = typeof syncDecoGasCardUi === 'function';
+    const m3Ok = syncUi;
+    return {
+      h1Ok, h3Ok, h5Ok, l1Ok, m3Ok,
+      ok: h1Ok && h3Ok && h5Ok && l1Ok && m3Ok,
+    };
+  })();
+
   // ── E11: issue #112 planner BT vs descent validation ───────────────────
   out.sections.issue112PlannerBt = (() => {
     const depthEl = document.getElementById('depth');
@@ -905,6 +926,8 @@ def run_suite(page) -> dict:
     assert_true(i122r.get("ok"), "deco card IDs reuse slots 3–8 and dg8 values persist (issue #122 ID reuse)", str(i122r))
     i123 = s.get("issue123", {})
     assert_true(i123.get("ok"), "issue #123 engine audit fixes (CCR shallow/pSCR/VPM)", str(i123))
+    i124 = s.get("issue124", {})
+    assert_true(i124.get("ok"), "issue #124 audit fixes (ceiling/gfAt/contingency/pSCR/UI)", str(i124))
 
     for name, r in s["rebreather"].items():
         assert_true(fin(r), f"Rebreather {name} produces schedule", str(r)[:120])

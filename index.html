@@ -2667,6 +2667,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <div id="decoAlerts" style="margin-bottom:8px;"></div>
 <div class="deco-table-wrap">
 <div id="decoSummary" class="deco-plan-caption"></div>
+<div id="vpmStopCapNote" style="display:none;margin:8px 0;padding:8px 12px;border-left:3px solid var(--orange);color:var(--orange);font-size:12px;"></div>
 <table class="deco-table">
 <thead><tr><th>Phase</th><th>Depth</th><th>Stop</th><th>Mix</th><th>Run</th><th>TTS</th><th>PPO2</th><th>EAD</th></tr></thead>
 <tbody id="decoTableBody"></tbody>
@@ -5283,14 +5284,14 @@ function _escHtmlPre(s) {
 }
 
 /** VPM deco gas switch depth (metric m or imperial ft per unit mode). */
-function vpmDecoSwitchDepthVal(dgO2pct, ppO2Deco) {
+function vpmDecoSwitchDepthVal(dgO2pct, ppO2Limit) {
   const dU = units === 'metric';
   const fO2 = dgO2pct / 100;
   if (fO2 >= 0.995) {
-    const modM = calcGasMODm(fO2, ppO2Deco || 1.6);
+    const modM = calcGasMODm(fO2, ppO2Limit || 1.6);
     return dU ? modM : Math.round(modM * 3.28084);
   }
-  const modM = Math.max(0, Math.floor(((ppO2Deco || 1.6) / fO2 - altSurfaceP) / BAR_PER_METRE));
+  const modM = Math.max(0, Math.floor(((ppO2Limit || 1.6) / fO2 - altSurfaceP) / BAR_PER_METRE));
   return dU ? modM : Math.floor(modM * 3.28084);
 }
 
@@ -5333,7 +5334,9 @@ function getDecoGasSwitches() {
     const gas = shortMixLabel(getGasLabel(dgf.fO2, dgf.fHe));
     let sw;
     if (isVPM) {
-      const switchD = vpmDecoSwitchDepthVal(Math.round(dgf.fO2 * 100), ppO2Deco);
+      const fO2 = dgf.fO2 != null ? dgf.fO2 : Math.max(0, 1 - dgf.fN2 - (dgf.fHe || 0));
+      const ppLimit = fO2 > 0.60 ? ppO2Deco : ppO2Bot;
+      const switchD = vpmDecoSwitchDepthVal(Math.round(fO2 * 100), ppLimit);
       sw = dU ? Math.max(3, Math.floor(switchD / 3) * 3) : Math.max(10, Math.floor(switchD / 10) * 10);
     } else {
       // Global switch-depth fallback (closure-scoped version not available here):
@@ -6444,13 +6447,21 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
     if (pDry >= bottomSP) return bottomSP;
     return descSP;
   }
-  const deepestCross = Math.max(descCross ?? 0, bottomCross ?? 0, decoCross ?? 0);
-  if (depthM > deepestCross) return bottomSP;
+  const deepestCross = [descCross, bottomCross, decoCross].filter(d => d != null);
+  if (deepestCross.length === 0) {
+    if (pDry >= decoSP) return decoSP;
+    if (pDry >= bottomSP) return bottomSP;
+    return descSP;
+  }
+  if (depthM > Math.max(...deepestCross)) return bottomSP;
   if (descCross != null && depthM <= descCross) {
     if (pDry >= bottomSP + 0.005) return bottomSP;
     return descSP;
   }
-  if (descCross == null && bottomCross != null && depthM < bottomCross) return descSP;
+  if (descCross == null && bottomCross != null && depthM < bottomCross) {
+    if (pDry >= bottomSP) return bottomSP;
+    return descSP;
+  }
   if (decoCross != null && depthM <= decoCross) return bottomSP;
   return decoSP;
 }
@@ -6471,7 +6482,8 @@ function computePSCRFractions(pAmb, fO2, fHe, ccr) {
   const metO2 = getCcrMetabolicO2Rate(ccr);
   const ppO2Drop = (metO2 / loopVol) * (pAmb / (typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325));
   const ppO2Supply = fO2 * pAmb;
-  const newPpO2 = Math.max(PSCR_MIN_PPO2, ppO2Supply - ppO2Drop);
+  const cappedDrop = Math.min(ppO2Drop, Math.max(0, ppO2Supply - PSCR_MIN_PPO2));
+  const newPpO2 = ppO2Supply - cappedDrop;
   const newFO2 = Math.min(0.999, newPpO2 / Math.max(0.001, pAmb));
   const inertTotal = Math.max(0, 1 - newFO2);
   const heShare = fHe / sourceInert;
@@ -6654,8 +6666,9 @@ function getEffectivePpo2(pAmb, setpoint, fO2, ccr, depthM, fHe) {
     const fr = computePSCRFractions(pAmb, fO2, fHeVal, cfg);
     return Math.max(PSCR_MIN_PPO2, fr.fO2 * pAmb);
   }
-  const depthFromAmb = depthM != null ? depthM : (pAmb - altSurfaceP) / BAR_PER_METRE;
-  const sp = setpoint != null ? setpoint : getEffectiveSetpointAtDepth(depthFromAmb, cfg, altSurfaceP);
+  const surfPRef = (typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325);
+  const depthFromAmb = depthM != null ? depthM : (pAmb - surfPRef) / BAR_PER_METRE;
+  const sp = setpoint != null ? setpoint : getEffectiveSetpointAtDepth(depthFromAmb, cfg, surfPRef);
   const dilPpo2 = fO2 * pAmb;
   return Math.min(pAmb, Math.max(sp, dilPpo2));
 }
@@ -6779,7 +6792,7 @@ function sacDomToLpm(inputId, defaultLpm) {
 function ccrGasLitres(label, depthM, durMin, sac) {
   if (isCcrDiluentGasLabel(label)) {
     const pAmb = altSurfaceP + depthM * BAR_PER_METRE;
-    const pSurf = altSurfaceP || 1.0;
+    const pSurf = altSurfaceP || 1.01325;
     const surfLpm = ccrDiluentSurfaceLpm(depthM);
     if (!Number.isFinite(surfLpm)) return NaN;
     return surfLpm * (pAmb / pSurf) * durMin;
@@ -7059,6 +7072,7 @@ if (typeof window !== 'undefined') {
 
 function ceiling(tissues, gfHigh) {
   // Baker GF formula with weighted a/b for trimix: pAmb = (pTotal - GF*a) / (1 - GF + GF/b)
+  if (!(gfHigh > 0)) return 0;
   let maxC = 0;
   tissues.forEach((t0, i) => {
     const pN2 = t0.pN2;
@@ -8324,6 +8338,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   let prevGas = `${bottomO2pct}/${bottomHePct}`;
   let gasLabel = getGasLabel(bottomO2pct/100, bottomHePct/100);
   let vpmRtAtBottomEnd = 0;
+  let vpmStopCapHit = false;
 
   plan.forEach(seg => {
     const segGas = seg.gas || prevGas;
@@ -8393,20 +8408,24 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
         <td data-label="EAD" style="color:var(--muted);"></td>
       </tr>`;
     } else if (seg.type === 'stop') {
+      if (seg.vpmStopCapHit) vpmStopCapHit = true;
       const rtDisp = fmtRT(seg.runtime);
       const ppO2s = vpmDisplayPpo2(seg.depth, o2pct, hepct, seg);
       const ppO2Color = parseFloat(ppO2s) > 1.6 ? 'color:var(--red);font-weight:700;' : 'color:var(--muted);';
+      const capNote = seg.vpmStopCapHit ? ' title="Stop capped at safety limit — ceiling not cleared"' : '';
       // Cumulative CNS row highlight (same logic as Bühlmann, uses _cumCNS stored by VPM engine)
       const cumCnsPctVPM = seg._cumCNS != null ? seg._cumCNS : 0;
-      const rowBgVPM = cumCnsPctVPM >= 100
+      const rowBgVPM = seg.vpmStopCapHit
+        ? 'background:rgba(255,140,0,0.15);'
+        : cumCnsPctVPM >= 100
         ? 'background:#ffff00;color:#111 !important;'
         : cumCnsPctVPM >= 80
           ? 'background:rgba(255,255,0,0.25);'
           : '';
-      html += `<tr class="deco-row" data-phase="deco" style="${rowBgVPM}" ${rowBgVPM ? 'data-cnshi="1"' : ''}>
-        <td><span style="color:${rowBgVPM?'#b30000':'var(--red)'};font-size:13px;">🔴</span></td>
-        <td data-label="Depth" style="color:${rowBgVPM?'#b30000':'var(--red)'};font-weight:600;">${dU ? seg.depth : Math.round(seg.depth * 3.28084)}${du}</td>
-        <td data-label="Stop" style="color:${rowBgVPM?'#b30000':'var(--red)'};font-weight:600;">${fmtT(seg.time)}</td>
+      html += `<tr class="deco-row" data-phase="deco" style="${rowBgVPM}"${capNote} ${rowBgVPM && !seg.vpmStopCapHit ? 'data-cnshi="1"' : ''}>
+        <td><span style="color:${seg.vpmStopCapHit ? 'var(--orange)' : rowBgVPM ? '#b30000' : 'var(--red)'};font-size:13px;">${seg.vpmStopCapHit ? '⚠' : '🔴'}</span></td>
+        <td data-label="Depth" style="color:${seg.vpmStopCapHit ? 'var(--orange)' : rowBgVPM ? '#b30000' : 'var(--red)'};font-weight:600;">${dU ? seg.depth : Math.round(seg.depth * 3.28084)}${du}</td>
+        <td data-label="Stop" style="color:${seg.vpmStopCapHit ? 'var(--orange)' : rowBgVPM ? '#b30000' : 'var(--red)'};font-weight:600;">${fmtT(seg.time)}${seg.vpmStopCapHit ? ' ⚠' : ''}</td>
         <td data-label="Mix" style="color:${gc};">${gasDisp}</td>
         <td data-label="Run" style="color:var(--text);">${rtDisp}</td>
         <td data-label="PPO2" style="${rowBgVPM?'color:#b30000;font-weight:700;':ppO2Color}">${ppO2s}</td>
@@ -8418,6 +8437,17 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   });
 
   tbody.innerHTML = html;
+
+  if (vpmStopCapHit) {
+    const capNote = document.getElementById('vpmStopCapNote');
+    if (capNote) {
+      capNote.style.display = 'block';
+      capNote.textContent = 'One or more stops were limited to the safety time limit — VPM ceiling could not be cleared at that depth.';
+    }
+  } else {
+    const capNote = document.getElementById('vpmStopCapNote');
+    if (capNote) capNote.style.display = 'none';
+  }
 
   // ── TOTALS FOOTER ROW (same format as Bühlmann) ──────────────────────────
   const rt   = result.totalRuntime;
@@ -8925,6 +8955,12 @@ function _insertDecoGasCardInIdOrder(card, idx) {
   else container.appendChild(card);
 }
 
+function syncDecoGasCardUi(idx) {
+  toggleDecoCustomO2(`dg${idx}Mix`, `dg${idx}CustomField`);
+  toggleDecoTrimix(idx);
+  updateGasMODDisplays();
+}
+
 function appendDecoGasCardAtIdx(idx) {
   if (idx <= 2 || idx > _DG_MAX || document.getElementById(`dgCard_${idx}`)) return;
   if (_dgCardCount() >= _DG_MAX) return;
@@ -8982,7 +9018,7 @@ function appendDecoGasCardAtIdx(idx) {
 
   _insertDecoGasCardInIdOrder(card, idx);
   renumberDecoGasCards();
-  updateGasMODDisplays();
+  syncDecoGasCardUi(idx);
 }
 
 function addDecoGasCard() {
@@ -9012,6 +9048,7 @@ function restoreDecoGasCardLayout(cardIds, nextIdx) {
     appendDecoGasCardAtIdx(id);
   }
   _syncDgNextIdx();
+  wanted.forEach(id => syncDecoGasCardUi(id));
 }
 
 // ── End Dynamic Deco Gas Cards ──────────────────────────────────────────────
@@ -9842,7 +9879,10 @@ function runDecoSchedule() {
   }
   function rowDisplayPpo2(depthM, fN2, fHe, fO2, phase) {
     const fo2 = fO2 != null ? fO2 : Math.max(0, 1 - fN2 - (fHe || 0));
-    if (_zhlOnLoop) return ppO2Check(depthM, fN2, fHe, _ccrPpo2Opts(depthM, true, fo2, phase || 'bottom'));
+    if (_zhlOnLoop) {
+      const v = ppO2Check(depthM, fN2, fHe, _ccrPpo2Opts(depthM, true, fo2, phase || 'bottom'));
+      return typeof v === 'string' ? v : Number(v).toFixed(2);
+    }
     return ((depthM * BAR_PER_METRE + altSurfaceP) * fo2).toFixed(2);
   }
 
@@ -9855,7 +9895,7 @@ function runDecoSchedule() {
     // --- Phase 1: travel gas, surface → switch depth ---
     const travelDescentTimeMin = travelSwitchMrow / descentRate;
     const travelMidM = travelSwitchMrow / 2;
-    const travelPPO2 = rowDisplayPpo2(travelMidM, travelInfoRow.fN2, travelInfoRow.fHe);
+    const travelPPO2 = rowDisplayPpo2(travelMidM, travelInfoRow.fN2, travelInfoRow.fHe, travelInfoRow.fO2, 'descent');
     rowRT += travelDescentTimeMin;
     totalCNSfrac += segCNSfrac(parseFloat(travelPPO2), travelDescentTimeMin);
     totalOTU     += segOTU(parseFloat(travelPPO2), travelDescentTimeMin);
@@ -12260,22 +12300,30 @@ function calcSurfInt(prefix) {
     pHe: schreiner(t0[i].pHe, 0, ZHL16C_HE_HT[i], minutes),
   }));
 
+  const simulateDive2 = (t0) => {
+    let t = t0.map(c => ({ pN2: c.pN2, pHe: c.pHe || 0 }));
+    const descTime2 = d2 / descentRate;
+    t = saturateLinear(t, 0, d2, descTime2, fN2, 0);
+    const btAtDepth2 = Math.max(0, bt1 - descTime2);
+    t = saturate(t, d2, btAtDepth2, fN2, 0);
+    return t;
+  };
+
   const allWithin = (t) => t.every((c, i) => (c.pN2 + (c.pHe || 0)) <= tolTension[i] + 1e-9);
 
   let minSI = 0;
   let driver = -1;
-  if (!allWithin(tissues)) {
-    // search minute by minute up to 12h (720 min)
+  if (!allWithin(simulateDive2(tissues))) {
     let found = false;
     for (let si = 1; si <= 720; si++) {
-      const t = satSurface(tissues, si);
-      if (allWithin(t)) { minSI = si; found = true; break; }
+      const afterSI = satSurface(tissues, si);
+      if (allWithin(simulateDive2(afterSI))) { minSI = si; found = true; break; }
     }
     if (!found) minSI = 720;
-    // controlling compartment = the one needing the longest SI to clear
+    const tCheck = simulateDive2(satSurface(tissues, minSI));
     let worst = 0, worstIdx = 0;
     ZHL16C.forEach((c, i) => {
-      const over = (tissues[i].pN2 + (tissues[i].pHe || 0)) - tolTension[i];
+      const over = (tCheck[i].pN2 + (tCheck[i].pHe || 0)) - tolTension[i];
       if (over > worst) { worst = over; worstIdx = i; }
     });
     driver = worstIdx;
@@ -14371,7 +14419,7 @@ function runContingencyScenario(modifyFn) {
     const run = parseRunMinutes(tr.querySelector('td[data-label="Run"]')?.textContent) || 0;
     if (run > lastRun) lastRun = run;
     if (tr.dataset.phase === 'deco' || tr.dataset.phase === 'safety')
-      decoTime += parseStopDisplayTime(tr.querySelectorAll('td')[2]?.textContent) || 0;
+      decoTime += parseRunMinutes(tr.querySelectorAll('td')[2]?.textContent) || 0;
   });
 
   // Capture formatted totals from DOM totals row

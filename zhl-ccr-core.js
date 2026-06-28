@@ -81,13 +81,21 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
     if (pDry >= bottomSP) return bottomSP;
     return descSP;
   }
-  const deepestCross = Math.max(descCross ?? 0, bottomCross ?? 0, decoCross ?? 0);
-  if (depthM > deepestCross) return bottomSP;
+  const deepestCross = [descCross, bottomCross, decoCross].filter(d => d != null);
+  if (deepestCross.length === 0) {
+    if (pDry >= decoSP) return decoSP;
+    if (pDry >= bottomSP) return bottomSP;
+    return descSP;
+  }
+  if (depthM > Math.max(...deepestCross)) return bottomSP;
   if (descCross != null && depthM <= descCross) {
     if (pDry >= bottomSP + 0.005) return bottomSP;
     return descSP;
   }
-  if (descCross == null && bottomCross != null && depthM < bottomCross) return descSP;
+  if (descCross == null && bottomCross != null && depthM < bottomCross) {
+    if (pDry >= bottomSP) return bottomSP;
+    return descSP;
+  }
   if (decoCross != null && depthM <= decoCross) return bottomSP;
   return decoSP;
 }
@@ -112,7 +120,8 @@ function computePSCRFractions(pAmb, fO2, fHe, ccr) {
   // rest of the dive. The steady-state formula is time-independent and depth-correct.
   const ppO2Drop = (metO2 / loopVol) * (pAmb / (typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325));
   const ppO2Supply = fO2 * pAmb;
-  const newPpO2 = Math.max(PSCR_MIN_PPO2, ppO2Supply - ppO2Drop);
+  const cappedDrop = Math.min(ppO2Drop, Math.max(0, ppO2Supply - PSCR_MIN_PPO2));
+  const newPpO2 = ppO2Supply - cappedDrop;
   const newFO2 = Math.min(0.999, newPpO2 / Math.max(0.001, pAmb));
   const inertTotal = Math.max(0, 1 - newFO2);
   const heShare = fHe / sourceInert;
@@ -358,8 +367,9 @@ function getEffectivePpo2(pAmb, setpoint, fO2, ccr, depthM, fHe) {
     const fr = computePSCRFractions(pAmb, fO2, fHeVal, cfg);
     return Math.max(PSCR_MIN_PPO2, fr.fO2 * pAmb);
   }
-  const depthFromAmb = depthM != null ? depthM : (pAmb - altSurfaceP) / BAR_PER_METRE;
-  const sp = setpoint != null ? setpoint : getEffectiveSetpointAtDepth(depthFromAmb, cfg, altSurfaceP);
+  const surfPRef = (typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325);
+  const depthFromAmb = depthM != null ? depthM : (pAmb - surfPRef) / BAR_PER_METRE;
+  const sp = setpoint != null ? setpoint : getEffectiveSetpointAtDepth(depthFromAmb, cfg, surfPRef);
   const dilPpo2 = fO2 * pAmb;
   return Math.min(pAmb, Math.max(sp, dilPpo2));
 }

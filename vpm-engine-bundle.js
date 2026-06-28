@@ -1083,6 +1083,16 @@ const VPMEngine = (() => {
                 : 1e-9;
             if (finalCeiling > nextStop + clearToleranceFinal && totalStopTime >= vpmMaxStopMin) {
                 vpmStopCapFailedDepth = stopDepth;
+                appendPlan(ctx, {
+                    type: 'stop',
+                    depth: stopDepth,
+                    time: totalStopTime,
+                    runtime: Math.round(ctx.runtime * 10) / 10,
+                    gas: ctx.currentGasLabel,
+                    o2: Math.round(ctx.currentO2 * 100),
+                    he: Math.round(ctx.currentHe * 100),
+                    vpmStopCapHit: true,
+                });
                 return;
             }
             settings._scrRuntimeMin = ctx.runtime;
@@ -1332,6 +1342,7 @@ const VPMEngine = (() => {
         let curSP = forcedOCMode ? 0 : getEffectiveSetpoint(levels[0], isCCR, settings, levels[0].depth, 'descent');
         function runInterLevelDecoAscent(targetDepth) {
             calcCrushing(state, settings);
+            applyNuclearRegeneration(state, runtime);
             const offLoopPath = isCCR && settings.circuit !== 'pSCR' && (forcedOCMode || curSP <= 0);
             const interLevelConservatism = offLoopPath ? Math.max(0, conservatism - 1) : conservatism;
             calcAllowableGradients(state, model, settings, interLevelConservatism);

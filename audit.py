@@ -3486,6 +3486,7 @@ else:
 if pscr_frac_start > 0 and (
     ("PSCR_MIN_PPO2 * loopVol" in pscr_frac_block and "PSCR_MIN_PPO2 * loopVol * pAmb" not in pscr_frac_block)
     or ("Math.max(PSCR_MIN_PPO2, ppO2Supply - ppO2Drop)" in pscr_frac_block)
+    or ("cappedDrop = Math.min(ppO2Drop" in pscr_frac_block)
 ):
     ok("pSCR O₂ floor uses true 0.16 bar minimum (not 16% fraction floor)")
 else:
@@ -5815,7 +5816,9 @@ if "REQUIRED_PRECACHE.concat(OPTIONAL_PRECACHE)" in _117_sw and "const PRECACHE_
     ok("issue #117 L-1: sw.js PRECACHE_ASSETS derived from REQUIRED + OPTIONAL lists")
 else:
     fail("issue #117 L-1: sw.js still duplicates REQUIRED_PRECACHE and PRECACHE_ASSETS")
-if "killWorker();" in _117_bridge.split("Worker calculation failed", 1)[-1][:250]:
+if "rejectAll(error || 'ZHL worker calculation failed')" in _117_bridge:
+    ok("issue #117 L-2: worker bridge rejects all pending on calculation failure (issue #124 L-2)")
+elif "killWorker();" in _117_bridge.split("Worker calculation failed", 1)[-1][:250]:
     ok("issue #117 L-2: worker bridge kills worker immediately on ok === false")
 else:
     fail("issue #117 L-2: worker bridge still reuses worker after calculation failure")
@@ -5842,14 +5845,16 @@ if "descCross == null && bottomCross == null && decoCross == null" in _118_ccr.s
     ok("issue #118 H-1: altitude all-null setpoint crossings use ambient pDry zones")
 else:
     fail("issue #118 H-1: getEffectiveSetpointAtDepth still assigns bottomSP when all crossings null")
-if "function runInterLevelDecoAscent" in _118_vpm and "applyNuclearRegeneration(state, bottomPhaseRuntime)" not in _118_vpm.split("function runInterLevelDecoAscent", 1)[-1].split("function ", 1)[0][:400]:
+if "applyNuclearRegeneration(state, runtime)" in _118_vpm.split("function runInterLevelDecoAscent", 1)[-1][:500]:
+    ok("issue #118 H-2: VPM inter-level deco regenerates with cumulative runtime (issue #124 M-2)")
+elif "function runInterLevelDecoAscent" in _118_vpm and "applyNuclearRegeneration(state, bottomPhaseRuntime)" not in _118_vpm.split("function runInterLevelDecoAscent", 1)[-1].split("function ", 1)[0][:400]:
     ok("issue #118 H-2: VPM inter-level deco skips partial nuclear regeneration")
 else:
     fail("issue #118 H-2: runInterLevelDecoAscent still calls applyNuclearRegeneration with partial runtime")
-if "parseStopDisplayTime(tr.querySelectorAll('td')[2]" in js.split("function runContingencyScenario", 1)[-1][:2500]:
-    ok("issue #118 H-3: contingency deco time uses parseStopDisplayTime on stop column")
+if "parseRunMinutes(tr.querySelectorAll('td')[2]" in js.split("function runContingencyScenario", 1)[-1][:2500]:
+    ok("issue #118 H-3: contingency deco time uses parseRunMinutes on stop column (issue #124 H-3)")
 else:
-    fail("issue #118 H-3: runContingencyScenario still parses stop column with parseRunMinutes")
+    fail("issue #118 H-3: runContingencyScenario still parses stop column incorrectly")
 if "SW_SHELL_READY" in _118_sw and "SW_SHELL_READY" in js:
     ok("issue #118 H-4: SW activate notifies clients; page listens for shell-ready migration")
 else:
@@ -6097,6 +6102,74 @@ if "issue123" in _123_regr:
     ok("issue #123: engine regression covers CCR/VPM audit fixes")
 else:
     fail("issue #123: engine regression missing #123 coverage")
+
+# ── Issue #124: post-#123 full codebase audit ──
+_124_regr = open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read()
+_build_py = open(os.path.join(os.path.dirname(__file__), "tools", "build_zhl_bundle.py"), encoding="utf-8").read()
+if "if (!(gfHigh > 0)) return 0" in _build_py:
+    ok("issue #124 H-1: ceiling() rejects gfHigh <= 0 in ZHL bundle preamble")
+else:
+    fail("issue #124 H-1: ceiling() missing gfHigh guard")
+if "firstStopDepth === interpBase" in open(os.path.join(os.path.dirname(__file__), "zhl-schedule-core.js"), encoding="utf-8").read().split("function gfAt", 1)[-1][:500]:
+    ok("issue #124 H-2: gfAt returns gfHigh when firstStopDepth equals interpBase")
+else:
+    fail("issue #124 H-2: gfAt still divides by zero when shallowGradient first stop equals lastStop")
+if "parseRunMinutes(tr.querySelectorAll" in js.split("function runContingencyScenario", 1)[-1][:2500]:
+    ok("issue #124 H-3: runContingencyScenario accumulates deco time as numeric minutes")
+else:
+    fail("issue #124 H-3: runContingencyScenario still uses parseStopDisplayTime string concat")
+if "typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325" in _zhl_ccr.split("function getEffectivePpo2", 1)[-1][:600]:
+    ok("issue #124 H-4: getEffectivePpo2 guards bare altSurfaceP for worker context")
+else:
+    fail("issue #124 H-4: getEffectivePpo2 still accesses bare altSurfaceP")
+if "cappedDrop = Math.min(ppO2Drop" in _zhl_ccr:
+    ok("issue #124 H-5: computePSCRFractions caps metabolic drop before ppO2 subtraction")
+else:
+    fail("issue #124 H-5: pSCR still uses hard ppO2 floor clamp with discontinuity")
+if ".filter(d => d != null)" in _zhl_ccr.split("function getEffectiveSetpointAtDepth", 1)[-1][:2000]:
+    ok("issue #124 M-1: getEffectiveSetpointAtDepth ignores null crossings in deepestCross")
+else:
+    fail("issue #124 M-1: getEffectiveSetpointAtDepth still coalesces null crossings to 0")
+if "applyNuclearRegeneration(state, runtime)" in _vpm_core.split("function runInterLevelDecoAscent", 1)[-1][:400]:
+    ok("issue #124 M-2: runInterLevelDecoAscent regenerates radii before gradient calc")
+else:
+    fail("issue #124 M-2: VPM inter-level ascent still uses pre-regeneration radii")
+if "function syncDecoGasCardUi" in js:
+    ok("issue #124 M-3: syncDecoGasCardUi restores trimix/custom field visibility on deco cards")
+else:
+    fail("issue #124 M-3: appendDecoGasCardAtIdx still skips post-restore UI sync")
+if "travelInfoRow.fO2, 'descent'" in js:
+    ok("issue #124 M-4: travel-gas descent rowDisplayPpo2 passes explicit fO2")
+else:
+    fail("issue #124 M-4: rowDisplayPpo2 CCR+travel path still omits fO2")
+if "fO2 > 0.60 ? ppO2Deco : ppO2Bot" in js.split("function getDecoGasSwitches", 1)[-1][:2000]:
+    ok("issue #124 M-5: VPM gas switch uses ppO2Bot for low-O2 deco gases")
+else:
+    fail("issue #124 M-5: VPM gas switch still always uses ppO2Deco limit")
+if "simulateDive2" in js.split("function calcSurfInt", 1)[-1][:2500]:
+    ok("issue #124 M-6: calcSurfInt simulates Dive 2 depth in minimum SI search")
+else:
+    fail("issue #124 M-6: calcSurfInt still ignores Dive 2 depth in SI computation")
+if "surfaceP: (environment || defaultEnvironment()).altSurfaceP" in _build_py:
+    ok("issue #124 M-7: repState carries explicit surfaceP from environment")
+else:
+    fail("issue #124 M-7: repetitive dive SI still falls back to stale altSurfaceP closure")
+if "vpmStopCapNote" in js and "vpmStopCapHit" in js:
+    ok("issue #124 L-1: renderVPMResults surfaces vpmStopCapHit capped-stop warning")
+else:
+    fail("issue #124 L-1: vpmStopCapHit still not consumed in UI")
+if "rejectAll(error || 'ZHL worker calculation failed')" in open(os.path.join(os.path.dirname(__file__), "zhl-worker-bridge.js"), encoding="utf-8").read():
+    ok("issue #124 L-2: worker onmessage error path calls rejectAll before killWorker")
+else:
+    fail("issue #124 L-2: worker error handler still leaves concurrent requests hanging")
+if "altSurfaceP || 1.01325" in js.split("function ccrGasLitres", 1)[-1][:400]:
+    ok("issue #124 L-3: CCR diluent consumption uses 1.01325 sea-level fallback")
+else:
+    fail("issue #124 L-3: CCR diluent still uses altSurfaceP || 1.0 fallback")
+if "issue124" in _124_regr:
+    ok("issue #124: engine regression covers audit #124 fixes")
+else:
+    fail("issue #124: engine regression missing #124 coverage")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):

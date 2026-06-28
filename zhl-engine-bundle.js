@@ -91,6 +91,7 @@
   }
 
   function ceiling(tissues, gfHigh) {
+    if (!(gfHigh > 0)) return 0;
     let maxC = 0;
     tissues.forEach((t0, i) => {
       const pN2 = t0.pN2;
@@ -224,13 +225,21 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
     if (pDry >= bottomSP) return bottomSP;
     return descSP;
   }
-  const deepestCross = Math.max(descCross ?? 0, bottomCross ?? 0, decoCross ?? 0);
-  if (depthM > deepestCross) return bottomSP;
+  const deepestCross = [descCross, bottomCross, decoCross].filter(d => d != null);
+  if (deepestCross.length === 0) {
+    if (pDry >= decoSP) return decoSP;
+    if (pDry >= bottomSP) return bottomSP;
+    return descSP;
+  }
+  if (depthM > Math.max(...deepestCross)) return bottomSP;
   if (descCross != null && depthM <= descCross) {
     if (pDry >= bottomSP + 0.005) return bottomSP;
     return descSP;
   }
-  if (descCross == null && bottomCross != null && depthM < bottomCross) return descSP;
+  if (descCross == null && bottomCross != null && depthM < bottomCross) {
+    if (pDry >= bottomSP) return bottomSP;
+    return descSP;
+  }
   if (decoCross != null && depthM <= decoCross) return bottomSP;
   return decoSP;
 }
@@ -255,7 +264,8 @@ function computePSCRFractions(pAmb, fO2, fHe, ccr) {
   // rest of the dive. The steady-state formula is time-independent and depth-correct.
   const ppO2Drop = (metO2 / loopVol) * (pAmb / (typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325));
   const ppO2Supply = fO2 * pAmb;
-  const newPpO2 = Math.max(PSCR_MIN_PPO2, ppO2Supply - ppO2Drop);
+  const cappedDrop = Math.min(ppO2Drop, Math.max(0, ppO2Supply - PSCR_MIN_PPO2));
+  const newPpO2 = ppO2Supply - cappedDrop;
   const newFO2 = Math.min(0.999, newPpO2 / Math.max(0.001, pAmb));
   const inertTotal = Math.max(0, 1 - newFO2);
   const heShare = fHe / sourceInert;
@@ -501,8 +511,9 @@ function getEffectivePpo2(pAmb, setpoint, fO2, ccr, depthM, fHe) {
     const fr = computePSCRFractions(pAmb, fO2, fHeVal, cfg);
     return Math.max(PSCR_MIN_PPO2, fr.fO2 * pAmb);
   }
-  const depthFromAmb = depthM != null ? depthM : (pAmb - altSurfaceP) / BAR_PER_METRE;
-  const sp = setpoint != null ? setpoint : getEffectiveSetpointAtDepth(depthFromAmb, cfg, altSurfaceP);
+  const surfPRef = (typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325);
+  const depthFromAmb = depthM != null ? depthM : (pAmb - surfPRef) / BAR_PER_METRE;
+  const sp = setpoint != null ? setpoint : getEffectiveSetpointAtDepth(depthFromAmb, cfg, surfPRef);
   const dilPpo2 = fO2 * pAmb;
   return Math.min(pAmb, Math.max(sp, dilPpo2));
 }
@@ -826,6 +837,7 @@ function runZhlScheduleCore(params) {
     const sgOn = !!params.shallowGradient;
     if (sgOn && depthM <= lastStop) return gfH;
     const interpBase = sgOn ? lastStop : 0;
+    if (firstStopDepth === interpBase) return gfH;
     if (firstStopDepth <= interpBase) return gfH;
     const gf = gfL + (gfH - gfL) * (firstStopDepth - depthM) / (firstStopDepth - interpBase);
     return Math.min(gfH, Math.max(gfL, gf));
@@ -1349,7 +1361,11 @@ function runZhlScheduleCore(params) {
       bottomMixLabel: getGasLabel(fO2bot, fHeBot),
       travelInfo: s.travelInfo || null,
       repState: (s._preTissues && s._preTissues.length)
-        ? { tissues: s._preTissues, surfaceIntervalMin: s._surfaceInterval || 0 }
+        ? {
+            tissues: s._preTissues,
+            surfaceIntervalMin: s._surfaceInterval || 0,
+            surfaceP: (environment || defaultEnvironment()).altSurfaceP,
+          }
         : null,
       continuationLevels: (profileSplit && profileSplit.continuation) || [],
       minDecoProfile: { enabled: false, m9: 1, m6: 3, isMetric: true },

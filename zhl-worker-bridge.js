@@ -74,7 +74,7 @@
           settlePending(id, true, result);
         } else {
           consecutiveWorkerFailures += 1;
-          settlePending(id, false, new Error(error || 'Worker calculation failed'));
+          rejectAll(error || 'ZHL worker calculation failed');
           killWorker();
           if (consecutiveWorkerFailures >= MAX_WORKER_FAILURES) {
             workerPermanentlyDisabled = true;

@@ -161,6 +161,7 @@ function runZhlScheduleCore(params) {
     const sgOn = !!params.shallowGradient;
     if (sgOn && depthM <= lastStop) return gfH;
     const interpBase = sgOn ? lastStop : 0;
+    if (firstStopDepth === interpBase) return gfH;
     if (firstStopDepth <= interpBase) return gfH;
     const gf = gfL + (gfH - gfL) * (firstStopDepth - depthM) / (firstStopDepth - interpBase);
     return Math.min(gfH, Math.max(gfL, gf));

@@ -136,6 +136,7 @@ preamble = r'''/**
   }
 
   function ceiling(tissues, gfHigh) {
+    if (!(gfHigh > 0)) return 0;
     let maxC = 0;
     tissues.forEach((t0, i) => {
       const pN2 = t0.pN2;
@@ -303,7 +304,11 @@ postamble = r'''
       bottomMixLabel: getGasLabel(fO2bot, fHeBot),
       travelInfo: s.travelInfo || null,
       repState: (s._preTissues && s._preTissues.length)
-        ? { tissues: s._preTissues, surfaceIntervalMin: s._surfaceInterval || 0 }
+        ? {
+            tissues: s._preTissues,
+            surfaceIntervalMin: s._surfaceInterval || 0,
+            surfaceP: (environment || defaultEnvironment()).altSurfaceP,
+          }
         : null,
       continuationLevels: (profileSplit && profileSplit.continuation) || [],
       minDecoProfile: { enabled: false, m9: 1, m6: 3, isMetric: true },
