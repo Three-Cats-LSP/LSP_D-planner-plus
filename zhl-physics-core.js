@@ -52,6 +52,7 @@ function setHeHalfTimeMode(mode) {
 
 function depthBar(m) { return altSurfaceP + m * BAR_PER_METRE; }
 function schreiner(p0, pGas, ht, t) { return pGas + (p0 - pGas) * Math.exp(-Math.LN2 / ht * t); }
+/** @param {number} R - pressure rate bar/min; may be 0 for constant depth (standard Schreiner). */
 function schreinerLinear(p0, fN2, ht, t, p0Amb, R) {
   const k = Math.LN2 / ht;
   const piN2 = (p0Amb - WATER_VAPOR) * fN2;

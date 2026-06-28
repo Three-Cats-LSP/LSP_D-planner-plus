@@ -41,23 +41,6 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
     result.push({ ...s });
   }
 
-  function resolveGasAtDepth(targetDepthM) {
-    let activeGas = fallbackGas || '';
-    let activeFN2 = fallbackFN2 ?? null;
-    let activeFHe = fallbackFHe ?? 0;
-    for (const s of result) {
-      if (!s.gas || s.gas.trim() === '') continue;
-      const stepDepthM = stepDepthToM(s);
-      if (stepDepthM == null) continue;
-      if (stepDepthM >= targetDepthM) {
-        activeGas = s.gas;
-        activeFN2 = s.fN2 ?? activeFN2;
-        activeFHe = s.fHe ?? activeFHe ?? 0;
-      }
-    }
-    return { gas: activeGas, fN2: activeFN2, fHe: activeFHe ?? 0 };
-  }
-
   function injectStop(targetDepthM, minDur) {
     const targetDisplay = isMetric ? targetDepthM : Math.round(targetDepthM * 3.28084);
     let insertIdx = result.length;
@@ -103,6 +86,23 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
       fHe,
       pO2: null,
     });
+  }
+
+  function resolveGasAtDepth(targetDepthM) {
+    let activeGas = fallbackGas || '';
+    let activeFN2 = fallbackFN2 ?? null;
+    let activeFHe = fallbackFHe ?? 0;
+    for (const s of result) {
+      if (!s.gas || s.gas.trim() === '') continue;
+      const stepDepthM = stepDepthToM(s);
+      if (stepDepthM == null) continue;
+      if (stepDepthM >= targetDepthM) {
+        activeGas = s.gas;
+        activeFN2 = s.fN2 ?? activeFN2;
+        activeFHe = s.fHe ?? activeFHe ?? 0;
+      }
+    }
+    return { gas: activeGas, fN2: activeFN2, fHe: activeFHe ?? 0 };
   }
 
   if (!enforced[9] && min9m > 0) injectStop(depth9, min9m);
@@ -161,8 +161,16 @@ function n2FracFromPercentages(o2pct, hepct) {
 
 function validateHypoxicDecoGas(o2, he, field) {
   const heVal = he || 0;
+  const label = String(field).replace(/^dg/, '');
+  if (o2 + heVal > 100 + 1e-6) {
+    return {
+      ok: false,
+      code: 'ERR_TOTAL_EXCEEDS_100',
+      field,
+      message: `Deco gas ${label}: O₂ + He exceeds 100%.`,
+    };
+  }
   if (heVal <= 0 && o2 < 18) {
-    const label = String(field).replace(/^dg/, '');
     return {
       ok: false,
       code: 'HYPOXIC_DECO_GAS',

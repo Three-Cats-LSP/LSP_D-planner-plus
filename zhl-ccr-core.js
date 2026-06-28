@@ -88,8 +88,6 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
     if (pDry >= bottomSP) return bottomSP;
     return descSP;
   }
-  const deepestCross = Math.max(...crossDepths);
-  if (depthM > deepestCross) return bottomSP;
   if (descCross != null && depthM <= descCross) {
     if (pDry >= bottomSP + 0.005) return bottomSP;
     return descSP;
@@ -102,12 +100,14 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
   return decoSP;
 }
 
+/** @param {object} ccr — CCR settings; scrMetabolicO2 in L/min (Baker steady-state). */
 function getCcrMetabolicO2Rate(ccr) {
   const cfg = normalizeCCRSettings(ccr);
   const v = parseFloat(cfg.scrMetabolicO2);
   return v > 0 ? v : 1.5;
 }
 
+/** pSCR loop fractions; metO2/loopVol yields bar/bar ppO2 drop (L/min ÷ L). */
 function computePSCRFractions(pAmb, fO2, fHe, ccr) {
   fO2 = Math.max(0, Math.min(1, fO2 || 0));
   fHe = Math.max(0, Math.min(1 - fO2, fHe || 0));
@@ -183,8 +183,8 @@ function getInspiredInertPressures(pAmb, setpoint, fO2, fHe, ccr) {
     return { pN2: loop.pN2, pHe: loop.pHe, fO2: loop.fO2, fHe: loop.fHe, fN2: loop.fN2 };
   }
   const pInert = pAmb - setpoint - ppH2O;
-  const den = Math.max(0.001, 1 - fO2);
   const fN2d = Math.max(0, 1 - fO2 - fHe);
+  const den = Math.max(0.001, fN2d + fHe);
   return {
     pN2: pInert * fN2d / den,
     pHe: pInert * fHe / den,

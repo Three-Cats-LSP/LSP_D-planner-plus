@@ -101,6 +101,13 @@ self.addEventListener('install', event => {
         }
         const shellReady = REQUIRED_PRECACHE.every(u => succeeded.has(u));
         if (shellReady) {
+          const optionalMiss = OPTIONAL_PRECACHE.filter(u => !succeeded.has(u));
+          if (optionalMiss.length > 0) {
+            const clients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+            clients.forEach((client) => {
+              client.postMessage({ type: 'SW_OPTIONAL_PRECACHE_MISS', urls: optionalMiss });
+            });
+          }
           self.skipWaiting();
           return;
         }
@@ -134,9 +141,18 @@ self.addEventListener('activate', event => {
           })
       );
       await self.clients.claim();
+      const cache = await caches.open(CACHE_VERSION);
+      const optionalMiss = [];
+      for (const url of OPTIONAL_PRECACHE) {
+        const hit = await cache.match(url, { ignoreSearch: true });
+        if (!hit) optionalMiss.push(url);
+      }
       const clients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
       clients.forEach((client) => {
         client.postMessage({ type: 'SW_SHELL_READY', version: CACHE_VERSION });
+        if (optionalMiss.length > 0) {
+          client.postMessage({ type: 'SW_OPTIONAL_PRECACHE_MISS', urls: optionalMiss });
+        }
       });
     })
   );

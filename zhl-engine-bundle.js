@@ -55,6 +55,7 @@ function setHeHalfTimeMode(mode) {
 
 function depthBar(m) { return altSurfaceP + m * BAR_PER_METRE; }
 function schreiner(p0, pGas, ht, t) { return pGas + (p0 - pGas) * Math.exp(-Math.LN2 / ht * t); }
+/** @param {number} R - pressure rate bar/min; may be 0 for constant depth (standard Schreiner). */
 function schreinerLinear(p0, fN2, ht, t, p0Amb, R) {
   const k = Math.LN2 / ht;
   const piN2 = (p0Amb - WATER_VAPOR) * fN2;
@@ -224,23 +225,6 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
     result.push({ ...s });
   }
 
-  function resolveGasAtDepth(targetDepthM) {
-    let activeGas = fallbackGas || '';
-    let activeFN2 = fallbackFN2 ?? null;
-    let activeFHe = fallbackFHe ?? 0;
-    for (const s of result) {
-      if (!s.gas || s.gas.trim() === '') continue;
-      const stepDepthM = stepDepthToM(s);
-      if (stepDepthM == null) continue;
-      if (stepDepthM >= targetDepthM) {
-        activeGas = s.gas;
-        activeFN2 = s.fN2 ?? activeFN2;
-        activeFHe = s.fHe ?? activeFHe ?? 0;
-      }
-    }
-    return { gas: activeGas, fN2: activeFN2, fHe: activeFHe ?? 0 };
-  }
-
   function injectStop(targetDepthM, minDur) {
     const targetDisplay = isMetric ? targetDepthM : Math.round(targetDepthM * 3.28084);
     let insertIdx = result.length;
@@ -286,6 +270,23 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
       fHe,
       pO2: null,
     });
+  }
+
+  function resolveGasAtDepth(targetDepthM) {
+    let activeGas = fallbackGas || '';
+    let activeFN2 = fallbackFN2 ?? null;
+    let activeFHe = fallbackFHe ?? 0;
+    for (const s of result) {
+      if (!s.gas || s.gas.trim() === '') continue;
+      const stepDepthM = stepDepthToM(s);
+      if (stepDepthM == null) continue;
+      if (stepDepthM >= targetDepthM) {
+        activeGas = s.gas;
+        activeFN2 = s.fN2 ?? activeFN2;
+        activeFHe = s.fHe ?? activeFHe ?? 0;
+      }
+    }
+    return { gas: activeGas, fN2: activeFN2, fHe: activeFHe ?? 0 };
   }
 
   if (!enforced[9] && min9m > 0) injectStop(depth9, min9m);
@@ -344,8 +345,16 @@ function n2FracFromPercentages(o2pct, hepct) {
 
 function validateHypoxicDecoGas(o2, he, field) {
   const heVal = he || 0;
+  const label = String(field).replace(/^dg/, '');
+  if (o2 + heVal > 100 + 1e-6) {
+    return {
+      ok: false,
+      code: 'ERR_TOTAL_EXCEEDS_100',
+      field,
+      message: `Deco gas ${label}: O₂ + He exceeds 100%.`,
+    };
+  }
   if (heVal <= 0 && o2 < 18) {
-    const label = String(field).replace(/^dg/, '');
     return {
       ok: false,
       code: 'HYPOXIC_DECO_GAS',
@@ -443,8 +452,6 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
     if (pDry >= bottomSP) return bottomSP;
     return descSP;
   }
-  const deepestCross = Math.max(...crossDepths);
-  if (depthM > deepestCross) return bottomSP;
   if (descCross != null && depthM <= descCross) {
     if (pDry >= bottomSP + 0.005) return bottomSP;
     return descSP;
@@ -457,12 +464,14 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
   return decoSP;
 }
 
+/** @param {object} ccr — CCR settings; scrMetabolicO2 in L/min (Baker steady-state). */
 function getCcrMetabolicO2Rate(ccr) {
   const cfg = normalizeCCRSettings(ccr);
   const v = parseFloat(cfg.scrMetabolicO2);
   return v > 0 ? v : 1.5;
 }
 
+/** pSCR loop fractions; metO2/loopVol yields bar/bar ppO2 drop (L/min ÷ L). */
 function computePSCRFractions(pAmb, fO2, fHe, ccr) {
   fO2 = Math.max(0, Math.min(1, fO2 || 0));
   fHe = Math.max(0, Math.min(1 - fO2, fHe || 0));
@@ -538,8 +547,8 @@ function getInspiredInertPressures(pAmb, setpoint, fO2, fHe, ccr) {
     return { pN2: loop.pN2, pHe: loop.pHe, fO2: loop.fO2, fHe: loop.fHe, fN2: loop.fN2 };
   }
   const pInert = pAmb - setpoint - ppH2O;
-  const den = Math.max(0.001, 1 - fO2);
   const fN2d = Math.max(0, 1 - fO2 - fHe);
+  const den = Math.max(0.001, fN2d + fHe);
   return {
     pN2: pInert * fN2d / den,
     pHe: pInert * fHe / den,
@@ -736,8 +745,8 @@ function runZhlScheduleCore(params) {
   const depthM = params.depthM;
   const bt = params.bt;
   const rate = params.ascentRate;
-  const decoRate = params.decoAscentRate;
-  const surfaceRate = params.surfaceAscentRate;
+  const decoRate = params.decoAscentRate ?? 9;
+  const surfaceRate = params.surfaceAscentRate ?? 9;
   const descentRate = params.descentRate;
   const gfL = params.gfL;
   const gfH = params.gfH;
@@ -759,20 +768,23 @@ function runZhlScheduleCore(params) {
   const ccrSettings = params.ccr ? normalizeCCRSettings(params.ccr) : null;
   const _zhlOnLoop = !!(params.onLoop && ccrSettings && isRebreatherCircuit(ccrSettings.circuit) && !ccrSettings.bailout);
   const loopMixLabel = params.loopMixLabel || (ccrSettings ? loopMixLabelForCore(bottomMixLabel, ccrSettings) : bottomMixLabel);
-  let _diveRuntimeMin = 0;
+  // CCR-loop elapsed time only (OC segments do not increment).
+  let _ccrLoopElapsedMin = 0;
+  let hitSafetyGuard = false;
+  const CEILING_LOOP_GUARD_MIN = 1440;
 
   function zhlLoadLinear(tissues, from, to, t, fO2, fHe, onLoop, phase) {
     if (onLoop && ccrSettings) {
-      const out = loadTissuesWithCCR(tissues, from, to, t, fO2, fHe, { ...ccrSettings, scrRuntimeMin: _diveRuntimeMin, ccrPhase: phase });
-      _diveRuntimeMin += t;
+      const out = loadTissuesWithCCR(tissues, from, to, t, fO2, fHe, { ...ccrSettings, scrRuntimeMin: _ccrLoopElapsedMin, ccrPhase: phase });
+      _ccrLoopElapsedMin += t;
       return out;
     }
     return saturateLinear(tissues, from, to, t, Math.max(0, 1 - fO2 - (fHe || 0)), fHe || 0);
   }
   function zhlLoadConst(tissues, depth, t, fO2, fHe, onLoop, phase) {
     if (onLoop && ccrSettings) {
-      const out = loadTissuesWithCCR(tissues, depth, depth, t, fO2, fHe, { ...ccrSettings, scrRuntimeMin: _diveRuntimeMin, ccrPhase: phase });
-      _diveRuntimeMin += t;
+      const out = loadTissuesWithCCR(tissues, depth, depth, t, fO2, fHe, { ...ccrSettings, scrRuntimeMin: _ccrLoopElapsedMin, ccrPhase: phase });
+      _ccrLoopElapsedMin += t;
       return out;
     }
     return saturate(tissues, depth, t, Math.max(0, 1 - fO2 - (fHe || 0)), fHe || 0);
@@ -962,7 +974,7 @@ function runZhlScheduleCore(params) {
         // MultiDeco-compatible mode: treat deco-zone transit as instant for tissue loading.
         // Transit time is still counted in RT and added to the displayed stop duration below.
         // (Schreiner mode: tissues off-gas normally during transit — more accurate.)
-        if (travelOnLoop && ccrSettings && isRebreatherCircuit(ccrSettings.circuit)) _diveRuntimeMin += travelDur;
+        if (travelOnLoop && ccrSettings && isRebreatherCircuit(ccrSettings.circuit)) _ccrLoopElapsedMin += travelDur;
       } else {
         const tFO2 = travelOnLoop ? bottomFO2 : (travelGas.fO2 != null ? travelGas.fO2 : Math.max(0, 1 - travelGas.fN2 - (travelGas.fHe || 0)));
         const tFHe = travelOnLoop ? bottomFHe : (travelGas.fHe || 0);
@@ -1041,10 +1053,11 @@ function runZhlScheduleCore(params) {
       // Capture RT before ceiling loop — ApexDeco snaps the arrival RT to next minute
       const rtOnArrival = rt;
       let stopT = 0;
-      while (ceiling(tissues, gfForClear) > ceilTarget && stopT < 360) {
+      while (ceiling(tissues, gfForClear) > ceilTarget && stopT < CEILING_LOOP_GUARD_MIN) {
         tissues = zhlLoadConst(tissues, cur, holdStep, stopFO2, stopFHe, onLoop, 'deco');
         stopT += holdStep; rt += holdStep;
       }
+      if (stopT >= CEILING_LOOP_GUARD_MIN && ceiling(tissues, gfForClear) > ceilTarget) hitSafetyGuard = true;
       if (isFirstDecoStop) {
         // First stop: always use RT-snap (fractional) — both ApexDeco and MultiDeco
         // keep the exact first-stop time (e.g. 0:33, 0:27) regardless of rounding mode.
@@ -1076,7 +1089,7 @@ function runZhlScheduleCore(params) {
         }
       }
       const mustStopDisplay = (mdCompatMode && !isFirstDecoStop) ? stopT + transitDur : stopT;
-      steps.push({ type: 'deco', depth: cur, dur: mustStopDisplay, gas: gasLabel, pO2: zhlStepPpo2(cur, stopFN2, stopFHe, 'deco'), fN2: stopFN2, fHe: stopFHe, _tissues: tissues.map(t => ({ pN2: t.pN2, pHe: t.pHe })) });
+      steps.push({ type: 'deco', depth: cur, dur: mustStopDisplay, gas: gasLabel, pO2: zhlStepPpo2(cur, stopFN2, stopFHe, 'deco'), fN2: stopFN2, fHe: stopFHe, hitSafetyGuard: hitSafetyGuard || undefined, _tissues: tissues.map(t => ({ pN2: t.pN2, pHe: t.pHe })) });
     } else if (minStopT > 0 && minStopZoneDepth !== null && cur <= minStopZoneDepth && cur !== lastStop) {
       decoZoneEntered = true;
       let stopT = 0;
@@ -1133,10 +1146,11 @@ function runZhlScheduleCore(params) {
       let transitToLastStop = 0;
       if (isDecoNeeded) {
         transitToLastStop = (stopDepths.length > 1) ? (stopDepths[stopDepths.length - 2] - lastStop) / decoRate : 0;
-        while (ceiling(tissues, lastClearGf) > lastCeilTarget + 0.01 && stopT < 180) {
+        while (ceiling(tissues, lastClearGf) > lastCeilTarget + 0.01 && stopT < CEILING_LOOP_GUARD_MIN) {
           tissues = zhlLoadConst(tissues, cur, minStopT, stopFO2, stopFHe, onLoop, 'deco');
           stopT += minStopT; rt += minStopT;
         }
+        if (stopT >= CEILING_LOOP_GUARD_MIN && ceiling(tissues, lastClearGf) > lastCeilTarget + 0.01) hitSafetyGuard = true;
         let roundedLastStop;
         {
           const totalAtLevel = Math.max(minStopT, Math.ceil((transitToLastStop + stopT) / minStopT) * minStopT);
@@ -1158,7 +1172,7 @@ function runZhlScheduleCore(params) {
         rt += stopT;
       }
       const lastStopDisplay = mdCompatMode ? stopT + transitToLastStop : stopT;
-      steps.push({ type: stopType, depth: cur, dur: lastStopDisplay, gas: gasLabel, pO2: zhlStepPpo2(cur, stopFN2, stopFHe, 'deco'), fN2: stopFN2, fHe: stopFHe, _tissues: tissues.map(t => ({ pN2: t.pN2, pHe: t.pHe })) });
+      steps.push({ type: stopType, depth: cur, dur: lastStopDisplay, gas: gasLabel, pO2: zhlStepPpo2(cur, stopFN2, stopFHe, 'deco'), fN2: stopFN2, fHe: stopFHe, hitSafetyGuard: hitSafetyGuard || undefined, _tissues: tissues.map(t => ({ pN2: t.pN2, pHe: t.pHe })) });
     }
     // No stop needed and not lastStop — continue ascending
     if (_zhlAscentFloor > 0 && cur <= _zhlAscentFloor && stopDepth <= _zhlAscentFloor) break;
@@ -1262,9 +1276,11 @@ function runZhlScheduleCore(params) {
     firstStopDepth: firstStopDepth || 0,
     finalTissues: tissues.map(t => ({ pN2: t.pN2, pHe: t.pHe || 0 })),  // for ZHL repetitive dive carry
     surfaceGF: computeSurfaceGF(tissues),
+    hitSafetyGuard: hitSafetyGuard || undefined,
   };
 
   return {
+    hitSafetyGuard,
     lastPlan,
     collapsed,
     collapsedMDP,

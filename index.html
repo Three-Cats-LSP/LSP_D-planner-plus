@@ -1659,6 +1659,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <!-- Banner — center column on desktop, full-width row on mobile -->
 <!-- Banner: fills center on desktop; own full-width row on mobile via CSS order -->
 <div id="headerBanner" style="flex:1;min-width:0;display:flex;justify-content:center;align-items:center;padding:0 8px;">
+<div id="swOptionalMissBanner" class="header-warn" style="display:none;white-space:nowrap;margin-right:8px;" title="Optional offline assets missing"></div>
 <div class="header-warn" onclick="toggleWarningModal()" style="white-space:nowrap;" title="Click to read full disclaimer">
         ⚠ Planning Aid Only
       </div>
@@ -5766,24 +5767,27 @@ function _pdfDrawSwitchRow(doc, y, layout, tr, cleanFn) {
   doc.setTextColor(0, 0, 0);
 }
 
-function buildDecoSummaryAlerts(hasDeco, endM, noDecoNote) {
+function buildDecoSummaryAlerts(hasDeco, endM, noDecoNote, hitSafetyGuard) {
   const decoAlertHtml = hasDeco
     ? '<div class="alert deco" style="margin-top:8px;"><span>⚠</span><div><strong>DECOMPRESSION DIVE.</strong> Do not skip mandatory stops. Switch gas at optimal depth shown above. Verify ppO₂ before each switch.</div></div>'
     : `<div class="alert ok" style="margin-top:8px;"><span>✓</span><div><strong>NO-DECO DIVE.</strong>${noDecoNote ? ' ' + noDecoNote : ''}</div></div>`;
+  const safetyGuardHtml = hitSafetyGuard
+    ? '<div class="alert dang" style="margin-top:8px;"><span>⚠</span><div><strong>DECO CALCULATION LIMIT.</strong> Decompression obligation exceeds the calculation limit — plan may be incomplete.</div></div>'
+    : '';
   const narcTip = '<span class="tip-icon" style="color:#fff;opacity:0.85;" onclick="showTip(_narcoticTipTitle,_narcoticTipText)"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"/><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" fill="none"/><circle cx="5.5" cy="7.4" r="0.55" fill="currentColor"/></svg></span>';
   const narcAlertHtml = endM > 40
     ? `<div class="alert" style="margin-top:8px;background:#FF4433;border-color:#111111;border-width:1px;color:#fff;font-weight:700;"><span>⚠</span><div><strong>HIGH NARCOTIC DEPTH.</strong> END exceeds 40 m equivalent. Consider a less narcotic gas mix.${narcTip}</div></div>`
     : endM > 30
       ? `<div class="alert" style="margin-top:8px;background:#FF4433;border-color:#111111;border-width:1px;color:#fff;font-weight:700;"><span>⚠</span><div><strong>NARCOTIC DEPTH WARNING.</strong> END exceeds 30 m equivalent. Consider a less narcotic gas mix.${narcTip}</div></div>`
       : '';
-  return { decoAlertHtml, narcAlertHtml };
+  return { decoAlertHtml, narcAlertHtml, safetyGuardHtml };
 }
 
-function updateDecoSummaryHtml(hasDeco, endM, noDecoNote) {
+function updateDecoSummaryHtml(hasDeco, endM, noDecoNote, hitSafetyGuard) {
   const el = document.getElementById('decoSummary');
   if (!el) return;
-  const { decoAlertHtml, narcAlertHtml } = buildDecoSummaryAlerts(hasDeco, endM, noDecoNote);
-  _pendingDecoAlerts = (decoAlertHtml || '') + (narcAlertHtml || '');
+  const { decoAlertHtml, narcAlertHtml, safetyGuardHtml } = buildDecoSummaryAlerts(hasDeco, endM, noDecoNote, hitSafetyGuard);
+  _pendingDecoAlerts = (decoAlertHtml || '') + (safetyGuardHtml || '') + (narcAlertHtml || '');
   el.innerHTML = renderDecoPlanHeaderHtml(buildDecoPlanHeaderData(), { hasDeco });
   scheduleDecoScheduleStackSync();
 }
@@ -9526,7 +9530,7 @@ function runDecoSchedule() {
   const prtColor  = prtVal < 15 ? 'var(--green)' : prtVal < 25 ? 'var(--yellow)' : prtVal < 40 ? 'var(--orange)' : 'var(--red)';
   const decoZoneDisp = formatDecoZoneStart(trueDecoZoneStart);
   const decoStopDisp = formatDecoStopDepth(firstStopDepth);
-  updateDecoSummaryHtml(hasDeco, endM, '3 min safety stop at 3 m included.');
+  updateDecoSummaryHtml(hasDeco, endM, '3 min safety stop at 3 m included.', zhlCore.hitSafetyGuard);
   tbody.innerHTML += buildPlanInfoRowHtml({
     runTime: totalRunMMSS,
     tts: ttsMMSS,
@@ -17281,6 +17285,14 @@ window.addEventListener('load', function() {
           navigator.serviceWorker.addEventListener('message', (event) => {
             if (event.data && event.data.type === 'SW_SHELL_READY') {
               localStorage.setItem(SW_VERSION_KEY, APP_VERSION);
+            }
+            if (event.data && event.data.type === 'SW_OPTIONAL_PRECACHE_MISS' && event.data.urls && event.data.urls.length) {
+              console.warn('[SW] optional precache incomplete:', event.data.urls.length, 'asset(s)');
+              const banner = document.getElementById('swOptionalMissBanner');
+              if (banner) {
+                banner.style.display = 'block';
+                banner.textContent = 'Some fonts/icons may be unavailable offline — online use is unaffected.';
+              }
             }
           });
         })

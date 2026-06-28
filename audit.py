@@ -5132,7 +5132,7 @@ else:
 
 # ── issue #99 fixes ──
 _gesp = _ccr_core_src.split("function getEffectiveSetpointAtDepth", 1)[-1][:2200] if "function getEffectiveSetpointAtDepth" in _ccr_core_src else ""
-if "depthM > deepestCross" in _gesp and "depthAtSetpointCrossing" in _gesp:
+if "depthAtSetpointCrossing" in _gesp and "if (depthM > deepestCross) return bottomSP" not in _gesp:
     ok("getEffectiveSetpointAtDepth uses depth-derived phase thresholds (issue #99 H-1 / #104 M-4)")
 else:
     fail("index.html getEffectiveSetpointAtDepth still uses pAmb/setpoint comparisons (issue #99 H-1)")
@@ -5286,7 +5286,9 @@ if "snap.surfaceIntervalMin" in js.split("function getZhlRepStateForSchedule", 1
     ok("getZhlRepStateForSchedule uses stored surfaceIntervalMin snapshot (issue #104 M-3)")
 else:
     fail("getZhlRepStateForSchedule still reads live DOM SI (issue #104 M-3)")
-if "depthM > deepestCross" in open(os.path.join(os.path.dirname(__file__), "zhl-ccr-core.js"), encoding="utf-8").read():
+_ccr128 = open(os.path.join(os.path.dirname(__file__), "zhl-ccr-core.js"), encoding="utf-8").read()
+_gesp128 = _ccr128.split("function getEffectiveSetpointAtDepth", 1)[-1][:2200] if "function getEffectiveSetpointAtDepth" in _ccr128 else ""
+if "depthAtSetpointCrossing" in _gesp128 and "if (depthM > deepestCross) return bottomSP" not in _gesp128:
     ok("getEffectiveSetpointAtDepth uses depth-derived phase thresholds (issue #104 M-4)")
 else:
     fail("getEffectiveSetpointAtDepth still compares pAmb to setpoint pressures (issue #104 M-4)")
@@ -5558,7 +5560,7 @@ if "const mMargin = mValue - P_surf" in _111_bundle:
     ok("issue #111 H-2: computeSurfaceGF uses (mValue - P_surf) denominator in bundle")
 else:
     fail("issue #111 H-2: computeSurfaceGF bundle still divides by raw mValue")
-if "depthM > deepestCross" in _111_ccr or "ZhlEngineBundle.getEffectiveSetpointAtDepth" in js:
+if ("depthAtSetpointCrossing" in _111_ccr or "ZhlEngineBundle.getEffectiveSetpointAtDepth" in js) and "if (depthM > deepestCross) return bottomSP" not in _111_ccr:
     ok("issue #111 H-3: getEffectiveSetpointAtDepth uses depth/phase thresholds (index + ccr-core)")
 else:
     fail("issue #111 H-3: getEffectiveSetpointAtDepth still compares pAmb to ppO2 setpoints")
@@ -5650,8 +5652,8 @@ else:
 # ── Issue #112: deep review faf3442 — 2 HIGH / 4 MEDIUM / 5 LOW ──
 _112_zhl = open(os.path.join(os.path.dirname(__file__), "zhl-schedule-core.js"), encoding="utf-8").read()
 _112_bundle = open(os.path.join(os.path.dirname(__file__), "zhl-engine-bundle.js"), encoding="utf-8").read()
-if "isRebreatherCircuit(ccrSettings.circuit)) _diveRuntimeMin += travelDur" in _112_zhl.split("decoZoneEntered && mdCompatMode", 1)[-1][:500]:
-    ok("issue #112 H-1: mdCompat rebreather transit advances _diveRuntimeMin when tissues skipped")
+if "isRebreatherCircuit(ccrSettings.circuit)) _ccrLoopElapsedMin += travelDur" in _112_zhl.split("decoZoneEntered && mdCompatMode", 1)[-1][:500]:
+    ok("issue #112 H-1: mdCompat rebreather transit advances _ccrLoopElapsedMin when tissues skipped")
 else:
     fail("issue #112 H-1: CCR scrubber runtime still lags on mdCompat deco transit")
 if "firstStopDepth = cur;" in _112_zhl.split("minStopZoneDepth !== null && cur <= minStopZoneDepth", 1)[-1][:800]:
@@ -5694,7 +5696,7 @@ if "prev.decoTransit = !!(prev.decoTransit || s.decoTransit)" in _112_zhl:
     ok("issue #112 L-5: merged ascent steps propagate decoTransit flag")
 else:
     fail("issue #112 L-5: ascent merge drops decoTransit on partial transit segments")
-if "isRebreatherCircuit(ccrSettings.circuit)) _diveRuntimeMin += travelDur" in _112_bundle:
+if "isRebreatherCircuit(ccrSettings.circuit)) _ccrLoopElapsedMin += travelDur" in _112_bundle:
     ok("issue #112 H-1: bundle includes mdCompat rebreather runtime sync fix")
 else:
     fail("issue #112 H-1: zhl-engine-bundle missing CCR runtime sync fix")
@@ -5737,7 +5739,7 @@ if "p.timer !== timer" in _113_bridge and "nextId = 1" not in _113_bridge.split(
     ok("issue #113 H-4: worker timeout verifies timer identity; nextId not reset on failure")
 else:
     fail("issue #113 H-4: worker bridge stale timeout can kill healthy requests")
-if "isRebreatherCircuit(ccrSettings.circuit)) _diveRuntimeMin += travelDur" in _113_zhl:
+if "isRebreatherCircuit(ccrSettings.circuit)) _ccrLoopElapsedMin += travelDur" in _113_zhl:
     ok("issue #113 M-1: mdCompat runtime advance for all rebreathers (CCR + pSCR)")
 else:
     fail("issue #113 M-1: mdCompat transit still skips pSCR runtime sync")
@@ -5845,8 +5847,8 @@ _117_cap = open(os.path.join(os.path.dirname(__file__), "capacitor-bridge.js"), 
 _117_picker = open(os.path.join(os.path.dirname(__file__), "android-select-picker.js"), encoding="utf-8").read()
 _117_sw = open(os.path.join(os.path.dirname(__file__), "sw.js"), encoding="utf-8").read()
 _117_regr = open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read()
-if "isRebreatherCircuit(ccrSettings.circuit)) _diveRuntimeMin += travelDur" in _117_zhl.split("decoZoneEntered && mdCompatMode", 1)[-1][:500]:
-    ok("issue #117 M-1: mdCompat transit advances _diveRuntimeMin for all rebreathers")
+if "isRebreatherCircuit(ccrSettings.circuit)) _ccrLoopElapsedMin += travelDur" in _117_zhl.split("decoZoneEntered && mdCompatMode", 1)[-1][:500]:
+    ok("issue #117 M-1: mdCompat transit advances _ccrLoopElapsedMin for all rebreathers")
 else:
     fail("issue #117 M-1: mdCompat transit still CCR-only for runtime sync")
 if "deferredRevokeUrls" in _117_cap and "async function readBlobFromHref" in _117_cap and "xhr.open('GET', href, false)" not in _117_cap:
@@ -6406,7 +6408,7 @@ if "endpointDepth = seg.toDepth" in _ccr_core_src.split("function saturateLinear
     ok("issue #127 M-3: saturateLinearCCR uses destination depth for setpoint on descent")
 else:
     fail("issue #127 M-3: saturateLinearCCR still uses shallow endpoint on descent")
-if "heVal <= 0 && o2 < 18" in _gas_core_js.split("function validateHypoxicDecoGas", 1)[-1][:300]:
+if "heVal <= 0 && o2 < 18" in _gas_core_js.split("function validateHypoxicDecoGas", 1)[-1][:600]:
     ok("issue #127 M-4: validateHypoxicDecoGas allows hypoxic trimix (He > 0)")
 else:
     fail("issue #127 M-4: validateHypoxicDecoGas still blocks all O2 < 18% gases")
@@ -6438,6 +6440,62 @@ if "in_template" in _parity127 and "in_block_comment" in _parity127:
     ok("issue #127 L-4: check_engine_parity extract_function_body skips string literals")
 else:
     fail("issue #127 L-4: parity extractor still blind to braces in strings")
+
+# ── Issue #128: full codebase audit b2ad2ee — 2 CRITICAL / 2 HIGH / 3 MEDIUM / 4 LOW ──
+_sw128 = open(os.path.join(os.path.dirname(__file__), "sw.js"), encoding="utf-8").read()
+_schedule128 = open(os.path.join(os.path.dirname(__file__), "zhl-schedule-core.js"), encoding="utf-8").read()
+_gesp128c = _ccr_core_src.split("function getEffectiveSetpointAtDepth", 1)[-1][:2200] if "function getEffectiveSetpointAtDepth" in _ccr_core_src else ""
+if "if (depthM > deepestCross) return bottomSP" not in _gesp128c and "depthAtSetpointCrossing" in _gesp128c:
+    ok("issue #128 C-1: getEffectiveSetpointAtDepth no longer forces bottomSP below deepest crossing")
+else:
+    fail("issue #128 C-1: getEffectiveSetpointAtDepth still uses deepestCross bottomSP shortcut")
+_inert128 = _ccr_core_src.split("function getInspiredInertPressures", 1)[-1][:1200] if "function getInspiredInertPressures" in _ccr_core_src else ""
+if "fN2d + fHe" in _inert128 and "1 - fO2" not in _inert128.split("const den", 1)[-1][:80]:
+    ok("issue #128 C-2: CCR inert PP denominator uses fN2d + fHe")
+else:
+    fail("issue #128 C-2: getInspiredInertPressures still divides by (1 - fO2)")
+if "ERR_TOTAL_EXCEEDS_100" in _gas_core_js.split("function validateHypoxicDecoGas", 1)[-1][:500]:
+    ok("issue #128 H-1: validateHypoxicDecoGas rejects O2+He > 100%")
+else:
+    fail("issue #128 H-1: validateHypoxicDecoGas missing ERR_TOTAL_EXCEEDS_100 guard")
+if "_ccrLoopElapsedMin" in _schedule128 and "_diveRuntimeMin" not in _schedule128:
+    ok("issue #128 H-2: schedule core tracks CCR-loop elapsed time explicitly")
+else:
+    fail("issue #128 H-2: _diveRuntimeMin still used without CCR-loop semantics")
+if "CEILING_LOOP_GUARD_MIN = 1440" in _schedule128 and "hitSafetyGuard" in _schedule128:
+    ok("issue #128 M-1: ceiling loop guard raised to 1440 min with hitSafetyGuard flag")
+else:
+    fail("issue #128 M-1: ceiling loop still capped at 360/180 without safety guard")
+if "Math.abs(fromDepth - toDepth) < 1e-9" in _ccr_core_src.split("function saturateLinearCCR", 1)[-1][:400]:
+    ok("issue #128 M-2: saturateLinearCCR guards constant-depth segments")
+else:
+    fail("issue #128 M-2: saturateLinearCCR missing constant-depth guard")
+if "params.decoAscentRate ?? 9" in _schedule128 and "params.surfaceAscentRate ?? 9" in _schedule128:
+    ok("issue #128 M-3: deco/surface ascent rates default to 9 m/min")
+else:
+    fail("issue #128 M-3: ascent rate params still lack nullish defaults")
+if "SW_OPTIONAL_PRECACHE_MISS" in _sw128 and "SW_OPTIONAL_PRECACHE_MISS" in js:
+    ok("issue #128 L-1: optional SW precache misses surfaced to client")
+else:
+    fail("issue #128 L-1: SW optional precache failures still silent")
+if "may be 0 for constant depth" in _physics_core_js.split("function schreinerLinear", 1)[0][-200:] + _physics_core_js.split("function schreinerLinear", 1)[-1][:120]:
+    ok("issue #128 L-2: schreinerLinear documents R=0 constant-depth usage")
+else:
+    fail("issue #128 L-2: schreinerLinear missing R=0 JSDoc")
+_enforce128 = _gas_core_js.split("function enforceMinDecoProfile", 1)[-1][:2200] if "function enforceMinDecoProfile" in _gas_core_js else ""
+_enforce_first_loop = _enforce128.split("function injectStop", 1)[0] if "function injectStop" in _enforce128 else ""
+if "function resolveGasAtDepth" not in _enforce_first_loop:
+    ok("issue #128 L-3: resolveGasAtDepth defined after first enforceMinDecoProfile loop")
+else:
+    fail("issue #128 L-3: resolveGasAtDepth still closes over partially-built result")
+if "L/min" in _ccr_core_src.split("function getCcrMetabolicO2Rate", 1)[0][-120:] + _ccr_core_src.split("function getCcrMetabolicO2Rate", 1)[-1][:200]:
+    ok("issue #128 L-4: getCcrMetabolicO2Rate documents L/min units")
+else:
+    fail("issue #128 L-4: getCcrMetabolicO2Rate missing unit JSDoc")
+if "bar/bar" in _ccr_core_src.split("function computePSCRFractions", 1)[0][-120:] + _ccr_core_src.split("function computePSCRFractions", 1)[-1][:200]:
+    ok("issue #128 L-4b: computePSCRFractions documents bar/bar ppO2 drop")
+else:
+    fail("issue #128 L-4b: computePSCRFractions missing unit JSDoc")
 
 print("=" * 60)
 
