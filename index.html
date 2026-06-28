@@ -17609,27 +17609,8 @@ window.addEventListener('load', function() {
     return q.get('regression') === '1' || q.get('massiveSuite') === '1';
   }
   const SW_VERSION_KEY = 'lspSwVersion';
-  const SW_MIGRATION_FLAG = `lspSwMigrated:${APP_VERSION}`;
-  (async () => {
-    try {
-      if (isAutomatedTestMode()) return;
-      const prev = localStorage.getItem(SW_VERSION_KEY);
-      if (prev === APP_VERSION || sessionStorage.getItem(SW_MIGRATION_FLAG) === '1') return;
-      sessionStorage.setItem(SW_MIGRATION_FLAG, '1');
-      if ('serviceWorker' in navigator) {
-        const regs = await navigator.serviceWorker.getRegistrations();
-        await Promise.all(regs.map(r => r.unregister()));
-      }
-      if (window.caches && typeof caches.keys === 'function') {
-        const keys = await caches.keys();
-        await Promise.all(keys.filter(k => /^lsp-dplanner-(ccr|plus)-v/i.test(k)).map(k => caches.delete(k)));
-      }
-      localStorage.setItem(SW_VERSION_KEY, APP_VERSION);
-      window.location.reload();
-    } catch (e) {
-      console.warn('[SW] version migration failed:', e);
-    }
-  })();
+  // Cache/worker lifecycle on version bump is owned by sw.js (activate after verified shell precache).
+  // Do NOT unregister workers or delete caches here — a failed new install would leave users offline.
 
   if ('serviceWorker' in navigator && !isAutomatedTestMode()) {
     window.addEventListener('load', () => {
@@ -17648,6 +17629,7 @@ window.addEventListener('load', function() {
           });
           let reloaded = false;
           navigator.serviceWorker.addEventListener('controllerchange', () => {
+            localStorage.setItem(SW_VERSION_KEY, APP_VERSION);
             if (reloaded) return;
             reloaded = true;
             window.location.reload();

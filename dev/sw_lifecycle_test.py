@@ -36,8 +36,12 @@ def main() -> int:
                     && swText.includes('SKIP_WAITING ignored')
                     && swText.includes('activate blocked')
                     && swText.includes('caches.delete(CACHE_VERSION)');
-                  const noBlindSkip = !idxText.includes('SKIP_WAITING');
-                  return { ok: guards && noBlindSkip, guards, noBlindSkip };
+                  const swBlock = idxText.split('PWA: service worker registration')[1] || '';
+                  const noBlindSkip = !swBlock.includes('SKIP_WAITING');
+                  const noEagerMigration = !swBlock.includes('getRegistrations()')
+                    && !swBlock.includes('caches.delete(k)');
+                  const versionOnActivate = swBlock.includes('localStorage.setItem(SW_VERSION_KEY, APP_VERSION)');
+                  return { ok: guards && noBlindSkip && noEagerMigration && versionOnActivate, guards, noBlindSkip, noEagerMigration, versionOnActivate };
                 }
                 """,
                 base,

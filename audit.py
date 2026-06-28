@@ -658,10 +658,10 @@ elif "window.VPMEngine" in js:
 else:
     fail("Bare VPMEngine reference may throw in strict scope (Issue #2)")
 
-if re.search(r"lsp-dplanner-\(ccr\|plus\)-v", html):
-    ok("SW cache migration regex covers ccr and plus prefixes (Issue #2)")
+if "getRegistrations()" not in html.split("PWA: service worker registration", 1)[-1][:3000]:
+    ok("SW cache lifecycle deferred to sw.js activate — no page-level cache wipe (Issue #2)")
 else:
-    fail("SW cache migration still only matches lsp-dplanner-ccr-v (Issue #2)")
+    fail("Page still unregisters SW or wipes caches before activation (Issue #2)")
 
 if "Mirrors VPMEngine.calculate(" not in js:
     ok("ZHLEngine header comment avoids VPMEngine.calculate linter false positive")
@@ -5756,6 +5756,14 @@ if "r.waiting.postMessage({ type: 'SKIP_WAITING' })" not in js and "SW update in
     ok("issue #116 M-1: index.html no longer forces SKIP_WAITING on waiting worker")
 else:
     fail("issue #116 M-1: index.html still forces SKIP_WAITING bypassing precache gate")
+if "getRegistrations()" not in js.split("PWA: service worker registration", 1)[-1][:2500] and "caches.delete(k)" not in js.split("PWA: service worker registration", 1)[-1][:2500]:
+    ok("issue #116 M-1: index.html no eager SW unregister/cache wipe on version bump")
+else:
+    fail("issue #116 M-1: index.html still unregisters workers or deletes caches before SW activation")
+if "localStorage.setItem(SW_VERSION_KEY, APP_VERSION)" in js.split("controllerchange", 1)[-1][:400]:
+    ok("issue #116 M-1: SW version key updates only after controllerchange")
+else:
+    fail("issue #116 M-1: SW version key still updated before successful activation")
 if "issue116" in _116_regr:
     ok("issue #116: engine regression covers custom hypoxic deco + VPM cap path")
 else:
