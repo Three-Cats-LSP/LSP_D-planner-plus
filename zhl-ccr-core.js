@@ -1,6 +1,6 @@
 /**
  * CCR Bühlmann tissue loading (Tier 3) — pure functions, no DOM.
- * Included in zhl-engine-bundle.js preamble via tools/build_zhl_bundle.py.
+ * Included in zhl-engine-bundle.js via tools/build_zhl_bundle.py.
  */
 function canonicalCircuit(circuit) {
   if (circuit == null || circuit === '') return 'OC';

@@ -655,6 +655,34 @@ ENGINE_SUITE_JS = """
     };
   })();
 
+  // ── E10e: engine dedup — index delegates match ZhlEngineBundle API ─────
+  out.sections.engineDedup = (() => {
+    const b = window.ZhlEngineBundle;
+    if (!b || typeof b.getEffectivePpo2 !== 'function' || typeof b.normalizeCCRSettings !== 'function') {
+      return { ok: false, reason: 'missing ZhlEngineBundle CCR API' };
+    }
+    const env = typeof getZhlEnvironment === 'function' ? getZhlEnvironment() : {
+      altSurfaceP: typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325,
+      barPerMetre: typeof BAR_PER_METRE !== 'undefined' ? BAR_PER_METRE : 0.1,
+      waterVapor: typeof WATER_VAPOR !== 'undefined' ? WATER_VAPOR : 0.0627,
+      altAcclimatized: true,
+      allowO2AtMOD: true,
+    };
+    b.applyEnvironment(env);
+    const ccr = { circuit: 'pSCR', scrLoopVolume: 7, scrMetabolicO2: 1.5, bailout: false };
+    const pAmb = 3.0;
+    const viaDelegate = typeof getEffectivePpo2 === 'function'
+      ? getEffectivePpo2(pAmb, 0, 0.21, ccr, 20, 0.35) : null;
+    const viaBundle = b.getEffectivePpo2(pAmb, 0, 0.21, b.normalizeCCRSettings(ccr), 20, 0.35);
+    const ppo2Ok = viaDelegate != null && Math.abs(viaDelegate - viaBundle) < 1e-6;
+    const lv = [{ depth: 40, time: 25, o2: 21, he: 0 }];
+    const syncRt = (typeof ZHLEngine !== 'undefined' && ZHLEngine.calculate)
+      ? (ZHLEngine.calculate(lv, [], { circuit: 'CCR', setpoint: 1.3, bailout: false }) || {}).totalRuntime : null;
+    const bundleRt = b.calculate(lv, [], { circuit: 'CCR', setpoint: 1.3, bailout: false }, b.splitZhlProfileLevels(lv), env).totalRuntime;
+    const scheduleOk = syncRt != null && bundleRt != null && Math.abs(syncRt - bundleRt) < 0.5;
+    return { ok: ppo2Ok && scheduleOk, ppo2Ok, scheduleOk, viaDelegate, viaBundle, syncRt, bundleRt };
+  })();
+
   // ── E11: issue #112 planner BT vs descent validation ───────────────────
   out.sections.issue112PlannerBt = (() => {
     const depthEl = document.getElementById('depth');
@@ -928,6 +956,8 @@ def run_suite(page) -> dict:
     assert_true(i123.get("ok"), "issue #123 engine audit fixes (CCR shallow/pSCR/VPM)", str(i123))
     i124 = s.get("issue124", {})
     assert_true(i124.get("ok"), "issue #124 audit fixes (ceiling/gfAt/contingency/pSCR/UI)", str(i124))
+    dedup = s.get("engineDedup", {})
+    assert_true(dedup.get("ok"), "index CCR delegates match ZhlEngineBundle (engine dedup)", str(dedup))
 
     for name, r in s["rebreather"].items():
         assert_true(fin(r), f"Rebreather {name} produces schedule", str(r)[:120])

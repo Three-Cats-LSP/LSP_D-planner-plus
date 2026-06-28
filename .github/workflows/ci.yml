@@ -47,6 +47,7 @@ jobs:
         run: |
           python tools/build_zhl_bundle.py
           python tools/build_vpm_bundle.py
+          python tools/check_engine_parity.py
           git diff --exit-code zhl-engine-bundle.js vpm-engine-bundle.js
 
   export-regression:

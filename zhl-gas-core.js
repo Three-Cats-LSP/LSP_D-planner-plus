@@ -1,0 +1,141 @@
+/**
+ * ZHL gas selection and min-deco profile helpers (Tier 3) — pure functions.
+ * Concatenated into zhl-engine-bundle.js via tools/build_zhl_bundle.py.
+ */
+function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackGas, fallbackFN2, fallbackFHe) {
+  if (!enabled || (!min9m && !min6m)) return steps;
+  const depth9 = 9;
+  const depth6 = 6;
+  const FT_PER_M = 3.28084;
+
+  function stepDepthToM(s) {
+    const raw = s.depth ?? s.from ?? s.to;
+    if (raw == null) return null;
+    return isMetric ? raw : raw / FT_PER_M;
+  }
+  function matchesStdMinStop(depthM, targetM) {
+    return depthM != null && Math.abs(depthM - targetM) < 0.25;
+  }
+
+  const result = [];
+  const enforced = { 9: false, 6: false };
+
+  for (const s of steps) {
+    if (s.type === 'deco' || s.type === 'safety') {
+      const depthM = stepDepthToM(s);
+      if (matchesStdMinStop(depthM, depth9) && min9m > 0) {
+        result.push({ ...s, type: 'deco', dur: Math.max(s.dur, min9m) });
+        enforced[9] = true;
+        continue;
+      }
+      if (matchesStdMinStop(depthM, depth6) && min6m > 0) {
+        result.push({ ...s, type: 'deco', dur: Math.max(s.dur, min6m) });
+        enforced[6] = true;
+        continue;
+      }
+    }
+    result.push({ ...s });
+  }
+
+  function resolveGasAtDepth(targetDepthM) {
+    let activeGas = fallbackGas || '';
+    let activeFN2 = fallbackFN2 ?? null;
+    let activeFHe = fallbackFHe ?? 0;
+    for (const s of result) {
+      if (!s.gas || s.gas.trim() === '') continue;
+      const stepDepthM = stepDepthToM(s);
+      if (stepDepthM == null) continue;
+      if (stepDepthM >= targetDepthM) {
+        activeGas = s.gas;
+        activeFN2 = s.fN2 ?? activeFN2;
+        activeFHe = s.fHe ?? activeFHe ?? 0;
+      }
+    }
+    return { gas: activeGas, fN2: activeFN2, fHe: activeFHe ?? 0 };
+  }
+
+  function injectStop(targetDepthM, minDur) {
+    const targetDisplay = isMetric ? targetDepthM : Math.round(targetDepthM * 3.28084);
+    let insertIdx = result.length;
+    for (let i = 0; i < result.length; i++) {
+      const s = result[i];
+      if (s.type === 'descent' || s.type === 'bottom') continue;
+      const rawD = s.type === 'ascent' ? (s.to ?? s.depth) : s.depth;
+      if (rawD == null) continue;
+      const d = isMetric ? rawD : rawD / FT_PER_M;
+      if (d != null && d < targetDepthM) { insertIdx = i; break; }
+    }
+    const { gas, fN2, fHe } = resolveGasAtDepth(targetDepthM);
+    const straddle = result[insertIdx];
+    if (straddle && straddle.type === 'ascent') {
+      const sFromM = stepDepthToM({ depth: straddle.from, from: straddle.from, to: straddle.to });
+      const sToM = stepDepthToM({ depth: straddle.to, from: straddle.from, to: straddle.to });
+      if (sFromM > targetDepthM && sToM < targetDepthM) {
+        const lowerDur = straddle.dur * (sFromM - targetDepthM) / (sFromM - sToM);
+        const upperDur = straddle.dur * (targetDepthM - sToM) / (sFromM - sToM);
+        const lowerPiece = { ...straddle, to: targetDisplay, dur: lowerDur };
+        const upperPiece = { ...straddle, from: targetDisplay, dur: upperDur };
+        const injectRow = {
+          type: 'deco',
+          depth: targetDisplay,
+          to: targetDisplay,
+          dur: minDur,
+          gas,
+          fN2,
+          fHe,
+          pO2: null,
+        };
+        result.splice(insertIdx, 1, lowerPiece, injectRow, upperPiece);
+        return;
+      }
+    }
+    result.splice(insertIdx, 0, {
+      type: 'deco',
+      depth: targetDisplay,
+      to: targetDisplay,
+      dur: minDur,
+      gas,
+      fN2,
+      fHe,
+      pO2: null,
+    });
+  }
+
+  if (!enforced[9] && min9m > 0) injectStop(depth9, min9m);
+  if (!enforced[6] && min6m > 0) injectStop(depth6, min6m);
+
+  return result;
+}
+
+function getActiveGas(curDepthM, bottomFN2, decoGases, getPPO2LimitFn, bottomLabel) {
+  let best = null;
+  let bestFO2 = -1;
+  for (const dg of decoGases) {
+    if (curDepthM > dg.depth) continue;
+    const fO2 = dg.fO2 != null ? dg.fO2 : Math.max(0, 1 - dg.fN2 - (dg.fHe || 0));
+    const isPureO2 = fO2 >= 0.995 && allowO2AtMOD;
+    if (!isPureO2) {
+      const limit = getPPO2LimitFn ? getPPO2LimitFn(dg.fN2) : 1.6;
+      const ppO2AtCur = (altSurfaceP + curDepthM * BAR_PER_METRE) * fO2;
+      if (ppO2AtCur > limit + 0.001) continue;
+    }
+    if (fO2 > bestFO2) {
+      best = dg;
+      bestFO2 = fO2;
+    }
+  }
+  return best || { fN2: bottomFN2, fHe: 0, label: bottomLabel || 'Bottom' };
+}
+
+function ppO2Check(depthM, fN2, fHe, opts) {
+  const fHeVal = fHe || 0;
+  const o2frac = Math.max(0, 1 - fN2 - fHeVal);
+  const pAmb = altSurfaceP + depthM * BAR_PER_METRE;
+  if (opts && opts.onLoop && opts.ccr && isRebreatherCircuit(opts.ccr.circuit) && !opts.ccr.bailout) {
+    const fO2 = opts.fO2 != null ? opts.fO2 : o2frac;
+    const surfP = opts.surfP != null ? opts.surfP : altSurfaceP;
+    const sp = opts.setpoint != null ? opts.setpoint : getEffectiveSetpointAtDepth(depthM, opts.ccr, surfP);
+    return getEffectivePpo2(pAmb, sp, fO2, opts.ccr, depthM, fHeVal).toFixed(2);
+  }
+  return (pAmb * o2frac).toFixed(2);
+}

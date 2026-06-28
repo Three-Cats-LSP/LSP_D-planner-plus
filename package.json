@@ -4,6 +4,8 @@
   "description": "LSP D-Planner+ — unified OC + CCR decompression planning app",
   "private": true,
   "scripts": {
+    "build:bundles": "python tools/build_zhl_bundle.py && python tools/build_vpm_bundle.py",
+    "check:engine-parity": "python tools/check_engine_parity.py",
     "vendor:offline": "python tools/vendor_offline_assets.py",
     "sync:www": "python tools/sync_www.py",
     "cap:sync": "npm run sync:www && npx cap sync android",

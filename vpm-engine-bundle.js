@@ -86,6 +86,88 @@ const VPMEngine = (() => {
         const alt = settings.altitude || 0;
         return 1.01325 * Math.exp(-alt / 8434);
     }
+    function zhlBundle() {
+        if (typeof ZhlEngineBundle !== 'undefined') return ZhlEngineBundle;
+        if (typeof window !== 'undefined' && window.ZhlEngineBundle) return window.ZhlEngineBundle;
+        return null;
+    }
+    function syncZhlEnvFromSettings(settings) {
+        const b = zhlBundle();
+        if (!b || typeof b.applyEnvironment !== 'function' || !settings) return;
+        b.applyEnvironment({
+            altSurfaceP: getSurfacePressure(settings),
+            barPerMetre: settings._barPerMetre != null ? settings._barPerMetre
+                : (typeof BAR_PER_METRE !== 'undefined' ? BAR_PER_METRE : 0.1),
+            waterVapor: settings._waterVapor != null ? settings._waterVapor
+                : (typeof WATER_VAPOR !== 'undefined' ? WATER_VAPOR : 0.0627),
+            altAcclimatized: settings.acclimatized !== false,
+            allowO2AtMOD: true,
+        });
+    }
+    function ccrNormalize(settings) {
+        const b = zhlBundle();
+        if (b && typeof b.normalizeCCRSettings === 'function') return b.normalizeCCRSettings(settings);
+        if (typeof mergeCCRSettings === 'function') return mergeCCRSettings(settings);
+        return settings;
+    }
+    function ccrSetpointAtDepth(depthM, ccr, surfP, phase) {
+        const b = zhlBundle();
+        if (b && typeof b.getEffectiveSetpointAtDepth === 'function') {
+            syncZhlEnvFromSettings({ altitude: 0, acclimatized: true, _barPerMetre: typeof BAR_PER_METRE !== 'undefined' ? BAR_PER_METRE : 0.1 });
+            if (typeof b.applyEnvironment === 'function') {
+                b.applyEnvironment({
+                    altSurfaceP: surfP,
+                    barPerMetre: typeof BAR_PER_METRE !== 'undefined' ? BAR_PER_METRE : 0.1,
+                    waterVapor: typeof WATER_VAPOR !== 'undefined' ? WATER_VAPOR : 0.0627,
+                    altAcclimatized: true,
+                    allowO2AtMOD: true,
+                });
+            }
+            return b.getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase);
+        }
+        if (typeof getEffectiveSetpointAtDepth === 'function') {
+            return getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase);
+        }
+        return 0;
+    }
+    function ccrSchreinerParams(pAmbStart, setpoint, fO2, fHe, pressureRate, ccr) {
+        const b = zhlBundle();
+        if (b && typeof b.getCCRInertSchreinerParams === 'function') {
+            syncZhlEnvFromSettings({ altitude: 0, acclimatized: true });
+            return b.getCCRInertSchreinerParams(pAmbStart, setpoint, fO2, fHe, pressureRate, ccr);
+        }
+        if (typeof getCCRInertSchreinerParams === 'function') {
+            return getCCRInertSchreinerParams(pAmbStart, setpoint, fO2, fHe, pressureRate, ccr);
+        }
+        const fN2 = Math.max(0, 1 - fO2 - fHe);
+        const ppH2O = typeof WATER_VAPOR !== 'undefined' ? WATER_VAPOR : 0.0627;
+        return {
+            inspN2Start: (pAmbStart - ppH2O) * fN2,
+            inspHeStart: (pAmbStart - ppH2O) * fHe,
+            rN2: fN2 * pressureRate,
+            rHe: fHe * pressureRate,
+        };
+    }
+    function ccrSplitSegmentAtSetpoint(fromDepth, toDepth, setpoint, surfP) {
+        const b = zhlBundle();
+        if (b && typeof b.splitSegmentAtSetpoint === 'function') {
+            syncZhlEnvFromSettings({ altitude: 0, acclimatized: true });
+            if (typeof b.applyEnvironment === 'function') {
+                b.applyEnvironment({
+                    altSurfaceP: surfP,
+                    barPerMetre: typeof BAR_PER_METRE !== 'undefined' ? BAR_PER_METRE : 0.1,
+                    waterVapor: typeof WATER_VAPOR !== 'undefined' ? WATER_VAPOR : 0.0627,
+                    altAcclimatized: true,
+                    allowO2AtMOD: true,
+                });
+            }
+            return b.splitSegmentAtSetpoint(fromDepth, toDepth, setpoint, surfP);
+        }
+        if (typeof splitSegmentAtSetpoint === 'function') {
+            return splitSegmentAtSetpoint(fromDepth, toDepth, setpoint, surfP);
+        }
+        return [{ fromDepth, toDepth }];
+    }
     function getAmbientPressure(depth, settings) {
         return getSurfacePressure(settings) + depth / getSLP(settings);
     }
@@ -333,7 +415,7 @@ const VPMEngine = (() => {
             scrMetabolicO2: settings.scrMetabolicO2,
             scrRuntimeMin: settings._scrRuntimeMin || 0,
         };
-        const segments = splitSegmentAtSetpoint(startDepth, endDepth, setpoint, surfP);
+        const segments = ccrSplitSegmentAtSetpoint(startDepth, endDepth, setpoint, surfP);
         let elapsed = 0;
         for (const seg of segments) {
             const segTime = Math.abs(seg.toDepth - seg.fromDepth) / rate;
@@ -343,8 +425,8 @@ const VPMEngine = (() => {
             const pressureRate = (pAmbEnd - pAmbStart) / segTime;
             const ascending = seg.toDepth < seg.fromDepth;
             const endpointDepth = ascending ? seg.toDepth : seg.fromDepth;
-            const segSP = getEffectiveSetpointAtDepth(endpointDepth, ccr, surfP);
-            const params = getCCRInertSchreinerParams(pAmbStart, segSP, o2Frac, heFrac, pressureRate, { ...ccr, setpoint: segSP });
+            const segSP = ccrSetpointAtDepth(endpointDepth, ccr, surfP);
+            const params = ccrSchreinerParams(pAmbStart, segSP, o2Frac, heFrac, pressureRate, { ...ccr, setpoint: segSP });
             for (let i = 0; i < NC; i++) {
                 const kN2 = Math.LN2 / ZHL16C_N2[i].ht;
                 const kHe = Math.LN2 / ZHL16C_He[i].ht;
@@ -784,12 +866,12 @@ const VPMEngine = (() => {
             setpoint: settings?.setpoint ?? 1.3,
             bailout: false,
         };
-        return getEffectiveSetpointAtDepth(depthM != null ? depthM : 0, ccr, surfP, phase);
+        return ccrSetpointAtDepth(depthM != null ? depthM : 0, ccr, surfP, phase);
     }
     function vpmSetpointAtDepth(depthM, phase, forcedOC, vpmSettings) {
         const cfg = vpmSettings || {};
         if (forcedOC || !isRebreatherCircuit(cfg.circuit) || cfg.bailout) return 0;
-        return getEffectiveSetpointAtDepth(
+        return ccrSetpointAtDepth(
             depthM != null ? depthM : 0,
             {
                 circuit: cfg.circuit || 'CCR',
@@ -805,14 +887,21 @@ const VPMEngine = (() => {
     }
     function vpmAccumPpo2(pAmb, sp, fO2, fHe, settings, depthM, useOC) {
         if (sp > 0) return Math.min(sp, pAmb);
-        if (!useOC && String(settings.circuit || '').trim().toUpperCase() === 'PSCR' && !settings.bailout && typeof getEffectivePpo2 === 'function') {
-            const ccr = mergeCCRSettings({
+        if (!useOC && String(settings.circuit || '').trim().toUpperCase() === 'PSCR' && !settings.bailout) {
+            const ccr = ccrNormalize({
                 ...settings,
                 circuit: 'pSCR',
                 bailout: false,
                 scrRuntimeMin: settings._scrRuntimeMin || 0,
             });
-            return getEffectivePpo2(pAmb, 0, fO2, ccr, depthM, fHe);
+            const b = zhlBundle();
+            if (b && typeof b.getEffectivePpo2 === 'function') {
+                syncZhlEnvFromSettings(settings);
+                return b.getEffectivePpo2(pAmb, 0, fO2, ccr, depthM, fHe);
+            }
+            if (typeof getEffectivePpo2 === 'function') {
+                return getEffectivePpo2(pAmb, 0, fO2, ccr, depthM, fHe);
+            }
         }
         return fO2 * pAmb;
     }

@@ -5,145 +5,145 @@
 (function (global) {
   'use strict';
 
-  const ZHL16C = [
-    [5.0,1.2599,0.5050],[8.0,1.0000,0.6514],[12.5,0.8618,0.7222],[18.5,0.7562,0.7825],
-    [27.0,0.6200,0.8126],[38.3,0.5043,0.8434],[54.3,0.4410,0.8693],[77.0,0.4000,0.8910],
-    [109.0,0.3750,0.9092],[146.0,0.3500,0.9222],[187.0,0.3295,0.9319],[239.0,0.3065,0.9403],
-    [305.0,0.2835,0.9477],[390.0,0.2610,0.9544],[498.0,0.2480,0.9602],[635.0,0.2327,0.9653],
-  ];
-  const ZHL16C_HE_HT_BAKER = [1.88,3.02,4.72,6.99,10.21,14.48,20.53,29.11,41.20,55.19,70.69,90.34,115.29,147.42,188.24,240.03];
-  const ZHL16C_HE_HT_BUHL2003 = [1.51,3.02,4.72,6.99,10.21,14.48,20.53,29.11,41.20,55.19,70.69,90.34,115.29,147.42,188.24,240.03];
-  let ZHL16C_HE_HT = ZHL16C_HE_HT_BAKER.slice();
-  const ZHL16C_HE_AB = [
-    [1.7424,0.4245],[1.3830,0.5747],[1.1919,0.6527],[1.0458,0.7223],[0.9220,0.7582],[0.8205,0.7957],
-    [0.7305,0.8279],[0.6502,0.8553],[0.5950,0.8757],[0.5545,0.8903],[0.5333,0.8997],[0.5189,0.9073],
-    [0.5181,0.9122],[0.5176,0.9171],[0.5172,0.9217],[0.5119,0.9267],
-  ];
-  const OTU_EXPONENT = 0.8333;
-  const SEA_LEVEL_P = 1.01325;
-  const PSCR_MIN_PPO2 = 0.16;
+const ZHL16C = [
+  [5.0,1.2599,0.5050],[8.0,1.0000,0.6514],[12.5,0.8618,0.7222],[18.5,0.7562,0.7825],
+  [27.0,0.6200,0.8126],[38.3,0.5043,0.8434],[54.3,0.4410,0.8693],[77.0,0.4000,0.8910],
+  [109.0,0.3750,0.9092],[146.0,0.3500,0.9222],[187.0,0.3295,0.9319],[239.0,0.3065,0.9403],
+  [305.0,0.2835,0.9477],[390.0,0.2610,0.9544],[498.0,0.2480,0.9602],[635.0,0.2327,0.9653],
+];
+const ZHL16C_HE_HT_BAKER = [1.88,3.02,4.72,6.99,10.21,14.48,20.53,29.11,41.20,55.19,70.69,90.34,115.29,147.42,188.24,240.03];
+const ZHL16C_HE_HT_BUHL2003 = [1.51,3.02,4.72,6.99,10.21,14.48,20.53,29.11,41.20,55.19,70.69,90.34,115.29,147.42,188.24,240.03];
+let ZHL16C_HE_HT = ZHL16C_HE_HT_BAKER.slice();
+const ZHL16C_HE_AB = [
+  [1.7424,0.4245],[1.3830,0.5747],[1.1919,0.6527],[1.0458,0.7223],[0.9220,0.7582],[0.8205,0.7957],
+  [0.7305,0.8279],[0.6502,0.8553],[0.5950,0.8757],[0.5545,0.8903],[0.5333,0.8997],[0.5189,0.9073],
+  [0.5181,0.9122],[0.5176,0.9171],[0.5172,0.9217],[0.5119,0.9267],
+];
+const OTU_EXPONENT = 0.8333;
+const SEA_LEVEL_P = 1.01325;
+const PSCR_MIN_PPO2 = 0.16;
 
-  let altSurfaceP = SEA_LEVEL_P;
-  let BAR_PER_METRE = 0.1;
-  let WATER_VAPOR = 0.0627;
-  let altAcclimatized = true;
-  let allowO2AtMOD = true;
+let altSurfaceP = SEA_LEVEL_P;
+let BAR_PER_METRE = 0.1;
+let WATER_VAPOR = 0.0627;
+let altAcclimatized = true;
+let allowO2AtMOD = true;
 
-  function applyEnvironment(env) {
-    env = env || {};
-    altSurfaceP = env.altSurfaceP ?? SEA_LEVEL_P;
-    BAR_PER_METRE = env.barPerMetre ?? 0.1;
-    WATER_VAPOR = env.waterVapor ?? 0.0627;
-    altAcclimatized = env.altAcclimatized !== false;
-    allowO2AtMOD = env.allowO2AtMOD !== false;
-  }
+function applyEnvironment(env) {
+  env = env || {};
+  altSurfaceP = env.altSurfaceP ?? SEA_LEVEL_P;
+  BAR_PER_METRE = env.barPerMetre ?? 0.1;
+  WATER_VAPOR = env.waterVapor ?? 0.0627;
+  altAcclimatized = env.altAcclimatized !== false;
+  allowO2AtMOD = env.allowO2AtMOD !== false;
+}
 
-  function defaultEnvironment() {
-    return {
-      altSurfaceP: SEA_LEVEL_P,
-      barPerMetre: 0.1,
-      waterVapor: 0.0627,
-      altAcclimatized: true,
-      allowO2AtMOD: true,
-    };
-  }
+function defaultEnvironment() {
+  return {
+    altSurfaceP: SEA_LEVEL_P,
+    barPerMetre: 0.1,
+    waterVapor: 0.0627,
+    altAcclimatized: true,
+    allowO2AtMOD: true,
+  };
+}
 
-  function setHeHalfTimeMode(mode) {
-    const src = mode === 'buhl2003' ? ZHL16C_HE_HT_BUHL2003 : ZHL16C_HE_HT_BAKER;
-    for (let i = 0; i < 16; i++) ZHL16C_HE_HT[i] = src[i];
-  }
+function setHeHalfTimeMode(mode) {
+  const src = mode === 'buhl2003' ? ZHL16C_HE_HT_BUHL2003 : ZHL16C_HE_HT_BAKER;
+  for (let i = 0; i < 16; i++) ZHL16C_HE_HT[i] = src[i];
+}
 
-  function depthBar(m) { return altSurfaceP + m * BAR_PER_METRE; }
-  function schreiner(p0, pGas, ht, t) { return pGas + (p0 - pGas) * Math.exp(-Math.LN2 / ht * t); }
-  function schreinerLinear(p0, fN2, ht, t, p0Amb, R) {
-    const k = Math.LN2 / ht;
-    const piN2 = (p0Amb - WATER_VAPOR) * fN2;
-    const rN2 = R * fN2;
-    return piN2 + rN2 * (t - 1 / k) - (piN2 - p0 - rN2 / k) * Math.exp(-k * t);
-  }
+function depthBar(m) { return altSurfaceP + m * BAR_PER_METRE; }
+function schreiner(p0, pGas, ht, t) { return pGas + (p0 - pGas) * Math.exp(-Math.LN2 / ht * t); }
+function schreinerLinear(p0, fN2, ht, t, p0Amb, R) {
+  const k = Math.LN2 / ht;
+  const piN2 = (p0Amb - WATER_VAPOR) * fN2;
+  const rN2 = R * fN2;
+  return piN2 + rN2 * (t - 1 / k) - (piN2 - p0 - rN2 / k) * Math.exp(-k * t);
+}
 
-  function initTissues() {
-    const surfP = altAcclimatized ? altSurfaceP : SEA_LEVEL_P;
-    const pN2 = (surfP - WATER_VAPOR) * 0.7902;
-    return ZHL16C.map(() => ({ pN2, pHe: 0 }));
-  }
+function initTissues() {
+  const surfP = altAcclimatized ? altSurfaceP : SEA_LEVEL_P;
+  const pN2 = (surfP - WATER_VAPOR) * 0.7902;
+  return ZHL16C.map(() => ({ pN2, pHe: 0 }));
+}
 
-  function saturateLinear(tissues, fromDepth, toDepth, t, fN2, fHe) {
-    if (t <= 0) return tissues;
-    const p0Amb = depthBar(fromDepth);
-    const pEndAmb = depthBar(toDepth);
-    const R = (pEndAmb - p0Amb) / t;
-    const fH = fHe || 0;
-    return tissues.map((t0, i) => ({
-      pN2: schreinerLinear(t0.pN2, fN2, ZHL16C[i][0], t, p0Amb, R),
-      pHe: fH > 0 ? schreinerLinear(t0.pHe, fH, ZHL16C_HE_HT[i], t, p0Amb, R) : t0.pHe,
-    }));
-  }
+function saturateLinear(tissues, fromDepth, toDepth, t, fN2, fHe) {
+  if (t <= 0) return tissues;
+  const p0Amb = depthBar(fromDepth);
+  const pEndAmb = depthBar(toDepth);
+  const R = (pEndAmb - p0Amb) / t;
+  const fH = fHe || 0;
+  return tissues.map((t0, i) => ({
+    pN2: schreinerLinear(t0.pN2, fN2, ZHL16C[i][0], t, p0Amb, R),
+    pHe: fH > 0 ? schreinerLinear(t0.pHe, fH, ZHL16C_HE_HT[i], t, p0Amb, R) : t0.pHe,
+  }));
+}
 
-  function saturate(tissues, depthM, t, fN2, fHe) {
-    const pAmb = depthBar(depthM);
-    const pN2insp = (pAmb - WATER_VAPOR) * fN2;
-    const pHeinsp = (pAmb - WATER_VAPOR) * (fHe || 0);
-    return tissues.map((t0, i) => ({
-      pN2: schreiner(t0.pN2, pN2insp, ZHL16C[i][0], t),
-      pHe: schreiner(t0.pHe, pHeinsp, ZHL16C_HE_HT[i], t),
-    }));
-  }
+function saturate(tissues, depthM, t, fN2, fHe) {
+  const pAmb = depthBar(depthM);
+  const pN2insp = (pAmb - WATER_VAPOR) * fN2;
+  const pHeinsp = (pAmb - WATER_VAPOR) * (fHe || 0);
+  return tissues.map((t0, i) => ({
+    pN2: schreiner(t0.pN2, pN2insp, ZHL16C[i][0], t),
+    pHe: schreiner(t0.pHe, pHeinsp, ZHL16C_HE_HT[i], t),
+  }));
+}
 
-  function ceiling(tissues, gfHigh) {
-    if (!(gfHigh > 0)) return 0;
-    let maxC = 0;
-    tissues.forEach((t0, i) => {
-      const pN2 = t0.pN2;
-      const pHe = t0.pHe || 0;
-      const pTotal = pN2 + pHe;
-      let a, b;
-      if (pHe > 0 && pTotal > 0) {
-        a = (pN2 * ZHL16C[i][1] + pHe * ZHL16C_HE_AB[i][0]) / pTotal;
-        b = (pN2 * ZHL16C[i][2] + pHe * ZHL16C_HE_AB[i][1]) / pTotal;
-      } else {
-        [, a, b] = ZHL16C[i];
-      }
-      const pAmbMin = (pTotal - gfHigh * a) / (1 - gfHigh + gfHigh / b);
-      const cM = Math.max(0, (pAmbMin - altSurfaceP) / BAR_PER_METRE);
-      if (cM > maxC) maxC = cM;
-    });
-    return maxC;
-  }
+function ceiling(tissues, gfHigh) {
+  if (!(gfHigh > 0)) return 0;
+  let maxC = 0;
+  tissues.forEach((t0, i) => {
+    const pN2 = t0.pN2;
+    const pHe = t0.pHe || 0;
+    const pTotal = pN2 + pHe;
+    let a, b;
+    if (pHe > 0 && pTotal > 0) {
+      a = (pN2 * ZHL16C[i][1] + pHe * ZHL16C_HE_AB[i][0]) / pTotal;
+      b = (pN2 * ZHL16C[i][2] + pHe * ZHL16C_HE_AB[i][1]) / pTotal;
+    } else {
+      [, a, b] = ZHL16C[i];
+    }
+    const pAmbMin = (pTotal - gfHigh * a) / (1 - gfHigh + gfHigh / b);
+    const cM = Math.max(0, (pAmbMin - altSurfaceP) / BAR_PER_METRE);
+    if (cM > maxC) maxC = cM;
+  });
+  return maxC;
+}
 
-  function computeSurfaceGF(tissues) {
-    if (!tissues || !tissues.length) return null;
-    const P_surf = altSurfaceP;
-    let maxGF = -Infinity;
-    tissues.forEach((t, i) => {
-      const pTotal = (t.pN2 || 0) + (t.pHe || 0);
-      if (pTotal <= 0) return;
-      let a, b;
-      const pN2 = t.pN2 || 0, pHe = t.pHe || 0;
-      if (pHe > 0 && pTotal > 0) {
-        a = (pN2 * ZHL16C[i][1] + pHe * ZHL16C_HE_AB[i][0]) / pTotal;
-        b = (pN2 * ZHL16C[i][2] + pHe * ZHL16C_HE_AB[i][1]) / pTotal;
-      } else {
-        [, a, b] = ZHL16C[i];
-      }
-      const mValue = a + P_surf / b;
-      const mMargin = mValue - P_surf;
-      if (mMargin <= 0) return;
-      const gf = (pTotal - P_surf) / mMargin;
-      if (gf > maxGF) maxGF = gf;
-    });
-    return maxGF === -Infinity ? 0 : Math.max(0, maxGF * 100);
-  }
+function computeSurfaceGF(tissues) {
+  if (!tissues || !tissues.length) return null;
+  const P_surf = altSurfaceP;
+  let maxGF = -Infinity;
+  tissues.forEach((t, i) => {
+    const pTotal = (t.pN2 || 0) + (t.pHe || 0);
+    if (pTotal <= 0) return;
+    let a, b;
+    const pN2 = t.pN2 || 0, pHe = t.pHe || 0;
+    if (pHe > 0 && pTotal > 0) {
+      a = (pN2 * ZHL16C[i][1] + pHe * ZHL16C_HE_AB[i][0]) / pTotal;
+      b = (pN2 * ZHL16C[i][2] + pHe * ZHL16C_HE_AB[i][1]) / pTotal;
+    } else {
+      [, a, b] = ZHL16C[i];
+    }
+    const mValue = a + P_surf / b;
+    const mMargin = mValue - P_surf;
+    if (mMargin <= 0) return;
+    const gf = (pTotal - P_surf) / mMargin;
+    if (gf > maxGF) maxGF = gf;
+  });
+  return maxGF === -Infinity ? 0 : Math.max(0, maxGF * 100);
+}
 
-  function ambientCrossingDepth(tissues) {
-    let maxD = 0;
-    tissues.forEach(t0 => {
-      const pTotal = t0.pN2 + (t0.pHe || 0);
-      const d = (pTotal - altSurfaceP) / BAR_PER_METRE;
-      if (d > maxD) maxD = d;
-    });
-    return Math.max(0, maxD);
-  }
+function ambientCrossingDepth(tissues) {
+  let maxD = 0;
+  tissues.forEach(t0 => {
+    const pTotal = t0.pN2 + (t0.pHe || 0);
+    const d = (pTotal - altSurfaceP) / BAR_PER_METRE;
+    if (d > maxD) maxD = d;
+  });
+  return Math.max(0, maxD);
+}
 
 
 function canonicalCircuit(circuit) {
@@ -520,53 +520,10 @@ function getEffectivePpo2(pAmb, setpoint, fO2, ccr, depthM, fHe) {
 }
 
 
-function getActiveGas(curDepthM, bottomFN2, decoGases, getPPO2LimitFn, bottomLabel) {
-  let best = null;
-  let bestFO2 = -1;
-  for (const dg of decoGases) {
-    if (curDepthM > dg.depth) continue;
-    // fO2 = 1-fN2-fHe for trimix; dg.fO2 is stored when available (Bug fix: 1-fN2 wrong for trimix)
-    const fO2 = dg.fO2 != null ? dg.fO2 : Math.max(0, 1 - dg.fN2 - (dg.fHe || 0));
-    // Pure O2 (≥99.5%): allowed at its switch depth regardless of ppO2
-    // ApexDeco uses o2MaxDepth special-case — we mirror that here
-    const isPureO2 = fO2 >= 0.995 && allowO2AtMOD;
-    if (!isPureO2) {
-      const limit = getPPO2LimitFn ? getPPO2LimitFn(dg.fN2) : 1.6;
-      const ppO2AtCur = (altSurfaceP + curDepthM * BAR_PER_METRE) * fO2;
-      if (ppO2AtCur > limit + 0.001) continue;
-    }
-    // BUGFIX: select by highest O2 fraction, not lowest N2.
-    // Selecting by min-fN2 incorrectly prefers trimix deco gases (e.g. Tx21/35, fN2=0.44)
-    // over high-O2 nitrox (e.g. EAN50, fN2=0.50) even when the nitrox has more O2 (0.50 vs 0.21).
-    // Max-fO2 is the correct criterion: always use the richest available O2 gas within ppO2 limits.
-    if (fO2 > bestFO2) {
-      best = dg;
-      bestFO2 = fO2;
-    }
-  }
-  return best || { fN2: bottomFN2, fHe: 0, label: bottomLabel || 'Bottom' };
-}
-
-// Truncate ppO2 to 1 decimal place (floor, not round) — 1.67 → 1.6
-
-function ppO2Check(depthM, fN2, fHe, opts) {
-  // He is inert: fO2 = 1 - fN2 - fHe (trimix-safe)
-  const fHeVal = fHe || 0;
-  const o2frac = Math.max(0, 1 - fN2 - fHeVal);
-  const pAmb = altSurfaceP + depthM * BAR_PER_METRE;
-  if (opts && opts.onLoop && opts.ccr && isRebreatherCircuit(opts.ccr.circuit) && !opts.ccr.bailout) {
-    const fO2 = opts.fO2 != null ? opts.fO2 : o2frac;
-    const surfP = opts.surfP != null ? opts.surfP : altSurfaceP;
-    const sp = opts.setpoint != null ? opts.setpoint : getEffectiveSetpointAtDepth(depthM, opts.ccr, surfP);
-    return getEffectivePpo2(pAmb, sp, fO2, opts.ccr, depthM, fHeVal).toFixed(2);
-  }
-  return (pAmb * o2frac).toFixed(2);
-}
-
 function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackGas, fallbackFN2, fallbackFHe) {
   if (!enabled || (!min9m && !min6m)) return steps;
-  const depth9 = 9;  // 9 m / 30 ft
-  const depth6 = 6;  // 6 m / 20 ft
+  const depth9 = 9;
+  const depth6 = 6;
   const FT_PER_M = 3.28084;
 
   function stepDepthToM(s) {
@@ -578,7 +535,6 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
     return depthM != null && Math.abs(depthM - targetM) < 0.25;
   }
 
-  // ── Pass 1: build result, extending existing stops if present ──
   const result = [];
   const enforced = { 9: false, 6: false };
 
@@ -599,13 +555,7 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
     result.push({ ...s });
   }
 
-  // ── Pass 2: resolve active gas at any depth by scanning the step sequence ──
-  // Build a list of gas-change events: { fromDepthM, gas, fN2, fHe }
-  // Steps are ordered deepest-first on ascent; gas switches happen as depth decreases.
   function resolveGasAtDepth(targetDepthM) {
-    // Walk through steps in order. Track current active gas.
-    // A gas change occurs when s.gas differs from the previous step's gas.
-    // The active gas at targetDepthM is the gas being breathed when depth <= s.depth (or s.to).
     let activeGas = fallbackGas || '';
     let activeFN2 = fallbackFN2 ?? null;
     let activeFHe = fallbackFHe ?? 0;
@@ -622,10 +572,8 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
     return { gas: activeGas, fN2: activeFN2, fHe: activeFHe ?? 0 };
   }
 
-  // ── Pass 3: inject missing stops in correct position ──
   function injectStop(targetDepthM, minDur) {
     const targetDisplay = isMetric ? targetDepthM : Math.round(targetDepthM * 3.28084);
-    // Find insertion point: first ascent-phase step shallower than targetDepthM
     let insertIdx = result.length;
     for (let i = 0; i < result.length; i++) {
       const s = result[i];
@@ -635,10 +583,7 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
       const d = isMetric ? rawD : rawD / FT_PER_M;
       if (d != null && d < targetDepthM) { insertIdx = i; break; }
     }
-    // Resolve the gas the diver is breathing at this depth
     const { gas, fN2, fHe } = resolveGasAtDepth(targetDepthM);
-    // If the step at insertIdx is an ascent row that STRADDLES the injection
-    // depth, split it so the stop sits between its deep and shallow pieces.
     const straddle = result[insertIdx];
     if (straddle && straddle.type === 'ascent') {
       const sFromM = stepDepthToM({ depth: straddle.from, from: straddle.from, to: straddle.to });
@@ -679,6 +624,40 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
 
   return result;
 }
+
+function getActiveGas(curDepthM, bottomFN2, decoGases, getPPO2LimitFn, bottomLabel) {
+  let best = null;
+  let bestFO2 = -1;
+  for (const dg of decoGases) {
+    if (curDepthM > dg.depth) continue;
+    const fO2 = dg.fO2 != null ? dg.fO2 : Math.max(0, 1 - dg.fN2 - (dg.fHe || 0));
+    const isPureO2 = fO2 >= 0.995 && allowO2AtMOD;
+    if (!isPureO2) {
+      const limit = getPPO2LimitFn ? getPPO2LimitFn(dg.fN2) : 1.6;
+      const ppO2AtCur = (altSurfaceP + curDepthM * BAR_PER_METRE) * fO2;
+      if (ppO2AtCur > limit + 0.001) continue;
+    }
+    if (fO2 > bestFO2) {
+      best = dg;
+      bestFO2 = fO2;
+    }
+  }
+  return best || { fN2: bottomFN2, fHe: 0, label: bottomLabel || 'Bottom' };
+}
+
+function ppO2Check(depthM, fN2, fHe, opts) {
+  const fHeVal = fHe || 0;
+  const o2frac = Math.max(0, 1 - fN2 - fHeVal);
+  const pAmb = altSurfaceP + depthM * BAR_PER_METRE;
+  if (opts && opts.onLoop && opts.ccr && isRebreatherCircuit(opts.ccr.circuit) && !opts.ccr.bailout) {
+    const fO2 = opts.fO2 != null ? opts.fO2 : o2frac;
+    const surfP = opts.surfP != null ? opts.surfP : altSurfaceP;
+    const sp = opts.setpoint != null ? opts.setpoint : getEffectiveSetpointAtDepth(depthM, opts.ccr, surfP);
+    return getEffectivePpo2(pAmb, sp, fO2, opts.ccr, depthM, fHeVal).toFixed(2);
+  }
+  return (pAmb * o2frac).toFixed(2);
+}
+
 
 function runZhlScheduleCore(params) {
   applyEnvironment(params.environment || defaultEnvironment());
@@ -1522,6 +1501,43 @@ function runZhlScheduleCore(params) {
     applyEnvironment,
     setHeHalfTimeMode,
     OTU_EXPONENT,
+    PSCR_MIN_PPO2,
+    ZHL16C,
+    ZHL16C_HE_HT,
+    ZHL16C_HE_HT_BAKER,
+    ZHL16C_HE_HT_BUHL2003,
+    ZHL16C_HE_AB,
+    initTissues,
+    depthBar,
+    schreiner,
+    schreinerLinear,
+    saturateLinear,
+    saturate,
+    ceiling,
+    computeSurfaceGF,
+    ambientCrossingDepth,
+    getActiveGas,
+    enforceMinDecoProfile,
+    ppO2Check,
+    canonicalCircuit,
+    normalizeCCRSettings,
+    isRebreatherCircuit,
+    loopMixLabelForCore,
+    depthAtSetpointCrossing,
+    getEffectiveSetpointAtDepth,
+    getCcrMetabolicO2Rate,
+    computePSCRFractions,
+    ccrLoopGasBelowSetpoint,
+    getInspiredInertPressures,
+    getCCRInertSchreinerParams,
+    getSetpointBoundaryDepths,
+    splitLinearDepthAtBoundaries,
+    splitSegmentAtSetpoint,
+    schreinerLinearCCR,
+    saturateLinearCCR,
+    saturateCCR,
+    loadTissuesWithCCR,
+    getEffectivePpo2,
   };
 
   global.ZhlEngineBundle = api;

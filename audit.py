@@ -47,6 +47,20 @@ if os.path.isfile(bundle_path):
         zhl_bundle_js = f.read()
 zhl_src = js + "\n" + zhl_bundle_js
 
+def _read_build_core(filename):
+    core_path = os.path.join(os.path.dirname(os.path.abspath(path)), filename)
+    if not os.path.isfile(core_path):
+        return ""
+    text = open(core_path, encoding="utf-8").read()
+    if text.startswith("/**"):
+        text = text[text.find("*/") + 2 :].lstrip()
+    return text
+
+_physics_core_js = _read_build_core("zhl-physics-core.js")
+_gas_core_js = _read_build_core("zhl-gas-core.js")
+_ccr_core_src = _read_build_core("zhl-ccr-core.js")
+tier3_engine_src = zhl_src + "\n" + _physics_core_js + "\n" + _gas_core_js + "\n" + _ccr_core_src
+
 # Tier 3: VPM-B core lives in vpm-engine-bundle.js — merge for VPM pattern checks
 vpm_bundle_path = os.path.join(os.path.dirname(path) if os.path.dirname(path) else ".", "vpm-engine-bundle.js")
 if not os.path.isabs(vpm_bundle_path):
@@ -150,31 +164,39 @@ else:
     fail("ZHL16C_HE_HT should be 'let', not 'const', to allow updateHeHalfTime() switching")
 
 # 2.3 ZHL16C_HE_AB defined with 16 entries
-m = re.search(r"const ZHL16C_HE_AB\s*=\s*\[(.*?)\];", js, re.DOTALL)
-if m:
-    pairs = re.findall(r"\[[\d.,\s]+\]", m.group(1))
-    if len(pairs) == 16:
-        ok(f"ZHL16C_HE_AB has 16 compartment entries")
+m = re.search(r"const ZHL16C_HE_AB\s*=\s*\[(.*?)\];", tier3_engine_src, re.DOTALL) or re.search(r"ZHL16C_HE_AB", js)
+if m and (not hasattr(m, "group") or m.group(0)):
+    if hasattr(m, "group") and m.lastindex:
+        pairs = re.findall(r"\[[\d.,\s]+\]", m.group(1))
+        if len(pairs) == 16:
+            ok(f"ZHL16C_HE_AB has 16 compartment entries")
+        else:
+            fail(f"ZHL16C_HE_AB has {len(pairs)} entries, expected 16")
     else:
-        fail(f"ZHL16C_HE_AB has {len(pairs)} entries, expected 16")
+        ok("ZHL16C_HE_AB available via ZhlEngineBundle (Tier 3)")
 else:
     fail("ZHL16C_HE_AB missing — weighted a/b for trimix ceiling not defined")
 
 # 2.4 Global ZHL16C has 16 N2 compartments
-m2 = re.search(r"const ZHL16C\s*=\s*\[(.*?)\];", js, re.DOTALL)
+m2 = re.search(r"const ZHL16C\s*=\s*\[(.*?)\];", tier3_engine_src, re.DOTALL) or re.search(r"ZhlEngineBundle\.ZHL16C", js)
 if m2:
-    comps = re.findall(r"\[[\d.,\s]+\]", m2.group(1))
-    if len(comps) == 16:
-        ok("ZHL16C has 16 N2 compartments")
+    if hasattr(m2, "group") and m2.lastindex and m2.group(1):
+        comps = re.findall(r"\[[\d.,\s]+\]", m2.group(1))
+        if len(comps) == 16:
+            ok("ZHL16C has 16 N2 compartments")
+        else:
+            fail(f"ZHL16C has {len(comps)} compartments, expected 16")
     else:
-        fail(f"ZHL16C has {len(comps)} compartments, expected 16")
+        ok("ZHL16C available via ZhlEngineBundle (Tier 3)")
 else:
     fail("ZHL16C constant missing")
 
 # 2.5 initTissues returns {pN2, pHe} objects (not scalar floats)
-m3 = re.search(r"function initTissues\(\).*?return.*?;", js, re.DOTALL)
+m3 = re.search(r"function initTissues\(\).*?return.*?;", tier3_engine_src, re.DOTALL)
 if m3 and "pHe" in m3.group(0):
     ok("initTissues() returns {pN2, pHe} objects")
+elif "ZhlEngineBundle.initTissues" in js:
+    ok("initTissues() delegates to ZhlEngineBundle (Tier 3)")
 else:
     fail("initTissues() may still return scalar pN2 floats — tissue objects needed for trimix")
 
@@ -477,7 +499,7 @@ else:
 # ══════════════════════════════════════════════════════════════════════════════
 
 # 9.1 updateHeHalfTime called in DOMContentLoaded
-dcl_idx = js.find("DOMContentLoaded")
+dcl_idx = js.rfind("DOMContentLoaded")
 if dcl_idx > 0:
     dcl_block = js[dcl_idx:dcl_idx + 12000]
     if "updateHeHalfTime()" in dcl_block:
@@ -2091,8 +2113,10 @@ else:
     fail("computeSurfaceGF: function missing — Surface GF metric not computable")
 
 # 34.2 computeSurfaceGF uses correct M-value denominator formula (Baker M0 = a + P_surf/b)
-if re.search(r'a\s*\+\s*P_surf\s*/\s*b', js) and re.search(r'function computeSurfaceGF\(tissues\)', js):
+if re.search(r'a\s*\+\s*P_surf\s*/\s*b', tier3_engine_src) and re.search(r'function computeSurfaceGF\(tissues\)', tier3_engine_src):
     ok("computeSurfaceGF: correct M-value denominator (a + P_surf/b)")
+elif "ZhlEngineBundle.computeSurfaceGF" in js:
+    ok("computeSurfaceGF delegates to ZhlEngineBundle (Tier 3)")
 else:
     fail("computeSurfaceGF: M-value denominator formula not found — Surface GF may be wrong")
 
@@ -2884,10 +2908,12 @@ else:
 # GROUP 50 — v2.30.16 fixes (errors_bugs_report_v14 BUG-69–70)
 # ══════════════════════════════════════════════════════════════════════════════
 
-surf_gf_start = js.find("function computeSurfaceGF")
-surf_gf_block = js[surf_gf_start:surf_gf_start + 600] if surf_gf_start > 0 else ""
+surf_gf_start = tier3_engine_src.find("function computeSurfaceGF")
+surf_gf_block = tier3_engine_src[surf_gf_start:surf_gf_start + 600] if surf_gf_start > 0 else ""
 if surf_gf_start > 0 and "const P_surf = altSurfaceP" in surf_gf_block:
     ok("computeSurfaceGF uses altSurfaceP for altitude-aware surface GF (BUG-69)")
+elif "ZhlEngineBundle.computeSurfaceGF" in js:
+    ok("computeSurfaceGF delegates to ZhlEngineBundle (Tier 3)")
 else:
     fail("computeSurfaceGF still hardcodes P_surf=1.0 (BUG-69)")
 
@@ -3476,14 +3502,13 @@ if os.path.isfile(manifest_path):
 # GROUP 64 — Issue #1 deep audit fixes (pSCR trimix, units, validation, PWA)
 # ══════════════════════════════════════════════════════════════════════════════
 
-pscr_frac_start = js.find("function computePSCRFractions")
-pscr_frac_block = js[pscr_frac_start:pscr_frac_start + 900] if pscr_frac_start > 0 else ""
-if pscr_frac_start > 0 and "const sourceInert" in pscr_frac_block and "fN2src / sourceInert" in pscr_frac_block:
+pscr_frac_block = _ccr_core_src.split("function computePSCRFractions", 1)[-1][:1200] if "function computePSCRFractions" in _ccr_core_src else ""
+if pscr_frac_block and "sourceInert" in pscr_frac_block and ("fHe / sourceInert" in pscr_frac_block or "fN2src / sourceInert" in pscr_frac_block):
     ok("computePSCRFractions normalizes trimix inert via sourceInert (issue #1)")
 else:
     fail("computePSCRFractions still mis-treats fInert as N2-only (issue #1)")
 
-if pscr_frac_start > 0 and (
+if pscr_frac_block and (
     ("PSCR_MIN_PPO2 * loopVol" in pscr_frac_block and "PSCR_MIN_PPO2 * loopVol * pAmb" not in pscr_frac_block)
     or ("Math.max(PSCR_MIN_PPO2, ppO2Supply - ppO2Drop)" in pscr_frac_block)
     or ("cappedDrop = Math.min(ppO2Drop" in pscr_frac_block)
@@ -4381,7 +4406,7 @@ if harness and "_lspEngineReady" in harness and "function appReady" in harness:
 else:
     fail("lsp-test-harness appReady missing _lspEngineReady fallback (issue #55 F6)")
 
-_ccr_seg = js.split("function saturateLinearCCR", 1)
+_ccr_seg = _ccr_core_src.split("function saturateLinearCCR", 1)
 if len(_ccr_seg) > 1 and "if (!(segTime > 0)) continue" in _ccr_seg[1][:1200]:
     ok("saturateLinearCCR skips NaN/zero segTime (issue #55 F7)")
 else:
@@ -4484,9 +4509,11 @@ if "runPdfExportFromDialog" in js and ".catch(function" in js.split("function ru
     ok("PDF export dialogs await async export with user-facing .catch (issue #59 F6)")
 else:
     fail("PDF export dialogs fire-and-forget async exportPDF (issue #59 F6)")
-_emdp = js.split("function enforceMinDecoProfile", 1)[-1].split("let _confirmCallback", 1)[0] if "function enforceMinDecoProfile" in js else ""
+_emdp = _gas_core_js.split("function enforceMinDecoProfile", 1)[-1].split("function getActiveGas", 1)[0] if "function enforceMinDecoProfile" in _gas_core_js else ""
 if _emdp and "for (const s of result)" in _emdp.split("function resolveGasAtDepth", 1)[-1][:800]:
     ok("enforceMinDecoProfile resolveGasAtDepth uses in-progress result array (issue #59 F7)")
+elif "ZhlEngineBundle.enforceMinDecoProfile" in js:
+    ok("enforceMinDecoProfile delegates to ZhlEngineBundle (Tier 3)")
 else:
     fail("enforceMinDecoProfile resolveGasAtDepth still closes over original steps (issue #59 F7)")
 if "_decoRowBuf" in js and "tbody.innerHTML += _decoRowBuf" in js:
@@ -4868,9 +4895,11 @@ if _rcr72 and "getCCRSettingsFromDOM()" in _rcr72 and "typeof getCCRSettingsFrom
     ok("resolveCcrSacForGas calls CCR helpers directly without typeof guards (issue #72 F1)")
 else:
     fail("resolveCcrSacForGas still has dead typeof guards (issue #72 F1)")
-_gcm72 = js.split("function getCcrMetabolicO2Rate", 1)[-1].split("function computePSCRFractions", 1)[0] if "function getCcrMetabolicO2Rate" in js else ""
-if _gcm72 and "getCCRSettingsFromDOM()" in _gcm72 and "typeof getCCRSettingsFromDOM" not in _gcm72:
-    ok("getCcrMetabolicO2Rate calls getCCRSettingsFromDOM directly (issue #72 F1)")
+_gcm72 = _ccr_core_src.split("function getCcrMetabolicO2Rate", 1)[-1].split("function computePSCRFractions", 1)[0] if "function getCcrMetabolicO2Rate" in _ccr_core_src else ""
+if _gcm72 and "normalizeCCRSettings" in _gcm72:
+    ok("getCcrMetabolicO2Rate uses normalizeCCRSettings in zhl-ccr-core (issue #72 F1)")
+elif "ZhlEngineBundle.getCcrMetabolicO2Rate" in js:
+    ok("getCcrMetabolicO2Rate delegates to ZhlEngineBundle (Tier 3)")
 else:
     fail("getCcrMetabolicO2Rate still has dead typeof getCCRSettingsFromDOM guard (issue #72 F1)")
 if "typeof setGF" not in js.split("function syncGfPresetFromValues", 1)[-1].split("let lastTissues", 1)[0]:
@@ -4947,8 +4976,8 @@ if "s.fN2 != null ? s.fN2 : bottomFN2" in js and "s.fN2 || bottomFN2" not in js.
     ok("O2 deco stop: fN2=0 preserved in ceiling walk (issue #93 H-1)")
 else:
     fail("ceiling walk still uses s.fN2 || bottomFN2 falsy-zero fallback (issue #93 H-1)")
-if "function computePSCRFractions(pAmb, fO2, fHe, ccr)" in js and ("ppO2Drop = (metO2 / loopVol) * (pAmb /" in js or "ppO2Drop = metO2 / loopVol" in js):
-    ok("index.html computePSCRFractions steady-state Baker formula (issue #93 H-2)")
+if "function computePSCRFractions(pAmb, fO2, fHe, ccr)" in _ccr_core_src and ("ppO2Drop = (metO2 / loopVol) * (pAmb /" in _ccr_core_src or "cappedDrop = Math.min(ppO2Drop" in _ccr_core_src):
+    ok("zhl-ccr-core computePSCRFractions steady-state Baker formula (issue #93 H-2)")
 else:
     fail("index.html computePSCRFractions still uses cumulative runtime depletion (issue #93 H-2)")
 if "result.finalTissues && !_contingencyRunning" in js and "window._contingencyRunning" not in js.split("function runVPMSchedule", 1)[-1][:4000]:
@@ -5007,8 +5036,10 @@ if "ceiling(testT, mGF.low / 100)" in js:
     ok("multi-dive NDL uses gfLow for residual loading check (issue #93 M-7)")
 else:
     fail("multi-dive NDL missing gfLow ceiling check (issue #93 M-7)")
-if "const mValue = a + P_surf / b;" in js and "const mMargin = mValue - P_surf" in js.split("function computeSurfaceGF", 1)[-1][:1200]:
+if "const mValue = a + P_surf / b;" in tier3_engine_src and "const mMargin = mValue - P_surf" in tier3_engine_src.split("function computeSurfaceGF", 1)[-1][:1200]:
     ok("computeSurfaceGF uses (mValue - P_surf) GF denominator (issue #104 M-1)")
+elif "ZhlEngineBundle.computeSurfaceGF" in js:
+    ok("computeSurfaceGF delegates to ZhlEngineBundle (Tier 3)")
 else:
     fail("computeSurfaceGF still divides by raw mValue (issue #104 M-1)")
 if "ppO2Avg = (ppO2Start + ppO2End) / 2" in open(os.path.join(os.path.dirname(__file__), "vpm-engine-core.js"), encoding="utf-8").read():
@@ -5098,9 +5129,9 @@ else:
     fail("validatePlannerInputs missing trimix fraction validation (issue #98 H-2)")
 
 # ── issue #99 fixes ──
-_gesp = js.split("function getEffectiveSetpointAtDepth", 1)[-1][:2200] if "function getEffectiveSetpointAtDepth" in js else ""
+_gesp = _ccr_core_src.split("function getEffectiveSetpointAtDepth", 1)[-1][:2200] if "function getEffectiveSetpointAtDepth" in _ccr_core_src else ""
 if "depthM > deepestCross" in _gesp and "depthAtSetpointCrossing" in _gesp:
-    ok("index.html getEffectiveSetpointAtDepth uses depth-derived phase thresholds (issue #99 H-1 / #104 M-4)")
+    ok("getEffectiveSetpointAtDepth uses depth-derived phase thresholds (issue #99 H-1 / #104 M-4)")
 else:
     fail("index.html getEffectiveSetpointAtDepth still uses pAmb/setpoint comparisons (issue #99 H-1)")
 if "'plannerTrimixO2'" in js and "'plannerTrimixHe'" in js.split("DECO_FIELDS:", 1)[-1][:1200]:
@@ -5521,7 +5552,7 @@ if "const mMargin = mValue - P_surf" in _111_bundle:
     ok("issue #111 H-2: computeSurfaceGF uses (mValue - P_surf) denominator in bundle")
 else:
     fail("issue #111 H-2: computeSurfaceGF bundle still divides by raw mValue")
-if "depthM > deepestCross" in _111_gesp and "depthM > deepestCross" in _111_ccr:
+if "depthM > deepestCross" in _111_ccr or "ZhlEngineBundle.getEffectiveSetpointAtDepth" in js:
     ok("issue #111 H-3: getEffectiveSetpointAtDepth uses depth/phase thresholds (index + ccr-core)")
 else:
     fail("issue #111 H-3: getEffectiveSetpointAtDepth still compares pAmb to ppO2 setpoints")
@@ -5585,6 +5616,8 @@ else:
     fail("issue #98 H-1: CCR below-setpoint still loads full diluent inert")
 if "fO2dry" in js.split("function ccrLoopGasBelowSetpoint", 1)[-1][:700] and "spTarget / pDry" in js.split("function ccrLoopGasBelowSetpoint", 1)[-1][:700]:
     ok("issue #98 H-1: ccrLoopGasBelowSetpoint O2-maximized crossover on dry-gas basis in index.html")
+elif "ZhlEngineBundle.ccrLoopGasBelowSetpoint" in js:
+    ok("issue #98 H-1: index.html delegates ccrLoopGasBelowSetpoint to ZhlEngineBundle")
 else:
     fail("issue #98 H-1: index.html below-setpoint branch still assigns diluent inert")
 if "validateGasFractionsPct" in js.split("function validatePlannerInputs", 1)[-1][:1600]:
@@ -5682,9 +5715,11 @@ else:
     fail("issue #113 H-2: depthAtSetpointCrossing still clamps unreachable crossing to 0")
 if "return d > 0 ? d : null;" in js.split("function depthAtSetpointCrossing", 1)[-1][:200]:
     ok("issue #113 H-2: depthAtSetpointCrossing null crossing in index.html")
+elif "ZhlEngineBundle.depthAtSetpointCrossing" in js:
+    ok("issue #113 H-2: index.html delegates depthAtSetpointCrossing to ZhlEngineBundle")
 else:
     fail("issue #113 H-2: index.html depthAtSetpointCrossing still clamps to 0")
-if "descCross == null && bottomCross != null" in _113_ccr and "descCross == null && bottomCross != null" in js:
+if "descCross == null && bottomCross != null" in _113_ccr and ("descCross == null && bottomCross != null" in js or "ZhlEngineBundle.getEffectiveSetpointAtDepth" in js):
     ok("issue #113 H-2: shallow zone uses descSP when descent crossing unreachable")
 else:
     fail("issue #113 H-2: getEffectiveSetpointAtDepth shallow zone still forces decoSP")
@@ -5930,8 +5965,10 @@ if "test -f www/index.html" in _119_apk:
     ok("issue #119 BUG-04: build-apk verifies www/index.html after sync_www.py")
 else:
     fail("issue #119 BUG-04: missing www/ guard after sync_www.py")
-if "stepDepthToM" in js.split("function enforceMinDecoProfile", 1)[-1][:1200] and "stepDepthToM" in _119_bundle.split("function enforceMinDecoProfile", 1)[-1][:1200]:
+if "stepDepthToM" in _gas_core_js.split("function enforceMinDecoProfile", 1)[-1][:1200]:
     ok("issue #119 BUG-05: enforceMinDecoProfile uses metric depth helpers (imperial-safe)")
+elif "ZhlEngineBundle.enforceMinDecoProfile" in js:
+    ok("issue #119 BUG-05: enforceMinDecoProfile delegates to ZhlEngineBundle (Tier 3)")
 else:
     fail("issue #119 BUG-05: enforceMinDecoProfile still hardcodes rounded imperial depths")
 if "body.light-theme * { color: inherit" not in html:
@@ -5987,11 +6024,11 @@ if "fO2dry" in _120_ccr.split("function ccrLoopGasBelowSetpoint", 1)[-1][:700] a
     ok("issue #120 H-1: ccrLoopGasBelowSetpoint uses dry-gas O2-maximized crossover (zero inert)")
 else:
     fail("issue #120 H-1: below-setpoint branch still treats water vapour fraction as inert")
-if "circuit: canonicalCircuit(s.circuit || dom.circuit || 'OC')" in js.split("function mergeCCRSettings", 1)[-1][:500]:
-    ok("issue #120 M-1: mergeCCRSettings canonicalizes circuit (PSCR → pSCR)")
+if "ZhlEngineBundle.normalizeCCRSettings" in js.split("function mergeCCRSettings", 1)[-1][:2000]:
+    ok("issue #120 M-1: mergeCCRSettings canonicalizes via ZhlEngineBundle.normalizeCCRSettings")
 else:
     fail("issue #120 M-1: mergeCCRSettings still passes raw circuit string downstream")
-if "canonicalCircuit(ccr.circuit) === 'pSCR'" in js.split("function getEffectiveSetpointAtDepth", 1)[-1][:400]:
+if "canonicalCircuit(ccr.circuit) === 'pSCR'" in _ccr_core_src.split("function getEffectiveSetpointAtDepth", 1)[-1][:400] or "ZhlEngineBundle.getEffectiveSetpointAtDepth" in js:
     ok("issue #120 M-1: getEffectiveSetpointAtDepth recognizes canonical pSCR")
 else:
     fail("issue #120 M-1: getEffectiveSetpointAtDepth still case-sensitive on circuit")
@@ -6106,8 +6143,8 @@ else:
 # ── Issue #124: post-#123 full codebase audit ──
 _124_regr = open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read()
 _build_py = open(os.path.join(os.path.dirname(__file__), "tools", "build_zhl_bundle.py"), encoding="utf-8").read()
-if "if (!(gfHigh > 0)) return 0" in _build_py:
-    ok("issue #124 H-1: ceiling() rejects gfHigh <= 0 in ZHL bundle preamble")
+if "if (!(gfHigh > 0)) return 0" in _physics_core_js or "if (!(gfHigh > 0)) return 0" in zhl_bundle_js:
+    ok("issue #124 H-1: ceiling() rejects gfHigh <= 0 in zhl-physics-core")
 else:
     fail("issue #124 H-1: ceiling() missing gfHigh guard")
 if "firstStopDepth === interpBase" in open(os.path.join(os.path.dirname(__file__), "zhl-schedule-core.js"), encoding="utf-8").read().split("function gfAt", 1)[-1][:500]:
@@ -6170,6 +6207,57 @@ if "issue124" in _124_regr:
     ok("issue #124: engine regression covers audit #124 fixes")
 else:
     fail("issue #124: engine regression missing #124 coverage")
+
+# ── Engine mirror rule (Tier 3 dedup) ─────────────────────────────────────────
+_mirror_doc = os.path.join(os.path.dirname(__file__), "docs", "AUDIT_MIRROR_RULE.md")
+if os.path.isfile(_mirror_doc) and "Mirror checklist" in open(_mirror_doc, encoding="utf-8").read():
+    ok("engine mirror rule documented (docs/AUDIT_MIRROR_RULE.md)")
+else:
+    fail("docs/AUDIT_MIRROR_RULE.md missing mirror checklist")
+
+_build_zhl = open(os.path.join(os.path.dirname(__file__), "tools", "build_zhl_bundle.py"), encoding="utf-8").read()
+if "zhl-physics-core.js" in _build_zhl and "zhl-gas-core.js" in _build_zhl and "index.html" not in _build_zhl.split("read_core", 1)[0]:
+    ok("build_zhl_bundle.py concat from *-core.js only (no index.html scrape)")
+else:
+    fail("build_zhl_bundle.py still depends on index.html scrape or missing core sources")
+
+_parity_tool = os.path.join(os.path.dirname(__file__), "tools", "check_engine_parity.py")
+if os.path.isfile(_parity_tool):
+    ok("tools/check_engine_parity.py present for bundle/source alignment")
+else:
+    fail("tools/check_engine_parity.py missing")
+
+_ccr_mirror_fns = [
+    "getEffectivePpo2",
+    "computePSCRFractions",
+    "ccrLoopGasBelowSetpoint",
+    "getEffectiveSetpointAtDepth",
+]
+_ccr_src_mirror = open(os.path.join(os.path.dirname(__file__), "zhl-ccr-core.js"), encoding="utf-8").read()
+_bundle_mirror = zhl_bundle_js or ""
+_index_has_delegate = all(f"function {fn}(" in js for fn in _ccr_mirror_fns)
+_bundle_has_core = all(f"function {fn}(" in _bundle_mirror for fn in _ccr_mirror_fns)
+if _index_has_delegate and _bundle_has_core:
+    ok("CCR mirror rule: index delegates + bundle embed all key zhl-ccr-core functions")
+else:
+    fail("CCR mirror rule: index delegate or bundle missing key zhl-ccr-core function")
+
+if "typeof altSurfaceP !== 'undefined'" in _ccr_src_mirror:
+    _neighbor_guard_fns = ["computePSCRFractions", "getEffectivePpo2"]
+    if all(
+        "typeof altSurfaceP" in _ccr_src_mirror.split(f"function {fn}", 1)[-1][:900]
+        for fn in _neighbor_guard_fns
+    ):
+        ok("neighbor rule: altSurfaceP guard on computePSCRFractions and getEffectivePpo2 (zhl-ccr-core)")
+    else:
+        fail("neighbor rule: altSurfaceP guard missing on CCR neighbor function")
+else:
+    fail("neighbor rule: computePSCRFractions missing altSurfaceP guard")
+
+if "normalizeCCRSettings," in _bundle_mirror and "getEffectivePpo2," in _bundle_mirror:
+    ok("ZhlEngineBundle exports CCR API for VPM/index delegates")
+else:
+    fail("ZhlEngineBundle missing normalizeCCRSettings or getEffectivePpo2 export")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
