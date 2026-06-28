@@ -246,10 +246,18 @@ function ccrLoopGasBelowSetpoint(pAmb, fO2, fHe) {
   const ppH2O = WATER_VAPOR;
   const pDry = Math.max(0, pAmb - ppH2O);
   const fO2eff = Math.min(1, pDry / Math.max(0.001, pAmb));
-  // O2 controller maxes dry loop gas; water vapour is alveolar, not diluent inert.
+  const fN2d = Math.max(0, 1 - fO2 - fHe);
+  const inertSrc = Math.max(0.001, fHe + fN2d);
+  const loopInert = Math.max(0, 1 - fO2eff);
+  const fHeEff = loopInert * (fHe / inertSrc);
+  const fN2eff = loopInert * (fN2d / inertSrc);
+  const pInert = Math.max(0, pDry * loopInert);
   return {
-    fO2: fO2eff, fN2: 0, fHe: 0,
-    pN2: 0, pHe: 0,
+    fO2: fO2eff,
+    fN2: fN2eff,
+    fHe: fHeEff,
+    pN2: pInert * (fN2d / inertSrc),
+    pHe: pInert * (fHe / inertSrc),
   };
 }
 
@@ -846,7 +854,7 @@ function runZhlScheduleCore(params) {
         // MultiDeco-compatible mode: treat deco-zone transit as instant for tissue loading.
         // Transit time is still counted in RT and added to the displayed stop duration below.
         // (Schreiner mode: tissues off-gas normally during transit — more accurate.)
-        if (travelOnLoop && ccrSettings && ccrSettings.circuit === 'CCR') _diveRuntimeMin += travelDur;
+        if (travelOnLoop && ccrSettings && isRebreatherCircuit(ccrSettings.circuit)) _diveRuntimeMin += travelDur;
       } else {
         const tFO2 = travelOnLoop ? bottomFO2 : (travelGas.fO2 != null ? travelGas.fO2 : Math.max(0, 1 - travelGas.fN2 - (travelGas.fHe || 0)));
         const tFHe = travelOnLoop ? bottomFHe : (travelGas.fHe || 0);

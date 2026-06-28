@@ -4022,14 +4022,14 @@ if capacitor_bridge_js and "uniqueFilename" in capacitor_bridge_js and "return n
 else:
     fail("capacitor-bridge saveFile missing uniqueFilename or tier fallback")
 
-if capacitor_bridge_js and "readBlobFromHref" in capacitor_bridge_js and "xhr.open('GET', href, false)" in capacitor_bridge_js:
-    ok("capacitor-bridge: sync blob read before revoke (issue #21 CR-1)")
-    if "typeof xhr.response === 'string'" in capacitor_bridge_js:
-        ok("capacitor-bridge: sync blob read fallback for WebViews without sync Blob XHR")
+if capacitor_bridge_js and "readBlobFromHref" in capacitor_bridge_js and "deferredRevokeUrls" in capacitor_bridge_js and "async function readBlobFromHref" in capacitor_bridge_js:
+    ok("capacitor-bridge: async blob read with deferred revokeObjectURL (issue #21 CR-1 / #117 M-2)")
+    if "fetch(href)" in capacitor_bridge_js.split("readBlobFromHref", 1)[-1][:300]:
+        ok("capacitor-bridge: async blob read uses fetch (non-blocking)")
     else:
-        fail("capacitor-bridge missing sync blob read string fallback")
+        fail("capacitor-bridge missing fetch-based blob read")
 else:
-    fail("capacitor-bridge missing sync blob read (issue #21 CR-1)")
+    fail("capacitor-bridge missing async blob read before revoke (issue #21 CR-1)")
 
 if capacitor_bridge_js and "dirPath != null && dirPath !== ''" in capacitor_bridge_js:
     ok("capacitor-bridge uniqueFilename dirPath guard (issue #21 CR-2)")
@@ -4176,7 +4176,7 @@ if worker_bridge_js and "WORKER_TIMEOUT_MS" in worker_bridge_js and "ZHL worker 
 else:
     fail("zhl-worker-bridge missing per-request timeout (issue #21 CR-5)")
 
-if sw_js and "android-select-picker.js" in sw_js.split("PRECACHE_ASSETS", 1)[-1][:800]:
+if sw_js and ("android-select-picker.js" in sw_js.split("PRECACHE_ASSETS", 1)[-1][:800] or "android-select-picker.js" in sw_js.split("OPTIONAL_PRECACHE", 1)[-1][:400]):
     ok("sw.js precaches android-select-picker.js (issue #21 CR-6)")
 else:
     fail("sw.js missing android-select-picker.js in PRECACHE_ASSETS (issue #21 CR-6)")
@@ -4223,7 +4223,7 @@ if capacitor_bridge_js and "falling back to browser download" not in capacitor_b
 else:
     fail("capacitor-bridge still swallows download or claims false fallback (issue #24/#25)")
 
-if capacitor_bridge_js and "handleBlobDownload(blob, dl).catch" in capacitor_bridge_js:
+if capacitor_bridge_js and ("handleBlobDownload(blob, dl).catch" in capacitor_bridge_js or ".catch(function (err)" in capacitor_bridge_js.split("deferredRevokeUrls.add(href)", 1)[-1][:500]):
     ok("capacitor-bridge handleBlobDownload errors caught via .catch (issue #24)")
 else:
     fail("capacitor-bridge handleBlobDownload fire-and-forget without .catch (issue #24)")
@@ -4379,10 +4379,10 @@ if len(_ccr_seg) > 1 and "if (!(segTime > 0)) continue" in _ccr_seg[1][:1200]:
 else:
     fail("saturateLinearCCR still uses segTime <= 0 guard (issue #55 F7)")
 
-if capacitor_bridge_js and "saved.finalName || filename" in capacitor_bridge_js and "xhr.responseType = 'blob'" in capacitor_bridge_js.split("readBlobFromHref", 1)[-1][:600]:
-    ok("capacitor-bridge share uses finalName + blob fallback XHR (issue #55 F8/F9)")
+if capacitor_bridge_js and "saved.finalName || filename" in capacitor_bridge_js and "deferredRevokeUrls" in capacitor_bridge_js:
+    ok("capacitor-bridge share uses finalName + deferred blob revoke (issue #55 F8/F9 / #117 M-2)")
 else:
-    fail("capacitor-bridge missing finalName share or blob responseType fallback (issue #55 F8/F9)")
+    fail("capacitor-bridge missing finalName share or deferred blob read (issue #55 F8/F9)")
 
 if capacitor_bridge_js and "status === 'granted'" in capacitor_bridge_js.split("function ensurePermission", 1)[-1][:600]:
     ok("capacitor-bridge ensurePermission requires granted status (issue #55 F10)")
@@ -4945,10 +4945,10 @@ if "window._lastVPMExport = null" in js.split("function setAlgo", 1)[-1][:8000]:
     ok("setAlgo/setDecoAlgorithm clear _lastVPMExport (issue #93 M-2)")
 else:
     fail("_lastVPMExport not cleared on algorithm switch (issue #93 M-2)")
-if "ccrLoopGasBelowSetpoint" in _ccr_core_src and "pN2: 0, pHe: 0" in _ccr_core_src.split("function ccrLoopGasBelowSetpoint", 1)[-1][:400]:
-    ok("CCR below-setpoint: zero loop inert, O2-maximized dry gas (issue #98 residual)")
+if "ccrLoopGasBelowSetpoint" in _ccr_core_src and "fHe / inertSrc" in _ccr_core_src.split("function ccrLoopGasBelowSetpoint", 1)[-1][:600]:
+    ok("CCR below-setpoint: proportional diluent He/N2 in loop inert (issue #98/#117)")
 else:
-    fail("CCR below-setpoint still assigns water-vapour slot as diluent inert (issue #98 residual)")
+    fail("CCR below-setpoint still zeroes or over-assigns loop inert (issue #98/#117)")
 if "validateGasFractionsPct" in js.split("function validatePlannerInputs", 1)[-1][:1600]:
     ok("validatePlannerInputs validates trimix O2+He totals (issue #98 H-2)")
 else:
@@ -5559,12 +5559,12 @@ _98_vpm = open(os.path.join(os.path.dirname(__file__), "vpm-engine-core.js"), en
 _98_ccr = open(os.path.join(os.path.dirname(__file__), "zhl-ccr-core.js"), encoding="utf-8").read()
 _98_regr = open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read()
 _98_pkg = open(os.path.join(os.path.dirname(__file__), "package.json"), encoding="utf-8").read()
-if "pN2: 0, pHe: 0" in _98_ccr.split("function ccrLoopGasBelowSetpoint", 1)[-1][:400]:
-    ok("issue #98 H-1: ccrLoopGasBelowSetpoint zero loop inert below setpoint (zhl-ccr-core)")
+if "fHe / inertSrc" in _98_ccr.split("function ccrLoopGasBelowSetpoint", 1)[-1][:600]:
+    ok("issue #98 H-1: ccrLoopGasBelowSetpoint proportional loop inert below setpoint (zhl-ccr-core)")
 else:
     fail("issue #98 H-1: CCR below-setpoint still loads full diluent inert")
-if "pN2: 0, pHe: 0" in js.split("function ccrLoopGasBelowSetpoint", 1)[-1][:400]:
-    ok("issue #98 H-1: ccrLoopGasBelowSetpoint zero loop inert in index.html")
+if "fHe / inertSrc" in js.split("function ccrLoopGasBelowSetpoint", 1)[-1][:600]:
+    ok("issue #98 H-1: ccrLoopGasBelowSetpoint proportional loop inert in index.html")
 else:
     fail("issue #98 H-1: index.html below-setpoint branch still assigns diluent inert")
 if "validateGasFractionsPct" in js.split("function validatePlannerInputs", 1)[-1][:1600]:
@@ -5591,8 +5591,8 @@ else:
 # ── Issue #112: deep review faf3442 — 2 HIGH / 4 MEDIUM / 5 LOW ──
 _112_zhl = open(os.path.join(os.path.dirname(__file__), "zhl-schedule-core.js"), encoding="utf-8").read()
 _112_bundle = open(os.path.join(os.path.dirname(__file__), "zhl-engine-bundle.js"), encoding="utf-8").read()
-if "ccrSettings.circuit === 'CCR') _diveRuntimeMin += travelDur" in _112_zhl.split("decoZoneEntered && mdCompatMode", 1)[-1][:500]:
-    ok("issue #112 H-1: mdCompat CCR transit advances _diveRuntimeMin when tissues skipped")
+if "isRebreatherCircuit(ccrSettings.circuit)) _diveRuntimeMin += travelDur" in _112_zhl.split("decoZoneEntered && mdCompatMode", 1)[-1][:500]:
+    ok("issue #112 H-1: mdCompat rebreather transit advances _diveRuntimeMin when tissues skipped")
 else:
     fail("issue #112 H-1: CCR scrubber runtime still lags on mdCompat deco transit")
 if "firstStopDepth = cur;" in _112_zhl.split("minStopZoneDepth !== null && cur <= minStopZoneDepth", 1)[-1][:800]:
@@ -5635,8 +5635,8 @@ if "prev.decoTransit = !!(prev.decoTransit || s.decoTransit)" in _112_zhl:
     ok("issue #112 L-5: merged ascent steps propagate decoTransit flag")
 else:
     fail("issue #112 L-5: ascent merge drops decoTransit on partial transit segments")
-if "ccrSettings.circuit === 'CCR') _diveRuntimeMin += travelDur" in _112_bundle:
-    ok("issue #112 H-1: bundle includes mdCompat CCR runtime sync fix")
+if "isRebreatherCircuit(ccrSettings.circuit)) _diveRuntimeMin += travelDur" in _112_bundle:
+    ok("issue #112 H-1: bundle includes mdCompat rebreather runtime sync fix")
 else:
     fail("issue #112 H-1: zhl-engine-bundle missing CCR runtime sync fix")
 if "issue112PlannerBt" in open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read():
@@ -5676,10 +5676,10 @@ if "p.timer !== timer" in _113_bridge and "nextId = 1" not in _113_bridge.split(
     ok("issue #113 H-4: worker timeout verifies timer identity; nextId not reset on failure")
 else:
     fail("issue #113 H-4: worker bridge stale timeout can kill healthy requests")
-if "ccrSettings.circuit === 'CCR') _diveRuntimeMin += travelDur" in _113_zhl:
-    ok("issue #113 M-1: mdCompat runtime advance limited to CCR (not pSCR)")
+if "isRebreatherCircuit(ccrSettings.circuit)) _diveRuntimeMin += travelDur" in _113_zhl:
+    ok("issue #113 M-1: mdCompat runtime advance for all rebreathers (CCR + pSCR)")
 else:
-    fail("issue #113 M-1: mdCompat transit still advances pSCR scrRuntimeMin without tissues")
+    fail("issue #113 M-1: mdCompat transit still skips pSCR runtime sync")
 if "let bottomPhaseRuntime = 0" in _113_vpm and "bottomPhaseRuntime += descTime" in _113_vpm and "bottomPhaseRuntime += bottomTime" in _113_vpm:
     if _113_vpm.count("applyNuclearRegeneration(state, bottomPhaseRuntime)") >= 2:
         ok("issue #113 M-2: applyNuclearRegeneration uses tracked bottom-phase runtime (excl. deco)")
@@ -5772,6 +5772,43 @@ if os.path.isfile(os.path.join(os.path.dirname(__file__), "dev", "sw_lifecycle_t
     ok("issue #116 M-1: sw lifecycle behavioral test script present")
 else:
     fail("issue #116 M-1: missing sw lifecycle behavioral test")
+
+# ── Issue #117: full codebase audit v2.52.00 — 2 MEDIUM / 4 LOW ──
+_117_zhl = open(os.path.join(os.path.dirname(__file__), "zhl-schedule-core.js"), encoding="utf-8").read()
+_117_ccr = open(os.path.join(os.path.dirname(__file__), "zhl-ccr-core.js"), encoding="utf-8").read()
+_117_bridge = open(os.path.join(os.path.dirname(__file__), "zhl-worker-bridge.js"), encoding="utf-8").read()
+_117_cap = open(os.path.join(os.path.dirname(__file__), "capacitor-bridge.js"), encoding="utf-8").read()
+_117_picker = open(os.path.join(os.path.dirname(__file__), "android-select-picker.js"), encoding="utf-8").read()
+_117_sw = open(os.path.join(os.path.dirname(__file__), "sw.js"), encoding="utf-8").read()
+_117_regr = open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read()
+if "isRebreatherCircuit(ccrSettings.circuit)) _diveRuntimeMin += travelDur" in _117_zhl.split("decoZoneEntered && mdCompatMode", 1)[-1][:500]:
+    ok("issue #117 M-1: mdCompat transit advances _diveRuntimeMin for all rebreathers")
+else:
+    fail("issue #117 M-1: mdCompat transit still CCR-only for runtime sync")
+if "deferredRevokeUrls" in _117_cap and "async function readBlobFromHref" in _117_cap and "xhr.open('GET', href, false)" not in _117_cap:
+    ok("issue #117 M-2: capacitor-bridge async blob read with deferred revokeObjectURL")
+else:
+    fail("issue #117 M-2: capacitor-bridge still blocks UI with sync XHR")
+if "REQUIRED_PRECACHE.concat(OPTIONAL_PRECACHE)" in _117_sw and "const PRECACHE_ASSETS = REQUIRED_PRECACHE.concat" in _117_sw:
+    ok("issue #117 L-1: sw.js PRECACHE_ASSETS derived from REQUIRED + OPTIONAL lists")
+else:
+    fail("issue #117 L-1: sw.js still duplicates REQUIRED_PRECACHE and PRECACHE_ASSETS")
+if "killWorker();" in _117_bridge.split("Worker calculation failed", 1)[-1][:250]:
+    ok("issue #117 L-2: worker bridge kills worker immediately on ok === false")
+else:
+    fail("issue #117 L-2: worker bridge still reuses worker after calculation failure")
+if "fHe / inertSrc" in _117_ccr.split("function ccrLoopGasBelowSetpoint", 1)[-1][:600]:
+    ok("issue #117 L-3: ccrLoopGasBelowSetpoint preserves diluent He fraction below setpoint")
+else:
+    fail("issue #117 L-3: ccrLoopGasBelowSetpoint still zeroes loop He unconditionally")
+if "sheetRebuildPending = typeof WeakMap" in _117_picker and "closeSheet();" in _117_picker.split("item.addEventListener('click'", 1)[-1][:200]:
+    ok("issue #117 L-4: android picker guards WeakMap and closes sheet before option mutation")
+else:
+    fail("issue #117 L-4: android picker still flashes ghost sheet on fast tap+mutation")
+if "issue117" in _117_regr:
+    ok("issue #117: engine regression covers mdCompat pSCR runtime + CCR trimix He")
+else:
+    fail("issue #117: engine regression missing #117 coverage")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):

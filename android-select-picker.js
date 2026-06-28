@@ -97,9 +97,10 @@
   }
 
   /** Coalesce async-tick option mutations into one sheet rebuild per frame (per select). */
-  var sheetRebuildPending = new WeakMap();
+  var sheetRebuildPending = typeof WeakMap !== 'undefined' ? new WeakMap() : null;
 
   function scheduleSheetRebuild(sel, syncBtn) {
+    if (!sheetRebuildPending) return;
     if (sheetRebuildPending.has(sel)) return;
     sheetRebuildPending.set(sel, true);
     requestAnimationFrame(function () {
@@ -158,10 +159,10 @@
         }
         item.addEventListener('click', function () {
           if (opt.disabled) return;
+          closeSheet();
           sel.selectedIndex = index;
           sel.dispatchEvent(new Event('change', { bubbles: true }));
           syncBtn();
-          closeSheet();
         });
         list.appendChild(item);
       })(sel.options[i], i);

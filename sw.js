@@ -36,15 +36,18 @@ function getAppBasePath() {
 const APP_BASE = getAppBasePath();
 const OFFLINE_INDEX = APP_BASE + 'index.html';
 
-// Required for offline/PWA startup (Tier-3 ZHL + self-hosted fonts/icons)
-const PRECACHE_ASSETS = [
+const REQUIRED_PRECACHE = [
   OFFLINE_INDEX,
   APP_BASE + 'app-version.js',
-  APP_BASE + 'capacitor-bridge.js',
-  APP_BASE + 'android-select-picker.js',
   APP_BASE + 'zhl-engine-bundle.js',
   APP_BASE + 'vpm-engine-bundle.js',
   APP_BASE + 'zhl-worker-bridge.js',
+];
+
+// Required for offline/PWA startup (Tier-3 ZHL + self-hosted fonts/icons)
+const OPTIONAL_PRECACHE = [
+  APP_BASE + 'capacitor-bridge.js',
+  APP_BASE + 'android-select-picker.js',
   APP_BASE + 'zhl-schedule-worker.js',
   APP_BASE + 'vendor/jspdf.umd.min.js',
   APP_BASE + 'vendor/fonts/fonts.css',
@@ -68,13 +71,7 @@ const PRECACHE_ASSETS = [
   APP_BASE + 'icon-512.png',
 ];
 
-const REQUIRED_PRECACHE = [
-  OFFLINE_INDEX,
-  APP_BASE + 'app-version.js',
-  APP_BASE + 'zhl-engine-bundle.js',
-  APP_BASE + 'vpm-engine-bundle.js',
-  APP_BASE + 'zhl-worker-bridge.js',
-];
+const PRECACHE_ASSETS = REQUIRED_PRECACHE.concat(OPTIONAL_PRECACHE);
 
 async function verifyShellPrecache(cacheName) {
   const cache = await caches.open(cacheName);

@@ -74,10 +74,10 @@
         } else {
           consecutiveWorkerFailures += 1;
           settlePending(id, false, new Error(error || 'Worker calculation failed'));
+          killWorker();
           if (consecutiveWorkerFailures >= MAX_WORKER_FAILURES) {
             workerPermanentlyDisabled = true;
             rejectAll('ZHL worker crashed repeatedly — reload required');
-            killWorker();
           }
         }
       };

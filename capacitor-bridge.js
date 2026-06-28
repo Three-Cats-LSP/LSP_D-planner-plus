@@ -185,50 +185,37 @@
     await shareFile(saved.uri, saved.finalName || filename);
   }
 
-  // Read blob synchronously — caller may revoke the blob: URL before async fetch completes.
-  function readBlobFromHref(href) {
-    try {
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', href, false);
-      xhr.responseType = 'blob';
-      xhr.send();
-      if (xhr.status === 200 && xhr.response instanceof Blob) return xhr.response;
-    } catch (_) {}
-    try {
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', href, false);
-      xhr.responseType = 'arraybuffer';
-      xhr.send();
-      if (xhr.status === 200 && xhr.response instanceof ArrayBuffer) {
-        return new Blob([xhr.response]);
-      }
-    } catch (_) {}
-    try {
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', href, false);
-      xhr.send();
-      if (xhr.status === 200 && xhr.response) {
-        if (xhr.response instanceof Blob) return xhr.response;
-        if (typeof xhr.response === 'string') return new Blob([xhr.response]);
-        if (xhr.response instanceof ArrayBuffer) return new Blob([xhr.response]);
-      }
-    } catch (_) {}
-    return null;
+  const _origRevokeObjectURL = URL.revokeObjectURL;
+  const deferredRevokeUrls = new Set();
+
+  URL.revokeObjectURL = function (url) {
+    if (deferredRevokeUrls.has(url)) return;
+    _origRevokeObjectURL.call(URL, url);
+  };
+
+  async function readBlobFromHref(href) {
+    const res = await fetch(href);
+    if (!res.ok) throw new Error('blob read failed: HTTP ' + res.status);
+    return res.blob();
   }
 
   function interceptBlobDownload(anchor) {
     if (!anchor.download || !anchor.href || !anchor.href.startsWith('blob:')) return false;
     const href = anchor.href;
     const dl = anchor.download;
-    const blob = readBlobFromHref(href);
-    if (blob) {
-      handleBlobDownload(blob, dl).catch(function (err) {
+    deferredRevokeUrls.add(href);
+    readBlobFromHref(href)
+      .then(function (blob) {
+        return handleBlobDownload(blob, dl);
+      })
+      .catch(function (err) {
         notify('Export error: ' + (err && err.message ? err.message : err), true);
+      })
+      .finally(function () {
+        deferredRevokeUrls.delete(href);
+        _origRevokeObjectURL.call(URL, href);
       });
-      return true;
-    }
-    notify('Export error: could not read export file', true);
-    return false;
+    return true;
   }
 
   // ── patch a.click() — used by exportTXT ──────────────────────────────────

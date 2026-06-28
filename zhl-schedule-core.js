@@ -241,7 +241,7 @@ function runZhlScheduleCore(params) {
         // MultiDeco-compatible mode: treat deco-zone transit as instant for tissue loading.
         // Transit time is still counted in RT and added to the displayed stop duration below.
         // (Schreiner mode: tissues off-gas normally during transit — more accurate.)
-        if (travelOnLoop && ccrSettings && ccrSettings.circuit === 'CCR') _diveRuntimeMin += travelDur;
+        if (travelOnLoop && ccrSettings && isRebreatherCircuit(ccrSettings.circuit)) _diveRuntimeMin += travelDur;
       } else {
         const tFO2 = travelOnLoop ? bottomFO2 : (travelGas.fO2 != null ? travelGas.fO2 : Math.max(0, 1 - travelGas.fN2 - (travelGas.fHe || 0)));
         const tFHe = travelOnLoop ? bottomFHe : (travelGas.fHe || 0);

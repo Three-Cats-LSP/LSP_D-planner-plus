@@ -300,13 +300,17 @@ ENGINE_SUITE_JS = """
     return { persisted, mem: window._tecGasMix, ok };
   })();
 
-  // ── E8: CCR below-setpoint loop inert (issue #98 H-1) ─────────────────
+  // ── E8: CCR below-setpoint loop inert (issue #98 H-1 / #117 L-3) ───────
   out.sections.issue98CcrInert = (() => {
     const surfP = typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325;
+    const ppH2O = typeof WATER_VAPOR !== 'undefined' ? WATER_VAPOR : 0.0627;
     const pAmb = surfP + 3 * (BAR_PER_METRE || 0.1);
     const sp = 1.3;
-    const insp = getInspiredInertPressures(pAmb, sp, 0.21, 0, { circuit: 'CCR', setpoint: sp });
-    return { pN2: insp.pN2, pHe: insp.pHe, ok: insp.pN2 === 0 && insp.pHe === 0 };
+    const fO2 = 0.18;
+    const fHe = 0.45;
+    const insp = getInspiredInertPressures(pAmb, sp, fO2, fHe, { circuit: 'CCR', setpoint: sp });
+    const fullDilHe = (pAmb - ppH2O) * fHe;
+    return { pHe: insp.pHe, fullDilHe, ok: insp.pHe > 0 && insp.pHe < fullDilHe };
   })();
 
   // ── E9: planner trimix O2+He validation (issue #98 H-2) ────────────────
@@ -396,6 +400,24 @@ ENGINE_SUITE_JS = """
     const idxShallow = plan.findIndex(s => s.type === 'bottom' && Math.abs((s.depth || 0) - 30) < 0.5);
     const interDeco = idxShallow > 0 && plan.slice(0, idxShallow).some(s => s.type === 'stop');
     return { ok: interDeco && (r.totalRuntime || 0) >= 100, interDeco, rt: r.totalRuntime, idxShallow };
+  })();
+
+  // ── E10b: issue #117 mdCompat pSCR runtime + trimix He below setpoint ───
+  out.sections.issue117 = (() => {
+    const pscrMd = zhl(lv(55, 25, 32, 0), [], {
+      circuit: 'pSCR', setpoint: 0, descentSetpoint: 0,
+      bottomSetpoint: 0, decoSetpoint: 0, scrLoopVolume: 7, scrMetabolicO2: 0.85,
+      bailout: false, mdCompatMode: true,
+    });
+    const surfP = typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325;
+    const ppH2O = typeof WATER_VAPOR !== 'undefined' ? WATER_VAPOR : 0.0627;
+    const pAmb = surfP + 3 * (BAR_PER_METRE || 0.1);
+    const sp = 1.3;
+    const fHe = 0.45;
+    const insp = getInspiredInertPressures(pAmb, sp, 0.18, fHe, { circuit: 'CCR', setpoint: sp });
+    const fullDilHe = (pAmb - ppH2O) * fHe;
+    const heOk = insp.pHe > 0 && insp.pHe < fullDilHe;
+    return { pscrOk: fin(pscrMd), heOk, ok: fin(pscrMd) && heOk };
   })();
 
   // ── E11: issue #112 planner BT vs descent validation ───────────────────
@@ -634,7 +656,7 @@ def run_suite(page) -> dict:
     assert_true(tg.get("ok"), "Tec gasMix memory tracks EAN32 after trimix (issue #106 verify M-1)", str(tg))
 
     i98i = s.get("issue98CcrInert", {})
-    assert_true(i98i.get("ok"), "CCR below-setpoint returns zero loop inert (issue #98 H-1)", str(i98i))
+    assert_true(i98i.get("ok"), "CCR below-setpoint preserves proportional trimix He (issue #98 H-1)", str(i98i))
     i98t = s.get("issue98TrimixValidate", {})
     assert_true(i98t.get("ok"), "validatePlannerInputs rejects O2+He>100% trimix (issue #98 H-2)", str(i98t))
 
@@ -653,6 +675,8 @@ def run_suite(page) -> dict:
     assert_true(i116v.get("ok"), "VPM stop cap returns VPM_STOP_CAP with empty plan (issue #116 H-2)", str(i116v))
     i113r = s.get("issue113NuclearRegen", {})
     assert_true(i113r.get("ok"), "VPM ML inter-level deco excludes deco from nuclear regen path (issue #113 M-2)", str(i113r))
+    i117 = s.get("issue117", {})
+    assert_true(i117.get("ok"), "mdCompat pSCR schedule + trimix He below setpoint (issue #117)", str(i117))
 
     for name, r in s["rebreather"].items():
         assert_true(fin(r), f"Rebreather {name} produces schedule", str(r)[:120])
