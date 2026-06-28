@@ -5954,10 +5954,10 @@ if "selectSyncFns.get(sel)" in _119_picker.split("scheduleSheetRebuild", 1)[-1][
     ok("issue #119 BUG-13: android picker rebuild uses live syncBtn from WeakMap")
 else:
     fail("issue #119 BUG-13: android picker still uses stale syncBtn closure")
-if "__LSP_CAP_BRIDGE_INSTALLED" in _119_cap:
-    ok("issue #119 BUG-14: capacitor-bridge single-install guard prevents revoke patch leak")
+if "__LSP_CAP_BRIDGE_TEARDOWN" in _119_cap and "__LSP_CAP_BRIDGE_ORIG__" in _119_cap and "deferredRevokeUrls.forEach" in _119_cap.split("function teardown", 1)[-1][:400]:
+    ok("issue #119 BUG-14: capacitor-bridge teardown restores patches and revokes deferred blob URLs")
 else:
-    fail("issue #119 BUG-14: capacitor-bridge still re-patches revokeObjectURL on hot reload")
+    fail("issue #119 BUG-14: capacitor-bridge still leaves permanent revokeObjectURL monkey-patch on hot reload")
 if "path.endsWith('.apk')" in _119_sw and "url.href.includes" not in _119_sw.split("function shouldNeverCache", 1)[-1][:300]:
     ok("issue #119 BUG-15: shouldNeverCache uses pathname suffix checks")
 else:

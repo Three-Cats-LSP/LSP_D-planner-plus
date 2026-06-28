@@ -20,8 +20,50 @@
 
 (function () {
   if (!window.Capacitor || !window.Capacitor.isNativePlatform()) return;
-  if (window.__LSP_CAP_BRIDGE_INSTALLED) return;
-  window.__LSP_CAP_BRIDGE_INSTALLED = true;
+
+  if (typeof window.__LSP_CAP_BRIDGE_TEARDOWN === 'function') {
+    window.__LSP_CAP_BRIDGE_TEARDOWN();
+  }
+
+  if (!window.__LSP_CAP_BRIDGE_ORIG__) {
+    window.__LSP_CAP_BRIDGE_ORIG__ = {
+      revokeObjectURL: URL.revokeObjectURL.bind(URL),
+      click: HTMLAnchorElement.prototype.click,
+      dispatchEvent: HTMLAnchorElement.prototype.dispatchEvent,
+    };
+  }
+  const _origRevokeObjectURL = window.__LSP_CAP_BRIDGE_ORIG__.revokeObjectURL;
+  const _origClick = window.__LSP_CAP_BRIDGE_ORIG__.click;
+  const _origDispatch = window.__LSP_CAP_BRIDGE_ORIG__.dispatchEvent;
+  const deferredRevokeUrls = new Set();
+
+  function teardown() {
+    deferredRevokeUrls.forEach(function (url) {
+      try { _origRevokeObjectURL(url); } catch (e) { /* ignore stale blob */ }
+    });
+    deferredRevokeUrls.clear();
+    URL.revokeObjectURL = _origRevokeObjectURL;
+    HTMLAnchorElement.prototype.click = _origClick;
+    HTMLAnchorElement.prototype.dispatchEvent = _origDispatch;
+    if (window.__LSP_CAP_BRIDGE_PAGEHIDE__) {
+      window.removeEventListener('pagehide', window.__LSP_CAP_BRIDGE_PAGEHIDE__);
+      delete window.__LSP_CAP_BRIDGE_PAGEHIDE__;
+    }
+    window.__LSP_CAP_BRIDGE_INSTALLED = false;
+    delete window.__LSP_CAP_BRIDGE_TEARDOWN;
+  }
+
+  window.__LSP_CAP_BRIDGE_TEARDOWN = teardown;
+  if (window.__LSP_CAP_BRIDGE_PAGEHIDE__) {
+    window.removeEventListener('pagehide', window.__LSP_CAP_BRIDGE_PAGEHIDE__);
+  }
+  window.__LSP_CAP_BRIDGE_PAGEHIDE__ = function () { teardown(); };
+  window.addEventListener('pagehide', window.__LSP_CAP_BRIDGE_PAGEHIDE__);
+
+  URL.revokeObjectURL = function (url) {
+    if (deferredRevokeUrls.has(url)) return;
+    _origRevokeObjectURL(url);
+  };
 
   const FS = 'Filesystem';
   const SH = 'Share';
@@ -187,14 +229,6 @@
     await shareFile(saved.uri, saved.finalName || filename);
   }
 
-  const _origRevokeObjectURL = URL.revokeObjectURL;
-  const deferredRevokeUrls = new Set();
-
-  URL.revokeObjectURL = function (url) {
-    if (deferredRevokeUrls.has(url)) return;
-    _origRevokeObjectURL.call(URL, url);
-  };
-
   async function readBlobFromHref(href) {
     const res = await fetch(href);
     if (!res.ok) throw new Error('blob read failed: HTTP ' + res.status);
@@ -215,14 +249,13 @@
       })
       .finally(function () {
         deferredRevokeUrls.delete(href);
-        _origRevokeObjectURL.call(URL, href);
+        _origRevokeObjectURL(href);
       });
     return true;
   }
 
   // ── patch a.click() — used by exportTXT ──────────────────────────────────
 
-  const _origClick = HTMLAnchorElement.prototype.click;
   HTMLAnchorElement.prototype.click = function () {
     if (interceptBlobDownload(this)) return;
     _origClick.call(this);
@@ -230,7 +263,6 @@
 
   // ── patch a.dispatchEvent() — used by jsPDF doc.save() ───────────────────
 
-  const _origDispatch = HTMLAnchorElement.prototype.dispatchEvent;
   HTMLAnchorElement.prototype.dispatchEvent = function (event) {
     if (
       event instanceof MouseEvent && event.type === 'click' &&
@@ -241,5 +273,6 @@
     return _origDispatch.call(this, event);
   };
 
+  window.__LSP_CAP_BRIDGE_INSTALLED = true;
   console.log('[CapBridge] Active — saving to Downloads folder');
 })();
