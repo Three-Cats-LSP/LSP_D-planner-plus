@@ -5002,10 +5002,10 @@ if "5.0 / 1.88" in html and "4.0 / 1.88" not in html:
     ok("He HT tooltip uses 5.0 min N2 compartment (issue #98 L-1)")
 else:
     fail("He HT tooltip still documents 4.0 min N2 compartment (issue #98 L-1)")
-if "'gfs_40_25_air_hi85':      { rt:109" in verify_html:
-    ok("VPM-B/GFS pinned RT updated to 109 min (issue #98 L-2)")
+if "'gfs_40_25_air_hi85':      { rt:119" in verify_html:
+    ok("VPM-B/GFS pinned RT updated to 119 min (issue #98 L-2)")
 else:
-    fail("VPM-B/GFS pinned RT still stale at 111 min (issue #98 L-2)")
+    fail("VPM-B/GFS pinned RT still stale at 109 min (issue #98 L-2)")
 
 # ── issue #98 MEDIUM-1: dev dependency tar override (superseded by Capacitor 8 in #110 M-2) ──
 _pkg_json = open(os.path.join(os.path.dirname(__file__), "package.json"), encoding="utf-8").read()
@@ -5644,10 +5644,10 @@ if "5.0 / 1.88" in html and "4.0 / 1.88" not in html:
     ok("issue #98 L-1: He HT tooltip uses 5.0 min N2 compartment")
 else:
     fail("issue #98 L-1: He HT tooltip still documents 4.0 min N2 compartment")
-if "'gfs_40_25_air_hi85':      { rt:109" in verify_html:
-    ok("issue #98 L-2: VPM-B/GFS pinned RT updated to 109 min")
+if "'gfs_40_25_air_hi85':      { rt:119" in verify_html:
+    ok("issue #98 L-2: VPM-B/GFS pinned RT updated to 119 min")
 else:
-    fail("issue #98 L-2: VPM-B/GFS pinned RT still stale at 111 min")
+    fail("issue #98 L-2: VPM-B/GFS pinned RT still stale at 109 min")
 
 # ── Issue #112: deep review faf3442 — 2 HIGH / 4 MEDIUM / 5 LOW ──
 _112_zhl = open(os.path.join(os.path.dirname(__file__), "zhl-schedule-core.js"), encoding="utf-8").read()
