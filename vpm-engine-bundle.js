@@ -922,6 +922,7 @@ const VPMEngine = (() => {
             return _origPush.call(this, seg);
         };
         let runtime = 0;
+        let bottomPhaseRuntime = 0;
         let currentDepth = 0;
         let totalOTU = settings._preOTU || 0;  // carry OTU from previous dive if repetitive
         let totalCNS = settings._preCNS || 0;  // carry CNS (decayed) from previous dive if repetitive
@@ -1276,7 +1277,7 @@ const VPMEngine = (() => {
         let curSP = forcedOCMode ? 0 : getEffectiveSetpoint(levels[0], isCCR, settings, levels[0].depth, 'descent');
         function runInterLevelDecoAscent(targetDepth) {
             calcCrushing(state, settings);
-            applyNuclearRegeneration(state, runtime);
+            applyNuclearRegeneration(state, bottomPhaseRuntime);
             const offLoopPath = isCCR && settings.circuit !== 'pSCR' && (forcedOCMode || curSP <= 0);
             const interLevelConservatism = offLoopPath ? Math.max(0, conservatism - 1) : conservatism;
             calcAllowableGradients(state, model, settings, interLevelConservatism);
@@ -1441,6 +1442,7 @@ const VPMEngine = (() => {
                 settings._scrRuntimeMin = runtime;
                 const descTime = loadTissuesLinear(state, currentDepth, depth, descentRate, o2Frac, heFrac, settings, sp);
                 runtime += descTime;
+                bottomPhaseRuntime += descTime;
                 const pAmbStart = getAmbientPressure(currentDepth, settings);
                 const pAmbEnd = getAmbientPressure(depth, settings);
                 const ppO2Start = vpmAccumPpo2(pAmbStart, sp, o2Frac, heFrac, settings, currentDepth, forcedOCMode || nextLevelOffLoop);
@@ -1467,6 +1469,7 @@ const VPMEngine = (() => {
                 settings._scrRuntimeMin = runtime;
                 loadTissuesConstant(state, depth, bottomTime, o2Frac, heFrac, settings, bottomSp);
                 runtime += bottomTime;
+                bottomPhaseRuntime += bottomTime;
                 const pAmbB = getAmbientPressure(depth, settings);
                 const ppO2B = vpmAccumPpo2(pAmbB, bottomSp, o2Frac, heFrac, settings, depth, forcedOCMode || nextLevelOffLoop);
                 totalOTU += calculateOTU(ppO2B, bottomTime);
@@ -1483,7 +1486,6 @@ const VPMEngine = (() => {
         }
         setCriticalRadiiForConservatism(state, conservatism, settings);
         calcCrushing(state, settings);
-        const bottomPhaseRuntime = runtime;
         applyNuclearRegeneration(state, bottomPhaseRuntime);
         calcAllowableGradients(state, model, settings, conservatism);
         if (model === 'VPMBE') {

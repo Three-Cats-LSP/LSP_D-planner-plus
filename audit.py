@@ -5680,8 +5680,13 @@ if "ccrSettings.circuit === 'CCR') _diveRuntimeMin += travelDur" in _113_zhl:
     ok("issue #113 M-1: mdCompat runtime advance limited to CCR (not pSCR)")
 else:
     fail("issue #113 M-1: mdCompat transit still advances pSCR scrRuntimeMin without tissues")
-if "bottomPhaseRuntime = runtime" in _113_vpm and "applyNuclearRegeneration(state, bottomPhaseRuntime)" in _113_vpm:
-    ok("issue #113 M-2: applyNuclearRegeneration uses pre-deco bottom runtime")
+if "let bottomPhaseRuntime = 0" in _113_vpm and "bottomPhaseRuntime += descTime" in _113_vpm and "bottomPhaseRuntime += bottomTime" in _113_vpm:
+    if _113_vpm.count("applyNuclearRegeneration(state, bottomPhaseRuntime)") >= 2:
+        ok("issue #113 M-2: applyNuclearRegeneration uses tracked bottom-phase runtime (excl. deco)")
+    else:
+        fail("issue #113 M-2: applyNuclearRegeneration not wired to bottomPhaseRuntime at all call sites")
+elif "applyNuclearRegeneration(state, bottomPhaseRuntime)" in _113_vpm and "applyNuclearRegeneration(state, runtime)" not in _113_vpm.split("function runInterLevelDecoAscent", 1)[-1][:200]:
+    ok("issue #113 M-2: applyNuclearRegeneration uses tracked bottom-phase runtime (excl. deco)")
 else:
     fail("issue #113 M-2: nuclear regeneration still uses total runtime incl. deco")
 if "const hasSnap = s.circuit != null" in js.split("function mergeCCRSettings", 1)[-1][:400]:

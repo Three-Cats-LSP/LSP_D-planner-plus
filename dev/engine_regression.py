@@ -364,6 +364,16 @@ ENGINE_SUITE_JS = """
     return { ok: !!(bad && !bad.ok && bad.errors.some(e => e.code === 'HYPOXIC_DECO_GAS')) };
   })();
 
+  out.sections.issue113NuclearRegen = (() => {
+    const ml = [{ depth: 60, time: 40, o2: 18, he: 45 }, { depth: 30, time: 10, o2: 21, he: 35 }];
+    const r = vpm(ml, [{ o2: 50, he: 0, mod: 0 }], {}, 'VPMB');
+    if (!fin(r)) return { ok: false, reason: 'no schedule' };
+    const plan = r.plan || [];
+    const idxShallow = plan.findIndex(s => s.type === 'bottom' && Math.abs((s.depth || 0) - 30) < 0.5);
+    const interDeco = idxShallow > 0 && plan.slice(0, idxShallow).some(s => s.type === 'stop');
+    return { ok: interDeco && (r.totalRuntime || 0) >= 100, interDeco, rt: r.totalRuntime, idxShallow };
+  })();
+
   // ── E11: issue #112 planner BT vs descent validation ───────────────────
   out.sections.issue112PlannerBt = (() => {
     const depthEl = document.getElementById('depth');
@@ -613,6 +623,8 @@ def run_suite(page) -> dict:
     assert_true(i113n.get("ok"), "getN2Frac custom clamps O2>100 to fN2=0 (issue #113 M-7)", str(i113n))
     i113h = s.get("issue113HypoxicDeco", {})
     assert_true(i113h.get("ok"), "validateDomDecoGases rejects hypoxic trimix deco (issue #113 H-3)", str(i113h))
+    i113r = s.get("issue113NuclearRegen", {})
+    assert_true(i113r.get("ok"), "VPM ML inter-level deco excludes deco from nuclear regen path (issue #113 M-2)", str(i113r))
 
     for name, r in s["rebreather"].items():
         assert_true(fin(r), f"Rebreather {name} produces schedule", str(r)[:120])
