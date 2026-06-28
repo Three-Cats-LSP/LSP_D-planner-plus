@@ -4457,7 +4457,10 @@ _www_bridge = os.path.join(os.path.dirname(__file__), "www", "capacitor-bridge.j
 if capacitor_bridge_js and os.path.isfile(_www_bridge):
     with open(_www_bridge, encoding="utf-8") as _wb:
         _www_bridge_txt = _wb.read()
-    if "saved.finalName || filename" in _www_bridge_txt and "responseType = 'arraybuffer'" in _www_bridge_txt:
+    if "saved.finalName || filename" in _www_bridge_txt and (
+        "responseType = 'arraybuffer'" in _www_bridge_txt
+        or "async function readBlobFromHref" in _www_bridge_txt
+    ):
         ok("www/capacitor-bridge.js synced with root share + arraybuffer fallback (issue #59 F3/F10)")
     else:
         fail("www/capacitor-bridge.js stale vs root — run sync_www.py (issue #59 F3/F10)")
@@ -4523,7 +4526,10 @@ _pages_bridge = os.path.join(os.path.dirname(__file__), "_pages", "capacitor-bri
 if capacitor_bridge_js and os.path.isfile(_pages_bridge):
     with open(_pages_bridge, encoding="utf-8") as _pb:
         _pages_bridge_txt = _pb.read()
-    if "saved.finalName || filename" in _pages_bridge_txt and "responseType = 'arraybuffer'" in _pages_bridge_txt:
+    if "saved.finalName || filename" in _pages_bridge_txt and (
+        "responseType = 'arraybuffer'" in _pages_bridge_txt
+        or "async function readBlobFromHref" in _pages_bridge_txt
+    ):
         ok("_pages/capacitor-bridge.js synced with root share + arraybuffer fallback (issue #60 F2)")
     else:
         fail("_pages/capacitor-bridge.js stale vs root — run build_pages_site.py (issue #60 F2)")
@@ -5569,12 +5575,12 @@ _98_vpm = open(os.path.join(os.path.dirname(__file__), "vpm-engine-core.js"), en
 _98_ccr = open(os.path.join(os.path.dirname(__file__), "zhl-ccr-core.js"), encoding="utf-8").read()
 _98_regr = open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read()
 _98_pkg = open(os.path.join(os.path.dirname(__file__), "package.json"), encoding="utf-8").read()
-if "fHe / inertSrc" in _98_ccr.split("function ccrLoopGasBelowSetpoint", 1)[-1][:600]:
-    ok("issue #98 H-1: ccrLoopGasBelowSetpoint proportional loop inert below setpoint (zhl-ccr-core)")
+if "fO2dry" in _98_ccr.split("function ccrLoopGasBelowSetpoint", 1)[-1][:700] and "spTarget / pDry" in _98_ccr.split("function ccrLoopGasBelowSetpoint", 1)[-1][:700]:
+    ok("issue #98 H-1: ccrLoopGasBelowSetpoint O2-maximized crossover on dry-gas basis (zhl-ccr-core)")
 else:
     fail("issue #98 H-1: CCR below-setpoint still loads full diluent inert")
-if "fHe / inertSrc" in js.split("function ccrLoopGasBelowSetpoint", 1)[-1][:600]:
-    ok("issue #98 H-1: ccrLoopGasBelowSetpoint proportional loop inert in index.html")
+if "fO2dry" in js.split("function ccrLoopGasBelowSetpoint", 1)[-1][:700] and "spTarget / pDry" in js.split("function ccrLoopGasBelowSetpoint", 1)[-1][:700]:
+    ok("issue #98 H-1: ccrLoopGasBelowSetpoint O2-maximized crossover on dry-gas basis in index.html")
 else:
     fail("issue #98 H-1: index.html below-setpoint branch still assigns diluent inert")
 if "validateGasFractionsPct" in js.split("function validatePlannerInputs", 1)[-1][:1600]:
@@ -5810,16 +5816,16 @@ if "killWorker();" in _117_bridge.split("Worker calculation failed", 1)[-1][:250
     ok("issue #117 L-2: worker bridge kills worker immediately on ok === false")
 else:
     fail("issue #117 L-2: worker bridge still reuses worker after calculation failure")
-if "fHe / inertSrc" in _117_ccr.split("function ccrLoopGasBelowSetpoint", 1)[-1][:600]:
-    ok("issue #117 L-3: ccrLoopGasBelowSetpoint preserves diluent He fraction below setpoint")
+if "fO2dry" in _117_ccr.split("function ccrLoopGasBelowSetpoint", 1)[-1][:700]:
+    ok("issue #117 L-3: ccrLoopGasBelowSetpoint zeroes loop inert at O2-maximized crossover (dry basis)")
 else:
-    fail("issue #117 L-3: ccrLoopGasBelowSetpoint still zeroes loop He unconditionally")
+    fail("issue #117 L-3: ccrLoopGasBelowSetpoint still assigns wet-fraction loop inert below setpoint")
 if "sheetRebuildPending = typeof WeakMap" in _117_picker and "closeSheet();" in _117_picker.split("item.addEventListener('click'", 1)[-1][:200]:
     ok("issue #117 L-4: android picker guards WeakMap and closes sheet before option mutation")
 else:
     fail("issue #117 L-4: android picker still flashes ghost sheet on fast tap+mutation")
 if "issue117" in _117_regr:
-    ok("issue #117: engine regression covers mdCompat pSCR runtime + CCR trimix He")
+    ok("issue #117: engine regression covers mdCompat pSCR runtime + CCR crossover inert")
 else:
     fail("issue #117: engine regression missing #117 coverage")
 
@@ -5964,6 +5970,39 @@ if "issue119" in _119_regr:
     ok("issue #119: engine regression covers worker getEffectivePpo2")
 else:
     fail("issue #119: engine regression missing #119 coverage")
+
+# ── Issue #120: full codebase audit v2.52.00 — 1 HIGH / 3 MEDIUM / 1 LOW ──
+_120_ccr = open(os.path.join(os.path.dirname(__file__), "zhl-ccr-core.js"), encoding="utf-8").read()
+_120_regr = open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read()
+_120_cap = open(os.path.join(os.path.dirname(__file__), "capacitor-bridge.js"), encoding="utf-8").read()
+if "fO2dry" in _120_ccr.split("function ccrLoopGasBelowSetpoint", 1)[-1][:700] and "wetScale" in _120_ccr.split("function ccrLoopGasBelowSetpoint", 1)[-1][:700]:
+    ok("issue #120 H-1: ccrLoopGasBelowSetpoint uses dry-gas O2-maximized crossover (zero inert)")
+else:
+    fail("issue #120 H-1: below-setpoint branch still treats water vapour fraction as inert")
+if "circuit: canonicalCircuit(s.circuit || dom.circuit || 'OC')" in js.split("function mergeCCRSettings", 1)[-1][:500]:
+    ok("issue #120 M-1: mergeCCRSettings canonicalizes circuit (PSCR → pSCR)")
+else:
+    fail("issue #120 M-1: mergeCCRSettings still passes raw circuit string downstream")
+if "canonicalCircuit(ccr.circuit) === 'pSCR'" in js.split("function getEffectiveSetpointAtDepth", 1)[-1][:400]:
+    ok("issue #120 M-1: getEffectiveSetpointAtDepth recognizes canonical pSCR")
+else:
+    fail("issue #120 M-1: getEffectiveSetpointAtDepth still case-sensitive on circuit")
+if "_syncUiAfterRestore" in js.split("var appSettings", 1)[-1][:12000] and "toggleCircuitFields" in js.split("_syncUiAfterRestore", 1)[-1][:600]:
+    ok("issue #120 M-2: settings restore runs explicit post-restore UI sync")
+else:
+    fail("issue #120 M-2: _restoreInProgress still suppresses change handlers without UI resync")
+if "__decoCardIds" in js.split("var appSettings", 1)[-1][:12000] and "travelGasActive" in js.split("var appSettings", 1)[-1][:12000] and "restoreDecoGasCardLayout" in js:
+    ok("issue #120 M-3: dynamic deco cards + travel gas active state persisted")
+else:
+    fail("issue #120 M-3: deco cards 3–8 and travelGasActive still not saved/restored")
+if "async function readBlobFromHref" in _120_cap and "xhr.open('GET', href, false)" not in _120_cap:
+    ok("issue #120 L-1: capacitor-bridge async blob read (www/_pages sync accepts fetch path)")
+else:
+    fail("issue #120 L-1: capacitor-bridge still requires sync XHR arraybuffer fallback")
+if "issue120" in _120_regr:
+    ok("issue #120: engine regression covers PSCR canonicalization + dry-gas crossover")
+else:
+    fail("issue #120: engine regression missing #120 coverage")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):

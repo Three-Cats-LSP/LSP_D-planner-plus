@@ -792,7 +792,7 @@ const VPMEngine = (() => {
     }
     function vpmAccumPpo2(pAmb, sp, fO2, fHe, settings, depthM, useOC) {
         if (sp > 0) return Math.min(sp, pAmb);
-        if (!useOC && settings.circuit === 'pSCR' && !settings.bailout && typeof getEffectivePpo2 === 'function') {
+        if (!useOC && String(settings.circuit || '').trim().toUpperCase() === 'PSCR' && !settings.bailout && typeof getEffectivePpo2 === 'function') {
             const ccr = mergeCCRSettings({
                 ...settings,
                 circuit: 'pSCR',

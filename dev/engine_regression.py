@@ -300,17 +300,17 @@ ENGINE_SUITE_JS = """
     return { persisted, mem: window._tecGasMix, ok };
   })();
 
-  // ── E8: CCR below-setpoint loop inert (issue #98 H-1 / #117 L-3) ───────
+  // ── E8: CCR below-setpoint loop inert (issue #98 H-1 / #120 H-1) ───────
   out.sections.issue98CcrInert = (() => {
-    const surfP = typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325;
     const ppH2O = typeof WATER_VAPOR !== 'undefined' ? WATER_VAPOR : 0.0627;
-    const pAmb = surfP + 3 * (BAR_PER_METRE || 0.1);
     const sp = 1.3;
-    const fO2 = 0.18;
-    const fHe = 0.45;
-    const insp = getInspiredInertPressures(pAmb, sp, fO2, fHe, { circuit: 'CCR', setpoint: sp });
-    const fullDilHe = (pAmb - ppH2O) * fHe;
-    return { pHe: insp.pHe, fullDilHe, ok: insp.pHe > 0 && insp.pHe < fullDilHe };
+    const pAmb = sp + ppH2O;
+    const insp = getInspiredInertPressures(pAmb, sp, 0.21, 0, { circuit: 'CCR', setpoint: sp });
+    return {
+      pN2: insp.pN2,
+      pHe: insp.pHe,
+      ok: Math.abs(insp.pN2) < 1e-9 && Math.abs(insp.pHe) < 1e-9,
+    };
   })();
 
   // ── E9: planner trimix O2+He validation (issue #98 H-2) ────────────────
@@ -402,7 +402,7 @@ ENGINE_SUITE_JS = """
     return { ok: interDeco && (r.totalRuntime || 0) >= 100, interDeco, rt: r.totalRuntime, idxShallow };
   })();
 
-  // ── E10b: issue #117 mdCompat pSCR runtime + trimix He below setpoint ───
+  // ── E10b: issue #117 mdCompat pSCR runtime + CCR crossover inert ───────
   out.sections.issue117 = (() => {
     const pscrMd = zhl(lv(55, 25, 32, 0), [], {
       circuit: 'pSCR', setpoint: 0, descentSetpoint: 0,
@@ -411,13 +411,15 @@ ENGINE_SUITE_JS = """
     });
     const surfP = typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325;
     const ppH2O = typeof WATER_VAPOR !== 'undefined' ? WATER_VAPOR : 0.0627;
-    const pAmb = surfP + 3 * (BAR_PER_METRE || 0.1);
     const sp = 1.3;
+    const pCross = sp + ppH2O;
+    const crossover = getInspiredInertPressures(pCross, sp, 0.21, 0, { circuit: 'CCR', setpoint: sp });
+    const crossoverOk = Math.abs(crossover.pN2) < 1e-9 && Math.abs(crossover.pHe) < 1e-9;
+    const pAmb40 = surfP + 40 * (BAR_PER_METRE || 0.1);
     const fHe = 0.45;
-    const insp = getInspiredInertPressures(pAmb, sp, 0.18, fHe, { circuit: 'CCR', setpoint: sp });
-    const fullDilHe = (pAmb - ppH2O) * fHe;
-    const heOk = insp.pHe > 0 && insp.pHe < fullDilHe;
-    return { pscrOk: fin(pscrMd), heOk, ok: fin(pscrMd) && heOk };
+    const deep = getInspiredInertPressures(pAmb40, sp, 0.18, fHe, { circuit: 'CCR', setpoint: sp });
+    const heAboveOk = deep.pHe > 0;
+    return { pscrOk: fin(pscrMd), crossoverOk, heAboveOk, ok: fin(pscrMd) && crossoverOk && heAboveOk };
   })();
 
   // ── E10c: issue #118 altitude setpoint + circuit case + buhNDL zero stop ─
@@ -453,6 +455,23 @@ ENGINE_SUITE_JS = """
     const pAmb = (typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325) + 40 * (typeof BAR_PER_METRE !== 'undefined' ? BAR_PER_METRE : 0.1);
     const ppo2 = bundleOk ? getEffectivePpo2(pAmb, 1.3, 0.21, ccr, 40, 0) : NaN;
     return { bundleOk, ppo2, ok: bundleOk && ppo2 >= 1.2 && ppo2 <= pAmb };
+  })();
+
+  // ── E10e: issue #120 circuit canonicalization + dry-gas crossover ─────────
+  out.sections.issue120 = (() => {
+    const merged = mergeCCRSettings({ circuit: 'PSCR', setpoint: 1.3 });
+    const pscrSp = getEffectiveSetpointAtDepth(30, merged, altSurfaceP);
+    const ppH2O = typeof WATER_VAPOR !== 'undefined' ? WATER_VAPOR : 0.0627;
+    const sp = 1.3;
+    const pAmb = sp + ppH2O;
+    const insp = getInspiredInertPressures(pAmb, sp, 0.21, 0, { circuit: 'CCR', setpoint: sp });
+    const crossoverOk = Math.abs(insp.pN2) < 1e-9 && Math.abs(insp.pHe) < 1e-9;
+    return {
+      circuit: merged.circuit,
+      pscrSp,
+      crossoverOk,
+      ok: merged.circuit === 'pSCR' && pscrSp === 0 && crossoverOk,
+    };
   })();
 
   // ── E11: issue #112 planner BT vs descent validation ───────────────────
@@ -691,7 +710,7 @@ def run_suite(page) -> dict:
     assert_true(tg.get("ok"), "Tec gasMix memory tracks EAN32 after trimix (issue #106 verify M-1)", str(tg))
 
     i98i = s.get("issue98CcrInert", {})
-    assert_true(i98i.get("ok"), "CCR below-setpoint preserves proportional trimix He (issue #98 H-1)", str(i98i))
+    assert_true(i98i.get("ok"), "CCR below-setpoint zero inert at O2-max crossover (issue #98 H-1 / #120 H-1)", str(i98i))
     i98t = s.get("issue98TrimixValidate", {})
     assert_true(i98t.get("ok"), "validatePlannerInputs rejects O2+He>100% trimix (issue #98 H-2)", str(i98t))
 
@@ -711,11 +730,13 @@ def run_suite(page) -> dict:
     i113r = s.get("issue113NuclearRegen", {})
     assert_true(i113r.get("ok"), "VPM ML inter-level deco excludes deco from nuclear regen path (issue #113 M-2)", str(i113r))
     i117 = s.get("issue117", {})
-    assert_true(i117.get("ok"), "mdCompat pSCR schedule + trimix He below setpoint (issue #117)", str(i117))
+    assert_true(i117.get("ok"), "mdCompat pSCR schedule + CCR crossover/deep inert (issue #117 / #120)", str(i117))
     i118 = s.get("issue118", {})
     assert_true(i118.get("ok"), "altitude setpoint zones + circuit case + buhNDL zero stop (issue #118)", str(i118))
     i119 = s.get("issue119", {})
     assert_true(i119.get("ok"), "getEffectivePpo2 available in main bundle (issue #119 BUG-02)", str(i119))
+    i120 = s.get("issue120", {})
+    assert_true(i120.get("ok"), "PSCR canonicalization + dry-gas crossover (issue #120)", str(i120))
 
     for name, r in s["rebreather"].items():
         assert_true(fin(r), f"Rebreather {name} produces schedule", str(r)[:120])

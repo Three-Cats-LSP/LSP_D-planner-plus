@@ -260,18 +260,22 @@ function computePSCRFractions(pAmb, fO2, fHe, ccr) {
 function ccrLoopGasBelowSetpoint(pAmb, fO2, fHe, setpoint) {
   const ppH2O = WATER_VAPOR;
   const pDry = Math.max(0, pAmb - ppH2O);
+  if (pDry <= 0.001) {
+    return { fO2: 1, fN2: 0, fHe: 0, pN2: 0, pHe: 0 };
+  }
   const spTarget = setpoint > 0 ? Math.min(setpoint, pDry) : pDry;
-  const fO2eff = Math.min(1, spTarget / Math.max(0.001, pAmb));
+  const fO2dry = Math.min(1, spTarget / pDry);
+  const loopInertDry = Math.max(0, 1 - fO2dry);
   const fN2d = Math.max(0, 1 - fO2 - fHe);
   const inertSrc = Math.max(0.001, fHe + fN2d);
-  const loopInert = Math.max(0, 1 - fO2eff);
-  const fHeEff = loopInert * (fHe / inertSrc);
-  const fN2eff = loopInert * (fN2d / inertSrc);
-  const pInert = Math.max(0, pDry * loopInert);
+  const fHeEffDry = loopInertDry * (fHe / inertSrc);
+  const fN2effDry = loopInertDry * (fN2d / inertSrc);
+  const wetScale = pDry / Math.max(0.001, pAmb);
+  const pInert = pDry * loopInertDry;
   return {
-    fO2: fO2eff,
-    fN2: fN2eff,
-    fHe: fHeEff,
+    fO2: fO2dry * wetScale,
+    fN2: fN2effDry * wetScale,
+    fHe: fHeEffDry * wetScale,
     pN2: pInert * (fN2d / inertSrc),
     pHe: pInert * (fHe / inertSrc),
   };

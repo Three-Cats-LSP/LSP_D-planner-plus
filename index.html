@@ -6380,7 +6380,7 @@ function mergeCCRSettings(settings) {
   const hasSnap = s.circuit != null && s.circuit !== '';
   const dom = hasSnap ? {} : (typeof document !== 'undefined' ? getCCRSettingsFromDOM() : {});
   return {
-    circuit: s.circuit || dom.circuit || 'OC',
+    circuit: canonicalCircuit(s.circuit || dom.circuit || 'OC'),
     setpoint: s.setpoint != null ? s.setpoint : (s.decoSetpoint != null ? s.decoSetpoint : dom.setpoint),
     decoSetpoint: s.decoSetpoint != null ? s.decoSetpoint : (s.setpoint != null ? s.setpoint : dom.decoSetpoint),
     bottomSetpoint: s.bottomSetpoint != null ? s.bottomSetpoint : dom.bottomSetpoint,
@@ -6420,7 +6420,7 @@ function depthAtSetpointCrossing(setpoint, surfP) {
 
 function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
   if (!ccr || ccr.bailout || !isRebreatherCircuit(ccr.circuit)) return 0;
-  if (ccr.circuit === 'pSCR') return 0;
+  if (canonicalCircuit(ccr.circuit) === 'pSCR') return 0;
   const descSP = ccr.descentSetpoint != null ? ccr.descentSetpoint : 0.7;
   const bottomSP = ccr.bottomSetpoint != null ? ccr.bottomSetpoint : 1.2;
   const decoSP = ccr.decoSetpoint != null ? ccr.decoSetpoint : (ccr.setpoint != null ? ccr.setpoint : 1.3);
@@ -6476,18 +6476,22 @@ function computePSCRFractions(pAmb, fO2, fHe, ccr) {
 function ccrLoopGasBelowSetpoint(pAmb, fO2, fHe, setpoint) {
   const ppH2O = WATER_VAPOR;
   const pDry = Math.max(0, pAmb - ppH2O);
+  if (pDry <= 0.001) {
+    return { fO2: 1, fN2: 0, fHe: 0, pN2: 0, pHe: 0 };
+  }
   const spTarget = setpoint > 0 ? Math.min(setpoint, pDry) : pDry;
-  const fO2eff = Math.min(1, spTarget / Math.max(0.001, pAmb));
+  const fO2dry = Math.min(1, spTarget / pDry);
+  const loopInertDry = Math.max(0, 1 - fO2dry);
   const fN2d = Math.max(0, 1 - fO2 - fHe);
   const inertSrc = Math.max(0.001, fHe + fN2d);
-  const loopInert = Math.max(0, 1 - fO2eff);
-  const fHeEff = loopInert * (fHe / inertSrc);
-  const fN2eff = loopInert * (fN2d / inertSrc);
-  const pInert = Math.max(0, pDry * loopInert);
+  const fHeEffDry = loopInertDry * (fHe / inertSrc);
+  const fN2effDry = loopInertDry * (fN2d / inertSrc);
+  const wetScale = pDry / Math.max(0.001, pAmb);
+  const pInert = pDry * loopInertDry;
   return {
-    fO2: fO2eff,
-    fN2: fN2eff,
-    fHe: fHeEff,
+    fO2: fO2dry * wetScale,
+    fN2: fN2effDry * wetScale,
+    fHe: fHeEffDry * wetScale,
     pN2: pInert * (fN2d / inertSrc),
     pHe: pInert * (fHe / inertSrc),
   };
@@ -8939,6 +8943,17 @@ function removeDecoGasCard(idx) {
   renumberDecoGasCards();
   updateGasMODDisplays();
   updateCcrGasValidation();
+}
+
+function restoreDecoGasCardLayout(cardIds, nextIdx) {
+  getAllDecoGasIds().filter(id => id > 2).forEach(id => removeDecoGasCard(id));
+  _dgNextIdx = 3;
+  const extras = (Array.isArray(cardIds) ? cardIds : [1, 2]).filter(id => id > 2).sort((a, b) => a - b);
+  for (const id of extras) {
+    while (_dgNextIdx < id) addDecoGasCard();
+    if (!document.getElementById(`dgCard_${id}`)) addDecoGasCard();
+  }
+  if (typeof nextIdx === 'number' && nextIdx > _dgNextIdx) _dgNextIdx = nextIdx;
 }
 
 // ── End Dynamic Deco Gas Cards ──────────────────────────────────────────────
@@ -16765,6 +16780,10 @@ var appSettings = {
         }
       }
     });
+
+    values.__decoCardIds = getAllDecoGasIds();
+    values.__dgNextIdx = _dgNextIdx;
+    values.travelGasActive = isTravelGasConfigured();
     
     try {
       localStorage.setItem('lspDiveSettings_v6', JSON.stringify(values));
@@ -16845,9 +16864,29 @@ var appSettings = {
   },
 
   // Helper to restore field values
+  _syncUiAfterRestore: function(values) {
+    if (window._zhlHeadless) return;
+    toggleCircuitFields?.();
+    toggleDecoCustomO2?.('decoGas', 'decoCustomO2Field');
+    toggleBottomTrimix?.();
+    toggleDecoCustomO2?.('travelGasMix', 'travelGasCustomField');
+    updateTravelGasMOD?.();
+    for (const idx of getAllDecoGasIds()) {
+      toggleDecoCustomO2?.(`dg${idx}Mix`, `dg${idx}CustomField`);
+      toggleDecoTrimix?.(idx);
+    }
+    updateGasMODDisplays?.();
+    updateCcrGasCardLabels?.();
+    if (values.travelGasActive) addTravelGas();
+    else removeTravelGas();
+  },
+
   _restoreFields: function(values) {
     let restored = 0;
     this._restoreInProgress = true;
+    if (!window._zhlHeadless && typeof restoreDecoGasCardLayout === 'function') {
+      restoreDecoGasCardLayout(values.__decoCardIds, values.__dgNextIdx);
+    }
     const allPossible = this.getAllPossibleFields();
     const gfPreset = values.gfPresetSelect;
     const gfIsCustom = gfPreset === 'custom';
@@ -16891,6 +16930,7 @@ var appSettings = {
     };
     applyGfPreset();
     this._restoreInProgress = false;
+    this._syncUiAfterRestore(values);
 
     if (values.waterDensitySelect && typeof setWaterDensity === 'function') {
       setWaterDensity(values.waterDensitySelect);
