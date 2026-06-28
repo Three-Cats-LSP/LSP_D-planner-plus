@@ -6019,6 +6019,17 @@ if "issue121" in _121_regr:
 else:
     fail("issue #121: engine regression missing #121 coverage")
 
+# ── Issue #122: gapped dynamic deco card layout restore ──
+_122_regr = open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read()
+if "appendDecoGasCardAtIdx" in js and "while (_dgNextIdx < id)" not in js.split("function restoreDecoGasCardLayout", 1)[-1][:400]:
+    ok("issue #122: restoreDecoGasCardLayout creates exact saved card IDs without gap fillers")
+else:
+    fail("issue #122: restoreDecoGasCardLayout still advances through intermediate card IDs")
+if "issue122" in _122_regr and "layoutOk" in _122_regr:
+    ok("issue #122: engine regression asserts exact restored deco card ID list")
+else:
+    fail("issue #122: engine regression missing exact layout restore coverage")
+
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
     ok("stable release APP_VERSION is 2.52.00")

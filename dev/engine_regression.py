@@ -517,6 +517,8 @@ ENGINE_SUITE_JS = """
     dg3.value = 'none';
     dg5.value = 'none';
     appSettings._restoreFields(saved);
+    const restoredIds = getAllDecoGasIds();
+    const layoutOk = JSON.stringify(restoredIds) === JSON.stringify(saved.__decoCardIds);
     const restoredOk = document.getElementById('dg3Mix')?.value === 'ean50'
       && document.getElementById('dg5Mix')?.value === 'trimix'
       && document.getElementById('dg5TrimixO2')?.value === '18';
@@ -530,9 +532,21 @@ ENGINE_SUITE_JS = """
       trimixVisible,
       cardsOk,
       valuesOk,
+      layoutOk,
       restoredOk,
-      ok: syncHasToggle && trimixVisible && cardsOk && valuesOk && restoredOk,
+      ok: syncHasToggle && trimixVisible && cardsOk && valuesOk && layoutOk && restoredOk,
     };
+  })();
+
+  // ── E10g: issue #122 gapped dynamic deco card layout restore ─────────────
+  out.sections.issue122 = (() => {
+    if (typeof restoreDecoGasCardLayout !== 'function' || typeof getAllDecoGasIds !== 'function') return { ok: false };
+    getAllDecoGasIds().filter(id => id > 2).forEach(id => removeDecoGasCard(id));
+    restoreDecoGasCardLayout([1, 2, 3, 5], 6);
+    const ids = getAllDecoGasIds();
+    const exact = JSON.stringify(ids) === JSON.stringify([1, 2, 3, 5]);
+    const noPhantom4 = !document.getElementById('dgCard_4');
+    return { ids, exact, noPhantom4, ok: exact && noPhantom4 };
   })();
 
   // ── E11: issue #112 planner BT vs descent validation ───────────────────
@@ -800,6 +814,8 @@ def run_suite(page) -> dict:
     assert_true(i120.get("ok"), "PSCR canonicalization + dry-gas crossover (issue #120)", str(i120))
     i121 = s.get("issue121", {})
     assert_true(i121.get("ok"), "trimix UI sync + dynamic deco card value persistence (issue #121)", str(i121))
+    i122 = s.get("issue122", {})
+    assert_true(i122.get("ok"), "gapped dynamic deco card layout restores exact ID set (issue #122)", str(i122))
 
     for name, r in s["rebreather"].items():
         assert_true(fin(r), f"Rebreather {name} produces schedule", str(r)[:120])

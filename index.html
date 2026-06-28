@@ -8892,9 +8892,9 @@ function renumberDecoGasCards() {
   if (btn) btn.style.display = _dgCardCount() >= _DG_MAX ? 'none' : 'block';
 }
 
-function addDecoGasCard() {
+function appendDecoGasCardAtIdx(idx) {
+  if (idx <= 2 || document.getElementById(`dgCard_${idx}`)) return;
   if (_dgCardCount() >= _DG_MAX) return;
-  const idx = _dgNextIdx++;
   const n = _dgCardCount() + 1;
   const mixNum = n + 1;
   const ccrUi = isCcrGasUiMode();
@@ -8952,6 +8952,11 @@ function addDecoGasCard() {
   updateGasMODDisplays();
 }
 
+function addDecoGasCard() {
+  if (_dgCardCount() >= _DG_MAX) return;
+  appendDecoGasCardAtIdx(_dgNextIdx++);
+}
+
 function removeDecoGasCard(idx) {
   const card = document.getElementById(`dgCard_${idx}`);
   if (card) card.remove();
@@ -8963,10 +8968,10 @@ function removeDecoGasCard(idx) {
 function restoreDecoGasCardLayout(cardIds, nextIdx) {
   getAllDecoGasIds().filter(id => id > 2).forEach(id => removeDecoGasCard(id));
   _dgNextIdx = 3;
-  const extras = (Array.isArray(cardIds) ? cardIds : [1, 2]).filter(id => id > 2).sort((a, b) => a - b);
-  for (const id of extras) {
-    while (_dgNextIdx < id) addDecoGasCard();
-    if (!document.getElementById(`dgCard_${id}`)) addDecoGasCard();
+  const wanted = (Array.isArray(cardIds) ? cardIds : [1, 2]).filter(id => id > 2).sort((a, b) => a - b);
+  for (const id of wanted) {
+    appendDecoGasCardAtIdx(id);
+    if (id >= _dgNextIdx) _dgNextIdx = id + 1;
   }
   if (typeof nextIdx === 'number' && nextIdx > _dgNextIdx) _dgNextIdx = nextIdx;
 }
