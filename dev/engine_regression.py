@@ -474,6 +474,67 @@ ENGINE_SUITE_JS = """
     };
   })();
 
+  // ── E10f: issue #121 trimix UI + dynamic deco card persistence ───────────
+  out.sections.issue121 = (() => {
+    const mixEl = document.getElementById('gasMix');
+    const o2Field = document.getElementById('plannerTrimixO2Field');
+    const heField = document.getElementById('plannerTrimixHeField');
+    if (!mixEl || !o2Field || !heField || typeof appSettings === 'undefined') return { ok: false };
+    const syncHasToggle = String(appSettings._syncUiAfterRestore).includes('toggleCustomO2');
+    const prevMix = mixEl.value;
+    mixEl.value = 'trimix';
+    toggleCustomO2?.();
+    const trimixVisible = o2Field.style.display !== 'none' && heField.style.display !== 'none';
+    if (typeof restoreDecoGasCardLayout !== 'function') {
+      mixEl.value = prevMix;
+      toggleCustomO2?.();
+      return { syncHasToggle, trimixVisible, ok: false };
+    }
+    const prevStore = localStorage.getItem('lspDiveSettings_v6');
+    const prevHeadless = window._zhlHeadless;
+    window._zhlHeadless = false;
+    restoreDecoGasCardLayout([1, 2, 3, 5], 6);
+    const dg3 = document.getElementById('dg3Mix');
+    const dg5 = document.getElementById('dg5Mix');
+    if (!dg3 || !dg5) {
+      window._zhlHeadless = prevHeadless;
+      mixEl.value = prevMix;
+      toggleCustomO2?.();
+      if (prevStore != null) localStorage.setItem('lspDiveSettings_v6', prevStore);
+      else localStorage.removeItem('lspDiveSettings_v6');
+      return { syncHasToggle, trimixVisible, ok: false };
+    }
+    dg3.value = 'ean50';
+    dg5.value = 'trimix';
+    const dg5O2 = document.getElementById('dg5TrimixO2');
+    const dg5He = document.getElementById('dg5TrimixHe');
+    if (dg5O2) dg5O2.value = '18';
+    if (dg5He) dg5He.value = '45';
+    appSettings.save(false);
+    const saved = JSON.parse(localStorage.getItem('lspDiveSettings_v6') || '{}');
+    const cardsOk = Array.isArray(saved.__decoCardIds) && saved.__decoCardIds.includes(3) && saved.__decoCardIds.includes(5);
+    const valuesOk = saved.dg3Mix === 'ean50' && saved.dg5Mix === 'trimix' && saved.dg5TrimixO2 === '18';
+    dg3.value = 'none';
+    dg5.value = 'none';
+    appSettings._restoreFields(saved);
+    const restoredOk = document.getElementById('dg3Mix')?.value === 'ean50'
+      && document.getElementById('dg5Mix')?.value === 'trimix'
+      && document.getElementById('dg5TrimixO2')?.value === '18';
+    window._zhlHeadless = prevHeadless;
+    mixEl.value = prevMix;
+    toggleCustomO2?.();
+    if (prevStore != null) localStorage.setItem('lspDiveSettings_v6', prevStore);
+    else localStorage.removeItem('lspDiveSettings_v6');
+    return {
+      syncHasToggle,
+      trimixVisible,
+      cardsOk,
+      valuesOk,
+      restoredOk,
+      ok: syncHasToggle && trimixVisible && cardsOk && valuesOk && restoredOk,
+    };
+  })();
+
   // ── E11: issue #112 planner BT vs descent validation ───────────────────
   out.sections.issue112PlannerBt = (() => {
     const depthEl = document.getElementById('depth');
@@ -737,6 +798,8 @@ def run_suite(page) -> dict:
     assert_true(i119.get("ok"), "getEffectivePpo2 available in main bundle (issue #119 BUG-02)", str(i119))
     i120 = s.get("issue120", {})
     assert_true(i120.get("ok"), "PSCR canonicalization + dry-gas crossover (issue #120)", str(i120))
+    i121 = s.get("issue121", {})
+    assert_true(i121.get("ok"), "trimix UI sync + dynamic deco card value persistence (issue #121)", str(i121))
 
     for name, r in s["rebreather"].items():
         assert_true(fin(r), f"Rebreather {name} produces schedule", str(r)[:120])

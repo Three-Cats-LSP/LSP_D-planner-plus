@@ -6004,6 +6004,21 @@ if "issue120" in _120_regr:
 else:
     fail("issue #120: engine regression missing #120 coverage")
 
+# ── Issue #121: follow-up to #120 — trimix UI + dynamic deco values ──
+_121_regr = open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read()
+if "toggleCustomO2?.();" in js.split("_syncUiAfterRestore", 1)[-1][:500]:
+    ok("issue #121 M-1: post-restore UI sync calls toggleCustomO2 for gasMix trimix fields")
+else:
+    fail("issue #121 M-1: _syncUiAfterRestore still omits toggleCustomO2 (planner trimix hidden)")
+if "decoCardPersistFieldIds" in js and "MAX_DECO_CARD_IDX" in js.split("var appSettings", 1)[-1][:4000]:
+    ok("issue #121 M-2: dynamic deco cards 3–8 field IDs included in persistence")
+else:
+    fail("issue #121 M-2: dg3–dg8 mix/cylinder fields still absent from save/restore")
+if "issue121" in _121_regr:
+    ok("issue #121: engine regression covers trimix visibility + dynamic deco reload")
+else:
+    fail("issue #121: engine regression missing #121 coverage")
+
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
     ok("stable release APP_VERSION is 2.52.00")

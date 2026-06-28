@@ -8769,6 +8769,21 @@ function getAllDecoGasIds() {
   return ids;
 }
 
+function decoCardPersistFieldIds(idx) {
+  return [
+    `dg${idx}Mix`,
+    `dg${idx}CustomO2`,
+    `dg${idx}TrimixO2`,
+    `dg${idx}TrimixHe`,
+    `cylDg${idx}_size`,
+    `cylDg${idx}_pres`,
+    `cylDg${idx}_reserve`,
+    `gpDg${idx}_size`,
+    `gpDg${idx}_fill`,
+    `gpDg${idx}_reserve`,
+  ];
+}
+
 function updateGasMODDisplays() {
   const ppO2Limit = parseFloat(document.getElementById('ppo2Bottom')?.value) || 1.4;
   const ppO2Deco  = parseFloat(document.getElementById('ppo2Deco')?.value)   || 1.6;
@@ -16719,10 +16734,15 @@ var appSettings = {
   // Multi-dive fields that might exist (0-9 for each prefix)
   MULTI_DIVE_PREFIXES: ['mD', 'mBT', 'mSI', 'mGas'],
   MAX_MULTI_DIVE: 10,
-  
+  MAX_DECO_CARD_IDX: 8,
+
   // Get all POSSIBLE field IDs (including ones that don't exist yet)
   getAllPossibleFields: function() {
     const fields = [...this.DECO_FIELDS, ...this.REC_FIELDS];
+
+    for (let idx = 3; idx <= this.MAX_DECO_CARD_IDX; idx++) {
+      decoCardPersistFieldIds(idx).forEach(id => fields.push(id));
+    }
     
     // Add all POSSIBLE multi-dive field IDs (mD0-mD9, mBT0-mBT9, etc.)
     for (let i = 0; i < this.MAX_MULTI_DIVE; i++) {
@@ -16738,13 +16758,25 @@ var appSettings = {
   // Get all EXISTING field IDs (only those in DOM)
   getExistingFields: function() {
     const fields = [];
+    const seen = new Set();
     const possible = this.getAllPossibleFields();
     
     possible.forEach(id => {
       if (id !== '__algo__' && document.getElementById(id)) {
         fields.push(id);
+        seen.add(id);
       }
     });
+
+    getAllDecoGasIds().forEach(idx => {
+        if (idx <= 2) return;
+        decoCardPersistFieldIds(idx).forEach(id => {
+          if (!seen.has(id) && document.getElementById(id)) {
+            fields.push(id);
+            seen.add(id);
+          }
+        });
+      });
     
     fields.push('__algo__');
     return fields;
@@ -16867,6 +16899,7 @@ var appSettings = {
   _syncUiAfterRestore: function(values) {
     if (window._zhlHeadless) return;
     toggleCircuitFields?.();
+    toggleCustomO2?.();
     toggleDecoCustomO2?.('decoGas', 'decoCustomO2Field');
     toggleBottomTrimix?.();
     toggleDecoCustomO2?.('travelGasMix', 'travelGasCustomField');
