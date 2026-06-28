@@ -17637,13 +17637,12 @@ window.addEventListener('load', function() {
         .then(r => {
           console.log('[SW] registered, scope:', r.scope);
           r.update();
-          if (r.waiting) r.waiting.postMessage({ type: 'SKIP_WAITING' });
           r.addEventListener('updatefound', () => {
             const sw = r.installing;
             if (!sw) return;
             sw.addEventListener('statechange', () => {
-              if (sw.state === 'installed' && navigator.serviceWorker.controller) {
-                sw.postMessage({ type: 'SKIP_WAITING' });
+              if (sw.state === 'redundant') {
+                console.warn('[SW] SW update install failed — prior cache retained');
               }
             });
           });

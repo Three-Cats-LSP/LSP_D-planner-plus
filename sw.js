@@ -76,7 +76,16 @@ const REQUIRED_PRECACHE = [
   APP_BASE + 'zhl-worker-bridge.js',
 ];
 
-// Install — skip waiting immediately so new SW takes over fast
+async function verifyShellPrecache(cacheName) {
+  const cache = await caches.open(cacheName);
+  const checks = await Promise.all(REQUIRED_PRECACHE.map(async (url) => {
+    const hit = await cache.match(url, { ignoreSearch: true });
+    return !!hit;
+  }));
+  return checks.every(Boolean);
+}
+
+// Install — skip waiting only when required shell assets are cached
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_VERSION)
@@ -88,38 +97,58 @@ self.addEventListener('install', event => {
             return { url, ok: false };
           })
       )))
-      .then(results => {
+      .then(async (results) => {
         const succeeded = new Set();
         for (const r of results) {
           if (r.status === 'fulfilled' && r.value && r.value.ok) succeeded.add(r.value.url);
         }
         const shellReady = REQUIRED_PRECACHE.every(u => succeeded.has(u));
-        if (shellReady) self.skipWaiting();
-        else console.error('[SW] required shell precache incomplete — keeping prior cache until retry');
+        if (shellReady) {
+          self.skipWaiting();
+          return;
+        }
+        console.error('[SW] required shell precache incomplete — aborting install');
+        await caches.delete(CACHE_VERSION);
+        throw new Error('Required shell precache incomplete');
       })
-      .catch(err => console.error('[SW] install failed:', err))
+      .catch(err => {
+        console.error('[SW] install failed:', err);
+        throw err;
+      })
   );
 });
 
-// Activate — delete ALL old caches, claim clients immediately
+// Activate — delete old caches only when this version's shell is complete
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys()
-      .then(keys => Promise.all(
+    verifyShellPrecache(CACHE_VERSION).then(async (shellReady) => {
+      if (!shellReady) {
+        console.error('[SW] activate blocked — incomplete shell cache; preserving prior caches');
+        await caches.delete(CACHE_VERSION);
+        return;
+      }
+      const keys = await caches.keys();
+      await Promise.all(
         keys
           .filter(key => key !== CACHE_VERSION)
           .map(key => {
             console.log('[SW] Deleting old cache:', key);
             return caches.delete(key);
           })
-      ))
-      .then(() => self.clients.claim())
+      );
+      await self.clients.claim();
+    })
   );
 });
 
 self.addEventListener('message', event => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
+    event.waitUntil(
+      verifyShellPrecache(CACHE_VERSION).then((shellReady) => {
+        if (shellReady) self.skipWaiting();
+        else console.warn('[SW] SKIP_WAITING ignored — required shell precache incomplete');
+      })
+    );
   }
 });
 

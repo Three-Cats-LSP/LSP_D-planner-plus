@@ -5701,7 +5701,7 @@ if "syncContDepthLabels" in js.split("loadAltitudeFromStorage();", 1)[-1][:200] 
     ok("issue #113 M-5: syncContDepthLabels on restore and DOMContentLoaded")
 else:
     fail("issue #113 M-5: contingency depth labels not synced at startup")
-if "REQUIRED_PRECACHE.every" in _113_sw and "r.value.ok" in _113_sw:
+if "REQUIRED_PRECACHE.every" in _113_sw and "verifyShellPrecache" in _113_sw:
     ok("issue #113 M-6: sw.js skipWaiting only after required shell precache succeeds")
 else:
     fail("issue #113 M-6: sw.js still calls skipWaiting when all precache fails")
@@ -5744,14 +5744,26 @@ if "result.code === 'VPM_STOP_CAP'" in js and "function runVPMSchedule" in js:
     ok("issue #116 H-2: UI blocks render on VPM_STOP_CAP")
 else:
     fail("issue #116 H-2: UI still renders VPM cap-hit plans")
-if "REQUIRED_PRECACHE" in _113_sw and ".value.ok" in _113_sw.split("REQUIRED_PRECACHE", 1)[-1][:1200]:
+if "REQUIRED_PRECACHE" in _113_sw and "verifyShellPrecache" in _113_sw and "throw new Error('Required shell precache incomplete')" in _113_sw:
     ok("issue #116 M-1: SW counts only confirmed cache.add successes")
 else:
     fail("issue #116 M-1: SW still treats caught precache failures as successes")
+if "activate blocked" in _113_sw and "SKIP_WAITING ignored" in _113_sw:
+    ok("issue #116 M-1: SW activate and SKIP_WAITING gated on shell precache verification")
+else:
+    fail("issue #116 M-1: SW activate/SKIP_WAITING still bypass incomplete precache")
+if "r.waiting.postMessage({ type: 'SKIP_WAITING' })" not in js and "SW update install failed" in js:
+    ok("issue #116 M-1: index.html no longer forces SKIP_WAITING on waiting worker")
+else:
+    fail("issue #116 M-1: index.html still forces SKIP_WAITING bypassing precache gate")
 if "issue116" in _116_regr:
     ok("issue #116: engine regression covers custom hypoxic deco + VPM cap path")
 else:
     fail("issue #116: engine regression missing #116 coverage")
+if os.path.isfile(os.path.join(os.path.dirname(__file__), "dev", "sw_lifecycle_test.py")) and "verifyShellPrecache" in open(os.path.join(os.path.dirname(__file__), "dev", "sw_lifecycle_test.py"), encoding="utf-8").read():
+    ok("issue #116 M-1: sw lifecycle behavioral test script present")
+else:
+    fail("issue #116 M-1: missing sw lifecycle behavioral test")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):
