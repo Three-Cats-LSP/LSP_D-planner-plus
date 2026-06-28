@@ -49,7 +49,7 @@ const VPMEngine = (() => {
     const GAMMA_C = 0.257;           
     const INITIAL_RADIUS_N2 = 0.55e-6; 
     const INITIAL_RADIUS_He = 0.45e-6; 
-    const REGEN_TIME = 20160.0;      
+    const REGEN_TIME_MIN = 20160.0;      
     function getWaterVaporPressure(settings) {
         return (settings && settings.waterVapor != null) ? settings.waterVapor : 0.0627;
     }
@@ -184,17 +184,20 @@ const VPMEngine = (() => {
                 && settings._prevBubbleState.regeneratedRadiiHe
                 && settings._prevBubbleState.regeneratedRadiiHe.length === NC) {
             const si = Math.max(0, settings._surfaceInterval != null ? settings._surfaceInterval : 0);
-            const regenFactor = Math.exp(-si / REGEN_TIME);
+            const regenFactor = Math.exp(-si / REGEN_TIME_MIN);
             const pb = settings._prevBubbleState;
+            const prevAltFactor = (pb._altFactor != null && pb._altFactor > 0) ? pb._altFactor : altFactor;
             for (let i = 0; i < NC; i++) {
                 // End-of-previous-dive radius (after nuclear regeneration was applied)
                 const prevN2 = pb.regeneratedRadiiN2[i];
                 const prevHe = pb.regeneratedRadiiHe[i];
+                const prevN2AtCurrentAlt = (prevN2 / prevAltFactor) * altFactor;
+                const prevHeAtCurrentAlt = (prevHe / prevAltFactor) * altFactor;
                 // During surface interval, radii regenerate toward the altitude-adjusted
                 // initial values (baseline for this altitude). Partial regeneration:
-                //   r(t) = r_init + (r_prev - r_init) * exp(-t / REGEN_TIME)
-                const carriedN2 = initRadN2 + (prevN2 - initRadN2) * regenFactor;
-                const carriedHe = initRadHe + (prevHe - initRadHe) * regenFactor;
+                //   r(t) = r_init + (r_prev - r_init) * exp(-t / REGEN_TIME_MIN)
+                const carriedN2 = initRadN2 + (prevN2AtCurrentAlt - initRadN2) * regenFactor;
+                const carriedHe = initRadHe + (prevHeAtCurrentAlt - initRadHe) * regenFactor;
                 critRadiiN2[i]         = carriedN2;
                 critRadiiHe[i]         = carriedHe;
                 adjustedCritRadiiN2[i] = carriedN2;
@@ -241,6 +244,7 @@ const VPMEngine = (() => {
             firstStopDepth: 0,
             useDecoGradients: false,
             _bubbleCarryApplied: bubbleCarryApplied,
+            _altFactor: altFactor,
             _conservatismRadiiApplied: false
         };
     }
@@ -336,8 +340,9 @@ const VPMEngine = (() => {
             const pAmbStart = surfP + seg.fromDepth / slp;
             const pAmbEnd = surfP + seg.toDepth / slp;
             const pressureRate = (pAmbEnd - pAmbStart) / segTime;
-            const midDepth = (seg.fromDepth + seg.toDepth) / 2;
-            const segSP = getEffectiveSetpointAtDepth(midDepth, ccr, surfP);
+            const ascending = seg.toDepth < seg.fromDepth;
+            const endpointDepth = ascending ? seg.toDepth : seg.fromDepth;
+            const segSP = getEffectiveSetpointAtDepth(endpointDepth, ccr, surfP);
             const params = getCCRInertSchreinerParams(pAmbStart, segSP, o2Frac, heFrac, pressureRate, { ...ccr, setpoint: segSP });
             for (let i = 0; i < NC; i++) {
                 const kN2 = Math.LN2 / ZHL16C_N2[i].ht;
@@ -375,7 +380,7 @@ const VPMEngine = (() => {
         return r0 * twoGammaC / (twoGammaC + pCrush);
     }
     function applyNuclearRegeneration(state, diveTime) {
-        const regenFactor = Math.exp(-diveTime / REGEN_TIME);
+        const regenFactor = Math.exp(-diveTime / REGEN_TIME_MIN);
         for (let i = 0; i < NC; i++) {
             const crushN2 = state.maxCrushingPressureN2[i];
             const crushHe = state.maxCrushingPressureHe[i];
@@ -410,7 +415,7 @@ const VPMEngine = (() => {
                 state.surfacePhaseVolumeTime[i] = (
                     pHe / (Math.LN2 / ZHL16C_He[i].ht)
                     + (pN2 - surfaceInspiredN2) / (Math.LN2 / ZHL16C_N2[i].ht)
-                ) / Math.max(denomBase, 0.001);
+                ) / Math.max(denomBase, Math.max(0.001, pN2 * 1e-4));
             } else if (pN2 <= surfaceInspiredN2 && pHe + pN2 >= surfaceInspiredN2 && pHe > 0) {
                 const kHe = Math.LN2 / ZHL16C_He[i].ht;
                 const kN2 = Math.LN2 / ZHL16C_N2[i].ht;
@@ -420,7 +425,7 @@ const VPMEngine = (() => {
                 if (decayTime < 0) { state.surfacePhaseVolumeTime[i] = 0; continue; }
                 const integral = pHe / kHe * (1 - Math.exp(-kHe * decayTime))
                     + (pN2 - surfaceInspiredN2) / kN2 * (1 - Math.exp(-kN2 * decayTime));
-                state.surfacePhaseVolumeTime[i] = integral / Math.max(denomBase, 0.001);
+                state.surfacePhaseVolumeTime[i] = integral / Math.max(denomBase, Math.max(0.001, pN2 * 1e-4));
             } else {
                 state.surfacePhaseVolumeTime[i] = 0;
             }
@@ -572,7 +577,7 @@ const VPMEngine = (() => {
         state._conservatismRadiiApplied = true;
         if (scaleCarried) state._bubbleCarryApplied = false;
     }
-    function calcAllowableGradients(state, model, settings, conservatism) {
+    function calcAllowableGradients(state, model, settings, _conservatism) {
         for (let i = 0; i < NC; i++) {
             const rN2 = state.regeneratedRadiiN2[i];
             const baseGradN2 = twoGammaOverR(GAMMA, rN2)
@@ -644,13 +649,18 @@ const VPMEngine = (() => {
         const surfP = getSurfacePressure(settings);
         const pMaxAmb = state.maxAmbientPressure;
         const maxDepthBar = pMaxAmb - surfP;
-        const threshold = 6.0; 
+        const threshold = 6.0;
         if (maxDepthBar <= threshold) return;
         const extFactor = 1.0 - (maxDepthBar - threshold) * 0.02;
         const clampedFactor = Math.max(0.5, Math.min(1.0, extFactor));
         for (let i = 0; i < NC; i++) {
-            state.allowableGradientN2[i] *= clampedFactor;
-            state.allowableGradientHe[i] *= clampedFactor;
+            state.decoGradientN2[i] *= clampedFactor;
+            state.decoGradientHe[i] *= clampedFactor;
+        }
+    }
+    function applyExtendedAfterBoyle(state, model, settings) {
+        if (model === 'VPMBE' && state.useDecoGradients) {
+            extendedCompensation(state, settings);
         }
     }
     function getVPMCeiling(state, settings) {
@@ -690,17 +700,19 @@ const VPMEngine = (() => {
             }
             const mValue = a + pAmb / b;
             const buhlGrad = gf * (mValue - pAmb);
-            let vpmGrad;
-            if (pTotal > 0) {
-                vpmGrad = (pN2 * state.allowableGradientN2[i] + pHe * state.allowableGradientHe[i]) / pTotal;
+            let vpmGradN2;
+            let vpmGradHe;
+            if (state.useDecoGradients) {
+                vpmGradN2 = state.decoGradientN2[i];
+                vpmGradHe = state.decoGradientHe[i];
             } else {
-                vpmGrad = state.allowableGradientN2[i];
+                vpmGradN2 = state.allowableGradientN2[i];
+                vpmGradHe = state.allowableGradientHe[i];
             }
-            const blendedGrad = vpmGrad * fraction + buhlGrad * (1 - fraction);
-            if (pTotal > 0) {
-                state.allowableGradientN2[i] = blendedGrad;
-                state.allowableGradientHe[i] = blendedGrad;
-            }
+            const blendedGradN2 = vpmGradN2 * fraction + buhlGrad * (1 - fraction);
+            const blendedGradHe = vpmGradHe * fraction + buhlGrad * (1 - fraction);
+            state.allowableGradientN2[i] = blendedGradN2;
+            state.allowableGradientHe[i] = blendedGradHe;
         }
     }
     function isClearToAscendVPM(state, targetDepth, firstStopDepth, model, settings) {
@@ -927,7 +939,7 @@ const VPMEngine = (() => {
         let currentDepth = 0;
         let vpmStopCapFailedDepth = null;
         const vpmMaxStopMin = (settings._vpmMaxStopMin != null && Number.isFinite(settings._vpmMaxStopMin))
-            ? Math.max(0, settings._vpmMaxStopMin) : 999;
+            ? Math.max(0, settings._vpmMaxStopMin) : 180;
         function vpmStopCapError(stopDepth) {
             return {
                 error: `VPM stop at ${stopDepth} m exceeded safety limit without clearance — schedule invalid`,
@@ -1045,7 +1057,13 @@ const VPMEngine = (() => {
             const insp = getInspiredInertPressures(pAmb, ctx.currentSP, ctx.currentO2, ctx.currentHe, ccr);
             const inspHe = insp.pHe;
             const inspN2 = insp.pN2;
+            const stopLoopStart = (typeof performance !== 'undefined' && performance.now) ? performance.now() : 0;
             for (let guard = 0; guard < 1000; guard++) {
+                if (guard > 0 && guard % 50 === 0 && stopLoopStart > 0
+                    && performance.now() - stopLoopStart > 10000) {
+                    vpmStopCapFailedDepth = stopDepth;
+                    return;
+                }
                 for (let i = 0; i < NC; i++) {
                     ctx.state.tissues[i].pHe = haldane(ctx.state.tissues[i].pHe, inspHe, ZHL16C_He[i].ht, segmentTime);
                     ctx.state.tissues[i].pN2 = haldane(ctx.state.tissues[i].pN2, inspN2, ZHL16C_N2[i].ht, segmentTime);
@@ -1109,6 +1127,7 @@ const VPMEngine = (() => {
             ctx.state.firstStopDepth = firstStopDepth;
             if (model === 'VPMB' || model === 'VPMBE' || model === 'VPMB_GFS' || model === 'VPMBFBO') {
                 boyleLawCompensation(ctx.state, firstStopDepth, firstStopDepth, stepSize, settings);
+                applyExtendedAfterBoyle(ctx.state, model, settings);
                 rawCeiling = getVPMCeiling(ctx.state, settings);
                 firstStopDepth = Math.floor(rawCeiling / stepSize) * stepSize;
                 if (firstStopDoubleStep && firstStopDepth > Math.max(lastStop, targetDepth)) {
@@ -1140,6 +1159,7 @@ const VPMEngine = (() => {
                 }
                 if (model === 'VPMB' || model === 'VPMBE' || model === 'VPMB_GFS' || model === 'VPMBFBO') {
                     boyleLawCompensation(ctx.state, phaseFirstStopDepth, stopDepth + stepSize, stepSize, settings);
+                    applyExtendedAfterBoyle(ctx.state, model, settings);
                 }
                 runRoundedDecoStop(ctx, stopDepth, nextStop);
                 if (vpmStopCapFailedDepth != null) return ctx;
@@ -1159,7 +1179,10 @@ const VPMEngine = (() => {
             return ctx;
         }
         function appendLevelHold(ctx, level) {
-            if (level.oc) ctx.forcedOCMode = true;
+            if (level.oc) {
+                ctx.forcedOCMode = true;
+                maybeSwitchDecoGas(ctx, ctx.currentDepth);
+            }
             const nextLevelOffLoop = isCCR && !!(level.oc || level.scr);
             ctx.currentDepth = level.depth;
             ctx.currentO2 = level.o2 / 100;
@@ -1210,6 +1233,7 @@ const VPMEngine = (() => {
                     stepSize,
                     settings
                 );
+                applyExtendedAfterBoyle(scheduleState, model, settings);
                 rawCeiling = getVPMCeiling(scheduleState, settings);
                 if (rawCeiling > 0) {
                     firstStopDepth = roundUpToStop(rawCeiling, stepSize);
@@ -1284,6 +1308,7 @@ const VPMEngine = (() => {
                 }
                 if (model === 'VPMB' || model === 'VPMBE' || model === 'VPMB_GFS' || model === 'VPMBFBO') {
                     boyleLawCompensation(ctx.state, phaseFirstStopDepth, stopDepth + stepSize, stepSize, settings);
+                    applyExtendedAfterBoyle(ctx.state, model, settings);
                 }
                 runRoundedDecoStop(ctx, stopDepth, nextStop);
                 if (vpmStopCapFailedDepth != null) return ctx;
@@ -1310,7 +1335,6 @@ const VPMEngine = (() => {
             const offLoopPath = isCCR && settings.circuit !== 'pSCR' && (forcedOCMode || curSP <= 0);
             const interLevelConservatism = offLoopPath ? Math.max(0, conservatism - 1) : conservatism;
             calcAllowableGradients(state, model, settings, interLevelConservatism);
-            if (model === 'VPMBE') extendedCompensation(state, settings);
             let rawCeiling = getVPMCeiling(state, settings);
             if (rawCeiling <= targetDepth) {
                 settings._scrRuntimeMin = runtime;
@@ -1352,6 +1376,7 @@ const VPMEngine = (() => {
             state.firstStopDepth = firstStopDepth;
             if (model === 'VPMB' || model === 'VPMBE' || model === 'VPMB_GFS' || model === 'VPMBFBO') {
                 boyleLawCompensation(state, firstStopDepth, firstStopDepth, stepSize, settings);
+                applyExtendedAfterBoyle(state, model, settings);
                 rawCeiling = getVPMCeiling(state, settings);
                 firstStopDepth = offLoopPath
                     ? Math.floor(rawCeiling / stepSize) * stepSize
@@ -1412,6 +1437,7 @@ const VPMEngine = (() => {
                 const nextStopClamped = nextStop < targetDepth ? targetDepth : nextStop;
                 if (model === 'VPMB' || model === 'VPMBE' || model === 'VPMB_GFS' || model === 'VPMBFBO') {
                     boyleLawCompensation(state, firstStopDepth, stopDepth + stepSize, stepSize, settings);
+                    applyExtendedAfterBoyle(state, model, settings);
                 }
                 const effectiveMinStop = (firstStop30sec && stopDepth === firstStopDepth) ? 0.5 : minStopTime;
                 let stopTime = 0;
@@ -1463,7 +1489,16 @@ const VPMEngine = (() => {
             const time = level.time;
             const o2Frac = level.o2 / 100;
             const heFrac = level.he / 100;
-            if (level.oc) forcedOCMode = true;
+            if (level.oc) {
+                forcedOCMode = true;
+                const decoGas = selectDecoGas(currentDepth, normalizedDecoGases, ppO2Deco, settings);
+                if (decoGas) {
+                    curO2 = decoGas.o2;
+                    curHe = decoGas.he;
+                    curGasLabel = decoGas.label;
+                    curSP = 0;
+                }
+            }
             const nextLevelOffLoop = isCCR && !!(level.oc || level.scr);
             const sp = (forcedOCMode || nextLevelOffLoop) ? 0 : getEffectiveSetpoint(
                 level, isCCR, settings, depth, depth > currentDepth ? 'descent' : 'bottom');
@@ -1521,9 +1556,6 @@ const VPMEngine = (() => {
         calcCrushing(state, settings);
         applyNuclearRegeneration(state, bottomPhaseRuntime);
         calcAllowableGradients(state, model, settings, conservatism);
-        if (model === 'VPMBE') {
-            extendedCompensation(state, settings);
-        }
         const lastLevel = continuationLevels.length > 0
             ? continuationLevels[continuationLevels.length - 1]
             : levels[levels.length - 1];
@@ -1597,6 +1629,7 @@ const VPMEngine = (() => {
                 }
                 if (model === 'VPMB' || model === 'VPMBE' || model === 'VPMB_GFS' || model === 'VPMBFBO') {
                     boyleLawCompensation(trialBaseState, firstStopDepth, firstStopDepth, stepSize, settings);
+                    applyExtendedAfterBoyle(trialBaseState, model, settings);
                     rawCeiling = getVPMCeiling(trialBaseState, settings);
                     if (rawCeiling > 0) {
                         firstStopDepth = roundUpToStop(rawCeiling, stepSize);
@@ -1722,7 +1755,8 @@ const VPMEngine = (() => {
             adjustedCritRadiiN2:  state.adjustedCritRadiiN2.slice(),
             adjustedCritRadiiHe:  state.adjustedCritRadiiHe.slice(),
             regeneratedRadiiN2:   state.regeneratedRadiiN2.slice(),
-            regeneratedRadiiHe:   state.regeneratedRadiiHe.slice()
+            regeneratedRadiiHe:   state.regeneratedRadiiHe.slice(),
+            _altFactor: state._altFactor != null ? state._altFactor : 1,
         } : null;
         const normPlan = plan.map(seg => ({
             ...seg,

@@ -150,7 +150,7 @@ function canonicalCircuit(circuit) {
   const u = String(circuit).trim().toUpperCase();
   if (u === 'CCR') return 'CCR';
   if (u === 'PSCR') return 'pSCR';
-  return String(circuit).trim();
+  return 'OC';
 }
 
 function normalizeCCRSettings(s) {
@@ -217,9 +217,19 @@ function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
     if (pDry >= bottomSP) return bottomSP;
     return descSP;
   }
+  const pAmb = spSurf + depthM * BAR_PER_METRE;
+  const pDry = pAmb - WATER_VAPOR;
+  if (depthM < 0.5) {
+    if (pDry >= decoSP) return decoSP;
+    if (pDry >= bottomSP) return bottomSP;
+    return descSP;
+  }
   const deepestCross = Math.max(descCross ?? 0, bottomCross ?? 0, decoCross ?? 0);
   if (depthM > deepestCross) return bottomSP;
-  if (descCross != null && depthM <= descCross) return descSP;
+  if (descCross != null && depthM <= descCross) {
+    if (pDry >= bottomSP + 0.005) return bottomSP;
+    return descSP;
+  }
   if (descCross == null && bottomCross != null && depthM < bottomCross) return descSP;
   if (decoCross != null && depthM <= decoCross) return bottomSP;
   return decoSP;
@@ -243,7 +253,7 @@ function computePSCRFractions(pAmb, fO2, fHe, ccr) {
   // Previous model subtracted cumulative dive runtime × VO2 from a fixed loop volume,
   // which drove loop O2 to near-zero after a few minutes, zeroing N2 loading for the
   // rest of the dive. The steady-state formula is time-independent and depth-correct.
-  const ppO2Drop = metO2 / loopVol;
+  const ppO2Drop = (metO2 / loopVol) * (pAmb / (typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325));
   const ppO2Supply = fO2 * pAmb;
   const newPpO2 = Math.max(PSCR_MIN_PPO2, ppO2Supply - ppO2Drop);
   const newFO2 = Math.min(0.999, newPpO2 / Math.max(0.001, pAmb));
@@ -271,13 +281,12 @@ function ccrLoopGasBelowSetpoint(pAmb, fO2, fHe, setpoint) {
   const fHeEffDry = loopInertDry * (fHe / inertSrc);
   const fN2effDry = loopInertDry * (fN2d / inertSrc);
   const wetScale = pDry / Math.max(0.001, pAmb);
-  const pInert = pDry * loopInertDry;
   return {
     fO2: fO2dry * wetScale,
     fN2: fN2effDry * wetScale,
     fHe: fHeEffDry * wetScale,
-    pN2: pInert * (fN2d / inertSrc),
-    pHe: pInert * (fHe / inertSrc),
+    pN2: pDry * fN2effDry,
+    pHe: pDry * fHeEffDry,
   };
 }
 
@@ -430,9 +439,10 @@ function saturateLinearCCR(tissues, fromDepth, toDepth, t, fO2, fHe, ccr) {
   const cfg = normalizeCCRSettings(ccr);
   const surfP = altSurfaceP;
   const phase = cfg.ccrPhase || null;
-  const segments = phase
-    ? [{ fromDepth, toDepth }]
-    : splitLinearDepthAtBoundaries(fromDepth, toDepth, getSetpointBoundaryDepths(cfg, surfP));
+  if (Math.abs(fromDepth - toDepth) < 1e-9) {
+    return saturateCCR(tissues, fromDepth, t, fO2, fHe, cfg);
+  }
+  const segments = splitLinearDepthAtBoundaries(fromDepth, toDepth, getSetpointBoundaryDepths(cfg, surfP));
   let out = tissues;
   const totalTime = t;
   const totalDist = Math.abs(toDepth - fromDepth) || 1e-9;
@@ -442,7 +452,9 @@ function saturateLinearCCR(tissues, fromDepth, toDepth, t, fO2, fHe, ccr) {
     const p0Amb = depthBar(seg.fromDepth);
     const pEndAmb = depthBar(seg.toDepth);
     const R = (pEndAmb - p0Amb) / segTime;
-    const segSP = getEffectiveSetpointAtDepth(seg.toDepth, cfg, surfP, phase);
+    const ascending = seg.toDepth < seg.fromDepth;
+    const endpointDepth = ascending ? seg.toDepth : seg.fromDepth;
+    const segSP = getEffectiveSetpointAtDepth(endpointDepth, cfg, surfP, phase);
     const segCcr = { ...cfg, setpoint: segSP };
     out = out.map((t0, i) => ({
       pN2: schreinerLinearCCR(t0.pN2, ZHL16C[i][0], segTime, p0Amb, R, segSP, fO2, fHe, segCcr, false),

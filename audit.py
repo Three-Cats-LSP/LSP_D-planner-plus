@@ -703,8 +703,8 @@ _ccr_core_path = os.path.join(os.path.dirname(__file__), "zhl-ccr-core.js")
 if os.path.isfile(_ccr_core_path):
     with open(_ccr_core_path, encoding="utf-8") as f:
         _ccr_core_src = f.read()
-    if "getEffectiveSetpointAtDepth(seg.toDepth" in _ccr_core_src:
-        ok("CCR saturateLinearCCR uses segment exit depth for setpoint (issue #27 BUG-C / #118 M-7)")
+    if "getEffectiveSetpointAtDepth(endpointDepth" in _ccr_core_src or "getEffectiveSetpointAtDepth(seg.toDepth" in _ccr_core_src:
+        ok("CCR saturateLinearCCR uses segment boundary depth for setpoint (issue #27 BUG-C / #118 M-7 / #123 H-03)")
     elif "getEffectiveSetpointAtDepth(seg.fromDepth" in _ccr_core_src:
         ok("CCR saturateLinearCCR uses segment entry depth for setpoint (issue #27 BUG-C)")
     else:
@@ -725,8 +725,8 @@ if zhl_bundle_js:
         ok("zhl-engine-bundle travel gas descent passes fHe (issue #28 bundle parity)")
     else:
         fail("zhl-engine-bundle missing travel gas fHe (issue #28)")
-    if "getEffectiveSetpointAtDepth(seg.toDepth" in zhl_bundle_js:
-        ok("zhl-engine-bundle CCR setpoint at segment exit depth (issue #28 / #118 M-7)")
+    if "getEffectiveSetpointAtDepth(endpointDepth" in zhl_bundle_js or "getEffectiveSetpointAtDepth(seg.toDepth" in zhl_bundle_js:
+        ok("zhl-engine-bundle CCR setpoint at segment boundary depth (issue #28 / #118 M-7 / #123)")
     elif "getEffectiveSetpointAtDepth(seg.fromDepth" in zhl_bundle_js:
         ok("zhl-engine-bundle CCR setpoint at segment entry depth (issue #28 bundle parity)")
     else:
@@ -1029,19 +1029,19 @@ else:
 # GROUP 17 — FEATURE B: Repetitive VPM dive bubble state carry
 # ══════════════════════════════════════════════════════════════════════════════
 
-# 17.1 REGEN_TIME constant = 20160 min (14 days)
-m_regen = re.search(r"REGEN_TIME\s*=\s*([\d.]+)", vpm_src)
+# 17.1 REGEN_TIME_MIN constant = 20160 min (14 days)
+m_regen = re.search(r"REGEN_TIME(?:_MIN)?\s*=\s*([\d.]+)", vpm_src)
 if m_regen and abs(float(m_regen.group(1)) - 20160.0) < 1.0:
-    ok(f"REGEN_TIME = {m_regen.group(1)} min (14 days = 14×24×60 ✓)")
+    ok(f"REGEN_TIME_MIN = {m_regen.group(1)} min (14 days = 14×24×60 ✓)")
 else:
     val = m_regen.group(1) if m_regen else "NOT FOUND"
-    fail(f"REGEN_TIME = {val}, expected 20160 (14 days) — bubble regeneration rate wrong")
+    fail(f"REGEN_TIME_MIN = {val}, expected 20160 (14 days) — bubble regeneration rate wrong")
 
-# 17.2 Regeneration formula: exp(-si / REGEN_TIME) — exponential decay
-if re.search(r"Math\.exp\s*\(\s*-\s*\w+\s*/\s*REGEN_TIME\s*\)", vpm_src):
-    ok("Regeneration formula uses exp(-t/REGEN_TIME) — correct exponential decay")
+# 17.2 Regeneration formula: exp(-si / REGEN_TIME_MIN) — exponential decay
+if re.search(r"Math\.exp\s*\(\s*-\s*\w+\s*/\s*REGEN_TIME(?:_MIN)?\s*\)", vpm_src):
+    ok("Regeneration formula uses exp(-t/REGEN_TIME_MIN) — correct exponential decay")
 else:
-    fail("Regeneration formula missing exp(-t/REGEN_TIME) — bubble state carry physics wrong")
+    fail("Regeneration formula missing exp(-t/REGEN_TIME_MIN) — bubble state carry physics wrong")
 
 # 17.3 finalBubbleState exported from buildResult with adjustedCritRadii and regeneratedRadii
 if ("finalBubbleState" in vpm_src and
@@ -1242,8 +1242,11 @@ if "fraction = stopDepth / firstStopDepth" in vpm_src:
 else:
     fail("GFS blend fraction formula wrong — direction of VPM→GF transition incorrect")
 
-# 19.3 Blend formula: vpmGrad * fraction + buhlGrad * (1 - fraction)
-if "blendedGrad = vpmGrad * fraction + buhlGrad * (1 - fraction)" in vpm_src:
+# 19.3 Blend formula: per-gas VPM→GF interpolation (issue #123 M-04)
+if ("blendedGradN2 = vpmGradN2 * fraction + buhlGrad * (1 - fraction)" in vpm_src
+        and "blendedGradHe = vpmGradHe * fraction + buhlGrad * (1 - fraction)" in vpm_src):
+    ok("GFS blend formula: per-gas linear VPM→GF interpolation correct")
+elif "blendedGrad = vpmGrad * fraction + buhlGrad * (1 - fraction)" in vpm_src:
     ok("GFS blend formula: linear VPM→GF interpolation correct")
 else:
     fail("GFS blend formula missing or wrong")
@@ -4943,7 +4946,7 @@ if "s.fN2 != null ? s.fN2 : bottomFN2" in js and "s.fN2 || bottomFN2" not in js.
     ok("O2 deco stop: fN2=0 preserved in ceiling walk (issue #93 H-1)")
 else:
     fail("ceiling walk still uses s.fN2 || bottomFN2 falsy-zero fallback (issue #93 H-1)")
-if "function computePSCRFractions(pAmb, fO2, fHe, ccr)" in js and "ppO2Drop = metO2 / loopVol" in js:
+if "function computePSCRFractions(pAmb, fO2, fHe, ccr)" in js and ("ppO2Drop = (metO2 / loopVol) * (pAmb /" in js or "ppO2Drop = metO2 / loopVol" in js):
     ok("index.html computePSCRFractions steady-state Baker formula (issue #93 H-2)")
 else:
     fail("index.html computePSCRFractions still uses cumulative runtime depletion (issue #93 H-2)")
@@ -5094,7 +5097,7 @@ else:
     fail("validatePlannerInputs missing trimix fraction validation (issue #98 H-2)")
 
 # ── issue #99 fixes ──
-_gesp = js.split("function getEffectiveSetpointAtDepth", 1)[-1][:1200] if "function getEffectiveSetpointAtDepth" in js else ""
+_gesp = js.split("function getEffectiveSetpointAtDepth", 1)[-1][:2200] if "function getEffectiveSetpointAtDepth" in js else ""
 if "depthM > deepestCross" in _gesp and "depthAtSetpointCrossing" in _gesp:
     ok("index.html getEffectiveSetpointAtDepth uses depth-derived phase thresholds (issue #99 H-1 / #104 M-4)")
 else:
@@ -5233,7 +5236,7 @@ if "_bubbleCarryApplied" in _vpm104 and "scaleCarried" in _vpm104.split("functio
     ok("setCriticalRadiiForConservatism scales carried radii when bubble carry applied (issue #104 H-2 / #106 H-1)")
 else:
     fail("setCriticalRadiiForConservatism still skips conservatism on bubble carry (issue #104 H-2)")
-if "Math.max(denomBase, 0.001)" in _vpm104:
+if "Math.max(denomBase, Math.max(0.001, pN2 * 1e-4))" in _vpm104 or "Math.max(denomBase, 0.001)" in _vpm104:
     ok("VPM calcSurfacePhaseVolumeTime guards near-zero denominator (issue #104 M-9)")
 else:
     fail("VPM surface phase volume missing denominator guard (issue #104 M-9)")
@@ -5501,7 +5504,7 @@ _111_bundle = open(os.path.join(os.path.dirname(__file__), "zhl-engine-bundle.js
 _111_ccr = open(os.path.join(os.path.dirname(__file__), "zhl-ccr-core.js"), encoding="utf-8").read()
 _111_ci = open(os.path.join(os.path.dirname(__file__), ".github", "workflows", "ci.yml"), encoding="utf-8").read()
 _111_regr = open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read()
-_111_gesp = js.split("function getEffectiveSetpointAtDepth", 1)[-1][:1200] if "function getEffectiveSetpointAtDepth" in js else ""
+_111_gesp = js.split("function getEffectiveSetpointAtDepth", 1)[-1][:2200] if "function getEffectiveSetpointAtDepth" in js else ""
 _111_ndl = js.split("function buhNDL", 1)[-1][:1500] if "function buhNDL" in js else ""
 _111_rep = js.split("function getZhlRepStateForSchedule", 1)[-1][:400] if "function getZhlRepStateForSchedule" in js else ""
 _111_end = js.split("function calcEND_tool", 1)[-1][:2500] if "function calcEND_tool" in js else ""
@@ -5541,7 +5544,7 @@ if "if (ok) {" in _111_zwb.split("worker.onmessage", 1)[-1][:600] and "consecuti
     ok("issue #111 M-3: worker bridge increments failures only on ok:false")
 else:
     fail("issue #111 M-3: worker bridge failure counter regression")
-if "Math.max(denomBase, 0.001)" in _111_vpm:
+if "Math.max(denomBase, Math.max(0.001, pN2 * 1e-4))" in _111_vpm or "Math.max(denomBase, 0.001)" in _111_vpm:
     ok("issue #111 M-4: VPM calcSurfacePhaseVolumeTime near-zero denominator guard")
 else:
     fail("issue #111 M-4: VPM surface phase volume missing denominator guard")
@@ -5875,8 +5878,8 @@ if "_restoreInProgress" in js.split("var appSettings", 1)[-1][:800] and "waterDe
     ok("issue #118 M-6/M-8: batch restore suppresses change events; waterDensity in v6 blob")
 else:
     fail("issue #118 M-6/M-8: settings restore ordering or waterDensity dual-store regression")
-if "getEffectiveSetpointAtDepth(seg.toDepth" in _118_ccr:
-    ok("issue #118 M-7: saturateLinearCCR samples setpoint at segment toDepth")
+if "getEffectiveSetpointAtDepth(endpointDepth" in _118_ccr or "getEffectiveSetpointAtDepth(seg.toDepth" in _118_ccr:
+    ok("issue #118 M-7: saturateLinearCCR samples setpoint at segment boundary depth")
 else:
     fail("issue #118 M-7: CCR Schreiner still samples setpoint at fromDepth boundary")
 if "margin <= 5 ? 'var(--orange)'" in js.split("function statusColor", 1)[-1][:200]:
@@ -6045,6 +6048,55 @@ if "_insertDecoGasCardInIdOrder" in js and "insertBefore" in js.split("function 
     ok("issue #122 follow-up: reused deco cards insert in ID order (stable labels after reload)")
 else:
     fail("issue #122 follow-up: appendDecoGasCardAtIdx still appends reused cards out of ID order")
+
+# ── Issue #123: full engine core audit (zhl-ccr-core + vpm-engine-core) ──
+_vpm_core = open(os.path.join(os.path.dirname(__file__), "vpm-engine-core.js"), encoding="utf-8").read()
+_zhl_ccr = open(os.path.join(os.path.dirname(__file__), "zhl-ccr-core.js"), encoding="utf-8").read()
+_123_regr = open(os.path.join(os.path.dirname(__file__), "dev", "engine_regression.py"), encoding="utf-8").read()
+if "pN2: pDry * fN2effDry" in _zhl_ccr and "pHe: pDry * fHeEffDry" in _zhl_ccr:
+    ok("issue #123 C-01: ccrLoopGasBelowSetpoint uses dry-basis partial pressures")
+else:
+    fail("issue #123 C-01: ccrLoopGasBelowSetpoint still double-scales loop inert partials")
+if "ppO2Drop = (metO2 / loopVol) * (pAmb /" in _zhl_ccr:
+    ok("issue #123 C-02: computePSCRFractions depth-normalises metabolic O2 drop")
+else:
+    fail("issue #123 C-02: computePSCRFractions still subtracts dimensionless drop from bar ppO2")
+if "applyExtendedAfterBoyle" in _vpm_core and "state.decoGradientN2[i] *= clampedFactor" in _vpm_core and "state.allowableGradientN2[i] *=" not in _vpm_core.split("function extendedCompensation", 1)[-1][:800]:
+    ok("issue #123 H-01: extended compensation scales deco gradients after Boyle step")
+else:
+    fail("issue #123 H-01: extendedCompensation still scales allowable before Boyle")
+if "endpointDepth = ascending ? seg.toDepth : seg.fromDepth" in _vpm_core.split("function loadTissuesLinear", 1)[-1][:2000]:
+    ok("issue #123 H-02: loadTissuesLinear uses segment endpoint for setpoint lookup")
+else:
+    fail("issue #123 H-02: loadTissuesLinear still uses midpoint depth for setpoint")
+if "splitLinearDepthAtBoundaries(fromDepth, toDepth" in _zhl_ccr.split("function saturateLinearCCR", 1)[-1][:800] and "phase ? [{ fromDepth" not in _zhl_ccr.split("function saturateLinearCCR", 1)[-1][:800]:
+    ok("issue #123 H-03: saturateLinearCCR always splits at setpoint boundaries")
+else:
+    fail("issue #123 H-03: saturateLinearCCR still bypasses boundary split when ccrPhase set")
+if "vpmMaxStopMin" in _vpm_core and ": 180" in _vpm_core and "guard % 50 === 0" in _vpm_core.split("function runRoundedDecoStop", 1)[-1][:2500]:
+    ok("issue #123 M-01: vpmMaxStopMin defaults to 180 with perf bailout in stop loop")
+else:
+    fail("issue #123 M-01: runRoundedDecoStop still uncapped at 999 min default")
+if "prevAltFactor" in _vpm_core and "_altFactor: altFactor" in _vpm_core:
+    ok("issue #123 M-02: bubble carry stores and normalises _altFactor on repetitive dives")
+else:
+    fail("issue #123 M-02: bubble carry still omits altitude normalisation")
+if "depthM < 0.5" in _zhl_ccr.split("function getEffectiveSetpointAtDepth", 1)[-1][:1500]:
+    ok("issue #123 M-03: shallow setpoint tier guard at depths < 0.5 m")
+else:
+    fail("issue #123 M-03: getEffectiveSetpointAtDepth missing shallow pressure guard")
+if "blendedGradN2" in _vpm_core.split("function applyGFSurfacing", 1)[-1][:1400] and "blendedGradHe" in _vpm_core.split("function applyGFSurfacing", 1)[-1][:1400]:
+    ok("issue #123 M-04: applyGFSurfacing blends N2 and He VPM gradients independently")
+else:
+    fail("issue #123 M-04: applyGFSurfacing still assigns single blended scalar to both gases")
+if "return 'OC'" in _zhl_ccr.split("function canonicalCircuit", 1)[-1][:200]:
+    ok("issue #123 L-03: canonicalCircuit falls back to OC for unknown circuits")
+else:
+    fail("issue #123 L-03: canonicalCircuit still passes through unknown circuit strings")
+if "issue123" in _123_regr:
+    ok("issue #123: engine regression covers CCR/VPM audit fixes")
+else:
+    fail("issue #123: engine regression missing #123 coverage")
 
 # ── v2.52.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.52\.00['\"]", app_version_js):

@@ -583,6 +583,57 @@ ENGINE_SUITE_JS = """
     };
   })();
 
+  // ── E10c: issue #123 engine core audit (CCR + VPM) ─────────────────────
+  out.sections.issue123 = (() => {
+    const surfP = typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325;
+    const ppH2O = typeof WATER_VAPOR !== 'undefined' ? WATER_VAPOR : 0.0627;
+    const barM = BAR_PER_METRE || 0.1;
+    const sp = 1.3;
+    const fO2 = 0.21;
+    const fHe = 0.35;
+    const pAmb6 = surfP + 6 * barM;
+    const loop = typeof ccrLoopGasBelowSetpoint === 'function'
+      ? ccrLoopGasBelowSetpoint(pAmb6, fO2, fHe, sp) : null;
+    const pDry6 = pAmb6 - ppH2O;
+    const fO2dry = Math.min(1, sp / pDry6);
+    const loopInertDry = Math.max(0, 1 - fO2dry);
+    const fN2d = Math.max(0, 1 - fO2 - fHe);
+    const inertSrc = Math.max(0.001, fHe + fN2d);
+    const fN2effDry = loopInertDry * (fN2d / inertSrc);
+    const c01Ok = loop && Math.abs(loop.pN2 - pDry6 * fN2effDry) < 1e-6
+      && Math.abs(loop.pHe - pDry6 * loopInertDry * (fHe / inertSrc)) < 1e-6;
+    const pAmbShallow = surfP + 0.1 * barM;
+    const pAmbDeep = surfP + 40 * barM;
+    const ccr = { circuit: 'pSCR', scrLoopVolume: 7, scrMetabolicO2: 1.5 };
+    const frSh = typeof computePSCRFractions === 'function'
+      ? computePSCRFractions(pAmbShallow, 0.32, 0, ccr) : null;
+    const frDp = typeof computePSCRFractions === 'function'
+      ? computePSCRFractions(pAmbDeep, 0.32, 0, ccr) : null;
+    const c02Ok = frSh && frDp && frDp.fO2 < frSh.fO2;
+    const ccrSp = { circuit: 'CCR', descentSetpoint: 0.7, bottomSetpoint: 1.2, decoSetpoint: 1.3 };
+    const m03Ok = typeof getEffectiveSetpointAtDepth === 'function'
+      && getEffectiveSetpointAtDepth(2.6, ccrSp, surfP) === 1.2;
+    const l03Ok = typeof canonicalCircuit === 'function' && canonicalCircuit('scr') === 'OC';
+    const deepMl = [{ depth: 56, time: 20, o2: 18, he: 45 }];
+    const vpmDeep = typeof VPMEngine !== 'undefined' && VPMEngine.calculate
+      ? VPMEngine.calculate(deepMl, [{ o2: 50, he: 0 }], {}, 'VPMBE') : null;
+    const h01Ok = !!(vpmDeep && fin(vpmDeep) && (vpmDeep.totalRuntime || 0) > 0);
+    const ccrAsc = zhl(lv(40, 20, 21, 35), [], {
+      circuit: 'CCR', descentSetpoint: 0.7, bottomSetpoint: 1.2, decoSetpoint: 1.3, bailout: false,
+    });
+    const h02Ok = fin(ccrAsc) && (ccrAsc.totalRuntime || 0) > 0;
+    const tissues0 = Array.from({ length: 16 }, () => ({ pN2: 0.79, pHe: 0 }));
+    const phased = typeof saturateLinearCCR === 'function'
+      ? saturateLinearCCR(tissues0, 30, 6, 24, 0.21, 0.35, {
+        circuit: 'CCR', descentSetpoint: 0.7, bottomSetpoint: 1.2, decoSetpoint: 1.3, ccrPhase: 'bottom',
+      }) : null;
+    const h03Ok = phased && phased.some((t, i) => i > 0 && Math.abs(t.pN2 - tissues0[i].pN2) > 1e-6);
+    return {
+      c01Ok, c02Ok, m03Ok, l03Ok, h01Ok, h02Ok, h03Ok,
+      ok: c01Ok && c02Ok && m03Ok && l03Ok && h01Ok && h02Ok && h03Ok,
+    };
+  })();
+
   // ── E11: issue #112 planner BT vs descent validation ───────────────────
   out.sections.issue112PlannerBt = (() => {
     const depthEl = document.getElementById('depth');
@@ -852,6 +903,8 @@ def run_suite(page) -> dict:
     assert_true(i122.get("ok"), "gapped dynamic deco card layout restores exact ID set (issue #122)", str(i122))
     i122r = s.get("issue122IdReuse", {})
     assert_true(i122r.get("ok"), "deco card IDs reuse slots 3–8 and dg8 values persist (issue #122 ID reuse)", str(i122r))
+    i123 = s.get("issue123", {})
+    assert_true(i123.get("ok"), "issue #123 engine audit fixes (CCR shallow/pSCR/VPM)", str(i123))
 
     for name, r in s["rebreather"].items():
         assert_true(fin(r), f"Rebreather {name} produces schedule", str(r)[:120])
