@@ -125,6 +125,7 @@ jobs:
 
   native-bridge-regression:
     name: Native bridge regression (Android select + Capacitor)
+    needs: [bundle-sync]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

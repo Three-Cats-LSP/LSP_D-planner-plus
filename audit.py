@@ -6335,6 +6335,23 @@ if "thin delegates — single source is bundle" in _125_mirror:
 else:
     fail("issue #125 L-3: mirror doc still says index CCR delegates (until removed)")
 
+# ── Issue #126: Option 1 roadmap completion ──
+_pkg126 = open(os.path.join(os.path.dirname(__file__), "package.json"), encoding="utf-8").read()
+_vpm_core126 = open(os.path.join(os.path.dirname(__file__), "vpm-engine-core.js"), encoding="utf-8").read()
+_ci126 = open(os.path.join(os.path.dirname(__file__), ".github", "workflows", "ci.yml"), encoding="utf-8").read()
+if '"build": "npm run build:bundles"' in _pkg126:
+    ok("issue #126 R-1: package.json build alias points to build:bundles")
+else:
+    fail("issue #126 R-1: npm run build alias missing from package.json")
+if re.search(r"\*/\s*\n\s*'use strict';", _vpm_core126):
+    ok("issue #126 R-2: vpm-engine-core.js uses strict mode at file scope")
+else:
+    fail("issue #126 R-2: vpm-engine-core.js missing top-level use strict")
+if all("needs: [bundle-sync]" in _ci126.split(f"{job}:", 1)[-1][:120] for job in ("audit", "export-regression", "engine-full", "engine-validation", "native-bridge-regression")):
+    ok("issue #126: all regression CI jobs depend on bundle-sync")
+else:
+    fail("issue #126: one or more CI jobs still run without bundle-sync dependency")
+
 # ── v2.53.00 stable release ──
 if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.00['\"]", app_version_js):
     ok("stable release APP_VERSION is 2.53.00")

@@ -9,6 +9,8 @@
  *   globals: altSurfaceP, BAR_PER_METRE (exposure fallbacks)
  */
 const VPMEngine = (() => {
+'use strict';
+
     const ZHL16C_N2 = [
         { ht: 5.0,    a: 1.2599, b: 0.5050 },
         { ht: 8.0,    a: 1.0000, b: 0.6514 },
