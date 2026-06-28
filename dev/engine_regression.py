@@ -413,7 +413,7 @@ ENGINE_SUITE_JS = """
     const ml = [{ depth: 60, time: 40, o2: 18, he: 45 }, { depth: 30, time: 10, o2: 21, he: 35 }];
     const r = vpm(ml, [{ o2: 50, he: 0, mod: 0 }], { _vpmMaxStopMin: 0, _vpmTestForceStopCap: true }, 'VPMB');
     return {
-      ok: !!(r && r.code === 'VPM_STOP_CAP' && r.error && !(r.plan || []).length && r.finalTissues == null),
+      ok: !!(r && r.code === 'VPM_STOP_CAP' && r.error && r.finalTissues == null && (r.plan || []).length > 0),
       code: r && r.code,
       planLen: (r && r.plan || []).length,
     };
@@ -962,7 +962,7 @@ def run_suite(page) -> dict:
     i116h = s.get("issue116HypoxicCustomDeco", {})
     assert_true(i116h.get("ok"), "validateDomDecoGases rejects custom 10% O2 deco (issue #116 H-1)", str(i116h))
     i116v = s.get("issue116VpmStopCap", {})
-    assert_true(i116v.get("ok"), "VPM stop cap returns VPM_STOP_CAP with empty plan (issue #116 H-2)", str(i116v))
+    assert_true(i116v.get("ok"), "VPM stop cap returns VPM_STOP_CAP with partial plan for UI warning (issue #116 / #127 M-6)", str(i116v))
     i113r = s.get("issue113NuclearRegen", {})
     assert_true(i113r.get("ok"), "VPM ML inter-level deco excludes deco from nuclear regen path (issue #113 M-2)", str(i113r))
     i117 = s.get("issue117", {})

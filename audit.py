@@ -5806,10 +5806,10 @@ if "VPM_STOP_CAP" in _113_vpm and "return vpmStopCapError" in _113_vpm:
     ok("issue #116 H-2: VPM stop cap returns fatal VPM_STOP_CAP error")
 else:
     fail("issue #116 H-2: VPM stop cap still treated as valid plan segment")
-if "result.code === 'VPM_STOP_CAP'" in js and "function runVPMSchedule" in js:
-    ok("issue #116 H-2: UI blocks render on VPM_STOP_CAP")
+if "result.code === 'VPM_STOP_CAP' && result.plan" in js and "function runVPMSchedule" in js:
+    ok("issue #116 H-2: UI renders partial plan on VPM_STOP_CAP for capped-stop warning")
 else:
-    fail("issue #116 H-2: UI still renders VPM cap-hit plans")
+    fail("issue #116 H-2: UI missing VPM_STOP_CAP partial-plan warning path")
 if "REQUIRED_PRECACHE" in _113_sw and "verifyShellPrecache" in _113_sw and "throw new Error('Required shell precache incomplete')" in _113_sw:
     ok("issue #116 M-1: SW counts only confirmed cache.add successes")
 else:
