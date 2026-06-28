@@ -1,6 +1,7 @@
 /**
- * Bühlmann ZHL-16C tissue physics (Tier 3) — pure functions, no DOM.
- * Concatenated into zhl-engine-bundle.js via tools/build_zhl_bundle.py.
+ * Bühlmann ZHL-16C tissue physics (Tier 3) — BUILD SOURCE ONLY.
+ * Not loaded by index.html at runtime.
+ * Rebuilt into zhl-engine-bundle.js via tools/build_zhl_bundle.py.
  */
 const ZHL16C = [
   [5.0,1.2599,0.5050],[8.0,1.0000,0.6514],[12.5,0.8618,0.7222],[18.5,0.7562,0.7825],
@@ -154,6 +155,8 @@ function gfAtDepth(depthM, gfL, gfH, firstStopDepth, lastStop, shallowGradient) 
 }
 
 function ndlClearAtDepth(tissues, depthM, gfL, gfH, lastStop, decoStep, shallowGradient) {
+  if (!(decoStep > 0)) decoStep = 3;
+  if (!(lastStop >= 0)) lastStop = 3;
   const ceilL = ceiling(tissues, gfL);
   if (ceilL <= 0) return true;
   const firstStop = Math.max(lastStop, Math.ceil(ceilL / decoStep) * decoStep);

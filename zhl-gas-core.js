@@ -1,6 +1,7 @@
 /**
- * ZHL gas selection and min-deco profile helpers (Tier 3) — pure functions.
- * Concatenated into zhl-engine-bundle.js via tools/build_zhl_bundle.py.
+ * ZHL gas selection and min-deco profile helpers (Tier 3) — BUILD SOURCE ONLY.
+ * Not loaded by index.html at runtime.
+ * Rebuilt into zhl-engine-bundle.js via tools/build_zhl_bundle.py.
  *
  * Depends on zhl-physics-core.js module globals: altSurfaceP, BAR_PER_METRE, allowO2AtMOD
  * (build order: physics → gas → ccr → schedule).
@@ -39,6 +40,23 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
       }
     }
     result.push({ ...s });
+  }
+
+  function resolveGasAtDepth(targetDepthM) {
+    let activeGas = fallbackGas || '';
+    let activeFN2 = fallbackFN2 ?? null;
+    let activeFHe = fallbackFHe ?? 0;
+    for (const s of result) {
+      if (!s.gas || s.gas.trim() === '') continue;
+      const stepDepthM = stepDepthToM(s);
+      if (stepDepthM == null) continue;
+      if (stepDepthM >= targetDepthM) {
+        activeGas = s.gas;
+        activeFN2 = s.fN2 ?? activeFN2;
+        activeFHe = s.fHe ?? activeFHe ?? 0;
+      }
+    }
+    return { gas: activeGas, fN2: activeFN2, fHe: activeFHe ?? 0 };
   }
 
   function injectStop(targetDepthM, minDur) {
@@ -88,23 +106,6 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
     });
   }
 
-  function resolveGasAtDepth(targetDepthM) {
-    let activeGas = fallbackGas || '';
-    let activeFN2 = fallbackFN2 ?? null;
-    let activeFHe = fallbackFHe ?? 0;
-    for (const s of result) {
-      if (!s.gas || s.gas.trim() === '') continue;
-      const stepDepthM = stepDepthToM(s);
-      if (stepDepthM == null) continue;
-      if (stepDepthM >= targetDepthM) {
-        activeGas = s.gas;
-        activeFN2 = s.fN2 ?? activeFN2;
-        activeFHe = s.fHe ?? activeFHe ?? 0;
-      }
-    }
-    return { gas: activeGas, fN2: activeFN2, fHe: activeFHe ?? 0 };
-  }
-
   if (!enforced[9] && min9m > 0) injectStop(depth9, min9m);
   if (!enforced[6] && min6m > 0) injectStop(depth6, min6m);
 
@@ -135,14 +136,13 @@ function getActiveGas(curDepthM, bottomFN2, bottomFHe, decoGases, getPPO2LimitFn
 function ppO2Check(depthM, fN2, fHe, opts) {
   const fHeVal = fHe || 0;
   const fO2 = 1 - fN2 - fHeVal;
-  if (fO2 < -1e-6) return 'ERR';
   const o2frac = Math.max(0, fO2);
   const pAmb = altSurfaceP + depthM * BAR_PER_METRE;
   if (opts && opts.onLoop && opts.ccr && isRebreatherCircuit(opts.ccr.circuit) && !opts.ccr.bailout) {
-    const fO2 = opts.fO2 != null ? opts.fO2 : o2frac;
+    const ccrFO2 = opts.fO2 != null ? opts.fO2 : o2frac;
     const surfP = opts.surfP != null ? opts.surfP : altSurfaceP;
     const sp = opts.setpoint != null ? opts.setpoint : getEffectiveSetpointAtDepth(depthM, opts.ccr, surfP);
-    return getEffectivePpo2(pAmb, sp, fO2, opts.ccr, depthM, fHeVal).toFixed(2);
+    return getEffectivePpo2(pAmb, sp, ccrFO2, opts.ccr, depthM, fHeVal).toFixed(2);
   }
   return (pAmb * o2frac).toFixed(2);
 }

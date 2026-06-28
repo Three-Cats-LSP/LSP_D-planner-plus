@@ -7,14 +7,14 @@ self.onmessage = function (e) {
   const msg = e.data || {};
   const { id, levels, decoGases, settings, profileSplit, environment } = msg;
   try {
+    if (!ZhlEngineBundle) throw new Error('ZHL engine bundle failed to load');
     const env = environment || ZhlEngineBundle.defaultEnvironment();
-    ZhlEngineBundle.applyEnvironment(env);
     const result = ZhlEngineBundle.calculate(
       levels,
       decoGases,
       settings,
       profileSplit,
-      environment
+      env
     );
     self.postMessage({ id, ok: true, result });
   } catch (err) {

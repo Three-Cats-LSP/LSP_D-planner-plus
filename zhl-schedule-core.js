@@ -8,8 +8,8 @@ function runZhlScheduleCore(params) {
   const depthM = params.depthM;
   const bt = params.bt;
   const rate = params.ascentRate;
-  const decoRate = params.decoAscentRate ?? 9;
-  const surfaceRate = params.surfaceAscentRate ?? 9;
+  const decoRate = params.decoAscentRate ?? 3;
+  const surfaceRate = params.surfaceAscentRate ?? 3;
   const descentRate = params.descentRate;
   const gfL = params.gfL;
   const gfH = params.gfH;

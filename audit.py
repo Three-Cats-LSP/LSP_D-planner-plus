@@ -6376,10 +6376,10 @@ if "bottomFHe" in _gas_core_js.split("function getActiveGas", 1)[-1][:600] and "
     ok("issue #127 H-1: getActiveGas fallback preserves bottom helium fraction")
 else:
     fail("issue #127 H-1: getActiveGas still hardcodes fHe: 0 in fallback")
-if "if (fO2 < -1e-6) return 'ERR'" in _gas_core_js.split("function ppO2Check", 1)[-1][:400]:
-    ok("issue #127 H-2: ppO2Check rejects invalid O2 fraction instead of clamping to zero")
+if "return 'ERR'" not in _gas_core_js.split("function ppO2Check", 1)[-1][:400] and "Math.max(0, fO2)" in _gas_core_js.split("function ppO2Check", 1)[-1][:400]:
+    ok("issue #127 H-2: ppO2Check clamps invalid O2 fraction to zero ppO2")
 else:
-    fail("issue #127 H-2: ppO2Check still clamps negative O2 to zero ppO2")
+    fail("issue #127 H-2: ppO2Check still returns ERR or skips O2 clamp")
 if "gfAtDepth(" in _physics_core_js.split("function ndlClearAtDepth", 1)[-1][:900]:
     ok("issue #127 H-3: ndlClearAtDepth uses gfAtDepth with shallowGradient parameter")
 else:
@@ -6392,10 +6392,14 @@ if "ppO2Drop = metO2 / loopVol" in _ccr_core_src and "* (pAmb /" not in _ccr_cor
     ok("issue #127 H-5: computePSCRFractions uses depth-independent Baker ppO2 drop")
 else:
     fail("issue #127 H-5: computePSCRFractions still scales ppO2 drop by pAmb/altSurfaceP")
-if "applyEnvironment(environment || defaultEnvironment())" in (zhl_bundle_js or "") and "ZhlEngineBundle.applyEnvironment" in _worker127:
-    ok("issue #127 H-6: worker and calculate() apply environment before schedule run")
+if (
+    "applyEnvironment(environment || defaultEnvironment())" in (zhl_bundle_js or "")
+    and "profileSplit,\n      env" in _worker127.replace("\r\n", "\n")
+    and "applyEnvironment" not in _worker127
+):
+    ok("issue #127 H-6 / #130 BUG-05: worker passes resolved env to calculate() (single applyEnvironment)")
 else:
-    fail("issue #127 H-6: altitude environment not applied in worker path")
+    fail("issue #127 H-6 / #130 BUG-05: altitude environment not applied correctly in worker path")
 if "const margin = effNDL - bt" in js.split("effNDLCap", 1)[-1][:200]:
     ok("issue #127 M-1: UDP margin uses uncapped effNDL")
 else:
@@ -6474,10 +6478,10 @@ if "Math.abs(fromDepth - toDepth) < 1e-9" in _ccr_core_src.split("function satur
     ok("issue #128 M-2: saturateLinearCCR guards constant-depth segments")
 else:
     fail("issue #128 M-2: saturateLinearCCR missing constant-depth guard")
-if "params.decoAscentRate ?? 9" in _schedule128 and "params.surfaceAscentRate ?? 9" in _schedule128:
-    ok("issue #128 M-3: deco/surface ascent rates default to 9 m/min")
+if "params.decoAscentRate ?? 3" in _schedule128 and "params.surfaceAscentRate ?? 3" in _schedule128:
+    ok("issue #128 M-3 / #130 BUG-02: deco/surface ascent rates default to 3 m/min")
 else:
-    fail("issue #128 M-3: ascent rate params still lack nullish defaults")
+    fail("issue #128 M-3 / #130 BUG-02: ascent rate params still lack 3 m/min nullish defaults")
 if "SW_OPTIONAL_PRECACHE_MISS" in _sw128 and "SW_OPTIONAL_PRECACHE_MISS" in js:
     ok("issue #128 L-1: optional SW precache misses surfaced to client")
 else:
@@ -6488,10 +6492,13 @@ else:
     fail("issue #128 L-2: schreinerLinear missing R=0 JSDoc")
 _enforce128 = _gas_core_js.split("function enforceMinDecoProfile", 1)[-1][:2200] if "function enforceMinDecoProfile" in _gas_core_js else ""
 _enforce_first_loop = _enforce128.split("function injectStop", 1)[0] if "function injectStop" in _enforce128 else ""
-if "function resolveGasAtDepth" not in _enforce_first_loop:
-    ok("issue #128 L-3: resolveGasAtDepth defined after first enforceMinDecoProfile loop")
+if (
+    "function resolveGasAtDepth" in _enforce_first_loop
+    and _enforce128.find("for (const s of steps)") < _enforce128.find("function resolveGasAtDepth")
+):
+    ok("issue #128 L-3 / #130 BUG-11: resolveGasAtDepth after enrichment loop, before injectStop")
 else:
-    fail("issue #128 L-3: resolveGasAtDepth still closes over partially-built result")
+    fail("issue #128 L-3 / #130 BUG-11: resolveGasAtDepth ordering still wrong in enforceMinDecoProfile")
 if "L/min" in _ccr_core_src.split("function getCcrMetabolicO2Rate", 1)[0][-120:] + _ccr_core_src.split("function getCcrMetabolicO2Rate", 1)[-1][:200]:
     ok("issue #128 L-4: getCcrMetabolicO2Rate documents L/min units")
 else:
@@ -6500,6 +6507,53 @@ if "bar/bar" in _ccr_core_src.split("function computePSCRFractions", 1)[0][-120:
     ok("issue #128 L-4b: computePSCRFractions documents bar/bar ppO2 drop")
 else:
     fail("issue #128 L-4b: computePSCRFractions missing unit JSDoc")
+
+_worker130 = open("zhl-schedule-worker.js", encoding="utf-8").read() if os.path.isfile("zhl-schedule-worker.js") else ""
+_ppo2_130 = _gas_core_js.split("function ppO2Check", 1)[-1].split("function n2FracFromCustomO2", 1)[0] if "function ppO2Check" in _gas_core_js else ""
+if "const ccrFO2" in _ppo2_130 and "const fO2 = opts.fO2" not in _ppo2_130:
+    ok("issue #130 BUG-01: ppO2Check CCR branch uses ccrFO2 (no inner fO2 shadowing)")
+else:
+    fail("issue #130 BUG-01: ppO2Check still shadows outer fO2 in CCR branch")
+if "return 'ERR'" not in _ppo2_130:
+    ok("issue #130 BUG-08: ppO2Check returns numeric string instead of ERR sentinel")
+else:
+    fail("issue #130 BUG-08: ppO2Check still returns non-numeric ERR")
+if "allowO2AtMOD = (val === true || val === 'on')" in js:
+    ok("issue #130 BUG-03: setAllowO2AtMOD normalizes to boolean")
+else:
+    fail("issue #130 BUG-03: setAllowO2AtMOD still assigns raw string/value")
+if "ZHL16C_HE_AB," in (zhl_bundle_js or ""):
+    ok("issue #130 BUG-04: ZHL16C_HE_AB exported from ZhlEngineBundle API")
+else:
+    fail("issue #130 BUG-04: ZHL16C_HE_AB missing from bundle exports")
+if (
+    "if (!ZhlEngineBundle)" in _worker130
+    and "applyEnvironment" not in _worker130
+    and "profileSplit,\n      env" in _worker130.replace("\r\n", "\n")
+):
+    ok("issue #130 BUG-05/07/10: worker passes resolved env to calculate (no duplicate applyEnvironment)")
+else:
+    fail("issue #130 BUG-05/07/10: worker still double-applies env or passes raw null environment")
+if "ZhlEngineBundle.buhNDL(depthM, fN2, 50, 100, 0, 5, 5, false)" in js:
+    ok("issue #130 BUG-06: rec custom nitrox NDL uses explicit 5 m stop params")
+else:
+    fail("issue #130 BUG-06: rec custom nitrox NDL still inherits DOM decoStep/lastStop")
+_ndl130 = _physics_core_js.split("function ndlClearAtDepth", 1)[-1].split("function buhNDL", 1)[0] if "function ndlClearAtDepth" in _physics_core_js else ""
+if "if (!(decoStep > 0)) decoStep = 3" in _ndl130:
+    ok("issue #130 BUG-09: ndlClearAtDepth guards invalid decoStep/lastStop")
+else:
+    fail("issue #130 BUG-09: ndlClearAtDepth missing decoStep guard")
+_repo_root130 = os.path.dirname(os.path.abspath(__file__))
+_physics_hdr = open(os.path.join(_repo_root130, "zhl-physics-core.js"), encoding="utf-8").read()[:400]
+_gas_hdr = open(os.path.join(_repo_root130, "zhl-gas-core.js"), encoding="utf-8").read()[:500]
+if "BUILD SOURCE ONLY" in _physics_hdr:
+    ok("issue #130 BUG-12a: zhl-physics-core.js marked BUILD SOURCE ONLY")
+else:
+    fail("issue #130 BUG-12a: zhl-physics-core.js missing BUILD SOURCE ONLY header")
+if "BUILD SOURCE ONLY" in _gas_hdr:
+    ok("issue #130 BUG-12b: zhl-gas-core.js marked BUILD SOURCE ONLY")
+else:
+    fail("issue #130 BUG-12b: zhl-gas-core.js missing BUILD SOURCE ONLY header")
 
 print("=" * 60)
 

@@ -3972,7 +3972,8 @@ function getNitroxNDL(depthM, mix) {
   if (mix === 'custom') {
     // Interpolate between air, EAN32, EAN36 using Bühlmann for custom mixes in rec mode
     const fN2 = getN2Frac(mix);
-    return buhNDL(depthM, fN2, 50, 100); // conservative GF for rec nitrox
+    _syncZhlBundleEnv();
+    return ZhlEngineBundle.buhNDL(depthM, fN2, 50, 100, 0, 5, 5, false); // rec nitrox: 5 m stops, no shallow GF
   }
   return PADI_NDL_M[closest]; // air fallback
 }
@@ -4338,7 +4339,7 @@ function loadAltitudeFromStorage() {
 }
 
 function setAllowO2AtMOD(val) {
-  allowO2AtMOD = val;
+  allowO2AtMOD = (val === true || val === 'on');
   const sel = document.getElementById('o2AtMODSelect');
   if (sel) sel.value = val ? 'on' : 'off';
 }
