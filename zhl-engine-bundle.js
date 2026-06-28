@@ -602,8 +602,8 @@ function getCCRInertSchreinerParams(pAmbStart, setpoint, fO2, fHe, pressureRate,
       rHe: loop1.pHe - loop0.pHe,
     };
   }
-  const den = Math.max(0.001, 1 - fO2);
   const fN2d = Math.max(0, 1 - fO2 - fHe);
+  const den = Math.max(0.001, fN2d + fHe);
   const coeffN2 = fN2d / den;
   const coeffHe = fHe / den;
   const inspN2Start = Math.max(0, pAmbStart - setpoint - WATER_VAPOR) * coeffN2;

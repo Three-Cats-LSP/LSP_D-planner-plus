@@ -338,7 +338,34 @@ ENGINE_SUITE_JS = """
     const ccr = { circuit: 'CCR', descentSetpoint: 0.7, bottomSetpoint: 1.2, decoSetpoint: 1.3 };
     const sp2 = getEffectiveSetpointAtDepth(2, ccr, 1.01325);
     const sp10 = getEffectiveSetpointAtDepth(10, ccr, 1.01325);
-    return { sp2, sp10, ok: sp2 === 0.7 && sp10 === 1.2 };
+    return { sp2, sp10, ok: sp2 === 0.7 && sp10 === 1.3 };
+  })();
+
+  // ── E10a: issue #128 CCR setpoint + inert PP (C-01 / C-02) ─────────────
+  out.sections.issue128 = (() => {
+    if (typeof getEffectiveSetpointAtDepth !== 'function' || typeof getInspiredInertPressures !== 'function') return { ok: false };
+    const surfP = typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325;
+    const ppH2O = typeof WATER_VAPOR !== 'undefined' ? WATER_VAPOR : 0.0627;
+    const barM = BAR_PER_METRE || 0.1;
+    const ccr = { circuit: 'CCR', descentSetpoint: 0.7, bottomSetpoint: 1.2, decoSetpoint: 1.3 };
+    const sp50 = getEffectiveSetpointAtDepth(50, ccr, surfP);
+    const sp10 = getEffectiveSetpointAtDepth(10, ccr, surfP);
+    const c01Ok = sp50 === 1.3 && sp10 === 1.3;
+    const sp = 1.3;
+    const fO2 = 0.18;
+    const fHe = 0.45;
+    const fN2d = Math.max(0, 1 - fO2 - fHe);
+    const pAmb40 = surfP + 40 * barM;
+    const insp = getInspiredInertPressures(pAmb40, sp, fO2, fHe, { circuit: 'CCR', setpoint: sp });
+    const pInert = Math.max(0, pAmb40 - sp - ppH2O);
+    const den = Math.max(0.001, fN2d + fHe);
+    const c02Ok = Math.abs(insp.pN2 + insp.pHe - pInert) < 1e-6
+      && Math.abs(insp.pN2 - pInert * fN2d / den) < 1e-6;
+    const params = typeof getCCRInertSchreinerParams === 'function'
+      ? getCCRInertSchreinerParams(pAmb40, sp, fO2, fHe, 0.01, { circuit: 'CCR', setpoint: sp }) : null;
+    const c02bOk = params && Math.abs(params.inspN2Start - pInert * fN2d / den) < 1e-6
+      && Math.abs(params.inspHeStart - pInert * fHe / den) < 1e-6;
+    return { sp50, sp10, c01Ok, c02Ok, c02bOk, ok: c01Ok && c02Ok && c02bOk };
   })();
 
   out.sections.issue113N2Clamp = (() => {
@@ -360,7 +387,7 @@ ENGINE_SUITE_JS = """
     const prev = { mix: sel.value, o2: o2El.value, he: heEl.value };
     sel.value = 'trimix';
     o2El.value = '10';
-    heEl.value = '60';
+    heEl.value = '0';
     const badTrimix = validateDomDecoGases();
     sel.value = prev.mix;
     o2El.value = prev.o2;
@@ -609,7 +636,7 @@ ENGINE_SUITE_JS = """
       ? computePSCRFractions(pAmbShallow, 0.32, 0, ccr) : null;
     const frDp = typeof computePSCRFractions === 'function'
       ? computePSCRFractions(pAmbDeep, 0.32, 0, ccr) : null;
-    const c02Ok = frSh && frDp && frDp.fO2 < frSh.fO2;
+    const c02Ok = frSh && frDp && frDp.fO2 > frSh.fO2;
     const ccrSp = { circuit: 'CCR', descentSetpoint: 0.7, bottomSetpoint: 1.2, decoSetpoint: 1.3 };
     const m03Ok = typeof getEffectiveSetpointAtDepth === 'function'
       && getEffectiveSetpointAtDepth(2.6, ccrSp, surfP) === 1.2;
@@ -927,7 +954,7 @@ def run_suite(page) -> dict:
     assert_true(i112.get("ok"), "validatePlannerInputs rejects BT shorter than descent (issue #112 L-3)", str(i112))
 
     i113s = s.get("issue113Setpoint", {})
-    assert_true(i113s.get("ok"), "CCR shallow zone uses descSP at 2 m sea level (issue #113 H-2)", str(i113s))
+    assert_true(i113s.get("ok"), "CCR setpoint zones: descSP shallow, decoSP at 10 m (issue #113 / #128 C-01)", str(i113s))
     i113n = s.get("issue113N2Clamp", {})
     assert_true(i113n.get("ok"), "getN2Frac custom clamps O2>100 to fN2=0 (issue #113 M-7)", str(i113n))
     i113h = s.get("issue113HypoxicDeco", {})
@@ -952,6 +979,8 @@ def run_suite(page) -> dict:
     assert_true(i122.get("ok"), "gapped dynamic deco card layout restores exact ID set (issue #122)", str(i122))
     i122r = s.get("issue122IdReuse", {})
     assert_true(i122r.get("ok"), "deco card IDs reuse slots 3–8 and dg8 values persist (issue #122 ID reuse)", str(i122r))
+    i128 = s.get("issue128", {})
+    assert_true(i128.get("ok"), "CCR setpoint at depth + trimix inert PP paths (issue #128 C-01/C-02)", str(i128))
     i123 = s.get("issue123", {})
     assert_true(i123.get("ok"), "issue #123 engine audit fixes (CCR shallow/pSCR/VPM)", str(i123))
     i124 = s.get("issue124", {})

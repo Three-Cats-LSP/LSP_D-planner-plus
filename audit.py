@@ -6450,10 +6450,14 @@ if "if (depthM > deepestCross) return bottomSP" not in _gesp128c and "depthAtSet
 else:
     fail("issue #128 C-1: getEffectiveSetpointAtDepth still uses deepestCross bottomSP shortcut")
 _inert128 = _ccr_core_src.split("function getInspiredInertPressures", 1)[-1][:1200] if "function getInspiredInertPressures" in _ccr_core_src else ""
-if "fN2d + fHe" in _inert128 and "1 - fO2" not in _inert128.split("const den", 1)[-1][:80]:
-    ok("issue #128 C-2: CCR inert PP denominator uses fN2d + fHe")
+_sch128 = _ccr_core_src.split("function getCCRInertSchreinerParams", 1)[-1].split("function getSetpointBoundaryDepths", 1)[0] if "function getCCRInertSchreinerParams" in _ccr_core_src else ""
+if (
+    "const den = Math.max(0.001, fN2d + fHe)" in _inert128
+    and "const den = Math.max(0.001, fN2d + fHe)" in _sch128
+):
+    ok("issue #128 C-2: CCR inert PP denominator uses fN2d + fHe (inspired + Schreiner paths)")
 else:
-    fail("issue #128 C-2: getInspiredInertPressures still divides by (1 - fO2)")
+    fail("issue #128 C-2: CCR inert paths still divide by (1 - fO2)")
 if "ERR_TOTAL_EXCEEDS_100" in _gas_core_js.split("function validateHypoxicDecoGas", 1)[-1][:500]:
     ok("issue #128 H-1: validateHypoxicDecoGas rejects O2+He > 100%")
 else:
