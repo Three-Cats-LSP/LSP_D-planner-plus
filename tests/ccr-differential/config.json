@@ -5,6 +5,7 @@
     "entry": "index.html"
   },
   "comparatorEngines": ["multideco", "divekit", "abysner", "subsurface"],
+  "partialCoverageEngines": ["multideco", "divekit"],
   "multideco": {
     "applicationVersion": "2.26",
     "source": "captured-application-output",
@@ -45,5 +46,5 @@
     "abysner": ["CCR-C1", "CCR-C2", "CCR-C3"],
     "subsurface": ["CCR-C1", "CCR-C2", "CCR-C3"]
   },
-  "optionalGoldensNote": "Fixtures without comparator goldens are reported inconclusive (not failures). Expand requiredGoldens as captures are added."
+  "optionalGoldensNote": "multideco/divekit only have C1–C3 captures (partialCoverageEngines). Abysner/subsurface goldens exist for all valid fixtures; only C1–C3 are CI-blocking."
 }

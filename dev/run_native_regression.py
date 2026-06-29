@@ -16,7 +16,7 @@ _DEV = Path(__file__).resolve().parent
 if str(_DEV) not in sys.path:
     sys.path.insert(0, str(_DEV))
 
-from test_http import serve_root  # noqa: E402
+from test_http import serve_www  # noqa: E402
 
 PASS: list[str] = []
 FAIL: list[str] = []
@@ -237,7 +237,7 @@ def main() -> int:
     print("Android select picker + Capacitor export bridge")
     print("=" * 60)
 
-    with serve_root(ROOT) as base_url:
+    with serve_www(ROOT) as base_url:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()

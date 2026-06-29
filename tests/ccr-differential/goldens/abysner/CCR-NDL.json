@@ -1,0 +1,22 @@
+{
+  "engine": "Abysner",
+  "engineVersion": "open-reference",
+  "scenarioId": "CCR-NDL",
+  "provenance": {
+    "source": "open-reference-planner",
+    "note": "ZHL-16C CCR reference with Abysner preset (WV 0.0627, Schreiner, fixture rates)",
+    "repository": "https://github.com/NeoTech-Software/Abysner"
+  },
+  "stops": [],
+  "summary": {
+    "firstStopDepthM": 0,
+    "ttsMin": 2.0,
+    "runtimeMin": 22.9,
+    "cnsPercent": 12.4,
+    "otu": 33.0,
+    "decozoneStartM": 0
+  },
+  "gasSwitches": [],
+  "tissuesN2": "not_available",
+  "tissuesHe": "not_available"
+}

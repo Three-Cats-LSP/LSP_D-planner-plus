@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 _DEV = Path(__file__).resolve().parent
 if str(_DEV) not in sys.path:
     sys.path.insert(0, str(_DEV))
-from test_http import serve_root  # noqa: F401 — re-exported for run_browser_regression / run_ccr_differential
+from test_http import serve_root, serve_www  # noqa: F401 — re-exported for regression runners
 from playwright_boot import boot_app_page, ensure_app_engines, wait_app_engines  # noqa: E402
 
 INDEX = ROOT / "index.html"
@@ -171,7 +171,7 @@ def run_playwright_validation() -> dict:
 
     results = {"profiles": [], "pscr_suite": None, "app_version": None}
 
-    with serve_root(ROOT) as base_url:
+    with serve_www(ROOT) as base_url:
         app_url = urljoin(base_url, "index.html")
         pscr_url = urljoin(base_url, "tests-pscr-otu-cns.html")
 

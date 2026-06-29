@@ -10,9 +10,6 @@ Exit 0 = all pass, 1 = failures.
 import math
 import re
 import sys
-import threading
-import http.server
-import socketserver
 from pathlib import Path
 
 if hasattr(sys.stdout, 'reconfigure'):
@@ -28,6 +25,7 @@ if str(_DEV) not in sys.path:
     sys.path.insert(0, str(_DEV))
 
 from playwright_boot import boot_app_page  # noqa: E402
+from test_http import serve_www  # noqa: E402
 
 PASS = []
 FAIL = []
@@ -87,28 +85,8 @@ def line_has(pattern, text, label):
     return False
 
 
-class QuietHandler(http.server.SimpleHTTPRequestHandler):
-    def log_message(self, fmt, *args):
-        pass
-
-
-def start_server():
-    class Handler(http.server.SimpleHTTPRequestHandler):
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, directory=str(ROOT), **kwargs)
-
-        def log_message(self, fmt, *args):
-            pass
-
-    httpd = socketserver.TCPServer(("127.0.0.1", 0), Handler)
-    port = httpd.server_address[1]
-    t = threading.Thread(target=httpd.serve_forever, daemon=True)
-    t.start()
-    return httpd, port
-
-
-def run_tests(page, port):
-    boot_app_page(page, f"http://127.0.0.1:{port}")
+def run_tests(page, base_url: str):
+    boot_app_page(page, base_url)
 
     # ── A: Pure helper functions (metric + imperial) ─────────────────────
     print("\n── A: PrT helpers (domDepthToM / calcPrTBarMin) ──")
@@ -451,6 +429,130 @@ def run_tests(page, port):
     else:
         fail("Trimix: export text missing PrT")
 
+    # ── H: VPM-B export paths ────────────────────────────────────────────
+    print("\n── H: VPM-B deco exports (40 m / 30 min) ──")
+
+    for algo, label in [("VPMB", "VPM-B"), ("VPMB_GFS", "VPM-B / GFS")]:
+        vpm = page.evaluate(
+            """async (algo) => {
+                if (typeof setUnits === 'function') setUnits('metric');
+                window._zhlHeadless = false;
+                window._lastContingency = null;
+                document.getElementById('circuitSelect').value = 'OC';
+                if (typeof toggleCircuitFields === 'function') toggleCircuitFields();
+                document.getElementById('algorithmSelect').value = algo;
+                if (typeof setDecoAlgorithm === 'function') setDecoAlgorithm(algo);
+                document.getElementById('decoDepth').value = '40';
+                document.getElementById('decoBT').value = '30';
+                document.getElementById('decoGas').value = 'air';
+                document.getElementById('dg1Mix').value = 'ean50';
+                document.getElementById('dg2Mix').value = 'o2';
+                runDecoSchedule();
+                const deadline = Date.now() + 20000;
+                while (Date.now() < deadline) {
+                  if (document.querySelector('#decoTableBody tr[data-phase="totals"]')) break;
+                  await new Promise(r => setTimeout(r, 100));
+                }
+                const hdr = buildDecoPlanHeaderLines().join('\\n');
+                const txt = buildExportText('deco');
+                const msg = buildMessengerText('deco');
+                const sum = getPlanSummaryExport();
+                return {
+                  algo: document.getElementById('algorithmSelect').value,
+                  hdr, txt, msg,
+                  sumPrt: sum.prt,
+                  hasTable: !!document.querySelector('#decoTableBody tr[data-phase="totals"]'),
+                };
+            }""",
+            algo,
+        )
+        if vpm["hasTable"]:
+            ok(f"{label}: totals row rendered")
+        else:
+            fail(f"{label}: no totals row after runDecoSchedule")
+        if vpm["algo"] == algo:
+            ok(f"{label}: algorithmSelect={algo}")
+        else:
+            fail(f"{label}: algorithmSelect={vpm['algo']!r} (expected {algo})")
+        hdr = vpm["hdr"] or ""
+        if re.search(r"VPM", hdr, re.I):
+            ok(f"{label}: export header names VPM algorithm")
+        else:
+            fail(f"{label}: export header missing VPM label")
+        for src, text in [("exportText", vpm["txt"]), ("messenger", vpm["msg"])]:
+            if not text:
+                fail(f"{label} {src}: empty output")
+                continue
+            assert_near(extract_prt(text), exp_prt, 2.0, f"{label} {src} PrT")
+            stamp_ok(text, f"{label} {src}")
+
+    # ── I: CCR export paths ──────────────────────────────────────────────
+    print("\n── I: CCR deco exports (40 m / 28 min air diluent) ──")
+
+    ccr = page.evaluate(
+        """async () => {
+            if (typeof setUnits === 'function') setUnits('metric');
+            window._zhlHeadless = false;
+            window._lastContingency = null;
+            document.getElementById('algorithmSelect').value = 'ZHLC_GF';
+            if (typeof setDecoAlgorithm === 'function') setDecoAlgorithm('ZHLC_GF');
+            document.getElementById('circuitSelect').value = 'CCR';
+            if (typeof toggleCircuitFields === 'function') toggleCircuitFields();
+            document.getElementById('decoDepth').value = '40';
+            document.getElementById('decoBT').value = '28';
+            document.getElementById('decoGas').value = 'air';
+            document.getElementById('dg1Mix').value = 'ean50';
+            document.getElementById('dg2Mix').value = 'o2';
+            runDecoSchedule();
+            const deadline = Date.now() + 25000;
+            while (Date.now() < deadline) {
+              if (document.querySelector('#decoTableBody tr[data-phase="totals"]')) break;
+              await new Promise(r => setTimeout(r, 100));
+            }
+            const title = typeof getDecoPlanTitle === 'function' ? getDecoPlanTitle() : '';
+            const hdr = buildDecoPlanHeaderLines().join('\\n');
+            const txt = buildExportText('deco');
+            const msg = buildMessengerText('deco');
+            const sum = getPlanSummaryExport();
+            return {
+              title, hdr, txt, msg,
+              sumPrt: sum.prt,
+              circuit: document.getElementById('circuitSelect').value,
+              hasTable: !!document.querySelector('#decoTableBody tr[data-phase="totals"]'),
+              hasRows: !!document.querySelector('#decoTableBody tr'),
+            };
+        }"""
+    )
+    if ccr["hasTable"]:
+        ok("CCR: totals row rendered")
+    elif ccr.get("hasRows"):
+        ok("CCR: deco table rows rendered")
+    elif ccr.get("txt") and extract_prt(ccr["txt"]):
+        ok("CCR: export text includes PrT (schedule complete)")
+    else:
+        fail("CCR: no deco output after runDecoSchedule")
+    if ccr.get("circuit") == "CCR":
+        ok("CCR: circuitSelect=CCR")
+    else:
+        fail(f"CCR: circuitSelect={ccr.get('circuit')!r}")
+    title = ccr.get("title") or ""
+    hdr_ccr = ccr.get("hdr") or ""
+    if "CCR" in title or "CCR" in hdr_ccr:
+        ok("CCR: export title/header labels CCR mode")
+    else:
+        fail(f"CCR: missing CCR label in title/header ({title!r})")
+    if re.search(r"Diluent|CCR SP", hdr_ccr, re.I):
+        ok("CCR: header includes diluent / setpoint detail")
+    else:
+        fail("CCR: header missing diluent or setpoint detail")
+    ccr_exp_prt = prt_expected(40, 28)
+    for src, text in [("exportText", ccr["txt"]), ("messenger", ccr["msg"])]:
+        if not text:
+            fail(f"CCR {src}: empty output")
+            continue
+        assert_near(extract_prt(text), ccr_exp_prt, 2.0, f"CCR {src} PrT")
+        stamp_ok(text, f"CCR {src}")
+
 
 def main():
     try:
@@ -461,19 +563,17 @@ def main():
 
     print("=" * 60)
     print("LSP D-Planner — Export Regression Suite")
-    print("PrT · depth units · contingency · messenger · text export")
+    print("PrT · depth units · contingency · messenger · text export · VPM · CCR")
     print("=" * 60)
 
-    httpd, port = start_server()
-
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        page = browser.new_page()
-        try:
-            run_tests(page, port)
-        finally:
-            browser.close()
-            httpd.shutdown()
+    with serve_www(ROOT) as base_url:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            try:
+                run_tests(page, base_url)
+            finally:
+                browser.close()
 
     print("\n" + "─" * 60)
     print(f"Results: {len(PASS)} passed, {len(FAIL)} failed")

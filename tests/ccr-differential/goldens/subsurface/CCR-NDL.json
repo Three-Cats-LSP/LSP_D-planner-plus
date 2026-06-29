@@ -1,0 +1,22 @@
+{
+  "engine": "Subsurface",
+  "engineVersion": "open-reference",
+  "scenarioId": "CCR-NDL",
+  "provenance": {
+    "source": "open-reference-planner",
+    "note": "ZHL-16C CCR reference with Subsurface preset (WV 0.0627, 9/6/3 ascent, whole-minute stops)",
+    "repository": "https://github.com/subsurface/subsurface"
+  },
+  "stops": [],
+  "summary": {
+    "firstStopDepthM": 0,
+    "ttsMin": 2.0,
+    "runtimeMin": 22.9,
+    "cnsPercent": 12.4,
+    "otu": 33.0,
+    "decozoneStartM": 0
+  },
+  "gasSwitches": [],
+  "tissuesN2": "not_available",
+  "tissuesHe": "not_available"
+}

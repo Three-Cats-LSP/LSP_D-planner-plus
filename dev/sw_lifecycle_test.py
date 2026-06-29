@@ -12,7 +12,7 @@ _DEV = Path(__file__).resolve().parent
 if str(_DEV) not in sys.path:
     sys.path.insert(0, str(_DEV))
 
-from test_http import serve_root  # noqa: E402
+from test_http import serve_www  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def main() -> int:
     from playwright.sync_api import sync_playwright
 
-    with serve_root(ROOT) as base_url:
+    with serve_www(ROOT) as base_url:
         base = base_url.rstrip("/") + "/"
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)

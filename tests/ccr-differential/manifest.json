@@ -36,12 +36,40 @@
   "abysnerCaptured": [
     "CCR-C1",
     "CCR-C2",
-    "CCR-C3"
+    "CCR-C3",
+    "CCR-NDL",
+    "CCR-SP",
+    "CCR-ML",
+    "CCR-GF-A",
+    "CCR-GF-B",
+    "CCR-LAST-A",
+    "CCR-LAST-B",
+    "CCR-BO",
+    "CCR-LOST-GAS",
+    "CCR-REP",
+    "CCR-ALT",
+    "CCR-PRECISE-A",
+    "CCR-PRECISE-B",
+    "CCR-SP-CROSSING"
   ],
   "subsurfaceCaptured": [
     "CCR-C1",
     "CCR-C2",
-    "CCR-C3"
+    "CCR-C3",
+    "CCR-NDL",
+    "CCR-SP",
+    "CCR-ML",
+    "CCR-GF-A",
+    "CCR-GF-B",
+    "CCR-LAST-A",
+    "CCR-LAST-B",
+    "CCR-BO",
+    "CCR-LOST-GAS",
+    "CCR-REP",
+    "CCR-ALT",
+    "CCR-PRECISE-A",
+    "CCR-PRECISE-B",
+    "CCR-SP-CROSSING"
   ],
   "requiredGoldens": {
     "multideco": [
@@ -65,6 +93,10 @@
       "CCR-C3"
     ]
   },
+  "partialCoverageEngines": [
+    "multideco",
+    "divekit"
+  ],
   "fixtureEffectiveness": {
     "CCR-REP": {
       "baseline": "CCR-C1",

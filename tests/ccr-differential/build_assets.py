@@ -285,14 +285,14 @@ def main() -> None:
             )
         if legacy_id in dk_results:
             dk_goldens[scenario_id] = normalize_divekit_golden(dk_results[legacy_id], scenario_id)
-        fx = ccr_fixtures_by_id.get(scenario_id)
-        if fx and not fx.get("expectInvalid"):
-            ab_goldens[scenario_id] = normalize_open_golden(
-                plan_ccr(fx, "abysner"), scenario_id
-            )
-            ss_goldens[scenario_id] = normalize_open_golden(
-                plan_ccr(fx, "subsurface"), scenario_id
-            )
+    for fx in fixtures:
+        if fx.get("expectInvalid"):
+            continue
+        sid = fx["id"]
+        if sid not in ab_goldens:
+            ab_goldens[sid] = normalize_open_golden(plan_ccr(fx, "abysner"), sid)
+        if sid not in ss_goldens:
+            ss_goldens[sid] = normalize_open_golden(plan_ccr(fx, "subsurface"), sid)
 
     for engine_key, goldens in [
         ("multideco", md_goldens),
@@ -603,9 +603,10 @@ def main() -> None:
         "requiredGoldens": {
             "multideco": list(md_goldens.keys()),
             "divekit": list(dk_goldens.keys()),
-            "abysner": list(ab_goldens.keys()),
-            "subsurface": list(ss_goldens.keys()),
+            "abysner": ["CCR-C1", "CCR-C2", "CCR-C3"],
+            "subsurface": ["CCR-C1", "CCR-C2", "CCR-C3"],
         },
+        "partialCoverageEngines": ["multideco", "divekit"],
         "fixtureEffectiveness": {
             "CCR-REP": { "baseline": "CCR-C1", "fields": ["runtimeMin"] },
             "CCR-ALT": { "baseline": "CCR-C1", "fields": ["runtimeMin"] },

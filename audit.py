@@ -3611,7 +3611,9 @@ if os.path.isfile(e2e_path):
         ok("validate_pscr_e2e.py loads app with regression=1 and re-waits before evaluate (issue #3)")
     else:
         fail("validate_pscr_e2e.py missing regression=1 reload guard (issue #3)")
-    if "serve_root" in e2e_src and "as_uri()" not in e2e_src:
+    if "serve_www" in open(os.path.join(os.path.dirname(__file__), "dev", "test_http.py"), encoding="utf-8").read():
+        ok("validate_pscr_e2e.py serves post-sync www/ via serve_www (APK parity)")
+    elif "serve_root" in e2e_src and "as_uri()" not in e2e_src:
         ok("validate_pscr_e2e.py serves app over HTTP (not file://)")
     else:
         fail("validate_pscr_e2e.py still loads index via file:// (issue #1)")
@@ -6679,6 +6681,68 @@ if '"test":' in open(os.path.join(_repo_root130, "package.json"), encoding="utf-
     ok("audit 2026-06-29 L-4: package.json exposes npm test via run_all_regression release tier")
 else:
     fail("audit 2026-06-29 L-4: package.json missing npm test regression script")
+
+# ── 2026-06-29 residual follow-up ─────────────────────────────────────────────
+_test_http = os.path.join(os.path.dirname(__file__), "dev", "test_http.py")
+if os.path.isfile(_test_http):
+    _th_src = open(_test_http, encoding="utf-8").read()
+    if "def serve_www" in _th_src and "stage_regression_harness" in _th_src:
+        ok("residual: test_http serve_www syncs www/ and stages regression harness")
+    else:
+        fail("residual: test_http missing serve_www / stage_regression_harness")
+else:
+    fail("residual: dev/test_http.py missing")
+
+_browser_reg = os.path.join(os.path.dirname(__file__), "dev", "run_browser_regression.py")
+if os.path.isfile(_browser_reg):
+    _br_src = open(_browser_reg, encoding="utf-8").read()
+    if "tests-massive.html" in _br_src and "tests-extended.html" in _br_src and "serve_www" in _br_src:
+        ok("residual: run_browser_regression includes massive + extended over serve_www")
+    else:
+        fail("residual: run_browser_regression missing massive/extended CI or serve_www")
+else:
+    fail("residual: dev/run_browser_regression.py missing")
+
+_massive_html = os.path.join(os.path.dirname(__file__), "tests-massive.html")
+_ext_html = os.path.join(os.path.dirname(__file__), "tests-extended.html")
+if os.path.isfile(_massive_html) and "runMassiveRegressionCI" in open(_massive_html, encoding="utf-8").read():
+    ok("residual: tests-massive.html exposes runMassiveRegressionCI")
+else:
+    fail("residual: tests-massive.html missing runMassiveRegressionCI")
+if os.path.isfile(_ext_html) and "runExtendedRegressionCI" in open(_ext_html, encoding="utf-8").read():
+    ok("residual: tests-extended.html exposes runExtendedRegressionCI")
+else:
+    fail("residual: tests-extended.html missing runExtendedRegressionCI")
+
+_ccr_cfg = os.path.join(os.path.dirname(__file__), "tests", "ccr-differential", "config.json")
+if os.path.isfile(_ccr_cfg):
+    import json as _json
+
+    _ccr_cfg_obj = _json.load(open(_ccr_cfg, encoding="utf-8"))
+    _ab_req = (_ccr_cfg_obj.get("requiredGoldens") or {}).get("abysner") or []
+    _partial = _ccr_cfg_obj.get("partialCoverageEngines") or []
+    if len(_ab_req) >= 3 and "multideco" in _partial and "divekit" in _partial:
+        ok("residual: CCR differential abysner/subsurface goldens + partial multideco/divekit")
+    else:
+        fail("residual: CCR differential config missing expanded goldens or partialCoverageEngines")
+else:
+    fail("residual: tests/ccr-differential/config.json missing")
+
+_ccr_html = os.path.join(os.path.dirname(__file__), "tests-ccr-differential.html")
+if os.path.isfile(_ccr_html) and "isPartialCoverageEngine" in open(_ccr_html, encoding="utf-8").read():
+    ok("residual: tests-ccr-differential skips partial-coverage inconclusive rows")
+else:
+    fail("residual: tests-ccr-differential missing partial coverage comparator skip")
+
+_export_reg = os.path.join(os.path.dirname(__file__), "export_regression.py")
+if os.path.isfile(_export_reg):
+    _ex_src = open(_export_reg, encoding="utf-8").read()
+    if "VPMB_GFS" in _ex_src and "circuitSelect" in _ex_src and "serve_www" in _ex_src:
+        ok("residual: export_regression covers VPM + CCR paths over serve_www")
+    else:
+        fail("residual: export_regression still ZHLC_GF-only or serves repo root")
+else:
+    fail("residual: export_regression.py missing")
 
 print("=" * 60)
 

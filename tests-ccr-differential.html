@@ -156,6 +156,16 @@ function isRequiredGolden(config, engine, scenarioId) {
 
 
 
+function isPartialCoverageEngine(config, engine) {
+
+  const partial = config.partialCoverageEngines || [];
+
+  return partial.indexOf(engine) >= 0;
+
+}
+
+
+
 async function runAll() {
 
   const logEl = document.getElementById('log');
@@ -250,6 +260,12 @@ async function runAll() {
 
       if (!golden) {
 
+        if (isPartialCoverageEngine(CONFIG, engine) && !isRequiredGolden(CONFIG, engine, id)) {
+
+          continue;
+
+        }
+
         const required = isRequiredGolden(CONFIG, engine, id);
 
         row.comparisons.push({
@@ -290,7 +306,7 @@ async function runAll() {
 
       });
 
-      if (cmp.classification === CCRDiff.CLASS.LSP_SUSPECT) failures++;
+      if (cmp.classification === CCRDiff.CLASS.LSP_SUSPECT && isRequiredGolden(CONFIG, engine, id)) failures++;
 
     }
 

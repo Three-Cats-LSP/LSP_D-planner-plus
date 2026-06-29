@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run in-browser regression suites (tests-verify + tests-pscr-otu-cns) over HTTP."""
+"""Run in-browser regression suites over HTTP (post-sync www/ app shell)."""
 from __future__ import annotations
 
 import json
@@ -7,9 +7,13 @@ import sys
 from pathlib import Path
 from urllib.parse import urljoin
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 ROOT = Path(__file__).resolve().parents[1]
 
-JS_RUN_SUITE = """
+JS_RUN_SECTIONS = """
 (pageName) => new Promise((resolve, reject) => {
   const iframe = document.getElementById('app-frame');
   if (!iframe) return reject(new Error('app-frame missing on ' + pageName));
@@ -73,33 +77,54 @@ JS_RUN_SUITE = """
 })
 """
 
+JS_RUN_MASSIVE = """
+() => {
+  if (!window.runMassiveRegressionCI) throw new Error('runMassiveRegressionCI missing');
+  return window.runMassiveRegressionCI({ skipTier1: true });
+}
+"""
 
-def run_suite(page, base_url: str, html_name: str) -> dict:
+JS_RUN_EXTENDED = """
+() => {
+  if (!window.runExtendedRegressionCI) throw new Error('runExtendedRegressionCI missing');
+  return window.runExtendedRegressionCI();
+}
+"""
+
+SUITE_SPECS = [
+    ("tests-verify.html", JS_RUN_SECTIONS, 240000, True),
+    ("tests-pscr-otu-cns.html", JS_RUN_SECTIONS, 240000, True),
+    ("tests-extended.html?ci=1", JS_RUN_EXTENDED, 300000, False),
+    ("tests-massive.html?ci=1", JS_RUN_MASSIVE, 900000, False),
+]
+
+
+def run_suite(page, base_url: str, html_name: str, eval_js: str) -> dict:
     url = urljoin(base_url, html_name)
     page.goto(url, wait_until="domcontentloaded", timeout=180000)
-    return page.evaluate(JS_RUN_SUITE, html_name)
+    if eval_js is JS_RUN_SECTIONS:
+        return page.evaluate(eval_js, html_name.split("?")[0])
+    return page.evaluate(eval_js)
 
 
 def main() -> int:
     from playwright.sync_api import sync_playwright
 
     sys.path.insert(0, str(ROOT / "dev"))
-    from validate_pscr_e2e import serve_root  # noqa: E402
+    from test_http import serve_www  # noqa: E402
 
-    suites = [
-        "tests-verify.html",
-        "tests-pscr-otu-cns.html",
-    ]
     results = []
 
-    with serve_root(ROOT) as base_url:
+    with serve_www(ROOT) as base_url:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
-            page.set_default_timeout(240000)
-            for name in suites:
+            for name, eval_js, timeout_ms, strict_warn in SUITE_SPECS:
+                page.set_default_timeout(timeout_ms)
                 print(f"Running {name} …")
-                results.append(run_suite(page, base_url, name))
+                result = run_suite(page, base_url, name, eval_js)
+                result["strictWarn"] = strict_warn
+                results.append(result)
             browser.close()
 
     out = ROOT / "dev" / "browser_regression_results.json"
@@ -112,7 +137,8 @@ def main() -> int:
         fail = suite.get("fail", 0)
         warn = suite.get("warn", 0)
         total_fail += fail
-        total_warn += warn
+        if suite.get("strictWarn", True):
+            total_warn += warn
         status = "FAIL" if fail else ("WARN" if warn else "PASS")
         print(
             f"  {suite.get('page')}: {status} — "
@@ -129,7 +155,7 @@ def main() -> int:
     if total_warn:
         print(f"\nBrowser regression: {total_warn} warning(s) treated as failures")
         return 1
-    print(f"\nBrowser regression: all suites passed")
+    print("\nBrowser regression: all suites passed")
     return 0
 
 

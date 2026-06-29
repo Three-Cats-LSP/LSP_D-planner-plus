@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -68,17 +69,14 @@ def main() -> int:
     from playwright.sync_api import sync_playwright
 
     sys.path.insert(0, str(ROOT / "dev"))
-    from validate_pscr_e2e import serve_root  # noqa: E402
-
-    # Ensure fixtures/goldens are current
-    import subprocess
+    from test_http import serve_www  # noqa: E402
 
     build = ROOT / "tests" / "ccr-differential" / "build_assets.py"
     subprocess.run([sys.executable, str(build)], cwd=str(ROOT), check=True)
 
     url_path = "tests-ccr-differential.html"
 
-    with serve_root(ROOT) as base_url:
+    with serve_www(ROOT) as base_url:
         page_url = urljoin(base_url, url_path)
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)

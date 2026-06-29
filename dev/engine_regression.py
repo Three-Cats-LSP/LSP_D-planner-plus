@@ -22,7 +22,7 @@ if str(_DEV) not in sys.path:
     sys.path.insert(0, str(_DEV))
 
 from playwright_boot import boot_app_page  # noqa: E402
-from test_http import serve_root  # noqa: E402
+from test_http import serve_www  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 PASS: list[str] = []
@@ -1052,7 +1052,7 @@ def main() -> int:
 
     report = {"pass": [], "fail": [], "warn": []}
 
-    with serve_root(ROOT) as base_url:
+    with serve_www(ROOT) as base_url:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()

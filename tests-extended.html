@@ -1254,7 +1254,57 @@ function exportLog() {
   URL.revokeObjectURL(a.href);
 }
 
+function summarizeExtendedGroups(groups) {
+  const rows = [];
+  let pass = 0, warn = 0, fail = 0;
+  groups.forEach(function(g) {
+    g.results.forEach(function(r) {
+      rows.push({
+        section: g.name,
+        name: r.name,
+        pass: !!(r.pass && !r.warn),
+        warn: !!(r.pass && r.warn),
+        detail: r.detail || r.error || 'ok',
+      });
+      if (!r.pass) fail++;
+      else if (r.warn) warn++;
+      else pass++;
+    });
+  });
+  return { pass, warn, fail, rows };
+}
+
+window.runExtendedRegressionCI = function() {
+  return new Promise(function(resolve, reject) {
+    const frame = document.getElementById('app-frame');
+    frame.src = 'index.html?regression=1&ts=' + Date.now();
+    LSPTestHarness.waitForApp(frame, 45000, function(err, ctx) {
+      if (err) return reject(err);
+      HARNESS_CTX = ctx;
+      E = ctx.vpm;
+      WIN = ctx.win;
+      SURF = ctx.surf;
+      BAR = ctx.barPerM;
+      try {
+        const groups = runAllGroups();
+        const summary = summarizeExtendedGroups(groups);
+        resolve({
+          page: 'tests-extended.html',
+          version: ctx.version || null,
+          pass: summary.pass,
+          warn: summary.warn,
+          fail: summary.fail,
+          rows: summary.rows,
+        });
+      } catch (e) {
+        reject(e);
+      }
+    });
+  });
+};
+
 window.addEventListener('load', function() {
+  if (location.search.includes('ci=1')) return;
   setTimeout(startTests, 250);
 });
 </script>
