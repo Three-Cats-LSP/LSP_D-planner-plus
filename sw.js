@@ -43,6 +43,11 @@ const REQUIRED_PRECACHE = [
   APP_BASE + 'vpm-engine-bundle.js',
   APP_BASE + 'zhl-worker-bridge.js',
   APP_BASE + 'zhl-schedule-worker.js',
+  APP_BASE + 'surf-interval-core.js',
+  APP_BASE + 'gas-table-core.js',
+  APP_BASE + 'gas-plan-core.js',
+  APP_BASE + 'export-core.js',
+  APP_BASE + 'contingency-core.js',
 ];
 
 // Required for offline/PWA startup (Tier-3 ZHL + self-hosted fonts/icons)

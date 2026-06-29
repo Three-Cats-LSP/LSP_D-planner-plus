@@ -59,6 +59,18 @@ def _read_build_core(filename):
 _physics_core_js = _read_build_core("zhl-physics-core.js")
 _gas_core_js = _read_build_core("zhl-gas-core.js")
 _ccr_core_src = _read_build_core("zhl-ccr-core.js")
+_UI_CORE_FILES = (
+    "surf-interval-core.js",
+    "gas-table-core.js",
+    "gas-plan-core.js",
+    "export-core.js",
+    "contingency-core.js",
+)
+_ui_parts = [_read_build_core(name) for name in _UI_CORE_FILES]
+_ui_core_js = "\n".join(t for t in _ui_parts if t)
+if _ui_core_js:
+    js = js + "\n" + _ui_core_js
+    js_lines = js.split("\n")
 tier3_engine_src = zhl_src + "\n" + _physics_core_js + "\n" + _gas_core_js + "\n" + _ccr_core_src
 
 # Tier 3: VPM-B core lives in vpm-engine-bundle.js — merge for VPM pattern checks
@@ -6264,6 +6276,12 @@ if os.path.isfile(_mirror_doc) and "Mirror checklist" in open(_mirror_doc, encod
 else:
     fail("docs/AUDIT_MIRROR_RULE.md missing mirror checklist")
 
+for _ui_script in _UI_CORE_FILES:
+    if f'src="{_ui_script}"' in html:
+        ok(f"index.html loads runtime UI core {_ui_script}")
+    else:
+        fail(f"index.html missing script src for {_ui_script}")
+
 _build_zhl = open(os.path.join(os.path.dirname(__file__), "tools", "build_zhl_bundle.py"), encoding="utf-8").read()
 if "zhl-physics-core.js" in _build_zhl and "zhl-gas-core.js" in _build_zhl and "index.html" not in _build_zhl.split("read_core", 1)[0]:
     ok("build_zhl_bundle.py concat from *-core.js only (no index.html scrape)")
@@ -6936,9 +6954,10 @@ else:
 # ── Issue #135: Audit #130 v2.53.02 — 21 findings ──
 _repo_root135 = os.path.dirname(__file__)
 _index135 = open(os.path.join(_repo_root135, "index.html"), encoding="utf-8").read()
+_app135 = js  # inline scripts + runtime UI *-core.js (post-extraction)
 _zwb135 = open(os.path.join(_repo_root135, "zhl-worker-bridge.js"), encoding="utf-8").read()
-_rcs135 = _run_contingency = _index135.split("function runContingencyScenario", 1)[-1][:3500] if "function runContingencyScenario" in _index135 else ""
-_cc135 = _index135.split("function calcContingency", 1)[-1][:9000] if "function calcContingency" in _index135 else ""
+_rcs135 = _app135.split("function runContingencyScenario", 1)[-1][:3500] if "function runContingencyScenario" in _app135 else ""
+_cc135 = _app135.split("function calcContingency", 1)[-1][:9000] if "function calcContingency" in _app135 else ""
 if "let ok = false" in _rcs135 and "ok: false, newRows: ''" in _rcs135:
     ok("issue #135 H-1: runContingencyScenario returns ok:false when schedule empty")
 else:
@@ -6947,7 +6966,7 @@ if "} finally {" in _cc135 and "origBailout" in _cc135 and "if (origBT)" in _cc1
     ok("issue #135 H-2: calcContingency restores BT/depth/gases in finally")
 else:
     fail("issue #135 H-2: calcContingency DOM restore not in try/finally")
-if "getBottomGasFractions" in _index135.split("function calcSurfInt", 1)[-1][:2500]:
+if "getBottomGasFractions" in _app135.split("function calcSurfInt", 1)[-1][:2500]:
     ok("issue #135 H-3: calcSurfInt uses bottom gas fN2 not hardcoded FN2_AIR")
 else:
     fail("issue #135 H-3: calcSurfInt still hardcodes FN2_AIR")
@@ -6955,7 +6974,7 @@ if "totalCNS:" in _index135.split("function saveZhlRepState", 1)[-1][:500] and "
     ok("issue #135 H-4: saveZhlRepState persists CNS/OTU carry")
 else:
     fail("issue #135 H-4: saveZhlRepState missing CNS/OTU in rep snapshot")
-if "finally {" in _index135.split("EMERGENCY DIVE PROFILE GRAPH", 1)[-1][:1200]:
+if "finally {" in _app135.split("EMERGENCY DIVE PROFILE GRAPH", 1)[-1][:1200]:
     ok("issue #135 H-5: emergency PDF DOM-swap restore in finally")
 else:
     fail("issue #135 H-5: emergency PDF restore not in finally")
@@ -6988,7 +7007,7 @@ if "ccrBailoutToggle" in _cc135 and "contGasLose !== 'none'" in _cc135:
     ok("issue #135 M-4: gas-loss contingency forces CCR bailout mode")
 else:
     fail("issue #135 M-4: CCR gas-loss contingency missing bailout toggle")
-if "calcEND(dM" in _index135.split("function renderEADTable", 1)[-1][:2000]:
+if "calcEND(dM" in _app135.split("function renderEADTable", 1)[-1][:2000]:
     ok("issue #135 M-6: renderEADTable uses calcEND for altitude-aware EAD")
 else:
     fail("issue #135 M-6: renderEADTable still uses inline sea-level EAD formula")
@@ -7005,7 +7024,7 @@ if "ppo2 >= 1.6" in _index135.split("function calcCNS", 1)[-1][:5000]:
     ok("issue #135 M-9: calcCNS ppO2 limit uses >= 1.6 boundary")
 else:
     fail("issue #135 M-9: calcCNS still uses > 1.6 for ppO2 limit")
-if "narcoticO2" in _index135.split("function renderGasTable", 1)[-1][:2000]:
+if "narcoticO2" in _app135.split("function renderGasTable", 1)[-1][:2000]:
     ok("issue #135 M-10: gas table MND respects narcoticO2 toggle")
 else:
     fail("issue #135 M-10: gas table MND ignores narcoticO2")

@@ -30,6 +30,11 @@ ROOT_FILES = [
     "vpm-engine-bundle.js",
     "zhl-worker-bridge.js",
     "zhl-schedule-worker.js",
+    "surf-interval-core.js",
+    "gas-table-core.js",
+    "gas-plan-core.js",
+    "export-core.js",
+    "contingency-core.js",
 ]
 
 # Directories copied recursively (vendor fonts, jsPDF, partner icons)
