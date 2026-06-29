@@ -62,11 +62,11 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Build Pages site (_pages/)
+        run: python tools/build_pages_site.py
+
       - name: Static audit gate
         run: python audit.py
-
-      - name: Build Pages site
-        run: python tools/build_pages_site.py
 
       - name: Hash site contents
         id: sitehash

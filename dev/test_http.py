@@ -52,6 +52,13 @@ def stage_regression_harness(www: Path, root: Path = ROOT) -> None:
     for src in sorted(root.glob(STAGE_GLOB)):
         if src.is_file():
             shutil.copy2(src, www / src.name)
+    fixtures_src = root / "dev" / "fixtures"
+    if fixtures_src.is_dir():
+        fixtures_dest = www / "dev" / "fixtures"
+        fixtures_dest.parent.mkdir(parents=True, exist_ok=True)
+        if fixtures_dest.exists():
+            shutil.rmtree(fixtures_dest)
+        shutil.copytree(fixtures_src, fixtures_dest)
 
 
 @contextmanager
