@@ -112,6 +112,16 @@ def run_checks(page, port: int) -> None:
       );
       out.o2OnePct = zhl(lv(40, 25, 1, 0), [], ccr);
       out.vpmNoSettings = vpm(lv(40, 25, 21, 0), null, null);
+      out.vpmMetricDefaults = vpm(lv(40, 25, 21, 0), [], { metric: true, gfLo: 30, gfHi: 85 });
+      out.pscrHypoxicPpo2 = (() => {
+        const b = window.ZhlEngineBundle;
+        if (!b || typeof b.getEffectivePpo2 !== 'function') return null;
+        const pAmb = 1.01325;
+        const ccr = b.normalizeCCRSettings({
+          circuit: 'pSCR', scrLoopVolume: 7, scrMetabolicO2: 0.85,
+        });
+        return b.getEffectivePpo2(pAmb, 0, 0.10, ccr, 0, 0.70);
+      })();
       out.vpmNoGases = vpm(lv(40, 25, 21, 0), undefined, {});
       out.vpmNullLevel = vpm([null], [], {});
       out.vpmNullGas = vpm(lv(40, 25, 21, 0), [null], {});
@@ -226,6 +236,31 @@ def run_checks(page, port: int) -> None:
         ok("VPM null settings uses defaults (no throw)")
     else:
         fail(f"VPM null settings failed: {results['vpmNoSettings']}")
+
+    ns = results["vpmNoSettings"]
+    md = results["vpmMetricDefaults"]
+    ns_stops = len(ns.get("stops") or [])
+    md_stops = len(md.get("stops") or [])
+    if (
+        ns.get("depthUnit") == "m"
+        and md.get("depthUnit") == "m"
+        and ns.get("totalRuntime") == md.get("totalRuntime")
+        and ns_stops == md_stops
+        and ns_stops >= 1
+    ):
+        ok("VPM null settings matches explicit metric defaults (issue #131 H-1)")
+    else:
+        fail(
+            f"VPM null settings diverges from metric defaults: "
+            f"null unit={ns.get('depthUnit')} rt={ns.get('totalRuntime')} stops={ns_stops} "
+            f"vs metric rt={md.get('totalRuntime')} stops={md_stops}"
+        )
+
+    hypoxic = results.get("pscrHypoxicPpo2")
+    if hypoxic is not None and hypoxic < 0.12 and hypoxic > 0.09:
+        ok("pSCR hypoxic source gas reports physical ppO2 below 0.16 bar (issue #131 M-1)")
+    else:
+        fail(f"pSCR hypoxic ppO2 not physical: {hypoxic!r}")
 
     if results["vpmNoGases"].get("totalRuntime", 0) > 0 and not results["vpmNoGases"].get("error"):
         ok("VPM undefined decoGases uses empty list (no throw)")

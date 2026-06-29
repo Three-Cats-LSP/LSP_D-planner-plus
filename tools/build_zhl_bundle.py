@@ -206,7 +206,7 @@ postamble = r'''
     if (!isRebreatherCircuit(cfg.circuit) || cfg.bailout) return fO2 * pAmb;
     if (cfg.circuit === 'pSCR') {
       const fr = computePSCRFractions(pAmb, fO2, fHe, cfg);
-      return Math.max(PSCR_MIN_PPO2, fr.fO2 * pAmb);
+      return fr.fO2 * pAmb;
     }
     const sp = getEffectiveSetpointAtDepth(depthM, cfg, altSurfaceP);
     return Math.min(pAmb, Math.max(sp, fO2 * pAmb));

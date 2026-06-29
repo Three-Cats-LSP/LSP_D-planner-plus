@@ -366,7 +366,7 @@ function getEffectivePpo2(pAmb, setpoint, fO2, ccr, depthM, fHe) {
   if (cfg.circuit === 'pSCR') {
     const fHeVal = fHe != null ? fHe : 0;
     const fr = computePSCRFractions(pAmb, fO2, fHeVal, cfg);
-    return Math.max(PSCR_MIN_PPO2, fr.fO2 * pAmb);
+    return fr.fO2 * pAmb;
   }
   const surfPRef = (typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325);
   const depthFromAmb = depthM != null ? depthM : (pAmb - surfPRef) / BAR_PER_METRE;

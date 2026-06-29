@@ -945,6 +945,7 @@ const VPMEngine = (() => {
     function calculate(levels, decoGases, settings, model) {
         model = model || 'VPMB';
         settings = settings || {};
+        if (settings.metric == null) settings.metric = true;
         if (!Array.isArray(levels) || levels.length === 0) {
             return {
                 error: 'No bottom segments defined',

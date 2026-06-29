@@ -376,10 +376,11 @@ function runZhlScheduleCore(params) {
         tissues = zhlLoadConst(tissues, cur, stopT, stopFO2, stopFHe, onLoop, 'deco');
         rt += stopT;
       }
-      while (ceiling(tissues, gfForClear) > ceilTarget && stopT < 360) {
+      while (ceiling(tissues, gfForClear) > ceilTarget && stopT < CEILING_LOOP_GUARD_MIN) {
         tissues = zhlLoadConst(tissues, cur, minStopT, stopFO2, stopFHe, onLoop, 'deco');
         stopT += minStopT; rt += minStopT;
       }
+      if (stopT >= CEILING_LOOP_GUARD_MIN && ceiling(tissues, gfForClear) > ceilTarget) hitSafetyGuard = true;
       if (!isFirstDecoStop) {
         // Round up and enforce minimum — only for non-first stops
         const totalAtLevel = Math.max(minStopT, Math.ceil((transitDur + stopT) / minStopT) * minStopT);
@@ -397,7 +398,7 @@ function runZhlScheduleCore(params) {
       }
       if (stopT > 0) {
         const minStopDisplay = (mdCompatMode && !isFirstDecoStop) ? stopT + transitDur : stopT;
-        steps.push({ type: 'deco', depth: cur, dur: minStopDisplay, gas: gasLabel, pO2: zhlStepPpo2(cur, stopFN2, stopFHe, 'deco'), fN2: stopFN2, fHe: stopFHe, _tissues: tissues.map(t => ({ pN2: t.pN2, pHe: t.pHe })) });
+        steps.push({ type: 'deco', depth: cur, dur: minStopDisplay, gas: gasLabel, pO2: zhlStepPpo2(cur, stopFN2, stopFHe, 'deco'), fN2: stopFN2, fHe: stopFHe, hitSafetyGuard: hitSafetyGuard || undefined, _tissues: tissues.map(t => ({ pN2: t.pN2, pHe: t.pHe })) });
       }
     } else if (cur === lastStop) {
       const isDecoNeeded = steps.some(s => s.type === 'deco');

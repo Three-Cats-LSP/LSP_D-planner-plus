@@ -731,7 +731,7 @@ function getEffectivePpo2(pAmb, setpoint, fO2, ccr, depthM, fHe) {
   if (cfg.circuit === 'pSCR') {
     const fHeVal = fHe != null ? fHe : 0;
     const fr = computePSCRFractions(pAmb, fO2, fHeVal, cfg);
-    return Math.max(PSCR_MIN_PPO2, fr.fO2 * pAmb);
+    return fr.fO2 * pAmb;
   }
   const surfPRef = (typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325);
   const depthFromAmb = depthM != null ? depthM : (pAmb - surfPRef) / BAR_PER_METRE;
@@ -1114,10 +1114,11 @@ function runZhlScheduleCore(params) {
         tissues = zhlLoadConst(tissues, cur, stopT, stopFO2, stopFHe, onLoop, 'deco');
         rt += stopT;
       }
-      while (ceiling(tissues, gfForClear) > ceilTarget && stopT < 360) {
+      while (ceiling(tissues, gfForClear) > ceilTarget && stopT < CEILING_LOOP_GUARD_MIN) {
         tissues = zhlLoadConst(tissues, cur, minStopT, stopFO2, stopFHe, onLoop, 'deco');
         stopT += minStopT; rt += minStopT;
       }
+      if (stopT >= CEILING_LOOP_GUARD_MIN && ceiling(tissues, gfForClear) > ceilTarget) hitSafetyGuard = true;
       if (!isFirstDecoStop) {
         // Round up and enforce minimum — only for non-first stops
         const totalAtLevel = Math.max(minStopT, Math.ceil((transitDur + stopT) / minStopT) * minStopT);
@@ -1135,7 +1136,7 @@ function runZhlScheduleCore(params) {
       }
       if (stopT > 0) {
         const minStopDisplay = (mdCompatMode && !isFirstDecoStop) ? stopT + transitDur : stopT;
-        steps.push({ type: 'deco', depth: cur, dur: minStopDisplay, gas: gasLabel, pO2: zhlStepPpo2(cur, stopFN2, stopFHe, 'deco'), fN2: stopFN2, fHe: stopFHe, _tissues: tissues.map(t => ({ pN2: t.pN2, pHe: t.pHe })) });
+        steps.push({ type: 'deco', depth: cur, dur: minStopDisplay, gas: gasLabel, pO2: zhlStepPpo2(cur, stopFN2, stopFHe, 'deco'), fN2: stopFN2, fHe: stopFHe, hitSafetyGuard: hitSafetyGuard || undefined, _tissues: tissues.map(t => ({ pN2: t.pN2, pHe: t.pHe })) });
       }
     } else if (cur === lastStop) {
       const isDecoNeeded = steps.some(s => s.type === 'deco');
@@ -1473,7 +1474,7 @@ function runZhlScheduleCore(params) {
     if (!isRebreatherCircuit(cfg.circuit) || cfg.bailout) return fO2 * pAmb;
     if (cfg.circuit === 'pSCR') {
       const fr = computePSCRFractions(pAmb, fO2, fHe, cfg);
-      return Math.max(PSCR_MIN_PPO2, fr.fO2 * pAmb);
+      return fr.fO2 * pAmb;
     }
     const sp = getEffectiveSetpointAtDepth(depthM, cfg, altSurfaceP);
     return Math.min(pAmb, Math.max(sp, fO2 * pAmb));

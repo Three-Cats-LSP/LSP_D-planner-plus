@@ -6555,6 +6555,34 @@ if "BUILD SOURCE ONLY" in _gas_hdr:
 else:
     fail("issue #130 BUG-12b: zhl-gas-core.js missing BUILD SOURCE ONLY header")
 
+_vpm131 = open(os.path.join(_repo_root130, "vpm-engine-core.js"), encoding="utf-8").read()
+_schedule131 = open(os.path.join(_repo_root130, "zhl-schedule-core.js"), encoding="utf-8").read()
+_ccr131 = open(os.path.join(_repo_root130, "zhl-ccr-core.js"), encoding="utf-8").read()
+if "if (settings.metric == null) settings.metric = true;" in _vpm131:
+    ok("issue #131 H-1: VPM calculate defaults omitted metric flag to true")
+else:
+    fail("issue #131 H-1: VPM still selects imperial defaults when settings.metric is absent")
+_ppo2_131 = _ccr131.split("function getEffectivePpo2", 1)[-1].split("function loadTissuesWithCCR", 1)[0] if "function getEffectivePpo2" in _ccr131 else ""
+if "return fr.fO2 * pAmb;" in _ppo2_131 and "Math.max(PSCR_MIN_PPO2, fr.fO2 * pAmb)" not in _ppo2_131:
+    ok("issue #131 M-1: getEffectivePpo2 reports physical pSCR loop ppO2")
+else:
+    fail("issue #131 M-1: getEffectivePpo2 still clamps pSCR ppO2 to PSCR_MIN_PPO2")
+_minstop131 = _schedule131.split("} else if (minStopT > 0 && minStopZoneDepth", 1)[-1].split("} else if (cur === lastStop)", 1)[0] if "minStopZoneDepth" in _schedule131 else ""
+if (
+    "stopT < CEILING_LOOP_GUARD_MIN" in _minstop131
+    and "stopT < 360" not in _minstop131
+    and "hitSafetyGuard = true" in _minstop131
+    and "hitSafetyGuard: hitSafetyGuard" in _minstop131
+):
+    ok("issue #131 M-2: minimum-stop ceiling loop uses shared guard and propagates hitSafetyGuard")
+else:
+    fail("issue #131 M-2: minimum-stop branch still uses 360-min cap or omits guard flag")
+_ccr_val131 = open(os.path.join(_repo_root130, "dev", "ccr_engine_validation_regression.py"), encoding="utf-8").read()
+if "issue #131 H-1" in _ccr_val131 and "pscrHypoxicPpo2" in _ccr_val131:
+    ok("issue #131: CCR validation regression covers VPM null-settings parity and hypoxic pSCR")
+else:
+    fail("issue #131: CCR validation regression missing strengthened null-settings / pSCR checks")
+
 print("=" * 60)
 
 if FAIL:
