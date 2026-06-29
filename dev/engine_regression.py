@@ -769,6 +769,25 @@ ENGINE_SUITE_JS = """
     };
   })();
 
+  // ── E10j: issue #135 audit fixes (Audit #130) ────────────────────────────
+  out.sections.issue135 = (() => {
+    const b = window.ZhlEngineBundle;
+    const ppFn = typeof ppO2Check === 'function' ? ppO2Check.toString() : '';
+    const h6Ok = ppFn.length > 0 && !/\.toFixed\(2\)/.test(ppFn.split('return')[1] || '');
+    const ppo2Val = typeof ppO2Check === 'function' ? ppO2Check(30, 0.79, 0) : null;
+    const h6NumOk = typeof ppo2Val === 'number' && Number.isFinite(ppo2Val);
+    const rcsFn = typeof runContingencyScenario === 'function' ? runContingencyScenario.toString() : '';
+    const h1Ok = /let ok = false/.test(rcsFn) && /ok:\s*false/.test(rcsFn);
+    const h8Ok = /parseRunMinutes\(stopTxt\)/.test(rcsFn);
+    const rdFn = typeof runDecoSchedule === 'function' ? runDecoSchedule.toString() : '';
+    const m2Ok = /!_contingencyRunning/.test(rdFn.split('validateDecoInputs', 1)[0] || rdFn.slice(0, 800));
+    const repFn = typeof saveZhlRepState === 'function' ? saveZhlRepState.toString() : '';
+    const h4Ok = /totalCNS/.test(repFn) && /totalOTU/.test(repFn);
+    const endSubAir = typeof calcEND === 'function' ? calcEND(30, 0.1, 0) : null;
+    const l6Ok = endSubAir === null;
+    return { h1Ok, h6Ok: h6Ok && h6NumOk, h8Ok, m2Ok, h4Ok, l6Ok, ok: h1Ok && h6Ok && h6NumOk && h8Ok && m2Ok && h4Ok };
+  })();
+
   // ── E10i: getActiveGas passes fO2 to ppO2 limit bands (audit 2026-06-29 H-1) ─
   out.sections.getActiveGasF02Limit = (() => {
     if (typeof ZhlEngineBundle === 'undefined' || typeof ZhlEngineBundle.getActiveGas !== 'function') return { ok: false };
@@ -1078,6 +1097,13 @@ def run_suite(page) -> dict:
     assert_true(i134.get("m7Ok"), "issue #134 M-7: ppO2Check returns numeric value", str(i134))
     assert_true(i134.get("shallowNdlOk"), "issue #134 L-6: shallowGradient changes buhNDL", str(i134))
     assert_true(i134.get("saveGuard"), "issue #134 M-4: appSettings.save guards _restoreInProgress", str(i134))
+    i135 = s.get("issue135", {})
+    assert_true(i135.get("h1Ok"), "issue #135 H-1: contingency returns ok:false on empty schedule", str(i135))
+    assert_true(i135.get("h6Ok"), "issue #135 H-6: ppO2Check delegate returns number", str(i135))
+    assert_true(i135.get("h8Ok"), "issue #135 H-8: contingency uses parseRunMinutes for stop time", str(i135))
+    assert_true(i135.get("m2Ok"), "issue #135 M-2: runDecoSchedule skips validation during contingency", str(i135))
+    assert_true(i135.get("h4Ok"), "issue #135 H-4: saveZhlRepState persists CNS/OTU", str(i135))
+    assert_true(i135.get("ok"), "issue #135 combined regression gate", str(i135))
     dedup = s.get("engineDedup", {})
     assert_true(dedup.get("ok"), "index CCR delegates match ZhlEngineBundle (engine dedup)", str(dedup))
     gag = s.get("getActiveGasF02Limit", {})

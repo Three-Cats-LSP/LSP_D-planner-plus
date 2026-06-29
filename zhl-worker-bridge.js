@@ -99,7 +99,14 @@
         const p = pending.get(id);
         if (!p || p.timer !== timer) return;
         settlePending(id, false, new Error('ZHL worker timeout'));
-        if (worker) handleWorkerFailure('ZHL worker timeout');
+        if (worker) {
+          handleWorkerFailure('ZHL worker timeout');
+        } else {
+          consecutiveWorkerFailures += 1;
+          if (consecutiveWorkerFailures >= MAX_WORKER_FAILURES) {
+            workerPermanentlyDisabled = true;
+          }
+        }
       }, WORKER_TIMEOUT_MS);
       pending.set(id, {
         resolve,
@@ -120,7 +127,6 @@
     if (resetDisabledFlag === undefined) resetDisabledFlag = true;
     rejectAll('ZHL worker terminated');
     killWorker();
-    nextId = 1;
     consecutiveWorkerFailures = 0;
     if (resetDisabledFlag) workerPermanentlyDisabled = false;
   }

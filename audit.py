@@ -841,10 +841,10 @@ if "function escapeHtmlText" in js and "escapeHtmlText(reason)" in js.split("set
 else:
     fail("index.html travel gas reason unescaped in innerHTML (issue #32)")
 
-if worker_bridge_js and "nextId = 1" in worker_bridge_js and worker_bridge_js.count("nextId = 1") >= 2:
-    ok("ZhlWorkerBridge resets nextId on terminate/error/timeout (issue #27 BUG-E)")
+if worker_bridge_js and ("nextId = 1" in worker_bridge_js or "let nextId = 1" in worker_bridge_js):
+    ok("ZhlWorkerBridge tracks monotonic nextId (issue #27 BUG-E / #135 L-3)")
 else:
-    fail("ZhlWorkerBridge missing nextId reset on worker session end (issue #27 BUG-E)")
+    fail("ZhlWorkerBridge missing nextId worker session tracking (issue #27 BUG-E)")
 
 if "function getTravelGasInfo" in js and "fHe: 0" in js.split("function getTravelGasInfo", 1)[-1][:2500]:
     ok("getTravelGasInfo exposes fHe field for travel gas schema (issue #27 BUG-B)")
@@ -3028,10 +3028,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.02['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.53.02")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.03['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.53.03")
 else:
-    fail("APP_VERSION not bumped to 2.53.02 in app-version.js")
+    fail("APP_VERSION not bumped to 2.53.03 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -3371,12 +3371,12 @@ else:
     fail("ZHLEngine.calculate still clears _zhlHeadless after headless runs (BUG-74)")
 
 _rds_bug74 = js.split("function runDecoSchedule", 1)[-1].split("function planSegDepthM", 1)[0] if "function runDecoSchedule" in js else ""
-if _rds_bug74 and re.search(r"!window\._zhlHeadless && isCcrGasUiMode\(\)", _rds_bug74) and "validateCcrGasConfiguration()" in _rds_bug74:
+if _rds_bug74 and re.search(r"!window\._zhlHeadless && !?_contingencyRunning && isCcrGasUiMode\(\)", _rds_bug74) and "validateCcrGasConfiguration()" in _rds_bug74:
     ok("runDecoSchedule skips CCR alert when headless (BUG-74)")
 else:
     fail("runDecoSchedule may alert() during headless test runs (BUG-74)")
 
-if re.search(r"!window\._zhlHeadless && isRebreatherCircuit\(_uiCcr\.circuit\)", js):
+if re.search(r"!window\._zhlHeadless && !?_contingencyRunning && isRebreatherCircuit\(_uiCcr\.circuit\)", js):
     ok("runDecoSchedule DOM gas validation uses window._zhlHeadless (not bare _zhlHeadless)")
 else:
     fail("runDecoSchedule references bare _zhlHeadless (ReferenceError in UI)")
@@ -5498,11 +5498,11 @@ if "if (seg.decoTransit) return" in _b110.split("computeHeadlessCnsOtu", 1)[-1][
     ok("computeHeadlessCnsOtu skips folded decoTransit segments (issue #110 H-3)")
 else:
     fail("computeHeadlessCnsOtu still counts folded MultiDeco transit (issue #110 H-3)")
-if "if (s.decoTransit) return" in js.split("function accumulateHeadlessPlanExposure", 1)[-1][:1200]:
+if "if (s.decoTransit) return" in js.split("function accumulateHeadlessPlanExposure", 1)[-1][:2000]:
     ok("accumulateHeadlessPlanExposure skips folded decoTransit segments (issue #110 H-3)")
 else:
     fail("accumulateHeadlessPlanExposure still counts folded MultiDeco transit (issue #110 H-3)")
-if "statusCandidates" in js.split("function calcCNS", 1)[-1][:5500] and "b.sev - a.sev" in js.split("function calcCNS", 1)[-1][:5500]:
+if "statusCandidates" in js.split("function calcCNS", 1)[-1][:8000] and "b.sev - a.sev" in js.split("function calcCNS", 1)[-1][:8000]:
     ok("calcCNS status picks highest-severity condition (issue #110 M-1)")
 else:
     fail("calcCNS status still ordered by category not severity (issue #110 M-1)")
@@ -5622,8 +5622,8 @@ if "const ppO2Limit = parseFloat(document.getElementById('ppo2Bottom')" in _111_
     ok("issue #111 M-6: calcEND_tool MOD uses configured ppO2 limit")
 else:
     fail("issue #111 M-6: calcEND_tool MOD still hardcoded 1.4 bar")
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.02['\"]", app_version_js):
-    ok("issue #111 L-1: app-version 2.53.02 synced; SW derives CACHE_VERSION dynamically")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.03['\"]", app_version_js):
+    ok("issue #111 L-1: app-version 2.53.03 synced; SW derives CACHE_VERSION dynamically")
 else:
     fail("issue #111 L-1: SW/app-version sync regression")
 if "build_vpm_bundle.py" in _111_ci and "git diff --exit-code zhl-engine-bundle.js vpm-engine-bundle.js" in _111_ci:
@@ -6399,11 +6399,11 @@ if all("needs: [bundle-sync]" in _ci126.split(f"{job}:", 1)[-1][:120] for job in
 else:
     fail("issue #126: one or more CI jobs still run without bundle-sync dependency")
 
-# ── v2.53.02 stable release ──
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.02['\"]", app_version_js):
-    ok("stable release APP_VERSION is 2.53.02")
+# ── v2.53.03 stable release ──
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.03['\"]", app_version_js):
+    ok("stable release APP_VERSION is 2.53.03")
 else:
-    fail("stable release requires APP_VERSION 2.53.02")
+    fail("stable release requires APP_VERSION 2.53.03")
 
 # ── Issue #127: full codebase audit v2.53.00 — 6 HIGH / 7 MEDIUM / 4 LOW ──
 _vpm_core127 = open(os.path.join(os.path.dirname(__file__), "vpm-engine-core.js"), encoding="utf-8").read()
@@ -6858,7 +6858,7 @@ if "Closed field list" in _ccr_core_src:
     ok("issue #133 L-8: normalizeCCRSettings documents closed field list")
 else:
     fail("issue #133 L-8: normalizeCCRSettings missing closed-list documentation")
-if "2.53.02" in open(os.path.join(_repo_root130, "app-version.js"), encoding="utf-8").read():
+if "2.53.03" in open(os.path.join(_repo_root130, "app-version.js"), encoding="utf-8").read():
     ok("issue #133 H-2: APP_VERSION bumped for PWA cache bust")
 else:
     fail("issue #133 H-2: APP_VERSION not bumped after engine fixes")
@@ -6910,8 +6910,8 @@ if "worker = null" in _zwb134.split("function killWorker", 1)[-1][:120] and _zwb
     ok("issue #134 L-2: killWorker nulls worker before terminate")
 else:
     fail("issue #134 L-2: killWorker still terminates before nulling worker ref")
-if "settlePending(id, false, new Error('ZHL worker timeout'))" in _zwb134 and "if (worker) handleWorkerFailure('ZHL worker timeout')" in _zwb134:
-    ok("issue #134 L-3: worker timeout settles pending before kill; nextId reset confined to terminate")
+if "settlePending(id, false, new Error('ZHL worker timeout'))" in _zwb134 and "handleWorkerFailure('ZHL worker timeout')" in _zwb134:
+    ok("issue #134 L-3: worker timeout settles pending and increments failure counter")
 else:
     fail("issue #134 L-3: worker timeout/nextId race not hardened")
 if "setpoint === 0 && !cfg.bailout" in _ccr_core_src.split("function loadTissuesWithCCR", 1)[-1][:500]:
@@ -6928,10 +6928,124 @@ if "issue134" in open(os.path.join(_repo_root130, "dev", "engine_regression.py")
 else:
     fail("issue #134 L-6: engine_regression missing issue134 section")
 _av134 = open(os.path.join(_repo_root130, "app-version.js"), encoding="utf-8").read()
-if "2.53.02" in _av134:
-    ok("issue #134: APP_VERSION bumped to 2.53.02")
+if "2.53.03" in _av134:
+    ok("issue #134: APP_VERSION bumped to 2.53.03 (historical)")
 else:
-    fail("issue #134: APP_VERSION not bumped to 2.53.02")
+    fail("issue #134: APP_VERSION historical marker missing")
+
+# ── Issue #135: Audit #130 v2.53.02 — 21 findings ──
+_repo_root135 = os.path.dirname(__file__)
+_index135 = open(os.path.join(_repo_root135, "index.html"), encoding="utf-8").read()
+_zwb135 = open(os.path.join(_repo_root135, "zhl-worker-bridge.js"), encoding="utf-8").read()
+_rcs135 = _run_contingency = _index135.split("function runContingencyScenario", 1)[-1][:3500] if "function runContingencyScenario" in _index135 else ""
+_cc135 = _index135.split("function calcContingency", 1)[-1][:9000] if "function calcContingency" in _index135 else ""
+if "let ok = false" in _rcs135 and "ok: false, newRows: ''" in _rcs135:
+    ok("issue #135 H-1: runContingencyScenario returns ok:false when schedule empty")
+else:
+    fail("issue #135 H-1: contingency still crashes on undefined newRows")
+if "} finally {" in _cc135 and "origBailout" in _cc135 and "if (origBT)" in _cc135.split("} finally {", 1)[-1][:600]:
+    ok("issue #135 H-2: calcContingency restores BT/depth/gases in finally")
+else:
+    fail("issue #135 H-2: calcContingency DOM restore not in try/finally")
+if "getBottomGasFractions" in _index135.split("function calcSurfInt", 1)[-1][:2500]:
+    ok("issue #135 H-3: calcSurfInt uses bottom gas fN2 not hardcoded FN2_AIR")
+else:
+    fail("issue #135 H-3: calcSurfInt still hardcodes FN2_AIR")
+if "totalCNS:" in _index135.split("function saveZhlRepState", 1)[-1][:500] and "totalOTU:" in _index135.split("function saveZhlRepState", 1)[-1][:500]:
+    ok("issue #135 H-4: saveZhlRepState persists CNS/OTU carry")
+else:
+    fail("issue #135 H-4: saveZhlRepState missing CNS/OTU in rep snapshot")
+if "finally {" in _index135.split("EMERGENCY DIVE PROFILE GRAPH", 1)[-1][:1200]:
+    ok("issue #135 H-5: emergency PDF DOM-swap restore in finally")
+else:
+    fail("issue #135 H-5: emergency PDF restore not in finally")
+_ppo2_wrap135 = _index135.split("function ppO2Check", 1)[-1].split("function fmtPpO2", 1)[0] if "function ppO2Check" in _index135 else ""
+if ".toFixed(2)" not in _ppo2_wrap135 and "return ZhlEngineBundle.ppO2Check" in _ppo2_wrap135:
+    ok("issue #135 H-6: ppO2Check delegate returns numeric ppO2")
+else:
+    fail("issue #135 H-6: ppO2Check wrapper still returns .toFixed string")
+if "validateHypoxicDecoGas(dgf.fO2" in _index135.split("function buildZhlScheduleParamsFromDom", 1)[-1][:2500]:
+    ok("issue #135 H-7: buildZhlScheduleParamsFromDom validates hypoxic deco gases")
+else:
+    fail("issue #135 H-7: buildZhlScheduleParamsFromDom missing validateHypoxicDecoGas")
+if "parseRunMinutes(stopTxt)" in _rcs135:
+    ok("issue #135 H-8: contingency deco time uses parseRunMinutes not parseInt")
+else:
+    fail("issue #135 H-8: contingency still parseInt M:SS stop times")
+if "modPpo2" in _index135 and "nitroxMOD(fO2, modPpo2)" in _index135:
+    ok("issue #135 H-9: rec planner MOD uses user ppo2Bottom limit")
+else:
+    fail("issue #135 H-9: rec planner MOD still hardcoded 1.4 bar")
+if "handleWorkerFailure('ZHL worker timeout')" in _zwb135 and "consecutiveWorkerFailures += 1" in _zwb135.split("ZHL worker timeout", 1)[-1][:300]:
+    ok("issue #135 H-10: worker timeout increments failure counter when worker null")
+else:
+    fail("issue #135 H-10: worker timeout still skips failure counter when worker null")
+if "!_contingencyRunning" in _index135.split("function runDecoSchedule", 1)[-1][:1200]:
+    ok("issue #135 M-2/M-3: runDecoSchedule skips validation during contingency")
+else:
+    fail("issue #135 M-2: contingency still runs validateDecoInputs during scenario")
+if "ccrBailoutToggle" in _cc135 and "contGasLose !== 'none'" in _cc135:
+    ok("issue #135 M-4: gas-loss contingency forces CCR bailout mode")
+else:
+    fail("issue #135 M-4: CCR gas-loss contingency missing bailout toggle")
+if "calcEND(dM" in _index135.split("function renderEADTable", 1)[-1][:2000]:
+    ok("issue #135 M-6: renderEADTable uses calcEND for altitude-aware EAD")
+else:
+    fail("issue #135 M-6: renderEADTable still uses inline sea-level EAD formula")
+_sac135 = _index135.split("function sacDomToLpm", 1)[-1][:300]
+if "raw <= 0) return 0" in _sac135:
+    ok("issue #135 M-7: sacDomToLpm does not substitute default when SAC is 0")
+else:
+    fail("issue #135 M-7: sacDomToLpm still silently uses default for SAC=0")
+if "cnsPctNum >= 80" in _index135:
+    ok("issue #135 M-8: ZHL CNS warning uses >= 80 threshold")
+else:
+    fail("issue #135 M-8: ZHL/VPM CNS threshold mismatch")
+if "ppo2 >= 1.6" in _index135.split("function calcCNS", 1)[-1][:5000]:
+    ok("issue #135 M-9: calcCNS ppO2 limit uses >= 1.6 boundary")
+else:
+    fail("issue #135 M-9: calcCNS still uses > 1.6 for ppO2 limit")
+if "narcoticO2" in _index135.split("function renderGasTable", 1)[-1][:2000]:
+    ok("issue #135 M-10: gas table MND respects narcoticO2 toggle")
+else:
+    fail("issue #135 M-10: gas table MND ignores narcoticO2")
+if "calcSurfInt();appSettings.save()" in _index135:
+    ok("issue #135 L-1: siGfLow onchange persists via appSettings.save")
+else:
+    fail("issue #135 L-1: siGfLow missing appSettings.save")
+if "nextId = 1" not in _zwb135.split("function terminate", 1)[-1][:200]:
+    ok("issue #135 L-3: terminate() no longer resets nextId mid-session")
+else:
+    fail("issue #135 L-3: terminate() still resets nextId to 1")
+if "seenMixes" in _index135.split("function validateDomDecoGases", 1)[-1][:1200]:
+    ok("issue #135 L-4: validateDomDecoGases detects duplicate deco gas mixes")
+else:
+    fail("issue #135 L-4: no duplicate deco gas detection")
+if "if (ead == null) return null" in _index135.split("function calcEAD", 1)[-1][:400]:
+    ok("issue #135 L-5/L-6: calcEAD/calcEND defer rounding and null for sub-air narcotic")
+else:
+    fail("issue #135 L-5: calcEAD still rounds before return")
+if 'oninput="applyCustomAltitude()"' not in _index135.split("altitudeCustomInput", 1)[-1][:200]:
+    ok("issue #135 L-8: altitude custom input no longer double-fires oninput+onchange")
+else:
+    fail("issue #135 L-8: altitude custom still has oninput+onchange")
+if 'data-phase="contingency-' in _cc135:
+    ok("issue #135 L-9: contingency table rows tagged with contingency- data-phase prefix")
+else:
+    fail("issue #135 L-9: contingency rows missing data-phase contingency prefix")
+if "1500 OTU/week" in _index135.split("function calcCNS", 1)[-1][:6000]:
+    ok("issue #135 L-11: calcCNS warns on NOAA 1500 OTU/week limit")
+else:
+    fail("issue #135 L-11: no 1500 OTU/week threshold warning")
+if "issue135" in open(os.path.join(_repo_root135, "dev", "engine_regression.py"), encoding="utf-8").read():
+    ok("issue #135 L-6: engine_regression covers #135 with split assertions")
+else:
+    fail("issue #135: engine_regression missing issue135 section")
+_av135 = open(os.path.join(_repo_root135, "app-version.js"), encoding="utf-8").read()
+if "2.53.03" in _av135:
+    ok("issue #135: APP_VERSION bumped to 2.53.03")
+else:
+    fail("issue #135: APP_VERSION not bumped to 2.53.03")
 
 print("=" * 60)
 
