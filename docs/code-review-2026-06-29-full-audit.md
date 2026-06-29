@@ -5,17 +5,54 @@
 **Scope:** Full engine layer + UI layer + tooling + service worker — all open audit issues synthesised  
 **Method:** Multi-pass static audit, 10-angle independent-finder method, mirror rule applied throughout  
 
+> **Status (2026-06-29):** This document is a **historical synthesis** as of the HEADs above.  
+> All 38 findings below were **resolved** in commits `53fa89e` (#127) through `1df8c80` (#132 H-3).  
+> **Authoritative verification:** [`code-review-2026-06-29-addendum.md`](code-review-2026-06-29-addendum.md) at `556b0a5`.
+
 ---
 
-## Summary
+## Summary (historical — at time of writing)
 
-| Severity   | Count | Status |
-|------------|-------|--------|
-| 🔴 CRITICAL | 4     | Open — release-blocking |
-| 🟠 HIGH     | 13    | Open |
-| 🟡 MEDIUM   | 14    | Open |
-| 🔵 LOW      | 7     | Open |
-| **Total**   | **38** | **NOT RELEASE-CLEAN** |
+| Severity   | Count | Status at `299eb46` | Status at `556b0a5` |
+|------------|-------|---------------------|---------------------|
+| 🔴 CRITICAL | 4     | Open — release-blocking | ✅ Resolved (#128, #130) |
+| 🟠 HIGH     | 13    | Open | ✅ Resolved (#125–#132) |
+| 🟡 MEDIUM   | 14    | Open | ✅ Resolved (#125–#132) |
+| 🔵 LOW      | 7     | Open | ✅ Resolved (#125–#132) |
+| **Total**   | **38** | **NOT RELEASE-CLEAN** | **✅ RELEASE-CLEAN** (see addendum) |
+
+---
+
+## Resolved Since Original Report
+
+Fix commits on `main` (newest first):
+
+| Commit | Issue | Summary |
+|--------|-------|---------|
+| `1df8c80` | #132 H-3 | Dynamic deco cylinder reserve fields: unit conversion + imperial defaults |
+| `ddfc403` | #132 | VPM always metric from UI; altitude ft→m; gas plan dg3+; M-value parity; VPM settings clone |
+| `23ca5a4` | #131 | VPM null-settings metric default; physical pSCR ppO₂; min-stop ceiling guard |
+| `3d8d086` | #130 | ppO2 shadowing; ascent `?? 3`; worker env; rec NDL params; BUILD SOURCE ONLY headers |
+| `d9ade8c` | #128 | CCR Schreiner inert denominator; regression gates |
+| `a9df846` | #128 | CCR setpoint zones; inert PP; ceiling guard; SW offline notice; schedule defaults |
+| `53fa89e` | #127 | Gas/NDL/CCR/VPM/UI safety (13 HIGH + 7 MEDIUM + 4 LOW from #127) |
+| `ed8c6cb` / earlier | #125 | Tier-3 dedup, VPM bundle build, restore/parity/CI gates |
+
+### Finding → resolution map (synthesized IDs)
+
+| ID | Resolved in | Notes |
+|----|-------------|-------|
+| C-01 | #130 BUG-01 | `ccrFO2` — no inner `fO2` shadowing |
+| C-02 | #128 M-3 / #130 BUG-02 | `decoAscentRate ?? 3` |
+| C-03 | #128 C-1 | Removed `deepestCross` bottomSP shortcut |
+| C-04 | #128 C-2 | Inert denominator `fN2d + fHe` (inspired + Schreiner) |
+| H-01 … H-13 | #125, #127, #128, #130 | See `audit.py` gates `issue #125`–`#132` (all pass) |
+| M-01 … M-14 | #125, #127, #128, #130, #131, #132 | Ceiling guard 1440 min; parity; VPM stop cap; etc. |
+| L-01 … L-07 | #125, #128, #130 | SW precache banner; schreiner JSDoc; CI bundle-sync; mirror doc |
+
+**Regression proof at `556b0a5`:** `python dev/run_all_regression.py --tier release` → **9/9 suites passed**; `audit.py` → **1043/1043**.
+
+---
 
 **Files audited:**
 - `zhl-physics-core.js`
@@ -452,7 +489,17 @@ The following items were audited and found correct at HEAD:
 
 ---
 
-## Release Verdict
+## Release Verdict (updated 2026-06-29)
+
+**RELEASE-CLEAN** for the scope of issues **#125–#132**.
+
+All four CRITICAL findings (C-01–C-04) and all HIGH/MEDIUM/LOW items in this synthesis are fixed and gated in `audit.py`. Full release regression (`--tier release`) passes 9/9 suites at `556b0a5`.
+
+See [`code-review-2026-06-29-addendum.md`](code-review-2026-06-29-addendum.md) for the verification run log and issue-close checklist.
+
+---
+
+## Release Verdict (original — superseded)
 
 **NOT RELEASE-CLEAN.**
 
