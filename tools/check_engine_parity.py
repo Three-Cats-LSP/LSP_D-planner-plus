@@ -12,7 +12,11 @@ ROOT = Path(__file__).resolve().parents[1]
 def strip_header(text: str) -> str:
     if text.startswith("/**"):
         end = text.find("*/")
-        return text[end + 2 :].lstrip()
+        text = text[end + 2 :].lstrip()
+    if text.startswith("'use strict';"):
+        text = text[len("'use strict';") :].lstrip()
+    elif text.startswith('"use strict";'):
+        text = text[len('"use strict";') :].lstrip()
     return text
 
 
@@ -42,6 +46,7 @@ def extract_function_body(src: str, name: str) -> str:
     in_single = False
     in_double = False
     in_template = False
+    template_expr_depth = 0
     escape = False
     while i < len(src):
         ch = src[i]
@@ -81,8 +86,14 @@ def extract_function_body(src: str, name: str) -> str:
                 escape = False
             elif ch == "\\":
                 escape = True
-            elif ch == "`":
+            elif ch == "`" and template_expr_depth == 0:
                 in_template = False
+            elif ch == "$" and nxt == "{":
+                template_expr_depth += 1
+                i += 2
+                continue
+            elif ch == "}" and template_expr_depth > 0:
+                template_expr_depth -= 1
             i += 1
             continue
         if ch == "/" and nxt == "/":
@@ -119,6 +130,27 @@ def api_export_present(bundle: str, name: str) -> bool:
     return bool(re.search(rf"\b{re.escape(name)}\b\s*,", bundle)) or bool(
         re.search(rf"\b{re.escape(name)}\b\s*\n", bundle)
     )
+
+
+def extract_api_block(bundle: str) -> str:
+    marker = "const api = {"
+    start = bundle.find(marker)
+    if start < 0:
+        return ""
+    brace = bundle.find("{", start)
+    if brace < 0:
+        return ""
+    depth = 0
+    i = brace
+    while i < len(bundle):
+        if bundle[i] == "{":
+            depth += 1
+        elif bundle[i] == "}":
+            depth -= 1
+            if depth == 0:
+                return bundle[brace + 1 : i]
+        i += 1
+    return ""
 
 
 def main() -> int:
@@ -208,7 +240,7 @@ def main() -> int:
         "setHeHalfTimeMode",
         "OTU_EXPONENT",
     ]
-    api_block = zhl_bundle.split("const api = {", 1)[-1].split("};", 1)[0] if "const api = {" in zhl_bundle else ""
+    api_block = extract_api_block(zhl_bundle)
     for name in api_exports:
         if not api_export_present(api_block, name):
             failures.append(f"ZhlEngineBundle API missing export {name}")

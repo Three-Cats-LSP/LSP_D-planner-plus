@@ -1434,6 +1434,20 @@
         let curSP = forcedOCMode ? 0 : getEffectiveSetpoint(levels[0], isCCR, settings, levels[0].depth, 'descent');
         function runInterLevelDecoAscent(targetDepth) {
             calcCrushing(state, settings);
+            const radiiBeforeInterLevel = {
+                regeneratedRadiiN2: state.regeneratedRadiiN2.slice(),
+                regeneratedRadiiHe: state.regeneratedRadiiHe.slice(),
+                adjustedCritRadiiN2: state.adjustedCritRadiiN2.slice(),
+                adjustedCritRadiiHe: state.adjustedCritRadiiHe.slice(),
+            };
+            function restoreInterLevelRadii() {
+                for (let i = 0; i < NC; i++) {
+                    state.regeneratedRadiiN2[i] = radiiBeforeInterLevel.regeneratedRadiiN2[i];
+                    state.regeneratedRadiiHe[i] = radiiBeforeInterLevel.regeneratedRadiiHe[i];
+                    state.adjustedCritRadiiN2[i] = radiiBeforeInterLevel.adjustedCritRadiiN2[i];
+                    state.adjustedCritRadiiHe[i] = radiiBeforeInterLevel.adjustedCritRadiiHe[i];
+                }
+            }
             const offLoopPath = isCCR && settings.circuit !== 'pSCR' && (forcedOCMode || curSP <= 0);
             const interLevelConservatism = offLoopPath ? Math.max(0, conservatism - 1) : conservatism;
             if (offLoopPath && interLevelConservatism < conservatism) {
@@ -1477,6 +1491,7 @@
                     he: Math.round(curHe * 100),
                     setpoint: curSP > 0 ? curSP : 0
                 });
+                restoreInterLevelRadii();
                 return { depth: targetDepth, o2: curO2, he: curHe, gasLabel: curGasLabel, sp: curSP };
             }
             let firstStopDepth = offLoopPath
@@ -1563,6 +1578,7 @@
                 }
                 if (settings._vpmTestForceStopCap || !isClearToAscendVPM(state, nextStopClamped, firstStopDepth, model, settings)) {
                     vpmStopCapFailedDepth = stopDepth;
+                    restoreInterLevelRadii();
                     return null;
                 }
                 if (stopTime < effectiveMinStop) stopTime = effectiveMinStop;
@@ -1597,6 +1613,7 @@
                 stopDepth = nextStopClamped;
             }
             currentDepth = targetDepth;
+            restoreInterLevelRadii();
             return { depth: targetDepth, o2: curO2, he: curHe, gasLabel: curGasLabel, sp: curSP };
         }
         for (const level of levels) {

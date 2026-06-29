@@ -10,6 +10,7 @@ function canonicalCircuit(circuit) {
   return 'OC';
 }
 
+/** Closed field list — unknown keys on input are dropped; extend here when adding CCR settings. */
 function normalizeCCRSettings(s) {
   s = s || {};
   return {
@@ -52,8 +53,9 @@ function loopMixLabelForCore(diluentLabel, ccr) {
 function depthAtSetpointCrossing(setpoint, surfP) {
   if (!setpoint || setpoint <= 0) return null;
   const sp = surfP != null ? surfP : altSurfaceP;
+  if (!Number.isFinite(sp) || sp <= 0) return null;
   const d = (setpoint + WATER_VAPOR - sp) / BAR_PER_METRE;
-  return d > 0 ? d : null;
+  return Number.isFinite(d) && d > 0 ? d : null;
 }
 
 function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
@@ -320,7 +322,7 @@ function saturateLinearCCR(tissues, fromDepth, toDepth, t, fO2, fHe, ccr) {
     const p0Amb = depthBar(seg.fromDepth);
     const pEndAmb = depthBar(seg.toDepth);
     const R = (pEndAmb - p0Amb) / segTime;
-    const endpointDepth = seg.toDepth;
+    const endpointDepth = seg.fromDepth < seg.toDepth ? seg.toDepth : seg.fromDepth;
     const segSP = getEffectiveSetpointAtDepth(endpointDepth, cfg, surfP, phase);
     const segCcr = { ...cfg, setpoint: segSP };
     out = out.map((t0, i) => ({

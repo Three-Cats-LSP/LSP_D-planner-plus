@@ -73,13 +73,7 @@
           consecutiveWorkerFailures = 0;
           settlePending(id, true, result);
         } else {
-          consecutiveWorkerFailures += 1;
-          rejectAll(error || 'ZHL worker calculation failed');
-          killWorker();
-          if (consecutiveWorkerFailures >= MAX_WORKER_FAILURES) {
-            workerPermanentlyDisabled = true;
-            rejectAll('ZHL worker crashed repeatedly — reload required');
-          }
+          handleWorkerFailure(error || 'ZHL worker calculation failed');
         }
       };
       worker.onerror = function (err) {

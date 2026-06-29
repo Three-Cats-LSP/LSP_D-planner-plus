@@ -75,7 +75,7 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
     if (straddle && straddle.type === 'ascent') {
       const sFromM = stepDepthToM({ depth: straddle.from, from: straddle.from, to: straddle.to });
       const sToM = stepDepthToM({ depth: straddle.to, from: straddle.from, to: straddle.to });
-      if (sFromM > targetDepthM && sToM < targetDepthM) {
+      if (sFromM > targetDepthM && sToM <= targetDepthM) {
         const lowerDur = straddle.dur * (sFromM - targetDepthM) / (sFromM - sToM);
         const upperDur = straddle.dur * (targetDepthM - sToM) / (sFromM - sToM);
         const lowerPiece = { ...straddle, to: targetDisplay, dur: lowerDur };
@@ -154,7 +154,9 @@ function n2FracFromCustomO2(o2pct) {
 
 function n2FracFromPercentages(o2pct, hepct) {
   if (Number.isFinite(o2pct) && Number.isFinite(hepct)) {
-    return Math.max(0, (100 - o2pct - hepct) / 100);
+    const n2 = (100 - o2pct - hepct) / 100;
+    if (n2 < 0) return null;
+    return n2;
   }
   return null;
 }
@@ -170,7 +172,7 @@ function validateHypoxicDecoGas(o2, he, field) {
       message: `Deco gas ${label}: O₂ + He exceeds 100%.`,
     };
   }
-  if (heVal <= 0 && o2 < 18) {
+  if (o2 < 18) {
     return {
       ok: false,
       code: 'HYPOXIC_DECO_GAS',

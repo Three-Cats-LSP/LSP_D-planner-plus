@@ -6753,12 +6753,15 @@ function parseDomInt(id, fallback) {
   return Number.isNaN(raw) ? fallback : raw;
 }
 
+function isShallowGradientOn() {
+  return document.getElementById('shallowGradient')?.value === 'on';
+}
+
 function buhNDL(depthM, fN2, gfLow, gfHigh, fHe) {
   _syncZhlBundleEnv();
   const lastStop = parseDomInt('lastDecoStop', 3);
   const decoStep = parseDomInt('decoStep', 3);
-  const shallowGradient = document.getElementById('shallowGradient')?.value === 'on';
-  return ZhlEngineBundle.buhNDL(depthM, fN2, gfLow, gfHigh, fHe, lastStop, decoStep, shallowGradient);
+  return ZhlEngineBundle.buhNDL(depthM, fN2, gfLow, gfHigh, fHe, lastStop, decoStep, isShallowGradientOn());
 }
 
 function maxSatPct(tissues, gfHigh) {
@@ -7125,6 +7128,10 @@ function validateDomDecoGases() {
   const bot = getDomBottomGasPct();
   const botCheck = validateGasFractionsPct(bot.o2, bot.he, 'bottomGas');
   if (!botCheck.ok) errors.push(botCheck);
+  else {
+    const hypoBot = ZhlEngineBundle.validateHypoxicDecoGas(bot.o2, bot.he, 'bottomGas');
+    if (hypoBot) errors.push(hypoBot);
+  }
   for (const idx of getAllDecoGasIds()) {
     const g = getDomDecoGasPct(idx);
     if (!g) continue;
@@ -7501,9 +7508,19 @@ function _doResetToDefaults(userDefaults) {
   console.log('[LSP] ↺ Settings reset to defaults (ApexDeco-matched)');
 }
 
-function getActiveGas(curDepthM, bottomFN2, decoGases, getPPO2LimitFn, bottomLabel, bottomFHe) {
+function getActiveGas(curDepthM, bottomFN2, bottomFHe, decoGases, getPPO2LimitFn, bottomLabel) {
   _syncZhlBundleEnv();
   return ZhlEngineBundle.getActiveGas(curDepthM, bottomFN2, bottomFHe || 0, decoGases, getPPO2LimitFn, bottomLabel);
+}
+
+function ppO2DisplayStyle(ppO2Str, limit) {
+  if (ppO2Str === 'ERR') return 'color:var(--red);font-weight:700;';
+  const v = parseFloat(ppO2Str);
+  const lim = limit != null ? limit : 1.6;
+  if (!Number.isFinite(v)) return 'color:var(--red);font-weight:700;';
+  if (v > lim) return 'color:var(--red);font-weight:700;';
+  if (v > lim * 0.97) return 'color:var(--orange);';
+  return 'color:var(--muted);';
 }
 
 function ppO2Check(depthM, fN2, fHe, opts) {
@@ -7845,7 +7862,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
       if (seg.vpmStopCapHit) vpmStopCapHit = true;
       const rtDisp = fmtRT(seg.runtime);
       const ppO2s = vpmDisplayPpo2(seg.depth, o2pct, hepct, seg);
-      const ppO2Color = parseFloat(ppO2s) > 1.6 ? 'color:var(--red);font-weight:700;' : 'color:var(--muted);';
+      const ppO2Color = ppO2DisplayStyle(ppO2s, 1.6);
       const capNote = seg.vpmStopCapHit ? ' title="Stop capped at safety limit — ceiling not cleared"' : '';
       // Cumulative CNS row highlight (same logic as Bühlmann, uses _cumCNS stored by VPM engine)
       const cumCnsPctVPM = seg._cumCNS != null ? seg._cumCNS : 0;
@@ -8942,7 +8959,7 @@ function buildZhlScheduleParamsFromDom(rawD, depthM, bt) {
       switchPauseT: 0,
       mdCompatMode: (document.getElementById('decoTransitMode')?.value || 'multideco') === 'multideco',
       lastStop, decoStep,
-      shallowGradient: document.getElementById('shallowGradient')?.value === 'on',
+      shallowGradient: isShallowGradientOn(),
       bottomFN2, bottomFHe, bottomFO2, bottomMixLabel,
       travelInfo,
       repState: takeZhlRepStateSnapshot(),
@@ -9423,10 +9440,13 @@ function runDecoSchedule() {
   collapsedMDP.forEach(s => {
     const _sFN2    = s.fN2 ?? bottomFN2;
     const _sFHe    = s.fHe ?? 0;
-    const pO2Val   = s.pO2 != null ? parseFloat(s.pO2) : parseFloat(ppO2Check(s.depth, _sFN2, _sFHe));
+    const pO2Raw   = s.pO2 != null ? String(s.pO2) : ppO2Check(s.depth, _sFN2, _sFHe);
+    const pO2Val   = parseFloat(pO2Raw);
     const _sFO2    = Math.max(0, 1 - _sFN2 - _sFHe);  // trimix-safe fO2
     const gasLimit = getPPO2Limit(_sFO2);
-    const pO2Color = pO2Val > gasLimit ? 'color:var(--red);font-weight:700;' : pO2Val > gasLimit * 0.97 ? 'color:var(--orange);' : 'color:var(--muted);';
+    const pO2Color = pO2Raw === 'ERR' || !Number.isFinite(pO2Val)
+      ? 'color:var(--red);font-weight:700;'
+      : pO2Val > gasLimit ? 'color:var(--red);font-weight:700;' : pO2Val > gasLimit * 0.97 ? 'color:var(--orange);' : 'color:var(--muted);';
     const stepDur  = typeof s.dur === 'number' ? s.dur : parseFloat(s.dur) || 0;
     rowRT += stepDur;
     const rtDisp = fmtMM(rowRT);
@@ -9441,7 +9461,9 @@ function runDecoSchedule() {
       const _swFHe  = s.fHe ?? 0;
       const _swFO2  = Math.max(0, 1 - (s.fN2 ?? bottomFN2) - _swFHe);  // trimix-safe
       const switchLimit = getPPO2Limit(_swFO2);
-      const sppColor    = sppVal > switchLimit ? 'color:var(--red);font-weight:700;' : sppVal > switchLimit * 0.97 ? 'color:var(--orange);font-weight:700;' : '';
+      const sppColor    = switchPpO2 === 'ERR' || !Number.isFinite(sppVal)
+        ? 'color:var(--red);font-weight:700;'
+        : sppVal > switchLimit ? 'color:var(--red);font-weight:700;' : sppVal > switchLimit * 0.97 ? 'color:var(--orange);font-weight:700;' : '';
       const switchMixDisp = s.gas.replace(/\s+/g, '').toUpperCase();
       _decoRowBuf += `<tr data-phase="switch">
         <td style="text-align:center;">⇄</td>
@@ -10306,6 +10328,7 @@ function runUnifiedPlan() {
   const rbOnLoop = isRebreatherCircuit(ccr.circuit) && !ccr.bailout;
   const bot  = getBottomGasFractions();
   if (rbOnLoop && !bot) return;
+  if (!mGF || mGF.low == null || mGF.high == null) return;
   const fN2  = rbOnLoop ? bot.fN2 : FN2_AIR;
   const fHe  = rbOnLoop ? (bot.fHe || 0) : 0;
   const fO2  = rbOnLoop ? bot.fO2 : 0.21;
@@ -14872,7 +14895,7 @@ function calcCNS() {
     statusCandidates.push({ sev: 2, cls: 'c-warn', msg: `⚠️ ppO2 ${ppo2.toFixed(2)} bar is above recreational limit (1.4 bar). Technical divers only.` });
   }
   const otuCarry = window._priorDiveCarry?.otuCarry || 0;
-  const perDiveOtu = Math.max(0, otu - otuCarry);
+  const perDiveOtu = fromPlan ? Math.max(0, otu - otuCarry) : otu;
   if (otu >= 600) {
     statusCandidates.push({ sev: 3, cls: 'c-dang', msg: `⛔ OTU ${Math.round(otu)} exceeds 600 (daily NOAA limit). No more diving today.` });
   } else if (perDiveOtu >= 300) {
@@ -16261,7 +16284,7 @@ var appSettings = {
     'zhlRepMode', 'zhlSurfaceInterval',
     'priorDiveDays', 'priorDiveHours', 'priorDiveMinutes', 'priorDiveOTU', 'priorDiveCNS',
     'shallowGradient',
-    'siD1Depth', 'siD1BT', 'siD2Depth', 'siD2BT',
+    'siD1Depth', 'siD1BT', 'siD2Depth', 'siD2BT', 'siGfLow',
     'travelGasMix', 'travelGasCustomO2', 'travelGasTrimixO2', 'travelGasTrimixHe', 'travelGasSwitchMode', 'travelGasManualDepth',
     'sacBottom', 'sacDeco',
     'cylBot_size', 'cylBot_pres', 'cylBot_reserve',
@@ -16459,6 +16482,11 @@ var appSettings = {
     updateCcrGasCardLabels?.();
     if (values.travelGasActive) addTravelGas();
     else removeTravelGas();
+    ['siD1Depth', 'siD1BT', 'siD2Depth', 'siD2BT'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && typeof updateSliderFill === 'function') updateSliderFill(el);
+    });
+    calcSurfInt?.();
   },
 
   _restoreFields: function(values) {
@@ -16516,17 +16544,19 @@ var appSettings = {
       restored++;
     };
     applyGfPreset();
-    this._restoreInProgress = false;
-    if (!window._zhlHeadless) {
-      pendingChangeEls.forEach(el => {
-        el.dispatchEvent(new Event('change', { bubbles: true }));
-      });
-    }
-    this._syncUiAfterRestore(values);
-
     if (values.waterDensitySelect && typeof setWaterDensity === 'function') {
       setWaterDensity(values.waterDensitySelect);
     }
+    if (!window._zhlHeadless) {
+      pendingChangeEls.forEach(el => {
+        el.dispatchEvent(new Event('change', { bubbles: true }));
+        if (el.type === 'range') {
+          el.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      });
+    }
+    this._syncUiAfterRestore(values);
+    this._restoreInProgress = false;
     
     if (values['__units__']) {
       setUnits(values['__units__'], { relabelOnly: true });

@@ -1618,7 +1618,10 @@ else:
     fail("updateMinDecoLabels missing — depth labels do not update on unit switch")
 
 # 21.8 pO2: null in injected stops is handled (falls through to ppO2Check)
-if "pO2 != null ? parseFloat(s.pO2) : parseFloat(ppO2Check(" in js:
+if (
+    "pO2 != null ? parseFloat(s.pO2) : parseFloat(ppO2Check(" in js
+    or "s.pO2 != null ? String(s.pO2) : ppO2Check(" in js
+):
     ok("Injected stop pO2:null handled — ppO2Check recalculates ppO2 for min deco stops")
 else:
     fail("pO2:null injected stops may not get ppO2 recalculated — check stop row rendering")
@@ -3020,10 +3023,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.00['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.53.00")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.01['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.53.01")
 else:
-    fail("APP_VERSION not bumped to 2.53.00 in app-version.js")
+    fail("APP_VERSION not bumped to 2.53.01 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -5320,7 +5323,11 @@ elif 'td[data-label="Stop"]' in js.split("function runContingencyScenario", 1)[-
 else:
     fail("runContingencyScenario still parseFloats MM:SS stop durations (issue #104 M-7)")
 _zwb104 = open(os.path.join(os.path.dirname(__file__), "zhl-worker-bridge.js"), encoding="utf-8").read()
-if "if (ok) {" in _zwb104.split("worker.onmessage", 1)[-1][:600] and "consecutiveWorkerFailures += 1" in _zwb104.split("worker.onmessage", 1)[-1][:800]:
+_onmsg104 = _zwb104.split("worker.onmessage", 1)[-1][:800]
+if (
+    ("consecutiveWorkerFailures += 1" in _onmsg104 and "if (ok) {" in _onmsg104)
+    or ("handleWorkerFailure(error" in _onmsg104 and "if (ok) {" in _onmsg104)
+):
     ok("worker bridge increments failures on ok:false replies (issue #104 M-8)")
 else:
     fail("worker bridge still resets failure counter on ok:false (issue #104 M-8)")
@@ -5591,7 +5598,10 @@ if "'travelGasTrimixO2'" in _111_deco and "'travelGasTrimixHe'" in _111_deco:
     ok("issue #111 M-2: travelGasTrimixO2/He persisted in DECO_FIELDS")
 else:
     fail("issue #111 M-2: travel gas trimix missing from DECO_FIELDS")
-if "if (ok) {" in _111_zwb.split("worker.onmessage", 1)[-1][:600] and "consecutiveWorkerFailures += 1" in _111_zwb.split("worker.onmessage", 1)[-1][:800]:
+if (
+    ("if (ok) {" in _111_zwb.split("worker.onmessage", 1)[-1][:600] and "consecutiveWorkerFailures += 1" in _111_zwb.split("worker.onmessage", 1)[-1][:800])
+    or "handleWorkerFailure(error" in _111_zwb.split("worker.onmessage", 1)[-1][:800]
+):
     ok("issue #111 M-3: worker bridge increments failures only on ok:false")
 else:
     fail("issue #111 M-3: worker bridge failure counter regression")
@@ -5607,8 +5617,8 @@ if "const ppO2Limit = parseFloat(document.getElementById('ppo2Bottom')" in _111_
     ok("issue #111 M-6: calcEND_tool MOD uses configured ppO2 limit")
 else:
     fail("issue #111 M-6: calcEND_tool MOD still hardcoded 1.4 bar")
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.00['\"]", app_version_js):
-    ok("issue #111 L-1: app-version 2.53.00 synced; SW derives CACHE_VERSION dynamically")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.01['\"]", app_version_js):
+    ok("issue #111 L-1: app-version 2.53.01 synced; SW derives CACHE_VERSION dynamically")
 else:
     fail("issue #111 L-1: SW/app-version sync regression")
 if "build_vpm_bundle.py" in _111_ci and "git diff --exit-code zhl-engine-bundle.js vpm-engine-bundle.js" in _111_ci:
@@ -5728,7 +5738,10 @@ if "VPM_STOP_CAP" in _113_vpm and "vpmStopCapError" in _113_vpm and "vpmStopCapF
     ok("issue #113 H-1: VPM stop cap aborts with VPM_STOP_CAP error (no silent ascent)")
 else:
     fail("issue #113 H-1: VPM inner stop loop still ascends silently after 999-min cap")
-if "return d > 0 ? d : null;" in _113_ccr.split("function depthAtSetpointCrossing", 1)[-1][:400]:
+if (
+    "return d > 0 ? d : null;" in _113_ccr.split("function depthAtSetpointCrossing", 1)[-1][:400]
+    or "Number.isFinite(d) && d > 0 ? d : null" in _113_ccr.split("function depthAtSetpointCrossing", 1)[-1][:400]
+):
     ok("issue #113 H-2: depthAtSetpointCrossing returns null below surface (zhl-ccr-core)")
 else:
     fail("issue #113 H-2: depthAtSetpointCrossing still clamps unreachable crossing to 0")
@@ -5872,6 +5885,8 @@ else:
     fail("issue #117 L-1: sw.js still duplicates REQUIRED_PRECACHE and PRECACHE_ASSETS")
 if "rejectAll(error || 'ZHL worker calculation failed')" in _117_bridge:
     ok("issue #117 L-2: worker bridge rejects all pending on calculation failure (issue #124 L-2)")
+elif "handleWorkerFailure(error || 'ZHL worker calculation failed')" in _117_bridge:
+    ok("issue #117 L-2: worker bridge delegates calculation failure to handleWorkerFailure")
 elif "killWorker();" in _117_bridge.split("Worker calculation failed", 1)[-1][:250]:
     ok("issue #117 L-2: worker bridge kills worker immediately on ok === false")
 else:
@@ -5923,7 +5938,10 @@ if "zhl-schedule-worker.js" in _118_sw.split("REQUIRED_PRECACHE", 1)[-1][:400]:
     ok("issue #118 M-2: zhl-schedule-worker.js in REQUIRED_PRECACHE shell list")
 else:
     fail("issue #118 M-2: ZHL worker script still optional-only precache")
-if "const perDiveOtu = Math.max(0, otu - otuCarry)" in js.split("function calcCNS", 1)[-1][:5500]:
+if (
+    "const perDiveOtu = fromPlan ? Math.max(0, otu - otuCarry) : otu" in js.split("function calcCNS", 1)[-1][:5500]
+    or "const perDiveOtu = Math.max(0, otu - otuCarry)" in js.split("function calcCNS", 1)[-1][:5500]
+):
     ok("issue #118 M-3: single-dive OTU warning excludes carry when no plan")
 else:
     fail("issue #118 M-3: perDiveOtu still includes carry in widget-only path")
@@ -6218,7 +6236,10 @@ if "vpmStopCapNote" in js and "vpmStopCapHit" in js:
     ok("issue #124 L-1: renderVPMResults surfaces vpmStopCapHit capped-stop warning")
 else:
     fail("issue #124 L-1: vpmStopCapHit still not consumed in UI")
-if "rejectAll(error || 'ZHL worker calculation failed')" in open(os.path.join(os.path.dirname(__file__), "zhl-worker-bridge.js"), encoding="utf-8").read():
+if (
+    "rejectAll(error || 'ZHL worker calculation failed')" in open(os.path.join(os.path.dirname(__file__), "zhl-worker-bridge.js"), encoding="utf-8").read()
+    or "handleWorkerFailure(error || 'ZHL worker calculation failed')" in open(os.path.join(os.path.dirname(__file__), "zhl-worker-bridge.js"), encoding="utf-8").read()
+):
     ok("issue #124 L-2: worker onmessage error path calls rejectAll before killWorker")
 else:
     fail("issue #124 L-2: worker error handler still leaves concurrent requests hanging")
@@ -6373,11 +6394,11 @@ if all("needs: [bundle-sync]" in _ci126.split(f"{job}:", 1)[-1][:120] for job in
 else:
     fail("issue #126: one or more CI jobs still run without bundle-sync dependency")
 
-# ── v2.53.00 stable release ──
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.00['\"]", app_version_js):
-    ok("stable release APP_VERSION is 2.53.00")
+# ── v2.53.01 stable release ──
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.01['\"]", app_version_js):
+    ok("stable release APP_VERSION is 2.53.01")
 else:
-    fail("stable release requires APP_VERSION 2.53.00")
+    fail("stable release requires APP_VERSION 2.53.01")
 
 # ── Issue #127: full codebase audit v2.53.00 — 6 HIGH / 7 MEDIUM / 4 LOW ──
 _vpm_core127 = open(os.path.join(os.path.dirname(__file__), "vpm-engine-core.js"), encoding="utf-8").read()
@@ -6419,14 +6440,14 @@ if all(f"'{f}'" in js.split("DECO_FIELDS:", 1)[-1][:2500] for f in ("siD1Depth",
     ok("issue #127 M-2: surface-interval sliders in DECO_FIELDS for persistence")
 else:
     fail("issue #127 M-2: siD1/siD2 sliders missing from DECO_FIELDS")
-if "endpointDepth = seg.toDepth" in _ccr_core_src.split("function saturateLinearCCR", 1)[-1][:900]:
-    ok("issue #127 M-3: saturateLinearCCR uses destination depth for setpoint on descent")
+if "endpointDepth = seg.toDepth" in _ccr_core_src.split("function saturateLinearCCR", 1)[-1][:900] or "endpointDepth = seg.fromDepth < seg.toDepth ? seg.toDepth : seg.fromDepth" in _ccr_core_src.split("function saturateLinearCCR", 1)[-1][:900]:
+    ok("issue #127 M-3: saturateLinearCCR uses deep endpoint for setpoint on segment")
 else:
     fail("issue #127 M-3: saturateLinearCCR still uses shallow endpoint on descent")
-if "heVal <= 0 && o2 < 18" in _gas_core_js.split("function validateHypoxicDecoGas", 1)[-1][:600]:
-    ok("issue #127 M-4: validateHypoxicDecoGas allows hypoxic trimix (He > 0)")
+if "heVal <= 0 && o2 < 18" not in _gas_core_js.split("function validateHypoxicDecoGas", 1)[-1][:600] and "o2 < 18" in _gas_core_js.split("function validateHypoxicDecoGas", 1)[-1][:600]:
+    ok("issue #133 C-2 / #127 M-4: validateHypoxicDecoGas rejects all O2 < 18% gases including trimix")
 else:
-    fail("issue #127 M-4: validateHypoxicDecoGas still blocks all O2 < 18% gases")
+    fail("issue #133 C-2: validateHypoxicDecoGas still exempts hypoxic trimix (heVal guard)")
 if 'td[data-label="Stop"]' in js.split("function runContingencyScenario", 1)[-1][:2500]:
     ok("issue #127 M-5: contingency decoTime reads Stop column duration")
 else:
@@ -6447,7 +6468,7 @@ if "surfP != null ? surfP : altSurfaceP" in _ccr_core_src.split("function depthA
     ok("issue #127 L-2: CCR setpoint crossing uses surfP != null guard")
 else:
     fail("issue #127 L-2: surfP || altSurfaceP still treats zero as missing")
-if "VPM_CRITICAL_RADIUS_FACTOR[interIdx]" in _vpm_core127.split("function runInterLevelDecoAscent", 1)[-1][:1200]:
+if "VPM_CRITICAL_RADIUS_FACTOR[interIdx]" in _vpm_core127.split("function runInterLevelDecoAscent", 1)[-1][:2500]:
     ok("issue #127 L-3: inter-level off-loop conservatism relaxes regenerated radii")
 else:
     fail("issue #127 L-3: interLevelConservatism still no-op in runInterLevelDecoAscent")
@@ -6743,6 +6764,100 @@ if os.path.isfile(_export_reg):
         fail("residual: export_regression still ZHLC_GF-only or serves repo root")
 else:
     fail("residual: export_regression.py missing")
+
+# ── issue #133 (audit #128 HEAD 0c919fa) ────────────────────────────────────
+_gf133 = _physics_core_js.split("function gfAtDepth", 1)[-1][:200] if "function gfAtDepth" in _physics_core_js else ""
+if "firstStopDepth <= 0) return gfL" in _gf133:
+    ok("issue #133 H-1: gfAtDepth keeps gfL pre-anchor (Baker first-stop; audit false positive)")
+else:
+    fail("issue #133 H-1: gfAtDepth regressed to gfH pre-anchor")
+_getactive133 = js.split("function getActiveGas", 1)[-1][:280] if "function getActiveGas" in js else ""
+if "bottomFHe, decoGases" in _getactive133.replace("\r\n", "\n"):
+    ok("issue #133 C-1: index getActiveGas wrapper matches bundle arg order")
+else:
+    fail("issue #133 C-1: getActiveGas wrapper still has bottomFHe in position 6")
+_vpm133 = open(os.path.join(_repo_root130, "vpm-engine-core.js"), encoding="utf-8").read()
+if "radiiBeforeInterLevel" in _vpm133 and "restoreInterLevelRadii()" in _vpm133:
+    ok("issue #133 C-3: VPM inter-level radii snapshot restored before main deco")
+else:
+    fail("issue #133 C-3: VPM missing inter-level radii restore")
+if "function isShallowGradientOn" in js and "value === 'on'" in js.split("function isShallowGradientOn", 1)[-1][:120]:
+    ok("issue #133 C-4: shallowGradient read via isShallowGradientOn helper (select value=on)")
+else:
+    fail("issue #133 C-4: shallowGradient DOM read missing or wrong")
+_parity133 = open(os.path.join(_repo_root130, "tools", "check_engine_parity.py"), encoding="utf-8").read()
+if "template_expr_depth" in _parity133 and "extract_api_block" in _parity133 and "'use strict'" in _parity133.split("def strip_header", 1)[-1][:400]:
+    ok("issue #133 H-3/L-6/L-7: check_engine_parity template depth + api block + use strict strip")
+else:
+    fail("issue #133 H-3/L-6/L-7: check_engine_parity parity extractor still fragile")
+if "handleWorkerFailure(error" in open(os.path.join(_repo_root130, "zhl-worker-bridge.js"), encoding="utf-8").read().split("worker.onmessage", 1)[-1][:500]:
+    ok("issue #133 H-4: worker onmessage error path delegates to handleWorkerFailure")
+else:
+    fail("issue #133 H-4: worker onmessage still duplicates rejectAll logic")
+if "issue133" in open(os.path.join(_repo_root130, "dev", "engine_regression.py"), encoding="utf-8").read():
+    ok("issue #133 H-5: engine_regression includes issue #133 regression section")
+else:
+    fail("issue #133 H-5: engine_regression missing issue #133 tests")
+_ccr133 = _ccr_core_src.split("function saturateLinearCCR", 1)[-1][:900] if "function saturateLinearCCR" in _ccr_core_src else ""
+if "endpointDepth = seg.fromDepth < seg.toDepth ? seg.toDepth : seg.fromDepth" in _ccr133:
+    ok("issue #133 M-2: saturateLinearCCR samples setpoint at deep endpoint of segment")
+else:
+    fail("issue #133 M-2: saturateLinearCCR still uses shallow endpoint for setpoint")
+if "Number.isFinite(sp)" in _ccr_core_src.split("function depthAtSetpointCrossing", 1)[-1][:200]:
+    ok("issue #133 M-3: depthAtSetpointCrossing guards non-finite surfP")
+else:
+    fail("issue #133 M-3: depthAtSetpointCrossing missing finite surfP guard")
+if "calcSurfInt?.()" in js.split("_syncUiAfterRestore", 1)[-1][:800]:
+    ok("issue #133 M-4: SI slider displays refreshed after settings restore")
+else:
+    fail("issue #133 M-4: _syncUiAfterRestore missing calcSurfInt / slider fill refresh")
+_restore133 = js.split("_restoreFields: function", 1)[-1][:2200] if "_restoreFields: function" in js else ""
+if _restore133.find("setWaterDensity") < _restore133.find("_syncUiAfterRestore"):
+    ok("issue #133 M-5: waterDensitySelect applied before dependent UI sync")
+else:
+    fail("issue #133 M-5: setWaterDensity still runs after _syncUiAfterRestore")
+if "ppO2DisplayStyle" in js or "pO2Raw === 'ERR'" in js:
+    ok("issue #133 M-6: ppO2Check ERR path applies error styling in deco table")
+else:
+    fail("issue #133 M-6: ppO2 ERR still suppresses colour warnings")
+if "fromPlan ? Math.max(0, otu - otuCarry) : otu" in js:
+    ok("issue #133 M-7: perDiveOtu only subtracts carry on fromPlan path")
+else:
+    fail("issue #133 M-7: perDiveOtu still subtracts carry from widget estimate")
+if "mGF.low == null" in js.split("function runUnifiedPlan", 1)[-1][:800]:
+    ok("issue #133 M-8: runUnifiedPlan guards unset mGF before NDL loop")
+else:
+    fail("issue #133 M-8: runUnifiedPlan still uses unguarded mGF.low")
+if "validateHypoxicDecoGas(bot.o2" in js.split("function validateDomDecoGases", 1)[-1][:600]:
+    ok("issue #133 L-1: bottom gas validated by validateHypoxicDecoGas")
+else:
+    fail("issue #133 L-1: bottom gas skips hypoxic validation")
+if "if (n2 < 0) return null" in _gas_core_js.split("function n2FracFromPercentages", 1)[-1][:200]:
+    ok("issue #133 L-2: n2FracFromPercentages returns null when O2+He > 100%")
+else:
+    fail("issue #133 L-2: n2FracFromPercentages still clamps impossible mixes to 0")
+if "sToM <= targetDepthM" in _gas_core_js:
+    ok("issue #133 L-3: injectStop straddles ascent ending exactly at target depth")
+else:
+    fail("issue #133 L-3: injectStop still misses sToM == targetDepthM case")
+if "'siGfLow'" in js.split("DECO_FIELDS:", 1)[-1][:3500]:
+    ok("issue #133 L-4: siGfLow persisted in DECO_FIELDS")
+else:
+    fail("issue #133 L-4: siGfLow missing from DECO_FIELDS")
+_restore_flag133 = js.split("_restoreFields: function", 1)[-1][:2500] if "_restoreFields: function" in js else ""
+if _restore_flag133.find("_restoreInProgress = false") > _restore_flag133.find("pendingChangeEls.forEach"):
+    ok("issue #133 L-5: _restoreInProgress cleared after synthetic change events")
+else:
+    fail("issue #133 L-5: _restoreInProgress cleared before pendingChangeEls dispatch")
+if "Closed field list" in _ccr_core_src:
+    ok("issue #133 L-8: normalizeCCRSettings documents closed field list")
+else:
+    fail("issue #133 L-8: normalizeCCRSettings missing closed-list documentation")
+_av133 = open(os.path.join(_repo_root130, "app-version.js"), encoding="utf-8").read()
+if "2.53.01" in _av133:
+    ok("issue #133 H-2: APP_VERSION bumped to 2.53.01 for PWA cache bust")
+else:
+    fail("issue #133 H-2: APP_VERSION not bumped after engine fixes")
 
 print("=" * 60)
 

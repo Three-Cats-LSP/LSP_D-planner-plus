@@ -710,6 +710,39 @@ ENGINE_SUITE_JS = """
     return { ok: ppo2Ok && scheduleOk, ppo2Ok, scheduleOk, viaDelegate, viaBundle, syncRt, bundleRt };
   })();
 
+  // ── E10j: issue #133 audit fixes ───────────────────────────────────────
+  out.sections.issue133 = (() => {
+    const b = window.ZhlEngineBundle;
+    const gfL = b && typeof b.gfAtDepth === 'function' ? b.gfAtDepth(30, 30, 85, 0, 3, false) : null;
+    const h1Ok = gfL === 30;
+    const hypo = b && typeof b.validateHypoxicDecoGas === 'function'
+      ? b.validateHypoxicDecoGas(15, 45, 'dg1') : null;
+    const c2Ok = hypo && hypo.ok === false;
+    const n2bad = b && typeof b.n2FracFromPercentages === 'function'
+      ? b.n2FracFromPercentages(60, 50) : 0;
+    const l2Ok = n2bad === null;
+    const sgEl = document.getElementById('shallowGradient');
+    const prevSg = sgEl ? sgEl.value : null;
+    let c4Ok = false;
+    if (sgEl && typeof isShallowGradientOn === 'function') {
+      sgEl.value = 'on';
+      const on = isShallowGradientOn();
+      sgEl.value = 'off';
+      const off = isShallowGradientOn();
+      if (prevSg != null) sgEl.value = prevSg;
+      c4Ok = on === true && off === false;
+    }
+    const wrapGas = typeof getActiveGas === 'function' && b
+      ? (() => {
+          const lim = fo2 => (fo2 >= 1 ? 1.6 : 1.4);
+          const g = getActiveGas(39, 0.21, 0.35, [], lim, 'Tx21/35');
+          return g && Math.abs((g.fHe || 0) - 0.35) < 0.01;
+        })()
+      : false;
+    const vpmSnap = false;
+    return { h1Ok, c2Ok, l2Ok, c4Ok, wrapGas, ok: h1Ok && c2Ok && l2Ok && c4Ok && wrapGas };
+  })();
+
   // ── E10i: getActiveGas passes fO2 to ppO2 limit bands (audit 2026-06-29 H-1) ─
   out.sections.getActiveGasF02Limit = (() => {
     if (typeof ZhlEngineBundle === 'undefined' || typeof ZhlEngineBundle.getActiveGas !== 'function') return { ok: false };
@@ -1008,6 +1041,8 @@ def run_suite(page) -> dict:
     assert_true(i123.get("ok"), "issue #123 engine audit fixes (CCR shallow/pSCR/VPM)", str(i123))
     i124 = s.get("issue124", {})
     assert_true(i124.get("ok"), "issue #124 audit fixes (ceiling/gfAt/contingency/pSCR/UI)", str(i124))
+    i133 = s.get("issue133", {})
+    assert_true(i133.get("ok"), "issue #133 audit fixes (gfAtDepth/hypoxic/getActiveGas/shallowGF)", str(i133))
     dedup = s.get("engineDedup", {})
     assert_true(dedup.get("ok"), "index CCR delegates match ZhlEngineBundle (engine dedup)", str(dedup))
     gag = s.get("getActiveGasF02Limit", {})
