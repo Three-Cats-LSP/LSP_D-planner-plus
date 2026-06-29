@@ -154,6 +154,33 @@ def main() -> int:
         if src_body and bundle_body and src_body != bundle_body:
             failures.append(f"zhl-ccr-core.js function {fn} diverges from bundle")
 
+    for fn in ("getActiveGas", "enforceMinDecoProfile", "ppO2Check", "validateHypoxicDecoGas"):
+        if fn not in function_names(gas_src):
+            continue
+        src_body = normalize_js(extract_function_body(gas_src, fn))
+        bundle_body = normalize_js(extract_function_body(zhl_bundle, fn))
+        if src_body and bundle_body and src_body != bundle_body:
+            failures.append(f"zhl-gas-core.js function {fn} diverges from bundle")
+
+    for fn in ("gfAtDepth", "ndlClearAtDepth", "buhNDL", "ceiling"):
+        if fn not in function_names(physics_src):
+            continue
+        src_body = normalize_js(extract_function_body(physics_src, fn))
+        bundle_body = normalize_js(extract_function_body(zhl_bundle, fn))
+        if src_body and bundle_body and src_body != bundle_body:
+            failures.append(f"zhl-physics-core.js function {fn} diverges from bundle")
+
+    sched_embed = schedule_src.replace(
+        "\nif (typeof window !== 'undefined') window.runZhlScheduleCore = runZhlScheduleCore;\n",
+        "\n",
+    ).replace(
+        "function runZhlScheduleCore(params) {",
+        "function runZhlScheduleCore(params) {\n  applyEnvironment(params.environment || defaultEnvironment());",
+        1,
+    )
+    if normalize_js(sched_embed) not in normalize_js(zhl_bundle):
+        failures.append("zhl-schedule-core.js body not embedded in zhl-engine-bundle.js")
+
     norm_vpm = normalize_js(vpm_src)
     norm_vpm_bundle_body = normalize_js(
         vpm_bundle.split("const VPMEngine = (() => {", 1)[1].rsplit("})();", 1)[0]

@@ -306,7 +306,7 @@ function getActiveGas(curDepthM, bottomFN2, bottomFHe, decoGases, getPPO2LimitFn
     const fO2 = dg.fO2 != null ? dg.fO2 : Math.max(0, 1 - dg.fN2 - (dg.fHe || 0));
     const isPureO2 = fO2 >= 0.995 && allowO2AtMOD;
     if (!isPureO2) {
-      const limit = getPPO2LimitFn ? getPPO2LimitFn(dg.fN2) : 1.6;
+      const limit = getPPO2LimitFn ? getPPO2LimitFn(fO2) : 1.6;
       const ppO2AtCur = (altSurfaceP + curDepthM * BAR_PER_METRE) * fO2;
       if (ppO2AtCur > limit + 0.001) continue;
     }
@@ -1430,7 +1430,7 @@ function runZhlScheduleCore(params) {
           }
         : null,
       continuationLevels: (profileSplit && profileSplit.continuation) || [],
-      minDecoProfile: { enabled: false, m9: 1, m6: 3, isMetric: true },
+      minDecoProfile: s.minDecoProfile || { enabled: false, m9: 1, m6: 3, isMetric: metric !== false },
       decoGases: gases,
       environment: environment || defaultEnvironment(),
       ccr: {

@@ -9085,25 +9085,6 @@ function runDecoSchedule() {
     }
     return saturate(tissues, depth, t, Math.max(0, 1 - fO2 - fHe), fHe);
   }
-  function zhlOnLoopAt(depthM, gas) {
-    return !!_zhlOnLoop;
-  }
-  function zhlGasAt(depthM) {
-    if (_zhlOnLoop) {
-      return { fN2: bottomFN2, fHe: bottomFHe, fO2: bottomFO2, label: bottomMixLabel };
-    }
-    return getActiveGas(depthM, bottomFN2, [], () => ppo2Bottom, bottomMixLabel, bottomFHe);
-  }
-  function _ccrPpo2Opts(depthM, onLoop, fO2, phase) {
-    if (!onLoop || !_zhlOnLoop) return undefined;
-    return {
-      onLoop: true,
-      ccr: { ..._ccrSettings, scrRuntimeMin: diveRuntimeMin },
-      fO2: fO2,
-      setpoint: getEffectiveSetpointAtDepth(depthM, _ccrSettings, altSurfaceP, phase),
-      surfP: altSurfaceP,
-    };
-  }
 
   // ── Bühlmann via Tier-3 unified core (OC + CCR) ───────────────────────
   const { params: zhlParams, switchDisplays } = buildZhlScheduleParamsFromDom(rawD, depthM, bt);

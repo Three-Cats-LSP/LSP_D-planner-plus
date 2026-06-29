@@ -126,7 +126,10 @@ def main() -> int:
     if total_fail:
         print(f"\nBrowser regression: {total_fail} failure(s)")
         return 1
-    print(f"\nBrowser regression: all suites passed ({total_warn} warning(s))")
+    if total_warn:
+        print(f"\nBrowser regression: {total_warn} warning(s) treated as failures")
+        return 1
+    print(f"\nBrowser regression: all suites passed")
     return 0
 
 

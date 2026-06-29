@@ -710,6 +710,29 @@ ENGINE_SUITE_JS = """
     return { ok: ppo2Ok && scheduleOk, ppo2Ok, scheduleOk, viaDelegate, viaBundle, syncRt, bundleRt };
   })();
 
+  // ── E10i: getActiveGas passes fO2 to ppO2 limit bands (audit 2026-06-29 H-1) ─
+  out.sections.getActiveGasF02Limit = (() => {
+    if (typeof ZhlEngineBundle === 'undefined' || typeof ZhlEngineBundle.getActiveGas !== 'function') return { ok: false };
+    const env = typeof getZhlEnvironment === 'function' ? getZhlEnvironment() : {
+      altSurfaceP: typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325,
+      barPerMetre: typeof BAR_PER_METRE !== 'undefined' ? BAR_PER_METRE : 0.1,
+      waterVapor: typeof WATER_VAPOR !== 'undefined' ? WATER_VAPOR : 0.0627,
+      altAcclimatized: true,
+      allowO2AtMOD: true,
+    };
+    ZhlEngineBundle.applyEnvironment(env);
+    const limitFn = (fO2) => {
+      const pct = fO2 * 100;
+      if (pct >= 45) return 1.6;
+      if (pct >= 28) return 1.5;
+      return 1.4;
+    };
+    const ean32 = [{ depth: 0, fO2: 0.32, fN2: 0.68, fHe: 0, label: 'EAN32' }];
+    const pick = ZhlEngineBundle.getActiveGas(39, 0.79, 0, ean32, limitFn, 'Air');
+    const ok = pick && pick.label === 'Air';
+    return { label: pick && pick.label, ok };
+  })();
+
   // ── E11: issue #112 planner BT vs descent validation ───────────────────
   out.sections.issue112PlannerBt = (() => {
     const depthEl = document.getElementById('depth');
@@ -987,6 +1010,8 @@ def run_suite(page) -> dict:
     assert_true(i124.get("ok"), "issue #124 audit fixes (ceiling/gfAt/contingency/pSCR/UI)", str(i124))
     dedup = s.get("engineDedup", {})
     assert_true(dedup.get("ok"), "index CCR delegates match ZhlEngineBundle (engine dedup)", str(dedup))
+    gag = s.get("getActiveGasF02Limit", {})
+    assert_true(gag.get("ok"), "getActiveGas uses fO2 for ppO2 limit bands (audit H-1)", str(gag))
 
     for name, r in s["rebreather"].items():
         assert_true(fin(r), f"Rebreather {name} produces schedule", str(r)[:120])

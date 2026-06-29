@@ -57,6 +57,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Static audit gate
+        run: python audit.py
+
       - name: Build Pages site
         run: python tools/build_pages_site.py
 

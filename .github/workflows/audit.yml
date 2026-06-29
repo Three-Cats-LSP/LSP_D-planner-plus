@@ -11,7 +11,27 @@ permissions:
   contents: read
 
 jobs:
+  bundle-sync:
+    name: Engine bundle sync guard
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Rebuild bundles and verify no drift
+        run: |
+          python tools/build_zhl_bundle.py
+          python tools/build_vpm_bundle.py
+          python tools/check_engine_parity.py
+          git diff --exit-code zhl-engine-bundle.js vpm-engine-bundle.js
+
   static-audit:
+    needs: [bundle-sync]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -41,6 +61,7 @@ jobs:
         run: python audit.py index.html
 
   browser-regression:
+    needs: [bundle-sync]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -58,22 +79,5 @@ jobs:
           pip install playwright
           playwright install --with-deps chromium
 
-      - name: Run full engine regression (all algos)
-        run: python dev/engine_regression.py
-
-      - name: Run CCR engine validation regression
-        run: python dev/ccr_engine_validation_regression.py
-
-      - name: Run browser regression suites
-        run: python dev/run_browser_regression.py
-
-      - name: Run native bridge regression (Android select + Capacitor export)
-        run: python dev/run_native_regression.py
-
-      - name: Run pSCR E2E release gate
-        env:
-          SKIP_AUDIT: "1"
-        run: python dev/validate_pscr_e2e.py
-
-      - name: Run CCR differential comparison suite
-        run: python dev/run_ccr_differential.py
+      - name: Run release regression orchestrator
+        run: python dev/run_all_regression.py --tier release

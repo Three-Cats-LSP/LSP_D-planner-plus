@@ -133,10 +133,10 @@ const VPMEngine = (() => {
         }
         return 0;
     }
-    function ccrSchreinerParams(pAmbStart, setpoint, fO2, fHe, pressureRate, ccr) {
+    function ccrSchreinerParams(pAmbStart, setpoint, fO2, fHe, pressureRate, ccr, settings) {
         const b = zhlBundle();
         if (b && typeof b.getCCRInertSchreinerParams === 'function') {
-            syncZhlEnvFromSettings({ altitude: 0, acclimatized: true });
+            if (settings) syncZhlEnvFromSettings(settings);
             return b.getCCRInertSchreinerParams(pAmbStart, setpoint, fO2, fHe, pressureRate, ccr);
         }
         if (typeof getCCRInertSchreinerParams === 'function') {
@@ -431,7 +431,7 @@ const VPMEngine = (() => {
             const ascending = seg.toDepth < seg.fromDepth;
             const endpointDepth = ascending ? seg.toDepth : seg.fromDepth;
             const segSP = ccrSetpointAtDepth(endpointDepth, ccr, surfP);
-            const params = ccrSchreinerParams(pAmbStart, segSP, o2Frac, heFrac, pressureRate, { ...ccr, setpoint: segSP });
+            const params = ccrSchreinerParams(pAmbStart, segSP, o2Frac, heFrac, pressureRate, { ...ccr, setpoint: segSP }, settings);
             for (let i = 0; i < NC; i++) {
                 const kN2 = Math.LN2 / ZHL16C_N2[i].ht;
                 const kHe = Math.LN2 / ZHL16C_He[i].ht;
@@ -552,7 +552,7 @@ const VPMEngine = (() => {
             scrMetabolicO2: settings.scrMetabolicO2,
             scrRuntimeMin: settings._scrRuntimeMin || 0,
         };
-        const params = getCCRInertSchreinerParams(startAmb, setpoint, o2Frac, heFrac, pressureRate, ccr);
+        const params = ccrSchreinerParams(startAmb, setpoint, o2Frac, heFrac, pressureRate, ccr, settings);
         const inspiredHe0 = params.inspHeStart;
         const inspiredN20 = params.inspN2Start;
         const heRate = params.rHe;
@@ -599,7 +599,7 @@ const VPMEngine = (() => {
             scrMetabolicO2: settings.scrMetabolicO2,
             scrRuntimeMin: settings._scrRuntimeMin || 0,
         };
-        const params = getCCRInertSchreinerParams(startAmb, setpoint, o2Frac, heFrac, pressureRate, ccr);
+        const params = ccrSchreinerParams(startAmb, setpoint, o2Frac, heFrac, pressureRate, ccr, settings);
         const inspiredHe0 = params.inspHeStart;
         const inspiredN20 = params.inspN2Start;
         const heRate = params.rHe;
@@ -666,6 +666,8 @@ const VPMEngine = (() => {
         if (scaleCarried) state._bubbleCarryApplied = false;
     }
     function calcAllowableGradients(state, model, settings, _conservatism) {
+        // Inter-level conservatism relaxation is applied via bubble-radius scaling in
+        // runInterLevelDecoAscent before this call; gradients derive from radii state.
         for (let i = 0; i < NC; i++) {
             const rN2 = state.regeneratedRadiiN2[i];
             const baseGradN2 = twoGammaOverR(GAMMA, rN2)

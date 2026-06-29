@@ -1698,6 +1698,13 @@ if "getPPO2Limit(_sFO2)" in stop_loop or ("getPPO2Limit" in stop_loop and "_sFHe
 elif "getPPO2Limit(_sFN2)" in stop_loop:
     fail("Stop row passes _sFN2 to getPPO2Limit — ppO2 limit color wrong for trimix stops")
 
+# 23.5 getActiveGas passes fO2 (not fN2) to getPPO2LimitFn
+_gag_ppo2 = _gas_core_js.split("function getActiveGas", 1)[-1].split("function ppO2Check", 1)[0] if "function getActiveGas" in _gas_core_js else ""
+if "getPPO2LimitFn(fO2)" in _gag_ppo2 or "getPPO2LimitFn( fO2" in _gag_ppo2:
+    ok("getActiveGas passes fO2 to getPPO2LimitFn (trimix-safe deco gas selection)")
+elif "getPPO2LimitFn(dg.fN2)" in _gag_ppo2:
+    fail("getActiveGas passes dg.fN2 to getPPO2LimitFn — wrong ppO2 limit band for trimix deco gases")
+
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 24 — GAS BAND ppO2 LIMITS (mid-band and boundary correctness)
 # Bug: ppo2Mid was set to ppo2Bottom (1.4) — gives wrong MOD for 28-44% O2
@@ -3614,6 +3621,8 @@ if os.path.isfile(audit_wf):
     with open(audit_wf, encoding="utf-8") as f:
         audit_wf_src = f.read()
     if (
+        "run_all_regression.py" in audit_wf_src and "--tier release" in audit_wf_src
+    ) or (
         "run_browser_regression.py" in audit_wf_src
         and "validate_pscr_e2e.py" in audit_wf_src
         and "run_native_regression.py" in audit_wf_src
@@ -3756,7 +3765,7 @@ audit_wf2 = os.path.join(os.path.dirname(__file__), ".github", "workflows", "aud
 if os.path.isfile(audit_wf2):
     with open(audit_wf2, encoding="utf-8") as f:
         wf2 = f.read()
-    if "run_ccr_differential.py" in wf2:
+    if "run_ccr_differential.py" in wf2 or ("run_all_regression.py" in wf2 and "--tier release" in wf2):
         ok("audit.yml runs CCR differential suite (issue #2)")
     else:
         fail("audit.yml missing CCR differential step (issue #2)")
@@ -6630,6 +6639,46 @@ if "function defaultDecoCylFieldValues" in _index132 and "units === 'imperial'" 
     ok("issue #132 H-3b: new dynamic deco cards initialize cylinder values for active units")
 else:
     fail("issue #132 H-3b: dynamic deco cards still seed metric defaults under imperial labels")
+
+# ── 2026-06-29 full-audit follow-up ───────────────────────────────────────────
+_vpm_audit = open(os.path.join(_repo_root130, "vpm-engine-core.js"), encoding="utf-8").read()
+_ccr_sch = _vpm_audit.split("function ccrSchreinerParams", 1)[-1].split("function ccrSplitSegmentAtSetpoint", 1)[0] if "function ccrSchreinerParams" in _vpm_audit else ""
+if "syncZhlEnvFromSettings(settings)" in _ccr_sch and "altitude: 0" not in _ccr_sch:
+    ok("audit 2026-06-29 M-1: VPM ccrSchreinerParams syncs ZHL env from dive settings (not sea level)")
+else:
+    fail("audit 2026-06-29 M-1: VPM ccrSchreinerParams still resets ZHL bundle to altitude 0")
+if "ccrSchreinerParams(startAmb, setpoint, o2Frac, heFrac, pressureRate, ccr, settings)" in _vpm_audit:
+    ok("audit 2026-06-29 M-2: VPM decozone/projected-ascent use ccrSchreinerParams with settings")
+else:
+    fail("audit 2026-06-29 M-2: VPM calcStartOfDecoZone/projectedAscent still call bare getCCRInertSchreinerParams")
+_build_zhl_audit = open(os.path.join(_repo_root130, "tools", "build_zhl_bundle.py"), encoding="utf-8").read()
+if "s.minDecoProfile ||" in _build_zhl_audit:
+    ok("audit 2026-06-29 M-3: buildZhlScheduleParamsFromEngine threads minDecoProfile from settings")
+else:
+    fail("audit 2026-06-29 M-3: engine API path still hard-disables minDecoProfile")
+if "function zhlOnLoopAt(depthM, gas)" not in js.split("function runDecoSchedule", 1)[-1].split("function runVPMSchedule", 1)[0]:
+    ok("audit 2026-06-29 L-2: dead zhlOnLoopAt/zhlGasAt/_ccrPpo2Opts removed from runDecoSchedule")
+else:
+    fail("audit 2026-06-29 L-2: runDecoSchedule still contains dead pre-migration ZHL helpers")
+_audit_yml292 = open(os.path.join(_repo_root130, ".github", "workflows", "audit.yml"), encoding="utf-8").read()
+if "bundle-sync:" in _audit_yml292 and "needs: [bundle-sync]" in _audit_yml292:
+    ok("audit 2026-06-29 M-4/M-5: audit.yml bundle-sync guards release regression jobs")
+else:
+    fail("audit 2026-06-29 M-5: audit.yml missing bundle-sync job or needs dependency")
+_apk_yml292 = open(os.path.join(_repo_root130, ".github", "workflows", "build-apk.yml"), encoding="utf-8").read()
+if "python audit.py" in _apk_yml292 and "check_engine_parity.py" in _apk_yml292:
+    ok("audit 2026-06-29 M-10: APK workflow runs bundle parity and static audit before build")
+else:
+    fail("audit 2026-06-29 M-10: APK workflow still builds without audit/parity gate")
+_deploy_yml292 = open(os.path.join(_repo_root130, ".github", "workflows", "deploy.yml"), encoding="utf-8").read()
+if "python audit.py" in _deploy_yml292:
+    ok("audit 2026-06-29 M-11: Pages deploy workflow runs static audit gate")
+else:
+    fail("audit 2026-06-29 M-11: Pages deploy still ungated on audit.py")
+if '"test":' in open(os.path.join(_repo_root130, "package.json"), encoding="utf-8").read() and "run_all_regression.py" in open(os.path.join(_repo_root130, "package.json"), encoding="utf-8").read():
+    ok("audit 2026-06-29 L-4: package.json exposes npm test via run_all_regression release tier")
+else:
+    fail("audit 2026-06-29 L-4: package.json missing npm test regression script")
 
 print("=" * 60)
 

@@ -58,6 +58,19 @@ jobs:
       - name: Install Capacitor dependencies
         run: npm ci
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Rebuild bundles, parity check, and static audit
+        run: |
+          python tools/build_zhl_bundle.py
+          python tools/build_vpm_bundle.py
+          python tools/check_engine_parity.py
+          git diff --exit-code zhl-engine-bundle.js vpm-engine-bundle.js
+          python audit.py
+
       - name: Prepare web assets (www/)
         run: python tools/sync_www.py
 

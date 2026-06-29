@@ -162,7 +162,7 @@ postamble = r'''
           }
         : null,
       continuationLevels: (profileSplit && profileSplit.continuation) || [],
-      minDecoProfile: { enabled: false, m9: 1, m6: 3, isMetric: true },
+      minDecoProfile: s.minDecoProfile || { enabled: false, m9: 1, m6: 3, isMetric: metric !== false },
       decoGases: gases,
       environment: environment || defaultEnvironment(),
       ccr: {
