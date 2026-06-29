@@ -294,7 +294,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ENVIRONMENT"
       },
-      "fingerprint": "2a1ae81a48801b8498c8150c4107b4c8d0f332cbe03a6b766a89745639fbfe8e",
+      "fingerprint": "95ef10e6d3dd65d0082f331897ea3565812f58e444af192d196255d3d861aca4",
       "last_read_fingerprint": null
     },
     {
@@ -367,78 +367,78 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-DELEGATES"
       },
-      "fingerprint": "501c8db0649925a0479a2bd50bc8cb741c0385c283332573563137baf371b376",
-      "last_read_fingerprint": null
+      "fingerprint": "191342d60eb5c279f7390a4e1024230c2c2eda6a95fde5cf25566e1671e32332",
+      "last_read_fingerprint": "191342d60eb5c279f7390a4e1024230c2c2eda6a95fde5cf25566e1671e32332"
     },
     {
       "id": "UI-CCR-DELEGATES",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-CCR-DELEGATES"
       },
       "fingerprint": "ab3676e739a9446721d005222a850f905576d6aff9e2b9628d5bfd6eb998dc81",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "ab3676e739a9446721d005222a850f905576d6aff9e2b9628d5bfd6eb998dc81"
     },
     {
       "id": "UI-DECO-PHYSICS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-DECO-PHYSICS"
       },
-      "fingerprint": "24bf0bf23b51f6335875a64e823b7bd2ec115da5630db235ea0171074fe9bac3",
-      "last_read_fingerprint": null
+      "fingerprint": "72f995abed9fdc8478a5677660ccc422677f0c4b90eed69ad33e683130219c4d",
+      "last_read_fingerprint": "72f995abed9fdc8478a5677660ccc422677f0c4b90eed69ad33e683130219c4d"
     },
     {
       "id": "UI-SCHEDULE-INPUTS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SCHEDULE-INPUTS"
       },
-      "fingerprint": "0b84e535ef447f68f51377607baaa61cd92504d863ffb13a6b727e8de6cf77b3",
-      "last_read_fingerprint": null
+      "fingerprint": "d9edf4ca60c03eee6aba1eb58cbba211ff44e71dfeb83a9d4d6cbc297cff1cdd",
+      "last_read_fingerprint": "d9edf4ca60c03eee6aba1eb58cbba211ff44e71dfeb83a9d4d6cbc297cff1cdd"
     },
     {
       "id": "UI-SETTINGS-CONTROLS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS-CONTROLS"
       },
       "fingerprint": "09b3935f8455d9d4d0a077aa52217cfce6f2c599549060f6d178366a54a50dfc",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "09b3935f8455d9d4d0a077aa52217cfce6f2c599549060f6d178366a54a50dfc"
     },
     {
       "id": "UI-VPM-RUNNER",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RUNNER"
       },
-      "fingerprint": "c2d347c65750242b02adb52c3f2f2ab811a1e580b16c388f8da7235f1989c3af",
-      "last_read_fingerprint": null
+      "fingerprint": "39fa760759a40716379b6d0861fa70a9e6870374389dc0e51df77a785b66cde4",
+      "last_read_fingerprint": "39fa760759a40716379b6d0861fa70a9e6870374389dc0e51df77a785b66cde4"
     },
     {
       "id": "UI-VPM-RENDER",
@@ -450,7 +450,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RENDER"
       },
-      "fingerprint": "ac7f5c2caf786c3f97d7d277459fc2711a6da02b16afc5128d284e9a36a6d3c3",
+      "fingerprint": "76747c53c1383e885a4163f8bf25cc9ffd3ac798f40e4a9c2a3652e29940fae3",
       "last_read_fingerprint": null
     },
     {
@@ -458,65 +458,65 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-INPUTS"
       },
       "fingerprint": "fb23c84fc166b04c7b73759d56b034d09b538d4aef750f326bda289783f99c09",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "fb23c84fc166b04c7b73759d56b034d09b538d4aef750f326bda289783f99c09"
     },
     {
       "id": "UI-GAS-CARDS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-CARDS"
       },
-      "fingerprint": "0938c975a6ae105cfac499baf120e1ef069e9c28e2b3b2e5e0e4ef113d3320d1",
-      "last_read_fingerprint": null
+      "fingerprint": "f96b0f02ef3d642af9e3c39a0995c936bfbb78e13c04c1e84752da3dc949744c",
+      "last_read_fingerprint": "f96b0f02ef3d642af9e3c39a0995c936bfbb78e13c04c1e84752da3dc949744c"
     },
     {
       "id": "UI-ZHL-RUNNER-SETUP",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-SETUP"
       },
-      "fingerprint": "9e7e17bd88d7166b6fac53a3765e256e22a9f0b27fd4318c6c6e9726b4384162",
-      "last_read_fingerprint": null
+      "fingerprint": "8644d28b55960468e0c9ed5a06828d358f0afb58d036e73a0cfbb99ce296fecb",
+      "last_read_fingerprint": "8644d28b55960468e0c9ed5a06828d358f0afb58d036e73a0cfbb99ce296fecb"
     },
     {
       "id": "UI-ZHL-RUNNER-ENGINE",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-ENGINE"
       },
       "fingerprint": "60b3297f5a2e2c312c2c7e39b936ec795131ba3b10f387578f0fe111d82dc72a",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "60b3297f5a2e2c312c2c7e39b936ec795131ba3b10f387578f0fe111d82dc72a"
     },
     {
       "id": "UI-ZHL-RESULTS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
-      "fingerprint": "9d2bfabc8fe5bbaa07e17a400ff88641f68d816d3a9147e06cf2ea6b5e8822dd",
-      "last_read_fingerprint": null
+      "fingerprint": "564ce2fa807984183a5438041d54b2475e4851aa14b3690840d7e37b44c9c3c4",
+      "last_read_fingerprint": "564ce2fa807984183a5438041d54b2475e4851aa14b3690840d7e37b44c9c3c4"
     },
     {
       "id": "UI-ZHL-HEADLESS-HELPERS",
@@ -551,16 +551,11 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-HEADLESS-ENGINE"
       },
-      "regression_cases": [
-        "REG-01",
-        "REG-02"
-      ],
-      "evidence": [
-        "python dev/engine_regression.py"
-      ],
+      "regression_cases": [],
+      "evidence": [],
       "issue": "Audit #134",
-      "fingerprint": "bd56aeb5d5651900478282874f5c72820e2581b53fd605fde5c66c579183cff2",
-      "last_read_fingerprint": "bd56aeb5d5651900478282874f5c72820e2581b53fd605fde5c66c579183cff2"
+      "fingerprint": "975bf40d74d2f0685aa574402a31edda502e4ee609b9bc45833a1f346a9c8725",
+      "last_read_fingerprint": "975bf40d74d2f0685aa574402a31edda502e4ee609b9bc45833a1f346a9c8725"
     },
     {
       "id": "UI-PLOT-INIT",
@@ -598,7 +593,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-WAYPOINTS"
       },
-      "fingerprint": "77a455de448cae6042564834e9a558d680a5ad25a7df5aed16fae9eef0de661f",
+      "fingerprint": "42bb253859dc877f4503d0f61f135f97d9d8bb95667c532cd85644faa89b40a7",
       "last_read_fingerprint": null
     },
     {
@@ -624,7 +619,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-EXPOSURE"
       },
-      "fingerprint": "48d2c59d9589bbb6742acba1828a909b415e5f4c3407b38cdae82a7faa2d8147",
+      "fingerprint": "0e73dedf86d17c12f2cbd14b69c82dbccb5abee72174ba5ed08673dd5d5110f2",
       "last_read_fingerprint": null
     },
     {
@@ -650,7 +645,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-PROFILE"
       },
-      "fingerprint": "aee50a5f06fb3870acd5782f76f07e8276b133a0441ee94259ddb65fb2053854",
+      "fingerprint": "8ae70c7847ef29512cc0f95b2680200b37974d43ce56bf1580a753d252b45c5f",
       "last_read_fingerprint": null
     },
     {
@@ -663,7 +658,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS"
       },
-      "fingerprint": "dc76ca4498f1ee44e296f04a6a7fdf71a34431b376bdfee629d3ee7706194367",
+      "fingerprint": "12fd7e64ec4b0c8c9347685e9cba2d2e754d28d0ada67d39432b5fc976972e42",
       "last_read_fingerprint": null
     },
     {
@@ -689,7 +684,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-CONFIG-PRESETS"
       },
-      "fingerprint": "2a309a937794032bb84d9ebe3b1d5513708825a32c342531db0a41d82bd1efa6",
+      "fingerprint": "7dfd75e09dc3246ce367cb574d8f8ca0d699aa97e222ade2496cc0d7ac9ed45a",
       "last_read_fingerprint": null
     },
     {
@@ -697,13 +692,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-APP-INIT"
       },
       "fingerprint": "c02b4d7f0a1061b87d4ad85a07eacfba51bfa2eddfc841c1803037b19032b2f7",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "c02b4d7f0a1061b87d4ad85a07eacfba51bfa2eddfc841c1803037b19032b2f7"
     },
     {
       "id": "UI-PWA-LIFECYCLE",
@@ -739,8 +734,10 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "8b2181f70c8be3c1c26391c8a9dabfd474baa806928c986bbc551bd445b0e5f6",
-      "last_read_fingerprint": "8b2181f70c8be3c1c26391c8a9dabfd474baa806928c986bbc551bd445b0e5f6"
+      "fingerprint": "e29f7e365f603f8f3384efd5d85d0639729c80581a98cbe126003f4e22071c00",
+      "last_read_fingerprint": "e29f7e365f603f8f3384efd5d85d0639729c80581a98cbe126003f4e22071c00",
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "ENG-ZHL-CCR",
@@ -751,40 +748,35 @@
       "boundary": {
         "type": "whole_file"
       },
-      "regression_cases": [
-        "REG-01",
-        "REG-02"
-      ],
-      "evidence": [
-        "python dev/engine_regression.py"
-      ],
+      "regression_cases": [],
+      "evidence": [],
       "issue": "Audit #134",
-      "fingerprint": "03a83cf105c289c62c11c9f17afd5a31578f39bf0221260dbbe8ab66dd74fd25",
-      "last_read_fingerprint": "03a83cf105c289c62c11c9f17afd5a31578f39bf0221260dbbe8ab66dd74fd25"
+      "fingerprint": "f72d03141467b15ad98603b72d31bedacf7df19d2e32aa1de734782905e62ccc",
+      "last_read_fingerprint": "f72d03141467b15ad98603b72d31bedacf7df19d2e32aa1de734782905e62ccc"
     },
     {
       "id": "ENG-ZHL-SCHEDULE",
       "path": "zhl-schedule-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "0ccf02530aabbfc20e061b7fda281818f120ad8b87cb55b1da18b45ed9ad1247",
-      "last_read_fingerprint": null
+      "fingerprint": "9b0c9926b8d74a1c699ab9b25853bc0b863b11c1c1c6f5578ba85be046b209e2",
+      "last_read_fingerprint": "9b0c9926b8d74a1c699ab9b25853bc0b863b11c1c1c6f5578ba85be046b209e2"
     },
     {
       "id": "ENG-VPM",
       "path": "vpm-engine-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a1f7d5732dc1223a066293b8b93a04d5bd58dba977eea5190ddaf833cbbfbac7",
-      "last_read_fingerprint": null
+      "fingerprint": "e7fb15962d930854d0d85d2bc5b2e32bfb807e5561c08ea0b9ee8b02d5b1b72c",
+      "last_read_fingerprint": "e7fb15962d930854d0d85d2bc5b2e32bfb807e5561c08ea0b9ee8b02d5b1b72c"
     },
     {
       "id": "ENG-VPM-REFERENCE",
@@ -827,72 +819,84 @@
       "path": "contingency-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "7e021691430709816d04a15729b310b6c0d913ba8e2afcb93e73094258a19fc6",
-      "last_read_fingerprint": "7e021691430709816d04a15729b310b6c0d913ba8e2afcb93e73094258a19fc6"
+      "fingerprint": "42bb7a6c85ffae2180e6e200a207e418a9c6208fc75b230fd8f5d0dbe7fe5496",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "APP-EXPORT",
       "path": "export-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f7ce4a09a6b17b09adc234ec34186005efa3262e86192244dc1c32581470fd7e",
-      "last_read_fingerprint": "f7ce4a09a6b17b09adc234ec34186005efa3262e86192244dc1c32581470fd7e"
+      "fingerprint": "f21500b8cf055f299c5452146637aa2a9f9d1cc6ff1b762428d77b71ddda108b",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "APP-GAS-PLAN",
       "path": "gas-plan-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "6a8c2050b25652f81a8530757f8bf4416d73f9afffde631fd6ee977c53ac1577",
-      "last_read_fingerprint": "6a8c2050b25652f81a8530757f8bf4416d73f9afffde631fd6ee977c53ac1577"
+      "fingerprint": "26cbfe1f5ad85268906b3a053550a888b38727c3c9209cf6470a07a2ec7c2d29",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "APP-GAS-TABLE",
       "path": "gas-table-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "086419071f43011a946de34bba39e055a17ef4ee1caef436fd58ec4bdad63f04",
-      "last_read_fingerprint": "086419071f43011a946de34bba39e055a17ef4ee1caef436fd58ec4bdad63f04"
+      "fingerprint": "190ac90658c7c472df21560d97c89672d4478299b4c9b7cb0cd233c3d5fdd7d3",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "APP-SURFACE-INTERVAL",
       "path": "surf-interval-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "244a573427885e50b1057b67e9c5bfed5dfa5552ceb2e1358e9fe8110027b5b2",
-      "last_read_fingerprint": "244a573427885e50b1057b67e9c5bfed5dfa5552ceb2e1358e9fe8110027b5b2"
+      "fingerprint": "7de4d0f4c0595721d21944414da7b6d8016310243988c3795243b89b601216f0",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "APP-SERVICE-WORKER",
       "path": "sw.js",
       "layer": "pwa",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "aa89b68b30c51651b64a2ffaee188dccc537632c93b57db137065bd6b0db30cf",
-      "last_read_fingerprint": "aa89b68b30c51651b64a2ffaee188dccc537632c93b57db137065bd6b0db30cf"
+      "fingerprint": "4e9a1adaeda73ee02b3d0aca2f721c296fc26640042b1a1517d5c40a6e901f8d",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "APP-ZHL-WORKER-BRIDGE",
@@ -983,12 +987,12 @@
       "path": "package.json",
       "layer": "build_config",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "60e25b2ab4b5857d2c5bb2a36f46278de111374407d6b66fc6905b19127cf861",
-      "last_read_fingerprint": "60e25b2ab4b5857d2c5bb2a36f46278de111374407d6b66fc6905b19127cf861",
+      "fingerprint": "a244be02f942db71b474289629b5c7608706a279f2a714a36d4f667b620f0f22",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
     },
@@ -1205,7 +1209,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "cc3e6687b9b0b83ac85fe0f623fb904fb63f21fd348da57cf2c6f47ef87fcd57",
+      "fingerprint": "e35d122408e51da3b3a67bbe13c7d6e3b37e993eac6675e349c93f05f437e919",
       "last_read_fingerprint": null
     },
     {
@@ -1359,12 +1363,14 @@
       "path": "lsp-test-harness.js",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "bd89d1ff9471c1ed2f05711f363094c603e259c9479068ea12c1b63917f13840",
-      "last_read_fingerprint": "bd89d1ff9471c1ed2f05711f363094c603e259c9479068ea12c1b63917f13840"
+      "fingerprint": "ee699022d8a49f193323d698259ce1df422c4422c546342d53b4f8fc65b3d220",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "TEST-MAIN",
@@ -1543,7 +1549,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "4a32adc754a0e898937c712748299e9e421fadb22412d95e85a98902ff1563bf",
+      "fingerprint": "0a49241e23d6b0205883c95953ab2a7fbcab7ecc4ed1d277c694440bd641449e",
       "last_read_fingerprint": null
     },
     {
@@ -1620,12 +1626,14 @@
       "path": "tools/check_engine_parity.py",
       "layer": "tooling",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "60db13227f7dc6652908bddeb01ee5389eadb8796cbd4be1aa6f08ad563bf148",
-      "last_read_fingerprint": "60db13227f7dc6652908bddeb01ee5389eadb8796cbd4be1aa6f08ad563bf148"
+      "fingerprint": "cd7430e24791a9e26e75f32ebbe82a05074b2814e2f306c98b78a7a77017c967",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "TOOL-EXTRACT-UI",
@@ -1788,12 +1796,12 @@
       "path": ".github/workflows/audit.yml",
       "layer": "ci",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "7e4974499e7e431076d5a722c5a8bd13f0bc20dd8b65c5738df984fbe3a53fe5",
-      "last_read_fingerprint": "7e4974499e7e431076d5a722c5a8bd13f0bc20dd8b65c5738df984fbe3a53fe5",
+      "fingerprint": "42eb0ac8378545828abba49f38c93b5916457341187860d638b4a0f444647937",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
     },
@@ -1814,12 +1822,12 @@
       "path": ".github/workflows/ci.yml",
       "layer": "ci",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "fde037c6a76231e3a78b411da3d323ae74551409962e21f764adff3e1e104155",
-      "last_read_fingerprint": "fde037c6a76231e3a78b411da3d323ae74551409962e21f764adff3e1e104155",
+      "fingerprint": "6aa08d94e88114926069b742e76cb24ae356a7f8f953f6e893cb01b132bf1724",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
     },
