@@ -103,12 +103,13 @@ function runContingencyScenario(modifyFn) {
   const savedBody    = document.getElementById('decoTableBody').innerHTML;
   const savedSummary = document.getElementById('decoSummary').innerHTML;
   const savedLastPlan = window._lastPlan;
+  const origBailout = document.getElementById('ccrBailoutToggle')?.value;
 
   _contingencyRunning = true;
   let ok = false;
   let scenarioDepth, scenarioBT, scenarioBotFracs, newRows = '', lastRun, decoTime;
   let lastRunFmt, decoTimeFmt, totalCNS, totalOTUc, tts, decoStop, decozoneDisp;
-  let decoZoneStart, contSurfaceGF, planSum;
+  let decoZoneStart, contSurfaceGF, planSum, contLastPlan, contLastTissues;
   try {
     modifyFn();
     runDecoSchedule();
@@ -149,16 +150,25 @@ function runContingencyScenario(modifyFn) {
     decozoneDisp = planSum.decozone;
     decoZoneStart = lp.decoZoneStart ?? 0;
     contSurfaceGF = lp.surfaceGF ?? null;
+    contLastPlan = window._lastPlan ? JSON.parse(JSON.stringify(window._lastPlan)) : null;
+    contLastTissues = (typeof lastTissues !== 'undefined' && lastTissues && lastTissues.length)
+      ? lastTissues.map(t => ({ pN2: t.pN2, pHe: t.pHe || 0, mv: t.mv }))
+      : null;
   } finally {
     _contingencyRunning = false;
     document.getElementById('decoTableBody').innerHTML = savedBody;
     document.getElementById('decoSummary').innerHTML   = savedSummary;
     window._lastPlan = savedLastPlan;
+    if (origBailout != null) {
+      const boEl = document.getElementById('ccrBailoutToggle');
+      if (boEl) boEl.value = origBailout;
+    }
   }
 
   return {
     ok, newRows, lastRun, decoTime: Math.round(decoTime), lastRunFmt, decoTimeFmt, totalCNS, totalOTUc,
     decoZoneStart, decozoneDisp, decoStop, tts, planSum, contSurfaceGF, scenarioDepth, scenarioBT, scenarioBotFracs,
+    contLastPlan, contLastTissues,
   };
 }
 
@@ -309,9 +319,9 @@ function calcContingency() {
 
   const origDepth = document.getElementById('decoDepth')?.value;
   const origBailout = document.getElementById('ccrBailoutToggle')?.value;
-  let ok, newRows, lastRun, decoTime, lastRunFmt, decoTimeFmt, totalCNS, totalOTUc, decoZoneStart, decozoneDisp, decoStop, tts, planSum, contSurfaceGF, scenarioDepth, scenarioBT, scenarioBotFracs;
+  let ok, newRows, lastRun, decoTime, lastRunFmt, decoTimeFmt, totalCNS, totalOTUc, decoZoneStart, decozoneDisp, decoStop, tts, planSum, contSurfaceGF, scenarioDepth, scenarioBT, scenarioBotFracs, contLastPlan, contLastTissues;
   try {
-    ({ ok, newRows, lastRun, decoTime, lastRunFmt, decoTimeFmt, totalCNS, totalOTUc, decoZoneStart, decozoneDisp, decoStop, tts, planSum, contSurfaceGF, scenarioDepth, scenarioBT, scenarioBotFracs } = runContingencyScenario(() => {
+    ({ ok, newRows, lastRun, decoTime, lastRunFmt, decoTimeFmt, totalCNS, totalOTUc, decoZoneStart, decozoneDisp, decoStop, tts, planSum, contSurfaceGF, scenarioDepth, scenarioBT, scenarioBotFracs, contLastPlan, contLastTissues } = runContingencyScenario(() => {
     if (contExtraBT > 0 && origBT)
       document.getElementById('decoBT').value = parseFloat(origBT) + contExtraBT;
     if (contExtraDepth > 0 && origDepth) {
@@ -400,7 +410,7 @@ function calcContingency() {
     <div id="decoAlertsEmergency" style="margin-top:8px;"></div>`;
 
   // Store for export
-  window._lastContingency = { label, lastRun, decoTime, lastRunFmt, decoTimeFmt, totalCNS, totalOTU: _emOTU, totalPrT: _emPrT, decoZoneStart, decozoneDisp: _emDecozone, decoStop: _emDecoStop, tts: _emTts, newRows, severity, icon, msg, surfGF: contSurfaceGF != null ? Math.round(contSurfaceGF) + '%' : '-', scenarioDepth, scenarioBT, scenarioBotFracs, emAlertsHtml: '' };
+  window._lastContingency = { label, lastRun, decoTime, lastRunFmt, decoTimeFmt, totalCNS, totalOTU: _emOTU, totalPrT: _emPrT, decoZoneStart, decozoneDisp: _emDecozone, decoStop: _emDecoStop, tts: _emTts, newRows, severity, icon, msg, surfGF: contSurfaceGF != null ? Math.round(contSurfaceGF) + '%' : '-', scenarioDepth, scenarioBT, scenarioBotFracs, emAlertsHtml: '', contLastPlan, contLastTissues };
 
   // CNS alert — goes into emergency card, NOT main decoAlerts
   const emAlerts = document.getElementById('decoAlertsEmergency');
@@ -842,8 +852,11 @@ async function exportContingencyPDF(opts) {
     }
   }
 
+  const emTissues = c.contLastTissues || (typeof lastTissues !== 'undefined' ? lastTissues : null);
+  const emPlan = c.contLastPlan || (typeof _lastPlan !== 'undefined' ? _lastPlan : null);
+
   // ── SECTION: Tissue Saturation ───────────────────────────────────────────
-  if (_incTissue && !isVPMem && lastTissues && lastTissues.length) {
+  if (_incTissue && !isVPMem && emTissues && emTissues.length) {
     doc.addPage(); drawHeader();
     sectionTitle('TISSUE SATURATION','Buhlmann ZH-L16C \u2014 loading at end of dive');
     const gfFem=mGF.high/100;
@@ -852,7 +865,7 @@ async function exportContingencyPDF(opts) {
     checkY(8);
     doc.setFontSize(7); doc.setFont('DejaVuSans','bold'); doc.setTextColor(180,30,30);
     doc.text('SURFACE SNAPSHOT', ML, y+4.8); y+=7;
-    lastTissues.forEach((t0lp,i)=>{
+    emTissues.forEach((t0lp,i)=>{
       const pN2lp=t0lp.pN2; const pHelp=t0lp.pHe||0; const pTotlp=pN2lp+pHelp;
       checkY(7);
       const [ht,a_n,b_n]=ZHL16C[i];
@@ -875,7 +888,7 @@ async function exportContingencyPDF(opts) {
 
     // Compartment Detail table
     const ttbEm=document.getElementById('tissueTableBody');
-    if(ttbEm&&ttbEm.rows.length===0&&lastTissues) updateTissueViz(lastTissues,mGF.high);
+    if(ttbEm&&ttbEm.rows.length===0&&emTissues) updateTissueViz(emTissues,mGF.high);
     if(ttbEm&&ttbEm.rows.length){
       doc.addPage(); drawHeader();
       sectionTitle('COMPARTMENT DETAIL','Buhlmann ZH-L16C - End of dive N2 loading');
@@ -899,10 +912,10 @@ async function exportContingencyPDF(opts) {
     }
 
     // Per-Stop Ascent Profile (grid)
-    if(typeof _lastPlan !== 'undefined' && _lastPlan && _lastPlan.steps && _lastPlan.steps.some(s=>s._tissues)){
+    if(emPlan && emPlan.steps && emPlan.steps.some(s=>s._tissues)){
       doc.addPage(); drawHeader();
       sectionTitle('PER-STOP ASCENT PROFILE','Compartment loading at each deco stop');
-      const stopSteps=_lastPlan.steps.filter(s=>s._tissues&&(s.phase==='deco'||s.phase==='safety'||s.phase==='ascent'));
+      const stopSteps=emPlan.steps.filter(s=>s._tissues&&(s.phase==='deco'||s.phase==='safety'||s.phase==='ascent'));
       const COLS=4; const cellW=CW/COLS; const cellH=20;
       stopSteps.forEach((step,si)=>{
         if(si%COLS===0){ checkY(cellH+6); }

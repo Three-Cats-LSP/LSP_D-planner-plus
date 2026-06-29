@@ -334,6 +334,10 @@ function buildExportText(mode) {
     const _eMdp6m = document.getElementById('minDeco6m')?.value || '3';
     const _eDu    = units === 'imperial' ? 'ft' : 'm';
     if (_eMdpEn) lines.push(`Min Deco Profile: ON  (9${_eDu}: ${_eMdp9m} min  6${_eDu}: ${_eMdp6m} min)`);
+    const _eHdr = typeof buildDecoPlanHeaderData === 'function' ? buildDecoPlanHeaderData() : null;
+    if (_eHdr && _eHdr.circuit && _eHdr.circuit !== 'OC') {
+      lines.push(`Circuit     : ${_eHdr.ccrLabel || _eHdr.circuit}${_eHdr.ccrBailout ? ' (bailout)' : ''}`);
+    }
     if (c.msg) lines.push(`Note        : ${clean(c.msg)}`);
     lines.push('');
 
@@ -558,7 +562,7 @@ function buildSlateText() {
   const algoNames = { ZHLC_GF: 'Buhlmann GF', VPMB: 'VPM-B', VPMB_GFS: 'VPM-B/GFS' };
   const algoName = algoNames[algoSel] || algoSel;
   const algoLine = algoSel === 'ZHLC_GF'
-    ? `${algoName} ${mGF.low}/${mGF.high}`
+    ? `${algoName} ${(mGF && mGF.low != null) ? mGF.low : '-'}/${(mGF && mGF.high != null) ? mGF.high : '-'}`
     : algoSel === 'VPMB'
       ? `${algoName} +${document.getElementById('conservatismSelect')?.value ?? '0'}`
       : `${algoName} GF Hi ${mGF.high}`;
@@ -977,8 +981,10 @@ function copyFallback(text) {
     const ok = document.execCommand('copy');
     document.body.removeChild(ta);
     if (ok) showCopyToast();
+    else showToast('Copy failed — select text manually', 'copy', true);
   } catch(e) {
     console.error('Copy fallback error:', e);
+    showToast('Copy failed', 'copy', true);
   }
 }
 
@@ -1717,6 +1723,8 @@ async function exportPDF(opts) {
   // Emergency plan intentionally excluded from main deco PDF.
   // Use the dedicated Emergency Plan PDF button for that.
   if(false){
+    const colX = [ML, ML + 12, ML + 30, ML + 48, ML + 66, ML + 84, ML + 102, ML + 120, ML + 138, ML + 156];
+    const colW = [12, 18, 18, 18, 18, 18, 18, 18, 18, 18];
     doc.addPage(); drawHeader();
     const cc=window._lastContingency;
     doc.setFillColor(255,240,240);doc.setDrawColor(200,100,100);

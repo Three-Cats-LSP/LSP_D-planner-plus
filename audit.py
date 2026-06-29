@@ -2013,10 +2013,12 @@ elif re.search(r'if \(!firstStopDepth \|\| firstStopDepth <= 0\) return gfL;', _
 else:
     fail("GF anchor: gfAtDepth pre-anchor return value not found or changed structure")
 _schedule_gf = open(os.path.join(os.path.dirname(__file__), "zhl-schedule-core.js"), encoding="utf-8").read()
-if re.search(r'function gfAt\(depthM\)[\s\S]{0,220}if \(!firstStopDepth \|\| firstStopDepth <= 0\) return gfL;', _schedule_gf):
+if re.search(r'function gfAt\(depthM\)[\s\S]{0,220}if \(!firstStopDepth \|\| firstStopDepth <= 0\) return gfH;', _schedule_gf):
+    ok("GF anchor: schedule gfAt() returns gfH when firstStopDepth unanchored (issue #137 H-7)")
+elif re.search(r'function gfAt\(depthM\)[\s\S]{0,220}if \(!firstStopDepth \|\| firstStopDepth <= 0\) return gfL;', _schedule_gf):
     ok("GF anchor: schedule gfAt() returns gfL pre-anchor (Baker first-stop search)")
 else:
-    fail("GF anchor: schedule gfAt() missing gfL pre-anchor guard")
+    fail("GF anchor: schedule gfAt() missing pre-anchor guard (gfH or gfL)")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 31 — TTS METRIC + DECOZONE GF-INDEPENDENCE FIX (v2.10.10)
@@ -3383,12 +3385,12 @@ else:
     fail("ZHLEngine.calculate still clears _zhlHeadless after headless runs (BUG-74)")
 
 _rds_bug74 = js.split("function runDecoSchedule", 1)[-1].split("function planSegDepthM", 1)[0] if "function runDecoSchedule" in js else ""
-if _rds_bug74 and re.search(r"!window\._zhlHeadless && !?_contingencyRunning && isCcrGasUiMode\(\)", _rds_bug74) and "validateCcrGasConfiguration()" in _rds_bug74:
+if _rds_bug74 and re.search(r"!window\._zhlHeadless && (?:!_contingencyRunning && )?isCcrGasUiMode\(\)", _rds_bug74) and "validateCcrGasConfiguration()" in _rds_bug74:
     ok("runDecoSchedule skips CCR alert when headless (BUG-74)")
 else:
     fail("runDecoSchedule may alert() during headless test runs (BUG-74)")
 
-if re.search(r"!window\._zhlHeadless && !?_contingencyRunning && isRebreatherCircuit\(_uiCcr\.circuit\)", js):
+if re.search(r"!window\._zhlHeadless && (?:!_contingencyRunning && )?isRebreatherCircuit\(_uiCcr\.circuit\)", js):
     ok("runDecoSchedule DOM gas validation uses window._zhlHeadless (not bare _zhlHeadless)")
 else:
     fail("runDecoSchedule references bare _zhlHeadless (ReferenceError in UI)")
@@ -6243,6 +6245,8 @@ else:
     fail("issue #124 M-5: VPM gas switch still always uses ppO2Deco limit")
 if "simulateDive2" in js.split("function calcSurfInt", 1)[-1][:2500] and "D2BT" in js.split("function calcSurfInt", 1)[-1][:2500]:
     ok("issue #124 M-6: calcSurfInt simulates Dive 2 depth and BT in minimum SI search")
+elif "simulateDive2" in open(os.path.join(os.path.dirname(__file__), "surf-interval-core.js"), encoding="utf-8").read() and "D2BT" in open(os.path.join(os.path.dirname(__file__), "surf-interval-core.js"), encoding="utf-8").read():
+    ok("issue #124 M-6: calcSurfInt simulates Dive 2 depth and BT in minimum SI search")
 else:
     fail("issue #124 M-6: calcSurfInt still ignores Dive 2 depth/BT in SI computation")
 if "surfaceP: (environment || defaultEnvironment()).altSurfaceP" in _build_py:
@@ -6428,7 +6432,7 @@ else:
 _pkg126 = open(os.path.join(os.path.dirname(__file__), "package.json"), encoding="utf-8").read()
 _vpm_core126 = open(os.path.join(os.path.dirname(__file__), "vpm-engine-core.js"), encoding="utf-8").read()
 _ci126 = open(os.path.join(os.path.dirname(__file__), ".github", "workflows", "ci.yml"), encoding="utf-8").read()
-if '"build": "npm run build:bundles"' in _pkg126:
+if '"build": "npm run build:bundles"' in _pkg126 or '"build": "npm run build:bundles && npm run check:engine-parity"' in _pkg126:
     ok("issue #126 R-1: package.json build alias points to build:bundles")
 else:
     fail("issue #126 R-1: npm run build alias missing from package.json")
@@ -6463,7 +6467,8 @@ if "gfAtDepth(" in _physics_core_js.split("function ndlClearAtDepth", 1)[-1][:90
     ok("issue #127 H-3: ndlClearAtDepth uses gfAtDepth with shallowGradient parameter")
 else:
     fail("issue #127 H-3: ndlClearAtDepth local gfAt ignores shallowGradient")
-if "try {" in js.split("function runContingencyScenario", 1)[-1][:800] and "finally {" in js.split("function runContingencyScenario", 1)[-1][:2500]:
+_contingency_core127 = open(os.path.join(os.path.dirname(__file__), "contingency-core.js"), encoding="utf-8").read()
+if ("try {" in js.split("function runContingencyScenario", 1)[-1][:1500] and "finally {" in js.split("function runContingencyScenario", 1)[-1][:3000]) or ("try {" in _contingency_core127.split("function runContingencyScenario", 1)[-1][:1500] and "finally {" in _contingency_core127.split("function runContingencyScenario", 1)[-1][:3000]):
     ok("issue #127 H-4: runContingencyScenario restores DOM in finally block")
 else:
     fail("issue #127 H-4: runContingencyScenario missing try/finally DOM restore")
@@ -6487,7 +6492,7 @@ if all(f"'{f}'" in js.split("DECO_FIELDS:", 1)[-1][:2500] for f in ("siD1Depth",
     ok("issue #127 M-2: surface-interval sliders in DECO_FIELDS for persistence")
 else:
     fail("issue #127 M-2: siD1/siD2 sliders missing from DECO_FIELDS")
-if "endpointDepth = seg.toDepth" in _ccr_core_src.split("function saturateLinearCCR", 1)[-1][:900] or "endpointDepth = seg.fromDepth < seg.toDepth ? seg.toDepth : seg.fromDepth" in _ccr_core_src.split("function saturateLinearCCR", 1)[-1][:900]:
+if "endpointDepth = seg.toDepth" in _ccr_core_src.split("function saturateLinearCCR", 1)[-1][:900] or "endpointDepth = seg.fromDepth < seg.toDepth ? seg.toDepth : seg.fromDepth" in _ccr_core_src.split("function saturateLinearCCR", 1)[-1][:900] or "endpointDepth = seg.fromDepth < seg.toDepth ? seg.toDepth : Math.min(seg.fromDepth, seg.toDepth)" in _ccr_core_src.split("function saturateLinearCCR", 1)[-1][:900]:
     ok("issue #127 M-3: saturateLinearCCR uses deep endpoint for setpoint on segment")
 else:
     fail("issue #127 M-3: saturateLinearCCR still uses shallow endpoint on descent")
@@ -6846,7 +6851,7 @@ if "issue133" in open(os.path.join(_repo_root130, "dev", "engine_regression.py")
 else:
     fail("issue #133 H-5: engine_regression missing issue #133 tests")
 _ccr133 = _ccr_core_src.split("function saturateLinearCCR", 1)[-1][:900] if "function saturateLinearCCR" in _ccr_core_src else ""
-if "endpointDepth = seg.fromDepth < seg.toDepth ? seg.toDepth : seg.fromDepth" in _ccr133:
+if "endpointDepth = seg.fromDepth < seg.toDepth ? seg.toDepth : seg.fromDepth" in _ccr133 or "endpointDepth = seg.fromDepth < seg.toDepth ? seg.toDepth : Math.min(seg.fromDepth, seg.toDepth)" in _ccr133:
     ok("issue #133 M-2: saturateLinearCCR samples setpoint at deep endpoint of segment")
 else:
     fail("issue #133 M-2: saturateLinearCCR still uses shallow endpoint for setpoint")

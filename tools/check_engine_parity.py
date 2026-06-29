@@ -3,10 +3,19 @@
 from __future__ import annotations
 
 import re
+import subprocess
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+
+UI_RUNTIME_CORES = [
+    "contingency-core.js",
+    "export-core.js",
+    "gas-plan-core.js",
+    "gas-table-core.js",
+    "surf-interval-core.js",
+]
 
 
 def strip_header(text: str) -> str:
@@ -252,6 +261,33 @@ def main() -> int:
 
     if not (ROOT / "tools" / "build_vpm_bundle.py").is_file():
         failures.append("tools/build_vpm_bundle.py missing (VPM bundle not automated)")
+
+    index_html = (ROOT / "index.html").read_text(encoding="utf-8")
+    for core in UI_RUNTIME_CORES:
+        core_path = ROOT / core
+        if not core_path.is_file():
+            failures.append(f"UI runtime core missing: {core}")
+            continue
+        marker = f'src="{core}"'
+        if marker not in index_html:
+            failures.append(f"index.html missing script tag for {core}")
+        stem = core.replace(".js", "")
+        begin = f"LSP-EXTRACT-BEGIN:{stem}"
+        end = f"LSP-EXTRACT-END:{stem}"
+        if begin not in index_html or end not in index_html:
+            failures.append(f"index.html missing extract markers for {core}")
+
+    verify = subprocess.run(
+        [sys.executable, str(ROOT / "tools" / "extract_ui_cores.py")],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+    )
+    if verify.returncode != 0:
+        failures.append(
+            "extract_ui_cores.py verify failed: "
+            + (verify.stderr or verify.stdout or "unknown error").strip()[:500]
+        )
 
     if failures:
         print("ENGINE PARITY FAILURES:")

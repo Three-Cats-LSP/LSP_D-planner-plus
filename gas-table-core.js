@@ -72,12 +72,15 @@ function calcEND_tool() {
   const ppO2 = fO2 * pAmb;
   const ppHe = fHe * pAmb;
 
-  // Narcotic partial pressure — respect narcoticN2/narcoticO2 settings (He non-narcotic)
-  const pNarc = (narcoticN2 ? ppN2 : 0) + (narcoticO2 ? ppO2 : 0);
-
-  // Use shared calcEND() — handles altitude, narcotic toggles, and He correctly
-  const endM    = calcEND(dM, fN2, fHe);
+  const endM = calcEND(dM, fN2, fHe);
   const endDisp = du ? Math.round(endM) + ' m' : Math.round(endM * 3.28084) + ' ft';
+  const pNarcAirSurface = (narcoticN2 ? surfP * FN2_AIR : 0) +
+    (narcoticO2 ? surfP * (1 - FN2_AIR) : 0);
+  const narcoticFracAir = (narcoticN2 ? FN2_AIR : 0) + (narcoticO2 ? (1 - FN2_AIR) : 0);
+  const endMVal = endM != null ? endM : 0;
+  const pNarcDisplay = narcoticFracAir > 0
+    ? pNarcAirSurface + endMVal * (BAR_PER_METRE || 0.1) * narcoticFracAir
+    : (narcoticN2 ? ppN2 : 0) + (narcoticO2 ? ppO2 : 0);
 
   // Risk level
   let riskLabel, riskCol;
@@ -98,22 +101,24 @@ function calcEND_tool() {
     ? o2Pct + '/' + hePct
     : (o2Pct === 21 ? 'Air' : 'EAN' + o2Pct);
 
-  // Depth display label sync
-  document.getElementById('endDepthDisplay').textContent = (du ? dRaw : dRaw) + (du ? ' m' : ' ft');
+  const endDepthDispEl = document.getElementById('endDepthDisplay');
+  if (endDepthDispEl) endDepthDispEl.textContent = (du ? dRaw : dRaw) + (du ? ' m' : ' ft');
 
-  // Update UI
-  document.getElementById('endResult').textContent    = endDisp;
-  document.getElementById('endResult').style.color    = riskCol;
-  document.getElementById('endRisk').textContent      = riskLabel;
-  document.getElementById('endRisk').style.color      = riskCol;
-  document.getElementById('endNarcLoad').textContent  = pNarc.toFixed(2) + ' bar';
-  document.getElementById('endAbsP').textContent      = pAmb.toFixed(2) + ' bar';
-  document.getElementById('endPPN2').textContent      = ppN2.toFixed(2) + ' bar';
-  document.getElementById('endPPO2').textContent      = ppO2.toFixed(2) + ' bar';
-  document.getElementById('endPPHe').textContent      = ppHe.toFixed(2) + ' bar';
-  document.getElementById('endMixName').textContent   = mixName;
-  document.getElementById('endMOD14').textContent     = mod14d;
-  document.getElementById('endMOD16').textContent     = mod16d;
+  const setTxt = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
+  setTxt('endResult', endDisp);
+  const endResultEl = document.getElementById('endResult');
+  if (endResultEl) endResultEl.style.color = riskCol;
+  setTxt('endRisk', riskLabel);
+  const endRiskEl = document.getElementById('endRisk');
+  if (endRiskEl) endRiskEl.style.color = riskCol;
+  setTxt('endNarcLoad', pNarcDisplay.toFixed(2) + ' bar');
+  setTxt('endAbsP', pAmb.toFixed(2) + ' bar');
+  setTxt('endPPN2', ppN2.toFixed(2) + ' bar');
+  setTxt('endPPO2', ppO2.toFixed(2) + ' bar');
+  setTxt('endPPHe', ppHe.toFixed(2) + ' bar');
+  setTxt('endMixName', mixName);
+  setTxt('endMOD14', mod14d);
+  setTxt('endMOD16', mod16d);
   const mod14Lbl = document.getElementById('endMOD14')?.closest('.stat')?.querySelector('.stat-lbl');
   if (mod14Lbl) mod14Lbl.textContent = 'MOD @ ' + ppO2Limit.toFixed(1);
 
@@ -130,7 +135,7 @@ function calcEND_tool() {
   if (mod14M != null && dM > mod14M) {
     alertHtml += `<div class="alert dang" style="margin-top:6px;"><span>\u26a0</span><div><strong>EXCEEDS MOD.</strong> Depth ${du ? Math.round(dM)+' m' : Math.round(dM*3.28084)+' ft'} is deeper than MOD ${mod14d} at ppO\u2082 ${ppO2Limit.toFixed(1)}.</div></div>`;
   }
-  alertEl.innerHTML = alertHtml;
+  if (alertEl) alertEl.innerHTML = alertHtml;
 }
 
 const _eadTipTitle = 'Equivalent Air Depth (EAD)';
@@ -197,7 +202,7 @@ function renderEADTable() {
     html += `<tr class="bmt-ref-row"><td style="color:${o2Col};font-weight:600;white-space:nowrap;">EAN${o2pct}</td>`;
     depths.forEach(dM => {
       const ead = calcEND(dM, fN2, 0);
-      const eadDisp = ead == null ? '—' : Math.max(0, ead);
+      const eadDisp = ead == null ? '—' : ead;
       html += `<td style="text-align:right;padding:5px 4px;color:var(--muted);white-space:nowrap;">${toDisp(eadDisp)}</td>`;
     });
     html += '</tr>';

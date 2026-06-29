@@ -160,7 +160,8 @@ function calcGasPlan() {
     const usableL  = (botFill - botRes) * botSize + travelPooledL;
     const fraction = _gasRule === 'half' ? 0.5 : (1 / 3);
     const portionL = usableL * fraction;
-    const turnBar  = botFill - portionL / botSize;
+    const botShareL = travelPooledL > 0 ? portionL * ((botFill - botRes) * botSize) / usableL : portionL;
+    const turnBar  = botFill - botShareL / botSize;
 
     // Cross-check against last deco plan consumption
     const reqL      = gpRequiredFor(botLabel);

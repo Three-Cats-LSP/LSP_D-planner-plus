@@ -4,11 +4,11 @@
   "description": "LSP D-Planner+ \u2014 unified OC + CCR decompression planning app",
   "private": true,
   "scripts": {
-    "build": "npm run build:bundles",
+    "build": "npm run build:bundles && npm run check:engine-parity",
     "build:bundles": "python tools/build_zhl_bundle.py && python tools/build_vpm_bundle.py",
     "check:engine-parity": "python tools/check_engine_parity.py",
     "audit:coverage": "python tools/audit_coverage.py --check",
-    "test:audit-coverage": "python -m unittest tools/test_audit_coverage.py",
+    "test:audit-coverage": "python tools/test_audit_coverage.py",
     "test": "python dev/run_all_regression.py --tier release",
     "test:ci": "python dev/run_all_regression.py --tier ci",
     "vendor:offline": "python tools/vendor_offline_assets.py",

@@ -45,7 +45,7 @@ jobs:
 
       - name: Test and validate audit registry
         run: |
-          python -m unittest tools/test_audit_coverage.py
+          python tools/test_audit_coverage.py
           python tools/audit_coverage.py --check
 
   audit:

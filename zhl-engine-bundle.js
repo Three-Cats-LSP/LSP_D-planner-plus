@@ -345,7 +345,7 @@ function n2FracFromPercentages(o2pct, hepct) {
   return null;
 }
 
-function validateHypoxicDecoGas(o2, he, field) {
+function validateHypoxicDecoGas(o2, he, field, circuit) {
   const heVal = he || 0;
   const label = String(field).replace(/^dg/, '');
   if (o2 + heVal > 100 + 1e-6) {
@@ -356,7 +356,8 @@ function validateHypoxicDecoGas(o2, he, field) {
       message: `Deco gas ${label}: O₂ + He exceeds 100%.`,
     };
   }
-  if (o2 < 18) {
+  const isCCR = circuit === 'CCR' || circuit === 'pSCR';
+  if (!isCCR && o2 < 18) {
     return {
       ok: false,
       code: 'HYPOXIC_DECO_GAS',
@@ -417,7 +418,7 @@ function loopMixLabelForCore(diluentLabel, ccr) {
 }
 
 function depthAtSetpointCrossing(setpoint, surfP) {
-  if (!setpoint || setpoint <= 0) return null;
+  if (!Number.isFinite(setpoint) || setpoint <= 0) return null;
   const sp = surfP != null ? surfP : altSurfaceP;
   if (!Number.isFinite(sp) || sp <= 0) return null;
   const d = (setpoint + WATER_VAPOR - sp) / BAR_PER_METRE;
@@ -688,7 +689,7 @@ function saturateLinearCCR(tissues, fromDepth, toDepth, t, fO2, fHe, ccr) {
     const p0Amb = depthBar(seg.fromDepth);
     const pEndAmb = depthBar(seg.toDepth);
     const R = (pEndAmb - p0Amb) / segTime;
-    const endpointDepth = seg.fromDepth < seg.toDepth ? seg.toDepth : seg.fromDepth;
+    const endpointDepth = seg.fromDepth < seg.toDepth ? seg.toDepth : Math.min(seg.fromDepth, seg.toDepth);
     const segSP = getEffectiveSetpointAtDepth(endpointDepth, cfg, surfP, phase);
     const segCcr = { ...cfg, setpoint: segSP };
     out = out.map((t0, i) => ({
@@ -907,7 +908,7 @@ function runZhlScheduleCore(params) {
   // gfAt must live outside the phase loop — block-scoped function declarations are
   // not visible after the loop in strict mode (Tier 3 bundle uses 'use strict').
   function gfAt(depthM) {
-    if (!firstStopDepth || firstStopDepth <= 0) return gfL;
+    if (!firstStopDepth || firstStopDepth <= 0) return gfH;
     return gfAtDepth(depthM, gfL, gfH, firstStopDepth, lastStop, !!params.shallowGradient);
   }
 

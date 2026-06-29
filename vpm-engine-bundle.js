@@ -1454,6 +1454,9 @@ const VPMEngine = (() => {
                     }
                 }
                 state.firstStopDepth = snap.firstStopDepth;
+                state.useDecoGradients = snap.useDecoGradients;
+                state._conservatismRadiiApplied = snap._conservatismRadiiApplied;
+                state.maxAmbientPressure = snap.maxAmbientPressure;
             }
             calcCrushing(state, settings);
             const offLoopPath = isCCR && settings.circuit !== 'pSCR' && (forcedOCMode || curSP <= 0);

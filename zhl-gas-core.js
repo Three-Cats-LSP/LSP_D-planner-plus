@@ -160,7 +160,7 @@ function n2FracFromPercentages(o2pct, hepct) {
   return null;
 }
 
-function validateHypoxicDecoGas(o2, he, field) {
+function validateHypoxicDecoGas(o2, he, field, circuit) {
   const heVal = he || 0;
   const label = String(field).replace(/^dg/, '');
   if (o2 + heVal > 100 + 1e-6) {
@@ -171,7 +171,8 @@ function validateHypoxicDecoGas(o2, he, field) {
       message: `Deco gas ${label}: O₂ + He exceeds 100%.`,
     };
   }
-  if (o2 < 18) {
+  const isCCR = circuit === 'CCR' || circuit === 'pSCR';
+  if (!isCCR && o2 < 18) {
     return {
       ok: false,
       code: 'HYPOXIC_DECO_GAS',

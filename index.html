@@ -4156,7 +4156,7 @@ function calcEND(depthM, fN2, fHe) {
   const end = narcoticFracAir > 0
     ? (pNarc / narcoticFracAir - altSurfaceP) / BAR_PER_METRE
     : 0;
-  if (end < 0) return null;
+  if (end < 0) return 0;
   return end;
 }
 
@@ -6338,7 +6338,12 @@ function getHeFrac(mix) {
 // ═══════════════════════════════════════════════════════════════════════════════
 // CCR / Rebreather shared physics (v2.30) — used by Bühlmann + VPM paths
 // ═══════════════════════════════════════════════════════════════════════════════
-const PSCR_MIN_PPO2 = ZhlEngineBundle.PSCR_MIN_PPO2;
+const PSCR_MIN_PPO2 = (typeof ZhlEngineBundle !== 'undefined' && ZhlEngineBundle.PSCR_MIN_PPO2 != null)
+  ? ZhlEngineBundle.PSCR_MIN_PPO2 : 0.16;
+function getPscrMinPpo2() {
+  return (typeof ZhlEngineBundle !== 'undefined' && ZhlEngineBundle.PSCR_MIN_PPO2 != null)
+    ? ZhlEngineBundle.PSCR_MIN_PPO2 : PSCR_MIN_PPO2;
+}
 const PSCR_DEFAULT_BYPASS_RATIO = 10; // typical sport pSCR fresh:loop ~1:7–1:10
 
 function getCCRSettingsFromDOM() {
@@ -6899,7 +6904,7 @@ function runPlanner() {
         <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:5px;letter-spacing:1px;"><span>NDL USAGE · ${tableRef}</span><span>${pct}%</span></div>
         <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${bc};"></div></div>
       </div>
-      ${beyondMOD ? `<div class="alert dang" style="margin-top:12px;"><span>⚠</span><div><strong>BEYOND MOD.</strong> ${dDisp} exceeds ${gasLabel} MOD of ${isMetric ? modM+' m' : modFt+' ft'} at 1.4 bar ppO₂. CNS oxygen toxicity risk — use a lower O₂ mix or reduce depth.</div></div>` : ''}
+      ${beyondMOD ? `<div class="alert dang" style="margin-top:12px;"><span>⚠</span><div><strong>BEYOND MOD.</strong> ${dDisp} exceeds ${gasLabel} MOD of ${isMetric ? modM+' m' : modFt+' ft'} at ${modPpo2.toFixed(1)} bar ppO₂. CNS oxygen toxicity risk — use a lower O₂ mix or reduce depth.</div></div>` : ''}
       ${!beyondMOD && !btOk ? '<div class="alert" style="margin-top:12px;background:#FF4433;border-color:#cc2200;color:#fff;font-weight:700;"><span>⚠</span><div><strong>NDL EXCEEDED.</strong> Not permitted for recreational diving. Reduce bottom time.</div></div>' : ''}
       ${!beyondMOD && btOk && pct>=80 ? '<div class="alert" style="margin-top:12px;background:#ffff00;border-color:#cccc00;color:#111;font-weight:700;"><span>⚡</span><div><strong>APPROACHING LIMIT.</strong> 80%+ NDL used. Monitor closely and ascend conservatively.</div></div>' : ''}
       ${!beyondMOD && btOk && pct<80 ? '<div class="alert ok" style="margin-top:12px;"><span>✓</span><div><strong>WITHIN LIMITS.</strong> '+rem+' minutes remaining. Good safety margin.</div></div>' : ''}
@@ -6938,7 +6943,7 @@ function runPlanner() {
         <div class="stat"><div class="stat-val ${rem===0?'r':rem<10?'o':'g'}">${rem}</div><div class="stat-lbl">Remaining</div></div>
         <div class="stat"><div class="stat-val ${ceil>0?'r':'g'}">${ceil>0?Math.ceil(ceil)+' m':'0 m'}</div><div class="stat-lbl">Deco Ceil</div></div>
         <div class="stat"><div class="stat-val ${sat>=100?'r':sat>=85?'o':sat>=70?'y':'g'}">${sat}%</div><div class="stat-lbl">Max Sat</div></div>
-        <div class="stat"><div class="stat-val ${pO2>1.4?'r':'g'}">${pO2.toFixed(1)}</div><div class="stat-lbl">ppO₂</div></div>
+        <div class="stat"><div class="stat-val ${pO2>modPpo2?'r':'g'}">${pO2.toFixed(1)}</div><div class="stat-lbl">ppO₂</div></div>
       </div>
       <div style="margin-top:14px;">
         <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:5px;letter-spacing:1px;"><span>NDL USAGE</span><span>${pct}%</span></div>
@@ -7094,8 +7099,11 @@ function updateTissueViz(tissues, gfH) {
 // DECO SCHEDULE
 // ═══════════════════════════════════════════════
 function toggleDecoCustomO2(selectId, fieldId) {
-  const isCustom = document.getElementById(selectId).value === 'custom';
-  document.getElementById(fieldId).style.display = isCustom ? 'block' : 'none';
+  const selEl = document.getElementById(selectId);
+  const fieldEl = document.getElementById(fieldId);
+  if (!selEl || !fieldEl) return;
+  const isCustom = selEl.value === 'custom';
+  fieldEl.style.display = isCustom ? 'block' : 'none';
 }
 
 // Toggle trimix He/O2 fields for bottom gas card
@@ -7170,7 +7178,7 @@ function validateDomDecoGases() {
     const chk = validateGasFractionsPct(g.o2, g.he, `dg${idx}`);
     if (!chk.ok) errors.push(chk);
     else {
-      const hypo = ZhlEngineBundle.validateHypoxicDecoGas(g.o2, g.he, `dg${idx}`);
+      const hypo = ZhlEngineBundle.validateHypoxicDecoGas(g.o2, g.he, `dg${idx}`, document.getElementById('circuitSelect')?.value || 'OC');
       if (hypo) errors.push(hypo);
       const mixKey = `${g.o2}|${g.he}`;
       if (seenMixes.has(mixKey)) {
@@ -7651,6 +7659,8 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
       const dgPct = getDomDecoGasPct(n);
       if (dgPct) {
         notifyScheduleError(`VPM: invalid deco gas ${n} (${dgPct.o2}%/${dgPct.he}%) — fix mix or set to None.`);
+      } else {
+        notifyScheduleError(`VPM: deco gas ${n} has no valid mix — enter O₂/He or set to None.`);
       }
       continue;
     }
@@ -7873,6 +7883,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
     }
 
     if (seg.type === 'descent') {
+      if (seg.runtime) vpmRtAtBottomEnd = seg.runtime;
       const rtDisp = fmtRT(seg.runtime);
       html += `<tr class="asc-row" data-phase="descent">
         <td><span style="font-size:18px;color:var(--red);">↓</span></td>
@@ -7959,7 +7970,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   const cons = document.getElementById('conservatismSelect')?.value || '0';
   const gfHi = model === 'VPMB_GFS' ? ` · GF Hi ${mGF.high}` : '';
   const cnsDisp = result.totalCNS != null ? result.totalCNS.toFixed(1) : '—';
-  const otuDisp = result.totalOTU ?? '—';
+  const otuDisp = result.totalOTU != null ? Math.round(result.totalOTU) : '—';
   // PrT
   const prtValVPM = (depthM * BAR_PER_METRE) * Math.sqrt(bt);
   const prtDispVPM = prtValVPM.toFixed(1);
@@ -7968,7 +7979,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   const decoZoneDispVPM = formatDecoZoneStart(result.decoZoneStart);
   const vpmFirstStop = result.stops?.length ? Math.max(...result.stops.map(s => s.depth)) : 0;
   const decoStopDispVPM = formatDecoStopDepth(vpmFirstStop);
-  const vpmTtsMin = Math.max(0, rt - bt);
+  const vpmTtsMin = Math.max(0, rt - (vpmRtAtBottomEnd || 0));
   const vpmTtsMMSS = toMMSS(vpmTtsMin);
   const otuFootColorVPM = (result.totalOTU ?? 0) >= 300 ? 'var(--red)' : (result.totalOTU ?? 0) >= 200 ? 'var(--orange)' : (result.totalOTU ?? 0) >= 100 ? 'var(--yellow)' : 'var(--green)';
   tbody.innerHTML += buildPlanInfoRowHtml({
@@ -8962,7 +8973,7 @@ function buildZhlScheduleParamsFromDom(rawD, depthM, bt) {
     if (!dgf) {
       throw new Error(`Invalid deco gas ${idx}: enter valid O₂ and He percentages.`);
     }
-    const hypo = ZhlEngineBundle.validateHypoxicDecoGas(dgf.fO2 * 100, dgf.fHe * 100, `dg${idx}`);
+    const hypo = ZhlEngineBundle.validateHypoxicDecoGas(dgf.fO2 * 100, dgf.fHe * 100, `dg${idx}`, _ccrMerged.circuit);
     if (hypo) throw new Error(hypo.message);
     const fN2 = dgf.fN2;
     const fHe = dgf.fHe || 0;
@@ -9067,7 +9078,7 @@ function runDecoSchedule() {
       return;
     }
   }
-  if (!window._zhlHeadless && !_contingencyRunning && isCcrGasUiMode()) {
+  if (!window._zhlHeadless && isCcrGasUiMode()) {
     const gasVal = validateCcrGasConfiguration();
     if (!gasVal.ok) {
       updateCcrGasValidation();
@@ -9089,7 +9100,7 @@ function runDecoSchedule() {
   const depthM = units === 'metric' ? rawD : rawD / 3.28084;
   const bt     = parseInt(document.getElementById('decoBT').value) || 30;
   const _uiCcr = getCCRSettingsFromDOM();
-  if (!window._zhlHeadless && !_contingencyRunning && isRebreatherCircuit(_uiCcr.circuit)) {
+  if (!window._zhlHeadless && isRebreatherCircuit(_uiCcr.circuit)) {
     const bot = getDomBottomGasPct();
     const ccrVal = validateCcrCalculationInputs(
       [{ depth: depthM, time: bt, o2: bot.o2, he: bot.he }],
@@ -9835,6 +9846,7 @@ function runDecoSchedule() {
   if (_zhlPrevGF) { mGF.low = _zhlPrevGF.low; mGF.high = _zhlPrevGF.high; }
   } catch(err) {
     if (_zhlPrevGF) { mGF.low = _zhlPrevGF.low; mGF.high = _zhlPrevGF.high; }
+    if (_contingencyRunning) throw err;
     console.error('[Deco] Error:', err);
     document.getElementById('decoSummary').innerHTML = `<div class="alert dang"><span>⚠</span><div><strong>Error:</strong> ${err.message}</div></div>`;
     document.getElementById('decoResult').style.display = 'block';
@@ -10165,7 +10177,13 @@ const ZHLEngine = (() => {
     if (s._preTissues && s._preTissues.length) return s;
     const repSnap = peekZhlRepState();
     if (repSnap) {
-      return { ...s, _preTissues: repSnap.tissues, _surfaceInterval: repSnap.surfaceIntervalMin || 0 };
+      return {
+        ...s,
+        _preTissues: repSnap.tissues,
+        _surfaceInterval: repSnap.surfaceIntervalMin || 0,
+        totalCNSCarry: repSnap.totalCNS,
+        totalOTUCarry: repSnap.totalOTU,
+      };
     }
     return s;
   }
@@ -10180,8 +10198,8 @@ const ZHLEngine = (() => {
       result.plan, s, fO2bot, fHeBot, altSurfaceP || 1.01325, BAR_PER_METRE || 0.1
     );
     const _pdCarry = window._priorDiveCarry;
-    const otuCarry = _pdCarry ? (_pdCarry.otuCarry || 0) : 0;
-    const cnsCarry = _pdCarry ? (_pdCarry.cnsCarry || 0) : 0;
+    const otuCarry = _pdCarry ? (_pdCarry.otuCarry || 0) : (s.totalOTUCarry != null ? s.totalOTUCarry : 0);
+    const cnsCarry = _pdCarry ? (_pdCarry.cnsCarry || 0) : (s.totalCNSCarry != null ? s.totalCNSCarry : 0);
     return Object.assign({}, result, {
       totalOTU: Math.round(exposure.totalOTU + otuCarry),
       totalCNS: parseFloat((exposure.totalCNS + cnsCarry).toFixed(1)),
@@ -11074,6 +11092,8 @@ function drawPlannerProfile() {
   if (wrap) wrap.style.display = 'block';
 
   const dRate = 18, aRate = 9; // default rates m/min
+  const duLbl = units === 'metric' ? 'm' : 'ft';
+  const fmtDep = (d) => units === 'metric' ? d + 'm' : Math.round(d * 3.28084) + 'ft';
   const descentT = depthVal / dRate;
   const ascentT  = depthVal / aRate;
   const safetyT  = 3;
@@ -11084,13 +11104,13 @@ function drawPlannerProfile() {
     { t: t, depth: 0, type: 'surface' },
   ];
   t += descentT;
-  wps.push({ t, depth: depthVal, type: 'bottom', dot: true, label: depthVal + 'm' });
+  wps.push({ t, depth: depthVal, type: 'bottom', dot: true, label: fmtDep(depthVal) });
   t += btVal;
   wps.push({ t, depth: depthVal, type: 'bottom' });
   t += ascentT * (depthVal - 5) / depthVal;
   wps.push({ t, depth: 5, type: 'safety' });
   t += safetyT;
-  wps.push({ t, depth: 5, type: 'safety', dot: true, label: '5m' });
+  wps.push({ t, depth: 5, type: 'safety', dot: true, label: fmtDep(5) });
   t += ascentT * 5 / depthVal;
   wps.push({ t, depth: 0, type: 'surface' });
 
@@ -11136,9 +11156,12 @@ function drawDecoProfile() {
     return parseFloat(s) || 0;
   }
 
+  const duLbl = units === 'metric' ? 'm' : 'ft';
+  const fmtDepLbl = (d) => units === 'metric' ? d + 'm' : Math.round(d * 3.28084) + 'ft';
+
   const wps = [{ t: 0, depth: 0, type: 'surface' }];
   let t = descentT;
-  wps.push({ t, depth: depthVal, type: 'bottom', dot: true, label: depthVal + 'm' });
+  wps.push({ t, depth: depthVal, type: 'bottom', dot: true, label: fmtDepLbl(depthVal) });
   // btVal is run time (descent included) — bottom ends at btVal, not descentT+btVal
   t = btVal;
   wps.push({ t, depth: depthVal, type: 'bottom' });
@@ -11167,7 +11190,7 @@ function drawDecoProfile() {
       wps.push({ t: run, depth, type: phase, gas,
         dot: true,
         num: stopNum,
-        label: showLabel ? depth + 'm ' + stopTime : null,
+        label: showLabel ? fmtDepLbl(depth) + ' ' + stopTime : null,
         ppo2: ppo2 > 0 ? ppo2 : null,
       });
     }
@@ -11902,8 +11925,12 @@ function updatePriorDiveCarry() {
   const resultEl = document.getElementById('priorDiveCarryResult');
 
   if (totalMinutes <= 0 || (priorOTU <= 0 && priorCNS <= 0)) {
+    if (window._priorDiveCarry && resultEl) {
+      resultEl.innerHTML = '<span style="color:var(--orange);font-size:11px;">Prior dive carry cleared — re-enter surface interval and exposure values.</span>';
+    } else if (resultEl) {
+      resultEl.textContent = '';
+    }
     window._priorDiveCarry = null;
-    if (resultEl) resultEl.textContent = '';
     return;
   }
 
@@ -12460,20 +12487,19 @@ function attachDiveProfileInteraction(canvasId) {
     crossH.style.display   = 'none';
   }
 
-  // Remove old listeners by cloning
-  const newOverlay = overlay.cloneNode(true);
-  overlay.parentNode.replaceChild(newOverlay, overlay);
+  if (overlay.dataset.lspProfileBound === '1') return;
+  overlay.dataset.lspProfileBound = '1';
 
-  newOverlay.addEventListener('mousemove', e => showTooltip(e.clientX, e.clientY));
-  newOverlay.addEventListener('mouseleave', hideTooltip);
-  newOverlay.addEventListener('touchmove',  e => {
+  overlay.addEventListener('mousemove', e => showTooltip(e.clientX, e.clientY));
+  overlay.addEventListener('mouseleave', hideTooltip);
+  overlay.addEventListener('touchmove',  e => {
     e.preventDefault();
     if (e.touches.length === 1) showTooltip(e.touches[0].clientX, e.touches[0].clientY);
   }, { passive: false });
-  newOverlay.addEventListener('touchend', hideTooltip);
+  overlay.addEventListener('touchend', hideTooltip);
 
   // ── Scroll/wheel zoom ──
-  newOverlay.addEventListener('wheel', e => {
+  overlay.addEventListener('wheel', e => {
     e.preventDefault();
     const data = _graphOpts[canvasId];
     if (!data) return;
@@ -12507,7 +12533,7 @@ function attachDiveProfileInteraction(canvasId) {
   }, { passive: false });
 
   // ── Double-click: reset zoom ──
-  newOverlay.addEventListener('dblclick', e => {
+  overlay.addEventListener('dblclick', e => {
     e.preventDefault();
     _graphZoomReset(canvasId);
     const data = _graphOpts[canvasId];
@@ -12516,12 +12542,12 @@ function attachDiveProfileInteraction(canvasId) {
 
   // ── Drag to pan ──
   let _dragStart = null;
-  newOverlay.addEventListener('mousedown', e => {
+  overlay.addEventListener('mousedown', e => {
     if (e.button !== 0) return;
     _dragStart = { x: e.clientX, tMin: (_graphZoom[canvasId]?.tMin ?? 0), tMax: (_graphZoom[canvasId]?.tMax ?? (_graphOpts[canvasId]?.opts?.totalTime || 60)) };
-    newOverlay.style.cursor = 'grabbing';
+    overlay.style.cursor = 'grabbing';
   });
-  newOverlay.addEventListener('mousemove', e => {
+  overlay.addEventListener('mousemove', e => {
     if (!_dragStart) return;
     const data = _graphOpts[canvasId];
     if (!data) return;
@@ -12542,13 +12568,13 @@ function attachDiveProfileInteraction(canvasId) {
     _graphZoomApply(canvasId, { tMin: newTMin, tMax: newTMax, dMin: zoom.dMin, dMax: zoom.dMax });
     drawDiveProfile(canvasId, data.waypoints, data.opts);
   });
-  newOverlay.addEventListener('mouseup', () => { _dragStart = null; newOverlay.style.cursor = 'crosshair'; });
-  newOverlay.addEventListener('mouseleave', () => { _dragStart = null; newOverlay.style.cursor = 'crosshair'; });
+  overlay.addEventListener('mouseup', () => { _dragStart = null; overlay.style.cursor = 'crosshair'; });
+  overlay.addEventListener('mouseleave', () => { _dragStart = null; overlay.style.cursor = 'crosshair'; });
 
   // ── Pinch to zoom (touch) ──
   let _pinchDist = null;
   let _pinchZoomStart = null;
-  newOverlay.addEventListener('touchstart', e => {
+  overlay.addEventListener('touchstart', e => {
     if (e.touches.length === 2) {
       const dx = e.touches[0].clientX - e.touches[1].clientX;
       const dy = e.touches[0].clientY - e.touches[1].clientY;
@@ -12556,7 +12582,7 @@ function attachDiveProfileInteraction(canvasId) {
       _pinchZoomStart = { ...(_graphZoom[canvasId] || { tMin: 0, tMax: (_graphOpts[canvasId]?.opts?.totalTime || 60), dMin: 0, dMax: ((_graphOpts[canvasId]?.opts?.maxDepth || 10) * 1.15) }) };
     }
   }, { passive: true });
-  newOverlay.addEventListener('touchmove', e => {
+  overlay.addEventListener('touchmove', e => {
     if (e.touches.length === 2 && _pinchDist && _pinchZoomStart) {
       e.preventDefault();
       const dx = e.touches[0].clientX - e.touches[1].clientX;
@@ -12579,7 +12605,7 @@ function attachDiveProfileInteraction(canvasId) {
       drawDiveProfile(canvasId, data.waypoints, data.opts);
     }
   }, { passive: false });
-  newOverlay.addEventListener('touchend', e => {
+  overlay.addEventListener('touchend', e => {
     if (e.touches.length < 2) { _pinchDist = null; _pinchZoomStart = null; }
   });
 }
@@ -12923,6 +12949,7 @@ var appSettings = {
       if (el && typeof updateSliderFill === 'function') updateSliderFill(el);
     });
     calcSurfInt?.();
+    if (values.algorithmSelect) setDecoAlgorithm(values.algorithmSelect, true);
   },
 
   _restoreFields: function(values) {
@@ -12992,7 +13019,7 @@ var appSettings = {
       });
     }
     this._syncUiAfterRestore(values);
-    this._restoreInProgress = false;
+    setTimeout(() => { this._restoreInProgress = false; }, 150);
     
     if (values['__units__']) {
       setUnits(values['__units__'], { relabelOnly: true });
@@ -13424,7 +13451,10 @@ function snapshotPresetValues() {
   appSettings.getExistingFields().forEach(id => {
     if (id === '__algo__') return;
     const el = document.getElementById(id);
-    if (el) values[id] = el.value || '';
+    if (el) {
+      if (el.type === 'checkbox') values[id] = el.checked;
+      else values[id] = el.value || '';
+    }
   });
   return values;
 }

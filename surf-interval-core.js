@@ -35,12 +35,41 @@ function calcSurfInt(prefix) {
   const botFracs = typeof getBottomGasFractions === 'function' ? getBottomGasFractions() : null;
   const fN2 = botFracs ? botFracs.fN2 : FN2_AIR;
 
-  // ── Simulate Dive 1 on air: descent then bottom, then instant surface ──
+  // ── Simulate Dive 1: descent, bottom, then deco ascent to surface ──
   let tissues = initTissues();
   const descTime = d1 / descentRate;
   tissues = saturateLinear(tissues, 0, d1, descTime, fN2, 0);
   const btAtDepth = Math.max(0, bt1 - descTime);
   tissues = saturate(tissues, d1, btAtDepth, fN2, 0);
+  const ceilingFn = (typeof ZhlEngineBundle !== 'undefined' && ZhlEngineBundle.ceiling)
+    ? (t, gf) => ZhlEngineBundle.ceiling(t, gf) : null;
+  if (ceilingFn) {
+    const decoStep = 3;
+    const decoAscentRate = 9;
+    const lastStop = 3;
+    let depth = d1;
+    for (let guard = 0; guard < 200 && depth > 0; guard++) {
+      const ceil = ceilingFn(tissues, gfLow);
+      if (ceil <= 0) {
+        const ascentT = depth / decoAscentRate;
+        tissues = saturateLinear(tissues, depth, 0, ascentT, fN2, 0);
+        break;
+      }
+      const stopDepth = Math.max(lastStop, Math.ceil(ceil / decoStep) * decoStep);
+      if (depth > stopDepth) {
+        const ascentT = (depth - stopDepth) / decoAscentRate;
+        tissues = saturateLinear(tissues, depth, stopDepth, ascentT, fN2, 0);
+        depth = stopDepth;
+      }
+      tissues = saturate(tissues, depth, 1, fN2, 0);
+      if (depth <= lastStop) {
+        const ascentT = depth / decoAscentRate;
+        tissues = saturateLinear(tissues, depth, 0, ascentT, fN2, 0);
+        break;
+      }
+      depth = Math.max(0, depth - decoStep);
+    }
+  }
 
   // ── Tolerated tissue tension at the SURFACE, using GF-Lo ──
   // The surface interval must be long enough that the diver can safely
@@ -182,7 +211,7 @@ function renderSurfIntPanel(containerId, prefix, preDepthM, preBtMin) {
           </div>
           <div style="display:flex;align-items:center;gap:6px;margin-bottom:14px;">
             <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">GF Lo:</span>
-            <select id="${P}GfLow" onchange="calcSurfInt('${P}')" style="padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;">
+            <select id="${P}GfLow" onchange="calcSurfInt('${P}');if(typeof appSettings!=='undefined')appSettings.save(false)" style="padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;">
               <option value="20">20</option><option value="25">25</option><option value="30" selected>30</option>
               <option value="35">35</option><option value="40">40</option><option value="45">45</option><option value="50">50</option>
             </select>

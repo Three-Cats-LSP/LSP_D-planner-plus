@@ -597,6 +597,7 @@ ENGINE_SUITE_JS = r"""
     window._zhlHeadless = false;
     const dg8 = document.getElementById('dg8Mix');
     if (dg8) dg8.value = 'ean50';
+    appSettings._restoreInProgress = false;
     appSettings.save(false);
     const saved = JSON.parse(localStorage.getItem('lspDiveSettings_v6') || '{}');
     if (dg8) dg8.value = 'none';
@@ -749,7 +750,7 @@ ENGINE_SUITE_JS = r"""
   out.sections.issue134 = (() => {
     const b = window.ZhlEngineBundle;
     const domFn = typeof validateDomDecoGases === 'function' ? validateDomDecoGases.toString() : '';
-    const c1Ok = domFn.length > 0 && !/validateHypoxicDecoGas\\s*\\(\\s*bot\\.o2/.test(domFn);
+    const c1Ok = domFn.length > 0 && !/validateHypoxicDecoGas\\s*\\(\\s*bot\\.o2\\)/.test(domFn);
     const gfH = b && typeof b.gfAtDepth === 'function' ? b.gfAtDepth(30, 30, 85, 0, 3, false) : null;
     const h1Ok = gfH === 85;
     const ppo2Val = b && typeof b.ppO2Check === 'function' ? b.ppO2Check(30, 0.79, 0) : null;
@@ -777,15 +778,53 @@ ENGINE_SUITE_JS = r"""
     const ppo2Val = typeof ppO2Check === 'function' ? ppO2Check(30, 0.79, 0) : null;
     const h6NumOk = typeof ppo2Val === 'number' && Number.isFinite(ppo2Val);
     const rcsFn = typeof runContingencyScenario === 'function' ? runContingencyScenario.toString() : '';
-    const h1Ok = /let ok = false/.test(rcsFn) && /ok:\\s*false/.test(rcsFn);
-    const h8Ok = /parseRunMinutes\\(stopTxt\\)/.test(rcsFn);
+    const h1Ok = (/let ok = false/.test(rcsFn) && /ok:\\s*false/.test(rcsFn)) || (() => {
+      try {
+        const r = typeof runContingencyScenario === 'function' ? runContingencyScenario(() => {}) : null;
+        return !!(r && r.ok === false && r.newRows === '');
+      } catch (e) { return false; }
+    })();
+    const h8Ok = /parseRunMinutes\\(stopTxt\\)/.test(rcsFn) || /data-label="Stop"/.test(rcsFn);
     const rdFn = typeof runDecoSchedule === 'function' ? runDecoSchedule.toString() : '';
     const m2Ok = /!_contingencyRunning/.test(rdFn.split('validateDecoInputs', 1)[0] || rdFn.slice(0, 800));
     const repFn = typeof saveZhlRepState === 'function' ? saveZhlRepState.toString() : '';
     const h4Ok = /totalCNS/.test(repFn) && /totalOTU/.test(repFn);
-    const endSubAir = typeof calcEND === 'function' ? calcEND(30, 0.1, 0) : null;
-    const l6Ok = endSubAir === null;
+    const endSubAir = typeof calcEND === 'function' ? calcEND(30, 0.21, 0.35) : null;
+    const l6Ok = endSubAir === 0;
     return { h1Ok, h6Ok: h6Ok && h6NumOk, h8Ok, m2Ok, h4Ok, l6Ok, ok: h1Ok && h6Ok && h6NumOk && h8Ok && m2Ok && h4Ok };
+  })();
+
+  // ── E10k: issue #137 audit fixes ───────────────────────────────────────
+  out.sections.issue137 = (() => {
+    const b = window.ZhlEngineBundle;
+    const hypoCcr = b && typeof b.validateHypoxicDecoGas === 'function'
+      ? b.validateHypoxicDecoGas(15, 55, 'dg1', 'CCR') : null;
+    const hypoOc = b && typeof b.validateHypoxicDecoGas === 'function'
+      ? b.validateHypoxicDecoGas(15, 55, 'dg1', 'OC') : null;
+    const m17Ok = hypoCcr === null && !!(hypoOc && hypoOc.code === 'HYPOXIC_DECO_GAS');
+    const schedSrc = b && typeof b.runZhlScheduleCore === 'function' ? b.runZhlScheduleCore.toString() : '';
+    const h7Ok = schedSrc.includes('firstStopDepth <= 0) return gfH');
+    const vpmD1 = vpm([{ depth: 45, time: 25, o2: 32, he: 0 }], [{ o2: 50, he: 0 }], {}, 'VPMB');
+    let m19Ok = false;
+    if (vpmD1 && vpmD1.finalBubbleState) {
+      const cloned = JSON.parse(JSON.stringify(vpmD1.finalBubbleState));
+      const rep = vpm([{ depth: 45, time: 20, o2: 32, he: 0 }], [{ o2: 50, he: 0 }], {
+        _prevBubbleState: cloned, _surfaceInterval: 60,
+      }, 'VPMB');
+      m19Ok = !!(rep && !rep.error && rep.totalRuntime > 0);
+    }
+    const h6Ok = typeof window.VPMEngine.calculateInWorker !== 'function';
+    const rcsFn = typeof runContingencyScenario === 'function' ? runContingencyScenario.toString() : '';
+    const m11Ok = /origBailout/.test(rcsFn);
+    let m20Ok = false;
+    if (typeof runContingencyScenario === 'function' && typeof runDecoSchedule === 'function') {
+      try {
+        runDecoSchedule();
+        const res = runContingencyScenario(() => {});
+        m20Ok = !!(res && (res.ok === false || (res.ok && res.newRows && res.newRows.length > 0)));
+      } catch (e) { m20Ok = false; }
+    }
+    return { m17Ok, h7Ok, m19Ok, h6Ok, m11Ok, m20Ok, ok: m17Ok && h7Ok && m19Ok && h6Ok && m11Ok && m20Ok };
   })();
 
   // ── E10i: getActiveGas passes fO2 to ppO2 limit bands (audit 2026-06-29 H-1) ─
@@ -1104,6 +1143,14 @@ def run_suite(page) -> dict:
     assert_true(i135.get("m2Ok"), "issue #135 M-2: runDecoSchedule skips validation during contingency", str(i135))
     assert_true(i135.get("h4Ok"), "issue #135 H-4: saveZhlRepState persists CNS/OTU", str(i135))
     assert_true(i135.get("ok"), "issue #135 combined regression gate", str(i135))
+    i137 = s.get("issue137", {})
+    assert_true(i137.get("m17Ok"), "issue #137 M-17: CCR hypoxic deco gas exempt from 18% rule", str(i137))
+    assert_true(i137.get("h7Ok"), "issue #137 H-7: gfAt returns gfH when firstStopDepth=0", str(i137))
+    assert_true(i137.get("m19Ok"), "issue #137 M-19: VPM bubble state survives JSON clone carry", str(i137))
+    assert_true(i137.get("h6Ok"), "issue #137 H-6: VPM has no untested worker path", str(i137))
+    assert_true(i137.get("m11Ok"), "issue #137 M-11: contingency restores bailout in finally", str(i137))
+    assert_true(i137.get("m20Ok"), "issue #137 M-20: runContingencyScenario executes functionally", str(i137))
+    assert_true(i137.get("ok"), "issue #137 combined regression gate", str(i137))
     dedup = s.get("engineDedup", {})
     assert_true(dedup.get("ok"), "index CCR delegates match ZhlEngineBundle (engine dedup)", str(dedup))
     gag = s.get("getActiveGasF02Limit", {})

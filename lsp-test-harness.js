@@ -110,7 +110,12 @@ var LSPTestHarness = (function () {
     }
 
     if (!iframe.src || iframe.src === 'about:blank') {
-      iframe.src = 'index.html?regression=1&massiveSuite=1&ts=' + Date.now();
+      var basePath = (function() {
+        var p = window.location.pathname || '/';
+        var i = p.lastIndexOf('/');
+        return i >= 0 ? p.slice(0, i + 1) : '/';
+      })();
+      iframe.src = basePath + 'index.html?regression=1&massiveSuite=1&ts=' + Date.now();
     }
     setTimeout(check, 100);
   }
@@ -131,7 +136,12 @@ var LSPTestHarness = (function () {
   }
 
   function reloadApp(iframe, qs) {
-    iframe.src = 'index.html?' + (qs || 'regression=1&massiveSuite=1') + '&ts=' + Date.now();
+    var basePath = (function() {
+      var p = window.location.pathname || '/';
+      var i = p.lastIndexOf('/');
+      return i >= 0 ? p.slice(0, i + 1) : '/';
+    })();
+    iframe.src = basePath + 'index.html?' + (qs || 'regression=1&massiveSuite=1') + '&ts=' + Date.now();
   }
 
   return {

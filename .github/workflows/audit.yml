@@ -59,7 +59,7 @@ jobs:
 
       - name: Validate audit coverage registry
         run: |
-          python -m unittest tools/test_audit_coverage.py
+          python tools/test_audit_coverage.py
           python tools/audit_coverage.py --check
 
       - name: Run audit.py
