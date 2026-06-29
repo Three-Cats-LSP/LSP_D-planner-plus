@@ -7243,6 +7243,30 @@ if "issue138" in open(os.path.join(_repo_root138, "dev", "engine_regression.py")
 else:
     fail("issue #138: engine_regression missing issue138 section")
 
+# ── Issue #139: Audit #133 v2.53.04 — 3 new findings (re-verify #138) ──
+if 'id="ccrBottomSetpoint"' in _index138 and "appSettings.save(false)" in _index138.split('id="ccrBottomSetpoint"', 1)[-1][:200]:
+    ok("issue #139 L-1: ccrBottomSetpoint persists on input")
+else:
+    fail("issue #139 L-1: ccrBottomSetpoint missing appSettings.save on input")
+if 'id="ccrDecoSetpoint"' in _index138 and "appSettings.save(false)" in _index138.split('id="ccrDecoSetpoint"', 1)[-1][:200]:
+    ok("issue #139 L-1: ccrDecoSetpoint persists on input")
+else:
+    fail("issue #139 L-1: ccrDecoSetpoint missing appSettings.save on input")
+_safety138 = _index138.split("s.type === 'safety'", 1)[-1][:800] if "s.type === 'safety'" in _index138 else ""
+if "pO2Val.toFixed(2)" in _safety138:
+    ok("issue #139 L-2: safety stop row formats ppO₂ to 2 decimals")
+else:
+    fail("issue #139 L-2: safety stop row still renders raw ppO₂")
+_gf138 = _index138.split("function setCustomGF", 1)[-1][:1200] if "function setCustomGF" in _index138 else ""
+if "low > high" in _gf138 and "lowInput.value = String(low)" in _gf138:
+    ok("issue #139 L-3: setCustomGF syncs DOM after GF swap")
+else:
+    fail("issue #139 L-3: setCustomGF swap does not update input fields")
+if "issue139" in open(os.path.join(_repo_root138, "dev", "engine_regression.py"), encoding="utf-8").read():
+    ok("issue #139: engine_regression covers #139")
+else:
+    fail("issue #139: engine_regression missing issue139 section")
+
 print("=" * 60)
 
 if FAIL:

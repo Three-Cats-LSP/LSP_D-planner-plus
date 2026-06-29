@@ -842,6 +842,20 @@ ENGINE_SUITE_JS = r"""
     return { h7Ok, h2Ok, m1Ok, h8Ok, l9Ok, ok: h7Ok && h2Ok && m1Ok && h8Ok && l9Ok };
   })();
 
+  // ── E10m: issue #139 audit fixes (Audit #133) ────────────────────────────
+  out.sections.issue139 = (() => {
+    const bot = document.getElementById('ccrBottomSetpoint');
+    const dec = document.getElementById('ccrDecoSetpoint');
+    const l1Ok = !!(bot && bot.getAttribute('oninput') && bot.getAttribute('oninput').includes('appSettings.save(false)')
+      && dec && dec.getAttribute('oninput') && dec.getAttribute('oninput').includes('appSettings.save(false)'));
+    const rdFn = typeof runDecoSchedule === 'function' ? runDecoSchedule.toString() : '';
+    const safetySlice = rdFn.split("s.type === 'safety'")[1] || '';
+    const l2Ok = safetySlice.includes('pO2Val.toFixed(2)');
+    const gfFn = typeof setCustomGF === 'function' ? setCustomGF.toString() : '';
+    const l3Ok = gfFn.includes('lowInput.value = String(low)') && gfFn.includes('low > high');
+    return { l1Ok, l2Ok, l3Ok, ok: l1Ok && l2Ok && l3Ok };
+  })();
+
   // ── E10i: getActiveGas passes fO2 to ppO2 limit bands (audit 2026-06-29 H-1) ─
   out.sections.getActiveGasF02Limit = (() => {
     if (typeof ZhlEngineBundle === 'undefined' || typeof ZhlEngineBundle.getActiveGas !== 'function') return { ok: false };
@@ -1173,6 +1187,11 @@ def run_suite(page) -> dict:
     assert_true(i138.get("h8Ok"), "issue #138 H-8: VPM uses btAtDepthMin", str(i138))
     assert_true(i138.get("l9Ok"), "issue #138 L-9: n2FracFromPercentages rejects fN2 > 1", str(i138))
     assert_true(i138.get("ok"), "issue #138 combined regression gate", str(i138))
+    i139 = s.get("issue139", {})
+    assert_true(i139.get("l1Ok"), "issue #139 L-1: CCR setpoint inputs persist on change", str(i139))
+    assert_true(i139.get("l2Ok"), "issue #139 L-2: safety stop row formats ppO₂", str(i139))
+    assert_true(i139.get("l3Ok"), "issue #139 L-3: setCustomGF syncs DOM after GF swap", str(i139))
+    assert_true(i139.get("ok"), "issue #139 combined regression gate", str(i139))
     dedup = s.get("engineDedup", {})
     assert_true(dedup.get("ok"), "index CCR delegates match ZhlEngineBundle (engine dedup)", str(dedup))
     gag = s.get("getActiveGasF02Limit", {})

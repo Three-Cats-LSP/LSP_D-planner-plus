@@ -2397,11 +2397,11 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 <div class="adv-row" id="ccrSpBottomRow" style="display:none;">
 <label>Active ppO₂ / SP bottom (bar) <span class="tip-icon" onclick="showTip('Active ppO₂','Constant partial pressure of O₂ maintained on-loop during the bottom phase. Also used for diluent MOD checks on CCR.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
-<input id="ccrBottomSetpoint" max="1.6" min="0.7" oninput="updateGasMODDisplays();updateCcrGasValidation()" step="0.1" type="number" value="1.2"/>
+<input id="ccrBottomSetpoint" max="1.6" min="0.7" oninput="updateGasMODDisplays();updateCcrGasValidation();appSettings.save(false)" step="0.1" type="number" value="1.2"/>
 </div>
 <div class="adv-row" id="ccrSpDecoRow" style="display:none;">
 <label>Decompression ppO₂ / SP deco (bar) <span class="tip-icon" onclick="showTip('Decompression ppO₂','Setpoint used on-loop during decompression stops and ascent after the bottom phase.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
-<input id="ccrDecoSetpoint" max="1.6" min="0.7" oninput="updateGasMODDisplays();updateCcrGasValidation()" step="0.1" type="number" value="1.3"/>
+<input id="ccrDecoSetpoint" max="1.6" min="0.7" oninput="updateGasMODDisplays();updateCcrGasValidation();appSettings.save(false)" step="0.1" type="number" value="1.3"/>
 </div>
 <div class="adv-row" id="ccrLoopVolRow">
 <label>Loop volume (L) <span class="tip-icon" onclick="showTip('Loop Volume','Internal loop volume in litres. Used for pSCR inspired-gas calculations and loop O₂ fraction modelling.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
@@ -5070,9 +5070,12 @@ function setCustomGF(commit) {
       const tmp = low;
       low = high;
       high = tmp;
+      if (lowInput) lowInput.value = String(low);
+      if (highInput) highInput.value = String(high);
+    } else {
+      if (lowInput  && lowVal  !== '') lowInput.value  = low;
+      if (highInput && highVal !== '') highInput.value = high;
     }
-    if (lowInput  && lowVal  !== '') lowInput.value  = low;
-    if (highInput && highVal !== '') highInput.value = high;
   } else {
     // mid-type: only update if value looks complete (>= 5)
     if (low  < 5)  low  = mGF.low;  // don't apply partial
@@ -9642,7 +9645,7 @@ function runDecoSchedule() {
         <td data-label="Stop" style="color:var(--green);">${fmtMM(stepDur)}</td>
         <td data-label="Mix" style="color:${gasColor};">${(s.gas || '—').toUpperCase()}</td>
         <td data-label="Run">${rtDisp}</td>
-        <td data-label="PPO2" style="color:var(--muted);">${s.pO2||'—'}</td>
+        <td data-label="PPO2" style="color:var(--muted);">${Number.isFinite(pO2Val) ? pO2Val.toFixed(2) : '—'}</td>
         <td data-label="EAD" style="color:var(--muted);font-size:11px;">${fmtEAD(s.depth, s.fN2)}</td>
       </tr>`;
     // ── ASCENT ROW ──

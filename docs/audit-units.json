@@ -192,6 +192,14 @@
       "status": "CLOSED",
       "issue": "GitHub #138 / Audit #132 (40 findings)",
       "summary": "Fixed in fcfb6c4 (v2.53.04); gated in audit.py and engine_regression issue138"
+    },
+    {
+      "id": "ISSUE-139-ROLLUP",
+      "unit_id": "TOOL-AUDIT",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "issue": "GitHub #139 / Audit #133 (3 new findings; #138 re-verified)",
+      "summary": "All 3L fixed; #138 40/40 re-verified on 1271d1a; gated in audit.py and engine_regression issue139"
     }
   ],
   "units": [
@@ -283,7 +291,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MARKUP-PLANNER"
       },
-      "fingerprint": "4e705a5e7721ac041b88f3a3995cfb0d8d098e1cd0dea9c7c8f8e02f7b655ff8",
+      "fingerprint": "e9d5263d7eece15f9ad6ead913e86642c8bfff8db87d82087f6c8a3f61219b31",
       "last_read_fingerprint": null
     },
     {
@@ -370,14 +378,16 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ALGORITHM-SETTINGS"
       },
-      "fingerprint": "d55151e1ffc84bb6526e51966932fd29558891d5e03d575ff3206dc309b0dd6d",
-      "last_read_fingerprint": "d55151e1ffc84bb6526e51966932fd29558891d5e03d575ff3206dc309b0dd6d",
-      "audit_issue": 139
+      "fingerprint": "ddad5f3ba7c965543ff16d428cd818d3ef074d6232a0a771b5b945d7fe71c71b",
+      "last_read_fingerprint": null,
+      "audit_issue": 139,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "UI-UNIT-HELPERS",
@@ -589,13 +599,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
-      "fingerprint": "d299bf21ac70661ed0cd6d08bfe1a91777dc89148db5a8dba68aac92b006669a",
-      "last_read_fingerprint": "d299bf21ac70661ed0cd6d08bfe1a91777dc89148db5a8dba68aac92b006669a",
+      "fingerprint": "b33dde84b09fd1f08f23e0785c36268ca7ceedceedf25341e9cc2397357c270d",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 139
@@ -1302,7 +1312,7 @@
       "evidence": [],
       "issue": "GitHub #133\u2013#138 audit regression sections",
       "regression_cases": [],
-      "fingerprint": "ff4a794c91fa2c602d2702fa67c236b80711bbd63c3aec69951bedcec5a74910",
+      "fingerprint": "f86492cc71fd1a7d870d9e5e3e7aeda4f9714054b34ddd3d4f0e6a6349faa267",
       "last_read_fingerprint": null
     },
     {
@@ -1645,7 +1655,7 @@
       "evidence": [],
       "issue": "GitHub #133\u2013#138 structured environment audit gates",
       "regression_cases": [],
-      "fingerprint": "7b08acee11d95c296deceb9dd430fb9894ce182bbfdde09e5b9332bcc19d0872",
+      "fingerprint": "e9a239d603944603459765d2347736f87521090724adf73510286bd2abcaac81",
       "last_read_fingerprint": null
     },
     {
