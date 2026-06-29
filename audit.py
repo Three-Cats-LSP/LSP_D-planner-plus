@@ -10,7 +10,7 @@ Every check added here must correspond to a real bug or regression
 that was found in production. No theoretical checks.
 """
 
-import re, sys, os, json, ast
+import re, sys, os, json, ast, subprocess
 from collections import Counter
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -6281,6 +6281,30 @@ for _ui_script in _UI_CORE_FILES:
         ok(f"index.html loads runtime UI core {_ui_script}")
     else:
         fail(f"index.html missing script src for {_ui_script}")
+
+_extract_tool = open(os.path.join(os.path.dirname(__file__), "tools", "extract_ui_cores.py"), encoding="utf-8").read()
+if "LSP-EXTRACT-BEGIN" in _extract_tool and "BEGIN_JS_RE" in _extract_tool and "extract_lines" not in _extract_tool:
+    ok("extract_ui_cores.py uses marker-based contract (no line-range extract_lines)")
+else:
+    fail("extract_ui_cores.py still uses line-range extraction or missing marker contract")
+for _blk in ("surf-interval-core", "gas-table-core", "gas-plan-core", "export-core", "contingency-core"):
+    if f"LSP-EXTRACT-BEGIN:{_blk}" in html and f"LSP-EXTRACT-END:{_blk}" in html:
+        ok(f"index.html has LSP-EXTRACT marker pair for {_blk}")
+    else:
+        fail(f"index.html missing LSP-EXTRACT marker pair for {_blk}")
+_extract_verify = subprocess.run(
+    [sys.executable, os.path.join(os.path.dirname(__file__), "tools", "extract_ui_cores.py")],
+    capture_output=True,
+    text=True,
+    cwd=os.path.dirname(__file__),
+)
+if _extract_verify.returncode == 0:
+    ok("tools/extract_ui_cores.py verify passes (extracted layout valid)")
+else:
+    fail(
+        "tools/extract_ui_cores.py verify failed: "
+        + (_extract_verify.stderr or _extract_verify.stdout or "unknown").strip()[:240]
+    )
 
 _build_zhl = open(os.path.join(os.path.dirname(__file__), "tools", "build_zhl_bundle.py"), encoding="utf-8").read()
 if "zhl-physics-core.js" in _build_zhl and "zhl-gas-core.js" in _build_zhl and "index.html" not in _build_zhl.split("read_core", 1)[0]:

@@ -62,7 +62,7 @@ def assert_near(a: float | None, b: float | None, tol: float, label: str) -> Non
         fail(f"{label}: {a:.2f} vs {b:.2f} (tol ±{tol})")
 
 
-ENGINE_SUITE_JS = """
+ENGINE_SUITE_JS = r"""
 () => {
   const lv = (d, t, o2, he = 0) => [{ depth: d, time: t, o2, he }];
   const base = {
@@ -880,7 +880,7 @@ ENGINE_SUITE_JS = """
       else expect = Math.floor((ppLim / fO2 - (window.altSurfaceP || 1.01325)) / (window.BAR_PER_METRE || 0.1));
       if (ppo2El && prevPpo2 != null) ppo2El.value = prevPpo2;
       if (gasEl && prevGas != null) gasEl.value = prevGas;
-      const m = botTxt.match(/(\\d+)/);
+      const m = botTxt.match(/(\d+)/);
       const modM = m ? parseInt(m[1], 10) : NaN;
       return { botTxt, modM, expect, fO2, ok: Number.isFinite(modM) && Math.abs(modM - expect) <= 2 };
     } catch (e) {
