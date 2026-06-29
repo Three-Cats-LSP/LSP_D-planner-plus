@@ -4,6 +4,15 @@
  * Rebuilt into zhl-engine-bundle.js via tools/build_zhl_bundle.py.
  * Requires Bühlmann helpers that the bundle preamble provides.
  */
+function getGasLabel(fO2, fHe) {
+  if (fO2 === null || fO2 === undefined) return null;
+  if (fO2 >= 0.995) return '100%';
+  const o2pct = Math.round(fO2 * 100);
+  const hePct = Math.round((fHe || 0) * 100);
+  if (o2pct === 21 && hePct === 0) return 'Air';
+  return `${o2pct}/${String(hePct).padStart(2, '0')}`;
+}
+
 function runZhlScheduleCore(params) {
   const depthM = params.depthM;
   const bt = params.bt;

@@ -44,7 +44,7 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
 
   function resolveGasAtDepth(targetDepthM) {
     let activeGas = fallbackGas || '';
-    let activeFN2 = fallbackFN2 ?? null;
+    let activeFN2 = fallbackFN2 ?? 0;
     let activeFHe = fallbackFHe ?? 0;
     for (let i = result.length - 1; i >= 0; i--) {
       const s = result[i];
@@ -52,10 +52,10 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
       const stepDepthM = stepDepthToM(s);
       if (stepDepthM == null) continue;
       if (stepDepthM >= targetDepthM) {
-        return { gas: s.gas, fN2: s.fN2 ?? activeFN2, fHe: s.fHe ?? activeFHe ?? 0 };
+        return { gas: s.gas, fN2: (s.fN2 ?? activeFN2) ?? 0, fHe: s.fHe ?? activeFHe ?? 0 };
       }
     }
-    return { gas: activeGas, fN2: activeFN2, fHe: activeFHe ?? 0 };
+    return { gas: activeGas, fN2: activeFN2 ?? 0, fHe: activeFHe ?? 0 };
   }
 
   function injectStop(targetDepthM, minDur) {
@@ -154,7 +154,7 @@ function n2FracFromCustomO2(o2pct) {
 function n2FracFromPercentages(o2pct, hepct) {
   if (Number.isFinite(o2pct) && Number.isFinite(hepct)) {
     const n2 = (100 - o2pct - hepct) / 100;
-    if (n2 < 0) return null;
+    if (n2 < 0 || n2 > 1) return null;
     return n2;
   }
   return null;

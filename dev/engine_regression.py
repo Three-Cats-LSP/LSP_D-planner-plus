@@ -827,6 +827,21 @@ ENGINE_SUITE_JS = r"""
     return { m17Ok, h7Ok, m19Ok, h6Ok, m11Ok, m20Ok, ok: m17Ok && h7Ok && m19Ok && h6Ok && m11Ok && m20Ok };
   })();
 
+  // ── E10l: issue #138 audit fixes (Audit #132) ────────────────────────────
+  out.sections.issue138 = (() => {
+    const rdFn = typeof runDecoSchedule === 'function' ? runDecoSchedule.toString() : '';
+    const h2Ok = rdFn.includes('escapeHtmlText(err.message');
+    const m1Ok = rdFn.includes('!_contingencyRunning && isCcrGasUiMode()');
+    const vpmFn = typeof runVPMSchedule === 'function' ? runVPMSchedule.toString() : '';
+    const h8Ok = vpmFn.includes('time: btAtDepthMin');
+    const repFn = typeof getZhlRepStateForSchedule === 'function' ? getZhlRepStateForSchedule.toString() : '';
+    const h7Ok = repFn.includes('totalCNS: snap.totalCNS') && repFn.includes('totalOTU: snap.totalOTU');
+    const b = window.ZhlEngineBundle;
+    const l9Ok = b && typeof b.n2FracFromPercentages === 'function'
+      ? b.n2FracFromPercentages(60, 50) === null : false;
+    return { h7Ok, h2Ok, m1Ok, h8Ok, l9Ok, ok: h7Ok && h2Ok && m1Ok && h8Ok && l9Ok };
+  })();
+
   // ── E10i: getActiveGas passes fO2 to ppO2 limit bands (audit 2026-06-29 H-1) ─
   out.sections.getActiveGasF02Limit = (() => {
     if (typeof ZhlEngineBundle === 'undefined' || typeof ZhlEngineBundle.getActiveGas !== 'function') return { ok: false };
@@ -1151,6 +1166,13 @@ def run_suite(page) -> dict:
     assert_true(i137.get("m11Ok"), "issue #137 M-11: contingency restores bailout in finally", str(i137))
     assert_true(i137.get("m20Ok"), "issue #137 M-20: runContingencyScenario executes functionally", str(i137))
     assert_true(i137.get("ok"), "issue #137 combined regression gate", str(i137))
+    i138 = s.get("issue138", {})
+    assert_true(i138.get("h7Ok"), "issue #138 H-7: getZhlRepStateForSchedule carries CNS/OTU", str(i138))
+    assert_true(i138.get("h2Ok"), "issue #138 H-2: runDecoSchedule sanitizes error HTML", str(i138))
+    assert_true(i138.get("m1Ok"), "issue #138 M-1: CCR validation skipped during contingency", str(i138))
+    assert_true(i138.get("h8Ok"), "issue #138 H-8: VPM uses btAtDepthMin", str(i138))
+    assert_true(i138.get("l9Ok"), "issue #138 L-9: n2FracFromPercentages rejects fN2 > 1", str(i138))
+    assert_true(i138.get("ok"), "issue #138 combined regression gate", str(i138))
     dedup = s.get("engineDedup", {})
     assert_true(dedup.get("ok"), "index CCR delegates match ZhlEngineBundle (engine dedup)", str(dedup))
     gag = s.get("getActiveGasF02Limit", {})

@@ -2833,10 +2833,10 @@ if "isRB && bailoutOn" in tcf_block:
 else:
     fail("ccrBailoutSettingsGroup still CCR-only (BUG-59)")
 
-if "settings.circuit !== 'pSCR'" in vpm_src and "offLoopPath" in vpm_src:
-    ok("VPM offLoopPath excludes normal pSCR on-loop (BUG-60)")
+if "settings.circuit !== 'pSCR'" not in vpm_src.split("offLoopPath", 1)[-1][:160]:
+    ok("VPM offLoopPath includes pSCR (issue #138 L-1; supersedes BUG-60)")
 else:
-    fail("VPM still treats pSCR as offLoopPath (BUG-60)")
+    fail("VPM offLoopPath still excludes pSCR (issue #138 L-1)")
 
 vpm_gas_start = js.find("const gasConsVPM = {}")
 vpm_gas_block = js[vpm_gas_start:vpm_gas_start + 800] if vpm_gas_start > 0 else ""
@@ -3042,10 +3042,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.03['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.53.03")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.04['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.53.04")
 else:
-    fail("APP_VERSION not bumped to 2.53.03 in app-version.js")
+    fail("APP_VERSION not bumped to 2.53.04 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -3799,10 +3799,10 @@ if os.path.isfile(audit_wf2):
 # ══════════════════════════════════════════════════════════════════════════════
 
 val_ccr_calc = js[js.find("function validateCcrCalculationInputs"):js.find("function validateCcrCalculationInputs") + 2500]
-if "circuit === 'pSCR'" in val_ccr_calc and "return { ok: errors.length === 0, errors }" in val_ccr_calc:
-    ok("validateCcrCalculationInputs skips setpoint checks for pSCR (BUG-95)")
+if "circuit === 'pSCR'" in val_ccr_calc and "value === 0) continue" in val_ccr_calc:
+    ok("validateCcrCalculationInputs validates active pSCR setpoints (issue #138 M-15; supersedes BUG-95)")
 else:
-    fail("validateCcrCalculationInputs still validates pSCR setpoints (BUG-95)")
+    fail("validateCcrCalculationInputs still skips pSCR setpoint checks (issue #138 M-15)")
 if re.search(r"descentSetpoint\s*!=\s*null\s*\?\s*s\.descentSetpoint\s*:\s*0\.7", val_ccr_calc):
     ok("validateCcrCalculationInputs defaults descent setpoint to 0.7 (BUG-96)")
 else:
@@ -5636,8 +5636,8 @@ if "const ppO2Limit = parseFloat(document.getElementById('ppo2Bottom')" in _111_
     ok("issue #111 M-6: calcEND_tool MOD uses configured ppO2 limit")
 else:
     fail("issue #111 M-6: calcEND_tool MOD still hardcoded 1.4 bar")
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.03['\"]", app_version_js):
-    ok("issue #111 L-1: app-version 2.53.03 synced; SW derives CACHE_VERSION dynamically")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.04['\"]", app_version_js):
+    ok("issue #111 L-1: app-version 2.53.04 synced; SW derives CACHE_VERSION dynamically")
 else:
     fail("issue #111 L-1: SW/app-version sync regression")
 if "build_vpm_bundle.py" in _111_ci and "git diff --exit-code zhl-engine-bundle.js vpm-engine-bundle.js" in _111_ci:
@@ -6445,11 +6445,11 @@ if all("needs: [bundle-sync]" in _ci126.split(f"{job}:", 1)[-1][:120] for job in
 else:
     fail("issue #126: one or more CI jobs still run without bundle-sync dependency")
 
-# ── v2.53.03 stable release ──
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.03['\"]", app_version_js):
-    ok("stable release APP_VERSION is 2.53.03")
+# ── v2.53.04 stable release ──
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.04['\"]", app_version_js):
+    ok("stable release APP_VERSION is 2.53.04")
 else:
-    fail("stable release requires APP_VERSION 2.53.03")
+    fail("stable release requires APP_VERSION 2.53.04")
 
 # ── Issue #127: full codebase audit v2.53.00 — 6 HIGH / 7 MEDIUM / 4 LOW ──
 _vpm_core127 = open(os.path.join(os.path.dirname(__file__), "vpm-engine-core.js"), encoding="utf-8").read()
@@ -6880,12 +6880,12 @@ if "mGF.low == null" in js.split("function runUnifiedPlan", 1)[-1][:800]:
     ok("issue #133 M-8: runUnifiedPlan guards unset mGF before NDL loop")
 else:
     fail("issue #133 M-8: runUnifiedPlan still uses unguarded mGF.low")
-if "validateHypoxicDecoGas(bot.o2" not in js.split("function validateDomDecoGases", 1)[-1][:600]:
-    ok("issue #133 L-1 / #134 C-1: bottom gas not checked by validateHypoxicDecoGas")
+if "validateHypoxicDecoGas(bot.o2" in js.split("function validateDomDecoGases", 1)[-1][:800]:
+    ok("issue #133 L-1 / #134 C-1 / #138 H-1: bottom gas validated by validateHypoxicDecoGas")
 else:
-    fail("issue #133 L-1: bottom gas still validated by validateHypoxicDecoGas")
-if "if (n2 < 0) return null" in _gas_core_js.split("function n2FracFromPercentages", 1)[-1][:200]:
-    ok("issue #133 L-2: n2FracFromPercentages returns null when O2+He > 100%")
+    fail("issue #133 L-1: bottom gas missing validateHypoxicDecoGas (issue #138 H-1)")
+if "n2 > 1" in _gas_core_js.split("function n2FracFromPercentages", 1)[-1][:250]:
+    ok("issue #133 L-2 / #138 L-9: n2FracFromPercentages rejects impossible N₂ fraction")
 else:
     fail("issue #133 L-2: n2FracFromPercentages still clamps impossible mixes to 0")
 if "sToM <= targetDepthM" in _gas_core_js:
@@ -6905,16 +6905,16 @@ if "Closed field list" in _ccr_core_src:
     ok("issue #133 L-8: normalizeCCRSettings documents closed field list")
 else:
     fail("issue #133 L-8: normalizeCCRSettings missing closed-list documentation")
-if "2.53.03" in open(os.path.join(_repo_root130, "app-version.js"), encoding="utf-8").read():
+if "2.53.04" in open(os.path.join(_repo_root130, "app-version.js"), encoding="utf-8").read():
     ok("issue #133 H-2: APP_VERSION bumped for PWA cache bust")
 else:
     fail("issue #133 H-2: APP_VERSION not bumped after engine fixes")
 
 # ── issue #134 (audit #129 HEAD ee69770) ────────────────────────────────────
-if "validateHypoxicDecoGas(bot.o2" not in js.split("function validateDomDecoGases", 1)[-1][:800]:
-    ok("issue #134 C-1: validateDomDecoGases does not block hypoxic bottom/CCR diluent")
+if "validateHypoxicDecoGas(bot.o2" in js.split("function validateDomDecoGases", 1)[-1][:800]:
+    ok("issue #134 C-1 / #138 H-1: validateDomDecoGases validates hypoxic bottom gas")
 else:
-    fail("issue #134 C-1: bottom gas still validated by validateHypoxicDecoGas")
+    fail("issue #134 C-1: bottom gas missing validateHypoxicDecoGas")
 if "d <= targetDepthM" in _gas_core_js:
     ok("issue #134 H-2: injectStop insertion scan uses <= targetDepthM")
 else:
@@ -6975,7 +6975,9 @@ if "issue134" in open(os.path.join(_repo_root130, "dev", "engine_regression.py")
 else:
     fail("issue #134 L-6: engine_regression missing issue134 section")
 _av134 = open(os.path.join(_repo_root130, "app-version.js"), encoding="utf-8").read()
-if "2.53.03" in _av134:
+if "2.53.04" in _av134:
+    ok("issue #134: APP_VERSION bumped to 2.53.04 (historical)")
+elif "2.53.03" in _av134:
     ok("issue #134: APP_VERSION bumped to 2.53.03 (historical)")
 else:
     fail("issue #134: APP_VERSION historical marker missing")
@@ -7069,8 +7071,9 @@ if "seenMixes" in _index135.split("function validateDomDecoGases", 1)[-1][:1200]
     ok("issue #135 L-4: validateDomDecoGases detects duplicate deco gas mixes")
 else:
     fail("issue #135 L-4: no duplicate deco gas detection")
-if "if (ead == null) return null" in _index135.split("function calcEAD", 1)[-1][:400]:
-    ok("issue #135 L-5/L-6: calcEAD/calcEND defer rounding and null for sub-air narcotic")
+if ("if (ead == null) return null" in _index135.split("function calcEAD", 1)[-1][:400]
+        or "ead <= 0) return null" in _index135.split("function calcEAD", 1)[-1][:400]):
+    ok("issue #135 L-5/L-6: calcEAD/calcEND null for invalid/zero END (issue #138 M-17)")
 else:
     fail("issue #135 L-5: calcEAD still rounds before return")
 if 'oninput="applyCustomAltitude()"' not in _index135.split("altitudeCustomInput", 1)[-1][:200]:
@@ -7090,10 +7093,155 @@ if "issue135" in open(os.path.join(_repo_root135, "dev", "engine_regression.py")
 else:
     fail("issue #135: engine_regression missing issue135 section")
 _av135 = open(os.path.join(_repo_root135, "app-version.js"), encoding="utf-8").read()
-if "2.53.03" in _av135:
+if "2.53.04" in _av135:
+    ok("issue #138: APP_VERSION bumped to 2.53.04")
+elif "2.53.03" in _av135:
     ok("issue #135: APP_VERSION bumped to 2.53.03")
 else:
-    fail("issue #135: APP_VERSION not bumped to 2.53.03")
+    fail("issue #138: APP_VERSION not bumped to 2.53.04")
+
+# ── Issue #138: Audit #132 v2.53.04 — 40 findings ──
+_repo_root138 = os.path.dirname(__file__)
+_index138 = open(os.path.join(_repo_root138, "index.html"), encoding="utf-8").read()
+_app138 = js
+_vpm138 = open(os.path.join(_repo_root138, "vpm-engine-core.js"), encoding="utf-8").read()
+_zgas138 = open(os.path.join(_repo_root138, "zhl-gas-core.js"), encoding="utf-8").read()
+_zsched138 = open(os.path.join(_repo_root138, "zhl-schedule-core.js"), encoding="utf-8").read()
+_bzhl138 = open(os.path.join(_repo_root138, "zhl-engine-bundle.js"), encoding="utf-8").read()
+_rd138 = _index138.split("function runDecoSchedule", 1)[-1][:12000] if "function runDecoSchedule" in _index138 else ""
+_bz138 = _index138.split("function buildZhlScheduleParamsFromDom", 1)[-1][:3000] if "function buildZhlScheduleParamsFromDom" in _index138 else ""
+_rep138 = _index138.split("function getZhlRepStateForSchedule", 1)[-1][:500] if "function getZhlRepStateForSchedule" in _index138 else ""
+if "validateHypoxicDecoGas" in _bz138 and "bottomGas" in _bz138:
+    ok("issue #138 H-1: bottom gas hypoxic validation in buildZhlScheduleParamsFromDom")
+else:
+    fail("issue #138 H-1: bottom gas missing validateHypoxicDecoGas")
+if "escapeHtmlText(err.message" in _index138 and "function runDecoSchedule" in _index138:
+    ok("issue #138 H-2: deco schedule error sanitized with escapeHtmlText")
+else:
+    fail("issue #138 H-2: deco error still unsanitized innerHTML")
+if 'id="conservatismSelect" onchange="onConservatismChange()"' in _index138:
+    ok("issue #138 H-3: conservatismSelect triggers replan")
+else:
+    fail("issue #138 H-3: conservatismSelect missing onchange")
+if "replanAfterEnvChange()" in _index138.split("function setWaterDensity", 1)[-1][:900]:
+    ok("issue #138 H-4: setWaterDensity replans live schedule")
+else:
+    fail("issue #138 H-4: setWaterDensity missing replan")
+if "pO2>modPpo2" in _index138.split("function runPlanner", 1)[-1][:8000] and "const modPpo2" in _index138.split("function runPlanner", 1)[-1][:800]:
+    ok("issue #138 H-5/H-6: Bühlmann planner uses scoped modPpo2")
+else:
+    fail("issue #138 H-5/H-6: Bühlmann modPpo2 still broken")
+if "totalCNS: snap.totalCNS" in _rep138 and "totalOTU: snap.totalOTU" in _rep138:
+    ok("issue #138 H-7: getZhlRepStateForSchedule carries CNS/OTU")
+else:
+    fail("issue #138 H-7: rep state missing CNS/OTU")
+if "time: btAtDepthMin" in _index138.split("function runVPMSchedule", 1)[-1][:5000]:
+    ok("issue #138 H-8: VPM levels use btAtDepthMin")
+else:
+    fail("issue #138 H-8: VPM still passes raw BT")
+if "!_contingencyRunning && isCcrGasUiMode()" in _rd138:
+    ok("issue #138 M-1: CCR gas validation skipped during contingency")
+else:
+    fail("issue #138 M-1: CCR validation not gated on contingency")
+if "settings.metric ? stopDepth" in _vpm138.split("function vpmStopCapError", 1)[-1][:400]:
+    ok("issue #138 M-3: vpmStopCapError uses metric/imperial suffix")
+else:
+    fail("issue #138 M-3: vpmStopCapError hardcodes metres")
+if "if (stopTime > 0)" in _vpm138.split("let stopTime = 0", 1)[-1][:1200]:
+    ok("issue #138 M-4: inter-level VPM skips zero-time forced stop")
+else:
+    fail("issue #138 M-4: inter-level still forces min stop when clear")
+if "pO2Val >= gasLimit" in _index138:
+    ok("issue #138 M-5: ppO2 limit boundary uses >=")
+else:
+    fail("issue #138 M-5: ppO2 still strict >")
+if "(s.gas ||" in _index138.split("collapsedMDP.forEach", 1)[-1][:4000]:
+    ok("issue #138 M-6: null-safe gas label in deco rows")
+else:
+    fail("issue #138 M-6: s.gas.toUpperCase still unguarded")
+if "getDecoCardFractions(idx)" in _index138.split("function validateDomDecoGases", 1)[-1][:1500]:
+    ok("issue #138 M-8: duplicate gas detection uses clamped fractions")
+else:
+    fail("issue #138 M-8: duplicate key still raw DOM strings")
+if "if (low > high)" in _index138.split("function setCustomGF", 1)[-1][:1200]:
+    ok("issue #138 M-9: setCustomGF rejects inverted GF")
+else:
+    fail("issue #138 M-9: GF Low > High not validated")
+if "appSettings.save(false)" in _index138.split('id="ppo2Bottom"', 1)[-1][:200]:
+    ok("issue #138 M-10: ppo2Bottom persists on change")
+else:
+    fail("issue #138 M-10: ppo2Bottom not persisted")
+if 'ccrDecoSetpoint' in _index138 and "updateCcrGasValidation()" in _index138.split("ccrDecoSetpoint", 1)[-1][:200]:
+    ok("issue #138 M-11: ccrDecoSetpoint updates MOD/validation")
+else:
+    fail("issue #138 M-11: ccrDecoSetpoint missing handler")
+_restore138 = _index138.split("_restoreFields: function", 1)[-1][:3500] if "_restoreFields: function" in _index138 else ""
+if ("this._restoreInProgress = false" in _restore138
+        and _restore138.find("_restoreInProgress = false") > _restore138.find("pendingChangeEls.forEach")):
+    ok("issue #138 M-12: _restoreInProgress cleared after sync and change dispatch")
+else:
+    fail("issue #138 M-12: _restoreInProgress restore order wrong")
+if "function parseCcrSetpoint" in _index138:
+    ok("issue #138 M-13: CCR setpoints use parseCcrSetpoint")
+else:
+    fail("issue #138 M-13: setpoint || fallback still treats 0 as missing")
+if "activeFN2 ?? 0" in _zgas138 and "activeFN2 ?? 0" in _bzhl138.split("resolveGasAtDepth", 1)[-1][:800]:
+    ok("issue #138 M-14: resolveGasAtDepth null-safe fN2 (mirror)")
+else:
+    fail("issue #138 M-14: resolveGasAtDepth fN2 can be null")
+_val138 = _index138.split("function validateCcrCalculationInputs", 1)[-1][:3500] if "function validateCcrCalculationInputs" in _index138 else ""
+if "circuit === 'pSCR'" in _val138 and "value === 0) continue" in _val138:
+    ok("issue #138 M-15: pSCR setpoints validated when active")
+else:
+    fail("issue #138 M-15: pSCR still skips setpoint validation")
+if "modPpo2Ndl" in _index138.split("function renderNDLTable", 1)[-1][:2000]:
+    ok("issue #138 M-16: NDL MOD uses ppo2Bottom")
+else:
+    fail("issue #138 M-16: NDL MOD still hardcoded 1.4")
+if "ead <= 0) return null" in _index138.split("function calcEAD", 1)[-1][:400]:
+    ok("issue #138 M-17: calcEAD null for zero END")
+else:
+    fail("issue #138 M-17: calcEAD still formats 0 m")
+if "Number.isFinite(dgvFracs.fO2)" in _index138.split("function runVPMSchedule", 1)[-1][:2500]:
+    ok("issue #138 M-18: VPM rejects NaN deco fractions")
+else:
+    fail("issue #138 M-18: NaN deco gas still pushed to VPM")
+if "Number.isFinite(mGF.high)" in _index138.split("function runVPMSchedule", 1)[-1][:800]:
+    ok("issue #138 M-19: VPM gfHi fallback when mGF unset")
+else:
+    fail("issue #138 M-19: VPM gfHi still undefined on cold load")
+if "totalCNSCarry: repSnap.totalCNS" in _index138.split("function mergeRepSettings", 1)[-1][:600]:
+    ok("issue #138 M-20: mergeRepSettings injects CNS/OTU with _preTissues")
+else:
+    fail("issue #138 M-20: mergeRepSettings drops CNS/OTU carry")
+if "Number.isFinite(altitudeM)" in _index138.split("function runVPMSchedule", 1)[-1][:3500]:
+    ok("issue #138 M-21: VPM altitude NaN guard")
+else:
+    fail("issue #138 M-21: VPM altitude can be NaN")
+if "!appSettings._loadPending" in _index138 and "setAlgo('buh')" in _index138.split("appSettings.load();", 1)[-1][:800]:
+    ok("issue #138 M-22: app init skips defaults when restore deferred")
+else:
+    fail("issue #138 M-22: first-time defaults still race deferred restore")
+if "settings.circuit !== 'pSCR'" not in _vpm138.split("offLoopPath", 1)[-1][:120]:
+    ok("issue #138 L-1: pSCR included in inter-level conservatism relaxation")
+else:
+    fail("issue #138 L-1: pSCR still excluded from offLoopPath")
+if "if (!(r0 > 0)) return 0" in _vpm138.split("function calcCrushRadius", 1)[-1][:200]:
+    ok("issue #138 L-2: calcCrushRadius guards zero radius")
+else:
+    fail("issue #138 L-2: calcCrushRadius NaN on r0=0")
+if "function getGasLabel(fO2, fHe)" in _zsched138:
+    ok("issue #138 L-10: getGasLabel defined in zhl-schedule-core")
+else:
+    fail("issue #138 L-10: schedule core still depends on bundle getGasLabel")
+if "n2 > 1" in _zgas138.split("function n2FracFromPercentages", 1)[-1][:250]:
+    ok("issue #138 L-9: n2FracFromPercentages rejects fN2 > 1")
+else:
+    fail("issue #138 L-9: n2FracFromPercentages allows fN2 > 1")
+if "issue138" in open(os.path.join(_repo_root138, "dev", "engine_regression.py"), encoding="utf-8").read():
+    ok("issue #138: engine_regression covers #138")
+else:
+    fail("issue #138: engine_regression missing issue138 section")
 
 print("=" * 60)
 

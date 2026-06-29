@@ -463,6 +463,7 @@ const VPMEngine = (() => {
         }
     }
     function calcCrushRadius(r0, pCrush) {
+        if (!(r0 > 0)) return 0;
         const twoGammaC = (2.0 * GAMMA_C / r0) / 1.0e5; 
         if (twoGammaC + pCrush <= 0) return r0;
         return r0 * twoGammaC / (twoGammaC + pCrush);
@@ -1040,8 +1041,10 @@ const VPMEngine = (() => {
             ? Math.max(0, settings._vpmMaxStopMin) : 180;
         function vpmStopCapError(stopDepth, partialPlan) {
             const plan = partialPlan || [];
+            const depthDisp = settings.metric ? stopDepth : Math.round(stopDepth * 3.28084);
+            const unitSuffix = settings.metric ? ' m' : ' ft';
             return {
-                error: `VPM stop at ${stopDepth} m exceeded safety limit without clearance — schedule invalid`,
+                error: `VPM stop at ${depthDisp}${unitSuffix} exceeded safety limit without clearance — schedule invalid`,
                 code: 'VPM_STOP_CAP',
                 stops: plan,
                 plan,
@@ -1459,7 +1462,7 @@ const VPMEngine = (() => {
                 state.maxAmbientPressure = snap.maxAmbientPressure;
             }
             calcCrushing(state, settings);
-            const offLoopPath = isCCR && settings.circuit !== 'pSCR' && (forcedOCMode || curSP <= 0);
+            const offLoopPath = isCCR && (forcedOCMode || curSP <= 0);
             const interLevelConservatism = offLoopPath ? Math.max(0, conservatism - 1) : conservatism;
             if (offLoopPath && interLevelConservatism < conservatism) {
                 const consIdx = Math.max(0, Math.min(5, Math.round(conservatism || 0)));
@@ -1592,20 +1595,22 @@ const VPMEngine = (() => {
                     restoreInterLevelDerivedState();
                     return null;
                 }
-                if (stopTime < effectiveMinStop) stopTime = effectiveMinStop;
-                runtime += stopTime;
-                const pAmbStop = getAmbientPressure(stopDepth, settings);
-                const ppO2Stop = vpmAccumPpo2(pAmbStop, curSP, curO2, curHe, settings, stopDepth, forcedOCMode);
-                totalOTU += calculateOTU(ppO2Stop, stopTime);
-                totalCNS += calculateCNS(ppO2Stop, stopTime);
-                plan.push({
-                    type: 'stop', depth: stopDepth, time: stopTime,
-                    runtime: Math.round(runtime * 10) / 10,
-                    gas: curGasLabel,
-                    o2: Math.round(curO2 * 100),
-                    he: Math.round(curHe * 100),
-                    setpoint: curSP > 0 ? curSP : 0
-                });
+                if (stopTime > 0) {
+                    if (stopTime < effectiveMinStop) stopTime = effectiveMinStop;
+                    runtime += stopTime;
+                    const pAmbStop = getAmbientPressure(stopDepth, settings);
+                    const ppO2Stop = vpmAccumPpo2(pAmbStop, curSP, curO2, curHe, settings, stopDepth, forcedOCMode);
+                    totalOTU += calculateOTU(ppO2Stop, stopTime);
+                    totalCNS += calculateCNS(ppO2Stop, stopTime);
+                    plan.push({
+                        type: 'stop', depth: stopDepth, time: stopTime,
+                        runtime: Math.round(runtime * 10) / 10,
+                        gas: curGasLabel,
+                        o2: Math.round(curO2 * 100),
+                        he: Math.round(curHe * 100),
+                        setpoint: curSP > 0 ? curSP : 0
+                    });
+                }
                 if (nextStopClamped < stopDepth) {
                     settings._scrRuntimeMin = runtime;
                     const ascSegTime = loadTissuesLinear(state, stopDepth, nextStopClamped, decoAscentRate, curO2, curHe, settings, curSP);

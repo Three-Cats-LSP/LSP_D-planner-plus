@@ -229,7 +229,7 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
 
   function resolveGasAtDepth(targetDepthM) {
     let activeGas = fallbackGas || '';
-    let activeFN2 = fallbackFN2 ?? null;
+    let activeFN2 = fallbackFN2 ?? 0;
     let activeFHe = fallbackFHe ?? 0;
     for (let i = result.length - 1; i >= 0; i--) {
       const s = result[i];
@@ -237,10 +237,10 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
       const stepDepthM = stepDepthToM(s);
       if (stepDepthM == null) continue;
       if (stepDepthM >= targetDepthM) {
-        return { gas: s.gas, fN2: s.fN2 ?? activeFN2, fHe: s.fHe ?? activeFHe ?? 0 };
+        return { gas: s.gas, fN2: (s.fN2 ?? activeFN2) ?? 0, fHe: s.fHe ?? activeFHe ?? 0 };
       }
     }
-    return { gas: activeGas, fN2: activeFN2, fHe: activeFHe ?? 0 };
+    return { gas: activeGas, fN2: activeFN2 ?? 0, fHe: activeFHe ?? 0 };
   }
 
   function injectStop(targetDepthM, minDur) {
@@ -339,7 +339,7 @@ function n2FracFromCustomO2(o2pct) {
 function n2FracFromPercentages(o2pct, hepct) {
   if (Number.isFinite(o2pct) && Number.isFinite(hepct)) {
     const n2 = (100 - o2pct - hepct) / 100;
-    if (n2 < 0) return null;
+    if (n2 < 0 || n2 > 1) return null;
     return n2;
   }
   return null;
@@ -751,6 +751,15 @@ function getEffectivePpo2(pAmb, setpoint, fO2, ccr, depthM, fHe) {
   return Math.min(pAmb, Math.max(sp, dilPpo2));
 }
 
+
+function getGasLabel(fO2, fHe) {
+  if (fO2 === null || fO2 === undefined) return null;
+  if (fO2 >= 0.995) return '100%';
+  const o2pct = Math.round(fO2 * 100);
+  const hePct = Math.round((fHe || 0) * 100);
+  if (o2pct === 21 && hePct === 0) return 'Air';
+  return `${o2pct}/${String(hePct).padStart(2, '0')}`;
+}
 
 function runZhlScheduleCore(params) {
   applyEnvironment(params.environment || defaultEnvironment());
