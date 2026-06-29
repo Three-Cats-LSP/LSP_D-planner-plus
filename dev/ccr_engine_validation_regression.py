@@ -3,9 +3,6 @@
 from __future__ import annotations
 
 import sys
-import threading
-import http.server
-import socketserver
 from pathlib import Path
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -16,6 +13,7 @@ if str(_DEV) not in sys.path:
     sys.path.insert(0, str(_DEV))
 
 from playwright_boot import boot_app_page  # noqa: E402
+from test_http import serve_www  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 PASS: list[str] = []
@@ -32,22 +30,8 @@ def fail(msg: str) -> None:
     print(f"  ✗ {msg}")
 
 
-def start_server():
-    class Handler(http.server.SimpleHTTPRequestHandler):
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, directory=str(ROOT), **kwargs)
-
-        def log_message(self, fmt, *args):
-            pass
-
-    httpd = socketserver.TCPServer(("127.0.0.1", 0), Handler)
-    port = httpd.server_address[1]
-    threading.Thread(target=httpd.serve_forever, daemon=True).start()
-    return httpd, port
-
-
-def run_checks(page, port: int) -> None:
-    boot_app_page(page, f"http://127.0.0.1:{port}", require_ccr=True)
+def run_checks(page, base_url: str) -> None:
+    boot_app_page(page, base_url, require_ccr=True)
 
     settings = {
         "metric": True,
@@ -352,15 +336,14 @@ def main() -> int:
 
     print("CCR engine validation regression")
     print("=" * 50)
-    httpd, port = start_server()
-    try:
+
+    with serve_www(ROOT) as base_url:
         with sync_playwright() as p:
-            browser = p.chromium.launch()
+            browser = p.chromium.launch(headless=True)
             page = browser.new_page()
-            run_checks(page, port)
+            page.set_default_timeout(240000)
+            run_checks(page, base_url)
             browser.close()
-    finally:
-        httpd.shutdown()
 
     print(f"\n{'─' * 50}")
     print(f"  Results: {len(PASS)} passed, {len(FAIL)} failed")
