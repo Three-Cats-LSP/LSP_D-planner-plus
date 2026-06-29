@@ -1,122 +1,169 @@
 # Audit Coverage Ledger
 
-**Purpose:** Track which audit units have been read and verified so audit cycles converge instead of re-sampling the same lines.
+> Generated from `docs/audit-units.json` by `tools/audit_coverage.py`. Do not edit manually.
 
-**States:** `UNREAD` — never fully fetched · `READ` — analysed in at least one cycle · `VERIFIED` — READ, findings fixed, regression test covers corrected logic
-
-**Update protocol:** At the end of each audit cycle (or UI extraction PR that passes `audit.py` + regression), update statuses here and add a changelog row.
-
-**Related docs:** [codebase-audit-strategy-v2.md](codebase-audit-strategy-v2.md) · [audit-master-plan.md](audit-master-plan.md) · [AUDIT_MIRROR_RULE.md](AUDIT_MIRROR_RULE.md)
-
-**Last updated:** 2026-06-29 (initial seed + UI extraction)
-
----
+**Baseline:** `fd805111eab2fba349a9303a6e208106b798f82b`
+**States:** `UNREAD`, `IN_PROGRESS`, `READ`, `VERIFIED`
 
 ## Summary
 
-| File | Units | READ | VERIFIED | Coverage |
-|------|-------|------|----------|----------|
-| `zhl-physics-core.js` | 12 | 11 | 9 | 92% READ |
-| `zhl-gas-core.js` | 6 | 5 | 4 | 83% READ |
-| `zhl-ccr-core.js` | 18 | 16 | 14 | 89% READ |
-| `zhl-schedule-core.js` | 1 | 1 | 0 | 100% READ / 0% VERIFIED |
-| `zhl-engine-bundle.js` | 1 | 1 | 0 | parity spot-checks only |
-| `vpm-engine-core.js` | 1 | 0 | 0 | 0% READ |
-| `vpm-engine-bundle.js` | 1 | 0 | 0 | 0% READ |
-| `zhl-worker-bridge.js` | 1 | 1 | 1 | VERIFIED |
-| `surf-interval-core.js` | 3 | 3 | 3 | VERIFIED (extraction) |
-| `gas-table-core.js` | 4 | 4 | 4 | VERIFIED (extraction) |
-| `gas-plan-core.js` | 6 | 6 | 4 | READ (Playwright partial) |
-| `export-core.js` | 12 | 12 | 8 | READ (`export_regression.py`) |
-| `contingency-core.js` | 10 | 10 | 6 | READ (partial regression) |
-| `index.html` (inline) | 18 | 8 | 2 | ~44% READ |
-| `dev/engine_regression.py` | 20 | 4 | 4 | ~20% READ |
-| `sw.js` | 8 | 6 | 5 | ~75% READ |
-| `audit.py` | 15 | 12 | 10 | ~80% READ |
+| Layer | Total | Unread | In progress | Read | Verified |
+|---|---:|---:|---:|---:|---:|
+| build_config | 2 | 0 | 0 | 2 | 0 |
+| ci | 5 | 0 | 0 | 5 | 0 |
+| deploy_config | 1 | 0 | 0 | 1 | 0 |
+| engine | 5 | 1 | 1 | 3 | 0 |
+| engine_reference | 1 | 1 | 0 | 0 | 0 |
+| native_android | 16 | 15 | 0 | 1 | 0 |
+| native_bridge | 2 | 0 | 0 | 2 | 0 |
+| native_config | 1 | 0 | 0 | 1 | 0 |
+| pwa | 3 | 0 | 0 | 3 | 0 |
+| release_config | 1 | 0 | 0 | 1 | 0 |
+| test_infrastructure | 29 | 16 | 1 | 12 | 0 |
+| tooling | 19 | 10 | 1 | 7 | 1 |
+| ui_core | 5 | 0 | 0 | 5 | 0 |
+| web_css | 4 | 4 | 0 | 0 | 0 |
+| web_markup | 5 | 5 | 0 | 0 | 0 |
+| web_runtime | 34 | 16 | 11 | 6 | 1 |
+| worker | 2 | 0 | 0 | 2 | 0 |
+| **Total** | **135** | **68** | **14** | **51** | **2** |
 
----
+## Units
 
-## Engine layer
-
-| Unit ID | File | Symbol / range | Status | Last cycle | Regression | Notes |
-|---------|------|----------------|--------|------------|------------|-------|
-| PHY-01 | `zhl-physics-core.js` | `applyEnvironment`, `defaultEnvironment` | VERIFIED | Audit #134 | engine_regression A | |
-| PHY-02 | `zhl-physics-core.js` | `schreiner`, `schreinerLinear` | VERIFIED | Audit #134 | — | |
-| PHY-03 | `zhl-physics-core.js` | `initTissues`, `saturate`, `saturateLinear` | READ | Audit #133 | engine_regression A | |
-| PHY-04 | `zhl-physics-core.js` | `ceiling`, `computeSurfaceGF` | READ | Audit #132 | — | |
-| PHY-05 | `zhl-physics-core.js` | `gfAtDepth`, `ndlClearAtDepth` | READ | Audit #131 | — | |
-| PHY-06 | `zhl-physics-core.js` | `buhNDL` | VERIFIED | Audit #134 | NDL suite | |
-| GAS-01 | `zhl-gas-core.js` | `enforceMinDecoProfile` | READ | Audit #130 | — | |
-| GAS-02 | `zhl-gas-core.js` | `getActiveGas`, `ppO2Check` | VERIFIED | Audit #134 | H-02 path | |
-| GAS-03 | `zhl-gas-core.js` | fraction validators | READ | Audit #129 | — | |
-| CCR-01 | `zhl-ccr-core.js` | `normalizeCCRSettings`, `mergeCCRSettings` | VERIFIED | Audit #134 | CCR suite | |
-| CCR-02 | `zhl-ccr-core.js` | `getEffectiveSetpointAtDepth` | VERIFIED | Audit #134 | C-03 | |
-| CCR-03 | `zhl-ccr-core.js` | `computePSCRFractions`, inert PP | VERIFIED | Audit #134 | C-04 | |
-| CCR-04 | `zhl-ccr-core.js` | `saturateCCR`, `loadTissuesWithCCR` | READ | Audit #133 | — | |
-| SCH-01 | `zhl-schedule-core.js` | `runZhlScheduleCore` | READ | Audit #128 | deco ascent C-02 | ~55% function-level |
-| ZB-01 | `zhl-engine-bundle.js` | bundle parity | READ | Audit #134 | `check_engine_parity.py` | |
-| VPM-01 | `vpm-engine-core.js` | full file | UNREAD | — | — | H-09 bundle drift risk |
-| VPMB-01 | `vpm-engine-bundle.js` | parity vs core | UNREAD | — | — | |
-| WBR-01 | `zhl-worker-bridge.js` | `calculateInWorker`, `terminate` | VERIFIED | Audit #130 | worker parity | |
-
----
-
-## UI runtime cores (extracted from index.html)
-
-| Unit ID | File | Symbol | Status | Last cycle | Regression | Notes |
-|---------|------|--------|--------|------------|------------|-------|
-| SI-01 | `surf-interval-core.js` | `calcSurfInt` | VERIFIED | Extraction PR1 | audit.py SI guards | |
-| SI-02 | `surf-interval-core.js` | `renderSurfIntPanel` | VERIFIED | Extraction PR1 | — | |
-| SI-03 | `surf-interval-core.js` | `toggleSurfIntPanel` | VERIFIED | Extraction PR1 | — | |
-| GT-01 | `gas-table-core.js` | `calcEND_tool` | VERIFIED | Extraction PR2 | audit MOD checks | |
-| GT-02 | `gas-table-core.js` | `renderEADTable` | VERIFIED | Extraction PR2 | — | |
-| GT-03 | `gas-table-core.js` | `renderGasTable` | VERIFIED | Extraction PR2 | audit.py | |
-| GT-04 | `gas-table-core.js` | tip constants | READ | Extraction PR2 | — | |
-| GP-01 | `gas-plan-core.js` | `setGasRule`, `_gasRule` | VERIFIED | Extraction PR3 | — | shared with deco UI |
-| GP-02 | `gas-plan-core.js` | `calcGasPlan` | READ | Extraction PR3 | — | |
-| GP-03 | `gas-plan-core.js` | `buildGasPlanText`, `copyGasPlan` | READ | Extraction PR3 | — | |
-| GP-04 | `gas-plan-core.js` | `buildGasPlanPDF` | READ | Extraction PR3 | — | |
-| GP-05 | `gas-plan-core.js` | `gpPresBar`, `gpSizeL` | VERIFIED | Extraction PR3 | — | |
-| EXP-01 | `export-core.js` | `buildExportText` | VERIFIED | Extraction PR4 | `export_regression.py` | |
-| EXP-02 | `export-core.js` | `copyDiveProfile`, `exportTXT` | VERIFIED | Extraction PR4 | export_regression | |
-| EXP-03 | `export-core.js` | `buildSlateText`, `buildMessengerText` | VERIFIED | Extraction PR4 | export_regression | |
-| EXP-04 | `export-core.js` | `showToast`, `copyFallback` | READ | Extraction PR4 | — | |
-| EXP-05 | `export-core.js` | `exportPDF`, PDF dialog | READ | Extraction PR4 | — | |
-| CONT-01 | `contingency-core.js` | state vars | VERIFIED | Extraction PR5 | audit guards | |
-| CONT-02 | `contingency-core.js` | `runContingencyScenario` | VERIFIED | Extraction PR5 | H-04 | try/finally restore |
-| CONT-03 | `contingency-core.js` | `calcContingency` | READ | Extraction PR5 | export_regression contingency | |
-| CONT-04 | `contingency-core.js` | contingency PDF/slate | READ | Extraction PR5 | export_regression | |
-
----
-
-## index.html (remaining inline)
-
-| Unit ID | Section | Approx lines | Status | Last cycle | Notes |
-|---------|---------|--------------|--------|------------|-------|
-| UI-01 | State & constants | 3769–4394 | READ partial | Audit #132 | |
-| UI-02 | Settings persistence | 16335+ | READ partial | Audit #130 | scattered `appSettings` |
-| UI-03 | Units & environment | 4226–4760 | UNREAD | — | |
-| UI-04 | Gas input / MOD display | 8550–8816 | UNREAD | — | |
-| UI-05 | CCR panel UI | 6309–6788 | UNREAD | — | |
-| UI-06 | Engine delegate layer | 6256–10114 | READ ~25% | Audit #134 | highest priority |
-| UI-07 | ZHL plan runner | 6802–9020 | UNREAD | — | |
-| UI-08 | VPM runner | ~7780+ | READ partial | Audit #133 | M-06 |
-| UI-09 | NDL / OTU / CNS | 6953–7059 | READ partial | Audit #131 | |
-| UI-10 | Surface interval | — | VERIFIED | Extraction PR1 | moved to `surf-interval-core.js` |
-| UI-11 | Deco table rendering | 9021–9884 | UNREAD | — | |
-| UI-12 | Gas consumption / SAC | 9319+ | READ partial | Extraction PR3 | gas plan extracted |
-| UI-13 | Contingency | — | VERIFIED | Extraction PR5 | moved to `contingency-core.js` |
-| UI-14 | Multi-dive / history | 10193–11160 | UNREAD | — | |
-| UI-15 | Tools MOD / best mix | 11161–11500 | UNREAD | — | |
-| UI-16 | Gas table | — | VERIFIED | Extraction PR2 | moved to `gas-table-core.js` |
-| UI-17 | Export / PDF | — | VERIFIED | Extraction PR4 | moved to `export-core.js` |
-| UI-18 | Init / DOMContentLoaded | 17200–17387 | UNREAD | — | |
-
----
-
-## Changelog
-
-| Date | Cycle / PR | Units touched | Notes |
-|------|------------|---------------|-------|
-| 2026-06-29 | Initial seed | all tables | Ledger created per strategy v2 §3 |
-| 2026-06-29 | UI extraction PR1–5 | SI, GT, GP, EXP, CONT | Subsystems moved to `*-core.js`; inline units marked VERIFIED |
+| Unit | Layer | Source | Lines | Priority | Status | Evidence |
+|---|---|---|---:|---|---|---|
+| UI-BOOT | web_runtime | `index.html:1` | 31 | P2 | READ | - |
+| UI-CSS-FOUNDATION | web_css | `index.html:32` | 371 | P2 | UNREAD | - |
+| UI-CSS-MODES | web_css | `index.html:403` | 369 | P2 | UNREAD | - |
+| UI-CSS-CONTROLS | web_css | `index.html:772` | 454 | P2 | UNREAD | - |
+| UI-CSS-RESULTS | web_css | `index.html:1226` | 411 | P1 | UNREAD | - |
+| UI-MARKUP-HEADER | web_markup | `index.html:1637` | 554 | P2 | UNREAD | - |
+| UI-MARKUP-PLANNER | web_markup | `index.html:2191` | 536 | P1 | UNREAD | - |
+| UI-MARKUP-CONSUMPTION | web_markup | `index.html:2727` | 495 | P1 | UNREAD | - |
+| UI-MARKUP-TOOLS | web_markup | `index.html:3222` | 231 | P2 | UNREAD | - |
+| UI-MARKUP-MODALS | web_markup | `index.html:3453` | 341 | P2 | UNREAD | - |
+| UI-RUNTIME-BOOTSTRAP | web_runtime | `index.html:3794` | 261 | P1 | READ | - |
+| UI-ENVIRONMENT | web_runtime | `index.html:4055` | 353 | P1 | IN_PROGRESS | - |
+| UI-MODE-STATE | web_runtime | `index.html:4408` | 380 | P2 | IN_PROGRESS | - |
+| UI-ALGORITHM-SETTINGS | web_runtime | `index.html:4788` | 352 | P1 | IN_PROGRESS | - |
+| UI-UNIT-HELPERS | web_runtime | `index.html:5140` | 388 | P1 | READ | - |
+| UI-PLAN-HEADER | web_runtime | `index.html:5528` | 449 | P2 | READ | - |
+| UI-UNIT-SWITCHING | web_runtime | `index.html:5977` | 310 | P1 | READ | - |
+| UI-ZHL-DELEGATES | web_runtime | `index.html:6287` | 124 | P0 | IN_PROGRESS | - |
+| UI-CCR-DELEGATES | web_runtime | `index.html:6411` | 354 | P0 | IN_PROGRESS | - |
+| UI-DECO-PHYSICS | web_runtime | `index.html:6765` | 222 | P0 | IN_PROGRESS | - |
+| UI-SCHEDULE-INPUTS | web_runtime | `index.html:6987` | 332 | P0 | IN_PROGRESS | - |
+| UI-SETTINGS-CONTROLS | web_runtime | `index.html:7319` | 316 | P1 | UNREAD | - |
+| UI-VPM-RUNNER | web_runtime | `index.html:7635` | 161 | P0 | IN_PROGRESS | - |
+| UI-VPM-RENDER | web_runtime | `index.html:7796` | 512 | P1 | IN_PROGRESS | - |
+| UI-GAS-INPUTS | web_runtime | `index.html:8308` | 184 | P1 | UNREAD | - |
+| UI-GAS-CARDS | web_runtime | `index.html:8492` | 559 | P1 | UNREAD | - |
+| UI-ZHL-RUNNER-SETUP | web_runtime | `index.html:9051` | 116 | P0 | UNREAD | - |
+| UI-ZHL-RUNNER-ENGINE | web_runtime | `index.html:9167` | 338 | P0 | UNREAD | - |
+| UI-ZHL-RESULTS | web_runtime | `index.html:9505` | 488 | P1 | UNREAD | - |
+| UI-ZHL-HEADLESS-HELPERS | web_runtime | `index.html:9993` | 168 | P1 | VERIFIED | REG-01, REG-02, REG-03, REG-05 |
+| UI-ZHL-HEADLESS-ENGINE | web_runtime | `index.html:10161` | 369 | P0 | READ | REG-01, REG-02 |
+| UI-PLOT-INIT | web_runtime | `index.html:10530` | 95 | P2 | UNREAD | - |
+| UI-PLOT-RENDER | web_runtime | `index.html:10625` | 440 | P2 | UNREAD | - |
+| UI-PLOT-WAYPOINTS | web_runtime | `index.html:11065` | 523 | P2 | UNREAD | - |
+| UI-TOOLS-TISSUES | web_runtime | `index.html:11588` | 305 | P2 | UNREAD | - |
+| UI-TOOLS-EXPOSURE | web_runtime | `index.html:11893` | 221 | P1 | IN_PROGRESS | - |
+| UI-TOOLS-GF | web_runtime | `index.html:12114` | 214 | P2 | UNREAD | - |
+| UI-TOOLS-PROFILE | web_runtime | `index.html:12328` | 366 | P2 | UNREAD | - |
+| UI-SETTINGS | web_runtime | `index.html:12694` | 340 | P1 | IN_PROGRESS | - |
+| UI-PROFILE-PRESETS | web_runtime | `index.html:13034` | 374 | P2 | UNREAD | - |
+| UI-CONFIG-PRESETS | web_runtime | `index.html:13408` | 172 | P2 | UNREAD | - |
+| UI-APP-INIT | web_runtime | `index.html:13580` | 169 | P1 | UNREAD | - |
+| UI-PWA-LIFECYCLE | pwa | `index.html:13749` | 84 | P1 | READ | - |
+| ENG-ZHL-PHYSICS | engine | `zhl-physics-core.js:1` | 189 | P1 | READ | - |
+| ENG-ZHL-GAS | engine | `zhl-gas-core.js:1` | 183 | P1 | READ | - |
+| ENG-ZHL-CCR | engine | `zhl-ccr-core.js:1` | 385 | P0 | READ | REG-01, REG-02 |
+| ENG-ZHL-SCHEDULE | engine | `zhl-schedule-core.js:1` | 576 | P0 | IN_PROGRESS | - |
+| ENG-VPM | engine | `vpm-engine-core.js:1` | 1947 | P0 | UNREAD | - |
+| ENG-VPM-REFERENCE | engine_reference | `vpmb.py:1` | 2574 | P2 | UNREAD | - |
+| APP-ANDROID-SELECT | native_bridge | `android-select-picker.js:1` | 270 | P1 | READ | - |
+| APP-CAPACITOR-BRIDGE | native_bridge | `capacitor-bridge.js:1` | 278 | P1 | READ | - |
+| APP-CONTINGENCY | ui_core | `contingency-core.js:1` | 974 | P1 | READ | - |
+| APP-EXPORT | ui_core | `export-core.js:1` | 1753 | P2 | READ | - |
+| APP-GAS-PLAN | ui_core | `gas-plan-core.js:1` | 530 | P1 | READ | - |
+| APP-GAS-TABLE | ui_core | `gas-table-core.js:1` | 268 | P2 | READ | - |
+| APP-SURFACE-INTERVAL | ui_core | `surf-interval-core.js:1` | 216 | P1 | READ | - |
+| APP-SERVICE-WORKER | pwa | `sw.js:1` | 249 | P1 | READ | - |
+| APP-ZHL-WORKER-BRIDGE | worker | `zhl-worker-bridge.js:1` | 135 | P1 | READ | - |
+| APP-ZHL-WORKER | worker | `zhl-schedule-worker.js:1` | 23 | P1 | READ | - |
+| APP-DOWNLOAD | web_runtime | `download.html:1` | 119 | P3 | UNREAD | - |
+| APP-MANIFEST | pwa | `manifest.json:1` | 41 | P2 | READ | - |
+| APP-VERSION | release_config | `version.json:1` | 6 | P2 | READ | - |
+| APP-CAPACITOR-CONFIG | native_config | `capacitor.config.json:1` | 14 | P1 | READ | - |
+| APP-CLOUDFLARE-CONFIG | deploy_config | `wrangler.jsonc:1` | 14 | P2 | READ | - |
+| APP-PACKAGE | build_config | `package.json:1` | 34 | P1 | READ | - |
+| APP-NODE-VERSION | build_config | `.nvmrc:1` | 1 | P2 | READ | - |
+| NATIVE-MAIN-ACTIVITY | native_android | `android/app/src/main/java/com/threecats/lsp/dplannerplus/MainActivity.java:1` | 61 | P1 | UNREAD | - |
+| NATIVE-MANIFEST | native_android | `android/app/src/main/AndroidManifest.xml:1` | 50 | P1 | READ | - |
+| NATIVE-BUILD-ROOT | native_android | `android/build.gradle:1` | 29 | P2 | UNREAD | - |
+| NATIVE-BUILD-APP | native_android | `android/app/build.gradle:1` | 82 | P1 | UNREAD | - |
+| NATIVE-SETTINGS | native_android | `android/settings.gradle:1` | 5 | P2 | UNREAD | - |
+| NATIVE-VARIABLES | native_android | `android/variables.gradle:1` | 16 | P2 | UNREAD | - |
+| NATIVE-LAYOUT | native_android | `android/app/src/main/res/layout/activity_main.xml:1` | 12 | P2 | UNREAD | - |
+| NATIVE-FILE-PATHS | native_android | `android/app/src/main/res/xml/file_paths.xml:1` | 11 | P1 | UNREAD | - |
+| NATIVE-STRINGS | native_android | `android/app/src/main/res/values/strings.xml:1` | 7 | P2 | UNREAD | - |
+| NATIVE-STYLES | native_android | `android/app/src/main/res/values/styles.xml:1` | 26 | P2 | UNREAD | - |
+| NATIVE-COLORS | native_android | `android/app/src/main/res/values/colors.xml:1` | 7 | P3 | UNREAD | - |
+| NATIVE-LAUNCHER-BG | native_android | `android/app/src/main/res/values/ic_launcher_background.xml:1` | 4 | P3 | UNREAD | - |
+| NATIVE-DRAWABLE-BG | native_android | `android/app/src/main/res/drawable/ic_launcher_background.xml:1` | 170 | P3 | UNREAD | - |
+| NATIVE-DRAWABLE-FG | native_android | `android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml:1` | 34 | P3 | UNREAD | - |
+| NATIVE-ICON | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml:1` | 5 | P3 | UNREAD | - |
+| NATIVE-ICON-ROUND | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml:1` | 5 | P3 | UNREAD | - |
+| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 1174 | P1 | IN_PROGRESS | - |
+| TEST-ENGINE-VALIDATION | test_infrastructure | `engine_validation_regression.py:1` | 517 | P1 | READ | - |
+| TEST-CCR-VALIDATION | test_infrastructure | `dev/ccr_engine_validation_regression.py:1` | 355 | P1 | READ | - |
+| TEST-EXPORT | test_infrastructure | `export_regression.py:1` | 592 | P2 | READ | - |
+| TEST-RUN-ALL | test_infrastructure | `dev/run_all_regression.py:1` | 196 | P1 | READ | - |
+| TEST-BROWSER-RUNNER | test_infrastructure | `dev/run_browser_regression.py:1` | 163 | P2 | UNREAD | - |
+| TEST-NATIVE-RUNNER | test_infrastructure | `dev/run_native_regression.py:1` | 260 | P2 | UNREAD | - |
+| TEST-CCR-DIFF-RUNNER | test_infrastructure | `dev/run_ccr_differential.py:1` | 106 | P1 | READ | - |
+| TEST-PSCR-E2E | test_infrastructure | `dev/validate_pscr_e2e.py:1` | 426 | P1 | READ | - |
+| TEST-SW-LIFECYCLE | test_infrastructure | `dev/sw_lifecycle_test.py:1` | 62 | P1 | READ | - |
+| TEST-PLAYWRIGHT-BOOT | test_infrastructure | `dev/playwright_boot.py:1` | 54 | P2 | UNREAD | - |
+| TEST-HTTP | test_infrastructure | `dev/test_http.py:1` | 101 | P2 | UNREAD | - |
+| TEST-LEGACY | test_infrastructure | `dev/legacy.js:1` | 517 | P3 | UNREAD | - |
+| TEST-HARNESS | test_infrastructure | `lsp-test-harness.js:1` | 145 | P1 | READ | - |
+| TEST-MAIN | test_infrastructure | `tests.html:1` | 848 | P2 | UNREAD | - |
+| TEST-EXTENDED | test_infrastructure | `tests-extended.html:1` | 1312 | P2 | UNREAD | - |
+| TEST-MASSIVE | test_infrastructure | `tests-massive.html:1` | 4093 | P2 | UNREAD | - |
+| TEST-MASSIVE-MAIN | test_infrastructure | `tests-massive-main.html:1` | 3342 | P2 | UNREAD | - |
+| TEST-VERIFY | test_infrastructure | `tests-verify.html:1` | 925 | P2 | UNREAD | - |
+| TEST-PSCR-OTU-CNS | test_infrastructure | `tests-pscr-otu-cns.html:1` | 574 | P1 | UNREAD | - |
+| TEST-CCR-DIFF-HTML | test_infrastructure | `tests-ccr-differential.html:1` | 406 | P1 | READ | - |
+| TEST-NATIVE-FIXTURE | test_infrastructure | `dev/fixtures/native-select.html:1` | 18 | P2 | UNREAD | - |
+| TEST-CAP-FIXTURE | test_infrastructure | `dev/fixtures/capacitor-bridge.html:1` | 30 | P2 | UNREAD | - |
+| TEST-ANDROID-UNIT | test_infrastructure | `android/app/src/test/java/com/getcapacitor/myapp/ExampleUnitTest.java:1` | 18 | P3 | UNREAD | - |
+| TEST-ANDROID-INSTRUMENTED | test_infrastructure | `android/app/src/androidTest/java/com/getcapacitor/myapp/ExampleInstrumentedTest.java:1` | 26 | P3 | UNREAD | - |
+| TEST-CCR-DIFF-BUILD | test_infrastructure | `tests/ccr-differential/build_assets.py:1` | 626 | P2 | UNREAD | - |
+| TEST-CCR-DIFF-LIB-PY | test_infrastructure | `tests/ccr-differential/lib/ccr_open_reference.py:1` | 325 | P1 | READ | - |
+| TEST-CCR-DIFF-LIB-JS | test_infrastructure | `tests/ccr-differential/lib/ccrdiff.js:1` | 418 | P1 | READ | - |
+| TOOL-AUDIT | tooling | `audit.py:1` | 7110 | P1 | IN_PROGRESS | - |
+| TOOL-AUDIT-COVERAGE | tooling | `tools/audit_coverage.py:1` | 443 | P1 | VERIFIED | COV-01 |
+| TOOL-AUDIT-COVERAGE-TEST | test_infrastructure | `tools/test_audit_coverage.py:1` | 198 | P1 | READ | - |
+| TOOL-BUILD-PAGES | tooling | `tools/build_pages_site.py:1` | 115 | P2 | READ | - |
+| TOOL-BUILD-VPM | tooling | `tools/build_vpm_bundle.py:1` | 104 | P1 | READ | - |
+| TOOL-BUILD-ZHL | tooling | `tools/build_zhl_bundle.py:1` | 382 | P1 | READ | - |
+| TOOL-CHECK-PARITY | tooling | `tools/check_engine_parity.py:1` | 267 | P1 | READ | - |
+| TOOL-EXTRACT-UI | tooling | `tools/extract_ui_cores.py:1` | 375 | P2 | UNREAD | - |
+| TOOL-EXTRACT-ZHL | tooling | `tools/extract_zhl_core.py:1` | 124 | P2 | UNREAD | - |
+| TOOL-INSERT-ZHL | tooling | `tools/insert_zhl_tier2.py:1` | 223 | P3 | UNREAD | - |
+| TOOL-MERGE-CCR | tooling | `tools/merge_ccr_into_plus.py:1` | 477 | P3 | UNREAD | - |
+| TOOL-PATCH-DECO | tooling | `tools/patch_run_deco_schedule.py:1` | 66 | P3 | UNREAD | - |
+| TOOL-PATCH-SCHEDULE | tooling | `tools/patch_schedule_core_ccr.py:1` | 215 | P3 | UNREAD | - |
+| TOOL-PATCH-TIER3 | tooling | `tools/patch_tier3_index.py:1` | 244 | P3 | UNREAD | - |
+| TOOL-PATCH-VPM | tooling | `tools/patch_vpm_bundle_index.py:1` | 25 | P3 | UNREAD | - |
+| TOOL-PATCH-ZHL | tooling | `tools/patch_zhl_engine.py:1` | 121 | P3 | UNREAD | - |
+| TOOL-SYNC-WWW | tooling | `tools/sync_www.py:1` | 104 | P1 | READ | - |
+| TOOL-UPDATE-VERSION | tooling | `tools/update_sw_version.py:1` | 104 | P2 | READ | - |
+| TOOL-VENDOR | tooling | `tools/vendor_offline_assets.py:1` | 115 | P2 | UNREAD | - |
+| TOOL-VERIFY-ASSETS | tooling | `tools/verify_site_assets.py:1` | 132 | P2 | READ | - |
+| CI-AUDIT | ci | `.github/workflows/audit.yml:1` | 88 | P1 | READ | - |
+| CI-APK | ci | `.github/workflows/build-apk.yml:1` | 159 | P1 | READ | - |
+| CI-MAIN | ci | `.github/workflows/ci.yml:1` | 164 | P1 | READ | - |
+| CI-DEPLOY | ci | `.github/workflows/deploy.yml:1` | 119 | P1 | READ | - |
+| CI-NOTIFY | ci | `.github/workflows/notify-site.yml:1` | 45 | P2 | READ | - |

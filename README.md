@@ -104,7 +104,8 @@ All browser suites run live from the deployed app — no local setup needed for 
 
 | Script | CI tier | Scope |
 |--------|---------|-------|
-| [`audit.py`](audit.py) | CI + Release | Static analysis — structure, safety rules, regression guards (687 checks) |
+| [`audit.py`](audit.py) | CI + Release | Static analysis — structure, safety rules, regression guards (1135 checks at v2.53.03) |
+| [`tools/audit_coverage.py`](tools/audit_coverage.py) | CI + Release | Audit registry integrity, source inventory, fingerprints, evidence, and generated coverage reports |
 | [`dev/run_all_regression.py`](dev/run_all_regression.py) | Both | Unified orchestrator — `--tier ci` (4 suites) or `--tier release` (9 suites) |
 | [`dev/run_browser_regression.py`](dev/run_browser_regression.py) | CI | Playwright runner — `tests-verify.html` + `tests-pscr-otu-cns.html` |
 | [`dev/run_native_regression.py`](dev/run_native_regression.py) | Release | Android select picker + Capacitor blob-export bridge (Playwright) |
@@ -138,7 +139,7 @@ Build sources (not loaded at runtime): `zhl-physics-core.js` · `zhl-gas-core.js
 Bundle rebuild: `npm run build:bundles` or `tools/build_zhl_bundle.py` · `tools/build_vpm_bundle.py`  
 Engine parity check: `npm run check:engine-parity`  
 Audit mirror rule: [`docs/AUDIT_MIRROR_RULE.md`](docs/AUDIT_MIRROR_RULE.md)  
-Audit strategy & coverage: [`docs/codebase-audit-strategy-v2.md`](docs/codebase-audit-strategy-v2.md) · [`docs/audit-coverage.md`](docs/audit-coverage.md) · [`docs/audit-master-plan.md`](docs/audit-master-plan.md)
+Audit environment: [`docs/audit-units.json`](docs/audit-units.json) · [`docs/audit-master-plan.md`](docs/audit-master-plan.md) · [`docs/audit-coverage.md`](docs/audit-coverage.md) · [`docs/codebase-audit-strategy-v2.md`](docs/codebase-audit-strategy-v2.md)
 
 **DOM adapter (index.html only):** `getCCRSettingsFromDOM` + `mergeCCRSettings` read UI state; all Bühlmann/CCR physics delegate to `ZhlEngineBundle`.
 

@@ -57,6 +57,11 @@ jobs:
       - name: Build Pages site (_pages/)
         run: python tools/build_pages_site.py
 
+      - name: Validate audit coverage registry
+        run: |
+          python -m unittest tools/test_audit_coverage.py
+          python tools/audit_coverage.py --check
+
       - name: Run audit.py
         run: python audit.py index.html
 

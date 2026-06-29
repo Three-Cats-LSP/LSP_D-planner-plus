@@ -30,6 +30,24 @@ jobs:
           python tools/check_engine_parity.py
           git diff --exit-code zhl-engine-bundle.js vpm-engine-bundle.js
 
+  audit-coverage:
+    name: Audit registry integrity
+    needs: [bundle-sync]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Test and validate audit registry
+        run: |
+          python -m unittest tools/test_audit_coverage.py
+          python tools/audit_coverage.py --check
+
   audit:
     name: Static audit
     needs: [bundle-sync]

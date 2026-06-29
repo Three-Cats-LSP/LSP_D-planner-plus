@@ -749,7 +749,7 @@ ENGINE_SUITE_JS = r"""
   out.sections.issue134 = (() => {
     const b = window.ZhlEngineBundle;
     const domFn = typeof validateDomDecoGases === 'function' ? validateDomDecoGases.toString() : '';
-    const c1Ok = domFn.length > 0 && !/validateHypoxicDecoGas\s*\(\s*bot\.o2/.test(domFn);
+    const c1Ok = domFn.length > 0 && !/validateHypoxicDecoGas\\s*\\(\\s*bot\\.o2/.test(domFn);
     const gfH = b && typeof b.gfAtDepth === 'function' ? b.gfAtDepth(30, 30, 85, 0, 3, false) : null;
     const h1Ok = gfH === 85;
     const ppo2Val = b && typeof b.ppO2Check === 'function' ? b.ppO2Check(30, 0.79, 0) : null;
@@ -773,12 +773,12 @@ ENGINE_SUITE_JS = r"""
   out.sections.issue135 = (() => {
     const b = window.ZhlEngineBundle;
     const ppFn = typeof ppO2Check === 'function' ? ppO2Check.toString() : '';
-    const h6Ok = ppFn.length > 0 && !/\.toFixed\(2\)/.test(ppFn.split('return')[1] || '');
+    const h6Ok = ppFn.length > 0 && !/\\.toFixed\\(2\\)/.test(ppFn.split('return')[1] || '');
     const ppo2Val = typeof ppO2Check === 'function' ? ppO2Check(30, 0.79, 0) : null;
     const h6NumOk = typeof ppo2Val === 'number' && Number.isFinite(ppo2Val);
     const rcsFn = typeof runContingencyScenario === 'function' ? runContingencyScenario.toString() : '';
-    const h1Ok = /let ok = false/.test(rcsFn) && /ok:\s*false/.test(rcsFn);
-    const h8Ok = /parseRunMinutes\(stopTxt\)/.test(rcsFn);
+    const h1Ok = /let ok = false/.test(rcsFn) && /ok:\\s*false/.test(rcsFn);
+    const h8Ok = /parseRunMinutes\\(stopTxt\\)/.test(rcsFn);
     const rdFn = typeof runDecoSchedule === 'function' ? runDecoSchedule.toString() : '';
     const m2Ok = /!_contingencyRunning/.test(rdFn.split('validateDecoInputs', 1)[0] || rdFn.slice(0, 800));
     const repFn = typeof saveZhlRepState === 'function' ? saveZhlRepState.toString() : '';
@@ -1055,7 +1055,7 @@ def run_suite(page) -> dict:
     assert_true(i112.get("ok"), "validatePlannerInputs rejects BT shorter than descent (issue #112 L-3)", str(i112))
 
     i113s = s.get("issue113Setpoint", {})
-    assert_true(i113s.get("ok"), "CCR setpoint zones: descSP shallow, decoSP at 10 m (issue #113 / #128 C-01)", str(i113s))
+    assert_true(i113s.get("ok"), "[AUDIT-REG-02] CCR setpoint zones: descSP shallow, decoSP at 10 m (issue #113 / #128 C-01)", str(i113s))
     i113n = s.get("issue113N2Clamp", {})
     assert_true(i113n.get("ok"), "getN2Frac custom clamps O2>100 to fN2=0 (issue #113 M-7)", str(i113n))
     i113h = s.get("issue113HypoxicDeco", {})
@@ -1081,7 +1081,7 @@ def run_suite(page) -> dict:
     i122r = s.get("issue122IdReuse", {})
     assert_true(i122r.get("ok"), "deco card IDs reuse slots 3–8 and dg8 values persist (issue #122 ID reuse)", str(i122r))
     i128 = s.get("issue128", {})
-    assert_true(i128.get("ok"), "CCR setpoint at depth + trimix inert PP paths (issue #128 C-01/C-02)", str(i128))
+    assert_true(i128.get("ok"), "[AUDIT-REG-01] CCR setpoint at depth + trimix inert PP paths (issue #128 C-01/C-02)", str(i128))
     i123 = s.get("issue123", {})
     assert_true(i123.get("ok"), "issue #123 engine audit fixes (CCR shallow/pSCR/VPM)", str(i123))
     i124 = s.get("issue124", {})
@@ -1095,11 +1095,11 @@ def run_suite(page) -> dict:
     assert_true(i134.get("c1Ok"), "issue #134 C-1: bottom/CCR hypoxic gas not blocked in DOM validation", str(i134))
     assert_true(i134.get("h1Ok"), "issue #134 H-1: gfAtDepth returns gfH when firstStopDepth=0", str(i134))
     assert_true(i134.get("m7Ok"), "issue #134 M-7: ppO2Check returns numeric value", str(i134))
-    assert_true(i134.get("shallowNdlOk"), "issue #134 L-6: shallowGradient changes buhNDL", str(i134))
+    assert_true(i134.get("shallowNdlOk"), "[AUDIT-REG-05] issue #134 L-6: shallowGradient changes buhNDL", str(i134))
     assert_true(i134.get("saveGuard"), "issue #134 M-4: appSettings.save guards _restoreInProgress", str(i134))
     i135 = s.get("issue135", {})
     assert_true(i135.get("h1Ok"), "issue #135 H-1: contingency returns ok:false on empty schedule", str(i135))
-    assert_true(i135.get("h6Ok"), "issue #135 H-6: ppO2Check delegate returns number", str(i135))
+    assert_true(i135.get("h6Ok"), "[AUDIT-REG-03] issue #135 H-6: ppO2Check preserves numeric precision", str(i135))
     assert_true(i135.get("h8Ok"), "issue #135 H-8: contingency uses parseRunMinutes for stop time", str(i135))
     assert_true(i135.get("m2Ok"), "issue #135 M-2: runDecoSchedule skips validation during contingency", str(i135))
     assert_true(i135.get("h4Ok"), "issue #135 H-4: saveZhlRepState persists CNS/OTU", str(i135))

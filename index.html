@@ -1,3 +1,4 @@
+<!-- AUDIT-UNIT:UI-BOOT -->
 <!DOCTYPE html>
 
 <html lang="en">
@@ -28,6 +29,7 @@
 <link href="icon-192.png" rel="icon" type="image/png"/>
 <link href="icon-192.png" rel="apple-touch-icon"/>
 <link href="vendor/fonts/fonts.css" rel="stylesheet"/>
+<!-- AUDIT-UNIT:UI-CSS-FOUNDATION -->
 <style>
 /* ═══════════════════════════════════════════
  SHARED DESIGN TOKENS
@@ -398,6 +400,7 @@ body.rec-mode #gfCustomRow select { opacity: 0.5 !important;
  cursor: not-allowed !important;
 }
 
+/* AUDIT-UNIT:UI-CSS-MODES */
 /* Tools mode - gray out only Water and GF, keep Training/REF bright */
 body.algo-tools #waterRow { opacity: 0.4 !important;
  pointer-events: none !important;
@@ -766,6 +769,7 @@ body.algo-buh .buh-only { display: flex !important; }
 }
 
 /* ── UNIT / SEG CONTROLS ── */
+/* AUDIT-UNIT:UI-CSS-CONTROLS */
 .ctrl-row { display: flex;
  align-items: center;
  gap: 12px;
@@ -1219,6 +1223,7 @@ body.light-theme .ok { background:#f0fff4; border-color:#116622; color:#116622; 
 .t-col { display:flex; flex-direction:column; align-items:center; gap:4px; }
 
 /* ── DECO TABLE ── */
+/* AUDIT-UNIT:UI-CSS-RESULTS */
 .deco-table-wrap {
  display: block;
  width: max-content;
@@ -1629,6 +1634,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </style>
 <!-- jsPDF: vendored locally — defer so app startup is not blocked on CDN -->
 <!-- App version (single source of truth — also importScripts'd by sw.js) -->
+<!-- AUDIT-UNIT:UI-MARKUP-HEADER -->
 <script src="app-version.js"></script>
 <script src="capacitor-bridge.js"></script>
 <script src="zhl-engine-bundle.js"></script>
@@ -2182,6 +2188,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 </div><!-- end always-visible form-grid -->
 <!-- ── Advanced Settings (collapsible) ─────────────────────────────── -->
+<!-- AUDIT-UNIT:UI-MARKUP-PLANNER -->
 <div id="advancedSettingsSection" style="margin-top:6px;">
 <button id="advancedSettingsToggle" onclick="toggleAdvancedSettings()" onmouseenter="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseleave="this.style.borderColor='var(--border)';this.style.color='var(--muted)'" style="display:flex;align-items:center;gap:7px;width:100%;background:none;border:1px solid var(--border);
                border-radius:6px;padding:7px 12px;cursor:pointer;color:var(--muted);font-family:inherit;
@@ -2717,6 +2724,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div></div>
 </div>
 <!-- ── Gas Consumption ── -->
+<!-- AUDIT-UNIT:UI-MARKUP-CONSUMPTION -->
 <div id="gasConsumptionSummary" style="display:none;"></div>
 <!-- ── Contingency Plans ── -->
 <div class="card collapsible card-open" id="contingencyCard" style="display:none;">
@@ -3211,6 +3219,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 <!-- ── VPM-B Physics ─────────────────────────────────────── -->
 <div class="u21">
+<!-- AUDIT-UNIT:UI-MARKUP-TOOLS -->
 <div class="u18">VPM-B Physics</div>
 <div class="info-box"><strong>Critical radii:</strong> each tissue has initial bubble nuclei radii for N₂ and He. Descent compresses (crushes) them. During ascent, allowable supersaturation is derived from bubble mechanics — smaller radii = more conservative stops.</div>
 <div class="info-box"><strong>Altitude correction:</strong> at altitude, reduced surface pressure expands initial radii by (P_SL / P_alt)^⅓ — making nuclei larger and requiring more conservative ascents. Applied automatically when altitude &gt; 0.</div>
@@ -3441,6 +3450,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 </div>
 <!-- Gas Rule Info Modal -->
+<!-- AUDIT-UNIT:UI-MARKUP-MODALS -->
 <div id="gasRuleModal" class="lsp-modal-overlay" onclick="if(event.target===this)closeGasRuleInfo()" style="display:none;z-index:9500;background:rgba(0,0,0,0.72);">
 <div style="max-width:460px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:12px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);margin:12px auto;">
 <div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;">⛽ Gas Management Rules</div>
@@ -3781,6 +3791,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 </div><!-- /app -->
 <script>
+// AUDIT-UNIT:UI-RUNTIME-BOOTSTRAP
 // ═══════════════════════════════════════════════
 // BÜHLMANN ZH-L16C DATA
 // ═══════════════════════════════════════════════
@@ -4041,6 +4052,7 @@ const WATER_DENSITY = {
   en13319:  0.09921,  // 10.080 m/bar — EN13319 standard (DiveKit/MultiDeco)
   salt:     0.10000,  // 10.000 m/bar — industry standard (MultiDeco/DiveKit/ApexDeco)
 };
+// AUDIT-UNIT:UI-ENVIRONMENT
 // NOTE: WATER_DENSITY values are canonical m/bar-derived constants matching MultiDeco/DiveKit:
 //   salt:    10.000 m/bar = 0.10000 bar/m (MultiDeco/DiveKit/ApexDeco standard)
 //   fresh:   10.330 m/bar = 0.09681 bar/m
@@ -4393,6 +4405,7 @@ function appendHeHtSyncAlert(container) {
 }
 let _pendingDecoAlerts = '';
 let _travelGasFractionWarning = '';
+// AUDIT-UNIT:UI-MODE-STATE
 function renderDecoAlerts(container, cnsHtml) {
   if (!container) return;
   refreshTravelGasFractionWarning();
@@ -4772,6 +4785,7 @@ function loadThemePreference() {
 // ═══════════════════════════════════════════════
 // GF SELECTOR
 // ═══════════════════════════════════════════════
+// AUDIT-UNIT:UI-ALGORITHM-SETTINGS
 function setDecoAlgorithm(model, skipSave) {
   const isVPMB    = model === 'VPMB';
   const isVPMBGFS = model === 'VPMB_GFS';
@@ -5123,6 +5137,7 @@ function switchTab(name, btn) {
 }
 
 // ═══════════════════════════════════════════════
+// AUDIT-UNIT:UI-UNIT-HELPERS
 // UNIT HELPERS
 // ═══════════════════════════════════════════════
 function mToFt(m)    { return Math.round(m * 3.28084); }
@@ -5510,6 +5525,7 @@ function _dpbGasChipClass(gas) {
   return 'dpb-chip--deco';
 }
 
+// AUDIT-UNIT:UI-PLAN-HEADER
 function renderDecoPlanHeaderHtml(data, opts) {
   opts = opts || {};
   data = data || buildDecoPlanHeaderData();
@@ -5958,6 +5974,7 @@ function injectTtsCells(tbodyId, rtAtBottomEnd) {
   });
 }
 
+// AUDIT-UNIT:UI-UNIT-SWITCHING
 function setUnits(u, opts) {
   opts = opts || {};
   const relabelOnly = !!opts.relabelOnly;
@@ -6267,6 +6284,7 @@ function autoSlashGF(input) {
 // ═══════════════════════════════════════════════
 // BÜHLMANN PHYSICS — delegates to ZhlEngineBundle (zhl-physics-core.js)
 // ═══════════════════════════════════════════════
+// AUDIT-UNIT:UI-ZHL-DELEGATES
 function _syncZhlBundleEnv(extra) {
   if (!window.ZhlEngineBundle) return;
   ZhlEngineBundle.applyEnvironment(Object.assign({
@@ -6390,6 +6408,7 @@ function mergeCCRSettings(settings) {
   return raw;
 }
 
+// AUDIT-UNIT:UI-CCR-DELEGATES
 function canonicalCircuit(circuit) { _syncZhlBundleEnv(); return ZhlEngineBundle.canonicalCircuit(circuit); }
 function isRebreatherCircuit(circuit) { _syncZhlBundleEnv(); return ZhlEngineBundle.isRebreatherCircuit(circuit); }
 function depthAtSetpointCrossing(setpoint, surfP) { _syncZhlBundleEnv(); return ZhlEngineBundle.depthAtSetpointCrossing(setpoint, surfP); }
@@ -6743,6 +6762,7 @@ if (typeof window !== 'undefined') {
   window.validateCcrGasConfiguration = validateCcrGasConfiguration;
 }
 
+// AUDIT-UNIT:UI-DECO-PHYSICS
 function ceiling(tissues, gfHigh) { _syncZhlBundleEnv(); return ZhlEngineBundle.ceiling(tissues, gfHigh); }
 
 // ── Decozone start (GF-INDEPENDENT) ──────────────────────────────────────────
@@ -6964,6 +6984,7 @@ function safetyStopHTML(depthM, depthFt, dur) {
 // ═══════════════════════════════════════════════
 // NDL TABLE
 // ═══════════════════════════════════════════════
+// AUDIT-UNIT:UI-SCHEDULE-INPUTS
 function renderNDLTable() {
   if (window._zhlHeadless) return; // skip during headless test execution
   const isM  = ndlUnits === 'metric';
@@ -7295,6 +7316,7 @@ function closeConfirmModal(ok) {
 }
 
 // ── Env Settings collapse (Water / Units / Altitude / Acclimatized) ─────────
+// AUDIT-UNIT:UI-SETTINGS-CONTROLS
 function toggleEnvSettings(forceOpen) {
   const body     = document.getElementById('envSettingsBody');
   const btn      = document.getElementById('envSettingsToggle');
@@ -7610,6 +7632,7 @@ function clearZhlRepState() {
 }
 // ───────────────────────────────────────────────────────────────────────────────
 
+// AUDIT-UNIT:UI-VPM-RUNNER
 function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, surfaceAscentRate,
                         stepSize, lastStop, minStopTime, ppo2Bottom, ppo2Deco, model) {
   // Headless mode: skip all VPM computation and DOM rendering
@@ -7770,6 +7793,7 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
   renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct, decoGases, model, _vpmBotFracs);
 }
 
+// AUDIT-UNIT:UI-VPM-RENDER
 function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct, decoGases, model, _vpmBotFracs) {
   const dU = units === 'metric';
   const du = dU ? 'm' : 'ft';
@@ -8281,6 +8305,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
 
 
 // Collect all deco gas IDs from DOM (both pre-built and dynamic cards)
+// AUDIT-UNIT:UI-GAS-INPUTS
 function getAllDecoGasIds() {
   const ids = [];
   document.querySelectorAll('.deco-gas-card').forEach(card => {
@@ -8464,6 +8489,7 @@ function defaultDecoCylFieldValues() {
   };
 }
 
+// AUDIT-UNIT:UI-GAS-CARDS
 function appendDecoGasCardAtIdx(idx) {
   if (idx <= 2 || idx > _DG_MAX || document.getElementById(`dgCard_${idx}`)) return;
   if (_dgCardCount() >= _DG_MAX) return;
@@ -9022,6 +9048,7 @@ function applyZhlSwitchDepthDisplays(switchDisplays) {
   });
 }
 
+// AUDIT-UNIT:UI-ZHL-RUNNER-SETUP
 function runZhlScheduleCore(params) {
   if (!params.environment) {
     params = Object.assign({}, params, { environment: getZhlEnvironment() });
@@ -9137,6 +9164,7 @@ function runDecoSchedule() {
   }
 
   // ── Bühlmann via Tier-3 unified core (OC + CCR) ───────────────────────
+  // AUDIT-UNIT:UI-ZHL-RUNNER-ENGINE
   const { params: zhlParams, switchDisplays } = buildZhlScheduleParamsFromDom(rawD, depthM, bt);
   zhlParams.ccr = mergeCCRSettings(_ccrSettings);
   zhlParams.onLoop = _zhlOnLoop;
@@ -9474,6 +9502,7 @@ function runDecoSchedule() {
   // ── TTS baseline: snapshot rowRT here — this is exactly descent+bottom time.
   // TTS (time-to-surface) is everything from this point to the final rowRT,
   // i.e. ascent+deco only. Matches MultiDeco/DiveKit's published TTS definition.
+  // AUDIT-UNIT:UI-ZHL-RESULTS
   const rtAtBottomEnd = rowRT;
 
   collapsedMDP.forEach(s => {
@@ -9961,6 +9990,7 @@ function validateGasFractionsPct(o2, he, field) {
 }
 
 /** Percent (0–100) → fraction (0–1); missing He matches validateGasFractionsPct (0). */
+// AUDIT-UNIT:UI-ZHL-HEADLESS-HELPERS
 function gasFractionsFromPct(o2, he) {
   const o = Number(o2);
   const h = (he == null || he === '') ? 0 : Number(he);
@@ -10128,6 +10158,7 @@ if (typeof window !== 'undefined') window.validateZhlHeadlessProfile = validateZ
 // Tier 3: ZhlEngineBundle (sync OC + CCR) + ZhlWorkerBridge (async OC + CCR)
 // Provides the same calculate(levels, gases, settings) interface as VPMEngine for tests.
 // ═══════════════════════════════════════════════
+// AUDIT-UNIT:UI-ZHL-HEADLESS-ENGINE
 const ZHLEngine = (() => {
   function mergeRepSettings(settings) {
     const s = settings || {};
@@ -10496,6 +10527,7 @@ function spawnBubbles() {
 }
 
 // ═══════════════════════════════════════════════
+// AUDIT-UNIT:UI-PLOT-INIT
 // INIT
 // ═══════════════════════════════════════════════
 spawnBubbles();
@@ -10590,6 +10622,7 @@ function _graphZoomApply(canvasId, data) {
   }
 }
 
+// AUDIT-UNIT:UI-PLOT-RENDER
 function _drawDiveProfileCore(canvasId, waypoints, opts) {
   // waypoints: [{t, depth, type, label, ppo2, cns}]
   // opts: { maxDepth, totalTime, isLight }
@@ -11029,6 +11062,7 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
 }
 
 // ─── Build waypoints from Dive Planner (Rec mode) ───────────────────────────
+// AUDIT-UNIT:UI-PLOT-WAYPOINTS
 function drawPlannerProfile() {
   const canvas = document.getElementById('plannerProfileCanvas');
   if (!canvas) return;
@@ -11551,6 +11585,7 @@ function toggleTissueChart() {
   if (card) { const t = card.querySelector('.card-title'); if (t) toggleCard(t); }
 }
 
+// AUDIT-UNIT:UI-TOOLS-TISSUES
 function renderTissueLoadChart() {
   const card = document.getElementById('tissueLoadCard');
   const chartEl = document.getElementById('tissueLoadChart');
@@ -11855,6 +11890,7 @@ function initTools() {
 // NOAA day-boundary rule: OTU resets if last dive ended > 24 h ago.
 // CNS decays with 90-min half-life regardless of day boundary.
 // Both values are picked up by runDecoSchedule via window._priorDiveCarry.
+// AUDIT-UNIT:UI-TOOLS-EXPOSURE
 function updatePriorDiveCarry() {
   const days    = parseFloat(document.getElementById('priorDiveDays')?.value)    || 0;
   const hours   = parseFloat(document.getElementById('priorDiveHours')?.value)   || 0;
@@ -12075,6 +12111,7 @@ function calcCNS() {
 // GF CURVE VISUALIZER
 // ═══════════════════════════════════════════════
 
+// AUDIT-UNIT:UI-TOOLS-GF
 function drawGFCurve() {
   const canvas = document.getElementById('gfCurveCanvas');
   if (!canvas) return;
@@ -12288,6 +12325,7 @@ function drawGFCurve() {
 const _graphOpts = {};
 
 // Wrapper stores opts for hover interaction then calls core renderer
+// AUDIT-UNIT:UI-TOOLS-PROFILE
 function drawDiveProfile(canvasId, waypoints, opts) {
   _drawDiveProfileCore(canvasId, waypoints, opts);
   _graphOpts[canvasId] = { waypoints, opts };
@@ -12653,6 +12691,7 @@ function attachGFCurveInteraction() {
 // SETTINGS PERSISTENCE - Remember Last Values
 // ═══════════════════════════════════════════════
 
+// AUDIT-UNIT:UI-SETTINGS
 var appSettings = {
   _loaded: false,
   _loadPending: false,
@@ -12992,6 +13031,7 @@ var appSettings = {
 const LSP_PROFILE_PRESETS_KEY = 'lspProfilePresets';
 const LSP_PROFILE_PRESETS_MAX = 20;
 
+// AUDIT-UNIT:UI-PROFILE-PRESETS
 function getProfilePresets() {
   try { const r = localStorage.getItem(LSP_PROFILE_PRESETS_KEY); const a = r ? JSON.parse(r) : []; return Array.isArray(a) ? a : []; } catch(e) { return []; }
 }
@@ -13365,6 +13405,7 @@ function deleteConfigPreset(idx) {
 const LSP_PRESETS_KEY = 'lspPresets';
 const LSP_PRESETS_MAX = 20;
 
+// AUDIT-UNIT:UI-CONFIG-PRESETS
 function getPresets() {
   try {
     const raw = localStorage.getItem(LSP_PRESETS_KEY);
@@ -13536,6 +13577,7 @@ window.addEventListener('beforeunload', function() {
 });
 
 // Load settings when page loads
+// AUDIT-UNIT:UI-APP-INIT
 function showEngineLoadErrorBanner() {
   let el = document.getElementById('lspEngineErrorBanner');
   if (!el) {
@@ -13704,6 +13746,7 @@ window.addEventListener('load', function() {
 </script>
 <!-- PWA: service worker registration -->
 <script>
+// AUDIT-UNIT:UI-PWA-LIFECYCLE
   function isAutomatedTestMode() {
     const q = new URLSearchParams(location.search);
     return q.get('regression') === '1' || q.get('massiveSuite') === '1';
