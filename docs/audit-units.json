@@ -343,13 +343,14 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ENVIRONMENT"
       },
       "fingerprint": "256146aa2fe3437facd7b661fe8a57344917cd76d571f1282526ada403358676",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "256146aa2fe3437facd7b661fe8a57344917cd76d571f1282526ada403358676",
+      "audit_issue": 139
     },
     {
       "id": "UI-MODE-STATE",
@@ -369,13 +370,14 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ALGORITHM-SETTINGS"
       },
       "fingerprint": "d55151e1ffc84bb6526e51966932fd29558891d5e03d575ff3206dc309b0dd6d",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "d55151e1ffc84bb6526e51966932fd29558891d5e03d575ff3206dc309b0dd6d",
+      "audit_issue": 139
     },
     {
       "id": "UI-UNIT-HELPERS",
@@ -421,15 +423,16 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-DELEGATES"
       },
       "fingerprint": "143a6cc331b891a1511168a0c02b3e74635ab4a6929efb7d204429ac572643d8",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "143a6cc331b891a1511168a0c02b3e74635ab4a6929efb7d204429ac572643d8",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 139
     },
     {
       "id": "UI-CCR-DELEGATES",
@@ -449,60 +452,64 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-DECO-PHYSICS"
       },
       "fingerprint": "395140fc42c8484714db22a8dbf2976d8d7ce820cd8a12e60267e2edd5f3cb6b",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "395140fc42c8484714db22a8dbf2976d8d7ce820cd8a12e60267e2edd5f3cb6b",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 139
     },
     {
       "id": "UI-SCHEDULE-INPUTS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SCHEDULE-INPUTS"
       },
       "fingerprint": "3886260fe01c43c6484906bfa1db25518f743893be2748b5454b01791da70820",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "3886260fe01c43c6484906bfa1db25518f743893be2748b5454b01791da70820",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 139
     },
     {
       "id": "UI-SETTINGS-CONTROLS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS-CONTROLS"
       },
       "fingerprint": "6730498741d965b06411b913a120eea9b94653949bd505f2ca7e5f35e6f2e83e",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "6730498741d965b06411b913a120eea9b94653949bd505f2ca7e5f35e6f2e83e",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 139
     },
     {
       "id": "UI-VPM-RUNNER",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RUNNER"
       },
       "fingerprint": "568e4f193e527bd9de926b15b346c770d219c78b2ddfb579f5ff32cd12d5fd43",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "568e4f193e527bd9de926b15b346c770d219c78b2ddfb579f5ff32cd12d5fd43",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 139
     },
     {
       "id": "UI-VPM-RENDER",
@@ -550,52 +557,55 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-SETUP"
       },
       "fingerprint": "ffa9a1e362f552b619026cbe68db84f259d69059712e0077a80c80f723f9d93b",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "ffa9a1e362f552b619026cbe68db84f259d69059712e0077a80c80f723f9d93b",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 139
     },
     {
       "id": "UI-ZHL-RUNNER-ENGINE",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-ENGINE"
       },
       "fingerprint": "8f770fc4fbe9a58e7ab3f190737cdc4670c5a82d348901765a7ef9e7ee0d6ff4",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "8f770fc4fbe9a58e7ab3f190737cdc4670c5a82d348901765a7ef9e7ee0d6ff4",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 139
     },
     {
       "id": "UI-ZHL-RESULTS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
       "fingerprint": "d299bf21ac70661ed0cd6d08bfe1a91777dc89148db5a8dba68aac92b006669a",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "d299bf21ac70661ed0cd6d08bfe1a91777dc89148db5a8dba68aac92b006669a",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 139
     },
     {
       "id": "UI-ZHL-HEADLESS-HELPERS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-HEADLESS-HELPERS"
@@ -604,14 +614,15 @@
       "evidence": [],
       "issue": "Audit #134",
       "fingerprint": "210b7810ce80db6323e9636b809724192751e9fc1aa02d9c3c2493632e9625d9",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "210b7810ce80db6323e9636b809724192751e9fc1aa02d9c3c2493632e9625d9",
+      "audit_issue": 139
     },
     {
       "id": "UI-ZHL-HEADLESS-ENGINE",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-HEADLESS-ENGINE"
@@ -620,7 +631,8 @@
       "evidence": [],
       "issue": "Audit #134",
       "fingerprint": "1d22bcc6fed862574235fb2392688e0d19fe85b62e13ab94c4b10b6c40ab4b9e",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "1d22bcc6fed862574235fb2392688e0d19fe85b62e13ab94c4b10b6c40ab4b9e",
+      "audit_issue": 139
     },
     {
       "id": "UI-PLOT-INIT",
@@ -718,13 +730,14 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS"
       },
       "fingerprint": "0922390b58821920092f11fab65633c7aba275e2e3ff9e25add9160522862b75",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "0922390b58821920092f11fab65633c7aba275e2e3ff9e25add9160522862b75",
+      "audit_issue": 139
     },
     {
       "id": "UI-PROFILE-PRESETS",
@@ -757,15 +770,16 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-APP-INIT"
       },
       "fingerprint": "e1685f2940151c7ebe3ca118fc81e9ae650145145664ed401676f79919fe76e4",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "e1685f2940151c7ebe3ca118fc81e9ae650145145664ed401676f79919fe76e4",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 139
     },
     {
       "id": "UI-PWA-LIFECYCLE",
@@ -797,14 +811,15 @@
       "path": "zhl-gas-core.js",
       "layer": "engine",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "2a5f62b8c5f0b9fce7e19c6f65362ba69bd6077da5244ed19aeb657c3fbabcbc",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "2a5f62b8c5f0b9fce7e19c6f65362ba69bd6077da5244ed19aeb657c3fbabcbc",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 139
     },
     {
       "id": "ENG-ZHL-CCR",
@@ -826,28 +841,30 @@
       "path": "zhl-schedule-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "6708b8ea4fad80422994c32f168e6a656d08b4d98373db567614b593abff5270",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "6708b8ea4fad80422994c32f168e6a656d08b4d98373db567614b593abff5270",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 139
     },
     {
       "id": "ENG-VPM",
       "path": "vpm-engine-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "da203db761b79c01ca353997645ff85dad50baae3bb2d0920239a1e9b5b98462",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "da203db761b79c01ca353997645ff85dad50baae3bb2d0920239a1e9b5b98462",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 139
     },
     {
       "id": "ENG-VPM-REFERENCE",
