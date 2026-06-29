@@ -138,7 +138,7 @@ Build sources (not loaded at runtime): `zhl-physics-core.js` · `zhl-gas-core.js
 Bundle rebuild: `npm run build:bundles` or `tools/build_zhl_bundle.py` · `tools/build_vpm_bundle.py`  
 Engine parity check: `npm run check:engine-parity`  
 Audit mirror rule: [`docs/AUDIT_MIRROR_RULE.md`](docs/AUDIT_MIRROR_RULE.md)  
-Audit strategy & coverage: [`docs/codebase-audit-strategy-v2.md`](docs/codebase-audit-strategy-v2.md) · [`docs/audit-coverage.md`](docs/audit-coverage.md)
+Audit strategy & coverage: [`docs/codebase-audit-strategy-v2.md`](docs/codebase-audit-strategy-v2.md) · [`docs/audit-coverage.md`](docs/audit-coverage.md) · [`docs/audit-master-plan.md`](docs/audit-master-plan.md)
 
 **DOM adapter (index.html only):** `getCCRSettingsFromDOM` + `mergeCCRSettings` read UI state; all Bühlmann/CCR physics delegate to `ZhlEngineBundle`.
 

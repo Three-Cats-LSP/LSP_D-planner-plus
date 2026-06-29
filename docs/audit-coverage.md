@@ -6,7 +6,7 @@
 
 **Update protocol:** At the end of each audit cycle (or UI extraction PR that passes `audit.py` + regression), update statuses here and add a changelog row.
 
-**Related docs:** [codebase-audit-strategy-v2.md](codebase-audit-strategy-v2.md) · [AUDIT_MIRROR_RULE.md](AUDIT_MIRROR_RULE.md)
+**Related docs:** [codebase-audit-strategy-v2.md](codebase-audit-strategy-v2.md) · [audit-master-plan.md](audit-master-plan.md) · [AUDIT_MIRROR_RULE.md](AUDIT_MIRROR_RULE.md)
 
 **Last updated:** 2026-06-29 (initial seed + UI extraction)
 
