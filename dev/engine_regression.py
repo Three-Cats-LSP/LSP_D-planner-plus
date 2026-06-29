@@ -258,11 +258,13 @@ ENGINE_SUITE_JS = """
   })();
 
   // ── E5: buhNDL GF High sensitivity (issue #106 M-1) ───────────────────
-  out.sections.buhNdlGf = {
-    ndl70: buhNDL(18, 0.79, 30, 70),
-    ndl85: buhNDL(18, 0.79, 30, 85),
-    ndl95: buhNDL(18, 0.79, 30, 95),
-  };
+  out.sections.buhNdlGf = (() => {
+    if (typeof buhNDL !== 'function') return { ok: false, ndl70: null, ndl85: null, ndl95: null };
+    const ndl70 = buhNDL(18, 0.79, 30, 70);
+    const ndl85 = buhNDL(18, 0.79, 30, 85);
+    const ndl95 = buhNDL(18, 0.79, 30, 95);
+    return { ok: true, ndl70, ndl85, ndl95 };
+  })();
 
   // ── E6: VPM surface interval validation (issue #106 M-2) ───────────────
   out.sections.vpmSiValidate = (() => {
@@ -713,8 +715,8 @@ ENGINE_SUITE_JS = """
   // ── E10j: issue #133 audit fixes ───────────────────────────────────────
   out.sections.issue133 = (() => {
     const b = window.ZhlEngineBundle;
-    const gfL = b && typeof b.gfAtDepth === 'function' ? b.gfAtDepth(30, 30, 85, 0, 3, false) : null;
-    const h1Ok = gfL === 30;
+    const gfH = b && typeof b.gfAtDepth === 'function' ? b.gfAtDepth(30, 30, 85, 0, 3, false) : null;
+    const h1Ok = gfH === 85;
     const hypo = b && typeof b.validateHypoxicDecoGas === 'function'
       ? b.validateHypoxicDecoGas(15, 45, 'dg1') : null;
     const c2Ok = hypo && hypo.ok === false;
@@ -741,6 +743,30 @@ ENGINE_SUITE_JS = """
       : false;
     const vpmSnap = false;
     return { h1Ok, c2Ok, l2Ok, c4Ok, wrapGas, ok: h1Ok && c2Ok && l2Ok && c4Ok && wrapGas };
+  })();
+
+  // ── E10k: issue #134 audit fixes ───────────────────────────────────────
+  out.sections.issue134 = (() => {
+    const b = window.ZhlEngineBundle;
+    const domFn = typeof validateDomDecoGases === 'function' ? validateDomDecoGases.toString() : '';
+    const c1Ok = domFn.length > 0 && !/validateHypoxicDecoGas\s*\(\s*bot\.o2/.test(domFn);
+    const gfH = b && typeof b.gfAtDepth === 'function' ? b.gfAtDepth(30, 30, 85, 0, 3, false) : null;
+    const h1Ok = gfH === 85;
+    const ppo2Val = b && typeof b.ppO2Check === 'function' ? b.ppO2Check(30, 0.79, 0) : null;
+    const m7Ok = typeof ppo2Val === 'number' && Number.isFinite(ppo2Val);
+    const sg = document.getElementById('shallowGradient');
+    const prevSg = sg ? sg.value : null;
+    let shallowNdlOk = false;
+    if (b && typeof b.gfAtDepth === 'function') {
+      const gfOff = b.gfAtDepth(3, 0.3, 0.85, 9, 3, false);
+      const gfOn = b.gfAtDepth(3, 0.3, 0.85, 9, 3, true);
+      shallowNdlOk = gfOff !== gfOn;
+    }
+    const saveGuard = typeof appSettings !== 'undefined' && String(appSettings.save).includes('_restoreInProgress');
+    return {
+      c1Ok, h1Ok, m7Ok, shallowNdlOk, saveGuard,
+      ok: c1Ok && h1Ok && m7Ok && shallowNdlOk && saveGuard,
+    };
   })();
 
   // ── E10i: getActiveGas passes fO2 to ppO2 limit bands (audit 2026-06-29 H-1) ─
@@ -1042,7 +1068,16 @@ def run_suite(page) -> dict:
     i124 = s.get("issue124", {})
     assert_true(i124.get("ok"), "issue #124 audit fixes (ceiling/gfAt/contingency/pSCR/UI)", str(i124))
     i133 = s.get("issue133", {})
-    assert_true(i133.get("ok"), "issue #133 audit fixes (gfAtDepth/hypoxic/getActiveGas/shallowGF)", str(i133))
+    assert_true(i133.get("c2Ok"), "issue #133 C-2: hypoxic trimix deco rejected", str(i133))
+    assert_true(i133.get("l2Ok"), "issue #133 L-2: n2FracFromPercentages null for O2+He>100", str(i133))
+    assert_true(i133.get("c4Ok"), "issue #133 C-4: isShallowGradientOn reads select value=on", str(i133))
+    assert_true(i133.get("wrapGas"), "issue #133 C-1: getActiveGas wrapper arg order", str(i133))
+    i134 = s.get("issue134", {})
+    assert_true(i134.get("c1Ok"), "issue #134 C-1: bottom/CCR hypoxic gas not blocked in DOM validation", str(i134))
+    assert_true(i134.get("h1Ok"), "issue #134 H-1: gfAtDepth returns gfH when firstStopDepth=0", str(i134))
+    assert_true(i134.get("m7Ok"), "issue #134 M-7: ppO2Check returns numeric value", str(i134))
+    assert_true(i134.get("shallowNdlOk"), "issue #134 L-6: shallowGradient changes buhNDL", str(i134))
+    assert_true(i134.get("saveGuard"), "issue #134 M-4: appSettings.save guards _restoreInProgress", str(i134))
     dedup = s.get("engineDedup", {})
     assert_true(dedup.get("ok"), "index CCR delegates match ZhlEngineBundle (engine dedup)", str(dedup))
     gag = s.get("getActiveGasF02Limit", {})

@@ -46,14 +46,13 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
     let activeGas = fallbackGas || '';
     let activeFN2 = fallbackFN2 ?? null;
     let activeFHe = fallbackFHe ?? 0;
-    for (const s of result) {
+    for (let i = result.length - 1; i >= 0; i--) {
+      const s = result[i];
       if (!s.gas || s.gas.trim() === '') continue;
       const stepDepthM = stepDepthToM(s);
       if (stepDepthM == null) continue;
       if (stepDepthM >= targetDepthM) {
-        activeGas = s.gas;
-        activeFN2 = s.fN2 ?? activeFN2;
-        activeFHe = s.fHe ?? activeFHe ?? 0;
+        return { gas: s.gas, fN2: s.fN2 ?? activeFN2, fHe: s.fHe ?? activeFHe ?? 0 };
       }
     }
     return { gas: activeGas, fN2: activeFN2, fHe: activeFHe ?? 0 };
@@ -68,7 +67,7 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
       const rawD = s.type === 'ascent' ? (s.to ?? s.depth) : s.depth;
       if (rawD == null) continue;
       const d = isMetric ? rawD : rawD / FT_PER_M;
-      if (d != null && d < targetDepthM) { insertIdx = i; break; }
+      if (d != null && d <= targetDepthM) { insertIdx = i; break; }
     }
     const { gas, fN2, fHe } = resolveGasAtDepth(targetDepthM);
     const straddle = result[insertIdx];
@@ -142,9 +141,9 @@ function ppO2Check(depthM, fN2, fHe, opts) {
     const ccrFO2 = opts.fO2 != null ? opts.fO2 : o2frac;
     const surfP = opts.surfP != null ? opts.surfP : altSurfaceP;
     const sp = opts.setpoint != null ? opts.setpoint : getEffectiveSetpointAtDepth(depthM, opts.ccr, surfP);
-    return getEffectivePpo2(pAmb, sp, ccrFO2, opts.ccr, depthM, fHeVal).toFixed(2);
+    return getEffectivePpo2(pAmb, sp, ccrFO2, opts.ccr, depthM, fHeVal);
   }
-  return (pAmb * o2frac).toFixed(2);
+  return pAmb * o2frac;
 }
 
 function n2FracFromCustomO2(o2pct) {

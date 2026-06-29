@@ -7128,10 +7128,6 @@ function validateDomDecoGases() {
   const bot = getDomBottomGasPct();
   const botCheck = validateGasFractionsPct(bot.o2, bot.he, 'bottomGas');
   if (!botCheck.ok) errors.push(botCheck);
-  else {
-    const hypoBot = ZhlEngineBundle.validateHypoxicDecoGas(bot.o2, bot.he, 'bottomGas');
-    if (hypoBot) errors.push(hypoBot);
-  }
   for (const idx of getAllDecoGasIds()) {
     const g = getDomDecoGasPct(idx);
     if (!g) continue;
@@ -7528,7 +7524,8 @@ function ppO2Check(depthM, fN2, fHe, opts) {
   if (opts && opts.ccr) {
     opts = { ...opts, ccr: mergeCCRSettings(opts.ccr) };
   }
-  return ZhlEngineBundle.ppO2Check(depthM, fN2, fHe, opts);
+  const v = ZhlEngineBundle.ppO2Check(depthM, fN2, fHe, opts);
+  return typeof v === 'number' && Number.isFinite(v) ? v.toFixed(2) : String(v);
 }
 
 // ── VPM SCHEDULE RUNNER ──────────────────────────────────────────────
@@ -10372,12 +10369,16 @@ function runUnifiedPlan() {
     const btDisp = document.getElementById('udp-bt' + i + '-disp');
 
     // NDL at this depth given current tissue state (residual N2 already loaded)
-    // Find how many more minutes can be spent at dM before ceiling > 0
     let effNDL = 0;
-    let testT  = tissues.slice();
+    const gfL = mGF.low / 100;
+    const gfH = mGF.high / 100;
+    const lastStop = parseDomInt('lastDecoStop', 3);
+    const decoStep = parseDomInt('decoStep', 3);
+    const shallowGF = isShallowGradientOn();
+    let testT = tissues.map(t => ({ pN2: t.pN2, pHe: t.pHe || 0 }));
     for (let t = 1; t <= 200; t++) {
       testT = loadAtDepth(testT, dM, 1);
-      if (ceiling(testT, mGF.low / 100) > 0.5) break;
+      if (!ZhlEngineBundle.ndlClearAtDepth(testT, dM, gfL, gfH, lastStop, decoStep, shallowGF)) break;
       effNDL = t;
     }
     // Cap display at 90
@@ -14895,13 +14896,14 @@ function calcCNS() {
     statusCandidates.push({ sev: 2, cls: 'c-warn', msg: `⚠️ ppO2 ${ppo2.toFixed(2)} bar is above recreational limit (1.4 bar). Technical divers only.` });
   }
   const otuCarry = window._priorDiveCarry?.otuCarry || 0;
+  const cumulativeOtu = fromPlan ? otu : (otu + otuCarry);
   const perDiveOtu = fromPlan ? Math.max(0, otu - otuCarry) : otu;
-  if (otu >= 600) {
-    statusCandidates.push({ sev: 3, cls: 'c-dang', msg: `⛔ OTU ${Math.round(otu)} exceeds 600 (daily NOAA limit). No more diving today.` });
+  if (cumulativeOtu >= 600) {
+    statusCandidates.push({ sev: 3, cls: 'c-dang', msg: `⛔ OTU ${Math.round(cumulativeOtu)} exceeds 600 (daily NOAA limit). No more diving today.` });
   } else if (perDiveOtu >= 300) {
     statusCandidates.push({ sev: 2, cls: 'c-warn', msg: `⚠️ OTU ${Math.round(perDiveOtu)} exceeds 300 (single-dive NOAA limit). Monitor total exposure.` });
-  } else if (otu >= 300 && otuCarry > 0) {
-    statusCandidates.push({ sev: 2, cls: 'c-warn', msg: `⚠️ Cumulative OTU ${Math.round(otu)} exceeds 300 (includes ${Math.round(otuCarry)} OTU carry). Monitor total exposure.` });
+  } else if (cumulativeOtu >= 300 && otuCarry > 0) {
+    statusCandidates.push({ sev: 2, cls: 'c-warn', msg: `⚠️ Cumulative OTU ${Math.round(cumulativeOtu)} exceeds 300 (includes ${Math.round(otuCarry)} OTU carry). Monitor total exposure.` });
   } else if (!fromPlan && otuEstimated && otu >= 250) {
     statusCandidates.push({ sev: 1, cls: 'c-warn', msg: `🟡 Estimated OTU ${Math.round(otu)} incl. likely deco — run Calculate for exact profile OTU.` });
   }
@@ -16355,6 +16357,7 @@ var appSettings = {
   // Save all current values
   save: function(verbose = true) {
     if (window._zhlHeadless) return; // skip during headless tests
+    if (this._restoreInProgress) return;
     _updateAdvancedSummary(); // keep collapsed summary in sync
     _updateEnvSummary();       // keep env summary in sync
     const values = {};

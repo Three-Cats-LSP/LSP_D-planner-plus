@@ -145,7 +145,7 @@ function ambientCrossingDepth(tissues) {
 }
 
 function gfAtDepth(depthM, gfL, gfH, firstStopDepth, lastStop, shallowGradient) {
-  if (!firstStopDepth || firstStopDepth <= 0) return gfL;
+  if (!firstStopDepth || firstStopDepth <= 0) return gfH;
   if (depthM >= firstStopDepth) return gfL;
   if (shallowGradient && depthM <= lastStop) return gfH;
   const interpBase = shallowGradient ? lastStop : 0;

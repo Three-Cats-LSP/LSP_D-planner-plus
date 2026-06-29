@@ -349,6 +349,13 @@ function saturateCCR(tissues, depthM, t, fO2, fHe, ccr) {
 
 function loadTissuesWithCCR(tissues, fromDepth, toDepth, time, fO2, fHe, ccr, constantDepth) {
   const cfg = normalizeCCRSettings(ccr);
+  if (cfg.setpoint === 0 && !cfg.bailout && isRebreatherCircuit(cfg.circuit)) {
+    const fN2 = Math.max(0, 1 - fO2 - fHe);
+    if (constantDepth || Math.abs(fromDepth - toDepth) < 1e-6) {
+      return saturate(tissues, fromDepth, time, fN2, fHe);
+    }
+    return saturateLinear(tissues, fromDepth, toDepth, time, fN2, fHe);
+  }
   if (!isRebreatherCircuit(cfg.circuit) || cfg.bailout) {
     const fN2 = Math.max(0, 1 - fO2 - fHe);
     if (constantDepth || Math.abs(fromDepth - toDepth) < 1e-6) {

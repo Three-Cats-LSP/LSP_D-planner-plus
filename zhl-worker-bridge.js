@@ -33,20 +33,25 @@
   }
 
   function killWorker() {
-    if (worker) {
-      worker.terminate();
-      worker = null;
+    const w = worker;
+    worker = null;
+    if (w) {
+      try {
+        w.terminate();
+      } catch (_) { /* already terminated */ }
     }
   }
 
   function handleWorkerFailure(msg) {
     if (!worker) return;
     consecutiveWorkerFailures += 1;
-    rejectAll(msg);
+    const errMsg = consecutiveWorkerFailures >= MAX_WORKER_FAILURES
+      ? 'ZHL worker crashed repeatedly — reload required'
+      : msg;
+    rejectAll(errMsg);
     killWorker();
     if (consecutiveWorkerFailures >= MAX_WORKER_FAILURES) {
       workerPermanentlyDisabled = true;
-      rejectAll('ZHL worker crashed repeatedly — reload required');
     }
   }
 
@@ -77,7 +82,6 @@
         }
       };
       worker.onerror = function (err) {
-        if (!worker) return;
         const msg = (err && err.message) || 'Worker error';
         handleWorkerFailure(msg);
       };
@@ -94,7 +98,8 @@
       const timer = setTimeout(() => {
         const p = pending.get(id);
         if (!p || p.timer !== timer) return;
-        handleWorkerFailure('ZHL worker timeout');
+        settlePending(id, false, new Error('ZHL worker timeout'));
+        if (worker) handleWorkerFailure('ZHL worker timeout');
       }, WORKER_TIMEOUT_MS);
       pending.set(id, {
         resolve,

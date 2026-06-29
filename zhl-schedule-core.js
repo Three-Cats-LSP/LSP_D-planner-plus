@@ -159,6 +159,7 @@ function runZhlScheduleCore(params) {
   // gfAt must live outside the phase loop — block-scoped function declarations are
   // not visible after the loop in strict mode (Tier 3 bundle uses 'use strict').
   function gfAt(depthM) {
+    if (!firstStopDepth || firstStopDepth <= 0) return gfL;
     return gfAtDepth(depthM, gfL, gfH, firstStopDepth, lastStop, !!params.shallowGradient);
   }
 
@@ -488,7 +489,7 @@ function runZhlScheduleCore(params) {
     rt += cont.time;
     steps.push({
       type: 'bottom', depth: cur, dur: cont.time,
-      gas: getGasLabel(cO2, cHe), pO2: ppO2Check(cur, cN2, cHe),
+      gas: getGasLabel(cO2, cHe), pO2: (+ppO2Check(cur, cN2, cHe)).toFixed(2),
       fN2: cN2, fHe: cHe,
     });
   }

@@ -1438,21 +1438,24 @@ const VPMEngine = (() => {
         let forcedOCMode = isCCR && !!levels[0].oc;
         let curSP = forcedOCMode ? 0 : getEffectiveSetpoint(levels[0], isCCR, settings, levels[0].depth, 'descent');
         function runInterLevelDecoAscent(targetDepth) {
-            calcCrushing(state, settings);
-            const radiiBeforeInterLevel = {
-                regeneratedRadiiN2: state.regeneratedRadiiN2.slice(),
-                regeneratedRadiiHe: state.regeneratedRadiiHe.slice(),
-                adjustedCritRadiiN2: state.adjustedCritRadiiN2.slice(),
-                adjustedCritRadiiHe: state.adjustedCritRadiiHe.slice(),
-            };
-            function restoreInterLevelRadii() {
-                for (let i = 0; i < NC; i++) {
-                    state.regeneratedRadiiN2[i] = radiiBeforeInterLevel.regeneratedRadiiN2[i];
-                    state.regeneratedRadiiHe[i] = radiiBeforeInterLevel.regeneratedRadiiHe[i];
-                    state.adjustedCritRadiiN2[i] = radiiBeforeInterLevel.adjustedCritRadiiN2[i];
-                    state.adjustedCritRadiiHe[i] = radiiBeforeInterLevel.adjustedCritRadiiHe[i];
+            const stateBeforeInterLevel = cloneVPMState(state);
+            function restoreInterLevelDerivedState() {
+                const snap = stateBeforeInterLevel;
+                const arrayKeys = [
+                    'regeneratedRadiiN2', 'regeneratedRadiiHe', 'adjustedCritRadiiN2', 'adjustedCritRadiiHe',
+                    'maxCrushingPressureN2', 'maxCrushingPressureHe', 'adjustedCrushingPressureN2', 'adjustedCrushingPressureHe',
+                    'allowableGradientN2', 'allowableGradientHe', 'decoGradientN2', 'decoGradientHe',
+                    'initialAllowableGradientN2', 'initialAllowableGradientHe',
+                    'maxActualGradientN2', 'maxActualGradientHe', 'critRadiiN2', 'critRadiiHe',
+                ];
+                for (const key of arrayKeys) {
+                    if (snap[key] && state[key]) {
+                        for (let i = 0; i < NC; i++) state[key][i] = snap[key][i];
+                    }
                 }
+                state.firstStopDepth = snap.firstStopDepth;
             }
+            calcCrushing(state, settings);
             const offLoopPath = isCCR && settings.circuit !== 'pSCR' && (forcedOCMode || curSP <= 0);
             const interLevelConservatism = offLoopPath ? Math.max(0, conservatism - 1) : conservatism;
             if (offLoopPath && interLevelConservatism < conservatism) {
@@ -1496,7 +1499,7 @@ const VPMEngine = (() => {
                     he: Math.round(curHe * 100),
                     setpoint: curSP > 0 ? curSP : 0
                 });
-                restoreInterLevelRadii();
+                restoreInterLevelDerivedState();
                 return { depth: targetDepth, o2: curO2, he: curHe, gasLabel: curGasLabel, sp: curSP };
             }
             let firstStopDepth = offLoopPath
@@ -1583,7 +1586,7 @@ const VPMEngine = (() => {
                 }
                 if (settings._vpmTestForceStopCap || !isClearToAscendVPM(state, nextStopClamped, firstStopDepth, model, settings)) {
                     vpmStopCapFailedDepth = stopDepth;
-                    restoreInterLevelRadii();
+                    restoreInterLevelDerivedState();
                     return null;
                 }
                 if (stopTime < effectiveMinStop) stopTime = effectiveMinStop;
@@ -1618,7 +1621,7 @@ const VPMEngine = (() => {
                 stopDepth = nextStopClamped;
             }
             currentDepth = targetDepth;
-            restoreInterLevelRadii();
+            restoreInterLevelDerivedState();
             return { depth: targetDepth, o2: curO2, he: curHe, gasLabel: curGasLabel, sp: curSP };
         }
         for (const level of levels) {

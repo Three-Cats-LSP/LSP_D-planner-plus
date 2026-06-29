@@ -1993,13 +1993,18 @@ else:
 # anchored at 6m, skipping the 12m and 9m stops entirely).
 # ══════════════════════════════════════════════════════════════════════════════
 
-# 30.1 gfAt() returns gfL (not gfH) when firstStopDepth is unanchored
-if re.search(r'if \(!firstStopDepth \|\| firstStopDepth <= 0\) return gfL;', zhl_src):
-    ok("GF anchor: gfAt() returns gfL pre-anchor (correct — GF Low determines first stop per Baker)")
-elif re.search(r'if \(!firstStopDepth \|\| firstStopDepth <= 0\) return gfH;', zhl_src):
-    fail("GF anchor: gfAt() returns gfH pre-anchor — REGRESSION. Anchors 1-3 steps shallower than correct; GF Low must be used to find the first stop, not GF High.")
+# 30.1 gfAtDepth returns gfH pre-anchor for NDL; schedule gfAt() keeps gfL pre-anchor
+if re.search(r'if \(!firstStopDepth \|\| firstStopDepth <= 0\) return gfH;', _physics_core_js):
+    ok("GF anchor: gfAtDepth returns gfH when firstStopDepth unanchored (NDL path)")
+elif re.search(r'if \(!firstStopDepth \|\| firstStopDepth <= 0\) return gfL;', _physics_core_js):
+    fail("GF anchor: gfAtDepth still returns gfL pre-anchor — NDL uses conservative GF Low")
 else:
-    fail("GF anchor: gfAt() pre-anchor return value not found or changed structure")
+    fail("GF anchor: gfAtDepth pre-anchor return value not found or changed structure")
+_schedule_gf = open(os.path.join(os.path.dirname(__file__), "zhl-schedule-core.js"), encoding="utf-8").read()
+if re.search(r'function gfAt\(depthM\)[\s\S]{0,220}if \(!firstStopDepth \|\| firstStopDepth <= 0\) return gfL;', _schedule_gf):
+    ok("GF anchor: schedule gfAt() returns gfL pre-anchor (Baker first-stop search)")
+else:
+    fail("GF anchor: schedule gfAt() missing gfL pre-anchor guard")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 31 — TTS METRIC + DECOZONE GF-INDEPENDENCE FIX (v2.10.10)
@@ -3023,10 +3028,10 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.01['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.53.01")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.02['\"]", app_version_js):
+    ok("APP_VERSION bumped to 2.53.02")
 else:
-    fail("APP_VERSION not bumped to 2.53.01 in app-version.js")
+    fail("APP_VERSION not bumped to 2.53.02 in app-version.js")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 57 — v2.30.25 fix (pSCR OTU/CNS plan integration)
@@ -5048,7 +5053,7 @@ for _fid, _desc in [
         ok(f"DECO_FIELDS includes {_fid} ({_desc}) (issue #93 M-6/L-2)")
     else:
         fail(f"DECO_FIELDS missing {_fid} ({_desc}) (issue #93 M-6/L-2)")
-if "ceiling(testT, mGF.low / 100)" in js:
+if "ceiling(testT, mGF.low / 100)" in js or "ndlClearAtDepth(testT" in js:
     ok("multi-dive NDL uses gfLow for residual loading check (issue #93 M-7)")
 else:
     fail("multi-dive NDL missing gfLow ceiling check (issue #93 M-7)")
@@ -5470,7 +5475,7 @@ if "repSurfP = altAcclimatized" in _zhl108 or "rep.surfaceP != null" in _zhl108:
     ok("ZHL rep surface off-gas respects altAcclimatized (issue #108 M-8)")
 else:
     fail("ZHL rep off-gas always uses altSurfaceP (issue #108 M-8)")
-if "otu >= 600" in js.split("function calcCNS", 1)[-1][:4500] and "perDiveOtu >= 300" in js.split("function calcCNS", 1)[-1][:4500]:
+if ("otu >= 600" in js.split("function calcCNS", 1)[-1][:4500] or "cumulativeOtu >= 600" in js.split("function calcCNS", 1)[-1][:4500]) and "perDiveOtu >= 300" in js.split("function calcCNS", 1)[-1][:4500]:
     ok("CNS widget status warns on OTU ≥300/600 (issue #108 M-9)")
 else:
     fail("CNS widget status ignores OTU overages (issue #108 M-9)")
@@ -5617,8 +5622,8 @@ if "const ppO2Limit = parseFloat(document.getElementById('ppo2Bottom')" in _111_
     ok("issue #111 M-6: calcEND_tool MOD uses configured ppO2 limit")
 else:
     fail("issue #111 M-6: calcEND_tool MOD still hardcoded 1.4 bar")
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.01['\"]", app_version_js):
-    ok("issue #111 L-1: app-version 2.53.01 synced; SW derives CACHE_VERSION dynamically")
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.02['\"]", app_version_js):
+    ok("issue #111 L-1: app-version 2.53.02 synced; SW derives CACHE_VERSION dynamically")
 else:
     fail("issue #111 L-1: SW/app-version sync regression")
 if "build_vpm_bundle.py" in _111_ci and "git diff --exit-code zhl-engine-bundle.js vpm-engine-bundle.js" in _111_ci:
@@ -6394,11 +6399,11 @@ if all("needs: [bundle-sync]" in _ci126.split(f"{job}:", 1)[-1][:120] for job in
 else:
     fail("issue #126: one or more CI jobs still run without bundle-sync dependency")
 
-# ── v2.53.01 stable release ──
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.01['\"]", app_version_js):
-    ok("stable release APP_VERSION is 2.53.01")
+# ── v2.53.02 stable release ──
+if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.02['\"]", app_version_js):
+    ok("stable release APP_VERSION is 2.53.02")
 else:
-    fail("stable release requires APP_VERSION 2.53.01")
+    fail("stable release requires APP_VERSION 2.53.02")
 
 # ── Issue #127: full codebase audit v2.53.00 — 6 HIGH / 7 MEDIUM / 4 LOW ──
 _vpm_core127 = open(os.path.join(os.path.dirname(__file__), "vpm-engine-core.js"), encoding="utf-8").read()
@@ -6767,18 +6772,18 @@ else:
 
 # ── issue #133 (audit #128 HEAD 0c919fa) ────────────────────────────────────
 _gf133 = _physics_core_js.split("function gfAtDepth", 1)[-1][:200] if "function gfAtDepth" in _physics_core_js else ""
-if "firstStopDepth <= 0) return gfL" in _gf133:
-    ok("issue #133 H-1: gfAtDepth keeps gfL pre-anchor (Baker first-stop; audit false positive)")
+if "firstStopDepth <= 0) return gfH" in _gf133:
+    ok("issue #133 H-1 / #134 H-1: gfAtDepth returns gfH when firstStopDepth unanchored")
 else:
-    fail("issue #133 H-1: gfAtDepth regressed to gfH pre-anchor")
+    fail("issue #133 H-1: gfAtDepth still returns gfL when firstStopDepth <= 0")
 _getactive133 = js.split("function getActiveGas", 1)[-1][:280] if "function getActiveGas" in js else ""
 if "bottomFHe, decoGases" in _getactive133.replace("\r\n", "\n"):
     ok("issue #133 C-1: index getActiveGas wrapper matches bundle arg order")
 else:
     fail("issue #133 C-1: getActiveGas wrapper still has bottomFHe in position 6")
 _vpm133 = open(os.path.join(_repo_root130, "vpm-engine-core.js"), encoding="utf-8").read()
-if "radiiBeforeInterLevel" in _vpm133 and "restoreInterLevelRadii()" in _vpm133:
-    ok("issue #133 C-3: VPM inter-level radii snapshot restored before main deco")
+if "cloneVPMState(state)" in _vpm133 and "restoreInterLevelDerivedState()" in _vpm133:
+    ok("issue #133 C-3: VPM inter-level derived state snapshot restored before main deco")
 else:
     fail("issue #133 C-3: VPM missing inter-level radii restore")
 if "function isShallowGradientOn" in js and "value === 'on'" in js.split("function isShallowGradientOn", 1)[-1][:120]:
@@ -6828,10 +6833,10 @@ if "mGF.low == null" in js.split("function runUnifiedPlan", 1)[-1][:800]:
     ok("issue #133 M-8: runUnifiedPlan guards unset mGF before NDL loop")
 else:
     fail("issue #133 M-8: runUnifiedPlan still uses unguarded mGF.low")
-if "validateHypoxicDecoGas(bot.o2" in js.split("function validateDomDecoGases", 1)[-1][:600]:
-    ok("issue #133 L-1: bottom gas validated by validateHypoxicDecoGas")
+if "validateHypoxicDecoGas(bot.o2" not in js.split("function validateDomDecoGases", 1)[-1][:600]:
+    ok("issue #133 L-1 / #134 C-1: bottom gas not checked by validateHypoxicDecoGas")
 else:
-    fail("issue #133 L-1: bottom gas skips hypoxic validation")
+    fail("issue #133 L-1: bottom gas still validated by validateHypoxicDecoGas")
 if "if (n2 < 0) return null" in _gas_core_js.split("function n2FracFromPercentages", 1)[-1][:200]:
     ok("issue #133 L-2: n2FracFromPercentages returns null when O2+He > 100%")
 else:
@@ -6853,11 +6858,80 @@ if "Closed field list" in _ccr_core_src:
     ok("issue #133 L-8: normalizeCCRSettings documents closed field list")
 else:
     fail("issue #133 L-8: normalizeCCRSettings missing closed-list documentation")
-_av133 = open(os.path.join(_repo_root130, "app-version.js"), encoding="utf-8").read()
-if "2.53.01" in _av133:
-    ok("issue #133 H-2: APP_VERSION bumped to 2.53.01 for PWA cache bust")
+if "2.53.02" in open(os.path.join(_repo_root130, "app-version.js"), encoding="utf-8").read():
+    ok("issue #133 H-2: APP_VERSION bumped for PWA cache bust")
 else:
     fail("issue #133 H-2: APP_VERSION not bumped after engine fixes")
+
+# ── issue #134 (audit #129 HEAD ee69770) ────────────────────────────────────
+if "validateHypoxicDecoGas(bot.o2" not in js.split("function validateDomDecoGases", 1)[-1][:800]:
+    ok("issue #134 C-1: validateDomDecoGases does not block hypoxic bottom/CCR diluent")
+else:
+    fail("issue #134 C-1: bottom gas still validated by validateHypoxicDecoGas")
+if "d <= targetDepthM" in _gas_core_js:
+    ok("issue #134 H-2: injectStop insertion scan uses <= targetDepthM")
+else:
+    fail("issue #134 H-2: injectStop insertion scan still strict <")
+if ('value="on"' in html or "value='on'" in html) and 'id="shallowGradient"' in html and "function isShallowGradientOn" in js:
+    ok("issue #134 H-3: shallowGradient select option value=on matches isShallowGradientOn")
+else:
+    fail("issue #134 H-3: shallowGradient option values not aligned with helper")
+_zwb134 = open(os.path.join(_repo_root130, "zhl-worker-bridge.js"), encoding="utf-8").read()
+if "settlePending(id, false, new Error('ZHL worker timeout'))" in _zwb134:
+    ok("issue #134 H-4: worker timeout settles pending promise when worker already killed")
+else:
+    fail("issue #134 H-4: worker timeout still leaks pending promise")
+if "ndlClearAtDepth(testT" in js.split("function runUnifiedPlan", 1)[-1][:8000] or "ZhlEngineBundle.ndlClearAtDepth(testT" in js.split("function runUnifiedPlan", 1)[-1][:8000]:
+    ok("issue #134 M-1/M-2: runUnifiedPlan NDL probe uses ndlClearAtDepth with GF interpolation")
+else:
+    fail("issue #134 M-1: runUnifiedPlan still probes NDL with gfLow-only ceiling")
+if "cloneVPMState(state)" in open(os.path.join(_repo_root130, "vpm-engine-core.js"), encoding="utf-8").read().split("function runInterLevelDecoAscent", 1)[-1][:600]:
+    ok("issue #134 M-3: VPM inter-level uses full derived-state snapshot restore")
+else:
+    fail("issue #134 M-3: VPM inter-level still partial radii-only restore")
+if "if (this._restoreInProgress) return;" in js.split("save: function", 1)[-1][:200]:
+    ok("issue #134 M-4: appSettings.save skips during restore")
+else:
+    fail("issue #134 M-4: appSettings.save still fires during synthetic input restore")
+if "cumulativeOtu = fromPlan ? otu : (otu + otuCarry)" in js.split("function calcCNS", 1)[-1][:6000]:
+    ok("issue #134 M-5: widget OTU uses cumulativeOtu for carry-aware daily limits")
+else:
+    fail("issue #134 M-5: perDiveOtu/cumulative OTU carry handling still wrong")
+if "for (let i = result.length - 1; i >= 0; i--)" in _gas_core_js.split("function resolveGasAtDepth", 1)[-1][:400]:
+    ok("issue #134 M-6: resolveGasAtDepth scans shallow-to-deep for deepest matching gas")
+else:
+    fail("issue #134 M-6: resolveGasAtDepth still overwrites with shallowest step")
+_ppo2_134 = _gas_core_js.split("function ppO2Check", 1)[-1].split("function n2FracFromCustomO2", 1)[0] if "function ppO2Check" in _gas_core_js else ""
+if ".toFixed(2)" not in _ppo2_134 and "return pAmb * o2frac" in _ppo2_134:
+    ok("issue #134 M-7: ppO2Check returns numeric ppO2 (display formats at call site)")
+else:
+    fail("issue #134 M-7: ppO2Check still returns .toFixed string")
+if "worker = null" in _zwb134.split("function killWorker", 1)[-1][:120] and _zwb134.split("function killWorker", 1)[-1][:120].find("worker = null") < _zwb134.split("function killWorker", 1)[-1][:120].find("terminate"):
+    ok("issue #134 L-2: killWorker nulls worker before terminate")
+else:
+    fail("issue #134 L-2: killWorker still terminates before nulling worker ref")
+if "settlePending(id, false, new Error('ZHL worker timeout'))" in _zwb134 and "if (worker) handleWorkerFailure('ZHL worker timeout')" in _zwb134:
+    ok("issue #134 L-3: worker timeout settles pending before kill; nextId reset confined to terminate")
+else:
+    fail("issue #134 L-3: worker timeout/nextId race not hardened")
+if "setpoint === 0 && !cfg.bailout" in _ccr_core_src.split("function loadTissuesWithCCR", 1)[-1][:500]:
+    ok("issue #134 L-4: loadTissuesWithCCR treats setpoint=0 without bailout as OC")
+else:
+    fail("issue #134 L-4: loadTissuesWithCCR still loads CCR when setpoint=0")
+_parity134 = open(os.path.join(os.path.dirname(__file__), "tools", "check_engine_parity.py"), encoding="utf-8").read()
+if '"ppO2Check"' in _parity134.split("api_exports = [", 1)[-1][:800]:
+    ok("issue #134 L-5: check_engine_parity lists ppO2Check in api_exports")
+else:
+    fail("issue #134 L-5: ppO2Check missing from parity api_exports")
+if "issue134" in open(os.path.join(_repo_root130, "dev", "engine_regression.py"), encoding="utf-8").read():
+    ok("issue #134 L-6/L-7: engine_regression covers #134 with split assertions")
+else:
+    fail("issue #134 L-6: engine_regression missing issue134 section")
+_av134 = open(os.path.join(_repo_root130, "app-version.js"), encoding="utf-8").read()
+if "2.53.02" in _av134:
+    ok("issue #134: APP_VERSION bumped to 2.53.02")
+else:
+    fail("issue #134: APP_VERSION not bumped to 2.53.02")
 
 print("=" * 60)
 

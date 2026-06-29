@@ -147,7 +147,7 @@ function ambientCrossingDepth(tissues) {
 }
 
 function gfAtDepth(depthM, gfL, gfH, firstStopDepth, lastStop, shallowGradient) {
-  if (!firstStopDepth || firstStopDepth <= 0) return gfL;
+  if (!firstStopDepth || firstStopDepth <= 0) return gfH;
   if (depthM >= firstStopDepth) return gfL;
   if (shallowGradient && depthM <= lastStop) return gfH;
   const interpBase = shallowGradient ? lastStop : 0;
@@ -231,14 +231,13 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
     let activeGas = fallbackGas || '';
     let activeFN2 = fallbackFN2 ?? null;
     let activeFHe = fallbackFHe ?? 0;
-    for (const s of result) {
+    for (let i = result.length - 1; i >= 0; i--) {
+      const s = result[i];
       if (!s.gas || s.gas.trim() === '') continue;
       const stepDepthM = stepDepthToM(s);
       if (stepDepthM == null) continue;
       if (stepDepthM >= targetDepthM) {
-        activeGas = s.gas;
-        activeFN2 = s.fN2 ?? activeFN2;
-        activeFHe = s.fHe ?? activeFHe ?? 0;
+        return { gas: s.gas, fN2: s.fN2 ?? activeFN2, fHe: s.fHe ?? activeFHe ?? 0 };
       }
     }
     return { gas: activeGas, fN2: activeFN2, fHe: activeFHe ?? 0 };
@@ -253,7 +252,7 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
       const rawD = s.type === 'ascent' ? (s.to ?? s.depth) : s.depth;
       if (rawD == null) continue;
       const d = isMetric ? rawD : rawD / FT_PER_M;
-      if (d != null && d < targetDepthM) { insertIdx = i; break; }
+      if (d != null && d <= targetDepthM) { insertIdx = i; break; }
     }
     const { gas, fN2, fHe } = resolveGasAtDepth(targetDepthM);
     const straddle = result[insertIdx];
@@ -327,9 +326,9 @@ function ppO2Check(depthM, fN2, fHe, opts) {
     const ccrFO2 = opts.fO2 != null ? opts.fO2 : o2frac;
     const surfP = opts.surfP != null ? opts.surfP : altSurfaceP;
     const sp = opts.setpoint != null ? opts.setpoint : getEffectiveSetpointAtDepth(depthM, opts.ccr, surfP);
-    return getEffectivePpo2(pAmb, sp, ccrFO2, opts.ccr, depthM, fHeVal).toFixed(2);
+    return getEffectivePpo2(pAmb, sp, ccrFO2, opts.ccr, depthM, fHeVal);
   }
-  return (pAmb * o2frac).toFixed(2);
+  return pAmb * o2frac;
 }
 
 function n2FracFromCustomO2(o2pct) {
@@ -716,6 +715,13 @@ function saturateCCR(tissues, depthM, t, fO2, fHe, ccr) {
 
 function loadTissuesWithCCR(tissues, fromDepth, toDepth, time, fO2, fHe, ccr, constantDepth) {
   const cfg = normalizeCCRSettings(ccr);
+  if (cfg.setpoint === 0 && !cfg.bailout && isRebreatherCircuit(cfg.circuit)) {
+    const fN2 = Math.max(0, 1 - fO2 - fHe);
+    if (constantDepth || Math.abs(fromDepth - toDepth) < 1e-6) {
+      return saturate(tissues, fromDepth, time, fN2, fHe);
+    }
+    return saturateLinear(tissues, fromDepth, toDepth, time, fN2, fHe);
+  }
   if (!isRebreatherCircuit(cfg.circuit) || cfg.bailout) {
     const fN2 = Math.max(0, 1 - fO2 - fHe);
     if (constantDepth || Math.abs(fromDepth - toDepth) < 1e-6) {
@@ -901,6 +907,7 @@ function runZhlScheduleCore(params) {
   // gfAt must live outside the phase loop — block-scoped function declarations are
   // not visible after the loop in strict mode (Tier 3 bundle uses 'use strict').
   function gfAt(depthM) {
+    if (!firstStopDepth || firstStopDepth <= 0) return gfL;
     return gfAtDepth(depthM, gfL, gfH, firstStopDepth, lastStop, !!params.shallowGradient);
   }
 
@@ -1230,7 +1237,7 @@ function runZhlScheduleCore(params) {
     rt += cont.time;
     steps.push({
       type: 'bottom', depth: cur, dur: cont.time,
-      gas: getGasLabel(cO2, cHe), pO2: ppO2Check(cur, cN2, cHe),
+      gas: getGasLabel(cO2, cHe), pO2: (+ppO2Check(cur, cN2, cHe)).toFixed(2),
       fN2: cN2, fHe: cHe,
     });
   }

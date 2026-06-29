@@ -235,6 +235,7 @@ def main() -> int:
         "n2FracFromCustomO2",
         "n2FracFromPercentages",
         "validateHypoxicDecoGas",
+        "ppO2Check",
         "applyEnvironment",
         "defaultEnvironment",
         "setHeHalfTimeMode",
