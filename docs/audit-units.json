@@ -137,9 +137,63 @@
       "path": "tools/test_audit_coverage.py",
       "needle": "[AUDIT-COV-01]",
       "command": "python -m unittest tools/test_audit_coverage.py"
+    },
+    "EXT-01": {
+      "path": "audit.py",
+      "needle": "extract_ui_cores.py uses marker-based contract",
+      "command": "python audit.py"
     }
   },
-  "findings": [],
+  "findings": [
+    {
+      "id": "ISSUE-133-ROLLUP",
+      "unit_id": "TOOL-AUDIT",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "issue": "GitHub #133 / Audit #128 (25 findings)",
+      "summary": "All 4C/5H/8M/8L remediated; gated in audit.py issue133 block and engine_regression issue133"
+    },
+    {
+      "id": "ISSUE-134-ROLLUP",
+      "unit_id": "TOOL-AUDIT",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "issue": "GitHub #134 / Audit #129 (19 findings)",
+      "summary": "All 1C/4H/7M/7L remediated; gated in audit.py issue134 block and engine_regression issue134"
+    },
+    {
+      "id": "ISSUE-135-ROLLUP",
+      "unit_id": "TOOL-AUDIT",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "issue": "GitHub #135 / Audit #130 (21 findings)",
+      "summary": "All 10H/10M/1L remediated; gated in audit.py issue135 block and engine_regression issue135"
+    },
+    {
+      "id": "ISSUE-136-ROLLUP",
+      "unit_id": "TOOL-EXTRACT-UI",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "issue": "GitHub #136 (UI extractor hardening)",
+      "summary": "extract_ui_cores.py uses LSP-EXTRACT marker contract; verified by audit.py and tools/extract_ui_cores.py"
+    },
+    {
+      "id": "ISSUE-137-ROLLUP",
+      "unit_id": "TOOL-AUDIT",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "issue": "GitHub #137 / Audit #131 (39 findings)",
+      "summary": "Fixed in 51f95ac; gated in audit.py and engine_regression issue137"
+    },
+    {
+      "id": "ISSUE-138-ROLLUP",
+      "unit_id": "TOOL-AUDIT",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "issue": "GitHub #138 / Audit #132 (40 findings)",
+      "summary": "Fixed in fcfb6c4 (v2.53.04); gated in audit.py and engine_regression issue138"
+    }
+  ],
   "units": [
     {
       "id": "UI-BOOT",
@@ -216,7 +270,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MARKUP-HEADER"
       },
-      "fingerprint": "26567f191b722de6b49a3c7e96c1126e396ea787989df0d1acd6a681e9e6294d",
+      "fingerprint": "d2d416148bbc9d763852d2e07cc16ceb5aaf1664c87b43f3e1da4552204963d4",
       "last_read_fingerprint": null
     },
     {
@@ -229,7 +283,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MARKUP-PLANNER"
       },
-      "fingerprint": "308a16d4f62cbe120ec69134c37acf0ecb6de905577e5227c5feae5363f5831b",
+      "fingerprint": "4e705a5e7721ac041b88f3a3995cfb0d8d098e1cd0dea9c7c8f8e02f7b655ff8",
       "last_read_fingerprint": null
     },
     {
@@ -294,7 +348,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ENVIRONMENT"
       },
-      "fingerprint": "95ef10e6d3dd65d0082f331897ea3565812f58e444af192d196255d3d861aca4",
+      "fingerprint": "256146aa2fe3437facd7b661fe8a57344917cd76d571f1282526ada403358676",
       "last_read_fingerprint": null
     },
     {
@@ -320,7 +374,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ALGORITHM-SETTINGS"
       },
-      "fingerprint": "16f0bf4a19fc16ad8f3767c514a95122bf213d86a8cc129cd89623829a66598a",
+      "fingerprint": "d55151e1ffc84bb6526e51966932fd29558891d5e03d575ff3206dc309b0dd6d",
       "last_read_fingerprint": null
     },
     {
@@ -367,13 +421,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-DELEGATES"
       },
-      "fingerprint": "191342d60eb5c279f7390a4e1024230c2c2eda6a95fde5cf25566e1671e32332",
-      "last_read_fingerprint": "191342d60eb5c279f7390a4e1024230c2c2eda6a95fde5cf25566e1671e32332"
+      "fingerprint": "143a6cc331b891a1511168a0c02b3e74635ab4a6929efb7d204429ac572643d8",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "UI-CCR-DELEGATES",
@@ -393,52 +449,60 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-DECO-PHYSICS"
       },
-      "fingerprint": "72f995abed9fdc8478a5677660ccc422677f0c4b90eed69ad33e683130219c4d",
-      "last_read_fingerprint": "72f995abed9fdc8478a5677660ccc422677f0c4b90eed69ad33e683130219c4d"
+      "fingerprint": "395140fc42c8484714db22a8dbf2976d8d7ce820cd8a12e60267e2edd5f3cb6b",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "UI-SCHEDULE-INPUTS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SCHEDULE-INPUTS"
       },
-      "fingerprint": "d9edf4ca60c03eee6aba1eb58cbba211ff44e71dfeb83a9d4d6cbc297cff1cdd",
-      "last_read_fingerprint": "d9edf4ca60c03eee6aba1eb58cbba211ff44e71dfeb83a9d4d6cbc297cff1cdd"
+      "fingerprint": "3886260fe01c43c6484906bfa1db25518f743893be2748b5454b01791da70820",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "UI-SETTINGS-CONTROLS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS-CONTROLS"
       },
-      "fingerprint": "09b3935f8455d9d4d0a077aa52217cfce6f2c599549060f6d178366a54a50dfc",
-      "last_read_fingerprint": "09b3935f8455d9d4d0a077aa52217cfce6f2c599549060f6d178366a54a50dfc"
+      "fingerprint": "6730498741d965b06411b913a120eea9b94653949bd505f2ca7e5f35e6f2e83e",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "UI-VPM-RUNNER",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RUNNER"
       },
-      "fingerprint": "39fa760759a40716379b6d0861fa70a9e6870374389dc0e51df77a785b66cde4",
-      "last_read_fingerprint": "39fa760759a40716379b6d0861fa70a9e6870374389dc0e51df77a785b66cde4"
+      "fingerprint": "568e4f193e527bd9de926b15b346c770d219c78b2ddfb579f5ff32cd12d5fd43",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "UI-VPM-RENDER",
@@ -471,82 +535,83 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-CARDS"
       },
-      "fingerprint": "f96b0f02ef3d642af9e3c39a0995c936bfbb78e13c04c1e84752da3dc949744c",
-      "last_read_fingerprint": "f96b0f02ef3d642af9e3c39a0995c936bfbb78e13c04c1e84752da3dc949744c"
+      "fingerprint": "806969aca10652c864576df9180cc8bd4810fb090dbde871b6fb77447f6c6a71",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "UI-ZHL-RUNNER-SETUP",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-SETUP"
       },
-      "fingerprint": "8644d28b55960468e0c9ed5a06828d358f0afb58d036e73a0cfbb99ce296fecb",
-      "last_read_fingerprint": "8644d28b55960468e0c9ed5a06828d358f0afb58d036e73a0cfbb99ce296fecb"
+      "fingerprint": "ffa9a1e362f552b619026cbe68db84f259d69059712e0077a80c80f723f9d93b",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "UI-ZHL-RUNNER-ENGINE",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-ENGINE"
       },
-      "fingerprint": "60b3297f5a2e2c312c2c7e39b936ec795131ba3b10f387578f0fe111d82dc72a",
-      "last_read_fingerprint": "60b3297f5a2e2c312c2c7e39b936ec795131ba3b10f387578f0fe111d82dc72a"
+      "fingerprint": "8f770fc4fbe9a58e7ab3f190737cdc4670c5a82d348901765a7ef9e7ee0d6ff4",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "UI-ZHL-RESULTS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
-      "fingerprint": "564ce2fa807984183a5438041d54b2475e4851aa14b3690840d7e37b44c9c3c4",
-      "last_read_fingerprint": "564ce2fa807984183a5438041d54b2475e4851aa14b3690840d7e37b44c9c3c4"
+      "fingerprint": "d299bf21ac70661ed0cd6d08bfe1a91777dc89148db5a8dba68aac92b006669a",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "UI-ZHL-HEADLESS-HELPERS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-HEADLESS-HELPERS"
       },
-      "regression_cases": [
-        "REG-01",
-        "REG-02",
-        "REG-03",
-        "REG-05"
-      ],
-      "evidence": [
-        "python dev/engine_regression.py"
-      ],
+      "regression_cases": [],
+      "evidence": [],
       "issue": "Audit #134",
-      "fingerprint": "39750a6832b89c463ccd2d79f1f19a45ef3aea2987c05fd4a9369ffaf15be05a",
-      "last_read_fingerprint": "39750a6832b89c463ccd2d79f1f19a45ef3aea2987c05fd4a9369ffaf15be05a"
+      "fingerprint": "210b7810ce80db6323e9636b809724192751e9fc1aa02d9c3c2493632e9625d9",
+      "last_read_fingerprint": null
     },
     {
       "id": "UI-ZHL-HEADLESS-ENGINE",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-HEADLESS-ENGINE"
@@ -554,8 +619,8 @@
       "regression_cases": [],
       "evidence": [],
       "issue": "Audit #134",
-      "fingerprint": "975bf40d74d2f0685aa574402a31edda502e4ee609b9bc45833a1f346a9c8725",
-      "last_read_fingerprint": "975bf40d74d2f0685aa574402a31edda502e4ee609b9bc45833a1f346a9c8725"
+      "fingerprint": "1d22bcc6fed862574235fb2392688e0d19fe85b62e13ab94c4b10b6c40ab4b9e",
+      "last_read_fingerprint": null
     },
     {
       "id": "UI-PLOT-INIT",
@@ -658,7 +723,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS"
       },
-      "fingerprint": "12fd7e64ec4b0c8c9347685e9cba2d2e754d28d0ada67d39432b5fc976972e42",
+      "fingerprint": "0922390b58821920092f11fab65633c7aba275e2e3ff9e25add9160522862b75",
       "last_read_fingerprint": null
     },
     {
@@ -692,13 +757,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-APP-INIT"
       },
-      "fingerprint": "c02b4d7f0a1061b87d4ad85a07eacfba51bfa2eddfc841c1803037b19032b2f7",
-      "last_read_fingerprint": "c02b4d7f0a1061b87d4ad85a07eacfba51bfa2eddfc841c1803037b19032b2f7"
+      "fingerprint": "e1685f2940151c7ebe3ca118fc81e9ae650145145664ed401676f79919fe76e4",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "UI-PWA-LIFECYCLE",
@@ -730,12 +797,12 @@
       "path": "zhl-gas-core.js",
       "layer": "engine",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "e29f7e365f603f8f3384efd5d85d0639729c80581a98cbe126003f4e22071c00",
-      "last_read_fingerprint": "e29f7e365f603f8f3384efd5d85d0639729c80581a98cbe126003f4e22071c00",
+      "fingerprint": "2a5f62b8c5f0b9fce7e19c6f65362ba69bd6077da5244ed19aeb657c3fbabcbc",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
     },
@@ -759,24 +826,28 @@
       "path": "zhl-schedule-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "9b0c9926b8d74a1c699ab9b25853bc0b863b11c1c1c6f5578ba85be046b209e2",
-      "last_read_fingerprint": "9b0c9926b8d74a1c699ab9b25853bc0b863b11c1c1c6f5578ba85be046b209e2"
+      "fingerprint": "6708b8ea4fad80422994c32f168e6a656d08b4d98373db567614b593abff5270",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "ENG-VPM",
       "path": "vpm-engine-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "e7fb15962d930854d0d85d2bc5b2e32bfb807e5561c08ea0b9ee8b02d5b1b72c",
-      "last_read_fingerprint": "e7fb15962d930854d0d85d2bc5b2e32bfb807e5561c08ea0b9ee8b02d5b1b72c"
+      "fingerprint": "da203db761b79c01ca353997645ff85dad50baae3bb2d0920239a1e9b5b98462",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "ENG-VPM-REFERENCE",
@@ -951,12 +1022,14 @@
       "path": "version.json",
       "layer": "release_config",
       "priority": "P2",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a36e32eb81272d65f9ca661ce4e3f1063e9710657df9b157d12360e29cd29e71",
-      "last_read_fingerprint": "a36e32eb81272d65f9ca661ce4e3f1063e9710657df9b157d12360e29cd29e71"
+      "fingerprint": "bec3cb23177541a154c9718c6c8ec8206f4eab532c5c6879d1adbe853496b6e6",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "APP-CAPACITOR-CONFIG",
@@ -991,7 +1064,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a244be02f942db71b474289629b5c7608706a279f2a714a36d4f667b620f0f22",
+      "fingerprint": "4d407185818142a6d3fe2f2776dc431211bfa2fd2504effccae0c2b0ece7751c",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
@@ -1053,7 +1126,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "e4d56e824876c6037feb1741136ba4019f1ab988f3812f8647e253f882509b19",
+      "fingerprint": "8e946c4d77fcdcb2d3ed2a3be82540d9c3eabaaf1da9549d62b4404dc7a3683e",
       "last_read_fingerprint": null
     },
     {
@@ -1209,7 +1282,10 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "e35d122408e51da3b3a67bbe13c7d6e3b37e993eac6675e349c93f05f437e919",
+      "evidence": [],
+      "issue": "GitHub #133\u2013#138 audit regression sections",
+      "regression_cases": [],
+      "fingerprint": "ff4a794c91fa2c602d2702fa67c236b80711bbd63c3aec69951bedcec5a74910",
       "last_read_fingerprint": null
     },
     {
@@ -1549,7 +1625,10 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "0a49241e23d6b0205883c95953ab2a7fbcab7ecc4ed1d277c694440bd641449e",
+      "evidence": [],
+      "issue": "GitHub #133\u2013#138 structured environment audit gates",
+      "regression_cases": [],
+      "fingerprint": "7b08acee11d95c296deceb9dd430fb9894ce182bbfdde09e5b9332bcc19d0872",
       "last_read_fingerprint": null
     },
     {
@@ -1640,12 +1719,20 @@
       "path": "tools/extract_ui_cores.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
+      "evidence": [
+        "python tools/extract_ui_cores.py",
+        "python audit.py"
+      ],
+      "issue": "GitHub #136 marker-based UI core extraction",
+      "regression_cases": [
+        "EXT-01"
+      ],
       "fingerprint": "ff0b3d48b6772309f18df1141335141536c0a8db7075d1fe3ae46c5068880dd5",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "ff0b3d48b6772309f18df1141335141536c0a8db7075d1fe3ae46c5068880dd5"
     },
     {
       "id": "TOOL-EXTRACT-ZHL",

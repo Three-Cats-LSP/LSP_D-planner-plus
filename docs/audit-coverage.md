@@ -12,21 +12,21 @@
 | build_config | 2 | 0 | 1 | 1 | 0 |
 | ci | 5 | 0 | 2 | 3 | 0 |
 | deploy_config | 1 | 0 | 0 | 1 | 0 |
-| engine | 5 | 0 | 0 | 5 | 0 |
+| engine | 5 | 0 | 3 | 2 | 0 |
 | engine_reference | 1 | 1 | 0 | 0 | 0 |
 | native_android | 16 | 15 | 0 | 1 | 0 |
 | native_bridge | 2 | 0 | 0 | 2 | 0 |
 | native_config | 1 | 0 | 0 | 1 | 0 |
 | pwa | 3 | 0 | 1 | 2 | 0 |
-| release_config | 1 | 0 | 0 | 1 | 0 |
+| release_config | 1 | 0 | 1 | 0 | 0 |
 | test_infrastructure | 29 | 16 | 2 | 11 | 0 |
-| tooling | 19 | 10 | 2 | 6 | 1 |
+| tooling | 19 | 9 | 2 | 6 | 2 |
 | ui_core | 5 | 0 | 5 | 0 | 0 |
 | web_css | 4 | 4 | 0 | 0 | 0 |
 | web_markup | 5 | 5 | 0 | 0 | 0 |
-| web_runtime | 34 | 9 | 6 | 18 | 1 |
+| web_runtime | 34 | 9 | 18 | 7 | 0 |
 | worker | 2 | 0 | 0 | 2 | 0 |
-| **Total** | **135** | **60** | **19** | **54** | **2** |
+| **Total** | **135** | **59** | **35** | **39** | **2** |
 
 ## Units
 
@@ -43,43 +43,43 @@
 | UI-MARKUP-TOOLS | web_markup | `index.html:3222` | 231 | P2 | UNREAD | - |
 | UI-MARKUP-MODALS | web_markup | `index.html:3453` | 341 | P2 | UNREAD | - |
 | UI-RUNTIME-BOOTSTRAP | web_runtime | `index.html:3794` | 261 | P1 | READ | - |
-| UI-ENVIRONMENT | web_runtime | `index.html:4055` | 353 | P1 | IN_PROGRESS | - |
-| UI-MODE-STATE | web_runtime | `index.html:4408` | 380 | P2 | IN_PROGRESS | - |
-| UI-ALGORITHM-SETTINGS | web_runtime | `index.html:4788` | 352 | P1 | IN_PROGRESS | - |
-| UI-UNIT-HELPERS | web_runtime | `index.html:5140` | 388 | P1 | READ | - |
-| UI-PLAN-HEADER | web_runtime | `index.html:5528` | 449 | P2 | READ | - |
-| UI-UNIT-SWITCHING | web_runtime | `index.html:5977` | 310 | P1 | READ | - |
-| UI-ZHL-DELEGATES | web_runtime | `index.html:6287` | 129 | P0 | READ | - |
-| UI-CCR-DELEGATES | web_runtime | `index.html:6416` | 354 | P0 | READ | - |
-| UI-DECO-PHYSICS | web_runtime | `index.html:6770` | 222 | P0 | READ | - |
-| UI-SCHEDULE-INPUTS | web_runtime | `index.html:6992` | 335 | P0 | READ | - |
-| UI-SETTINGS-CONTROLS | web_runtime | `index.html:7327` | 316 | P1 | READ | - |
-| UI-VPM-RUNNER | web_runtime | `index.html:7643` | 163 | P0 | READ | - |
-| UI-VPM-RENDER | web_runtime | `index.html:7806` | 513 | P1 | IN_PROGRESS | - |
-| UI-GAS-INPUTS | web_runtime | `index.html:8319` | 184 | P1 | READ | - |
-| UI-GAS-CARDS | web_runtime | `index.html:8503` | 559 | P1 | READ | - |
-| UI-ZHL-RUNNER-SETUP | web_runtime | `index.html:9062` | 116 | P0 | READ | - |
-| UI-ZHL-RUNNER-ENGINE | web_runtime | `index.html:9178` | 338 | P0 | READ | - |
-| UI-ZHL-RESULTS | web_runtime | `index.html:9516` | 489 | P1 | READ | - |
-| UI-ZHL-HEADLESS-HELPERS | web_runtime | `index.html:10005` | 168 | P1 | VERIFIED | REG-01, REG-02, REG-03, REG-05 |
-| UI-ZHL-HEADLESS-ENGINE | web_runtime | `index.html:10173` | 375 | P0 | READ | - |
-| UI-PLOT-INIT | web_runtime | `index.html:10548` | 95 | P2 | UNREAD | - |
-| UI-PLOT-RENDER | web_runtime | `index.html:10643` | 440 | P2 | UNREAD | - |
-| UI-PLOT-WAYPOINTS | web_runtime | `index.html:11083` | 528 | P2 | UNREAD | - |
-| UI-TOOLS-TISSUES | web_runtime | `index.html:11611` | 305 | P2 | UNREAD | - |
-| UI-TOOLS-EXPOSURE | web_runtime | `index.html:11916` | 225 | P1 | IN_PROGRESS | - |
-| UI-TOOLS-GF | web_runtime | `index.html:12141` | 214 | P2 | UNREAD | - |
-| UI-TOOLS-PROFILE | web_runtime | `index.html:12355` | 365 | P2 | UNREAD | - |
-| UI-SETTINGS | web_runtime | `index.html:12720` | 341 | P1 | IN_PROGRESS | - |
-| UI-PROFILE-PRESETS | web_runtime | `index.html:13061` | 374 | P2 | UNREAD | - |
-| UI-CONFIG-PRESETS | web_runtime | `index.html:13435` | 175 | P2 | UNREAD | - |
-| UI-APP-INIT | web_runtime | `index.html:13610` | 169 | P1 | READ | - |
-| UI-PWA-LIFECYCLE | pwa | `index.html:13779` | 84 | P1 | READ | - |
+| UI-ENVIRONMENT | web_runtime | `index.html:4055` | 367 | P1 | IN_PROGRESS | - |
+| UI-MODE-STATE | web_runtime | `index.html:4422` | 380 | P2 | IN_PROGRESS | - |
+| UI-ALGORITHM-SETTINGS | web_runtime | `index.html:4802` | 357 | P1 | IN_PROGRESS | - |
+| UI-UNIT-HELPERS | web_runtime | `index.html:5159` | 388 | P1 | READ | - |
+| UI-PLAN-HEADER | web_runtime | `index.html:5547` | 449 | P2 | READ | - |
+| UI-UNIT-SWITCHING | web_runtime | `index.html:5996` | 310 | P1 | READ | - |
+| UI-ZHL-DELEGATES | web_runtime | `index.html:6306` | 130 | P0 | IN_PROGRESS | - |
+| UI-CCR-DELEGATES | web_runtime | `index.html:6436` | 354 | P0 | READ | - |
+| UI-DECO-PHYSICS | web_runtime | `index.html:6790` | 222 | P0 | IN_PROGRESS | - |
+| UI-SCHEDULE-INPUTS | web_runtime | `index.html:7012` | 344 | P0 | IN_PROGRESS | - |
+| UI-SETTINGS-CONTROLS | web_runtime | `index.html:7356` | 327 | P1 | IN_PROGRESS | - |
+| UI-VPM-RUNNER | web_runtime | `index.html:7683` | 165 | P0 | IN_PROGRESS | - |
+| UI-VPM-RENDER | web_runtime | `index.html:7848` | 513 | P1 | IN_PROGRESS | - |
+| UI-GAS-INPUTS | web_runtime | `index.html:8361` | 184 | P1 | READ | - |
+| UI-GAS-CARDS | web_runtime | `index.html:8545` | 565 | P1 | IN_PROGRESS | - |
+| UI-ZHL-RUNNER-SETUP | web_runtime | `index.html:9110` | 116 | P0 | IN_PROGRESS | - |
+| UI-ZHL-RUNNER-ENGINE | web_runtime | `index.html:9226` | 338 | P0 | IN_PROGRESS | - |
+| UI-ZHL-RESULTS | web_runtime | `index.html:9564` | 489 | P1 | IN_PROGRESS | - |
+| UI-ZHL-HEADLESS-HELPERS | web_runtime | `index.html:10053` | 181 | P1 | IN_PROGRESS | - |
+| UI-ZHL-HEADLESS-ENGINE | web_runtime | `index.html:10234` | 385 | P0 | IN_PROGRESS | - |
+| UI-PLOT-INIT | web_runtime | `index.html:10619` | 95 | P2 | UNREAD | - |
+| UI-PLOT-RENDER | web_runtime | `index.html:10714` | 440 | P2 | UNREAD | - |
+| UI-PLOT-WAYPOINTS | web_runtime | `index.html:11154` | 528 | P2 | UNREAD | - |
+| UI-TOOLS-TISSUES | web_runtime | `index.html:11682` | 305 | P2 | UNREAD | - |
+| UI-TOOLS-EXPOSURE | web_runtime | `index.html:11987` | 225 | P1 | IN_PROGRESS | - |
+| UI-TOOLS-GF | web_runtime | `index.html:12212` | 214 | P2 | UNREAD | - |
+| UI-TOOLS-PROFILE | web_runtime | `index.html:12426` | 365 | P2 | UNREAD | - |
+| UI-SETTINGS | web_runtime | `index.html:12791` | 346 | P1 | IN_PROGRESS | - |
+| UI-PROFILE-PRESETS | web_runtime | `index.html:13137` | 374 | P2 | UNREAD | - |
+| UI-CONFIG-PRESETS | web_runtime | `index.html:13511` | 175 | P2 | UNREAD | - |
+| UI-APP-INIT | web_runtime | `index.html:13686` | 164 | P1 | IN_PROGRESS | - |
+| UI-PWA-LIFECYCLE | pwa | `index.html:13850` | 84 | P1 | READ | - |
 | ENG-ZHL-PHYSICS | engine | `zhl-physics-core.js:1` | 189 | P1 | READ | - |
-| ENG-ZHL-GAS | engine | `zhl-gas-core.js:1` | 184 | P1 | READ | - |
+| ENG-ZHL-GAS | engine | `zhl-gas-core.js:1` | 184 | P1 | IN_PROGRESS | - |
 | ENG-ZHL-CCR | engine | `zhl-ccr-core.js:1` | 385 | P0 | READ | - |
-| ENG-ZHL-SCHEDULE | engine | `zhl-schedule-core.js:1` | 576 | P0 | READ | - |
-| ENG-VPM | engine | `vpm-engine-core.js:1` | 1950 | P0 | READ | - |
+| ENG-ZHL-SCHEDULE | engine | `zhl-schedule-core.js:1` | 585 | P0 | IN_PROGRESS | - |
+| ENG-VPM | engine | `vpm-engine-core.js:1` | 1955 | P0 | IN_PROGRESS | - |
 | ENG-VPM-REFERENCE | engine_reference | `vpmb.py:1` | 2574 | P2 | UNREAD | - |
 | APP-ANDROID-SELECT | native_bridge | `android-select-picker.js:1` | 270 | P1 | READ | - |
 | APP-CAPACITOR-BRIDGE | native_bridge | `capacitor-bridge.js:1` | 278 | P1 | READ | - |
@@ -93,7 +93,7 @@
 | APP-ZHL-WORKER | worker | `zhl-schedule-worker.js:1` | 23 | P1 | READ | - |
 | APP-DOWNLOAD | web_runtime | `download.html:1` | 119 | P3 | UNREAD | - |
 | APP-MANIFEST | pwa | `manifest.json:1` | 41 | P2 | READ | - |
-| APP-VERSION | release_config | `version.json:1` | 6 | P2 | READ | - |
+| APP-VERSION | release_config | `version.json:1` | 6 | P2 | IN_PROGRESS | - |
 | APP-CAPACITOR-CONFIG | native_config | `capacitor.config.json:1` | 14 | P1 | READ | - |
 | APP-CLOUDFLARE-CONFIG | deploy_config | `wrangler.jsonc:1` | 14 | P2 | READ | - |
 | APP-PACKAGE | build_config | `package.json:1` | 34 | P1 | IN_PROGRESS | - |
@@ -114,7 +114,7 @@
 | NATIVE-DRAWABLE-FG | native_android | `android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml:1` | 34 | P3 | UNREAD | - |
 | NATIVE-ICON | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml:1` | 5 | P3 | UNREAD | - |
 | NATIVE-ICON-ROUND | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml:1` | 5 | P3 | UNREAD | - |
-| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 1221 | P1 | IN_PROGRESS | - |
+| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 1243 | P1 | IN_PROGRESS | - |
 | TEST-ENGINE-VALIDATION | test_infrastructure | `engine_validation_regression.py:1` | 517 | P1 | READ | - |
 | TEST-CCR-VALIDATION | test_infrastructure | `dev/ccr_engine_validation_regression.py:1` | 355 | P1 | READ | - |
 | TEST-EXPORT | test_infrastructure | `export_regression.py:1` | 592 | P2 | READ | - |
@@ -142,14 +142,14 @@
 | TEST-CCR-DIFF-BUILD | test_infrastructure | `tests/ccr-differential/build_assets.py:1` | 626 | P2 | UNREAD | - |
 | TEST-CCR-DIFF-LIB-PY | test_infrastructure | `tests/ccr-differential/lib/ccr_open_reference.py:1` | 325 | P1 | READ | - |
 | TEST-CCR-DIFF-LIB-JS | test_infrastructure | `tests/ccr-differential/lib/ccrdiff.js:1` | 418 | P1 | READ | - |
-| TOOL-AUDIT | tooling | `audit.py:1` | 7115 | P1 | IN_PROGRESS | - |
+| TOOL-AUDIT | tooling | `audit.py:1` | 7263 | P1 | IN_PROGRESS | - |
 | TOOL-AUDIT-COVERAGE | tooling | `tools/audit_coverage.py:1` | 443 | P1 | VERIFIED | COV-01 |
 | TOOL-AUDIT-COVERAGE-TEST | test_infrastructure | `tools/test_audit_coverage.py:1` | 198 | P1 | READ | - |
 | TOOL-BUILD-PAGES | tooling | `tools/build_pages_site.py:1` | 115 | P2 | READ | - |
 | TOOL-BUILD-VPM | tooling | `tools/build_vpm_bundle.py:1` | 104 | P1 | READ | - |
 | TOOL-BUILD-ZHL | tooling | `tools/build_zhl_bundle.py:1` | 382 | P1 | READ | - |
 | TOOL-CHECK-PARITY | tooling | `tools/check_engine_parity.py:1` | 303 | P1 | IN_PROGRESS | - |
-| TOOL-EXTRACT-UI | tooling | `tools/extract_ui_cores.py:1` | 375 | P2 | UNREAD | - |
+| TOOL-EXTRACT-UI | tooling | `tools/extract_ui_cores.py:1` | 375 | P2 | VERIFIED | EXT-01 |
 | TOOL-EXTRACT-ZHL | tooling | `tools/extract_zhl_core.py:1` | 124 | P2 | UNREAD | - |
 | TOOL-INSERT-ZHL | tooling | `tools/insert_zhl_tier2.py:1` | 223 | P3 | UNREAD | - |
 | TOOL-MERGE-CCR | tooling | `tools/merge_ccr_into_plus.py:1` | 477 | P3 | UNREAD | - |
