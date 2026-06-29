@@ -6583,6 +6583,45 @@ if "issue #131 H-1" in _ccr_val131 and "pscrHypoxicPpo2" in _ccr_val131:
 else:
     fail("issue #131: CCR validation regression missing strengthened null-settings / pSCR checks")
 
+_index132 = js
+_index_html132 = html
+if "metric:            true," in _index132.split("function runVPMSchedule", 1)[-1][:2500]:
+    ok("issue #132 C-1: runVPMSchedule always invokes VPM engine in metric mode")
+else:
+    fail("issue #132 C-1: runVPMSchedule still passes imperial metric flag to VPM engine")
+if "altitudeMFromCustomDisplay" in _index132 and "units === 'imperial' ? v / 3.28084" in _index132.split("function altitudeMFromCustomDisplay", 1)[-1][:200]:
+    ok("issue #132 H-1: custom altitude input converts feet to metres when imperial")
+else:
+    fail("issue #132 H-1: custom altitude still parsed as metres in imperial mode")
+if "getAllDecoGasIds().map(n =>" in _index132.split("_cylDefsVPM", 1)[-1][:800]:
+    ok("issue #132 H-2: VPM gas planning maps all dynamic deco gas cylinders")
+else:
+    fail("issue #132 H-2: VPM gas planning still hardcoded to deco gases 1-2")
+_calc132 = _index132.split("function calcGasPlan", 1)[-1].split("function _applyGasWarningStyles", 1)[0] if "function calcGasPlan" in _index132 else ""
+_card132 = _index132.split("function appendDecoGasCardAtIdx", 1)[-1].split("function addDecoGasCard", 1)[0] if "function appendDecoGasCardAtIdx" in _index132 else ""
+if "getAllDecoGasIds().forEach(idx =>" in _calc132 and 'id="cylDg${idx}_reserve"' in _card132:
+    ok("issue #132 H-2b: calcGasPlan and dynamic cards cover deco gases 3+ with reserve fields")
+else:
+    fail("issue #132 H-2b: calcGasPlan still omits dynamic deco gases or reserve inputs")
+if "gfAdjustedMValue(a, b, altSurfaceP, gfFem)" in _index132 and "gfAdjustedMValue(a, b, pAmb, gf)" in _index132.split("function getGFInfo", 1)[-1][:1500]:
+    ok("issue #132 M-1: emergency PDF and GF Explorer use gfAdjustedMValue helper")
+else:
+    fail("issue #132 M-1: report/GF Explorer still use obsolete M-value formula")
+if 'id="dg1CustomO2"' in _index_html132 and 'oninput="updateGasMODDisplays()"' in _index_html132.split('id="dg1CustomO2"', 1)[-1][:120]:
+    ok("issue #132 M-2: custom deco O2 inputs refresh MOD on change")
+else:
+    fail("issue #132 M-2: custom deco O2 edits still leave MOD stale")
+_vpm132 = open(os.path.join(_repo_root130, "vpm-engine-core.js"), encoding="utf-8").read()
+if "settings = Object.assign({}, settings || {});" in _vpm132:
+    ok("issue #132 L-1: VPM calculate clones settings before mutation")
+else:
+    fail("issue #132 L-1: VPM calculate still mutates caller-owned settings object")
+_ccr_val132 = open(os.path.join(_repo_root130, "dev", "ccr_engine_validation_regression.py"), encoding="utf-8").read()
+if "issue #132 C-1" in _ccr_val132 and "issue #132 L-1" in _ccr_val132:
+    ok("issue #132: CCR validation covers VPM depth parity and settings immutability")
+else:
+    fail("issue #132: CCR validation missing depth parity / immutability checks")
+
 print("=" * 60)
 
 if FAIL:

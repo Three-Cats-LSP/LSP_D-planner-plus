@@ -122,6 +122,24 @@ def run_checks(page, port: int) -> None:
         });
         return b.getEffectivePpo2(pAmb, 0, 0.10, ccr, 0, 0.70);
       })();
+      const vpmBase = {
+        metric: true, gfLo: 30, gfHi: 85, stepSize: 3, lastStop: 3,
+        descentRate: 20, ascentRate: 10, decoAscentRate: 3, surfaceAscentRate: 3,
+      };
+      out.vpm40m = vpm([{ depth: 40, time: 25, o2: 21, he: 0 }], [], vpmBase);
+      out.vpm131ft = vpm([{ depth: 131 / 3.28084, time: 25, o2: 21, he: 0 }], [], vpmBase);
+      out.vpmFrozenOk = (() => {
+        const frozen = Object.freeze({ ...vpmBase });
+        try {
+          const r = vpm([{ depth: 40, time: 25, o2: 21, he: 0 }], [], frozen);
+          return !r.error && frozen._scrRuntimeMin === undefined;
+        } catch (e) { return false; }
+      })();
+      out.vpmPlainUntouched = (() => {
+        const plain = { ...vpmBase };
+        vpm([{ depth: 40, time: 25, o2: 21, he: 0 }], [], plain);
+        return plain._scrRuntimeMin === undefined;
+      })();
       out.vpmNoGases = vpm(lv(40, 25, 21, 0), undefined, {});
       out.vpmNullLevel = vpm([null], [], {});
       out.vpmNullGas = vpm(lv(40, 25, 21, 0), [null], {});
@@ -261,6 +279,30 @@ def run_checks(page, port: int) -> None:
         ok("pSCR hypoxic source gas reports physical ppO2 below 0.16 bar (issue #131 M-1)")
     else:
         fail(f"pSCR hypoxic ppO2 not physical: {hypoxic!r}")
+
+    v40 = results.get("vpm40m") or {}
+    v131 = results.get("vpm131ft") or {}
+    if (
+        v40.get("totalRuntime") == v131.get("totalRuntime")
+        and len(v40.get("stops") or []) == len(v131.get("stops") or [])
+        and len(v40.get("stops") or []) >= 1
+    ):
+        ok("VPM metric 40 m matches 131 ft equivalent depth (issue #132 C-1)")
+    else:
+        fail(
+            f"VPM imperial/metric depth parity failed: 40m rt={v40.get('totalRuntime')} stops={len(v40.get('stops') or [])} "
+            f"vs 131ft rt={v131.get('totalRuntime')} stops={len(v131.get('stops') or [])}"
+        )
+
+    if results.get("vpmFrozenOk"):
+        ok("VPM accepts frozen settings without throw (issue #132 L-1)")
+    else:
+        fail("VPM frozen settings still throw or mutate input object")
+
+    if results.get("vpmPlainUntouched"):
+        ok("VPM does not leave _scrRuntimeMin on caller settings (issue #132 L-1)")
+    else:
+        fail("VPM still mutates caller-owned settings with internal scratch fields")
 
     if results["vpmNoGases"].get("totalRuntime", 0) > 0 and not results["vpmNoGases"].get("error"):
         ok("VPM undefined decoGases uses empty list (no throw)")

@@ -2547,7 +2547,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 <div class="field" id="dg1CustomField" style="display:none;">
 <label>O₂ %</label>
-<input id="dg1CustomO2" max="100" min="21" step="1" type="number" value="50"/>
+<input id="dg1CustomO2" max="100" min="21" oninput="updateGasMODDisplays()" step="1" type="number" value="50"/>
 </div>
 <div class="field" id="dg1TrimixO2Field" style="display:none;">
 <label>O₂ %</label>
@@ -2590,7 +2590,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 <div class="field" id="dg2CustomField" style="display:none;">
 <label>O₂ %</label>
-<input id="dg2CustomO2" max="100" min="21" step="1" type="number" value="80"/>
+<input id="dg2CustomO2" max="100" min="21" oninput="updateGasMODDisplays()" step="1" type="number" value="80"/>
 </div>
 <div class="field" id="dg2TrimixO2Field" style="display:none;">
 <label>O₂ %</label>
@@ -4244,12 +4244,12 @@ function refreshAltitudeDependentUI() {
 }
 
 function setAltitude() {
-  // Read altitude from UI
+  // Read altitude from UI (custom input is in display units; presets are metres)
   const sel = document.getElementById('altitudeSelect');
   const customInput = document.getElementById('altitudeCustomInput');
   const selVal = sel ? sel.value : '0';
   const altM = selVal === 'custom'
-    ? (parseFloat(customInput?.value) || 0)
+    ? altitudeMFromCustomDisplay(customInput?.value)
     : parseFloat(selVal) || 0;
 
   // Acclimatized setting
@@ -4302,12 +4302,16 @@ function handleAltitudeSelect(val) {
 }
 
 function applyCustomAltitude() {
-  // If units are imperial, convert ft input to metres for storage
-  const inp = document.getElementById('altitudeCustomInput');
-  if (!inp) return;
-  const raw = parseFloat(inp.value) || 0;
-  // Store display value but convert when reading in setAltitude via altitudeInDisplayUnits
   setAltitude();
+}
+
+function altitudeMFromCustomDisplay(raw) {
+  const v = parseFloat(raw) || 0;
+  return units === 'imperial' ? v / 3.28084 : v;
+}
+
+function altitudeMToCustomDisplay(m) {
+  return units === 'imperial' ? Math.round(m * 3.28084) : Math.round(m);
 }
 
 function loadAltitudeFromStorage() {
@@ -4326,7 +4330,7 @@ function loadAltitudeFromStorage() {
       const customInp = document.getElementById('altitudeCustomInput');
       if (!matchOpt) {
         if (customRow) customRow.style.display = 'flex';
-        if (customInp) customInp.value = altitudeM;
+        if (customInp) customInp.value = altitudeMToCustomDisplay(altitudeM);
       }
     }
     const acclSel = document.getElementById('acclimatizedSelect');
@@ -6092,6 +6096,10 @@ function setUnits(u, opts) {
   setTxt('ndlDepthHdr', `Depth (${du})`);
   // Altitude custom input unit label
   setTxt('altitudeCustomUnit', du);
+  if (document.getElementById('altitudeSelect')?.value === 'custom') {
+    const altInp = document.getElementById('altitudeCustomInput');
+    if (altInp) altInp.value = altitudeMToCustomDisplay(altitudeM);
+  }
   setTxt('sd3', u === 'metric' ? '3 m' : '10 ft');
   setTxt('sd6', u === 'metric' ? '6 m' : '20 ft');
 
@@ -7564,7 +7572,6 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
   // Headless mode: skip all VPM computation and DOM rendering
   // (called from ZHLEngine or fastRDS headless path when algo is VPM-B)
   if (window._zhlHeadless) return;
-  const dU = units === 'metric';
   const conservatism = parseInt(document.getElementById('conservatismSelect')?.value || '0');
   const gfHi = mGF.high; // used by VPM-B/GFS
 
@@ -7586,7 +7593,7 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
   const waterTypeVal = getWaterTypeForVPM();
 
   const settings = {
-    metric:            dU,
+    metric:            true,
     waterType:         waterTypeVal,
     barPerM:           BAR_PER_METRE,
     descentRate,
@@ -7604,7 +7611,7 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
     ppO2Low:           ppo2Bottom,  // air/lean: 1.4
     ppO2Mid:           1.5,         // nitrox 28-45%: 1.5 (NOT 1.4 — ApexDeco default)
     ppO2High:          ppo2Deco,    // rich deco gas >45%: 1.6
-    o2MaxDepth:        dU ? 6 : 20,
+    o2MaxDepth:        6,
     conservatism,
     gfHi,
     gfs:               gfHi,
@@ -7983,8 +7990,11 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
     const _cylDefsVPM = [
       { ids:['cylBot_size','cylBot_pres','cylBot_reserve'],                   label: gasLabels[0] || null,                                              isBottom: true  },
       { ids:['cylTravelGas_size','cylTravelGas_pres','cylTravelGas_reserve'], label: (getTravelGasInfo()?.label || null),                                isBottom: false },
-      { ids:['cylDg1_size','cylDg1_pres','cylDg1_reserve'],                   label: (getDecoGasLabel('dg1Mix','dg1CustomO2') || null),           isBottom: false },
-      { ids:['cylDg2_size','cylDg2_pres','cylDg2_reserve'],                   label: (getDecoGasLabel('dg2Mix','dg2CustomO2') || null),           isBottom: false },
+      ...getAllDecoGasIds().map(n => ({
+        ids: [`cylDg${n}_size`, `cylDg${n}_pres`, `cylDg${n}_reserve`],
+        label: getDecoGasLabel(`dg${n}Mix`, `dg${n}CustomO2`) || null,
+        isBottom: false,
+      })),
     ];
     const _cylByLabelVPM = {};
     _cylDefsVPM.forEach(cyl => {
@@ -8417,7 +8427,7 @@ function appendDecoGasCardAtIdx(idx) {
       </div>
       <div class="field" id="dg${idx}CustomField" style="display:none;">
         <label>O₂ %</label>
-        <input type="number" id="dg${idx}CustomO2" value="50" min="21" max="100" step="1">
+        <input type="number" id="dg${idx}CustomO2" value="50" min="21" max="100" step="1" oninput="updateGasMODDisplays()">
       </div>
       <div class="field" id="dg${idx}TrimixO2Field" style="display:none;">
         <label>O₂ %</label>
@@ -8437,6 +8447,7 @@ function appendDecoGasCardAtIdx(idx) {
       </div>
       <div class="field"><label>${units === 'imperial' ? 'Size (cu ft)' : 'Size (L)'}</label><input type="number" id="cylDg${idx}_size" value="11" min="1" max="30" step="0.5" placeholder="11"></div>
       <div class="field"><label id="cylDg${idx}_pres_lbl">${units === 'imperial' ? 'PSI' : 'Bar'}</label><input type="number" id="cylDg${idx}_pres" value="200" min="0" max="300" step="10" placeholder="200"></div>
+      <div class="field"><label id="cylDg${idx}_reserve_lbl">${units === 'imperial' ? 'Reserve psi' : 'Reserve bar'}</label><input type="number" id="cylDg${idx}_reserve" value="50" min="0" max="300" step="10" placeholder="50" title="Reserve pressure kept in this deco cylinder. Used by the Gas Plan tab."></div>
     </div>`;
 
   _insertDecoGasCardInIdOrder(card, idx);
@@ -12286,13 +12297,16 @@ function _syncCylToGasPlan() {
     ['cylTravelGas_size',    'gpTravel_size'],
     ['cylTravelGas_pres',    'gpTravel_fill'],
     ['cylTravelGas_reserve', 'gpTravel_reserve'],
-    ['cylDg1_size',          'gpDg1_size'],
-    ['cylDg1_pres',          'gpDg1_fill'],
-    ['cylDg1_reserve',       'gpDg1_reserve'],
-    ['cylDg2_size',          'gpDg2_size'],
-    ['cylDg2_pres',          'gpDg2_fill'],
-    ['cylDg2_reserve',       'gpDg2_reserve'],
   ];
+  getAllDecoGasIds().forEach(idx => {
+    if (idx <= 2) {
+      map.push(
+        [`cylDg${idx}_size`, `gpDg${idx}_size`],
+        [`cylDg${idx}_pres`, `gpDg${idx}_fill`],
+        [`cylDg${idx}_reserve`, `gpDg${idx}_reserve`],
+      );
+    }
+  });
   map.forEach(([src, dst]) => {
     const srcEl = document.getElementById(src);
     const dstEl = document.getElementById(dst);
@@ -12332,17 +12346,13 @@ function calcGasPlan() {
   const presU = units === 'imperial' ? 'psi'   : 'bar';
 
   // ── Determine which optional gases are configured on the Deco tab ──
-  const dg1 = getDecoCardFractions(1);
-  const dg2 = getDecoCardFractions(2);
   const travelConfigured = isTravelGasConfigured()
                            && !!document.getElementById('cylTravelGas_size');
-  const dg1Configured = !!dg1 && dg1.fO2 > 0;
-  const dg2Configured = !!dg2 && dg2.fO2 > 0;
 
   const showRow = (id, show) => { const el = document.getElementById(id); if (el) el.style.display = show ? '' : 'none'; };
   showRow('gpTravelRow', travelConfigured);
-  showRow('gpDg1Row', dg1Configured);
-  showRow('gpDg2Row', dg2Configured);
+  showRow('gpDg1Row', false);
+  showRow('gpDg2Row', false);
 
   const rows = [];
 
@@ -12415,14 +12425,21 @@ function calcGasPlan() {
                  || (getGasLabel(0.21, 0)); // travel default air
     oneWay.push({ name: 'Travel', label: tLabel, sizeId: 'gpTravel_size', fillId: 'gpTravel_fill', resId: 'gpTravel_reserve' });
   }
-  if (dg1Configured) {
-    const l = getGasLabel(dg1.fO2, dg1.fHe);
-    oneWay.push({ name: 'Deco 1', label: l, sizeId: 'gpDg1_size', fillId: 'gpDg1_fill', resId: 'gpDg1_reserve' });
-  }
-  if (dg2Configured) {
-    const l = getGasLabel(dg2.fO2, dg2.fHe);
-    oneWay.push({ name: 'Deco 2', label: l, sizeId: 'gpDg2_size', fillId: 'gpDg2_fill', resId: 'gpDg2_reserve' });
-  }
+  getAllDecoGasIds().forEach(idx => {
+    const fracs = getDecoCardFractions(idx);
+    if (!fracs || fracs.fO2 <= 0) return;
+    if (idx === 1) showRow('gpDg1Row', true);
+    if (idx === 2) showRow('gpDg2Row', true);
+    const label = getGasLabel(fracs.fO2, fracs.fHe);
+    const useGp = idx <= 2 && document.getElementById(`gpDg${idx}_size`);
+    oneWay.push({
+      name: `Deco ${idx}`,
+      label,
+      sizeId: useGp ? `gpDg${idx}_size` : `cylDg${idx}_size`,
+      fillId: useGp ? `gpDg${idx}_fill` : `cylDg${idx}_pres`,
+      resId: useGp ? `gpDg${idx}_reserve` : `cylDg${idx}_reserve`,
+    });
+  });
 
   // Remove travel from one-way list if it was pooled into bottom
   const oneWayFiltered = travelPooledL > 0
@@ -14553,7 +14570,7 @@ async function exportContingencyPDF(opts) {
       const [ht,a_n,b_n]=ZHL16C[i];
       let a=a_n,b=b_n;
       if(pHelp>0&&pTotlp>0){a=(pN2lp*a_n+pHelp*ZHL16C_HE_AB[i][0])/pTotlp;b=(pN2lp*b_n+pHelp*ZHL16C_HE_AB[i][1])/pTotlp;}
-      const mv=a*gfFem+altSurfaceP/b;
+      const mv = gfAdjustedMValue(a, b, altSurfaceP, gfFem);
       const pct=Math.min(100,Math.round((pTotlp/mv)*100));
       const cr=pct>=100?[220,0,0]:pct>=85?[200,80,0]:pct>=70?[180,150,0]:[20,160,60];
       doc.setFontSize(6.5); doc.setFont('DejaVuSans','normal'); doc.setTextColor(100,100,120);
@@ -15390,7 +15407,7 @@ function attachGFCurveInteraction() {
     const pN2     = (pAmb - WATER_VAPOR) * FN2_AIR;
     let maxSat = 0, controlComp = 0;
     ZHL16C.forEach(([ht, a, b], i) => {
-      const mv  = (a * gf + altSurfaceP / b);
+      const mv  = gfAdjustedMValue(a, b, pAmb, gf);
       const sat = pN2 / mv;
       if (sat > maxSat) { maxSat = sat; controlComp = i + 1; }
     });
@@ -15994,7 +16011,7 @@ async function exportPDF(opts) {
             a=(pN2pdf*a_n2pdf+pHepdf*ZHL16C_HE_AB[i][0])/pTotpdf;
             b=(pN2pdf*b_n2pdf+pHepdf*ZHL16C_HE_AB[i][1])/pTotpdf;
           }
-          const mv=a*gfF+altSurfaceP/b;
+          const mv = gfAdjustedMValue(a, b, altSurfaceP, gfF);
           const pct=Math.min(100,Math.round((pTotpdf/mv)*100));
           const cr=pct>=100?[220,0,0]:pct>=90?[200,80,0]:pct>=75?[180,150,0]:[20,160,60];
           // Labels
@@ -16049,7 +16066,7 @@ async function exportPDF(opts) {
             a=(pN2pdf*a_n2pdf+pHepdf*ZHL16C_HE_AB[i][0])/pTotpdf;
             b=(pN2pdf*b_n2pdf+pHepdf*ZHL16C_HE_AB[i][1])/pTotpdf;
           }
-          const mv=a*gfF+altSurfaceP/b;
+          const mv = gfAdjustedMValue(a, b, altSurfaceP, gfF);
           const pct=Math.min(100,Math.round((pTotpdf/mv)*100));
           const cr=pct>=100?[200,0,0]:pct>=90?[180,80,0]:pct>=75?[150,120,0]:[20,140,50];
           const status=pct>=100?'LIMIT':pct>=90?'HIGH':pct>=75?'MED':'OK';
@@ -16127,7 +16144,7 @@ async function exportPDF(opts) {
                   ar=wN2*a_n2r+wHe*ZHL16C_HE_AB[i][0];
                   br=wN2*b_n2r+wHe*ZHL16C_HE_AB[i][1];
                 }
-                const mValR=pAmb/br+ar*gfApplied;
+                const mValR = gfAdjustedMValue(ar, br, pAmb, gfApplied);
                 const pctR=mValR>0?Math.round((pTr/mValR)*100):0;
                 const clampR=Math.max(0,Math.min(120,pctR));
                 const barPctR=Math.min(100,clampR);
