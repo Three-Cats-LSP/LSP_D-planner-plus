@@ -6621,6 +6621,15 @@ if "issue #132 C-1" in _ccr_val132 and "issue #132 L-1" in _ccr_val132:
     ok("issue #132: CCR validation covers VPM depth parity and settings immutability")
 else:
     fail("issue #132: CCR validation missing depth parity / immutability checks")
+_units132 = _index132.split("function setUnits", 1)[-1].split("function ", 1)[0] if "function setUnits" in _index132 else ""
+if "allCylReserve" in _units132 and 'querySelectorAll(\'[id^="cylDg"][id$="_reserve"]\')' in _units132:
+    ok("issue #132 H-3: dynamic deco cylinder reserve fields included in unit conversion")
+else:
+    fail("issue #132 H-3: dynamic deco cylinder reserve fields still skip unit conversion")
+if "function defaultDecoCylFieldValues" in _index132 and "units === 'imperial'" in _index132.split("function defaultDecoCylFieldValues", 1)[-1][:500]:
+    ok("issue #132 H-3b: new dynamic deco cards initialize cylinder values for active units")
+else:
+    fail("issue #132 H-3b: dynamic deco cards still seed metric defaults under imperial labels")
 
 print("=" * 60)
 
