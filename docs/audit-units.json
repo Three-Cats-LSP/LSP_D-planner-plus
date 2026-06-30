@@ -626,14 +626,14 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ALGORITHM-SETTINGS"
       },
       "fingerprint": "ddad5f3ba7c965543ff16d428cd818d3ef074d6232a0a771b5b945d7fe71c71b",
-      "last_read_fingerprint": null,
-      "audit_issue": 139,
+      "last_read_fingerprint": "ddad5f3ba7c965543ff16d428cd818d3ef074d6232a0a771b5b945d7fe71c71b",
+      "audit_issue": 163,
       "evidence": [],
       "regression_cases": []
     },

@@ -24,9 +24,9 @@
 | ui_core | 5 | 0 | 2 | 0 | 3 |
 | web_css | 4 | 4 | 0 | 0 | 0 |
 | web_markup | 5 | 5 | 0 | 0 | 0 |
-| web_runtime | 34 | 4 | 3 | 26 | 1 |
+| web_runtime | 34 | 4 | 2 | 27 | 1 |
 | worker | 2 | 0 | 0 | 2 | 0 |
-| **Total** | **157** | **54** | **50** | **48** | **5** |
+| **Total** | **157** | **54** | **49** | **49** | **5** |
 
 ## Units
 
@@ -45,7 +45,7 @@
 | UI-RUNTIME-BOOTSTRAP | web_runtime | `index.html:3833` | 270 | P1 | READ | - |
 | UI-ENVIRONMENT | web_runtime | `index.html:4103` | 377 | P1 | READ | - |
 | UI-MODE-STATE | web_runtime | `index.html:4480` | 380 | P2 | IN_PROGRESS | - |
-| UI-ALGORITHM-SETTINGS | web_runtime | `index.html:4860` | 360 | P1 | IN_PROGRESS | - |
+| UI-ALGORITHM-SETTINGS | web_runtime | `index.html:4860` | 360 | P1 | READ | - |
 | UI-UNIT-HELPERS | web_runtime | `index.html:5220` | 388 | P1 | READ | - |
 | UI-PLAN-HEADER | web_runtime | `index.html:5608` | 449 | P2 | READ | - |
 | UI-UNIT-SWITCHING | web_runtime | `index.html:6057` | 310 | P1 | READ | - |
