@@ -2013,12 +2013,12 @@ elif re.search(r'if \(!firstStopDepth \|\| firstStopDepth <= 0\) return gfL;', _
 else:
     fail("GF anchor: gfAtDepth pre-anchor return value not found or changed structure")
 _schedule_gf = open(os.path.join(os.path.dirname(__file__), "zhl-schedule-core.js"), encoding="utf-8").read()
-if re.search(r'function gfAt\(depthM\)[\s\S]{0,220}if \(!firstStopDepth \|\| firstStopDepth <= 0\) return gfH;', _schedule_gf):
-    ok("GF anchor: schedule gfAt() returns gfH when firstStopDepth unanchored (issue #137 H-7)")
-elif re.search(r'function gfAt\(depthM\)[\s\S]{0,220}if \(!firstStopDepth \|\| firstStopDepth <= 0\) return gfL;', _schedule_gf):
+if re.search(r'function gfAt\(depthM\)[\s\S]{0,220}if \(!firstStopDepth \|\| firstStopDepth <= 0\) return gfL;', _schedule_gf):
     ok("GF anchor: schedule gfAt() returns gfL pre-anchor (Baker first-stop search)")
+elif re.search(r'function gfAt\(depthM\)[\s\S]{0,220}if \(!firstStopDepth \|\| firstStopDepth <= 0\) return gfH;', _schedule_gf):
+    fail("GF anchor: schedule gfAt() returns gfH pre-anchor — shallower first stops (issue #137 H-7 regression)")
 else:
-    fail("GF anchor: schedule gfAt() missing pre-anchor guard (gfH or gfL)")
+    fail("GF anchor: schedule gfAt() missing pre-anchor guard (gfL required)")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 31 — TTS METRIC + DECOZONE GF-INDEPENDENCE FIX (v2.10.10)
@@ -6492,7 +6492,7 @@ if all(f"'{f}'" in js.split("DECO_FIELDS:", 1)[-1][:2500] for f in ("siD1Depth",
     ok("issue #127 M-2: surface-interval sliders in DECO_FIELDS for persistence")
 else:
     fail("issue #127 M-2: siD1/siD2 sliders missing from DECO_FIELDS")
-if "endpointDepth = seg.toDepth" in _ccr_core_src.split("function saturateLinearCCR", 1)[-1][:900] or "endpointDepth = seg.fromDepth < seg.toDepth ? seg.toDepth : seg.fromDepth" in _ccr_core_src.split("function saturateLinearCCR", 1)[-1][:900] or "endpointDepth = seg.fromDepth < seg.toDepth ? seg.toDepth : Math.min(seg.fromDepth, seg.toDepth)" in _ccr_core_src.split("function saturateLinearCCR", 1)[-1][:900]:
+if "endpointDepth = seg.fromDepth < seg.toDepth ? seg.toDepth : seg.fromDepth" in _ccr_core_src.split("function saturateLinearCCR", 1)[-1][:900]:
     ok("issue #127 M-3: saturateLinearCCR uses deep endpoint for setpoint on segment")
 else:
     fail("issue #127 M-3: saturateLinearCCR still uses shallow endpoint on descent")
@@ -6851,7 +6851,7 @@ if "issue133" in open(os.path.join(_repo_root130, "dev", "engine_regression.py")
 else:
     fail("issue #133 H-5: engine_regression missing issue #133 tests")
 _ccr133 = _ccr_core_src.split("function saturateLinearCCR", 1)[-1][:900] if "function saturateLinearCCR" in _ccr_core_src else ""
-if "endpointDepth = seg.fromDepth < seg.toDepth ? seg.toDepth : seg.fromDepth" in _ccr133 or "endpointDepth = seg.fromDepth < seg.toDepth ? seg.toDepth : Math.min(seg.fromDepth, seg.toDepth)" in _ccr133:
+if "endpointDepth = seg.fromDepth < seg.toDepth ? seg.toDepth : seg.fromDepth" in _ccr133:
     ok("issue #133 M-2: saturateLinearCCR samples setpoint at deep endpoint of segment")
 else:
     fail("issue #133 M-2: saturateLinearCCR still uses shallow endpoint for setpoint")

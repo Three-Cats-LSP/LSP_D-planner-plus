@@ -803,7 +803,7 @@ ENGINE_SUITE_JS = r"""
       ? b.validateHypoxicDecoGas(15, 55, 'dg1', 'OC') : null;
     const m17Ok = hypoCcr === null && !!(hypoOc && hypoOc.code === 'HYPOXIC_DECO_GAS');
     const schedSrc = b && typeof b.runZhlScheduleCore === 'function' ? b.runZhlScheduleCore.toString() : '';
-    const h7Ok = schedSrc.includes('firstStopDepth <= 0) return gfH');
+    const h7Ok = schedSrc.includes('firstStopDepth <= 0) return gfL');
     const vpmD1 = vpm([{ depth: 45, time: 25, o2: 32, he: 0 }], [{ o2: 50, he: 0 }], {}, 'VPMB');
     let m19Ok = false;
     if (vpmD1 && vpmD1.finalBubbleState) {
@@ -1174,7 +1174,7 @@ def run_suite(page) -> dict:
     assert_true(i135.get("ok"), "issue #135 combined regression gate", str(i135))
     i137 = s.get("issue137", {})
     assert_true(i137.get("m17Ok"), "issue #137 M-17: CCR hypoxic deco gas exempt from 18% rule", str(i137))
-    assert_true(i137.get("h7Ok"), "issue #137 H-7: gfAt returns gfH when firstStopDepth=0", str(i137))
+    assert_true(i137.get("h7Ok"), "issue #137 H-7: schedule gfAt returns gfL pre-anchor (Baker search)", str(i137))
     assert_true(i137.get("m19Ok"), "issue #137 M-19: VPM bubble state survives JSON clone carry", str(i137))
     assert_true(i137.get("h6Ok"), "issue #137 H-6: VPM has no untested worker path", str(i137))
     assert_true(i137.get("m11Ok"), "issue #137 M-11: contingency restores bailout in finally", str(i137))

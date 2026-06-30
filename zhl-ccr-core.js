@@ -322,7 +322,8 @@ function saturateLinearCCR(tissues, fromDepth, toDepth, t, fO2, fHe, ccr) {
     const p0Amb = depthBar(seg.fromDepth);
     const pEndAmb = depthBar(seg.toDepth);
     const R = (pEndAmb - p0Amb) / segTime;
-    const endpointDepth = seg.fromDepth < seg.toDepth ? seg.toDepth : Math.min(seg.fromDepth, seg.toDepth);
+    // [AUDIT-REG-07] setpoint sampled at deep segment endpoint (ascent uses fromDepth)
+    const endpointDepth = seg.fromDepth < seg.toDepth ? seg.toDepth : seg.fromDepth;
     const segSP = getEffectiveSetpointAtDepth(endpointDepth, cfg, surfP, phase);
     const segCcr = { ...cfg, setpoint: segSP };
     out = out.map((t0, i) => ({

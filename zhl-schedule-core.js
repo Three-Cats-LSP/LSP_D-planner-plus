@@ -167,8 +167,9 @@ function runZhlScheduleCore(params) {
 
   // gfAt must live outside the phase loop — block-scoped function declarations are
   // not visible after the loop in strict mode (Tier 3 bundle uses 'use strict').
+  // [AUDIT-REG-06] pre-anchor gfAt returns gfL for Baker first-stop search
   function gfAt(depthM) {
-    if (!firstStopDepth || firstStopDepth <= 0) return gfH;
+    if (!firstStopDepth || firstStopDepth <= 0) return gfL;
     return gfAtDepth(depthM, gfL, gfH, firstStopDepth, lastStop, !!params.shallowGradient);
   }
 

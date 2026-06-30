@@ -59,7 +59,7 @@
 | UI-GAS-INPUTS | web_runtime | `index.html:8364` | 184 | P1 | READ | - |
 | UI-GAS-CARDS | web_runtime | `index.html:8548` | 565 | P1 | IN_PROGRESS | - |
 | UI-ZHL-RUNNER-SETUP | web_runtime | `index.html:9113` | 116 | P0 | READ | - |
-| UI-ZHL-RUNNER-ENGINE | web_runtime | `index.html:9229` | 338 | P0 | READ | - |
+| UI-ZHL-RUNNER-ENGINE | web_runtime | `index.html:9229` | 338 | P0 | READ | REG-01, REG-06 |
 | UI-ZHL-RESULTS | web_runtime | `index.html:9567` | 489 | P1 | IN_PROGRESS | - |
 | UI-ZHL-HEADLESS-HELPERS | web_runtime | `index.html:10056` | 181 | P1 | READ | - |
 | UI-ZHL-HEADLESS-ENGINE | web_runtime | `index.html:10237` | 385 | P0 | READ | - |
@@ -77,8 +77,8 @@
 | UI-PWA-LIFECYCLE | pwa | `index.html:13853` | 84 | P1 | READ | - |
 | ENG-ZHL-PHYSICS | engine | `zhl-physics-core.js:1` | 189 | P1 | READ | - |
 | ENG-ZHL-GAS | engine | `zhl-gas-core.js:1` | 184 | P1 | READ | - |
-| ENG-ZHL-CCR | engine | `zhl-ccr-core.js:1` | 385 | P0 | READ | - |
-| ENG-ZHL-SCHEDULE | engine | `zhl-schedule-core.js:1` | 585 | P0 | READ | - |
+| ENG-ZHL-CCR | engine | `zhl-ccr-core.js:1` | 386 | P0 | READ | REG-07 |
+| ENG-ZHL-SCHEDULE | engine | `zhl-schedule-core.js:1` | 586 | P0 | READ | REG-06 |
 | ENG-VPM | engine | `vpm-engine-core.js:1` | 1955 | P0 | READ | - |
 | ENG-VPM-REFERENCE | engine_reference | `vpmb.py:1` | 2574 | P2 | UNREAD | - |
 | APP-ANDROID-SELECT | native_bridge | `android-select-picker.js:1` | 270 | P1 | READ | - |

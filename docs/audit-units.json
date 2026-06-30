@@ -142,6 +142,16 @@
       "path": "audit.py",
       "needle": "extract_ui_cores.py uses marker-based contract",
       "command": "python audit.py"
+    },
+    "REG-06": {
+      "path": "zhl-schedule-core.js",
+      "needle": "[AUDIT-REG-06]",
+      "command": "python dev/run_all_regression.py --tier release"
+    },
+    "REG-07": {
+      "path": "zhl-ccr-core.js",
+      "needle": "[AUDIT-REG-07]",
+      "command": "python dev/run_ccr_differential.py"
     }
   },
   "findings": [
@@ -200,6 +210,14 @@
       "status": "CLOSED",
       "issue": "GitHub #139 / Audit #133 (3 new findings; #138 re-verified)",
       "summary": "All 3L fixed; #138 40/40 re-verified on 1271d1a; gated in audit.py and engine_regression issue139"
+    },
+    {
+      "id": "REGRESSION-GF-CCR-FIX",
+      "unit_id": "ENG-ZHL-SCHEDULE",
+      "severity": "CRITICAL",
+      "status": "CLOSED",
+      "issue": "Debug report: schedule GF pre-anchor + CCR endpoint regressions from #137 H-7",
+      "summary": "schedule gfAt returns gfL pre-anchor; CCR saturateLinearCCR uses deep endpoint; release regression 9/9; REG-06/REG-07"
     }
   ],
   "units": [
@@ -590,8 +608,13 @@
       },
       "fingerprint": "8f770fc4fbe9a58e7ab3f190737cdc4670c5a82d348901765a7ef9e7ee0d6ff4",
       "last_read_fingerprint": "8f770fc4fbe9a58e7ab3f190737cdc4670c5a82d348901765a7ef9e7ee0d6ff4",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "python dev/run_all_regression.py --tier release"
+      ],
+      "regression_cases": [
+        "REG-01",
+        "REG-06"
+      ],
       "audit_issue": 139
     },
     {
@@ -840,11 +863,15 @@
       "boundary": {
         "type": "whole_file"
       },
-      "regression_cases": [],
-      "evidence": [],
-      "issue": "Audit #134",
-      "fingerprint": "f72d03141467b15ad98603b72d31bedacf7df19d2e32aa1de734782905e62ccc",
-      "last_read_fingerprint": "f72d03141467b15ad98603b72d31bedacf7df19d2e32aa1de734782905e62ccc"
+      "evidence": [
+        "python dev/run_ccr_differential.py"
+      ],
+      "regression_cases": [
+        "REG-07"
+      ],
+      "issue": "Audit #134; CCR deep-endpoint setpoint sampling",
+      "fingerprint": "1c90a29cab4644ec939050181a2a0c911e593f82f9a5b837380570616155ffdf",
+      "last_read_fingerprint": "1c90a29cab4644ec939050181a2a0c911e593f82f9a5b837380570616155ffdf"
     },
     {
       "id": "ENG-ZHL-SCHEDULE",
@@ -855,10 +882,14 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "6708b8ea4fad80422994c32f168e6a656d08b4d98373db567614b593abff5270",
-      "last_read_fingerprint": "6708b8ea4fad80422994c32f168e6a656d08b4d98373db567614b593abff5270",
-      "evidence": [],
-      "regression_cases": [],
+      "fingerprint": "63089599fa05d171423247bf31548c8419d590c1605e10c7676686b72dafbd42",
+      "last_read_fingerprint": "63089599fa05d171423247bf31548c8419d590c1605e10c7676686b72dafbd42",
+      "evidence": [
+        "python dev/run_all_regression.py --tier release"
+      ],
+      "regression_cases": [
+        "REG-06"
+      ],
       "audit_issue": 139
     },
     {
@@ -1312,7 +1343,7 @@
       "evidence": [],
       "issue": "GitHub #133\u2013#138 audit regression sections",
       "regression_cases": [],
-      "fingerprint": "f86492cc71fd1a7d870d9e5e3e7aeda4f9714054b34ddd3d4f0e6a6349faa267",
+      "fingerprint": "e748be5bb6a98e5c65136d62e61c3dcdd65a85851122bb05891596593131d160",
       "last_read_fingerprint": null
     },
     {
@@ -1653,9 +1684,9 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "GitHub #133\u2013#138 structured environment audit gates",
       "regression_cases": [],
-      "fingerprint": "e9a239d603944603459765d2347736f87521090724adf73510286bd2abcaac81",
+      "issue": "GitHub #133\u2013#139 structured environment audit gates; release regression 9/9",
+      "fingerprint": "bc2d118af744b069cb58df59fbf2f2d4a7552a26e9c495f4b71b9076a60e304a",
       "last_read_fingerprint": null
     },
     {
