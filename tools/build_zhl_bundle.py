@@ -263,7 +263,7 @@ postamble = r'''
     if (plan.length === 0 || plan[0].type !== 'descent') {
       const descentTime = level.depth / (s.descentRate || 20);
       const btAtDepthMin = Math.max(0, level.time - descentTime);
-      const bottomGasLabel = plan.length > 0 ? (plan[0].gas || 'bottom') : 'bottom';
+      const bottomGasLabel = getGasLabel(fO2bot, (level.he || 0) / 100);
       plan.unshift({ type: 'bottom', depth: level.depth, time: btAtDepthMin, run: descentTime + btAtDepthMin, gas: bottomGasLabel, o2: level.o2, he: level.he || 0 });
       plan.unshift({ type: 'descent', depth: level.depth, time: descentTime, run: descentTime, gas: bottomGasLabel, o2: level.o2, he: level.he || 0 });
     }

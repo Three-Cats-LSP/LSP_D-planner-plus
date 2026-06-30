@@ -995,6 +995,39 @@ ENGINE_SUITE_JS = r"""
     })),
   };
 
+  // ── multi-level continuation gas + headless bottom labels ───────────────
+  out.sections.mlContGas = (() => {
+    const decoGases = [{ o2: 50, he: 0 }];
+    const r = zhl([
+      { depth: 20, time: 25, o2: 21, he: 0 },
+      { depth: 10, time: 5, o2: 50, he: 0 },
+    ], decoGases);
+    const plan = r.plan || [];
+    const hold10 = plan.find(s => s.type === 'bottom' && s.depth === 10);
+    let seenHold = false;
+    let ascAfterHold = null;
+    for (const s of plan) {
+      if (s === hold10) { seenHold = true; continue; }
+      if (seenHold && s.type === 'ascent') { ascAfterHold = s; break; }
+    }
+    const gasOk = hold10?.gas === 'EAN50' && ascAfterHold?.gas === 'EAN50';
+    const expectMainRate = (10 - base.lastStop) / base.ascentRate;
+    const rateOk = ascAfterHold && Math.abs(ascAfterHold.time - expectMainRate) < 0.15;
+    const notDecoRate = !ascAfterHold || Math.abs(ascAfterHold.time - (10 - base.lastStop) / base.decoAscentRate) > 0.3;
+    return {
+      holdGas: hold10?.gas, ascGas: ascAfterHold?.gas, ascTime: ascAfterHold?.time,
+      gasOk, rateOk, notDecoRate, ok: gasOk && rateOk && notDecoRate,
+    };
+  })();
+  out.sections.mlBottomLabel = (() => {
+    const r = zhl([{ depth: 20, time: 25, o2: 21, he: 0 }], [{ o2: 50, he: 0 }]);
+    const descent = (r.plan || []).find(s => s.type === 'descent');
+    const bottom = (r.plan || []).find(s => s.type === 'bottom');
+    const labelOk = descent?.gas === 'Air' && bottom?.gas === 'Air';
+    const o2Ok = descent?.o2 === 21 && bottom?.o2 === 21;
+    return { descentGas: descent?.gas, bottomGas: bottom?.gas, labelOk, o2Ok, ok: labelOk && o2Ok };
+  })();
+
   return out;
 }
 """
@@ -1216,6 +1249,13 @@ def run_suite(page) -> dict:
     assert_true(t110.get("bottomNoDoubleDescent", {}).get("ok"), "ZHL headless bottom excludes descent time (issue #110 H-2)", str(t110.get("bottomNoDoubleDescent")))
     for key in ("zhl4025", "zhl3025", "schreiner", "ccrMl"):
         assert_true(t110.get(key, {}).get("ok"), f"ZHL plan timeline parity {key} (issue #110 H-3/L-1)", str(t110.get(key)))
+
+    ml = s.get("mlContGas", {})
+    assert_true(ml.get("gasOk"), "multi-level continuation gas preserved on ascent after hold", str(ml))
+    assert_true(ml.get("rateOk"), "continuation no-deco ascent uses main rate not deco rate", str(ml))
+    assert_true(ml.get("ok"), "multi-level continuation gas regression gate", str(ml))
+    mlb = s.get("mlBottomLabel", {})
+    assert_true(mlb.get("ok"), "headless descent/bottom gas label from declared level not first step", str(mlb))
 
     print("\n── G: Worker parity ──")
     worker = page.evaluate(WORKER_SUITE_JS)

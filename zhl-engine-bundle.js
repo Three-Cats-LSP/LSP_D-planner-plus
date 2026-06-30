@@ -823,7 +823,10 @@ function runZhlScheduleCore(params) {
     if (_zhlOnLoop) {
       return { fN2: bottomFN2, fHe: bottomFHe, fO2: bottomFO2, label: bottomMixLabel };
     }
-    return getActiveGas(depthM, bottomFN2, bottomFHe, decoGases, getPPO2Limit, bottomMixLabel);
+    const baseN2 = _zhlActiveGas ? _zhlActiveGas.fN2 : bottomFN2;
+    const baseHe = _zhlActiveGas ? _zhlActiveGas.fHe : bottomFHe;
+    const baseLabel = _zhlActiveGas ? _zhlActiveGas.label : bottomMixLabel;
+    return getActiveGas(depthM, baseN2, baseHe, decoGases, getPPO2Limit, baseLabel);
   }
 
   function getPPO2Limit(fO2) {
@@ -914,6 +917,7 @@ function runZhlScheduleCore(params) {
 
   let firstStopDepth = 0;
   let carriedFirstStopDepth = 0;
+  let _zhlActiveGas = null; // continuation-level mix carried until deco-gas switch
 
   // gfAt must live outside the phase loop — block-scoped function declarations are
   // not visible after the loop in strict mode (Tier 3 bundle uses 'use strict').
@@ -957,8 +961,8 @@ function runZhlScheduleCore(params) {
     stopDepths.push(lastStop);
   }
 
-  let prevEngineGas = bottomMixLabel; // track gas for switch pause
-  let decoZoneEntered = _zhlPhaseIdx > 0; // true once first ceiling-forced stop fires
+  let prevEngineGas = _zhlActiveGas ? _zhlActiveGas.label : bottomMixLabel; // track gas for switch pause
+  let decoZoneEntered = false; // set when ceiling-forced or min-stop deco actually begins
 
   // firstSwitchDepth — find first deco gas switch depth
   let firstDecoDepth   = null;
@@ -1252,6 +1256,7 @@ function runZhlScheduleCore(params) {
       gas: getGasLabel(cO2, cHe), pO2: (+ppO2Check(cur, cN2, cHe)).toFixed(2),
       fN2: cN2, fHe: cHe,
     });
+    _zhlActiveGas = { fN2: cN2, fHe: cHe, fO2: cO2, label: getGasLabel(cO2, cHe) };
   }
 
   } // end multi-level ascent phase
@@ -1554,7 +1559,7 @@ function runZhlScheduleCore(params) {
     if (plan.length === 0 || plan[0].type !== 'descent') {
       const descentTime = level.depth / (s.descentRate || 20);
       const btAtDepthMin = Math.max(0, level.time - descentTime);
-      const bottomGasLabel = plan.length > 0 ? (plan[0].gas || 'bottom') : 'bottom';
+      const bottomGasLabel = getGasLabel(fO2bot, (level.he || 0) / 100);
       plan.unshift({ type: 'bottom', depth: level.depth, time: btAtDepthMin, run: descentTime + btAtDepthMin, gas: bottomGasLabel, o2: level.o2, he: level.he || 0 });
       plan.unshift({ type: 'descent', depth: level.depth, time: descentTime, run: descentTime, gas: bottomGasLabel, o2: level.o2, he: level.he || 0 });
     }

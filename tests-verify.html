@@ -760,13 +760,17 @@ const SECTIONS = [
     ['pSCR ccrDiluentSurfaceLpm ≈ metRate / (fO2dil − fO2loop), not hardcoded bypass (BUG-75)', () => {
       const d = WIN.document;
       const sel = d.getElementById('circuitSelect');
+      const bailEl = d.getElementById('ccrBailoutToggle');
       const prev = sel ? sel.value : null;
+      const prevBailout = bailEl ? bailEl.value : null;
       if (sel) sel.value = 'pSCR';
+      if (bailEl) bailEl.value = 'off';
       WIN.toggleCircuitFields?.();
       const met = parseFloat(d.getElementById('scrMetabolicO2')?.value) || 1.5;
       const loopVol = parseFloat(d.getElementById('ccrLoopVolume')?.value) || 10;
       const depthM = 40;
       const lpm = WIN.ccrDiluentSurfaceLpm(depthM);
+      if (bailEl && prevBailout != null) bailEl.value = prevBailout;
       if (sel && prev != null) { sel.value = prev; WIN.toggleCircuitFields?.(); }
       const pSurf = WIN.altSurfaceP || 1.01325;
       const pAmb = pSurf + depthM * (WIN.BAR_PER_METRE || 0.1);

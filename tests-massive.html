@@ -3523,13 +3523,17 @@ const TIER3_GROUPS = [
       ['pSCR ccrDiluentSurfaceLpm from computePSCRFractions (BUG-75)', 'SCN', function(){
         const d = getDoc();
         const sel = d.getElementById('circuitSelect');
+        const bailEl = d.getElementById('ccrBailoutToggle');
         const prevCircuit = sel ? sel.value : null;
+        const prevBailout = bailEl ? bailEl.value : null;
         if (sel) sel.value = 'pSCR';
+        if (bailEl) bailEl.value = 'off';
         if (typeof WIN.toggleCircuitFields === 'function') WIN.toggleCircuitFields();
         const met = parseFloat(d.getElementById('scrMetabolicO2')?.value) || 1.5;
         const loopVol = parseFloat(d.getElementById('ccrLoopVolume')?.value) || 10;
         const depthM = 40;
         const lpm = WIN.ccrDiluentSurfaceLpm(depthM);
+        if (bailEl && prevBailout != null) bailEl.value = prevBailout;
         if (sel && prevCircuit != null) sel.value = prevCircuit;
         if (typeof WIN.toggleCircuitFields === 'function') WIN.toggleCircuitFields();
         const pSurf = WIN.altSurfaceP || 1.01325;
