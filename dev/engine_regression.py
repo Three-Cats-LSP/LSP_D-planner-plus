@@ -1124,7 +1124,10 @@ ENGINE_SUITE_JS = r"""
     let stateValidationOk = false;
     if (window.VPMEngine) {
       const fresh = VPMEngine.calculate(lv, deco, baseVpm, 'VPMB');
-      const badTissue = VPMEngine.calculate(lv, deco, { ...baseVpm, _preTissues: [{ pN2: NaN, pHe: 0 }] }, 'VPMB');
+      const badTissue = VPMEngine.calculate(lv, deco, {
+        ...baseVpm,
+        _preTissues: Array.from({ length: 16 }, () => ({ pN2: NaN, pHe: 0 })),
+      }, 'VPMB');
       const badBubble = VPMEngine.calculate(lv, deco, {
         ...baseVpm,
         _prevBubbleState: {
@@ -1134,8 +1137,9 @@ ENGINE_SUITE_JS = r"""
           regeneratedRadiiHe: Array(16).fill(0),
         },
       }, 'VPMB');
-      stateValidationOk = !fresh.error && !badTissue.error && !badBubble.error
-        && Math.abs((badTissue.totalRuntime || 0) - (fresh.totalRuntime || 0)) < 0.01;
+      stateValidationOk = !fresh.error
+        && badTissue.code === 'INVALID_REPETITIVE_STATE'
+        && badBubble.code === 'INVALID_REPETITIVE_STATE';
     }
 
     let settingsValidationOk = false;
@@ -1163,11 +1167,43 @@ ENGINE_SUITE_JS = r"""
 
     const rdsFn = typeof _doResetToDefaults === 'function' ? _doResetToDefaults.toString() : '';
     const personalDefaultsOk = /userDefaults\?\.gfLowInput/.test(rdsFn) && /_ADV_FIELDS\.forEach/.test(rdsFn);
-    const resetUiSyncOk = /toggleCircuitFields\?\.\(\)/.test(rdsFn) && /syncMinStopTimeRounding\?\.\(\)/.test(rdsFn);
-    const bzFn = typeof buildZhlScheduleParamsFromDom === 'function' ? buildZhlScheduleParamsFromDom.toString() : '';
-    const rdsSchedule = typeof runDecoSchedule === 'function' ? runDecoSchedule.toString() : '';
-    const vpmFn = typeof runVPMSchedule === 'function' ? runVPMSchedule.toString() : '';
-    const stopRoundingOk = /wholeMinStops/.test(bzFn) && /wholeMinStops/.test(rdsSchedule) && /wholeMinStops/.test(vpmFn);
+    let resetUiSyncOk = false;
+    if (typeof _doResetToDefaults === 'function') {
+      const cSel = document.getElementById('circuitSelect');
+      const dGas = document.getElementById('decoGas');
+      const trimixO2 = document.getElementById('botTrimixO2Field');
+      const trimixHe = document.getElementById('botTrimixHeField');
+      const ccrAdv = document.getElementById('ccrAdvSettingsSection');
+      const prevC = cSel?.value;
+      const prevG = dGas?.value;
+      if (cSel && dGas && trimixO2 && trimixHe) {
+        cSel.value = 'CCR';
+        dGas.value = 'trimix';
+        toggleCircuitFields?.();
+        toggleBottomTrimix?.();
+        _doResetToDefaults(null);
+        const trimixHidden = trimixO2.style.display === 'none' && trimixHe.style.display === 'none';
+        const ccrHidden = !ccrAdv || ccrAdv.style.display === 'none';
+        resetUiSyncOk = cSel.value === 'OC' && dGas.value === 'air' && trimixHidden && ccrHidden;
+        if (prevC != null) cSel.value = prevC;
+        if (prevG != null) dGas.value = prevG;
+        toggleCircuitFields?.();
+        toggleBottomTrimix?.();
+      }
+    }
+    let stopRoundingOk = false;
+    if (window.VPMEngine) {
+      const deep = [{ depth: 50, time: 25, o2: 21, he: 0 }];
+      const deco50 = [{ o2: 50, he: 0 }];
+      const halfMin = { ...baseVpm, minStopTime: 0.5 };
+      const frac = VPMEngine.calculate(deep, deco50, { ...halfMin, wholeMinStops: false }, 'VPMB');
+      const whole = VPMEngine.calculate(deep, deco50, { ...halfMin, wholeMinStops: true }, 'VPMB');
+      const fracTimes = (frac.plan || []).filter(s => s.type === 'stop').map(s => s.time);
+      const wholeTimes = (whole.plan || []).filter(s => s.type === 'stop').map(s => s.time);
+      const allWhole = wholeTimes.length > 0 && wholeTimes.every(t => Math.abs(t - Math.round(t)) < 1e-6);
+      const differs = JSON.stringify(fracTimes) !== JSON.stringify(wholeTimes);
+      stopRoundingOk = !frac.error && !whole.error && allWhole && differs;
+    }
 
     return {
       exposureCarryOk, stateValidationOk, settingsValidationOk, altitudeExposureOk,
@@ -1552,13 +1588,13 @@ def run_suite(page) -> dict:
     assert_true(c7b.get("l2Ok"), "[CYCLE7b-L2] drawGraphLegend normalizes rows via legendRowFromTr", str(c7b))
     c7o = s.get("cycle7Official", {})
     assert_true(c7o.get("exposureCarryOk"), "[CYCLE7-VPM-EXPOSURE-CARRY] VPM buildResult preserves _preOTU/_preCNS carry", str(c7o))
-    assert_true(c7o.get("stateValidationOk"), "[CYCLE7-VPM-STATE-VALIDATION] invalid repetitive state ignored fail-closed", str(c7o))
+    assert_true(c7o.get("stateValidationOk"), "[CYCLE7-VPM-STATE-VALIDATION] malformed repetitive state returns INVALID_REPETITIVE_STATE", str(c7o))
     assert_true(c7o.get("settingsValidationOk"), "[CYCLE7-VPM-SETTINGS-VALIDATION] negative VPM rates rejected", str(c7o))
     assert_true(c7o.get("altitudeExposureOk"), "[CYCLE7-VPM-ALTITUDE-EXPOSURE] altitude changes VPM exposure totals", str(c7o))
     assert_true(c7o.get("imperialResetOk"), "[CYCLE7-IMPERIAL-RESET] factory reset uses imperial SAC/cylinder defaults", str(c7o))
     assert_true(c7o.get("personalDefaultsOk"), "[CYCLE7-PERSONAL-DEFAULTS] reset honours saved GF and adv fields", str(c7o))
-    assert_true(c7o.get("resetUiSyncOk"), "[CYCLE7-RESET-UI-SYNC] reset triggers circuit and rounding UI sync", str(c7o))
-    assert_true(c7o.get("stopRoundingOk"), "[CYCLE7-STOP-ROUNDING] wholeMinStops wired to ZHL and VPM runners", str(c7o))
+    assert_true(c7o.get("resetUiSyncOk"), "[CYCLE7-RESET-UI-SYNC] reset hides CCR and trimix fields after OC/Air restore", str(c7o))
+    assert_true(c7o.get("stopRoundingOk"), "[CYCLE7-STOP-ROUNDING] whole-minute mode emits integer-minute VPM stops", str(c7o))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
     sw_block = sw_install.split("addEventListener('install'")[1].split("addEventListener('activate'")[0] if "addEventListener('install'" in sw_install else ""
     assert_true("clients.matchAll" not in sw_block, "[CYCLE7-L2] SW install handler does not postMessage before claim")

@@ -104,6 +104,27 @@ const VPMEngine = (() => {
         if (!Array.isArray(arr) || arr.length !== nc) return false;
         return arr.every(v => Number.isFinite(v) && v >= 0);
     }
+    function validateRepetitiveState(settings, nc) {
+        if (settings._preTissues != null && !validatePreTissues(settings._preTissues, nc)) {
+            return {
+                ok: false,
+                code: 'INVALID_REPETITIVE_STATE',
+                message: 'Repetitive tissue state must be 16 finite {pN2,pHe} rows',
+            };
+        }
+        const pb = settings._prevBubbleState;
+        if (pb != null) {
+            const keys = ['adjustedCritRadiiN2', 'adjustedCritRadiiHe', 'regeneratedRadiiN2', 'regeneratedRadiiHe'];
+            if (!keys.every(k => validateRadiusArray(pb[k], nc))) {
+                return {
+                    ok: false,
+                    code: 'INVALID_REPETITIVE_STATE',
+                    message: 'Repetitive bubble state arrays must be 16 finite non-negative values',
+                };
+            }
+        }
+        return { ok: true };
+    }
     function validateVpmSettings(settings) {
         const rates = ['descentRate', 'ascentRate', 'decoAscentRate', 'surfaceAscentRate'];
         for (const key of rates) {
@@ -1007,6 +1028,12 @@ const VPMEngine = (() => {
                 errors: [{ code: vpmSettingsVal.code, message: vpmSettingsVal.message }],
             });
         }
+        const repStateVal = validateRepetitiveState(s, 16);
+        if (!repStateVal.ok) {
+            return engineValidationError({
+                errors: [{ code: repStateVal.code, message: repStateVal.message }],
+            });
+        }
         const safeDecoGases = Array.isArray(decoGases) ? decoGases.filter(g => g != null) : [];
         function ctxUseOCForPpo2(calcSettings) {
             return calcSettings.bailout || calcSettings.circuit !== 'pSCR';
@@ -1180,11 +1207,13 @@ const VPMEngine = (() => {
             ctx.currentSP = vpmSetpointAtDepth(stopDepth, 'deco', ctx.forcedOCMode, settings);
             let effectiveMinStop = (firstStop30sec && stopDepth === ctx.firstStopDepth) ? 0.5 : minStopTime;
             const useWholeMinStops = settings.wholeMinStops !== false;
+            const stopRoundGrid = useWholeMinStops ? 1 : effectiveMinStop;
+            const stopStep = stopRoundGrid;
             let roundedRuntime = ctx.runtime;
             if (useWholeMinStops) {
                 roundedRuntime = (ctx.continuationFinalPhase && stopDepth <= 12)
                     ? ctx.runtime
-                    : Math.round((ctx.runtime / effectiveMinStop) + 0.5) * effectiveMinStop;
+                    : Math.ceil((ctx.runtime - 1e-9) / stopRoundGrid) * stopRoundGrid;
             }
             let segmentTime = roundedRuntime - ctx.runtime;
             ctx.runtime = roundedRuntime;
@@ -1218,9 +1247,14 @@ const VPMEngine = (() => {
                     ? (nextStop <= 0 ? 0.35 : 0.1)
                     : 1e-9;
                 if (decoCeiling <= nextStop + clearTolerance) break;
-                segmentTime = effectiveMinStop;
-                totalStopTime += effectiveMinStop;
-                ctx.runtime += effectiveMinStop;
+                segmentTime = stopStep;
+                totalStopTime += stopStep;
+                ctx.runtime += stopStep;
+            }
+            if (useWholeMinStops && totalStopTime > 0) {
+                const snapped = Math.max(effectiveMinStop, Math.ceil((totalStopTime - 1e-9) / stopRoundGrid) * stopRoundGrid);
+                ctx.runtime += snapped - totalStopTime;
+                totalStopTime = snapped;
             }
             const finalCeiling = getVPMCeiling(ctx.state, settings);
             const clearToleranceFinal = (ctx.continuationFinalPhase && stopDepth <= 6)

@@ -755,8 +755,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS-CONTROLS"
       },
-      "fingerprint": "daeb8d4114b4e2417c5b2df8d6918eaf1c41c42fa8150cd70a12bcd6a2dfad68",
-      "last_read_fingerprint": "daeb8d4114b4e2417c5b2df8d6918eaf1c41c42fa8150cd70a12bcd6a2dfad68",
+      "fingerprint": "f3f227ea1f8d8f740928c7c5722cb93ff17df914a6ba3772d46b024c2586eed1",
+      "last_read_fingerprint": "f3f227ea1f8d8f740928c7c5722cb93ff17df914a6ba3772d46b024c2586eed1",
       "evidence": [
         "REG-35",
         "REG-36",
@@ -1134,8 +1134,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "ee29a3ba88c38bff75a7013a970923f1197a251d213a40cf46ce14e78d93d2d3",
-      "last_read_fingerprint": "ee29a3ba88c38bff75a7013a970923f1197a251d213a40cf46ce14e78d93d2d3",
+      "fingerprint": "700eef1932b61949f61c7e2ad64e2f5c0480bbc3db6aed47cbd83c04cc102081",
+      "last_read_fingerprint": "700eef1932b61949f61c7e2ad64e2f5c0480bbc3db6aed47cbd83c04cc102081",
       "evidence": [
         "REG-06",
         "REG-22",
@@ -1157,8 +1157,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "08f1fc344a9df145c0aee7929ad0660f5a7e42c39f03372a7d02496c5c30df0e",
-      "last_read_fingerprint": "08f1fc344a9df145c0aee7929ad0660f5a7e42c39f03372a7d02496c5c30df0e",
+      "fingerprint": "10b49e5512913736c2c3936413225b41a458bc649b715f538d13dc88b37527d7",
+      "last_read_fingerprint": "10b49e5512913736c2c3936413225b41a458bc649b715f538d13dc88b37527d7",
       "evidence": [
         "REG-31",
         "REG-32",
@@ -1636,7 +1636,7 @@
       "evidence": [],
       "issue": "GitHub #133â€“#138 audit regression sections",
       "regression_cases": [],
-      "fingerprint": "97a54b7fedc175899b99d9ed02d3e956a4c9580abdd7b061e2bf3bfbfef324c3",
+      "fingerprint": "c767526cae36d39f10fffa636d86c4234c58319eb9ba985a3f282b5fd24207dd",
       "last_read_fingerprint": null
     },
     {

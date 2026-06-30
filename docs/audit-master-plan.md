@@ -31,7 +31,7 @@
 |---:|---|---:|---|---|
 | 5 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 487 | ENG-ZHL-SCHEDULE | Delegate units fully READ; schedule findings linked to regression IDs |
 | 6 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 586 | ENG-ZHL-CCR | Physics and schedule input paths READ; no unresolved P0 finding |
-| 7 | UI-SETTINGS-CONTROLS, UI-VPM-RUNNER | 550 | ENG-VPM | Settings restoration and VPM invocation contracts READ |
+| 7 | UI-SETTINGS-CONTROLS, UI-VPM-RUNNER | 555 | ENG-VPM | Settings restoration and VPM invocation contracts READ |
 | 8 | UI-VPM-RENDER | 530 | ENG-VPM | VPM rendering and safety warning propagation READ |
 | 9 | UI-GAS-CARDS | 574 | ENG-ZHL-GAS | Dynamic gas-card units and persistence READ |
 | 10 | UI-GAS-INPUTS, UI-ZHL-RUNNER-SETUP | 301 | ENG-ZHL-SCHEDULE | Gas validation and ZHL parameter construction READ |

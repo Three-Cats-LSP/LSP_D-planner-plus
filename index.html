@@ -7700,8 +7700,13 @@ function _doResetToDefaults(userDefaults) {
   updateWaterVapor();
 
   // Clear custom O2 fields visibility
+  toggleDecoCustomO2?.('decoGas', 'decoCustomO2Field');
   toggleDecoCustomO2?.('dg1Mix', 'dg1CustomField');
   toggleDecoCustomO2?.('dg2Mix', 'dg2CustomField');
+  toggleBottomTrimix?.();
+  for (const idx of getAllDecoGasIds()) {
+    toggleDecoTrimix?.(idx);
+  }
   toggleCircuitFields?.();
   syncMinStopTimeRounding?.();
   updateGasMODDisplays?.();
