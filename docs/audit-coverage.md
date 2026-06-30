@@ -119,7 +119,7 @@
 | TEST-GAS-CORE-REGRESSION | test_infrastructure | `dev/gas_core_regression.py:1` | 129 | P1 | IN_PROGRESS | - |
 | TEST-ISSUE-141-REGRESSION | test_infrastructure | `dev/issue141_regression.py:1` | 108 | P1 | IN_PROGRESS | - |
 | TEST-ISSUE-142-REGRESSION | test_infrastructure | `dev/surf_interval_regression.py:1` | 124 | P1 | IN_PROGRESS | - |
-| TEST-ANDROID-COMPILE | test_infrastructure | `dev/run_android_compile_check.py:1` | 100 | P2 | IN_PROGRESS | - |
+| TEST-ANDROID-COMPILE | test_infrastructure | `dev/run_android_compile_check.py:1` | 103 | P2 | IN_PROGRESS | - |
 | TEST-ENGINE-VALIDATION | test_infrastructure | `engine_validation_regression.py:1` | 521 | P1 | IN_PROGRESS | - |
 | TEST-CCR-VALIDATION | test_infrastructure | `dev/ccr_engine_validation_regression.py:1` | 359 | P1 | IN_PROGRESS | - |
 | TEST-EXPORT | test_infrastructure | `export_regression.py:1` | 596 | P2 | IN_PROGRESS | - |
@@ -168,7 +168,7 @@
 | TOOL-UPDATE-VERSION | tooling | `tools/update_sw_version.py:1` | 104 | P2 | READ | - |
 | TOOL-VENDOR | tooling | `tools/vendor_offline_assets.py:1` | 115 | P2 | UNREAD | - |
 | TOOL-VERIFY-ASSETS | tooling | `tools/verify_site_assets.py:1` | 132 | P2 | READ | - |
-| CI-AUDIT | ci | `.github/workflows/audit.yml:1` | 120 | P1 | IN_PROGRESS | - |
+| CI-AUDIT | ci | `.github/workflows/audit.yml:1` | 126 | P1 | IN_PROGRESS | - |
 | CI-APK | ci | `.github/workflows/build-apk.yml:1` | 159 | P1 | IN_PROGRESS | - |
 | CI-MAIN | ci | `.github/workflows/ci.yml:1` | 189 | P1 | IN_PROGRESS | - |
 | CI-DEPLOY | ci | `.github/workflows/deploy.yml:1` | 128 | P1 | IN_PROGRESS | - |

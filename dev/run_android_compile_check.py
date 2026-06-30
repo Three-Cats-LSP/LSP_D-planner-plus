@@ -79,7 +79,10 @@ def main() -> int:
             text=True,
         )
         if proc.returncode != 0:
-            errors.append((proc.stdout or proc.stderr or "gradle compile failed").strip()[:800])
+            combined = ((proc.stdout or "") + "\n" + (proc.stderr or "")).strip()
+            lines = combined.splitlines()
+            snippet = "\n".join(lines[-25:]) if lines else "gradle compile failed"
+            errors.append(snippet[:800])
 
     passed = not errors
     if passed:
