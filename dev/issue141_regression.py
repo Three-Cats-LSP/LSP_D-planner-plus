@@ -41,10 +41,14 @@ ISSUE141_JS = r"""
   out.m1expected = expectedSurf;
 
   const sel = document.getElementById('circuitSelect');
+  const bailEl = document.getElementById('ccrBailoutToggle');
   const prevCircuit = sel ? sel.value : null;
+  const prevBailout = bailEl ? bailEl.value : null;
   if (sel) sel.value = 'pSCR';
+  if (bailEl) bailEl.value = 'off';
   toggleCircuitFields?.();
   const lpm = ccrDiluentSurfaceLpm(depthM);
+  if (bailEl && prevBailout != null) bailEl.value = prevBailout;
   if (sel && prevCircuit != null) { sel.value = prevCircuit; toggleCircuitFields?.(); }
   out.m1lpm = lpm;
   out.m1match = Number.isFinite(lpm) && Math.abs(lpm - expectedSurf) < 0.25;

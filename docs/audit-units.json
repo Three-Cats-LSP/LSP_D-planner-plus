@@ -190,9 +190,25 @@
       "suite_id": "SUITE-ISSUE-141",
       "case_id": "ISSUE141-L2-TRIMIX-NULL"
     },
+    "REG-18": {
+      "suite_id": "SUITE-ISSUE-141",
+      "case_id": "ISSUE141-L1-RESOLVE-SAC"
+    },
     "REG-17": {
       "suite_id": "SUITE-ISSUE-142",
       "case_id": "ISSUE142-SI-02-EAN32"
+    },
+    "REG-19": {
+      "suite_id": "SUITE-ISSUE-142",
+      "case_id": "ISSUE142-SI-01-INHERIT"
+    },
+    "REG-20": {
+      "suite_id": "SUITE-ISSUE-142",
+      "case_id": "ISSUE142-SI-04-O2-SHALLOW"
+    },
+    "REG-21": {
+      "suite_id": "SUITE-ISSUE-142",
+      "case_id": "ISSUE142-SI-05-INVALID-MIX"
     },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
@@ -341,7 +357,8 @@
       "resolution_commit": "198436f",
       "evidence_cases": [
         "REG-15",
-        "REG-16"
+        "REG-16",
+        "REG-18"
       ]
     },
     {
@@ -477,7 +494,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MARKUP-TOOLS"
       },
-      "fingerprint": "7867ff048f88793fb30f87fc906980ede4c38211d9596852f07cbb20d89ad0de",
+      "fingerprint": "86a6c3bad9aa4921d44b425ee369be3fc5e0d93778504d0841270e8a3dd74a11",
       "last_read_fingerprint": null
     },
     {
@@ -918,14 +935,16 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS"
       },
-      "fingerprint": "0922390b58821920092f11fab65633c7aba275e2e3ff9e25add9160522862b75",
-      "last_read_fingerprint": "0922390b58821920092f11fab65633c7aba275e2e3ff9e25add9160522862b75",
-      "audit_issue": 139
+      "fingerprint": "7fb4f21b72c0c87e3bc89f7b5463406e6b795698be0365fed0d644aa46f01044",
+      "last_read_fingerprint": null,
+      "audit_issue": 139,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "UI-PROFILE-PRESETS",
@@ -1033,18 +1052,14 @@
       "path": "zhl-schedule-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "63089599fa05d171423247bf31548c8419d590c1605e10c7676686b72dafbd42",
-      "last_read_fingerprint": "63089599fa05d171423247bf31548c8419d590c1605e10c7676686b72dafbd42",
-      "evidence": [
-        "python dev/run_all_regression.py --tier release"
-      ],
-      "regression_cases": [
-        "REG-06"
-      ],
+      "fingerprint": "b96643f1269401019c569be95b7664d66078a850ef4d75a40495a0814bd9af1f",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 141
     },
     {
@@ -1142,7 +1157,7 @@
         "REG-12",
         "REG-13"
       ],
-      "issue": "GitHub #140 H-2 / Cycle 5 GP-01–06 — docs/code-review-2026-06-30.md",
+      "issue": "GitHub #140 H-2 / Cycle 5 GP-01\u201306 \u2014 docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-10",
         "REG-12",
@@ -1164,7 +1179,7 @@
         "REG-11",
         "REG-14"
       ],
-      "issue": "Cycle 5 GT-01–06 — docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GT-01\u201306 \u2014 docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-11",
         "REG-14"
@@ -1181,13 +1196,18 @@
       },
       "fingerprint": "0b4dd1981dc6bbdc7204d57331473979a25fa7ecc11704aeef2e39cf534c2f68",
       "last_read_fingerprint": "0b4dd1981dc6bbdc7204d57331473979a25fa7ecc11704aeef2e39cf534c2f68",
-      "evidence": [],
-      "issue": "GitHub #142 — Dive 2 gas override",
+      "evidence": [
+        "REG-17",
+        "REG-19",
+        "REG-20",
+        "REG-21"
+      ],
+      "issue": "GitHub #142 \u2014 Dive 2 gas override",
       "regression_cases": [
-        "ISSUE142-SI-01-INHERIT",
-        "ISSUE142-SI-02-EAN32",
-        "ISSUE142-SI-04-O2-SHALLOW",
-        "ISSUE142-SI-05-INVALID-MIX"
+        "REG-17",
+        "REG-19",
+        "REG-20",
+        "REG-21"
       ]
     },
     {
@@ -1518,9 +1538,9 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "GitHub #133â€“#138 audit regression sections",
+      "issue": "GitHub #133\u00e2\u20ac\u201c#138 audit regression sections",
       "regression_cases": [],
-      "fingerprint": "dba147958161fd6f78cf288d4eae5a8c78b706c5c58140519399b3e795047f0d",
+      "fingerprint": "c9089929ed20974c88b57eeb4a17de3c8e8cfa7b61fdc7e438174df966482879",
       "last_read_fingerprint": null
     },
     {
@@ -1548,7 +1568,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "Cycle 5 GP/GT behavioral regression — docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GP/GT behavioral regression \u2014 docs/code-review-2026-06-30.md",
       "regression_cases": [],
       "fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
       "last_read_fingerprint": null
@@ -1565,7 +1585,7 @@
       "evidence": [],
       "issue": "GitHub #141 delegate/schedule audit regression",
       "regression_cases": [],
-      "fingerprint": "e67f221f9c7e3909a63993bb26abce2ba52d696d0180e46e370c96981567cb94",
+      "fingerprint": "3cc5e4b88b3d7c22869c939061e2018049f322cc4dafa47f888a608810b62be6",
       "last_read_fingerprint": null
     },
     {
@@ -1580,7 +1600,8 @@
       "evidence": [],
       "issue": "GitHub #142 Dive 2 gas override regression",
       "regression_cases": [],
-      "fingerprint": "1248d551baee79d2dc241c617a8ec377cb8a80a8b6149bada8f2b608ff99e94b"
+      "fingerprint": "1248d551baee79d2dc241c617a8ec377cb8a80a8b6149bada8f2b608ff99e94b",
+      "last_read_fingerprint": null
     },
     {
       "id": "TEST-ANDROID-COMPILE",
@@ -1800,7 +1821,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3b0221a8e16b54b7491cdb6f6f5cff74e077fb45df559a6ecdaca15840b6d175",
+      "fingerprint": "eafb7497b925de76ede32ba32db9a2e4574798c1accaf69c929f926248b3918b",
       "last_read_fingerprint": null
     },
     {
@@ -1824,7 +1845,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a8b0bf953a89d92bfc55e5040061ab909cac2c6e50b8a08752e28461462d1a77",
+      "fingerprint": "956610a691c4f716c48b9f07bbacb9ad9dfa4f6675f47e404fb6736ee20d1956",
       "last_read_fingerprint": null
     },
     {
@@ -1946,7 +1967,7 @@
       },
       "evidence": [],
       "regression_cases": [],
-      "issue": "GitHub #133â€“#139 structured environment audit gates; release regression 9/9",
+      "issue": "GitHub #133\u00e2\u20ac\u201c#139 structured environment audit gates; release regression 9/9",
       "fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d",
       "last_read_fingerprint": null
     },
@@ -2010,12 +2031,14 @@
       "path": "tools/build_zhl_bundle.py",
       "layer": "tooling",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "24c05599119c1e8ff3fb0ffe47e862012fe29e0e5e01363141e60c2c3649097b",
-      "last_read_fingerprint": "24c05599119c1e8ff3fb0ffe47e862012fe29e0e5e01363141e60c2c3649097b"
+      "fingerprint": "908b4fb6d4fa275975826447957bd1aa53c23c957c4fd3c015818671f1993171",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "TOOL-CHECK-PARITY",
