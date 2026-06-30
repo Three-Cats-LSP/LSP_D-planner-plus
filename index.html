@@ -9321,9 +9321,9 @@ function runDecoSchedule() {
       return;
     }
   }
-  const rawD   = parseFloat(document.getElementById('decoDepth').value) || 40;
+  const rawD   = parseFloat(document.getElementById('decoDepth')?.value) || 40;
   const depthM = units === 'metric' ? rawD : rawD / 3.28084;
-  const bt     = parseInt(document.getElementById('decoBT').value) || 30;
+  const bt     = parseInt(document.getElementById('decoBT')?.value) || 30;
   const _uiCcr = getCCRSettingsFromDOM();
   if (!window._zhlHeadless && isRebreatherCircuit(_uiCcr.circuit)) {
     const bot = getDomBottomGasPct();
@@ -9338,15 +9338,15 @@ function runDecoSchedule() {
       return;
     }
   }
-  const rate            = Math.max(1, parseInt(document.getElementById('ascentRate').value)        || 9);
-  const decoRate        = Math.max(1, parseInt(document.getElementById('decoAscentRate').value)    || 9);
-  const surfaceRate     = Math.max(1, parseInt(document.getElementById('surfaceAscentRate').value) || 9);
-  const descentRate = Math.max(1, parseInt(document.getElementById('descentRate').value) || 22);
+  const rate            = Math.max(1, parseInt(document.getElementById('ascentRate')?.value)        || 9);
+  const decoRate        = Math.max(1, parseInt(document.getElementById('decoAscentRate')?.value)    || 9);
+  const surfaceRate     = Math.max(1, parseInt(document.getElementById('surfaceAscentRate')?.value) || 9);
+  const descentRate = Math.max(1, parseInt(document.getElementById('descentRate')?.value) || 22);
   let gfL    = mGF.low  / 100;
   let gfH    = mGF.high / 100;
-  const ppo2Bottom = parseFloat(document.getElementById('ppo2Bottom').value) || 1.4;
-  const ppo2Deco   = parseFloat(document.getElementById('ppo2Deco').value)   || 1.6;
-  const minStopT   = parseFloat(document.getElementById('minStopTime').value) || 1;
+  const ppo2Bottom = parseFloat(document.getElementById('ppo2Bottom')?.value) || 1.4;
+  const ppo2Deco   = parseFloat(document.getElementById('ppo2Deco')?.value)   || 1.6;
+  const minStopT   = parseFloat(document.getElementById('minStopTime')?.value) || 1;
   const switchPauseT = 0;
   const wholeMinStops = (document.getElementById('stopRounding')?.value || 'fractional') === 'wholeminute';
   const mdCompatMode  = (document.getElementById('decoTransitMode')?.value || 'schreiner') === 'multideco';
@@ -9357,8 +9357,8 @@ function runDecoSchedule() {
   // VPM-B: last stop must be 6m when using EAN50+O2 as deco gases
   // ApexDeco uses lastStop=6 for VPM — this determines where critical volume
   // time accumulates. lastStop=3 incorrectly splits time across 3m and 6m.
-  const lastStop = parseInt(document.getElementById('lastDecoStop').value) || 3;
-  const decoStep    = parseInt(document.getElementById('decoStep').value)     || 3;
+  const lastStop = parseInt(document.getElementById('lastDecoStop')?.value) || 3;
+  const decoStep    = parseInt(document.getElementById('decoStep')?.value)     || 3;
 
   // ── VPM-B / VPM-B+GFS branch ──────────────────────────────────────
   const decoModelSel = document.getElementById('algorithmSelect')?.value || 'ZHLC_GF';

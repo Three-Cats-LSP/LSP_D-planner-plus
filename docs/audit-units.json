@@ -835,8 +835,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-SETUP"
       },
-      "fingerprint": "19beab379171c4a791667d3c8f73dd893a282b174969b5ef7b33487adbf42c28",
-      "last_read_fingerprint": "19beab379171c4a791667d3c8f73dd893a282b174969b5ef7b33487adbf42c28",
+      "fingerprint": "11b9ee1c5457a0413eaa2322de93c691776edf6a27fa587dcc9351ca774eae3c",
+      "last_read_fingerprint": "11b9ee1c5457a0413eaa2322de93c691776edf6a27fa587dcc9351ca774eae3c",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 149
