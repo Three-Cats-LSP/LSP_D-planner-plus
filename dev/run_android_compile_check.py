@@ -70,8 +70,6 @@ def main() -> int:
     if not gradlew.is_file():
         errors.append(f"missing {gradlew}")
     else:
-        if sys.platform != "win32":
-            gradlew.chmod(gradlew.stat().st_mode | 0o111)
         proc = subprocess.run(
             [str(gradlew), "compileDebugJavaWithJavac", "--no-daemon", "-q"],
             cwd=ANDROID,

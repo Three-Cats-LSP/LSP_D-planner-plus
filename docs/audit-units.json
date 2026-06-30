@@ -1173,7 +1173,7 @@
         "REG-12",
         "REG-13"
       ],
-      "issue": "GitHub #140 H-2 / Cycle 5 GP-01\u201306 \u2014 docs/code-review-2026-06-30.md",
+      "issue": "GitHub #140 H-2 / Cycle 5 GP-01–06 — docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-10",
         "REG-12",
@@ -1195,7 +1195,7 @@
         "REG-11",
         "REG-14"
       ],
-      "issue": "Cycle 5 GT-01\u201306 \u2014 docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GT-01–06 — docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-11",
         "REG-14"
@@ -1218,7 +1218,7 @@
         "REG-20",
         "REG-21"
       ],
-      "issue": "GitHub #142 \u2014 Dive 2 gas override",
+      "issue": "GitHub #142 — Dive 2 gas override",
       "regression_cases": [
         "REG-17",
         "REG-19",
@@ -1554,7 +1554,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "GitHub #133\u00e2\u20ac\u201c#138 audit regression sections",
+      "issue": "GitHub #133â€“#138 audit regression sections",
       "regression_cases": [],
       "fingerprint": "5e9f7696692146642128605b7a874ae52e9f4b90956204f2451ef0dcf7a35ed1",
       "last_read_fingerprint": null
@@ -1584,7 +1584,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "Cycle 5 GP/GT behavioral regression \u2014 docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GP/GT behavioral regression — docs/code-review-2026-06-30.md",
       "regression_cases": [],
       "fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
       "last_read_fingerprint": null
@@ -1631,7 +1631,7 @@
       "evidence": [],
       "issue": "GitHub #140 M-2 Android compile gate",
       "regression_cases": [],
-      "fingerprint": "71cdf36f690726feea893dd5f35bddd8a08dff892705b94207f6a2708571e1f9",
+      "fingerprint": "d98eb2cf78857dbf86f129f90ac7302401df50649897ecd5f65b0fab13fee0f3",
       "last_read_fingerprint": null
     },
     {
@@ -1983,7 +1983,7 @@
       },
       "evidence": [],
       "regression_cases": [],
-      "issue": "GitHub #133\u00e2\u20ac\u201c#139 structured environment audit gates; release regression 9/9",
+      "issue": "GitHub #133â€“#139 structured environment audit gates; release regression 9/9",
       "fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d",
       "last_read_fingerprint": null
     },
