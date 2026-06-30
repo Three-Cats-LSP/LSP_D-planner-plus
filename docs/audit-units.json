@@ -1226,14 +1226,15 @@
       "path": "export-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "f21500b8cf055f299c5452146637aa2a9f9d1cc6ff1b762428d77b71ddda108b",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "f21500b8cf055f299c5452146637aa2a9f9d1cc6ff1b762428d77b71ddda108b",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 165
     },
     {
       "id": "APP-GAS-PLAN",
@@ -1251,7 +1252,7 @@
         "REG-12",
         "REG-13"
       ],
-      "issue": "GitHub #140 H-2 / Cycle 5 GP-01â€“06 â€” docs/code-review-2026-06-30.md",
+      "issue": "GitHub #140 H-2 / Cycle 5 GP-01�06 � docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-10",
         "REG-12",
@@ -1273,7 +1274,7 @@
         "REG-11",
         "REG-14"
       ],
-      "issue": "Cycle 5 GT-01â€“06 â€” docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GT-01�06 � docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-11",
         "REG-14"
@@ -1296,7 +1297,7 @@
         "REG-20",
         "REG-21"
       ],
-      "issue": "GitHub #142 â€” Dive 2 gas override",
+      "issue": "GitHub #142 � Dive 2 gas override",
       "regression_cases": [
         "REG-17",
         "REG-19",
@@ -1309,14 +1310,15 @@
       "path": "sw.js",
       "layer": "pwa",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "e1cb0d97a88ff50b77e5e1ed746ccf38e9c21e034c22e3c75db42474f7895061",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "e1cb0d97a88ff50b77e5e1ed746ccf38e9c21e034c22e3c75db42474f7895061",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 165
     },
     {
       "id": "APP-ZHL-WORKER-BRIDGE",
@@ -1632,7 +1634,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "GitHub #133Ã¢â‚¬â€œ#138 audit regression sections",
+      "issue": "GitHub #133–#138 audit regression sections",
       "regression_cases": [],
       "fingerprint": "776865b4da4658c31a1d2734829fbf6b0e85e79db057420300891894ccaec3cf",
       "last_read_fingerprint": null
@@ -1662,7 +1664,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "Cycle 5 GP/GT behavioral regression â€” docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GP/GT behavioral regression � docs/code-review-2026-06-30.md",
       "regression_cases": [],
       "fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
       "last_read_fingerprint": null
@@ -2061,7 +2063,7 @@
       },
       "evidence": [],
       "regression_cases": [],
-      "issue": "GitHub #133Ã¢â‚¬â€œ#139 structured environment audit gates; release regression 9/9",
+      "issue": "GitHub #133–#139 structured environment audit gates; release regression 9/9",
       "fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d",
       "last_read_fingerprint": null
     },

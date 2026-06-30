@@ -17,16 +17,16 @@
 | native_android | 16 | 15 | 0 | 1 | 0 |
 | native_bridge | 2 | 0 | 0 | 2 | 0 |
 | native_config | 1 | 0 | 0 | 1 | 0 |
-| pwa | 3 | 0 | 1 | 2 | 0 |
+| pwa | 3 | 0 | 0 | 3 | 0 |
 | release_config | 1 | 0 | 1 | 0 | 0 |
 | test_infrastructure | 34 | 16 | 13 | 5 | 0 |
 | tooling | 36 | 9 | 22 | 4 | 1 |
-| ui_core | 5 | 0 | 1 | 1 | 3 |
+| ui_core | 5 | 0 | 0 | 2 | 3 |
 | web_css | 4 | 4 | 0 | 0 | 0 |
 | web_markup | 5 | 5 | 0 | 0 | 0 |
 | web_runtime | 34 | 4 | 2 | 27 | 1 |
 | worker | 2 | 0 | 0 | 2 | 0 |
-| **Total** | **157** | **54** | **48** | **50** | **5** |
+| **Total** | **157** | **54** | **46** | **52** | **5** |
 
 ## Units
 
@@ -84,11 +84,11 @@
 | APP-ANDROID-SELECT | native_bridge | `android-select-picker.js:1` | 270 | P1 | READ | - |
 | APP-CAPACITOR-BRIDGE | native_bridge | `capacitor-bridge.js:1` | 278 | P1 | READ | - |
 | APP-CONTINGENCY | ui_core | `contingency-core.js:1` | 1056 | P1 | READ | - |
-| APP-EXPORT | ui_core | `export-core.js:1` | 1761 | P2 | IN_PROGRESS | - |
+| APP-EXPORT | ui_core | `export-core.js:1` | 1761 | P2 | READ | - |
 | APP-GAS-PLAN | ui_core | `gas-plan-core.js:1` | 559 | P1 | VERIFIED | REG-10, REG-12, REG-13 |
 | APP-GAS-TABLE | ui_core | `gas-table-core.js:1` | 302 | P2 | VERIFIED | REG-11, REG-14 |
 | APP-SURFACE-INTERVAL | ui_core | `surf-interval-core.js:1` | 372 | P1 | VERIFIED | REG-17, REG-19, REG-20, REG-21 |
-| APP-SERVICE-WORKER | pwa | `sw.js:1` | 249 | P1 | IN_PROGRESS | - |
+| APP-SERVICE-WORKER | pwa | `sw.js:1` | 249 | P1 | READ | - |
 | APP-ZHL-WORKER-BRIDGE | worker | `zhl-worker-bridge.js:1` | 135 | P1 | READ | - |
 | APP-ZHL-WORKER | worker | `zhl-schedule-worker.js:1` | 23 | P1 | READ | - |
 | APP-DOWNLOAD | web_runtime | `download.html:1` | 119 | P3 | UNREAD | - |
