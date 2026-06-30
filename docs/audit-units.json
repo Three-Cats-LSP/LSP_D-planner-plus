@@ -718,32 +718,32 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-DECO-PHYSICS"
       },
       "fingerprint": "0e28b392ed53a714b92e0c461580f1bfef232294d0f9a789be5384bde9298a5e",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "0e28b392ed53a714b92e0c461580f1bfef232294d0f9a789be5384bde9298a5e",
       "evidence": [],
       "regression_cases": [],
-      "audit_issue": 139
+      "audit_issue": 145
     },
     {
       "id": "UI-SCHEDULE-INPUTS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SCHEDULE-INPUTS"
       },
       "fingerprint": "74082da8c35589581af048b350d7bd644ac574f26fa9efc46304d02b71fc924a",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "74082da8c35589581af048b350d7bd644ac574f26fa9efc46304d02b71fc924a",
       "evidence": [],
       "regression_cases": [],
-      "audit_issue": 139
+      "audit_issue": 145
     },
     {
       "id": "UI-SETTINGS-CONTROLS",
@@ -1115,7 +1115,7 @@
       "path": "zhl-ccr-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
@@ -1123,7 +1123,8 @@
       "regression_cases": [],
       "issue": "Audit #134; CCR deep-endpoint setpoint sampling",
       "fingerprint": "6d1953c834dcf1309da766e9a596be8a91c64047cd362caf61a8673322c17a5a",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "6d1953c834dcf1309da766e9a596be8a91c64047cd362caf61a8673322c17a5a",
+      "audit_issue": 145
     },
     {
       "id": "ENG-ZHL-SCHEDULE",
@@ -1253,7 +1254,7 @@
         "REG-12",
         "REG-13"
       ],
-      "issue": "GitHub #140 H-2 / Cycle 5 GP-01\u201306 \u2014 docs/code-review-2026-06-30.md",
+      "issue": "GitHub #140 H-2 / Cycle 5 GP-01–06 — docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-10",
         "REG-12",
@@ -1275,7 +1276,7 @@
         "REG-11",
         "REG-14"
       ],
-      "issue": "Cycle 5 GT-01\u201306 \u2014 docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GT-01–06 — docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-11",
         "REG-14"
@@ -1298,7 +1299,7 @@
         "REG-20",
         "REG-21"
       ],
-      "issue": "GitHub #142 \u2014 Dive 2 gas override",
+      "issue": "GitHub #142 — Dive 2 gas override",
       "regression_cases": [
         "REG-17",
         "REG-19",
@@ -1634,7 +1635,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "GitHub #133\u00e2\u20ac\u201c#138 audit regression sections",
+      "issue": "GitHub #133â€“#138 audit regression sections",
       "regression_cases": [],
       "fingerprint": "c767526cae36d39f10fffa636d86c4234c58319eb9ba985a3f282b5fd24207dd",
       "last_read_fingerprint": null
@@ -1664,7 +1665,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "Cycle 5 GP/GT behavioral regression \u2014 docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GP/GT behavioral regression — docs/code-review-2026-06-30.md",
       "regression_cases": [],
       "fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
       "last_read_fingerprint": null
@@ -2063,7 +2064,7 @@
       },
       "evidence": [],
       "regression_cases": [],
-      "issue": "GitHub #133\u00e2\u20ac\u201c#139 structured environment audit gates; release regression 9/9",
+      "issue": "GitHub #133â€“#139 structured environment audit gates; release regression 9/9",
       "fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d",
       "last_read_fingerprint": null
     },
