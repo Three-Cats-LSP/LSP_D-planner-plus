@@ -519,7 +519,7 @@
       "last_read_fingerprint": "143a6cc331b891a1511168a0c02b3e74635ab4a6929efb7d204429ac572643d8",
       "evidence": [],
       "regression_cases": [],
-      "audit_issue": 139
+      "audit_issue": 141
     },
     {
       "id": "UI-CCR-DELEGATES",
@@ -532,7 +532,8 @@
         "marker": "AUDIT-UNIT:UI-CCR-DELEGATES"
       },
       "fingerprint": "ab3676e739a9446721d005222a850f905576d6aff9e2b9628d5bfd6eb998dc81",
-      "last_read_fingerprint": "ab3676e739a9446721d005222a850f905576d6aff9e2b9628d5bfd6eb998dc81"
+      "last_read_fingerprint": "ab3676e739a9446721d005222a850f905576d6aff9e2b9628d5bfd6eb998dc81",
+      "audit_issue": 141
     },
     {
       "id": "UI-DECO-PHYSICS",
@@ -949,7 +950,7 @@
       "regression_cases": [
         "REG-06"
       ],
-      "audit_issue": 139
+      "audit_issue": 141
     },
     {
       "id": "ENG-VPM",
@@ -1400,7 +1401,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "GitHub #133–#138 audit regression sections",
+      "issue": "GitHub #133\u00e2\u20ac\u201c#138 audit regression sections",
       "regression_cases": [],
       "fingerprint": "e748be5bb6a98e5c65136d62e61c3dcdd65a85851122bb05891596593131d160",
       "last_read_fingerprint": null
@@ -1746,7 +1747,7 @@
       },
       "evidence": [],
       "regression_cases": [],
-      "issue": "GitHub #133–#139 structured environment audit gates; release regression 9/9",
+      "issue": "GitHub #133\u00e2\u20ac\u201c#139 structured environment audit gates; release regression 9/9",
       "fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d",
       "last_read_fingerprint": null
     },
