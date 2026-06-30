@@ -31,7 +31,7 @@ jobs:
           git diff --exit-code zhl-engine-bundle.js vpm-engine-bundle.js
 
   audit-coverage:
-    name: Audit registry integrity
+    name: Audit v2 unit tests
     needs: [bundle-sync]
     runs-on: ubuntu-latest
     steps:
@@ -43,10 +43,17 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Test and validate audit registry
-        run: |
-          python tools/test_audit_coverage.py
-          python tools/audit_coverage.py --check
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install parser dependencies
+        run: npm ci
+
+      - name: Test audit platform
+        run: python -m unittest tools.test_audit_coverage tools.audit.test_system
 
   audit:
     name: Static audit
@@ -61,11 +68,29 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install parser dependencies
+        run: npm ci
+
       - name: Build Pages site (_pages/)
         run: python tools/build_pages_site.py
 
-      - name: Run audit.py
-        run: python audit.py
+      - name: Run registry-driven static audit
+        run: python -m tools.audit check --profile static
+
+      - name: Upload audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-v2-static
+          path: |
+            dev/audit-results.json
+            dev/audit-report.md
 
   export-regression:
     name: Export regression (PrT / units)

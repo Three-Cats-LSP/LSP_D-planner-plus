@@ -156,8 +156,8 @@ def validate_registry(
     registry: dict[str, Any], root: Path = ROOT, tracked: list[str] | None = None
 ) -> tuple[list[str], dict[str, dict[str, Any]]]:
     errors: list[str] = []
-    if registry.get("schema_version") != 1:
-        errors.append("schema_version must be 1")
+    if registry.get("schema_version") not in {1, 2}:
+        errors.append("schema_version must be 1 or 2")
 
     units = all_units(registry)
     ids = [unit.get("id", "") for unit in units]
@@ -166,7 +166,14 @@ def validate_registry(
         errors.append(f"duplicate or empty unit IDs: {', '.join(duplicates)}")
 
     evidence_catalog = registry.get("evidence_catalog", {})
+    suite_ids = {suite.get("id") for suite in registry.get("suite_catalog", [])}
     for case_id, evidence in evidence_catalog.items():
+        if registry.get("schema_version", 1) >= 2:
+            if evidence.get("suite_id") not in suite_ids:
+                errors.append(f"evidence {case_id}: unknown suite_id")
+            if not evidence.get("case_id"):
+                errors.append(f"evidence {case_id}: case_id missing")
+            continue
         evidence_path = root / evidence.get("path", "")
         if not evidence_path.is_file():
             errors.append(f"evidence {case_id}: file missing")
@@ -321,14 +328,14 @@ def render_master(registry: dict[str, Any], resolved: dict[str, dict[str, Any]])
         "",
         f"**Baseline:** `{registry['baseline_commit']}`",
         f"**Units:** {data['total']} total; {s['UNREAD']} unread; {s['IN_PROGRESS']} in progress; {s['READ']} read; {s['VERIFIED']} verified.",
-        "**Gate:** `python tools/audit_coverage.py --check`",
+        "**Gate:** `python -m tools.audit check --profile static`",
         "",
         "## Operating Rules",
         "",
         "- Audit P0 before P1, then P2/P3. Unit priority is not finding severity.",
         "- A cycle may read at most 600 new application-source lines plus one bounded engine re-verification unit.",
         "- Record actual findings only; there are no finding quotas or projections.",
-        "- `VERIFIED` requires a current fingerprint, review/issue reference, evidence, and stable regression case IDs.",
+        "- `VERIFIED` requires a current fingerprint and evidence that passes in the current audit profile.",
         "- Generated artifacts are validated by their generator and parity command, not manual READ coverage.",
         "- Open CRITICAL or HIGH findings fail the coverage gate and block release.",
         "",
@@ -360,13 +367,13 @@ def render_master(registry: dict[str, Any], resolved: dict[str, dict[str, Any]])
         "",
         "- Every registered unit is READ and at least 85% are VERIFIED.",
         "- No open CRITICAL or HIGH findings remain.",
-        "- `audit.py`, engine parity, audit coverage, and the complete release regression pass.",
+        "- `python -m tools.audit run --profile release` passes with every required leaf suite.",
         "- No tracked source is unregistered, stale, overlapping, or uncovered.",
         "- Generated bundles and deployment mirrors reproduce cleanly from canonical sources.",
         "",
         "## Session Card",
         "",
-        "1. Pull `main`; run the coverage gate and baseline checks.",
+        "1. Pull `main`; run `python -m tools.audit check --profile static`.",
         "2. Read each selected unit in full and apply all seven lenses.",
         "3. Record unit ID, exact lines, lens, severity, issue, and regression case ID.",
         "4. Re-read fixed units, run the relevant suite, refresh fingerprints, and regenerate these reports.",

@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "baseline_commit": "fd805111eab2fba349a9303a6e208106b798f82b",
   "source_policy": {
     "extensions": [
@@ -13,7 +13,8 @@
       ".yml",
       ".yaml",
       ".gradle",
-      ".xml"
+      ".xml",
+      ".mjs"
     ],
     "exact_names": [
       ".nvmrc"
@@ -114,44 +115,44 @@
   },
   "evidence_catalog": {
     "REG-01": {
-      "path": "dev/engine_regression.py",
-      "needle": "[AUDIT-REG-01]",
-      "command": "python dev/engine_regression.py"
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "AUDIT-REG-01"
     },
     "REG-02": {
-      "path": "dev/engine_regression.py",
-      "needle": "[AUDIT-REG-02]",
-      "command": "python dev/engine_regression.py"
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "AUDIT-REG-02"
     },
     "REG-03": {
-      "path": "dev/engine_regression.py",
-      "needle": "[AUDIT-REG-03]",
-      "command": "python dev/engine_regression.py"
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "AUDIT-REG-03"
     },
     "REG-05": {
-      "path": "dev/engine_regression.py",
-      "needle": "[AUDIT-REG-05]",
-      "command": "python dev/engine_regression.py"
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "AUDIT-REG-05"
     },
     "COV-01": {
-      "path": "tools/test_audit_coverage.py",
-      "needle": "[AUDIT-COV-01]",
-      "command": "python -m unittest tools/test_audit_coverage.py"
+      "suite_id": "SUITE-COVERAGE",
+      "case_id": "AUDIT-COV-01"
     },
     "EXT-01": {
-      "path": "audit.py",
-      "needle": "extract_ui_cores.py uses marker-based contract",
-      "command": "python audit.py"
+      "suite_id": "SUITE-LEGACY",
+      "case_id": "extract-ui-marker-contract"
     },
     "REG-06": {
-      "path": "zhl-schedule-core.js",
-      "needle": "[AUDIT-REG-06]",
-      "command": "python dev/run_all_regression.py --tier release"
+      "suite_id": "SUITE-BROWSER",
+      "case_id": "gf-pinned-schedules"
     },
     "REG-07": {
-      "path": "zhl-ccr-core.js",
-      "needle": "[AUDIT-REG-07]",
-      "command": "python dev/run_ccr_differential.py"
+      "suite_id": "SUITE-CCR-DIFFERENTIAL",
+      "case_id": "ccr-differential-required-goldens"
+    },
+    "LEGACY-BASELINE": {
+      "suite_id": "SUITE-LEGACY",
+      "case_id": "legacy-v1-clean-baseline"
+    },
+    "PARITY-01": {
+      "suite_id": "SUITE-PARITY",
+      "case_id": "canonical-generated-parity"
     }
   },
   "findings": [
@@ -161,7 +162,14 @@
       "severity": "HIGH",
       "status": "CLOSED",
       "issue": "GitHub #133 / Audit #128 (25 findings)",
-      "summary": "All 4C/5H/8M/8L remediated; gated in audit.py issue133 block and engine_regression issue133"
+      "summary": "All 4C/5H/8M/8L remediated; gated in audit.py issue133 block and engine_regression issue133",
+      "affected_units": [
+        "TOOL-AUDIT"
+      ],
+      "resolution_commit": "legacy-history",
+      "evidence_cases": [
+        "LEGACY-BASELINE"
+      ]
     },
     {
       "id": "ISSUE-134-ROLLUP",
@@ -169,7 +177,14 @@
       "severity": "HIGH",
       "status": "CLOSED",
       "issue": "GitHub #134 / Audit #129 (19 findings)",
-      "summary": "All 1C/4H/7M/7L remediated; gated in audit.py issue134 block and engine_regression issue134"
+      "summary": "All 1C/4H/7M/7L remediated; gated in audit.py issue134 block and engine_regression issue134",
+      "affected_units": [
+        "TOOL-AUDIT"
+      ],
+      "resolution_commit": "legacy-history",
+      "evidence_cases": [
+        "LEGACY-BASELINE"
+      ]
     },
     {
       "id": "ISSUE-135-ROLLUP",
@@ -177,7 +192,14 @@
       "severity": "HIGH",
       "status": "CLOSED",
       "issue": "GitHub #135 / Audit #130 (21 findings)",
-      "summary": "All 10H/10M/1L remediated; gated in audit.py issue135 block and engine_regression issue135"
+      "summary": "All 10H/10M/1L remediated; gated in audit.py issue135 block and engine_regression issue135",
+      "affected_units": [
+        "TOOL-AUDIT"
+      ],
+      "resolution_commit": "legacy-history",
+      "evidence_cases": [
+        "LEGACY-BASELINE"
+      ]
     },
     {
       "id": "ISSUE-136-ROLLUP",
@@ -185,7 +207,14 @@
       "severity": "MEDIUM",
       "status": "CLOSED",
       "issue": "GitHub #136 (UI extractor hardening)",
-      "summary": "extract_ui_cores.py uses LSP-EXTRACT marker contract; verified by audit.py and tools/extract_ui_cores.py"
+      "summary": "extract_ui_cores.py uses LSP-EXTRACT marker contract; verified by audit.py and tools/extract_ui_cores.py",
+      "affected_units": [
+        "TOOL-EXTRACT-UI"
+      ],
+      "resolution_commit": "legacy-history",
+      "evidence_cases": [
+        "LEGACY-BASELINE"
+      ]
     },
     {
       "id": "ISSUE-137-ROLLUP",
@@ -193,7 +222,14 @@
       "severity": "HIGH",
       "status": "CLOSED",
       "issue": "GitHub #137 / Audit #131 (39 findings)",
-      "summary": "Fixed in 51f95ac; gated in audit.py and engine_regression issue137"
+      "summary": "Fixed in 51f95ac; gated in audit.py and engine_regression issue137",
+      "affected_units": [
+        "TOOL-AUDIT"
+      ],
+      "resolution_commit": "legacy-history",
+      "evidence_cases": [
+        "LEGACY-BASELINE"
+      ]
     },
     {
       "id": "ISSUE-138-ROLLUP",
@@ -201,7 +237,14 @@
       "severity": "HIGH",
       "status": "CLOSED",
       "issue": "GitHub #138 / Audit #132 (40 findings)",
-      "summary": "Fixed in fcfb6c4 (v2.53.04); gated in audit.py and engine_regression issue138"
+      "summary": "Fixed in fcfb6c4 (v2.53.04); gated in audit.py and engine_regression issue138",
+      "affected_units": [
+        "TOOL-AUDIT"
+      ],
+      "resolution_commit": "legacy-history",
+      "evidence_cases": [
+        "LEGACY-BASELINE"
+      ]
     },
     {
       "id": "ISSUE-139-ROLLUP",
@@ -209,7 +252,14 @@
       "severity": "LOW",
       "status": "CLOSED",
       "issue": "GitHub #139 / Audit #133 (3 new findings; #138 re-verified)",
-      "summary": "All 3L fixed; #138 40/40 re-verified on 1271d1a; gated in audit.py and engine_regression issue139"
+      "summary": "All 3L fixed; #138 40/40 re-verified on 1271d1a; gated in audit.py and engine_regression issue139",
+      "affected_units": [
+        "TOOL-AUDIT"
+      ],
+      "resolution_commit": "legacy-history",
+      "evidence_cases": [
+        "LEGACY-BASELINE"
+      ]
     },
     {
       "id": "REGRESSION-GF-CCR-FIX",
@@ -217,7 +267,16 @@
       "severity": "CRITICAL",
       "status": "CLOSED",
       "issue": "Debug report: schedule GF pre-anchor + CCR endpoint regressions from #137 H-7",
-      "summary": "schedule gfAt returns gfL pre-anchor; CCR saturateLinearCCR uses deep endpoint; release regression 9/9; REG-06/REG-07"
+      "summary": "GF pre-anchor and CCR endpoint corrected; verification requires REG-06 and REG-07 in the current release run",
+      "affected_units": [
+        "ENG-ZHL-SCHEDULE",
+        "ENG-ZHL-CCR"
+      ],
+      "resolution_commit": "a83bbec",
+      "evidence_cases": [
+        "REG-06",
+        "REG-07"
+      ]
     }
   ],
   "units": [
@@ -1122,7 +1181,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "4d407185818142a6d3fe2f2776dc431211bfa2fd2504effccae0c2b0ece7751c",
+      "fingerprint": "cb6a835fa6d3a060f9c5e48002bace74efdc86a2a3666e6ac374bde3e8f09378",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
@@ -1341,7 +1400,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "GitHub #133\u2013#138 audit regression sections",
+      "issue": "GitHub #133–#138 audit regression sections",
       "regression_cases": [],
       "fingerprint": "e748be5bb6a98e5c65136d62e61c3dcdd65a85851122bb05891596593131d160",
       "last_read_fingerprint": null
@@ -1389,12 +1448,14 @@
       "path": "dev/run_all_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "92fdbb13e784439663e47a6af55620a4596e2e9a8883932eff32cf86474b0998",
-      "last_read_fingerprint": "92fdbb13e784439663e47a6af55620a4596e2e9a8883932eff32cf86474b0998"
+      "fingerprint": "cc418c102eec92d6003d31a486ec8fca9c657080b0fb58d0c6b23f1e74ef262a",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "TEST-BROWSER-RUNNER",
@@ -1685,8 +1746,8 @@
       },
       "evidence": [],
       "regression_cases": [],
-      "issue": "GitHub #133\u2013#139 structured environment audit gates; release regression 9/9",
-      "fingerprint": "bc2d118af744b069cb58df59fbf2f2d4a7552a26e9c495f4b71b9076a60e304a",
+      "issue": "GitHub #133–#139 structured environment audit gates; release regression 9/9",
+      "fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d",
       "last_read_fingerprint": null
     },
     {
@@ -1694,19 +1755,15 @@
       "path": "tools/audit_coverage.py",
       "layer": "tooling",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [
-        "python -m unittest tools/test_audit_coverage.py"
-      ],
+      "evidence": [],
       "issue": "Audit environment hardening after fd80511",
-      "regression_cases": [
-        "COV-01"
-      ],
-      "fingerprint": "1d3570f1bcb87bc2e1cea942a2e03223373cae048e6e7f65b8d463980afbe961",
-      "last_read_fingerprint": "1d3570f1bcb87bc2e1cea942a2e03223373cae048e6e7f65b8d463980afbe961"
+      "regression_cases": [],
+      "fingerprint": "8e7ebe01fc7cb5452eaac79e723493e7f021ac63a79296eba40e91b794524549",
+      "last_read_fingerprint": null
     },
     {
       "id": "TOOL-AUDIT-COVERAGE-TEST",
@@ -1945,7 +2002,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "42eb0ac8378545828abba49f38c93b5916457341187860d638b4a0f444647937",
+      "fingerprint": "a52719c5733cb03ca9c4ac1b9f4705aaced81fd97457730c24c268f60922f2fc",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
@@ -1955,12 +2012,14 @@
       "path": ".github/workflows/build-apk.yml",
       "layer": "ci",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "8d8ff29990dcb37975629c0894015f0f695bbe5856ce943e734acd8e3a0a8009",
-      "last_read_fingerprint": "8d8ff29990dcb37975629c0894015f0f695bbe5856ce943e734acd8e3a0a8009"
+      "fingerprint": "4404caf0766d9add71eb67ce9160229ea131dbed06a443965d2c14c1f8aa2f68",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "CI-MAIN",
@@ -1971,7 +2030,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "6aa08d94e88114926069b742e76cb24ae356a7f8f953f6e893cb01b132bf1724",
+      "fingerprint": "e14775d50854c86063686dcc75589f2d9b51bc10e7107b6bd5e1217ee6da0519",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
@@ -1981,12 +2040,14 @@
       "path": ".github/workflows/deploy.yml",
       "layer": "ci",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "67d328065ff0dad84ee94e9aa8544377daa299128c10b3341b3a748205f7fc10",
-      "last_read_fingerprint": "67d328065ff0dad84ee94e9aa8544377daa299128c10b3341b3a748205f7fc10"
+      "fingerprint": "7b2f9b102e99020feb33f405499c2c241dc88c52f93ea170b98e0fd93937b31b",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "CI-NOTIFY",
@@ -1999,6 +2060,216 @@
       },
       "fingerprint": "76f119266e318539d90890962b2660420abc46ce9defe014bea89679e9141f3e",
       "last_read_fingerprint": "76f119266e318539d90890962b2660420abc46ce9defe014bea89679e9141f3e"
+    },
+    {
+      "id": "TOOL-AUDIT-V2-__INIT__-PY",
+      "path": "tools/audit/__init__.py",
+      "layer": "tooling",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "0d83ef70d7c87b264c0f06d26f4d3bfd10c8742c99c10743d073fb240b4d98f0",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "Ground-up audit architecture"
+    },
+    {
+      "id": "TOOL-AUDIT-V2-__MAIN__-PY",
+      "path": "tools/audit/__main__.py",
+      "layer": "tooling",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "3d2438ae92f4746e9ffaa1f837b1fe803f6281091d1f31f8c95643716f257d9a",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "Ground-up audit architecture"
+    },
+    {
+      "id": "TOOL-AUDIT-V2-CLI-PY",
+      "path": "tools/audit/cli.py",
+      "layer": "tooling",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "1d1b7037c45f44f89972e8994ac8827357ab8dd34c8e2e53647e1670adea997b",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "Ground-up audit architecture"
+    },
+    {
+      "id": "TOOL-AUDIT-V2-LEGACY_V1-PY",
+      "path": "tools/audit/legacy_v1.py",
+      "layer": "tooling",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "0e218ddec08eda40f1784222f0d57b10787ccd10fca8cf274a2aa2f9398363a1",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "Ground-up audit architecture"
+    },
+    {
+      "id": "TOOL-AUDIT-V2-MIGRATE_V2-PY",
+      "path": "tools/audit/migrate_v2.py",
+      "layer": "tooling",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "92a11c049325d6167c478d47b60196e8490f90cbf4e6bfb434fb96a081632894",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "Ground-up audit architecture"
+    },
+    {
+      "id": "TOOL-AUDIT-V2-MODEL-PY",
+      "path": "tools/audit/model.py",
+      "layer": "tooling",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "60daa6732daff3efd7e4282234793f5c55f60b54d966f78a77c74d171e28bc0b",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "Ground-up audit architecture"
+    },
+    {
+      "id": "TOOL-AUDIT-V2-PARSER_BRIDGE-MJS",
+      "path": "tools/audit/parser_bridge.mjs",
+      "layer": "tooling",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "530015812be99300310d5e1adfa2db1dc57d608920aaa7bde727a088b0b54fce",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "Ground-up audit architecture"
+    },
+    {
+      "id": "TOOL-AUDIT-V2-REGISTRY-PY",
+      "path": "tools/audit/registry.py",
+      "layer": "tooling",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "59fd5fd417c4c2cf5332d7aab54c846d633a024e40e5e3c44737c71a759efd99",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "Ground-up audit architecture"
+    },
+    {
+      "id": "TOOL-AUDIT-V2-REPORTING-PY",
+      "path": "tools/audit/reporting.py",
+      "layer": "tooling",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "18d28d71f10faecda01ad60fa8c0cdd7a865586056fe54e6ddbccbe9224aab3b",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "Ground-up audit architecture"
+    },
+    {
+      "id": "TOOL-AUDIT-V2-RULES-PY",
+      "path": "tools/audit/rules.py",
+      "layer": "tooling",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "b0351cc6a535945727d4e8648c660d36f759292354d6b43a2fe53d3ce677ee0b",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "Ground-up audit architecture"
+    },
+    {
+      "id": "TOOL-AUDIT-V2-RUNNER-PY",
+      "path": "tools/audit/runner.py",
+      "layer": "tooling",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "404444b853419b392d24440040391ab5d0f11bf4383071765fc4e0775ccfb885",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "Ground-up audit architecture"
+    },
+    {
+      "id": "TOOL-AUDIT-V2-WORKSPACE-PY",
+      "path": "tools/audit/workspace.py",
+      "layer": "tooling",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "624badd885069c46d477d5959f120cc32119aa28992a6596d64990678c78a378",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "Ground-up audit architecture"
+    },
+    {
+      "id": "TOOL-AUDIT-V2-AUDIT-LEGACY-MIGRATION-JSON",
+      "path": "docs/audit-legacy-migration.json",
+      "layer": "tooling",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "7fdbc68f0520f2edb622826a4109a271c7737c044dbf78bb9a7e9ef51a9378c7",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "Ground-up audit architecture"
+    },
+    {
+      "id": "TOOL-AUDIT-V2-TEST_SYSTEM-PY",
+      "path": "tools/audit/test_system.py",
+      "layer": "tooling",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "a6f9091f20e8ebd2c43782874f152d8723d895ecbedebb3297d7544f6a7d6162",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "Ground-up audit architecture"
     }
   ],
   "cycles": [
@@ -2094,5 +2365,262 @@
       ],
       "acceptance": "Result construction, exposure totals, and safety fields READ"
     }
-  ]
+  ],
+  "suite_catalog": [
+    {
+      "id": "SUITE-BUILD-PAGES",
+      "command": [
+        "{python}",
+        "tools/build_pages_site.py"
+      ],
+      "profiles": [
+        "static",
+        "ci",
+        "release"
+      ],
+      "timeout_seconds": 120,
+      "case_ids": [
+        "pages-site-build"
+      ]
+    },
+    {
+      "id": "SUITE-COVERAGE",
+      "command": [
+        "{python}",
+        "tools/test_audit_coverage.py"
+      ],
+      "profiles": [
+        "static",
+        "ci",
+        "release"
+      ],
+      "timeout_seconds": 120,
+      "case_ids": [
+        "AUDIT-COV-01"
+      ]
+    },
+    {
+      "id": "SUITE-PARITY",
+      "command": [
+        "{python}",
+        "tools/check_engine_parity.py"
+      ],
+      "profiles": [
+        "static",
+        "ci",
+        "release"
+      ],
+      "timeout_seconds": 120,
+      "case_ids": [
+        "canonical-generated-parity"
+      ]
+    },
+    {
+      "id": "SUITE-LEGACY",
+      "command": [
+        "{python}",
+        "tools/audit/legacy_v1.py"
+      ],
+      "profiles": [
+        "static",
+        "ci",
+        "release"
+      ],
+      "timeout_seconds": 180,
+      "case_ids": [
+        "legacy-v1-clean-baseline",
+        "extract-ui-marker-contract"
+      ]
+    },
+    {
+      "id": "SUITE-EXPORT",
+      "command": [
+        "{python}",
+        "export_regression.py"
+      ],
+      "profiles": [
+        "ci",
+        "release"
+      ],
+      "timeout_seconds": 300,
+      "case_ids": [
+        "export-regression"
+      ]
+    },
+    {
+      "id": "SUITE-ENGINE-VALIDATION",
+      "command": [
+        "{python}",
+        "engine_validation_regression.py"
+      ],
+      "profiles": [
+        "ci",
+        "release"
+      ],
+      "timeout_seconds": 300,
+      "case_ids": [
+        "engine-input-validation"
+      ]
+    },
+    {
+      "id": "SUITE-ENGINE-FULL",
+      "command": [
+        "{python}",
+        "dev/engine_regression.py"
+      ],
+      "profiles": [
+        "ci",
+        "release"
+      ],
+      "timeout_seconds": 300,
+      "case_ids": [
+        "AUDIT-REG-01",
+        "AUDIT-REG-02",
+        "AUDIT-REG-03",
+        "AUDIT-REG-05"
+      ]
+    },
+    {
+      "id": "SUITE-CCR-VALIDATION",
+      "command": [
+        "{python}",
+        "dev/ccr_engine_validation_regression.py"
+      ],
+      "profiles": [
+        "release"
+      ],
+      "timeout_seconds": 300,
+      "case_ids": [
+        "ccr-input-validation"
+      ]
+    },
+    {
+      "id": "SUITE-BROWSER",
+      "command": [
+        "{python}",
+        "dev/run_browser_regression.py"
+      ],
+      "profiles": [
+        "release"
+      ],
+      "timeout_seconds": 420,
+      "case_ids": [
+        "gf-pinned-schedules",
+        "browser-regression"
+      ]
+    },
+    {
+      "id": "SUITE-PSCR-E2E",
+      "command": [
+        "{python}",
+        "dev/validate_pscr_e2e.py"
+      ],
+      "profiles": [
+        "release"
+      ],
+      "timeout_seconds": 300,
+      "env": {
+        "SKIP_AUDIT": "1"
+      },
+      "case_ids": [
+        "pscr-e2e"
+      ]
+    },
+    {
+      "id": "SUITE-CCR-DIFFERENTIAL",
+      "command": [
+        "{python}",
+        "dev/run_ccr_differential.py"
+      ],
+      "profiles": [
+        "release"
+      ],
+      "timeout_seconds": 420,
+      "case_ids": [
+        "ccr-differential-required-goldens"
+      ]
+    },
+    {
+      "id": "SUITE-NATIVE",
+      "command": [
+        "{python}",
+        "dev/run_native_regression.py"
+      ],
+      "profiles": [
+        "release"
+      ],
+      "timeout_seconds": 300,
+      "case_ids": [
+        "native-bridge-regression"
+      ]
+    }
+  ],
+  "rule_catalog": [
+    {
+      "id": "AUD-PARSE-001",
+      "kind": "parser.syntax",
+      "severity": "CRITICAL",
+      "unit_ids": [
+        "TOOL-AUDIT"
+      ],
+      "rationale": "All registered JavaScript, HTML, and inline CSS must be parser-valid.",
+      "remediation": "Correct the parser diagnostic at the reported source location."
+    },
+    {
+      "id": "AUD-JS-001",
+      "kind": "js.no_duplicate_top_level_functions",
+      "severity": "HIGH",
+      "unit_ids": [
+        "UI-BOOT"
+      ],
+      "paths": [
+        "index.html"
+      ],
+      "rationale": "Duplicate top-level declarations can shadow runtime behavior.",
+      "remediation": "Keep one canonical declaration and remove the duplicate."
+    },
+    {
+      "id": "AUD-HTML-001",
+      "kind": "html.unique_ids",
+      "severity": "HIGH",
+      "unit_ids": [
+        "UI-MARKUP-HEADER"
+      ],
+      "paths": [
+        "index.html"
+      ],
+      "rationale": "Duplicate DOM IDs make UI reads and writes target-dependent.",
+      "remediation": "Assign each rendered element a unique ID and update references."
+    },
+    {
+      "id": "AUD-HTML-002",
+      "kind": "html.script_order",
+      "severity": "CRITICAL",
+      "unit_ids": [
+        "UI-BOOT"
+      ],
+      "paths": [
+        "index.html"
+      ],
+      "config": {
+        "required": [
+          "app-version.js",
+          "capacitor-bridge.js",
+          "zhl-engine-bundle.js",
+          "vpm-engine-bundle.js",
+          "zhl-worker-bridge.js"
+        ]
+      },
+      "rationale": "Runtime globals must load before dependent application code.",
+      "remediation": "Restore the canonical dependency order in index.html."
+    }
+  ],
+  "parser_config": {
+    "wrappers": {
+      "vpm-engine-core.js": {
+        "prefix": "(function () {",
+        "suffix": "})();"
+      }
+    }
+  }
 }

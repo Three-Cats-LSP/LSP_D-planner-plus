@@ -10,7 +10,7 @@
 | Layer | Total | Unread | In progress | Read | Verified |
 |---|---:|---:|---:|---:|---:|
 | build_config | 2 | 0 | 1 | 1 | 0 |
-| ci | 5 | 0 | 2 | 3 | 0 |
+| ci | 5 | 0 | 4 | 1 | 0 |
 | deploy_config | 1 | 0 | 0 | 1 | 0 |
 | engine | 5 | 0 | 0 | 5 | 0 |
 | engine_reference | 1 | 1 | 0 | 0 | 0 |
@@ -19,14 +19,14 @@
 | native_config | 1 | 0 | 0 | 1 | 0 |
 | pwa | 3 | 0 | 1 | 2 | 0 |
 | release_config | 1 | 0 | 1 | 0 | 0 |
-| test_infrastructure | 29 | 16 | 2 | 11 | 0 |
-| tooling | 19 | 9 | 2 | 6 | 2 |
+| test_infrastructure | 29 | 16 | 3 | 10 | 0 |
+| tooling | 33 | 9 | 17 | 6 | 1 |
 | ui_core | 5 | 0 | 5 | 0 | 0 |
 | web_css | 4 | 4 | 0 | 0 | 0 |
 | web_markup | 5 | 5 | 0 | 0 | 0 |
 | web_runtime | 34 | 9 | 6 | 19 | 0 |
 | worker | 2 | 0 | 0 | 2 | 0 |
-| **Total** | **135** | **59** | **20** | **54** | **2** |
+| **Total** | **149** | **59** | **38** | **51** | **1** |
 
 ## Units
 
@@ -96,7 +96,7 @@
 | APP-VERSION | release_config | `version.json:1` | 6 | P2 | IN_PROGRESS | - |
 | APP-CAPACITOR-CONFIG | native_config | `capacitor.config.json:1` | 14 | P1 | READ | - |
 | APP-CLOUDFLARE-CONFIG | deploy_config | `wrangler.jsonc:1` | 14 | P2 | READ | - |
-| APP-PACKAGE | build_config | `package.json:1` | 34 | P1 | IN_PROGRESS | - |
+| APP-PACKAGE | build_config | `package.json:1` | 40 | P1 | IN_PROGRESS | - |
 | APP-NODE-VERSION | build_config | `.nvmrc:1` | 1 | P2 | READ | - |
 | NATIVE-MAIN-ACTIVITY | native_android | `android/app/src/main/java/com/threecats/lsp/dplannerplus/MainActivity.java:1` | 61 | P1 | UNREAD | - |
 | NATIVE-MANIFEST | native_android | `android/app/src/main/AndroidManifest.xml:1` | 50 | P1 | READ | - |
@@ -118,7 +118,7 @@
 | TEST-ENGINE-VALIDATION | test_infrastructure | `engine_validation_regression.py:1` | 517 | P1 | READ | - |
 | TEST-CCR-VALIDATION | test_infrastructure | `dev/ccr_engine_validation_regression.py:1` | 355 | P1 | READ | - |
 | TEST-EXPORT | test_infrastructure | `export_regression.py:1` | 592 | P2 | READ | - |
-| TEST-RUN-ALL | test_infrastructure | `dev/run_all_regression.py:1` | 196 | P1 | READ | - |
+| TEST-RUN-ALL | test_infrastructure | `dev/run_all_regression.py:1` | 36 | P1 | IN_PROGRESS | - |
 | TEST-BROWSER-RUNNER | test_infrastructure | `dev/run_browser_regression.py:1` | 163 | P2 | UNREAD | - |
 | TEST-NATIVE-RUNNER | test_infrastructure | `dev/run_native_regression.py:1` | 260 | P2 | UNREAD | - |
 | TEST-CCR-DIFF-RUNNER | test_infrastructure | `dev/run_ccr_differential.py:1` | 106 | P1 | READ | - |
@@ -142,8 +142,8 @@
 | TEST-CCR-DIFF-BUILD | test_infrastructure | `tests/ccr-differential/build_assets.py:1` | 626 | P2 | UNREAD | - |
 | TEST-CCR-DIFF-LIB-PY | test_infrastructure | `tests/ccr-differential/lib/ccr_open_reference.py:1` | 325 | P1 | READ | - |
 | TEST-CCR-DIFF-LIB-JS | test_infrastructure | `tests/ccr-differential/lib/ccrdiff.js:1` | 418 | P1 | READ | - |
-| TOOL-AUDIT | tooling | `audit.py:1` | 7287 | P1 | IN_PROGRESS | - |
-| TOOL-AUDIT-COVERAGE | tooling | `tools/audit_coverage.py:1` | 443 | P1 | VERIFIED | COV-01 |
+| TOOL-AUDIT | tooling | `audit.py:1` | 16 | P1 | IN_PROGRESS | - |
+| TOOL-AUDIT-COVERAGE | tooling | `tools/audit_coverage.py:1` | 450 | P1 | IN_PROGRESS | - |
 | TOOL-AUDIT-COVERAGE-TEST | test_infrastructure | `tools/test_audit_coverage.py:1` | 198 | P1 | READ | - |
 | TOOL-BUILD-PAGES | tooling | `tools/build_pages_site.py:1` | 115 | P2 | READ | - |
 | TOOL-BUILD-VPM | tooling | `tools/build_vpm_bundle.py:1` | 104 | P1 | READ | - |
@@ -162,8 +162,22 @@
 | TOOL-UPDATE-VERSION | tooling | `tools/update_sw_version.py:1` | 104 | P2 | READ | - |
 | TOOL-VENDOR | tooling | `tools/vendor_offline_assets.py:1` | 115 | P2 | UNREAD | - |
 | TOOL-VERIFY-ASSETS | tooling | `tools/verify_site_assets.py:1` | 132 | P2 | READ | - |
-| CI-AUDIT | ci | `.github/workflows/audit.yml:1` | 88 | P1 | IN_PROGRESS | - |
-| CI-APK | ci | `.github/workflows/build-apk.yml:1` | 159 | P1 | READ | - |
-| CI-MAIN | ci | `.github/workflows/ci.yml:1` | 164 | P1 | IN_PROGRESS | - |
-| CI-DEPLOY | ci | `.github/workflows/deploy.yml:1` | 119 | P1 | READ | - |
+| CI-AUDIT | ci | `.github/workflows/audit.yml:1` | 113 | P1 | IN_PROGRESS | - |
+| CI-APK | ci | `.github/workflows/build-apk.yml:1` | 159 | P1 | IN_PROGRESS | - |
+| CI-MAIN | ci | `.github/workflows/ci.yml:1` | 189 | P1 | IN_PROGRESS | - |
+| CI-DEPLOY | ci | `.github/workflows/deploy.yml:1` | 128 | P1 | IN_PROGRESS | - |
 | CI-NOTIFY | ci | `.github/workflows/notify-site.yml:1` | 45 | P2 | READ | - |
+| TOOL-AUDIT-V2-__INIT__-PY | tooling | `tools/audit/__init__.py:1` | 3 | P0 | IN_PROGRESS | - |
+| TOOL-AUDIT-V2-__MAIN__-PY | tooling | `tools/audit/__main__.py:1` | 5 | P0 | IN_PROGRESS | - |
+| TOOL-AUDIT-V2-CLI-PY | tooling | `tools/audit/cli.py:1` | 151 | P0 | IN_PROGRESS | - |
+| TOOL-AUDIT-V2-LEGACY_V1-PY | tooling | `tools/audit/legacy_v1.py:1` | 7295 | P0 | IN_PROGRESS | - |
+| TOOL-AUDIT-V2-MIGRATE_V2-PY | tooling | `tools/audit/migrate_v2.py:1` | 185 | P0 | IN_PROGRESS | - |
+| TOOL-AUDIT-V2-MODEL-PY | tooling | `tools/audit/model.py:1` | 67 | P0 | IN_PROGRESS | - |
+| TOOL-AUDIT-V2-PARSER_BRIDGE-MJS | tooling | `tools/audit/parser_bridge.mjs:1` | 111 | P0 | IN_PROGRESS | - |
+| TOOL-AUDIT-V2-REGISTRY-PY | tooling | `tools/audit/registry.py:1` | 199 | P0 | IN_PROGRESS | - |
+| TOOL-AUDIT-V2-REPORTING-PY | tooling | `tools/audit/reporting.py:1` | 90 | P0 | IN_PROGRESS | - |
+| TOOL-AUDIT-V2-RULES-PY | tooling | `tools/audit/rules.py:1` | 136 | P0 | IN_PROGRESS | - |
+| TOOL-AUDIT-V2-RUNNER-PY | tooling | `tools/audit/runner.py:1` | 69 | P0 | IN_PROGRESS | - |
+| TOOL-AUDIT-V2-WORKSPACE-PY | tooling | `tools/audit/workspace.py:1` | 48 | P0 | IN_PROGRESS | - |
+| TOOL-AUDIT-V2-AUDIT-LEGACY-MIGRATION-JSON | tooling | `docs/audit-legacy-migration.json:1` | 31640 | P0 | IN_PROGRESS | - |
+| TOOL-AUDIT-V2-TEST_SYSTEM-PY | tooling | `tools/audit/test_system.py:1` | 151 | P0 | IN_PROGRESS | - |

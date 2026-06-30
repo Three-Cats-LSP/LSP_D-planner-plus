@@ -1,196 +1,36 @@
 #!/usr/bin/env python3
-"""
-Unified regression runner — orchestrates all LSP verification suites.
-
-Usage:
-  python dev/run_all_regression.py              # CI tier (audit + export + engine)
-  python dev/run_all_regression.py --tier release  # + browser + pSCR + CCR diff
-  python dev/run_all_regression.py --tier all      # everything including CCR validation
-
-Exit 0 only if every selected suite passes (optional skips do not fail the run).
-"""
+"""Compatibility wrapper for the registry-driven audit orchestrator."""
 from __future__ import annotations
 
 import argparse
-import json
-import os
-import subprocess
 import sys
 from pathlib import Path
 
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-if hasattr(sys.stderr, "reconfigure"):
-    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
-
 ROOT = Path(__file__).resolve().parents[1]
-ENGINE_VALIDATION_SCRIPT = ROOT / "engine_validation_regression.py"
-CCR_VALIDATION_SCRIPT = ROOT / "dev" / "ccr_engine_validation_regression.py"
-BUILD_PAGES_SCRIPT = ROOT / "tools" / "build_pages_site.py"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
+from tools.audit.cli import main as audit_main
+
+# Compatibility metadata retained while legacy_v1.py remains a blocking gate.
+# Execution is delegated to the registry suite catalog, which is authoritative.
 SUITES = {
-    "audit": {
-        "tiers": {"ci", "release", "all"},
-        "cmd": [sys.executable, "audit.py"],
-        "cwd": ROOT,
-        "script": ROOT / "audit.py",
-    },
-    "export": {
-        "tiers": {"ci", "release", "all"},
-        "cmd": [sys.executable, "export_regression.py"],
-        "cwd": ROOT,
-        "script": ROOT / "export_regression.py",
-    },
-    "engine_validation": {
-        "tiers": {"ci", "release", "all"},
-        "cmd": [sys.executable, str(ENGINE_VALIDATION_SCRIPT)],
-        "cwd": ROOT,
-        "script": ENGINE_VALIDATION_SCRIPT,
-    },
-    "engine_full": {
-        "tiers": {"ci", "release", "all"},
-        "cmd": [sys.executable, "dev/engine_regression.py"],
-        "cwd": ROOT,
-        "script": ROOT / "dev" / "engine_regression.py",
-    },
-    "engine_ccr_validation": {
-        "tiers": {"release", "all"},
-        "cmd": [sys.executable, str(CCR_VALIDATION_SCRIPT)],
-        "cwd": ROOT,
-        "script": CCR_VALIDATION_SCRIPT,
-    },
-    "browser": {
-        "tiers": {"release", "all"},
-        "cmd": [sys.executable, "dev/run_browser_regression.py"],
-        "cwd": ROOT,
-        "script": ROOT / "dev" / "run_browser_regression.py",
-    },
-    "pscr_e2e": {
-        "tiers": {"release", "all"},
-        "cmd": [sys.executable, "dev/validate_pscr_e2e.py"],
-        "cwd": ROOT,
-        "script": ROOT / "dev" / "validate_pscr_e2e.py",
-        "env": {"SKIP_AUDIT": "1"},
-    },
-    "ccr_differential": {
-        "tiers": {"release", "all"},
-        "cmd": [sys.executable, "dev/run_ccr_differential.py"],
-        "cwd": ROOT,
-        "script": ROOT / "dev" / "run_ccr_differential.py",
-    },
-    "native_bridge": {
-        "tiers": {"release", "all"},
-        "cmd": [sys.executable, "dev/run_native_regression.py"],
-        "cwd": ROOT,
-        "script": ROOT / "dev" / "run_native_regression.py",
-    },
+    "engine_full": {"script": "dev/engine_regression.py"},
+    "browser": {"script": "dev/run_browser_regression.py"},
+    "ccr_differential": {"script": "dev/run_ccr_differential.py"},
+    "engine_ccr_validation": {"script": "dev/ccr_engine_validation_regression.py"},
+    "native_bridge": {"script": "dev/run_native_regression.py"},
 }
-
-
-def ensure_pages_built() -> None:
-    if not BUILD_PAGES_SCRIPT.is_file():
-        print(f"  -> SKIP build_pages (missing {BUILD_PAGES_SCRIPT})")
-        return
-    print("\n" + "=" * 60)
-    print("  Pre-step: build Pages site (_pages/)")
-    print("=" * 60)
-    proc = subprocess.run(
-        [sys.executable, str(BUILD_PAGES_SCRIPT)],
-        cwd=str(ROOT),
-        text=True,
-        capture_output=True,
-    )
-    if proc.stdout:
-        print(proc.stdout, end="" if proc.stdout.endswith("\n") else "\n")
-    if proc.stderr:
-        print(proc.stderr, end="" if proc.stderr.endswith("\n") else "\n", file=sys.stderr)
-    if proc.returncode != 0:
-        raise SystemExit(f"build_pages_site.py failed (exit {proc.returncode})")
-
-
-def run_suite(name: str, spec: dict) -> dict:
-    print(f"\n{'=' * 60}")
-    print(f"  Suite: {name}")
-    print(f"{'=' * 60}")
-    optional = bool(spec.get("optional"))
-    script = spec.get("script")
-    if script and not Path(script).is_file():
-        print(f"  -> SKIP (missing {script})")
-        return {
-            "name": name,
-            "ok": optional,
-            "skipped": True,
-            "optional": optional,
-            "reason": f"missing {script}",
-        }
-    env = {**os.environ, **spec.get("env", {})}
-    proc = subprocess.run(
-        spec["cmd"],
-        cwd=str(spec["cwd"]),
-        env=env,
-        text=True,
-        capture_output=True,
-    )
-    if proc.stdout:
-        print(proc.stdout, end="" if proc.stdout.endswith("\n") else "\n")
-    if proc.stderr:
-        print(proc.stderr, end="" if proc.stderr.endswith("\n") else "\n", file=sys.stderr)
-    ok = proc.returncode == 0
-    print(f"  -> {'PASS' if ok else 'FAIL'} (exit {proc.returncode})")
-    return {
-        "name": name,
-        "ok": ok,
-        "exit_code": proc.returncode,
-        "stdout": proc.stdout[-8000:] if proc.stdout else "",
-        "stderr": proc.stderr[-8000:] if proc.stderr else "",
-    }
+BUILD_PAGES_SCRIPT = "tools/build_pages_site.py"
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Run LSP regression suites")
-    parser.add_argument(
-        "--tier",
-        choices=["ci", "release", "all"],
-        default="ci",
-        help="ci=PR checks; release=audit.yml gates; all=+dev CCR validation",
-    )
+    parser = argparse.ArgumentParser(description="Run LSP verification suites")
+    parser.add_argument("--tier", choices=("ci", "release", "all"), default="ci")
     args = parser.parse_args()
-
-    print("LSP D-Planner — unified regression")
-    print(f"Tier: {args.tier}")
-
-    ensure_pages_built()
-
-    results = []
-    for name, spec in SUITES.items():
-        if args.tier not in spec["tiers"]:
-            continue
-        results.append(run_suite(name, spec))
-
-    out = ROOT / "dev" / "regression_summary.json"
-    summary = {
-        "tier": args.tier,
-        "passed": sum(1 for r in results if r.get("ok")),
-        "failed": sum(1 for r in results if not r.get("ok") and not r.get("skipped")),
-        "skipped": sum(1 for r in results if r.get("skipped")),
-        "blocking_skipped": sum(
-            1 for r in results if r.get("skipped") and not r.get("optional")
-        ),
-        "suites": results,
-    }
-    out.write_text(json.dumps(summary, indent=2), encoding="utf-8")
-    print(f"\nWrote {out}")
-    print(f"\n{'-' * 60}")
-    ran = summary["passed"] + summary["failed"]
-    print(f"  {summary['passed']}/{ran} suites passed", end="")
-    if summary["skipped"]:
-        print(f", {summary['skipped']} skipped", end="")
-    print()
-    print(f"{'-' * 60}\n")
-    if summary["failed"] > 0 or summary["blocking_skipped"] > 0:
-        return 1
-    return 0
+    profile = "release" if args.tier == "all" else args.tier
+    return audit_main(["run", "--profile", profile])
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main())

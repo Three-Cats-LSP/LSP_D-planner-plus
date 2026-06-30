@@ -3,15 +3,15 @@
 > Generated schedule and totals. Policy and unit metadata live in `docs/audit-units.json`.
 
 **Baseline:** `fd805111eab2fba349a9303a6e208106b798f82b`
-**Units:** 135 total; 59 unread; 20 in progress; 54 read; 2 verified.
-**Gate:** `python tools/audit_coverage.py --check`
+**Units:** 149 total; 59 unread; 38 in progress; 51 read; 1 verified.
+**Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
 
 - Audit P0 before P1, then P2/P3. Unit priority is not finding severity.
 - A cycle may read at most 600 new application-source lines plus one bounded engine re-verification unit.
 - Record actual findings only; there are no finding quotas or projections.
-- `VERIFIED` requires a current fingerprint, review/issue reference, evidence, and stable regression case IDs.
+- `VERIFIED` requires a current fingerprint and evidence that passes in the current audit profile.
 - Generated artifacts are validated by their generator and parity command, not manual READ coverage.
 - Open CRITICAL or HIGH findings fail the coverage gate and block release.
 
@@ -42,13 +42,13 @@
 
 - Every registered unit is READ and at least 85% are VERIFIED.
 - No open CRITICAL or HIGH findings remain.
-- `audit.py`, engine parity, audit coverage, and the complete release regression pass.
+- `python -m tools.audit run --profile release` passes with every required leaf suite.
 - No tracked source is unregistered, stale, overlapping, or uncovered.
 - Generated bundles and deployment mirrors reproduce cleanly from canonical sources.
 
 ## Session Card
 
-1. Pull `main`; run the coverage gate and baseline checks.
+1. Pull `main`; run `python -m tools.audit check --profile static`.
 2. Read each selected unit in full and apply all seven lenses.
 3. Record unit ID, exact lines, lens, severity, issue, and regression case ID.
 4. Re-read fixed units, run the relevant suite, refresh fingerprints, and regenerate these reports.

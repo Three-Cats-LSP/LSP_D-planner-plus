@@ -63,14 +63,14 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Rebuild bundles, parity check, and static audit
+      - name: Rebuild bundles, parity check, and audit v2 static gate
         run: |
           python tools/build_zhl_bundle.py
           python tools/build_vpm_bundle.py
           python tools/check_engine_parity.py
           git diff --exit-code zhl-engine-bundle.js vpm-engine-bundle.js
           python tools/build_pages_site.py
-          python audit.py
+          python -m tools.audit check --profile static
 
       - name: Prepare web assets (www/)
         run: python tools/sync_www.py

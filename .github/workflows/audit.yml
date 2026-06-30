@@ -57,13 +57,20 @@ jobs:
       - name: Build Pages site (_pages/)
         run: python tools/build_pages_site.py
 
-      - name: Validate audit coverage registry
-        run: |
-          python tools/test_audit_coverage.py
-          python tools/audit_coverage.py --check
+      - name: Run audit v2 tests
+        run: python -m unittest tools.test_audit_coverage tools.audit.test_system
 
-      - name: Run audit.py
-        run: python audit.py index.html
+      - name: Run registry-driven static audit
+        run: python -m tools.audit check --profile static
+
+      - name: Upload static audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-v2-release-static
+          path: |
+            dev/audit-results.json
+            dev/audit-report.md
 
   browser-regression:
     needs: [bundle-sync]
@@ -77,6 +84,15 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install parser dependencies
+        run: npm ci
+
       - name: Install Playwright
         run: |
           sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list /etc/apt/sources.list.d/microsoft-*.list
@@ -84,5 +100,14 @@ jobs:
           pip install playwright
           playwright install --with-deps chromium
 
-      - name: Run release regression orchestrator
-        run: python dev/run_all_regression.py --tier release
+      - name: Run release audit orchestrator
+        run: python -m tools.audit run --profile release
+
+      - name: Upload release audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-v2-release
+          path: |
+            dev/audit-results.json
+            dev/audit-report.md

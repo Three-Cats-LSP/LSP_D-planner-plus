@@ -62,11 +62,20 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install parser dependencies
+        run: npm ci
+
       - name: Build Pages site (_pages/)
         run: python tools/build_pages_site.py
 
-      - name: Static audit gate
-        run: python audit.py
+      - name: Audit v2 static gate
+        run: python -m tools.audit check --profile static
 
       - name: Hash site contents
         id: sitehash
