@@ -8375,9 +8375,15 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
           const maxPooled = (typeof computePooledBottomTurnBars === 'function')
             ? computePooledBottomTurnBars(sizeL, fillBar, resBar, travelPooledLVPM, fraction)
             : null;
-          const maxTurnBar = maxPooled ? maxPooled.turnBar : fillBar - (usableL * fraction) / sizeL;
-          const maxTurnDisp = units === 'imperial' ? Math.round(maxTurnBar*14.5038) : Math.round(maxTurnBar);
-          btSuggest = `Shorten BT to <strong>${maxBT} min</strong> and turn at <strong>${maxTurnDisp} ${presUnitV}</strong>, or use a larger cylinder / add a stage.`;
+          const maxTurnBar = maxPooled
+            ? maxPooled.turnBar
+            : (sizeL > 0 ? fillBar - (usableL * fraction) / sizeL : null);
+          const maxTurnDisp = maxTurnBar != null
+            ? (units === 'imperial' ? Math.round(maxTurnBar * 14.5038) : Math.round(maxTurnBar))
+            : null;
+          btSuggest = maxTurnDisp != null
+            ? `Shorten BT to <strong>${maxBT} min</strong> and turn at <strong>${maxTurnDisp} ${presUnitV}</strong>, or use a larger cylinder / add a stage.`
+            : `Shorten BT to <strong>${maxBT} min</strong>, or use a larger cylinder / add a stage.`;
         }
         warnings += `<div class="alert dang" style="margin-top:6px;"><span>⚠</span><div><strong>${gas} insufficient</strong> — need ${reqDisp} ${volUnitV}, have ${availDisp} ${volUnitV}. Short by <strong>${shortVolDisp(reqL - usableL)} ${volUnitV}</strong>.${btSuggest ? '<br>' + btSuggest : ''}</div></div>`;
       }
