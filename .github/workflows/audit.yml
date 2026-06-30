@@ -93,6 +93,11 @@ jobs:
       - name: Install parser dependencies
         run: npm ci
 
+      - name: Sync web assets and Capacitor android project
+        run: |
+          python tools/sync_www.py
+          npx cap sync android
+
       - name: Install Playwright
         run: |
           sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list /etc/apt/sources.list.d/microsoft-*.list
