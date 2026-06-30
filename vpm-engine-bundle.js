@@ -1203,6 +1203,29 @@ const VPMEngine = (() => {
             ctx.currentDepth = toDepth;
             return segTime;
         }
+        function vpmMdpMinAtDepth(depthM) {
+            const mdp = settings.minDecoProfile;
+            if (!mdp || !mdp.enabled) return 0;
+            if (Math.abs(depthM - 9) < 0.25 && (mdp.m9 || 0) > 0) return mdp.m9;
+            if (Math.abs(depthM - 6) < 0.25 && (mdp.m6 || 0) > 0) return mdp.m6;
+            return 0;
+        }
+        function vpmNextMdpStopDepth(stopDepth, targetDepth, stepSize, toSurface) {
+            const mdp = settings.minDecoProfile;
+            if (toSurface) {
+                if (mdp && mdp.enabled) {
+                    if (stopDepth > 9.25 && (mdp.m9 || 0) > 0) return 9;
+                    if (stopDepth > 6.25 && (mdp.m6 || 0) > 0) return 6;
+                }
+                return 0;
+            }
+            let next = Math.max(targetDepth, stopDepth - stepSize);
+            if (mdp && mdp.enabled) {
+                if (stopDepth > 9.25 && next < 8.75 && (mdp.m9 || 0) > 0) return 9;
+                if (stopDepth > 6.25 && next < 5.75 && (mdp.m6 || 0) > 0) return 6;
+            }
+            return next;
+        }
         function runRoundedDecoStop(ctx, stopDepth, nextStop) {
             if (settings._vpmTestForceStopCap) {
                 vpmStopCapFailedDepth = stopDepth;
@@ -1271,6 +1294,16 @@ const VPMEngine = (() => {
                     ctx.runtime += roundDelta;
                     totalStopTime = snapped;
                 }
+            }
+            const mdpMin = vpmMdpMinAtDepth(stopDepth);
+            if (mdpMin > totalStopTime) {
+                const mdpExtra = mdpMin - totalStopTime;
+                for (let i = 0; i < NC; i++) {
+                    ctx.state.tissues[i].pHe = haldane(ctx.state.tissues[i].pHe, inspHe, ZHL16C_He[i].ht, mdpExtra);
+                    ctx.state.tissues[i].pN2 = haldane(ctx.state.tissues[i].pN2, inspN2, ZHL16C_N2[i].ht, mdpExtra);
+                }
+                ctx.runtime += mdpExtra;
+                totalStopTime = mdpMin;
             }
             const finalCeiling = getVPMCeiling(ctx.state, settings);
             const clearToleranceFinal = (ctx.continuationFinalPhase && stopDepth <= 6)
@@ -1357,7 +1390,7 @@ const VPMEngine = (() => {
             let stopDepth = firstStopDepth;
             while (stopDepth > targetDepth) {
                 maybeSwitchDecoGas(ctx, stopDepth);
-                const nextStop = Math.max(targetDepth, stopDepth - stepSize);
+                const nextStop = vpmNextMdpStopDepth(stopDepth, targetDepth, stepSize, false);
                 if (model === 'VPMB_GFS') {
                     const gfsValue = settings.gfs || settings.gfHi || 85;
                     applyGFSurfacing(ctx.state, stopDepth, phaseFirstStopDepth, gfsValue, settings);
@@ -1504,7 +1537,7 @@ const VPMEngine = (() => {
             let stopDepth = firstStopDepth;
             while (stopDepth > 0) {
                 maybeSwitchDecoGas(ctx, stopDepth);
-                const nextStop = stopDepth <= lastStop ? 0 : stopDepth - stepSize;
+                const nextStop = vpmNextMdpStopDepth(stopDepth, 0, stepSize, stopDepth <= lastStop);
                 if (model === 'VPMB_GFS') {
                     const gfsValue = settings.gfs || settings.gfHi || 85;
                     applyGFSurfacing(ctx.state, stopDepth, phaseFirstStopDepth, gfsValue, settings);
@@ -1670,8 +1703,8 @@ const VPMEngine = (() => {
                         }
                     }
                 }
-                const nextStop = stopDepth - stepSize;
-                const nextStopClamped = nextStop < targetDepth ? targetDepth : nextStop;
+                const nextStop = vpmNextMdpStopDepth(stopDepth, targetDepth, stepSize, false);
+                const nextStopClamped = nextStop;
                 if (model === 'VPMB' || model === 'VPMBE' || model === 'VPMB_GFS' || model === 'VPMBFBO') {
                     boyleLawCompensation(state, firstStopDepth, stopDepth + stepSize, stepSize, settings);
                     applyExtendedAfterBoyle(state, model, settings);
@@ -1687,6 +1720,13 @@ const VPMEngine = (() => {
                     vpmStopCapFailedDepth = stopDepth;
                     restoreInterLevelDerivedState();
                     return null;
+                }
+                const mdpMin = vpmMdpMinAtDepth(stopDepth);
+                if (mdpMin > stopTime) {
+                    const mdpExtra = mdpMin - stopTime;
+                    settings._scrRuntimeMin = runtime;
+                    loadTissuesConstant(state, stopDepth, mdpExtra, curO2, curHe, settings, curSP);
+                    stopTime = mdpMin;
                 }
                 if (stopTime > 0) {
                     if (stopTime < effectiveMinStop) stopTime = effectiveMinStop;
@@ -2018,114 +2058,8 @@ const VPMEngine = (() => {
             error: null
         };
     }
-    function applyMinDecoProfile(result, opts) {
-        if (!result || result.error || !opts || !opts.mdpStops || !opts.mdpStops.length) return result;
-        const plan = result.plan || [];
-        if (!plan.length) return result;
-        const mdpStops = opts.mdpStops;
-        const isMetric = opts.isMetric !== false;
-        const botFracs = opts.botFracs || { fN2: 0.79, fHe: 0 };
-        const surfP = opts.surfP != null ? opts.surfP : 1.01325;
-        const barPerM = opts.barPerM != null ? opts.barPerM : 0.101325;
-        const FT_PER_M = 3.28084;
-        const stepDepthM = (s) => {
-            const raw = s.depth ?? s.from ?? s.to;
-            if (raw == null) return null;
-            return isMetric ? raw : raw / FT_PER_M;
-        };
-        const defaultPpo2 = (depthM, fN2, fHe) => {
-            const fO2 = Math.max(0, 1 - fN2 - (fHe || 0));
-            return (depthM * barPerM + surfP) * fO2;
-        };
-        const stopPpo2 = typeof opts.stopPpo2 === 'function' ? opts.stopPpo2 : defaultPpo2;
-        const loadTissues = typeof opts.loadTissues === 'function' ? opts.loadTissues : null;
-
-        let totalDelta = 0;
-        let cnsDelta = 0;
-        let otuDelta = 0;
-        let tissues = result.finalTissues
-            ? result.finalTissues.map(t => ({ pN2: t.pN2, pHe: t.pHe || 0 }))
-            : null;
-
-        function addExposureDelta(depthM, deltaMin, fN2, fHe) {
-            if (deltaMin <= 1e-9) return;
-            const ppo2 = stopPpo2(depthM, fN2, fHe);
-            cnsDelta += calculateCNS(ppo2, deltaMin);
-            otuDelta += calculateOTU(ppo2, deltaMin);
-            if (loadTissues && tissues) {
-                tissues = loadTissues(tissues, depthM, deltaMin, fN2, fHe || 0);
-            }
-        }
-        function shiftRuntimes(fromRt, delta) {
-            for (const seg of plan) {
-                if ((seg.runtime || 0) >= fromRt - 1e-9) {
-                    seg.runtime = Math.round(((seg.runtime || 0) + delta) * 10) / 10;
-                }
-            }
-        }
-
-        const matchedDepths = new Set();
-        for (const seg of plan) {
-            if (seg.type !== 'stop') continue;
-            const dm = stepDepthM(seg);
-            if (dm == null) continue;
-            const mdp = mdpStops.find(s => Math.abs(stepDepthM(s) - dm) < 0.25);
-            if (!mdp) continue;
-            matchedDepths.add(Math.round(dm * 100));
-            const oldTime = seg.time || 0;
-            const delta = mdp.dur - oldTime;
-            if (delta <= 1e-9) {
-                if (mdp.dur > oldTime) seg.time = mdp.dur;
-                continue;
-            }
-            seg.time = mdp.dur;
-            shiftRuntimes(seg.runtime || 0, delta);
-            totalDelta += delta;
-            addExposureDelta(dm, delta, mdp.fN2 ?? botFracs.fN2, mdp.fHe ?? botFracs.fHe ?? 0);
-        }
-
-        for (const mdp of mdpStops) {
-            const dm = stepDepthM(mdp);
-            if (dm == null || matchedDepths.has(Math.round(dm * 100))) continue;
-            let insertIdx = plan.length;
-            for (let i = 0; i < plan.length; i++) {
-                const seg = plan[i];
-                if (seg.type === 'stop' && stepDepthM(seg) != null && stepDepthM(seg) < dm) {
-                    insertIdx = i;
-                    break;
-                }
-                if (seg.type === 'surface') {
-                    insertIdx = i;
-                    break;
-                }
-            }
-            const prevRt = insertIdx > 0 ? (plan[insertIdx - 1].runtime || 0) : 0;
-            const newSeg = {
-                type: 'stop',
-                depth: mdp.depth,
-                time: mdp.dur,
-                runtime: Math.round((prevRt + mdp.dur) * 10) / 10,
-                gas: mdp.gas,
-            };
-            plan.splice(insertIdx, 0, newSeg);
-            for (let i = insertIdx + 1; i < plan.length; i++) {
-                plan[i].runtime = Math.round(((plan[i].runtime || 0) + mdp.dur) * 10) / 10;
-            }
-            totalDelta += mdp.dur;
-            addExposureDelta(dm, mdp.dur, mdp.fN2 ?? botFracs.fN2, mdp.fHe ?? botFracs.fHe ?? 0);
-        }
-
-        result.plan = plan;
-        result.stops = plan.filter(s => s.type === 'stop');
-        result.totalRuntime = Math.ceil((result.totalRuntime || 0) + totalDelta);
-        if (tissues) result.finalTissues = tissues;
-        if (result.totalCNS != null) result.totalCNS += cnsDelta;
-        if (result.totalOTU != null) result.totalOTU += otuDelta;
-        return result;
-    }
     return {
         calculate,
-        applyMinDecoProfile,
         load: function load() { return true; },
         createVPMState,
         /** Sync all 16 He compartment half-times from ZHL16C_HE_HT array (Baker / Bühlmann 2003). */

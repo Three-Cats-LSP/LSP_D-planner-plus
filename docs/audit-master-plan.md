@@ -3,7 +3,7 @@
 > Generated schedule and totals. Policy and unit metadata live in `docs/audit-units.json`.
 
 **Baseline:** `fd805111eab2fba349a9303a6e208106b798f82b`
-**Units:** 157 total; 59 unread; 53 in progress; 40 read; 5 verified.
+**Units:** 157 total; 51 unread; 52 in progress; 49 read; 5 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -31,12 +31,12 @@
 |---:|---|---:|---|---|
 | 5 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 487 | ENG-ZHL-SCHEDULE | Delegate units fully READ; schedule findings linked to regression IDs |
 | 6 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 590 | ENG-ZHL-CCR | Physics and schedule input paths READ; no unresolved P0 finding |
-| 7 | UI-SETTINGS-CONTROLS, UI-VPM-RUNNER | 595 | ENG-VPM | Settings restoration and VPM invocation contracts READ |
+| 7 | UI-SETTINGS-CONTROLS, UI-VPM-RUNNER | 561 | ENG-VPM | Settings restoration and VPM invocation contracts READ |
 | 8 | UI-VPM-RENDER | 529 | ENG-VPM | VPM rendering and safety warning propagation READ |
 | 9 | UI-GAS-CARDS | 574 | ENG-ZHL-GAS | Dynamic gas-card units and persistence READ |
 | 10 | UI-GAS-INPUTS, UI-ZHL-RUNNER-SETUP | 301 | ENG-ZHL-SCHEDULE | Gas validation and ZHL parameter construction READ |
 | 11 | UI-ZHL-RUNNER-ENGINE | 342 | ENG-ZHL-SCHEDULE | Canonical ZHL execution path READ with parity evidence |
-| 12 | UI-ZHL-RESULTS | 495 | ENG-ZHL-PHYSICS | Result construction, exposure totals, and safety fields READ |
+| 12 | UI-ZHL-RESULTS | 496 | ENG-ZHL-PHYSICS | Result construction, exposure totals, and safety fields READ |
 
 ## Definition of Done
 

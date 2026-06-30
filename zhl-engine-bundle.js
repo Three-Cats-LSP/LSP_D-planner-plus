@@ -780,6 +780,25 @@ function getGasLabel(fO2, fHe) {
   return `${o2pct}/${String(hePct).padStart(2, '0')}`;
 }
 
+function insertMdpStopDepths(stopDepths, enabled, min9m, min6m) {
+  if (!enabled) return stopDepths;
+  const out = stopDepths.slice();
+  for (const [targetM, minDur] of [[9, min9m], [6, min6m]]) {
+    if (minDur <= 0) continue;
+    if (out.some(d => Math.abs(d - targetM) < 0.25)) continue;
+    let idx = out.findIndex(d => d < targetM);
+    if (idx < 0) idx = out.length;
+    out.splice(idx, 0, targetM);
+  }
+  return out;
+}
+
+function mdpMinRequiredAt(depthM, min9m, min6m) {
+  if (Math.abs(depthM - 9) < 0.25 && min9m > 0) return min9m;
+  if (Math.abs(depthM - 6) < 0.25 && min6m > 0) return min6m;
+  return 0;
+}
+
 function runZhlScheduleCore(params) {
   applyEnvironment(params.environment || defaultEnvironment());
   const depthM = params.depthM;
@@ -812,6 +831,9 @@ function runZhlScheduleCore(params) {
   const bottomFO2 = params.bottomFO2;
   const bottomMixLabel = params.bottomMixLabel;
   const decoGases = params.decoGases;
+  const _mdpEnabled   = !!params.minDecoProfile?.enabled;
+  const _mdp9m        = params.minDecoProfile?.m9 ?? 1;
+  const _mdp6m        = params.minDecoProfile?.m6 ?? 3;
   const ccrSettings = params.ccr ? normalizeCCRSettings(params.ccr) : null;
   const _zhlOnLoop = !!(params.onLoop && ccrSettings && isRebreatherCircuit(ccrSettings.circuit) && !ccrSettings.bailout);
   const loopMixLabel = params.loopMixLabel || (ccrSettings ? loopMixLabelForCore(bottomMixLabel, ccrSettings) : bottomMixLabel);
@@ -975,7 +997,7 @@ function runZhlScheduleCore(params) {
   // is a single linear segment. Gas switch happens at the first stop where it's available.
   // This matches ApexDeco: ascend to first stop, then iterate stops down to lastStop.
   const startStop = candidateFirstStop > 0 ? candidateFirstStop : lastStop;
-  const stopDepths = [];
+  let stopDepths = [];
   const floorStopMin = _zhlAscentFloor > 0 ? Math.max(lastStop, _zhlAscentFloor) : lastStop;
   for (let d = startStop; d >= floorStopMin; d -= decoStep) {
     stopDepths.push(d);
@@ -984,6 +1006,23 @@ function runZhlScheduleCore(params) {
     if (stopDepths.length === 0 || stopDepths[stopDepths.length - 1] !== floorStopMin) stopDepths.push(floorStopMin);
   } else if (stopDepths.length === 0 || stopDepths[stopDepths.length - 1] !== lastStop) {
     stopDepths.push(lastStop);
+  }
+  stopDepths = insertMdpStopDepths(stopDepths, _mdpEnabled, _mdp9m, _mdp6m);
+
+  function applyMdpMinimumStop(cur, stopT, transitForDisplay, isFirstDecoStop) {
+    const minReq = mdpMinRequiredAt(cur, _mdp9m, _mdp6m);
+    if (!_mdpEnabled || minReq <= 0) return stopT;
+    const displayT = (mdCompatMode && !isFirstDecoStop) ? stopT + transitForDisplay : stopT;
+    if (displayT >= minReq) return stopT;
+    return stopT + (minReq - displayT);
+  }
+  function loadMdpStopExtension(cur, stopT, transitForDisplay, isFirstDecoStop, stopFO2, stopFHe, onLoop) {
+    const extended = applyMdpMinimumStop(cur, stopT, transitForDisplay, isFirstDecoStop);
+    if (extended <= stopT) return stopT;
+    const extra = extended - stopT;
+    tissues = zhlLoadConst(tissues, cur, extra, stopFO2, stopFHe, onLoop, 'deco');
+    rt += extra;
+    return extended;
   }
 
   let prevEngineGas = _zhlActiveGas ? _zhlActiveGas.label : bottomMixLabel; // track gas for switch pause
@@ -1144,6 +1183,7 @@ function runZhlScheduleCore(params) {
           rt += extra; stopT = minStopT;
         }
       }
+      stopT = loadMdpStopExtension(cur, stopT, transitDur, isFirstDecoStop, stopFO2, stopFHe, onLoop);
       const mustStopDisplay = (mdCompatMode && !isFirstDecoStop) ? stopT + transitDur : stopT;
       steps.push({ type: 'deco', depth: cur, dur: mustStopDisplay, gas: gasLabel, pO2: zhlStepPpo2(cur, stopFN2, stopFHe, 'deco'), fN2: stopFN2, fHe: stopFHe, hitSafetyGuard: hitSafetyGuard || undefined, _tissues: tissues.map(t => ({ pN2: t.pN2, pHe: t.pHe })) });
     } else if (minStopT > 0 && minStopZoneDepth !== null && cur <= minStopZoneDepth && cur !== lastStop) {
@@ -1193,6 +1233,7 @@ function runZhlScheduleCore(params) {
         }
       }
       if (stopT > 0) {
+        stopT = loadMdpStopExtension(cur, stopT, transitDur, isFirstDecoStop, stopFO2, stopFHe, onLoop);
         const minStopDisplay = (mdCompatMode && !isFirstDecoStop) ? stopT + transitDur : stopT;
         steps.push({ type: 'deco', depth: cur, dur: minStopDisplay, gas: gasLabel, pO2: zhlStepPpo2(cur, stopFN2, stopFHe, 'deco'), fN2: stopFN2, fHe: stopFHe, hitSafetyGuard: hitSafetyGuard || undefined, _tissues: tissues.map(t => ({ pN2: t.pN2, pHe: t.pHe })) });
       }
@@ -1234,8 +1275,23 @@ function runZhlScheduleCore(params) {
         tissues = zhlLoadConst(tissues, cur, stopT, stopFO2, stopFHe, onLoop, 'deco');
         rt += stopT;
       }
+      stopT = loadMdpStopExtension(cur, stopT, transitToLastStop, false, stopFO2, stopFHe, onLoop);
       const lastStopDisplay = mdCompatMode ? stopT + transitToLastStop : stopT;
       steps.push({ type: stopType, depth: cur, dur: lastStopDisplay, gas: gasLabel, pO2: zhlStepPpo2(cur, stopFN2, stopFHe, 'deco'), fN2: stopFN2, fHe: stopFHe, hitSafetyGuard: hitSafetyGuard || undefined, _tissues: tissues.map(t => ({ pN2: t.pN2, pHe: t.pHe })) });
+    } else if (_mdpEnabled && mdpMinRequiredAt(cur, _mdp9m, _mdp6m) > 0) {
+      const minReq = mdpMinRequiredAt(cur, _mdp9m, _mdp6m);
+      let stopT = mdCompatMode ? Math.max(0, minReq - transitDur) : minReq;
+      if (stopT < 1 / 60) stopT = 1 / 60;
+      tissues = zhlLoadConst(tissues, cur, stopT, stopFO2, stopFHe, onLoop, 'deco');
+      rt += stopT;
+      const mdpDisplay = mdCompatMode ? stopT + transitDur : stopT;
+      steps.push({
+        type: 'deco', depth: cur, dur: mdpDisplay, gas: gasLabel,
+        pO2: zhlStepPpo2(cur, stopFN2, stopFHe, 'deco'),
+        fN2: stopFN2, fHe: stopFHe,
+        hitSafetyGuard: hitSafetyGuard || undefined,
+        _tissues: tissues.map(t => ({ pN2: t.pN2, pHe: t.pHe })),
+      });
     }
     // No stop needed and not lastStop — continue ascending
     if (_zhlAscentFloor > 0 && cur <= _zhlAscentFloor && stopDepth <= _zhlAscentFloor) break;
@@ -1309,44 +1365,7 @@ function runZhlScheduleCore(params) {
     }
   }
 
-  // ── Min Deco Profile enforcement ──────────────
-  const _mdpEnabled   = !!params.minDecoProfile?.enabled;
-  const _mdp9m        = params.minDecoProfile?.m9 ?? 1;
-  const _mdp6m        = params.minDecoProfile?.m6 ?? 3;
-  const _mdpIsMetric  = params.minDecoProfile?.isMetric !== false;
-  const collapsedMDP  = enforceMinDecoProfile(collapsed, _mdpEnabled, _mdp9m, _mdp6m, _mdpIsMetric, bottomMixLabel, bottomFN2, bottomFHe);
-
-  // Reconcile runtime and tissues with min-deco stop extensions/injections.
-  const _mdpStepDepthM = (s) => {
-    const raw = s.depth ?? s.from ?? s.to;
-    if (raw == null) return null;
-    return _mdpIsMetric ? raw : raw / 3.28084;
-  };
-  const _sumDecoAtDepth = (steps, targetM) => steps
-    .filter(s => (s.type === 'deco' || s.type === 'safety')
-      && _mdpStepDepthM(s) != null
-      && Math.abs(_mdpStepDepthM(s) - targetM) < 0.25)
-    .reduce((a, s) => a + s.dur, 0);
-  const _origDecoTime = collapsed
-    .filter(s => s.type === 'deco' || s.type === 'safety')
-    .reduce((a, s) => a + s.dur, 0);
-  const _mdpDecoTime = collapsedMDP
-    .filter(s => s.type === 'deco' || s.type === 'safety')
-    .reduce((a, s) => a + s.dur, 0);
-  for (const targetM of [9, 6]) {
-    const delta = _sumDecoAtDepth(collapsedMDP, targetM) - _sumDecoAtDepth(collapsed, targetM);
-    if (delta <= 1e-9) continue;
-    const step = collapsedMDP.find(s => (s.type === 'deco' || s.type === 'safety')
-      && _mdpStepDepthM(s) != null
-      && Math.abs(_mdpStepDepthM(s) - targetM) < 0.25);
-    if (!step) continue;
-    const fHe = step.fHe ?? bottomFHe ?? 0;
-    const fN2 = step.fN2 ?? bottomFN2;
-    const fO2 = Math.max(0, 1 - fN2 - fHe);
-    tissues = zhlLoadConst(tissues, step.depth, delta, fO2, fHe, _zhlOnLoop, 'deco');
-  }
-  rt += _mdpDecoTime - _origDecoTime;
-
+  const collapsedMDP = collapsed;
   const decoStops = collapsedMDP.filter(s => s.type === 'deco');
   const decoTime  = Math.round(decoStops.reduce((a, s) => a + s.dur, 0) * 60) / 60;
   const hasDeco   = decoStops.length > 0;

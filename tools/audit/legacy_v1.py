@@ -1565,14 +1565,14 @@ if "function enforceMinDecoProfile(" in js:
 else:
     fail("enforceMinDecoProfile() missing — minimum deco profile feature not implemented")
 
-# 21.2 Called in Buhlmann path
-if "enforceMinDecoProfile(collapsed," in zhl_src:
+# 21.2 Called in Bühlmann path (inline min-deco during ascent loop)
+if "insertMdpStopDepths(" in zhl_src or "loadMdpStopExtension(" in zhl_src or "enforceMinDecoProfile(collapsed," in zhl_src:
     ok("enforceMinDecoProfile called in Buhlmann path")
 else:
     fail("enforceMinDecoProfile not called in Buhlmann path — min deco profile ignored for ZHL")
 
-# 21.3 Called in VPM path (pre-render via applyMinDecoProfileToVpmResult / VPMEngine.applyMinDecoProfile)
-if ("applyMinDecoProfileToVpmResult(" in js and "VPMEngine.applyMinDecoProfile" in js) or "enforceMinDecoProfile(_vpmRawStops," in js:
+# 21.3 Called in VPM path (minDecoProfile passed into VPMEngine settings)
+if ("minDecoProfile:" in js and "getVpmMinDecoSettingsFromDom" in js) or "applyMinDecoProfileToVpmResult(" in js or "enforceMinDecoProfile(_vpmRawStops," in js:
     ok("enforceMinDecoProfile called in VPM path")
 else:
     fail("enforceMinDecoProfile not called in VPM path — min deco profile ignored for VPM-B")

@@ -1161,24 +1161,14 @@
       "path": "vpm-engine-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "9c2b3719744b67306e85458e59c20e415db7554295d9c5a4676e8abe0c6f8504",
-      "last_read_fingerprint": "9c2b3719744b67306e85458e59c20e415db7554295d9c5a4676e8abe0c6f8504",
-      "evidence": [
-        "REG-31",
-        "REG-32",
-        "REG-33",
-        "REG-34"
-      ],
-      "regression_cases": [
-        "REG-31",
-        "REG-32",
-        "REG-33",
-        "REG-34"
-      ],
+      "fingerprint": "6867f99789a7ae3bbed82db90def60119ffe7b397dbf99b267688ce481373ffc",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 146
     },
     {
@@ -1261,7 +1251,7 @@
         "REG-12",
         "REG-13"
       ],
-      "issue": "GitHub #140 H-2 / Cycle 5 GP-01\u00e2\u20ac\u201c06 \u00e2\u20ac\u201d docs/code-review-2026-06-30.md",
+      "issue": "GitHub #140 H-2 / Cycle 5 GP-01â€“06 â€” docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-10",
         "REG-12",
@@ -1283,7 +1273,7 @@
         "REG-11",
         "REG-14"
       ],
-      "issue": "Cycle 5 GT-01\u00e2\u20ac\u201c06 \u00e2\u20ac\u201d docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GT-01â€“06 â€” docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-11",
         "REG-14"
@@ -1306,7 +1296,7 @@
         "REG-20",
         "REG-21"
       ],
-      "issue": "GitHub #142 \u00e2\u20ac\u201d Dive 2 gas override",
+      "issue": "GitHub #142 â€” Dive 2 gas override",
       "regression_cases": [
         "REG-17",
         "REG-19",
@@ -1642,7 +1632,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "GitHub #133\u00c3\u00a2\u00e2\u201a\u00ac\u00e2\u20ac\u0153#138 audit regression sections",
+      "issue": "GitHub #133Ã¢â‚¬â€œ#138 audit regression sections",
       "regression_cases": [],
       "fingerprint": "776865b4da4658c31a1d2734829fbf6b0e85e79db057420300891894ccaec3cf",
       "last_read_fingerprint": null
@@ -1672,7 +1662,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "Cycle 5 GP/GT behavioral regression \u00e2\u20ac\u201d docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GP/GT behavioral regression â€” docs/code-review-2026-06-30.md",
       "regression_cases": [],
       "fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
       "last_read_fingerprint": null
@@ -2071,7 +2061,7 @@
       },
       "evidence": [],
       "regression_cases": [],
-      "issue": "GitHub #133\u00c3\u00a2\u00e2\u201a\u00ac\u00e2\u20ac\u0153#139 structured environment audit gates; release regression 9/9",
+      "issue": "GitHub #133Ã¢â‚¬â€œ#139 structured environment audit gates; release regression 9/9",
       "fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d",
       "last_read_fingerprint": null
     },
@@ -2461,7 +2451,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "44ddf172698b0f8fbbc6052d6362b00ce92ac80a096192b9da8d84b1123e6183",
+      "fingerprint": "56a6f62ca2a4be0f8fc6363fd64aa95cc63621e7ae2a80164c337d61c201ee63",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],

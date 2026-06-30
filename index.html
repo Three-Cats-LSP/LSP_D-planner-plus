@@ -7833,41 +7833,6 @@ function onConservatismChange() {
 }
 
 // AUDIT-UNIT:UI-VPM-RUNNER
-function applyMinDecoProfileToVpmResult(result, botFracs) {
-  const m = getVpmMinDecoSettingsFromDom();
-  if (!result || result.error || !m.enabled || (!m.min9m && !m.min6m)) return result;
-  if (!window.VPMEngine || typeof VPMEngine.applyMinDecoProfile !== 'function') return result;
-  const botLabel = getGasLabel(botFracs.fO2, botFracs.fHe);
-  const origStops = (result.stops || []).map(s => ({
-    type: 'deco',
-    depth: s.depth,
-    dur: s.time || 0,
-    gas: s.gas,
-    fN2: s.o2 != null ? Math.max(0, 1 - s.o2 / 100 - (s.he || 0) / 100) : botFracs.fN2,
-    fHe: s.he != null ? s.he / 100 : (botFracs.fHe || 0),
-  }));
-  const mdpStops = enforceMinDecoProfile(origStops, m.enabled, m.min9m, m.min6m, m.isMetric, botLabel, botFracs.fN2, botFracs.fHe || 0);
-  function vpmStopPpo2(depthM, fN2, fHe) {
-    const fO2 = Math.max(0, 1 - fN2 - (fHe || 0));
-    const ccr = getCCRSettingsFromDOM();
-    if (isRebreatherCircuit(ccr.circuit) && !ccr.bailout) {
-      const sp = getEffectiveSetpointAtDepth(depthM, ccr, altSurfaceP);
-      const pAmb = (altSurfaceP || 1.01325) + depthM * BAR_PER_METRE;
-      return getEffectivePpo2(pAmb, sp, fO2, mergeCCRSettings(ccr), depthM, fHe);
-    }
-    return (depthM * BAR_PER_METRE + (altSurfaceP || 1.01325)) * fO2;
-  }
-  return VPMEngine.applyMinDecoProfile(result, {
-    mdpStops,
-    isMetric: m.isMetric,
-    botFracs,
-    surfP: altSurfaceP || 1.01325,
-    barPerM: BAR_PER_METRE,
-    stopPpo2: vpmStopPpo2,
-    loadTissues: (t, d, dt, fN2, fHe) => saturate(t, d, dt, fN2, fHe),
-  });
-}
-
 function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, surfaceAscentRate,
                         stepSize, lastStop, minStopTime, ppo2Bottom, ppo2Deco, model, wholeMinStops) {
   // Headless mode: skip all VPM computation and DOM rendering
@@ -7929,6 +7894,10 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
     extendedStops:     false,
     wholeMinStops:     wholeMinStops === true,
     altitude:          Number.isFinite(altitudeM) ? altitudeM : 0,
+    minDecoProfile:    (() => {
+      const m = getVpmMinDecoSettingsFromDom();
+      return { enabled: m.enabled, m9: m.min9m, m6: m.min6m, isMetric: m.isMetric };
+    })(),
     ...getCCRSettingsFromDOM(),
   };
 
@@ -8006,7 +7975,6 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
   }
 
   if (result.code === 'VPM_STOP_CAP' && result.plan && result.plan.length) {
-    applyMinDecoProfileToVpmResult(result, _vpmBotFracs);
     renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct, decoGases, model, _vpmBotFracs);
     return;
   }
@@ -8015,8 +7983,6 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
     if (tbody) tbody.innerHTML = `<tr><td colspan="8" style="color:var(--red);padding:12px;">VPM Error: ${result.error}</td></tr>`;
     return;
   }
-
-  applyMinDecoProfileToVpmResult(result, _vpmBotFracs);
 
   // ── Feature B: save dive result for next repetitive dive ───────────────────────
   if (result.finalTissues && !_contingencyRunning) {
@@ -9786,6 +9752,7 @@ function runDecoSchedule() {
   const rtAtBottomEnd = rowRT;
 
   collapsedMDP.forEach(s => {
+    if (s.decoTransit) return; // mdCompatMode: transit folded into stop duration
     const _sFN2    = s.fN2 ?? bottomFN2;
     const _sFHe    = s.fHe ?? 0;
     const pO2Raw   = s.pO2 != null ? String(s.pO2) : ppO2Check(s.depth, _sFN2, _sFHe);
@@ -9899,7 +9866,7 @@ function runDecoSchedule() {
     window._lastPlan.totalCNS = parseFloat(totalCNSpct);
     window._lastPlan.totalOTU = totalOTUval;
   }
-  const totalRunMMSS = toMMSS(rowRT);
+  const totalRunMMSS = toMMSS(window._lastPlan ? window._lastPlan.rt : rowRT);
   const decoTimeMMSS = toMMSS(decoTime);
   // ── TTS (time-to-surface): ascent+deco only, excludes descent+bottom time.
   // Sourced from window._lastPlan.tts (computed once, headless-safe, from
