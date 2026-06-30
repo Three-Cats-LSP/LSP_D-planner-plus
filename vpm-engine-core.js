@@ -1202,14 +1202,18 @@
             ctx.currentSP = vpmSetpointAtDepth(stopDepth, 'deco', ctx.forcedOCMode, settings);
             let effectiveMinStop = (firstStop30sec && stopDepth === ctx.firstStopDepth) ? 0.5 : minStopTime;
             const useWholeMinStops = settings.wholeMinStops !== false;
-            const stopRoundGrid = useWholeMinStops ? 1 : effectiveMinStop;
-            const stopStep = stopRoundGrid;
+            const useOneMinuteGrid = settings.wholeMinStops === true;
             let roundedRuntime = ctx.runtime;
-            if (useWholeMinStops) {
+            if (useWholeMinStops && !useOneMinuteGrid) {
                 roundedRuntime = (ctx.continuationFinalPhase && stopDepth <= 12)
                     ? ctx.runtime
-                    : Math.ceil((ctx.runtime - 1e-9) / stopRoundGrid) * stopRoundGrid;
+                    : Math.round((ctx.runtime / effectiveMinStop) + 0.5) * effectiveMinStop;
+            } else if (useOneMinuteGrid) {
+                roundedRuntime = (ctx.continuationFinalPhase && stopDepth <= 12)
+                    ? ctx.runtime
+                    : Math.ceil((ctx.runtime - 1e-9) / 1) * 1;
             }
+            const stopStep = useOneMinuteGrid ? 1 : effectiveMinStop;
             let segmentTime = roundedRuntime - ctx.runtime;
             ctx.runtime = roundedRuntime;
             let totalStopTime = segmentTime;
@@ -1246,8 +1250,8 @@
                 totalStopTime += stopStep;
                 ctx.runtime += stopStep;
             }
-            if (useWholeMinStops && totalStopTime > 0) {
-                const snapped = Math.max(effectiveMinStop, Math.ceil((totalStopTime - 1e-9) / stopRoundGrid) * stopRoundGrid);
+            if (useOneMinuteGrid && totalStopTime > 0) {
+                const snapped = Math.max(effectiveMinStop, Math.ceil((totalStopTime - 1e-9) / 1) * 1);
                 ctx.runtime += snapped - totalStopTime;
                 totalStopTime = snapped;
             }

@@ -796,10 +796,10 @@ function runZhlScheduleCore(params) {
   const switchPauseT = params.switchPauseT || 0;
   const mdCompatMode = params.mdCompatMode !== false;
   const wholeMinStops = params.wholeMinStops !== false;
-  function stopRoundGrid() { return wholeMinStops ? 1 : minStopT; }
+  function stopRoundGrid() { return params.wholeMinStops === true ? 1 : minStopT; }
   function snapStopToGrid(stopT) {
     if (!wholeMinStops) return stopT;
-    const grid = 1;
+    const grid = stopRoundGrid();
     return Math.max(minStopT, Math.ceil((stopT - 1e-9) / grid) * grid);
   }
   const lastStop = params.lastStop;
@@ -1123,7 +1123,6 @@ function runZhlScheduleCore(params) {
           rt += extra; stopT = actualStop;
         }
         if (stopT < 1/60) { tissues = zhlLoadConst(tissues, cur, 1/60 - stopT, stopFO2, stopFHe, onLoop, 'deco'); rt += 1/60 - stopT; stopT = 1/60; }
-        if (wholeMinStops) stopT = snapStopToGrid(stopT);
       } else {
         let roundedStop;
         if (wholeMinStops) {

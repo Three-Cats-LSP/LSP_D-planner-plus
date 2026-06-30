@@ -781,8 +781,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RUNNER"
       },
-      "fingerprint": "5de094ee9b9ca425fe1d8cee12ac39fcf4ba8eb408a855d8642779a9772788dc",
-      "last_read_fingerprint": "5de094ee9b9ca425fe1d8cee12ac39fcf4ba8eb408a855d8642779a9772788dc",
+      "fingerprint": "2255c7bf986b6bd560897bb2797e922a735332d486bc74cc7d0fdeb38bc9690f",
+      "last_read_fingerprint": "2255c7bf986b6bd560897bb2797e922a735332d486bc74cc7d0fdeb38bc9690f",
       "evidence": [
         "REG-31",
         "REG-38"
@@ -1134,8 +1134,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "700eef1932b61949f61c7e2ad64e2f5c0480bbc3db6aed47cbd83c04cc102081",
-      "last_read_fingerprint": "700eef1932b61949f61c7e2ad64e2f5c0480bbc3db6aed47cbd83c04cc102081",
+      "fingerprint": "931d6bb991d87e76ed92d9c0fd03b47560a3b1dcdec8c1f4b87e7efda9d7a026",
+      "last_read_fingerprint": "931d6bb991d87e76ed92d9c0fd03b47560a3b1dcdec8c1f4b87e7efda9d7a026",
       "evidence": [
         "REG-06",
         "REG-22",
@@ -1157,8 +1157,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "10b49e5512913736c2c3936413225b41a458bc649b715f538d13dc88b37527d7",
-      "last_read_fingerprint": "10b49e5512913736c2c3936413225b41a458bc649b715f538d13dc88b37527d7",
+      "fingerprint": "40ecb98b007c21a66b5a210bd286aa9a821a3d26c9c861f4b6d7e0b4e672119c",
+      "last_read_fingerprint": "40ecb98b007c21a66b5a210bd286aa9a821a3d26c9c861f4b6d7e0b4e672119c",
       "evidence": [
         "REG-31",
         "REG-32",
@@ -1253,7 +1253,7 @@
         "REG-12",
         "REG-13"
       ],
-      "issue": "GitHub #140 H-2 / Cycle 5 GP-01–06 — docs/code-review-2026-06-30.md",
+      "issue": "GitHub #140 H-2 / Cycle 5 GP-01\u201306 \u2014 docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-10",
         "REG-12",
@@ -1275,7 +1275,7 @@
         "REG-11",
         "REG-14"
       ],
-      "issue": "Cycle 5 GT-01–06 — docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GT-01\u201306 \u2014 docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-11",
         "REG-14"
@@ -1298,7 +1298,7 @@
         "REG-20",
         "REG-21"
       ],
-      "issue": "GitHub #142 — Dive 2 gas override",
+      "issue": "GitHub #142 \u2014 Dive 2 gas override",
       "regression_cases": [
         "REG-17",
         "REG-19",
@@ -1634,7 +1634,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "GitHub #133â€“#138 audit regression sections",
+      "issue": "GitHub #133\u00e2\u20ac\u201c#138 audit regression sections",
       "regression_cases": [],
       "fingerprint": "c767526cae36d39f10fffa636d86c4234c58319eb9ba985a3f282b5fd24207dd",
       "last_read_fingerprint": null
@@ -1664,7 +1664,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "Cycle 5 GP/GT behavioral regression — docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GP/GT behavioral regression \u2014 docs/code-review-2026-06-30.md",
       "regression_cases": [],
       "fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
       "last_read_fingerprint": null
@@ -2063,7 +2063,7 @@
       },
       "evidence": [],
       "regression_cases": [],
-      "issue": "GitHub #133â€“#139 structured environment audit gates; release regression 9/9",
+      "issue": "GitHub #133\u00e2\u20ac\u201c#139 structured environment audit gates; release regression 9/9",
       "fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d",
       "last_read_fingerprint": null
     },

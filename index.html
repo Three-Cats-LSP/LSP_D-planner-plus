@@ -7886,7 +7886,7 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
     waterVapor:        WATER_VAPOR,
     firstStop30sec:    false,
     extendedStops:     false,
-    wholeMinStops:     wholeMinStops !== false,
+    wholeMinStops:     wholeMinStops === true,
     altitude:          Number.isFinite(altitudeM) ? altitudeM : 0,
     ...getCCRSettingsFromDOM(),
   };
