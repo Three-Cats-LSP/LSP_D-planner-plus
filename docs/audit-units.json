@@ -734,13 +734,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SCHEDULE-INPUTS"
       },
-      "fingerprint": "74082da8c35589581af048b350d7bd644ac574f26fa9efc46304d02b71fc924a",
-      "last_read_fingerprint": "74082da8c35589581af048b350d7bd644ac574f26fa9efc46304d02b71fc924a",
+      "fingerprint": "5c6e1f652e3585368d0c11633aa4deb9333d00336f01f0e8a577dac9bb0e2403",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 145
@@ -769,7 +769,7 @@
         "REG-37",
         "REG-38"
       ],
-      "audit_issue": 143
+      "audit_issue": 146
     },
     {
       "id": "UI-VPM-RUNNER",
@@ -791,7 +791,7 @@
         "REG-31",
         "REG-38"
       ],
-      "audit_issue": 143
+      "audit_issue": 146
     },
     {
       "id": "UI-VPM-RENDER",
@@ -983,7 +983,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-EXPOSURE"
       },
-      "fingerprint": "0e73dedf86d17c12f2cbd14b69c82dbccb5abee72174ba5ed08673dd5d5110f2",
+      "fingerprint": "c928d6b616152064a364aaf55d261afed640539caa108baf6dbc3e3bcbdb4ddd",
       "last_read_fingerprint": null
     },
     {
@@ -1172,7 +1172,7 @@
         "REG-33",
         "REG-34"
       ],
-      "audit_issue": 143
+      "audit_issue": 146
     },
     {
       "id": "ENG-VPM-REFERENCE",
@@ -1254,7 +1254,7 @@
         "REG-12",
         "REG-13"
       ],
-      "issue": "GitHub #140 H-2 / Cycle 5 GP-01–06 — docs/code-review-2026-06-30.md",
+      "issue": "GitHub #140 H-2 / Cycle 5 GP-01â€“06 â€” docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-10",
         "REG-12",
@@ -1276,7 +1276,7 @@
         "REG-11",
         "REG-14"
       ],
-      "issue": "Cycle 5 GT-01–06 — docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GT-01â€“06 â€” docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-11",
         "REG-14"
@@ -1299,7 +1299,7 @@
         "REG-20",
         "REG-21"
       ],
-      "issue": "GitHub #142 — Dive 2 gas override",
+      "issue": "GitHub #142 â€” Dive 2 gas override",
       "regression_cases": [
         "REG-17",
         "REG-19",
@@ -1635,7 +1635,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "GitHub #133â€“#138 audit regression sections",
+      "issue": "GitHub #133Ã¢â‚¬â€œ#138 audit regression sections",
       "regression_cases": [],
       "fingerprint": "c767526cae36d39f10fffa636d86c4234c58319eb9ba985a3f282b5fd24207dd",
       "last_read_fingerprint": null
@@ -1665,7 +1665,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "Cycle 5 GP/GT behavioral regression — docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GP/GT behavioral regression â€” docs/code-review-2026-06-30.md",
       "regression_cases": [],
       "fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
       "last_read_fingerprint": null
@@ -2064,7 +2064,7 @@
       },
       "evidence": [],
       "regression_cases": [],
-      "issue": "GitHub #133â€“#139 structured environment audit gates; release regression 9/9",
+      "issue": "GitHub #133Ã¢â‚¬â€œ#139 structured environment audit gates; release regression 9/9",
       "fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d",
       "last_read_fingerprint": null
     },
@@ -2132,7 +2132,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "051a0e9287f73622967742accffccbfdc7c2c445901ca0b88170b4c2fedadbc6",
+      "fingerprint": "1abb9c1493996770f6621d423da8677c039d267a8f7f50bcf10f3e14bb7efc7e",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
