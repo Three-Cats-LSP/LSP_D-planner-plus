@@ -9166,10 +9166,10 @@ function buildZhlScheduleParamsFromDom(rawD, depthM, bt) {
   const surfaceRate = Math.max(1, parseInt(document.getElementById('surfaceAscentRate')?.value) || 9);
   const descentRate = Math.max(1, parseInt(document.getElementById('descentRate')?.value) || 22);
   const ppo2Bottom = parseFloat(document.getElementById('ppo2Bottom')?.value) || 1.4;
-  const ppo2Deco = parseFloat(document.getElementById('ppo2Deco').value) || 1.6;
-  const minStopTime = parseFloat(document.getElementById('minStopTime').value) || 1;
-  const lastStop = parseInt(document.getElementById('lastDecoStop').value) || 3;
-  const decoStep = parseInt(document.getElementById('decoStep').value) || 3;
+  const ppo2Deco = parseFloat(document.getElementById('ppo2Deco')?.value) || 1.6;
+  const minStopTime = parseFloat(document.getElementById('minStopTime')?.value) || 1;
+  const lastStop = parseInt(document.getElementById('lastDecoStop')?.value) || 3;
+  const decoStep = parseInt(document.getElementById('decoStep')?.value) || 3;
   const metric = units === 'metric';
   const switchCtx = { ppo2Bottom, ppo2Deco, lastStop, decoStep, metric };
   const _botFracs = getBottomGasFractions();

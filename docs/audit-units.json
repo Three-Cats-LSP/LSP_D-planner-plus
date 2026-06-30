@@ -820,8 +820,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-CARDS"
       },
-      "fingerprint": "68b00368ef6b562ee3bb66908040e243d7e6f4e3b4326866066f7c1b66504173",
-      "last_read_fingerprint": "68b00368ef6b562ee3bb66908040e243d7e6f4e3b4326866066f7c1b66504173",
+      "fingerprint": "aa07f02423ba2567f8e9027965fbd69e80615b3eaaaae8aed5a38e78eadf2d75",
+      "last_read_fingerprint": "aa07f02423ba2567f8e9027965fbd69e80615b3eaaaae8aed5a38e78eadf2d75",
       "audit_issue": 148
     },
     {
