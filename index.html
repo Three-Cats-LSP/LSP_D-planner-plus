@@ -8155,16 +8155,31 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
       const sizeL = units === 'imperial' ? sizeRaw * 28.3168 : sizeRaw;
       const fillBar = units === 'imperial' ? fillRaw / 14.5038 : fillRaw;
       const resBar  = units === 'imperial' ? resRaw  / 14.5038 : resRaw;
+      const isBottom = gas === gasLabels[0]; // first gas = bottom gas
+      const reqDisp  = gpVolDisp(reqL);
+      const shortVolDisp = (litres) => gpVolDisp(Math.max(0, litres));
+
+      let travelPooledLVPM = 0;
+      if (isBottom) {
+        const tSr = parseFloat(document.getElementById('cylTravelGas_size')?.value) || 0;
+        const tFr = parseFloat(document.getElementById('cylTravelGas_pres')?.value) || 0;
+        const tRr = parseFloat(document.getElementById('cylTravelGas_reserve')?.value) || 0;
+        const tSL = units === 'imperial' ? tSr * 28.3168 : tSr;
+        const tFB = units === 'imperial' ? tFr / 14.5038 : tFr;
+        const tRB = units === 'imperial' ? tRr / 14.5038 : tRr;
+        if (tSL > 0 && tFB > tRB) travelPooledLVPM = (tFB - tRB) * tSL;
+      }
 
       const hasCyl = hasCylVPM || (sizeL > 0 && fillBar > resBar);
-      const usableL = usableLVPM !== null ? usableLVPM : (hasCyl ? (fillBar - resBar) * sizeL : null);
-      const isBottom = gas === gasLabels[0]; // first gas = bottom gas
-      const portionL = usableL != null ? usableL * fraction : null;
-      const turnBar  = (hasCyl && isBottom && sizeL > 0) ? fillBar - (portionL / sizeL) : null;
+      let usableL = usableLVPM !== null ? usableLVPM : (hasCyl ? (fillBar - resBar) * sizeL : null);
+      if (isBottom && usableL != null && travelPooledLVPM > 0) usableL += travelPooledLVPM;
+      const pooledTurn = (isBottom && sizeL > 0 && fillBar > resBar && typeof computePooledBottomTurnBars === 'function')
+        ? computePooledBottomTurnBars(sizeL, fillBar, resBar, travelPooledLVPM, fraction)
+        : null;
+      const portionL = pooledTurn ? pooledTurn.portionL : (usableL != null ? usableL * fraction : null);
+      const turnBar  = pooledTurn ? pooledTurn.turnBar : ((hasCyl && isBottom && sizeL > 0) ? fillBar - (portionL / sizeL) : null);
 
-      const reqDisp  = gpVolDisp(reqL);
       const availDisp = usableL != null ? gpVolDisp(usableL) : null;
-      const shortVolDisp = (litres) => gpVolDisp(Math.max(0, litres));
       const reqValid = Number.isFinite(reqL);
       const short = reqValid && usableL != null && reqL > usableL;
       const tight = reqValid && usableL != null && !short && reqL > usableL * 0.90;
@@ -8216,8 +8231,10 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
         } else if (bt > 0 && reqL > 0) {
           const rate = reqL / bt;
           const maxBT = Math.max(1, Math.floor(usableL / rate));
-          const maxPortionL = usableL * fraction;
-          const maxTurnBar = fillBar - maxPortionL / sizeL;
+          const maxPooled = (typeof computePooledBottomTurnBars === 'function')
+            ? computePooledBottomTurnBars(sizeL, fillBar, resBar, travelPooledLVPM, fraction)
+            : null;
+          const maxTurnBar = maxPooled ? maxPooled.turnBar : fillBar - (usableL * fraction) / sizeL;
           const maxTurnDisp = units === 'imperial' ? Math.round(maxTurnBar*14.5038) : Math.round(maxTurnBar);
           btSuggest = `Shorten BT to <strong>${maxBT} min</strong> and turn at <strong>${maxTurnDisp} ${presUnitV}</strong>, or use a larger cylinder / add a stage.`;
         }

@@ -159,5 +159,33 @@ def main() -> int:
     return 0
 
 
+def _browser_case_rows(results: list[dict]) -> list[dict]:
+    from tools.audit.suite_emit import case_row
+
+    def suite_failed(suite: dict) -> bool:
+        if suite.get("fail", 0) > 0:
+            return True
+        return bool(suite.get("strictWarn", True) and suite.get("warn", 0) > 0)
+
+    pinned_fail = any(
+        suite_failed(s) for s in results if "tests-verify" in str(s.get("page", ""))
+    )
+    other_fail = any(
+        suite_failed(s) for s in results if "tests-verify" not in str(s.get("page", ""))
+    )
+    return [
+        case_row("gf-pinned-schedules", not pinned_fail),
+        case_row("browser-regression", not other_fail),
+    ]
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    code = main()
+    sys.path.insert(0, str(ROOT))
+    from tools.audit.suite_emit import finish_suite
+
+    results = []
+    out = ROOT / "dev" / "browser_regression_results.json"
+    if out.is_file():
+        results = json.loads(out.read_text(encoding="utf-8"))
+    finish_suite(ROOT, _browser_case_rows(results), code)

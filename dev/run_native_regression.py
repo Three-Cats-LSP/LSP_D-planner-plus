@@ -257,4 +257,8 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    code = main()
+    sys.path.insert(0, str(ROOT))
+    from tools.audit.suite_emit import case_row, finish_suite
+
+    finish_suite(ROOT, [case_row("native-bridge-regression", code == 0)], code)

@@ -554,12 +554,12 @@ def run_tests(page, base_url: str):
         stamp_ok(text, f"CCR {src}")
 
 
-def main():
+def main() -> int:
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
         print("FATAL: playwright not installed. Run: pip install playwright && playwright install chromium")
-        sys.exit(1)
+        return 1
 
     print("=" * 60)
     print("LSP D-Planner — Export Regression Suite")
@@ -582,11 +582,15 @@ def main():
         for f in FAIL:
             print(f"  ✗ {f}")
         print("─" * 60)
-        sys.exit(1)
+        return 1
     print("─" * 60)
     print("All export regression checks passed.")
-    sys.exit(0)
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    code = main()
+    sys.path.insert(0, str(ROOT))
+    from tools.audit.suite_emit import case_row, finish_suite
+
+    finish_suite(ROOT, [case_row("export-regression", code == 0)], code)

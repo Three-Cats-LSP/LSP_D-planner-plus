@@ -1258,5 +1258,23 @@ def main() -> int:
     return 0 if not FAIL else 1
 
 
+def _audit_case_rows():
+    from tools.audit.suite_emit import case_row
+
+    def case_ok(case_id: str) -> bool:
+        return not any(f"[{case_id}]" in f for f in FAIL)
+
+    return [
+        case_row("AUDIT-REG-01", case_ok("AUDIT-REG-01")),
+        case_row("AUDIT-REG-02", case_ok("AUDIT-REG-02")),
+        case_row("AUDIT-REG-03", case_ok("AUDIT-REG-03")),
+        case_row("AUDIT-REG-05", case_ok("AUDIT-REG-05")),
+    ]
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    code = main()
+    sys.path.insert(0, str(ROOT))
+    from tools.audit.suite_emit import finish_suite
+
+    finish_suite(ROOT, _audit_case_rows(), code)

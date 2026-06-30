@@ -14,9 +14,34 @@ from .registry import load_registry, migration_summary, validate_registry_v2
 from .reporting import render_console, write_reports
 from .rules import evaluate_rules
 from .runner import run_suites
-from .workspace import commit, restore_generated, snapshot_generated, tracked_status
+from .workspace import commit, restore_generated, snapshot_generated, tracked_status, workspace_changed
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def _case_status(suites: list[Any], suite_id: str, case_id: str) -> str | None:
+    for suite in suites:
+        if suite.id != suite_id:
+            continue
+        for row in suite.case_results:
+            if row.get("case_id") == case_id:
+                return row.get("status")
+        return None
+    return None
+
+
+def _evidence_ok(registry: dict[str, Any], suites: list[Any], evidence_id: str) -> tuple[bool, str]:
+    spec = registry.get("evidence_catalog", {}).get(evidence_id)
+    if not spec:
+        return False, "unknown evidence"
+    suite_id = spec["suite_id"]
+    case_id = spec["case_id"]
+    status = _case_status(suites, suite_id, case_id)
+    if status is None:
+        return False, f"case {case_id} not emitted by {suite_id}"
+    if status != "PASS":
+        return False, f"case {case_id} status {status}"
+    return True, "ok"
 
 
 def effective_statuses(
@@ -36,19 +61,22 @@ def effective_statuses(
         ):
             effective, reason = "IN_PROGRESS", "stale fingerprint"
         elif declared == "VERIFIED":
-            required_suites = {
-                evidence[case]["suite_id"]
-                for case in unit.get("regression_cases", [])
-                if case in evidence
-            }
-            failed = sorted(item for item in required_suites if suite_status.get(item) in {"FAIL", "ERROR"})
-            missing = sorted(item for item in required_suites if item not in suite_status)
-            if failed:
-                effective, reason = "READ", f"failed evidence: {', '.join(failed)}"
-            elif missing:
-                effective, reason = "READ", f"evidence not executed: {', '.join(missing)}"
+            required_cases = list(unit.get("regression_cases", []))
+            bad_cases = []
+            missing_cases = []
+            for evidence_id in required_cases:
+                ok, reason = _evidence_ok(registry, suites, evidence_id)
+                if not ok:
+                    if "not emitted" in reason:
+                        missing_cases.append(evidence_id)
+                    else:
+                        bad_cases.append(f"{evidence_id} ({reason})")
+            if bad_cases:
+                effective, reason = "READ", f"failed evidence: {', '.join(bad_cases)}"
+            elif missing_cases:
+                effective, reason = "READ", f"evidence not executed: {', '.join(missing_cases)}"
             else:
-                reason = "fingerprint current and all evidence passed"
+                reason = "fingerprint current and all evidence cases passed"
         output[unit_id] = {"declared": declared, "effective": effective, "reason": reason}
     return output
 
@@ -62,14 +90,23 @@ def invalid_closed_findings(
     for finding in registry.get("findings", []):
         if finding.get("status") != "CLOSED":
             continue
-        required = {evidence[case]["suite_id"] for case in finding.get("evidence_cases", []) if case in evidence}
-        failed = sorted(item for item in required if suite_status.get(item) in {"FAIL", "ERROR"})
-        if failed:
-            invalid.append({"id": finding["id"], "reason": f"required evidence failed: {', '.join(failed)}"})
+        bad = []
+        missing = []
+        for evidence_id in finding.get("evidence_cases", []):
+            ok, reason = _evidence_ok(registry, suites, evidence_id)
+            if not ok:
+                if require_all or "not emitted" not in reason:
+                    bad.append(f"{evidence_id}: {reason}")
+                elif "not emitted" in reason:
+                    missing.append(evidence_id)
+        if bad:
+            invalid.append({"id": finding["id"], "reason": "; ".join(bad)})
             continue
-        missing = sorted(item for item in required if item not in suite_status)
         if require_all and missing:
-            invalid.append({"id": finding["id"], "reason": f"required release evidence was not executed: {', '.join(missing)}"})
+            invalid.append({
+                "id": finding["id"],
+                "reason": f"required release evidence was not executed: {', '.join(missing)}",
+            })
     return invalid
 
 
@@ -101,7 +138,7 @@ def execute(command_name: str, profile: str) -> int:
             registry, report.suites, require_all=profile == "release"
         )
     restore_generated(ROOT, registry, generated_snapshot, generated_original)
-    report.workspace_clean = tracked_status(ROOT) == baseline
+    report.workspace_clean, report.workspace_drift = workspace_changed(ROOT, baseline)
     write_reports(ROOT, report)
     print(render_console(report), end="")
     if report.configuration_errors:

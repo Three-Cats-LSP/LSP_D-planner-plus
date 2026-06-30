@@ -13,6 +13,18 @@ const GP_PSI_PER_BAR = 14.5038;
 const GP_CUFT_PER_L  = 0.0353147;
 let _gasRule = 'thirds';
 
+function computePooledBottomTurnBars(botSize, botFill, botRes, travelPooledL, fraction) {
+  if (!(botSize > 0 && botFill > botRes)) return null;
+  const usableL = (botFill - botRes) * botSize + (travelPooledL || 0);
+  if (!(usableL > 0)) return null;
+  const portionL = usableL * fraction;
+  const botShareL = travelPooledL > 0
+    ? portionL * ((botFill - botRes) * botSize) / usableL
+    : portionL;
+  const turnBar = botFill - botShareL / botSize;
+  return { usableL, portionL, botShareL, turnBar, maxTurnBar: turnBar };
+}
+
 function setGasRule(rule) {
   _gasRule = rule === 'half' ? 'half' : 'thirds';
   // Sync Gas Plan tab toggles
@@ -157,11 +169,11 @@ function calcGasPlan() {
   }
 
   if (botSize > 0 && botFill > botRes) {
-    const usableL  = (botFill - botRes) * botSize + travelPooledL;
     const fraction = _gasRule === 'half' ? 0.5 : (1 / 3);
-    const portionL = usableL * fraction;
-    const botShareL = travelPooledL > 0 ? portionL * ((botFill - botRes) * botSize) / usableL : portionL;
-    const turnBar  = botFill - botShareL / botSize;
+    const pooled = computePooledBottomTurnBars(botSize, botFill, botRes, travelPooledL, fraction);
+    const usableL  = pooled.usableL;
+    const portionL = pooled.portionL;
+    const turnBar  = pooled.turnBar;
 
     // Cross-check against last deco plan consumption
     const reqL      = gpRequiredFor(botLabel);
@@ -171,16 +183,11 @@ function calcGasPlan() {
     let   maxTurnBar = null;  // turn pressure at max BT
     if (Number.isFinite(reqL) && reqL > usableL) {
       shortL = reqL - usableL;
-      // Back-calculate max BT from consumption rate
-      // Bottom phase time ≈ BT (descent is included in gasConsumed for bottom gas)
       const plannedBT = parseFloat(document.getElementById('decoBT')?.value) || 0;
       if (plannedBT > 0 && reqL > 0) {
-        const ratePerMin = reqL / plannedBT;         // L per BT-minute
-        maxBTmin = Math.floor(usableL / ratePerMin); // max BT with available gas
-        maxBTmin = Math.max(1, maxBTmin);
-        // Turn pressure at max BT: same rule fraction but on available gas
-        const maxPortionL = usableL * fraction;
-        maxTurnBar = botFill - maxPortionL / botSize;
+        const ratePerMin = reqL / plannedBT;
+        maxBTmin = Math.max(1, Math.floor(usableL / ratePerMin));
+        maxTurnBar = pooled.turnBar;
       }
     }
 

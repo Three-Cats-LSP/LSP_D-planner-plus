@@ -100,7 +100,14 @@ jobs:
           pip install playwright
           playwright install --with-deps chromium
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: platforms;android-36 build-tools;36.0.0
+
       - name: Run release audit orchestrator
+        env:
+          LSP_REQUIRE_ANDROID: "1"
         run: python -m tools.audit run --profile release
 
       - name: Upload release audit reports

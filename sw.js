@@ -192,19 +192,19 @@ self.addEventListener('fetch', event => {
   // Network-first for HTML — ensures index.html is always up to date
   if (isHTMLRequest(event.request) || url.pathname.endsWith('.html') || url.pathname.endsWith('/')) {
     event.respondWith(
-      fetch(event.request)
-        .then(response => {
+      (async () => {
+        try {
+          const response = await fetch(event.request);
           if (response.ok) {
-            // Update cache with fresh version
             const clone = response.clone();
-            caches.open(CACHE_VERSION).then(cache => {
+            const cachePromise = caches.open(CACHE_VERSION).then(cache => {
               const key = new Request(url.origin + url.pathname);
-              cache.put(key, clone);
+              return cache.put(key, clone);
             });
+            event.waitUntil(cachePromise);
           }
           return response;
-        })
-        .catch(async () => {
+        } catch (_) {
           const cached = await caches.match(event.request, { ignoreSearch: true });
           if (cached) return cached;
           if (event.request.mode === 'navigate' || event.request.destination === 'document') {
@@ -216,36 +216,37 @@ self.addEventListener('fetch', event => {
             statusText: 'Offline',
             headers: { 'Content-Type': 'text/plain' },
           });
-        })
+        }
+      })()
     );
     return;
   }
 
   // Cache-first for all other static assets
   event.respondWith(
-    caches.match(event.request, { ignoreSearch: true })
-      .then(cached => {
-        if (cached) return cached;
-        return fetch(event.request)
-          .then(response => {
-            if (response.ok && url.pathname.startsWith(APP_BASE)) {
-              const clone = response.clone();
-              const cacheKey = new Request(url.origin + url.pathname);
-              caches.open(CACHE_VERSION).then(cache => cache.put(cacheKey, clone));
-            }
-            return response;
-          })
-          .catch(async () => {
-            if (event.request.mode === 'navigate' || event.request.destination === 'document') {
-              const offline = await caches.match(OFFLINE_INDEX, { ignoreSearch: true });
-              if (offline) return offline;
-            }
-            return new Response('Offline — asset unavailable', {
-              status: 503,
-              statusText: 'Offline',
-              headers: { 'Content-Type': 'text/plain' },
-            });
-          });
-      })
+    (async () => {
+      const cached = await caches.match(event.request, { ignoreSearch: true });
+      if (cached) return cached;
+      try {
+        const response = await fetch(event.request);
+        if (response.ok && url.pathname.startsWith(APP_BASE)) {
+          const clone = response.clone();
+          const cacheKey = new Request(url.origin + url.pathname);
+          const cachePromise = caches.open(CACHE_VERSION).then(cache => cache.put(cacheKey, clone));
+          event.waitUntil(cachePromise);
+        }
+        return response;
+      } catch (_) {
+        if (event.request.mode === 'navigate' || event.request.destination === 'document') {
+          const offline = await caches.match(OFFLINE_INDEX, { ignoreSearch: true });
+          if (offline) return offline;
+        }
+        return new Response('Offline — asset unavailable', {
+          status: 503,
+          statusText: 'Offline',
+          headers: { 'Content-Type': 'text/plain' },
+        });
+      }
+    })()
   );
 });

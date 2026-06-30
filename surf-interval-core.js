@@ -11,6 +11,94 @@
 // SURFACE INTERVAL — minimum SI between two air dives
 // Reuses the app's ZH-L16C compartment data + saturate()/initTissues()
 // ═══════════════════════════════════════════════
+function computeSurfIntervalCore(opts) {
+  const d1 = opts.d1;
+  const bt1 = opts.bt1;
+  const d2 = opts.d2;
+  const bt2 = opts.bt2;
+  const gfLow = (opts.gfLowPct != null ? opts.gfLowPct : 30) / 100;
+  const gfHigh = (opts.gfHighPct != null ? opts.gfHighPct : 85) / 100;
+  const dive1Gas = opts.dive1Gas || { fN2: FN2_AIR, fHe: 0 };
+  const dive2Gas = opts.dive2Gas || dive1Gas;
+  const surfGas = opts.surfGas || { fN2: FN2_AIR, fHe: 0 };
+  const descentRate = opts.descentRate != null ? opts.descentRate : 18;
+
+  let tissues = initTissues();
+  const descTime = d1 / descentRate;
+  tissues = saturateLinear(tissues, 0, d1, descTime, dive1Gas.fN2, dive1Gas.fHe || 0);
+  const btAtDepth = Math.max(0, bt1 - descTime);
+  tissues = saturate(tissues, d1, btAtDepth, dive1Gas.fN2, dive1Gas.fHe || 0);
+  const ceilingFn = (typeof ZhlEngineBundle !== 'undefined' && ZhlEngineBundle.ceiling)
+    ? (t, gf) => ZhlEngineBundle.ceiling(t, gf) : null;
+  if (ceilingFn) {
+    const decoStep = 3;
+    const decoAscentRate = 9;
+    const lastStop = 3;
+    let depth = d1;
+    for (let guard = 0; guard < 200 && depth > 0; guard++) {
+      const ceil = ceilingFn(tissues, gfLow);
+      if (ceil <= 0) {
+        tissues = saturateLinear(tissues, depth, 0, depth / decoAscentRate, dive1Gas.fN2, dive1Gas.fHe || 0);
+        break;
+      }
+      const stopDepth = Math.max(lastStop, Math.ceil(ceil / decoStep) * decoStep);
+      if (depth > stopDepth) {
+        const ascMin = (depth - stopDepth) / decoAscentRate;
+        tissues = saturateLinear(tissues, depth, stopDepth, ascMin, dive1Gas.fN2, dive1Gas.fHe || 0);
+        depth = stopDepth;
+      }
+      tissues = saturate(tissues, depth, 1, dive1Gas.fN2, dive1Gas.fHe || 0);
+      if (depth <= lastStop) {
+        tissues = saturateLinear(tissues, depth, 0, depth / decoAscentRate, dive1Gas.fN2, dive1Gas.fHe || 0);
+        break;
+      }
+      depth = Math.max(0, depth - decoStep);
+    }
+  }
+
+  const tolTension = ZHL16C.map(([ht, a, b]) => gfHigh * a + altSurfaceP * (1 - gfHigh + gfHigh / b));
+  const surfP = altSurfaceP;
+  const pN2surf = (surfP - WATER_VAPOR) * surfGas.fN2;
+  const pHesurf = (surfP - WATER_VAPOR) * (surfGas.fHe || 0);
+  const satSurface = (t0, minutes) => ZHL16C.map((c, i) => ({
+    pN2: schreiner(t0[i].pN2, pN2surf, c[0], minutes),
+    pHe: schreiner(t0[i].pHe, pHesurf, ZHL16C_HE_HT[i], minutes),
+  }));
+
+  const simulateDive2 = (t0) => {
+    let t = t0.map(c => ({ pN2: c.pN2, pHe: c.pHe || 0 }));
+    const descTime2 = d2 / descentRate;
+    t = saturateLinear(t, 0, d2, descTime2, dive2Gas.fN2, dive2Gas.fHe || 0);
+    const btAtDepth2 = Math.max(0, bt2 - descTime2);
+    t = saturate(t, d2, btAtDepth2, dive2Gas.fN2, dive2Gas.fHe || 0);
+    return t;
+  };
+
+  const allWithin = (t) => t.every((c, i) => (c.pN2 + (c.pHe || 0)) <= tolTension[i] + 1e-9);
+
+  let minSI = 0;
+  let siCapped = false;
+  let driver = -1;
+  if (!allWithin(simulateDive2(tissues))) {
+    let found = false;
+    for (let si = 1; si <= 720; si++) {
+      const afterSI = satSurface(tissues, si);
+      if (allWithin(simulateDive2(afterSI))) { minSI = si; found = true; break; }
+    }
+    if (!found) { minSI = 720; siCapped = true; }
+    const tCheck = simulateDive2(satSurface(tissues, minSI));
+    let worst = 0, worstIdx = 0;
+    ZHL16C.forEach((c, i) => {
+      const over = (tCheck[i].pN2 + (tCheck[i].pHe || 0)) - tolTension[i];
+      if (over > worst) { worst = over; worstIdx = i; }
+    });
+    driver = worstIdx;
+  }
+
+  const recSI = siCapped ? null : Math.ceil((minSI * 1.5) / 5) * 5;
+  return { minSI, recSI, siCapped, driver };
+}
+
 function calcSurfInt(prefix) {
   const P = prefix || 'si';
   const gid = (suffix) => document.getElementById(P + suffix);
@@ -19,6 +107,7 @@ function calcSurfInt(prefix) {
   const d2 = parseFloat(gid('D2Depth')?.value) || 30;
   const bt2 = parseFloat(gid('D2BT')?.value) || 25;
   const gfLow = (parseFloat(gid('GfLow')?.value) || 30) / 100;
+  const gfHigh = (typeof mGF !== 'undefined' && Number.isFinite(mGF.high) ? mGF.high : 85) / 100;
   const dU = units === 'metric';
   const conv = dU ? 1 : 3.28084;
   const uLbl = dU ? 'm' : 'ft';
@@ -33,96 +122,45 @@ function calcSurfInt(prefix) {
 
   const descentRate = 18; // m/min (per spec)
   const botFracs = typeof getBottomGasFractions === 'function' ? getBottomGasFractions() : null;
-  const fN2 = botFracs ? botFracs.fN2 : FN2_AIR;
+  const dive1Gas = botFracs
+    ? { fN2: botFracs.fN2, fHe: botFracs.fHe || 0 }
+    : { fN2: FN2_AIR, fHe: 0 };
+  const dive2Gas = dive1Gas;
+  const surfGas = { fN2: FN2_AIR, fHe: 0 };
 
-  // ── Simulate Dive 1: descent, bottom, then deco ascent to surface ──
-  let tissues = initTissues();
-  const descTime = d1 / descentRate;
-  tissues = saturateLinear(tissues, 0, d1, descTime, fN2, 0);
-  const btAtDepth = Math.max(0, bt1 - descTime);
-  tissues = saturate(tissues, d1, btAtDepth, fN2, 0);
-  const ceilingFn = (typeof ZhlEngineBundle !== 'undefined' && ZhlEngineBundle.ceiling)
-    ? (t, gf) => ZhlEngineBundle.ceiling(t, gf) : null;
-  if (ceilingFn) {
-    const decoStep = 3;
-    const decoAscentRate = 9;
-    const lastStop = 3;
-    let depth = d1;
-    for (let guard = 0; guard < 200 && depth > 0; guard++) {
-      const ceil = ceilingFn(tissues, gfLow);
-      if (ceil <= 0) {
-        const ascentT = depth / decoAscentRate;
-        tissues = saturateLinear(tissues, depth, 0, ascentT, fN2, 0);
-        break;
-      }
-      const stopDepth = Math.max(lastStop, Math.ceil(ceil / decoStep) * decoStep);
-      if (depth > stopDepth) {
-        const ascentT = (depth - stopDepth) / decoAscentRate;
-        tissues = saturateLinear(tissues, depth, stopDepth, ascentT, fN2, 0);
-        depth = stopDepth;
-      }
-      tissues = saturate(tissues, depth, 1, fN2, 0);
-      if (depth <= lastStop) {
-        const ascentT = depth / decoAscentRate;
-        tissues = saturateLinear(tissues, depth, 0, ascentT, fN2, 0);
-        break;
-      }
-      depth = Math.max(0, depth - decoStep);
-    }
-  }
-
-  // ── Tolerated tissue tension at the SURFACE, using GF-Lo ──
-  // The surface interval must be long enough that the diver can safely
-  // surface (ceiling = 0m). Using pAmbD2 would incorrectly allow deeper
-  // Dive 2 entries to bypass the off-gassing check entirely.
-  const tolTension = ZHL16C.map(([ht, a, b]) => gfLow * a + altSurfaceP * (1 - gfLow + gfLow / b));
-
-  // ── Off-gas at surface (air) and find minimum SI ──
-  const surfP = altSurfaceP;
-  const pN2surf = (surfP - WATER_VAPOR) * fN2;
-  // Helium ignored on air dives (pHe ~ 0). Use N2-only saturation at surface.
-  const satSurface = (t0, minutes) => ZHL16C.map((c, i) => ({
-    pN2: schreiner(t0[i].pN2, pN2surf, c[0], minutes),
-    pHe: schreiner(t0[i].pHe, 0, ZHL16C_HE_HT[i], minutes),
-  }));
-
-  const simulateDive2 = (t0) => {
-    let t = t0.map(c => ({ pN2: c.pN2, pHe: c.pHe || 0 }));
-    const descTime2 = d2 / descentRate;
-    t = saturateLinear(t, 0, d2, descTime2, fN2, 0);
-    const btAtDepth2 = Math.max(0, bt2 - descTime2);
-    t = saturate(t, d2, btAtDepth2, fN2, 0);
-    return t;
-  };
-
-  const allWithin = (t) => t.every((c, i) => (c.pN2 + (c.pHe || 0)) <= tolTension[i] + 1e-9);
-
-  let minSI = 0;
-  let driver = -1;
-  if (!allWithin(simulateDive2(tissues))) {
-    let found = false;
-    for (let si = 1; si <= 720; si++) {
-      const afterSI = satSurface(tissues, si);
-      if (allWithin(simulateDive2(afterSI))) { minSI = si; found = true; break; }
-    }
-    if (!found) minSI = 720;
-    const tCheck = simulateDive2(satSurface(tissues, minSI));
-    let worst = 0, worstIdx = 0;
-    ZHL16C.forEach((c, i) => {
-      const over = (tCheck[i].pN2 + (tCheck[i].pHe || 0)) - tolTension[i];
-      if (over > worst) { worst = over; worstIdx = i; }
-    });
-    driver = worstIdx;
-  }
-
-  const recSI = Math.ceil((minSI * 1.5) / 5) * 5;
+  const result = computeSurfIntervalCore({
+    d1, bt1, d2, bt2, gfLowPct: gfLow * 100, gfHighPct: gfHigh * 100,
+    dive1Gas, dive2Gas, surfGas, descentRate,
+  });
+  const { minSI, recSI, siCapped, driver } = result;
+  const chartSI = recSI != null ? recSI : minSI;
+  const chartT = (() => {
+    const surfP = altSurfaceP;
+    const pN2surf = (surfP - WATER_VAPOR) * surfGas.fN2;
+    const pHesurf = (surfP - WATER_VAPOR) * (surfGas.fHe || 0);
+    let tissues = initTissues();
+    const descTime = d1 / descentRate;
+    const btAtDepth = Math.max(0, bt1 - descTime);
+    tissues = saturateLinear(tissues, 0, d1, descTime, dive1Gas.fN2, dive1Gas.fHe || 0);
+    tissues = saturate(tissues, d1, btAtDepth, dive1Gas.fN2, dive1Gas.fHe || 0);
+    const satSurface = (t0, minutes) => ZHL16C.map((c, i) => ({
+      pN2: schreiner(t0[i].pN2, pN2surf, c[0], minutes),
+      pHe: schreiner(t0[i].pHe, pHesurf, ZHL16C_HE_HT[i], minutes),
+    }));
+    return satSurface(tissues, chartSI);
+  })();
+  const tolTension = ZHL16C.map(([ht, a, b]) => gfHigh * a + altSurfaceP * (1 - gfHigh + gfHigh / b));
   const fmtHM = (mins) => {
     const h = Math.floor(mins / 60), m = Math.round(mins % 60);
     return h > 0 ? `${h}h ${String(m).padStart(2,'0')}m` : `${m} min`;
   };
 
-  if (gid('MinResult')) gid('MinResult').textContent = minSI === 0 ? 'None' : fmtHM(minSI);
-  if (gid('RecResult')) gid('RecResult').textContent = recSI === 0 ? 'None' : fmtHM(recSI);
+  if (gid('MinResult')) {
+    gid('MinResult').textContent = minSI === 0 ? 'None' : (siCapped ? '>12h (cap)' : fmtHM(minSI));
+    if (siCapped) gid('MinResult').style.color = 'var(--orange)';
+    else if (gid('MinResult').style) gid('MinResult').style.color = 'var(--accent)';
+  }
+  if (gid('RecResult')) gid('RecResult').textContent = recSI == null ? '—' : (recSI === 0 ? 'None' : fmtHM(recSI));
   if (gid('DriverResult')) gid('DriverResult').textContent = driver < 0
     ? 'No off-gassing required'
     : `Compartment ${driver + 1} (${ZHL16C[driver][0]} min t½)`;
@@ -138,7 +176,6 @@ function calcSurfInt(prefix) {
   }
 
   // ── Tissue loading chart at recommended SI ──
-  const chartT = satSurface(tissues, recSI);
   const chart = gid('TissueChart');
   if (chart) {
     chart.innerHTML = '';

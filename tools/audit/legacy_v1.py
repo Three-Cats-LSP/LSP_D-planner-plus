@@ -7288,8 +7288,22 @@ print(f"\n{'─'*60}")
 print(f"  Results: {len(PASS)} passed, {len(FAIL)} failed")
 print(f"{'─'*60}\n")
 
-if FAIL:
-    sys.exit(1)
-else:
+exit_code = 1 if FAIL else 0
+if not FAIL:
     print("  ALL CHECKS PASSED ✓\n")
-    sys.exit(0)
+
+sys.path.insert(0, str(_REPO_ROOT))
+from tools.audit.suite_emit import case_row, finish_suite
+
+_extract_fail = any("extract" in f.lower() or "LSP-EXTRACT" in f for f in FAIL)
+_baseline_fail = any(
+    f for f in FAIL if not ("extract" in f.lower() or "LSP-EXTRACT" in f)
+)
+finish_suite(
+    _REPO_ROOT,
+    [
+        case_row("extract-ui-marker-contract", not _extract_fail),
+        case_row("legacy-v1-clean-baseline", not _baseline_fail),
+    ],
+    exit_code,
+)

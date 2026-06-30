@@ -28,6 +28,8 @@ def render_console(report: AuditReport) -> str:
                 lines.append(detail[-2000:].rstrip())
     for finding in report.invalid_findings:
         lines.append(f"[INVALID] finding {finding['id']}: {finding['reason']}")
+    for drift in report.workspace_drift:
+        lines.append(f"[WORKSPACE] {drift}")
     lines.extend(
         [
             "-" * 60,

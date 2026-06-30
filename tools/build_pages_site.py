@@ -112,4 +112,15 @@ def build_pages_site() -> Path:
 
 
 if __name__ == "__main__":
-    build_pages_site()
+    code = 0
+    try:
+        build_pages_site()
+    except SystemExit as exc:
+        code = int(exc.code) if isinstance(exc.code, int) else 1
+    except Exception as exc:
+        print(exc, file=sys.stderr)
+        code = 1
+    sys.path.insert(0, str(ROOT))
+    from tools.audit.suite_emit import case_row, finish_suite
+
+    finish_suite(ROOT, [case_row("pages-site-build", code == 0)], code)

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 import sys
 import tempfile
 import unittest
@@ -50,12 +51,15 @@ class AuditSystemTests(unittest.TestCase):
             }],
             "findings": [{"id": "F", "status": "CLOSED", "evidence_cases": ["CASE"]}],
         }
-        suites = [SuiteResult("S", "FAIL", ["false"], 1, 1)]
+        suites = [SuiteResult(
+            "S", "FAIL", ["false"], 1, 1,
+            case_results=[{"case_id": "case", "status": "FAIL"}],
+        )]
         effective = effective_statuses(registry, {"U": {"current_fingerprint": "x"}}, suites)
         self.assertEqual("READ", effective["U"]["effective"])
         self.assertEqual("F", invalid_closed_findings(registry, suites)[0]["id"])
         missing = invalid_closed_findings(registry, [], require_all=True)
-        self.assertIn("not executed", missing[0]["reason"])
+        self.assertIn("not emitted", missing[0]["reason"])
 
     def test_static_run_never_claims_unexecuted_evidence(self) -> None:
         registry = {
@@ -139,6 +143,35 @@ class AuditSystemTests(unittest.TestCase):
             data = json.loads((root / "dev" / "audit-results.json").read_text(encoding="utf-8"))
             self.assertTrue(data["summary"]["ok"])
             self.assertIn("LSP Audit Report", render_markdown(report))
+
+    def test_runner_rejects_missing_declared_cases(self) -> None:
+        registry = {"suite_catalog": [{
+            "id": "S",
+            "command": ["{python}", "-c", "print('ok')"],
+            "profiles": ["ci"],
+            "timeout_seconds": 10,
+            "case_ids": ["required-case"],
+        }]}
+        result = run_suites(ROOT, registry, "ci")[0]
+        self.assertEqual("FAIL", result.status)
+        self.assertTrue(any(
+            "missing declared case" in err or "missing structured case results" in err
+            for err in result.case_errors
+        ))
+
+    def test_workspace_changed_detects_content_drift(self) -> None:
+        from tools.audit.workspace import snapshot_dirty_hashes
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            dirty = root / "dirty.js"
+            dirty.write_text("a\n", encoding="utf-8")
+            status = {f" M {dirty.name}"}
+            before = snapshot_dirty_hashes(root, status)
+            dirty.write_text("b\n", encoding="utf-8")
+            after = snapshot_dirty_hashes(root, status)
+            self.assertEqual(list(before.keys()), list(after.keys()))
+            self.assertNotEqual(before, after)
 
     def test_ccr_evidence_is_behavioral_not_a_source_window(self) -> None:
         registry = load_registry(ROOT)

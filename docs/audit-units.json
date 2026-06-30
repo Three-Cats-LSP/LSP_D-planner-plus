@@ -153,6 +153,18 @@
     "PARITY-01": {
       "suite_id": "SUITE-PARITY",
       "case_id": "canonical-generated-parity"
+    },
+    "REG-08": {
+      "suite_id": "SUITE-ISSUE-140",
+      "case_id": "ISSUE140-H1-SURF-GAS"
+    },
+    "REG-09": {
+      "suite_id": "SUITE-ISSUE-140",
+      "case_id": "ISSUE140-H2-POOLED-TURN"
+    },
+    "ANDROID-01": {
+      "suite_id": "SUITE-ANDROID",
+      "case_id": "android-compile"
     }
   },
   "findings": [
@@ -259,6 +271,27 @@
       "resolution_commit": "legacy-history",
       "evidence_cases": [
         "LEGACY-BASELINE"
+      ]
+    },
+    {
+      "id": "ISSUE-140-ROLLUP",
+      "unit_id": "TOOL-AUDIT",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "issue": "GitHub #140 / Audit #134 (3H/4M/1L)",
+      "summary": "Surface interval gas/GF kinetics, pooled gas-plan turn pressure, audit case-ID validation, SW cache waitUntil, Android compile gate, coverage self-tests, FileProvider scope, workspace hash drift",
+      "affected_units": [
+        "APP-SURFACE-INTERVAL",
+        "APP-GAS-PLAN",
+        "APP-SERVICE-WORKER",
+        "TOOL-AUDIT"
+      ],
+      "resolution_commit": "d2c6d85",
+      "evidence_cases": [
+        "REG-08",
+        "REG-09",
+        "COV-01",
+        "ANDROID-01"
       ]
     },
     {
@@ -609,7 +642,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RENDER"
       },
-      "fingerprint": "76747c53c1383e885a4163f8bf25cc9ffd3ac798f40e4a9c2a3652e29940fae3",
+      "fingerprint": "2c6544c20b4b21be3f1b57e497958d8a35bb285560186d7bb2b0cf8abc23f640",
       "last_read_fingerprint": null
     },
     {
@@ -1040,9 +1073,10 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "26cbfe1f5ad85268906b3a053550a888b38727c3c9209cf6470a07a2ec7c2d29",
+      "fingerprint": "455751cc07cc9becc81745443d26f185df18d083982e60b8c73d887f08c171cd",
       "last_read_fingerprint": null,
       "evidence": [],
+      "issue": "GitHub #140 H-2",
       "regression_cases": []
     },
     {
@@ -1068,9 +1102,10 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "7de4d0f4c0595721d21944414da7b6d8016310243988c3795243b89b601216f0",
+      "fingerprint": "f782c96344fe26741dcb7430950327d53715ad9a9b98cc2d688fadab05533b8e",
       "last_read_fingerprint": null,
       "evidence": [],
+      "issue": "GitHub #140 H-1",
       "regression_cases": []
     },
     {
@@ -1082,7 +1117,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "4e9a1adaeda73ee02b3d0aca2f721c296fc26640042b1a1517d5c40a6e901f8d",
+      "fingerprint": "cf3b0bb9c21d2a226740ebf55f85ae6e45aa09ce9f8feb3f03ffe88468e584dc",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
@@ -1292,7 +1327,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "6e1c950220bed1093534c3c747a871935cea0621dea8939a4e910f8845077de3",
+      "fingerprint": "1b74d886a95c46991adcdca09acf5d6477128169f7d77af68df039b9c8cbfe4e",
       "last_read_fingerprint": null
     },
     {
@@ -1403,7 +1438,37 @@
       "evidence": [],
       "issue": "GitHub #133\u00e2\u20ac\u201c#138 audit regression sections",
       "regression_cases": [],
-      "fingerprint": "e748be5bb6a98e5c65136d62e61c3dcdd65a85851122bb05891596593131d160",
+      "fingerprint": "dba147958161fd6f78cf288d4eae5a8c78b706c5c58140519399b3e795047f0d",
+      "last_read_fingerprint": null
+    },
+    {
+      "id": "TEST-ISSUE-140-REGRESSION",
+      "path": "dev/issue140_regression.py",
+      "layer": "test_infrastructure",
+      "priority": "P1",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "GitHub #140 H-1/H-2 behavioral regression",
+      "regression_cases": [],
+      "fingerprint": "c1ac87de8c3523544c19332457c3240268f2de8f84e52ece0f24d4aa0d095c2d",
+      "last_read_fingerprint": null
+    },
+    {
+      "id": "TEST-ANDROID-COMPILE",
+      "path": "dev/run_android_compile_check.py",
+      "layer": "test_infrastructure",
+      "priority": "P2",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "GitHub #140 M-2 Android compile gate",
+      "regression_cases": [],
+      "fingerprint": "89f66d0c0a1b0de56f0c69ec36e3628dbc6fcd06fbf8eb289d57e5c55c1b112e",
       "last_read_fingerprint": null
     },
     {
@@ -1411,24 +1476,26 @@
       "path": "engine_validation_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "6bf162cfe148039bf2cc5bba49138ef34ebe630d659ecb374508dbe622d6ca15",
-      "last_read_fingerprint": "6bf162cfe148039bf2cc5bba49138ef34ebe630d659ecb374508dbe622d6ca15"
+      "fingerprint": "3000b4928ea0c295dfc499cc2a09785287d7ab569a87005b131183a9cf4138ba",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "TEST-CCR-VALIDATION",
       "path": "dev/ccr_engine_validation_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "8ea0c8a148d163390ef7fb6a16fa67c5ca80ad7f0048913fda0f82a4db93a079",
-      "last_read_fingerprint": "8ea0c8a148d163390ef7fb6a16fa67c5ca80ad7f0048913fda0f82a4db93a079",
+      "fingerprint": "38756c349775248087e9197b17b5b577a20926cead6027f7243f49f26acca3e8",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
     },
@@ -1437,12 +1504,14 @@
       "path": "export_regression.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "507f432cdeff362efbbe25186241feced860ae6a7187466547e15e136f378c68",
-      "last_read_fingerprint": "507f432cdeff362efbbe25186241feced860ae6a7187466547e15e136f378c68"
+      "fingerprint": "097bf7b3d320f56e99d77220fb73c4f99a6c7d15fb9b7e842d7e0b8c539ff0f7",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "TEST-RUN-ALL",
@@ -1467,7 +1536,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "5220223eaadaabc78db8584209c862b8682ff43f780fad8236bff5906934023b",
+      "fingerprint": "35e0dc3bed1051a3d63cfca10748bcea5587282db3b7c98850e7bd72bff1ddbf",
       "last_read_fingerprint": null
     },
     {
@@ -1479,7 +1548,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "cfb0aa4736bf4fc3429d6bec11529820182b1c6c285b18dbf7505b0d6fe0bbf1",
+      "fingerprint": "63d1608bcfffc49bf37d4d997d785bdec150013dcce94c306f340827a9dfa233",
       "last_read_fingerprint": null
     },
     {
@@ -1487,24 +1556,28 @@
       "path": "dev/run_ccr_differential.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "b1635346caf19bd71b8c5c51487b90e71b423295d864854151d92462de7b4a2f",
-      "last_read_fingerprint": "b1635346caf19bd71b8c5c51487b90e71b423295d864854151d92462de7b4a2f"
+      "fingerprint": "cd77642e7ca0e56799049aeb8ccb7a6317d1a569c53bada6453e856beac122aa",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "TEST-PSCR-E2E",
       "path": "dev/validate_pscr_e2e.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "38a9b3436eadf6ff9b459275b92bc1201ca5ca9feb05f8f62ed7371d7a464bec",
-      "last_read_fingerprint": "38a9b3436eadf6ff9b459275b92bc1201ca5ca9feb05f8f62ed7371d7a464bec"
+      "fingerprint": "fe3be39653b8b0361e8185860b4ad794b1d7289a7335dd4cb659cfcd890e0b93",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "TEST-SW-LIFECYCLE",
@@ -1785,12 +1858,14 @@
       "path": "tools/build_pages_site.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a4e05c2de755bd2a984f6d7293f4353a27cb2311622de8f863d6708da77c4f94",
-      "last_read_fingerprint": "a4e05c2de755bd2a984f6d7293f4353a27cb2311622de8f863d6708da77c4f94"
+      "fingerprint": "708c38fe7e38f96b72a36490f93f80e66763004e8a2dcdcfaa5749841c151fc3",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "TOOL-BUILD-VPM",
@@ -1825,10 +1900,25 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "cd7430e24791a9e26e75f32ebbe82a05074b2814e2f306c98b78a7a77017c967",
+      "fingerprint": "2948efd7c94c02bdc0fd8a335f519f533a276af7d2ee1eae010b8dbec9e54ff2",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
+    },
+    {
+      "id": "TOOL-RUN-AUDIT-COVERAGE-SUITE-PY",
+      "path": "tools/run_audit_coverage_suite.py",
+      "layer": "tooling",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "GitHub #140 M-3 coverage + audit self-tests",
+      "regression_cases": [],
+      "fingerprint": "e731abbae424503a33816ecc967e490eecebdfb5f30149a529407697fa6d9368",
+      "last_read_fingerprint": null
     },
     {
       "id": "TOOL-EXTRACT-UI",
@@ -2003,7 +2093,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a52719c5733cb03ca9c4ac1b9f4705aaced81fd97457730c24c268f60922f2fc",
+      "fingerprint": "ac115f54b0fdffcdbc1953346245d296a34437c1a3a093d08a3a399061893a37",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
@@ -2101,7 +2191,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1d1b7037c45f44f89972e8994ac8827357ab8dd34c8e2e53647e1670adea997b",
+      "fingerprint": "80b87a7cb9a9055ea9613bda1ebb4f802b7cad3fada6b7cd5f4bb208bb8fb58e",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2116,7 +2206,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "0e218ddec08eda40f1784222f0d57b10787ccd10fca8cf274a2aa2f9398363a1",
+      "fingerprint": "148f777870809afa0b03095c3f0a70e91d5b57c7971218f96175aae9017b90ee",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2146,7 +2236,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "60daa6732daff3efd7e4282234793f5c55f60b54d966f78a77c74d171e28bc0b",
+      "fingerprint": "47291239afc107c8fe1e47da1149ad128783a6e6c5de020a4db3c55aecda9dd4",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2191,7 +2281,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "18d28d71f10faecda01ad60fa8c0cdd7a865586056fe54e6ddbccbe9224aab3b",
+      "fingerprint": "c3acb0a72986af10513ea4fcd0773bc8cd9d4c322ab9ed4da3713b7fcb8d2725",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2221,11 +2311,41 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "404444b853419b392d24440040391ab5d0f11bf4383071765fc4e0775ccfb885",
+      "fingerprint": "8d5858e9c3562e5f8a05d6b8db97a3365db32fbbe80bee9b7263c010ed93db04",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
       "issue": "Ground-up audit architecture"
+    },
+    {
+      "id": "TOOL-AUDIT-V2-CASE_REPORT-PY",
+      "path": "tools/audit/case_report.py",
+      "layer": "tooling",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "GitHub #140 H-3 structured case validation",
+      "regression_cases": [],
+      "fingerprint": "559044188103e7141f3a2d66beae7c0a0c5bb2c181663444bca0d832594556f0",
+      "last_read_fingerprint": null
+    },
+    {
+      "id": "TOOL-AUDIT-V2-SUITE_EMIT-PY",
+      "path": "tools/audit/suite_emit.py",
+      "layer": "tooling",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "GitHub #140 H-3 suite case emission",
+      "regression_cases": [],
+      "fingerprint": "9f6c2cc0bd406e8d66606aab3160d868f55e9eb5fcedcdd741de053909ec9a9b",
+      "last_read_fingerprint": null
     },
     {
       "id": "TOOL-AUDIT-V2-WORKSPACE-PY",
@@ -2236,7 +2356,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "624badd885069c46d477d5959f120cc32119aa28992a6596d64990678c78a378",
+      "fingerprint": "d45d6dd6beed3b3307f6797f67d6cf86c9bd6c9ec274c91f566da0d8afea1856",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2251,7 +2371,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "7fdbc68f0520f2edb622826a4109a271c7737c044dbf78bb9a7e9ef51a9378c7",
+      "fingerprint": "f25ae613502c672e0649dfc7b3d0d50e24eac28a925e28e2450ea27f3dd65eba",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2266,7 +2386,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a6f9091f20e8ebd2c43782874f152d8723d895ecbedebb3297d7544f6a7d6162",
+      "fingerprint": "7e8ab1f2396465dab7258eaef365ff690928b7701fa058fa1d59e64971ed8187",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2388,7 +2508,7 @@
       "id": "SUITE-COVERAGE",
       "command": [
         "{python}",
-        "tools/test_audit_coverage.py"
+        "tools/run_audit_coverage_suite.py"
       ],
       "profiles": [
         "static",
@@ -2553,6 +2673,39 @@
       "timeout_seconds": 300,
       "case_ids": [
         "native-bridge-regression"
+      ]
+    },
+    {
+      "id": "SUITE-ISSUE-140",
+      "command": [
+        "{python}",
+        "dev/issue140_regression.py"
+      ],
+      "profiles": [
+        "ci",
+        "release"
+      ],
+      "timeout_seconds": 180,
+      "case_ids": [
+        "ISSUE140-H1-SURF-GAS",
+        "ISSUE140-H1-HE-CARRY",
+        "ISSUE140-H1-GF-HIGH",
+        "ISSUE140-H1-SI-CAP",
+        "ISSUE140-H2-POOLED-TURN"
+      ]
+    },
+    {
+      "id": "SUITE-ANDROID",
+      "command": [
+        "{python}",
+        "dev/run_android_compile_check.py"
+      ],
+      "profiles": [
+        "release"
+      ],
+      "timeout_seconds": 600,
+      "case_ids": [
+        "android-compile"
       ]
     }
   ],
