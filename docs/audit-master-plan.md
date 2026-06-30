@@ -3,7 +3,7 @@
 > Generated schedule and totals. Policy and unit metadata live in `docs/audit-units.json`.
 
 **Baseline:** `fd805111eab2fba349a9303a6e208106b798f82b`
-**Units:** 157 total; 59 unread; 54 in progress; 38 read; 6 verified.
+**Units:** 157 total; 59 unread; 59 in progress; 34 read; 5 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -30,7 +30,7 @@
 | Cycle | Application units | New lines | Engine re-verification | Acceptance |
 |---:|---|---:|---|---|
 | 5 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 487 | ENG-ZHL-SCHEDULE | Delegate units fully READ; schedule findings linked to regression IDs |
-| 6 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 576 | ENG-ZHL-CCR | Physics and schedule input paths READ; no unresolved P0 finding |
+| 6 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 586 | ENG-ZHL-CCR | Physics and schedule input paths READ; no unresolved P0 finding |
 | 7 | UI-SETTINGS-CONTROLS, UI-VPM-RUNNER | 492 | ENG-VPM | Settings restoration and VPM invocation contracts READ |
 | 8 | UI-VPM-RENDER | 530 | ENG-VPM | VPM rendering and safety warning propagation READ |
 | 9 | UI-GAS-CARDS | 573 | ENG-ZHL-GAS | Dynamic gas-card units and persistence READ |

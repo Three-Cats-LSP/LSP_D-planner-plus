@@ -218,34 +218,6 @@
       "suite_id": "SUITE-ENGINE-FULL",
       "case_id": "ZHL-ML-ASCENT-RATE"
     },
-    "REG-24": {
-      "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "CYCLE6-RDP-CEILING"
-    },
-    "REG-25": {
-      "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "CYCLE6-PADI-DEPTH"
-    },
-    "REG-26": {
-      "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "CYCLE6-TRIMIX-RANGE"
-    },
-    "REG-27": {
-      "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "CYCLE6-PSCR-BOUNDS"
-    },
-    "REG-28": {
-      "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "CYCLE6-PSCR-CANON"
-    },
-    "REG-29": {
-      "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "CYCLE6-CCR-DRY-PPO2"
-    },
-    "REG-30": {
-      "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "CYCLE6-BUHLMANN-BT"
-    },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
       "case_id": "android-compile"
@@ -478,7 +450,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-CSS-RESULTS"
       },
-      "fingerprint": "b8e71f8c16c1031a2b0effb973e3c60f85885cca6b9e0d60d89c9bec1f365026",
+      "fingerprint": "47405b2b865d9fb691c35c0b6053075412328acf6633c85d1add4e5b2fbb9b71",
       "last_read_fingerprint": null
     },
     {
@@ -504,7 +476,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MARKUP-PLANNER"
       },
-      "fingerprint": "e9d5263d7eece15f9ad6ead913e86642c8bfff8db87d82087f6c8a3f61219b31",
+      "fingerprint": "33706450e62160061771c57d43f8ee879e64791b5f02c0743693781aaf9f107c",
       "last_read_fingerprint": null
     },
     {
@@ -648,21 +620,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-DELEGATES"
       },
       "fingerprint": "6547d83fc8046cfb6f0d4595004d85eb6dd7c6785bb9b33573ac6e867e672e24",
-      "last_read_fingerprint": "6547d83fc8046cfb6f0d4595004d85eb6dd7c6785bb9b33573ac6e867e672e24",
-      "evidence": [
-        "REG-16",
-        "REG-27"
-      ],
-      "regression_cases": [
-        "REG-16",
-        "REG-27"
-      ],
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "GitHub #141 L-2 getN2Frac trimix null",
       "audit_issue": 141
     },
@@ -692,46 +658,32 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-DECO-PHYSICS"
       },
       "fingerprint": "0e28b392ed53a714b92e0c461580f1bfef232294d0f9a789be5384bde9298a5e",
-      "last_read_fingerprint": "0e28b392ed53a714b92e0c461580f1bfef232294d0f9a789be5384bde9298a5e",
-      "evidence": [
-        "REG-24",
-        "REG-30"
-      ],
-      "regression_cases": [
-        "REG-24",
-        "REG-30"
-      ],
-      "issue": "Cycle 6 recreational physics review and regression coverage"
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "audit_issue": 139
     },
     {
       "id": "UI-SCHEDULE-INPUTS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SCHEDULE-INPUTS"
       },
-      "fingerprint": "41306cedd180e53e704bea2c3e76eea67ce45495511fd60394c3771f25dc0ac0",
-      "last_read_fingerprint": "41306cedd180e53e704bea2c3e76eea67ce45495511fd60394c3771f25dc0ac0",
-      "evidence": [
-        "REG-25",
-        "REG-26",
-        "REG-27"
-      ],
-      "regression_cases": [
-        "REG-25",
-        "REG-26",
-        "REG-27"
-      ],
-      "issue": "Cycle 6 schedule input validation review and regression coverage"
+      "fingerprint": "74082da8c35589581af048b350d7bd644ac574f26fa9efc46304d02b71fc924a",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "audit_issue": 139
     },
     {
       "id": "UI-SETTINGS-CONTROLS",
@@ -1031,13 +983,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-APP-INIT"
       },
-      "fingerprint": "e1685f2940151c7ebe3ca118fc81e9ae650145145664ed401676f79919fe76e4",
-      "last_read_fingerprint": "e1685f2940151c7ebe3ca118fc81e9ae650145145664ed401676f79919fe76e4",
+      "fingerprint": "097f137d2442531bf8ba4709aabc9fd0b8c97d907b132c652e50d46be604f738",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 139
@@ -1087,23 +1039,15 @@
       "path": "zhl-ccr-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [
-        "REG-27",
-        "REG-28",
-        "REG-29"
-      ],
-      "regression_cases": [
-        "REG-27",
-        "REG-28",
-        "REG-29"
-      ],
-      "issue": "Audit #134 endpoint sampling; Cycle 6 pSCR bounds, circuit canonicalization, and dry-pressure cap",
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "Audit #134; CCR deep-endpoint setpoint sampling",
       "fingerprint": "6d1953c834dcf1309da766e9a596be8a91c64047cd362caf61a8673322c17a5a",
-      "last_read_fingerprint": "6d1953c834dcf1309da766e9a596be8a91c64047cd362caf61a8673322c17a5a"
+      "last_read_fingerprint": null
     },
     {
       "id": "ENG-ZHL-SCHEDULE",
@@ -1188,7 +1132,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "42bb7a6c85ffae2180e6e200a207e418a9c6208fc75b230fd8f5d0dbe7fe5496",
+      "fingerprint": "4beb890efb356643309a6d3bf5a75be8e09504880ea790c9b96bc6b82ade2ff3",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
@@ -1223,7 +1167,7 @@
         "REG-12",
         "REG-13"
       ],
-      "issue": "GitHub #140 H-2 / Cycle 5 GP-01–06 — docs/code-review-2026-06-30.md",
+      "issue": "GitHub #140 H-2 / Cycle 5 GP-01\u201306 \u2014 docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-10",
         "REG-12",
@@ -1245,7 +1189,7 @@
         "REG-11",
         "REG-14"
       ],
-      "issue": "Cycle 5 GT-01–06 — docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GT-01\u201306 \u2014 docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-11",
         "REG-14"
@@ -1268,7 +1212,7 @@
         "REG-20",
         "REG-21"
       ],
-      "issue": "GitHub #142 — Dive 2 gas override",
+      "issue": "GitHub #142 \u2014 Dive 2 gas override",
       "regression_cases": [
         "REG-17",
         "REG-19",
@@ -1285,7 +1229,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "cf3b0bb9c21d2a226740ebf55f85ae6e45aa09ce9f8feb3f03ffe88468e584dc",
+      "fingerprint": "e1cb0d97a88ff50b77e5e1ed746ccf38e9c21e034c22e3c75db42474f7895061",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
@@ -1604,9 +1548,9 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "GitHub #133â€“#138 audit regression sections",
+      "issue": "GitHub #133\u00e2\u20ac\u201c#138 audit regression sections",
       "regression_cases": [],
-      "fingerprint": "4d2ae2e3ebdbbb94b308ec026db816fb6bbecdd159843a128295d8f41e3816ea",
+      "fingerprint": "82c975c8a0f6b9302ff6fd29950ea3aecfa19f24d69bca5d868a4a28ef92ff46",
       "last_read_fingerprint": null
     },
     {
@@ -1634,7 +1578,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "Cycle 5 GP/GT behavioral regression — docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GP/GT behavioral regression \u2014 docs/code-review-2026-06-30.md",
       "regression_cases": [],
       "fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
       "last_read_fingerprint": null
@@ -2033,7 +1977,7 @@
       },
       "evidence": [],
       "regression_cases": [],
-      "issue": "GitHub #133â€“#139 structured environment audit gates; release regression 9/9",
+      "issue": "GitHub #133\u00e2\u20ac\u201c#139 structured environment audit gates; release regression 9/9",
       "fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d",
       "last_read_fingerprint": null
     },
@@ -2817,14 +2761,7 @@
         "AUDIT-REG-03",
         "AUDIT-REG-05",
         "ZHL-ML-CONT-GAS",
-        "ZHL-ML-ASCENT-RATE",
-        "CYCLE6-RDP-CEILING",
-        "CYCLE6-PADI-DEPTH",
-        "CYCLE6-TRIMIX-RANGE",
-        "CYCLE6-PSCR-BOUNDS",
-        "CYCLE6-PSCR-CANON",
-        "CYCLE6-CCR-DRY-PPO2",
-        "CYCLE6-BUHLMANN-BT"
+        "ZHL-ML-ASCENT-RATE"
       ]
     },
     {

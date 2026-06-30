@@ -110,10 +110,7 @@ self.addEventListener('install', event => {
         if (shellReady) {
           const optionalMiss = OPTIONAL_PRECACHE.filter(u => !succeeded.has(u));
           if (optionalMiss.length > 0) {
-            const clients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
-            clients.forEach((client) => {
-              client.postMessage({ type: 'SW_OPTIONAL_PRECACHE_MISS', urls: optionalMiss });
-            });
+            // Optional miss banner is delivered from activate after clients.claim().
           }
           self.skipWaiting();
           return;

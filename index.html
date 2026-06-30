@@ -1501,6 +1501,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
  body.light-theme .gas-bt-cell *, body.light-theme .gas-bt-cell strong, body.light-theme .gas-bt-cell span { color:#000 !important; }
 
  .deco-table tr.gas-tight-row td,
+ /* Intentional duplicate of base gas-tight-row rules — keeps !important override after mobile background:none resets */
  .deco-table tr.gas-tight-row td:first-child { background:#FF4433 !important; color:#fff !important; font-weight:600 !important; border-bottom:1px solid var(--border) !important; }
  .deco-table tr.gas-tight-row td span,
  .deco-table tr.gas-tight-row td * { color:#fff !important; }
@@ -2259,7 +2260,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <option value="1">1:00</option>
 <option value="0.5">0:30</option>
 <option value="0.1667">0:10</option>
-<option value="0.0167">0:01</option>
+<option value="0.0167" id="minStopTimeSubMin" title="Unavailable with whole-minute stop rounding">0:01</option>
 </select>
 </div>
 <div class="adv-row">
@@ -2281,7 +2282,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 </div>
 <div class="adv-row">
 <label>Stop Rounding <span class="tip-icon" onclick="showTip('Stop Rounding','Whether stop times are rounded to whole minutes.\nNo = fractional (Buhlmann default).\nYes (MultiDeco) = whole-minute rounding, matching MultiDeco output.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
-<select id="stopRounding">
+<select id="stopRounding" onchange="syncMinStopTimeRounding()">
 <option value="fractional">No</option>
 <option selected="" value="wholeminute">Yes (MultiDeco)</option>
 </select>
@@ -7385,6 +7386,16 @@ function toggleMinDecoProfile() {
   const en = document.getElementById('minDecoProfileEnable').value === 'yes';
   const fields = document.getElementById('minDecoProfileFields');
   if (fields) fields.style.display = en ? 'contents' : 'none';
+}
+
+function syncMinStopTimeRounding() {
+  const rounding = document.getElementById('stopRounding')?.value || 'wholeminute';
+  const subMin = document.getElementById('minStopTimeSubMin');
+  const sel = document.getElementById('minStopTime');
+  if (!subMin || !sel) return;
+  const whole = rounding === 'wholeminute';
+  subMin.disabled = whole;
+  if (whole && sel.value === '0.0167') sel.value = '0.1667';
 }
 
 function updateMinDecoLabels(isMetric) {
@@ -13891,6 +13902,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const open = adv === '1';
     toggleAdvancedSettings(open);
   } catch(e) { toggleAdvancedSettings(false); }
+  syncMinStopTimeRounding();
 
   // ── Restore rebreather adv. settings collapse state ───────────────────────
   try {

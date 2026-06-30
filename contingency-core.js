@@ -57,15 +57,15 @@ function buildContingencySlateText() {
   }).filter(Boolean);
   const mixLine = `${botLabel} (BTM) [EMRG: ${cc.label}]` + (switchParts.length ? ' | ' + switchParts.join(' | ') : '');
   const out = [];
+  const cellText = (tr, label) => clean(tr.querySelector(`td[data-label="${label}"]`)?.textContent);
   rows.forEach(tr => {
     const ph = tr.dataset.phase;
     if (ph !== 'deco' && ph !== 'safety') return;
-    const tds = tr.querySelectorAll('td');
-    const depRaw = clean(tds[1]?.textContent).replace(/(m|ft)$/i,'');
+    const depRaw = (cellText(tr, 'Depth') || '').replace(/(m|ft)$/i, '');
     const dep = (depRaw + du).padStart(5);
-    const run = clean(tds[4]?.textContent).padStart(5);
-    const gas = shortMix(tds[3]?.textContent).padEnd(6);
-    const ppo2 = clean(tds[6]?.textContent).padStart(4);
+    const run = (cellText(tr, 'Run') || '').padStart(5);
+    const gas = shortMix(cellText(tr, 'Mix')).padEnd(6);
+    const ppo2 = (cellText(tr, 'PPO2') || '').padStart(4);
     out.push(`${dep}  ${run}  ${gas} ${ppo2}`);
   });
   const _ecToMMSS = s => {
@@ -99,36 +99,60 @@ function showContingencySlate() {
   document.getElementById('slateModalBody').textContent = text;
   document.getElementById('slateModal').style.display = 'flex';
 }
+/**
+ * Run a contingency schedule without mutating the main deco table DOM.
+ * modifyFn may adjust planner inputs (depth, BT, deco gases, bailout, circuit) — all are restored in finally.
+ */
 function runContingencyScenario(modifyFn) {
-  const savedBody    = document.getElementById('decoTableBody').innerHTML;
-  const savedSummary = document.getElementById('decoSummary').innerHTML;
+  const empty = {
+    ok: false, newRows: '', lastRun: 0, decoTime: 0, lastRunFmt: null, decoTimeFmt: null,
+    totalCNS: null, totalOTUc: null, decoZoneStart: 0, decozoneDisp: null, decoStop: null,
+    tts: null, planSum: null, contSurfaceGF: null, scenarioDepth: null, scenarioBT: null,
+    scenarioBotFracs: null, contLastPlan: null, contLastTissues: null,
+  };
+  const mainTbody = document.getElementById('decoTableBody');
+  if (!mainTbody) return empty;
+
+  const savedSummary = document.getElementById('decoSummary')?.innerHTML || '';
   const savedLastPlan = window._lastPlan;
+  const origDepth = document.getElementById('decoDepth')?.value;
+  const origBT = document.getElementById('decoBT')?.value;
+  const origDgVals = {};
+  for (const idx of getAllDecoGasIds()) {
+    const el = document.getElementById(`dg${idx}Mix`);
+    if (el) origDgVals[idx] = el.value;
+  }
   const origBailout = document.getElementById('ccrBailoutToggle')?.value;
+  const origCircuit = document.getElementById('circuitSelect')?.value;
+
+  const table = mainTbody.closest('table');
+  const scratchTbody = document.createElement('tbody');
+  scratchTbody.id = 'decoTableBody';
+  mainTbody.removeAttribute('id');
+  const mainDisplay = mainTbody.style.display;
+  mainTbody.style.display = 'none';
+  if (table) table.appendChild(scratchTbody);
 
   _contingencyRunning = true;
   let ok = false;
   let scenarioDepth, scenarioBT, scenarioBotFracs, newRows = '', lastRun, decoTime;
   let lastRunFmt, decoTimeFmt, totalCNS, totalOTUc, tts, decoStop, decozoneDisp;
   let decoZoneStart, contSurfaceGF, planSum, contLastPlan, contLastTissues;
+  let error = null;
   try {
-    modifyFn();
+    if (typeof modifyFn === 'function') modifyFn();
     runDecoSchedule();
 
-    const rows = document.querySelectorAll('#decoTableBody tr[data-phase]');
-    if (!rows.length) {
-      return {
-        ok: false, newRows: '', lastRun: 0, decoTime: 0, lastRunFmt: null, decoTimeFmt: null,
-        totalCNS: null, totalOTUc: null, decoZoneStart: 0, decozoneDisp: null, decoStop: null,
-        tts: null, planSum: null, contSurfaceGF: null, scenarioDepth: null, scenarioBT: null,
-        scenarioBotFracs: null,
-      };
-    }
+    const rows = scratchTbody.querySelectorAll('tr[data-phase]');
+    if (!rows.length) return empty;
+
     ok = true;
     scenarioDepth = document.getElementById('decoDepth')?.value;
-    scenarioBT    = document.getElementById('decoBT')?.value;
+    scenarioBT = document.getElementById('decoBT')?.value;
     scenarioBotFracs = getBottomGasFractions();
-    newRows = document.getElementById('decoTableBody').innerHTML;
-    lastRun = 0; decoTime = 0;
+    newRows = scratchTbody.innerHTML;
+    lastRun = 0;
+    decoTime = 0;
     rows.forEach(tr => {
       const run = parseRunMinutes(tr.querySelector('td[data-label="Run"]')?.textContent) || 0;
       if (run > lastRun) lastRun = run;
@@ -138,7 +162,7 @@ function runContingencyScenario(modifyFn) {
       }
     });
 
-    const totalsRow = document.querySelector('#decoTableBody tr[data-phase="totals"] td');
+    const totalsRow = scratchTbody.querySelector('tr[data-phase="totals"] td');
     planSum = getPlanSummaryExport(totalsRow);
     const lp = window._lastPlan || {};
     lastRunFmt = planSum.runTime !== '-' ? planSum.runTime : null;
@@ -151,24 +175,46 @@ function runContingencyScenario(modifyFn) {
     decoZoneStart = lp.decoZoneStart ?? 0;
     contSurfaceGF = lp.surfaceGF ?? null;
     contLastPlan = window._lastPlan ? JSON.parse(JSON.stringify(window._lastPlan)) : null;
-    contLastTissues = (typeof lastTissues !== 'undefined' && lastTissues && lastTissues.length)
-      ? lastTissues.map(t => ({ pN2: t.pN2, pHe: t.pHe || 0, mv: t.mv }))
+    const tissueSrc = window._lastPlan?.finalTissues;
+    contLastTissues = tissueSrc && tissueSrc.length
+      ? tissueSrc.map(t => ({ pN2: t.pN2, pHe: t.pHe || 0, mv: t.mv }))
       : null;
+  } catch (e) {
+    error = e.message;
   } finally {
-    _contingencyRunning = false;
-    document.getElementById('decoTableBody').innerHTML = savedBody;
-    document.getElementById('decoSummary').innerHTML   = savedSummary;
-    window._lastPlan = savedLastPlan;
+    scratchTbody.remove();
+    mainTbody.id = 'decoTableBody';
+    mainTbody.style.display = mainDisplay;
+    if (origBT != null) {
+      const btEl = document.getElementById('decoBT');
+      if (btEl) btEl.value = origBT;
+    }
+    if (origDepth != null) {
+      const depthEl = document.getElementById('decoDepth');
+      if (depthEl) depthEl.value = origDepth;
+    }
+    for (const [idx, val] of Object.entries(origDgVals)) {
+      const el = document.getElementById(`dg${idx}Mix`);
+      if (el) el.value = val;
+    }
     if (origBailout != null) {
       const boEl = document.getElementById('ccrBailoutToggle');
       if (boEl) boEl.value = origBailout;
     }
+    if (origCircuit != null) {
+      const cEl = document.getElementById('circuitSelect');
+      if (cEl) cEl.value = origCircuit;
+    }
+    const summEl = document.getElementById('decoSummary');
+    if (summEl) summEl.innerHTML = savedSummary;
+    window._lastPlan = savedLastPlan;
+    _contingencyRunning = false;
   }
 
   return {
     ok, newRows, lastRun, decoTime: Math.round(decoTime), lastRunFmt, decoTimeFmt, totalCNS, totalOTUc,
     decoZoneStart, decozoneDisp, decoStop, tts, planSum, contSurfaceGF, scenarioDepth, scenarioBT, scenarioBotFracs,
-    contLastPlan, contLastTissues,
+    contLastPlan, contLastTissues, error,
   };
 }
 
@@ -263,6 +309,7 @@ function syncContDepthLabels() {
   });
 }
 
+/** @param {number} metres — extra depth in metres (3/5); imperial display is derived in syncContDepthLabels */
 function selectContDepth(metres) {
   contExtraDepth = metres;
   syncContDepthLabels();
@@ -288,12 +335,6 @@ function calcContingency() {
     if (el && el.value !== 'none') gases.push({ id: idx, name: label });
   }
 
-  const origBT = document.getElementById('decoBT')?.value;
-  const _origDgVals = {};
-  for (const idx of getAllDecoGasIds()) {
-    const el = document.getElementById(`dg${idx}Mix`);
-    if (el) _origDgVals[idx] = el.value;
-  }
   // Build scenario label
   const parts = [];
   if (contGasLose === 'both') parts.push('Lost ' + gases.map(g=>g.name).join(' & '));
@@ -317,16 +358,15 @@ function calcContingency() {
                    (contExtraDepth > 0)     ? 'You went deeper — deco obligation increased.' :
                    'Showing standard plan.';
 
-  const origDepth = document.getElementById('decoDepth')?.value;
-  const origBailout = document.getElementById('ccrBailoutToggle')?.value;
-  let ok, newRows, lastRun, decoTime, lastRunFmt, decoTimeFmt, totalCNS, totalOTUc, decoZoneStart, decozoneDisp, decoStop, tts, planSum, contSurfaceGF, scenarioDepth, scenarioBT, scenarioBotFracs, contLastPlan, contLastTissues;
-  try {
-    ({ ok, newRows, lastRun, decoTime, lastRunFmt, decoTimeFmt, totalCNS, totalOTUc, decoZoneStart, decozoneDisp, decoStop, tts, planSum, contSurfaceGF, scenarioDepth, scenarioBT, scenarioBotFracs, contLastPlan, contLastTissues } = runContingencyScenario(() => {
-    if (contExtraBT > 0 && origBT)
-      document.getElementById('decoBT').value = parseFloat(origBT) + contExtraBT;
-    if (contExtraDepth > 0 && origDepth) {
+  const { ok, newRows, lastRun, decoTime, lastRunFmt, decoTimeFmt, totalCNS, totalOTUc, decoZoneStart, decozoneDisp, decoStop, tts, planSum, contSurfaceGF, scenarioDepth, scenarioBT, scenarioBotFracs, contLastPlan, contLastTissues } = runContingencyScenario(() => {
+    if (contExtraBT > 0) {
+      const btEl = document.getElementById('decoBT');
+      if (btEl) btEl.value = parseFloat(btEl.value) + contExtraBT;
+    }
+    if (contExtraDepth > 0) {
+      const depthEl = document.getElementById('decoDepth');
       const factor = units === 'metric' ? 1 : 3.28084;
-      document.getElementById('decoDepth').value = parseFloat(origDepth) + Math.round(contExtraDepth * factor);
+      if (depthEl) depthEl.value = parseFloat(depthEl.value) + Math.round(contExtraDepth * factor);
     }
     for (const idx of getAllDecoGasIds()) {
       if (contGasLose === String(idx) || contGasLose === 'both') {
@@ -338,19 +378,7 @@ function calcContingency() {
       const boEl = document.getElementById('ccrBailoutToggle');
       if (boEl) boEl.value = 'on';
     }
-  }));
-  } finally {
-    if (origBT) document.getElementById('decoBT').value = origBT;
-    if (origDepth) document.getElementById('decoDepth').value = origDepth;
-    for (const [idx, val] of Object.entries(_origDgVals)) {
-      const el = document.getElementById(`dg${idx}Mix`);
-      if (el) el.value = val;
-    }
-    if (origBailout != null) {
-      const boEl = document.getElementById('ccrBailoutToggle');
-      if (boEl) boEl.value = origBailout;
-    }
-  }
+  });
 
   if (!ok || !newRows) {
     resultEl.style.display = 'block';
@@ -431,9 +459,12 @@ function calcContingency() {
 
 
 
-  function drawGraphLegend(doc, y, ML, CW, checkY) {
-    const legEl = document.getElementById('decoProfileLegend');
-    const rows = legEl ? Array.from(legEl.querySelectorAll('tbody tr')) : [];
+  function drawGraphLegend(doc, y, ML, CW, checkY, legendRows) {
+    let rows = legendRows;
+    if (!rows) {
+      const legEl = document.getElementById('decoProfileLegend');
+      rows = legEl ? Array.from(legEl.querySelectorAll('tbody tr')) : [];
+    }
     if (!rows.length) return y;
     checkY(rows.length * 5 + 10);
     // Header
@@ -442,12 +473,20 @@ function calcContingency() {
     const cw=[8,80,30,24]; const cx=[ML,ML+8,ML+88,ML+118];
     ['#','Stop','Run','ppO2'].forEach((h,i)=>doc.text(h,cx[i]+(i>0?cw[i]/2:cw[0]/2),y+3.8,{align:i===0?'center':'center'}));
     doc.setTextColor(0,0,0); y+=5.5;
-    rows.forEach((tr,ri)=>{
-      const cells=Array.from(tr.querySelectorAll('td'));
-      const num=cells[0]?.textContent.trim()||'';
-      const stop=cells[1]?.textContent.trim().replace(/[^\x20-\x7E]/g,'').trim()||'';
-      const run=cells[2]?.textContent.trim()||'';
-      const ppo=cells[3]?.textContent.trim()||'';
+    rows.forEach((row, ri)=>{
+      let num, stop, run, ppo;
+      if (row instanceof HTMLElement) {
+        const cells = Array.from(row.querySelectorAll('td'));
+        num = cells[0]?.textContent.trim() || '';
+        stop = cells[1]?.textContent.trim().replace(/[^\x20-\x7E]/g,'').trim() || '';
+        run = cells[2]?.textContent.trim() || '';
+        ppo = cells[3]?.textContent.trim() || '';
+      } else {
+        num = row.num || '';
+        stop = row.stop || '';
+        run = row.run || '';
+        ppo = row.ppo2 || row.ppo || '';
+      }
       const ppoV=parseFloat(ppo)||0;
       const tc=ppoV>=1.6?[200,0,0]:ppoV>=1.4?[180,100,0]:[60,120,60];
       ri%2===0?doc.setFillColor(248,249,255):doc.setFillColor(255,255,255);
@@ -460,6 +499,16 @@ function calcContingency() {
       doc.setTextColor(0,0,0); y+=5;
     });
     return y+4;
+  }
+
+  function buildProfileLegendRowsFromWaypoints() {
+    const stops = (window._decoWaypoints || []).filter(wp => wp.dot && wp.label);
+    return stops.map((wp, i) => ({
+      num: String(i + 1),
+      stop: wp.label.replace(/(\d+m)\s+(\d+)/, '$1 - $2'),
+      run: `${Math.round(wp.t)} min`,
+      ppo2: wp.ppo2 ? wp.ppo2.toFixed(2) : '—',
+    }));
   }
 
 // ── PDF canvas capture — scale to print resolution to prevent 100 MB output ──
@@ -802,7 +851,7 @@ async function exportContingencyPDF(opts) {
         const imgH = CW * pc.height / pc.width;
         doc.addImage(_pcCapture.dataURL,'PNG',ML,y,CW,imgH);
         y += imgH+4;
-        y = drawGraphLegend(doc, y, ML, CW, checkY);
+        y = drawGraphLegend(doc, y, ML, CW, checkY, buildProfileLegendRowsFromWaypoints());
       }
     } catch(e) { console.warn('Emergency graph failed',e); }
     finally {
@@ -852,8 +901,8 @@ async function exportContingencyPDF(opts) {
     }
   }
 
-  const emTissues = c.contLastTissues || (typeof lastTissues !== 'undefined' ? lastTissues : null);
-  const emPlan = c.contLastPlan || (typeof _lastPlan !== 'undefined' ? _lastPlan : null);
+  const emTissues = c.contLastTissues;
+  const emPlan = c.contLastPlan;
 
   // ── SECTION: Tissue Saturation ───────────────────────────────────────────
   if (_incTissue && !isVPMem && emTissues && emTissues.length) {

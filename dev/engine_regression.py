@@ -1028,6 +1028,66 @@ ENGINE_SUITE_JS = r"""
     return { descentGas: descent?.gas, bottomGas: bottom?.gas, labelOk, o2Ok, ok: labelOk && o2Ok };
   })();
 
+  // ── Cycle 7 audit fixes (contingency, SW, adv settings) ─────────────────
+  out.sections.cycle7 = (() => {
+    const rcsFn = typeof runContingencyScenario === 'function' ? runContingencyScenario.toString() : '';
+    const h1SrcOk = !/savedBody/.test(rcsFn) && /scratchTbody/.test(rcsFn);
+    let h1FuncOk = false;
+    if (typeof runContingencyScenario === 'function' && typeof runDecoSchedule === 'function') {
+      try {
+        runDecoSchedule();
+        const tbody = document.getElementById('decoTableBody');
+        if (tbody) {
+          const saved = tbody.innerHTML;
+          tbody.innerHTML = saved + '<tr data-phase="marker"><td>KEEP</td></tr>';
+          runContingencyScenario(() => {});
+          h1FuncOk = tbody.innerHTML.includes('KEEP');
+          tbody.innerHTML = saved;
+        }
+      } catch (_) { h1FuncOk = false; }
+    }
+    const calcFn = typeof calcContingency === 'function' ? calcContingency.toString() : '';
+    const h2SrcOk = /origCircuit/.test(rcsFn) && !/origBT\)/.test(calcFn.split('runContingencyScenario')[0] || '');
+    let h2ThrowOk = false;
+    if (typeof runContingencyScenario === 'function') {
+      try {
+        const depthEl = document.getElementById('decoDepth');
+        const btEl = document.getElementById('decoBT');
+        const prevD = depthEl ? depthEl.value : null;
+        const prevB = btEl ? btEl.value : null;
+        runContingencyScenario(() => { throw new Error('cycle7 probe'); });
+        h2ThrowOk = depthEl && btEl && prevD != null && depthEl.value === prevD && btEl.value === prevB;
+      } catch (_) { h2ThrowOk = false; }
+    }
+    const slateFn = typeof buildContingencySlateText === 'function' ? buildContingencySlateText.toString() : '';
+    const m1Ok = /data-label=/.test(slateFn) && !/tds\[4\]/.test(slateFn);
+    const m2Ok = /origCircuit/.test(rcsFn);
+    const pdfFn = typeof exportContingencyPDF === 'function' ? exportContingencyPDF.toString() : '';
+    const m3Ok = /const emTissues = c\.contLastTissues;/.test(pdfFn)
+      && !/contLastTissues \|\|/.test(pdfFn)
+      && !/typeof lastTissues/.test(pdfFn);
+    const m4Ok = /buildProfileLegendRowsFromWaypoints/.test(pdfFn);
+    let l4Ok = false;
+    if (typeof syncMinStopTimeRounding === 'function') {
+      const rnd = document.getElementById('stopRounding');
+      const sub = document.getElementById('minStopTimeSubMin');
+      const sel = document.getElementById('minStopTime');
+      if (rnd && sub && sel) {
+        const prevR = rnd.value;
+        const prevS = sel.value;
+        rnd.value = 'wholeminute';
+        syncMinStopTimeRounding();
+        l4Ok = sub.disabled === true;
+        rnd.value = prevR;
+        sel.value = prevS;
+        syncMinStopTimeRounding();
+      }
+    }
+    const h1Ok = h1SrcOk && h1FuncOk;
+    const h2Ok = h2SrcOk && h2ThrowOk;
+    return { h1Ok, h2Ok, m1Ok, m2Ok, m3Ok, m4Ok, l4Ok, ok: h1Ok && h2Ok && m1Ok && m2Ok && m3Ok && m4Ok && l4Ok };
+  })();
+
   // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
   out.sections.cycle6 = (() => {
     const rdp11 = typeof padiTableRowIndex === 'function' ? padiTableRowIndex(11) : null;
@@ -1387,6 +1447,18 @@ def run_suite(page) -> dict:
     assert_true(c6.get("pscrCanonOk"), "[CYCLE6-PSCR-CANON] lowercase pSCR circuit returns zero setpoint", str(c6))
     assert_true(c6.get("ppo2DryOk"), "[CYCLE6-CCR-DRY-PPO2] CCR ppO2 capped at dry-gas pressure", str(c6))
     assert_true(c6.get("buhlBtOk"), "[CYCLE6-BUHLMANN-BT] Bühlmann rec planner models descent then hold BT", str(c6))
+
+    c7 = s.get("cycle7", {})
+    assert_true(c7.get("h1Ok"), "[CYCLE7-H1] contingency uses scratch tbody without clobbering main table", str(c7))
+    assert_true(c7.get("h2Ok"), "[CYCLE7-H2] contingency restores inputs on modifyFn throw", str(c7))
+    assert_true(c7.get("m1Ok"), "[CYCLE7-M1] contingency slate uses data-label selectors", str(c7))
+    assert_true(c7.get("m2Ok"), "[CYCLE7-M2] contingency saves/restores circuitSelect", str(c7))
+    assert_true(c7.get("m3Ok"), "[CYCLE7-M3] contingency PDF tissue section uses contLastTissues only", str(c7))
+    assert_true(c7.get("m4Ok"), "[CYCLE7-M4] contingency PDF legend from waypoint data", str(c7))
+    assert_true(c7.get("l4Ok"), "[CYCLE7-L4] minStopTime 0:01 disabled under whole-minute rounding", str(c7))
+    sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
+    sw_block = sw_install.split("addEventListener('install'")[1].split("addEventListener('activate'")[0] if "addEventListener('install'" in sw_install else ""
+    assert_true("clients.matchAll" not in sw_block, "[CYCLE7-L2] SW install handler does not postMessage before claim")
 
     print("\n── G: Worker parity ──")
     worker = page.evaluate(WORKER_SUITE_JS)
