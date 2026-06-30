@@ -1211,14 +1211,15 @@
       "path": "contingency-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "537c094810d517eda5262ce7ef9dd2f5ff018bbd504c28274c6f10bd99a20267",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "537c094810d517eda5262ce7ef9dd2f5ff018bbd504c28274c6f10bd99a20267",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 164
     },
     {
       "id": "APP-EXPORT",
