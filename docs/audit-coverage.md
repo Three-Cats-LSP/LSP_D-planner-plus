@@ -24,9 +24,9 @@
 | ui_core | 5 | 0 | 2 | 0 | 3 |
 | web_css | 4 | 4 | 0 | 0 | 0 |
 | web_markup | 5 | 5 | 0 | 0 | 0 |
-| web_runtime | 34 | 1 | 5 | 27 | 1 |
+| web_runtime | 34 | 4 | 3 | 26 | 1 |
 | worker | 2 | 0 | 0 | 2 | 0 |
-| **Total** | **157** | **51** | **52** | **49** | **5** |
+| **Total** | **157** | **54** | **50** | **48** | **5** |
 
 ## Units
 
@@ -42,7 +42,7 @@
 | UI-MARKUP-CONSUMPTION | web_markup | `index.html:2728` | 495 | P1 | UNREAD | - |
 | UI-MARKUP-TOOLS | web_markup | `index.html:3223` | 269 | P2 | UNREAD | - |
 | UI-MARKUP-MODALS | web_markup | `index.html:3492` | 341 | P2 | UNREAD | - |
-| UI-RUNTIME-BOOTSTRAP | web_runtime | `index.html:3833` | 270 | P1 | IN_PROGRESS | - |
+| UI-RUNTIME-BOOTSTRAP | web_runtime | `index.html:3833` | 270 | P1 | READ | - |
 | UI-ENVIRONMENT | web_runtime | `index.html:4103` | 377 | P1 | READ | - |
 | UI-MODE-STATE | web_runtime | `index.html:4480` | 380 | P2 | IN_PROGRESS | - |
 | UI-ALGORITHM-SETTINGS | web_runtime | `index.html:4860` | 360 | P1 | IN_PROGRESS | - |
@@ -54,7 +54,7 @@
 | UI-DECO-PHYSICS | web_runtime | `index.html:6854` | 229 | P0 | READ | - |
 | UI-SCHEDULE-INPUTS | web_runtime | `index.html:7083` | 361 | P0 | READ | REG-29, REG-30 |
 | UI-SETTINGS-CONTROLS | web_runtime | `index.html:7444` | 391 | P1 | READ | REG-35, REG-36, REG-37, REG-38 |
-| UI-VPM-RUNNER | web_runtime | `index.html:7835` | 170 | P0 | IN_PROGRESS | - |
+| UI-VPM-RUNNER | web_runtime | `index.html:7835` | 170 | P0 | READ | REG-31, REG-38 |
 | UI-VPM-RENDER | web_runtime | `index.html:8005` | 529 | P1 | READ | - |
 | UI-GAS-INPUTS | web_runtime | `index.html:8534` | 184 | P1 | READ | - |
 | UI-GAS-CARDS | web_runtime | `index.html:8718` | 574 | P1 | READ | - |
@@ -63,9 +63,9 @@
 | UI-ZHL-RESULTS | web_runtime | `index.html:9751` | 496 | P1 | IN_PROGRESS | - |
 | UI-ZHL-HEADLESS-HELPERS | web_runtime | `index.html:10247` | 201 | P1 | READ | - |
 | UI-ZHL-HEADLESS-ENGINE | web_runtime | `index.html:10448` | 385 | P0 | READ | - |
-| UI-PLOT-INIT | web_runtime | `index.html:10833` | 95 | P2 | READ | - |
-| UI-PLOT-RENDER | web_runtime | `index.html:10928` | 440 | P2 | READ | - |
-| UI-PLOT-WAYPOINTS | web_runtime | `index.html:11368` | 528 | P2 | READ | - |
+| UI-PLOT-INIT | web_runtime | `index.html:10833` | 95 | P2 | UNREAD | - |
+| UI-PLOT-RENDER | web_runtime | `index.html:10928` | 440 | P2 | UNREAD | - |
+| UI-PLOT-WAYPOINTS | web_runtime | `index.html:11368` | 528 | P2 | UNREAD | - |
 | UI-TOOLS-TISSUES | web_runtime | `index.html:11896` | 305 | P2 | READ | - |
 | UI-TOOLS-EXPOSURE | web_runtime | `index.html:12201` | 225 | P1 | READ | - |
 | UI-TOOLS-GF | web_runtime | `index.html:12426` | 214 | P2 | READ | - |

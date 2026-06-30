@@ -583,15 +583,16 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-RUNTIME-BOOTSTRAP"
       },
       "fingerprint": "502f53f2f99fb4bedac4812a00086c1c0c9cf194cd4abe7cf44df9caa56481f0",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "502f53f2f99fb4bedac4812a00086c1c0c9cf194cd4abe7cf44df9caa56481f0",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 162
     },
     {
       "id": "UI-ENVIRONMENT",
@@ -680,17 +681,17 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-DELEGATES"
       },
       "fingerprint": "6547d83fc8046cfb6f0d4595004d85eb6dd7c6785bb9b33573ac6e867e672e24",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "6547d83fc8046cfb6f0d4595004d85eb6dd7c6785bb9b33573ac6e867e672e24",
       "evidence": [],
       "regression_cases": [],
       "issue": "GitHub #141 L-2 getN2Frac trimix null",
-      "audit_issue": 141
+      "audit_issue": 161
     },
     {
       "id": "UI-CCR-DELEGATES",
@@ -787,8 +788,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RUNNER"
       },
-      "fingerprint": "8dec7b0a8a9638d0838190c32201f061a06eaf76ec64d3fa99073af29086a240",
-      "last_read_fingerprint": "8dec7b0a8a9638d0838190c32201f061a06eaf76ec64d3fa99073af29086a240",
+      "fingerprint": "9138c25141881bdc5a07905224c1fed05a529e29d31577133eed0f860b76355b",
+      "last_read_fingerprint": "9138c25141881bdc5a07905224c1fed05a529e29d31577133eed0f860b76355b",
       "evidence": [
         "REG-31",
         "REG-38"
@@ -883,13 +884,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
-      "fingerprint": "3162fcbe353d84c9c65f63db4521be4a11fb661c59285c23acc7913f347d9ace",
-      "last_read_fingerprint": "3162fcbe353d84c9c65f63db4521be4a11fb661c59285c23acc7913f347d9ace",
+      "fingerprint": "8a79c1563b212d93f9b7a825e1c0dc887bb1114ef6ecfa50b1c31c79c47d4cd9",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 151
@@ -899,7 +900,7 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-HEADLESS-HELPERS"
@@ -908,8 +909,8 @@
       "evidence": [],
       "issue": "Audit #134",
       "fingerprint": "3678c11ab261aec2ccf3ae92febf586e33844a5f2bcfaf525946654d88abee62",
-      "last_read_fingerprint": null,
-      "audit_issue": 139
+      "last_read_fingerprint": "3678c11ab261aec2ccf3ae92febf586e33844a5f2bcfaf525946654d88abee62",
+      "audit_issue": 156
     },
     {
       "id": "UI-ZHL-HEADLESS-ENGINE",
@@ -972,66 +973,70 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-TISSUES"
       },
       "fingerprint": "d9c8e2c3f0423f221048c8cf9bbe073d65aab222efc64f7db00984faefced878",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "d9c8e2c3f0423f221048c8cf9bbe073d65aab222efc64f7db00984faefced878",
+      "audit_issue": 156
     },
     {
       "id": "UI-TOOLS-EXPOSURE",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-EXPOSURE"
       },
       "fingerprint": "c928d6b616152064a364aaf55d261afed640539caa108baf6dbc3e3bcbdb4ddd",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "c928d6b616152064a364aaf55d261afed640539caa108baf6dbc3e3bcbdb4ddd",
+      "audit_issue": 156
     },
     {
       "id": "UI-TOOLS-GF",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-GF"
       },
       "fingerprint": "a5ca8553658a0083ae6d965ec96a00b848596ab9b48127fc1e71711a978e1d2f",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "a5ca8553658a0083ae6d965ec96a00b848596ab9b48127fc1e71711a978e1d2f",
+      "audit_issue": 157
     },
     {
       "id": "UI-TOOLS-PROFILE",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-PROFILE"
       },
       "fingerprint": "8ae70c7847ef29512cc0f95b2680200b37974d43ce56bf1580a753d252b45c5f",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "8ae70c7847ef29512cc0f95b2680200b37974d43ce56bf1580a753d252b45c5f",
+      "audit_issue": 157
     },
     {
       "id": "UI-SETTINGS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS"
       },
       "fingerprint": "7fb4f21b72c0c87e3bc89f7b5463406e6b795698be0365fed0d644aa46f01044",
-      "last_read_fingerprint": null,
-      "audit_issue": 139,
+      "last_read_fingerprint": "7fb4f21b72c0c87e3bc89f7b5463406e6b795698be0365fed0d644aa46f01044",
+      "audit_issue": 158,
       "evidence": [],
       "regression_cases": []
     },
@@ -1040,42 +1045,44 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PROFILE-PRESETS"
       },
       "fingerprint": "389eac6fe50cdd984910f6a8e0529ffbfb2b8b374c02e848c488958973b0b58c",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "389eac6fe50cdd984910f6a8e0529ffbfb2b8b374c02e848c488958973b0b58c",
+      "audit_issue": 159
     },
     {
       "id": "UI-CONFIG-PRESETS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-CONFIG-PRESETS"
       },
       "fingerprint": "7dfd75e09dc3246ce367cb574d8f8ca0d699aa97e222ade2496cc0d7ac9ed45a",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "7dfd75e09dc3246ce367cb574d8f8ca0d699aa97e222ade2496cc0d7ac9ed45a",
+      "audit_issue": 159
     },
     {
       "id": "UI-APP-INIT",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-APP-INIT"
       },
       "fingerprint": "097f137d2442531bf8ba4709aabc9fd0b8c97d907b132c652e50d46be604f738",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "097f137d2442531bf8ba4709aabc9fd0b8c97d907b132c652e50d46be604f738",
       "evidence": [],
       "regression_cases": [],
-      "audit_issue": 139
+      "audit_issue": 160
     },
     {
       "id": "UI-PWA-LIFECYCLE",
@@ -1138,22 +1145,14 @@
       "path": "zhl-schedule-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "8dcb15ec1804e96c7d883bc0edbc19ac059c1f7ef10e2e458f010777b05032c8",
-      "last_read_fingerprint": "8dcb15ec1804e96c7d883bc0edbc19ac059c1f7ef10e2e458f010777b05032c8",
-      "evidence": [
-        "REG-06",
-        "REG-22",
-        "REG-23"
-      ],
-      "regression_cases": [
-        "REG-06",
-        "REG-22",
-        "REG-23"
-      ],
+      "fingerprint": "d7279942cdf33e329f3f519116c57396019850eff57bd05214cf2387e251e637",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Multi-level continuation gas carry and deco-zone ascent rate (1136f90); GF anchor via REG-06"
     },
     {
@@ -2616,7 +2615,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "8af3648bc08395358ec1950697d81fabfb0f5ebe69af208ca9e56b7ad32150b5",
+      "fingerprint": "120f3e9909c521a8c92749dd2a3da308df196915362770677d6d2292f6a46449",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
