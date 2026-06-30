@@ -33,7 +33,6 @@ function buildContingencySlateText() {
   const _ecNow = new Date();
   const _ecD = String(_ecNow.getDate()).padStart(2,'0'), _ecMo = String(_ecNow.getMonth()+1).padStart(2,'0');
   const _ecH = String(_ecNow.getHours()).padStart(2,'0'), _ecMi = String(_ecNow.getMinutes()).padStart(2,'0');
-  const dateStr = _ecNow.toISOString().slice(0,10);
   const ecStamp = `${_ecNow.getFullYear()}/${_ecMo}/${_ecD} ${_ecH}:${_ecMi}`;
   const algoSel = document.getElementById('algorithmSelect')?.value || 'ZHLC_GF';
   const algoNames = { ZHLC_GF: 'Buhlmann GF', VPMB: 'VPM-B', VPMB_GFS: 'VPM-B/GFS' };
@@ -99,6 +98,28 @@ function showContingencySlate() {
   document.getElementById('slateModalBody').textContent = text;
   document.getElementById('slateModal').style.display = 'flex';
 }
+
+/** Render against a scratch #decoTableBody so the live schedule table is never mutated. */
+function withScratchDecoTableBody(fn, prefillHtml) {
+  const mainTbody = document.getElementById('decoTableBody');
+  if (!mainTbody) return typeof fn === 'function' ? fn() : undefined;
+  const table = mainTbody.closest('table');
+  const scratchTbody = document.createElement('tbody');
+  scratchTbody.id = 'decoTableBody';
+  if (prefillHtml) scratchTbody.innerHTML = prefillHtml;
+  mainTbody.removeAttribute('id');
+  const mainDisplay = mainTbody.style.display;
+  mainTbody.style.display = 'none';
+  if (table) table.appendChild(scratchTbody);
+  try {
+    return typeof fn === 'function' ? fn(scratchTbody) : undefined;
+  } finally {
+    scratchTbody.remove();
+    mainTbody.id = 'decoTableBody';
+    mainTbody.style.display = mainDisplay;
+  }
+}
+
 /**
  * Run a contingency schedule without mutating the main deco table DOM.
  * modifyFn may adjust planner inputs (depth, BT, deco gases, bailout, circuit) — all are restored in finally.
@@ -125,14 +146,6 @@ function runContingencyScenario(modifyFn) {
   const origBailout = document.getElementById('ccrBailoutToggle')?.value;
   const origCircuit = document.getElementById('circuitSelect')?.value;
 
-  const table = mainTbody.closest('table');
-  const scratchTbody = document.createElement('tbody');
-  scratchTbody.id = 'decoTableBody';
-  mainTbody.removeAttribute('id');
-  const mainDisplay = mainTbody.style.display;
-  mainTbody.style.display = 'none';
-  if (table) table.appendChild(scratchTbody);
-
   _contingencyRunning = true;
   let ok = false;
   let scenarioDepth, scenarioBT, scenarioBotFracs, newRows = '', lastRun, decoTime;
@@ -140,51 +153,50 @@ function runContingencyScenario(modifyFn) {
   let decoZoneStart, contSurfaceGF, planSum, contLastPlan, contLastTissues;
   let error = null;
   try {
-    if (typeof modifyFn === 'function') modifyFn();
-    runDecoSchedule();
+    withScratchDecoTableBody((scratchTbody) => {
+      if (typeof modifyFn === 'function') modifyFn();
+      runDecoSchedule();
 
-    const rows = scratchTbody.querySelectorAll('tr[data-phase]');
-    if (!rows.length) return empty;
+      const rows = scratchTbody.querySelectorAll('tr[data-phase]');
+      if (!rows.length) return;
 
-    ok = true;
-    scenarioDepth = document.getElementById('decoDepth')?.value;
-    scenarioBT = document.getElementById('decoBT')?.value;
-    scenarioBotFracs = getBottomGasFractions();
-    newRows = scratchTbody.innerHTML;
-    lastRun = 0;
-    decoTime = 0;
-    rows.forEach(tr => {
-      const run = parseRunMinutes(tr.querySelector('td[data-label="Run"]')?.textContent) || 0;
-      if (run > lastRun) lastRun = run;
-      if (tr.dataset.phase === 'deco' || tr.dataset.phase === 'safety') {
-        const stopTxt = tr.querySelector('td[data-label="Stop"]')?.textContent || '';
-        decoTime += parseRunMinutes(stopTxt) || 0;
-      }
+      ok = true;
+      scenarioDepth = document.getElementById('decoDepth')?.value;
+      scenarioBT = document.getElementById('decoBT')?.value;
+      scenarioBotFracs = getBottomGasFractions();
+      newRows = scratchTbody.innerHTML;
+      lastRun = 0;
+      decoTime = 0;
+      rows.forEach(tr => {
+        const run = parseRunMinutes(tr.querySelector('td[data-label="Run"]')?.textContent) || 0;
+        if (run > lastRun) lastRun = run;
+        if (tr.dataset.phase === 'deco' || tr.dataset.phase === 'safety') {
+          const stopTxt = tr.querySelector('td[data-label="Stop"]')?.textContent || '';
+          decoTime += parseRunMinutes(stopTxt) || 0;
+        }
+      });
+
+      const totalsRow = scratchTbody.querySelector('tr[data-phase="totals"] td');
+      planSum = getPlanSummaryExport(totalsRow);
+      const lp = window._lastPlan || {};
+      lastRunFmt = planSum.runTime !== '-' ? planSum.runTime : null;
+      decoTimeFmt = planSum.decoTime !== '-' ? planSum.decoTime : null;
+      totalCNS = planSum.cns !== '-' ? planSum.cns : null;
+      totalOTUc = planSum.otu !== '-' ? planSum.otu : null;
+      tts = planSum.tts;
+      decoStop = planSum.decoStop;
+      decozoneDisp = planSum.decozone;
+      decoZoneStart = lp.decoZoneStart ?? 0;
+      contSurfaceGF = lp.surfaceGF ?? null;
+      contLastPlan = window._lastPlan ? JSON.parse(JSON.stringify(window._lastPlan)) : null;
+      const tissueSrc = window._lastPlan?.finalTissues;
+      contLastTissues = tissueSrc && tissueSrc.length
+        ? tissueSrc.map(t => ({ pN2: t.pN2, pHe: t.pHe || 0, mv: t.mv }))
+        : null;
     });
-
-    const totalsRow = scratchTbody.querySelector('tr[data-phase="totals"] td');
-    planSum = getPlanSummaryExport(totalsRow);
-    const lp = window._lastPlan || {};
-    lastRunFmt = planSum.runTime !== '-' ? planSum.runTime : null;
-    decoTimeFmt = planSum.decoTime !== '-' ? planSum.decoTime : null;
-    totalCNS = planSum.cns !== '-' ? planSum.cns : null;
-    totalOTUc = planSum.otu !== '-' ? planSum.otu : null;
-    tts = planSum.tts;
-    decoStop = planSum.decoStop;
-    decozoneDisp = planSum.decozone;
-    decoZoneStart = lp.decoZoneStart ?? 0;
-    contSurfaceGF = lp.surfaceGF ?? null;
-    contLastPlan = window._lastPlan ? JSON.parse(JSON.stringify(window._lastPlan)) : null;
-    const tissueSrc = window._lastPlan?.finalTissues;
-    contLastTissues = tissueSrc && tissueSrc.length
-      ? tissueSrc.map(t => ({ pN2: t.pN2, pHe: t.pHe || 0, mv: t.mv }))
-      : null;
   } catch (e) {
     error = e.message;
   } finally {
-    scratchTbody.remove();
-    mainTbody.id = 'decoTableBody';
-    mainTbody.style.display = mainDisplay;
     if (origBT != null) {
       const btEl = document.getElementById('decoBT');
       if (btEl) btEl.value = origBT;
@@ -211,6 +223,7 @@ function runContingencyScenario(modifyFn) {
     _contingencyRunning = false;
   }
 
+  if (!ok) return empty;
   return {
     ok, newRows, lastRun, decoTime: Math.round(decoTime), lastRunFmt, decoTimeFmt, totalCNS, totalOTUc,
     decoZoneStart, decozoneDisp, decoStop, tts, planSum, contSurfaceGF, scenarioDepth, scenarioBT, scenarioBotFracs,
@@ -459,6 +472,19 @@ function calcContingency() {
 
 
 
+  function legendRowFromTr(tr) {
+    if (!(tr instanceof HTMLElement)) return tr;
+    const cell = (label) => tr.querySelector(`td[data-label="${label}"]`)?.textContent.trim()
+      || tr.querySelector(`th[data-label="${label}"]`)?.textContent.trim()
+      || '';
+    const num = cell('#') || tr.querySelector('td:nth-child(1)')?.textContent.trim() || '';
+    const stop = (cell('Stop') || tr.querySelector('td:nth-child(2)')?.textContent.trim() || '')
+      .replace(/[^\x20-\x7E]/g, '').trim();
+    const run = cell('Run') || tr.querySelector('td:nth-child(3)')?.textContent.trim() || '';
+    const ppo = cell('ppO2') || cell('PPO2') || tr.querySelector('td:nth-child(4)')?.textContent.trim() || '';
+    return { num, stop, run, ppo2: ppo };
+  }
+
   function drawGraphLegend(doc, y, ML, CW, checkY, legendRows) {
     let rows = legendRows;
     if (!rows) {
@@ -474,19 +500,11 @@ function calcContingency() {
     ['#','Stop','Run','ppO2'].forEach((h,i)=>doc.text(h,cx[i]+(i>0?cw[i]/2:cw[0]/2),y+3.8,{align:i===0?'center':'center'}));
     doc.setTextColor(0,0,0); y+=5.5;
     rows.forEach((row, ri)=>{
-      let num, stop, run, ppo;
-      if (row instanceof HTMLElement) {
-        const cells = Array.from(row.querySelectorAll('td'));
-        num = cells[0]?.textContent.trim() || '';
-        stop = cells[1]?.textContent.trim().replace(/[^\x20-\x7E]/g,'').trim() || '';
-        run = cells[2]?.textContent.trim() || '';
-        ppo = cells[3]?.textContent.trim() || '';
-      } else {
-        num = row.num || '';
-        stop = row.stop || '';
-        run = row.run || '';
-        ppo = row.ppo2 || row.ppo || '';
-      }
+      const norm = legendRowFromTr(row);
+      const num = norm.num || '';
+      const stop = norm.stop || '';
+      const run = norm.run || '';
+      const ppo = norm.ppo2 || norm.ppo || '';
       const ppoV=parseFloat(ppo)||0;
       const tc=ppoV>=1.6?[200,0,0]:ppoV>=1.4?[180,100,0]:[60,120,60];
       ri%2===0?doc.setFillColor(248,249,255):doc.setFillColor(255,255,255);
@@ -839,25 +857,22 @@ async function exportContingencyPDF(opts) {
 
   // ── SECTION: Dive Profile Graph ─────────────────────────────────────────
   if (_incProfile) {
-    const saved = document.getElementById('decoTableBody').innerHTML;
     try {
-      document.getElementById('decoTableBody').innerHTML = c.newRows;
-      _drawForPDF(() => drawDecoProfile());
-      const pc = document.getElementById('decoProfileCanvas');
-      if (pc) {
-        doc.addPage(); drawHeader();
-        sectionTitle('EMERGENCY DIVE PROFILE GRAPH', `${depth}${du} / ${bt}min / ${cleanPDF(c.label)}`);
-        const _pcCapture = _canvasToDataURLForPDF(pc, CW);
-        const imgH = CW * pc.height / pc.width;
-        doc.addImage(_pcCapture.dataURL,'PNG',ML,y,CW,imgH);
-        y += imgH+4;
-        y = drawGraphLegend(doc, y, ML, CW, checkY, buildProfileLegendRowsFromWaypoints());
-      }
+      withScratchDecoTableBody(() => {
+        _drawForPDF(() => drawDecoProfile());
+        const pc = document.getElementById('decoProfileCanvas');
+        if (pc) {
+          doc.addPage(); drawHeader();
+          sectionTitle('EMERGENCY DIVE PROFILE GRAPH', `${depth}${du} / ${bt}min / ${cleanPDF(c.label)}`);
+          const _pcCapture = _canvasToDataURLForPDF(pc, CW);
+          const imgH = CW * pc.height / pc.width;
+          doc.addImage(_pcCapture.dataURL,'PNG',ML,y,CW,imgH);
+          y += imgH+4;
+          y = drawGraphLegend(doc, y, ML, CW, checkY, buildProfileLegendRowsFromWaypoints());
+        }
+      }, c.newRows);
     } catch(e) { console.warn('Emergency graph failed',e); }
-    finally {
-      document.getElementById('decoTableBody').innerHTML = saved;
-      drawDecoProfile();
-    }
+    drawDecoProfile();
   }
 
   // ── SECTION: GF Gradient Factor Curve ───────────────────────────────────
@@ -936,28 +951,33 @@ async function exportContingencyPDF(opts) {
     y+=4;
 
     // Compartment Detail table
-    const ttbEm=document.getElementById('tissueTableBody');
-    if(ttbEm&&ttbEm.rows.length===0&&emTissues) updateTissueViz(emTissues,mGF.high);
-    if(ttbEm&&ttbEm.rows.length){
-      doc.addPage(); drawHeader();
-      sectionTitle('COMPARTMENT DETAIL','Buhlmann ZH-L16C - End of dive N2 loading');
-      const th3=['#','Half-time (min)','N2 Load (bar)','M-value (bar)','Saturation %','Status'];
-      const tw3=[8,30,28,28,28,30]; const tx3=[ML]; tw3.forEach((w,i)=>{if(i<tw3.length-1)tx3.push(tx3[i]+tw3[i]);});
-      doc.setFillColor(180,30,30);doc.rect(ML,y,CW,6,'F');
-      doc.setFontSize(7);doc.setFont('DejaVuSans','bold');doc.setTextColor(255,255,255);
-      th3.forEach((h,i)=>doc.text(h,tx3[i]+tw3[i]/2,y+4,{align:'center'}));
-      doc.setTextColor(0,0,0);y+=6;
-      Array.from(ttbEm.rows).forEach((tr,ri)=>{
-        checkY(5);const cells=Array.from(tr.cells).map(td=>td.textContent.trim());
-        const pct=parseFloat(cells[4])||0;
-        const cr=pct>=100?[200,0,0]:pct>=85?[180,80,0]:pct>=70?[150,120,0]:[20,140,50];
-        ri%2===0?doc.setFillColor(255,250,250):doc.setFillColor(255,255,255);
-        doc.rect(ML,y,CW,5,'F');
-        doc.setFontSize(7);doc.setFont('DejaVuSans','normal');doc.setTextColor(...cr);
-        cells.forEach((v,i)=>doc.text(cleanPDF(v),tx3[i]+tw3[i]/2,y+3.5,{align:'center'}));
-        doc.setTextColor(0,0,0);y+=5;
-      });
-      y+=4;
+    const ttbEm = document.getElementById('tissueTableBody');
+    const savedTissueHtml = ttbEm ? ttbEm.innerHTML : '';
+    try {
+      if (ttbEm && ttbEm.rows.length === 0 && emTissues) updateTissueViz(emTissues, mGF.high);
+      if (ttbEm && ttbEm.rows.length) {
+        doc.addPage(); drawHeader();
+        sectionTitle('COMPARTMENT DETAIL','Buhlmann ZH-L16C - End of dive N2 loading');
+        const th3=['#','Half-time (min)','N2 Load (bar)','M-value (bar)','Saturation %','Status'];
+        const tw3=[8,30,28,28,28,30]; const tx3=[ML]; tw3.forEach((w,i)=>{if(i<tw3.length-1)tx3.push(tx3[i]+tw3[i]);});
+        doc.setFillColor(180,30,30);doc.rect(ML,y,CW,6,'F');
+        doc.setFontSize(7);doc.setFont('DejaVuSans','bold');doc.setTextColor(255,255,255);
+        th3.forEach((h,i)=>doc.text(h,tx3[i]+tw3[i]/2,y+4,{align:'center'}));
+        doc.setTextColor(0,0,0);y+=6;
+        Array.from(ttbEm.rows).forEach((tr,ri)=>{
+          checkY(5);const cells=Array.from(tr.cells).map(td=>td.textContent.trim());
+          const pct=parseFloat(cells[4])||0;
+          const cr=pct>=100?[200,0,0]:pct>=85?[180,80,0]:pct>=70?[150,120,0]:[20,140,50];
+          ri%2===0?doc.setFillColor(255,250,250):doc.setFillColor(255,255,255);
+          doc.rect(ML,y,CW,5,'F');
+          doc.setFontSize(7);doc.setFont('DejaVuSans','normal');doc.setTextColor(...cr);
+          cells.forEach((v,i)=>doc.text(cleanPDF(v),tx3[i]+tw3[i]/2,y+3.5,{align:'center'}));
+          doc.setTextColor(0,0,0);y+=5;
+        });
+        y+=4;
+      }
+    } finally {
+      if (ttbEm) ttbEm.innerHTML = savedTissueHtml;
     }
 
     // Per-Stop Ascent Profile (grid)

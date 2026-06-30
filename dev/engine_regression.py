@@ -1031,7 +1031,7 @@ ENGINE_SUITE_JS = r"""
   // ── Cycle 7 audit fixes (contingency, SW, adv settings) ─────────────────
   out.sections.cycle7 = (() => {
     const rcsFn = typeof runContingencyScenario === 'function' ? runContingencyScenario.toString() : '';
-    const h1SrcOk = !/savedBody/.test(rcsFn) && /scratchTbody/.test(rcsFn);
+    const h1SrcOk = !/savedBody/.test(rcsFn) && (/withScratchDecoTableBody/.test(rcsFn) || /scratchTbody/.test(rcsFn));
     let h1FuncOk = false;
     if (typeof runContingencyScenario === 'function' && typeof runDecoSchedule === 'function') {
       try {
@@ -1086,6 +1086,21 @@ ENGINE_SUITE_JS = r"""
     const h1Ok = h1SrcOk && h1FuncOk;
     const h2Ok = h2SrcOk && h2ThrowOk;
     return { h1Ok, h2Ok, m1Ok, m2Ok, m3Ok, m4Ok, l4Ok, ok: h1Ok && h2Ok && m1Ok && m2Ok && m3Ok && m4Ok && l4Ok };
+  })();
+
+  // ── Cycle 7b re-read fixes (PDF export DOM isolation) ───────────────────
+  out.sections.cycle7b = (() => {
+    const pdfFn = typeof exportContingencyPDF === 'function' ? exportContingencyPDF.toString() : '';
+    const h1Ok = /withScratchDecoTableBody/.test(pdfFn)
+      && !/decoTableBody'\)\.innerHTML = c\.newRows/.test(pdfFn)
+      && !/getElementById\('decoTableBody'\)\.innerHTML = saved/.test(pdfFn);
+    const m1Ok = /savedTissueHtml/.test(pdfFn) && /ttbEm\.innerHTML = savedTissueHtml/.test(pdfFn);
+    const slateFn = typeof buildContingencySlateText === 'function' ? buildContingencySlateText.toString() : '';
+    const l1Ok = !/dateStr/.test(slateFn);
+    const legFn = typeof legendRowFromTr === 'function' ? legendRowFromTr.toString() : '';
+    const l2Ok = /data-label=/.test(legFn) && /legendRowFromTr/.test(typeof drawGraphLegend === 'function' ? drawGraphLegend.toString() : '');
+    const helperOk = typeof withScratchDecoTableBody === 'function';
+    return { h1Ok, m1Ok, l1Ok, l2Ok, helperOk, ok: h1Ok && m1Ok && l1Ok && l2Ok && helperOk };
   })();
 
   // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
@@ -1456,6 +1471,11 @@ def run_suite(page) -> dict:
     assert_true(c7.get("m3Ok"), "[CYCLE7-M3] contingency PDF tissue section uses contLastTissues only", str(c7))
     assert_true(c7.get("m4Ok"), "[CYCLE7-M4] contingency PDF legend from waypoint data", str(c7))
     assert_true(c7.get("l4Ok"), "[CYCLE7-L4] minStopTime 0:01 disabled under whole-minute rounding", str(c7))
+    c7b = s.get("cycle7b", {})
+    assert_true(c7b.get("h1Ok"), "[CYCLE7b-H1] contingency PDF profile uses scratch tbody not innerHTML swap", str(c7b))
+    assert_true(c7b.get("m1Ok"), "[CYCLE7b-M1] contingency PDF restores tissueTableBody after updateTissueViz", str(c7b))
+    assert_true(c7b.get("l1Ok"), "[CYCLE7b-L1] buildContingencySlateText has no dead dateStr", str(c7b))
+    assert_true(c7b.get("l2Ok"), "[CYCLE7b-L2] drawGraphLegend normalizes rows via legendRowFromTr", str(c7b))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
     sw_block = sw_install.split("addEventListener('install'")[1].split("addEventListener('activate'")[0] if "addEventListener('install'" in sw_install else ""
     assert_true("clients.matchAll" not in sw_block, "[CYCLE7-L2] SW install handler does not postMessage before claim")

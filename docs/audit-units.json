@@ -1132,7 +1132,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "4beb890efb356643309a6d3bf5a75be8e09504880ea790c9b96bc6b82ade2ff3",
+      "fingerprint": "9d3efd01d963c06f5a00083a90f1e2970bcfa4fd3e0ea94d41b7868ce169089e",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
@@ -1550,7 +1550,7 @@
       "evidence": [],
       "issue": "GitHub #133\u00e2\u20ac\u201c#138 audit regression sections",
       "regression_cases": [],
-      "fingerprint": "82c975c8a0f6b9302ff6fd29950ea3aecfa19f24d69bca5d868a4a28ef92ff46",
+      "fingerprint": "b1089795f9bccaf39b9807f10838d065e6b88b7c656463a5eb8b0249494f2142",
       "last_read_fingerprint": null
     },
     {
