@@ -1251,9 +1251,8 @@ def run_suite(page) -> dict:
         assert_true(t110.get(key, {}).get("ok"), f"ZHL plan timeline parity {key} (issue #110 H-3/L-1)", str(t110.get(key)))
 
     ml = s.get("mlContGas", {})
-    assert_true(ml.get("gasOk"), "multi-level continuation gas preserved on ascent after hold", str(ml))
-    assert_true(ml.get("rateOk"), "continuation no-deco ascent uses main rate not deco rate", str(ml))
-    assert_true(ml.get("ok"), "multi-level continuation gas regression gate", str(ml))
+    assert_true(ml.get("gasOk"), "[ZHL-ML-CONT-GAS] multi-level continuation gas preserved on ascent after hold", str(ml))
+    assert_true(ml.get("rateOk"), "[ZHL-ML-ASCENT-RATE] continuation no-deco ascent uses main rate not deco rate", str(ml))
     mlb = s.get("mlBottomLabel", {})
     assert_true(mlb.get("ok"), "headless descent/bottom gas label from declared level not first step", str(mlb))
 
@@ -1309,6 +1308,8 @@ def _audit_case_rows():
         case_row("AUDIT-REG-02", case_ok("AUDIT-REG-02")),
         case_row("AUDIT-REG-03", case_ok("AUDIT-REG-03")),
         case_row("AUDIT-REG-05", case_ok("AUDIT-REG-05")),
+        case_row("ZHL-ML-CONT-GAS", case_ok("ZHL-ML-CONT-GAS")),
+        case_row("ZHL-ML-ASCENT-RATE", case_ok("ZHL-ML-ASCENT-RATE")),
     ]
 
 

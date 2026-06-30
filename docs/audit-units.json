@@ -210,6 +210,14 @@
       "suite_id": "SUITE-ISSUE-142",
       "case_id": "ISSUE142-SI-05-INVALID-MIX"
     },
+    "REG-22": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "ZHL-ML-CONT-GAS"
+    },
+    "REG-23": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "ZHL-ML-ASCENT-RATE"
+    },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
       "case_id": "android-compile"
@@ -1052,15 +1060,23 @@
       "path": "zhl-schedule-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "b96643f1269401019c569be95b7664d66078a850ef4d75a40495a0814bd9af1f",
-      "last_read_fingerprint": null,
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 141
+      "last_read_fingerprint": "b96643f1269401019c569be95b7664d66078a850ef4d75a40495a0814bd9af1f",
+      "evidence": [
+        "REG-06",
+        "REG-22",
+        "REG-23"
+      ],
+      "regression_cases": [
+        "REG-06",
+        "REG-22",
+        "REG-23"
+      ],
+      "issue": "Multi-level continuation gas carry and deco-zone ascent rate (1136f90); GF anchor via REG-06"
     },
     {
       "id": "ENG-VPM",
@@ -1540,7 +1556,7 @@
       "evidence": [],
       "issue": "GitHub #133\u00e2\u20ac\u201c#138 audit regression sections",
       "regression_cases": [],
-      "fingerprint": "c9089929ed20974c88b57eeb4a17de3c8e8cfa7b61fdc7e438174df966482879",
+      "fingerprint": "5e9f7696692146642128605b7a874ae52e9f4b90956204f2451ef0dcf7a35ed1",
       "last_read_fingerprint": null
     },
     {
@@ -2747,7 +2763,9 @@
         "AUDIT-REG-01",
         "AUDIT-REG-02",
         "AUDIT-REG-03",
-        "AUDIT-REG-05"
+        "AUDIT-REG-05",
+        "ZHL-ML-CONT-GAS",
+        "ZHL-ML-ASCENT-RATE"
       ]
     },
     {
