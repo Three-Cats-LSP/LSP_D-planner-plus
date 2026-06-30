@@ -286,7 +286,7 @@
         "APP-SERVICE-WORKER",
         "TOOL-AUDIT"
       ],
-      "resolution_commit": "d2c6d85",
+      "resolution_commit": "9a675c8",
       "evidence_cases": [
         "REG-08",
         "REG-09",
