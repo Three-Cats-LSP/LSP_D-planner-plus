@@ -377,6 +377,11 @@ function canonicalCircuit(circuit) {
   return 'OC';
 }
 
+const PSCR_LOOP_VOLUME_MIN = 3;
+const PSCR_LOOP_VOLUME_MAX = 15;
+const PSCR_METABOLIC_O2_MIN = 0.5;
+const PSCR_METABOLIC_O2_MAX = 2.5;
+
 /** Closed field list — unknown keys on input are dropped; extend here when adding CCR settings. */
 function normalizeCCRSettings(s) {
   s = s || {};
@@ -477,6 +482,18 @@ function getCcrMetabolicO2Rate(ccr) {
   return v > 0 ? v : 1.5;
 }
 
+function parsePSCRParameters(ccr) {
+  const loopVol = parseFloat(ccr.scrLoopVolume);
+  if (!Number.isFinite(loopVol) || loopVol < PSCR_LOOP_VOLUME_MIN || loopVol > PSCR_LOOP_VOLUME_MAX) {
+    throw new RangeError(`pSCR loop volume must be between ${PSCR_LOOP_VOLUME_MIN} and ${PSCR_LOOP_VOLUME_MAX} litres`);
+  }
+  const metO2 = parseFloat(ccr.scrMetabolicO2);
+  if (!Number.isFinite(metO2) || metO2 < PSCR_METABOLIC_O2_MIN || metO2 > PSCR_METABOLIC_O2_MAX) {
+    throw new RangeError(`pSCR metabolic O2 must be between ${PSCR_METABOLIC_O2_MIN} and ${PSCR_METABOLIC_O2_MAX} L/min`);
+  }
+  return { loopVol, metO2 };
+}
+
 /** pSCR loop fractions; metO2/loopVol yields bar/bar ppO2 drop (L/min ÷ L). */
 function computePSCRFractions(pAmb, fO2, fHe, ccr) {
   fO2 = Math.max(0, Math.min(1, fO2 || 0));
@@ -484,11 +501,7 @@ function computePSCRFractions(pAmb, fO2, fHe, ccr) {
   const fN2src = Math.max(0, 1 - fO2 - fHe);
   const sourceInert = Math.max(0.001, fHe + fN2src);
   if (sourceInert <= 0.001 && fO2 >= 0.999) return { fO2: 1, fHe: 0, fN2: 0 };
-  const loopVol = parseFloat(ccr.scrLoopVolume);
-  if (!Number.isFinite(loopVol) || loopVol <= 0) {
-    throw new Error('Invalid pSCR loop volume');
-  }
-  const metO2 = getCcrMetabolicO2Rate(ccr);
+  const { loopVol, metO2 } = parsePSCRParameters(ccr);
   // Steady-state pSCR model: ppO2_loop = ppO2_supply - VO2/loopVol (Baker drop formula).
   // Previous model subtracted cumulative dive runtime × VO2 from a fixed loop volume,
   // which drove loop O2 to near-zero after a few minutes, zeroing N2 loading for the
@@ -1618,6 +1631,10 @@ function runZhlScheduleCore(params) {
     setHeHalfTimeMode,
     OTU_EXPONENT,
     PSCR_MIN_PPO2,
+    PSCR_LOOP_VOLUME_MIN,
+    PSCR_LOOP_VOLUME_MAX,
+    PSCR_METABOLIC_O2_MIN,
+    PSCR_METABOLIC_O2_MAX,
     ZHL16C,
     ZHL16C_HE_HT,
     ZHL16C_HE_HT_BAKER,

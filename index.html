@@ -6424,6 +6424,10 @@ function getPscrMinPpo2() {
 }
 const PSCR_DILUENT_EPSILON = 1e-6;
 const PSCR_DEFAULT_BYPASS_RATIO = 10; // fallback when loop/diluent delta vanishes (typical sport pSCR ~1:7–1:10)
+const PSCR_LOOP_VOLUME_MIN = ZhlEngineBundle.PSCR_LOOP_VOLUME_MIN;
+const PSCR_LOOP_VOLUME_MAX = ZhlEngineBundle.PSCR_LOOP_VOLUME_MAX;
+const PSCR_METABOLIC_O2_MIN = ZhlEngineBundle.PSCR_METABOLIC_O2_MIN;
+const PSCR_METABOLIC_O2_MAX = ZhlEngineBundle.PSCR_METABOLIC_O2_MAX;
 
 function parseCcrSetpoint(id, fallback) {
   const v = parseFloat(document.getElementById(id)?.value);
@@ -10218,6 +10222,25 @@ function collectDecoGasesPctFromDom() {
   return out;
 }
 
+function validatePSCRParameterBounds(settings) {
+  const loopVol = parseFloat(settings.scrLoopVolume);
+  const metO2 = parseFloat(settings.scrMetabolicO2);
+  const errors = [];
+  if (!Number.isFinite(loopVol) || loopVol < PSCR_LOOP_VOLUME_MIN || loopVol > PSCR_LOOP_VOLUME_MAX) {
+    errors.push({
+      code: 'INVALID_LOOP_VOLUME', field: 'scrLoopVolume',
+      message: `pSCR loop volume must be between ${PSCR_LOOP_VOLUME_MIN} and ${PSCR_LOOP_VOLUME_MAX} litres.`,
+    });
+  }
+  if (!Number.isFinite(metO2) || metO2 < PSCR_METABOLIC_O2_MIN || metO2 > PSCR_METABOLIC_O2_MAX) {
+    errors.push({
+      code: 'INVALID_METABOLIC_O2', field: 'scrMetabolicO2',
+      message: `pSCR metabolic O₂ must be between ${PSCR_METABOLIC_O2_MIN} and ${PSCR_METABOLIC_O2_MAX} L/min.`,
+    });
+  }
+  return errors;
+}
+
 function validateCcrCalculationInputs(levels, settings, decoGases) {
   const errors = [];
   const s = settings || {};
@@ -10259,22 +10282,7 @@ function validateCcrCalculationInputs(levels, settings, decoGases) {
   const decoSP = s.decoSetpoint != null ? s.decoSetpoint : (s.setpoint != null ? s.setpoint : 1.3);
 
   if (circuit === 'pSCR') {
-    const loopVol = parseFloat(s.scrLoopVolume);
-    const metO2 = parseFloat(s.scrMetabolicO2);
-    if (!Number.isFinite(loopVol) || loopVol <= 0) {
-      errors.push({
-        code: 'INVALID_LOOP_VOLUME',
-        field: 'scrLoopVolume',
-        message: 'pSCR loop volume must be a positive number of litres.',
-      });
-    }
-    if (!Number.isFinite(metO2) || metO2 <= 0) {
-      errors.push({
-        code: 'INVALID_METABOLIC_O2',
-        field: 'scrMetabolicO2',
-        message: 'pSCR metabolic O₂ must be a positive number (L/min).',
-      });
-    }
+    errors.push(...validatePSCRParameterBounds(s));
     for (const [name, value, min, max] of [
       ['bottom', bottomSP, 0.7, 1.6],
       ['deco', decoSP, 0.7, 1.6],

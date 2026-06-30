@@ -218,6 +218,34 @@
       "suite_id": "SUITE-ENGINE-FULL",
       "case_id": "ZHL-ML-ASCENT-RATE"
     },
+    "REG-24": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE6-RDP-CEILING"
+    },
+    "REG-25": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE6-PADI-DEPTH"
+    },
+    "REG-26": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE6-TRIMIX-RANGE"
+    },
+    "REG-27": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE6-PSCR-BOUNDS"
+    },
+    "REG-28": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE6-PSCR-CANON"
+    },
+    "REG-29": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE6-CCR-DRY-PPO2"
+    },
+    "REG-30": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE6-BUHLMANN-BT"
+    },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
       "case_id": "android-compile"
@@ -625,13 +653,15 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-DELEGATES"
       },
-      "fingerprint": "7b6642c8195bafbf3d6da3dc67b8e28384cdff323da28a8f77545be8abfd7940",
-      "last_read_fingerprint": "7b6642c8195bafbf3d6da3dc67b8e28384cdff323da28a8f77545be8abfd7940",
+      "fingerprint": "6547d83fc8046cfb6f0d4595004d85eb6dd7c6785bb9b33573ac6e867e672e24",
+      "last_read_fingerprint": "6547d83fc8046cfb6f0d4595004d85eb6dd7c6785bb9b33573ac6e867e672e24",
       "evidence": [
-        "REG-16"
+        "REG-16",
+        "REG-27"
       ],
       "regression_cases": [
-        "REG-16"
+        "REG-16",
+        "REG-27"
       ],
       "issue": "GitHub #141 L-2 getN2Frac trimix null",
       "audit_issue": 141
@@ -662,32 +692,46 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-DECO-PHYSICS"
       },
       "fingerprint": "0e28b392ed53a714b92e0c461580f1bfef232294d0f9a789be5384bde9298a5e",
-      "last_read_fingerprint": null,
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 139
+      "last_read_fingerprint": "0e28b392ed53a714b92e0c461580f1bfef232294d0f9a789be5384bde9298a5e",
+      "evidence": [
+        "REG-24",
+        "REG-30"
+      ],
+      "regression_cases": [
+        "REG-24",
+        "REG-30"
+      ],
+      "issue": "Cycle 6 recreational physics review and regression coverage"
     },
     {
       "id": "UI-SCHEDULE-INPUTS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SCHEDULE-INPUTS"
       },
       "fingerprint": "41306cedd180e53e704bea2c3e76eea67ce45495511fd60394c3771f25dc0ac0",
-      "last_read_fingerprint": null,
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 139
+      "last_read_fingerprint": "41306cedd180e53e704bea2c3e76eea67ce45495511fd60394c3771f25dc0ac0",
+      "evidence": [
+        "REG-25",
+        "REG-26",
+        "REG-27"
+      ],
+      "regression_cases": [
+        "REG-25",
+        "REG-26",
+        "REG-27"
+      ],
+      "issue": "Cycle 6 schedule input validation review and regression coverage"
     },
     {
       "id": "UI-SETTINGS-CONTROLS",
@@ -828,7 +872,7 @@
       "regression_cases": [],
       "evidence": [],
       "issue": "Audit #134",
-      "fingerprint": "61d538ab7727f22be74f18283acdc598be705e049edb29dddb571cb06765f696",
+      "fingerprint": "3678c11ab261aec2ccf3ae92febf586e33844a5f2bcfaf525946654d88abee62",
       "last_read_fingerprint": null,
       "audit_issue": 139
     },
@@ -1043,15 +1087,23 @@
       "path": "zhl-ccr-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [],
-      "regression_cases": [],
-      "issue": "Audit #134; CCR deep-endpoint setpoint sampling",
-      "fingerprint": "4a75814802434e594ea3524227aa25105008120c3fde37b2e3e607107a8cad7c",
-      "last_read_fingerprint": null
+      "evidence": [
+        "REG-27",
+        "REG-28",
+        "REG-29"
+      ],
+      "regression_cases": [
+        "REG-27",
+        "REG-28",
+        "REG-29"
+      ],
+      "issue": "Audit #134 endpoint sampling; Cycle 6 pSCR bounds, circuit canonicalization, and dry-pressure cap",
+      "fingerprint": "6d1953c834dcf1309da766e9a596be8a91c64047cd362caf61a8673322c17a5a",
+      "last_read_fingerprint": "6d1953c834dcf1309da766e9a596be8a91c64047cd362caf61a8673322c17a5a"
     },
     {
       "id": "ENG-ZHL-SCHEDULE",
@@ -1171,7 +1223,7 @@
         "REG-12",
         "REG-13"
       ],
-      "issue": "GitHub #140 H-2 / Cycle 5 GP-01\u201306 \u2014 docs/code-review-2026-06-30.md",
+      "issue": "GitHub #140 H-2 / Cycle 5 GP-01–06 — docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-10",
         "REG-12",
@@ -1193,7 +1245,7 @@
         "REG-11",
         "REG-14"
       ],
-      "issue": "Cycle 5 GT-01\u201306 \u2014 docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GT-01–06 — docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-11",
         "REG-14"
@@ -1216,7 +1268,7 @@
         "REG-20",
         "REG-21"
       ],
-      "issue": "GitHub #142 \u2014 Dive 2 gas override",
+      "issue": "GitHub #142 — Dive 2 gas override",
       "regression_cases": [
         "REG-17",
         "REG-19",
@@ -1552,9 +1604,9 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "GitHub #133\u00e2\u20ac\u201c#138 audit regression sections",
+      "issue": "GitHub #133â€“#138 audit regression sections",
       "regression_cases": [],
-      "fingerprint": "99cec49c101752db0d22ec3ad24a24dcdb46fba0acc776bc569334d7e554af06",
+      "fingerprint": "4d2ae2e3ebdbbb94b308ec026db816fb6bbecdd159843a128295d8f41e3816ea",
       "last_read_fingerprint": null
     },
     {
@@ -1582,7 +1634,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "Cycle 5 GP/GT behavioral regression \u2014 docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GP/GT behavioral regression — docs/code-review-2026-06-30.md",
       "regression_cases": [],
       "fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
       "last_read_fingerprint": null
@@ -1981,7 +2033,7 @@
       },
       "evidence": [],
       "regression_cases": [],
-      "issue": "GitHub #133\u00e2\u20ac\u201c#139 structured environment audit gates; release regression 9/9",
+      "issue": "GitHub #133â€“#139 structured environment audit gates; release regression 9/9",
       "fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d",
       "last_read_fingerprint": null
     },
@@ -2049,7 +2101,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "908b4fb6d4fa275975826447957bd1aa53c23c957c4fd3c015818671f1993171",
+      "fingerprint": "051a0e9287f73622967742accffccbfdc7c2c445901ca0b88170b4c2fedadbc6",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
@@ -2765,7 +2817,14 @@
         "AUDIT-REG-03",
         "AUDIT-REG-05",
         "ZHL-ML-CONT-GAS",
-        "ZHL-ML-ASCENT-RATE"
+        "ZHL-ML-ASCENT-RATE",
+        "CYCLE6-RDP-CEILING",
+        "CYCLE6-PADI-DEPTH",
+        "CYCLE6-TRIMIX-RANGE",
+        "CYCLE6-PSCR-BOUNDS",
+        "CYCLE6-PSCR-CANON",
+        "CYCLE6-CCR-DRY-PPO2",
+        "CYCLE6-BUHLMANN-BT"
       ]
     },
     {

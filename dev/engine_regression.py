@@ -1076,22 +1076,46 @@ ENGINE_SUITE_JS = r"""
     let pscrValOk = false;
     let pscrCanonOk = false;
     if (typeof validateCcrCalculationInputs === 'function') {
-      const badLoop = validateCcrCalculationInputs(
-        [{ depth: 40, time: 20, o2: 21, he: 0 }],
-        { circuit: 'pSCR', scrLoopVolume: -5, scrMetabolicO2: 1.5 },
-        []
-      );
-      pscrValOk = !badLoop.ok;
+      const profile = [{ depth: 40, time: 20, o2: 21, he: 0 }];
+      const invalidSettings = [
+        { scrLoopVolume: 2.99, scrMetabolicO2: 1.5 },
+        { scrLoopVolume: 15.01, scrMetabolicO2: 1.5 },
+        { scrLoopVolume: 10, scrMetabolicO2: 0.49 },
+        { scrLoopVolume: 10, scrMetabolicO2: 2.51 },
+      ];
+      pscrValOk = invalidSettings.every(settings => {
+        const result = validateCcrCalculationInputs(profile, { circuit: 'pSCR', ...settings }, []);
+        return !result.ok;
+      }) && [
+        { scrLoopVolume: 3, scrMetabolicO2: 0.5 },
+        { scrLoopVolume: 15, scrMetabolicO2: 2.5 },
+      ].every(settings => validateCcrCalculationInputs(profile, { circuit: 'pSCR', ...settings }, []).ok);
     }
     if (typeof getEffectiveSetpointAtDepth === 'function') {
       pscrCanonOk = getEffectiveSetpointAtDepth(30, { circuit: 'pscr' }, altSurfaceP) === 0;
     }
     let pscrCoreOk = true;
     if (typeof computePSCRFractions === 'function') {
-      try {
-        computePSCRFractions(1.5, 0.21, 0, { circuit: 'pSCR', scrLoopVolume: -1, scrMetabolicO2: 1.5 });
-        pscrCoreOk = false;
-      } catch (_) { pscrCoreOk = true; }
+      const invalidCoreSettings = [
+        { scrLoopVolume: 2.99, scrMetabolicO2: 1.5 },
+        { scrLoopVolume: 15.01, scrMetabolicO2: 1.5 },
+        { scrLoopVolume: 10, scrMetabolicO2: 0.49 },
+        { scrLoopVolume: 10, scrMetabolicO2: 2.51 },
+      ];
+      pscrCoreOk = invalidCoreSettings.every(settings => {
+        try {
+          computePSCRFractions(1.5, 0.21, 0, { circuit: 'pSCR', ...settings });
+          return false;
+        } catch (_) { return true; }
+      }) && [
+        { scrLoopVolume: 3, scrMetabolicO2: 0.5 },
+        { scrLoopVolume: 15, scrMetabolicO2: 2.5 },
+      ].every(settings => {
+        try {
+          const fractions = computePSCRFractions(1.5, 0.21, 0, { circuit: 'pSCR', ...settings });
+          return fractions && Number.isFinite(fractions.fO2);
+        } catch (_) { return false; }
+      });
     }
 
     const surfP = typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325;
@@ -1356,13 +1380,13 @@ def run_suite(page) -> dict:
     assert_true(mlb.get("ok"), "headless descent/bottom gas label from declared level not first step", str(mlb))
 
     c6 = s.get("cycle6", {})
-    assert_true(c6.get("rdpOk"), "[CYCLE6-H2] PADI RDP uses ceiling depth row not nearest", str(c6))
-    assert_true(c6.get("padiDepthOk"), "[CYCLE6-H1] validatePlannerInputs rejects beyond PADI table depth", str(c6))
-    assert_true(c6.get("trimixOk"), "[CYCLE6-H4] bottom trimix >40% rejected without silent clamp", str(c6))
-    assert_true(c6.get("pscrValOk") and c6.get("pscrCoreOk"), "[CYCLE6-H3] invalid pSCR loop volume rejected", str(c6))
-    assert_true(c6.get("pscrCanonOk"), "[CYCLE6-L8] lowercase pSCR circuit returns zero setpoint", str(c6))
-    assert_true(c6.get("ppo2DryOk"), "[CYCLE6-M6] CCR ppO2 capped at dry-gas pressure", str(c6))
-    assert_true(c6.get("buhlBtOk"), "[CYCLE6-M5] Bühlmann rec planner models descent then hold BT", str(c6))
+    assert_true(c6.get("rdpOk"), "[CYCLE6-RDP-CEILING] PADI RDP uses ceiling depth row not nearest", str(c6))
+    assert_true(c6.get("padiDepthOk"), "[CYCLE6-PADI-DEPTH] validatePlannerInputs rejects beyond PADI table depth", str(c6))
+    assert_true(c6.get("trimixOk"), "[CYCLE6-TRIMIX-RANGE] bottom trimix >40% rejected without silent clamp", str(c6))
+    assert_true(c6.get("pscrValOk") and c6.get("pscrCoreOk"), "[CYCLE6-PSCR-BOUNDS] pSCR UI contract bounds enforced by validator and pure core", str(c6))
+    assert_true(c6.get("pscrCanonOk"), "[CYCLE6-PSCR-CANON] lowercase pSCR circuit returns zero setpoint", str(c6))
+    assert_true(c6.get("ppo2DryOk"), "[CYCLE6-CCR-DRY-PPO2] CCR ppO2 capped at dry-gas pressure", str(c6))
+    assert_true(c6.get("buhlBtOk"), "[CYCLE6-BUHLMANN-BT] Bühlmann rec planner models descent then hold BT", str(c6))
 
     print("\n── G: Worker parity ──")
     worker = page.evaluate(WORKER_SUITE_JS)
@@ -1418,6 +1442,13 @@ def _audit_case_rows():
         case_row("AUDIT-REG-05", case_ok("AUDIT-REG-05")),
         case_row("ZHL-ML-CONT-GAS", case_ok("ZHL-ML-CONT-GAS")),
         case_row("ZHL-ML-ASCENT-RATE", case_ok("ZHL-ML-ASCENT-RATE")),
+        case_row("CYCLE6-RDP-CEILING", case_ok("CYCLE6-RDP-CEILING")),
+        case_row("CYCLE6-PADI-DEPTH", case_ok("CYCLE6-PADI-DEPTH")),
+        case_row("CYCLE6-TRIMIX-RANGE", case_ok("CYCLE6-TRIMIX-RANGE")),
+        case_row("CYCLE6-PSCR-BOUNDS", case_ok("CYCLE6-PSCR-BOUNDS")),
+        case_row("CYCLE6-PSCR-CANON", case_ok("CYCLE6-PSCR-CANON")),
+        case_row("CYCLE6-CCR-DRY-PPO2", case_ok("CYCLE6-CCR-DRY-PPO2")),
+        case_row("CYCLE6-BUHLMANN-BT", case_ok("CYCLE6-BUHLMANN-BT")),
     ]
 
 
