@@ -125,7 +125,26 @@ function calcSurfInt(prefix) {
   const dive1Gas = botFracs
     ? { fN2: botFracs.fN2, fHe: botFracs.fHe || 0 }
     : { fN2: FN2_AIR, fHe: 0 };
-  const dive2Gas = dive1Gas;
+  const d2O2El = document.getElementById(P + 'D2O2');
+  const d2HeEl = document.getElementById(P + 'D2He');
+  const d2O2Pct = d2O2El ? parseFloat(d2O2El.value) : NaN;
+  const d2HePct = d2HeEl ? parseFloat(d2HeEl.value) : 0;
+
+  const errEl = document.getElementById(P + 'D2GasErr');
+  if (Number.isFinite(d2O2Pct) && Number.isFinite(d2HePct) && d2O2Pct + d2HePct > 100) {
+    if (errEl) { errEl.textContent = 'O₂ + He > 100% — impossible mix'; errEl.style.display = 'block'; }
+    return;
+  }
+  if (errEl) errEl.style.display = 'none';
+
+  let dive2Gas;
+  if (Number.isFinite(d2O2Pct) && d2O2Pct >= 21 && d2O2Pct <= 100) {
+    const fO2 = d2O2Pct / 100;
+    const fHe = Math.max(0, Math.min((100 - d2O2Pct) / 100, (d2HePct || 0) / 100));
+    dive2Gas = { fO2, fN2: Math.max(0, 1 - fO2 - fHe), fHe };
+  } else {
+    dive2Gas = dive1Gas;
+  }
   const surfGas = { fN2: FN2_AIR, fHe: 0 };
 
   const result = computeSurfIntervalCore({
@@ -254,6 +273,44 @@ function renderSurfIntPanel(containerId, prefix, preDepthM, preBtMin) {
             </select>
           </div>
         </div>
+        <div style="margin-bottom:14px;">
+          <button type="button" onclick="toggleD2Gas('${P}')" id="${P}D2GasToggle"
+            style="display:flex;align-items:center;gap:7px;width:100%;background:none;
+                   border:1px solid var(--border);border-radius:6px;padding:7px 12px;
+                   cursor:pointer;color:var(--muted);font-family:inherit;font-size:11px;
+                   font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+                   text-align:left;transition:all .2s;">
+            <span id="${P}D2GasChevron" style="transition:transform .25s;">▶</span>
+            <span>Dive 2 Gas Override</span>
+            <span id="${P}D2GasSummary"
+              style="margin-left:auto;font-size:10px;font-weight:400;letter-spacing:0;
+                     text-transform:none;opacity:.7;color:var(--accent);">
+            </span>
+          </button>
+          <div id="${P}D2GasBody" style="display:none;padding:10px 4px 0;">
+            <div class="info-box" style="margin-top:0;margin-bottom:10px;">
+              Optional. Leave blank to use the same gas as Dive 1 (common case).
+              Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
+            </div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
+              <div class="field" style="flex:1;min-width:80px;">
+                <label>Dive 2 O₂ %</label>
+                <input type="number" id="${P}D2O2" min="21" max="100" step="1"
+                  placeholder="inherit"
+                  oninput="updateD2GasSummary('${P}');calcSurfInt('${P}')"/>
+              </div>
+              <div class="field" style="flex:1;min-width:80px;">
+                <label>Dive 2 He %</label>
+                <input type="number" id="${P}D2He" min="0" max="79" step="1" value="0"
+                  oninput="updateD2GasSummary('${P}');calcSurfInt('${P}')"/>
+              </div>
+            </div>
+            <div id="${P}D2GasErr"
+              style="display:none;margin-top:6px;font-family:'JetBrains Mono',monospace;
+                     font-size:10px;color:var(--red);">
+            </div>
+          </div>
+        </div>
         <div class="stats" style="grid-template-columns:repeat(2,1fr);margin-top:4px;">
           <div class="stat"><div class="stat-val" id="${P}MinResult" style="color:var(--accent);">—</div><div class="stat-lbl">Minimum SI</div></div>
           <div class="stat"><div class="stat-val" id="${P}RecResult" style="color:var(--green);">—</div><div class="stat-lbl">Recommended (×1.5)</div></div>
@@ -278,5 +335,29 @@ function toggleSurfIntPanel(prefix) {
   if (open) {
     document.querySelectorAll('#' + prefix + 'Body .lsp-slider').forEach(s => updateSliderFill(s));
     calcSurfInt(prefix);
+  }
+}
+
+function toggleD2Gas(prefix) {
+  const body = document.getElementById(prefix + 'D2GasBody');
+  const chevron = document.getElementById(prefix + 'D2GasChevron');
+  if (!body) return;
+  const open = body.style.display === 'none';
+  body.style.display = open ? 'block' : 'none';
+  if (chevron) chevron.style.transform = open ? 'rotate(90deg)' : '';
+}
+
+function updateD2GasSummary(prefix) {
+  const o2El = document.getElementById(prefix + 'D2O2');
+  const heEl = document.getElementById(prefix + 'D2He');
+  const sumEl = document.getElementById(prefix + 'D2GasSummary');
+  if (!sumEl) return;
+  const o2 = o2El ? parseFloat(o2El.value) : NaN;
+  const he = heEl ? parseFloat(heEl.value) : 0;
+  if (!Number.isFinite(o2) || o2 < 21) { sumEl.textContent = ''; return; }
+  if (Number.isFinite(he) && he > 0) {
+    sumEl.textContent = `Tx${Math.round(o2)}/${Math.round(he)}`;
+  } else {
+    sumEl.textContent = o2 === 21 ? 'Air' : `EAN${Math.round(o2)}`;
   }
 }

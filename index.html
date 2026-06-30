@@ -3421,6 +3421,44 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <div class="slider-ticks"><span>5</span><span>30</span><span>60</span><span>90</span><span>120</span></div>
 </div>
 </div>
+<div style="margin-bottom:18px;">
+<button type="button" onclick="toggleD2Gas('si')" id="siD2GasToggle"
+  style="display:flex;align-items:center;gap:7px;width:100%;background:none;
+         border:1px solid var(--border);border-radius:6px;padding:7px 12px;
+         cursor:pointer;color:var(--muted);font-family:inherit;font-size:11px;
+         font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+         text-align:left;transition:all .2s;">
+<span id="siD2GasChevron" style="transition:transform .25s;">▶</span>
+<span>Dive 2 Gas Override</span>
+<span id="siD2GasSummary"
+  style="margin-left:auto;font-size:10px;font-weight:400;letter-spacing:0;
+         text-transform:none;opacity:.7;color:var(--accent);">
+</span>
+</button>
+<div id="siD2GasBody" style="display:none;padding:10px 4px 0;">
+<div class="info-box" style="margin-top:0;margin-bottom:10px;">
+Optional. Leave blank to use the same gas as Dive 1 (common case).
+Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
+</div>
+<div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
+<div class="field" style="flex:1;min-width:80px;">
+<label>Dive 2 O₂ %</label>
+<input type="number" id="siD2O2" min="21" max="100" step="1"
+  placeholder="inherit"
+  oninput="updateD2GasSummary('si');calcSurfInt();appSettings.save()"/>
+</div>
+<div class="field" style="flex:1;min-width:80px;">
+<label>Dive 2 He %</label>
+<input type="number" id="siD2He" min="0" max="79" step="1" value="0"
+  oninput="updateD2GasSummary('si');calcSurfInt();appSettings.save()"/>
+</div>
+</div>
+<div id="siD2GasErr"
+  style="display:none;margin-top:6px;font-family:'JetBrains Mono',monospace;
+         font-size:10px;color:var(--red);">
+</div>
+</div>
+</div>
 <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:18px;">
 <div style="display:flex;align-items:center;gap:6px;">
 <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">GF Lo:</span>
@@ -12857,7 +12895,7 @@ var appSettings = {
     'zhlRepMode', 'zhlSurfaceInterval',
     'priorDiveDays', 'priorDiveHours', 'priorDiveMinutes', 'priorDiveOTU', 'priorDiveCNS',
     'shallowGradient',
-    'siD1Depth', 'siD1BT', 'siD2Depth', 'siD2BT', 'siGfLow',
+    'siD1Depth', 'siD1BT', 'siD2Depth', 'siD2BT', 'siGfLow', 'siD2O2', 'siD2He',
     'travelGasMix', 'travelGasCustomO2', 'travelGasTrimixO2', 'travelGasTrimixHe', 'travelGasSwitchMode', 'travelGasManualDepth',
     'sacBottom', 'sacDeco',
     'cylBot_size', 'cylBot_pres', 'cylBot_reserve',

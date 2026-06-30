@@ -190,6 +190,10 @@
       "suite_id": "SUITE-ISSUE-141",
       "case_id": "ISSUE141-L2-TRIMIX-NULL"
     },
+    "REG-17": {
+      "suite_id": "SUITE-ISSUE-142",
+      "case_id": "ISSUE142-SI-02-EAN32"
+    },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
       "case_id": "android-compile"
@@ -1171,15 +1175,20 @@
       "path": "surf-interval-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "f782c96344fe26741dcb7430950327d53715ad9a9b98cc2d688fadab05533b8e",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "f782c96344fe26741dcb7430950327d53715ad9a9b98cc2d688fadab05533b8e",
       "evidence": [],
-      "issue": "GitHub #140 H-1",
-      "regression_cases": []
+      "issue": "GitHub #142 — Dive 2 gas override",
+      "regression_cases": [
+        "ISSUE142-SI-01-INHERIT",
+        "ISSUE142-SI-02-EAN32",
+        "ISSUE142-SI-04-O2-SHALLOW",
+        "ISSUE142-SI-05-INVALID-MIX"
+      ]
     },
     {
       "id": "APP-SERVICE-WORKER",
@@ -1558,6 +1567,19 @@
       "regression_cases": [],
       "fingerprint": "e67f221f9c7e3909a63993bb26abce2ba52d696d0180e46e370c96981567cb94",
       "last_read_fingerprint": null
+    },
+    {
+      "id": "TEST-ISSUE-142-REGRESSION",
+      "path": "dev/surf_interval_regression.py",
+      "layer": "test_infrastructure",
+      "priority": "P1",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "GitHub #142 Dive 2 gas override regression",
+      "regression_cases": []
     },
     {
       "id": "TEST-ANDROID-COMPILE",
@@ -2831,6 +2853,26 @@
         "ISSUE141-M1-PSCR-BYPASS",
         "ISSUE141-L1-RESOLVE-SAC",
         "ISSUE141-L2-TRIMIX-NULL"
+      ]
+    },
+    {
+      "id": "SUITE-ISSUE-142",
+      "command": [
+        "{python}",
+        "dev/surf_interval_regression.py"
+      ],
+      "profiles": [
+        "ci",
+        "release"
+      ],
+      "timeout_seconds": 180,
+      "case_ids": [
+        "ISSUE142-SI-01-INHERIT",
+        "ISSUE142-SI-02-EAN32",
+        "ISSUE142-SI-04-O2-SHALLOW",
+        "ISSUE142-SI-05-INVALID-MIX",
+        "ISSUE142-SI-05-NO-NAN",
+        "ISSUE142-SI-SUMMARY"
       ]
     },
     {
