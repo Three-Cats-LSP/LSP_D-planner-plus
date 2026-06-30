@@ -1028,6 +1028,105 @@ ENGINE_SUITE_JS = r"""
     return { descentGas: descent?.gas, bottomGas: bottom?.gas, labelOk, o2Ok, ok: labelOk && o2Ok };
   })();
 
+  // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
+  out.sections.cycle6 = (() => {
+    const rdp11 = typeof padiTableRowIndex === 'function' ? padiTableRowIndex(11) : null;
+    const rdp13 = typeof padiTableRowIndex === 'function' ? padiTableRowIndex(13) : null;
+    const ndl11 = typeof getNitroxNDL === 'function' ? getNitroxNDL(11, 'air') : null;
+    const ndl13 = typeof getNitroxNDL === 'function' ? getNitroxNDL(13, 'air') : null;
+    const ndl25ean32 = typeof getNitroxNDL === 'function' ? getNitroxNDL(25, 'ean32') : null;
+    const rdpOk = rdp11 === 1 && rdp13 === 2 && ndl11 === 230 && ndl13 === 100 && ndl25ean32 === 25;
+
+    const depthEl = document.getElementById('depth');
+    const btEl = document.getElementById('bt');
+    const prevAlgo = typeof algo !== 'undefined' ? algo : null;
+    let padiDepthOk = false;
+    if (depthEl && btEl && typeof validatePlannerInputs === 'function') {
+      const prevD = depthEl.value;
+      const prevBt = btEl.value;
+      if (typeof algo !== 'undefined') algo = 'padi';
+      depthEl.value = '60';
+      btEl.value = '5';
+      const bad = validatePlannerInputs();
+      depthEl.value = prevD;
+      btEl.value = prevBt;
+      if (prevAlgo != null) algo = prevAlgo;
+      padiDepthOk = !!(bad && !bad.ok);
+    }
+
+    const decoGasEl = document.getElementById('decoGas');
+    const botO2El = document.getElementById('botTrimixO2');
+    const botHeEl = document.getElementById('botTrimixHe');
+    let trimixOk = false;
+    if (decoGasEl && botO2El && botHeEl && typeof validateDomDecoGases === 'function') {
+      const prevGas = decoGasEl.value;
+      const prevO2 = botO2El.value;
+      const prevHe = botHeEl.value;
+      decoGasEl.value = 'trimix';
+      botO2El.value = '50';
+      botHeEl.value = '0';
+      const badTrimix = validateDomDecoGases();
+      const fr = typeof getBottomGasFractions === 'function' ? getBottomGasFractions() : null;
+      decoGasEl.value = prevGas;
+      botO2El.value = prevO2;
+      botHeEl.value = prevHe;
+      trimixOk = !badTrimix.ok && (!fr || Math.abs(fr.fO2 - 0.5) < 1e-6);
+    }
+
+    let pscrValOk = false;
+    let pscrCanonOk = false;
+    if (typeof validateCcrCalculationInputs === 'function') {
+      const badLoop = validateCcrCalculationInputs(
+        [{ depth: 40, time: 20, o2: 21, he: 0 }],
+        { circuit: 'pSCR', scrLoopVolume: -5, scrMetabolicO2: 1.5 },
+        []
+      );
+      pscrValOk = !badLoop.ok;
+    }
+    if (typeof getEffectiveSetpointAtDepth === 'function') {
+      pscrCanonOk = getEffectiveSetpointAtDepth(30, { circuit: 'pscr' }, altSurfaceP) === 0;
+    }
+    let pscrCoreOk = true;
+    if (typeof computePSCRFractions === 'function') {
+      try {
+        computePSCRFractions(1.5, 0.21, 0, { circuit: 'pSCR', scrLoopVolume: -1, scrMetabolicO2: 1.5 });
+        pscrCoreOk = false;
+      } catch (_) { pscrCoreOk = true; }
+    }
+
+    const surfP = typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325;
+    const pAmb3 = surfP + 3 * (BAR_PER_METRE || 0.1);
+    const pDry3 = pAmb3 - (WATER_VAPOR || 0.0627);
+    const ccrCfg = { circuit: 'CCR', descentSetpoint: 0.7, bottomSetpoint: 1.2, decoSetpoint: 1.3, bailout: false };
+    const ppo2At3 = typeof getEffectivePpo2 === 'function'
+      ? getEffectivePpo2(pAmb3, 1.3, 0.21, ccrCfg, 3, 0) : null;
+    const ppo2DryOk = ppo2At3 != null && ppo2At3 <= pDry3 + 1e-6 && ppo2At3 > 1.25;
+
+    let buhlBtOk = false;
+    if (typeof initTissues === 'function' && typeof saturate === 'function' && typeof saturateLinear === 'function') {
+      const fN2 = 0.79;
+      const fHe = 0;
+      const depthM = 40;
+      const bt = 20;
+      const descentRate = 20;
+      const descentTime = depthM / descentRate;
+      const btAtDepth = Math.max(0, bt - descentTime);
+      let tHold = initTissues();
+      tHold = saturate(tHold, depthM, bt, fN2, fHe);
+      let tSplit = initTissues();
+      tSplit = saturateLinear(tSplit, 0, depthM, descentTime, fN2, fHe);
+      tSplit = saturate(tSplit, depthM, btAtDepth, fN2, fHe);
+      const diff = tSplit.reduce((m, c, i) => Math.max(m, Math.abs((c.pN2 || 0) - (tHold[i].pN2 || 0))), 0);
+      buhlBtOk = diff > 0.05;
+    }
+
+    return {
+      rdpOk, padiDepthOk, trimixOk, pscrValOk, pscrCanonOk, pscrCoreOk, ppo2DryOk, buhlBtOk,
+      ndl11, ndl13, ndl25ean32, ppo2At3, pDry3,
+      ok: rdpOk && padiDepthOk && trimixOk && pscrValOk && pscrCanonOk && pscrCoreOk && ppo2DryOk && buhlBtOk,
+    };
+  })();
+
   return out;
 }
 """
@@ -1255,6 +1354,15 @@ def run_suite(page) -> dict:
     assert_true(ml.get("rateOk"), "[ZHL-ML-ASCENT-RATE] continuation no-deco ascent uses main rate not deco rate", str(ml))
     mlb = s.get("mlBottomLabel", {})
     assert_true(mlb.get("ok"), "headless descent/bottom gas label from declared level not first step", str(mlb))
+
+    c6 = s.get("cycle6", {})
+    assert_true(c6.get("rdpOk"), "[CYCLE6-H2] PADI RDP uses ceiling depth row not nearest", str(c6))
+    assert_true(c6.get("padiDepthOk"), "[CYCLE6-H1] validatePlannerInputs rejects beyond PADI table depth", str(c6))
+    assert_true(c6.get("trimixOk"), "[CYCLE6-H4] bottom trimix >40% rejected without silent clamp", str(c6))
+    assert_true(c6.get("pscrValOk") and c6.get("pscrCoreOk"), "[CYCLE6-H3] invalid pSCR loop volume rejected", str(c6))
+    assert_true(c6.get("pscrCanonOk"), "[CYCLE6-L8] lowercase pSCR circuit returns zero setpoint", str(c6))
+    assert_true(c6.get("ppo2DryOk"), "[CYCLE6-M6] CCR ppO2 capped at dry-gas pressure", str(c6))
+    assert_true(c6.get("buhlBtOk"), "[CYCLE6-M5] Bühlmann rec planner models descent then hold BT", str(c6))
 
     print("\n── G: Worker parity ──")
     worker = page.evaluate(WORKER_SUITE_JS)

@@ -4015,6 +4015,18 @@ const PADI_DEPTHS_FT = [35,40,50,60,70,80,90,100,110,120,130];
 const PADI_NDL_M  = [310,230,100,60,35,25,20,15,13,10,8];
 const PADI_NDL_FT = [310,230,100,60,35,25,20,15,13,10,8];
 const PADI_GROUPS = ['A','B','C','D','E','F','G','H','I','J','K'];
+const PADI_TABLE_MAX_M = PADI_DEPTHS_M[PADI_DEPTHS_M.length - 1];
+const PADI_TABLE_MAX_FT = PADI_DEPTHS_FT[PADI_DEPTHS_FT.length - 1];
+
+/** PADI RDP row: first table depth >= dive depth (conservative ceiling lookup). */
+function padiTableRowIndex(depthM) {
+  if (!Number.isFinite(depthM) || depthM <= 0) return null;
+  if (depthM > PADI_TABLE_MAX_M + 1e-6) return null;
+  for (let i = 0; i < PADI_DEPTHS_M.length; i++) {
+    if (PADI_DEPTHS_M[i] >= depthM - 1e-9) return i;
+  }
+  return PADI_DEPTHS_M.length - 1;
+}
 
 // PADI Nitrox NDL tables (IANTD/PADI Enriched Air Diver standard tables)
 // EAN32 (32% O2) — indexed to match PADI_DEPTHS_M
@@ -4026,21 +4038,17 @@ function nitroxMOD(fO2, ppO2limit) {
   return calcGasMODm(fO2, ppO2limit);
 }
 function getNitroxNDL(depthM, mix) {
-  // Return the correct PADI NDL for a given mix at a given depth
-  // Finds closest depth in table (same logic as padiNDL)
-  const depths = PADI_DEPTHS_M;
-  let closest = 0, minDiff = Infinity;
-  depths.forEach((d,i) => { const diff = Math.abs(d-depthM); if(diff<minDiff){minDiff=diff;closest=i;} });
-  if (mix === 'ean32') return NITROX_NDL_EAN32[closest];
-  if (mix === 'ean36') return NITROX_NDL_EAN36[closest];
+  const idx = padiTableRowIndex(depthM);
+  if (idx == null) return 0;
+  if (mix === 'ean32') return NITROX_NDL_EAN32[idx];
+  if (mix === 'ean36') return NITROX_NDL_EAN36[idx];
   if (mix === 'custom') {
-    // Interpolate between air, EAN32, EAN36 using Bühlmann for custom mixes in rec mode
     const fN2 = getN2Frac(mix);
-    if (fN2 == null) return PADI_NDL_M[closest];
+    if (fN2 == null) return PADI_NDL_M[idx];
     _syncZhlBundleEnv();
     return ZhlEngineBundle.buhNDL(depthM, fN2, 50, 100, 0, 5, 5, false); // rec nitrox: 5 m stops, no shallow GF
   }
-  return PADI_NDL_M[closest]; // air fallback
+  return PADI_NDL_M[idx]; // air
 }
 
 window._tecGasMix = window._tecGasMix || null;
@@ -6941,24 +6949,20 @@ function runPlanner() {
     const fO2 = 1 - fN2;
     const isNitrox = mix !== 'air';
     const gasLabel = mix === 'ean32' ? '32/00' : mix === 'ean36' ? '36/00' : mix === 'custom' ? `${Math.round(fO2*100)}/00` : 'Air';
-    const ndl = padiNDL(depthM, mix);
-    const rem = Math.max(0, ndl-bt);
-    const group = padiGroup(depthM, bt, mix);
-    const pct = Math.min(100, Math.round((bt/ndl)*100));
-    const bc  = pct>=100?'var(--red)':pct>=80?'var(--orange)':pct>=65?'var(--yellow)':'var(--green)';
-    const btOk = bt <= ndl;
     const pO2  = parseFloat((depthBar(depthM) * fO2).toFixed(2));
-    const ppO2Ok = pO2 <= modPpo2;
-    const modM = isNitrox ? nitroxMOD(fO2, modPpo2) : null;
+    const ndl = padiNDL(depthM, mix);
+    const rem = ndl > 0 ? Math.max(0, ndl - bt) : 0;
+    const group = padiGroup(depthM, bt, mix);
+    const pct = ndl > 0 ? Math.min(100, Math.round((bt / ndl) * 100)) : 100;
+    const bc  = pct>=100?'var(--red)':pct>=80?'var(--orange)':pct>=65?'var(--yellow)':'var(--green)';
+    const modM = nitroxMOD(fO2, modPpo2);
     const modFt = modM !== null ? Math.floor(modM * 3.28084) : null;
-    const beyondMOD = isNitrox && depthM > modM;
+    const beyondMOD = depthM > modM;
+    const ppO2Ok = pO2 <= modPpo2;
+    const btOk = ndl > 0 && bt <= ndl && !beyondMOD;
 
-    const gasStatHtml = isNitrox
-      ? `<div class="stat"><div class="stat-val ${ppO2Ok?'g':'r'}">${pO2.toFixed(2)}</div><div class="stat-lbl">ppO₂ (bar)</div></div>`
-      : '';
-    const modInfoHtml = isNitrox
-      ? `<div class="alert info" style="margin-top:12px;"><span>💡</span><div>MOD for ${gasLabel} @ ${modPpo2.toFixed(1)} bar ppO₂: <strong>${isMetric ? modM+' m' : modFt+' ft'}</strong></div></div>`
-      : '';
+    const gasStatHtml = `<div class="stat"><div class="stat-val ${ppO2Ok?'g':'r'}">${pO2.toFixed(2)}</div><div class="stat-lbl">ppO₂ (bar)</div></div>`;
+    const modInfoHtml = `<div class="alert info" style="margin-top:12px;"><span>💡</span><div>MOD for ${gasLabel} @ ${modPpo2.toFixed(1)} bar ppO₂: <strong>${isMetric ? modM+' m' : modFt+' ft'}</strong></div></div>`;
     const tableRef = isNitrox ? `PADI Nitrox ${gasLabel}` : 'PADI Air';
 
     html = `<div class="card">
@@ -6969,10 +6973,10 @@ function runPlanner() {
           <button class="btn-export" onclick="exportTXT('planner')" title="Download .txt"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg></button>
         </div>
       </div>
-      <div class="stats" style="grid-template-columns:repeat(${isNitrox?4:3},1fr);margin-top:4px;margin-bottom:4px;">
-        <div class="stat"><div class="stat-val ${btOk&&!beyondMOD?'g':'r'}">${bt}</div><div class="stat-lbl">Your BT</div></div>
+      <div class="stats" style="grid-template-columns:repeat(4,1fr);margin-top:4px;margin-bottom:4px;">
+        <div class="stat"><div class="stat-val ${btOk?'g':'r'}">${bt}</div><div class="stat-lbl">Your BT</div></div>
         <div class="stat"><div class="stat-val ${rem===0?'r':rem<10?'o':'g'}">${rem}</div><div class="stat-lbl">Remaining</div></div>
-        <div class="stat"><div class="stat-val" style="font-size:22px;"><span class="group-badge">${group}</span></div><div class="stat-lbl">Press. Group</div></div>
+        <div class="stat"><div class="stat-val" style="font-size:22px;"><span class="group-badge">${group}</span></div><div class="stat-lbl">Press. Group (est.)</div></div>
         ${gasStatHtml}
       </div>
       <div style="margin-top:14px;">
@@ -6980,7 +6984,8 @@ function runPlanner() {
         <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${bc};"></div></div>
       </div>
       ${beyondMOD ? `<div class="alert dang" style="margin-top:12px;"><span>⚠</span><div><strong>BEYOND MOD.</strong> ${dDisp} exceeds ${gasLabel} MOD of ${isMetric ? modM+' m' : modFt+' ft'} at ${modPpo2.toFixed(1)} bar ppO₂. CNS oxygen toxicity risk — use a lower O₂ mix or reduce depth.</div></div>` : ''}
-      ${!beyondMOD && !btOk ? '<div class="alert" style="margin-top:12px;background:#FF4433;border-color:#cc2200;color:#fff;font-weight:700;"><span>⚠</span><div><strong>NDL EXCEEDED.</strong> Not permitted for recreational diving. Reduce bottom time.</div></div>' : ''}
+      ${!beyondMOD && ndl === 0 ? `<div class="alert dang" style="margin-top:12px;"><span>⚠</span><div><strong>BEYOND TABLE.</strong> ${dDisp} exceeds the PADI recreational table maximum (${isMetric ? PADI_TABLE_MAX_M+' m' : PADI_TABLE_MAX_FT+' ft'}).</div></div>` : ''}
+      ${!beyondMOD && ndl > 0 && !btOk ? '<div class="alert" style="margin-top:12px;background:#FF4433;border-color:#cc2200;color:#fff;font-weight:700;"><span>⚠</span><div><strong>NDL EXCEEDED.</strong> Not permitted for recreational diving. Reduce bottom time.</div></div>' : ''}
       ${!beyondMOD && btOk && pct>=80 ? '<div class="alert" style="margin-top:12px;background:#ffff00;border-color:#cccc00;color:#111;font-weight:700;"><span>⚡</span><div><strong>APPROACHING LIMIT.</strong> 80%+ NDL used. Monitor closely and ascend conservatively.</div></div>' : ''}
       ${!beyondMOD && btOk && pct<80 ? '<div class="alert ok" style="margin-top:12px;"><span>✓</span><div><strong>WITHIN LIMITS.</strong> '+rem+' minutes remaining. Good safety margin.</div></div>' : ''}
       ${modInfoHtml}
@@ -6988,9 +6993,15 @@ function runPlanner() {
     </div>`;
 
   } else {
-    // Bühlmann
+    // Bühlmann — BT includes descent; saturate linearly on descent, then hold at depth
     let tissues = initTissues();
-    tissues = saturate(tissues, depthM, bt, fN2, fHe);
+    const descentRate = Math.max(1, parseInt(document.getElementById('descentRate')?.value, 10) || 20);
+    const descentTime = depthM / descentRate;
+    const btAtDepth = Math.max(0, bt - descentTime);
+    if (descentTime > 0 && depthM > 0) {
+      tissues = saturateLinear(tissues, 0, depthM, descentTime, fN2, fHe);
+    }
+    tissues = saturate(tissues, depthM, btAtDepth, fN2, fHe);
     lastTissues = tissues;
     const gfHF = gfH/100;
     const ndl = buhNDL(depthM, fN2, gfL, gfH, fHe);
@@ -7251,6 +7262,9 @@ function validateDomDecoGases() {
   else {
     const botHypo = ZhlEngineBundle.validateHypoxicDecoGas(bot.o2, bot.he, 'bottomGas', circuit);
     if (botHypo) errors.push(botHypo);
+    if (document.getElementById('decoGas')?.value === 'trimix' && bot.o2 > 40) {
+      errors.push({ message: 'Bottom trimix O₂ must not exceed 40%.' });
+    }
   }
   const seenMixes = new Map();
   for (const idx of getAllDecoGasIds()) {
@@ -7348,7 +7362,7 @@ function getBottomGasFractions() {
     const o2 = readDomO2Pct('botTrimixO2');
     const he = readDomHePct('botTrimixHe');
     if (!Number.isFinite(o2) || !Number.isFinite(he)) return null;
-    const fO2 = Math.min(0.40, Math.max(0.05, o2 / 100));
+    const fO2 = Math.min(0.99, Math.max(0.05, o2 / 100));
     const fHe = Math.min(0.95, Math.max(0, he / 100));
     if (fO2 + fHe > 1.0) return null;
     return { fO2, fHe, fN2: Math.max(0, 1 - fO2 - fHe) };
@@ -8920,12 +8934,20 @@ function validateDiveInputs(depthId, btId, depthLimits) {
 }
 
 function validatePlannerInputs() {
-  const base = validateDiveInputs('depth', 'bt', { metric: 100, imperial: 330, maxBt: 300 });
+  const isPadi = typeof algo !== 'undefined' && algo === 'padi';
+  const depthLim = isPadi
+    ? { metric: PADI_TABLE_MAX_M, imperial: PADI_TABLE_MAX_FT, maxBt: 300 }
+    : { metric: 100, imperial: 330, maxBt: 300 };
+  const base = validateDiveInputs('depth', 'bt', depthLim);
   if (!base.ok) return base;
   const isMetric = units === 'metric';
   const rawD = parseFloat(document.getElementById('depth')?.value);
   const bt = parseInt(document.getElementById('bt')?.value, 10);
   const depthM = isMetric ? rawD : rawD / 3.28084;
+  if (isPadi && padiTableRowIndex(depthM) == null) {
+    const du = isMetric ? `${PADI_TABLE_MAX_M} m` : `${PADI_TABLE_MAX_FT} ft`;
+    return { ok: false, msg: `Depth exceeds the PADI table maximum (${du}).` };
+  }
   const descentRate = Math.max(1, parseInt(document.getElementById('descentRate')?.value, 10) || 20);
   if (Number.isFinite(depthM) && Number.isFinite(bt) && depthM > 0 && bt <= depthM / descentRate + 1e-6) {
     const descentMin = (depthM / descentRate).toFixed(1);
@@ -10199,7 +10221,7 @@ function collectDecoGasesPctFromDom() {
 function validateCcrCalculationInputs(levels, settings, decoGases) {
   const errors = [];
   const s = settings || {};
-  const circuit = s.circuit || 'OC';
+  const circuit = canonicalCircuit(s.circuit || 'OC');
   if (!isRebreatherCircuit(circuit)) return { ok: true, errors: [] };
 
   if (!Array.isArray(levels) || levels.length === 0) {
@@ -10237,6 +10259,22 @@ function validateCcrCalculationInputs(levels, settings, decoGases) {
   const decoSP = s.decoSetpoint != null ? s.decoSetpoint : (s.setpoint != null ? s.setpoint : 1.3);
 
   if (circuit === 'pSCR') {
+    const loopVol = parseFloat(s.scrLoopVolume);
+    const metO2 = parseFloat(s.scrMetabolicO2);
+    if (!Number.isFinite(loopVol) || loopVol <= 0) {
+      errors.push({
+        code: 'INVALID_LOOP_VOLUME',
+        field: 'scrLoopVolume',
+        message: 'pSCR loop volume must be a positive number of litres.',
+      });
+    }
+    if (!Number.isFinite(metO2) || metO2 <= 0) {
+      errors.push({
+        code: 'INVALID_METABOLIC_O2',
+        field: 'scrMetabolicO2',
+        message: 'pSCR metabolic O₂ must be a positive number (L/min).',
+      });
+    }
     for (const [name, value, min, max] of [
       ['bottom', bottomSP, 0.7, 1.6],
       ['deco', decoSP, 0.7, 1.6],

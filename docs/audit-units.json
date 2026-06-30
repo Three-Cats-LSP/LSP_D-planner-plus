@@ -523,13 +523,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-RUNTIME-BOOTSTRAP"
       },
-      "fingerprint": "589068f7a446699af28d74f2e9b69ede2a317305cfd75075991c18213f801043",
-      "last_read_fingerprint": "589068f7a446699af28d74f2e9b69ede2a317305cfd75075991c18213f801043"
+      "fingerprint": "502f53f2f99fb4bedac4812a00086c1c0c9cf194cd4abe7cf44df9caa56481f0",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "UI-ENVIRONMENT",
@@ -660,13 +662,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-DECO-PHYSICS"
       },
-      "fingerprint": "e40dc4dd201276276ac7ba770b090b107ea7064637c06ed77339c75d99ef3acc",
-      "last_read_fingerprint": "e40dc4dd201276276ac7ba770b090b107ea7064637c06ed77339c75d99ef3acc",
+      "fingerprint": "0e28b392ed53a714b92e0c461580f1bfef232294d0f9a789be5384bde9298a5e",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 139
@@ -676,13 +678,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SCHEDULE-INPUTS"
       },
-      "fingerprint": "3886260fe01c43c6484906bfa1db25518f743893be2748b5454b01791da70820",
-      "last_read_fingerprint": "3886260fe01c43c6484906bfa1db25518f743893be2748b5454b01791da70820",
+      "fingerprint": "41306cedd180e53e704bea2c3e76eea67ce45495511fd60394c3771f25dc0ac0",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 139
@@ -755,7 +757,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-CARDS"
       },
-      "fingerprint": "806969aca10652c864576df9180cc8bd4810fb090dbde871b6fb77447f6c6a71",
+      "fingerprint": "5208fdf56bf3cec8d44f96dea9565cdc6eacb838799701772eb1238c8bfaacd3",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
@@ -818,7 +820,7 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-HEADLESS-HELPERS"
@@ -826,8 +828,8 @@
       "regression_cases": [],
       "evidence": [],
       "issue": "Audit #134",
-      "fingerprint": "210b7810ce80db6323e9636b809724192751e9fc1aa02d9c3c2493632e9625d9",
-      "last_read_fingerprint": "210b7810ce80db6323e9636b809724192751e9fc1aa02d9c3c2493632e9625d9",
+      "fingerprint": "61d538ab7727f22be74f18283acdc598be705e049edb29dddb571cb06765f696",
+      "last_read_fingerprint": null,
       "audit_issue": 139
     },
     {
@@ -1041,19 +1043,15 @@
       "path": "zhl-ccr-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [
-        "python dev/run_ccr_differential.py"
-      ],
-      "regression_cases": [
-        "REG-07"
-      ],
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Audit #134; CCR deep-endpoint setpoint sampling",
-      "fingerprint": "1c90a29cab4644ec939050181a2a0c911e593f82f9a5b837380570616155ffdf",
-      "last_read_fingerprint": "1c90a29cab4644ec939050181a2a0c911e593f82f9a5b837380570616155ffdf"
+      "fingerprint": "4a75814802434e594ea3524227aa25105008120c3fde37b2e3e607107a8cad7c",
+      "last_read_fingerprint": null
     },
     {
       "id": "ENG-ZHL-SCHEDULE",
@@ -1556,7 +1554,7 @@
       "evidence": [],
       "issue": "GitHub #133â€“#138 audit regression sections",
       "regression_cases": [],
-      "fingerprint": "5e9f7696692146642128605b7a874ae52e9f4b90956204f2451ef0dcf7a35ed1",
+      "fingerprint": "99cec49c101752db0d22ec3ad24a24dcdb46fba0acc776bc569334d7e554af06",
       "last_read_fingerprint": null
     },
     {
@@ -2025,7 +2023,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "708c38fe7e38f96b72a36490f93f80e66763004e8a2dcdcfaa5749841c151fc3",
+      "fingerprint": "d653ae570836a1b7b6cb480dfb2712b18a79e65864b458648211a0d8a4d64e8c",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
@@ -2371,7 +2369,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "077b0b7f7c340745dd6c53ba1d1597381377124288f4c2f0a090788d3ebd9a4a",
+      "fingerprint": "b0f90e1a99e71d61e575678be9f8de494f59cc02afad11a482084972ae56e964",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2536,7 +2534,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "d8c4c3ecbb1d62d21b60a0f47337feabad4d464b27495d2504b5c71f8e33a150",
+      "fingerprint": "83f53c5da32619b811414b905f8e6ccb20204d6253ce834e29cabe7da299092f",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],

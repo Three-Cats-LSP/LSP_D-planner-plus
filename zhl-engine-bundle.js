@@ -426,11 +426,12 @@ function depthAtSetpointCrossing(setpoint, surfP) {
 }
 
 function getEffectiveSetpointAtDepth(depthM, ccr, surfP, phase) {
-  if (!ccr || ccr.bailout || !isRebreatherCircuit(ccr.circuit)) return 0;
-  if (ccr.circuit === 'pSCR') return 0;
-  const descSP = ccr.descentSetpoint != null ? ccr.descentSetpoint : 0.7;
-  const bottomSP = ccr.bottomSetpoint != null ? ccr.bottomSetpoint : 1.2;
-  const decoSP = ccr.decoSetpoint != null ? ccr.decoSetpoint : (ccr.setpoint != null ? ccr.setpoint : 1.3);
+  const cfg = normalizeCCRSettings(ccr);
+  if (!cfg || cfg.bailout || !isRebreatherCircuit(cfg.circuit)) return 0;
+  if (cfg.circuit === 'pSCR') return 0;
+  const descSP = cfg.descentSetpoint != null ? cfg.descentSetpoint : 0.7;
+  const bottomSP = cfg.bottomSetpoint != null ? cfg.bottomSetpoint : 1.2;
+  const decoSP = cfg.decoSetpoint != null ? cfg.decoSetpoint : (cfg.setpoint != null ? cfg.setpoint : 1.3);
   if (phase === 'descent') return descSP;
   if (phase === 'bottom') return bottomSP;
   if (phase === 'deco' || phase === 'ascent') return decoSP;
@@ -483,7 +484,10 @@ function computePSCRFractions(pAmb, fO2, fHe, ccr) {
   const fN2src = Math.max(0, 1 - fO2 - fHe);
   const sourceInert = Math.max(0.001, fHe + fN2src);
   if (sourceInert <= 0.001 && fO2 >= 0.999) return { fO2: 1, fHe: 0, fN2: 0 };
-  const loopVol = ccr.scrLoopVolume || 7.0;
+  const loopVol = parseFloat(ccr.scrLoopVolume);
+  if (!Number.isFinite(loopVol) || loopVol <= 0) {
+    throw new Error('Invalid pSCR loop volume');
+  }
   const metO2 = getCcrMetabolicO2Rate(ccr);
   // Steady-state pSCR model: ppO2_loop = ppO2_supply - VO2/loopVol (Baker drop formula).
   // Previous model subtracted cumulative dive runtime × VO2 from a fixed loop volume,
@@ -748,8 +752,9 @@ function getEffectivePpo2(pAmb, setpoint, fO2, ccr, depthM, fHe) {
   const surfPRef = (typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325);
   const depthFromAmb = depthM != null ? depthM : (pAmb - surfPRef) / BAR_PER_METRE;
   const sp = setpoint != null ? setpoint : getEffectiveSetpointAtDepth(depthFromAmb, cfg, surfPRef);
+  const pDry = Math.max(0, pAmb - WATER_VAPOR);
   const dilPpo2 = fO2 * pAmb;
-  return Math.min(pAmb, Math.max(sp, dilPpo2));
+  return Math.min(pDry, Math.max(sp, dilPpo2));
 }
 
 
