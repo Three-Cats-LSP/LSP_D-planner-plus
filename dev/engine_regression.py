@@ -1128,6 +1128,10 @@ ENGINE_SUITE_JS = r"""
         ...baseVpm,
         _preTissues: Array.from({ length: 16 }, () => ({ pN2: NaN, pHe: 0 })),
       }, 'VPMB');
+      const negTissue = VPMEngine.calculate(lv, deco, {
+        ...baseVpm,
+        _preTissues: Array.from({ length: 16 }, (_, i) => ({ pN2: i === 0 ? -1 : 0.79, pHe: 0 })),
+      }, 'VPMB');
       const badBubble = VPMEngine.calculate(lv, deco, {
         ...baseVpm,
         _prevBubbleState: {
@@ -1137,9 +1141,20 @@ ENGINE_SUITE_JS = r"""
           regeneratedRadiiHe: Array(16).fill(0),
         },
       }, 'VPMB');
+      const zeroBubble = VPMEngine.calculate(lv, deco, {
+        ...baseVpm,
+        _prevBubbleState: {
+          adjustedCritRadiiN2: Array(16).fill(0.000001),
+          adjustedCritRadiiHe: Array(16).fill(0.000001),
+          regeneratedRadiiN2: Array(16).fill(0),
+          regeneratedRadiiHe: Array(16).fill(0.000001),
+        },
+      }, 'VPMB');
       stateValidationOk = !fresh.error
         && badTissue.code === 'INVALID_REPETITIVE_STATE'
-        && badBubble.code === 'INVALID_REPETITIVE_STATE';
+        && negTissue.code === 'INVALID_REPETITIVE_STATE'
+        && badBubble.code === 'INVALID_REPETITIVE_STATE'
+        && zeroBubble.code === 'INVALID_REPETITIVE_STATE';
     }
 
     let settingsValidationOk = false;

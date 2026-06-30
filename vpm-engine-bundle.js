@@ -95,21 +95,24 @@ const VPMEngine = (() => {
     function isFiniteTissueRow(t) {
         return t && Number.isFinite(t.pN2) && Number.isFinite(t.pHe);
     }
+    function isValidTissueRow(t) {
+        return isFiniteTissueRow(t) && t.pN2 >= 0 && t.pHe >= 0;
+    }
     function validatePreTissues(pre, nc) {
         if (!pre) return true;
         if (!Array.isArray(pre) || pre.length !== nc) return false;
-        return pre.every(isFiniteTissueRow);
+        return pre.every(isValidTissueRow);
     }
     function validateRadiusArray(arr, nc) {
         if (!Array.isArray(arr) || arr.length !== nc) return false;
-        return arr.every(v => Number.isFinite(v) && v >= 0);
+        return arr.every(v => Number.isFinite(v) && v > 0);
     }
     function validateRepetitiveState(settings, nc) {
         if (settings._preTissues != null && !validatePreTissues(settings._preTissues, nc)) {
             return {
                 ok: false,
                 code: 'INVALID_REPETITIVE_STATE',
-                message: 'Repetitive tissue state must be 16 finite {pN2,pHe} rows',
+                message: 'Repetitive tissue state must be 16 finite non-negative {pN2,pHe} rows',
             };
         }
         const pb = settings._prevBubbleState;
@@ -119,7 +122,7 @@ const VPMEngine = (() => {
                 return {
                     ok: false,
                     code: 'INVALID_REPETITIVE_STATE',
-                    message: 'Repetitive bubble state arrays must be 16 finite non-negative values',
+                    message: 'Repetitive bubble state arrays must be 16 finite strictly positive values',
                 };
             }
         }
@@ -1259,8 +1262,15 @@ const VPMEngine = (() => {
             }
             if (useOneMinuteGrid && totalStopTime > 0) {
                 const snapped = Math.max(effectiveMinStop, Math.ceil((totalStopTime - 1e-9) / 1) * 1);
-                ctx.runtime += snapped - totalStopTime;
-                totalStopTime = snapped;
+                const roundDelta = snapped - totalStopTime;
+                if (roundDelta > 1e-9) {
+                    for (let i = 0; i < NC; i++) {
+                        ctx.state.tissues[i].pHe = haldane(ctx.state.tissues[i].pHe, inspHe, ZHL16C_He[i].ht, roundDelta);
+                        ctx.state.tissues[i].pN2 = haldane(ctx.state.tissues[i].pN2, inspN2, ZHL16C_N2[i].ht, roundDelta);
+                    }
+                    ctx.runtime += roundDelta;
+                    totalStopTime = snapped;
+                }
             }
             const finalCeiling = getVPMCeiling(ctx.state, settings);
             const clearToleranceFinal = (ctx.continuationFinalPhase && stopDepth <= 6)
@@ -2008,8 +2018,114 @@ const VPMEngine = (() => {
             error: null
         };
     }
+    function applyMinDecoProfile(result, opts) {
+        if (!result || result.error || !opts || !opts.mdpStops || !opts.mdpStops.length) return result;
+        const plan = result.plan || [];
+        if (!plan.length) return result;
+        const mdpStops = opts.mdpStops;
+        const isMetric = opts.isMetric !== false;
+        const botFracs = opts.botFracs || { fN2: 0.79, fHe: 0 };
+        const surfP = opts.surfP != null ? opts.surfP : 1.01325;
+        const barPerM = opts.barPerM != null ? opts.barPerM : 0.101325;
+        const FT_PER_M = 3.28084;
+        const stepDepthM = (s) => {
+            const raw = s.depth ?? s.from ?? s.to;
+            if (raw == null) return null;
+            return isMetric ? raw : raw / FT_PER_M;
+        };
+        const defaultPpo2 = (depthM, fN2, fHe) => {
+            const fO2 = Math.max(0, 1 - fN2 - (fHe || 0));
+            return (depthM * barPerM + surfP) * fO2;
+        };
+        const stopPpo2 = typeof opts.stopPpo2 === 'function' ? opts.stopPpo2 : defaultPpo2;
+        const loadTissues = typeof opts.loadTissues === 'function' ? opts.loadTissues : null;
+
+        let totalDelta = 0;
+        let cnsDelta = 0;
+        let otuDelta = 0;
+        let tissues = result.finalTissues
+            ? result.finalTissues.map(t => ({ pN2: t.pN2, pHe: t.pHe || 0 }))
+            : null;
+
+        function addExposureDelta(depthM, deltaMin, fN2, fHe) {
+            if (deltaMin <= 1e-9) return;
+            const ppo2 = stopPpo2(depthM, fN2, fHe);
+            cnsDelta += calculateCNS(ppo2, deltaMin);
+            otuDelta += calculateOTU(ppo2, deltaMin);
+            if (loadTissues && tissues) {
+                tissues = loadTissues(tissues, depthM, deltaMin, fN2, fHe || 0);
+            }
+        }
+        function shiftRuntimes(fromRt, delta) {
+            for (const seg of plan) {
+                if ((seg.runtime || 0) >= fromRt - 1e-9) {
+                    seg.runtime = Math.round(((seg.runtime || 0) + delta) * 10) / 10;
+                }
+            }
+        }
+
+        const matchedDepths = new Set();
+        for (const seg of plan) {
+            if (seg.type !== 'stop') continue;
+            const dm = stepDepthM(seg);
+            if (dm == null) continue;
+            const mdp = mdpStops.find(s => Math.abs(stepDepthM(s) - dm) < 0.25);
+            if (!mdp) continue;
+            matchedDepths.add(Math.round(dm * 100));
+            const oldTime = seg.time || 0;
+            const delta = mdp.dur - oldTime;
+            if (delta <= 1e-9) {
+                if (mdp.dur > oldTime) seg.time = mdp.dur;
+                continue;
+            }
+            seg.time = mdp.dur;
+            shiftRuntimes(seg.runtime || 0, delta);
+            totalDelta += delta;
+            addExposureDelta(dm, delta, mdp.fN2 ?? botFracs.fN2, mdp.fHe ?? botFracs.fHe ?? 0);
+        }
+
+        for (const mdp of mdpStops) {
+            const dm = stepDepthM(mdp);
+            if (dm == null || matchedDepths.has(Math.round(dm * 100))) continue;
+            let insertIdx = plan.length;
+            for (let i = 0; i < plan.length; i++) {
+                const seg = plan[i];
+                if (seg.type === 'stop' && stepDepthM(seg) != null && stepDepthM(seg) < dm) {
+                    insertIdx = i;
+                    break;
+                }
+                if (seg.type === 'surface') {
+                    insertIdx = i;
+                    break;
+                }
+            }
+            const prevRt = insertIdx > 0 ? (plan[insertIdx - 1].runtime || 0) : 0;
+            const newSeg = {
+                type: 'stop',
+                depth: mdp.depth,
+                time: mdp.dur,
+                runtime: Math.round((prevRt + mdp.dur) * 10) / 10,
+                gas: mdp.gas,
+            };
+            plan.splice(insertIdx, 0, newSeg);
+            for (let i = insertIdx + 1; i < plan.length; i++) {
+                plan[i].runtime = Math.round(((plan[i].runtime || 0) + mdp.dur) * 10) / 10;
+            }
+            totalDelta += mdp.dur;
+            addExposureDelta(dm, mdp.dur, mdp.fN2 ?? botFracs.fN2, mdp.fHe ?? botFracs.fHe ?? 0);
+        }
+
+        result.plan = plan;
+        result.stops = plan.filter(s => s.type === 'stop');
+        result.totalRuntime = Math.ceil((result.totalRuntime || 0) + totalDelta);
+        if (tissues) result.finalTissues = tissues;
+        if (result.totalCNS != null) result.totalCNS += cnsDelta;
+        if (result.totalOTU != null) result.totalOTU += otuDelta;
+        return result;
+    }
     return {
         calculate,
+        applyMinDecoProfile,
         load: function load() { return true; },
         createVPMState,
         /** Sync all 16 He compartment half-times from ZHL16C_HE_HT array (Baker / Bühlmann 2003). */

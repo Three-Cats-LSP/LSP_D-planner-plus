@@ -7415,6 +7415,15 @@ function enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackG
   return ZhlEngineBundle.enforceMinDecoProfile(steps, enabled, min9m, min6m, isMetric, fallbackGas, fallbackFN2, fallbackFHe);
 }
 
+function getVpmMinDecoSettingsFromDom() {
+  return {
+    enabled: document.getElementById('minDecoProfileEnable')?.value === 'yes',
+    min9m: parseFloat(document.getElementById('minDeco9m')?.value) || 1,
+    min6m: parseFloat(document.getElementById('minDeco6m')?.value) || 3,
+    isMetric: document.getElementById('unitSel')?.value !== 'imperial',
+  };
+}
+
 
 let _confirmCallback = null;
 function showConfirm(message, callback) {
@@ -7824,6 +7833,41 @@ function onConservatismChange() {
 }
 
 // AUDIT-UNIT:UI-VPM-RUNNER
+function applyMinDecoProfileToVpmResult(result, botFracs) {
+  const m = getVpmMinDecoSettingsFromDom();
+  if (!result || result.error || !m.enabled || (!m.min9m && !m.min6m)) return result;
+  if (!window.VPMEngine || typeof VPMEngine.applyMinDecoProfile !== 'function') return result;
+  const botLabel = getGasLabel(botFracs.fO2, botFracs.fHe);
+  const origStops = (result.stops || []).map(s => ({
+    type: 'deco',
+    depth: s.depth,
+    dur: s.time || 0,
+    gas: s.gas,
+    fN2: s.o2 != null ? Math.max(0, 1 - s.o2 / 100 - (s.he || 0) / 100) : botFracs.fN2,
+    fHe: s.he != null ? s.he / 100 : (botFracs.fHe || 0),
+  }));
+  const mdpStops = enforceMinDecoProfile(origStops, m.enabled, m.min9m, m.min6m, m.isMetric, botLabel, botFracs.fN2, botFracs.fHe || 0);
+  function vpmStopPpo2(depthM, fN2, fHe) {
+    const fO2 = Math.max(0, 1 - fN2 - (fHe || 0));
+    const ccr = getCCRSettingsFromDOM();
+    if (isRebreatherCircuit(ccr.circuit) && !ccr.bailout) {
+      const sp = getEffectiveSetpointAtDepth(depthM, ccr, altSurfaceP);
+      const pAmb = (altSurfaceP || 1.01325) + depthM * BAR_PER_METRE;
+      return getEffectivePpo2(pAmb, sp, fO2, mergeCCRSettings(ccr), depthM, fHe);
+    }
+    return (depthM * BAR_PER_METRE + (altSurfaceP || 1.01325)) * fO2;
+  }
+  return VPMEngine.applyMinDecoProfile(result, {
+    mdpStops,
+    isMetric: m.isMetric,
+    botFracs,
+    surfP: altSurfaceP || 1.01325,
+    barPerM: BAR_PER_METRE,
+    stopPpo2: vpmStopPpo2,
+    loadTissues: (t, d, dt, fN2, fHe) => saturate(t, d, dt, fN2, fHe),
+  });
+}
+
 function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, surfaceAscentRate,
                         stepSize, lastStop, minStopTime, ppo2Bottom, ppo2Deco, model, wholeMinStops) {
   // Headless mode: skip all VPM computation and DOM rendering
@@ -7962,6 +8006,7 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
   }
 
   if (result.code === 'VPM_STOP_CAP' && result.plan && result.plan.length) {
+    applyMinDecoProfileToVpmResult(result, _vpmBotFracs);
     renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct, decoGases, model, _vpmBotFracs);
     return;
   }
@@ -7970,6 +8015,8 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
     if (tbody) tbody.innerHTML = `<tr><td colspan="8" style="color:var(--red);padding:12px;">VPM Error: ${result.error}</td></tr>`;
     return;
   }
+
+  applyMinDecoProfileToVpmResult(result, _vpmBotFracs);
 
   // ── Feature B: save dive result for next repetitive dive ───────────────────────
   if (result.finalTissues && !_contingencyRunning) {
@@ -8456,21 +8503,14 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
     renderDecoAlerts(alertsContainer, cnsAlert);
   }
 
-  // ── Min Deco Profile enforcement (VPM) ──────────────
-  const _vmdpEnabled  = document.getElementById('minDecoProfileEnable')?.value === 'yes';
-  const _vmdp9m       = parseFloat(document.getElementById('minDeco9m')?.value) || 1;
-  const _vmdp6m       = parseFloat(document.getElementById('minDeco6m')?.value) || 3;
-  const _vmdpIsMetric = document.getElementById('unitSel')?.value !== 'imperial';
-  let _vpmRawStops    = result.stops?.map(s => ({ type: 'deco', depth: s.depth, dur: s.time, gas: s.gas })) || [];
-  const _vmdpBotFracs  = _vpmBotFracs;
-  const _vmdpBotLabel  = getGasLabel ? getGasLabel(_vmdpBotFracs.fO2, _vmdpBotFracs.fHe) : '';
-  _vpmRawStops        = enforceMinDecoProfile(_vpmRawStops, _vmdpEnabled, _vmdp9m, _vmdp6m, _vmdpIsMetric, _vmdpBotLabel, _vmdpBotFracs.fN2, _vmdpBotFracs.fHe || 0);
+  // ── Min Deco Profile enforcement (VPM) — applied in runVPMSchedule before render ──
+  const _vpmRawStops = result.stops?.map(s => ({ depth: s.depth, dur: s.time, gas: s.gas })) || [];
 
   window._lastPlan = {
     rt,
     tts: Math.round(vpmTtsMin * 10) / 10,
     decoTime: Math.round(deco),
-    stops: _vpmRawStops.map(s => ({ depth: s.depth, dur: s.dur, gas: s.gas })),
+    stops: _vpmRawStops,
     steps: plan,
     totalOTU: result.totalOTU != null ? result.totalOTU : undefined,
     totalCNS: result.totalCNS != null ? result.totalCNS : undefined,

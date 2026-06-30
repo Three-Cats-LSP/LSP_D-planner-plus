@@ -1571,8 +1571,8 @@ if "enforceMinDecoProfile(collapsed," in zhl_src:
 else:
     fail("enforceMinDecoProfile not called in Buhlmann path — min deco profile ignored for ZHL")
 
-# 21.3 Called in VPM path
-if "enforceMinDecoProfile(_vpmRawStops," in js:
+# 21.3 Called in VPM path (pre-render via applyMinDecoProfileToVpmResult / VPMEngine.applyMinDecoProfile)
+if ("applyMinDecoProfileToVpmResult(" in js and "VPMEngine.applyMinDecoProfile" in js) or "enforceMinDecoProfile(_vpmRawStops," in js:
     ok("enforceMinDecoProfile called in VPM path")
 else:
     fail("enforceMinDecoProfile not called in VPM path — min deco profile ignored for VPM-B")

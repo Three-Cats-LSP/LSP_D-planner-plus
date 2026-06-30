@@ -1316,6 +1316,37 @@ function runZhlScheduleCore(params) {
   const _mdpIsMetric  = params.minDecoProfile?.isMetric !== false;
   const collapsedMDP  = enforceMinDecoProfile(collapsed, _mdpEnabled, _mdp9m, _mdp6m, _mdpIsMetric, bottomMixLabel, bottomFN2, bottomFHe);
 
+  // Reconcile runtime and tissues with min-deco stop extensions/injections.
+  const _mdpStepDepthM = (s) => {
+    const raw = s.depth ?? s.from ?? s.to;
+    if (raw == null) return null;
+    return _mdpIsMetric ? raw : raw / 3.28084;
+  };
+  const _sumDecoAtDepth = (steps, targetM) => steps
+    .filter(s => (s.type === 'deco' || s.type === 'safety')
+      && _mdpStepDepthM(s) != null
+      && Math.abs(_mdpStepDepthM(s) - targetM) < 0.25)
+    .reduce((a, s) => a + s.dur, 0);
+  const _origDecoTime = collapsed
+    .filter(s => s.type === 'deco' || s.type === 'safety')
+    .reduce((a, s) => a + s.dur, 0);
+  const _mdpDecoTime = collapsedMDP
+    .filter(s => s.type === 'deco' || s.type === 'safety')
+    .reduce((a, s) => a + s.dur, 0);
+  for (const targetM of [9, 6]) {
+    const delta = _sumDecoAtDepth(collapsedMDP, targetM) - _sumDecoAtDepth(collapsed, targetM);
+    if (delta <= 1e-9) continue;
+    const step = collapsedMDP.find(s => (s.type === 'deco' || s.type === 'safety')
+      && _mdpStepDepthM(s) != null
+      && Math.abs(_mdpStepDepthM(s) - targetM) < 0.25);
+    if (!step) continue;
+    const fHe = step.fHe ?? bottomFHe ?? 0;
+    const fN2 = step.fN2 ?? bottomFN2;
+    const fO2 = Math.max(0, 1 - fN2 - fHe);
+    tissues = zhlLoadConst(tissues, step.depth, delta, fO2, fHe, _zhlOnLoop, 'deco');
+  }
+  rt += _mdpDecoTime - _origDecoTime;
+
   const decoStops = collapsedMDP.filter(s => s.type === 'deco');
   const decoTime  = Math.round(decoStops.reduce((a, s) => a + s.dur, 0) * 60) / 60;
   const hasDeco   = decoStops.length > 0;
@@ -1335,7 +1366,7 @@ function runZhlScheduleCore(params) {
     tts: Math.round(ttsMin * 10) / 10,
     decoTime: Math.round(decoTime),
     stops: decoStops.map(s => ({ depth: s.depth, dur: s.dur, gas: s.gas })),
-    steps: collapsed,
+    steps: collapsedMDP,
     decoZoneStart: trueDecoZoneStart,
     firstStopDepth: firstStopDepth || 0,
     finalTissues: tissues.map(t => ({ pN2: t.pN2, pHe: t.pHe || 0 })),  // for ZHL repetitive dive carry

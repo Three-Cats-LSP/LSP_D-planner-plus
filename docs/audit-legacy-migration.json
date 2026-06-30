@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "legacy_path": "tools/audit/legacy_v1.py",
-  "legacy_sha256": "98ed92090678089d17f529cb07809bcff048d07bb8fbfdebb9523b42ce8d1e3f",
+  "legacy_sha256": "44ddf172698b0f8fbbc6052d6362b00ce92ac80a096192b9da8d84b1123e6183",
   "cutover_policy": {
     "required_consecutive_clean_main_runs": 3,
     "recorded_runs": []
