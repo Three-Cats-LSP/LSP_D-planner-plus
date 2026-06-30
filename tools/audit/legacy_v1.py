@@ -4047,6 +4047,11 @@ else:
         ok("site-assets-manifest includes app-version.js and vpm-engine-bundle.js")
     else:
         fail("site-assets-manifest missing app-version.js or vpm-engine-bundle.js")
+    missing_ui_cores = [f for f in _UI_CORE_FILES if f not in manifest_lines]
+    if not missing_ui_cores:
+        ok("site-assets-manifest includes all runtime UI core modules for Pages deploy")
+    else:
+        fail(f"site-assets-manifest missing UI cores for Pages deploy: {', '.join(missing_ui_cores)}")
 
 if os.path.isfile(os.path.join(os.path.dirname(__file__), "android-select-picker.js")):
     with open(os.path.join(os.path.dirname(__file__), "android-select-picker.js"), encoding="utf-8") as f:

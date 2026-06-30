@@ -2,11 +2,16 @@
 android-select-picker.js
 app-version.js
 capacitor-bridge.js
+contingency-core.js
 download.html
+export-core.js
+gas-plan-core.js
+gas-table-core.js
 icon-192.png
 icon-512.png
 index.html
 manifest.json
+surf-interval-core.js
 sw.js
 tests-ccr-differential.html
 tests-extended.html
