@@ -872,8 +872,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
-      "fingerprint": "cc05977aee28ac4c506593dc48c96a7f09d8acbf5785b1120bd6ea6f82a12c0e",
-      "last_read_fingerprint": "cc05977aee28ac4c506593dc48c96a7f09d8acbf5785b1120bd6ea6f82a12c0e",
+      "fingerprint": "3162fcbe353d84c9c65f63db4521be4a11fb661c59285c23acc7913f347d9ace",
+      "last_read_fingerprint": "3162fcbe353d84c9c65f63db4521be4a11fb661c59285c23acc7913f347d9ace",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 151

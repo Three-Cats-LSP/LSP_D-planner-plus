@@ -9897,7 +9897,7 @@ function runDecoSchedule() {
     surfaceGF: window._lastPlan ? window._lastPlan.surfaceGF : null,
   });
 
-  document.getElementById('decoResult').style.display = 'block';
+  { const _decoRes = document.getElementById('decoResult'); if (_decoRes) _decoRes.style.display = 'block'; }
   { const _tBtn=document.getElementById('tissueChartToggleBtn'); const _cBtn=document.getElementById('contingencyJumpBtn'); if(_tBtn)_tBtn.style.display='inline-block'; if(_cBtn)_cBtn.style.display='inline-block'; }
 
   // Inject TTS cells into deco table rows
@@ -10052,17 +10052,17 @@ function runDecoSchedule() {
   // Tissue handled by updateTissueViz via tissueInlineCard
 
   if (!_contingencyRunning) {
-    document.getElementById('tissueLoadCard').style.display = 'block'; // unified tissue card
-    document.getElementById('gfCurveInlineCard').style.display = 'block';
+    { const _tlc = document.getElementById('tissueLoadCard'); if (_tlc) _tlc.style.display = 'block'; }
+    { const _gfc = document.getElementById('gfCurveInlineCard'); if (_gfc) _gfc.style.display = 'block'; }
     // Clear any VPM "N/A" notices from tissue/GF cards
     ['gfCurveInlineCard'].forEach(id => { // tissueInlineCard/tableCard merged into tissueLoadCard
       const el = document.getElementById(id);
       if (el) el.querySelectorAll('.info-box').forEach(n => { if (n.textContent.includes('N/A for VPM')) n.remove(); });
     });
-    document.getElementById('contingencyCard').style.display = 'block';
+    { const _cc = document.getElementById('contingencyCard'); if (_cc) _cc.style.display = 'block'; }
     const _dgc = document.getElementById('diveGraphCard'); if (_dgc) _dgc.style.display = 'block';
     buildContingencyButtons();
-    document.getElementById('contingencyResult').style.display = 'none';
+    { const _cr = document.getElementById('contingencyResult'); if (_cr) _cr.style.display = 'none'; }
     setTimeout(() => {
       const dgc = document.getElementById('diveGraphCard');
       if (dgc) dgc.style.display = 'block';
@@ -10079,8 +10079,10 @@ function runDecoSchedule() {
     if (_zhlPrevGF) { mGF.low = _zhlPrevGF.low; mGF.high = _zhlPrevGF.high; }
     if (_contingencyRunning) throw err;
     console.error('[Deco] Error:', err);
-    document.getElementById('decoSummary').innerHTML = `<div class="alert dang"><span>⚠</span><div><strong>Error:</strong> ${escapeHtmlText(err.message || String(err))}</div></div>`;
-    document.getElementById('decoResult').style.display = 'block';
+    const _ds = document.getElementById('decoSummary');
+    if (_ds) _ds.innerHTML = `<div class="alert dang"><span>⚠</span><div><strong>Error:</strong> ${escapeHtmlText(err.message || String(err))}</div></div>`;
+    const _dr2 = document.getElementById('decoResult');
+    if (_dr2) _dr2.style.display = 'block';
   } finally {
     window._scheduleWorkerBusy = false;
   }
