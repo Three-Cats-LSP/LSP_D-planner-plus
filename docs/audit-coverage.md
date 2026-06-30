@@ -24,9 +24,9 @@
 | ui_core | 5 | 0 | 2 | 0 | 3 |
 | web_css | 4 | 4 | 0 | 0 | 0 |
 | web_markup | 5 | 5 | 0 | 0 | 0 |
-| web_runtime | 34 | 9 | 12 | 12 | 1 |
+| web_runtime | 34 | 9 | 11 | 13 | 1 |
 | worker | 2 | 0 | 0 | 2 | 0 |
-| **Total** | **157** | **59** | **58** | **35** | **5** |
+| **Total** | **157** | **59** | **57** | **36** | **5** |
 
 ## Units
 
@@ -57,7 +57,7 @@
 | UI-VPM-RUNNER | web_runtime | `index.html:7826` | 166 | P0 | READ | REG-31, REG-38 |
 | UI-VPM-RENDER | web_runtime | `index.html:7992` | 536 | P1 | READ | - |
 | UI-GAS-INPUTS | web_runtime | `index.html:8528` | 184 | P1 | READ | - |
-| UI-GAS-CARDS | web_runtime | `index.html:8712` | 574 | P1 | IN_PROGRESS | - |
+| UI-GAS-CARDS | web_runtime | `index.html:8712` | 574 | P1 | READ | - |
 | UI-ZHL-RUNNER-SETUP | web_runtime | `index.html:9286` | 117 | P0 | READ | - |
 | UI-ZHL-RUNNER-ENGINE | web_runtime | `index.html:9403` | 341 | P0 | READ | REG-01, REG-06 |
 | UI-ZHL-RESULTS | web_runtime | `index.html:9744` | 493 | P1 | IN_PROGRESS | - |

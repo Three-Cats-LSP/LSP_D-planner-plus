@@ -815,15 +815,14 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-CARDS"
       },
       "fingerprint": "68b00368ef6b562ee3bb66908040e243d7e6f4e3b4326866066f7c1b66504173",
-      "last_read_fingerprint": null,
-      "evidence": [],
-      "regression_cases": []
+      "last_read_fingerprint": "68b00368ef6b562ee3bb66908040e243d7e6f4e3b4326866066f7c1b66504173",
+      "audit_issue": 148
     },
     {
       "id": "UI-ZHL-RUNNER-SETUP",
