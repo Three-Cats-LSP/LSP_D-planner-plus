@@ -218,6 +218,66 @@
       "suite_id": "SUITE-ENGINE-FULL",
       "case_id": "ZHL-ML-ASCENT-RATE"
     },
+    "REG-24": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE6-RDP-CEILING"
+    },
+    "REG-25": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE6-PADI-DEPTH"
+    },
+    "REG-26": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE6-TRIMIX-RANGE"
+    },
+    "REG-27": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE6-PSCR-BOUNDS"
+    },
+    "REG-28": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE6-PSCR-CANON"
+    },
+    "REG-29": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE6-CCR-DRY-PPO2"
+    },
+    "REG-30": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE6-BUHLMANN-BT"
+    },
+    "REG-31": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE7-VPM-EXPOSURE-CARRY"
+    },
+    "REG-32": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE7-VPM-STATE-VALIDATION"
+    },
+    "REG-33": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE7-VPM-SETTINGS-VALIDATION"
+    },
+    "REG-34": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE7-VPM-ALTITUDE-EXPOSURE"
+    },
+    "REG-35": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE7-IMPERIAL-RESET"
+    },
+    "REG-36": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE7-PERSONAL-DEFAULTS"
+    },
+    "REG-37": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE7-RESET-UI-SYNC"
+    },
+    "REG-38": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE7-STOP-ROUNDING"
+    },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
       "case_id": "android-compile"
@@ -695,11 +755,21 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS-CONTROLS"
       },
-      "fingerprint": "6730498741d965b06411b913a120eea9b94653949bd505f2ca7e5f35e6f2e83e",
-      "last_read_fingerprint": "6730498741d965b06411b913a120eea9b94653949bd505f2ca7e5f35e6f2e83e",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 139
+      "fingerprint": "daeb8d4114b4e2417c5b2df8d6918eaf1c41c42fa8150cd70a12bcd6a2dfad68",
+      "last_read_fingerprint": "daeb8d4114b4e2417c5b2df8d6918eaf1c41c42fa8150cd70a12bcd6a2dfad68",
+      "evidence": [
+        "REG-35",
+        "REG-36",
+        "REG-37",
+        "REG-38"
+      ],
+      "regression_cases": [
+        "REG-35",
+        "REG-36",
+        "REG-37",
+        "REG-38"
+      ],
+      "audit_issue": 143
     },
     {
       "id": "UI-VPM-RUNNER",
@@ -711,11 +781,17 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RUNNER"
       },
-      "fingerprint": "568e4f193e527bd9de926b15b346c770d219c78b2ddfb579f5ff32cd12d5fd43",
-      "last_read_fingerprint": "568e4f193e527bd9de926b15b346c770d219c78b2ddfb579f5ff32cd12d5fd43",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 139
+      "fingerprint": "5de094ee9b9ca425fe1d8cee12ac39fcf4ba8eb408a855d8642779a9772788dc",
+      "last_read_fingerprint": "5de094ee9b9ca425fe1d8cee12ac39fcf4ba8eb408a855d8642779a9772788dc",
+      "evidence": [
+        "REG-31",
+        "REG-38"
+      ],
+      "regression_cases": [
+        "REG-31",
+        "REG-38"
+      ],
+      "audit_issue": 143
     },
     {
       "id": "UI-VPM-RENDER",
@@ -753,7 +829,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-CARDS"
       },
-      "fingerprint": "5208fdf56bf3cec8d44f96dea9565cdc6eacb838799701772eb1238c8bfaacd3",
+      "fingerprint": "68b00368ef6b562ee3bb66908040e243d7e6f4e3b4326866066f7c1b66504173",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
@@ -768,8 +844,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-SETUP"
       },
-      "fingerprint": "15c7282ae6916268ae80276c8d5338b80fc7ac2a0aff9e209df9069738058085",
-      "last_read_fingerprint": "15c7282ae6916268ae80276c8d5338b80fc7ac2a0aff9e209df9069738058085",
+      "fingerprint": "19beab379171c4a791667d3c8f73dd893a282b174969b5ef7b33487adbf42c28",
+      "last_read_fingerprint": "19beab379171c4a791667d3c8f73dd893a282b174969b5ef7b33487adbf42c28",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 139
@@ -784,8 +860,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-ENGINE"
       },
-      "fingerprint": "d6cdfed2fc3839aaae9b8633bc957b7fff68e32dc0dd14cabe9a4a0469eee5fe",
-      "last_read_fingerprint": "d6cdfed2fc3839aaae9b8633bc957b7fff68e32dc0dd14cabe9a4a0469eee5fe",
+      "fingerprint": "74fad22401899c0222eae7c1140a9960a2d37068a617c06399a17ce418c95edd",
+      "last_read_fingerprint": "74fad22401899c0222eae7c1140a9960a2d37068a617c06399a17ce418c95edd",
       "evidence": [
         "python dev/run_all_regression.py --tier release"
       ],
@@ -1058,8 +1134,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "b96643f1269401019c569be95b7664d66078a850ef4d75a40495a0814bd9af1f",
-      "last_read_fingerprint": "b96643f1269401019c569be95b7664d66078a850ef4d75a40495a0814bd9af1f",
+      "fingerprint": "ee29a3ba88c38bff75a7013a970923f1197a251d213a40cf46ce14e78d93d2d3",
+      "last_read_fingerprint": "ee29a3ba88c38bff75a7013a970923f1197a251d213a40cf46ce14e78d93d2d3",
       "evidence": [
         "REG-06",
         "REG-22",
@@ -1081,11 +1157,21 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "da203db761b79c01ca353997645ff85dad50baae3bb2d0920239a1e9b5b98462",
-      "last_read_fingerprint": "da203db761b79c01ca353997645ff85dad50baae3bb2d0920239a1e9b5b98462",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 139
+      "fingerprint": "08f1fc344a9df145c0aee7929ad0660f5a7e42c39f03372a7d02496c5c30df0e",
+      "last_read_fingerprint": "08f1fc344a9df145c0aee7929ad0660f5a7e42c39f03372a7d02496c5c30df0e",
+      "evidence": [
+        "REG-31",
+        "REG-32",
+        "REG-33",
+        "REG-34"
+      ],
+      "regression_cases": [
+        "REG-31",
+        "REG-32",
+        "REG-33",
+        "REG-34"
+      ],
+      "audit_issue": 143
     },
     {
       "id": "ENG-VPM-REFERENCE",
@@ -1132,7 +1218,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "9d3efd01d963c06f5a00083a90f1e2970bcfa4fd3e0ea94d41b7868ce169089e",
+      "fingerprint": "537c094810d517eda5262ce7ef9dd2f5ff018bbd504c28274c6f10bd99a20267",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
@@ -1167,7 +1253,7 @@
         "REG-12",
         "REG-13"
       ],
-      "issue": "GitHub #140 H-2 / Cycle 5 GP-01\u201306 \u2014 docs/code-review-2026-06-30.md",
+      "issue": "GitHub #140 H-2 / Cycle 5 GP-01–06 — docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-10",
         "REG-12",
@@ -1189,7 +1275,7 @@
         "REG-11",
         "REG-14"
       ],
-      "issue": "Cycle 5 GT-01\u201306 \u2014 docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GT-01–06 — docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-11",
         "REG-14"
@@ -1212,7 +1298,7 @@
         "REG-20",
         "REG-21"
       ],
-      "issue": "GitHub #142 \u2014 Dive 2 gas override",
+      "issue": "GitHub #142 — Dive 2 gas override",
       "regression_cases": [
         "REG-17",
         "REG-19",
@@ -1548,9 +1634,9 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "GitHub #133\u00e2\u20ac\u201c#138 audit regression sections",
+      "issue": "GitHub #133â€“#138 audit regression sections",
       "regression_cases": [],
-      "fingerprint": "b1089795f9bccaf39b9807f10838d065e6b88b7c656463a5eb8b0249494f2142",
+      "fingerprint": "97a54b7fedc175899b99d9ed02d3e956a4c9580abdd7b061e2bf3bfbfef324c3",
       "last_read_fingerprint": null
     },
     {
@@ -1578,7 +1664,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "Cycle 5 GP/GT behavioral regression \u2014 docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GP/GT behavioral regression — docs/code-review-2026-06-30.md",
       "regression_cases": [],
       "fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
       "last_read_fingerprint": null
@@ -1977,7 +2063,7 @@
       },
       "evidence": [],
       "regression_cases": [],
-      "issue": "GitHub #133\u00e2\u20ac\u201c#139 structured environment audit gates; release regression 9/9",
+      "issue": "GitHub #133â€“#139 structured environment audit gates; release regression 9/9",
       "fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d",
       "last_read_fingerprint": null
     },
@@ -2367,7 +2453,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "b0f90e1a99e71d61e575678be9f8de494f59cc02afad11a482084972ae56e964",
+      "fingerprint": "98ed92090678089d17f529cb07809bcff048d07bb8fbfdebb9523b42ce8d1e3f",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2532,7 +2618,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "83f53c5da32619b811414b905f8e6ccb20204d6253ce834e29cabe7da299092f",
+      "fingerprint": "22d434f11cac650c1bb58726c4a7af60a948def2f0977636ad0d8f3d4af59fe3",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2761,7 +2847,22 @@
         "AUDIT-REG-03",
         "AUDIT-REG-05",
         "ZHL-ML-CONT-GAS",
-        "ZHL-ML-ASCENT-RATE"
+        "ZHL-ML-ASCENT-RATE",
+        "CYCLE6-RDP-CEILING",
+        "CYCLE6-PADI-DEPTH",
+        "CYCLE6-TRIMIX-RANGE",
+        "CYCLE6-PSCR-BOUNDS",
+        "CYCLE6-PSCR-CANON",
+        "CYCLE6-CCR-DRY-PPO2",
+        "CYCLE6-BUHLMANN-BT",
+        "CYCLE7-VPM-EXPOSURE-CARRY",
+        "CYCLE7-VPM-STATE-VALIDATION",
+        "CYCLE7-VPM-SETTINGS-VALIDATION",
+        "CYCLE7-VPM-ALTITUDE-EXPOSURE",
+        "CYCLE7-IMPERIAL-RESET",
+        "CYCLE7-PERSONAL-DEFAULTS",
+        "CYCLE7-RESET-UI-SYNC",
+        "CYCLE7-STOP-ROUNDING"
       ]
     },
     {

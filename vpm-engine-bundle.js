@@ -86,8 +86,45 @@ const VPMEngine = (() => {
         return settings.waterType === 0 ? SLP_SW_F : SLP_FW_F;
     }
     function getSurfacePressure(settings) {
-        const alt = settings.altitude || 0;
+        if (settings && Number.isFinite(settings.altSurfaceP) && settings.altSurfaceP > 0) {
+            return settings.altSurfaceP;
+        }
+        const alt = settings && settings.altitude != null ? settings.altitude : 0;
         return 1.01325 * Math.exp(-alt / 8434);
+    }
+    function isFiniteTissueRow(t) {
+        return t && Number.isFinite(t.pN2) && Number.isFinite(t.pHe);
+    }
+    function validatePreTissues(pre, nc) {
+        if (!pre) return true;
+        if (!Array.isArray(pre) || pre.length !== nc) return false;
+        return pre.every(isFiniteTissueRow);
+    }
+    function validateRadiusArray(arr, nc) {
+        if (!Array.isArray(arr) || arr.length !== nc) return false;
+        return arr.every(v => Number.isFinite(v) && v >= 0);
+    }
+    function validateVpmSettings(settings) {
+        const rates = ['descentRate', 'ascentRate', 'decoAscentRate', 'surfaceAscentRate'];
+        for (const key of rates) {
+            const v = settings[key];
+            if (v != null && (!Number.isFinite(v) || v <= 0)) {
+                return { ok: false, code: 'INVALID_VPM_SETTINGS', message: `${key} must be positive` };
+            }
+        }
+        const step = settings.stepSize;
+        if (step != null && (!Number.isFinite(step) || step <= 0)) {
+            return { ok: false, code: 'INVALID_VPM_SETTINGS', message: 'stepSize must be positive' };
+        }
+        const last = settings.lastStop;
+        if (last != null && (!Number.isFinite(last) || last < 0)) {
+            return { ok: false, code: 'INVALID_VPM_SETTINGS', message: 'lastStop must be non-negative' };
+        }
+        const minStop = settings.minStopTime;
+        if (minStop != null && (!Number.isFinite(minStop) || minStop < 0)) {
+            return { ok: false, code: 'INVALID_VPM_SETTINGS', message: 'minStopTime must be non-negative' };
+        }
+        return { ok: true };
     }
     function zhlBundle() {
         if (typeof ZhlEngineBundle !== 'undefined') return ZhlEngineBundle;
@@ -236,7 +273,7 @@ const VPMEngine = (() => {
             surfacePhaseVolumeTime.push(0);
             lastPhaseVolumeTime.push(0);
         }
-        if (settings._preTissues && settings._preTissues.length === NC) {
+        if (settings._preTissues && validatePreTissues(settings._preTissues, NC)) {
             for (let i = 0; i < NC; i++) {
                 tissues[i].pN2 = settings._preTissues[i].pN2;
                 tissues[i].pHe = settings._preTissues[i].pHe;
@@ -263,17 +300,13 @@ const VPMEngine = (() => {
         //  but larger nuclei survive surface interval better → more conservative for next dive).
         // Net effect: carrying state is conservative — correct VPM-B behaviour.
         let bubbleCarryApplied = false;
-        if (settings._prevBubbleState && settings._prevBubbleState.adjustedCritRadiiN2
-                && settings._prevBubbleState.adjustedCritRadiiN2.length === NC
-                && settings._prevBubbleState.adjustedCritRadiiHe
-                && settings._prevBubbleState.adjustedCritRadiiHe.length === NC
-                && settings._prevBubbleState.regeneratedRadiiN2
-                && settings._prevBubbleState.regeneratedRadiiN2.length === NC
-                && settings._prevBubbleState.regeneratedRadiiHe
-                && settings._prevBubbleState.regeneratedRadiiHe.length === NC) {
+        const pb = settings._prevBubbleState;
+        const bubbleStateOk = pb
+            && ['adjustedCritRadiiN2', 'adjustedCritRadiiHe', 'regeneratedRadiiN2', 'regeneratedRadiiHe']
+                .every(k => validateRadiusArray(pb[k], NC));
+        if (bubbleStateOk) {
             const si = Math.max(0, settings._surfaceInterval != null ? settings._surfaceInterval : 0);
             const regenFactor = Math.exp(-si / REGEN_TIME);
-            const pb = settings._prevBubbleState;
             const prevAltFactor = (pb._altFactor != null && pb._altFactor > 0) ? pb._altFactor : altFactor;
             for (let i = 0; i < NC; i++) {
                 // End-of-previous-dive radius (after nuclear regeneration was applied)
@@ -968,6 +1001,12 @@ const VPMEngine = (() => {
             const ccrVal = validateCcrCalculationInputs(levels, s, decoGases);
             if (!ccrVal.ok) return engineValidationError(ccrVal);
         }
+        const vpmSettingsVal = validateVpmSettings(s);
+        if (!vpmSettingsVal.ok) {
+            return engineValidationError({
+                errors: [{ code: vpmSettingsVal.code, message: vpmSettingsVal.message }],
+            });
+        }
         const safeDecoGases = Array.isArray(decoGases) ? decoGases.filter(g => g != null) : [];
         function ctxUseOCForPpo2(calcSettings) {
             return calcSettings.bailout || calcSettings.circuit !== 'pSCR';
@@ -1140,9 +1179,13 @@ const VPMEngine = (() => {
             settings._scrRuntimeMin = ctx.runtime;
             ctx.currentSP = vpmSetpointAtDepth(stopDepth, 'deco', ctx.forcedOCMode, settings);
             let effectiveMinStop = (firstStop30sec && stopDepth === ctx.firstStopDepth) ? 0.5 : minStopTime;
-            const roundedRuntime = (ctx.continuationFinalPhase && stopDepth <= 12)
-                ? ctx.runtime
-                : Math.round((ctx.runtime / effectiveMinStop) + 0.5) * effectiveMinStop;
+            const useWholeMinStops = settings.wholeMinStops !== false;
+            let roundedRuntime = ctx.runtime;
+            if (useWholeMinStops) {
+                roundedRuntime = (ctx.continuationFinalPhase && stopDepth <= 12)
+                    ? ctx.runtime
+                    : Math.round((ctx.runtime / effectiveMinStop) + 0.5) * effectiveMinStop;
+            }
             let segmentTime = roundedRuntime - ctx.runtime;
             ctx.runtime = roundedRuntime;
             let totalStopTime = segmentTime;
@@ -1912,18 +1955,11 @@ const VPMEngine = (() => {
             run: seg.run != null ? seg.run : seg.runtime,
         }));
         const botSeg = normPlan.find(s => s.type === 'bottom') || normPlan[0];
-        const defaultFO2 = botSeg && botSeg.o2 != null ? (botSeg.o2 > 1 ? botSeg.o2 / 100 : botSeg.o2) : 0.21;
-        const defaultFHe = botSeg && botSeg.he != null ? (botSeg.he > 1 ? botSeg.he / 100 : botSeg.he) : 0;
-        const exposure = computePlanExposureTotals(
-            normPlan, settings, defaultFO2, defaultFHe,
-            settings.altSurfaceP || altSurfaceP || 1.01325,
-            settings.barPerM || BAR_PER_METRE || 0.1
-        );
         return {
             plan: normPlan,
             totalRuntime: Math.ceil(runtime),
-            totalOTU: exposure.totalOTU,
-            totalCNS: exposure.totalCNS,
+            totalOTU: totalOTU,
+            totalCNS: totalCNS,
             depthUnit: settings.metric ? 'm' : 'ft',
             decoZoneStart: decoZoneStart || 0,
             stops: plan.filter(s => s.type === 'stop'),

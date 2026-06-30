@@ -7473,11 +7473,13 @@ function _updateAdvancedSummary() {
   if (!el) return;
   const body = document.getElementById('advancedSettingsBody');
   if (body && body.style.display !== 'none') { el.textContent = ''; return; }
+  const rateU = units === 'imperial' ? 'ft/min' : 'm/min';
+  const depthU = units === 'imperial' ? 'ft' : 'm';
   const parts = [];
-  const dr = document.getElementById('descentRate')?.value; if (dr && dr !== '20') parts.push(dr+'↓m/min');
-  const ar = document.getElementById('ascentRate')?.value; if (ar && ar !== '10') parts.push(ar+'↑m/min');
+  const dr = document.getElementById('descentRate')?.value; if (dr && dr !== '20') parts.push(dr+'↓'+rateU);
+  const ar = document.getElementById('ascentRate')?.value; if (ar && ar !== '10') parts.push(ar+'↑'+rateU);
   const dar = document.getElementById('decoAscentRate')?.value; if (dar && dar !== '3') parts.push(dar+'↑deco');
-  const ls = document.getElementById('lastDecoStop')?.value; if (ls && ls !== '3') parts.push('last '+ls+'m');
+  const ls = document.getElementById('lastDecoStop')?.value; if (ls && ls !== '3') parts.push('last '+ls+depthU);
   const ms = document.getElementById('minStopTime')?.value; if (ms && ms !== '2') parts.push('min '+ms+'min');
   const wv = document.getElementById('waterVapor')?.value; if (wv === '0.0627') parts.push('WV Bühl');
   const tr = document.getElementById('decoTransitMode')?.value; if (tr === 'schreiner') parts.push('Schreiner');
@@ -7527,10 +7529,8 @@ function resetToDefaults() {
   });
 }
 
-function _doResetToDefaults(userDefaults) {
-
-  // ApexDeco-matched defaults
-  const defaults = {
+function _factoryMetricDefaults() {
+  return {
     // Rates
     descentRate:      '20',
     ascentRate:       '10',
@@ -7608,11 +7608,55 @@ function _doResetToDefaults(userDefaults) {
     // He half-time
     heHalfTimeMode:   'baker',
   };
+}
+
+function _factoryDefaultsForUnits() {
+  const d = _factoryMetricDefaults();
+  if (units !== 'imperial') return d;
+  const FT_PER_M = 3.28084;
+  const PSI_PER_BAR = 14.5038;
+  const CUFT_PER_L = CUFT_PER_LITRE;
+  const cuft = (litres) => (litres * CUFT_PER_L).toFixed(1).replace(/\.0$/, '');
+  const psi = (bar) => String(Math.round(bar * PSI_PER_BAR));
+  const sacCuft = (lMin) => (lMin * CUFT_PER_L).toFixed(2).replace(/\.0+$/, '');
+  return Object.assign(d, {
+    decoDepth: String(Math.round(40 * FT_PER_M)),
+    sacBottom: sacCuft(22),
+    sacDeco: sacCuft(20),
+    cylBot_size: cuft(12),
+    cylBot_pres: psi(200),
+    cylBot_reserve: psi(50),
+    cylDg1_size: cuft(11),
+    cylDg1_pres: psi(200),
+    cylDg1_reserve: psi(50),
+    cylDg2_size: cuft(11),
+    cylDg2_pres: psi(200),
+    cylDg2_reserve: psi(50),
+    cylTravelGas_size: cuft(11),
+    cylTravelGas_pres: psi(200),
+    cylTravelGas_reserve: psi(50),
+    gpBot_size: cuft(12),
+    gpBot_fill: psi(200),
+    gpBot_reserve: psi(50),
+    gpTravel_size: cuft(11),
+    gpTravel_fill: psi(200),
+    gpTravel_reserve: psi(50),
+    gpDg1_size: cuft(11),
+    gpDg1_fill: psi(200),
+    gpDg1_reserve: psi(50),
+    gpDg2_size: cuft(11),
+    gpDg2_fill: psi(200),
+    gpDg2_reserve: psi(50),
+  });
+}
+
+function _doResetToDefaults(userDefaults) {
+  const defaults = _factoryDefaultsForUnits();
 
   // Overlay user's personal advanced defaults on top of factory defaults (if any)
   if (userDefaults && typeof userDefaults === 'object') {
-    Object.entries(userDefaults).forEach(([id, val]) => {
-      if (id in defaults) defaults[id] = val; // only allow known adv fields
+    _ADV_FIELDS.forEach(id => {
+      if (userDefaults[id] != null) defaults[id] = userDefaults[id];
     });
   }
 
@@ -7625,8 +7669,17 @@ function _doResetToDefaults(userDefaults) {
   // Reset Gas Plan rule to thirds
   setGasRule('thirds');
 
-  // Reset GF to default preset 20/85
-  setGF(20, 85);
+  // Reset GF — honour saved personal GF when present
+  if (userDefaults?.gfLowInput != null && userDefaults?.gfHighInput != null) {
+    setGF(parseInt(userDefaults.gfLowInput, 10) || 20, parseInt(userDefaults.gfHighInput, 10) || 85);
+  } else if (userDefaults?.gfPresetSelect) {
+    const gfEl = document.getElementById('gfPresetSelect');
+    if (gfEl) gfEl.value = userDefaults.gfPresetSelect;
+    if (typeof applyGFPreset === 'function') applyGFPreset();
+    else setGF(20, 85);
+  } else {
+    setGF(20, 85);
+  }
 
   // Reset water density to salt default
   setWaterDensity('salt');
@@ -7649,6 +7702,10 @@ function _doResetToDefaults(userDefaults) {
   // Clear custom O2 fields visibility
   toggleDecoCustomO2?.('dg1Mix', 'dg1CustomField');
   toggleDecoCustomO2?.('dg2Mix', 'dg2CustomField');
+  toggleCircuitFields?.();
+  syncMinStopTimeRounding?.();
+  updateGasMODDisplays?.();
+  _updateAdvancedSummary();
 
   // Clear localStorage v4
   try { localStorage.removeItem('lspDiveSettings_v6'); } catch(e) {}
@@ -7766,7 +7823,7 @@ function onConservatismChange() {
 
 // AUDIT-UNIT:UI-VPM-RUNNER
 function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, surfaceAscentRate,
-                        stepSize, lastStop, minStopTime, ppo2Bottom, ppo2Deco, model) {
+                        stepSize, lastStop, minStopTime, ppo2Bottom, ppo2Deco, model, wholeMinStops) {
   // Headless mode: skip all VPM computation and DOM rendering
   // (called from ZHLEngine or fastRDS headless path when algo is VPM-B)
   if (window._zhlHeadless) return;
@@ -7824,6 +7881,7 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
     waterVapor:        WATER_VAPOR,
     firstStop30sec:    false,
     extendedStops:     false,
+    wholeMinStops:     wholeMinStops !== false,
     altitude:          Number.isFinite(altitudeM) ? altitudeM : 0,
     ...getCCRSettingsFromDOM(),
   };
@@ -9185,6 +9243,7 @@ function buildZhlScheduleParamsFromDom(rawD, depthM, bt) {
       minStopTime,
       switchPauseT: 0,
       mdCompatMode: (document.getElementById('decoTransitMode')?.value || 'multideco') === 'multideco',
+      wholeMinStops: (document.getElementById('stopRounding')?.value || 'fractional') === 'wholeminute',
       lastStop, decoStep,
       shallowGradient: isShallowGradientOn(),
       bottomFN2, bottomFHe, bottomFO2, bottomMixLabel,
@@ -9298,7 +9357,7 @@ function runDecoSchedule() {
   if ((decoModelSel === 'VPMB' || decoModelSel === 'VPMB_GFS') && window.VPMEngine) {
     return runVPMSchedule(depthM, bt, descentRate, rate, decoRate, surfaceRate,
                           decoStep, lastStop, minStopT, ppo2Bottom, ppo2Deco,
-                          decoModelSel);
+                          decoModelSel, wholeMinStops);
   }
   // ── END VPM branch — Bühlmann continues below ─────────────────────
 
@@ -9335,6 +9394,7 @@ function runDecoSchedule() {
   // ── Bühlmann via Tier-3 unified core (OC + CCR) ───────────────────────
   // AUDIT-UNIT:UI-ZHL-RUNNER-ENGINE
   const { params: zhlParams, switchDisplays } = buildZhlScheduleParamsFromDom(rawD, depthM, bt);
+  zhlParams.wholeMinStops = wholeMinStops;
   zhlParams.ccr = mergeCCRSettings(_ccrSettings);
   zhlParams.onLoop = _zhlOnLoop;
   if (_ccrSettings.bailout) {

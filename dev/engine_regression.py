@@ -1034,6 +1034,8 @@ ENGINE_SUITE_JS = r"""
     const h1SrcOk = !/savedBody/.test(rcsFn) && (/withScratchDecoTableBody/.test(rcsFn) || /scratchTbody/.test(rcsFn));
     let h1FuncOk = false;
     if (typeof runContingencyScenario === 'function' && typeof runDecoSchedule === 'function') {
+      const wasHeadless = window._zhlHeadless;
+      window._zhlHeadless = false;
       try {
         runDecoSchedule();
         const tbody = document.getElementById('decoTableBody');
@@ -1045,6 +1047,7 @@ ENGINE_SUITE_JS = r"""
           tbody.innerHTML = saved;
         }
       } catch (_) { h1FuncOk = false; }
+      finally { window._zhlHeadless = wasHeadless; }
     }
     const calcFn = typeof calcContingency === 'function' ? calcContingency.toString() : '';
     const h2SrcOk = /origCircuit/.test(rcsFn) && !/origBT\)/.test(calcFn.split('runContingencyScenario')[0] || '');
@@ -1101,6 +1104,77 @@ ENGINE_SUITE_JS = r"""
     const l2Ok = /data-label=/.test(legFn) && /legendRowFromTr/.test(typeof drawGraphLegend === 'function' ? drawGraphLegend.toString() : '');
     const helperOk = typeof withScratchDecoTableBody === 'function';
     return { h1Ok, m1Ok, l1Ok, l2Ok, helperOk, ok: h1Ok && m1Ok && l1Ok && l2Ok && helperOk };
+  })();
+
+  // ── Cycle 7 official scope (settings controls + VPM runner + ENG-VPM) ─────
+  out.sections.cycle7Official = (() => {
+    const lv = [{ depth: 40, time: 20, o2: 21, he: 0 }];
+    const deco = [{ o2: 50, he: 0 }];
+    const baseVpm = { metric: true, minStopTime: 1, stepSize: 3, lastStop: 3, descentRate: 20, ascentRate: 10, decoAscentRate: 3 };
+
+    let exposureCarryOk = false;
+    if (window.VPMEngine && typeof VPMEngine.calculate === 'function') {
+      const d1 = VPMEngine.calculate(lv, deco, baseVpm, 'VPMB');
+      const preOTU = d1.totalOTU || 0;
+      const preCNS = d1.totalCNS || 0;
+      const d2 = VPMEngine.calculate(lv, deco, { ...baseVpm, _preOTU: preOTU, _preCNS: preCNS, _surfaceInterval: 0 }, 'VPMB');
+      exposureCarryOk = !d2.error && d2.totalOTU > preOTU + 0.01 && d2.totalCNS >= preCNS;
+    }
+
+    let stateValidationOk = false;
+    if (window.VPMEngine) {
+      const fresh = VPMEngine.calculate(lv, deco, baseVpm, 'VPMB');
+      const badTissue = VPMEngine.calculate(lv, deco, { ...baseVpm, _preTissues: [{ pN2: NaN, pHe: 0 }] }, 'VPMB');
+      const badBubble = VPMEngine.calculate(lv, deco, {
+        ...baseVpm,
+        _prevBubbleState: {
+          adjustedCritRadiiN2: Array(16).fill(NaN),
+          adjustedCritRadiiHe: Array(16).fill(0),
+          regeneratedRadiiN2: Array(16).fill(0),
+          regeneratedRadiiHe: Array(16).fill(0),
+        },
+      }, 'VPMB');
+      stateValidationOk = !fresh.error && !badTissue.error && !badBubble.error
+        && Math.abs((badTissue.totalRuntime || 0) - (fresh.totalRuntime || 0)) < 0.01;
+    }
+
+    let settingsValidationOk = false;
+    if (window.VPMEngine) {
+      const badRate = VPMEngine.calculate(lv, deco, { ...baseVpm, descentRate: -5 }, 'VPMB');
+      const badStep = VPMEngine.calculate(lv, deco, { ...baseVpm, stepSize: 0 }, 'VPMB');
+      settingsValidationOk = badRate.code === 'INVALID_VPM_SETTINGS' && badStep.code === 'INVALID_VPM_SETTINGS';
+    }
+
+    let altitudeExposureOk = false;
+    if (window.VPMEngine) {
+      const sea = VPMEngine.calculate(lv, deco, { ...baseVpm, altitude: 0, altSurfaceP: 1.01325 }, 'VPMB');
+      const alt = VPMEngine.calculate(lv, deco, { ...baseVpm, altitude: 2000, altSurfaceP: 0.77 }, 'VPMB');
+      altitudeExposureOk = !sea.error && !alt.error && Math.abs((sea.totalOTU || 0) - (alt.totalOTU || 0)) > 0.01;
+    }
+
+    let imperialResetOk = false;
+    const prevUnits = typeof units !== 'undefined' ? units : 'metric';
+    if (typeof _factoryDefaultsForUnits === 'function' && typeof setUnits === 'function') {
+      setUnits('imperial');
+      const imp = _factoryDefaultsForUnits();
+      imperialResetOk = parseFloat(imp.sacBottom) < 5 && parseInt(imp.cylBot_pres, 10) > 1000;
+      setUnits(prevUnits);
+    }
+
+    const rdsFn = typeof _doResetToDefaults === 'function' ? _doResetToDefaults.toString() : '';
+    const personalDefaultsOk = /userDefaults\?\.gfLowInput/.test(rdsFn) && /_ADV_FIELDS\.forEach/.test(rdsFn);
+    const resetUiSyncOk = /toggleCircuitFields\?\.\(\)/.test(rdsFn) && /syncMinStopTimeRounding\?\.\(\)/.test(rdsFn);
+    const bzFn = typeof buildZhlScheduleParamsFromDom === 'function' ? buildZhlScheduleParamsFromDom.toString() : '';
+    const rdsSchedule = typeof runDecoSchedule === 'function' ? runDecoSchedule.toString() : '';
+    const vpmFn = typeof runVPMSchedule === 'function' ? runVPMSchedule.toString() : '';
+    const stopRoundingOk = /wholeMinStops/.test(bzFn) && /wholeMinStops/.test(rdsSchedule) && /wholeMinStops/.test(vpmFn);
+
+    return {
+      exposureCarryOk, stateValidationOk, settingsValidationOk, altitudeExposureOk,
+      imperialResetOk, personalDefaultsOk, resetUiSyncOk, stopRoundingOk,
+      ok: exposureCarryOk && stateValidationOk && settingsValidationOk && altitudeExposureOk
+        && imperialResetOk && personalDefaultsOk && resetUiSyncOk && stopRoundingOk,
+    };
   })();
 
   // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
@@ -1476,6 +1550,15 @@ def run_suite(page) -> dict:
     assert_true(c7b.get("m1Ok"), "[CYCLE7b-M1] contingency PDF restores tissueTableBody after updateTissueViz", str(c7b))
     assert_true(c7b.get("l1Ok"), "[CYCLE7b-L1] buildContingencySlateText has no dead dateStr", str(c7b))
     assert_true(c7b.get("l2Ok"), "[CYCLE7b-L2] drawGraphLegend normalizes rows via legendRowFromTr", str(c7b))
+    c7o = s.get("cycle7Official", {})
+    assert_true(c7o.get("exposureCarryOk"), "[CYCLE7-VPM-EXPOSURE-CARRY] VPM buildResult preserves _preOTU/_preCNS carry", str(c7o))
+    assert_true(c7o.get("stateValidationOk"), "[CYCLE7-VPM-STATE-VALIDATION] invalid repetitive state ignored fail-closed", str(c7o))
+    assert_true(c7o.get("settingsValidationOk"), "[CYCLE7-VPM-SETTINGS-VALIDATION] negative VPM rates rejected", str(c7o))
+    assert_true(c7o.get("altitudeExposureOk"), "[CYCLE7-VPM-ALTITUDE-EXPOSURE] altitude changes VPM exposure totals", str(c7o))
+    assert_true(c7o.get("imperialResetOk"), "[CYCLE7-IMPERIAL-RESET] factory reset uses imperial SAC/cylinder defaults", str(c7o))
+    assert_true(c7o.get("personalDefaultsOk"), "[CYCLE7-PERSONAL-DEFAULTS] reset honours saved GF and adv fields", str(c7o))
+    assert_true(c7o.get("resetUiSyncOk"), "[CYCLE7-RESET-UI-SYNC] reset triggers circuit and rounding UI sync", str(c7o))
+    assert_true(c7o.get("stopRoundingOk"), "[CYCLE7-STOP-ROUNDING] wholeMinStops wired to ZHL and VPM runners", str(c7o))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
     sw_block = sw_install.split("addEventListener('install'")[1].split("addEventListener('activate'")[0] if "addEventListener('install'" in sw_install else ""
     assert_true("clients.matchAll" not in sw_block, "[CYCLE7-L2] SW install handler does not postMessage before claim")
@@ -1541,6 +1624,14 @@ def _audit_case_rows():
         case_row("CYCLE6-PSCR-CANON", case_ok("CYCLE6-PSCR-CANON")),
         case_row("CYCLE6-CCR-DRY-PPO2", case_ok("CYCLE6-CCR-DRY-PPO2")),
         case_row("CYCLE6-BUHLMANN-BT", case_ok("CYCLE6-BUHLMANN-BT")),
+        case_row("CYCLE7-VPM-EXPOSURE-CARRY", case_ok("CYCLE7-VPM-EXPOSURE-CARRY")),
+        case_row("CYCLE7-VPM-STATE-VALIDATION", case_ok("CYCLE7-VPM-STATE-VALIDATION")),
+        case_row("CYCLE7-VPM-SETTINGS-VALIDATION", case_ok("CYCLE7-VPM-SETTINGS-VALIDATION")),
+        case_row("CYCLE7-VPM-ALTITUDE-EXPOSURE", case_ok("CYCLE7-VPM-ALTITUDE-EXPOSURE")),
+        case_row("CYCLE7-IMPERIAL-RESET", case_ok("CYCLE7-IMPERIAL-RESET")),
+        case_row("CYCLE7-PERSONAL-DEFAULTS", case_ok("CYCLE7-PERSONAL-DEFAULTS")),
+        case_row("CYCLE7-RESET-UI-SYNC", case_ok("CYCLE7-RESET-UI-SYNC")),
+        case_row("CYCLE7-STOP-ROUNDING", case_ok("CYCLE7-STOP-ROUNDING")),
     ]
 
 

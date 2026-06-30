@@ -27,6 +27,7 @@ function runZhlScheduleCore(params) {
   const minStopT = params.minStopTime;
   const switchPauseT = params.switchPauseT || 0;
   const mdCompatMode = params.mdCompatMode !== false;
+  const wholeMinStops = params.wholeMinStops !== false;
   const lastStop = params.lastStop;
   const decoStep = params.decoStep;
   const ppo2High = ppo2Deco;
@@ -350,9 +351,11 @@ function runZhlScheduleCore(params) {
         if (stopT < 1/60) { tissues = zhlLoadConst(tissues, cur, 1/60 - stopT, stopFO2, stopFHe, onLoop, 'deco'); rt += 1/60 - stopT; stopT = 1/60; }
       } else {
         let roundedStop;
-        {
+        if (wholeMinStops) {
           const totalAtLevel = Math.max(minStopT, Math.ceil((transitDur + stopT) / minStopT) * minStopT);
           roundedStop = totalAtLevel - transitDur;
+        } else {
+          roundedStop = stopT;
         }
         if (roundedStop > stopT) {
           const extra = roundedStop - stopT;
@@ -398,12 +401,14 @@ function runZhlScheduleCore(params) {
       if (stopT >= CEILING_LOOP_GUARD_MIN && ceiling(tissues, gfForClear) > ceilTarget) hitSafetyGuard = true;
       if (!isFirstDecoStop) {
         // Round up and enforce minimum — only for non-first stops
-        const totalAtLevel = Math.max(minStopT, Math.ceil((transitDur + stopT) / minStopT) * minStopT);
-        const roundedStop = totalAtLevel - transitDur;
-        if (roundedStop > stopT) {
-          const extra = roundedStop - stopT;
-          tissues = zhlLoadConst(tissues, cur, extra, stopFO2, stopFHe, onLoop, 'deco');
-          rt += extra; stopT = roundedStop;
+        if (wholeMinStops) {
+          const totalAtLevel = Math.max(minStopT, Math.ceil((transitDur + stopT) / minStopT) * minStopT);
+          const roundedStop = totalAtLevel - transitDur;
+          if (roundedStop > stopT) {
+            const extra = roundedStop - stopT;
+            tissues = zhlLoadConst(tissues, cur, extra, stopFO2, stopFHe, onLoop, 'deco');
+            rt += extra; stopT = roundedStop;
+          }
         }
         if (stopT < minStopT) {
           const extra = minStopT - stopT;
@@ -431,9 +436,11 @@ function runZhlScheduleCore(params) {
         }
         if (stopT >= CEILING_LOOP_GUARD_MIN && ceiling(tissues, lastClearGf) > lastCeilTarget + 0.01) hitSafetyGuard = true;
         let roundedLastStop;
-        {
+        if (wholeMinStops) {
           const totalAtLevel = Math.max(minStopT, Math.ceil((transitToLastStop + stopT) / minStopT) * minStopT);
           roundedLastStop = totalAtLevel - transitToLastStop;
+        } else {
+          roundedLastStop = stopT;
         }
         if (roundedLastStop > stopT) {
           const extra = roundedLastStop - stopT;

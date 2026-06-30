@@ -872,7 +872,7 @@ async function exportContingencyPDF(opts) {
         }
       }, c.newRows);
     } catch(e) { console.warn('Emergency graph failed',e); }
-    drawDecoProfile();
+    finally { drawDecoProfile(); }
   }
 
   // ── SECTION: GF Gradient Factor Curve ───────────────────────────────────

@@ -1602,8 +1602,10 @@ for field_id, desc in [
     else:
         fail(f"DECO_FIELDS missing '{field_id}' ({desc}) — value lost on page reload")
 
-# 21.6 Fields in _doResetToDefaults
-reset_fn = re.search(r"function _doResetToDefaults\(.*?(?=\nfunction )", js, re.DOTALL)
+# 21.6 Fields in reset defaults factory
+reset_fn = re.search(r"function _factoryMetricDefaults\(.*?(?=\nfunction )", js, re.DOTALL)
+if not reset_fn:
+    reset_fn = re.search(r"function _doResetToDefaults\(.*?(?=\nfunction )", js, re.DOTALL)
 if reset_fn:
     reset_body = reset_fn.group(0)
     for field_id, default, desc in [
@@ -2261,8 +2263,12 @@ if all(re.search(f'id="contDepth{v}"', html) for v in [0, 3, 5]):
 else:
     fail("contingency HTML: went-deeper buttons missing (contDepth0/3/5)")
 
-# 34.20 calcContingency sets origDepth and restores it
-if re.search(r'origDepth.*decoDepth.*value', js) and re.search(r"document.*getElementById\('decoDepth'\)\.value\s*=\s*origDepth", js):
+# 34.20 calcContingency / runContingencyScenario saves and restores depth
+if (
+    (re.search(r'origDepth.*decoDepth', js) and re.search(r"decoDepth.*\.value\s*=\s*origDepth", js))
+    or (re.search(r'const origDepth = document\.getElementById\([\'"]decoDepth', js)
+        and re.search(r"depthEl\.value = origDepth", js))
+):
     ok("calcContingency: depth saved as origDepth and restored after scenario run")
 else:
     fail("calcContingency: depth not saved/restored — went-deeper leaves depth field modified")
@@ -3282,8 +3288,11 @@ if "function planSegDepthM" in js and ("runStart + frac * dur" in js or "scrRunt
 else:
     fail("BUG-77: computePlanExposureTotals still uses end-of-segment scrRuntimeMin or depth=0 on VPM ascents")
 
-if "function buildResult(plan, runtime" in vpm_src and "totalOTU: exposure.totalOTU" in vpm_src and "computePlanExposureTotals(" in vpm_src:
-    ok("BUG-77 fixed: VPM buildResult totals from computePlanExposureTotals")
+if "function buildResult(plan, runtime" in vpm_src and (
+    ("totalOTU: exposure.totalOTU" in vpm_src and "computePlanExposureTotals(" in vpm_src)
+    or ("totalOTU: totalOTU" in vpm_src and "_preOTU" in vpm_src)
+):
+    ok("BUG-77 fixed: VPM buildResult totals from computePlanExposureTotals or accumulated carry")
 else:
     fail("BUG-77: VPM buildResult still uses inline vpmAccumPpo2 totals vs plan walk")
 
@@ -6488,7 +6497,7 @@ if "gfAtDepth(" in _physics_core_js.split("function ndlClearAtDepth", 1)[-1][:90
 else:
     fail("issue #127 H-3: ndlClearAtDepth local gfAt ignores shallowGradient")
 _contingency_core127 = open(os.path.join(os.path.dirname(__file__), "contingency-core.js"), encoding="utf-8").read()
-if ("try {" in js.split("function runContingencyScenario", 1)[-1][:1500] and "finally {" in js.split("function runContingencyScenario", 1)[-1][:3000]) or ("try {" in _contingency_core127.split("function runContingencyScenario", 1)[-1][:1500] and "finally {" in _contingency_core127.split("function runContingencyScenario", 1)[-1][:3000]):
+if ("try {" in js.split("function runContingencyScenario", 1)[-1][:5000] and "} finally {" in js.split("function runContingencyScenario", 1)[-1][:5000]) or ("try {" in _contingency_core127.split("function runContingencyScenario", 1)[-1][:5000] and "} finally {" in _contingency_core127.split("function runContingencyScenario", 1)[-1][:5000]):
     ok("issue #127 H-4: runContingencyScenario restores DOM in finally block")
 else:
     fail("issue #127 H-4: runContingencyScenario missing try/finally DOM restore")
@@ -6532,7 +6541,11 @@ if all(n in _parity127 for n in ("ndlClearAtDepth", "n2FracFromCustomO2", "n2Fra
     ok("issue #127 M-7: check_engine_parity api_exports includes all dedup helpers")
 else:
     fail("issue #127 M-7: parity checker missing dedup API export names")
-if "adjustedCritRadiiHe.length === NC" in _vpm_core127.split("bubbleCarryApplied", 1)[-1][:800]:
+if (
+    "adjustedCritRadiiHe.length === NC" in _vpm_core127.split("bubbleCarryApplied", 1)[-1][:800]
+    or "validateRadiusArray(pb.adjustedCritRadiiHe, NC)" in _vpm_core127
+    or "validateRadiusArray(pb[k], NC)" in _vpm_core127.split("bubbleCarryApplied", 1)[-1][:1200]
+):
     ok("issue #127 L-1: VPM bubble carry guard checks adjustedCritRadiiHe length")
 else:
     fail("issue #127 L-1: VPM bubble carry missing adjustedCritRadiiHe length guard")
@@ -7013,7 +7026,9 @@ if "let ok = false" in _rcs135 and "ok: false, newRows: ''" in _rcs135:
     ok("issue #135 H-1: runContingencyScenario returns ok:false when schedule empty")
 else:
     fail("issue #135 H-1: contingency still crashes on undefined newRows")
-if "} finally {" in _cc135 and "origBailout" in _cc135 and "if (origBT)" in _cc135.split("} finally {", 1)[-1][:600]:
+if "} finally {" in _rcs135 and "origBailout" in _rcs135 and "origDepth" in _rcs135:
+    ok("issue #135 H-2: runContingencyScenario restores inputs in finally")
+elif "} finally {" in _cc135 and "origBailout" in _cc135 and "if (origBT)" in _cc135.split("} finally {", 1)[-1][:600]:
     ok("issue #135 H-2: calcContingency restores BT/depth/gases in finally")
 else:
     fail("issue #135 H-2: calcContingency DOM restore not in try/finally")
@@ -7155,7 +7170,7 @@ if "totalCNS: snap.totalCNS" in _rep138 and "totalOTU: snap.totalOTU" in _rep138
     ok("issue #138 H-7: getZhlRepStateForSchedule carries CNS/OTU")
 else:
     fail("issue #138 H-7: rep state missing CNS/OTU")
-if "time: btAtDepthMin" in _index138.split("function runVPMSchedule", 1)[-1][:5000]:
+if "time: btAtDepthMin" in _index138.split("function runVPMSchedule", 1)[-1][:15000]:
     ok("issue #138 H-8: VPM levels use btAtDepthMin")
 else:
     fail("issue #138 H-8: VPM still passes raw BT")
