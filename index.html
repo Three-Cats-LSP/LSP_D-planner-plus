@@ -7093,6 +7093,10 @@ function renderNDLTable() {
   const tbody  = document.getElementById('ndlBody');
   tbody.innerHTML = '';
 
+  const modPpo2Ndl = parseFloat(document.getElementById('ppo2Bottom')?.value) || 1.4;
+  const mod32 = nitroxMOD(0.32, modPpo2Ndl);
+  const mod36 = nitroxMOD(0.36, modPpo2Ndl);
+
   depths.forEach((d, i) => {
     const depthM = isM ? d : d/3.28084;
     let ndl = ndls[i];
@@ -7109,10 +7113,6 @@ function renderNDLTable() {
     const groupIdx = Math.min(PADI_GROUPS.length-1, Math.floor(i * PADI_GROUPS.length / depths.length));
     const group = PADI_GROUPS[groupIdx];
 
-    // MOD checks for nitrox at user ppO₂ limit
-    const modPpo2Ndl = parseFloat(document.getElementById('ppo2Bottom')?.value) || 1.4;
-    const mod32 = nitroxMOD(0.32, modPpo2Ndl);
-    const mod36 = nitroxMOD(0.36, modPpo2Ndl);
     const beyondMOD32 = depthM > mod32;
     const beyondMOD36 = depthM > mod36;
 
@@ -7321,15 +7321,10 @@ function getDecoGasFractions(selectId, customId, trimixO2Id, trimixHeId) {
   return null;
 }
 
-// Gas label format: named labels for common gases, O2/He for everything else
-// Examples: "Air" = 21/00, "50/00" = EAN50, "21/35" = trimix, "100%" = pure O2
+// Gas label format: delegate to canonical schedule-core implementation in ZhlEngineBundle
 function getGasLabel(fO2, fHe) {
-  if (fO2 === null || fO2 === undefined) return null;
-  if (fO2 >= 0.995) return '100%';
-  const o2pct = Math.round(fO2 * 100);
-  const hePct = Math.round((fHe || 0) * 100);
-  if (o2pct === 21 && hePct === 0) return 'Air';
-  return `${o2pct}/${String(hePct).padStart(2, '0')}`;
+  _syncZhlBundleEnv();
+  return ZhlEngineBundle.getGasLabel(fO2, fHe);
 }
 
 function getDecoGasFrac(selectId, customId) {
@@ -12310,7 +12305,7 @@ function calcCNS() {
   const ccr = getCCRSettingsFromDOM();
   let ppo2;
   if (isRebreatherCircuit(ccr.circuit) && !ccr.bailout) {
-    const sp = getEffectiveSetpointAtDepth(depth, ccr, altSurfaceP);
+    const sp = getEffectiveSetpointAtDepth(depth, ccr, altSurfaceP, 'bottom');
     const ccrForPpo2 = ccr.circuit === 'pSCR'
       ? { ...ccr, scrRuntimeMin: bt }
       : ccr;

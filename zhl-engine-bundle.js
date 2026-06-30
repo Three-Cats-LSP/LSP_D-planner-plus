@@ -1375,6 +1375,8 @@ function runZhlScheduleCore(params) {
 
 
 
+  const _scheduleCoreGetGasLabel = getGasLabel;
+
   function getGasLabel(fO2, fHe) {
     const o2 = Math.round(fO2 * 100);
     const he = Math.round((fHe || 0) * 100);
@@ -1693,6 +1695,7 @@ function runZhlScheduleCore(params) {
     saturateCCR,
     loadTissuesWithCCR,
     getEffectivePpo2,
+    getGasLabel: _scheduleCoreGetGasLabel,
   };
 
   global.ZhlEngineBundle = api;
