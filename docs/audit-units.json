@@ -1179,8 +1179,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f782c96344fe26741dcb7430950327d53715ad9a9b98cc2d688fadab05533b8e",
-      "last_read_fingerprint": "f782c96344fe26741dcb7430950327d53715ad9a9b98cc2d688fadab05533b8e",
+      "fingerprint": "0b4dd1981dc6bbdc7204d57331473979a25fa7ecc11704aeef2e39cf534c2f68",
+      "last_read_fingerprint": "0b4dd1981dc6bbdc7204d57331473979a25fa7ecc11704aeef2e39cf534c2f68",
       "evidence": [],
       "issue": "GitHub #142 — Dive 2 gas override",
       "regression_cases": [
@@ -1579,7 +1579,8 @@
       },
       "evidence": [],
       "issue": "GitHub #142 Dive 2 gas override regression",
-      "regression_cases": []
+      "regression_cases": [],
+      "fingerprint": "1248d551baee79d2dc241c617a8ec377cb8a80a8b6149bada8f2b608ff99e94b"
     },
     {
       "id": "TEST-ANDROID-COMPILE",
