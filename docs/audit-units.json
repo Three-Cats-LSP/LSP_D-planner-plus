@@ -750,25 +750,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS-CONTROLS"
       },
-      "fingerprint": "f3f227ea1f8d8f740928c7c5722cb93ff17df914a6ba3772d46b024c2586eed1",
-      "last_read_fingerprint": "f3f227ea1f8d8f740928c7c5722cb93ff17df914a6ba3772d46b024c2586eed1",
-      "evidence": [
-        "REG-35",
-        "REG-36",
-        "REG-37",
-        "REG-38"
-      ],
-      "regression_cases": [
-        "REG-35",
-        "REG-36",
-        "REG-37",
-        "REG-38"
-      ],
+      "fingerprint": "6968ed515f569323ae4a6f424221568033f3e2867c7bcabac3578c5f1b581b72",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 146
     },
     {
@@ -1154,24 +1144,14 @@
       "path": "vpm-engine-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "40ecb98b007c21a66b5a210bd286aa9a821a3d26c9c861f4b6d7e0b4e672119c",
-      "last_read_fingerprint": "40ecb98b007c21a66b5a210bd286aa9a821a3d26c9c861f4b6d7e0b4e672119c",
-      "evidence": [
-        "REG-31",
-        "REG-32",
-        "REG-33",
-        "REG-34"
-      ],
-      "regression_cases": [
-        "REG-31",
-        "REG-32",
-        "REG-33",
-        "REG-34"
-      ],
+      "fingerprint": "3ce783115afc8055dd8d99104c091347def34b789ac968672f8d324e309bd68f",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 146
     },
     {

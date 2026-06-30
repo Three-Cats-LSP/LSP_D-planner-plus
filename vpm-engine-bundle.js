@@ -1019,8 +1019,10 @@ const VPMEngine = (() => {
         }
         const s = settings;
         if (isRebreatherCircuit(s.circuit || 'OC')) {
-            const ccrVal = validateCcrCalculationInputs(levels, s, decoGases);
-            if (!ccrVal.ok) return engineValidationError(ccrVal);
+            if (typeof validateCcrCalculationInputs === 'function') {
+                const ccrVal = validateCcrCalculationInputs(levels, s, decoGases);
+                if (!ccrVal.ok) return engineValidationError(ccrVal);
+            }
         }
         const vpmSettingsVal = validateVpmSettings(s);
         if (!vpmSettingsVal.ok) {
