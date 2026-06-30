@@ -3520,21 +3520,27 @@ const TIER3_GROUPS = [
         assert(pscr.totalRuntime !== ccr.totalRuntime, 'pSCR and CCR should differ');
         return `CCR=${ccr.totalRuntime} pSCR=${pscr.totalRuntime} ✓`;
       }],
-      ['pSCR ccrDiluentSurfaceLpm = metRate × bypass (BUG-75)', 'SCN', function(){
+      ['pSCR ccrDiluentSurfaceLpm from computePSCRFractions (BUG-75)', 'SCN', function(){
         const d = getDoc();
         const sel = d.getElementById('circuitSelect');
         const prevCircuit = sel ? sel.value : null;
         if (sel) sel.value = 'pSCR';
         if (typeof WIN.toggleCircuitFields === 'function') WIN.toggleCircuitFields();
         const met = parseFloat(d.getElementById('scrMetabolicO2')?.value) || 1.5;
-        const bypass = 10;
-        const lpm = WIN.ccrDiluentSurfaceLpm(40);
+        const loopVol = parseFloat(d.getElementById('ccrLoopVolume')?.value) || 10;
+        const depthM = 40;
+        const lpm = WIN.ccrDiluentSurfaceLpm(depthM);
         if (sel && prevCircuit != null) sel.value = prevCircuit;
         if (typeof WIN.toggleCircuitFields === 'function') WIN.toggleCircuitFields();
-        const expected = met * bypass;
-        assert(Math.abs(lpm - expected) < 0.2, `surf LPM=${lpm} expected ${expected} (met×bypass)`);
+        const pSurf = WIN.altSurfaceP || 1.01325;
+        const pAmb = pSurf + depthM * (WIN.BAR_PER_METRE || 0.1);
+        const ccr = { circuit: 'pSCR', scrLoopVolume: loopVol, scrMetabolicO2: met };
+        const fr = WIN.computePSCRFractions(pAmb, 0.21, 0, ccr);
+        const delta = Math.max(1e-6, 0.21 - fr.fO2);
+        const expected = (met / delta) * (pSurf / pAmb);
+        assert(Math.abs(lpm - expected) < 0.25, `surf LPM=${lpm} expected ~${expected.toFixed(2)} (Baker bypass)`);
         assert(lpm < 30, `surf LPM=${lpm} still looks fO2Loop-inflated (BUG-75)`);
-        return `pSCR surf LPM=${lpm.toFixed(1)} = ${met}×${bypass} ✓`;
+        return `pSCR surf LPM=${lpm.toFixed(1)} ≈ Baker bypass ✓`;
       }],
     ]
   },

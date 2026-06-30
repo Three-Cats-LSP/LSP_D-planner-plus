@@ -3998,6 +3998,7 @@ function getNitroxNDL(depthM, mix) {
   if (mix === 'custom') {
     // Interpolate between air, EAN32, EAN36 using Bühlmann for custom mixes in rec mode
     const fN2 = getN2Frac(mix);
+    if (fN2 == null) return PADI_NDL_M[closest];
     _syncZhlBundleEnv();
     return ZhlEngineBundle.buhNDL(depthM, fN2, 50, 100, 0, 5, 5, false); // rec nitrox: 5 m stops, no shallow GF
   }
@@ -6355,7 +6356,7 @@ function getN2Frac(mix) {
     const n2 = ZhlEngineBundle.n2FracFromPercentages(o2, he);
     if (n2 != null) return n2;
     console.warn('[LSP] Invalid trimix N₂ fraction — check O₂/He percentages.');
-    return FN2_AIR;
+    return null;
   }
   return FN2_AIR;
 }
@@ -6375,7 +6376,8 @@ function getPscrMinPpo2() {
   return (typeof ZhlEngineBundle !== 'undefined' && ZhlEngineBundle.PSCR_MIN_PPO2 != null)
     ? ZhlEngineBundle.PSCR_MIN_PPO2 : 0.16;
 }
-const PSCR_DEFAULT_BYPASS_RATIO = 10; // typical sport pSCR fresh:loop ~1:7–1:10
+const PSCR_DILUENT_EPSILON = 1e-6;
+const PSCR_DEFAULT_BYPASS_RATIO = 10; // fallback when loop/diluent delta vanishes (typical sport pSCR ~1:7–1:10)
 
 function parseCcrSetpoint(id, fallback) {
   const v = parseFloat(document.getElementById(id)?.value);
@@ -6481,7 +6483,12 @@ function ccrDiluentSurfaceLpm(depthM) {
   if (!bot) return NaN;
   const fO2Dil = Math.max(0.01, bot.fO2 || 0.21);
   if (ccr.circuit === 'pSCR' && !ccr.bailout) {
-    return metRate * PSCR_DEFAULT_BYPASS_RATIO;
+    const pAmb = altSurfaceP + (depthM || 0) * BAR_PER_METRE;
+    const pSurf = altSurfaceP || 1.01325;
+    const fr = computePSCRFractions(pAmb, fO2Dil, bot.fHe || 0, ccr);
+    const delta = Math.max(PSCR_DILUENT_EPSILON, fO2Dil - fr.fO2);
+    const flowAtDepth = metRate / delta;
+    return flowAtDepth * (pSurf / pAmb);
   }
   return metRate / fO2Dil;
 }
@@ -6628,13 +6635,6 @@ function getConfiguredBailoutMixes() {
     });
   });
   return mixes;
-}
-
-function resolveCcrSacForGas(label, phaseSac, ccr) {
-  const cfg = ccr || getCCRSettingsFromDOM();
-  if (!cfg || !isRebreatherCircuit(cfg.circuit)) return phaseSac;
-  if (isCcrDiluentGasLabel(label)) return phaseSac;
-  return phaseSac;
 }
 
 /** Deepest-capable bailout mix label for stress/problem-solve reserve at depth. */
@@ -6887,13 +6887,17 @@ function runPlanner() {
   const gfL = mGF.low;
   const gfH = mGF.high;
   const mix = document.getElementById('gasMix').value;
+  const modPpo2 = parseFloat(document.getElementById('ppo2Bottom')?.value) || 1.4;
   const fN2 = getN2Frac(mix);
+  if (fN2 == null) {
+    if (!window._zhlHeadless) alert('Invalid gas mix — check O₂ and He percentages.');
+    return;
+  }
   const fHe = getHeFrac(mix);
   const dDisp = isMetric ? rawD+' m' : rawD+' ft';
   const stopFt = stopDepthM === 3 ? 10 : 20;
 
   let html = '';
-  const modPpo2 = parseFloat(document.getElementById('ppo2Bottom')?.value) || 1.4;
 
   if (algo === 'padi') {
     const fO2 = 1 - fN2;
@@ -8086,7 +8090,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
     const gasKey = (_vpmOnLoop && !isCcrOnLoopGasLabel(mixRaw))
       ? loopMixLabelFor(mixRaw.replace(/^(CCR|PSCR)\s+/i, ''), _vpmCcr)
       : mixRaw;
-    const sac = resolveCcrSacForGas(gasKey, (ph === 'bottom') ? sacBotVPM : sacDecoVPM, _vpmCcr);
+    const sac = (ph === 'bottom') ? sacBotVPM : sacDecoVPM;
     accumGasLitres(gasConsVPM, gasKey, ccrGasLitres(gasKey, depthM2, durMin, sac));
   });
   if (_vpmOnLoop) {
@@ -9454,7 +9458,7 @@ function runDecoSchedule() {
   const gasConsumed = {};
   const bottomPhaseConsumed = {};
   function addGas(label, depthM, dur, sac, bottomPhaseOnly) {
-    const litres = ccrGasLitres(label, depthM, dur, resolveCcrSacForGas(label, sac, _ccrSettings));
+    const litres = ccrGasLitres(label, depthM, dur, sac);
     accumGasLitres(gasConsumed, label, litres);
     if (bottomPhaseOnly) accumGasLitres(bottomPhaseConsumed, label, litres);
   }

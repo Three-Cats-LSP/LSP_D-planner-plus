@@ -182,6 +182,14 @@
       "suite_id": "SUITE-GAS-CORE",
       "case_id": "T-GT-03"
     },
+    "REG-15": {
+      "suite_id": "SUITE-ISSUE-141",
+      "case_id": "ISSUE141-M1-PSCR-BYPASS"
+    },
+    "REG-16": {
+      "suite_id": "SUITE-ISSUE-141",
+      "case_id": "ISSUE141-L2-TRIMIX-NULL"
+    },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
       "case_id": "android-compile"
@@ -313,6 +321,23 @@
         "REG-09",
         "COV-01",
         "ANDROID-01"
+      ]
+    },
+    {
+      "id": "ISSUE-141-ROLLUP",
+      "unit_id": "TOOL-AUDIT",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "issue": "GitHub #141 / Cycle 5 delegates (0H/1M/2L)",
+      "summary": "pSCR diluent bypass from computePSCRFractions, resolveCcrSacForGas removed, invalid trimix getN2Frac returns null",
+      "affected_units": [
+        "UI-ZHL-DELEGATES",
+        "UI-CCR-DELEGATES"
+      ],
+      "resolution_commit": "pending",
+      "evidence_cases": [
+        "REG-15",
+        "REG-16"
       ]
     },
     {
@@ -474,8 +499,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-RUNTIME-BOOTSTRAP"
       },
-      "fingerprint": "61d180842ac1c5459e879022e03b4fe284d19a8fc3a4607fd7db41548deaa8bc",
-      "last_read_fingerprint": "61d180842ac1c5459e879022e03b4fe284d19a8fc3a4607fd7db41548deaa8bc"
+      "fingerprint": "589068f7a446699af28d74f2e9b69ede2a317305cfd75075991c18213f801043",
+      "last_read_fingerprint": "589068f7a446699af28d74f2e9b69ede2a317305cfd75075991c18213f801043"
     },
     {
       "id": "UI-ENVIRONMENT",
@@ -564,15 +589,20 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-DELEGATES"
       },
-      "fingerprint": "143a6cc331b891a1511168a0c02b3e74635ab4a6929efb7d204429ac572643d8",
-      "last_read_fingerprint": "143a6cc331b891a1511168a0c02b3e74635ab4a6929efb7d204429ac572643d8",
-      "evidence": [],
-      "regression_cases": [],
+      "fingerprint": "7b6642c8195bafbf3d6da3dc67b8e28384cdff323da28a8f77545be8abfd7940",
+      "last_read_fingerprint": "7b6642c8195bafbf3d6da3dc67b8e28384cdff323da28a8f77545be8abfd7940",
+      "evidence": [
+        "REG-16"
+      ],
+      "regression_cases": [
+        "REG-16"
+      ],
+      "issue": "GitHub #141 L-2 getN2Frac trimix null",
       "audit_issue": 141
     },
     {
@@ -580,13 +610,20 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-CCR-DELEGATES"
       },
-      "fingerprint": "ab3676e739a9446721d005222a850f905576d6aff9e2b9628d5bfd6eb998dc81",
-      "last_read_fingerprint": "ab3676e739a9446721d005222a850f905576d6aff9e2b9628d5bfd6eb998dc81",
+      "fingerprint": "7adff7157fc7b03d823a7fd88602900b0342ea44d9a37d045d59aaebbbce0ccb",
+      "last_read_fingerprint": "7adff7157fc7b03d823a7fd88602900b0342ea44d9a37d045d59aaebbbce0ccb",
+      "evidence": [
+        "REG-15"
+      ],
+      "regression_cases": [
+        "REG-15"
+      ],
+      "issue": "GitHub #141 M-1 pSCR diluent bypass",
       "audit_issue": 141
     },
     {
@@ -599,8 +636,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-DECO-PHYSICS"
       },
-      "fingerprint": "395140fc42c8484714db22a8dbf2976d8d7ce820cd8a12e60267e2edd5f3cb6b",
-      "last_read_fingerprint": "395140fc42c8484714db22a8dbf2976d8d7ce820cd8a12e60267e2edd5f3cb6b",
+      "fingerprint": "e40dc4dd201276276ac7ba770b090b107ea7064637c06ed77339c75d99ef3acc",
+      "last_read_fingerprint": "e40dc4dd201276276ac7ba770b090b107ea7064637c06ed77339c75d99ef3acc",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 139
@@ -663,7 +700,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RENDER"
       },
-      "fingerprint": "2c6544c20b4b21be3f1b57e497958d8a35bb285560186d7bb2b0cf8abc23f640",
+      "fingerprint": "85d04d6c521cb0bc468dd2cef3105fd45216817e55f9922d9942c11bb62f00a6",
       "last_read_fingerprint": null
     },
     {
@@ -720,8 +757,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-ENGINE"
       },
-      "fingerprint": "c8c9ff172f912a6f9d3e8a68cfff617c55e9db34464675b0d20190f1bce985bf",
-      "last_read_fingerprint": "c8c9ff172f912a6f9d3e8a68cfff617c55e9db34464675b0d20190f1bce985bf",
+      "fingerprint": "d6cdfed2fc3839aaae9b8633bc957b7fff68e32dc0dd14cabe9a4a0469eee5fe",
+      "last_read_fingerprint": "d6cdfed2fc3839aaae9b8633bc957b7fff68e32dc0dd14cabe9a4a0469eee5fe",
       "evidence": [
         "python dev/run_all_regression.py --tier release"
       ],
@@ -1472,7 +1509,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "GitHub #133\u00e2\u20ac\u201c#138 audit regression sections",
+      "issue": "GitHub #133â€“#138 audit regression sections",
       "regression_cases": [],
       "fingerprint": "dba147958161fd6f78cf288d4eae5a8c78b706c5c58140519399b3e795047f0d",
       "last_read_fingerprint": null
@@ -1505,6 +1542,21 @@
       "issue": "Cycle 5 GP/GT behavioral regression — docs/code-review-2026-06-30.md",
       "regression_cases": [],
       "fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
+      "last_read_fingerprint": null
+    },
+    {
+      "id": "TEST-ISSUE-141-REGRESSION",
+      "path": "dev/issue141_regression.py",
+      "layer": "test_infrastructure",
+      "priority": "P1",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "GitHub #141 delegate/schedule audit regression",
+      "regression_cases": [],
+      "fingerprint": "e67f221f9c7e3909a63993bb26abce2ba52d696d0180e46e370c96981567cb94",
       "last_read_fingerprint": null
     },
     {
@@ -1725,7 +1777,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "e23039384328a53ca0fc3c61cf5a1567055fe87d32af1d62f01c8025350eafa3",
+      "fingerprint": "3b0221a8e16b54b7491cdb6f6f5cff74e077fb45df559a6ecdaca15840b6d175",
       "last_read_fingerprint": null
     },
     {
@@ -1749,7 +1801,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f03ea9e85bb51f194502769a040b09de7133b40876ceb3a91c079169e50cdfd6",
+      "fingerprint": "a8b0bf953a89d92bfc55e5040061ab909cac2c6e50b8a08752e28461462d1a77",
       "last_read_fingerprint": null
     },
     {
@@ -1871,7 +1923,7 @@
       },
       "evidence": [],
       "regression_cases": [],
-      "issue": "GitHub #133\u00e2\u20ac\u201c#139 structured environment audit gates; release regression 9/9",
+      "issue": "GitHub #133â€“#139 structured environment audit gates; release regression 9/9",
       "fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d",
       "last_read_fingerprint": null
     },
@@ -2257,7 +2309,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "d9886724a7aa6995a8c3f27793956a96158e757398017cc84ecc86e592f17c34",
+      "fingerprint": "077b0b7f7c340745dd6c53ba1d1597381377124288f4c2f0a090788d3ebd9a4a",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2422,7 +2474,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c6f28d8b359846458156fbce633c1c30f002ccdc5cfc80edfc247f0e45862c65",
+      "fingerprint": "d8c4c3ecbb1d62d21b60a0f47337feabad4d464b27495d2504b5c71f8e33a150",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2762,6 +2814,23 @@
         "T-GP-03",
         "T-GT-01",
         "T-GT-03"
+      ]
+    },
+    {
+      "id": "SUITE-ISSUE-141",
+      "command": [
+        "{python}",
+        "dev/issue141_regression.py"
+      ],
+      "profiles": [
+        "ci",
+        "release"
+      ],
+      "timeout_seconds": 180,
+      "case_ids": [
+        "ISSUE141-M1-PSCR-BYPASS",
+        "ISSUE141-L1-RESOLVE-SAC",
+        "ISSUE141-L2-TRIMIX-NULL"
       ]
     },
     {

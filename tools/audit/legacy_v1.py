@@ -2809,10 +2809,11 @@ if "isRB && bailoutOn" in tcf_block:
 else:
     fail("ccrBailoutSettingsGroup still shown for pSCR/bailout-off (BUG-55)")
 
-if "PSCR_DEFAULT_BYPASS_RATIO" in js and "metRate * PSCR_DEFAULT_BYPASS_RATIO" in js[js.find("function ccrDiluentSurfaceLpm"):js.find("function ccrDiluentSurfaceLpm") + 400]:
-    ok("ccrDiluentSurfaceLpm pSCR: metRate × bypass ratio (BUG-75)")
+_cdl_pscr = js[js.find("function ccrDiluentSurfaceLpm"):js.find("function ccrDiluentSurfaceLpm") + 650] if js.find("function ccrDiluentSurfaceLpm") > 0 else ""
+if "computePSCRFractions" in _cdl_pscr and "metRate / delta" in _cdl_pscr and "metRate / fO2Loop" not in _cdl_pscr:
+    ok("ccrDiluentSurfaceLpm pSCR: bypass from computePSCRFractions (BUG-75 / issue #141 M-1)")
 else:
-    fail("ccrDiluentSurfaceLpm pSCR still uses (metRate/fO2Loop)×bypass (BUG-75)")
+    fail("ccrDiluentSurfaceLpm pSCR still uses hardcoded bypass or fO2Loop divisor (BUG-75)")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROUP 46 — v2.30.13 fixes (errors_bugs_report_v11)
@@ -4928,16 +4929,19 @@ else:
     fail("runDecoSchedule CCR gas error still has unsafe object passthrough (issue #71 F3)")
 
 # ── Issue #72: remaining dead typeof guards for always-present functions ──
-_gcbm72 = js.split("function getConfiguredBailoutMixes", 1)[-1].split("function resolveCcrSacForGas", 1)[0] if "function getConfiguredBailoutMixes" in js else ""
+_gcbm72 = js.split("function getConfiguredBailoutMixes", 1)[-1].split("function getBailoutReserveMixLabel", 1)[0] if "function getConfiguredBailoutMixes" in js else ""
 if _gcbm72 and "getDecoCardFractions(cidx)" in _gcbm72 and "typeof getDecoCardFractions" not in _gcbm72:
     ok("getConfiguredBailoutMixes calls getDecoCardFractions directly (issue #72 F1)")
 else:
     fail("getConfiguredBailoutMixes still has dead typeof getDecoCardFractions guard (issue #72 F1)")
-_rcr72 = js.split("function resolveCcrSacForGas", 1)[-1].split("function getBailoutReserveMixLabel", 1)[0] if "function resolveCcrSacForGas" in js else ""
-if _rcr72 and "getCCRSettingsFromDOM()" in _rcr72 and "typeof getCCRSettingsFromDOM" not in _rcr72 and "typeof isCcrDiluentGasLabel" not in _rcr72:
-    ok("resolveCcrSacForGas calls CCR helpers directly without typeof guards (issue #72 F1)")
+if "function resolveCcrSacForGas" not in js:
+    ok("resolveCcrSacForGas removed — phaseSac passed directly to ccrGasLitres (issue #141 L-1)")
 else:
-    fail("resolveCcrSacForGas still has dead typeof guards (issue #72 F1)")
+    _rcr72 = js.split("function resolveCcrSacForGas", 1)[-1].split("function getBailoutReserveMixLabel", 1)[0]
+    if _rcr72 and "getCCRSettingsFromDOM()" in _rcr72 and "typeof getCCRSettingsFromDOM" not in _rcr72 and "typeof isCcrDiluentGasLabel" not in _rcr72:
+        ok("resolveCcrSacForGas calls CCR helpers directly without typeof guards (issue #72 F1)")
+    else:
+        fail("resolveCcrSacForGas still has dead typeof guards (issue #72 F1)")
 _gcm72 = _ccr_core_src.split("function getCcrMetabolicO2Rate", 1)[-1].split("function computePSCRFractions", 1)[0] if "function getCcrMetabolicO2Rate" in _ccr_core_src else ""
 if _gcm72 and "normalizeCCRSettings" in _gcm72:
     ok("getCcrMetabolicO2Rate uses normalizeCCRSettings in zhl-ccr-core (issue #72 F1)")
@@ -7138,7 +7142,7 @@ if "replanAfterEnvChange()" in _index138.split("function setWaterDensity", 1)[-1
     ok("issue #138 H-4: setWaterDensity replans live schedule")
 else:
     fail("issue #138 H-4: setWaterDensity missing replan")
-if "pO2>modPpo2" in _index138.split("function runPlanner", 1)[-1][:8000] and "const modPpo2" in _index138.split("function runPlanner", 1)[-1][:800]:
+if "pO2>modPpo2" in _index138.split("function runPlanner", 1)[-1][:12000] and "const modPpo2" in _index138.split("function runPlanner", 1)[-1][:800]:
     ok("issue #138 H-5/H-6: Bühlmann planner uses scoped modPpo2")
 else:
     fail("issue #138 H-5/H-6: Bühlmann modPpo2 still broken")
