@@ -1631,7 +1631,7 @@
       "evidence": [],
       "issue": "GitHub #140 M-2 Android compile gate",
       "regression_cases": [],
-      "fingerprint": "89f66d0c0a1b0de56f0c69ec36e3628dbc6fcd06fbf8eb289d57e5c55c1b112e",
+      "fingerprint": "899e7744d58ea1cf88aac0f9210c3cafb2ac2520d91e97e8ab2d57d744b63966",
       "last_read_fingerprint": null
     },
     {
