@@ -808,7 +808,8 @@
         "marker": "AUDIT-UNIT:UI-GAS-INPUTS"
       },
       "fingerprint": "fb23c84fc166b04c7b73759d56b034d09b538d4aef750f326bda289783f99c09",
-      "last_read_fingerprint": "fb23c84fc166b04c7b73759d56b034d09b538d4aef750f326bda289783f99c09"
+      "last_read_fingerprint": "fb23c84fc166b04c7b73759d56b034d09b538d4aef750f326bda289783f99c09",
+      "audit_issue": 149
     },
     {
       "id": "UI-GAS-CARDS",
@@ -838,7 +839,7 @@
       "last_read_fingerprint": "19beab379171c4a791667d3c8f73dd893a282b174969b5ef7b33487adbf42c28",
       "evidence": [],
       "regression_cases": [],
-      "audit_issue": 139
+      "audit_issue": 149
     },
     {
       "id": "UI-ZHL-RUNNER-ENGINE",
