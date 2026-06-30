@@ -356,6 +356,14 @@ def main() -> None:
         },
         {
             "scenarioId": "CCR-C2",
+            "pair": ["LSP", "MultiDeco"],
+            "classification": "EXPECTED_DIFFERENCE",
+            "field": "cnsPercent",
+            "evidence": "CNS integration differs on trimix CCR vs MultiDeco capture after corrected plan exposure",
+            "reviewer": "issue #110 post-fix verification",
+        },
+        {
+            "scenarioId": "CCR-C2",
             "pair": ["LSP", "DiveKit"],
             "classification": "EXPECTED_DIFFERENCE",
             "field": "ttsMin",
