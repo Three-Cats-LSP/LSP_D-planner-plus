@@ -1160,15 +1160,15 @@
       "path": "vpm-engine-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "6867f99789a7ae3bbed82db90def60119ffe7b397dbf99b267688ce481373ffc",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "6867f99789a7ae3bbed82db90def60119ffe7b397dbf99b267688ce481373ffc",
       "evidence": [],
       "regression_cases": [],
-      "audit_issue": 146
+      "audit_issue": 166
     },
     {
       "id": "ENG-VPM-REFERENCE",
