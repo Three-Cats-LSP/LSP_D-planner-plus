@@ -162,6 +162,26 @@
       "suite_id": "SUITE-ISSUE-140",
       "case_id": "ISSUE140-H2-POOLED-TURN"
     },
+    "REG-10": {
+      "suite_id": "SUITE-GAS-CORE",
+      "case_id": "T-GP-01"
+    },
+    "REG-11": {
+      "suite_id": "SUITE-GAS-CORE",
+      "case_id": "T-GT-01"
+    },
+    "REG-12": {
+      "suite_id": "SUITE-GAS-CORE",
+      "case_id": "T-GP-02"
+    },
+    "REG-13": {
+      "suite_id": "SUITE-GAS-CORE",
+      "case_id": "T-GP-03"
+    },
+    "REG-14": {
+      "suite_id": "SUITE-GAS-CORE",
+      "case_id": "T-GT-03"
+    },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
       "case_id": "android-compile"
@@ -283,6 +303,7 @@
       "affected_units": [
         "APP-SURFACE-INTERVAL",
         "APP-GAS-PLAN",
+        "APP-GAS-TABLE",
         "APP-SERVICE-WORKER",
         "TOOL-AUDIT"
       ],
@@ -466,8 +487,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ENVIRONMENT"
       },
-      "fingerprint": "256146aa2fe3437facd7b661fe8a57344917cd76d571f1282526ada403358676",
-      "last_read_fingerprint": "256146aa2fe3437facd7b661fe8a57344917cd76d571f1282526ada403358676",
+      "fingerprint": "4c866a6a5306ea40ea62bea326acfa2aefdc22aa2ad03839344490aa758f2926",
+      "last_read_fingerprint": "4c866a6a5306ea40ea62bea326acfa2aefdc22aa2ad03839344490aa758f2926",
       "audit_issue": 139
     },
     {
@@ -683,8 +704,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-SETUP"
       },
-      "fingerprint": "ffa9a1e362f552b619026cbe68db84f259d69059712e0077a80c80f723f9d93b",
-      "last_read_fingerprint": "ffa9a1e362f552b619026cbe68db84f259d69059712e0077a80c80f723f9d93b",
+      "fingerprint": "15c7282ae6916268ae80276c8d5338b80fc7ac2a0aff9e209df9069738058085",
+      "last_read_fingerprint": "15c7282ae6916268ae80276c8d5338b80fc7ac2a0aff9e209df9069738058085",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 139
@@ -699,8 +720,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-ENGINE"
       },
-      "fingerprint": "8f770fc4fbe9a58e7ab3f190737cdc4670c5a82d348901765a7ef9e7ee0d6ff4",
-      "last_read_fingerprint": "8f770fc4fbe9a58e7ab3f190737cdc4670c5a82d348901765a7ef9e7ee0d6ff4",
+      "fingerprint": "c8c9ff172f912a6f9d3e8a68cfff617c55e9db34464675b0d20190f1bce985bf",
+      "last_read_fingerprint": "c8c9ff172f912a6f9d3e8a68cfff617c55e9db34464675b0d20190f1bce985bf",
       "evidence": [
         "python dev/run_all_regression.py --tier release"
       ],
@@ -720,7 +741,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
-      "fingerprint": "b33dde84b09fd1f08f23e0785c36268ca7ceedceedf25341e9cc2397357c270d",
+      "fingerprint": "cc05977aee28ac4c506593dc48c96a7f09d8acbf5785b1120bd6ea6f82a12c0e",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1069,29 +1090,44 @@
       "path": "gas-plan-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "455751cc07cc9becc81745443d26f185df18d083982e60b8c73d887f08c171cd",
-      "last_read_fingerprint": null,
-      "evidence": [],
-      "issue": "GitHub #140 H-2",
-      "regression_cases": []
+      "fingerprint": "17f732b30165748e83eb14757389eeafe252638087069077c7a1e698cb6ea45f",
+      "last_read_fingerprint": "17f732b30165748e83eb14757389eeafe252638087069077c7a1e698cb6ea45f",
+      "evidence": [
+        "REG-10",
+        "REG-12",
+        "REG-13"
+      ],
+      "issue": "GitHub #140 H-2 / Cycle 5 GP-01–06 — docs/code-review-2026-06-30.md",
+      "regression_cases": [
+        "REG-10",
+        "REG-12",
+        "REG-13"
+      ]
     },
     {
       "id": "APP-GAS-TABLE",
       "path": "gas-table-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "IN_PROGRESS",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "190ac90658c7c472df21560d97c89672d4478299b4c9b7cb0cd233c3d5fdd7d3",
-      "last_read_fingerprint": null,
-      "evidence": [],
-      "regression_cases": []
+      "fingerprint": "d3b1f105ccebc2f18bbb220df22417d019a5d4d0766c84005d41d65dda22fecd",
+      "last_read_fingerprint": "d3b1f105ccebc2f18bbb220df22417d019a5d4d0766c84005d41d65dda22fecd",
+      "evidence": [
+        "REG-11",
+        "REG-14"
+      ],
+      "issue": "Cycle 5 GT-01–06 — docs/code-review-2026-06-30.md",
+      "regression_cases": [
+        "REG-11",
+        "REG-14"
+      ]
     },
     {
       "id": "APP-SURFACE-INTERVAL",
@@ -1454,6 +1490,21 @@
       "issue": "GitHub #140 H-1/H-2 behavioral regression",
       "regression_cases": [],
       "fingerprint": "c1ac87de8c3523544c19332457c3240268f2de8f84e52ece0f24d4aa0d095c2d",
+      "last_read_fingerprint": null
+    },
+    {
+      "id": "TEST-GAS-CORE-REGRESSION",
+      "path": "dev/gas_core_regression.py",
+      "layer": "test_infrastructure",
+      "priority": "P1",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Cycle 5 GP/GT behavioral regression — docs/code-review-2026-06-30.md",
+      "regression_cases": [],
+      "fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
       "last_read_fingerprint": null
     },
     {
@@ -2206,7 +2257,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "148f777870809afa0b03095c3f0a70e91d5b57c7971218f96175aae9017b90ee",
+      "fingerprint": "d9886724a7aa6995a8c3f27793956a96158e757398017cc84ecc86e592f17c34",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2371,7 +2422,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f25ae613502c672e0649dfc7b3d0d50e24eac28a925e28e2450ea27f3dd65eba",
+      "fingerprint": "c6f28d8b359846458156fbce633c1c30f002ccdc5cfc80edfc247f0e45862c65",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2692,6 +2743,25 @@
         "ISSUE140-H1-GF-HIGH",
         "ISSUE140-H1-SI-CAP",
         "ISSUE140-H2-POOLED-TURN"
+      ]
+    },
+    {
+      "id": "SUITE-GAS-CORE",
+      "command": [
+        "{python}",
+        "dev/gas_core_regression.py"
+      ],
+      "profiles": [
+        "ci",
+        "release"
+      ],
+      "timeout_seconds": 180,
+      "case_ids": [
+        "T-GP-01",
+        "T-GP-02",
+        "T-GP-03",
+        "T-GT-01",
+        "T-GT-03"
       ]
     },
     {

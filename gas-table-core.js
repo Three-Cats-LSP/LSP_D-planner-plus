@@ -1,8 +1,9 @@
 /**
  * Gas table / END / EAD reference — RUNTIME UI CORE.
  * Loaded by index.html before main inline script.
- * Globals read: units, altSurfaceP, BAR_PER_METRE, narcoticN2, narcoticO2, calcEND,
- *   calcGasMODm
+ * Globals read: units, altSurfaceP, BAR_PER_METRE, FN2_AIR, narcoticN2, narcoticO2,
+ *   calcEND, calcGasMODm, calcNarcPP, getBottomGasFractions, getDecoCardFractions,
+ *   getAllDecoGasIds, getGasLabel
  * Globals written: window._endTipTitle, window._endTipText, window._eadTipTitle,
  *   window._eadTipText, window._avgDepthTipTitle, window._avgDepthTipText
  */
@@ -10,6 +11,15 @@
 // ═══════════════════════════════════════════════
 // GAS TABLE — MOD / MND reference for common mixes
 // ═══════════════════════════════════════════════
+/** ~30 m END on air — narcotic pp target for MND column */
+const GT_NARC_PP_TARGET = 3.5;
+/** Shared depth bands (metres) for END risk and MOD/MND colour cues */
+const GT_END_LOW_M = 30;
+const GT_END_MODERATE_M = 40;
+const GT_END_HIGH_M = 50;
+const GT_MOD_SHALLOW_M = 20;
+const GT_HYPOXIC_PPO2_BAR = 0.18;
+
 const _endTipTitle = 'Equivalent Narcotic Depth (END)';
 window._endTipTitle = _endTipTitle;
 const _endTipText  =
@@ -33,16 +43,27 @@ Practical guidance
 Most recreational agencies recommend keeping END ≤ 30 m. Technical divers typically plan for END ≤ 30–35 m even on deep trimix dives. Exertion, cold, stress, and CO₂ build-up can all worsen narcosis beyond what END predicts.`;
 window._endTipText = _endTipText;
 
+function gtEndRisk(endM) {
+  if (endM <= GT_END_LOW_M) return { label: 'Low', col: 'var(--green)' };
+  if (endM <= GT_END_MODERATE_M) return { label: 'Moderate', col: 'var(--yellow)' };
+  if (endM <= GT_END_HIGH_M) return { label: 'High', col: 'var(--orange)' };
+  return { label: 'Severe', col: 'var(--red)' };
+}
+
+function gtModDepthColor(depthM) {
+  if (depthM < GT_MOD_SHALLOW_M) return 'var(--red)';
+  if (depthM < GT_END_LOW_M) return 'var(--yellow)';
+  return 'var(--accent)';
+}
+
 function calcEND_tool() {
   const du     = units === 'metric';
-  const dUnit  = du ? 'm' : 'ft';
   const dRaw   = parseFloat(document.getElementById('endDepth')?.value) || 30;
   const dM     = du ? dRaw : dRaw / 3.28084;
   const o2Pct  = parseFloat(document.getElementById('endO2')?.value) || 21;
   const hePct  = parseFloat(document.getElementById('endHe')?.value) || 0;
   const n2Pct  = 100 - o2Pct - hePct;
 
-  // Mix validity
   const warnEl = document.getElementById('endMixWarn');
   if (n2Pct < 0) {
     warnEl.style.display = 'block';
@@ -59,10 +80,10 @@ function calcEND_tool() {
 
   const surfP = altSurfaceP || 1.01325;
   const ppO2Surf = fO2 * surfP;
-  if (ppO2Surf < 0.16) {
+  if (ppO2Surf < GT_HYPOXIC_PPO2_BAR) {
     warnEl.style.display = 'block';
     warnEl.innerHTML = '<div class="alert dang"><span>\u26a0</span><div><strong>Hypoxic mix.</strong> ppO\u2082 at surface is ' +
-      ppO2Surf.toFixed(2) + ' bar (&lt; 0.16 bar). Do not breathe this gas.</div></div>';
+      ppO2Surf.toFixed(2) + ' bar (&lt; ' + GT_HYPOXIC_PPO2_BAR.toFixed(2) + ' bar). Do not breathe this gas.</div></div>';
     document.getElementById('endResults').style.opacity = '0.3';
     return;
   }
@@ -74,29 +95,16 @@ function calcEND_tool() {
 
   const endM = calcEND(dM, fN2, fHe);
   const endDisp = du ? Math.round(endM) + ' m' : Math.round(endM * 3.28084) + ' ft';
-  const pNarcAirSurface = (narcoticN2 ? surfP * FN2_AIR : 0) +
-    (narcoticO2 ? surfP * (1 - FN2_AIR) : 0);
-  const narcoticFracAir = (narcoticN2 ? FN2_AIR : 0) + (narcoticO2 ? (1 - FN2_AIR) : 0);
-  const endMVal = endM != null ? endM : 0;
-  const pNarcDisplay = narcoticFracAir > 0
-    ? pNarcAirSurface + endMVal * (BAR_PER_METRE || 0.1) * narcoticFracAir
-    : (narcoticN2 ? ppN2 : 0) + (narcoticO2 ? ppO2 : 0);
+  const pNarcDisplay = calcNarcPP(dM, fN2, fHe);
 
-  // Risk level
-  let riskLabel, riskCol;
-  if (endM <= 30)      { riskLabel = 'Low';      riskCol = 'var(--green)'; }
-  else if (endM <= 40) { riskLabel = 'Moderate'; riskCol = 'var(--yellow)'; }
-  else if (endM <= 50) { riskLabel = 'High';     riskCol = 'var(--orange)'; }
-  else                 { riskLabel = 'Severe';   riskCol = 'var(--red)'; }
+  const { label: riskLabel, col: riskCol } = gtEndRisk(endM != null ? endM : 0);
 
-  // MOD
   const ppO2Limit = parseFloat(document.getElementById('ppo2Bottom')?.value) || 1.4;
   const mod14M = fO2 > 0 ? calcGasMODm(fO2, ppO2Limit) : null;
   const mod16M = fO2 > 0 ? calcGasMODm(fO2, 1.6) : null;
   const mod14d = mod14M != null ? (du ? mod14M + ' m' : Math.round(mod14M * 3.28084) + ' ft') : '\u2014';
   const mod16d = mod16M != null ? (du ? mod16M + ' m' : Math.round(mod16M * 3.28084) + ' ft') : '\u2014';
 
-  // Mix name
   const mixName = hePct > 0
     ? o2Pct + '/' + hePct
     : (o2Pct === 21 ? 'Air' : 'EAN' + o2Pct);
@@ -122,15 +130,14 @@ function calcEND_tool() {
   const mod14Lbl = document.getElementById('endMOD14')?.closest('.stat')?.querySelector('.stat-lbl');
   if (mod14Lbl) mod14Lbl.textContent = 'MOD @ ' + ppO2Limit.toFixed(1);
 
-  // Alert banner
   const alertEl = document.getElementById('endAlert');
   let alertHtml = '';
-  if (endM > 50) {
+  if (endM > GT_END_HIGH_M) {
     alertHtml = `<div class="alert" style="background:#FF4433;border-color:#111;border-width:1px;color:#fff;font-weight:700;"><span>\u26a0</span><div><strong>SEVERE NARCOSIS.</strong> END ${endDisp} \u2014 consider adding helium.</div></div>`;
-  } else if (endM > 40) {
-    alertHtml = `<div class="alert" style="background:#FF4433;border-color:#111;border-width:1px;color:#fff;font-weight:700;"><span>\u26a0</span><div><strong>HIGH NARCOTIC DEPTH.</strong> END ${endDisp} exceeds 40 m equivalent.</div></div>`;
-  } else if (endM > 30) {
-    alertHtml = `<div class="alert" style="background:#FF4433;border-color:#111;border-width:1px;color:#fff;font-weight:700;"><span>\u26a0</span><div><strong>NARCOTIC DEPTH WARNING.</strong> END ${endDisp} exceeds 30 m equivalent.</div></div>`;
+  } else if (endM > GT_END_MODERATE_M) {
+    alertHtml = `<div class="alert" style="background:#FF4433;border-color:#111;border-width:1px;color:#fff;font-weight:700;"><span>\u26a0</span><div><strong>HIGH NARCOTIC DEPTH.</strong> END ${endDisp} exceeds ${GT_END_MODERATE_M} m equivalent.</div></div>`;
+  } else if (endM > GT_END_LOW_M) {
+    alertHtml = `<div class="alert" style="background:#FF4433;border-color:#111;border-width:1px;color:#fff;font-weight:700;"><span>\u26a0</span><div><strong>NARCOTIC DEPTH WARNING.</strong> END ${endDisp} exceeds ${GT_END_LOW_M} m equivalent.</div></div>`;
   }
   if (mod14M != null && dM > mod14M) {
     alertHtml += `<div class="alert dang" style="margin-top:6px;"><span>\u26a0</span><div><strong>EXCEEDS MOD.</strong> Depth ${du ? Math.round(dM)+' m' : Math.round(dM*3.28084)+' ft'} is deeper than MOD ${mod14d} at ppO\u2082 ${ppO2Limit.toFixed(1)}.</div></div>`;
@@ -184,9 +191,8 @@ function renderEADTable() {
   const depthLabel = m => du ? m + ' m' : Math.round(m * 3.28084) + ' ft';
 
   const depths = [12,14,16,18,20,22,24,26,28,30,32,34,36,38];
-  const mixes  = Array.from({length:19}, (_, i) => 22 + i); // 22..40
+  const mixes  = Array.from({length:19}, (_, i) => 22 + i);
 
-  // Header row
   let html = '<thead><tr style="border-bottom:1px solid var(--border);">' +
     '<th style="text-align:left;padding:5px 6px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:400;white-space:nowrap;">Mix</th>';
   depths.forEach(d => {
@@ -194,7 +200,6 @@ function renderEADTable() {
   });
   html += '</tr></thead><tbody>';
 
-  // Data rows
   mixes.forEach(o2pct => {
     const fO2 = o2pct / 100;
     const fN2 = 1 - fO2;
@@ -212,18 +217,8 @@ function renderEADTable() {
   table.innerHTML = html;
 }
 
-function renderGasTable() {
-  const body = document.getElementById('gasTableBody');
-  if (!body) return;
-  const dU   = units === 'metric';
-  const conv = dU ? 1 : 3.28084;
-  const uLbl = dU ? 'm' : 'ft';
-  const selPpo2 = (parseFloat(document.getElementById('gasTablePPO2')?.value) || 14) / 10;
-  const hdr = document.getElementById('gasTableModSelHdr');
-  if (hdr) hdr.textContent = 'MOD @ ' + selPpo2.toFixed(1);
-
-  // [label, fO2, fHe]
-  const gases = [
+function _gasTableFixedGases() {
+  return [
     ['Air',    0.21, 0],
     ['EAN32',  0.32, 0],
     ['EAN36',  0.36, 0],
@@ -234,6 +229,40 @@ function renderGasTable() {
     ['18/45',  0.18, 0.45],
     ['15/55',  0.15, 0.55],
   ];
+}
+
+function _gasTableUserGases(fixed) {
+  const seen = new Set(fixed.map(([label]) => label.toLowerCase()));
+  const extra = [];
+  const addMix = (fO2, fHe) => {
+    if (!(fO2 > 0)) return;
+    const label = getGasLabel(fO2, fHe || 0);
+    if (!label) return;
+    const key = label.toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+    extra.push([label, fO2, fHe || 0]);
+  };
+  const bot = getBottomGasFractions();
+  if (bot) addMix(bot.fO2, bot.fHe);
+  getAllDecoGasIds().forEach(idx => {
+    const fr = getDecoCardFractions(idx);
+    if (fr) addMix(fr.fO2, fr.fHe);
+  });
+  return extra;
+}
+
+function renderGasTable() {
+  const body = document.getElementById('gasTableBody');
+  if (!body) return;
+  const dU   = units === 'metric';
+  const conv = dU ? 1 : 3.28084;
+  const uLbl = dU ? 'm' : 'ft';
+  const selPpo2 = (parseFloat(document.getElementById('gasTablePPO2')?.value) || 14) / 10;
+  const hdr = document.getElementById('gasTableModSelHdr');
+  if (hdr) hdr.textContent = 'MOD @ ' + selPpo2.toFixed(1);
+
+  const gases = [..._gasTableFixedGases(), ..._gasTableUserGases(_gasTableFixedGases())];
 
   const fmtDepth = (mVal) => {
     if (mVal < 0) return '—';
@@ -241,16 +270,14 @@ function renderGasTable() {
     return v + ' ' + uLbl;
   };
 
-  // MOD (m) = (ppO2 / fO2 - altSurfaceP) / BAR_PER_METRE
   const modM = (fO2, ppo2) => calcGasMODm(fO2, ppo2);
-  // MND: END = 3.5 bar. fNarc = fO2 + fN2 (He non-narcotic). MND = (3.5/fNarc - altP)/BAR_PER_METRE
   const mndM = (fO2, fHe) => {
     const fN2 = Math.max(0, 1 - fO2 - (fHe || 0));
     const fH = fHe || 0;
     const fO2n = Math.max(0, 1 - fN2 - fH);
     const narcFrac = (narcoticN2 ? fN2 : 0) + (narcoticO2 ? fO2n : 0);
     if (narcFrac <= 0) return -1;
-    const pAmbTarget = 3.5 / narcFrac;
+    const pAmbTarget = GT_NARC_PP_TARGET / narcFrac;
     if (pAmbTarget <= altSurfaceP) return -1;
     return (pAmbTarget - altSurfaceP) / BAR_PER_METRE;
   };
@@ -260,9 +287,11 @@ function renderGasTable() {
     const m1   = modM(fO2, selPpo2);
     const m16  = modM(fO2, 1.6);
     const mnd  = mndM(fO2, fHe);
-    const col1  = m1  < 20 ? 'var(--red)' : m1  < 30 ? 'var(--yellow)' : 'var(--accent)';
-    const col16 = m16 < 20 ? 'var(--red)' : m16 < 30 ? 'var(--yellow)' : 'var(--accent)';
-    const mndCol = (mnd >= 0 && mnd < 30) ? 'var(--yellow)' : 'var(--muted)';
+    const col1  = gtModDepthColor(m1);
+    const col16 = gtModDepthColor(m16);
+    const mndCol = (mnd >= 0 && mnd <= GT_END_LOW_M) ? 'var(--green)'
+      : (mnd > GT_END_LOW_M && mnd <= GT_END_MODERATE_M) ? 'var(--yellow)'
+      : 'var(--muted)';
     body.innerHTML += `<tr data-phase="gas">
       <td style="text-align:left;font-weight:700;">${label}</td>
       <td data-label="MOD @ ${selPpo2.toFixed(1)}" style="color:${col1};">${fmtDepth(m1)}</td>

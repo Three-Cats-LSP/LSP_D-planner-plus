@@ -2,7 +2,9 @@
  * Gas plan tab (Rule of Thirds) — RUNTIME UI CORE.
  * Loaded by index.html before main inline script.
  * Globals read: units, document, runDecoSchedule, ensurePDFFontsForPDF, getExportCircuitTag,
- *   showCopyToast, copyFallback, window.jspdf
+ *   showCopyToast, copyFallback, window.jspdf, getBottomGasFractions, getDecoCardFractions,
+ *   getAllDecoGasIds, isTravelGasConfigured, getDecoGasLabel, getGasLabel, validateDomDecoGases,
+ *   getCCRSettingsFromDOM, loopMixLabelFor
  * Globals written: _gasRule, window._lastGasPlan
  */
 
@@ -11,18 +13,19 @@
 // ═══════════════════════════════════════════════
 const GP_PSI_PER_BAR = 14.5038;
 const GP_CUFT_PER_L  = 0.0353147;
+const GP_ONEWAY_MARGIN = 1.10;
 let _gasRule = 'thirds';
 
+/** Turn pressure uses bottom-cylinder rule fraction only; pool portionL is for plan cross-check. */
 function computePooledBottomTurnBars(botSize, botFill, botRes, travelPooledL, fraction) {
   if (!(botSize > 0 && botFill > botRes)) return null;
-  const usableL = (botFill - botRes) * botSize + (travelPooledL || 0);
+  const botCylUsableL = (botFill - botRes) * botSize;
+  const usableL = botCylUsableL + (travelPooledL || 0);
   if (!(usableL > 0)) return null;
   const portionL = usableL * fraction;
-  const botShareL = travelPooledL > 0
-    ? portionL * ((botFill - botRes) * botSize) / usableL
-    : portionL;
-  const turnBar = botFill - botShareL / botSize;
-  return { usableL, portionL, botShareL, turnBar, maxTurnBar: turnBar };
+  const botCylPortionL = botCylUsableL * fraction;
+  const turnBar = botFill - botCylPortionL / botSize;
+  return { usableL, portionL, botCylPortionL, turnBar, maxTurnBar: turnBar };
 }
 
 function setGasRule(rule) {
@@ -33,9 +36,10 @@ function setGasRule(rule) {
   if (t) t.classList.toggle('active', _gasRule === 'thirds');
   if (h) h.classList.toggle('active', _gasRule === 'half');
   calcGasPlan();
-  // Also refresh the Gas Consumption card on Deco Schedule if it is visible
   const gasEl = document.getElementById('gasConsumptionSummary');
-  if (!window._zhlHeadless && gasEl && gasEl.style.display !== 'none') runDecoSchedule();
+  if (!window._zhlHeadless && gasEl && gasEl.style.display !== 'none' && !window._scheduleWorkerBusy) {
+    runDecoSchedule();
+  }
 }
 
 // Read a Gas Plan pressure input, returning bar regardless of unit system.
@@ -181,12 +185,17 @@ function calcGasPlan() {
     let   shortL    = null;   // > 0 means insufficient
     let   maxBTmin  = null;   // suggested max BT
     let   maxTurnBar = null;  // turn pressure at max BT
+    let   maxBTEstimate = false;
     if (Number.isFinite(reqL) && reqL > usableL) {
       shortL = reqL - usableL;
       const plannedBT = parseFloat(document.getElementById('decoBT')?.value) || 0;
       if (plannedBT > 0 && reqL > 0) {
-        const ratePerMin = reqL / plannedBT;
-        maxBTmin = Math.max(1, Math.floor(usableL / ratePerMin));
+        const bottomPhaseL = window._lastBottomPhaseConsumedL?.[botLabel];
+        const rateL = (Number.isFinite(bottomPhaseL) && bottomPhaseL > 0)
+          ? bottomPhaseL / plannedBT
+          : reqL / plannedBT;
+        maxBTEstimate = !(Number.isFinite(bottomPhaseL) && bottomPhaseL > 0);
+        maxBTmin = Math.max(1, Math.floor(usableL / rateL));
         maxTurnBar = pooled.turnBar;
       }
     }
@@ -202,6 +211,7 @@ function calcGasPlan() {
       shortL,
       maxBTmin,
       maxTurnBar,
+      maxBTEstimate,
     });
   }
 
@@ -228,9 +238,9 @@ function calcGasPlan() {
     });
   });
 
-  // Remove travel from one-way list if it was pooled into bottom
+  // Remove pooled label from one-way list (any gas name sharing the bottom mix)
   const oneWayFiltered = travelPooledL > 0
-    ? oneWay.filter(g => g.name !== 'Travel')
+    ? oneWay.filter(g => g.label !== botLabel)
     : oneWay;
 
   let needPlan = false;
@@ -260,7 +270,7 @@ function calcGasPlan() {
         if (r.shortL != null && r.shortL > 0) {
           // Insufficient for deco plan — warning + max BT suggestion
           const btSuggest = r.maxBTmin != null
-            ? `Max BT with this cylinder: <strong>${r.maxBTmin} min</strong>, turn at <strong>${gpPresDisp(r.maxTurnBar)} ${presU}</strong>`
+            ? `Max BT with this cylinder: <strong>${r.maxBTmin} min</strong>, turn at <strong>${gpPresDisp(r.maxTurnBar)} ${presU}</strong>${r.maxBTEstimate ? ' <span style="color:var(--muted);">(conservative estimate)</span>' : ''}`
             : '';
           html += `<tr>
             <td style="white-space:nowrap;">${r.label}</td>
@@ -274,19 +284,30 @@ function calcGasPlan() {
           if (btSuggest) html += `<tr class="gas-bt-row"><td colspan="7" class="gas-bt-cell">⚠ ${btSuggest} — or use a larger cylinder.</td></tr>`;
         } else {
           // Sufficient — normal turn pressure row with plan check
-          const suffNote = Number.isFinite(r.reqL)
-            ? `<br><span style="color:var(--green) !important;font-size:10px;">✓ ${gpVolDisp(r.reqL)} ${volU} needed</span>`
-            : (r.reqL != null ? '<br><span style="color:var(--orange) !important;font-size:10px;">Invalid gas</span>' : '');
-          const botVolColor = Number.isFinite(r.reqL) ? 'color:var(--green) !important;font-weight:700;' : '';
+          const botVolColor = Number.isFinite(r.reqL)
+            ? (r.totalL >= r.reqL * GP_ONEWAY_MARGIN ? 'color:var(--green) !important;font-weight:700;'
+              : r.totalL >= r.reqL ? 'color:var(--yellow) !important;font-weight:700;'
+              : 'color:var(--red) !important;font-weight:700;')
+            : '';
           const botMargin = Number.isFinite(r.reqL) ? gpVolDisp(r.totalL - r.reqL) + ' ' + volU : '—';
-          const botMarginCol = Number.isFinite(r.reqL) ? 'color:var(--green) !important;font-weight:700;' : 'color:var(--muted);';
-          html += `<tr>
+          const botMarginCol = !Number.isFinite(r.reqL) ? 'color:var(--muted);'
+            : r.totalL < r.reqL ? 'color:var(--red) !important;font-weight:700;'
+            : r.totalL < r.reqL * GP_ONEWAY_MARGIN ? 'color:var(--yellow) !important;font-weight:700;'
+            : 'color:var(--green) !important;font-weight:700;';
+          const botSuffNote = Number.isFinite(r.reqL)
+            ? (r.totalL >= r.reqL * GP_ONEWAY_MARGIN
+              ? `<br><span style="color:var(--green) !important;font-size:10px;">✓ ${gpVolDisp(r.reqL)} ${volU} needed</span>`
+              : r.totalL >= r.reqL
+                ? `<br><span style="color:var(--yellow) !important;font-size:10px;">⚠ tight — ${gpVolDisp(r.reqL)} ${volU} needed</span>`
+                : '')
+            : (r.reqL != null ? '<br><span style="color:var(--orange) !important;font-size:10px;">Invalid gas</span>' : '');
+          html += `<tr class="${Number.isFinite(r.reqL) && r.totalL >= r.reqL && r.totalL < r.reqL * GP_ONEWAY_MARGIN ? 'gas-tight-row' : ''}">
             <td style="white-space:nowrap;">${r.label}</td>
             <td style="${botVolColor}">${gpVolDisp(r.totalL)} ${volU}</td>
             <td>${gpVolDisp(r.portionL)} ${volU} <span style="color:var(--muted);">(${ruleTxt})</span></td>
             <td style="color:var(--accent) !important;font-weight:700;">${gpPresDisp(r.turnBar)} ${presU}</td>
             <td>${gpPresDisp(r.reserveBar)} ${presU}</td>
-            <td><span style="color:var(--accent) !important;font-weight:700;">⟳ turn</span>${suffNote}</td>
+            <td><span style="color:var(--accent) !important;font-weight:700;">⟳ turn</span>${botSuffNote}</td>
             <td style="${botMarginCol}">${botMargin}</td>
           </tr>`;
         }
@@ -298,7 +319,7 @@ function calcGasPlan() {
         } else if (!Number.isFinite(r.reqL)) {
           suffCell = '<span style="color:var(--orange) !important;font-weight:700;">invalid gas</span>';
           statusCol = 'var(--orange)';
-        } else if (r.totalL >= r.reqL * 1.10) {
+        } else if (r.totalL >= r.reqL * GP_ONEWAY_MARGIN) {
           suffCell = '<span style="color:var(--green) !important;font-weight:700;">✓ ok</span><br><span style="color:var(--muted);font-size:10px;">req ' + gpVolDisp(r.reqL) + ' ' + volU + '</span>';
           statusCol = 'var(--green)';
         } else if (r.totalL >= r.reqL) {
@@ -308,7 +329,7 @@ function calcGasPlan() {
           suffCell = '<span style="color:var(--red) !important;font-weight:700;">✗ short</span><br><span style="color:var(--muted);font-size:10px;">req ' + gpVolDisp(r.reqL) + ' ' + volU + '</span>';
           statusCol = 'var(--red)';
         }
-        const isTight = r.reqL != null && r.totalL >= r.reqL && r.totalL < r.reqL * 1.10;
+        const isTight = r.reqL != null && r.totalL >= r.reqL && r.totalL < r.reqL * GP_ONEWAY_MARGIN;
         const marginL = r.reqL != null ? r.totalL - r.reqL : null;
         const marginDisp = marginL != null ? (marginL >= 0 ? '+' : '−') + gpVolDisp(Math.abs(marginL)) + ' ' + volU : '—';
         const marginCol = marginL == null ? 'var(--muted)' : marginL < 0 ? 'var(--red)' : isTight ? '#FF4433' : 'var(--green)';
@@ -369,7 +390,7 @@ function buildGasPlanText() {
       if (r.shortL != null && r.shortL > 0) {
         L.push(`  ! INSUFFICIENT: need ${gpVolDisp(r.reqL)}${volU}, have ${gpVolDisp(r.totalL)}${volU} (short ${gpVolDisp(r.shortL)}${volU})`);
         if (r.maxBTmin != null) {
-          L.push(`  > Shorten BT to ${r.maxBTmin} min, turn at ${gpPresDisp(r.maxTurnBar)}${presU}`);
+          L.push(`  > Shorten BT to ${r.maxBTmin} min, turn at ${gpPresDisp(r.maxTurnBar)}${presU}${r.maxBTEstimate ? ' (conservative estimate)' : ''}`);
           L.push(`  > Or use a larger cylinder / add a stage`);
         }
       } else {
@@ -384,7 +405,7 @@ function buildGasPlanText() {
         L.push('  Required: run deco plan first');
       } else {
         const margin = r.totalL - r.reqL;
-        const status = r.totalL >= r.reqL * 1.10 ? 'OK' : r.totalL >= r.reqL ? 'TIGHT' : 'INSUFFICIENT';
+        const status = r.totalL >= r.reqL * GP_ONEWAY_MARGIN ? 'OK' : r.totalL >= r.reqL ? 'TIGHT' : 'INSUFFICIENT';
         L.push(`  Need: ${gpVolDisp(r.reqL)}${volU}  Margin: ${gpVolDisp(margin)}${volU}  [${status}]`);
         if (status === 'INSUFFICIENT') L.push('  > Add more gas or reduce deco obligation');
       }
@@ -502,7 +523,7 @@ async function buildGasPlanPDF() {
     } else {
       let status;
       if(r.reqL==null) status='RUN PLAN';
-      else if(r.totalL>=r.reqL*1.10) status='OK';
+      else if(r.totalL>=r.reqL*GP_ONEWAY_MARGIN) status='OK';
       else if(r.totalL>=r.reqL) status='TIGHT';
       else status='SHORT';
       cells=[

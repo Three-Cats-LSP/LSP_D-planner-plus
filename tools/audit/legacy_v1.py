@@ -5210,7 +5210,10 @@ if "if (ph === 'totals' || ph === 'info') return;" in js.split("EMERGENCY ASCENT
     ok("buildExportText skips contingency info row (issue #99 M-8)")
 else:
     fail("buildExportText missing skip for contingency info row (issue #99 M-8)")
-if "ppO2Surf < 0.16" in js.split("function calcEND_tool()", 1)[-1][:2500]:
+if "ppO2Surf <" in js.split("function calcEND_tool()", 1)[-1][:2500] and (
+    "GT_HYPOXIC_PPO2_BAR" in js.split("function calcEND_tool()", 1)[-1][:2500]
+    or "ppO2Surf < 0.16" in js.split("function calcEND_tool()", 1)[-1][:2500]
+):
     ok("END/EAD tool warns on hypoxic surface ppO2 (issue #99 M-9)")
 else:
     fail("END/EAD tool missing hypoxic mix warning (issue #99 M-9)")

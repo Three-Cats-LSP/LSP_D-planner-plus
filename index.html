@@ -4160,6 +4160,16 @@ function calcEND(depthM, fN2, fHe) {
   return end;
 }
 
+/** Total narcotic partial pressure (bar) at depth — shares narcoticN2/narcoticO2 with calcEND. */
+function calcNarcPP(depthM, fN2, fHe) {
+  const fH = fHe || 0;
+  const fO2 = Math.max(0, 1 - fN2 - fH);
+  const pAmb = altSurfaceP + depthM * BAR_PER_METRE;
+  const pNarcN2 = narcoticN2 ? pAmb * fN2 : 0;
+  const pNarcO2 = narcoticO2 ? pAmb * fO2 : 0;
+  return pNarcN2 + pNarcO2;
+}
+
 // Parse the deepest depth (m) from a rendered Depth-cell, converting ft→m if needed.
 function endParseDepthM(text) {
   if (!text) return null;
@@ -9137,6 +9147,7 @@ function runZhlScheduleCore(params) {
 
 function runDecoSchedule() {
   let _zhlPrevGF = null;
+  window._scheduleWorkerBusy = true;
   try {
   if (!guardEngineBootForCalculate()) return;
   if (!window._zhlHeadless && !_contingencyRunning) {
@@ -9440,10 +9451,12 @@ function runDecoSchedule() {
   const sacBottomDisp = parseFloat(document.getElementById('sacBottom')?.value) || 20;
   const sacDecoDisp   = parseFloat(document.getElementById('sacDeco')?.value) || 15;
   const BAR_PER_M = BAR_PER_METRE;
-  // gasConsumed[gasLabel] = litres
   const gasConsumed = {};
-  function addGas(label, depthM, dur, sac) {
-    accumGasLitres(gasConsumed, label, ccrGasLitres(label, depthM, dur, resolveCcrSacForGas(label, sac, _ccrSettings)));
+  const bottomPhaseConsumed = {};
+  function addGas(label, depthM, dur, sac, bottomPhaseOnly) {
+    const litres = ccrGasLitres(label, depthM, dur, resolveCcrSacForGas(label, sac, _ccrSettings));
+    accumGasLitres(gasConsumed, label, litres);
+    if (bottomPhaseOnly) accumGasLitres(bottomPhaseConsumed, label, litres);
   }
 
 
@@ -9503,7 +9516,7 @@ function runDecoSchedule() {
     rowRT += travelDescentTimeMin;
     totalCNSfrac += segCNSfrac(parseFloat(travelPPO2), travelDescentTimeMin);
     totalOTU     += segOTU(parseFloat(travelPPO2), travelDescentTimeMin);
-    addGas(travelInfoRow.label, travelMidM, travelDescentTimeMin, sacBottom);
+    addGas(travelInfoRow.label, travelMidM, travelDescentTimeMin, sacBottom, false);
     const travelSwitchDisp = dU ? travelSwitchMrow+'m' : mToFt(travelSwitchMrow)+'ft';
     _decoRowBuf += `<tr class="asc-row" data-phase="descent">
       <td><span style="font-size:18px;color:#ff8080;">↓</span></td>
@@ -9522,7 +9535,7 @@ function runDecoSchedule() {
     rowRT += bottomDescentTimeMin;
     totalCNSfrac += segCNSfrac(parseFloat(descentPPO2), bottomDescentTimeMin);
     totalOTU     += segOTU(parseFloat(descentPPO2), bottomDescentTimeMin);
-    addGas(loopMixLabel, bottomMidM, bottomDescentTimeMin, sacBottom);
+    addGas(loopMixLabel, bottomMidM, bottomDescentTimeMin, sacBottom, true);
     _decoRowBuf += `<tr class="asc-row" data-phase="descent">
       <td><span style="font-size:18px;color:#ff8080;">↓</span></td>
       <td data-label="Depth" style="color:#ff8080;">${travelSwitchDisp}→${dU?rawD+'m':mToFt(rawD)+'ft'}</td>
@@ -9539,7 +9552,7 @@ function runDecoSchedule() {
     const descentPPO2 = rowDisplayPpo2(descentMidM, bottomFN2, bottomFHe, bottomFO2, 'descent');
     totalCNSfrac += segCNSfrac(parseFloat(descentPPO2), descentTimeMin);
     totalOTU     += segOTU(parseFloat(descentPPO2), descentTimeMin);
-    addGas(loopMixLabel, descentMidM, descentTimeMin, sacBottom);
+    addGas(loopMixLabel, descentMidM, descentTimeMin, sacBottom, true);
     _decoRowBuf += `<tr class="asc-row" data-phase="descent">
       <td><span style="font-size:18px;color:#ff8080;">↓</span></td>
       <td data-label="Depth" style="color:#ff8080;">0→${dU?rawD+'m':mToFt(rawD)+'ft'}</td>
@@ -9557,7 +9570,7 @@ function runDecoSchedule() {
   const btPPO2 = rowDisplayPpo2(rawD, bottomFN2, bottomFHe, bottomFO2, 'bottom');
   totalCNSfrac += segCNSfrac(parseFloat(btPPO2), btAtDepthMin);
   totalOTU     += segOTU(parseFloat(btPPO2), btAtDepthMin);
-  addGas(loopMixLabel, rawD, btAtDepthMin, sacBottom);
+  addGas(loopMixLabel, rawD, btAtDepthMin, sacBottom, true);
   if (_zhlOnLoop) {
     const reserveMin = (_ccrSettings.stressTimeMin || 0) + (_ccrSettings.problemSolveMin || 0);
     if (reserveMin > 0) {
@@ -9757,6 +9770,7 @@ function runDecoSchedule() {
   // Only store from the main plan run, not emergency contingency runs.
   if (!_contingencyRunning) {
     window._lastGasConsumed = Object.assign({}, gasConsumed);
+    window._lastBottomPhaseConsumedL = Object.assign({}, bottomPhaseConsumed);
   }
   _syncCylToGasPlan();
 
@@ -9803,6 +9817,7 @@ function runDecoSchedule() {
     if (!_contingencyRunning) {
       // Store consumed gas so calcGasPlan() can cross-check
       window._lastGasConsumed = Object.assign({}, gasConsumed);
+      window._lastBottomPhaseConsumedL = Object.assign({}, bottomPhaseConsumed);
       // Run Gas Plan render into a temp tbody, then build card
       calcGasPlan();
       const gpBody = document.getElementById('gpResultBody');
@@ -9918,6 +9933,8 @@ function runDecoSchedule() {
     console.error('[Deco] Error:', err);
     document.getElementById('decoSummary').innerHTML = `<div class="alert dang"><span>⚠</span><div><strong>Error:</strong> ${escapeHtmlText(err.message || String(err))}</div></div>`;
     document.getElementById('decoResult').style.display = 'block';
+  } finally {
+    window._scheduleWorkerBusy = false;
   }
 }
 
