@@ -9571,6 +9571,7 @@ function runDecoSchedule() {
   }
 
   const tbody = document.getElementById('decoTableBody');
+  if (!tbody) return;
   const descentTimeMin = Math.round((depthM / descentRate) * 10) / 10;
 
   tbody.innerHTML = '';

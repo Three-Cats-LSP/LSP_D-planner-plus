@@ -35,7 +35,7 @@
 | 8 | UI-VPM-RENDER | 536 | ENG-VPM | VPM rendering and safety warning propagation READ |
 | 9 | UI-GAS-CARDS | 574 | ENG-ZHL-GAS | Dynamic gas-card units and persistence READ |
 | 10 | UI-GAS-INPUTS, UI-ZHL-RUNNER-SETUP | 301 | ENG-ZHL-SCHEDULE | Gas validation and ZHL parameter construction READ |
-| 11 | UI-ZHL-RUNNER-ENGINE | 341 | ENG-ZHL-SCHEDULE | Canonical ZHL execution path READ with parity evidence |
+| 11 | UI-ZHL-RUNNER-ENGINE | 342 | ENG-ZHL-SCHEDULE | Canonical ZHL execution path READ with parity evidence |
 | 12 | UI-ZHL-RESULTS | 493 | ENG-ZHL-PHYSICS | Result construction, exposure totals, and safety fields READ |
 
 ## Definition of Done
