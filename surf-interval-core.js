@@ -255,7 +255,7 @@ function renderSurfIntPanel(containerId, prefix, preDepthM, preBtMin) {
             </div>
           </div>
         </div>
-        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+        <div style="display:flex;gap:16px;flex-wrap:wrap;">
           <div style="flex:1;min-width:150px;margin-bottom:14px;">
             <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
               <label style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">Dive 2 Planned Depth</label>
@@ -265,13 +265,22 @@ function renderSurfIntPanel(containerId, prefix, preDepthM, preBtMin) {
               <input type="range" id="${P}D2Depth" class="lsp-slider" min="5" max="60" value="${d1Init}" step="1" oninput="updateSliderFill(this);calcSurfInt('${P}')">
             </div>
           </div>
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:14px;">
-            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">GF Lo:</span>
-            <select id="${P}GfLow" onchange="calcSurfInt('${P}');if(typeof appSettings!=='undefined')appSettings.save(false)" style="padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;">
-              <option value="20">20</option><option value="25">25</option><option value="30" selected>30</option>
-              <option value="35">35</option><option value="40">40</option><option value="45">45</option><option value="50">50</option>
-            </select>
+          <div style="flex:1;min-width:150px;margin-bottom:14px;">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
+              <label style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">Dive 2 Bottom Time</label>
+              <span id="${P}D2BTDisplay" style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);line-height:1;">${btInit} min</span>
+            </div>
+            <div class="slider-wrap">
+              <input type="range" id="${P}D2BT" class="lsp-slider" min="5" max="120" value="${btInit}" step="1" oninput="updateSliderFill(this);calcSurfInt('${P}')">
+            </div>
           </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:14px;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">GF Lo:</span>
+          <select id="${P}GfLow" onchange="calcSurfInt('${P}');if(typeof appSettings!=='undefined')appSettings.save(false)" style="padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;">
+            <option value="20">20</option><option value="25">25</option><option value="30" selected>30</option>
+            <option value="35">35</option><option value="40">40</option><option value="45">45</option><option value="50">50</option>
+          </select>
         </div>
         <div style="margin-bottom:14px;">
           <button type="button" onclick="toggleD2Gas('${P}')" id="${P}D2GasToggle"
