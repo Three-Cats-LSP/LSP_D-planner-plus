@@ -450,7 +450,7 @@
             state.tissues[i].pHe = haldane(state.tissues[i].pHe, insp.pHe, ZHL16C_He[i].ht, time);
         }
     }
-    function loadTissuesLinear(state, startDepth, endDepth, rate, o2Frac, heFrac, settings, setpoint) {
+    function loadTissuesLinear(state, startDepth, endDepth, rate, o2Frac, heFrac, settings, setpoint, phase) {
         const time = Math.abs(endDepth - startDepth) / rate;
         if (time <= 0) return 0;
         const slp = getSLP(settings);
@@ -479,7 +479,7 @@
             const pressureRate = (pAmbEnd - pAmbStart) / segTime;
             const ascending = seg.toDepth < seg.fromDepth;
             const endpointDepth = ascending ? seg.toDepth : seg.fromDepth;
-            const segSP = ccrSetpointAtDepth(endpointDepth, ccr, surfP);
+            const segSP = ccrSetpointAtDepth(endpointDepth, ccr, surfP, phase || (ascending ? 'deco' : 'descent'));
             const params = ccrSchreinerParams(pAmbStart, segSP, o2Frac, heFrac, pressureRate, { ...ccr, setpoint: segSP }, settings);
             for (let i = 0; i < NC; i++) {
                 const kN2 = Math.LN2 / ZHL16C_N2[i].ht;
@@ -1014,8 +1014,10 @@
         }
         const s = settings;
         if (isRebreatherCircuit(s.circuit || 'OC')) {
-            const ccrVal = validateCcrCalculationInputs(levels, s, decoGases);
-            if (!ccrVal.ok) return engineValidationError(ccrVal);
+            if (typeof validateCcrCalculationInputs === 'function') {
+                const ccrVal = validateCcrCalculationInputs(levels, s, decoGases);
+                if (!ccrVal.ok) return engineValidationError(ccrVal);
+            }
         }
         const vpmSettingsVal = validateVpmSettings(s);
         if (!vpmSettingsVal.ok) {
@@ -1176,7 +1178,7 @@
             ctx.currentSP = vpmSetpointAtDepth(midDepth, phase || 'deco', ctx.forcedOCMode, settings);
             const segTime = loadTissuesLinear(
                 ctx.state, fromDepth, toDepth, rate,
-                ctx.currentO2, ctx.currentHe, settings, ctx.currentSP
+                ctx.currentO2, ctx.currentHe, settings, ctx.currentSP, phase
             );
             ctx.runtime += segTime;
             addExposureToContext(ctx, fromDepth, toDepth, segTime);
