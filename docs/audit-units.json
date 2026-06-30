@@ -867,16 +867,16 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
       "fingerprint": "cc05977aee28ac4c506593dc48c96a7f09d8acbf5785b1120bd6ea6f82a12c0e",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "cc05977aee28ac4c506593dc48c96a7f09d8acbf5785b1120bd6ea6f82a12c0e",
       "evidence": [],
       "regression_cases": [],
-      "audit_issue": 139
+      "audit_issue": 151
     },
     {
       "id": "UI-ZHL-HEADLESS-HELPERS",
