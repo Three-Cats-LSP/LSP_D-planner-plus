@@ -1335,6 +1335,88 @@ ENGINE_SUITE_JS = r"""
     };
   })();
 
+  // ── Cycle 32: contingency bailout dual-check (UI-13 / gas-plan-core) ─────
+  out.sections.cycle32 = (() => {
+    const rdFn = typeof runDecoSchedule === 'function' ? runDecoSchedule.toString() : '';
+    const sacScaleOk = /getContingencySacMultiplier/.test(rdFn) && /contSacMult/.test(rdFn);
+    const scratchGasOk = /_contingencyScratchGasConsumed/.test(rdFn);
+    const calcFn = typeof calcContingency === 'function' ? calcContingency.toString() : '';
+    const bailoutDualOk = /buildContingencyBailoutGasAlert/.test(calcFn)
+      && /contLastGasConsumed/.test(calcFn)
+      && /warningBailoutContingency/.test(calcFn);
+    const gasSwitchOk = typeof revalidateContingencyGasSwitchDepth === 'function'
+      && /getConfiguredBailoutMixes/.test(revalidateContingencyGasSwitchDepth.toString());
+    const errorRecoveryOk = /finally\s*\{/.test(calcFn)
+      && /_contingencyRunning\s*=\s*false/.test(calcFn)
+      && /_scheduleWorkerBusy\s*=\s*false/.test(calcFn);
+    const persistOk = typeof appSettings !== 'undefined'
+      && Array.isArray(appSettings.DECO_FIELDS)
+      && appSettings.DECO_FIELDS.includes('contingencySacMultiplier');
+
+    let sacFuncOk = false;
+    if (typeof getContingencySacMultiplier === 'function' && typeof scaleGasConsumedMap === 'function') {
+      const el = document.getElementById('contingencySacMultiplier');
+      const prev = el ? el.value : null;
+      if (el) el.value = '2';
+      const mult = getContingencySacMultiplier();
+      const scaled = scaleGasConsumedMap({ AIR: 100 }, mult);
+      sacFuncOk = mult === 2 && Math.abs(scaled.AIR - 200) < 1e-6;
+      if (el && prev != null) el.value = prev;
+    }
+
+    let bailoutWarnOk = false;
+    if (typeof calculateGasRequirementsFromConsumed === 'function' && typeof buildContingencyBailoutGasAlert === 'function') {
+      const el = document.getElementById('gpDg1_size');
+      const fill = document.getElementById('gpDg1_fill');
+      const res = document.getElementById('gpDg1_reserve');
+      const prevS = el ? el.value : null;
+      const prevF = fill ? fill.value : null;
+      const prevR = res ? res.value : null;
+      if (el) el.value = '1';
+      if (fill) fill.value = '50';
+      if (res) res.value = '0';
+      const alert = buildContingencyBailoutGasAlert({ 'EAN 50': 5000 });
+      bailoutWarnOk = alert.warningBailoutContingency === true
+        && typeof alert.html === 'string'
+        && alert.html.includes('BAILOUT INSUFFICIENT');
+      if (el && prevS != null) el.value = prevS;
+      if (fill && prevF != null) fill.value = prevF;
+      if (res && prevR != null) res.value = prevR;
+    }
+
+    let gasSwitchDepthOk = false;
+    if (typeof revalidateContingencyGasSwitchDepth === 'function') {
+      const html = revalidateContingencyGasSwitchDepth(
+        { firstStopDepth: 18 },
+        { firstStopDepth: 27 },
+      );
+      gasSwitchDepthOk = typeof html === 'string' && html.includes('GAS SWITCH REVIEW');
+    }
+
+    let throwRecoveryOk = false;
+    if (typeof runContingencyScenario === 'function') {
+      try {
+        runContingencyScenario(() => { throw new Error('cycle32 probe'); });
+        throwRecoveryOk = _contingencyRunning === false && window._scheduleWorkerBusy === false;
+      } catch (_) { throwRecoveryOk = false; }
+    }
+
+    return {
+      ok: sacScaleOk && scratchGasOk && bailoutDualOk && gasSwitchOk && errorRecoveryOk && persistOk
+        && sacFuncOk && bailoutWarnOk && gasSwitchDepthOk && throwRecoveryOk,
+      sacScaleOk,
+      scratchGasOk,
+      bailoutDualOk,
+      gasSwitchOk,
+      errorRecoveryOk,
+      persistOk,
+      sacFuncOk,
+      bailoutWarnOk,
+      gasSwitchDepthOk,
+      throwRecoveryOk,
+    };
+  })();
+
   // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
   out.sections.cycle6 = (() => {
     const rdp11 = typeof padiTableRowIndex === 'function' ? padiTableRowIndex(11) : null;
@@ -1726,6 +1808,11 @@ def run_suite(page) -> dict:
     assert_true(c31.get("pscrLoopSyncOk"), "[CYCLE31-PSCR] pSCR loop volume changes inspired fractions", str(c31))
     assert_true(c31.get("shallowPersistOk"), "[CYCLE31-SHALLOW] shallowGradient in DECO_FIELDS", str(c31))
     assert_true(c31.get("contingencyModOk"), "[CYCLE31-CONTINGENCY-MOD] went-deeper contingency flags MOD violation", str(c31))
+    c32 = s.get("cycle32", {})
+    assert_true(c32.get("bailoutWarnOk"), "[CYCLE32-L6] test_contingency_bailout_insufficiency_warning", str(c32))
+    assert_true(c32.get("sacFuncOk") and c32.get("sacScaleOk"), "[CYCLE32-L1] test_contingency_sac_scaling", str(c32))
+    assert_true(c32.get("gasSwitchDepthOk") and c32.get("gasSwitchOk"), "[CYCLE32-L3] test_contingency_gas_switch_depth_shift", str(c32))
+    assert_true(c32.get("throwRecoveryOk") and c32.get("errorRecoveryOk"), "[CYCLE32-L2] test_contingency_error_recovery", str(c32))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
     sw_block = sw_install.split("addEventListener('install'")[1].split("addEventListener('activate'")[0] if "addEventListener('install'" in sw_install else ""
     assert_true("clients.matchAll" not in sw_block, "[CYCLE7-L2] SW install handler does not postMessage before claim")

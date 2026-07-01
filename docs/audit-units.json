@@ -1224,7 +1224,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "16fb02c5434482d0a0adeb4c9f4520ff847583608424584efe74f7c331d7bd69",
+      "fingerprint": "bde7de5cfd9d10442c6b7fdd800a8a2d774e970730c25c343ce989e3752d5eef",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1250,23 +1250,15 @@
       "path": "gas-plan-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "17f732b30165748e83eb14757389eeafe252638087069077c7a1e698cb6ea45f",
-      "last_read_fingerprint": "17f732b30165748e83eb14757389eeafe252638087069077c7a1e698cb6ea45f",
-      "evidence": [
-        "REG-10",
-        "REG-12",
-        "REG-13"
-      ],
+      "fingerprint": "ba0eeb2fe1949b2876eeda800e23ebb5da904cce0a44683993e9479872b58ee0",
+      "last_read_fingerprint": null,
+      "evidence": [],
       "issue": "GitHub #140 H-2 / Cycle 5 GP-01�06 � docs/code-review-2026-06-30.md",
-      "regression_cases": [
-        "REG-10",
-        "REG-12",
-        "REG-13"
-      ]
+      "regression_cases": []
     },
     {
       "id": "APP-GAS-TABLE",

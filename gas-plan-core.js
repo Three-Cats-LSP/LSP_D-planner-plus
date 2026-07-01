@@ -82,6 +82,83 @@ function gpRequiredFor(label) {
   return null;
 }
 
+function getContingencySacMultiplier() {
+  const v = parseFloat(document.getElementById('contingencySacMultiplier')?.value);
+  return Number.isFinite(v) && v >= 1 && v <= 3 ? v : 1.5;
+}
+
+function scaleGasConsumedMap(gasMap, multiplier) {
+  if (!gasMap) return {};
+  if (!multiplier || multiplier === 1) return Object.assign({}, gasMap);
+  const out = {};
+  Object.entries(gasMap).forEach(([label, litres]) => {
+    if (Number.isFinite(litres)) out[label] = litres * multiplier;
+  });
+  return out;
+}
+
+function gpAvailLForGasLabel(label) {
+  if (!label) return 0;
+  const bot = getBottomGasFractions();
+  const botLabel = bot ? getGasLabel(bot.fO2, bot.fHe) : null;
+  if (botLabel && label.toLowerCase() === botLabel.toLowerCase()) {
+    const size = gpSizeL('gpBot_size');
+    const fill = gpPresBar('gpBot_fill');
+    const res = gpPresBar('gpBot_reserve');
+    return (size > 0 && fill > res) ? (fill - res) * size : 0;
+  }
+  let availL = 0;
+  getAllDecoGasIds().forEach(idx => {
+    const fracs = getDecoCardFractions(idx);
+    if (!fracs || fracs.fO2 <= 0) return;
+    const gLabel = getGasLabel(fracs.fO2, fracs.fHe);
+    if (gLabel.toLowerCase() !== label.toLowerCase()) return;
+    const useGp = idx <= 2 && document.getElementById(`gpDg${idx}_size`);
+    const size = gpSizeL(useGp ? `gpDg${idx}_size` : `cylDg${idx}_size`);
+    const fill = gpPresBar(useGp ? `gpDg${idx}_fill` : `cylDg${idx}_pres`);
+    const res = gpPresBar(useGp ? `gpDg${idx}_reserve` : `cylDg${idx}_reserve`);
+    if (size > 0 && fill > res) availL += (fill - res) * size;
+  });
+  return availL;
+}
+
+/** Contingency profile gas requirements vs configured cylinders (bailout-focused). */
+function calculateGasRequirementsFromConsumed(gasConsumed, options) {
+  options = options || {};
+  const consumed = scaleGasConsumedMap(gasConsumed, options.sacMultiplier || 1);
+  const rows = [];
+  const shortfalls = [];
+  const bailoutShortfalls = [];
+  if (!consumed || !Object.keys(consumed).length) {
+    return { ok: true, shortfalls, bailoutShortfalls, warningBailoutContingency: false, rows };
+  }
+  const ccr = typeof getCCRSettingsFromDOM === 'function' ? getCCRSettingsFromDOM() : { circuit: 'OC' };
+  const onCcr = typeof isRebreatherCircuit === 'function' && isRebreatherCircuit(ccr.circuit);
+  const bailoutMixes = typeof getConfiguredBailoutMixes === 'function' ? getConfiguredBailoutMixes() : [];
+  const bailoutLabels = new Set(bailoutMixes.map(m => m.label.toLowerCase()));
+
+  Object.entries(consumed).forEach(([label, reqL]) => {
+    if (!Number.isFinite(reqL) || reqL <= 0) return;
+    const availL = gpAvailLForGasLabel(label);
+    const isBailout = bailoutLabels.has(label.toLowerCase()) || (onCcr && !!ccr.bailout);
+    const shortL = availL > 0 && reqL > availL ? reqL - availL : (availL <= 0 && reqL > 0 ? reqL : 0);
+    rows.push({ label, reqL, availL, shortL, isBailout });
+    if (shortL > 0) {
+      shortfalls.push({ label, reqL, availL, shortL });
+      if (isBailout || options.bailoutFocus) bailoutShortfalls.push({ label, reqL, availL, shortL });
+    }
+  });
+
+  const warningBailoutContingency = bailoutShortfalls.length > 0;
+  return {
+    ok: shortfalls.length === 0,
+    shortfalls,
+    bailoutShortfalls,
+    warningBailoutContingency,
+    rows,
+  };
+}
+
 // Sync main cylinder inputs → Gas Plan cylinder fields before calcGasPlan()
 // Main: cylBot_size, cylBot_pres, cylBot_reserve  →  gp: gpBot_size, gpBot_fill, gpBot_reserve
 function _syncCylToGasPlan() {
