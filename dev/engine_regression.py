@@ -1601,6 +1601,47 @@ ENGINE_SUITE_JS = r"""
     };
   })();
 
+  // Cycle 35: gas cards / ZHL runner setup + schedule engine parity.
+  out.sections.cycle35 = (() => {
+    let imperialO2SwitchOk = false;
+    let wholeMinStopsPropOk = false;
+    let wholeMinStopsEffectOk = false;
+    if (typeof zhlOptimalSwitchDepth === 'function') {
+      const ctx = { ppo2Bottom: 1.4, ppo2Deco: 1.6, lastStop: 3, decoStep: 3, metric: false };
+      const depthM = zhlOptimalSwitchDepth(1.0, ctx);
+      imperialO2SwitchOk = depthM === 6;
+    }
+    const b = window.ZhlEngineBundle;
+    if (b && typeof b.buildZhlScheduleParamsFromEngine === 'function') {
+      const params = b.buildZhlScheduleParamsFromEngine(
+        [{ depth: 40, time: 25, o2: 21, he: 0 }],
+        [{ o2: 50, he: 0 }],
+        { wholeMinStops: false, metric: true, gfLo: 30, gfHi: 85 },
+      );
+      wholeMinStopsPropOk = params && params.wholeMinStops === false;
+    }
+    if (b && typeof b.buildZhlScheduleParamsFromEngine === 'function') {
+      const lv = [{ depth: 40, time: 25, o2: 21, he: 0 }];
+      const deco = [{ o2: 50, he: 0 }];
+      const eng = {
+        metric: true, gfLo: 30, gfHi: 85, stepSize: 3, lastStop: 3, minStopTime: 2,
+        descentRate: 20, ascentRate: 10, decoAscentRate: 3, ppO2Bottom: 1.4, ppO2Deco: 1.6,
+      };
+      const pFalse = b.buildZhlScheduleParamsFromEngine(lv, deco, { ...eng, wholeMinStops: false });
+      const pOmit = b.buildZhlScheduleParamsFromEngine(lv, deco, { ...eng });
+      const pTrue = b.buildZhlScheduleParamsFromEngine(lv, deco, { ...eng, wholeMinStops: true });
+      wholeMinStopsEffectOk = pFalse.wholeMinStops === false
+        && pOmit.wholeMinStops === true
+        && pTrue.wholeMinStops === true;
+    }
+    return {
+      ok: imperialO2SwitchOk && wholeMinStopsPropOk && wholeMinStopsEffectOk,
+      imperialO2SwitchOk,
+      wholeMinStopsPropOk,
+      wholeMinStopsEffectOk,
+    };
+  })();
+
   // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
   out.sections.cycle6 = (() => {
     const rdp11 = typeof padiTableRowIndex === 'function' ? padiTableRowIndex(11) : null;
@@ -2009,6 +2050,10 @@ def run_suite(page) -> dict:
     assert_true(c34.get("bailoutGasSelectionOk"), "[CYCLE34-BAILOUT-GAS-SELECTION] richest breathable bailout gas is selected by depth", str(c34))
     assert_true(c34.get("diluentGuidanceOk"), "[CYCLE34-DILUENT-GUIDANCE] shallow MOD recommends a leaner diluent", str(c34))
     assert_true(c34.get("invalidModDisplayOk"), "[CYCLE34-INVALID-MOD-DISPLAY] invalid custom gases do not display clamped MOD values", str(c34))
+    c35 = s.get("cycle35", {})
+    assert_true(c35.get("imperialO2SwitchOk"), "[CYCLE35-O2-SWITCH-DEPTH] test_zhl_imperial_pure_o2_switch_depth_uses_6m_not_20m", str(c35))
+    assert_true(c35.get("wholeMinStopsPropOk"), "[CYCLE35-WHOLE-MIN-STOPS-PROP] buildZhlScheduleParamsFromEngine propagates wholeMinStops", str(c35))
+    assert_true(c35.get("wholeMinStopsEffectOk"), "[CYCLE35-WHOLE-MIN-STOPS-EFFECT] test_zhl_engine_calculate_respects_whole_min_stops_false", str(c35))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
     sw_block = sw_install.split("addEventListener('install'")[1].split("addEventListener('activate'")[0] if "addEventListener('install'" in sw_install else ""
     assert_true("clients.matchAll" not in sw_block, "[CYCLE7-L2] SW install handler does not postMessage before claim")
@@ -2099,6 +2144,9 @@ def _audit_case_rows():
         case_row("CYCLE34-BAILOUT-GAS-SELECTION", case_ok("CYCLE34-BAILOUT-GAS-SELECTION")),
         case_row("CYCLE34-DILUENT-GUIDANCE", case_ok("CYCLE34-DILUENT-GUIDANCE")),
         case_row("CYCLE34-INVALID-MOD-DISPLAY", case_ok("CYCLE34-INVALID-MOD-DISPLAY")),
+        case_row("CYCLE35-O2-SWITCH-DEPTH", case_ok("CYCLE35-O2-SWITCH-DEPTH")),
+        case_row("CYCLE35-WHOLE-MIN-STOPS-PROP", case_ok("CYCLE35-WHOLE-MIN-STOPS-PROP")),
+        case_row("CYCLE35-WHOLE-MIN-STOPS-EFFECT", case_ok("CYCLE35-WHOLE-MIN-STOPS-EFFECT")),
     ]
 
 

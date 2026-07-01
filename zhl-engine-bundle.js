@@ -1450,7 +1450,7 @@ function runZhlScheduleCore(params) {
       return ppo2Low;
     }
     if (fO2 <= 0) return 0;
-    if (fO2 >= 0.995) return Math.max(ctx.lastStop, ctx.metric ? 6 : 20);
+    if (fO2 >= 0.995) return Math.max(ctx.lastStop, 6);
     const limit = getPPO2Limit(fO2);
     const exactMOD = (limit / fO2 - altSurfaceP) / BAR_PER_METRE;
     const snapped = Math.floor(exactMOD / ctx.decoStep) * ctx.decoStep;
@@ -1526,6 +1526,7 @@ function runZhlScheduleCore(params) {
       ppo2Bottom: switchCtx.ppo2Bottom,
       ppo2Deco: switchCtx.ppo2Deco,
       minStopTime: s.minStopTime || 1,
+      wholeMinStops: s.wholeMinStops !== false,
       switchPauseT: 0,
       mdCompatMode: s.mdCompatMode !== false,
       lastStop: switchCtx.lastStop,

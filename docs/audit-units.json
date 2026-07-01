@@ -338,6 +338,14 @@
       "suite_id": "SUITE-ENGINE-FULL",
       "case_id": "CYCLE34-INVALID-MOD-DISPLAY"
     },
+    "REG-54": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE35-O2-SWITCH-DEPTH"
+    },
+    "REG-55": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE35-WHOLE-MIN-STOPS-PROP"
+    },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
       "case_id": "android-compile"
@@ -890,31 +898,33 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-CARDS"
       },
       "fingerprint": "dc805228329353928eba72dd3a422379ec41a638e3af27151b3a9223ed785c3c",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "dc805228329353928eba72dd3a422379ec41a638e3af27151b3a9223ed785c3c",
       "audit_issue": 148,
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "issue": "Cycle 35 structured read — no actionable findings"
     },
     {
       "id": "UI-ZHL-RUNNER-SETUP",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-SETUP"
       },
       "fingerprint": "c8363897aa524291a6cc0e410c26156f87f5a3275cfd7327490610f26af0dc05",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "c8363897aa524291a6cc0e410c26156f87f5a3275cfd7327490610f26af0dc05",
       "evidence": [],
       "regression_cases": [],
+      "issue": "Cycle 35 structured read — no actionable findings",
       "audit_issue": 149
     },
     {
@@ -1225,15 +1235,21 @@
       "path": "zhl-schedule-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "d7279942cdf33e329f3f519116c57396019850eff57bd05214cf2387e251e637",
-      "last_read_fingerprint": null,
-      "evidence": [],
-      "regression_cases": [],
-      "issue": "Multi-level continuation gas carry and deco-zone ascent rate (1136f90); GF anchor via REG-06"
+      "last_read_fingerprint": "d7279942cdf33e329f3f519116c57396019850eff57bd05214cf2387e251e637",
+      "evidence": [
+        "REG-54",
+        "REG-55"
+      ],
+      "regression_cases": [
+        "REG-54",
+        "REG-55"
+      ],
+      "issue": "Cycle 35: imperial O2 switch depth + wholeMinStops API parity via bundle builder"
     },
     {
       "id": "ENG-VPM",
@@ -1733,43 +1749,15 @@
       "path": "dev/engine_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [
-        "REG-39",
-        "REG-40",
-        "REG-41",
-        "REG-42",
-        "REG-43",
-        "REG-44",
-        "REG-47",
-        "REG-48",
-        "REG-49",
-        "REG-50",
-        "REG-51",
-        "REG-52",
-        "REG-53"
-      ],
+      "evidence": [],
       "issue": "GitHub #133–#138 audit regressions and Cycle 31–34 verification",
-      "regression_cases": [
-        "REG-39",
-        "REG-40",
-        "REG-41",
-        "REG-42",
-        "REG-43",
-        "REG-44",
-        "REG-47",
-        "REG-48",
-        "REG-49",
-        "REG-50",
-        "REG-51",
-        "REG-52",
-        "REG-53"
-      ],
-      "fingerprint": "3339a928913626109caaa4227a57dc7b2c94b30c072f2934ab9521d556da4cfd",
-      "last_read_fingerprint": "3339a928913626109caaa4227a57dc7b2c94b30c072f2934ab9521d556da4cfd",
+      "regression_cases": [],
+      "fingerprint": "6908951e0f338a02a1b22a7d083a7f61c01dac3c199b8495537ec13ff01cf819",
+      "last_read_fingerprint": null,
       "audit_issue": 169
     },
     {
@@ -2281,7 +2269,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1abb9c1493996770f6621d423da8677c039d267a8f7f50bcf10f3e14bb7efc7e",
+      "fingerprint": "1286717116c9d9c5d263bd817681ff3a719dc43e84be443cb31c69a4ac59477e",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
@@ -3131,6 +3119,18 @@
         "TEST-ENGINE-REGRESSION"
       ],
       "acceptance": "Historical UI-04/UI-05 scope: richest breathable bailout reserve selection, directionally safe diluent guidance, and invalid custom-gas MOD suppression verified by REG-51 through REG-53"
+    },
+    {
+      "cycle": 35,
+      "max_new_application_lines": 0,
+      "application_units": [],
+      "engine_reverification": [
+        "UI-GAS-CARDS",
+        "UI-ZHL-RUNNER-SETUP",
+        "ENG-ZHL-SCHEDULE",
+        "TEST-ENGINE-REGRESSION"
+      ],
+      "acceptance": "Imperial pure-O2 switch depth stays in metres; headless/worker ZHL API propagates wholeMinStops; gas cards and runner setup READ clean verified by REG-54 and REG-55"
     }
   ],
   "suite_catalog": [
@@ -3278,7 +3278,10 @@
         "CYCLE33-TABLE-SOURCE",
         "CYCLE34-BAILOUT-GAS-SELECTION",
         "CYCLE34-DILUENT-GUIDANCE",
-        "CYCLE34-INVALID-MOD-DISPLAY"
+        "CYCLE34-INVALID-MOD-DISPLAY",
+        "CYCLE35-O2-SWITCH-DEPTH",
+        "CYCLE35-WHOLE-MIN-STOPS-PROP",
+        "CYCLE35-WHOLE-MIN-STOPS-EFFECT"
       ]
     },
     {

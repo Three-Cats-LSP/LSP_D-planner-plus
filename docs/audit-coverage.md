@@ -12,21 +12,21 @@
 | build_config | 2 | 0 | 0 | 2 | 0 |
 | ci | 6 | 0 | 0 | 6 | 0 |
 | deploy_config | 1 | 0 | 0 | 1 | 0 |
-| engine | 5 | 0 | 1 | 3 | 1 |
+| engine | 5 | 0 | 0 | 3 | 2 |
 | engine_reference | 1 | 1 | 0 | 0 | 0 |
 | native_android | 16 | 12 | 0 | 4 | 0 |
 | native_bridge | 2 | 0 | 0 | 2 | 0 |
 | native_config | 1 | 0 | 0 | 1 | 0 |
 | pwa | 3 | 0 | 0 | 2 | 1 |
 | release_config | 1 | 0 | 0 | 1 | 0 |
-| test_infrastructure | 34 | 16 | 6 | 9 | 3 |
+| test_infrastructure | 34 | 16 | 7 | 9 | 2 |
 | tooling | 36 | 9 | 22 | 4 | 1 |
 | ui_core | 5 | 0 | 0 | 1 | 4 |
 | web_css | 4 | 4 | 0 | 0 | 0 |
 | web_markup | 5 | 5 | 0 | 0 | 0 |
-| web_runtime | 34 | 1 | 7 | 22 | 4 |
+| web_runtime | 34 | 1 | 5 | 24 | 4 |
 | worker | 2 | 0 | 1 | 1 | 0 |
-| **Total** | **158** | **48** | **37** | **59** | **14** |
+| **Total** | **158** | **48** | **35** | **61** | **14** |
 
 ## Units
 
@@ -57,8 +57,8 @@
 | UI-VPM-RUNNER | web_runtime | `index.html:7839` | 171 | P0 | IN_PROGRESS | - |
 | UI-VPM-RENDER | web_runtime | `index.html:8010` | 530 | P1 | IN_PROGRESS | - |
 | UI-GAS-INPUTS | web_runtime | `index.html:8540` | 185 | P1 | VERIFIED | REG-53 |
-| UI-GAS-CARDS | web_runtime | `index.html:8725` | 575 | P1 | IN_PROGRESS | - |
-| UI-ZHL-RUNNER-SETUP | web_runtime | `index.html:9300` | 127 | P0 | IN_PROGRESS | - |
+| UI-GAS-CARDS | web_runtime | `index.html:8725` | 575 | P1 | READ | - |
+| UI-ZHL-RUNNER-SETUP | web_runtime | `index.html:9300` | 127 | P0 | READ | - |
 | UI-ZHL-RUNNER-ENGINE | web_runtime | `index.html:9427` | 347 | P0 | READ | - |
 | UI-ZHL-RESULTS | web_runtime | `index.html:9774` | 504 | P1 | IN_PROGRESS | - |
 | UI-ZHL-HEADLESS-HELPERS | web_runtime | `index.html:10278` | 201 | P1 | READ | - |
@@ -78,7 +78,7 @@
 | ENG-ZHL-PHYSICS | engine | `zhl-physics-core.js:1` | 189 | P1 | READ | - |
 | ENG-ZHL-GAS | engine | `zhl-gas-core.js:1` | 184 | P1 | READ | - |
 | ENG-ZHL-CCR | engine | `zhl-ccr-core.js:1` | 404 | P0 | VERIFIED | REG-39, REG-40 |
-| ENG-ZHL-SCHEDULE | engine | `zhl-schedule-core.js:1` | 657 | P0 | IN_PROGRESS | - |
+| ENG-ZHL-SCHEDULE | engine | `zhl-schedule-core.js:1` | 657 | P0 | VERIFIED | REG-54, REG-55 |
 | ENG-VPM | engine | `vpm-engine-core.js:1` | 2099 | P0 | READ | - |
 | ENG-VPM-REFERENCE | engine_reference | `vpmb.py:1` | 2574 | P2 | UNREAD | - |
 | APP-ANDROID-SELECT | native_bridge | `android-select-picker.js:1` | 270 | P1 | READ | - |
@@ -114,7 +114,7 @@
 | NATIVE-DRAWABLE-FG | native_android | `android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml:1` | 34 | P3 | UNREAD | - |
 | NATIVE-ICON | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml:1` | 5 | P3 | UNREAD | - |
 | NATIVE-ICON-ROUND | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml:1` | 5 | P3 | UNREAD | - |
-| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 2110 | P1 | VERIFIED | REG-39, REG-40, REG-41, REG-42, REG-43, REG-44, REG-47, REG-48, REG-49, REG-50, REG-51, REG-52, REG-53 |
+| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 2158 | P1 | IN_PROGRESS | - |
 | TEST-ISSUE-140-REGRESSION | test_infrastructure | `dev/issue140_regression.py:1` | 99 | P1 | IN_PROGRESS | - |
 | TEST-GAS-CORE-REGRESSION | test_infrastructure | `dev/gas_core_regression.py:1` | 129 | P1 | READ | - |
 | TEST-ISSUE-141-REGRESSION | test_infrastructure | `dev/issue141_regression.py:1` | 108 | P1 | IN_PROGRESS | - |
@@ -152,7 +152,7 @@
 | TOOL-AUDIT-COVERAGE-TEST | test_infrastructure | `tools/test_audit_coverage.py:1` | 198 | P1 | READ | - |
 | TOOL-BUILD-PAGES | tooling | `tools/build_pages_site.py:1` | 131 | P2 | IN_PROGRESS | - |
 | TOOL-BUILD-VPM | tooling | `tools/build_vpm_bundle.py:1` | 104 | P1 | READ | - |
-| TOOL-BUILD-ZHL | tooling | `tools/build_zhl_bundle.py:1` | 389 | P1 | IN_PROGRESS | - |
+| TOOL-BUILD-ZHL | tooling | `tools/build_zhl_bundle.py:1` | 390 | P1 | IN_PROGRESS | - |
 | TOOL-CHECK-PARITY | tooling | `tools/check_engine_parity.py:1` | 307 | P1 | IN_PROGRESS | - |
 | TOOL-RUN-AUDIT-COVERAGE-SUITE-PY | tooling | `tools/run_audit_coverage_suite.py:1` | 46 | P0 | IN_PROGRESS | - |
 | TOOL-EXTRACT-UI | tooling | `tools/extract_ui_cores.py:1` | 375 | P2 | VERIFIED | EXT-01 |

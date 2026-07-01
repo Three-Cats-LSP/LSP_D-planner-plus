@@ -3,7 +3,7 @@
 > Generated schedule and totals. Policy and unit metadata live in `docs/audit-units.json`.
 
 **Baseline:** `fd805111eab2fba349a9303a6e208106b798f82b`
-**Units:** 158 total; 48 unread; 37 in progress; 59 read; 14 verified.
+**Units:** 158 total; 48 unread; 35 in progress; 61 read; 14 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -59,6 +59,7 @@
 | 32 | - | 0 | APP-CONTINGENCY, APP-GAS-PLAN, UI-SETTINGS, TEST-ENGINE-REGRESSION, TEST-PSCR-E2E | Contingency stress SAC, eligible bailout inventory, gas-switch review, error recovery, and settings restore cleanup verified by REG-43 and REG-44 |
 | 33 | - | 0 | APP-CONTINGENCY, APP-GAS-PLAN, TEST-ENGINE-REGRESSION | Contingency ppO2 warning, primary gas state immutability, full-precision gas sufficiency, and primary table isolation verified by REG-47 through REG-50 |
 | 34 | - | 0 | UI-GAS-INPUTS, UI-CCR-DELEGATES, TEST-ENGINE-REGRESSION | Historical UI-04/UI-05 scope: richest breathable bailout reserve selection, directionally safe diluent guidance, and invalid custom-gas MOD suppression verified by REG-51 through REG-53 |
+| 35 | - | 0 | UI-GAS-CARDS, UI-ZHL-RUNNER-SETUP, ENG-ZHL-SCHEDULE, TEST-ENGINE-REGRESSION | Imperial pure-O2 switch depth stays in metres; headless/worker ZHL API propagates wholeMinStops; gas cards and runner setup READ clean verified by REG-54 and REG-55 |
 
 ## Definition of Done
 
