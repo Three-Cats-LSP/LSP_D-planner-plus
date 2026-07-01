@@ -1205,6 +1205,13 @@
             if (Math.abs(depthM - 6) < 0.25 && (mdp.m6 || 0) > 0) return mdp.m6;
             return 0;
         }
+        function vpmMdpSurfaceFirstStopDepth(fromDepthM) {
+            const mdp = settings.minDecoProfile;
+            if (!mdp || !mdp.enabled) return 0;
+            if ((mdp.m9 || 0) > 0 && fromDepthM > 8.75) return 9;
+            if ((mdp.m6 || 0) > 0 && fromDepthM > 5.75) return 6;
+            return 0;
+        }
         function vpmNextMdpStopDepth(stopDepth, targetDepth, stepSize, toSurface) {
             const mdp = settings.minDecoProfile;
             if (toSurface) {
@@ -1375,6 +1382,11 @@
         }
         function runStopSequenceToDepth(ctx, firstStopDepth, targetDepth, anchorFirstStopDepth) {
             if (firstStopDepth <= 0 || firstStopDepth <= targetDepth) {
+                const mdpFirst = vpmMdpSurfaceFirstStopDepth(ctx.currentDepth);
+                if (mdpFirst > targetDepth) {
+                    ctx.continuationFinalPhase = true;
+                    return runStopSequenceToDepth(ctx, mdpFirst, targetDepth, mdpFirst);
+                }
                 runAscentSegment(ctx, targetDepth, ascentRate, 'deco');
                 return ctx;
             }
@@ -1519,6 +1531,11 @@
         }
         function runStopSequence(ctx, firstStopDepth, recordSurface, anchorFirstStopDepth) {
             if (firstStopDepth <= 0) {
+                const mdpFirst = vpmMdpSurfaceFirstStopDepth(ctx.currentDepth);
+                if (mdpFirst > 0) {
+                    ctx.continuationFinalPhase = true;
+                    return runStopSequence(ctx, mdpFirst, recordSurface, mdpFirst);
+                }
                 runAscentSegment(ctx, 0, surfaceAscentRate, 'deco');
                 if (recordSurface) {
                     appendPlan(ctx, { type: 'surface', depth: 0, time: 0, runtime: Math.round(ctx.runtime * 10) / 10, gas: ctx.currentGasLabel });

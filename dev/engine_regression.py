@@ -1228,6 +1228,34 @@ ENGINE_SUITE_JS = r"""
     };
   })();
 
+  // ── VPM min-deco on no-decompression (NDL) dives ─────────────────────────
+  out.sections.vpmMdpNdl = (() => {
+    const lv = [{ depth: 12, time: 10, o2: 21, he: 0 }];
+    const baseVpm = {
+      metric: true, minStopTime: 1, stepSize: 3, lastStop: 3,
+      descentRate: 20, ascentRate: 10, decoAscentRate: 3, surfaceAscentRate: 3,
+    };
+    if (!window.VPMEngine) return { ok: false, reason: 'no engine' };
+    const noMdp = VPMEngine.calculate(lv, [], baseVpm, 'VPMB');
+    const withMdp = VPMEngine.calculate(lv, [], {
+      ...baseVpm,
+      minDecoProfile: { enabled: true, m9: 5, m6: 5 },
+    }, 'VPMB');
+    const stops = (withMdp.stops || []).map(s => ({ depth: s.depth, time: s.time }));
+    const has9 = stops.some(s => Math.abs(s.depth - 9) < 0.25 && s.time >= 4.9);
+    const has6 = stops.some(s => Math.abs(s.depth - 6) < 0.25 && s.time >= 4.9);
+    const runtimeDelta = (withMdp.totalRuntime || 0) - (noMdp.totalRuntime || 0);
+    return {
+      ok: !noMdp.error && !withMdp.error
+        && (noMdp.stops || []).length === 0
+        && has9 && has6
+        && runtimeDelta >= 8,
+      stops,
+      noRt: noMdp.totalRuntime,
+      mdpRt: withMdp.totalRuntime,
+    };
+  })();
+
   // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
   out.sections.cycle6 = (() => {
     const rdp11 = typeof padiTableRowIndex === 'function' ? padiTableRowIndex(11) : null;
@@ -1610,6 +1638,8 @@ def run_suite(page) -> dict:
     assert_true(c7o.get("personalDefaultsOk"), "[CYCLE7-PERSONAL-DEFAULTS] reset honours saved GF and adv fields", str(c7o))
     assert_true(c7o.get("resetUiSyncOk"), "[CYCLE7-RESET-UI-SYNC] reset hides CCR and trimix fields after OC/Air restore", str(c7o))
     assert_true(c7o.get("stopRoundingOk"), "[CYCLE7-STOP-ROUNDING] whole-minute mode emits integer-minute VPM stops", str(c7o))
+    vmdp = s.get("vpmMdpNdl", {})
+    assert_true(vmdp.get("ok"), "[VPM-MDP-NDL] min-deco inserts 9m/6m stops on no-decompression dive", str(vmdp))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
     sw_block = sw_install.split("addEventListener('install'")[1].split("addEventListener('activate'")[0] if "addEventListener('install'" in sw_install else ""
     assert_true("clients.matchAll" not in sw_block, "[CYCLE7-L2] SW install handler does not postMessage before claim")
