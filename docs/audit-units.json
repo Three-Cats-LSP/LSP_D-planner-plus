@@ -1411,14 +1411,15 @@
       "path": "package.json",
       "layer": "build_config",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "cb6a835fa6d3a060f9c5e48002bace74efdc86a2a3666e6ac374bde3e8f09378",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "cb6a835fa6d3a060f9c5e48002bace74efdc86a2a3666e6ac374bde3e8f09378",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 167
     },
     {
       "id": "APP-NODE-VERSION",
@@ -2334,56 +2335,60 @@
       "path": ".github/workflows/audit.yml",
       "layer": "ci",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "303415829727d7dcff5b7856e63e8863d09556d68dc1d47f5ffbf9322ff6a9a8",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "303415829727d7dcff5b7856e63e8863d09556d68dc1d47f5ffbf9322ff6a9a8",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 167
     },
     {
       "id": "CI-APK",
       "path": ".github/workflows/build-apk.yml",
       "layer": "ci",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "4404caf0766d9add71eb67ce9160229ea131dbed06a443965d2c14c1f8aa2f68",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "4404caf0766d9add71eb67ce9160229ea131dbed06a443965d2c14c1f8aa2f68",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 167
     },
     {
       "id": "CI-MAIN",
       "path": ".github/workflows/ci.yml",
       "layer": "ci",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "e14775d50854c86063686dcc75589f2d9b51bc10e7107b6bd5e1217ee6da0519",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "e14775d50854c86063686dcc75589f2d9b51bc10e7107b6bd5e1217ee6da0519",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 167
     },
     {
       "id": "CI-DEPLOY",
       "path": ".github/workflows/deploy.yml",
       "layer": "ci",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "7b2f9b102e99020feb33f405499c2c241dc88c52f93ea170b98e0fd93937b31b",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "7b2f9b102e99020feb33f405499c2c241dc88c52f93ea170b98e0fd93937b31b",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 167
     },
     {
       "id": "CI-NOTIFY",

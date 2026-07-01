@@ -9,8 +9,8 @@
 
 | Layer | Total | Unread | In progress | Read | Verified |
 |---|---:|---:|---:|---:|---:|
-| build_config | 2 | 0 | 1 | 1 | 0 |
-| ci | 5 | 0 | 5 | 0 | 0 |
+| build_config | 2 | 0 | 0 | 2 | 0 |
+| ci | 5 | 0 | 1 | 4 | 0 |
 | deploy_config | 1 | 0 | 0 | 1 | 0 |
 | engine | 5 | 0 | 1 | 4 | 0 |
 | engine_reference | 1 | 1 | 0 | 0 | 0 |
@@ -26,7 +26,7 @@
 | web_markup | 5 | 5 | 0 | 0 | 0 |
 | web_runtime | 34 | 4 | 2 | 27 | 1 |
 | worker | 2 | 0 | 0 | 2 | 0 |
-| **Total** | **157** | **54** | **45** | **53** | **5** |
+| **Total** | **157** | **54** | **40** | **58** | **5** |
 
 ## Units
 
@@ -96,7 +96,7 @@
 | APP-VERSION | release_config | `version.json:1` | 6 | P2 | IN_PROGRESS | - |
 | APP-CAPACITOR-CONFIG | native_config | `capacitor.config.json:1` | 14 | P1 | READ | - |
 | APP-CLOUDFLARE-CONFIG | deploy_config | `wrangler.jsonc:1` | 14 | P2 | READ | - |
-| APP-PACKAGE | build_config | `package.json:1` | 40 | P1 | IN_PROGRESS | - |
+| APP-PACKAGE | build_config | `package.json:1` | 40 | P1 | READ | - |
 | APP-NODE-VERSION | build_config | `.nvmrc:1` | 1 | P2 | READ | - |
 | NATIVE-MAIN-ACTIVITY | native_android | `android/app/src/main/java/com/threecats/lsp/dplannerplus/MainActivity.java:1` | 61 | P1 | UNREAD | - |
 | NATIVE-MANIFEST | native_android | `android/app/src/main/AndroidManifest.xml:1` | 50 | P1 | READ | - |
@@ -168,10 +168,10 @@
 | TOOL-UPDATE-VERSION | tooling | `tools/update_sw_version.py:1` | 104 | P2 | READ | - |
 | TOOL-VENDOR | tooling | `tools/vendor_offline_assets.py:1` | 115 | P2 | UNREAD | - |
 | TOOL-VERIFY-ASSETS | tooling | `tools/verify_site_assets.py:1` | 132 | P2 | READ | - |
-| CI-AUDIT | ci | `.github/workflows/audit.yml:1` | 131 | P1 | IN_PROGRESS | - |
-| CI-APK | ci | `.github/workflows/build-apk.yml:1` | 159 | P1 | IN_PROGRESS | - |
-| CI-MAIN | ci | `.github/workflows/ci.yml:1` | 189 | P1 | IN_PROGRESS | - |
-| CI-DEPLOY | ci | `.github/workflows/deploy.yml:1` | 128 | P1 | IN_PROGRESS | - |
+| CI-AUDIT | ci | `.github/workflows/audit.yml:1` | 131 | P1 | READ | - |
+| CI-APK | ci | `.github/workflows/build-apk.yml:1` | 159 | P1 | READ | - |
+| CI-MAIN | ci | `.github/workflows/ci.yml:1` | 189 | P1 | READ | - |
+| CI-DEPLOY | ci | `.github/workflows/deploy.yml:1` | 128 | P1 | READ | - |
 | CI-NOTIFY | ci | `.github/workflows/notify-site.yml:1` | 50 | P2 | IN_PROGRESS | - |
 | TOOL-AUDIT-V2-__INIT__-PY | tooling | `tools/audit/__init__.py:1` | 3 | P0 | IN_PROGRESS | - |
 | TOOL-AUDIT-V2-__MAIN__-PY | tooling | `tools/audit/__main__.py:1` | 5 | P0 | IN_PROGRESS | - |
