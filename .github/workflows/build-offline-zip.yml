@@ -1,0 +1,119 @@
+name: Build Offline ZIP
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'Android Apk/**'
+      - 'Offline Zip/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-offline-zip
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract app version
+        id: version
+        run: |
+          VERSION=$(grep -oP "APP_VERSION\s*=\s*'\K[^']+" app-version.js)
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "Detected version: $VERSION"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Rebuild bundles and verify no drift
+        run: |
+          python tools/build_zhl_bundle.py
+          python tools/build_vpm_bundle.py
+          python tools/check_engine_parity.py
+          git diff --exit-code zhl-engine-bundle.js vpm-engine-bundle.js
+
+      - name: Assemble offline package
+        run: |
+          PKG_DIR="offline-pkg"
+          mkdir -p "$PKG_DIR/vendor/fonts" "$PKG_DIR/vendor/icons"
+
+          # Core app files
+          cp index.html "$PKG_DIR/"
+          cp app-version.js "$PKG_DIR/"
+          cp sw.js "$PKG_DIR/"
+          cp manifest.json "$PKG_DIR/"
+          cp icon-192.png "$PKG_DIR/"
+          cp icon-512.png "$PKG_DIR/"
+
+          # Engine bundles and bridges
+          cp zhl-engine-bundle.js "$PKG_DIR/"
+          cp vpm-engine-bundle.js "$PKG_DIR/"
+          cp zhl-worker-bridge.js "$PKG_DIR/"
+          cp zhl-schedule-worker.js "$PKG_DIR/"
+
+          # App core modules
+          cp surf-interval-core.js "$PKG_DIR/"
+          cp gas-table-core.js "$PKG_DIR/"
+          cp gas-plan-core.js "$PKG_DIR/"
+          cp export-core.js "$PKG_DIR/"
+          cp contingency-core.js "$PKG_DIR/"
+
+          # Native bridge stubs (load silently on desktop)
+          cp capacitor-bridge.js "$PKG_DIR/"
+          cp android-select-picker.js "$PKG_DIR/"
+
+          # Vendor: PDF library, fonts, icons
+          cp vendor/jspdf.umd.min.js "$PKG_DIR/vendor/"
+          cp vendor/fonts/* "$PKG_DIR/vendor/fonts/"
+          cp vendor/icons/* "$PKG_DIR/vendor/icons/"
+
+      - name: Create ZIP
+        run: |
+          ZIP_NAME="LSP_D-planner-plus-offline-v${{ steps.version.outputs.VERSION }}.zip"
+          cd offline-pkg
+          zip -r "../${ZIP_NAME}" .
+          cd ..
+          echo "ZIP_NAME=${ZIP_NAME}" >> "$GITHUB_ENV"
+          ls -lh "${ZIP_NAME}"
+
+      - name: Commit ZIP to repository
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git stash push -u -m "zip-build-artifacts"
+          git pull --rebase origin main
+          git stash pop
+          git restore index.html app-version.js sw.js manifest.json \
+            icon-192.png icon-512.png \
+            zhl-engine-bundle.js vpm-engine-bundle.js \
+            zhl-worker-bridge.js zhl-schedule-worker.js \
+            surf-interval-core.js gas-table-core.js gas-plan-core.js \
+            export-core.js contingency-core.js \
+            capacitor-bridge.js android-select-picker.js \
+            vendor/ || true
+          mkdir -p "Offline Zip"
+          rm -f "Offline Zip"/LSP_D-planner-plus-offline*.zip
+          mv "$ZIP_NAME" "Offline Zip/${ZIP_NAME}"
+          git add -A "Offline Zip/"
+          git commit -m "build(offline): ${ZIP_NAME} [skip ci]" --allow-empty
+          git push
