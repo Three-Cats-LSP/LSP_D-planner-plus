@@ -97,17 +97,22 @@ function scaleGasConsumedMap(gasMap, multiplier) {
   return out;
 }
 
-function gpAvailLForGasLabel(label) {
+function gpAvailLForGasLabel(label, options) {
   if (!label) return 0;
+  options = options || {};
+  let availL = 0;
   const bot = getBottomGasFractions();
   const botLabel = bot ? getGasLabel(bot.fO2, bot.fHe) : null;
-  if (botLabel && label.toLowerCase() === botLabel.toLowerCase()) {
+  const ccr = getCCRSettingsFromDOM();
+  const onRebreather = isRebreatherCircuit(ccr.circuit);
+  const diluentAllowed = document.getElementById('diluentUseAsBailout')?.value === 'on';
+  const includeBottom = !options.bailoutFocus || !onRebreather || diluentAllowed;
+  if (includeBottom && botLabel && label.toLowerCase() === botLabel.toLowerCase()) {
     const size = gpSizeL('gpBot_size');
     const fill = gpPresBar('gpBot_fill');
     const res = gpPresBar('gpBot_reserve');
-    return (size > 0 && fill > res) ? (fill - res) * size : 0;
+    if (size > 0 && fill > res) availL += (fill - res) * size;
   }
-  let availL = 0;
   getAllDecoGasIds().forEach(idx => {
     const fracs = getDecoCardFractions(idx);
     if (!fracs || fracs.fO2 <= 0) return;
@@ -132,14 +137,14 @@ function calculateGasRequirementsFromConsumed(gasConsumed, options) {
   if (!consumed || !Object.keys(consumed).length) {
     return { ok: true, shortfalls, bailoutShortfalls, warningBailoutContingency: false, rows };
   }
-  const ccr = typeof getCCRSettingsFromDOM === 'function' ? getCCRSettingsFromDOM() : { circuit: 'OC' };
+  const ccr = getCCRSettingsFromDOM();
   const onCcr = typeof isRebreatherCircuit === 'function' && isRebreatherCircuit(ccr.circuit);
   const bailoutMixes = typeof getConfiguredBailoutMixes === 'function' ? getConfiguredBailoutMixes() : [];
   const bailoutLabels = new Set(bailoutMixes.map(m => m.label.toLowerCase()));
 
   Object.entries(consumed).forEach(([label, reqL]) => {
     if (!Number.isFinite(reqL) || reqL <= 0) return;
-    const availL = gpAvailLForGasLabel(label);
+    const availL = gpAvailLForGasLabel(label, options);
     const isBailout = bailoutLabels.has(label.toLowerCase()) || (onCcr && !!ccr.bailout);
     const shortL = availL > 0 && reqL > availL ? reqL - availL : (availL <= 0 && reqL > 0 ? reqL : 0);
     rows.push({ label, reqL, availL, shortL, isBailout });

@@ -69,7 +69,7 @@ def serve_root(root: Path, host: str = "127.0.0.1", port: int = 8765):
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     try:
-        yield f"http://{host}:{port}/"
+        yield f"http://{host}:{server.server_port}/"
     finally:
         server.shutdown()
         thread.join(timeout=2)

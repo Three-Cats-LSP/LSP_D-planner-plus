@@ -1313,6 +1313,8 @@ ENGINE_SUITE_JS = r"""
     const shallowPersistOk = typeof appSettings !== 'undefined'
       && Array.isArray(appSettings.DECO_FIELDS)
       && appSettings.DECO_FIELDS.includes('shallowGradient');
+    const repetitiveBottomPhaseOk = typeof runUnifiedPlan === 'function'
+      && /ccrPhase:\s*['"]bottom['"]/.test(runUnifiedPlan.toString());
     let contingencyModOk = false;
     if (typeof buildContingencyModViolationAlert === 'function') {
       const depthEl = document.getElementById('decoDepth');
@@ -1327,11 +1329,12 @@ ENGINE_SUITE_JS = r"""
       if (gasEl && prevG != null) gasEl.value = prevG;
     }
     return {
-      ok: c04Ok && pscrLoopSyncOk && shallowPersistOk && contingencyModOk,
+      ok: c04Ok && pscrLoopSyncOk && shallowPersistOk && contingencyModOk && repetitiveBottomPhaseOk,
       c04Ok,
       pscrLoopSyncOk,
       shallowPersistOk,
       contingencyModOk,
+      repetitiveBottomPhaseOk,
     };
   })();
 
@@ -1384,6 +1387,24 @@ ENGINE_SUITE_JS = r"""
       if (res && prevR != null) res.value = prevR;
     }
 
+    let bailoutEligibilityOk = false;
+    if (typeof gpAvailLForGasLabel === 'function') {
+      const ids = ['circuitSelect', 'decoGas', 'diluentUseAsBailout', 'gpBot_size', 'gpBot_fill', 'gpBot_reserve'];
+      const saved = Object.fromEntries(ids.map(id => [id, document.getElementById(id)?.value]));
+      const set = (id, value) => { const el = document.getElementById(id); if (el) el.value = value; };
+      set('circuitSelect', 'CCR');
+      set('decoGas', 'air');
+      set('diluentUseAsBailout', 'off');
+      set('gpBot_size', '11');
+      set('gpBot_fill', '200');
+      set('gpBot_reserve', '50');
+      const excluded = gpAvailLForGasLabel('Air', { bailoutFocus: true });
+      set('diluentUseAsBailout', 'on');
+      const included = gpAvailLForGasLabel('Air', { bailoutFocus: true });
+      bailoutEligibilityOk = Math.abs(excluded) < 1e-6 && included >= 1650;
+      Object.entries(saved).forEach(([id, value]) => { if (value != null) set(id, value); });
+    }
+
     let gasSwitchDepthOk = false;
     if (typeof revalidateContingencyGasSwitchDepth === 'function') {
       const html = revalidateContingencyGasSwitchDepth(
@@ -1401,9 +1422,22 @@ ENGINE_SUITE_JS = r"""
       } catch (_) { throwRecoveryOk = false; }
     }
 
+    let settingsRecoveryOk = false;
+    if (typeof appSettings !== 'undefined' && typeof appSettings._restoreFields === 'function') {
+      const originalSync = appSettings._syncUiAfterRestore;
+      const previousHeadless = window._zhlHeadless;
+      window._zhlHeadless = true;
+      appSettings._syncUiAfterRestore = () => { throw new Error('settings recovery probe'); };
+      try { appSettings._restoreFields({}); } catch (_) {}
+      settingsRecoveryOk = appSettings._restoreInProgress === false;
+      appSettings._syncUiAfterRestore = originalSync;
+      window._zhlHeadless = previousHeadless;
+      appSettings._restoreInProgress = false;
+    }
+
     return {
       ok: sacScaleOk && scratchGasOk && bailoutDualOk && gasSwitchOk && errorRecoveryOk && persistOk
-        && sacFuncOk && bailoutWarnOk && gasSwitchDepthOk && throwRecoveryOk,
+        && sacFuncOk && bailoutWarnOk && bailoutEligibilityOk && gasSwitchDepthOk && throwRecoveryOk && settingsRecoveryOk,
       sacScaleOk,
       scratchGasOk,
       bailoutDualOk,
@@ -1412,8 +1446,10 @@ ENGINE_SUITE_JS = r"""
       persistOk,
       sacFuncOk,
       bailoutWarnOk,
+      bailoutEligibilityOk,
       gasSwitchDepthOk,
       throwRecoveryOk,
+      settingsRecoveryOk,
     };
   })();
 
@@ -1808,11 +1844,14 @@ def run_suite(page) -> dict:
     assert_true(c31.get("pscrLoopSyncOk"), "[CYCLE31-PSCR] pSCR loop volume changes inspired fractions", str(c31))
     assert_true(c31.get("shallowPersistOk"), "[CYCLE31-SHALLOW] shallowGradient in DECO_FIELDS", str(c31))
     assert_true(c31.get("contingencyModOk"), "[CYCLE31-CONTINGENCY-MOD] went-deeper contingency flags MOD violation", str(c31))
+    assert_true(c31.get("repetitiveBottomPhaseOk"), "[CYCLE31-CCR-NDL-PHASE] repetitive CCR NDL uses bottom setpoint phase", str(c31))
     c32 = s.get("cycle32", {})
     assert_true(c32.get("bailoutWarnOk"), "[CYCLE32-L6] test_contingency_bailout_insufficiency_warning", str(c32))
     assert_true(c32.get("sacFuncOk") and c32.get("sacScaleOk"), "[CYCLE32-L1] test_contingency_sac_scaling", str(c32))
     assert_true(c32.get("gasSwitchDepthOk") and c32.get("gasSwitchOk"), "[CYCLE32-L3] test_contingency_gas_switch_depth_shift", str(c32))
     assert_true(c32.get("throwRecoveryOk") and c32.get("errorRecoveryOk"), "[CYCLE32-L2] test_contingency_error_recovery", str(c32))
+    assert_true(c32.get("bailoutEligibilityOk"), "[CYCLE32-BAILOUT-ELIGIBILITY] disabled diluent is excluded from bailout availability", str(c32))
+    assert_true(c32.get("settingsRecoveryOk"), "[CYCLE32-SETTINGS-RECOVERY] restore lock clears after exception", str(c32))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
     sw_block = sw_install.split("addEventListener('install'")[1].split("addEventListener('activate'")[0] if "addEventListener('install'" in sw_install else ""
     assert_true("clients.matchAll" not in sw_block, "[CYCLE7-L2] SW install handler does not postMessage before claim")
@@ -1886,6 +1925,16 @@ def _audit_case_rows():
         case_row("CYCLE7-PERSONAL-DEFAULTS", case_ok("CYCLE7-PERSONAL-DEFAULTS")),
         case_row("CYCLE7-RESET-UI-SYNC", case_ok("CYCLE7-RESET-UI-SYNC")),
         case_row("CYCLE7-STOP-ROUNDING", case_ok("CYCLE7-STOP-ROUNDING")),
+        case_row("CYCLE31-C04", case_ok("CYCLE31-C04")),
+        case_row("CYCLE31-PSCR", case_ok("CYCLE31-PSCR")),
+        case_row("CYCLE31-CONTINGENCY-MOD", case_ok("CYCLE31-CONTINGENCY-MOD")),
+        case_row("CYCLE31-CCR-NDL-PHASE", case_ok("CYCLE31-CCR-NDL-PHASE")),
+        case_row("CYCLE32-L1", case_ok("CYCLE32-L1")),
+        case_row("CYCLE32-L2", case_ok("CYCLE32-L2")),
+        case_row("CYCLE32-L3", case_ok("CYCLE32-L3")),
+        case_row("CYCLE32-L6", case_ok("CYCLE32-L6")),
+        case_row("CYCLE32-BAILOUT-ELIGIBILITY", case_ok("CYCLE32-BAILOUT-ELIGIBILITY")),
+        case_row("CYCLE32-SETTINGS-RECOVERY", case_ok("CYCLE32-SETTINGS-RECOVERY")),
     ]
 
 

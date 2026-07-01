@@ -3,7 +3,7 @@
 > Generated schedule and totals. Policy and unit metadata live in `docs/audit-units.json`.
 
 **Baseline:** `fd805111eab2fba349a9303a6e208106b798f82b`
-**Units:** 157 total; 48 unread; 32 in progress; 72 read; 5 verified.
+**Units:** 158 total; 48 unread; 37 in progress; 60 read; 13 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -31,20 +31,20 @@
 |---:|---|---:|---|---|
 | 5 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 487 | ENG-ZHL-SCHEDULE | Delegate units fully READ; schedule findings linked to regression IDs |
 | 6 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 590 | ENG-ZHL-CCR | Physics and schedule input paths READ; no unresolved P0 finding |
-| 7 | UI-SETTINGS-CONTROLS, UI-VPM-RUNNER | 561 | ENG-VPM | Settings restoration and VPM invocation contracts READ |
-| 8 | UI-VPM-RENDER | 529 | ENG-VPM | VPM rendering and safety warning propagation READ |
-| 9 | UI-GAS-CARDS | 574 | ENG-ZHL-GAS | Dynamic gas-card units and persistence READ |
-| 10 | UI-GAS-INPUTS, UI-ZHL-RUNNER-SETUP | 301 | ENG-ZHL-SCHEDULE | Gas validation and ZHL parameter construction READ |
-| 11 | UI-ZHL-RUNNER-ENGINE | 342 | ENG-ZHL-SCHEDULE | Canonical ZHL execution path READ with parity evidence |
-| 12 | UI-ZHL-RESULTS | 496 | ENG-ZHL-PHYSICS | Result construction, exposure totals, and safety fields READ |
+| 7 | UI-SETTINGS-CONTROLS, UI-VPM-RUNNER | 563 | ENG-VPM | Settings restoration and VPM invocation contracts READ |
+| 8 | UI-VPM-RENDER | 530 | ENG-VPM | VPM rendering and safety warning propagation READ |
+| 9 | UI-GAS-CARDS | 575 | ENG-ZHL-GAS | Dynamic gas-card units and persistence READ |
+| 10 | UI-GAS-INPUTS, UI-ZHL-RUNNER-SETUP | 311 | ENG-ZHL-SCHEDULE | Gas validation and ZHL parameter construction READ |
+| 11 | UI-ZHL-RUNNER-ENGINE | 347 | ENG-ZHL-SCHEDULE | Canonical ZHL execution path READ with parity evidence |
+| 12 | UI-ZHL-RESULTS | 504 | ENG-ZHL-PHYSICS | Result construction, exposure totals, and safety fields READ |
 | 13 | UI-ZHL-HEADLESS-HELPERS | 201 | - | Headless ZHL helper path READ; issue #152 |
-| 14 | UI-ZHL-HEADLESS-ENGINE | 385 | - | Headless ZHL engine invocation READ; issue #153 |
+| 14 | UI-ZHL-HEADLESS-ENGINE | 387 | - | Headless ZHL engine invocation READ; issue #153 |
 | 15 | UI-PLOT-INIT, UI-PLOT-RENDER | 535 | - | Profile plot init and render READ; issue #154 |
 | 16 | UI-PLOT-WAYPOINTS | 528 | - | Waypoint plot interaction READ; issue #155 |
 | 17 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE | 530 | - | Tissue and exposure tools READ; issue #156 |
 | 18 | UI-TOOLS-GF, UI-TOOLS-PROFILE | 579 | - | GF and profile tools READ; issue #157 |
-| 19 | UI-SETTINGS | 346 | - | Settings persistence READ; issue #158 |
-| 20 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 549 | - | Profile and config presets READ; issue #159 |
+| 19 | UI-SETTINGS | 349 | - | Settings persistence READ; issue #158 |
+| 20 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 557 | - | Profile and config presets READ; issue #159 |
 | 21 | UI-APP-INIT | 165 | - | App init and boot hooks READ; issue #160 |
 | 22 | - | 0 | UI-ZHL-DELEGATES | ZHL delegate re-read READ; issue #161 |
 | 23 | UI-RUNTIME-BOOTSTRAP | 270 | - | Runtime bootstrap READ; issue #162 |
@@ -55,6 +55,8 @@
 | 28 | APP-PACKAGE | 40 | CI-AUDIT, CI-APK, CI-MAIN, CI-DEPLOY, CI-NOTIFY | Package manifest and CI workflows READ; issue #167 |
 | 29 | - | 0 | NATIVE-MAIN-ACTIVITY, NATIVE-BUILD-APP, NATIVE-FILE-PATHS, TEST-CCR-VALIDATION, TEST-CCR-DIFF-RUNNER | Native Android and CCR test paths READ; issue #168 |
 | 30 | - | 0 | TEST-RUN-ALL, TEST-ENGINE-REGRESSION, TEST-ENGINE-VALIDATION, TEST-GAS-CORE-REGRESSION | Test runner suite READ; issue #169 |
+| 31 | - | 0 | ENG-ZHL-CCR, UI-ZHL-HEADLESS-ENGINE, APP-CONTINGENCY, APP-SERVICE-WORKER, TEST-ENGINE-REGRESSION, TEST-SW-LIFECYCLE | C-04 trimix inert parity, pSCR environment sync, contingency MOD, CCR repetitive NDL phase, and deployed SW runtime assets verified by REG-39 through REG-42 and REG-45 |
+| 32 | - | 0 | APP-CONTINGENCY, APP-GAS-PLAN, UI-SETTINGS, TEST-ENGINE-REGRESSION, TEST-PSCR-E2E | Contingency stress SAC, eligible bailout inventory, gas-switch review, error recovery, and settings restore cleanup verified by REG-43 and REG-44 |
 
 ## Definition of Done
 
