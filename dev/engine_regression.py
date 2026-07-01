@@ -1453,6 +1453,94 @@ ENGINE_SUITE_JS = r"""
     };
   })();
 
+  // Cycle 33: verify contingency safety, precision, and primary UI isolation.
+  out.sections.cycle33 = (() => {
+    const ids = [
+      'algorithmSelect', 'circuitSelect', 'decoGas', 'decoDepth', 'decoBT',
+      'ppo2Bottom', 'dg1Mix', 'dg2Mix', 'gpBot_size', 'gpBot_fill', 'gpBot_reserve',
+    ];
+    const savedInputs = Object.fromEntries(ids.map(id => [id, document.getElementById(id)?.value]));
+    const set = (id, value) => { const el = document.getElementById(id); if (el) el.value = value; };
+    const mainTbody = document.getElementById('decoTableBody');
+    const summaryEl = document.getElementById('decoSummary');
+    const gasSummaryEl = document.getElementById('gasConsumptionSummary');
+    const savedUi = {
+      table: mainTbody?.innerHTML,
+      summary: summaryEl?.innerHTML,
+      gasSummary: gasSummaryEl?.innerHTML,
+      lastPlan: window._lastPlan,
+      lastGasConsumed: window._lastGasConsumed,
+      lastBottomPhaseConsumedL: window._lastBottomPhaseConsumedL,
+      zhlHeadless: window._zhlHeadless,
+    };
+    let ppo2ToxicityOk = false;
+    let gasPrecisionOk = false;
+    let primaryGasStateOk = false;
+    let tableSourceOk = false;
+    try {
+      const depthM = 38.5;
+      set('decoDepth', units === 'metric' ? String(depthM) : String(depthM * 3.28084));
+      set('decoGas', 'ean32');
+      set('ppo2Bottom', '1.4');
+      const toxicityAlert = buildContingencyModViolationAlert(3);
+      ppo2ToxicityOk = toxicityAlert.includes('BEYOND MOD')
+        && toxicityAlert.includes('actual 1.65 bar')
+        && toxicityAlert.includes('CNS oxygen toxicity risk');
+
+      set('circuitSelect', 'OC');
+      set('decoGas', 'air');
+      set('gpBot_size', '1');
+      set('gpBot_fill', '100');
+      set('gpBot_reserve', '0');
+      const precise = calculateGasRequirementsFromConsumed({ Air: 100.1 }, { bailoutFocus: true });
+      const preciseRow = precise.rows.find(row => row.label === 'Air');
+      gasPrecisionOk = precise.warningBailoutContingency === true
+        && preciseRow?.reqL === 100.1
+        && Math.abs(preciseRow.shortL - 0.1) < 1e-9;
+
+      set('algorithmSelect', 'ZHLC_GF');
+      set('decoDepth', units === 'metric' ? '30' : String(30 * 3.28084));
+      set('decoBT', '20');
+      set('dg1Mix', 'none');
+      set('dg2Mix', 'none');
+      window._zhlHeadless = false;
+      runDecoSchedule();
+      const primaryGas = JSON.stringify(window._lastGasConsumed || {});
+      const primaryPlan = window._lastPlan;
+      const primaryTable = mainTbody?.innerHTML;
+      const primaryGasHtml = gasSummaryEl?.innerHTML;
+      const contingency = runContingencyScenario(() => set('decoBT', '25'));
+      primaryGasStateOk = contingency.ok === true
+        && window._lastPlan === primaryPlan
+        && JSON.stringify(window._lastGasConsumed || {}) === primaryGas
+        && gasSummaryEl?.innerHTML === primaryGasHtml;
+      tableSourceOk = contingency.ok === true
+        && mainTbody?.innerHTML === primaryTable
+        && !mainTbody?.innerHTML.includes('EMERGENCY CONTINGENCY');
+    } catch (_) {
+      ppo2ToxicityOk = false;
+      gasPrecisionOk = false;
+      primaryGasStateOk = false;
+      tableSourceOk = false;
+    } finally {
+      Object.entries(savedInputs).forEach(([id, value]) => { if (value != null) set(id, value); });
+      if (mainTbody && savedUi.table != null) mainTbody.innerHTML = savedUi.table;
+      if (summaryEl && savedUi.summary != null) summaryEl.innerHTML = savedUi.summary;
+      if (gasSummaryEl && savedUi.gasSummary != null) gasSummaryEl.innerHTML = savedUi.gasSummary;
+      window._lastPlan = savedUi.lastPlan;
+      window._lastGasConsumed = savedUi.lastGasConsumed;
+      window._lastBottomPhaseConsumedL = savedUi.lastBottomPhaseConsumedL;
+      window._zhlHeadless = savedUi.zhlHeadless;
+    }
+    return {
+      ok: ppo2ToxicityOk && gasPrecisionOk && primaryGasStateOk && tableSourceOk,
+      ppo2ToxicityOk,
+      gasPrecisionOk,
+      primaryGasStateOk,
+      tableSourceOk,
+    };
+  })();
+
   // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
   out.sections.cycle6 = (() => {
     const rdp11 = typeof padiTableRowIndex === 'function' ? padiTableRowIndex(11) : null;
@@ -1852,6 +1940,11 @@ def run_suite(page) -> dict:
     assert_true(c32.get("throwRecoveryOk") and c32.get("errorRecoveryOk"), "[CYCLE32-L2] test_contingency_error_recovery", str(c32))
     assert_true(c32.get("bailoutEligibilityOk"), "[CYCLE32-BAILOUT-ELIGIBILITY] disabled diluent is excluded from bailout availability", str(c32))
     assert_true(c32.get("settingsRecoveryOk"), "[CYCLE32-SETTINGS-RECOVERY] restore lock clears after exception", str(c32))
+    c33 = s.get("cycle33", {})
+    assert_true(c33.get("ppo2ToxicityOk"), "[CYCLE33-PPO2-TOXICITY] test_contingency_ppo2_toxicity_violation", str(c33))
+    assert_true(c33.get("primaryGasStateOk"), "[CYCLE33-PRIMARY-GAS-INTEGRITY] test_primary_gas_state_integrity_during_contingency", str(c33))
+    assert_true(c33.get("gasPrecisionOk"), "[CYCLE33-GAS-PRECISION] test_gas_volume_rounding_conservatism", str(c33))
+    assert_true(c33.get("tableSourceOk"), "[CYCLE33-TABLE-SOURCE] test_table_render_source_consistency", str(c33))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
     sw_block = sw_install.split("addEventListener('install'")[1].split("addEventListener('activate'")[0] if "addEventListener('install'" in sw_install else ""
     assert_true("clients.matchAll" not in sw_block, "[CYCLE7-L2] SW install handler does not postMessage before claim")
@@ -1935,6 +2028,10 @@ def _audit_case_rows():
         case_row("CYCLE32-L6", case_ok("CYCLE32-L6")),
         case_row("CYCLE32-BAILOUT-ELIGIBILITY", case_ok("CYCLE32-BAILOUT-ELIGIBILITY")),
         case_row("CYCLE32-SETTINGS-RECOVERY", case_ok("CYCLE32-SETTINGS-RECOVERY")),
+        case_row("CYCLE33-PPO2-TOXICITY", case_ok("CYCLE33-PPO2-TOXICITY")),
+        case_row("CYCLE33-PRIMARY-GAS-INTEGRITY", case_ok("CYCLE33-PRIMARY-GAS-INTEGRITY")),
+        case_row("CYCLE33-GAS-PRECISION", case_ok("CYCLE33-GAS-PRECISION")),
+        case_row("CYCLE33-TABLE-SOURCE", case_ok("CYCLE33-TABLE-SOURCE")),
     ]
 
 

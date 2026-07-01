@@ -57,6 +57,7 @@
 | 30 | - | 0 | TEST-RUN-ALL, TEST-ENGINE-REGRESSION, TEST-ENGINE-VALIDATION, TEST-GAS-CORE-REGRESSION | Test runner suite READ; issue #169 |
 | 31 | - | 0 | ENG-ZHL-CCR, UI-ZHL-HEADLESS-ENGINE, APP-CONTINGENCY, APP-SERVICE-WORKER, TEST-ENGINE-REGRESSION, TEST-SW-LIFECYCLE | C-04 trimix inert parity, pSCR environment sync, contingency MOD, CCR repetitive NDL phase, and deployed SW runtime assets verified by REG-39 through REG-42 and REG-45 |
 | 32 | - | 0 | APP-CONTINGENCY, APP-GAS-PLAN, UI-SETTINGS, TEST-ENGINE-REGRESSION, TEST-PSCR-E2E | Contingency stress SAC, eligible bailout inventory, gas-switch review, error recovery, and settings restore cleanup verified by REG-43 and REG-44 |
+| 33 | - | 0 | APP-CONTINGENCY, APP-GAS-PLAN, TEST-ENGINE-REGRESSION | Contingency ppO2 warning, primary gas state immutability, full-precision gas sufficiency, and primary table isolation verified by REG-47 through REG-50 |
 
 ## Definition of Done
 
