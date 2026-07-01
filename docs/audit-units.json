@@ -1438,12 +1438,13 @@
       "path": "android/app/src/main/java/com/threecats/lsp/dplannerplus/MainActivity.java",
       "layer": "native_android",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "7626f12d2bfb343a31875003374d929749d38518b4699191825481020212c00c",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "7626f12d2bfb343a31875003374d929749d38518b4699191825481020212c00c",
+      "audit_issue": 168
     },
     {
       "id": "NATIVE-MANIFEST",
@@ -1474,12 +1475,13 @@
       "path": "android/app/build.gradle",
       "layer": "native_android",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "8e946c4d77fcdcb2d3ed2a3be82540d9c3eabaaf1da9549d62b4404dc7a3683e",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "8e946c4d77fcdcb2d3ed2a3be82540d9c3eabaaf1da9549d62b4404dc7a3683e",
+      "audit_issue": 168
     },
     {
       "id": "NATIVE-SETTINGS",
@@ -1522,12 +1524,13 @@
       "path": "android/app/src/main/res/xml/file_paths.xml",
       "layer": "native_android",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "1b74d886a95c46991adcdca09acf5d6477128169f7d77af68df039b9c8cbfe4e",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "1b74d886a95c46991adcdca09acf5d6477128169f7d77af68df039b9c8cbfe4e",
+      "audit_issue": 168
     },
     {
       "id": "NATIVE-STRINGS",
@@ -1734,14 +1737,15 @@
       "path": "dev/ccr_engine_validation_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "38756c349775248087e9197b17b5b577a20926cead6027f7243f49f26acca3e8",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "38756c349775248087e9197b17b5b577a20926cead6027f7243f49f26acca3e8",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 168
     },
     {
       "id": "TEST-EXPORT",
@@ -1800,14 +1804,15 @@
       "path": "dev/run_ccr_differential.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "cd77642e7ca0e56799049aeb8ccb7a6317d1a569c53bada6453e856beac122aa",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "cd77642e7ca0e56799049aeb8ccb7a6317d1a569c53bada6453e856beac122aa",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 168
     },
     {
       "id": "TEST-PSCR-E2E",

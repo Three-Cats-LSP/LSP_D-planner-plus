@@ -14,19 +14,19 @@
 | deploy_config | 1 | 0 | 0 | 1 | 0 |
 | engine | 5 | 0 | 1 | 4 | 0 |
 | engine_reference | 1 | 1 | 0 | 0 | 0 |
-| native_android | 16 | 15 | 0 | 1 | 0 |
+| native_android | 16 | 12 | 0 | 4 | 0 |
 | native_bridge | 2 | 0 | 0 | 2 | 0 |
 | native_config | 1 | 0 | 0 | 1 | 0 |
 | pwa | 3 | 0 | 0 | 3 | 0 |
 | release_config | 1 | 0 | 1 | 0 | 0 |
-| test_infrastructure | 34 | 16 | 13 | 5 | 0 |
+| test_infrastructure | 34 | 16 | 11 | 7 | 0 |
 | tooling | 36 | 9 | 22 | 4 | 1 |
 | ui_core | 5 | 0 | 0 | 2 | 3 |
 | web_css | 4 | 4 | 0 | 0 | 0 |
 | web_markup | 5 | 5 | 0 | 0 | 0 |
 | web_runtime | 34 | 4 | 2 | 27 | 1 |
 | worker | 2 | 0 | 0 | 2 | 0 |
-| **Total** | **157** | **54** | **40** | **58** | **5** |
+| **Total** | **157** | **51** | **38** | **63** | **5** |
 
 ## Units
 
@@ -98,14 +98,14 @@
 | APP-CLOUDFLARE-CONFIG | deploy_config | `wrangler.jsonc:1` | 14 | P2 | READ | - |
 | APP-PACKAGE | build_config | `package.json:1` | 40 | P1 | READ | - |
 | APP-NODE-VERSION | build_config | `.nvmrc:1` | 1 | P2 | READ | - |
-| NATIVE-MAIN-ACTIVITY | native_android | `android/app/src/main/java/com/threecats/lsp/dplannerplus/MainActivity.java:1` | 61 | P1 | UNREAD | - |
+| NATIVE-MAIN-ACTIVITY | native_android | `android/app/src/main/java/com/threecats/lsp/dplannerplus/MainActivity.java:1` | 61 | P1 | READ | - |
 | NATIVE-MANIFEST | native_android | `android/app/src/main/AndroidManifest.xml:1` | 50 | P1 | READ | - |
 | NATIVE-BUILD-ROOT | native_android | `android/build.gradle:1` | 29 | P2 | UNREAD | - |
-| NATIVE-BUILD-APP | native_android | `android/app/build.gradle:1` | 82 | P1 | UNREAD | - |
+| NATIVE-BUILD-APP | native_android | `android/app/build.gradle:1` | 82 | P1 | READ | - |
 | NATIVE-SETTINGS | native_android | `android/settings.gradle:1` | 5 | P2 | UNREAD | - |
 | NATIVE-VARIABLES | native_android | `android/variables.gradle:1` | 16 | P2 | UNREAD | - |
 | NATIVE-LAYOUT | native_android | `android/app/src/main/res/layout/activity_main.xml:1` | 12 | P2 | UNREAD | - |
-| NATIVE-FILE-PATHS | native_android | `android/app/src/main/res/xml/file_paths.xml:1` | 9 | P1 | UNREAD | - |
+| NATIVE-FILE-PATHS | native_android | `android/app/src/main/res/xml/file_paths.xml:1` | 9 | P1 | READ | - |
 | NATIVE-STRINGS | native_android | `android/app/src/main/res/values/strings.xml:1` | 7 | P2 | UNREAD | - |
 | NATIVE-STYLES | native_android | `android/app/src/main/res/values/styles.xml:1` | 26 | P2 | UNREAD | - |
 | NATIVE-COLORS | native_android | `android/app/src/main/res/values/colors.xml:1` | 7 | P3 | UNREAD | - |
@@ -121,12 +121,12 @@
 | TEST-ISSUE-142-REGRESSION | test_infrastructure | `dev/surf_interval_regression.py:1` | 124 | P1 | IN_PROGRESS | - |
 | TEST-ANDROID-COMPILE | test_infrastructure | `dev/run_android_compile_check.py:1` | 101 | P2 | IN_PROGRESS | - |
 | TEST-ENGINE-VALIDATION | test_infrastructure | `engine_validation_regression.py:1` | 521 | P1 | IN_PROGRESS | - |
-| TEST-CCR-VALIDATION | test_infrastructure | `dev/ccr_engine_validation_regression.py:1` | 359 | P1 | IN_PROGRESS | - |
+| TEST-CCR-VALIDATION | test_infrastructure | `dev/ccr_engine_validation_regression.py:1` | 359 | P1 | READ | - |
 | TEST-EXPORT | test_infrastructure | `export_regression.py:1` | 596 | P2 | IN_PROGRESS | - |
 | TEST-RUN-ALL | test_infrastructure | `dev/run_all_regression.py:1` | 36 | P1 | IN_PROGRESS | - |
 | TEST-BROWSER-RUNNER | test_infrastructure | `dev/run_browser_regression.py:1` | 191 | P2 | UNREAD | - |
 | TEST-NATIVE-RUNNER | test_infrastructure | `dev/run_native_regression.py:1` | 264 | P2 | UNREAD | - |
-| TEST-CCR-DIFF-RUNNER | test_infrastructure | `dev/run_ccr_differential.py:1` | 110 | P1 | IN_PROGRESS | - |
+| TEST-CCR-DIFF-RUNNER | test_infrastructure | `dev/run_ccr_differential.py:1` | 110 | P1 | READ | - |
 | TEST-PSCR-E2E | test_infrastructure | `dev/validate_pscr_e2e.py:1` | 430 | P1 | IN_PROGRESS | - |
 | TEST-SW-LIFECYCLE | test_infrastructure | `dev/sw_lifecycle_test.py:1` | 62 | P1 | READ | - |
 | TEST-PLAYWRIGHT-BOOT | test_infrastructure | `dev/playwright_boot.py:1` | 54 | P2 | UNREAD | - |
