@@ -1258,6 +1258,31 @@ ENGINE_SUITE_JS = r"""
     };
   })();
 
+  // ── AI Studio report re-checks (water density, schedule gen, worker guard) ─
+  out.sections.studioFixes = (() => {
+    const freshBpm = (1000 * 9.80665) / 100000;
+    const saltBpm = (1025 * 9.80665) / 100000;
+    let waterOk = false;
+    if (window.ZhlEngineBundle) {
+      ZhlEngineBundle.applyEnvironment({ altSurfaceP: 1.01325, barPerMetre: freshBpm });
+      const fresh40 = ZhlEngineBundle.depthBar(40);
+      ZhlEngineBundle.applyEnvironment({ altSurfaceP: 1.01325, barPerMetre: saltBpm });
+      const salt40 = ZhlEngineBundle.depthBar(40);
+      waterOk = salt40 > fresh40 && Math.abs(salt40 - fresh40) > 0.03;
+    }
+    const workerGuardOk = typeof ZhlWorkerBridge !== 'undefined';
+    return {
+      ok: waterOk
+        && typeof nextDecoScheduleGen === 'function'
+        && typeof isStaleDecoScheduleGen === 'function'
+        && typeof savePresets === 'function'
+        && workerGuardOk,
+      waterOk,
+      scheduleGenOk: typeof nextDecoScheduleGen === 'function',
+      workerGuardOk,
+    };
+  })();
+
   // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
   out.sections.cycle6 = (() => {
     const rdp11 = typeof padiTableRowIndex === 'function' ? padiTableRowIndex(11) : null;
@@ -1642,6 +1667,8 @@ def run_suite(page) -> dict:
     assert_true(c7o.get("stopRoundingOk"), "[CYCLE7-STOP-ROUNDING] whole-minute mode emits integer-minute VPM stops", str(c7o))
     vmdp = s.get("vpmMdpNdl", {})
     assert_true(vmdp.get("ok"), "[VPM-MDP-NDL] min-deco inserts 9m/6m stops on no-decompression dive", str(vmdp))
+    studio = s.get("studioFixes", {})
+    assert_true(studio.get("ok"), "[STUDIO-FIXES] water density + schedule gen guards present", str(studio))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
     sw_block = sw_install.split("addEventListener('install'")[1].split("addEventListener('activate'")[0] if "addEventListener('install'" in sw_install else ""
     assert_true("clients.matchAll" not in sw_block, "[CYCLE7-L2] SW install handler does not postMessage before claim")

@@ -74,6 +74,7 @@
       worker = new Worker(getWorkerScriptUrl());
       worker.onmessage = function (e) {
         const { id, ok, result, error } = e.data || {};
+        if (!pending.has(id)) return;
         if (ok) {
           consecutiveWorkerFailures = 0;
           settlePending(id, true, result);

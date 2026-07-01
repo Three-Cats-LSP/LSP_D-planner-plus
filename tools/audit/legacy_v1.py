@@ -894,6 +894,10 @@ if os.path.isfile(sw_path_early):
         ok("sw.js CACHE_VERSION derived from app-version.js APP_VERSION")
     else:
         fail("sw.js must importScripts app-version.js and derive CACHE_VERSION")
+    if "isSafetyCriticalEngineAsset" in sw_early and "networkFirstWithCacheFallback" in sw_early:
+        ok("sw.js network-first fetch for safety-critical engine bundles")
+    else:
+        fail("sw.js must network-first cache engine bundles (stale physics risk)")
 else:
     fail("sw.js missing")
 

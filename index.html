@@ -8209,7 +8209,8 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   // Dive graph — works for VPM (reads table rows)
   const _dgcVPM = document.getElementById('diveGraphCard');
   if (_dgcVPM) _dgcVPM.style.display = 'block';
-  setTimeout(drawDecoProfile, 100);
+  const vpmScheduleGen = window._decoScheduleSeq;
+  setTimeout(() => { if (!isStaleDecoScheduleGen(vpmScheduleGen)) drawDecoProfile(); }, 100);
 
   // Gas Consumption — compute from rendered table rows
   const gasConsVPM = {};
@@ -8793,6 +8794,7 @@ function removeDecoGasCard(idx) {
   updateGasMODDisplays();
   updateCcrGasValidation();
   _syncDgNextIdx();
+  replanAfterEnvChange();
 }
 
 function restoreDecoGasCardLayout(cardIds, nextIdx) {
@@ -9297,8 +9299,17 @@ function runZhlScheduleCore(params) {
   return ZhlEngineBundle.runZhlScheduleCore(params);
 }
 
+function nextDecoScheduleGen() {
+  window._decoScheduleSeq = (window._decoScheduleSeq || 0) + 1;
+  return window._decoScheduleSeq;
+}
+function isStaleDecoScheduleGen(gen) {
+  return gen !== window._decoScheduleSeq;
+}
+
 function runDecoSchedule() {
   let _zhlPrevGF = null;
+  const scheduleGen = nextDecoScheduleGen();
   window._scheduleWorkerBusy = true;
   try {
   if (!guardEngineBootForCalculate()) return;
@@ -10071,11 +10082,17 @@ function runDecoSchedule() {
     buildContingencyButtons();
     { const _cr = document.getElementById('contingencyResult'); if (_cr) _cr.style.display = 'none'; }
     setTimeout(() => {
+      if (isStaleDecoScheduleGen(scheduleGen)) return;
       const dgc = document.getElementById('diveGraphCard');
       if (dgc) dgc.style.display = 'block';
-      setTimeout(drawDecoProfile, 50);
+      setTimeout(() => { if (!isStaleDecoScheduleGen(scheduleGen)) drawDecoProfile(); }, 50);
     }, 100);
-    setTimeout(() => { drawGFCurve(); attachGFCurveInteraction(); }, 250);
+    setTimeout(() => {
+      if (!isStaleDecoScheduleGen(scheduleGen)) {
+        drawGFCurve();
+        attachGFCurveInteraction();
+      }
+    }, 250);
     // Surface Interval panel (collapsed) — pre-fill Dive 1 from this dive
     renderSurfIntPanel('tecSurfIntContainer', 'tecSi', depthM, bt);
     if (!_contingencyRunning) renderTissueLoadChart();
@@ -13731,7 +13748,15 @@ function getPresets() {
   } catch (e) { return []; }
 }
 function savePresets(arr) {
-  try { localStorage.setItem(LSP_PRESETS_KEY, JSON.stringify(arr)); } catch (e) {}
+  try {
+    localStorage.setItem(LSP_PRESETS_KEY, JSON.stringify(arr));
+    return true;
+  } catch (e) {
+    if (e && (e.name === 'QuotaExceededError' || e.code === 22)) {
+      showToast('Preset storage full — delete old presets or free browser storage', 'error', true);
+    }
+    return false;
+  }
 }
 
 // Build a values snapshot identical in shape to appSettings storage.
@@ -13831,7 +13856,7 @@ function saveNewPreset() {
   if (!name) return;
   const values = snapshotPresetValues();
   presets.push({ name, summary: presetSummary(values), values });
-  savePresets(presets);
+  if (!savePresets(presets)) return;
   renderPresetList();
   showToast('Preset saved', 'preset');
 }

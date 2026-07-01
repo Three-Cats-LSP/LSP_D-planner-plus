@@ -20,6 +20,39 @@ function isHTMLRequest(request) {
   return accept.includes('text/html');
 }
 
+/** Safety-critical engine sources — network-first so physics fixes reach users before offline cache. */
+function isSafetyCriticalEngineAsset(pathname) {
+  const leaf = (pathname || '').split('/').pop() || '';
+  return /-engine-bundle\.js$/.test(leaf)
+    || leaf === 'zhl-schedule-worker.js'
+    || leaf === 'zhl-worker-bridge.js'
+    || leaf === 'zhl-physics-core.js'
+    || leaf === 'zhl-gas-core.js'
+    || leaf === 'zhl-ccr-core.js'
+    || leaf === 'zhl-schedule-core.js'
+    || leaf === 'vpm-engine-core.js';
+}
+
+async function networkFirstWithCacheFallback(request, url) {
+  const cacheKey = new Request(url.origin + url.pathname);
+  try {
+    const response = await fetch(request);
+    if (response.ok && url.pathname.startsWith(APP_BASE)) {
+      const clone = response.clone();
+      event.waitUntil(caches.open(CACHE_VERSION).then(cache => cache.put(cacheKey, clone)));
+    }
+    return response;
+  } catch (_) {
+    const cached = await caches.match(request, { ignoreSearch: true });
+    if (cached) return cached;
+    return new Response('Offline — asset unavailable', {
+      status: 503,
+      statusText: 'Offline',
+      headers: { 'Content-Type': 'text/plain' },
+    });
+  }
+}
+
 function getAppBasePath() {
   const p = self.location.pathname || '/';
   if (p.includes('/LSP_D-planner-plus/')) return '/LSP_D-planner-plus/';
@@ -176,6 +209,7 @@ self.addEventListener('message', event => {
 // Fetch strategy:
 //   - APK / external URLs: pass through, never intercept
 //   - HTML (index.html, navigation): network-first, cache fallback
+//   - Engine bundles + schedule cores: network-first (safety-critical updates)
 //   - Everything else (JS, CSS, fonts, etc.): cache-first, network fallback
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
@@ -216,6 +250,12 @@ self.addEventListener('fetch', event => {
         }
       })()
     );
+    return;
+  }
+
+  // Network-first for decompression engine assets — avoid serving stale physics after updates
+  if (isSafetyCriticalEngineAsset(url.pathname)) {
+    event.respondWith(networkFirstWithCacheFallback(event.request, url));
     return;
   }
 

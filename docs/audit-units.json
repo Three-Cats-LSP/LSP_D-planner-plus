@@ -805,14 +805,16 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RENDER"
       },
-      "fingerprint": "5ee36ee0d1aadbcc0be00acade908c00c1583d265c2cdb7b82b39c131518a1c9",
-      "last_read_fingerprint": "5ee36ee0d1aadbcc0be00acade908c00c1583d265c2cdb7b82b39c131518a1c9",
-      "audit_issue": 147
+      "fingerprint": "e0fc59346ae68096bc27717934f270169c9e9903eb80baafa900283faf3495b8",
+      "last_read_fingerprint": null,
+      "audit_issue": 147,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "UI-GAS-INPUTS",
@@ -833,27 +835,29 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-CARDS"
       },
-      "fingerprint": "aa07f02423ba2567f8e9027965fbd69e80615b3eaaaae8aed5a38e78eadf2d75",
-      "last_read_fingerprint": "aa07f02423ba2567f8e9027965fbd69e80615b3eaaaae8aed5a38e78eadf2d75",
-      "audit_issue": 148
+      "fingerprint": "dc805228329353928eba72dd3a422379ec41a638e3af27151b3a9223ed785c3c",
+      "last_read_fingerprint": null,
+      "audit_issue": 148,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "UI-ZHL-RUNNER-SETUP",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-SETUP"
       },
-      "fingerprint": "11b9ee1c5457a0413eaa2322de93c691776edf6a27fa587dcc9351ca774eae3c",
-      "last_read_fingerprint": "11b9ee1c5457a0413eaa2322de93c691776edf6a27fa587dcc9351ca774eae3c",
+      "fingerprint": "509f588e666334f105e470676ec11af1945e5e46707f6dfdbd913907c73cad60",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 149
@@ -884,13 +888,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
-      "fingerprint": "8a79c1563b212d93f9b7a825e1c0dc887bb1114ef6ecfa50b1c31c79c47d4cd9",
-      "last_read_fingerprint": "8a79c1563b212d93f9b7a825e1c0dc887bb1114ef6ecfa50b1c31c79c47d4cd9",
+      "fingerprint": "344a51cd441eda0414ec258546a57880a021f21da592003ca873c103f45fbdf3",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 151
@@ -1068,14 +1072,16 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-CONFIG-PRESETS"
       },
-      "fingerprint": "7dfd75e09dc3246ce367cb574d8f8ca0d699aa97e222ade2496cc0d7ac9ed45a",
-      "last_read_fingerprint": "7dfd75e09dc3246ce367cb574d8f8ca0d699aa97e222ade2496cc0d7ac9ed45a",
-      "audit_issue": 159
+      "fingerprint": "6d59bb56113c4a4b3e3614e7a2ea498f503ba6d687fed470e4825d36b0120183",
+      "last_read_fingerprint": null,
+      "audit_issue": 159,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "UI-APP-INIT",
@@ -1319,12 +1325,12 @@
       "path": "sw.js",
       "layer": "pwa",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "e1cb0d97a88ff50b77e5e1ed746ccf38e9c21e034c22e3c75db42474f7895061",
-      "last_read_fingerprint": "e1cb0d97a88ff50b77e5e1ed746ccf38e9c21e034c22e3c75db42474f7895061",
+      "fingerprint": "fcc78c66d577b0b87db7abadbf4668a6fa9d8ec8374a2b69945a5374e8c23aeb",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 165
@@ -1334,12 +1340,14 @@
       "path": "zhl-worker-bridge.js",
       "layer": "worker",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "82bb7a3ddc5443660cd98069c232e52a08ae2f0a586d112409112d9930cdf60f",
-      "last_read_fingerprint": "82bb7a3ddc5443660cd98069c232e52a08ae2f0a586d112409112d9930cdf60f"
+      "fingerprint": "7ffff8505b071bad0781da0a5b365b90fe45b93c1586e6257384905a12363dcc",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "APP-ZHL-WORKER",
@@ -1642,15 +1650,15 @@
       "path": "dev/engine_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
       "evidence": [],
       "issue": "GitHub #133–#138 audit regression sections",
       "regression_cases": [],
-      "fingerprint": "142b9a1866183a664f11d0ce3b2e46298f6f51a7908dda24c3c9694011e572fe",
-      "last_read_fingerprint": "142b9a1866183a664f11d0ce3b2e46298f6f51a7908dda24c3c9694011e572fe",
+      "fingerprint": "80cb36b46b65a23a55f533d46966fb22f4bc4b76715673d53a64f63f9bba88e4",
+      "last_read_fingerprint": null,
       "audit_issue": 169
     },
     {
@@ -2424,6 +2432,21 @@
       "audit_issue": 167
     },
     {
+      "id": "CI-OFFLINE-ZIP",
+      "path": ".github/workflows/build-offline-zip.yml",
+      "layer": "ci",
+      "priority": "P2",
+      "status": "READ",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "4d6efff16a28dcbfa66140b459294fe1a0e22a9e90aeea3e90615489c7b447c6",
+      "last_read_fingerprint": "4d6efff16a28dcbfa66140b459294fe1a0e22a9e90aeea3e90615489c7b447c6",
+      "evidence": [],
+      "regression_cases": [],
+      "audit_issue": 167
+    },
+    {
       "id": "TOOL-AUDIT-V2-__INIT__-PY",
       "path": "tools/audit/__init__.py",
       "layer": "tooling",
@@ -2477,7 +2500,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "56a6f62ca2a4be0f8fc6363fd64aa95cc63621e7ae2a80164c337d61c201ee63",
+      "fingerprint": "d036ad63a1c7b184b841de2e252332292a95619800580bc183e7ce777172aa31",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
