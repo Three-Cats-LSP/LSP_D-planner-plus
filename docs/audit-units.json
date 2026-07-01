@@ -884,13 +884,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
       "fingerprint": "8a79c1563b212d93f9b7a825e1c0dc887bb1114ef6ecfa50b1c31c79c47d4cd9",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "8a79c1563b212d93f9b7a825e1c0dc887bb1114ef6ecfa50b1c31c79c47d4cd9",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 151
@@ -1650,7 +1650,8 @@
       "issue": "GitHub #133–#138 audit regression sections",
       "regression_cases": [],
       "fingerprint": "142b9a1866183a664f11d0ce3b2e46298f6f51a7908dda24c3c9694011e572fe",
-      "last_read_fingerprint": "142b9a1866183a664f11d0ce3b2e46298f6f51a7908dda24c3c9694011e572fe"
+      "last_read_fingerprint": "142b9a1866183a664f11d0ce3b2e46298f6f51a7908dda24c3c9694011e572fe",
+      "audit_issue": 169
     },
     {
       "id": "TEST-ISSUE-140-REGRESSION",
@@ -1680,7 +1681,8 @@
       "issue": "Cycle 5 GP/GT behavioral regression � docs/code-review-2026-06-30.md",
       "regression_cases": [],
       "fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
-      "last_read_fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315"
+      "last_read_fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
+      "audit_issue": 169
     },
     {
       "id": "TEST-ISSUE-141-REGRESSION",
@@ -1739,7 +1741,8 @@
       "fingerprint": "3000b4928ea0c295dfc499cc2a09785287d7ab569a87005b131183a9cf4138ba",
       "last_read_fingerprint": "3000b4928ea0c295dfc499cc2a09785287d7ab569a87005b131183a9cf4138ba",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 169
     },
     {
       "id": "TEST-CCR-VALIDATION",
@@ -1782,7 +1785,8 @@
       "fingerprint": "cc418c102eec92d6003d31a486ec8fca9c657080b0fb58d0c6b23f1e74ef262a",
       "last_read_fingerprint": "cc418c102eec92d6003d31a486ec8fca9c657080b0fb58d0c6b23f1e74ef262a",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 169
     },
     {
       "id": "TEST-BROWSER-RUNNER",
@@ -2409,14 +2413,15 @@
       "path": ".github/workflows/notify-site.yml",
       "layer": "ci",
       "priority": "P2",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "9b22467d8497f7b0fb584c1bc310875452fad65109e6b67d6644949e2f3fd512",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "9b22467d8497f7b0fb584c1bc310875452fad65109e6b67d6644949e2f3fd512",
       "evidence": [],
-      "regression_cases": []
+      "regression_cases": [],
+      "audit_issue": 167
     },
     {
       "id": "TOOL-AUDIT-V2-__INIT__-PY",
@@ -2827,6 +2832,110 @@
       ],
       "engine_reverification": [],
       "acceptance": "Profile and config presets READ; issue #159"
+    },
+    {
+      "cycle": 21,
+      "max_new_application_lines": 600,
+      "application_units": [
+        "UI-APP-INIT"
+      ],
+      "engine_reverification": [],
+      "acceptance": "App init and boot hooks READ; issue #160"
+    },
+    {
+      "cycle": 22,
+      "max_new_application_lines": 600,
+      "application_units": [],
+      "engine_reverification": [
+        "UI-ZHL-DELEGATES"
+      ],
+      "acceptance": "ZHL delegate re-read READ; issue #161"
+    },
+    {
+      "cycle": 23,
+      "max_new_application_lines": 600,
+      "application_units": [
+        "UI-RUNTIME-BOOTSTRAP"
+      ],
+      "engine_reverification": [],
+      "acceptance": "Runtime bootstrap READ; issue #162"
+    },
+    {
+      "cycle": 24,
+      "max_new_application_lines": 600,
+      "application_units": [
+        "UI-ALGORITHM-SETTINGS"
+      ],
+      "engine_reverification": [],
+      "acceptance": "Algorithm settings READ; issue #163"
+    },
+    {
+      "cycle": 25,
+      "max_new_application_lines": 600,
+      "application_units": [],
+      "engine_reverification": [
+        "APP-CONTINGENCY"
+      ],
+      "acceptance": "Contingency core READ; issue #164"
+    },
+    {
+      "cycle": 26,
+      "max_new_application_lines": 600,
+      "application_units": [],
+      "engine_reverification": [
+        "APP-EXPORT",
+        "APP-SERVICE-WORKER"
+      ],
+      "acceptance": "Export and service worker READ; issue #165"
+    },
+    {
+      "cycle": 27,
+      "max_new_application_lines": 600,
+      "application_units": [],
+      "engine_reverification": [
+        "ENG-VPM"
+      ],
+      "acceptance": "VPM engine re-read READ; issue #166"
+    },
+    {
+      "cycle": 28,
+      "max_new_application_lines": 600,
+      "application_units": [
+        "APP-PACKAGE"
+      ],
+      "engine_reverification": [
+        "CI-AUDIT",
+        "CI-APK",
+        "CI-MAIN",
+        "CI-DEPLOY",
+        "CI-NOTIFY"
+      ],
+      "acceptance": "Package manifest and CI workflows READ; issue #167"
+    },
+    {
+      "cycle": 29,
+      "max_new_application_lines": 600,
+      "application_units": [],
+      "engine_reverification": [
+        "NATIVE-MAIN-ACTIVITY",
+        "NATIVE-BUILD-APP",
+        "NATIVE-FILE-PATHS",
+        "TEST-CCR-VALIDATION",
+        "TEST-CCR-DIFF-RUNNER"
+      ],
+      "acceptance": "Native Android and CCR test paths READ; issue #168"
+    },
+    {
+      "cycle": 30,
+      "max_new_application_lines": 600,
+      "application_units": [],
+      "engine_reverification": [
+        "TEST-RUN-ALL",
+        "TEST-ENGINE-REGRESSION",
+        "TEST-ENGINE-VALIDATION",
+        "TEST-GAS-CORE-REGRESSION"
+      ],
+      "acceptance": "Test runner suite READ; issue #169"
     }
   ],
   "suite_catalog": [

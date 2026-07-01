@@ -3,7 +3,7 @@
 > Generated schedule and totals. Policy and unit metadata live in `docs/audit-units.json`.
 
 **Baseline:** `fd805111eab2fba349a9303a6e208106b798f82b`
-**Units:** 157 total; 48 unread; 34 in progress; 70 read; 5 verified.
+**Units:** 157 total; 48 unread; 32 in progress; 72 read; 5 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -45,6 +45,16 @@
 | 18 | UI-TOOLS-GF, UI-TOOLS-PROFILE | 579 | - | GF and profile tools READ; issue #157 |
 | 19 | UI-SETTINGS | 346 | - | Settings persistence READ; issue #158 |
 | 20 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 549 | - | Profile and config presets READ; issue #159 |
+| 21 | UI-APP-INIT | 165 | - | App init and boot hooks READ; issue #160 |
+| 22 | - | 0 | UI-ZHL-DELEGATES | ZHL delegate re-read READ; issue #161 |
+| 23 | UI-RUNTIME-BOOTSTRAP | 270 | - | Runtime bootstrap READ; issue #162 |
+| 24 | UI-ALGORITHM-SETTINGS | 360 | - | Algorithm settings READ; issue #163 |
+| 25 | - | 0 | APP-CONTINGENCY | Contingency core READ; issue #164 |
+| 26 | - | 0 | APP-EXPORT, APP-SERVICE-WORKER | Export and service worker READ; issue #165 |
+| 27 | - | 0 | ENG-VPM | VPM engine re-read READ; issue #166 |
+| 28 | APP-PACKAGE | 40 | CI-AUDIT, CI-APK, CI-MAIN, CI-DEPLOY, CI-NOTIFY | Package manifest and CI workflows READ; issue #167 |
+| 29 | - | 0 | NATIVE-MAIN-ACTIVITY, NATIVE-BUILD-APP, NATIVE-FILE-PATHS, TEST-CCR-VALIDATION, TEST-CCR-DIFF-RUNNER | Native Android and CCR test paths READ; issue #168 |
+| 30 | - | 0 | TEST-RUN-ALL, TEST-ENGINE-REGRESSION, TEST-ENGINE-VALIDATION, TEST-GAS-CORE-REGRESSION | Test runner suite READ; issue #169 |
 
 ## Definition of Done
 
