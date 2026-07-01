@@ -1244,11 +1244,13 @@ ENGINE_SUITE_JS = r"""
     const stops = (withMdp.stops || []).map(s => ({ depth: s.depth, time: s.time }));
     const has9 = stops.some(s => Math.abs(s.depth - 9) < 0.25 && s.time >= 4.9);
     const has6 = stops.some(s => Math.abs(s.depth - 6) < 0.25 && s.time >= 4.9);
+    const noZeroStops = stops.every(s => s.time > 0.01);
     const runtimeDelta = (withMdp.totalRuntime || 0) - (noMdp.totalRuntime || 0);
     return {
       ok: !noMdp.error && !withMdp.error
         && (noMdp.stops || []).length === 0
         && has9 && has6
+        && noZeroStops
         && runtimeDelta >= 8,
       stops,
       noRt: noMdp.totalRuntime,

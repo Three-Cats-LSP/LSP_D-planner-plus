@@ -1330,6 +1330,7 @@ const VPMEngine = (() => {
                 });
                 return;
             }
+            if (totalStopTime <= 1e-9) return 0;
             settings._scrRuntimeMin = ctx.runtime;
             const ppO2Stop = vpmAccumPpo2(pAmb, ctx.currentSP, ctx.currentO2, ctx.currentHe, settings, stopDepth, ctxOffLoop(ctx));
             ctx.totalOTU += calculateOTU(ppO2Stop, totalStopTime);

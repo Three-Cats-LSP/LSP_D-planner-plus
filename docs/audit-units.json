@@ -1173,8 +1173,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1e6041cf3d56a99ec94da51ec43bb8cedcd90dd4413997a82b7bbb8d2241dd73",
-      "last_read_fingerprint": "1e6041cf3d56a99ec94da51ec43bb8cedcd90dd4413997a82b7bbb8d2241dd73",
+      "fingerprint": "d9546f97e9ea7102932703413c37137d225053085ab546e1390b9ec031a8ca8a",
+      "last_read_fingerprint": "d9546f97e9ea7102932703413c37137d225053085ab546e1390b9ec031a8ca8a",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 166
@@ -1649,8 +1649,8 @@
       "evidence": [],
       "issue": "GitHub #133–#138 audit regression sections",
       "regression_cases": [],
-      "fingerprint": "bfc8347f7a78415c2919b49016de5172328f1396d91659834162e5f30463906c",
-      "last_read_fingerprint": "bfc8347f7a78415c2919b49016de5172328f1396d91659834162e5f30463906c"
+      "fingerprint": "142b9a1866183a664f11d0ce3b2e46298f6f51a7908dda24c3c9694011e572fe",
+      "last_read_fingerprint": "142b9a1866183a664f11d0ce3b2e46298f6f51a7908dda24c3c9694011e572fe"
     },
     {
       "id": "TEST-ISSUE-140-REGRESSION",
