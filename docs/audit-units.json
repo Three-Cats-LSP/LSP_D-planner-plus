@@ -783,21 +783,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RUNNER"
       },
-      "fingerprint": "9138c25141881bdc5a07905224c1fed05a529e29d31577133eed0f860b76355b",
-      "last_read_fingerprint": "9138c25141881bdc5a07905224c1fed05a529e29d31577133eed0f860b76355b",
-      "evidence": [
-        "REG-31",
-        "REG-38"
-      ],
-      "regression_cases": [
-        "REG-31",
-        "REG-38"
-      ],
+      "fingerprint": "bb34b939412067f8910f6a735e87af6269ab35b2ae8f538c205dda50aef8912e",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 146
     },
     {
@@ -856,7 +850,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-SETUP"
       },
-      "fingerprint": "509f588e666334f105e470676ec11af1945e5e46707f6dfdbd913907c73cad60",
+      "fingerprint": "c8363897aa524291a6cc0e410c26156f87f5a3275cfd7327490610f26af0dc05",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -921,7 +915,7 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-HEADLESS-ENGINE"
@@ -929,8 +923,8 @@
       "regression_cases": [],
       "evidence": [],
       "issue": "Audit #134",
-      "fingerprint": "1d22bcc6fed862574235fb2392688e0d19fe85b62e13ab94c4b10b6c40ab4b9e",
-      "last_read_fingerprint": "1d22bcc6fed862574235fb2392688e0d19fe85b62e13ab94c4b10b6c40ab4b9e",
+      "fingerprint": "f76a94517b5676b57ac0c095300e1174044e6a1fb2a5e19b2fbc8b6e951db2b8",
+      "last_read_fingerprint": null,
       "audit_issue": 153
     },
     {
@@ -1226,12 +1220,12 @@
       "path": "contingency-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "537c094810d517eda5262ce7ef9dd2f5ff018bbd504c28274c6f10bd99a20267",
-      "last_read_fingerprint": "537c094810d517eda5262ce7ef9dd2f5ff018bbd504c28274c6f10bd99a20267",
+      "fingerprint": "16fb02c5434482d0a0adeb4c9f4520ff847583608424584efe74f7c331d7bd69",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 164
@@ -1329,7 +1323,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "fcc78c66d577b0b87db7abadbf4668a6fa9d8ec8374a2b69945a5374e8c23aeb",
+      "fingerprint": "965c16376a1c3b43a742f3a82ebcfd13aca43d01aa477f3fea29df7725bc6b3f",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1657,7 +1651,7 @@
       "evidence": [],
       "issue": "GitHub #133–#138 audit regression sections",
       "regression_cases": [],
-      "fingerprint": "80cb36b46b65a23a55f533d46966fb22f4bc4b76715673d53a64f63f9bba88e4",
+      "fingerprint": "56998913308674b1bf36d89fcd0921d7e35875b1334f964aac2eb3d136afd616",
       "last_read_fingerprint": null,
       "audit_issue": 169
     },
@@ -2500,7 +2494,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "d036ad63a1c7b184b841de2e252332292a95619800580bc183e7ce777172aa31",
+      "fingerprint": "bf973de69635fe63e30be80a0758c269484112c95da969a01f1e8de200b9f242",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],

@@ -6420,6 +6420,10 @@ if "zhl-physics-core.js" in _125_sw and "zhl-gas-core.js" in _125_sw:
     ok("issue #125 H-7: SW REQUIRED_PRECACHE includes zhl-physics-core.js and zhl-gas-core.js")
 else:
     fail("issue #125 H-7: SW precache missing Tier-3 core source files")
+if "vpm-engine-core.js" in _125_sw.split("REQUIRED_PRECACHE", 1)[-1][:800]:
+    ok("Cycle 31 L-7: vpm-engine-core.js in SW REQUIRED_PRECACHE for offline VPM")
+else:
+    fail("Cycle 31 L-7: vpm-engine-core.js missing from SW REQUIRED_PRECACHE")
 if "applyEnvironment" in _125_parity and "extract_function_body" in _125_parity and "api_export_present" in _125_parity:
     ok("issue #125 M-1: check_engine_parity.py uses function-body and API export checks")
 else:

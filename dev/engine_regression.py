@@ -1283,6 +1283,58 @@ ENGINE_SUITE_JS = r"""
     };
   })();
 
+  // ── Cycle 31 post-fix verification (C-04 trimix inert, pSCR env sync, contingency MOD) ─
+  out.sections.cycle31 = (() => {
+    let c04Ok = false;
+    if (typeof getInspiredInertPressures === 'function') {
+      const surfP = typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325;
+      const ppH2O = typeof WATER_VAPOR !== 'undefined' ? WATER_VAPOR : 0.0627;
+      const barM = BAR_PER_METRE || 0.1;
+      const sp = 1.3;
+      const fO2 = 0.18;
+      const fHe = 0.45;
+      const fN2d = Math.max(0, 1 - fO2 - fHe);
+      const pAmb40 = surfP + 40 * barM;
+      _syncZhlBundleEnv();
+      const insp = getInspiredInertPressures(pAmb40, sp, fO2, fHe, { circuit: 'CCR', setpoint: sp });
+      const pInert = Math.max(0, pAmb40 - sp - ppH2O);
+      const den = Math.max(0.001, fN2d + fHe);
+      c04Ok = Math.abs(insp.pN2 - pInert * fN2d / den) < 1e-6
+        && Math.abs(insp.pHe - pInert * fHe / den) < 1e-6;
+    }
+    let pscrLoopSyncOk = false;
+    if (typeof computePSCRFractions === 'function') {
+      _syncZhlBundleEnv();
+      const pAmb = (typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325) + 30 * (BAR_PER_METRE || 0.1);
+      const fr5 = computePSCRFractions(pAmb, 0.32, 0, { circuit: 'pSCR', scrLoopVolume: 5, scrMetabolicO2: 1.5 });
+      const fr15 = computePSCRFractions(pAmb, 0.32, 0, { circuit: 'pSCR', scrLoopVolume: 15, scrMetabolicO2: 1.5 });
+      pscrLoopSyncOk = !!(fr5 && fr15 && Math.abs(fr5.fO2 - fr15.fO2) > 1e-4);
+    }
+    const shallowPersistOk = typeof appSettings !== 'undefined'
+      && Array.isArray(appSettings.DECO_FIELDS)
+      && appSettings.DECO_FIELDS.includes('shallowGradient');
+    let contingencyModOk = false;
+    if (typeof buildContingencyModViolationAlert === 'function') {
+      const depthEl = document.getElementById('decoDepth');
+      const gasEl = document.getElementById('decoGas');
+      const prevD = depthEl?.value;
+      const prevG = gasEl?.value;
+      if (depthEl) depthEl.value = '55';
+      if (gasEl) gasEl.value = 'air';
+      const alert = buildContingencyModViolationAlert(5);
+      contingencyModOk = typeof alert === 'string' && alert.includes('BEYOND MOD');
+      if (depthEl && prevD != null) depthEl.value = prevD;
+      if (gasEl && prevG != null) gasEl.value = prevG;
+    }
+    return {
+      ok: c04Ok && pscrLoopSyncOk && shallowPersistOk && contingencyModOk,
+      c04Ok,
+      pscrLoopSyncOk,
+      shallowPersistOk,
+      contingencyModOk,
+    };
+  })();
+
   // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
   out.sections.cycle6 = (() => {
     const rdp11 = typeof padiTableRowIndex === 'function' ? padiTableRowIndex(11) : null;
@@ -1669,6 +1721,11 @@ def run_suite(page) -> dict:
     assert_true(vmdp.get("ok"), "[VPM-MDP-NDL] min-deco inserts 9m/6m stops on no-decompression dive", str(vmdp))
     studio = s.get("studioFixes", {})
     assert_true(studio.get("ok"), "[STUDIO-FIXES] water density + schedule gen guards present", str(studio))
+    c31 = s.get("cycle31", {})
+    assert_true(c31.get("c04Ok"), "[CYCLE31-C04] CCR trimix inert PP uses fN2/(fN2+fHe) ratio", str(c31))
+    assert_true(c31.get("pscrLoopSyncOk"), "[CYCLE31-PSCR] pSCR loop volume changes inspired fractions", str(c31))
+    assert_true(c31.get("shallowPersistOk"), "[CYCLE31-SHALLOW] shallowGradient in DECO_FIELDS", str(c31))
+    assert_true(c31.get("contingencyModOk"), "[CYCLE31-CONTINGENCY-MOD] went-deeper contingency flags MOD violation", str(c31))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
     sw_block = sw_install.split("addEventListener('install'")[1].split("addEventListener('activate'")[0] if "addEventListener('install'" in sw_install else ""
     assert_true("clients.matchAll" not in sw_block, "[CYCLE7-L2] SW install handler does not postMessage before claim")

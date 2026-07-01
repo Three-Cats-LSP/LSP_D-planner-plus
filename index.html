@@ -7838,6 +7838,7 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
   // Headless mode: skip all VPM computation and DOM rendering
   // (called from ZHLEngine or fastRDS headless path when algo is VPM-B)
   if (window._zhlHeadless) return;
+  _syncZhlBundleEnv();
   const conservatism = parseInt(document.getElementById('conservatismSelect')?.value || '0');
   const gfHi = (mGF && Number.isFinite(mGF.high)) ? mGF.high : 85;
 
@@ -9310,6 +9311,7 @@ function isStaleDecoScheduleGen(gen) {
 function runDecoSchedule() {
   let _zhlPrevGF = null;
   const scheduleGen = nextDecoScheduleGen();
+  _syncZhlBundleEnv();
   window._scheduleWorkerBusy = true;
   try {
   if (!guardEngineBootForCalculate()) return;
@@ -10509,6 +10511,7 @@ const ZHLEngine = (() => {
   }
 
   function calculate(levels, decoGases, settings) {
+    _syncZhlBundleEnv();
     const s = mergeRepSettings(settings);
     const ccrVal = validateCcrCalculationInputs(levels, s, decoGases);
     if (!ccrVal.ok) return engineValidationError(ccrVal);
@@ -10527,6 +10530,7 @@ const ZHLEngine = (() => {
   }
 
   async function calculateInWorker(levels, decoGases, settings) {
+    _syncZhlBundleEnv();
     const s = mergeRepSettings(settings);
     const ccrVal = validateCcrCalculationInputs(levels, s, decoGases);
     if (!ccrVal.ok) return engineValidationError(ccrVal);

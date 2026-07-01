@@ -74,6 +74,7 @@ const REQUIRED_PRECACHE = [
   APP_BASE + 'zhl-gas-core.js',
   APP_BASE + 'zhl-engine-bundle.js',
   APP_BASE + 'vpm-engine-bundle.js',
+  APP_BASE + 'vpm-engine-core.js',
   APP_BASE + 'zhl-worker-bridge.js',
   APP_BASE + 'zhl-schedule-worker.js',
   APP_BASE + 'zhl-ccr-core.js',

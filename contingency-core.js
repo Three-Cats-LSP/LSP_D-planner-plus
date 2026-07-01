@@ -120,6 +120,24 @@ function withScratchDecoTableBody(fn, prefillHtml) {
   }
 }
 
+/** MOD / ppO₂ warning when contingency "went deeper" exceeds bottom-gas MOD at new depth. */
+function buildContingencyModViolationAlert(extraDepthM) {
+  if (!extraDepthM || extraDepthM <= 0) return '';
+  if (typeof getBottomGasFractions !== 'function' || typeof calcGasMODm !== 'function' || typeof domDepthToM !== 'function') return '';
+  const bot = getBottomGasFractions();
+  if (!bot || !Number.isFinite(bot.fO2)) return '';
+  const depthM = domDepthToM('decoDepth') + extraDepthM;
+  const ppo2Limit = parseFloat(document.getElementById('ppo2Bottom')?.value) || 1.4;
+  const modM = calcGasMODm(bot.fO2, ppo2Limit);
+  if (depthM <= modM + 0.01) return '';
+  const ppO2 = (altSurfaceP + depthM * BAR_PER_METRE) * bot.fO2;
+  const du = units === 'metric' ? 'm' : 'ft';
+  const depthDisp = units === 'metric' ? Math.round(depthM) : Math.round(depthM * 3.28084);
+  const modDisp = units === 'metric' ? modM : Math.floor(modM * 3.28084);
+  const gasLabel = typeof getGasLabel === 'function' ? getGasLabel(bot.fO2, bot.fHe) : 'bottom gas';
+  return `<div class="alert dang" style="margin-top:8px;"><span>⚠</span><div><strong>BEYOND MOD.</strong> Contingency depth ${depthDisp}${du} exceeds ${gasLabel} MOD of ${modDisp}${du} at ${ppo2Limit.toFixed(1)} bar ppO₂ (actual ${ppO2.toFixed(2)} bar). CNS oxygen toxicity risk.</div></div>`;
+}
+
 /**
  * Run a contingency schedule without mutating the main deco table DOM.
  * modifyFn may adjust planner inputs (depth, BT, deco gases, bailout, circuit) — all are restored in finally.
@@ -456,12 +474,13 @@ function calcContingency() {
   // CNS alert — goes into emergency card, NOT main decoAlerts
   const emAlerts = document.getElementById('decoAlertsEmergency');
   if (emAlerts) {
+    const modAlert = buildContingencyModViolationAlert(contExtraDepth);
     const cnsPctEm = totalCNS ? parseFloat(totalCNS) : 0;
+    let cnsAlert = '';
     if (cnsPctEm >= 80) {
-      emAlerts.innerHTML = `<div class="alert" style="margin-top:8px;background:#ffff00;border-color:#cccc00;color:#111;font-weight:700;"><span>☢</span><div><strong>HIGH CNS%.</strong> Emergency CNS oxygen load ${cnsPctEm.toFixed(0)}% exceeds 80%. Extreme caution.</div></div>`;
-    } else {
-      emAlerts.innerHTML = '';
+      cnsAlert = `<div class="alert" style="margin-top:8px;background:#ffff00;border-color:#cccc00;color:#111;font-weight:700;"><span>☢</span><div><strong>HIGH CNS%.</strong> Emergency CNS oxygen load ${cnsPctEm.toFixed(0)}% exceeds 80%. Extreme caution.</div></div>`;
     }
+    emAlerts.innerHTML = modAlert + cnsAlert;
     window._lastContingency.emAlertsHtml = emAlerts.innerHTML;
   }
   scheduleDecoScheduleStackSync();
