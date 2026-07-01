@@ -6691,12 +6691,12 @@ function getConfiguredBailoutMixes() {
   return mixes;
 }
 
-/** Deepest-capable bailout mix label for stress/problem-solve reserve at depth. */
+/** Richest breathable bailout mix for stress/problem-solve reserve at depth. */
 function getBailoutReserveMixLabel(depthM, fO2Bot, fHeBot) {
   const mixes = getConfiguredBailoutMixes();
   const atDepth = mixes.filter(m => m.modM >= depthM - 0.01);
   if (atDepth.length) {
-    return atDepth.reduce((best, m) => (!best || m.modM > best.modM) ? m : best).label;
+    return atDepth.reduce((best, m) => (!best || m.modM < best.modM) ? m : best).label;
   }
   const useDil = document.getElementById('diluentUseAsBailout')?.value === 'on';
   if (useDil) {
@@ -6753,7 +6753,7 @@ function validateCcrGasConfiguration() {
     const diluentMod = calcGasMODm(bot.fO2, activePpo2);
     const modDisp = units === 'imperial' ? Math.round(diluentMod * 3.28084) : diluentMod;
     if (depthM > diluentMod + 0.01) {
-      errors.push(`Diluent MOD (${modDisp}${du}) is shallower than dive depth (${depthDisp}${du}). Use a richer diluent or reduce depth.`);
+      errors.push(`Diluent MOD (${modDisp}${du}) is shallower than dive depth (${depthDisp}${du}). Use a leaner diluent or reduce depth.`);
     }
     const useDiluentBailout = document.getElementById('diluentUseAsBailout')?.value === 'on';
     const bailoutMixes = getConfiguredBailoutMixes();
@@ -8590,13 +8590,12 @@ function updateGasMODDisplays() {
   // Bottom gas MOD — validate raw DOM % before clamped fractions
   const botMix = document.getElementById('decoGas')?.value;
   const botDom = (botMix === 'custom' || botMix === 'trimix') ? getDomBottomGasPct() : null;
+  const botDomCheck = botDom ? validateGasFractionsPct(botDom.o2, botDom.he, 'bottomGas') : null;
   const botEl    = document.getElementById('botMODDisplay');
   if (botEl) {
-    if (botDom && (!Number.isFinite(botDom.o2) || (botMix === 'trimix' && !Number.isFinite(botDom.he)))) {
+    if (botDomCheck && !botDomCheck.ok) {
       botEl.value = '—';
-      botEl.title = botMix === 'trimix'
-        ? 'Enter valid O₂ and He % for trimix bottom gas'
-        : 'Enter a valid O₂ % for custom bottom gas';
+      botEl.title = botDomCheck.message;
     } else {
       const botFracs = getBottomGasFractions();
       if (!botFracs) {
@@ -8628,11 +8627,13 @@ function updateGasMODDisplays() {
     if (sel.value === 'none' || !sel.value) { disp.value = '—'; disp.title = 'Select a gas mix to see MOD'; continue; }
     if (sel.value === 'custom' || sel.value === 'trimix') {
       const domG = getDomDecoGasPct(cidx);
-      if (!domG || !Number.isFinite(domG.o2) || (sel.value === 'trimix' && !Number.isFinite(domG.he))) {
+      const domCheck = domG ? validateGasFractionsPct(domG.o2, domG.he, `dg${cidx}`) : null;
+      if (!domCheck || !domCheck.ok) {
         disp.value = '—';
-        disp.title = sel.value === 'custom'
-          ? 'Enter a valid O₂ % for custom deco gas'
-          : 'Enter valid O₂ and He % for trimix deco gas';
+        const inputHint = sel.value === 'custom'
+          ? 'Enter a valid O₂ % for custom deco gas.'
+          : 'Enter valid O₂ and He % for trimix deco gas.';
+        disp.title = domCheck?.message ? `${inputHint} ${domCheck.message}` : inputHint;
         continue;
       }
     }

@@ -326,6 +326,18 @@
       "suite_id": "SUITE-ENGINE-FULL",
       "case_id": "CYCLE33-TABLE-SOURCE"
     },
+    "REG-51": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE34-BAILOUT-GAS-SELECTION"
+    },
+    "REG-52": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE34-DILUENT-GUIDANCE"
+    },
+    "REG-53": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE34-INVALID-MOD-DISPLAY"
+    },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
       "case_id": "android-compile"
@@ -751,15 +763,19 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-CCR-DELEGATES"
       },
-      "fingerprint": "7adff7157fc7b03d823a7fd88602900b0342ea44d9a37d045d59aaebbbce0ccb",
-      "last_read_fingerprint": "7adff7157fc7b03d823a7fd88602900b0342ea44d9a37d045d59aaebbbce0ccb",
+      "fingerprint": "6aac32465b19ab2db51b43f1346f9fa346e45030771fa66b78e33c325276d35f",
+      "last_read_fingerprint": "6aac32465b19ab2db51b43f1346f9fa346e45030771fa66b78e33c325276d35f",
       "evidence": [
-        "REG-15"
+        "REG-15",
+        "REG-51",
+        "REG-52"
       ],
       "regression_cases": [
-        "REG-15"
+        "REG-15",
+        "REG-51",
+        "REG-52"
       ],
-      "issue": "GitHub #141 M-1 pSCR diluent bypass",
+      "issue": "GitHub #141 M-1 pSCR diluent bypass; Cycle 34 bailout selection and diluent guidance",
       "audit_issue": 141
     },
     {
@@ -853,14 +869,21 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-INPUTS"
       },
-      "fingerprint": "fb23c84fc166b04c7b73759d56b034d09b538d4aef750f326bda289783f99c09",
-      "last_read_fingerprint": "fb23c84fc166b04c7b73759d56b034d09b538d4aef750f326bda289783f99c09",
-      "audit_issue": 149
+      "fingerprint": "c25e9f1fc0ab239072d42ee6a560eb6b4db12953e8fa3a05a12b703f3cb41f28",
+      "last_read_fingerprint": "c25e9f1fc0ab239072d42ee6a560eb6b4db12953e8fa3a05a12b703f3cb41f28",
+      "audit_issue": 149,
+      "evidence": [
+        "REG-53"
+      ],
+      "regression_cases": [
+        "REG-53"
+      ],
+      "issue": "Cycle 34 invalid custom-gas MOD display suppression"
     },
     {
       "id": "UI-GAS-CARDS",
@@ -1452,8 +1475,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "5f620462b1c1b759e4067f5afb45f3cff071dd1ae68c800f73d98993714345ff",
-      "last_read_fingerprint": "5f620462b1c1b759e4067f5afb45f3cff071dd1ae68c800f73d98993714345ff",
+      "fingerprint": "6cf4d4bd3d844e8bdcfb0a072a8c39762a07fa24bc6139e6ee8b7bdf5a1d7156",
+      "last_read_fingerprint": "6cf4d4bd3d844e8bdcfb0a072a8c39762a07fa24bc6139e6ee8b7bdf5a1d7156",
       "evidence": [],
       "regression_cases": []
     },
@@ -1490,8 +1513,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "22560c77a7d2bd881b2e28a69e1a002f1e4aba2b927a4e4473c62c66a61e635f",
-      "last_read_fingerprint": "22560c77a7d2bd881b2e28a69e1a002f1e4aba2b927a4e4473c62c66a61e635f",
+      "fingerprint": "366a17b3b8d2f51e7f63b127f17ebcdd3f8bea2c5ca6425efd395bb016118957",
+      "last_read_fingerprint": "366a17b3b8d2f51e7f63b127f17ebcdd3f8bea2c5ca6425efd395bb016118957",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 167
@@ -1554,8 +1577,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1f45bebdd0ccb5e5bb703aa3f5954bc0618a72edf4c787bf380637d3111f3654",
-      "last_read_fingerprint": "1f45bebdd0ccb5e5bb703aa3f5954bc0618a72edf4c787bf380637d3111f3654",
+      "fingerprint": "4d5a3649e7d6431fa81d4bcaee29f9000f9eefea7316ee445033ddcba06f0b18",
+      "last_read_fingerprint": "4d5a3649e7d6431fa81d4bcaee29f9000f9eefea7316ee445033ddcba06f0b18",
       "audit_issue": 168,
       "evidence": [],
       "regression_cases": []
@@ -1724,9 +1747,12 @@
         "REG-47",
         "REG-48",
         "REG-49",
-        "REG-50"
+        "REG-50",
+        "REG-51",
+        "REG-52",
+        "REG-53"
       ],
-      "issue": "GitHub #133–#138 audit regressions and Cycle 31–33 verification",
+      "issue": "GitHub #133–#138 audit regressions and Cycle 31–34 verification",
       "regression_cases": [
         "REG-39",
         "REG-40",
@@ -1737,10 +1763,13 @@
         "REG-47",
         "REG-48",
         "REG-49",
-        "REG-50"
+        "REG-50",
+        "REG-51",
+        "REG-52",
+        "REG-53"
       ],
-      "fingerprint": "d4f02c60bd2ae4327b41593027740c0aa18f3674a9dd02cc4c01769ba6ffc6e4",
-      "last_read_fingerprint": "d4f02c60bd2ae4327b41593027740c0aa18f3674a9dd02cc4c01769ba6ffc6e4",
+      "fingerprint": "3339a928913626109caaa4227a57dc7b2c94b30c072f2934ab9521d556da4cfd",
+      "last_read_fingerprint": "3339a928913626109caaa4227a57dc7b2c94b30c072f2934ab9521d556da4cfd",
       "audit_issue": 169
     },
     {
@@ -3091,6 +3120,17 @@
         "TEST-ENGINE-REGRESSION"
       ],
       "acceptance": "Contingency ppO2 warning, primary gas state immutability, full-precision gas sufficiency, and primary table isolation verified by REG-47 through REG-50"
+    },
+    {
+      "cycle": 34,
+      "max_new_application_lines": 600,
+      "application_units": [],
+      "engine_reverification": [
+        "UI-GAS-INPUTS",
+        "UI-CCR-DELEGATES",
+        "TEST-ENGINE-REGRESSION"
+      ],
+      "acceptance": "Historical UI-04/UI-05 scope: richest breathable bailout reserve selection, directionally safe diluent guidance, and invalid custom-gas MOD suppression verified by REG-51 through REG-53"
     }
   ],
   "suite_catalog": [
@@ -3235,7 +3275,10 @@
         "CYCLE33-PPO2-TOXICITY",
         "CYCLE33-PRIMARY-GAS-INTEGRITY",
         "CYCLE33-GAS-PRECISION",
-        "CYCLE33-TABLE-SOURCE"
+        "CYCLE33-TABLE-SOURCE",
+        "CYCLE34-BAILOUT-GAS-SELECTION",
+        "CYCLE34-DILUENT-GUIDANCE",
+        "CYCLE34-INVALID-MOD-DISPLAY"
       ]
     },
     {

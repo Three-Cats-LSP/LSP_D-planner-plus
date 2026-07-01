@@ -1541,6 +1541,66 @@ ENGINE_SUITE_JS = r"""
     };
   })();
 
+  // Cycle 34: gas input / MOD display and CCR panel delegates.
+  out.sections.cycle34 = (() => {
+    const gasIds = typeof getAllDecoGasIds === 'function' ? getAllDecoGasIds() : [];
+    const ids = [
+      'circuitSelect', 'decoGas', 'decoCustomO2', 'decoDepth', 'ppo2Bottom',
+      'ccrBottomSetpoint', 'diluentUseAsBailout',
+      ...gasIds.flatMap(idx => [`dg${idx}Mix`, `dg${idx}CustomO2`]),
+    ];
+    const saved = Object.fromEntries(ids.map(id => [id, document.getElementById(id)?.value]));
+    const set = (id, value) => { const el = document.getElementById(id); if (el) el.value = value; };
+    let bailoutGasSelectionOk = false;
+    let diluentGuidanceOk = false;
+    let invalidModDisplayOk = false;
+    try {
+      gasIds.forEach(idx => set(`dg${idx}Mix`, 'none'));
+      set('circuitSelect', 'CCR');
+      set('decoGas', 'air');
+      set('ppo2Bottom', '1.4');
+      set('diluentUseAsBailout', 'on');
+      set('dg1Mix', 'ean50');
+      set('dg2Mix', 'o2');
+      bailoutGasSelectionOk = getBailoutReserveMixLabel(6, 0.21, 0) === '100%'
+        && getBailoutReserveMixLabel(15, 0.21, 0) === 'EAN50'
+        && getBailoutReserveMixLabel(40, 0.21, 0) === 'Air';
+
+      set('decoDepth', units === 'metric' ? '60' : String(60 * 3.28084));
+      set('ccrBottomSetpoint', '1.3');
+      const validation = validateCcrGasConfiguration();
+      diluentGuidanceOk = validation.errors.some(msg => msg.includes('Use a leaner diluent'))
+        && !validation.errors.some(msg => msg.includes('Use a richer diluent'));
+
+      set('circuitSelect', 'OC');
+      set('decoGas', 'custom');
+      set('decoCustomO2', '150');
+      set('dg1Mix', 'custom');
+      set('dg1CustomO2', '150');
+      set('dg2Mix', 'none');
+      updateGasMODDisplays();
+      const botMod = document.getElementById('botMODDisplay');
+      const dg1Mod = document.getElementById('dg1MODDisplay');
+      invalidModDisplayOk = botMod?.value === '—'
+        && dg1Mod?.value === '—'
+        && botMod.title.includes('at most 100 percent')
+        && dg1Mod.title.includes('at most 100 percent');
+    } catch (_) {
+      bailoutGasSelectionOk = false;
+      diluentGuidanceOk = false;
+      invalidModDisplayOk = false;
+    } finally {
+      Object.entries(saved).forEach(([id, value]) => { if (value != null) set(id, value); });
+      updateGasMODDisplays();
+    }
+    return {
+      ok: bailoutGasSelectionOk && diluentGuidanceOk && invalidModDisplayOk,
+      bailoutGasSelectionOk,
+      diluentGuidanceOk,
+      invalidModDisplayOk,
+    };
+  })();
+
   // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
   out.sections.cycle6 = (() => {
     const rdp11 = typeof padiTableRowIndex === 'function' ? padiTableRowIndex(11) : null;
@@ -1945,6 +2005,10 @@ def run_suite(page) -> dict:
     assert_true(c33.get("primaryGasStateOk"), "[CYCLE33-PRIMARY-GAS-INTEGRITY] test_primary_gas_state_integrity_during_contingency", str(c33))
     assert_true(c33.get("gasPrecisionOk"), "[CYCLE33-GAS-PRECISION] test_gas_volume_rounding_conservatism", str(c33))
     assert_true(c33.get("tableSourceOk"), "[CYCLE33-TABLE-SOURCE] test_table_render_source_consistency", str(c33))
+    c34 = s.get("cycle34", {})
+    assert_true(c34.get("bailoutGasSelectionOk"), "[CYCLE34-BAILOUT-GAS-SELECTION] richest breathable bailout gas is selected by depth", str(c34))
+    assert_true(c34.get("diluentGuidanceOk"), "[CYCLE34-DILUENT-GUIDANCE] shallow MOD recommends a leaner diluent", str(c34))
+    assert_true(c34.get("invalidModDisplayOk"), "[CYCLE34-INVALID-MOD-DISPLAY] invalid custom gases do not display clamped MOD values", str(c34))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
     sw_block = sw_install.split("addEventListener('install'")[1].split("addEventListener('activate'")[0] if "addEventListener('install'" in sw_install else ""
     assert_true("clients.matchAll" not in sw_block, "[CYCLE7-L2] SW install handler does not postMessage before claim")
@@ -2032,6 +2096,9 @@ def _audit_case_rows():
         case_row("CYCLE33-PRIMARY-GAS-INTEGRITY", case_ok("CYCLE33-PRIMARY-GAS-INTEGRITY")),
         case_row("CYCLE33-GAS-PRECISION", case_ok("CYCLE33-GAS-PRECISION")),
         case_row("CYCLE33-TABLE-SOURCE", case_ok("CYCLE33-TABLE-SOURCE")),
+        case_row("CYCLE34-BAILOUT-GAS-SELECTION", case_ok("CYCLE34-BAILOUT-GAS-SELECTION")),
+        case_row("CYCLE34-DILUENT-GUIDANCE", case_ok("CYCLE34-DILUENT-GUIDANCE")),
+        case_row("CYCLE34-INVALID-MOD-DISPLAY", case_ok("CYCLE34-INVALID-MOD-DISPLAY")),
     ]
 
 
