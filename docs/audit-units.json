@@ -289,6 +289,129 @@
   },
   "findings": [
     {
+      "id": "ISSUE-153-CCR-BOTTOM-PHASE",
+      "unit_id": "UI-ZHL-HEADLESS-ENGINE",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "issue": "GitHub #153 / Cycle 14",
+      "summary": "Unified repetitive CCR NDL loading now explicitly uses the bottom setpoint phase.",
+      "affected_units": [
+        "UI-ZHL-HEADLESS-ENGINE"
+      ],
+      "resolution_commit": "ca1886a",
+      "evidence_cases": [
+        "REG-39"
+      ]
+    },
+    {
+      "id": "ISSUE-157-VISUALIZATION-DOM-GUARDS",
+      "unit_id": "UI-TOOLS-GF",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "issue": "GitHub #157 / Cycle 18",
+      "summary": "GF statistics and profile/GF crosshair interactions now tolerate absent optional DOM elements.",
+      "affected_units": [
+        "UI-TOOLS-GF",
+        "UI-TOOLS-PROFILE"
+      ],
+      "resolution_commit": "ca1886a",
+      "evidence_cases": [
+        "REG-39"
+      ]
+    },
+    {
+      "id": "ISSUE-158-RESTORE-FLAG-FINALLY",
+      "unit_id": "UI-SETTINGS",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "issue": "GitHub #158 / Cycle 19",
+      "summary": "Settings restoration always clears _restoreInProgress through a finally block.",
+      "affected_units": [
+        "UI-SETTINGS"
+      ],
+      "resolution_commit": "ca1886a",
+      "evidence_cases": [
+        "REG-39"
+      ]
+    },
+    {
+      "id": "ISSUE-159-PRESET-MODAL-GUARDS",
+      "unit_id": "UI-PROFILE-PRESETS",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "issue": "GitHub #159 / Cycle 20",
+      "summary": "Profile, advanced configuration, and full-preset modal controls are null-safe.",
+      "affected_units": [
+        "UI-PROFILE-PRESETS",
+        "UI-CONFIG-PRESETS"
+      ],
+      "resolution_commit": "ca1886a",
+      "evidence_cases": [
+        "REG-39"
+      ]
+    },
+    {
+      "id": "ISSUE-161-GAS-CONTROL-GUARDS",
+      "unit_id": "UI-ZHL-DELEGATES",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "issue": "GitHub #161 / Cycle 22",
+      "summary": "Custom O2 and trimix field toggles now tolerate absent controls.",
+      "affected_units": [
+        "UI-ZHL-DELEGATES"
+      ],
+      "resolution_commit": "ca1886a",
+      "evidence_cases": [
+        "REG-39"
+      ]
+    },
+    {
+      "id": "ISSUE-163-ALGORITHM-TAB-GUARDS",
+      "unit_id": "UI-ALGORITHM-SETTINGS",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "issue": "GitHub #163 / Cycle 24",
+      "summary": "Algorithm rows and tab switching now guard missing target elements.",
+      "affected_units": [
+        "UI-MODE-STATE",
+        "UI-ALGORITHM-SETTINGS"
+      ],
+      "resolution_commit": "ca1886a",
+      "evidence_cases": [
+        "REG-39"
+      ]
+    },
+    {
+      "id": "ISSUE-164-CONTINGENCY-MODAL-GUARDS",
+      "unit_id": "APP-CONTINGENCY",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "issue": "GitHub #164 / Cycle 25",
+      "summary": "Contingency slate rendering now requires both modal elements before writing.",
+      "affected_units": [
+        "APP-CONTINGENCY"
+      ],
+      "resolution_commit": "ca1886a",
+      "evidence_cases": [
+        "REG-39"
+      ]
+    },
+    {
+      "id": "ISSUE-165-EXPORT-MODAL-GUARDS",
+      "unit_id": "APP-EXPORT",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "issue": "GitHub #165 / Cycle 26",
+      "summary": "Copy and slate export modal operations now handle absent DOM elements safely.",
+      "affected_units": [
+        "APP-EXPORT"
+      ],
+      "resolution_commit": "ca1886a",
+      "evidence_cases": [
+        "REG-39"
+      ]
+    },
+    {
       "id": "ISSUE-133-ROLLUP",
       "unit_id": "TOOL-AUDIT",
       "severity": "HIGH",
