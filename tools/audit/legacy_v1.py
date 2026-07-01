@@ -94,6 +94,11 @@ app_version_js = ""
 if os.path.isfile(app_version_path):
     with open(app_version_path, encoding="utf-8") as f:
         app_version_js = f.read()
+_app_version_match = re.search(r"APP_VERSION\s*=\s*['\"](\d+)\.(\d+)\.(\d+)['\"]", app_version_js)
+_app_version_tuple = tuple(map(int, _app_version_match.groups())) if _app_version_match else (0, 0, 0)
+
+def _app_version_at_least(major, minor, patch):
+    return _app_version_tuple >= (major, minor, patch)
 vpm_core_path = os.path.join(os.path.dirname(os.path.abspath(path)), "vpm-engine-core.js")
 vpm_core_js = ""
 if os.path.isfile(vpm_core_path):
@@ -3060,8 +3065,8 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.04['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.53.04")
+if _app_version_at_least(2, 53, 4):
+    ok("APP_VERSION is at least 2.53.04")
 else:
     fail("APP_VERSION not bumped to 2.53.04 in app-version.js")
 
@@ -5669,8 +5674,8 @@ if "const ppO2Limit = parseFloat(document.getElementById('ppo2Bottom')" in _111_
     ok("issue #111 M-6: calcEND_tool MOD uses configured ppO2 limit")
 else:
     fail("issue #111 M-6: calcEND_tool MOD still hardcoded 1.4 bar")
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.04['\"]", app_version_js):
-    ok("issue #111 L-1: app-version 2.53.04 synced; SW derives CACHE_VERSION dynamically")
+if _app_version_at_least(2, 53, 4):
+    ok("issue #111 L-1: app-version is at least 2.53.04; SW derives CACHE_VERSION dynamically")
 else:
     fail("issue #111 L-1: SW/app-version sync regression")
 if "build_vpm_bundle.py" in _111_ci and "git diff --exit-code zhl-engine-bundle.js vpm-engine-bundle.js" in _111_ci:
@@ -6416,14 +6421,15 @@ if "mergeCCRSettings(opts.ccr)" in js.split("function ppO2Check", 1)[-1][:400]:
     ok("issue #125 H-6: ppO2Check delegate merges CCR settings before bundle call")
 else:
     fail("issue #125 H-6: ppO2Check delegate still passes raw opts.ccr")
-if "zhl-physics-core.js" in _125_sw and "zhl-gas-core.js" in _125_sw:
-    ok("issue #125 H-7: SW REQUIRED_PRECACHE includes zhl-physics-core.js and zhl-gas-core.js")
+_required_sw125 = _125_sw.split("REQUIRED_PRECACHE", 1)[-1].split("];", 1)[0]
+if "zhl-engine-bundle.js" in _required_sw125 and "zhl-physics-core.js" not in _required_sw125 and "zhl-gas-core.js" not in _required_sw125:
+    ok("issue #125 H-7: SW precaches the deployed ZHL bundle rather than build-only core sources")
 else:
-    fail("issue #125 H-7: SW precache missing Tier-3 core source files")
-if "vpm-engine-core.js" in _125_sw.split("REQUIRED_PRECACHE", 1)[-1][:800]:
-    ok("Cycle 31 L-7: vpm-engine-core.js in SW REQUIRED_PRECACHE for offline VPM")
+    fail("issue #125 H-7: SW required precache does not match deployed ZHL runtime assets")
+if "vpm-engine-bundle.js" in _required_sw125 and "vpm-engine-core.js" not in _required_sw125:
+    ok("Cycle 31 L-7: deployed VPM bundle is in SW REQUIRED_PRECACHE")
 else:
-    fail("Cycle 31 L-7: vpm-engine-core.js missing from SW REQUIRED_PRECACHE")
+    fail("Cycle 31 L-7: SW required precache does not match deployed VPM runtime assets")
 if "applyEnvironment" in _125_parity and "extract_function_body" in _125_parity and "api_export_present" in _125_parity:
     ok("issue #125 M-1: check_engine_parity.py uses function-body and API export checks")
 else:
@@ -6483,8 +6489,8 @@ else:
     fail("issue #126: one or more CI jobs still run without bundle-sync dependency")
 
 # ── v2.53.04 stable release ──
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.04['\"]", app_version_js):
-    ok("stable release APP_VERSION is 2.53.04")
+if _app_version_at_least(2, 53, 4):
+    ok("stable release APP_VERSION is at least 2.53.04")
 else:
     fail("stable release requires APP_VERSION 2.53.04")
 
@@ -6946,8 +6952,8 @@ if "Closed field list" in _ccr_core_src:
     ok("issue #133 L-8: normalizeCCRSettings documents closed field list")
 else:
     fail("issue #133 L-8: normalizeCCRSettings missing closed-list documentation")
-if "2.53.04" in open(os.path.join(_repo_root130, "app-version.js"), encoding="utf-8").read():
-    ok("issue #133 H-2: APP_VERSION bumped for PWA cache bust")
+if _app_version_at_least(2, 53, 4):
+    ok("issue #133 H-2: APP_VERSION retains the required PWA cache bust")
 else:
     fail("issue #133 H-2: APP_VERSION not bumped after engine fixes")
 
@@ -7016,10 +7022,8 @@ if "issue134" in open(os.path.join(_repo_root130, "dev", "engine_regression.py")
 else:
     fail("issue #134 L-6: engine_regression missing issue134 section")
 _av134 = open(os.path.join(_repo_root130, "app-version.js"), encoding="utf-8").read()
-if "2.53.04" in _av134:
-    ok("issue #134: APP_VERSION bumped to 2.53.04 (historical)")
-elif "2.53.03" in _av134:
-    ok("issue #134: APP_VERSION bumped to 2.53.03 (historical)")
+if _app_version_at_least(2, 53, 3):
+    ok("issue #134: APP_VERSION retains the historical 2.53.03+ bump")
 else:
     fail("issue #134: APP_VERSION historical marker missing")
 
@@ -7028,7 +7032,7 @@ _repo_root135 = os.path.dirname(__file__)
 _index135 = open(os.path.join(_repo_root135, "index.html"), encoding="utf-8").read()
 _app135 = js  # inline scripts + runtime UI *-core.js (post-extraction)
 _zwb135 = open(os.path.join(_repo_root135, "zhl-worker-bridge.js"), encoding="utf-8").read()
-_rcs135 = _app135.split("function runContingencyScenario", 1)[-1][:3500] if "function runContingencyScenario" in _app135 else ""
+_rcs135 = _app135.split("function runContingencyScenario", 1)[-1].split("function buildContingencyButtons", 1)[0] if "function runContingencyScenario" in _app135 else ""
 _cc135 = _app135.split("function calcContingency", 1)[-1][:9000] if "function calcContingency" in _app135 else ""
 if "let ok = false" in _rcs135 and "ok: false, newRows: ''" in _rcs135:
     ok("issue #135 H-1: runContingencyScenario returns ok:false when schedule empty")
@@ -7136,10 +7140,8 @@ if "issue135" in open(os.path.join(_repo_root135, "dev", "engine_regression.py")
 else:
     fail("issue #135: engine_regression missing issue135 section")
 _av135 = open(os.path.join(_repo_root135, "app-version.js"), encoding="utf-8").read()
-if "2.53.04" in _av135:
-    ok("issue #138: APP_VERSION bumped to 2.53.04")
-elif "2.53.03" in _av135:
-    ok("issue #135: APP_VERSION bumped to 2.53.03")
+if _app_version_at_least(2, 53, 4):
+    ok("issue #138: APP_VERSION retains the required 2.53.04+ bump")
 else:
     fail("issue #138: APP_VERSION not bumped to 2.53.04")
 

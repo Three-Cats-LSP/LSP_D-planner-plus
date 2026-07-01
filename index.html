@@ -10744,7 +10744,7 @@ function runUnifiedPlan() {
   const fO2  = rbOnLoop ? bot.fO2 : 0.21;
 
   function loadAtDepth(tissues, depthM, durMin) {
-    if (rbOnLoop) return loadTissuesWithCCR(tissues, depthM, depthM, durMin, fO2, fHe, ccr);
+    if (rbOnLoop) return loadTissuesWithCCR(tissues, depthM, depthM, durMin, fO2, fHe, { ...ccr, ccrPhase: 'bottom' });
     return saturate(tissues, depthM, durMin, fN2, fHe);
   }
   function offgasAtSurface(tissues, durMin) {
@@ -13273,6 +13273,7 @@ var appSettings = {
   _restoreFields: function(values) {
     let restored = 0;
     this._restoreInProgress = true;
+    try {
     if (!window._zhlHeadless && typeof restoreDecoGasCardLayout === 'function') {
       restoreDecoGasCardLayout(values.__decoCardIds, values.__dgNextIdx);
     }
@@ -13344,7 +13345,9 @@ var appSettings = {
         }
       });
     }
-    this._restoreInProgress = false;
+    } finally {
+      this._restoreInProgress = false;
+    }
     if (!window._zhlHeadless && typeof this.save === 'function') {
       this.save(false);
     }

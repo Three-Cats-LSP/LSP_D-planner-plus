@@ -550,7 +550,7 @@ function calcContingency() {
   } catch (e) {
     console.error('[Contingency]', e);
     resultEl.style.display = 'block';
-    resultEl.innerHTML = `<div class="alert dang" style="margin:0;"><span>⚠</span><div><strong>Contingency calculation failed.</strong> ${typeof escapeHtmlText === 'function' ? escapeHtmlText(e.message || String(e)) : (e.message || String(e))}</div></div>`;
+    resultEl.innerHTML = `<div class="alert dang" style="margin:0;"><span>⚠</span><div><strong>Contingency calculation failed.</strong> ${escapeHtmlText(e.message || String(e))}</div></div>`;
   } finally {
     _contingencyRunning = false;
     window._scheduleWorkerBusy = false;

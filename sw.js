@@ -33,7 +33,7 @@ function isSafetyCriticalEngineAsset(pathname) {
     || leaf === 'vpm-engine-core.js';
 }
 
-async function networkFirstWithCacheFallback(request, url) {
+async function networkFirstWithCacheFallback(event, request, url) {
   const cacheKey = new Request(url.origin + url.pathname);
   try {
     const response = await fetch(request);
@@ -70,15 +70,10 @@ const OFFLINE_INDEX = APP_BASE + 'index.html';
 const REQUIRED_PRECACHE = [
   OFFLINE_INDEX,
   APP_BASE + 'app-version.js',
-  APP_BASE + 'zhl-physics-core.js',
-  APP_BASE + 'zhl-gas-core.js',
   APP_BASE + 'zhl-engine-bundle.js',
   APP_BASE + 'vpm-engine-bundle.js',
-  APP_BASE + 'vpm-engine-core.js',
   APP_BASE + 'zhl-worker-bridge.js',
   APP_BASE + 'zhl-schedule-worker.js',
-  APP_BASE + 'zhl-ccr-core.js',
-  APP_BASE + 'zhl-schedule-core.js',
   APP_BASE + 'surf-interval-core.js',
   APP_BASE + 'gas-table-core.js',
   APP_BASE + 'gas-plan-core.js',
@@ -256,7 +251,7 @@ self.addEventListener('fetch', event => {
 
   // Network-first for decompression engine assets — avoid serving stale physics after updates
   if (isSafetyCriticalEngineAsset(url.pathname)) {
-    event.respondWith(networkFirstWithCacheFallback(event.request, url));
+    event.respondWith(networkFirstWithCacheFallback(event, event.request, url));
     return;
   }
 

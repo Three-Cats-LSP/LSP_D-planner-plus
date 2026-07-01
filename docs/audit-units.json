@@ -278,6 +278,38 @@
       "suite_id": "SUITE-ENGINE-FULL",
       "case_id": "CYCLE7-STOP-ROUNDING"
     },
+    "REG-39": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE31-C04"
+    },
+    "REG-40": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE31-PSCR"
+    },
+    "REG-41": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE31-CONTINGENCY-MOD"
+    },
+    "REG-42": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE31-CCR-NDL-PHASE"
+    },
+    "REG-43": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE32-BAILOUT-ELIGIBILITY"
+    },
+    "REG-44": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE32-SETTINGS-RECOVERY"
+    },
+    "REG-45": {
+      "suite_id": "SUITE-SW-LIFECYCLE",
+      "case_id": "SW-NETWORK-FIRST-ENGINE"
+    },
+    "REG-46": {
+      "suite_id": "SUITE-PSCR-E2E",
+      "case_id": "pscr-e2e"
+    },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
       "case_id": "android-compile"
@@ -536,7 +568,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MARKUP-PLANNER"
       },
-      "fingerprint": "33706450e62160061771c57d43f8ee879e64791b5f02c0743693781aaf9f107c",
+      "fingerprint": "e9b1ba99d1e2e9e20858016db0afaba206d0ca20b4b321cc31d015a42724d57a",
       "last_read_fingerprint": null
     },
     {
@@ -762,20 +794,10 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS-CONTROLS"
       },
-      "fingerprint": "6968ed515f569323ae4a6f424221568033f3e2867c7bcabac3578c5f1b581b72",
-      "last_read_fingerprint": "6968ed515f569323ae4a6f424221568033f3e2867c7bcabac3578c5f1b581b72",
-      "evidence": [
-        "REG-35",
-        "REG-36",
-        "REG-37",
-        "REG-38"
-      ],
-      "regression_cases": [
-        "REG-35",
-        "REG-36",
-        "REG-37",
-        "REG-38"
-      ],
+      "fingerprint": "644e033ccc25a55107efa7333abf25d7ca9ae944dc93370fdd1eb684e5a8e61f",
+      "last_read_fingerprint": "644e033ccc25a55107efa7333abf25d7ca9ae944dc93370fdd1eb684e5a8e61f",
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 146
     },
     {
@@ -866,15 +888,10 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-ENGINE"
       },
-      "fingerprint": "f143d9da697095be455749399b843509fb8978d2cf916cd29d88778ca5568284",
-      "last_read_fingerprint": "f143d9da697095be455749399b843509fb8978d2cf916cd29d88778ca5568284",
-      "evidence": [
-        "python dev/run_all_regression.py --tier release"
-      ],
-      "regression_cases": [
-        "REG-01",
-        "REG-06"
-      ],
+      "fingerprint": "472ecd1d79a6fff4264956f26598fc54bf6c5c1b71b375006af711de9fe42a94",
+      "last_read_fingerprint": "472ecd1d79a6fff4264956f26598fc54bf6c5c1b71b375006af711de9fe42a94",
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 150
     },
     {
@@ -887,7 +904,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
-      "fingerprint": "344a51cd441eda0414ec258546a57880a021f21da592003ca873c103f45fbdf3",
+      "fingerprint": "8ec174b69a23671da83f6c46d9561f126e269b4df261203dfbda029901093a23",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -915,16 +932,20 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-HEADLESS-ENGINE"
       },
-      "regression_cases": [],
-      "evidence": [],
-      "issue": "Audit #134",
-      "fingerprint": "f76a94517b5676b57ac0c095300e1174044e6a1fb2a5e19b2fbc8b6e951db2b8",
-      "last_read_fingerprint": null,
+      "regression_cases": [
+        "REG-42"
+      ],
+      "evidence": [
+        "REG-42"
+      ],
+      "issue": "Audit #134; Cycle 31 CCR repetitive NDL phase",
+      "fingerprint": "0bde20e5bb27c45c1dd8b978ab24669c6b4bacd92129c6bcb4b7a809c9308828",
+      "last_read_fingerprint": "0bde20e5bb27c45c1dd8b978ab24669c6b4bacd92129c6bcb4b7a809c9308828",
       "audit_issue": 153
     },
     {
@@ -1036,16 +1057,21 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS"
       },
-      "fingerprint": "7fb4f21b72c0c87e3bc89f7b5463406e6b795698be0365fed0d644aa46f01044",
-      "last_read_fingerprint": "7fb4f21b72c0c87e3bc89f7b5463406e6b795698be0365fed0d644aa46f01044",
+      "fingerprint": "dd4ae1eabd4d03bf361be144d90f44c8e3c27cd01109c94581a8786fab687876",
+      "last_read_fingerprint": "dd4ae1eabd4d03bf361be144d90f44c8e3c27cd01109c94581a8786fab687876",
       "audit_issue": 158,
-      "evidence": [],
-      "regression_cases": []
+      "issue": "Cycle 32 settings restore exception recovery",
+      "evidence": [
+        "REG-44"
+      ],
+      "regression_cases": [
+        "REG-44"
+      ]
     },
     {
       "id": "UI-PROFILE-PRESETS",
@@ -1138,13 +1164,19 @@
       "path": "zhl-ccr-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [],
-      "regression_cases": [],
-      "issue": "Audit #134; CCR deep-endpoint setpoint sampling",
+      "evidence": [
+        "REG-39",
+        "REG-40"
+      ],
+      "regression_cases": [
+        "REG-39",
+        "REG-40"
+      ],
+      "issue": "Audit #134; CCR deep-endpoint setpoint sampling; Cycle 31 C-04/pSCR sync",
       "fingerprint": "6d1953c834dcf1309da766e9a596be8a91c64047cd362caf61a8673322c17a5a",
       "last_read_fingerprint": "6d1953c834dcf1309da766e9a596be8a91c64047cd362caf61a8673322c17a5a",
       "audit_issue": 145
@@ -1220,15 +1252,20 @@
       "path": "contingency-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "bde7de5cfd9d10442c6b7fdd800a8a2d774e970730c25c343ce989e3752d5eef",
-      "last_read_fingerprint": null,
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 164
+      "fingerprint": "021cb2185d7dd97020eb471564579a2d013e1ad480a0f976215cc5c00f2ebf51",
+      "last_read_fingerprint": "021cb2185d7dd97020eb471564579a2d013e1ad480a0f976215cc5c00f2ebf51",
+      "evidence": [
+        "REG-41"
+      ],
+      "regression_cases": [
+        "REG-41"
+      ],
+      "audit_issue": 164,
+      "issue": "Cycle 31 contingency MOD and Cycle 32 bailout validation"
     },
     {
       "id": "APP-EXPORT",
@@ -1250,15 +1287,19 @@
       "path": "gas-plan-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "ba0eeb2fe1949b2876eeda800e23ebb5da904cce0a44683993e9479872b58ee0",
-      "last_read_fingerprint": null,
-      "evidence": [],
+      "fingerprint": "400263f24f79c7ea0309f3fcb7e992e33c78066549caaac64bd45ee0be04275f",
+      "last_read_fingerprint": "400263f24f79c7ea0309f3fcb7e992e33c78066549caaac64bd45ee0be04275f",
+      "evidence": [
+        "REG-43"
+      ],
       "issue": "GitHub #140 H-2 / Cycle 5 GP-01�06 � docs/code-review-2026-06-30.md",
-      "regression_cases": []
+      "regression_cases": [
+        "REG-43"
+      ]
     },
     {
       "id": "APP-GAS-TABLE",
@@ -1311,15 +1352,20 @@
       "path": "sw.js",
       "layer": "pwa",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "965c16376a1c3b43a742f3a82ebcfd13aca43d01aa477f3fea29df7725bc6b3f",
-      "last_read_fingerprint": null,
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 165
+      "fingerprint": "310feef7f8261494429ba2ca7d43a9fc1316baff7846e8a2f61ced01e4c56ec8",
+      "last_read_fingerprint": "310feef7f8261494429ba2ca7d43a9fc1316baff7846e8a2f61ced01e4c56ec8",
+      "evidence": [
+        "REG-45"
+      ],
+      "regression_cases": [
+        "REG-45"
+      ],
+      "audit_issue": 165,
+      "issue": "Cycle 31 deployed shell precache and network-first engine delivery"
     },
     {
       "id": "APP-ZHL-WORKER-BRIDGE",
@@ -1376,12 +1422,12 @@
       "path": "version.json",
       "layer": "release_config",
       "priority": "P2",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "bec3cb23177541a154c9718c6c8ec8206f4eab532c5c6879d1adbe853496b6e6",
-      "last_read_fingerprint": null,
+      "fingerprint": "5f620462b1c1b759e4067f5afb45f3cff071dd1ae68c800f73d98993714345ff",
+      "last_read_fingerprint": "5f620462b1c1b759e4067f5afb45f3cff071dd1ae68c800f73d98993714345ff",
       "evidence": [],
       "regression_cases": []
     },
@@ -1418,8 +1464,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "cb6a835fa6d3a060f9c5e48002bace74efdc86a2a3666e6ac374bde3e8f09378",
-      "last_read_fingerprint": "cb6a835fa6d3a060f9c5e48002bace74efdc86a2a3666e6ac374bde3e8f09378",
+      "fingerprint": "22560c77a7d2bd881b2e28a69e1a002f1e4aba2b927a4e4473c62c66a61e635f",
+      "last_read_fingerprint": "22560c77a7d2bd881b2e28a69e1a002f1e4aba2b927a4e4473c62c66a61e635f",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 167
@@ -1482,9 +1528,11 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "8e946c4d77fcdcb2d3ed2a3be82540d9c3eabaaf1da9549d62b4404dc7a3683e",
-      "last_read_fingerprint": "8e946c4d77fcdcb2d3ed2a3be82540d9c3eabaaf1da9549d62b4404dc7a3683e",
-      "audit_issue": 168
+      "fingerprint": "1f45bebdd0ccb5e5bb703aa3f5954bc0618a72edf4c787bf380637d3111f3654",
+      "last_read_fingerprint": "1f45bebdd0ccb5e5bb703aa3f5954bc0618a72edf4c787bf380637d3111f3654",
+      "audit_issue": 168,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "NATIVE-SETTINGS",
@@ -1636,15 +1684,29 @@
       "path": "dev/engine_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [],
+      "evidence": [
+        "REG-39",
+        "REG-40",
+        "REG-41",
+        "REG-42",
+        "REG-43",
+        "REG-44"
+      ],
       "issue": "GitHub #133–#138 audit regression sections",
-      "regression_cases": [],
-      "fingerprint": "56998913308674b1bf36d89fcd0921d7e35875b1334f964aac2eb3d136afd616",
-      "last_read_fingerprint": null,
+      "regression_cases": [
+        "REG-39",
+        "REG-40",
+        "REG-41",
+        "REG-42",
+        "REG-43",
+        "REG-44"
+      ],
+      "fingerprint": "35c441ab698c70e7ecbad7d50131007decae61de51efb6daaa42bd5a854f54b9",
+      "last_read_fingerprint": "35c441ab698c70e7ecbad7d50131007decae61de51efb6daaa42bd5a854f54b9",
       "audit_issue": 169
     },
     {
@@ -1826,26 +1888,38 @@
       "path": "dev/validate_pscr_e2e.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "fe3be39653b8b0361e8185860b4ad794b1d7289a7335dd4cb659cfcd890e0b93",
-      "last_read_fingerprint": null,
-      "evidence": [],
-      "regression_cases": []
+      "fingerprint": "f0d20e3e7ac3b48ec6bf278868563a0f530119df3e8ee015d2beb58cf9ab909d",
+      "last_read_fingerprint": "f0d20e3e7ac3b48ec6bf278868563a0f530119df3e8ee015d2beb58cf9ab909d",
+      "evidence": [
+        "REG-46"
+      ],
+      "regression_cases": [
+        "REG-46"
+      ],
+      "issue": "Cycle 32 MOD-valid pSCR matrix and VPM CNS parity"
     },
     {
       "id": "TEST-SW-LIFECYCLE",
       "path": "dev/sw_lifecycle_test.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "236aeded7c6f49ee56b99c2dac93fb70d28befbe825ad9244ff59ec198ce5404",
-      "last_read_fingerprint": "236aeded7c6f49ee56b99c2dac93fb70d28befbe825ad9244ff59ec198ce5404"
+      "fingerprint": "42fd3d1a5f70bc1185c7296315e835e738be457a7019a740ecb0dd49f7640e82",
+      "last_read_fingerprint": "42fd3d1a5f70bc1185c7296315e835e738be457a7019a740ecb0dd49f7640e82",
+      "evidence": [
+        "REG-45"
+      ],
+      "regression_cases": [
+        "REG-45"
+      ],
+      "issue": "Cycle 31 service-worker install and network-first engine delivery"
     },
     {
       "id": "TEST-PLAYWRIGHT-BOOT",
@@ -1868,7 +1942,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "2f2411ab24d0a2d042e2e10713ab7a19c5d128eb79a137b6bcbf63f7347c2069",
+      "fingerprint": "fb84be11784a6961dd07d9669c41eba819da0609d0978b02d0ff272f6dc0f0e7",
       "last_read_fingerprint": null
     },
     {
@@ -2486,7 +2560,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "bf973de69635fe63e30be80a0758c269484112c95da969a01f1e8de200b9f242",
+      "fingerprint": "a73f3fb08cfa027e6fe1150e6a0b51279a9818b323b51133c9df6e53ca4b5b0a",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2501,7 +2575,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "92a11c049325d6167c478d47b60196e8490f90cbf4e6bfb434fb96a081632894",
+      "fingerprint": "513257d3cba6e4a82443e8dba9456956ce669602c30657b75ed589e6cc088b52",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2651,7 +2725,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "120f3e9909c521a8c92749dd2a3da308df196915362770677d6d2292f6a46449",
+      "fingerprint": "3993f50397ca1bd356ac9a8fb82e76f9b1f4092087600f736ada0275c9517a5f",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2945,6 +3019,33 @@
         "TEST-GAS-CORE-REGRESSION"
       ],
       "acceptance": "Test runner suite READ; issue #169"
+    },
+    {
+      "cycle": 31,
+      "max_new_application_lines": 600,
+      "application_units": [],
+      "engine_reverification": [
+        "ENG-ZHL-CCR",
+        "UI-ZHL-HEADLESS-ENGINE",
+        "APP-CONTINGENCY",
+        "APP-SERVICE-WORKER",
+        "TEST-ENGINE-REGRESSION",
+        "TEST-SW-LIFECYCLE"
+      ],
+      "acceptance": "C-04 trimix inert parity, pSCR environment sync, contingency MOD, CCR repetitive NDL phase, and deployed SW runtime assets verified by REG-39 through REG-42 and REG-45"
+    },
+    {
+      "cycle": 32,
+      "max_new_application_lines": 600,
+      "application_units": [],
+      "engine_reverification": [
+        "APP-CONTINGENCY",
+        "APP-GAS-PLAN",
+        "UI-SETTINGS",
+        "TEST-ENGINE-REGRESSION",
+        "TEST-PSCR-E2E"
+      ],
+      "acceptance": "Contingency stress SAC, eligible bailout inventory, gas-switch review, error recovery, and settings restore cleanup verified by REG-43 and REG-44"
     }
   ],
   "suite_catalog": [
@@ -3075,7 +3176,17 @@
         "CYCLE7-IMPERIAL-RESET",
         "CYCLE7-PERSONAL-DEFAULTS",
         "CYCLE7-RESET-UI-SYNC",
-        "CYCLE7-STOP-ROUNDING"
+        "CYCLE7-STOP-ROUNDING",
+        "CYCLE31-C04",
+        "CYCLE31-PSCR",
+        "CYCLE31-CONTINGENCY-MOD",
+        "CYCLE31-CCR-NDL-PHASE",
+        "CYCLE32-L1",
+        "CYCLE32-L2",
+        "CYCLE32-L3",
+        "CYCLE32-L6",
+        "CYCLE32-BAILOUT-ELIGIBILITY",
+        "CYCLE32-SETTINGS-RECOVERY"
       ]
     },
     {
@@ -3150,6 +3261,21 @@
       "timeout_seconds": 300,
       "case_ids": [
         "native-bridge-regression"
+      ]
+    },
+    {
+      "id": "SUITE-SW-LIFECYCLE",
+      "command": [
+        "{python}",
+        "dev/sw_lifecycle_test.py"
+      ],
+      "profiles": [
+        "ci",
+        "release"
+      ],
+      "timeout_seconds": 180,
+      "case_ids": [
+        "SW-NETWORK-FIRST-ENGINE"
       ]
     },
     {

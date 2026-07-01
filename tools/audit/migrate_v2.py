@@ -110,14 +110,14 @@ def main() -> None:
     extensions = registry["source_policy"]["extensions"]
     if ".mjs" not in extensions:
         extensions.append(".mjs")
-    registry["suite_catalog"] = SUITES
-    registry["evidence_catalog"] = EVIDENCE
-    registry["rule_catalog"] = RULES
-    registry["parser_config"] = {
+    registry.setdefault("suite_catalog", SUITES)
+    registry.setdefault("evidence_catalog", EVIDENCE)
+    registry.setdefault("rule_catalog", RULES)
+    registry.setdefault("parser_config", {
         "wrappers": {
             "vpm-engine-core.js": {"prefix": "(function () {", "suffix": "})();"}
         }
-    }
+    })
 
     for finding in registry.get("findings", []):
         finding.setdefault("affected_units", [finding["unit_id"]])
