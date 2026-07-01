@@ -1164,8 +1164,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "6867f99789a7ae3bbed82db90def60119ffe7b397dbf99b267688ce481373ffc",
-      "last_read_fingerprint": "6867f99789a7ae3bbed82db90def60119ffe7b397dbf99b267688ce481373ffc",
+      "fingerprint": "1e6041cf3d56a99ec94da51ec43bb8cedcd90dd4413997a82b7bbb8d2241dd73",
+      "last_read_fingerprint": "1e6041cf3d56a99ec94da51ec43bb8cedcd90dd4413997a82b7bbb8d2241dd73",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 166
@@ -1633,15 +1633,15 @@
       "path": "dev/engine_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "evidence": [],
       "issue": "GitHub #133–#138 audit regression sections",
       "regression_cases": [],
-      "fingerprint": "776865b4da4658c31a1d2734829fbf6b0e85e79db057420300891894ccaec3cf",
-      "last_read_fingerprint": null
+      "fingerprint": "bfc8347f7a78415c2919b49016de5172328f1396d91659834162e5f30463906c",
+      "last_read_fingerprint": "bfc8347f7a78415c2919b49016de5172328f1396d91659834162e5f30463906c"
     },
     {
       "id": "TEST-ISSUE-140-REGRESSION",
@@ -1663,7 +1663,7 @@
       "path": "dev/gas_core_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
@@ -1671,7 +1671,7 @@
       "issue": "Cycle 5 GP/GT behavioral regression � docs/code-review-2026-06-30.md",
       "regression_cases": [],
       "fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315"
     },
     {
       "id": "TEST-ISSUE-141-REGRESSION",
@@ -1723,12 +1723,12 @@
       "path": "engine_validation_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "3000b4928ea0c295dfc499cc2a09785287d7ab569a87005b131183a9cf4138ba",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "3000b4928ea0c295dfc499cc2a09785287d7ab569a87005b131183a9cf4138ba",
       "evidence": [],
       "regression_cases": []
     },
@@ -1766,12 +1766,12 @@
       "path": "dev/run_all_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "cc418c102eec92d6003d31a486ec8fca9c657080b0fb58d0c6b23f1e74ef262a",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "cc418c102eec92d6003d31a486ec8fca9c657080b0fb58d0c6b23f1e74ef262a",
       "evidence": [],
       "regression_cases": []
     },

@@ -3,7 +3,7 @@
 > Generated schedule and totals. Policy and unit metadata live in `docs/audit-units.json`.
 
 **Baseline:** `fd805111eab2fba349a9303a6e208106b798f82b`
-**Units:** 157 total; 54 unread; 48 in progress; 50 read; 5 verified.
+**Units:** 157 total; 51 unread; 34 in progress; 67 read; 5 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
