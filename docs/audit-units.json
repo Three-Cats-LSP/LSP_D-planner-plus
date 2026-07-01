@@ -278,6 +278,10 @@
       "suite_id": "SUITE-ENGINE-FULL",
       "case_id": "CYCLE7-STOP-ROUNDING"
     },
+    "REG-39": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE13-30-FIXES"
+    },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
       "case_id": "android-compile"
@@ -613,13 +617,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MODE-STATE"
       },
-      "fingerprint": "257d8797fffa475da08836d91422ff5d157ccf84ff6645d94cc2b1794ffa9f7b",
-      "last_read_fingerprint": null
+      "fingerprint": "f0823cee2f16eae843d720db162a1196bbf5928d9e4e67ba87bdca3809ad5237",
+      "last_read_fingerprint": "f0823cee2f16eae843d720db162a1196bbf5928d9e4e67ba87bdca3809ad5237",
+      "evidence": ["REG-39"],
+      "regression_cases": ["REG-39"]
     },
     {
       "id": "UI-ALGORITHM-SETTINGS",
@@ -631,11 +637,11 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ALGORITHM-SETTINGS"
       },
-      "fingerprint": "ddad5f3ba7c965543ff16d428cd818d3ef074d6232a0a771b5b945d7fe71c71b",
-      "last_read_fingerprint": "ddad5f3ba7c965543ff16d428cd818d3ef074d6232a0a771b5b945d7fe71c71b",
+      "fingerprint": "f5a0b3bd94a793ed8a63b955caac18ce15fb4122477120bac4c36c3cbe7f3e29",
+      "last_read_fingerprint": "f5a0b3bd94a793ed8a63b955caac18ce15fb4122477120bac4c36c3cbe7f3e29",
       "audit_issue": 163,
-      "evidence": [],
-      "regression_cases": []
+      "evidence": ["REG-39"],
+      "regression_cases": ["REG-39"]
     },
     {
       "id": "UI-UNIT-HELPERS",
@@ -686,10 +692,10 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-DELEGATES"
       },
-      "fingerprint": "6547d83fc8046cfb6f0d4595004d85eb6dd7c6785bb9b33573ac6e867e672e24",
-      "last_read_fingerprint": "6547d83fc8046cfb6f0d4595004d85eb6dd7c6785bb9b33573ac6e867e672e24",
-      "evidence": [],
-      "regression_cases": [],
+      "fingerprint": "d8bea09afffeaa12656b6963c3bfaeccb1804196c84324197c79ced0a8a1ccf2",
+      "last_read_fingerprint": "d8bea09afffeaa12656b6963c3bfaeccb1804196c84324197c79ced0a8a1ccf2",
+      "evidence": ["REG-39"],
+      "regression_cases": ["REG-39"],
       "issue": "GitHub #141 L-2 getN2Frac trimix null",
       "audit_issue": 161
     },
@@ -922,11 +928,11 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-HEADLESS-ENGINE"
       },
-      "regression_cases": [],
-      "evidence": [],
+      "regression_cases": ["REG-39"],
+      "evidence": ["REG-39"],
       "issue": "Audit #134",
-      "fingerprint": "1d22bcc6fed862574235fb2392688e0d19fe85b62e13ab94c4b10b6c40ab4b9e",
-      "last_read_fingerprint": "1d22bcc6fed862574235fb2392688e0d19fe85b62e13ab94c4b10b6c40ab4b9e",
+      "fingerprint": "69f98a9f9210aa4a9483bc90d268966748e1309759abd29874059822467df34c",
+      "last_read_fingerprint": "69f98a9f9210aa4a9483bc90d268966748e1309759abd29874059822467df34c",
       "audit_issue": 153
     },
     {
@@ -1015,9 +1021,11 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-GF"
       },
-      "fingerprint": "a5ca8553658a0083ae6d965ec96a00b848596ab9b48127fc1e71711a978e1d2f",
-      "last_read_fingerprint": "a5ca8553658a0083ae6d965ec96a00b848596ab9b48127fc1e71711a978e1d2f",
-      "audit_issue": 157
+      "fingerprint": "09ce6b4377285d1174b057d4972f58d788fa58000577ecfc31a5ab0a61ae9130",
+      "last_read_fingerprint": "09ce6b4377285d1174b057d4972f58d788fa58000577ecfc31a5ab0a61ae9130",
+      "audit_issue": 157,
+      "evidence": ["REG-39"],
+      "regression_cases": ["REG-39"]
     },
     {
       "id": "UI-TOOLS-PROFILE",
@@ -1029,9 +1037,11 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-PROFILE"
       },
-      "fingerprint": "8ae70c7847ef29512cc0f95b2680200b37974d43ce56bf1580a753d252b45c5f",
-      "last_read_fingerprint": "8ae70c7847ef29512cc0f95b2680200b37974d43ce56bf1580a753d252b45c5f",
-      "audit_issue": 157
+      "fingerprint": "433166418d8baa412a10b47205b2b85eb9f07b75ad0660c0b84a6ba9bf884f23",
+      "last_read_fingerprint": "433166418d8baa412a10b47205b2b85eb9f07b75ad0660c0b84a6ba9bf884f23",
+      "audit_issue": 157,
+      "evidence": ["REG-39"],
+      "regression_cases": ["REG-39"]
     },
     {
       "id": "UI-SETTINGS",
@@ -1043,11 +1053,11 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS"
       },
-      "fingerprint": "7fb4f21b72c0c87e3bc89f7b5463406e6b795698be0365fed0d644aa46f01044",
-      "last_read_fingerprint": "7fb4f21b72c0c87e3bc89f7b5463406e6b795698be0365fed0d644aa46f01044",
+      "fingerprint": "debdad7f8728176dd6cf8714cc14deae367594e248b1468ccfea36b2cf796ec4",
+      "last_read_fingerprint": "debdad7f8728176dd6cf8714cc14deae367594e248b1468ccfea36b2cf796ec4",
       "audit_issue": 158,
-      "evidence": [],
-      "regression_cases": []
+      "evidence": ["REG-39"],
+      "regression_cases": ["REG-39"]
     },
     {
       "id": "UI-PROFILE-PRESETS",
@@ -1059,9 +1069,11 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PROFILE-PRESETS"
       },
-      "fingerprint": "389eac6fe50cdd984910f6a8e0529ffbfb2b8b374c02e848c488958973b0b58c",
-      "last_read_fingerprint": "389eac6fe50cdd984910f6a8e0529ffbfb2b8b374c02e848c488958973b0b58c",
-      "audit_issue": 159
+      "fingerprint": "0de33a58af17af36707047567684709c5cb2aa8343a56b5f90435d4b87469346",
+      "last_read_fingerprint": "0de33a58af17af36707047567684709c5cb2aa8343a56b5f90435d4b87469346",
+      "audit_issue": 159,
+      "evidence": ["REG-39"],
+      "regression_cases": ["REG-39"]
     },
     {
       "id": "UI-CONFIG-PRESETS",
@@ -1073,9 +1085,11 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-CONFIG-PRESETS"
       },
-      "fingerprint": "7dfd75e09dc3246ce367cb574d8f8ca0d699aa97e222ade2496cc0d7ac9ed45a",
-      "last_read_fingerprint": "7dfd75e09dc3246ce367cb574d8f8ca0d699aa97e222ade2496cc0d7ac9ed45a",
-      "audit_issue": 159
+      "fingerprint": "d9ee36fcdbb2bff78d4cca8754ec92d35f57ff9f0360a9b7568eb2238d29f51b",
+      "last_read_fingerprint": "d9ee36fcdbb2bff78d4cca8754ec92d35f57ff9f0360a9b7568eb2238d29f51b",
+      "audit_issue": 159,
+      "evidence": ["REG-39"],
+      "regression_cases": ["REG-39"]
     },
     {
       "id": "UI-APP-INIT",
@@ -1224,10 +1238,10 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "537c094810d517eda5262ce7ef9dd2f5ff018bbd504c28274c6f10bd99a20267",
-      "last_read_fingerprint": "537c094810d517eda5262ce7ef9dd2f5ff018bbd504c28274c6f10bd99a20267",
-      "evidence": [],
-      "regression_cases": [],
+      "fingerprint": "2411b1d99e37d68b4638250b48b3271b3a28409cda09e72db92b80cf4a2bef29",
+      "last_read_fingerprint": "2411b1d99e37d68b4638250b48b3271b3a28409cda09e72db92b80cf4a2bef29",
+      "evidence": ["REG-39"],
+      "regression_cases": ["REG-39"],
       "audit_issue": 164
     },
     {
@@ -1239,10 +1253,10 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f21500b8cf055f299c5452146637aa2a9f9d1cc6ff1b762428d77b71ddda108b",
-      "last_read_fingerprint": "f21500b8cf055f299c5452146637aa2a9f9d1cc6ff1b762428d77b71ddda108b",
-      "evidence": [],
-      "regression_cases": [],
+      "fingerprint": "5c8dbe23708d93ec0ecf2c46e991c09c3718e9b0dc2e70c662283cc822c407ba",
+      "last_read_fingerprint": "5c8dbe23708d93ec0ecf2c46e991c09c3718e9b0dc2e70c662283cc822c407ba",
+      "evidence": ["REG-39"],
+      "regression_cases": ["REG-39"],
       "audit_issue": 165
     },
     {
@@ -1261,7 +1275,7 @@
         "REG-12",
         "REG-13"
       ],
-      "issue": "GitHub #140 H-2 / Cycle 5 GP-01�06 � docs/code-review-2026-06-30.md",
+      "issue": "GitHub #140 H-2 / Cycle 5 GP-01\ufffd06 \ufffd docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-10",
         "REG-12",
@@ -1283,7 +1297,7 @@
         "REG-11",
         "REG-14"
       ],
-      "issue": "Cycle 5 GT-01�06 � docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GT-01\ufffd06 \ufffd docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-11",
         "REG-14"
@@ -1306,7 +1320,7 @@
         "REG-20",
         "REG-21"
       ],
-      "issue": "GitHub #142 � Dive 2 gas override",
+      "issue": "GitHub #142 \ufffd Dive 2 gas override",
       "regression_cases": [
         "REG-17",
         "REG-19",
@@ -1646,11 +1660,11 @@
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [],
-      "issue": "GitHub #133–#138 audit regression sections",
-      "regression_cases": [],
-      "fingerprint": "142b9a1866183a664f11d0ce3b2e46298f6f51a7908dda24c3c9694011e572fe",
-      "last_read_fingerprint": "142b9a1866183a664f11d0ce3b2e46298f6f51a7908dda24c3c9694011e572fe",
+      "evidence": ["REG-39"],
+      "issue": "GitHub #133\u2013#138 audit regression sections",
+      "regression_cases": ["REG-39"],
+      "fingerprint": "f2d58cf88d2c0f2cde52870c722282f75784628bdbe32ff572661fb672904a63",
+      "last_read_fingerprint": "f2d58cf88d2c0f2cde52870c722282f75784628bdbe32ff572661fb672904a63",
       "audit_issue": 169
     },
     {
@@ -1678,7 +1692,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "Cycle 5 GP/GT behavioral regression � docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GP/GT behavioral regression \ufffd docs/code-review-2026-06-30.md",
       "regression_cases": [],
       "fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
       "last_read_fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
@@ -2082,7 +2096,7 @@
       },
       "evidence": [],
       "regression_cases": [],
-      "issue": "GitHub #133–#139 structured environment audit gates; release regression 9/9",
+      "issue": "GitHub #133\u2013#139 structured environment audit gates; release regression 9/9",
       "fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d",
       "last_read_fingerprint": null
     },
@@ -3066,7 +3080,8 @@
         "CYCLE7-IMPERIAL-RESET",
         "CYCLE7-PERSONAL-DEFAULTS",
         "CYCLE7-RESET-UI-SYNC",
-        "CYCLE7-STOP-ROUNDING"
+        "CYCLE7-STOP-ROUNDING",
+        "CYCLE13-30-FIXES"
       ]
     },
     {

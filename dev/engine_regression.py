@@ -1228,6 +1228,62 @@ ENGINE_SUITE_JS = r"""
     };
   })();
 
+  // ── Cycles 13–30 accepted finding remediation ───────────────────────────
+  out.sections.cycle13to30Fixes = (() => {
+    const unifiedSrc = typeof runUnifiedPlan === 'function' ? runUnifiedPlan.toString() : '';
+    const ccrBottomPhaseOk = /\.\.\.ccr\s*,\s*ccrPhase:\s*['"]bottom['"]/.test(unifiedSrc);
+    const savedHeadless = window._zhlHeadless;
+
+    let restoreFinallyOk = false;
+    const originalGetAllPossibleFields = appSettings?.getAllPossibleFields;
+    if (typeof appSettings?._restoreFields === 'function') {
+      window._zhlHeadless = true;
+      appSettings.getAllPossibleFields = () => { throw new Error('cycle13-30-restore-probe'); };
+      appSettings._restoreInProgress = false;
+      try {
+        appSettings._restoreFields({});
+      } catch (_) {
+        restoreFinallyOk = appSettings._restoreInProgress === false;
+      } finally {
+        appSettings._restoreInProgress = false;
+        appSettings.getAllPossibleFields = originalGetAllPossibleFields;
+        window._zhlHeadless = savedHeadless;
+      }
+    }
+
+    const guarded = (fn, ...patterns) => {
+      if (typeof fn !== 'function') return false;
+      const src = fn.toString();
+      return patterns.every(pattern => pattern.test(src));
+    };
+    const domGuardsOk =
+      guarded(drawGFCurve, /if \(gfCurveGFL\)/, /if \(gfCurveGFH\)/, /if \(gfCurveStops\)/)
+      && guarded(attachDiveProfileInteraction, /!crossV/, /!crossH/)
+      && guarded(attachGFCurveInteraction, /!crossV/, /!crossH/)
+      && guarded(openDiveProfilePresets, /if \(modal\)/)
+      && guarded(closeDiveProfilePresets, /if \(modal\)/)
+      && guarded(openAdvConfigPresets, /if \(modal\)/)
+      && guarded(closeAdvConfigPresets, /if \(modal\)/)
+      && guarded(openPresetModal, /if \(modal\)/)
+      && guarded(closePresetModal, /if \(modal\)/)
+      && guarded(toggleCustomO2, /if \(!gasMix\) return/, /if \(customO2Field\)/)
+      && guarded(setDecoAlgorithm, /if \(gfPresetsRow\)/, /if \(conservatismRow\)/)
+      && guarded(switchTab, /if \(!panel\) return/)
+      && guarded(showContingencySlate, /if \(!body \|\| !modal\) return/)
+      && guarded(copyDiveProfile, /if \(!titleEl \|\| !bodyEl \|\| !modal\) return/)
+      && guarded(closeCopyModal, /if \(modal\)/)
+      && guarded(copyCopyModal, /\?\.textContent/, /if \(!text\) return/)
+      && guarded(showSlate, /if \(!body \|\| !modal\) return/)
+      && guarded(closeSlate, /if \(modal\)/);
+
+    return {
+      ccrBottomPhaseOk,
+      restoreFinallyOk,
+      domGuardsOk,
+      ok: ccrBottomPhaseOk && restoreFinallyOk && domGuardsOk,
+    };
+  })();
+
   // ── VPM min-deco on no-decompression (NDL) dives ─────────────────────────
   out.sections.vpmMdpNdl = (() => {
     const lv = [{ depth: 12, time: 10, o2: 21, he: 0 }];
@@ -1640,6 +1696,10 @@ def run_suite(page) -> dict:
     assert_true(c7o.get("personalDefaultsOk"), "[CYCLE7-PERSONAL-DEFAULTS] reset honours saved GF and adv fields", str(c7o))
     assert_true(c7o.get("resetUiSyncOk"), "[CYCLE7-RESET-UI-SYNC] reset hides CCR and trimix fields after OC/Air restore", str(c7o))
     assert_true(c7o.get("stopRoundingOk"), "[CYCLE7-STOP-ROUNDING] whole-minute mode emits integer-minute VPM stops", str(c7o))
+    c13_30 = s.get("cycle13to30Fixes", {})
+    assert_true(c13_30.get("ccrBottomPhaseOk"), "[CYCLE13-30-FIXES] unified CCR NDL uses bottom phase", str(c13_30))
+    assert_true(c13_30.get("restoreFinallyOk"), "[CYCLE13-30-FIXES] settings restore flag clears after exception", str(c13_30))
+    assert_true(c13_30.get("domGuardsOk"), "[CYCLE13-30-FIXES] audited DOM paths are null-safe", str(c13_30))
     vmdp = s.get("vpmMdpNdl", {})
     assert_true(vmdp.get("ok"), "[VPM-MDP-NDL] min-deco inserts 9m/6m stops on no-decompression dive", str(vmdp))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
@@ -1715,6 +1775,7 @@ def _audit_case_rows():
         case_row("CYCLE7-PERSONAL-DEFAULTS", case_ok("CYCLE7-PERSONAL-DEFAULTS")),
         case_row("CYCLE7-RESET-UI-SYNC", case_ok("CYCLE7-RESET-UI-SYNC")),
         case_row("CYCLE7-STOP-ROUNDING", case_ok("CYCLE7-STOP-ROUNDING")),
+        case_row("CYCLE13-30-FIXES", case_ok("CYCLE13-30-FIXES")),
     ]
 
 

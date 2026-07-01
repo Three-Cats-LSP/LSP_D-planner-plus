@@ -519,15 +519,21 @@ function copyDiveProfile(mode) {
   const text = buildMessengerText(mode);
   if (!text) { showToast('Run a dive plan first', 'copy', true); return; }
   const titles = { deco: 'Deco Plan', contingency: 'Emergency Plan', planner: 'Dive Plan' };
-  document.getElementById('copyModalTitle').textContent = titles[mode] || 'Copy Plan';
-  document.getElementById('copyModalBody').textContent = text;
-  document.getElementById('copyModal').style.display = 'flex';
+  const titleEl = document.getElementById('copyModalTitle');
+  const bodyEl = document.getElementById('copyModalBody');
+  const modal = document.getElementById('copyModal');
+  if (!titleEl || !bodyEl || !modal) return;
+  titleEl.textContent = titles[mode] || 'Copy Plan';
+  bodyEl.textContent = text;
+  modal.style.display = 'flex';
 }
 function closeCopyModal() {
-  document.getElementById('copyModal').style.display = 'none';
+  const modal = document.getElementById('copyModal');
+  if (modal) modal.style.display = 'none';
 }
 function copyCopyModal() {
-  const text = document.getElementById('copyModalBody').textContent || '';
+  const text = document.getElementById('copyModalBody')?.textContent || '';
+  if (!text) return;
   if (navigator.clipboard?.writeText) {
     navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard', 'copy')).catch(() => copyFallback(text));
   } else {
@@ -645,14 +651,18 @@ function showSlate() {
   if (!getBottomGasFractions()) { notifyInvalidGasExport('slate'); return; }
   const text = buildSlateText();
   if (!text) { showToast('Run a dive plan first', 'slate', true); return; }
-  document.getElementById('slateModalBody').textContent = text;
-  document.getElementById('slateModal').style.display = 'flex';
+  const body = document.getElementById('slateModalBody');
+  const modal = document.getElementById('slateModal');
+  if (!body || !modal) return;
+  body.textContent = text;
+  modal.style.display = 'flex';
 }
 function closeSlate() {
-  document.getElementById('slateModal').style.display = 'none';
+  const modal = document.getElementById('slateModal');
+  if (modal) modal.style.display = 'none';
 }
 function copySlate() {
-  const text = document.getElementById('slateModalBody').textContent || '';
+  const text = document.getElementById('slateModalBody')?.textContent || '';
   if (!text) return;
   if (navigator.clipboard?.writeText) {
     navigator.clipboard.writeText(text).then(() => showToast('Slate copied', 'slate')).catch(() => copyFallback(text));
