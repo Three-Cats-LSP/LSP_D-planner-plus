@@ -310,6 +310,22 @@
       "suite_id": "SUITE-PSCR-E2E",
       "case_id": "pscr-e2e"
     },
+    "REG-47": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE33-PPO2-TOXICITY"
+    },
+    "REG-48": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE33-PRIMARY-GAS-INTEGRITY"
+    },
+    "REG-49": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE33-GAS-PRECISION"
+    },
+    "REG-50": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "CYCLE33-TABLE-SOURCE"
+    },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
       "case_id": "android-compile"
@@ -1259,10 +1275,16 @@
       "fingerprint": "021cb2185d7dd97020eb471564579a2d013e1ad480a0f976215cc5c00f2ebf51",
       "last_read_fingerprint": "021cb2185d7dd97020eb471564579a2d013e1ad480a0f976215cc5c00f2ebf51",
       "evidence": [
-        "REG-41"
+        "REG-41",
+        "REG-47",
+        "REG-48",
+        "REG-50"
       ],
       "regression_cases": [
-        "REG-41"
+        "REG-41",
+        "REG-47",
+        "REG-48",
+        "REG-50"
       ],
       "audit_issue": 164,
       "issue": "Cycle 31 contingency MOD and Cycle 32 bailout validation"
@@ -1294,11 +1316,15 @@
       "fingerprint": "400263f24f79c7ea0309f3fcb7e992e33c78066549caaac64bd45ee0be04275f",
       "last_read_fingerprint": "400263f24f79c7ea0309f3fcb7e992e33c78066549caaac64bd45ee0be04275f",
       "evidence": [
-        "REG-43"
+        "REG-43",
+        "REG-48",
+        "REG-49"
       ],
       "issue": "GitHub #140 H-2 / Cycle 5 GP-01�06 � docs/code-review-2026-06-30.md",
       "regression_cases": [
-        "REG-43"
+        "REG-43",
+        "REG-48",
+        "REG-49"
       ]
     },
     {
@@ -1694,19 +1720,27 @@
         "REG-41",
         "REG-42",
         "REG-43",
-        "REG-44"
+        "REG-44",
+        "REG-47",
+        "REG-48",
+        "REG-49",
+        "REG-50"
       ],
-      "issue": "GitHub #133–#138 audit regression sections",
+      "issue": "GitHub #133–#138 audit regressions and Cycle 31–33 verification",
       "regression_cases": [
         "REG-39",
         "REG-40",
         "REG-41",
         "REG-42",
         "REG-43",
-        "REG-44"
+        "REG-44",
+        "REG-47",
+        "REG-48",
+        "REG-49",
+        "REG-50"
       ],
-      "fingerprint": "35c441ab698c70e7ecbad7d50131007decae61de51efb6daaa42bd5a854f54b9",
-      "last_read_fingerprint": "35c441ab698c70e7ecbad7d50131007decae61de51efb6daaa42bd5a854f54b9",
+      "fingerprint": "d4f02c60bd2ae4327b41593027740c0aa18f3674a9dd02cc4c01769ba6ffc6e4",
+      "last_read_fingerprint": "d4f02c60bd2ae4327b41593027740c0aa18f3674a9dd02cc4c01769ba6ffc6e4",
       "audit_issue": 169
     },
     {
@@ -3046,6 +3080,17 @@
         "TEST-PSCR-E2E"
       ],
       "acceptance": "Contingency stress SAC, eligible bailout inventory, gas-switch review, error recovery, and settings restore cleanup verified by REG-43 and REG-44"
+    },
+    {
+      "cycle": 33,
+      "max_new_application_lines": 600,
+      "application_units": [],
+      "engine_reverification": [
+        "APP-CONTINGENCY",
+        "APP-GAS-PLAN",
+        "TEST-ENGINE-REGRESSION"
+      ],
+      "acceptance": "Contingency ppO2 warning, primary gas state immutability, full-precision gas sufficiency, and primary table isolation verified by REG-47 through REG-50"
     }
   ],
   "suite_catalog": [
@@ -3186,7 +3231,11 @@
         "CYCLE32-L3",
         "CYCLE32-L6",
         "CYCLE32-BAILOUT-ELIGIBILITY",
-        "CYCLE32-SETTINGS-RECOVERY"
+        "CYCLE32-SETTINGS-RECOVERY",
+        "CYCLE33-PPO2-TOXICITY",
+        "CYCLE33-PRIMARY-GAS-INTEGRITY",
+        "CYCLE33-GAS-PRECISION",
+        "CYCLE33-TABLE-SOURCE"
       ]
     },
     {

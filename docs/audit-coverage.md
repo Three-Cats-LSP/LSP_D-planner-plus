@@ -83,9 +83,9 @@
 | ENG-VPM-REFERENCE | engine_reference | `vpmb.py:1` | 2574 | P2 | UNREAD | - |
 | APP-ANDROID-SELECT | native_bridge | `android-select-picker.js:1` | 270 | P1 | READ | - |
 | APP-CAPACITOR-BRIDGE | native_bridge | `capacitor-bridge.js:1` | 278 | P1 | READ | - |
-| APP-CONTINGENCY | ui_core | `contingency-core.js:1` | 1147 | P1 | VERIFIED | REG-41 |
+| APP-CONTINGENCY | ui_core | `contingency-core.js:1` | 1147 | P1 | VERIFIED | REG-41, REG-47, REG-48, REG-50 |
 | APP-EXPORT | ui_core | `export-core.js:1` | 1761 | P2 | READ | - |
-| APP-GAS-PLAN | ui_core | `gas-plan-core.js:1` | 641 | P1 | VERIFIED | REG-43 |
+| APP-GAS-PLAN | ui_core | `gas-plan-core.js:1` | 641 | P1 | VERIFIED | REG-43, REG-48, REG-49 |
 | APP-GAS-TABLE | ui_core | `gas-table-core.js:1` | 302 | P2 | VERIFIED | REG-11, REG-14 |
 | APP-SURFACE-INTERVAL | ui_core | `surf-interval-core.js:1` | 372 | P1 | VERIFIED | REG-17, REG-19, REG-20, REG-21 |
 | APP-SERVICE-WORKER | pwa | `sw.js:1` | 285 | P1 | VERIFIED | REG-45 |
@@ -114,7 +114,7 @@
 | NATIVE-DRAWABLE-FG | native_android | `android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml:1` | 34 | P3 | UNREAD | - |
 | NATIVE-ICON | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml:1` | 5 | P3 | UNREAD | - |
 | NATIVE-ICON-ROUND | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml:1` | 5 | P3 | UNREAD | - |
-| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 1946 | P1 | VERIFIED | REG-39, REG-40, REG-41, REG-42, REG-43, REG-44 |
+| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 2043 | P1 | VERIFIED | REG-39, REG-40, REG-41, REG-42, REG-43, REG-44, REG-47, REG-48, REG-49, REG-50 |
 | TEST-ISSUE-140-REGRESSION | test_infrastructure | `dev/issue140_regression.py:1` | 99 | P1 | IN_PROGRESS | - |
 | TEST-GAS-CORE-REGRESSION | test_infrastructure | `dev/gas_core_regression.py:1` | 129 | P1 | READ | - |
 | TEST-ISSUE-141-REGRESSION | test_infrastructure | `dev/issue141_regression.py:1` | 108 | P1 | IN_PROGRESS | - |
