@@ -21,7 +21,7 @@ All apps run **fully offline** after first load, install as **PWA** from any bro
 
 ## 🤿 LSP D-Planner+ — Decompression Planner
 
-> v2.53.06 · MIT · [Live app](https://threecats-lsp.com/d-planner-plus/) · [APK](https://threecats-lsp.com/d-planner-plus/download.html)
+> v2.53.07 · MIT · [Live app](https://threecats-lsp.com/d-planner-plus/) · [APK](https://threecats-lsp.com/d-planner-plus/download.html)
 
 The decompression engine at the core of the toolkit. Runs entirely in the browser — no server, no account, no build step.
 

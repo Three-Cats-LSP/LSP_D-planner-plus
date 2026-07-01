@@ -3,7 +3,7 @@
 > Generated schedule and totals. Policy and unit metadata live in `docs/audit-units.json`.
 
 **Baseline:** `fd805111eab2fba349a9303a6e208106b798f82b`
-**Units:** 158 total; 48 unread; 37 in progress; 60 read; 13 verified.
+**Units:** 158 total; 48 unread; 37 in progress; 59 read; 14 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -34,7 +34,7 @@
 | 7 | UI-SETTINGS-CONTROLS, UI-VPM-RUNNER | 563 | ENG-VPM | Settings restoration and VPM invocation contracts READ |
 | 8 | UI-VPM-RENDER | 530 | ENG-VPM | VPM rendering and safety warning propagation READ |
 | 9 | UI-GAS-CARDS | 575 | ENG-ZHL-GAS | Dynamic gas-card units and persistence READ |
-| 10 | UI-GAS-INPUTS, UI-ZHL-RUNNER-SETUP | 311 | ENG-ZHL-SCHEDULE | Gas validation and ZHL parameter construction READ |
+| 10 | UI-GAS-INPUTS, UI-ZHL-RUNNER-SETUP | 312 | ENG-ZHL-SCHEDULE | Gas validation and ZHL parameter construction READ |
 | 11 | UI-ZHL-RUNNER-ENGINE | 347 | ENG-ZHL-SCHEDULE | Canonical ZHL execution path READ with parity evidence |
 | 12 | UI-ZHL-RESULTS | 504 | ENG-ZHL-PHYSICS | Result construction, exposure totals, and safety fields READ |
 | 13 | UI-ZHL-HEADLESS-HELPERS | 201 | - | Headless ZHL helper path READ; issue #152 |
@@ -58,6 +58,7 @@
 | 31 | - | 0 | ENG-ZHL-CCR, UI-ZHL-HEADLESS-ENGINE, APP-CONTINGENCY, APP-SERVICE-WORKER, TEST-ENGINE-REGRESSION, TEST-SW-LIFECYCLE | C-04 trimix inert parity, pSCR environment sync, contingency MOD, CCR repetitive NDL phase, and deployed SW runtime assets verified by REG-39 through REG-42 and REG-45 |
 | 32 | - | 0 | APP-CONTINGENCY, APP-GAS-PLAN, UI-SETTINGS, TEST-ENGINE-REGRESSION, TEST-PSCR-E2E | Contingency stress SAC, eligible bailout inventory, gas-switch review, error recovery, and settings restore cleanup verified by REG-43 and REG-44 |
 | 33 | - | 0 | APP-CONTINGENCY, APP-GAS-PLAN, TEST-ENGINE-REGRESSION | Contingency ppO2 warning, primary gas state immutability, full-precision gas sufficiency, and primary table isolation verified by REG-47 through REG-50 |
+| 34 | - | 0 | UI-GAS-INPUTS, UI-CCR-DELEGATES, TEST-ENGINE-REGRESSION | Historical UI-04/UI-05 scope: richest breathable bailout reserve selection, directionally safe diluent guidance, and invalid custom-gas MOD suppression verified by REG-51 through REG-53 |
 
 ## Definition of Done
 
