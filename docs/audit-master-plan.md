@@ -3,7 +3,7 @@
 > Generated schedule and totals. Policy and unit metadata live in `docs/audit-units.json`.
 
 **Baseline:** `fd805111eab2fba349a9303a6e208106b798f82b`
-**Units:** 157 total; 48 unread; 32 in progress; 72 read; 5 verified.
+**Units:** 158 total; 48 unread; 40 in progress; 65 read; 5 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -32,11 +32,11 @@
 | 5 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 487 | ENG-ZHL-SCHEDULE | Delegate units fully READ; schedule findings linked to regression IDs |
 | 6 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 590 | ENG-ZHL-CCR | Physics and schedule input paths READ; no unresolved P0 finding |
 | 7 | UI-SETTINGS-CONTROLS, UI-VPM-RUNNER | 561 | ENG-VPM | Settings restoration and VPM invocation contracts READ |
-| 8 | UI-VPM-RENDER | 529 | ENG-VPM | VPM rendering and safety warning propagation READ |
-| 9 | UI-GAS-CARDS | 574 | ENG-ZHL-GAS | Dynamic gas-card units and persistence READ |
-| 10 | UI-GAS-INPUTS, UI-ZHL-RUNNER-SETUP | 301 | ENG-ZHL-SCHEDULE | Gas validation and ZHL parameter construction READ |
+| 8 | UI-VPM-RENDER | 530 | ENG-VPM | VPM rendering and safety warning propagation READ |
+| 9 | UI-GAS-CARDS | 575 | ENG-ZHL-GAS | Dynamic gas-card units and persistence READ |
+| 10 | UI-GAS-INPUTS, UI-ZHL-RUNNER-SETUP | 310 | ENG-ZHL-SCHEDULE | Gas validation and ZHL parameter construction READ |
 | 11 | UI-ZHL-RUNNER-ENGINE | 342 | ENG-ZHL-SCHEDULE | Canonical ZHL execution path READ with parity evidence |
-| 12 | UI-ZHL-RESULTS | 496 | ENG-ZHL-PHYSICS | Result construction, exposure totals, and safety fields READ |
+| 12 | UI-ZHL-RESULTS | 502 | ENG-ZHL-PHYSICS | Result construction, exposure totals, and safety fields READ |
 | 13 | UI-ZHL-HEADLESS-HELPERS | 201 | - | Headless ZHL helper path READ; issue #152 |
 | 14 | UI-ZHL-HEADLESS-ENGINE | 385 | - | Headless ZHL engine invocation READ; issue #153 |
 | 15 | UI-PLOT-INIT, UI-PLOT-RENDER | 535 | - | Profile plot init and render READ; issue #154 |
@@ -44,7 +44,7 @@
 | 17 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE | 530 | - | Tissue and exposure tools READ; issue #156 |
 | 18 | UI-TOOLS-GF, UI-TOOLS-PROFILE | 579 | - | GF and profile tools READ; issue #157 |
 | 19 | UI-SETTINGS | 346 | - | Settings persistence READ; issue #158 |
-| 20 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 549 | - | Profile and config presets READ; issue #159 |
+| 20 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 557 | - | Profile and config presets READ; issue #159 |
 | 21 | UI-APP-INIT | 165 | - | App init and boot hooks READ; issue #160 |
 | 22 | - | 0 | UI-ZHL-DELEGATES | ZHL delegate re-read READ; issue #161 |
 | 23 | UI-RUNTIME-BOOTSTRAP | 270 | - | Runtime bootstrap READ; issue #162 |

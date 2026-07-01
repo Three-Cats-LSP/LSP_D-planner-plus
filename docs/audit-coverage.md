@@ -10,23 +10,23 @@
 | Layer | Total | Unread | In progress | Read | Verified |
 |---|---:|---:|---:|---:|---:|
 | build_config | 2 | 0 | 0 | 2 | 0 |
-| ci | 5 | 0 | 0 | 5 | 0 |
+| ci | 6 | 0 | 0 | 6 | 0 |
 | deploy_config | 1 | 0 | 0 | 1 | 0 |
 | engine | 5 | 0 | 1 | 4 | 0 |
 | engine_reference | 1 | 1 | 0 | 0 | 0 |
 | native_android | 16 | 12 | 0 | 4 | 0 |
 | native_bridge | 2 | 0 | 0 | 2 | 0 |
 | native_config | 1 | 0 | 0 | 1 | 0 |
-| pwa | 3 | 0 | 0 | 3 | 0 |
+| pwa | 3 | 0 | 1 | 2 | 0 |
 | release_config | 1 | 0 | 1 | 0 | 0 |
-| test_infrastructure | 34 | 16 | 7 | 11 | 0 |
+| test_infrastructure | 34 | 16 | 8 | 10 | 0 |
 | tooling | 36 | 9 | 22 | 4 | 1 |
 | ui_core | 5 | 0 | 0 | 2 | 3 |
 | web_css | 4 | 4 | 0 | 0 | 0 |
 | web_markup | 5 | 5 | 0 | 0 | 0 |
-| web_runtime | 34 | 1 | 1 | 31 | 1 |
-| worker | 2 | 0 | 0 | 2 | 0 |
-| **Total** | **157** | **48** | **32** | **72** | **5** |
+| web_runtime | 34 | 1 | 6 | 26 | 1 |
+| worker | 2 | 0 | 1 | 1 | 0 |
+| **Total** | **158** | **48** | **40** | **65** | **5** |
 
 ## Units
 
@@ -55,26 +55,26 @@
 | UI-SCHEDULE-INPUTS | web_runtime | `index.html:7083` | 361 | P0 | READ | REG-29, REG-30 |
 | UI-SETTINGS-CONTROLS | web_runtime | `index.html:7444` | 391 | P1 | READ | REG-35, REG-36, REG-37, REG-38 |
 | UI-VPM-RUNNER | web_runtime | `index.html:7835` | 170 | P0 | READ | REG-31, REG-38 |
-| UI-VPM-RENDER | web_runtime | `index.html:8005` | 529 | P1 | READ | - |
-| UI-GAS-INPUTS | web_runtime | `index.html:8534` | 184 | P1 | READ | - |
-| UI-GAS-CARDS | web_runtime | `index.html:8718` | 574 | P1 | READ | - |
-| UI-ZHL-RUNNER-SETUP | web_runtime | `index.html:9292` | 117 | P0 | READ | - |
-| UI-ZHL-RUNNER-ENGINE | web_runtime | `index.html:9409` | 342 | P0 | READ | REG-01, REG-06 |
-| UI-ZHL-RESULTS | web_runtime | `index.html:9751` | 496 | P1 | READ | - |
-| UI-ZHL-HEADLESS-HELPERS | web_runtime | `index.html:10247` | 201 | P1 | READ | - |
-| UI-ZHL-HEADLESS-ENGINE | web_runtime | `index.html:10448` | 385 | P0 | READ | - |
-| UI-PLOT-INIT | web_runtime | `index.html:10833` | 95 | P2 | READ | - |
-| UI-PLOT-RENDER | web_runtime | `index.html:10928` | 440 | P2 | READ | - |
-| UI-PLOT-WAYPOINTS | web_runtime | `index.html:11368` | 528 | P2 | READ | - |
-| UI-TOOLS-TISSUES | web_runtime | `index.html:11896` | 305 | P2 | READ | - |
-| UI-TOOLS-EXPOSURE | web_runtime | `index.html:12201` | 225 | P1 | READ | - |
-| UI-TOOLS-GF | web_runtime | `index.html:12426` | 214 | P2 | READ | - |
-| UI-TOOLS-PROFILE | web_runtime | `index.html:12640` | 365 | P2 | READ | - |
-| UI-SETTINGS | web_runtime | `index.html:13005` | 346 | P1 | READ | - |
-| UI-PROFILE-PRESETS | web_runtime | `index.html:13351` | 374 | P2 | READ | - |
-| UI-CONFIG-PRESETS | web_runtime | `index.html:13725` | 175 | P2 | READ | - |
-| UI-APP-INIT | web_runtime | `index.html:13900` | 165 | P1 | READ | - |
-| UI-PWA-LIFECYCLE | pwa | `index.html:14065` | 84 | P1 | READ | - |
+| UI-VPM-RENDER | web_runtime | `index.html:8005` | 530 | P1 | IN_PROGRESS | - |
+| UI-GAS-INPUTS | web_runtime | `index.html:8535` | 184 | P1 | READ | - |
+| UI-GAS-CARDS | web_runtime | `index.html:8719` | 575 | P1 | IN_PROGRESS | - |
+| UI-ZHL-RUNNER-SETUP | web_runtime | `index.html:9294` | 126 | P0 | IN_PROGRESS | - |
+| UI-ZHL-RUNNER-ENGINE | web_runtime | `index.html:9420` | 342 | P0 | READ | REG-01, REG-06 |
+| UI-ZHL-RESULTS | web_runtime | `index.html:9762` | 502 | P1 | IN_PROGRESS | - |
+| UI-ZHL-HEADLESS-HELPERS | web_runtime | `index.html:10264` | 201 | P1 | READ | - |
+| UI-ZHL-HEADLESS-ENGINE | web_runtime | `index.html:10465` | 385 | P0 | READ | - |
+| UI-PLOT-INIT | web_runtime | `index.html:10850` | 95 | P2 | READ | - |
+| UI-PLOT-RENDER | web_runtime | `index.html:10945` | 440 | P2 | READ | - |
+| UI-PLOT-WAYPOINTS | web_runtime | `index.html:11385` | 528 | P2 | READ | - |
+| UI-TOOLS-TISSUES | web_runtime | `index.html:11913` | 305 | P2 | READ | - |
+| UI-TOOLS-EXPOSURE | web_runtime | `index.html:12218` | 225 | P1 | READ | - |
+| UI-TOOLS-GF | web_runtime | `index.html:12443` | 214 | P2 | READ | - |
+| UI-TOOLS-PROFILE | web_runtime | `index.html:12657` | 365 | P2 | READ | - |
+| UI-SETTINGS | web_runtime | `index.html:13022` | 346 | P1 | READ | - |
+| UI-PROFILE-PRESETS | web_runtime | `index.html:13368` | 374 | P2 | READ | - |
+| UI-CONFIG-PRESETS | web_runtime | `index.html:13742` | 183 | P2 | IN_PROGRESS | - |
+| UI-APP-INIT | web_runtime | `index.html:13925` | 165 | P1 | READ | - |
+| UI-PWA-LIFECYCLE | pwa | `index.html:14090` | 84 | P1 | READ | - |
 | ENG-ZHL-PHYSICS | engine | `zhl-physics-core.js:1` | 189 | P1 | READ | - |
 | ENG-ZHL-GAS | engine | `zhl-gas-core.js:1` | 184 | P1 | READ | - |
 | ENG-ZHL-CCR | engine | `zhl-ccr-core.js:1` | 404 | P0 | READ | - |
@@ -88,8 +88,8 @@
 | APP-GAS-PLAN | ui_core | `gas-plan-core.js:1` | 559 | P1 | VERIFIED | REG-10, REG-12, REG-13 |
 | APP-GAS-TABLE | ui_core | `gas-table-core.js:1` | 302 | P2 | VERIFIED | REG-11, REG-14 |
 | APP-SURFACE-INTERVAL | ui_core | `surf-interval-core.js:1` | 372 | P1 | VERIFIED | REG-17, REG-19, REG-20, REG-21 |
-| APP-SERVICE-WORKER | pwa | `sw.js:1` | 249 | P1 | READ | - |
-| APP-ZHL-WORKER-BRIDGE | worker | `zhl-worker-bridge.js:1` | 135 | P1 | READ | - |
+| APP-SERVICE-WORKER | pwa | `sw.js:1` | 289 | P1 | IN_PROGRESS | - |
+| APP-ZHL-WORKER-BRIDGE | worker | `zhl-worker-bridge.js:1` | 136 | P1 | IN_PROGRESS | - |
 | APP-ZHL-WORKER | worker | `zhl-schedule-worker.js:1` | 23 | P1 | READ | - |
 | APP-DOWNLOAD | web_runtime | `download.html:1` | 119 | P3 | UNREAD | - |
 | APP-MANIFEST | pwa | `manifest.json:1` | 41 | P2 | READ | - |
@@ -114,7 +114,7 @@
 | NATIVE-DRAWABLE-FG | native_android | `android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml:1` | 34 | P3 | UNREAD | - |
 | NATIVE-ICON | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml:1` | 5 | P3 | UNREAD | - |
 | NATIVE-ICON-ROUND | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml:1` | 5 | P3 | UNREAD | - |
-| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 1726 | P1 | READ | - |
+| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 1753 | P1 | IN_PROGRESS | - |
 | TEST-ISSUE-140-REGRESSION | test_infrastructure | `dev/issue140_regression.py:1` | 99 | P1 | IN_PROGRESS | - |
 | TEST-GAS-CORE-REGRESSION | test_infrastructure | `dev/gas_core_regression.py:1` | 129 | P1 | READ | - |
 | TEST-ISSUE-141-REGRESSION | test_infrastructure | `dev/issue141_regression.py:1` | 108 | P1 | IN_PROGRESS | - |
@@ -173,10 +173,11 @@
 | CI-MAIN | ci | `.github/workflows/ci.yml:1` | 189 | P1 | READ | - |
 | CI-DEPLOY | ci | `.github/workflows/deploy.yml:1` | 128 | P1 | READ | - |
 | CI-NOTIFY | ci | `.github/workflows/notify-site.yml:1` | 50 | P2 | READ | - |
+| CI-OFFLINE-ZIP | ci | `.github/workflows/build-offline-zip.yml:1` | 119 | P2 | READ | - |
 | TOOL-AUDIT-V2-__INIT__-PY | tooling | `tools/audit/__init__.py:1` | 3 | P0 | IN_PROGRESS | - |
 | TOOL-AUDIT-V2-__MAIN__-PY | tooling | `tools/audit/__main__.py:1` | 5 | P0 | IN_PROGRESS | - |
 | TOOL-AUDIT-V2-CLI-PY | tooling | `tools/audit/cli.py:1` | 188 | P0 | IN_PROGRESS | - |
-| TOOL-AUDIT-V2-LEGACY_V1-PY | tooling | `tools/audit/legacy_v1.py:1` | 7336 | P0 | IN_PROGRESS | - |
+| TOOL-AUDIT-V2-LEGACY_V1-PY | tooling | `tools/audit/legacy_v1.py:1` | 7340 | P0 | IN_PROGRESS | - |
 | TOOL-AUDIT-V2-MIGRATE_V2-PY | tooling | `tools/audit/migrate_v2.py:1` | 185 | P0 | IN_PROGRESS | - |
 | TOOL-AUDIT-V2-MODEL-PY | tooling | `tools/audit/model.py:1` | 72 | P0 | IN_PROGRESS | - |
 | TOOL-AUDIT-V2-PARSER_BRIDGE-MJS | tooling | `tools/audit/parser_bridge.mjs:1` | 111 | P0 | IN_PROGRESS | - |
@@ -187,5 +188,5 @@
 | TOOL-AUDIT-V2-CASE_REPORT-PY | tooling | `tools/audit/case_report.py:1` | 93 | P0 | IN_PROGRESS | - |
 | TOOL-AUDIT-V2-SUITE_EMIT-PY | tooling | `tools/audit/suite_emit.py:1` | 32 | P0 | IN_PROGRESS | - |
 | TOOL-AUDIT-V2-WORKSPACE-PY | tooling | `tools/audit/workspace.py:1` | 89 | P0 | IN_PROGRESS | - |
-| TOOL-AUDIT-V2-AUDIT-LEGACY-MIGRATION-JSON | tooling | `docs/audit-legacy-migration.json:1` | 31696 | P0 | IN_PROGRESS | - |
+| TOOL-AUDIT-V2-AUDIT-LEGACY-MIGRATION-JSON | tooling | `docs/audit-legacy-migration.json:1` | 31722 | P0 | IN_PROGRESS | - |
 | TOOL-AUDIT-V2-TEST_SYSTEM-PY | tooling | `tools/audit/test_system.py:1` | 184 | P0 | IN_PROGRESS | - |
