@@ -3,7 +3,7 @@
 > Generated schedule and totals. Policy and unit metadata live in `docs/audit-units.json`.
 
 **Baseline:** `fd805111eab2fba349a9303a6e208106b798f82b`
-**Units:** 157 total; 48 unread; 32 in progress; 72 read; 5 verified.
+**Units:** 157 total; 48 unread; 31 in progress; 73 read; 5 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -29,7 +29,7 @@
 
 | Cycle | Application units | New lines | Engine re-verification | Acceptance |
 |---:|---|---:|---|---|
-| 5 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 487 | ENG-ZHL-SCHEDULE | Delegate units fully READ; schedule findings linked to regression IDs |
+| 5 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 492 | ENG-ZHL-SCHEDULE | Delegate units fully READ; schedule findings linked to regression IDs |
 | 6 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 590 | ENG-ZHL-CCR | Physics and schedule input paths READ; no unresolved P0 finding |
 | 7 | UI-SETTINGS-CONTROLS, UI-VPM-RUNNER | 561 | ENG-VPM | Settings restoration and VPM invocation contracts READ |
 | 8 | UI-VPM-RENDER | 529 | ENG-VPM | VPM rendering and safety warning propagation READ |
@@ -42,13 +42,13 @@
 | 15 | UI-PLOT-INIT, UI-PLOT-RENDER | 535 | - | Profile plot init and render READ; issue #154 |
 | 16 | UI-PLOT-WAYPOINTS | 528 | - | Waypoint plot interaction READ; issue #155 |
 | 17 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE | 530 | - | Tissue and exposure tools READ; issue #156 |
-| 18 | UI-TOOLS-GF, UI-TOOLS-PROFILE | 579 | - | GF and profile tools READ; issue #157 |
-| 19 | UI-SETTINGS | 346 | - | Settings persistence READ; issue #158 |
-| 20 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 549 | - | Profile and config presets READ; issue #159 |
+| 18 | UI-TOOLS-GF, UI-TOOLS-PROFILE | 582 | - | GF and profile tools READ; issue #157 |
+| 19 | UI-SETTINGS | 349 | - | Settings persistence READ; issue #158 |
+| 20 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 555 | - | Profile and config presets READ; issue #159 |
 | 21 | UI-APP-INIT | 165 | - | App init and boot hooks READ; issue #160 |
 | 22 | - | 0 | UI-ZHL-DELEGATES | ZHL delegate re-read READ; issue #161 |
 | 23 | UI-RUNTIME-BOOTSTRAP | 270 | - | Runtime bootstrap READ; issue #162 |
-| 24 | UI-ALGORITHM-SETTINGS | 360 | - | Algorithm settings READ; issue #163 |
+| 24 | UI-ALGORITHM-SETTINGS | 364 | - | Algorithm settings READ; issue #163 |
 | 25 | - | 0 | APP-CONTINGENCY | Contingency core READ; issue #164 |
 | 26 | - | 0 | APP-EXPORT, APP-SERVICE-WORKER | Export and service worker READ; issue #165 |
 | 27 | - | 0 | ENG-VPM | VPM engine re-read READ; issue #166 |

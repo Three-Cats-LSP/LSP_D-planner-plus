@@ -4591,9 +4591,11 @@ function setAlgo(a) {
     // Rec mode: hide TEC algo row; ENV settings via global ENV toggle only
     document.getElementById('algoRow').style.display          = 'none';
     syncEnvRowDisplay();
-    document.getElementById('gfPresetsRow').style.display     = 'none';
+    const gfPresetsRow = document.getElementById('gfPresetsRow');
+    if (gfPresetsRow) gfPresetsRow.style.display = 'none';
     document.getElementById('gfCustomRow').style.display      = 'none';
-    document.getElementById('conservatismRow').style.display  = 'none';
+    const conservatismRow = document.getElementById('conservatismRow');
+    if (conservatismRow) conservatismRow.style.display = 'none';
   }
 
   document.getElementById('gasMixField').style.display = (isBuh || isRec) ? 'block' : 'none';
@@ -4917,7 +4919,8 @@ function setDecoAlgorithm(model, skipSave) {
 
   // GF row: show for Bühlmann and VPM-B/GFS, hide for VPM-B
   const showGF = isZHLCGF || isVPMBGFS;
-  document.getElementById('gfPresetsRow').style.display = showGF ? 'flex' : 'none';
+  const gfPresetsRow = document.getElementById('gfPresetsRow');
+  if (gfPresetsRow) gfPresetsRow.style.display = showGF ? 'flex' : 'none';
   const customRowEl   = document.getElementById('gfCustomRow');
   const isCustomSel   = document.getElementById('gfPresetSelect')?.value === 'custom';
   if (customRowEl) {
@@ -4931,7 +4934,8 @@ function setDecoAlgorithm(model, skipSave) {
   }
 
   // Conservatism row: show for VPM-B and VPM-B/GFS
-  document.getElementById('conservatismRow').style.display = isVPM ? 'flex' : 'none';
+  const conservatismRow = document.getElementById('conservatismRow');
+  if (conservatismRow) conservatismRow.style.display = isVPM ? 'flex' : 'none';
 
   // Repetitive dive panels: VPM vs Bühlmann
   if (isVPM) {
@@ -5184,9 +5188,11 @@ function setCustomGF(commit) {
 // ═══════════════════════════════════════════════
 function switchTab(name, btn) {
   if (name === 'tools') name = 'toolsPanel';
+  const panel = document.getElementById(name);
+  if (!panel) return;
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById(name).classList.add('active');
+  panel.classList.add('active');
   if (btn) {
     btn.classList.add('active');
   } else {
@@ -6383,11 +6389,16 @@ function saturateLinear(tissues, fromDepth, toDepth, t, fN2, fHe) { _syncZhlBund
 function saturate(tissues, depthM, t, fN2, fHe) { _syncZhlBundleEnv(); return ZhlEngineBundle.saturate(tissues, depthM, t, fN2, fHe); }
 
 function toggleCustomO2() {
-  const mix = document.getElementById('gasMix').value;
-  document.getElementById('customO2Field').style.display = mix === 'custom' ? 'block' : 'none';
+  const gasMix = document.getElementById('gasMix');
+  if (!gasMix) return;
+  const mix = gasMix.value;
+  const customO2Field = document.getElementById('customO2Field');
+  if (customO2Field) customO2Field.style.display = mix === 'custom' ? 'block' : 'none';
   const showTrimix = mix === 'trimix';
-  document.getElementById('plannerTrimixO2Field').style.display = showTrimix ? 'block' : 'none';
-  document.getElementById('plannerTrimixHeField').style.display = showTrimix ? 'block' : 'none';
+  const plannerTrimixO2Field = document.getElementById('plannerTrimixO2Field');
+  const plannerTrimixHeField = document.getElementById('plannerTrimixHeField');
+  if (plannerTrimixO2Field) plannerTrimixO2Field.style.display = showTrimix ? 'block' : 'none';
+  if (plannerTrimixHeField) plannerTrimixHeField.style.display = showTrimix ? 'block' : 'none';
   syncTecGasMixMemory();
 }
 
@@ -10712,7 +10723,7 @@ function runUnifiedPlan() {
   const fO2  = rbOnLoop ? bot.fO2 : 0.21;
 
   function loadAtDepth(tissues, depthM, durMin) {
-    if (rbOnLoop) return loadTissuesWithCCR(tissues, depthM, depthM, durMin, fO2, fHe, ccr);
+    if (rbOnLoop) return loadTissuesWithCCR(tissues, depthM, depthM, durMin, fO2, fHe, { ...ccr, ccrPhase: 'bottom' });
     return saturate(tissues, depthM, durMin, fN2, fHe);
   }
   function offgasAtSurface(tissues, durMin) {
@@ -12477,9 +12488,12 @@ function drawGFCurve() {
   const firstStop = stops.filter(s => s.type === 'deco').reduce((max, s) => Math.max(max, s.depth), 0);
 
   // Update stats
-  document.getElementById('gfCurveGFL').textContent = mGF.low;
-  document.getElementById('gfCurveGFH').textContent = mGF.high;
-  document.getElementById('gfCurveStops').textContent = stops.filter(s => s.type === 'deco').length || '—';
+  const gfCurveGFL = document.getElementById('gfCurveGFL');
+  const gfCurveGFH = document.getElementById('gfCurveGFH');
+  const gfCurveStops = document.getElementById('gfCurveStops');
+  if (gfCurveGFL) gfCurveGFL.textContent = mGF.low;
+  if (gfCurveGFH) gfCurveGFH.textContent = mGF.high;
+  if (gfCurveStops) gfCurveStops.textContent = stops.filter(s => s.type === 'deco').length || '—';
 
   const maxDepth = Math.max(bottomDepth, 10);
   const maxDepthY = maxDepth * (isMobile ? 1.01 : 1.03);
@@ -12650,7 +12664,7 @@ function attachDiveProfileInteraction(canvasId) {
   const crossV   = document.getElementById(canvasId + '-crosshair-v');
   const crossH   = document.getElementById(canvasId + '-crosshair-h');
   const canvas   = document.getElementById(canvasId);
-  if (!overlay || !tooltip || !canvas) return;
+  if (!overlay || !tooltip || !crossV || !crossH || !canvas) return;
 
   function getInfo(clientX, clientY) {
     const rect = canvas.getBoundingClientRect();
@@ -12903,7 +12917,7 @@ function attachGFCurveInteraction() {
   const crossV   = document.getElementById(canvasId + '-crosshair-v');
   const crossH   = document.getElementById(canvasId + '-crosshair-h');
   const canvas   = document.getElementById(canvasId);
-  if (!overlay || !tooltip || !canvas) return;
+  if (!overlay || !tooltip || !crossV || !crossH || !canvas) return;
 
   function getGFInfo(clientX, clientY) {
     const rect = canvas.getBoundingClientRect();
@@ -13241,6 +13255,7 @@ var appSettings = {
   _restoreFields: function(values) {
     let restored = 0;
     this._restoreInProgress = true;
+    try {
     if (!window._zhlHeadless && typeof restoreDecoGasCardLayout === 'function') {
       restoreDecoGasCardLayout(values.__decoCardIds, values.__dgNextIdx);
     }
@@ -13312,7 +13327,9 @@ var appSettings = {
         }
       });
     }
-    this._restoreInProgress = false;
+    } finally {
+      this._restoreInProgress = false;
+    }
     if (!window._zhlHeadless && typeof this.save === 'function') {
       this.save(false);
     }
@@ -13358,10 +13375,12 @@ function saveProfilePresets(arr) {
 
 function openDiveProfilePresets() {
   _renderProfilePresetModal();
-  document.getElementById('profilePresetModal').style.display = 'flex';
+  const modal = document.getElementById('profilePresetModal');
+  if (modal) modal.style.display = 'flex';
 }
 function closeDiveProfilePresets() {
-  document.getElementById('profilePresetModal').style.display = 'none';
+  const modal = document.getElementById('profilePresetModal');
+  if (modal) modal.style.display = 'none';
 }
 
 function _renderProfilePresetModal() {
@@ -13486,10 +13505,12 @@ function saveConfigPresets(arr) {
 
 function openAdvConfigPresets() {
   _renderConfigPresetModal();
-  document.getElementById('configPresetModal').style.display = 'flex';
+  const modal = document.getElementById('configPresetModal');
+  if (modal) modal.style.display = 'flex';
 }
 function closeAdvConfigPresets() {
-  document.getElementById('configPresetModal').style.display = 'none';
+  const modal = document.getElementById('configPresetModal');
+  if (modal) modal.style.display = 'none';
 }
 
 function _snapshotAdvConfig() {
@@ -13786,10 +13807,12 @@ function presetSummary(values) {
 
 function openPresetModal() {
   renderPresetList();
-  document.getElementById('presetModal').style.display = 'flex';
+  const modal = document.getElementById('presetModal');
+  if (modal) modal.style.display = 'flex';
 }
 function closePresetModal() {
-  document.getElementById('presetModal').style.display = 'none';
+  const modal = document.getElementById('presetModal');
+  if (modal) modal.style.display = 'none';
 }
 
 function renderPresetList() {

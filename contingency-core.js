@@ -95,8 +95,11 @@ function showContingencySlate() {
   if (!getBottomGasFractions()) { notifyInvalidGasExport('slate'); return; }
   const text = buildContingencySlateText();
   if (!text) { showToast('Run an emergency plan first', 'slate', true); return; }
-  document.getElementById('slateModalBody').textContent = text;
-  document.getElementById('slateModal').style.display = 'flex';
+  const body = document.getElementById('slateModalBody');
+  const modal = document.getElementById('slateModal');
+  if (!body || !modal) return;
+  body.textContent = text;
+  modal.style.display = 'flex';
 }
 
 /** Render against a scratch #decoTableBody so the live schedule table is never mutated. */
