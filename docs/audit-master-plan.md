@@ -3,7 +3,7 @@
 > Generated schedule and totals. Policy and unit metadata live in `docs/audit-units.json`.
 
 **Baseline:** `fd805111eab2fba349a9303a6e208106b798f82b`
-**Units:** 158 total; 48 unread; 35 in progress; 61 read; 14 verified.
+**Units:** 159 total; 48 unread; 39 in progress; 59 read; 13 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -30,7 +30,7 @@
 | Cycle | Application units | New lines | Engine re-verification | Acceptance |
 |---:|---|---:|---|---|
 | 5 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 487 | ENG-ZHL-SCHEDULE | Delegate units fully READ; schedule findings linked to regression IDs |
-| 6 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 590 | ENG-ZHL-CCR | Physics and schedule input paths READ; no unresolved P0 finding |
+| 6 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 577 | ENG-ZHL-CCR | Physics and schedule input paths READ; no unresolved P0 finding |
 | 7 | UI-SETTINGS-CONTROLS, UI-VPM-RUNNER | 563 | ENG-VPM | Settings restoration and VPM invocation contracts READ |
 | 8 | UI-VPM-RENDER | 530 | ENG-VPM | VPM rendering and safety warning propagation READ |
 | 9 | UI-GAS-CARDS | 575 | ENG-ZHL-GAS | Dynamic gas-card units and persistence READ |
@@ -47,7 +47,7 @@
 | 20 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 557 | - | Profile and config presets READ; issue #159 |
 | 21 | UI-APP-INIT | 165 | - | App init and boot hooks READ; issue #160 |
 | 22 | - | 0 | UI-ZHL-DELEGATES | ZHL delegate re-read READ; issue #161 |
-| 23 | UI-RUNTIME-BOOTSTRAP | 270 | - | Runtime bootstrap READ; issue #162 |
+| 23 | UI-RUNTIME-BOOTSTRAP | 238 | - | Runtime bootstrap READ; issue #162 |
 | 24 | UI-ALGORITHM-SETTINGS | 360 | - | Algorithm settings READ; issue #163 |
 | 25 | - | 0 | APP-CONTINGENCY | Contingency core READ; issue #164 |
 | 26 | - | 0 | APP-EXPORT, APP-SERVICE-WORKER | Export and service worker READ; issue #165 |

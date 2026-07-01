@@ -27,6 +27,7 @@ ROOT_FILES = [
     "icon-512.png",
     "sw.js",
     "zhl-engine-bundle.js",
+    "padi-engine.js",
     "vpm-engine-bundle.js",
     "zhl-worker-bridge.js",
     "zhl-schedule-worker.js",

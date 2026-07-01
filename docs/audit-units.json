@@ -346,6 +346,14 @@
       "suite_id": "SUITE-ENGINE-FULL",
       "case_id": "CYCLE35-WHOLE-MIN-STOPS-PROP"
     },
+    "REG-56": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "ENG-RDP-PURE-MIXES"
+    },
+    "REG-57": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "ENG-RDP-CUSTOM-FALLBACK"
+    },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
       "case_id": "android-compile"
@@ -591,7 +599,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MARKUP-HEADER"
       },
-      "fingerprint": "d2d416148bbc9d763852d2e07cc16ceb5aaf1664c87b43f3e1da4552204963d4",
+      "fingerprint": "7f37f5b4b5d3249e223f8b8ca9c4329672c4ebbd7be31ca1b7c693001465d1ab",
       "last_read_fingerprint": null
     },
     {
@@ -651,13 +659,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-RUNTIME-BOOTSTRAP"
       },
-      "fingerprint": "502f53f2f99fb4bedac4812a00086c1c0c9cf194cd4abe7cf44df9caa56481f0",
-      "last_read_fingerprint": "502f53f2f99fb4bedac4812a00086c1c0c9cf194cd4abe7cf44df9caa56481f0",
+      "fingerprint": "16312956581fa1f26630f4479289a82b03bf88b1d6625355641b54c186da521e",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 162
@@ -686,7 +694,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MODE-STATE"
       },
-      "fingerprint": "257d8797fffa475da08836d91422ff5d157ccf84ff6645d94cc2b1794ffa9f7b",
+      "fingerprint": "556bb16ca8af6f11a3924a5d0459eb060d8e9fd0ec3fe192b228e0603d8cba57",
       "last_read_fingerprint": null
     },
     {
@@ -791,13 +799,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-DECO-PHYSICS"
       },
-      "fingerprint": "0e28b392ed53a714b92e0c461580f1bfef232294d0f9a789be5384bde9298a5e",
-      "last_read_fingerprint": "0e28b392ed53a714b92e0c461580f1bfef232294d0f9a789be5384bde9298a5e",
+      "fingerprint": "fa931d64c31af29b96d16ba717c221fb013d91eb45d8ca9d3d9ddadf29863e5c",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 145
@@ -1279,6 +1287,23 @@
       "last_read_fingerprint": null
     },
     {
+      "id": "ENG-RDP",
+      "path": "padi-engine.js",
+      "layer": "engine",
+      "priority": "P1",
+      "status": "READ",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "e7c22383698125fe514ee21a66aba966d0f8b0f5bfcf3e73fe794eae18c3b8b5",
+      "last_read_fingerprint": "e7c22383698125fe514ee21a66aba966d0f8b0f5bfcf3e73fe794eae18c3b8b5",
+      "evidence": [],
+      "regression_cases": [
+        "REG-56",
+        "REG-57"
+      ]
+    },
+    {
       "id": "APP-ANDROID-SELECT",
       "path": "android-select-picker.js",
       "layer": "native_bridge",
@@ -1417,18 +1442,14 @@
       "path": "sw.js",
       "layer": "pwa",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "310feef7f8261494429ba2ca7d43a9fc1316baff7846e8a2f61ced01e4c56ec8",
-      "last_read_fingerprint": "310feef7f8261494429ba2ca7d43a9fc1316baff7846e8a2f61ced01e4c56ec8",
-      "evidence": [
-        "REG-45"
-      ],
-      "regression_cases": [
-        "REG-45"
-      ],
+      "fingerprint": "e396e88e8d404f64a2e1c47ffeb1cb13e6373517e2da254e7b23738b1e747ffb",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 165,
       "issue": "Cycle 31 deployed shell precache and network-first engine delivery"
     },
@@ -1756,7 +1777,7 @@
       "evidence": [],
       "issue": "GitHub #133–#138 audit regressions and Cycle 31–34 verification",
       "regression_cases": [],
-      "fingerprint": "6908951e0f338a02a1b22a7d083a7f61c01dac3c199b8495537ec13ff01cf819",
+      "fingerprint": "ab7567e1d67627b72f6ffc9d2c3de73c9e4505b39514bb04811414422c9356e7",
       "last_read_fingerprint": null,
       "audit_issue": 169
     },
@@ -2243,7 +2264,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "d653ae570836a1b7b6cb480dfb2712b18a79e65864b458648211a0d8a4d64e8c",
+      "fingerprint": "e7cb24cdd1b287dc5b6b25525f52782e2b18691146fdc9ead88c52fc309b497b",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
@@ -2424,12 +2445,14 @@
       "path": "tools/sync_www.py",
       "layer": "tooling",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "6d0e8e20f4bcc6698162968969e56defcc3491e4677a8457550e2ea70334cf14",
-      "last_read_fingerprint": "6d0e8e20f4bcc6698162968969e56defcc3491e4677a8457550e2ea70334cf14"
+      "fingerprint": "b126f3eb9228bc4ec65a1895bdbd9e0a551398aeb8246dc312d74f898508f71b",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "TOOL-UPDATE-VERSION",
@@ -2611,7 +2634,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a73f3fb08cfa027e6fe1150e6a0b51279a9818b323b51133c9df6e53ca4b5b0a",
+      "fingerprint": "37606eba13af03c134c67fe1481dcc68a98553699f5b7bca7be6bf79d5655e24",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2776,7 +2799,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3993f50397ca1bd356ac9a8fb82e76f9b1f4092087600f736ada0275c9517a5f",
+      "fingerprint": "1269cb638c6aefa4cb900a40c88e7bce3b45f83f9b9a15d21fed8f9ebbaca811",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3281,7 +3304,9 @@
         "CYCLE34-INVALID-MOD-DISPLAY",
         "CYCLE35-O2-SWITCH-DEPTH",
         "CYCLE35-WHOLE-MIN-STOPS-PROP",
-        "CYCLE35-WHOLE-MIN-STOPS-EFFECT"
+        "CYCLE35-WHOLE-MIN-STOPS-EFFECT",
+        "ENG-RDP-PURE-MIXES",
+        "ENG-RDP-CUSTOM-FALLBACK"
       ]
     },
     {

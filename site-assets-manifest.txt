@@ -11,6 +11,7 @@ icon-192.png
 icon-512.png
 index.html
 manifest.json
+padi-engine.js
 surf-interval-core.js
 sw.js
 tests-ccr-differential.html

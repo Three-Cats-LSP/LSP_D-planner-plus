@@ -6665,10 +6665,21 @@ if (
     ok("issue #130 BUG-05/07/10: worker passes resolved env to calculate (no duplicate applyEnvironment)")
 else:
     fail("issue #130 BUG-05/07/10: worker still double-applies env or passes raw null environment")
-if "ZhlEngineBundle.buhNDL(depthM, fN2, 50, 100, 0, 5, 5, false)" in js:
-    ok("issue #130 BUG-06: rec custom nitrox NDL uses explicit 5 m stop params")
+_index_root130 = os.path.dirname(os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else "index.html"))
+_padi_engine_path = os.path.join(_index_root130, "padi-engine.js")
+_padi_engine130 = open(_padi_engine_path, encoding="utf-8").read() if os.path.isfile(_padi_engine_path) else ""
+_bug06 = {
+    "padi_file": os.path.isfile(_padi_engine_path),
+    "script_tag": 'src="padi-engine.js"' in html,
+    "normalizeRecMix": "normalizeRecMix" in _padi_engine130,
+    "no_buh_in_pe": "ZhlEngineBundle.buhNDL" not in _padi_engine130,
+    "no_custom_in_pe": "mix === 'custom'" not in _padi_engine130,
+    "no_old_buh_in_js": "ZhlEngineBundle.buhNDL(depthM, fN2, 50, 100, 0, 5, 5, false)" not in js,
+}
+if all(_bug06.values()):
+    ok("issue #130 BUG-06: Rec NDL is pure PADI tables (Air/EAN32/EAN36); custom nitrox removed")
 else:
-    fail("issue #130 BUG-06: rec custom nitrox NDL still inherits DOM decoStep/lastStop")
+    fail(f"issue #130 BUG-06: Rec RDP purity check failed: {_bug06}")
 _ndl130 = _physics_core_js.split("function ndlClearAtDepth", 1)[-1].split("function buhNDL", 1)[0] if "function ndlClearAtDepth" in _physics_core_js else ""
 if "if (!(decoStep > 0)) decoStep = 3" in _ndl130:
     ok("issue #130 BUG-09: ndlClearAtDepth guards invalid decoStep/lastStop")

@@ -1639,6 +1639,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 <script src="app-version.js"></script>
 <script src="capacitor-bridge.js"></script>
 <script src="zhl-engine-bundle.js"></script>
+<script src="padi-engine.js"></script>
 <script src="vpm-engine-bundle.js"></script>
 <script src="zhl-worker-bridge.js"></script>
 <!-- LSP-EXTRACT-BEGIN:surf-interval-core -->
@@ -4013,46 +4014,11 @@ const ZHL16C_HE_HT_BUHL2003 = ZhlEngineBundle.ZHL16C_HE_HT_BUHL2003;
 let ZHL16C_HE_HT = ZhlEngineBundle.ZHL16C_HE_HT;
 const ZHL16C_HE_AB = ZhlEngineBundle.ZHL16C_HE_AB;
 
-// Rec RDP data
-const PADI_DEPTHS_M  = [10,12,15,18,21,24,27,30,33,36,40];
-const PADI_DEPTHS_FT = [35,40,50,60,70,80,90,100,110,120,130];
-const PADI_NDL_M  = [310,230,100,60,35,25,20,15,13,10,8];
-const PADI_NDL_FT = [310,230,100,60,35,25,20,15,13,10,8];
-const PADI_GROUPS = ['A','B','C','D','E','F','G','H','I','J','K'];
-const PADI_TABLE_MAX_M = PADI_DEPTHS_M[PADI_DEPTHS_M.length - 1];
-const PADI_TABLE_MAX_FT = PADI_DEPTHS_FT[PADI_DEPTHS_FT.length - 1];
+// Rec RDP tables + lookup: padi-engine.js (PadiEngine)
 
-/** PADI RDP row: first table depth >= dive depth (conservative ceiling lookup). */
-function padiTableRowIndex(depthM) {
-  if (!Number.isFinite(depthM) || depthM <= 0) return null;
-  if (depthM > PADI_TABLE_MAX_M + 1e-6) return null;
-  for (let i = 0; i < PADI_DEPTHS_M.length; i++) {
-    if (PADI_DEPTHS_M[i] >= depthM - 1e-9) return i;
-  }
-  return PADI_DEPTHS_M.length - 1;
-}
-
-// PADI Nitrox NDL tables (IANTD/PADI Enriched Air Diver standard tables)
-// EAN32 (32% O2) — indexed to match PADI_DEPTHS_M
-const NITROX_NDL_EAN32 = [310,230,145,75,55,30,25,20,16,13,9];
-// EAN36 (36% O2) — indexed to match PADI_DEPTHS_M
-const NITROX_NDL_EAN36 = [310,230,170,100,60,40,30,25,20,15,10];
 // MOD for nitrox mixes at ppO2 limit (recreational) — delegates to calcGasMODm
 function nitroxMOD(fO2, ppO2limit) {
   return calcGasMODm(fO2, ppO2limit);
-}
-function getNitroxNDL(depthM, mix) {
-  const idx = padiTableRowIndex(depthM);
-  if (idx == null) return 0;
-  if (mix === 'ean32') return NITROX_NDL_EAN32[idx];
-  if (mix === 'ean36') return NITROX_NDL_EAN36[idx];
-  if (mix === 'custom') {
-    const fN2 = getN2Frac(mix);
-    if (fN2 == null) return PADI_NDL_M[idx];
-    _syncZhlBundleEnv();
-    return ZhlEngineBundle.buhNDL(depthM, fN2, 50, 100, 0, 5, 5, false); // rec nitrox: 5 m stops, no shallow GF
-  }
-  return PADI_NDL_M[idx]; // air
 }
 
 window._tecGasMix = window._tecGasMix || null;
@@ -4060,14 +4026,17 @@ window._tecGasMix = window._tecGasMix || null;
 function getPersistedGasMix() {
   const el = document.getElementById('gasMix');
   if (!el) return 'air';
-  if (typeof algo !== 'undefined' && algo === 'padi' && window._tecGasMix) return window._tecGasMix;
+  if (typeof algo !== 'undefined' && algo === 'padi') {
+    return PadiEngine.normalizeRecMix(el.value || 'air');
+  }
   return el.value || 'air';
 }
 
 function syncRecGasMixDisplay() {
   const gasMixSel = document.getElementById('gasMix');
   if (!gasMixSel || typeof algo === 'undefined' || algo !== 'padi') return;
-  if (window._tecGasMix === 'ean50' || window._tecGasMix === 'trimix') {
+  const recMixes = PadiEngine.REC_MIXES;
+  if (!recMixes.includes(gasMixSel.value)) {
     gasMixSel.value = 'air';
     toggleCustomO2();
   }
@@ -4604,6 +4573,7 @@ function setAlgo(a) {
   if (gasMixSel) {
     Array.from(gasMixSel.options).forEach(opt => {
       if (opt.value === 'ean50' || opt.value === 'trimix') opt.style.display = isBuh ? '' : 'none';
+      if (opt.value === 'custom') opt.style.display = isRec ? 'none' : '';
     });
     if (isBuh) {
       if (window._tecGasMix) gasMixSel.value = window._tecGasMix;
@@ -6910,19 +6880,6 @@ function maxSatPct(tissues, gfHigh) {
 }
 
 // ═══════════════════════════════════════════════
-// PADI LOOKUP
-// ═══════════════════════════════════════════════
-function padiNDL(depthM, mix) {
-  return getNitroxNDL(depthM, mix || 'air');
-}
-function padiGroup(depthM, time, mix) {
-  const ndl = getNitroxNDL(depthM, mix || 'air');
-  const pct = time/ndl;
-  const gi  = Math.min(PADI_GROUPS.length-1, Math.floor(pct * PADI_GROUPS.length * 0.7));
-  return PADI_GROUPS[gi];
-}
-
-// ═══════════════════════════════════════════════
 // PLANNER
 // ═══════════════════════════════════════════════
 function runPlanner() {
@@ -6940,7 +6897,7 @@ function runPlanner() {
   const bt  = parseInt(document.getElementById('bt').value)||25;
   const gfL = mGF.low;
   const gfH = mGF.high;
-  const mix = document.getElementById('gasMix').value;
+  const mix = getPersistedGasMix();
   const modPpo2 = parseFloat(document.getElementById('ppo2Bottom')?.value) || 1.4;
   const fN2 = getN2Frac(mix);
   if (fN2 == null) {
@@ -6954,9 +6911,9 @@ function runPlanner() {
   let html = '';
 
   if (algo === 'padi') {
-    const fO2 = 1 - fN2;
+    const fO2 = PadiEngine.recMixFO2(mix);
     const isNitrox = mix !== 'air';
-    const gasLabel = mix === 'ean32' ? '32/00' : mix === 'ean36' ? '36/00' : mix === 'custom' ? `${Math.round(fO2*100)}/00` : 'Air';
+    const gasLabel = mix === 'ean32' ? '32/00' : mix === 'ean36' ? '36/00' : 'Air';
     const pO2  = parseFloat((depthBar(depthM) * fO2).toFixed(2));
     const ndl = padiNDL(depthM, mix);
     const rem = ndl > 0 ? Math.max(0, ndl - bt) : 0;

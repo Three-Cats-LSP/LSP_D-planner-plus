@@ -1642,6 +1642,38 @@ ENGINE_SUITE_JS = r"""
     };
   })();
 
+  // ENG-RDP: standalone PADI table engine — Air / EAN32 / EAN36 only.
+  out.sections.engRdp = (() => {
+    const pe = window.PadiEngine;
+    const bundleOk = !!(pe && typeof pe.padiTableRowIndex === 'function');
+    const ndl18air = bundleOk ? pe.getNitroxNDL(18, 'air') : null;
+    const ndl18ean36 = bundleOk ? pe.getNitroxNDL(18, 'ean36') : null;
+    const ndl18ean32 = bundleOk ? pe.getNitroxNDL(18, 'ean32') : null;
+    const pureMixesOk = ndl18air === 60 && ndl18ean36 === 100 && ndl18ean32 === 75;
+    const customFallbackOk = bundleOk && pe.getNitroxNDL(18, 'custom') === ndl18air
+      && pe.getNitroxNDL(18, 'trimix') === ndl18air;
+    const normalizeOk = bundleOk
+      && pe.normalizeRecMix('custom') === 'air'
+      && pe.normalizeRecMix('ean32') === 'ean32';
+    const gasMixEl = document.getElementById('gasMix');
+    const prevAlgo = typeof algo !== 'undefined' ? algo : null;
+    let recGasUiOk = false;
+    if (gasMixEl && typeof setAlgo === 'function') {
+      setAlgo('padi');
+      const customOpt = Array.from(gasMixEl.options).find(o => o.value === 'custom');
+      recGasUiOk = !!(customOpt && customOpt.style.display === 'none');
+      if (prevAlgo != null) setAlgo(prevAlgo);
+    }
+    return {
+      ok: bundleOk && pureMixesOk && customFallbackOk && normalizeOk && recGasUiOk,
+      bundleOk,
+      pureMixesOk,
+      customFallbackOk,
+      normalizeOk,
+      recGasUiOk,
+    };
+  })();
+
   // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
   out.sections.cycle6 = (() => {
     const rdp11 = typeof padiTableRowIndex === 'function' ? padiTableRowIndex(11) : null;
@@ -2054,6 +2086,12 @@ def run_suite(page) -> dict:
     assert_true(c35.get("imperialO2SwitchOk"), "[CYCLE35-O2-SWITCH-DEPTH] test_zhl_imperial_pure_o2_switch_depth_uses_6m_not_20m", str(c35))
     assert_true(c35.get("wholeMinStopsPropOk"), "[CYCLE35-WHOLE-MIN-STOPS-PROP] buildZhlScheduleParamsFromEngine propagates wholeMinStops", str(c35))
     assert_true(c35.get("wholeMinStopsEffectOk"), "[CYCLE35-WHOLE-MIN-STOPS-EFFECT] test_zhl_engine_calculate_respects_whole_min_stops_false", str(c35))
+    erdp = s.get("engRdp", {})
+    assert_true(erdp.get("bundleOk"), "[ENG-RDP-PURE-MIXES] PadiEngine bundle loads", str(erdp))
+    assert_true(erdp.get("pureMixesOk"), "[ENG-RDP-PURE-MIXES] Air/EAN32/EAN36 NDL tables at 18 m", str(erdp))
+    assert_true(erdp.get("customFallbackOk"), "[ENG-RDP-CUSTOM-FALLBACK] non-standard mixes fall back to air table", str(erdp))
+    assert_true(erdp.get("normalizeOk"), "[ENG-RDP-CUSTOM-FALLBACK] normalizeRecMix restricts to standard gases", str(erdp))
+    assert_true(erdp.get("recGasUiOk"), "[ENG-RDP-CUSTOM-FALLBACK] Rec mode hides custom gas option", str(erdp))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
     sw_block = sw_install.split("addEventListener('install'")[1].split("addEventListener('activate'")[0] if "addEventListener('install'" in sw_install else ""
     assert_true("clients.matchAll" not in sw_block, "[CYCLE7-L2] SW install handler does not postMessage before claim")
@@ -2147,6 +2185,8 @@ def _audit_case_rows():
         case_row("CYCLE35-O2-SWITCH-DEPTH", case_ok("CYCLE35-O2-SWITCH-DEPTH")),
         case_row("CYCLE35-WHOLE-MIN-STOPS-PROP", case_ok("CYCLE35-WHOLE-MIN-STOPS-PROP")),
         case_row("CYCLE35-WHOLE-MIN-STOPS-EFFECT", case_ok("CYCLE35-WHOLE-MIN-STOPS-EFFECT")),
+        case_row("ENG-RDP-PURE-MIXES", case_ok("ENG-RDP-PURE-MIXES")),
+        case_row("ENG-RDP-CUSTOM-FALLBACK", case_ok("ENG-RDP-CUSTOM-FALLBACK")),
     ]
 
 

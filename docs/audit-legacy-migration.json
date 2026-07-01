@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "legacy_path": "tools/audit/legacy_v1.py",
-  "legacy_sha256": "a73f3fb08cfa027e6fe1150e6a0b51279a9818b323b51133c9df6e53ca4b5b0a",
+  "legacy_sha256": "37606eba13af03c134c67fe1481dcc68a98553699f5b7bca7be6bf79d5655e24",
   "cutover_policy": {
     "required_consecutive_clean_main_runs": 3,
     "recorded_runs": []
@@ -27925,8 +27925,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06669-OK",
-      "line": 6669,
+      "id": "LEG-GX-L06680-OK",
+      "line": 6680,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -27939,64 +27939,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06671-FAIL",
-      "line": 6671,
-      "call": "fail",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06674-OK",
-      "line": 6674,
-      "call": "ok",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06676-FAIL",
-      "line": 6676,
-      "call": "fail",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06681-OK",
-      "line": 6681,
-      "call": "ok",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06683-FAIL",
-      "line": 6683,
+      "id": "LEG-GX-L06682-FAIL",
+      "line": 6682,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28037,8 +27981,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06693-OK",
-      "line": 6693,
+      "id": "LEG-GX-L06692-OK",
+      "line": 6692,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28051,8 +27995,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06695-FAIL",
-      "line": 6695,
+      "id": "LEG-GX-L06694-FAIL",
+      "line": 6694,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28065,22 +28009,22 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06698-OK",
+      "id": "LEG-GX-L06696-OK",
+      "line": 6696,
+      "call": "ok",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L06698-FAIL",
       "line": 6698,
-      "call": "ok",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06700-FAIL",
-      "line": 6700,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28093,8 +28037,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06708-OK",
-      "line": 6708,
+      "id": "LEG-GX-L06704-OK",
+      "line": 6704,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28107,8 +28051,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06710-FAIL",
-      "line": 6710,
+      "id": "LEG-GX-L06706-FAIL",
+      "line": 6706,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28121,8 +28065,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06713-OK",
-      "line": 6713,
+      "id": "LEG-GX-L06709-OK",
+      "line": 6709,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28135,8 +28079,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06715-FAIL",
-      "line": 6715,
+      "id": "LEG-GX-L06711-FAIL",
+      "line": 6711,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28149,8 +28093,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06720-OK",
-      "line": 6720,
+      "id": "LEG-GX-L06719-OK",
+      "line": 6719,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28163,8 +28107,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06722-FAIL",
-      "line": 6722,
+      "id": "LEG-GX-L06721-FAIL",
+      "line": 6721,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28205,8 +28149,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06728-OK",
-      "line": 6728,
+      "id": "LEG-GX-L06731-OK",
+      "line": 6731,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28219,8 +28163,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06730-FAIL",
-      "line": 6730,
+      "id": "LEG-GX-L06733-FAIL",
+      "line": 6733,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28233,8 +28177,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06734-OK",
-      "line": 6734,
+      "id": "LEG-GX-L06735-OK",
+      "line": 6735,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28247,8 +28191,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06736-FAIL",
-      "line": 6736,
+      "id": "LEG-GX-L06737-FAIL",
+      "line": 6737,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28261,8 +28205,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06738-OK",
-      "line": 6738,
+      "id": "LEG-GX-L06739-OK",
+      "line": 6739,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28275,8 +28219,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06740-FAIL",
-      "line": 6740,
+      "id": "LEG-GX-L06741-FAIL",
+      "line": 6741,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28289,8 +28233,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06742-OK",
-      "line": 6742,
+      "id": "LEG-GX-L06745-OK",
+      "line": 6745,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28303,23 +28247,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06744-FAIL",
-      "line": 6744,
-      "call": "fail",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06747-OK",
+      "id": "LEG-GX-L06747-FAIL",
       "line": 6747,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -28331,22 +28261,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06749-FAIL",
+      "id": "LEG-GX-L06749-OK",
       "line": 6749,
-      "call": "fail",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06752-OK",
-      "line": 6752,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28359,8 +28275,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06754-FAIL",
-      "line": 6754,
+      "id": "LEG-GX-L06751-FAIL",
+      "line": 6751,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28373,8 +28289,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06757-OK",
-      "line": 6757,
+      "id": "LEG-GX-L06753-OK",
+      "line": 6753,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28387,8 +28303,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06759-FAIL",
-      "line": 6759,
+      "id": "LEG-GX-L06755-FAIL",
+      "line": 6755,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28401,8 +28317,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06761-OK",
-      "line": 6761,
+      "id": "LEG-GX-L06758-OK",
+      "line": 6758,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28415,22 +28331,22 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06763-FAIL",
+      "id": "LEG-GX-L06760-FAIL",
+      "line": 6760,
+      "call": "fail",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L06763-OK",
       "line": 6763,
-      "call": "fail",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06769-OK",
-      "line": 6769,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28443,8 +28359,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06771-FAIL",
-      "line": 6771,
+      "id": "LEG-GX-L06765-FAIL",
+      "line": 6765,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28457,8 +28373,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06773-OK",
-      "line": 6773,
+      "id": "LEG-GX-L06768-OK",
+      "line": 6768,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28471,8 +28387,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06775-FAIL",
-      "line": 6775,
+      "id": "LEG-GX-L06770-FAIL",
+      "line": 6770,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28485,8 +28401,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06778-OK",
-      "line": 6778,
+      "id": "LEG-GX-L06772-OK",
+      "line": 6772,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28499,9 +28415,23 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06780-FAIL",
+      "id": "LEG-GX-L06774-FAIL",
+      "line": 6774,
+      "call": "fail",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L06780-OK",
       "line": 6780,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -28513,9 +28443,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06782-OK",
+      "id": "LEG-GX-L06782-FAIL",
       "line": 6782,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -28527,22 +28457,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06784-FAIL",
+      "id": "LEG-GX-L06784-OK",
       "line": 6784,
-      "call": "fail",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06787-OK",
-      "line": 6787,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28555,22 +28471,22 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06789-FAIL",
+      "id": "LEG-GX-L06786-FAIL",
+      "line": 6786,
+      "call": "fail",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L06789-OK",
       "line": 6789,
-      "call": "fail",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06792-OK",
-      "line": 6792,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28583,8 +28499,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06794-FAIL",
-      "line": 6794,
+      "id": "LEG-GX-L06791-FAIL",
+      "line": 6791,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28597,8 +28513,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06797-OK",
-      "line": 6797,
+      "id": "LEG-GX-L06793-OK",
+      "line": 6793,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28611,8 +28527,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06799-FAIL",
-      "line": 6799,
+      "id": "LEG-GX-L06795-FAIL",
+      "line": 6795,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28625,8 +28541,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06801-OK",
-      "line": 6801,
+      "id": "LEG-GX-L06798-OK",
+      "line": 6798,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28639,22 +28555,22 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06803-FAIL",
+      "id": "LEG-GX-L06800-FAIL",
+      "line": 6800,
+      "call": "fail",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L06803-OK",
       "line": 6803,
-      "call": "fail",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06810-OK",
-      "line": 6810,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28667,9 +28583,51 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06812-FAIL",
-      "line": 6812,
+      "id": "LEG-GX-L06805-FAIL",
+      "line": 6805,
       "call": "fail",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L06808-OK",
+      "line": 6808,
+      "call": "ok",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L06810-FAIL",
+      "line": 6810,
+      "call": "fail",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L06812-OK",
+      "line": 6812,
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -28695,8 +28653,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06820-OK",
-      "line": 6820,
+      "id": "LEG-GX-L06821-OK",
+      "line": 6821,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28709,8 +28667,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06822-FAIL",
-      "line": 6822,
+      "id": "LEG-GX-L06823-FAIL",
+      "line": 6823,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28723,8 +28681,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06824-FAIL",
-      "line": 6824,
+      "id": "LEG-GX-L06825-FAIL",
+      "line": 6825,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28737,23 +28695,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06829-OK",
-      "line": 6829,
-      "call": "ok",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06831-FAIL",
+      "id": "LEG-GX-L06831-OK",
       "line": 6831,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -28765,9 +28709,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06833-OK",
+      "id": "LEG-GX-L06833-FAIL",
       "line": 6833,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -28793,8 +28737,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06845-OK",
-      "line": 6845,
+      "id": "LEG-GX-L06840-OK",
+      "line": 6840,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28807,8 +28751,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06847-FAIL",
-      "line": 6847,
+      "id": "LEG-GX-L06842-FAIL",
+      "line": 6842,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28821,22 +28765,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06849-FAIL",
-      "line": 6849,
-      "call": "fail",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06853-OK",
-      "line": 6853,
+      "id": "LEG-GX-L06844-OK",
+      "line": 6844,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28849,8 +28779,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06855-FAIL",
-      "line": 6855,
+      "id": "LEG-GX-L06846-FAIL",
+      "line": 6846,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28863,8 +28793,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06861-OK",
-      "line": 6861,
+      "id": "LEG-GX-L06856-OK",
+      "line": 6856,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28877,8 +28807,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06863-FAIL",
-      "line": 6863,
+      "id": "LEG-GX-L06858-FAIL",
+      "line": 6858,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28891,8 +28821,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06865-FAIL",
-      "line": 6865,
+      "id": "LEG-GX-L06860-FAIL",
+      "line": 6860,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28905,8 +28835,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06870-OK",
-      "line": 6870,
+      "id": "LEG-GX-L06864-OK",
+      "line": 6864,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28919,22 +28849,22 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06872-FAIL",
+      "id": "LEG-GX-L06866-FAIL",
+      "line": 6866,
+      "call": "fail",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L06872-OK",
       "line": 6872,
-      "call": "fail",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06875-OK",
-      "line": 6875,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28947,8 +28877,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06877-FAIL",
-      "line": 6877,
+      "id": "LEG-GX-L06874-FAIL",
+      "line": 6874,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28961,22 +28891,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06880-OK",
-      "line": 6880,
-      "call": "ok",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06882-FAIL",
-      "line": 6882,
+      "id": "LEG-GX-L06876-FAIL",
+      "line": 6876,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -28989,8 +28905,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06884-OK",
-      "line": 6884,
+      "id": "LEG-GX-L06881-OK",
+      "line": 6881,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29003,22 +28919,22 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06886-FAIL",
+      "id": "LEG-GX-L06883-FAIL",
+      "line": 6883,
+      "call": "fail",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L06886-OK",
       "line": 6886,
-      "call": "fail",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06889-OK",
-      "line": 6889,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29031,9 +28947,23 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06891-FAIL",
+      "id": "LEG-GX-L06888-FAIL",
+      "line": 6888,
+      "call": "fail",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L06891-OK",
       "line": 6891,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29045,9 +28975,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06893-OK",
+      "id": "LEG-GX-L06893-FAIL",
       "line": 6893,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29059,9 +28989,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06895-FAIL",
+      "id": "LEG-GX-L06895-OK",
       "line": 6895,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29073,22 +29003,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06897-OK",
+      "id": "LEG-GX-L06897-FAIL",
       "line": 6897,
-      "call": "ok",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06899-FAIL",
-      "line": 6899,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29101,9 +29017,23 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06902-OK",
+      "id": "LEG-GX-L06900-OK",
+      "line": 6900,
+      "call": "ok",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L06902-FAIL",
       "line": 6902,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29115,9 +29045,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06904-FAIL",
+      "id": "LEG-GX-L06904-OK",
       "line": 6904,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29129,9 +29059,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06906-OK",
+      "id": "LEG-GX-L06906-FAIL",
       "line": 6906,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29143,9 +29073,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06908-FAIL",
+      "id": "LEG-GX-L06908-OK",
       "line": 6908,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29157,22 +29087,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06910-OK",
+      "id": "LEG-GX-L06910-FAIL",
       "line": 6910,
-      "call": "ok",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06912-FAIL",
-      "line": 6912,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29185,9 +29101,23 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06915-OK",
+      "id": "LEG-GX-L06913-OK",
+      "line": 6913,
+      "call": "ok",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L06915-FAIL",
       "line": 6915,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29199,9 +29129,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06917-FAIL",
+      "id": "LEG-GX-L06917-OK",
       "line": 6917,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29213,9 +29143,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06919-OK",
+      "id": "LEG-GX-L06919-FAIL",
       "line": 6919,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29227,9 +29157,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06921-FAIL",
+      "id": "LEG-GX-L06921-OK",
       "line": 6921,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29241,22 +29171,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06923-OK",
+      "id": "LEG-GX-L06923-FAIL",
       "line": 6923,
-      "call": "ok",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06925-FAIL",
-      "line": 6925,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29269,8 +29185,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06927-OK",
-      "line": 6927,
+      "id": "LEG-GX-L06926-OK",
+      "line": 6926,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29283,8 +29199,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06929-FAIL",
-      "line": 6929,
+      "id": "LEG-GX-L06928-FAIL",
+      "line": 6928,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29297,8 +29213,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06931-OK",
-      "line": 6931,
+      "id": "LEG-GX-L06930-OK",
+      "line": 6930,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29311,8 +29227,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06933-FAIL",
-      "line": 6933,
+      "id": "LEG-GX-L06932-FAIL",
+      "line": 6932,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29325,8 +29241,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06935-OK",
-      "line": 6935,
+      "id": "LEG-GX-L06934-OK",
+      "line": 6934,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29339,8 +29255,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06937-FAIL",
-      "line": 6937,
+      "id": "LEG-GX-L06936-FAIL",
+      "line": 6936,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29353,8 +29269,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06939-OK",
-      "line": 6939,
+      "id": "LEG-GX-L06938-OK",
+      "line": 6938,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29367,8 +29283,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06941-FAIL",
-      "line": 6941,
+      "id": "LEG-GX-L06940-FAIL",
+      "line": 6940,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29381,8 +29297,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06943-OK",
-      "line": 6943,
+      "id": "LEG-GX-L06942-OK",
+      "line": 6942,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29395,8 +29311,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06945-FAIL",
-      "line": 6945,
+      "id": "LEG-GX-L06944-FAIL",
+      "line": 6944,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29409,9 +29325,23 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06948-OK",
+      "id": "LEG-GX-L06946-OK",
+      "line": 6946,
+      "call": "ok",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L06948-FAIL",
       "line": 6948,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29423,9 +29353,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06950-FAIL",
+      "id": "LEG-GX-L06950-OK",
       "line": 6950,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29437,9 +29367,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06952-OK",
+      "id": "LEG-GX-L06952-FAIL",
       "line": 6952,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29451,9 +29381,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06954-FAIL",
+      "id": "LEG-GX-L06954-OK",
       "line": 6954,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29465,22 +29395,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06956-OK",
+      "id": "LEG-GX-L06956-FAIL",
       "line": 6956,
-      "call": "ok",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06958-FAIL",
-      "line": 6958,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29493,8 +29409,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06962-OK",
-      "line": 6962,
+      "id": "LEG-GX-L06959-OK",
+      "line": 6959,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29507,8 +29423,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06964-FAIL",
-      "line": 6964,
+      "id": "LEG-GX-L06961-FAIL",
+      "line": 6961,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29521,8 +29437,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06966-OK",
-      "line": 6966,
+      "id": "LEG-GX-L06963-OK",
+      "line": 6963,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29535,8 +29451,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06968-FAIL",
-      "line": 6968,
+      "id": "LEG-GX-L06965-FAIL",
+      "line": 6965,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29549,8 +29465,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06970-OK",
-      "line": 6970,
+      "id": "LEG-GX-L06967-OK",
+      "line": 6967,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29563,8 +29479,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06972-FAIL",
-      "line": 6972,
+      "id": "LEG-GX-L06969-FAIL",
+      "line": 6969,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29577,9 +29493,23 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06975-OK",
+      "id": "LEG-GX-L06973-OK",
+      "line": 6973,
+      "call": "ok",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L06975-FAIL",
       "line": 6975,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29591,9 +29521,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06977-FAIL",
+      "id": "LEG-GX-L06977-OK",
       "line": 6977,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29605,9 +29535,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06979-OK",
+      "id": "LEG-GX-L06979-FAIL",
       "line": 6979,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29619,9 +29549,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06981-FAIL",
+      "id": "LEG-GX-L06981-OK",
       "line": 6981,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29633,22 +29563,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06983-OK",
+      "id": "LEG-GX-L06983-FAIL",
       "line": 6983,
-      "call": "ok",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L06985-FAIL",
-      "line": 6985,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29661,8 +29577,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06987-OK",
-      "line": 6987,
+      "id": "LEG-GX-L06986-OK",
+      "line": 6986,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29675,8 +29591,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06989-FAIL",
-      "line": 6989,
+      "id": "LEG-GX-L06988-FAIL",
+      "line": 6988,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29689,8 +29605,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06991-OK",
-      "line": 6991,
+      "id": "LEG-GX-L06990-OK",
+      "line": 6990,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29703,8 +29619,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06993-FAIL",
-      "line": 6993,
+      "id": "LEG-GX-L06992-FAIL",
+      "line": 6992,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29717,8 +29633,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06995-OK",
-      "line": 6995,
+      "id": "LEG-GX-L06994-OK",
+      "line": 6994,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29731,8 +29647,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L06997-FAIL",
-      "line": 6997,
+      "id": "LEG-GX-L06996-FAIL",
+      "line": 6996,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29745,9 +29661,23 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07000-OK",
+      "id": "LEG-GX-L06998-OK",
+      "line": 6998,
+      "call": "ok",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L07000-FAIL",
       "line": 7000,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29759,9 +29689,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07002-FAIL",
+      "id": "LEG-GX-L07002-OK",
       "line": 7002,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29773,9 +29703,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07004-OK",
+      "id": "LEG-GX-L07004-FAIL",
       "line": 7004,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29787,9 +29717,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07006-FAIL",
+      "id": "LEG-GX-L07006-OK",
       "line": 7006,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29801,22 +29731,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07008-OK",
+      "id": "LEG-GX-L07008-FAIL",
       "line": 7008,
-      "call": "ok",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L07010-FAIL",
-      "line": 7010,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29829,8 +29745,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07012-OK",
-      "line": 7012,
+      "id": "LEG-GX-L07011-OK",
+      "line": 7011,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29843,8 +29759,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07014-FAIL",
-      "line": 7014,
+      "id": "LEG-GX-L07013-FAIL",
+      "line": 7013,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29857,9 +29773,23 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07017-OK",
+      "id": "LEG-GX-L07015-OK",
+      "line": 7015,
+      "call": "ok",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L07017-FAIL",
       "line": 7017,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29871,9 +29801,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07019-FAIL",
+      "id": "LEG-GX-L07019-OK",
       "line": 7019,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29885,9 +29815,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07021-OK",
+      "id": "LEG-GX-L07021-FAIL",
       "line": 7021,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -29899,22 +29829,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07023-FAIL",
+      "id": "LEG-GX-L07023-OK",
       "line": 7023,
-      "call": "fail",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L07026-OK",
-      "line": 7026,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29927,22 +29843,22 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07028-FAIL",
+      "id": "LEG-GX-L07025-FAIL",
+      "line": 7025,
+      "call": "fail",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L07028-OK",
       "line": 7028,
-      "call": "fail",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L07038-OK",
-      "line": 7038,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29955,8 +29871,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07040-FAIL",
-      "line": 7040,
+      "id": "LEG-GX-L07030-FAIL",
+      "line": 7030,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29969,8 +29885,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07042-OK",
-      "line": 7042,
+      "id": "LEG-GX-L07032-OK",
+      "line": 7032,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -29983,22 +29899,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07044-OK",
-      "line": 7044,
-      "call": "ok",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L07046-FAIL",
-      "line": 7046,
+      "id": "LEG-GX-L07034-FAIL",
+      "line": 7034,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30011,8 +29913,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07048-OK",
-      "line": 7048,
+      "id": "LEG-GX-L07037-OK",
+      "line": 7037,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30025,8 +29927,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07050-FAIL",
-      "line": 7050,
+      "id": "LEG-GX-L07039-FAIL",
+      "line": 7039,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30039,8 +29941,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07052-OK",
-      "line": 7052,
+      "id": "LEG-GX-L07049-OK",
+      "line": 7049,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30053,8 +29955,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07054-FAIL",
-      "line": 7054,
+      "id": "LEG-GX-L07051-FAIL",
+      "line": 7051,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30067,8 +29969,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07056-OK",
-      "line": 7056,
+      "id": "LEG-GX-L07053-OK",
+      "line": 7053,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30081,8 +29983,22 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07058-FAIL",
-      "line": 7058,
+      "id": "LEG-GX-L07055-OK",
+      "line": 7055,
+      "call": "ok",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L07057-FAIL",
+      "line": 7057,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30095,9 +30011,23 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07061-OK",
+      "id": "LEG-GX-L07059-OK",
+      "line": 7059,
+      "call": "ok",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L07061-FAIL",
       "line": 7061,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -30109,9 +30039,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07063-FAIL",
+      "id": "LEG-GX-L07063-OK",
       "line": 7063,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -30123,9 +30053,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07065-OK",
+      "id": "LEG-GX-L07065-FAIL",
       "line": 7065,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -30137,9 +30067,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07067-FAIL",
+      "id": "LEG-GX-L07067-OK",
       "line": 7067,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -30151,22 +30081,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07069-OK",
+      "id": "LEG-GX-L07069-FAIL",
       "line": 7069,
-      "call": "ok",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L07071-FAIL",
-      "line": 7071,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30179,8 +30095,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07073-OK",
-      "line": 7073,
+      "id": "LEG-GX-L07072-OK",
+      "line": 7072,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30193,8 +30109,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07075-FAIL",
-      "line": 7075,
+      "id": "LEG-GX-L07074-FAIL",
+      "line": 7074,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30207,8 +30123,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07077-OK",
-      "line": 7077,
+      "id": "LEG-GX-L07076-OK",
+      "line": 7076,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30221,8 +30137,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07079-FAIL",
-      "line": 7079,
+      "id": "LEG-GX-L07078-FAIL",
+      "line": 7078,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30235,8 +30151,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07081-OK",
-      "line": 7081,
+      "id": "LEG-GX-L07080-OK",
+      "line": 7080,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30249,8 +30165,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07083-FAIL",
-      "line": 7083,
+      "id": "LEG-GX-L07082-FAIL",
+      "line": 7082,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30263,8 +30179,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07085-OK",
-      "line": 7085,
+      "id": "LEG-GX-L07084-OK",
+      "line": 7084,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30277,8 +30193,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07087-FAIL",
-      "line": 7087,
+      "id": "LEG-GX-L07086-FAIL",
+      "line": 7086,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30291,8 +30207,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07089-OK",
-      "line": 7089,
+      "id": "LEG-GX-L07088-OK",
+      "line": 7088,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30305,8 +30221,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07091-FAIL",
-      "line": 7091,
+      "id": "LEG-GX-L07090-FAIL",
+      "line": 7090,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30319,9 +30235,23 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07094-OK",
+      "id": "LEG-GX-L07092-OK",
+      "line": 7092,
+      "call": "ok",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L07094-FAIL",
       "line": 7094,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -30333,9 +30263,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07096-FAIL",
+      "id": "LEG-GX-L07096-OK",
       "line": 7096,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -30347,9 +30277,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07098-OK",
+      "id": "LEG-GX-L07098-FAIL",
       "line": 7098,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -30361,9 +30291,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07100-FAIL",
+      "id": "LEG-GX-L07100-OK",
       "line": 7100,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -30375,22 +30305,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07102-OK",
+      "id": "LEG-GX-L07102-FAIL",
       "line": 7102,
-      "call": "ok",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L07104-FAIL",
-      "line": 7104,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30403,8 +30319,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07106-OK",
-      "line": 7106,
+      "id": "LEG-GX-L07105-OK",
+      "line": 7105,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30417,8 +30333,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07108-FAIL",
-      "line": 7108,
+      "id": "LEG-GX-L07107-FAIL",
+      "line": 7107,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30431,8 +30347,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07110-OK",
-      "line": 7110,
+      "id": "LEG-GX-L07109-OK",
+      "line": 7109,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30445,8 +30361,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07112-FAIL",
-      "line": 7112,
+      "id": "LEG-GX-L07111-FAIL",
+      "line": 7111,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30459,8 +30375,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07114-OK",
-      "line": 7114,
+      "id": "LEG-GX-L07113-OK",
+      "line": 7113,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30473,8 +30389,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07116-FAIL",
-      "line": 7116,
+      "id": "LEG-GX-L07115-FAIL",
+      "line": 7115,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30487,8 +30403,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07118-OK",
-      "line": 7118,
+      "id": "LEG-GX-L07117-OK",
+      "line": 7117,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30501,8 +30417,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07120-FAIL",
-      "line": 7120,
+      "id": "LEG-GX-L07119-FAIL",
+      "line": 7119,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30515,9 +30431,23 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07123-OK",
+      "id": "LEG-GX-L07121-OK",
+      "line": 7121,
+      "call": "ok",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L07123-FAIL",
       "line": 7123,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -30529,9 +30459,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07125-FAIL",
+      "id": "LEG-GX-L07125-OK",
       "line": 7125,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -30543,9 +30473,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07127-OK",
+      "id": "LEG-GX-L07127-FAIL",
       "line": 7127,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -30557,9 +30487,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07129-FAIL",
+      "id": "LEG-GX-L07129-OK",
       "line": 7129,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -30571,22 +30501,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07131-OK",
+      "id": "LEG-GX-L07131-FAIL",
       "line": 7131,
-      "call": "ok",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L07133-FAIL",
-      "line": 7133,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30599,8 +30515,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07135-OK",
-      "line": 7135,
+      "id": "LEG-GX-L07134-OK",
+      "line": 7134,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30613,8 +30529,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07137-FAIL",
-      "line": 7137,
+      "id": "LEG-GX-L07136-FAIL",
+      "line": 7136,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30627,8 +30543,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07139-OK",
-      "line": 7139,
+      "id": "LEG-GX-L07138-OK",
+      "line": 7138,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30641,8 +30557,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07141-FAIL",
-      "line": 7141,
+      "id": "LEG-GX-L07140-FAIL",
+      "line": 7140,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30655,9 +30571,23 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07144-OK",
+      "id": "LEG-GX-L07142-OK",
+      "line": 7142,
+      "call": "ok",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L07144-FAIL",
       "line": 7144,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -30669,22 +30599,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07146-FAIL",
+      "id": "LEG-GX-L07146-OK",
       "line": 7146,
-      "call": "fail",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L07160-OK",
-      "line": 7160,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30697,8 +30613,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07162-FAIL",
-      "line": 7162,
+      "id": "LEG-GX-L07148-FAIL",
+      "line": 7148,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30711,8 +30627,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07164-OK",
-      "line": 7164,
+      "id": "LEG-GX-L07150-OK",
+      "line": 7150,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30725,8 +30641,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07166-FAIL",
-      "line": 7166,
+      "id": "LEG-GX-L07152-FAIL",
+      "line": 7152,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30739,8 +30655,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07168-OK",
-      "line": 7168,
+      "id": "LEG-GX-L07155-OK",
+      "line": 7155,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30753,8 +30669,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07170-FAIL",
-      "line": 7170,
+      "id": "LEG-GX-L07157-FAIL",
+      "line": 7157,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30767,8 +30683,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07172-OK",
-      "line": 7172,
+      "id": "LEG-GX-L07171-OK",
+      "line": 7171,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30781,8 +30697,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07174-FAIL",
-      "line": 7174,
+      "id": "LEG-GX-L07173-FAIL",
+      "line": 7173,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30795,8 +30711,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07176-OK",
-      "line": 7176,
+      "id": "LEG-GX-L07175-OK",
+      "line": 7175,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30809,8 +30725,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07178-FAIL",
-      "line": 7178,
+      "id": "LEG-GX-L07177-FAIL",
+      "line": 7177,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30823,8 +30739,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07180-OK",
-      "line": 7180,
+      "id": "LEG-GX-L07179-OK",
+      "line": 7179,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30837,8 +30753,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07182-FAIL",
-      "line": 7182,
+      "id": "LEG-GX-L07181-FAIL",
+      "line": 7181,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30851,8 +30767,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07184-OK",
-      "line": 7184,
+      "id": "LEG-GX-L07183-OK",
+      "line": 7183,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30865,8 +30781,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07186-FAIL",
-      "line": 7186,
+      "id": "LEG-GX-L07185-FAIL",
+      "line": 7185,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30879,8 +30795,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07188-OK",
-      "line": 7188,
+      "id": "LEG-GX-L07187-OK",
+      "line": 7187,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30893,8 +30809,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07190-FAIL",
-      "line": 7190,
+      "id": "LEG-GX-L07189-FAIL",
+      "line": 7189,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30907,8 +30823,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07192-OK",
-      "line": 7192,
+      "id": "LEG-GX-L07191-OK",
+      "line": 7191,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30921,8 +30837,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07194-FAIL",
-      "line": 7194,
+      "id": "LEG-GX-L07193-FAIL",
+      "line": 7193,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30935,8 +30851,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07196-OK",
-      "line": 7196,
+      "id": "LEG-GX-L07195-OK",
+      "line": 7195,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30949,8 +30865,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07198-FAIL",
-      "line": 7198,
+      "id": "LEG-GX-L07197-FAIL",
+      "line": 7197,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30963,8 +30879,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07200-OK",
-      "line": 7200,
+      "id": "LEG-GX-L07199-OK",
+      "line": 7199,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30977,8 +30893,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07202-FAIL",
-      "line": 7202,
+      "id": "LEG-GX-L07201-FAIL",
+      "line": 7201,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -30991,8 +30907,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07204-OK",
-      "line": 7204,
+      "id": "LEG-GX-L07203-OK",
+      "line": 7203,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31005,8 +30921,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07206-FAIL",
-      "line": 7206,
+      "id": "LEG-GX-L07205-FAIL",
+      "line": 7205,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31019,8 +30935,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07208-OK",
-      "line": 7208,
+      "id": "LEG-GX-L07207-OK",
+      "line": 7207,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31033,8 +30949,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07210-FAIL",
-      "line": 7210,
+      "id": "LEG-GX-L07209-FAIL",
+      "line": 7209,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31047,8 +30963,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07212-OK",
-      "line": 7212,
+      "id": "LEG-GX-L07211-OK",
+      "line": 7211,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31061,8 +30977,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07214-FAIL",
-      "line": 7214,
+      "id": "LEG-GX-L07213-FAIL",
+      "line": 7213,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31075,8 +30991,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07216-OK",
-      "line": 7216,
+      "id": "LEG-GX-L07215-OK",
+      "line": 7215,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31089,8 +31005,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07218-FAIL",
-      "line": 7218,
+      "id": "LEG-GX-L07217-FAIL",
+      "line": 7217,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31103,8 +31019,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07220-OK",
-      "line": 7220,
+      "id": "LEG-GX-L07219-OK",
+      "line": 7219,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31117,8 +31033,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07222-FAIL",
-      "line": 7222,
+      "id": "LEG-GX-L07221-FAIL",
+      "line": 7221,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31131,8 +31047,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07226-OK",
-      "line": 7226,
+      "id": "LEG-GX-L07223-OK",
+      "line": 7223,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31145,8 +31061,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07228-FAIL",
-      "line": 7228,
+      "id": "LEG-GX-L07225-FAIL",
+      "line": 7225,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31159,8 +31075,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07230-OK",
-      "line": 7230,
+      "id": "LEG-GX-L07227-OK",
+      "line": 7227,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31173,8 +31089,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07232-FAIL",
-      "line": 7232,
+      "id": "LEG-GX-L07229-FAIL",
+      "line": 7229,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31187,8 +31103,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07234-OK",
-      "line": 7234,
+      "id": "LEG-GX-L07231-OK",
+      "line": 7231,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31201,8 +31117,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07236-FAIL",
-      "line": 7236,
+      "id": "LEG-GX-L07233-FAIL",
+      "line": 7233,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31215,9 +31131,23 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07239-OK",
+      "id": "LEG-GX-L07237-OK",
+      "line": 7237,
+      "call": "ok",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L07239-FAIL",
       "line": 7239,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -31229,9 +31159,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07241-FAIL",
+      "id": "LEG-GX-L07241-OK",
       "line": 7241,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -31243,9 +31173,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07243-OK",
+      "id": "LEG-GX-L07243-FAIL",
       "line": 7243,
-      "call": "ok",
+      "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -31257,9 +31187,9 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07245-FAIL",
+      "id": "LEG-GX-L07245-OK",
       "line": 7245,
-      "call": "fail",
+      "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
       "replacement_ids": [
@@ -31271,22 +31201,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07247-OK",
+      "id": "LEG-GX-L07247-FAIL",
       "line": 7247,
-      "call": "ok",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L07249-FAIL",
-      "line": 7249,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31299,8 +31215,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07251-OK",
-      "line": 7251,
+      "id": "LEG-GX-L07250-OK",
+      "line": 7250,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31313,8 +31229,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07253-FAIL",
-      "line": 7253,
+      "id": "LEG-GX-L07252-FAIL",
+      "line": 7252,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31327,8 +31243,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07255-OK",
-      "line": 7255,
+      "id": "LEG-GX-L07254-OK",
+      "line": 7254,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31341,8 +31257,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07257-FAIL",
-      "line": 7257,
+      "id": "LEG-GX-L07256-FAIL",
+      "line": 7256,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31355,8 +31271,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07259-OK",
-      "line": 7259,
+      "id": "LEG-GX-L07258-OK",
+      "line": 7258,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31369,8 +31285,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07261-FAIL",
-      "line": 7261,
+      "id": "LEG-GX-L07260-FAIL",
+      "line": 7260,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31383,8 +31299,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07263-OK",
-      "line": 7263,
+      "id": "LEG-GX-L07262-OK",
+      "line": 7262,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31397,8 +31313,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07265-FAIL",
-      "line": 7265,
+      "id": "LEG-GX-L07264-FAIL",
+      "line": 7264,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31411,8 +31327,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07267-OK",
-      "line": 7267,
+      "id": "LEG-GX-L07266-OK",
+      "line": 7266,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31425,8 +31341,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07269-FAIL",
-      "line": 7269,
+      "id": "LEG-GX-L07268-FAIL",
+      "line": 7268,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31439,8 +31355,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07271-OK",
-      "line": 7271,
+      "id": "LEG-GX-L07270-OK",
+      "line": 7270,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31453,8 +31369,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07273-FAIL",
-      "line": 7273,
+      "id": "LEG-GX-L07272-FAIL",
+      "line": 7272,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31467,8 +31383,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07275-OK",
-      "line": 7275,
+      "id": "LEG-GX-L07274-OK",
+      "line": 7274,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31481,8 +31397,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07277-FAIL",
-      "line": 7277,
+      "id": "LEG-GX-L07276-FAIL",
+      "line": 7276,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31495,8 +31411,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07279-OK",
-      "line": 7279,
+      "id": "LEG-GX-L07278-OK",
+      "line": 7278,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31509,8 +31425,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07281-FAIL",
-      "line": 7281,
+      "id": "LEG-GX-L07280-FAIL",
+      "line": 7280,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31523,8 +31439,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07283-OK",
-      "line": 7283,
+      "id": "LEG-GX-L07282-OK",
+      "line": 7282,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31537,8 +31453,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07285-FAIL",
-      "line": 7285,
+      "id": "LEG-GX-L07284-FAIL",
+      "line": 7284,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31551,8 +31467,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07287-OK",
-      "line": 7287,
+      "id": "LEG-GX-L07286-OK",
+      "line": 7286,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31565,8 +31481,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07289-FAIL",
-      "line": 7289,
+      "id": "LEG-GX-L07288-FAIL",
+      "line": 7288,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31579,8 +31495,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07293-OK",
-      "line": 7293,
+      "id": "LEG-GX-L07290-OK",
+      "line": 7290,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31593,8 +31509,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07295-FAIL",
-      "line": 7295,
+      "id": "LEG-GX-L07292-FAIL",
+      "line": 7292,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31607,8 +31523,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07297-OK",
-      "line": 7297,
+      "id": "LEG-GX-L07294-OK",
+      "line": 7294,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31621,8 +31537,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07299-FAIL",
-      "line": 7299,
+      "id": "LEG-GX-L07296-FAIL",
+      "line": 7296,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31635,8 +31551,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07302-OK",
-      "line": 7302,
+      "id": "LEG-GX-L07298-OK",
+      "line": 7298,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31649,22 +31565,22 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07304-FAIL",
+      "id": "LEG-GX-L07300-FAIL",
+      "line": 7300,
+      "call": "fail",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L07304-OK",
       "line": 7304,
-      "call": "fail",
-      "group": "X",
-      "disposition": "MIGRATED_REGRESSION",
-      "replacement_ids": [
-        "SUITE-LEGACY",
-        "SUITE-ENGINE-FULL",
-        "SUITE-BROWSER"
-      ],
-      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
-      "independent_replacement": false
-    },
-    {
-      "id": "LEG-GX-L07307-OK",
-      "line": 7307,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31677,8 +31593,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07309-FAIL",
-      "line": 7309,
+      "id": "LEG-GX-L07306-FAIL",
+      "line": 7306,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31691,8 +31607,8 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07311-OK",
-      "line": 7311,
+      "id": "LEG-GX-L07308-OK",
+      "line": 7308,
       "call": "ok",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",
@@ -31705,8 +31621,92 @@
       "independent_replacement": false
     },
     {
-      "id": "LEG-GX-L07313-FAIL",
+      "id": "LEG-GX-L07310-FAIL",
+      "line": 7310,
+      "call": "fail",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L07313-OK",
       "line": 7313,
+      "call": "ok",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L07315-FAIL",
+      "line": 7315,
+      "call": "fail",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L07318-OK",
+      "line": 7318,
+      "call": "ok",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L07320-FAIL",
+      "line": 7320,
+      "call": "fail",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L07322-OK",
+      "line": 7322,
+      "call": "ok",
+      "group": "X",
+      "disposition": "MIGRATED_REGRESSION",
+      "replacement_ids": [
+        "SUITE-LEGACY",
+        "SUITE-ENGINE-FULL",
+        "SUITE-BROWSER"
+      ],
+      "rationale": "Preserved by blocking legacy baseline and behavioral release suites during staged migration",
+      "independent_replacement": false
+    },
+    {
+      "id": "LEG-GX-L07324-FAIL",
+      "line": 7324,
       "call": "fail",
       "group": "X",
       "disposition": "MIGRATED_REGRESSION",

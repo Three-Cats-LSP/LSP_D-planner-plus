@@ -71,6 +71,7 @@ const REQUIRED_PRECACHE = [
   OFFLINE_INDEX,
   APP_BASE + 'app-version.js',
   APP_BASE + 'zhl-engine-bundle.js',
+  APP_BASE + 'padi-engine.js',
   APP_BASE + 'vpm-engine-bundle.js',
   APP_BASE + 'zhl-worker-bridge.js',
   APP_BASE + 'zhl-schedule-worker.js',
