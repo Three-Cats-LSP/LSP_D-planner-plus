@@ -3,7 +3,7 @@
 > Generated schedule and totals. Policy and unit metadata live in `docs/audit-units.json`.
 
 **Baseline:** `fd805111eab2fba349a9303a6e208106b798f82b`
-**Units:** 157 total; 51 unread; 34 in progress; 67 read; 5 verified.
+**Units:** 157 total; 48 unread; 34 in progress; 70 read; 5 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -37,6 +37,14 @@
 | 10 | UI-GAS-INPUTS, UI-ZHL-RUNNER-SETUP | 301 | ENG-ZHL-SCHEDULE | Gas validation and ZHL parameter construction READ |
 | 11 | UI-ZHL-RUNNER-ENGINE | 342 | ENG-ZHL-SCHEDULE | Canonical ZHL execution path READ with parity evidence |
 | 12 | UI-ZHL-RESULTS | 496 | ENG-ZHL-PHYSICS | Result construction, exposure totals, and safety fields READ |
+| 13 | UI-ZHL-HEADLESS-HELPERS | 201 | - | Headless ZHL helper path READ; issue #152 |
+| 14 | UI-ZHL-HEADLESS-ENGINE | 385 | - | Headless ZHL engine invocation READ; issue #153 |
+| 15 | UI-PLOT-INIT, UI-PLOT-RENDER | 535 | - | Profile plot init and render READ; issue #154 |
+| 16 | UI-PLOT-WAYPOINTS | 528 | - | Waypoint plot interaction READ; issue #155 |
+| 17 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE | 530 | - | Tissue and exposure tools READ; issue #156 |
+| 18 | UI-TOOLS-GF, UI-TOOLS-PROFILE | 579 | - | GF and profile tools READ; issue #157 |
+| 19 | UI-SETTINGS | 346 | - | Settings persistence READ; issue #158 |
+| 20 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 549 | - | Profile and config presets READ; issue #159 |
 
 ## Definition of Done
 

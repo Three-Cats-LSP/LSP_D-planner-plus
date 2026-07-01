@@ -24,9 +24,9 @@
 | ui_core | 5 | 0 | 0 | 2 | 3 |
 | web_css | 4 | 4 | 0 | 0 | 0 |
 | web_markup | 5 | 5 | 0 | 0 | 0 |
-| web_runtime | 34 | 4 | 2 | 27 | 1 |
+| web_runtime | 34 | 1 | 2 | 30 | 1 |
 | worker | 2 | 0 | 0 | 2 | 0 |
-| **Total** | **157** | **51** | **34** | **67** | **5** |
+| **Total** | **157** | **48** | **34** | **70** | **5** |
 
 ## Units
 
@@ -63,9 +63,9 @@
 | UI-ZHL-RESULTS | web_runtime | `index.html:9751` | 496 | P1 | IN_PROGRESS | - |
 | UI-ZHL-HEADLESS-HELPERS | web_runtime | `index.html:10247` | 201 | P1 | READ | - |
 | UI-ZHL-HEADLESS-ENGINE | web_runtime | `index.html:10448` | 385 | P0 | READ | - |
-| UI-PLOT-INIT | web_runtime | `index.html:10833` | 95 | P2 | UNREAD | - |
-| UI-PLOT-RENDER | web_runtime | `index.html:10928` | 440 | P2 | UNREAD | - |
-| UI-PLOT-WAYPOINTS | web_runtime | `index.html:11368` | 528 | P2 | UNREAD | - |
+| UI-PLOT-INIT | web_runtime | `index.html:10833` | 95 | P2 | READ | - |
+| UI-PLOT-RENDER | web_runtime | `index.html:10928` | 440 | P2 | READ | - |
+| UI-PLOT-WAYPOINTS | web_runtime | `index.html:11368` | 528 | P2 | READ | - |
 | UI-TOOLS-TISSUES | web_runtime | `index.html:11896` | 305 | P2 | READ | - |
 | UI-TOOLS-EXPOSURE | web_runtime | `index.html:12201` | 225 | P1 | READ | - |
 | UI-TOOLS-GF | web_runtime | `index.html:12426` | 214 | P2 | READ | - |

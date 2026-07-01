@@ -910,7 +910,7 @@
       "issue": "Audit #134",
       "fingerprint": "3678c11ab261aec2ccf3ae92febf586e33844a5f2bcfaf525946654d88abee62",
       "last_read_fingerprint": "3678c11ab261aec2ccf3ae92febf586e33844a5f2bcfaf525946654d88abee62",
-      "audit_issue": 156
+      "audit_issue": 152
     },
     {
       "id": "UI-ZHL-HEADLESS-ENGINE",
@@ -927,46 +927,55 @@
       "issue": "Audit #134",
       "fingerprint": "1d22bcc6fed862574235fb2392688e0d19fe85b62e13ab94c4b10b6c40ab4b9e",
       "last_read_fingerprint": "1d22bcc6fed862574235fb2392688e0d19fe85b62e13ab94c4b10b6c40ab4b9e",
-      "audit_issue": 139
+      "audit_issue": 153
     },
     {
       "id": "UI-PLOT-INIT",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-INIT"
       },
       "fingerprint": "88c9616d8ad395c0c03e68775b134c891eca23135321046994c4bd41b699a9e7",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "88c9616d8ad395c0c03e68775b134c891eca23135321046994c4bd41b699a9e7",
+      "evidence": [],
+      "regression_cases": [],
+      "audit_issue": 154
     },
     {
       "id": "UI-PLOT-RENDER",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-RENDER"
       },
       "fingerprint": "0d434ed46d2b4621e6f5698d6ad9d7f459a57a2cefbc5f118e4e691bdc601764",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "0d434ed46d2b4621e6f5698d6ad9d7f459a57a2cefbc5f118e4e691bdc601764",
+      "evidence": [],
+      "regression_cases": [],
+      "audit_issue": 154
     },
     {
       "id": "UI-PLOT-WAYPOINTS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-WAYPOINTS"
       },
       "fingerprint": "42bb253859dc877f4503d0f61f135f97d9d8bb95667c532cd85644faa89b40a7",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "42bb253859dc877f4503d0f61f135f97d9d8bb95667c532cd85644faa89b40a7",
+      "evidence": [],
+      "regression_cases": [],
+      "audit_issue": 155
     },
     {
       "id": "UI-TOOLS-TISSUES",
@@ -2742,6 +2751,82 @@
         "ENG-ZHL-PHYSICS"
       ],
       "acceptance": "Result construction, exposure totals, and safety fields READ"
+    },
+    {
+      "cycle": 13,
+      "max_new_application_lines": 600,
+      "application_units": [
+        "UI-ZHL-HEADLESS-HELPERS"
+      ],
+      "engine_reverification": [],
+      "acceptance": "Headless ZHL helper path READ; issue #152"
+    },
+    {
+      "cycle": 14,
+      "max_new_application_lines": 600,
+      "application_units": [
+        "UI-ZHL-HEADLESS-ENGINE"
+      ],
+      "engine_reverification": [],
+      "acceptance": "Headless ZHL engine invocation READ; issue #153"
+    },
+    {
+      "cycle": 15,
+      "max_new_application_lines": 600,
+      "application_units": [
+        "UI-PLOT-INIT",
+        "UI-PLOT-RENDER"
+      ],
+      "engine_reverification": [],
+      "acceptance": "Profile plot init and render READ; issue #154"
+    },
+    {
+      "cycle": 16,
+      "max_new_application_lines": 600,
+      "application_units": [
+        "UI-PLOT-WAYPOINTS"
+      ],
+      "engine_reverification": [],
+      "acceptance": "Waypoint plot interaction READ; issue #155"
+    },
+    {
+      "cycle": 17,
+      "max_new_application_lines": 600,
+      "application_units": [
+        "UI-TOOLS-TISSUES",
+        "UI-TOOLS-EXPOSURE"
+      ],
+      "engine_reverification": [],
+      "acceptance": "Tissue and exposure tools READ; issue #156"
+    },
+    {
+      "cycle": 18,
+      "max_new_application_lines": 600,
+      "application_units": [
+        "UI-TOOLS-GF",
+        "UI-TOOLS-PROFILE"
+      ],
+      "engine_reverification": [],
+      "acceptance": "GF and profile tools READ; issue #157"
+    },
+    {
+      "cycle": 19,
+      "max_new_application_lines": 600,
+      "application_units": [
+        "UI-SETTINGS"
+      ],
+      "engine_reverification": [],
+      "acceptance": "Settings persistence READ; issue #158"
+    },
+    {
+      "cycle": 20,
+      "max_new_application_lines": 600,
+      "application_units": [
+        "UI-PROFILE-PRESETS",
+        "UI-CONFIG-PRESETS"
+      ],
+      "engine_reverification": [],
+      "acceptance": "Profile and config presets READ; issue #159"
     }
   ],
   "suite_catalog": [
