@@ -371,7 +371,7 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
   /* Banner: own full-width row, between logo (order:1) and mode (order:3) */
   #headerBanner { flex:0 0 100% !important; order:2; padding:4px 14px 8px; justify-content:center; }
   #headerTopRow > div:first-child { order:1; }
-  #headerTopRow > div:last-child  { order:3; width:100%; justify-content:center !important; padding:4px 0 6px !important; }
+  #headerTopRow > div:last-child  { order:3; width:100%; justify-content:center !important; padding:0 !important; }
 }
 @media(min-width:641px) { .mobile-only { display:none !important; } }
 @media(max-width:640px) {
@@ -655,11 +655,25 @@ body.light-theme #gasWarningBanner.gas-warning-banner { background: #fff8f0; bor
 .tools-page-wrap .card { border-radius: var(--radius-xl); }
 
 #headerTopRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
   background: var(--surface);
   border: 1px solid var(--border-hi);
   border-radius: var(--radius-lg);
-  padding: 0 var(--space-2) !important;
+  /* Match .algo-bar-btn vertical rhythm (10px) */
+  padding: 10px var(--space-2) !important;
 }
+#headerTopRow .brand-icon {
+  width: 36px;
+  height: 36px;
+  font-size: 18px;
+  border-radius: var(--radius-md);
+}
+#headerTopRow .brand-text h1 { font-size: 20px; letter-spacing: 2px; }
+#headerTopRow .brand-text p { margin-top: 2px; font-size: 8px; letter-spacing: 1.5px; }
 .header-warn { font-size: var(--text-xs); font-weight: 600; color: var(--red); background: var(--red-dim); border: 1px solid color-mix(in oklab, var(--red) 30%, transparent); border-radius: var(--radius-md); padding: 4px 10px; cursor: pointer; }
 .brand-text h1 .algo-label { color: var(--accent); }
 .brand-icon { background: var(--accent-dim); border-color: var(--accent); animation: none; box-shadow: none; }
