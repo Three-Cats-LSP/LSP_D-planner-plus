@@ -787,7 +787,7 @@ function formatExportScheduleRun(run) {
   return s.length <= 4 ? s.padEnd(5) : s.padEnd(6);
 }
 
-function formatExportScheduleStopW(stop, mix) {
+function formatExportScheduleStopW(stop, mix, phase) {
   const s = (stop || '').trim();
   const m = (mix || '').trim();
   if (!s) return 7;
@@ -796,27 +796,32 @@ function formatExportScheduleStopW(stop, mix) {
   return 6;
 }
 
-function formatExportScheduleDepthW(depth, stop, mix) {
+function formatExportSchedulePhaseCol(phase, depth) {
+  const d = (depth || '').trim();
+  return phase.padEnd(d.length <= 2 ? 7 : 6);
+}
+
+function formatExportScheduleDepthW(depth, phase, stop) {
+  const d = (depth || '').trim();
   const stp = (stop || '').trim();
-  const m = (mix || '').trim();
-  if (!stp) return 6;
-  if (stp.length >= 5) return 6;
-  if (m === '100%' && stp.length === 4) return 7;
-  return 7;
+  if (d.length !== 3) return 6;
+  if (phase === 'Asc' && stp && stp !== '1:00') return 7;
+  if (phase === 'Stp' && stp.startsWith('1:')) return 7;
+  return 6;
+}
+
+function formatExportScheduleDepth(depth, phase, stop) {
+  const d = (depth || '').trim();
+  const w = formatExportScheduleDepthW(d, phase, stop);
+  if (!d) return ' '.repeat(w);
+  return d.padEnd(w);
 }
 
 function formatExportScheduleStop(stop, phase, mix) {
   const s = (stop || '').trim();
-  const w = formatExportScheduleStopW(s, mix);
+  const w = formatExportScheduleStopW(s, mix, phase);
   if (!s) return ' '.repeat(w);
-  if (s.length >= 5) return s.padEnd(w);
-  if (phase === 'Asc' && s !== '1:00') return (' ' + s + ' ').padEnd(w);
   return s.padEnd(w);
-}
-
-function formatExportScheduleDepth(depth, stop, mix) {
-  const d = (depth || '').trim();
-  return d.padEnd(formatExportScheduleDepthW(d, stop, mix));
 }
 
 function formatExportScheduleMix(mix, phase) {
@@ -830,17 +835,17 @@ function formatExportScheduleTail(tts, ppo2, ead, phase, depth, prefixLen) {
   const ttsS = (tts || '').trim();
   const ppo2Col = formatExportSchedulePpo2(ppo2);
   const eadCol = formatExportScheduleEad(ead);
+  const ttsPad = Math.max(1, EXPORT_PPO2_COL - prefixLen);
   if (!ttsS || ttsS === '-') {
-    return '-'.padEnd(Math.max(1, EXPORT_PPO2_COL - prefixLen)) + ppo2Col + '   -';
+    return '  -'.padEnd(ttsPad) + ppo2Col + '   -';
   }
   const isShortTts = (phase === 'Stp' || (phase === 'Asc' && depth === '0m')) && ttsS.length < 6;
-  const ttsPad = Math.max(1, EXPORT_PPO2_COL - prefixLen);
   const ttsPart = isShortTts ? (' ' + ttsS).padEnd(ttsPad) : ttsS.padEnd(ttsPad);
   let eadGap;
   if (eadCol === '-') {
     eadGap = '   -';
   } else {
-    eadGap = ' '.repeat(Math.max(2, 4 - eadCol.length)) + eadCol;
+    eadGap = ' '.repeat(Math.max(2, 5 - eadCol.length)) + eadCol;
   }
   return ttsPart + ppo2Col + eadGap;
 }
@@ -851,8 +856,8 @@ function formatAscentScheduleHeaderRow() {
 
 function formatAscentScheduleRow({ phase, depth, stop, mix, run, tts, ppo2, ead }) {
   const stp = (stop || '').trim();
-  const prefix = phase.padEnd(6)
-    + formatExportScheduleDepth(depth, stp, mix)
+  const prefix = formatExportSchedulePhaseCol(phase, depth)
+    + formatExportScheduleDepth(depth, phase, stp)
     + formatExportScheduleStop(stp, phase, mix)
     + formatExportScheduleMix(mix, phase)
     + formatExportScheduleRun(run);
