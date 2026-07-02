@@ -20,8 +20,8 @@ These are **loaded at runtime** via `<script src>` (not build-time bundles). Can
 |------------------|--------|-------|
 | `surf-interval-core.js` | — | `calcSurfInt`, `renderSurfIntPanel`, `toggleSurfIntPanel` |
 | `gas-table-core.js` | — | `renderGasTable`, `calcEND_tool`, `renderEADTable` |
-| `gas-plan-core.js` | — | `calcGasPlan`, `setGasRule`, gas-plan PDF/text |
-| `export-core.js` | — | `buildExportText`, `exportPDF`, clipboard helpers |
+| `gas-plan-core.js` | — | `calcGasPlan`, `setGasRule`, gas-plan text export (PDF in export-core) |
+| `export-core.js` | — | `buildExportText`, `exportPDF`, `exportContingencyPDF`, `buildGasPlanPDF`, plan header + PDF infra |
 | `contingency-core.js` | — | `runContingencyScenario`, `calcContingency`, state vars |
 
 ## Required audit steps

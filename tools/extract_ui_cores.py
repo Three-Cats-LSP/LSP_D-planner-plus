@@ -93,11 +93,11 @@ UI_CORE_BLOCKS: tuple[UiCoreBlock, ...] = (
         "export-core",
         "export-core.js",
         """/**
- * Unified export / clipboard / PDF — RUNTIME UI CORE.
+ * Unified export engine — copy, text export, clipboard, slate, and all PDF variants.
  * Loaded by index.html before main inline script.
  * Globals read: units, mGF, altitudeM, altAcclimatized, window._lastPlan, window._lastContingency,
- *   window._lastGasPlan, getExportCircuitTag, getContingencySummaryExport, validateDomDecoGases,
- *   waterDensityDisplayLabel, ensurePDFFontsForPDF, cleanPDF, drawDecoPlanBannerPDF, and DOM ids
+ *   window._lastGasPlan, getContingencySummaryExport, validateDomDecoGases, waterDensityDisplayLabel,
+ *   getBottomGasFractions, drawDecoProfile, drawGFCurve, and DOM ids
  * Globals written: (toast DOM only)
  */
 """,
@@ -140,9 +140,21 @@ EXPECTED_SCRIPT_ORDER = [b.filename for b in UI_CORE_BLOCKS]
 INLINE_FORBIDDEN_DEFS: dict[str, tuple[str, ...]] = {
     "surf-interval-core": ("function calcSurfInt(",),
     "gas-table-core": ("function renderGasTable(", "function calcEND_tool("),
-    "gas-plan-core": ("function calcGasPlan(", "let _gasRule"),
-    "export-core": ("function buildExportText(", "async function exportPDF("),
-    "contingency-core": ("function runContingencyScenario(", "function calcContingency("),
+    "gas-plan-core": ("function calcGasPlan(", "let _gasRule", "async function buildGasPlanPDF("),
+    "export-core": (
+        "function buildExportText(",
+        "async function exportPDF(",
+        "function buildDecoPlanHeaderData(",
+        "async function exportContingencyPDF(",
+        "async function buildGasPlanPDF(",
+        "async function ensurePDFFontsForPDF(",
+    ),
+    "contingency-core": (
+        "function runContingencyScenario(",
+        "function calcContingency(",
+        "async function exportContingencyPDF(",
+        "async function ensurePDFFontsForPDF(",
+    ),
     "results-panel": ("function switchResultTab(", "function _renderResultSummaryStrip("),
     "planner-shell": ("function initV3Layout(", "function setNavMode("),
 }
