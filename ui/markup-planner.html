@@ -1,0 +1,493 @@
+
+<div id="advancedSettingsSection" style="margin-top:6px;">
+<button id="advancedSettingsToggle" onclick="toggleAdvancedSettings()" onmouseenter="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseleave="this.style.borderColor='var(--border)';this.style.color='var(--muted)'" style="display:flex;align-items:center;gap:7px;width:100%;background:none;border:1px solid var(--border);
+               border-radius:6px;padding:7px 12px;cursor:pointer;color:var(--muted);font-family:inherit;
+               font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+               text-align:left;transition:all .2s;">
+<span id="advancedSettingsChevron" style="transition:transform .25s;display:inline-block;">▶</span>
+<span>Advanced Settings</span>
+<span id="advancedSettingsSummary" style="margin-left:auto;font-size:10px;font-weight:400;letter-spacing:0;text-transform:none;opacity:.7;"></span>
+</button>
+<div id="advancedSettingsBody" style="display:none;">
+<div class="adv-stack">
+<div class="adv-row"><label>Descent Rate</label>
+<select id="descentRate">
+<option value="10">10 m/min</option>
+<option value="15">15 m/min</option>
+<option value="18">18 m/min</option>
+<option selected="" value="20">20 m/min</option>
+<option value="22">22 m/min</option>
+<option value="25">25 m/min</option>
+<option value="30">30 m/min</option>
+</select>
+</div>
+<div class="adv-row"><label>Ascent Rate</label>
+<select id="ascentRate">
+<option value="3">3 m/min</option>
+<option value="6">6 m/min</option>
+<option value="9">9 m/min</option>
+<option selected="" value="10">10 m/min</option>
+<option value="12">12 m/min</option>
+<option value="15">15 m/min</option>
+<option value="18">18 m/min</option>
+</select>
+</div>
+<div class="adv-row"><label>Deco Ascent Rate</label>
+<select id="decoAscentRate">
+<option selected="" value="3">3 m/min</option>
+<option value="6">6 m/min</option>
+<option value="9">9 m/min</option>
+<option value="10">10 m/min</option>
+<option value="12">12 m/min</option>
+</select>
+</div>
+<div class="adv-row"><label>Surf Ascent Rate</label>
+<select id="surfaceAscentRate">
+<option selected="" value="3">3 m/min</option>
+<option value="6">6 m/min</option>
+<option value="9">9 m/min</option>
+</select>
+</div>
+<div class="adv-row"><label>Deco Step Size</label>
+<select id="decoStep">
+<option value="1">1 m</option>
+<option selected="" value="3">3 m</option>
+<option value="5">5 m</option>
+</select>
+</div>
+<div class="adv-row"><label>Last Deco Stop</label>
+<select id="lastDecoStop">
+<option value="6">6 m</option>
+<option selected="" value="3">3 m</option>
+<option value="1">1 m</option>
+</select>
+</div>
+<div class="adv-row">
+<label>Minimum Stop <span class="tip-icon" onclick="showTip('Minimum Stop','Minimum time spent at any deco stop, regardless of ceiling clearance.\n1:00 = standard. Smaller values give precise plans but are harder to execute.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<select id="minStopTime">
+<option selected="" value="2">2:00</option>
+<option value="1">1:00</option>
+<option value="0.5">0:30</option>
+<option value="0.1667">0:10</option>
+<option value="0.0167" id="minStopTimeSubMin" title="Unavailable with whole-minute stop rounding">0:01</option>
+</select>
+</div>
+<div class="adv-row">
+<label>Min Deco <span class="tip-icon" onclick="showTip('Minimum Decompression Profile','Enforces minimum stop times at 9 m (30 ft) and 6 m (20 ft) on every dive, regardless of algorithm output.\nStandard DIR/GUE practice. If the algorithm already schedules more time at those depths, the longer time is kept.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<select id="minDecoProfileEnable" onchange="toggleMinDecoProfile()">
+<option selected="" value="no">Off</option>
+<option value="yes">On</option>
+</select>
+</div>
+<div id="minDecoProfileFields" style="display:none;">
+<div class="adv-row">
+<label id="minDeco9mLabel">9m (min)</label>
+<input id="minDeco9m" max="10" min="1" step="1" type="number" value="1"/>
+</div>
+<div class="adv-row">
+<label id="minDeco6mLabel">6m (min)</label>
+<input id="minDeco6m" max="10" min="1" step="1" type="number" value="3"/>
+</div>
+</div>
+<div class="adv-row">
+<label>Stop Rounding <span class="tip-icon" onclick="showTip('Stop Rounding','Whether stop times are rounded to whole minutes.\nNo = fractional (Buhlmann default).\nYes (MultiDeco) = whole-minute rounding, matching MultiDeco output.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<select id="stopRounding" onchange="syncMinStopTimeRounding()">
+<option value="fractional">No</option>
+<option selected="" value="wholeminute">Yes (MultiDeco)</option>
+</select>
+</div>
+<div class="adv-row">
+<label>Transit Mode <span class="tip-icon" onclick="showTip('Transit Mode','How deco-zone ascent transits between stops are modelled.\n\nSchreiner (accurate): tissues off-gas via Schreiner equation during each ascent segment. Most physically correct. Stop durations reflect actual hold time at depth only.\n\nMultiDeco compatible: ascent between stops is treated as instantaneous for tissue loading (matches MultiDeco 4.x). Transit time is added to the displayed stop duration, so stop times and run times match MultiDeco output exactly. Slightly more conservative.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<select id="decoTransitMode">
+<option value="schreiner">Schreiner (accurate)</option>
+<option selected="" value="multideco">MultiDeco compatible</option>
+</select>
+</div>
+<div class="adv-row">
+<label>Shallow GF <span class="tip-icon" onclick="showTip('Shallow GF','Modifies the GF slope so GF High is reached at the last deco stop rather than at the surface.\n\nOff (default, standard): GF interpolates from GF Low at the first stop to GF High at the surface. The last stop is cleared at a GF slightly below GF High.\n\nOn (MultiDeco-compatible): GF High is applied from the last stop onward. The last stop is held until tissues clear at the full GF High limit, not an intermediate value. This is more conservative at the final stop and produces slightly longer last-stop times.\n\nUse On to match MultiDeco shallow gradient conservatism mode. Keep Off for standard Bühlmann GF behaviour.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<select id="shallowGradient">
+<option selected="" value="off">Off (standard GF)</option>
+<option value="on">On (MultiDeco-compatible)</option>
+</select>
+</div>
+<div class="adv-row">
+<label>Water Vapor <span class="tip-icon" onclick="showTip('Water Vapor','Alveolar water vapor pressure used in tissue loading calculations.\n0.0627 bar = Buhlmann standard.\n0.0577 bar = MultiDeco standard.\nPair with Stop Rounding to match target tool.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<select id="waterVapor" onchange="updateWaterVapor()">
+<option value="0.0627">0.0627 bar (Bühlmann)</option>
+<option selected="" value="0.0577">0.0577 bar (MultiDeco)</option>
+</select>
+</div>
+<div class="adv-row">
+<label>He HT Comp 1 <span class="tip-icon" onclick="showTip('He Half-Time','Helium half-time for the fastest (compartment 1) tissue.\n\nBaker 1.88 min — canonical VPM-B value (Baker FORTRAN 1998, ApexDeco, MultiDeco).\nBühlmann 1.51 min — Bühlmann 2003 textbook value (Subsurface, Shearwater, DivePro).\n\nRatio to N2 comp 1 (5.0 min):\n Baker: 5.0 / 1.88 = 2.66\n Bühlmann: 5.0 / 1.51 = 3.31 (≈ √(28/4), physical diffusion ratio)\n\nPractical difference: negligible for dives &gt;15 min. Only measurable on very short deep bounce dives where fast-compartment He loading is significant.\n\nDefault: Baker 1.88 (matches VPM-B and ApexDeco).')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<select id="heHalfTimeMode" onchange="updateHeHalfTime()">
+<option selected="" value="baker">1.88 min (Baker / VPM-B)</option>
+<option value="buhl2003">1.51 min (Bühlmann 2003)</option>
+</select>
+</div>
+<div class="adv-row"><label>BT SAC (L/min)</label>
+<input id="sacBottom" max="60" min="5" step="1" type="number" value="22"/>
+</div>
+<div class="adv-row"><label>Deco SAC (L/min)</label>
+<input id="sacDeco" max="40" min="5" step="1" type="number" value="20"/>
+</div>
+<div class="adv-row"><label>Contingency SAC × <span class="tip-icon" onclick="showTip('Contingency SAC Multiplier','Stress multiplier applied to SAC during emergency contingency gas calculations (went deeper / stayed longer). Default 1.5× reflects elevated RMV under stress.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<input id="contingencySacMultiplier" max="3" min="1" step="0.1" type="number" value="1.5"/>
+</div>
+<div class="adv-row">
+<label>N₂ Narcotic <span class="tip-icon" onclick="showTip('N2 Narcotic','Whether N2 is counted as narcotic when calculating Equivalent Narcotic Depth (END).\nYes = NOAA/IANTD standard.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<select id="n2NarcSel" onchange="setNarcosis('n2', this.value==='yes')">
+<option selected="" value="yes">Yes</option>
+<option value="no">No</option>
+</select>
+</div>
+<div class="adv-row">
+<label>O₂ Narcotic <span class="tip-icon" onclick="showTip('O2 Narcotic','Whether O2 is counted as narcotic when calculating Equivalent Narcotic Depth (END).\nYes = NOAA/IANTD standard.\nNo = some technical agencies exclude O2.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<select id="o2NarcSel" onchange="setNarcosis('o2', this.value==='yes')">
+<option selected="" value="yes">Yes</option>
+<option value="no">No</option>
+</select>
+</div>
+<div class="adv-row"><label>Max Bottom ppO₂</label>
+<select id="ppo2Bottom" onchange="updateGasMODDisplays();appSettings.save(false)">
+<option value="1.6">1.6 bar</option>
+<option value="1.5">1.5 bar</option>
+<option selected="" value="1.4">1.4 bar</option>
+<option value="1.2">1.2 bar</option>
+</select>
+</div>
+<div class="adv-row"><label>Max Deco ppO₂</label>
+<select id="ppo2Deco" onchange="updateGasMODDisplays();appSettings.save(false)">
+<option selected="" value="1.6">1.6 bar</option>
+<option value="1.5">1.5 bar</option>
+<option value="1.4">1.4 bar</option>
+<option value="1.2">1.2 bar</option>
+</select>
+</div>
+<div class="adv-row">
+<label>O₂ @ MOD <span class="tip-icon" onclick="showTip('O2 @ MOD','Controls how pure O2 (100%) MOD is calculated.\n\n• Allow at MOD: O2 is always usable at 6m — real-world standard (Shearwater, V-Planner).\n• Strict ppO2: O2 subject to the ppO2 limit check, with a 6 m minimum regardless.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<select id="o2AtMODSelect" onchange="setAllowO2AtMOD(this.value === 'on');updateGasMODDisplays()">
+<option selected="" value="on">Allow at MOD</option>
+<option value="off">Strict ppO₂</option>
+</select>
+</div>
+</div>
+</div><!-- end advancedSettingsBody -->
+</div><!-- end advancedSettingsSection -->
+<!-- Gas Mix 1 — Bottom Gas -->
+<div id="ccrFieldsRow" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:10px;">
+<div style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--accent);margin-bottom:10px;">🔄 DIVE TYPE</div>
+<div class="form-grid u0">
+<div class="field">
+<label>Circuit</label>
+<select id="circuitSelect" class="hidden-v3" aria-hidden="true" tabindex="-1">
+<option selected="" value="OC">Open Circuit (OC)</option>
+<option value="CCR">Closed Circuit (CCR)</option>
+<option value="pSCR">Passive SCR (pSCR)</option>
+</select>
+<div class="circ-btns" id="circuitBtnGroup">
+<button type="button" class="circ-btn active" data-circuit="OC" onclick="setCircuitMode('OC',this)">OC</button>
+<button type="button" class="circ-btn" data-circuit="CCR" onclick="setCircuitMode('CCR',this)">CCR</button>
+<button type="button" class="circ-btn" data-circuit="pSCR" onclick="setCircuitMode('pSCR',this)">pSCR</button>
+</div>
+</div>
+<div class="field" id="ccrBailoutRow" style="display:none;">
+<label>Bailout mode</label>
+<select id="ccrBailoutToggle" onchange="toggleCircuitFields()">
+<option selected="" value="off">Off — on loop</option>
+<option value="on">On — open circuit bailout</option>
+</select>
+</div>
+</div>
+<!-- ── Rebreather Adv. Settings (collapsible, inside DIVE TYPE card) ── -->
+<div id="ccrAdvSettingsSection" style="display:none;margin-top:10px;">
+<button id="ccrAdvSettingsToggle" onclick="toggleCcrAdvSettings()" onmouseenter="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseleave="this.style.borderColor='var(--border)';this.style.color='var(--muted)'" style="display:flex;align-items:center;gap:7px;width:100%;background:none;border:1px solid var(--border);border-radius:6px;padding:7px 12px;cursor:pointer;color:var(--muted);font-family:inherit;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;text-align:left;transition:all .2s;">
+<span id="ccrAdvSettingsChevron" style="transition:transform .25s;display:inline-block;">▶</span>
+<span>Adv. Settings</span>
+<span id="ccrAdvSettingsSummary" style="margin-left:auto;font-size:10px;font-weight:400;letter-spacing:0;text-transform:none;opacity:.7;"></span>
+</button>
+<div id="ccrAdvSettingsBody" style="display:none;margin-top:8px;">
+<div id="ccrSettingsGroup" style="display:none;">
+<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);">CCR Settings</div>
+<div class="adv-stack">
+<div class="adv-row" id="ccrSpDescentRow" style="display:none;">
+<label>SP descent (bar) <span class="tip-icon" onclick="showTip('SP Descent','Partial pressure of O₂ maintained in the loop during descent. A lower setpoint reduces O₂ uptake before reaching bottom depth.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<input id="ccrDescentSetpoint" max="1.0" min="0.5" step="0.1" type="number" value="0.7"/>
+</div>
+<div class="adv-row" id="ccrSpBottomRow" style="display:none;">
+<label>Active ppO₂ / SP bottom (bar) <span class="tip-icon" onclick="showTip('Active ppO₂','Constant partial pressure of O₂ maintained on-loop during the bottom phase. Also used for diluent MOD checks on CCR.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<input id="ccrBottomSetpoint" max="1.6" min="0.7" oninput="updateGasMODDisplays();updateCcrGasValidation();appSettings.save(false)" step="0.1" type="number" value="1.2"/>
+</div>
+<div class="adv-row" id="ccrSpDecoRow" style="display:none;">
+<label>Decompression ppO₂ / SP deco (bar) <span class="tip-icon" onclick="showTip('Decompression ppO₂','Setpoint used on-loop during decompression stops and ascent after the bottom phase.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<input id="ccrDecoSetpoint" max="1.6" min="0.7" oninput="updateGasMODDisplays();updateCcrGasValidation();appSettings.save(false)" step="0.1" type="number" value="1.3"/>
+</div>
+<div class="adv-row" id="ccrLoopVolRow">
+<label>Loop volume (L) <span class="tip-icon" onclick="showTip('Loop Volume','Internal loop volume in litres. Used for pSCR inspired-gas calculations and loop O₂ fraction modelling.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<input id="ccrLoopVolume" max="15" min="3" step="0.5" type="number" value="10"/>
+</div>
+<div class="adv-row" id="ccrMetabolicRow">
+<label>Metabolic O₂ (L/min) <span class="tip-icon" onclick="showTip('Metabolic O₂','Diver O₂ consumption rate at the surface (L/min). Drives estimated diluent consumption for on-loop CCR/pSCR gas planning.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<input id="ccrMetabolicO2" max="2.5" min="0.5" step="0.05" type="number" value="1.5"/>
+</div>
+<div class="adv-row">
+<label>SAC stress (L/min) <span class="tip-icon" onclick="showTip('SAC Stress','Open-circuit SAC assumed during a stressed bailout at depth. Used with Stress time and Problem solving to reserve bailout cylinder volume.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<input id="ccrSacStress" max="80" min="10" step="1" type="number" value="50"/>
+</div>
+<div class="adv-row">
+<label>SAC deco (L/min) <span class="tip-icon" onclick="showTip('SAC Deco (Bailout)','Open-circuit SAC used for bailout/deco cylinder consumption estimates when breathing OC bailout mixes on a rebreather dive plan.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<input id="ccrSacDeco" max="40" min="5" step="1" type="number" value="25"/>
+</div>
+<div class="adv-row">
+<label>Stress time (min) <span class="tip-icon" onclick="showTip('Stress Time','Minutes of stressed open-circuit breathing at bottom depth reserved against bailout cylinders in the gas consumption estimate.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<input id="ccrStressTime" max="30" min="1" step="1" type="number" value="10"/>
+</div>
+<div class="adv-row">
+<label>Problem solving (min) <span class="tip-icon" onclick="showTip('Problem Solving','Additional minutes at depth for problem-solving before ascending on bailout. Added to Stress time for bailout gas reserve calculations.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<input id="ccrProblemSolve" max="15" min="1" step="1" type="number" value="3"/>
+</div>
+</div>
+</div>
+<div id="ccrBailoutSettingsGroup" style="display:none;margin-top:12px;">
+<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);">Bailout Settings <span class="tip-icon" onclick="showTip('Bailout Gradient Factors','Gradient factors applied when Bailout mode is ON — the planner switches to open-circuit deco using these GF values instead of the main plan GF.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></div>
+<div class="ccr-adv-gf-pair">
+<span class="algo-label-text u1">Low:</span>
+<select class="u7 ccr-bo-gf-select" id="ccrBailoutGfLow">
+<option value="20">20</option><option value="25">25</option><option value="30">30</option><option value="35">35</option><option value="40">40</option><option value="45">45</option><option value="50" selected="">50</option><option value="55">55</option><option value="60">60</option><option value="65">65</option><option value="70">70</option><option value="75">75</option><option value="80">80</option><option value="85">85</option><option value="90">90</option><option value="95">95</option><option value="100">100</option>
+</select>
+<span class="algo-label-text u1">High:</span>
+<select class="u7 ccr-bo-gf-select" id="ccrBailoutGfHigh">
+<option value="50">50</option><option value="55">55</option><option value="60">60</option><option value="65">65</option><option value="70">70</option><option value="75">75</option><option value="80">80</option><option value="85" selected="">85</option><option value="90">90</option><option value="95">95</option><option value="100">100</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+<!-- legacy ids kept for saved-settings compat (hidden) -->
+<input id="ccrSetpoint" type="hidden" value="1.3"/>
+<input id="scrLoopVolume" type="hidden" value="10"/>
+<input id="scrMetabolicO2" type="hidden" value="1.5"/>
+</div>
+<div id="diluentGasCard" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:10px;">
+<div class="gas-card-top">
+<div class="gas-card-title-row"><span class="gas-dot gas-dot--bottom" aria-hidden="true"></span><div id="diluentCardTitle" style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--accent);">GAS MIX 1 — BOTTOM GAS</div></div>
+<span class="gas-mod" id="botMODDisplay" title="Calculated MOD using selected Bottom Gas and Max Bottom ppO₂">—</span>
+</div>
+<div class="gas-card-grid u0">
+<div class="field gas-f-mix" id="diluentUseAsBailoutRow" style="display:none;">
+<label>Use as bailout</label>
+<select id="diluentUseAsBailout" onchange="updateCcrGasValidation();updateGasMODDisplays()">
+<option selected="" value="off">Off</option>
+<option value="on">On — diluent cylinder is bailout</option>
+</select>
+</div>
+<div class="field gas-f-mix">
+<label id="diluentMixLabel">Gas Mix</label>
+<select id="decoGas" onchange="toggleDecoCustomO2('decoGas','decoCustomO2Field');toggleBottomTrimix();updateGasMODDisplays();if(window._lastContingency) calcContingency()">
+<option value="air">Air (21%)</option>
+<option value="ean32">EAN32 (32%)</option>
+<option value="ean36">EAN36 (36%)</option>
+<option value="custom">Custom O₂ %</option>
+<option value="trimix">Trimix (O₂/He %)</option>
+</select>
+</div>
+<div class="field gas-f-num" id="decoCustomO2Field" style="display:none;">
+<label>O₂ %</label>
+<input id="decoCustomO2" max="100" min="5" oninput="updateGasMODDisplays();if(window._lastContingency) calcContingency()" step="1" type="number" value="21"/>
+</div>
+<div class="field gas-f-num" id="botTrimixO2Field" style="display:none;">
+<label>O₂ %</label>
+<input id="botTrimixO2" max="40" min="5" oninput="updateGasMODDisplays();if(window._lastContingency) calcContingency()" placeholder="21" step="1" type="number" value="21"/>
+</div>
+<div class="field gas-f-num" id="botTrimixHeField" style="display:none;">
+<label>He %</label>
+<input id="botTrimixHe" max="90" min="0" oninput="updateGasMODDisplays();if(window._lastContingency) calcContingency()" placeholder="35" step="1" type="number" value="35"/>
+</div>
+<div class="field gas-f-num"><label>Size (L)</label><input id="cylBot_size" max="30" min="1" placeholder="12" step="0.5" type="number" value="12"/></div>
+<div class="field gas-f-num"><label id="cylBot_pres_lbl">Bar</label><input id="cylBot_pres" max="300" min="0" placeholder="200" step="10" type="number" value="200"/></div>
+<input id="cylBot_reserve" type="hidden" value="50"/>
+</div>
+</div>
+<!-- Travel Gas Card -->
+<div id="travelGasCard" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:8px;display:none;">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+<div class="gas-card-title-row"><span class="gas-dot gas-dot--travel" aria-hidden="true"></span><div style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:#ff9f43;">TRAVEL GAS — DESCENT / ASCENT TRANSIT</div></div>
+<button onclick="removeTravelGas()" onmouseout="this.style.color='var(--muted)'" onmouseover="this.style.color='var(--red)'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 4px;" title="Remove travel gas">✕</button>
+</div>
+<div class="gas-card-grid u0">
+<div class="field gas-f-mix">
+<label>Gas Mix</label>
+<select id="travelGasMix" onchange="toggleDecoCustomO2('travelGasMix','travelGasCustomField');updateTravelGasMOD()" title="Travel gas breathing mix. Used from surface to switch depth on descent, and above bottom gas MOD on ascent.">
+<option selected="" value="air">Air (21%)</option>
+<option value="ean32">EAN32 (32%)</option>
+<option value="ean36">EAN36 (36%)</option>
+<option value="custom">Custom O₂ %</option>
+</select>
+</div>
+<div class="field gas-f-num" id="travelGasCustomField" style="display:none;">
+<label>O₂ %</label>
+<input id="travelGasCustomO2" max="40" min="16" oninput="updateTravelGasMOD()" step="1" title="Custom O₂% for travel gas. Keep below 40% — travel gas is used at shallow depths where high O₂ would be toxic." type="number" value="21"/>
+</div>
+<div class="field gas-f-num">
+<label>Switch</label>
+<select id="travelGasSwitchMode" onchange="updateTravelGasMOD()" style="font-size:11px;" title="Auto: switch depth = travel gas MOD at ppO₂ Bottom limit (recommended). Manual: you set the depth yourself.">
+<option selected="" value="auto">Auto (MOD)</option>
+<option value="manual">Manual</option>
+</select>
+</div>
+<div class="field gas-f-num" id="travelGasManualDepthField" style="display:none;">
+<label id="travelGasManualDepthLbl">Depth (m)</label>
+<input id="travelGasManualDepth" max="100" min="1" oninput="updateTravelGasMOD()" step="1" title="Manually set the depth where you switch from travel gas to bottom gas on descent (and back on ascent)." type="number" value="30"/>
+</div>
+<div class="field gas-f-switch">
+<label>Auto Switch Depth (MOD)</label>
+<input id="travelGasMODDisplay" placeholder="Select gas" readonly="" style="cursor:default;" title="Auto mode: shows travel gas MOD — deepest depth where travel gas ppO₂ stays within the Bottom ppO₂ limit. Manual mode: shows what the auto depth would be for reference." type="text"/>
+</div>
+<div class="field gas-f-num">
+<label>Size (L)</label>
+<input id="cylTravelGas_size" max="30" min="1" placeholder="12" step="0.5" title="Travel gas cylinder volume in litres. Used to calculate gas consumption and remaining pressure." type="number" value="12"/>
+</div>
+<div class="field gas-f-num">
+<label id="cylTravelGas_pres_lbl">Bar</label>
+<input id="cylTravelGas_pres" max="300" min="0" placeholder="200" step="10" title="Travel gas cylinder fill pressure in bar. Together with cylinder size, used to estimate gas consumption as a % of fill." type="number" value="200"/>
+</div>
+<input id="cylTravelGas_reserve" type="hidden" value="50"/>
+</div>
+<div style="margin-top:10px;font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;">
+        Breathed from surface → switch depth on descent, and from bottom gas MOD → first deco gas on ascent.
+      </div>
+</div>
+<!-- Add Travel Gas button -->
+<button id="addTravelGasBtn" onclick="addTravelGas()" onmouseout="this.style.opacity='0.7'" onmouseover="this.style.opacity='1'" style="margin-top:8px;width:100%;padding:9px;background:none;border:1px dashed #ff9f43;border-radius:8px;color:#ff9f43;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;transition:all 0.2s;opacity:0.7;" title="Add a travel gas — breathed from surface to switch depth on descent, and above bottom gas MOD on ascent. Prevents O₂ toxicity in shallow water with high-O₂ bottom mixes.">
+      + ADD TRAVEL GAS
+    </button>
+<!-- Dynamic deco / bailout gas cards container -->
+<div id="bailoutMixesSection">
+<div id="decoGasCards">
+<!-- Gas Mix 2 — Deco Gas 1 / Bailout Mix 1 -->
+<div class="deco-gas-card" id="dgCard_1" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:8px;">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;">
+<div class="gas-card-title-row"><span class="gas-dot gas-dot--deco1" aria-hidden="true"></span><div class="dg-card-title" style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--accent);">GAS MIX 2 — DECO GAS 1 (optional)</div></div>
+<div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+<span class="gas-mod" id="dg1MODDisplay" title="Calculated MOD using selected gas and Max Deco ppO₂">—</span>
+<button onclick="removeDecoGasCard(1)" onmouseout="this.style.color='var(--muted)'" onmouseover="this.style.color='var(--red)'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 4px;" title="Remove this gas">✕</button>
+</div>
+</div>
+<div class="gas-card-grid u0">
+<div class="field gas-f-mix">
+<label>Gas Mix</label>
+<select id="dg1Mix" onchange="toggleDecoCustomO2('dg1Mix','dg1CustomField');toggleDecoTrimix(1);updateGasMODDisplays()">
+<option value="none">— None —</option>
+<option selected="" value="ean50">EAN50 (50%)</option>
+<option value="ean80">EAN80 (80%)</option>
+<option value="o2">100% O₂</option>
+<option value="custom">Custom O₂ %</option>
+<option value="trimix">Trimix (O₂/He %)</option>
+</select>
+</div>
+<div class="field gas-f-num" id="dg1CustomField" style="display:none;">
+<label>O₂ %</label>
+<input id="dg1CustomO2" max="100" min="21" oninput="updateGasMODDisplays()" step="1" type="number" value="50"/>
+</div>
+<div class="field gas-f-num" id="dg1TrimixO2Field" style="display:none;">
+<label>O₂ %</label>
+<input id="dg1TrimixO2" max="60" min="5" oninput="updateGasMODDisplays()" placeholder="21" step="1" type="number" value="21"/>
+</div>
+<div class="field gas-f-num" id="dg1TrimixHeField" style="display:none;">
+<label>He %</label>
+<input id="dg1TrimixHe" max="90" min="0" oninput="updateGasMODDisplays()" placeholder="35" step="1" type="number" value="35"/>
+</div>
+<div class="field gas-f-switch">
+<label>Switch Depth <span class="tip-icon" onclick="showTip('Switch Depth','Depth at which this gas becomes optimal to breathe during ascent (or the recommended OC bailout depth). Calculated from O₂ fraction and ppO₂ limits when you generate a schedule; manual override available in Auto/Manual mode.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<input class="switch-depth-display" id="dg1SwitchDepthDisplay" placeholder="Calculate to see" readonly="" style="cursor:default;" type="text"/>
+</div>
+<div class="field gas-f-num"><label>Size (L)</label><input id="cylDg1_size" max="30" min="1" placeholder="11" step="0.5" type="number" value="11"/></div>
+<div class="field gas-f-num"><label id="cylDg1_pres_lbl">Bar</label><input id="cylDg1_pres" max="300" min="0" placeholder="200" step="10" type="number" value="200"/></div>
+<input id="cylDg1_reserve" type="hidden" value="50"/>
+</div>
+</div>
+<!-- Gas Mix 3 — Deco Gas 2 -->
+<div class="deco-gas-card" id="dgCard_2" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:8px;">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;">
+<div class="gas-card-title-row"><span class="gas-dot gas-dot--deco2" aria-hidden="true"></span><div class="dg-card-title" style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--accent);">GAS MIX 3 — DECO GAS 2 (optional)</div></div>
+<div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+<span class="gas-mod" id="dg2MODDisplay" title="Calculated MOD using selected gas and Max Deco ppO₂">—</span>
+<button onclick="removeDecoGasCard(2)" onmouseout="this.style.color='var(--muted)'" onmouseover="this.style.color='var(--red)'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 4px;" title="Remove this gas">✕</button>
+</div>
+</div>
+<div class="gas-card-grid u0">
+<div class="field gas-f-mix">
+<label>Gas Mix</label>
+<select id="dg2Mix" onchange="toggleDecoCustomO2('dg2Mix','dg2CustomField');toggleDecoTrimix(2);updateGasMODDisplays()">
+<option value="none">— None —</option>
+<option value="ean50">EAN50 (50%)</option>
+<option value="ean80">EAN80 (80%)</option>
+<option selected="" value="o2">100% O₂</option>
+<option value="custom">Custom O₂ %</option>
+<option value="trimix">Trimix (O₂/He %)</option>
+</select>
+</div>
+<div class="field gas-f-num" id="dg2CustomField" style="display:none;">
+<label>O₂ %</label>
+<input id="dg2CustomO2" max="100" min="21" oninput="updateGasMODDisplays()" step="1" type="number" value="80"/>
+</div>
+<div class="field gas-f-num" id="dg2TrimixO2Field" style="display:none;">
+<label>O₂ %</label>
+<input id="dg2TrimixO2" max="60" min="5" oninput="updateGasMODDisplays()" placeholder="21" step="1" type="number" value="21"/>
+</div>
+<div class="field gas-f-num" id="dg2TrimixHeField" style="display:none;">
+<label>He %</label>
+<input id="dg2TrimixHe" max="90" min="0" oninput="updateGasMODDisplays()" placeholder="35" step="1" type="number" value="35"/>
+</div>
+<div class="field gas-f-switch">
+<label>Switch Depth <span class="tip-icon" onclick="showTip('Switch Depth','Depth at which this gas becomes optimal to breathe during ascent (or the recommended OC bailout depth). Calculated from O₂ fraction and ppO₂ limits when you generate a schedule; manual override available in Auto/Manual mode.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
+<input class="switch-depth-display" id="dg2SwitchDepthDisplay" placeholder="Calculate to see" readonly="" style="cursor:default;" type="text"/>
+</div>
+<div class="field gas-f-num"><label>Size (L)</label><input id="cylDg2_size" max="30" min="1" placeholder="11" step="0.5" type="number" value="11"/></div>
+<div class="field gas-f-num"><label id="cylDg2_pres_lbl">Bar</label><input id="cylDg2_pres" max="300" min="0" placeholder="200" step="10" type="number" value="200"/></div>
+<input id="cylDg2_reserve" type="hidden" value="50"/>
+</div>
+</div>
+</div>
+<!-- Add Gas Mix / Bailout Mix button -->
+<button id="addDecoGasBtn" onclick="addDecoGasCard()" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" style="margin-top:10px;width:100%;padding:9px;background:none;border:1px dashed var(--border);border-radius:8px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;transition:all 0.2s;">
+      + ADD GAS MIX
+    </button>
+</div>
+<div id="ccrGasValidation" style="display:none;margin-top:10px;"></div>
+<button class="gen-btn btn-calc" onclick="runDecoSchedule()" style="margin-top:8px;margin-bottom:0;">▶ Generate schedule</button>
+<!-- Feature B: VPM Repetitive Dive panel — hidden until first VPM result available -->
+<div id="vpmRepRow" style="display:none;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px;padding:10px 12px;background:var(--card2);border:1px solid var(--border);border-radius:8px;">
+<label style="display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);cursor:pointer;">
+<input id="vpmRepMode" onchange="updateVpmRepUI()" style="width:14px;height:14px;accent-color:var(--accent);cursor:pointer;" type="checkbox"/>
+<span>Repetitive VPM Dive</span>
+<span class="tip-icon" onclick="showTip('Repetitive VPM Dive','Carries both tissue gas pressures AND bubble state (adjusted critical radii) from the previous VPM dive.\n\nTissue loading: N₂/He off-gasses during surface interval (Haldane).\n\nBubble state: compressed nuclei partially regenerate toward altitude-adjusted initial radii during surface interval (REGEN_TIME = 14 days), then carry into this dive — producing correct VPM repetitive dive behaviour.\n\nNote: only available for VPM-B and VPM-B+GFS models.')">
+<svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg>
+</span>
+</label>
+<div id="vpmRepSIRow" style="display:none;align-items:center;gap:6px;">
+<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">Surface interval:</span>
+<input id="vpmSurfaceInterval" max="10080" min="0" step="5" style="width:60px;padding:3px 6px;border-radius:5px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;" type="number" value="60"/>
+<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">min</span>
+</div>
+<button onclick="clearVpmRepState()" style="padding:3px 10px;background:none;border:1px solid var(--border);border-radius:5px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;cursor:pointer;letter-spacing:0.5px;" title="Clear saved dive state">× CLEAR</button>
+<span id="vpmRepLabel" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);"></span>
+</div>
+<!-- Feature B: Bühlmann repetitive dive panel — hidden until first ZHL result available -->
+<div id="zhlRepRow" style="display:none;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px;padding:10px 12px;background:var(--card2);border:1px solid var(--border);border-radius:8px;">
+<label style="display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);cursor:pointer;">
+<input id="zhlRepMode" onchange="updateZhlRepUI()" style="width:14px;height:14px;accent-color:var(--accent);cursor:pointer;" type="checkbox"/>
+<span>Repetitive Bühlmann Dive</span>
+<span class="tip-icon" onclick="showTip('Repetitive Bühlmann Dive','Carries end-of-dive tissue loading (N₂/He) from the previous Bühlmann schedule.\n\nDuring the surface interval, tissues off-gas using Haldane kinetics before the next dive begins.\n\nEnable after generating a Bühlmann schedule, then set surface interval minutes.')">
+<svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg>
+</span>
+</label>
+<div id="zhlRepSIRow" style="display:none;align-items:center;gap:6px;">
+<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">Surface interval:</span>
+<input id="zhlSurfaceInterval" max="10080" min="0" step="5" style="width:60px;padding:3px 6px;border-radius:5px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;" type="number" value="60"/>
+<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">min</span>
+</div>
+<button onclick="clearZhlRepState()" style="padding:3px 10px;background:none;border:1px solid var(--border);border-radius:5px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;cursor:pointer;letter-spacing:0.5px;" title="Clear saved dive state">× CLEAR</button>
+<span id="zhlRepLabel" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);"></span>
+</div>
+
+<!-- ── Gas Consumption ── -->

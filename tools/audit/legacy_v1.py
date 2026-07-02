@@ -35,6 +35,21 @@ if not os.path.exists(path):
 with open(path, encoding="utf-8") as f:
     html = f.read()
 
+_base_dir = os.path.dirname(os.path.abspath(path))
+_ui_css_files = (
+    "lsp-dplanner-foundation.css",
+    "lsp-dplanner-modes.css",
+    "lsp-dplanner-controls.css",
+    "lsp-dplanner-results.css",
+)
+_css_parts = []
+for _css_name in _ui_css_files:
+    _css_path = os.path.join(_base_dir, _css_name)
+    if os.path.isfile(_css_path):
+        _css_parts.append(open(_css_path, encoding="utf-8").read())
+if _css_parts:
+    html = html + "\n<!-- extracted-ui-css -->\n" + "\n".join(_css_parts)
+
 # Extract all inline (non-src) script blocks — main app is the largest; do not use scripts[0]
 # alone (v2.51+ adds a small <head> bootstrap before the main block).
 scripts = re.findall(r"<script(?![^>]*src)[^>]*>(.*?)</script>", html, re.DOTALL)
@@ -72,6 +87,8 @@ _UI_CORE_FILES = (
     "gas-plan-core.js",
     "export-core.js",
     "contingency-core.js",
+    "results-panel.js",
+    "planner-shell.js",
 )
 _ui_parts = [_read_build_core(name) for name in _UI_CORE_FILES]
 _ui_core_js = "\n".join(t for t in _ui_parts if t)
@@ -2342,13 +2359,17 @@ else:
 # GROUP 35 — v2.20.4–v2.20.14 GF controls, ppo2 expansion, export guards
 # ══════════════════════════════════════════════════════════════════════════════
 
-# 35.1 Bühlmann GF dropdown: 50/80 and 60/70 present (regression: missing in v2.20.5–v2.20.6)
-buhl_gf_opts = re.findall(r'option value="(\d+/\d+)"', html)
-for must_have in ['50/80', '60/70']:
+# 35.1 Bühlmann GF presets: common values as buttons (custom via Low/High selects)
+buhl_gf_opts = re.findall(r'<option[^>]*value="(\d+/\d+)"', html)
+for must_have in ['20/85', '30/70', '40/85', '50/75']:
     if must_have in buhl_gf_opts:
-        ok(f"GF preset dropdown: {must_have} option present")
+        ok(f"GF preset: {must_have} option present")
     else:
-        fail(f"GF preset dropdown: {must_have} missing — regression from v2.20.5/v2.20.6")
+        fail(f"GF preset: {must_have} missing")
+if 'gf-preset-btn' in html and 'GF_BUHLMANN_PRESETS' in html:
+    ok("GF preset: button row defined (dropdown hidden)")
+else:
+    fail("GF preset: button row or GF_BUHLMANN_PRESETS constant missing")
 
 # 35.2 ppo2Bottom and ppo2Deco selects include 1.2 bar option (v2.20.13)
 for sel_id in ('ppo2Bottom', 'ppo2Deco'):
@@ -2362,11 +2383,16 @@ for sel_id in ('ppo2Bottom', 'ppo2Deco'):
     else:
         ok(f"{sel_id}: 1.2 bar option present")
 
-# 35.3 VPM-B/GFS GF dropdown: hi/N options defined in setDecoAlgorithm
-if re.search(r'value="hi/70"', html) and re.search(r'value="hi/85"', html):
-    ok("VPM-B/GFS GF dropdown: hi/N options defined in setDecoAlgorithm rebuild")
+# 35.3 VPM-B/GFS GF presets: hi/70, hi/80, hi/85 + custom
+if 'GF_VPMGFS_PRESETS' in html:
+    ok("VPM-B/GFS GF preset: GF_VPMGFS_PRESETS constant defined")
 else:
-    fail("VPM-B/GFS GF dropdown: hi/N format options not found")
+    fail("VPM-B/GFS GF preset: GF_VPMGFS_PRESETS constant missing")
+for must_have in ['hi/70', 'hi/80', 'hi/85']:
+    if re.search(rf"value:\s*'{must_have}'", html):
+        ok(f"VPM-B/GFS GF preset: {must_have} in GF_VPMGFS_PRESETS")
+    else:
+        fail(f"VPM-B/GFS GF preset: {must_have} missing from GF_VPMGFS_PRESETS")
 
 # 35.4 mGF selection restored after Bühlmann dropdown rebuild (v2.20.14)
 if re.search(r'_restoredOpt\s*=\s*Array\.from\(gfSel\.options\)', js):
@@ -4489,31 +4515,46 @@ if capacitor_bridge_js and "status === 'granted'" in capacitor_bridge_js.split("
 else:
     fail("capacitor-bridge ensurePermission still treats non-denied as granted (issue #55 F10)")
 
-if re.search(r'id="algoTools"[^<]*<img[^>]+tools-1424252\.png', html) and re.search(r'id="envSettingsToggle"[^<]*<img[^>]+settings-2099058\.png', html):
-    ok("Mode row uses vendored Flaticon PNG icons for Tools and ENV")
+if re.search(r'id="navPlanner"[^<]*<img[^>]+computer-14545985\.png', html) and re.search(r'id="navTools"[^<]*<img[^>]+tools-1424252\.png', html) and re.search(r'id="navSettings"[^<]*<img[^>]+settings-2099058\.png', html) and re.search(r'id="navRef"[^>]*>\?</button>', html):
+    ok("Mode row uses icon-only Planner | Tools | Settings | ? Ref")
 else:
-    fail("Mode row missing vendored Flaticon PNG for Tools or ENV")
+    fail("Mode row missing icon nav (planner/tools/settings PNGs or ? Ref)")
 
-if os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "tools-1424252.png")) and os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "settings-2099058.png")):
+if os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "computer-14545985.png")) and os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "tools-1424252.png")) and os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "settings-2099058.png")):
     ok("vendor/icons Flaticon PNG assets present offline")
 else:
-    fail("vendor/icons missing tools-1424252.png or settings-2099058.png")
+    fail("vendor/icons missing computer-14545985.png, tools-1424252.png or settings-2099058.png")
 
-_mode_row = html.split('<div class="algo-toggle"', 1)
-if "syncEnvRowDisplay" in js and len(_mode_row) > 1 and 'id="envSettingsToggle"' in _mode_row[1][:3500]:
-    ok("ENV settings toggle lives in mode row (Rec | Tec | Tools | ENV | Ref)")
+if 'id="tool-cns"' in html and 'tool-panel-cns' in html and 'resultTab-cns' not in html:
+    ok("CNS O₂ tracker lives under Tools bar (not planner result tabs)")
 else:
-    fail("ENV toggle not in mode row or syncEnvRowDisplay missing")
+    fail("CNS O₂ should be tool-cns / tool-panel-cns, not planner resultTab-cns")
+
+if 'function showTip' in js and 'hoist' not in js and re.search(r"querySelectorAll\('\.lsp-modal-overlay'\)", js):
+    ok("initV3Layout hoists legacy modals so tooltips and dialogs are visible")
+else:
+    fail("Legacy modals must be hoisted out of .legacy-panels for showTip to work")
+
+_mode_row = html.split('<div class="mode-toggle ', 1)
+if "syncEnvRowDisplay" in js and len(_mode_row) > 1 and re.search(r'id="navSettings"[^>]*onclick="toggleEnvSettings\(\)"', _mode_row[1][:3500]):
+    ok("ENV settings toggle via Settings icon in mode row (not a separate nav mode)")
+else:
+    fail("Settings icon must call toggleEnvSettings() in mode row")
 
 if re.search(r'</div><!-- /deco panel -->\s*<div class="panel" id="cns">', html):
     ok("CNS and tools panels are siblings outside deco panel (not nested)")
 else:
     fail("deco panel not closed before cns — tools mode content would be hidden")
 
-if re.search(r'id="algoTools"[^<]*<img', html) and re.search(r'id="envSettingsToggle"[^<]*<img', html) and ".algo-btn-icon img" in html and "brightness(0) invert(1)" in html:
-    ok("Mode row PNG icons use theme-aware brightness filters")
+if 'id="algoBar"' in html and 'setPlannerAlgo' in js and 'id="plannerView"' in html:
+    ok("v3 planner layout: algo bar + two-column plannerView")
 else:
-    fail("Mode row PNG icons missing theme-aware brightness/contrast CSS")
+    fail("v3 planner layout missing algo bar or plannerView")
+
+if re.search(r'id="navPlanner"[^<]*<img', html) and 'id="navSettings"' in html and ".mode-btn" in html:
+    ok("Mode row uses v3 mode-btn styling")
+else:
+    fail("Mode row v3 mode-btn styling missing")
 
 if 'id="envSettingsBody"' in html and 'id="algoSettingsRow"' not in html and 'syncEnvRowDisplay' in js and 'algoSettingsRow' not in js.split('function syncEnvRowDisplay', 1)[1][:600]:
     ok("Rec mode uses global ENV panel only (no duplicate algoSettingsRow)")

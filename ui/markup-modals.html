@@ -1,0 +1,341 @@
+
+<div id="gasRuleModal" class="lsp-modal-overlay" onclick="if(event.target===this)closeGasRuleInfo()" style="display:none;z-index:9500;background:rgba(0,0,0,0.72);">
+<div style="max-width:460px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:12px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);margin:12px auto;">
+<div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;">⛽ Gas Management Rules</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);line-height:1.8;">
+<div style="font-weight:700;color:var(--accent);margin-bottom:4px;letter-spacing:1px;">RULE OF THIRDS (Thirds)</div>
+<div class="u9">The standard tec diving gas rule. Divide your bottom gas into three equal thirds:
+        <div style="margin:8px 0 4px 12px;">• <span class="u10">1st third</span> — used on the way out / descent</div>
+<div style="margin:0 0 4px 12px;">• <span class="u10">2nd third</span> — used on the way back / ascent</div>
+<div style="margin:0 0 0 12px;">• <span class="u13">3rd third</span> — held as reserve for emergencies</div>
+<div style="margin-top:8px;color:var(--muted);">Turn pressure = fill − (fill − reserve) × ⅓<br/>Designed for out-and-back penetration dives. Standard for cave, wreck, and deep technical dives.</div>
+</div>
+<div style="font-weight:700;color:var(--accent);margin-bottom:4px;letter-spacing:1px;">HALF TANK (Half)</div>
+<div class="u9">A more conservative rule — turn at half the usable gas:
+        <div style="margin:8px 0 4px 12px;">• <span class="u10">First half</span> — used for the dive</div>
+<div style="margin:0 0 0 12px;">• <span class="u13">Second half</span> — held as reserve</div>
+<div style="margin-top:8px;color:var(--muted);">Turn pressure = fill − (fill − reserve) × ½<br/>Common for open-water deco dives and as a more conservative margin for new tec divers.</div>
+</div>
+<div style="font-weight:700;color:var(--accent);margin-bottom:4px;letter-spacing:1px;">DECO &amp; TRAVEL GASES</div>
+<div class="u6">Deco and travel gases are one-way — there is no turn pressure. The full usable volume is compared against the requirement from the last deco plan run.</div>
+<div style="margin-top:12px;padding:8px 12px;background:rgba(255,68,51,0.08);border-left:3px solid var(--red);border-radius:4px;font-size:10px;color:var(--muted);">
+<span style="color:var(--red);font-weight:700;">⚠ Short</span> — insufficient gas for the plan.<br/>
+<span style="color:#FF4433;font-weight:700;">⚠ Tight</span> — just enough; no margin for error.<br/>
+<span style="color:var(--green);font-weight:700;">✓ OK</span> — &gt;10% margin above requirement.
+      </div>
+</div>
+<button type="button" onclick="closeGasRuleInfo()" style="margin-top:16px;width:100%;padding:10px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.5px;">Close</button>
+</div>
+</div>
+<div id="tipModal" class="lsp-modal-overlay" onclick="if(event.target===this)closeTip()" style="display:none;z-index:9500;background:rgba(0,0,0,0.72);">
+<div style="max-width:420px;width:100%;margin:12px auto;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:16px 18px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+<div id="tipModalTitle" style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;"></div>
+<div id="tipModalBody" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text);line-height:1.7;white-space:pre-wrap;max-height:min(60vh,480px);overflow-y:auto;-webkit-overflow-scrolling:touch;"></div>
+<button type="button" onclick="closeTip()" style="margin-top:14px;width:100%;padding:10px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.5px;">Close</button>
+</div>
+</div>
+<div id="slateModal" class="lsp-modal-overlay lsp-modal-overlay--pad20 lsp-modal-centered" onclick="if(event.target===this)closeSlate()" style="display:none;z-index:9550;background:rgba(0,0,0,0.72);">
+<div style="max-width:420px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+<div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Deco Slate</div>
+<pre id="slateModalBody" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text);line-height:1.5;white-space:pre;overflow-x:auto;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;padding:12px;margin:0;"></pre>
+<div style="display:flex;gap:10px;margin-top:14px;">
+<button onclick="copySlate()" style="flex:1;padding:8px;background:var(--accent);border:1px solid var(--accent);border-radius:6px;cursor:pointer;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.5px;">⧉ Copy</button>
+<button onclick="closeSlate()" style="flex:1;padding:8px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.5px;">✕ Close</button>
+</div>
+</div>
+</div>
+<div id="copyModal" class="lsp-modal-overlay lsp-modal-overlay--pad20 lsp-modal-centered" onclick="if(event.target===this)closeCopyModal()" style="display:none;z-index:9550;background:rgba(0,0,0,0.72);">
+<div style="max-width:480px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+<div id="copyModalTitle" style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Copy Plan</div>
+<pre id="copyModalBody" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);line-height:1.5;white-space:pre;overflow-x:auto;overflow-y:auto;max-height:60vh;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;padding:12px;margin:0;"></pre>
+<div style="display:flex;gap:10px;margin-top:14px;">
+<button onclick="copyCopyModal()" style="flex:1;padding:8px;background:var(--accent);border:1px solid var(--accent);border-radius:6px;cursor:pointer;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.5px;">⧉ Copy</button>
+<button onclick="closeCopyModal()" style="flex:1;padding:8px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.5px;">✕ Close</button>
+</div>
+</div>
+</div>
+<!-- Dive Profile Presets Modal (depth + BT only) -->
+<div id="profilePresetModal" class="lsp-modal-overlay lsp-modal-overlay--pad20 lsp-modal-centered" onclick="if(event.target===this)closeDiveProfilePresets()" style="display:none;z-index:9551;background:rgba(0,0,0,0.72);">
+<div style="max-width:400px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+<div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);">Dive Profiles</div>
+<span id="profilePresetCount" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);"></span>
+</div>
+<div style="font-size:11px;color:var(--muted);margin-bottom:12px;">Saves depth, BT, bottom gas, travel gas and deco mixes. Load to switch between planned dives.</div>
+<div id="profilePresetList" style="max-height:280px;overflow-y:auto;"></div>
+<div style="display:flex;gap:8px;margin-top:12px;">
+<button id="newProfilePresetBtn" onclick="saveNewProfilePreset()" style="flex:1;padding:9px;background:var(--accent);border:none;border-radius:7px;color:#000;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.5px;">+ SAVE CURRENT</button>
+<button onclick="closeDiveProfilePresets()" style="padding:9px 14px;background:none;border:1px solid var(--border);border-radius:7px;color:var(--muted);font-family:inherit;font-size:11px;cursor:pointer;">Close</button>
+</div>
+</div>
+</div>
+<!-- Advanced Config Presets Modal (advanced settings only) -->
+<div id="configPresetModal" class="lsp-modal-overlay lsp-modal-overlay--pad20 lsp-modal-centered" onclick="if(event.target===this)closeAdvConfigPresets()" style="display:none;z-index:9552;background:rgba(0,0,0,0.72);">
+<div style="max-width:420px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+<div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);">Advanced Configs</div>
+<span id="configPresetCount" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);"></span>
+</div>
+<div style="font-size:11px;color:var(--muted);margin-bottom:12px;">Saves advanced settings only — rates, narcosis, water vapor, stop rounding, etc. Load to switch between dive profiles.</div>
+<div id="configPresetList" style="max-height:280px;overflow-y:auto;"></div>
+<div style="display:flex;gap:8px;margin-top:12px;">
+<button id="newConfigPresetBtn" onclick="saveNewConfigPreset()" style="flex:1;padding:9px;background:var(--accent);border:none;border-radius:7px;color:#000;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.5px;">+ SAVE CURRENT</button>
+<button onclick="closeAdvConfigPresets()" style="padding:9px 14px;background:none;border:1px solid var(--border);border-radius:7px;color:var(--muted);font-family:inherit;font-size:11px;cursor:pointer;">Close</button>
+</div>
+</div>
+</div>
+<div id="presetModal" class="lsp-modal-overlay lsp-modal-overlay--pad20 lsp-modal-centered" onclick="if(event.target===this)closePresetModal()" style="display:none;z-index:9550;background:rgba(0,0,0,0.72);">
+<div style="max-width:460px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+<div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);">Dive Presets</div>
+<span id="presetCount" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);"></span>
+</div>
+<button id="newPresetBtn" onclick="saveNewPreset()" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" style="width:100%;padding:9px;background:none;border:1px dashed var(--border);border-radius:8px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;margin-bottom:12px;transition:all 0.2s;">
+      + NEW PRESET
+    </button>
+<div id="presetList" style="max-height:300px;overflow-y:auto;font-family:'JetBrains Mono',monospace;font-size:11px;"></div>
+<button onclick="closePresetModal()" style="margin-top:14px;width:100%;padding:8px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.5px;">✕ Close</button>
+</div>
+</div>
+<div id="confirmModal" class="lsp-modal-overlay lsp-modal-overlay--pad20 lsp-modal-centered" style="display:none;z-index:9600;background:rgba(0,0,0,0.72);">
+<div style="max-width:340px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:22px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+<div id="confirmModalMsg" style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;color:var(--text);margin-bottom:20px;text-align:center;line-height:1.5;"></div>
+<div style="display:flex;gap:10px;">
+<button id="confirmModalCancel" onclick="closeConfirmModal(false)" style="flex:1;padding:9px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.5px;">CANCEL</button>
+<button id="confirmModalOk" onclick="closeConfirmModal(true)" style="flex:1;padding:9px;background:var(--accent);border:1px solid var(--accent);border-radius:6px;cursor:pointer;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.5px;">OK</button>
+</div>
+</div>
+</div>
+<div id="settingsHelpModal" class="lsp-modal-overlay lsp-modal-overlay--pad20" onclick="if(event.target===this)this.style.display='none'" style="display:none;z-index:9000;background:rgba(0,0,0,0.75);">
+<div style="max-width:680px;margin:0 auto;position:relative;">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+<div style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);">⚙ Settings Guide</div>
+<button onclick="document.getElementById('settingsHelpModal').style.display='none'" style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 14px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;">✕ Close</button>
+</div>
+<div class="card u9" style="margin-bottom:12px;">
+<div class="card-title u0" style="margin-bottom:6px;">About Decompression Schedule</div>
+<p style="font-size:12px;color:var(--muted);line-height:1.6;margin:0;">Generates a full ascent profile with deco stops using the selected algorithm. Decompression gases switch automatically at the specified depths during ascent and are factored into tissue off-gassing. Configure bottom gas, optional travel gas, and up to two deco gases below.</p>
+</div>
+<div class="card u9">
+<div class="card-title">Dive Parameters</div>
+<div class="info-box"><strong>Depth:</strong> Maximum depth in metres. All 16 tissue compartments are loaded based on bottom time at this depth.</div>
+<div class="info-box"><strong>BT Time:</strong> Total bottom time in minutes, measured from the surface. Includes descent — descent duration is subtracted automatically for tissue loading.</div>
+<div class="info-box"><strong>Bottom Gas:</strong> Breathing mix for descent and bottom phase. Determines N₂ fraction for tissue loading and ppO₂ throughout the dive.</div>
+</div>
+<div class="card u9">
+<div class="card-title">Ascent Rates</div>
+<div class="info-box"><strong>Descent Rate:</strong> Speed of descent in m/min. Affects how quickly tissues load N₂. Standard technical rate is 10–22 m/min.</div>
+<div class="info-box"><strong>Ascent Rate:</strong> Speed from the bottom to the first deco stop. Faster = less off-gassing during transit = more conservative stops. Standard: 9–10 m/min.</div>
+<div class="info-box"><strong>Deco Ascent Rate:</strong> Speed of travel between deco stops. Slower means more off-gassing between stops, which can shorten stop times. Standard: 3–9 m/min.</div>
+<div class="info-box"><strong>Surf Ascent Rate:</strong> Speed from the last deco stop to the surface. Usually the same as deco ascent rate.</div>
+</div>
+<div class="card u9">
+<div class="card-title">Deco Stop Settings</div>
+<div class="info-box"><strong>Deco Step Size:</strong> Depth interval between stops in metres. Standard is 3 m. Most dive computers use 3 m.</div>
+<div class="info-box"><strong>Last Deco Stop:</strong> Shallowest mandatory stop depth. Common: 3 m (standard) or 6 m (conservative). The diver holds here until tissues are safe to surface at GF High.</div>
+<div class="info-box"><strong>Min Stop Time:</strong> Minimum time at any deco stop regardless of ceiling clearance. Standard is 1 min. Smaller values give more precise plans but are harder to execute.</div>
+<div class="info-box"><strong>Transit Mode:</strong> Controls how ascent segments <em>between</em> deco stops are modelled in Bühlmann GF mode.<br/>
+<br/>
+<strong>Schreiner (accurate)</strong> — tissues off-gas normally via the Schreiner equation during each ascent segment between stops. This is the most physically correct method. Stop durations shown reflect the actual hold time at that depth only. Run time includes transit segments separately.<br/>
+<br/>
+<strong>MultiDeco compatible</strong> — ascent between deco stops is treated as instantaneous for tissue loading, matching MultiDeco 4.x behaviour. Transit time is added to the displayed stop duration, so stop times and total run time match MultiDeco output exactly. This mode is slightly more conservative because transit off-gassing is not credited. Deco-zone ascent rows are hidden from the table (folded into the stop time, as MultiDeco displays them).<br/>
+<br/>
+        To fully replicate MultiDeco output: set <em>Transit Mode: MultiDeco compatible</em> + <em>Stop Rounding: Yes</em> + <em>Water Vapor: 0.0577 bar</em>.</div>
+<div class="info-box"><strong>Stop Rounding:</strong> Whether deco stop times are rounded to whole minutes.<br/>
+         • <strong>No</strong> (Fractional) — transit time between stops is absorbed, giving precise values like 0:33 or 1:40. Matches ApexDeco output.<br/>
+         • <strong>Yes</strong> (Whole min) — every stop rounds up to the nearest whole minute. Simpler to execute underwater. Closer to MultiDeco output.</div>
+<div class="info-box"><strong>Water Vapor:</strong> Alveolar water vapor pressure used in tissue loading calculations.<br/>
+         • <strong>0.0627 bar (B — Bühlmann)</strong> — Bühlmann's original standard at 37°C body temperature.<br/>
+         • <strong>0.0577 bar (M — MultiDeco)</strong> — value used by MultiDeco and some other implementations. Produces slightly more tissue loading, shifting stop times by a few seconds at boundaries.<br/>
+        Pair <em>Stop Rounding: Yes</em> + <em>0.0577 bar (M)</em> to most closely match MultiDeco output. Pair <em>No</em> + <em>0.0627 bar (B)</em> for the Bühlmann standard.</div>
+</div>
+<div class="card" style="margin-bottom:12px;border-left:3px solid #ff9900;">
+<div class="card-title" style="color:#ff9900;">🟠 Travel Gas</div>
+<div class="info-box"><strong>Definition:</strong> A travel gas (also called a back-gas or transit gas) is a breathing mix used from the surface to the depth where the bottom gas MOD is reached on descent, and again on ascent when you rise above the bottom gas MOD until the first deco gas switch. It prevents O₂ toxicity at shallower depths when the bottom mix has a high O₂ fraction.</div>
+<div class="info-box"><strong>When you need it:</strong> Any time your bottom gas ppO₂ exceeds the configured limit in shallow water. Common scenario: EAN32 as bottom gas on a 40 m dive — EAN32 hits 1.4 bar ppO₂ at ~33 m, so you need a travel gas (e.g. AIR or a custom mix) for the surface-to-33 m segment.</div>
+<div class="info-box"><strong>Switch depth — Auto:</strong> Calculated as the MOD of the travel gas at the configured ppO₂ Bottom limit. This is where the travel gas itself reaches its limit — the planner switches you to bottom gas exactly there. Formula: <code style="font-family:'JetBrains Mono',monospace;">depth = (ppO₂_limit / fO₂_travel − P_surface) / 0.099</code></div>
+<div class="info-box"><strong>Switch depth — Manual:</strong> Diver-specified. Useful when coordinating with a buddy, aligning with a site landmark, or when using a hypoxic travel gas that has a minimum safe depth.</div>
+<div class="info-box"><strong>Table output:</strong> When a travel gas is active, the descent in the deco table splits into two rows: travel gas (orange) surface → switch depth, then bottom gas (blue) switch depth → bottom. On ascent, a travel gas segment also appears above the bottom gas MOD. Gas consumption is tracked separately per gas.</div>
+<div class="info-box"><strong>Cylinder fields:</strong> Travel gas cylinder size (L) and pressure (bar) — included in the gas consumption summary alongside bottom and deco gases.</div>
+</div>
+<div class="card u9">
+<div class="card-title">Gas &amp; SAC</div>
+<div class="info-box"><strong>BT SAC:</strong> Surface Air Consumption during the bottom phase (L/min). Used to calculate cylinder gas consumption. Typical technical diver: 18–22 L/min. Stress and exertion increase SAC significantly.</div>
+<div class="info-box"><strong>Deco SAC:</strong> SAC rate during deco stops. Lower than bottom SAC since the diver is stationary. Typical: 12–18 L/min.</div>
+</div>
+<div class="card u9">
+<div class="card-title">Narcosis</div>
+<div class="info-box"><strong>N₂ / O₂ Narcotic:</strong> Which gases count toward the Equivalent Narcotic Depth (END).<br/>
+         • <strong>Both Yes</strong> — conservative, used by GUE/DIR. END equals actual depth on air.<br/>
+         • <strong>N₂ only</strong> — more optimistic END for high-O₂ mixes.<br/>
+        END above 30 m warrants caution. Above 40 m is a serious narcosis risk shown in red.</div>
+</div>
+<div class="card u9">
+<div class="card-title">ppO₂ Limits</div>
+<div class="info-box"><strong>Max Bottom ppO₂:</strong> Maximum O₂ partial pressure for the bottom gas. Standard: 1.4 bar. Sets the maximum operating depth (MOD) for the bottom mix.</div>
+<div class="info-box"><strong>Max Deco ppO₂:</strong> Maximum ppO₂ for deco gases (EAN50, O₂). Standard: 1.6 bar. The planner calculates each gas switch depth as the deepest depth where ppO₂ stays within this limit.</div>
+</div>
+<div class="card u9">
+<div class="card-title">O₂ @ MOD Setting</div>
+<div class="info-box"><strong>Allow at MOD (default)</strong> — Pure O₂ (100%) is always selectable as a deco gas at its Maximum Operating Depth (6 m). At 6 m, ppO₂ of pure O₂ = 1.608 bar — marginally above 1.6 bar but accepted in real-world practice. Matches Shearwater, V-Planner and most dive computers.</div>
+<div class="info-box"><strong>Strict ppO₂</strong> — Pure O₂ still uses a 6 m floor (same as Allow at MOD). The Strict flag has no effect on other deco gases — only pure O₂ has an override that Strict mode bypasses.</div>
+</div>
+<div class="card u9">
+<div class="card-title">Gradient Factors (GF Low / GF High) — Evidence Base</div>
+<div class="info-box"><strong>GF Low ≥ 55:</strong> Based on the US Navy NEDU deep-stop study (Doolette et al. 2011). Divers with first stop at 40 fsw had significantly lower DCS incidence than those stopping first at 70 fsw. Iterative ZHL-16C modelling places GF Low ~55 at the conservative bound, ~70 at the midpoint. Lower GF Low (deeper stops) is not proven safer and may increase shallow tissue loading.</div>
+<div class="info-box"><strong>GF High ≤ 80:</strong> Based on Howie et al. (2017, PLoS ONE) — at the 0.1% serious DCS criterion for no-stop dives, ZHL-16C iterative matching gives GF High = 80. For decompression dives, GF High must <em>decrease</em> as dive severity increases (see PrT below). GF High 85–95 exceeds the validated safety margin for any non-trivial dive.</div>
+<div class="info-box"><strong>Belgian military study (PMC10735712):</strong> Bühlmann ZHL-16C + GF replicated in Python and optimised against USN and DCIEM tables (both considered acceptably safe). Result: <strong>GF Low = 100, GF High ≥ 75</strong> best matches validated tables. Conclusion: lower GF Low (deep stops) is not necessarily safer — shallower-biased profiles with GF Lo=100 matched real-world validated tables most closely.</div>
+<div class="info-box"><strong>PrT — Pressure×Root-Time severity index:</strong><br/>
+<code style="font-family:'JetBrains Mono',monospace;font-size:12px;">PrT = P_rel (bar) × √T (min)</code><br/>
+        where P_rel = gauge pressure at depth (bar) = depth × BAR_PER_METRE (10.000 bar/m salt, 10.330 fresh, 10.080 EN13319), T = bottom time (min).<br/>
+         • PrT &lt; 15: recreational — GF High 80–90 is appropriate<br/>
+         • PrT 15–25: moderate deco — GF High 75–80<br/>
+         • PrT 25–40: serious deco — GF High 60–75 (VVAL-79/Van Liew)<br/>
+         • PrT &gt; 40: outside validated range — extreme conservatism required</div>
+<div class="info-box" style="font-size:11px;color:var(--muted);">
+        References: Fraedrich DS (2018/2019), Diving Hyperbaric Med. · Doolette DJ et al. NEDU TR 11-06 (2011) · Howie LE et al. PLoS ONE 12(3):e0172665 (2017) · Van Liew &amp; Flynn, Undersea Hyperb Med 32:199 (2005) · Belgian Defence study PMC10735712 (2023)</div>
+</div>
+</div>
+</div><!-- /legacy-panels -->
+</div><!-- /app -->
+<div id="warningModal" class="lsp-modal-overlay lsp-modal-overlay--pad20" style="display:none;z-index:9100;background:rgba(0,0,0,0.82);">
+<div style="max-width:640px;margin:24px auto;background:var(--surface);border-radius:12px;border:2px solid #cc0000;padding:28px 28px 24px;font-family:'JetBrains Mono',monospace;">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+<div style="display:flex;align-items:center;gap:10px;">
+<span style="font-size:24px;">⚠</span>
+<span style="font-size:14px;font-weight:700;letter-spacing:1px;color:#ff4444;text-transform:uppercase;">Warning &amp; Disclaimer</span>
+</div>
+</div>
+<div style="background:rgba(204,0,0,0.05);border:1px solid #cc0000;border-radius:8px;padding:16px 18px;font-size:12px;line-height:1.75;color:var(--text);">
+<p style="margin:0 0 12px 0;">The program authors do not warrant that this program accurately reflects the Varying Permeability Model or ZHL-16 algorithms, <strong>that it won't get you bent or dead</strong>, or that it will produce safe, reliable results.</p>
+<p style="margin:0 0 12px 0;">This dive schedule is <strong>experimental</strong> and you use it <strong>at your own risk</strong>. Diving in general is fraught with risk, and decompression diving adds significantly more risk. Deep diving utilizing multiple gases, including helium, or rebreathers is about as risky as it gets.</p>
+<p style="margin:0 0 12px 0;">LSP D-Planner+ and the decompression schedules it produces are tools for <strong>experienced mixed-gas decompression divers ONLY</strong>. If you have not been properly trained in mixed-gas decompression diving by an internationally recognized technical certification agency and/or don't have a firm handle on decompression planning and mixed-gas diving, then <strong>DO NOT use this software</strong>.</p>
+<p style="margin:0;color:rgba(255,150,80,0.85);font-size:11px;">In no event will the program authors be liable for any indirect, punitive, special, incidental or consequential damages however they may arise and even if program authors have been previously advised of the possibility of such damages.</p>
+</div>
+<div style="text-align:center;margin-top:18px;">
+<button onclick="toggleWarningModal()" onmouseout="this.style.background='rgba(204,0,0,0.08)'" onmouseover="this.style.background='rgba(204,0,0,0.18)'" style="background:rgba(204,0,0,0.08);border:2px solid #cc0000;border-radius:8px;padding:10px 32px;cursor:pointer;color:#cc0000;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.5px;transition:all 0.2s;">I UNDERSTAND — CLOSE</button>
+</div>
+</div>
+</div>
+<div id="referenceModal" class="lsp-modal-overlay lsp-modal-overlay--pad20" style="display:none;z-index:9000;background:rgba(0,0,0,0.7);">
+<div style="max-width:700px;margin:0 auto;position:relative;">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+<div style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);">📖 Reference</div>
+<button onclick="toggleReference()" aria-label="Close" style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 14px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;">X</button>
+</div>
+<!-- DISCLAIMER — shown first, always visible -->
+<div class="card" style="border-left:4px solid var(--red);margin-bottom:16px;">
+<div class="card-title u13">⚠ Disclaimer — Read Before Use</div>
+<p style="font-size:13px;line-height:1.7;margin-bottom:12px;">
+<strong>This application is a planning aid only.</strong> It does not replace professional dive training, certification, or a calibrated dive computer.
+    </p>
+<ul style="font-size:13px;line-height:2;padding-left:20px;color:var(--text);">
+<li>This is <strong>not</strong> a certified dive computer or medical device</li>
+<li>Plans must be cross-checked against your actual dive computer before every dive</li>
+<li>Decompression algorithms are mathematical models — they do not account for your individual physiology, age, fitness, hydration, thermal state, or workload</li>
+<li>Never dive to the exact limit of any planner or table</li>
+<li>Always follow the training and guidelines of your certifying agency (PADI, SSI, RAID, GUE, TDI, BSAC, or equivalent)</li>
+<li>If you are not certified for the type of dive you are planning, <strong>get trained first</strong></li>
+<li>The developers of this application accept <strong>no liability</strong> for any injury, illness, or death resulting from its use</li>
+</ul>
+<p style="font-size:12px;color:var(--muted);margin-top:12px;font-style:italic;">
+      Dive planning is a skill taught in dive courses. This tool is intended to support trained divers in understanding their plans — not to replace the training itself.
+    </p>
+</div>
+<div class="card">
+<div class="card-title">Algorithm Comparison</div>
+<div class="info-box"><strong>Rec (Recreational Dive Planner):</strong> A conservative lookup table derived from the Bühlmann model and US Navy tables. Fixed depth/time grid — easy to use, no computation. Uses pressure groups (A–Z) to track nitrogen load between dives. Best for recreational divers within 40 m.</div>
+<div class="info-box"><strong>Bühlmann ZH-L16C + GF:</strong> Full tissue compartment model by Dr. Albert Bühlmann (Zürich, 1983). Computes N₂/He saturation per-minute using the Schreiner equation across 16 parallel compartments. Gradient Factors (Baker, 1998) add a configurable safety buffer via GF Low (deep stops) and GF High (surface ceiling). Used in virtually all modern dive computers. Best for multi-level, repetitive, and technical diving.</div>
+<div class="info-box"><strong>VPM-B (Varying Permeability Model):</strong> Bubble-mechanics model by Yount &amp; Hoffman (1986), B-variant by Baker. Instead of tissue tension limits, VPM-B tracks the behaviour of bubble nuclei in tissues and limits their growth. Tends to produce more and shallower deep stops compared to Bühlmann GF. Configurable conservatism margin (+0 to +5). Preferred by many technical divers using helium mixes.</div>
+<div class="info-box"><strong>VPM-B+GFS (Gradient Factor Surfacing):</strong> VPM-B bubble mechanics determine the deep stop schedule; Gradient Factor High then controls the final shallow/surface stops. Combines the nuclei-growth model with a familiar GF ceiling at the top of the ascent. Useful when you want VPM-B deep stops but GF-style control over the last deco stops.</div>
+<div class="info-box"><strong>When to use which:</strong> Rec for simple no-stop recreational dives. Bühlmann+GF for dive computer-style planning and most technical diving. VPM-B or VPM-B/GFS when bubble-mechanics deep stops are preferred — common in trimix and cave diving communities.</div>
+<div style="margin-top:16px;">
+<div class="card-title">Key Safe Depth Limits</div>
+<div class="stats" style="margin-top:0;">
+<div class="stat"><div class="stat-val g" id="refDepthRec">40 m</div><div class="stat-lbl">Rec. Max</div></div>
+<div class="stat"><div class="stat-val" id="refDepthOW">18 m</div><div class="stat-lbl">OW Max</div></div>
+<div class="stat"><div class="stat-val" id="refDepthAdv">30 m</div><div class="stat-lbl">Advanced</div></div>
+<div class="stat"><div class="stat-val y">1.4 bar</div><div class="stat-lbl">ppO₂ Limit</div></div>
+</div>
+</div>
+<div style="margin-top:24px; padding-top:24px; border-top: 1px solid var(--border); text-align:center;">
+<div class="card-title">Links</div>
+<div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;">
+<a href="https://threecats-lsp.com" onmouseout="this.style.borderColor='var(--border-hi)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" rel="noopener noreferrer" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;transition:border-color 0.2s,color 0.2s;" target="_blank"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Three Cats LSP · Diver's Toolkit</span></a>
+<a href="https://github.com/Three-Cats-LSP/LSP_D-planner-plus" onmouseout="this.style.borderColor='var(--border-hi)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" rel="noopener noreferrer" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;transition:border-color 0.2s,color 0.2s;" target="_blank">
+<svg fill="currentColor" height="16" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.165 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.603-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"></path></svg>
+          LSP D-Planner+ · Open Source on GitHub
+        </a>
+<a href="https://threecats-lsp.com/d-planner-plus/download.html" onmouseout="this.style.borderColor='var(--border-hi)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" rel="noopener noreferrer" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;transition:border-color 0.2s,color 0.2s;" target="_blank"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">LSP D-Planner+ · Download Android APK</span></a>
+<a href="https://www.thingiverse.com/Roman_Markovtsev/designs" onmouseout="this.style.borderColor='var(--border-hi)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" rel="noopener noreferrer" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;transition:border-color 0.2s,color 0.2s;" target="_blank"><img alt="Thingiverse" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHIAAAByCAMAAAC4A3VPAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABpUExURStS/gAAADBY/yhY/zBQ/yhQ/yxT/yxT/ipT/ipR/ixT/itT/ixS/itS/v////H1//L0/8rU/8rT/73J/73J/rzJ/6++/6++/qKz/pWp/5Wo/oid/nuT/nuS/m2I/mB9/lNz/kZo/jld/g0+l6gAAAAOdFJOU/8AICAgIK+vr7C/v+/vniJZ+QAAAKhJREFUeNrt2ckNwjAARNFxFpbENmELO4T0XyQV2DJI9gH938DTnEem6a3KtaqMGquiuUoLFa5X8ZyIiIjo26ZHht6KtfMZ2kJCQkJCQkJCQkLmJZ9jpP3Ghxpj3fR755B4UK6uIfIECQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQn5d6QrT3ZK7xi+ftNbq02fOflgL6Vma5l2qaTmyxAmh/ucBna1+QBeIOmb8eOcqAAAAABJRU5ErkJggg==" style="width:16px;height:16px;object-fit:contain;border-radius:2px;flex-shrink:0;"/><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">My Designs · Thingiverse</span></a>
+<a href="https://www.instagram.com/threecats_lsp" onmouseout="this.style.borderColor='var(--border-hi)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='#d92e7f';this.style.color='#d92e7f'" rel="noopener noreferrer" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;transition:border-color 0.2s,color 0.2s;" target="_blank">
+<svg fill="none" height="16" viewbox="0 0 50 50" width="16" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="igAbout" x1="0%" x2="100%" y1="100%" y2="0%"><stop offset="0%" style="stop-color:#feda75"></stop><stop offset="5%" style="stop-color:#fa7e1e"></stop><stop offset="45%" style="stop-color:#d92e7f"></stop><stop offset="60%" style="stop-color:#9b36b7"></stop><stop offset="90%" style="stop-color:#515bd4"></stop></lineargradient></defs><rect fill="none" height="40" rx="10" stroke="url(#igAbout)" stroke-width="2.5" width="40" x="5" y="5"></rect><circle cx="25" cy="25" fill="none" r="8" stroke="url(#igAbout)" stroke-width="2"></circle><circle cx="36" cy="13" fill="url(#igAbout)" r="2"></circle></svg>
+<span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Follow @threecats_lsp on Instagram</span></a>
+<a href="https://paypal.me/ThreeCatsLSP" onmouseout="this.style.borderColor='rgba(0,112,186,0.4)';this.style.color='var(--muted)';this.style.background='linear-gradient(135deg,rgba(0,112,186,0.12),rgba(0,145,220,0.16))'" onmouseover="this.style.borderColor='#0070ba';this.style.color='#0070ba';this.style.background='rgba(0,112,186,0.22)'" rel="noopener noreferrer" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:linear-gradient(135deg,rgba(0,112,186,0.12),rgba(0,145,220,0.16));border:1px solid rgba(0,112,186,0.4);border-radius:8px;color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;transition:border-color 0.2s,color 0.2s,background 0.2s;" target="_blank">
+<svg fill="none" height="16" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.828L8.293 21H12.5c.524 0 .968-.381 1.05-.9l.437-2.786h1.8c3.476 0 5.893-1.408 6.656-5.49.343-1.818.044-3.145-.22-4.907z" fill="#009cde"></path><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106z" fill="#003087" opacity="0.8"></path></svg>
+          Support Development · Donate via PayPal
+        </a></div>
+<p id="appVersionLabel" style="color: var(--muted); font-size:10px; margin-top:12px; letter-spacing:1px; opacity:0.6;">Version 2.30.0</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer: Instagram + GitHub -->
+<div style="text-align: center; padding: 14px 24px 24px; background: transparent; border-top: none; margin-top: -2px;">
+<div style="display:inline-flex;align-items:center;gap:14px;">
+<a href="https://www.instagram.com/threecats_lsp" onmouseout="this.style.transform='scale(1)';this.style.opacity='0.8'" onmouseover="this.style.transform='scale(1.15)';this.style.opacity='1'" rel="noopener noreferrer" style="display:flex;align-items:center;transition:transform 0.2s ease,opacity 0.2s ease;opacity:0.8;" target="_blank" title="Follow @threecats_lsp on Instagram">
+<svg fill="none" height="36" viewbox="0 0 50 50" width="36" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<lineargradient id="instaGradient" x1="0%" x2="100%" y1="100%" y2="0%">
+<stop offset="0%" style="stop-color:#feda75;stop-opacity:1"></stop>
+<stop offset="5%" style="stop-color:#fa7e1e;stop-opacity:1"></stop>
+<stop offset="45%" style="stop-color:#d92e7f;stop-opacity:1"></stop>
+<stop offset="60%" style="stop-color:#9b36b7;stop-opacity:1"></stop>
+<stop offset="90%" style="stop-color:#515bd4;stop-opacity:1"></stop>
+</lineargradient>
+</defs>
+<rect fill="none" height="40" rx="10" ry="10" stroke="url(#instaGradient)" stroke-width="2" width="40" x="5" y="5"></rect>
+<circle cx="25" cy="25" fill="none" r="7" stroke="url(#instaGradient)" stroke-width="1.2"></circle>
+<circle cx="25" cy="25" fill="url(#instaGradient)" r="2.5"></circle>
+<circle cx="36" cy="12" fill="url(#instaGradient)" r="1.8"></circle>
+</svg>
+</a>
+<a href="https://github.com/Three-Cats-LSP/LSP_D-planner-plus" onmouseout="this.style.opacity='0.7';this.style.transform='scale(1)'" onmouseover="this.style.opacity='1';this.style.transform='scale(1.15)'" rel="noopener noreferrer" style="display:flex;align-items:center;opacity:0.7;transition:opacity 0.2s,transform 0.2s;" target="_blank" title="View source on GitHub">
+<svg fill="var(--muted)" height="36" viewbox="0 0 24 24" width="36" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.165 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.603-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"></path></svg>
+</a><a href="https://www.thingiverse.com/Roman_Markovtsev/designs" onmouseout="this.style.opacity='0.7';this.style.transform='scale(1)'" onmouseover="this.style.opacity='1';this.style.transform='scale(1.15)'" rel="noopener noreferrer" style="display:flex;align-items:center;opacity:0.7;transition:opacity 0.2s,transform 0.2s;" target="_blank" title="My designs on Thingiverse"><img alt="Thingiverse" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHIAAAByCAMAAAC4A3VPAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABpUExURStS/gAAADBY/yhY/zBQ/yhQ/yxT/yxT/ipT/ipR/ixT/itT/ixS/itS/v////H1//L0/8rU/8rT/73J/73J/rzJ/6++/6++/qKz/pWp/5Wo/oid/nuT/nuS/m2I/mB9/lNz/kZo/jld/g0+l6gAAAAOdFJOU/8AICAgIK+vr7C/v+/vniJZ+QAAAKhJREFUeNrt2ckNwjAARNFxFpbENmELO4T0XyQV2DJI9gH938DTnEem6a3KtaqMGquiuUoLFa5X8ZyIiIjo26ZHht6KtfMZ2kJCQkJCQkJCQkLmJZ9jpP3Ghxpj3fR755B4UK6uIfIECQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQn5d6QrT3ZK7xi+ftNbq02fOflgL6Vma5l2qaTmyxAmh/ucBna1+QBeIOmb8eOcqAAAAABJRU5ErkJggg==" style="width:36px;height:36px;object-fit:contain;border-radius:4px;flex-shrink:0;"/></a>
+<a href="https://threecats-lsp.com/d-planner-plus/download.html" id="apkDownloadIcon" onmouseout="this.style.opacity='0.7';this.style.transform='scale(1)'" onmouseover="this.style.opacity='1';this.style.transform='scale(1.15)'" style="display:flex;align-items:center;opacity:0.7;transition:opacity 0.2s,transform 0.2s;" title="Download LSP D-Planner+ APK">
+<img alt="LSP D-Planner+" height="36" src="icon-192.png" style="display:block;width:36px;height:36px;border-radius:8px;border:1px solid var(--border-hi);object-fit:contain;" width="36"/>
+</a>
+<a href="https://threecats-lsp.com/t-viewer/" id="tvAppIcon" onmouseout="this.style.opacity='0.7';this.style.transform='scale(1)'" onmouseover="this.style.opacity='1';this.style.transform='scale(1.15)'" rel="noopener noreferrer" style="display:flex;align-items:center;opacity:0.7;transition:opacity 0.2s,transform 0.2s;" target="_blank" title="T-Viewer">
+<svg fill="none" height="36" viewbox="0 0 500 500" width="36" xmlns="http://www.w3.org/2000/svg">
+<!-- background -->
+<rect fill="#0a1628" height="500" width="500"></rect>
+<!-- doc body -->
+<path d="M 193 165 L 287 165 L 315 193 L 315 327 Q 315 335 307 335 L 193 335 Q 185 335 185 327 L 185 173 Q 185 165 193 165 Z" fill="#0a1a3a" stroke="#00c8ff" stroke-width="5"></path>
+<!-- fold cut -->
+<path d="M 287 165 L 315 193 L 287 193 Z" fill="#0a1628"></path>
+<!-- fold border -->
+<line stroke="#00c8ff" stroke-width="5" x1="287" x2="287" y1="165" y2="193"></line>
+<line stroke="#00c8ff" stroke-width="5" x1="287" x2="315" y1="193" y2="193"></line>
+<!-- content lines -->
+<line opacity="0.85" stroke="#00c8ff" stroke-linecap="round" stroke-width="4" x1="204" x2="296" y1="222" y2="222"></line>
+<line opacity="0.85" stroke="#00c8ff" stroke-linecap="round" stroke-width="4" x1="204" x2="296" y1="240" y2="240"></line>
+<line opacity="0.85" stroke="#00c8ff" stroke-linecap="round" stroke-width="4" x1="204" x2="296" y1="258" y2="258"></line>
+<line opacity="0.65" stroke="#00c8ff" stroke-linecap="round" stroke-width="4" x1="204" x2="272" y1="276" y2="276"></line>
+<line opacity="0.65" stroke="#00c8ff" stroke-linecap="round" stroke-width="4" x1="204" x2="284" y1="294" y2="294"></line>
+<line opacity="0.45" stroke="#00c8ff" stroke-linecap="round" stroke-width="4" x1="204" x2="260" y1="312" y2="312"></line>
+</svg>
+</a>
+<a href="https://threecats-lsp.com/get-in-water/" id="giwAppIcon" onmouseout="this.style.opacity='0.7';this.style.transform='scale(1)'" onmouseover="this.style.opacity='1';this.style.transform='scale(1.15)'" rel="noopener noreferrer" style="display:flex;align-items:center;opacity:0.7;transition:opacity 0.2s,transform 0.2s;" target="_blank" title="Get In Water">
+<img alt="Get In Water" height="36" src="vendor/icons/giw-icon-192.png" style="display:block;width:36px;height:36px;border-radius:8px;border:1px solid var(--border-hi);object-fit:contain;" width="36"/>
+</a>
+</div>
+<div style="margin-top:10px;display:flex;align-items:center;justify-content:center;">
+<a href="https://paypal.me/ThreeCatsLSP" onmouseout="this.style.borderColor='rgba(0,112,186,0.35)';this.style.color='var(--muted)';this.style.opacity='0.7'" onmouseover="this.style.borderColor='#0070ba';this.style.color='#0070ba';this.style.opacity='1'" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:transparent;border:1px solid rgba(0,112,186,0.35);border-radius:20px;color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.5px;transition:border-color 0.2s,color 0.2s,opacity 0.2s;opacity:0.7;" target="_blank">
+<svg fill="none" height="13" viewbox="0 0 24 24" width="13" xmlns="http://www.w3.org/2000/svg"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.828L8.293 21H12.5c.524 0 .968-.381 1.05-.9l.437-2.786h1.8c3.476 0 5.893-1.408 6.656-5.49.343-1.818.044-3.145-.22-4.907z" fill="currentColor" opacity="0.7"></path></svg>
+      If you find this useful, consider a donation to support development
+    </a>
+</div>
+<p id="mainVersionLabel" style="color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;margin-top:6px;letter-spacing:1px;opacity:0.5;"></p>
+</div>
+</div><!-- /app -->

@@ -114,6 +114,24 @@ UI_CORE_BLOCKS: tuple[UiCoreBlock, ...] = (
  */
 """,
     ),
+    UiCoreBlock(
+        "results-panel",
+        "results-panel.js",
+        """/**
+ * Results panel shell — metrics, chips, tabs, schedule decoration.
+ * Loaded by index.html before main inline script.
+ */
+""",
+    ),
+    UiCoreBlock(
+        "planner-shell",
+        "planner-shell.js",
+        """/**
+ * Planner/tools navigation shell and V4 layout bootstrap.
+ * Loaded by index.html before main inline script.
+ */
+""",
+    ),
 )
 
 EXPECTED_SCRIPT_ORDER = [b.filename for b in UI_CORE_BLOCKS]
@@ -125,6 +143,8 @@ INLINE_FORBIDDEN_DEFS: dict[str, tuple[str, ...]] = {
     "gas-plan-core": ("function calcGasPlan(", "let _gasRule"),
     "export-core": ("function buildExportText(", "async function exportPDF("),
     "contingency-core": ("function runContingencyScenario(", "function calcContingency("),
+    "results-panel": ("function switchResultTab(", "function _renderResultSummaryStrip("),
+    "planner-shell": ("function initV3Layout(", "function setNavMode("),
 }
 
 

@@ -1,0 +1,271 @@
+
+<div class="u18">VPM-B Physics</div>
+<div class="info-box"><strong>Critical radii:</strong> each tissue has initial bubble nuclei radii for N₂ and He. Descent compresses (crushes) them. During ascent, allowable supersaturation is derived from bubble mechanics — smaller radii = more conservative stops.</div>
+<div class="info-box"><strong>Altitude correction:</strong> at altitude, reduced surface pressure expands initial radii by (P_SL / P_alt)^⅓ — making nuclei larger and requiring more conservative ascents. Applied automatically when altitude &gt; 0.</div>
+<div class="info-box"><strong>Repetitive dives:</strong> bubble nuclei regenerate during surface interval (τ ≈ 14 days). Use the VPM Repetitive mode to carry both tissue loading and bubble state between dives for accurate repetitive dive planning.</div>
+</div>
+<!-- ── Primary Sources ───────────────────────────────────── -->
+<div class="u21">
+<div class="u18">Primary Sources</div>
+<div style="font-size:12px;line-height:2;color:var(--text);">
+<div class="u14">📄 <strong>Bühlmann (1983, 2003)</strong> — <em>Decompression–Decompression Sickness</em> — the original ZHL-16 tissue model and M-value tables.<br/><a class="u12" href="https://en.wikipedia.org/wiki/B%C3%BChlmann_decompression_algorithm" rel="noopener noreferrer" target="_blank">Wikipedia — Bühlmann decompression algorithm</a></div>
+<div class="u14">📄 <strong>Baker (1998)</strong> — <em>Understanding M-values</em> — introduced Gradient Factors as a practical safety buffer on Bühlmann M-values.<br/><a class="u12" href="http://www.dive-tech.co.uk/resources/mvalues.pdf" rel="noopener noreferrer" target="_blank">dive-tech.co.uk — Baker 1998 (PDF)</a></div>
+<div class="u14">📄 <strong>Yount &amp; Hoffman (1986)</strong> — <em>On the use of a bubble formation model to calculate diving tables</em> — the original VPM paper.<br/><a class="u12" href="https://pubmed.ncbi.nlm.nih.gov/3954703/" rel="noopener noreferrer" target="_blank">PubMed — Yount &amp; Hoffman 1986</a>  ·  <a class="u12" href="https://diving-rov-specialists.com/index-b-documents_htm_files/scient-b_15-use-bubble-formation-model.pdf" rel="noopener noreferrer" target="_blank">Full PDF</a></div>
+<div class="u14">📄 <strong>Baker (1998) VPM-B FORTRAN</strong> — canonical VPM-B implementation with conservatism levels 0–5.<br/><a class="u12" href="https://gist.github.com/eskil/a1b8365b31cb95253f78186125c89fda" rel="noopener noreferrer" target="_blank">GitHub Gist — VPM-B FORTRAN source (Baker)</a></div>
+<div class="u14">📄 <strong>Wienke (2002)</strong> — <em>Technical Diving in Depth</em> — extended VPM theory, trimix, altitude, repetitive dives.<br/><a class="u12" href="https://www.springer.com/gp/book/9783540431282" rel="noopener noreferrer" target="_blank">springer.com — Wienke 2002</a></div>
+<div class="u14">📄 <strong>US Navy Diving Manual Rev 7 (2016)</strong> — standard tables, O₂ toxicity limits, CNS/OTU reference values.<br/><a class="u12" href="https://www.navsea.navy.mil/Portals/103/Documents/SUPSALV/Diving/US%20DIVING%20MANUAL_REV7.pdf" rel="noopener noreferrer" target="_blank">navsea.navy.mil — US Navy Diving Manual Rev 7 (PDF)</a></div>
+<div class="u14">📄 <strong>Doolette &amp; Mitchell (2003)</strong> — <em>Biophysical basis for inner ear decompression sickness</em> — He fast tissue physiology.<br/><a class="u12" href="https://pubmed.ncbi.nlm.nih.gov/12851511/" rel="noopener noreferrer" target="_blank">PubMed — Doolette &amp; Mitchell 2003</a></div>
+</div>
+</div>
+<!-- ── LSP Documentation ─────────────────────────────────── -->
+<div class="u21">
+<div class="u18">LSP D-Planner+ Documentation</div>
+<div style="font-size:12px;line-height:1.8;color:var(--text);">
+<div style="margin-bottom:10px;">Full technical documentation, algorithm notes, and knowledge base PDF available in the open-source repository.</div>
+<a href="https://github.com/Three-Cats-LSP/LSP_D-planner-plus" onmouseout="this.style.borderColor='var(--border-hi)';this.style.color='var(--text)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;padding:8px 14px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;color:var(--text);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;transition:border-color 0.2s,color 0.2s;" target="_blank">
+<svg fill="currentColor" height="16" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.165 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.603-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"></path></svg>
+            GitHub · Three-Cats-LSP/LSP_D-planner-plus
+          </a>
+</div>
+</div>
+<!-- ── Support Development ─────────────────────────────────── -->
+<div class="u21">
+<div class="u18">Support Development</div>
+<div style="font-size:12px;line-height:1.8;color:var(--text);margin-bottom:12px;">LSP D-Planner+ is free and open-source. If it helps your diving, consider supporting its continued development.</div>
+<a href="https://paypal.me/ThreeCatsLSP" onmouseout="this.style.borderColor='rgba(0,112,186,0.4)';this.style.background='linear-gradient(135deg,rgba(0,112,186,0.12),rgba(0,145,220,0.16))'" onmouseover="this.style.borderColor='#0070ba';this.style.background='rgba(0,112,186,0.22)'" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;padding:9px 16px;background:linear-gradient(135deg,rgba(0,112,186,0.12),rgba(0,145,220,0.16));border:1px solid rgba(0,112,186,0.4);border-radius:8px;color:var(--text);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;transition:border-color 0.2s,background 0.2s;" target="_blank">
+<svg fill="none" height="16" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.828L8.293 21H12.5c.524 0 .968-.381 1.05-.9l.437-2.786h1.8c3.476 0 5.893-1.408 6.656-5.49.343-1.818.044-3.145-.22-4.907z" fill="#009cde"></path><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106z" fill="#003087" opacity="0.8"></path></svg>
+          Donate via PayPal
+        </a>
+</div>
+</div>
+</div>
+<!-- ── END Calculator ── -->
+<div id="tool-panel-endcalc" style="display:none;">
+<div class="card">
+<div style="display:flex;align-items:center;gap:6px;margin-bottom:14px;">
+<div class="card-title u0">END — Equivalent Narcotic Depth</div>
+<span class="tip-icon" onclick="showTip(_endTipTitle,_endTipText)"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span>
+</div>
+<!-- Inputs -->
+<div style="display:flex;flex-wrap:wrap;gap:18px;margin-bottom:20px;">
+<!-- Depth -->
+<div style="flex:1;min-width:160px;">
+<div class="u2">
+<label class="u8">Depth</label>
+<span class="u5" id="endDepthDisplay">30 m</span>
+</div>
+<div class="slider-wrap">
+<input class="lsp-slider" id="endDepth" max="100" min="1" oninput="updateSliderFill(this);document.getElementById('endDepthDisplay').textContent=this.value+(units==='metric'?' m':' ft');calcEND_tool()" step="1" type="range" value="30"/>
+<div class="slider-ticks"><span>1</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+</div>
+</div>
+<!-- O2 % -->
+<div style="flex:1;min-width:160px;">
+<div class="u2">
+<label class="u8">O₂ %</label>
+<span class="u5" id="endO2Display">21%</span>
+</div>
+<div class="slider-wrap">
+<input class="lsp-slider" id="endO2" max="100" min="1" oninput="updateSliderFill(this);document.getElementById('endO2Display').textContent=this.value+'%';calcEND_tool()" step="1" type="range" value="21"/>
+<div class="slider-ticks-abs">
+<span style="left:0%">1%</span><span style="left:20.2%">21%</span><span style="left:39.4%">40%</span><span style="left:79.8%">80%</span><span style="left:100%">100%</span>
+</div>
+</div>
+</div>
+<!-- He % -->
+<div style="flex:1;min-width:160px;">
+<div class="u2">
+<label class="u8">He % <span style="font-size:9px;color:var(--muted);">(0 = nitrox)</span></label>
+<span class="u5" id="endHeDisplay">0%</span>
+</div>
+<div class="slider-wrap">
+<input class="lsp-slider" id="endHe" max="99" min="0" oninput="updateSliderFill(this);document.getElementById('endHeDisplay').textContent=this.value+'%';calcEND_tool()" step="1" type="range" value="0"/>
+<div class="slider-ticks"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>99%</span></div>
+</div>
+</div>
+</div>
+<!-- Mix validity warning -->
+<div id="endMixWarn" style="display:none;margin-bottom:12px;"></div>
+<!-- Results -->
+<div id="endResults">
+<!-- Row 1: END + Risk -->
+<div class="stats" style="grid-template-columns:repeat(3,1fr);margin-bottom:12px;">
+<div class="stat"><div class="stat-val u15" id="endResult">—</div><div class="stat-lbl">END</div></div>
+<div class="stat"><div class="stat-val" id="endRisk" style="font-size:14px;">—</div><div class="stat-lbl">Narcosis Risk</div></div>
+<div class="stat"><div class="stat-val u6" id="endNarcLoad">—</div><div class="stat-lbl">Narcotic ppressure</div></div>
+</div>
+<!-- Row 2: pressure breakdown -->
+<div class="stats" style="grid-template-columns:repeat(4,1fr);margin-bottom:12px;">
+<div class="stat"><div class="stat-val u6" id="endAbsP">—</div><div class="stat-lbl">Abs. Pressure</div></div>
+<div class="stat"><div class="stat-val u6" id="endPPN2">—</div><div class="stat-lbl">ppN₂</div></div>
+<div class="stat"><div class="stat-val u6" id="endPPO2">—</div><div class="stat-lbl">ppO₂</div></div>
+<div class="stat"><div class="stat-val u6" id="endPPHe">—</div><div class="stat-lbl">ppHe</div></div>
+</div>
+<!-- Row 3: MOD + mix name -->
+<div class="stats" style="grid-template-columns:repeat(3,1fr);margin-bottom:4px;">
+<div class="stat"><div class="stat-val" id="endMixName" style="color:var(--accent);font-size:16px;">—</div><div class="stat-lbl">Mix</div></div>
+<div class="stat"><div class="stat-val u15" id="endMOD14">—</div><div class="stat-lbl">MOD @ 1.4</div></div>
+<div class="stat"><div class="stat-val u6" id="endMOD16">—</div><div class="stat-lbl">MOD @ 1.6</div></div>
+</div>
+<div id="endAlert" style="margin-top:10px;"></div>
+</div>
+</div>
+</div>
+<!-- ── EAD Table ── -->
+<div id="tool-panel-eadtable" style="display:none;">
+<div class="card">
+<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+<div class="card-title u0">EAD — Equivalent Air Depth Table</div>
+<span class="tip-icon" onclick="showTip(_eadTipTitle,_eadTipText)"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span>
+</div>
+<p style="color:var(--muted);font-size:11px;margin-bottom:12px;">EAD for EAN 22–40 at depths 12–38 m. Use EAD with standard air NDL tables when diving nitrox. Values computed live using your current unit setting.</p>
+<div class="u16">
+<table id="eadRefTable" style="width:100%;border-collapse:collapse;font-size:11px;font-family:'JetBrains Mono',monospace;">
+<!-- filled by renderEADTable() -->
+</table>
+</div>
+</div>
+</div>
+<!-- ── Gas Table (MOD / MND reference) ── -->
+<div id="tool-panel-gastable" style="display:none;">
+<div class="card">
+<div class="card-title">Gas Table — MOD &amp; MND</div>
+<div class="info-box">Maximum Operating Depth and Maximum Narcotic Depth for common mixes. MOD columns recalculate when you change the ppO₂ limit below.</div>
+<div class="u4">
+<div class="u2">
+<label class="u8">ppO₂ limit for MOD column</label>
+<span class="u5" id="gasTablePPO2Display">1.4</span>
+</div>
+<div class="slider-wrap">
+<input class="lsp-slider" id="gasTablePPO2" max="16" min="10" oninput="updateSliderFill(this);document.getElementById('gasTablePPO2Display').textContent=(this.value/10).toFixed(1);renderGasTable()" step="1" type="range" value="14"/>
+<div class="slider-ticks"><span>1.0</span><span>1.2</span><span>1.4</span><span>1.6</span></div>
+</div>
+</div>
+<div style="overflow-x:auto;">
+<table class="deco-table" id="gasTableTable">
+<thead><tr>
+<th style="text-align:left;">Gas</th>
+<th id="gasTableModSelHdr">MOD @ 1.4</th>
+<th>MOD @ 1.6</th>
+<th>MND</th>
+</tr></thead>
+<tbody id="gasTableBody"></tbody>
+</table>
+</div>
+<div class="info-box" style="margin-top:14px;">MND calculated at END = 3.5 bar (N₂+O₂ narcotic, He non-narcotic). MOD column uses the ppO₂ limit set above; the 1.6 column is fixed at the deco limit.</div>
+</div>
+</div>
+<!-- ── Surface Interval Calculator ── -->
+<div id="tool-panel-surfint" style="display:none;">
+<div class="card">
+<div class="card-title">Surface Interval — Minimum Between Dives</div>
+<div class="info-box">Estimates the minimum surface interval needed before a second dive, using the same Bühlmann ZH-L16C tissue model as the planner. Off-gasses all 16 compartments at the surface until they are within tolerance for the planned second-dive depth.</div>
+<div class="u4">
+<div class="u2">
+<label class="u8">Dive 1 Depth</label>
+<span class="u5" id="siD1DepthDisplay">30 m</span>
+</div>
+<div class="slider-wrap">
+<input class="lsp-slider" id="siD1Depth" max="60" min="5" oninput="updateSliderFill(this);calcSurfInt();appSettings.save()" step="1" type="range" value="30"/>
+<div class="slider-ticks"><span>5m</span><span>15m</span><span>30m</span><span>45m</span><span>60m</span></div>
+</div>
+</div>
+<div class="u4">
+<div class="u2">
+<label class="u8">Dive 1 Bottom Time</label>
+<span class="u5" id="siD1BTDisplay">25 min</span>
+</div>
+<div class="slider-wrap">
+<input class="lsp-slider" id="siD1BT" max="120" min="5" oninput="updateSliderFill(this);calcSurfInt();appSettings.save()" step="1" type="range" value="25"/>
+<div class="slider-ticks"><span>5</span><span>30</span><span>60</span><span>90</span><span>120</span></div>
+</div>
+</div>
+<div class="u4">
+<div class="u2">
+<label class="u8">Dive 2 Planned Depth</label>
+<span class="u5" id="siD2DepthDisplay">30 m</span>
+</div>
+<div class="slider-wrap">
+<input class="lsp-slider" id="siD2Depth" max="60" min="5" oninput="updateSliderFill(this);calcSurfInt();appSettings.save()" step="1" type="range" value="30"/>
+<div class="slider-ticks"><span>5m</span><span>15m</span><span>30m</span><span>45m</span><span>60m</span></div>
+</div>
+</div>
+<div class="u4">
+<div class="u2">
+<label class="u8">Dive 2 Bottom Time</label>
+<span class="u5" id="siD2BTDisplay">25 min</span>
+</div>
+<div class="slider-wrap">
+<input class="lsp-slider" id="siD2BT" max="120" min="5" oninput="updateSliderFill(this);calcSurfInt();appSettings.save()" step="1" type="range" value="25"/>
+<div class="slider-ticks"><span>5</span><span>30</span><span>60</span><span>90</span><span>120</span></div>
+</div>
+</div>
+<div style="margin-bottom:18px;">
+<button type="button" onclick="toggleD2Gas('si')" id="siD2GasToggle"
+  style="display:flex;align-items:center;gap:7px;width:100%;background:none;
+         border:1px solid var(--border);border-radius:6px;padding:7px 12px;
+         cursor:pointer;color:var(--muted);font-family:inherit;font-size:11px;
+         font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+         text-align:left;transition:all .2s;">
+<span id="siD2GasChevron" style="transition:transform .25s;">▶</span>
+<span>Dive 2 Gas Override</span>
+<span id="siD2GasSummary"
+  style="margin-left:auto;font-size:10px;font-weight:400;letter-spacing:0;
+         text-transform:none;opacity:.7;color:var(--accent);">
+</span>
+</button>
+<div id="siD2GasBody" style="display:none;padding:10px 4px 0;">
+<div class="info-box" style="margin-top:0;margin-bottom:10px;">
+Optional. Leave blank to use the same gas as Dive 1 (common case).
+Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
+</div>
+<div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
+<div class="field" style="flex:1;min-width:80px;">
+<label>Dive 2 O₂ %</label>
+<input type="number" id="siD2O2" min="21" max="100" step="1"
+  placeholder="inherit"
+  oninput="updateD2GasSummary('si');calcSurfInt();appSettings.save()"/>
+</div>
+<div class="field" style="flex:1;min-width:80px;">
+<label>Dive 2 He %</label>
+<input type="number" id="siD2He" min="0" max="79" step="1" value="0"
+  oninput="updateD2GasSummary('si');calcSurfInt();appSettings.save()"/>
+</div>
+</div>
+<div id="siD2GasErr"
+  style="display:none;margin-top:6px;font-family:'JetBrains Mono',monospace;
+         font-size:10px;color:var(--red);">
+</div>
+</div>
+</div>
+<div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:18px;">
+<div style="display:flex;align-items:center;gap:6px;">
+<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">GF Lo:</span>
+<select class="u7" id="siGfLow" onchange="calcSurfInt();appSettings.save()">
+<option value="20">20</option>
+<option value="25">25</option>
+<option selected="" value="30">30</option>
+<option value="35">35</option>
+<option value="40">40</option>
+<option value="45">45</option>
+<option value="50">50</option>
+</select>
+</div>
+</div>
+<div class="stats" style="grid-template-columns:repeat(2,1fr);margin-top:8px;">
+<div class="stat"><div class="stat-val u10" id="siMinResult">—</div><div class="stat-lbl">Minimum Surface Interval</div></div>
+<div class="stat"><div class="stat-val u15" id="siRecResult">—</div><div class="stat-lbl">Recommended (min × 1.5)</div></div>
+<div class="stat" style="grid-column:1/-1;"><div class="stat-val" id="siDriverResult" style="font-size:14px;color:var(--muted);">—</div><div class="stat-lbl">Controlling Compartment</div></div>
+</div>
+<div class="info-box" id="siReverseWarn" style="display:none;margin-top:14px;"></div>
+<div style="margin-top:18px;">
+<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Tissue Loading at Recommended SI</div>
+<div id="siTissueChart" style="display:flex;flex-direction:column;gap:3px;"></div>
+</div>
+<div class="info-box" style="margin-top:16px;border-left:3px solid var(--accent);">This is a planning guide only — always use a dive computer. Assumes air dives, instantaneous surfacing, and surface off-gassing on air at the current altitude.</div>
+</div>
+</div>
+<!-- ── CNS O₂ Tracker (content mounted from #cns in initV3Layout) ── -->
+<div id="tool-panel-cns" style="display:none;"></div>
+</div>
+<!-- Gas Rule Info Modal -->

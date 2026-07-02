@@ -28,6 +28,10 @@ ROOT_FILES = [
     "icon-192.png",
     "icon-512.png",
     "sw.js",
+    "lsp-dplanner-foundation.css",
+    "lsp-dplanner-modes.css",
+    "lsp-dplanner-controls.css",
+    "lsp-dplanner-results.css",
     "zhl-engine-bundle.js",
     "padi-engine.js",
     "vpm-engine-bundle.js",
@@ -38,6 +42,8 @@ ROOT_FILES = [
     "gas-plan-core.js",
     "export-core.js",
     "contingency-core.js",
+    "results-panel.js",
+    "planner-shell.js",
     "tests.html",
     "tests-extended.html",
     "tests-massive.html",
@@ -76,9 +82,11 @@ def _copy_tree_filtered(src: Path, dst: Path) -> None:
 
 
 def build_pages_site() -> Path:
+    from assemble_ui_html import verify_partials
     from update_sw_version import main as verify_app_version
     from sync_www import parse_app_version, write_version_json
 
+    verify_partials()
     verify_app_version()
     app_version = parse_app_version((ROOT / "app-version.js").read_text(encoding="utf-8"))
     write_version_json(app_version)

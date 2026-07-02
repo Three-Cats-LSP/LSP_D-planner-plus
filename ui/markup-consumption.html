@@ -1,0 +1,381 @@
+
+
+<!-- ── Contingency Plans ── -->
+
+<!-- ── Dive Graph ── -->
+<!-- close diveGraphCard -->
+<!-- ── Tissue Loading Chart ── -->
+
+<!-- ── Tissue Saturation (inline) ── -->
+<!-- tissueInlineCard content merged into tissueLoadCard -->
+<!-- ── GF Curve (inline) ── -->
+
+<!-- tissueTableCard content merged into tissueLoadCard -->
+<div id="tecSurfIntContainer" style="display:block;"></div>
+</div>
+</div>
+</div><!-- /deco panel -->
+<div class="panel" id="cns">
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+<div class="card-title" style="margin:0;">CNS Oxygen Toxicity Tracker</div>
+<button class="btn-export" onclick="copyDiveProfile('cns')" title="Copy to clipboard"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+</div>
+<p style="color:var(--muted);font-size:12px;margin-bottom:16px;">Tracks Central Nervous System (CNS) O₂ toxicity based on ppO₂ and exposure time. NOAA limits: keep CNS below 80% per dive, 100% per day.</p>
+<!-- ── Last Dive OTU/CNS Carry ── -->
+<div style="background:rgba(0,200,255,0.04);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:14px;">
+<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Prior Dive O₂ Load Carry <span class="tip-icon" onclick="showTip('Prior Dive O₂ Load Carry','OTU accumulates all day (NOAA daily limit: 300 OTU). CNS decays with a 90-minute half-life between dives.\n\nEnter how long ago your last dive ended and the OTU/CNS from that dive. LSP will carry the remaining OTU and decayed CNS into the current plan.\n\nDay-boundary rule: if the last dive ended more than 24 hours ago, OTU resets to 0. CNS always decays exponentially regardless of day boundary.\n\nThe carry values appear in the deco plan footer as accumulated CNS and OTU.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"/><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"/><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"/></svg></span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:8px;align-items:end;margin-bottom:8px;">
+<div class="field" style="margin:0;">
+<label style="font-size:10px;">Days ago</label>
+<input id="priorDiveDays" max="30" min="0" oninput="updatePriorDiveCarry()" step="1" style="font-size:12px;" type="number" value="0"/>
+</div>
+<div class="field" style="margin:0;">
+<label style="font-size:10px;">Hours ago</label>
+<input id="priorDiveHours" max="23" min="0" oninput="updatePriorDiveCarry()" step="1" style="font-size:12px;" type="number" value="0"/>
+</div>
+<div class="field" style="margin:0;">
+<label style="font-size:10px;">Minutes ago</label>
+<input id="priorDiveMinutes" max="59" min="0" oninput="updatePriorDiveCarry()" step="1" style="font-size:12px;" type="number" value="0"/>
+</div>
+<div class="field" style="margin:0;">
+<label style="font-size:10px;">Prior OTU</label>
+<input id="priorDiveOTU" max="600" min="0" oninput="updatePriorDiveCarry()" step="1" style="font-size:12px;" type="number" value="0"/>
+</div>
+<div class="field" style="margin:0;">
+<label style="font-size:10px;">Prior CNS%</label>
+<input id="priorDiveCNS" max="200" min="0" oninput="updatePriorDiveCarry()" step="0.1" style="font-size:12px;" type="number" value="0"/>
+</div>
+</div>
+<div id="priorDiveCarryResult" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);"></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+<div class="field">
+<label>Depth (m)</label>
+<input id="cnsDepth" max="60" min="0" oninput="calcCNS()" type="number" value="30"/>
+</div>
+<div class="field">
+<label>Bottom time (min)</label>
+<input id="cnsBT" max="300" min="1" oninput="calcCNS()" type="number" value="40"/>
+</div>
+<div class="field">
+<label>Gas O₂ %</label>
+<input id="cnsO2" max="100" min="16" oninput="calcCNS()" type="number" value="21"/>
+</div>
+<div class="field">
+<label>Number of dives today</label>
+<input id="cnsDives" max="10" min="1" oninput="calcCNS()" type="number" value="1"/>
+</div>
+</div>
+<div class="stats u11">
+<div class="stat"><div class="stat-val" id="cnsPPO2">—</div><div class="stat-lbl">ppO₂ (bar)</div></div>
+<div class="stat"><div class="stat-val" id="cnsSinglePct">—</div><div class="stat-lbl">CNS% single dive</div></div>
+<div class="stat"><div class="stat-val" id="cnsDailyPct">—</div><div class="stat-lbl">CNS% daily total</div></div>
+<div class="stat"><div class="stat-val" id="cnsOTU">—</div><div class="stat-lbl">OTU (pulmonary)</div></div>
+</div>
+<!-- CNS bar -->
+<div class="u4">
+<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px;">
+<span style="font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase;">CNS% — Single Dive</span>
+<span id="cnsSingleLabel">—</span>
+</div>
+<div style="height:14px;background:var(--dim);border-radius:7px;overflow:hidden;border:1px solid var(--border);">
+<div id="cnsSingleBar" style="height:100%;width:0%;border-radius:7px;transition:width 0.5s ease,background 0.3s;background:var(--green);"></div>
+</div>
+<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px;">
+<span>0%</span><span style="color:var(--yellow);">80% limit</span><span>100%</span>
+</div>
+</div>
+<div class="u4">
+<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px;">
+<span style="font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase;">CNS% — Daily Total</span>
+<span id="cnsDailyLabel">—</span>
+</div>
+<div style="height:14px;background:var(--dim);border-radius:7px;overflow:hidden;border:1px solid var(--border);">
+<div id="cnsDailyBar" style="height:100%;width:0%;border-radius:7px;transition:width 0.5s ease,background 0.3s;background:var(--green);"></div>
+</div>
+<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px;">
+<span>0%</span><span class="u13">100% limit</span>
+</div>
+</div>
+<!-- Status card -->
+<div class="result-card c-ok" id="cnsStatus" style="margin-top:8px;">
+<div class="rc-title"><span>⚡</span> Status</div>
+<div id="cnsStatusText" style="font-size:13px;color:var(--text);">Enter dive parameters above.</div>
+</div>
+<!-- NOAA table -->
+<div style="margin-top:20px;">
+<div class="card-title" style="margin-bottom:10px;">NOAA CNS Exposure Limits</div>
+<div style="overflow-x:auto;">
+<table class="ndl-table">
+<thead><tr><th>ppO₂ (bar)</th><th>Single limit (min)</th><th>Daily limit (min)</th></tr></thead>
+<tbody>
+<tr><td>0.6</td><td>720</td><td>—</td></tr>
+<tr><td>0.7</td><td>570</td><td>—</td></tr>
+<tr><td>0.8</td><td>450</td><td>—</td></tr>
+<tr><td>0.9</td><td>360</td><td>—</td></tr>
+<tr><td>1.0</td><td>300</td><td>600</td></tr>
+<tr><td>1.1</td><td>240</td><td>480</td></tr>
+<tr><td>1.2</td><td>210</td><td>420</td></tr>
+<tr><td>1.3</td><td>180</td><td>360</td></tr>
+<tr><td style="color:var(--yellow);">1.4</td><td style="color:var(--yellow);">150</td><td style="color:var(--yellow);">300</td></tr>
+<tr><td style="color:var(--orange);">1.5</td><td style="color:var(--orange);">120</td><td style="color:var(--orange);">240</td></tr>
+<tr><td class="u13">1.6</td><td class="u13">45</td><td class="u13">—</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="panel" id="toolsPanel">
+<!-- tools sub-nav replaced by #toolsBar in header area -->
+<!-- ── MOD Calculator ── -->
+<div id="tool-panel-mod">
+<div class="card">
+<div style="display:flex;align-items:center;gap:6px;margin-bottom:14px;"><div class="card-title u0">MOD — Maximum Operating Depth</div><span class="tip-icon" onclick="showTip(_modTipTitle,_modTipText)"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></div>
+<div class="info-box">The deepest depth at which a gas can be safely breathed. Standard limits: <strong>1.4 bar</strong> (working), <strong>1.6 bar</strong> (deco).</div>
+<div class="u4">
+<div class="u2">
+<label class="u8">O₂ % in mix</label>
+<span class="u5" id="modO2Display">32%</span>
+</div>
+<div class="slider-wrap">
+<input class="lsp-slider" id="modO2" max="100" min="1" oninput="updateSliderFill(this);document.getElementById('modO2Display').textContent=this.value+'%';calcMODTool()" step="1" type="range" value="32"/>
+<div class="slider-ticks-abs">
+<span style="left:0%">1%</span><span style="left:20.2%">21%</span><span style="left:31.3%">32%</span><span style="left:49.5%">50%</span><span style="left:79.8%">80%</span><span style="left:100%">100%</span>
+</div>
+</div>
+</div>
+<div class="u4">
+<div class="u2">
+<label class="u8">Max ppO₂ limit</label>
+<span class="u5" id="modPPO2Display">1.4</span>
+</div>
+<div class="slider-wrap">
+<input class="lsp-slider" id="modPPO2" max="20" min="10" oninput="updateSliderFill(this);document.getElementById('modPPO2Display').textContent=(this.value/10).toFixed(1);calcMODTool()" step="1" type="range" value="14"/>
+<div class="slider-ticks"><span>1.0</span><span>1.2</span><span>1.4</span><span>1.6</span><span>1.8</span><span>2.0</span></div>
+</div>
+</div>
+<div class="stats" style="grid-template-columns:repeat(2,1fr);margin-top:8px;">
+<div class="stat"><div class="stat-val u10" id="modResult">—</div><div class="stat-lbl">MOD (metres)</div></div>
+<div class="stat"><div class="stat-val u6" id="modResultFt">—</div><div class="stat-lbl">MOD (feet)</div></div>
+</div>
+</div>
+<!-- MOD Reference Table -->
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+<div class="card-title u0">MOD Reference Table — Air &amp; EAN 22–40</div>
+<div style="font-size:10px;color:var(--muted);">Highlighted: current O₂%</div>
+</div>
+<p style="color:var(--muted);font-size:11px;margin-bottom:12px;">Maximum Operating Depth for common nitrox mixes at ppO₂ 1.4 bar (working) and 1.6 bar (deco). The row matching your O₂% slider is highlighted.</p>
+<div class="u16">
+<table style="width:100%;border-collapse:collapse;font-size:12px;font-family:'JetBrains Mono',monospace;">
+<thead>
+<tr style="border-bottom:1px solid var(--border);">
+<th class="u3">Mix</th>
+<th class="u3">O₂ %</th>
+<th class="u3">MOD @ 1.4</th>
+<th class="u3">MOD @ 1.6</th>
+</tr>
+</thead>
+<tbody id="modRefTableBody">
+<!-- filled by renderModRefTable() -->
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- ── Best Mix Calculator ── -->
+<div id="tool-panel-bestmix" style="display:none;">
+<!-- Single-depth calculator -->
+<div class="card">
+<div style="display:flex;align-items:center;gap:6px;margin-bottom:14px;"><div class="card-title u0">Best Mix — Calculator</div><span class="tip-icon" onclick="showTip(_toolsBmtFaqTitle,_toolsBmtFaqText)"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></div>
+<div class="info-box">Calculates the highest O₂ percentage that keeps ppO₂ at or below the target limit at the planned depth. Maximises O₂ exposure for off-gassing while staying within limits.</div>
+<div class="u4">
+<div class="u2">
+<label class="u8">Planned Depth</label>
+<span class="u5" id="bestMixDepthDisplay">30 m</span>
+</div>
+<div class="slider-wrap">
+<input class="lsp-slider" id="bestMixDepth" max="100" min="1" oninput="updateSliderFill(this);document.getElementById('bestMixDepthDisplay').textContent=this.value+(units==='metric'?' m':' ft');calcBestMix()" step="1" type="range" value="30"/>
+<div class="slider-ticks"><span>1m</span><span>20m</span><span>40m</span><span>60m</span><span>80m</span><span>100m</span></div>
+</div>
+</div>
+<div class="u4">
+<div class="u2">
+<label class="u8">Max ppO₂ limit</label>
+<span class="u5" id="bestMixPPO2Display">1.4</span>
+</div>
+<div class="slider-wrap">
+<input class="lsp-slider" id="bestMixPPO2" max="20" min="10" oninput="updateSliderFill(this);document.getElementById('bestMixPPO2Display').textContent=(this.value/10).toFixed(1);calcBestMix()" step="1" type="range" value="14"/>
+<div class="slider-ticks"><span>1.0</span><span>1.2</span><span>1.4</span><span>1.6</span><span>1.8</span><span>2.0</span></div>
+</div>
+</div>
+<div class="stats" style="grid-template-columns:repeat(3,1fr);margin-top:8px;">
+<div class="stat"><div class="stat-val u10" id="bestMixResult">—</div><div class="stat-lbl">Best O₂ %</div></div>
+<div class="stat"><div class="stat-val u6" id="bestMixActualPPO2">—</div><div class="stat-lbl">ppO₂ at depth</div></div>
+<div class="stat"><div class="stat-val" id="bestMixName" style="color:var(--muted);font-size:16px;">—</div><div class="stat-lbl">Gas Name</div></div>
+</div>
+</div>
+<!-- Reference table -->
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+<div class="card-title u0">Best Nitrox Mix — Depth Reference</div>
+<div style="font-size:10px;color:var(--muted);">ppO₂ limit: <span id="toolsBmtRefPPO2Label">1.4</span></div>
+</div>
+<p style="color:var(--muted);font-size:11px;margin-bottom:12px;">Pre-calculated optimal O₂% for each depth using the ppO₂ limit set below. MOD is the maximum operating depth for that mix. EAD is the equivalent air depth.</p>
+<div class="u16">
+<table style="width:100%;border-collapse:collapse;font-size:12px;font-family:'JetBrains Mono',monospace;">
+<thead>
+<tr style="border-bottom:1px solid var(--border);">
+<th class="u3">Depth</th>
+<th class="u3">Best Mix</th>
+<th class="u3">O₂ %</th>
+<th class="u3">MOD</th>
+<th class="u3">EAD</th>
+<th class="u3">ppO₂</th>
+</tr>
+</thead>
+<tbody id="toolsBmtRefTableBody">
+<!-- filled by renderToolsBmtRefTable() -->
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- ── Average Depth Converter ── -->
+<!-- ── Unit Converter ── -->
+<div id="tool-panel-converter" style="display:none;">
+<div class="card">
+<div class="card-title">Unit Converter</div>
+<!-- Converter sub-nav -->
+<div class="tabs-nav" style="margin-bottom:20px;background:var(--card2);">
+<button class="tab-btn active" id="conv-pressure" onclick="switchConverter('pressure',this)">Pressure</button>
+<button class="tab-btn" id="conv-volume" onclick="switchConverter('volume',this)">Volume</button>
+<button class="tab-btn" id="conv-depth" onclick="switchConverter('depth',this)">Depth</button>
+<button class="tab-btn" id="conv-temperature" onclick="switchConverter('temperature',this)">Temp</button>
+<button class="tab-btn" id="conv-weight" onclick="switchConverter('weight',this)">Weight</button>
+</div>
+<!-- Pressure: Bar / PSI / MPa -->
+<div id="conv-panel-pressure">
+<div class="u20">Pressure — Bar · PSI · MPa</div>
+<div class="conv-row">
+<div class="conv-field"><label>Bar</label><input id="conv-bar" oninput="convertPressure('bar')" step="0.1" type="number" value="1"/></div>
+<div class="conv-arrow">⇄</div>
+<div class="conv-field"><label>PSI</label><input id="conv-psi" oninput="convertPressure('psi')" step="1" type="number" value="14.504"/></div>
+<div class="conv-arrow">⇄</div>
+<div class="conv-field"><label>MPa</label><input id="conv-mpa" oninput="convertPressure('mpa')" step="0.01" type="number" value="0.1"/></div>
+</div>
+<div class="conv-ref">
+<span>🤿 Tank 200 bar = <strong id="conv-tank-psi">2901 PSI</strong></span>
+<span>Atmosphere = 1.013 bar</span>
+</div>
+</div>
+<!-- Volume: L / ft³ -->
+<div id="conv-panel-volume" style="display:none;">
+<div class="u20">Volume — Litres · Cubic Feet</div>
+<div class="conv-row">
+<div class="conv-field"><label>Litres (L)</label><input id="conv-litres" oninput="convertVolume('l')" step="0.1" type="number" value="12"/></div>
+<div class="conv-arrow">⇄</div>
+<div class="conv-field"><label>Cubic Feet (ft³)</label><input id="conv-ft3" oninput="convertVolume('ft3')" step="0.01" type="number" value="0.424"/></div>
+</div>
+<div class="conv-ref">
+<span>12L tank ≈ 0.424 ft³</span>
+<span>AL80 = 11.1L (77 ft³)</span>
+</div>
+</div>
+<!-- Depth: m / ft -->
+<div id="conv-panel-depth" style="display:none;">
+<div class="u20">Depth — Metres · Feet</div>
+<div class="u4">
+<div class="u2">
+<span id="conv-depth-m-lbl" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--accent);">30 m</span>
+<span id="conv-depth-ft-lbl" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--muted);">98 ft</span>
+</div>
+<div class="slider-wrap">
+<input class="lsp-slider" id="conv-depth-slider" max="100" min="1" oninput="updateSliderFill(this);convertDepthSlider(this.value)" step="1" type="range" value="30"/>
+<div class="slider-ticks"><span>1m</span><span>20m</span><span>40m</span><span>60m</span><span>80m</span><span>100m</span></div>
+</div>
+</div>
+<div class="conv-row" style="margin-top:8px;">
+<div class="conv-field"><label>Metres</label><input id="conv-m" oninput="convertDepth('m')" step="1" type="number" value="30"/></div>
+<div class="conv-arrow">⇄</div>
+<div class="conv-field"><label>Feet</label><input id="conv-ft" oninput="convertDepth('ft')" step="1" type="number" value="98.4"/></div>
+</div>
+</div>
+<!-- Temperature: °C / °F -->
+<div id="conv-panel-temperature" style="display:none;">
+<div class="u20">Temperature — Celsius · Fahrenheit</div>
+<div class="u4">
+<div class="u2">
+<span id="conv-temp-c-lbl" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--accent);">20°C</span>
+<span id="conv-temp-f-lbl" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--muted);">68°F</span>
+</div>
+<div class="slider-wrap">
+<input class="lsp-slider" id="conv-temp-slider" max="40" min="-10" oninput="updateSliderFill(this);convertTempSlider(this.value)" step="1" type="range" value="20"/>
+<div class="slider-ticks"><span>-10°C</span><span>0°C</span><span>15°C</span><span>30°C</span><span>40°C</span></div>
+</div>
+</div>
+<div class="conv-row" style="margin-top:8px;">
+<div class="conv-field"><label>Celsius (°C)</label><input id="conv-c" oninput="convertTemp('c')" step="0.1" type="number" value="20"/></div>
+<div class="conv-arrow">⇄</div>
+<div class="conv-field"><label>Fahrenheit (°F)</label><input id="conv-f" oninput="convertTemp('f')" step="0.1" type="number" value="68"/></div>
+</div>
+<div class="conv-ref">
+<span>Tropical 28°C = 82°F</span>
+<span>Cold 5°C = 41°F</span>
+</div>
+</div>
+<!-- Weight: kg / lbs -->
+<div id="conv-panel-weight" style="display:none;">
+<div class="u20">Weight — Kilograms · Pounds</div>
+<div class="u4">
+<div class="u2">
+<span id="conv-kg-lbl" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--accent);">8 kg</span>
+<span id="conv-lbs-lbl" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--muted);">17.6 lbs</span>
+</div>
+<div class="slider-wrap">
+<input class="lsp-slider" id="conv-weight-slider" max="30" min="1" oninput="updateSliderFill(this);convertWeightSlider(this.value)" step="0.5" type="range" value="8"/>
+<div class="slider-ticks"><span>1kg</span><span>8kg</span><span>15kg</span><span>22kg</span><span>30kg</span></div>
+</div>
+</div>
+<div class="conv-row" style="margin-top:8px;">
+<div class="conv-field"><label>Kilograms (kg)</label><input id="conv-kg" oninput="convertWeight('kg')" step="0.1" type="number" value="8"/></div>
+<div class="conv-arrow">⇄</div>
+<div class="conv-field"><label>Pounds (lbs)</label><input id="conv-lbs" oninput="convertWeight('lbs')" step="0.1" type="number" value="17.64"/></div>
+</div>
+<div class="conv-ref">
+<span>Lead weight 2kg = 4.4 lbs</span>
+<span>BC 10kg = 22 lbs</span>
+</div>
+</div>
+</div>
+</div>
+<div id="tool-panel-knowledge" style="display:none;">
+<div class="card">
+<div class="card-title">📚 Knowledge Base</div>
+<div class="info-box" style="margin-bottom:4px;">Technical references, practical diver notes, and links to primary sources. Use the source links to study the algorithms independently.</div>
+<!-- ── Practical Diver Notes ─────────────────────────────── -->
+<div style="margin-top:16px;">
+<div class="u18">Practical Diver Notes — MultiDeco FAQ</div>
+<ul style="font-size:12px;line-height:2;padding-left:18px;color:var(--text);">
+<li><strong>Follow run times.</strong> Stop times include transit between stops.</li>
+<li><strong>No extra deep stops.</strong> Adding deep stops significantly increases total obligation.</li>
+<li><strong>Extending shallow stops (6 m, 3 m) is safe.</strong></li>
+<li><strong>Ascent rate deviations are most critical in the deep deco zone.</strong></li>
+<li><strong>Lost deco gas:</strong> wait the time difference at current depth, then follow new plan.</li>
+<li><strong>Conservatism:</strong> use +2 or +3 for most divers. +3 or +4 for cold, strenuous, multi-day, or prior DCS history.</li>
+<li><strong>Do not fake VPM conservatism</strong> by inflating depth/time — this breaks the repetitive dive calculations.</li>
+<li><strong>High O₂ deco mixes after trimix</strong> generally do not accelerate deco. Helium deco mixes close to the switch point do accelerate it.</li>
+<li><strong>First deco gas switch</strong> works best when at or just above the first deco stop depth.</li>
+</ul>
+</div>
+<!-- ── Algorithm Comparison ──────────────────────────────── -->
+<div class="u21">
+<div class="u18">Algorithm Comparison</div>
+<div class="info-box"><strong>Bühlmann ZH-L16C + GF</strong> — dissolved gas model, tunable via GF Low/High. Every major dive computer uses it. Best for any technical dive where you want predictable, well-understood behaviour.</div>
+<div class="info-box"><strong>VPM-B</strong> — bubble mechanics model (Yount &amp; Hoffman). Tracks microscopic bubble nuclei rather than dissolved gas. Tends to give deeper first stops and shorter shallow stops. Best for divers who prefer a bubble-focused approach.<br/><br/><em>⚠ Conservatism order is profile-dependent:</em> on deep/long trimix dives GF is usually more conservative (longer TTS); on short/shallow dives VPM-B can match or exceed GF. Compare TTS for your specific dive.</div>
+<div class="info-box"><strong>VPM-B+GFS</strong> — VPM-B bubble mechanics for deep/mid stops, Bühlmann GF High ceiling at shallow stops. Useful when VPM-B's shallow stops feel too long.</div>
+</div>
+<!-- ── VPM-B Physics ─────────────────────────────────────── -->
+<div class="u21">

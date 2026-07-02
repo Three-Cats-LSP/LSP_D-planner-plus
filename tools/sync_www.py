@@ -26,6 +26,10 @@ ROOT_FILES = [
     "icon-192.png",
     "icon-512.png",
     "sw.js",
+    "lsp-dplanner-foundation.css",
+    "lsp-dplanner-modes.css",
+    "lsp-dplanner-controls.css",
+    "lsp-dplanner-results.css",
     "zhl-engine-bundle.js",
     "padi-engine.js",
     "vpm-engine-bundle.js",
@@ -36,6 +40,8 @@ ROOT_FILES = [
     "gas-plan-core.js",
     "export-core.js",
     "contingency-core.js",
+    "results-panel.js",
+    "planner-shell.js",
 ]
 
 # Directories copied recursively (vendor fonts, jsPDF, partner icons)

@@ -1,0 +1,372 @@
+/* AUDIT-UNIT:UI-CSS-MODES */
+/* Tools mode - gray out only Water and GF, keep Training/REF bright */
+body.algo-tools #waterRow { opacity: 0.4 !important;
+ pointer-events: none !important;
+ cursor: not-allowed !important;
+}
+
+body.algo-tools #waterRow button,
+body.algo-tools #waterRow span { opacity: 0.5 !important;
+ cursor: not-allowed !important;
+}
+
+body.algo-tools #gfPresetsRow,
+body.algo-tools #gfCustomRow { opacity: 0.4 !important;
+ pointer-events: none !important;
+ cursor: not-allowed !important;
+}
+
+body.algo-tools #gfPresetsRow button,
+body.algo-tools #gfCustomRow button,
+body.algo-tools #gfCustomRow input,
+body.algo-tools #gfCustomRow select { opacity: 0.5 !important;
+ cursor: not-allowed !important;
+}
+
+/* Tools mode - keep Training Use Only and REF fully bright */
+body.algo-tools .algo-switcher > div:last-child { opacity: 1 !important;
+ pointer-events: auto !important;
+ cursor: auto !important;
+}
+
+body.algo-tools .algo-switcher > div:last-child button,
+body.algo-tools .algo-switcher > div:last-child .header-warn { opacity: 1 !important;
+ cursor: pointer !important;
+}
+
+.algo-label-text { font-family: 'JetBrains Mono', monospace;
+ font-size: 9px;
+ letter-spacing: 2px;
+ text-transform: uppercase;
+ color: var(--muted);
+}
+
+/* ── Unified tooltip-trigger icon ─────────────────────────
+ Single source of truth for every ? info icon in the app.
+ Color: --tip (teal-steel, between --muted and --accent)
+ Usage: <span class="tip-icon" onclick="showTip(...)">SVG</span>
+ For standalone button wrappers add class="tip-icon tip-btn"
+──────────────────────────────────────────────────────────── */
+.tip-icon { display: inline-block;
+ line-height: 0;
+ vertical-align: middle;
+ margin-left: 3px;
+ cursor: pointer;
+ color: var(--tip);
+ opacity: 0.75;
+ transition: opacity 0.15s, color 0.15s;
+ flex-shrink: 0;
+}
+.tip-icon:hover { opacity: 1;
+ color: var(--accent);
+}
+/* Standalone button variant (toggleReference, settingsHelp) */
+.tip-btn { background: none;
+ border: none;
+ padding: 4px 6px;
+ border-radius: 6px;
+ margin-left: auto;
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+}
+
+.algo-toggle { display: flex;
+ background: var(--surface);
+ border: 1px solid var(--border-hi);
+ border-radius: 8px;
+ padding: 3px;
+ gap: 3px;
+}
+
+.algo-btn { padding: 7px 14px;
+ border: none;
+ background: transparent;
+ color: var(--accent);
+ font-family: 'JetBrains Mono', monospace;
+ font-size: 10px;
+ font-weight: 600;
+ letter-spacing: 1px;
+ text-transform: uppercase;
+ cursor: pointer;
+ border-radius: 6px;
+ transition: all 0.25s ease;
+ white-space: nowrap;
+}
+.algo-btn:hover { background: var(--accent-dim); }
+.algo-btn.active { background: var(--accent-dim);
+ color: var(--accent);
+ border: 1px solid color-mix(in oklab, var(--accent) 28%, transparent);
+}
+.algo-btn-icon { padding: 7px 10px;
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ line-height: 0;
+ color: var(--text-muted);
+ min-width: 34px;
+ min-height: 34px;
+}
+.algo-btn-icon:hover,
+.algo-btn-icon.active { color: var(--accent);
+ background: var(--accent-dim);
+}
+.algo-btn-icon img { width: 16px;
+ height: 16px;
+ display: block;
+ flex-shrink: 0;
+ opacity: 0.92;
+ filter: brightness(0) invert(1);
+}
+.algo-btn-icon:hover img,
+.algo-btn-icon.active img { opacity: 1;
+ filter: brightness(0) invert(1) sepia(1) saturate(4) hue-rotate(160deg);
+}
+body.light-theme .algo-btn-icon img { filter: brightness(0);
+ opacity: 0.78;
+}
+body.light-theme .algo-btn-icon:hover img,
+body.light-theme .algo-btn-icon.active img { opacity: 1;
+ filter: brightness(0) sepia(1) saturate(5) hue-rotate(160deg);
+}
+
+.gf-btn { padding: 8px 14px;
+ border: 1px solid var(--border);
+ background: var(--bg-alt);
+ color: var(--muted);
+ font-family: 'JetBrains Mono', monospace;
+ font-size: 10px;
+ font-weight: 700;
+ letter-spacing: 0.5px;
+ text-transform: uppercase;
+ cursor: pointer;
+ border-radius: 5px;
+ transition: all 0.2s ease;
+ white-space: nowrap;
+ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.gf-btn:hover { border-color: var(--accent);
+ color: var(--accent);
+ background: rgba(0, 200, 255, 0.08);
+ box-shadow: 0 2px 8px rgba(0, 200, 255, 0.15);
+}
+.gf-btn.active { background: linear-gradient(135deg, rgba(0,200,255,0.2), rgba(0,150,255,0.15));
+ color: var(--accent);
+ border-color: var(--accent);
+ box-shadow: 0 2px 8px rgba(0, 200, 255, 0.25);
+}
+
+/* Custom GF Dropdown Styling */
+#gfLowInput, #gfHighInput { border: 1px solid var(--border);
+ background: var(--bg-alt);
+ color: var(--text);
+ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+ transition: all 0.2s ease;
+ cursor: pointer;
+}
+
+#gfLowInput:focus, #gfHighInput:focus { border-color: var(--accent) !important;
+ color: var(--accent) !important;
+ background: rgba(0, 200, 255, 0.08) !important;
+ box-shadow: 0 2px 8px rgba(0, 200, 255, 0.15) !important;
+}
+
+.header-warn { font-family: 'JetBrains Mono', monospace;
+ font-size: 10px;
+ letter-spacing: 1px;
+ padding: 6px 12px;
+ border-radius: 5px;
+ background: rgba(204,0,0,0.07);
+ border: 1px solid #cc0000;
+ color: #ff4444;
+ text-transform: uppercase;
+ cursor: pointer;
+ transition: background 0.2s, border-color 0.2s;
+}
+.header-warn:hover { background: rgba(204,0,0,0.15);
+ border-color: #ff0000;
+}
+
+/* Theme Toggle Button */
+.theme-toggle { display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ width: 32px;
+ height: 32px;
+ border-radius: 6px;
+ border: 1px solid var(--border);
+ background: var(--card);
+ color: var(--accent);
+ font-size: 16px;
+ cursor: pointer;
+ transition: all 0.3s ease;
+}
+
+.theme-toggle:hover { border-color: var(--accent);
+ background: rgba(0, 200, 255, 0.1);
+ box-shadow: 0 2px 8px rgba(0, 200, 255, 0.15);
+}
+
+.theme-icon { display: inline-block;
+ transition: transform 0.3s ease;
+}
+
+.theme-toggle:active .theme-icon { transform: rotate(360deg);
+}
+
+/* ── TABS ── */
+.tabs-nav,
+.tools-tabs-nav { display: flex;
+ gap: 3px;
+ background: var(--surface);
+ border-radius: 10px;
+ padding: 4px;
+ margin-top: 2px;
+ margin-bottom: 6px;
+ box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+ overflow-x: auto;
+ flex-wrap: nowrap;
+ scrollbar-width: none;
+}
+.tabs-nav::-webkit-scrollbar,
+.tools-tabs-nav::-webkit-scrollbar { display: none; }
+
+.tab-btn { flex-shrink: 0;
+ padding: 8px 13px;
+ border: none;
+ background: transparent;
+ color: var(--muted);
+ font-family: 'JetBrains Mono', monospace;
+ font-size: 10px;
+ font-weight: 600;
+ letter-spacing: 0.8px;
+ text-transform: uppercase;
+ cursor: pointer;
+ border-radius: 7px;
+ transition: all 0.2s;
+ white-space: nowrap;
+}
+.tab-btn:hover { color: var(--text); background: var(--accent-dim); }
+.tab-btn.active { background: var(--accent-dim);
+ color: var(--accent);
+ border: 1px solid var(--accent-border);
+}
+
+/* ── Export / Copy buttons ── */
+.btn-export { padding: 7px 10px;
+ background: var(--surface);
+ color: var(--accent);
+ border: 1px solid var(--accent);
+ border-radius: 6px;
+ cursor: pointer;
+ font-family: 'JetBrains Mono', monospace;
+ font-weight: 600;
+ font-size: 12px;
+ letter-spacing: 1px;
+ transition: background 0.15s, color 0.15s;
+ white-space: nowrap;
+ display: inline-flex;
+ align-items: center;
+ gap: 0;
+ line-height: 1;
+ -webkit-tap-highlight-color: transparent;
+ outline: none;
+}
+.btn-export:focus { outline: none; }
+.btn-export:active { background: var(--accent); color: var(--bg); opacity: 1; }
+.btn-export:hover { background: rgba(0,200,255,0.12); }
+.btn-export.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.btn-export.active:hover { background: var(--accent2,var(--accent)); opacity: 0.9; }
+.btn-export svg { display:block; }
+
+/* Reset button — vivid red in both themes */
+.btn-reset-red { border-color: var(--red) !important;
+ color: var(--red) !important;
+}
+.btn-reset-red:hover { background: rgba(255,49,49,0.12) !important;
+}
+body.light-theme .btn-reset-red { border-color: #FF3131 !important;
+ color: #FF3131 !important;
+ background: rgba(255,49,49,0.06) !important;
+}
+body.light-theme .btn-reset-red:hover { background: rgba(255,49,49,0.15) !important;
+}
+.export-row { display: flex;
+ gap: 8px;
+ flex-wrap: wrap;
+ align-items: center;
+}
+
+/* Bühlmann-only tabs hidden in PADI mode */
+.buh-only { display: none !important; }
+body.algo-buh .buh-only { display: flex !important; }
+
+/* ── PANELS ── */
+.panel { display: none !important; }
+.panel.active { display: block !important; animation: fadeUp 0.3s ease; }
+@keyframes fadeUp { from { transform: translateY(6px); }
+ to { transform: translateY(0); }
+}
+
+/* ── CARD ── */
+.card { background: var(--card);
+ border: 1px solid var(--border);
+ border-radius: 14px;
+ padding: 20px;
+ margin-bottom: 14px;
+ position: relative;
+ overflow: hidden;
+}
+@media (max-width: 600px) { .card { padding: 10px 8px; }
+ .card-title { margin-bottom: 8px; }
+}
+.card::before { content: '';
+ position: absolute;
+ top: 0; left: 0; right: 0; height: 1px;
+ background: linear-gradient(90deg, transparent, var(--accent), transparent);
+ opacity: 0.2;
+}
+
+.card-title { font-family: 'Outfit', sans-serif;
+ font-size: 11px;
+ font-weight: 700;
+ letter-spacing: 2.5px;
+ text-transform: uppercase;
+ color: var(--accent);
+ margin-bottom: 16px;
+ display: flex;
+ align-items: center;
+ gap: 8px;
+}
+.card-title::after { content: ''; flex: 1; height: 1px;
+ background: linear-gradient(90deg, var(--border-hi), transparent);
+ margin-left: 4px;
+}
+/* ── COLLAPSIBLE CARDS ── */
+.card.collapsible .card-title::after { display: none;
+}
+.card.collapsible .card-title { cursor: pointer;
+ user-select: none;
+ margin-bottom: 0;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+}
+.card.collapsible .card-title .card-caret { color: var(--accent);
+ font-size: 11px;
+ margin-left: auto;
+ flex-shrink: 0;
+ display: inline-block;
+ transition: transform 0.2s;
+ vertical-align: middle;
+}
+.card.collapsible.card-open .card-title .card-caret { transform: rotate(180deg);
+}
+/* collapsed state: hide everything inside card except the title */
+.card.collapsible:not(.card-open) .card-collapsible-body { display: none;
+}
+.card.collapsible.card-open .card-collapsible-body { display: block;
+ margin-top: 14px;
+}
+
+/* ── UNIT / SEG CONTROLS ── */

@@ -10,8 +10,14 @@ gas-table-core.js
 icon-192.png
 icon-512.png
 index.html
+lsp-dplanner-controls.css
+lsp-dplanner-foundation.css
+lsp-dplanner-modes.css
+lsp-dplanner-results.css
 manifest.json
 padi-engine.js
+planner-shell.js
+results-panel.js
 surf-interval-core.js
 sw.js
 tests-ccr-differential.html
@@ -95,6 +101,13 @@ vendor/fonts/JTUSjIg69CK48gW7PXoo9Wdhyzbi.woff2
 vendor/fonts/JTUSjIg69CK48gW7PXoo9Wlhyw.woff2
 vendor/fonts/QGYvz_MVcBeNP4NJtEtq.woff2
 vendor/fonts/QGYvz_MVcBeNP4NJuktqQ4E.woff2
+vendor/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7SUc.woff2
+vendor/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2
+vendor/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1pL7SUc.woff2
+vendor/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa25L7SUc.woff2
+vendor/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2JL7SUc.woff2
+vendor/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2ZL7SUc.woff2
+vendor/fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2pL7SUc.woff2
 vendor/fonts/fonts.css
 vendor/fonts/tDbV2o-flEEny0FZhsfKu5WU4xD0OwG_TA.woff2
 vendor/fonts/tDbV2o-flEEny0FZhsfKu5WU4xD1OwG_TA.woff2
@@ -103,6 +116,7 @@ vendor/fonts/tDbV2o-flEEny0FZhsfKu5WU4xD4OwG_TA.woff2
 vendor/fonts/tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2
 vendor/fonts/tDbV2o-flEEny0FZhsfKu5WU4xD_OwG_TA.woff2
 vendor/icons/FLATICON-ATTRIBUTION.txt
+vendor/icons/computer-14545985.png
 vendor/icons/giw-icon-192.png
 vendor/icons/settings-2099058.png
 vendor/icons/tools-1424252.png

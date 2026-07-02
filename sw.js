@@ -70,6 +70,10 @@ const OFFLINE_INDEX = APP_BASE + 'index.html';
 const REQUIRED_PRECACHE = [
   OFFLINE_INDEX,
   APP_BASE + 'app-version.js',
+  APP_BASE + 'lsp-dplanner-foundation.css',
+  APP_BASE + 'lsp-dplanner-modes.css',
+  APP_BASE + 'lsp-dplanner-controls.css',
+  APP_BASE + 'lsp-dplanner-results.css',
   APP_BASE + 'zhl-engine-bundle.js',
   APP_BASE + 'padi-engine.js',
   APP_BASE + 'vpm-engine-bundle.js',
@@ -80,6 +84,8 @@ const REQUIRED_PRECACHE = [
   APP_BASE + 'gas-plan-core.js',
   APP_BASE + 'export-core.js',
   APP_BASE + 'contingency-core.js',
+  APP_BASE + 'results-panel.js',
+  APP_BASE + 'planner-shell.js',
 ];
 
 // Required for offline/PWA startup (Tier-3 ZHL + self-hosted fonts/icons)
@@ -101,6 +107,7 @@ const OPTIONAL_PRECACHE = [
   APP_BASE + 'vendor/fonts/tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2',
   APP_BASE + 'vendor/fonts/tDbV2o-flEEny0FZhsfKu5WU4xD_OwG_TA.woff2',
   APP_BASE + 'vendor/icons/giw-icon-192.png',
+  APP_BASE + 'vendor/icons/computer-14545985.png',
   APP_BASE + 'vendor/icons/tools-1424252.png',
   APP_BASE + 'vendor/icons/settings-2099058.png',
   APP_BASE + 'manifest.json',

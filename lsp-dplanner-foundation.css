@@ -1,0 +1,409 @@
+/* AUDIT-UNIT:UI-CSS-FOUNDATION */
+/* ═══════════════════════════════════════════
+ SHARED DESIGN TOKENS
+═══════════════════════════════════════════ */
+:root { /* DARK THEME — lsp-dplanner-colors.css */
+ --bg-alt: var(--surface);
+ --font-body: 'Inter', sans-serif;
+ --font-mono: 'JetBrains Mono', monospace;
+ --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+ --text-sm: clamp(0.8rem, 0.75rem + 0.3vw, 0.9375rem);
+ --text-base: clamp(0.9rem, 0.85rem + 0.25vw, 1rem);
+ --text-lg: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+ --text-xl: clamp(1.25rem, 1rem + 0.75vw, 1.75rem);
+ --text-num: clamp(1.6rem, 1.2rem + 1vw, 2.4rem);
+ --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
+ --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem;
+ --radius-sm: 0.25rem; --radius-md: 0.375rem; --radius-lg: 0.5rem; --radius-xl: 0.75rem; --radius-full: 9999px;
+ --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+
+ --bg: #0f1117;
+ --surface: #161b24;
+ --surface-2: #1c2333;
+ --surface-3: #222a3a;
+ --surface-4: #2a3347;
+ --card: var(--surface-2);
+ --card2: var(--surface-3);
+ --border: rgba(255,255,255,0.08);
+ --border-hi: rgba(255,255,255,0.13);
+ --border-med: rgba(255,255,255,0.13);
+
+ --text: #e2e8f0;
+ --text-muted: #8892a4;
+ --text-faint: #4a5568;
+ --muted: var(--text-muted);
+ --tip: var(--text-muted);
+ --dim: var(--surface-3);
+
+ --accent: #22d3ee;
+ --accent-dim: rgba(34,211,238,0.12);
+ --accent-hover: #38bdf8;
+ --accent-glow: rgba(34,211,238,0.22);
+ --accent-border: rgba(34,211,238,0.20);
+ --accent2: #22d3ee;
+ --btn-primary-text: #0a1628;
+
+ --padi-accent: var(--accent);
+ --padi-teal: var(--green);
+ --padi-mid: var(--accent);
+ --buh-accent: var(--accent);
+ --buh-mag: #a78bfa;
+ --buh-accent2: var(--accent-hover);
+
+ --green: #4ade80;
+ --green-dim: rgba(74,222,128,0.12);
+ --yellow: #fbbf24;
+ --yellow-dim: rgba(251,191,36,0.12);
+ --orange: #fbbf24;
+ --orange-dim: rgba(251,191,36,0.12);
+ --red: #f87171;
+ --red-dim: rgba(248,113,113,0.12);
+ --gold: var(--yellow);
+ --purple: #a78bfa;
+
+ --shadow-sm: 0 1px 2px rgba(0,0,0,0.20);
+ --shadow-md: 0 4px 12px rgba(0,0,0,0.30);
+ --shadow-lg: 0 12px 32px rgba(0,0,0,0.40);
+ --theme-toggle-size: 20px;
+}
+
+/* LIGHT THEME */
+body.light-theme {
+ --bg: #f0f4f8;
+ --surface: #ffffff;
+ --surface-2: #f7f9fc;
+ --surface-3: #edf2f7;
+ --surface-4: #e2e8f0;
+ --card: var(--surface-2);
+ --card2: var(--surface-3);
+ --bg-alt: var(--surface);
+ --border: rgba(0,0,0,0.08);
+ --border-hi: rgba(0,0,0,0.14);
+ --border-med: rgba(0,0,0,0.14);
+ --text: #1a202c;
+ --text-muted: #4a5568;
+ --text-faint: #a0aec0;
+ --muted: var(--text-muted);
+ --tip: var(--text-muted);
+ --dim: var(--surface-3);
+ --accent: #0891b2;
+ --accent-dim: rgba(8,145,178,0.10);
+ --accent-hover: #0e7490;
+ --accent-glow: rgba(8,145,178,0.18);
+ --accent-border: rgba(8,145,178,0.22);
+ --accent2: #0891b2;
+ --btn-primary-text: #ffffff;
+ --padi-accent: var(--accent);
+ --padi-teal: var(--green);
+ --buh-accent: var(--accent);
+ --buh-mag: #7c3aed;
+ --green: #16a34a;
+ --green-dim: rgba(22,163,74,0.10);
+ --yellow: #b45309;
+ --yellow-dim: rgba(180,83,9,0.08);
+ --orange: #b45309;
+ --orange-dim: rgba(180,83,9,0.08);
+ --red: #dc2626;
+ --red-dim: rgba(220,38,38,0.08);
+ --purple: #7c3aed;
+ --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+ --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
+ --shadow-lg: 0 12px 32px rgba(0,0,0,0.14);
+}
+
+/* body.algo-buh: do not redefine --accent as var(--accent) — that circular ref invalidates the token on body and all descendants */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body { background: var(--bg);
+ color: var(--text);
+ font-family: var(--font-body);
+ min-height: 100vh;
+ overflow-x: hidden;
+ transition: all 0.4s ease;
+ padding-top: env(safe-area-inset-top, 0px);
+ padding-left: env(safe-area-inset-left, 0px);
+ padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* Full-screen overlays: clear system status bar on edge-to-edge Android WebView */
+.lsp-modal-overlay {
+ position: fixed;
+ inset: 0;
+ overflow-y: auto;
+ -webkit-overflow-scrolling: touch;
+ box-sizing: border-box;
+ padding: 16px;
+ padding-top: calc(16px + env(safe-area-inset-top, 0px));
+ padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+}
+html.capacitor-native .lsp-modal-overlay {
+ padding-top: calc(16px + max(32px, env(safe-area-inset-top, 0px)));
+}
+.lsp-modal-overlay--pad20 {
+ padding: 20px;
+ padding-top: calc(20px + env(safe-area-inset-top, 0px));
+ padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+}
+html.capacitor-native .lsp-modal-overlay--pad20 {
+ padding-top: calc(20px + max(32px, env(safe-area-inset-top, 0px)));
+}
+.lsp-modal-overlay.lsp-modal-centered {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+}
+
+body::before { display: none; }
+body.light-theme::before { display: none; }
+
+/* Force dark text in light theme */
+body.light-theme { color: #000000 !important;
+}
+
+body.light-theme h1, body.light-theme h2, body.light-theme h3, body.light-theme h4, body.light-theme h5, body.light-theme h6 { color: #000000 !important;
+}
+
+body.light-theme button:not(.gen-btn):not(.btn-calc), body.light-theme input, body.light-theme textarea, body.light-theme select { color: #000000 !important;
+}
+body.light-theme .switch-depth-display { color: var(--text) !important;
+}
+
+body.light-theme .legacy-panels .text,
+body.light-theme .legacy-panels p,
+body.light-theme .legacy-panels span,
+body.light-theme .legacy-panels div { color: #1a1a1a !important; }
+body.light-theme .app { color: var(--text); }
+
+/* V3 component color restoration in light theme */
+body.light-theme .metric-val            { color: var(--text) !important; }
+body.light-theme .chip-green            { color: var(--green) !important; }
+body.light-theme .chip-orange           { color: var(--orange) !important; }
+body.light-theme .chip-yellow           { color: var(--yellow) !important; }
+body.light-theme .chip-red              { color: var(--red) !important; }
+body.light-theme .algo-bar-btn.active   { color: var(--accent) !important; }
+body.light-theme .algo-sub              { color: var(--text-faint) !important; }
+body.light-theme .results-section-label { color: var(--accent) !important; }
+body.light-theme .gas-warning-banner    { color: var(--orange) !important; }
+body.light-theme .gas-warning-banner *  { color: inherit !important; }
+body.light-theme .bnav-btn.active       { color: var(--accent) !important; }
+body.light-theme .bnav-btn              { color: var(--text-muted) !important; }
+body.light-theme .stepper-val           { color: var(--text) !important; }
+body.light-theme .result-tab-btn.active { color: var(--accent) !important; }
+body.light-theme .gf-preset-btn.active  { color: var(--accent) !important; }
+body.light-theme .cons-btn.active       { color: var(--accent) !important; }
+
+/* Restore alert colors overridden by broad div rule above */
+body.light-theme .dang, body.light-theme .dang * { color:#cc0000 !important; }
+body.light-theme .warn, body.light-theme .warn * { color:#884400 !important; }
+body.light-theme .ok, body.light-theme .ok * { color:#116622 !important; }
+body.light-theme .info, body.light-theme .info * { color:#0077aa !important; }
+
+/* Native APK update banner — theme-aware (light-theme * rule would break dark inline colors) */
+#apkUpdateBanner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99998;
+  background: var(--surface) !important;
+  border-bottom: 1px solid var(--border-hi) !important;
+  color: var(--text) !important;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-family: system-ui, sans-serif;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+#apkUpdateBanner span,
+#apkUpdateBanner strong {
+  color: var(--text) !important;
+}
+#apkUpdateBanner #apkUpdateDownloadBtn {
+  background: var(--accent) !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 6px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+#apkUpdateBanner #apkUpdateDismissBtn {
+  background: none !important;
+  border: 1px solid var(--border-hi) !important;
+  color: var(--accent) !important;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* Gas consumption — BT suggestion banner row */
+.gas-bt-cell { background:#FF4433 !important; color:#fff !important; font-weight:700; font-size:11px; padding:6px 10px; border-bottom:1px solid var(--border) !important; }
+.gas-bt-cell span, .gas-bt-cell strong, .gas-bt-cell * { color:#fff !important; }
+body.light-theme .gas-bt-cell { color:#000 !important; }
+body.light-theme .gas-bt-cell span, body.light-theme .gas-bt-cell strong, body.light-theme .gas-bt-cell * { color:#000 !important; }
+
+/* Gas consumption — tight warning row */
+body .deco-table tr.gas-tight-row td,
+body .deco-table tr.gas-tight-row td:first-child { background:#FF4433 !important; color:#fff !important; font-weight:600 !important; border-bottom:1px solid var(--border) !important; }
+body .deco-table tr.gas-tight-row td span,
+body .deco-table tr.gas-tight-row td * { color:#fff !important; }
+body.light-theme .deco-table tr.gas-tight-row td,
+body.light-theme .deco-table tr.gas-tight-row td:first-child { background:#FF4433 !important; color:#000 !important; }
+body.light-theme .deco-table tr.gas-tight-row td span,
+body.light-theme .deco-table tr.gas-tight-row td * { color:#000 !important; }
+
+/* algo-label in light theme — use dark blue, cyan is invisible on white */
+body.light-theme .algo-label { color: var(--accent) !important;
+}
+
+/* Keep deco table phase colors in light theme */
+body.light-theme .deco-table tr[data-phase="descent"] td span { color: #cc3333 !important; }
+
+/* Grid lines for Bühlmann mode */
+body.algo-buh::after { content: '';
+ position: fixed; inset: 0;
+ background-image:
+ linear-gradient(rgba(0,180,255,0.025) 1px, transparent 1px),
+ linear-gradient(90deg, rgba(0,180,255,0.025) 1px, transparent 1px);
+ background-size: 44px 44px;
+ z-index: 0;
+ pointer-events: none;
+}
+
+/* Bubbles for PADI mode */
+.bubbles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.bubble { position: absolute; border-radius: 50%;
+ background: rgba(0,200,212,0.04);
+ border: 1px solid rgba(0,200,212,0.1);
+ animation: rise linear infinite;
+}
+@keyframes rise { 0% { transform: translateY(0) translateX(0); opacity: 0; }
+ 10% { opacity: 1; }
+ 90% { opacity: 0.4; }
+ 100% { transform: translateY(-110vh) translateX(20px); opacity: 0; }
+}
+body.algo-buh .bubbles { display: none; }
+
+.app { position: relative; z-index: 1;
+ max-width: 1280px;
+ margin: 0 auto;
+ padding: var(--space-4) var(--space-6) var(--space-2);
+}
+
+/* ══ HEADER ══ */
+header { display: flex;
+ justify-content: space-between;
+ align-items: center;
+ padding: 8px 0 4px;
+ gap: 12px;
+ flex-wrap: wrap;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+
+.brand-icon { width: 44px; height: 44px;
+ border-radius: 10px;
+ display: flex; align-items: center; justify-content: center;
+ font-size: 22px;
+ line-height: 1;
+ font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+ background: linear-gradient(135deg, rgba(0,200,212,0.12), rgba(0,120,160,0.08));
+ border: 1px solid var(--accent);
+ transition: all 0.4s ease;
+ animation: iconGlow 4s ease-in-out infinite;
+}
+@keyframes iconGlow { 0%,100% { box-shadow: 0 0 12px rgba(0,200,212,0.15); }
+ 50% { box-shadow: 0 0 24px rgba(0,200,212,0.3); }
+}
+
+.brand-text h1 { font-family: 'Bebas Neue', sans-serif;
+ font-size: 24px;
+ letter-spacing: 3px;
+ color: var(--text);
+ line-height: 1;
+}
+.brand-text h1 .algo-label { color: var(--accent); transition: color 0.4s; }
+
+.brand-text p { font-family: 'JetBrains Mono', monospace;
+ font-size: 9px;
+ letter-spacing: 2px;
+ text-transform: uppercase;
+ color: var(--muted);
+ margin-top: 3px;
+}
+
+/* ── ALGO SWITCHER ── */
+.algo-switcher { display: flex;
+ gap: 8px;
+}
+
+/* Custom GF styling - match other GF buttons */
+#gfCustomRow .gf-btn { background: var(--bg-alt) !important;
+ border: 1px solid var(--border) !important;
+ cursor: pointer !important;
+ pointer-events: auto !important;
+ transition: all 0.2s;
+}
+
+#gfCustomRow .gf-btn:hover { background: var(--card) !important;
+ border-color: var(--accent) !important;
+}
+
+#gfCustomRow .gf-btn.active { background: var(--accent) !important;
+ color: var(--bg) !important;
+ border-color: var(--accent) !important;
+}
+
+/* Custom GF dropdown styling */
+#gfLowInput, #gfHighInput { background: var(--bg-alt) !important;
+ border: 1px solid var(--border) !important;
+ color: var(--text) !important;
+ transition: all 0.2s;
+ cursor: pointer;
+}
+
+#ccrBailoutGfLow, #ccrBailoutGfHigh { background: var(--bg-alt) !important;
+ border: 1px solid var(--border) !important;
+ color: var(--text) !important;
+ transition: all 0.2s;
+ cursor: pointer;
+ min-width: 58px;
+ max-width: 64px;
+ width: 64px;
+}
+
+.adv-stack { display: flex; flex-direction: column; gap: 10px; max-width: 560px; margin-top: 8px; }
+.adv-row { display: flex; align-items: center; gap: 10px; flex-wrap: nowrap; }
+.adv-row > label { flex: 1 1 auto; min-width: 0; margin: 0; font-size: 13px; line-height: 1.35; }
+.adv-row > input[type="number"] { flex: 0 0 88px; width: 88px; max-width: 88px; font-size: 13px; }
+.adv-row > select:not(.ccr-bo-gf-select) { flex: 0 0 auto; min-width: 130px; max-width: 220px; font-size: 13px; }
+.ccr-adv-gf-pair { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.ccr-adv-gf-pair .algo-label-text { font-size: 12px; }
+
+#gfLowInput:focus, #gfHighInput:focus { border-color: var(--accent) !important;
+ background: var(--card) !important;
+}
+
+/* REC mode - gray out GF settings to show as inactive */
+body.rec-mode #gfPresetsRow,
+body.rec-mode #gfCustomRow { opacity: 0.4 !important;
+ pointer-events: none !important;
+ cursor: not-allowed !important;
+}
+
+body.rec-mode #gfPresetsRow button,
+body.rec-mode #gfCustomRow button,
+body.rec-mode #gfCustomRow input,
+body.rec-mode #gfCustomRow select { opacity: 0.5 !important;
+ cursor: not-allowed !important;
+}
