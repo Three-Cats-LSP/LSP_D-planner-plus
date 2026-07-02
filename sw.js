@@ -85,6 +85,7 @@ const REQUIRED_PRECACHE = [
   APP_BASE + 'export-core.js',
   APP_BASE + 'contingency-core.js',
   APP_BASE + 'results-panel.js',
+  APP_BASE + 'results-render-core.js',
   APP_BASE + 'planner-shell.js',
 ];
 

@@ -25,6 +25,7 @@ These are **loaded at runtime** via `<script src>` (not build-time bundles). Can
 | `export-core.js` | — | `buildExportText`, `exportPDF`, `exportContingencyPDF`, `buildGasPlanPDF`, plan header + PDF infra |
 | `plot-core.js` | — | `drawDecoProfile`, `drawDecoProfile`, `_drawDiveProfileCore`, waypoint builders |
 | `contingency-core.js` | — | `runContingencyScenario`, `calcContingency`, state vars |
+| `results-render-core.js` | — | `renderVPMResults`, `renderZhlScheduleResults` |
 
 ## Required audit steps
 

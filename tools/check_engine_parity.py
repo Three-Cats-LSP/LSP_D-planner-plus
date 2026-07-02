@@ -17,6 +17,7 @@ UI_RUNTIME_CORES = [
     "gas-cards-core.js",
     "gas-table-core.js",
     "surf-interval-core.js",
+    "results-render-core.js",
 ]
 
 

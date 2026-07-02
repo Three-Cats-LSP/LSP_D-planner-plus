@@ -144,6 +144,15 @@ UI_CORE_BLOCKS: tuple[UiCoreBlock, ...] = (
 """,
     ),
     UiCoreBlock(
+        "results-render-core",
+        "results-render-core.js",
+        """/**
+ * Schedule results rendering — VPM and Bühlmann deco table, summary, gas consumption.
+ * Loaded by index.html before main inline script.
+ */
+""",
+    ),
+    UiCoreBlock(
         "planner-shell",
         "planner-shell.js",
         """/**
@@ -191,6 +200,10 @@ INLINE_FORBIDDEN_DEFS: dict[str, tuple[str, ...]] = {
         "async function ensurePDFFontsForPDF(",
     ),
     "results-panel": ("function switchResultTab(", "function _renderResultSummaryStrip("),
+    "results-render-core": (
+        "function renderVPMResults(",
+        "function renderZhlScheduleResults(",
+    ),
     "planner-shell": ("function initV3Layout(", "function setNavMode("),
 }
 
@@ -345,7 +358,7 @@ def verify_extracted_state(html: str | None = None) -> None:
     anchor_idx = html.find(SCRIPT_INSERT_AFTER)
     if anchor_idx == -1:
         raise ExtractionError("zhl-worker-bridge.js script anchor missing from index.html head")
-    head_slice = html[anchor_idx : anchor_idx + 1200]
+    head_slice = html[anchor_idx : anchor_idx + 2000]
     pos = 0
     for filename in EXPECTED_SCRIPT_ORDER:
         needle = f'<script src="{filename}"></script>'

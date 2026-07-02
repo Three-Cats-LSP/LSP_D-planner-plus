@@ -44,6 +44,7 @@ ROOT_FILES = [
     "export-core.js",
     "contingency-core.js",
     "results-panel.js",
+    "results-render-core.js",
     "planner-shell.js",
 ]
 
