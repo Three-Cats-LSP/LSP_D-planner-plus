@@ -122,11 +122,9 @@ function drawPdfAlertBanners(doc, y, opts, source) {
   }
 
   const padX = 4;
-  const padY = 3;
+  const padY = 2.5;
   const fontSize = 7.5;
-  const lineHeightFactor = 1.15;
-  const mmPerPt = 0.352778;
-  const lineHmm = fontSize * lineHeightFactor * mmPerPt;
+  const lineHeightFactor = 1.1;
 
   alerts.forEach((el) => {
     const txt = clean(extractAlertPlainText(el));
@@ -136,20 +134,25 @@ function drawPdfAlertBanners(doc, y, opts, source) {
     doc.setFontSize(fontSize);
     doc.setFont('DejaVuSans', 'bold');
     const maxW = CW - padX * 2;
-    const ls = doc.splitTextToSize(txt, maxW);
-    const h = padY * 2 + ls.length * lineHmm;
+    const ls = doc.splitTextToSize(txt, maxW).filter((l) => String(l).trim());
+    if (!ls.length) return;
 
-    checkY(h + 3);
+    const textDims = doc.getTextDimensions(ls, { lineHeightFactor });
+    const textH = textDims.h || ls.length * fontSize * 0.352778 * lineHeightFactor;
+    const h = padY * 2 + textH;
+
+    checkY(h + 2);
     doc.setFillColor(...st.bg);
     doc.setDrawColor(...st.border);
     doc.setLineWidth(0.3);
     doc.roundedRect(ML, y, CW, h, 1.5, 1.5, 'FD');
 
     doc.setTextColor(...st.tx);
-    doc.text(ls, ML + padX, y + padY, { baseline: 'top', lineHeightFactor, maxWidth: maxW });
+    // Pre-split lines — do not pass maxWidth or jsPDF re-wraps and adds empty rows.
+    doc.text(ls, ML + padX, y + padY, { baseline: 'top', lineHeightFactor });
     doc.setTextColor(0, 0, 0);
     doc.setLineWidth(0.2);
-    y += h + 3;
+    y += h + 2;
   });
   return y;
 }
