@@ -1650,6 +1650,36 @@ function cleanPdfText(s) {
   return s.replace(/^\s*[!&*#^~]+\s*/, '').trim();
 }
 
+/** PDF RGB + status — must match web lspSatColors() thresholds in index.html. */
+function lspSatStatus(pct) {
+  const p = Math.round(pct);
+  if (p >= 80) return { status: p >= 100 ? '!! LIMIT' : '! HIGH', level: 'warn' };
+  if (p >= 50) return { status: '~ LOADED', level: 'caution' };
+  return { status: 'OK', level: 'safe' };
+}
+function lspSatRgb(pct) {
+  const { level } = lspSatStatus(pct);
+  if (level === 'warn') return [239, 68, 68];
+  if (level === 'caution') return [245, 158, 11];
+  return [22, 163, 74];
+}
+function drawTissueSatLegend(doc, y, ML) {
+  const items = [
+    [lspSatRgb(25), '<50% clear'],
+    [lspSatRgb(65), '50-79% loaded'],
+    [lspSatRgb(85), '>=80% near/at limit'],
+  ];
+  doc.setFontSize(6); doc.setFont('DejaVuSans', 'normal');
+  let lx = ML;
+  items.forEach(([rgb, lbl]) => {
+    doc.setFillColor(...rgb); doc.roundedRect(lx, y + 1, 3, 3, 0.5, 0.5, 'F');
+    doc.setTextColor(80, 80, 100); doc.text(lbl, lx + 5, y + 4);
+    lx += doc.getTextWidth(lbl) + 11;
+  });
+  doc.setTextColor(0, 0, 0);
+  return y + 7;
+}
+
 function legendRowFromTr(tr) {
     if (!(tr instanceof HTMLElement)) return tr;
     const cell = (label) => tr.querySelector(`td[data-label="${label}"]`)?.textContent.trim()
@@ -2332,7 +2362,7 @@ async function exportPDF(opts) {
           }
           const mv = gfAdjustedMValue(a, b, altSurfaceP, gfF);
           const pct=Math.min(100,Math.round((pTotpdf/mv)*100));
-          const cr=pct>=100?[220,0,0]:pct>=90?[200,80,0]:pct>=75?[180,150,0]:[20,160,60];
+          const cr=lspSatRgb(pct);
           // Labels
           doc.setFontSize(6.5); doc.setFont('DejaVuSans','normal'); doc.setTextColor(100,100,120);
           doc.text(`${i+1}`, ML+4, y+4, {align:'center'});
@@ -2349,15 +2379,7 @@ async function exportPDF(opts) {
 
         // Color legend
         y+=2; checkY(5);
-        doc.setFontSize(6); doc.setFont('DejaVuSans','normal');
-        const legItems=[[20,160,60,'<75% clear'],[180,150,0,'75-90% loaded'],[200,80,0,'90-99% near limit'],[220,0,0,'>=100% at M-value']];
-        let lx=ML;
-        legItems.forEach(([r,g,b2,lbl])=>{
-          doc.setFillColor(r,g,b2); doc.roundedRect(lx,y+1,3,3,0.5,0.5,'F');
-          doc.setTextColor(80,80,100); doc.text(lbl,lx+5,y+4);
-          lx+=doc.getTextWidth(lbl)+11;
-        });
-        doc.setTextColor(0,0,0); y+=7;
+        y = drawTissueSatLegend(doc, y, ML);
 
         // ── Section 2: Compartment Detail table ──
         checkY(12);
@@ -2387,8 +2409,8 @@ async function exportPDF(opts) {
           }
           const mv = gfAdjustedMValue(a, b, altSurfaceP, gfF);
           const pct=Math.min(100,Math.round((pTotpdf/mv)*100));
-          const cr=pct>=100?[200,0,0]:pct>=90?[180,80,0]:pct>=75?[150,120,0]:[20,140,50];
-          const status=pct>=100?'LIMIT':pct>=90?'HIGH':pct>=75?'MED':'OK';
+          const cr=lspSatRgb(pct);
+          const status=lspSatStatus(pct).status;
           const loadStr=pHepdf>0?`${pTotpdf.toFixed(3)} (${pN2pdf.toFixed(2)}+${pHepdf.toFixed(2)})`:pTotpdf.toFixed(3);
           i%2===0?doc.setFillColor(248,249,255):doc.setFillColor(255,255,255);
           doc.rect(ML,y,CW,5,'F');
@@ -2467,7 +2489,7 @@ async function exportPDF(opts) {
                 const pctR=mValR>0?Math.round((pTr/mValR)*100):0;
                 const clampR=Math.max(0,Math.min(120,pctR));
                 const barPctR=Math.min(100,clampR);
-                const crR=clampR>=100?[220,0,0]:clampR>=90?[200,80,0]:clampR>=75?[180,150,0]:[20,160,60];
+                const crR=lspSatRgb(clampR);
                 const cx=startX+COMP_W+HT_W+si*stopColW;
                 const bx=cx+1, bw=stopColW-2, bh=4;
                 // Bar bg
@@ -2482,14 +2504,7 @@ async function exportPDF(opts) {
             }
             // Legend
             y+=3; checkY(5);
-            doc.setFontSize(6); doc.setFont('DejaVuSans','normal');
-            let lx2=ML;
-            [[20,160,60,'<75% clear'],[180,150,0,'75-90% loaded'],[200,80,0,'90-99% near limit'],[220,0,0,'>=100% at M-value']].forEach(([r,g,b2,lbl])=>{
-              doc.setFillColor(r,g,b2); doc.roundedRect(lx2,y+1,3,3,0.5,0.5,'F');
-              doc.setTextColor(80,80,100); doc.text(lbl,lx2+5,y+4);
-              lx2+=doc.getTextWidth(lbl)+11;
-            });
-            doc.setTextColor(0,0,0); y+=7;
+            y = drawTissueSatLegend(doc, y, ML);
           }
         }
       }
@@ -2869,7 +2884,7 @@ async function exportContingencyPDF(opts) {
       if(pHelp>0&&pTotlp>0){a=(pN2lp*a_n+pHelp*ZHL16C_HE_AB[i][0])/pTotlp;b=(pN2lp*b_n+pHelp*ZHL16C_HE_AB[i][1])/pTotlp;}
       const mv = gfAdjustedMValue(a, b, altSurfaceP, gfFem);
       const pct=Math.min(100,Math.round((pTotlp/mv)*100));
-      const cr=pct>=100?[220,0,0]:pct>=85?[200,80,0]:pct>=70?[180,150,0]:[20,160,60];
+      const cr=lspSatRgb(pct);
       doc.setFontSize(6.5); doc.setFont('DejaVuSans','normal'); doc.setTextColor(100,100,120);
       doc.text(`${i+1}`,ML+3,y+4,{align:'center'});
       doc.text(`${ht}min`,ML+14,y+4);
@@ -2899,7 +2914,7 @@ async function exportContingencyPDF(opts) {
         Array.from(ttbEm.rows).forEach((tr,ri)=>{
           checkY(5);const cells=Array.from(tr.cells).map(td=>td.textContent.trim());
           const pct=parseFloat(cells[4])||0;
-          const cr=pct>=100?[200,0,0]:pct>=85?[180,80,0]:pct>=70?[150,120,0]:[20,140,50];
+          const cr=lspSatRgb(pct);
           ri%2===0?doc.setFillColor(255,250,250):doc.setFillColor(255,255,255);
           doc.rect(ML,y,CW,5,'F');
           doc.setFontSize(7);doc.setFont('DejaVuSans','normal');doc.setTextColor(...cr);
@@ -2930,7 +2945,7 @@ async function exportContingencyPDF(opts) {
         tissues.forEach((t,ti)=>{
           const pT=Math.min(1,(t.pN2+(t.pHe||0))/(t.mv||1));
           const bH=Math.max(0.5,bMaxH*pT);
-          const tc2=pT>=1?[220,0,0]:pT>=0.85?[200,80,0]:pT>=0.7?[180,150,0]:[20,160,60];
+          const tc2=lspSatRgb(Math.round(pT*100));
           doc.setFillColor(...tc2);
           doc.rect(cx2+2+ti*bW, cy2+cellH-bH-2, bW*0.75, bH, 'F');
         });
