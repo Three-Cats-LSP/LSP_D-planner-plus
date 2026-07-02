@@ -29,12 +29,108 @@ function exportScheduleCell(val, width, { right = false, blank = false } = {}) {
   return right ? s.padStart(width) : s.padEnd(width);
 }
 
+function readExportScheduleCells(tr, clean) {
+  const get = (label) => {
+    const el = tr.querySelector(`td[data-label="${label}"]`);
+    return el ? clean(el.textContent) : '';
+  };
+  return {
+    depth: get('Depth'),
+    stop: get('Stop'),
+    mix: get('Mix'),
+    run: get('Run'),
+    tts: get('TTS'),
+    ppo2: get('PPO2'),
+    ead: get('EAD'),
+  };
+}
+
+function formatExportSchedulePpo2(val) {
+  const s = (val || '').trim();
+  if (!s || s === '-' || s === '—') return '-';
+  const n = parseFloat(s.replace(/[^\d.+-]/g, ''));
+  return Number.isFinite(n) ? n.toFixed(2) : s;
+}
+
+function formatExportScheduleEad(val) {
+  const s = (val || '').trim();
+  if (!s || s === '-' || s === '—') return '-';
+  const unitMatch = s.match(/^([\d.]+)\s*(m|ft)\b/i);
+  if (unitMatch) {
+    const n = Math.round(parseFloat(unitMatch[1]));
+    return `${n}${unitMatch[2].toLowerCase()}`;
+  }
+  const n = parseFloat(s);
+  return Number.isFinite(n) ? String(Math.round(n)) : s;
+}
+
+function formatExportGasVol(litres, volU) {
+  if (typeof gpVolDisp === 'function') return `${gpVolDisp(litres)}${volU}`;
+  if (!Number.isFinite(litres)) return `—${volU}`;
+  return `${Math.round(litres)}${volU}`;
+}
+
+function formatExportGasLabel(r) {
+  if (r.kind === 'bottom') {
+    return (r.label || 'Air').replace(/\s*\(\+Travel\)/i, '+Travel').replace(/\s+/g, '').toUpperCase();
+  }
+  const mix = (r.mixLabel || (r.label || '').replace(/\s*\([^)]*\)\s*$/, '')).replace(/\s+/g, '');
+  const roleMatch = (r.label || '').match(/\(([^)]+)\)/);
+  const role = (roleMatch ? roleMatch[1] : 'Deco').toUpperCase();
+  return `${mix.toUpperCase()}(${role})`;
+}
+
+function buildGasConsumptionLines(gp) {
+  const volU = (typeof lspVolUnit === 'function') ? lspVolUnit(true) : (units === 'imperial' ? 'ft3' : 'L');
+  const fmtV = (l) => formatExportGasVol(l, volU);
+  const presU = units === 'imperial' ? 'psi' : 'bar';
+  const sacBot = document.getElementById('sacBottom')?.value || '20';
+  const sacDec = document.getElementById('sacDeco')?.value || '15';
+  const ruleName = gp.rule === 'half' ? 'Half Tank' : 'Thirds';
+  const lines = [
+    'GAS CONSUMPTION',
+    `Rule: ${ruleName}  SAC: bottom ${sacBot} L/min, deco ${sacDec} L/min`,
+    ASCENT_SCHEDULE_HR,
+  ];
+  gp.rows.forEach(r => {
+    const gasLbl = formatExportGasLabel(r);
+    if (r.kind === 'bottom') {
+      lines.push(`${gasLbl} ${fmtV(r.totalL)} avail, reserve: ${gpPresDisp(r.reserveBar)} ${presU}`);
+      if (r.shortL != null && r.shortL > 0) {
+        lines.push(`STATUS: INSUFFICIENT — need ${fmtV(r.reqL)}, have ${fmtV(r.totalL)} (short ${fmtV(r.shortL)})`);
+        if (r.maxBTmin != null) {
+          lines.push(`FIX: Shorten BT to ${r.maxBTmin} min, turn at ${gpPresDisp(r.maxTurnBar)} ${presU}`);
+          lines.push('FIX: Or use a larger cylinder / add a stage');
+        }
+      } else {
+        const ruleTxt = gp.rule === 'half' ? '1/2' : '1/3';
+        lines.push(`TURN: ${gpPresDisp(r.turnBar)} ${presU} (${ruleTxt} of ${fmtV(r.portionL)})`);
+        if (r.reqL != null) lines.push(`PLAN: needs ${fmtV(r.reqL)}, STATUS: OK`);
+      }
+      return;
+    }
+    lines.push(`${gasLbl}: ${fmtV(r.totalL)} avail, reserve: ${gpPresDisp(r.reserveBar)} ${presU}`);
+    if (r.reqL == null) {
+      lines.push('STATUS: run deco plan first');
+    } else {
+      const margin = r.totalL - r.reqL;
+      const status = r.totalL >= r.reqL * 1.10 ? 'OK' : r.totalL >= r.reqL ? 'TIGHT' : 'INSUFFICIENT';
+      lines.push(`NEED: ${fmtV(r.reqL)}, MARGIN: ${fmtV(margin)}, STATUS: ${status}`);
+      if (status === 'INSUFFICIENT') lines.push('FIX: Add more gas or reduce deco obligation');
+    }
+  });
+  lines.push(ASCENT_SCHEDULE_HR);
+  return lines;
+}
+
 function formatAscentScheduleRow({ phase, depth, stop, mix, run, tts, ppo2, ead }) {
   const stp = (stop || '').trim();
   const ttsS = (tts || '').trim();
   const ttsCol = (!ttsS || ttsS === '-' || ttsS === '—')
     ? '-'.padStart(7)
     : ttsS.padEnd(7);
+  const ppo2Col = formatExportSchedulePpo2(ppo2);
+  const eadCol = formatExportScheduleEad(ead);
   return exportScheduleCell(phase, 6)
     + exportScheduleCell(depth, 6)
     + exportScheduleCell(stp, 7, { blank: !stp })
@@ -42,8 +138,9 @@ function formatAscentScheduleRow({ phase, depth, stop, mix, run, tts, ppo2, ead 
     + exportScheduleCell(run, 6)
     + ttsCol
     + ' '
-    + exportScheduleCell(ppo2, 5, { right: true })
-    + exportScheduleCell(ead, 6);
+    + exportScheduleCell(ppo2Col, 5, { right: true })
+    + '  '
+    + exportScheduleCell(eadCol, 7);
 }
 
 function buildExportText(mode) {
@@ -199,24 +296,24 @@ function buildExportText(mode) {
           lines.push(`>> ${mixSw} @ ${depSw}`);
           return;
         }
-        const c   = Array.from(tds).map(td => clean(td.textContent));
+        const cells = readExportScheduleCells(tr, clean);
 
         // Depth: descent may use 0→dest; ascent rows are destination-only
-        let depRaw = c[1] || '';
+        let depRaw = cells.depth || '';
         if (ph === 'descent') {
           const arrowMatch = depRaw.match(/[→>](.+)$/);
           if (arrowMatch) depRaw = arrowMatch[1].trim();
         }
-        const stp = typeof parseStopDisplayTime === 'function' ? parseStopDisplayTime(c[2]) : (c[2] || '');
+        const stp = typeof parseStopDisplayTime === 'function' ? parseStopDisplayTime(cells.stop) : (cells.stop || '');
         lines.push(formatAscentScheduleRow({
           phase: phaseLabel[ph] || ph,
           depth: depRaw.trim(),
           stop: stp,
-          mix: shortMix(c[3] || ''),
-          run: c[4] || '',
-          tts: c[5] || '',
-          ppo2: c[6] || '',
-          ead: c[7] || '',
+          mix: shortMix(cells.mix || ''),
+          run: cells.run || '',
+          tts: cells.tts || '',
+          ppo2: cells.ppo2 || '',
+          ead: cells.ead || '',
         }));
       });
 
@@ -231,43 +328,7 @@ function buildExportText(mode) {
       calcGasPlan();
       const _gp = window._lastGasPlan;
       if (_gp && _gp.rows && _gp.rows.length) {
-        const volU2  = (typeof lspVolUnit === 'function') ? lspVolUnit(true) : (units === 'imperial' ? 'ft3' : 'L');
-        const fmtVol = (l) => (typeof gpVolWithUnit === 'function' ? gpVolWithUnit(l) : `${gpVolDisp(l)}${volU2}`);
-        const presU2 = units === 'imperial' ? 'psi'   : 'bar';
-        const sacBot2 = document.getElementById('sacBottom')?.value || '20';
-        const sacDec2 = document.getElementById('sacDeco')?.value   || '15';
-        const ruleName2 = _gp.rule === 'half' ? 'Half Tank' : 'Thirds';
-        lines.push('GAS CONSUMPTION');
-        lines.push(`Rule: ${ruleName2}  SAC: bottom ${sacBot2} L/min, deco ${sacDec2} L/min`);
-        lines.push('-'.repeat(48));
-        _gp.rows.forEach(r => {
-          if (r.kind === 'bottom') {
-            const ruleTxt = _gp.rule === 'half' ? '1/2' : '1/3';
-            const lbl = r.label.includes('(+Travel)') ? r.label.replace('(+Travel)', '+ Travel') : r.label;
-            lines.push(`  ${lbl.toUpperCase().padEnd(14)} ${fmtVol(r.totalL)} avail   reserve: ${gpPresDisp(r.reserveBar)} ${presU2}`);
-            if (r.shortL != null && r.shortL > 0) {
-              lines.push(`    STATUS : INSUFFICIENT — need ${fmtVol(r.reqL)}, have ${fmtVol(r.totalL)} (short ${fmtVol(r.shortL)})`);
-              if (r.maxBTmin != null) {
-                lines.push(`    FIX    : Shorten BT to ${r.maxBTmin} min, turn at ${gpPresDisp(r.maxTurnBar)} ${presU2}`);
-                lines.push(`           : Or use a larger cylinder / add a stage`);
-              }
-            } else {
-              lines.push(`    TURN   : ${gpPresDisp(r.turnBar)} ${presU2}  (${ruleTxt} of ${fmtVol(r.portionL)})`);
-              if (r.reqL != null) lines.push(`    PLAN   : needs ${fmtVol(r.reqL)}  ✓ OK`);
-            }
-          } else {
-            lines.push(`  ${r.label.toUpperCase().padEnd(14)} ${fmtVol(r.totalL)} avail   reserve: ${gpPresDisp(r.reserveBar)} ${presU2}`);
-            if (r.reqL == null) {
-              lines.push(`    STATUS : run deco plan first`);
-            } else {
-              const margin2 = r.totalL - r.reqL;
-              const status2 = r.totalL >= r.reqL * 1.10 ? 'OK' : r.totalL >= r.reqL ? 'TIGHT' : 'INSUFFICIENT';
-              lines.push(`    NEED   : ${fmtVol(r.reqL)}   MARGIN: ${fmtVol(margin2)}   STATUS: ${status2}`);
-              if (status2 === 'INSUFFICIENT') lines.push(`    FIX    : Add more gas or reduce deco obligation`);
-            }
-          }
-        });
-        lines.push('-'.repeat(48));
+        lines.push(...buildGasConsumptionLines(_gp));
         lines.push('');
       }
     }
@@ -382,24 +443,24 @@ function buildExportText(mode) {
           lines.push(`>> ${mixSw} @ ${depSw}`);
           return;
         }
-        const c2   = Array.from(tds).map(td => clean(td.textContent));
+        const cells = readExportScheduleCells(tr, clean);
 
         // Ascent rows are destination-only; descent may use 0→dest
-        let depRaw = c2[1] || '';
+        let depRaw = cells.depth || '';
         if (ph === 'descent') {
           const arrowMatch = depRaw.match(/[→>](.+)$/);
           if (arrowMatch) depRaw = arrowMatch[1].trim();
         }
-        const stp = typeof parseStopDisplayTime === 'function' ? parseStopDisplayTime(c2[2]) : (c2[2] || '');
+        const stp = typeof parseStopDisplayTime === 'function' ? parseStopDisplayTime(cells.stop) : (cells.stop || '');
         lines.push(formatAscentScheduleRow({
           phase: phaseLabel[ph] || ph,
           depth: depRaw.trim(),
           stop: stp,
-          mix: eShortMix(c2[3] || ''),
-          run: c2[4] || '',
-          tts: c2[5] || '',
-          ppo2: c2[6] || '',
-          ead: c2[7] || '',
+          mix: eShortMix(cells.mix || ''),
+          run: cells.run || '',
+          tts: cells.tts || '',
+          ppo2: cells.ppo2 || '',
+          ead: cells.ead || '',
         }));
       });
 
