@@ -144,6 +144,9 @@ jobs:
           cp "Android Apk/${APK_NAME}" /tmp/LSP_D-planner-plus.apk
           gh release upload latest /tmp/LSP_D-planner-plus.apk --clobber
 
+      - name: Site APK mirror (sync-apk-d-planner-plus)
+        run: echo "Release asset ready for threecats-lsp.com sync-apk-d-planner-plus hook"
+
       - name: Commit version.json
         run: |
           git config user.email "github-actions[bot]@users.noreply.github.com"

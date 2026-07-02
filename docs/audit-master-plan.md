@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v3-full-reset`
-**Units:** 168 total; 101 unread; 41 in progress; 24 read; 2 verified.
+**Units:** 169 total; 38 unread; 40 in progress; 91 read; 0 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -30,7 +30,7 @@
 
 | Cycle | Application units | New lines | Engine re-verification | Acceptance |
 |---:|---|---:|---|---|
-| 1 | UI-MARKUP-HEADER | 837 | - | V3 cycle 1: header markup partial READ; SUITE-UI-STRUCTURE must be green |
+| 1 | UI-MARKUP-HEADER | 840 | - | V3 cycle 1: header markup partial READ; SUITE-UI-STRUCTURE must be green |
 | 2 | UI-MARKUP-PLANNER | 493 | - | Planner markup partial READ |
 | 3 | UI-MARKUP-CONSUMPTION | 381 | - | Consumption markup partial READ |
 | 4 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 612 | - | Tools and modals markup partials READ |
@@ -43,7 +43,7 @@
 | 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 497 | ENG-ZHL-GAS | Gas card UI READ |
 | 12 | APP-GAS-PLAN | 546 | - | Gas plan core READ |
 | 13 | APP-CONTINGENCY | 562 | - | Contingency core READ |
-| 14 | APP-EXPORT | 3252 | - | export-core text/PDF READ |
+| 14 | APP-EXPORT | 3255 | - | export-core text/PDF READ |
 | 15 | UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 621 | - | plot-core render and waypoints READ |
 | 16 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 701 | - | Profile tool and plot init READ |
 | 17 | UI-VPM-RENDER, UI-ZHL-RESULTS | 1064 | - | results-render-core READ |
@@ -57,7 +57,7 @@
 | 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1163 | - | Settings persistence and unit helpers READ |
 | 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 851 | - | Tools panels READ |
 | 27 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 559 | - | Profile and config presets READ |
-| 28 | UI-BOOT | 2366 | - | index.html shell boot region READ |
+| 28 | UI-BOOT | 2369 | - | index.html shell boot region READ |
 | 29 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 438 | - | PWA and service worker READ |
 | 30 | APP-ZHL-WORKER, APP-ZHL-WORKER-BRIDGE | 159 | - | ZHL schedule worker and bridge READ |
 | 31 | APP-CAPACITOR-BRIDGE, APP-ANDROID-SELECT | 548 | - | Capacitor and Android select bridge READ |

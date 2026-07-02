@@ -70,7 +70,7 @@ for (const relativePath of request.files) {
   if (relativePath.endsWith('.html')) {
     let document;
     try {
-      document = parse5.parse(rawSource, {
+      document = parse5.parse(source, {
         sourceCodeLocationInfo: true,
         onParseError(error) {
           diagnostic(relativePath, 'html', error.code, error.startLine, error.startCol);

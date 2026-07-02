@@ -1,5 +1,749 @@
 {
   "audit_epoch": "v3-full-reset",
-  "current_cycle": 1,
-  "cycles": []
+  "current_cycle": 42,
+  "cycles": [
+    {
+      "cycle_id": 1,
+      "closed_at": "2026-07-02T20:34:04+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-MARKUP-HEADER"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "V3 cycle 1: header markup partial READ; SUITE-UI-STRUCTURE must be green",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1731 ms)\n[PASS] SUITE-COVERAGE (17326 ms)\n[PASS] SUITE-PARITY (1204 ms)\n[PASS] SUITE-LEGACY (3986 ms)\n[PASS] SUITE-UI-STRUCTURE (2194 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 2,
+      "closed_at": "2026-07-02T20:34:44+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-MARKUP-PLANNER"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Planner markup partial READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1843 ms)\n[PASS] SUITE-COVERAGE (16668 ms)\n[PASS] SUITE-PARITY (1161 ms)\n[PASS] SUITE-LEGACY (3798 ms)\n[PASS] SUITE-UI-STRUCTURE (2189 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 3,
+      "closed_at": "2026-07-02T20:35:21+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-MARKUP-CONSUMPTION"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Consumption markup partial READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1818 ms)\n[PASS] SUITE-COVERAGE (13804 ms)\n[PASS] SUITE-PARITY (1078 ms)\n[PASS] SUITE-LEGACY (3610 ms)\n[PASS] SUITE-UI-STRUCTURE (2298 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 4,
+      "closed_at": "2026-07-02T20:36:01+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-MARKUP-TOOLS",
+        "UI-MARKUP-MODALS"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Tools and modals markup partials READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1638 ms)\n[PASS] SUITE-COVERAGE (18351 ms)\n[PASS] SUITE-PARITY (922 ms)\n[PASS] SUITE-LEGACY (2847 ms)\n[PASS] SUITE-UI-STRUCTURE (2582 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 5,
+      "closed_at": "2026-07-02T20:36:27+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-CSS-FOUNDATION",
+        "UI-CSS-MODES"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Foundation and modes CSS READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1101 ms)\n[PASS] SUITE-COVERAGE (10677 ms)\n[PASS] SUITE-PARITY (869 ms)\n[PASS] SUITE-LEGACY (2728 ms)\n[PASS] SUITE-UI-STRUCTURE (1542 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 6,
+      "closed_at": "2026-07-02T20:36:54+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-CSS-CONTROLS"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Controls CSS READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1205 ms)\n[PASS] SUITE-COVERAGE (10577 ms)\n[PASS] SUITE-PARITY (970 ms)\n[PASS] SUITE-LEGACY (2537 ms)\n[PASS] SUITE-UI-STRUCTURE (1542 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 7,
+      "closed_at": "2026-07-02T20:37:21+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-CSS-RESULTS"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Results CSS READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1104 ms)\n[PASS] SUITE-COVERAGE (11145 ms)\n[PASS] SUITE-PARITY (779 ms)\n[PASS] SUITE-LEGACY (2640 ms)\n[PASS] SUITE-UI-STRUCTURE (1538 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 8,
+      "closed_at": "2026-07-02T20:37:47+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-PLANNER-SHELL",
+        "UI-RESULTS-PANEL"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Planner shell and results panel READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1144 ms)\n[PASS] SUITE-COVERAGE (10700 ms)\n[PASS] SUITE-PARITY (827 ms)\n[PASS] SUITE-LEGACY (2711 ms)\n[PASS] SUITE-UI-STRUCTURE (1610 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 9,
+      "closed_at": "2026-07-02T20:38:15+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-ENVIRONMENT",
+        "UI-MODE-STATE"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "settings-core environment and mode state READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1129 ms)\n[PASS] SUITE-COVERAGE (11933 ms)\n[PASS] SUITE-PARITY (828 ms)\n[PASS] SUITE-LEGACY (2722 ms)\n[PASS] SUITE-UI-STRUCTURE (1622 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 10,
+      "closed_at": "2026-07-02T20:38:41+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "APP-SURFACE-INTERVAL",
+        "APP-GAS-TABLE"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Surface interval and gas table cores READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1088 ms)\n[PASS] SUITE-COVERAGE (9887 ms)\n[PASS] SUITE-PARITY (780 ms)\n[PASS] SUITE-LEGACY (2542 ms)\n[PASS] SUITE-UI-STRUCTURE (1586 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 11,
+      "closed_at": "2026-07-02T20:39:06+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-GAS-INPUTS",
+        "UI-GAS-CARDS"
+      ],
+      "engine_verified": [
+        "ENG-ZHL-GAS"
+      ],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Gas card UI READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1157 ms)\n[PASS] SUITE-COVERAGE (10277 ms)\n[PASS] SUITE-PARITY (823 ms)\n[PASS] SUITE-LEGACY (2700 ms)\n[PASS] SUITE-UI-STRUCTURE (1633 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 12,
+      "closed_at": "2026-07-02T22:19:27+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "APP-GAS-PLAN"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Gas plan core READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (2531 ms)\n[PASS] SUITE-COVERAGE (28913 ms)\n[PASS] SUITE-PARITY (998 ms)\n[PASS] SUITE-LEGACY (3319 ms)\n[PASS] SUITE-UI-STRUCTURE (1935 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 13,
+      "closed_at": "2026-07-02T22:20:02+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "APP-CONTINGENCY"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Contingency core READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1739 ms)\n[PASS] SUITE-COVERAGE (14294 ms)\n[PASS] SUITE-PARITY (1014 ms)\n[PASS] SUITE-LEGACY (3359 ms)\n[PASS] SUITE-UI-STRUCTURE (2057 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 14,
+      "closed_at": "2026-07-02T22:20:36+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "APP-EXPORT"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "export-core text/PDF READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1289 ms)\n[PASS] SUITE-COVERAGE (13292 ms)\n[PASS] SUITE-PARITY (1111 ms)\n[PASS] SUITE-LEGACY (3369 ms)\n[PASS] SUITE-UI-STRUCTURE (2084 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 15,
+      "closed_at": "2026-07-02T22:21:11+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-PLOT-RENDER",
+        "UI-PLOT-WAYPOINTS"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "plot-core render and waypoints READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1463 ms)\n[PASS] SUITE-COVERAGE (13223 ms)\n[PASS] SUITE-PARITY (1119 ms)\n[PASS] SUITE-LEGACY (3949 ms)\n[PASS] SUITE-UI-STRUCTURE (2018 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 16,
+      "closed_at": "2026-07-02T22:21:47+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-TOOLS-PROFILE",
+        "UI-PLOT-INIT"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Profile tool and plot init READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1470 ms)\n[PASS] SUITE-COVERAGE (13698 ms)\n[PASS] SUITE-PARITY (1545 ms)\n[PASS] SUITE-LEGACY (5429 ms)\n[PASS] SUITE-UI-STRUCTURE (2324 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 17,
+      "closed_at": "2026-07-02T22:22:21+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-VPM-RENDER",
+        "UI-ZHL-RESULTS"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "results-render-core READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (2031 ms)\n[PASS] SUITE-COVERAGE (14073 ms)\n[PASS] SUITE-PARITY (1098 ms)\n[PASS] SUITE-LEGACY (3471 ms)\n[PASS] SUITE-UI-STRUCTURE (1985 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 18,
+      "closed_at": "2026-07-02T22:22:58+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-ZHL-DELEGATES",
+        "UI-CCR-DELEGATES"
+      ],
+      "engine_verified": [
+        "ENG-ZHL-SCHEDULE"
+      ],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "ZHL/CCR delegate thin layer READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1443 ms)\n[PASS] SUITE-COVERAGE (16091 ms)\n[PASS] SUITE-PARITY (1036 ms)\n[PASS] SUITE-LEGACY (3655 ms)\n[PASS] SUITE-UI-STRUCTURE (2055 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 19,
+      "closed_at": "2026-07-02T22:23:32+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-DECO-PHYSICS",
+        "UI-SCHEDULE-INPUTS"
+      ],
+      "engine_verified": [
+        "ENG-ZHL-CCR"
+      ],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Deco physics and schedule inputs READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1332 ms)\n[PASS] SUITE-COVERAGE (13009 ms)\n[PASS] SUITE-PARITY (1038 ms)\n[PASS] SUITE-LEGACY (3359 ms)\n[PASS] SUITE-UI-STRUCTURE (1996 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 20,
+      "closed_at": "2026-07-02T22:24:07+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-ZHL-RUNNER-SETUP",
+        "UI-ZHL-RUNNER-ENGINE"
+      ],
+      "engine_verified": [
+        "ENG-ZHL-SCHEDULE"
+      ],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "ZHL runner setup and engine invocation READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1314 ms)\n[PASS] SUITE-COVERAGE (12988 ms)\n[PASS] SUITE-PARITY (1101 ms)\n[PASS] SUITE-LEGACY (3395 ms)\n[PASS] SUITE-UI-STRUCTURE (2023 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 21,
+      "closed_at": "2026-07-02T22:24:40+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-ZHL-HEADLESS-HELPERS",
+        "UI-ZHL-HEADLESS-ENGINE"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Headless ZHL path READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1488 ms)\n[PASS] SUITE-COVERAGE (13216 ms)\n[PASS] SUITE-PARITY (1016 ms)\n[PASS] SUITE-LEGACY (3325 ms)\n[PASS] SUITE-UI-STRUCTURE (1982 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 22,
+      "closed_at": "2026-07-02T22:25:15+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-VPM-RUNNER"
+      ],
+      "engine_verified": [
+        "ENG-VPM"
+      ],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "VPM runner READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1350 ms)\n[PASS] SUITE-COVERAGE (13641 ms)\n[PASS] SUITE-PARITY (1207 ms)\n[PASS] SUITE-LEGACY (3386 ms)\n[PASS] SUITE-UI-STRUCTURE (1991 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 23,
+      "closed_at": "2026-07-02T22:25:48+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-RUNTIME-BOOTSTRAP",
+        "UI-APP-INIT"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Runtime bootstrap and app init READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1570 ms)\n[PASS] SUITE-COVERAGE (14295 ms)\n[PASS] SUITE-PARITY (1139 ms)\n[PASS] SUITE-LEGACY (3274 ms)\n[PASS] SUITE-UI-STRUCTURE (1995 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 24,
+      "closed_at": "2026-07-02T22:26:28+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-ALGORITHM-SETTINGS",
+        "UI-SETTINGS-CONTROLS"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Algorithm and settings controls READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (2584 ms)\n[PASS] SUITE-COVERAGE (16423 ms)\n[PASS] SUITE-PARITY (1098 ms)\n[PASS] SUITE-LEGACY (3713 ms)\n[PASS] SUITE-UI-STRUCTURE (2091 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 25,
+      "closed_at": "2026-07-02T22:27:03+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-SETTINGS",
+        "UI-UNIT-HELPERS",
+        "UI-UNIT-SWITCHING"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Settings persistence and unit helpers READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1427 ms)\n[PASS] SUITE-COVERAGE (12858 ms)\n[PASS] SUITE-PARITY (1056 ms)\n[PASS] SUITE-LEGACY (3329 ms)\n[PASS] SUITE-UI-STRUCTURE (2102 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 26,
+      "closed_at": "2026-07-02T22:27:38+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-TOOLS-TISSUES",
+        "UI-TOOLS-EXPOSURE",
+        "UI-TOOLS-GF"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Tools panels READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (2582 ms)\n[PASS] SUITE-COVERAGE (13423 ms)\n[PASS] SUITE-PARITY (1417 ms)\n[PASS] SUITE-LEGACY (3065 ms)\n[PASS] SUITE-UI-STRUCTURE (1938 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 27,
+      "closed_at": "2026-07-02T22:28:14+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-PROFILE-PRESETS",
+        "UI-CONFIG-PRESETS"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Profile and config presets READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1383 ms)\n[PASS] SUITE-COVERAGE (14522 ms)\n[PASS] SUITE-PARITY (1002 ms)\n[PASS] SUITE-LEGACY (4946 ms)\n[PASS] SUITE-UI-STRUCTURE (1983 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 28,
+      "closed_at": "2026-07-02T22:28:47+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "UI-BOOT"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "index.html shell boot region READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1352 ms)\n[PASS] SUITE-COVERAGE (13078 ms)\n[PASS] SUITE-PARITY (1064 ms)\n[PASS] SUITE-LEGACY (3878 ms)\n[PASS] SUITE-UI-STRUCTURE (2825 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 29,
+      "closed_at": "2026-07-02T22:29:21+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "APP-SERVICE-WORKER",
+        "UI-PWA-LIFECYCLE",
+        "APP-MANIFEST"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "PWA and service worker READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1603 ms)\n[PASS] SUITE-COVERAGE (13252 ms)\n[PASS] SUITE-PARITY (1172 ms)\n[PASS] SUITE-LEGACY (3426 ms)\n[PASS] SUITE-UI-STRUCTURE (1993 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 30,
+      "closed_at": "2026-07-02T22:29:57+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "APP-ZHL-WORKER",
+        "APP-ZHL-WORKER-BRIDGE"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "ZHL schedule worker and bridge READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1330 ms)\n[PASS] SUITE-COVERAGE (14850 ms)\n[PASS] SUITE-PARITY (1100 ms)\n[PASS] SUITE-LEGACY (3273 ms)\n[PASS] SUITE-UI-STRUCTURE (2087 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 31,
+      "closed_at": "2026-07-02T22:30:32+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "APP-CAPACITOR-BRIDGE",
+        "APP-ANDROID-SELECT"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Capacitor and Android select bridge READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1475 ms)\n[PASS] SUITE-COVERAGE (13152 ms)\n[PASS] SUITE-PARITY (1086 ms)\n[PASS] SUITE-LEGACY (4725 ms)\n[PASS] SUITE-UI-STRUCTURE (1936 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 32,
+      "closed_at": "2026-07-02T22:31:08+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "ENG-ZHL-PHYSICS",
+        "ENG-ZHL-GAS"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "ZHL physics and gas canonical cores READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1512 ms)\n[PASS] SUITE-COVERAGE (15173 ms)\n[PASS] SUITE-PARITY (1058 ms)\n[PASS] SUITE-LEGACY (3415 ms)\n[PASS] SUITE-UI-STRUCTURE (2053 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 33,
+      "closed_at": "2026-07-02T22:31:43+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "ENG-ZHL-SCHEDULE"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "ZHL schedule canonical core READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1401 ms)\n[PASS] SUITE-COVERAGE (14133 ms)\n[PASS] SUITE-PARITY (1092 ms)\n[PASS] SUITE-LEGACY (3571 ms)\n[PASS] SUITE-UI-STRUCTURE (2009 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 34,
+      "closed_at": "2026-07-02T22:32:20+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "ENG-ZHL-CCR"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "ZHL CCR canonical core READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1403 ms)\n[PASS] SUITE-COVERAGE (14028 ms)\n[PASS] SUITE-PARITY (1804 ms)\n[PASS] SUITE-LEGACY (4126 ms)\n[PASS] SUITE-UI-STRUCTURE (2848 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 35,
+      "closed_at": "2026-07-02T22:33:00+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "ENG-VPM"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "VPM canonical core READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1883 ms)\n[PASS] SUITE-COVERAGE (15215 ms)\n[PASS] SUITE-PARITY (1171 ms)\n[PASS] SUITE-LEGACY (3298 ms)\n[PASS] SUITE-UI-STRUCTURE (2022 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 36,
+      "closed_at": "2026-07-02T22:33:36+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "ENG-RDP"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "PADI RDP engine READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1379 ms)\n[PASS] SUITE-COVERAGE (13444 ms)\n[PASS] SUITE-PARITY (1095 ms)\n[PASS] SUITE-LEGACY (4750 ms)\n[PASS] SUITE-UI-STRUCTURE (1997 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 37,
+      "closed_at": "2026-07-02T22:34:11+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "ENG-VPM-REFERENCE"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "VPM reference implementation READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1970 ms)\n[PASS] SUITE-COVERAGE (14174 ms)\n[PASS] SUITE-PARITY (1086 ms)\n[PASS] SUITE-LEGACY (3436 ms)\n[PASS] SUITE-UI-STRUCTURE (2097 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 38,
+      "closed_at": "2026-07-02T22:34:46+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "APP-DOWNLOAD"
+      ],
+      "engine_verified": [],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Download page READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1333 ms)\n[PASS] SUITE-COVERAGE (12631 ms)\n[PASS] SUITE-PARITY (1079 ms)\n[PASS] SUITE-LEGACY (4694 ms)\n[PASS] SUITE-UI-STRUCTURE (2064 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 39,
+      "closed_at": "2026-07-02T22:35:20+00:00",
+      "cycle_status": "closed",
+      "units_read": [],
+      "engine_verified": [
+        "TEST-ENGINE-REGRESSION",
+        "TEST-ENGINE-VALIDATION",
+        "TEST-GAS-CORE-REGRESSION"
+      ],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Engine and gas regression harnesses re-verified",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1535 ms)\n[PASS] SUITE-COVERAGE (13062 ms)\n[PASS] SUITE-PARITY (1058 ms)\n[PASS] SUITE-LEGACY (3279 ms)\n[PASS] SUITE-UI-STRUCTURE (1985 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 40,
+      "closed_at": "2026-07-02T22:35:54+00:00",
+      "cycle_status": "closed",
+      "units_read": [],
+      "engine_verified": [
+        "TEST-RUN-ALL",
+        "TEST-SW-LIFECYCLE",
+        "TEST-CCR-VALIDATION",
+        "TEST-CCR-DIFF-RUNNER",
+        "TEST-PSCR-E2E"
+      ],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Full regression umbrella and release-tier test paths re-verified",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (1451 ms)\n[PASS] SUITE-COVERAGE (14345 ms)\n[PASS] SUITE-PARITY (1024 ms)\n[PASS] SUITE-LEGACY (3396 ms)\n[PASS] SUITE-UI-STRUCTURE (2057 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    },
+    {
+      "cycle_id": 41,
+      "closed_at": "2026-07-02T22:37:06+00:00",
+      "cycle_status": "closed",
+      "units_read": [
+        "APP-PACKAGE"
+      ],
+      "engine_verified": [
+        "CI-AUDIT",
+        "CI-MAIN",
+        "CI-APK",
+        "CI-DEPLOY"
+      ],
+      "findings_opened": 0,
+      "findings_closed": 0,
+      "composer_fix_attempts": 0,
+      "gpt_fix_escalations": 0,
+      "acceptance": "Package manifest and CI workflows READ",
+      "static_audit_exit": 0,
+      "static_audit_excerpt": "LSP Audit v2 - static (2cf5af5)\n============================================================\nLegacy migration: 0/2293 independently replaced; cutover ready=False\n[PASS] AUD-PARSE-001: Parsed 46 registered source files\n[PASS] AUD-JS-001: No duplicate top-level function declarations\n[PASS] AUD-HTML-001: HTML ids are unique\n[PASS] AUD-HTML-002: Required runtime scripts load in canonical order\n[PASS] AUD-HTML-003: Required stylesheets load in canonical order\n[PASS] AUD-MIRROR-001: No re-inlined extracted UI core definitions in index.html\n[PASS] SUITE-BUILD-PAGES (4268 ms)\n[PASS] SUITE-COVERAGE (37791 ms)\n[PASS] SUITE-PARITY (2698 ms)\n[PASS] SUITE-LEGACY (9162 ms)\n[PASS] SUITE-UI-STRUCTURE (1764 ms)\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 5 passed, 0 failed, 0 skipped\nVerdict: PASS\n",
+      "automation_mode": "v3-full-auto"
+    }
+  ]
 }

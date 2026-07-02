@@ -1217,7 +1217,10 @@ function buildExportText(mode) {
     const statusEl = document.getElementById('cnsStatusText');
     const status   = statusEl ? clean(statusEl.textContent) : '';
 
-    lines.push(`${exportBrandName()} - CNS O2 TRACKER`);
+    const cnsTitle = (typeof getExportCircuitTag === 'function' && getExportCircuitTag() === 'CCR')
+      ? 'LSP D-PLANNER + CCR - CNS O2 TRACKER'
+      : `${exportBrandName()} - CNS O2 TRACKER`;
+    lines.push(cnsTitle);
     lines.push(hr);
     lines.push(`Depth         : ${depth}${du}`);
     lines.push(`BT Time      : ${bt} min`);

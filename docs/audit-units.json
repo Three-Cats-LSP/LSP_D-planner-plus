@@ -578,13 +578,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "f3e596ec9babf94433b4653b575fb88e8b030e10da6297cea211d18676e0c3a5",
-      "last_read_fingerprint": null,
+      "fingerprint": "7d87be3cdaeb93296f517f2c874e591465286fce2bfc60f1e91baaca0e6a5e4b",
+      "last_read_fingerprint": "7d87be3cdaeb93296f517f2c874e591465286fce2bfc60f1e91baaca0e6a5e4b",
       "evidence": [],
       "regression_cases": []
     },
@@ -593,12 +593,12 @@
       "path": "lsp-dplanner-foundation.css",
       "layer": "web_css",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "b460875b35f118ee845481add6776ed2cc2d582cc54bc90b84c5590571d22f9f",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "b460875b35f118ee845481add6776ed2cc2d582cc54bc90b84c5590571d22f9f",
       "evidence": [],
       "regression_cases": []
     },
@@ -607,12 +607,12 @@
       "path": "lsp-dplanner-modes.css",
       "layer": "web_css",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "9344ab5a3da09d6b9cf7e3843b7a4e6330289cffb6d3715810c152d3db14481e",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "9344ab5a3da09d6b9cf7e3843b7a4e6330289cffb6d3715810c152d3db14481e",
       "evidence": [],
       "regression_cases": []
     },
@@ -621,12 +621,12 @@
       "path": "lsp-dplanner-controls.css",
       "layer": "web_css",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "6511fe627d75f1bdf790d02c8dadb6a53c4a369b009b7271b9902f81f4225794",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "6511fe627d75f1bdf790d02c8dadb6a53c4a369b009b7271b9902f81f4225794",
       "evidence": [],
       "regression_cases": []
     },
@@ -635,12 +635,12 @@
       "path": "lsp-dplanner-results.css",
       "layer": "web_css",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "fc6e568be6ccf69c9f2026c5a20bde93ba095dd83b58cc40806c0a86293c8108",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "fc6e568be6ccf69c9f2026c5a20bde93ba095dd83b58cc40806c0a86293c8108",
       "evidence": [],
       "regression_cases": []
     },
@@ -649,12 +649,12 @@
       "path": "ui/markup-header.html",
       "layer": "web_markup",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c33bfda75be7e94f41b29488328c9b8dde13aafb9e4948ebbce3232f8865a8b1",
-      "last_read_fingerprint": null,
+      "fingerprint": "33bc7235987078ac24336bc6deff7a4983c115a73d2b67dda53055d55f8d24fe",
+      "last_read_fingerprint": "33bc7235987078ac24336bc6deff7a4983c115a73d2b67dda53055d55f8d24fe",
       "evidence": [],
       "regression_cases": []
     },
@@ -663,12 +663,12 @@
       "path": "ui/markup-planner.html",
       "layer": "web_markup",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "f8580045052a2fc92806d2edcca8f609067470f49e1b5c99827a5e2a83d8de86",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "f8580045052a2fc92806d2edcca8f609067470f49e1b5c99827a5e2a83d8de86",
       "evidence": [],
       "regression_cases": []
     },
@@ -677,12 +677,12 @@
       "path": "ui/markup-consumption.html",
       "layer": "web_markup",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "62bc7530920037c1e03178a1be7a10f1d578beaa7fcfb48178cd8a6e9786e36e",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "62bc7530920037c1e03178a1be7a10f1d578beaa7fcfb48178cd8a6e9786e36e",
       "evidence": [],
       "regression_cases": []
     },
@@ -691,12 +691,12 @@
       "path": "ui/markup-tools.html",
       "layer": "web_markup",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "62aef8c891215ea1b3640ca09af9fcb9edffe792f74f9a64ae60fe2dba71e737",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "62aef8c891215ea1b3640ca09af9fcb9edffe792f74f9a64ae60fe2dba71e737",
       "evidence": [],
       "regression_cases": []
     },
@@ -705,12 +705,12 @@
       "path": "ui/markup-modals.html",
       "layer": "web_markup",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "4720f42548ea3b0b75af9cf1548656c9c2c53b3c2b3cfd89c7c17c63a4447be6",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "4720f42548ea3b0b75af9cf1548656c9c2c53b3c2b3cfd89c7c17c63a4447be6",
       "evidence": [],
       "regression_cases": []
     },
@@ -719,13 +719,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-RUNTIME-BOOTSTRAP"
       },
       "fingerprint": "822569ba7547b9b50c20e33058d9c85c4b53f8edc7019b7952fc17958e5e3f3d",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "822569ba7547b9b50c20e33058d9c85c4b53f8edc7019b7952fc17958e5e3f3d",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 162
@@ -735,13 +735,13 @@
       "path": "settings-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ENVIRONMENT"
       },
       "fingerprint": "a391637b16aa5020defa62f0a5729f7b24c503e2a003cd91a782ba681ca0f8a5",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "a391637b16aa5020defa62f0a5729f7b24c503e2a003cd91a782ba681ca0f8a5",
       "audit_issue": 139,
       "evidence": [],
       "regression_cases": []
@@ -751,13 +751,13 @@
       "path": "settings-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MODE-STATE"
       },
       "fingerprint": "31e285f34bd10ec938f7ca6f19c9d58dbcd070740a1bfa2acb1285e0796abd3a",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "31e285f34bd10ec938f7ca6f19c9d58dbcd070740a1bfa2acb1285e0796abd3a",
       "evidence": [],
       "regression_cases": []
     },
@@ -766,13 +766,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ALGORITHM-SETTINGS"
       },
       "fingerprint": "4da7413aa2308a2bc706a8ac6c388b38a6b7bcaff3579cdbc45de6dc4f4fad85",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "4da7413aa2308a2bc706a8ac6c388b38a6b7bcaff3579cdbc45de6dc4f4fad85",
       "audit_issue": 163,
       "evidence": [],
       "regression_cases": []
@@ -782,13 +782,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-UNIT-HELPERS"
       },
       "fingerprint": "c8e5fe3a45889251cafba2736c3a1eb93fb7c046e516a222582d4576cf838633",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "c8e5fe3a45889251cafba2736c3a1eb93fb7c046e516a222582d4576cf838633",
       "evidence": [],
       "regression_cases": []
     },
@@ -797,13 +797,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-UNIT-SWITCHING"
       },
       "fingerprint": "34caf74a04d6e15f9c9077dc069d6d051ea4afdb26275c162cfdc5c48c3f42f7",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "34caf74a04d6e15f9c9077dc069d6d051ea4afdb26275c162cfdc5c48c3f42f7",
       "evidence": [],
       "regression_cases": []
     },
@@ -812,13 +812,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-DELEGATES"
       },
       "fingerprint": "2624b1e14c8a6260d1ced80646d82af33d1d0eef852e695f55e85eab38228b8f",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "2624b1e14c8a6260d1ced80646d82af33d1d0eef852e695f55e85eab38228b8f",
       "evidence": [],
       "regression_cases": [],
       "issue": "GitHub #141 L-2 getN2Frac trimix null",
@@ -829,13 +829,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-CCR-DELEGATES"
       },
       "fingerprint": "cf061ea76d23d906cd5216034110b6aaf1e658f0547f5aded894e1f20db71b9d",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "cf061ea76d23d906cd5216034110b6aaf1e658f0547f5aded894e1f20db71b9d",
       "evidence": [],
       "regression_cases": [],
       "issue": "GitHub #141 M-1 pSCR diluent bypass; Cycle 34 bailout selection and diluent guidance",
@@ -846,13 +846,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-DECO-PHYSICS"
       },
       "fingerprint": "6c75489c2328882a47744802f1e2d75a2f1c78d1d0f389706857fbd387a41b4b",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "6c75489c2328882a47744802f1e2d75a2f1c78d1d0f389706857fbd387a41b4b",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 145
@@ -862,13 +862,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SCHEDULE-INPUTS"
       },
       "fingerprint": "0c77d36d909d23219cc1dd5a7532ae62b41a4b6521534f85ed92c09e416eba26",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "0c77d36d909d23219cc1dd5a7532ae62b41a4b6521534f85ed92c09e416eba26",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 145
@@ -878,13 +878,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS-CONTROLS"
       },
       "fingerprint": "066a70d1956361c3fc69e20c4578b31e4e39aa589d7ee374834d0e6e4649e0b3",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "066a70d1956361c3fc69e20c4578b31e4e39aa589d7ee374834d0e6e4649e0b3",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 146
@@ -894,13 +894,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RUNNER"
       },
       "fingerprint": "fc27af5bc55f327af335f580565d5d5f43465aa131b23c9a6fade02affa9e73d",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "fc27af5bc55f327af335f580565d5d5f43465aa131b23c9a6fade02affa9e73d",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 146
@@ -910,13 +910,13 @@
       "path": "results-render-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RENDER"
       },
       "fingerprint": "711bc8d735fd41b3b3eca8b0c880172b6551c64173bdac5ff964972528fda496",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "711bc8d735fd41b3b3eca8b0c880172b6551c64173bdac5ff964972528fda496",
       "audit_issue": 147,
       "evidence": [],
       "regression_cases": []
@@ -926,13 +926,13 @@
       "path": "gas-cards-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-INPUTS"
       },
       "fingerprint": "27eada8c087021fff07532b17d5a2afbccd420d2dbebcd3e6d433a1783eaccc5",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "27eada8c087021fff07532b17d5a2afbccd420d2dbebcd3e6d433a1783eaccc5",
       "audit_issue": 149,
       "evidence": [],
       "regression_cases": [],
@@ -943,33 +943,33 @@
       "path": "gas-cards-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-CARDS"
       },
       "fingerprint": "bcaafc6b06e900201b8808cc8db76a30f8343a88097556d7b161e3e7060ffc27",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "bcaafc6b06e900201b8808cc8db76a30f8343a88097556d7b161e3e7060ffc27",
       "audit_issue": 148,
       "evidence": [],
       "regression_cases": [],
-      "issue": "Cycle 35 structured read \u2014 no actionable findings"
+      "issue": "Cycle 35 structured read — no actionable findings"
     },
     {
       "id": "UI-ZHL-RUNNER-SETUP",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-SETUP"
       },
       "fingerprint": "c8363897aa524291a6cc0e410c26156f87f5a3275cfd7327490610f26af0dc05",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "c8363897aa524291a6cc0e410c26156f87f5a3275cfd7327490610f26af0dc05",
       "evidence": [],
       "regression_cases": [],
-      "issue": "Cycle 35 structured read \u2014 no actionable findings",
+      "issue": "Cycle 35 structured read — no actionable findings",
       "audit_issue": 149
     },
     {
@@ -977,13 +977,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-ENGINE"
       },
       "fingerprint": "b7f5b5d2e55241725ba64403c0a8e301f0fc01f017dea8daebdd7126a138e85c",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "b7f5b5d2e55241725ba64403c0a8e301f0fc01f017dea8daebdd7126a138e85c",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 150
@@ -993,13 +993,13 @@
       "path": "results-render-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
       "fingerprint": "aacc548e6d3c82a8517498347c29980f79f630907c43810c199c1bdf72391326",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "aacc548e6d3c82a8517498347c29980f79f630907c43810c199c1bdf72391326",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 151
@@ -1009,7 +1009,7 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-HEADLESS-HELPERS"
@@ -1018,7 +1018,7 @@
       "evidence": [],
       "issue": "Audit #134",
       "fingerprint": "3678c11ab261aec2ccf3ae92febf586e33844a5f2bcfaf525946654d88abee62",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "3678c11ab261aec2ccf3ae92febf586e33844a5f2bcfaf525946654d88abee62",
       "audit_issue": 152
     },
     {
@@ -1026,7 +1026,7 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-HEADLESS-ENGINE"
@@ -1035,7 +1035,7 @@
       "evidence": [],
       "issue": "Audit #134; Cycle 31 CCR repetitive NDL phase",
       "fingerprint": "0bde20e5bb27c45c1dd8b978ab24669c6b4bacd92129c6bcb4b7a809c9308828",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "0bde20e5bb27c45c1dd8b978ab24669c6b4bacd92129c6bcb4b7a809c9308828",
       "audit_issue": 153
     },
     {
@@ -1043,13 +1043,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-INIT"
       },
       "fingerprint": "d8705525065b57428c7feb0fe67bea17c7eecc8d6e1e312cb8431470435ea9f1",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "d8705525065b57428c7feb0fe67bea17c7eecc8d6e1e312cb8431470435ea9f1",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 154
@@ -1059,13 +1059,13 @@
       "path": "plot-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-RENDER"
       },
       "fingerprint": "2efbc8f85a066175e4ef4f03b5d44169137a81c14ddcf226bdbce56fc9822f58",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "2efbc8f85a066175e4ef4f03b5d44169137a81c14ddcf226bdbce56fc9822f58",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 154
@@ -1075,13 +1075,13 @@
       "path": "plot-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-WAYPOINTS"
       },
       "fingerprint": "9600d006809de2e44008883c8131b128a7af0ca07b7b4b03e7d743abb1314359",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "9600d006809de2e44008883c8131b128a7af0ca07b7b4b03e7d743abb1314359",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 155
@@ -1091,13 +1091,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-TISSUES"
       },
       "fingerprint": "4da71c311ed94f99e464c9392dc50fc66e122f8794b084a6d53f99289b4a6789",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "4da71c311ed94f99e464c9392dc50fc66e122f8794b084a6d53f99289b4a6789",
       "audit_issue": 156,
       "evidence": [],
       "regression_cases": []
@@ -1107,13 +1107,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-EXPOSURE"
       },
       "fingerprint": "c928d6b616152064a364aaf55d261afed640539caa108baf6dbc3e3bcbdb4ddd",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "c928d6b616152064a364aaf55d261afed640539caa108baf6dbc3e3bcbdb4ddd",
       "audit_issue": 156,
       "evidence": [],
       "regression_cases": []
@@ -1123,13 +1123,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-GF"
       },
       "fingerprint": "f57b5172c1b9092da9278b522a152ebad5b616ccc87fb90b1da76341649fd0b2",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "f57b5172c1b9092da9278b522a152ebad5b616ccc87fb90b1da76341649fd0b2",
       "audit_issue": 157,
       "evidence": [],
       "regression_cases": []
@@ -1139,13 +1139,13 @@
       "path": "plot-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-PROFILE"
       },
       "fingerprint": "42a5050b66e81ae113895b8e689e3bdae69ec036989398b027e0217fd37e7f66",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "42a5050b66e81ae113895b8e689e3bdae69ec036989398b027e0217fd37e7f66",
       "audit_issue": 157,
       "evidence": [],
       "regression_cases": []
@@ -1155,13 +1155,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS"
       },
       "fingerprint": "613d841c523a1cfdcda609a21e66138376c54f3c805520807f92cbcc6e6800eb",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "613d841c523a1cfdcda609a21e66138376c54f3c805520807f92cbcc6e6800eb",
       "audit_issue": 158,
       "issue": "Cycle 32 settings restore exception recovery",
       "evidence": [],
@@ -1172,13 +1172,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PROFILE-PRESETS"
       },
       "fingerprint": "389eac6fe50cdd984910f6a8e0529ffbfb2b8b374c02e848c488958973b0b58c",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "389eac6fe50cdd984910f6a8e0529ffbfb2b8b374c02e848c488958973b0b58c",
       "audit_issue": 159,
       "evidence": [],
       "regression_cases": []
@@ -1188,13 +1188,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-CONFIG-PRESETS"
       },
       "fingerprint": "05982c3a58fed7315dd80536a2e722710a512b361e498c9e10969fe2b96ade76",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "05982c3a58fed7315dd80536a2e722710a512b361e498c9e10969fe2b96ade76",
       "audit_issue": 159,
       "evidence": [],
       "regression_cases": []
@@ -1204,13 +1204,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-APP-INIT"
       },
       "fingerprint": "523337de99d96008bde2efa9449bfe7d9f476914cba778b17b87b31684cb7850",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "523337de99d96008bde2efa9449bfe7d9f476914cba778b17b87b31684cb7850",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 160
@@ -1220,13 +1220,13 @@
       "path": "index.html",
       "layer": "pwa",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PWA-LIFECYCLE"
       },
       "fingerprint": "0646b53b2325d0249aad57576704a08e99a9e34f685680998dc11465c1da661d",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "0646b53b2325d0249aad57576704a08e99a9e34f685680998dc11465c1da661d",
       "evidence": [],
       "regression_cases": []
     },
@@ -1235,12 +1235,12 @@
       "path": "zhl-physics-core.js",
       "layer": "engine",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "e98721f27df532f622ffe2dd609051388e76c796d1d2284273763216956d413f",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "e98721f27df532f622ffe2dd609051388e76c796d1d2284273763216956d413f",
       "evidence": [],
       "regression_cases": []
     },
@@ -1249,12 +1249,12 @@
       "path": "zhl-gas-core.js",
       "layer": "engine",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "2a5f62b8c5f0b9fce7e19c6f65362ba69bd6077da5244ed19aeb657c3fbabcbc",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "2a5f62b8c5f0b9fce7e19c6f65362ba69bd6077da5244ed19aeb657c3fbabcbc",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 139
@@ -1264,7 +1264,7 @@
       "path": "zhl-ccr-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
@@ -1272,7 +1272,7 @@
       "regression_cases": [],
       "issue": "Audit #134; CCR deep-endpoint setpoint sampling; Cycle 31 C-04/pSCR sync",
       "fingerprint": "6d1953c834dcf1309da766e9a596be8a91c64047cd362caf61a8673322c17a5a",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "6d1953c834dcf1309da766e9a596be8a91c64047cd362caf61a8673322c17a5a",
       "audit_issue": 145
     },
     {
@@ -1280,12 +1280,12 @@
       "path": "zhl-schedule-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "d7279942cdf33e329f3f519116c57396019850eff57bd05214cf2387e251e637",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "d7279942cdf33e329f3f519116c57396019850eff57bd05214cf2387e251e637",
       "evidence": [],
       "regression_cases": [],
       "issue": "Cycle 35: imperial O2 switch depth + wholeMinStops API parity via bundle builder"
@@ -1295,12 +1295,12 @@
       "path": "vpm-engine-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "0c90dac13615ca7f0d480e98f36fef624109034bb304f332a970e07c3813b4ec",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "0c90dac13615ca7f0d480e98f36fef624109034bb304f332a970e07c3813b4ec",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 166
@@ -1310,12 +1310,12 @@
       "path": "vpmb.py",
       "layer": "engine_reference",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "337a84085e0b5a492ec6310a0b98edac4edcfa2bb16028792ca769881815726b",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "337a84085e0b5a492ec6310a0b98edac4edcfa2bb16028792ca769881815726b",
       "evidence": [],
       "regression_cases": []
     },
@@ -1324,12 +1324,12 @@
       "path": "padi-engine.js",
       "layer": "engine",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "e7c22383698125fe514ee21a66aba966d0f8b0f5bfcf3e73fe794eae18c3b8b5",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "e7c22383698125fe514ee21a66aba966d0f8b0f5bfcf3e73fe794eae18c3b8b5",
       "evidence": [],
       "regression_cases": []
     },
@@ -1338,12 +1338,12 @@
       "path": "android-select-picker.js",
       "layer": "native_bridge",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "56fe8ea5113d5a66992ffff19610eaeefdee32b69a8c5c9aa8eb0f3c78246d58",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "56fe8ea5113d5a66992ffff19610eaeefdee32b69a8c5c9aa8eb0f3c78246d58",
       "evidence": [],
       "regression_cases": []
     },
@@ -1352,12 +1352,12 @@
       "path": "capacitor-bridge.js",
       "layer": "native_bridge",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "945ef744b34d4e4aecf1011de7eb2988cc8d0e051a9bc5ca208c26f4dfafbdac",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "945ef744b34d4e4aecf1011de7eb2988cc8d0e051a9bc5ca208c26f4dfafbdac",
       "evidence": [],
       "regression_cases": []
     },
@@ -1366,12 +1366,12 @@
       "path": "contingency-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "1ffe7eac5ed9329e4d79508ad4b80b36ad13b6d3e2459550e8ed09e393b41083",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "1ffe7eac5ed9329e4d79508ad4b80b36ad13b6d3e2459550e8ed09e393b41083",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 164,
@@ -1382,12 +1382,12 @@
       "path": "export-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a6e6b1e47358702caf57a6cdb387e52194ff901d2f0c25614934f8f9f4a771c6",
-      "last_read_fingerprint": null,
+      "fingerprint": "f449b708599c4c152e2e2278c419677a3343b3ad80c2353963819ef763f4e7c4",
+      "last_read_fingerprint": "f449b708599c4c152e2e2278c419677a3343b3ad80c2353963819ef763f4e7c4",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 165
@@ -1397,14 +1397,14 @@
       "path": "gas-plan-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "98113d2a4d322e42e214658fff98d5630a2a5a7e285cb7af58974650cdab4b1b",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "98113d2a4d322e42e214658fff98d5630a2a5a7e285cb7af58974650cdab4b1b",
       "evidence": [],
-      "issue": "GitHub #140 H-2 / Cycle 5 GP-01\ufffd06 \ufffd docs/code-review-2026-06-30.md",
+      "issue": "GitHub #140 H-2 / Cycle 5 GP-01�06 � docs/code-review-2026-06-30.md",
       "regression_cases": []
     },
     {
@@ -1412,14 +1412,14 @@
       "path": "gas-table-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "3f603d19106c84ba678cc7b26b5befe6d65fc54ae8bda1d17f927c91c525fcf9",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "3f603d19106c84ba678cc7b26b5befe6d65fc54ae8bda1d17f927c91c525fcf9",
       "evidence": [],
-      "issue": "Cycle 5 GT-01\ufffd06 \ufffd docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GT-01�06 � docs/code-review-2026-06-30.md",
       "regression_cases": []
     },
     {
@@ -1427,14 +1427,14 @@
       "path": "surf-interval-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "bbc70a54ddf64b9b3e18fef1d1480155ff86a3e0da09d23cb48be6690b434a52",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "bbc70a54ddf64b9b3e18fef1d1480155ff86a3e0da09d23cb48be6690b434a52",
       "evidence": [],
-      "issue": "GitHub #142 \ufffd Dive 2 gas override",
+      "issue": "GitHub #142 � Dive 2 gas override",
       "regression_cases": []
     },
     {
@@ -1442,12 +1442,12 @@
       "path": "sw.js",
       "layer": "pwa",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "e50fba8a208b040f0473dd06731558169bd1e330757ebc0e0f79e71205e3b860",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "e50fba8a208b040f0473dd06731558169bd1e330757ebc0e0f79e71205e3b860",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 165,
@@ -1458,12 +1458,12 @@
       "path": "zhl-worker-bridge.js",
       "layer": "worker",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "7ffff8505b071bad0781da0a5b365b90fe45b93c1586e6257384905a12363dcc",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "7ffff8505b071bad0781da0a5b365b90fe45b93c1586e6257384905a12363dcc",
       "evidence": [],
       "regression_cases": []
     },
@@ -1472,12 +1472,12 @@
       "path": "zhl-schedule-worker.js",
       "layer": "worker",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "f9f18b7ebec540bee6fceedc114d74083b62538ca6693c385e65a344c2b3d4bf",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "f9f18b7ebec540bee6fceedc114d74083b62538ca6693c385e65a344c2b3d4bf",
       "evidence": [],
       "regression_cases": []
     },
@@ -1486,12 +1486,12 @@
       "path": "download.html",
       "layer": "web_runtime",
       "priority": "P3",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "db834ff6d219547c2d811761946d9dd127888e952d823869c029d3173c199b70",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "db834ff6d219547c2d811761946d9dd127888e952d823869c029d3173c199b70",
       "evidence": [],
       "regression_cases": []
     },
@@ -1500,12 +1500,12 @@
       "path": "manifest.json",
       "layer": "pwa",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "2c72106c8a1c5ba37b25f4f07a8cf01349dcc8a09a82d1a7f1b735099269e68d",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "2c72106c8a1c5ba37b25f4f07a8cf01349dcc8a09a82d1a7f1b735099269e68d",
       "evidence": [],
       "regression_cases": []
     },
@@ -1518,7 +1518,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "14e773c4481cc990247a688dd3c3c6e70c08ea72921bf293f989a3bd71fbeabc",
+      "fingerprint": "98d4150db2c8ec46c22c6795b430229c0ab87e1ba85a7b58268a0e1d43fb1d66",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
@@ -1776,15 +1776,15 @@
       "path": "dev/engine_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "GitHub #133\u2013#138 audit regressions and Cycle 31\u201334 verification",
+      "issue": "GitHub #133–#138 audit regressions and Cycle 31–34 verification",
       "regression_cases": [],
       "fingerprint": "e7dae97de2731988e5e9e8ce131c38907f5e8d0529ace62e788b344699c805e5",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "e7dae97de2731988e5e9e8ce131c38907f5e8d0529ace62e788b344699c805e5",
       "audit_issue": 169
     },
     {
@@ -1812,7 +1812,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "Cycle 5 GP/GT behavioral regression \ufffd docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GP/GT behavioral regression � docs/code-review-2026-06-30.md",
       "regression_cases": [],
       "fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
       "last_read_fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
@@ -1966,7 +1966,7 @@
       "path": "dev/validate_pscr_e2e.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
@@ -1985,7 +1985,7 @@
       "path": "dev/sw_lifecycle_test.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
@@ -2228,7 +2228,7 @@
       },
       "evidence": [],
       "regression_cases": [],
-      "issue": "GitHub #133\u2013#139 structured environment audit gates; release regression 9/9",
+      "issue": "GitHub #133–#139 structured environment audit gates; release regression 9/9",
       "fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d",
       "last_read_fingerprint": null
     },
@@ -2450,7 +2450,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3d73b7e93ecc89a32804bfedaccb7d68e8a3ca2e0d4cf244586125143a3ac138",
+      "fingerprint": "867617d197500a649f4fee2c54d6fd2e0a47b8aac2ce85e6abf06f347093a136",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
@@ -2511,12 +2511,12 @@
       "path": ".github/workflows/build-apk.yml",
       "layer": "ci",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "699d122867b3ebd9109f23ce0a10cc79d9075018500e96653b30ee34ac68a56e",
-      "last_read_fingerprint": null,
+      "fingerprint": "ca43af62e56279a20f9fc5919a096815bb38aa9a6547ccb37a65499284440123",
+      "last_read_fingerprint": "ca43af62e56279a20f9fc5919a096815bb38aa9a6547ccb37a65499284440123",
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 167
@@ -2635,7 +2635,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3a8d979af25d4d576cb197ee1cefbba619af66b9035bae2471f7309dec4e5c6c",
+      "fingerprint": "b75e2f92ec060f9e8b774ad36e9aee5dc27cf4ef6867619d1cf4e84b164c1ec4",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2680,7 +2680,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c7e855e91cf56ec7f805cf9412fcf068a93d8f7f379a94146027e4bfefea5a19",
+      "fingerprint": "1a345f6bf2e7708d9eda7d967f72f2f564f75739ed99652a574cacfe8a91df62",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2800,7 +2800,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "70a8d5beffd1c8997f844c7adbdc7331c6916617232c9fb50411834eabd9f834",
+      "fingerprint": "5e3c0b16e8006b7a508fb2e0c2f9914a5d0a83794608670135ba1f210ee4bb21",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2826,12 +2826,12 @@
       "path": "planner-shell.js",
       "layer": "ui_shell",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "0cfd1a3c2f4526e1561631243d8377626ddab91bec75c7091a1667d7899b4aa8",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "0cfd1a3c2f4526e1561631243d8377626ddab91bec75c7091a1667d7899b4aa8",
       "evidence": [],
       "regression_cases": []
     },
@@ -2840,12 +2840,12 @@
       "path": "results-panel.js",
       "layer": "ui_shell",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "b04d5d435b87a83d80e930eb67d8eb59d7a6942f4a9ba3b8bb4b3073547ada6b",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "b04d5d435b87a83d80e930eb67d8eb59d7a6942f4a9ba3b8bb4b3073547ada6b",
       "evidence": [],
       "regression_cases": []
     },
@@ -2888,7 +2888,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "636cc80f0e870dc59f96db88ee357df0ede6a5d8550fd88ff0845c58300c4597",
+      "fingerprint": "ad3ef139ecd5297e9516436f8ab0eb7c052c49aaabc8bf956576bce5c86ac322",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2968,12 +2968,27 @@
       "evidence": [],
       "regression_cases": [],
       "issue": "Audit V3 cycle reset"
+    },
+    {
+      "id": "TOOL-V3-RUN-V3-AUTOMATION-PY",
+      "path": "tools/audit/run_v3_automation.py",
+      "layer": "tooling",
+      "priority": "P2",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "ec11bace83083d27550a47c3ea28fa2739f40d367dd9615ba8644c445a4ab886",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "V3 automated audit runner"
     }
   ],
   "cycles": [
     {
       "cycle": 1,
-      "max_new_application_lines": 837,
+      "max_new_application_lines": 840,
       "application_units": [
         "UI-MARKUP-HEADER"
       ],
@@ -3098,7 +3113,7 @@
     },
     {
       "cycle": 14,
-      "max_new_application_lines": 3252,
+      "max_new_application_lines": 3255,
       "application_units": [
         "APP-EXPORT"
       ],
@@ -3246,7 +3261,7 @@
     },
     {
       "cycle": 28,
-      "max_new_application_lines": 2366,
+      "max_new_application_lines": 2370,
       "application_units": [
         "UI-BOOT"
       ],
@@ -3857,6 +3872,26 @@
       "vpm-engine-core.js": {
         "prefix": "(function () {",
         "suffix": "})();"
+      },
+      "ui/markup-header.html": {
+        "prefix": "<!DOCTYPE html><html><head></head><body>",
+        "suffix": "</body></html>"
+      },
+      "ui/markup-planner.html": {
+        "prefix": "<!DOCTYPE html><html><head></head><body>",
+        "suffix": "</body></html>"
+      },
+      "ui/markup-consumption.html": {
+        "prefix": "<!DOCTYPE html><html><head></head><body>",
+        "suffix": "</body></html>"
+      },
+      "ui/markup-tools.html": {
+        "prefix": "<!DOCTYPE html><html><head></head><body>",
+        "suffix": "</body></html>"
+      },
+      "ui/markup-modals.html": {
+        "prefix": "<!DOCTYPE html><html><head></head><body>",
+        "suffix": "</body></html>"
       }
     }
   },
