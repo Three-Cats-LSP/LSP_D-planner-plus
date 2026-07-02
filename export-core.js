@@ -1666,8 +1666,12 @@ function legendRowFromTr(tr) {
 function drawGraphLegend(doc, y, ML, CW, checkY, legendRows) {
     let rows = legendRows;
     if (!rows) {
-      const legEl = document.getElementById('decoProfileLegend');
+      const legEl = document.getElementById('plannerProfileLegend')
+        || document.getElementById('decoProfileLegend');
       rows = legEl ? Array.from(legEl.querySelectorAll('tbody tr')) : [];
+    }
+    if (!rows.length && typeof buildProfileLegendRowsFromWaypoints === 'function') {
+      rows = buildProfileLegendRowsFromWaypoints();
     }
     if (!rows.length) return y;
     checkY(rows.length * 5 + 10);
@@ -1698,14 +1702,32 @@ function drawGraphLegend(doc, y, ML, CW, checkY, legendRows) {
   }
 
 function buildProfileLegendRowsFromWaypoints() {
-    const stops = (window._decoWaypoints || []).filter(wp => wp.dot && wp.label);
-    return stops.map((wp, i) => ({
-      num: String(i + 1),
+  const wps = window._plannerWaypoints || window._decoWaypoints || [];
+  const rows = [];
+  let stopNum = 0;
+  [...wps].sort((a, b) => a.t - b.t).forEach(wp => {
+    if (wp.type === 'gasswitch') {
+      const gas = String(wp.gasLabel || '').replace(/\s+/g, ' ').trim();
+      const depthTxt = wp.depthLabel || (wp.depth != null ? `${wp.depth}m` : '');
+      rows.push({
+        num: '⇄',
+        stop: `${depthTxt}${gas ? ' · ' + gas : ''}`,
+        run: `${Math.round(wp.t * 10) / 10} min`,
+        ppo2: wp.ppo2 != null ? Number(wp.ppo2).toFixed(2) : '—',
+      });
+      return;
+    }
+    if (!wp.dot || !wp.label) return;
+    stopNum += 1;
+    rows.push({
+      num: String(stopNum),
       stop: wp.label.replace(/(\d+m)\s+(\d+)/, '$1 - $2'),
       run: `${Math.round(wp.t)} min`,
-      ppo2: wp.ppo2 ? wp.ppo2.toFixed(2) : '—',
-    }));
-  }
+      ppo2: wp.ppo2 != null ? Number(wp.ppo2).toFixed(2) : '—',
+    });
+  });
+  return rows;
+}
 
 // ── PDF canvas capture — scale to print resolution to prevent 100 MB output ──
 // jsPDF addImage stores raw pixel data. A 3× DPR canvas on mobile produces
@@ -2228,8 +2250,8 @@ async function exportPDF(opts) {
     }
   }
 
-  if(_incProfile) _drawForPDF(() => drawDecoProfile());
-  const pc=document.getElementById('decoProfileCanvas');
+  if(_incProfile) _drawForPDF(() => drawDecoProfileFull());
+  const pc=document.getElementById('plannerProfileCanvas');
   if(_incProfile&&pc){
     doc.addPage(); drawHeader();
     sectionTitle('DIVE PROFILE GRAPH',`${depthVal}${du} / ${btVal}min / ${algo} / ${gfStr}`);
@@ -2769,8 +2791,8 @@ async function exportContingencyPDF(opts) {
   if (_incProfile) {
     try {
       withScratchDecoTableBody(() => {
-        _drawForPDF(() => drawDecoProfile());
-        const pc = document.getElementById('decoProfileCanvas');
+        _drawForPDF(() => drawDecoProfileFull());
+        const pc = document.getElementById('plannerProfileCanvas');
         if (pc) {
           doc.addPage(); drawHeader();
           sectionTitle('EMERGENCY DIVE PROFILE GRAPH', `${depth}${du} / ${bt}min / ${cleanPDF(c.label)}`);
@@ -2782,7 +2804,7 @@ async function exportContingencyPDF(opts) {
         }
       }, c.newRows);
     } catch(e) { console.warn('Emergency graph failed',e); }
-    finally { drawDecoProfile(); }
+    finally { drawDecoProfile(); drawDecoProfileFull(); }
   }
 
   // ── SECTION: GF Gradient Factor Curve ───────────────────────────────────
