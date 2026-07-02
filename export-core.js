@@ -19,7 +19,7 @@
 // ═══════════════════════════════════════════════════════
 
 const EXPORT_SECTION_RULE_WIDTH = 50;
-const ASCENT_SCHEDULE_HEADER = 'Phase Depth  Stop  Mix   Run   TTS     PPO2  EAD    ';
+const ASCENT_SCHEDULE_HEADER = 'Phase Depth  Stop  Mix    Run   TTS    PPO2  EAD    ';
 
 function ascentScheduleRule() {
   return '-'.repeat(EXPORT_SECTION_RULE_WIDTH);
@@ -56,6 +56,33 @@ function _pdfAlertStyle(txt) {
     return { bg: [255, 68, 51], tx: [255, 255, 255], border: [200, 50, 30] };
   }
   return { bg: [255, 68, 51], tx: [255, 255, 255], border: [200, 50, 30] };
+}
+
+function formatExportAlertText(plainText) {
+  let t = (plainText || '').replace(/\s+/g, ' ').trim();
+  if (!t) return [];
+  t = t.replace(/ \(short /g, '(short ');
+  t = t.replace(/\s*[—-]\s*calculated at/gi, ' calculated at');
+  const dotMatch = t.match(/^([^.]+\.)\s*(.*)$/);
+  if (!dotMatch) return [`!! ${t}`];
+  const title = dotMatch[1];
+  const body = (dotMatch[2] || '').trim();
+  const out = [`!! ${title} `];
+  if (!body) return out;
+  const wrapW = 40;
+  const words = body.split(' ');
+  let line = '';
+  words.forEach((w) => {
+    const candidate = line ? `${line} ${w}` : w;
+    if (candidate.length > wrapW && line) {
+      out.push(line);
+      line = w;
+    } else {
+      line = candidate;
+    }
+  });
+  if (line) out.push(line);
+  return out;
 }
 
 function extractAlertPlainText(el) {
@@ -726,22 +753,46 @@ function buildGasConsumptionLines(gp) {
 function formatExportScheduleRun(run) {
   const s = (run || '').trim();
   if (!s || s === '-') return '-'.padEnd(6);
-  if (s.length <= 4 && /^\d:/.test(s)) return (' ' + s).padEnd(7);
-  return s.padEnd(6);
+  return s.length <= 4 ? s.padEnd(5) : s.padEnd(6);
 }
 
-function formatExportScheduleMix(mix) {
-  const s = (mix || '').trim();
-  if (s === '100%') return ' 100%'.padEnd(6);
-  return s.padEnd(6);
-}
-
-function formatExportScheduleStop(stop, phase) {
+function formatExportScheduleStopW(stop, mix) {
   const s = (stop || '').trim();
-  if (!s) return ' '.repeat(7);
-  if (s.length >= 5) return s.padEnd(7);
-  if (phase === 'Asc' && s !== '1:00') return (' ' + s + ' ').padEnd(7);
-  return (' ' + s).padEnd(6);
+  const m = (mix || '').trim();
+  if (!s) return 7;
+  if (s.length >= 5) return 7;
+  if (m === '100%' && s.length === 4) return 5;
+  return 6;
+}
+
+function formatExportScheduleDepthW(depth, stop, mix) {
+  const stp = (stop || '').trim();
+  const m = (mix || '').trim();
+  if (!stp) return 6;
+  if (stp.length >= 5) return 6;
+  if (m === '100%' && stp.length === 4) return 7;
+  return 7;
+}
+
+function formatExportScheduleStop(stop, phase, mix) {
+  const s = (stop || '').trim();
+  const w = formatExportScheduleStopW(s, mix);
+  if (!s) return ' '.repeat(w);
+  if (s.length >= 5) return s.padEnd(w);
+  if (phase === 'Asc' && s !== '1:00') return (' ' + s + ' ').padEnd(w);
+  return s.padEnd(w);
+}
+
+function formatExportScheduleDepth(depth, stop, mix) {
+  const d = (depth || '').trim();
+  return d.padEnd(formatExportScheduleDepthW(d, stop, mix));
+}
+
+function formatExportScheduleMix(mix, phase) {
+  const s = (mix || '').trim();
+  if (s === '100%') return ' 100% ';
+  const w = phase === 'Stp' ? 6 : 7;
+  return s.padEnd(w);
 }
 
 function formatExportScheduleTail(tts, ppo2, ead, phase, depth) {
@@ -751,14 +802,15 @@ function formatExportScheduleTail(tts, ppo2, ead, phase, depth) {
   if (!ttsS || ttsS === '-') {
     return '-'.padEnd(7) + ppo2Col + '   -';
   }
-  const ttsPad = (phase === 'Stp' || (phase === 'Asc' && depth === '0m')) ? 9 : 8;
+  const isShortTts = (phase === 'Stp' || (phase === 'Asc' && depth === '0m')) && ttsS.length < 6;
+  const ttsPart = isShortTts ? (' ' + ttsS).padEnd(9) : ttsS.padEnd(8);
   let eadGap;
   if (eadCol === '-') {
-    eadGap = (phase === 'Asc' && depth === '0m') ? '    -' : '   -';
+    eadGap = '   -';
   } else {
-    eadGap = ' '.repeat(Math.max(2, 5 - eadCol.length)) + eadCol;
+    eadGap = ' '.repeat(Math.max(2, 4 - eadCol.length)) + eadCol;
   }
-  return ttsS.padEnd(ttsPad) + ppo2Col + eadGap;
+  return ttsPart + ppo2Col + eadGap;
 }
 
 function formatAscentScheduleHeaderRow() {
@@ -767,17 +819,12 @@ function formatAscentScheduleHeaderRow() {
 
 function formatAscentScheduleRow({ phase, depth, stop, mix, run, tts, ppo2, ead }) {
   const stp = (stop || '').trim();
-  const line = phase.padEnd(6)
-    + (depth || '').trim().padEnd(6)
-    + formatExportScheduleStop(stp, phase)
-    + formatExportScheduleMix(mix)
+  return phase.padEnd(6)
+    + formatExportScheduleDepth(depth, stp, mix)
+    + formatExportScheduleStop(stp, phase, mix)
+    + formatExportScheduleMix(mix, phase)
     + formatExportScheduleRun(run)
     + formatExportScheduleTail(tts, ppo2, ead, phase, (depth || '').trim());
-  if (phase === 'Stp') {
-    const depthLen = ((depth || '').trim()).length;
-    return line.padEnd(depthLen <= 2 ? 53 : 52);
-  }
-  return line;
 }
 
 function buildExportText(mode) {
@@ -1058,11 +1105,9 @@ function buildExportText(mode) {
       lines.push(...formatExportSummaryBlock(emSum));
       lines.push('');
     }
-    const emAlertLines = collectAlertPlainLines(['decoAlertsEmergency']);
-    if (emAlertLines.length) {
-      emAlertLines.forEach((t) => lines.push('!! ' + clean(t)));
-      lines.push('');
-    }
+    collectAlertPlainLines(['decoAlertsEmergency']).forEach((t) => {
+      lines.push(...formatExportAlertText(clean(t)));
+    });
     lines.push('!! SAFETY REMINDERS');
     lines.push('- Do NOT skip mandatory deco stops');
     lines.push('- Check ppO2 before each gas switch');
@@ -1278,7 +1323,7 @@ function buildSlateText() {
   const slateAlerts = collectAlertPlainLines();
   if (slateAlerts.length) {
     lines.push('');
-    slateAlerts.forEach((t) => lines.push('!! ' + clean(t)));
+    slateAlerts.forEach((t) => lines.push(...formatExportAlertText(clean(t))));
   }
   lines.push('');
   lines.push('DEPTH  TIME   GAS    PPO2');
