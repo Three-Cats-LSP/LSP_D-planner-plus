@@ -36,7 +36,7 @@ function collectAlertPlainLines(ids) {
     const el = document.getElementById(id);
     if (!el) return;
     el.querySelectorAll('.alert').forEach((a) => {
-      const t = (a.textContent || '').replace(/\s+/g, ' ').trim();
+      const t = extractAlertPlainText(a);
       if (t) out.push(t);
     });
   });
@@ -58,6 +58,13 @@ function _pdfAlertStyle(txt) {
   return { bg: [255, 68, 51], tx: [255, 255, 255], border: [200, 50, 30] };
 }
 
+function extractAlertPlainText(el) {
+  if (!el) return '';
+  if (typeof el === 'string') return el.replace(/\s+/g, ' ').trim();
+  const inner = el.querySelector(':scope > div') || el;
+  return (inner.textContent || '').replace(/\s+/g, ' ').trim();
+}
+
 function drawPdfAlertBanners(doc, y, opts, source) {
   const { ML, CW, checkY, cleanPDF } = opts;
   const clean = cleanPDF || ((s) => (s || '').trim());
@@ -71,12 +78,15 @@ function drawPdfAlertBanners(doc, y, opts, source) {
   } else {
     alerts = Array.from(document.querySelectorAll('#decoAlerts .alert, #decoAlertsNarcotic .alert, #decoSummary .alert'));
   }
+  const padX = 4;
+  const padTop = 3.5;
+  const lineStep = 4.2;
   alerts.forEach((el) => {
-    const txt = clean(typeof el === 'string' ? el : el.textContent);
+    const txt = clean(extractAlertPlainText(el));
     if (!txt) return;
     const st = _pdfAlertStyle(txt);
-    const ls = doc.splitTextToSize(txt, CW - 8);
-    const h = 5.5 * ls.length + 4;
+    const ls = doc.splitTextToSize(txt, CW - padX * 2);
+    const h = padTop + lineStep * ls.length + 1.5;
     checkY(h);
     doc.setFillColor(...st.bg);
     doc.setDrawColor(...st.border);
@@ -84,7 +94,7 @@ function drawPdfAlertBanners(doc, y, opts, source) {
     doc.setFontSize(7.5);
     doc.setFont('DejaVuSans', 'bold');
     doc.setTextColor(...st.tx);
-    doc.text(ls, ML + 4, y + 4);
+    ls.forEach((line, i) => doc.text(line, ML + padX, y + padTop + i * lineStep));
     doc.setTextColor(0, 0, 0);
     y += h + 3;
   });
