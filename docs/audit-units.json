@@ -575,7 +575,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MARKUP-MODALS"
       },
-      "fingerprint": "8540adba759e6b40b6a676ee88a2c004aefa149f8a7a31b88aca9498dde2969c",
+      "fingerprint": "214614d0dfa07715a73db9cb5f4554c371072d2a4434e8ef8a615ddcd5d07b83",
       "last_read_fingerprint": null
     },
     {
@@ -583,13 +583,13 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-RUNTIME-BOOTSTRAP"
       },
-      "fingerprint": "502f53f2f99fb4bedac4812a00086c1c0c9cf194cd4abe7cf44df9caa56481f0",
-      "last_read_fingerprint": "502f53f2f99fb4bedac4812a00086c1c0c9cf194cd4abe7cf44df9caa56481f0",
+      "fingerprint": "6c97a395c98ae4dc7ce0bcbb2572ca0377df2a8cfbdf87e61f05bf869f71afa8",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 162
@@ -1394,7 +1394,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "bec3cb23177541a154c9718c6c8ec8206f4eab532c5c6879d1adbe853496b6e6",
+      "fingerprint": "e3bd76a678bf759f67f78d815cb8ac682a0162a8650160a9932d0504628113ca",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": []
@@ -2313,12 +2313,14 @@
       "path": "tools/sync_www.py",
       "layer": "tooling",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "6d0e8e20f4bcc6698162968969e56defcc3491e4677a8457550e2ea70334cf14",
-      "last_read_fingerprint": "6d0e8e20f4bcc6698162968969e56defcc3491e4677a8457550e2ea70334cf14"
+      "fingerprint": "1877930363ebff70d43e2f050a011de638244045fd2bce94d0a491e62fb09ffe",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": []
     },
     {
       "id": "TOOL-UPDATE-VERSION",
@@ -2376,12 +2378,12 @@
       "path": ".github/workflows/build-apk.yml",
       "layer": "ci",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "4404caf0766d9add71eb67ce9160229ea131dbed06a443965d2c14c1f8aa2f68",
-      "last_read_fingerprint": "4404caf0766d9add71eb67ce9160229ea131dbed06a443965d2c14c1f8aa2f68",
+      "fingerprint": "6f0ab3fa17fe3c7aad308b86999f79728caf7b5550aed8003941b501114bf676",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
       "audit_issue": 167
@@ -2500,7 +2502,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "d036ad63a1c7b184b841de2e252332292a95619800580bc183e7ce777172aa31",
+      "fingerprint": "80339bd95a5c0f2fad92b4d05c5ee76be0bf24d4f1551c1dd7b0b9997f17d5d6",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2665,7 +2667,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "50198d53fae16b18dada6ff8079ea4069c13cf7866cb46ed57c4caabcbcbf8d4",
+      "fingerprint": "fe2caf65431e03b6ac837ca6444d8b3efe264523f9898541f05841ad2d8b399b",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],

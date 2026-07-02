@@ -65,6 +65,7 @@ def write_version_json(version: str) -> None:
     payload = {
         "version": version,
         "versionCode": version_to_code(version),
+        "apkFileName": f"LSP_D-planner-plus-v{version}.apk",
         "apkUrl": GITHUB_RELEASE_APK,
         "downloadPage": f"{VERSION_JSON_URL_BASE}/download.html",
     }
