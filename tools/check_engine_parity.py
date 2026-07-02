@@ -10,6 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 UI_RUNTIME_CORES = [
+    "settings-core.js",
     "contingency-core.js",
     "export-core.js",
     "plot-core.js",

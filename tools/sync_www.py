@@ -38,6 +38,7 @@ ROOT_FILES = [
     "vpm-engine-bundle.js",
     "zhl-worker-bridge.js",
     "zhl-schedule-worker.js",
+    "settings-core.js",
     "surf-interval-core.js",
     "gas-table-core.js",
     "gas-plan-core.js",

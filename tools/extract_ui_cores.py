@@ -52,6 +52,15 @@ class UiCoreBlock:
 
 UI_CORE_BLOCKS: tuple[UiCoreBlock, ...] = (
     UiCoreBlock(
+        "settings-core",
+        "settings-core.js",
+        """/**
+ * Environment and planner mode/state orchestration — RUNTIME UI CORE.
+ * Loaded by index.html before other UI runtime cores.
+ */
+""",
+    ),
+    UiCoreBlock(
         "surf-interval-core",
         "surf-interval-core.js",
         """/**
@@ -167,6 +176,16 @@ EXPECTED_SCRIPT_ORDER = [b.filename for b in UI_CORE_BLOCKS]
 
 # Spot-check: extracted symbols must not remain as definitions in inline script blocks.
 INLINE_FORBIDDEN_DEFS: dict[str, tuple[str, ...]] = {
+    "settings-core": (
+        "function setWaterDensity(",
+        "function setAltitude(",
+        "function calcEND(",
+        "function renderDecoAlerts(",
+        "function setPlannerAlgo(",
+        "function toggleTheme(",
+        "let navMode",
+        "let BAR_PER_METRE",
+    ),
     "surf-interval-core": ("function calcSurfInt(",),
     "gas-table-core": ("function renderGasTable(", "function calcEND_tool("),
     "gas-plan-core": ("function calcGasPlan(", "let _gasRule", "async function buildGasPlanPDF("),

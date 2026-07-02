@@ -19,6 +19,7 @@ These are **loaded at runtime** via `<script src>` (not build-time bundles). Can
 | Canonical source | Mirror | Notes |
 |------------------|--------|-------|
 | `surf-interval-core.js` | — | `calcSurfInt`, `renderSurfIntPanel`, `toggleSurfIntPanel` |
+| `settings-core.js` | — | `setWaterDensity`, `setAltitude`, `calcEND`, `setPlannerAlgo`, mode/state globals |
 | `gas-table-core.js` | — | `renderGasTable`, `calcEND_tool`, `renderEADTable` |
 | `gas-plan-core.js` | — | `calcGasPlan`, `setGasRule`, gas-plan text export (PDF in export-core) |
 | `gas-cards-core.js` | — | `getAllDecoGasIds`, `updateGasMODDisplays`, dynamic deco cards, travel gas |
