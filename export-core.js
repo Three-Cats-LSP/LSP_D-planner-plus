@@ -18,17 +18,11 @@
 //  exportTXT(mode)       → .txt file download
 // ═══════════════════════════════════════════════════════
 
-const SCHED_COL = Object.freeze({ phase: 6, depth: 6, stop: 7, mix: 6, run: 6, tts: 7, ppo2: 5, ead: 7 });
-const SCHED_PPO2_GAP = ' ';
-const SCHED_EAD_GAP = '  ';
-
-function ascentScheduleWidth() {
-  return SCHED_COL.phase + SCHED_COL.depth + SCHED_COL.stop + SCHED_COL.mix + SCHED_COL.run + SCHED_COL.tts
-    + SCHED_PPO2_GAP.length + SCHED_COL.ppo2 + SCHED_EAD_GAP.length + SCHED_COL.ead;
-}
+const EXPORT_SECTION_RULE_WIDTH = 50;
+const ASCENT_SCHEDULE_HEADER = 'Phase Depth  Stop  Mix   Run   TTS     PPO2  EAD    ';
 
 function ascentScheduleRule() {
-  return '-'.repeat(ascentScheduleWidth());
+  return '-'.repeat(EXPORT_SECTION_RULE_WIDTH);
 }
 
 function exportBrandName() {
@@ -117,7 +111,7 @@ function buildGasConsumptionLines(gp) {
     if (r.kind === 'bottom') {
       lines.push(`${gasLbl} ${fmtV(r.totalL)} avail, reserve: ${gpPresDisp(r.reserveBar)} ${presU}`);
       if (r.shortL != null && r.shortL > 0) {
-        lines.push(`STATUS: INSUFFICIENT — need ${fmtV(r.reqL)}, have ${fmtV(r.totalL)} (short ${fmtV(r.shortL)})`);
+        lines.push(`STATUS: INSUFFICIENT — need ${fmtV(r.reqL)}, have ${fmtV(r.totalL)}(short ${fmtV(r.shortL)})`);
         if (r.maxBTmin != null) {
           lines.push(`FIX: Shorten BT to ${r.maxBTmin} min, turn at ${gpPresDisp(r.maxTurnBar)} ${presU}`);
           lines.push('FIX: Or use a larger cylinder / add a stage');
@@ -143,37 +137,61 @@ function buildGasConsumptionLines(gp) {
   return lines;
 }
 
+function formatExportScheduleRun(run) {
+  const s = (run || '').trim();
+  if (!s || s === '-') return '-'.padEnd(6);
+  if (s.length <= 4 && /^\d:/.test(s)) return (' ' + s).padEnd(7);
+  return s.padEnd(6);
+}
+
+function formatExportScheduleMix(mix) {
+  const s = (mix || '').trim();
+  if (s === '100%') return ' 100%'.padEnd(6);
+  return s.padEnd(6);
+}
+
+function formatExportScheduleStop(stop, phase) {
+  const s = (stop || '').trim();
+  if (!s) return ' '.repeat(7);
+  if (s.length >= 5) return s.padEnd(7);
+  if (phase === 'Asc' && s !== '1:00') return (' ' + s + ' ').padEnd(7);
+  return (' ' + s).padEnd(6);
+}
+
+function formatExportScheduleTail(tts, ppo2, ead, phase, depth) {
+  const ttsS = (tts || '').trim();
+  const ppo2Col = formatExportSchedulePpo2(ppo2);
+  const eadCol = formatExportScheduleEad(ead);
+  if (!ttsS || ttsS === '-') {
+    return '-'.padEnd(7) + ppo2Col + '   -';
+  }
+  const ttsPad = (phase === 'Stp' || (phase === 'Asc' && depth === '0m')) ? 9 : 8;
+  let eadGap;
+  if (eadCol === '-') {
+    eadGap = (phase === 'Asc' && depth === '0m') ? '    -' : '   -';
+  } else {
+    eadGap = ' '.repeat(Math.max(2, 5 - eadCol.length)) + eadCol;
+  }
+  return ttsS.padEnd(ttsPad) + ppo2Col + eadGap;
+}
+
 function formatAscentScheduleHeaderRow() {
-  return exportScheduleCell('Phase', SCHED_COL.phase)
-    + exportScheduleCell('Depth', SCHED_COL.depth)
-    + exportScheduleCell('Stop', SCHED_COL.stop)
-    + exportScheduleCell('Mix', SCHED_COL.mix)
-    + exportScheduleCell('Run', SCHED_COL.run)
-    + exportScheduleCell('TTS', SCHED_COL.tts)
-    + SCHED_PPO2_GAP
-    + exportScheduleCell('PPO2', SCHED_COL.ppo2, { right: true })
-    + SCHED_EAD_GAP
-    + exportScheduleCell('EAD', SCHED_COL.ead);
+  return ASCENT_SCHEDULE_HEADER;
 }
 
 function formatAscentScheduleRow({ phase, depth, stop, mix, run, tts, ppo2, ead }) {
   const stp = (stop || '').trim();
-  const ttsS = (tts || '').trim();
-  const ttsCol = (!ttsS || ttsS === '-' || ttsS === '—')
-    ? '-'.padStart(SCHED_COL.tts)
-    : ttsS.padEnd(SCHED_COL.tts);
-  const ppo2Col = formatExportSchedulePpo2(ppo2);
-  const eadCol = formatExportScheduleEad(ead);
-  return exportScheduleCell(phase, SCHED_COL.phase)
-    + exportScheduleCell(depth, SCHED_COL.depth)
-    + exportScheduleCell(stp, SCHED_COL.stop, { blank: !stp })
-    + exportScheduleCell(mix, SCHED_COL.mix)
-    + exportScheduleCell(run, SCHED_COL.run)
-    + ttsCol
-    + SCHED_PPO2_GAP
-    + exportScheduleCell(ppo2Col, SCHED_COL.ppo2, { right: true })
-    + SCHED_EAD_GAP
-    + exportScheduleCell(eadCol, SCHED_COL.ead);
+  const line = phase.padEnd(6)
+    + (depth || '').trim().padEnd(6)
+    + formatExportScheduleStop(stp, phase)
+    + formatExportScheduleMix(mix)
+    + formatExportScheduleRun(run)
+    + formatExportScheduleTail(tts, ppo2, ead, phase, (depth || '').trim());
+  if (phase === 'Stp') {
+    const depthLen = ((depth || '').trim()).length;
+    return line.padEnd(depthLen <= 2 ? 53 : 52);
+  }
+  return line;
 }
 
 function buildExportText(mode) {
