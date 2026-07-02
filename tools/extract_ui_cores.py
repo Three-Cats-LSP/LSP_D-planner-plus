@@ -103,6 +103,17 @@ UI_CORE_BLOCKS: tuple[UiCoreBlock, ...] = (
 """,
     ),
     UiCoreBlock(
+        "plot-core",
+        "plot-core.js",
+        """/**
+ * Dive profile graph — canvas render, waypoints, zoom/pan interaction.
+ * Loaded by index.html before main inline script.
+ * Globals read: units, document, window._decoGasSegments, window._decoCeilingWps, _lspCssVar
+ * Globals written: window._decoWaypoints, window._plannerWaypoints, _graphZoom, _graphOpts
+ */
+""",
+    ),
+    UiCoreBlock(
         "contingency-core",
         "contingency-core.js",
         """/**
@@ -148,6 +159,13 @@ INLINE_FORBIDDEN_DEFS: dict[str, tuple[str, ...]] = {
         "async function exportContingencyPDF(",
         "async function buildGasPlanPDF(",
         "async function ensurePDFFontsForPDF(",
+    ),
+    "plot-core": (
+        "function setupHiDPI(",
+        "function _drawDiveProfileCore(",
+        "function drawDecoProfile(",
+        "function drawDiveProfile(",
+        "function attachDiveProfileInteraction(",
     ),
     "contingency-core": (
         "function runContingencyScenario(",

@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 UI_RUNTIME_CORES = [
     "contingency-core.js",
     "export-core.js",
+    "plot-core.js",
     "gas-plan-core.js",
     "gas-table-core.js",
     "surf-interval-core.js",
