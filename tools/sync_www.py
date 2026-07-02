@@ -43,6 +43,7 @@ ROOT_FILES = [
     "gas-table-core.js",
     "gas-plan-core.js",
     "export-core.js",
+    "vendor/pdf-fonts.js",
     "contingency-core.js",
     "results-panel.js",
     "results-render-core.js",

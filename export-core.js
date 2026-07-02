@@ -1729,41 +1729,51 @@ function _canvasToDataURLForPDF(srcCanvas, targetMM) {
   return { dataURL: tmp.toDataURL('image/png'), w: outW, h: outH };
 }
 let _pdfFontCache = null;
+
+function _ttfBufferToBase64(buf) {
+  const bytes = new Uint8Array(buf);
+  const CHUNK = 8192;
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += CHUNK) {
+    bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK));
+  }
+  return btoa(bin);
+}
+
+function _installPdfFontsOnDoc(doc, cache) {
+  doc.addFileToVFS('DejaVuSans.ttf', cache.regular);
+  doc.addFileToVFS('DejaVuSans-Bold.ttf', cache.bold);
+  doc.addFont('DejaVuSans.ttf', 'DejaVuSans', 'normal');
+  doc.addFont('DejaVuSans-Bold.ttf', 'DejaVuSans', 'bold');
+  doc.setFont('DejaVuSans', 'normal');
+}
+
 async function loadPDFFonts(doc) {
   if (_pdfFontCache) {
-    doc.addFileToVFS('DejaVuSans.ttf',      _pdfFontCache.regular);
-    doc.addFileToVFS('DejaVuSans-Bold.ttf', _pdfFontCache.bold);
-    doc.addFont('DejaVuSans.ttf',      'DejaVuSans', 'normal');
-    doc.addFont('DejaVuSans-Bold.ttf', 'DejaVuSans', 'bold');
-    doc.setFont('DejaVuSans', 'normal');
+    _installPdfFontsOnDoc(doc, _pdfFontCache);
     return true;
   }
+
+  const embedded = typeof window !== 'undefined' ? window._LSP_PDF_FONTS : null;
+  if (embedded?.regular && embedded?.bold) {
+    _pdfFontCache = { regular: embedded.regular, bold: embedded.bold };
+    _installPdfFontsOnDoc(doc, _pdfFontCache);
+    return true;
+  }
+
   try {
+    const fontBase = new URL('vendor/fonts/', window.location.href);
     const [rResp, bResp] = await Promise.all([
-      fetch('vendor/fonts/DejaVuSans.ttf'),
-      fetch('vendor/fonts/DejaVuSans-Bold.ttf'),
+      fetch(new URL('DejaVuSans.ttf', fontBase)),
+      fetch(new URL('DejaVuSans-Bold.ttf', fontBase)),
     ]);
     if (!rResp.ok || !bResp.ok) throw new Error('Font fetch failed');
     const [rBuf, bBuf] = await Promise.all([rResp.arrayBuffer(), bResp.arrayBuffer()]);
-  function toBase64(buf) {
-      const bytes = new Uint8Array(buf);
-      // Process in 8192-byte chunks to avoid btoa/stack limits on large TTFs
-      const CHUNK = 8192;
-      let bin = '';
-      for (let i = 0; i < bytes.length; i += CHUNK) {
-        bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK));
-      }
-      return btoa(bin);
-    }
-    _pdfFontCache = { regular: toBase64(rBuf), bold: toBase64(bBuf) };
-    doc.addFileToVFS('DejaVuSans.ttf',      _pdfFontCache.regular);
-    doc.addFileToVFS('DejaVuSans-Bold.ttf', _pdfFontCache.bold);
-    doc.addFont('DejaVuSans.ttf',      'DejaVuSans', 'normal');
-    doc.addFont('DejaVuSans-Bold.ttf', 'DejaVuSans', 'bold');
-    doc.setFont('DejaVuSans', 'normal');
+    _pdfFontCache = { regular: _ttfBufferToBase64(rBuf), bold: _ttfBufferToBase64(bBuf) };
+    _installPdfFontsOnDoc(doc, _pdfFontCache);
     return true;
-  } catch(e) {
-    console.error('[LSP] DejaVu font load failed — Unicode symbols will not render in PDF. Check vendor/fonts/ assets.', e);
+  } catch (e) {
+    console.error('[LSP] DejaVu font load failed — Unicode symbols will not render in PDF. Check vendor/pdf-fonts.js and vendor/fonts/ assets.', e);
     return false;
   }
 }
@@ -1771,13 +1781,13 @@ async function ensurePDFFontsForPDF(doc) {
   try {
     const ok = await loadPDFFonts(doc);
     if (!ok) {
-      alert('PDF fonts could not be loaded. Check your network connection and try again.');
+      alert('PDF fonts could not be loaded. Ensure vendor/pdf-fonts.js is included, or open the app via a local web server.');
       return false;
     }
     return true;
   } catch (e) {
     console.error('[LSP] PDF font load failed:', e);
-    alert('PDF fonts could not be loaded. Check your network connection and try again.');
+    alert('PDF fonts could not be loaded. Ensure vendor/pdf-fonts.js is included, or open the app via a local web server.');
     return false;
   }
 }

@@ -98,6 +98,7 @@ const OPTIONAL_PRECACHE = [
   APP_BASE + 'vendor/fonts/fonts.css',
   APP_BASE + 'vendor/fonts/DejaVuSans.ttf',
   APP_BASE + 'vendor/fonts/DejaVuSans-Bold.ttf',
+  APP_BASE + 'vendor/pdf-fonts.js',
   APP_BASE + 'vendor/fonts/JTUSjIg69CK48gW7PXoo9Wdhyzbi.woff2',
   APP_BASE + 'vendor/fonts/JTUSjIg69CK48gW7PXoo9Wlhyw.woff2',
   APP_BASE + 'vendor/fonts/QGYvz_MVcBeNP4NJtEtq.woff2',
