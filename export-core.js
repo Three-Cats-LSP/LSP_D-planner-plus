@@ -20,6 +20,8 @@
 
 const EXPORT_SECTION_RULE_WIDTH = 50;
 const ASCENT_SCHEDULE_HEADER = 'Phase Depth  Stop  Mix    Run   TTS    PPO2  EAD    ';
+/** Column index where PPO2 starts — keeps TTS padding consistent across row lengths. */
+const EXPORT_PPO2_COL = 39;
 
 function ascentScheduleRule() {
   return '-'.repeat(EXPORT_SECTION_RULE_WIDTH);
@@ -820,19 +822,20 @@ function formatExportScheduleDepth(depth, stop, mix) {
 function formatExportScheduleMix(mix, phase) {
   const s = (mix || '').trim();
   if (s === '100%') return ' 100% ';
-  const w = phase === 'Stp' ? 6 : 7;
+  const w = phase === 'Des' ? 7 : 6;
   return s.padEnd(w);
 }
 
-function formatExportScheduleTail(tts, ppo2, ead, phase, depth) {
+function formatExportScheduleTail(tts, ppo2, ead, phase, depth, prefixLen) {
   const ttsS = (tts || '').trim();
   const ppo2Col = formatExportSchedulePpo2(ppo2);
   const eadCol = formatExportScheduleEad(ead);
   if (!ttsS || ttsS === '-') {
-    return '-'.padEnd(7) + ppo2Col + '   -';
+    return '-'.padEnd(Math.max(1, EXPORT_PPO2_COL - prefixLen)) + ppo2Col + '   -';
   }
   const isShortTts = (phase === 'Stp' || (phase === 'Asc' && depth === '0m')) && ttsS.length < 6;
-  const ttsPart = isShortTts ? (' ' + ttsS).padEnd(9) : ttsS.padEnd(8);
+  const ttsPad = Math.max(1, EXPORT_PPO2_COL - prefixLen);
+  const ttsPart = isShortTts ? (' ' + ttsS).padEnd(ttsPad) : ttsS.padEnd(ttsPad);
   let eadGap;
   if (eadCol === '-') {
     eadGap = '   -';
@@ -848,12 +851,12 @@ function formatAscentScheduleHeaderRow() {
 
 function formatAscentScheduleRow({ phase, depth, stop, mix, run, tts, ppo2, ead }) {
   const stp = (stop || '').trim();
-  return phase.padEnd(6)
+  const prefix = phase.padEnd(6)
     + formatExportScheduleDepth(depth, stp, mix)
     + formatExportScheduleStop(stp, phase, mix)
     + formatExportScheduleMix(mix, phase)
-    + formatExportScheduleRun(run)
-    + formatExportScheduleTail(tts, ppo2, ead, phase, (depth || '').trim());
+    + formatExportScheduleRun(run);
+  return prefix + formatExportScheduleTail(tts, ppo2, ead, phase, (depth || '').trim(), prefix.length);
 }
 
 function buildExportText(mode) {
