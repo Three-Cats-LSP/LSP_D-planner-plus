@@ -11,6 +11,7 @@ python -m tools.audit check --profile static
 python -m tools.audit run --profile ci
 python -m tools.audit run --profile release
 python -m tools.audit refresh --unit <ID>
+python tools/audit/reset_cycles_v3.py
 python tools/audit/migrate_v3.py
 python tools/audit_coverage.py --refresh-fingerprints --write-docs
 ```

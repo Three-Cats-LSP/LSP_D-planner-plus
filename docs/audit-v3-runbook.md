@@ -9,6 +9,7 @@
 python -m tools.audit check --profile static
 python -m tools.audit run --profile ci
 python -m tools.audit run --profile release
+python tools/audit/reset_cycles_v3.py
 python tools/audit/migrate_v3.py
 python tools/audit_coverage.py --refresh-fingerprints --write-docs
 ```
@@ -38,7 +39,7 @@ flowchart TD
 ### Step 1 — GPT 5.5 Medium: audit pass
 
 1. Run `python -m tools.audit check --profile static`.
-2. Read the current cycle units from `docs/audit-master-plan.md` (cycles 36–42 cover the extracted UI/CSS/markup layout).
+2. Read the current cycle units from `docs/audit-master-plan.md` (V3 full audit starts at **cycle 1**).
 3. Apply all seven lenses; record findings in `docs/audit-units.json` → `findings`.
 4. Output: `dev/audit-report.md` + cycle finding checklist.
 

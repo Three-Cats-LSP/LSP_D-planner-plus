@@ -88,62 +88,7 @@ V3_LAYERS: dict[str, str] = {
     "ci": "GitHub Actions workflows",
 }
 
-V3_CYCLES: list[dict[str, Any]] = [
-    {
-        "cycle": 36,
-        "max_new_application_lines": 900,
-        "application_units": ["UI-MARKUP-HEADER"],
-        "engine_reverification": [],
-        "acceptance": "Header markup partial READ; SUITE-UI-STRUCTURE green",
-    },
-    {
-        "cycle": 37,
-        "max_new_application_lines": 600,
-        "application_units": ["UI-MARKUP-PLANNER"],
-        "engine_reverification": [],
-        "acceptance": "Planner markup partial READ",
-    },
-    {
-        "cycle": 38,
-        "max_new_application_lines": 600,
-        "application_units": ["UI-MARKUP-CONSUMPTION"],
-        "engine_reverification": [],
-        "acceptance": "Consumption markup partial READ",
-    },
-    {
-        "cycle": 39,
-        "max_new_application_lines": 900,
-        "application_units": ["UI-MARKUP-TOOLS", "UI-MARKUP-MODALS"],
-        "engine_reverification": [],
-        "acceptance": "Tools and modals markup partials READ",
-    },
-    {
-        "cycle": 40,
-        "max_new_application_lines": 2500,
-        "application_units": [
-            "UI-CSS-FOUNDATION",
-            "UI-CSS-MODES",
-            "UI-CSS-CONTROLS",
-            "UI-CSS-RESULTS",
-        ],
-        "engine_reverification": [],
-        "acceptance": "Split CSS design system READ",
-    },
-    {
-        "cycle": 41,
-        "max_new_application_lines": 600,
-        "application_units": ["UI-RESULTS-PANEL", "UI-PLANNER-SHELL"],
-        "engine_reverification": [],
-        "acceptance": "Results panel and planner shell READ",
-    },
-    {
-        "cycle": 42,
-        "max_new_application_lines": 800,
-        "application_units": ["UI-ENVIRONMENT", "UI-MODE-STATE"],
-        "engine_reverification": ["APP-EXPORT", "ENG-ZHL-GAS"],
-        "acceptance": "settings-core environment/mode READ; export-core and gas engine re-verified",
-    },
-]
+# Cycle schedules are managed by tools/audit/reset_cycles_v3.py (full V3 audit from cycle 1).
 
 V3_TOOL_PATHS: tuple[str, ...] = (
     "tools/assemble_ui_html.py",
@@ -153,6 +98,7 @@ V3_TOOL_PATHS: tuple[str, ...] = (
     "tools/ui_assets.py",
     "tools/verify_sw_assets.py",
     "tools/test_ui_structure_suite.py",
+    "tools/audit/reset_cycles_v3.py",
 )
 
 V3_EXCLUDED_PATTERNS: tuple[dict[str, str], ...] = (
@@ -167,9 +113,9 @@ V3_EXCLUDED_PATTERNS: tuple[dict[str, str], ...] = (
         "reason": "Historical one-shot extraction merge scripts",
     },
     {
-        "pattern": "tools/v4_*.py",
-        "kind": "one_shot",
-        "reason": "V4 migration helper scripts outside runtime audit surface",
+        "pattern": "dev/audit-cycle-log.json",
+        "kind": "audit_artifact",
+        "reason": "Mutable V3 per-cycle agent workflow log",
     },
 )
 
@@ -438,8 +384,6 @@ def main() -> None:
         if entry["pattern"] not in existing_patterns:
             excluded.append(entry)
 
-    upsert_cycles(registry.setdefault("cycles", []), V3_CYCLES)
-
     upsert_suite(registry.setdefault("suite_catalog", []), UI_STRUCTURE_SUITE)
     evidence = registry.setdefault("evidence_catalog", {})
     evidence.update(UI_STRUCTURE_EVIDENCE)
@@ -454,9 +398,6 @@ def main() -> None:
             "All registered JavaScript, HTML, CSS, and markup partials must be parser-valid."
         )
 
-    registry = audit_coverage.refresh_fingerprints(registry, ROOT)
-    _, resolved = audit_coverage.validate_registry(registry, ROOT)
-    rebalance_cycle_budgets(registry, resolved)
     registry = audit_coverage.refresh_fingerprints(registry, ROOT)
     REGISTRY_PATH.write_text(json.dumps(registry, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print("migrated registry to schema v3")
