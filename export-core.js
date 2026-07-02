@@ -85,11 +85,26 @@ function formatExportAlertText(plainText) {
   return out;
 }
 
+function _pdfAlertStyleFromEl(el, txt) {
+  const cls = el && el.classList;
+  if (cls) {
+    if (cls.contains('dang')) return { bg: [255, 230, 230], tx: [120, 0, 0], border: [180, 30, 30] };
+    if (cls.contains('warn')) return { bg: [255, 248, 220], tx: [100, 60, 0], border: [200, 150, 50] };
+    if (cls.contains('deco') || cls.contains('narcotic-warn')) {
+      return { bg: [255, 68, 51], tx: [255, 255, 255], border: [200, 50, 30] };
+    }
+    if (cls.contains('ok')) return { bg: [230, 245, 230], tx: [20, 100, 40], border: [30, 140, 60] };
+  }
+  return _pdfAlertStyle(txt);
+}
+
 function extractAlertPlainText(el) {
   if (!el) return '';
   if (typeof el === 'string') return el.replace(/\s+/g, ' ').trim();
   const inner = el.querySelector(':scope > div') || el;
-  return (inner.textContent || '').replace(/\s+/g, ' ').trim();
+  const clone = inner.cloneNode(true);
+  clone.querySelectorAll('.tip-icon, svg, script, style').forEach((n) => n.remove());
+  return (clone.textContent || '').replace(/\s+/g, ' ').trim();
 }
 
 function drawPdfAlertBanners(doc, y, opts, source) {
@@ -105,24 +120,35 @@ function drawPdfAlertBanners(doc, y, opts, source) {
   } else {
     alerts = Array.from(document.querySelectorAll('#decoAlerts .alert, #decoAlertsNarcotic .alert, #decoSummary .alert'));
   }
+
   const padX = 4;
-  const padTop = 3.5;
-  const lineStep = 4.2;
+  const padY = 3;
+  const fontSize = 7.5;
+  const lineHeightFactor = 1.15;
+  const mmPerPt = 0.352778;
+  const lineHmm = fontSize * lineHeightFactor * mmPerPt;
+
   alerts.forEach((el) => {
     const txt = clean(extractAlertPlainText(el));
     if (!txt) return;
-    const st = _pdfAlertStyle(txt);
-    const ls = doc.splitTextToSize(txt, CW - padX * 2);
-    const h = padTop + lineStep * ls.length + 1.5;
-    checkY(h);
+    const st = _pdfAlertStyleFromEl(el, txt);
+
+    doc.setFontSize(fontSize);
+    doc.setFont('DejaVuSans', 'bold');
+    const maxW = CW - padX * 2;
+    const ls = doc.splitTextToSize(txt, maxW);
+    const h = padY * 2 + ls.length * lineHmm;
+
+    checkY(h + 3);
     doc.setFillColor(...st.bg);
     doc.setDrawColor(...st.border);
+    doc.setLineWidth(0.3);
     doc.roundedRect(ML, y, CW, h, 1.5, 1.5, 'FD');
-    doc.setFontSize(7.5);
-    doc.setFont('DejaVuSans', 'bold');
+
     doc.setTextColor(...st.tx);
-    ls.forEach((line, i) => doc.text(line, ML + padX, y + padTop + i * lineStep));
+    doc.text(ls, ML + padX, y + padY, { baseline: 'top', lineHeightFactor, maxWidth: maxW });
     doc.setTextColor(0, 0, 0);
+    doc.setLineWidth(0.2);
     y += h + 3;
   });
   return y;
