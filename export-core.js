@@ -25,6 +25,72 @@ function ascentScheduleRule() {
   return '-'.repeat(EXPORT_SECTION_RULE_WIDTH);
 }
 
+/** Strip contingency table prefix so export/PDF use standard phase names. */
+function normalizeSchedulePhase(phase) {
+  return String(phase || '').replace(/^contingency-/, '');
+}
+
+function collectAlertPlainLines(ids) {
+  const out = [];
+  (ids || ['decoAlerts', 'decoAlertsNarcotic']).forEach((id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.querySelectorAll('.alert').forEach((a) => {
+      const t = (a.textContent || '').replace(/\s+/g, ' ').trim();
+      if (t) out.push(t);
+    });
+  });
+  return out;
+}
+
+function _pdfAlertStyle(txt) {
+  const t = String(txt || '').toUpperCase();
+  if (t.includes('CNS')) return { bg: [255, 255, 0], tx: [17, 17, 17], border: [180, 180, 0] };
+  if (t.includes('INSUFFICIENT') || t.includes('BEYOND MOD') || t.includes('LIMIT')) {
+    return { bg: [255, 230, 230], tx: [120, 0, 0], border: [180, 30, 30] };
+  }
+  if (t.includes('GAS SWITCH') || t.includes('LOADED')) {
+    return { bg: [255, 248, 220], tx: [100, 60, 0], border: [200, 150, 50] };
+  }
+  if (t.includes('NARCOTIC') || t.includes('NDL') || t.includes('DECOMPRESSION')) {
+    return { bg: [255, 68, 51], tx: [255, 255, 255], border: [200, 50, 30] };
+  }
+  return { bg: [255, 68, 51], tx: [255, 255, 255], border: [200, 50, 30] };
+}
+
+function drawPdfAlertBanners(doc, y, opts, source) {
+  const { ML, CW, checkY, cleanPDF } = opts;
+  const clean = cleanPDF || ((s) => (s || '').trim());
+  let alerts = [];
+  if (typeof source === 'string') {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = source;
+    alerts = Array.from(tmp.querySelectorAll('.alert'));
+  } else if (source && typeof source.length === 'number') {
+    alerts = Array.from(source);
+  } else {
+    alerts = Array.from(document.querySelectorAll('#decoAlerts .alert, #decoAlertsNarcotic .alert, #decoSummary .alert'));
+  }
+  alerts.forEach((el) => {
+    const txt = clean(typeof el === 'string' ? el : el.textContent);
+    if (!txt) return;
+    const st = _pdfAlertStyle(txt);
+    const ls = doc.splitTextToSize(txt, CW - 8);
+    const h = 5.5 * ls.length + 4;
+    checkY(h);
+    doc.setFillColor(...st.bg);
+    doc.setDrawColor(...st.border);
+    doc.roundedRect(ML, y, CW, h, 1.5, 1.5, 'FD');
+    doc.setFontSize(7.5);
+    doc.setFont('DejaVuSans', 'bold');
+    doc.setTextColor(...st.tx);
+    doc.text(ls, ML + 4, y + 4);
+    doc.setTextColor(0, 0, 0);
+    y += h + 3;
+  });
+  return y;
+}
+
 function exportBrandName() {
   return 'LSP D-Planner+';
 }
@@ -918,8 +984,6 @@ function buildExportText(mode) {
   } else if (mode === 'contingency') {
     const c = window._lastContingency;
     if (!c) return null;
-    const depth = document.getElementById('decoDepth')?.value || '-';
-    const bt    = document.getElementById('decoBT')?.value    || '-';
     const shortMix = m => {
       const s = (m||'').trim();
       if (!s) return '-';
@@ -934,72 +998,26 @@ function buildExportText(mode) {
 
     lines.push('EMERGENCY PLAN');
     lines.push(stamp);
-    lines.push(hr);
-    // Algorithm + settings (reuse same logic as main deco export)
-    const eAlgoSel  = document.getElementById('algorithmSelect')?.value || 'ZHLC_GF';
-    const eAlgoNames = { ZHLC_GF: 'Buhlmann ZH-L16C + GF', VPMB: 'VPM-B', VPMB_GFS: 'VPM-B+GFS' };
-    const eAlgoName  = eAlgoNames[eAlgoSel] || eAlgoSel;
-    const eGfLow     = mGF?.low  ?? '-';
-    const eGfHigh    = mGF?.high ?? '-';
-    const eConsVal   = document.getElementById('conservatismSelect')?.value ?? '0';
-    const eAlgoSettings = eAlgoSel === 'ZHLC_GF'
-      ? `GF ${eGfLow}/${eGfHigh}`
-      : eAlgoSel === 'VPMB' ? `Conservatism +${eConsVal}` : `GF Hi ${eGfHigh}  Conservatism +${eConsVal}`;
-    const eAscentRate     = document.getElementById('ascentRate')?.value      || '-';
-    const eDecoAscentRate = document.getElementById('decoAscentRate')?.value  || '-';
-    const eSurfAscentRate = document.getElementById('surfaceAscentRate')?.value || '-';
-    const eDescentRate    = document.getElementById('descentRate')?.value || '-';
-    const eLastStop       = document.getElementById('lastDecoStop')?.value || '-';
-    const eDecoStep       = document.getElementById('decoStep')?.value    || '-';
-    const eRnd = (document.getElementById('stopRounding')?.value||'fractional')==='wholeminute'?'Yes':'No';
-    const eWV  = parseFloat(document.getElementById('waterVapor')?.value||'0.0627');
-    const eWVL = eWV<=0.058?'M':'B';
-    // shortMix matching main deco export style (number+%)
-    const eShortMix = m => {
-      const s = (m||'').trim();
-      if (!s) return '-';
-      if (/^\d+\/\d+$/.test(s)) return s; // O2/He format already
-      if (s === '100%') return '100%';          // pure O2
-      if (/^air$/i.test(s)) return 'Air';
-      if (/^100/i.test(s)) return '100%';       // legacy '100% O2' fallback
-      const ean = s.match(/[Ee][Aa][Nn]\s*(\d+)/); if (ean) return ean[1] + '/00';
-      const pct = s.match(/(\d+)%/); if (pct) return pct[1] + '/00';
-      return s;
-    };
+    lines.push(decoHr);
     lines.push(`Scenario    : ${c.label}`);
-    lines.push(`Algorithm   : ${eAlgoName}  (${eAlgoSettings})`);
-    lines.push(`Depth       : ${depth}${du}    BT: ${bt} min`);
-    lines.push(`Water       : ${density}`);
-    lines.push(`Descent     : ${eDescentRate}${du}/min  Ascent: ${eAscentRate}${du}/min  Deco: ${eDecoAscentRate}${du}/min  Surface: ${eSurfAscentRate}${du}/min`);
-    lines.push(`Last Stop   : ${eLastStop}${du}  Step: ${eDecoStep}${du}`);
-    lines.push(`Stop Rounding: ${eRnd}  WV: ${eWV}(${eWVL})`);
-    lines.push(`Altitude     : ${altLabel}  Acclimatized: ${acclLabel}`);
-    const _eMdpEn = document.getElementById('minDecoProfileEnable')?.value === 'yes';
-    const _eMdp9m = document.getElementById('minDeco9m')?.value || '1';
-    const _eMdp6m = document.getElementById('minDeco6m')?.value || '3';
-    const _eDu    = units === 'imperial' ? 'ft' : 'm';
-    if (_eMdpEn) lines.push(`Min Deco Profile: ON  (9${_eDu}: ${_eMdp9m} min  6${_eDu}: ${_eMdp6m} min)`);
-    const _eHdr = typeof buildDecoPlanHeaderData === 'function' ? buildDecoPlanHeaderData() : null;
-    if (_eHdr && _eHdr.circuit && _eHdr.circuit !== 'OC') {
-      lines.push(`Circuit     : ${_eHdr.ccrLabel || _eHdr.circuit}${_eHdr.ccrBailout ? ' (bailout)' : ''}`);
-    }
     if (c.msg) lines.push(`Note        : ${clean(c.msg)}`);
+    lines.push(...buildDecoPlanHeaderLines().slice(3));
     lines.push('');
 
     const rows = document.querySelectorAll('#contingencyResult .deco-table tbody tr');
     if (rows.length) {
-      lines.push('EMERGENCY ASCENT SCHEDULE');
+      lines.push('ASCENT SCHEDULE');
       lines.push(ascentScheduleRule());
       lines.push(formatAscentScheduleHeaderRow());
       lines.push(ascentScheduleRule());
       const phaseLabel = { descent:'Des', bottom:'Lvl', ascent:'Asc', deco:'Stp', safety:'Stp', switch:'>>' };
       rows.forEach(tr => {
-        const ph  = tr.dataset.phase;
+        const ph  = normalizeSchedulePhase(tr.dataset.phase);
         if (ph === 'totals' || ph === 'info') return;
         const tds = tr.querySelectorAll('td');
         if (ph === 'switch') {
           const cSw = Array.from(tds).map(td => clean(td.textContent));
-          const mixSw = eShortMix(cSw[3] || '');
+          const mixSw = shortMix(cSw[3] || '');
           const depSw = (cSw[1] || '').trim();
           lines.push(`>> ${mixSw} @ ${depSw}`);
           return;
@@ -1017,7 +1035,7 @@ function buildExportText(mode) {
           phase: phaseLabel[ph] || ph,
           depth: depRaw.trim(),
           stop: stp,
-          mix: eShortMix(cells.mix || ''),
+          mix: shortMix(cells.mix || ''),
           run: cells.run || '',
           tts: cells.tts || '',
           ppo2: cells.ppo2 || '',
@@ -1028,6 +1046,11 @@ function buildExportText(mode) {
       const emSum = getContingencySummaryExport();
       lines.push(ascentScheduleRule());
       lines.push(...formatExportSummaryBlock(emSum));
+      lines.push('');
+    }
+    const emAlertLines = collectAlertPlainLines(['decoAlertsEmergency']);
+    if (emAlertLines.length) {
+      emAlertLines.forEach((t) => lines.push('!! ' + clean(t)));
       lines.push('');
     }
     lines.push('!! SAFETY REMINDERS');
@@ -1242,6 +1265,11 @@ function buildSlateText() {
   lines.push(bar);
   lines.push(`Algo: ${algoLine}`);
   lines.push(`Mix: ${mixLine}`);
+  const slateAlerts = collectAlertPlainLines();
+  if (slateAlerts.length) {
+    lines.push('');
+    slateAlerts.forEach((t) => lines.push('!! ' + clean(t)));
+  }
   lines.push('');
   lines.push('DEPTH  TIME   GAS    PPO2');
   if (out.length) {
@@ -1320,8 +1348,8 @@ function buildMessengerText(mode) {
     result.push('-'.repeat(28));
     const rows = document.querySelectorAll('#contingencyResult .deco-table tbody tr');
     rows.forEach(tr => {
-      const ph = tr.dataset.phase;
-      if (!ph || ph === 'totals') return;
+      const ph = normalizeSchedulePhase(tr.dataset.phase);
+      if (!ph || ph === 'totals' || ph === 'info') return;
       const tds = tr.querySelectorAll('td');
       const cv  = Array.from(tds).map(td => clean(td.textContent));
       if (ph === 'switch') { const switchTxt = Array.from(tds).slice(1).map(t=>clean(t.textContent)).filter(Boolean).join(' '); result.push('>> ' + switchTxt); return; }
@@ -2028,22 +2056,8 @@ async function exportPDF(opts) {
     return true;
   })();
   y = drawDecoPlanBannerPdf(doc, y, { ML, CW, checkY, cleanPDF }, _pdfHdr, planSumPdf, _hasDecoPdf);
-  const alertEls=document.querySelectorAll('#decoSummary .alert');
-  [...alertEls].forEach(el=>{
-    const txt=cleanPDF(el.textContent);
-    const isNarc=txt.includes('NARCOTIC')||txt.includes('NDL');
-    const isDeco=txt.includes('DECOMPRESSION');
-    const isCNS=txt.includes('CNS');
-    const bg=isNarc||isDeco?[255,68,51]:isCNS?[255,255,0]:[255,68,51];
-    const tx=isNarc||isDeco?[255,255,255]:isCNS?[17,17,17]:[255,255,255];
-    checkY(9); doc.setFillColor(...bg); doc.roundedRect(ML,y,CW,7,1.5,1.5,'F');
-    doc.setFontSize(7.5); doc.setFont('DejaVuSans','bold'); doc.setTextColor(...tx);
-    const ls=doc.splitTextToSize(txt,CW-4); const lh=5.5*ls.length;
-    doc.setFillColor(...bg); doc.roundedRect(ML,y,CW,lh+2,1.5,1.5,'F');
-    doc.text(ls,ML+2,y+4);
-    doc.setTextColor(0,0,0); y+=lh+4;
-  });
-  y+=3;
+  y = drawPdfAlertBanners(doc, y, { ML, CW, checkY, cleanPDF });
+  y += 3;
 
   const _dRate  = document.getElementById('descentRate')?.value || '22';
   const _aRate  = document.getElementById('ascentRate')?.value || '9';
@@ -2744,7 +2758,8 @@ async function exportContingencyPDF(opts) {
 
     const emSumPdf = getContingencySummaryExport();
     document.querySelectorAll('#contingencyResult .deco-table tbody tr').forEach((tr,rowI)=>{
-      const phase=tr.dataset.phase;
+      const phase=normalizeSchedulePhase(tr.dataset.phase);
+      if (!phase || phase === 'info') return;
       const tds=Array.from(tr.querySelectorAll('td'));
       const cv=tds.map(td=>cleanPDF(td.textContent.trim()));
       checkY(5.5);
@@ -2958,16 +2973,8 @@ async function exportContingencyPDF(opts) {
   // ── SECTION: Emergency Slate ─────────────────────────────────────────────
   if (_incEmSlate) {
     const emAlertHtml = c.emAlertsHtml || document.getElementById('decoAlertsEmergency')?.innerHTML || '';
-    const emAlertText = emAlertHtml.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-    if (emAlertText) {
-      checkY(10);
-      doc.setFillColor(255, 255, 0); doc.setDrawColor(180, 180, 0);
-      const _alertLines = doc.splitTextToSize(cleanPDF(emAlertText), CW - 4);
-      const _alertH = 5.5 * _alertLines.length + 2;
-      doc.roundedRect(ML, y, CW, _alertH, 1.5, 1.5, 'FD');
-      doc.setFontSize(7.5); doc.setFont('DejaVuSans', 'bold'); doc.setTextColor(17, 17, 17);
-      doc.text(_alertLines, ML + 2, y + 4);
-      doc.setTextColor(0, 0, 0); y += _alertH + 4;
+    if (emAlertHtml) {
+      y = drawPdfAlertBanners(doc, y, { ML, CW, checkY, cleanPDF }, emAlertHtml);
     }
     const slateText = buildContingencySlateText();
     if (slateText) {
