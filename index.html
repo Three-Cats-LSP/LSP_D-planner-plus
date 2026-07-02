@@ -78,7 +78,7 @@
 <header style="display:flex;flex-direction:column;width:100%;">
 <!-- Top Row: Logo | Banner (center) | Mode buttons
        Desktop: single row  |  Mobile: 3 stacked rows via flex-wrap -->
-<div id="headerTopRow" style="display:flex;flex-wrap:wrap;align-items:center;width:100%;padding:2px 0;border-bottom:1px solid var(--border);">
+<div id="headerTopRow" style="display:flex;flex-wrap:wrap;align-items:center;width:100%;padding:2px 0;border:1px solid var(--border-hi);border-radius:var(--radius-lg);">
 <!-- Logo — left, fixed size -->
 <div style="display:flex;align-items:center;gap:12px;padding-left:14px;flex-shrink:0;flex-grow:0;">
 <div class="brand-icon" id="brandIcon" aria-hidden="true">🫧</div>
@@ -3109,7 +3109,6 @@ function _clearPlannerResults() {
   _setGasWarningBanner('');
   const totalsEl = document.getElementById('decoTotals');
   if (totalsEl) { totalsEl.innerHTML = ''; totalsEl.style.display = 'none'; }
-  { const _tBtn=document.getElementById('tissueChartToggleBtn'); const _cBtn=document.getElementById('contingencyJumpBtn'); if(_tBtn)_tBtn.style.display='none'; if(_cBtn)_cBtn.style.display='none'; }
   const _pr2 = document.getElementById('plannerResult'); if(_pr2){_pr2.style.display='none';_pr2.innerHTML='';}
   window._lastPlan = null;
   _lastVPMResult = null;
@@ -3349,8 +3348,9 @@ function toggleReference() {
 }
 
 function _lspCssVar(name, fallback) {
-  const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-  return v || fallback;
+  const bodyV = getComputedStyle(document.body).getPropertyValue(name).trim();
+  const rootV = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  return bodyV || rootV || fallback;
 }
 
 function toggleTheme() {
@@ -4557,12 +4557,14 @@ function buildPlanInfoRowHtml(o, phase) {
       <span class="summary-stat">CNS: <span style="color:${o.cnsColor}">${o.cns}</span></span> &nbsp;
       <span class="summary-stat">OTU: <span style="color:${o.otuColor || 'var(--text)'}">${o.otu}</span></span> &nbsp;
       <span class="summary-stat">PrT: <span style="color:${o.prtColor}" title="${o.prtTitle || ''}">${o.prt}</span></span> &nbsp;
-      <span class="summary-stat">Surf GF: <span style="color:${surfGFColor}" title="Surface gradient factor — tissue load ÷ M-value at surface">${surfGFDisp}</span></span>
+      <span class="summary-stat">Surf GF: <span style="color:${surfGFColor}" title="Surface gradient factor — tissue load ÷ M-value at surface">${surfGFDisp}</span></span> &nbsp;
+      <span class="summary-stat">Decozone: <span>${o.decozone}</span></span> &nbsp;
+      <span class="summary-stat">First deco: <span>${o.decoStop}</span></span>
     </div>`;
   const totalsEl = document.getElementById('decoTotals');
   if (totalsEl) {
-    totalsEl.innerHTML = `<span class="stat">Decozone: <strong>${o.decozone}</strong></span><span class="stat">First deco: <strong>${o.decoStop}</strong></span>`;
-    totalsEl.style.display = 'flex';
+    totalsEl.innerHTML = '';
+    totalsEl.style.display = 'none';
   }
   const rowHtml = `<tr class="deco-totals-row" data-phase="${phase || 'totals'}"><td colspan="20" data-run="${o.runTime}" data-tts="${o.tts}" data-deco="${o.decoTime}" data-cns="${o.cns}" data-otu="${o.otu}" data-prt="${o.prt}" data-decozone="${o.decozone}" data-decostop="${o.decoStop}" data-surfgf="${surfGFDisp}">${innerHtml}</td></tr>`;
   scheduleDecoScheduleStackSync();
@@ -9639,7 +9641,7 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
   const haloRadius = isMobile ? 5 : 8;
   // (PAD already set above before PW/PH computation)
 
-  const bg      = _lspCssVar('--bg', isLight ? '#f2f3f5' : '#0e0f11');
+  const bg      = _lspCssVar('--surface-2', isLight ? '#f4f6fa' : '#0e0f11');
   const grid    = isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.08)';
   const text    = _lspCssVar('--text', isLight ? '#1a202c' : '#e2e8f0');
   const muted   = _lspCssVar('--text-muted', isLight ? '#4a5568' : '#8892a4');
@@ -11115,7 +11117,8 @@ function drawGFCurve() {
   const labelFont = isMobile ? '300 7px "JetBrains Mono",monospace'  : '500 10px "JetBrains Mono",monospace';
   const axisFont  = isMobile ? '300 6.5px "Outfit",sans-serif'        : '300 10px "Outfit",sans-serif';
   const dotRadius = isMobile ? 3 : 5;
-  ctx.fillStyle  = _lspCssVar('--bg', isLight ? '#f0f4f8' : '#0f1117');
+  const graphBg = _lspCssVar('--surface-2', isLight ? '#f4f6fa' : '#0f1117');
+  ctx.fillStyle  = graphBg;
   ctx.fillRect(0, 0, W, H);
 
   const textColor   = _lspCssVar('--text', isLight ? '#1a202c' : '#e2e8f0');
@@ -11254,10 +11257,10 @@ function drawGFCurve() {
     ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
     ctx.fillStyle = wp.isDeco ? redColor : wp.isSafety ? greenColor : accentColor;
     ctx.fill();
-    ctx.strokeStyle = _lspCssVar('--bg', isLight ? '#f0f4f8' : '#0f1117');
+    ctx.strokeStyle = graphBg;
     ctx.lineWidth = 1.5; ctx.stroke();
     // Dot number
-    ctx.fillStyle = _lspCssVar('--bg', isLight ? '#f0f4f8' : '#0f1117');
+    ctx.fillStyle = graphBg;
     ctx.font = `600 ${isMobile ? 7 : 8}px "JetBrains Mono",monospace`;
     ctx.textAlign = 'center';
     ctx.fillText(i + 1, x, y + 3);

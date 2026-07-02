@@ -553,6 +553,8 @@ body.light-theme .mode-btn:hover img, body.light-theme .mode-btn.active img { op
 .results-section-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); padding: var(--space-3) var(--space-4) var(--space-2); flex-wrap: wrap; }
 .results-section-label { font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
 .results-section-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+#resultsPanel #tissueChartToggleBtn,
+#resultsPanel #contingencyJumpBtn { display: none !important; }
 #resultsPanel #diveGraphCard.card { background: transparent; border: none; box-shadow: none; margin: 0; padding: 0; }
 #resultsPanel #diveGraphCard .card-title, #resultsPanel #diveGraphCard .card-caret { display: none !important; }
 #resultsPanel #diveGraphCard .card-collapsible-body { padding: 0 var(--space-4) var(--space-2); }
@@ -652,7 +654,12 @@ body.light-theme #gasWarningBanner.gas-warning-banner { background: #fff8f0; bor
 .tools-page-wrap.visible { display: flex; }
 .tools-page-wrap .card { border-radius: var(--radius-xl); }
 
-#headerTopRow { background: var(--surface); border-bottom: 1px solid var(--border) !important; padding: 0 var(--space-2) !important; }
+#headerTopRow {
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-lg);
+  padding: 0 var(--space-2) !important;
+}
 .header-warn { font-size: var(--text-xs); font-weight: 600; color: var(--red); background: var(--red-dim); border: 1px solid color-mix(in oklab, var(--red) 30%, transparent); border-radius: var(--radius-md); padding: 4px 10px; cursor: pointer; }
 .brand-text h1 .algo-label { color: var(--accent); }
 .brand-icon { background: var(--accent-dim); border-color: var(--accent); animation: none; box-shadow: none; }
