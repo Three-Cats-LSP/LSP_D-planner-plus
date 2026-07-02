@@ -277,7 +277,7 @@ iframe { display: none; }
         <div class="metric-row"><span>CNS / OTU</span><span>numeric sanity</span></div>
         <div class="metric-row"><span>Travel gas</span><span>DOM + engine</span></div>
         <div class="metric-row"><span>Altitude</span><span>surface P correction</span></div>
-        <div class="metric-row"><span>Imperial units</span><span>ft / psi / cu ft / SAC conversion</span></div>
+        <div class="metric-row"><span>Imperial units</span><span>ft / psi / ft³ / SAC conversion</span></div>
         <div class="metric-row"><span>GF UI</span><span>VPM-B/GFS High-only mode</span></div>
         <div class="metric-row"><span>Multi-dive</span><span>residual loading</span></div>
         <div class="metric-row"><span>Edge cases</span><span>5m → 80m, 1min → 180min</span></div>
@@ -2413,14 +2413,15 @@ const TIER3_GROUPS = [
         if (!ok) return 'cylBot_pres_lbl not psi in imperial — check manually (warn)';
         return 'psi label confirmed ✓';
       }],
-      ['Imperial: cylinder size label flips to cu ft', 'SCN', function(){
+      ['Imperial: cylinder size label flips to ft³', 'SCN', function(){
         WIN.setUnits('imperial');
         const d = getDoc();
-        const lbl = d.getElementById('cylBot_size_lbl');
-        const ok = lbl && /cu\s*ft|cuft/i.test(lbl.textContent);
+        const lbl = d.querySelector('#diluentGasCard label, #cylBot_size')?.previousElementSibling || d.querySelector('label');
+        const txt = lbl ? lbl.textContent : '';
+        const ok = /ft³|ft3/i.test(txt) || Array.from(d.querySelectorAll('label')).some(l => /Size \(ft/i.test(l.textContent));
         WIN.setUnits('metric');
-        if (!ok) return 'cylBot_size_lbl not cu ft in imperial — check manually (warn)';
-        return 'cu ft label confirmed ✓';
+        if (!ok) return 'size label not ft³ in imperial — check manually (warn)';
+        return 'ft³ label confirmed ✓';
       }],
       ['Imperial: runDecoSchedule() works after unit switch', 'SCN', function(){
         WIN.setUnits('imperial');
@@ -2448,11 +2449,11 @@ const TIER3_GROUPS = [
         const converted = imperialVal < 5;
         WIN.setUnits('metric');
         const resetVal = parseFloat(sacEl.value);
-        if (!converted) return `SAC not converted: imperial=${imperialVal} (expected < 5 cu ft/min) — 28x overestimate bug present`;
+        if (!converted) return `SAC not converted: imperial=${imperialVal} (expected < 5 ft³/min) — 28x overestimate bug present`;
         assert(Math.abs(resetVal - metricVal) < 1, `SAC not restored after metric switch: was ${metricVal}, now ${resetVal}`);
-        return `SAC: ${metricVal} L/min → ${imperialVal.toFixed(2)} cu ft/min ↓ restored ${resetVal} L/min ✓`;
+        return `SAC: ${metricVal} L/min → ${imperialVal.toFixed(2)} ft³/min ↓ restored ${resetVal} L/min ✓`;
       }],
-      ['Imperial: gas consumption card shows cu ft not L', 'SCN', function(){
+      ['Imperial: gas consumption card shows ft³ not L', 'SCN', function(){
         WIN.setUnits('imperial');
         fastRDS(true);
         const d = getDoc();
@@ -2465,12 +2466,12 @@ const TIER3_GROUPS = [
         }
         const html = gasEl.innerHTML;
         const hasLitres = /\d+\s*L(?!\s*\/|\s*m|iter)/.test(html);  // standalone L but not L/min or L/m
-        const hasCuFt  = /cu\s*ft/i.test(html);
+        const hasCuFt  = /ft³|ft3/i.test(html);
         WIN.setUnits('metric');
         fastRDS(true);
         if (hasLitres && !hasCuFt) return `Gas card shows L in imperial mode — volUnit display bug present`;
-        assert(hasCuFt, `Gas card has neither L nor cu ft in imperial mode — cannot verify`);
-        return 'Gas card shows cu ft in imperial mode ✓';
+        assert(hasCuFt, `Gas card has neither L nor ft³ in imperial mode — cannot verify`);
+        return 'Gas card shows ft³ in imperial mode ✓';
       }],
     ]
   },

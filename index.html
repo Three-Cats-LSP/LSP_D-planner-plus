@@ -80,8 +80,8 @@
        Desktop: single row  |  Mobile: 3 stacked rows via flex-wrap -->
 <div id="headerTopRow">
 <!-- Logo — left, fixed size -->
-<div style="display:flex;align-items:center;gap:12px;padding-left:14px;flex-shrink:0;flex-grow:0;">
-<div class="brand-icon" id="brandIcon" aria-hidden="true">🫧</div>
+<div class="brand-lockup">
+<img alt="Three Cats LSP" class="brand-logo" decoding="async" height="48" id="brandLogo" src="vendor/brand/three-cats-lsp-logo.png" width="95"/>
 <div class="brand-text">
 <h1>LSP D-PLANNER · <span class="algo-label" id="algoLabel">DIVE</span></h1>
 <p id="algoSubtitle">Bühlmann ZH-L16C · Gradient Factors</p>
@@ -100,7 +100,7 @@
 <button type="button" class="theme-pill-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme">
 <span class="theme-pill-track">
 <span class="theme-pill-thumb" id="themePillThumb" aria-hidden="true"></span>
-<svg class="theme-pill-icon theme-pill-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+<svg class="theme-pill-icon theme-pill-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="currentColor"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
 <svg class="theme-pill-icon theme-pill-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
 </span>
 </button>
@@ -167,11 +167,14 @@
 </div>
 </div>
 <div class="vpm-mode-row" id="vpmModeRowV3">
-<span class="section-label" style="margin:0;">VPM Mode</span>
-<div class="seg">
-<button type="button" class="seg-btn active" id="vpmModePure" onclick="setVpmMode('VPMB',this)">VPM-B</button>
-<button type="button" class="seg-btn" id="vpmModeGfs" onclick="setVpmMode('VPMB_GFS',this)">VPM-B+GFS</button>
-</div>
+<span class="section-label vpm-mode-label" style="margin:0;">VPM Mode<span class="tip-icon" onclick="event.stopPropagation();showTip('VPM Mode','VPM-B — Bubble-mechanics decompression model (Yount & Hoffman). Tracks microscopic bubble nuclei rather than dissolved gas alone. Tends to give deeper first stops and shorter shallow stops than Bühlmann GF.\n\nVPM-B+GFS — Same VPM-B bubble model for deep and mid stops, with Bühlmann Gradient Factor High overlay at shallow stops. Always at least as conservative as VPM-B alone at the surface; useful when VPM-B shallow stops feel too aggressive.\n\n⚠ Conservatism order is profile-dependent: on deep/long trimix dives Bühlmann GF is often longer TTS; on short/shallow dives VPM-B can match or exceed GF. Compare TTS for your specific dive profile.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></span>
+<button type="button" class="option-pill-toggle" id="vpmModeToggle" onclick="toggleVpmMode()" aria-label="Toggle VPM-B or VPM-B+GFS" data-side="left">
+<span class="option-pill-track" style="--pill-w: 108px;">
+<span class="option-pill-thumb" id="vpmModeThumb" aria-hidden="true"></span>
+<span class="option-pill-opt">VPM-B</span>
+<span class="option-pill-opt">+GFS</span>
+</span>
+</button>
 </div>
 <div class="vpm-cons-row" id="conservatismRowV3">
 <span class="section-label" style="margin:0;">Conservatism</span>
@@ -193,14 +196,20 @@
 <div id="planPanelRecSection">
 <div class="ctrl-row" id="recSafetyStopRow">
 <span class="ctrl-label" style="margin-left:0;">Safety Stop:</span>
-<div class="seg">
-<button class="seg-btn" id="sd3" onclick="setStopDepth(3)">3 m</button>
-<button class="seg-btn active" id="sd6" onclick="setStopDepth(6)">6 m</button>
-</div>
-<div class="seg">
-<button class="seg-btn active" id="sdur3" onclick="setStopDur(3)">3 min</button>
-<button class="seg-btn" id="sdur5" onclick="setStopDur(5)">5 min</button>
-</div>
+<button type="button" class="option-pill-toggle" id="stopDepthToggle" onclick="toggleStopDepth()" aria-label="Toggle safety stop depth" data-side="right">
+<span class="option-pill-track" style="--pill-w: 72px;">
+<span class="option-pill-thumb" aria-hidden="true"></span>
+<span class="option-pill-opt">3 m</span>
+<span class="option-pill-opt">6 m</span>
+</span>
+</button>
+<button type="button" class="option-pill-toggle" id="stopDurToggle" onclick="toggleStopDur()" aria-label="Toggle safety stop duration" data-side="left">
+<span class="option-pill-track" style="--pill-w: 80px;">
+<span class="option-pill-thumb" aria-hidden="true"></span>
+<span class="option-pill-opt">3 min</span>
+<span class="option-pill-opt">5 min</span>
+</span>
+</button>
 </div>
 <div class="field" id="gasMixField">
 <label class="section-label">Breathing Gas</label>
@@ -233,8 +242,9 @@
 <button class="result-tab-btn" data-tab="ndlref" onclick="switchResultTab('ndlref',this)">NDL Table</button>
 </div>
 <div class="result-tabs-nav" id="tecResultTabs">
-<button class="result-tab-btn active" data-tab="graphs" onclick="switchResultTab('graphs',this)">Graphs</button>
+<button class="result-tab-btn active" data-tab="profile" onclick="switchResultTab('profile',this)">Dive Profile</button>
 <button class="result-tab-btn" data-tab="contingency" onclick="switchResultTab('contingency',this)">Contingency Plans</button>
+<button class="result-tab-btn" data-tab="graphs" onclick="switchResultTab('graphs',this)">Graphs</button>
 <button class="result-tab-btn" data-tab="tissue" onclick="switchResultTab('tissue',this)">Tissue Saturation</button>
 </div>
 <div class="result-tab-pane" id="resultTab-dive"></div>
@@ -242,7 +252,7 @@
 <div class="result-tab-pane" id="resultTab-avgdepth"></div>
 <div class="result-tab-pane" id="resultTab-multi"></div>
 <div class="result-tab-pane" id="resultTab-ndlref"></div>
-<div class="result-tab-pane active" id="resultTab-graphs">
+<div class="result-tab-pane active" id="resultTab-profile">
 <div class="results-section-head" id="profileSectionHead">
 <span class="results-section-label">Dive Profile</span>
 <div class="results-section-actions profile-export-actions">
@@ -252,8 +262,13 @@
 <button class="btn-export" onclick="showPDFExportDialog()" title="Export PDF"><span style="display:inline-block;width:16px;height:16px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0px;line-height:16px;text-align:center;overflow:visible;white-space:nowrap;">PDF</span></button>
 </div>
 </div>
+<div id="decoResult" class="results-v3-card" style="display:none;">
+<div id="decoAlerts"></div>
+<div id="decoSummary" class="deco-plan-caption"></div>
+<div id="decoAlertsNarcotic"></div>
+<div id="vpmStopCapNote" style="display:none;margin:8px var(--space-4);padding:8px 12px;border-left:3px solid var(--orange);color:var(--orange);font-size:12px;"></div>
 <div class="card collapsible card-open" id="diveGraphCard" style="display:none;">
-<div class="card-title" onclick="toggleCard(this)">Dive Graph<span class="tip-icon" onclick="event.stopPropagation();showTip('Dive Graph','How to read the graph\n\nProfile line — coloured by gas. Each gas segment uses its own colour; the fill below fades to transparent.\n\nRed dotted line — Bühlmann ceiling. The minimum depth you must not ascend above at each moment, calculated from tissue loading and gradient factors. It rises as you off-gas during ascent and deco stops. If your profile line is always at or below this line, you are within the model\'s deco obligation.\n\nYellow/green flags — gas switches. Match the yellow/green gas switch rows in the deco table.\n\nDots — key waypoints (bottom, deco stops, safety stop). Red dots = deco stops, green = safety stop, blue/accent = bottom.\n\nOrange/red halo on a dot — ppO₂ is at or above 1.4 bar (orange) or 1.6 bar (red).\n\nHorizontal dashed lines — individual stop depth indicators. Red = deco stop, green = safety stop.\n\nInteraction\nHover (desktop) or tap (mobile) to see depth, time, gas, ppO₂, CNS%, and current ceiling at that point.\nScroll to zoom · drag to pan · double-click to reset.')" style="margin-left:6px;"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span><span class="card-caret">▾</span></div>
+<div class="card-title" onclick="toggleCard(this)">Dive Graph<span class="tip-icon" onclick="event.stopPropagation();showTip('Dive Graph (summary)','Compact profile overview for quick reference alongside the schedule.\n\nFor the full interactive graph — gas colours, Bühlmann ceiling, gas-switch flags, hover tooltips, and zoom/pan — open the Graphs tab.')" style="margin-left:6px;"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span><span class="card-caret">▾</span></div>
 <div class="card-collapsible-body">
 <div id="decoProfileCanvas-wrap" style="position:relative;width:100%;margin:6px 0;">
 <canvas height="220" id="decoProfileCanvas" style="width:100%;height:auto;aspect-ratio:700/220;border-radius:10px;background:var(--card2);border:1px solid var(--border);display:block;" width="700"></canvas>
@@ -266,40 +281,6 @@
 <div id="decoProfileLegend" class="profile-legend" style="display:none;margin-top:4px;"></div>
 </div><!-- /card-collapsible-body diveGraph -->
 </div>
-<div class="card collapsible card-open" id="gfCurveInlineCard" style="display:none;">
-<div class="card-title" onclick="toggleCard(this)">GF Gradient Factor Curve<span class="tip-icon" onclick="event.stopPropagation();showTip('GF Gradient Factor Curve','The GF curve shows how your gradient factor allowance changes at each deco stop during the ascent — from GF Low at the first (deepest) stop to GF High at the surface.\n\nWhat are Gradient Factors?\nGF Low controls where your first deco stop is placed (deeper = more conservative). GF High controls how saturated you are allowed to be at the surface.\n\nThe curve interpolates linearly between these two values as you ascend. At each stop the algorithm permits a fraction of the full M-value proportional to where that stop falls between GF Low (first stop) and GF High (surface).\n\nReading the chart:\n X-axis — stop depth (deepest on left, surface on right)\n Y-axis — gradient factor % allowed at that stop\n Dots — your actual deco stops\n\nConservative divers use lower GF Low (e.g. 30/70) to add deep stops; aggressive technical divers may use 85/85. The curve lets you visualise the trade-off at a glance.')" style="margin-left:6px;"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span><span class="card-caret">▾</span></div>
-<div class="card-collapsible-body">
-<p style="color:var(--muted);font-size:12px;margin-bottom:16px;">Visualizes how gradient factors control the ascent ceiling at each deco stop. Interpolates linearly from GF Low (first stop) to GF High (surface).</p>
-<div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
-<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveGFL" style="color:var(--accent)">30</div><div class="stat-lbl">GF Low</div></div>
-<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveGFH" style="color:var(--accent)">70</div><div class="stat-lbl">GF High</div></div>
-<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveStops">—</div><div class="stat-lbl">Deco Stops</div></div>
-</div>
-<div id="gfCurveCanvas-wrap" style="position:relative;width:100%;">
-<canvas height="220" id="gfCurveCanvas" style="width:100%;height:auto;aspect-ratio:700/220;border-radius:10px;background:var(--card2);border:1px solid var(--border);display:block;" width="700"></canvas>
-<div id="gfCurveCanvas-overlay" style="position:absolute;top:0;left:0;right:0;bottom:0;border-radius:10px;cursor:crosshair;"></div>
-<div id="gfCurveCanvas-tooltip" style="display:none;position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--accent);border-radius:6px;padding:7px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);white-space:nowrap;z-index:10;box-shadow:0 4px 16px rgba(0,0,0,0.4);"></div>
-<div id="gfCurveCanvas-crosshair-v" style="display:none;position:absolute;top:0;bottom:0;width:1px;background:rgba(0,217,255,0.5);pointer-events:none;"></div>
-<div id="gfCurveCanvas-crosshair-h" style="display:none;position:absolute;left:0;right:0;height:1px;background:rgba(0,217,255,0.3);pointer-events:none;"></div>
-</div>
-<div id="gfCurveLegend" style="display:none;margin-top:4px;"></div>
-<div style="margin-top:12px;display:flex;gap:20px;flex-wrap:wrap;">
-<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
-<div style="width:20px;height:3px;background:var(--accent);border-radius:2px;"></div> GF Ceiling line
-      </div>
-<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
-<div style="width:20px;height:3px;background:var(--green);border-radius:2px;"></div> Actual ascent
-      </div>
-<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
-<div style="width:12px;height:12px;border-radius:50%;background:var(--red);"></div> First deco
-      </div>
-</div>
-</div><!-- /card-collapsible-body gfCurve -->
-</div>
-<div id="decoResult" class="results-v3-card" style="display:none;">
-<div id="decoAlerts"></div>
-<div id="decoSummary" class="deco-plan-caption"></div>
-<div id="vpmStopCapNote" style="display:none;margin:8px var(--space-4);padding:8px 12px;border-left:3px solid var(--orange);color:var(--orange);font-size:12px;"></div>
 <div class="results-section-head">
 <span class="results-section-label">Schedule</span>
 <div class="results-section-actions">
@@ -325,12 +306,63 @@
 <span class="legend-item legend-switch"><svg class="leg-icon" width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 3h12M10 1l3 2-3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 7H1M4 5l-3 2 3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Gas Switch</span>
 </div>
 </div>
-</div></div>
+</div>
 <div id="gasConsumptionSummary" style="display:none;"></div>
-<div class="result-tab-pane" id="resultTab-contingency">
-<div class="card collapsible card-open" id="contingencyCard" style="display:none;">
-<div class="card-title" onclick="toggleCard(this)">⚠️ Contingency Plans<span class="tip-icon" onclick="event.stopPropagation();showTip('⚠️ Contingency Plans','Contingency planning lets you pre-calculate an emergency decompression schedule before your dive — so you are never caught off guard.\n\nGas Loss — simulate losing one of your gas supplies (bottom gas, deco gas 1 or 2). The plan recalculates using only your remaining gases, so you can see whether the dive is still viable and what extra deco time is required.\n\nExtended Bottom Time — add +3, +5 or +10 minutes to your planned bottom time and instantly see the updated deco obligation. Useful for planning bailout margins or conservative turnaround points.\n\nCombined scenarios — gas loss and extended bottom time can be combined simultaneously.\n\nThe resulting emergency plan shows the full deco schedule you would need to follow, along with gas sufficiency checks for the gases still available.')" style="margin-left:6px;"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span><span class="card-caret">▾</span></div>
+</div>
+<div class="result-tab-pane" id="resultTab-graphs">
+<div class="results-section-head results-section-head--sub" id="graphsDiveSectionHead" style="display:none;">
+<span class="results-section-label">Dive Graph</span>
+</div>
+<div class="card collapsible card-open" id="fullDiveGraphCard" style="display:none;">
+<div class="card-title" onclick="toggleCard(this)">Dive Graph<span class="tip-icon" onclick="event.stopPropagation();showTip('Dive Graph','How to read the graph\n\nProfile line — coloured by gas. Each gas segment uses its own colour; the fill below fades to transparent.\n\nRed dotted line — Bühlmann ceiling. The minimum depth you must not ascend above at each moment, calculated from tissue loading and gradient factors. It rises as you off-gas during ascent and deco stops. If your profile line is always at or below this line, you are within the model\'s deco obligation.\n\nYellow/green flags — gas switches. Match the yellow/green gas switch rows in the deco table.\n\nDots — key waypoints (bottom, deco stops, safety stop). Red dots = deco stops, green = safety stop, blue/accent = bottom.\n\nOrange/red halo on a dot — ppO₂ is at or above 1.4 bar (orange) or 1.6 bar (red).\n\nHorizontal dashed lines — individual stop depth indicators. Red = deco stop, green = safety stop.\n\nInteraction\nHover (desktop) or tap (mobile) to see depth, time, gas, ppO₂, CNS%, and current ceiling at that point.\nScroll to zoom · drag to pan · double-click to reset.')" style="margin-left:6px;"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span><span class="card-caret">▾</span></div>
+<div class="card-collapsible-body" id="fullDiveGraphMount"></div>
+</div>
+<div class="results-section-head results-section-head--sub" id="graphsGfSectionHead" style="display:none;">
+<span class="results-section-label">GF Curve</span>
+</div>
+<div class="card collapsible card-open" id="gfCurveInlineCard" style="display:none;">
+<div class="card-title" onclick="toggleCard(this)">GF Gradient Factor Curve<span class="tip-icon" onclick="event.stopPropagation();showTip('GF Gradient Factor Curve','The GF curve shows how your gradient factor allowance changes at each deco stop during the ascent — from GF Low at the first (deepest) stop to GF High at the surface.\n\nWhat are Gradient Factors?\nGF Low controls where your first deco stop is placed (deeper = more conservative). GF High controls how saturated you are allowed to be at the surface.\n\nThe curve interpolates linearly between these two values as you ascend. At each stop the algorithm permits a fraction of the full M-value proportional to where that stop falls between GF Low (first stop) and GF High (surface).\n\nReading the chart:\n X-axis — stop depth (deepest on left, surface on right)\n Y-axis — gradient factor % allowed at that stop\n Dots — your actual deco stops\n\nConservative divers use lower GF Low (e.g. 30/70) to add deep stops; aggressive technical divers may use 85/85. The curve lets you visualise the trade-off at a glance.')" style="margin-left:6px;"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span><span class="card-caret">▾</span></div>
 <div class="card-collapsible-body">
+<p class="gf-curve-intro">Visualizes how gradient factors control the ascent ceiling at each deco stop. Interpolates linearly from GF Low (first stop) to GF High (surface).</p>
+<div class="gf-curve-stats">
+<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveGFL" style="color:var(--accent)">30</div><div class="stat-lbl">GF Low</div></div>
+<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveGFH" style="color:var(--accent)">70</div><div class="stat-lbl">GF High</div></div>
+<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveStops">—</div><div class="stat-lbl">Deco Stops</div></div>
+</div>
+<div id="gfCurveCanvas-wrap" style="position:relative;width:100%;">
+<canvas height="220" id="gfCurveCanvas" style="width:100%;height:auto;aspect-ratio:700/220;border-radius:10px;background:var(--card2);border:1px solid var(--border);display:block;" width="700"></canvas>
+<div id="gfCurveCanvas-overlay" style="position:absolute;top:0;left:0;right:0;bottom:0;border-radius:10px;cursor:crosshair;"></div>
+<div id="gfCurveCanvas-tooltip" style="display:none;position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--accent);border-radius:6px;padding:7px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);white-space:nowrap;z-index:10;box-shadow:0 4px 16px rgba(0,0,0,0.4);"></div>
+<div id="gfCurveCanvas-crosshair-v" style="display:none;position:absolute;top:0;bottom:0;width:1px;background:rgba(0,217,255,0.5);pointer-events:none;"></div>
+<div id="gfCurveCanvas-crosshair-h" style="display:none;position:absolute;left:0;right:0;height:1px;background:rgba(0,217,255,0.3);pointer-events:none;"></div>
+</div>
+<div id="gfCurveLegend" class="gf-curve-stop-table" style="display:none;"></div>
+<div class="gf-curve-legend-keys">
+<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
+<div style="width:20px;height:3px;background:var(--accent);border-radius:2px;"></div> GF Ceiling line
+      </div>
+<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
+<div style="width:20px;height:3px;background:var(--green);border-radius:2px;"></div> Actual ascent
+      </div>
+<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
+<div style="width:12px;height:12px;border-radius:50%;background:var(--red);"></div> First deco
+      </div>
+</div>
+</div><!-- /card-collapsible-body gfCurve -->
+</div>
+</div>
+<div class="result-tab-pane" id="resultTab-contingency">
+<div id="contingencyCard" class="contingency-v4-card" style="display:none;">
+<div class="results-section-head">
+<span class="results-section-label">Contingency Plans</span>
+<div class="results-section-actions contingency-export-actions" id="contingencyExportActions" style="display:none;">
+<button class="btn-export" onclick="copyDiveProfile('contingency')" title="Copy to clipboard"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+<button class="btn-export" onclick="showContingencySlate()" title="Emergency slate (waterproof format)"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><rect height="18" rx="2" width="18" x="3" y="3"></rect><line x1="7" x2="17" y1="8" y2="8"></line><line x1="7" x2="17" y1="12" y2="12"></line><line x1="7" x2="13" y1="16" y2="16"></line></svg></button>
+<button class="btn-export" onclick="exportTXT('contingency')" title="Download .txt"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line><line x1="10" x2="8" y1="9" y2="9"></line></svg></button>
+<button class="btn-export" onclick="showContingencyPDFDialog()" title="Export PDF"><span style="display:inline-block;width:16px;height:16px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0px;line-height:16px;text-align:center;overflow:visible;white-space:nowrap;">PDF</span></button>
+</div>
+</div>
+<div class="contingency-setup-body">
 <div class="info-box">Select a gas loss scenario and/or extended bottom time to calculate a combined emergency plan.</div>
 <!-- Gas Loss -->
 <div class="u11">
@@ -358,16 +390,17 @@
 </div>
 <!-- Calculate Button -->
 <div id="contingencyScheduleStack">
-<button class="deco-contingency-calc" onclick="calcContingency()" onmouseout="this.style.background='linear-gradient(135deg,rgba(255,71,87,0.12),rgba(255,100,50,0.16))'" onmouseover="this.style.background='rgba(255,71,87,0.22)'" style="padding:11px;background:linear-gradient(135deg,rgba(255,71,87,0.12),rgba(255,100,50,0.16));color:var(--red);border:1px solid var(--red);border-radius:8px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;transition:all 0.2s;">Calculate Emergency Plan</button>
-<div id="contingencyResult" style="display:none;"></div>
+<button class="deco-contingency-calc" onclick="calcContingency()" style="margin-bottom:0;">Calculate Emergency Plan</button>
 </div>
 <div id="emergencyGasConsumption" style="display:none;"></div>
-</div><!-- /card-collapsible-body contingency -->
-</div></div>
+</div>
+<div id="contingencyResult" style="display:none;"></div>
+</div>
+</div>
 <div class="result-tab-pane" id="resultTab-tissue">
 <div id="tissueLoadCard" style="display:none;">
 <div class="card collapsible card-open" id="tissueLoadInnerCard">
-<div class="card-title" onclick="toggleCard(this)">Tissue Saturation<span class="tip-icon" onclick="event.stopPropagation();showTip('Tissue Saturation','Tissue saturation shows how loaded each of the 16 Bühlmann tissue compartments is relative to its decompression limit (M-value).\n\nThe card has three sections:\n\n1. Surface Saturation — snapshot at the moment you reach the surface. Shows how much of each compartment\'s M-value is used up after completing the full deco schedule.\n\n2. Compartment Detail — same surface snapshot in table form with exact numbers: N₂/He partial pressure (bar), M-value ceiling (bar), saturation %, and status.\n\n3. Per-Stop Saturation — shows saturation at every deco stop through the ascent. Each column is one stop (depth / stop time); each row is one compartment. Lets you see which compartments are controlling each stop and how the load evolves during ascent.\n\nColor coding (all sections):\n Green &lt; 75% — well within limits\n Yellow 75–90% — moderately loaded\n Orange 90–99% — near the ceiling\n Red ≥ 100% — at or over M-value (would need a deeper or longer stop)')" style="margin-left:6px;"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span><span class="card-caret">▾</span></div>
+<div class="card-title" onclick="toggleCard(this)">Tissue Saturation<span class="tip-icon" onclick="event.stopPropagation();showTip('Tissue Saturation','Tissue saturation shows how loaded each of the 16 Bühlmann tissue compartments is relative to its decompression limit (M-value).\n\nThe card has three sections:\n\n1. Surface Saturation — snapshot at the moment you reach the surface. Shows how much of each compartment\'s M-value is used up after completing the full deco schedule.\n\n2. Compartment Detail — same surface snapshot in table form with exact numbers: N₂/He partial pressure (bar), M-value ceiling (bar), saturation %, and status.\n\n3. Per-Stop Saturation — shows saturation at every deco stop through the ascent. Each column is one stop (depth / stop time); each row is one compartment. Lets you see which compartments are controlling each stop and how the load evolves during ascent.\n\nColor coding (all sections):\n Green &lt; 50% — well within limits\n Orange 50–79% — moderately loaded\n Red ≥ 80% — near or at the ceiling limit')" style="margin-left:6px;"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span><span class="card-caret">▾</span></div>
 <div class="card-collapsible-body">
 <!-- Section 1: surface saturation bars (end-of-dive snapshot) -->
 <div class="u11">
@@ -377,7 +410,7 @@
 </div>
 <!-- Section 2: detailed table with exact bar values -->
 <div class="u11">
-<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px;">Compartment Detail<span class="tip-icon" onclick="showTip('Compartment Detail','Detailed table of the end-of-dive tissue snapshot — same data as the surface saturation bars but with exact numerical values.\n\nColumns:\n # — compartment number (1 = fastest, 16 = slowest)\n Half-time — N₂ half-time in minutes. Faster compartments load and offgas quickly (relevant on short dives); slower compartments dominate on long or repetitive dives.\n N₂ Load (bar) — total inert gas tension (N₂ + He) in that compartment at surfacing. Shows combined partial pressure; trimix dives display N₂ and He contributions separately.\n M-value (bar) — GF-adjusted maximum tolerated tension at surface pressure. The algorithm will not surface you above this limit.\n Sat % — N₂ load ÷ M-value × 100. The controlling compartment (highest %) determined your last stop.\n Status — OK &lt; 70% / MED 70–85% / HIGH 85–99% / LIMIT ≥ 100%')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px;">Compartment Detail<span class="tip-icon" onclick="showTip('Compartment Detail','Detailed table of the end-of-dive tissue snapshot — same data as the surface saturation bars but with exact numerical values.\n\nColumns:\n # — compartment number (1 = fastest, 16 = slowest)\n Half-time — N₂ half-time in minutes. Faster compartments load and offgas quickly (relevant on short dives); slower compartments dominate on long or repetitive dives.\n N₂ Load (bar) — total inert gas tension (N₂ + He) in that compartment at surfacing. Shows combined partial pressure; trimix dives display N₂ and He contributions separately.\n M-value (bar) — GF-adjusted maximum tolerated tension at surface pressure. The algorithm will not surface you above this limit.\n Sat % — N₂ load ÷ M-value × 100. The controlling compartment (highest %) determined your last stop.\n Status — OK &lt; 50% / LOADED 50–79% / HIGH ≥ 80%')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></div>
 <div class="u16">
 <table class="deco-table tissue-table table-view">
 <thead><tr><th>#</th><th>Half-time</th><th>N₂ Load (bar)</th><th>M-value (bar)</th><th>Sat %</th><th>Status</th></tr></thead>
@@ -483,6 +516,7 @@
 <div id="plannerProfileCanvas-crosshair-v" style="display:none;position:absolute;top:0;bottom:0;width:1px;background:rgba(0,217,255,0.5);pointer-events:none;"></div>
 <div id="plannerProfileCanvas-crosshair-h" style="display:none;position:absolute;left:0;right:0;height:1px;background:rgba(0,217,255,0.3);pointer-events:none;"></div>
 </div>
+<div id="plannerProfileCanvas-hint" style="display:none;width:100%;text-align:right;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);opacity:0.55;margin:3px 0 2px 0;letter-spacing:0.3px;box-sizing:border-box;padding-right:2px;"><span style="opacity:0.7;">Hint:</span> scroll·zoom   drag·pan   dbl-click·reset</div>
 <div id="plannerProfileLegend" style="display:none;margin-top:4px;"></div>
 <div id="recSurfIntContainer" style="display:block;"></div>
 </div>
@@ -716,11 +750,9 @@
 <div class="card-title" id="gpResultTitle">Gas Plan Results</div>
 <div class="u16">
 <table class="gas-plan-table">
-<colgroup>
-<col style="width:13%"/><col style="width:12%"/><col style="width:15%"/><col style="width:12%"/><col style="width:10%"/><col style="width:22%"/><col style="width:16%"/>
-</colgroup>
+<colgroup></colgroup>
 <thead><tr>
-<th>GAS</th><th>TOTAL VOL</th><th>THIRDS</th><th>TURN PRESS</th><th>RESERVE</th><th>SUFFICIENT</th><th>MARGIN</th>
+<th>GAS</th><th>TOTAL VOL</th><th>THIRDS</th><th>TURN PRESS</th><th>SUFFICIENT</th><th>MARGIN</th>
 </tr></thead>
 <tbody id="gpResultBody"></tbody>
 </table>
@@ -2372,7 +2404,7 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
   }
 
   function buildApkUrl(version) {
-    return 'https://threecats-lsp.com/d-planner-plus/LSP_D-planner-plus-v' + version + '.apk';
+    return 'https://github.com/Three-Cats-LSP/LSP_D-planner-plus/releases/latest/download/LSP_D-planner-plus.apk';
   }
 
   function openDownloadPage(url) {
@@ -2916,6 +2948,7 @@ function appendHeHtSyncAlert(container) {
     '<span>⚠</span><div><strong>He half-time sync unavailable.</strong> VPM engine could not receive Bühlmann He HT updates — VPM schedules may use stale He compartment times until refresh.</div></div>');
 }
 let _pendingDecoAlerts = '';
+let _pendingDecoAlertsNarcotic = '';
 let _travelGasFractionWarning = '';
 // AUDIT-UNIT:UI-MODE-STATE
 function renderDecoAlerts(container, cnsHtml) {
@@ -2923,6 +2956,12 @@ function renderDecoAlerts(container, cnsHtml) {
   refreshTravelGasFractionWarning();
   container.innerHTML = (_pendingDecoAlerts || '') + (_travelGasFractionWarning || '') + (cnsHtml || '');
   appendHeHtSyncAlert(container);
+  const narcContainer = document.getElementById('decoAlertsNarcotic');
+  if (narcContainer) {
+    narcContainer.innerHTML = _pendingDecoAlertsNarcotic || '';
+    if (!narcContainer.innerHTML.trim()) narcContainer.style.display = 'none';
+    else narcContainer.style.display = '';
+  }
 }
 const FN2_AIR   = 0.79;
 const FN2_EAN32 = 0.68;
@@ -2997,11 +3036,8 @@ let lastTissues = null;
 // ═══════════════════════════════════════════════
 // ALGO SWITCH
 // ═══════════════════════════════════════════════
-function setBrandIcon(mode) {
-  const el = document.getElementById('brandIcon');
-  if (!el) return;
-  const icons = { rec: '🤿', planner: '🫧', buh: '🫧', padi: '🤿', tools: '🔧' };
-  el.textContent = icons[mode] || icons.planner;
+function setBrandIcon(_mode) {
+  /* Static Three Cats LSP logo — mode-specific emoji icons removed. */
 }
 
 function _syncDepthBtSteppers() {
@@ -3097,10 +3133,12 @@ function runGenerateSchedule() {
 }
 
 function _clearPlannerResults() {
-  ['decoResult','gasConsumptionSummary','contingencyCard','contingencyResult','diveGraphCard','tissueLoadCard',
-   'plannerProfileCanvas-wrap','recSurfIntContainer','tecSurfIntContainer'].forEach(id => {
+  ['decoResult','gasConsumptionSummary','contingencyCard','contingencyResult','diveGraphCard','fullDiveGraphCard','gfCurveInlineCard','tissueLoadCard',
+   'plannerProfileCanvas-wrap','recSurfIntContainer','tecSurfIntContainer','graphsDiveSectionHead','graphsGfSectionHead'].forEach(id => {
     const el = document.getElementById(id); if (el) el.style.display = 'none';
   });
+  const contExport = document.getElementById('contingencyExportActions');
+  if (contExport) contExport.style.display = 'none';
   _clearResultSummaryStrip();
   _setGasWarningBanner('');
   const totalsEl = document.getElementById('decoTotals');
@@ -3110,6 +3148,28 @@ function _clearPlannerResults() {
   _lastVPMResult = null;
   window._lastContingency = null;
   window._lastVPMExport = null;
+}
+
+function _plannerShowsGfCurve() {
+  return plannerAlgo === 'ZHLC_GF' || plannerAlgo === 'VPMB_GFS';
+}
+function _syncGfCurveCardVisibility() {
+  const gfc = document.getElementById('gfCurveInlineCard');
+  const gfHead = document.getElementById('graphsGfSectionHead');
+  const hasPlan = document.getElementById('decoResult')?.style.display !== 'none';
+  const show = _plannerShowsGfCurve() && hasPlan && !_contingencyRunning;
+  if (gfc) {
+    gfc.style.display = show ? 'block' : 'none';
+    if (show) gfc.classList.add('card-open');
+  }
+  if (gfHead) gfHead.style.display = show ? 'flex' : 'none';
+}
+function _syncGraphsSectionHeads() {
+  const hasPlan = document.getElementById('decoResult')?.style.display !== 'none';
+  const diveHead = document.getElementById('graphsDiveSectionHead');
+  const fdgc = document.getElementById('fullDiveGraphCard');
+  if (diveHead) diveHead.style.display = (hasPlan && fdgc?.style.display !== 'none') ? 'flex' : 'none';
+  _syncGfCurveCardVisibility();
 }
 
 function _updatePlannerSubtitle() {
@@ -3141,12 +3201,17 @@ function _updatePlanPanelSections() {
   const tecTabs = document.getElementById('tecResultTabs');
   if (recTabs) recTabs.style.display = isRec ? 'flex' : 'none';
   if (tecTabs) tecTabs.style.display = isRec ? 'none' : 'flex';
-  const gfCard = document.getElementById('gfCurveInlineCard');
-  if (gfCard) gfCard.style.display = (!isRec && plannerAlgo === 'ZHLC_GF') ? '' : 'none';
+  if (!isRec) _syncGfCurveCardVisibility();
+  else {
+    const gfCard = document.getElementById('gfCurveInlineCard');
+    if (gfCard) gfCard.style.display = 'none';
+    const gfHead = document.getElementById('graphsGfSectionHead');
+    if (gfHead) gfHead.style.display = 'none';
+  }
   document.querySelectorAll('#resultsPanel #resultTab-dive, #resultsPanel #resultTab-surfint, #resultsPanel #resultTab-avgdepth, #resultsPanel #resultTab-multi, #resultsPanel #resultTab-ndlref').forEach(p => {
     p.classList.remove('active');
   });
-  document.querySelectorAll('#resultsPanel #resultTab-graphs, #resultsPanel #resultTab-contingency, #resultsPanel #resultTab-tissue').forEach(p => {
+  document.querySelectorAll('#resultsPanel #resultTab-profile, #resultsPanel #resultTab-contingency, #resultsPanel #resultTab-graphs, #resultsPanel #resultTab-tissue').forEach(p => {
     p.classList.remove('active');
   });
   const firstRec = document.querySelector('#recResultTabs .result-tab-btn');
@@ -3393,6 +3458,7 @@ function toggleTheme() {
   setTimeout(() => {
     drawPlannerProfile();
     drawDecoProfile();
+    drawDecoProfileFull();
     drawGFCurve();
   }, 50);
 }
@@ -3811,6 +3877,23 @@ function toMMSS(minutes) {
   return `${m}'${String(s).padStart(2,'0')}"`;
 }
 
+/** Normalize M'SS" display — handles data-* attrs where trailing " was stripped by HTML. */
+function normalizeMMSSDisplay(s) {
+  if (s == null || s === '' || s === '-') return '-';
+  if (typeof s === 'number' && !isNaN(s)) return toMMSS(s);
+  s = String(s).trim();
+  let m = s.match(/^(\d+)'(\d{1,2})"?\s*$/);
+  if (m) return `${m[1]}'${String(m[2]).padStart(2, '0')}"`;
+  m = s.match(/^(\d+):(\d{1,2})$/);
+  if (m) return `${m[1]}'${String(m[2]).padStart(2, '0')}"`;
+  if (/^\d+(\.\d+)?$/.test(s)) return toMMSS(parseFloat(s));
+  return s;
+}
+
+function escHtmlAttr(s) {
+  return String(s ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+}
+
 function fmtRowTTS(rowRunMin, rtAtBottomEnd, finalRunMin) {
   if (rowRunMin == null || isNaN(rowRunMin) || rowRunMin < rtAtBottomEnd - 0.001) return '—';
   return toMMSS(Math.max(0, finalRunMin - rowRunMin));
@@ -3835,7 +3918,9 @@ function getContingencySummaryExport() {
   const totRow = document.querySelector('#contingencyResult .deco-table tbody tr[data-phase="totals"] td');
   if (totRow) {
     const p = totRow.dataset.run ? {
-      runTime: totRow.dataset.run||'-', tts: totRow.dataset.tts||'-', decoTime: totRow.dataset.deco||'-',
+      runTime: normalizeMMSSDisplay(totRow.dataset.run) || '-',
+      tts: normalizeMMSSDisplay(totRow.dataset.tts) || '-',
+      decoTime: normalizeMMSSDisplay(totRow.dataset.deco) || '-',
       cns: totRow.dataset.cns||'-', otu: totRow.dataset.otu||'-', prt: totRow.dataset.prt||'-',
       decozone: totRow.dataset.decozone||'-', decoStop: totRow.dataset.decostop||'-',
       surfGF: totRow.dataset.surfgf||'-',
@@ -3851,13 +3936,16 @@ function getContingencySummaryExport() {
       if (p.decoStop === '-') p.decoStop = c.decoStop || '-';
       if (!p.surfGF || p.surfGF === '-') p.surfGF = c.surfGF || '-';
     }
+    p.runTime = normalizeMMSSDisplay(p.runTime);
+    p.tts = normalizeMMSSDisplay(p.tts);
+    p.decoTime = normalizeMMSSDisplay(p.decoTime);
     return p;
   }
   if (!c) return getPlanSummaryExport();
   return {
-    runTime: c.lastRunFmt || `${c.lastRun}'00"`,
-    tts: c.tts || '-',
-    decoTime: c.decoTimeFmt || `${c.decoTime}'00"`,
+    runTime: normalizeMMSSDisplay(c.lastRunFmt || `${c.lastRun}'00"`),
+    tts: normalizeMMSSDisplay(c.tts || '-'),
+    decoTime: normalizeMMSSDisplay(c.decoTimeFmt || `${c.decoTime}'00"`),
     cns: c.totalCNS || '-',
     otu: c.totalOTU || '-',
     prt: c.totalPrT || '-',
@@ -3873,9 +3961,9 @@ function getPlanSummaryExport(fromTotalsEl) {
   if (el) {
     // Read from data-* attributes (text content is empty to avoid inflating table width)
     const p = el.dataset.run ? {
-      runTime:  el.dataset.run  || '-',
-      tts:      el.dataset.tts  || '-',
-      decoTime: el.dataset.deco || '-',
+      runTime:  normalizeMMSSDisplay(el.dataset.run)  || '-',
+      tts:      normalizeMMSSDisplay(el.dataset.tts)  || '-',
+      decoTime: normalizeMMSSDisplay(el.dataset.deco) || '-',
       cns:      el.dataset.cns  || '-',
       otu:      el.dataset.otu  || '-',
       prt:      el.dataset.prt  || '-',
@@ -3883,6 +3971,9 @@ function getPlanSummaryExport(fromTotalsEl) {
       decoStop: el.dataset.decostop || '-',
       surfGF:   el.dataset.surfgf || '-',
     } : parsePlanSummaryText(el.textContent);
+    p.runTime = normalizeMMSSDisplay(p.runTime);
+    p.tts = normalizeMMSSDisplay(p.tts);
+    p.decoTime = normalizeMMSSDisplay(p.decoTime);
     if (p.decozone === '-') p.decozone = formatDecoZoneStart(lp.decoZoneStart);
     if (p.decoStop === '-') p.decoStop = formatDecoStopDepth(lp.firstStopDepth);
     if (p.tts === '-' && lp.tts != null) p.tts = toMMSS(lp.tts);
@@ -3936,11 +4027,19 @@ function getDecoGasSwitches() {
   const gswRows = Array.from(document.querySelectorAll('#decoTableBody tr[data-phase="switch"]'));
   if (gswRows.length) {
     return gswRows.map(tr => {
-      const txt = (tr.querySelector('td[data-label="Depth"]') || tr.querySelectorAll('td')[1])?.textContent?.trim() || '';
-      const m = txt.match(/^(.+?)\s*@\s*(.+)$/i);
-      const gas = shortMixLabel(m ? m[1] : txt.split('@')[0] || txt);
-      const depth = m ? m[2].replace(/\s+/g, '') : '-';
-      return { gas, depth };
+      const depthTxt = (tr.querySelector('td[data-label="Depth"]') || tr.querySelectorAll('td')[1])?.textContent?.trim() || '';
+      const mixTxt = (tr.querySelector('td[data-label="Mix"]') || tr.querySelectorAll('td')[3])?.textContent?.trim() || '';
+      const legacy = depthTxt.match(/^(.+?)\s*@\s*(.+)$/i);
+      if (legacy) {
+        return {
+          gas: shortMixLabel(legacy[1]),
+          depth: legacy[2].replace(/\s+/g, ''),
+        };
+      }
+      return {
+        gas: shortMixLabel(mixTxt || depthTxt.split('@')[0] || depthTxt),
+        depth: depthTxt.replace(/\s+/g, '') || '-',
+      };
     });
   }
   const switches = [];
@@ -4149,7 +4248,7 @@ function renderDecoPlanHeaderHtml(data, opts) {
     const chipPrefix = (data.circuit === 'CCR' || data.circuit === 'pSCR') ? 'Bailout' : 'Deco';
     data.decoGases.forEach((g, i) => {
       const cls = i === 0 ? 'deco1' : 'deco2';
-      chips.push(`<span class="gas-pill ${cls}"><span class="pill-dot"></span>${chipPrefix} ${i + 1} ${_escHtmlPre(g.depth)} @ ${_escHtmlPre(g.gas)}</span>`);
+      chips.push(`<span class="gas-pill ${cls}"><span class="pill-dot"></span>${chipPrefix} ${i + 1} ${_escHtmlPre(g.gas)} @ ${_escHtmlPre(g.depth)}</span>`);
     });
   }
 
@@ -4437,16 +4536,16 @@ function _pdfDrawSwitchRow(doc, y, layout, tr, cleanFn) {
 
 function buildDecoSummaryAlerts(hasDeco, endM, noDecoNote, hitSafetyGuard) {
   const decoAlertHtml = hasDeco
-    ? '<div class="alert deco" style="margin-top:8px;"><span>⚠</span><div><strong>DECOMPRESSION DIVE.</strong> Do not skip mandatory stops. Switch gas at optimal depth shown above. Verify ppO₂ before each switch.</div></div>'
-    : `<div class="alert ok" style="margin-top:8px;"><span>✓</span><div><strong>NO-DECO DIVE.</strong>${noDecoNote ? ' ' + noDecoNote : ''}</div></div>`;
+    ? '<div class="alert deco"><span>⚠</span><div><strong>DECOMPRESSION DIVE.</strong> Do not skip mandatory stops. Switch gas at optimal depth according to the deco schedule. Verify ppO₂ before each switch.</div></div>'
+    : `<div class="alert ok"><span>✓</span><div><strong>NO-DECO DIVE.</strong>${noDecoNote ? ' ' + noDecoNote : ''}</div></div>`;
   const safetyGuardHtml = hitSafetyGuard
-    ? '<div class="alert dang" style="margin-top:8px;"><span>⚠</span><div><strong>DECO CALCULATION LIMIT.</strong> Decompression obligation exceeds the calculation limit — plan may be incomplete.</div></div>'
+    ? '<div class="alert dang"><span>⚠</span><div><strong>DECO CALCULATION LIMIT.</strong> Decompression obligation exceeds the calculation limit — plan may be incomplete.</div></div>'
     : '';
-  const narcTip = '<span class="tip-icon" style="color:#fff;opacity:0.85;" onclick="showTip(_narcoticTipTitle,_narcoticTipText)"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"/><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" fill="none"/><circle cx="5.5" cy="7.4" r="0.55" fill="currentColor"/></svg></span>';
+  const narcTip = '<span class="tip-icon" onclick="showTip(_narcoticTipTitle,_narcoticTipText)"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"/><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" fill="none"/><circle cx="5.5" cy="7.4" r="0.55" fill="currentColor"/></svg></span>';
   const narcAlertHtml = endM > 40
-    ? `<div class="alert" style="margin-top:8px;background:#FF4433;border-color:#111111;border-width:1px;color:#fff;font-weight:700;"><span>⚠</span><div><strong>HIGH NARCOTIC DEPTH.</strong> END exceeds 40 m equivalent. Consider a less narcotic gas mix.${narcTip}</div></div>`
+    ? `<div class="alert narcotic-warn"><span>⚠</span><div><strong>HIGH NARCOTIC DEPTH.</strong> END exceeds 40 m equivalent. Consider a less narcotic gas mix.${narcTip}</div></div>`
     : endM > 30
-      ? `<div class="alert" style="margin-top:8px;background:#FF4433;border-color:#111111;border-width:1px;color:#fff;font-weight:700;"><span>⚠</span><div><strong>NARCOTIC DEPTH WARNING.</strong> END exceeds 30 m equivalent. Consider a less narcotic gas mix.${narcTip}</div></div>`
+      ? `<div class="alert narcotic-warn"><span>⚠</span><div><strong>NARCOTIC DEPTH WARNING.</strong> END exceeds 30 m equivalent. Consider a less narcotic gas mix.${narcTip}</div></div>`
       : '';
   return { decoAlertHtml, narcAlertHtml, safetyGuardHtml };
 }
@@ -4455,7 +4554,8 @@ function updateDecoSummaryHtml(hasDeco, endM, noDecoNote, hitSafetyGuard) {
   const el = document.getElementById('decoSummary');
   if (!el) return;
   const { decoAlertHtml, narcAlertHtml, safetyGuardHtml } = buildDecoSummaryAlerts(hasDeco, endM, noDecoNote, hitSafetyGuard);
-  _pendingDecoAlerts = (decoAlertHtml || '') + (safetyGuardHtml || '') + (narcAlertHtml || '');
+  _pendingDecoAlerts = (decoAlertHtml || '') + (safetyGuardHtml || '');
+  _pendingDecoAlertsNarcotic = narcAlertHtml || '';
   el.innerHTML = renderDecoPlanHeaderHtml(buildDecoPlanHeaderData(), { hasDeco });
   scheduleDecoScheduleStackSync();
 }
@@ -4476,6 +4576,11 @@ function measureDecoScheduleColumnWidth(table) {
 
 function syncDecoScheduleStackWidths() {
   document.querySelectorAll('.deco-table-wrap').forEach(wrap => {
+    if (wrap.closest('#contingencyResult') && wrap.closest('#resultsPanel')) {
+      wrap.style.width = '';
+      wrap.style.removeProperty('--deco-table-width');
+      return;
+    }
     const table = wrap.querySelector('.deco-table');
     if (!table?.tBodies[0]?.rows.length) {
       wrap.style.width = '';
@@ -4493,42 +4598,56 @@ function syncDecoScheduleStackWidths() {
     }
   });
   const stack = document.getElementById('contingencyScheduleStack');
-  const wrap = stack?.querySelector('#contingencyResult .deco-table-wrap');
   const btn = stack?.querySelector('.deco-contingency-calc');
-  if (stack && btn) {
+  const emergWrap = document.querySelector('#contingencyResult .deco-table-wrap');
+  const emergAlerts = document.getElementById('decoAlertsEmergency');
+  if (stack?.closest('#resultsPanel')) {
+    stack.style.width = '100%';
+    if (btn) btn.style.width = '100%';
+    if (emergWrap) {
+      emergWrap.style.width = '';
+      emergWrap.style.removeProperty('--deco-table-width');
+    }
+    if (emergWrap && emergAlerts) {
+      emergAlerts.style.width = '';
+      emergAlerts.style.maxWidth = '';
+      emergAlerts.style.boxSizing = '';
+    }
+  } else if (stack && btn) {
+    const wrap = emergWrap;
     if (wrap?.style.width) {
       stack.style.width = wrap.style.width;
       btn.style.width = '100%';
     } else {
       stack.style.width = '';
     }
+    if (emergWrap && emergAlerts) {
+      if (emergWrap.style.width) {
+        emergAlerts.style.width = emergWrap.style.width;
+        emergAlerts.style.maxWidth = '100%';
+        emergAlerts.style.boxSizing = 'border-box';
+      } else {
+        emergAlerts.style.width = '';
+        emergAlerts.style.maxWidth = '';
+        emergAlerts.style.boxSizing = '';
+      }
+    }
   }
   const mainWrap = document.querySelector('#decoResult .deco-table-wrap');
   const decoAlerts = document.getElementById('decoAlerts');
-  if (mainWrap && decoAlerts) {
-    if (mainWrap.style.width) {
-      decoAlerts.style.width = mainWrap.style.width;
-      decoAlerts.style.maxWidth = '100%';
-      decoAlerts.style.boxSizing = 'border-box';
+  const decoAlertsNarcotic = document.getElementById('decoAlertsNarcotic');
+  [decoAlerts, decoAlertsNarcotic].forEach(alertsEl => {
+    if (!alertsEl) return;
+    if (mainWrap && mainWrap.style.width) {
+      alertsEl.style.width = mainWrap.style.width;
+      alertsEl.style.maxWidth = '100%';
+      alertsEl.style.boxSizing = 'border-box';
     } else {
-      decoAlerts.style.width = '';
-      decoAlerts.style.maxWidth = '';
-      decoAlerts.style.boxSizing = '';
+      alertsEl.style.width = '';
+      alertsEl.style.maxWidth = '';
+      alertsEl.style.boxSizing = '';
     }
-  }
-  const emergWrap = document.querySelector('#contingencyResult .deco-table-wrap');
-  const emergAlerts = document.getElementById('decoAlertsEmergency');
-  if (emergWrap && emergAlerts) {
-    if (emergWrap.style.width) {
-      emergAlerts.style.width = emergWrap.style.width;
-      emergAlerts.style.maxWidth = '100%';
-      emergAlerts.style.boxSizing = 'border-box';
-    } else {
-      emergAlerts.style.width = '';
-      emergAlerts.style.maxWidth = '';
-      emergAlerts.style.boxSizing = '';
-    }
-  }
+  });
 }
 
 function scheduleDecoScheduleStackSync() {
@@ -4543,15 +4662,16 @@ function planInfoTipIconHtml() {
 }
 
 function buildPlanInfoRowHtml(o, phase) {
-  const decoColor = o.hasDeco ? 'var(--orange)' : 'var(--green)';
+  const decoColor = o.hasDeco ? 'var(--red)' : 'var(--green)';
   const surfGFVal = o.surfaceGF != null ? Math.round(o.surfaceGF) : null;
   const surfGFDisp = surfGFVal != null ? surfGFVal + '%' : '—';
   const surfGFColor = surfGFVal == null ? 'var(--muted)' :
     surfGFVal >= 100 ? 'var(--red)' : surfGFVal >= 85 ? 'var(--orange)' :
     surfGFVal >= 70 ? 'var(--yellow)' : 'var(--green)';
+  const firstStopColor = (o.decoStop && o.decoStop !== '—' && o.decoStop !== '-') ? 'var(--red)' : 'var(--text)';
   const innerHtml = `<div class="deco-totals-inner">
       ${planInfoTipIconHtml()}
-      <span class="summary-stat"><span>Run time:</span> <span>${o.runTime}</span></span> &nbsp;
+      <span class="summary-stat"><span>Run time:</span> <span style="color:#2563eb">${o.runTime}</span></span> &nbsp;
       <span class="summary-stat"><span>TTS:</span> <span>${o.tts}</span></span> &nbsp;
       <span class="summary-stat">Deco time: <span style="color:${decoColor}">${o.decoTime}</span></span> &nbsp;
       <span class="summary-stat">CNS: <span style="color:${o.cnsColor}">${o.cns}</span></span> &nbsp;
@@ -4559,31 +4679,52 @@ function buildPlanInfoRowHtml(o, phase) {
       <span class="summary-stat">PrT: <span style="color:${o.prtColor}" title="${o.prtTitle || ''}">${o.prt}</span></span> &nbsp;
       <span class="summary-stat">Surf GF: <span style="color:${surfGFColor}" title="Surface gradient factor — tissue load ÷ M-value at surface">${surfGFDisp}</span></span> &nbsp;
       <span class="summary-stat">Decozone: <span>${o.decozone}</span></span> &nbsp;
-      <span class="summary-stat">First deco: <span>${o.decoStop}</span></span>
+      <span class="summary-stat">First deco: <span style="color:${firstStopColor}">${o.decoStop}</span></span>
     </div>`;
   const totalsEl = document.getElementById('decoTotals');
   if (totalsEl) {
     totalsEl.innerHTML = '';
     totalsEl.style.display = 'none';
   }
-  const rowHtml = `<tr class="deco-totals-row" data-phase="${phase || 'totals'}"><td colspan="20" data-run="${o.runTime}" data-tts="${o.tts}" data-deco="${o.decoTime}" data-cns="${o.cns}" data-otu="${o.otu}" data-prt="${o.prt}" data-decozone="${o.decozone}" data-decostop="${o.decoStop}" data-surfgf="${surfGFDisp}">${innerHtml}</td></tr>`;
+  const rowHtml = `<tr class="deco-totals-row" data-phase="${phase || 'totals'}"><td colspan="20" data-run="${escHtmlAttr(o.runTime)}" data-tts="${escHtmlAttr(o.tts)}" data-deco="${escHtmlAttr(o.decoTime)}" data-cns="${escHtmlAttr(o.cns)}" data-otu="${escHtmlAttr(o.otu)}" data-prt="${escHtmlAttr(o.prt)}" data-decozone="${escHtmlAttr(o.decozone)}" data-decostop="${escHtmlAttr(o.decoStop)}" data-surfgf="${escHtmlAttr(surfGFDisp)}">${innerHtml}</td></tr>`;
   scheduleDecoScheduleStackSync();
   return rowHtml;
+}
+
+function compactExportDepth(v) {
+  if (!v || v === '-' || v === '—') return v;
+  return String(v).replace(/(\d+(?:\.\d+)?)\s+(m|ft)\b/gi, '$1$2').trim();
 }
 
 function formatPlanSummaryBlock(p, compact) {
   const sg = p.surfGF || '-';
   if (compact) {
+    const dz = compactExportDepth(p.decozone);
+    const ds = compactExportDepth(p.decoStop);
     return [
-      `Run Time:${p.runTime} TTS:${p.tts} Deco:${p.decoTime}`,
-      `CNS:${p.cns} OTU:${p.otu} PrT:${p.prt}`,
-      `Surf GF:${sg} Decozone:${p.decozone} First deco:${p.decoStop}`,
+      `RT: ${p.runTime} TTS: ${p.tts} Deco: ${p.decoTime}`,
+      `CNS: ${p.cns} OTU: ${p.otu} PrT: ${p.prt}`,
+      `Surf GF: ${sg} Decozone: ${dz}`,
+      `First deco: ${ds}`,
     ];
   }
   return [
     `Deco Time: ${p.decoTime}  Run Time: ${p.runTime}  TTS: ${p.tts}`,
     `CNS: ${p.cns}  OTU: ${p.otu}  PrT: ${p.prt}`,
     `Surf GF: ${sg}  Decozone: ${p.decozone}  First deco: ${p.decoStop}`,
+  ];
+}
+
+/** Compact 3-line totals footer for .txt export (no inch marks on times). */
+function formatExportSummaryBlock(p) {
+  const stripInch = s => (s && s !== '-') ? String(s).replace(/"/g, '') : s;
+  const dz = compactExportDepth(p.decozone);
+  const ds = compactExportDepth(p.decoStop);
+  const sg = p.surfGF || '-';
+  return [
+    `RT: ${stripInch(p.runTime)} TTS: ${stripInch(p.tts)} Deco: ${stripInch(p.decoTime)}`,
+    `CNS: ${p.cns} OTU: ${p.otu} PrT: ${p.prt}`,
+    `Surf GF: ${sg} Decozone: ${dz} First deco: ${ds}`,
   ];
 }
 
@@ -4771,8 +4912,12 @@ function setUnits(u, opts) {
     const altInp = document.getElementById('altitudeCustomInput');
     if (altInp) altInp.value = altitudeMToCustomDisplay(altitudeM);
   }
-  setTxt('sd3', u === 'metric' ? '3 m' : '10 ft');
-  setTxt('sd6', u === 'metric' ? '6 m' : '20 ft');
+  const depthToggle = document.getElementById('stopDepthToggle');
+  if (depthToggle) {
+    const depthOpts = depthToggle.querySelectorAll('.option-pill-opt');
+    if (depthOpts[0]) depthOpts[0].textContent = u === 'metric' ? '3 m' : '10 ft';
+    if (depthOpts[1]) depthOpts[1].textContent = u === 'metric' ? '6 m' : '20 ft';
+  }
 
   relabelSelectOptions('descentRate', v => u === 'imperial' ? Math.round(v * FT_PER_M) + ' ft/min' : v + ' m/min');
   relabelSelectOptions('ascentRate', v => u === 'imperial' ? Math.round(v * FT_PER_M) + ' ft/min' : v + ' m/min');
@@ -4868,15 +5013,27 @@ function setUnits(u, opts) {
 // ═══════════════════════════════════════════════
 // SAFETY STOP CONTROLS
 // ═══════════════════════════════════════════════
+function _syncStopDepthPill() {
+  const toggle = document.getElementById('stopDepthToggle');
+  if (toggle) toggle.dataset.side = stopDepthM === 6 ? 'right' : 'left';
+}
+function _syncStopDurPill() {
+  const toggle = document.getElementById('stopDurToggle');
+  if (toggle) toggle.dataset.side = stopDurMin === 5 ? 'right' : 'left';
+}
+function toggleStopDepth() {
+  setStopDepth(stopDepthM === 3 ? 6 : 3);
+}
+function toggleStopDur() {
+  setStopDur(stopDurMin === 3 ? 5 : 3);
+}
 function setStopDepth(m) {
   stopDepthM = m;
-  document.getElementById('sd3').classList.toggle('active', m===3);
-  document.getElementById('sd6').classList.toggle('active', m===6);
+  _syncStopDepthPill();
 }
 function setStopDur(min) {
   stopDurMin = min;
-  document.getElementById('sdur3').classList.toggle('active', min===3);
-  document.getElementById('sdur5').classList.toggle('active', min===5);
+  _syncStopDurPill();
 }
 
 // ═══════════════════════════════════════════════
@@ -5721,6 +5878,12 @@ function renderNDLTable() {
 // ═══════════════════════════════════════════════
 // TISSUE VIZ (Bühlmann)
 // ═══════════════════════════════════════════════
+function lspSatColors(pct) {
+  const p = Math.round(pct);
+  if (p >= 80) return { bar: 'var(--status-red)', text: 'var(--status-red)', status: p >= 100 ? '!! LIMIT' : '! HIGH', level: 'warn' };
+  if (p >= 50) return { bar: 'var(--status-orange)', text: 'var(--status-orange)', status: '~ LOADED', level: 'caution' };
+  return { bar: 'var(--status-green)', text: 'var(--status-green)', status: 'OK', level: 'safe' };
+}
 function updateTissueViz(tissues, gfH) {
   const gfF   = gfH / 100;
   const grid  = document.getElementById('tissueGrid');
@@ -5741,9 +5904,9 @@ function updateTissueViz(tissues, gfH) {
     } else { a = a_n2; b = b_n2; }
     const mv  = gfAdjustedMValue(a, b, altSurfaceP, gfF);
     const pct = Math.min(100, Math.round((pTotal / mv) * 100));
-    const col = pct >= 100 ? 'var(--red)' : pct >= 85 ? 'var(--orange)' : pct >= 70 ? 'var(--yellow)' : 'var(--green)';
-    const tc  = pct >= 100 ? '#ff7080' : pct >= 85 ? '#ff9a40' : pct >= 70 ? '#ffe060' : '#70f0aa';
-    const status = pct >= 100 ? '!! LIMIT' : pct >= 85 ? '! HIGH' : pct >= 70 ? '~ MED' : 'OK';
+    const sat = lspSatColors(pct);
+    const col = sat.bar;
+    const status = sat.status;
 
     // Horizontal bar row
     const row = document.createElement('div');
@@ -5756,10 +5919,10 @@ function updateTissueViz(tissues, gfH) {
       <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:${col};min-width:36px;text-align:right;">${pct}%</span>`;
     grid.appendChild(row);
 
-    if (tbody) tbody.innerHTML += `<tr>
+    if (tbody) tbody.innerHTML += `<tr class="tissue-sat-${sat.level}">
       <td>${i+1}</td><td>${ht}</td>
       <td>${pTotal.toFixed(3)}${pHe>0?' ('+pN2.toFixed(2)+'+'+pHe.toFixed(2)+')':''}</td><td>${mv.toFixed(3)}</td>
-      <td style="color:${tc}">${pct}%</td><td>${status}</td>
+      <td class="tissue-sat-pct">${pct}%</td><td class="tissue-sat-status">${status}</td>
     </tr>`;
   });
   // Show unified tissue card
@@ -6798,8 +6961,11 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   // Dive graph — works for VPM (reads table rows)
   const _dgcVPM = document.getElementById('diveGraphCard');
   if (_dgcVPM) _dgcVPM.style.display = 'block';
+  const _fdgcVPM = document.getElementById('fullDiveGraphCard');
+  if (_fdgcVPM) _fdgcVPM.style.display = 'block';
+  _syncGraphsSectionHeads?.();
   const vpmScheduleGen = window._decoScheduleSeq;
-  setTimeout(() => { if (!isStaleDecoScheduleGen(vpmScheduleGen)) drawDecoProfile(); }, 100);
+  setTimeout(() => { if (!isStaleDecoScheduleGen(vpmScheduleGen)) { drawDecoProfile(); drawDecoProfileFull(); } }, 100);
 
   // Gas Consumption — compute from rendered table rows
   const gasConsVPM = {};
@@ -6900,8 +7066,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
       const fillBar = units === 'imperial' ? fillRaw / 14.5038 : fillRaw;
       const resBar  = units === 'imperial' ? resRaw  / 14.5038 : resRaw;
       const isBottom = gas === gasLabels[0]; // first gas = bottom gas
-      const reqDisp  = gpVolDisp(reqL);
-      const shortVolDisp = (litres) => gpVolDisp(Math.max(0, litres));
+      const reqVolV = gpVolWithUnit(reqL);
 
       let travelPooledLVPM = 0;
       if (isBottom) {
@@ -6923,7 +7088,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
       const portionL = pooledTurn ? pooledTurn.portionL : (usableL != null ? usableL * fraction : null);
       const turnBar  = pooledTurn ? pooledTurn.turnBar : ((hasCyl && isBottom && sizeL > 0) ? fillBar - (portionL / sizeL) : null);
 
-      const availDisp = usableL != null ? gpVolDisp(usableL) : null;
+      const availVolV = usableL != null ? gpVolWithUnit(usableL) : null;
       const reqValid = Number.isFinite(reqL);
       const short = reqValid && usableL != null && reqL > usableL;
       const tight = reqValid && usableL != null && !short && reqL > usableL * 0.90;
@@ -6932,10 +7097,10 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
       // Sufficiency colour
       const sufCol = !reqValid ? 'var(--orange)' : short ? 'var(--red)' : tight ? 'var(--yellow)' : hasCyl ? 'var(--green)' : 'var(--muted)';
       const sufIcon = !reqValid ? '—' : short ? '✗' : tight ? '⚠' : hasCyl ? '✓' : '—';
-      const sufTxt  = !reqValid ? 'Invalid gas' : short ? `Short ${shortVolDisp(reqL - (usableL || 0))} ${volUnitV}` : tight ? 'Tight' : hasCyl ? 'OK' : 'No cyl data';
+      const sufTxt  = !reqValid ? 'Invalid gas' : short ? `Short ${gpVolWithUnit(reqL - (usableL || 0))}` : tight ? 'Tight' : hasCyl ? 'OK' : 'No cyl data';
 
       // Thirds/Half portion in litres (bottom only)
-      const portionDispV = (isBottom && portionL != null) ? `${gpVolDisp(portionL)} ${volUnitV}` : '—';
+      const portionDispV = (isBottom && portionL != null) ? gpVolWithUnit(portionL) : '—';
       const portionColorV = (isBottom && portionL != null) ? 'var(--accent)' : 'var(--muted)';
       // Turn pressure (bottom only)
       const turnDispV = (isBottom && turnBar != null) ? (units==='imperial'?Math.round(turnBar*14.5038):Math.round(turnBar)) : null;
@@ -6950,16 +7115,16 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
       const reqColorV   = short ? 'var(--red)'  : 'var(--text)';
       const availColorV = short ? 'var(--red)'  : tight ? 'var(--yellow)' : hasCyl ? 'var(--green)' : 'var(--muted)';
       const statusCellV = short
-        ? `<td style="color:var(--red);font-weight:700;">✗ short ${shortVolDisp(reqL - (usableL || 0))} ${volUnitV}</td>`
+        ? `<td style="color:var(--red);font-weight:700;">✗ short ${gpVolWithUnit(reqL - (usableL || 0))}</td>`
         : tight
           ? `<td style="color:var(--yellow);font-weight:700;">⚠ tight</td>`
           : (isBottom && turnDispV != null)
-            ? `<td style="color:var(--accent);">⟳ turn${usableL!=null?` <span style="color:var(--green);font-size:10px;">✓ ${reqDisp} ${volUnitV} needed</span>`:''}</td>`
+            ? `<td style="color:var(--accent);">⟳ turn${usableL!=null?` <span style="color:var(--green);font-size:10px;">✓ ${reqVolV} needed</span>`:''}</td>`
             : `<td style="color:${sufCol};font-weight:700;">${sufIcon} ${sufTxt}</td>`;
       tableRows += `<tr style="background:${rowBgV};">
         <td style="font-weight:700;">${gas}</td>
-        <td style="color:${reqColorV};font-weight:${short?'700':'400'};">${reqDisp} ${volUnitV}</td>
-        <td style="color:${availColorV};font-weight:${(!short&&hasCyl)?'700':'400'};">${availDisp != null ? availDisp+' '+volUnitV : '—'}</td>
+        <td style="color:${reqColorV};font-weight:${short?'700':'400'};">${reqVolV}</td>
+        <td style="color:${availColorV};font-weight:${(!short&&hasCyl)?'700':'400'};">${availVolV != null ? availVolV : '—'}</td>
         <td style="color:${portionColorV};">${portionDispV}</td>
         ${turnCellV}
         <td style="color:var(--muted);">${resDispV}</td>
@@ -6988,7 +7153,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
             ? `Shorten BT to <strong>${maxBT} min</strong> and turn at <strong>${maxTurnDisp} ${presUnitV}</strong>, or use a larger cylinder / add a stage.`
             : `Shorten BT to <strong>${maxBT} min</strong>, or use a larger cylinder / add a stage.`;
         }
-        warnings += `<div class="alert dang" style="margin-top:6px;"><span>⚠</span><div><strong>${gas} insufficient</strong> — need ${reqDisp} ${volUnitV}, have ${availDisp} ${volUnitV}. Short by <strong>${shortVolDisp(reqL - usableL)} ${volUnitV}</strong>.${btSuggest ? '<br>' + btSuggest : ''}</div></div>`;
+        warnings += `<div class="alert dang" style="margin-top:6px;"><span>⚠</span><div><strong>${gas} insufficient</strong> — need ${reqVolV}, have ${availVolV}. Short by <strong>${gpVolWithUnit(reqL - usableL)}</strong>.${btSuggest ? '<br>' + btSuggest : ''}</div></div>`;
       }
     }
 
@@ -7013,13 +7178,12 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
       </div>
       <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
         <table class="gas-plan-table" style="margin-top:0;">
-          <colgroup><col style="width:13%"><col style="width:12%"><col style="width:15%"><col style="width:12%"><col style="width:10%"><col style="width:22%"><col style="width:16%"></colgroup>
+          <colgroup></colgroup>
           <thead><tr>
             <th>GAS</th>
             <th>TOTAL VOL</th>
             <th>${ruleLblVPM}</th>
             <th>TURN PRESS</th>
-            <th>RESERVE</th>
             <th>SUFFICIENT</th>
             <th>MARGIN</th>
           </tr></thead>
@@ -7045,14 +7209,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
 
   // Tissue Saturation, GF Curve — Bühlmann-only: hide GF card on VPM
   const gfcVpm = document.getElementById('gfCurveInlineCard');
-  if (gfcVpm) gfcVpm.style.display = 'none';
-  const alertsContainer = document.getElementById('decoAlerts');
-  if (alertsContainer) {
-    const cnsAlert = result.totalCNS != null && result.totalCNS >= 80
-      ? `<div class="alert" style="margin-top:8px;background:#ffff00;border-color:#cccc00;color:#111;font-weight:700;"><span>☢</span><div><strong>HIGH CNS%.</strong> CNS oxygen load ${result.totalCNS.toFixed(0)}% exceeds 80%. Reduce deco gas ppO₂, switch depth, or bottom time.</div></div>`
-      : '';
-    renderDecoAlerts(alertsContainer, cnsAlert);
-  }
+  if (gfcVpm) gfcVpm.style.display = _plannerShowsGfCurve() ? 'block' : 'none';
 
   // ── Min Deco Profile enforcement (VPM) — applied in runVPMSchedule before render ──
   const _vpmRawStops = result.stops?.map(s => ({ depth: s.depth, dur: s.time, gas: s.gas })) || [];
@@ -7103,6 +7260,13 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
     const endMvpm = calcEND(depthM, bottomFN2vpm, _vpmBotFracs.fHe || 0);
     const hasDeco = (result.stops || []).some(s => s.time > 0);
     updateDecoSummaryHtml(hasDeco, endMvpm, '');
+  }
+  const alertsContainer = document.getElementById('decoAlerts');
+  if (alertsContainer) {
+    const cnsAlert = result.totalCNS != null && result.totalCNS >= 80
+      ? `<div class="alert" style="margin-top:8px;background:#ffff00;border-color:#cccc00;color:#111;font-weight:700;"><span>☢</span><div><strong>HIGH CNS%.</strong> CNS oxygen load ${result.totalCNS.toFixed(0)}% exceeds 80%. Reduce deco gas ppO₂, switch depth, or bottom time.</div></div>`
+      : '';
+    renderDecoAlerts(alertsContainer, cnsAlert);
   }
   if (result.finalTissues && result.finalTissues.length && !_contingencyRunning) {
     updateTissueViz(result.finalTissues, mGF.high);
@@ -8638,13 +8802,12 @@ function runDecoSchedule() {
         </div>
         <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
           <table class="gas-plan-table" style="margin-top:0;">
-            <colgroup><col style="width:13%"><col style="width:12%"><col style="width:15%"><col style="width:12%"><col style="width:10%"><col style="width:22%"><col style="width:16%"></colgroup>
+            <colgroup></colgroup>
             <thead><tr>
               <th>GAS</th>
               <th>TOTAL VOL</th>
               <th>${ruleLblCard}</th>
               <th>TURN PRESS</th>
-              <th>RESERVE</th>
               <th>SUFFICIENT</th>
               <th>MARGIN</th>
             </tr></thead>
@@ -8679,12 +8842,12 @@ function runDecoSchedule() {
         const reqValid = Number.isFinite(reqL);
         const short2 = reqValid && avail!=null && reqL>avail;
         const sufCol2 = !reqValid ? 'var(--orange)' : short2?'var(--red)':avail!=null?'var(--green)':'var(--muted)';
-        const reqDispE = gpVolDisp(reqL);
-        const availDispE = avail != null ? gpVolDisp(avail) : null;
-        const shortDispE = gpVolDisp(Math.max(0, reqL - (avail || 0)));
-        const sufTxt2 = !reqValid ? 'Invalid gas' : short2?`✗ short ${shortDispE} ${volUnitV2}`:avail!=null?'✓ OK':'—';
-        emergRows += `<tr><td style="font-weight:700;">${gas}</td><td style="color:${short2?'var(--red)':'var(--text)'};">${reqDispE} ${volUnitV2}</td><td style="color:${avail!=null?(short2?'var(--red)':'var(--green)'):'var(--muted)'};">${availDispE != null ? availDispE+' '+volUnitV2 : '—'}</td><td style="color:${sufCol2};font-weight:700;">${sufTxt2}</td></tr>`;
-        if (short2) emergWarn += `<div class="alert dang" style="margin-top:6px;"><span>⚠</span><div><strong>${gas} insufficient</strong> — need ${reqDispE} ${volUnitV2}, have ${availDispE} ${volUnitV2}.</div></div>`;
+        const reqVolE = gpVolWithUnit(reqL);
+        const availVolE = avail != null ? gpVolWithUnit(avail) : null;
+        const shortVolE = gpVolWithUnit(Math.max(0, reqL - (avail || 0)));
+        const sufTxt2 = !reqValid ? 'Invalid gas' : short2?`✗ short ${shortVolE}`:avail!=null?'✓ OK':'—';
+        emergRows += `<tr><td style="font-weight:700;">${gas}</td><td style="color:${short2?'var(--red)':'var(--text)'};">${reqVolE}</td><td style="color:${avail!=null?(short2?'var(--red)':'var(--green)'):'var(--muted)'};">${availVolE != null ? availVolE : '—'}</td><td style="color:${sufCol2};font-weight:700;">${sufTxt2}</td></tr>`;
+        if (short2) emergWarn += `<div class="alert dang" style="margin-top:6px;"><span>⚠</span><div><strong>${gas} insufficient</strong> — need ${reqVolE}, have ${availVolE}.</div></div>`;
       });
       const html2 = `<div style="margin-top:14px;">
         <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">${cardTitle}</div>
@@ -8710,7 +8873,7 @@ function runDecoSchedule() {
 
   if (!_contingencyRunning) {
     { const _tlc = document.getElementById('tissueLoadCard'); if (_tlc) _tlc.style.display = 'block'; }
-    { const _gfc = document.getElementById('gfCurveInlineCard'); if (_gfc) _gfc.style.display = (plannerAlgo === 'ZHLC_GF') ? 'block' : 'none'; }
+    _syncGraphsSectionHeads();
     // Clear any VPM "N/A" notices from tissue/GF cards
     ['gfCurveInlineCard'].forEach(id => { // tissueInlineCard/tableCard merged into tissueLoadCard
       const el = document.getElementById(id);
@@ -8718,13 +8881,14 @@ function runDecoSchedule() {
     });
     { const _cc = document.getElementById('contingencyCard'); if (_cc) _cc.style.display = 'block'; }
     const _dgc = document.getElementById('diveGraphCard'); if (_dgc) _dgc.style.display = 'block';
+    const _fdgc = document.getElementById('fullDiveGraphCard'); if (_fdgc) _fdgc.style.display = 'block';
     buildContingencyButtons();
     { const _cr = document.getElementById('contingencyResult'); if (_cr) _cr.style.display = 'none'; }
     setTimeout(() => {
       if (isStaleDecoScheduleGen(scheduleGen)) return;
       const dgc = document.getElementById('diveGraphCard');
       if (dgc) dgc.style.display = 'block';
-      setTimeout(() => { if (!isStaleDecoScheduleGen(scheduleGen)) drawDecoProfile(); }, 50);
+      setTimeout(() => { if (!isStaleDecoScheduleGen(scheduleGen)) { drawDecoProfile(); drawDecoProfileFull(); } }, 50);
     }, 100);
     setTimeout(() => {
       if (!isStaleDecoScheduleGen(scheduleGen)) {
@@ -9581,6 +9745,72 @@ function _graphZoomApply(canvasId, data) {
     const hint = document.getElementById('decoProfileCanvas-hint');
     if (hint) hint.style.opacity = data ? '0.85' : '0.55';
   }
+  if (canvasId === 'plannerProfileCanvas') {
+    const hint = document.getElementById('plannerProfileCanvas-hint');
+    if (hint) hint.style.opacity = data ? '0.85' : '0.55';
+  }
+}
+
+function _profileLegendDepthLabel(depthM) {
+  if (units === 'imperial') return Math.round(depthM * 3.28084) + 'ft';
+  const d = Math.round(depthM * 10) / 10;
+  return (d % 1 === 0 ? d.toFixed(0) : d.toFixed(1)) + 'm';
+}
+
+function _buildProfileLegendTableRows(waypoints, colors) {
+  const { red, green, accent } = colors;
+  const rows = [];
+  let stopNum = 0;
+  [...waypoints].sort((a, b) => a.t - b.t).forEach(wp => {
+    if (wp.type === 'gasswitch') {
+      const gas = String(wp.gasLabel || '').replace(/\s+/g, ' ').trim();
+      const depthTxt = wp.depthLabel || _profileLegendDepthLabel(wp.depth || 0);
+      rows.push({
+        kind: 'gasswitch',
+        num: '⇄',
+        stop: `${depthTxt}${gas ? ' · ' + gas : ''}`,
+        run: Math.round(wp.t * 10) / 10,
+        ppo2: wp.ppo2,
+        color: 'var(--gas-switch)',
+      });
+      return;
+    }
+    if (!wp.dot || !wp.label) return;
+    stopNum += 1;
+    const dotColor = wp.type === 'deco' ? red : wp.type === 'safety' ? green : accent;
+    rows.push({
+      kind: wp.type,
+      num: stopNum,
+      stop: wp.label.replace(/(\d+m)\s+(\d+)/, '$1 - $2'),
+      run: Math.round(wp.t * 10) / 10,
+      ppo2: wp.ppo2,
+      color: dotColor,
+    });
+  });
+  return rows;
+}
+
+function _renderProfileLegendTableHtml(rows, colors) {
+  const { red, orange, muted } = colors;
+  return `<table class="profile-legend-table" style="width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:11px;margin-top:8px;">
+    <thead><tr style="border-bottom:1px solid var(--border);">
+      <th style="padding:5px 6px;text-align:left;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">#</th>
+      <th style="padding:5px 6px;text-align:left;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">Stop</th>
+      <th style="padding:5px 6px;text-align:right;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">Run</th>
+      <th style="padding:5px 6px;text-align:right;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">ppO₂</th>
+    </tr></thead>
+    <tbody>${rows.map(row => {
+      const pColor = row.ppo2 >= 1.6 ? red : row.ppo2 >= 1.4 ? orange : muted;
+      const rowCls = row.kind === 'gasswitch' ? ' class="profile-legend-gasswitch"' : '';
+      const rowBg = row.kind === 'gasswitch' ? ' style="border-bottom:1px solid var(--border);background:color-mix(in oklab, var(--gas-switch) 8%, transparent);"' : ' style="border-bottom:1px solid var(--border);"';
+      return `<tr${rowCls}${rowBg}>
+        <td style="padding:5px 6px;color:${row.color};font-weight:600;">${row.num}</td>
+        <td style="padding:5px 6px;color:${row.color};">${row.stop}</td>
+        <td style="padding:5px 6px;text-align:right;color:var(--muted);">${row.run} min</td>
+        <td style="padding:5px 6px;text-align:right;color:${row.ppo2 != null ? pColor : 'var(--muted)'};">${row.ppo2 != null ? row.ppo2.toFixed(2) : '—'}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`;
 }
 
 // AUDIT-UNIT:UI-PLOT-RENDER
@@ -9705,7 +9935,6 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
   }
 
   // ── Gas switch flags — pinned to top of plot area, line to switch depth ──
-  if (!simple) {
   const switchWpsVis = waypoints.filter(wp => wp.type === 'gasswitch' && wp.t >= tMin && wp.t <= tMax);
   switchWpsVis.forEach((wp, si) => {
     const x = toX(wp.t);
@@ -9753,7 +9982,6 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
     ctx.fillText(displayLabel, fx + 3, flagTopY + flagH - 3);
     ctx.restore();
   });
-  }
 
   // ── Profile line with per-gas color zones ──
   const pathWps = waypoints.filter(wp => wp.type !== 'gasswitch');
@@ -9862,25 +10090,6 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
       ctx.fill();
       ctx.restore();
     }
-  }
-
-  // Simple graph: vertical gas-switch markers
-  if (simple) {
-    const switchWpsSimple = waypoints.filter(wp => wp.type === 'gasswitch' && wp.t >= tMin && wp.t <= tMax);
-    ctx.save(); clipToPlot();
-    switchWpsSimple.forEach(wp => {
-      const x = toX(wp.t);
-      const yDepth = toY(wp.depth || 0);
-      ctx.strokeStyle = green;
-      ctx.lineWidth = 1.5;
-      ctx.globalAlpha = 0.75;
-      ctx.beginPath();
-      ctx.moveTo(x, PAD.top);
-      ctx.lineTo(x, yDepth);
-      ctx.stroke();
-      ctx.globalAlpha = 1;
-    });
-    ctx.restore();
   }
 
   // ── Deco ceiling line overlay ──
@@ -10026,39 +10235,19 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
   // ── Mobile legend below graph ──
   const legendEl = document.getElementById(canvasId === 'decoProfileCanvas' ? 'decoProfileLegend' : 'plannerProfileLegend');
   if (legendEl) {
-    if (simple) {
-      legendEl.style.display = 'flex';
-      legendEl.innerHTML = `
+    const switchCount = waypoints.filter(wp => wp.type === 'gasswitch').length;
+    const gasChangeItem = `<span class="legend-item"><span style="display:inline-block;width:14px;height:10px;background:#FFD700;border-radius:2px;border:1px solid rgba(0,122,51,0.35);"></span> Gas change${switchCount ? ` (${switchCount})` : ''}</span>`;
+    const legendColors = { red, green, accent, orange, muted, profileLine };
+    const legendRows = _buildProfileLegendTableRows(waypoints, legendColors);
+    const keyLegend = `<div class="profile-legend-keys" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
         <span class="legend-item"><span style="display:inline-block;width:18px;height:2px;background:${profileLine};border-radius:1px;"></span> OC depth</span>
-        <span class="legend-item"><span style="display:inline-block;width:2px;height:12px;background:${green};border-radius:1px;"></span> Gas switch</span>
-        <span class="legend-item"><span class="leg-dot" style="background:${red}"></span> Deco stop</span>`;
-    } else {
-    const stops = waypoints.filter(wp => wp.dot && wp.label);
-    if (stops.length) {
-      legendEl.style.display = 'block';
-      legendEl.innerHTML = `<table style="width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:11px;">
-        <thead><tr style="border-bottom:1px solid var(--border);">
-          <th style="padding:5px 6px;text-align:left;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">#</th>
-          <th style="padding:5px 6px;text-align:left;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">Stop</th>
-          <th style="padding:5px 6px;text-align:right;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">Run</th>
-          <th style="padding:5px 6px;text-align:right;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">ppO₂</th>
-        </tr></thead>
-        <tbody>${stops.map((wp, i) => {
-          const dotColor = wp.type==='deco' ? red : wp.type==='safety' ? green : accent;
-          const pColor = wp.ppo2 >= 1.6 ? red : wp.ppo2 >= 1.4 ? orange : muted;
-          const labelFmt = wp.label.replace(/(\d+m)\s+(\d+)/, '$1 - $2');
-          return `<tr style="border-bottom:1px solid var(--border);">
-            <td style="padding:5px 6px;color:${dotColor};font-weight:600;">${i+1}</td>
-            <td style="padding:5px 6px;color:${dotColor};">${labelFmt}</td>
-            <td style="padding:5px 6px;text-align:right;color:var(--muted);">${Math.round(wp.t)} min</td>
-            <td style="padding:5px 6px;text-align:right;color:${pColor};">${wp.ppo2 ? wp.ppo2.toFixed(2) : '—'}</td>
-          </tr>`;
-        }).join('')}</tbody>
-      </table>`;
-    } else {
-      legendEl.style.display = 'none';
-    }
-    }
+        ${gasChangeItem}
+        <span class="legend-item"><span class="leg-dot" style="background:${red}"></span> Deco stop</span>
+        ${simple ? '' : `<span class="legend-item"><span style="display:inline-block;width:18px;height:0;border-top:2px dashed ${red};"></span> Ceiling</span>`}
+      </div>`;
+    const tableHtml = (!simple && legendRows.length) ? _renderProfileLegendTableHtml(legendRows, legendColors) : '';
+    legendEl.style.display = tableHtml ? 'block' : 'flex';
+    legendEl.innerHTML = keyLegend + tableHtml;
   }
 }
 
@@ -10114,19 +10303,11 @@ function drawPlannerProfile() {
 }
 
 // ─── Build waypoints from Deco Schedule ─────────────────────────────────────
-function drawDecoProfile() {
-  const canvas = document.getElementById('decoProfileCanvas');
-  if (!canvas) return;
-
+function _buildDecoProfileWaypoints() {
   const depthVal  = parseFloat(document.getElementById('decoDepth')?.value) || 0;
   const btVal     = parseFloat(document.getElementById('decoBT')?.value)    || 0;
-  if (!depthVal || !btVal) return;
+  if (!depthVal || !btVal) return null;
 
-  const dRate = parseFloat(document.getElementById('descentRate')?.value) || 22;
-  const aRate = parseFloat(document.getElementById('ascentRate')?.value)  || 9;
-  const descentT = depthVal / dRate;
-
-  // Parse "mm:ss" or plain number to decimal minutes
   function parseRunMin(txt) {
     if (!txt) return 0;
     const s = txt.trim();
@@ -10139,17 +10320,17 @@ function drawDecoProfile() {
     return parseFloat(s) || 0;
   }
 
-  const duLbl = units === 'metric' ? 'm' : 'ft';
+  const dRate = parseFloat(document.getElementById('descentRate')?.value) || 22;
+  const descentT = depthVal / dRate;
+
   const fmtDepLbl = (d) => units === 'metric' ? d + 'm' : Math.round(d * 3.28084) + 'ft';
 
   const wps = [{ t: 0, depth: 0, type: 'surface' }];
   let t = descentT;
   wps.push({ t, depth: depthVal, type: 'bottom', dot: true, label: fmtDepLbl(depthVal) });
-  // btVal is run time (descent included) — bottom ends at btVal, not descentT+btVal
   t = btVal;
   wps.push({ t, depth: depthVal, type: 'bottom' });
 
-  // Read stops from the table using data-phase
   const labelledDepths = new Set();
   document.querySelectorAll('#decoTableBody tr[data-phase]').forEach(tr => {
     const phase = tr.dataset.phase;
@@ -10158,8 +10339,8 @@ function drawDecoProfile() {
     const tds    = tr.querySelectorAll('td');
     const run    = parseRunMin(tds[4]?.textContent);
     const depthTxt = tds[1]?.textContent?.trim() || '';
-    const ppo2   = parseFloat(tds[6]?.textContent) || 0;  // PPO2 (col 6)
-    const gas    = tds[3]?.textContent?.trim() || null;    // Mix (col 3)
+    const ppo2   = parseFloat(tds[6]?.textContent) || 0;
+    const gas    = tds[3]?.textContent?.trim() || null;
 
     if (phase === 'ascent') {
       const toDepth = parseFloat(depthTxt) || 0;
@@ -10179,34 +10360,74 @@ function drawDecoProfile() {
     }
   });
 
-  // Second pass: inject gas switch markers
   const switchWps = [];
-  document.querySelectorAll('#decoTableBody tr[data-phase="switch"]').forEach(tr => {
+  document.querySelectorAll('#decoTableBody tr[data-phase="switch"], #decoTableBody tr.row-switch').forEach(tr => {
     const tds = tr.querySelectorAll('td');
-    const switchDepthTxt = tds[1]?.textContent?.trim() || '';
-    const switchGas = tds[3]?.textContent?.trim().replace(/[🔵🔴⇄↓↑🤿⚠️]/g, '').trim() || '';
-    const depM = switchDepthTxt.match(/([\d.]+)\s*(m|ft)/i);
+    const switchDepthTxt = (tds[1]?.textContent || '').trim();
+    const switchGas = (tds[3]?.textContent || '').trim().replace(/[🔵🔴⇄↓↑🤿⚠️]/g, '').trim() || '';
+    const depM = switchDepthTxt.match(/([\d.]+)\s*(m|ft)\b/i) || switchDepthTxt.match(/([\d.]+)/);
     if (!depM) return;
     const switchDepth = parseFloat(depM[1]);
-    // Find the run time of the nearest subsequent wp at this depth
+    const switchPpo2 = parseFloat(String(tds[6]?.textContent || '').replace(/[^\d.]/g, ''));
+    const switchRun = parseRunMin(tds[4]?.textContent)
+      || parseRunMin(tr.nextElementSibling?.cells?.[4]?.textContent)
+      || parseRunMin(tr.previousElementSibling?.cells?.[4]?.textContent);
     const nextWp = wps.find(w => w.depth <= switchDepth + 1 && w.depth >= switchDepth - 1 && w.type !== 'bottom');
-    if (nextWp) switchWps.push({ t: nextWp.t, depth: switchDepth, type: 'gasswitch', gasLabel: switchGas });
+    const switchT = switchRun > 0 ? switchRun : (nextWp?.t ?? 0);
+    switchWps.push({
+      t: switchT,
+      depth: switchDepth,
+      depthLabel: switchDepthTxt,
+      type: 'gasswitch',
+      gasLabel: switchGas,
+      ppo2: Number.isFinite(switchPpo2) ? switchPpo2 : null,
+    });
   });
   wps.push(...switchWps);
-  // Sort all waypoints by time so out-of-order injections (gasswitch etc) don't corrupt the profile line
   wps.sort((a, b) => a.t - b.t);
 
-  // Close to surface — exclude totals row when finding last run time
   const allPhaseRows = Array.from(document.querySelectorAll('#decoTableBody tr[data-phase]'))
     .filter(tr => tr.dataset.phase !== 'totals');
-  const lastT = parseRunMin(allPhaseRows[allPhaseRows.length - 1]?.querySelectorAll('td')[4]?.textContent) || btVal + descentT;  // Run is col 4
+  const lastT = parseRunMin(allPhaseRows[allPhaseRows.length - 1]?.querySelectorAll('td')[4]?.textContent) || btVal + descentT;
   wps.push({ t: lastT, depth: 0, type: 'surface' });
 
+  return { wps, depthVal, lastT };
+}
+
+function drawDecoProfile() {
+  const canvas = document.getElementById('decoProfileCanvas');
+  if (!canvas) return;
+  const built = _buildDecoProfileWaypoints();
+  if (!built) return;
+  const { wps, depthVal, lastT } = built;
   window._decoWaypoints = wps;
   drawDiveProfile('decoProfileCanvas', wps, {
     maxDepth: depthVal,
     totalTime: lastT,
     simple: true,
+  });
+}
+
+function drawDecoProfileFull() {
+  const canvas = document.getElementById('plannerProfileCanvas');
+  if (!canvas) return;
+  const built = _buildDecoProfileWaypoints();
+  if (!built) return;
+  const { wps, depthVal, lastT } = built;
+  const wrap = document.getElementById('plannerProfileCanvas-wrap');
+  const card = document.getElementById('fullDiveGraphCard');
+  const hint = document.getElementById('plannerProfileCanvas-hint');
+  if (wrap) wrap.style.display = 'block';
+  if (card) card.style.display = 'block';
+  _syncGraphsSectionHeads();
+  if (hint) hint.style.display = 'block';
+  window._plannerWaypoints = wps;
+  window._plannerGasSegments = window._decoGasSegments;
+  window._plannerGasColorMap = window._decoGasColorMap;
+  window._plannerCeilingWps = window._decoCeilingWps;
+  drawDiveProfile('plannerProfileCanvas', wps, {
+    maxDepth: depthVal,
+    totalTime: lastT,
   });
 }
 
@@ -10330,10 +10551,10 @@ function calcBestMixTec() {
     const alertEl = document.getElementById('bmtENDAlert');
     if (currentEND > 40) {
       alertEl.style.display = 'block';
-      alertEl.innerHTML = `<div class="alert" style="background:#FF4433;border-color:#111;border-width:1px;color:#fff;font-weight:700;"><span>⚠</span><div><strong>HIGH NARCOTIC DEPTH.</strong> END ${endDisp} ${dUnit} exceeds 40 m equivalent. Add helium to reduce narcosis.<span class=\"tip-icon\" style=\"color:#fff;opacity:0.85;\" onclick=\"showTip(_narcoticTipTitle,_narcoticTipText)\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"5.5\" cy=\"5.5\" r=\"5\" stroke=\"currentColor\" stroke-width=\"1.1\"/><path d=\"M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2\" stroke=\"currentColor\" stroke-width=\"1.1\" stroke-linecap=\"round\" fill=\"none\"/><circle cx=\"5.5\" cy=\"7.4\" r=\"0.55\" fill=\"currentColor\"/></svg></span></div></div>`;
+      alertEl.innerHTML = `<div class="alert narcotic-warn"><span>⚠</span><div><strong>HIGH NARCOTIC DEPTH.</strong> END ${endDisp} ${dUnit} exceeds 40 m equivalent. Add helium to reduce narcosis.<span class="tip-icon" onclick="showTip(_narcoticTipTitle,_narcoticTipText)"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"/><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" fill="none"/><circle cx="5.5" cy="7.4" r="0.55" fill="currentColor"/></svg></span></div></div>`;
     } else if (currentEND > 30) {
       alertEl.style.display = 'block';
-      alertEl.innerHTML = `<div class="alert" style="background:#FF4433;border-color:#111;border-width:1px;color:#fff;font-weight:700;"><span>⚠</span><div><strong>NARCOTIC DEPTH WARNING.</strong> END ${endDisp} ${dUnit} exceeds 30 m equivalent. Consider adding helium.<span class=\"tip-icon\" style=\"color:#fff;opacity:0.85;\" onclick=\"showTip(_narcoticTipTitle,_narcoticTipText)\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"5.5\" cy=\"5.5\" r=\"5\" stroke=\"currentColor\" stroke-width=\"1.1\"/><path d=\"M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2\" stroke=\"currentColor\" stroke-width=\"1.1\" stroke-linecap=\"round\" fill=\"none\"/><circle cx=\"5.5\" cy=\"7.4\" r=\"0.55\" fill=\"currentColor\"/></svg></span></div></div>`;
+      alertEl.innerHTML = `<div class="alert narcotic-warn"><span>⚠</span><div><strong>NARCOTIC DEPTH WARNING.</strong> END ${endDisp} ${dUnit} exceeds 30 m equivalent. Consider adding helium.<span class="tip-icon" onclick="showTip(_narcoticTipTitle,_narcoticTipText)"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"/><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" fill="none"/><circle cx="5.5" cy="7.4" r="0.55" fill="currentColor"/></svg></span></div></div>`;
     } else {
       alertEl.style.display = 'none';
     }
@@ -10593,16 +10814,20 @@ function renderTissueLoadChart() {
   if (!card || !chartEl) return;
 
   const lp = window._lastPlan;
-  if (!lp || !lp.steps) { card.style.display = 'none'; return; }
+  if (!lp || !lp.steps) {
+    chartEl.innerHTML = '';
+    return;
+  }
 
   // Collect deco stops that have _tissues
   const decoSteps = lp.steps.filter(s =>
     (s.type === 'deco' || s.type === 'safety') && s._tissues && s._tissues.length === 16
   );
 
-  if (decoSteps.length === 0) { card.style.display = 'none'; return; }
-
-  card.style.display = 'block';
+  if (decoSteps.length === 0) {
+    chartEl.innerHTML = '<div class="info-box" style="margin:0;">Per-stop tissue data is not available for this plan type.</div>';
+    return;
+  }
 
   const dU = units === 'metric';
   const conv = dU ? 1 : 3.28084;
@@ -10668,8 +10893,9 @@ function renderTissueLoadChart() {
       const pct = mVal > 0 ? Math.round((pTotal / mVal) * 100) : 0;
       const clampedPct = Math.max(0, Math.min(120, pct));
       const barPct = Math.min(100, clampedPct);
-      const barCol = clampedPct >= 100 ? 'var(--red)' : clampedPct >= 90 ? 'var(--orange)' : clampedPct >= 75 ? 'var(--yellow)' : 'var(--green)';
-      const textCol = clampedPct >= 100 ? 'var(--red)' : clampedPct >= 90 ? 'var(--orange)' : clampedPct >= 75 ? 'var(--yellow)' : 'var(--muted)';
+      const sat = lspSatColors(clampedPct);
+      const barCol = sat.bar;
+      const textCol = sat.text;
 
       html += '<td style="padding:4px 4px;">';
       html += '<div style="min-width:52px;max-width:80px;">';
@@ -10686,10 +10912,9 @@ function renderTissueLoadChart() {
 
   // Legend
   html += '<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;font-family:\'JetBrains Mono\',monospace;font-size:9px;color:var(--muted);">';
-  html += '<span><span style="color:var(--green);">&#9632;</span> &lt;75% — clear</span>';
-  html += '<span><span style="color:var(--yellow);">&#9632;</span> 75–90% — loaded</span>';
-  html += '<span><span style="color:var(--orange);">&#9632;</span> 90–99% — near limit</span>';
-  html += '<span><span style="color:var(--red);">&#9632;</span> &ge;100% — at/over M-value</span>';
+  html += '<span><span style="color:var(--status-green);">&#9632;</span> &lt;50% — clear</span>';
+  html += '<span><span style="color:var(--status-orange);">&#9632;</span> 50–79% — loaded</span>';
+  html += '<span><span style="color:var(--status-red);">&#9632;</span> &ge;80% — near/at limit</span>';
   html += '</div>';
   html += '<div style="margin-top:8px;font-family:\'JetBrains Mono\',monospace;font-size:9px;color:var(--muted);">% = tissue tension / GF-adjusted M-value at stop depth. &ge;100% would require a deeper/longer stop.</div>';
 
@@ -11302,19 +11527,20 @@ function drawGFCurve() {
   if (gfLegendEl) {
     if (isMobile && gfStops.length) {
       gfLegendEl.style.display = 'block';
-      gfLegendEl.innerHTML = `<table style="width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:11px;margin-top:6px;">
+      gfLegendEl.innerHTML = `<table style="width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:11px;margin:0;">
         <thead><tr style="border-bottom:1px solid var(--border);">
-          <th style="padding:5px 6px;text-align:left;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">#</th>
-          <th style="padding:5px 6px;text-align:left;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">Stop</th>
-          <th style="padding:5px 6px;text-align:right;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">GF%</th>
+          <th style="padding:4px 6px;text-align:left;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">#</th>
+          <th style="padding:4px 6px;text-align:left;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">Stop</th>
+          <th style="padding:4px 6px;text-align:right;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">GF%</th>
         </tr></thead>
         <tbody>${gfStops.map((wp, i) => {
           const col = wp.isDeco ? redColor : wp.isSafety ? greenColor : accentColor;
           const labelFmt = wp.label.replace(/(\d+m)\s+\/\s+(\d+)/, '$1 - $2');
-          return `<tr style="border-bottom:1px solid var(--border);">
-            <td style="padding:5px 6px;color:${col};font-weight:600;">${i+1}</td>
-            <td style="padding:5px 6px;color:${col};">${labelFmt}</td>
-            <td style="padding:5px 6px;text-align:right;color:var(--muted);">${Math.round(wp.gf*100)}%</td>
+          const isLast = i === gfStops.length - 1;
+          return `<tr${isLast ? '' : ' style="border-bottom:1px solid var(--border);"'}>
+            <td style="padding:4px 6px;color:${col};font-weight:600;">${i+1}</td>
+            <td style="padding:4px 6px;color:${col};">${labelFmt}</td>
+            <td style="padding:4px 6px;text-align:right;color:var(--muted);">${Math.round(wp.gf*100)}%</td>
           </tr>`;
         }).join('')}</tbody>
       </table>`;
@@ -12696,6 +12922,9 @@ document.addEventListener('DOMContentLoaded', function() {
   console.log('[LSP] DOMContentLoaded fired');
 
   initV3Layout();
+
+  _syncStopDepthPill();
+  _syncStopDurPill();
 
   _initMobilePlanView();
   window.addEventListener('resize', _initMobilePlanView);

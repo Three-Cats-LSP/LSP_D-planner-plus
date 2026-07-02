@@ -16,6 +16,16 @@ const _PHASE_ICON_SVG = {
   safety: '<span class="ph ph-deco" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="5" cy="5" r="2.5"/></svg></span>',
   switch: '<span class="ph ph-switch" aria-hidden="true"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 3h12M10 1l3 2-3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 7H1M4 5l-3 2 3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>',
 };
+function buildScheduleLegendHtml() {
+  return `<div class="deco-table-legend legend">
+<span class="legend-item"><svg class="leg-icon" width="12" height="14" viewBox="0 0 12 14" fill="none"><path d="M6 1v10M2 9l4 4 4-4" stroke="var(--red)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Descent</span>
+<span class="legend-item"><span class="leg-dot" style="background:var(--accent)"></span> Bottom</span>
+<span class="legend-item"><svg class="leg-icon" width="12" height="14" viewBox="0 0 12 14" fill="none"><path d="M6 13V3M2 5l4-4 4 4" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Ascent</span>
+<span class="legend-item"><span class="leg-dot" style="background:var(--red)"></span> Deco Stop</span>
+<span class="legend-item"><span class="leg-dot" style="background:var(--green)"></span> Safety Stop</span>
+<span class="legend-item legend-switch"><svg class="leg-icon" width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 3h12M10 1l3 2-3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 7H1M4 5l-3 2 3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Gas Switch</span>
+</div>`;
+}
 function _clearResultSummaryStrip() {
   const strip = document.getElementById('resultMetricStrip');
   const chips = document.getElementById('resultChipRow');
@@ -33,6 +43,12 @@ function _parseChipNum(val) {
   const n = parseFloat(String(val || '').replace(/[^\d.]/g, ''));
   return Number.isFinite(n) ? n : null;
 }
+function _cnsMetricColor(cnsNum) {
+  if (cnsNum == null) return '';
+  if (cnsNum >= 80) return 'metric-val--cns-warn';
+  if (cnsNum >= 50) return 'metric-val--cns-caution';
+  return 'metric-val--cns-safe';
+}
 function renderMetricCards({ runTime, decoTime, cns, firstStop, unit }) {
   const strip = document.getElementById('resultMetricStrip');
   if (!strip) return;
@@ -41,22 +57,23 @@ function renderMetricCards({ runTime, decoTime, cns, firstStop, unit }) {
   const cnsParts = _splitMetricValUnit(String(cns || '').replace('%', ''), '%');
   const fs = _splitMetricValUnit(firstStop, unit || 'm');
   const cnsNum = _parseChipNum(cns);
-  const cnsStyle = cnsNum == null ? '' : ` style="color:${cnsNum >= 80 ? 'var(--orange)' : 'var(--green)'}"`;
+  const cnsClass = _cnsMetricColor(cnsNum);
+  const firstStopClass = fs.val === '—' || fs.val === '-' ? '' : 'metric-val--deco';
   strip.innerHTML = `
     <div class="metric-card">
-      <span class="metric-val">${rt.val}<span class="unit">${rt.unit}</span></span>
+      <span class="metric-val metric-val--runtime">${rt.val}<span class="unit">${rt.unit}</span></span>
       <span class="metric-lbl">Run Time</span>
     </div>
     <div class="metric-card">
-      <span class="metric-val">${dt.val}<span class="unit">${dt.unit}</span></span>
+      <span class="metric-val metric-val--deco">${dt.val}<span class="unit">${dt.unit}</span></span>
       <span class="metric-lbl">Deco Time</span>
     </div>
     <div class="metric-card">
-      <span class="metric-val"${cnsStyle}>${cnsParts.val}<span class="unit">${cnsParts.unit}</span></span>
+      <span class="metric-val${cnsClass ? ' ' + cnsClass : ''}">${cnsParts.val}<span class="unit">${cnsParts.unit}</span></span>
       <span class="metric-lbl">CNS O₂</span>
     </div>
     <div class="metric-card">
-      <span class="metric-val">${fs.val}<span class="unit">${fs.unit}</span></span>
+      <span class="metric-val${firstStopClass ? ' ' + firstStopClass : ''}">${fs.val}<span class="unit">${fs.unit}</span></span>
       <span class="metric-lbl">First Stop</span>
     </div>`;
 }
@@ -173,6 +190,39 @@ function decorateDecoTableForV3() {
     if (cells[7]) cells[7].classList.add('col-ead', 'align-r');
   });
 }
+function _normalizeContingencyPhase(ph) {
+  return String(ph || '').replace(/^contingency-/, '');
+}
+function decorateContingencyTableForV3() {
+  const table = document.querySelector('#contingencyResult .deco-table');
+  const tbody = document.getElementById('contingencyTableBody');
+  if (!table || !tbody) return;
+  table.classList.add('schedule-table');
+  tbody.querySelectorAll('tr').forEach(tr => {
+    const ph = _normalizeContingencyPhase(tr.dataset.phase);
+    if (ph === 'totals' || ph === 'info') {
+      tr.classList.add('row-summary');
+      tr.querySelectorAll('.deco-totals-inner span').forEach(span => {
+        if (!span.classList.contains('summary-stat')) span.classList.add('summary-stat');
+      });
+      return;
+    }
+    if (ph === 'descent') tr.classList.add('row-descent');
+    if (ph === 'switch') tr.classList.add('row-switch');
+    const cells = tr.cells;
+    if (!cells || !cells.length) return;
+    cells[0].classList.add('phase-cell');
+    const iconPh = ph === 'ascent' && cells[1]?.textContent?.includes('0') ? 'surface' : ph;
+    if (_PHASE_ICON_SVG[iconPh]) cells[0].innerHTML = _PHASE_ICON_SVG[iconPh];
+    if (cells[1]) cells[1].classList.add('col-depth');
+    if (cells[2]) cells[2].classList.add('col-time', 'stop');
+    if (cells[3]) cells[3].classList.add('col-gas', _gasMixClassV3(cells[3].textContent));
+    if (cells[4]) cells[4].classList.add('col-time', 'run', 'align-r');
+    if (cells[5]) cells[5].classList.add('col-tts', 'align-r');
+    if (cells[6]) cells[6].classList.add('col-ppo2', 'align-r', _ppo2ClassV3(cells[6].textContent));
+    if (cells[7]) cells[7].classList.add('col-ead', 'align-r');
+  });
+}
 function _setGasWarningBanner(message) {
   const banner = document.getElementById('gasWarningBanner');
   if (!banner) return;
@@ -208,7 +258,7 @@ function switchResultTab(name, btn) {
   const prefix = isRec ? '' : '';
   const panes = isRec
     ? ['dive','surfint','avgdepth','multi','ndlref']
-    : ['graphs','contingency','tissue'];
+    : ['profile','contingency','graphs','tissue'];
   const nav = isRec ? document.getElementById('recResultTabs') : document.getElementById('tecResultTabs');
   const panel = document.getElementById('resultsPanel');
   nav?.querySelectorAll('.result-tab-btn').forEach(b => b.classList.toggle('active', b === btn));
@@ -233,5 +283,19 @@ function switchResultTab(name, btn) {
   }
   if (name === 'ndlref') renderNDLTable?.();
   if (name === 'multi') buildDiveBlocks?.();
-  if (name === 'graphs') setTimeout(() => { drawGFCurve?.(); }, 50);
+  if (name === 'graphs') setTimeout(() => { _syncGraphsSectionHeads?.(); drawDecoProfileFull?.(); drawGFCurve?.(); attachGFCurveInteraction?.(); }, 50);
+  if (name === 'profile') setTimeout(() => drawDecoProfile?.(), 50);
+  if (name === 'tissue') {
+    const card = document.getElementById('tissueLoadCard');
+    const inner = document.getElementById('tissueLoadInnerCard');
+    const hasTissue = window._lastPlan?.finalTissues?.length
+      || document.getElementById('tissueGrid')?.children.length;
+    if (card && hasTissue) card.style.display = 'block';
+    if (inner) inner.classList.add('card-open');
+    if (hasTissue) {
+      const tissues = window._lastPlan?.finalTissues;
+      if (tissues?.length) updateTissueViz?.(tissues, mGF?.high ?? 85);
+      renderTissueLoadChart?.();
+    }
+  }
 }

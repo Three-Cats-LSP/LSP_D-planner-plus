@@ -133,11 +133,11 @@ function calcEND_tool() {
   const alertEl = document.getElementById('endAlert');
   let alertHtml = '';
   if (endM > GT_END_HIGH_M) {
-    alertHtml = `<div class="alert" style="background:#FF4433;border-color:#111;border-width:1px;color:#fff;font-weight:700;"><span>\u26a0</span><div><strong>SEVERE NARCOSIS.</strong> END ${endDisp} \u2014 consider adding helium.</div></div>`;
+    alertHtml = `<div class="alert narcotic-warn"><span>\u26a0</span><div><strong>SEVERE NARCOSIS.</strong> END ${endDisp} \u2014 consider adding helium.</div></div>`;
   } else if (endM > GT_END_MODERATE_M) {
-    alertHtml = `<div class="alert" style="background:#FF4433;border-color:#111;border-width:1px;color:#fff;font-weight:700;"><span>\u26a0</span><div><strong>HIGH NARCOTIC DEPTH.</strong> END ${endDisp} exceeds ${GT_END_MODERATE_M} m equivalent.</div></div>`;
+    alertHtml = `<div class="alert narcotic-warn"><span>\u26a0</span><div><strong>HIGH NARCOTIC DEPTH.</strong> END ${endDisp} exceeds ${GT_END_MODERATE_M} m equivalent.</div></div>`;
   } else if (endM > GT_END_LOW_M) {
-    alertHtml = `<div class="alert" style="background:#FF4433;border-color:#111;border-width:1px;color:#fff;font-weight:700;"><span>\u26a0</span><div><strong>NARCOTIC DEPTH WARNING.</strong> END ${endDisp} exceeds ${GT_END_LOW_M} m equivalent.</div></div>`;
+    alertHtml = `<div class="alert narcotic-warn"><span>\u26a0</span><div><strong>NARCOTIC DEPTH WARNING.</strong> END ${endDisp} exceeds ${GT_END_LOW_M} m equivalent.</div></div>`;
   }
   if (mod14M != null && dM > mod14M) {
     alertHtml += `<div class="alert dang" style="margin-top:6px;"><span>\u26a0</span><div><strong>EXCEEDS MOD.</strong> Depth ${du ? Math.round(dM)+' m' : Math.round(dM*3.28084)+' ft'} is deeper than MOD ${mod14d} at ppO\u2082 ${ppO2Limit.toFixed(1)}.</div></div>`;

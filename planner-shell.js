@@ -13,22 +13,24 @@ let vpmVariant = (() => {
 
 function _syncVpmModeUI(model) {
   const m = model === 'VPMB_GFS' ? 'VPMB_GFS' : 'VPMB';
-  document.getElementById('vpmModePure')?.classList.toggle('active', m === 'VPMB');
-  document.getElementById('vpmModeGfs')?.classList.toggle('active', m === 'VPMB_GFS');
+  const toggle = document.getElementById('vpmModeToggle');
+  if (toggle) {
+    toggle.dataset.side = m === 'VPMB_GFS' ? 'right' : 'left';
+    toggle.setAttribute('aria-pressed', m === 'VPMB_GFS' ? 'true' : 'false');
+  }
   const sub = document.getElementById('vpmNavSub');
   if (sub) sub.textContent = m === 'VPMB_GFS' ? 'Bubble + GF Surfacing' : 'Bubble Model';
+}
+
+function toggleVpmMode() {
+  setVpmMode(vpmVariant === 'VPMB' ? 'VPMB_GFS' : 'VPMB');
 }
 
 function setVpmMode(model, btn) {
   if (model !== 'VPMB' && model !== 'VPMB_GFS') return;
   vpmVariant = model;
   try { localStorage.setItem('vpmVariant', model); } catch (e) {}
-  if (btn) {
-    document.querySelectorAll('#vpmModeRowV3 .seg-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  } else {
-    _syncVpmModeUI(model);
-  }
+  _syncVpmModeUI(model);
   if (plannerAlgo === 'VPMB' || plannerAlgo === 'VPMB_GFS') {
     setPlannerAlgo(model, document.getElementById('navBtnVpm'));
   }
@@ -154,9 +156,16 @@ function initV3Layout() {
     const pane = document.getElementById('resultTab-' + tab);
     if (el && pane) pane.appendChild(el);
   };
+  const fullGraphMount = document.getElementById('fullDiveGraphMount');
+  const profileWrap = document.getElementById('plannerProfileCanvas-wrap');
+  const profileHint = document.getElementById('plannerProfileCanvas-hint');
+  const profileLegend = document.getElementById('plannerProfileLegend');
+  if (fullGraphMount && profileWrap) {
+    fullGraphMount.appendChild(profileWrap);
+    if (profileHint) fullGraphMount.appendChild(profileHint);
+    if (profileLegend) fullGraphMount.appendChild(profileLegend);
+  }
   moveToTab('plannerResult', 'dive');
-  moveToTab('plannerProfileCanvas-wrap', 'dive');
-  moveToTab('plannerProfileLegend', 'dive');
   const surfPanel = document.getElementById('surfint');
   if (surfPanel) moveChildren(surfPanel, document.getElementById('resultTab-surfint'), []);
   const avgPanel = document.getElementById('avgdepth');

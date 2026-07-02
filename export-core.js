@@ -18,6 +18,34 @@
 //  exportTXT(mode)       → .txt file download
 // ═══════════════════════════════════════════════════════
 
+const ASCENT_SCHEDULE_HR = '-'.repeat(48);
+
+function exportScheduleCell(val, width, { right = false, blank = false } = {}) {
+  const s = (val == null ? '' : String(val)).trim();
+  if (!s || s === '-' || s === '—') {
+    if (blank) return ' '.repeat(width);
+    return '-'.padStart(width);
+  }
+  return right ? s.padStart(width) : s.padEnd(width);
+}
+
+function formatAscentScheduleRow({ phase, depth, stop, mix, run, tts, ppo2, ead }) {
+  const stp = (stop || '').trim();
+  const ttsS = (tts || '').trim();
+  const ttsCol = (!ttsS || ttsS === '-' || ttsS === '—')
+    ? '-'.padStart(7)
+    : ttsS.padEnd(7);
+  return exportScheduleCell(phase, 6)
+    + exportScheduleCell(depth, 6)
+    + exportScheduleCell(stp, 7, { blank: !stp })
+    + exportScheduleCell(mix, 6)
+    + exportScheduleCell(run, 6)
+    + ttsCol
+    + ' '
+    + exportScheduleCell(ppo2, 5, { right: true })
+    + exportScheduleCell(ead, 6);
+}
+
 function buildExportText(mode) {
   const now     = new Date();
   const dateStr = now.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
@@ -150,17 +178,15 @@ function buildExportText(mode) {
     }
 
     lines.push(...buildDecoPlanHeaderLines());
-    lines.push(...formatPlanSummaryBlock(planSum));
     lines.push('');
 
     // Ascent schedule table
     const rows = document.querySelectorAll('#decoTableBody tr[data-phase]');
     if (rows.length) {
-      const shr = '-'.repeat(56);
       lines.push('ASCENT SCHEDULE');
-      lines.push(shr);
+      lines.push(ASCENT_SCHEDULE_HR);
       lines.push('Phase Depth  Stop   Mix   Run   TTS   PPO2  EAD');
-      lines.push(shr);
+      lines.push(ASCENT_SCHEDULE_HR);
       const phaseLabel = { descent:'Des', bottom:'Lvl', ascent:'Asc', deco:'Stp', safety:'Stp', totals:'TOT' };
       rows.forEach(tr => {
         const ph  = tr.dataset.phase;
@@ -174,7 +200,6 @@ function buildExportText(mode) {
           return;
         }
         const c   = Array.from(tds).map(td => clean(td.textContent));
-        const lbl = (phaseLabel[ph] || ph).padEnd(5);
 
         // Depth: descent may use 0→dest; ascent rows are destination-only
         let depRaw = c[1] || '';
@@ -182,24 +207,21 @@ function buildExportText(mode) {
           const arrowMatch = depRaw.match(/[→>](.+)$/);
           if (arrowMatch) depRaw = arrowMatch[1].trim();
         }
-        const dep  = (depRaw.length <= 2 ? depRaw.padStart(3) : depRaw).padEnd(6);
-        const stpRaw = c[2] || '';
-        const stpVal = /^\d+:\d+$/.test(stpRaw) ? stpRaw : '';
-        const stp  = (stpVal.length > 0 && stpVal.length <= 4 ? stpVal.padStart(5) : stpVal).padEnd(7);
-        const mix  = shortMix(c[3] || '').padEnd(5);
-        const runRaw = c[4] || '';
-        const run  = (runRaw.length <= 4 ? runRaw.padStart(5) : runRaw).padEnd(6);
-        const ttsRaw = (c[5] || '').trim() || '-';
-        const tts  = (ttsRaw.length <= 4 ? ttsRaw.padStart(5) : ttsRaw).padEnd(6);
-        const ppo2  = (c[6] || '').padStart(4).padEnd(5);
-        const eadVal = (c[7] || '-').trim() || '-';
-        const ead  = (eadVal === '-' ? eadVal.padStart(2) : eadVal.padStart(3)).padEnd(6);
-        lines.push(`${lbl} ${dep}${stp}${mix}${run}${tts} ${ppo2}${ead}`);
+        const stp = typeof parseStopDisplayTime === 'function' ? parseStopDisplayTime(c[2]) : (c[2] || '');
+        lines.push(formatAscentScheduleRow({
+          phase: phaseLabel[ph] || ph,
+          depth: depRaw.trim(),
+          stop: stp,
+          mix: shortMix(c[3] || ''),
+          run: c[4] || '',
+          tts: c[5] || '',
+          ppo2: c[6] || '',
+          ead: c[7] || '',
+        }));
       });
 
-      // Totals row — use values already read from table footer (runTimeVal etc.)
-      lines.push(shr);
-      lines.push(...formatPlanSummaryBlock(planSum, true));
+      lines.push(ASCENT_SCHEDULE_HR);
+      lines.push(...formatExportSummaryBlock(planSum));
       lines.push('');
     }
 
@@ -209,7 +231,8 @@ function buildExportText(mode) {
       calcGasPlan();
       const _gp = window._lastGasPlan;
       if (_gp && _gp.rows && _gp.rows.length) {
-        const volU2  = units === 'imperial' ? 'cu ft' : 'L';
+        const volU2  = (typeof lspVolUnit === 'function') ? lspVolUnit(true) : (units === 'imperial' ? 'ft3' : 'L');
+        const fmtVol = (l) => (typeof gpVolWithUnit === 'function' ? gpVolWithUnit(l) : `${gpVolDisp(l)}${volU2}`);
         const presU2 = units === 'imperial' ? 'psi'   : 'bar';
         const sacBot2 = document.getElementById('sacBottom')?.value || '20';
         const sacDec2 = document.getElementById('sacDeco')?.value   || '15';
@@ -221,25 +244,25 @@ function buildExportText(mode) {
           if (r.kind === 'bottom') {
             const ruleTxt = _gp.rule === 'half' ? '1/2' : '1/3';
             const lbl = r.label.includes('(+Travel)') ? r.label.replace('(+Travel)', '+ Travel') : r.label;
-            lines.push(`  ${lbl.toUpperCase().padEnd(14)} ${gpVolDisp(r.totalL)} ${volU2} avail   reserve: ${gpPresDisp(r.reserveBar)} ${presU2}`);
+            lines.push(`  ${lbl.toUpperCase().padEnd(14)} ${fmtVol(r.totalL)} avail   reserve: ${gpPresDisp(r.reserveBar)} ${presU2}`);
             if (r.shortL != null && r.shortL > 0) {
-              lines.push(`    STATUS : INSUFFICIENT — need ${gpVolDisp(r.reqL)} ${volU2}, have ${gpVolDisp(r.totalL)} ${volU2} (short ${gpVolDisp(r.shortL)} ${volU2})`);
+              lines.push(`    STATUS : INSUFFICIENT — need ${fmtVol(r.reqL)}, have ${fmtVol(r.totalL)} (short ${fmtVol(r.shortL)})`);
               if (r.maxBTmin != null) {
                 lines.push(`    FIX    : Shorten BT to ${r.maxBTmin} min, turn at ${gpPresDisp(r.maxTurnBar)} ${presU2}`);
                 lines.push(`           : Or use a larger cylinder / add a stage`);
               }
             } else {
-              lines.push(`    TURN   : ${gpPresDisp(r.turnBar)} ${presU2}  (${ruleTxt} of ${gpVolDisp(r.portionL)} ${volU2})`);
-              if (r.reqL != null) lines.push(`    PLAN   : needs ${gpVolDisp(r.reqL)} ${volU2}  ✓ OK`);
+              lines.push(`    TURN   : ${gpPresDisp(r.turnBar)} ${presU2}  (${ruleTxt} of ${fmtVol(r.portionL)})`);
+              if (r.reqL != null) lines.push(`    PLAN   : needs ${fmtVol(r.reqL)}  ✓ OK`);
             }
           } else {
-            lines.push(`  ${r.label.toUpperCase().padEnd(14)} ${gpVolDisp(r.totalL)} ${volU2} avail   reserve: ${gpPresDisp(r.reserveBar)} ${presU2}`);
+            lines.push(`  ${r.label.toUpperCase().padEnd(14)} ${fmtVol(r.totalL)} avail   reserve: ${gpPresDisp(r.reserveBar)} ${presU2}`);
             if (r.reqL == null) {
               lines.push(`    STATUS : run deco plan first`);
             } else {
               const margin2 = r.totalL - r.reqL;
               const status2 = r.totalL >= r.reqL * 1.10 ? 'OK' : r.totalL >= r.reqL ? 'TIGHT' : 'INSUFFICIENT';
-              lines.push(`    NEED   : ${gpVolDisp(r.reqL)} ${volU2}   MARGIN: ${gpVolDisp(margin2)} ${volU2}   STATUS: ${status2}`);
+              lines.push(`    NEED   : ${fmtVol(r.reqL)}   MARGIN: ${fmtVol(margin2)}   STATUS: ${status2}`);
               if (status2 === 'INSUFFICIENT') lines.push(`    FIX    : Add more gas or reduce deco obligation`);
             }
           }
@@ -292,7 +315,7 @@ function buildExportText(mode) {
     lines.push(hr);
     // Algorithm + settings (reuse same logic as main deco export)
     const eAlgoSel  = document.getElementById('algorithmSelect')?.value || 'ZHLC_GF';
-    const eAlgoNames = { ZHLC_GF: 'Buhlmann ZH-L16C + GF', VPMB: 'VPM-B', VPMB_GFS: 'VPM-B / GFS' };
+    const eAlgoNames = { ZHLC_GF: 'Buhlmann ZH-L16C + GF', VPMB: 'VPM-B', VPMB_GFS: 'VPM-B+GFS' };
     const eAlgoName  = eAlgoNames[eAlgoSel] || eAlgoSel;
     const eGfLow     = mGF?.low  ?? '-';
     const eGfHigh    = mGF?.high ?? '-';
@@ -344,9 +367,9 @@ function buildExportText(mode) {
     const rows = document.querySelectorAll('#contingencyResult .deco-table tbody tr');
     if (rows.length) {
       lines.push('EMERGENCY ASCENT SCHEDULE');
-      lines.push('-'.repeat(56));
+      lines.push(ASCENT_SCHEDULE_HR);
       lines.push('Phase Depth  Stop   Mix   Run   TTS   PPO2  EAD');
-      lines.push('-'.repeat(56));
+      lines.push(ASCENT_SCHEDULE_HR);
       const phaseLabel = { descent:'Des', bottom:'Lvl', ascent:'Asc', deco:'Stp', safety:'Stp', switch:'>>' };
       rows.forEach(tr => {
         const ph  = tr.dataset.phase;
@@ -360,7 +383,6 @@ function buildExportText(mode) {
           return;
         }
         const c2   = Array.from(tds).map(td => clean(td.textContent));
-        const lbl  = (phaseLabel[ph]||ph).padEnd(5);
 
         // Ascent rows are destination-only; descent may use 0→dest
         let depRaw = c2[1] || '';
@@ -368,25 +390,22 @@ function buildExportText(mode) {
           const arrowMatch = depRaw.match(/[→>](.+)$/);
           if (arrowMatch) depRaw = arrowMatch[1].trim();
         }
-        const dep  = (depRaw.length <= 2 ? depRaw.padStart(3) : depRaw).padEnd(6);
-        const stpRaw = c2[2]||'';
-        const stpVal = parseStopDisplayTime(stpRaw);
-        const stp  = (stpVal.length > 0 && stpVal.length <= 4 ? stpVal.padStart(5) : stpVal).padEnd(7);
-        const mix  = eShortMix(c2[3]||'').padEnd(5);
-        const runRaw2 = c2[4]||'';
-        const run  = (runRaw2.length <= 4 ? runRaw2.padStart(5) : runRaw2).padEnd(6);
-        const ttsRaw = (c2[5] || '').trim() || '-';
-        const tts  = (ttsRaw.length <= 4 ? ttsRaw.padStart(5) : ttsRaw).padEnd(6);
-        const ppo2  = (c2[6]||'').padStart(4).padEnd(5);
-        const eadVal = (c2[7]||'-').trim() || '-';
-        const ead  = (eadVal === '-' ? eadVal.padStart(2) : eadVal.padStart(3)).padEnd(6);
-        lines.push(`${lbl} ${dep}${stp}${mix}${run}${tts} ${ppo2}${ead}`);
+        const stp = typeof parseStopDisplayTime === 'function' ? parseStopDisplayTime(c2[2]) : (c2[2] || '');
+        lines.push(formatAscentScheduleRow({
+          phase: phaseLabel[ph] || ph,
+          depth: depRaw.trim(),
+          stop: stp,
+          mix: eShortMix(c2[3] || ''),
+          run: c2[4] || '',
+          tts: c2[5] || '',
+          ppo2: c2[6] || '',
+          ead: c2[7] || '',
+        }));
       });
 
-      // Totals line
       const emSum = getContingencySummaryExport();
-      lines.push('-'.repeat(56));
-      lines.push(...formatPlanSummaryBlock(emSum, true));
+      lines.push(ASCENT_SCHEDULE_HR);
+      lines.push(...formatExportSummaryBlock(emSum));
       lines.push('');
     }
     lines.push('!! SAFETY REMINDERS');
@@ -559,7 +578,7 @@ function buildSlateText() {
   const dateStr = _sNow.toISOString().slice(0, 10);
   const stamp = `${_sNow.getFullYear()}/${_sMo}/${_sD} ${_sH}:${_sMi}`;
   const algoSel = document.getElementById('algorithmSelect')?.value || 'ZHLC_GF';
-  const algoNames = { ZHLC_GF: 'Buhlmann GF', VPMB: 'VPM-B', VPMB_GFS: 'VPM-B/GFS' };
+  const algoNames = { ZHLC_GF: 'Buhlmann GF', VPMB: 'VPM-B', VPMB_GFS: 'VPM-B+GFS' };
   const algoName = algoNames[algoSel] || algoSel;
   const algoLine = algoSel === 'ZHLC_GF'
     ? `${algoName} ${(mGF && mGF.low != null) ? mGF.low : '-'}/${(mGF && mGF.high != null) ? mGF.high : '-'}`
@@ -599,26 +618,14 @@ function buildSlateText() {
   // Footer: TRT/TTS/DECO/CNS/OTU/PrT/Decozone/Deco stop — read from totals row
   const _stotRow = document.querySelector('#decoTableBody tr[data-phase="totals"] td');
   const _slSum = getPlanSummaryExport(_stotRow);
-  const _toMMSS = s => {
-    if (!s || s === '-') return '-';
-    s = String(s).trim();
-    const mm = s.match(/(\d+)'(\d+)"/);
-    if (mm) return `${mm[1]}'${mm[2]}"`;
-    const colon = s.match(/(\d+):(\d+)/);
-    if (colon) return `${colon[1]}'${colon[2]}"`;
-    const plain = s.replace(/[^\d]/g,'');
-    return plain ? `${plain}'00"` : '-';
+  const slateSum = {
+    ..._slSum,
+    runTime: _slSum.runTime === '-' ? `${document.getElementById('decoBT')?.value || '-'}'00"` : _slSum.runTime,
+    decozone: typeof compactExportDepth === 'function' ? compactExportDepth(_slSum.decozone) : _slSum.decozone,
+    decoStop: typeof compactExportDepth === 'function' ? compactExportDepth(_slSum.decoStop) : _slSum.decoStop,
   };
-  let tbt = _toMMSS(_slSum.runTime);
-  let ttsDisp = _slSum.tts;
-  let decoDisp = _toMMSS(_slSum.decoTime);
-  const _sCNS = _slSum.cns;
-  const _sOTU = _slSum.otu;
-  const _sPrT = _slSum.prt;
-  const _sDz = _slSum.decozone;
-  const _sDs = _slSum.decoStop;
-  const _sSGF = _slSum.surfGF || '-';
-  if (tbt === '-') tbt = `${document.getElementById('decoBT')?.value || '-'}'00"`;
+  const summaryLines = formatPlanSummaryBlock(slateSum, true);
+  summaryLines[0] = summaryLines[0].replace(/^RT:/, 'TRT:');
 
   const bar = '========================';
   const lines = [];
@@ -635,8 +642,7 @@ function buildSlateText() {
     lines.push('  (no decompression stops)');
   }
   lines.push(bar);
-  lines.push(`TRT: ${tbt} | TTS: ${ttsDisp} | DECO: ${decoDisp}`);
-  lines.push(`CNS: ${_sCNS} OTU: ${_sOTU} PrT: ${_sPrT} Surf GF: ${_sSGF} Decozone: ${_sDz} First deco: ${_sDs}`);
+  lines.push(...summaryLines);
   return lines.join('\n');
 }
 
@@ -775,7 +781,7 @@ function buildMessengerText(mode) {
   result.push(_msgHr);
   // Algorithm + settings line
   const _algoSel = document.getElementById('algorithmSelect')?.value || 'ZHLC_GF';
-  const _algoNames = { ZHLC_GF: 'ZHL16C+GF', VPMB: 'VPM-B', VPMB_GFS: 'VPM-B/GFS' };
+  const _algoNames = { ZHLC_GF: 'ZHL16C+GF', VPMB: 'VPM-B', VPMB_GFS: 'VPM-B+GFS' };
   const _algoShort = _algoNames[_algoSel] || _algoSel;
   const _cons = document.getElementById('conservatismSelect')?.value ?? '0';
   const _algoStr = _algoSel === 'ZHLC_GF'
@@ -837,9 +843,9 @@ function buildMessengerText(mode) {
     const c   = Array.from(tds).map(td => clean(td.textContent));
 
     if (ph === 'switch') {
-      // Gas switch: ">> EAN50 @ 21m"
-      const info = clean(Array.from(tds).map(td => td.textContent).join(' '));
-      result.push(`>> ${info}`);
+      const mixSw = shortMix(c[3] || '');
+      const depSw = (c[1] || '').trim();
+      result.push(`>> ${mixSw} @ ${depSw}`);
       return;
     }
     if (ph === 'descent' || ph === 'ascent') return; // skip travel rows - clutter
@@ -1106,7 +1112,7 @@ async function exportPDF(opts) {
 
   const decoModelSel = document.getElementById('algorithmSelect')?.value || 'ZHLC_GF';
   const isVPM = decoModelSel === 'VPMB' || decoModelSel === 'VPMB_GFS';
-  const algoNames = { ZHLC_GF:'Bühlmann ZH-L16C+GF', VPMB:'VPM-B', VPMB_GFS:'VPM-B/GFS' };
+  const algoNames = { ZHLC_GF:'Bühlmann ZH-L16C+GF', VPMB:'VPM-B', VPMB_GFS:'VPM-B+GFS' };
   const algo = algoNames[decoModelSel] || 'Bühlmann ZH-L16C+GF';
   const cons = document.getElementById('conservatismSelect')?.value || '0';
   const gfStr = decoModelSel==='ZHLC_GF' ? `GF ${mGF.low}/${mGF.high}`
@@ -1123,7 +1129,7 @@ async function exportPDF(opts) {
   const _pdfRepEl     = document.getElementById('vpmRepMode');
   const _pdfRepActive = isVPM && _pdfRepEl && _pdfRepEl.checked && typeof _lastVPMResult !== 'undefined' && _lastVPMResult;
   const _pdfSI        = _pdfRepActive ? (parseFloat(document.getElementById('vpmSurfaceInterval')?.value || '60')) : null;
-  const _pdfSacUnit   = units === 'imperial' ? 'cu ft/min' : 'L/min';
+  const _pdfSacUnit   = (typeof lspSacUnit === 'function') ? lspSacUnit(true) : (units === 'imperial' ? 'ft3/min' : 'L/min');
   const du       = units === 'imperial' ? 'ft' : 'm';
   const depthVal = document.getElementById('decoDepth')?.value || '—';
   const btVal    = document.getElementById('decoBT')?.value    || '—';
@@ -1328,7 +1334,6 @@ async function exportPDF(opts) {
       doc.addPage(); drawHeader();
       const sacBot=document.getElementById('sacBottom')?.value||'20';
       const sacDec=document.getElementById('sacDeco')?.value||'15';
-      const pdfVolU=units==='imperial'?'cu ft':'L';
       const pdfPresU=units==='imperial'?'psi':'bar';
       const pdfRuleName=_gpPDF.rule==='half'?'Half Tank':'Thirds';
       sectionTitle('GAS CONSUMPTION',`${pdfRuleName} rule  •  SAC bottom: ${sacBot} ${_pdfSacUnit}  deco: ${sacDec} ${_pdfSacUnit}`);
@@ -1336,20 +1341,19 @@ async function exportPDF(opts) {
       // ── Table header ──────────────────────────────────────────────────────
       // Column widths (sum = CW ~170mm)
       const gc={
-        gas:   26, vol: 22, thirds: 18, turn: 22,
-        res:   18, suf: 38, margin: 22
+        gas:   28, vol: 24, thirds: 20, turn: 24,
+        suf:   46, margin: 28
       };
       const gx={
         gas: ML,
         vol: ML+gc.gas,
         thirds: ML+gc.gas+gc.vol,
         turn: ML+gc.gas+gc.vol+gc.thirds,
-        res:  ML+gc.gas+gc.vol+gc.thirds+gc.turn,
-        suf:  ML+gc.gas+gc.vol+gc.thirds+gc.turn+gc.res,
-        margin: ML+gc.gas+gc.vol+gc.thirds+gc.turn+gc.res+gc.suf
+        suf:  ML+gc.gas+gc.vol+gc.thirds+gc.turn,
+        margin: ML+gc.gas+gc.vol+gc.thirds+gc.turn+gc.suf
       };
-      const hdrs=['GAS','TOTAL VOL','THIRDS','TURN PRESS','RESERVE','SUFFICIENT','MARGIN'];
-      const hkeys=['gas','vol','thirds','turn','res','suf','margin'];
+      const hdrs=['GAS','TOTAL VOL','THIRDS','TURN PRESS','SUFFICIENT','MARGIN'];
+      const hkeys=['gas','vol','thirds','turn','suf','margin'];
       const ROW_H=6.5, HDR_H=6;
 
       checkY(HDR_H + _gpPDF.rows.length*(ROW_H+1) + 20);
@@ -1385,12 +1389,12 @@ async function exportPDF(opts) {
         const volCol = insufficient ? [180,0,0] : [0,120,60];
         doc.setFont('DejaVuSans','normal'); doc.setFontSize(6.5);
         doc.setTextColor(...volCol);
-        doc.text(`${gpVolDisp(r.totalL)} ${pdfVolU}`, gx.vol+gc.vol/2, y+4.2, {align:'center'});
+        doc.text(gpVolWithUnit(r.totalL), gx.vol+gc.vol/2, y+4.2, {align:'center'});
 
         // ── THIRDS (bottom only) ──
         if(isBottom && r.portionL!=null){
           doc.setTextColor(100,100,100);
-          doc.text(`${gpVolDisp(r.portionL)} ${pdfVolU}`, gx.thirds+gc.thirds/2, y+4.2, {align:'center'});
+          doc.text(gpVolWithUnit(r.portionL), gx.thirds+gc.thirds/2, y+4.2, {align:'center'});
         } else {
           doc.setTextColor(160,160,160);
           doc.text('—', gx.thirds+gc.thirds/2, y+4.2, {align:'center'});
@@ -1408,22 +1412,18 @@ async function exportPDF(opts) {
           doc.text('one-way', gx.turn+gc.turn/2, y+4.2, {align:'center'});
         }
 
-        // ── RESERVE ──
-        doc.setTextColor(100,100,100);
-        doc.text(`${gpPresDisp(r.reserveBar)} ${pdfPresU}`, gx.res+gc.res/2, y+4.2, {align:'center'});
-
         // ── SUFFICIENT ──
         if(isBottom){
           if(insufficient){
             doc.setFont('DejaVuSans','bold'); doc.setTextColor(180,0,0);
-            doc.text(`SHORT ${gpVolDisp(r.shortL)} ${pdfVolU}`, gx.suf+1, y+2.8);
+            doc.text(`SHORT ${gpVolWithUnit(r.shortL)}`, gx.suf+1, y+2.8);
             if(r.maxBTmin!=null){
               doc.setFont('DejaVuSans','normal'); doc.setFontSize(5.5); doc.setTextColor(140,0,0);
               doc.text(`BT→${r.maxBTmin}min, turn ${gpPresDisp(r.maxTurnBar)}${pdfPresU}`, gx.suf+1, y+5.8);
             }
           } else {
             doc.setFont('DejaVuSans','normal'); doc.setTextColor(0,130,60);
-            doc.text(`turn ${gpPresDisp(r.turnBar)}${pdfPresU}  OK ${gpVolDisp(r.reqL)}${pdfVolU}`, gx.suf+1, y+4.2);
+            doc.text(`turn ${gpPresDisp(r.turnBar)}${pdfPresU}  OK ${gpVolWithUnit(r.reqL)}`, gx.suf+1, y+4.2);
           }
         } else {
           if(r.reqL==null){
@@ -1436,7 +1436,7 @@ async function exportPDF(opts) {
             doc.setFont('DejaVuSans','bold'); doc.setTextColor(...tc3);
             doc.text(stat3sym+stat3txt, gx.suf+1, y+2.8);
             doc.setFont('DejaVuSans','normal'); doc.setFontSize(5.5); doc.setTextColor(100,100,100);
-            doc.text(`need ${gpVolDisp(r.reqL)} ${pdfVolU}`, gx.suf+1, y+5.8);
+            doc.text(`need ${gpVolWithUnit(r.reqL)}`, gx.suf+1, y+5.8);
           }
         }
 
@@ -1446,12 +1446,12 @@ async function exportPDF(opts) {
           const mg = r.totalL - r.reqL;
           const mgCol = mg >= 0 ? [0,130,60] : [180,0,0];
           doc.setFont('DejaVuSans','bold'); doc.setTextColor(...mgCol);
-          doc.text(`${mg>=0?'+':''}${gpVolDisp(mg)} ${pdfVolU}`, gx.margin+gc.margin/2, y+4.2, {align:'center'});
+          doc.text(`${mg>=0?'+':''}${gpVolWithUnit(mg)}`, gx.margin+gc.margin/2, y+4.2, {align:'center'});
         } else if(!isBottom && r.reqL!=null){
           const mg3 = r.totalL - r.reqL;
           const mgCol3 = mg3 >= 0 ? [0,130,60] : [180,0,0];
           doc.setFont('DejaVuSans','bold'); doc.setTextColor(...mgCol3);
-          doc.text(`${mg3>=0?'+':''}${gpVolDisp(mg3)} ${pdfVolU}`, gx.margin+gc.margin/2, y+4.2, {align:'center'});
+          doc.text(`${mg3>=0?'+':''}${gpVolWithUnit(mg3)}`, gx.margin+gc.margin/2, y+4.2, {align:'center'});
         } else {
           doc.setTextColor(160,160,160);
           doc.text('—', gx.margin+gc.margin/2, y+4.2, {align:'center'});
@@ -1462,6 +1462,13 @@ async function exportPDF(opts) {
         doc.line(ML, y+ROW_H, ML+Object.values(gc).reduce((a,b)=>a+b,0), y+ROW_H);
         y += ROW_H;
       });
+      const reserveNote = typeof gpSafetyReserveNoteText === 'function' ? gpSafetyReserveNoteText() : '';
+      if (reserveNote) {
+        checkY(5);
+        doc.setFontSize(7); doc.setFont('DejaVuSans','normal'); doc.setTextColor(90, 90, 110);
+        doc.text(cleanPDF(reserveNote), ML, y + 3.5);
+        y += 5;
+      }
       y += 4;
     }
   }

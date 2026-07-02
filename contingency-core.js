@@ -35,7 +35,7 @@ function buildContingencySlateText() {
   const _ecH = String(_ecNow.getHours()).padStart(2,'0'), _ecMi = String(_ecNow.getMinutes()).padStart(2,'0');
   const ecStamp = `${_ecNow.getFullYear()}/${_ecMo}/${_ecD} ${_ecH}:${_ecMi}`;
   const algoSel = document.getElementById('algorithmSelect')?.value || 'ZHLC_GF';
-  const algoNames = { ZHLC_GF: 'Buhlmann GF', VPMB: 'VPM-B', VPMB_GFS: 'VPM-B/GFS' };
+  const algoNames = { ZHLC_GF: 'Buhlmann GF', VPMB: 'VPM-B', VPMB_GFS: 'VPM-B+GFS' };
   const algoName = algoNames[algoSel] || algoSel;
   const algoLine = algoSel === 'ZHLC_GF'
     ? `${algoName} ${mGF.low}/${mGF.high}`
@@ -67,17 +67,14 @@ function buildContingencySlateText() {
     const ppo2 = (cellText(tr, 'PPO2') || '').padStart(4);
     out.push(`${dep}  ${run}  ${gas} ${ppo2}`);
   });
-  const _ecToMMSS = s => {
-    if (!s && s !== 0) return '-';
-    if (typeof s === 'number') return `${s}'00"`;
-    s = String(s).trim();
-    const mm = s.match(/(\d+)'(\d+)"/); if (mm) return `${mm[1]}'${mm[2]}"`;
-    const colon = s.match(/(\d+):(\d+)/); if (colon) return `${colon[1]}'${colon[2]}"`;
-    const plain = s.replace(/[^\d]/g,''); return plain ? `${plain}'00"` : '-';
-  };
-  const tbt = _ecToMMSS(cc.lastRunFmt || cc.lastRun);
-  const decoDisp = _ecToMMSS(cc.decoTimeFmt || cc.decoTime);
   const _ecSum = getContingencySummaryExport();
+  const ecSlateSum = {
+    ..._ecSum,
+    decozone: typeof compactExportDepth === 'function' ? compactExportDepth(_ecSum.decozone) : _ecSum.decozone,
+    decoStop: typeof compactExportDepth === 'function' ? compactExportDepth(_ecSum.decoStop) : _ecSum.decoStop,
+  };
+  const summaryLines = formatPlanSummaryBlock(ecSlateSum, true);
+  summaryLines[0] = summaryLines[0].replace(/^RT:/, 'TRT:');
   const bar = '========================';
   const lines = ['EMERGENCY SLATE', ecStamp, bar,
     `Algo: ${algoLine}`, `Mix: ${mixLine}`, '',
@@ -85,8 +82,7 @@ function buildContingencySlateText() {
   if (out.length) out.forEach(l => lines.push(l));
   else lines.push('  (no decompression stops)');
   lines.push(bar);
-  lines.push(`TRT: ${tbt} | TTS: ${_ecSum.tts} | DECO: ${decoDisp}`);
-  lines.push(`CNS: ${_ecSum.cns} OTU: ${_ecSum.otu} PrT: ${_ecSum.prt} Decozone: ${_ecSum.decozone} First deco: ${_ecSum.decoStop}`);
+  lines.push(...summaryLines);
   return lines.join('\n');
 }
 
@@ -156,13 +152,13 @@ function buildContingencyBailoutGasAlert(contGasConsumed) {
   const mult = typeof getContingencySacMultiplier === 'function' ? getContingencySacMultiplier() : 1.5;
   const req = calculateGasRequirementsFromConsumed(contGasConsumed, { sacMultiplier: 1, bailoutFocus: true });
   if (!req.warningBailoutContingency) return { html: '', warningBailoutContingency: false };
-  const volU = units === 'imperial' ? 'cu ft' : 'L';
-  const lines = req.bailoutShortfalls.map((s) => {
-    const shortDisp = typeof gpVolDisp === 'function' ? gpVolDisp(s.shortL) : Math.round(s.shortL);
-    const needDisp = typeof gpVolDisp === 'function' ? gpVolDisp(s.reqL) : Math.round(s.reqL);
-    const haveDisp = typeof gpVolDisp === 'function' ? gpVolDisp(s.availL) : Math.round(s.availL);
-    return `${s.label}: need ${needDisp} ${volU}, have ${haveDisp} ${volU} (short ${shortDisp} ${volU})`;
-  }).join('; ');
+  const volU = (typeof lspVolUnit === 'function') ? lspVolUnit() : (units === 'imperial' ? 'ft³' : 'L');
+  const fmtVol = (typeof gpVolWithUnit === 'function')
+    ? gpVolWithUnit
+    : (l) => `${typeof gpVolDisp === 'function' ? gpVolDisp(l) : Math.round(l)}${volU}`;
+  const lines = req.bailoutShortfalls.map((s) =>
+    `${s.label}: need ${fmtVol(s.reqL)}, have ${fmtVol(s.availL)} (short ${fmtVol(s.shortL)})`
+  ).join('; ');
   return {
     warningBailoutContingency: true,
     html: `<div class="alert dang" style="margin-top:8px;" data-warning="bailout-contingency"><span>⚠</span><div><strong>BAILOUT INSUFFICIENT FOR CONTINGENCY.</strong> ${lines} — calculated at ${mult}× stress SAC.</div></div>`,
@@ -470,11 +466,15 @@ function calcContingency() {
 
   if (!ok || !newRows) {
     resultEl.style.display = 'block';
+    const exportActions = document.getElementById('contingencyExportActions');
+    if (exportActions) exportActions.style.display = 'none';
     resultEl.innerHTML = `<div class="alert dang" style="margin:0;"><span>⚠️</span><div><strong>Contingency plan unavailable.</strong> Run Calculate on the main deco plan first, or adjust scenario inputs.</div></div>`;
     return;
   }
 
   resultEl.style.display = 'block';
+  const exportActions = document.getElementById('contingencyExportActions');
+  if (exportActions) exportActions.style.display = 'flex';
   const _emRunFmt  = lastRunFmt  || `${lastRun}'00"`;
   const _emDecoFmt = decoTimeFmt || `${decoTime}'00"`;
   const _emDepthM  = domDepthToM('decoDepth') + (contExtraDepth || 0);
@@ -502,26 +502,21 @@ function calcContingency() {
     surfaceGF: contSurfaceGF,
   }, 'info');
   resultEl.innerHTML = `
-    <div class="deco-table-wrap">
-      <div class="deco-plan-caption">
-        <div class="alert ${severity}" style="margin:0;${contGasLose==='both'?'border-width:2px;':''}">
-          <span>${icon}</span>
-          <div><strong>${label}</strong> — Run ≈ <strong>${_emRunFmt}</strong> · Deco ≈ <strong>${_emDecoFmt}</strong>
-          <div style="font-size:11px;margin-top:3px;opacity:0.85;">${msg}</div></div>
-        </div>
+    <div class="deco-plan-caption">
+      <div class="alert ${severity}" style="margin:0;${contGasLose==='both'?'border-width:2px;':''}">
+        <span>${icon}</span>
+        <div><strong>${label}</strong> — Run ≈ <strong>${_emRunFmt}</strong> · Deco ≈ <strong>${_emDecoFmt}</strong>
+        <div style="font-size:11px;margin-top:3px;opacity:0.85;">${msg}</div></div>
       </div>
-      <table class="deco-table table-view" style="font-size:10px;">
-        <thead><tr><th>Phase</th><th>Depth</th><th>Stop</th><th>Mix</th><th>Run</th><th>TTS</th><th>PPO2</th><th>EAD</th></tr></thead>
-        <tbody id="contingencyTableBody">${(newRows || '').replace(/data-phase="/g, 'data-phase="contingency-').replace(/<tr[^>]*data-phase="contingency-totals"[^>]*>[\s\S]*?<\/tr>/gi, '')}${emInfoRow}</tbody>
-      </table>
-      <div class="deco-schedule-stack__actions">
-        <div class="export-row">
-          <button class="btn-export" onclick="copyDiveProfile('contingency')" title="Copy to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-          <button class="btn-export" onclick="showContingencySlate()" title="Emergency slate (waterproof format)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="13" y2="16"/></svg></button>
-          <button class="btn-export" onclick="exportTXT('contingency')" title="Download .txt"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg></button>
-          <button class="btn-export" onclick="showContingencyPDFDialog()" title="Export PDF"><span style="display:inline-block;width:16px;height:16px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0px;line-height:16px;text-align:center;overflow:visible;white-space:nowrap;">PDF</span></button>
-        </div>
+    </div>
+    <div class="schedule-wrap">
+      <div class="deco-table-wrap">
+        <table class="deco-table schedule-table table-view">
+          <thead><tr><th class="phase-cell" aria-label="Phase"></th><th>Depth</th><th>Stop</th><th>Mix</th><th class="align-r">Run</th><th class="align-r">TTS</th><th class="align-r">PPO₂</th><th class="align-r">EAD</th></tr></thead>
+          <tbody id="contingencyTableBody">${(newRows || '').replace(/data-phase="/g, 'data-phase="contingency-').replace(/<tr[^>]*data-phase="contingency-totals"[^>]*>[\s\S]*?<\/tr>/gi, '')}${emInfoRow}</tbody>
+        </table>
       </div>
+      ${typeof buildScheduleLegendHtml === 'function' ? buildScheduleLegendHtml() : ''}
     </div>
     <div id="decoAlertsEmergency" style="margin-top:8px;"></div>`;
 
@@ -546,6 +541,8 @@ function calcContingency() {
     window._lastContingency.emAlertsHtml = emAlerts.innerHTML;
     window._lastContingency.warningBailoutContingency = bailoutAlert.warningBailoutContingency;
   }
+  if (typeof injectTtsCells === 'function') injectTtsCells('contingencyTableBody');
+  if (typeof decorateContingencyTableForV3 === 'function') decorateContingencyTableForV3();
   scheduleDecoScheduleStackSync();
   } catch (e) {
     console.error('[Contingency]', e);

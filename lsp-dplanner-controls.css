@@ -37,6 +37,59 @@
  color: var(--accent);
 }
 
+/* Option seg toggle — square segmented control, click anywhere to flip */
+.option-pill-toggle { background: none; border: none; padding: 0; cursor: pointer; line-height: 0; flex-shrink: 0; }
+.option-pill-toggle:focus-visible .option-pill-track { outline: 2px solid color-mix(in oklab, var(--accent) 55%, transparent); outline-offset: 2px; }
+.option-pill-track {
+  --pill-pad: 2px;
+  --pill-r: 7px;
+  --pill-inner-r: 5px;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  width: var(--pill-w, 80px);
+  height: 28px;
+  padding: var(--pill-pad);
+  border-radius: var(--pill-r);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-sizing: border-box;
+}
+.option-pill-thumb {
+  position: absolute;
+  top: var(--pill-pad);
+  left: var(--pill-pad);
+  width: calc((100% - var(--pill-pad) * 2) / 2);
+  height: calc(100% - var(--pill-pad) * 2);
+  border-radius: var(--pill-inner-r);
+  background: color-mix(in oklab, var(--accent) 12%, transparent);
+  transition: transform 0.2s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+.option-pill-toggle[data-side="right"] .option-pill-thumb { transform: translateX(100%); }
+.option-pill-opt {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+.option-pill-toggle[data-side="left"] .option-pill-opt:first-of-type,
+.option-pill-toggle[data-side="right"] .option-pill-opt:last-of-type { color: var(--accent); }
+.vpm-mode-label { display: inline-flex; align-items: center; gap: 6px; }
+
 /* ── FORM ── */
 .form-grid { display: grid;
  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
@@ -379,10 +432,20 @@ body.light-theme .dpb-chip--o2     { background: #e8faff; }
 .dang { background:#fff0f0; border:1px solid #cc0000; color:#cc0000 !important; font-weight:600; }
 .info { background:rgba(0,200,255,0.06); border-color:rgba(0,200,255,0.2); color:#60d8ff; }
 .deco { background:#FF4433; border:1px solid #111111; color:#fff; font-weight:700; }
+.alert.narcotic-warn { background:#FF4433; border:1px solid #111111; color:#fff; font-weight:700; }
 
-/* Light theme: solid strong colors for readability on white */
+/* Light theme: emergency deco / narcotic alerts — solid red + dark text */
+body.light-theme .deco,
+body.light-theme .alert.narcotic-warn {
+ background:#FF4433;
+ border:1px solid #111111;
+ color:#111;
+ font-weight:700;
+}
+body.light-theme .deco *,
+body.light-theme .alert.narcotic-warn * { color:#111 !important; }
+body.light-theme .alert.narcotic-warn .tip-icon { color:#111 !important; opacity:0.85; }
 body.light-theme .dang { background:#fff0f0; border:1px solid #cc0000; color:#cc0000; font-weight:600; }
-body.light-theme .deco { background:#FF4433; border:1px solid #111111; color:#fff; font-weight:700; }
 body.light-theme .warn { background:#fff8e6; border-color:#cc7700; color:#884400; }
 body.light-theme .ok { background:#f0fff4; border-color:#116622; color:#116622; }
 

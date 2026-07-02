@@ -16,10 +16,26 @@ UA = (
 GOOGLE_CSS = (
     "https://fonts.googleapis.com/css2?"
     "family=Bebas+Neue&"
-    "family=JetBrains+Mono:wght@300;400;500;700&"
+    "family=Inter:wght@300;400;500;600;700&"
+    "family=JetBrains+Mono:wght@300;400;500;600;700&"
     "family=Outfit:wght@300;400;500;600;700&"
     "display=swap"
 )
+
+FLATICON_ICONS = [
+    (
+        "https://cdn-icons-png.flaticon.com/512/14545/14545985.png",
+        "computer-14545985.png",
+    ),
+    (
+        "https://cdn-icons-png.flaticon.com/512/1424/1424252.png",
+        "tools-1424252.png",
+    ),
+    (
+        "https://cdn-icons-png.flaticon.com/512/2099/2099058.png",
+        "settings-2099058.png",
+    ),
+]
 
 DEJAVU = [
     (
@@ -83,6 +99,21 @@ def vendor_dejavu() -> list[str]:
     return paths
 
 
+def vendor_flaticon_icons() -> list[str]:
+    ICONS_DIR.mkdir(parents=True, exist_ok=True)
+    paths: list[str] = []
+    for url, fname in FLATICON_ICONS:
+        dest = ICONS_DIR / fname
+        try:
+            if not dest.exists() or dest.stat().st_size == 0:
+                dest.write_bytes(fetch(url))
+                print(f"  downloaded {fname}")
+            paths.append(f"vendor/icons/{fname}")
+        except Exception as exc:
+            print(f"  WARN: could not fetch {fname}: {exc}")
+    return paths
+
+
 def vendor_giw_icon() -> str | None:
     ICONS_DIR.mkdir(parents=True, exist_ok=True)
     url, fname = GIW_ICON
@@ -102,11 +133,13 @@ def main() -> None:
     gf = vendor_google_fonts()
     print("Vendoring DejaVu PDF fonts...")
     dv = vendor_dejavu()
+    print("Vendoring Flaticon icons...")
+    fi = vendor_flaticon_icons()
     print("Vendoring Get In Water icon...")
     giw = vendor_giw_icon()
 
     manifest = ROOT / "vendor" / "offline-manifest.txt"
-    lines = sorted(set(gf + dv + ([giw] if giw else [])))
+    lines = sorted(set(gf + dv + fi + ([giw] if giw else [])))
     manifest.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"Wrote {manifest} ({len(lines)} assets)")
 

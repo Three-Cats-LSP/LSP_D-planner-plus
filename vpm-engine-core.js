@@ -2093,7 +2093,7 @@
             'VPMA': 'VPM-A',
             'VPMB': 'VPM-B',
             'VPMBE': 'VPM-B/E',
-            'VPMB_GFS': 'VPM-B/GFS',
+            'VPMB_GFS': 'VPM-B+GFS',
             'VPMBFBO': 'VPM-B/FBO'
         }
     };

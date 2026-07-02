@@ -132,7 +132,19 @@ jobs:
           echo "APK_NAME=${APK_NAME}" >> "$GITHUB_ENV"
           ls -la "Android Apk/"
 
-      - name: Commit APK back to main
+      - name: Publish APK to GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view latest >/dev/null 2>&1 || \
+            gh release create latest \
+              --title "Latest Android APK" \
+              --notes "Release APK built by CI. Download: https://threecats-lsp.com/d-planner-plus/download.html" \
+              --latest
+          cp "Android Apk/${APK_NAME}" /tmp/LSP_D-planner-plus.apk
+          gh release upload latest /tmp/LSP_D-planner-plus.apk --clobber
+
+      - name: Commit version.json
         run: |
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
@@ -140,20 +152,7 @@ jobs:
           git pull --rebase origin main
           git stash pop
           git restore android/ package.json README.md
-          git add -A "Android Apk/" version.json
-          git commit -m "build(android): ${APK_NAME} [skip ci]" --allow-empty
+          git add version.json
+          git diff --cached --quiet && echo "No version.json changes" && exit 0
+          git commit -m "build(android): ${APK_NAME} [skip ci]"
           git push
-
-      - name: Notify homepage to sync APK
-        env:
-          SYNC_TOKEN: ${{ secrets.SYNC_TOKEN }}
-        run: |
-          if [ -z "$SYNC_TOKEN" ]; then
-            echo "::error::SYNC_TOKEN secret is missing — cannot trigger threecats-lsp.com APK sync"
-            exit 1
-          fi
-          curl -sfS -X POST \
-            -H "Authorization: token ${SYNC_TOKEN}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/Three-Cats-LSP/threecats-lsp.com/dispatches \
-            -d '{"event_type":"sync-apk-d-planner-plus"}'

@@ -38,8 +38,8 @@
        Desktop: single row  |  Mobile: 3 stacked rows via flex-wrap -->
 <div id="headerTopRow">
 <!-- Logo — left, fixed size -->
-<div style="display:flex;align-items:center;gap:12px;padding-left:14px;flex-shrink:0;flex-grow:0;">
-<div class="brand-icon" id="brandIcon" aria-hidden="true">🫧</div>
+<div class="brand-lockup">
+<img alt="Three Cats LSP" class="brand-logo" decoding="async" height="48" id="brandLogo" src="vendor/brand/three-cats-lsp-logo.png" width="95"/>
 <div class="brand-text">
 <h1>LSP D-PLANNER · <span class="algo-label" id="algoLabel">DIVE</span></h1>
 <p id="algoSubtitle">Bühlmann ZH-L16C · Gradient Factors</p>
@@ -58,7 +58,7 @@
 <button type="button" class="theme-pill-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme">
 <span class="theme-pill-track">
 <span class="theme-pill-thumb" id="themePillThumb" aria-hidden="true"></span>
-<svg class="theme-pill-icon theme-pill-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+<svg class="theme-pill-icon theme-pill-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="currentColor"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
 <svg class="theme-pill-icon theme-pill-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
 </span>
 </button>
@@ -125,11 +125,14 @@
 </div>
 </div>
 <div class="vpm-mode-row" id="vpmModeRowV3">
-<span class="section-label" style="margin:0;">VPM Mode</span>
-<div class="seg">
-<button type="button" class="seg-btn active" id="vpmModePure" onclick="setVpmMode('VPMB',this)">VPM-B</button>
-<button type="button" class="seg-btn" id="vpmModeGfs" onclick="setVpmMode('VPMB_GFS',this)">VPM-B+GFS</button>
-</div>
+<span class="section-label vpm-mode-label" style="margin:0;">VPM Mode<span class="tip-icon" onclick="event.stopPropagation();showTip('VPM Mode','VPM-B — Bubble-mechanics decompression model (Yount & Hoffman). Tracks microscopic bubble nuclei rather than dissolved gas alone. Tends to give deeper first stops and shorter shallow stops than Bühlmann GF.\n\nVPM-B+GFS — Same VPM-B bubble model for deep and mid stops, with Bühlmann Gradient Factor High overlay at shallow stops. Always at least as conservative as VPM-B alone at the surface; useful when VPM-B shallow stops feel too aggressive.\n\n⚠ Conservatism order is profile-dependent: on deep/long trimix dives Bühlmann GF is often longer TTS; on short/shallow dives VPM-B can match or exceed GF. Compare TTS for your specific dive profile.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></span>
+<button type="button" class="option-pill-toggle" id="vpmModeToggle" onclick="toggleVpmMode()" aria-label="Toggle VPM-B or VPM-B+GFS" data-side="left">
+<span class="option-pill-track" style="--pill-w: 108px;">
+<span class="option-pill-thumb" id="vpmModeThumb" aria-hidden="true"></span>
+<span class="option-pill-opt">VPM-B</span>
+<span class="option-pill-opt">+GFS</span>
+</span>
+</button>
 </div>
 <div class="vpm-cons-row" id="conservatismRowV3">
 <span class="section-label" style="margin:0;">Conservatism</span>
@@ -151,14 +154,20 @@
 <div id="planPanelRecSection">
 <div class="ctrl-row" id="recSafetyStopRow">
 <span class="ctrl-label" style="margin-left:0;">Safety Stop:</span>
-<div class="seg">
-<button class="seg-btn" id="sd3" onclick="setStopDepth(3)">3 m</button>
-<button class="seg-btn active" id="sd6" onclick="setStopDepth(6)">6 m</button>
-</div>
-<div class="seg">
-<button class="seg-btn active" id="sdur3" onclick="setStopDur(3)">3 min</button>
-<button class="seg-btn" id="sdur5" onclick="setStopDur(5)">5 min</button>
-</div>
+<button type="button" class="option-pill-toggle" id="stopDepthToggle" onclick="toggleStopDepth()" aria-label="Toggle safety stop depth" data-side="right">
+<span class="option-pill-track" style="--pill-w: 72px;">
+<span class="option-pill-thumb" aria-hidden="true"></span>
+<span class="option-pill-opt">3 m</span>
+<span class="option-pill-opt">6 m</span>
+</span>
+</button>
+<button type="button" class="option-pill-toggle" id="stopDurToggle" onclick="toggleStopDur()" aria-label="Toggle safety stop duration" data-side="left">
+<span class="option-pill-track" style="--pill-w: 80px;">
+<span class="option-pill-thumb" aria-hidden="true"></span>
+<span class="option-pill-opt">3 min</span>
+<span class="option-pill-opt">5 min</span>
+</span>
+</button>
 </div>
 <div class="field" id="gasMixField">
 <label class="section-label">Breathing Gas</label>
@@ -191,8 +200,9 @@
 <button class="result-tab-btn" data-tab="ndlref" onclick="switchResultTab('ndlref',this)">NDL Table</button>
 </div>
 <div class="result-tabs-nav" id="tecResultTabs">
-<button class="result-tab-btn active" data-tab="graphs" onclick="switchResultTab('graphs',this)">Graphs</button>
+<button class="result-tab-btn active" data-tab="profile" onclick="switchResultTab('profile',this)">Dive Profile</button>
 <button class="result-tab-btn" data-tab="contingency" onclick="switchResultTab('contingency',this)">Contingency Plans</button>
+<button class="result-tab-btn" data-tab="graphs" onclick="switchResultTab('graphs',this)">Graphs</button>
 <button class="result-tab-btn" data-tab="tissue" onclick="switchResultTab('tissue',this)">Tissue Saturation</button>
 </div>
 <div class="result-tab-pane" id="resultTab-dive"></div>
@@ -200,7 +210,7 @@
 <div class="result-tab-pane" id="resultTab-avgdepth"></div>
 <div class="result-tab-pane" id="resultTab-multi"></div>
 <div class="result-tab-pane" id="resultTab-ndlref"></div>
-<div class="result-tab-pane active" id="resultTab-graphs">
+<div class="result-tab-pane active" id="resultTab-profile">
 <div class="results-section-head" id="profileSectionHead">
 <span class="results-section-label">Dive Profile</span>
 <div class="results-section-actions profile-export-actions">
@@ -210,8 +220,13 @@
 <button class="btn-export" onclick="showPDFExportDialog()" title="Export PDF"><span style="display:inline-block;width:16px;height:16px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0px;line-height:16px;text-align:center;overflow:visible;white-space:nowrap;">PDF</span></button>
 </div>
 </div>
+<div id="decoResult" class="results-v3-card" style="display:none;">
+<div id="decoAlerts"></div>
+<div id="decoSummary" class="deco-plan-caption"></div>
+<div id="decoAlertsNarcotic"></div>
+<div id="vpmStopCapNote" style="display:none;margin:8px var(--space-4);padding:8px 12px;border-left:3px solid var(--orange);color:var(--orange);font-size:12px;"></div>
 <div class="card collapsible card-open" id="diveGraphCard" style="display:none;">
-<div class="card-title" onclick="toggleCard(this)">Dive Graph<span class="tip-icon" onclick="event.stopPropagation();showTip('Dive Graph','How to read the graph\n\nProfile line — coloured by gas. Each gas segment uses its own colour; the fill below fades to transparent.\n\nRed dotted line — Bühlmann ceiling. The minimum depth you must not ascend above at each moment, calculated from tissue loading and gradient factors. It rises as you off-gas during ascent and deco stops. If your profile line is always at or below this line, you are within the model\'s deco obligation.\n\nYellow/green flags — gas switches. Match the yellow/green gas switch rows in the deco table.\n\nDots — key waypoints (bottom, deco stops, safety stop). Red dots = deco stops, green = safety stop, blue/accent = bottom.\n\nOrange/red halo on a dot — ppO₂ is at or above 1.4 bar (orange) or 1.6 bar (red).\n\nHorizontal dashed lines — individual stop depth indicators. Red = deco stop, green = safety stop.\n\nInteraction\nHover (desktop) or tap (mobile) to see depth, time, gas, ppO₂, CNS%, and current ceiling at that point.\nScroll to zoom · drag to pan · double-click to reset.')" style="margin-left:6px;"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span><span class="card-caret">▾</span></div>
+<div class="card-title" onclick="toggleCard(this)">Dive Graph<span class="tip-icon" onclick="event.stopPropagation();showTip('Dive Graph (summary)','Compact profile overview for quick reference alongside the schedule.\n\nFor the full interactive graph — gas colours, Bühlmann ceiling, gas-switch flags, hover tooltips, and zoom/pan — open the Graphs tab.')" style="margin-left:6px;"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span><span class="card-caret">▾</span></div>
 <div class="card-collapsible-body">
 <div id="decoProfileCanvas-wrap" style="position:relative;width:100%;margin:6px 0;">
 <canvas height="220" id="decoProfileCanvas" style="width:100%;height:auto;aspect-ratio:700/220;border-radius:10px;background:var(--card2);border:1px solid var(--border);display:block;" width="700"></canvas>
@@ -224,40 +239,6 @@
 <div id="decoProfileLegend" class="profile-legend" style="display:none;margin-top:4px;"></div>
 </div><!-- /card-collapsible-body diveGraph -->
 </div>
-<div class="card collapsible card-open" id="gfCurveInlineCard" style="display:none;">
-<div class="card-title" onclick="toggleCard(this)">GF Gradient Factor Curve<span class="tip-icon" onclick="event.stopPropagation();showTip('GF Gradient Factor Curve','The GF curve shows how your gradient factor allowance changes at each deco stop during the ascent — from GF Low at the first (deepest) stop to GF High at the surface.\n\nWhat are Gradient Factors?\nGF Low controls where your first deco stop is placed (deeper = more conservative). GF High controls how saturated you are allowed to be at the surface.\n\nThe curve interpolates linearly between these two values as you ascend. At each stop the algorithm permits a fraction of the full M-value proportional to where that stop falls between GF Low (first stop) and GF High (surface).\n\nReading the chart:\n X-axis — stop depth (deepest on left, surface on right)\n Y-axis — gradient factor % allowed at that stop\n Dots — your actual deco stops\n\nConservative divers use lower GF Low (e.g. 30/70) to add deep stops; aggressive technical divers may use 85/85. The curve lets you visualise the trade-off at a glance.')" style="margin-left:6px;"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span><span class="card-caret">▾</span></div>
-<div class="card-collapsible-body">
-<p style="color:var(--muted);font-size:12px;margin-bottom:16px;">Visualizes how gradient factors control the ascent ceiling at each deco stop. Interpolates linearly from GF Low (first stop) to GF High (surface).</p>
-<div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
-<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveGFL" style="color:var(--accent)">30</div><div class="stat-lbl">GF Low</div></div>
-<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveGFH" style="color:var(--accent)">70</div><div class="stat-lbl">GF High</div></div>
-<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveStops">—</div><div class="stat-lbl">Deco Stops</div></div>
-</div>
-<div id="gfCurveCanvas-wrap" style="position:relative;width:100%;">
-<canvas height="220" id="gfCurveCanvas" style="width:100%;height:auto;aspect-ratio:700/220;border-radius:10px;background:var(--card2);border:1px solid var(--border);display:block;" width="700"></canvas>
-<div id="gfCurveCanvas-overlay" style="position:absolute;top:0;left:0;right:0;bottom:0;border-radius:10px;cursor:crosshair;"></div>
-<div id="gfCurveCanvas-tooltip" style="display:none;position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--accent);border-radius:6px;padding:7px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);white-space:nowrap;z-index:10;box-shadow:0 4px 16px rgba(0,0,0,0.4);"></div>
-<div id="gfCurveCanvas-crosshair-v" style="display:none;position:absolute;top:0;bottom:0;width:1px;background:rgba(0,217,255,0.5);pointer-events:none;"></div>
-<div id="gfCurveCanvas-crosshair-h" style="display:none;position:absolute;left:0;right:0;height:1px;background:rgba(0,217,255,0.3);pointer-events:none;"></div>
-</div>
-<div id="gfCurveLegend" style="display:none;margin-top:4px;"></div>
-<div style="margin-top:12px;display:flex;gap:20px;flex-wrap:wrap;">
-<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
-<div style="width:20px;height:3px;background:var(--accent);border-radius:2px;"></div> GF Ceiling line
-      </div>
-<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
-<div style="width:20px;height:3px;background:var(--green);border-radius:2px;"></div> Actual ascent
-      </div>
-<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
-<div style="width:12px;height:12px;border-radius:50%;background:var(--red);"></div> First deco
-      </div>
-</div>
-</div><!-- /card-collapsible-body gfCurve -->
-</div>
-<div id="decoResult" class="results-v3-card" style="display:none;">
-<div id="decoAlerts"></div>
-<div id="decoSummary" class="deco-plan-caption"></div>
-<div id="vpmStopCapNote" style="display:none;margin:8px var(--space-4);padding:8px 12px;border-left:3px solid var(--orange);color:var(--orange);font-size:12px;"></div>
 <div class="results-section-head">
 <span class="results-section-label">Schedule</span>
 <div class="results-section-actions">
@@ -283,12 +264,63 @@
 <span class="legend-item legend-switch"><svg class="leg-icon" width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 3h12M10 1l3 2-3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 7H1M4 5l-3 2 3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Gas Switch</span>
 </div>
 </div>
-</div></div>
+</div>
 <div id="gasConsumptionSummary" style="display:none;"></div>
-<div class="result-tab-pane" id="resultTab-contingency">
-<div class="card collapsible card-open" id="contingencyCard" style="display:none;">
-<div class="card-title" onclick="toggleCard(this)">⚠️ Contingency Plans<span class="tip-icon" onclick="event.stopPropagation();showTip('⚠️ Contingency Plans','Contingency planning lets you pre-calculate an emergency decompression schedule before your dive — so you are never caught off guard.\n\nGas Loss — simulate losing one of your gas supplies (bottom gas, deco gas 1 or 2). The plan recalculates using only your remaining gases, so you can see whether the dive is still viable and what extra deco time is required.\n\nExtended Bottom Time — add +3, +5 or +10 minutes to your planned bottom time and instantly see the updated deco obligation. Useful for planning bailout margins or conservative turnaround points.\n\nCombined scenarios — gas loss and extended bottom time can be combined simultaneously.\n\nThe resulting emergency plan shows the full deco schedule you would need to follow, along with gas sufficiency checks for the gases still available.')" style="margin-left:6px;"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span><span class="card-caret">▾</span></div>
+</div>
+<div class="result-tab-pane" id="resultTab-graphs">
+<div class="results-section-head results-section-head--sub" id="graphsDiveSectionHead" style="display:none;">
+<span class="results-section-label">Dive Graph</span>
+</div>
+<div class="card collapsible card-open" id="fullDiveGraphCard" style="display:none;">
+<div class="card-title" onclick="toggleCard(this)">Dive Graph<span class="tip-icon" onclick="event.stopPropagation();showTip('Dive Graph','How to read the graph\n\nProfile line — coloured by gas. Each gas segment uses its own colour; the fill below fades to transparent.\n\nRed dotted line — Bühlmann ceiling. The minimum depth you must not ascend above at each moment, calculated from tissue loading and gradient factors. It rises as you off-gas during ascent and deco stops. If your profile line is always at or below this line, you are within the model\'s deco obligation.\n\nYellow/green flags — gas switches. Match the yellow/green gas switch rows in the deco table.\n\nDots — key waypoints (bottom, deco stops, safety stop). Red dots = deco stops, green = safety stop, blue/accent = bottom.\n\nOrange/red halo on a dot — ppO₂ is at or above 1.4 bar (orange) or 1.6 bar (red).\n\nHorizontal dashed lines — individual stop depth indicators. Red = deco stop, green = safety stop.\n\nInteraction\nHover (desktop) or tap (mobile) to see depth, time, gas, ppO₂, CNS%, and current ceiling at that point.\nScroll to zoom · drag to pan · double-click to reset.')" style="margin-left:6px;"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span><span class="card-caret">▾</span></div>
+<div class="card-collapsible-body" id="fullDiveGraphMount"></div>
+</div>
+<div class="results-section-head results-section-head--sub" id="graphsGfSectionHead" style="display:none;">
+<span class="results-section-label">GF Curve</span>
+</div>
+<div class="card collapsible card-open" id="gfCurveInlineCard" style="display:none;">
+<div class="card-title" onclick="toggleCard(this)">GF Gradient Factor Curve<span class="tip-icon" onclick="event.stopPropagation();showTip('GF Gradient Factor Curve','The GF curve shows how your gradient factor allowance changes at each deco stop during the ascent — from GF Low at the first (deepest) stop to GF High at the surface.\n\nWhat are Gradient Factors?\nGF Low controls where your first deco stop is placed (deeper = more conservative). GF High controls how saturated you are allowed to be at the surface.\n\nThe curve interpolates linearly between these two values as you ascend. At each stop the algorithm permits a fraction of the full M-value proportional to where that stop falls between GF Low (first stop) and GF High (surface).\n\nReading the chart:\n X-axis — stop depth (deepest on left, surface on right)\n Y-axis — gradient factor % allowed at that stop\n Dots — your actual deco stops\n\nConservative divers use lower GF Low (e.g. 30/70) to add deep stops; aggressive technical divers may use 85/85. The curve lets you visualise the trade-off at a glance.')" style="margin-left:6px;"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span><span class="card-caret">▾</span></div>
 <div class="card-collapsible-body">
+<p class="gf-curve-intro">Visualizes how gradient factors control the ascent ceiling at each deco stop. Interpolates linearly from GF Low (first stop) to GF High (surface).</p>
+<div class="gf-curve-stats">
+<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveGFL" style="color:var(--accent)">30</div><div class="stat-lbl">GF Low</div></div>
+<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveGFH" style="color:var(--accent)">70</div><div class="stat-lbl">GF High</div></div>
+<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveStops">—</div><div class="stat-lbl">Deco Stops</div></div>
+</div>
+<div id="gfCurveCanvas-wrap" style="position:relative;width:100%;">
+<canvas height="220" id="gfCurveCanvas" style="width:100%;height:auto;aspect-ratio:700/220;border-radius:10px;background:var(--card2);border:1px solid var(--border);display:block;" width="700"></canvas>
+<div id="gfCurveCanvas-overlay" style="position:absolute;top:0;left:0;right:0;bottom:0;border-radius:10px;cursor:crosshair;"></div>
+<div id="gfCurveCanvas-tooltip" style="display:none;position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--accent);border-radius:6px;padding:7px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);white-space:nowrap;z-index:10;box-shadow:0 4px 16px rgba(0,0,0,0.4);"></div>
+<div id="gfCurveCanvas-crosshair-v" style="display:none;position:absolute;top:0;bottom:0;width:1px;background:rgba(0,217,255,0.5);pointer-events:none;"></div>
+<div id="gfCurveCanvas-crosshair-h" style="display:none;position:absolute;left:0;right:0;height:1px;background:rgba(0,217,255,0.3);pointer-events:none;"></div>
+</div>
+<div id="gfCurveLegend" class="gf-curve-stop-table" style="display:none;"></div>
+<div class="gf-curve-legend-keys">
+<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
+<div style="width:20px;height:3px;background:var(--accent);border-radius:2px;"></div> GF Ceiling line
+      </div>
+<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
+<div style="width:20px;height:3px;background:var(--green);border-radius:2px;"></div> Actual ascent
+      </div>
+<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
+<div style="width:12px;height:12px;border-radius:50%;background:var(--red);"></div> First deco
+      </div>
+</div>
+</div><!-- /card-collapsible-body gfCurve -->
+</div>
+</div>
+<div class="result-tab-pane" id="resultTab-contingency">
+<div id="contingencyCard" class="contingency-v4-card" style="display:none;">
+<div class="results-section-head">
+<span class="results-section-label">Contingency Plans</span>
+<div class="results-section-actions contingency-export-actions" id="contingencyExportActions" style="display:none;">
+<button class="btn-export" onclick="copyDiveProfile('contingency')" title="Copy to clipboard"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+<button class="btn-export" onclick="showContingencySlate()" title="Emergency slate (waterproof format)"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><rect height="18" rx="2" width="18" x="3" y="3"></rect><line x1="7" x2="17" y1="8" y2="8"></line><line x1="7" x2="17" y1="12" y2="12"></line><line x1="7" x2="13" y1="16" y2="16"></line></svg></button>
+<button class="btn-export" onclick="exportTXT('contingency')" title="Download .txt"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line><line x1="10" x2="8" y1="9" y2="9"></line></svg></button>
+<button class="btn-export" onclick="showContingencyPDFDialog()" title="Export PDF"><span style="display:inline-block;width:16px;height:16px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0px;line-height:16px;text-align:center;overflow:visible;white-space:nowrap;">PDF</span></button>
+</div>
+</div>
+<div class="contingency-setup-body">
 <div class="info-box">Select a gas loss scenario and/or extended bottom time to calculate a combined emergency plan.</div>
 <!-- Gas Loss -->
 <div class="u11">
@@ -316,16 +348,17 @@
 </div>
 <!-- Calculate Button -->
 <div id="contingencyScheduleStack">
-<button class="deco-contingency-calc" onclick="calcContingency()" onmouseout="this.style.background='linear-gradient(135deg,rgba(255,71,87,0.12),rgba(255,100,50,0.16))'" onmouseover="this.style.background='rgba(255,71,87,0.22)'" style="padding:11px;background:linear-gradient(135deg,rgba(255,71,87,0.12),rgba(255,100,50,0.16));color:var(--red);border:1px solid var(--red);border-radius:8px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;transition:all 0.2s;">Calculate Emergency Plan</button>
-<div id="contingencyResult" style="display:none;"></div>
+<button class="deco-contingency-calc" onclick="calcContingency()" style="margin-bottom:0;">Calculate Emergency Plan</button>
 </div>
 <div id="emergencyGasConsumption" style="display:none;"></div>
-</div><!-- /card-collapsible-body contingency -->
-</div></div>
+</div>
+<div id="contingencyResult" style="display:none;"></div>
+</div>
+</div>
 <div class="result-tab-pane" id="resultTab-tissue">
 <div id="tissueLoadCard" style="display:none;">
 <div class="card collapsible card-open" id="tissueLoadInnerCard">
-<div class="card-title" onclick="toggleCard(this)">Tissue Saturation<span class="tip-icon" onclick="event.stopPropagation();showTip('Tissue Saturation','Tissue saturation shows how loaded each of the 16 Bühlmann tissue compartments is relative to its decompression limit (M-value).\n\nThe card has three sections:\n\n1. Surface Saturation — snapshot at the moment you reach the surface. Shows how much of each compartment\'s M-value is used up after completing the full deco schedule.\n\n2. Compartment Detail — same surface snapshot in table form with exact numbers: N₂/He partial pressure (bar), M-value ceiling (bar), saturation %, and status.\n\n3. Per-Stop Saturation — shows saturation at every deco stop through the ascent. Each column is one stop (depth / stop time); each row is one compartment. Lets you see which compartments are controlling each stop and how the load evolves during ascent.\n\nColor coding (all sections):\n Green &lt; 75% — well within limits\n Yellow 75–90% — moderately loaded\n Orange 90–99% — near the ceiling\n Red ≥ 100% — at or over M-value (would need a deeper or longer stop)')" style="margin-left:6px;"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span><span class="card-caret">▾</span></div>
+<div class="card-title" onclick="toggleCard(this)">Tissue Saturation<span class="tip-icon" onclick="event.stopPropagation();showTip('Tissue Saturation','Tissue saturation shows how loaded each of the 16 Bühlmann tissue compartments is relative to its decompression limit (M-value).\n\nThe card has three sections:\n\n1. Surface Saturation — snapshot at the moment you reach the surface. Shows how much of each compartment\'s M-value is used up after completing the full deco schedule.\n\n2. Compartment Detail — same surface snapshot in table form with exact numbers: N₂/He partial pressure (bar), M-value ceiling (bar), saturation %, and status.\n\n3. Per-Stop Saturation — shows saturation at every deco stop through the ascent. Each column is one stop (depth / stop time); each row is one compartment. Lets you see which compartments are controlling each stop and how the load evolves during ascent.\n\nColor coding (all sections):\n Green &lt; 50% — well within limits\n Orange 50–79% — moderately loaded\n Red ≥ 80% — near or at the ceiling limit')" style="margin-left:6px;"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span><span class="card-caret">▾</span></div>
 <div class="card-collapsible-body">
 <!-- Section 1: surface saturation bars (end-of-dive snapshot) -->
 <div class="u11">
@@ -335,7 +368,7 @@
 </div>
 <!-- Section 2: detailed table with exact bar values -->
 <div class="u11">
-<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px;">Compartment Detail<span class="tip-icon" onclick="showTip('Compartment Detail','Detailed table of the end-of-dive tissue snapshot — same data as the surface saturation bars but with exact numerical values.\n\nColumns:\n # — compartment number (1 = fastest, 16 = slowest)\n Half-time — N₂ half-time in minutes. Faster compartments load and offgas quickly (relevant on short dives); slower compartments dominate on long or repetitive dives.\n N₂ Load (bar) — total inert gas tension (N₂ + He) in that compartment at surfacing. Shows combined partial pressure; trimix dives display N₂ and He contributions separately.\n M-value (bar) — GF-adjusted maximum tolerated tension at surface pressure. The algorithm will not surface you above this limit.\n Sat % — N₂ load ÷ M-value × 100. The controlling compartment (highest %) determined your last stop.\n Status — OK &lt; 70% / MED 70–85% / HIGH 85–99% / LIMIT ≥ 100%')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px;">Compartment Detail<span class="tip-icon" onclick="showTip('Compartment Detail','Detailed table of the end-of-dive tissue snapshot — same data as the surface saturation bars but with exact numerical values.\n\nColumns:\n # — compartment number (1 = fastest, 16 = slowest)\n Half-time — N₂ half-time in minutes. Faster compartments load and offgas quickly (relevant on short dives); slower compartments dominate on long or repetitive dives.\n N₂ Load (bar) — total inert gas tension (N₂ + He) in that compartment at surfacing. Shows combined partial pressure; trimix dives display N₂ and He contributions separately.\n M-value (bar) — GF-adjusted maximum tolerated tension at surface pressure. The algorithm will not surface you above this limit.\n Sat % — N₂ load ÷ M-value × 100. The controlling compartment (highest %) determined your last stop.\n Status — OK &lt; 50% / LOADED 50–79% / HIGH ≥ 80%')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></div>
 <div class="u16">
 <table class="deco-table tissue-table table-view">
 <thead><tr><th>#</th><th>Half-time</th><th>N₂ Load (bar)</th><th>M-value (bar)</th><th>Sat %</th><th>Status</th></tr></thead>
@@ -441,6 +474,7 @@
 <div id="plannerProfileCanvas-crosshair-v" style="display:none;position:absolute;top:0;bottom:0;width:1px;background:rgba(0,217,255,0.5);pointer-events:none;"></div>
 <div id="plannerProfileCanvas-crosshair-h" style="display:none;position:absolute;left:0;right:0;height:1px;background:rgba(0,217,255,0.3);pointer-events:none;"></div>
 </div>
+<div id="plannerProfileCanvas-hint" style="display:none;width:100%;text-align:right;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);opacity:0.55;margin:3px 0 2px 0;letter-spacing:0.3px;box-sizing:border-box;padding-right:2px;"><span style="opacity:0.7;">Hint:</span> scroll·zoom   drag·pan   dbl-click·reset</div>
 <div id="plannerProfileLegend" style="display:none;margin-top:4px;"></div>
 <div id="recSurfIntContainer" style="display:block;"></div>
 </div>
@@ -674,11 +708,9 @@
 <div class="card-title" id="gpResultTitle">Gas Plan Results</div>
 <div class="u16">
 <table class="gas-plan-table">
-<colgroup>
-<col style="width:13%"/><col style="width:12%"/><col style="width:15%"/><col style="width:12%"/><col style="width:10%"/><col style="width:22%"/><col style="width:16%"/>
-</colgroup>
+<colgroup></colgroup>
 <thead><tr>
-<th>GAS</th><th>TOTAL VOL</th><th>THIRDS</th><th>TURN PRESS</th><th>RESERVE</th><th>SUFFICIENT</th><th>MARGIN</th>
+<th>GAS</th><th>TOTAL VOL</th><th>THIRDS</th><th>TURN PRESS</th><th>SUFFICIENT</th><th>MARGIN</th>
 </tr></thead>
 <tbody id="gpResultBody"></tbody>
 </table>

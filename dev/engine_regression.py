@@ -1658,10 +1658,12 @@ ENGINE_SUITE_JS = r"""
     const gasMixEl = document.getElementById('gasMix');
     const prevAlgo = typeof algo !== 'undefined' ? algo : null;
     let recGasUiOk = false;
-    if (gasMixEl && typeof setAlgo === 'function') {
-      setAlgo('padi');
-      const customOpt = Array.from(gasMixEl.options).find(o => o.value === 'custom');
-      recGasUiOk = !!(customOpt && customOpt.style.display === 'none');
+    if (gasMixEl && typeof setPlannerAlgo === 'function') {
+      setPlannerAlgo('rec');
+      const visible = Array.from(gasMixEl.options).filter(o => o.style.display !== 'none');
+      recGasUiOk = visible.length === 3
+        && visible.every(o => ['air', 'ean32', 'ean36'].includes(o.value))
+        && !visible.some(o => o.value === 'custom');
       if (prevAlgo != null) setAlgo(prevAlgo);
     }
     return {

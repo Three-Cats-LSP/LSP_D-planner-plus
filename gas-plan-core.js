@@ -13,6 +13,19 @@
 // ═══════════════════════════════════════════════
 const GP_PSI_PER_BAR = 14.5038;
 const GP_CUFT_PER_L  = 0.0353147;
+
+function lspVolUnit(plain) {
+  if (typeof units !== 'undefined' && units === 'imperial') return plain ? 'ft3' : 'ft³';
+  return 'L';
+}
+function lspSacUnit(plain) {
+  if (typeof units !== 'undefined' && units === 'imperial') return plain ? 'ft3/min' : 'ft³/min';
+  return 'L/min';
+}
+if (typeof window !== 'undefined') {
+  window.lspVolUnit = lspVolUnit;
+  window.lspSacUnit = lspSacUnit;
+}
 const GP_ONEWAY_MARGIN = 1.10;
 let _gasRule = 'thirds';
 
@@ -58,6 +71,22 @@ function gpSizeL(id) {
 function gpVolDisp(litres) {
   if (!Number.isFinite(litres)) return '—';
   return units === 'imperial' ? (litres * GP_CUFT_PER_L).toFixed(1) : Math.round(litres).toString();
+}
+function gpVolWithUnit(litres) {
+  if (!Number.isFinite(litres)) return '—';
+  return gpVolDisp(litres) + lspVolUnit();
+}
+function gpGasNameHtml(r) {
+  if (r.kind === 'oneway' && r.mixLabel) {
+    return `<span class="gas-plan-gas-mix">${r.mixLabel}</span><span class="gas-plan-gas-role">${r.roleName}</span>`;
+  }
+  return r.label;
+}
+function gpSafetyReserveNoteText() {
+  const presU = units === 'imperial' ? 'psi' : 'bar';
+  const botRes = gpPresBar('gpBot_reserve');
+  if (!(botRes > 0)) return '';
+  return `Safety reserve pressure: ${gpPresDisp(botRes)} ${presU}`;
 }
 function gpPresDisp(bar) {
   return units === 'imperial' ? Math.round(bar * GP_PSI_PER_BAR).toString() : Math.round(bar).toString();
@@ -219,7 +248,7 @@ function calcGasPlan() {
     const gasVal = validateDomDecoGases();
     if (!gasVal.ok) return;
   }
-  const volU  = units === 'imperial' ? 'cu ft' : 'L';
+  const volU  = lspVolUnit();
   const presU = units === 'imperial' ? 'psi'   : 'bar';
 
   // ── Determine which optional gases are configured on the Deco tab ──
@@ -312,7 +341,7 @@ function calcGasPlan() {
     const label = getGasLabel(fracs.fO2, fracs.fHe);
     const useGp = idx <= 2 && document.getElementById(`gpDg${idx}_size`);
     oneWay.push({
-      name: `Deco ${idx}`,
+      name: 'Deco',
       label,
       sizeId: useGp ? `gpDg${idx}_size` : `cylDg${idx}_size`,
       fillId: useGp ? `gpDg${idx}_fill` : `cylDg${idx}_pres`,
@@ -335,6 +364,8 @@ function calcGasPlan() {
     if (reqL == null) needPlan = true;
     rows.push({
       kind: 'oneway',
+      mixLabel: g.label,
+      roleName: g.name,
       label: `${g.label} (${g.name})`,
       totalL: availL,
       reqL,
@@ -355,15 +386,14 @@ function calcGasPlan() {
             ? `Max BT with this cylinder: <strong>${r.maxBTmin} min</strong>, turn at <strong>${gpPresDisp(r.maxTurnBar)} ${presU}</strong>${r.maxBTEstimate ? ' <span style="color:var(--muted);">(conservative estimate)</span>' : ''}`
             : '';
           html += `<tr>
-            <td style="white-space:nowrap;">${r.label}</td>
-            <td style="color:var(--red) !important;font-weight:700;">${gpVolDisp(r.totalL)} ${volU}</td>
-            <td style="color:var(--muted);font-size:10px;">${gpVolDisp(r.portionL||0)} ${volU} <span style="color:var(--muted);">(${ruleTxt})</span></td>
+            <td class="gas-plan-gas-cell">${gpGasNameHtml(r)}</td>
+            <td style="color:var(--red) !important;font-weight:700;">${gpVolWithUnit(r.totalL)}</td>
+            <td style="color:var(--muted);font-size:10px;">${gpVolWithUnit(r.portionL || 0)} <span style="color:var(--muted);">(${ruleTxt})</span></td>
             <td style="color:var(--muted);">—</td>
-            <td>${gpPresDisp(r.reserveBar)} ${presU}</td>
-            <td><span style="color:var(--red) !important;font-weight:700;">✗ short</span><br><span style="color:var(--muted);font-size:10px;">need ${gpVolDisp(r.reqL)} ${volU}</span></td>
-            <td style="color:var(--red) !important;font-weight:700;">−${gpVolDisp(r.shortL)} ${volU}</td>
+            <td><span style="color:var(--red) !important;font-weight:700;">✗ short</span><br><span style="color:var(--muted);font-size:10px;">need ${gpVolWithUnit(r.reqL)}</span></td>
+            <td style="color:var(--red) !important;font-weight:700;">−${gpVolWithUnit(r.shortL)}</td>
           </tr>`;
-          if (btSuggest) html += `<tr class="gas-bt-row"><td colspan="7" class="gas-bt-cell">⚠ ${btSuggest} — or use a larger cylinder.</td></tr>`;
+          if (btSuggest) html += `<tr class="gas-bt-row"><td colspan="6" class="gas-bt-cell">⚠ ${btSuggest} — or use a larger cylinder.</td></tr>`;
         } else {
           // Sufficient — normal turn pressure row with plan check
           const botVolColor = Number.isFinite(r.reqL)
@@ -371,24 +401,26 @@ function calcGasPlan() {
               : r.totalL >= r.reqL ? 'color:var(--yellow) !important;font-weight:700;'
               : 'color:var(--red) !important;font-weight:700;')
             : '';
-          const botMargin = Number.isFinite(r.reqL) ? gpVolDisp(r.totalL - r.reqL) + ' ' + volU : '—';
+          const botMarginVal = Number.isFinite(r.reqL) ? r.totalL - r.reqL : null;
+          const botMargin = botMarginVal != null
+            ? `${botMarginVal >= 0 ? '+' : '−'}${gpVolDisp(Math.abs(botMarginVal))}${volU}`
+            : '—';
           const botMarginCol = !Number.isFinite(r.reqL) ? 'color:var(--muted);'
             : r.totalL < r.reqL ? 'color:var(--red) !important;font-weight:700;'
             : r.totalL < r.reqL * GP_ONEWAY_MARGIN ? 'color:var(--yellow) !important;font-weight:700;'
             : 'color:var(--green) !important;font-weight:700;';
           const botSuffNote = Number.isFinite(r.reqL)
             ? (r.totalL >= r.reqL * GP_ONEWAY_MARGIN
-              ? `<br><span style="color:var(--green) !important;font-size:10px;">✓ ${gpVolDisp(r.reqL)} ${volU} needed</span>`
+              ? `<br><span style="color:var(--green) !important;font-size:10px;">✓ ${gpVolWithUnit(r.reqL)} needed</span>`
               : r.totalL >= r.reqL
-                ? `<br><span style="color:var(--yellow) !important;font-size:10px;">⚠ tight — ${gpVolDisp(r.reqL)} ${volU} needed</span>`
+                ? `<br><span style="color:var(--yellow) !important;font-size:10px;">⚠ tight — ${gpVolWithUnit(r.reqL)} needed</span>`
                 : '')
             : (r.reqL != null ? '<br><span style="color:var(--orange) !important;font-size:10px;">Invalid gas</span>' : '');
           html += `<tr class="${Number.isFinite(r.reqL) && r.totalL >= r.reqL && r.totalL < r.reqL * GP_ONEWAY_MARGIN ? 'gas-tight-row' : ''}">
-            <td style="white-space:nowrap;">${r.label}</td>
-            <td style="${botVolColor}">${gpVolDisp(r.totalL)} ${volU}</td>
-            <td>${gpVolDisp(r.portionL)} ${volU} <span style="color:var(--muted);">(${ruleTxt})</span></td>
+            <td class="gas-plan-gas-cell">${gpGasNameHtml(r)}</td>
+            <td style="${botVolColor}">${gpVolWithUnit(r.totalL)}</td>
+            <td>${gpVolWithUnit(r.portionL)} <span style="color:var(--muted);">(${ruleTxt})</span></td>
             <td style="color:var(--accent) !important;font-weight:700;">${gpPresDisp(r.turnBar)} ${presU}</td>
-            <td>${gpPresDisp(r.reserveBar)} ${presU}</td>
             <td><span style="color:var(--accent) !important;font-weight:700;">⟳ turn</span>${botSuffNote}</td>
             <td style="${botMarginCol}">${botMargin}</td>
           </tr>`;
@@ -402,40 +434,43 @@ function calcGasPlan() {
           suffCell = '<span style="color:var(--orange) !important;font-weight:700;">invalid gas</span>';
           statusCol = 'var(--orange)';
         } else if (r.totalL >= r.reqL * GP_ONEWAY_MARGIN) {
-          suffCell = '<span style="color:var(--green) !important;font-weight:700;">✓ ok</span><br><span style="color:var(--muted);font-size:10px;">req ' + gpVolDisp(r.reqL) + ' ' + volU + '</span>';
+          suffCell = '<span style="color:var(--green) !important;font-weight:700;">✓ ok</span><br><span style="color:var(--muted);font-size:10px;">req ' + gpVolWithUnit(r.reqL) + '</span>';
           statusCol = 'var(--green)';
         } else if (r.totalL >= r.reqL) {
-          suffCell = '<span>⚠ tight</span><br><span style="color:var(--muted);font-size:10px;">req ' + gpVolDisp(r.reqL) + ' ' + volU + '</span>';
+          suffCell = '<span>⚠ tight</span><br><span style="color:var(--muted);font-size:10px;">req ' + gpVolWithUnit(r.reqL) + '</span>';
           statusCol = '#FF4433';
         } else {
-          suffCell = '<span style="color:var(--red) !important;font-weight:700;">✗ short</span><br><span style="color:var(--muted);font-size:10px;">req ' + gpVolDisp(r.reqL) + ' ' + volU + '</span>';
+          suffCell = '<span style="color:var(--red) !important;font-weight:700;">✗ short</span><br><span style="color:var(--muted);font-size:10px;">req ' + gpVolWithUnit(r.reqL) + '</span>';
           statusCol = 'var(--red)';
         }
         const isTight = r.reqL != null && r.totalL >= r.reqL && r.totalL < r.reqL * GP_ONEWAY_MARGIN;
         const marginL = r.reqL != null ? r.totalL - r.reqL : null;
-        const marginDisp = marginL != null ? (marginL >= 0 ? '+' : '−') + gpVolDisp(Math.abs(marginL)) + ' ' + volU : '—';
+        const marginDisp = marginL != null
+          ? `${marginL >= 0 ? '+' : '−'}${gpVolDisp(Math.abs(marginL))}${volU}`
+          : '—';
         const marginCol = marginL == null ? 'var(--muted)' : marginL < 0 ? 'var(--red)' : isTight ? '#FF4433' : 'var(--green)';
         html += `<tr class="${isTight ? 'gas-tight-row' : ''}">
-          <td style="white-space:nowrap;">${r.label}</td>
-          <td style="${isTight ? '' : 'color:' + statusCol + ' !important;'}font-weight:700;">${gpVolDisp(r.totalL)} ${volU}</td>
+          <td class="gas-plan-gas-cell">${gpGasNameHtml(r)}</td>
+          <td style="${isTight ? '' : 'color:' + statusCol + ' !important;'}font-weight:700;">${gpVolWithUnit(r.totalL)}</td>
           <td style="color:var(--muted);">—</td>
           <td style="color:var(--muted);">one-way</td>
-          <td>${gpPresDisp(r.reserveBar)} ${presU}</td>
           <td>${suffCell}</td>
           <td style="color:${marginCol} !important;font-weight:700;">${marginDisp}</td>
         </tr>`;
       }
     });
-    if (!html) html = `<tr><td colspan="7" style="color:var(--muted);text-align:center;">Configure a bottom gas cylinder.</td></tr>`;
+    if (!html) html = `<tr><td colspan="6" style="color:var(--muted);text-align:center;">Configure a bottom gas cylinder.</td></tr>`;
     body.innerHTML = html;
   }
 
   const note = document.getElementById('gpResultNote');
   if (note) {
     const ruleName = _gasRule === 'half' ? 'Half Tank' : 'Rule of Thirds';
-    note.innerHTML = needPlan
+    const ruleLine = needPlan
       ? `Rule: ${ruleName} · Deco/travel requirements need a deco plan — run one on the Deco Schedule tab first.`
       : `Rule: ${ruleName} · One-way requirements pulled from the last deco plan run.`;
+    const reserveLine = gpSafetyReserveNoteText();
+    note.innerHTML = reserveLine ? `${ruleLine}<br>${reserveLine}` : ruleLine;
   }
 
   window._lastGasPlan = { rows, rule: _gasRule };
@@ -445,7 +480,7 @@ function buildGasPlanText() {
   calcGasPlan();
   const gp = window._lastGasPlan;
   if (!gp || !gp.rows.length) return null;
-  const volU  = units === 'imperial' ? 'cu ft' : 'L';
+  const volU  = lspVolUnit();
   const presU = units === 'imperial' ? 'psi'   : 'bar';
   const depthU = units === 'imperial' ? 'ft' : 'm';
   const dateStr = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
@@ -522,7 +557,7 @@ async function buildGasPlanPDF() {
   const dateStr = now.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
   const timeStr = now.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
   const isoDate = now.toISOString().split('T')[0];
-  const volU  = units === 'imperial' ? 'cu ft' : 'L';
+  const volU  = lspVolUnit();
   const presU = units === 'imperial' ? 'psi'   : 'bar';
   const ruleName = gp.rule === 'half' ? 'Half Tank' : 'Rule of Thirds';
 
@@ -562,12 +597,12 @@ async function buildGasPlanPDF() {
   doc.setFontSize(10); doc.setFont('DejaVuSans','bold'); doc.setTextColor(0,90,140);
   doc.text(`Gas Rule: ${ruleName}`, ML+3, y+5);
   doc.setFontSize(8); doc.setFont('DejaVuSans','normal'); doc.setTextColor(80,80,100);
-  doc.text(`Units: ${units === 'imperial' ? 'Imperial (cu ft / psi)' : 'Metric (L / bar)'}`, ML+3, y+9.5);
+  doc.text(`Units: ${units === 'imperial' ? 'Imperial (ft3 / psi)' : 'Metric (L / bar)'}`, ML+3, y+9.5);
   doc.setTextColor(0,0,0); y+=16;
 
   // Table header
-  const headers=['GAS','TOTAL VOL','THIRDS','TURN PRESS','RESERVE','SUFFICIENT'];
-  const colW=[40,30,34,28,24,26];
+  const headers=['GAS','TOTAL VOL','THIRDS','TURN PRESS','SUFFICIENT'];
+  const colW=[40,30,34,28,50];
   const colX=[ML]; colW.forEach((w,i)=>{ if(i<colW.length-1) colX.push(colX[i]+colW[i]); });
   doc.setFillColor(0,90,140); doc.rect(ML,y,CW,6,'F');
   doc.setFontSize(7); doc.setFont('DejaVuSans','bold'); doc.setTextColor(255,255,255);
@@ -585,11 +620,10 @@ async function buildGasPlanPDF() {
       const isShort = r.shortL != null && r.shortL > 0;
       cells=[
         r.label,
-        `${gpVolDisp(r.totalL)} ${volU}`,
-        isShort ? `need ${gpVolDisp(r.reqL)} ${volU}` : `${gpVolDisp(r.portionL)} ${volU} (${ruleTxt})`,
+        gpVolWithUnit(r.totalL),
+        isShort ? `need ${gpVolWithUnit(r.reqL)}` : `${gpVolWithUnit(r.portionL)} (${ruleTxt})`,
         isShort ? `(${ruleTxt} rule)` : `${gpPresDisp(r.turnBar)} ${presU}`,
-        `${gpPresDisp(r.reserveBar)} ${presU}`,
-        isShort ? `SHORT ${gpVolDisp(r.shortL)} ${volU}` : 'TURN',
+        isShort ? `SHORT ${gpVolWithUnit(r.shortL)}` : 'TURN',
       ];
       // Extra BT suggestion row if short
       if(isShort && r.maxBTmin != null){
@@ -610,10 +644,9 @@ async function buildGasPlanPDF() {
       else status='SHORT';
       cells=[
         r.label,
-        `${gpVolDisp(r.totalL)} ${volU}`,
-        r.reqL==null?'req --':`req ${gpVolDisp(r.reqL)} ${volU}`,
+        gpVolWithUnit(r.totalL),
+        r.reqL==null?'req --':`req ${gpVolWithUnit(r.reqL)}`,
         'one-way',
-        `${gpPresDisp(r.reserveBar)} ${presU}`,
         status,
       ];
     }
@@ -624,6 +657,14 @@ async function buildGasPlanPDF() {
     y+=5.5;
   });
   y+=4;
+
+  const reserveNote = gpSafetyReserveNoteText();
+  if (reserveNote) {
+    checkY(5);
+    doc.setFontSize(7); doc.setFont('DejaVuSans','normal'); doc.setTextColor(90,90,110);
+    doc.text(cleanPDF(reserveNote), ML, y+3.5);
+    y += 5;
+  }
 
   // Text summary block
   checkY(10);
