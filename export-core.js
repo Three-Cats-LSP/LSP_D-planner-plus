@@ -796,31 +796,34 @@ function formatExportScheduleStopW(stop, mix, phase) {
   return 6;
 }
 
-function formatExportSchedulePhaseCol(phase, depth) {
+function formatExportSchedulePhaseCol(phase, depth, layout) {
   const d = (depth || '').trim();
-  return phase.padEnd(d.length <= 2 ? 7 : 6);
+  const widen = layout === 'deco' && d.length <= 2;
+  return phase.padEnd(widen ? 7 : 6);
 }
 
-function formatExportScheduleDepthW(depth, phase, stop) {
+function formatExportScheduleDepthW(depth, phase, stop, layout) {
   const d = (depth || '').trim();
   const stp = (stop || '').trim();
+  if (layout !== 'deco' && d.length <= 2) return 7;
   if (d.length !== 3) return 6;
   if (phase === 'Asc' && stp && stp !== '1:00') return 7;
   if (phase === 'Stp' && stp.startsWith('1:')) return 7;
   return 6;
 }
 
-function formatExportScheduleDepth(depth, phase, stop) {
+function formatExportScheduleDepth(depth, phase, stop, layout) {
   const d = (depth || '').trim();
-  const w = formatExportScheduleDepthW(d, phase, stop);
+  const w = formatExportScheduleDepthW(d, phase, stop, layout);
   if (!d) return ' '.repeat(w);
   return d.padEnd(w);
 }
 
-function formatExportScheduleStop(stop, phase, mix) {
+function formatExportScheduleStop(stop, phase, mix, layout) {
   const s = (stop || '').trim();
   const w = formatExportScheduleStopW(s, mix, phase);
   if (!s) return ' '.repeat(w);
+  if (layout !== 'deco' && phase === 'Asc' && s !== '1:00') return (' ' + s).padEnd(w);
   return s.padEnd(w);
 }
 
@@ -831,7 +834,7 @@ function formatExportScheduleMix(mix, phase) {
   return s.padEnd(w);
 }
 
-function formatExportScheduleTail(tts, ppo2, ead, phase, depth, prefixLen) {
+function formatExportScheduleTail(tts, ppo2, ead, phase, depth, prefixLen, layout) {
   const ttsS = (tts || '').trim();
   const ppo2Col = formatExportSchedulePpo2(ppo2);
   const eadCol = formatExportScheduleEad(ead);
@@ -845,7 +848,8 @@ function formatExportScheduleTail(tts, ppo2, ead, phase, depth, prefixLen) {
   if (eadCol === '-') {
     eadGap = '   -';
   } else {
-    eadGap = ' '.repeat(Math.max(2, 5 - eadCol.length)) + eadCol;
+    const eadTarget = layout === 'deco' ? 5 : 4;
+    eadGap = ' '.repeat(Math.max(2, eadTarget - eadCol.length)) + eadCol;
   }
   return ttsPart + ppo2Col + eadGap;
 }
@@ -854,14 +858,15 @@ function formatAscentScheduleHeaderRow() {
   return ASCENT_SCHEDULE_HEADER;
 }
 
-function formatAscentScheduleRow({ phase, depth, stop, mix, run, tts, ppo2, ead }) {
+function formatAscentScheduleRow({ phase, depth, stop, mix, run, tts, ppo2, ead, layout }) {
+  const schedLayout = layout === 'deco' ? 'deco' : 'default';
   const stp = (stop || '').trim();
-  const prefix = formatExportSchedulePhaseCol(phase, depth)
-    + formatExportScheduleDepth(depth, phase, stp)
-    + formatExportScheduleStop(stp, phase, mix)
+  const prefix = formatExportSchedulePhaseCol(phase, depth, schedLayout)
+    + formatExportScheduleDepth(depth, phase, stp, schedLayout)
+    + formatExportScheduleStop(stp, phase, mix, schedLayout)
     + formatExportScheduleMix(mix, phase)
     + formatExportScheduleRun(run);
-  return prefix + formatExportScheduleTail(tts, ppo2, ead, phase, (depth || '').trim(), prefix.length);
+  return prefix + formatExportScheduleTail(tts, ppo2, ead, phase, (depth || '').trim(), prefix.length, schedLayout);
 }
 
 function buildExportText(mode) {
@@ -1035,6 +1040,7 @@ function buildExportText(mode) {
           tts: cells.tts || '',
           ppo2: cells.ppo2 || '',
           ead: cells.ead || '',
+          layout: 'deco',
         }));
       });
 
