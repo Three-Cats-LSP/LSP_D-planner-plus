@@ -1653,8 +1653,8 @@ function cleanPdfText(s) {
 /** PDF RGB + status — must match web lspSatColors() thresholds in index.html. */
 function lspSatStatus(pct) {
   const p = Math.round(pct);
-  if (p >= 80) return { status: p >= 100 ? '!! LIMIT' : '! HIGH', level: 'warn' };
-  if (p >= 50) return { status: '~ LOADED', level: 'caution' };
+  if (p >= 80) return { status: p >= 100 ? 'LIMIT' : 'HIGH', level: 'warn' };
+  if (p >= 50) return { status: 'LOADED', level: 'caution' };
   return { status: 'OK', level: 'safe' };
 }
 function lspSatRgb(pct) {

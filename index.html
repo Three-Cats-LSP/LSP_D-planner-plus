@@ -4465,8 +4465,8 @@ function renderNDLTable() {
 // ═══════════════════════════════════════════════
 function lspSatColors(pct) {
   const p = Math.round(pct);
-  if (p >= 80) return { bar: 'var(--status-red)', text: 'var(--status-red)', status: p >= 100 ? '!! LIMIT' : '! HIGH', level: 'warn' };
-  if (p >= 50) return { bar: 'var(--status-orange)', text: 'var(--status-orange)', status: '~ LOADED', level: 'caution' };
+  if (p >= 80) return { bar: 'var(--status-red)', text: 'var(--status-red)', status: p >= 100 ? 'LIMIT' : 'HIGH', level: 'warn' };
+  if (p >= 50) return { bar: 'var(--status-orange)', text: 'var(--status-orange)', status: 'LOADED', level: 'caution' };
   return { bar: 'var(--status-green)', text: 'var(--status-green)', status: 'OK', level: 'safe' };
 }
 function updateTissueViz(tissues, gfH) {
