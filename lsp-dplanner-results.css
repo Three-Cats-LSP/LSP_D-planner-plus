@@ -549,7 +549,12 @@ body.light-theme .mode-btn:hover img, body.light-theme .mode-btn.active img { op
 #resultsPanel .metric-lbl { font-size: 9px; letter-spacing: 0.1em; }
 #resultsPanel .chip { padding: 4px 10px; font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.03em; border-radius: var(--radius-full); }
 #resultsPanel .result-tab-pane.active { gap: var(--space-3); }
-#resultsPanel #resultTab-profile { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 0; overflow: hidden; }
+#resultsPanel #resultTab-graphs { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 0; overflow: hidden; }
+#resultsPanel #gfCurveInlineCard.card { margin: 0 var(--space-4) var(--space-3); background: transparent; border: none; box-shadow: none; }
+#resultsPanel #gfCurveInlineCard .card-collapsible-body { padding: 0; }
+#resultsPanel #gasConsumptionSummary { padding: 0 var(--space-4) var(--space-4); }
+#resultsPanel #gasConsumptionSummary .card { margin-top: var(--space-2); }
+#resultsPanel .profile-export-actions { margin-left: auto; }
 .results-section-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); padding: var(--space-3) var(--space-4) var(--space-2); flex-wrap: wrap; }
 .results-section-label { font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
 .results-section-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
@@ -617,7 +622,13 @@ body.light-theme #resultsPanel #decoAlerts .alert { background: rgba(204,17,34,.
 #resultsPanel .deco-table.schedule-table .ppo2-crit { color: var(--red); }
 #resultsPanel .deco-table.schedule-table .col-ead { color: var(--text-faint); text-align: right; }
 #resultsPanel .deco-table.schedule-table tr.row-switch { background: color-mix(in oklab, var(--yellow) 5%, transparent); }
-#resultsPanel .deco-table.schedule-table tr.row-switch td { border-top: 1px dashed color-mix(in oklab, var(--yellow) 20%, transparent); border-bottom: 1px dashed color-mix(in oklab, var(--yellow) 20%, transparent); }
+#resultsPanel .deco-table.schedule-table tr.row-switch td { color: var(--yellow); border-top: 1px dashed color-mix(in oklab, var(--yellow) 20%, transparent); border-bottom: 1px dashed color-mix(in oklab, var(--yellow) 20%, transparent); }
+#resultsPanel .deco-table.schedule-table tr.row-switch .col-gas { font-weight: 600; }
+#resultsPanel .deco-table.schedule-table tr.row-switch .col-ppo2.ppo2-ok,
+#resultsPanel .deco-table.schedule-table tr.row-switch .col-ppo2.ppo2-warn,
+#resultsPanel .deco-table.schedule-table tr.row-switch .col-ppo2.ppo2-hi,
+#resultsPanel .deco-table.schedule-table tr.row-switch .col-ppo2.ppo2-crit { color: inherit; }
+#resultsPanel .legend-item.legend-switch { color: var(--yellow); }
 #resultsPanel .deco-table.schedule-table tr.row-descent td { color: var(--text-muted); }
 #resultsPanel .deco-table.schedule-table tr.row-descent .col-depth { color: var(--text); }
 #resultsPanel .deco-table.schedule-table tr.row-summary td { background: color-mix(in oklab, var(--accent) 4%, transparent); border-top: 1px solid var(--border-hi); border-bottom: none; padding: 9px 6px; font-size: 10px; color: var(--text-muted); }
@@ -628,7 +639,6 @@ body.light-theme #resultsPanel #decoAlerts .alert { background: rgba(204,17,34,.
 #resultsPanel .legend-item { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
 #resultsPanel .leg-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 #resultsPanel .leg-icon { display: inline-flex; width: 14px; align-items: center; justify-content: center; flex-shrink: 0; }
-#resultsPanel .results-export-row { padding: var(--space-2) var(--space-4) var(--space-4); border-top: 1px solid var(--border); }
 #gasWarningBanner.gas-warning-banner { display: none; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); background: var(--orange-dim); border: 1px solid var(--orange); border-radius: var(--radius-md); color: var(--orange); font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.04em; margin-top: var(--space-2); }
 #gasWarningBanner.gas-warning-banner::before { content: '⚠'; font-size: 1rem; flex-shrink: 0; }
 body.light-theme #gasWarningBanner.gas-warning-banner { background: #fff8f0; border-color: #c87800; color: #c87800; }

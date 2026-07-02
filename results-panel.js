@@ -208,7 +208,7 @@ function switchResultTab(name, btn) {
   const prefix = isRec ? '' : '';
   const panes = isRec
     ? ['dive','surfint','avgdepth','multi','ndlref']
-    : ['profile','contingency','tissue','gfcurve'];
+    : ['graphs','contingency','tissue'];
   const nav = isRec ? document.getElementById('recResultTabs') : document.getElementById('tecResultTabs');
   const panel = document.getElementById('resultsPanel');
   nav?.querySelectorAll('.result-tab-btn').forEach(b => b.classList.toggle('active', b === btn));
@@ -233,4 +233,5 @@ function switchResultTab(name, btn) {
   }
   if (name === 'ndlref') renderNDLTable?.();
   if (name === 'multi') buildDiveBlocks?.();
+  if (name === 'graphs') setTimeout(() => { drawGFCurve?.(); }, 50);
 }

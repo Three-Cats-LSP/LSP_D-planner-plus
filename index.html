@@ -283,31 +283,68 @@
 <button class="result-tab-btn" data-tab="ndlref" onclick="switchResultTab('ndlref',this)">NDL Table</button>
 </div>
 <div class="result-tabs-nav" id="tecResultTabs">
-<button class="result-tab-btn active" data-tab="profile" onclick="switchResultTab('profile',this)">Dive Profile</button>
+<button class="result-tab-btn active" data-tab="graphs" onclick="switchResultTab('graphs',this)">Graphs</button>
 <button class="result-tab-btn" data-tab="contingency" onclick="switchResultTab('contingency',this)">Contingency Plans</button>
 <button class="result-tab-btn" data-tab="tissue" onclick="switchResultTab('tissue',this)">Tissue Saturation</button>
-<button class="result-tab-btn" data-tab="gfcurve" onclick="switchResultTab('gfcurve',this)">GF Curve</button>
 </div>
 <div class="result-tab-pane" id="resultTab-dive"></div>
 <div class="result-tab-pane" id="resultTab-surfint"></div>
 <div class="result-tab-pane" id="resultTab-avgdepth"></div>
 <div class="result-tab-pane" id="resultTab-multi"></div>
 <div class="result-tab-pane" id="resultTab-ndlref"></div>
-<div class="result-tab-pane active" id="resultTab-profile">
-<div class="results-section-head" id="profileSectionHead"><span class="results-section-label">Dive Profile</span></div>
+<div class="result-tab-pane active" id="resultTab-graphs">
+<div class="results-section-head" id="profileSectionHead">
+<span class="results-section-label">Dive Profile</span>
+<div class="results-section-actions profile-export-actions">
+<button class="btn-export" onclick="copyDiveProfile('deco')" title="Copy to clipboard"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+<button class="btn-export" onclick="showSlate()" title="Deco slate (waterproof format)"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><rect height="18" rx="2" width="18" x="3" y="3"></rect><line x1="7" x2="17" y1="8" y2="8"></line><line x1="7" x2="17" y1="12" y2="12"></line><line x1="7" x2="13" y1="16" y2="16"></line></svg></button>
+<button class="btn-export" onclick="exportTXT('deco')" title="Download .txt"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line><line x1="10" x2="8" y1="9" y2="9"></line></svg></button>
+<button class="btn-export" onclick="showPDFExportDialog()" title="Export PDF"><span style="display:inline-block;width:16px;height:16px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0px;line-height:16px;text-align:center;overflow:visible;white-space:nowrap;">PDF</span></button>
+</div>
+</div>
 <div class="card collapsible card-open" id="diveGraphCard" style="display:none;">
 <div class="card-title" onclick="toggleCard(this)">Dive Graph<span class="tip-icon" onclick="event.stopPropagation();showTip('Dive Graph','How to read the graph\n\nProfile line — coloured by gas. Each gas segment uses its own colour; the fill below fades to transparent.\n\nRed dotted line — Bühlmann ceiling. The minimum depth you must not ascend above at each moment, calculated from tissue loading and gradient factors. It rises as you off-gas during ascent and deco stops. If your profile line is always at or below this line, you are within the model\'s deco obligation.\n\nYellow/green flags — gas switches. Match the yellow/green gas switch rows in the deco table.\n\nDots — key waypoints (bottom, deco stops, safety stop). Red dots = deco stops, green = safety stop, blue/accent = bottom.\n\nOrange/red halo on a dot — ppO₂ is at or above 1.4 bar (orange) or 1.6 bar (red).\n\nHorizontal dashed lines — individual stop depth indicators. Red = deco stop, green = safety stop.\n\nInteraction\nHover (desktop) or tap (mobile) to see depth, time, gas, ppO₂, CNS%, and current ceiling at that point.\nScroll to zoom · drag to pan · double-click to reset.')" style="margin-left:6px;"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span><span class="card-caret">▾</span></div>
 <div class="card-collapsible-body">
 <div id="decoProfileCanvas-wrap" style="position:relative;width:100%;margin:6px 0;">
-<canvas height="420" id="decoProfileCanvas" style="width:100%;height:auto;aspect-ratio:700/420;border-radius:10px;background:var(--card2);border:1px solid var(--border);display:block;" width="700"></canvas>
+<canvas height="220" id="decoProfileCanvas" style="width:100%;height:auto;aspect-ratio:700/220;border-radius:10px;background:var(--card2);border:1px solid var(--border);display:block;" width="700"></canvas>
 <div id="decoProfileCanvas-overlay" style="position:absolute;top:0;left:0;right:0;bottom:0;border-radius:10px;cursor:crosshair;"></div>
 <div id="decoProfileCanvas-tooltip" style="display:none;position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--accent);border-radius:6px;padding:7px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);white-space:nowrap;z-index:10;box-shadow:0 4px 16px rgba(0,0,0,0.4);"></div>
 <div id="decoProfileCanvas-crosshair-v" style="display:none;position:absolute;top:0;bottom:0;width:1px;background:rgba(0,217,255,0.5);pointer-events:none;"></div>
 <div id="decoProfileCanvas-crosshair-h" style="display:none;position:absolute;left:0;right:0;height:1px;background:rgba(0,217,255,0.3);pointer-events:none;"></div>
 </div>
-<div id="decoProfileCanvas-hint" style="display:block;width:100%;text-align:right;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);opacity:0.55;margin:3px 0 2px 0;letter-spacing:0.3px;box-sizing:border-box;padding-right:2px;"><span style="opacity:0.7;">Hint:</span> scroll·zoom   drag·pan   dbl-click·reset</div>
-<div id="decoProfileLegend" style="display:none;margin-top:4px;"></div>
+<div id="decoProfileCanvas-hint" style="display:none;width:100%;text-align:right;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);opacity:0.55;margin:3px 0 2px 0;letter-spacing:0.3px;box-sizing:border-box;padding-right:2px;"><span style="opacity:0.7;">Hint:</span> scroll·zoom   drag·pan   dbl-click·reset</div>
+<div id="decoProfileLegend" class="profile-legend" style="display:none;margin-top:4px;"></div>
 </div><!-- /card-collapsible-body diveGraph -->
+</div>
+<div class="card collapsible card-open" id="gfCurveInlineCard" style="display:none;">
+<div class="card-title" onclick="toggleCard(this)">GF Gradient Factor Curve<span class="tip-icon" onclick="event.stopPropagation();showTip('GF Gradient Factor Curve','The GF curve shows how your gradient factor allowance changes at each deco stop during the ascent — from GF Low at the first (deepest) stop to GF High at the surface.\n\nWhat are Gradient Factors?\nGF Low controls where your first deco stop is placed (deeper = more conservative). GF High controls how saturated you are allowed to be at the surface.\n\nThe curve interpolates linearly between these two values as you ascend. At each stop the algorithm permits a fraction of the full M-value proportional to where that stop falls between GF Low (first stop) and GF High (surface).\n\nReading the chart:\n X-axis — stop depth (deepest on left, surface on right)\n Y-axis — gradient factor % allowed at that stop\n Dots — your actual deco stops\n\nConservative divers use lower GF Low (e.g. 30/70) to add deep stops; aggressive technical divers may use 85/85. The curve lets you visualise the trade-off at a glance.')" style="margin-left:6px;"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span><span class="card-caret">▾</span></div>
+<div class="card-collapsible-body">
+<p style="color:var(--muted);font-size:12px;margin-bottom:16px;">Visualizes how gradient factors control the ascent ceiling at each deco stop. Interpolates linearly from GF Low (first stop) to GF High (surface).</p>
+<div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
+<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveGFL" style="color:var(--accent)">30</div><div class="stat-lbl">GF Low</div></div>
+<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveGFH" style="color:var(--accent)">70</div><div class="stat-lbl">GF High</div></div>
+<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveStops">—</div><div class="stat-lbl">Deco Stops</div></div>
+</div>
+<div id="gfCurveCanvas-wrap" style="position:relative;width:100%;">
+<canvas height="220" id="gfCurveCanvas" style="width:100%;height:auto;aspect-ratio:700/220;border-radius:10px;background:var(--card2);border:1px solid var(--border);display:block;" width="700"></canvas>
+<div id="gfCurveCanvas-overlay" style="position:absolute;top:0;left:0;right:0;bottom:0;border-radius:10px;cursor:crosshair;"></div>
+<div id="gfCurveCanvas-tooltip" style="display:none;position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--accent);border-radius:6px;padding:7px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);white-space:nowrap;z-index:10;box-shadow:0 4px 16px rgba(0,0,0,0.4);"></div>
+<div id="gfCurveCanvas-crosshair-v" style="display:none;position:absolute;top:0;bottom:0;width:1px;background:rgba(0,217,255,0.5);pointer-events:none;"></div>
+<div id="gfCurveCanvas-crosshair-h" style="display:none;position:absolute;left:0;right:0;height:1px;background:rgba(0,217,255,0.3);pointer-events:none;"></div>
+</div>
+<div id="gfCurveLegend" style="display:none;margin-top:4px;"></div>
+<div style="margin-top:12px;display:flex;gap:20px;flex-wrap:wrap;">
+<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
+<div style="width:20px;height:3px;background:var(--accent);border-radius:2px;"></div> GF Ceiling line
+      </div>
+<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
+<div style="width:20px;height:3px;background:var(--green);border-radius:2px;"></div> Actual ascent
+      </div>
+<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
+<div style="width:12px;height:12px;border-radius:50%;background:var(--red);"></div> First deco
+      </div>
+</div>
+</div><!-- /card-collapsible-body gfCurve -->
 </div>
 <div id="decoResult" class="results-v3-card" style="display:none;">
 <div id="decoAlerts"></div>
@@ -335,16 +372,11 @@
 <span class="legend-item"><svg class="leg-icon" width="12" height="14" viewBox="0 0 12 14" fill="none"><path d="M6 13V3M2 5l4-4 4 4" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Ascent</span>
 <span class="legend-item"><span class="leg-dot" style="background:var(--red)"></span> Deco Stop</span>
 <span class="legend-item"><span class="leg-dot" style="background:var(--green)"></span> Safety Stop</span>
-<span class="legend-item"><svg class="leg-icon" width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 3h12M10 1l3 2-3 2" stroke="var(--yellow)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 7H1M4 5l-3 2 3 2" stroke="var(--yellow)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Gas Switch</span>
+<span class="legend-item legend-switch"><svg class="leg-icon" width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 3h12M10 1l3 2-3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 7H1M4 5l-3 2 3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Gas Switch</span>
 </div>
 </div>
-<div class="results-export-row"><div class="export-row">
-<button class="btn-export" onclick="copyDiveProfile('deco')" title="Copy to clipboard"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-<button class="btn-export" onclick="showSlate()" title="Deco slate (waterproof format)"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><rect height="18" rx="2" width="18" x="3" y="3"></rect><line x1="7" x2="17" y1="8" y2="8"></line><line x1="7" x2="17" y1="12" y2="12"></line><line x1="7" x2="13" y1="16" y2="16"></line></svg></button>
-<button class="btn-export" onclick="exportTXT('deco')" title="Download .txt"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line><line x1="10" x2="8" y1="9" y2="9"></line></svg></button>
-<button class="btn-export" onclick="showPDFExportDialog()" title="Export PDF"><span style="display:inline-block;width:16px;height:16px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0px;line-height:16px;text-align:center;overflow:visible;white-space:nowrap;">PDF</span></button>
 </div></div>
-</div></div>
+<div id="gasConsumptionSummary" style="display:none;"></div>
 <div class="result-tab-pane" id="resultTab-contingency">
 <div class="card collapsible card-open" id="contingencyCard" style="display:none;">
 <div class="card-title" onclick="toggleCard(this)">⚠️ Contingency Plans<span class="tip-icon" onclick="event.stopPropagation();showTip('⚠️ Contingency Plans','Contingency planning lets you pre-calculate an emergency decompression schedule before your dive — so you are never caught off guard.\n\nGas Loss — simulate losing one of your gas supplies (bottom gas, deco gas 1 or 2). The plan recalculates using only your remaining gases, so you can see whether the dive is still viable and what extra deco time is required.\n\nExtended Bottom Time — add +3, +5 or +10 minutes to your planned bottom time and instantly see the updated deco obligation. Useful for planning bailout margins or conservative turnaround points.\n\nCombined scenarios — gas loss and extended bottom time can be combined simultaneously.\n\nThe resulting emergency plan shows the full deco schedule you would need to follow, along with gas sufficiency checks for the gases still available.')" style="margin-left:6px;"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span><span class="card-caret">▾</span></div>
@@ -412,40 +444,6 @@
 </div>
 </div>
 </div></div>
-<div class="result-tab-pane" id="resultTab-gfcurve">
-<div class="card collapsible card-open" id="gfCurveInlineCard" style="display:none;">
-<div class="card-title" onclick="toggleCard(this)">GF Gradient Factor Curve<span class="tip-icon" onclick="event.stopPropagation();showTip('GF Gradient Factor Curve','The GF curve shows how your gradient factor allowance changes at each deco stop during the ascent — from GF Low at the first (deepest) stop to GF High at the surface.\n\nWhat are Gradient Factors?\nGF Low controls where your first deco stop is placed (deeper = more conservative). GF High controls how saturated you are allowed to be at the surface.\n\nThe curve interpolates linearly between these two values as you ascend. At each stop the algorithm permits a fraction of the full M-value proportional to where that stop falls between GF Low (first stop) and GF High (surface).\n\nReading the chart:\n X-axis — stop depth (deepest on left, surface on right)\n Y-axis — gradient factor % allowed at that stop\n Dots — your actual deco stops\n\nConservative divers use lower GF Low (e.g. 30/70) to add deep stops; aggressive technical divers may use 85/85. The curve lets you visualise the trade-off at a glance.')" style="margin-left:6px;"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span><span class="card-caret">▾</span></div>
-<div class="card-collapsible-body">
-<p style="color:var(--muted);font-size:12px;margin-bottom:16px;">Visualizes how gradient factors control the ascent ceiling at each deco stop. Interpolates linearly from GF Low (first stop) to GF High (surface).</p>
-<div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
-<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveGFL" style="color:var(--accent)">30</div><div class="stat-lbl">GF Low</div></div>
-<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveGFH" style="color:var(--accent)">70</div><div class="stat-lbl">GF High</div></div>
-<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveStops">—</div><div class="stat-lbl">Deco Stops</div></div>
-</div>
-<div id="gfCurveCanvas-wrap" style="position:relative;width:100%;">
-<canvas height="420" id="gfCurveCanvas" style="width:100%;height:auto;aspect-ratio:700/420;border-radius:10px;background:var(--card2);border:1px solid var(--border);display:block;" width="700"></canvas>
-<div id="gfCurveCanvas-overlay" style="position:absolute;top:0;left:0;right:0;bottom:0;border-radius:10px;cursor:crosshair;"></div>
-<div id="gfCurveCanvas-tooltip" style="display:none;position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--accent);border-radius:6px;padding:7px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);white-space:nowrap;z-index:10;box-shadow:0 4px 16px rgba(0,0,0,0.4);"></div>
-<div id="gfCurveCanvas-crosshair-v" style="display:none;position:absolute;top:0;bottom:0;width:1px;background:rgba(0,217,255,0.5);pointer-events:none;"></div>
-<div id="gfCurveCanvas-crosshair-h" style="display:none;position:absolute;left:0;right:0;height:1px;background:rgba(0,217,255,0.3);pointer-events:none;"></div>
-</div>
-<div id="gfCurveLegend" style="display:none;margin-top:4px;"></div>
-<div style="margin-top:12px;display:flex;gap:20px;flex-wrap:wrap;">
-<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
-<div style="width:20px;height:3px;background:var(--accent);border-radius:2px;"></div> GF Ceiling line
-      </div>
-<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
-<div style="width:20px;height:3px;background:var(--green);border-radius:2px;"></div> Actual ascent
-      </div>
-<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
-<div style="width:12px;height:12px;border-radius:50%;background:var(--red);"></div> First deco
-      </div>
-</div>
-</div><!-- /card-collapsible-body gfCurve -->
-</div></div>
-<div id="resultsScratch" hidden aria-hidden="true">
-<div id="gasConsumptionSummary" style="display:none;"></div>
-</div>
 </section>
 </div>
 <!-- TOOLS FULL PAGE -->
@@ -3143,12 +3141,12 @@ function _updatePlanPanelSections() {
   const tecTabs = document.getElementById('tecResultTabs');
   if (recTabs) recTabs.style.display = isRec ? 'flex' : 'none';
   if (tecTabs) tecTabs.style.display = isRec ? 'none' : 'flex';
-  const gfTab = document.querySelector('#tecResultTabs [data-tab="gfcurve"]');
-  if (gfTab) gfTab.style.display = plannerAlgo === 'ZHLC_GF' ? '' : 'none';
+  const gfCard = document.getElementById('gfCurveInlineCard');
+  if (gfCard) gfCard.style.display = (!isRec && plannerAlgo === 'ZHLC_GF') ? '' : 'none';
   document.querySelectorAll('#resultsPanel #resultTab-dive, #resultsPanel #resultTab-surfint, #resultsPanel #resultTab-avgdepth, #resultsPanel #resultTab-multi, #resultsPanel #resultTab-ndlref').forEach(p => {
     p.classList.remove('active');
   });
-  document.querySelectorAll('#resultsPanel #resultTab-profile, #resultsPanel #resultTab-contingency, #resultsPanel #resultTab-tissue, #resultsPanel #resultTab-gfcurve').forEach(p => {
+  document.querySelectorAll('#resultsPanel #resultTab-graphs, #resultsPanel #resultTab-contingency, #resultsPanel #resultTab-tissue').forEach(p => {
     p.classList.remove('active');
   });
   const firstRec = document.querySelector('#recResultTabs .result-tab-btn');
@@ -7054,15 +7052,9 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   const contRes = document.getElementById('contingencyResult');
   if (contRes) contRes.style.display = 'none';
 
-  // Tissue Saturation, GF Curve, Compartment — Bühlmann-only: show notice
-  const buhOnlyNote = `<div class="info-box" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);"><strong>N/A for VPM-B</strong> — Tissue saturation and GF curve are Bühlmann ZH-L16C specific. Switch to Bühlmann+GF to view these.</div>`;
-  ['gfCurveInlineCard'].forEach(id => { // tissueInlineCard/tableCard merged into tissueLoadCard
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.style.display = 'block';
-    const existing = el.querySelector('.info-box');
-    if (!existing) el.insertAdjacentHTML('beforeend', buhOnlyNote);
-  });
+  // Tissue Saturation, GF Curve — Bühlmann-only: hide GF card on VPM
+  const gfcVpm = document.getElementById('gfCurveInlineCard');
+  if (gfcVpm) gfcVpm.style.display = 'none';
   const alertsContainer = document.getElementById('decoAlerts');
   if (alertsContainer) {
     const cnsAlert = result.totalCNS != null && result.totalCNS >= 80
@@ -8433,7 +8425,7 @@ function runDecoSchedule() {
         <td style="text-align:center;">⇄</td>
         <td data-label="Depth">${switchDepthDisp}</td>
         <td data-label="Stop"></td>
-        <td data-label="Mix" style="color:#FFD700;font-weight:600;">${switchMixDisp}</td>
+        <td data-label="Mix">${switchMixDisp}</td>
         <td data-label="Run"></td>
         <td data-label="TTS"></td>
         <td data-label="PPO2" style="${sppColor}">${fmtPpO2(switchPpO2)}</td>
@@ -8727,7 +8719,7 @@ function runDecoSchedule() {
 
   if (!_contingencyRunning) {
     { const _tlc = document.getElementById('tissueLoadCard'); if (_tlc) _tlc.style.display = 'block'; }
-    { const _gfc = document.getElementById('gfCurveInlineCard'); if (_gfc) _gfc.style.display = 'block'; }
+    { const _gfc = document.getElementById('gfCurveInlineCard'); if (_gfc) _gfc.style.display = (plannerAlgo === 'ZHLC_GF') ? 'block' : 'none'; }
     // Clear any VPM "N/A" notices from tissue/GF cards
     ['gfCurveInlineCard'].forEach(id => { // tissueInlineCard/tableCard merged into tissueLoadCard
       const el = document.getElementById(id);
@@ -9603,9 +9595,10 @@ function _graphZoomApply(canvasId, data) {
 // AUDIT-UNIT:UI-PLOT-RENDER
 function _drawDiveProfileCore(canvasId, waypoints, opts) {
   // waypoints: [{t, depth, type, label, ppo2, cns}]
-  // opts: { maxDepth, totalTime, isLight }
+  // opts: { maxDepth, totalTime, isLight, simple }
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
+  const simple = opts?.simple === true && canvasId === 'decoProfileCanvas';
   const { ctx, W, H } = setupHiDPI(canvas);
   const isMobile  = W < 520;
   const PAD = { top: 10, right: 6, bottom: 28, left: 40 };
@@ -9698,6 +9691,7 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
 
   // ── Deco zone shading removed — gas fills + deco staircase are sufficient ──
   // (decoStops[0] reference kept for audit)
+  if (!simple) {
   ctx.save(); clipToPlot();
   const decoStops = waypoints.filter(wp => wp.type === 'deco' || wp.type === 'safety');
   void decoStops[0]; // audit anchor
@@ -9717,8 +9711,10 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
     ctx.globalAlpha = 1;
   });
   ctx.restore(); // end deco shading clip
+  }
 
   // ── Gas switch flags — pinned to top of plot area, line to switch depth ──
+  if (!simple) {
   const switchWpsVis = waypoints.filter(wp => wp.type === 'gasswitch' && wp.t >= tMin && wp.t <= tMax);
   switchWpsVis.forEach((wp, si) => {
     const x = toX(wp.t);
@@ -9766,16 +9762,17 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
     ctx.fillText(displayLabel, fx + 3, flagTopY + flagH - 3);
     ctx.restore();
   });
+  }
 
   // ── Profile line with per-gas color zones ──
   const pathWps = waypoints.filter(wp => wp.type !== 'gasswitch');
-  const gasSegs    = canvasId === 'decoProfileCanvas' ? window._decoGasSegments
-                   : canvasId === 'plannerProfileCanvas' ? window._plannerGasSegments : null;
-  const gasColorMap = canvasId === 'decoProfileCanvas' ? window._decoGasColorMap
-                   : canvasId === 'plannerProfileCanvas' ? window._plannerGasColorMap : null;
+  const gasSegs    = (!simple && canvasId === 'decoProfileCanvas') ? window._decoGasSegments
+                   : (!simple && canvasId === 'plannerProfileCanvas') ? window._plannerGasSegments : null;
+  const gasColorMap = (!simple && canvasId === 'decoProfileCanvas') ? window._decoGasColorMap
+                   : (!simple && canvasId === 'plannerProfileCanvas') ? window._plannerGasColorMap : null;
 
   if (pathWps.length > 1) {
-    if (gasSegs && gasSegs.length >= 1) {
+    if (!simple && gasSegs && gasSegs.length >= 1) {
       // Draw per-gas colored segments
       // Build a map of t → depth from pathWps for interpolation
       function depthAtT(t) {
@@ -9854,10 +9851,11 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
         ctx.restore();
       });
     } else {
-      // Single color fallback
+      // Single color fallback (also used for simple results graph)
+      ctx.save(); clipToPlot();
       ctx.beginPath();
       ctx.strokeStyle = profileLine;
-      ctx.lineWidth = isMobile ? 1.5 : 2;
+      ctx.lineWidth = simple ? (isMobile ? 2 : 2.5) : (isMobile ? 1.5 : 2);
       ctx.lineJoin = 'round';
       pathWps.forEach((wp, i) => i === 0 ? ctx.moveTo(toX(wp.t), toY(wp.depth)) : ctx.lineTo(toX(wp.t), toY(wp.depth)));
       ctx.stroke();
@@ -9867,14 +9865,35 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
       ctx.lineTo(toX(pathWps[0].t), PAD.top + PH);
       ctx.closePath();
       const grad = ctx.createLinearGradient(0, PAD.top, 0, PAD.top + PH);
-      grad.addColorStop(0, isLight ? 'rgba(0,85,170,0.18)' : 'rgba(0,217,255,0.15)');
+      grad.addColorStop(0, isLight ? 'rgba(8,145,178,0.16)' : 'rgba(34,211,238,0.15)');
       grad.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = grad;
       ctx.fill();
+      ctx.restore();
     }
   }
 
+  // Simple graph: vertical gas-switch markers
+  if (simple) {
+    const switchWpsSimple = waypoints.filter(wp => wp.type === 'gasswitch' && wp.t >= tMin && wp.t <= tMax);
+    ctx.save(); clipToPlot();
+    switchWpsSimple.forEach(wp => {
+      const x = toX(wp.t);
+      const yDepth = toY(wp.depth || 0);
+      ctx.strokeStyle = green;
+      ctx.lineWidth = 1.5;
+      ctx.globalAlpha = 0.75;
+      ctx.beginPath();
+      ctx.moveTo(x, PAD.top);
+      ctx.lineTo(x, yDepth);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    });
+    ctx.restore();
+  }
+
   // ── Deco ceiling line overlay ──
+  if (!simple) {
   const ceilWps = canvasId === 'decoProfileCanvas' ? window._decoCeilingWps
                : canvasId === 'plannerProfileCanvas' ? window._plannerCeilingWps : null;
   if (ceilWps && ceilWps.length > 1) {
@@ -9900,27 +9919,32 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
       }
     }
   }
+  }
 
   // ── Stop dots with labels ──
   const usedY = new Map(); // track used y positions per x-column to stagger labels
 
   waypoints.forEach(wp => {
-    if (!wp.dot) return;
+    if (simple) {
+      if (wp.type !== 'deco' && wp.type !== 'safety') return;
+    } else if (!wp.dot) return;
     const x = toX(wp.t), y = toY(wp.depth);
     const dotColor = wp.type === 'deco'   ? red
                    : wp.type === 'safety' ? green
                    : wp.type === 'bottom' ? accent
                    : muted;
 
-    if (wp.ppo2 >= 1.4) {
+    if (!simple && wp.ppo2 >= 1.4) {
       ctx.beginPath(); ctx.arc(x, y, haloRadius, 0, Math.PI*2);
       ctx.fillStyle = wp.ppo2 >= 1.6 ? 'rgba(255,71,87,0.2)' : 'rgba(255,183,3,0.2)';
       ctx.fill();
     }
 
-    ctx.beginPath(); ctx.arc(x, y, dotRadius, 0, Math.PI*2);
+    ctx.beginPath(); ctx.arc(x, y, simple ? (isMobile ? 2.5 : 3.5) : dotRadius, 0, Math.PI*2);
     ctx.fillStyle = dotColor; ctx.fill();
     ctx.strokeStyle = bg; ctx.lineWidth = isMobile ? 1 : 1.5; ctx.stroke();
+
+    if (simple) return;
 
     // Draw dot number
     if (wp.dot && wp.num) {
@@ -10011,6 +10035,13 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
   // ── Mobile legend below graph ──
   const legendEl = document.getElementById(canvasId === 'decoProfileCanvas' ? 'decoProfileLegend' : 'plannerProfileLegend');
   if (legendEl) {
+    if (simple) {
+      legendEl.style.display = 'flex';
+      legendEl.innerHTML = `
+        <span class="legend-item"><span style="display:inline-block;width:18px;height:2px;background:${profileLine};border-radius:1px;"></span> OC depth</span>
+        <span class="legend-item"><span style="display:inline-block;width:2px;height:12px;background:${green};border-radius:1px;"></span> Gas switch</span>
+        <span class="legend-item"><span class="leg-dot" style="background:${red}"></span> Deco stop</span>`;
+    } else {
     const stops = waypoints.filter(wp => wp.dot && wp.label);
     if (stops.length) {
       legendEl.style.display = 'block';
@@ -10035,6 +10066,7 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
       </table>`;
     } else {
       legendEl.style.display = 'none';
+    }
     }
   }
 }
@@ -10183,6 +10215,7 @@ function drawDecoProfile() {
   drawDiveProfile('decoProfileCanvas', wps, {
     maxDepth: depthVal,
     totalTime: lastT,
+    simple: true,
   });
 }
 
@@ -11322,6 +11355,11 @@ function attachDiveProfileInteraction(canvasId) {
   const crossH   = document.getElementById(canvasId + '-crosshair-h');
   const canvas   = document.getElementById(canvasId);
   if (!overlay || !tooltip || !canvas) return;
+  const data = _graphOpts[canvasId];
+  if (data?.opts?.simple) {
+    overlay.style.cursor = 'default';
+    return;
+  }
 
   function getInfo(clientX, clientY) {
     const rect = canvas.getBoundingClientRect();
