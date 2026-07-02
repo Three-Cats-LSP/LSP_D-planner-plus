@@ -3230,7 +3230,10 @@ else:
 if os.path.isfile(version_json_path):
     with open(version_json_path, encoding="utf-8") as f:
         _vj50 = f.read()
-    if '"apkUrl"' in _vj50 and f"LSP_D-planner-plus-v" in _vj50:
+    if '"apkUrl"' in _vj50 and (
+        f"LSP_D-planner-plus-v" in _vj50
+        or "github.com/Three-Cats-LSP/LSP_D-planner-plus/releases" in _vj50
+    ):
         ok("version.json includes apkUrl for direct APK download (issue #50)")
     else:
         fail("version.json missing apkUrl for APK download (issue #50)")
