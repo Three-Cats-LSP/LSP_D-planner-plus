@@ -27,6 +27,26 @@ These are **loaded at runtime** via `<script src>` (not build-time bundles). Can
 | `plot-core.js` | — | `drawDecoProfile`, `drawDecoProfile`, `_drawDiveProfileCore`, waypoint builders |
 | `contingency-core.js` | — | `runContingencyScenario`, `calcContingency`, state vars |
 | `results-render-core.js` | — | `renderVPMResults`, `renderZhlScheduleResults` |
+| `results-panel.js` | — | Results metrics, chips, tabs, schedule decoration shell |
+| `planner-shell.js` | — | `initV3Layout`, `setNavMode`, tools/planner navigation |
+
+## Markup and CSS partials
+
+| Canonical source | Assembled into | Notes |
+|---|---|---|
+| `ui/markup-*.html` | `index.html` | Five partials; verify with `tools/assemble_ui_html.py --verify` |
+| `lsp-dplanner-foundation.css` | `<link>` in head | Design tokens + base layout |
+| `lsp-dplanner-modes.css` | `<link>` in head | Mode / theme surfaces |
+| `lsp-dplanner-controls.css` | `<link>` in head | Form controls |
+| `lsp-dplanner-results.css` | `<link>` in head | Results panel styling |
+
+## Deployment mirrors
+
+| Surface | Must include |
+|---|---|
+| `_pages/` (GitHub Pages) | All UI cores + CSS + shell JS — `tools/build_pages_site.py` |
+| `www/` (Capacitor) | Same runtime set — `tools/sync_www.py` |
+| `sw.js` `REQUIRED_PRECACHE` | UI cores + split CSS — `tools/verify_sw_assets.py` |
 
 ## Required audit steps
 
@@ -34,7 +54,8 @@ These are **loaded at runtime** via `<script src>` (not build-time bundles). Can
 2. **Neighbor rule (issue #123):** When fixing function A, grep the same file for functions that share globals (`altSurfaceP`, `BAR_PER_METRE`, `WATER_VAPOR`, `PSCR_MIN_PPO2`) and verify they receive the same guard or fix.
 3. **Bundle rebuild:** After editing any `*-core.js`, run `npm run build:bundles` and commit the regenerated bundle files.
 4. **Parity check:** Run `python tools/check_engine_parity.py` to verify source/bundle alignment.
-5. **UI core rule:** After editing any runtime UI `*-core.js`, run `python audit.py`. Do **not** re-inline moved logic in `index.html`. Update `docs/audit-units.json`, then regenerate the Markdown views with `python tools/audit_coverage.py --refresh-fingerprints --write-docs`.
+5. **UI core rule:** After editing any runtime UI `*-core.js`, CSS, or markup partial, run `python -m tools.audit check --profile static`. Do **not** re-inline moved logic in `index.html`.
+6. **Structure gate:** `python tools/run_ui_structure_suite.py` must pass after layout or asset-list changes.
 
 ## Fix-once workflow
 

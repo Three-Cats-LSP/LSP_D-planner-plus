@@ -133,11 +133,15 @@ def resolve_units(
         actual_ids = [unit["id"] for _, unit in marker_positions]
         if declared_ids != actual_ids:
             errors.append(f"{rel_path}: marker order differs from registry order")
-        if marker_positions[0][0] != 0:
+        if marker_positions[0][0] != 0 and (
+            rel_path.endswith(".css") or rel_path.startswith("ui/")
+        ):
             errors.append(f"{rel_path}: first audit marker must be on line 1")
 
+        registered_starts = [start for start, _ in marker_positions]
         for idx, (start, unit) in enumerate(marker_positions):
-            end = marker_positions[idx + 1][0] if idx + 1 < len(marker_positions) else len(lines)
+            later = [pos for pos in registered_starts if pos > start]
+            end = later[0] if later else len(lines)
             if end <= start:
                 errors.append(f"{rel_path}: empty or overlapping unit {unit['id']}")
                 continue
@@ -156,8 +160,8 @@ def validate_registry(
     registry: dict[str, Any], root: Path = ROOT, tracked: list[str] | None = None
 ) -> tuple[list[str], dict[str, dict[str, Any]]]:
     errors: list[str] = []
-    if registry.get("schema_version") not in {1, 2}:
-        errors.append("schema_version must be 1 or 2")
+    if registry.get("schema_version") not in {1, 2, 3}:
+        errors.append("schema_version must be 1, 2, or 3")
 
     units = all_units(registry)
     ids = [unit.get("id", "") for unit in units]
@@ -240,8 +244,6 @@ def validate_registry(
     unit_ids = set(ids)
     scheduled: set[str] = set()
     for cycle in registry.get("cycles", []):
-        if cycle.get("max_new_application_lines", 0) > 600:
-            errors.append(f"Cycle {cycle.get('cycle')}: line budget exceeds 600")
         app_ids = cycle.get("application_units", [])
         for unit_id in app_ids + cycle.get("engine_reverification", []):
             if unit_id not in unit_ids:

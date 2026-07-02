@@ -16,7 +16,32 @@ VALID_RULE_KINDS = {
     "js.no_duplicate_top_level_functions",
     "html.unique_ids",
     "html.script_order",
+    "html.css_link_order",
     "html.dom_references_resolve",
+    "extract.no_reinline",
+}
+VALID_LAYERS = {
+    "web_shell",
+    "ui_core",
+    "ui_shell",
+    "web_css",
+    "web_markup",
+    "web_runtime",
+    "engine",
+    "engine_reference",
+    "tooling",
+    "test",
+    "test_infrastructure",
+    "native",
+    "native_bridge",
+    "native_android",
+    "native_config",
+    "ci",
+    "pwa",
+    "worker",
+    "release_config",
+    "deploy_config",
+    "build_config",
 }
 VALID_DISPOSITIONS = {
     "MIGRATED_STATIC",
@@ -124,6 +149,10 @@ def validate_registry_v2(root: Path, registry: dict[str, Any]) -> tuple[list[str
     errors: list[str] = []
     if registry.get("schema_version") != SCHEMA_VERSION:
         errors.append(f"registry schema_version must be {SCHEMA_VERSION}")
+    for unit in registry.get("units", []):
+        layer = unit.get("layer", "")
+        if layer and layer not in VALID_LAYERS:
+            errors.append(f"{unit.get('id')}: unknown layer {layer!r}")
     tracked = audit_coverage.git_tracked_files(root)
     coverage_errors, resolved = audit_coverage.validate_registry(registry, root, tracked)
     errors.extend(coverage_errors)

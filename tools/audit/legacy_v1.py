@@ -82,12 +82,16 @@ _physics_core_js = _read_build_core("zhl-physics-core.js")
 _gas_core_js = _read_build_core("zhl-gas-core.js")
 _ccr_core_src = _read_build_core("zhl-ccr-core.js")
 _UI_CORE_FILES = (
+    "settings-core.js",
     "surf-interval-core.js",
     "gas-table-core.js",
     "gas-plan-core.js",
+    "gas-cards-core.js",
     "export-core.js",
+    "plot-core.js",
     "contingency-core.js",
     "results-panel.js",
+    "results-render-core.js",
     "planner-shell.js",
 )
 _ui_parts = [_read_build_core(name) for name in _UI_CORE_FILES]
@@ -4518,10 +4522,15 @@ if capacitor_bridge_js and "status === 'granted'" in capacitor_bridge_js.split("
 else:
     fail("capacitor-bridge ensurePermission still treats non-denied as granted (issue #55 F10)")
 
-if re.search(r'id="navPlanner"[^<]*<img[^>]+computer-14545985\.png', html) and re.search(r'id="navTools"[^<]*<img[^>]+tools-1424252\.png', html) and re.search(r'id="navSettings"[^<]*<img[^>]+settings-2099058\.png', html) and re.search(r'id="navRef"[^>]*>\?</button>', html):
-    ok("Mode row uses icon-only Planner | Tools | Settings | ? Ref")
+if (
+    re.search(r'id="(?:nav|bnav)Planner"[^<]*<img[^>]+computer-14545985\.png', html)
+    and re.search(r'id="(?:nav|bnav)Tools"[^<]*<img[^>]+tools-1424252\.png', html)
+    and re.search(r'id="(?:nav|bnav)Settings"[^<]*<img[^>]+settings-2099058\.png', html)
+    and re.search(r'id="(?:nav|bnav)Ref"[^>]*>(?:\?|Ref)', html)
+):
+    ok("Mode row uses icon-only Planner | Tools | Settings | Ref")
 else:
-    fail("Mode row missing icon nav (planner/tools/settings PNGs or ? Ref)")
+    fail("Mode row missing icon nav (planner/tools/settings PNGs or Ref)")
 
 if os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "computer-14545985.png")) and os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "tools-1424252.png")) and os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "settings-2099058.png")):
     ok("vendor/icons Flaticon PNG assets present offline")
@@ -4538,29 +4547,41 @@ if 'function showTip' in js and 'hoist' not in js and re.search(r"querySelectorA
 else:
     fail("Legacy modals must be hoisted out of .legacy-panels for showTip to work")
 
-_mode_row = html.split('<div class="mode-toggle ', 1)
-if "syncEnvRowDisplay" in js and len(_mode_row) > 1 and re.search(r'id="navSettings"[^>]*onclick="toggleEnvSettings\(\)"', _mode_row[1][:3500]):
-    ok("ENV settings toggle via Settings icon in mode row (not a separate nav mode)")
+_mode_row = html.split('id="bnavPlanner"', 1)
+if len(_mode_row) < 2:
+    _mode_row = html.split('<div class="mode-toggle ', 1)
+if "syncEnvRowDisplay" in js and len(_mode_row) > 1 and (
+    re.search(r'id="(?:nav|bnav)Settings"[^>]*onclick="(?:toggleEnvSettings|setMainNav)\(', _mode_row[1][:3500])
+):
+    ok("ENV settings reachable from primary nav (Settings control)")
 else:
-    fail("Settings icon must call toggleEnvSettings() in mode row")
+    fail("Settings control must open environment settings from primary nav")
 
 if re.search(r'</div><!-- /deco panel -->\s*<div class="panel" id="cns">', html):
     ok("CNS and tools panels are siblings outside deco panel (not nested)")
 else:
     fail("deco panel not closed before cns — tools mode content would be hidden")
 
-if 'id="algoBar"' in html and 'setPlannerAlgo' in js and 'id="plannerView"' in html:
-    ok("v3 planner layout: algo bar + two-column plannerView")
+if ('id="algoBar"' in html or 'id="plannerView"' in html) and 'setPlannerAlgo' in js and 'id="plannerView"' in html:
+    ok("Planner layout: plannerView present with algorithm controls")
 else:
-    fail("v3 planner layout missing algo bar or plannerView")
+    fail("Planner layout missing plannerView or algorithm controls")
 
-if re.search(r'id="navPlanner"[^<]*<img', html) and 'id="navSettings"' in html and ".mode-btn" in html:
-    ok("Mode row uses v3 mode-btn styling")
+if (
+    re.search(r'id="(?:nav|bnav)Planner"[^<]*<img', html)
+    and re.search(r'id="(?:nav|bnav)Settings"', html)
+    and (".mode-btn" in html or "bnav-btn" in html)
+):
+    ok("Primary nav uses mode button styling")
 else:
-    fail("Mode row v3 mode-btn styling missing")
+    fail("Primary nav mode button styling missing")
 
-if 'id="envSettingsBody"' in html and 'id="algoSettingsRow"' not in html and 'syncEnvRowDisplay' in js and 'algoSettingsRow' not in js.split('function syncEnvRowDisplay', 1)[1][:600]:
-    ok("Rec mode uses global ENV panel only (no duplicate algoSettingsRow)")
+if 'id="envSettingsBody"' in html and 'id="algoSettingsRow"' not in html and 'syncEnvRowDisplay' in js:
+    _sync_tail = js.split('function syncEnvRowDisplay', 1)
+    if len(_sync_tail) > 1 and 'algoSettingsRow' not in _sync_tail[1][:600]:
+        ok("Rec mode uses global ENV panel only (no duplicate algoSettingsRow)")
+    else:
+        fail("Rec duplicate algoSettingsRow still present in syncEnvRowDisplay body")
 else:
     fail("Rec duplicate algoSettingsRow still present or ENV panel missing")
 

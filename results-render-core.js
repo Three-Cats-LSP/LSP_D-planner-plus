@@ -753,7 +753,6 @@ function renderZhlScheduleResults(ctx) {
   // ── TTS baseline: snapshot rowRT here — this is exactly descent+bottom time.
   // TTS (time-to-surface) is everything from this point to the final rowRT,
   // i.e. ascent+deco only. Matches MultiDeco/DiveKit's published TTS definition.
-  // AUDIT-UNIT:UI-ZHL-RESULTS
   const rtAtBottomEnd = rowRT;
 
   collapsedMDP.forEach(s => {

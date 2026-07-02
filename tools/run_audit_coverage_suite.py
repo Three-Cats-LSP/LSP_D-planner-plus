@@ -21,7 +21,13 @@ def main() -> int:
         text=True,
     )
     tests = subprocess.run(
-        [sys.executable, "-m", "unittest", "tools.audit.test_system"],
+        [
+            sys.executable,
+            "-m",
+            "unittest",
+            "tools.audit.test_system",
+            "tools.test_ui_structure_suite",
+        ],
         cwd=ROOT,
         capture_output=True,
         text=True,

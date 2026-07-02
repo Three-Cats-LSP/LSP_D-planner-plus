@@ -82,6 +82,7 @@ for (const relativePath of request.files) {
     }
     const ids = [];
     const scripts = [];
+    const stylesheets = [];
     const functions = [];
     const domRefs = [];
     walkHtml(document, node => {
@@ -96,6 +97,9 @@ for (const relativePath of request.files) {
           domRefs.push(...parsed.domRefs);
         }
       }
+      if (node.nodeName === 'link' && attrs.rel === 'stylesheet' && attrs.href) {
+        stylesheets.push({ href: attrs.href, line: node.sourceCodeLocation?.startLine || null });
+      }
       if (node.nodeName === 'style') {
         try {
           postcss.parse(textContent(node), { from: relativePath });
@@ -104,7 +108,17 @@ for (const relativePath of request.files) {
         }
       }
     });
-    result.files[relativePath] = { kind: 'html', ids, scripts, functions, domRefs };
+    result.files[relativePath] = { kind: 'html', ids, scripts, stylesheets, functions, domRefs };
+    continue;
+  }
+  if (relativePath.endsWith('.css')) {
+    try {
+      postcss.parse(rawSource, { from: relativePath });
+      result.files[relativePath] = { kind: 'css' };
+    } catch (error) {
+      diagnostic(relativePath, 'css', error.reason || error.message, error.line, error.column);
+      result.files[relativePath] = { kind: 'css' };
+    }
   }
 }
 

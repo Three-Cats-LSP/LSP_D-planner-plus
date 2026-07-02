@@ -5,6 +5,7 @@ capacitor-bridge.js
 contingency-core.js
 download.html
 export-core.js
+gas-cards-core.js
 gas-plan-core.js
 gas-table-core.js
 icon-192.png
@@ -17,7 +18,10 @@ lsp-dplanner-results.css
 manifest.json
 padi-engine.js
 planner-shell.js
+plot-core.js
 results-panel.js
+results-render-core.js
+settings-core.js
 surf-interval-core.js
 sw.js
 tests-ccr-differential.html
@@ -95,6 +99,7 @@ tests/ccr-differential/lib/ccrdiff.js
 tests/ccr-differential/manifest.json
 tests/ccr-differential/schemas/result.schema.json
 tests/ccr-differential/schemas/scenario.schema.json
+vendor/brand/three-cats-lsp-logo.png
 vendor/fonts/DejaVuSans-Bold.ttf
 vendor/fonts/DejaVuSans.ttf
 vendor/fonts/JTUSjIg69CK48gW7PXoo9Wdhyzbi.woff2
@@ -122,6 +127,7 @@ vendor/icons/settings-2099058.png
 vendor/icons/tools-1424252.png
 vendor/jspdf.umd.min.js
 vendor/offline-manifest.txt
+vendor/pdf-fonts.js
 version.json
 vpm-engine-bundle.js
 zhl-engine-bundle.js
