@@ -6750,8 +6750,6 @@ function runDecoSchedule() {
     const zhlRepRow = document.getElementById('zhlRepRow');
     if (zhlRepRow) zhlRepRow.style.display = 'flex';
   }
-  const bottomMix = document.getElementById('decoGas')?.value || 'air';
-  const maxPPO2 = Math.max(ppo2Deco, 1.5, ppo2Bottom);
 
   // ── Headless mode early return: skip ceiling/graph/DOM work ─────────────
   // Guard moved before ceiling waypoints — the intermediate saturate() calls
