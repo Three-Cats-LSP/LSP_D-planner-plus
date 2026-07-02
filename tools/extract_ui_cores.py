@@ -90,6 +90,15 @@ UI_CORE_BLOCKS: tuple[UiCoreBlock, ...] = (
 """,
     ),
     UiCoreBlock(
+        "gas-cards-core",
+        "gas-cards-core.js",
+        """/**
+ * Deco / travel / bailout gas card UI — MOD displays, dynamic cards, travel gas.
+ * Loaded by index.html before main inline script.
+ */
+""",
+    ),
+    UiCoreBlock(
         "export-core",
         "export-core.js",
         """/**
@@ -152,6 +161,14 @@ INLINE_FORBIDDEN_DEFS: dict[str, tuple[str, ...]] = {
     "surf-interval-core": ("function calcSurfInt(",),
     "gas-table-core": ("function renderGasTable(", "function calcEND_tool("),
     "gas-plan-core": ("function calcGasPlan(", "let _gasRule", "async function buildGasPlanPDF("),
+    "gas-cards-core": (
+        "function getAllDecoGasIds(",
+        "function updateGasMODDisplays(",
+        "function appendDecoGasCardAtIdx(",
+        "function addDecoGasCard(",
+        "function getTravelGasExport(",
+        "let _dgNextIdx",
+    ),
     "export-core": (
         "function buildExportText(",
         "async function exportPDF(",

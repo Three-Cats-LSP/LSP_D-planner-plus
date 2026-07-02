@@ -14,6 +14,7 @@ UI_RUNTIME_CORES = [
     "export-core.js",
     "plot-core.js",
     "gas-plan-core.js",
+    "gas-cards-core.js",
     "gas-table-core.js",
     "surf-interval-core.js",
 ]

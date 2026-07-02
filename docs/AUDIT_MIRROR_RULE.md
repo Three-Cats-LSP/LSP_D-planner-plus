@@ -21,6 +21,7 @@ These are **loaded at runtime** via `<script src>` (not build-time bundles). Can
 | `surf-interval-core.js` | — | `calcSurfInt`, `renderSurfIntPanel`, `toggleSurfIntPanel` |
 | `gas-table-core.js` | — | `renderGasTable`, `calcEND_tool`, `renderEADTable` |
 | `gas-plan-core.js` | — | `calcGasPlan`, `setGasRule`, gas-plan text export (PDF in export-core) |
+| `gas-cards-core.js` | — | `getAllDecoGasIds`, `updateGasMODDisplays`, dynamic deco cards, travel gas |
 | `export-core.js` | — | `buildExportText`, `exportPDF`, `exportContingencyPDF`, `buildGasPlanPDF`, plan header + PDF infra |
 | `plot-core.js` | — | `drawDecoProfile`, `drawDecoProfile`, `_drawDiveProfileCore`, waypoint builders |
 | `contingency-core.js` | — | `runContingencyScenario`, `calcContingency`, state vars |
