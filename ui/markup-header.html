@@ -44,9 +44,6 @@
 <h1>LSP D-PLANNER · <span class="algo-label" id="algoLabel">DIVE</span></h1>
 <p id="algoSubtitle">Bühlmann ZH-L16C · Gradient Factors</p>
 </div>
-<button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" style="background:none;border:none;cursor:pointer;font-size:18px;padding:4px;" title="Toggle light/dark theme">
-<span class="theme-icon" id="themeIcon">🌙</span>
-</button>
 </div>
 <!-- Banner — center column on desktop, full-width row on mobile -->
 <!-- Banner: fills center on desktop; own full-width row on mobile via CSS order -->
@@ -56,82 +53,28 @@
         ⚠ Planning Aid Only
       </div>
 </div>
-<!-- Mode buttons — right, never shrinks -->
-<div style="display:flex;align-items:center;gap:8px;padding-right:14px;flex-shrink:0;justify-content:flex-end;">
-<div class="mode-toggle algo-toggle">
-<button class="mode-btn algo-btn-icon active" id="navPlanner" onclick="setNavMode('planner'); setMobilePlanView('plan');" title="Dive Planner" aria-label="Dive Planner"><img src="vendor/icons/computer-14545985.png" alt="" width="16" height="16" decoding="async"/></button>
-<button class="mode-btn algo-btn-icon" id="navTools" onclick="setNavMode('tools')" title="Tools" aria-label="Tools"><img src="vendor/icons/tools-1424252.png" alt="" width="16" height="16" decoding="async"/></button>
-<button class="mode-btn algo-btn-icon" id="navSettings" onclick="toggleEnvSettings()" title="Environment settings — Water / Units / Altitude" aria-label="Environment settings"><img src="vendor/icons/settings-2099058.png" alt="" width="16" height="16" decoding="async"/></button>
-<button class="mode-btn algo-btn-icon mode-ref-btn" id="navRef" onclick="setNavMode('ref')" title="Reference" aria-label="Reference">?</button>
-</div>
-</div>
-</div>
-<!-- SINGLE ROW: Water | Units | Altitude (expanded from ENV button in mode row) -->
-<div class="algo-switcher" id="envRow" style="display:none;align-items:center;gap:8px;padding:1px 14px;flex-wrap:wrap;min-height:0;">
-<div id="envSettingsBody" style="display:none;align-items:center;gap:10px;flex-wrap:wrap;">
-<!-- Units -->
-<div id="unitsRow" style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-<span class="algo-label-text u1">Units:</span>
-<select class="u7" id="unitsSelect" onchange="setUnits(this.value)">
-<option value="metric">m (metric)</option>
-<option value="imperial">ft (imperial)</option>
-</select>
-</div>
-<!-- Water -->
-<div id="waterRow" style="display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap;">
-<span class="algo-label-text u1">Water:</span><span class="tip-icon" onclick="showTip('Water Type','Affects buoyancy pressure calculation (BAR_PER_METRE) used throughout all deco algorithms.\n\n• Salt (default) — 10.000 m/bar (0.10000 bar/m). MultiDeco/DiveKit/ApexDeco standard.\n• EN13319 — 10.080 m/bar (0.09921 bar/m). European dive-computer standard.\n• Fresh — 10.330 m/bar (0.09681 bar/m). Lakes, rivers, quarries. Least dense — stops are shallower in absolute pressure terms.\n• Custom — enter density in kg/m³ manually for brackish water or specific dive sites.\n\nIn practice the difference between salt and fresh adds ~1-2% to stop depths and run times — significant at technical depths.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span>
-<select class="u7" id="waterDensitySelect" onchange="setWaterDensity(this.value)">
-<option selected="" value="salt">Salt</option>
-<option value="en13319">EN13319</option>
-<option value="fresh">Fresh</option>
-<option value="custom">Custom</option>
-</select>
-<div class="u19" id="waterCustomRow">
-<input id="waterCustomInput" max="1100" min="900" onchange="applyCustomWaterDensity('waterCustomInput')" oninput="applyCustomWaterDensity('waterCustomInput')" step="1" style="width:58px;padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;" type="number" value="1025"/>
-<span class="algo-label-text u1">kg/m³</span>
-</div>
-</div>
-<!-- Altitude -->
-<div id="altitudeRow" style="display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap;">
-<span class="algo-label-text u1">Alt:</span><span class="tip-icon" onclick="showTip('Altitude','Dive site elevation above sea level.\n\nAt altitude, surface pressure is lower than 1 atm — the diver surfaces into a thinner atmosphere, which increases decompression stress.\n\nEffects on deco calculations:\n • Bühlmann ZHL-16C + GF: M-values are pressure-scaled automatically to the reduced surface pressure (Cross correction).\n • VPM-B: initial bubble critical radii are also scaled (altitude factor = (P_SL / P_alt)^⅓), making nuclei slightly larger at altitude and requiring more cautious ascents.\n\nAcclimatized: set to Yes if the diver has spent ≥12 h at or above the dive altitude before the dive. This uses actual atmospheric pressure for deco. Set to No for same-day travel — a conservative surface N₂ loading offset is applied.\n\nSea level (0 m) = standard calculations, no altitude correction.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span>
-<select class="u7" id="altitudeSelect" onchange="handleAltitudeSelect(this.value)">
-<option selected="" value="0">Sea level (0 m)</option>
-<option value="500">500 m</option>
-<option value="1000">1000 m</option>
-<option value="1500">1500 m</option>
-<option value="2000">2000 m</option>
-<option value="2500">2500 m</option>
-<option value="3000">3000 m</option>
-<option value="custom">Custom…</option>
-</select>
-<div class="u19" id="altitudeCustomRow">
-<input id="altitudeCustomInput" max="5000" min="0" onchange="applyCustomAltitude()" step="50" style="width:62px;padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;" type="number" value="0"/>
-<span class="algo-label-text u1" id="altitudeCustomUnit">m</span>
-</div>
-<span id="altitudePressureDisplay" style="color:var(--muted);font-size:10px;"></span>
-</div>
-<!-- Acclimatized toggle -->
-<div id="acclimatizedRow" style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-<span class="algo-label-text u1">Acclimatized:</span>
-<select class="u7" id="acclimatizedSelect" onchange="setAltitude()">
-<option selected="" value="yes">Yes</option>
-<option value="no">No</option>
-</select>
-</div>
-</div><!-- end envSettingsBody -->
-<!-- Warning -->
-<div style="display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0;">
+<!-- Header actions — theme toggle + reference -->
+<div class="header-actions">
+<button type="button" class="theme-pill-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme">
+<span class="theme-pill-track">
+<span class="theme-pill-thumb" id="themePillThumb" aria-hidden="true"></span>
+<svg class="theme-pill-icon theme-pill-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+<svg class="theme-pill-icon theme-pill-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+</span>
+</button>
+<button type="button" class="tip-icon tip-btn header-ref-btn" id="navRef" onclick="setNavMode('ref')" title="Reference" aria-label="Reference">?</button>
 </div>
 </div>
 </header>
-<!-- ALGO BAR (Dive Planner mode) -->
-<div class="algo-bar visible" id="algoBar">
-<button class="algo-bar-btn" id="algoBtnRec" onclick="setPlannerAlgo('rec',this)">REC<span class="algo-sub">NDL · PADI table</span></button>
-<button class="algo-bar-btn active" id="algoBtnBuh" onclick="setPlannerAlgo('ZHLC_GF',this)">Bühlmann<span class="algo-sub">ZH-L16C + GF</span></button>
-<button class="algo-bar-btn" id="algoBtnVpm" onclick="setPlannerAlgo('VPMB',this)">VPM-B<span class="algo-sub">Bubble Model</span></button>
-<button class="algo-bar-btn" id="algoBtnVpmE" onclick="setPlannerAlgo('VPMB_GFS',this)">VPM-B+GFS<span class="algo-sub">Gradient Factor Surfacing</span></button>
+<!-- MAIN NAV — Rec · Bühlmann · VPM · Tools · Settings -->
+<div class="main-nav-bar visible" id="mainNavBar">
+<button class="main-nav-btn" id="navBtnRec" onclick="setMainNav('rec',this)">REC<span class="algo-sub">NDL · PADI table</span></button>
+<button class="main-nav-btn active" id="navBtnBuh" onclick="setMainNav('buh',this)">Bühlmann<span class="algo-sub">ZH-L16C + GF</span></button>
+<button class="main-nav-btn" id="navBtnVpm" onclick="setMainNav('vpm',this)">VPM<span class="algo-sub" id="vpmNavSub">Bubble Model</span></button>
+<button class="main-nav-btn" id="navBtnTools" onclick="setMainNav('tools',this)">Tools<span class="algo-sub">Calculators</span></button>
+<button class="main-nav-btn" id="navBtnSettings" onclick="setMainNav('settings',this)">Settings<span class="algo-sub">Water · Units</span></button>
 </div>
-<!-- TOOLS BAR -->
+<!-- TOOLS SUB-NAV (visible in Tools mode) -->
 <div class="tools-bar" id="toolsBar">
 <button class="tools-bar-btn active" id="tool-bestmix" onclick="switchTool('bestmix',this)">Best Mix</button>
 <button class="tools-bar-btn" id="tool-mod" onclick="switchTool('mod',this)">MOD</button>
@@ -179,6 +122,13 @@
 </div>
 <input type="hidden" id="decoBT" value="30" oninput="if(window._lastContingency) calcContingency()"/>
 <input type="hidden" id="bt" value="30"/>
+</div>
+</div>
+<div class="vpm-mode-row" id="vpmModeRowV3">
+<span class="section-label" style="margin:0;">VPM Mode</span>
+<div class="seg">
+<button type="button" class="seg-btn active" id="vpmModePure" onclick="setVpmMode('VPMB',this)">VPM-B</button>
+<button type="button" class="seg-btn" id="vpmModeGfs" onclick="setVpmMode('VPMB_GFS',this)">VPM-B+GFS</button>
 </div>
 </div>
 <div class="vpm-cons-row" id="conservatismRowV3">
@@ -402,6 +352,68 @@
 </div>
 </div>
 </div></div>
+</section>
+</div>
+<!-- SETTINGS PAGE -->
+<div class="settings-page-wrap v4-shell" id="settingsPageWrap">
+<section class="v3-panel" id="settingsPanel" aria-label="Environment settings">
+<div class="panel-header-row">
+<div class="panel-title-wrap">
+<div class="panel-title">Environment Settings</div>
+<span class="tip-icon" onclick="showTip('Environment Settings','Water type, units, and altitude affect all decompression calculations in the planner and tools.\n\nChanges apply immediately and will re-run an open deco schedule if one is displayed.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span>
+</div>
+</div>
+<div id="envSettingsBody" class="settings-panel-body">
+<!-- Units -->
+<div id="unitsRow" class="settings-field-row">
+<span class="algo-label-text u1">Units:</span>
+<select class="u7" id="unitsSelect" onchange="setUnits(this.value)">
+<option value="metric">m (metric)</option>
+<option value="imperial">ft (imperial)</option>
+</select>
+</div>
+<!-- Water -->
+<div id="waterRow" class="settings-field-row">
+<span class="algo-label-text u1">Water:</span><span class="tip-icon" onclick="showTip('Water Type','Affects buoyancy pressure calculation (BAR_PER_METRE) used throughout all deco algorithms.\n\n• Salt (default) — 10.000 m/bar (0.10000 bar/m). MultiDeco/DiveKit/ApexDeco standard.\n• EN13319 — 10.080 m/bar (0.09921 bar/m). European dive-computer standard.\n• Fresh — 10.330 m/bar (0.09681 bar/m). Lakes, rivers, quarries. Least dense — stops are shallower in absolute pressure terms.\n• Custom — enter density in kg/m³ manually for brackish water or specific dive sites.\n\nIn practice the difference between salt and fresh adds ~1-2% to stop depths and run times — significant at technical depths.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span>
+<select class="u7" id="waterDensitySelect" onchange="setWaterDensity(this.value)">
+<option selected="" value="salt">Salt</option>
+<option value="en13319">EN13319</option>
+<option value="fresh">Fresh</option>
+<option value="custom">Custom</option>
+</select>
+<div class="u19" id="waterCustomRow">
+<input id="waterCustomInput" max="1100" min="900" onchange="applyCustomWaterDensity('waterCustomInput')" oninput="applyCustomWaterDensity('waterCustomInput')" step="1" style="width:58px;padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;" type="number" value="1025"/>
+<span class="algo-label-text u1">kg/m³</span>
+</div>
+</div>
+<!-- Altitude -->
+<div id="altitudeRow" class="settings-field-row">
+<span class="algo-label-text u1">Alt:</span><span class="tip-icon" onclick="showTip('Altitude','Dive site elevation above sea level.\n\nAt altitude, surface pressure is lower than 1 atm — the diver surfaces into a thinner atmosphere, which increases decompression stress.\n\nEffects on deco calculations:\n • Bühlmann ZHL-16C + GF: M-values are pressure-scaled automatically to the reduced surface pressure (Cross correction).\n • VPM-B: initial bubble critical radii are also scaled (altitude factor = (P_SL / P_alt)^⅓), making nuclei slightly larger at altitude and requiring more cautious ascents.\n\nAcclimatized: set to Yes if the diver has spent ≥12 h at or above the dive altitude before the dive. This uses actual atmospheric pressure for deco. Set to No for same-day travel — a conservative surface N₂ loading offset is applied.\n\nSea level (0 m) = standard calculations, no altitude correction.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span>
+<select class="u7" id="altitudeSelect" onchange="handleAltitudeSelect(this.value)">
+<option selected="" value="0">Sea level (0 m)</option>
+<option value="500">500 m</option>
+<option value="1000">1000 m</option>
+<option value="1500">1500 m</option>
+<option value="2000">2000 m</option>
+<option value="2500">2500 m</option>
+<option value="3000">3000 m</option>
+<option value="custom">Custom…</option>
+</select>
+<div class="u19" id="altitudeCustomRow">
+<input id="altitudeCustomInput" max="5000" min="0" onchange="applyCustomAltitude()" step="50" style="width:62px;padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;" type="number" value="0"/>
+<span class="algo-label-text u1" id="altitudeCustomUnit">m</span>
+</div>
+<span id="altitudePressureDisplay" style="color:var(--muted);font-size:10px;"></span>
+</div>
+<!-- Acclimatized toggle -->
+<div id="acclimatizedRow" class="settings-field-row">
+<span class="algo-label-text u1">Acclimatized:</span>
+<select class="u7" id="acclimatizedSelect" onchange="setAltitude()">
+<option selected="" value="yes">Yes</option>
+<option value="no">No</option>
+</select>
+</div>
+</div>
 </section>
 </div>
 <!-- TOOLS FULL PAGE -->
