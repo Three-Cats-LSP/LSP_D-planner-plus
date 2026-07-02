@@ -19,9 +19,17 @@
 // ═══════════════════════════════════════════════════════
 
 const EXPORT_SECTION_RULE_WIDTH = 50;
-const ASCENT_SCHEDULE_HEADER = 'Phase Depth  Stop  Mix    Run   TTS    PPO2  EAD    ';
-/** Column index where PPO2 starts — keeps TTS padding consistent across row lengths. */
-const EXPORT_PPO2_COL = 39;
+const EXPORT_PPO2_COL = 36;
+const EXPORT_SCHEDULE_LAYOUTS = {
+  deco: {
+    header: 'Phase Depth Stop  Mix   Run   TTS   PPO2  EAD    ',
+    eadGapBase: 5,
+  },
+  emergency: {
+    header: 'Phase Depth  Stop  Mix  Run   TTS   PPO2  EAD    ',
+    eadGapBase: 4,
+  },
+};
 
 function ascentScheduleRule() {
   return '-'.repeat(EXPORT_SECTION_RULE_WIDTH);
@@ -781,92 +789,96 @@ function buildGasConsumptionLines(gp) {
   return lines;
 }
 
-function formatExportScheduleRun(run) {
-  const s = (run || '').trim();
-  if (!s || s === '-') return '-'.padEnd(6);
-  return s.length <= 4 ? s.padEnd(5) : s.padEnd(6);
+function stripExportTts(val) {
+  const s = (val || '').trim();
+  if (!s || s === '-' || s === '—') return '-';
+  return s.replace(/"\s*$/, '');
 }
 
-function formatExportScheduleStopW(stop, mix, phase) {
-  const s = (stop || '').trim();
-  const m = (mix || '').trim();
-  if (!s) return 7;
-  if (s.length >= 5) return 7;
-  if (m === '100%' && s.length === 4) return 5;
+function exportScheduleLayoutKey(layout) {
+  return layout === 'deco' ? 'deco' : 'emergency';
+}
+
+function exportSchedulePhaseWidth(layoutKey, phase, depth) {
+  const d = (depth || '').trim();
+  if (layoutKey === 'deco' && d.length <= 2 && phase !== 'Des') return 7;
   return 6;
 }
 
-function formatExportSchedulePhaseCol(phase, depth, layout) {
-  const d = (depth || '').trim();
-  const widen = layout === 'deco' && d.length <= 2;
-  return phase.padEnd(widen ? 7 : 6);
-}
-
-function formatExportScheduleDepthW(depth, phase, stop, layout) {
+function exportScheduleDepthCell(layoutKey, phase, depth, stop) {
   const d = (depth || '').trim();
   const stp = (stop || '').trim();
-  if (layout !== 'deco' && d.length <= 2) return 7;
-  if (d.length !== 3) return 6;
-  if (phase === 'Asc' && stp && stp !== '1:00') return 7;
-  if (phase === 'Stp' && stp.startsWith('1:')) return 7;
-  return 6;
+  if (!stp && phase === 'Des') {
+    return d.padEnd(layoutKey === 'deco' ? 12 : 13);
+  }
+  if (phase === 'Lvl') return d.padEnd(5);
+  const depthW = (layoutKey === 'deco' && exportSchedulePhaseWidth(layoutKey, phase, depth) === 7) ? 5 : 6;
+  return d.padEnd(depthW);
 }
 
-function formatExportScheduleDepth(depth, phase, stop, layout) {
-  const d = (depth || '').trim();
-  const w = formatExportScheduleDepthW(d, phase, stop, layout);
-  if (!d) return ' '.repeat(w);
-  return d.padEnd(w);
-}
-
-function formatExportScheduleStop(stop, phase, mix, layout) {
+function exportScheduleStopCell(layoutKey, phase, stop, mix) {
   const s = (stop || '').trim();
-  const w = formatExportScheduleStopW(s, mix, phase);
-  if (!s) return ' '.repeat(w);
-  if (layout !== 'deco' && phase === 'Asc' && s !== '1:00') return (' ' + s).padEnd(w);
-  return s.padEnd(w);
+  const m = (mix || '').trim();
+  if (!s) return '';
+  if (layoutKey === 'emergency') {
+    if (s.length >= 5) return s.padEnd(8);
+    if (m === '100%') return s.padEnd(5);
+    return s.padEnd(7);
+  }
+  if (s.length >= 5) return s.padEnd(7);
+  if (phase === 'Asc') return s.padEnd(m === '100%' ? 5 : 6);
+  return s.padEnd(5);
 }
 
-function formatExportScheduleMix(mix, phase) {
+function exportScheduleMixCell(layoutKey, phase, mix) {
   const s = (mix || '').trim();
-  if (s === '100%') return ' 100% ';
-  const w = phase === 'Des' ? 7 : 6;
-  return s.padEnd(w);
+  if (s === '100%') return (' ' + s).padEnd(5);
+  if (phase === 'Des') return s.padEnd(layoutKey === 'deco' ? 6 : 5);
+  if (s === '50/00') return s.padEnd(6);
+  return s.padEnd(layoutKey === 'deco' ? 5 : 4);
 }
 
-function formatExportScheduleTail(tts, ppo2, ead, phase, depth, prefixLen, layout) {
-  const ttsS = (tts || '').trim();
-  const ppo2Col = formatExportSchedulePpo2(ppo2);
-  const eadCol = formatExportScheduleEad(ead);
-  const ttsPad = Math.max(1, EXPORT_PPO2_COL - prefixLen);
-  if (!ttsS || ttsS === '-') {
-    return '  -'.padEnd(ttsPad) + ppo2Col + '   -';
-  }
-  const isShortTts = (phase === 'Stp' || (phase === 'Asc' && depth === '0m')) && ttsS.length < 6;
-  const ttsPart = isShortTts ? (' ' + ttsS).padEnd(ttsPad) : ttsS.padEnd(ttsPad);
-  let eadGap;
-  if (eadCol === '-') {
-    eadGap = '   -';
-  } else {
-    const eadTarget = layout === 'deco' ? 5 : 4;
-    eadGap = ' '.repeat(Math.max(2, eadTarget - eadCol.length)) + eadCol;
-  }
-  return ttsPart + ppo2Col + eadGap;
+function exportScheduleRunCell(run, phase, mix, layoutKey) {
+  const s = (run || '').trim();
+  const m = (mix || '').trim();
+  if (!s || s === '-') return '-'.padEnd(5);
+  if (phase === 'Des') return s.padEnd(layoutKey === 'deco' ? 7 : 5);
+  if (m === '100%') return (' ' + s).padEnd(7);
+  if (s.length <= 4) return s.padEnd(7);
+  return s.padEnd(6);
 }
 
-function formatAscentScheduleHeaderRow() {
-  return ASCENT_SCHEDULE_HEADER;
+function exportScheduleTtsCell(tts, prefixLen) {
+  const s = stripExportTts(tts);
+  const w = Math.max(1, EXPORT_PPO2_COL - prefixLen);
+  if (s === '-') return '-'.padEnd(w);
+  const body = (s.length <= 4 ? ' ' + s : s);
+  return body.padEnd(w);
+}
+
+function exportScheduleEadCell(ead, layoutKey) {
+  const e = formatExportScheduleEad(ead);
+  if (e === '-') return '   -';
+  const base = EXPORT_SCHEDULE_LAYOUTS[layoutKey].eadGapBase;
+  return ' '.repeat(Math.max(2, base - e.length)) + e;
+}
+
+function formatAscentScheduleHeaderRow(layout) {
+  const key = exportScheduleLayoutKey(layout);
+  return EXPORT_SCHEDULE_LAYOUTS[key].header;
 }
 
 function formatAscentScheduleRow({ phase, depth, stop, mix, run, tts, ppo2, ead, layout }) {
-  const schedLayout = layout === 'deco' ? 'deco' : 'default';
-  const stp = (stop || '').trim();
-  const prefix = formatExportSchedulePhaseCol(phase, depth, schedLayout)
-    + formatExportScheduleDepth(depth, phase, stp, schedLayout)
-    + formatExportScheduleStop(stp, phase, mix, schedLayout)
-    + formatExportScheduleMix(mix, phase)
-    + formatExportScheduleRun(run);
-  return prefix + formatExportScheduleTail(tts, ppo2, ead, phase, (depth || '').trim(), prefix.length, schedLayout);
+  const layoutKey = exportScheduleLayoutKey(layout);
+  const prefix = phase.padEnd(exportSchedulePhaseWidth(layoutKey, phase, depth))
+    + exportScheduleDepthCell(layoutKey, phase, depth, stop)
+    + exportScheduleStopCell(layoutKey, phase, stop, mix)
+    + exportScheduleMixCell(layoutKey, phase, mix)
+    + exportScheduleRunCell(run, phase, mix, layoutKey);
+  return prefix
+    + exportScheduleTtsCell(tts, prefix.length)
+    + formatExportSchedulePpo2(ppo2)
+    + exportScheduleEadCell(ead, layoutKey);
 }
 
 function buildExportText(mode) {
@@ -1008,7 +1020,7 @@ function buildExportText(mode) {
     if (rows.length) {
       lines.push('ASCENT SCHEDULE');
       lines.push(ascentScheduleRule());
-      lines.push(formatAscentScheduleHeaderRow());
+      lines.push(formatAscentScheduleHeaderRow('deco'));
       lines.push(ascentScheduleRule());
       const phaseLabel = { descent:'Des', bottom:'Lvl', ascent:'Asc', deco:'Stp', safety:'Stp', totals:'TOT' };
       rows.forEach(tr => {
@@ -1108,7 +1120,7 @@ function buildExportText(mode) {
     if (rows.length) {
       lines.push('ASCENT SCHEDULE');
       lines.push(ascentScheduleRule());
-      lines.push(formatAscentScheduleHeaderRow());
+      lines.push(formatAscentScheduleHeaderRow('emergency'));
       lines.push(ascentScheduleRule());
       const phaseLabel = { descent:'Des', bottom:'Lvl', ascent:'Asc', deco:'Stp', safety:'Stp', switch:'>>' };
       rows.forEach(tr => {
