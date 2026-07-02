@@ -18,7 +18,27 @@
 //  exportTXT(mode)       → .txt file download
 // ═══════════════════════════════════════════════════════
 
-const ASCENT_SCHEDULE_HR = '-'.repeat(48);
+const SCHED_COL = Object.freeze({ phase: 6, depth: 6, stop: 7, mix: 6, run: 6, tts: 7, ppo2: 5, ead: 7 });
+const SCHED_PPO2_GAP = ' ';
+const SCHED_EAD_GAP = '  ';
+
+function ascentScheduleWidth() {
+  return SCHED_COL.phase + SCHED_COL.depth + SCHED_COL.stop + SCHED_COL.mix + SCHED_COL.run + SCHED_COL.tts
+    + SCHED_PPO2_GAP.length + SCHED_COL.ppo2 + SCHED_EAD_GAP.length + SCHED_COL.ead;
+}
+
+function ascentScheduleRule() {
+  return '-'.repeat(ascentScheduleWidth());
+}
+
+function exportBrandName() {
+  return 'LSP D-Planner+';
+}
+
+function exportBrandWithCircuit() {
+  const tag = typeof getExportCircuitTag === 'function' ? getExportCircuitTag() : 'OC';
+  return `${exportBrandName()} (${tag})`;
+}
 
 function exportScheduleCell(val, width, { right = false, blank = false } = {}) {
   const s = (val == null ? '' : String(val)).trim();
@@ -90,7 +110,7 @@ function buildGasConsumptionLines(gp) {
   const lines = [
     'GAS CONSUMPTION',
     `Rule: ${ruleName}  SAC: bottom ${sacBot} L/min, deco ${sacDec} L/min`,
-    ASCENT_SCHEDULE_HR,
+    ascentScheduleRule(),
   ];
   gp.rows.forEach(r => {
     const gasLbl = formatExportGasLabel(r);
@@ -119,28 +139,41 @@ function buildGasConsumptionLines(gp) {
       if (status === 'INSUFFICIENT') lines.push('FIX: Add more gas or reduce deco obligation');
     }
   });
-  lines.push(ASCENT_SCHEDULE_HR);
+  lines.push(ascentScheduleRule());
   return lines;
+}
+
+function formatAscentScheduleHeaderRow() {
+  return exportScheduleCell('Phase', SCHED_COL.phase)
+    + exportScheduleCell('Depth', SCHED_COL.depth)
+    + exportScheduleCell('Stop', SCHED_COL.stop)
+    + exportScheduleCell('Mix', SCHED_COL.mix)
+    + exportScheduleCell('Run', SCHED_COL.run)
+    + exportScheduleCell('TTS', SCHED_COL.tts)
+    + SCHED_PPO2_GAP
+    + exportScheduleCell('PPO2', SCHED_COL.ppo2, { right: true })
+    + SCHED_EAD_GAP
+    + exportScheduleCell('EAD', SCHED_COL.ead);
 }
 
 function formatAscentScheduleRow({ phase, depth, stop, mix, run, tts, ppo2, ead }) {
   const stp = (stop || '').trim();
   const ttsS = (tts || '').trim();
   const ttsCol = (!ttsS || ttsS === '-' || ttsS === '—')
-    ? '-'.padStart(7)
-    : ttsS.padEnd(7);
+    ? '-'.padStart(SCHED_COL.tts)
+    : ttsS.padEnd(SCHED_COL.tts);
   const ppo2Col = formatExportSchedulePpo2(ppo2);
   const eadCol = formatExportScheduleEad(ead);
-  return exportScheduleCell(phase, 6)
-    + exportScheduleCell(depth, 6)
-    + exportScheduleCell(stp, 7, { blank: !stp })
-    + exportScheduleCell(mix, 6)
-    + exportScheduleCell(run, 6)
+  return exportScheduleCell(phase, SCHED_COL.phase)
+    + exportScheduleCell(depth, SCHED_COL.depth)
+    + exportScheduleCell(stp, SCHED_COL.stop, { blank: !stp })
+    + exportScheduleCell(mix, SCHED_COL.mix)
+    + exportScheduleCell(run, SCHED_COL.run)
     + ttsCol
-    + ' '
-    + exportScheduleCell(ppo2Col, 5, { right: true })
-    + '  '
-    + exportScheduleCell(eadCol, 7);
+    + SCHED_PPO2_GAP
+    + exportScheduleCell(ppo2Col, SCHED_COL.ppo2, { right: true })
+    + SCHED_EAD_GAP
+    + exportScheduleCell(eadCol, SCHED_COL.ead);
 }
 
 function buildExportText(mode) {
@@ -281,9 +314,9 @@ function buildExportText(mode) {
     const rows = document.querySelectorAll('#decoTableBody tr[data-phase]');
     if (rows.length) {
       lines.push('ASCENT SCHEDULE');
-      lines.push(ASCENT_SCHEDULE_HR);
-      lines.push('Phase Depth  Stop   Mix   Run   TTS   PPO2  EAD');
-      lines.push(ASCENT_SCHEDULE_HR);
+      lines.push(ascentScheduleRule());
+      lines.push(formatAscentScheduleHeaderRow());
+      lines.push(ascentScheduleRule());
       const phaseLabel = { descent:'Des', bottom:'Lvl', ascent:'Asc', deco:'Stp', safety:'Stp', totals:'TOT' };
       rows.forEach(tr => {
         const ph  = tr.dataset.phase;
@@ -317,7 +350,7 @@ function buildExportText(mode) {
         }));
       });
 
-      lines.push(ASCENT_SCHEDULE_HR);
+      lines.push(ascentScheduleRule());
       lines.push(...formatExportSummaryBlock(planSum));
       lines.push('');
     }
@@ -428,9 +461,9 @@ function buildExportText(mode) {
     const rows = document.querySelectorAll('#contingencyResult .deco-table tbody tr');
     if (rows.length) {
       lines.push('EMERGENCY ASCENT SCHEDULE');
-      lines.push(ASCENT_SCHEDULE_HR);
-      lines.push('Phase Depth  Stop   Mix   Run   TTS   PPO2  EAD');
-      lines.push(ASCENT_SCHEDULE_HR);
+      lines.push(ascentScheduleRule());
+      lines.push(formatAscentScheduleHeaderRow());
+      lines.push(ascentScheduleRule());
       const phaseLabel = { descent:'Des', bottom:'Lvl', ascent:'Asc', deco:'Stp', safety:'Stp', switch:'>>' };
       rows.forEach(tr => {
         const ph  = tr.dataset.phase;
@@ -465,7 +498,7 @@ function buildExportText(mode) {
       });
 
       const emSum = getContingencySummaryExport();
-      lines.push(ASCENT_SCHEDULE_HR);
+      lines.push(ascentScheduleRule());
       lines.push(...formatExportSummaryBlock(emSum));
       lines.push('');
     }
@@ -479,7 +512,7 @@ function buildExportText(mode) {
 
   // ────────────────────────────────────────
   } else if (mode === 'multi') {
-    lines.push('LSP D-PLANNER + CCR - MULTI DIVE DAY PLAN');
+    lines.push(`${exportBrandName()} - MULTI DIVE DAY PLAN`);
     lines.push(hr);
     lines.push(`Water : ${density}`);
     lines.push('');
@@ -523,7 +556,7 @@ function buildExportText(mode) {
     const statusEl = document.getElementById('cnsStatusText');
     const status   = statusEl ? clean(statusEl.textContent) : '';
 
-    lines.push('LSP D-PLANNER + CCR - CNS O2 TRACKER');
+    lines.push(`${exportBrandName()} - CNS O2 TRACKER`);
     lines.push(hr);
     lines.push(`Depth         : ${depth}${du}`);
     lines.push(`BT Time      : ${bt} min`);
@@ -548,7 +581,7 @@ function buildExportText(mode) {
   // ── Footer (all modes) ──
   lines.push(hr);
   lines.push('Planning Aid Only - Not a substitute for training, certification, or a dive computer.');
-  lines.push(`Generated by LSP D-PLANNER + CCR  ${dateStr} ${timeStr}`);
+  lines.push(`Generated by ${exportBrandWithCircuit()}  ${dateStr} ${timeStr}`);
   lines.push('https://threecats-lsp.com/d-planner-plus/');
   lines.push('');
   lines.push('*'.repeat(43));
@@ -1238,7 +1271,7 @@ async function exportPDF(opts) {
   function drawHeader() {
     doc.setFillColor(0,85,170); doc.rect(0,0,PW,8,'F');
     doc.setFontSize(8); doc.setFont('DejaVuSans','bold'); doc.setTextColor(255,255,255);
-    doc.text('LSP D-PLANNER + CCR', ML, 5.5);
+    doc.text(exportBrandWithCircuit(), ML, 5.5);
     doc.setFont('DejaVuSans','normal');
     doc.setFontSize(8);
     const hdrMid = `${btVal}min @ ${depthVal}${du} | ${bottomGasVal} | ${gfStr} | ${algo} | ${densityLabel}`;
