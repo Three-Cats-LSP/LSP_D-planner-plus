@@ -1816,11 +1816,30 @@ ENGINE_SUITE_JS = r"""
   out.sections.sevenLensCycle02 = (() => {
     let minDecoUnitsOk = false;
     let travelDepthConstraintsOk = false;
+    let cylinderConstraintsOk = false;
     const prevUnits = typeof units !== 'undefined' ? units : null;
     const modeSel = document.getElementById('travelGasSwitchMode');
     const prevMode = modeSel?.value;
     const depthInp = document.getElementById('travelGasManualDepth');
     const prevDepth = depthInp?.value;
+    const cylinderIds = [
+      'cylBot_size', 'cylTravelGas_size', 'cylDg1_size', 'cylDg2_size',
+      'gpBot_size', 'gpTravel_size', 'gpDg1_size', 'gpDg2_size',
+    ];
+    const cylinderSnap = Object.fromEntries(cylinderIds.map(id => {
+      const el = document.getElementById(id);
+      return [id, el ? { value: el.value, min: el.min, max: el.max, step: el.step } : null];
+    }));
+    const restoreCylinderSnap = () => {
+      Object.entries(cylinderSnap).forEach(([id, snap]) => {
+        const el = document.getElementById(id);
+        if (!el || !snap) return;
+        el.value = snap.value;
+        el.min = snap.min;
+        el.max = snap.max;
+        el.step = snap.step;
+      });
+    };
     try {
       if (typeof setUnits === 'function' && typeof getVpmMinDecoSettingsFromDom === 'function') {
         setUnits('imperial');
@@ -1839,19 +1858,52 @@ ENGINE_SUITE_JS = r"""
             metricMax === 500 && imperialMax === 165 && depthInp.checkValidity() === true;
         }
       }
+      if (typeof setUnits === 'function') {
+        setUnits('metric');
+        cylinderIds.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = id.startsWith('cylBot') || id.startsWith('gpBot') ? '12' : '11';
+        });
+        setUnits('imperial');
+        const attrsOk = cylinderIds.every(id => {
+          const el = document.getElementById(id);
+          return el && Number(el.min) === 0.04 && Number(el.max) === 1.77 && Number(el.step) === 0.01;
+        });
+        const defaultValuesValid = cylinderIds.every(id => document.getElementById(id)?.checkValidity() === true);
+        const invalidHigh = cylinderIds.every(id => {
+          const el = document.getElementById(id);
+          if (!el) return false;
+          el.value = '2';
+          return el.checkValidity() === false;
+        });
+        const validSmall = cylinderIds.every(id => {
+          const el = document.getElementById(id);
+          if (!el) return false;
+          el.value = '0.4';
+          return el.checkValidity() === true;
+        });
+        cylinderConstraintsOk = attrsOk && defaultValuesValid && invalidHigh && validSmall;
+      }
     } finally {
       if (modeSel && prevMode != null) modeSel.value = prevMode;
       if (depthInp && prevDepth != null) depthInp.value = prevDepth;
       if (prevUnits != null && typeof setUnits === 'function') setUnits(prevUnits);
+      restoreCylinderSnap();
       updateTravelGasMOD?.();
     }
-    return { minDecoUnitsOk, travelDepthConstraintsOk, ok: minDecoUnitsOk && travelDepthConstraintsOk };
+    return {
+      minDecoUnitsOk,
+      travelDepthConstraintsOk,
+      cylinderConstraintsOk,
+      ok: minDecoUnitsOk && travelDepthConstraintsOk && cylinderConstraintsOk,
+    };
   })();
 
   // Seven-lens cycle 03: consumption markup contracts (SL-C03).
   out.sections.sevenLensCycle03 = (() => {
     let bestMixDepthUnitsOk = false;
     let cnsDepthUnitsOk = false;
+    let shallowStopGuidanceOk = false;
     const prevUnits = typeof units !== 'undefined' ? units : null;
     const bmEl = document.getElementById('bestMixDepth');
     const cnsEl = document.getElementById('cnsDepth');
@@ -1883,6 +1935,12 @@ ENGINE_SUITE_JS = r"""
         cnsDepthUnitsOk =
           metricPpo2 === imperialPpo2 && Math.round(parseFloat(cnsEl.value)) === 98;
       }
+      const knowledgeText = document.getElementById('tool-panel-knowledge')?.textContent || '';
+      shallowStopGuidanceOk =
+        /gas reserve/i.test(knowledgeText)
+        && /CNS\/OTU/i.test(knowledgeText)
+        && /exposure limits/i.test(knowledgeText)
+        && !/Extending shallow stops \(6 m, 3 m\) is safe/i.test(knowledgeText);
     } finally {
       if (bmEl && prevBm != null) bmEl.value = prevBm;
       if (cnsEl && prevCns != null) cnsEl.value = prevCns;
@@ -1891,7 +1949,12 @@ ENGINE_SUITE_JS = r"""
       calcBestMix?.();
       calcCNS?.();
     }
-    return { bestMixDepthUnitsOk, cnsDepthUnitsOk, ok: bestMixDepthUnitsOk && cnsDepthUnitsOk };
+    return {
+      bestMixDepthUnitsOk,
+      cnsDepthUnitsOk,
+      shallowStopGuidanceOk,
+      ok: bestMixDepthUnitsOk && cnsDepthUnitsOk && shallowStopGuidanceOk,
+    };
   })();
 
   // Seven-lens cycle 04: tools/modals markup contracts (SL-C04).
@@ -2384,9 +2447,11 @@ def run_suite(page) -> dict:
     sl02 = s.get("sevenLensCycle02", {})
     assert_true(sl02.get("minDecoUnitsOk"), "[SL-C02-MIN-DECO-UNITS] min deco profile uses imperial units flag", str(sl02))
     assert_true(sl02.get("travelDepthConstraintsOk"), "[SL-C02-TRAVEL-DEPTH-CONSTRAINTS] travel manual depth max follows display units", str(sl02))
+    assert_true(sl02.get("cylinderConstraintsOk"), "[SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS] cylinder size constraints follow physical metric/imperial bounds", str(sl02))
     sl03 = s.get("sevenLensCycle03", {})
     assert_true(sl03.get("bestMixDepthUnitsOk"), "[SL-C03-BEST-MIX-DEPTH-UNITS] best mix O2% invariant across equivalent metric/imperial depth", str(sl03))
     assert_true(sl03.get("cnsDepthUnitsOk"), "[SL-C03-CNS-DEPTH-UNITS] CNS ppO2 invariant across equivalent metric/imperial depth", str(sl03))
+    assert_true(sl03.get("shallowStopGuidanceOk"), "[SL-C03-SHALLOW-STOP-GUIDANCE] shallow-stop guidance is bounded by gas and exposure limits", str(sl03))
     sl04 = s.get("sevenLensCycle04", {})
     assert_true(sl04.get("endDepthUnitsOk"), "[SL-C04-END-DEPTH-UNITS] END abs pressure invariant across equivalent metric/imperial depth", str(sl04))
     assert_true(sl04.get("siDepthUnitsOk"), "[SL-C04-SI-DEPTH-UNITS] surface interval result invariant across equivalent metric/imperial depth", str(sl04))
@@ -2494,8 +2559,10 @@ def _audit_case_rows():
         case_row("SL-C01-ALTITUDE-UNIT-CONSTRAINTS", case_ok("SL-C01-ALTITUDE-UNIT-CONSTRAINTS")),
         case_row("SL-C02-MIN-DECO-UNITS", case_ok("SL-C02-MIN-DECO-UNITS")),
         case_row("SL-C02-TRAVEL-DEPTH-CONSTRAINTS", case_ok("SL-C02-TRAVEL-DEPTH-CONSTRAINTS")),
+        case_row("SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS", case_ok("SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS")),
         case_row("SL-C03-BEST-MIX-DEPTH-UNITS", case_ok("SL-C03-BEST-MIX-DEPTH-UNITS")),
         case_row("SL-C03-CNS-DEPTH-UNITS", case_ok("SL-C03-CNS-DEPTH-UNITS")),
+        case_row("SL-C03-SHALLOW-STOP-GUIDANCE", case_ok("SL-C03-SHALLOW-STOP-GUIDANCE")),
         case_row("SL-C04-END-DEPTH-UNITS", case_ok("SL-C04-END-DEPTH-UNITS")),
         case_row("SL-C04-SI-DEPTH-UNITS", case_ok("SL-C04-SI-DEPTH-UNITS")),
         case_row("SL-C04-CONFIRM-BACKDROP", case_ok("SL-C04-CONFIRM-BACKDROP")),
