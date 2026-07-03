@@ -36,7 +36,8 @@ class AuditSystemTests(unittest.TestCase):
     def test_closed_finding_and_unknown_case_are_rejected(self) -> None:
         registry = load_registry(ROOT)
         broken = copy.deepcopy(registry)
-        broken["findings"][0].pop("resolution_commit", None)
+        closed_finding = next(item for item in broken["findings"] if item.get("status") == "CLOSED")
+        closed_finding.pop("resolution_commit", None)
         broken["evidence_catalog"]["REG-01"]["case_id"] = "not-declared"
         errors, _ = validate_registry_v2(ROOT, broken)
         self.assertTrue(any("resolution_commit" in error for error in errors))

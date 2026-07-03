@@ -1816,11 +1816,37 @@ ENGINE_SUITE_JS = r"""
   out.sections.sevenLensCycle02 = (() => {
     let minDecoUnitsOk = false;
     let travelDepthConstraintsOk = false;
+    let cylinderConstraintsOk = false;
     const prevUnits = typeof units !== 'undefined' ? units : null;
     const modeSel = document.getElementById('travelGasSwitchMode');
     const prevMode = modeSel?.value;
     const depthInp = document.getElementById('travelGasManualDepth');
     const prevDepth = depthInp?.value;
+    const savedSizes = new Map();
+    let createdDynamicCard = false;
+    const saveSize = id => {
+      const el = document.getElementById(id);
+      if (el && !savedSizes.has(id)) {
+        savedSizes.set(id, { value: el.value, min: el.min, max: el.max, step: el.step });
+      }
+    };
+    const restoreSize = (id, state) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.value = state.value;
+      el.min = state.min;
+      el.max = state.max;
+      el.step = state.step;
+    };
+    const constraintsMatch = (el, min, max, step) =>
+      Number(el.min) === min && Number(el.max) === max && Number(el.step) === step;
+    const rejects = (el, value) => {
+      const prior = el.value;
+      el.value = value;
+      const invalid = el.checkValidity() === false;
+      el.value = prior;
+      return invalid;
+    };
     try {
       if (typeof setUnits === 'function' && typeof getVpmMinDecoSettingsFromDom === 'function') {
         setUnits('imperial');
@@ -1839,19 +1865,75 @@ ENGINE_SUITE_JS = r"""
             metricMax === 500 && imperialMax === 165 && depthInp.checkValidity() === true;
         }
       }
+      if (typeof setUnits === 'function') {
+        setUnits('metric');
+        if (!document.getElementById('cylDg3_size') && typeof appendDecoGasCardAtIdx === 'function') {
+          appendDecoGasCardAtIdx(3);
+          createdDynamicCard = !!document.getElementById('cylDg3_size');
+        }
+        const plannerIds = ['cylBot_size', 'cylTravelGas_size', 'cylDg1_size', 'cylDg2_size', 'cylDg3_size']
+          .filter(id => document.getElementById(id));
+        const gasPlanIds = ['gpBot_size', 'gpTravel_size', 'gpDg1_size', 'gpDg2_size']
+          .filter(id => document.getElementById(id));
+        [...plannerIds, ...gasPlanIds].forEach(saveSize);
+        plannerIds.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = id === 'cylBot_size' || id === 'cylTravelGas_size' ? '12' : '11';
+        });
+        gasPlanIds.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = id === 'gpBot_size' ? '12' : '11';
+        });
+        setUnits('imperial');
+        const dynamicDefaults = typeof defaultDecoCylFieldValues === 'function'
+          ? defaultDecoCylFieldValues()
+          : null;
+        const imperialOk = [...plannerIds, ...gasPlanIds].every(id => {
+          const el = document.getElementById(id);
+          return el &&
+            constraintsMatch(el, 0.04, 1.77, 0.01) &&
+            el.checkValidity() === true &&
+            rejects(el, '2') &&
+            rejects(el, '0.03');
+        }) && (!dynamicDefaults ||
+          (Number(dynamicDefaults.sizeMin) === 0.04 &&
+           Number(dynamicDefaults.sizeMax) === 1.77 &&
+           Number(dynamicDefaults.sizeStep) === 0.01));
+        setUnits('metric');
+        const metricOk = [...plannerIds, ...gasPlanIds].every(id => {
+          const el = document.getElementById(id);
+          if (!el || !constraintsMatch(el, 1, 50, 0.5)) return false;
+          const prior = el.value;
+          el.value = '50';
+          const maxValid = el.checkValidity() === true;
+          el.value = '50.5';
+          const maxInvalid = el.checkValidity() === false;
+          el.value = prior;
+          return maxValid && maxInvalid;
+        });
+        cylinderConstraintsOk = imperialOk && metricOk;
+      }
     } finally {
+      savedSizes.forEach((state, id) => restoreSize(id, state));
+      if (createdDynamicCard && typeof removeDecoGasCard === 'function') removeDecoGasCard(3);
       if (modeSel && prevMode != null) modeSel.value = prevMode;
       if (depthInp && prevDepth != null) depthInp.value = prevDepth;
       if (prevUnits != null && typeof setUnits === 'function') setUnits(prevUnits);
       updateTravelGasMOD?.();
     }
-    return { minDecoUnitsOk, travelDepthConstraintsOk, ok: minDecoUnitsOk && travelDepthConstraintsOk };
+    return {
+      minDecoUnitsOk,
+      travelDepthConstraintsOk,
+      cylinderConstraintsOk,
+      ok: minDecoUnitsOk && travelDepthConstraintsOk && cylinderConstraintsOk,
+    };
   })();
 
   // Seven-lens cycle 03: consumption markup contracts (SL-C03).
   out.sections.sevenLensCycle03 = (() => {
     let bestMixDepthUnitsOk = false;
     let cnsDepthUnitsOk = false;
+    let shallowStopGuidanceOk = false;
     const prevUnits = typeof units !== 'undefined' ? units : null;
     const bmEl = document.getElementById('bestMixDepth');
     const cnsEl = document.getElementById('cnsDepth');
@@ -1883,6 +1965,12 @@ ENGINE_SUITE_JS = r"""
         cnsDepthUnitsOk =
           metricPpo2 === imperialPpo2 && Math.round(parseFloat(cnsEl.value)) === 98;
       }
+      const knowledgeText = (document.getElementById('tool-panel-knowledge')?.textContent || '').replace(/\s+/g, ' ');
+      shallowStopGuidanceOk =
+        !/Extending shallow stops \(6 m, 3 m\) is safe/i.test(knowledgeText) &&
+        /CNS\/OTU exposure/i.test(knowledgeText) &&
+        /gas-reserve limits/i.test(knowledgeText) &&
+        /recalculate the plan/i.test(knowledgeText);
     } finally {
       if (bmEl && prevBm != null) bmEl.value = prevBm;
       if (cnsEl && prevCns != null) cnsEl.value = prevCns;
@@ -1891,7 +1979,12 @@ ENGINE_SUITE_JS = r"""
       calcBestMix?.();
       calcCNS?.();
     }
-    return { bestMixDepthUnitsOk, cnsDepthUnitsOk, ok: bestMixDepthUnitsOk && cnsDepthUnitsOk };
+    return {
+      bestMixDepthUnitsOk,
+      cnsDepthUnitsOk,
+      shallowStopGuidanceOk,
+      ok: bestMixDepthUnitsOk && cnsDepthUnitsOk && shallowStopGuidanceOk,
+    };
   })();
 
   // Seven-lens cycle 04: tools/modals markup contracts (SL-C04).
@@ -2384,9 +2477,11 @@ def run_suite(page) -> dict:
     sl02 = s.get("sevenLensCycle02", {})
     assert_true(sl02.get("minDecoUnitsOk"), "[SL-C02-MIN-DECO-UNITS] min deco profile uses imperial units flag", str(sl02))
     assert_true(sl02.get("travelDepthConstraintsOk"), "[SL-C02-TRAVEL-DEPTH-CONSTRAINTS] travel manual depth max follows display units", str(sl02))
+    assert_true(sl02.get("cylinderConstraintsOk"), "[SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS] cylinder volume min/max/step follows display units", str(sl02))
     sl03 = s.get("sevenLensCycle03", {})
     assert_true(sl03.get("bestMixDepthUnitsOk"), "[SL-C03-BEST-MIX-DEPTH-UNITS] best mix O2% invariant across equivalent metric/imperial depth", str(sl03))
     assert_true(sl03.get("cnsDepthUnitsOk"), "[SL-C03-CNS-DEPTH-UNITS] CNS ppO2 invariant across equivalent metric/imperial depth", str(sl03))
+    assert_true(sl03.get("shallowStopGuidanceOk"), "[SL-C03-SHALLOW-STOP-GUIDANCE] shallow-stop copy requires exposure, gas, and replanning checks", str(sl03))
     sl04 = s.get("sevenLensCycle04", {})
     assert_true(sl04.get("endDepthUnitsOk"), "[SL-C04-END-DEPTH-UNITS] END abs pressure invariant across equivalent metric/imperial depth", str(sl04))
     assert_true(sl04.get("siDepthUnitsOk"), "[SL-C04-SI-DEPTH-UNITS] surface interval result invariant across equivalent metric/imperial depth", str(sl04))
@@ -2494,8 +2589,10 @@ def _audit_case_rows():
         case_row("SL-C01-ALTITUDE-UNIT-CONSTRAINTS", case_ok("SL-C01-ALTITUDE-UNIT-CONSTRAINTS")),
         case_row("SL-C02-MIN-DECO-UNITS", case_ok("SL-C02-MIN-DECO-UNITS")),
         case_row("SL-C02-TRAVEL-DEPTH-CONSTRAINTS", case_ok("SL-C02-TRAVEL-DEPTH-CONSTRAINTS")),
+        case_row("SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS", case_ok("SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS")),
         case_row("SL-C03-BEST-MIX-DEPTH-UNITS", case_ok("SL-C03-BEST-MIX-DEPTH-UNITS")),
         case_row("SL-C03-CNS-DEPTH-UNITS", case_ok("SL-C03-CNS-DEPTH-UNITS")),
+        case_row("SL-C03-SHALLOW-STOP-GUIDANCE", case_ok("SL-C03-SHALLOW-STOP-GUIDANCE")),
         case_row("SL-C04-END-DEPTH-UNITS", case_ok("SL-C04-END-DEPTH-UNITS")),
         case_row("SL-C04-SI-DEPTH-UNITS", case_ok("SL-C04-SI-DEPTH-UNITS")),
         case_row("SL-C04-CONFIRM-BACKDROP", case_ok("SL-C04-CONFIRM-BACKDROP")),

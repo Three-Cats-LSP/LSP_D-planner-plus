@@ -454,6 +454,14 @@
       "suite_id": "SUITE-ENGINE-FULL",
       "case_id": "SL-C04-CONFIRM-BACKDROP"
     },
+    "REG-69": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS"
+    },
+    "REG-70": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C03-SHALLOW-STOP-GUIDANCE"
+    },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
       "case_id": "android-compile"
@@ -5228,7 +5236,9 @@
         "SL-C03-CNS-DEPTH-UNITS",
         "SL-C04-END-DEPTH-UNITS",
         "SL-C04-SI-DEPTH-UNITS",
-        "SL-C04-CONFIRM-BACKDROP"
+        "SL-C04-CONFIRM-BACKDROP",
+        "SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS",
+        "SL-C03-SHALLOW-STOP-GUIDANCE"
       ]
     },
     {

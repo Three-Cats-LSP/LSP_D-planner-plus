@@ -361,7 +361,7 @@
 <ul style="font-size:12px;line-height:2;padding-left:18px;color:var(--text);">
 <li><strong>Follow run times.</strong> Stop times include transit between stops.</li>
 <li><strong>No extra deep stops.</strong> Adding deep stops significantly increases total obligation.</li>
-<li><strong>Extending shallow stops (6 m, 3 m) is safe.</strong></li>
+<li><strong>Extending shallow stops (6 m, 3 m) must stay within the generated plan's CNS/OTU exposure and gas-reserve limits; recalculate the plan if you change stop time.</strong></li>
 <li><strong>Ascent rate deviations are most critical in the deep deco zone.</strong></li>
 <li><strong>Lost deco gas:</strong> wait the time difference at current depth, then follow new plan.</li>
 <li><strong>Conservatism:</strong> use +2 or +3 for most divers. +3 or +4 for cold, strenuous, multi-day, or prior DCS history.</li>
@@ -375,7 +375,7 @@
 <div class="u18">Algorithm Comparison</div>
 <div class="info-box"><strong>Bühlmann ZH-L16C + GF</strong> — dissolved gas model, tunable via GF Low/High. Every major dive computer uses it. Best for any technical dive where you want predictable, well-understood behaviour.</div>
 <div class="info-box"><strong>VPM-B</strong> — bubble mechanics model (Yount &amp; Hoffman). Tracks microscopic bubble nuclei rather than dissolved gas. Tends to give deeper first stops and shorter shallow stops. Best for divers who prefer a bubble-focused approach.<br/><br/><em>⚠ Conservatism order is profile-dependent:</em> on deep/long trimix dives GF is usually more conservative (longer TTS); on short/shallow dives VPM-B can match or exceed GF. Compare TTS for your specific dive.</div>
-<div class="info-box"><strong>VPM-B+GFS</strong> — VPM-B bubble mechanics for deep/mid stops, Bühlmann GF High ceiling at shallow stops. Useful when VPM-B's shallow stops feel too long.</div>
+<div class="info-box"><strong>VPM-B+GFS</strong> — VPM-B bubble mechanics for deep/mid stops, Bühlmann GF High ceiling at shallow stops. Useful when pure VPM-B feels too aggressive near the surface and you want an added shallow ceiling.</div>
 </div>
 <!-- ── VPM-B Physics ─────────────────────────────────────── -->
 <div class="u21">
