@@ -94,4 +94,9 @@ python tools/seven_lens_protocol.py check --phase close --record <RECORD>
 Exit 0 is required. On any error, leave the cycle IN_PROGRESS and report the exact
 blocker. Only after exit 0 may the ledger become SEVEN_LENS_REVIEWED and the cycle
 be closed.
+
+Then update `docs/seven-lens-test-results.md` with this cycle's results, push the
+cycle branch, open or refresh the PR targeting `dev`, wait for required CI on the
+final PR HEAD, and merge the PR. A finished cycle is not complete until its PR is
+merged to `dev`.
 ```

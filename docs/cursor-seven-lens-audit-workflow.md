@@ -308,6 +308,9 @@ A cycle closes only when all conditions are true:
   the PR title/body accurately describe its final scope.
 - `python tools/seven_lens_protocol.py check --phase close --record <record>`
   exits 0.
+- `docs/seven-lens-test-results.md` is updated with the cycle summary.
+- The cycle PR is pushed and merged to `dev` after required CI passes on the final
+  PR HEAD.
 
 Never count repeated executions of the same commit as multiple consecutive clean
 release runs. Each qualifying run must have a distinct GitHub Actions run ID and
