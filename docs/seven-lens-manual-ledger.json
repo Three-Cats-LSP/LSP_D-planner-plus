@@ -58,7 +58,7 @@
     },
     {
       "unit_id": "UI-MARKUP-PLANNER",
-      "review_status": "IN_PROGRESS",
+      "review_status": "SEVEN_LENS_REVIEWED",
       "reviewed_fingerprint": "f8580045052a2fc92806d2edcca8f609067470f49e1b5c99827a5e2a83d8de86",
       "cycle_id": "SL-C02",
       "boundary": "ui/markup-planner.html whole file (493 lines; single session)",
@@ -91,8 +91,8 @@
       "verified_at": "2026-07-03T14:45:00+00:00",
       "verifier": "Cursor (canonical-writers FIXER/VERIFIER at 6f75077)",
       "verification_status": "PASS",
-      "verified_source_commit": "6f75077",
-      "last_checked_commit": "6f75077",
+      "verified_source_commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "last_checked_commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
       "verification_report": "docs/seven-lens-reports/cycle-02-codex-verification.md",
       "findings_open": [],
       "findings_closed": [
@@ -110,7 +110,7 @@
     },
     {
       "unit_id": "UI-MARKUP-CONSUMPTION",
-      "review_status": "IN_PROGRESS",
+      "review_status": "SEVEN_LENS_REVIEWED",
       "reviewed_fingerprint": "49fc4db38e69cbe03c527b034cfa2f613cb08260278b33cf54fc5f1e5b4f4d7b",
       "cycle_id": "SL-C03",
       "boundary": "ui/markup-consumption.html whole file (381 lines; single session)",
@@ -142,8 +142,8 @@
       "verified_at": "2026-07-03T14:45:00+00:00",
       "verifier": "Cursor (canonical-writers FIXER/VERIFIER at 6f75077)",
       "verification_status": "PASS",
-      "verified_source_commit": "6f75077",
-      "last_checked_commit": "6f75077",
+      "verified_source_commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "last_checked_commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
       "verification_report": "docs/seven-lens-reports/cycle-03-codex-verification.md",
       "findings_open": [],
       "findings_closed": [
@@ -160,7 +160,7 @@
     },
     {
       "unit_id": "UI-MARKUP-TOOLS",
-      "review_status": "IN_PROGRESS",
+      "review_status": "SEVEN_LENS_REVIEWED",
       "reviewed_fingerprint": "848597e92f10f1494b5100e0fcde9099f7832325d7881ca77b0f2067989c4c9a",
       "cycle_id": "SL-C04",
       "boundary": "ui/markup-tools.html whole file (271 lines; single session)",
@@ -190,8 +190,8 @@
       "verified_at": "2026-07-03T14:45:00+00:00",
       "verifier": "Cursor (canonical-writers FIXER/VERIFIER at 6f75077)",
       "verification_status": "PASS",
-      "verified_source_commit": "6f75077",
-      "last_checked_commit": "6f75077",
+      "verified_source_commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "last_checked_commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
       "verification_report": "docs/seven-lens-reports/cycle-04-codex-verification.md",
       "findings_open": [],
       "findings_closed": [
@@ -206,7 +206,7 @@
     },
     {
       "unit_id": "UI-MARKUP-MODALS",
-      "review_status": "IN_PROGRESS",
+      "review_status": "SEVEN_LENS_REVIEWED",
       "reviewed_fingerprint": "c0b0b1ecc52d7398f80674b0af0f76c45b920b1771a1c917a5d4da34bafebe49",
       "cycle_id": "SL-C04",
       "boundary": "ui/markup-modals.html whole file (341 lines; single session)",
@@ -232,8 +232,8 @@
       "verified_at": "2026-07-03T14:45:00+00:00",
       "verifier": "Cursor (canonical-writers FIXER/VERIFIER at 6f75077)",
       "verification_status": "PASS",
-      "verified_source_commit": "6f75077",
-      "last_checked_commit": "6f75077",
+      "verified_source_commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "last_checked_commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
       "verification_report": "docs/seven-lens-reports/cycle-04-codex-verification.md",
       "findings_open": [],
       "findings_closed": [

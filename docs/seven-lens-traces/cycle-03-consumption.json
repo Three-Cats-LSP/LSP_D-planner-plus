@@ -118,7 +118,7 @@
       ],
       "state": {
         "selectors": ["#navBtnSettings", "#navBtnTools", "#tool-bestmix", "#unitsSelect", "#bestMixDepth"],
-        "restore_order": ["#bestMixDepth", "#unitsSelect", "#tool-bestmix", "#navBtnTools", "#navBtnSettings"],
+        "restore_order": ["#navBtnSettings", "#navBtnTools", "#tool-bestmix", "#unitsSelect", "#bestMixDepth"],
         "globals": ["_zhlHeadless"]
       },
       "steps": [
@@ -156,7 +156,7 @@
       ],
       "state": {
         "selectors": ["#navBtnSettings", "#navBtnTools", "#tool-cns", "#unitsSelect", "#cnsDepth"],
-        "restore_order": ["#cnsDepth", "#unitsSelect", "#tool-cns", "#navBtnTools", "#navBtnSettings"],
+        "restore_order": ["#navBtnSettings", "#navBtnTools", "#tool-cns", "#unitsSelect", "#cnsDepth"],
         "globals": ["_zhlHeadless"]
       },
       "steps": [
