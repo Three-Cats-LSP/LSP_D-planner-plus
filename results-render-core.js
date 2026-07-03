@@ -279,8 +279,10 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
     Object.keys(gasConsVPM).forEach((label, idx) => {
       const [sId,pId] = cylIds[idx] || [];
       if (!sId) return;
-      const szRaw = parseFloat(document.getElementById(sId)?.value) || 0;
-      const sz = units === 'imperial' ? szRaw * 28.3168 : szRaw;
+      const sz = typeof gpSizeL === 'function' ? gpSizeL(sId) : (() => {
+        const szRaw = parseFloat(document.getElementById(sId)?.value) || 0;
+        return units === 'imperial' ? szRaw * 28.3168 : szRaw;
+      })();
       const prRaw = parseFloat(document.getElementById(pId)?.value) || 0;
       const pr = units === 'imperial' ? prRaw / 14.5038 : prRaw;
       if (sz > 0 && pr > 0) cylCapVPM[label] = sz * pr;
@@ -325,16 +327,16 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
       let hasCylVPM  = false;
       cylsVPM.forEach(cyl => {
         const ids = cyl.ids;
-        const sr = parseFloat(document.getElementById(ids[0])?.value) || 0;
+        const sr = typeof gpSizeL === 'function' ? gpSizeL(ids[0]) : (parseFloat(document.getElementById(ids[0])?.value) || 0);
         const fr = parseFloat(document.getElementById(ids[1])?.value) || 0;
         const rr = parseFloat(document.getElementById(ids[2])?.value) || 0;
-        const sL  = units === 'imperial' ? sr * 28.3168 : sr;
+        const sL  = typeof gpSizeL === 'function' ? sr : (units === 'imperial' ? sr * 28.3168 : sr);
         const fB  = units === 'imperial' ? fr / 14.5038 : fr;
         const rB  = units === 'imperial' ? rr / 14.5038 : rr;
         if (sL > 0 && fB > rB) { usableLVPM = (usableLVPM || 0) + (fB - rB) * sL; hasCylVPM = true; }
         if (cyl.isBottom) { sizeRaw = sr; fillRaw = fr; resRaw = rr; }
       });
-      const sizeL = units === 'imperial' ? sizeRaw * 28.3168 : sizeRaw;
+      const sizeL = typeof gpSizeL === 'function' ? sizeRaw : (units === 'imperial' ? sizeRaw * 28.3168 : sizeRaw);
       const fillBar = units === 'imperial' ? fillRaw / 14.5038 : fillRaw;
       const resBar  = units === 'imperial' ? resRaw  / 14.5038 : resRaw;
       const isBottom = gas === gasLabels[0]; // first gas = bottom gas
@@ -342,10 +344,10 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
 
       let travelPooledLVPM = 0;
       if (isBottom) {
-        const tSr = parseFloat(document.getElementById('cylTravelGas_size')?.value) || 0;
+        const tSr = typeof gpSizeL === 'function' ? gpSizeL('cylTravelGas_size') : (parseFloat(document.getElementById('cylTravelGas_size')?.value) || 0);
         const tFr = parseFloat(document.getElementById('cylTravelGas_pres')?.value) || 0;
         const tRr = parseFloat(document.getElementById('cylTravelGas_reserve')?.value) || 0;
-        const tSL = units === 'imperial' ? tSr * 28.3168 : tSr;
+        const tSL = typeof gpSizeL === 'function' ? tSr : (units === 'imperial' ? tSr * 28.3168 : tSr);
         const tFB = units === 'imperial' ? tFr / 14.5038 : tFr;
         const tRB = units === 'imperial' ? tRr / 14.5038 : tRr;
         if (tSL > 0 && tFB > tRB) travelPooledLVPM = (tFB - tRB) * tSL;
@@ -971,8 +973,10 @@ function renderZhlScheduleResults(ctx) {
     gasLabels.forEach((label, idx) => {
       const [sId, pId] = cylIds[idx] || [];
       if (!sId) return;
-      const szRaw = parseFloat(document.getElementById(sId)?.value) || 0;
-      const sz  = units === 'imperial' ? szRaw * 28.3168 : szRaw;
+      const sz = typeof gpSizeL === 'function' ? gpSizeL(sId) : (() => {
+        const szRaw = parseFloat(document.getElementById(sId)?.value) || 0;
+        return units === 'imperial' ? szRaw * 28.3168 : szRaw;
+      })();
       const prRaw = parseFloat(document.getElementById(pId)?.value) || 0;
       // Pressure input is in bar (metric) or psi (imperial) — always calc in bar
       const pr = units === 'imperial' ? prRaw / 14.5038 : prRaw;
@@ -1040,10 +1044,10 @@ function renderZhlScheduleResults(ctx) {
       Object.entries(gasConsumed).forEach(([gas, reqL], gi) => {
         const cylIds = [['cylBot_size','cylBot_pres','cylBot_reserve'],['cylTravelGas_size','cylTravelGas_pres','cylTravelGas_reserve'],['cylDg1_size','cylDg1_pres','cylDg1_reserve'],['cylDg2_size','cylDg2_pres','cylDg2_reserve']][gi];
         if (!cylIds) return;
-        const sR = parseFloat(document.getElementById(cylIds[0])?.value)||0;
+        const sR = typeof gpSizeL === 'function' ? gpSizeL(cylIds[0]) : (parseFloat(document.getElementById(cylIds[0])?.value)||0);
         const fR = parseFloat(document.getElementById(cylIds[1])?.value)||0;
         const rR = parseFloat(document.getElementById(cylIds[2])?.value)||0;
-        const sL = units==='imperial'?sR*28.3168:sR;
+        const sL = typeof gpSizeL === 'function' ? sR : (units==='imperial'?sR*28.3168:sR);
         const fB = units==='imperial'?fR/14.5038:fR;
         const rB = units==='imperial'?rR/14.5038:rR;
         const avail = sL>0&&fB>rB?(fB-rB)*sL:null;

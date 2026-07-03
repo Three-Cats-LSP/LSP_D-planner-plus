@@ -63,7 +63,19 @@ function gpPresBar(id) {
 }
 // Read a Gas Plan size input, returning litres regardless of unit system.
 function gpSizeL(id) {
-  const v = parseFloat(document.getElementById(id)?.value);
+  const el = document.getElementById(id);
+  if (el && (
+    el.dataset.volumeDisplayValue !== String(el.value)
+    || el.dataset.volumeDisplayUnits !== units
+  )) {
+    const synced = syncVolumeInputCanonical?.(el);
+    if (Number.isFinite(synced)) return synced;
+  }
+  if (el?.dataset?.volumeL != null && el.dataset.volumeL !== '') {
+    const canonical = parseFloat(el.dataset.volumeL);
+    if (Number.isFinite(canonical)) return canonical;
+  }
+  const v = parseFloat(el?.value);
   if (Number.isNaN(v)) return 0;
   return units === 'imperial' ? v / GP_CUFT_PER_L : v;
 }

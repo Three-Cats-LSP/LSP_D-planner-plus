@@ -527,6 +527,7 @@ function stepDepthBt(field, delta) {
     v = Math.max(1, Math.min(300, v + delta));
   }
   el.value = v;
+  if (isDepth) syncDepthInputCanonical?.(el);
   _syncDepthBtSteppers();
   updateCcrGasValidation?.();
   updateGasMODDisplays?.();

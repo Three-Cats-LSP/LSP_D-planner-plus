@@ -201,7 +201,13 @@ function runContingencyScenario(modifyFn) {
   const savedSummary = document.getElementById('decoSummary')?.innerHTML || '';
   const savedLastPlan = window._lastPlan;
   const primaryFirstStopDepth = savedLastPlan?.firstStopDepth ?? null;
-  const origDepth = document.getElementById('decoDepth')?.value;
+  const depthEl = document.getElementById('decoDepth');
+  const origDepth = depthEl?.value;
+  const origDepthDataset = depthEl ? {
+    depthM: depthEl.dataset.depthM,
+    depthDisplayValue: depthEl.dataset.depthDisplayValue,
+    depthDisplayUnits: depthEl.dataset.depthDisplayUnits,
+  } : null;
   const origBT = document.getElementById('decoBT')?.value;
   const origDgVals = {};
   for (const idx of getAllDecoGasIds()) {
@@ -220,6 +226,7 @@ function runContingencyScenario(modifyFn) {
   try {
     withScratchDecoTableBody((scratchTbody) => {
       if (typeof modifyFn === 'function') modifyFn();
+      syncDepthInputCanonical?.('decoDepth');
       if (contExtraDepth > 0 && typeof updateGasMODDisplays === 'function') updateGasMODDisplays();
       runDecoSchedule();
 
@@ -272,7 +279,17 @@ function runContingencyScenario(modifyFn) {
     }
     if (origDepth != null) {
       const depthEl = document.getElementById('decoDepth');
-      if (depthEl) depthEl.value = origDepth;
+      if (depthEl) {
+        depthEl.value = origDepth;
+        if (origDepthDataset) {
+          for (const [key, value] of Object.entries(origDepthDataset)) {
+            if (value == null) delete depthEl.dataset[key];
+            else depthEl.dataset[key] = value;
+          }
+        } else {
+          syncDepthInputCanonical?.(depthEl);
+        }
+      }
     }
     for (const [idx, val] of Object.entries(origDgVals)) {
       const el = document.getElementById(`dg${idx}Mix`);
@@ -450,7 +467,10 @@ function calcContingency() {
     if (contExtraDepth > 0) {
       const depthEl = document.getElementById('decoDepth');
       const factor = units === 'metric' ? 1 : 3.28084;
-      if (depthEl) depthEl.value = parseFloat(depthEl.value) + Math.round(contExtraDepth * factor);
+      if (depthEl) {
+        depthEl.value = parseFloat(depthEl.value) + Math.round(contExtraDepth * factor);
+        syncDepthInputCanonical?.(depthEl);
+      }
     }
     for (const idx of getAllDecoGasIds()) {
       if (contGasLose === String(idx) || contGasLose === 'both') {
