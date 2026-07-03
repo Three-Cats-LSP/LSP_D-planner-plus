@@ -1120,7 +1120,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-UNIT-SWITCHING"
       },
-      "fingerprint": "9566d8de5c5036e6bb40a007e7f0aac4d90155ec14de38703488470a0bc09b4e",
+      "fingerprint": "4a3bb772e3fcb75f5fbf267dc8a13ec1b23b4a7abfca6280cea7f58b9717db0c",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],

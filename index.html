@@ -3393,10 +3393,7 @@ function setUnits(u, opts) {
   };
   const setInputConstraints = (id, min, max, step) => {
     const el = document.getElementById(id);
-    if (!el) return;
-    el.min = String(min);
-    el.max = String(max);
-    el.step = String(step);
+    if (el) { el.min = String(min); el.max = String(max); el.step = String(step); }
   };
 
   const relabelSelectOptions = (id, formatter) => {
@@ -3511,17 +3508,8 @@ function setUnits(u, opts) {
     convertNumericInput(id, v => Math.round(v * PSI_PER_BAR), v => Math.round(v / PSI_PER_BAR), 300, 4351);
   });
   const formatCylCuft = litres => (litres * CUFT_PER_L).toFixed(2).replace(/\.?0+$/, '');
-  const syncCylSizeConstraints = id => setInputConstraints(
-    id,
-    u === 'imperial' ? 0.04 : 1,
-    u === 'imperial' ? 1.77 : 50,
-    u === 'imperial' ? 0.01 : 0.5
-  );
-  allCylSize.forEach(id => {
-    syncCylSizeConstraints(id);
-    convertNumericInput(id, formatCylCuft, v => Math.round(v / CUFT_PER_L), 50, 1.77);
-    syncCylSizeConstraints(id);
-  });
+  const syncCylSizeConstraints = id => setInputConstraints(id, u === 'imperial' ? 0.04 : 1, u === 'imperial' ? 1.77 : 50, u === 'imperial' ? 0.01 : 0.5);
+  allCylSize.forEach(id => { syncCylSizeConstraints(id); convertNumericInput(id, formatCylCuft, v => Math.round(v / CUFT_PER_L), 50, 1.77); syncCylSizeConstraints(id); });
   allCylReserve.forEach(id => {
     convertNumericInput(id, v => Math.round(v * PSI_PER_BAR), v => Math.round(v / PSI_PER_BAR), 300, 4351);
   });
@@ -3531,11 +3519,7 @@ function setUnits(u, opts) {
   convertNumericInput('sacDeco',   v => (v * CUFT_PER_L).toFixed(2).replace(/\.0+$/, ''), v => Math.round(v / CUFT_PER_L), 40, 1.41);
 
   // ── Gas Plan tab conversions ──
-  ['gpBot_size','gpTravel_size','gpDg1_size','gpDg2_size'].forEach(id => {
-    syncCylSizeConstraints(id);
-    convertNumericInput(id, formatCylCuft, v => Math.round(v / CUFT_PER_L), 50, 1.77);
-    syncCylSizeConstraints(id);
-  });
+  ['gpBot_size','gpTravel_size','gpDg1_size','gpDg2_size'].forEach(id => { syncCylSizeConstraints(id); convertNumericInput(id, formatCylCuft, v => Math.round(v / CUFT_PER_L), 50, 1.77); syncCylSizeConstraints(id); });
   ['gpBot_fill','gpBot_reserve','gpTravel_fill','gpTravel_reserve','gpDg1_fill','gpDg1_reserve','gpDg2_fill','gpDg2_reserve'].forEach(id => {
     convertNumericInput(id, v => Math.round(v * PSI_PER_BAR), v => Math.round(v / PSI_PER_BAR), 300, 4351);
   });
