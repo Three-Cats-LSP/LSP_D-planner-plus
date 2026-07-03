@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from tools.seven_lens_protocol import LENSES, validate_record
+from tools.seven_lens_protocol import LENSES, make_plan, validate_record
 
 
 def lens_results():
@@ -33,6 +33,7 @@ class SevenLensProtocolTests(unittest.TestCase):
             "UNIT": {"path": "unit.js", "start_line": 1, "end_line": 700, "line_count": 700}
         }
         self.record = {
+            "schema_version": 1,
             "target_branch": "dev",
             "audit_commit": "abcdef1",
             "verified_source_commit": "abcdef2",
@@ -146,6 +147,84 @@ class SevenLensProtocolTests(unittest.TestCase):
         errors = self.validate(broken)
         self.assertTrue(any("command missing" in e for e in errors))
         self.assertTrue(any("commit missing" in e for e in errors))
+
+    def test_v2_state_restoration_requires_matching_hashes(self):
+        broken = copy.deepcopy(self.record)
+        broken["schema_version"] = 2
+        broken["integration_base_commit"] = "base123"
+        broken["baseline_commit"] = "base123"
+        broken["baseline_registry_fingerprint"] = "a" * 64
+        broken["baseline_findings"] = []
+        broken["evidence_runs"].append({
+            "id": "restore", "kind": "state_restoration", "case_ids": ["CASE-1"],
+            "observable_assertions": ["state restored"], "state_restored": True,
+            "state_before_sha256": "a" * 64, "state_after_sha256": "b" * 64,
+            "command": "python probe.py", "commit": "abcdef2", "exit_code": 0,
+            "worktree_clean": True,
+        })
+        self.assertTrue(any("state snapshots differ" in e for e in self.validate(broken)))
+
+    def test_v2_closed_finding_requires_complete_runtime_trace(self):
+        broken = copy.deepcopy(self.record)
+        broken.update({
+            "schema_version": 2, "integration_base_commit": "base123",
+            "baseline_commit": "base123", "baseline_registry_fingerprint": "a" * 64,
+            "baseline_findings": [],
+        })
+        broken["findings"] = [{
+            "id": "SL-C01-M-01", "severity": "MEDIUM", "unit_id": "UNIT",
+            "location": "unit.js:10", "root_cause": "A concrete root cause.",
+            "failure_path": "A reproducible failure path.", "impact": "Wrong output.",
+            "evidence": "Focused probe fails.", "recommendation": "Correct the contract.",
+            "observable_contract": "The user-visible result preserves the physical input.",
+            "status": "CLOSED", "regression_ids": ["CASE-1"],
+            "evidence_ids": ["before", "after", "restore"],
+            "pre_fix_evidence_id": "before", "post_fix_evidence_id": "after",
+            "state_restoration_evidence_id": "restore",
+        }]
+        common = {"case_ids": ["CASE-1"], "observable_assertions": ["observable"],
+                  "command": "python probe.py", "commit": "abcdef2", "worktree_clean": True}
+        broken["evidence_runs"].extend([
+            {**common, "id": "before", "kind": "baseline_failure", "exit_code": 1,
+             "state_restored": True},
+            {**common, "id": "after", "kind": "post_fix", "exit_code": 0,
+             "state_restored": False, "runtime_trace": {"entry_event": "input change"}},
+            {**common, "id": "restore", "kind": "state_restoration", "exit_code": 0,
+             "state_restored": True, "state_before_sha256": "a" * 64,
+             "state_after_sha256": "a" * 64},
+        ])
+        errors = self.validate(broken)
+        self.assertTrue(any("consumer path" in e for e in errors))
+        self.assertTrue(any("trace lacks stages" in e for e in errors))
+        self.assertTrue(any("artifact hash" in e for e in errors))
+
+    def test_v2_historical_finding_cannot_disappear(self):
+        record = copy.deepcopy(self.record)
+        record.update({
+            "schema_version": 2, "integration_base_commit": "base123",
+            "baseline_commit": "base123", "baseline_registry_fingerprint": "a" * 64,
+            "baseline_findings": [{"id": "OLD-HIGH", "severity": "HIGH", "status": "OPEN"}],
+        })
+        with patch("tools.seven_lens_protocol._resolved_registry", return_value=({"findings": []}, self.resolved)):
+            errors = validate_record(self.root, record, "close", check_git=False)
+        self.assertTrue(any("historical finding OLD-HIGH was deleted" in e for e in errors))
+
+    def test_plan_refuses_branch_that_already_diverged_from_origin_dev(self):
+        registry = {"cycles": [{"cycle": 1, "application_units": ["UNIT"]}], "findings": []}
+
+        def fake_git(*args, root):
+            if args == ("status", "--porcelain"):
+                return ""
+            if args == ("rev-parse", "HEAD"):
+                return "branch-change"
+            if args == ("rev-parse", "origin/dev"):
+                return "integration-base"
+            raise AssertionError(args)
+
+        with patch("tools.seven_lens_protocol._resolved_registry", return_value=(registry, self.resolved)):
+            with patch("tools.seven_lens_protocol._git", side_effect=fake_git):
+                with self.assertRaisesRegex(RuntimeError, "HEAD must equal origin/dev"):
+                    make_plan(self.root, 1)
 
 
 if __name__ == "__main__":
