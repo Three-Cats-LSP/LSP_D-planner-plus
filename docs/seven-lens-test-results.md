@@ -12,6 +12,7 @@ in `docs/seven-lens-records/`.
 |------:|------|--------|-----------------|-----|
 | 1 | `UI-MARKUP-HEADER` | **CLOSED** — merged to `dev` | `d39bb3b` | [#177](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/177), [#178](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/178) |
 | 2 | `UI-MARKUP-PLANNER` | **CLOSED** — merged to `dev` | `b56fc07` | [#179](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/179) |
+| 3 | `UI-MARKUP-CONSUMPTION` | **CLOSED** — pending merge to `dev` | `277985b` | (PR pending) |
 
 ---
 
@@ -237,6 +238,103 @@ Seven lenses applied to the V3 planner markup partial (plan panel) and traced ca
 - **Merge status:** Merged to `dev` via PR [#179](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/179).
 - **Open findings:** None for this unit.
 - **Cumulative seven-lens coverage:** Cycles 1–2 complete header + planner markup partials (`UI-MARKUP-HEADER`, `UI-MARKUP-PLANNER`).
+
+---
+
+## Cycle 3 — `UI-MARKUP-CONSUMPTION`
+
+| Field | Value |
+|-------|-------|
+| **Cycle ID** | SL-C03 |
+| **Unit** | `UI-MARKUP-CONSUMPTION` |
+| **Canonical file** | `ui/markup-consumption.html` (381 lines) |
+| **Review boundary** | Lines 1–381 (single session, under 600-line limit) |
+| **Baseline** | `6e987af` |
+| **Audit checkpoint** | `e07ab49` |
+| **Verified commit** | `277985b` |
+| **Branch** | `cursor/seven-lens-cycle-03-consumption` |
+| **Auditor** | Cursor GPT-5.5 Medium (`cursor/seven-lens-cycle-03-consumption-audit`) |
+| **Fixer** | Composer 2.5 |
+| **Verifier** | Cursor GPT-5.5 Medium (`cursor/seven-lens-cycle-03-consumption-verify`) |
+| **Ledger** | `SEVEN_LENS_REVIEWED` |
+| **Protocol record** | `docs/seven-lens-records/cycle-03-consumption.json` |
+| **Detailed reports** | `docs/seven-lens-reports/cycle-03-consumption.md`, `cycle-03-independent-verification.md` |
+
+### What was tested
+
+Seven lenses applied to the V3 consumption tools markup partial and traced callers:
+
+| Part | Lines | Scope |
+|------|------:|-------|
+| P01 | 1–381 | CNS widget, best-mix calculator, unit/volume converters, BMT reference table |
+
+**Callers traced:** `index.html` (`calcCNS`, `calcBestMix`, `setUnits`, `domDepthToM`, `syncBestMixDepthConstraints`).
+
+**Strengthened protocol requirements exercised:**
+- Pre-fix failure evidence at audit commit (`ER-03-PRE-FIX`, exit 1)
+- Observable post-fix assertions (`SL-C03-BEST-MIX-DEPTH-UNITS`, `SL-C03-CNS-DEPTH-UNITS`)
+- DOM state restoration in regression `finally` blocks
+- Real audit checkpoint commit before fixes (`e07ab49`)
+- Complete unit-conversion tuples (depth slider value, min/max, label, canonical `data-depthM`)
+
+### Findings
+
+#### SL-C03-H-01 — Best-mix depth slider treated as metres in imperial mode
+
+| | |
+|---|---|
+| **Severity** | HIGH |
+| **Lenses** | L1, L3, L4, L6, L7 |
+| **Location** | `ui/markup-consumption.html:196-201`; `index.html:calcBestMix`, `setUnits` |
+| **Root cause** | `bestMixDepth` slider value always stored in metres; imperial mode only relabelled display. |
+| **Failure path** | Imperial 30 ft display → `calcBestMix` computes ATA as 30 m → wrong O₂% and ppO₂. |
+| **Fix** | `domDepthToM` reads `data-depthM` canonical stamp; `setUnits` converts slider value/min/max; `syncBestMixDepthConstraints()`. |
+| **Regressions** | `SL-C03-BEST-MIX-DEPTH-UNITS` (REG-64) |
+| **Status** | **CLOSED** |
+
+#### SL-C03-M-01 — CNS depth never follows global units
+
+| | |
+|---|---|
+| **Severity** | MEDIUM |
+| **Lenses** | L1, L3, L4, L7 |
+| **Location** | `ui/markup-consumption.html:54-55`; `index.html:calcCNS`, `setUnits` |
+| **Root cause** | Hardcoded `Depth (m)` label; `cnsDepth` omitted from unit conversion list. |
+| **Failure path** | Imperial mode → CNS depth still treated as metres → wrong CNS% and OTU. |
+| **Fix** | `cnsDepthLbl` sync on `setUnits`; depth converted with canonical stamp; `calcCNS` uses `domDepthToM`. |
+| **Regressions** | `SL-C03-CNS-DEPTH-UNITS` (REG-65) |
+| **Status** | **CLOSED** |
+
+#### SL-C03-L-01 — AL80 reference volume copy misleading
+
+| | |
+|---|---|
+| **Severity** | LOW |
+| **Lenses** | L1, L6 |
+| **Location** | `ui/markup-consumption.html:284` |
+| **Root cause** | Reference text mixed litre volume with `77 ft³` naming convention. |
+| **Fix** | Clarified AL80 as 11.1 L (~0.39 ft³) naming convention. |
+| **Status** | **CLOSED** |
+
+### Verification gates (final)
+
+| Gate | Result |
+|------|--------|
+| Pre-fix at `e07ab49` | FAIL 161/163 (2 SL-C03 cases) — **required baseline failure** |
+| `python dev/engine_regression.py` | PASS 163/163 |
+| `python -m tools.audit check --profile static` | PASS |
+| `python -m tools.audit run --profile ci` | PASS (12/12 suites) |
+| `python tools/seven_lens_protocol.py check --phase close` | PASS |
+| Independent re-check | O₂% and ppO₂ invariants across unit switch; DOM restore in `finally` |
+
+### App status after Cycle 3
+
+- **Unit `UI-MARKUP-CONSUMPTION`:** `SEVEN_LENS_REVIEWED` — all three findings CLOSED.
+- **Consumption tools:** Best-mix and CNS depth inputs convert correctly between metric and imperial; canonical `data-depthM` stamps preserve lossless round-trips.
+- **Regression suite:** Two new stable case IDs (REG-64, REG-65); full engine regression at 163 cases.
+- **CI:** Static + full CI green on verified commit `277985b`.
+- **Open findings:** None for this unit.
+- **Cumulative seven-lens coverage:** Cycles 1–3 complete header, planner, and consumption markup partials.
 
 ---
 
