@@ -67,6 +67,19 @@ Added engine regression cases `SL-C01-DEPTH-SYNC` and `SL-C01-PRESET-SYNC`.
 
 ## Verification
 
-- [x] `python -m tools.audit check --profile static` — PASS
-- [x] `python -m tools.audit run --profile ci` — PASS (12 suites)
-- [x] Fingerprints synced for UI-MARKUP-HEADER, UI-BOOT, UI-SETTINGS, UI-PROFILE-PRESETS, TEST-ENGINE-REGRESSION
+### Phase C — Composer fix (attempt 1)
+- Sync hooks in markup + `loadProfilePreset` + `_syncUiAfterRestore`
+- Regressions `SL-C01-DEPTH-SYNC`, `SL-C01-PRESET-SYNC`
+- Suite catalog: `REG-58`, `REG-59` registered (fixes undeclared-case CI failure)
+
+### Phase D — GPT-5.5 Medium independent re-check (`50e3ea1`)
+- Re-read changed lines; re-applied L1–L7 on sync paths — no new findings
+- Reproduced preset-load failure path — regressions now catch drift
+- **SL-C01-M-01:** CLOSED
+
+| Gate | Result |
+|------|--------|
+| `python -m tools.audit check --profile static` | PASS |
+| `python -m tools.audit run --profile ci` | PASS (12/12 suites) |
+| `dev/engine_regression.py` SL-C01 cases | PASS |
+| GitHub PR #177 checks | All pass (incl. browser-regression) |
