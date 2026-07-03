@@ -57,7 +57,7 @@
     },
     {
       "unit_id": "UI-MARKUP-PLANNER",
-      "review_status": "IN_PROGRESS",
+      "review_status": "SEVEN_LENS_REVIEWED",
       "reviewed_fingerprint": "f8580045052a2fc92806d2edcca8f609067470f49e1b5c99827a5e2a83d8de86",
       "cycle_id": "SL-C02",
       "boundary": "ui/markup-planner.html whole file (493 lines; single session)",
@@ -90,8 +90,8 @@
       "verified_at": null,
       "verifier": "Cursor GPT-5.5 Medium (cursor/seven-lens-cycle-02-planner-verify)",
       "verification_status": "PASSED",
-      "verified_source_commit": null,
-      "last_checked_commit": "ba95293",
+      "verified_source_commit": "d747ccc",
+      "last_checked_commit": "d747ccc",
       "verification_report": "docs/seven-lens-reports/cycle-02-codex-verification.md",
       "findings_open": [],
       "findings_closed": [
@@ -109,7 +109,7 @@
     },
     {
       "unit_id": "UI-MARKUP-CONSUMPTION",
-      "review_status": "IN_PROGRESS",
+      "review_status": "SEVEN_LENS_REVIEWED",
       "reviewed_fingerprint": "49fc4db38e69cbe03c527b034cfa2f613cb08260278b33cf54fc5f1e5b4f4d7b",
       "cycle_id": "SL-C03",
       "boundary": "ui/markup-consumption.html whole file (381 lines; single session)",
@@ -141,8 +141,8 @@
       "verified_at": null,
       "verifier": "Cursor GPT-5.5 Medium (cursor/seven-lens-cycle-03-consumption-verify)",
       "verification_status": "PASSED",
-      "verified_source_commit": null,
-      "last_checked_commit": "ba95293",
+      "verified_source_commit": "d747ccc",
+      "last_checked_commit": "d747ccc",
       "verification_report": "docs/seven-lens-reports/cycle-03-codex-verification.md",
       "findings_open": [],
       "findings_closed": [
@@ -155,6 +155,91 @@
       ],
       "parts": {
         "P01": "lines 1-381 — consumption tools markup (single bounded part)"
+      }
+    },
+    {
+      "unit_id": "UI-MARKUP-TOOLS",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "848597e92f10f1494b5100e0fcde9099f7832325d7881ca77b0f2067989c4c9a",
+      "cycle_id": "SL-C04",
+      "boundary": "ui/markup-tools.html whole file (271 lines; single session)",
+      "reviewer": "Cursor GPT-5.5 Medium",
+      "review_session": "cursor/seven-lens-cycle-04-tools-audit",
+      "lens_results": {
+        "L1": "END/SI depth sliders; gas table ppO2 bounds; imperial END/SI parity fixed.",
+        "L2": "oninput calcEND_tool, calcSurfInt traced; unit switch recalc.",
+        "L3": "endDepth/siD* in full conversion tuple with data-depthM.",
+        "L4": "calcEND_tool and calcSurfInt use domDepthToM.",
+        "L5": "Canonical ui/markup-tools.html partial.",
+        "L6": "END/SI imperial physics corrected.",
+        "L7": "SL-C04-END-DEPTH-UNITS, SL-C04-SI-DEPTH-UNITS; REG-66/67; browser traces PASS."
+      },
+      "finding_ids": [
+        "SL-C04-H-01",
+        "SL-C04-M-01",
+        "SL-C04-L-01",
+        "SL-C04-L-02"
+      ],
+      "verification_commands": [
+        "python -m tools.audit check --profile static",
+        "python dev/engine_regression.py",
+        "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-04-tools-modals.json"
+      ],
+      "reviewed_at": "2026-07-03T12:24:00+00:00",
+      "verified_at": "2026-07-03T13:12:00+00:00",
+      "verifier": "Cursor (post #188 merge triage)",
+      "verification_status": "PASSED",
+      "verified_source_commit": "d747ccc",
+      "last_checked_commit": "d747ccc",
+      "verification_report": "docs/seven-lens-reports/cycle-04-independent-verification.md",
+      "findings_open": [],
+      "findings_closed": [
+        "SL-C04-H-01",
+        "SL-C04-M-01",
+        "SL-C04-L-01",
+        "SL-C04-L-02"
+      ],
+      "parts": {
+        "P01": "lines 1-271 — tools panel markup"
+      }
+    },
+    {
+      "unit_id": "UI-MARKUP-MODALS",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "c0b0b1ecc52d7398f80674b0af0f76c45b920b1771a1c917a5d4da34bafebe49",
+      "cycle_id": "SL-C04",
+      "boundary": "ui/markup-modals.html whole file (341 lines; single session)",
+      "reviewer": "Cursor GPT-5.5 Medium",
+      "review_session": "cursor/seven-lens-cycle-04-modals-audit",
+      "lens_results": {
+        "L1": "Modal copy and ref depth stats follow display units.",
+        "L2": "confirmModal backdrop dismiss added.",
+        "L3": "Modal open state via style.display; Escape in settings-core.",
+        "L4": "showConfirm/closeConfirmModal contract traced.",
+        "L5": "Canonical ui/markup-modals.html partial.",
+        "L6": "Confirm trap on destructive reset with backdrop dismiss.",
+        "L7": "SL-C04-CONFIRM-BACKDROP; REG-68."
+      },
+      "finding_ids": [
+        "SL-C04-M-02"
+      ],
+      "verification_commands": [
+        "python -m tools.audit check --profile static",
+        "python dev/engine_regression.py"
+      ],
+      "reviewed_at": "2026-07-03T12:24:00+00:00",
+      "verified_at": "2026-07-03T13:12:00+00:00",
+      "verifier": "Cursor (post #188 merge triage)",
+      "verification_status": "PASSED",
+      "verified_source_commit": "d747ccc",
+      "last_checked_commit": "d747ccc",
+      "verification_report": "docs/seven-lens-reports/cycle-04-independent-verification.md",
+      "findings_open": [],
+      "findings_closed": [
+        "SL-C04-M-02"
+      ],
+      "parts": {
+        "P01": "lines 1-341 — modals markup"
       }
     }
   ]

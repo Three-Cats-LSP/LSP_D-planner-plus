@@ -11,9 +11,9 @@ in `docs/seven-lens-records/`.
 | Cycle | Unit | Status | Verified commit | PR |
 |------:|------|--------|-----------------|-----|
 | 1 | `UI-MARKUP-HEADER` | **CLOSED** — merged to `dev` | `d39bb3b` | [#177](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/177), [#178](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/178) |
-| 2 | `UI-MARKUP-PLANNER` | **BLOCKED** — post-merge verification | — | [#179](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/179), [#183](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/183) |
-| 3 | `UI-MARKUP-CONSUMPTION` | **BLOCKED** — post-merge verification | — | [#182](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/182), [#183](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/183) |
-| 4 | `UI-MARKUP-TOOLS` + `UI-MARKUP-MODALS` | **BLOCKED** — fixes ready, static gate | `50bacb0` | [#185](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/185) |
+| 2 | `UI-MARKUP-PLANNER` | **CLOSED** — FIXER via #188 | `d747ccc` | [#179](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/179), [#188](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/188) |
+| 3 | `UI-MARKUP-CONSUMPTION` | **CLOSED** — FIXER via #188 | `d747ccc` | [#182](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/182), [#188](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/188) |
+| 4 | `UI-MARKUP-TOOLS` + `UI-MARKUP-MODALS` | **CLOSED** — merged via #188 (supersedes #185) | `d747ccc` | [#185](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/185), [#188](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/188) |
 
 ---
 
