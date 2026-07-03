@@ -508,7 +508,7 @@
         "UI-UNIT-SWITCHING",
         "UI-GAS-INPUTS"
       ],
-      "resolution_commit": "3f46fe4",
+      "resolution_commit": "437bbf6",
       "evidence_cases": [
         "REG-69"
       ]
@@ -525,7 +525,7 @@
         "UI-UNIT-SWITCHING",
         "UI-GAS-INPUTS"
       ],
-      "resolution_commit": "3f46fe4",
+      "resolution_commit": "437bbf6",
       "evidence_cases": [
         "REG-63"
       ]
@@ -542,7 +542,7 @@
         "UI-MARKUP-CONSUMPTION",
         "UI-UNIT-SWITCHING"
       ],
-      "resolution_commit": "3f46fe4",
+      "resolution_commit": "437bbf6",
       "evidence_cases": [
         "REG-70"
       ]
@@ -558,7 +558,7 @@
         "UI-MARKUP-PLANNER",
         "TEST-ENGINE-REGRESSION"
       ],
-      "resolution_commit": "3f46fe4",
+      "resolution_commit": "437bbf6",
       "evidence_cases": [
         "REG-62"
       ]
@@ -589,7 +589,7 @@
       "affected_units": [
         "UI-MARKUP-CONSUMPTION"
       ],
-      "resolution_commit": "3f46fe4",
+      "resolution_commit": "437bbf6",
       "evidence_cases": [
         "REG-64"
       ]
@@ -606,7 +606,7 @@
         "UI-UNIT-SWITCHING",
         "TEST-ENGINE-REGRESSION"
       ],
-      "resolution_commit": "3f46fe4",
+      "resolution_commit": "437bbf6",
       "evidence_cases": [
         "REG-64",
         "REG-65"
@@ -622,7 +622,7 @@
       "affected_units": [
         "UI-MARKUP-CONSUMPTION"
       ],
-      "resolution_commit": "3f46fe4",
+      "resolution_commit": "437bbf6",
       "evidence_cases": [
         "REG-64"
       ]
