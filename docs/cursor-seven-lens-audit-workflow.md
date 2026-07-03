@@ -106,9 +106,13 @@ finding is discovered.
 
 1. Read `docs/audit-master-plan.md` and `docs/audit-units.json`.
 2. Select the next units in priority order: P0, then P1, P2, and P3.
-3. Limit a manual session to at most 600 new application-source lines.
+3. Limit each manual review or verification session to at most 600 new
+   application-source lines. Do not combine several documented parts into a
+   single session when their combined boundary exceeds this limit.
 4. Split any larger unit into stable marker or function boundaries and document
-   the split. Do not claim the whole unit was reviewed after a partial read.
+   the split. Track review and verification separately for every part. Do not
+   claim the whole unit was reviewed until every part has been verified against
+   the final source fingerprint.
 5. Add at most one bounded engine re-verification scope to a UI cycle.
 6. Read the complete selected boundary plus direct callers and callees needed to
    validate contracts. Dependency context does not count as reviewed coverage.
@@ -152,6 +156,10 @@ For each unit:
 Do not use expected-finding quotas. Zero findings is acceptable only after all
 seven lens notes are complete.
 
+Commit the completed read-only audit report before Phase C begins. Record that
+commit as `audit_commit` in the cycle report. This checkpoint must contain no
+application fix for a finding first documented by the same audit pass.
+
 ## Finding Format
 
 Use stable IDs: `SL-C<cycle>-<severity>-<number>`.
@@ -186,13 +194,20 @@ Start only after the audit report is complete.
 5. Regenerate bundles and assembled artifacts through repository tools.
 6. Avoid unrelated refactors and formatting churn.
 
+Behavioral regressions must exercise the public or user event path that failed;
+calling the repaired helper directly is insufficient when event wiring is part of
+the contract. Every regression must restore all DOM values, globals, storage,
+workers, timers, and generated state it changes in a `finally` block. A finding
+that names several entry paths must have evidence for every named path.
+
 Cursor may perform up to three fix attempts. After each attempt, return to the
 verification phase. Do not repeatedly edit without a fresh failure explanation.
 
 ## Phase D: Independent Verification
 
-Use a fresh Cursor chat or a clean context whenever possible. The verifier should
-not rely on the fix author's explanation.
+Use a fresh Cursor chat or a distinct reviewer context. This is mandatory for an
+independent-verification claim. The verifier must not rely on the fix author's
+explanation and must start from the committed audit report and source.
 
 1. Re-read every changed line and the complete affected unit.
 2. Reproduce the original failure input.
@@ -200,6 +215,17 @@ not rely on the fix author's explanation.
 4. Reapply all seven lenses to changed behavior and adjacent paths.
 5. Check canonical/generated parity.
 6. Run the required profiles.
+7. Record `verified_source_commit`, `verified_fingerprint`, verifier
+   identity/session, and the exact evidence run IDs. The verified source commit
+   must be the latest commit that changes reviewed application source, regression
+   code, or generated artifacts.
+
+Any later change to reviewed application source, regression code, or generated
+artifacts invalidates Phase D. Repeat verification at the new source commit before
+merge. A later attestation-only commit may update cycle reports and ledger metadata
+without creating a self-referential commit hash, provided its diff is limited to
+those records. Automated review and CI evidence count only for the exact commit
+they evaluated; required CI must still run on the final PR HEAD.
 
 Minimum commands:
 
@@ -243,9 +269,13 @@ reviewed_fingerprint
 cycle_id
 reviewer: Cursor GPT-5.5 Medium
 review_session
+parts: boundary, reviewed_fingerprint, review_session, verification_session
 lens_results: L1 through L7
 finding_ids
 verification_commands
+audit_commit
+verified_source_commit
+verification_status: PENDING | PASSED | BLOCKED
 reviewed_at
 ```
 
@@ -262,10 +292,15 @@ A cycle closes only when all conditions are true:
 - Required regressions pass.
 - Static and required runtime profiles pass.
 - Fingerprints match the reviewed source.
+- Every split part has final-fingerprint verification from a session within the
+  600-line limit.
 - Generated artifacts reproduce from canonical sources.
 - No open CRITICAL or HIGH finding remains.
 - The tracked worktree is clean after all commands.
 - A PR targeting `dev` contains the report, fixes, tests, and metadata.
+- `verified_source_commit` is the latest commit touching reviewed source, tests,
+  or generated artifacts; all required CI runs evaluated the final PR HEAD; and
+  the PR title/body accurately describe its final scope.
 
 Never count repeated executions of the same commit as multiple consecutive clean
 release runs. Each qualifying run must have a distinct GitHub Actions run ID and
@@ -306,4 +341,3 @@ finding only when source review and current evidence both pass. Refresh fingerpr
 only after verification. Confirm the PR targets dev and the tracked worktree is
 clean.
 ```
-

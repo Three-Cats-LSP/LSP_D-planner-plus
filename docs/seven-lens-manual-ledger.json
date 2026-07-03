@@ -3,7 +3,7 @@
   "reviews": [
     {
       "unit_id": "UI-MARKUP-HEADER",
-      "review_status": "SEVEN_LENS_REVIEWED",
+      "review_status": "IN_PROGRESS",
       "reviewed_fingerprint": "08baabc5316bd85fa78d860f7414fdfe0df845c163407973d471ad0178923e60",
       "cycle_id": "SL-C01",
       "boundary": "ui/markup-header.html whole file (847 lines; parts A–D)",
@@ -16,12 +16,15 @@
         "L4": "Settings and contingency onclick handlers traced to settings-core, contingency-core, export-core. Script LSP-EXTRACT order unchanged.",
         "L5": "Canonical ui/markup-header.html; assemble_ui_html --assemble and --verify PASS.",
         "L6": "gasWarningBanner role=alert; planning-aid disclaimer intact. GF curve placeholders match mGF default 20/85.",
-        "L7": "SL-C01-DEPTH-SYNC and SL-C01-PRESET-SYNC regressions from part A; REG-58/59 in audit-units."
+        "L7": "Post-merge verification found incomplete, state-leaking regression evidence and final-commit verification gaps; see cycle-01-independent-verification.md."
       },
       "finding_ids": [
         "SL-C01-M-01",
         "SL-C01-M-02",
-        "SL-C01-L-01"
+        "SL-C01-L-01",
+        "SL-C01-M-03",
+        "SL-C01-L-02",
+        "SL-C01-M-04"
       ],
       "verification_commands": [
         "python -m tools.audit check --profile static",
@@ -29,8 +32,17 @@
         "python tools/assemble_ui_html.py --verify"
       ],
       "reviewed_at": "2026-07-03T08:15:00+00:00",
-      "verified_at": "2026-07-03T09:30:00+00:00",
-      "verifier": "Cursor GPT-5.5 Medium (Phase D full-unit re-check)",
+      "verified_at": null,
+      "verifier": "Codex post-merge verification at a249536 (BLOCKED)",
+      "verification_status": "BLOCKED",
+      "verified_source_commit": null,
+      "last_checked_commit": "a249536",
+      "verification_report": "docs/seven-lens-reports/cycle-01-independent-verification.md",
+      "findings_open": [
+        "SL-C01-M-03",
+        "SL-C01-L-02",
+        "SL-C01-M-04"
+      ],
       "findings_closed": [
         "SL-C01-M-01",
         "SL-C01-M-02",
