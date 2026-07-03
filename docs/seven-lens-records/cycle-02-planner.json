@@ -4,7 +4,7 @@
   "target_branch": "dev",
   "baseline_commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
   "audit_commit": "e07ab49cf5c28a9b99c00eb12d3538acec568728",
-  "verified_source_commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+  "verified_source_commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -294,7 +294,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C02-MIN-DECO-UNITS",
       "exit_code": 0,
-      "commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "unitsSelect change from metric to imperial",
@@ -343,7 +343,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C02-TRAVEL-DEPTH-CONSTRAINTS",
       "exit_code": 0,
-      "commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "User switches to imperial, edits travel manual depth, and returns to metric.",
@@ -388,7 +388,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS",
       "exit_code": 0,
-      "commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "User switches to imperial, edits bottom cylinder size, and returns to metric.",
@@ -433,7 +433,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C02-TRAVEL-DEPTH-PHYSICAL-PARITY SL-C02-UNIT-ROUNDTRIP-IMMUTABLE",
       "exit_code": 0,
-      "commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "User switches to imperial, edits travel manual depth, and returns to metric.",
@@ -478,7 +478,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C02-MIN-DECO-UNITS",
       "exit_code": 0,
-      "commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "unitsSelect metric to imperial to metric round trip",
@@ -527,7 +527,7 @@
       "state_restored": false,
       "command": "python tools/run_audit_coverage_suite.py",
       "exit_code": 0,
-      "commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "unitsSelect change from metric to imperial",
@@ -576,7 +576,7 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C02-MIN-DECO-UNITS",
       "exit_code": 0,
-      "commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
       "worktree_clean": true,
       "state_before_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34",
       "state_after_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34"
@@ -593,7 +593,7 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C02-TRAVEL-DEPTH-CONSTRAINTS",
       "exit_code": 0,
-      "commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
       "worktree_clean": true,
       "state_before_sha256": "62f9d70e0b73f0d64c827aca0a6fe30079c53dfa6110493965c3865559c59e1e",
       "state_after_sha256": "62f9d70e0b73f0d64c827aca0a6fe30079c53dfa6110493965c3865559c59e1e"
@@ -610,7 +610,7 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS",
       "exit_code": 0,
-      "commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
       "worktree_clean": true,
       "state_before_sha256": "62ba2e20bbf615e8c6fd7f70901336c8accb8ce1530a26b89b4c717ee6de5359",
       "state_after_sha256": "62ba2e20bbf615e8c6fd7f70901336c8accb8ce1530a26b89b4c717ee6de5359"
@@ -628,7 +628,7 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C02-TRAVEL-DEPTH-PHYSICAL-PARITY SL-C02-UNIT-ROUNDTRIP-IMMUTABLE",
       "exit_code": 0,
-      "commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
       "worktree_clean": true,
       "state_before_sha256": "62f9d70e0b73f0d64c827aca0a6fe30079c53dfa6110493965c3865559c59e1e",
       "state_after_sha256": "62f9d70e0b73f0d64c827aca0a6fe30079c53dfa6110493965c3865559c59e1e"
@@ -645,7 +645,7 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C02-MIN-DECO-UNITS",
       "exit_code": 0,
-      "commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
       "worktree_clean": true,
       "state_before_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34",
       "state_after_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34"
@@ -662,7 +662,7 @@
       "state_restored": true,
       "command": "python tools/run_audit_coverage_suite.py",
       "exit_code": 0,
-      "commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
       "worktree_clean": true,
       "state_before_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34",
       "state_after_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34"
@@ -677,7 +677,7 @@
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
       "exit_code": 0,
-      "commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
       "worktree_clean": true
     },
     {
@@ -690,7 +690,7 @@
       "state_restored": true,
       "command": "python -m tools.audit run --profile ci",
       "exit_code": 0,
-      "commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
       "worktree_clean": true
     },
     {
@@ -703,7 +703,7 @@
       "state_restored": true,
       "command": "python tools/run_audit_coverage_suite.py",
       "exit_code": 0,
-      "commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
       "worktree_clean": true
     }
   ],
