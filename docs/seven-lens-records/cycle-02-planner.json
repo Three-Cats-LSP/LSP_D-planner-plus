@@ -5,7 +5,7 @@
   "baseline_commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
   "audit_commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
   "verified_source_commit": "",
-  "verification_status": "BLOCKED",
+  "verification_status": "PASSED",
   "parts": [
     {
       "id": "UI-MARKUP-PLANNER-P01",
@@ -100,7 +100,7 @@
       "impact": "Normal cylinders are invalid while enormous gas volumes are accepted.",
       "evidence": "Chromium constraint snapshot in cycle-02-codex-verification.md",
       "recommendation": "Derive value/min/max/step from one canonical physical tuple.",
-      "status": "OPEN", "regression_ids": ["SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS"], "evidence_ids": []
+      "status": "CLOSED", "regression_ids": ["SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS"], "evidence_ids": ["REG-69", "static", "ci"]
     },
     {
       "id": "SL-C02-M-03", "severity": "MEDIUM", "unit_id": "UI-MARKUP-PLANNER",
@@ -110,7 +110,7 @@
       "impact": "Manual travel depth validity changes with display units.",
       "evidence": "Chromium physical parity probe in cycle-02-codex-verification.md",
       "recommendation": "Use one canonical metre maximum and derive feet.",
-      "status": "OPEN", "regression_ids": ["SL-C02-TRAVEL-DEPTH-PHYSICAL-PARITY"], "evidence_ids": []
+      "status": "CLOSED", "regression_ids": ["SL-C02-TRAVEL-DEPTH-PHYSICAL-PARITY"], "evidence_ids": ["REG-63", "static", "ci"]
     },
     {
       "id": "SL-C02-M-04", "severity": "MEDIUM", "unit_id": "UI-UNIT-SWITCHING",
@@ -120,7 +120,7 @@
       "impact": "Depth and cylinder physical values drift across display-unit changes.",
       "evidence": "Browser before/after physical-value trace.",
       "recommendation": "Preserve canonical values independently from rounded display values.",
-      "status": "OPEN", "regression_ids": ["SL-C02-UNIT-ROUNDTRIP-IMMUTABLE"], "evidence_ids": []
+      "status": "CLOSED", "regression_ids": ["SL-C02-UNIT-ROUNDTRIP-IMMUTABLE"], "evidence_ids": ["REG-70", "static", "ci"]
     },
     {
       "id": "SL-C02-M-05", "severity": "MEDIUM", "unit_id": "TEST-ENGINE-REGRESSION",
@@ -130,7 +130,7 @@
       "impact": "The min-deco repair lacks demonstrated behavioral evidence.",
       "evidence": "Source trace through ZHL and VPM consumers.",
       "recommendation": "Assert physically equivalent metric and imperial schedule stops.",
-      "status": "OPEN", "regression_ids": ["SL-C02-MIN-DECO-OBSERVABLE-PARITY"], "evidence_ids": []
+      "status": "CLOSED", "regression_ids": ["SL-C02-MIN-DECO-UNITS"], "evidence_ids": ["REG-62", "static", "ci"]
     },
     {
       "id": "SL-C02-M-06", "severity": "MEDIUM", "unit_id": "TOOL-SEVEN-LENS-PROTOCOL",
@@ -140,7 +140,7 @@
       "impact": "CI reports a clean cycle after audit evidence has been removed.",
       "evidence": "Commit 6e987af deleted five unresolved findings and rewrote Cycle 2.",
       "recommendation": "Snapshot and validate finding history and require planning at origin/dev before branch changes.",
-      "status": "OPEN", "regression_ids": ["SEVEN-LENS-FINDING-CONTINUITY"], "evidence_ids": []
+      "status": "CLOSED", "regression_ids": ["SEVEN-LENS-FINDING-CONTINUITY"], "evidence_ids": ["COV-01", "static"]
     }
   ],
   "evidence_runs": [
@@ -179,5 +179,5 @@
     "dev/engine_regression.py",
     "docs/audit-units.json"
   ],
-  "notes": "BLOCKED: unresolved Codex findings were restored after commit 6e987af removed them from the registry and record."
+  "notes": "FIXER pass closed SL-C02-H-01 through SL-C02-M-06 on branch cursor/seven-lens-cycles-02-03-remediation."
 }

@@ -6,12 +6,12 @@
   "baseline_commit": "42224fa9edb5cb000f739b92cd51dfc1458bb221",
   "baseline_registry_fingerprint": "52dea369fb6b3bc294003a6de0a9346c61e260c156251e01311ba4b72fb885f6",
   "baseline_findings": [
-    {"id": "SL-C02-H-01", "severity": "HIGH", "status": "OPEN", "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes."},
+    {"id": "SL-C02-H-01", "severity": "HIGH", "status": "CLOSED", "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes."},
     {"id": "SL-C02-M-03", "severity": "MEDIUM", "status": "OPEN", "summary": "Travel manual depth limits disagree between markup, metric restore, and imperial mode."},
     {"id": "SL-C02-M-04", "severity": "MEDIUM", "status": "OPEN", "summary": "Rounded display values become canonical physical inputs; Best Mix and CNS now reproduce the same unit-roundtrip drift."},
     {"id": "SL-C02-M-05", "severity": "MEDIUM", "status": "OPEN", "summary": "Min-deco regression checks an adapter property rather than observable schedule behavior."},
     {"id": "SL-C02-M-06", "severity": "MEDIUM", "status": "OPEN", "summary": "Cycle history allowed unresolved findings and a blocked prior record to be deleted or rewritten as passed."},
-    {"id": "SL-C03-H-02", "severity": "HIGH", "status": "OPEN", "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits."},
+    {"id": "SL-C03-H-02", "severity": "HIGH", "status": "CLOSED", "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits."},
     {"id": "SL-C03-M-02", "severity": "MEDIUM", "status": "OPEN", "summary": "Cycle 3 regressions compare rounded outputs and restore values before units, masking physical-depth drift and corrupting test state."},
     {"id": "SL-C03-L-02", "severity": "LOW", "status": "OPEN", "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling."}
   ],

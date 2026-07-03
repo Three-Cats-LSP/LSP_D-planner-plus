@@ -1743,7 +1743,7 @@
 <ul style="font-size:12px;line-height:2;padding-left:18px;color:var(--text);">
 <li><strong>Follow run times.</strong> Stop times include transit between stops.</li>
 <li><strong>No extra deep stops.</strong> Adding deep stops significantly increases total obligation.</li>
-<li><strong>Extending shallow stops (6 m, 3 m) is safe.</strong></li>
+<li><strong>Extending shallow stops (6 m, 3 m)</strong> changes oxygen exposure and gas use — only do so when CNS/OTU and remaining gas stay within your generated plan limits, then recalculate if inputs change.</li>
 <li><strong>Ascent rate deviations are most critical in the deep deco zone.</strong></li>
 <li><strong>Lost deco gas:</strong> wait the time difference at current depth, then follow new plan.</li>
 <li><strong>Conservatism:</strong> use +2 or +3 for most divers. +3 or +4 for cold, strenuous, multi-day, or prior DCS history.</li>
@@ -1757,7 +1757,7 @@
 <div class="u18">Algorithm Comparison</div>
 <div class="info-box"><strong>Bühlmann ZH-L16C + GF</strong> — dissolved gas model, tunable via GF Low/High. Every major dive computer uses it. Best for any technical dive where you want predictable, well-understood behaviour.</div>
 <div class="info-box"><strong>VPM-B</strong> — bubble mechanics model (Yount &amp; Hoffman). Tracks microscopic bubble nuclei rather than dissolved gas. Tends to give deeper first stops and shorter shallow stops. Best for divers who prefer a bubble-focused approach.<br/><br/><em>⚠ Conservatism order is profile-dependent:</em> on deep/long trimix dives GF is usually more conservative (longer TTS); on short/shallow dives VPM-B can match or exceed GF. Compare TTS for your specific dive.</div>
-<div class="info-box"><strong>VPM-B+GFS</strong> — VPM-B bubble mechanics for deep/mid stops, Bühlmann GF High ceiling at shallow stops. Useful when VPM-B's shallow stops feel too long.</div>
+<div class="info-box"><strong>VPM-B+GFS</strong> — VPM-B bubble mechanics for deep/mid stops, Bühlmann GF High ceiling at shallow stops. Adds a more conservative surfacing ceiling when pure VPM-B feels too aggressive — shallow stops may be longer, not shorter.</div>
 </div>
 <!-- ── VPM-B Physics ─────────────────────────────────────── -->
 <div class="u21">
@@ -3461,37 +3461,72 @@ function setUnits(u, opts) {
     el.classList.toggle('active', u === 'imperial' ? isImp : !isImp);
   });
 
-  convertNumericInput('depth', v => Math.round(v * FT_PER_M), v => (v / FT_PER_M).toFixed(1).replace(/\.0$/, ''), 100, 330);
-  convertNumericInput('decoDepth', v => Math.round(v * FT_PER_M), v => (v / FT_PER_M).toFixed(1).replace(/\.0$/, ''), 120, 394);
+  const applyDepthUnitSwitch = (id, metricMax, imperialMax) => {
+    const el = document.getElementById(id);
+    if (!el || (!isToImperial && !isToMetric)) return;
+    let metres = parseFloat(el.dataset.depthM);
+    if (!Number.isFinite(metres)) {
+      const v = parseFloat(el.value);
+      if (Number.isNaN(v)) return;
+      metres = prev === 'imperial' ? v / FT_PER_M : v;
+      el.dataset.depthM = String(metres);
+    }
+    if (isToImperial) {
+      if (imperialMax != null) el.max = imperialMax;
+      el.value = String(Math.round(metres * FT_PER_M));
+    } else if (isToMetric) {
+      if (metricMax != null) el.max = metricMax;
+      el.value = Number.isInteger(metres) ? String(Math.round(metres))
+        : metres.toFixed(1).replace(/\.0$/, '');
+    }
+  };
 
+  const travelMaxFt = Math.round(500 * FT_PER_M);
   // ── Travel gas manual switch depth ──
-  convertNumericInput('travelGasManualDepth', v => Math.round(v * FT_PER_M), v => Math.round(v / FT_PER_M), 500, 165);
+  convertNumericInput('travelGasManualDepth', v => Math.round(v * FT_PER_M), v => Math.round(v / FT_PER_M), 500, travelMaxFt);
   setTxt('travelGasManualDepthLbl', `Switch Depth (${u === 'imperial' ? 'ft' : 'm'})`);
   syncTravelGasManualDepthConstraints?.();
 
-  const stampDepthCanonicalBeforeConvert = (id) => {
+  applyDepthUnitSwitch('depth', 100, 330);
+  applyDepthUnitSwitch('decoDepth', 120, 394);
+  applyDepthUnitSwitch('bestMixDepth', 100, 330);
+  syncBestMixDepthConstraints?.();
+  applyDepthUnitSwitch('cnsDepth', 60, 197);
+  setTxt('cnsDepthLbl', `Depth (${u === 'imperial' ? 'ft' : 'm'})`);
+  applyDepthUnitSwitch('endDepth', 100, 330);
+  syncEndDepthConstraints?.();
+  applyDepthUnitSwitch('siD1Depth', 60, 197);
+  applyDepthUnitSwitch('siD2Depth', 60, 197);
+  syncSurfIntDepthConstraints?.();
+
+  const CYL_SIZE_MAX_L = 50;
+  const CYL_SIZE_MIN_L = 0.5;
+  const cylMaxCuFt = () => +(CYL_SIZE_MAX_L * CUFT_PER_L).toFixed(2);
+  const cylMinCuFt = () => +(CYL_SIZE_MIN_L * CUFT_PER_L).toFixed(2);
+
+  const applyCylinderSizeUnitSwitch = (id) => {
     const el = document.getElementById(id);
     if (!el || (!isToImperial && !isToMetric)) return;
-    const v = parseFloat(el.value);
-    if (Number.isNaN(v)) return;
-    el.dataset.depthM = String(prev === 'imperial' ? v / FT_PER_M : v);
+    let litres = parseFloat(el.dataset.volumeL);
+    if (!Number.isFinite(litres)) {
+      const v = parseFloat(el.value);
+      if (Number.isNaN(v)) return;
+      litres = prev === 'imperial' ? v / CUFT_PER_L : v;
+      el.dataset.volumeL = String(litres);
+    }
+    if (isToImperial) {
+      el.min = String(cylMinCuFt());
+      el.max = String(cylMaxCuFt());
+      el.step = String(cylMinCuFt());
+      el.value = (litres * CUFT_PER_L).toFixed(1).replace(/\.0$/, '');
+    } else if (isToMetric) {
+      el.min = String(CYL_SIZE_MIN_L);
+      el.max = String(CYL_SIZE_MAX_L);
+      el.step = String(CYL_SIZE_MIN_L);
+      el.value = Number.isInteger(litres) ? String(Math.round(litres))
+        : litres.toFixed(1).replace(/\.0$/, '');
+    }
   };
-
-  stampDepthCanonicalBeforeConvert('bestMixDepth');
-  stampDepthCanonicalBeforeConvert('cnsDepth');
-  stampDepthCanonicalBeforeConvert('endDepth');
-  stampDepthCanonicalBeforeConvert('siD1Depth');
-  stampDepthCanonicalBeforeConvert('siD2Depth');
-
-  convertNumericInput('bestMixDepth', v => Math.round(v * FT_PER_M), v => Math.round(v / FT_PER_M), 100, 330);
-  syncBestMixDepthConstraints?.();
-  convertNumericInput('cnsDepth', v => Math.round(v * FT_PER_M), v => (v / FT_PER_M).toFixed(1).replace(/\.0$/, ''), 60, 197);
-  setTxt('cnsDepthLbl', `Depth (${u === 'imperial' ? 'ft' : 'm'})`);
-  convertNumericInput('endDepth', v => Math.round(v * FT_PER_M), v => Math.round(v / FT_PER_M), 100, 330);
-  syncEndDepthConstraints?.();
-  convertNumericInput('siD1Depth', v => Math.round(v * FT_PER_M), v => Math.round(v / FT_PER_M), 60, 197);
-  convertNumericInput('siD2Depth', v => Math.round(v * FT_PER_M), v => Math.round(v / FT_PER_M), 60, 197);
-  syncSurfIntDepthConstraints?.();
 
   // ── Cylinder pressure conversion (all gas cards including dynamic ones) ──
   const allCylPres = ['cylBot_pres','cylTravelGas_pres','cylDg1_pres','cylDg2_pres',
@@ -3504,8 +3539,9 @@ function setUnits(u, opts) {
     convertNumericInput(id, v => Math.round(v * PSI_PER_BAR), v => Math.round(v / PSI_PER_BAR), 300, 4351);
   });
   allCylSize.forEach(id => {
-    convertNumericInput(id, v => (v * CUFT_PER_L).toFixed(1).replace(/\.0$/, ''), v => Math.round(v / CUFT_PER_L), 50, 1766);
+    applyCylinderSizeUnitSwitch(id);
   });
+  syncCylinderSizeConstraints?.();
   allCylReserve.forEach(id => {
     convertNumericInput(id, v => Math.round(v * PSI_PER_BAR), v => Math.round(v / PSI_PER_BAR), 300, 4351);
   });
@@ -7100,8 +7136,32 @@ function syncSurfIntDepthConstraints() {
   });
 }
 
+/** Keep cylinder size inputs min/max/step in display units (L or ft³). */
+function syncCylinderSizeConstraints() {
+  const imperial = units === 'imperial';
+  const CUFT_PER_L = 0.0353147;
+  const maxL = 50;
+  const minL = 0.5;
+  const maxCu = +(maxL * CUFT_PER_L).toFixed(2);
+  const minCu = +(minL * CUFT_PER_L).toFixed(2);
+  const ids = ['cylBot_size', 'cylTravelGas_size', 'cylDg1_size', 'cylDg2_size',
+    ...Array.from(document.querySelectorAll('[id^="cylDg"][id$="_size"]')).map(el => el.id)];
+  [...new Set(ids)].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (imperial) {
+      el.min = String(minCu);
+      el.max = String(maxCu);
+      el.step = String(minCu);
+    } else {
+      el.min = String(minL);
+      el.max = String(maxL);
+      el.step = String(minL);
+    }
+  });
+}
+
 function calcBestMix() {
-  syncDepthInputCanonical('bestMixDepth');
   const depth = domDepthToM('bestMixDepth');
   const ppo2  = (parseFloat(document.getElementById('bestMixPPO2')?.value) || 14) / 10;
   if (!depth || depth <= 0) return;
@@ -7626,7 +7686,6 @@ function estimateWidgetOtuWithDeco(bottomOtu, depthM, bt, fN2, gfLow, gfHigh, fH
 }
 
 function calcCNS() {
-  syncDepthInputCanonical('cnsDepth');
   const depth  = domDepthToM('cnsDepth');
   const bt     = parseFloat(document.getElementById('cnsBT')?.value)    || 0;
   const fO2    = parseFloat(document.getElementById('cnsO2')?.value)    || 21;
