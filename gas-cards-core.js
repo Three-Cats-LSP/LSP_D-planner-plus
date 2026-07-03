@@ -216,7 +216,7 @@ function defaultDecoCylFieldValues() {
       size: (sizeL * CUFT_PER_LITRE).toFixed(1).replace(/\.0$/, ''),
       fill: String(Math.round(fillBar * PSI_PER_BAR)),
       reserve: String(Math.round(reserveBar * PSI_PER_BAR)),
-      sizeMax: 1766,
+      sizeMax: +(50 * CUFT_PER_LITRE).toFixed(2),
       presMax: 4351,
     };
   }
@@ -516,7 +516,8 @@ function syncTravelGasManualDepthConstraints() {
   const inp = document.getElementById('travelGasManualDepth');
   if (!inp) return;
   const imperial = units === 'imperial';
+  const maxM = 500;
   inp.min = '1';
-  inp.max = String(imperial ? 165 : 500);
+  inp.max = String(imperial ? Math.round(maxM * 3.28084) : maxM);
   inp.step = '1';
 }

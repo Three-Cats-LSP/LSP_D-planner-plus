@@ -1816,15 +1816,30 @@ ENGINE_SUITE_JS = r"""
   out.sections.sevenLensCycle02 = (() => {
     let minDecoUnitsOk = false;
     let travelDepthConstraintsOk = false;
+    let cylinderPhysicalConstraintsOk = false;
+    let unitRoundtripImmutableOk = false;
     const prevUnits = typeof units !== 'undefined' ? units : null;
     const modeSel = document.getElementById('travelGasSwitchMode');
     const prevMode = modeSel?.value;
     const depthInp = document.getElementById('travelGasManualDepth');
     const prevDepth = depthInp?.value;
+    const decoEl = document.getElementById('decoDepth');
+    const cylEl = document.getElementById('cylBot_size');
+    const prevDeco = decoEl?.value;
+    const prevCyl = cylEl?.value;
+    const travelMaxFt = Math.round(500 * 3.28084);
+    const cylMaxCu = +(50 * 0.0353147).toFixed(2);
+    const cylMinCu = +(0.5 * 0.0353147).toFixed(2);
     try {
-      if (typeof setUnits === 'function' && typeof getVpmMinDecoSettingsFromDom === 'function') {
-        setUnits('imperial');
-        minDecoUnitsOk = getVpmMinDecoSettingsFromDom().isMetric === false;
+      if (typeof enforceMinDecoProfile === 'function') {
+        const steps = [
+          { type: 'deco', depth: 30, dur: 1 },
+          { type: 'deco', depth: 20, dur: 1 },
+        ];
+        const outSteps = enforceMinDecoProfile(steps, true, 5, 3, false, '21/00', 0.79, 0);
+        const d30 = outSteps.find(s => s.type === 'deco' && s.depth === 30);
+        const d20 = outSteps.find(s => s.type === 'deco' && s.depth === 20);
+        minDecoUnitsOk = !!(d30 && d30.dur >= 5 && d20 && d20.dur >= 3);
       }
       if (typeof setUnits === 'function' && typeof syncTravelGasManualDepthConstraints === 'function') {
         if (modeSel) modeSel.value = 'manual';
@@ -1834,18 +1849,43 @@ ENGINE_SUITE_JS = r"""
         setUnits('imperial');
         const imperialMax = Number(depthInp?.max);
         if (depthInp) {
-          depthInp.value = '165';
+          depthInp.value = String(travelMaxFt);
           travelDepthConstraintsOk =
-            metricMax === 500 && imperialMax === 165 && depthInp.checkValidity() === true;
+            metricMax === 500 && imperialMax === travelMaxFt && depthInp.checkValidity() === true;
         }
+      }
+      if (typeof setUnits === 'function' && cylEl) {
+        setUnits('imperial');
+        cylinderPhysicalConstraintsOk =
+          Number(cylEl.max) === cylMaxCu &&
+          Number(cylEl.min) === cylMinCu &&
+          cylEl.checkValidity() === true;
+      }
+      if (typeof setUnits === 'function' && decoEl && cylEl) {
+        setUnits('metric');
+        decoEl.value = '40';
+        cylEl.value = '12';
+        decoEl.dataset.depthM = '40';
+        cylEl.dataset.volumeL = '12';
+        setUnits('imperial');
+        setUnits('metric');
+        unitRoundtripImmutableOk = decoEl.value === '40' && cylEl.value === '12';
       }
     } finally {
       if (modeSel && prevMode != null) modeSel.value = prevMode;
       if (depthInp && prevDepth != null) depthInp.value = prevDepth;
+      if (decoEl && prevDeco != null) decoEl.value = prevDeco;
+      if (cylEl && prevCyl != null) cylEl.value = prevCyl;
       if (prevUnits != null && typeof setUnits === 'function') setUnits(prevUnits);
       updateTravelGasMOD?.();
     }
-    return { minDecoUnitsOk, travelDepthConstraintsOk, ok: minDecoUnitsOk && travelDepthConstraintsOk };
+    return {
+      minDecoUnitsOk,
+      travelDepthConstraintsOk,
+      cylinderPhysicalConstraintsOk,
+      unitRoundtripImmutableOk,
+      ok: minDecoUnitsOk && travelDepthConstraintsOk && cylinderPhysicalConstraintsOk && unitRoundtripImmutableOk,
+    };
   })();
 
   // Seven-lens cycle 03: consumption markup contracts (SL-C03).
@@ -1859,31 +1899,49 @@ ENGINE_SUITE_JS = r"""
     const prevBm = bmEl?.value;
     const prevCns = cnsEl?.value;
     const prevPpo2 = ppo2El?.value;
+    const depthClose = (a, b) => Math.abs(a - b) < 0.000001;
     try {
       if (typeof setUnits === 'function' && typeof calcBestMix === 'function' && bmEl && ppo2El) {
         setUnits('metric');
         bmEl.value = '30';
+        bmEl.dataset.depthM = '30';
         ppo2El.value = '14';
         calcBestMix();
         const metricO2 = document.getElementById('bestMixResult')?.textContent;
         setUnits('imperial');
         calcBestMix();
         const imperialO2 = document.getElementById('bestMixResult')?.textContent;
+        setUnits('metric');
+        calcBestMix();
+        const roundtripO2 = document.getElementById('bestMixResult')?.textContent;
         bestMixDepthUnitsOk =
-          metricO2 === imperialO2 && Math.round(parseFloat(bmEl.value)) === 98;
+          metricO2 === imperialO2 &&
+          metricO2 === roundtripO2 &&
+          Math.round(parseFloat(bmEl.value)) === 30 &&
+          depthClose(domDepthToM('bestMixDepth'), 30) &&
+          depthClose(parseFloat(bmEl.dataset.depthM), 30);
       }
       if (typeof setUnits === 'function' && typeof calcCNS === 'function' && cnsEl) {
         setUnits('metric');
         cnsEl.value = '30';
+        cnsEl.dataset.depthM = '30';
         calcCNS();
         const metricPpo2 = document.getElementById('cnsPPO2')?.textContent;
         setUnits('imperial');
         calcCNS();
         const imperialPpo2 = document.getElementById('cnsPPO2')?.textContent;
+        setUnits('metric');
+        calcCNS();
+        const roundtripPpo2 = document.getElementById('cnsPPO2')?.textContent;
         cnsDepthUnitsOk =
-          metricPpo2 === imperialPpo2 && Math.round(parseFloat(cnsEl.value)) === 98;
+          metricPpo2 === imperialPpo2 &&
+          metricPpo2 === roundtripPpo2 &&
+          Math.round(parseFloat(cnsEl.value)) === 30 &&
+          depthClose(domDepthToM('cnsDepth'), 30) &&
+          depthClose(parseFloat(cnsEl.dataset.depthM), 30);
       }
     } finally {
+      if (typeof setUnits === 'function') setUnits('metric');
       if (bmEl && prevBm != null) bmEl.value = prevBm;
       if (cnsEl && prevCns != null) cnsEl.value = prevCns;
       if (ppo2El && prevPpo2 != null) ppo2El.value = prevPpo2;
@@ -1892,6 +1950,72 @@ ENGINE_SUITE_JS = r"""
       calcCNS?.();
     }
     return { bestMixDepthUnitsOk, cnsDepthUnitsOk, ok: bestMixDepthUnitsOk && cnsDepthUnitsOk };
+  })();
+
+  // Seven-lens cycle 04: tools/modals markup contracts (SL-C04).
+  out.sections.sevenLensCycle04 = (() => {
+    let endDepthUnitsOk = false;
+    let siDepthUnitsOk = false;
+    let confirmBackdropOk = false;
+    const prevUnits = typeof units !== 'undefined' ? units : null;
+    const endEl = document.getElementById('endDepth');
+    const siD1El = document.getElementById('siD1Depth');
+    const siD1BtEl = document.getElementById('siD1BT');
+    const siD2El = document.getElementById('siD2Depth');
+    const siD2BtEl = document.getElementById('siD2BT');
+    const prevEnd = endEl?.value;
+    const prevSiD1 = siD1El?.value;
+    const prevSiD1Bt = siD1BtEl?.value;
+    const prevSiD2 = siD2El?.value;
+    const prevSiD2Bt = siD2BtEl?.value;
+    try {
+      if (typeof setUnits === 'function') setUnits('metric');
+      if (typeof setUnits === 'function' && typeof calcEND_tool === 'function' && endEl) {
+        setUnits('metric');
+        endEl.value = '30';
+        syncDepthInputCanonical('endDepth');
+        calcEND_tool();
+        const metricAbs = document.getElementById('endAbsP')?.textContent;
+        setUnits('imperial');
+        calcEND_tool();
+        const imperialAbs = document.getElementById('endAbsP')?.textContent;
+        endDepthUnitsOk =
+          metricAbs === imperialAbs && Math.round(parseFloat(endEl.value)) === 98;
+      }
+      if (typeof setUnits === 'function' && typeof calcSurfInt === 'function' && siD1El && siD2El) {
+        setUnits('metric');
+        siD1El.value = '30';
+        siD1BtEl.value = '25';
+        siD2El.value = '18';
+        siD2BtEl.value = '20';
+        syncDepthInputCanonical('siD1Depth');
+        syncDepthInputCanonical('siD2Depth');
+        calcSurfInt();
+        const metricSi = document.getElementById('siMinResult')?.textContent;
+        setUnits('imperial');
+        calcSurfInt();
+        const imperialSi = document.getElementById('siMinResult')?.textContent;
+        siDepthUnitsOk =
+          metricSi === imperialSi && Math.round(parseFloat(siD1El.value)) === 98;
+      }
+      const confirmModal = document.getElementById('confirmModal');
+      confirmBackdropOk = !!confirmModal?.getAttribute('onclick')?.includes('closeConfirmModal(false)');
+    } finally {
+      if (endEl && prevEnd != null) endEl.value = prevEnd;
+      if (siD1El && prevSiD1 != null) siD1El.value = prevSiD1;
+      if (siD1BtEl && prevSiD1Bt != null) siD1BtEl.value = prevSiD1Bt;
+      if (siD2El && prevSiD2 != null) siD2El.value = prevSiD2;
+      if (siD2BtEl && prevSiD2Bt != null) siD2BtEl.value = prevSiD2Bt;
+      if (prevUnits != null && typeof setUnits === 'function') setUnits(prevUnits);
+      calcEND_tool?.();
+      calcSurfInt?.();
+    }
+    return {
+      endDepthUnitsOk,
+      siDepthUnitsOk,
+      confirmBackdropOk,
+      ok: endDepthUnitsOk && siDepthUnitsOk && confirmBackdropOk,
+    };
   })();
 
   // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
@@ -2316,11 +2440,17 @@ def run_suite(page) -> dict:
     assert_true(sl01.get("settingsRestoreSyncOk"), "[SL-C01-SETTINGS-RESTORE] settings restore syncs depth/bt mirrors and stepper", str(sl01))
     assert_true(sl01.get("altitudeUnitConstraintsOk"), "[SL-C01-ALTITUDE-UNIT-CONSTRAINTS] custom altitude max/step follow display units", str(sl01))
     sl02 = s.get("sevenLensCycle02", {})
-    assert_true(sl02.get("minDecoUnitsOk"), "[SL-C02-MIN-DECO-UNITS] min deco profile uses imperial units flag", str(sl02))
+    assert_true(sl02.get("minDecoUnitsOk"), "[SL-C02-MIN-DECO-UNITS] min deco profile enforces imperial stop depths", str(sl02))
     assert_true(sl02.get("travelDepthConstraintsOk"), "[SL-C02-TRAVEL-DEPTH-CONSTRAINTS] travel manual depth max follows display units", str(sl02))
+    assert_true(sl02.get("cylinderPhysicalConstraintsOk"), "[SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS] imperial cylinder size min/max/step are physical", str(sl02))
+    assert_true(sl02.get("unitRoundtripImmutableOk"), "[SL-C02-UNIT-ROUNDTRIP-IMMUTABLE] metric round-trip preserves stamped depth/volume", str(sl02))
     sl03 = s.get("sevenLensCycle03", {})
     assert_true(sl03.get("bestMixDepthUnitsOk"), "[SL-C03-BEST-MIX-DEPTH-UNITS] best mix O2% invariant across equivalent metric/imperial depth", str(sl03))
     assert_true(sl03.get("cnsDepthUnitsOk"), "[SL-C03-CNS-DEPTH-UNITS] CNS ppO2 invariant across equivalent metric/imperial depth", str(sl03))
+    sl04 = s.get("sevenLensCycle04", {})
+    assert_true(sl04.get("endDepthUnitsOk"), "[SL-C04-END-DEPTH-UNITS] END abs pressure invariant across equivalent metric/imperial depth", str(sl04))
+    assert_true(sl04.get("siDepthUnitsOk"), "[SL-C04-SI-DEPTH-UNITS] surface interval result invariant across equivalent metric/imperial depth", str(sl04))
+    assert_true(sl04.get("confirmBackdropOk"), "[SL-C04-CONFIRM-BACKDROP] confirm modal dismisses on backdrop click", str(sl04))
     assert_true(erdp.get("normalizeOk"), "[ENG-RDP-CUSTOM-FALLBACK] normalizeRecMix restricts to standard gases", str(erdp))
     assert_true(erdp.get("recGasUiOk"), "[ENG-RDP-CUSTOM-FALLBACK] Rec mode hides custom gas option", str(erdp))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
@@ -2424,8 +2554,13 @@ def _audit_case_rows():
         case_row("SL-C01-ALTITUDE-UNIT-CONSTRAINTS", case_ok("SL-C01-ALTITUDE-UNIT-CONSTRAINTS")),
         case_row("SL-C02-MIN-DECO-UNITS", case_ok("SL-C02-MIN-DECO-UNITS")),
         case_row("SL-C02-TRAVEL-DEPTH-CONSTRAINTS", case_ok("SL-C02-TRAVEL-DEPTH-CONSTRAINTS")),
+        case_row("SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS", case_ok("SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS")),
+        case_row("SL-C02-UNIT-ROUNDTRIP-IMMUTABLE", case_ok("SL-C02-UNIT-ROUNDTRIP-IMMUTABLE")),
         case_row("SL-C03-BEST-MIX-DEPTH-UNITS", case_ok("SL-C03-BEST-MIX-DEPTH-UNITS")),
         case_row("SL-C03-CNS-DEPTH-UNITS", case_ok("SL-C03-CNS-DEPTH-UNITS")),
+        case_row("SL-C04-END-DEPTH-UNITS", case_ok("SL-C04-END-DEPTH-UNITS")),
+        case_row("SL-C04-SI-DEPTH-UNITS", case_ok("SL-C04-SI-DEPTH-UNITS")),
+        case_row("SL-C04-CONFIRM-BACKDROP", case_ok("SL-C04-CONFIRM-BACKDROP")),
     ]
 
 

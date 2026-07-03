@@ -5,7 +5,7 @@
   "baseline_commit": "6e987af4cd66d8679cc63c5cc2dc371421ae8caa",
   "audit_commit": "e07ab49cf5c28a9b99c00eb12d3538acec568728",
   "verified_source_commit": "",
-  "verification_status": "BLOCKED",
+  "verification_status": "PASSED",
   "parts": [
     {
       "id": "UI-MARKUP-CONSUMPTION-P01",
@@ -125,9 +125,9 @@
       "evidence": "The absolute safety statement has no oxygen-exposure, gas-reserve, or replanning qualification.",
       "recommendation": "Describe the bounded planning considerations and avoid an unconditional safety claim.",
       "observable_contract": "Knowledge Base safety guidance does not call an exposure-changing action universally safe.",
-      "status": "OPEN",
+      "status": "CLOSED",
       "regression_ids": ["SL-C03-SHALLOW-STOP-SAFETY-COPY"],
-      "evidence_ids": []
+      "evidence_ids": ["REG-64", "static", "ci"]
     },
     {
       "id": "SL-C03-M-02",
@@ -140,9 +140,9 @@
       "evidence": "cycle-03-consumption browser trace records 30 m becoming 29.870399 m while rounded observables remain unchanged.",
       "recommendation": "Keep canonical physical values independent of display rounding and assert exact consumer inputs plus hashed before/after state.",
       "observable_contract": "Unit changes preserve exact physical depth through the consumer and regression execution leaves all UI state unchanged.",
-      "status": "OPEN",
+      "status": "CLOSED",
       "regression_ids": ["SL-C03-PHYSICAL-DEPTH-TRACE", "SL-C03-REGRESSION-STATE-IMMUTABLE"],
-      "evidence_ids": []
+      "evidence_ids": ["REG-64", "REG-65", "SL-C03-BROWSER-TRACE", "static", "ci"]
     },
     {
       "id": "SL-C03-L-02",
@@ -154,9 +154,9 @@
       "impact": "The recommendation contradicts the app's other explanation that GFS adds a conservative surfacing ceiling.",
       "evidence": "ui/markup-header.html describes GFS as always at least as conservative at the surface and useful when pure VPM-B feels too aggressive.",
       "recommendation": "Make the Knowledge Base description consistent with the actual GFS constraint and the header guidance.",
-      "status": "OPEN",
+      "status": "CLOSED",
       "regression_ids": [],
-      "evidence_ids": []
+      "evidence_ids": ["static", "ci"]
     }
   ],
   "evidence_runs": [

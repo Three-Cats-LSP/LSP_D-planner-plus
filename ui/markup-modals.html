@@ -97,7 +97,7 @@
 <button onclick="closePresetModal()" style="margin-top:14px;width:100%;padding:8px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.5px;">✕ Close</button>
 </div>
 </div>
-<div id="confirmModal" class="lsp-modal-overlay lsp-modal-overlay--pad20 lsp-modal-centered" style="display:none;z-index:9600;background:rgba(0,0,0,0.72);">
+<div id="confirmModal" class="lsp-modal-overlay lsp-modal-overlay--pad20 lsp-modal-centered" onclick="if(event.target===this)closeConfirmModal(false)" style="display:none;z-index:9600;background:rgba(0,0,0,0.72);">
 <div style="max-width:340px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:22px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
 <div id="confirmModalMsg" style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;color:var(--text);margin-bottom:20px;text-align:center;line-height:1.5;"></div>
 <div style="display:flex;gap:10px;">

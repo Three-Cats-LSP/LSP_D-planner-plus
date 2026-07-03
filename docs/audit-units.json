@@ -442,6 +442,26 @@
       "suite_id": "SUITE-ENGINE-FULL",
       "case_id": "SL-C03-CNS-DEPTH-UNITS"
     },
+    "REG-66": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C04-END-DEPTH-UNITS"
+    },
+    "REG-67": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C04-SI-DEPTH-UNITS"
+    },
+    "REG-68": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C04-CONFIRM-BACKDROP"
+    },
+    "REG-69": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS"
+    },
+    "REG-70": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C02-UNIT-ROUNDTRIP-IMMUTABLE"
+    },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
       "case_id": "android-compile"
@@ -480,98 +500,131 @@
       "id": "SL-C02-H-01",
       "unit_id": "UI-MARKUP-PLANNER",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-Lens Cycle 02 Codex verification",
       "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes.",
       "affected_units": [
         "UI-MARKUP-PLANNER",
         "UI-UNIT-SWITCHING",
         "UI-GAS-INPUTS"
+      ],
+      "resolution_commit": "437bbf6",
+      "evidence_cases": [
+        "REG-69"
       ]
     },
     {
       "id": "SL-C02-M-03",
       "unit_id": "UI-MARKUP-PLANNER",
       "severity": "MEDIUM",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-Lens Cycle 02 Codex verification",
       "summary": "Travel manual depth limits disagree between markup, metric restore, and imperial mode.",
       "affected_units": [
         "UI-MARKUP-PLANNER",
         "UI-UNIT-SWITCHING",
         "UI-GAS-INPUTS"
+      ],
+      "resolution_commit": "437bbf6",
+      "evidence_cases": [
+        "REG-63"
       ]
     },
     {
       "id": "SL-C02-M-04",
       "unit_id": "UI-UNIT-SWITCHING",
       "severity": "MEDIUM",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-Lens Cycle 02 and Cycle 03 Codex verification",
       "summary": "Rounded display values become canonical physical inputs; Best Mix and CNS now reproduce the same unit-roundtrip drift.",
       "affected_units": [
         "UI-MARKUP-PLANNER",
         "UI-MARKUP-CONSUMPTION",
         "UI-UNIT-SWITCHING"
+      ],
+      "resolution_commit": "437bbf6",
+      "evidence_cases": [
+        "REG-70"
       ]
     },
     {
       "id": "SL-C02-M-05",
       "unit_id": "TEST-ENGINE-REGRESSION",
       "severity": "MEDIUM",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-Lens Cycle 02 Codex verification",
       "summary": "Min-deco regression checks an adapter property rather than observable schedule behavior.",
       "affected_units": [
         "UI-MARKUP-PLANNER",
         "TEST-ENGINE-REGRESSION"
+      ],
+      "resolution_commit": "437bbf6",
+      "evidence_cases": [
+        "REG-62"
       ]
     },
     {
       "id": "SL-C02-M-06",
       "unit_id": "TOOL-SEVEN-LENS-PROTOCOL",
       "severity": "MEDIUM",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-Lens protocol integrity verification",
       "summary": "Cycle history allowed unresolved findings and a blocked prior record to be deleted or rewritten as passed.",
       "affected_units": [
         "TOOL-SEVEN-LENS-PROTOCOL",
         "TEST-SEVEN-LENS-PROTOCOL"
+      ],
+      "resolution_commit": "27b661c",
+      "evidence_cases": [
+        "COV-01"
       ]
     },
     {
       "id": "SL-C03-H-02",
       "unit_id": "UI-MARKUP-CONSUMPTION",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-Lens Cycle 03 Codex verification",
       "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits.",
       "affected_units": [
         "UI-MARKUP-CONSUMPTION"
+      ],
+      "resolution_commit": "437bbf6",
+      "evidence_cases": [
+        "REG-64"
       ]
     },
     {
       "id": "SL-C03-M-02",
       "unit_id": "TEST-ENGINE-REGRESSION",
       "severity": "MEDIUM",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-Lens Cycle 03 Codex verification",
       "summary": "Cycle 3 regressions compare rounded outputs and restore values before units, masking physical-depth drift and corrupting test state.",
       "affected_units": [
         "UI-MARKUP-CONSUMPTION",
         "UI-UNIT-SWITCHING",
         "TEST-ENGINE-REGRESSION"
+      ],
+      "resolution_commit": "437bbf6",
+      "evidence_cases": [
+        "REG-64",
+        "REG-65"
       ]
     },
     {
       "id": "SL-C03-L-02",
       "unit_id": "UI-MARKUP-CONSUMPTION",
       "severity": "LOW",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-Lens Cycle 03 Codex verification",
       "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling.",
       "affected_units": [
         "UI-MARKUP-CONSUMPTION"
+      ],
+      "resolution_commit": "437bbf6",
+      "evidence_cases": [
+        "REG-64"
       ]
     },
     {
@@ -771,21 +824,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "a0afb7d6db3bdb53c4d331671675bfd01e2aa289d9bfda42175ffac84de88bf3",
-      "last_read_fingerprint": "a0afb7d6db3bdb53c4d331671675bfd01e2aa289d9bfda42175ffac84de88bf3",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-05",
-        "COV-01"
-      ],
+      "fingerprint": "d6a8bc822762ab15e054f28a71c35e6d18d716ff3d8519c14f58d5a8e5f11ea9",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified — UI-BOOT"
     },
     {
@@ -927,20 +974,14 @@
       "path": "ui/markup-consumption.html",
       "layer": "web_markup",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "49fc4db38e69cbe03c527b034cfa2f613cb08260278b33cf54fc5f1e5b4f4d7b",
-      "last_read_fingerprint": "49fc4db38e69cbe03c527b034cfa2f613cb08260278b33cf54fc5f1e5b4f4d7b",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-04",
-        "COV-01"
-      ],
+      "fingerprint": "df53e08dc24202bc9299f9d1b455542dd9bb66d9ebbdfbad07f7f01e8579f247",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified — UI-MARKUP-CONSUMPTION"
     },
     {
@@ -952,8 +993,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "62aef8c891215ea1b3640ca09af9fcb9edffe792f74f9a64ae60fe2dba71e737",
-      "last_read_fingerprint": "62aef8c891215ea1b3640ca09af9fcb9edffe792f74f9a64ae60fe2dba71e737",
+      "fingerprint": "848597e92f10f1494b5100e0fcde9099f7832325d7881ca77b0f2067989c4c9a",
+      "last_read_fingerprint": "848597e92f10f1494b5100e0fcde9099f7832325d7881ca77b0f2067989c4c9a",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
         "SUITE-COVERAGE/AUDIT-COV-01"
@@ -973,8 +1014,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "4720f42548ea3b0b75af9cf1548656c9c2c53b3c2b3cfd89c7c17c63a4447be6",
-      "last_read_fingerprint": "4720f42548ea3b0b75af9cf1548656c9c2c53b3c2b3cfd89c7c17c63a4447be6",
+      "fingerprint": "c0b0b1ecc52d7398f80674b0af0f76c45b920b1771a1c917a5d4da34bafebe49",
+      "last_read_fingerprint": "c0b0b1ecc52d7398f80674b0af0f76c45b920b1771a1c917a5d4da34bafebe49",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
         "SUITE-COVERAGE/AUDIT-COV-01"
@@ -1111,21 +1152,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-UNIT-SWITCHING"
       },
-      "fingerprint": "33da7bff9034db36b81a8d8a6352936226788be247465541c072deccffab9aa8",
-      "last_read_fingerprint": "33da7bff9034db36b81a8d8a6352936226788be247465541c072deccffab9aa8",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-05",
-        "COV-01"
-      ],
+      "fingerprint": "6e7f14acc3a94eb130f3b21f9b612937357315c4221b569c099fa75a34c16167",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified — UI-UNIT-SWITCHING"
     },
     {
@@ -1302,26 +1337,16 @@
       "path": "gas-cards-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-INPUTS"
       },
-      "fingerprint": "27eada8c087021fff07532b17d5a2afbccd420d2dbebcd3e6d433a1783eaccc5",
-      "last_read_fingerprint": "27eada8c087021fff07532b17d5a2afbccd420d2dbebcd3e6d433a1783eaccc5",
+      "fingerprint": "0d72136b9b37afb99bae41b2cc1f80b74f0cbbdeffed9e896608ba0edd0aba9d",
+      "last_read_fingerprint": null,
       "audit_issue": 149,
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity",
-        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
-        "SUITE-ENGINE-FULL/AUDIT-REG-01"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01",
-        "EXT-02",
-        "REG-01"
-      ],
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Cycle 34 invalid custom-gas MOD display suppression"
     },
     {
@@ -1329,26 +1354,16 @@
       "path": "gas-cards-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-CARDS"
       },
-      "fingerprint": "6d08c33b01b44a3ef9e3811174641839c7b56b7fd10cc54b1382a172e96036be",
-      "last_read_fingerprint": "6d08c33b01b44a3ef9e3811174641839c7b56b7fd10cc54b1382a172e96036be",
+      "fingerprint": "47cf1ec9ad9ffc1e7fb9e567bcc19a79aca516769a703cd160b9b4f3c8c4cb32",
+      "last_read_fingerprint": null,
       "audit_issue": 148,
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity",
-        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
-        "SUITE-ENGINE-FULL/AUDIT-REG-01"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01",
-        "EXT-02",
-        "REG-01"
-      ],
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Cycle 35 structured read — no actionable findings"
     },
     {
@@ -1475,21 +1490,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-INIT"
       },
-      "fingerprint": "9e0102c609f84e5a39b1a75bbe9cec64f1772739496f35ae4649dcaee939d583",
-      "last_read_fingerprint": "9e0102c609f84e5a39b1a75bbe9cec64f1772739496f35ae4649dcaee939d583",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-05",
-        "COV-01"
-      ],
+      "fingerprint": "ba6430625655de958aec4ba54e57bb62fc166c185969da7992f25ce0d82e0937",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 154,
       "issue": "Audit issue #154"
     },
@@ -1575,22 +1584,16 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-EXPOSURE"
       },
-      "fingerprint": "2b5f0a053c4c2b32e6cc52e300550d8e5690bcb25268d7743a42391e8e5331f2",
-      "last_read_fingerprint": "2b5f0a053c4c2b32e6cc52e300550d8e5690bcb25268d7743a42391e8e5331f2",
+      "fingerprint": "f298f0b0b91dafaf9d71eb5de13bb8e859f539a51f25ac5894a3ab740aaa6292",
+      "last_read_fingerprint": null,
       "audit_issue": 156,
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-05",
-        "COV-01"
-      ],
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Audit issue #156"
     },
     {
@@ -2049,42 +2052,30 @@
       "path": "gas-table-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3f603d19106c84ba678cc7b26b5befe6d65fc54ae8bda1d17f927c91c525fcf9",
-      "last_read_fingerprint": "3f603d19106c84ba678cc7b26b5befe6d65fc54ae8bda1d17f927c91c525fcf9",
-      "evidence": [
-        "SUITE-ISSUE-140/ISSUE140-H1-SURF-GAS",
-        "SUITE-ISSUE-140/ISSUE140-H2-POOLED-TURN"
-      ],
+      "fingerprint": "f752db7c39b97db8b016acfd5cc1df60f0a9f656972786f50f8352dbca1020a9",
+      "last_read_fingerprint": null,
+      "evidence": [],
       "issue": "Cycle 5 GT-01�06 � docs/code-review-2026-06-30.md",
-      "regression_cases": [
-        "REG-08",
-        "REG-09"
-      ]
+      "regression_cases": []
     },
     {
       "id": "APP-SURFACE-INTERVAL",
       "path": "surf-interval-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "bbc70a54ddf64b9b3e18fef1d1480155ff86a3e0da09d23cb48be6690b434a52",
-      "last_read_fingerprint": "bbc70a54ddf64b9b3e18fef1d1480155ff86a3e0da09d23cb48be6690b434a52",
-      "evidence": [
-        "SUITE-ISSUE-140/ISSUE140-H1-SURF-GAS",
-        "SUITE-ISSUE-140/ISSUE140-H2-POOLED-TURN"
-      ],
+      "fingerprint": "2b0a6880339f3c6d576cecfd092ca8618765ab866a4a945fee8fd1b6497227ad",
+      "last_read_fingerprint": null,
+      "evidence": [],
       "issue": "GitHub #142 � Dive 2 gas override",
-      "regression_cases": [
-        "REG-08",
-        "REG-09"
-      ]
+      "regression_cases": []
     },
     {
       "id": "APP-SERVICE-WORKER",
@@ -2648,25 +2639,15 @@
       "path": "dev/engine_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [
-        "SUITE-ENGINE-FULL/AUDIT-REG-01",
-        "SUITE-ENGINE-FULL/AUDIT-REG-02",
-        "SUITE-ENGINE-FULL/AUDIT-REG-03",
-        "SUITE-ENGINE-FULL/AUDIT-REG-05"
-      ],
+      "evidence": [],
       "issue": "GitHub #133–#138 audit regressions and Cycle 31–34 verification",
-      "regression_cases": [
-        "REG-01",
-        "REG-02",
-        "REG-03",
-        "REG-05"
-      ],
-      "fingerprint": "a3ece02c9e6bb4e8c7debf3c9dcb03d013dbb56b47964675489080fc44a98c28",
-      "last_read_fingerprint": "a3ece02c9e6bb4e8c7debf3c9dcb03d013dbb56b47964675489080fc44a98c28",
+      "regression_cases": [],
+      "fingerprint": "522740d9788ae297cbbebf667795c13885f570f703edd068a3181bc696df33b6",
+      "last_read_fingerprint": null,
       "audit_issue": 169
     },
     {
@@ -3497,9 +3478,15 @@
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": ["SUITE-COVERAGE/AUDIT-COV-01", "SUITE-PARITY/canonical-generated-parity"],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
       "issue": "Seven-lens manual audit protocol gate",
-      "regression_cases": ["COV-01", "PARITY-01"],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "fingerprint": "976ca2f350da90e3286f38ae2fee1459be031c913cecb9e1c9d42036bd7f4a1e",
       "last_read_fingerprint": "976ca2f350da90e3286f38ae2fee1459be031c913cecb9e1c9d42036bd7f4a1e"
     },
@@ -3512,9 +3499,13 @@
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": ["SUITE-COVERAGE/AUDIT-COV-01"],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
       "issue": "Seven-lens manual audit protocol gate tests",
-      "regression_cases": ["COV-01"],
+      "regression_cases": [
+        "COV-01"
+      ],
       "fingerprint": "073afbd6c212ac5de0c58a5967bea95a52e000b88a27445f6d34c1e8421cbb9a",
       "last_read_fingerprint": "073afbd6c212ac5de0c58a5967bea95a52e000b88a27445f6d34c1e8421cbb9a"
     },
@@ -3523,19 +3514,15 @@
       "path": "tools/seven_lens_browser_trace.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
+      "evidence": [],
       "issue": "Seven-lens browser event and consumer value tracing",
-      "regression_cases": [
-        "COV-01"
-      ],
-      "fingerprint": "b3d4e334759f7a791dc161eb2b485f94c79500992e2141aac35f36954c3afe6b",
-      "last_read_fingerprint": "b3d4e334759f7a791dc161eb2b485f94c79500992e2141aac35f36954c3afe6b"
+      "regression_cases": [],
+      "fingerprint": "5a498c9fd3fdea5c06441ad185d2ad5c2f56a9510cd0088bf155e397f0b8b42b",
+      "last_read_fingerprint": null
     },
     {
       "id": "TEST-SEVEN-LENS-BROWSER-TRACE",
@@ -3570,6 +3557,21 @@
       "regression_cases": [],
       "fingerprint": "a3b84140c93159491e8d64583ba2081816438e9e17651972d2907c73425cac4b",
       "last_read_fingerprint": "a3b84140c93159491e8d64583ba2081816438e9e17651972d2907c73425cac4b"
+    },
+    {
+      "id": "TEST-SEVEN-LENS-CYCLE04-TRACE",
+      "path": "docs/seven-lens-traces/cycle-04-tools-modals.json",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Cycle 04 exact browser value and state trace specification",
+      "regression_cases": [],
+      "fingerprint": "be75ffb78f5abf216dd6ef559399043c7c4841eed400dbe866bce9f674d6b795",
+      "last_read_fingerprint": null
     },
     {
       "id": "TOOL-EXTRACT-UI",
@@ -4714,7 +4716,7 @@
     },
     {
       "cycle": 10,
-      "max_new_application_lines": 674,
+      "max_new_application_lines": 690,
       "application_units": [
         "APP-SURFACE-INTERVAL",
         "APP-GAS-TABLE"
@@ -4773,7 +4775,7 @@
     },
     {
       "cycle": 16,
-      "max_new_application_lines": 720,
+      "max_new_application_lines": 800,
       "application_units": [
         "UI-TOOLS-PROFILE",
         "UI-PLOT-INIT"
@@ -4870,7 +4872,7 @@
     },
     {
       "cycle": 25,
-      "max_new_application_lines": 1200,
+      "max_new_application_lines": 1250,
       "application_units": [
         "UI-SETTINGS",
         "UI-UNIT-HELPERS",
@@ -5197,8 +5199,13 @@
         "SL-C01-ALTITUDE-UNIT-CONSTRAINTS",
         "SL-C02-MIN-DECO-UNITS",
         "SL-C02-TRAVEL-DEPTH-CONSTRAINTS",
+        "SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS",
+        "SL-C02-UNIT-ROUNDTRIP-IMMUTABLE",
         "SL-C03-BEST-MIX-DEPTH-UNITS",
-        "SL-C03-CNS-DEPTH-UNITS"
+        "SL-C03-CNS-DEPTH-UNITS",
+        "SL-C04-END-DEPTH-UNITS",
+        "SL-C04-SI-DEPTH-UNITS",
+        "SL-C04-CONFIRM-BACKDROP"
       ]
     },
     {

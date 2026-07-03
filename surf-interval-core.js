@@ -102,9 +102,11 @@ function computeSurfIntervalCore(opts) {
 function calcSurfInt(prefix) {
   const P = prefix || 'si';
   const gid = (suffix) => document.getElementById(P + suffix);
-  const d1 = parseFloat(gid('D1Depth')?.value) || 30;
+  const d1Id = P + 'D1Depth';
+  const d2Id = P + 'D2Depth';
+  const d1 = domDepthToM(d1Id);
   const bt1 = parseFloat(gid('D1BT')?.value) || 25;
-  const d2 = parseFloat(gid('D2Depth')?.value) || 30;
+  const d2 = domDepthToM(d2Id);
   const bt2 = parseFloat(gid('D2BT')?.value) || 25;
   const gfLow = (parseFloat(gid('GfLow')?.value) || 30) / 100;
   const gfHigh = (typeof mGF !== 'undefined' && Number.isFinite(mGF.high) ? mGF.high : 85) / 100;
