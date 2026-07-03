@@ -12,7 +12,7 @@ in `docs/seven-lens-records/`.
 |------:|------|--------|-----------------|-----|
 | 1 | `UI-MARKUP-HEADER` | **CLOSED** — merged to `dev` | `d39bb3b` | [#177](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/177), [#178](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/178) |
 | 2 | `UI-MARKUP-PLANNER` | **CLOSED** — merged to `dev` | `b56fc07` | [#179](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/179) |
-| 3 | `UI-MARKUP-CONSUMPTION` | **CLOSED** — pending merge to `dev` | `277985b` | [#182](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/182) |
+| 3 | `UI-MARKUP-CONSUMPTION` | **CLOSED** — merged to `dev` | `277985b` | [#182](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/182) |
 
 ---
 
@@ -333,6 +333,7 @@ Seven lenses applied to the V3 consumption tools markup partial and traced calle
 - **Consumption tools:** Best-mix and CNS depth inputs convert correctly between metric and imperial; canonical `data-depthM` stamps preserve lossless round-trips.
 - **Regression suite:** Two new stable case IDs (REG-64, REG-65); full engine regression at 163 cases.
 - **CI:** Static + full CI green on verified commit `277985b`.
+- **Merge status:** Merged to `dev` via PR [#182](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/182).
 - **Open findings:** None for this unit.
 - **Cumulative seven-lens coverage:** Cycles 1–3 complete header, planner, and consumption markup partials.
 
