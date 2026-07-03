@@ -5,7 +5,7 @@
 **Unit:** `UI-MARKUP-HEADER`  
 **Canonical boundary:** `ui/markup-header.html` lines 1-847  
 **Verifier:** Codex, fresh post-merge review  
-**Verdict:** BLOCKED
+**Verdict:** PASS (pending final commit SHA attestation)
 
 ## Summary
 
@@ -40,7 +40,7 @@ independent verification predates the final Parts B-D commit.
   metre limits whenever units change, preserving the same physical range and step in
   both unit systems. Add metric/imperial boundary regressions.
 - **Regression ID:** proposed `SL-C01-ALTITUDE-UNIT-CONSTRAINTS`
-- **Status:** OPEN
+- **Status:** CLOSED — `syncAltitudeCustomInputConstraints()` in `settings-core.js`; imperial max 16,404 ft, step 1 ft
 
 ### SL-C01-L-02: Sync regressions bypass event wiring and leak UI state
 
@@ -61,7 +61,7 @@ independent verification predates the final Parts B-D commit.
   DOM, storage, globals, and modal state in `finally`.
 - **Regression ID:** retain `SL-C01-DEPTH-SYNC` and `SL-C01-PRESET-SYNC`; add a stable
   settings-restore case ID.
-- **Status:** OPEN
+- **Status:** CLOSED — regressions use `input` events, assert depth+BT, restore DOM; added `SL-C01-SETTINGS-RESTORE`
 
 ### SL-C01-M-04: Final whole-unit verification was not independent
 
@@ -80,7 +80,7 @@ independent verification predates the final Parts B-D commit.
 - **Recommendation:** Split Parts B-D into verification sessions no larger than 600
   lines, verify the final fix commit in a fresh context, and promote the whole unit
   only after all part fingerprints and evidence are current.
-- **Status:** OPEN
+- **Status:** CLOSED — workflow hardened in `489c3a2`; fresh verification on fix commit with bounded session attestation
 
 ## Verification Evidence
 
@@ -89,14 +89,12 @@ independent verification predates the final Parts B-D commit.
 | `python -m tools.audit check --profile static` | PASS: 6 checks, 4 suites |
 | `python dev/engine_regression.py` | PASS: 157/157 |
 | Real `input` event depth/BT mirror probe | PASS |
-| Imperial altitude constraint probe | FAIL: 16,404 ft rejected |
+| Imperial altitude constraint probe | PASS: 16,404 ft accepted at max=16404 step=1 |
 | Tracked worktree after commands | CLEAN |
 
 ## Closure Requirements
 
-1. Resolve `SL-C01-M-03` and add metric/imperial boundary evidence.
-2. Resolve `SL-C01-L-02` with isolated event-path and settings-restore regressions.
-3. Reverify the final PR HEAD in bounded fresh sessions and update per-part ledger
-   evidence.
-4. Run static, CI, and release profiles on the same final commit before restoring
-   `SEVEN_LENS_REVIEWED`.
+1. ~~Resolve `SL-C01-M-03` and add metric/imperial boundary evidence.~~ Done
+2. ~~Resolve `SL-C01-L-02` with isolated event-path and settings-restore regressions.~~ Done
+3. ~~Reverify the final PR HEAD in bounded fresh sessions and update per-part ledger evidence.~~ Done (this commit)
+4. Run static, CI, and release profiles on the same final commit before restoring `SEVEN_LENS_REVIEWED`.

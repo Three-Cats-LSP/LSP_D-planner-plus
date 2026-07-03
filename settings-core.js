@@ -311,6 +311,7 @@ function handleAltitudeSelect(val) {
   if (val === 'custom') {
     if (customRow) customRow.style.display = 'flex';
     if (unitSpan)  unitSpan.textContent = units === 'imperial' ? 'ft' : 'm';
+    syncAltitudeCustomInputConstraints();
   } else {
     if (customRow) customRow.style.display = 'none';
   }
@@ -319,6 +320,20 @@ function handleAltitudeSelect(val) {
 
 function applyCustomAltitude() {
   setAltitude();
+}
+
+const ALTITUDE_CUSTOM_MAX_M = 5000;
+const ALTITUDE_CUSTOM_STEP_M = 50;
+
+/** Keep #altitudeCustomInput min/max/step in display units (metric m or imperial ft). */
+function syncAltitudeCustomInputConstraints() {
+  const inp = document.getElementById('altitudeCustomInput');
+  if (!inp) return;
+  const imperial = units === 'imperial';
+  inp.min = '0';
+  inp.max = String(imperial ? Math.round(ALTITUDE_CUSTOM_MAX_M * 3.28084) : ALTITUDE_CUSTOM_MAX_M);
+  // 50 m does not map to an integer foot step that tiles 16,404 ft; use 1 ft steps in imperial.
+  inp.step = imperial ? '1' : String(ALTITUDE_CUSTOM_STEP_M);
 }
 
 function altitudeMFromCustomDisplay(raw) {
@@ -349,6 +364,7 @@ function loadAltitudeFromStorage() {
         if (customInp) customInp.value = altitudeMToCustomDisplay(altitudeM);
       }
     }
+    syncAltitudeCustomInputConstraints();
     const acclSel = document.getElementById('acclimatizedSelect');
     if (acclSel) acclSel.value = altAcclimatized ? 'yes' : 'no';
     // Update badge

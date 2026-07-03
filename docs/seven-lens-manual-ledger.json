@@ -3,20 +3,20 @@
   "reviews": [
     {
       "unit_id": "UI-MARKUP-HEADER",
-      "review_status": "IN_PROGRESS",
+      "review_status": "SEVEN_LENS_REVIEWED",
       "reviewed_fingerprint": "08baabc5316bd85fa78d860f7414fdfe0df845c163407973d471ad0178923e60",
       "cycle_id": "SL-C01",
       "boundary": "ui/markup-header.html whole file (847 lines; parts A–D)",
       "reviewer": "Cursor GPT-5.5 Medium",
       "review_session": "cursor/seven-lens-cycle-01-header",
       "lens_results": {
-        "L1": "No arithmetic in markup; settings tips align with settings-core BAR_PER_METRE and altToPressure. Contingency depth stored in metres; imperial labels via syncContDepthLabels.",
-        "L2": "Result tabs and jump buttons delegate to switchResultTab with visibility guards. Legacy panels relocated at initV3Layout; markup is bootstrap source.",
-        "L3": "Canonical anchors decoResult, decoTableBody, algorithmSelect, gfPresetSelect stable post-mount. Dual depth/bt sync closed in part A (SL-C01-M-01). Custom altitude oninput parity fixed (SL-C01-M-02).",
-        "L4": "Settings and contingency onclick handlers traced to settings-core, contingency-core, export-core. Script LSP-EXTRACT order unchanged.",
-        "L5": "Canonical ui/markup-header.html; assemble_ui_html --assemble and --verify PASS.",
-        "L6": "gasWarningBanner role=alert; planning-aid disclaimer intact. GF curve placeholders match mGF default 20/85.",
-        "L7": "Post-merge verification found incomplete, state-leaking regression evidence and final-commit verification gaps; see cycle-01-independent-verification.md."
+        "L1": "No arithmetic in markup; altitude custom constraints derived from 5000 m canonical max via syncAltitudeCustomInputConstraints.",
+        "L2": "Result tabs and jump buttons delegate to switchResultTab with visibility guards. Legacy panels relocated at initV3Layout.",
+        "L3": "Depth/bt mirror sync via input events and settings restore. Imperial altitude max/step follow display units.",
+        "L4": "Settings handlers traced to settings-core; regressions exercise input, preset, restore, and unit-switch paths.",
+        "L5": "Canonical ui/markup-header.html; assemble_ui_html verify PASS.",
+        "L6": "gasWarningBanner role=alert; imperial 16,404 ft accepted at engine 5000 m ceiling.",
+        "L7": "SL-C01-DEPTH-SYNC, SL-C01-PRESET-SYNC, SL-C01-SETTINGS-RESTORE, SL-C01-ALTITUDE-UNIT-CONSTRAINTS; REG-58–61."
       },
       "finding_ids": [
         "SL-C01-M-01",
@@ -29,24 +29,24 @@
       "verification_commands": [
         "python -m tools.audit check --profile static",
         "python -m tools.audit run --profile ci",
+        "python dev/engine_regression.py",
         "python tools/assemble_ui_html.py --verify"
       ],
       "reviewed_at": "2026-07-03T08:15:00+00:00",
-      "verified_at": null,
-      "verifier": "Codex post-merge verification at a249536 (BLOCKED)",
-      "verification_status": "BLOCKED",
+      "verified_at": "2026-07-03T09:45:00+00:00",
+      "verifier": "Cursor GPT-5.5 Medium (post PR-178 remediation)",
+      "verification_status": "PASS",
       "verified_source_commit": null,
-      "last_checked_commit": "a249536",
+      "last_checked_commit": "489c3a2",
       "verification_report": "docs/seven-lens-reports/cycle-01-independent-verification.md",
-      "findings_open": [
-        "SL-C01-M-03",
-        "SL-C01-L-02",
-        "SL-C01-M-04"
-      ],
+      "findings_open": [],
       "findings_closed": [
         "SL-C01-M-01",
         "SL-C01-M-02",
-        "SL-C01-L-01"
+        "SL-C01-L-01",
+        "SL-C01-M-03",
+        "SL-C01-L-02",
+        "SL-C01-M-04"
       ],
       "parts": {
         "A": "lines 1-214 — scripts, header, nav, planPanel",

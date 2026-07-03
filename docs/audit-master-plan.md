@@ -38,7 +38,7 @@
 | 6 | UI-CSS-CONTROLS | 528 | - | Controls CSS READ |
 | 7 | UI-CSS-RESULTS | 924 | - | Results CSS READ |
 | 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 506 | - | Planner shell and results panel READ |
-| 9 | UI-ENVIRONMENT, UI-MODE-STATE | 932 | - | settings-core environment and mode state READ |
+| 9 | UI-ENVIRONMENT, UI-MODE-STATE | 948 | - | settings-core environment and mode state READ |
 | 10 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 674 | - | Surface interval and gas table cores READ |
 | 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 497 | ENG-ZHL-GAS | Gas card UI READ |
 | 12 | APP-GAS-PLAN | 546 | - | Gas plan core READ |
@@ -54,7 +54,7 @@
 | 22 | UI-VPM-RUNNER | 473 | ENG-VPM | VPM runner READ |
 | 23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 393 | - | Runtime bootstrap and app init READ |
 | 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 671 | - | Algorithm and settings controls READ |
-| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1164 | - | Settings persistence and unit helpers READ |
+| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1165 | - | Settings persistence and unit helpers READ |
 | 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 851 | - | Tools panels READ |
 | 27 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 562 | - | Profile and config presets READ |
 | 28 | UI-BOOT | 2376 | - | index.html shell boot region READ |

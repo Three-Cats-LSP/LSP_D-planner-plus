@@ -413,6 +413,14 @@
       "suite_id": "SUITE-ENGINE-FULL",
       "case_id": "SL-C01-PRESET-SYNC"
     },
+    "REG-60": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C01-SETTINGS-RESTORE"
+    },
+    "REG-61": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C01-ALTITUDE-UNIT-CONSTRAINTS"
+    },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
       "case_id": "android-compile"
@@ -891,8 +899,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ENVIRONMENT"
       },
-      "fingerprint": "a391637b16aa5020defa62f0a5729f7b24c503e2a003cd91a782ba681ca0f8a5",
-      "last_read_fingerprint": "a391637b16aa5020defa62f0a5729f7b24c503e2a003cd91a782ba681ca0f8a5",
+      "fingerprint": "21351eca56327ac0d74c4412cb073b57523d78668ca95fd465c67dfa197e08ba",
+      "last_read_fingerprint": "21351eca56327ac0d74c4412cb073b57523d78668ca95fd465c67dfa197e08ba",
       "audit_issue": 139,
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01",
@@ -989,8 +997,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-UNIT-SWITCHING"
       },
-      "fingerprint": "34caf74a04d6e15f9c9077dc069d6d051ea4afdb26275c162cfdc5c48c3f42f7",
-      "last_read_fingerprint": "34caf74a04d6e15f9c9077dc069d6d051ea4afdb26275c162cfdc5c48c3f42f7",
+      "fingerprint": "dc44ce7335dff87eaf6d11e8340b7f944685f2ea0ad9136d38f0a3123849f37e",
+      "last_read_fingerprint": "dc44ce7335dff87eaf6d11e8340b7f944685f2ea0ad9136d38f0a3123849f37e",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
         "SUITE-COVERAGE/AUDIT-COV-01"
@@ -2538,8 +2546,8 @@
         "REG-03",
         "REG-05"
       ],
-      "fingerprint": "5b893a58ea50bd176b34018a7d0f92854703a72b77c5e9f42ec6e42f84d6aa49",
-      "last_read_fingerprint": "5b893a58ea50bd176b34018a7d0f92854703a72b77c5e9f42ec6e42f84d6aa49",
+      "fingerprint": "1c8a7c9befe46d7168dddddcca7050877dd0cd1c4df6df6b216b0cff8ad211b1",
+      "last_read_fingerprint": "1c8a7c9befe46d7168dddddcca7050877dd0cd1c4df6df6b216b0cff8ad211b1",
       "audit_issue": 169
     },
     {
@@ -4494,7 +4502,7 @@
     },
     {
       "cycle": 9,
-      "max_new_application_lines": 932,
+      "max_new_application_lines": 960,
       "application_units": [
         "UI-ENVIRONMENT",
         "UI-MODE-STATE"
@@ -4982,7 +4990,9 @@
         "ENG-RDP-PURE-MIXES",
         "ENG-RDP-CUSTOM-FALLBACK",
         "SL-C01-DEPTH-SYNC",
-        "SL-C01-PRESET-SYNC"
+        "SL-C01-PRESET-SYNC",
+        "SL-C01-SETTINGS-RESTORE",
+        "SL-C01-ALTITUDE-UNIT-CONSTRAINTS"
       ]
     },
     {

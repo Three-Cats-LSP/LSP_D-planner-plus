@@ -1670,38 +1670,146 @@ ENGINE_SUITE_JS = r"""
 
   // Seven-lens cycle 01: depth/bt mirror + stepper sync (SL-C01-M-01).
   out.sections.sevenLensCycle01 = (() => {
+    const FT_PER_M = 3.28084;
+    const fieldIds = ['decoDepth', 'decoBT', 'depth', 'bt'];
+    const snapFields = (ids) => Object.fromEntries(
+      ids.map(id => [id, document.getElementById(id)?.value])
+    );
+    const restoreFields = (snap) => {
+      Object.entries(snap).forEach(([id, value]) => {
+        const el = document.getElementById(id);
+        if (el && value != null) el.value = value;
+      });
+      _syncDepthBtSteppers?.();
+    };
+    const snapLabels = () => ({
+      depthLbl: document.getElementById('depthStepperVal')?.textContent,
+      btLbl: document.getElementById('btStepperVal')?.textContent,
+    });
+    const restoreLabels = (snap) => {
+      const dl = document.getElementById('depthStepperVal');
+      const bl = document.getElementById('btStepperVal');
+      if (dl && snap.depthLbl != null) dl.textContent = snap.depthLbl;
+      if (bl && snap.btLbl != null) bl.textContent = snap.btLbl;
+    };
+    const syncOk = (d, b) => {
+      const dd = document.getElementById('decoDepth')?.value;
+      const db = document.getElementById('decoBT')?.value;
+      const depth = document.getElementById('depth')?.value;
+      const bt = document.getElementById('bt')?.value;
+      const depthLbl = document.getElementById('depthStepperVal')?.textContent;
+      const btLbl = document.getElementById('btStepperVal')?.textContent;
+      const ds = String(d);
+      const bs = String(b);
+      return dd === ds && db === bs && depth === ds && bt === bs && depthLbl === ds && btLbl === bs;
+    };
+    const dispatchInput = (id, value) => {
+      const el = document.getElementById(id);
+      if (!el) return false;
+      el.value = value;
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      return true;
+    };
+
     let depthStepperSyncOk = false;
     let loadPresetSyncOk = false;
-    if (typeof _syncDepthBtSteppers === 'function') {
-      const dEl = document.getElementById('decoDepth');
-      const bEl = document.getElementById('decoBT');
-      if (dEl && bEl) {
-        dEl.value = '52';
-        bEl.value = '22';
-        _syncDepthBtSteppers();
-        depthStepperSyncOk =
-          document.getElementById('depth')?.value === '52'
-          && document.getElementById('bt')?.value === '22'
-          && document.getElementById('depthStepperVal')?.textContent === '52'
-          && document.getElementById('btStepperVal')?.textContent === '22';
+    let settingsRestoreSyncOk = false;
+    let altitudeUnitConstraintsOk = false;
+
+    const baselineFields = snapFields(fieldIds);
+    const baselineLabels = snapLabels();
+    const prevUnits = typeof units !== 'undefined' ? units : null;
+
+    try {
+      if (dispatchInput('decoDepth', '52') && dispatchInput('decoBT', '22')) {
+        depthStepperSyncOk = syncOk(52, 22);
       }
+      restoreFields(baselineFields);
+      restoreLabels(baselineLabels);
+
       if (typeof loadProfilePreset === 'function') {
+        const presetFields = snapFields(fieldIds);
+        const presetLabels = snapLabels();
         const key = typeof LSP_PROFILE_PRESETS_KEY !== 'undefined' ? LSP_PROFILE_PRESETS_KEY : 'lspProfilePresets';
-        const prev = localStorage.getItem(key);
+        const prevStorage = localStorage.getItem(key);
         try {
           localStorage.setItem(key, JSON.stringify([{ name: 't', depth: '48', bt: '18', gases: {} }]));
           loadProfilePreset(0);
-          loadPresetSyncOk =
-            document.getElementById('decoDepth')?.value === '48'
-            && document.getElementById('depth')?.value === '48'
-            && document.getElementById('depthStepperVal')?.textContent === '48';
+          loadPresetSyncOk = syncOk(48, 18);
         } finally {
-          if (prev == null) localStorage.removeItem(key);
-          else localStorage.setItem(key, prev);
+          if (prevStorage == null) localStorage.removeItem(key);
+          else localStorage.setItem(key, prevStorage);
+          restoreFields(presetFields);
+          restoreLabels(presetLabels);
         }
       }
+
+      if (typeof appSettings !== 'undefined' && typeof appSettings._syncUiAfterRestore === 'function') {
+        const restoreFieldsSnap = snapFields(fieldIds);
+        const restoreLabelsSnap = snapLabels();
+        const wasHeadless = window._zhlHeadless;
+        try {
+          window._zhlHeadless = false;
+          const dd = document.getElementById('decoDepth');
+          const db = document.getElementById('decoBT');
+          if (dd) dd.value = '55';
+          if (db) db.value = '25';
+          appSettings._syncUiAfterRestore({});
+          settingsRestoreSyncOk = syncOk(55, 25);
+        } finally {
+          window._zhlHeadless = wasHeadless;
+          restoreFields(restoreFieldsSnap);
+          restoreLabels(restoreLabelsSnap);
+        }
+      }
+
+      if (typeof setUnits === 'function' && typeof syncAltitudeCustomInputConstraints === 'function') {
+        const altSel = document.getElementById('altitudeSelect');
+        const altInp = document.getElementById('altitudeCustomInput');
+        const altRow = document.getElementById('altitudeCustomRow');
+        const selSnap = altSel?.value;
+        const rowDisp = altRow?.style.display;
+        try {
+          if (altSel) {
+            altSel.value = 'custom';
+            handleAltitudeSelect('custom');
+          }
+          setUnits('metric');
+          const metricMax = Number(altInp?.max);
+          const metricStep = Number(altInp?.step);
+          setUnits('imperial');
+          const imperialMax = Number(altInp?.max);
+          const imperialFt = Math.round(5000 * FT_PER_M);
+          if (altInp) {
+            altInp.value = String(imperialFt);
+            altitudeUnitConstraintsOk =
+              metricMax === 5000 && metricStep === 50
+              && imperialMax === imperialFt
+              && Number(altInp?.step) === 1
+              && altInp.checkValidity() === true;
+          }
+        } finally {
+          if (prevUnits != null) setUnits(prevUnits);
+          if (altSel && selSnap != null) {
+            altSel.value = selSnap;
+            handleAltitudeSelect(selSnap);
+          }
+          if (altRow && rowDisp != null) altRow.style.display = rowDisp;
+        }
+      }
+    } finally {
+      restoreFields(baselineFields);
+      restoreLabels(baselineLabels);
+      if (prevUnits != null && typeof setUnits === 'function') setUnits(prevUnits);
     }
-    return { depthStepperSyncOk, loadPresetSyncOk, ok: depthStepperSyncOk && loadPresetSyncOk };
+
+    return {
+      depthStepperSyncOk,
+      loadPresetSyncOk,
+      settingsRestoreSyncOk,
+      altitudeUnitConstraintsOk,
+      ok: depthStepperSyncOk && loadPresetSyncOk && settingsRestoreSyncOk && altitudeUnitConstraintsOk,
+    };
   })();
 
   // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
@@ -2121,8 +2229,10 @@ def run_suite(page) -> dict:
     assert_true(erdp.get("pureMixesOk"), "[ENG-RDP-PURE-MIXES] Air/EAN32/EAN36 NDL tables at 18 m", str(erdp))
     assert_true(erdp.get("customFallbackOk"), "[ENG-RDP-CUSTOM-FALLBACK] non-standard mixes fall back to air table", str(erdp))
     sl01 = s.get("sevenLensCycle01", {})
-    assert_true(sl01.get("depthStepperSyncOk"), "[SL-C01-DEPTH-SYNC] decoDepth/decoBT sync depth/bt mirrors and stepper labels", str(sl01))
+    assert_true(sl01.get("depthStepperSyncOk"), "[SL-C01-DEPTH-SYNC] decoDepth/decoBT input events sync depth/bt mirrors and stepper labels", str(sl01))
     assert_true(sl01.get("loadPresetSyncOk"), "[SL-C01-PRESET-SYNC] loadProfilePreset syncs depth/bt mirrors and stepper", str(sl01))
+    assert_true(sl01.get("settingsRestoreSyncOk"), "[SL-C01-SETTINGS-RESTORE] settings restore syncs depth/bt mirrors and stepper", str(sl01))
+    assert_true(sl01.get("altitudeUnitConstraintsOk"), "[SL-C01-ALTITUDE-UNIT-CONSTRAINTS] custom altitude max/step follow display units", str(sl01))
     assert_true(erdp.get("normalizeOk"), "[ENG-RDP-CUSTOM-FALLBACK] normalizeRecMix restricts to standard gases", str(erdp))
     assert_true(erdp.get("recGasUiOk"), "[ENG-RDP-CUSTOM-FALLBACK] Rec mode hides custom gas option", str(erdp))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
@@ -2222,6 +2332,8 @@ def _audit_case_rows():
         case_row("ENG-RDP-CUSTOM-FALLBACK", case_ok("ENG-RDP-CUSTOM-FALLBACK")),
         case_row("SL-C01-DEPTH-SYNC", case_ok("SL-C01-DEPTH-SYNC")),
         case_row("SL-C01-PRESET-SYNC", case_ok("SL-C01-PRESET-SYNC")),
+        case_row("SL-C01-SETTINGS-RESTORE", case_ok("SL-C01-SETTINGS-RESTORE")),
+        case_row("SL-C01-ALTITUDE-UNIT-CONSTRAINTS", case_ok("SL-C01-ALTITUDE-UNIT-CONSTRAINTS")),
     ]
 
 
