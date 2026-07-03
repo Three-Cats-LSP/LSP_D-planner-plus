@@ -473,6 +473,14 @@
     "EXT-08": {
       "suite_id": "SUITE-UI-STRUCTURE",
       "case_id": "UI-SW-PRECACHE"
+    },
+    "REG-66": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS"
+    },
+    "REG-67": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C03-SHALLOW-STOP-SAFETY-COPY"
     }
   },
   "findings": [
@@ -480,13 +488,17 @@
       "id": "SL-C02-H-01",
       "unit_id": "UI-MARKUP-PLANNER",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-Lens Cycle 02 Codex verification",
       "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes.",
       "affected_units": [
         "UI-MARKUP-PLANNER",
         "UI-UNIT-SWITCHING",
         "UI-GAS-INPUTS"
+      ],
+      "resolution_commit": "pending-ci-autofix",
+      "evidence_cases": [
+        "REG-66"
       ]
     },
     {
@@ -543,11 +555,15 @@
       "id": "SL-C03-H-02",
       "unit_id": "UI-MARKUP-CONSUMPTION",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-Lens Cycle 03 Codex verification",
       "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits.",
       "affected_units": [
         "UI-MARKUP-CONSUMPTION"
+      ],
+      "resolution_commit": "pending-ci-autofix",
+      "evidence_cases": [
+        "REG-67"
       ]
     },
     {
@@ -776,8 +792,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "a0afb7d6db3bdb53c4d331671675bfd01e2aa289d9bfda42175ffac84de88bf3",
-      "last_read_fingerprint": "a0afb7d6db3bdb53c4d331671675bfd01e2aa289d9bfda42175ffac84de88bf3",
+      "fingerprint": "d5c14d94df46053219122c5d0155de5a098ba1bc34001f4582e2b3835ccc73d7",
+      "last_read_fingerprint": "d5c14d94df46053219122c5d0155de5a098ba1bc34001f4582e2b3835ccc73d7",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
         "SUITE-COVERAGE/AUDIT-COV-01"
@@ -889,8 +905,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "08baabc5316bd85fa78d860f7414fdfe0df845c163407973d471ad0178923e60",
-      "last_read_fingerprint": "08baabc5316bd85fa78d860f7414fdfe0df845c163407973d471ad0178923e60",
+      "fingerprint": "aea9c3e936f3fc212cba82bcbdee0e59110b1e6ad8703e387512c81951429b50",
+      "last_read_fingerprint": "aea9c3e936f3fc212cba82bcbdee0e59110b1e6ad8703e387512c81951429b50",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
         "SUITE-COVERAGE/AUDIT-COV-01"
@@ -910,15 +926,17 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f8580045052a2fc92806d2edcca8f609067470f49e1b5c99827a5e2a83d8de86",
-      "last_read_fingerprint": "f8580045052a2fc92806d2edcca8f609067470f49e1b5c99827a5e2a83d8de86",
+      "fingerprint": "4b4acba13f75f10323e76ae8a04f40a5a63bba0c5ce6049e70a059e27902e58e",
+      "last_read_fingerprint": "4b4acba13f75f10323e76ae8a04f40a5a63bba0c5ce6049e70a059e27902e58e",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
-        "SUITE-COVERAGE/AUDIT-COV-01"
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-ENGINE-FULL/SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS"
       ],
       "regression_cases": [
         "EXT-04",
-        "COV-01"
+        "COV-01",
+        "REG-66"
       ],
       "issue": "V3 full audit verified — UI-MARKUP-PLANNER"
     },
@@ -931,15 +949,17 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "49fc4db38e69cbe03c527b034cfa2f613cb08260278b33cf54fc5f1e5b4f4d7b",
-      "last_read_fingerprint": "49fc4db38e69cbe03c527b034cfa2f613cb08260278b33cf54fc5f1e5b4f4d7b",
+      "fingerprint": "1f2b15ef5bb2c10a2df488526e13cf72037d3b1305c4c2210ddc11561422adc2",
+      "last_read_fingerprint": "1f2b15ef5bb2c10a2df488526e13cf72037d3b1305c4c2210ddc11561422adc2",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
-        "SUITE-COVERAGE/AUDIT-COV-01"
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-ENGINE-FULL/SL-C03-SHALLOW-STOP-SAFETY-COPY"
       ],
       "regression_cases": [
         "EXT-04",
-        "COV-01"
+        "COV-01",
+        "REG-67"
       ],
       "issue": "V3 full audit verified — UI-MARKUP-CONSUMPTION"
     },
@@ -1116,15 +1136,17 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-UNIT-SWITCHING"
       },
-      "fingerprint": "33da7bff9034db36b81a8d8a6352936226788be247465541c072deccffab9aa8",
-      "last_read_fingerprint": "33da7bff9034db36b81a8d8a6352936226788be247465541c072deccffab9aa8",
+      "fingerprint": "10292ef99d2c4a22a55d959620145b6069cac73597627c219e524f2b971229af",
+      "last_read_fingerprint": "10292ef99d2c4a22a55d959620145b6069cac73597627c219e524f2b971229af",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-ENGINE-FULL/SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS"
       ],
       "regression_cases": [
         "EXT-05",
-        "COV-01"
+        "COV-01",
+        "REG-66"
       ],
       "issue": "V3 full audit verified — UI-UNIT-SWITCHING"
     },
@@ -1307,8 +1329,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-INPUTS"
       },
-      "fingerprint": "27eada8c087021fff07532b17d5a2afbccd420d2dbebcd3e6d433a1783eaccc5",
-      "last_read_fingerprint": "27eada8c087021fff07532b17d5a2afbccd420d2dbebcd3e6d433a1783eaccc5",
+      "fingerprint": "16881eff4fe36fc2d6af839e4e8cb009db2e939f3f4ac398a55bcf0e34e356b1",
+      "last_read_fingerprint": "16881eff4fe36fc2d6af839e4e8cb009db2e939f3f4ac398a55bcf0e34e356b1",
       "audit_issue": 149,
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01",
@@ -1334,20 +1356,22 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-CARDS"
       },
-      "fingerprint": "6d08c33b01b44a3ef9e3811174641839c7b56b7fd10cc54b1382a172e96036be",
-      "last_read_fingerprint": "6d08c33b01b44a3ef9e3811174641839c7b56b7fd10cc54b1382a172e96036be",
+      "fingerprint": "bb95bd21f3878128e587abb7afb2846a50a7ad603d28d759a86a40c17095820f",
+      "last_read_fingerprint": "bb95bd21f3878128e587abb7afb2846a50a7ad603d28d759a86a40c17095820f",
       "audit_issue": 148,
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01",
         "SUITE-PARITY/canonical-generated-parity",
         "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
-        "SUITE-ENGINE-FULL/AUDIT-REG-01"
+        "SUITE-ENGINE-FULL/AUDIT-REG-01",
+        "SUITE-ENGINE-FULL/SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS"
       ],
       "regression_cases": [
         "COV-01",
         "PARITY-01",
         "EXT-02",
-        "REG-01"
+        "REG-01",
+        "REG-66"
       ],
       "issue": "Cycle 35 structured read — no actionable findings"
     },
@@ -2656,17 +2680,21 @@
         "SUITE-ENGINE-FULL/AUDIT-REG-01",
         "SUITE-ENGINE-FULL/AUDIT-REG-02",
         "SUITE-ENGINE-FULL/AUDIT-REG-03",
-        "SUITE-ENGINE-FULL/AUDIT-REG-05"
+        "SUITE-ENGINE-FULL/AUDIT-REG-05",
+        "SUITE-ENGINE-FULL/SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS",
+        "SUITE-ENGINE-FULL/SL-C03-SHALLOW-STOP-SAFETY-COPY"
       ],
       "issue": "GitHub #133–#138 audit regressions and Cycle 31–34 verification",
       "regression_cases": [
         "REG-01",
         "REG-02",
         "REG-03",
-        "REG-05"
+        "REG-05",
+        "REG-66",
+        "REG-67"
       ],
-      "fingerprint": "a3ece02c9e6bb4e8c7debf3c9dcb03d013dbb56b47964675489080fc44a98c28",
-      "last_read_fingerprint": "a3ece02c9e6bb4e8c7debf3c9dcb03d013dbb56b47964675489080fc44a98c28",
+      "fingerprint": "c4a2bdd0104f96dc78af0bd92b025ca5671eba0bdc57983a5738c1f356e6b70b",
+      "last_read_fingerprint": "c4a2bdd0104f96dc78af0bd92b025ca5671eba0bdc57983a5738c1f356e6b70b",
       "audit_issue": 169
     },
     {
@@ -5198,7 +5226,9 @@
         "SL-C02-MIN-DECO-UNITS",
         "SL-C02-TRAVEL-DEPTH-CONSTRAINTS",
         "SL-C03-BEST-MIX-DEPTH-UNITS",
-        "SL-C03-CNS-DEPTH-UNITS"
+        "SL-C03-CNS-DEPTH-UNITS",
+        "SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS",
+        "SL-C03-SHALLOW-STOP-SAFETY-COPY"
       ]
     },
     {

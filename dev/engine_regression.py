@@ -1816,11 +1816,14 @@ ENGINE_SUITE_JS = r"""
   out.sections.sevenLensCycle02 = (() => {
     let minDecoUnitsOk = false;
     let travelDepthConstraintsOk = false;
+    let cylinderSizeConstraintsOk = false;
     const prevUnits = typeof units !== 'undefined' ? units : null;
     const modeSel = document.getElementById('travelGasSwitchMode');
     const prevMode = modeSel?.value;
     const depthInp = document.getElementById('travelGasManualDepth');
     const prevDepth = depthInp?.value;
+    const cylSizeInp = document.getElementById('cylTravelGas_size');
+    const prevCylSize = cylSizeInp?.value;
     try {
       if (typeof setUnits === 'function' && typeof getVpmMinDecoSettingsFromDom === 'function') {
         setUnits('imperial');
@@ -1839,19 +1842,46 @@ ENGINE_SUITE_JS = r"""
             metricMax === 500 && imperialMax === 165 && depthInp.checkValidity() === true;
         }
       }
+      if (typeof setUnits === 'function' && cylSizeInp) {
+        setUnits('metric');
+        const metricMin = Number(cylSizeInp.min);
+        const metricMax = Number(cylSizeInp.max);
+        const metricStep = Number(cylSizeInp.step);
+        cylSizeInp.value = '12';
+        const metricDefaultOk = cylSizeInp.checkValidity() === true;
+        setUnits('imperial');
+        const imperialMin = Number(cylSizeInp.min);
+        const imperialMax = Number(cylSizeInp.max);
+        const imperialStep = Number(cylSizeInp.step);
+        cylSizeInp.value = '0.4';
+        const imperialDefaultOk = cylSizeInp.checkValidity() === true;
+        cylSizeInp.value = '2';
+        const imperialOversizeRejected = cylSizeInp.checkValidity() === false;
+        cylinderSizeConstraintsOk =
+          metricMin === 1 && metricMax === 50 && metricStep === 0.5 && metricDefaultOk
+          && imperialMin === 0.1 && imperialMax >= 1.76 && imperialMax <= 1.78
+          && imperialStep === 0.01 && imperialDefaultOk && imperialOversizeRejected;
+      }
     } finally {
       if (modeSel && prevMode != null) modeSel.value = prevMode;
       if (depthInp && prevDepth != null) depthInp.value = prevDepth;
+      if (cylSizeInp && prevCylSize != null) cylSizeInp.value = prevCylSize;
       if (prevUnits != null && typeof setUnits === 'function') setUnits(prevUnits);
       updateTravelGasMOD?.();
     }
-    return { minDecoUnitsOk, travelDepthConstraintsOk, ok: minDecoUnitsOk && travelDepthConstraintsOk };
+    return {
+      minDecoUnitsOk,
+      travelDepthConstraintsOk,
+      cylinderSizeConstraintsOk,
+      ok: minDecoUnitsOk && travelDepthConstraintsOk && cylinderSizeConstraintsOk,
+    };
   })();
 
   // Seven-lens cycle 03: consumption markup contracts (SL-C03).
   out.sections.sevenLensCycle03 = (() => {
     let bestMixDepthUnitsOk = false;
     let cnsDepthUnitsOk = false;
+    let shallowStopSafetyCopyOk = false;
     const prevUnits = typeof units !== 'undefined' ? units : null;
     const bmEl = document.getElementById('bestMixDepth');
     const cnsEl = document.getElementById('cnsDepth');
@@ -1883,6 +1913,14 @@ ENGINE_SUITE_JS = r"""
         cnsDepthUnitsOk =
           metricPpo2 === imperialPpo2 && Math.round(parseFloat(cnsEl.value)) === 98;
       }
+      const shallowStopNote = Array.from(document.querySelectorAll('li'))
+        .map(el => (el.textContent || '').trim())
+        .find(text => /Extending shallow stops/.test(text));
+      shallowStopSafetyCopyOk = !!shallowStopNote
+        && /recalculated plan/i.test(shallowStopNote)
+        && /oxygen exposure/i.test(shallowStopNote)
+        && /gas reserves/i.test(shallowStopNote)
+        && !/is safe\b/i.test(shallowStopNote);
     } finally {
       if (bmEl && prevBm != null) bmEl.value = prevBm;
       if (cnsEl && prevCns != null) cnsEl.value = prevCns;
@@ -1891,7 +1929,12 @@ ENGINE_SUITE_JS = r"""
       calcBestMix?.();
       calcCNS?.();
     }
-    return { bestMixDepthUnitsOk, cnsDepthUnitsOk, ok: bestMixDepthUnitsOk && cnsDepthUnitsOk };
+    return {
+      bestMixDepthUnitsOk,
+      cnsDepthUnitsOk,
+      shallowStopSafetyCopyOk,
+      ok: bestMixDepthUnitsOk && cnsDepthUnitsOk && shallowStopSafetyCopyOk,
+    };
   })();
 
   // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
@@ -2318,9 +2361,11 @@ def run_suite(page) -> dict:
     sl02 = s.get("sevenLensCycle02", {})
     assert_true(sl02.get("minDecoUnitsOk"), "[SL-C02-MIN-DECO-UNITS] min deco profile uses imperial units flag", str(sl02))
     assert_true(sl02.get("travelDepthConstraintsOk"), "[SL-C02-TRAVEL-DEPTH-CONSTRAINTS] travel manual depth max follows display units", str(sl02))
+    assert_true(sl02.get("cylinderSizeConstraintsOk"), "[SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS] cylinder size constraints follow physical metric/imperial tuple", str(sl02))
     sl03 = s.get("sevenLensCycle03", {})
     assert_true(sl03.get("bestMixDepthUnitsOk"), "[SL-C03-BEST-MIX-DEPTH-UNITS] best mix O2% invariant across equivalent metric/imperial depth", str(sl03))
     assert_true(sl03.get("cnsDepthUnitsOk"), "[SL-C03-CNS-DEPTH-UNITS] CNS ppO2 invariant across equivalent metric/imperial depth", str(sl03))
+    assert_true(sl03.get("shallowStopSafetyCopyOk"), "[SL-C03-SHALLOW-STOP-SAFETY-COPY] shallow-stop guidance qualifies oxygen, gas, and replanning limits", str(sl03))
     assert_true(erdp.get("normalizeOk"), "[ENG-RDP-CUSTOM-FALLBACK] normalizeRecMix restricts to standard gases", str(erdp))
     assert_true(erdp.get("recGasUiOk"), "[ENG-RDP-CUSTOM-FALLBACK] Rec mode hides custom gas option", str(erdp))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
@@ -2424,8 +2469,10 @@ def _audit_case_rows():
         case_row("SL-C01-ALTITUDE-UNIT-CONSTRAINTS", case_ok("SL-C01-ALTITUDE-UNIT-CONSTRAINTS")),
         case_row("SL-C02-MIN-DECO-UNITS", case_ok("SL-C02-MIN-DECO-UNITS")),
         case_row("SL-C02-TRAVEL-DEPTH-CONSTRAINTS", case_ok("SL-C02-TRAVEL-DEPTH-CONSTRAINTS")),
+        case_row("SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS", case_ok("SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS")),
         case_row("SL-C03-BEST-MIX-DEPTH-UNITS", case_ok("SL-C03-BEST-MIX-DEPTH-UNITS")),
         case_row("SL-C03-CNS-DEPTH-UNITS", case_ok("SL-C03-CNS-DEPTH-UNITS")),
+        case_row("SL-C03-SHALLOW-STOP-SAFETY-COPY", case_ok("SL-C03-SHALLOW-STOP-SAFETY-COPY")),
     ]
 
 
