@@ -628,6 +628,60 @@
       ]
     },
     {
+      "id": "SL-C04-H-02",
+      "unit_id": "UI-UNIT-SWITCHING",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "issue": "Seven-Lens Cycle 04 post-merge verification",
+      "summary": "Depth and cylinder edits after a unit switch leave canonical data-depth-m/data-volume-l stale, so consumers use old values and the next switch discards the edit.",
+      "affected_units": [
+        "UI-MARKUP-PLANNER",
+        "UI-MARKUP-CONSUMPTION",
+        "UI-UNIT-SWITCHING",
+        "UI-GAS-INPUTS"
+      ]
+    },
+    {
+      "id": "SL-C04-H-03",
+      "unit_id": "TOOL-SEVEN-LENS-PROTOCOL",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "issue": "Seven-Lens Cycle 04 post-merge verification",
+      "summary": "Cycles 2-4 are marked reviewed although their protocol records fail closure and Cycle 4 has no evidence runs for five closed findings.",
+      "affected_units": [
+        "TOOL-SEVEN-LENS-PROTOCOL",
+        "TEST-SEVEN-LENS-PROTOCOL",
+        "TOOL-RUN-AUDIT-COVERAGE-SUITE-PY"
+      ]
+    },
+    {
+      "id": "SL-C04-M-03",
+      "unit_id": "TEST-ENGINE-REGRESSION",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "issue": "Seven-Lens Cycle 04 post-merge verification",
+      "summary": "Cycle regression setup leaks canonical DOM and settings state, making the full engine suite order-dependent and leaving two contingency cases failing.",
+      "affected_units": [
+        "TEST-ENGINE-REGRESSION",
+        "UI-UNIT-SWITCHING",
+        "UI-GAS-INPUTS"
+      ]
+    },
+    {
+      "id": "SL-C04-M-04",
+      "unit_id": "TOOL-SEVEN-LENS-BROWSER-TRACE",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "issue": "Seven-Lens Cycle 04 post-merge verification",
+      "summary": "Browser trace evidence could pass forced or vacuous single-run checks without proving a real interactive consumer path.",
+      "affected_units": [
+        "TOOL-SEVEN-LENS-BROWSER-TRACE",
+        "TEST-SEVEN-LENS-BROWSER-TRACE",
+        "TEST-SEVEN-LENS-CYCLE03-TRACE",
+        "TEST-SEVEN-LENS-CYCLE04-TRACE"
+      ]
+    },
+    {
       "id": "ISSUE-133-ROLLUP",
       "unit_id": "TOOL-AUDIT",
       "severity": "HIGH",
@@ -3453,61 +3507,45 @@
       "path": "tools/run_audit_coverage_suite.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity"
-      ],
+      "evidence": [],
       "issue": "GitHub #140 M-3 coverage + audit self-tests",
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01"
-      ],
-      "fingerprint": "82539814d52f369f56a52c78879b590fd8dcbd4fcb42d25721f27ac8abcfb22d",
-      "last_read_fingerprint": "82539814d52f369f56a52c78879b590fd8dcbd4fcb42d25721f27ac8abcfb22d"
+      "regression_cases": [],
+      "fingerprint": "a663d6186990c2e9c99cb163bf8d07227df0699552d8a6f0edd364f3fa872359",
+      "last_read_fingerprint": null
     },
     {
       "id": "TOOL-SEVEN-LENS-PROTOCOL",
       "path": "tools/seven_lens_protocol.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity"
-      ],
+      "evidence": [],
       "issue": "Seven-lens manual audit protocol gate",
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01"
-      ],
-      "fingerprint": "976ca2f350da90e3286f38ae2fee1459be031c913cecb9e1c9d42036bd7f4a1e",
-      "last_read_fingerprint": "976ca2f350da90e3286f38ae2fee1459be031c913cecb9e1c9d42036bd7f4a1e"
+      "regression_cases": [],
+      "fingerprint": "b89ee9febe73651fe0d3f2f8869e4e4854c6b06f80eba74ccc8333bae5dbbf35",
+      "last_read_fingerprint": null
     },
     {
       "id": "TEST-SEVEN-LENS-PROTOCOL",
       "path": "tools/test_seven_lens_protocol.py",
       "layer": "test_infrastructure",
       "priority": "P0",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
+      "evidence": [],
       "issue": "Seven-lens manual audit protocol gate tests",
-      "regression_cases": [
-        "COV-01"
-      ],
-      "fingerprint": "073afbd6c212ac5de0c58a5967bea95a52e000b88a27445f6d34c1e8421cbb9a",
-      "last_read_fingerprint": "073afbd6c212ac5de0c58a5967bea95a52e000b88a27445f6d34c1e8421cbb9a"
+      "regression_cases": [],
+      "fingerprint": "f1682838b3be7a805c76675991088fcfefc18d5988e8582356e2aee4d0b3b6ae",
+      "last_read_fingerprint": null
     },
     {
       "id": "TOOL-SEVEN-LENS-BROWSER-TRACE",
@@ -3521,7 +3559,7 @@
       "evidence": [],
       "issue": "Seven-lens browser event and consumer value tracing",
       "regression_cases": [],
-      "fingerprint": "5a498c9fd3fdea5c06441ad185d2ad5c2f56a9510cd0088bf155e397f0b8b42b",
+      "fingerprint": "aa852f1020f371e0bf1043aa1766c4b2c6149792fb4f3540c09735ef7b40d509",
       "last_read_fingerprint": null
     },
     {
@@ -3529,34 +3567,30 @@
       "path": "tools/test_seven_lens_browser_trace.py",
       "layer": "test_infrastructure",
       "priority": "P0",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
+      "evidence": [],
       "issue": "Seven-lens browser trace assertion tests",
-      "regression_cases": [
-        "COV-01"
-      ],
-      "fingerprint": "c38321e30ba8926849f2b0e4535e9c224f0f787d5c31e67caf16f3fd52aad1ae",
-      "last_read_fingerprint": "c38321e30ba8926849f2b0e4535e9c224f0f787d5c31e67caf16f3fd52aad1ae"
+      "regression_cases": [],
+      "fingerprint": "fa4b24560b700563b1a8e33b4443c1316b556881e5f4ac24639b406e992ba55b",
+      "last_read_fingerprint": null
     },
     {
       "id": "TEST-SEVEN-LENS-CYCLE03-TRACE",
       "path": "docs/seven-lens-traces/cycle-03-consumption.json",
       "layer": "test_infrastructure",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
       "evidence": [],
       "issue": "Cycle 03 exact browser value and state trace specification",
       "regression_cases": [],
-      "fingerprint": "a3b84140c93159491e8d64583ba2081816438e9e17651972d2907c73425cac4b",
-      "last_read_fingerprint": "a3b84140c93159491e8d64583ba2081816438e9e17651972d2907c73425cac4b"
+      "fingerprint": "01e4fa44356905873ae4209b61878cb8e3f46fd0309f1c1ec3d3712167c6626d",
+      "last_read_fingerprint": null
     },
     {
       "id": "TEST-SEVEN-LENS-CYCLE04-TRACE",
@@ -3570,7 +3604,7 @@
       "evidence": [],
       "issue": "Cycle 04 exact browser value and state trace specification",
       "regression_cases": [],
-      "fingerprint": "be75ffb78f5abf216dd6ef559399043c7c4841eed400dbe866bce9f674d6b795",
+      "fingerprint": "61026b6594d7c0ae3f33bc31219349018f9cc3da39806061c6a88873035b3386",
       "last_read_fingerprint": null
     },
     {

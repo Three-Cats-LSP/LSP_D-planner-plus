@@ -20,6 +20,12 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
+    reviewed = subprocess.run(
+        [sys.executable, "tools/seven_lens_protocol.py", "check-all"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
     tests = subprocess.run(
         [
             sys.executable,
@@ -40,12 +46,17 @@ def main() -> int:
     if tests.returncode != 0:
         print(tests.stdout, end="")
         print(tests.stderr, end="", file=sys.stderr)
-    passed = cov.returncode == 0 and tests.returncode == 0
+    if reviewed.returncode != 0:
+        print(reviewed.stdout, end="")
+        print(reviewed.stderr, end="", file=sys.stderr)
+    passed = cov.returncode == 0 and tests.returncode == 0 and reviewed.returncode == 0
     msg = ""
     if cov.returncode != 0:
         msg = "audit_coverage --check failed"
     elif tests.returncode != 0:
         msg = "audit infrastructure unit tests failed"
+    elif reviewed.returncode != 0:
+        msg = "reviewed seven-lens cycle records are invalid"
     finish_suite(ROOT, [case_row("AUDIT-COV-01", passed, msg)], 0 if passed else 1)
     return 0 if passed else 1
 

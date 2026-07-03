@@ -8,8 +8,9 @@ running a prompt. Do not combine prompts in one chat.
 ```text
 ROLE: AUDITOR. This chat is read-only for application source and tests.
 
-Read docs/cursor-seven-lens-audit-workflow.md and the active Cursor seven-lens
-rule completely. Work only on dev through a cycle branch. Run:
+Read docs/cursor-seven-lens-audit-workflow.md,
+docs/seven-lens-review-playbook.md, and the active Cursor seven-lens rule
+completely. Work only on dev through a cycle branch. Run:
 
 python tools/seven_lens_protocol.py plan --cycle <N> --output <RECORD>
 python -m tools.audit check --profile static
@@ -34,6 +35,9 @@ create a `docs/seven-lens-traces/` spec and run
 `python tools/seven_lens_browser_trace.py --spec <spec>`. Capture input,
 canonical physical value, consumer value, and observable output separately.
 Rounded output equality is not physical parity.
+For every dual-unit control, exercise switch -> visible unforced user edit ->
+final consumer -> roundtrip from both initial unit systems. A unit-switch-only
+trace is incomplete.
 
 Run:
 python tools/seven_lens_protocol.py check --phase audit --record <RECORD>
@@ -55,6 +59,8 @@ contract. Assert every path named by the finding.
 
 Every test must save and restore all DOM values, globals, local/session storage,
 workers, timers, modal state, generated output, and other shared state in finally.
+Run stateful cases twice and in at least one different order; fail when the suite
+does not return to the exact pre-test snapshot.
 Register stable case IDs in the leaf suite and evidence catalog. Regenerate
 derived files only through repository tools. Record changed paths, regression
 IDs, and targeted results in <RECORD>, commit, then STOP. A fresh chat must run
@@ -87,6 +93,8 @@ commit, case IDs, and clean-worktree result in <RECORD>.
 Run every declared browser trace and inspect its raw captures. Require exact or
 explicitly tolerated physical values at the consumer stage, not merely equal
 rounded UI strings. Confirm before/after state hashes match.
+Reject forced tested actions, non-finite captures, empty assertions, console/page
+errors, and traces that do not repeat identically in fresh contexts.
 
 Record `verified_source_commit` and set verification_status to PASSED only when
 all source and evidence checks succeed; otherwise set it to BLOCKED. Then run:
@@ -111,6 +119,7 @@ ran on final PR HEAD, and the tracked worktree is clean.
 
 Run:
 python tools/seven_lens_protocol.py check --phase close --record <RECORD>
+python tools/seven_lens_protocol.py check-all --require-artifacts
 
 Exit 0 is required. On any error, leave the cycle IN_PROGRESS and report the exact
 blocker. Only after exit 0 may the ledger become SEVEN_LENS_REVIEWED and the cycle

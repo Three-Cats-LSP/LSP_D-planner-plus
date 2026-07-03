@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any
@@ -13,6 +14,109 @@ ROOT = Path(__file__).resolve().parents[1]
 DEV = ROOT / "dev"
 if str(DEV) not in sys.path:
     sys.path.insert(0, str(DEV))
+TRACE_SCHEMA_VERSION = 2
+
+
+def validate_trace_spec(spec: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    if spec.get("schema_version") != TRACE_SCHEMA_VERSION:
+        errors.append(f"schema_version must be {TRACE_SCHEMA_VERSION}")
+    repeat = spec.get("repeat", 2)
+    if not isinstance(repeat, int) or not 2 <= repeat <= 5:
+        errors.append("repeat must be an integer from 2 to 5")
+    traces = spec.get("traces")
+    if not isinstance(traces, list) or not traces:
+        return errors + ["traces must be a non-empty list"]
+    ids: set[str] = set()
+    for trace in traces:
+        trace_id = trace.get("id", "<unknown>")
+        if not isinstance(trace_id, str) or len(trace_id.strip()) < 5:
+            errors.append("trace id is missing")
+        elif trace_id in ids:
+            errors.append(f"duplicate trace id {trace_id}")
+        ids.add(trace_id)
+        if not isinstance(trace.get("entry_event"), str) or len(trace["entry_event"].strip()) < 5:
+            errors.append(f"{trace_id}: entry_event missing")
+        consumers = trace.get("consumer_path")
+        if not isinstance(consumers, list) or len(consumers) < 2 or not all(isinstance(x, str) and x for x in consumers):
+            errors.append(f"{trace_id}: consumer_path needs at least two named stages")
+        state = trace.get("state", {})
+        selectors = state.get("selectors")
+        restore = state.get("restore_order")
+        if not isinstance(selectors, list) or not selectors:
+            errors.append(f"{trace_id}: state selectors missing")
+            selectors = []
+        elif not all(isinstance(value, str) and value for value in selectors):
+            errors.append(f"{trace_id}: state selectors must be non-empty strings")
+            selectors = [value for value in selectors if isinstance(value, str) and value]
+        if isinstance(restore, list) and not all(isinstance(value, str) and value for value in restore):
+            errors.append(f"{trace_id}: restore_order entries must be non-empty strings")
+            restore = [value for value in restore if isinstance(value, str) and value]
+        if len(selectors) != len(set(selectors)):
+            errors.append(f"{trace_id}: state selectors must be unique")
+        if (
+            not isinstance(restore, list)
+            or len(restore) != len(selectors)
+            or len(restore) != len(set(restore))
+            or set(restore) != set(selectors)
+        ):
+            errors.append(f"{trace_id}: restore_order must cover every state selector exactly")
+        globals_tracked = set(state.get("globals", []))
+        for phase_name in ("setup", "steps"):
+            rows = trace.get(phase_name, [])
+            if not isinstance(rows, list):
+                errors.append(f"{trace_id}: {phase_name} must be a list")
+                continue
+            for row in rows:
+                if not isinstance(row, dict):
+                    errors.append(f"{trace_id}: {phase_name} entries must be objects")
+                    continue
+                if "action" not in row:
+                    continue
+                action = row.get("action")
+                if action not in {"fill", "select", "click", "check", "set_global"}:
+                    errors.append(f"{trace_id}: unsupported {phase_name} action {action!r}")
+                if phase_name == "steps" and row.get("force"):
+                    errors.append(f"{trace_id}: tested user actions must not use force")
+                if (
+                    phase_name == "setup"
+                    and row.get("force")
+                    and not (isinstance(row.get("setup_only_reason"), str) and row["setup_only_reason"].strip())
+                ):
+                    errors.append(f"{trace_id}: forced setup action needs setup_only_reason")
+                selector = row.get("selector")
+                if selector and selector not in selectors and phase_name == "steps":
+                    errors.append(f"{trace_id}: tested selector {selector} is absent from state snapshot")
+                if action == "set_global":
+                    if phase_name != "setup":
+                        errors.append(f"{trace_id}: set_global is allowed only during setup")
+                    if row.get("name") not in globals_tracked:
+                        errors.append(f"{trace_id}: setup global {row.get('name')} is not state-tracked")
+        steps = trace.get("steps", [])
+        if not any("action" in row for row in steps):
+            errors.append(f"{trace_id}: trace has no tested user action")
+        captures = [row for row in steps if "capture" in row]
+        if len(captures) < 2:
+            errors.append(f"{trace_id}: trace needs captures before and after the tested action")
+        for row in captures:
+            values = row.get("values")
+            if not isinstance(values, dict) or not values or not all(isinstance(v, str) and v.strip() for v in values.values()):
+                errors.append(f"{trace_id}/{row.get('capture')}: capture expressions missing")
+        assertions = trace.get("assertions")
+        if not isinstance(assertions, list) or not assertions:
+            errors.append(f"{trace_id}: assertions must be non-empty")
+            continue
+        assertion_ids = [row.get("id") for row in assertions]
+        if any(not isinstance(value, str) or not value for value in assertion_ids):
+            errors.append(f"{trace_id}: every assertion needs an id")
+        if len(assertion_ids) != len(set(assertion_ids)):
+            errors.append(f"{trace_id}: assertion ids must be unique")
+        for row in assertions:
+            if row.get("op") not in {"equal", "not_equal", "close", "finite"}:
+                errors.append(f"{trace_id}/{row.get('id')}: invalid assertion operator")
+            if not isinstance(row.get("left"), str) or not row["left"].startswith("$."):
+                errors.append(f"{trace_id}/{row.get('id')}: left side must reference a capture")
+    return errors
 
 
 def _resolve_path(value: Any, captures: dict[str, Any]) -> Any:
@@ -57,6 +161,30 @@ def _capture(page, values: dict[str, str]) -> dict[str, Any]:
         }))""",
         values,
     )
+
+
+def _capture_is_finite(value: Any) -> bool:
+    if isinstance(value, float):
+        return value == value and abs(value) != float("inf")
+    if isinstance(value, dict):
+        return "traceError" not in value and all(_capture_is_finite(item) for item in value.values())
+    if isinstance(value, list):
+        return all(_capture_is_finite(item) for item in value)
+    return True
+
+
+def _sanitize_capture(value: Any) -> Any:
+    if isinstance(value, float) and (value != value or abs(value) == float("inf")):
+        return {"traceError": "non-finite capture"}
+    if isinstance(value, dict):
+        return {key: _sanitize_capture(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_sanitize_capture(item) for item in value]
+    return value
+
+
+def _stable_json(value: Any) -> str:
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=True)
 
 
 def _state_snapshot(page, spec: dict[str, Any]) -> dict[str, Any]:
@@ -119,7 +247,7 @@ def _restore(page, before: dict[str, Any], spec: dict[str, Any]) -> None:
             locator.select_option(str(state["value"]), force=True)
         elif input_type in {"checkbox", "radio"}:
             locator.set_checked(bool(state["checked"]), force=True)
-        elif state["value"] is not None:
+        elif tag in {"INPUT", "TEXTAREA"} and state["value"] is not None:
             locator.fill(str(state["value"]), force=True)
         dataset = state.get("dataset") or {}
         locator.evaluate(
@@ -141,41 +269,57 @@ def _restore(page, before: dict[str, Any], spec: dict[str, Any]) -> None:
     )
 
 
-def run_trace(page, trace: dict[str, Any]) -> dict[str, Any]:
-    for action in trace.get("setup", []):
-        _act(page, action)
+def run_trace(
+    page, trace: dict[str, Any], console_errors: list[str], page_errors: list[str]
+) -> dict[str, Any]:
     state_spec = trace.get("state", {})
-    before = _state_snapshot(page, state_spec)
+    before: dict[str, Any] = {}
     captures: dict[str, Any] = {}
     error = ""
     try:
+        for action in trace.get("setup", []):
+            _act(page, action)
+        before = _state_snapshot(page, state_spec)
         for step in trace.get("steps", []):
             if "action" in step:
                 _act(page, step)
             if "capture" in step:
-                captures[step["capture"]] = _capture(page, step.get("values", {}))
+                captures[step["capture"]] = _sanitize_capture(
+                    _capture(page, step.get("values", {}))
+                )
     except Exception as exc:  # browser errors belong in the artifact
         error = str(exc)
     finally:
-        _restore(page, before, state_spec)
-    after = _state_snapshot(page, state_spec)
+        if before:
+            try:
+                _restore(page, before, state_spec)
+            except Exception as exc:
+                suffix = f"state restoration failed: {exc}"
+                error = f"{error}; {suffix}" if error else suffix
+    after = _state_snapshot(page, state_spec) if before else {}
     assertion_rows = []
     for assertion in trace.get("assertions", []):
         passed, detail = evaluate_assertion(assertion, captures)
         assertion_rows.append({"id": assertion.get("id"), "passed": passed, "detail": detail})
     state_restored = before == after
-    passed = not error and state_restored and all(row["passed"] for row in assertion_rows)
+    passed = (
+        not error and not console_errors and not page_errors and state_restored
+        and _capture_is_finite(captures)
+        and bool(assertion_rows) and all(row["passed"] for row in assertion_rows)
+    )
     return {
         "id": trace.get("id"),
         "entry_event": trace.get("entry_event"),
         "consumer_path": trace.get("consumer_path", []),
         "captures": captures,
         "assertions": assertion_rows,
-        "state_before_sha256": hashlib.sha256(json.dumps(before, sort_keys=True).encode()).hexdigest(),
-        "state_after_sha256": hashlib.sha256(json.dumps(after, sort_keys=True).encode()).hexdigest(),
+        "state_before_sha256": hashlib.sha256(_stable_json(before).encode()).hexdigest(),
+        "state_after_sha256": hashlib.sha256(_stable_json(after).encode()).hexdigest(),
         "state_before": before,
         "state_after": after,
         "state_restored": state_restored,
+        "console_errors": console_errors,
+        "page_errors": page_errors,
         "error": error,
         "passed": passed,
     }
@@ -189,24 +333,60 @@ def main() -> int:
     spec_path = args.spec if args.spec.is_absolute() else ROOT / args.spec
     output = args.output if args.output.is_absolute() else ROOT / args.output
     spec = json.loads(spec_path.read_text(encoding="utf-8"))
+    spec_errors = validate_trace_spec(spec)
+    if spec_errors:
+        print("SEVEN-LENS BROWSER TRACE SPEC: INVALID", file=sys.stderr)
+        for error in spec_errors:
+            print(f"- {error}", file=sys.stderr)
+        return 2
 
     from playwright.sync_api import sync_playwright
     from playwright_boot import boot_app_page
     from test_http import serve_www
 
     results = []
+    repeat = spec.get("repeat", 2)
     with serve_www(ROOT) as base_url, sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         try:
             for trace in spec.get("traces", []):
-                context = browser.new_context()
-                page = context.new_page()
-                boot_app_page(page, base_url)
-                results.append(run_trace(page, trace))
-                context.close()
+                runs = []
+                for _ in range(repeat):
+                    context = browser.new_context()
+                    page = context.new_page()
+                    console_errors: list[str] = []
+                    page_errors: list[str] = []
+                    page.on("console", lambda msg, out=console_errors: out.append(msg.text) if msg.type == "error" else None)
+                    page.on("pageerror", lambda error, out=page_errors: out.append(str(error)))
+                    boot_app_page(page, base_url)
+                    runs.append(run_trace(page, trace, console_errors, page_errors))
+                    context.close()
+                first = dict(runs[0])
+                repeatable = all(
+                    _stable_json(row.get("captures")) == _stable_json(first.get("captures"))
+                    and _stable_json(row.get("assertions")) == _stable_json(first.get("assertions"))
+                    and row.get("state_restored") == first.get("state_restored")
+                    for row in runs[1:]
+                )
+                first["repeatable"] = repeatable
+                first["repeat_count"] = repeat
+                first["runs"] = runs
+                first["passed"] = repeatable and all(row.get("passed") is True for row in runs)
+                results.append(first)
         finally:
             browser.close()
-    artifact = {"spec": str(args.spec), "traces": results, "passed": all(r["passed"] for r in results)}
+    git_commit = subprocess.run(
+        ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True, capture_output=True, check=True
+    ).stdout.strip()
+    artifact = {
+        "schema_version": TRACE_SCHEMA_VERSION,
+        "runner_version": 2,
+        "spec": str(args.spec),
+        "spec_sha256": hashlib.sha256(spec_path.read_bytes()).hexdigest(),
+        "commit": git_commit,
+        "traces": results,
+        "passed": bool(results) and all(r["passed"] for r in results),
+    }
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(artifact, indent=2) + "\n", encoding="utf-8")
     print(f"SEVEN-LENS BROWSER TRACE: {'PASS' if artifact['passed'] else 'FAIL'}")

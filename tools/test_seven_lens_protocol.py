@@ -2,12 +2,19 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import json
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from tools.seven_lens_protocol import LENSES, make_plan, validate_record
+from tools.seven_lens_protocol import (
+    LENSES,
+    _validate_trace_artifact,
+    make_plan,
+    validate_record,
+    validate_reviewed_cycles,
+)
 
 
 def lens_results():
@@ -225,6 +232,55 @@ class SevenLensProtocolTests(unittest.TestCase):
             with patch("tools.seven_lens_protocol._git", side_effect=fake_git):
                 with self.assertRaisesRegex(RuntimeError, "HEAD must equal origin/dev"):
                     make_plan(self.root, 1)
+
+    def test_failed_browser_trace_artifact_cannot_support_closure(self):
+        artifact = self.root / "trace.json"
+        artifact.write_text(json.dumps({
+            "passed": False,
+            "traces": [{
+                "id": "TRACE-1", "passed": False, "repeatable": False,
+                "state_restored": False, "assertions": [],
+            }],
+        }), encoding="utf-8")
+        trace = {
+            "trace_id": "TRACE-1",
+            "artifact_path": "trace.json",
+            "artifact_sha256": hashlib.sha256(artifact.read_bytes()).hexdigest(),
+        }
+        errors = _validate_trace_artifact(self.root, "FINDING-1", trace, True)
+        self.assertTrue(any("did not pass" in error for error in errors))
+        self.assertTrue(any("not passing and repeatable" in error for error in errors))
+        self.assertTrue(any("did not restore state" in error for error in errors))
+        self.assertTrue(any("assertion set" in error for error in errors))
+
+    def test_reviewed_ledger_cannot_hide_legacy_record(self):
+        docs = self.root / "docs"
+        records = docs / "seven-lens-records"
+        records.mkdir(parents=True)
+        (docs / "seven-lens-manual-ledger.json").write_text(json.dumps({
+            "reviews": [{
+                "cycle_id": "SL-C02", "unit_id": "UNIT",
+                "review_status": "SEVEN_LENS_REVIEWED",
+                "verification_status": "PASSED",
+                "verified_source_commit": "abcdef2", "findings_open": [],
+            }],
+        }), encoding="utf-8")
+        (records / "cycle-02.json").write_text(json.dumps(self.record), encoding="utf-8")
+        with patch("tools.seven_lens_protocol._resolved_registry", return_value=({}, self.resolved)):
+            errors = validate_reviewed_cycles(self.root)
+        self.assertTrue(any("legacy protocol schema" in error for error in errors))
+
+    def test_reviewed_cycle_without_record_requires_explicit_exemption(self):
+        docs = self.root / "docs"
+        (docs / "seven-lens-records").mkdir(parents=True)
+        (docs / "seven-lens-manual-ledger.json").write_text(json.dumps({
+            "reviews": [{
+                "cycle_id": "SL-C01", "unit_id": "UNIT",
+                "review_status": "SEVEN_LENS_REVIEWED",
+            }],
+        }), encoding="utf-8")
+        errors = validate_reviewed_cycles(self.root)
+        self.assertTrue(any("no protocol record or exemption" in error for error in errors))
 
 
 if __name__ == "__main__":

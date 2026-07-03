@@ -1,5 +1,6 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
+  "repeat": 2,
   "cycle": 4,
   "traces": [
     {
@@ -8,10 +9,11 @@
       "consumer_path": ["setUnits", "calcEND_tool", "domDepthToM", "endAbsP"],
       "setup": [
         {"action": "set_global", "name": "_zhlHeadless", "value": false},
-        {"action": "select", "selector": "#unitsSelect", "value": "metric", "force": true},
-        {"action": "fill", "selector": "#endDepth", "value": "30", "force": true},
-        {"action": "fill", "selector": "#endO2", "value": "21", "force": true},
-        {"action": "fill", "selector": "#endHe", "value": "0", "force": true}
+        {"action": "click", "selector": "#navBtnSettings"},
+        {"action": "select", "selector": "#unitsSelect", "value": "metric"},
+        {"action": "fill", "selector": "#endDepth", "value": "30", "force": true, "setup_only_reason": "Prepare the hidden END panel before testing the visible unit selector."},
+        {"action": "fill", "selector": "#endO2", "value": "21", "force": true, "setup_only_reason": "Prepare the hidden END panel before testing the visible unit selector."},
+        {"action": "fill", "selector": "#endHe", "value": "0", "force": true, "setup_only_reason": "Prepare the hidden END panel before testing the visible unit selector."}
       ],
       "state": {
         "selectors": ["#unitsSelect", "#endDepth", "#endO2", "#endHe"],
@@ -28,7 +30,7 @@
             "observable": "document.querySelector('#endAbsP').textContent"
           }
         },
-        {"action": "select", "selector": "#unitsSelect", "value": "imperial", "force": true},
+        {"action": "select", "selector": "#unitsSelect", "value": "imperial"},
         {
           "capture": "imperial",
           "values": {
@@ -52,11 +54,12 @@
       "consumer_path": ["setUnits", "calcSurfInt", "domDepthToM", "siMinResult"],
       "setup": [
         {"action": "set_global", "name": "_zhlHeadless", "value": false},
-        {"action": "select", "selector": "#unitsSelect", "value": "metric", "force": true},
-        {"action": "fill", "selector": "#siD1Depth", "value": "30", "force": true},
-        {"action": "fill", "selector": "#siD1BT", "value": "25", "force": true},
-        {"action": "fill", "selector": "#siD2Depth", "value": "18", "force": true},
-        {"action": "fill", "selector": "#siD2BT", "value": "20", "force": true}
+        {"action": "click", "selector": "#navBtnSettings"},
+        {"action": "select", "selector": "#unitsSelect", "value": "metric"},
+        {"action": "fill", "selector": "#siD1Depth", "value": "30", "force": true, "setup_only_reason": "Prepare the hidden surface-interval panel before testing the visible unit selector."},
+        {"action": "fill", "selector": "#siD1BT", "value": "25", "force": true, "setup_only_reason": "Prepare the hidden surface-interval panel before testing the visible unit selector."},
+        {"action": "fill", "selector": "#siD2Depth", "value": "18", "force": true, "setup_only_reason": "Prepare the hidden surface-interval panel before testing the visible unit selector."},
+        {"action": "fill", "selector": "#siD2BT", "value": "20", "force": true, "setup_only_reason": "Prepare the hidden surface-interval panel before testing the visible unit selector."}
       ],
       "state": {
         "selectors": ["#unitsSelect", "#siD1Depth", "#siD1BT", "#siD2Depth", "#siD2BT"],
@@ -72,7 +75,7 @@
             "observable": "document.querySelector('#siMinResult').textContent"
           }
         },
-        {"action": "select", "selector": "#unitsSelect", "value": "imperial", "force": true},
+        {"action": "select", "selector": "#unitsSelect", "value": "imperial"},
         {
           "capture": "imperial",
           "values": {
