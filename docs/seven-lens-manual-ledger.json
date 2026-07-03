@@ -6,7 +6,7 @@
       "review_status": "SEVEN_LENS_REVIEWED",
       "reviewed_fingerprint": "08baabc5316bd85fa78d860f7414fdfe0df845c163407973d471ad0178923e60",
       "cycle_id": "SL-C01",
-      "boundary": "ui/markup-header.html whole file (847 lines; parts A–D)",
+      "boundary": "ui/markup-header.html whole file (847 lines; parts A\u2013D)",
       "reviewer": "Cursor GPT-5.5 Medium",
       "review_session": "cursor/seven-lens-cycle-01-header",
       "lens_results": {
@@ -16,7 +16,7 @@
         "L4": "Settings handlers traced to settings-core; regressions exercise input, preset, restore, and unit-switch paths.",
         "L5": "Canonical ui/markup-header.html; assemble_ui_html verify PASS.",
         "L6": "gasWarningBanner role=alert; imperial 16,404 ft accepted at engine 5000 m ceiling.",
-        "L7": "SL-C01-DEPTH-SYNC, SL-C01-PRESET-SYNC, SL-C01-SETTINGS-RESTORE, SL-C01-ALTITUDE-UNIT-CONSTRAINTS; REG-58–61."
+        "L7": "SL-C01-DEPTH-SYNC, SL-C01-PRESET-SYNC, SL-C01-SETTINGS-RESTORE, SL-C01-ALTITUDE-UNIT-CONSTRAINTS; REG-58\u201361."
       },
       "finding_ids": [
         "SL-C01-M-01",
@@ -50,10 +50,10 @@
         "SL-C01-M-04"
       ],
       "parts": {
-        "A": "lines 1-214 — scripts, header, nav, planPanel",
-        "B": "lines 215-415 — resultsPanel",
-        "C": "lines 416-481 — settingsPageWrap",
-        "D": "lines 482-847 — tools mount, legacy-panels, gfPresetsRow tail"
+        "A": "lines 1-214 \u2014 scripts, header, nav, planPanel",
+        "B": "lines 215-415 \u2014 resultsPanel",
+        "C": "lines 416-481 \u2014 settingsPageWrap",
+        "D": "lines 482-847 \u2014 tools mount, legacy-panels, gfPresetsRow tail"
       }
     },
     {
@@ -91,8 +91,8 @@
       "verified_at": "2026-07-03T14:45:00+00:00",
       "verifier": "Cursor (canonical-writers FIXER/VERIFIER at 6f75077)",
       "verification_status": "PASS",
-      "verified_source_commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
-      "last_checked_commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "verified_source_commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "last_checked_commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
       "verification_report": "docs/seven-lens-reports/cycle-02-codex-verification.md",
       "findings_open": [],
       "findings_closed": [
@@ -105,7 +105,7 @@
         "SL-C02-M-06"
       ],
       "parts": {
-        "P01": "lines 1-493 — plan panel markup (single bounded part)"
+        "P01": "lines 1-493 \u2014 plan panel markup (single bounded part)"
       }
     },
     {
@@ -142,8 +142,8 @@
       "verified_at": "2026-07-03T14:45:00+00:00",
       "verifier": "Cursor (canonical-writers FIXER/VERIFIER at 6f75077)",
       "verification_status": "PASS",
-      "verified_source_commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
-      "last_checked_commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "verified_source_commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "last_checked_commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
       "verification_report": "docs/seven-lens-reports/cycle-03-codex-verification.md",
       "findings_open": [],
       "findings_closed": [
@@ -155,7 +155,7 @@
         "SL-C03-L-02"
       ],
       "parts": {
-        "P01": "lines 1-381 — consumption tools markup (single bounded part)"
+        "P01": "lines 1-381 \u2014 consumption tools markup (single bounded part)"
       }
     },
     {
@@ -190,8 +190,8 @@
       "verified_at": "2026-07-03T14:45:00+00:00",
       "verifier": "Cursor (canonical-writers FIXER/VERIFIER at 6f75077)",
       "verification_status": "PASS",
-      "verified_source_commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
-      "last_checked_commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "verified_source_commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "last_checked_commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
       "verification_report": "docs/seven-lens-reports/cycle-04-codex-verification.md",
       "findings_open": [],
       "findings_closed": [
@@ -201,7 +201,7 @@
         "SL-C04-L-02"
       ],
       "parts": {
-        "P01": "lines 1-271 — tools panel markup"
+        "P01": "lines 1-271 \u2014 tools panel markup"
       }
     },
     {
@@ -232,15 +232,15 @@
       "verified_at": "2026-07-03T14:45:00+00:00",
       "verifier": "Cursor (canonical-writers FIXER/VERIFIER at 6f75077)",
       "verification_status": "PASS",
-      "verified_source_commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
-      "last_checked_commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+      "verified_source_commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "last_checked_commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
       "verification_report": "docs/seven-lens-reports/cycle-04-codex-verification.md",
       "findings_open": [],
       "findings_closed": [
         "SL-C04-M-02"
       ],
       "parts": {
-        "P01": "lines 1-341 — modals markup"
+        "P01": "lines 1-341 \u2014 modals markup"
       }
     }
   ]
