@@ -147,11 +147,15 @@ def _attestation_only_path(path: str) -> bool:
 
 
 def _audit_metadata_path(path: str) -> bool:
-    return _attestation_only_path(path) or path in {
-        "docs/audit-units.json",
-        "docs/audit-coverage.md",
-        "docs/audit-master-plan.md",
-    }
+    return (
+        _attestation_only_path(path)
+        or path.startswith("docs/seven-lens-traces/")
+        or path in {
+            "docs/audit-units.json",
+            "docs/audit-coverage.md",
+            "docs/audit-master-plan.md",
+        }
+    )
 
 
 def _validate_parts(root: Path, record: dict[str, Any], phase: str) -> list[str]:

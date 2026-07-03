@@ -17,7 +17,7 @@
       ],
       "state": {
         "selectors": ["#navBtnSettings", "#navBtnBuh", "#unitsSelect", "#travelGasSwitchMode", "#travelGasManualDepth"],
-        "restore_order": ["#unitsSelect", "#travelGasSwitchMode", "#travelGasManualDepth", "#navBtnBuh", "#navBtnSettings"],
+        "restore_order": ["#navBtnBuh", "#unitsSelect", "#travelGasSwitchMode", "#travelGasManualDepth", "#navBtnSettings"],
         "globals": ["_zhlHeadless"]
       },
       "steps": [
@@ -51,7 +51,7 @@
       ],
       "state": {
         "selectors": ["#navBtnSettings", "#navBtnBuh", "#unitsSelect", "#cylBot_size"],
-        "restore_order": ["#unitsSelect", "#cylBot_size", "#navBtnBuh", "#navBtnSettings"],
+        "restore_order": ["#navBtnBuh", "#unitsSelect", "#cylBot_size", "#navBtnSettings"],
         "globals": ["_zhlHeadless"]
       },
       "steps": [

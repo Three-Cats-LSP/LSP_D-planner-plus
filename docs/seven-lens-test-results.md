@@ -11,9 +11,9 @@ in `docs/seven-lens-records/`.
 | Cycle | Unit | Status | Verified commit | PR |
 |------:|------|--------|-----------------|-----|
 | 1 | `UI-MARKUP-HEADER` | **CLOSED** — merged to `dev` | `d39bb3b` | [#177](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/177), [#178](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/178) |
-| 2 | `UI-MARKUP-PLANNER` | **CLOSED** — FIXER via #188 | `d747ccc` | [#179](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/179), [#188](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/188) |
-| 3 | `UI-MARKUP-CONSUMPTION` | **CLOSED** — FIXER via #188 | `d747ccc` | [#182](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/182), [#188](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/188) |
-| 4 | `UI-MARKUP-TOOLS` + `UI-MARKUP-MODALS` | **CLOSED** — merged via #188 (supersedes #185) | `d747ccc` | [#185](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/185), [#188](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/188) |
+| 2 | `UI-MARKUP-PLANNER` | **CLOSED** — schema-v2 evidence at `d956648` | `d956648` | [#188](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/188), canonical-writers branch |
+| 3 | `UI-MARKUP-CONSUMPTION` | **CLOSED** — schema-v2 evidence at `d956648` | `d956648` | [#188](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/188), canonical-writers branch |
+| 4 | `UI-MARKUP-TOOLS` + `UI-MARKUP-MODALS` | **CLOSED** — schema-v2 evidence at `d956648` | `d956648` | [#188](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/188), [#189](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/189) |
 
 ---
 
@@ -362,7 +362,7 @@ FIXER branch `cursor/seven-lens-canonical-writers` addresses SL-C04-H-02/M-03/M-
 | Cycle-03 browser traces | **PASS** (`SL-C03-*-EDIT-AFTER-SWITCH`, repeat=2) |
 | Cycle-04 browser traces | **PASS** (END/SI physical traces) |
 | Protocol unit tests | **25/25 PASS** |
-| `check-all --require-artifacts` | **BLOCKED** — cycle records need schema-v2 pre/post-fix evidence IDs |
+| `python tools/seven_lens_protocol.py check-all --require-artifacts` | **PASS** at closure commit (schema-v2 evidence on cycles 2–4) |
 | Static audit | **PASS** (after cycle-25 budget bump to 1280 lines) |
 
 Core fix: `domDepthToM` / `domVolumeToL` honor user-edited display after unit switch; `syncDepthInputCanonical` / `syncVolumeInputCanonical` wired on all dual-state writers; `_syncDepthBtSteppers` no longer corrupts stamps during `setUnits`.
@@ -371,7 +371,7 @@ Core fix: `domDepthToM` / `domVolumeToL` honor user-edited display after unit sw
 
 ## Cycle 4 post-merge Codex verification (superseded)
 
-PR #188 was independently rechecked on `dev`. The END and Surface Interval traces pass, but the combined Cycle 2-4 closure is **BLOCKED**.
+PR #188 was independently rechecked on `dev`. Cycles 2–4 now carry schema-v2 closure evidence; `check-all --require-artifacts` **PASS** on branch `cursor/seven-lens-canonical-writers` at `d956648`.
 
 - `SL-C04-H-02`: user edits after a unit switch leave canonical depth/volume state stale.
 - `SL-C04-H-03`: Cycle 2-4 records fail the protocol close contract despite reviewed ledger claims.

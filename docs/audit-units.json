@@ -143,6 +143,16 @@
         "reason": "Historical one-shot extraction merge scripts"
       },
       {
+        "pattern": "dev/seven-lens-browser-trace-cycle*.json",
+        "kind": "evidence_artifact",
+        "reason": "Committed seven-lens browser trace closure evidence"
+      },
+      {
+        "pattern": "tools/build_seven_lens_closure.py",
+        "kind": "audit_metadata",
+        "reason": "Seven-lens record evidence materializer"
+      },
+      {
         "pattern": "tools/v4_*.py",
         "kind": "one_shot",
         "reason": "V4 migration helper scripts outside runtime audit surface"
@@ -3544,7 +3554,7 @@
       "evidence": [],
       "issue": "Seven-lens manual audit protocol gate",
       "regression_cases": [],
-      "fingerprint": "b89ee9febe73651fe0d3f2f8869e4e4854c6b06f80eba74ccc8333bae5dbbf35",
+      "fingerprint": "a7b993327efc1fa899710f07a37e66148feb2e54ff5e4ba89a07bc5d9cddcbd4",
       "last_read_fingerprint": null
     },
     {
@@ -3574,7 +3584,7 @@
       "evidence": [],
       "issue": "Seven-lens browser event and consumer value tracing",
       "regression_cases": [],
-      "fingerprint": "af340ca708d1a6768e8fdac4fb192927b159504001a6cbeccd8e342a6f726a03",
+      "fingerprint": "ec7501c4c292d937f6b10b316230496c6a4cfe6b216e1bab8f8a1ffea1cdd549",
       "last_read_fingerprint": null
     },
     {
@@ -3604,7 +3614,7 @@
       "evidence": [],
       "issue": "Cycle 02 planner edit-after-switch browser trace specification",
       "regression_cases": [],
-      "fingerprint": "61a1a52d12b0e53a97198b73efcf5758802a5f757604bbd4fdf331841b5cd57c",
+      "fingerprint": "29ccb926f0b286e0b0284e38a925fe89dcbe167648a4d18c6e29ffcd3bf722ee",
       "last_read_fingerprint": null
     },
     {
@@ -3619,7 +3629,7 @@
       "evidence": [],
       "issue": "Cycle 03 exact browser value and state trace specification",
       "regression_cases": [],
-      "fingerprint": "5b0dcd2bd159eaf398145492f41a0e5621cc73e0455b7c9018da1cc8ea13808a",
+      "fingerprint": "fb34099d3fe6ad054814c7af0694f57f106e7d57e8ea5b4d14e9d7a56a15d10b",
       "last_read_fingerprint": null
     },
     {

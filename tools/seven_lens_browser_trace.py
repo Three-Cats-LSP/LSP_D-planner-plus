@@ -248,6 +248,10 @@ def _restore(page, before: dict[str, Any], spec: dict[str, Any]) -> None:
         locator = page.locator(selector)
         tag = locator.evaluate("el => el.tagName")
         input_type = locator.get_attribute("type")
+        if tag == "BUTTON":
+            if "active" in (state.get("className") or ""):
+                locator.click(force=True)
+            continue
         if tag == "SELECT":
             locator.select_option(str(state["value"]), force=True)
             if selector == "#unitsSelect":
@@ -260,8 +264,19 @@ def _restore(page, before: dict[str, Any], spec: dict[str, Any]) -> None:
             locator.fill(str(state["value"]), force=True)
             if selector in {"#travelGasManualDepth", "#cylBot_size", "#bestMixDepth", "#cnsDepth"}:
                 page.evaluate(
-                    "(id) => { if (id.includes('Depth') && typeof syncDepthInputCanonical === 'function') syncDepthInputCanonical(id); else if (id.includes('size') && typeof syncVolumeInputCanonical === 'function') syncVolumeInputCanonical(id); }",
-                    selector[1:],
+                    """([sel, dataset]) => {
+                      const id = sel.slice(1);
+                      if (id.includes('Depth') && typeof syncDepthInputCanonical === 'function') {
+                        syncDepthInputCanonical(id);
+                      } else if (id.includes('size') && typeof syncVolumeInputCanonical === 'function') {
+                        syncVolumeInputCanonical(id);
+                      }
+                      const el = document.querySelector(sel);
+                      if (el && !Object.keys(dataset || {}).length) {
+                        for (const key of Object.keys(el.dataset)) delete el.dataset[key];
+                      }
+                    }""",
+                    [selector, state.get("dataset") or {}],
                 )
         dataset = state.get("dataset") or {}
         locator.evaluate(
@@ -288,6 +303,39 @@ def _restore(page, before: dict[str, Any], spec: dict[str, Any]) -> None:
           try { appSettings._syncUiAfterRestore?.(JSON.parse(raw)); } catch (_) {}
         }"""
     )
+    page.evaluate(
+        """state => {
+          localStorage.clear();
+          sessionStorage.clear();
+          for (const [key, value] of Object.entries(state.localStorage)) localStorage.setItem(key, value);
+          for (const [key, value] of Object.entries(state.sessionStorage)) sessionStorage.setItem(key, value);
+        }""",
+        before,
+    )
+    for selector in selectors:
+        state = before["elements"].get(selector)
+        if state is None:
+            continue
+        if selector in {"#travelGasManualDepth", "#cylBot_size", "#bestMixDepth", "#cnsDepth"}:
+            page.evaluate(
+                """([sel, value, dataset]) => {
+                  const el = document.querySelector(sel);
+                  if (!el || value == null) return;
+                  el.value = String(value);
+                  for (const key of Object.keys(el.dataset)) delete el.dataset[key];
+                  for (const [k, v] of Object.entries(dataset || {})) el.dataset[k] = v;
+                  const id = sel.slice(1);
+                  if (id.includes('Depth') && typeof syncDepthInputCanonical === 'function') {
+                    syncDepthInputCanonical(id);
+                  } else if (id.includes('size') && typeof syncVolumeInputCanonical === 'function') {
+                    syncVolumeInputCanonical(id);
+                  }
+                  if (!Object.keys(dataset || {}).length) {
+                    for (const key of Object.keys(el.dataset)) delete el.dataset[key];
+                  }
+                }""",
+                [selector, state.get("value"), state.get("dataset") or {}],
+            )
 
 
 def run_trace(
