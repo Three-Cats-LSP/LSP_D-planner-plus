@@ -4,14 +4,16 @@ Consolidated record of every manual seven-lens audit cycle: what was reviewed, w
 was found, how it was fixed, and application status after closure.
 
 **Maintenance:** After each cycle closes (`python tools/seven_lens_protocol.py check
---phase close`), append a new cycle section here, then push and merge the cycle PR
-to `dev`. Keep detailed reports in `docs/seven-lens-reports/` and protocol records
-in `docs/seven-lens-records/`.
+--phase close`), append or update the cycle section here, then push and merge the
+cycle PR to `dev`. If independent verification later finds residual defects, set the
+cycle back to **BLOCKED**, record new findings, and do not mark complete until a
+fresh FIXER + VERIFIER pass closes them. Keep detailed reports in
+`docs/seven-lens-reports/` and protocol records in `docs/seven-lens-records/`.
 
-| Cycle | Unit | Status | Verified commit | PR |
-|------:|------|--------|-----------------|-----|
+| Cycle | Unit | Status | Source commit | PR |
+|------:|------|--------|---------------|-----|
 | 1 | `UI-MARKUP-HEADER` | **CLOSED** — merged to `dev` | `d39bb3b` | [#177](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/177), [#178](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/178) |
-| 2 | `UI-MARKUP-PLANNER` | **CLOSED** — merged to `dev` | `b56fc07` | [#179](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/179) |
+| 2 | `UI-MARKUP-PLANNER` | **BLOCKED** — post-merge verification failed | `b56fc07` / merge `b37d836` | [#179](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/179) merged; [#180](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/180) draft (block + protocol) |
 
 ---
 
@@ -160,14 +162,12 @@ Seven lenses (L1–L7) applied to the V3 header markup partial and its callers:
 | **Canonical file** | `ui/markup-planner.html` (493 lines) |
 | **Review boundary** | Lines 1–493 (single session, under 600-line limit) |
 | **Baseline** | `3731e560` |
-| **Verified commit** | `b56fc07` |
-| **Branch** | `cursor/seven-lens-cycle-02-planner` |
-| **Auditor** | Cursor GPT-5.5 Medium (`cursor/seven-lens-cycle-02-planner-audit`) |
-| **Fixer** | Composer 2.5 |
-| **Verifier** | Cursor GPT-5.5 Medium (`cursor/seven-lens-cycle-02-planner-verify`) |
-| **Ledger** | `SEVEN_LENS_REVIEWED` |
-| **Protocol record** | `docs/seven-lens-records/cycle-02-planner.json` — **CLOSE PASS** |
-| **Detailed reports** | `docs/seven-lens-reports/cycle-02-planner.md`, `cycle-02-independent-verification.md` |
+| **Merge on dev** | `b37d836` (PR #179) |
+| **Independent verifier** | Codex post-merge (`codex/cycle02-independent-verification`, `74dcf45`) |
+| **Ledger** | `IN_PROGRESS` (was prematurely `SEVEN_LENS_REVIEWED`) |
+| **Protocol record** | `docs/seven-lens-records/cycle-02-planner.json` — **BLOCKED** |
+| **Detailed reports** | `cycle-02-planner.md`, `cycle-02-independent-verification.md` (Cursor, insufficient), `cycle-02-codex-verification.md` (authoritative block) |
+| **Remediation PR** | [#180](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/180) — protocol hardening + open findings; **do not merge** until FIXER/VERIFIER close defects |
 
 ### What was tested
 
@@ -200,9 +200,9 @@ Seven lenses applied to the V3 planner markup partial (plan panel) and traced ca
 | **Root cause** | `isMetric` read phantom `#unitSel` (never rendered). `null?.value !== 'imperial'` is always `true`. |
 | **Failure path** | Enable Min Deco profile → switch to imperial → generate. `enforceMinDecoProfile` matches 9 m / 6 m stops instead of 30 ft / 20 ft equivalents. |
 | **Impact** | Incorrect minimum stop enforcement for imperial divers at shallow stops. |
-| **Fix** | Use `units !== 'imperial'` for `isMetric` in both schedule builder call sites. |
-| **Regressions** | `SL-C02-MIN-DECO-UNITS` (REG-62) |
-| **Status** | **CLOSED** |
+| **Fix attempted** | `units !== 'imperial'` for `isMetric` in schedule builders |
+| **Regressions** | `SL-C02-MIN-DECO-UNITS` (REG-62) — flag only, not schedule output |
+| **Status** | **BLOCKED** — original fix insufficient; regression coverage gap |
 
 #### SL-C02-M-02 — Travel gas manual depth max stays metric on relabel-only unit restore
 
@@ -214,29 +214,93 @@ Seven lenses applied to the V3 planner markup partial (plan panel) and traced ca
 | **Root cause** | Markup `max="100"` (metres). `convertNumericInput` updates `max` only during active conversion, not `relabelOnly` restores or manual-mode display. |
 | **Failure path** | Imperial + manual travel switch → enter 165 ft (valid 50 m equivalent) → browser rejects because `max` remains 100. |
 | **Impact** | Imperial manual travel switch depth capped at ~30 m regardless of displayed unit. |
-| **Fix** | `syncTravelGasManualDepthConstraints()` in `gas-cards-core.js` (metric max 500, imperial max 165, step 1); called from `setUnits` and `updateTravelGasMOD`. |
-| **Regressions** | `SL-C02-TRAVEL-DEPTH-CONSTRAINTS` (REG-63) |
-| **Status** | **CLOSED** |
+| **Fix attempted** | `syncTravelGasManualDepthConstraints()` — partial; see SL-C02-M-03 |
+| **Regressions** | `SL-C02-TRAVEL-DEPTH-CONSTRAINTS` (REG-63) — browser constraint only, not physical parity |
+| **Status** | **BLOCKED**
 
-### Verification gates (final)
+#### SL-C02-H-01 — Imperial cylinder size constraints permit impossible volumes
 
-| Gate | Result |
-|------|--------|
-| `python dev/engine_regression.py` | PASS 161/161 |
-| `python -m tools.audit check --profile static` | PASS |
-| `python -m tools.audit run --profile ci` | PASS (12/12 suites) |
-| `python tools/seven_lens_protocol.py check --phase close` | PASS |
-| Independent re-check | Adjacent imperial/metric round-trip, min-deco toggle, no phantom `#unitSel` |
+| | |
+|---|---|
+| **Severity** | HIGH |
+| **Lenses** | L1, L3, L4, L6 |
+| **Location** | `ui/markup-planner.html` cylinder fields; `index.html:3464-3475`; `gas-cards-core.js:defaultDecoCylFieldValues` |
+| **Root cause** | Litres→ft³ conversion applied to values but imperial `max=1766` (should be ~1.77 ft³ for 50 L). Metric `min=1` / `step=0.5` remain after values like `0.4 ft³`. |
+| **Failure path** | Switch to imperial → default 12 L → 0.4 ft³ rejected (below min 1); 2 ft³ or hundreds of ft³ accepted. |
+| **Impact** | Normal cylinders invalid; physically impossible volumes accepted → gas reserve overestimate. |
+| **Fix needed** | One canonical physical min/max/step tuple; derive metric and imperial constraints for all cylinder inputs. |
+| **Regressions** | `SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS` (proposed) |
+| **Status** | **OPEN**
 
-### App status after Cycle 2
+#### SL-C02-M-03 — Travel switch-depth limits not physically equivalent
 
-- **Unit `UI-MARKUP-PLANNER`:** `SEVEN_LENS_REVIEWED` — both findings CLOSED.
-- **Planner markup:** Imperial min-deco enforcement uses correct unit flag. Travel gas manual depth input constraints follow display units on switch and restore.
-- **Regression suite:** Two new stable case IDs (REG-62, REG-63); full engine regression at 161 cases.
-- **CI:** Static + full CI green on verified commit `b56fc07`.
-- **Merge status:** Merged to `dev` via PR [#179](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/179).
-- **Open findings:** None for this unit.
-- **Cumulative seven-lens coverage:** Cycles 1–2 complete header + planner markup partials (`UI-MARKUP-HEADER`, `UI-MARKUP-PLANNER`).
+| | |
+|---|---|
+| **Severity** | MEDIUM |
+| **Lenses** | L1, L3, L4, L6 |
+| **Location** | Markup `max=100` m; `syncTravelGasManualDepthConstraints` metric `500` m, imperial `165` ft (~50 m) |
+| **Root cause** | Three conflicting maxima; no single canonical metre ceiling. |
+| **Failure path** | 77 m travel MOD valid in metric; equivalent 253 ft rejected in imperial. |
+| **Impact** | Valid manual travel depths accepted/rejected by display unit alone. |
+| **Fix needed** | One canonical metre maximum (e.g. 100 m from markup); derive imperial feet everywhere. |
+| **Regressions** | `SL-C02-TRAVEL-DEPTH-PHYSICAL-PARITY` (proposed) |
+| **Status** | **OPEN**
+
+#### SL-C02-M-04 — Unit round trips mutate the active dive plan
+
+| | |
+|---|---|
+| **Severity** | MEDIUM |
+| **Lenses** | L1, L3, L6 |
+| **Location** | `index.html:3352-3480` (`setUnits`, `convertNumericInput`) |
+| **Root cause** | Display-rounded values written back as canonical; integer ft and one-decimal ft³ lose precision. |
+| **Failure path** | Metric → imperial → metric with defaults. |
+| **Impact** | 40 m → 39.9 m; 12 L cylinders → 11 L without user action. |
+| **Fix needed** | Preserve canonical physical values or higher-precision conversion; bidirectional round-trip tests. |
+| **Regressions** | `SL-C02-UNIT-ROUNDTRIP-IMMUTABLE` (proposed) |
+| **Status** | **OPEN**
+
+#### SL-C02-M-05 — Min-deco regression does not test schedule behavior
+
+| | |
+|---|---|
+| **Severity** | MEDIUM (test evidence) |
+| **Lenses** | L4, L7 |
+| **Location** | `dev/engine_regression.py` `sevenLensCycle02`; ZHL/VPM min-deco engines |
+| **Root cause** | `SL-C02-MIN-DECO-UNITS` asserts unused `isMetric` adapter flag; engines use internal metre depths. |
+| **Failure path** | Schedule output can be wrong while regression passes. |
+| **Fix needed** | Assert observable metric/imperial schedule stops (9 m/30 ft, 6 m/20 ft parity); prove pre-fix failure. |
+| **Regressions** | `SL-C02-MIN-DECO-OBSERVABLE-PARITY` (proposed) |
+| **Status** | **OPEN**
+
+#### SL-C02-M-06 — Protocol accepted nonexistent audit checkpoint
+
+| | |
+|---|---|
+| **Severity** | MEDIUM (audit process) |
+| **Lens** | L7 |
+| **Root cause** | `audit_commit` equalled baseline; audit/fix/tests combined; old protocol still returned CLOSE PASS. |
+| **Fix** | Protocol hardened in `74dcf45` / PR #180: distinct report-only audit commit, pre-fix failure + post-fix observable assertions, state restoration evidence, full unit-conversion tuples. |
+| **Regressions** | `SEVEN-LENS-AUDIT-CHECKPOINT` (protocol unit tests) |
+| **Status** | **OPEN** (process — addressed in PR #180, not yet on `dev`) |
+
+### Verification gates
+
+| Gate | Cursor verify (PR #179) | Codex independent (PR #180) |
+|------|-------------------------|------------------------------|
+| `python dev/engine_regression.py` | PASS 161/161 | PASS — demonstrates coverage gap |
+| `python -m tools.audit check --profile static` | PASS | BLOCKED (open HIGH `SL-C02-H-01`) |
+| `python -m tools.audit run --profile ci` | PASS 12/12 | PASS |
+| `python tools/seven_lens_protocol.py check --phase close` | PASS (weak) | BLOCKED (strengthened checker) |
+| Chromium physical probes | not run | FAIL (cylinder, travel parity, round-trip) |
+
+### App status after Cycle 2 (current)
+
+- **Unit `UI-MARKUP-PLANNER`:** **BLOCKED** — 7 open/blocked findings (2 original repairs insufficient, 5 residual).
+- **On `dev`:** PR #179 merged; unit-conversion defects remain in production code paths.
+- **Protocol:** Strengthened on `codex/cycle02-independent-verification` (`74dcf45`); awaits merge via PR #180 after code fixes.
+- **Next step:** FIXER branch from `dev` → resolve H-01, M-03–M-05 → fresh VERIFIER → merge remediation PR → then merge #180 protocol/ledger updates.
+- **Cumulative coverage:** Cycle 1 closed; Cycle 2 **not** closed despite earlier ledger promotion.
 
 ---
 
