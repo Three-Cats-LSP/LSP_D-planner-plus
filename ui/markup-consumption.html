@@ -51,7 +51,7 @@
 </div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
 <div class="field">
-<label>Depth (m)</label>
+<label id="cnsDepthLbl">Depth (m)</label>
 <input id="cnsDepth" max="60" min="0" oninput="calcCNS()" type="number" value="30"/>
 </div>
 <div class="field">
@@ -281,7 +281,7 @@
 </div>
 <div class="conv-ref">
 <span>12L tank ≈ 0.424 ft³</span>
-<span>AL80 = 11.1L (77 ft³)</span>
+<span>AL80 ≈ 11.1 L (~0.39 ft³) — "80" is nominal cu ft naming</span>
 </div>
 </div>
 <!-- Depth: m / ft -->

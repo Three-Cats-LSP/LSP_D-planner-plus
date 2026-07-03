@@ -434,6 +434,14 @@
       "suite_id": "SUITE-ENGINE-FULL",
       "case_id": "SL-C02-TRAVEL-DEPTH-CONSTRAINTS"
     },
+    "REG-64": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C03-BEST-MIX-DEPTH-UNITS"
+    },
+    "REG-65": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C03-CNS-DEPTH-UNITS"
+    },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
       "case_id": "android-compile"
@@ -670,8 +678,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "1148d236f73d2242f37ceac46df802b720b4e7a7e1f604e68a093bd47fb9c7b2",
-      "last_read_fingerprint": "1148d236f73d2242f37ceac46df802b720b4e7a7e1f604e68a093bd47fb9c7b2",
+      "fingerprint": "a0afb7d6db3bdb53c4d331671675bfd01e2aa289d9bfda42175ffac84de88bf3",
+      "last_read_fingerprint": "a0afb7d6db3bdb53c4d331671675bfd01e2aa289d9bfda42175ffac84de88bf3",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
         "SUITE-COVERAGE/AUDIT-COV-01"
@@ -825,8 +833,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "62bc7530920037c1e03178a1be7a10f1d578beaa7fcfb48178cd8a6e9786e36e",
-      "last_read_fingerprint": "62bc7530920037c1e03178a1be7a10f1d578beaa7fcfb48178cd8a6e9786e36e",
+      "fingerprint": "49fc4db38e69cbe03c527b034cfa2f613cb08260278b33cf54fc5f1e5b4f4d7b",
+      "last_read_fingerprint": "49fc4db38e69cbe03c527b034cfa2f613cb08260278b33cf54fc5f1e5b4f4d7b",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
         "SUITE-COVERAGE/AUDIT-COV-01"
@@ -988,8 +996,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-UNIT-HELPERS"
       },
-      "fingerprint": "c8e5fe3a45889251cafba2736c3a1eb93fb7c046e516a222582d4576cf838633",
-      "last_read_fingerprint": "c8e5fe3a45889251cafba2736c3a1eb93fb7c046e516a222582d4576cf838633",
+      "fingerprint": "a83eb8927f7c153a241e3306962faff0e2ad27f5d74f0ea6924fce0f1e3b1f5d",
+      "last_read_fingerprint": "a83eb8927f7c153a241e3306962faff0e2ad27f5d74f0ea6924fce0f1e3b1f5d",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
         "SUITE-COVERAGE/AUDIT-COV-01"
@@ -1010,8 +1018,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-UNIT-SWITCHING"
       },
-      "fingerprint": "770f5b7cb9e91606fba6ecdef5dc57c1aab0bfc1d9882a7d55ff5eee8bd03b0b",
-      "last_read_fingerprint": "770f5b7cb9e91606fba6ecdef5dc57c1aab0bfc1d9882a7d55ff5eee8bd03b0b",
+      "fingerprint": "33da7bff9034db36b81a8d8a6352936226788be247465541c072deccffab9aa8",
+      "last_read_fingerprint": "33da7bff9034db36b81a8d8a6352936226788be247465541c072deccffab9aa8",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
         "SUITE-COVERAGE/AUDIT-COV-01"
@@ -1374,8 +1382,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-INIT"
       },
-      "fingerprint": "d8705525065b57428c7feb0fe67bea17c7eecc8d6e1e312cb8431470435ea9f1",
-      "last_read_fingerprint": "d8705525065b57428c7feb0fe67bea17c7eecc8d6e1e312cb8431470435ea9f1",
+      "fingerprint": "9e0102c609f84e5a39b1a75bbe9cec64f1772739496f35ae4649dcaee939d583",
+      "last_read_fingerprint": "9e0102c609f84e5a39b1a75bbe9cec64f1772739496f35ae4649dcaee939d583",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
         "SUITE-COVERAGE/AUDIT-COV-01"
@@ -1474,8 +1482,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-EXPOSURE"
       },
-      "fingerprint": "c928d6b616152064a364aaf55d261afed640539caa108baf6dbc3e3bcbdb4ddd",
-      "last_read_fingerprint": "c928d6b616152064a364aaf55d261afed640539caa108baf6dbc3e3bcbdb4ddd",
+      "fingerprint": "2b5f0a053c4c2b32e6cc52e300550d8e5690bcb25268d7743a42391e8e5331f2",
+      "last_read_fingerprint": "2b5f0a053c4c2b32e6cc52e300550d8e5690bcb25268d7743a42391e8e5331f2",
       "audit_issue": 156,
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
@@ -2559,8 +2567,8 @@
         "REG-03",
         "REG-05"
       ],
-      "fingerprint": "e4e99dae2fb006dff303bab6f6d734380944ac77dbe72826d5783835e540c218",
-      "last_read_fingerprint": "e4e99dae2fb006dff303bab6f6d734380944ac77dbe72826d5783835e540c218",
+      "fingerprint": "a3ece02c9e6bb4e8c7debf3c9dcb03d013dbb56b47964675489080fc44a98c28",
+      "last_read_fingerprint": "a3ece02c9e6bb4e8c7debf3c9dcb03d013dbb56b47964675489080fc44a98c28",
       "audit_issue": 169
     },
     {
@@ -3400,8 +3408,8 @@
         "COV-01",
         "PARITY-01"
       ],
-      "fingerprint": "6ea535561f9958d959be062504f25b6f04d6a5bd7570e794886ef34701c8c804",
-      "last_read_fingerprint": "6ea535561f9958d959be062504f25b6f04d6a5bd7570e794886ef34701c8c804"
+      "fingerprint": "0f96919b9db7894eda50eb718d0e2f7c3f9e222e3c5300717cc31c1ef60ced9b",
+      "last_read_fingerprint": "0f96919b9db7894eda50eb718d0e2f7c3f9e222e3c5300717cc31c1ef60ced9b"
     },
     {
       "id": "TEST-SEVEN-LENS-PROTOCOL",
@@ -3419,8 +3427,8 @@
       "regression_cases": [
         "COV-01"
       ],
-      "fingerprint": "b4e9216a588ef84fea99347d45ad5041f4a1349edc93dee935fc21825f68361b",
-      "last_read_fingerprint": "b4e9216a588ef84fea99347d45ad5041f4a1349edc93dee935fc21825f68361b"
+      "fingerprint": "2a21ba0ad2b3b8f9923e1081fede193e69138c3b367676b143766bec35653871",
+      "last_read_fingerprint": "2a21ba0ad2b3b8f9923e1081fede193e69138c3b367676b143766bec35653871"
     },
     {
       "id": "TOOL-EXTRACT-UI",
@@ -5047,7 +5055,9 @@
         "SL-C01-SETTINGS-RESTORE",
         "SL-C01-ALTITUDE-UNIT-CONSTRAINTS",
         "SL-C02-MIN-DECO-UNITS",
-        "SL-C02-TRAVEL-DEPTH-CONSTRAINTS"
+        "SL-C02-TRAVEL-DEPTH-CONSTRAINTS",
+        "SL-C03-BEST-MIX-DEPTH-UNITS",
+        "SL-C03-CNS-DEPTH-UNITS"
       ]
     },
     {
