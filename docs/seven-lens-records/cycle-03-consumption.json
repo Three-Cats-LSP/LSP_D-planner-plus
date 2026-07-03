@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "cycle": 3,
+  "target_branch": "dev",
+  "baseline_commit": "6e987af4cd66d8679cc63c5cc2dc371421ae8caa",
+  "audit_commit": "",
+  "verified_source_commit": "",
+  "verification_status": "PENDING",
+  "parts": [
+    {
+      "id": "UI-MARKUP-CONSUMPTION-P01",
+      "unit_id": "UI-MARKUP-CONSUMPTION",
+      "path": "ui/markup-consumption.html",
+      "start_line": 1,
+      "end_line": 381,
+      "line_count": 381,
+      "content_fingerprint": "62bc7530920037c1e03178a1be7a10f1d578beaa7fcfb48178cd8a6e9786e36e",
+      "review_session": "cursor/seven-lens-cycle-03-consumption-audit",
+      "verification_session": "",
+      "lens_results": {
+        "L1": {
+          "trace": "CNS depth max 60 m; bestMix slider max 100; converter depth slider 1-100 m; volume 12L/0.424 ft3 defaults.",
+          "boundary_cases": ["imperial bestMix 30 ft vs 30 m", "cnsDepth 60 m max", "AL80 reference volumes"],
+          "evidence": "markup-consumption.html:54-55,196-201,284; calcBestMix uses BAR_PER_METRE on raw slider",
+          "result": "FINDING"
+        },
+        "L2": {
+          "trace": "oninput calcCNS, calcBestMix, convert* handlers; switchConverter tabs; tool panel visibility.",
+          "boundary_cases": ["unit switch recalc tools"],
+          "evidence": "All handlers traced to index.html functions",
+          "result": "NO_FINDING"
+        },
+        "L3": {
+          "trace": "setUnits relabels bestMixDepth display only; cnsDepth omitted from convertNumericInput list.",
+          "boundary_cases": ["metric->imperial relabelOnly", "imperial slider value unchanged"],
+          "evidence": "index.html:3586-3588 setUnits bestMix relabel; no cnsDepth conversion",
+          "result": "FINDING"
+        },
+        "L4": {
+          "trace": "calcBestMix depth*BAR_PER_METRE; calcCNS depth*BAR_PER_METRE; renderToolsBmtRefTable compares slider to metre rows.",
+          "boundary_cases": ["imperial highlight row mismatch"],
+          "evidence": "index.html:7048-7097",
+          "result": "FINDING"
+        },
+        "L5": {
+          "trace": "Canonical ui/markup-consumption.html; assemble contract unchanged.",
+          "boundary_cases": ["no bundle edits"],
+          "evidence": "assemble_ui_html --verify planned post-fix",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "Wrong best mix / CNS ppO2 at depth risks toxic exposure mis-estimation.",
+          "boundary_cases": ["30 ft displayed as 30 m equivalent"],
+          "evidence": "ATA error ~3.28x for typical imperial slider",
+          "result": "FINDING"
+        },
+        "L7": {
+          "trace": "Proposed SL-C03-BEST-MIX-DEPTH-UNITS and SL-C03-CNS-DEPTH-UNITS with pre-fix failure evidence.",
+          "boundary_cases": ["setUnits round-trip non-default depths"],
+          "evidence": "Strengthened protocol requires observable schedule/tool output assertions",
+          "result": "FINDING"
+        }
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "SL-C03-H-01",
+      "severity": "HIGH",
+      "unit_id": "UI-MARKUP-CONSUMPTION",
+      "location": "ui/markup-consumption.html:196-201; index.html calcBestMix/setUnits",
+      "root_cause": "bestMixDepth slider value always metres; imperial relabel only",
+      "failure_path": "Imperial 30 ft display calculates as 30 m ATA",
+      "impact": "Wrong best O2% and ppO2 recommendations",
+      "evidence": "calcBestMix depth*BAR_PER_METRE; setUnits relabel without convert",
+      "recommendation": "Convert slider value/min/max on unit switch; read depth in metres for calc",
+      "observable_contract": "calcBestMix Best O2% matches metre-equivalent depth after imperial/metric switch",
+      "status": "OPEN",
+      "regression_ids": ["SL-C03-BEST-MIX-DEPTH-UNITS"],
+      "evidence_ids": []
+    },
+    {
+      "id": "SL-C03-M-01",
+      "severity": "MEDIUM",
+      "unit_id": "UI-MARKUP-CONSUMPTION",
+      "location": "ui/markup-consumption.html:54-55; index.html calcCNS/setUnits",
+      "root_cause": "cnsDepth label and value never follow units global",
+      "failure_path": "Imperial mode CNS depth still treated as metres",
+      "impact": "CNS% and OTU widget wrong in imperial",
+      "evidence": "Hardcoded Depth (m); calcCNS uses BAR_PER_METRE on raw value",
+      "recommendation": "Sync label/constraints; convert on setUnits; depthToMetres in calcCNS",
+      "observable_contract": "calcCNS ppO2 unchanged for physically equivalent depth across unit switch",
+      "status": "OPEN",
+      "regression_ids": ["SL-C03-CNS-DEPTH-UNITS"],
+      "evidence_ids": []
+    },
+    {
+      "id": "SL-C03-L-01",
+      "severity": "LOW",
+      "unit_id": "UI-MARKUP-CONSUMPTION",
+      "location": "ui/markup-consumption.html:284",
+      "root_cause": "AL80 reference mixes litre volume with 77 naming cu ft",
+      "failure_path": "User reads volume converter reference",
+      "impact": "Misleading copy",
+      "evidence": "11.1L is ~0.39 ft3 not 77 ft3",
+      "recommendation": "Clarify AL80 as 11.1 L (~0.39 ft3) naming convention",
+      "status": "OPEN",
+      "regression_ids": [],
+      "evidence_ids": []
+    }
+  ],
+  "evidence_runs": [],
+  "changed_paths": [],
+  "audit_report": "docs/seven-lens-reports/cycle-03-consumption.md",
+  "notes": "Strengthened protocol cycle 3; audit-only checkpoint."
+}
