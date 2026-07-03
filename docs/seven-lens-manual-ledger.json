@@ -96,6 +96,50 @@
       "parts": {
         "P01": "lines 1-493 — plan panel markup (single bounded part)"
       }
+    },
+    {
+      "unit_id": "UI-MARKUP-CONSUMPTION",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "49fc4db38e69cbe03c527b034cfa2f613cb08260278b33cf54fc5f1e5b4f4d7b",
+      "cycle_id": "SL-C03",
+      "boundary": "ui/markup-consumption.html whole file (381 lines; single session)",
+      "reviewer": "Cursor GPT-5.5 Medium",
+      "review_session": "cursor/seven-lens-cycle-03-consumption-audit",
+      "lens_results": {
+        "L1": "CNS depth max 60 m; bestMix slider max 100; imperial bestMix 30 ft vs 30 m boundary.",
+        "L2": "oninput calcCNS, calcBestMix, convert* handlers traced to index.html.",
+        "L3": "setUnits relabelOnly on bestMixDepth; cnsDepth omitted from convertNumericInput list.",
+        "L4": "calcBestMix/calcCNS used BAR_PER_METRE on raw slider without domDepthToM.",
+        "L5": "Canonical ui/markup-consumption.html; assemble contract unchanged.",
+        "L6": "Wrong best mix / CNS ppO2 at depth risks toxic exposure mis-estimation.",
+        "L7": "SL-C03-BEST-MIX-DEPTH-UNITS and SL-C03-CNS-DEPTH-UNITS with pre-fix failure at e07ab49."
+      },
+      "finding_ids": [
+        "SL-C03-H-01",
+        "SL-C03-M-01",
+        "SL-C03-L-01"
+      ],
+      "verification_commands": [
+        "python -m tools.audit check --profile static",
+        "python -m tools.audit run --profile ci",
+        "python dev/engine_regression.py"
+      ],
+      "reviewed_at": "2026-07-03T10:30:00+00:00",
+      "verified_at": "2026-07-03T11:00:00+00:00",
+      "verifier": "Cursor GPT-5.5 Medium (cursor/seven-lens-cycle-03-consumption-verify)",
+      "verification_status": "PASS",
+      "verified_source_commit": "277985b",
+      "last_checked_commit": "277985b",
+      "verification_report": "docs/seven-lens-reports/cycle-03-independent-verification.md",
+      "findings_open": [],
+      "findings_closed": [
+        "SL-C03-H-01",
+        "SL-C03-M-01",
+        "SL-C03-L-01"
+      ],
+      "parts": {
+        "P01": "lines 1-381 — consumption tools markup (single bounded part)"
+      }
     }
   ]
 }

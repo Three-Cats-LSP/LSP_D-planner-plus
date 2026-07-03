@@ -205,6 +205,18 @@ the contract. Every regression must restore all DOM values, globals, storage,
 workers, timers, and generated state it changes in a `finally` block. A finding
 that names several entry paths must have evidence for every named path.
 
+For every MEDIUM/HIGH/CRITICAL finding, record a failing run on the pre-fix
+commit and a passing run on the fix commit. Assertions must inspect an observable
+schedule, rendered value, validation result, persisted value, or API result. A
+test that only checks an internal flag, helper existence, or source string is not
+behavioral evidence. Record a separate before/after state snapshot proving the
+test leaves DOM, globals, storage, and workers unchanged.
+
+For unit-sensitive controls, review the complete physical tuple: value, label,
+minimum, maximum, step, default, persistence, and both conversion directions.
+Test a non-default value and each boundary, then require metric -> imperial ->
+metric and imperial -> metric -> imperial round trips to preserve physical state.
+
 Cursor may perform up to three fix attempts. After each attempt, return to the
 verification phase. Do not repeatedly edit without a fresh failure explanation.
 

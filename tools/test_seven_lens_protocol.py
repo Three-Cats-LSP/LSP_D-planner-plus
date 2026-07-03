@@ -40,8 +40,8 @@ class SevenLensProtocolTests(unittest.TestCase):
             "parts": [],
             "findings": [],
             "evidence_runs": [
-                {"id": "static", "command": "python audit static", "commit": "abcdef2", "exit_code": 0, "worktree_clean": True},
-                {"id": "ci", "command": "python audit ci", "commit": "abcdef2", "exit_code": 0, "worktree_clean": True},
+                {"id": "static", "kind": "gate", "case_ids": [], "command": "python audit static", "commit": "abcdef2", "exit_code": 0, "worktree_clean": True},
+                {"id": "ci", "kind": "gate", "case_ids": [], "command": "python audit ci", "commit": "abcdef2", "exit_code": 0, "worktree_clean": True},
             ],
             "changed_paths": [],
         }
@@ -106,6 +106,38 @@ class SevenLensProtocolTests(unittest.TestCase):
             "status": "CLOSED", "evidence_ids": ["static"], "regression_ids": [],
         }]
         self.assertTrue(any("regression IDs" in e for e in self.validate(broken)))
+
+    def test_closed_medium_requires_observable_before_after_and_restore(self):
+        broken = copy.deepcopy(self.record)
+        broken["findings"] = [{
+            "id": "SL-C01-M-01", "severity": "MEDIUM", "unit_id": "UNIT",
+            "location": "unit.js:10", "root_cause": "A concrete root cause.",
+            "failure_path": "A reproducible failure path.", "impact": "Wrong output.",
+            "evidence": "Focused probe fails.", "recommendation": "Correct the contract.",
+            "status": "CLOSED", "evidence_ids": ["static"], "regression_ids": ["CASE-1"],
+        }]
+        errors = self.validate(broken)
+        self.assertTrue(any("observable_contract" in e for e in errors))
+        self.assertTrue(any("pre_fix_evidence_id" in e for e in errors))
+
+    def test_baseline_failure_must_actually_fail(self):
+        broken = copy.deepcopy(self.record)
+        broken["evidence_runs"].append({
+            "id": "before", "kind": "baseline_failure", "case_ids": ["CASE-1"],
+            "observable_assertions": ["Rendered schedule contains expected stop"],
+            "state_restored": True, "command": "python probe.py", "commit": "abcdef1",
+            "exit_code": 0, "worktree_clean": True,
+        })
+        self.assertTrue(any("must fail before the fix" in e for e in self.validate(broken)))
+
+    def test_audit_commit_cannot_equal_baseline(self):
+        broken = copy.deepcopy(self.record)
+        broken["baseline_commit"] = "abcdef1"
+        broken["audit_commit"] = "abcdef1"
+        with patch("tools.seven_lens_protocol._resolved_registry", return_value=({}, self.resolved)):
+            with patch("tools.seven_lens_protocol._git", return_value=""):
+                errors = validate_record(self.root, broken, "verify", check_git=True)
+        self.assertTrue(any("report-only commit after baseline" in e for e in errors))
 
     def test_evidence_requires_command_and_commit(self):
         broken = copy.deepcopy(self.record)

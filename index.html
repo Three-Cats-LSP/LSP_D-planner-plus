@@ -1433,7 +1433,7 @@
 </div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
 <div class="field">
-<label>Depth (m)</label>
+<label id="cnsDepthLbl">Depth (m)</label>
 <input id="cnsDepth" max="60" min="0" oninput="calcCNS()" type="number" value="30"/>
 </div>
 <div class="field">
@@ -1663,7 +1663,7 @@
 </div>
 <div class="conv-ref">
 <span>12L tank ≈ 0.424 ft³</span>
-<span>AL80 = 11.1L (77 ft³)</span>
+<span>AL80 ≈ 11.1 L (~0.39 ft³) — "80" is nominal cu ft naming</span>
 </div>
 </div>
 <!-- Depth: m / ft -->
@@ -2883,12 +2883,23 @@ function mToFt(m)    { return Math.round(m * 3.28084); }
 function depthDisp(m, u) { return u === 'metric' ? `${m} m` : `${mToFt(m)} ft`; }
 /** DOM depth input → metres (handles imperial ft stored in .value). */
 function domDepthToM(idOrVal) {
-  const raw = (typeof idOrVal === 'string' && document.getElementById(idOrVal))
-    ? document.getElementById(idOrVal).value
-    : idOrVal;
+  const el = (typeof idOrVal === 'string') ? document.getElementById(idOrVal) : null;
+  if (el?.dataset?.depthM != null && el.dataset.depthM !== '') {
+    const canonical = parseFloat(el.dataset.depthM);
+    if (Number.isFinite(canonical)) return canonical;
+  }
+  const raw = el ? el.value : idOrVal;
   const v = parseFloat(raw);
   if (Number.isNaN(v)) return 0;
   return units === 'imperial' ? v / 3.28084 : v;
+}
+/** Keep canonical metre depth on display-unit inputs for lossless round trips. */
+function syncDepthInputCanonical(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const v = parseFloat(el.value);
+  if (Number.isNaN(v)) return;
+  el.dataset.depthM = String(units === 'imperial' ? v / 3.28084 : v);
 }
 /** PrT from depth (m) and bottom time (min). */
 function calcPrTBarMin(depthM, btMin) {
@@ -3457,6 +3468,22 @@ function setUnits(u, opts) {
   convertNumericInput('travelGasManualDepth', v => Math.round(v * FT_PER_M), v => Math.round(v / FT_PER_M), 500, 165);
   setTxt('travelGasManualDepthLbl', `Switch Depth (${u === 'imperial' ? 'ft' : 'm'})`);
   syncTravelGasManualDepthConstraints?.();
+
+  const stampDepthCanonicalBeforeConvert = (id) => {
+    const el = document.getElementById(id);
+    if (!el || (!isToImperial && !isToMetric)) return;
+    const v = parseFloat(el.value);
+    if (Number.isNaN(v)) return;
+    el.dataset.depthM = String(prev === 'imperial' ? v / FT_PER_M : v);
+  };
+
+  stampDepthCanonicalBeforeConvert('bestMixDepth');
+  stampDepthCanonicalBeforeConvert('cnsDepth');
+
+  convertNumericInput('bestMixDepth', v => Math.round(v * FT_PER_M), v => Math.round(v / FT_PER_M), 100, 330);
+  syncBestMixDepthConstraints?.();
+  convertNumericInput('cnsDepth', v => Math.round(v * FT_PER_M), v => (v / FT_PER_M).toFixed(1).replace(/\.0$/, ''), 60, 197);
+  setTxt('cnsDepthLbl', `Depth (${u === 'imperial' ? 'ft' : 'm'})`);
 
   // ── Cylinder pressure conversion (all gas cards including dynamic ones) ──
   const allCylPres = ['cylBot_pres','cylTravelGas_pres','cylDg1_pres','cylDg2_pres',
@@ -7045,8 +7072,18 @@ function renderBmtRefTable() {
   tbody.innerHTML = rows.join('');
 }
 
+function syncBestMixDepthConstraints() {
+  const el = document.getElementById('bestMixDepth');
+  if (!el) return;
+  const imperial = units === 'imperial';
+  el.min = '1';
+  el.max = String(imperial ? 330 : 100);
+  el.step = '1';
+}
+
 function calcBestMix() {
-  const depth = parseFloat(document.getElementById('bestMixDepth')?.value) || 0;
+  syncDepthInputCanonical('bestMixDepth');
+  const depth = domDepthToM('bestMixDepth');
   const ppo2  = (parseFloat(document.getElementById('bestMixPPO2')?.value) || 14) / 10;
   if (!depth || depth <= 0) return;
   const ata   = altSurfaceP + depth * BAR_PER_METRE;
@@ -7077,7 +7114,7 @@ function renderToolsBmtRefTable() {
   if (ppO2Label) ppO2Label.textContent = ppO2Lim.toFixed(1);
 
   // Highlight row matching current slider depth
-  const currentDepthM = parseFloat(document.getElementById('bestMixDepth')?.value) || 0;
+  const currentDepthM = domDepthToM('bestMixDepth');
 
   const rows = [];
   for (let dM = 10; dM <= 42; dM++) {
@@ -7570,7 +7607,8 @@ function estimateWidgetOtuWithDeco(bottomOtu, depthM, bt, fN2, gfLow, gfHigh, fH
 }
 
 function calcCNS() {
-  const depth  = parseFloat(document.getElementById('cnsDepth')?.value) || 0;
+  syncDepthInputCanonical('cnsDepth');
+  const depth  = domDepthToM('cnsDepth');
   const bt     = parseFloat(document.getElementById('cnsBT')?.value)    || 0;
   const fO2    = parseFloat(document.getElementById('cnsO2')?.value)    || 21;
   const dives  = parseInt(document.getElementById('cnsDives')?.value)   || 1;
