@@ -1,8 +1,10 @@
 # Cycle 4 Post-Merge Verification Report
 
-**Branch reviewed:** `dev`  
-**Merged source:** PR #188 / `d747ccc`  
-**Current reviewed HEAD:** `df717c0`  
+**Branch reviewed:** `dev`
+
+**Merged source:** PR #188 / `d747ccc`
+
+**Current reviewed HEAD:** `df717c0`
 **Verdict:** **BLOCKED — 2 HIGH, 2 MEDIUM**
 
 ## Summary
@@ -13,7 +15,8 @@ The END and Surface Interval fixes behave correctly in their declared browser tr
 
 ### SL-C04-H-02 — User edits after unit switching do not reach physical consumers
 
-**Severity:** HIGH  
+**Severity:** HIGH
+
 **Locations:** `ui/markup-consumption.html:55`, `ui/markup-consumption.html:200`, `ui/markup-header.html:127`, `ui/markup-planner.html:305`, `settings-core.js:516-533`, `index.html:2897-2903`, `index.html:3491-3515`
 
 **Root cause:** `setUnits()` introduced canonical `data-depth-m` and `data-volume-l` state, but the application has multiple writers for the corresponding display values. Best Mix, CNS, planner depth steppers, travel depth, and cylinder-size inputs do not all refresh canonical state. Downstream code prefers the stale dataset over the edited display value.
@@ -31,7 +34,8 @@ The END and Surface Interval fixes behave correctly in their declared browser tr
 
 ### SL-C04-H-03 — Completed review claims are not backed by closable records
 
-**Severity:** HIGH  
+**Severity:** HIGH
+
 **Locations:** `docs/seven-lens-manual-ledger.json`; `docs/seven-lens-records/cycle-02-planner.json`; `cycle-03-consumption.json`; `cycle-04-tools-modals.json`
 
 **Root cause:** The manual ledger could be changed to `SEVEN_LENS_REVIEWED` without a repository gate validating every reviewed cycle record.
@@ -44,7 +48,8 @@ The END and Surface Interval fixes behave correctly in their declared browser tr
 
 ### SL-C04-M-03 — Full engine regression is stateful and currently fails
 
-**Severity:** MEDIUM  
+**Severity:** MEDIUM
+
 **Locations:** `dev/engine_regression.py:1824-1992`, `dev/engine_regression.py:2411`, `dev/engine_regression.py:2421`
 
 **Root cause:** Cycle 2/3 tests mutate canonical datasets, units, local storage, and travel-depth state without restoring the complete pre-test snapshot.
@@ -57,7 +62,8 @@ The END and Surface Interval fixes behave correctly in their declared browser tr
 
 ### SL-C04-M-04 — Browser evidence protocol allowed false-green traces
 
-**Severity:** MEDIUM  
+**Severity:** MEDIUM
+
 **Locations:** `tools/seven_lens_browser_trace.py`; `docs/seven-lens-traces/cycle-03-consumption.json`
 
 **Root cause:** The trace runner previously accepted forced tested actions, an empty trace/assertion set, a single run, non-finite captures, and console/page errors. Cycle 3 tested unit conversion but not editing after conversion.
