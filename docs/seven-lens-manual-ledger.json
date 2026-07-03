@@ -36,8 +36,8 @@
       "verified_at": "2026-07-03T09:45:00+00:00",
       "verifier": "Cursor GPT-5.5 Medium (post PR-178 remediation)",
       "verification_status": "PASS",
-      "verified_source_commit": null,
-      "last_checked_commit": "489c3a2",
+      "verified_source_commit": "d39bb3b",
+      "last_checked_commit": "d39bb3b",
       "verification_report": "docs/seven-lens-reports/cycle-01-independent-verification.md",
       "findings_open": [],
       "findings_closed": [
