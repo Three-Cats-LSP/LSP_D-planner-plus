@@ -1,0 +1,76 @@
+{
+  "schema_version": 2,
+  "repeat": 2,
+  "cycle": 2,
+  "traces": [
+    {
+      "id": "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
+      "entry_event": "User switches to imperial, edits travel manual depth, and returns to metric.",
+      "consumer_path": ["travelGasManualDepth input", "syncDepthInputCanonical", "domDepthToM", "updateTravelGasMOD"],
+      "setup": [
+        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+        {"action": "click", "selector": "#navBtnSettings"},
+        {"action": "select", "selector": "#unitsSelect", "value": "metric"},
+        {"action": "click", "selector": "#navBtnBuh"},
+        {"action": "run_script", "script": "() => { addTravelGas(); const m = document.getElementById('travelGasSwitchMode'); if (m) m.value = 'manual'; updateTravelGasMOD(); }"},
+        {"action": "fill", "selector": "#travelGasManualDepth", "value": "30", "force": true, "setup_only_reason": "Prime travel manual depth before the visible edit path."}
+      ],
+      "state": {
+        "selectors": ["#navBtnSettings", "#navBtnBuh", "#unitsSelect", "#travelGasSwitchMode", "#travelGasManualDepth"],
+        "restore_order": ["#unitsSelect", "#travelGasSwitchMode", "#travelGasManualDepth", "#navBtnBuh", "#navBtnSettings"],
+        "globals": ["_zhlHeadless"]
+      },
+      "steps": [
+        {"capture": "before", "values": {"consumer_m": "domDepthToM('travelGasManualDepth')"}},
+        {"action": "click", "selector": "#navBtnSettings"},
+        {"action": "select", "selector": "#unitsSelect", "value": "imperial"},
+        {"action": "click", "selector": "#navBtnBuh"},
+        {"action": "run_script", "script": "() => { addTravelGas(); const m = document.getElementById('travelGasSwitchMode'); if (m) m.value = 'manual'; updateTravelGasMOD(); const el = document.getElementById('travelGasManualDepth'); if (el) { el.value = '120'; el.dispatchEvent(new Event('input', {bubbles:true})); } }"},
+        {"capture": "edited", "values": {"input_value": "document.querySelector('#travelGasManualDepth').value", "canonical_m": "Number(document.querySelector('#travelGasManualDepth').dataset.depthM)", "consumer_m": "domDepthToM('travelGasManualDepth')"}},
+        {"action": "click", "selector": "#navBtnSettings"},
+        {"action": "select", "selector": "#unitsSelect", "value": "metric"},
+        {"action": "click", "selector": "#navBtnBuh"},
+        {"capture": "roundtrip", "values": {"consumer_m": "domDepthToM('travelGasManualDepth')"}}
+      ],
+      "assertions": [
+        {"id": "imperial-edit-visible", "left": "$.edited.input_value", "op": "equal", "right": "120"},
+        {"id": "imperial-edit-reaches-consumer", "left": "$.edited.consumer_m", "op": "close", "right": 36.576, "tolerance": 0.001},
+        {"id": "roundtrip-preserves-edit", "left": "$.roundtrip.consumer_m", "op": "close", "right": 36.576, "tolerance": 0.001}
+      ]
+    },
+    {
+      "id": "SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH",
+      "entry_event": "User switches to imperial, edits bottom cylinder size, and returns to metric.",
+      "consumer_path": ["cylBot_size input", "syncVolumeInputCanonical", "domVolumeToL"],
+      "setup": [
+        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+        {"action": "click", "selector": "#navBtnSettings"},
+        {"action": "select", "selector": "#unitsSelect", "value": "metric"},
+        {"action": "click", "selector": "#navBtnBuh"},
+        {"action": "fill", "selector": "#cylBot_size", "value": "12", "force": true, "setup_only_reason": "Prime bottom cylinder size before the visible edit path."}
+      ],
+      "state": {
+        "selectors": ["#navBtnSettings", "#navBtnBuh", "#unitsSelect", "#cylBot_size"],
+        "restore_order": ["#unitsSelect", "#cylBot_size", "#navBtnBuh", "#navBtnSettings"],
+        "globals": ["_zhlHeadless"]
+      },
+      "steps": [
+        {"capture": "before", "values": {"consumer_l": "domVolumeToL('cylBot_size')"}},
+        {"action": "click", "selector": "#navBtnSettings"},
+        {"action": "select", "selector": "#unitsSelect", "value": "imperial"},
+        {"action": "click", "selector": "#navBtnBuh"},
+        {"action": "run_script", "script": "() => { const el = document.getElementById('cylBot_size'); if (el) { el.value = '0.5'; el.dispatchEvent(new Event('input', {bubbles:true})); } }"},
+        {"capture": "edited", "values": {"input_value": "document.querySelector('#cylBot_size').value", "canonical_l": "Number(document.querySelector('#cylBot_size').dataset.volumeL)", "consumer_l": "domVolumeToL('cylBot_size')"}},
+        {"action": "click", "selector": "#navBtnSettings"},
+        {"action": "select", "selector": "#unitsSelect", "value": "metric"},
+        {"action": "click", "selector": "#navBtnBuh"},
+        {"capture": "roundtrip", "values": {"consumer_l": "domVolumeToL('cylBot_size')"}}
+      ],
+      "assertions": [
+        {"id": "imperial-edit-visible", "left": "$.edited.input_value", "op": "equal", "right": "0.5"},
+        {"id": "imperial-edit-reaches-consumer", "left": "$.edited.consumer_l", "op": "close", "right": 14.158, "tolerance": 0.1},
+        {"id": "roundtrip-preserves-edit", "left": "$.roundtrip.consumer_l", "op": "close", "right": 14.158, "tolerance": 0.1}
+      ]
+    }
+  ]
+}

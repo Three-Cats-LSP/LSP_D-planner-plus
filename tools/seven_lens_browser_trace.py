@@ -74,7 +74,7 @@ def validate_trace_spec(spec: dict[str, Any]) -> list[str]:
                 if "action" not in row:
                     continue
                 action = row.get("action")
-                if action not in {"fill", "select", "click", "check", "set_global"}:
+                if action not in {"fill", "select", "click", "check", "set_global", "run_script"}:
                     errors.append(f"{trace_id}: unsupported {phase_name} action {action!r}")
                 if phase_name == "steps" and row.get("force"):
                     errors.append(f"{trace_id}: tested user actions must not use force")
@@ -123,8 +123,11 @@ def _resolve_path(value: Any, captures: dict[str, Any]) -> Any:
     if not isinstance(value, str) or not value.startswith("$"):
         return value
     current: Any = captures
-    for part in value[1:].lstrip(".").split("."):
-        current = current[int(part)] if isinstance(current, list) else current[part]
+    try:
+        for part in value[1:].lstrip(".").split("."):
+            current = current[int(part)] if isinstance(current, list) else current[part]
+    except (KeyError, IndexError, TypeError, ValueError):
+        return None
     return current
 
 
@@ -230,6 +233,8 @@ def _act(page, action: dict[str, Any]) -> None:
             "([name, value]) => { window[name] = value; }",
             [str(action.get("name")), action.get("value")],
         )
+    elif kind == "run_script":
+        page.evaluate(str(action.get("script", "")))
     else:
         raise RuntimeError(f"unsupported browser action {kind!r}")
 
@@ -245,10 +250,19 @@ def _restore(page, before: dict[str, Any], spec: dict[str, Any]) -> None:
         input_type = locator.get_attribute("type")
         if tag == "SELECT":
             locator.select_option(str(state["value"]), force=True)
+            if selector == "#unitsSelect":
+                page.evaluate(
+                    "() => { const u = document.getElementById('unitsSelect')?.value; if (typeof setUnits === 'function' && u) setUnits(u); }"
+                )
         elif input_type in {"checkbox", "radio"}:
             locator.set_checked(bool(state["checked"]), force=True)
         elif tag in {"INPUT", "TEXTAREA"} and state["value"] is not None:
             locator.fill(str(state["value"]), force=True)
+            if selector in {"#travelGasManualDepth", "#cylBot_size", "#bestMixDepth", "#cnsDepth"}:
+                page.evaluate(
+                    "(id) => { if (id.includes('Depth') && typeof syncDepthInputCanonical === 'function') syncDepthInputCanonical(id); else if (id.includes('size') && typeof syncVolumeInputCanonical === 'function') syncVolumeInputCanonical(id); }",
+                    selector[1:],
+                )
         dataset = state.get("dataset") or {}
         locator.evaluate(
             """(el, ds) => {
@@ -266,6 +280,13 @@ def _restore(page, before: dict[str, Any], spec: dict[str, Any]) -> None:
           for (const [key, value] of Object.entries(state.globals)) window[key] = value;
         }""",
         before,
+    )
+    page.evaluate(
+        """() => {
+          const raw = localStorage.getItem('lspDiveSettings_v6');
+          if (!raw || typeof appSettings === 'undefined') return;
+          try { appSettings._syncUiAfterRestore?.(JSON.parse(raw)); } catch (_) {}
+        }"""
     )
 
 
