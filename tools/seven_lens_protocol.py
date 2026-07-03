@@ -30,6 +30,12 @@ def _git(*args: str, root: Path = ROOT) -> str:
     return proc.stdout.strip()
 
 
+def _git_ok(*args: str, root: Path = ROOT) -> bool:
+    return subprocess.run(
+        ["git", *args], cwd=root, text=True, capture_output=True, check=False,
+    ).returncode == 0
+
+
 def _part_hash(path: Path, start: int, end: int) -> str:
     lines = path.read_bytes().splitlines(keepends=True)
     return hashlib.sha256(b"".join(lines[start - 1:end])).hexdigest()
@@ -94,6 +100,7 @@ def make_plan(root: Path, cycle_id: int) -> dict[str, Any]:
         "findings": [],
         "evidence_runs": [],
         "changed_paths": [],
+        "audit_report": "",
         "notes": "Generated boundaries are review scopes, not permission to skip semantic dependencies.",
     }
 
@@ -108,6 +115,14 @@ def _attestation_only_path(path: str) -> bool:
         or path.startswith("docs/seven-lens-records/")
         or path == "docs/seven-lens-manual-ledger.json"
     )
+
+
+def _audit_metadata_path(path: str) -> bool:
+    return _attestation_only_path(path) or path in {
+        "docs/audit-units.json",
+        "docs/audit-coverage.md",
+        "docs/audit-master-plan.md",
+    }
 
 
 def _validate_parts(root: Path, record: dict[str, Any], phase: str) -> list[str]:
@@ -201,6 +216,19 @@ def _validate_findings(record: dict[str, Any], phase: str) -> list[str]:
                 errors.append(f"{fid}: closed finding lacks behavioral regression IDs")
             if not linked or any(item not in evidence_ids for item in linked):
                 errors.append(f"{fid}: closed finding lacks valid evidence IDs")
+            if finding.get("severity") in {"CRITICAL", "HIGH", "MEDIUM"}:
+                if not _text(finding.get("observable_contract"), 20):
+                    errors.append(f"{fid}: observable_contract missing")
+                before_id = finding.get("pre_fix_evidence_id")
+                after_id = finding.get("post_fix_evidence_id")
+                restore_id = finding.get("state_restoration_evidence_id")
+                for label, evidence_id in (
+                    ("pre_fix_evidence_id", before_id),
+                    ("post_fix_evidence_id", after_id),
+                    ("state_restoration_evidence_id", restore_id),
+                ):
+                    if evidence_id not in evidence_ids:
+                        errors.append(f"{fid}: {label} is missing or unknown")
     if phase == "close":
         open_ids = [f.get("id") for f in record.get("findings", []) if f.get("status") != "CLOSED"]
         if open_ids:
@@ -224,6 +252,21 @@ def _validate_evidence(record: dict[str, Any], phase: str) -> list[str]:
             errors.append(f"evidence {evidence_id}: integer exit_code missing")
         if not isinstance(row.get("worktree_clean"), bool):
             errors.append(f"evidence {evidence_id}: worktree_clean must be boolean")
+        if row.get("kind") not in {"baseline_failure", "post_fix", "state_restoration", "gate"}:
+            errors.append(f"evidence {evidence_id}: invalid kind")
+        if not isinstance(row.get("case_ids"), list):
+            errors.append(f"evidence {evidence_id}: case_ids must be a list")
+        if row.get("kind") in {"baseline_failure", "post_fix", "state_restoration"}:
+            if not row.get("case_ids"):
+                errors.append(f"evidence {evidence_id}: behavioral evidence needs case_ids")
+            if not isinstance(row.get("observable_assertions"), list) or not row.get("observable_assertions"):
+                errors.append(f"evidence {evidence_id}: observable_assertions missing")
+            if not isinstance(row.get("state_restored"), bool):
+                errors.append(f"evidence {evidence_id}: state_restored must be boolean")
+        if row.get("kind") == "baseline_failure" and row.get("exit_code") == 0:
+            errors.append(f"evidence {evidence_id}: baseline failure must fail before the fix")
+        if row.get("kind") in {"post_fix", "state_restoration", "gate"} and row.get("exit_code") != 0:
+            errors.append(f"evidence {evidence_id}: passing evidence has nonzero exit_code")
     if phase in {"verify", "close"} and record.get("verification_status") == "PASSED":
         passed = {
             row.get("id") for row in record.get("evidence_runs", [])
@@ -234,14 +277,67 @@ def _validate_evidence(record: dict[str, Any], phase: str) -> list[str]:
     return errors
 
 
+def _validate_closed_finding_evidence(record: dict[str, Any], phase: str) -> list[str]:
+    if phase not in {"verify", "close"}:
+        return []
+    errors: list[str] = []
+    evidence = {row.get("id"): row for row in record.get("evidence_runs", [])}
+    for finding in record.get("findings", []):
+        if finding.get("status") != "CLOSED" or finding.get("severity") not in {"CRITICAL", "HIGH", "MEDIUM"}:
+            continue
+        fid = finding.get("id", "<unknown>")
+        regressions = set(finding.get("regression_ids", []))
+        before = evidence.get(finding.get("pre_fix_evidence_id"), {})
+        after = evidence.get(finding.get("post_fix_evidence_id"), {})
+        restore = evidence.get(finding.get("state_restoration_evidence_id"), {})
+        if before.get("kind") != "baseline_failure" or before.get("exit_code") == 0:
+            errors.append(f"{fid}: pre-fix evidence does not demonstrate failure")
+        if after.get("kind") != "post_fix" or after.get("exit_code") != 0:
+            errors.append(f"{fid}: post-fix evidence does not demonstrate success")
+        if not regressions.issubset(set(after.get("case_ids", []))):
+            errors.append(f"{fid}: post-fix evidence does not emit every regression ID")
+        if restore.get("kind") != "state_restoration" or restore.get("state_restored") is not True:
+            errors.append(f"{fid}: state restoration evidence is not clean")
+    return errors
+
+
+def _validate_audit_checkpoint(root: Path, record: dict[str, Any], check_git: bool) -> list[str]:
+    if not check_git:
+        return []
+    errors: list[str] = []
+    baseline = str(record.get("baseline_commit", ""))
+    audit = str(record.get("audit_commit", ""))
+    verified = str(record.get("verified_source_commit", ""))
+    if not (_text(baseline, 7) and _text(audit, 7)):
+        return errors
+    if baseline == audit:
+        errors.append("audit_commit must be a report-only commit after baseline")
+        return errors
+    if not _git_ok("merge-base", "--is-ancestor", baseline, audit, root=root):
+        errors.append("audit_commit is not descended from baseline_commit")
+        return errors
+    changed = _git("diff", "--name-only", f"{baseline}..{audit}", root=root).splitlines()
+    if not any(_attestation_only_path(path) for path in changed):
+        errors.append("audit checkpoint does not contain a cycle report or record")
+    disallowed = [path for path in changed if path and not _audit_metadata_path(path)]
+    if disallowed:
+        errors.append("audit checkpoint contains source/test fixes: " + ", ".join(disallowed))
+    if _text(verified, 7) and not _git_ok("merge-base", "--is-ancestor", audit, verified, root=root):
+        errors.append("verified_source_commit does not descend from audit_commit")
+    return errors
+
+
 def validate_record(root: Path, record: dict[str, Any], phase: str, check_git: bool = True) -> list[str]:
     errors = _validate_parts(root, record, phase)
     errors.extend(_validate_findings(record, phase))
     errors.extend(_validate_evidence(record, phase))
+    errors.extend(_validate_closed_finding_evidence(record, phase))
     if record.get("target_branch") != "dev":
         errors.append("target_branch must be dev")
     if phase in {"verify", "close"} and not _text(record.get("audit_commit"), 7):
         errors.append("audit_commit missing")
+    if phase in {"verify", "close"}:
+        errors.extend(_validate_audit_checkpoint(root, record, check_git))
     if phase in {"verify", "close"} and record.get("verification_status") not in {"PASSED", "BLOCKED"}:
         errors.append("verification_status must be PASSED or BLOCKED")
     if phase in {"verify", "close"} and record.get("verification_status") == "PASSED" and not _text(record.get("verified_source_commit"), 7):
