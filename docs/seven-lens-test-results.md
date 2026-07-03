@@ -12,7 +12,7 @@ in `docs/seven-lens-records/`.
 |------:|------|--------|-----------------|-----|
 | 1 | `UI-MARKUP-HEADER` | **CLOSED** — merged to `dev` | `d39bb3b` | [#177](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/177), [#178](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/178) |
 | 2 | `UI-MARKUP-PLANNER` | **CLOSED** — merged to `dev` | `b56fc07` | [#179](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/179) |
-| 3 | `UI-MARKUP-CONSUMPTION` | **CLOSED** — pending merge to `dev` | `277985b` | (PR pending) |
+| 3 | `UI-MARKUP-CONSUMPTION` | **CLOSED** — pending merge to `dev` | `277985b` | [#182](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/182) |
 
 ---
 
