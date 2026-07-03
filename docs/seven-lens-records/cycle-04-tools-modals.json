@@ -1,0 +1,142 @@
+{
+  "schema_version": 2,
+  "cycle": 4,
+  "target_branch": "dev",
+  "integration_base_commit": "42224fa9edb5cb000f739b92cd51dfc1458bb221",
+  "baseline_commit": "42224fa9edb5cb000f739b92cd51dfc1458bb221",
+  "baseline_registry_fingerprint": "52dea369fb6b3bc294003a6de0a9346c61e260c156251e01311ba4b72fb885f6",
+  "baseline_findings": [
+    {"id": "SL-C02-H-01", "severity": "HIGH", "status": "OPEN", "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes."},
+    {"id": "SL-C02-M-03", "severity": "MEDIUM", "status": "OPEN", "summary": "Travel manual depth limits disagree between markup, metric restore, and imperial mode."},
+    {"id": "SL-C02-M-04", "severity": "MEDIUM", "status": "OPEN", "summary": "Rounded display values become canonical physical inputs; Best Mix and CNS now reproduce the same unit-roundtrip drift."},
+    {"id": "SL-C02-M-05", "severity": "MEDIUM", "status": "OPEN", "summary": "Min-deco regression checks an adapter property rather than observable schedule behavior."},
+    {"id": "SL-C02-M-06", "severity": "MEDIUM", "status": "OPEN", "summary": "Cycle history allowed unresolved findings and a blocked prior record to be deleted or rewritten as passed."},
+    {"id": "SL-C03-H-02", "severity": "HIGH", "status": "OPEN", "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits."},
+    {"id": "SL-C03-M-02", "severity": "MEDIUM", "status": "OPEN", "summary": "Cycle 3 regressions compare rounded outputs and restore values before units, masking physical-depth drift and corrupting test state."},
+    {"id": "SL-C03-L-02", "severity": "LOW", "status": "OPEN", "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling."}
+  ],
+  "audit_commit": "",
+  "verified_source_commit": "",
+  "verification_status": "PENDING",
+  "parts": [
+    {
+      "id": "UI-MARKUP-TOOLS-P01",
+      "unit_id": "UI-MARKUP-TOOLS",
+      "path": "ui/markup-tools.html",
+      "start_line": 1,
+      "end_line": 271,
+      "line_count": 271,
+      "content_fingerprint": "62aef8c891215ea1b3640ca09af9fcb9edffe792f74f9a64ae60fe2dba71e737",
+      "review_session": "cursor/seven-lens-cycle-04-tools-audit",
+      "verification_session": "",
+      "lens_results": {
+        "L1": {"trace": "END slider 1-100; SI depth 5-60; gas table ppO2 1.0-1.6; O2/He mix bounds.", "boundary_cases": ["imperial END 30 ft", "SI 60 m max", "hypoxic surface ppO2"], "evidence": "markup-tools.html:52-191; gas-table-core.js:59-146", "result": "FINDING"},
+        "L2": {"trace": "oninput calcEND_tool, calcSurfInt; tool panel switch via initV3Layout.", "boundary_cases": ["unit switch recalc"], "evidence": "index.html:7318-7320", "result": "NO_FINDING"},
+        "L3": {"trace": "endDepth/siD* omitted from convertNumericInput; setUnits relabel only.", "boundary_cases": ["metric->imperial relabelOnly"], "evidence": "index.html:3616-3624 vs 3480-3485", "result": "FINDING"},
+        "L4": {"trace": "calcEND_tool divides raw slider; calcSurfInt passes raw depth as metres.", "boundary_cases": ["imperial consumer mismatch"], "evidence": "gas-table-core.js:61-62; surf-interval-core.js:105-152", "result": "FINDING"},
+        "L5": {"trace": "Canonical ui/markup-tools.html partial.", "boundary_cases": ["assemble contract"], "evidence": "ui/markup-tools.html", "result": "NO_FINDING"},
+        "L6": {"trace": "Wrong END/SI in imperial misstates narcosis risk and SI guidance.", "boundary_cases": ["30 ft displayed as 9 m physics"], "evidence": "calcEND_tool ATA error", "result": "FINDING"},
+        "L7": {"trace": "SL-C04-END-PHYSICAL-TRACE and SL-C04-SI-PHYSICAL-TRACE declared.", "boundary_cases": ["exact consumer_m assertions"], "evidence": "docs/seven-lens-traces/cycle-04-tools-modals.json", "result": "FINDING"}
+      }
+    },
+    {
+      "id": "UI-MARKUP-MODALS-P01",
+      "unit_id": "UI-MARKUP-MODALS",
+      "path": "ui/markup-modals.html",
+      "start_line": 1,
+      "end_line": 341,
+      "line_count": 341,
+      "content_fingerprint": "4720f42548ea3b0b75af9cf1548656c9c2c53b3c2b3cfd89c7c17c63a4447be6",
+      "review_session": "cursor/seven-lens-cycle-04-modals-audit",
+      "verification_session": "",
+      "lens_results": {
+        "L1": {"trace": "Modal copy references depths in metres; ref depth stats updated by setUnits.", "boundary_cases": ["refDepthRec imperial"], "evidence": "markup-modals.html:121-122; index.html:3553", "result": "NO_FINDING"},
+        "L2": {"trace": "Overlay click dismiss on gas/tip/preset modals; confirmModal lacks backdrop handler.", "boundary_cases": ["reset confirm flow"], "evidence": "markup-modals.html:2 vs 100", "result": "FINDING"},
+        "L3": {"trace": "Modal open state via style.display; Escape handled in settings-core.", "boundary_cases": ["z-index stacking"], "evidence": "settings-core.js:813", "result": "NO_FINDING"},
+        "L4": {"trace": "showConfirm/closeConfirmModal contract; preset save handlers traced.", "boundary_cases": ["confirm callback guard"], "evidence": "index.html:4796-4803", "result": "NO_FINDING"},
+        "L5": {"trace": "Canonical ui/markup-modals.html partial.", "boundary_cases": [], "evidence": "ui/markup-modals.html", "result": "NO_FINDING"},
+        "L6": {"trace": "warningModal and disclaimer copy present; confirm trap on destructive reset.", "boundary_cases": ["backdrop dismiss"], "evidence": "markup-modals.html:100-108", "result": "FINDING"},
+        "L7": {"trace": "SL-C04-CONFIRM-BACKDROP regression proposed.", "boundary_cases": ["DOM onclick attribute"], "evidence": "audit report", "result": "FINDING"}
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "SL-C04-H-01",
+      "severity": "HIGH",
+      "unit_id": "UI-MARKUP-TOOLS",
+      "location": "ui/markup-tools.html:52-60; gas-table-core.js:calcEND_tool; index.html:setUnits",
+      "root_cause": "endDepth omitted from unit conversion tuple and canonical depth stamp",
+      "failure_path": "Imperial 30 ft display calculates as ~9.14 m ATA",
+      "impact": "Wrong END, MOD, and narcosis risk in END calculator",
+      "evidence": "setUnits relabel; calcEND_tool dRaw/3.28084 without data-depthM",
+      "recommendation": "Convert endDepth on setUnits; use domDepthToM in calcEND_tool",
+      "observable_contract": "endAbsP unchanged for physically equivalent depth after imperial/metric switch",
+      "status": "OPEN",
+      "regression_ids": ["SL-C04-END-DEPTH-UNITS"],
+      "evidence_ids": []
+    },
+    {
+      "id": "SL-C04-M-01",
+      "severity": "MEDIUM",
+      "unit_id": "UI-MARKUP-TOOLS",
+      "location": "ui/markup-tools.html:164-191; surf-interval-core.js:calcSurfInt",
+      "root_cause": "siD1Depth/siD2Depth never converted; engine reads raw slider as metres",
+      "failure_path": "Imperial slider 30 treated as 30 m for ZHL surface-interval model",
+      "impact": "Wrong minimum surface interval in imperial mode",
+      "evidence": "calcSurfInt d1/d2 raw; setUnits relabel only",
+      "recommendation": "Full depth tuple + domDepthToM in calcSurfInt",
+      "observable_contract": "siMinResult unchanged for equivalent physical depths across unit switch",
+      "status": "OPEN",
+      "regression_ids": ["SL-C04-SI-DEPTH-UNITS"],
+      "evidence_ids": []
+    },
+    {
+      "id": "SL-C04-M-02",
+      "severity": "MEDIUM",
+      "unit_id": "UI-MARKUP-MODALS",
+      "location": "ui/markup-modals.html:100-108",
+      "root_cause": "confirmModal overlay missing backdrop dismiss onclick",
+      "failure_path": "User taps outside reset confirmation; modal stays open",
+      "impact": "Inconsistent modal UX on destructive confirmation",
+      "evidence": "Sibling modals use if(event.target===this)close* pattern",
+      "recommendation": "Add backdrop dismiss calling closeConfirmModal(false)",
+      "observable_contract": "Overlay click sets confirmModal display none without invoking callback",
+      "status": "OPEN",
+      "regression_ids": ["SL-C04-CONFIRM-BACKDROP"],
+      "evidence_ids": []
+    },
+    {
+      "id": "SL-C04-L-01",
+      "severity": "LOW",
+      "unit_id": "UI-MARKUP-TOOLS",
+      "location": "ui/markup-tools.html:95",
+      "root_cause": "Typo Narcotic ppressure",
+      "failure_path": "User reads END results",
+      "impact": "Misleading label copy",
+      "evidence": "markup-tools.html:95",
+      "recommendation": "Fix to Narcotic pressure",
+      "status": "OPEN",
+      "regression_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "SL-C04-L-02",
+      "severity": "LOW",
+      "unit_id": "UI-MARKUP-TOOLS",
+      "location": "ui/markup-tools.html:121",
+      "root_cause": "EAD intro hardcodes 12-38 m",
+      "failure_path": "Imperial user reads EAD table intro",
+      "impact": "Misleading static copy",
+      "evidence": "renderEADTable uses display units",
+      "recommendation": "Unit-neutral depth range wording",
+      "status": "OPEN",
+      "regression_ids": [],
+      "evidence_ids": []
+    }
+  ],
+  "evidence_runs": [],
+  "changed_paths": [],
+  "audit_report": "docs/seven-lens-reports/cycle-04-tools-modals.md",
+  "notes": "Cycle 04 audit checkpoint; FIXER phase follows."
+}
