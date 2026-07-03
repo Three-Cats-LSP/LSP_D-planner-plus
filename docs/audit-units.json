@@ -93,6 +93,11 @@
         "reason": "Seven-lens cycle audit reports"
       },
       {
+        "pattern": "docs/seven-lens-records/**",
+        "kind": "audit_metadata",
+        "reason": "Seven-lens cycle protocol records"
+      },
+      {
         "pattern": "docs/cursor-seven-lens-audit-workflow.md",
         "kind": "audit_metadata",
         "reason": "Cursor seven-lens audit workflow runbook"
@@ -420,6 +425,14 @@
     "REG-61": {
       "suite_id": "SUITE-ENGINE-FULL",
       "case_id": "SL-C01-ALTITUDE-UNIT-CONSTRAINTS"
+    },
+    "REG-62": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C02-MIN-DECO-UNITS"
+    },
+    "REG-63": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C02-TRAVEL-DEPTH-CONSTRAINTS"
     },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
@@ -997,8 +1010,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-UNIT-SWITCHING"
       },
-      "fingerprint": "dc44ce7335dff87eaf6d11e8340b7f944685f2ea0ad9136d38f0a3123849f37e",
-      "last_read_fingerprint": "dc44ce7335dff87eaf6d11e8340b7f944685f2ea0ad9136d38f0a3123849f37e",
+      "fingerprint": "770f5b7cb9e91606fba6ecdef5dc57c1aab0bfc1d9882a7d55ff5eee8bd03b0b",
+      "last_read_fingerprint": "770f5b7cb9e91606fba6ecdef5dc57c1aab0bfc1d9882a7d55ff5eee8bd03b0b",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
         "SUITE-COVERAGE/AUDIT-COV-01"
@@ -1092,8 +1105,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SCHEDULE-INPUTS"
       },
-      "fingerprint": "0c77d36d909d23219cc1dd5a7532ae62b41a4b6521534f85ed92c09e416eba26",
-      "last_read_fingerprint": "0c77d36d909d23219cc1dd5a7532ae62b41a4b6521534f85ed92c09e416eba26",
+      "fingerprint": "716e3948232430f69f7bc507a5785aa3e7396de36a2d8fb68b24e2257b7acd9c",
+      "last_read_fingerprint": "716e3948232430f69f7bc507a5785aa3e7396de36a2d8fb68b24e2257b7acd9c",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
         "SUITE-COVERAGE/AUDIT-COV-01"
@@ -1138,8 +1151,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RUNNER"
       },
-      "fingerprint": "fc27af5bc55f327af335f580565d5d5f43465aa131b23c9a6fade02affa9e73d",
-      "last_read_fingerprint": "fc27af5bc55f327af335f580565d5d5f43465aa131b23c9a6fade02affa9e73d",
+      "fingerprint": "9542a3474cd4c0cb117c0556bf1f844bd5d7584bb06ef2eaf9a956c47e8564e4",
+      "last_read_fingerprint": "9542a3474cd4c0cb117c0556bf1f844bd5d7584bb06ef2eaf9a956c47e8564e4",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
         "SUITE-COVERAGE/AUDIT-COV-01"
@@ -1215,8 +1228,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-CARDS"
       },
-      "fingerprint": "bcaafc6b06e900201b8808cc8db76a30f8343a88097556d7b161e3e7060ffc27",
-      "last_read_fingerprint": "bcaafc6b06e900201b8808cc8db76a30f8343a88097556d7b161e3e7060ffc27",
+      "fingerprint": "6d08c33b01b44a3ef9e3811174641839c7b56b7fd10cc54b1382a172e96036be",
+      "last_read_fingerprint": "6d08c33b01b44a3ef9e3811174641839c7b56b7fd10cc54b1382a172e96036be",
       "audit_issue": 148,
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01",
@@ -2546,8 +2559,8 @@
         "REG-03",
         "REG-05"
       ],
-      "fingerprint": "1c8a7c9befe46d7168dddddcca7050877dd0cd1c4df6df6b216b0cff8ad211b1",
-      "last_read_fingerprint": "1c8a7c9befe46d7168dddddcca7050877dd0cd1c4df6df6b216b0cff8ad211b1",
+      "fingerprint": "e4e99dae2fb006dff303bab6f6d734380944ac77dbe72826d5783835e540c218",
+      "last_read_fingerprint": "e4e99dae2fb006dff303bab6f6d734380944ac77dbe72826d5783835e540c218",
       "audit_issue": 169
     },
     {
@@ -3379,14 +3392,16 @@
         "type": "whole_file"
       },
       "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01"
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
       ],
       "issue": "Seven-lens manual audit protocol gate",
       "regression_cases": [
-        "COV-01"
+        "COV-01",
+        "PARITY-01"
       ],
-      "fingerprint": "33c2766d22241ed32669465d76e57752ef791b6f4c830b01a4642e6a650aaaec",
-      "last_read_fingerprint": "33c2766d22241ed32669465d76e57752ef791b6f4c830b01a4642e6a650aaaec"
+      "fingerprint": "6ea535561f9958d959be062504f25b6f04d6a5bd7570e794886ef34701c8c804",
+      "last_read_fingerprint": "6ea535561f9958d959be062504f25b6f04d6a5bd7570e794886ef34701c8c804"
     },
     {
       "id": "TEST-SEVEN-LENS-PROTOCOL",
@@ -5030,7 +5045,9 @@
         "SL-C01-DEPTH-SYNC",
         "SL-C01-PRESET-SYNC",
         "SL-C01-SETTINGS-RESTORE",
-        "SL-C01-ALTITUDE-UNIT-CONSTRAINTS"
+        "SL-C01-ALTITUDE-UNIT-CONSTRAINTS",
+        "SL-C02-MIN-DECO-UNITS",
+        "SL-C02-TRAVEL-DEPTH-CONSTRAINTS"
       ]
     },
     {

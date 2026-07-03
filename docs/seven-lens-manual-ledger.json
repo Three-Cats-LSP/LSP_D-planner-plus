@@ -54,6 +54,48 @@
         "C": "lines 416-481 — settingsPageWrap",
         "D": "lines 482-847 — tools mount, legacy-panels, gfPresetsRow tail"
       }
+    },
+    {
+      "unit_id": "UI-MARKUP-PLANNER",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "f8580045052a2fc92806d2edcca8f609067470f49e1b5c99827a5e2a83d8de86",
+      "cycle_id": "SL-C02",
+      "boundary": "ui/markup-planner.html whole file (493 lines; single session)",
+      "reviewer": "Cursor GPT-5.5 Medium",
+      "review_session": "cursor/seven-lens-cycle-02-planner-audit",
+      "lens_results": {
+        "L1": "Rate selects m/min; travelGasManualDepth metric max=100; imperial 165 ft boundary examined.",
+        "L2": "All onclick/onchange handlers traced to index.html or gas-cards-core.js.",
+        "L3": "Phantom #unitSel caused isMetric always true; travel depth max not synced on relabelOnly.",
+        "L4": "enforceMinDecoProfile metre matching wrong in imperial; manual travel depth validity capped.",
+        "L5": "Canonical ui/markup-planner.html; fixes in caller modules per assemble contract.",
+        "L6": "Imperial min deco shallow stop enforcement and travel MOD manual depth limits.",
+        "L7": "SL-C02-MIN-DECO-UNITS and SL-C02-TRAVEL-DEPTH-CONSTRAINTS with DOM restore; REG-62/63."
+      },
+      "finding_ids": [
+        "SL-C02-M-01",
+        "SL-C02-M-02"
+      ],
+      "verification_commands": [
+        "python -m tools.audit check --profile static",
+        "python -m tools.audit run --profile ci",
+        "python dev/engine_regression.py"
+      ],
+      "reviewed_at": "2026-07-03T09:30:00+00:00",
+      "verified_at": "2026-07-03T10:00:00+00:00",
+      "verifier": "Cursor GPT-5.5 Medium (cursor/seven-lens-cycle-02-planner-verify)",
+      "verification_status": "PASS",
+      "verified_source_commit": "b56fc07",
+      "last_checked_commit": "b56fc07",
+      "verification_report": "docs/seven-lens-reports/cycle-02-independent-verification.md",
+      "findings_open": [],
+      "findings_closed": [
+        "SL-C02-M-01",
+        "SL-C02-M-02"
+      ],
+      "parts": {
+        "P01": "lines 1-493 — plan panel markup (single bounded part)"
+      }
     }
   ]
 }

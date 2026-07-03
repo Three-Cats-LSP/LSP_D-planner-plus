@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "cycle": 2,
+  "target_branch": "dev",
+  "baseline_commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
+  "audit_commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
+  "verified_source_commit": "b56fc07292f07ead3811d91a2412c063620e5d9d",
+  "verification_status": "PASSED",
+  "parts": [
+    {
+      "id": "UI-MARKUP-PLANNER-P01",
+      "unit_id": "UI-MARKUP-PLANNER",
+      "path": "ui/markup-planner.html",
+      "start_line": 1,
+      "end_line": 493,
+      "line_count": 493,
+      "content_fingerprint": "f8580045052a2fc92806d2edcca8f609067470f49e1b5c99827a5e2a83d8de86",
+      "review_session": "cursor/seven-lens-cycle-02-planner-audit",
+      "verification_session": "cursor/seven-lens-cycle-02-planner-verify",
+      "lens_results": {
+        "L1": {
+          "trace": "Traced rate selects (m/min), minDeco minute inputs, travelGasManualDepth metric max=100, SAC L/min fields, ppO2 bar selects.",
+          "boundary_cases": ["imperial travel manual 165 ft", "minDeco 9m/6m vs 30ft/20ft labels"],
+          "evidence": "travelGasManualDepth max=100 in markup; setUnits convertNumericInput 500/165",
+          "result": "FINDING"
+        },
+        "L2": {
+          "trace": "onchange/oninput handlers on circuit, gases, CCR, minDeco, stopRounding, travel gas; generate calls runDecoSchedule.",
+          "boundary_cases": ["toggleMinDecoProfile show/hide", "travel manual vs auto MOD"],
+          "evidence": "All onclick/onchange traced to index.html or gas-cards-core.js",
+          "result": "NO_FINDING"
+        },
+        "L3": {
+          "trace": "minDeco9m/6m values read by getVpmMinDecoSettingsFromDom; travel depth by getTravelGasInfo; units global drives display.",
+          "boundary_cases": ["imperial isMetric flag", "settings relabelOnly restore"],
+          "evidence": "unitSel phantom ID in index.html:4763,5623",
+          "result": "FINDING"
+        },
+        "L4": {
+          "trace": "buildZhlScheduleParamsFromDom minDecoProfile contract; getTravelGasInfo imperial ft→m conversion.",
+          "boundary_cases": ["enforceMinDecoProfile isMetric", "manual travel depth validity"],
+          "evidence": "zhl-gas-core enforceMinDecoProfile depth9/6 metre matching",
+          "result": "FINDING"
+        },
+        "L5": {
+          "trace": "Canonical ui/markup-planner.html; fixes in gas-cards-core.js and index.html callers per assemble rules.",
+          "boundary_cases": ["no generated bundle edits"],
+          "evidence": "assemble_ui_html --verify unchanged partial",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "Min deco DIR/GUE shallow stop enforcement; travel gas MOD ppO2 limits; CCR validation banner.",
+          "boundary_cases": ["imperial min deco stop depth mismatch"],
+          "evidence": "Wrong isMetric skips 30ft/20ft enforcement",
+          "result": "FINDING"
+        },
+        "L7": {
+          "trace": "Added SL-C02-MIN-DECO-UNITS and SL-C02-TRAVEL-DEPTH-CONSTRAINTS engine regressions with DOM restore.",
+          "boundary_cases": ["setUnits imperial/metric round-trip"],
+          "evidence": "dev/engine_regression.py sevenLensCycle02 section",
+          "result": "FINDING"
+        }
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "SL-C02-M-01",
+      "severity": "MEDIUM",
+      "unit_id": "UI-MARKUP-PLANNER",
+      "location": "ui/markup-planner.html:76-90; index.html getVpmMinDecoSettingsFromDom",
+      "root_cause": "isMetric read phantom #unitSel; always true",
+      "failure_path": "Imperial + min deco on → 9m/6m matching instead of ft stops",
+      "impact": "Incorrect minimum stop enforcement for imperial divers",
+      "evidence": "grep unitSel; getVpmMinDecoSettingsFromDom trace",
+      "recommendation": "Use units !== 'imperial' for isMetric",
+      "status": "CLOSED",
+      "regression_ids": ["SL-C02-MIN-DECO-UNITS"],
+      "evidence_ids": ["ER-02-MIN-DECO", "static", "ci"]
+    },
+    {
+      "id": "SL-C02-M-02",
+      "severity": "MEDIUM",
+      "unit_id": "UI-MARKUP-PLANNER",
+      "location": "ui/markup-planner.html:337-339; gas-cards-core.js",
+      "root_cause": "travelGasManualDepth max not synced on relabelOnly or manual display",
+      "failure_path": "Imperial manual travel depth 165 ft rejected by max=100",
+      "impact": "Manual travel switch depth capped below valid imperial range",
+      "evidence": "markup max=100; convertNumericInput only on unit switch",
+      "recommendation": "syncTravelGasManualDepthConstraints on setUnits and updateTravelGasMOD",
+      "status": "CLOSED",
+      "regression_ids": ["SL-C02-TRAVEL-DEPTH-CONSTRAINTS"],
+      "evidence_ids": ["ER-02-TRAVEL-DEPTH", "static", "ci"]
+    }
+  ],
+  "evidence_runs": [
+    {
+      "id": "static",
+      "command": "python -m tools.audit check --profile static",
+      "exit_code": 0,
+      "commit": "b56fc07292f07ead3811d91a2412c063620e5d9d",
+      "worktree_clean": true
+    },
+    {
+      "id": "ci",
+      "command": "python -m tools.audit run --profile ci",
+      "exit_code": 0,
+      "commit": "b56fc07292f07ead3811d91a2412c063620e5d9d",
+      "worktree_clean": true
+    },
+    {
+      "id": "ER-02-MIN-DECO",
+      "command": "python dev/engine_regression.py SL-C02-MIN-DECO-UNITS",
+      "exit_code": 0,
+      "commit": "b56fc07292f07ead3811d91a2412c063620e5d9d",
+      "worktree_clean": true
+    },
+    {
+      "id": "ER-02-TRAVEL-DEPTH",
+      "command": "python dev/engine_regression.py SL-C02-TRAVEL-DEPTH-CONSTRAINTS",
+      "exit_code": 0,
+      "commit": "b56fc07292f07ead3811d91a2412c063620e5d9d",
+      "worktree_clean": true
+    }
+  ],
+  "changed_paths": [
+    "index.html",
+    "gas-cards-core.js",
+    "dev/engine_regression.py",
+    "docs/audit-units.json"
+  ],
+  "notes": "Single-part review (493 lines). Caller fixes in index.html and gas-cards-core.js per markup contract."
+}

@@ -21,7 +21,9 @@ When the user asks to run, fix, verify, close, or continue a seven-lens cycle:
    on the fix summary, and reproduces the original failure through the user/API
    entry path.
 7. The CLOSER runs `python tools/seven_lens_protocol.py check --phase close
-   --record <record>` and may close only on exit 0.
+   --record <record>` and may close only on exit 0. Then updates
+   `docs/seven-lens-test-results.md`, pushes the cycle branch, and merges the PR
+   to `dev` after CI passes on the final PR HEAD.
 8. Green automated tests are evidence, not a seven-lens review. Never infer "no
    bugs" or `SEVEN_LENS_REVIEWED` from test results alone.
 9. Work against `dev`. Never target or modify `main` for this audit program.

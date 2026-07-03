@@ -37,26 +37,26 @@
 | UI-RUNTIME-BOOTSTRAP | web_runtime | `index.html:2377` | 218 | P1 | VERIFIED | EXT-05, COV-01 |
 | UI-ALGORITHM-SETTINGS | web_runtime | `index.html:2595` | 284 | P1 | VERIFIED | EXT-05, COV-01 |
 | UI-UNIT-HELPERS | web_runtime | `index.html:2879` | 472 | P1 | VERIFIED | EXT-05, COV-01 |
-| UI-UNIT-SWITCHING | web_runtime | `index.html:3351` | 324 | P1 | VERIFIED | EXT-05, COV-01 |
-| UI-ZHL-DELEGATES | web_runtime | `index.html:3675` | 141 | P0 | VERIFIED | REG-15, REG-16, REG-18 |
-| UI-CCR-DELEGATES | web_runtime | `index.html:3816` | 370 | P0 | VERIFIED | REG-15, REG-16, REG-18 |
-| UI-DECO-PHYSICS | web_runtime | `index.html:4186` | 232 | P0 | VERIFIED | EXT-05, COV-01 |
-| UI-SCHEDULE-INPUTS | web_runtime | `index.html:4418` | 365 | P0 | VERIFIED | EXT-05, COV-01 |
-| UI-SETTINGS-CONTROLS | web_runtime | `index.html:4783` | 387 | P1 | VERIFIED | EXT-05, COV-01 |
-| UI-VPM-RUNNER | web_runtime | `index.html:5170` | 473 | P0 | VERIFIED | EXT-05, COV-01 |
-| UI-ZHL-RUNNER-SETUP | web_runtime | `index.html:5643` | 127 | P0 | VERIFIED | EXT-05, COV-01 |
-| UI-ZHL-RUNNER-ENGINE | web_runtime | `index.html:5770` | 352 | P0 | VERIFIED | EXT-05, COV-01 |
-| UI-ZHL-HEADLESS-HELPERS | web_runtime | `index.html:6122` | 201 | P1 | VERIFIED | EXT-05, COV-01 |
-| UI-ZHL-HEADLESS-ENGINE | web_runtime | `index.html:6323` | 387 | P0 | VERIFIED | EXT-05, COV-01 |
-| UI-PLOT-INIT | web_runtime | `index.html:6710` | 439 | P2 | VERIFIED | EXT-05, COV-01 |
-| UI-TOOLS-TISSUES | web_runtime | `index.html:7149` | 310 | P2 | VERIFIED | EXT-05, COV-01 |
-| UI-TOOLS-EXPOSURE | web_runtime | `index.html:7459` | 225 | P1 | VERIFIED | EXT-05, COV-01 |
-| UI-TOOLS-GF | web_runtime | `index.html:7684` | 316 | P2 | VERIFIED | EXT-05, COV-01 |
-| UI-SETTINGS | web_runtime | `index.html:8000` | 369 | P1 | VERIFIED | EXT-05, COV-01 |
-| UI-PROFILE-PRESETS | web_runtime | `index.html:8369` | 377 | P2 | VERIFIED | EXT-05, COV-01 |
-| UI-CONFIG-PRESETS | web_runtime | `index.html:8746` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
-| UI-APP-INIT | web_runtime | `index.html:8931` | 175 | P1 | VERIFIED | EXT-05, COV-01 |
-| UI-PWA-LIFECYCLE | pwa | `index.html:9106` | 99 | P1 | VERIFIED | REG-45, EXT-08, COV-01 |
+| UI-UNIT-SWITCHING | web_runtime | `index.html:3351` | 325 | P1 | VERIFIED | EXT-05, COV-01 |
+| UI-ZHL-DELEGATES | web_runtime | `index.html:3676` | 141 | P0 | VERIFIED | REG-15, REG-16, REG-18 |
+| UI-CCR-DELEGATES | web_runtime | `index.html:3817` | 370 | P0 | VERIFIED | REG-15, REG-16, REG-18 |
+| UI-DECO-PHYSICS | web_runtime | `index.html:4187` | 232 | P0 | VERIFIED | EXT-05, COV-01 |
+| UI-SCHEDULE-INPUTS | web_runtime | `index.html:4419` | 365 | P0 | VERIFIED | EXT-05, COV-01 |
+| UI-SETTINGS-CONTROLS | web_runtime | `index.html:4784` | 387 | P1 | VERIFIED | EXT-05, COV-01 |
+| UI-VPM-RUNNER | web_runtime | `index.html:5171` | 473 | P0 | VERIFIED | EXT-05, COV-01 |
+| UI-ZHL-RUNNER-SETUP | web_runtime | `index.html:5644` | 127 | P0 | VERIFIED | EXT-05, COV-01 |
+| UI-ZHL-RUNNER-ENGINE | web_runtime | `index.html:5771` | 352 | P0 | VERIFIED | EXT-05, COV-01 |
+| UI-ZHL-HEADLESS-HELPERS | web_runtime | `index.html:6123` | 201 | P1 | VERIFIED | EXT-05, COV-01 |
+| UI-ZHL-HEADLESS-ENGINE | web_runtime | `index.html:6324` | 387 | P0 | VERIFIED | EXT-05, COV-01 |
+| UI-PLOT-INIT | web_runtime | `index.html:6711` | 439 | P2 | VERIFIED | EXT-05, COV-01 |
+| UI-TOOLS-TISSUES | web_runtime | `index.html:7150` | 310 | P2 | VERIFIED | EXT-05, COV-01 |
+| UI-TOOLS-EXPOSURE | web_runtime | `index.html:7460` | 225 | P1 | VERIFIED | EXT-05, COV-01 |
+| UI-TOOLS-GF | web_runtime | `index.html:7685` | 316 | P2 | VERIFIED | EXT-05, COV-01 |
+| UI-SETTINGS | web_runtime | `index.html:8001` | 369 | P1 | VERIFIED | EXT-05, COV-01 |
+| UI-PROFILE-PRESETS | web_runtime | `index.html:8370` | 377 | P2 | VERIFIED | EXT-05, COV-01 |
+| UI-CONFIG-PRESETS | web_runtime | `index.html:8747` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
+| UI-APP-INIT | web_runtime | `index.html:8932` | 175 | P1 | VERIFIED | EXT-05, COV-01 |
+| UI-PWA-LIFECYCLE | pwa | `index.html:9107` | 99 | P1 | VERIFIED | REG-45, EXT-08, COV-01 |
 | UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 454 | P2 | VERIFIED | EXT-03, EXT-06, COV-01 |
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 372 | P2 | VERIFIED | EXT-03, EXT-06, COV-01 |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 528 | P2 | VERIFIED | EXT-03, EXT-06, COV-01 |
@@ -71,7 +71,7 @@
 | UI-VPM-RENDER | ui_core | `results-render-core.js:17` | 531 | P1 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
 | UI-ZHL-RESULTS | ui_core | `results-render-core.js:548` | 533 | P1 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
 | UI-GAS-INPUTS | ui_core | `gas-cards-core.js:15` | 217 | P1 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
-| UI-GAS-CARDS | ui_core | `gas-cards-core.js:232` | 280 | P1 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
+| UI-GAS-CARDS | ui_core | `gas-cards-core.js:232` | 291 | P1 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
 | UI-PLOT-RENDER | ui_core | `plot-core.js:109` | 439 | P2 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
 | UI-PLOT-WAYPOINTS | ui_core | `plot-core.js:548` | 182 | P2 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
 | UI-TOOLS-PROFILE | ui_core | `plot-core.js:730` | 262 | P2 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
@@ -115,7 +115,7 @@
 | NATIVE-DRAWABLE-FG | native_android | `android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml:1` | 34 | P3 | VERIFIED | ANDROID-01, COV-01 |
 | NATIVE-ICON | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml:1` | 5 | P3 | VERIFIED | ANDROID-01, COV-01 |
 | NATIVE-ICON-ROUND | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml:1` | 5 | P3 | VERIFIED | ANDROID-01, COV-01 |
-| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 2345 | P1 | VERIFIED | REG-01, REG-02, REG-03, REG-05 |
+| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 2386 | P1 | VERIFIED | REG-01, REG-02, REG-03, REG-05 |
 | TEST-ISSUE-140-REGRESSION | test_infrastructure | `dev/issue140_regression.py:1` | 99 | P1 | VERIFIED | REG-08, REG-09 |
 | TEST-GAS-CORE-REGRESSION | test_infrastructure | `dev/gas_core_regression.py:1` | 129 | P1 | VERIFIED | REG-10, REG-11, REG-12 |
 | TEST-ISSUE-141-REGRESSION | test_infrastructure | `dev/issue141_regression.py:1` | 108 | P1 | VERIFIED | REG-15, REG-16, REG-18 |
@@ -156,7 +156,7 @@
 | TOOL-BUILD-ZHL | tooling | `tools/build_zhl_bundle.py:1` | 390 | P1 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-CHECK-PARITY | tooling | `tools/check_engine_parity.py:1` | 311 | P1 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-RUN-AUDIT-COVERAGE-SUITE-PY | tooling | `tools/run_audit_coverage_suite.py:1` | 53 | P0 | VERIFIED | COV-01, PARITY-01 |
-| TOOL-SEVEN-LENS-PROTOCOL | tooling | `tools/seven_lens_protocol.py:1` | 309 | P0 | VERIFIED | COV-01 |
+| TOOL-SEVEN-LENS-PROTOCOL | tooling | `tools/seven_lens_protocol.py:1` | 313 | P0 | VERIFIED | COV-01, PARITY-01 |
 | TEST-SEVEN-LENS-PROTOCOL | test_infrastructure | `tools/test_seven_lens_protocol.py:1` | 120 | P0 | VERIFIED | COV-01 |
 | TOOL-EXTRACT-UI | tooling | `tools/extract_ui_cores.py:1` | 474 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-EXTRACT-ZHL | tooling | `tools/extract_zhl_core.py:1` | 124 | P2 | VERIFIED | COV-01, PARITY-01 |
