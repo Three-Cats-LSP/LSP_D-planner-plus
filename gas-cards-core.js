@@ -487,6 +487,7 @@ function getTravelGasExport() {
 }
 
 function updateTravelGasMOD() {
+  syncTravelGasManualDepthConstraints?.();
   const info = getTravelGasInfo();
   const dispEl = document.getElementById('travelGasMODDisplay');
   const manualField = document.getElementById('travelGasManualDepthField');
@@ -508,4 +509,14 @@ function updateTravelGasMOD() {
       ? `${modDisp}  (ppO₂ ${ppO2AtSwitch})`
       : `Auto: ${modDisp}`;
   }
+}
+
+/** Keep #travelGasManualDepth min/max in display units (metric m or imperial ft). */
+function syncTravelGasManualDepthConstraints() {
+  const inp = document.getElementById('travelGasManualDepth');
+  if (!inp) return;
+  const imperial = units === 'imperial';
+  inp.min = '1';
+  inp.max = String(imperial ? 165 : 500);
+  inp.step = '1';
 }

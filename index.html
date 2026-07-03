@@ -3456,6 +3456,7 @@ function setUnits(u, opts) {
   // ── Travel gas manual switch depth ──
   convertNumericInput('travelGasManualDepth', v => Math.round(v * FT_PER_M), v => Math.round(v / FT_PER_M), 500, 165);
   setTxt('travelGasManualDepthLbl', `Switch Depth (${u === 'imperial' ? 'ft' : 'm'})`);
+  syncTravelGasManualDepthConstraints?.();
 
   // ── Cylinder pressure conversion (all gas cards including dynamic ones) ──
   const allCylPres = ['cylBot_pres','cylTravelGas_pres','cylDg1_pres','cylDg2_pres',
@@ -4760,7 +4761,7 @@ function getVpmMinDecoSettingsFromDom() {
     enabled: document.getElementById('minDecoProfileEnable')?.value === 'yes',
     min9m: parseFloat(document.getElementById('minDeco9m')?.value) || 1,
     min6m: parseFloat(document.getElementById('minDeco6m')?.value) || 3,
-    isMetric: document.getElementById('unitSel')?.value !== 'imperial',
+    isMetric: units !== 'imperial',
   };
 }
 
@@ -5620,7 +5621,7 @@ function buildZhlScheduleParamsFromDom(rawD, depthM, bt) {
         enabled: document.getElementById('minDecoProfileEnable')?.value === 'yes',
         m9: parseFloat(document.getElementById('minDeco9m')?.value) || 1,
         m6: parseFloat(document.getElementById('minDeco6m')?.value) || 3,
-        isMetric: document.getElementById('unitSel')?.value !== 'imperial',
+        isMetric: units !== 'imperial',
       },
       decoGases,
       environment: getZhlEnvironment(),

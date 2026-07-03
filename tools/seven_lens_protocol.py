@@ -103,7 +103,11 @@ def _text(value: Any, minimum: int = 1) -> bool:
 
 
 def _attestation_only_path(path: str) -> bool:
-    return path.startswith("docs/seven-lens-reports/") or path == "docs/seven-lens-manual-ledger.json"
+    return (
+        path.startswith("docs/seven-lens-reports/")
+        or path.startswith("docs/seven-lens-records/")
+        or path == "docs/seven-lens-manual-ledger.json"
+    )
 
 
 def _validate_parts(root: Path, record: dict[str, Any], phase: str) -> list[str]:
