@@ -649,8 +649,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "a444b41e76a002e7a411cb93d3f6e261b7a8970c3c4ea92453446ef34ef0f09a",
-      "last_read_fingerprint": "a444b41e76a002e7a411cb93d3f6e261b7a8970c3c4ea92453446ef34ef0f09a",
+      "fingerprint": "1148d236f73d2242f37ceac46df802b720b4e7a7e1f604e68a093bd47fb9c7b2",
+      "last_read_fingerprint": "1148d236f73d2242f37ceac46df802b720b4e7a7e1f604e68a093bd47fb9c7b2",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
         "SUITE-COVERAGE/AUDIT-COV-01"
@@ -762,8 +762,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "17f7538a1b8c87c30454eb5c496672c0b84ae089b5c4de1b348fe5fd40eb49fc",
-      "last_read_fingerprint": "17f7538a1b8c87c30454eb5c496672c0b84ae089b5c4de1b348fe5fd40eb49fc",
+      "fingerprint": "08baabc5316bd85fa78d860f7414fdfe0df845c163407973d471ad0178923e60",
+      "last_read_fingerprint": "08baabc5316bd85fa78d860f7414fdfe0df845c163407973d471ad0178923e60",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
         "SUITE-COVERAGE/AUDIT-COV-01"

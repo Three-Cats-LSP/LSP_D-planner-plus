@@ -4,31 +4,44 @@
     {
       "unit_id": "UI-MARKUP-HEADER",
       "review_status": "SEVEN_LENS_REVIEWED",
-      "reviewed_fingerprint": "17f7538a1b8c87c30454eb5c496672c0b84ae089b5c4de1b348fe5fd40eb49fc",
+      "reviewed_fingerprint": "08baabc5316bd85fa78d860f7414fdfe0df845c163407973d471ad0178923e60",
       "cycle_id": "SL-C01",
-      "boundary": "ui/markup-header.html lines 1-214 (part A of 4; file 847 lines total)",
+      "boundary": "ui/markup-header.html whole file (847 lines; parts A–D)",
       "reviewer": "Cursor GPT-5.5 Medium",
       "review_session": "cursor/seven-lens-cycle-01-header",
       "lens_results": {
-        "L1": "No arithmetic in markup; depth/bt defaults 40/30 align with settings-core stepper limits. Trimix planner fields bounded 5-40% O2 and 0-90% He match engine validators.",
-        "L2": "onclick handlers delegate to settings-core/planner-shell; generate button calls runGenerateSchedule. Hidden decoDepth/decoBT oninput paths traced.",
-        "L3": "Dual hidden fields depth/decoDepth and bt/decoBT require _syncDepthBtSteppers; finding SL-C01-M-01 when preset/restore skip sync.",
-        "L4": "REC path reads #depth; tec path reads #decoDepth — mirror contract documented. Script LSP-EXTRACT markers match extract_ui_cores EXPECTED_SCRIPT_ORDER.",
-        "L5": "Part A script block order verified against SUITE-UI-STRUCTURE; assemble_ui_html --verify PASS after edits.",
-        "L6": "Disclaimer banner and planning-aid warning visible; no safety text regression in scoped lines.",
-        "L7": "SUITE-UI-STRUCTURE and AUD-HTML-002 cover script order; added SL-C01-DEPTH-SYNC and SL-C01-PRESET-SYNC engine regressions."
+        "L1": "No arithmetic in markup; settings tips align with settings-core BAR_PER_METRE and altToPressure. Contingency depth stored in metres; imperial labels via syncContDepthLabels.",
+        "L2": "Result tabs and jump buttons delegate to switchResultTab with visibility guards. Legacy panels relocated at initV3Layout; markup is bootstrap source.",
+        "L3": "Canonical anchors decoResult, decoTableBody, algorithmSelect, gfPresetSelect stable post-mount. Dual depth/bt sync closed in part A (SL-C01-M-01). Custom altitude oninput parity fixed (SL-C01-M-02).",
+        "L4": "Settings and contingency onclick handlers traced to settings-core, contingency-core, export-core. Script LSP-EXTRACT order unchanged.",
+        "L5": "Canonical ui/markup-header.html; assemble_ui_html --assemble and --verify PASS.",
+        "L6": "gasWarningBanner role=alert; planning-aid disclaimer intact. GF curve placeholders match mGF default 20/85.",
+        "L7": "SL-C01-DEPTH-SYNC and SL-C01-PRESET-SYNC regressions from part A; REG-58/59 in audit-units."
       },
       "finding_ids": [
-        "SL-C01-M-01"
+        "SL-C01-M-01",
+        "SL-C01-M-02",
+        "SL-C01-L-01"
       ],
       "verification_commands": [
         "python -m tools.audit check --profile static",
-        "python -m tools.audit run --profile ci"
+        "python -m tools.audit run --profile ci",
+        "python tools/assemble_ui_html.py --verify"
       ],
       "reviewed_at": "2026-07-03T08:15:00+00:00",
-      "verified_at": "2026-07-03T08:35:00+00:00",
-      "verifier": "Cursor GPT-5.5 Medium (Phase D re-check)",
-      "findings_closed": ["SL-C01-M-01"]
+      "verified_at": "2026-07-03T09:30:00+00:00",
+      "verifier": "Cursor GPT-5.5 Medium (Phase D full-unit re-check)",
+      "findings_closed": [
+        "SL-C01-M-01",
+        "SL-C01-M-02",
+        "SL-C01-L-01"
+      ],
+      "parts": {
+        "A": "lines 1-214 — scripts, header, nav, planPanel",
+        "B": "lines 215-415 — resultsPanel",
+        "C": "lines 416-481 — settingsPageWrap",
+        "D": "lines 482-847 — tools mount, legacy-panels, gfPresetsRow tail"
+      }
     }
   ]
 }

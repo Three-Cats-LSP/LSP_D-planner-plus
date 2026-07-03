@@ -13,10 +13,10 @@ Cycle 1 exceeds the 600-line manual session limit. This report covers:
 
 | Part | Lines | Status |
 |------|------:|--------|
-| A — scripts, header, nav, planPanel inputs | 1–214 | **Reviewed this session** |
-| B — resultsPanel shell | 215–415 | Pending |
-| C — settingsPageWrap | 416–481 | Pending |
-| D — legacy-panels + deco card tail | 482–847 | Pending |
+| A — scripts, header, nav, planPanel inputs | 1–214 | **Done** |
+| B — resultsPanel shell | 215–415 | **Done** (`cycle-01-header-parts-bcd.md`) |
+| C — settingsPageWrap | 416–481 | **Done** (`cycle-01-header-parts-bcd.md`) |
+| D — legacy-panels + deco card tail | 482–847 | **Done** (`cycle-01-header-parts-bcd.md`) |
 
 ## Lens notes (Part A)
 

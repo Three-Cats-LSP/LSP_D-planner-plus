@@ -351,8 +351,8 @@
 <div class="card-collapsible-body">
 <p class="gf-curve-intro">Visualizes how gradient factors control the ascent ceiling at each deco stop. Interpolates linearly from GF Low (first stop) to GF High (surface).</p>
 <div class="gf-curve-stats">
-<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveGFL" style="color:var(--accent)">30</div><div class="stat-lbl">GF Low</div></div>
-<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveGFH" style="color:var(--accent)">70</div><div class="stat-lbl">GF High</div></div>
+<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveGFL" style="color:var(--accent)">20</div><div class="stat-lbl">GF Low</div></div>
+<div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveGFH" style="color:var(--accent)">85</div><div class="stat-lbl">GF High</div></div>
 <div class="stat" style="min-width:80px;"><div class="stat-val" id="gfCurveStops">—</div><div class="stat-lbl">Deco Stops</div></div>
 </div>
 <div id="gfCurveCanvas-wrap" style="position:relative;width:100%;">
@@ -501,7 +501,7 @@
 <option value="custom">Custom…</option>
 </select>
 <div class="u19" id="altitudeCustomRow">
-<input id="altitudeCustomInput" max="5000" min="0" onchange="applyCustomAltitude()" step="50" style="width:62px;padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;" type="number" value="0"/>
+<input id="altitudeCustomInput" max="5000" min="0" onchange="applyCustomAltitude()" oninput="applyCustomAltitude()" step="50" style="width:62px;padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;" type="number" value="0"/>
 <span class="algo-label-text u1" id="altitudeCustomUnit">m</span>
 </div>
 <span id="altitudePressureDisplay" style="color:var(--muted);font-size:10px;"></span>
