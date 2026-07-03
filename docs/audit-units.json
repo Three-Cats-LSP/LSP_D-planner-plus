@@ -442,6 +442,18 @@
       "suite_id": "SUITE-ENGINE-FULL",
       "case_id": "SL-C03-CNS-DEPTH-UNITS"
     },
+    "REG-66": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C04-END-DEPTH-UNITS"
+    },
+    "REG-67": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C04-SI-DEPTH-UNITS"
+    },
+    "REG-68": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C04-CONFIRM-BACKDROP"
+    },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
       "case_id": "android-compile"
@@ -952,8 +964,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "62aef8c891215ea1b3640ca09af9fcb9edffe792f74f9a64ae60fe2dba71e737",
-      "last_read_fingerprint": "62aef8c891215ea1b3640ca09af9fcb9edffe792f74f9a64ae60fe2dba71e737",
+      "fingerprint": "848597e92f10f1494b5100e0fcde9099f7832325d7881ca77b0f2067989c4c9a",
+      "last_read_fingerprint": "848597e92f10f1494b5100e0fcde9099f7832325d7881ca77b0f2067989c4c9a",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
         "SUITE-COVERAGE/AUDIT-COV-01"
@@ -973,8 +985,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "4720f42548ea3b0b75af9cf1548656c9c2c53b3c2b3cfd89c7c17c63a4447be6",
-      "last_read_fingerprint": "4720f42548ea3b0b75af9cf1548656c9c2c53b3c2b3cfd89c7c17c63a4447be6",
+      "fingerprint": "c0b0b1ecc52d7398f80674b0af0f76c45b920b1771a1c917a5d4da34bafebe49",
+      "last_read_fingerprint": "c0b0b1ecc52d7398f80674b0af0f76c45b920b1771a1c917a5d4da34bafebe49",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
         "SUITE-COVERAGE/AUDIT-COV-01"
@@ -2665,8 +2677,8 @@
         "REG-03",
         "REG-05"
       ],
-      "fingerprint": "a3ece02c9e6bb4e8c7debf3c9dcb03d013dbb56b47964675489080fc44a98c28",
-      "last_read_fingerprint": "a3ece02c9e6bb4e8c7debf3c9dcb03d013dbb56b47964675489080fc44a98c28",
+      "fingerprint": "a358c387492c50df69ebce0bb9b535c1e4cc4e0d95d9fccf2ec36df5f959aa62",
+      "last_read_fingerprint": "a358c387492c50df69ebce0bb9b535c1e4cc4e0d95d9fccf2ec36df5f959aa62",
       "audit_issue": 169
     },
     {
@@ -3570,6 +3582,21 @@
       "regression_cases": [],
       "fingerprint": "a3b84140c93159491e8d64583ba2081816438e9e17651972d2907c73425cac4b",
       "last_read_fingerprint": "a3b84140c93159491e8d64583ba2081816438e9e17651972d2907c73425cac4b"
+    },
+    {
+      "id": "TEST-SEVEN-LENS-CYCLE04-TRACE",
+      "path": "docs/seven-lens-traces/cycle-04-tools-modals.json",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "READ",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Cycle 04 exact browser value and state trace specification",
+      "regression_cases": [],
+      "fingerprint": "1268680a6f9ddfd8854850b249ba50dbffaab8d99a649bf2f1c0bc9281d3896e",
+      "last_read_fingerprint": "1268680a6f9ddfd8854850b249ba50dbffaab8d99a649bf2f1c0bc9281d3896e"
     },
     {
       "id": "TOOL-EXTRACT-UI",
@@ -4714,7 +4741,7 @@
     },
     {
       "cycle": 10,
-      "max_new_application_lines": 674,
+      "max_new_application_lines": 690,
       "application_units": [
         "APP-SURFACE-INTERVAL",
         "APP-GAS-TABLE"
@@ -4773,7 +4800,7 @@
     },
     {
       "cycle": 16,
-      "max_new_application_lines": 720,
+      "max_new_application_lines": 740,
       "application_units": [
         "UI-TOOLS-PROFILE",
         "UI-PLOT-INIT"
@@ -5198,7 +5225,10 @@
         "SL-C02-MIN-DECO-UNITS",
         "SL-C02-TRAVEL-DEPTH-CONSTRAINTS",
         "SL-C03-BEST-MIX-DEPTH-UNITS",
-        "SL-C03-CNS-DEPTH-UNITS"
+        "SL-C03-CNS-DEPTH-UNITS",
+        "SL-C04-END-DEPTH-UNITS",
+        "SL-C04-SI-DEPTH-UNITS",
+        "SL-C04-CONFIRM-BACKDROP"
       ]
     },
     {

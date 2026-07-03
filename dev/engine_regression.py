@@ -1894,6 +1894,72 @@ ENGINE_SUITE_JS = r"""
     return { bestMixDepthUnitsOk, cnsDepthUnitsOk, ok: bestMixDepthUnitsOk && cnsDepthUnitsOk };
   })();
 
+  // Seven-lens cycle 04: tools/modals markup contracts (SL-C04).
+  out.sections.sevenLensCycle04 = (() => {
+    let endDepthUnitsOk = false;
+    let siDepthUnitsOk = false;
+    let confirmBackdropOk = false;
+    const prevUnits = typeof units !== 'undefined' ? units : null;
+    const endEl = document.getElementById('endDepth');
+    const siD1El = document.getElementById('siD1Depth');
+    const siD1BtEl = document.getElementById('siD1BT');
+    const siD2El = document.getElementById('siD2Depth');
+    const siD2BtEl = document.getElementById('siD2BT');
+    const prevEnd = endEl?.value;
+    const prevSiD1 = siD1El?.value;
+    const prevSiD1Bt = siD1BtEl?.value;
+    const prevSiD2 = siD2El?.value;
+    const prevSiD2Bt = siD2BtEl?.value;
+    try {
+      if (typeof setUnits === 'function') setUnits('metric');
+      if (typeof setUnits === 'function' && typeof calcEND_tool === 'function' && endEl) {
+        setUnits('metric');
+        endEl.value = '30';
+        syncDepthInputCanonical('endDepth');
+        calcEND_tool();
+        const metricAbs = document.getElementById('endAbsP')?.textContent;
+        setUnits('imperial');
+        calcEND_tool();
+        const imperialAbs = document.getElementById('endAbsP')?.textContent;
+        endDepthUnitsOk =
+          metricAbs === imperialAbs && Math.round(parseFloat(endEl.value)) === 98;
+      }
+      if (typeof setUnits === 'function' && typeof calcSurfInt === 'function' && siD1El && siD2El) {
+        setUnits('metric');
+        siD1El.value = '30';
+        siD1BtEl.value = '25';
+        siD2El.value = '18';
+        siD2BtEl.value = '20';
+        syncDepthInputCanonical('siD1Depth');
+        syncDepthInputCanonical('siD2Depth');
+        calcSurfInt();
+        const metricSi = document.getElementById('siMinResult')?.textContent;
+        setUnits('imperial');
+        calcSurfInt();
+        const imperialSi = document.getElementById('siMinResult')?.textContent;
+        siDepthUnitsOk =
+          metricSi === imperialSi && Math.round(parseFloat(siD1El.value)) === 98;
+      }
+      const confirmModal = document.getElementById('confirmModal');
+      confirmBackdropOk = !!confirmModal?.getAttribute('onclick')?.includes('closeConfirmModal(false)');
+    } finally {
+      if (endEl && prevEnd != null) endEl.value = prevEnd;
+      if (siD1El && prevSiD1 != null) siD1El.value = prevSiD1;
+      if (siD1BtEl && prevSiD1Bt != null) siD1BtEl.value = prevSiD1Bt;
+      if (siD2El && prevSiD2 != null) siD2El.value = prevSiD2;
+      if (siD2BtEl && prevSiD2Bt != null) siD2BtEl.value = prevSiD2Bt;
+      if (prevUnits != null && typeof setUnits === 'function') setUnits(prevUnits);
+      calcEND_tool?.();
+      calcSurfInt?.();
+    }
+    return {
+      endDepthUnitsOk,
+      siDepthUnitsOk,
+      confirmBackdropOk,
+      ok: endDepthUnitsOk && siDepthUnitsOk && confirmBackdropOk,
+    };
+  })();
+
   // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
   out.sections.cycle6 = (() => {
     const rdp11 = typeof padiTableRowIndex === 'function' ? padiTableRowIndex(11) : null;
@@ -2321,6 +2387,10 @@ def run_suite(page) -> dict:
     sl03 = s.get("sevenLensCycle03", {})
     assert_true(sl03.get("bestMixDepthUnitsOk"), "[SL-C03-BEST-MIX-DEPTH-UNITS] best mix O2% invariant across equivalent metric/imperial depth", str(sl03))
     assert_true(sl03.get("cnsDepthUnitsOk"), "[SL-C03-CNS-DEPTH-UNITS] CNS ppO2 invariant across equivalent metric/imperial depth", str(sl03))
+    sl04 = s.get("sevenLensCycle04", {})
+    assert_true(sl04.get("endDepthUnitsOk"), "[SL-C04-END-DEPTH-UNITS] END abs pressure invariant across equivalent metric/imperial depth", str(sl04))
+    assert_true(sl04.get("siDepthUnitsOk"), "[SL-C04-SI-DEPTH-UNITS] surface interval result invariant across equivalent metric/imperial depth", str(sl04))
+    assert_true(sl04.get("confirmBackdropOk"), "[SL-C04-CONFIRM-BACKDROP] confirm modal dismisses on backdrop click", str(sl04))
     assert_true(erdp.get("normalizeOk"), "[ENG-RDP-CUSTOM-FALLBACK] normalizeRecMix restricts to standard gases", str(erdp))
     assert_true(erdp.get("recGasUiOk"), "[ENG-RDP-CUSTOM-FALLBACK] Rec mode hides custom gas option", str(erdp))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
@@ -2426,6 +2496,9 @@ def _audit_case_rows():
         case_row("SL-C02-TRAVEL-DEPTH-CONSTRAINTS", case_ok("SL-C02-TRAVEL-DEPTH-CONSTRAINTS")),
         case_row("SL-C03-BEST-MIX-DEPTH-UNITS", case_ok("SL-C03-BEST-MIX-DEPTH-UNITS")),
         case_row("SL-C03-CNS-DEPTH-UNITS", case_ok("SL-C03-CNS-DEPTH-UNITS")),
+        case_row("SL-C04-END-DEPTH-UNITS", case_ok("SL-C04-END-DEPTH-UNITS")),
+        case_row("SL-C04-SI-DEPTH-UNITS", case_ok("SL-C04-SI-DEPTH-UNITS")),
+        case_row("SL-C04-CONFIRM-BACKDROP", case_ok("SL-C04-CONFIRM-BACKDROP")),
     ]
 
 
