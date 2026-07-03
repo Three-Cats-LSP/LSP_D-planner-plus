@@ -49,6 +49,11 @@ Register stable case IDs in the leaf suite and evidence catalog. Regenerate
 derived files only through repository tools. Record changed paths, regression
 IDs, and targeted results in <RECORD>, commit, then STOP. A fresh chat must run
 VERIFIER.
+
+For every MEDIUM/HIGH/CRITICAL finding, run the new case against the pre-fix
+commit and record the expected failure. Assert observable output, never merely a
+configuration property or helper call. For unit work, test value/label/min/max/
+step/default/persistence plus both physical round trips using non-default values.
 ```
 
 ## 3. Verifier Prompt
