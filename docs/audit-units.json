@@ -434,6 +434,10 @@
       "suite_id": "SUITE-ENGINE-FULL",
       "case_id": "SL-C02-TRAVEL-DEPTH-CONSTRAINTS"
     },
+    "REG-64": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS"
+    },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
       "case_id": "android-compile"
@@ -645,13 +649,17 @@
       "id": "SL-C02-H-01",
       "unit_id": "UI-MARKUP-PLANNER",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-Lens Cycle 02 Codex verification",
-      "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes.",
+      "summary": "Imperial cylinder size constraints now derive from 1-50 L physical bounds; 2 ft3 is rejected and converted defaults remain browser-valid.",
       "affected_units": [
         "UI-MARKUP-PLANNER",
         "UI-UNIT-SWITCHING",
         "UI-GAS-INPUTS"
+      ],
+      "resolution_commit": "a5bc972",
+      "evidence_cases": [
+        "REG-64"
       ]
     },
     {
@@ -5109,7 +5117,8 @@
         "SL-C01-SETTINGS-RESTORE",
         "SL-C01-ALTITUDE-UNIT-CONSTRAINTS",
         "SL-C02-MIN-DECO-UNITS",
-        "SL-C02-TRAVEL-DEPTH-CONSTRAINTS"
+        "SL-C02-TRAVEL-DEPTH-CONSTRAINTS",
+        "SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS"
       ]
     },
     {

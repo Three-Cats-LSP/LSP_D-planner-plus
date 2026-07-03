@@ -228,9 +228,9 @@ Seven lenses applied to the V3 planner markup partial (plan panel) and traced ca
 | **Root cause** | Litres→ft³ conversion applied to values but imperial `max=1766` (should be ~1.77 ft³ for 50 L). Metric `min=1` / `step=0.5` remain after values like `0.4 ft³`. |
 | **Failure path** | Switch to imperial → default 12 L → 0.4 ft³ rejected (below min 1); 2 ft³ or hundreds of ft³ accepted. |
 | **Impact** | Normal cylinders invalid; physically impossible volumes accepted → gas reserve overestimate. |
-| **Fix needed** | One canonical physical min/max/step tuple; derive metric and imperial constraints for all cylinder inputs. |
-| **Regressions** | `SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS` (proposed) |
-| **Status** | **OPEN**
+| **Fix** | `a5bc972` derives metric/imperial cylinder size constraints from 1-50 L physical bounds for static, dynamic, and gas-plan inputs. |
+| **Regressions** | `SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS` (REG-64) |
+| **Status** | **CLOSED**
 
 #### SL-C02-M-03 — Travel switch-depth limits not physically equivalent
 
