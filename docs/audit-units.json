@@ -131,6 +131,16 @@
         "pattern": "dev/audit-cycle-log.json",
         "kind": "audit_artifact",
         "reason": "Mutable V3 per-cycle agent workflow log"
+      },
+      {
+        "pattern": "dev/audit-unit-log.json",
+        "kind": "audit_artifact",
+        "reason": "Mutable V3 per-unit agent workflow log"
+      },
+      {
+        "pattern": "dev/_list_pending.py",
+        "kind": "audit_artifact",
+        "reason": "Dev helper script"
       }
     ]
   },
@@ -953,7 +963,7 @@
       "audit_issue": 148,
       "evidence": [],
       "regression_cases": [],
-      "issue": "Cycle 35 structured read — no actionable findings"
+      "issue": "Cycle 35 structured read \u2014 no actionable findings"
     },
     {
       "id": "UI-ZHL-RUNNER-SETUP",
@@ -969,7 +979,7 @@
       "last_read_fingerprint": "c8363897aa524291a6cc0e410c26156f87f5a3275cfd7327490610f26af0dc05",
       "evidence": [],
       "regression_cases": [],
-      "issue": "Cycle 35 structured read — no actionable findings",
+      "issue": "Cycle 35 structured read \u2014 no actionable findings",
       "audit_issue": 149
     },
     {
@@ -1404,7 +1414,7 @@
       "fingerprint": "98113d2a4d322e42e214658fff98d5630a2a5a7e285cb7af58974650cdab4b1b",
       "last_read_fingerprint": "98113d2a4d322e42e214658fff98d5630a2a5a7e285cb7af58974650cdab4b1b",
       "evidence": [],
-      "issue": "GitHub #140 H-2 / Cycle 5 GP-01�06 � docs/code-review-2026-06-30.md",
+      "issue": "GitHub #140 H-2 / Cycle 5 GP-01\ufffd06 \ufffd docs/code-review-2026-06-30.md",
       "regression_cases": []
     },
     {
@@ -1419,7 +1429,7 @@
       "fingerprint": "3f603d19106c84ba678cc7b26b5befe6d65fc54ae8bda1d17f927c91c525fcf9",
       "last_read_fingerprint": "3f603d19106c84ba678cc7b26b5befe6d65fc54ae8bda1d17f927c91c525fcf9",
       "evidence": [],
-      "issue": "Cycle 5 GT-01�06 � docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GT-01\ufffd06 \ufffd docs/code-review-2026-06-30.md",
       "regression_cases": []
     },
     {
@@ -1434,7 +1444,7 @@
       "fingerprint": "bbc70a54ddf64b9b3e18fef1d1480155ff86a3e0da09d23cb48be6690b434a52",
       "last_read_fingerprint": "bbc70a54ddf64b9b3e18fef1d1480155ff86a3e0da09d23cb48be6690b434a52",
       "evidence": [],
-      "issue": "GitHub #142 � Dive 2 gas override",
+      "issue": "GitHub #142 \ufffd Dive 2 gas override",
       "regression_cases": []
     },
     {
@@ -1514,12 +1524,12 @@
       "path": "version.json",
       "layer": "release_config",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "98d4150db2c8ec46c22c6795b430229c0ab87e1ba85a7b58268a0e1d43fb1d66",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "98d4150db2c8ec46c22c6795b430229c0ab87e1ba85a7b58268a0e1d43fb1d66",
       "evidence": [],
       "regression_cases": []
     },
@@ -1604,12 +1614,12 @@
       "path": "android/build.gradle",
       "layer": "native_android",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "46ade7db7afeb8049ccea59fce83095dca736ceb8c9acd79cc944e988c3357d9",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "46ade7db7afeb8049ccea59fce83095dca736ceb8c9acd79cc944e988c3357d9"
     },
     {
       "id": "NATIVE-BUILD-APP",
@@ -1631,36 +1641,36 @@
       "path": "android/settings.gradle",
       "layer": "native_android",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "6ce098d15ebd69b44c4ecd786bca1bdc366340d2459b2af4d7bb0ab317aa9669",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "6ce098d15ebd69b44c4ecd786bca1bdc366340d2459b2af4d7bb0ab317aa9669"
     },
     {
       "id": "NATIVE-VARIABLES",
       "path": "android/variables.gradle",
       "layer": "native_android",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "914187f602f14a71fd5699c54585e780d5aa37f0298d3b7e357cda55291ae5fc",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "914187f602f14a71fd5699c54585e780d5aa37f0298d3b7e357cda55291ae5fc"
     },
     {
       "id": "NATIVE-LAYOUT",
       "path": "android/app/src/main/res/layout/activity_main.xml",
       "layer": "native_android",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "5d770feb791313b947020cbfc57e5c733c556dac5e9e49261a1190e527073253",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "5d770feb791313b947020cbfc57e5c733c556dac5e9e49261a1190e527073253"
     },
     {
       "id": "NATIVE-FILE-PATHS",
@@ -1680,96 +1690,96 @@
       "path": "android/app/src/main/res/values/strings.xml",
       "layer": "native_android",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "08a95620adf9208e4fa4ee8582937299a967ce27a0664b3c1684f47f0e0cf90f",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "08a95620adf9208e4fa4ee8582937299a967ce27a0664b3c1684f47f0e0cf90f"
     },
     {
       "id": "NATIVE-STYLES",
       "path": "android/app/src/main/res/values/styles.xml",
       "layer": "native_android",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "50669c3b8eb2a03817fbecc1f1b71b9e171ffdd8ada1ac1dca112cb26c6382f4",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "50669c3b8eb2a03817fbecc1f1b71b9e171ffdd8ada1ac1dca112cb26c6382f4"
     },
     {
       "id": "NATIVE-COLORS",
       "path": "android/app/src/main/res/values/colors.xml",
       "layer": "native_android",
       "priority": "P3",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "61f4479e31eba642888ed12ac836524f15ed1f6288eb60faf030b2aa94165606",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "61f4479e31eba642888ed12ac836524f15ed1f6288eb60faf030b2aa94165606"
     },
     {
       "id": "NATIVE-LAUNCHER-BG",
       "path": "android/app/src/main/res/values/ic_launcher_background.xml",
       "layer": "native_android",
       "priority": "P3",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "19cd60a55fcac56e1d7ca8b290f6f57c1bd7f1b36ae36a28bf67f41dd128f7b6",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "19cd60a55fcac56e1d7ca8b290f6f57c1bd7f1b36ae36a28bf67f41dd128f7b6"
     },
     {
       "id": "NATIVE-DRAWABLE-BG",
       "path": "android/app/src/main/res/drawable/ic_launcher_background.xml",
       "layer": "native_android",
       "priority": "P3",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "718ba51adf166bb55c3e9936bb8199a0148457f7f0191aaa2f37a94f3159d6ec",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "718ba51adf166bb55c3e9936bb8199a0148457f7f0191aaa2f37a94f3159d6ec"
     },
     {
       "id": "NATIVE-DRAWABLE-FG",
       "path": "android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml",
       "layer": "native_android",
       "priority": "P3",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "a8514094f754b099d3e55ce1d6e0b2de79db418b2eeacb0fc2a6bb0bfadef221",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "a8514094f754b099d3e55ce1d6e0b2de79db418b2eeacb0fc2a6bb0bfadef221"
     },
     {
       "id": "NATIVE-ICON",
       "path": "android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml",
       "layer": "native_android",
       "priority": "P3",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "9c3a7e0a6515c6e1a7ae834a9ae430311ebc3241f7b2e5e7f0460aa690709a7c",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "9c3a7e0a6515c6e1a7ae834a9ae430311ebc3241f7b2e5e7f0460aa690709a7c"
     },
     {
       "id": "NATIVE-ICON-ROUND",
       "path": "android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml",
       "layer": "native_android",
       "priority": "P3",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "9c3a7e0a6515c6e1a7ae834a9ae430311ebc3241f7b2e5e7f0460aa690709a7c",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "9c3a7e0a6515c6e1a7ae834a9ae430311ebc3241f7b2e5e7f0460aa690709a7c"
     },
     {
       "id": "TEST-ENGINE-REGRESSION",
@@ -1781,7 +1791,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "GitHub #133–#138 audit regressions and Cycle 31–34 verification",
+      "issue": "GitHub #133\u2013#138 audit regressions and Cycle 31\u201334 verification",
       "regression_cases": [],
       "fingerprint": "e7dae97de2731988e5e9e8ce131c38907f5e8d0529ace62e788b344699c805e5",
       "last_read_fingerprint": "e7dae97de2731988e5e9e8ce131c38907f5e8d0529ace62e788b344699c805e5",
@@ -1792,7 +1802,7 @@
       "path": "dev/issue140_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
@@ -1800,7 +1810,7 @@
       "issue": "GitHub #140 H-1/H-2 behavioral regression",
       "regression_cases": [],
       "fingerprint": "c1ac87de8c3523544c19332457c3240268f2de8f84e52ece0f24d4aa0d095c2d",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "c1ac87de8c3523544c19332457c3240268f2de8f84e52ece0f24d4aa0d095c2d"
     },
     {
       "id": "TEST-GAS-CORE-REGRESSION",
@@ -1812,7 +1822,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "Cycle 5 GP/GT behavioral regression � docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GP/GT behavioral regression \ufffd docs/code-review-2026-06-30.md",
       "regression_cases": [],
       "fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
       "last_read_fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
@@ -1823,7 +1833,7 @@
       "path": "dev/issue141_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
@@ -1831,14 +1841,14 @@
       "issue": "GitHub #141 delegate/schedule audit regression",
       "regression_cases": [],
       "fingerprint": "3cc5e4b88b3d7c22869c939061e2018049f322cc4dafa47f888a608810b62be6",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "3cc5e4b88b3d7c22869c939061e2018049f322cc4dafa47f888a608810b62be6"
     },
     {
       "id": "TEST-ISSUE-142-REGRESSION",
       "path": "dev/surf_interval_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
@@ -1846,14 +1856,14 @@
       "issue": "GitHub #142 Dive 2 gas override regression",
       "regression_cases": [],
       "fingerprint": "1248d551baee79d2dc241c617a8ec377cb8a80a8b6149bada8f2b608ff99e94b",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "1248d551baee79d2dc241c617a8ec377cb8a80a8b6149bada8f2b608ff99e94b"
     },
     {
       "id": "TEST-ANDROID-COMPILE",
       "path": "dev/run_android_compile_check.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
@@ -1861,7 +1871,7 @@
       "issue": "GitHub #140 M-2 Android compile gate",
       "regression_cases": [],
       "fingerprint": "d98eb2cf78857dbf86f129f90ac7302401df50649897ecd5f65b0fab13fee0f3",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "d98eb2cf78857dbf86f129f90ac7302401df50649897ecd5f65b0fab13fee0f3"
     },
     {
       "id": "TEST-ENGINE-VALIDATION",
@@ -1898,12 +1908,12 @@
       "path": "export_regression.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "097bf7b3d320f56e99d77220fb73c4f99a6c7d15fb9b7e842d7e0b8c539ff0f7",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "097bf7b3d320f56e99d77220fb73c4f99a6c7d15fb9b7e842d7e0b8c539ff0f7",
       "evidence": [],
       "regression_cases": []
     },
@@ -1927,24 +1937,24 @@
       "path": "dev/run_browser_regression.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "35e0dc3bed1051a3d63cfca10748bcea5587282db3b7c98850e7bd72bff1ddbf",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "35e0dc3bed1051a3d63cfca10748bcea5587282db3b7c98850e7bd72bff1ddbf"
     },
     {
       "id": "TEST-NATIVE-RUNNER",
       "path": "dev/run_native_regression.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "63d1608bcfffc49bf37d4d997d785bdec150013dcce94c306f340827a9dfa233",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "63d1608bcfffc49bf37d4d997d785bdec150013dcce94c306f340827a9dfa233"
     },
     {
       "id": "TEST-CCR-DIFF-RUNNER",
@@ -2004,48 +2014,48 @@
       "path": "dev/playwright_boot.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "30c6917f594cac7f015ae48d8c039ed8a23eba4e78e1e0401825de748774e61b",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "30c6917f594cac7f015ae48d8c039ed8a23eba4e78e1e0401825de748774e61b"
     },
     {
       "id": "TEST-HTTP",
       "path": "dev/test_http.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "fb84be11784a6961dd07d9669c41eba819da0609d0978b02d0ff272f6dc0f0e7",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "fb84be11784a6961dd07d9669c41eba819da0609d0978b02d0ff272f6dc0f0e7"
     },
     {
       "id": "TEST-LEGACY",
       "path": "dev/legacy.js",
       "layer": "test_infrastructure",
       "priority": "P3",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "de26e30e948071382a4ab7f0669d5399b7c10dcf59734874133e4a452813a7f9",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "de26e30e948071382a4ab7f0669d5399b7c10dcf59734874133e4a452813a7f9"
     },
     {
       "id": "TEST-HARNESS",
       "path": "lsp-test-harness.js",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "ee699022d8a49f193323d698259ce1df422c4422c546342d53b4f8fc65b3d220",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "ee699022d8a49f193323d698259ce1df422c4422c546342d53b4f8fc65b3d220",
       "evidence": [],
       "regression_cases": []
     },
@@ -2054,72 +2064,72 @@
       "path": "tests.html",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "30cab20d0fc9404651be3f74264d1a7c9ff1edc4f8161f8f02902e05b9fef034",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "30cab20d0fc9404651be3f74264d1a7c9ff1edc4f8161f8f02902e05b9fef034"
     },
     {
       "id": "TEST-EXTENDED",
       "path": "tests-extended.html",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "340e1b936c11df63d0cc389288082d33f838bcd34dd87fee5f93a47e7957d27b",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "340e1b936c11df63d0cc389288082d33f838bcd34dd87fee5f93a47e7957d27b"
     },
     {
       "id": "TEST-MASSIVE",
       "path": "tests-massive.html",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "6658e3ac4a640066c6e31e34af8073d9e096779861444ad9f121eeeb960ec2a7",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "6658e3ac4a640066c6e31e34af8073d9e096779861444ad9f121eeeb960ec2a7"
     },
     {
       "id": "TEST-MASSIVE-MAIN",
       "path": "tests-massive-main.html",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "268fcde954be6ea4c9a0c97bf190dc1171c1e0d19b9ccde4a5804ff025163c01",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "268fcde954be6ea4c9a0c97bf190dc1171c1e0d19b9ccde4a5804ff025163c01"
     },
     {
       "id": "TEST-VERIFY",
       "path": "tests-verify.html",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "956610a691c4f716c48b9f07bbacb9ad9dfa4f6675f47e404fb6736ee20d1956",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "956610a691c4f716c48b9f07bbacb9ad9dfa4f6675f47e404fb6736ee20d1956"
     },
     {
       "id": "TEST-PSCR-OTU-CNS",
       "path": "tests-pscr-otu-cns.html",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "e0a967927b8fcbf1dbd032abe786ab4b9ab755cc2f8f1f7a23000d39a2387e5c",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "e0a967927b8fcbf1dbd032abe786ab4b9ab755cc2f8f1f7a23000d39a2387e5c"
     },
     {
       "id": "TEST-CCR-DIFF-HTML",
@@ -2138,60 +2148,60 @@
       "path": "dev/fixtures/native-select.html",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "c3a9f72292913713361f1278e89981690a8d24835efbc89b4e19e2fa7b578546",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "c3a9f72292913713361f1278e89981690a8d24835efbc89b4e19e2fa7b578546"
     },
     {
       "id": "TEST-CAP-FIXTURE",
       "path": "dev/fixtures/capacitor-bridge.html",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "63b02481bafd67093521626d60c32da4dfc08bbede1ce0199a91f33371099016",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "63b02481bafd67093521626d60c32da4dfc08bbede1ce0199a91f33371099016"
     },
     {
       "id": "TEST-ANDROID-UNIT",
       "path": "android/app/src/test/java/com/getcapacitor/myapp/ExampleUnitTest.java",
       "layer": "test_infrastructure",
       "priority": "P3",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "d4045ae8fac1f0807e6b24eb34e68409a9a235df9d1a3f896fb8c9a49424363d",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "d4045ae8fac1f0807e6b24eb34e68409a9a235df9d1a3f896fb8c9a49424363d"
     },
     {
       "id": "TEST-ANDROID-INSTRUMENTED",
       "path": "android/app/src/androidTest/java/com/getcapacitor/myapp/ExampleInstrumentedTest.java",
       "layer": "test_infrastructure",
       "priority": "P3",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "ff50b4c110a7434312f9af54171f9e8523b015836f707c9b387b76d4c38a97f8",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "ff50b4c110a7434312f9af54171f9e8523b015836f707c9b387b76d4c38a97f8"
     },
     {
       "id": "TEST-CCR-DIFF-BUILD",
       "path": "tests/ccr-differential/build_assets.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "94f9bc84d0572395974e24d018c263b7469a9f6b499da738ab2b7a6f9ab4a064",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "94f9bc84d0572395974e24d018c263b7469a9f6b499da738ab2b7a6f9ab4a064"
     },
     {
       "id": "TEST-CCR-DIFF-LIB-PY",
@@ -2222,22 +2232,22 @@
       "path": "audit.py",
       "layer": "tooling",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "evidence": [],
       "regression_cases": [],
-      "issue": "GitHub #133–#139 structured environment audit gates; release regression 9/9",
+      "issue": "GitHub #133\u2013#139 structured environment audit gates; release regression 9/9",
       "fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d"
     },
     {
       "id": "TOOL-AUDIT-COVERAGE",
       "path": "tools/audit_coverage.py",
       "layer": "tooling",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
@@ -2245,19 +2255,19 @@
       "issue": "Audit environment hardening after fd80511",
       "regression_cases": [],
       "fingerprint": "7b56faeb23943398bd68c2470dbb56813b2e398b0d4548df15d60a4bc3b58b4c",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "7b56faeb23943398bd68c2470dbb56813b2e398b0d4548df15d60a4bc3b58b4c"
     },
     {
       "id": "TOOL-AUDIT-COVERAGE-TEST",
       "path": "tools/test_audit_coverage.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "c2ca15554b362252f14dfec67bc78d6a530ebda908e8ccdcfdfb6778ef0e5fcf",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "c2ca15554b362252f14dfec67bc78d6a530ebda908e8ccdcfdfb6778ef0e5fcf",
       "evidence": [],
       "regression_cases": []
     },
@@ -2266,12 +2276,12 @@
       "path": "tools/build_pages_site.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "276a70794a3ee871970f7de6c9921a9c6823470d0c1bc5f2565871a05d3811b3",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "276a70794a3ee871970f7de6c9921a9c6823470d0c1bc5f2565871a05d3811b3",
       "evidence": [],
       "regression_cases": []
     },
@@ -2292,12 +2302,12 @@
       "path": "tools/build_zhl_bundle.py",
       "layer": "tooling",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "1286717116c9d9c5d263bd817681ff3a719dc43e84be443cb31c69a4ac59477e",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "1286717116c9d9c5d263bd817681ff3a719dc43e84be443cb31c69a4ac59477e",
       "evidence": [],
       "regression_cases": []
     },
@@ -2306,12 +2316,12 @@
       "path": "tools/check_engine_parity.py",
       "layer": "tooling",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "645a8ced3169d1263403ee9bb6972b13cd128e708adb01844d8a22bd33df45cc",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "645a8ced3169d1263403ee9bb6972b13cd128e708adb01844d8a22bd33df45cc",
       "evidence": [],
       "regression_cases": []
     },
@@ -2320,7 +2330,7 @@
       "path": "tools/run_audit_coverage_suite.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
@@ -2328,14 +2338,14 @@
       "issue": "GitHub #140 M-3 coverage + audit self-tests",
       "regression_cases": [],
       "fingerprint": "a5cfe73a27242416e54a74722207a48d5dec896129286a5919aa142cb1578e02",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "a5cfe73a27242416e54a74722207a48d5dec896129286a5919aa142cb1578e02"
     },
     {
       "id": "TOOL-EXTRACT-UI",
       "path": "tools/extract_ui_cores.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
@@ -2343,115 +2353,115 @@
       "issue": "GitHub #136 marker-based UI core extraction",
       "regression_cases": [],
       "fingerprint": "cfa927e430353bcc54c243896a73eee1c9033b21f800d148308562a8bfa85223",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "cfa927e430353bcc54c243896a73eee1c9033b21f800d148308562a8bfa85223"
     },
     {
       "id": "TOOL-EXTRACT-ZHL",
       "path": "tools/extract_zhl_core.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "48523e6bb23f7454ea733d239446f883aa1899d1f578fe7d55b2e5311197b4e4",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "48523e6bb23f7454ea733d239446f883aa1899d1f578fe7d55b2e5311197b4e4"
     },
     {
       "id": "TOOL-INSERT-ZHL",
       "path": "tools/insert_zhl_tier2.py",
       "layer": "tooling",
       "priority": "P3",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "b55bebb29f45597ee72868607dd8749578b0232ff57042fc7a0622cb066ced61",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "b55bebb29f45597ee72868607dd8749578b0232ff57042fc7a0622cb066ced61"
     },
     {
       "id": "TOOL-MERGE-CCR",
       "path": "tools/merge_ccr_into_plus.py",
       "layer": "tooling",
       "priority": "P3",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "4ec785078dfbba50252f0277144bbfd1067c108734f526ab93e8be86c9658c1c",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "4ec785078dfbba50252f0277144bbfd1067c108734f526ab93e8be86c9658c1c"
     },
     {
       "id": "TOOL-PATCH-DECO",
       "path": "tools/patch_run_deco_schedule.py",
       "layer": "tooling",
       "priority": "P3",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "158dc396180bf4c7176386b257c35dc2d1ea742ed79acfd81aefd4eca43cb77d",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "158dc396180bf4c7176386b257c35dc2d1ea742ed79acfd81aefd4eca43cb77d"
     },
     {
       "id": "TOOL-PATCH-SCHEDULE",
       "path": "tools/patch_schedule_core_ccr.py",
       "layer": "tooling",
       "priority": "P3",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "8256af3ce539b6e9f01177904a32564a03daa2d7acf82495001cfad5e9ceac9c",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "8256af3ce539b6e9f01177904a32564a03daa2d7acf82495001cfad5e9ceac9c"
     },
     {
       "id": "TOOL-PATCH-TIER3",
       "path": "tools/patch_tier3_index.py",
       "layer": "tooling",
       "priority": "P3",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "71e0fb22d7f71cf7a513753fab0c6f31c08469a00ba87b81a18eb029fc9ff2fa",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "71e0fb22d7f71cf7a513753fab0c6f31c08469a00ba87b81a18eb029fc9ff2fa"
     },
     {
       "id": "TOOL-PATCH-VPM",
       "path": "tools/patch_vpm_bundle_index.py",
       "layer": "tooling",
       "priority": "P3",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "e09551c2923e1bb087d9571a87ea8fede0d753e44fd36e82489c5e0a33536532",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "e09551c2923e1bb087d9571a87ea8fede0d753e44fd36e82489c5e0a33536532"
     },
     {
       "id": "TOOL-PATCH-ZHL",
       "path": "tools/patch_zhl_engine.py",
       "layer": "tooling",
       "priority": "P3",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "574bba8d50fa59896d017195c35d7b248e90ab2770afe1fc797a64aa19d80f93",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "574bba8d50fa59896d017195c35d7b248e90ab2770afe1fc797a64aa19d80f93"
     },
     {
       "id": "TOOL-SYNC-WWW",
       "path": "tools/sync_www.py",
       "layer": "tooling",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "867617d197500a649f4fee2c54d6fd2e0a47b8aac2ce85e6abf06f347093a136",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "867617d197500a649f4fee2c54d6fd2e0a47b8aac2ce85e6abf06f347093a136",
       "evidence": [],
       "regression_cases": []
     },
@@ -2472,12 +2482,12 @@
       "path": "tools/vendor_offline_assets.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "UNREAD",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "af18f642229ca5b8c32bec594a26b2e6d5cd4fc2dda25280e67187dadc86d09a",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "af18f642229ca5b8c32bec594a26b2e6d5cd4fc2dda25280e67187dadc86d09a"
     },
     {
       "id": "TOOL-VERIFY-ASSETS",
@@ -2586,12 +2596,12 @@
       "path": "tools/audit/__init__.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "efeac017093b9690e1d142adf0f2c80ca334e95deb808c77531379950e9ff63e",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "efeac017093b9690e1d142adf0f2c80ca334e95deb808c77531379950e9ff63e",
       "evidence": [],
       "regression_cases": [],
       "issue": "Ground-up audit architecture"
@@ -2601,12 +2611,12 @@
       "path": "tools/audit/__main__.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "3d2438ae92f4746e9ffaa1f837b1fe803f6281091d1f31f8c95643716f257d9a",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "3d2438ae92f4746e9ffaa1f837b1fe803f6281091d1f31f8c95643716f257d9a",
       "evidence": [],
       "regression_cases": [],
       "issue": "Ground-up audit architecture"
@@ -2616,12 +2626,12 @@
       "path": "tools/audit/cli.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "80b87a7cb9a9055ea9613bda1ebb4f802b7cad3fada6b7cd5f4bb208bb8fb58e",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "80b87a7cb9a9055ea9613bda1ebb4f802b7cad3fada6b7cd5f4bb208bb8fb58e",
       "evidence": [],
       "regression_cases": [],
       "issue": "Ground-up audit architecture"
@@ -2631,12 +2641,12 @@
       "path": "tools/audit/legacy_v1.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "b75e2f92ec060f9e8b774ad36e9aee5dc27cf4ef6867619d1cf4e84b164c1ec4",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "b75e2f92ec060f9e8b774ad36e9aee5dc27cf4ef6867619d1cf4e84b164c1ec4",
       "evidence": [],
       "regression_cases": [],
       "issue": "Ground-up audit architecture"
@@ -2646,12 +2656,12 @@
       "path": "tools/audit/migrate_v2.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "513257d3cba6e4a82443e8dba9456956ce669602c30657b75ed589e6cc088b52",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "513257d3cba6e4a82443e8dba9456956ce669602c30657b75ed589e6cc088b52",
       "evidence": [],
       "regression_cases": [],
       "issue": "Ground-up audit architecture"
@@ -2661,12 +2671,12 @@
       "path": "tools/audit/model.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "47291239afc107c8fe1e47da1149ad128783a6e6c5de020a4db3c55aecda9dd4",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "47291239afc107c8fe1e47da1149ad128783a6e6c5de020a4db3c55aecda9dd4",
       "evidence": [],
       "regression_cases": [],
       "issue": "Ground-up audit architecture"
@@ -2676,12 +2686,12 @@
       "path": "tools/audit/parser_bridge.mjs",
       "layer": "tooling",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "1a345f6bf2e7708d9eda7d967f72f2f564f75739ed99652a574cacfe8a91df62",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "1a345f6bf2e7708d9eda7d967f72f2f564f75739ed99652a574cacfe8a91df62",
       "evidence": [],
       "regression_cases": [],
       "issue": "Ground-up audit architecture"
@@ -2691,12 +2701,12 @@
       "path": "tools/audit/registry.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "a82442e6aff6c2abc9af2b1dbb6da7ff4c46ab0b87bd6af33d1477533c5ae371",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "a82442e6aff6c2abc9af2b1dbb6da7ff4c46ab0b87bd6af33d1477533c5ae371",
       "evidence": [],
       "regression_cases": [],
       "issue": "Ground-up audit architecture"
@@ -2706,12 +2716,12 @@
       "path": "tools/audit/reporting.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "c3acb0a72986af10513ea4fcd0773bc8cd9d4c322ab9ed4da3713b7fcb8d2725",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "c3acb0a72986af10513ea4fcd0773bc8cd9d4c322ab9ed4da3713b7fcb8d2725",
       "evidence": [],
       "regression_cases": [],
       "issue": "Ground-up audit architecture"
@@ -2721,12 +2731,12 @@
       "path": "tools/audit/rules.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "49b0b40ed6261a6bbfc8557f93533e4b878d60437c135512c2eacd76fc8ed382",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "49b0b40ed6261a6bbfc8557f93533e4b878d60437c135512c2eacd76fc8ed382",
       "evidence": [],
       "regression_cases": [],
       "issue": "Ground-up audit architecture"
@@ -2736,12 +2746,12 @@
       "path": "tools/audit/runner.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "8d5858e9c3562e5f8a05d6b8db97a3365db32fbbe80bee9b7263c010ed93db04",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "8d5858e9c3562e5f8a05d6b8db97a3365db32fbbe80bee9b7263c010ed93db04",
       "evidence": [],
       "regression_cases": [],
       "issue": "Ground-up audit architecture"
@@ -2751,7 +2761,7 @@
       "path": "tools/audit/case_report.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
@@ -2759,14 +2769,14 @@
       "issue": "GitHub #140 H-3 structured case validation",
       "regression_cases": [],
       "fingerprint": "559044188103e7141f3a2d66beae7c0a0c5bb2c181663444bca0d832594556f0",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "559044188103e7141f3a2d66beae7c0a0c5bb2c181663444bca0d832594556f0"
     },
     {
       "id": "TOOL-AUDIT-V2-SUITE_EMIT-PY",
       "path": "tools/audit/suite_emit.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
@@ -2774,19 +2784,19 @@
       "issue": "GitHub #140 H-3 suite case emission",
       "regression_cases": [],
       "fingerprint": "9f6c2cc0bd406e8d66606aab3160d868f55e9eb5fcedcdd741de053909ec9a9b",
-      "last_read_fingerprint": null
+      "last_read_fingerprint": "9f6c2cc0bd406e8d66606aab3160d868f55e9eb5fcedcdd741de053909ec9a9b"
     },
     {
       "id": "TOOL-AUDIT-V2-WORKSPACE-PY",
       "path": "tools/audit/workspace.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "d45d6dd6beed3b3307f6797f67d6cf86c9bd6c9ec274c91f566da0d8afea1856",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "d45d6dd6beed3b3307f6797f67d6cf86c9bd6c9ec274c91f566da0d8afea1856",
       "evidence": [],
       "regression_cases": [],
       "issue": "Ground-up audit architecture"
@@ -2796,12 +2806,12 @@
       "path": "docs/audit-legacy-migration.json",
       "layer": "tooling",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "5e3c0b16e8006b7a508fb2e0c2f9914a5d0a83794608670135ba1f210ee4bb21",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "5e3c0b16e8006b7a508fb2e0c2f9914a5d0a83794608670135ba1f210ee4bb21",
       "evidence": [],
       "regression_cases": [],
       "issue": "Ground-up audit architecture"
@@ -2811,12 +2821,12 @@
       "path": "tools/audit/test_system.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "7e8ab1f2396465dab7258eaef365ff690928b7701fa058fa1d59e64971ed8187",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "7e8ab1f2396465dab7258eaef365ff690928b7701fa058fa1d59e64971ed8187",
       "evidence": [],
       "regression_cases": [],
       "issue": "Ground-up audit architecture"
@@ -2854,12 +2864,12 @@
       "path": "tools/assemble_ui_html.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "4d673763b0b972688dc8d836f3c213a37f0a3655e9a06f1ba7fe0df47d8a6ee1",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "4d673763b0b972688dc8d836f3c213a37f0a3655e9a06f1ba7fe0df47d8a6ee1",
       "evidence": [],
       "regression_cases": [],
       "issue": "Audit V3 environment"
@@ -2869,12 +2879,12 @@
       "path": "tools/extract_ui_css.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "3dc127b9990c1a4fde9689ab7972f4e4fdc71076ed54577d4d18b54081e5f20f",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "3dc127b9990c1a4fde9689ab7972f4e4fdc71076ed54577d4d18b54081e5f20f",
       "evidence": [],
       "regression_cases": [],
       "issue": "Audit V3 environment"
@@ -2884,12 +2894,12 @@
       "path": "tools/audit/migrate_v3.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "ad3ef139ecd5297e9516436f8ab0eb7c052c49aaabc8bf956576bce5c86ac322",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "ad3ef139ecd5297e9516436f8ab0eb7c052c49aaabc8bf956576bce5c86ac322",
       "evidence": [],
       "regression_cases": [],
       "issue": "Audit V3 environment"
@@ -2899,12 +2909,12 @@
       "path": "tools/run_ui_structure_suite.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "cdf70dfb1c1c0dcbe11cbe964de0b1bd98178d8f2c6865e4dafbf49461cbce3e",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "cdf70dfb1c1c0dcbe11cbe964de0b1bd98178d8f2c6865e4dafbf49461cbce3e",
       "evidence": [],
       "regression_cases": [],
       "issue": "Audit V3 environment"
@@ -2914,12 +2924,12 @@
       "path": "tools/ui_assets.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "d6d124882de12c385b665b40e56bd4da03df1e1ced79f9bd7bfc9084abc927fa",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "d6d124882de12c385b665b40e56bd4da03df1e1ced79f9bd7bfc9084abc927fa",
       "evidence": [],
       "regression_cases": [],
       "issue": "Audit V3 environment"
@@ -2929,12 +2939,12 @@
       "path": "tools/verify_sw_assets.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "2871d7d8f42356678ebfcd3b5f047ef557e6a81da32fb09d3e15bf2d7aeb4b0f",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "2871d7d8f42356678ebfcd3b5f047ef557e6a81da32fb09d3e15bf2d7aeb4b0f",
       "evidence": [],
       "regression_cases": [],
       "issue": "Audit V3 environment"
@@ -2944,12 +2954,12 @@
       "path": "tools/test_ui_structure_suite.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "cd10bb70a9aa5107712ae18c5b4ff5a1c03d5295f467480a6bd6d44400cb276b",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "cd10bb70a9aa5107712ae18c5b4ff5a1c03d5295f467480a6bd6d44400cb276b",
       "evidence": [],
       "regression_cases": [],
       "issue": "Audit V3 environment"
@@ -2959,12 +2969,12 @@
       "path": "tools/audit/reset_cycles_v3.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "1fc5b91fb855b60484ef15eb86fba860305b100ce76d7e4cfc2fe04300b4f4ec",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "1fc5b91fb855b60484ef15eb86fba860305b100ce76d7e4cfc2fe04300b4f4ec",
       "evidence": [],
       "regression_cases": [],
       "issue": "Audit V3 cycle reset"
@@ -2974,15 +2984,30 @@
       "path": "tools/audit/run_v3_automation.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "IN_PROGRESS",
+      "status": "READ",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "ec11bace83083d27550a47c3ea28fa2739f40d367dd9615ba8644c445a4ab886",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "ec11bace83083d27550a47c3ea28fa2739f40d367dd9615ba8644c445a4ab886",
       "evidence": [],
       "regression_cases": [],
       "issue": "V3 automated audit runner"
+    },
+    {
+      "id": "TOOL-V3-RUN-V3-UNITS-AUTOMATION-PY",
+      "path": "tools/audit/run_v3_units_automation.py",
+      "layer": "tooling",
+      "priority": "P2",
+      "status": "READ",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "b92642f5f2e850e72714cf99837fbbe37b0267af0c052662951b2422966e00f3",
+      "last_read_fingerprint": "b92642f5f2e850e72714cf99837fbbe37b0267af0c052662951b2422966e00f3",
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "V3 automated unit READ runner"
     }
   ],
   "cycles": [
