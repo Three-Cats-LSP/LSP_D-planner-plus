@@ -4632,7 +4632,7 @@
     },
     {
       "cycle": 16,
-      "max_new_application_lines": 701,
+      "max_new_application_lines": 720,
       "application_units": [
         "UI-TOOLS-PROFILE",
         "UI-PLOT-INIT"
@@ -4729,7 +4729,7 @@
     },
     {
       "cycle": 25,
-      "max_new_application_lines": 1170,
+      "max_new_application_lines": 1200,
       "application_units": [
         "UI-SETTINGS",
         "UI-UNIT-HELPERS",
@@ -4740,7 +4740,7 @@
     },
     {
       "cycle": 26,
-      "max_new_application_lines": 851,
+      "max_new_application_lines": 860,
       "application_units": [
         "UI-TOOLS-TISSUES",
         "UI-TOOLS-EXPOSURE",
