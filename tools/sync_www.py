@@ -45,7 +45,6 @@ ROOT_FILES = [
     "gas-cards-core.js",
     "export-core.js",
     "plot-core.js",
-    "vendor/pdf-fonts.js",
     "contingency-core.js",
     "results-panel.js",
     "results-render-core.js",
@@ -101,13 +100,15 @@ def sync_www() -> None:
         src = ROOT / name
         if not src.is_file():
             raise SystemExit(f"Missing required web asset: {name}")
-        shutil.copy2(src, WWW / name)
+        dest = WWW / name
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(src, dest)
 
     for name in ROOT_DIRS:
         src = ROOT / name
         if not src.is_dir():
             raise SystemExit(f"Missing required web directory: {name}")
-        shutil.copytree(src, WWW / name)
+        shutil.copytree(src, WWW / name, dirs_exist_ok=True)
 
     shutil.copy2(ROOT / "version.json", WWW / "version.json")
 

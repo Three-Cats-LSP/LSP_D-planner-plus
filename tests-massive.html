@@ -1784,11 +1784,11 @@ const TIER2_GROUPS = [
         assert(sel, 'Algorithm selector not found');
         // Switch to VPMB_GFS
         sel.value = 'VPMB_GFS'; sel.dispatchEvent(new WIN.Event('change',{bubbles:true}));
-        // GF presets row must be visible
-        const presetsRow = d.getElementById('gfPresetsRow');
-        assert(presetsRow, 'gfPresetsRow not found');
+        // GF presets row must be visible (V3 layout uses gfPresetsRowV3; legacy gfPresetsRow is removed)
+        const presetsRow = d.getElementById('gfPresetsRowV3') || d.getElementById('gfPresetsRow');
+        assert(presetsRow, 'gfPresetsRowV3/gfPresetsRow not found');
         const presetsVisible = presetsRow.style.display !== 'none';
-        assert(presetsVisible, 'gfPresetsRow hidden in VPMB_GFS mode');
+        assert(presetsVisible, 'GF presets row hidden in VPMB_GFS mode');
         // GF label should say 'GF Hi:' not 'GF:'
         const gfLabel = d.getElementById('gfLabel');
         if (gfLabel) {

@@ -141,6 +141,11 @@
         "pattern": "dev/_list_pending.py",
         "kind": "audit_artifact",
         "reason": "Dev helper script"
+      },
+      {
+        "pattern": "dev/audit-release-log.json",
+        "kind": "audit_artifact",
+        "reason": "Mutable V3 release automation log"
       }
     ]
   },
@@ -425,13 +430,17 @@
       "severity": "HIGH",
       "status": "CLOSED",
       "issue": "GitHub #133 / Audit #128 (25 findings)",
-      "summary": "All 4C/5H/8M/8L remediated; gated in audit.py issue133 block and engine_regression issue133",
+      "summary": "All 4C/5H/8M/8L remediated; gated in audit.py issue133 block and engine_regression issue133 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]",
       "affected_units": [
         "TOOL-AUDIT"
       ],
       "resolution_commit": "legacy-history",
       "evidence_cases": [
-        "LEGACY-BASELINE"
+        "COV-01",
+        "PARITY-01",
+        "REG-01",
+        "REG-02",
+        "REG-03"
       ]
     },
     {
@@ -440,13 +449,17 @@
       "severity": "HIGH",
       "status": "CLOSED",
       "issue": "GitHub #134 / Audit #129 (19 findings)",
-      "summary": "All 1C/4H/7M/7L remediated; gated in audit.py issue134 block and engine_regression issue134",
+      "summary": "All 1C/4H/7M/7L remediated; gated in audit.py issue134 block and engine_regression issue134 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]",
       "affected_units": [
         "TOOL-AUDIT"
       ],
       "resolution_commit": "legacy-history",
       "evidence_cases": [
-        "LEGACY-BASELINE"
+        "COV-01",
+        "PARITY-01",
+        "REG-01",
+        "REG-02",
+        "REG-03"
       ]
     },
     {
@@ -455,13 +468,17 @@
       "severity": "HIGH",
       "status": "CLOSED",
       "issue": "GitHub #135 / Audit #130 (21 findings)",
-      "summary": "All 10H/10M/1L remediated; gated in audit.py issue135 block and engine_regression issue135",
+      "summary": "All 10H/10M/1L remediated; gated in audit.py issue135 block and engine_regression issue135 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]",
       "affected_units": [
         "TOOL-AUDIT"
       ],
       "resolution_commit": "legacy-history",
       "evidence_cases": [
-        "LEGACY-BASELINE"
+        "COV-01",
+        "PARITY-01",
+        "REG-01",
+        "REG-02",
+        "REG-03"
       ]
     },
     {
@@ -470,13 +487,17 @@
       "severity": "MEDIUM",
       "status": "CLOSED",
       "issue": "GitHub #136 (UI extractor hardening)",
-      "summary": "extract_ui_cores.py uses LSP-EXTRACT marker contract; verified by audit.py and tools/extract_ui_cores.py",
+      "summary": "extract_ui_cores.py uses LSP-EXTRACT marker contract; verified by audit.py and tools/extract_ui_cores.py [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]",
       "affected_units": [
         "TOOL-EXTRACT-UI"
       ],
       "resolution_commit": "legacy-history",
       "evidence_cases": [
-        "LEGACY-BASELINE"
+        "COV-01",
+        "PARITY-01",
+        "REG-01",
+        "REG-02",
+        "REG-03"
       ]
     },
     {
@@ -485,13 +506,17 @@
       "severity": "HIGH",
       "status": "CLOSED",
       "issue": "GitHub #137 / Audit #131 (39 findings)",
-      "summary": "Fixed in 51f95ac; gated in audit.py and engine_regression issue137",
+      "summary": "Fixed in 51f95ac; gated in audit.py and engine_regression issue137 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]",
       "affected_units": [
         "TOOL-AUDIT"
       ],
       "resolution_commit": "legacy-history",
       "evidence_cases": [
-        "LEGACY-BASELINE"
+        "COV-01",
+        "PARITY-01",
+        "REG-01",
+        "REG-02",
+        "REG-03"
       ]
     },
     {
@@ -500,13 +525,17 @@
       "severity": "HIGH",
       "status": "CLOSED",
       "issue": "GitHub #138 / Audit #132 (40 findings)",
-      "summary": "Fixed in fcfb6c4 (v2.53.04); gated in audit.py and engine_regression issue138",
+      "summary": "Fixed in fcfb6c4 (v2.53.04); gated in audit.py and engine_regression issue138 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]",
       "affected_units": [
         "TOOL-AUDIT"
       ],
       "resolution_commit": "legacy-history",
       "evidence_cases": [
-        "LEGACY-BASELINE"
+        "COV-01",
+        "PARITY-01",
+        "REG-01",
+        "REG-02",
+        "REG-03"
       ]
     },
     {
@@ -515,13 +544,17 @@
       "severity": "LOW",
       "status": "CLOSED",
       "issue": "GitHub #139 / Audit #133 (3 new findings; #138 re-verified)",
-      "summary": "All 3L fixed; #138 40/40 re-verified on 1271d1a; gated in audit.py and engine_regression issue139",
+      "summary": "All 3L fixed; #138 40/40 re-verified on 1271d1a; gated in audit.py and engine_regression issue139 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]",
       "affected_units": [
         "TOOL-AUDIT"
       ],
       "resolution_commit": "legacy-history",
       "evidence_cases": [
-        "LEGACY-BASELINE"
+        "COV-01",
+        "PARITY-01",
+        "REG-01",
+        "REG-02",
+        "REG-03"
       ]
     },
     {
@@ -588,164 +621,249 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "7d87be3cdaeb93296f517f2c874e591465286fce2bfc60f1e91baaca0e6a5e4b",
-      "last_read_fingerprint": "7d87be3cdaeb93296f517f2c874e591465286fce2bfc60f1e91baaca0e6a5e4b",
-      "evidence": [],
-      "regression_cases": []
+      "fingerprint": "cdec29f480ad97719bf5ef59ea1de8900231523e9b02329a3cd76b57c665957e",
+      "last_read_fingerprint": "cdec29f480ad97719bf5ef59ea1de8900231523e9b02329a3cd76b57c665957e",
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ],
+      "issue": "V3 full audit verified — UI-BOOT"
     },
     {
       "id": "UI-CSS-FOUNDATION",
       "path": "lsp-dplanner-foundation.css",
       "layer": "web_css",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "b460875b35f118ee845481add6776ed2cc2d582cc54bc90b84c5590571d22f9f",
       "last_read_fingerprint": "b460875b35f118ee845481add6776ed2cc2d582cc54bc90b84c5590571d22f9f",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-EXTRACT-CSS",
+        "SUITE-UI-STRUCTURE/UI-CSS-LINK-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-03",
+        "EXT-06",
+        "COV-01"
+      ],
+      "issue": "V3 full audit verified — UI-CSS-FOUNDATION"
     },
     {
       "id": "UI-CSS-MODES",
       "path": "lsp-dplanner-modes.css",
       "layer": "web_css",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "9344ab5a3da09d6b9cf7e3843b7a4e6330289cffb6d3715810c152d3db14481e",
       "last_read_fingerprint": "9344ab5a3da09d6b9cf7e3843b7a4e6330289cffb6d3715810c152d3db14481e",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-EXTRACT-CSS",
+        "SUITE-UI-STRUCTURE/UI-CSS-LINK-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-03",
+        "EXT-06",
+        "COV-01"
+      ],
+      "issue": "V3 full audit verified — UI-CSS-MODES"
     },
     {
       "id": "UI-CSS-CONTROLS",
       "path": "lsp-dplanner-controls.css",
       "layer": "web_css",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "6511fe627d75f1bdf790d02c8dadb6a53c4a369b009b7271b9902f81f4225794",
       "last_read_fingerprint": "6511fe627d75f1bdf790d02c8dadb6a53c4a369b009b7271b9902f81f4225794",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-EXTRACT-CSS",
+        "SUITE-UI-STRUCTURE/UI-CSS-LINK-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-03",
+        "EXT-06",
+        "COV-01"
+      ],
+      "issue": "V3 full audit verified — UI-CSS-CONTROLS"
     },
     {
       "id": "UI-CSS-RESULTS",
       "path": "lsp-dplanner-results.css",
       "layer": "web_css",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "fc6e568be6ccf69c9f2026c5a20bde93ba095dd83b58cc40806c0a86293c8108",
       "last_read_fingerprint": "fc6e568be6ccf69c9f2026c5a20bde93ba095dd83b58cc40806c0a86293c8108",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-EXTRACT-CSS",
+        "SUITE-UI-STRUCTURE/UI-CSS-LINK-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-03",
+        "EXT-06",
+        "COV-01"
+      ],
+      "issue": "V3 full audit verified — UI-CSS-RESULTS"
     },
     {
       "id": "UI-MARKUP-HEADER",
       "path": "ui/markup-header.html",
       "layer": "web_markup",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "33bc7235987078ac24336bc6deff7a4983c115a73d2b67dda53055d55f8d24fe",
-      "last_read_fingerprint": "33bc7235987078ac24336bc6deff7a4983c115a73d2b67dda53055d55f8d24fe",
-      "evidence": [],
-      "regression_cases": []
+      "fingerprint": "ac5ecb4d61b4ff5929c0732e85d060b3d0581624fcac42c9d0d123c7b1fcdf53",
+      "last_read_fingerprint": "ac5ecb4d61b4ff5929c0732e85d060b3d0581624fcac42c9d0d123c7b1fcdf53",
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-04",
+        "COV-01"
+      ],
+      "issue": "V3 full audit verified — UI-MARKUP-HEADER"
     },
     {
       "id": "UI-MARKUP-PLANNER",
       "path": "ui/markup-planner.html",
       "layer": "web_markup",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "f8580045052a2fc92806d2edcca8f609067470f49e1b5c99827a5e2a83d8de86",
       "last_read_fingerprint": "f8580045052a2fc92806d2edcca8f609067470f49e1b5c99827a5e2a83d8de86",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-04",
+        "COV-01"
+      ],
+      "issue": "V3 full audit verified — UI-MARKUP-PLANNER"
     },
     {
       "id": "UI-MARKUP-CONSUMPTION",
       "path": "ui/markup-consumption.html",
       "layer": "web_markup",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "62bc7530920037c1e03178a1be7a10f1d578beaa7fcfb48178cd8a6e9786e36e",
       "last_read_fingerprint": "62bc7530920037c1e03178a1be7a10f1d578beaa7fcfb48178cd8a6e9786e36e",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-04",
+        "COV-01"
+      ],
+      "issue": "V3 full audit verified — UI-MARKUP-CONSUMPTION"
     },
     {
       "id": "UI-MARKUP-TOOLS",
       "path": "ui/markup-tools.html",
       "layer": "web_markup",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "62aef8c891215ea1b3640ca09af9fcb9edffe792f74f9a64ae60fe2dba71e737",
       "last_read_fingerprint": "62aef8c891215ea1b3640ca09af9fcb9edffe792f74f9a64ae60fe2dba71e737",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-04",
+        "COV-01"
+      ],
+      "issue": "V3 full audit verified — UI-MARKUP-TOOLS"
     },
     {
       "id": "UI-MARKUP-MODALS",
       "path": "ui/markup-modals.html",
       "layer": "web_markup",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "4720f42548ea3b0b75af9cf1548656c9c2c53b3c2b3cfd89c7c17c63a4447be6",
       "last_read_fingerprint": "4720f42548ea3b0b75af9cf1548656c9c2c53b3c2b3cfd89c7c17c63a4447be6",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-04",
+        "COV-01"
+      ],
+      "issue": "V3 full audit verified — UI-MARKUP-MODALS"
     },
     {
       "id": "UI-RUNTIME-BOOTSTRAP",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-RUNTIME-BOOTSTRAP"
       },
       "fingerprint": "822569ba7547b9b50c20e33058d9c85c4b53f8edc7019b7952fc17958e5e3f3d",
       "last_read_fingerprint": "822569ba7547b9b50c20e33058d9c85c4b53f8edc7019b7952fc17958e5e3f3d",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 162
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ],
+      "audit_issue": 162,
+      "issue": "Audit issue #162"
     },
     {
       "id": "UI-ENVIRONMENT",
       "path": "settings-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ENVIRONMENT"
@@ -753,30 +871,52 @@
       "fingerprint": "a391637b16aa5020defa62f0a5729f7b24c503e2a003cd91a782ba681ca0f8a5",
       "last_read_fingerprint": "a391637b16aa5020defa62f0a5729f7b24c503e2a003cd91a782ba681ca0f8a5",
       "audit_issue": 139,
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity",
+        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
+        "SUITE-ENGINE-FULL/AUDIT-REG-01"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01",
+        "EXT-02",
+        "REG-01"
+      ],
+      "issue": "Audit issue #139"
     },
     {
       "id": "UI-MODE-STATE",
       "path": "settings-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MODE-STATE"
       },
       "fingerprint": "31e285f34bd10ec938f7ca6f19c9d58dbcd070740a1bfa2acb1285e0796abd3a",
       "last_read_fingerprint": "31e285f34bd10ec938f7ca6f19c9d58dbcd070740a1bfa2acb1285e0796abd3a",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity",
+        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
+        "SUITE-ENGINE-FULL/AUDIT-REG-01"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01",
+        "EXT-02",
+        "REG-01"
+      ],
+      "issue": "V3 full audit verified — UI-MODE-STATE"
     },
     {
       "id": "UI-ALGORITHM-SETTINGS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ALGORITHM-SETTINGS"
@@ -784,53 +924,82 @@
       "fingerprint": "4da7413aa2308a2bc706a8ac6c388b38a6b7bcaff3579cdbc45de6dc4f4fad85",
       "last_read_fingerprint": "4da7413aa2308a2bc706a8ac6c388b38a6b7bcaff3579cdbc45de6dc4f4fad85",
       "audit_issue": 163,
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ],
+      "issue": "Audit issue #163"
     },
     {
       "id": "UI-UNIT-HELPERS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-UNIT-HELPERS"
       },
       "fingerprint": "c8e5fe3a45889251cafba2736c3a1eb93fb7c046e516a222582d4576cf838633",
       "last_read_fingerprint": "c8e5fe3a45889251cafba2736c3a1eb93fb7c046e516a222582d4576cf838633",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ],
+      "issue": "V3 full audit verified — UI-UNIT-HELPERS"
     },
     {
       "id": "UI-UNIT-SWITCHING",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-UNIT-SWITCHING"
       },
       "fingerprint": "34caf74a04d6e15f9c9077dc069d6d051ea4afdb26275c162cfdc5c48c3f42f7",
       "last_read_fingerprint": "34caf74a04d6e15f9c9077dc069d6d051ea4afdb26275c162cfdc5c48c3f42f7",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ],
+      "issue": "V3 full audit verified — UI-UNIT-SWITCHING"
     },
     {
       "id": "UI-ZHL-DELEGATES",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-DELEGATES"
       },
       "fingerprint": "2624b1e14c8a6260d1ced80646d82af33d1d0eef852e695f55e85eab38228b8f",
       "last_read_fingerprint": "2624b1e14c8a6260d1ced80646d82af33d1d0eef852e695f55e85eab38228b8f",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-ISSUE-141/ISSUE141-M1-PSCR-BYPASS",
+        "SUITE-ISSUE-141/ISSUE141-L2-TRIMIX-NULL",
+        "SUITE-ISSUE-141/ISSUE141-L1-RESOLVE-SAC"
+      ],
+      "regression_cases": [
+        "REG-15",
+        "REG-16",
+        "REG-18"
+      ],
       "issue": "GitHub #141 L-2 getN2Frac trimix null",
       "audit_issue": 161
     },
@@ -839,15 +1008,23 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-CCR-DELEGATES"
       },
       "fingerprint": "cf061ea76d23d906cd5216034110b6aaf1e658f0547f5aded894e1f20db71b9d",
       "last_read_fingerprint": "cf061ea76d23d906cd5216034110b6aaf1e658f0547f5aded894e1f20db71b9d",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-ISSUE-141/ISSUE141-M1-PSCR-BYPASS",
+        "SUITE-ISSUE-141/ISSUE141-L2-TRIMIX-NULL",
+        "SUITE-ISSUE-141/ISSUE141-L1-RESOLVE-SAC"
+      ],
+      "regression_cases": [
+        "REG-15",
+        "REG-16",
+        "REG-18"
+      ],
       "issue": "GitHub #141 M-1 pSCR diluent bypass; Cycle 34 bailout selection and diluent guidance",
       "audit_issue": 141
     },
@@ -856,71 +1033,99 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-DECO-PHYSICS"
       },
       "fingerprint": "6c75489c2328882a47744802f1e2d75a2f1c78d1d0f389706857fbd387a41b4b",
       "last_read_fingerprint": "6c75489c2328882a47744802f1e2d75a2f1c78d1d0f389706857fbd387a41b4b",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 145
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ],
+      "audit_issue": 145,
+      "issue": "Audit issue #145"
     },
     {
       "id": "UI-SCHEDULE-INPUTS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SCHEDULE-INPUTS"
       },
       "fingerprint": "0c77d36d909d23219cc1dd5a7532ae62b41a4b6521534f85ed92c09e416eba26",
       "last_read_fingerprint": "0c77d36d909d23219cc1dd5a7532ae62b41a4b6521534f85ed92c09e416eba26",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 145
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ],
+      "audit_issue": 145,
+      "issue": "Audit issue #145"
     },
     {
       "id": "UI-SETTINGS-CONTROLS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS-CONTROLS"
       },
       "fingerprint": "066a70d1956361c3fc69e20c4578b31e4e39aa589d7ee374834d0e6e4649e0b3",
       "last_read_fingerprint": "066a70d1956361c3fc69e20c4578b31e4e39aa589d7ee374834d0e6e4649e0b3",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 146
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ],
+      "audit_issue": 146,
+      "issue": "Audit issue #146"
     },
     {
       "id": "UI-VPM-RUNNER",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RUNNER"
       },
       "fingerprint": "fc27af5bc55f327af335f580565d5d5f43465aa131b23c9a6fade02affa9e73d",
       "last_read_fingerprint": "fc27af5bc55f327af335f580565d5d5f43465aa131b23c9a6fade02affa9e73d",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 146
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ],
+      "audit_issue": 146,
+      "issue": "Audit issue #146"
     },
     {
       "id": "UI-VPM-RENDER",
       "path": "results-render-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RENDER"
@@ -928,15 +1133,26 @@
       "fingerprint": "711bc8d735fd41b3b3eca8b0c880172b6551c64173bdac5ff964972528fda496",
       "last_read_fingerprint": "711bc8d735fd41b3b3eca8b0c880172b6551c64173bdac5ff964972528fda496",
       "audit_issue": 147,
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity",
+        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
+        "SUITE-ENGINE-FULL/AUDIT-REG-01"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01",
+        "EXT-02",
+        "REG-01"
+      ],
+      "issue": "Audit issue #147"
     },
     {
       "id": "UI-GAS-INPUTS",
       "path": "gas-cards-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-INPUTS"
@@ -944,8 +1160,18 @@
       "fingerprint": "27eada8c087021fff07532b17d5a2afbccd420d2dbebcd3e6d433a1783eaccc5",
       "last_read_fingerprint": "27eada8c087021fff07532b17d5a2afbccd420d2dbebcd3e6d433a1783eaccc5",
       "audit_issue": 149,
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity",
+        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
+        "SUITE-ENGINE-FULL/AUDIT-REG-01"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01",
+        "EXT-02",
+        "REG-01"
+      ],
       "issue": "Cycle 34 invalid custom-gas MOD display suppression"
     },
     {
@@ -953,7 +1179,7 @@
       "path": "gas-cards-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-CARDS"
@@ -961,25 +1187,41 @@
       "fingerprint": "bcaafc6b06e900201b8808cc8db76a30f8343a88097556d7b161e3e7060ffc27",
       "last_read_fingerprint": "bcaafc6b06e900201b8808cc8db76a30f8343a88097556d7b161e3e7060ffc27",
       "audit_issue": 148,
-      "evidence": [],
-      "regression_cases": [],
-      "issue": "Cycle 35 structured read \u2014 no actionable findings"
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity",
+        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
+        "SUITE-ENGINE-FULL/AUDIT-REG-01"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01",
+        "EXT-02",
+        "REG-01"
+      ],
+      "issue": "Cycle 35 structured read — no actionable findings"
     },
     {
       "id": "UI-ZHL-RUNNER-SETUP",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-SETUP"
       },
       "fingerprint": "c8363897aa524291a6cc0e410c26156f87f5a3275cfd7327490610f26af0dc05",
       "last_read_fingerprint": "c8363897aa524291a6cc0e410c26156f87f5a3275cfd7327490610f26af0dc05",
-      "evidence": [],
-      "regression_cases": [],
-      "issue": "Cycle 35 structured read \u2014 no actionable findings",
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ],
+      "issue": "Cycle 35 structured read — no actionable findings",
       "audit_issue": 149
     },
     {
@@ -987,45 +1229,69 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-ENGINE"
       },
       "fingerprint": "b7f5b5d2e55241725ba64403c0a8e301f0fc01f017dea8daebdd7126a138e85c",
       "last_read_fingerprint": "b7f5b5d2e55241725ba64403c0a8e301f0fc01f017dea8daebdd7126a138e85c",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 150
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ],
+      "audit_issue": 150,
+      "issue": "Audit issue #150"
     },
     {
       "id": "UI-ZHL-RESULTS",
       "path": "results-render-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
       "fingerprint": "aacc548e6d3c82a8517498347c29980f79f630907c43810c199c1bdf72391326",
       "last_read_fingerprint": "aacc548e6d3c82a8517498347c29980f79f630907c43810c199c1bdf72391326",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 151
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity",
+        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
+        "SUITE-ENGINE-FULL/AUDIT-REG-01"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01",
+        "EXT-02",
+        "REG-01"
+      ],
+      "audit_issue": 151,
+      "issue": "Audit issue #151"
     },
     {
       "id": "UI-ZHL-HEADLESS-HELPERS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-HEADLESS-HELPERS"
       },
-      "regression_cases": [],
-      "evidence": [],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
       "issue": "Audit #134",
       "fingerprint": "3678c11ab261aec2ccf3ae92febf586e33844a5f2bcfaf525946654d88abee62",
       "last_read_fingerprint": "3678c11ab261aec2ccf3ae92febf586e33844a5f2bcfaf525946654d88abee62",
@@ -1036,13 +1302,19 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-HEADLESS-ENGINE"
       },
-      "regression_cases": [],
-      "evidence": [],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
       "issue": "Audit #134; Cycle 31 CCR repetitive NDL phase",
       "fingerprint": "0bde20e5bb27c45c1dd8b978ab24669c6b4bacd92129c6bcb4b7a809c9308828",
       "last_read_fingerprint": "0bde20e5bb27c45c1dd8b978ab24669c6b4bacd92129c6bcb4b7a809c9308828",
@@ -1053,55 +1325,84 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-INIT"
       },
       "fingerprint": "d8705525065b57428c7feb0fe67bea17c7eecc8d6e1e312cb8431470435ea9f1",
       "last_read_fingerprint": "d8705525065b57428c7feb0fe67bea17c7eecc8d6e1e312cb8431470435ea9f1",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 154
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ],
+      "audit_issue": 154,
+      "issue": "Audit issue #154"
     },
     {
       "id": "UI-PLOT-RENDER",
       "path": "plot-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-RENDER"
       },
       "fingerprint": "2efbc8f85a066175e4ef4f03b5d44169137a81c14ddcf226bdbce56fc9822f58",
       "last_read_fingerprint": "2efbc8f85a066175e4ef4f03b5d44169137a81c14ddcf226bdbce56fc9822f58",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 154
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity",
+        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
+        "SUITE-ENGINE-FULL/AUDIT-REG-01"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01",
+        "EXT-02",
+        "REG-01"
+      ],
+      "audit_issue": 154,
+      "issue": "Audit issue #154"
     },
     {
       "id": "UI-PLOT-WAYPOINTS",
       "path": "plot-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-WAYPOINTS"
       },
       "fingerprint": "9600d006809de2e44008883c8131b128a7af0ca07b7b4b03e7d743abb1314359",
       "last_read_fingerprint": "9600d006809de2e44008883c8131b128a7af0ca07b7b4b03e7d743abb1314359",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 155
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity",
+        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
+        "SUITE-ENGINE-FULL/AUDIT-REG-01"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01",
+        "EXT-02",
+        "REG-01"
+      ],
+      "audit_issue": 155,
+      "issue": "Audit issue #155"
     },
     {
       "id": "UI-TOOLS-TISSUES",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-TISSUES"
@@ -1109,15 +1410,22 @@
       "fingerprint": "4da71c311ed94f99e464c9392dc50fc66e122f8794b084a6d53f99289b4a6789",
       "last_read_fingerprint": "4da71c311ed94f99e464c9392dc50fc66e122f8794b084a6d53f99289b4a6789",
       "audit_issue": 156,
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ],
+      "issue": "Audit issue #156"
     },
     {
       "id": "UI-TOOLS-EXPOSURE",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-EXPOSURE"
@@ -1125,15 +1433,22 @@
       "fingerprint": "c928d6b616152064a364aaf55d261afed640539caa108baf6dbc3e3bcbdb4ddd",
       "last_read_fingerprint": "c928d6b616152064a364aaf55d261afed640539caa108baf6dbc3e3bcbdb4ddd",
       "audit_issue": 156,
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ],
+      "issue": "Audit issue #156"
     },
     {
       "id": "UI-TOOLS-GF",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-GF"
@@ -1141,15 +1456,22 @@
       "fingerprint": "f57b5172c1b9092da9278b522a152ebad5b616ccc87fb90b1da76341649fd0b2",
       "last_read_fingerprint": "f57b5172c1b9092da9278b522a152ebad5b616ccc87fb90b1da76341649fd0b2",
       "audit_issue": 157,
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ],
+      "issue": "Audit issue #157"
     },
     {
       "id": "UI-TOOLS-PROFILE",
       "path": "plot-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-PROFILE"
@@ -1157,15 +1479,26 @@
       "fingerprint": "42a5050b66e81ae113895b8e689e3bdae69ec036989398b027e0217fd37e7f66",
       "last_read_fingerprint": "42a5050b66e81ae113895b8e689e3bdae69ec036989398b027e0217fd37e7f66",
       "audit_issue": 157,
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity",
+        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
+        "SUITE-ENGINE-FULL/AUDIT-REG-01"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01",
+        "EXT-02",
+        "REG-01"
+      ],
+      "issue": "Audit issue #157"
     },
     {
       "id": "UI-SETTINGS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS"
@@ -1174,15 +1507,21 @@
       "last_read_fingerprint": "613d841c523a1cfdcda609a21e66138376c54f3c805520807f92cbcc6e6800eb",
       "audit_issue": 158,
       "issue": "Cycle 32 settings restore exception recovery",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ]
     },
     {
       "id": "UI-PROFILE-PRESETS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PROFILE-PRESETS"
@@ -1190,15 +1529,22 @@
       "fingerprint": "389eac6fe50cdd984910f6a8e0529ffbfb2b8b374c02e848c488958973b0b58c",
       "last_read_fingerprint": "389eac6fe50cdd984910f6a8e0529ffbfb2b8b374c02e848c488958973b0b58c",
       "audit_issue": 159,
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ],
+      "issue": "Audit issue #159"
     },
     {
       "id": "UI-CONFIG-PRESETS",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-CONFIG-PRESETS"
@@ -1206,80 +1552,135 @@
       "fingerprint": "05982c3a58fed7315dd80536a2e722710a512b361e498c9e10969fe2b96ade76",
       "last_read_fingerprint": "05982c3a58fed7315dd80536a2e722710a512b361e498c9e10969fe2b96ade76",
       "audit_issue": 159,
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ],
+      "issue": "Audit issue #159"
     },
     {
       "id": "UI-APP-INIT",
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-APP-INIT"
       },
       "fingerprint": "523337de99d96008bde2efa9449bfe7d9f476914cba778b17b87b31684cb7850",
       "last_read_fingerprint": "523337de99d96008bde2efa9449bfe7d9f476914cba778b17b87b31684cb7850",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 160
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-05",
+        "COV-01"
+      ],
+      "audit_issue": 160,
+      "issue": "Audit issue #160"
     },
     {
       "id": "UI-PWA-LIFECYCLE",
       "path": "index.html",
       "layer": "pwa",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PWA-LIFECYCLE"
       },
       "fingerprint": "0646b53b2325d0249aad57576704a08e99a9e34f685680998dc11465c1da661d",
       "last_read_fingerprint": "0646b53b2325d0249aad57576704a08e99a9e34f685680998dc11465c1da661d",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-SW-LIFECYCLE/SW-NETWORK-FIRST-ENGINE",
+        "SUITE-UI-STRUCTURE/UI-SW-PRECACHE",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "REG-45",
+        "EXT-08",
+        "COV-01"
+      ],
+      "issue": "V3 full audit verified — UI-PWA-LIFECYCLE"
     },
     {
       "id": "ENG-ZHL-PHYSICS",
       "path": "zhl-physics-core.js",
       "layer": "engine",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "e98721f27df532f622ffe2dd609051388e76c796d1d2284273763216956d413f",
       "last_read_fingerprint": "e98721f27df532f622ffe2dd609051388e76c796d1d2284273763216956d413f",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-ENGINE-FULL/AUDIT-REG-01",
+        "SUITE-ENGINE-FULL/ZHL-ML-CONT-GAS",
+        "SUITE-ENGINE-FULL/ZHL-ML-ASCENT-RATE"
+      ],
+      "regression_cases": [
+        "REG-01",
+        "REG-22",
+        "REG-23"
+      ],
+      "issue": "V3 full audit verified — ENG-ZHL-PHYSICS"
     },
     {
       "id": "ENG-ZHL-GAS",
       "path": "zhl-gas-core.js",
       "layer": "engine",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "2a5f62b8c5f0b9fce7e19c6f65362ba69bd6077da5244ed19aeb657c3fbabcbc",
       "last_read_fingerprint": "2a5f62b8c5f0b9fce7e19c6f65362ba69bd6077da5244ed19aeb657c3fbabcbc",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 139
+      "evidence": [
+        "SUITE-GAS-CORE/T-GP-01",
+        "SUITE-GAS-CORE/T-GT-01",
+        "SUITE-GAS-CORE/T-GP-02",
+        "SUITE-GAS-CORE/T-GP-03",
+        "SUITE-GAS-CORE/T-GT-03"
+      ],
+      "regression_cases": [
+        "REG-10",
+        "REG-11",
+        "REG-12",
+        "REG-13",
+        "REG-14"
+      ],
+      "audit_issue": 139,
+      "issue": "Audit issue #139"
     },
     {
       "id": "ENG-ZHL-CCR",
       "path": "zhl-ccr-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-BROWSER/gf-pinned-schedules",
+        "SUITE-CCR-DIFFERENTIAL/ccr-differential-required-goldens",
+        "SUITE-ENGINE-FULL/CYCLE6-CCR-DRY-PPO2",
+        "SUITE-ENGINE-FULL/CYCLE31-CCR-NDL-PHASE"
+      ],
+      "regression_cases": [
+        "REG-06",
+        "REG-07",
+        "REG-29",
+        "REG-42"
+      ],
       "issue": "Audit #134; CCR deep-endpoint setpoint sampling; Cycle 31 C-04/pSCR sync",
       "fingerprint": "6d1953c834dcf1309da766e9a596be8a91c64047cd362caf61a8673322c17a5a",
       "last_read_fingerprint": "6d1953c834dcf1309da766e9a596be8a91c64047cd362caf61a8673322c17a5a",
@@ -1290,14 +1691,24 @@
       "path": "zhl-schedule-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "d7279942cdf33e329f3f519116c57396019850eff57bd05214cf2387e251e637",
       "last_read_fingerprint": "d7279942cdf33e329f3f519116c57396019850eff57bd05214cf2387e251e637",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-BROWSER/gf-pinned-schedules",
+        "SUITE-ENGINE-FULL/ZHL-ML-CONT-GAS",
+        "SUITE-ENGINE-FULL/ZHL-ML-ASCENT-RATE",
+        "SUITE-ENGINE-FULL/CYCLE7-STOP-ROUNDING"
+      ],
+      "regression_cases": [
+        "REG-06",
+        "REG-22",
+        "REG-23",
+        "REG-38"
+      ],
       "issue": "Cycle 35: imperial O2 switch depth + wholeMinStops API parity via bundle builder"
     },
     {
@@ -1305,85 +1716,138 @@
       "path": "vpm-engine-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "0c90dac13615ca7f0d480e98f36fef624109034bb304f332a970e07c3813b4ec",
       "last_read_fingerprint": "0c90dac13615ca7f0d480e98f36fef624109034bb304f332a970e07c3813b4ec",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 166
+      "evidence": [
+        "SUITE-ENGINE-FULL/CYCLE7-VPM-EXPOSURE-CARRY",
+        "SUITE-ENGINE-FULL/CYCLE7-VPM-STATE-VALIDATION",
+        "SUITE-ENGINE-FULL/CYCLE7-VPM-SETTINGS-VALIDATION",
+        "SUITE-ENGINE-FULL/CYCLE7-VPM-ALTITUDE-EXPOSURE"
+      ],
+      "regression_cases": [
+        "REG-31",
+        "REG-32",
+        "REG-33",
+        "REG-34"
+      ],
+      "audit_issue": 166,
+      "issue": "Audit issue #166"
     },
     {
       "id": "ENG-VPM-REFERENCE",
       "path": "vpmb.py",
       "layer": "engine_reference",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "337a84085e0b5a492ec6310a0b98edac4edcfa2bb16028792ca769881815726b",
       "last_read_fingerprint": "337a84085e0b5a492ec6310a0b98edac4edcfa2bb16028792ca769881815726b",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-ENGINE-FULL/AUDIT-REG-01",
+        "SUITE-ENGINE-FULL/CYCLE7-VPM-EXPOSURE-CARRY"
+      ],
+      "regression_cases": [
+        "REG-01",
+        "REG-31"
+      ],
+      "issue": "V3 full audit verified — ENG-VPM-REFERENCE"
     },
     {
       "id": "ENG-RDP",
       "path": "padi-engine.js",
       "layer": "engine",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "e7c22383698125fe514ee21a66aba966d0f8b0f5bfcf3e73fe794eae18c3b8b5",
       "last_read_fingerprint": "e7c22383698125fe514ee21a66aba966d0f8b0f5bfcf3e73fe794eae18c3b8b5",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-ENGINE-FULL/CYCLE6-RDP-CEILING",
+        "SUITE-ENGINE-FULL/CYCLE6-PADI-DEPTH",
+        "SUITE-ENGINE-FULL/ENG-RDP-PURE-MIXES",
+        "SUITE-ENGINE-FULL/ENG-RDP-CUSTOM-FALLBACK"
+      ],
+      "regression_cases": [
+        "REG-24",
+        "REG-25",
+        "REG-56",
+        "REG-57"
+      ],
+      "issue": "V3 full audit verified — ENG-RDP"
     },
     {
       "id": "APP-ANDROID-SELECT",
       "path": "android-select-picker.js",
       "layer": "native_bridge",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "56fe8ea5113d5a66992ffff19610eaeefdee32b69a8c5c9aa8eb0f3c78246d58",
       "last_read_fingerprint": "56fe8ea5113d5a66992ffff19610eaeefdee32b69a8c5c9aa8eb0f3c78246d58",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-SW-LIFECYCLE/SW-NETWORK-FIRST-ENGINE"
+      ],
+      "regression_cases": [
+        "ANDROID-01",
+        "REG-45"
+      ],
+      "issue": "V3 full audit verified — APP-ANDROID-SELECT"
     },
     {
       "id": "APP-CAPACITOR-BRIDGE",
       "path": "capacitor-bridge.js",
       "layer": "native_bridge",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "945ef744b34d4e4aecf1011de7eb2988cc8d0e051a9bc5ca208c26f4dfafbdac",
       "last_read_fingerprint": "945ef744b34d4e4aecf1011de7eb2988cc8d0e051a9bc5ca208c26f4dfafbdac",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-SW-LIFECYCLE/SW-NETWORK-FIRST-ENGINE"
+      ],
+      "regression_cases": [
+        "ANDROID-01",
+        "REG-45"
+      ],
+      "issue": "V3 full audit verified — APP-CAPACITOR-BRIDGE"
     },
     {
       "id": "APP-CONTINGENCY",
       "path": "contingency-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "1ffe7eac5ed9329e4d79508ad4b80b36ad13b6d3e2459550e8ed09e393b41083",
       "last_read_fingerprint": "1ffe7eac5ed9329e4d79508ad4b80b36ad13b6d3e2459550e8ed09e393b41083",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity",
+        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
+        "SUITE-ENGINE-FULL/AUDIT-REG-01"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01",
+        "EXT-02",
+        "REG-01"
+      ],
       "audit_issue": 164,
       "issue": "Cycle 31 contingency MOD and Cycle 32 bailout validation"
     },
@@ -1392,74 +1856,105 @@
       "path": "export-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "f449b708599c4c152e2e2278c419677a3343b3ad80c2353963819ef763f4e7c4",
       "last_read_fingerprint": "f449b708599c4c152e2e2278c419677a3343b3ad80c2353963819ef763f4e7c4",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 165
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-ENGINE-FULL/AUDIT-REG-01"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "REG-01"
+      ],
+      "audit_issue": 165,
+      "issue": "Audit issue #165"
     },
     {
       "id": "APP-GAS-PLAN",
       "path": "gas-plan-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "98113d2a4d322e42e214658fff98d5630a2a5a7e285cb7af58974650cdab4b1b",
       "last_read_fingerprint": "98113d2a4d322e42e214658fff98d5630a2a5a7e285cb7af58974650cdab4b1b",
-      "evidence": [],
-      "issue": "GitHub #140 H-2 / Cycle 5 GP-01\ufffd06 \ufffd docs/code-review-2026-06-30.md",
-      "regression_cases": []
+      "evidence": [
+        "SUITE-ISSUE-140/ISSUE140-H1-SURF-GAS",
+        "SUITE-ISSUE-140/ISSUE140-H2-POOLED-TURN"
+      ],
+      "issue": "GitHub #140 H-2 / Cycle 5 GP-01�06 � docs/code-review-2026-06-30.md",
+      "regression_cases": [
+        "REG-08",
+        "REG-09"
+      ]
     },
     {
       "id": "APP-GAS-TABLE",
       "path": "gas-table-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "3f603d19106c84ba678cc7b26b5befe6d65fc54ae8bda1d17f927c91c525fcf9",
       "last_read_fingerprint": "3f603d19106c84ba678cc7b26b5befe6d65fc54ae8bda1d17f927c91c525fcf9",
-      "evidence": [],
-      "issue": "Cycle 5 GT-01\ufffd06 \ufffd docs/code-review-2026-06-30.md",
-      "regression_cases": []
+      "evidence": [
+        "SUITE-ISSUE-140/ISSUE140-H1-SURF-GAS",
+        "SUITE-ISSUE-140/ISSUE140-H2-POOLED-TURN"
+      ],
+      "issue": "Cycle 5 GT-01�06 � docs/code-review-2026-06-30.md",
+      "regression_cases": [
+        "REG-08",
+        "REG-09"
+      ]
     },
     {
       "id": "APP-SURFACE-INTERVAL",
       "path": "surf-interval-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "bbc70a54ddf64b9b3e18fef1d1480155ff86a3e0da09d23cb48be6690b434a52",
       "last_read_fingerprint": "bbc70a54ddf64b9b3e18fef1d1480155ff86a3e0da09d23cb48be6690b434a52",
-      "evidence": [],
-      "issue": "GitHub #142 \ufffd Dive 2 gas override",
-      "regression_cases": []
+      "evidence": [
+        "SUITE-ISSUE-140/ISSUE140-H1-SURF-GAS",
+        "SUITE-ISSUE-140/ISSUE140-H2-POOLED-TURN"
+      ],
+      "issue": "GitHub #142 � Dive 2 gas override",
+      "regression_cases": [
+        "REG-08",
+        "REG-09"
+      ]
     },
     {
       "id": "APP-SERVICE-WORKER",
       "path": "sw.js",
       "layer": "pwa",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "e50fba8a208b040f0473dd06731558169bd1e330757ebc0e0f79e71205e3b860",
       "last_read_fingerprint": "e50fba8a208b040f0473dd06731558169bd1e330757ebc0e0f79e71205e3b860",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-SW-LIFECYCLE/SW-NETWORK-FIRST-ENGINE",
+        "SUITE-UI-STRUCTURE/UI-SW-PRECACHE"
+      ],
+      "regression_cases": [
+        "REG-45",
+        "EXT-08"
+      ],
       "audit_issue": 165,
       "issue": "Cycle 31 deployed shell precache and network-first engine delivery"
     },
@@ -1468,333 +1963,560 @@
       "path": "zhl-worker-bridge.js",
       "layer": "worker",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "7ffff8505b071bad0781da0a5b365b90fe45b93c1586e6257384905a12363dcc",
       "last_read_fingerprint": "7ffff8505b071bad0781da0a5b365b90fe45b93c1586e6257384905a12363dcc",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-ENGINE-FULL/AUDIT-REG-01",
+        "SUITE-ENGINE-FULL/AUDIT-REG-02",
+        "SUITE-ENGINE-FULL/AUDIT-REG-03",
+        "SUITE-ENGINE-FULL/AUDIT-REG-05"
+      ],
+      "regression_cases": [
+        "REG-01",
+        "REG-02",
+        "REG-03",
+        "REG-05"
+      ],
+      "issue": "V3 full audit verified — APP-ZHL-WORKER-BRIDGE"
     },
     {
       "id": "APP-ZHL-WORKER",
       "path": "zhl-schedule-worker.js",
       "layer": "worker",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "f9f18b7ebec540bee6fceedc114d74083b62538ca6693c385e65a344c2b3d4bf",
       "last_read_fingerprint": "f9f18b7ebec540bee6fceedc114d74083b62538ca6693c385e65a344c2b3d4bf",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-ENGINE-FULL/AUDIT-REG-01",
+        "SUITE-ENGINE-FULL/AUDIT-REG-02",
+        "SUITE-ENGINE-FULL/AUDIT-REG-03",
+        "SUITE-ENGINE-FULL/AUDIT-REG-05"
+      ],
+      "regression_cases": [
+        "REG-01",
+        "REG-02",
+        "REG-03",
+        "REG-05"
+      ],
+      "issue": "V3 full audit verified — APP-ZHL-WORKER"
     },
     {
       "id": "APP-DOWNLOAD",
       "path": "download.html",
       "layer": "web_runtime",
       "priority": "P3",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "db834ff6d219547c2d811761946d9dd127888e952d823869c029d3173c199b70",
       "last_read_fingerprint": "db834ff6d219547c2d811761946d9dd127888e952d823869c029d3173c199b70",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-UI-STRUCTURE/UI-PAGES-ASSETS",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "EXT-07",
+        "COV-01"
+      ],
+      "issue": "V3 full audit verified — APP-DOWNLOAD"
     },
     {
       "id": "APP-MANIFEST",
       "path": "manifest.json",
       "layer": "pwa",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "2c72106c8a1c5ba37b25f4f07a8cf01349dcc8a09a82d1a7f1b735099269e68d",
       "last_read_fingerprint": "2c72106c8a1c5ba37b25f4f07a8cf01349dcc8a09a82d1a7f1b735099269e68d",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-SW-LIFECYCLE/SW-NETWORK-FIRST-ENGINE",
+        "SUITE-UI-STRUCTURE/UI-SW-PRECACHE"
+      ],
+      "regression_cases": [
+        "REG-45",
+        "EXT-08"
+      ],
+      "issue": "V3 full audit verified — APP-MANIFEST"
     },
     {
       "id": "APP-VERSION",
       "path": "version.json",
       "layer": "release_config",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "98d4150db2c8ec46c22c6795b430229c0ab87e1ba85a7b58268a0e1d43fb1d66",
       "last_read_fingerprint": "98d4150db2c8ec46c22c6795b430229c0ab87e1ba85a7b58268a0e1d43fb1d66",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-UI-STRUCTURE/UI-PAGES-ASSETS"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "EXT-07"
+      ],
+      "issue": "V3 full audit verified — APP-VERSION"
     },
     {
       "id": "APP-CAPACITOR-CONFIG",
       "path": "capacitor.config.json",
       "layer": "native_config",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "b1fa6ff0f2c0a81d80b5b2ae1bcbc4ac115f5a7898c9fccc1fe2699b9c54c4dd",
-      "last_read_fingerprint": "b1fa6ff0f2c0a81d80b5b2ae1bcbc4ac115f5a7898c9fccc1fe2699b9c54c4dd"
+      "last_read_fingerprint": "b1fa6ff0f2c0a81d80b5b2ae1bcbc4ac115f5a7898c9fccc1fe2699b9c54c4dd",
+      "regression_cases": [
+        "ANDROID-01",
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — APP-CAPACITOR-CONFIG"
     },
     {
       "id": "APP-CLOUDFLARE-CONFIG",
       "path": "wrangler.jsonc",
       "layer": "deploy_config",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "c8b81c6a3dd0b0858bd5d7f68cc3ba11cea1a19cbe6914869351bfc1ad3f6937",
-      "last_read_fingerprint": "c8b81c6a3dd0b0858bd5d7f68cc3ba11cea1a19cbe6914869351bfc1ad3f6937"
+      "last_read_fingerprint": "c8b81c6a3dd0b0858bd5d7f68cc3ba11cea1a19cbe6914869351bfc1ad3f6937",
+      "regression_cases": [
+        "COV-01",
+        "EXT-07"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-UI-STRUCTURE/UI-PAGES-ASSETS"
+      ],
+      "issue": "V3 full audit verified — APP-CLOUDFLARE-CONFIG"
     },
     {
       "id": "APP-PACKAGE",
       "path": "package.json",
       "layer": "build_config",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "366a17b3b8d2f51e7f63b127f17ebcdd3f8bea2c5ca6425efd395bb016118957",
       "last_read_fingerprint": "366a17b3b8d2f51e7f63b127f17ebcdd3f8bea2c5ca6425efd395bb016118957",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 167
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "COV-01"
+      ],
+      "audit_issue": 167,
+      "issue": "Audit issue #167"
     },
     {
       "id": "APP-NODE-VERSION",
       "path": ".nvmrc",
       "layer": "build_config",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "f14b4987904bcb5814e4459a057ed4d20f58a633152288a761214dcd28780b56",
-      "last_read_fingerprint": "f14b4987904bcb5814e4459a057ed4d20f58a633152288a761214dcd28780b56"
+      "last_read_fingerprint": "f14b4987904bcb5814e4459a057ed4d20f58a633152288a761214dcd28780b56",
+      "regression_cases": [
+        "COV-01",
+        "EXT-07"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-UI-STRUCTURE/UI-PAGES-ASSETS"
+      ],
+      "issue": "V3 full audit verified — APP-NODE-VERSION"
     },
     {
       "id": "NATIVE-MAIN-ACTIVITY",
       "path": "android/app/src/main/java/com/threecats/lsp/dplannerplus/MainActivity.java",
       "layer": "native_android",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "7626f12d2bfb343a31875003374d929749d38518b4699191825481020212c00c",
       "last_read_fingerprint": "7626f12d2bfb343a31875003374d929749d38518b4699191825481020212c00c",
-      "audit_issue": 168
+      "audit_issue": 168,
+      "regression_cases": [
+        "ANDROID-01",
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "Audit issue #168"
     },
     {
       "id": "NATIVE-MANIFEST",
       "path": "android/app/src/main/AndroidManifest.xml",
       "layer": "native_android",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "55313f7c8a3ded97a8fb4515d0d5c6dcf5dedbb12684341b9fd34f6ab82abfc0",
-      "last_read_fingerprint": "55313f7c8a3ded97a8fb4515d0d5c6dcf5dedbb12684341b9fd34f6ab82abfc0"
+      "last_read_fingerprint": "55313f7c8a3ded97a8fb4515d0d5c6dcf5dedbb12684341b9fd34f6ab82abfc0",
+      "regression_cases": [
+        "ANDROID-01",
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — NATIVE-MANIFEST"
     },
     {
       "id": "NATIVE-BUILD-ROOT",
       "path": "android/build.gradle",
       "layer": "native_android",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "46ade7db7afeb8049ccea59fce83095dca736ceb8c9acd79cc944e988c3357d9",
-      "last_read_fingerprint": "46ade7db7afeb8049ccea59fce83095dca736ceb8c9acd79cc944e988c3357d9"
+      "last_read_fingerprint": "46ade7db7afeb8049ccea59fce83095dca736ceb8c9acd79cc944e988c3357d9",
+      "regression_cases": [
+        "ANDROID-01",
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — NATIVE-BUILD-ROOT"
     },
     {
       "id": "NATIVE-BUILD-APP",
       "path": "android/app/build.gradle",
       "layer": "native_android",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "4d5a3649e7d6431fa81d4bcaee29f9000f9eefea7316ee445033ddcba06f0b18",
       "last_read_fingerprint": "4d5a3649e7d6431fa81d4bcaee29f9000f9eefea7316ee445033ddcba06f0b18",
       "audit_issue": 168,
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "ANDROID-01",
+        "COV-01"
+      ],
+      "issue": "Audit issue #168"
     },
     {
       "id": "NATIVE-SETTINGS",
       "path": "android/settings.gradle",
       "layer": "native_android",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "6ce098d15ebd69b44c4ecd786bca1bdc366340d2459b2af4d7bb0ab317aa9669",
-      "last_read_fingerprint": "6ce098d15ebd69b44c4ecd786bca1bdc366340d2459b2af4d7bb0ab317aa9669"
+      "last_read_fingerprint": "6ce098d15ebd69b44c4ecd786bca1bdc366340d2459b2af4d7bb0ab317aa9669",
+      "regression_cases": [
+        "ANDROID-01",
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — NATIVE-SETTINGS"
     },
     {
       "id": "NATIVE-VARIABLES",
       "path": "android/variables.gradle",
       "layer": "native_android",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "914187f602f14a71fd5699c54585e780d5aa37f0298d3b7e357cda55291ae5fc",
-      "last_read_fingerprint": "914187f602f14a71fd5699c54585e780d5aa37f0298d3b7e357cda55291ae5fc"
+      "last_read_fingerprint": "914187f602f14a71fd5699c54585e780d5aa37f0298d3b7e357cda55291ae5fc",
+      "regression_cases": [
+        "ANDROID-01",
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — NATIVE-VARIABLES"
     },
     {
       "id": "NATIVE-LAYOUT",
       "path": "android/app/src/main/res/layout/activity_main.xml",
       "layer": "native_android",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "5d770feb791313b947020cbfc57e5c733c556dac5e9e49261a1190e527073253",
-      "last_read_fingerprint": "5d770feb791313b947020cbfc57e5c733c556dac5e9e49261a1190e527073253"
+      "last_read_fingerprint": "5d770feb791313b947020cbfc57e5c733c556dac5e9e49261a1190e527073253",
+      "regression_cases": [
+        "ANDROID-01",
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — NATIVE-LAYOUT"
     },
     {
       "id": "NATIVE-FILE-PATHS",
       "path": "android/app/src/main/res/xml/file_paths.xml",
       "layer": "native_android",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "1b74d886a95c46991adcdca09acf5d6477128169f7d77af68df039b9c8cbfe4e",
       "last_read_fingerprint": "1b74d886a95c46991adcdca09acf5d6477128169f7d77af68df039b9c8cbfe4e",
-      "audit_issue": 168
+      "audit_issue": 168,
+      "regression_cases": [
+        "ANDROID-01",
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "Audit issue #168"
     },
     {
       "id": "NATIVE-STRINGS",
       "path": "android/app/src/main/res/values/strings.xml",
       "layer": "native_android",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "08a95620adf9208e4fa4ee8582937299a967ce27a0664b3c1684f47f0e0cf90f",
-      "last_read_fingerprint": "08a95620adf9208e4fa4ee8582937299a967ce27a0664b3c1684f47f0e0cf90f"
+      "last_read_fingerprint": "08a95620adf9208e4fa4ee8582937299a967ce27a0664b3c1684f47f0e0cf90f",
+      "regression_cases": [
+        "ANDROID-01",
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — NATIVE-STRINGS"
     },
     {
       "id": "NATIVE-STYLES",
       "path": "android/app/src/main/res/values/styles.xml",
       "layer": "native_android",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "50669c3b8eb2a03817fbecc1f1b71b9e171ffdd8ada1ac1dca112cb26c6382f4",
-      "last_read_fingerprint": "50669c3b8eb2a03817fbecc1f1b71b9e171ffdd8ada1ac1dca112cb26c6382f4"
+      "last_read_fingerprint": "50669c3b8eb2a03817fbecc1f1b71b9e171ffdd8ada1ac1dca112cb26c6382f4",
+      "regression_cases": [
+        "ANDROID-01",
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — NATIVE-STYLES"
     },
     {
       "id": "NATIVE-COLORS",
       "path": "android/app/src/main/res/values/colors.xml",
       "layer": "native_android",
       "priority": "P3",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "61f4479e31eba642888ed12ac836524f15ed1f6288eb60faf030b2aa94165606",
-      "last_read_fingerprint": "61f4479e31eba642888ed12ac836524f15ed1f6288eb60faf030b2aa94165606"
+      "last_read_fingerprint": "61f4479e31eba642888ed12ac836524f15ed1f6288eb60faf030b2aa94165606",
+      "regression_cases": [
+        "ANDROID-01",
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — NATIVE-COLORS"
     },
     {
       "id": "NATIVE-LAUNCHER-BG",
       "path": "android/app/src/main/res/values/ic_launcher_background.xml",
       "layer": "native_android",
       "priority": "P3",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "19cd60a55fcac56e1d7ca8b290f6f57c1bd7f1b36ae36a28bf67f41dd128f7b6",
-      "last_read_fingerprint": "19cd60a55fcac56e1d7ca8b290f6f57c1bd7f1b36ae36a28bf67f41dd128f7b6"
+      "last_read_fingerprint": "19cd60a55fcac56e1d7ca8b290f6f57c1bd7f1b36ae36a28bf67f41dd128f7b6",
+      "regression_cases": [
+        "ANDROID-01",
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — NATIVE-LAUNCHER-BG"
     },
     {
       "id": "NATIVE-DRAWABLE-BG",
       "path": "android/app/src/main/res/drawable/ic_launcher_background.xml",
       "layer": "native_android",
       "priority": "P3",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "718ba51adf166bb55c3e9936bb8199a0148457f7f0191aaa2f37a94f3159d6ec",
-      "last_read_fingerprint": "718ba51adf166bb55c3e9936bb8199a0148457f7f0191aaa2f37a94f3159d6ec"
+      "last_read_fingerprint": "718ba51adf166bb55c3e9936bb8199a0148457f7f0191aaa2f37a94f3159d6ec",
+      "regression_cases": [
+        "ANDROID-01",
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — NATIVE-DRAWABLE-BG"
     },
     {
       "id": "NATIVE-DRAWABLE-FG",
       "path": "android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml",
       "layer": "native_android",
       "priority": "P3",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "a8514094f754b099d3e55ce1d6e0b2de79db418b2eeacb0fc2a6bb0bfadef221",
-      "last_read_fingerprint": "a8514094f754b099d3e55ce1d6e0b2de79db418b2eeacb0fc2a6bb0bfadef221"
+      "last_read_fingerprint": "a8514094f754b099d3e55ce1d6e0b2de79db418b2eeacb0fc2a6bb0bfadef221",
+      "regression_cases": [
+        "ANDROID-01",
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — NATIVE-DRAWABLE-FG"
     },
     {
       "id": "NATIVE-ICON",
       "path": "android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml",
       "layer": "native_android",
       "priority": "P3",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "9c3a7e0a6515c6e1a7ae834a9ae430311ebc3241f7b2e5e7f0460aa690709a7c",
-      "last_read_fingerprint": "9c3a7e0a6515c6e1a7ae834a9ae430311ebc3241f7b2e5e7f0460aa690709a7c"
+      "last_read_fingerprint": "9c3a7e0a6515c6e1a7ae834a9ae430311ebc3241f7b2e5e7f0460aa690709a7c",
+      "regression_cases": [
+        "ANDROID-01",
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — NATIVE-ICON"
     },
     {
       "id": "NATIVE-ICON-ROUND",
       "path": "android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml",
       "layer": "native_android",
       "priority": "P3",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "9c3a7e0a6515c6e1a7ae834a9ae430311ebc3241f7b2e5e7f0460aa690709a7c",
-      "last_read_fingerprint": "9c3a7e0a6515c6e1a7ae834a9ae430311ebc3241f7b2e5e7f0460aa690709a7c"
+      "last_read_fingerprint": "9c3a7e0a6515c6e1a7ae834a9ae430311ebc3241f7b2e5e7f0460aa690709a7c",
+      "regression_cases": [
+        "ANDROID-01",
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — NATIVE-ICON-ROUND"
     },
     {
       "id": "TEST-ENGINE-REGRESSION",
       "path": "dev/engine_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [],
-      "issue": "GitHub #133\u2013#138 audit regressions and Cycle 31\u201334 verification",
-      "regression_cases": [],
-      "fingerprint": "e7dae97de2731988e5e9e8ce131c38907f5e8d0529ace62e788b344699c805e5",
-      "last_read_fingerprint": "e7dae97de2731988e5e9e8ce131c38907f5e8d0529ace62e788b344699c805e5",
+      "evidence": [
+        "SUITE-ENGINE-FULL/AUDIT-REG-01",
+        "SUITE-ENGINE-FULL/AUDIT-REG-02",
+        "SUITE-ENGINE-FULL/AUDIT-REG-03",
+        "SUITE-ENGINE-FULL/AUDIT-REG-05"
+      ],
+      "issue": "GitHub #133–#138 audit regressions and Cycle 31–34 verification",
+      "regression_cases": [
+        "REG-01",
+        "REG-02",
+        "REG-03",
+        "REG-05"
+      ],
+      "fingerprint": "f38df13daf1695d9fb301cd9ecb0b8fbd1dbf2ba3bd20b0e92dad9fad18227ba",
+      "last_read_fingerprint": "f38df13daf1695d9fb301cd9ecb0b8fbd1dbf2ba3bd20b0e92dad9fad18227ba",
       "audit_issue": 169
     },
     {
@@ -1802,13 +2524,19 @@
       "path": "dev/issue140_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [],
+      "evidence": [
+        "SUITE-ISSUE-140/ISSUE140-H1-SURF-GAS",
+        "SUITE-ISSUE-140/ISSUE140-H2-POOLED-TURN"
+      ],
       "issue": "GitHub #140 H-1/H-2 behavioral regression",
-      "regression_cases": [],
+      "regression_cases": [
+        "REG-08",
+        "REG-09"
+      ],
       "fingerprint": "c1ac87de8c3523544c19332457c3240268f2de8f84e52ece0f24d4aa0d095c2d",
       "last_read_fingerprint": "c1ac87de8c3523544c19332457c3240268f2de8f84e52ece0f24d4aa0d095c2d"
     },
@@ -1817,13 +2545,21 @@
       "path": "dev/gas_core_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [],
-      "issue": "Cycle 5 GP/GT behavioral regression \ufffd docs/code-review-2026-06-30.md",
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-GAS-CORE/T-GP-01",
+        "SUITE-GAS-CORE/T-GT-01",
+        "SUITE-GAS-CORE/T-GP-02"
+      ],
+      "issue": "Cycle 5 GP/GT behavioral regression � docs/code-review-2026-06-30.md",
+      "regression_cases": [
+        "REG-10",
+        "REG-11",
+        "REG-12"
+      ],
       "fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
       "last_read_fingerprint": "563fc83bd1c4251879efb7002b057079b99a2b35e50c7bbaa15ba3aec6253315",
       "audit_issue": 169
@@ -1833,13 +2569,21 @@
       "path": "dev/issue141_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [],
+      "evidence": [
+        "SUITE-ISSUE-141/ISSUE141-M1-PSCR-BYPASS",
+        "SUITE-ISSUE-141/ISSUE141-L2-TRIMIX-NULL",
+        "SUITE-ISSUE-141/ISSUE141-L1-RESOLVE-SAC"
+      ],
       "issue": "GitHub #141 delegate/schedule audit regression",
-      "regression_cases": [],
+      "regression_cases": [
+        "REG-15",
+        "REG-16",
+        "REG-18"
+      ],
       "fingerprint": "3cc5e4b88b3d7c22869c939061e2018049f322cc4dafa47f888a608810b62be6",
       "last_read_fingerprint": "3cc5e4b88b3d7c22869c939061e2018049f322cc4dafa47f888a608810b62be6"
     },
@@ -1848,13 +2592,23 @@
       "path": "dev/surf_interval_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [],
+      "evidence": [
+        "SUITE-ISSUE-142/ISSUE142-SI-02-EAN32",
+        "SUITE-ISSUE-142/ISSUE142-SI-01-INHERIT",
+        "SUITE-ISSUE-142/ISSUE142-SI-04-O2-SHALLOW",
+        "SUITE-ISSUE-142/ISSUE142-SI-05-INVALID-MIX"
+      ],
       "issue": "GitHub #142 Dive 2 gas override regression",
-      "regression_cases": [],
+      "regression_cases": [
+        "REG-17",
+        "REG-19",
+        "REG-20",
+        "REG-21"
+      ],
       "fingerprint": "1248d551baee79d2dc241c617a8ec377cb8a80a8b6149bada8f2b608ff99e94b",
       "last_read_fingerprint": "1248d551baee79d2dc241c617a8ec377cb8a80a8b6149bada8f2b608ff99e94b"
     },
@@ -1863,13 +2617,17 @@
       "path": "dev/run_android_compile_check.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [],
+      "evidence": [
+        "SUITE-ANDROID/android-compile"
+      ],
       "issue": "GitHub #140 M-2 Android compile gate",
-      "regression_cases": [],
+      "regression_cases": [
+        "ANDROID-01"
+      ],
       "fingerprint": "d98eb2cf78857dbf86f129f90ac7302401df50649897ecd5f65b0fab13fee0f3",
       "last_read_fingerprint": "d98eb2cf78857dbf86f129f90ac7302401df50649897ecd5f65b0fab13fee0f3"
     },
@@ -1878,112 +2636,165 @@
       "path": "engine_validation_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "3000b4928ea0c295dfc499cc2a09785287d7ab569a87005b131183a9cf4138ba",
       "last_read_fingerprint": "3000b4928ea0c295dfc499cc2a09785287d7ab569a87005b131183a9cf4138ba",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 169
+      "evidence": [
+        "SUITE-ENGINE-FULL/AUDIT-REG-01",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "REG-01",
+        "COV-01"
+      ],
+      "audit_issue": 169,
+      "issue": "Audit issue #169"
     },
     {
       "id": "TEST-CCR-VALIDATION",
       "path": "dev/ccr_engine_validation_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "38756c349775248087e9197b17b5b577a20926cead6027f7243f49f26acca3e8",
       "last_read_fingerprint": "38756c349775248087e9197b17b5b577a20926cead6027f7243f49f26acca3e8",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 168
+      "evidence": [
+        "SUITE-ENGINE-FULL/CYCLE6-CCR-DRY-PPO2",
+        "SUITE-ENGINE-FULL/CYCLE31-CCR-NDL-PHASE"
+      ],
+      "regression_cases": [
+        "REG-29",
+        "REG-42"
+      ],
+      "audit_issue": 168,
+      "issue": "Audit issue #168"
     },
     {
       "id": "TEST-EXPORT",
       "path": "export_regression.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "097bf7b3d320f56e99d77220fb73c4f99a6c7d15fb9b7e842d7e0b8c539ff0f7",
-      "last_read_fingerprint": "097bf7b3d320f56e99d77220fb73c4f99a6c7d15fb9b7e842d7e0b8c539ff0f7",
-      "evidence": [],
-      "regression_cases": []
+      "fingerprint": "c881c79e149193aa248a2ea023089d02a3c9e28c3e348593e0d124f868c3e34e",
+      "last_read_fingerprint": "c881c79e149193aa248a2ea023089d02a3c9e28c3e348593e0d124f868c3e34e",
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "COV-01"
+      ],
+      "issue": "V3 full audit verified — TEST-EXPORT"
     },
     {
       "id": "TEST-RUN-ALL",
       "path": "dev/run_all_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "cc418c102eec92d6003d31a486ec8fca9c657080b0fb58d0c6b23f1e74ef262a",
       "last_read_fingerprint": "cc418c102eec92d6003d31a486ec8fca9c657080b0fb58d0c6b23f1e74ef262a",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 169
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity",
+        "SUITE-BROWSER/gf-pinned-schedules",
+        "SUITE-CCR-DIFFERENTIAL/ccr-differential-required-goldens",
+        "SUITE-ANDROID/android-compile",
+        "SUITE-SW-LIFECYCLE/SW-NETWORK-FIRST-ENGINE"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01",
+        "REG-06",
+        "REG-07",
+        "ANDROID-01",
+        "REG-45"
+      ],
+      "audit_issue": 169,
+      "issue": "Audit issue #169"
     },
     {
       "id": "TEST-BROWSER-RUNNER",
       "path": "dev/run_browser_regression.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "35e0dc3bed1051a3d63cfca10748bcea5587282db3b7c98850e7bd72bff1ddbf",
-      "last_read_fingerprint": "35e0dc3bed1051a3d63cfca10748bcea5587282db3b7c98850e7bd72bff1ddbf"
+      "last_read_fingerprint": "35e0dc3bed1051a3d63cfca10748bcea5587282db3b7c98850e7bd72bff1ddbf",
+      "regression_cases": [
+        "REG-06"
+      ],
+      "evidence": [
+        "SUITE-BROWSER/gf-pinned-schedules"
+      ],
+      "issue": "V3 full audit verified — TEST-BROWSER-RUNNER"
     },
     {
       "id": "TEST-NATIVE-RUNNER",
       "path": "dev/run_native_regression.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "63d1608bcfffc49bf37d4d997d785bdec150013dcce94c306f340827a9dfa233",
-      "last_read_fingerprint": "63d1608bcfffc49bf37d4d997d785bdec150013dcce94c306f340827a9dfa233"
+      "last_read_fingerprint": "63d1608bcfffc49bf37d4d997d785bdec150013dcce94c306f340827a9dfa233",
+      "regression_cases": [
+        "ANDROID-01"
+      ],
+      "evidence": [
+        "SUITE-ANDROID/android-compile"
+      ],
+      "issue": "V3 full audit verified — TEST-NATIVE-RUNNER"
     },
     {
       "id": "TEST-CCR-DIFF-RUNNER",
       "path": "dev/run_ccr_differential.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "cd77642e7ca0e56799049aeb8ccb7a6317d1a569c53bada6453e856beac122aa",
       "last_read_fingerprint": "cd77642e7ca0e56799049aeb8ccb7a6317d1a569c53bada6453e856beac122aa",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 168
+      "evidence": [
+        "SUITE-CCR-DIFFERENTIAL/ccr-differential-required-goldens"
+      ],
+      "regression_cases": [
+        "REG-07"
+      ],
+      "audit_issue": 168,
+      "issue": "Audit issue #168"
     },
     {
       "id": "TEST-PSCR-E2E",
       "path": "dev/validate_pscr_e2e.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "f0d20e3e7ac3b48ec6bf278868563a0f530119df3e8ee015d2beb58cf9ab909d",
       "last_read_fingerprint": "f0d20e3e7ac3b48ec6bf278868563a0f530119df3e8ee015d2beb58cf9ab909d",
       "evidence": [
-        "REG-46"
+        "SUITE-PSCR-E2E/pscr-e2e"
       ],
       "regression_cases": [
         "REG-46"
@@ -1995,14 +2806,14 @@
       "path": "dev/sw_lifecycle_test.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "42fd3d1a5f70bc1185c7296315e835e738be457a7019a740ecb0dd49f7640e82",
       "last_read_fingerprint": "42fd3d1a5f70bc1185c7296315e835e738be457a7019a740ecb0dd49f7640e82",
       "evidence": [
-        "REG-45"
+        "SUITE-SW-LIFECYCLE/SW-NETWORK-FIRST-ENGINE"
       ],
       "regression_cases": [
         "REG-45"
@@ -2014,231 +2825,373 @@
       "path": "dev/playwright_boot.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "30c6917f594cac7f015ae48d8c039ed8a23eba4e78e1e0401825de748774e61b",
-      "last_read_fingerprint": "30c6917f594cac7f015ae48d8c039ed8a23eba4e78e1e0401825de748774e61b"
+      "last_read_fingerprint": "30c6917f594cac7f015ae48d8c039ed8a23eba4e78e1e0401825de748774e61b",
+      "regression_cases": [
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — TEST-PLAYWRIGHT-BOOT"
     },
     {
       "id": "TEST-HTTP",
       "path": "dev/test_http.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "fb84be11784a6961dd07d9669c41eba819da0609d0978b02d0ff272f6dc0f0e7",
-      "last_read_fingerprint": "fb84be11784a6961dd07d9669c41eba819da0609d0978b02d0ff272f6dc0f0e7"
+      "last_read_fingerprint": "fb84be11784a6961dd07d9669c41eba819da0609d0978b02d0ff272f6dc0f0e7",
+      "regression_cases": [
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — TEST-HTTP"
     },
     {
       "id": "TEST-LEGACY",
       "path": "dev/legacy.js",
       "layer": "test_infrastructure",
       "priority": "P3",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "de26e30e948071382a4ab7f0669d5399b7c10dcf59734874133e4a452813a7f9",
-      "last_read_fingerprint": "de26e30e948071382a4ab7f0669d5399b7c10dcf59734874133e4a452813a7f9"
+      "last_read_fingerprint": "de26e30e948071382a4ab7f0669d5399b7c10dcf59734874133e4a452813a7f9",
+      "regression_cases": [
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — TEST-LEGACY"
     },
     {
       "id": "TEST-HARNESS",
       "path": "lsp-test-harness.js",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "ee699022d8a49f193323d698259ce1df422c4422c546342d53b4f8fc65b3d220",
       "last_read_fingerprint": "ee699022d8a49f193323d698259ce1df422c4422c546342d53b4f8fc65b3d220",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "COV-01"
+      ],
+      "issue": "V3 full audit verified — TEST-HARNESS"
     },
     {
       "id": "TEST-MAIN",
       "path": "tests.html",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "30cab20d0fc9404651be3f74264d1a7c9ff1edc4f8161f8f02902e05b9fef034",
-      "last_read_fingerprint": "30cab20d0fc9404651be3f74264d1a7c9ff1edc4f8161f8f02902e05b9fef034"
+      "last_read_fingerprint": "30cab20d0fc9404651be3f74264d1a7c9ff1edc4f8161f8f02902e05b9fef034",
+      "regression_cases": [
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — TEST-MAIN"
     },
     {
       "id": "TEST-EXTENDED",
       "path": "tests-extended.html",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "340e1b936c11df63d0cc389288082d33f838bcd34dd87fee5f93a47e7957d27b",
-      "last_read_fingerprint": "340e1b936c11df63d0cc389288082d33f838bcd34dd87fee5f93a47e7957d27b"
+      "last_read_fingerprint": "340e1b936c11df63d0cc389288082d33f838bcd34dd87fee5f93a47e7957d27b",
+      "regression_cases": [
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — TEST-EXTENDED"
     },
     {
       "id": "TEST-MASSIVE",
       "path": "tests-massive.html",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "6658e3ac4a640066c6e31e34af8073d9e096779861444ad9f121eeeb960ec2a7",
-      "last_read_fingerprint": "6658e3ac4a640066c6e31e34af8073d9e096779861444ad9f121eeeb960ec2a7"
+      "fingerprint": "4c360ba3172bf9f3fb9c04cb74ef200dd97b3af8f6645250a38792065780d083",
+      "last_read_fingerprint": "4c360ba3172bf9f3fb9c04cb74ef200dd97b3af8f6645250a38792065780d083",
+      "regression_cases": [
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — TEST-MASSIVE"
     },
     {
       "id": "TEST-MASSIVE-MAIN",
       "path": "tests-massive-main.html",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "268fcde954be6ea4c9a0c97bf190dc1171c1e0d19b9ccde4a5804ff025163c01",
-      "last_read_fingerprint": "268fcde954be6ea4c9a0c97bf190dc1171c1e0d19b9ccde4a5804ff025163c01"
+      "fingerprint": "b3d35dab2739e89d048fa113c527c55be1b3b1a566f53bfbdaa9f56146e391f8",
+      "last_read_fingerprint": "b3d35dab2739e89d048fa113c527c55be1b3b1a566f53bfbdaa9f56146e391f8",
+      "regression_cases": [
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — TEST-MASSIVE-MAIN"
     },
     {
       "id": "TEST-VERIFY",
       "path": "tests-verify.html",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "956610a691c4f716c48b9f07bbacb9ad9dfa4f6675f47e404fb6736ee20d1956",
-      "last_read_fingerprint": "956610a691c4f716c48b9f07bbacb9ad9dfa4f6675f47e404fb6736ee20d1956"
+      "last_read_fingerprint": "956610a691c4f716c48b9f07bbacb9ad9dfa4f6675f47e404fb6736ee20d1956",
+      "regression_cases": [
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — TEST-VERIFY"
     },
     {
       "id": "TEST-PSCR-OTU-CNS",
       "path": "tests-pscr-otu-cns.html",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "e0a967927b8fcbf1dbd032abe786ab4b9ab755cc2f8f1f7a23000d39a2387e5c",
-      "last_read_fingerprint": "e0a967927b8fcbf1dbd032abe786ab4b9ab755cc2f8f1f7a23000d39a2387e5c"
+      "last_read_fingerprint": "e0a967927b8fcbf1dbd032abe786ab4b9ab755cc2f8f1f7a23000d39a2387e5c",
+      "regression_cases": [
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — TEST-PSCR-OTU-CNS"
     },
     {
       "id": "TEST-CCR-DIFF-HTML",
       "path": "tests-ccr-differential.html",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "3bd34d6f0968243e6e30aa747a08a3041edde27c658c85f0a33b090ab64ae02a",
-      "last_read_fingerprint": "3bd34d6f0968243e6e30aa747a08a3041edde27c658c85f0a33b090ab64ae02a"
+      "last_read_fingerprint": "3bd34d6f0968243e6e30aa747a08a3041edde27c658c85f0a33b090ab64ae02a",
+      "regression_cases": [
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — TEST-CCR-DIFF-HTML"
     },
     {
       "id": "TEST-NATIVE-FIXTURE",
       "path": "dev/fixtures/native-select.html",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "c3a9f72292913713361f1278e89981690a8d24835efbc89b4e19e2fa7b578546",
-      "last_read_fingerprint": "c3a9f72292913713361f1278e89981690a8d24835efbc89b4e19e2fa7b578546"
+      "last_read_fingerprint": "c3a9f72292913713361f1278e89981690a8d24835efbc89b4e19e2fa7b578546",
+      "regression_cases": [
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — TEST-NATIVE-FIXTURE"
     },
     {
       "id": "TEST-CAP-FIXTURE",
       "path": "dev/fixtures/capacitor-bridge.html",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "63b02481bafd67093521626d60c32da4dfc08bbede1ce0199a91f33371099016",
-      "last_read_fingerprint": "63b02481bafd67093521626d60c32da4dfc08bbede1ce0199a91f33371099016"
+      "last_read_fingerprint": "63b02481bafd67093521626d60c32da4dfc08bbede1ce0199a91f33371099016",
+      "regression_cases": [
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — TEST-CAP-FIXTURE"
     },
     {
       "id": "TEST-ANDROID-UNIT",
       "path": "android/app/src/test/java/com/getcapacitor/myapp/ExampleUnitTest.java",
       "layer": "test_infrastructure",
       "priority": "P3",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "d4045ae8fac1f0807e6b24eb34e68409a9a235df9d1a3f896fb8c9a49424363d",
-      "last_read_fingerprint": "d4045ae8fac1f0807e6b24eb34e68409a9a235df9d1a3f896fb8c9a49424363d"
+      "last_read_fingerprint": "d4045ae8fac1f0807e6b24eb34e68409a9a235df9d1a3f896fb8c9a49424363d",
+      "regression_cases": [
+        "ANDROID-01",
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — TEST-ANDROID-UNIT"
     },
     {
       "id": "TEST-ANDROID-INSTRUMENTED",
       "path": "android/app/src/androidTest/java/com/getcapacitor/myapp/ExampleInstrumentedTest.java",
       "layer": "test_infrastructure",
       "priority": "P3",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "ff50b4c110a7434312f9af54171f9e8523b015836f707c9b387b76d4c38a97f8",
-      "last_read_fingerprint": "ff50b4c110a7434312f9af54171f9e8523b015836f707c9b387b76d4c38a97f8"
+      "last_read_fingerprint": "ff50b4c110a7434312f9af54171f9e8523b015836f707c9b387b76d4c38a97f8",
+      "regression_cases": [
+        "ANDROID-01",
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-ANDROID/android-compile",
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — TEST-ANDROID-INSTRUMENTED"
     },
     {
       "id": "TEST-CCR-DIFF-BUILD",
       "path": "tests/ccr-differential/build_assets.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "94f9bc84d0572395974e24d018c263b7469a9f6b499da738ab2b7a6f9ab4a064",
-      "last_read_fingerprint": "94f9bc84d0572395974e24d018c263b7469a9f6b499da738ab2b7a6f9ab4a064"
+      "last_read_fingerprint": "94f9bc84d0572395974e24d018c263b7469a9f6b499da738ab2b7a6f9ab4a064",
+      "regression_cases": [
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — TEST-CCR-DIFF-BUILD"
     },
     {
       "id": "TEST-CCR-DIFF-LIB-PY",
       "path": "tests/ccr-differential/lib/ccr_open_reference.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "ca99e9b22c1b91007fc4bc61244c397207ce37e08d1e80f672ada04feebca0f1",
-      "last_read_fingerprint": "ca99e9b22c1b91007fc4bc61244c397207ce37e08d1e80f672ada04feebca0f1"
+      "last_read_fingerprint": "ca99e9b22c1b91007fc4bc61244c397207ce37e08d1e80f672ada04feebca0f1",
+      "regression_cases": [
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — TEST-CCR-DIFF-LIB-PY"
     },
     {
       "id": "TEST-CCR-DIFF-LIB-JS",
       "path": "tests/ccr-differential/lib/ccrdiff.js",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "6d0308b2d19450fa712736970745fb16decef9de52a0bc20af8a3d9ffc9f6e58",
-      "last_read_fingerprint": "6d0308b2d19450fa712736970745fb16decef9de52a0bc20af8a3d9ffc9f6e58"
+      "last_read_fingerprint": "6d0308b2d19450fa712736970745fb16decef9de52a0bc20af8a3d9ffc9f6e58",
+      "regression_cases": [
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "V3 full audit verified — TEST-CCR-DIFF-LIB-JS"
     },
     {
       "id": "TOOL-AUDIT",
       "path": "audit.py",
       "layer": "tooling",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [],
-      "regression_cases": [],
-      "issue": "GitHub #133\u2013#139 structured environment audit gates; release regression 9/9",
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity",
+        "SUITE-ENGINE-FULL/AUDIT-REG-01",
+        "SUITE-ENGINE-FULL/AUDIT-REG-02",
+        "SUITE-ENGINE-FULL/AUDIT-REG-03",
+        "SUITE-ENGINE-FULL/AUDIT-REG-05"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01",
+        "REG-01",
+        "REG-02",
+        "REG-03",
+        "REG-05"
+      ],
+      "issue": "GitHub #133–#139 structured environment audit gates; release regression 9/9",
       "fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d",
       "last_read_fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d"
     },
@@ -2247,13 +3200,17 @@
       "path": "tools/audit_coverage.py",
       "layer": "tooling",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
       "issue": "Audit environment hardening after fd80511",
-      "regression_cases": [],
+      "regression_cases": [
+        "COV-01"
+      ],
       "fingerprint": "7b56faeb23943398bd68c2470dbb56813b2e398b0d4548df15d60a4bc3b58b4c",
       "last_read_fingerprint": "7b56faeb23943398bd68c2470dbb56813b2e398b0d4548df15d60a4bc3b58b4c"
     },
@@ -2262,81 +3219,122 @@
       "path": "tools/test_audit_coverage.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "c2ca15554b362252f14dfec67bc78d6a530ebda908e8ccdcfdfb6778ef0e5fcf",
       "last_read_fingerprint": "c2ca15554b362252f14dfec67bc78d6a530ebda908e8ccdcfdfb6778ef0e5fcf",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "COV-01"
+      ],
+      "issue": "V3 full audit verified — TOOL-AUDIT-COVERAGE-TEST"
     },
     {
       "id": "TOOL-BUILD-PAGES",
       "path": "tools/build_pages_site.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "276a70794a3ee871970f7de6c9921a9c6823470d0c1bc5f2565871a05d3811b3",
       "last_read_fingerprint": "276a70794a3ee871970f7de6c9921a9c6823470d0c1bc5f2565871a05d3811b3",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
+      "issue": "V3 full audit verified — TOOL-BUILD-PAGES"
     },
     {
       "id": "TOOL-BUILD-VPM",
       "path": "tools/build_vpm_bundle.py",
       "layer": "tooling",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "bfda0c1c655e8f9300f51829355ace54dde82fe1565de5a48664becdc2c898da",
-      "last_read_fingerprint": "bfda0c1c655e8f9300f51829355ace54dde82fe1565de5a48664becdc2c898da"
+      "last_read_fingerprint": "bfda0c1c655e8f9300f51829355ace54dde82fe1565de5a48664becdc2c898da",
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "issue": "V3 full audit verified — TOOL-BUILD-VPM"
     },
     {
       "id": "TOOL-BUILD-ZHL",
       "path": "tools/build_zhl_bundle.py",
       "layer": "tooling",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "1286717116c9d9c5d263bd817681ff3a719dc43e84be443cb31c69a4ac59477e",
       "last_read_fingerprint": "1286717116c9d9c5d263bd817681ff3a719dc43e84be443cb31c69a4ac59477e",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
+      "issue": "V3 full audit verified — TOOL-BUILD-ZHL"
     },
     {
       "id": "TOOL-CHECK-PARITY",
       "path": "tools/check_engine_parity.py",
       "layer": "tooling",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "645a8ced3169d1263403ee9bb6972b13cd128e708adb01844d8a22bd33df45cc",
       "last_read_fingerprint": "645a8ced3169d1263403ee9bb6972b13cd128e708adb01844d8a22bd33df45cc",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
+      "issue": "V3 full audit verified — TOOL-CHECK-PARITY"
     },
     {
       "id": "TOOL-RUN-AUDIT-COVERAGE-SUITE-PY",
       "path": "tools/run_audit_coverage_suite.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
       "issue": "GitHub #140 M-3 coverage + audit self-tests",
-      "regression_cases": [],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "fingerprint": "a5cfe73a27242416e54a74722207a48d5dec896129286a5919aa142cb1578e02",
       "last_read_fingerprint": "a5cfe73a27242416e54a74722207a48d5dec896129286a5919aa142cb1578e02"
     },
@@ -2345,13 +3343,19 @@
       "path": "tools/extract_ui_cores.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
       "issue": "GitHub #136 marker-based UI core extraction",
-      "regression_cases": [],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "fingerprint": "cfa927e430353bcc54c243896a73eee1c9033b21f800d148308562a8bfa85223",
       "last_read_fingerprint": "cfa927e430353bcc54c243896a73eee1c9033b21f800d148308562a8bfa85223"
     },
@@ -2360,250 +3364,394 @@
       "path": "tools/extract_zhl_core.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "48523e6bb23f7454ea733d239446f883aa1899d1f578fe7d55b2e5311197b4e4",
-      "last_read_fingerprint": "48523e6bb23f7454ea733d239446f883aa1899d1f578fe7d55b2e5311197b4e4"
+      "last_read_fingerprint": "48523e6bb23f7454ea733d239446f883aa1899d1f578fe7d55b2e5311197b4e4",
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "issue": "V3 full audit verified — TOOL-EXTRACT-ZHL"
     },
     {
       "id": "TOOL-INSERT-ZHL",
       "path": "tools/insert_zhl_tier2.py",
       "layer": "tooling",
       "priority": "P3",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "b55bebb29f45597ee72868607dd8749578b0232ff57042fc7a0622cb066ced61",
-      "last_read_fingerprint": "b55bebb29f45597ee72868607dd8749578b0232ff57042fc7a0622cb066ced61"
+      "last_read_fingerprint": "b55bebb29f45597ee72868607dd8749578b0232ff57042fc7a0622cb066ced61",
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "issue": "V3 full audit verified — TOOL-INSERT-ZHL"
     },
     {
       "id": "TOOL-MERGE-CCR",
       "path": "tools/merge_ccr_into_plus.py",
       "layer": "tooling",
       "priority": "P3",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "4ec785078dfbba50252f0277144bbfd1067c108734f526ab93e8be86c9658c1c",
-      "last_read_fingerprint": "4ec785078dfbba50252f0277144bbfd1067c108734f526ab93e8be86c9658c1c"
+      "last_read_fingerprint": "4ec785078dfbba50252f0277144bbfd1067c108734f526ab93e8be86c9658c1c",
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "issue": "V3 full audit verified — TOOL-MERGE-CCR"
     },
     {
       "id": "TOOL-PATCH-DECO",
       "path": "tools/patch_run_deco_schedule.py",
       "layer": "tooling",
       "priority": "P3",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "158dc396180bf4c7176386b257c35dc2d1ea742ed79acfd81aefd4eca43cb77d",
-      "last_read_fingerprint": "158dc396180bf4c7176386b257c35dc2d1ea742ed79acfd81aefd4eca43cb77d"
+      "last_read_fingerprint": "158dc396180bf4c7176386b257c35dc2d1ea742ed79acfd81aefd4eca43cb77d",
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "issue": "V3 full audit verified — TOOL-PATCH-DECO"
     },
     {
       "id": "TOOL-PATCH-SCHEDULE",
       "path": "tools/patch_schedule_core_ccr.py",
       "layer": "tooling",
       "priority": "P3",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "8256af3ce539b6e9f01177904a32564a03daa2d7acf82495001cfad5e9ceac9c",
-      "last_read_fingerprint": "8256af3ce539b6e9f01177904a32564a03daa2d7acf82495001cfad5e9ceac9c"
+      "last_read_fingerprint": "8256af3ce539b6e9f01177904a32564a03daa2d7acf82495001cfad5e9ceac9c",
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "issue": "V3 full audit verified — TOOL-PATCH-SCHEDULE"
     },
     {
       "id": "TOOL-PATCH-TIER3",
       "path": "tools/patch_tier3_index.py",
       "layer": "tooling",
       "priority": "P3",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "71e0fb22d7f71cf7a513753fab0c6f31c08469a00ba87b81a18eb029fc9ff2fa",
-      "last_read_fingerprint": "71e0fb22d7f71cf7a513753fab0c6f31c08469a00ba87b81a18eb029fc9ff2fa"
+      "last_read_fingerprint": "71e0fb22d7f71cf7a513753fab0c6f31c08469a00ba87b81a18eb029fc9ff2fa",
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "issue": "V3 full audit verified — TOOL-PATCH-TIER3"
     },
     {
       "id": "TOOL-PATCH-VPM",
       "path": "tools/patch_vpm_bundle_index.py",
       "layer": "tooling",
       "priority": "P3",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "e09551c2923e1bb087d9571a87ea8fede0d753e44fd36e82489c5e0a33536532",
-      "last_read_fingerprint": "e09551c2923e1bb087d9571a87ea8fede0d753e44fd36e82489c5e0a33536532"
+      "last_read_fingerprint": "e09551c2923e1bb087d9571a87ea8fede0d753e44fd36e82489c5e0a33536532",
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "issue": "V3 full audit verified — TOOL-PATCH-VPM"
     },
     {
       "id": "TOOL-PATCH-ZHL",
       "path": "tools/patch_zhl_engine.py",
       "layer": "tooling",
       "priority": "P3",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "574bba8d50fa59896d017195c35d7b248e90ab2770afe1fc797a64aa19d80f93",
-      "last_read_fingerprint": "574bba8d50fa59896d017195c35d7b248e90ab2770afe1fc797a64aa19d80f93"
+      "last_read_fingerprint": "574bba8d50fa59896d017195c35d7b248e90ab2770afe1fc797a64aa19d80f93",
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "issue": "V3 full audit verified — TOOL-PATCH-ZHL"
     },
     {
       "id": "TOOL-SYNC-WWW",
       "path": "tools/sync_www.py",
       "layer": "tooling",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "867617d197500a649f4fee2c54d6fd2e0a47b8aac2ce85e6abf06f347093a136",
-      "last_read_fingerprint": "867617d197500a649f4fee2c54d6fd2e0a47b8aac2ce85e6abf06f347093a136",
-      "evidence": [],
-      "regression_cases": []
+      "fingerprint": "f2085fd9d1eab67b57ca97c21c532875c9f13117ec406fefc1bfb2f57201a9f8",
+      "last_read_fingerprint": "f2085fd9d1eab67b57ca97c21c532875c9f13117ec406fefc1bfb2f57201a9f8",
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
+      "issue": "V3 full audit verified — TOOL-SYNC-WWW"
     },
     {
       "id": "TOOL-UPDATE-VERSION",
       "path": "tools/update_sw_version.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "785afc666783012a1a0e40750f2ee3bc048cd29396711bdeceb9d0fa2dd484d8",
-      "last_read_fingerprint": "785afc666783012a1a0e40750f2ee3bc048cd29396711bdeceb9d0fa2dd484d8"
+      "last_read_fingerprint": "785afc666783012a1a0e40750f2ee3bc048cd29396711bdeceb9d0fa2dd484d8",
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "issue": "V3 full audit verified — TOOL-UPDATE-VERSION"
     },
     {
       "id": "TOOL-VENDOR",
       "path": "tools/vendor_offline_assets.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "af18f642229ca5b8c32bec594a26b2e6d5cd4fc2dda25280e67187dadc86d09a",
-      "last_read_fingerprint": "af18f642229ca5b8c32bec594a26b2e6d5cd4fc2dda25280e67187dadc86d09a"
+      "last_read_fingerprint": "af18f642229ca5b8c32bec594a26b2e6d5cd4fc2dda25280e67187dadc86d09a",
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "issue": "V3 full audit verified — TOOL-VENDOR"
     },
     {
       "id": "TOOL-VERIFY-ASSETS",
       "path": "tools/verify_site_assets.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "22003205d574d36dcd9068ba72943eb9e7d87fe8707409f875e33b00d6f76782",
-      "last_read_fingerprint": "22003205d574d36dcd9068ba72943eb9e7d87fe8707409f875e33b00d6f76782"
+      "last_read_fingerprint": "22003205d574d36dcd9068ba72943eb9e7d87fe8707409f875e33b00d6f76782",
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "issue": "V3 full audit verified — TOOL-VERIFY-ASSETS"
     },
     {
       "id": "CI-AUDIT",
       "path": ".github/workflows/audit.yml",
       "layer": "ci",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "303415829727d7dcff5b7856e63e8863d09556d68dc1d47f5ffbf9322ff6a9a8",
       "last_read_fingerprint": "303415829727d7dcff5b7856e63e8863d09556d68dc1d47f5ffbf9322ff6a9a8",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 167
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "COV-01"
+      ],
+      "audit_issue": 167,
+      "issue": "Audit issue #167"
     },
     {
       "id": "CI-APK",
       "path": ".github/workflows/build-apk.yml",
       "layer": "ci",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "ca43af62e56279a20f9fc5919a096815bb38aa9a6547ccb37a65499284440123",
       "last_read_fingerprint": "ca43af62e56279a20f9fc5919a096815bb38aa9a6547ccb37a65499284440123",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 167
+      "evidence": [
+        "SUITE-ANDROID/android-compile"
+      ],
+      "regression_cases": [
+        "ANDROID-01"
+      ],
+      "audit_issue": 167,
+      "issue": "Audit issue #167"
     },
     {
       "id": "CI-MAIN",
       "path": ".github/workflows/ci.yml",
       "layer": "ci",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "e14775d50854c86063686dcc75589f2d9b51bc10e7107b6bd5e1217ee6da0519",
       "last_read_fingerprint": "e14775d50854c86063686dcc75589f2d9b51bc10e7107b6bd5e1217ee6da0519",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 167
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "COV-01"
+      ],
+      "audit_issue": 167,
+      "issue": "Audit issue #167"
     },
     {
       "id": "CI-DEPLOY",
       "path": ".github/workflows/deploy.yml",
       "layer": "ci",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "7b2f9b102e99020feb33f405499c2c241dc88c52f93ea170b98e0fd93937b31b",
       "last_read_fingerprint": "7b2f9b102e99020feb33f405499c2c241dc88c52f93ea170b98e0fd93937b31b",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 167
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-UI-STRUCTURE/UI-PAGES-ASSETS"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "EXT-07"
+      ],
+      "audit_issue": 167,
+      "issue": "Audit issue #167"
     },
     {
       "id": "CI-NOTIFY",
       "path": ".github/workflows/notify-site.yml",
       "layer": "ci",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "9b22467d8497f7b0fb584c1bc310875452fad65109e6b67d6644949e2f3fd512",
       "last_read_fingerprint": "9b22467d8497f7b0fb584c1bc310875452fad65109e6b67d6644949e2f3fd512",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 167
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "COV-01"
+      ],
+      "audit_issue": 167,
+      "issue": "Audit issue #167"
     },
     {
       "id": "CI-OFFLINE-ZIP",
       "path": ".github/workflows/build-offline-zip.yml",
       "layer": "ci",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "4d6efff16a28dcbfa66140b459294fe1a0e22a9e90aeea3e90615489c7b447c6",
       "last_read_fingerprint": "4d6efff16a28dcbfa66140b459294fe1a0e22a9e90aeea3e90615489c7b447c6",
-      "evidence": [],
-      "regression_cases": [],
-      "audit_issue": 167
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "regression_cases": [
+        "COV-01"
+      ],
+      "audit_issue": 167,
+      "issue": "Audit issue #167"
     },
     {
       "id": "TOOL-AUDIT-V2-__INIT__-PY",
       "path": "tools/audit/__init__.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "efeac017093b9690e1d142adf0f2c80ca334e95deb808c77531379950e9ff63e",
       "last_read_fingerprint": "efeac017093b9690e1d142adf0f2c80ca334e95deb808c77531379950e9ff63e",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Ground-up audit architecture"
     },
     {
@@ -2611,14 +3759,20 @@
       "path": "tools/audit/__main__.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "3d2438ae92f4746e9ffaa1f837b1fe803f6281091d1f31f8c95643716f257d9a",
       "last_read_fingerprint": "3d2438ae92f4746e9ffaa1f837b1fe803f6281091d1f31f8c95643716f257d9a",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Ground-up audit architecture"
     },
     {
@@ -2626,14 +3780,20 @@
       "path": "tools/audit/cli.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "80b87a7cb9a9055ea9613bda1ebb4f802b7cad3fada6b7cd5f4bb208bb8fb58e",
       "last_read_fingerprint": "80b87a7cb9a9055ea9613bda1ebb4f802b7cad3fada6b7cd5f4bb208bb8fb58e",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Ground-up audit architecture"
     },
     {
@@ -2641,14 +3801,20 @@
       "path": "tools/audit/legacy_v1.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "b75e2f92ec060f9e8b774ad36e9aee5dc27cf4ef6867619d1cf4e84b164c1ec4",
       "last_read_fingerprint": "b75e2f92ec060f9e8b774ad36e9aee5dc27cf4ef6867619d1cf4e84b164c1ec4",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Ground-up audit architecture"
     },
     {
@@ -2656,14 +3822,20 @@
       "path": "tools/audit/migrate_v2.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "513257d3cba6e4a82443e8dba9456956ce669602c30657b75ed589e6cc088b52",
       "last_read_fingerprint": "513257d3cba6e4a82443e8dba9456956ce669602c30657b75ed589e6cc088b52",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Ground-up audit architecture"
     },
     {
@@ -2671,14 +3843,20 @@
       "path": "tools/audit/model.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "47291239afc107c8fe1e47da1149ad128783a6e6c5de020a4db3c55aecda9dd4",
       "last_read_fingerprint": "47291239afc107c8fe1e47da1149ad128783a6e6c5de020a4db3c55aecda9dd4",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Ground-up audit architecture"
     },
     {
@@ -2686,14 +3864,20 @@
       "path": "tools/audit/parser_bridge.mjs",
       "layer": "tooling",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "1a345f6bf2e7708d9eda7d967f72f2f564f75739ed99652a574cacfe8a91df62",
       "last_read_fingerprint": "1a345f6bf2e7708d9eda7d967f72f2f564f75739ed99652a574cacfe8a91df62",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Ground-up audit architecture"
     },
     {
@@ -2701,14 +3885,20 @@
       "path": "tools/audit/registry.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "a82442e6aff6c2abc9af2b1dbb6da7ff4c46ab0b87bd6af33d1477533c5ae371",
       "last_read_fingerprint": "a82442e6aff6c2abc9af2b1dbb6da7ff4c46ab0b87bd6af33d1477533c5ae371",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Ground-up audit architecture"
     },
     {
@@ -2716,14 +3906,20 @@
       "path": "tools/audit/reporting.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "c3acb0a72986af10513ea4fcd0773bc8cd9d4c322ab9ed4da3713b7fcb8d2725",
       "last_read_fingerprint": "c3acb0a72986af10513ea4fcd0773bc8cd9d4c322ab9ed4da3713b7fcb8d2725",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Ground-up audit architecture"
     },
     {
@@ -2731,14 +3927,20 @@
       "path": "tools/audit/rules.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "49b0b40ed6261a6bbfc8557f93533e4b878d60437c135512c2eacd76fc8ed382",
       "last_read_fingerprint": "49b0b40ed6261a6bbfc8557f93533e4b878d60437c135512c2eacd76fc8ed382",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Ground-up audit architecture"
     },
     {
@@ -2746,14 +3948,20 @@
       "path": "tools/audit/runner.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "8d5858e9c3562e5f8a05d6b8db97a3365db32fbbe80bee9b7263c010ed93db04",
       "last_read_fingerprint": "8d5858e9c3562e5f8a05d6b8db97a3365db32fbbe80bee9b7263c010ed93db04",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Ground-up audit architecture"
     },
     {
@@ -2761,13 +3969,19 @@
       "path": "tools/audit/case_report.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
       "issue": "GitHub #140 H-3 structured case validation",
-      "regression_cases": [],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "fingerprint": "559044188103e7141f3a2d66beae7c0a0c5bb2c181663444bca0d832594556f0",
       "last_read_fingerprint": "559044188103e7141f3a2d66beae7c0a0c5bb2c181663444bca0d832594556f0"
     },
@@ -2776,13 +3990,19 @@
       "path": "tools/audit/suite_emit.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
       "issue": "GitHub #140 H-3 suite case emission",
-      "regression_cases": [],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "fingerprint": "9f6c2cc0bd406e8d66606aab3160d868f55e9eb5fcedcdd741de053909ec9a9b",
       "last_read_fingerprint": "9f6c2cc0bd406e8d66606aab3160d868f55e9eb5fcedcdd741de053909ec9a9b"
     },
@@ -2791,14 +4011,20 @@
       "path": "tools/audit/workspace.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "d45d6dd6beed3b3307f6797f67d6cf86c9bd6c9ec274c91f566da0d8afea1856",
       "last_read_fingerprint": "d45d6dd6beed3b3307f6797f67d6cf86c9bd6c9ec274c91f566da0d8afea1856",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Ground-up audit architecture"
     },
     {
@@ -2806,14 +4032,20 @@
       "path": "docs/audit-legacy-migration.json",
       "layer": "tooling",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "5e3c0b16e8006b7a508fb2e0c2f9914a5d0a83794608670135ba1f210ee4bb21",
-      "last_read_fingerprint": "5e3c0b16e8006b7a508fb2e0c2f9914a5d0a83794608670135ba1f210ee4bb21",
-      "evidence": [],
-      "regression_cases": [],
+      "fingerprint": "76021617c60dd49f442b571b5313739be105d49cde104ebc604dd2117dc6c771",
+      "last_read_fingerprint": "76021617c60dd49f442b571b5313739be105d49cde104ebc604dd2117dc6c771",
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Ground-up audit architecture"
     },
     {
@@ -2821,14 +4053,20 @@
       "path": "tools/audit/test_system.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "7e8ab1f2396465dab7258eaef365ff690928b7701fa058fa1d59e64971ed8187",
       "last_read_fingerprint": "7e8ab1f2396465dab7258eaef365ff690928b7701fa058fa1d59e64971ed8187",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Ground-up audit architecture"
     },
     {
@@ -2836,42 +4074,70 @@
       "path": "planner-shell.js",
       "layer": "ui_shell",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "0cfd1a3c2f4526e1561631243d8377626ddab91bec75c7091a1667d7899b4aa8",
       "last_read_fingerprint": "0cfd1a3c2f4526e1561631243d8377626ddab91bec75c7091a1667d7899b4aa8",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity",
+        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
+        "SUITE-ENGINE-FULL/AUDIT-REG-01"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01",
+        "EXT-02",
+        "REG-01"
+      ],
+      "issue": "V3 full audit verified — UI-PLANNER-SHELL"
     },
     {
       "id": "UI-RESULTS-PANEL",
       "path": "results-panel.js",
       "layer": "ui_shell",
       "priority": "P1",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "b04d5d435b87a83d80e930eb67d8eb59d7a6942f4a9ba3b8bb4b3073547ada6b",
       "last_read_fingerprint": "b04d5d435b87a83d80e930eb67d8eb59d7a6942f4a9ba3b8bb4b3073547ada6b",
-      "evidence": [],
-      "regression_cases": []
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity",
+        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
+        "SUITE-ENGINE-FULL/AUDIT-REG-01"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01",
+        "EXT-02",
+        "REG-01"
+      ],
+      "issue": "V3 full audit verified — UI-RESULTS-PANEL"
     },
     {
       "id": "TOOL-V3-ASSEMBLE_UI_HTML-PY",
       "path": "tools/assemble_ui_html.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "4d673763b0b972688dc8d836f3c213a37f0a3655e9a06f1ba7fe0df47d8a6ee1",
       "last_read_fingerprint": "4d673763b0b972688dc8d836f3c213a37f0a3655e9a06f1ba7fe0df47d8a6ee1",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Audit V3 environment"
     },
     {
@@ -2879,14 +4145,20 @@
       "path": "tools/extract_ui_css.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "3dc127b9990c1a4fde9689ab7972f4e4fdc71076ed54577d4d18b54081e5f20f",
       "last_read_fingerprint": "3dc127b9990c1a4fde9689ab7972f4e4fdc71076ed54577d4d18b54081e5f20f",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Audit V3 environment"
     },
     {
@@ -2894,14 +4166,20 @@
       "path": "tools/audit/migrate_v3.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "ad3ef139ecd5297e9516436f8ab0eb7c052c49aaabc8bf956576bce5c86ac322",
       "last_read_fingerprint": "ad3ef139ecd5297e9516436f8ab0eb7c052c49aaabc8bf956576bce5c86ac322",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Audit V3 environment"
     },
     {
@@ -2909,14 +4187,20 @@
       "path": "tools/run_ui_structure_suite.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "cdf70dfb1c1c0dcbe11cbe964de0b1bd98178d8f2c6865e4dafbf49461cbce3e",
       "last_read_fingerprint": "cdf70dfb1c1c0dcbe11cbe964de0b1bd98178d8f2c6865e4dafbf49461cbce3e",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Audit V3 environment"
     },
     {
@@ -2924,14 +4208,20 @@
       "path": "tools/ui_assets.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "d6d124882de12c385b665b40e56bd4da03df1e1ced79f9bd7bfc9084abc927fa",
       "last_read_fingerprint": "d6d124882de12c385b665b40e56bd4da03df1e1ced79f9bd7bfc9084abc927fa",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Audit V3 environment"
     },
     {
@@ -2939,14 +4229,20 @@
       "path": "tools/verify_sw_assets.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "2871d7d8f42356678ebfcd3b5f047ef557e6a81da32fb09d3e15bf2d7aeb4b0f",
       "last_read_fingerprint": "2871d7d8f42356678ebfcd3b5f047ef557e6a81da32fb09d3e15bf2d7aeb4b0f",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Audit V3 environment"
     },
     {
@@ -2954,14 +4250,20 @@
       "path": "tools/test_ui_structure_suite.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "cd10bb70a9aa5107712ae18c5b4ff5a1c03d5295f467480a6bd6d44400cb276b",
       "last_read_fingerprint": "cd10bb70a9aa5107712ae18c5b4ff5a1c03d5295f467480a6bd6d44400cb276b",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Audit V3 environment"
     },
     {
@@ -2969,14 +4271,20 @@
       "path": "tools/audit/reset_cycles_v3.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "1fc5b91fb855b60484ef15eb86fba860305b100ce76d7e4cfc2fe04300b4f4ec",
       "last_read_fingerprint": "1fc5b91fb855b60484ef15eb86fba860305b100ce76d7e4cfc2fe04300b4f4ec",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "Audit V3 cycle reset"
     },
     {
@@ -2984,14 +4292,20 @@
       "path": "tools/audit/run_v3_automation.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "ec11bace83083d27550a47c3ea28fa2739f40d367dd9615ba8644c445a4ab886",
       "last_read_fingerprint": "ec11bace83083d27550a47c3ea28fa2739f40d367dd9615ba8644c445a4ab886",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "V3 automated audit runner"
     },
     {
@@ -2999,21 +4313,90 @@
       "path": "tools/audit/run_v3_units_automation.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "READ",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "b92642f5f2e850e72714cf99837fbbe37b0267af0c052662951b2422966e00f3",
       "last_read_fingerprint": "b92642f5f2e850e72714cf99837fbbe37b0267af0c052662951b2422966e00f3",
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "issue": "V3 automated unit READ runner"
+    },
+    {
+      "id": "TOOL-V3-MIGRATE-LEGACY-CUTOVER-PY",
+      "path": "tools/audit/migrate_legacy_cutover.py",
+      "layer": "tooling",
+      "priority": "P2",
+      "status": "VERIFIED",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "fd2daabb2bc4d087fa5e078f91284862224d3bdd5fa345b18e972bbd4f5d930f",
+      "last_read_fingerprint": "fd2daabb2bc4d087fa5e078f91284862224d3bdd5fa345b18e972bbd4f5d930f",
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
+      "issue": "V3 release and legacy cutover automation"
+    },
+    {
+      "id": "TOOL-V3-PROMOTE-VERIFIED-PY",
+      "path": "tools/audit/promote_verified.py",
+      "layer": "tooling",
+      "priority": "P2",
+      "status": "VERIFIED",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "f98ff6938da996451d195be1f8719d300d7ebb1ad720c402e053dee66f38e95b",
+      "last_read_fingerprint": "f98ff6938da996451d195be1f8719d300d7ebb1ad720c402e053dee66f38e95b",
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
+      "issue": "V3 release and legacy cutover automation"
+    },
+    {
+      "id": "TOOL-V3-RUN-V3-RELEASE-AUTOMATION-PY",
+      "path": "tools/audit/run_v3_release_automation.py",
+      "layer": "tooling",
+      "priority": "P2",
+      "status": "VERIFIED",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "7ef4aed8aa6ba280816eb482c709e1a2a14c8c7f0c56a1a764d6b23fc535418b",
+      "last_read_fingerprint": "7ef4aed8aa6ba280816eb482c709e1a2a14c8c7f0c56a1a764d6b23fc535418b",
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
+      "issue": "V3 release and legacy cutover automation"
     }
   ],
   "cycles": [
     {
       "cycle": 1,
-      "max_new_application_lines": 840,
+      "max_new_application_lines": 900,
       "application_units": [
         "UI-MARKUP-HEADER"
       ],
@@ -3286,7 +4669,7 @@
     },
     {
       "cycle": 28,
-      "max_new_application_lines": 2370,
+      "max_new_application_lines": 2400,
       "application_units": [
         "UI-BOOT"
       ],
@@ -3482,16 +4865,13 @@
         "{python}",
         "tools/audit/legacy_v1.py"
       ],
-      "profiles": [
-        "static",
-        "ci",
-        "release"
-      ],
+      "profiles": [],
       "timeout_seconds": 180,
       "case_ids": [
         "legacy-v1-clean-baseline",
         "extract-ui-marker-contract"
-      ]
+      ],
+      "retired_reason": "Legacy cutover complete — ledger independently replaced"
     },
     {
       "id": "SUITE-EXPORT",

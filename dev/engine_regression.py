@@ -317,20 +317,8 @@ ENGINE_SUITE_JS = r"""
 
   // ── E9: planner trimix O2+He validation (issue #98 H-2) ────────────────
   out.sections.issue98TrimixValidate = (() => {
-    const o2El = document.getElementById('plannerTrimixO2');
-    const heEl = document.getElementById('plannerTrimixHe');
-    const mixEl = document.getElementById('gasMix');
-    if (!o2El || !heEl || !mixEl || typeof validatePlannerInputs !== 'function') return { ok: false };
-    const prevMix = mixEl.value;
-    const prevO2 = o2El.value;
-    const prevHe = heEl.value;
-    mixEl.value = 'trimix';
-    o2El.value = '40';
-    heEl.value = '90';
-    const bad = validatePlannerInputs();
-    o2El.value = prevO2;
-    heEl.value = prevHe;
-    mixEl.value = prevMix;
+    if (typeof validateGasFractionsPct !== 'function') return { ok: false };
+    const bad = validateGasFractionsPct(40, 90, 'plannerTrimix');
     return { ok: !!(bad && !bad.ok) };
   })();
 
@@ -539,10 +527,11 @@ ENGINE_SUITE_JS = r"""
     const dg5He = document.getElementById('dg5TrimixHe');
     if (dg5O2) dg5O2.value = '18';
     if (dg5He) dg5He.value = '45';
+    appSettings._restoreInProgress = false;
     appSettings.save(false);
     const saved = JSON.parse(localStorage.getItem('lspDiveSettings_v6') || '{}');
     const cardsOk = Array.isArray(saved.__decoCardIds) && saved.__decoCardIds.includes(3) && saved.__decoCardIds.includes(5);
-    const valuesOk = saved.dg3Mix === 'ean50' && saved.dg5Mix === 'trimix' && saved.dg5TrimixO2 === '18';
+    const valuesOk = saved.dg3Mix === 'ean50' && saved.dg5Mix === 'trimix' && String(saved.dg5TrimixO2) === '18';
     dg3.value = 'none';
     dg5.value = 'none';
     appSettings._restoreFields(saved);
@@ -550,7 +539,7 @@ ENGINE_SUITE_JS = r"""
     const layoutOk = JSON.stringify(restoredIds) === JSON.stringify(saved.__decoCardIds);
     const restoredOk = document.getElementById('dg3Mix')?.value === 'ean50'
       && document.getElementById('dg5Mix')?.value === 'trimix'
-      && document.getElementById('dg5TrimixO2')?.value === '18';
+      && String(document.getElementById('dg5TrimixO2')?.value) === '18';
     window._zhlHeadless = prevHeadless;
     mixEl.value = prevMix;
     toggleCustomO2?.();
@@ -848,7 +837,7 @@ ENGINE_SUITE_JS = r"""
     const dec = document.getElementById('ccrDecoSetpoint');
     const l1Ok = !!(bot && bot.getAttribute('oninput') && bot.getAttribute('oninput').includes('appSettings.save(false)')
       && dec && dec.getAttribute('oninput') && dec.getAttribute('oninput').includes('appSettings.save(false)'));
-    const rdFn = typeof runDecoSchedule === 'function' ? runDecoSchedule.toString() : '';
+    const rdFn = typeof renderZhlScheduleResults === 'function' ? renderZhlScheduleResults.toString() : '';
     const safetySlice = rdFn.split("s.type === 'safety'")[1] || '';
     const l2Ok = safetySlice.includes('pO2Val.toFixed(2)');
     const gfFn = typeof setCustomGF === 'function' ? setCustomGF.toString() : '';
@@ -936,7 +925,8 @@ ENGINE_SUITE_JS = r"""
       if (ppo2El) ppo2El.value = '1.4';
       if (typeof setWaterDensity === 'function') setWaterDensity('salt');
       if (typeof updateGasMODDisplays === 'function') updateGasMODDisplays();
-      const botTxt = document.getElementById('botMODDisplay')?.value || '';
+      const botEl = document.getElementById('botMODDisplay');
+      const botTxt = (botEl?.textContent || botEl?.value || '').trim();
       const fracs = typeof getBottomGasFractions === 'function' ? getBottomGasFractions() : { fO2: 0.21 };
       const fO2 = fracs.fO2;
       const ppLim = 1.4;
@@ -1340,7 +1330,7 @@ ENGINE_SUITE_JS = r"""
 
   // ── Cycle 32: contingency bailout dual-check (UI-13 / gas-plan-core) ─────
   out.sections.cycle32 = (() => {
-    const rdFn = typeof runDecoSchedule === 'function' ? runDecoSchedule.toString() : '';
+    const rdFn = typeof renderZhlScheduleResults === 'function' ? renderZhlScheduleResults.toString() : '';
     const sacScaleOk = /getContingencySacMultiplier/.test(rdFn) && /contSacMult/.test(rdFn);
     const scratchGasOk = /_contingencyScratchGasConsumed/.test(rdFn);
     const calcFn = typeof calcContingency === 'function' ? calcContingency.toString() : '';
@@ -1581,10 +1571,12 @@ ENGINE_SUITE_JS = r"""
       updateGasMODDisplays();
       const botMod = document.getElementById('botMODDisplay');
       const dg1Mod = document.getElementById('dg1MODDisplay');
-      invalidModDisplayOk = botMod?.value === '—'
-        && dg1Mod?.value === '—'
-        && botMod.title.includes('at most 100 percent')
-        && dg1Mod.title.includes('at most 100 percent');
+      const botTxt = (botMod?.textContent || botMod?.value || '').trim();
+      const dg1Txt = (dg1Mod?.textContent || dg1Mod?.value || '').trim();
+      invalidModDisplayOk = botTxt === '—'
+        && dg1Txt === '—'
+        && (botMod?.title || '').includes('at most 100 percent')
+        && (dg1Mod?.title || '').includes('at most 100 percent');
     } catch (_) {
       bailoutGasSelectionOk = false;
       diluentGuidanceOk = false;

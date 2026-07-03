@@ -1,0 +1,16 @@
+{
+  "runs": [
+    {
+      "commit": "40021d7110384748af62eb98f6e31b0da4a58d83",
+      "closed_at": "2026-07-03T02:27:19+00:00",
+      "release_ok": false,
+      "output_tail": "UP: REG-01: case AUDIT-REG-01 not emitted by SUITE-ENGINE-FULL; REG-02: case AUDIT-REG-02 not emitted by SUITE-ENGINE-FULL; REG-03: case AUDIT-REG-03 not emitted by SUITE-ENGINE-FULL\n[INVALID] finding ISSUE-135-ROLLUP: REG-01: case AUDIT-REG-01 not emitted by SUITE-ENGINE-FULL; REG-02: case AUDIT-REG-02 not emitted by SUITE-ENGINE-FULL; REG-03: case AUDIT-REG-03 not emitted by SUITE-ENGINE-FULL\n[INVALID] finding ISSUE-136-ROLLUP: REG-01: case AUDIT-REG-01 not emitted by SUITE-ENGINE-FULL; REG-02: case AUDIT-REG-02 not emitted by SUITE-ENGINE-FULL; REG-03: case AUDIT-REG-03 not emitted by SUITE-ENGINE-FULL\n[INVALID] finding ISSUE-137-ROLLUP: REG-01: case AUDIT-REG-01 not emitted by SUITE-ENGINE-FULL; REG-02: case AUDIT-REG-02 not emitted by SUITE-ENGINE-FULL; REG-03: case AUDIT-REG-03 not emitted by SUITE-ENGINE-FULL\n[INVALID] finding ISSUE-138-ROLLUP: REG-01: case AUDIT-REG-01 not emitted by SUITE-ENGINE-FULL; REG-02: case AUDIT-REG-02 not emitted by SUITE-ENGINE-FULL; REG-03: case AUDIT-REG-03 not emitted by SUITE-ENGINE-FULL\n[INVALID] finding ISSUE-139-ROLLUP: REG-01: case AUDIT-REG-01 not emitted by SUITE-ENGINE-FULL; REG-02: case AUDIT-REG-02 not emitted by SUITE-ENGINE-FULL; REG-03: case AUDIT-REG-03 not emitted by SUITE-ENGINE-FULL\n[INVALID] finding ISSUE-140-ROLLUP: REG-08: case ISSUE140-H1-SURF-GAS not emitted by SUITE-ISSUE-140; REG-09: case ISSUE140-H2-POOLED-TURN not emitted by SUITE-ISSUE-140\n[INVALID] finding ISSUE-141-ROLLUP: REG-15: case ISSUE141-M1-PSCR-BYPASS not emitted by SUITE-ISSUE-141; REG-16: case ISSUE141-L2-TRIMIX-NULL not emitted by SUITE-ISSUE-141; REG-18: case ISSUE141-L1-RESOLVE-SAC not emitted by SUITE-ISSUE-141\n[INVALID] finding REGRESSION-GF-CCR-FIX: REG-06: case gf-pinned-schedules not emitted by SUITE-BROWSER; REG-07: case ccr-differential-required-goldens not emitted by SUITE-CCR-DIFFERENTIAL\n------------------------------------------------------------\nChecks: 6 passed, 0 failed\nSuites: 7 passed, 12 failed, 0 skipped\nVerdict: FAIL\n"
+    },
+    {
+      "commit": "40021d7110384748af62eb98f6e31b0da4a58d83",
+      "closed_at": "2026-07-03T02:41:04+00:00",
+      "release_ok": false,
+      "output_tail": "LSP Audit v2 - release (40021d7)\n============================================================\nLegacy migration: 2293/2293 independently replaced; cutover ready=False\nCONFIG ERROR: Cycle 1: 847 application lines exceed budget\nCONFIG ERROR: Cycle 28: 2376 application lines exceed budget\n------------------------------------------------------------\nChecks: 0 passed, 0 failed\nSuites: 0 passed, 0 failed, 0 skipped\nVerdict: FAIL\n"
+    }
+  ]
+}

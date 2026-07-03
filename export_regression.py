@@ -498,6 +498,8 @@ def run_tests(page, base_url: str):
             if (typeof setDecoAlgorithm === 'function') setDecoAlgorithm('ZHLC_GF');
             document.getElementById('circuitSelect').value = 'CCR';
             if (typeof toggleCircuitFields === 'function') toggleCircuitFields();
+            const dilBailout = document.getElementById('diluentUseAsBailout');
+            if (dilBailout) dilBailout.value = 'on';
             document.getElementById('decoDepth').value = '40';
             document.getElementById('decoBT').value = '28';
             document.getElementById('decoGas').value = 'air';

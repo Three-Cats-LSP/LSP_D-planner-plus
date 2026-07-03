@@ -234,13 +234,20 @@
 <option value="ean32">EAN32 (32%)</option>
 <option value="ean36">EAN36 (36%)</option>
 <option value="custom">Custom O₂ %</option>
+<option value="trimix">Trimix (O₂/He %)</option>
 </select>
 </div>
 <div class="field" id="customO2Field" style="display:none;">
 <label>O₂ % (21–100)</label>
 <input id="customO2" max="100" min="21" oninput="updateGasMODDisplays()" step="1" type="number" value="32"/>
-<input id="plannerTrimixO2" type="hidden" value="21"/>
-<input id="plannerTrimixHe" type="hidden" value="35"/>
+</div>
+<div class="field gas-f-num" id="plannerTrimixO2Field" style="display:none;">
+<label>Trimix O₂ % (5–40)</label>
+<input id="plannerTrimixO2" max="40" min="5" step="1" type="number" value="21"/>
+</div>
+<div class="field gas-f-num" id="plannerTrimixHeField" style="display:none;">
+<label>Trimix He % (0–90)</label>
+<input id="plannerTrimixHe" max="90" min="0" step="1" type="number" value="35"/>
 </div>
 <div id="planPanelTecSection" class="visible">
 <div id="planPanelTecMount"></div>

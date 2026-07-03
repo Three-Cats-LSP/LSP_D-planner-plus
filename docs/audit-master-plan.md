@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v3-full-reset`
-**Units:** 170 total; 0 unread; 0 in progress; 170 read; 0 verified.
+**Units:** 173 total; 0 unread; 0 in progress; 0 read; 173 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -30,7 +30,7 @@
 
 | Cycle | Application units | New lines | Engine re-verification | Acceptance |
 |---:|---|---:|---|---|
-| 1 | UI-MARKUP-HEADER | 840 | - | V3 cycle 1: header markup partial READ; SUITE-UI-STRUCTURE must be green |
+| 1 | UI-MARKUP-HEADER | 847 | - | V3 cycle 1: header markup partial READ; SUITE-UI-STRUCTURE must be green |
 | 2 | UI-MARKUP-PLANNER | 493 | - | Planner markup partial READ |
 | 3 | UI-MARKUP-CONSUMPTION | 381 | - | Consumption markup partial READ |
 | 4 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 612 | - | Tools and modals markup partials READ |
@@ -57,7 +57,7 @@
 | 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1163 | - | Settings persistence and unit helpers READ |
 | 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 851 | - | Tools panels READ |
 | 27 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 559 | - | Profile and config presets READ |
-| 28 | UI-BOOT | 2369 | - | index.html shell boot region READ |
+| 28 | UI-BOOT | 2376 | - | index.html shell boot region READ |
 | 29 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 438 | - | PWA and service worker READ |
 | 30 | APP-ZHL-WORKER, APP-ZHL-WORKER-BRIDGE | 159 | - | ZHL schedule worker and bridge READ |
 | 31 | APP-CAPACITOR-BRIDGE, APP-ANDROID-SELECT | 548 | - | Capacitor and Android select bridge READ |
