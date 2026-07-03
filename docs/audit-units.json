@@ -83,6 +83,21 @@
         "reason": "Self-describing authoritative audit registry"
       },
       {
+        "pattern": "docs/seven-lens-manual-ledger.json",
+        "kind": "audit_metadata",
+        "reason": "Manual seven-lens review ledger (separate from automated VERIFIED)"
+      },
+      {
+        "pattern": "docs/seven-lens-reports/**",
+        "kind": "audit_metadata",
+        "reason": "Seven-lens cycle audit reports"
+      },
+      {
+        "pattern": "docs/cursor-seven-lens-audit-workflow.md",
+        "kind": "audit_metadata",
+        "reason": "Cursor seven-lens audit workflow runbook"
+      },
+      {
         "pattern": "GUE DecPlanner Binary/**",
         "kind": "reference",
         "reason": "Disassembled external reference application"
@@ -390,6 +405,14 @@
       "suite_id": "SUITE-ENGINE-FULL",
       "case_id": "ENG-RDP-CUSTOM-FALLBACK"
     },
+    "REG-58": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C01-DEPTH-SYNC"
+    },
+    "REG-59": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C01-PRESET-SYNC"
+    },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
       "case_id": "android-compile"
@@ -626,8 +649,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "cdec29f480ad97719bf5ef59ea1de8900231523e9b02329a3cd76b57c665957e",
-      "last_read_fingerprint": "cdec29f480ad97719bf5ef59ea1de8900231523e9b02329a3cd76b57c665957e",
+      "fingerprint": "a444b41e76a002e7a411cb93d3f6e261b7a8970c3c4ea92453446ef34ef0f09a",
+      "last_read_fingerprint": "a444b41e76a002e7a411cb93d3f6e261b7a8970c3c4ea92453446ef34ef0f09a",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
         "SUITE-COVERAGE/AUDIT-COV-01"
@@ -739,8 +762,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "ac5ecb4d61b4ff5929c0732e85d060b3d0581624fcac42c9d0d123c7b1fcdf53",
-      "last_read_fingerprint": "ac5ecb4d61b4ff5929c0732e85d060b3d0581624fcac42c9d0d123c7b1fcdf53",
+      "fingerprint": "17f7538a1b8c87c30454eb5c496672c0b84ae089b5c4de1b348fe5fd40eb49fc",
+      "last_read_fingerprint": "17f7538a1b8c87c30454eb5c496672c0b84ae089b5c4de1b348fe5fd40eb49fc",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
         "SUITE-COVERAGE/AUDIT-COV-01"
@@ -1503,8 +1526,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS"
       },
-      "fingerprint": "613d841c523a1cfdcda609a21e66138376c54f3c805520807f92cbcc6e6800eb",
-      "last_read_fingerprint": "613d841c523a1cfdcda609a21e66138376c54f3c805520807f92cbcc6e6800eb",
+      "fingerprint": "6885b9325913260db27ab2fa067ffb4863c9678e79c7fe710d688a32ddce43f8",
+      "last_read_fingerprint": "6885b9325913260db27ab2fa067ffb4863c9678e79c7fe710d688a32ddce43f8",
       "audit_issue": 158,
       "issue": "Cycle 32 settings restore exception recovery",
       "evidence": [
@@ -1526,8 +1549,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PROFILE-PRESETS"
       },
-      "fingerprint": "389eac6fe50cdd984910f6a8e0529ffbfb2b8b374c02e848c488958973b0b58c",
-      "last_read_fingerprint": "389eac6fe50cdd984910f6a8e0529ffbfb2b8b374c02e848c488958973b0b58c",
+      "fingerprint": "acb312bfcb92f8ad08571e1a598b04ff4d7e442cdfd78caf537c2926ed952f63",
+      "last_read_fingerprint": "acb312bfcb92f8ad08571e1a598b04ff4d7e442cdfd78caf537c2926ed952f63",
       "audit_issue": 159,
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
@@ -2515,8 +2538,8 @@
         "REG-03",
         "REG-05"
       ],
-      "fingerprint": "f38df13daf1695d9fb301cd9ecb0b8fbd1dbf2ba3bd20b0e92dad9fad18227ba",
-      "last_read_fingerprint": "f38df13daf1695d9fb301cd9ecb0b8fbd1dbf2ba3bd20b0e92dad9fad18227ba",
+      "fingerprint": "5b893a58ea50bd176b34018a7d0f92854703a72b77c5e9f42ec6e42f84d6aa49",
+      "last_read_fingerprint": "5b893a58ea50bd176b34018a7d0f92854703a72b77c5e9f42ec6e42f84d6aa49",
       "audit_issue": 169
     },
     {
@@ -4637,7 +4660,7 @@
     },
     {
       "cycle": 25,
-      "max_new_application_lines": 1163,
+      "max_new_application_lines": 1170,
       "application_units": [
         "UI-SETTINGS",
         "UI-UNIT-HELPERS",
@@ -4957,7 +4980,9 @@
         "CYCLE35-WHOLE-MIN-STOPS-PROP",
         "CYCLE35-WHOLE-MIN-STOPS-EFFECT",
         "ENG-RDP-PURE-MIXES",
-        "ENG-RDP-CUSTOM-FALLBACK"
+        "ENG-RDP-CUSTOM-FALLBACK",
+        "SL-C01-DEPTH-SYNC",
+        "SL-C01-PRESET-SYNC"
       ]
     },
     {

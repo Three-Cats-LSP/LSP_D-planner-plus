@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "reviews": [
+    {
+      "unit_id": "UI-MARKUP-HEADER",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "17f7538a1b8c87c30454eb5c496672c0b84ae089b5c4de1b348fe5fd40eb49fc",
+      "cycle_id": "SL-C01",
+      "boundary": "ui/markup-header.html lines 1-214 (part A of 4; file 847 lines total)",
+      "reviewer": "Cursor GPT-5.5 Medium",
+      "review_session": "cursor/seven-lens-cycle-01-header",
+      "lens_results": {
+        "L1": "No arithmetic in markup; depth/bt defaults 40/30 align with settings-core stepper limits. Trimix planner fields bounded 5-40% O2 and 0-90% He match engine validators.",
+        "L2": "onclick handlers delegate to settings-core/planner-shell; generate button calls runGenerateSchedule. Hidden decoDepth/decoBT oninput paths traced.",
+        "L3": "Dual hidden fields depth/decoDepth and bt/decoBT require _syncDepthBtSteppers; finding SL-C01-M-01 when preset/restore skip sync.",
+        "L4": "REC path reads #depth; tec path reads #decoDepth — mirror contract documented. Script LSP-EXTRACT markers match extract_ui_cores EXPECTED_SCRIPT_ORDER.",
+        "L5": "Part A script block order verified against SUITE-UI-STRUCTURE; assemble_ui_html --verify PASS after edits.",
+        "L6": "Disclaimer banner and planning-aid warning visible; no safety text regression in scoped lines.",
+        "L7": "SUITE-UI-STRUCTURE and AUD-HTML-002 cover script order; added SL-C01-DEPTH-SYNC and SL-C01-PRESET-SYNC engine regressions."
+      },
+      "finding_ids": [
+        "SL-C01-M-01"
+      ],
+      "verification_commands": [
+        "python -m tools.audit check --profile static",
+        "python -m tools.audit run --profile ci"
+      ],
+      "reviewed_at": "2026-07-03T08:15:00+00:00"
+    }
+  ]
+}

@@ -54,9 +54,9 @@
 | 22 | UI-VPM-RUNNER | 473 | ENG-VPM | VPM runner READ |
 | 23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 393 | - | Runtime bootstrap and app init READ |
 | 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 671 | - | Algorithm and settings controls READ |
-| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1163 | - | Settings persistence and unit helpers READ |
+| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1164 | - | Settings persistence and unit helpers READ |
 | 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 851 | - | Tools panels READ |
-| 27 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 559 | - | Profile and config presets READ |
+| 27 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 562 | - | Profile and config presets READ |
 | 28 | UI-BOOT | 2376 | - | index.html shell boot region READ |
 | 29 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 438 | - | PWA and service worker READ |
 | 30 | APP-ZHL-WORKER, APP-ZHL-WORKER-BRIDGE | 159 | - | ZHL schedule worker and bridge READ |

@@ -166,7 +166,7 @@
 <button type="button" class="stepper-btn" onclick="stepDepthBt('depth',-1)" aria-label="Decrease depth">−</button>
 </div>
 </div>
-<input type="hidden" id="decoDepth" value="40" oninput="updateCcrGasValidation();updateGasMODDisplays();if(window._lastContingency) calcContingency()"/>
+<input type="hidden" id="decoDepth" value="40" oninput="_syncDepthBtSteppers();updateCcrGasValidation();updateGasMODDisplays();if(window._lastContingency) calcContingency()"/>
 <input type="hidden" id="depth" value="40"/>
 </div>
 <div class="input-card">
@@ -178,7 +178,7 @@
 <button type="button" class="stepper-btn" onclick="stepDepthBt('bt',-1)" aria-label="Decrease bottom time">−</button>
 </div>
 </div>
-<input type="hidden" id="decoBT" value="30" oninput="if(window._lastContingency) calcContingency()"/>
+<input type="hidden" id="decoBT" value="30" oninput="_syncDepthBtSteppers();if(window._lastContingency) calcContingency()"/>
 <input type="hidden" id="bt" value="30"/>
 </div>
 </div>
@@ -8240,6 +8240,7 @@ var appSettings = {
       if (el && typeof updateSliderFill === 'function') updateSliderFill(el);
     });
     calcSurfInt?.();
+    _syncDepthBtSteppers?.();
     if (values.algorithmSelect) setDecoAlgorithm(values.algorithmSelect, true);
   },
 
@@ -8477,6 +8478,9 @@ function loadProfilePreset(idx) {
   }
   if (p.travelActive || (p.summary && /(?:^|\s)T:/.test(p.summary))) addTravelGas();
   else removeTravelGas();
+  _syncDepthBtSteppers?.();
+  updateCcrGasValidation?.();
+  updateGasMODDisplays?.();
   closeDiveProfilePresets();
   showToast(`Loaded: ${p.name}`, 'preset');
 }

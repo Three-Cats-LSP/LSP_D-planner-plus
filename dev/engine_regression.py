@@ -1668,6 +1668,42 @@ ENGINE_SUITE_JS = r"""
     };
   })();
 
+  // Seven-lens cycle 01: depth/bt mirror + stepper sync (SL-C01-M-01).
+  out.sections.sevenLensCycle01 = (() => {
+    let depthStepperSyncOk = false;
+    let loadPresetSyncOk = false;
+    if (typeof _syncDepthBtSteppers === 'function') {
+      const dEl = document.getElementById('decoDepth');
+      const bEl = document.getElementById('decoBT');
+      if (dEl && bEl) {
+        dEl.value = '52';
+        bEl.value = '22';
+        _syncDepthBtSteppers();
+        depthStepperSyncOk =
+          document.getElementById('depth')?.value === '52'
+          && document.getElementById('bt')?.value === '22'
+          && document.getElementById('depthStepperVal')?.textContent === '52'
+          && document.getElementById('btStepperVal')?.textContent === '22';
+      }
+      if (typeof loadProfilePreset === 'function') {
+        const key = typeof LSP_PROFILE_PRESETS_KEY !== 'undefined' ? LSP_PROFILE_PRESETS_KEY : 'lspProfilePresets';
+        const prev = localStorage.getItem(key);
+        try {
+          localStorage.setItem(key, JSON.stringify([{ name: 't', depth: '48', bt: '18', gases: {} }]));
+          loadProfilePreset(0);
+          loadPresetSyncOk =
+            document.getElementById('decoDepth')?.value === '48'
+            && document.getElementById('depth')?.value === '48'
+            && document.getElementById('depthStepperVal')?.textContent === '48';
+        } finally {
+          if (prev == null) localStorage.removeItem(key);
+          else localStorage.setItem(key, prev);
+        }
+      }
+    }
+    return { depthStepperSyncOk, loadPresetSyncOk, ok: depthStepperSyncOk && loadPresetSyncOk };
+  })();
+
   // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
   out.sections.cycle6 = (() => {
     const rdp11 = typeof padiTableRowIndex === 'function' ? padiTableRowIndex(11) : null;
@@ -2084,6 +2120,9 @@ def run_suite(page) -> dict:
     assert_true(erdp.get("bundleOk"), "[ENG-RDP-PURE-MIXES] PadiEngine bundle loads", str(erdp))
     assert_true(erdp.get("pureMixesOk"), "[ENG-RDP-PURE-MIXES] Air/EAN32/EAN36 NDL tables at 18 m", str(erdp))
     assert_true(erdp.get("customFallbackOk"), "[ENG-RDP-CUSTOM-FALLBACK] non-standard mixes fall back to air table", str(erdp))
+    sl01 = s.get("sevenLensCycle01", {})
+    assert_true(sl01.get("depthStepperSyncOk"), "[SL-C01-DEPTH-SYNC] decoDepth/decoBT sync depth/bt mirrors and stepper labels", str(sl01))
+    assert_true(sl01.get("loadPresetSyncOk"), "[SL-C01-PRESET-SYNC] loadProfilePreset syncs depth/bt mirrors and stepper", str(sl01))
     assert_true(erdp.get("normalizeOk"), "[ENG-RDP-CUSTOM-FALLBACK] normalizeRecMix restricts to standard gases", str(erdp))
     assert_true(erdp.get("recGasUiOk"), "[ENG-RDP-CUSTOM-FALLBACK] Rec mode hides custom gas option", str(erdp))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
@@ -2181,6 +2220,8 @@ def _audit_case_rows():
         case_row("CYCLE35-WHOLE-MIN-STOPS-EFFECT", case_ok("CYCLE35-WHOLE-MIN-STOPS-EFFECT")),
         case_row("ENG-RDP-PURE-MIXES", case_ok("ENG-RDP-PURE-MIXES")),
         case_row("ENG-RDP-CUSTOM-FALLBACK", case_ok("ENG-RDP-CUSTOM-FALLBACK")),
+        case_row("SL-C01-DEPTH-SYNC", case_ok("SL-C01-DEPTH-SYNC")),
+        case_row("SL-C01-PRESET-SYNC", case_ok("SL-C01-PRESET-SYNC")),
     ]
 
 
