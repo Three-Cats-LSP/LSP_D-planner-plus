@@ -1816,11 +1816,32 @@ ENGINE_SUITE_JS = r"""
   out.sections.sevenLensCycle02 = (() => {
     let minDecoUnitsOk = false;
     let travelDepthConstraintsOk = false;
+    let cylinderSizeConstraintsOk = false;
     const prevUnits = typeof units !== 'undefined' ? units : null;
     const modeSel = document.getElementById('travelGasSwitchMode');
     const prevMode = modeSel?.value;
     const depthInp = document.getElementById('travelGasManualDepth');
     const prevDepth = depthInp?.value;
+    const cylSizeIds = [
+      'cylBot_size', 'cylTravelGas_size', 'cylDg1_size', 'cylDg2_size',
+      'gpBot_size', 'gpTravel_size', 'gpDg1_size', 'gpDg2_size',
+    ];
+    const snapshotInput = el => el ? ({
+      value: el.value,
+      min: el.min,
+      max: el.max,
+      step: el.step,
+    }) : null;
+    const snapshots = new Map(cylSizeIds.map(id => [id, snapshotInput(document.getElementById(id))]));
+    const restoreInput = (id, state) => {
+      const el = document.getElementById(id);
+      if (!el || !state) return;
+      el.value = state.value;
+      el.min = state.min;
+      el.max = state.max;
+      el.step = state.step;
+    };
+    let createdDynamicDg3 = false;
     try {
       if (typeof setUnits === 'function' && typeof getVpmMinDecoSettingsFromDom === 'function') {
         setUnits('imperial');
@@ -1839,13 +1860,68 @@ ENGINE_SUITE_JS = r"""
             metricMax === 500 && imperialMax === 165 && depthInp.checkValidity() === true;
         }
       }
+      if (typeof setUnits === 'function') {
+        setUnits('metric');
+        const metricValues = {
+          cylBot_size: '12',
+          cylTravelGas_size: '12',
+          cylDg1_size: '11',
+          cylDg2_size: '11',
+          gpBot_size: '12',
+          gpTravel_size: '11',
+          gpDg1_size: '11',
+          gpDg2_size: '11',
+        };
+        Object.entries(metricValues).forEach(([id, value]) => {
+          const el = document.getElementById(id);
+          if (el) el.value = value;
+        });
+        if (!document.getElementById('dgCard_3') && typeof addDecoGasCard === 'function') {
+          addDecoGasCard();
+          createdDynamicDg3 = !!document.getElementById('dgCard_3');
+        }
+        const dg3Size = document.getElementById('cylDg3_size');
+        if (dg3Size) {
+          snapshots.set('cylDg3_size', snapshotInput(dg3Size));
+          dg3Size.value = '11';
+        }
+        setUnits('imperial');
+        const ids = cylSizeIds.concat(dg3Size ? ['cylDg3_size'] : []);
+        const fields = ids.map(id => document.getElementById(id)).filter(Boolean);
+        const validDefaults = fields.every(el =>
+          Number(el.min) === 0.04 &&
+          Number(el.max) === 1.77 &&
+          Number(el.step) === 0.01 &&
+          Number(el.value) > 0 &&
+          el.checkValidity() === true
+        );
+        const rejectsImpossibleVolumes = fields.every(el => {
+          const oldValue = el.value;
+          el.value = '2';
+          const rejected = el.checkValidity() === false;
+          el.value = oldValue;
+          return rejected;
+        });
+        cylinderSizeConstraintsOk =
+          fields.length >= cylSizeIds.length &&
+          !!dg3Size &&
+          validDefaults &&
+          rejectsImpossibleVolumes;
+      }
     } finally {
       if (modeSel && prevMode != null) modeSel.value = prevMode;
       if (depthInp && prevDepth != null) depthInp.value = prevDepth;
       if (prevUnits != null && typeof setUnits === 'function') setUnits(prevUnits);
+      if (createdDynamicDg3 && typeof removeDecoGasCard === 'function') removeDecoGasCard(3);
+      snapshots.forEach((state, id) => restoreInput(id, state));
       updateTravelGasMOD?.();
     }
-    return { minDecoUnitsOk, travelDepthConstraintsOk, ok: minDecoUnitsOk && travelDepthConstraintsOk };
+    return {
+      minDecoUnitsOk,
+      travelDepthConstraintsOk,
+      cylinderSizeConstraintsOk,
+      ok: minDecoUnitsOk && travelDepthConstraintsOk && cylinderSizeConstraintsOk,
+    };
   })();
 
   // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
@@ -2272,6 +2348,7 @@ def run_suite(page) -> dict:
     sl02 = s.get("sevenLensCycle02", {})
     assert_true(sl02.get("minDecoUnitsOk"), "[SL-C02-MIN-DECO-UNITS] min deco profile uses imperial units flag", str(sl02))
     assert_true(sl02.get("travelDepthConstraintsOk"), "[SL-C02-TRAVEL-DEPTH-CONSTRAINTS] travel manual depth max follows display units", str(sl02))
+    assert_true(sl02.get("cylinderSizeConstraintsOk"), "[SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS] cylinder size constraints follow display units", str(sl02))
     assert_true(erdp.get("normalizeOk"), "[ENG-RDP-CUSTOM-FALLBACK] normalizeRecMix restricts to standard gases", str(erdp))
     assert_true(erdp.get("recGasUiOk"), "[ENG-RDP-CUSTOM-FALLBACK] Rec mode hides custom gas option", str(erdp))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
@@ -2375,6 +2452,7 @@ def _audit_case_rows():
         case_row("SL-C01-ALTITUDE-UNIT-CONSTRAINTS", case_ok("SL-C01-ALTITUDE-UNIT-CONSTRAINTS")),
         case_row("SL-C02-MIN-DECO-UNITS", case_ok("SL-C02-MIN-DECO-UNITS")),
         case_row("SL-C02-TRAVEL-DEPTH-CONSTRAINTS", case_ok("SL-C02-TRAVEL-DEPTH-CONSTRAINTS")),
+        case_row("SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS", case_ok("SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS")),
     ]
 
 
