@@ -3,7 +3,7 @@
   "cycle": 3,
   "target_branch": "dev",
   "baseline_commit": "6e987af4cd66d8679cc63c5cc2dc371421ae8caa",
-  "audit_commit": "",
+  "audit_commit": "e07ab49cf5c28a9b99c00eb12d3538acec568728",
   "verified_source_commit": "",
   "verification_status": "PENDING",
   "parts": [
