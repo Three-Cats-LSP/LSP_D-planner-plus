@@ -1818,7 +1818,7 @@
 <span class="u5" id="endDepthDisplay">30 m</span>
 </div>
 <div class="slider-wrap">
-<input class="lsp-slider" id="endDepth" max="100" min="1" oninput="updateSliderFill(this);document.getElementById('endDepthDisplay').textContent=this.value+(units==='metric'?' m':' ft');calcEND_tool()" step="1" type="range" value="30"/>
+<input class="lsp-slider" id="endDepth" max="100" min="1" oninput="updateSliderFill(this);syncDepthInputCanonical('endDepth');document.getElementById('endDepthDisplay').textContent=this.value+(units==='metric'?' m':' ft');calcEND_tool()" step="1" type="range" value="30"/>
 <div class="slider-ticks"><span>1</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
 </div>
 </div>
@@ -1855,7 +1855,7 @@
 <div class="stats" style="grid-template-columns:repeat(3,1fr);margin-bottom:12px;">
 <div class="stat"><div class="stat-val u15" id="endResult">—</div><div class="stat-lbl">END</div></div>
 <div class="stat"><div class="stat-val" id="endRisk" style="font-size:14px;">—</div><div class="stat-lbl">Narcosis Risk</div></div>
-<div class="stat"><div class="stat-val u6" id="endNarcLoad">—</div><div class="stat-lbl">Narcotic ppressure</div></div>
+<div class="stat"><div class="stat-val u6" id="endNarcLoad">—</div><div class="stat-lbl">Narcotic pressure</div></div>
 </div>
 <!-- Row 2: pressure breakdown -->
 <div class="stats" style="grid-template-columns:repeat(4,1fr);margin-bottom:12px;">
@@ -1881,7 +1881,7 @@
 <div class="card-title u0">EAD — Equivalent Air Depth Table</div>
 <span class="tip-icon" onclick="showTip(_eadTipTitle,_eadTipText)"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span>
 </div>
-<p style="color:var(--muted);font-size:11px;margin-bottom:12px;">EAD for EAN 22–40 at depths 12–38 m. Use EAD with standard air NDL tables when diving nitrox. Values computed live using your current unit setting.</p>
+<p style="color:var(--muted);font-size:11px;margin-bottom:12px;">EAD for EAN 22–40 at common recreational depths. Use EAD with standard air NDL tables when diving nitrox. Values computed live using your current unit setting.</p>
 <div class="u16">
 <table id="eadRefTable" style="width:100%;border-collapse:collapse;font-size:11px;font-family:'JetBrains Mono',monospace;">
 <!-- filled by renderEADTable() -->
@@ -1929,7 +1929,7 @@
 <span class="u5" id="siD1DepthDisplay">30 m</span>
 </div>
 <div class="slider-wrap">
-<input class="lsp-slider" id="siD1Depth" max="60" min="5" oninput="updateSliderFill(this);calcSurfInt();appSettings.save()" step="1" type="range" value="30"/>
+<input class="lsp-slider" id="siD1Depth" max="60" min="5" oninput="updateSliderFill(this);syncDepthInputCanonical('siD1Depth');calcSurfInt();appSettings.save()" step="1" type="range" value="30"/>
 <div class="slider-ticks"><span>5m</span><span>15m</span><span>30m</span><span>45m</span><span>60m</span></div>
 </div>
 </div>
@@ -1949,7 +1949,7 @@
 <span class="u5" id="siD2DepthDisplay">30 m</span>
 </div>
 <div class="slider-wrap">
-<input class="lsp-slider" id="siD2Depth" max="60" min="5" oninput="updateSliderFill(this);calcSurfInt();appSettings.save()" step="1" type="range" value="30"/>
+<input class="lsp-slider" id="siD2Depth" max="60" min="5" oninput="updateSliderFill(this);syncDepthInputCanonical('siD2Depth');calcSurfInt();appSettings.save()" step="1" type="range" value="30"/>
 <div class="slider-ticks"><span>5m</span><span>15m</span><span>30m</span><span>45m</span><span>60m</span></div>
 </div>
 </div>
@@ -2131,7 +2131,7 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 <button onclick="closePresetModal()" style="margin-top:14px;width:100%;padding:8px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.5px;">✕ Close</button>
 </div>
 </div>
-<div id="confirmModal" class="lsp-modal-overlay lsp-modal-overlay--pad20 lsp-modal-centered" style="display:none;z-index:9600;background:rgba(0,0,0,0.72);">
+<div id="confirmModal" class="lsp-modal-overlay lsp-modal-overlay--pad20 lsp-modal-centered" onclick="if(event.target===this)closeConfirmModal(false)" style="display:none;z-index:9600;background:rgba(0,0,0,0.72);">
 <div style="max-width:340px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:22px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
 <div id="confirmModalMsg" style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;color:var(--text);margin-bottom:20px;text-align:center;line-height:1.5;"></div>
 <div style="display:flex;gap:10px;">
@@ -3384,11 +3384,11 @@ function setUnits(u, opts) {
     const v = parseFloat(el.value);
     if (Number.isNaN(v)) return;
     if (isToImperial) {
-      el.value = toImperial(v);
       if (imperialMax != null) el.max = imperialMax;
+      el.value = toImperial(v);
     } else if (isToMetric) {
-      el.value = toMetric(v);
       if (metricMax != null) el.max = metricMax;
+      el.value = toMetric(v);
     }
   };
 
@@ -3479,11 +3479,19 @@ function setUnits(u, opts) {
 
   stampDepthCanonicalBeforeConvert('bestMixDepth');
   stampDepthCanonicalBeforeConvert('cnsDepth');
+  stampDepthCanonicalBeforeConvert('endDepth');
+  stampDepthCanonicalBeforeConvert('siD1Depth');
+  stampDepthCanonicalBeforeConvert('siD2Depth');
 
   convertNumericInput('bestMixDepth', v => Math.round(v * FT_PER_M), v => Math.round(v / FT_PER_M), 100, 330);
   syncBestMixDepthConstraints?.();
   convertNumericInput('cnsDepth', v => Math.round(v * FT_PER_M), v => (v / FT_PER_M).toFixed(1).replace(/\.0$/, ''), 60, 197);
   setTxt('cnsDepthLbl', `Depth (${u === 'imperial' ? 'ft' : 'm'})`);
+  convertNumericInput('endDepth', v => Math.round(v * FT_PER_M), v => Math.round(v / FT_PER_M), 100, 330);
+  syncEndDepthConstraints?.();
+  convertNumericInput('siD1Depth', v => Math.round(v * FT_PER_M), v => Math.round(v / FT_PER_M), 60, 197);
+  convertNumericInput('siD2Depth', v => Math.round(v * FT_PER_M), v => Math.round(v / FT_PER_M), 60, 197);
+  syncSurfIntDepthConstraints?.();
 
   // ── Cylinder pressure conversion (all gas cards including dynamic ones) ──
   const allCylPres = ['cylBot_pres','cylTravelGas_pres','cylDg1_pres','cylDg2_pres',
@@ -3613,15 +3621,6 @@ function setUnits(u, opts) {
   const bmDepthEl = document.getElementById('bestMixDepth');
   if (bmDepthEl) document.getElementById('bestMixDepthDisplay').textContent =
     bmDepthEl.value + (u === 'imperial' ? ' ft' : ' m');
-  const endDepthEl = document.getElementById('endDepth');
-  if (endDepthEl) document.getElementById('endDepthDisplay').textContent =
-    endDepthEl.value + (u === 'imperial' ? ' ft' : ' m');
-  const siD1El = document.getElementById('siD1Depth');
-  if (siD1El) document.getElementById('siD1DepthDisplay').textContent =
-    siD1El.value + (u === 'imperial' ? ' ft' : ' m');
-  const siD2El = document.getElementById('siD2Depth');
-  if (siD2El) document.getElementById('siD2DepthDisplay').textContent =
-    siD2El.value + (u === 'imperial' ? ' ft' : ' m');
 
   // Recalculate visible tools panels
   renderEADTable?.();
@@ -7079,6 +7078,26 @@ function syncBestMixDepthConstraints() {
   el.min = '1';
   el.max = String(imperial ? 330 : 100);
   el.step = '1';
+}
+
+function syncEndDepthConstraints() {
+  const el = document.getElementById('endDepth');
+  if (!el) return;
+  const imperial = units === 'imperial';
+  el.min = '1';
+  el.max = String(imperial ? 330 : 100);
+  el.step = '1';
+}
+
+function syncSurfIntDepthConstraints() {
+  const imperial = units === 'imperial';
+  ['siD1Depth', 'siD2Depth'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.min = '5';
+    el.max = String(imperial ? 197 : 60);
+    el.step = '1';
+  });
 }
 
 function calcBestMix() {

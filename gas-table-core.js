@@ -58,8 +58,7 @@ function gtModDepthColor(depthM) {
 
 function calcEND_tool() {
   const du     = units === 'metric';
-  const dRaw   = parseFloat(document.getElementById('endDepth')?.value) || 30;
-  const dM     = du ? dRaw : dRaw / 3.28084;
+  const dM     = domDepthToM('endDepth');
   const o2Pct  = parseFloat(document.getElementById('endO2')?.value) || 21;
   const hePct  = parseFloat(document.getElementById('endHe')?.value) || 0;
   const n2Pct  = 100 - o2Pct - hePct;
@@ -110,7 +109,11 @@ function calcEND_tool() {
     : (o2Pct === 21 ? 'Air' : 'EAN' + o2Pct);
 
   const endDepthDispEl = document.getElementById('endDepthDisplay');
-  if (endDepthDispEl) endDepthDispEl.textContent = (du ? dRaw : dRaw) + (du ? ' m' : ' ft');
+  if (endDepthDispEl) {
+    endDepthDispEl.textContent = du
+      ? Math.round(dM) + ' m'
+      : Math.round(dM * 3.28084) + ' ft';
+  }
 
   const setTxt = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
   setTxt('endResult', endDisp);

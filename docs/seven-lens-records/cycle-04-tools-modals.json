@@ -15,7 +15,7 @@
     {"id": "SL-C03-M-02", "severity": "MEDIUM", "status": "OPEN", "summary": "Cycle 3 regressions compare rounded outputs and restore values before units, masking physical-depth drift and corrupting test state."},
     {"id": "SL-C03-L-02", "severity": "LOW", "status": "OPEN", "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling."}
   ],
-  "audit_commit": "",
+  "audit_commit": "1ac8fb51600177d31c9b8c756b1c22e9b6f618da",
   "verified_source_commit": "",
   "verification_status": "PENDING",
   "parts": [
