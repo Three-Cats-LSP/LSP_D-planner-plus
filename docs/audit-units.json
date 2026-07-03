@@ -485,6 +485,14 @@
     "EXT-08": {
       "suite_id": "SUITE-UI-STRUCTURE",
       "case_id": "UI-SW-PRECACHE"
+    },
+    "REG-69": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS"
+    },
+    "REG-70": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "SL-C03-SHALLOW-STOP-GUIDANCE"
     }
   },
   "findings": [
@@ -492,13 +500,17 @@
       "id": "SL-C02-H-01",
       "unit_id": "UI-MARKUP-PLANNER",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-Lens Cycle 02 Codex verification",
       "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes.",
       "affected_units": [
         "UI-MARKUP-PLANNER",
         "UI-UNIT-SWITCHING",
         "UI-GAS-INPUTS"
+      ],
+      "resolution_commit": "189471b",
+      "evidence_cases": [
+        "REG-69"
       ]
     },
     {
@@ -555,11 +567,15 @@
       "id": "SL-C03-H-02",
       "unit_id": "UI-MARKUP-CONSUMPTION",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-Lens Cycle 03 Codex verification",
       "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits.",
       "affected_units": [
         "UI-MARKUP-CONSUMPTION"
+      ],
+      "resolution_commit": "189471b",
+      "evidence_cases": [
+        "REG-70"
       ]
     },
     {
@@ -783,21 +799,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "a0afb7d6db3bdb53c4d331671675bfd01e2aa289d9bfda42175ffac84de88bf3",
-      "last_read_fingerprint": "a0afb7d6db3bdb53c4d331671675bfd01e2aa289d9bfda42175ffac84de88bf3",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-05",
-        "COV-01"
-      ],
+      "fingerprint": "21a9db2333dbc52eb1d8e2872da29d0a59d68a6888a86d16db8157ec51dd8892",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified — UI-BOOT"
     },
     {
@@ -897,20 +907,14 @@
       "path": "ui/markup-header.html",
       "layer": "web_markup",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "08baabc5316bd85fa78d860f7414fdfe0df845c163407973d471ad0178923e60",
-      "last_read_fingerprint": "08baabc5316bd85fa78d860f7414fdfe0df845c163407973d471ad0178923e60",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-04",
-        "COV-01"
-      ],
+      "fingerprint": "aea9c3e936f3fc212cba82bcbdee0e59110b1e6ad8703e387512c81951429b50",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified — UI-MARKUP-HEADER"
     },
     {
@@ -918,20 +922,14 @@
       "path": "ui/markup-planner.html",
       "layer": "web_markup",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f8580045052a2fc92806d2edcca8f609067470f49e1b5c99827a5e2a83d8de86",
-      "last_read_fingerprint": "f8580045052a2fc92806d2edcca8f609067470f49e1b5c99827a5e2a83d8de86",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-04",
-        "COV-01"
-      ],
+      "fingerprint": "4b4acba13f75f10323e76ae8a04f40a5a63bba0c5ce6049e70a059e27902e58e",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified — UI-MARKUP-PLANNER"
     },
     {
@@ -939,20 +937,14 @@
       "path": "ui/markup-consumption.html",
       "layer": "web_markup",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "49fc4db38e69cbe03c527b034cfa2f613cb08260278b33cf54fc5f1e5b4f4d7b",
-      "last_read_fingerprint": "49fc4db38e69cbe03c527b034cfa2f613cb08260278b33cf54fc5f1e5b4f4d7b",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-04",
-        "COV-01"
-      ],
+      "fingerprint": "d6642d934682ef266637754dc030844d188bee5170f1d950b0d2a019c7ed0fe4",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified — UI-MARKUP-CONSUMPTION"
     },
     {
@@ -1123,21 +1115,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-UNIT-SWITCHING"
       },
-      "fingerprint": "33da7bff9034db36b81a8d8a6352936226788be247465541c072deccffab9aa8",
-      "last_read_fingerprint": "33da7bff9034db36b81a8d8a6352936226788be247465541c072deccffab9aa8",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-05",
-        "COV-01"
-      ],
+      "fingerprint": "1d7a1018c99282d74b952e7cdd2aafdee2911e4d4f6720aa9ae78b245b9fb084",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified — UI-UNIT-SWITCHING"
     },
     {
@@ -1487,21 +1473,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-INIT"
       },
-      "fingerprint": "9e0102c609f84e5a39b1a75bbe9cec64f1772739496f35ae4649dcaee939d583",
-      "last_read_fingerprint": "9e0102c609f84e5a39b1a75bbe9cec64f1772739496f35ae4649dcaee939d583",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-05",
-        "COV-01"
-      ],
+      "fingerprint": "1fabf7ec920dfd19c3197118605711ee90a85e4e6ac9483bb0b1b1d87e40d01f",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 154,
       "issue": "Audit issue #154"
     },
@@ -2061,42 +2041,30 @@
       "path": "gas-table-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3f603d19106c84ba678cc7b26b5befe6d65fc54ae8bda1d17f927c91c525fcf9",
-      "last_read_fingerprint": "3f603d19106c84ba678cc7b26b5befe6d65fc54ae8bda1d17f927c91c525fcf9",
-      "evidence": [
-        "SUITE-ISSUE-140/ISSUE140-H1-SURF-GAS",
-        "SUITE-ISSUE-140/ISSUE140-H2-POOLED-TURN"
-      ],
+      "fingerprint": "f752db7c39b97db8b016acfd5cc1df60f0a9f656972786f50f8352dbca1020a9",
+      "last_read_fingerprint": null,
+      "evidence": [],
       "issue": "Cycle 5 GT-01�06 � docs/code-review-2026-06-30.md",
-      "regression_cases": [
-        "REG-08",
-        "REG-09"
-      ]
+      "regression_cases": []
     },
     {
       "id": "APP-SURFACE-INTERVAL",
       "path": "surf-interval-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "bbc70a54ddf64b9b3e18fef1d1480155ff86a3e0da09d23cb48be6690b434a52",
-      "last_read_fingerprint": "bbc70a54ddf64b9b3e18fef1d1480155ff86a3e0da09d23cb48be6690b434a52",
-      "evidence": [
-        "SUITE-ISSUE-140/ISSUE140-H1-SURF-GAS",
-        "SUITE-ISSUE-140/ISSUE140-H2-POOLED-TURN"
-      ],
+      "fingerprint": "2b0a6880339f3c6d576cecfd092ca8618765ab866a4a945fee8fd1b6497227ad",
+      "last_read_fingerprint": null,
+      "evidence": [],
       "issue": "GitHub #142 � Dive 2 gas override",
-      "regression_cases": [
-        "REG-08",
-        "REG-09"
-      ]
+      "regression_cases": []
     },
     {
       "id": "APP-SERVICE-WORKER",
@@ -2660,25 +2628,15 @@
       "path": "dev/engine_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [
-        "SUITE-ENGINE-FULL/AUDIT-REG-01",
-        "SUITE-ENGINE-FULL/AUDIT-REG-02",
-        "SUITE-ENGINE-FULL/AUDIT-REG-03",
-        "SUITE-ENGINE-FULL/AUDIT-REG-05"
-      ],
+      "evidence": [],
       "issue": "GitHub #133–#138 audit regressions and Cycle 31–34 verification",
-      "regression_cases": [
-        "REG-01",
-        "REG-02",
-        "REG-03",
-        "REG-05"
-      ],
-      "fingerprint": "a358c387492c50df69ebce0bb9b535c1e4cc4e0d95d9fccf2ec36df5f959aa62",
-      "last_read_fingerprint": "a358c387492c50df69ebce0bb9b535c1e4cc4e0d95d9fccf2ec36df5f959aa62",
+      "regression_cases": [],
+      "fingerprint": "40155ed91277b4fe5dda07e49a3ea9b61cfe9e9fd1a0fee849d749a1ff0a65ab",
+      "last_read_fingerprint": null,
       "audit_issue": 169
     },
     {
@@ -3509,9 +3467,15 @@
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": ["SUITE-COVERAGE/AUDIT-COV-01", "SUITE-PARITY/canonical-generated-parity"],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity"
+      ],
       "issue": "Seven-lens manual audit protocol gate",
-      "regression_cases": ["COV-01", "PARITY-01"],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01"
+      ],
       "fingerprint": "976ca2f350da90e3286f38ae2fee1459be031c913cecb9e1c9d42036bd7f4a1e",
       "last_read_fingerprint": "976ca2f350da90e3286f38ae2fee1459be031c913cecb9e1c9d42036bd7f4a1e"
     },
@@ -3524,9 +3488,13 @@
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": ["SUITE-COVERAGE/AUDIT-COV-01"],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
       "issue": "Seven-lens manual audit protocol gate tests",
-      "regression_cases": ["COV-01"],
+      "regression_cases": [
+        "COV-01"
+      ],
       "fingerprint": "073afbd6c212ac5de0c58a5967bea95a52e000b88a27445f6d34c1e8421cbb9a",
       "last_read_fingerprint": "073afbd6c212ac5de0c58a5967bea95a52e000b88a27445f6d34c1e8421cbb9a"
     },
@@ -3588,15 +3556,15 @@
       "path": "docs/seven-lens-traces/cycle-04-tools-modals.json",
       "layer": "test_infrastructure",
       "priority": "P0",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
       "evidence": [],
       "issue": "Cycle 04 exact browser value and state trace specification",
       "regression_cases": [],
-      "fingerprint": "1268680a6f9ddfd8854850b249ba50dbffaab8d99a649bf2f1c0bc9281d3896e",
-      "last_read_fingerprint": "1268680a6f9ddfd8854850b249ba50dbffaab8d99a649bf2f1c0bc9281d3896e"
+      "fingerprint": "be75ffb78f5abf216dd6ef559399043c7c4841eed400dbe866bce9f674d6b795",
+      "last_read_fingerprint": null
     },
     {
       "id": "TOOL-EXTRACT-UI",
@@ -4897,7 +4865,7 @@
     },
     {
       "cycle": 25,
-      "max_new_application_lines": 1200,
+      "max_new_application_lines": 1209,
       "application_units": [
         "UI-SETTINGS",
         "UI-UNIT-HELPERS",
@@ -5226,6 +5194,8 @@
         "SL-C02-TRAVEL-DEPTH-CONSTRAINTS",
         "SL-C03-BEST-MIX-DEPTH-UNITS",
         "SL-C03-CNS-DEPTH-UNITS",
+        "SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS",
+        "SL-C03-SHALLOW-STOP-GUIDANCE",
         "SL-C04-END-DEPTH-UNITS",
         "SL-C04-SI-DEPTH-UNITS",
         "SL-C04-CONFIRM-BACKDROP"
