@@ -496,7 +496,7 @@
         "UI-UNIT-SWITCHING",
         "UI-GAS-INPUTS"
       ],
-      "resolution_commit": "pending-ci-autofix",
+      "resolution_commit": "8903ee9",
       "evidence_cases": [
         "REG-66"
       ]
@@ -561,7 +561,7 @@
       "affected_units": [
         "UI-MARKUP-CONSUMPTION"
       ],
-      "resolution_commit": "pending-ci-autofix",
+      "resolution_commit": "8903ee9",
       "evidence_cases": [
         "REG-67"
       ]
