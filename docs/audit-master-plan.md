@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v3-full-reset`
-**Units:** 175 total; 0 unread; 0 in progress; 0 read; 175 verified.
+**Units:** 175 total; 0 unread; 8 in progress; 0 read; 167 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -40,7 +40,7 @@
 | 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 506 | - | Planner shell and results panel READ |
 | 9 | UI-ENVIRONMENT, UI-MODE-STATE | 948 | - | settings-core environment and mode state READ |
 | 10 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 674 | - | Surface interval and gas table cores READ |
-| 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 508 | ENG-ZHL-GAS | Gas card UI READ |
+| 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 512 | ENG-ZHL-GAS | Gas card UI READ |
 | 12 | APP-GAS-PLAN | 546 | - | Gas plan core READ |
 | 13 | APP-CONTINGENCY | 562 | - | Contingency core READ |
 | 14 | APP-EXPORT | 3255 | - | export-core text/PDF READ |
@@ -54,7 +54,7 @@
 | 22 | UI-VPM-RUNNER | 473 | ENG-VPM | VPM runner READ |
 | 23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 393 | - | Runtime bootstrap and app init READ |
 | 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 671 | - | Algorithm and settings controls READ |
-| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1166 | - | Settings persistence and unit helpers READ |
+| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1179 | - | Settings persistence and unit helpers READ |
 | 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 851 | - | Tools panels READ |
 | 27 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 562 | - | Profile and config presets READ |
 | 28 | UI-BOOT | 2376 | - | index.html shell boot region READ |

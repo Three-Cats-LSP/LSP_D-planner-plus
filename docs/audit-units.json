@@ -735,21 +735,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "1148d236f73d2242f37ceac46df802b720b4e7a7e1f604e68a093bd47fb9c7b2",
-      "last_read_fingerprint": "1148d236f73d2242f37ceac46df802b720b4e7a7e1f604e68a093bd47fb9c7b2",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-05",
-        "COV-01"
-      ],
+      "fingerprint": "4f732fbb853c7c84b5f94fa0c61025cb0242faed74cccb8bb527c69cebdeca10",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified — UI-BOOT"
     },
     {
@@ -849,20 +843,14 @@
       "path": "ui/markup-header.html",
       "layer": "web_markup",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "08baabc5316bd85fa78d860f7414fdfe0df845c163407973d471ad0178923e60",
-      "last_read_fingerprint": "08baabc5316bd85fa78d860f7414fdfe0df845c163407973d471ad0178923e60",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-04",
-        "COV-01"
-      ],
+      "fingerprint": "aea9c3e936f3fc212cba82bcbdee0e59110b1e6ad8703e387512c81951429b50",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified — UI-MARKUP-HEADER"
     },
     {
@@ -870,20 +858,14 @@
       "path": "ui/markup-planner.html",
       "layer": "web_markup",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f8580045052a2fc92806d2edcca8f609067470f49e1b5c99827a5e2a83d8de86",
-      "last_read_fingerprint": "f8580045052a2fc92806d2edcca8f609067470f49e1b5c99827a5e2a83d8de86",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-04",
-        "COV-01"
-      ],
+      "fingerprint": "4b4acba13f75f10323e76ae8a04f40a5a63bba0c5ce6049e70a059e27902e58e",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified — UI-MARKUP-PLANNER"
     },
     {
@@ -1075,21 +1057,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-UNIT-SWITCHING"
       },
-      "fingerprint": "770f5b7cb9e91606fba6ecdef5dc57c1aab0bfc1d9882a7d55ff5eee8bd03b0b",
-      "last_read_fingerprint": "770f5b7cb9e91606fba6ecdef5dc57c1aab0bfc1d9882a7d55ff5eee8bd03b0b",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-05",
-        "COV-01"
-      ],
+      "fingerprint": "9b53b5ba067954b7f07672219c8463df7b91a0497c24f756f4b8f24a69f8412e",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified — UI-UNIT-SWITCHING"
     },
     {
@@ -1193,21 +1169,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS-CONTROLS"
       },
-      "fingerprint": "066a70d1956361c3fc69e20c4578b31e4e39aa589d7ee374834d0e6e4649e0b3",
-      "last_read_fingerprint": "066a70d1956361c3fc69e20c4578b31e4e39aa589d7ee374834d0e6e4649e0b3",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-05",
-        "COV-01"
-      ],
+      "fingerprint": "4a31cfa931ce5f443efb043fa71e3a3081e5b23551c6968aeb10e541e81be11d",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 146,
       "issue": "Audit issue #146"
     },
@@ -1266,26 +1236,16 @@
       "path": "gas-cards-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-INPUTS"
       },
-      "fingerprint": "27eada8c087021fff07532b17d5a2afbccd420d2dbebcd3e6d433a1783eaccc5",
-      "last_read_fingerprint": "27eada8c087021fff07532b17d5a2afbccd420d2dbebcd3e6d433a1783eaccc5",
+      "fingerprint": "6200d99696ac6c79d954b9c749034093988a1b01fc3645e502e86185b5659693",
+      "last_read_fingerprint": null,
       "audit_issue": 149,
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity",
-        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
-        "SUITE-ENGINE-FULL/AUDIT-REG-01"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01",
-        "EXT-02",
-        "REG-01"
-      ],
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Cycle 34 invalid custom-gas MOD display suppression"
     },
     {
@@ -1293,26 +1253,16 @@
       "path": "gas-cards-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-CARDS"
       },
-      "fingerprint": "6d08c33b01b44a3ef9e3811174641839c7b56b7fd10cc54b1382a172e96036be",
-      "last_read_fingerprint": "6d08c33b01b44a3ef9e3811174641839c7b56b7fd10cc54b1382a172e96036be",
+      "fingerprint": "bb95bd21f3878128e587abb7afb2846a50a7ad603d28d759a86a40c17095820f",
+      "last_read_fingerprint": null,
       "audit_issue": 148,
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity",
-        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
-        "SUITE-ENGINE-FULL/AUDIT-REG-01"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01",
-        "EXT-02",
-        "REG-01"
-      ],
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Cycle 35 structured read — no actionable findings"
     },
     {
@@ -2612,25 +2562,15 @@
       "path": "dev/engine_regression.py",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [
-        "SUITE-ENGINE-FULL/AUDIT-REG-01",
-        "SUITE-ENGINE-FULL/AUDIT-REG-02",
-        "SUITE-ENGINE-FULL/AUDIT-REG-03",
-        "SUITE-ENGINE-FULL/AUDIT-REG-05"
-      ],
+      "evidence": [],
       "issue": "GitHub #133–#138 audit regressions and Cycle 31–34 verification",
-      "regression_cases": [
-        "REG-01",
-        "REG-02",
-        "REG-03",
-        "REG-05"
-      ],
-      "fingerprint": "e4e99dae2fb006dff303bab6f6d734380944ac77dbe72826d5783835e540c218",
-      "last_read_fingerprint": "e4e99dae2fb006dff303bab6f6d734380944ac77dbe72826d5783835e540c218",
+      "regression_cases": [],
+      "fingerprint": "b1cea4fda779cc8654da1e26e58aa6a4de54270b04fb43bc35036ea5b0ef16d6",
+      "last_read_fingerprint": null,
       "audit_issue": 169
     },
     {
@@ -4791,7 +4731,7 @@
     },
     {
       "cycle": 25,
-      "max_new_application_lines": 1170,
+      "max_new_application_lines": 1179,
       "application_units": [
         "UI-SETTINGS",
         "UI-UNIT-HELPERS",
