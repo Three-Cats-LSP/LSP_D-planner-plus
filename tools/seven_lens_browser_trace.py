@@ -121,6 +121,14 @@ def _restore(page, before: dict[str, Any], spec: dict[str, Any]) -> None:
             locator.set_checked(bool(state["checked"]), force=True)
         elif state["value"] is not None:
             locator.fill(str(state["value"]), force=True)
+        dataset = state.get("dataset") or {}
+        locator.evaluate(
+            """(el, ds) => {
+              for (const key of Object.keys(el.dataset)) delete el.dataset[key];
+              for (const [k, v] of Object.entries(ds)) el.dataset[k] = v;
+            }""",
+            dataset,
+        )
     page.evaluate(
         """state => {
           localStorage.clear();
