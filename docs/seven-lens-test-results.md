@@ -352,6 +352,19 @@ FIXER pass on `cursor/seven-lens-cycles-02-03-remediation` (includes Cycle 4 too
 
 ---
 
+## Cycle 4 post-merge Codex verification
+
+PR #188 was independently rechecked on `dev`. The END and Surface Interval traces pass, but the combined Cycle 2-4 closure is **BLOCKED**.
+
+- `SL-C04-H-02`: user edits after a unit switch leave canonical depth/volume state stale.
+- `SL-C04-H-03`: Cycle 2-4 records fail the protocol close contract despite reviewed ledger claims.
+- `SL-C04-M-03`: full engine regression is order-dependent and fails 2 cases.
+- `SL-C04-M-04`: prior browser evidence did not require real, repeated edit-to-consumer traces.
+
+Full evidence: `docs/seven-lens-reports/cycle-04-codex-verification.md`.
+
+---
+
 ## Template for future cycles
 
 Copy and fill when Cycle N closes:

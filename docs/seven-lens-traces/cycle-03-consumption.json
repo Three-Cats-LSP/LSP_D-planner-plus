@@ -1,5 +1,6 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
+  "repeat": 2,
   "cycle": 3,
   "traces": [
     {
@@ -8,9 +9,10 @@
       "consumer_path": ["setUnits", "calcBestMix", "domDepthToM", "bestMixResult"],
       "setup": [
         {"action": "set_global", "name": "_zhlHeadless", "value": false},
-        {"action": "select", "selector": "#unitsSelect", "value": "metric", "force": true},
-        {"action": "fill", "selector": "#bestMixDepth", "value": "30", "force": true},
-        {"action": "fill", "selector": "#bestMixPPO2", "value": "14", "force": true}
+        {"action": "click", "selector": "#navBtnSettings"},
+        {"action": "select", "selector": "#unitsSelect", "value": "metric"},
+        {"action": "fill", "selector": "#bestMixDepth", "value": "30", "force": true, "setup_only_reason": "Prepare the hidden Best Mix panel before testing the visible unit selector."},
+        {"action": "fill", "selector": "#bestMixPPO2", "value": "14", "force": true, "setup_only_reason": "Prepare the hidden Best Mix panel before testing the visible unit selector."}
       ],
       "state": {
         "selectors": ["#unitsSelect", "#bestMixDepth", "#bestMixPPO2"],
@@ -22,12 +24,12 @@
           "capture": "metric",
           "values": {
             "input_value": "document.querySelector('#bestMixDepth').value",
-            "canonical_m": "Number(document.querySelector('#bestMixDepth').dataset.depthM)",
+            "canonical_m": "domDepthToM('bestMixDepth')",
             "consumer_m": "domDepthToM('bestMixDepth')",
             "observable": "document.querySelector('#bestMixResult').textContent"
           }
         },
-        {"action": "select", "selector": "#unitsSelect", "value": "imperial", "force": true},
+        {"action": "select", "selector": "#unitsSelect", "value": "imperial"},
         {
           "capture": "imperial",
           "values": {
@@ -51,9 +53,10 @@
       "consumer_path": ["setUnits", "stampDepthCanonicalBeforeConvert", "domDepthToM", "calcCNS"],
       "setup": [
         {"action": "set_global", "name": "_zhlHeadless", "value": false},
-        {"action": "select", "selector": "#unitsSelect", "value": "metric", "force": true},
-        {"action": "fill", "selector": "#cnsDepth", "value": "30", "force": true},
-        {"action": "fill", "selector": "#cnsBT", "value": "40", "force": true}
+        {"action": "click", "selector": "#navBtnSettings"},
+        {"action": "select", "selector": "#unitsSelect", "value": "metric"},
+        {"action": "fill", "selector": "#cnsDepth", "value": "30", "force": true, "setup_only_reason": "Prepare the hidden CNS panel before testing the visible unit selector."},
+        {"action": "fill", "selector": "#cnsBT", "value": "40", "force": true, "setup_only_reason": "Prepare the hidden CNS panel before testing the visible unit selector."}
       ],
       "state": {
         "selectors": ["#unitsSelect", "#cnsDepth", "#cnsBT"],
@@ -65,12 +68,12 @@
           "capture": "metric",
           "values": {
             "input_value": "document.querySelector('#cnsDepth').value",
-            "canonical_m": "Number(document.querySelector('#cnsDepth').dataset.depthM)",
+            "canonical_m": "domDepthToM('cnsDepth')",
             "consumer_m": "domDepthToM('cnsDepth')",
             "observable": "document.querySelector('#cnsPPO2').textContent"
           }
         },
-        {"action": "select", "selector": "#unitsSelect", "value": "imperial", "force": true},
+        {"action": "select", "selector": "#unitsSelect", "value": "imperial"},
         {
           "capture": "imperial",
           "values": {
@@ -80,7 +83,7 @@
             "observable": "document.querySelector('#cnsPPO2').textContent"
           }
         },
-        {"action": "select", "selector": "#unitsSelect", "value": "metric", "force": true},
+        {"action": "select", "selector": "#unitsSelect", "value": "metric"},
         {
           "capture": "roundtrip",
           "values": {
@@ -99,6 +102,82 @@
         {"id": "roundtrip-canonical", "left": "$.roundtrip.canonical_m", "op": "close", "right": 30, "tolerance": 0.000001},
         {"id": "roundtrip-consumer", "left": "$.roundtrip.consumer_m", "op": "close", "right": 30, "tolerance": 0.000001},
         {"id": "observable-parity", "left": "$.metric.observable", "op": "equal", "right": "$.roundtrip.observable"}
+      ]
+    },
+    {
+      "id": "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
+      "entry_event": "User switches to imperial units, edits Best Mix depth, and returns to metric.",
+      "consumer_path": ["bestMixDepth input", "calcBestMix", "domDepthToM", "bestMixResult"],
+      "setup": [
+        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+        {"action": "click", "selector": "#navBtnSettings"},
+        {"action": "select", "selector": "#unitsSelect", "value": "metric"},
+        {"action": "click", "selector": "#navBtnTools"},
+        {"action": "click", "selector": "#tool-bestmix"},
+        {"action": "fill", "selector": "#bestMixDepth", "value": "30"}
+      ],
+      "state": {
+        "selectors": ["#navBtnSettings", "#navBtnTools", "#tool-bestmix", "#unitsSelect", "#bestMixDepth"],
+        "restore_order": ["#bestMixDepth", "#unitsSelect", "#tool-bestmix", "#navBtnTools", "#navBtnSettings"],
+        "globals": ["_zhlHeadless"]
+      },
+      "steps": [
+        {"capture": "before", "values": {"consumer_m": "domDepthToM('bestMixDepth')", "observable": "document.querySelector('#bestMixResult').textContent"}},
+        {"action": "click", "selector": "#navBtnSettings"},
+        {"action": "select", "selector": "#unitsSelect", "value": "imperial"},
+        {"action": "click", "selector": "#navBtnTools"},
+        {"action": "click", "selector": "#tool-bestmix"},
+        {"action": "fill", "selector": "#bestMixDepth", "value": "120"},
+        {"capture": "edited", "values": {"input_value": "document.querySelector('#bestMixDepth').value", "canonical_m": "Number(document.querySelector('#bestMixDepth').dataset.depthM)", "consumer_m": "domDepthToM('bestMixDepth')", "observable": "document.querySelector('#bestMixResult').textContent"}},
+        {"action": "click", "selector": "#navBtnSettings"},
+        {"action": "select", "selector": "#unitsSelect", "value": "metric"},
+        {"action": "click", "selector": "#navBtnTools"},
+        {"action": "click", "selector": "#tool-bestmix"},
+        {"capture": "roundtrip", "values": {"input_value": "document.querySelector('#bestMixDepth').value", "consumer_m": "domDepthToM('bestMixDepth')"}}
+      ],
+      "assertions": [
+        {"id": "imperial-edit-visible", "left": "$.edited.input_value", "op": "equal", "right": "120"},
+        {"id": "imperial-edit-reaches-consumer", "left": "$.edited.consumer_m", "op": "close", "right": 36.576, "tolerance": 0.000001},
+        {"id": "observable-reacts-to-edit", "left": "$.edited.observable", "op": "not_equal", "right": "$.before.observable"},
+        {"id": "roundtrip-preserves-edit", "left": "$.roundtrip.consumer_m", "op": "close", "right": 36.576, "tolerance": 0.000001}
+      ]
+    },
+    {
+      "id": "SL-C03-CNS-EDIT-AFTER-SWITCH",
+      "entry_event": "User switches to imperial units, edits CNS depth, and returns to metric.",
+      "consumer_path": ["cnsDepth input", "calcCNS", "domDepthToM", "cnsPPO2"],
+      "setup": [
+        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+        {"action": "click", "selector": "#navBtnSettings"},
+        {"action": "select", "selector": "#unitsSelect", "value": "metric"},
+        {"action": "click", "selector": "#navBtnTools"},
+        {"action": "click", "selector": "#tool-cns"},
+        {"action": "fill", "selector": "#cnsDepth", "value": "30"}
+      ],
+      "state": {
+        "selectors": ["#navBtnSettings", "#navBtnTools", "#tool-cns", "#unitsSelect", "#cnsDepth"],
+        "restore_order": ["#cnsDepth", "#unitsSelect", "#tool-cns", "#navBtnTools", "#navBtnSettings"],
+        "globals": ["_zhlHeadless"]
+      },
+      "steps": [
+        {"capture": "before", "values": {"consumer_m": "domDepthToM('cnsDepth')", "observable": "document.querySelector('#cnsPPO2').textContent"}},
+        {"action": "click", "selector": "#navBtnSettings"},
+        {"action": "select", "selector": "#unitsSelect", "value": "imperial"},
+        {"action": "click", "selector": "#navBtnTools"},
+        {"action": "click", "selector": "#tool-cns"},
+        {"action": "fill", "selector": "#cnsDepth", "value": "120"},
+        {"capture": "edited", "values": {"input_value": "document.querySelector('#cnsDepth').value", "canonical_m": "Number(document.querySelector('#cnsDepth').dataset.depthM)", "consumer_m": "domDepthToM('cnsDepth')", "observable": "document.querySelector('#cnsPPO2').textContent"}},
+        {"action": "click", "selector": "#navBtnSettings"},
+        {"action": "select", "selector": "#unitsSelect", "value": "metric"},
+        {"action": "click", "selector": "#navBtnTools"},
+        {"action": "click", "selector": "#tool-cns"},
+        {"capture": "roundtrip", "values": {"input_value": "document.querySelector('#cnsDepth').value", "consumer_m": "domDepthToM('cnsDepth')"}}
+      ],
+      "assertions": [
+        {"id": "imperial-edit-visible", "left": "$.edited.input_value", "op": "equal", "right": "120"},
+        {"id": "imperial-edit-reaches-consumer", "left": "$.edited.consumer_m", "op": "close", "right": 36.576, "tolerance": 0.000001},
+        {"id": "observable-reacts-to-edit", "left": "$.edited.observable", "op": "not_equal", "right": "$.before.observable"},
+        {"id": "roundtrip-preserves-edit", "left": "$.roundtrip.consumer_m", "op": "close", "right": 36.576, "tolerance": 0.000001}
       ]
     }
   ]
