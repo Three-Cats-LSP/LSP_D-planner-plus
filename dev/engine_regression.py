@@ -1814,19 +1814,37 @@ ENGINE_SUITE_JS = r"""
 
   // Seven-lens cycle 02: planner markup contracts (SL-C02).
   out.sections.sevenLensCycle02 = (() => {
+    const snapEl = (id) => {
+      const el = document.getElementById(id);
+      if (!el) return null;
+      return { value: el.value, depthM: el.dataset.depthM, volumeL: el.dataset.volumeL };
+    };
+    const restoreEl = (id, snap) => {
+      if (!snap) return;
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (snap.value != null) el.value = snap.value;
+      if (snap.depthM != null) el.dataset.depthM = snap.depthM;
+      else delete el.dataset.depthM;
+      if (snap.volumeL != null) el.dataset.volumeL = snap.volumeL;
+      else delete el.dataset.volumeL;
+    };
+    const depthClose = (a, b) => Math.abs(a - b) < 0.001;
     let minDecoUnitsOk = false;
     let travelDepthConstraintsOk = false;
     let cylinderPhysicalConstraintsOk = false;
     let unitRoundtripImmutableOk = false;
+    let travelDepthEditAfterSwitchOk = false;
+    let cylinderSizeEditAfterSwitchOk = false;
     const prevUnits = typeof units !== 'undefined' ? units : null;
     const modeSel = document.getElementById('travelGasSwitchMode');
     const prevMode = modeSel?.value;
     const depthInp = document.getElementById('travelGasManualDepth');
-    const prevDepth = depthInp?.value;
+    const prevDepthSnap = snapEl('travelGasManualDepth');
     const decoEl = document.getElementById('decoDepth');
     const cylEl = document.getElementById('cylBot_size');
-    const prevDeco = decoEl?.value;
-    const prevCyl = cylEl?.value;
+    const prevDecoSnap = snapEl('decoDepth');
+    const prevCylSnap = snapEl('cylBot_size');
     const travelMaxFt = Math.round(500 * 3.28084);
     const cylMaxCu = +(50 * 0.0353147).toFixed(2);
     const cylMinCu = +(0.5 * 0.0353147).toFixed(2);
@@ -1871,11 +1889,37 @@ ENGINE_SUITE_JS = r"""
         setUnits('metric');
         unitRoundtripImmutableOk = decoEl.value === '40' && cylEl.value === '12';
       }
+      if (typeof setUnits === 'function' && depthInp && modeSel) {
+        modeSel.value = 'manual';
+        updateTravelGasMOD?.();
+        setUnits('metric');
+        depthInp.value = '30';
+        syncDepthInputCanonical?.('travelGasManualDepth');
+        setUnits('imperial');
+        depthInp.value = '120';
+        syncDepthInputCanonical?.('travelGasManualDepth');
+        const editedM = domDepthToM('travelGasManualDepth');
+        setUnits('metric');
+        travelDepthEditAfterSwitchOk =
+          depthClose(editedM, 36.576) && depthClose(domDepthToM('travelGasManualDepth'), 36.576);
+      }
+      if (typeof setUnits === 'function' && cylEl) {
+        setUnits('metric');
+        cylEl.value = '12';
+        syncVolumeInputCanonical?.('cylBot_size');
+        setUnits('imperial');
+        cylEl.value = '0.5';
+        syncVolumeInputCanonical?.('cylBot_size');
+        const editedL = domVolumeToL('cylBot_size');
+        setUnits('metric');
+        cylinderSizeEditAfterSwitchOk =
+          depthClose(editedL, 14.158) && depthClose(domVolumeToL('cylBot_size'), 14.158);
+      }
     } finally {
       if (modeSel && prevMode != null) modeSel.value = prevMode;
-      if (depthInp && prevDepth != null) depthInp.value = prevDepth;
-      if (decoEl && prevDeco != null) decoEl.value = prevDeco;
-      if (cylEl && prevCyl != null) cylEl.value = prevCyl;
+      restoreEl('travelGasManualDepth', prevDepthSnap);
+      restoreEl('decoDepth', prevDecoSnap);
+      restoreEl('cylBot_size', prevCylSnap);
       if (prevUnits != null && typeof setUnits === 'function') setUnits(prevUnits);
       updateTravelGasMOD?.();
     }
@@ -1884,22 +1928,40 @@ ENGINE_SUITE_JS = r"""
       travelDepthConstraintsOk,
       cylinderPhysicalConstraintsOk,
       unitRoundtripImmutableOk,
-      ok: minDecoUnitsOk && travelDepthConstraintsOk && cylinderPhysicalConstraintsOk && unitRoundtripImmutableOk,
+      travelDepthEditAfterSwitchOk,
+      cylinderSizeEditAfterSwitchOk,
+      ok: minDecoUnitsOk && travelDepthConstraintsOk && cylinderPhysicalConstraintsOk
+        && unitRoundtripImmutableOk && travelDepthEditAfterSwitchOk && cylinderSizeEditAfterSwitchOk,
     };
   })();
 
   // Seven-lens cycle 03: consumption markup contracts (SL-C03).
   out.sections.sevenLensCycle03 = (() => {
+    const snapEl = (id) => {
+      const el = document.getElementById(id);
+      if (!el) return null;
+      return { value: el.value, depthM: el.dataset.depthM };
+    };
+    const restoreEl = (id, snap) => {
+      if (!snap) return;
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (snap.value != null) el.value = snap.value;
+      if (snap.depthM != null) el.dataset.depthM = snap.depthM;
+      else delete el.dataset.depthM;
+    };
+    const depthClose = (a, b) => Math.abs(a - b) < 0.001;
     let bestMixDepthUnitsOk = false;
     let cnsDepthUnitsOk = false;
+    let bestMixEditAfterSwitchOk = false;
+    let cnsEditAfterSwitchOk = false;
     const prevUnits = typeof units !== 'undefined' ? units : null;
     const bmEl = document.getElementById('bestMixDepth');
     const cnsEl = document.getElementById('cnsDepth');
     const ppo2El = document.getElementById('bestMixPPO2');
-    const prevBm = bmEl?.value;
-    const prevCns = cnsEl?.value;
+    const prevBmSnap = snapEl('bestMixDepth');
+    const prevCnsSnap = snapEl('cnsDepth');
     const prevPpo2 = ppo2El?.value;
-    const depthClose = (a, b) => Math.abs(a - b) < 0.000001;
     try {
       if (typeof setUnits === 'function' && typeof calcBestMix === 'function' && bmEl && ppo2El) {
         setUnits('metric');
@@ -1940,16 +2002,49 @@ ENGINE_SUITE_JS = r"""
           depthClose(domDepthToM('cnsDepth'), 30) &&
           depthClose(parseFloat(cnsEl.dataset.depthM), 30);
       }
+      if (typeof setUnits === 'function' && bmEl && typeof calcBestMix === 'function') {
+        setUnits('metric');
+        bmEl.value = '30';
+        syncDepthInputCanonical?.('bestMixDepth');
+        calcBestMix();
+        setUnits('imperial');
+        bmEl.value = '120';
+        syncDepthInputCanonical?.('bestMixDepth');
+        calcBestMix();
+        const editedM = domDepthToM('bestMixDepth');
+        setUnits('metric');
+        bestMixEditAfterSwitchOk =
+          depthClose(editedM, 36.576) && depthClose(domDepthToM('bestMixDepth'), 36.576);
+      }
+      if (typeof setUnits === 'function' && cnsEl && typeof calcCNS === 'function') {
+        setUnits('metric');
+        cnsEl.value = '30';
+        syncDepthInputCanonical?.('cnsDepth');
+        calcCNS();
+        setUnits('imperial');
+        cnsEl.value = '120';
+        syncDepthInputCanonical?.('cnsDepth');
+        calcCNS();
+        const editedM = domDepthToM('cnsDepth');
+        setUnits('metric');
+        cnsEditAfterSwitchOk =
+          depthClose(editedM, 36.576) && depthClose(domDepthToM('cnsDepth'), 36.576);
+      }
     } finally {
-      if (typeof setUnits === 'function') setUnits('metric');
-      if (bmEl && prevBm != null) bmEl.value = prevBm;
-      if (cnsEl && prevCns != null) cnsEl.value = prevCns;
+      restoreEl('bestMixDepth', prevBmSnap);
+      restoreEl('cnsDepth', prevCnsSnap);
       if (ppo2El && prevPpo2 != null) ppo2El.value = prevPpo2;
       if (prevUnits != null && typeof setUnits === 'function') setUnits(prevUnits);
       calcBestMix?.();
       calcCNS?.();
     }
-    return { bestMixDepthUnitsOk, cnsDepthUnitsOk, ok: bestMixDepthUnitsOk && cnsDepthUnitsOk };
+    return {
+      bestMixDepthUnitsOk,
+      cnsDepthUnitsOk,
+      bestMixEditAfterSwitchOk,
+      cnsEditAfterSwitchOk,
+      ok: bestMixDepthUnitsOk && cnsDepthUnitsOk && bestMixEditAfterSwitchOk && cnsEditAfterSwitchOk,
+    };
   })();
 
   // Seven-lens cycle 04: tools/modals markup contracts (SL-C04).
@@ -2444,9 +2539,13 @@ def run_suite(page) -> dict:
     assert_true(sl02.get("travelDepthConstraintsOk"), "[SL-C02-TRAVEL-DEPTH-CONSTRAINTS] travel manual depth max follows display units", str(sl02))
     assert_true(sl02.get("cylinderPhysicalConstraintsOk"), "[SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS] imperial cylinder size min/max/step are physical", str(sl02))
     assert_true(sl02.get("unitRoundtripImmutableOk"), "[SL-C02-UNIT-ROUNDTRIP-IMMUTABLE] metric round-trip preserves stamped depth/volume", str(sl02))
+    assert_true(sl02.get("travelDepthEditAfterSwitchOk"), "[SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH] travel manual depth edit reaches consumer after imperial switch", str(sl02))
+    assert_true(sl02.get("cylinderSizeEditAfterSwitchOk"), "[SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH] cylinder size edit reaches consumer after imperial switch", str(sl02))
     sl03 = s.get("sevenLensCycle03", {})
     assert_true(sl03.get("bestMixDepthUnitsOk"), "[SL-C03-BEST-MIX-DEPTH-UNITS] best mix O2% invariant across equivalent metric/imperial depth", str(sl03))
     assert_true(sl03.get("cnsDepthUnitsOk"), "[SL-C03-CNS-DEPTH-UNITS] CNS ppO2 invariant across equivalent metric/imperial depth", str(sl03))
+    assert_true(sl03.get("bestMixEditAfterSwitchOk"), "[SL-C03-BEST-MIX-EDIT-AFTER-SWITCH] best mix depth edit reaches consumer after imperial switch", str(sl03))
+    assert_true(sl03.get("cnsEditAfterSwitchOk"), "[SL-C03-CNS-EDIT-AFTER-SWITCH] CNS depth edit reaches consumer after imperial switch", str(sl03))
     sl04 = s.get("sevenLensCycle04", {})
     assert_true(sl04.get("endDepthUnitsOk"), "[SL-C04-END-DEPTH-UNITS] END abs pressure invariant across equivalent metric/imperial depth", str(sl04))
     assert_true(sl04.get("siDepthUnitsOk"), "[SL-C04-SI-DEPTH-UNITS] surface interval result invariant across equivalent metric/imperial depth", str(sl04))
@@ -2556,8 +2655,12 @@ def _audit_case_rows():
         case_row("SL-C02-TRAVEL-DEPTH-CONSTRAINTS", case_ok("SL-C02-TRAVEL-DEPTH-CONSTRAINTS")),
         case_row("SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS", case_ok("SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS")),
         case_row("SL-C02-UNIT-ROUNDTRIP-IMMUTABLE", case_ok("SL-C02-UNIT-ROUNDTRIP-IMMUTABLE")),
+        case_row("SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH", case_ok("SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH")),
+        case_row("SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH", case_ok("SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH")),
         case_row("SL-C03-BEST-MIX-DEPTH-UNITS", case_ok("SL-C03-BEST-MIX-DEPTH-UNITS")),
         case_row("SL-C03-CNS-DEPTH-UNITS", case_ok("SL-C03-CNS-DEPTH-UNITS")),
+        case_row("SL-C03-BEST-MIX-EDIT-AFTER-SWITCH", case_ok("SL-C03-BEST-MIX-EDIT-AFTER-SWITCH")),
+        case_row("SL-C03-CNS-EDIT-AFTER-SWITCH", case_ok("SL-C03-CNS-EDIT-AFTER-SWITCH")),
         case_row("SL-C04-END-DEPTH-UNITS", case_ok("SL-C04-END-DEPTH-UNITS")),
         case_row("SL-C04-SI-DEPTH-UNITS", case_ok("SL-C04-SI-DEPTH-UNITS")),
         case_row("SL-C04-CONFIRM-BACKDROP", case_ok("SL-C04-CONFIRM-BACKDROP")),
