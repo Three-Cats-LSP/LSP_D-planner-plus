@@ -642,68 +642,6 @@
       ]
     },
     {
-      "id": "SL-C02-H-01",
-      "unit_id": "UI-MARKUP-PLANNER",
-      "severity": "HIGH",
-      "status": "OPEN",
-      "issue": "Seven-Lens Cycle 02 Codex verification",
-      "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes.",
-      "affected_units": [
-        "UI-MARKUP-PLANNER",
-        "UI-UNIT-SWITCHING",
-        "UI-GAS-INPUTS"
-      ]
-    },
-    {
-      "id": "SL-C02-M-03",
-      "unit_id": "UI-MARKUP-PLANNER",
-      "severity": "MEDIUM",
-      "status": "OPEN",
-      "issue": "Seven-Lens Cycle 02 Codex verification",
-      "summary": "Travel manual depth limits disagree between markup (100 m), metric restore (500 m), and imperial mode (165 ft).",
-      "affected_units": [
-        "UI-MARKUP-PLANNER",
-        "UI-UNIT-SWITCHING",
-        "UI-GAS-INPUTS"
-      ]
-    },
-    {
-      "id": "SL-C02-M-04",
-      "unit_id": "UI-UNIT-SWITCHING",
-      "severity": "MEDIUM",
-      "status": "OPEN",
-      "issue": "Seven-Lens Cycle 02 Codex verification",
-      "summary": "Metric/imperial round trips mutate active depth and cylinder values because rounded display values become canonical inputs.",
-      "affected_units": [
-        "UI-MARKUP-PLANNER",
-        "UI-UNIT-SWITCHING"
-      ]
-    },
-    {
-      "id": "SL-C02-M-05",
-      "unit_id": "TEST-ENGINE-REGRESSION",
-      "severity": "MEDIUM",
-      "status": "OPEN",
-      "issue": "Seven-Lens Cycle 02 Codex verification",
-      "summary": "Min-deco regression checks an unused isMetric adapter property instead of observable schedule behavior and does not prove pre-fix failure.",
-      "affected_units": [
-        "UI-MARKUP-PLANNER",
-        "TEST-ENGINE-REGRESSION"
-      ]
-    },
-    {
-      "id": "SL-C02-M-06",
-      "unit_id": "TOOL-SEVEN-LENS-PROTOCOL",
-      "severity": "MEDIUM",
-      "status": "OPEN",
-      "issue": "Seven-Lens Cycle 02 Codex verification",
-      "summary": "Protocol accepted audit_commit equal to baseline and did not require observable pre-fix failure or state-restoration evidence.",
-      "affected_units": [
-        "TOOL-SEVEN-LENS-PROTOCOL",
-        "TEST-SEVEN-LENS-PROTOCOL"
-      ]
-    },
-    {
       "id": "REGRESSION-GF-CCR-FIX",
       "unit_id": "ENG-ZHL-SCHEDULE",
       "severity": "CRITICAL",
@@ -3462,8 +3400,8 @@
         "COV-01",
         "PARITY-01"
       ],
-      "fingerprint": "0f96919b9db7894eda50eb718d0e2f7c3f9e222e3c5300717cc31c1ef60ced9b",
-      "last_read_fingerprint": "0f96919b9db7894eda50eb718d0e2f7c3f9e222e3c5300717cc31c1ef60ced9b"
+      "fingerprint": "6ea535561f9958d959be062504f25b6f04d6a5bd7570e794886ef34701c8c804",
+      "last_read_fingerprint": "6ea535561f9958d959be062504f25b6f04d6a5bd7570e794886ef34701c8c804"
     },
     {
       "id": "TEST-SEVEN-LENS-PROTOCOL",
@@ -3481,8 +3419,8 @@
       "regression_cases": [
         "COV-01"
       ],
-      "fingerprint": "2a21ba0ad2b3b8f9923e1081fede193e69138c3b367676b143766bec35653871",
-      "last_read_fingerprint": "2a21ba0ad2b3b8f9923e1081fede193e69138c3b367676b143766bec35653871"
+      "fingerprint": "b4e9216a588ef84fea99347d45ad5041f4a1349edc93dee935fc21825f68361b",
+      "last_read_fingerprint": "b4e9216a588ef84fea99347d45ad5041f4a1349edc93dee935fc21825f68361b"
     },
     {
       "id": "TOOL-EXTRACT-UI",

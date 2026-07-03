@@ -156,8 +156,8 @@
 | TOOL-BUILD-ZHL | tooling | `tools/build_zhl_bundle.py:1` | 390 | P1 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-CHECK-PARITY | tooling | `tools/check_engine_parity.py:1` | 311 | P1 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-RUN-AUDIT-COVERAGE-SUITE-PY | tooling | `tools/run_audit_coverage_suite.py:1` | 53 | P0 | VERIFIED | COV-01, PARITY-01 |
-| TOOL-SEVEN-LENS-PROTOCOL | tooling | `tools/seven_lens_protocol.py:1` | 409 | P0 | VERIFIED | COV-01, PARITY-01 |
-| TEST-SEVEN-LENS-PROTOCOL | test_infrastructure | `tools/test_seven_lens_protocol.py:1` | 152 | P0 | VERIFIED | COV-01 |
+| TOOL-SEVEN-LENS-PROTOCOL | tooling | `tools/seven_lens_protocol.py:1` | 313 | P0 | VERIFIED | COV-01, PARITY-01 |
+| TEST-SEVEN-LENS-PROTOCOL | test_infrastructure | `tools/test_seven_lens_protocol.py:1` | 120 | P0 | VERIFIED | COV-01 |
 | TOOL-EXTRACT-UI | tooling | `tools/extract_ui_cores.py:1` | 474 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-EXTRACT-ZHL | tooling | `tools/extract_zhl_core.py:1` | 124 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-INSERT-ZHL | tooling | `tools/insert_zhl_tier2.py:1` | 223 | P3 | VERIFIED | COV-01, PARITY-01 |
