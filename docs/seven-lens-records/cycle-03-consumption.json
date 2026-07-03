@@ -4,8 +4,8 @@
   "target_branch": "dev",
   "baseline_commit": "6e987af4cd66d8679cc63c5cc2dc371421ae8caa",
   "audit_commit": "e07ab49cf5c28a9b99c00eb12d3538acec568728",
-  "verified_source_commit": "277985ba5e0ccd0f837bcf093bd7263e2c233738",
-  "verification_status": "PASSED",
+  "verified_source_commit": "",
+  "verification_status": "BLOCKED",
   "parts": [
     {
       "id": "UI-MARKUP-CONSUMPTION-P01",
@@ -113,6 +113,50 @@
       "status": "CLOSED",
       "regression_ids": [],
       "evidence_ids": ["static"]
+    },
+    {
+      "id": "SL-C03-H-02",
+      "severity": "HIGH",
+      "unit_id": "UI-MARKUP-CONSUMPTION",
+      "location": "ui/markup-consumption.html:364",
+      "root_cause": "The safety note presents extending 6 m and 3 m stops as unconditionally safe.",
+      "failure_path": "A diver extends an oxygen-rich shallow stop without recalculating CNS/OTU or checking remaining gas.",
+      "impact": "The UI can encourage excess oxygen exposure or gas use while labeling the action safe.",
+      "evidence": "The absolute safety statement has no oxygen-exposure, gas-reserve, or replanning qualification.",
+      "recommendation": "Describe the bounded planning considerations and avoid an unconditional safety claim.",
+      "observable_contract": "Knowledge Base safety guidance does not call an exposure-changing action universally safe.",
+      "status": "OPEN",
+      "regression_ids": ["SL-C03-SHALLOW-STOP-SAFETY-COPY"],
+      "evidence_ids": []
+    },
+    {
+      "id": "SL-C03-M-02",
+      "severity": "MEDIUM",
+      "unit_id": "TEST-ENGINE-REGRESSION",
+      "location": "index.html:2885-2903,3472-3486,3626-3629,7084-7087,7609-7612; dev/engine_regression.py:1861-1893",
+      "root_cause": "Consumers overwrite canonical metre values from rounded display values, while regressions compare only rounded outputs and restore fields before restoring units.",
+      "failure_path": "Set 30 m, switch to imperial, then calculate or round-trip units; the consumer receives 29.870399 m. The regression still sees 34% or 0.84 and passes.",
+      "impact": "Physical state drifts silently and the test's finally block can leave Best Mix and CNS fields changed.",
+      "evidence": "cycle-03-consumption browser trace records 30 m becoming 29.870399 m while rounded observables remain unchanged.",
+      "recommendation": "Keep canonical physical values independent of display rounding and assert exact consumer inputs plus hashed before/after state.",
+      "observable_contract": "Unit changes preserve exact physical depth through the consumer and regression execution leaves all UI state unchanged.",
+      "status": "OPEN",
+      "regression_ids": ["SL-C03-PHYSICAL-DEPTH-TRACE", "SL-C03-REGRESSION-STATE-IMMUTABLE"],
+      "evidence_ids": []
+    },
+    {
+      "id": "SL-C03-L-02",
+      "severity": "LOW",
+      "unit_id": "UI-MARKUP-CONSUMPTION",
+      "location": "ui/markup-consumption.html:378",
+      "root_cause": "The GFS description says it is useful when VPM-B shallow stops feel too long.",
+      "failure_path": "A user chooses GFS expecting it to shorten shallow decompression.",
+      "impact": "The recommendation contradicts the app's other explanation that GFS adds a conservative surfacing ceiling.",
+      "evidence": "ui/markup-header.html describes GFS as always at least as conservative at the surface and useful when pure VPM-B feels too aggressive.",
+      "recommendation": "Make the Knowledge Base description consistent with the actual GFS constraint and the header guidance.",
+      "status": "OPEN",
+      "regression_ids": [],
+      "evidence_ids": []
     }
   ],
   "evidence_runs": [
@@ -201,5 +245,5 @@
     "docs/audit-units.json"
   ],
   "audit_report": "docs/seven-lens-reports/cycle-03-consumption.md",
-  "notes": "Strengthened protocol cycle 3 complete."
+  "notes": "BLOCKED by Codex post-merge verification. See cycle-03-codex-verification.md and the browser trace specification."
 }

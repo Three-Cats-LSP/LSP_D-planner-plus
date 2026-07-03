@@ -26,6 +26,10 @@ results, and the reviewing model/session.
 3. Open pull requests against `dev`, never `main`.
 4. Keep audit reports, fixes, tests, and metadata for one cycle in the same PR.
 5. Never force-push or rewrite `dev` history.
+6. Run `plan` before making any branch commit. The planner refuses a dirty
+   worktree or a `HEAD` that differs from `origin/dev`.
+7. Never delete, downgrade, or rewrite an unresolved finding or prior-cycle
+   record to make a gate pass. Resolve it through its owning cycle and evidence.
 
 Suggested setup:
 
@@ -142,6 +146,11 @@ python -m tools.audit run --profile release
 
 Record the branch, exact commit SHA, commands, results, and worktree state.
 
+The schema-v2 plan snapshots the integration commit, registry fingerprint, and
+all historical findings. Audit, verify, and close reject deleted findings,
+severity downgrades, unsupported closures, prior-cycle record edits, or a cycle
+that was planned after work had already begun.
+
 Do not run fingerprint refresh before the baseline staleness check. A tool that
 refreshes fingerprints before checking them can hide unreviewed source changes.
 
@@ -212,6 +221,18 @@ test that only checks an internal flag, helper existence, or source string is no
 behavioral evidence. Record a separate before/after state snapshot proving the
 test leaves DOM, globals, storage, and workers unchanged.
 
+For UI, unit, state, and engine-consumer findings, add a declarative browser trace
+under `docs/seven-lens-traces/` and run:
+
+```text
+python tools/seven_lens_browser_trace.py --spec <trace-spec>
+```
+
+Each trace must capture all four stages: user/API input, canonical physical value,
+the value received by the consumer, and the observable output. Do not use equal
+rounded labels as proof of physical equivalence. The trace must also hash bounded
+DOM/global/storage snapshots before and after cleanup; the hashes must match.
+
 For unit-sensitive controls, review the complete physical tuple: value, label,
 minimum, maximum, step, default, persistence, and both conversion directions.
 Test a non-default value and each boundary, then require metric -> imperial ->
@@ -236,6 +257,9 @@ explanation and must start from the committed audit report and source.
    identity/session, and the exact evidence run IDs. The verified source commit
    must be the latest commit that changes reviewed application source, regression
    code, or generated artifacts.
+8. Inspect browser-trace captures, not only their pass/fail result. Confirm the
+   consumer received the expected unrounded physical value and the state hashes
+   are equal.
 
 Any later change to reviewed application source, regression code, or generated
 artifacts invalidates Phase D. Repeat verification at the new source commit before

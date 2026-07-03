@@ -166,7 +166,7 @@ Seven lenses (L1–L7) applied to the V3 header markup partial and its callers:
 | **Auditor** | Cursor GPT-5.5 Medium (`cursor/seven-lens-cycle-02-planner-audit`) |
 | **Fixer** | Composer 2.5 |
 | **Verifier** | Cursor GPT-5.5 Medium (`cursor/seven-lens-cycle-02-planner-verify`) |
-| **Ledger** | `SEVEN_LENS_REVIEWED` |
+| **Ledger** | `IN_PROGRESS` (historical findings restored) |
 | **Protocol record** | `docs/seven-lens-records/cycle-02-planner.json` — **CLOSE PASS** |
 | **Detailed reports** | `docs/seven-lens-reports/cycle-02-planner.md`, `cycle-02-independent-verification.md` |
 
@@ -236,7 +236,7 @@ Seven lenses applied to the V3 planner markup partial (plan panel) and traced ca
 - **Regression suite:** Two new stable case IDs (REG-62, REG-63); full engine regression at 161 cases.
 - **CI:** Static + full CI green on verified commit `b56fc07`.
 - **Merge status:** Merged to `dev` via PR [#179](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/179).
-- **Open findings:** None for this unit.
+- **Open findings:** Cycle 2 was reopened after audit-history verification restored `SL-C02-H-01` and `SL-C02-M-03` through `SL-C02-M-06`.
 - **Cumulative seven-lens coverage:** Cycles 1–2 complete header + planner markup partials (`UI-MARKUP-HEADER`, `UI-MARKUP-PLANNER`).
 
 ---
@@ -256,9 +256,9 @@ Seven lenses applied to the V3 planner markup partial (plan panel) and traced ca
 | **Auditor** | Cursor GPT-5.5 Medium (`cursor/seven-lens-cycle-03-consumption-audit`) |
 | **Fixer** | Composer 2.5 |
 | **Verifier** | Cursor GPT-5.5 Medium (`cursor/seven-lens-cycle-03-consumption-verify`) |
-| **Ledger** | `SEVEN_LENS_REVIEWED` |
+| **Ledger** | `IN_PROGRESS` (post-merge verification blocked) |
 | **Protocol record** | `docs/seven-lens-records/cycle-03-consumption.json` |
-| **Detailed reports** | `docs/seven-lens-reports/cycle-03-consumption.md`, `cycle-03-independent-verification.md` |
+| **Detailed reports** | `docs/seven-lens-reports/cycle-03-consumption.md`, `cycle-03-independent-verification.md`, `cycle-03-codex-verification.md` |
 
 ### What was tested
 
@@ -334,7 +334,16 @@ Seven lenses applied to the V3 consumption tools markup partial and traced calle
 - **Regression suite:** Two new stable case IDs (REG-64, REG-65); full engine regression at 163 cases.
 - **CI:** Static + full CI green on verified commit `277985b`.
 - **Merge status:** Merged to `dev` via PR [#182](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/182).
-- **Open findings:** None for this unit.
+- **Open findings:** `SL-C03-H-02`, `SL-C03-M-02`, `SL-C03-L-02`, plus shared `SL-C02-M-04` and `SL-C02-M-06`.
+
+### Post-merge Codex verification
+
+Cycle 3 was reopened after exact browser value tracing found that 30 m becomes
+29.870399 m inside Best Mix and after a CNS unit round trip, while the rounded
+outputs asserted by the old regression remain unchanged. The regression cleanup
+also restores depth strings before units. Two reviewed-copy findings remain:
+unconditional shallow-stop safety guidance and an inverted GFS recommendation.
+See `docs/seven-lens-reports/cycle-03-codex-verification.md`.
 - **Cumulative seven-lens coverage:** Cycles 1–3 complete header, planner, and consumption markup partials.
 
 ---

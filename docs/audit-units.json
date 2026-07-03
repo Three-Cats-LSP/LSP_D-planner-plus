@@ -477,6 +477,104 @@
   },
   "findings": [
     {
+      "id": "SL-C02-H-01",
+      "unit_id": "UI-MARKUP-PLANNER",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "issue": "Seven-Lens Cycle 02 Codex verification",
+      "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes.",
+      "affected_units": [
+        "UI-MARKUP-PLANNER",
+        "UI-UNIT-SWITCHING",
+        "UI-GAS-INPUTS"
+      ]
+    },
+    {
+      "id": "SL-C02-M-03",
+      "unit_id": "UI-MARKUP-PLANNER",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "issue": "Seven-Lens Cycle 02 Codex verification",
+      "summary": "Travel manual depth limits disagree between markup, metric restore, and imperial mode.",
+      "affected_units": [
+        "UI-MARKUP-PLANNER",
+        "UI-UNIT-SWITCHING",
+        "UI-GAS-INPUTS"
+      ]
+    },
+    {
+      "id": "SL-C02-M-04",
+      "unit_id": "UI-UNIT-SWITCHING",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "issue": "Seven-Lens Cycle 02 and Cycle 03 Codex verification",
+      "summary": "Rounded display values become canonical physical inputs; Best Mix and CNS now reproduce the same unit-roundtrip drift.",
+      "affected_units": [
+        "UI-MARKUP-PLANNER",
+        "UI-MARKUP-CONSUMPTION",
+        "UI-UNIT-SWITCHING"
+      ]
+    },
+    {
+      "id": "SL-C02-M-05",
+      "unit_id": "TEST-ENGINE-REGRESSION",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "issue": "Seven-Lens Cycle 02 Codex verification",
+      "summary": "Min-deco regression checks an adapter property rather than observable schedule behavior.",
+      "affected_units": [
+        "UI-MARKUP-PLANNER",
+        "TEST-ENGINE-REGRESSION"
+      ]
+    },
+    {
+      "id": "SL-C02-M-06",
+      "unit_id": "TOOL-SEVEN-LENS-PROTOCOL",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "issue": "Seven-Lens protocol integrity verification",
+      "summary": "Cycle history allowed unresolved findings and a blocked prior record to be deleted or rewritten as passed.",
+      "affected_units": [
+        "TOOL-SEVEN-LENS-PROTOCOL",
+        "TEST-SEVEN-LENS-PROTOCOL"
+      ]
+    },
+    {
+      "id": "SL-C03-H-02",
+      "unit_id": "UI-MARKUP-CONSUMPTION",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "issue": "Seven-Lens Cycle 03 Codex verification",
+      "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits.",
+      "affected_units": [
+        "UI-MARKUP-CONSUMPTION"
+      ]
+    },
+    {
+      "id": "SL-C03-M-02",
+      "unit_id": "TEST-ENGINE-REGRESSION",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "issue": "Seven-Lens Cycle 03 Codex verification",
+      "summary": "Cycle 3 regressions compare rounded outputs and restore values before units, masking physical-depth drift and corrupting test state.",
+      "affected_units": [
+        "UI-MARKUP-CONSUMPTION",
+        "UI-UNIT-SWITCHING",
+        "TEST-ENGINE-REGRESSION"
+      ]
+    },
+    {
+      "id": "SL-C03-L-02",
+      "unit_id": "UI-MARKUP-CONSUMPTION",
+      "severity": "LOW",
+      "status": "OPEN",
+      "issue": "Seven-Lens Cycle 03 Codex verification",
+      "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling.",
+      "affected_units": [
+        "UI-MARKUP-CONSUMPTION"
+      ]
+    },
+    {
       "id": "ISSUE-133-ROLLUP",
       "unit_id": "TOOL-AUDIT",
       "severity": "HIGH",
@@ -3387,8 +3485,8 @@
         "COV-01",
         "PARITY-01"
       ],
-      "fingerprint": "d9c425b8d174f3f8631d80c508ce1940d9c8509d3628b38b8a6d7803bb665b1a",
-      "last_read_fingerprint": "d9c425b8d174f3f8631d80c508ce1940d9c8509d3628b38b8a6d7803bb665b1a"
+      "fingerprint": "82539814d52f369f56a52c78879b590fd8dcbd4fcb42d25721f27ac8abcfb22d",
+      "last_read_fingerprint": "82539814d52f369f56a52c78879b590fd8dcbd4fcb42d25721f27ac8abcfb22d"
     },
     {
       "id": "TOOL-SEVEN-LENS-PROTOCOL",
@@ -3399,17 +3497,11 @@
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity"
-      ],
+      "evidence": ["SUITE-COVERAGE/AUDIT-COV-01", "SUITE-PARITY/canonical-generated-parity"],
       "issue": "Seven-lens manual audit protocol gate",
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01"
-      ],
-      "fingerprint": "0f96919b9db7894eda50eb718d0e2f7c3f9e222e3c5300717cc31c1ef60ced9b",
-      "last_read_fingerprint": "0f96919b9db7894eda50eb718d0e2f7c3f9e222e3c5300717cc31c1ef60ced9b"
+      "regression_cases": ["COV-01", "PARITY-01"],
+      "fingerprint": "976ca2f350da90e3286f38ae2fee1459be031c913cecb9e1c9d42036bd7f4a1e",
+      "last_read_fingerprint": "976ca2f350da90e3286f38ae2fee1459be031c913cecb9e1c9d42036bd7f4a1e"
     },
     {
       "id": "TEST-SEVEN-LENS-PROTOCOL",
@@ -3420,15 +3512,64 @@
       "boundary": {
         "type": "whole_file"
       },
+      "evidence": ["SUITE-COVERAGE/AUDIT-COV-01"],
+      "issue": "Seven-lens manual audit protocol gate tests",
+      "regression_cases": ["COV-01"],
+      "fingerprint": "073afbd6c212ac5de0c58a5967bea95a52e000b88a27445f6d34c1e8421cbb9a",
+      "last_read_fingerprint": "073afbd6c212ac5de0c58a5967bea95a52e000b88a27445f6d34c1e8421cbb9a"
+    },
+    {
+      "id": "TOOL-SEVEN-LENS-BROWSER-TRACE",
+      "path": "tools/seven_lens_browser_trace.py",
+      "layer": "tooling",
+      "priority": "P0",
+      "status": "VERIFIED",
+      "boundary": {
+        "type": "whole_file"
+      },
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "Seven-lens manual audit protocol gate tests",
+      "issue": "Seven-lens browser event and consumer value tracing",
       "regression_cases": [
         "COV-01"
       ],
-      "fingerprint": "2a21ba0ad2b3b8f9923e1081fede193e69138c3b367676b143766bec35653871",
-      "last_read_fingerprint": "2a21ba0ad2b3b8f9923e1081fede193e69138c3b367676b143766bec35653871"
+      "fingerprint": "b3d4e334759f7a791dc161eb2b485f94c79500992e2141aac35f36954c3afe6b",
+      "last_read_fingerprint": "b3d4e334759f7a791dc161eb2b485f94c79500992e2141aac35f36954c3afe6b"
+    },
+    {
+      "id": "TEST-SEVEN-LENS-BROWSER-TRACE",
+      "path": "tools/test_seven_lens_browser_trace.py",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "VERIFIED",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "Seven-lens browser trace assertion tests",
+      "regression_cases": [
+        "COV-01"
+      ],
+      "fingerprint": "c38321e30ba8926849f2b0e4535e9c224f0f787d5c31e67caf16f3fd52aad1ae",
+      "last_read_fingerprint": "c38321e30ba8926849f2b0e4535e9c224f0f787d5c31e67caf16f3fd52aad1ae"
+    },
+    {
+      "id": "TEST-SEVEN-LENS-CYCLE03-TRACE",
+      "path": "docs/seven-lens-traces/cycle-03-consumption.json",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "READ",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Cycle 03 exact browser value and state trace specification",
+      "regression_cases": [],
+      "fingerprint": "a3b84140c93159491e8d64583ba2081816438e9e17651972d2907c73425cac4b",
+      "last_read_fingerprint": "a3b84140c93159491e8d64583ba2081816438e9e17651972d2907c73425cac4b"
     },
     {
       "id": "TOOL-EXTRACT-UI",
