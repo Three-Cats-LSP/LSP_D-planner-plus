@@ -4,7 +4,7 @@
   "target_branch": "dev",
   "baseline_commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
   "audit_commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
-  "verified_source_commit": "",
+  "verified_source_commit": "b56fc07292f07ead3811d91a2412c063620e5d9d",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -98,28 +98,28 @@
       "id": "static",
       "command": "python -m tools.audit check --profile static",
       "exit_code": 0,
-      "commit": "",
+      "commit": "b56fc07292f07ead3811d91a2412c063620e5d9d",
       "worktree_clean": true
     },
     {
       "id": "ci",
       "command": "python -m tools.audit run --profile ci",
       "exit_code": 0,
-      "commit": "",
+      "commit": "b56fc07292f07ead3811d91a2412c063620e5d9d",
       "worktree_clean": true
     },
     {
       "id": "ER-02-MIN-DECO",
       "command": "python dev/engine_regression.py SL-C02-MIN-DECO-UNITS",
       "exit_code": 0,
-      "commit": "",
+      "commit": "b56fc07292f07ead3811d91a2412c063620e5d9d",
       "worktree_clean": true
     },
     {
       "id": "ER-02-TRAVEL-DEPTH",
       "command": "python dev/engine_regression.py SL-C02-TRAVEL-DEPTH-CONSTRAINTS",
       "exit_code": 0,
-      "commit": "",
+      "commit": "b56fc07292f07ead3811d91a2412c063620e5d9d",
       "worktree_clean": true
     }
   ],
