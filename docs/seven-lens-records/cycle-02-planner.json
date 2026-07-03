@@ -4,8 +4,8 @@
   "target_branch": "dev",
   "baseline_commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
   "audit_commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
-  "verified_source_commit": "b56fc07292f07ead3811d91a2412c063620e5d9d",
-  "verification_status": "PASSED",
+  "verified_source_commit": "",
+  "verification_status": "BLOCKED",
   "parts": [
     {
       "id": "UI-MARKUP-PLANNER-P01",
@@ -91,6 +91,56 @@
       "status": "CLOSED",
       "regression_ids": ["SL-C02-TRAVEL-DEPTH-CONSTRAINTS"],
       "evidence_ids": ["ER-02-TRAVEL-DEPTH", "static", "ci"]
+    },
+    {
+      "id": "SL-C02-H-01", "severity": "HIGH", "unit_id": "UI-MARKUP-PLANNER",
+      "location": "ui/markup-planner.html cylinder fields; index.html setUnits",
+      "root_cause": "Imperial cylinder max is 1766 rather than about 1.77 ft3 and metric min/step remain active.",
+      "failure_path": "Switch to imperial and validate a default or oversized cylinder.",
+      "impact": "Normal cylinders are invalid while enormous gas volumes are accepted.",
+      "evidence": "Chromium constraint snapshot in cycle-02-codex-verification.md",
+      "recommendation": "Derive value/min/max/step from one canonical physical tuple.",
+      "status": "OPEN", "regression_ids": ["SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS"], "evidence_ids": []
+    },
+    {
+      "id": "SL-C02-M-03", "severity": "MEDIUM", "unit_id": "UI-MARKUP-PLANNER",
+      "location": "ui/markup-planner.html travel depth; index.html setUnits; gas-cards-core.js",
+      "root_cause": "Travel depth maxima disagree between markup, metric restore, and imperial mode.",
+      "failure_path": "A depth can be accepted in metres and rejected at its feet equivalent.",
+      "impact": "Manual travel depth validity changes with display units.",
+      "evidence": "Chromium physical parity probe in cycle-02-codex-verification.md",
+      "recommendation": "Use one canonical metre maximum and derive feet.",
+      "status": "OPEN", "regression_ids": ["SL-C02-TRAVEL-DEPTH-PHYSICAL-PARITY"], "evidence_ids": []
+    },
+    {
+      "id": "SL-C02-M-04", "severity": "MEDIUM", "unit_id": "UI-UNIT-SWITCHING",
+      "location": "index.html setUnits numeric conversions",
+      "root_cause": "Rounded display values are converted back as canonical physical values.",
+      "failure_path": "Switch metric to imperial and back.",
+      "impact": "Depth and cylinder physical values drift across display-unit changes.",
+      "evidence": "Browser before/after physical-value trace.",
+      "recommendation": "Preserve canonical values independently from rounded display values.",
+      "status": "OPEN", "regression_ids": ["SL-C02-UNIT-ROUNDTRIP-IMMUTABLE"], "evidence_ids": []
+    },
+    {
+      "id": "SL-C02-M-05", "severity": "MEDIUM", "unit_id": "TEST-ENGINE-REGRESSION",
+      "location": "dev/engine_regression.py sevenLensCycle02",
+      "root_cause": "Regression asserts an adapter property rather than schedule output.",
+      "failure_path": "Engine behavior can remain unchanged while the regression passes.",
+      "impact": "The min-deco repair lacks demonstrated behavioral evidence.",
+      "evidence": "Source trace through ZHL and VPM consumers.",
+      "recommendation": "Assert physically equivalent metric and imperial schedule stops.",
+      "status": "OPEN", "regression_ids": ["SL-C02-MIN-DECO-OBSERVABLE-PARITY"], "evidence_ids": []
+    },
+    {
+      "id": "SL-C02-M-06", "severity": "MEDIUM", "unit_id": "TOOL-SEVEN-LENS-PROTOCOL",
+      "location": "Cycle 2/3 records and tools/seven_lens_protocol.py",
+      "root_cause": "Protocol did not preserve unresolved findings across cycle branches.",
+      "failure_path": "Delete registered findings and rewrite a blocked prior cycle as passed before planning the next cycle.",
+      "impact": "CI reports a clean cycle after audit evidence has been removed.",
+      "evidence": "Commit 6e987af deleted five unresolved findings and rewrote Cycle 2.",
+      "recommendation": "Snapshot and validate finding history and require planning at origin/dev before branch changes.",
+      "status": "OPEN", "regression_ids": ["SEVEN-LENS-FINDING-CONTINUITY"], "evidence_ids": []
     }
   ],
   "evidence_runs": [
@@ -129,5 +179,5 @@
     "dev/engine_regression.py",
     "docs/audit-units.json"
   ],
-  "notes": "Single-part review (493 lines). Caller fixes in index.html and gas-cards-core.js per markup contract."
+  "notes": "BLOCKED: unresolved Codex findings were restored after commit 6e987af removed them from the registry and record."
 }

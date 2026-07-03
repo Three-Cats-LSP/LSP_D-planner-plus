@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -19,6 +20,8 @@ FINDING_FIELDS = (
     "impact", "evidence", "recommendation", "status",
 )
 MAX_SESSION_LINES = 600
+SEVERITY_RANK = {"LOW": 1, "MEDIUM": 2, "HIGH": 3, "CRITICAL": 4}
+TRACE_STAGES = {"input", "canonical", "consumer", "observable"}
 
 
 def _git(*args: str, root: Path = ROOT) -> str:
@@ -56,13 +59,25 @@ def _resolved_registry(root: Path) -> tuple[dict[str, Any], dict[str, dict[str, 
 
     registry = load_registry(root)
     errors, resolved = validate_registry_v2(root, registry)
-    if errors:
-        raise RuntimeError("registry invalid:\n" + "\n".join(errors))
+    structural_errors = [
+        error for error in errors
+        if not error.startswith("release-blocking finding remains open:")
+    ]
+    if structural_errors:
+        raise RuntimeError("registry invalid:\n" + "\n".join(structural_errors))
     return registry, resolved
 
 
 def make_plan(root: Path, cycle_id: int) -> dict[str, Any]:
     registry, resolved = _resolved_registry(root)
+    if _git("status", "--porcelain", root=root):
+        raise RuntimeError("plan requires a clean worktree")
+    head = _git("rev-parse", "HEAD", root=root)
+    integration_base = _git("rev-parse", "origin/dev", root=root)
+    if head != integration_base:
+        raise RuntimeError(
+            "plan must run before cycle work begins: HEAD must equal origin/dev"
+        )
     cycle = next((row for row in registry.get("cycles", []) if row.get("cycle") == cycle_id), None)
     if not cycle:
         raise ValueError(f"cycle {cycle_id} is not registered")
@@ -89,10 +104,23 @@ def make_plan(root: Path, cycle_id: int) -> dict[str, Any]:
                 },
             })
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "cycle": cycle_id,
         "target_branch": "dev",
-        "baseline_commit": _git("rev-parse", "HEAD", root=root),
+        "integration_base_commit": integration_base,
+        "baseline_commit": head,
+        "baseline_registry_fingerprint": hashlib.sha256(
+            (root / "docs" / "audit-units.json").read_text(encoding="utf-8").strip().encode("utf-8")
+        ).hexdigest(),
+        "baseline_findings": [
+            {
+                "id": row.get("id"),
+                "severity": row.get("severity"),
+                "status": row.get("status"),
+                "summary": row.get("summary", ""),
+            }
+            for row in registry.get("findings", [])
+        ],
         "audit_commit": "",
         "verified_source_commit": "",
         "verification_status": "PENDING",
@@ -263,6 +291,15 @@ def _validate_evidence(record: dict[str, Any], phase: str) -> list[str]:
                 errors.append(f"evidence {evidence_id}: observable_assertions missing")
             if not isinstance(row.get("state_restored"), bool):
                 errors.append(f"evidence {evidence_id}: state_restored must be boolean")
+        if row.get("kind") == "state_restoration" and (
+            record.get("schema_version", 1) >= 2 or record.get("verification_status") == "PASSED"
+        ):
+            before = row.get("state_before_sha256")
+            after = row.get("state_after_sha256")
+            if not (_text(before, 64) and _text(after, 64)):
+                errors.append(f"evidence {evidence_id}: state snapshot hashes missing")
+            elif before != after:
+                errors.append(f"evidence {evidence_id}: before/after state snapshots differ")
         if row.get("kind") == "baseline_failure" and row.get("exit_code") == 0:
             errors.append(f"evidence {evidence_id}: baseline failure must fail before the fix")
         if row.get("kind") in {"post_fix", "state_restoration", "gate"} and row.get("exit_code") != 0:
@@ -277,7 +314,7 @@ def _validate_evidence(record: dict[str, Any], phase: str) -> list[str]:
     return errors
 
 
-def _validate_closed_finding_evidence(record: dict[str, Any], phase: str) -> list[str]:
+def _validate_closed_finding_evidence(root: Path, record: dict[str, Any], phase: str) -> list[str]:
     if phase not in {"verify", "close"}:
         return []
     errors: list[str] = []
@@ -298,6 +335,59 @@ def _validate_closed_finding_evidence(record: dict[str, Any], phase: str) -> lis
             errors.append(f"{fid}: post-fix evidence does not emit every regression ID")
         if restore.get("kind") != "state_restoration" or restore.get("state_restored") is not True:
             errors.append(f"{fid}: state restoration evidence is not clean")
+        trace = after.get("runtime_trace", {})
+        if record.get("schema_version", 1) >= 2:
+            if not _text(trace.get("entry_event"), 5):
+                errors.append(f"{fid}: post-fix browser trace lacks an entry event")
+            consumers = trace.get("consumer_path", [])
+            if not isinstance(consumers, list) or not consumers:
+                errors.append(f"{fid}: post-fix browser trace lacks consumer path")
+            captures = trace.get("captures", [])
+            stages = {
+                item.get("stage") for item in captures if isinstance(item, dict)
+            } if isinstance(captures, list) else set()
+            if not TRACE_STAGES.issubset(stages):
+                missing = ", ".join(sorted(TRACE_STAGES - stages))
+                errors.append(f"{fid}: post-fix browser trace lacks stages: {missing}")
+            if not _text(trace.get("artifact_sha256"), 64):
+                errors.append(f"{fid}: post-fix browser trace lacks artifact hash")
+            artifact_path = trace.get("artifact_path")
+            if not _text(artifact_path, 5):
+                errors.append(f"{fid}: post-fix browser trace lacks artifact path")
+            else:
+                artifact = root / artifact_path
+                if not artifact.is_file():
+                    errors.append(f"{fid}: browser trace artifact is missing: {artifact_path}")
+                elif hashlib.sha256(artifact.read_bytes()).hexdigest() != trace.get("artifact_sha256"):
+                    errors.append(f"{fid}: browser trace artifact hash does not match")
+    return errors
+
+
+def _validate_finding_continuity(
+    registry: dict[str, Any], record: dict[str, Any], phase: str
+) -> list[str]:
+    if record.get("schema_version", 1) < 2 or phase not in {"audit", "verify", "close"}:
+        return []
+    errors: list[str] = []
+    baseline = {row.get("id"): row for row in record.get("baseline_findings", [])}
+    current = {row.get("id"): row for row in registry.get("findings", [])}
+    cycle_findings = {row.get("id"): row for row in record.get("findings", [])}
+    for finding_id, old in baseline.items():
+        if not finding_id:
+            errors.append("baseline finding without id")
+            continue
+        new = current.get(finding_id)
+        if new is None:
+            errors.append(f"historical finding {finding_id} was deleted")
+            continue
+        if SEVERITY_RANK.get(new.get("severity"), 0) < SEVERITY_RANK.get(old.get("severity"), 0):
+            errors.append(f"historical finding {finding_id} severity was downgraded")
+        if old.get("status") != "CLOSED" and new.get("status") == "CLOSED":
+            cycle_copy = cycle_findings.get(finding_id, {})
+            if cycle_copy.get("status") != "CLOSED" or not cycle_copy.get("evidence_ids"):
+                errors.append(
+                    f"historical finding {finding_id} closed without this cycle's evidence"
+                )
     return errors
 
 
@@ -316,22 +406,69 @@ def _validate_audit_checkpoint(root: Path, record: dict[str, Any], check_git: bo
     if not _git_ok("merge-base", "--is-ancestor", baseline, audit, root=root):
         errors.append("audit_commit is not descended from baseline_commit")
         return errors
+    if record.get("schema_version", 1) >= 2:
+        try:
+            base_registry_text = _git(
+                "show", f"{baseline}:docs/audit-units.json", root=root
+            )
+            base_registry = json.loads(base_registry_text)
+            actual_hash = hashlib.sha256(base_registry_text.encode("utf-8")).hexdigest()
+            if actual_hash != record.get("baseline_registry_fingerprint"):
+                errors.append("baseline registry fingerprint does not match git history")
+            expected_findings = [
+                {
+                    "id": row.get("id"),
+                    "severity": row.get("severity"),
+                    "status": row.get("status"),
+                    "summary": row.get("summary", ""),
+                }
+                for row in base_registry.get("findings", [])
+            ]
+            if expected_findings != record.get("baseline_findings"):
+                errors.append("baseline finding snapshot does not match git history")
+        except (RuntimeError, json.JSONDecodeError) as exc:
+            errors.append(f"cannot verify baseline registry: {exc}")
+        try:
+            remote_base = _git("merge-base", audit, "origin/dev", root=root)
+            if remote_base != baseline:
+                errors.append(
+                    "baseline_commit is not the cycle branch point from origin/dev"
+                )
+        except RuntimeError as exc:
+            errors.append(f"cannot verify origin/dev branch point: {exc}")
     changed = _git("diff", "--name-only", f"{baseline}..{audit}", root=root).splitlines()
     if not any(_attestation_only_path(path) for path in changed):
         errors.append("audit checkpoint does not contain a cycle report or record")
     disallowed = [path for path in changed if path and not _audit_metadata_path(path)]
     if disallowed:
         errors.append("audit checkpoint contains source/test fixes: " + ", ".join(disallowed))
+    cycle = int(record.get("cycle", 0) or 0)
+    prior_records = []
+    for path in changed:
+        match = re.match(r"docs/seven-lens-records/cycle-(\d+)", path)
+        if match and int(match.group(1)) != cycle:
+            prior_records.append(path)
+    if prior_records:
+        errors.append("audit checkpoint edits prior-cycle records: " + ", ".join(prior_records))
+    if "docs/seven-lens-manual-ledger.json" in changed:
+        errors.append("audit checkpoint must not rewrite the manual ledger")
     if _text(verified, 7) and not _git_ok("merge-base", "--is-ancestor", audit, verified, root=root):
         errors.append("verified_source_commit does not descend from audit_commit")
     return errors
 
 
 def validate_record(root: Path, record: dict[str, Any], phase: str, check_git: bool = True) -> list[str]:
+    registry, _ = _resolved_registry(root)
     errors = _validate_parts(root, record, phase)
     errors.extend(_validate_findings(record, phase))
     errors.extend(_validate_evidence(record, phase))
-    errors.extend(_validate_closed_finding_evidence(record, phase))
+    errors.extend(_validate_closed_finding_evidence(root, record, phase))
+    errors.extend(_validate_finding_continuity(registry, record, phase))
+    if record.get("schema_version", 1) >= 2:
+        if record.get("integration_base_commit") != record.get("baseline_commit"):
+            errors.append("integration_base_commit must equal baseline_commit")
+        if not _text(record.get("baseline_registry_fingerprint"), 64):
+            errors.append("baseline_registry_fingerprint missing")
     if record.get("target_branch") != "dev":
         errors.append("target_branch must be dev")
     if phase in {"verify", "close"} and not _text(record.get("audit_commit"), 7):

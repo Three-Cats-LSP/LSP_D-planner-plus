@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "cycle": 3,
+  "traces": [
+    {
+      "id": "SL-C03-BEST-MIX-PHYSICAL-TRACE",
+      "entry_event": "unitsSelect change from metric to imperial",
+      "consumer_path": ["setUnits", "calcBestMix", "domDepthToM", "bestMixResult"],
+      "setup": [
+        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+        {"action": "select", "selector": "#unitsSelect", "value": "metric", "force": true},
+        {"action": "fill", "selector": "#bestMixDepth", "value": "30", "force": true},
+        {"action": "fill", "selector": "#bestMixPPO2", "value": "14", "force": true}
+      ],
+      "state": {
+        "selectors": ["#unitsSelect", "#bestMixDepth", "#bestMixPPO2"],
+        "restore_order": ["#unitsSelect", "#bestMixDepth", "#bestMixPPO2"],
+        "globals": ["_zhlHeadless"]
+      },
+      "steps": [
+        {
+          "capture": "metric",
+          "values": {
+            "input_value": "document.querySelector('#bestMixDepth').value",
+            "canonical_m": "Number(document.querySelector('#bestMixDepth').dataset.depthM)",
+            "consumer_m": "domDepthToM('bestMixDepth')",
+            "observable": "document.querySelector('#bestMixResult').textContent"
+          }
+        },
+        {"action": "select", "selector": "#unitsSelect", "value": "imperial", "force": true},
+        {
+          "capture": "imperial",
+          "values": {
+            "input_value": "document.querySelector('#bestMixDepth').value",
+            "canonical_m": "Number(document.querySelector('#bestMixDepth').dataset.depthM)",
+            "consumer_m": "domDepthToM('bestMixDepth')",
+            "observable": "document.querySelector('#bestMixResult').textContent"
+          }
+        }
+      ],
+      "assertions": [
+        {"id": "display-feet", "left": "$.imperial.input_value", "op": "equal", "right": "98"},
+        {"id": "canonical-physical-depth", "left": "$.imperial.canonical_m", "op": "close", "right": 30, "tolerance": 0.000001},
+        {"id": "consumer-physical-depth", "left": "$.imperial.consumer_m", "op": "close", "right": 30, "tolerance": 0.000001},
+        {"id": "observable-parity", "left": "$.metric.observable", "op": "equal", "right": "$.imperial.observable"}
+      ]
+    },
+    {
+      "id": "SL-C03-CNS-PHYSICAL-TRACE",
+      "entry_event": "unitsSelect metric to imperial to metric round trip",
+      "consumer_path": ["setUnits", "stampDepthCanonicalBeforeConvert", "domDepthToM", "calcCNS"],
+      "setup": [
+        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+        {"action": "select", "selector": "#unitsSelect", "value": "metric", "force": true},
+        {"action": "fill", "selector": "#cnsDepth", "value": "30", "force": true},
+        {"action": "fill", "selector": "#cnsBT", "value": "40", "force": true}
+      ],
+      "state": {
+        "selectors": ["#unitsSelect", "#cnsDepth", "#cnsBT"],
+        "restore_order": ["#unitsSelect", "#cnsDepth", "#cnsBT"],
+        "globals": ["_zhlHeadless"]
+      },
+      "steps": [
+        {
+          "capture": "metric",
+          "values": {
+            "input_value": "document.querySelector('#cnsDepth').value",
+            "canonical_m": "Number(document.querySelector('#cnsDepth').dataset.depthM)",
+            "consumer_m": "domDepthToM('cnsDepth')",
+            "observable": "document.querySelector('#cnsPPO2').textContent"
+          }
+        },
+        {"action": "select", "selector": "#unitsSelect", "value": "imperial", "force": true},
+        {
+          "capture": "imperial",
+          "values": {
+            "input_value": "document.querySelector('#cnsDepth').value",
+            "canonical_m": "Number(document.querySelector('#cnsDepth').dataset.depthM)",
+            "consumer_m": "domDepthToM('cnsDepth')",
+            "observable": "document.querySelector('#cnsPPO2').textContent"
+          }
+        },
+        {"action": "select", "selector": "#unitsSelect", "value": "metric", "force": true},
+        {
+          "capture": "roundtrip",
+          "values": {
+            "input_value": "document.querySelector('#cnsDepth').value",
+            "canonical_m": "Number(document.querySelector('#cnsDepth').dataset.depthM)",
+            "consumer_m": "domDepthToM('cnsDepth')",
+            "observable": "document.querySelector('#cnsPPO2').textContent"
+          }
+        }
+      ],
+      "assertions": [
+        {"id": "display-feet", "left": "$.imperial.input_value", "op": "equal", "right": "98"},
+        {"id": "canonical-physical-depth", "left": "$.imperial.canonical_m", "op": "close", "right": 30, "tolerance": 0.000001},
+        {"id": "consumer-physical-depth", "left": "$.imperial.consumer_m", "op": "close", "right": 30, "tolerance": 0.000001},
+        {"id": "roundtrip-display", "left": "$.roundtrip.input_value", "op": "equal", "right": "30"},
+        {"id": "roundtrip-canonical", "left": "$.roundtrip.canonical_m", "op": "close", "right": 30, "tolerance": 0.000001},
+        {"id": "roundtrip-consumer", "left": "$.roundtrip.consumer_m", "op": "close", "right": 30, "tolerance": 0.000001},
+        {"id": "observable-parity", "left": "$.metric.observable", "op": "equal", "right": "$.roundtrip.observable"}
+      ]
+    }
+  ]
+}

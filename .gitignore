@@ -34,6 +34,7 @@ dev/engine_regression_results.json
 dev/pscr_e2e_results.json
 dev/audit-suite-results/
 dev/regression_summary.json
+dev/seven-lens-browser-trace.json
 docs/CCR_DIFFERENTIAL_REPORT.md
 
 # Python bytecode (must not be tracked — recompiled on every test run)
