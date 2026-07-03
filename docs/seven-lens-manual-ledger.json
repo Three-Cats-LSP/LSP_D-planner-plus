@@ -85,8 +85,8 @@
       "verified_at": "2026-07-03T10:00:00+00:00",
       "verifier": "Cursor GPT-5.5 Medium (cursor/seven-lens-cycle-02-planner-verify)",
       "verification_status": "PASS",
-      "verified_source_commit": "",
-      "last_checked_commit": "",
+      "verified_source_commit": "b56fc07",
+      "last_checked_commit": "b56fc07",
       "verification_report": "docs/seven-lens-reports/cycle-02-independent-verification.md",
       "findings_open": [],
       "findings_closed": [
