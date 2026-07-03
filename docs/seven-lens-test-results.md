@@ -13,7 +13,7 @@ in `docs/seven-lens-records/`.
 | 1 | `UI-MARKUP-HEADER` | **CLOSED** — merged to `dev` | `d39bb3b` | [#177](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/177), [#178](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/178) |
 | 2 | `UI-MARKUP-PLANNER` | **BLOCKED** — post-merge verification | — | [#179](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/179), [#183](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/183) |
 | 3 | `UI-MARKUP-CONSUMPTION` | **BLOCKED** — post-merge verification | — | [#182](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/182), [#183](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/183) |
-| 4 | `UI-MARKUP-TOOLS` + `UI-MARKUP-MODALS` | **BLOCKED** — fixes ready, static gate | `50bacb0` | (PR pending) |
+| 4 | `UI-MARKUP-TOOLS` + `UI-MARKUP-MODALS` | **BLOCKED** — fixes ready, static gate | `50bacb0` | [#185](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/185) |
 
 ---
 
