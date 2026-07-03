@@ -3503,6 +3503,7 @@ function setUnits(u, opts) {
   _syncDepthBtSteppers();
   // Altitude custom input unit label
   setTxt('altitudeCustomUnit', du);
+  syncAltitudeCustomInputConstraints?.();
   if (document.getElementById('altitudeSelect')?.value === 'custom') {
     const altInp = document.getElementById('altitudeCustomInput');
     if (altInp) altInp.value = altitudeMToCustomDisplay(altitudeM);
