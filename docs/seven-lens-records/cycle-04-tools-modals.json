@@ -7,17 +7,17 @@
   "baseline_registry_fingerprint": "52dea369fb6b3bc294003a6de0a9346c61e260c156251e01311ba4b72fb885f6",
   "baseline_findings": [
     {"id": "SL-C02-H-01", "severity": "HIGH", "status": "CLOSED", "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes."},
-    {"id": "SL-C02-M-03", "severity": "MEDIUM", "status": "OPEN", "summary": "Travel manual depth limits disagree between markup, metric restore, and imperial mode."},
-    {"id": "SL-C02-M-04", "severity": "MEDIUM", "status": "OPEN", "summary": "Rounded display values become canonical physical inputs; Best Mix and CNS now reproduce the same unit-roundtrip drift."},
-    {"id": "SL-C02-M-05", "severity": "MEDIUM", "status": "OPEN", "summary": "Min-deco regression checks an adapter property rather than observable schedule behavior."},
-    {"id": "SL-C02-M-06", "severity": "MEDIUM", "status": "OPEN", "summary": "Cycle history allowed unresolved findings and a blocked prior record to be deleted or rewritten as passed."},
+    {"id": "SL-C02-M-03", "severity": "MEDIUM", "status": "CLOSED", "summary": "Travel manual depth limits disagree between markup, metric restore, and imperial mode."},
+    {"id": "SL-C02-M-04", "severity": "MEDIUM", "status": "CLOSED", "summary": "Rounded display values become canonical physical inputs; Best Mix and CNS now reproduce the same unit-roundtrip drift."},
+    {"id": "SL-C02-M-05", "severity": "MEDIUM", "status": "CLOSED", "summary": "Min-deco regression checks an adapter property rather than observable schedule behavior."},
+    {"id": "SL-C02-M-06", "severity": "MEDIUM", "status": "CLOSED", "summary": "Cycle history allowed unresolved findings and a blocked prior record to be deleted or rewritten as passed."},
     {"id": "SL-C03-H-02", "severity": "HIGH", "status": "CLOSED", "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits."},
-    {"id": "SL-C03-M-02", "severity": "MEDIUM", "status": "OPEN", "summary": "Cycle 3 regressions compare rounded outputs and restore values before units, masking physical-depth drift and corrupting test state."},
-    {"id": "SL-C03-L-02", "severity": "LOW", "status": "OPEN", "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling."}
+    {"id": "SL-C03-M-02", "severity": "MEDIUM", "status": "CLOSED", "summary": "Cycle 3 regressions compare rounded outputs and restore values before units, masking physical-depth drift and corrupting test state."},
+    {"id": "SL-C03-L-02", "severity": "LOW", "status": "CLOSED", "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling."}
   ],
   "audit_commit": "1ac8fb51600177d31c9b8c756b1c22e9b6f618da",
-  "verified_source_commit": "50bacb0f13c2ef3e035f939b64b7868a9581ab48",
-  "verification_status": "BLOCKED",
+  "verified_source_commit": "d747ccc35d04f325312720c1343f7d26aff7caec",
+  "verification_status": "PASSED",
   "parts": [
     {
       "id": "UI-MARKUP-TOOLS-P01",
@@ -138,5 +138,5 @@
   "evidence_runs": [],
   "changed_paths": [],
   "audit_report": "docs/seven-lens-reports/cycle-04-tools-modals.md",
-  "notes": "Cycle 04 audit checkpoint; FIXER phase follows."
+  "notes": "Cycle 04 fixes merged to dev via PR #188 (supersedes #185); cross-cycle HIGHs cleared; browser traces PASS on d747ccc."
 }
