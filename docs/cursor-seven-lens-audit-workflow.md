@@ -8,6 +8,9 @@ Use the role-separated prompts in `docs/cursor-seven-lens-prompts.md`. Generate
 and validate each structured cycle record with `tools/seven_lens_protocol.py`;
 prose reports do not replace the protocol gate.
 
+Read `docs/seven-lens-review-playbook.md` before every phase. It is the shared
+review knowledge base for recurring failure patterns and evidence standards.
+
 ## Core Rule
 
 Passing static checks, regressions, parity checks, or release suites is automated
@@ -232,11 +235,16 @@ Each trace must capture all four stages: user/API input, canonical physical valu
 the value received by the consumer, and the observable output. Do not use equal
 rounded labels as proof of physical equivalence. The trace must also hash bounded
 DOM/global/storage snapshots before and after cleanup; the hashes must match.
+Tested actions must be visible, enabled, and unforced. Run each trace at least
+twice in fresh browser contexts; reject non-finite captures and console/page
+errors.
 
 For unit-sensitive controls, review the complete physical tuple: value, label,
 minimum, maximum, step, default, persistence, and both conversion directions.
 Test a non-default value and each boundary, then require metric -> imperial ->
 metric and imperial -> metric -> imperial round trips to preserve physical state.
+Every such control must also execute switch -> user edit -> final consumer ->
+roundtrip. Unit-switch-only evidence is incomplete.
 
 Cursor may perform up to three fix attempts. After each attempt, return to the
 verification phase. Do not repeatedly edit without a fresh failure explanation.
@@ -344,6 +352,8 @@ A cycle closes only when all conditions are true:
   the PR title/body accurately describe its final scope.
 - `python tools/seven_lens_protocol.py check --phase close --record <record>`
   exits 0.
+- `python tools/seven_lens_protocol.py check-all --require-artifacts` exits 0;
+  all previously reviewed cycles remain valid.
 - `docs/seven-lens-test-results.md` is updated with the cycle summary.
 - The cycle PR is pushed and merged to `dev` after required CI passes on the final
   PR HEAD.

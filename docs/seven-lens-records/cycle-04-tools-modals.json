@@ -16,8 +16,8 @@
     {"id": "SL-C03-L-02", "severity": "LOW", "status": "CLOSED", "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling."}
   ],
   "audit_commit": "1ac8fb51600177d31c9b8c756b1c22e9b6f618da",
-  "verified_source_commit": "d747ccc35d04f325312720c1343f7d26aff7caec",
-  "verification_status": "PASSED",
+  "verified_source_commit": "",
+  "verification_status": "BLOCKED",
   "parts": [
     {
       "id": "UI-MARKUP-TOOLS-P01",
@@ -133,10 +133,58 @@
       "status": "CLOSED",
       "regression_ids": [],
       "evidence_ids": []
+    },
+    {
+      "id": "SL-C04-H-02",
+      "severity": "HIGH",
+      "unit_id": "UI-UNIT-SWITCHING",
+      "location": "ui/markup-consumption.html:55,200; ui/markup-header.html:127; ui/markup-planner.html:305; settings-core.js:516-533",
+      "root_cause": "User input and stepper writers update displayed values without refreshing the data-depth-m or data-volume-l canonical state consumed after a unit switch.",
+      "failure_path": "Switch to imperial, edit a depth or cylinder size, then switch units again; consumers continue using the pre-edit physical value and the UI reverts the edit.",
+      "impact": "Best Mix, CNS, contingency, export, planner depth, and gas-volume calculations can use stale physical inputs.",
+      "evidence": "Independent Chromium traces reproduce stale 30 m/40 m/12 L canonical values after visible edits to 120 ft/134 ft/0.5 ft3.",
+      "recommendation": "Give every canonicalized control one writer contract and test input, stepper, restore, and both unit-roundtrip paths through the final consumer.",
+      "status": "OPEN"
+    },
+    {
+      "id": "SL-C04-H-03",
+      "severity": "HIGH",
+      "unit_id": "TOOL-SEVEN-LENS-PROTOCOL",
+      "location": "docs/seven-lens-records/cycle-02-planner.json; cycle-03-consumption.json; cycle-04-tools-modals.json",
+      "root_cause": "The manual ledger was allowed to claim SEVEN_LENS_REVIEWED without running the protocol close validator over every reviewed cycle.",
+      "failure_path": "Cycle records lack required evidence and fail close validation while the ledger and documentation still report PASSED.",
+      "impact": "A release can present incomplete or stale review evidence as a completed safety audit.",
+      "evidence": "check --phase close fails Cycles 2-4; Cycle 4 has no evidence_runs and its five closed findings have empty evidence_ids.",
+      "recommendation": "Run check-all from the static audit gate and require ledger-record-commit parity before a reviewed status is accepted.",
+      "status": "OPEN"
+    },
+    {
+      "id": "SL-C04-M-03",
+      "severity": "MEDIUM",
+      "unit_id": "TEST-ENGINE-REGRESSION",
+      "location": "dev/engine_regression.py:1824-1992,2411,2421",
+      "root_cause": "Cycle 2/3 regression setup mutates canonical DOM datasets and persistent settings without restoring the complete pre-test state.",
+      "failure_path": "Run the complete engine suite; later contingency cases inherit altered travel-depth and canonical input state.",
+      "impact": "The suite is order-dependent and current CI fails CYCLE31-CONTINGENCY-MOD and CYCLE33-PPO2-TOXICITY.",
+      "evidence": "Current dev engine regression reports 166 passed and 2 failed; a browser suite probe leaves travelGasManualDepth at 322 ft.",
+      "recommendation": "Snapshot and restore values, datasets, units, storage, and globals around every case; add shuffled-order and repeated-run cleanliness gates.",
+      "status": "OPEN"
+    },
+    {
+      "id": "SL-C04-M-04",
+      "severity": "MEDIUM",
+      "unit_id": "TOOL-SEVEN-LENS-BROWSER-TRACE",
+      "location": "tools/seven_lens_browser_trace.py; docs/seven-lens-traces/cycle-03-consumption.json",
+      "root_cause": "Trace evidence previously allowed forced tested actions, empty/vacuous assertions, one execution, non-finite captures, and no console or page-error gate.",
+      "failure_path": "A trace can bypass visibility or event behavior and still be cited as proof of a user-visible fix.",
+      "impact": "Cursor can close findings with evidence that does not reproduce an actual interactive consumer path.",
+      "evidence": "The prior Cycle 3 trace passed a unit switch but never edited the control after switching, so it missed SL-C04-H-02.",
+      "recommendation": "Require schema-validated, repeated real interactions, finite captures, state restoration, console cleanliness, and artifact-backed assertions.",
+      "status": "OPEN"
     }
   ],
   "evidence_runs": [],
   "changed_paths": [],
   "audit_report": "docs/seven-lens-reports/cycle-04-tools-modals.md",
-  "notes": "Cycle 04 fixes merged to dev via PR #188 (supersedes #185); cross-cycle HIGHs cleared; browser traces PASS on d747ccc."
+  "notes": "PR #188 fixes were independently rechecked. Cycle 4 remains BLOCKED by stale canonical edit paths, invalid closure evidence, and an order-dependent engine suite."
 }

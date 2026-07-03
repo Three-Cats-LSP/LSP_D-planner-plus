@@ -104,8 +104,9 @@ def make_plan(root: Path, cycle_id: int) -> dict[str, Any]:
                 },
             })
     return {
-        "schema_version": 2,
+        "schema_version": 3,
         "cycle": cycle_id,
+        "record_path": "",
         "target_branch": "dev",
         "integration_base_commit": integration_base,
         "baseline_commit": head,
@@ -264,7 +265,9 @@ def _validate_findings(record: dict[str, Any], phase: str) -> list[str]:
     return errors
 
 
-def _validate_evidence(record: dict[str, Any], phase: str) -> list[str]:
+def _validate_evidence(
+    root: Path, record: dict[str, Any], phase: str, check_git: bool
+) -> list[str]:
     errors: list[str] = []
     seen: set[str] = set()
     for row in record.get("evidence_runs", []):
@@ -276,6 +279,10 @@ def _validate_evidence(record: dict[str, Any], phase: str) -> list[str]:
             errors.append(f"evidence {evidence_id}: command missing")
         if not _text(row.get("commit"), 7):
             errors.append(f"evidence {evidence_id}: commit missing")
+        elif check_git and phase in {"verify", "close"} and not _git_ok(
+            "cat-file", "-e", f"{row['commit']}^{{commit}}", root=root
+        ):
+            errors.append(f"evidence {evidence_id}: commit does not exist")
         if not isinstance(row.get("exit_code"), int):
             errors.append(f"evidence {evidence_id}: integer exit_code missing")
         if not isinstance(row.get("worktree_clean"), bool):
@@ -304,6 +311,13 @@ def _validate_evidence(record: dict[str, Any], phase: str) -> list[str]:
             errors.append(f"evidence {evidence_id}: baseline failure must fail before the fix")
         if row.get("kind") in {"post_fix", "state_restoration", "gate"} and row.get("exit_code") != 0:
             errors.append(f"evidence {evidence_id}: passing evidence has nonzero exit_code")
+        if (
+            phase == "close"
+            and record.get("schema_version", 1) >= 3
+            and row.get("kind") in {"post_fix", "state_restoration", "gate"}
+            and row.get("commit") != record.get("verified_source_commit")
+        ):
+            errors.append(f"evidence {evidence_id}: must run at verified_source_commit")
     if phase in {"verify", "close"} and record.get("verification_status") == "PASSED":
         passed = {
             row.get("id") for row in record.get("evidence_runs", [])
@@ -314,7 +328,55 @@ def _validate_evidence(record: dict[str, Any], phase: str) -> list[str]:
     return errors
 
 
-def _validate_closed_finding_evidence(root: Path, record: dict[str, Any], phase: str) -> list[str]:
+def _validate_trace_artifact(
+    root: Path, fid: str, trace: dict[str, Any], require_artifacts: bool
+) -> list[str]:
+    errors: list[str] = []
+    artifact_path = trace.get("artifact_path")
+    artifact_hash = trace.get("artifact_sha256")
+    trace_id = trace.get("trace_id")
+    if not _text(trace_id, 5):
+        errors.append(f"{fid}: post-fix browser trace lacks trace_id")
+    if not _text(artifact_hash, 64):
+        errors.append(f"{fid}: post-fix browser trace lacks artifact hash")
+    if not _text(artifact_path, 5):
+        errors.append(f"{fid}: post-fix browser trace lacks artifact path")
+        return errors
+    artifact = root / artifact_path
+    if not artifact.is_file():
+        if require_artifacts:
+            errors.append(f"{fid}: browser trace artifact is missing: {artifact_path}")
+        return errors
+    if hashlib.sha256(artifact.read_bytes()).hexdigest() != artifact_hash:
+        errors.append(f"{fid}: browser trace artifact hash does not match")
+        return errors
+    try:
+        payload = json.loads(artifact.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        errors.append(f"{fid}: browser trace artifact is malformed: {exc}")
+        return errors
+    if payload.get("passed") is not True:
+        errors.append(f"{fid}: browser trace artifact did not pass")
+    rows = [row for row in payload.get("traces", []) if row.get("id") == trace_id]
+    if len(rows) != 1:
+        errors.append(f"{fid}: browser trace artifact must contain trace {trace_id} exactly once")
+        return errors
+    row = rows[0]
+    if row.get("passed") is not True or row.get("repeatable") is not True:
+        errors.append(f"{fid}: browser trace is not passing and repeatable")
+    if row.get("state_restored") is not True:
+        errors.append(f"{fid}: browser trace did not restore state")
+    if row.get("console_errors") or row.get("page_errors"):
+        errors.append(f"{fid}: browser trace emitted console/page errors")
+    assertions = row.get("assertions", [])
+    if not assertions or any(item.get("passed") is not True for item in assertions):
+        errors.append(f"{fid}: browser trace lacks a complete passing assertion set")
+    return errors
+
+
+def _validate_closed_finding_evidence(
+    root: Path, record: dict[str, Any], phase: str, require_artifacts: bool = True
+) -> list[str]:
     if phase not in {"verify", "close"}:
         return []
     errors: list[str] = []
@@ -349,17 +411,7 @@ def _validate_closed_finding_evidence(root: Path, record: dict[str, Any], phase:
             if not TRACE_STAGES.issubset(stages):
                 missing = ", ".join(sorted(TRACE_STAGES - stages))
                 errors.append(f"{fid}: post-fix browser trace lacks stages: {missing}")
-            if not _text(trace.get("artifact_sha256"), 64):
-                errors.append(f"{fid}: post-fix browser trace lacks artifact hash")
-            artifact_path = trace.get("artifact_path")
-            if not _text(artifact_path, 5):
-                errors.append(f"{fid}: post-fix browser trace lacks artifact path")
-            else:
-                artifact = root / artifact_path
-                if not artifact.is_file():
-                    errors.append(f"{fid}: browser trace artifact is missing: {artifact_path}")
-                elif hashlib.sha256(artifact.read_bytes()).hexdigest() != trace.get("artifact_sha256"):
-                    errors.append(f"{fid}: browser trace artifact hash does not match")
+            errors.extend(_validate_trace_artifact(root, fid, trace, require_artifacts))
     return errors
 
 
@@ -436,6 +488,24 @@ def _validate_audit_checkpoint(root: Path, record: dict[str, Any], check_git: bo
                 )
         except RuntimeError as exc:
             errors.append(f"cannot verify origin/dev branch point: {exc}")
+    if record.get("schema_version", 1) >= 3:
+        record_path = str(record.get("record_path", ""))
+        if _text(record_path, 5):
+            try:
+                audit_record = json.loads(_git("show", f"{audit}:{record_path}", root=root))
+                audit_findings = {row.get("id"): row for row in audit_record.get("findings", [])}
+                current_findings = {row.get("id"): row for row in record.get("findings", [])}
+                for finding_id, old in audit_findings.items():
+                    new = current_findings.get(finding_id)
+                    if new is None:
+                        errors.append(f"audit finding {finding_id} was deleted from the cycle record")
+                        continue
+                    if SEVERITY_RANK.get(new.get("severity"), 0) < SEVERITY_RANK.get(old.get("severity"), 0):
+                        errors.append(f"audit finding {finding_id} severity was downgraded")
+                    if old.get("status") == "CLOSED":
+                        errors.append(f"audit finding {finding_id} was already closed at audit checkpoint")
+            except (RuntimeError, json.JSONDecodeError) as exc:
+                errors.append(f"cannot verify audit finding snapshot: {exc}")
     changed = _git("diff", "--name-only", f"{baseline}..{audit}", root=root).splitlines()
     if not any(_attestation_only_path(path) for path in changed):
         errors.append("audit checkpoint does not contain a cycle report or record")
@@ -457,18 +527,26 @@ def _validate_audit_checkpoint(root: Path, record: dict[str, Any], check_git: bo
     return errors
 
 
-def validate_record(root: Path, record: dict[str, Any], phase: str, check_git: bool = True) -> list[str]:
+def validate_record(
+    root: Path,
+    record: dict[str, Any],
+    phase: str,
+    check_git: bool = True,
+    require_artifacts: bool = True,
+) -> list[str]:
     registry, _ = _resolved_registry(root)
     errors = _validate_parts(root, record, phase)
     errors.extend(_validate_findings(record, phase))
-    errors.extend(_validate_evidence(record, phase))
-    errors.extend(_validate_closed_finding_evidence(root, record, phase))
+    errors.extend(_validate_evidence(root, record, phase, check_git))
+    errors.extend(_validate_closed_finding_evidence(root, record, phase, require_artifacts))
     errors.extend(_validate_finding_continuity(registry, record, phase))
     if record.get("schema_version", 1) >= 2:
         if record.get("integration_base_commit") != record.get("baseline_commit"):
             errors.append("integration_base_commit must equal baseline_commit")
         if not _text(record.get("baseline_registry_fingerprint"), 64):
             errors.append("baseline_registry_fingerprint missing")
+    if record.get("schema_version", 1) >= 3 and not _text(record.get("record_path"), 5):
+        errors.append("record_path missing")
     if record.get("target_branch") != "dev":
         errors.append("target_branch must be dev")
     if phase in {"verify", "close"} and not _text(record.get("audit_commit"), 7):
@@ -505,6 +583,65 @@ def validate_record(root: Path, record: dict[str, Any], phase: str, check_git: b
     return errors
 
 
+def validate_reviewed_cycles(root: Path, require_artifacts: bool = False) -> list[str]:
+    ledger_path = root / "docs" / "seven-lens-manual-ledger.json"
+    if not ledger_path.is_file():
+        return ["manual seven-lens ledger is missing"]
+    ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+    reviews: dict[int, list[dict[str, Any]]] = {}
+    for row in ledger.get("reviews", []):
+        match = re.fullmatch(r"SL-C(\d+)", str(row.get("cycle_id", "")))
+        if not match:
+            return [f"ledger has invalid cycle_id {row.get('cycle_id')!r}"]
+        reviews.setdefault(int(match.group(1)), []).append(row)
+
+    record_files: dict[int, list[Path]] = {}
+    for path in sorted((root / "docs" / "seven-lens-records").glob("cycle-*.json")):
+        match = re.match(r"cycle-(\d+)", path.name)
+        if match:
+            record_files.setdefault(int(match.group(1)), []).append(path)
+
+    errors: list[str] = []
+    for cycle, rows in sorted(reviews.items()):
+        reviewed = [row for row in rows if row.get("review_status") == "SEVEN_LENS_REVIEWED"]
+        if not reviewed:
+            continue
+        paths = record_files.get(cycle, [])
+        exemptions = [row.get("protocol_record_exemption") for row in reviewed]
+        if not paths:
+            if not all(_text(value, 20) for value in exemptions):
+                errors.append(f"SL-C{cycle:02d}: reviewed ledger has no protocol record or exemption")
+            continue
+        if len(paths) != 1:
+            errors.append(f"SL-C{cycle:02d}: expected one protocol record, found {len(paths)}")
+            continue
+        record = json.loads(paths[0].read_text(encoding="utf-8"))
+        if record.get("schema_version", 0) < 2:
+            errors.append(f"SL-C{cycle:02d}: reviewed cycle uses legacy protocol schema")
+        record_errors = validate_record(
+            root, record, "close", check_git=False, require_artifacts=require_artifacts
+        )
+        errors.extend(f"SL-C{cycle:02d}: {error}" for error in record_errors)
+        record_units = {part.get("unit_id") for part in record.get("parts", [])}
+        for row in reviewed:
+            unit_id = row.get("unit_id")
+            if unit_id not in record_units:
+                errors.append(f"SL-C{cycle:02d}: ledger unit {unit_id} is absent from record")
+            if row.get("verification_status") not in {"PASS", "PASSED"}:
+                errors.append(f"SL-C{cycle:02d}/{unit_id}: reviewed ledger is not verified")
+            if row.get("verified_source_commit") != record.get("verified_source_commit"):
+                errors.append(f"SL-C{cycle:02d}/{unit_id}: ledger/record verified commit mismatch")
+            if row.get("findings_open"):
+                errors.append(f"SL-C{cycle:02d}/{unit_id}: reviewed ledger still has open findings")
+        verified = str(record.get("verified_source_commit", ""))
+        if verified and not _git_ok("cat-file", "-e", f"{verified}^{{commit}}", root=root):
+            errors.append(f"SL-C{cycle:02d}: verified source commit does not exist")
+    for cycle, paths in sorted(record_files.items()):
+        if cycle not in reviews:
+            errors.append(f"SL-C{cycle:02d}: protocol record has no ledger entry")
+    return errors
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -514,18 +651,31 @@ def main() -> int:
     check = sub.add_parser("check")
     check.add_argument("--phase", choices=("audit", "verify", "close"), required=True)
     check.add_argument("--record", type=Path, required=True)
+    check_all = sub.add_parser("check-all")
+    check_all.add_argument("--require-artifacts", action="store_true")
     args = parser.parse_args()
     try:
         if args.command == "plan":
             record = make_plan(ROOT, args.cycle)
-            rendered = json.dumps(record, indent=2) + "\n"
             if args.output:
                 output = args.output if args.output.is_absolute() else ROOT / args.output
+                record["record_path"] = output.relative_to(ROOT).as_posix()
+                rendered = json.dumps(record, indent=2) + "\n"
                 output.parent.mkdir(parents=True, exist_ok=True)
                 output.write_text(rendered, encoding="utf-8")
                 print(f"wrote {output.relative_to(ROOT)} with {len(record['parts'])} bounded parts")
             else:
+                rendered = json.dumps(record, indent=2) + "\n"
                 print(rendered, end="")
+            return 0
+        if args.command == "check-all":
+            errors = validate_reviewed_cycles(ROOT, require_artifacts=args.require_artifacts)
+            if errors:
+                print("SEVEN-LENS REVIEWED-CYCLE GATE: BLOCKED", file=sys.stderr)
+                for error in errors:
+                    print(f"- {error}", file=sys.stderr)
+                return 1
+            print("SEVEN-LENS REVIEWED-CYCLE GATE: PASS")
             return 0
         record_path = args.record if args.record.is_absolute() else ROOT / args.record
         record = json.loads(record_path.read_text(encoding="utf-8"))
