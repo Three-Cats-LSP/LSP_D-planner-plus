@@ -4,7 +4,7 @@
   "target_branch": "dev",
   "baseline_commit": "6e987af4cd66d8679cc63c5cc2dc371421ae8caa",
   "audit_commit": "e07ab49cf5c28a9b99c00eb12d3538acec568728",
-  "verified_source_commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
+  "verified_source_commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -249,7 +249,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C03-BEST-MIX-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "unitsSelect change from metric to imperial",
@@ -298,7 +298,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C03-CNS-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "unitsSelect metric to imperial to metric round trip",
@@ -347,7 +347,7 @@
       "state_restored": false,
       "command": "python -m tools.audit check --profile static",
       "exit_code": 0,
-      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "unitsSelect change from metric to imperial",
@@ -397,7 +397,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C03-PHYSICAL-DEPTH-TRACE SL-C03-REGRESSION-STATE-IMMUTABLE",
       "exit_code": 0,
-      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "User switches to imperial units, edits Best Mix depth, and returns to metric.",
@@ -442,7 +442,7 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C03-BEST-MIX-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
       "worktree_clean": true,
       "state_before_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34",
       "state_after_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34"
@@ -459,7 +459,7 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C03-CNS-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
       "worktree_clean": true,
       "state_before_sha256": "05a01c89e4d995ec0e84dd8c282be8b15d77ca6d9ae620f662b49bb83bf558dd",
       "state_after_sha256": "05a01c89e4d995ec0e84dd8c282be8b15d77ca6d9ae620f662b49bb83bf558dd"
@@ -476,7 +476,7 @@
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
       "exit_code": 0,
-      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
       "worktree_clean": true,
       "state_before_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34",
       "state_after_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34"
@@ -494,7 +494,7 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C03-PHYSICAL-DEPTH-TRACE SL-C03-REGRESSION-STATE-IMMUTABLE",
       "exit_code": 0,
-      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
       "worktree_clean": true,
       "state_before_sha256": "32d9b547d41edc711c56883e98b96ef643eeef816b94dce2d7f5f19c9f84af0a",
       "state_after_sha256": "32d9b547d41edc711c56883e98b96ef643eeef816b94dce2d7f5f19c9f84af0a"
@@ -509,7 +509,7 @@
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
       "exit_code": 0,
-      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
       "worktree_clean": true
     },
     {
@@ -522,7 +522,7 @@
       "state_restored": true,
       "command": "python -m tools.audit run --profile ci",
       "exit_code": 0,
-      "commit": "31fc7088873606edbbc2656d2a66f07b6026e9b7",
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
       "worktree_clean": true
     }
   ],
