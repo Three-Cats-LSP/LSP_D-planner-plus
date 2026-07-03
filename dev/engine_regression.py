@@ -1848,6 +1848,52 @@ ENGINE_SUITE_JS = r"""
     return { minDecoUnitsOk, travelDepthConstraintsOk, ok: minDecoUnitsOk && travelDepthConstraintsOk };
   })();
 
+  // Seven-lens cycle 03: consumption markup contracts (SL-C03).
+  out.sections.sevenLensCycle03 = (() => {
+    let bestMixDepthUnitsOk = false;
+    let cnsDepthUnitsOk = false;
+    const prevUnits = typeof units !== 'undefined' ? units : null;
+    const bmEl = document.getElementById('bestMixDepth');
+    const cnsEl = document.getElementById('cnsDepth');
+    const ppo2El = document.getElementById('bestMixPPO2');
+    const prevBm = bmEl?.value;
+    const prevCns = cnsEl?.value;
+    const prevPpo2 = ppo2El?.value;
+    try {
+      if (typeof setUnits === 'function' && typeof calcBestMix === 'function' && bmEl && ppo2El) {
+        setUnits('metric');
+        bmEl.value = '30';
+        ppo2El.value = '14';
+        calcBestMix();
+        const metricO2 = document.getElementById('bestMixResult')?.textContent;
+        setUnits('imperial');
+        calcBestMix();
+        const imperialO2 = document.getElementById('bestMixResult')?.textContent;
+        bestMixDepthUnitsOk =
+          metricO2 === imperialO2 && Math.round(parseFloat(bmEl.value)) === 98;
+      }
+      if (typeof setUnits === 'function' && typeof calcCNS === 'function' && cnsEl) {
+        setUnits('metric');
+        cnsEl.value = '30';
+        calcCNS();
+        const metricPpo2 = document.getElementById('cnsPPO2')?.textContent;
+        setUnits('imperial');
+        calcCNS();
+        const imperialPpo2 = document.getElementById('cnsPPO2')?.textContent;
+        cnsDepthUnitsOk =
+          metricPpo2 === imperialPpo2 && Math.round(parseFloat(cnsEl.value)) === 98;
+      }
+    } finally {
+      if (bmEl && prevBm != null) bmEl.value = prevBm;
+      if (cnsEl && prevCns != null) cnsEl.value = prevCns;
+      if (ppo2El && prevPpo2 != null) ppo2El.value = prevPpo2;
+      if (prevUnits != null && typeof setUnits === 'function') setUnits(prevUnits);
+      calcBestMix?.();
+      calcCNS?.();
+    }
+    return { bestMixDepthUnitsOk, cnsDepthUnitsOk, ok: bestMixDepthUnitsOk && cnsDepthUnitsOk };
+  })();
+
   // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
   out.sections.cycle6 = (() => {
     const rdp11 = typeof padiTableRowIndex === 'function' ? padiTableRowIndex(11) : null;
@@ -2272,6 +2318,9 @@ def run_suite(page) -> dict:
     sl02 = s.get("sevenLensCycle02", {})
     assert_true(sl02.get("minDecoUnitsOk"), "[SL-C02-MIN-DECO-UNITS] min deco profile uses imperial units flag", str(sl02))
     assert_true(sl02.get("travelDepthConstraintsOk"), "[SL-C02-TRAVEL-DEPTH-CONSTRAINTS] travel manual depth max follows display units", str(sl02))
+    sl03 = s.get("sevenLensCycle03", {})
+    assert_true(sl03.get("bestMixDepthUnitsOk"), "[SL-C03-BEST-MIX-DEPTH-UNITS] best mix O2% invariant across equivalent metric/imperial depth", str(sl03))
+    assert_true(sl03.get("cnsDepthUnitsOk"), "[SL-C03-CNS-DEPTH-UNITS] CNS ppO2 invariant across equivalent metric/imperial depth", str(sl03))
     assert_true(erdp.get("normalizeOk"), "[ENG-RDP-CUSTOM-FALLBACK] normalizeRecMix restricts to standard gases", str(erdp))
     assert_true(erdp.get("recGasUiOk"), "[ENG-RDP-CUSTOM-FALLBACK] Rec mode hides custom gas option", str(erdp))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
@@ -2375,6 +2424,8 @@ def _audit_case_rows():
         case_row("SL-C01-ALTITUDE-UNIT-CONSTRAINTS", case_ok("SL-C01-ALTITUDE-UNIT-CONSTRAINTS")),
         case_row("SL-C02-MIN-DECO-UNITS", case_ok("SL-C02-MIN-DECO-UNITS")),
         case_row("SL-C02-TRAVEL-DEPTH-CONSTRAINTS", case_ok("SL-C02-TRAVEL-DEPTH-CONSTRAINTS")),
+        case_row("SL-C03-BEST-MIX-DEPTH-UNITS", case_ok("SL-C03-BEST-MIX-DEPTH-UNITS")),
+        case_row("SL-C03-CNS-DEPTH-UNITS", case_ok("SL-C03-CNS-DEPTH-UNITS")),
     ]
 
 
