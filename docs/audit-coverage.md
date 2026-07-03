@@ -36,27 +36,27 @@
 | UI-BOOT | web_runtime | `index.html:1` | 2376 | P2 | VERIFIED | EXT-05, COV-01 |
 | UI-RUNTIME-BOOTSTRAP | web_runtime | `index.html:2377` | 218 | P1 | VERIFIED | EXT-05, COV-01 |
 | UI-ALGORITHM-SETTINGS | web_runtime | `index.html:2595` | 284 | P1 | VERIFIED | EXT-05, COV-01 |
-| UI-UNIT-HELPERS | web_runtime | `index.html:2879` | 472 | P1 | VERIFIED | EXT-05, COV-01 |
-| UI-UNIT-SWITCHING | web_runtime | `index.html:3351` | 325 | P1 | VERIFIED | EXT-05, COV-01 |
-| UI-ZHL-DELEGATES | web_runtime | `index.html:3676` | 141 | P0 | VERIFIED | REG-15, REG-16, REG-18 |
-| UI-CCR-DELEGATES | web_runtime | `index.html:3817` | 370 | P0 | VERIFIED | REG-15, REG-16, REG-18 |
-| UI-DECO-PHYSICS | web_runtime | `index.html:4187` | 232 | P0 | VERIFIED | EXT-05, COV-01 |
-| UI-SCHEDULE-INPUTS | web_runtime | `index.html:4419` | 365 | P0 | VERIFIED | EXT-05, COV-01 |
-| UI-SETTINGS-CONTROLS | web_runtime | `index.html:4784` | 387 | P1 | VERIFIED | EXT-05, COV-01 |
-| UI-VPM-RUNNER | web_runtime | `index.html:5171` | 473 | P0 | VERIFIED | EXT-05, COV-01 |
-| UI-ZHL-RUNNER-SETUP | web_runtime | `index.html:5644` | 127 | P0 | VERIFIED | EXT-05, COV-01 |
-| UI-ZHL-RUNNER-ENGINE | web_runtime | `index.html:5771` | 352 | P0 | VERIFIED | EXT-05, COV-01 |
-| UI-ZHL-HEADLESS-HELPERS | web_runtime | `index.html:6123` | 201 | P1 | VERIFIED | EXT-05, COV-01 |
-| UI-ZHL-HEADLESS-ENGINE | web_runtime | `index.html:6324` | 387 | P0 | VERIFIED | EXT-05, COV-01 |
-| UI-PLOT-INIT | web_runtime | `index.html:6711` | 439 | P2 | VERIFIED | EXT-05, COV-01 |
-| UI-TOOLS-TISSUES | web_runtime | `index.html:7150` | 310 | P2 | VERIFIED | EXT-05, COV-01 |
-| UI-TOOLS-EXPOSURE | web_runtime | `index.html:7460` | 225 | P1 | VERIFIED | EXT-05, COV-01 |
-| UI-TOOLS-GF | web_runtime | `index.html:7685` | 316 | P2 | VERIFIED | EXT-05, COV-01 |
-| UI-SETTINGS | web_runtime | `index.html:8001` | 369 | P1 | VERIFIED | EXT-05, COV-01 |
-| UI-PROFILE-PRESETS | web_runtime | `index.html:8370` | 377 | P2 | VERIFIED | EXT-05, COV-01 |
-| UI-CONFIG-PRESETS | web_runtime | `index.html:8747` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
-| UI-APP-INIT | web_runtime | `index.html:8932` | 175 | P1 | VERIFIED | EXT-05, COV-01 |
-| UI-PWA-LIFECYCLE | pwa | `index.html:9107` | 99 | P1 | VERIFIED | REG-45, EXT-08, COV-01 |
+| UI-UNIT-HELPERS | web_runtime | `index.html:2879` | 483 | P1 | VERIFIED | EXT-05, COV-01 |
+| UI-UNIT-SWITCHING | web_runtime | `index.html:3362` | 341 | P1 | VERIFIED | EXT-05, COV-01 |
+| UI-ZHL-DELEGATES | web_runtime | `index.html:3703` | 141 | P0 | VERIFIED | REG-15, REG-16, REG-18 |
+| UI-CCR-DELEGATES | web_runtime | `index.html:3844` | 370 | P0 | VERIFIED | REG-15, REG-16, REG-18 |
+| UI-DECO-PHYSICS | web_runtime | `index.html:4214` | 232 | P0 | VERIFIED | EXT-05, COV-01 |
+| UI-SCHEDULE-INPUTS | web_runtime | `index.html:4446` | 365 | P0 | VERIFIED | EXT-05, COV-01 |
+| UI-SETTINGS-CONTROLS | web_runtime | `index.html:4811` | 387 | P1 | VERIFIED | EXT-05, COV-01 |
+| UI-VPM-RUNNER | web_runtime | `index.html:5198` | 473 | P0 | VERIFIED | EXT-05, COV-01 |
+| UI-ZHL-RUNNER-SETUP | web_runtime | `index.html:5671` | 127 | P0 | VERIFIED | EXT-05, COV-01 |
+| UI-ZHL-RUNNER-ENGINE | web_runtime | `index.html:5798` | 352 | P0 | VERIFIED | EXT-05, COV-01 |
+| UI-ZHL-HEADLESS-HELPERS | web_runtime | `index.html:6150` | 201 | P1 | VERIFIED | EXT-05, COV-01 |
+| UI-ZHL-HEADLESS-ENGINE | web_runtime | `index.html:6351` | 387 | P0 | VERIFIED | EXT-05, COV-01 |
+| UI-PLOT-INIT | web_runtime | `index.html:6738` | 449 | P2 | VERIFIED | EXT-05, COV-01 |
+| UI-TOOLS-TISSUES | web_runtime | `index.html:7187` | 310 | P2 | VERIFIED | EXT-05, COV-01 |
+| UI-TOOLS-EXPOSURE | web_runtime | `index.html:7497` | 226 | P1 | VERIFIED | EXT-05, COV-01 |
+| UI-TOOLS-GF | web_runtime | `index.html:7723` | 316 | P2 | VERIFIED | EXT-05, COV-01 |
+| UI-SETTINGS | web_runtime | `index.html:8039` | 369 | P1 | VERIFIED | EXT-05, COV-01 |
+| UI-PROFILE-PRESETS | web_runtime | `index.html:8408` | 377 | P2 | VERIFIED | EXT-05, COV-01 |
+| UI-CONFIG-PRESETS | web_runtime | `index.html:8785` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
+| UI-APP-INIT | web_runtime | `index.html:8970` | 175 | P1 | VERIFIED | EXT-05, COV-01 |
+| UI-PWA-LIFECYCLE | pwa | `index.html:9145` | 99 | P1 | VERIFIED | REG-45, EXT-08, COV-01 |
 | UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 454 | P2 | VERIFIED | EXT-03, EXT-06, COV-01 |
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 372 | P2 | VERIFIED | EXT-03, EXT-06, COV-01 |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 528 | P2 | VERIFIED | EXT-03, EXT-06, COV-01 |
@@ -115,7 +115,7 @@
 | NATIVE-DRAWABLE-FG | native_android | `android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml:1` | 34 | P3 | VERIFIED | ANDROID-01, COV-01 |
 | NATIVE-ICON | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml:1` | 5 | P3 | VERIFIED | ANDROID-01, COV-01 |
 | NATIVE-ICON-ROUND | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml:1` | 5 | P3 | VERIFIED | ANDROID-01, COV-01 |
-| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 2386 | P1 | VERIFIED | REG-01, REG-02, REG-03, REG-05 |
+| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 2437 | P1 | VERIFIED | REG-01, REG-02, REG-03, REG-05 |
 | TEST-ISSUE-140-REGRESSION | test_infrastructure | `dev/issue140_regression.py:1` | 99 | P1 | VERIFIED | REG-08, REG-09 |
 | TEST-GAS-CORE-REGRESSION | test_infrastructure | `dev/gas_core_regression.py:1` | 129 | P1 | VERIFIED | REG-10, REG-11, REG-12 |
 | TEST-ISSUE-141-REGRESSION | test_infrastructure | `dev/issue141_regression.py:1` | 108 | P1 | VERIFIED | REG-15, REG-16, REG-18 |

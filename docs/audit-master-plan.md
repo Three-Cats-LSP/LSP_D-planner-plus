@@ -45,7 +45,7 @@
 | 13 | APP-CONTINGENCY | 562 | - | Contingency core READ |
 | 14 | APP-EXPORT | 3255 | - | export-core text/PDF READ |
 | 15 | UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 621 | - | plot-core render and waypoints READ |
-| 16 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 701 | - | Profile tool and plot init READ |
+| 16 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 711 | - | Profile tool and plot init READ |
 | 17 | UI-VPM-RENDER, UI-ZHL-RESULTS | 1064 | - | results-render-core READ |
 | 18 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 511 | ENG-ZHL-SCHEDULE | ZHL/CCR delegate thin layer READ |
 | 19 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 597 | ENG-ZHL-CCR | Deco physics and schedule inputs READ |
@@ -54,8 +54,8 @@
 | 22 | UI-VPM-RUNNER | 473 | ENG-VPM | VPM runner READ |
 | 23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 393 | - | Runtime bootstrap and app init READ |
 | 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 671 | - | Algorithm and settings controls READ |
-| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1166 | - | Settings persistence and unit helpers READ |
-| 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 851 | - | Tools panels READ |
+| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1193 | - | Settings persistence and unit helpers READ |
+| 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 852 | - | Tools panels READ |
 | 27 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 562 | - | Profile and config presets READ |
 | 28 | UI-BOOT | 2376 | - | index.html shell boot region READ |
 | 29 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 438 | - | PWA and service worker READ |
