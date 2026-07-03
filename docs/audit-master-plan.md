@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v3-full-reset`
-**Units:** 179 total; 0 unread; 12 in progress; 1 read; 166 verified.
+**Units:** 179 total; 0 unread; 27 in progress; 0 read; 152 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -38,15 +38,15 @@
 | 6 | UI-CSS-CONTROLS | 528 | - | Controls CSS READ |
 | 7 | UI-CSS-RESULTS | 924 | - | Results CSS READ |
 | 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 506 | - | Planner shell and results panel READ |
-| 9 | UI-ENVIRONMENT, UI-MODE-STATE | 948 | - | settings-core environment and mode state READ |
+| 9 | UI-ENVIRONMENT, UI-MODE-STATE | 949 | - | settings-core environment and mode state READ |
 | 10 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 679 | - | Surface interval and gas table cores READ |
 | 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 509 | ENG-ZHL-GAS | Gas card UI READ |
-| 12 | APP-GAS-PLAN | 546 | - | Gas plan core READ |
-| 13 | APP-CONTINGENCY | 562 | - | Contingency core READ |
+| 12 | APP-GAS-PLAN | 558 | - | Gas plan core READ |
+| 13 | APP-CONTINGENCY | 582 | - | Contingency core READ |
 | 14 | APP-EXPORT | 3255 | - | export-core text/PDF READ |
 | 15 | UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 621 | - | plot-core render and waypoints READ |
 | 16 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 755 | - | Profile tool and plot init READ |
-| 17 | UI-VPM-RENDER, UI-ZHL-RESULTS | 1064 | - | results-render-core READ |
+| 17 | UI-VPM-RENDER, UI-ZHL-RESULTS | 1068 | - | results-render-core READ |
 | 18 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 511 | ENG-ZHL-SCHEDULE | ZHL/CCR delegate thin layer READ |
 | 19 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 597 | ENG-ZHL-CCR | Deco physics and schedule inputs READ |
 | 20 | UI-ZHL-RUNNER-SETUP, UI-ZHL-RUNNER-ENGINE | 479 | ENG-ZHL-SCHEDULE | ZHL runner setup and engine invocation READ |
@@ -54,9 +54,9 @@
 | 22 | UI-VPM-RUNNER | 473 | ENG-VPM | VPM runner READ |
 | 23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 393 | - | Runtime bootstrap and app init READ |
 | 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 671 | - | Algorithm and settings controls READ |
-| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1228 | - | Settings persistence and unit helpers READ |
+| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1262 | - | Settings persistence and unit helpers READ |
 | 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 851 | - | Tools panels READ |
-| 27 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 562 | - | Profile and config presets READ |
+| 27 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 563 | - | Profile and config presets READ |
 | 28 | UI-BOOT | 2376 | - | index.html shell boot region READ |
 | 29 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 438 | - | PWA and service worker READ |
 | 30 | APP-ZHL-WORKER, APP-ZHL-WORKER-BRIDGE | 159 | - | ZHL schedule worker and bridge READ |
