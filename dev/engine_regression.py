@@ -1812,6 +1812,42 @@ ENGINE_SUITE_JS = r"""
     };
   })();
 
+  // Seven-lens cycle 02: planner markup contracts (SL-C02).
+  out.sections.sevenLensCycle02 = (() => {
+    let minDecoUnitsOk = false;
+    let travelDepthConstraintsOk = false;
+    const prevUnits = typeof units !== 'undefined' ? units : null;
+    const modeSel = document.getElementById('travelGasSwitchMode');
+    const prevMode = modeSel?.value;
+    const depthInp = document.getElementById('travelGasManualDepth');
+    const prevDepth = depthInp?.value;
+    try {
+      if (typeof setUnits === 'function' && typeof getVpmMinDecoSettingsFromDom === 'function') {
+        setUnits('imperial');
+        minDecoUnitsOk = getVpmMinDecoSettingsFromDom().isMetric === false;
+      }
+      if (typeof setUnits === 'function' && typeof syncTravelGasManualDepthConstraints === 'function') {
+        if (modeSel) modeSel.value = 'manual';
+        updateTravelGasMOD?.();
+        setUnits('metric');
+        const metricMax = Number(depthInp?.max);
+        setUnits('imperial');
+        const imperialMax = Number(depthInp?.max);
+        if (depthInp) {
+          depthInp.value = '165';
+          travelDepthConstraintsOk =
+            metricMax === 500 && imperialMax === 165 && depthInp.checkValidity() === true;
+        }
+      }
+    } finally {
+      if (modeSel && prevMode != null) modeSel.value = prevMode;
+      if (depthInp && prevDepth != null) depthInp.value = prevDepth;
+      if (prevUnits != null && typeof setUnits === 'function') setUnits(prevUnits);
+      updateTravelGasMOD?.();
+    }
+    return { minDecoUnitsOk, travelDepthConstraintsOk, ok: minDecoUnitsOk && travelDepthConstraintsOk };
+  })();
+
   // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
   out.sections.cycle6 = (() => {
     const rdp11 = typeof padiTableRowIndex === 'function' ? padiTableRowIndex(11) : null;
@@ -2233,6 +2269,9 @@ def run_suite(page) -> dict:
     assert_true(sl01.get("loadPresetSyncOk"), "[SL-C01-PRESET-SYNC] loadProfilePreset syncs depth/bt mirrors and stepper", str(sl01))
     assert_true(sl01.get("settingsRestoreSyncOk"), "[SL-C01-SETTINGS-RESTORE] settings restore syncs depth/bt mirrors and stepper", str(sl01))
     assert_true(sl01.get("altitudeUnitConstraintsOk"), "[SL-C01-ALTITUDE-UNIT-CONSTRAINTS] custom altitude max/step follow display units", str(sl01))
+    sl02 = s.get("sevenLensCycle02", {})
+    assert_true(sl02.get("minDecoUnitsOk"), "[SL-C02-MIN-DECO-UNITS] min deco profile uses imperial units flag", str(sl02))
+    assert_true(sl02.get("travelDepthConstraintsOk"), "[SL-C02-TRAVEL-DEPTH-CONSTRAINTS] travel manual depth max follows display units", str(sl02))
     assert_true(erdp.get("normalizeOk"), "[ENG-RDP-CUSTOM-FALLBACK] normalizeRecMix restricts to standard gases", str(erdp))
     assert_true(erdp.get("recGasUiOk"), "[ENG-RDP-CUSTOM-FALLBACK] Rec mode hides custom gas option", str(erdp))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
@@ -2334,6 +2373,8 @@ def _audit_case_rows():
         case_row("SL-C01-PRESET-SYNC", case_ok("SL-C01-PRESET-SYNC")),
         case_row("SL-C01-SETTINGS-RESTORE", case_ok("SL-C01-SETTINGS-RESTORE")),
         case_row("SL-C01-ALTITUDE-UNIT-CONSTRAINTS", case_ok("SL-C01-ALTITUDE-UNIT-CONSTRAINTS")),
+        case_row("SL-C02-MIN-DECO-UNITS", case_ok("SL-C02-MIN-DECO-UNITS")),
+        case_row("SL-C02-TRAVEL-DEPTH-CONSTRAINTS", case_ok("SL-C02-TRAVEL-DEPTH-CONSTRAINTS")),
     ]
 
 
