@@ -19,15 +19,15 @@
 | native_config | 1 | 0 | 0 | 0 | 1 |
 | pwa | 3 | 0 | 0 | 0 | 3 |
 | release_config | 1 | 0 | 0 | 0 | 1 |
-| test_infrastructure | 34 | 0 | 0 | 0 | 34 |
-| tooling | 49 | 0 | 0 | 0 | 49 |
+| test_infrastructure | 35 | 0 | 0 | 0 | 35 |
+| tooling | 50 | 0 | 0 | 0 | 50 |
 | ui_core | 14 | 0 | 0 | 0 | 14 |
 | ui_shell | 2 | 0 | 0 | 0 | 2 |
 | web_css | 4 | 0 | 0 | 0 | 4 |
 | web_markup | 5 | 0 | 0 | 0 | 5 |
 | web_runtime | 24 | 0 | 0 | 0 | 24 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **173** | **0** | **0** | **0** | **173** |
+| **Total** | **175** | **0** | **0** | **0** | **175** |
 
 ## Units
 
@@ -155,7 +155,9 @@
 | TOOL-BUILD-VPM | tooling | `tools/build_vpm_bundle.py:1` | 104 | P1 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-BUILD-ZHL | tooling | `tools/build_zhl_bundle.py:1` | 390 | P1 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-CHECK-PARITY | tooling | `tools/check_engine_parity.py:1` | 311 | P1 | VERIFIED | COV-01, PARITY-01 |
-| TOOL-RUN-AUDIT-COVERAGE-SUITE-PY | tooling | `tools/run_audit_coverage_suite.py:1` | 52 | P0 | VERIFIED | COV-01, PARITY-01 |
+| TOOL-RUN-AUDIT-COVERAGE-SUITE-PY | tooling | `tools/run_audit_coverage_suite.py:1` | 53 | P0 | VERIFIED | COV-01, PARITY-01 |
+| TOOL-SEVEN-LENS-PROTOCOL | tooling | `tools/seven_lens_protocol.py:1` | 309 | P0 | VERIFIED | COV-01 |
+| TEST-SEVEN-LENS-PROTOCOL | test_infrastructure | `tools/test_seven_lens_protocol.py:1` | 120 | P0 | VERIFIED | COV-01 |
 | TOOL-EXTRACT-UI | tooling | `tools/extract_ui_cores.py:1` | 474 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-EXTRACT-ZHL | tooling | `tools/extract_zhl_core.py:1` | 124 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-INSERT-ZHL | tooling | `tools/insert_zhl_tier2.py:1` | 223 | P3 | VERIFIED | COV-01, PARITY-01 |

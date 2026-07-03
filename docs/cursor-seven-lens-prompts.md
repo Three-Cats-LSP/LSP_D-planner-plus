@@ -1,0 +1,97 @@
+# Cursor Seven-Lens Prompts
+
+Use a separate Cursor chat for each phase. Replace `<N>` and `<RECORD>` before
+running a prompt. Do not combine prompts in one chat.
+
+## 1. Auditor Prompt
+
+```text
+ROLE: AUDITOR. This chat is read-only for application source and tests.
+
+Read docs/cursor-seven-lens-audit-workflow.md and the active Cursor seven-lens
+rule completely. Work only on dev through a cycle branch. Run:
+
+python tools/seven_lens_protocol.py plan --cycle <N> --output <RECORD>
+python -m tools.audit check --profile static
+
+Read every generated part completely. Do not combine parts whose total exceeds
+600 application-source lines in one review_session. For each part, fill every
+L1-L7 object in <RECORD> with a concrete trace, boundary/failure cases examined,
+evidence, and result. Trace direct callers/callees, but do not count dependency
+context as reviewed coverage.
+
+For every defect, record exact canonical location, root cause, reproducible
+failure path, impact, evidence, recommendation, severity, and proposed stable
+regression IDs. Tests passing does not prove no defect. Do not edit source or
+tests and do not mark findings closed.
+
+Run:
+python tools/seven_lens_protocol.py check --phase audit --record <RECORD>
+
+Commit the report/record only, record that commit as audit_commit in a follow-up
+attestation commit, then STOP. Report that a different chat must perform FIXER.
+```
+
+## 2. Fixer Prompt
+
+```text
+ROLE: FIXER. Do not perform or claim independent verification.
+
+Read the committed cycle report and <RECORD>. Implement only its OPEN findings
+in canonical sources. For each finding, first create a behavioral regression
+that fails on the old behavior, then apply the fix. Exercise the actual user/API
+event path; do not substitute a direct helper call when wiring is part of the
+contract. Assert every path named by the finding.
+
+Every test must save and restore all DOM values, globals, local/session storage,
+workers, timers, modal state, generated output, and other shared state in finally.
+Register stable case IDs in the leaf suite and evidence catalog. Regenerate
+derived files only through repository tools. Record changed paths, regression
+IDs, and targeted results in <RECORD>, commit, then STOP. A fresh chat must run
+VERIFIER.
+```
+
+## 3. Verifier Prompt
+
+```text
+ROLE: VERIFIER. Treat the fix summary as untrusted context.
+
+Start from the committed fix HEAD in a fresh chat. Read the original report and
+<RECORD>, then independently re-read every changed line, every complete affected
+part, and required callers/callees. Use a verification_session different from
+review_session and keep each session at or below 600 application-source lines.
+
+For each finding: reproduce the original failure through its real entry path,
+prove the regression fails against the pre-fix commit, inspect state restoration,
+test adjacent metric/imperial and boundary cases, and reapply L1-L7. Run static,
+CI, and release profiles when required by the workflow. Record command, exit code,
+commit, case IDs, and clean-worktree result in <RECORD>.
+
+Record `verified_source_commit` and set verification_status to PASSED only when
+all source and evidence checks succeed; otherwise set it to BLOCKED. Then run:
+
+python tools/seven_lens_protocol.py check --phase verify --record <RECORD>
+
+If anything fails, leave the finding OPEN/BLOCKED and STOP. If it passes, commit
+only the report and ledger attestation, then STOP. Do not close the cycle in this
+chat.
+```
+
+## 4. Closure Prompt
+
+```text
+ROLE: CLOSER. Do not repair code in this chat.
+
+Fetch the PR HEAD and confirm its target is dev. Check that no reviewed source,
+test, or generated artifact changed after verified_source_commit. Confirm all
+findings are CLOSED with stable regression/evidence IDs, all part fingerprints
+match, review and verification sessions are independent, required GitHub checks
+ran on final PR HEAD, and the tracked worktree is clean.
+
+Run:
+python tools/seven_lens_protocol.py check --phase close --record <RECORD>
+
+Exit 0 is required. On any error, leave the cycle IN_PROGRESS and report the exact
+blocker. Only after exit 0 may the ledger become SEVEN_LENS_REVIEWED and the cycle
+be closed.
+```

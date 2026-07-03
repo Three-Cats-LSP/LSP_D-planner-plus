@@ -3366,8 +3366,46 @@
         "COV-01",
         "PARITY-01"
       ],
-      "fingerprint": "a5cfe73a27242416e54a74722207a48d5dec896129286a5919aa142cb1578e02",
-      "last_read_fingerprint": "a5cfe73a27242416e54a74722207a48d5dec896129286a5919aa142cb1578e02"
+      "fingerprint": "d9c425b8d174f3f8631d80c508ce1940d9c8509d3628b38b8a6d7803bb665b1a",
+      "last_read_fingerprint": "d9c425b8d174f3f8631d80c508ce1940d9c8509d3628b38b8a6d7803bb665b1a"
+    },
+    {
+      "id": "TOOL-SEVEN-LENS-PROTOCOL",
+      "path": "tools/seven_lens_protocol.py",
+      "layer": "tooling",
+      "priority": "P0",
+      "status": "VERIFIED",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "Seven-lens manual audit protocol gate",
+      "regression_cases": [
+        "COV-01"
+      ],
+      "fingerprint": "33c2766d22241ed32669465d76e57752ef791b6f4c830b01a4642e6a650aaaec",
+      "last_read_fingerprint": "33c2766d22241ed32669465d76e57752ef791b6f4c830b01a4642e6a650aaaec"
+    },
+    {
+      "id": "TEST-SEVEN-LENS-PROTOCOL",
+      "path": "tools/test_seven_lens_protocol.py",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "VERIFIED",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
+      "issue": "Seven-lens manual audit protocol gate tests",
+      "regression_cases": [
+        "COV-01"
+      ],
+      "fingerprint": "b4e9216a588ef84fea99347d45ad5041f4a1349edc93dee935fc21825f68361b",
+      "last_read_fingerprint": "b4e9216a588ef84fea99347d45ad5041f4a1349edc93dee935fc21825f68361b"
     },
     {
       "id": "TOOL-EXTRACT-UI",

@@ -4,6 +4,10 @@ This workflow is for Cursor using GPT-5.5 Medium. It performs the manual review
 that automated V3 gates cannot provide. The target integration branch is `dev`.
 Do not target or modify `main`.
 
+Use the role-separated prompts in `docs/cursor-seven-lens-prompts.md`. Generate
+and validate each structured cycle record with `tools/seven_lens_protocol.py`;
+prose reports do not replace the protocol gate.
+
 ## Core Rule
 
 Passing static checks, regressions, parity checks, or release suites is automated
@@ -125,6 +129,7 @@ those scopes for manual work instead of closing them in one session.
 Run before reading or editing:
 
 ```text
+python tools/seven_lens_protocol.py plan --cycle <N> --output docs/seven-lens-reports/cycle-<NN>-record.json
 python -m tools.audit check --profile static
 git status --short
 ```
@@ -301,6 +306,8 @@ A cycle closes only when all conditions are true:
 - `verified_source_commit` is the latest commit touching reviewed source, tests,
   or generated artifacts; all required CI runs evaluated the final PR HEAD; and
   the PR title/body accurately describe its final scope.
+- `python tools/seven_lens_protocol.py check --phase close --record <record>`
+  exits 0.
 
 Never count repeated executions of the same commit as multiple consecutive clean
 release runs. Each qualifying run must have a distinct GitHub Actions run ID and

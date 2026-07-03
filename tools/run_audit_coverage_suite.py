@@ -27,6 +27,7 @@ def main() -> int:
             "unittest",
             "tools.audit.test_system",
             "tools.test_ui_structure_suite",
+            "tools.test_seven_lens_protocol",
         ],
         cwd=ROOT,
         capture_output=True,
@@ -43,7 +44,7 @@ def main() -> int:
     if cov.returncode != 0:
         msg = "audit_coverage --check failed"
     elif tests.returncode != 0:
-        msg = "tools.audit.test_system failed"
+        msg = "audit infrastructure unit tests failed"
     finish_suite(ROOT, [case_row("AUDIT-COV-01", passed, msg)], 0 if passed else 1)
     return 0 if passed else 1
 
