@@ -1,10 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "cycle": 2,
   "target_branch": "dev",
   "baseline_commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
   "audit_commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
-  "verified_source_commit": "",
+  "verified_source_commit": "6f75077",
   "verification_status": "PASSED",
   "parts": [
     {

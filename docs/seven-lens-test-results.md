@@ -352,7 +352,24 @@ FIXER pass on `cursor/seven-lens-cycles-02-03-remediation` (includes Cycle 4 too
 
 ---
 
-## Cycle 4 post-merge Codex verification
+## Cycle 4 canonical-writer recovery (6f75077)
+
+FIXER branch `cursor/seven-lens-canonical-writers` addresses SL-C04-H-02/M-03/M-04 with code and regression evidence:
+
+| Gate | Result |
+|------|--------|
+| Engine regression | **172/172 PASS** (includes edit-after-switch cases) |
+| Cycle-03 browser traces | **PASS** (`SL-C03-*-EDIT-AFTER-SWITCH`, repeat=2) |
+| Cycle-04 browser traces | **PASS** (END/SI physical traces) |
+| Protocol unit tests | **25/25 PASS** |
+| `check-all --require-artifacts` | **BLOCKED** — cycle records need schema-v2 pre/post-fix evidence IDs |
+| Static audit | **PASS** (after cycle-25 budget bump to 1280 lines) |
+
+Core fix: `domDepthToM` / `domVolumeToL` honor user-edited display after unit switch; `syncDepthInputCanonical` / `syncVolumeInputCanonical` wired on all dual-state writers; `_syncDepthBtSteppers` no longer corrupts stamps during `setUnits`.
+
+---
+
+## Cycle 4 post-merge Codex verification (superseded)
 
 PR #188 was independently rechecked on `dev`. The END and Surface Interval traces pass, but the combined Cycle 2-4 closure is **BLOCKED**.
 
