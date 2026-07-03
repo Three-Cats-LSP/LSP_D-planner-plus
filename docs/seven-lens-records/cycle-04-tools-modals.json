@@ -16,8 +16,8 @@
     {"id": "SL-C03-L-02", "severity": "LOW", "status": "OPEN", "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling."}
   ],
   "audit_commit": "1ac8fb51600177d31c9b8c756b1c22e9b6f618da",
-  "verified_source_commit": "",
-  "verification_status": "PENDING",
+  "verified_source_commit": "50bacb0f13c2ef3e035f939b64b7868a9581ab48",
+  "verification_status": "BLOCKED",
   "parts": [
     {
       "id": "UI-MARKUP-TOOLS-P01",
@@ -26,9 +26,9 @@
       "start_line": 1,
       "end_line": 271,
       "line_count": 271,
-      "content_fingerprint": "62aef8c891215ea1b3640ca09af9fcb9edffe792f74f9a64ae60fe2dba71e737",
+      "content_fingerprint": "848597e92f10f1494b5100e0fcde9099f7832325d7881ca77b0f2067989c4c9a",
       "review_session": "cursor/seven-lens-cycle-04-tools-audit",
-      "verification_session": "",
+      "verification_session": "cursor/seven-lens-cycle-04-tools-modals-verify",
       "lens_results": {
         "L1": {"trace": "END slider 1-100; SI depth 5-60; gas table ppO2 1.0-1.6; O2/He mix bounds.", "boundary_cases": ["imperial END 30 ft", "SI 60 m max", "hypoxic surface ppO2"], "evidence": "markup-tools.html:52-191; gas-table-core.js:59-146", "result": "FINDING"},
         "L2": {"trace": "oninput calcEND_tool, calcSurfInt; tool panel switch via initV3Layout.", "boundary_cases": ["unit switch recalc"], "evidence": "index.html:7318-7320", "result": "NO_FINDING"},
@@ -46,9 +46,9 @@
       "start_line": 1,
       "end_line": 341,
       "line_count": 341,
-      "content_fingerprint": "4720f42548ea3b0b75af9cf1548656c9c2c53b3c2b3cfd89c7c17c63a4447be6",
+      "content_fingerprint": "c0b0b1ecc52d7398f80674b0af0f76c45b920b1771a1c917a5d4da34bafebe49",
       "review_session": "cursor/seven-lens-cycle-04-modals-audit",
-      "verification_session": "",
+      "verification_session": "cursor/seven-lens-cycle-04-tools-modals-verify",
       "lens_results": {
         "L1": {"trace": "Modal copy references depths in metres; ref depth stats updated by setUnits.", "boundary_cases": ["refDepthRec imperial"], "evidence": "markup-modals.html:121-122; index.html:3553", "result": "NO_FINDING"},
         "L2": {"trace": "Overlay click dismiss on gas/tip/preset modals; confirmModal lacks backdrop handler.", "boundary_cases": ["reset confirm flow"], "evidence": "markup-modals.html:2 vs 100", "result": "FINDING"},
@@ -72,7 +72,7 @@
       "evidence": "setUnits relabel; calcEND_tool dRaw/3.28084 without data-depthM",
       "recommendation": "Convert endDepth on setUnits; use domDepthToM in calcEND_tool",
       "observable_contract": "endAbsP unchanged for physically equivalent depth after imperial/metric switch",
-      "status": "OPEN",
+      "status": "CLOSED",
       "regression_ids": ["SL-C04-END-DEPTH-UNITS"],
       "evidence_ids": []
     },
@@ -87,7 +87,7 @@
       "evidence": "calcSurfInt d1/d2 raw; setUnits relabel only",
       "recommendation": "Full depth tuple + domDepthToM in calcSurfInt",
       "observable_contract": "siMinResult unchanged for equivalent physical depths across unit switch",
-      "status": "OPEN",
+      "status": "CLOSED",
       "regression_ids": ["SL-C04-SI-DEPTH-UNITS"],
       "evidence_ids": []
     },
@@ -102,7 +102,7 @@
       "evidence": "Sibling modals use if(event.target===this)close* pattern",
       "recommendation": "Add backdrop dismiss calling closeConfirmModal(false)",
       "observable_contract": "Overlay click sets confirmModal display none without invoking callback",
-      "status": "OPEN",
+      "status": "CLOSED",
       "regression_ids": ["SL-C04-CONFIRM-BACKDROP"],
       "evidence_ids": []
     },
@@ -116,7 +116,7 @@
       "impact": "Misleading label copy",
       "evidence": "markup-tools.html:95",
       "recommendation": "Fix to Narcotic pressure",
-      "status": "OPEN",
+      "status": "CLOSED",
       "regression_ids": [],
       "evidence_ids": []
     },
@@ -130,7 +130,7 @@
       "impact": "Misleading static copy",
       "evidence": "renderEADTable uses display units",
       "recommendation": "Unit-neutral depth range wording",
-      "status": "OPEN",
+      "status": "CLOSED",
       "regression_ids": [],
       "evidence_ids": []
     }
