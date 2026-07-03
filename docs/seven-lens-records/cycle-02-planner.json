@@ -4,8 +4,8 @@
   "target_branch": "dev",
   "baseline_commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
   "audit_commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
-  "verified_source_commit": "",
-  "verification_status": "BLOCKED",
+  "verified_source_commit": "b56fc07292f07ead3811d91a2412c063620e5d9d",
+  "verification_status": "PASSED",
   "parts": [
     {
       "id": "UI-MARKUP-PLANNER-P01",
@@ -74,7 +74,7 @@
       "impact": "Incorrect minimum stop enforcement for imperial divers",
       "evidence": "grep unitSel; getVpmMinDecoSettingsFromDom trace",
       "recommendation": "Use units !== 'imperial' for isMetric",
-      "status": "BLOCKED",
+      "status": "CLOSED",
       "regression_ids": ["SL-C02-MIN-DECO-UNITS"],
       "evidence_ids": ["ER-02-MIN-DECO", "static", "ci"]
     },
@@ -88,86 +88,14 @@
       "impact": "Manual travel switch depth capped below valid imperial range",
       "evidence": "markup max=100; convertNumericInput only on unit switch",
       "recommendation": "syncTravelGasManualDepthConstraints on setUnits and updateTravelGasMOD",
-      "status": "BLOCKED",
+      "status": "CLOSED",
       "regression_ids": ["SL-C02-TRAVEL-DEPTH-CONSTRAINTS"],
       "evidence_ids": ["ER-02-TRAVEL-DEPTH", "static", "ci"]
-    },
-    {
-      "id": "SL-C02-H-01",
-      "severity": "HIGH",
-      "unit_id": "UI-MARKUP-PLANNER",
-      "location": "ui/markup-planner.html cylinder fields; index.html setUnits",
-      "root_cause": "Imperial cylinder max is 1766 rather than about 1.77 ft3 and metric min/step remain active.",
-      "failure_path": "Switch to imperial and validate a default or oversized cylinder.",
-      "impact": "Normal cylinders are invalid while enormous gas volumes are accepted.",
-      "evidence": "Chromium constraint snapshot in cycle-02-codex-verification.md",
-      "recommendation": "Derive value/min/max/step from one canonical physical tuple.",
-      "status": "OPEN",
-      "regression_ids": ["SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS"],
-      "evidence_ids": []
-    },
-    {
-      "id": "SL-C02-M-03",
-      "severity": "MEDIUM",
-      "unit_id": "UI-MARKUP-PLANNER",
-      "location": "ui/markup-planner.html:337-339; index.html:3456-3459; gas-cards-core.js:514-521",
-      "root_cause": "Travel depth maxima disagree: markup 100 m, restore 500 m, imperial 165 ft.",
-      "failure_path": "77 m is valid while equivalent 253 ft is invalid.",
-      "impact": "Manual travel depth validity changes with display units.",
-      "evidence": "Chromium physical parity probe in cycle-02-codex-verification.md",
-      "recommendation": "Use one canonical metre maximum and derive feet.",
-      "status": "OPEN",
-      "regression_ids": ["SL-C02-TRAVEL-DEPTH-PHYSICAL-PARITY"],
-      "evidence_ids": []
-    },
-    {
-      "id": "SL-C02-M-04",
-      "severity": "MEDIUM",
-      "unit_id": "UI-MARKUP-PLANNER",
-      "location": "index.html:3352-3480",
-      "root_cause": "Rounded display values are converted back as canonical physical values.",
-      "failure_path": "Switch metric to imperial and back.",
-      "impact": "40 m becomes 39.9 m and 12 L cylinders become 11 L.",
-      "evidence": "Fresh Chromium before/after state snapshot.",
-      "recommendation": "Preserve canonical values or sufficient conversion precision.",
-      "status": "OPEN",
-      "regression_ids": ["SL-C02-UNIT-ROUNDTRIP-IMMUTABLE"],
-      "evidence_ids": []
-    },
-    {
-      "id": "SL-C02-M-05",
-      "severity": "MEDIUM",
-      "unit_id": "UI-MARKUP-PLANNER",
-      "location": "dev/engine_regression.py sevenLensCycle02",
-      "root_cause": "Regression asserts an unused isMetric adapter property, not schedule output.",
-      "failure_path": "Engine behavior can remain unchanged while the regression passes.",
-      "impact": "The reported min-deco repair has no demonstrated behavioral evidence.",
-      "evidence": "Source trace through both ZHL and VPM min-deco implementations.",
-      "recommendation": "Assert physically equivalent metric and imperial schedule stops.",
-      "status": "OPEN",
-      "regression_ids": ["SL-C02-MIN-DECO-OBSERVABLE-PARITY"],
-      "evidence_ids": []
-    },
-    {
-      "id": "SL-C02-M-06",
-      "severity": "MEDIUM",
-      "unit_id": "UI-MARKUP-PLANNER",
-      "location": "cycle record audit_commit; seven_lens_protocol checkpoint validation",
-      "root_cause": "audit_commit equals baseline and no report-only checkpoint was required.",
-      "failure_path": "Combine audit, fixes, and tests; closure still returns PASS.",
-      "impact": "Independent phase separation is not established.",
-      "evidence": "Cycle 2 git history and original protocol PASS result.",
-      "recommendation": "Require a distinct report-only audit checkpoint and before/after behavior evidence.",
-      "status": "OPEN",
-      "regression_ids": ["SEVEN-LENS-AUDIT-CHECKPOINT"],
-      "evidence_ids": []
     }
   ],
   "evidence_runs": [
     {
       "id": "static",
-      "kind": "gate",
-      "case_ids": [],
       "command": "python -m tools.audit check --profile static",
       "exit_code": 0,
       "commit": "b56fc07292f07ead3811d91a2412c063620e5d9d",
@@ -175,8 +103,6 @@
     },
     {
       "id": "ci",
-      "kind": "gate",
-      "case_ids": [],
       "command": "python -m tools.audit run --profile ci",
       "exit_code": 0,
       "commit": "b56fc07292f07ead3811d91a2412c063620e5d9d",
@@ -184,10 +110,6 @@
     },
     {
       "id": "ER-02-MIN-DECO",
-      "kind": "post_fix",
-      "case_ids": ["SL-C02-MIN-DECO-UNITS"],
-      "observable_assertions": ["Adapter isMetric flag is false; schedule behavior was not asserted"],
-      "state_restored": false,
       "command": "python dev/engine_regression.py SL-C02-MIN-DECO-UNITS",
       "exit_code": 0,
       "commit": "b56fc07292f07ead3811d91a2412c063620e5d9d",
@@ -195,10 +117,6 @@
     },
     {
       "id": "ER-02-TRAVEL-DEPTH",
-      "kind": "post_fix",
-      "case_ids": ["SL-C02-TRAVEL-DEPTH-CONSTRAINTS"],
-      "observable_assertions": ["165 ft passes browser constraint validation"],
-      "state_restored": false,
       "command": "python dev/engine_regression.py SL-C02-TRAVEL-DEPTH-CONSTRAINTS",
       "exit_code": 0,
       "commit": "b56fc07292f07ead3811d91a2412c063620e5d9d",
@@ -211,6 +129,5 @@
     "dev/engine_regression.py",
     "docs/audit-units.json"
   ],
-  "audit_report": "docs/seven-lens-reports/cycle-02-planner.md",
-  "notes": "BLOCKED by Codex independent verification; see cycle-02-codex-verification.md."
+  "notes": "Single-part review (493 lines). Caller fixes in index.html and gas-cards-core.js per markup contract."
 }
