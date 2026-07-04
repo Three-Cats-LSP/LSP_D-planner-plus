@@ -253,6 +253,16 @@ def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> 
     pristine = el.evaluate(READ_FIELD_PROBE_JS)
     pristine_valid = bool(snap.get("valid")) and bool(pristine.get("validityValid"))
     resolved_red = pristine.get("resolvedRed")
+    resolved_accent = page.evaluate(
+        """() => {
+          const p = document.createElement('span');
+          p.style.color = 'var(--accent)';
+          document.documentElement.appendChild(p);
+          const c = getComputedStyle(p).color;
+          p.remove();
+          return c;
+        }"""
+    )
 
     try:
         el.click()
@@ -269,10 +279,12 @@ def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> 
         blurred_not_focused = not bool(blurred.get("focused"))
 
         el.click()
+        page.wait_for_timeout(300)
         focused_probe = el.evaluate(READ_FIELD_PROBE_JS)
         focused = bool(focused_probe.get("focused"))
 
         el.evaluate("node => { node.disabled = true; }")
+        page.wait_for_timeout(300)
         disabled_probe = el.evaluate(READ_FIELD_PROBE_JS)
         disabled = bool(disabled_probe.get("disabled"))
     finally:
@@ -302,11 +314,11 @@ def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> 
         and blurred.get("borderColor") != pristine.get("borderColor")
     )
     shadow_changed = _shadow_differs(pristine, blurred)
-    focus_precedence = (
-        focused_probe.get("borderColor") != blurred.get("borderColor")
-        or focused_probe.get("boxShadow") != blurred.get("boxShadow")
+    focus_precedence = focused_probe.get("borderColor") == resolved_accent
+    disabled_no_red = (
+        disabled_probe.get("borderColor") != resolved_red
+        and disabled_probe.get("boxShadow") != blurred.get("boxShadow")
     )
-    disabled_no_red = disabled_probe.get("borderColor") != resolved_red
     ok = (
         pristine_valid
         and after_invalid
