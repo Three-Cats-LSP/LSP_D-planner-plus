@@ -5,7 +5,7 @@
     "python",
     "dev/ui_controls_css_regression.py"
   ],
-  "commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182",
+  "commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d",
   "exit_code": 0,
   "case_ids": [
     "SL-C06-SEG-FOCUS-VISIBLE",
@@ -18,9 +18,9 @@
   ],
   "worktree_clean_before": true,
   "worktree_clean_after": true,
-  "started_at": "2026-07-04T16:22:13.860614+00:00",
-  "finished_at": "2026-07-04T16:22:38.903327+00:00",
-  "stdout_sha256": "2d979eae507fe813546455dd153c23f413514203009b1158af444e8157adc6df",
+  "started_at": "2026-07-04T18:13:22.233857+00:00",
+  "finished_at": "2026-07-04T18:13:55.953682+00:00",
+  "stdout_sha256": "8891813f285683e9aa680cd5d8747e2b26cea84285d3490336c70f00d603eda9",
   "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
 }
