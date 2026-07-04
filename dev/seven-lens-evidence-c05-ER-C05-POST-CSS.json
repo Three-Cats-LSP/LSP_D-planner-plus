@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ER-C05-POST-CSS",
+  "command_argv": [
+    "python",
+    "dev/ui_css_regression.py"
+  ],
+  "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+  "exit_code": 0,
+  "case_ids": [
+    "SL-C05-GF-ROW-MODE-ISOLATION",
+    "SL-C05-EXPORT-FOCUS-VISIBLE",
+    "SL-C05-CSS-DEAD-BRAND-ICON",
+    "SL-C05-CSS-DEAD-GF-BTN",
+    "SL-C05-CSS-DEAD-ALGO-SWITCHER",
+    "SL-C05-CSS-DEAD-THEME-TOGGLE"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-04T12:10:23.980087+00:00",
+  "finished_at": "2026-07-04T12:10:37.185639+00:00",
+  "stdout_sha256": "383d3f9a06b58fe0fe451ac23d18ca6c0b3a29b3af49c38dba2ce584ee648262",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
+}
