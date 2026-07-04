@@ -158,8 +158,8 @@
       "summary": "GF pre-anchor and CCR endpoint corrected; verification requires REG-06 and REG-07 in the current release run"
     }
   ],
-  "audit_commit": "2fef1fa0ad56b9052beac9a8124726a20ee48395",
-  "verified_source_commit": "2fef1fa0ad56b9052beac9a8124726a20ee48395",
+  "audit_commit": "6be0739fa06c277c28bc1e91751305802cf0bea5",
+  "verified_source_commit": "6be0739fa06c277c28bc1e91751305802cf0bea5",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -349,7 +349,7 @@
         "static"
       ],
       "exit_code": 0,
-      "commit": "2fef1fa0ad56b9052beac9a8124726a20ee48395",
+      "commit": "6be0739fa06c277c28bc1e91751305802cf0bea5",
       "worktree_clean": true,
       "receipt_path": "dev/seven-lens-evidence-static.json",
       "receipt_sha256": ""
@@ -372,7 +372,7 @@
         "ci"
       ],
       "exit_code": 0,
-      "commit": "2fef1fa0ad56b9052beac9a8124726a20ee48395",
+      "commit": "6be0739fa06c277c28bc1e91751305802cf0bea5",
       "worktree_clean": true,
       "receipt_path": "dev/seven-lens-evidence-ci.json",
       "receipt_sha256": ""
@@ -397,7 +397,7 @@
         "dev/seven-lens-browser-trace-2a.json"
       ],
       "exit_code": 0,
-      "commit": "2fef1fa0ad56b9052beac9a8124726a20ee48395",
+      "commit": "6be0739fa06c277c28bc1e91751305802cf0bea5",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "User steps REC depth via stepper; hidden recDepth and label stay synced.",
