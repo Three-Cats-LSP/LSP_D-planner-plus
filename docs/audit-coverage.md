@@ -159,8 +159,8 @@
 | TOOL-BUILD-ZHL | tooling | `tools/build_zhl_bundle.py:1` | 390 | P1 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-CHECK-PARITY | tooling | `tools/check_engine_parity.py:1` | 311 | P1 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-RUN-AUDIT-COVERAGE-SUITE-PY | tooling | `tools/run_audit_coverage_suite.py:1` | 65 | P0 | IN_PROGRESS | - |
-| TOOL-SEVEN-LENS-PROTOCOL | tooling | `tools/seven_lens_protocol.py:1` | 819 | P0 | IN_PROGRESS | - |
-| TEST-SEVEN-LENS-PROTOCOL | test_infrastructure | `tools/test_seven_lens_protocol.py:1` | 360 | P0 | IN_PROGRESS | - |
+| TOOL-SEVEN-LENS-PROTOCOL | tooling | `tools/seven_lens_protocol.py:1` | 998 | P0 | IN_PROGRESS | - |
+| TEST-SEVEN-LENS-PROTOCOL | test_infrastructure | `tools/test_seven_lens_protocol.py:1` | 463 | P0 | IN_PROGRESS | - |
 | TOOL-SEVEN-LENS-EVIDENCE | tooling | `tools/seven_lens_evidence.py:1` | 146 | P0 | IN_PROGRESS | - |
 | TOOL-SEVEN-LENS-BROWSER-TRACE | tooling | `tools/seven_lens_browser_trace.py:1` | 500 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-BROWSER-TRACE | test_infrastructure | `tools/test_seven_lens_browser_trace.py:1` | 144 | P0 | IN_PROGRESS | - |
@@ -222,5 +222,5 @@
 | TEST-SEVEN-LENS-CYCLE05-EXPORT-FOCUS-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-05-export-focus.json:1` | 65 | P0 | IN_PROGRESS | - |
 | TEST-UI-CSS-REGRESSION | test_infrastructure | `dev/ui_css_regression.py:1` | 251 | P0 | IN_PROGRESS | REG-76, REG-77, REG-78, REG-79, REG-80, REG-81 |
 | TEST-SEVEN-LENS-CYCLE06-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-06-controls.json:1` | 221 | P0 | IN_PROGRESS | - |
-| TEST-UI-CONTROLS-CSS-REGRESSION | test_infrastructure | `dev/ui_controls_css_regression.py:1` | 392 | P0 | IN_PROGRESS | REG-82, REG-83, REG-84, REG-85, REG-86, REG-87, REG-88 |
+| TEST-UI-CONTROLS-CSS-REGRESSION | test_infrastructure | `dev/ui_controls_css_regression.py:1` | 503 | P0 | IN_PROGRESS | REG-82, REG-83, REG-84, REG-85, REG-86, REG-87, REG-88 |
 | TEST-C06-PRE-CONTROLS-REGRESSION | test_infrastructure | `dev/c06_pre_controls_regression.py:1` | 47 | P0 | IN_PROGRESS | REG-82, REG-83 |

@@ -14,6 +14,7 @@ from tools.seven_lens_protocol import (
     _file_sha256,
     _part_hash,
     _validate_evidence_receipt,
+    _validate_registry_closure_mutations,
     _validate_trace_artifact,
     make_plan,
     validate_record,
@@ -325,6 +326,8 @@ class SevenLensProtocolTests(unittest.TestCase):
         self.assertTrue(_attestation_only_path("dev/seven-lens-browser-trace-cycle05.json"))
         self.assertTrue(_attestation_only_path("dev\\seven-lens-browser-trace-cycle05-pre.json"))
         self.assertTrue(_attestation_only_path("docs/seven-lens-reports/cycle-05-record.json"))
+        self.assertTrue(_attestation_only_path("docs/audit-coverage.md"))
+        self.assertFalse(_attestation_only_path("docs/audit-units.json"))
         self.assertFalse(_attestation_only_path("lsp-dplanner-foundation.css"))
         self.assertFalse(_attestation_only_path("dev/ui_css_regression.py"))
 
@@ -354,6 +357,106 @@ class SevenLensProtocolTests(unittest.TestCase):
         }), encoding="utf-8")
         errors = validate_reviewed_cycles(self.root)
         self.assertTrue(any("no protocol record or exemption" in error for error in errors))
+
+    def test_registry_closure_allows_cycle_finding_rows(self):
+        docs = self.root / "docs"
+        docs.mkdir(parents=True)
+        before = {
+            "schema_version": 3,
+            "findings": [],
+            "units": [],
+            "evidence_catalog": {
+                "REG-82": {"suite_id": "SUITE-X", "case_id": "SL-C06-SEG-FOCUS-VISIBLE"},
+            },
+            "suites": {},
+            "rules": {},
+            "cycles": [],
+        }
+        after = copy.deepcopy(before)
+        after["findings"] = [{
+            "id": "SL-C06-M-01",
+            "unit_id": "UI-CSS-CONTROLS",
+            "severity": "MEDIUM",
+            "status": "CLOSED",
+            "issue": "Seven-lens Cycle 06 controls CSS audit",
+            "summary": "Segmented controls suppress keyboard focus ring",
+            "affected_units": ["UI-CSS-CONTROLS"],
+            "resolution_commit": "abcdef2",
+            "evidence_cases": ["REG-82"],
+        }]
+        (docs / "audit-units.json").write_text(json.dumps(after), encoding="utf-8")
+        record = {
+            "cycle": 6,
+            "findings": [{
+                "id": "SL-C06-M-01",
+                "unit_id": "UI-CSS-CONTROLS",
+                "severity": "MEDIUM",
+                "status": "CLOSED",
+                "regression_ids": ["SL-C06-SEG-FOCUS-VISIBLE"],
+            }],
+        }
+        with patch(
+            "tools.seven_lens_protocol._git",
+            return_value=json.dumps(before),
+        ):
+            errors = _validate_registry_closure_mutations(self.root, record, "abcdef2")
+        self.assertEqual([], errors)
+
+    def test_registry_closure_rejects_unrelated_finding_edits(self):
+        docs = self.root / "docs"
+        docs.mkdir(parents=True)
+        before = {
+            "schema_version": 3,
+            "findings": [{
+                "id": "SL-C05-M-01",
+                "unit_id": "UI-CSS-FOUNDATION",
+                "severity": "MEDIUM",
+                "status": "OPEN",
+                "issue": "Seven-lens Cycle 05 CSS audit",
+                "summary": "Mode-isolation CSS targets removed #gfPresetsRow",
+                "affected_units": ["UI-CSS-FOUNDATION"],
+                "resolution_commit": "",
+                "evidence_cases": ["REG-76"],
+            }],
+            "units": [],
+            "evidence_catalog": {
+                "REG-76": {"suite_id": "SUITE-X", "case_id": "SL-C05-GF-ROW-MODE-ISOLATION"},
+                "REG-82": {"suite_id": "SUITE-X", "case_id": "SL-C06-SEG-FOCUS-VISIBLE"},
+            },
+            "suites": {},
+            "rules": {},
+            "cycles": [],
+        }
+        after = copy.deepcopy(before)
+        after["findings"][0]["summary"] = "tampered summary"
+        after["findings"].append({
+            "id": "SL-C06-M-01",
+            "unit_id": "UI-CSS-CONTROLS",
+            "severity": "MEDIUM",
+            "status": "CLOSED",
+            "issue": "Seven-lens Cycle 06 controls CSS audit",
+            "summary": "Segmented controls suppress keyboard focus ring",
+            "affected_units": ["UI-CSS-CONTROLS"],
+            "resolution_commit": "abcdef2",
+            "evidence_cases": ["REG-82"],
+        })
+        (docs / "audit-units.json").write_text(json.dumps(after), encoding="utf-8")
+        record = {
+            "cycle": 6,
+            "findings": [{
+                "id": "SL-C06-M-01",
+                "unit_id": "UI-CSS-CONTROLS",
+                "severity": "MEDIUM",
+                "status": "CLOSED",
+                "regression_ids": ["SL-C06-SEG-FOCUS-VISIBLE"],
+            }],
+        }
+        with patch(
+            "tools.seven_lens_protocol._git",
+            return_value=json.dumps(before),
+        ):
+            errors = _validate_registry_closure_mutations(self.root, record, "abcdef2")
+        self.assertTrue(any("unrelated finding SL-C05-M-01" in error for error in errors))
 
 
 if __name__ == "__main__":

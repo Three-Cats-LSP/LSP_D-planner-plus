@@ -215,9 +215,166 @@ def _attestation_only_path(path: str) -> bool:
         normalized.startswith("docs/seven-lens-reports/")
         or normalized.startswith("docs/seven-lens-records/")
         or normalized == "docs/seven-lens-manual-ledger.json"
-        or normalized in {"docs/audit-units.json", "docs/audit-coverage.md"}
+        or normalized == "docs/audit-coverage.md"
         or fnmatch.fnmatch(normalized, "dev/seven-lens-browser-trace-*.json")
     )
+
+
+def _registry_regression_id(registry: dict[str, Any], regression_id: str) -> str | None:
+    for reg_id, row in registry.get("evidence_catalog", {}).items():
+        if row.get("case_id") == regression_id:
+            return reg_id
+    return None
+
+
+def _finding_closure_issue(cycle: int) -> str:
+    return f"Seven-lens Cycle {cycle:02d} controls CSS audit"
+
+
+def _expected_registry_evidence_cases(
+    record_finding: dict[str, Any], registry: dict[str, Any]
+) -> list[str]:
+    return [
+        reg_id
+        for regression_id in record_finding.get("regression_ids", [])
+        if (reg_id := _registry_regression_id(registry, regression_id))
+    ]
+
+
+def _validate_units_fingerprint_realignments(
+    root: Path, before_units: list[dict[str, Any]], after_units: list[dict[str, Any]]
+) -> list[str]:
+    errors: list[str] = []
+    before_map = {row.get("id"): row for row in before_units}
+    after_map = {row.get("id"): row for row in after_units}
+    if before_map.keys() != after_map.keys():
+        errors.append("registry closure changed unit catalog membership or order")
+        return errors
+    for unit_id, before in before_map.items():
+        after = after_map[unit_id]
+        if before == after:
+            continue
+        before_copy = dict(before)
+        after_copy = dict(after)
+        before_fp = before_copy.pop("fingerprint", None)
+        after_fp = after_copy.pop("fingerprint", None)
+        if before_copy != after_copy:
+            errors.append(f"registry closure changed unit {unit_id} outside fingerprint realignment")
+            continue
+        path = root / str(after.get("path", ""))
+        expected = _file_sha256(path) if path.is_file() else ""
+        if after_fp != expected:
+            errors.append(f"registry closure unit {unit_id} fingerprint does not match source file")
+    return errors
+
+
+def _validate_registry_closure_mutations(
+    root: Path, record: dict[str, Any], verified_commit: str
+) -> list[str]:
+    errors: list[str] = []
+    cycle = int(record.get("cycle", 0) or 0)
+    if cycle < 1:
+        errors.append("registry closure validation requires cycle number")
+        return errors
+    try:
+        before = json.loads(_git("show", f"{verified_commit}:docs/audit-units.json", root=root))
+    except (RuntimeError, json.JSONDecodeError) as exc:
+        errors.append(f"cannot load verified registry: {exc}")
+        return errors
+    after_path = root / "docs/audit-units.json"
+    if not after_path.is_file():
+        errors.append("docs/audit-units.json missing at closure HEAD")
+        return errors
+    after = json.loads(after_path.read_text(encoding="utf-8"))
+    expected_closed = {
+        row.get("id"): row
+        for row in record.get("findings", [])
+        if row.get("status") == "CLOSED" and _text(row.get("id"), 5)
+    }
+    immutable_top_level = [
+        key for key in before if key not in {"findings", "units"}
+    ]
+    for key in immutable_top_level:
+        if key not in after:
+            errors.append(f"registry closure removed top-level section {key}")
+        elif before[key] != after[key]:
+            errors.append(f"registry closure changed forbidden section {key}")
+    for key in after:
+        if key in {"findings", "units"}:
+            continue
+        if key not in before:
+            errors.append(f"registry closure added top-level section {key}")
+    errors.extend(
+        _validate_units_fingerprint_realignments(
+            root, before.get("units", []), after.get("units", [])
+        )
+    )
+    before_findings = {row.get("id"): row for row in before.get("findings", [])}
+    after_findings = {row.get("id"): row for row in after.get("findings", [])}
+    for finding_id, old in before_findings.items():
+        if finding_id not in after_findings:
+            errors.append(f"registry closure deleted finding {finding_id}")
+    for finding_id, new in after_findings.items():
+        old = before_findings.get(finding_id)
+        if finding_id not in expected_closed:
+            if old != new:
+                errors.append(f"registry closure modified unrelated finding {finding_id}")
+            continue
+        record_finding = expected_closed[finding_id]
+        expected_evidence = _expected_registry_evidence_cases(record_finding, after)
+        unit_id = str(record_finding.get("unit_id", ""))
+        if old is None:
+            if new.get("status") != "CLOSED":
+                errors.append(f"registry closure finding {finding_id} must be CLOSED")
+            if new.get("resolution_commit") != verified_commit[:7]:
+                errors.append(f"registry closure finding {finding_id} resolution_commit mismatch")
+            if new.get("unit_id") != unit_id:
+                errors.append(f"registry closure finding {finding_id} unit_id mismatch")
+            if new.get("severity") != record_finding.get("severity"):
+                errors.append(f"registry closure finding {finding_id} severity mismatch")
+            if new.get("issue") != _finding_closure_issue(cycle):
+                errors.append(f"registry closure finding {finding_id} issue mismatch")
+            if new.get("affected_units") != ([unit_id] if unit_id else []):
+                errors.append(f"registry closure finding {finding_id} affected_units mismatch")
+            if new.get("evidence_cases") != expected_evidence:
+                errors.append(f"registry closure finding {finding_id} evidence_cases mismatch")
+            if not _text(new.get("summary"), 5):
+                errors.append(f"registry closure finding {finding_id} summary missing")
+            continue
+        allowed_old_status = {"OPEN", "BLOCKED"}
+        if old.get("status") not in allowed_old_status:
+            errors.append(f"registry closure finding {finding_id} did not start OPEN/BLOCKED")
+        mutable = {"status", "resolution_commit"}
+        for key, value in old.items():
+            if key in mutable:
+                continue
+            if new.get(key) != value:
+                errors.append(f"registry closure finding {finding_id} changed immutable field {key}")
+        if new.get("status") != "CLOSED":
+            errors.append(f"registry closure finding {finding_id} must end CLOSED")
+        if new.get("resolution_commit") != verified_commit[:7]:
+            errors.append(f"registry closure finding {finding_id} resolution_commit mismatch")
+        if new.get("evidence_cases") != expected_evidence:
+            errors.append(f"registry closure finding {finding_id} evidence_cases mismatch")
+    for finding_id in expected_closed:
+        if finding_id not in after_findings:
+            errors.append(f"registry closure missing expected finding {finding_id}")
+    return errors
+
+
+def _validate_generated_coverage_doc(root: Path) -> list[str]:
+    try:
+        from tools import audit_coverage
+
+        registry = audit_coverage.load_registry(root / "docs/audit-units.json")
+        _, resolved = audit_coverage.validate_registry(registry, root)
+        expected = audit_coverage.render_coverage(registry, resolved)
+    except Exception as exc:
+        return [f"cannot validate generated coverage doc: {exc}"]
+    actual = (root / "docs/audit-coverage.md").read_text(encoding="utf-8")
+    if actual != expected:
+        return ["docs/audit-coverage.md is not generated from the registry"]
+    return []
 
 
 def _audit_metadata_path(path: str) -> bool:
@@ -698,9 +855,31 @@ def validate_record(
                 path for path in protected if path.strip() and not _attestation_only_path(path)
             )
             if paths:
-                changed = _git("diff", "--name-only", f"{record['verified_source_commit']}..HEAD", "--", *paths, root=root)
-                if changed:
-                    errors.append("reviewed source/test changed after verification: " + changed.replace("\n", ", "))
+                changed = _git(
+                    "diff", "--name-only", f"{record['verified_source_commit']}..HEAD", "--", *paths, root=root
+                )
+                changed_list = [path for path in changed.splitlines() if path.strip()]
+                if "docs/audit-units.json" in changed_list:
+                    errors.extend(
+                        _validate_registry_closure_mutations(
+                            root, record, str(record["verified_source_commit"])
+                        )
+                    )
+                    changed_list = [path for path in changed_list if path != "docs/audit-units.json"]
+                coverage_path = root / "docs/audit-coverage.md"
+                if coverage_path.is_file() and check_git:
+                    try:
+                        if _git(
+                            "diff", "--name-only", f"{record['verified_source_commit']}..HEAD",
+                            "--", "docs/audit-coverage.md", root=root,
+                        ).strip():
+                            errors.extend(_validate_generated_coverage_doc(root))
+                    except RuntimeError:
+                        pass
+                if changed_list:
+                    errors.append(
+                        "reviewed source/test changed after verification: " + ", ".join(changed_list)
+                    )
     return errors
 
 

@@ -103,54 +103,6 @@ TOUCH_JS = r"""
 }
 """
 
-INVALID_JS = r"""
-() => {
-  const snapVal = document.getElementById('cylBot_size')?.value;
-  try {
-    setMainNav('buh');
-    switchTab('planner', document.getElementById('tab-planner'));
-    const el = document.getElementById('cylBot_size');
-    if (!el) return { ok: false, missing: true };
-    const before = getComputedStyle(el).borderColor;
-    const pristineInvalid = !el.validity.valid;
-    el.focus();
-    el.value = '0';
-    el.dispatchEvent(new Event('input', { bubbles: true }));
-    el.blur();
-    const afterInvalid = !el.validity.valid;
-    const invalidBorder = getComputedStyle(el).borderColor;
-    el.focus();
-    const focusBorder = getComputedStyle(el).borderColor;
-    el.disabled = true;
-    const disabledBorder = getComputedStyle(el).borderColor;
-    el.disabled = false;
-    return {
-      ok: !pristineInvalid
-        && afterInvalid
-        && invalidBorder !== before
-        && focusBorder !== invalidBorder
-        && disabledBorder !== invalidBorder,
-      pristineInvalid,
-      afterInvalid,
-      before,
-      invalidBorder,
-      focusBorder,
-      disabledBorder,
-    };
-  } finally {
-    const el = document.getElementById('cylBot_size');
-    if (el) {
-      el.disabled = false;
-      if (snapVal != null) {
-        el.value = snapVal;
-        el.dispatchEvent(new Event('input', { bubbles: true }));
-      }
-    }
-    switchTab('deco', document.getElementById('tab-deco'));
-  }
-}
-"""
-
 REDUCED_JS = r"""
 () => {
   const read = (sel) => {
@@ -166,6 +118,24 @@ REDUCED_JS = r"""
   return { seg, thumb, input, ok: zeroed(seg) && zeroed(thumb) && zeroed(input) };
 }
 """
+
+READ_FIELD_STYLES_JS = r"""
+node => {
+  const cs = getComputedStyle(node);
+  return {
+    borderColor: cs.borderColor,
+    boxShadow: cs.boxShadow,
+    outlineStyle: cs.outlineStyle,
+    outlineWidth: cs.outlineWidth,
+  };
+}
+"""
+
+
+def _styles_differ(left: dict | None, right: dict | None) -> bool:
+    if not left or not right:
+        return False
+    return left.get("borderColor") != right.get("borderColor") or left.get("boxShadow") != right.get("boxShadow")
 
 
 def _keyboard_seg_focus(page, *, gas_rule: bool) -> dict:
@@ -232,7 +202,7 @@ def _keyboard_seg_focus(page, *, gas_rule: bool) -> dict:
     return {"found": found, "rows": rows, "ok": all(row and row.get("ok") for row in rows), "gas_rule": gas_rule}
 
 
-def _invalid_field(page) -> dict:
+def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> dict:
     page.evaluate(
         """() => {
           setMainNav('buh');
@@ -240,39 +210,155 @@ def _invalid_field(page) -> dict:
         }"""
     )
     el = page.locator("#cylBot_size")
-    before = el.evaluate("node => getComputedStyle(node).borderColor")
-    pristine_invalid = el.evaluate("node => !node.validity.valid")
-    el.click()
-    page.keyboard.press("Control+A")
-    page.keyboard.press("Backspace")
-    page.keyboard.type("0")
-    page.keyboard.press("Tab")
-    after_invalid = el.evaluate("node => !node.validity.valid")
-    invalid_border = el.evaluate("node => getComputedStyle(node).borderColor")
-    el.focus()
-    focus_border = el.evaluate("node => getComputedStyle(node).borderColor")
-    el.evaluate("node => { node.disabled = true; }")
-    disabled_border = el.evaluate("node => getComputedStyle(node).borderColor")
-    el.evaluate("node => { node.disabled = false; node.value = '12'; node.dispatchEvent(new Event('input', { bubbles: true })); }")
-    page.evaluate("() => { setMainNav('buh'); switchTab('deco', document.getElementById('tab-deco')); }")
-    return {
-        "ok": (not pristine_invalid)
+    if el.count() == 0:
+        return {
+            "ok": False,
+            "missing": True,
+            "viewport": list(viewport),
+            "browserVersion": browser_version,
+        }
+
+    snap = el.evaluate(
+        """node => ({
+          value: node.value,
+          disabled: node.disabled,
+          min: node.min,
+          max: node.max,
+          step: node.step,
+          valid: node.validity.valid,
+          validationMessage: node.validationMessage,
+        })"""
+    )
+    selector_matches = page.evaluate(
+        """() => ({
+          fieldInputCount: document.querySelectorAll('.field input').length,
+          targetPresent: !!document.getElementById('cylBot_size'),
+          targetInField: !!document.querySelector('.field input#cylBot_size'),
+        })"""
+    )
+    before_styles = el.evaluate(READ_FIELD_STYLES_JS)
+    pristine_valid = bool(snap.get("valid"))
+
+    try:
+        el.click()
+        el.select_text()
+        el.fill("0")
+        el.evaluate("node => node.dispatchEvent(new Event('input', { bubbles: true }))")
+        page.locator("#cylBot_pres").click()
+
+        after_valid = el.evaluate("node => node.validity.valid")
+        after_invalid = not after_valid
+        invalid_styles = el.evaluate(READ_FIELD_STYLES_JS)
+
+        el.click()
+        focused = el.evaluate("node => document.activeElement === node")
+        focus_styles = el.evaluate(READ_FIELD_STYLES_JS)
+
+        el.evaluate("node => { node.disabled = true; }")
+        disabled = el.evaluate("node => node.disabled")
+        disabled_styles = el.evaluate(READ_FIELD_STYLES_JS)
+    finally:
+        page.evaluate(
+            """(snap) => {
+              const node = document.getElementById('cylBot_size');
+              if (!node) return;
+              node.disabled = false;
+              node.value = snap.value;
+              if (typeof syncVolumeInputCanonical === 'function') {
+                syncVolumeInputCanonical('cylBot_size');
+              }
+              node.dispatchEvent(new Event('input', { bubbles: true }));
+              node.dispatchEvent(new Event('change', { bubbles: true }));
+              node.blur();
+            }""",
+            snap,
+        )
+        page.locator("body").click(position={"x": 8, "y": 8})
+        page.evaluate("() => { switchTab('deco', document.getElementById('tab-deco')); }")
+
+    invalid_visual = _styles_differ(before_styles, invalid_styles)
+    focus_differs = _styles_differ(invalid_styles, focus_styles)
+    disabled_differs = _styles_differ(invalid_styles, disabled_styles)
+    ok = (
+        pristine_valid
         and after_invalid
-        and invalid_border != before
-        and focus_border != invalid_border
-        and disabled_border != invalid_border,
-        "pristineInvalid": pristine_invalid,
+        and invalid_visual
+        and focus_differs
+        and disabled_differs
+        and focused
+        and disabled
+    )
+    return {
+        "ok": ok,
+        "viewport": list(viewport),
+        "browserVersion": browser_version,
+        "pristineValid": pristine_valid,
+        "pristineInvalid": not pristine_valid,
+        "afterValid": after_valid,
         "afterInvalid": after_invalid,
-        "before": before,
-        "invalidBorder": invalid_border,
-        "focusBorder": focus_border,
-        "disabledBorder": disabled_border,
+        "selectorMatches": selector_matches,
+        "values": {
+            "snapshotValue": snap.get("value"),
+            "editedValue": "0",
+            "min": snap.get("min"),
+            "max": snap.get("max"),
+            "step": snap.get("step"),
+        },
+        "validity": {
+            "pristineValid": pristine_valid,
+            "afterValid": after_valid,
+            "validationMessage": snap.get("validationMessage"),
+        },
+        "borderColors": {
+            "before": before_styles.get("borderColor"),
+            "invalid": invalid_styles.get("borderColor"),
+            "focus": focus_styles.get("borderColor"),
+            "disabled": disabled_styles.get("borderColor"),
+        },
+        "boxShadows": {
+            "before": before_styles.get("boxShadow"),
+            "invalid": invalid_styles.get("boxShadow"),
+            "focus": focus_styles.get("boxShadow"),
+            "disabled": disabled_styles.get("boxShadow"),
+        },
+        "focusState": {
+            "focused": focused,
+            "outlineStyle": focus_styles.get("outlineStyle"),
+            "outlineWidth": focus_styles.get("outlineWidth"),
+        },
+        "disabledState": {
+            "disabled": disabled,
+        },
+        "checks": {
+            "invalidVisual": invalid_visual,
+            "focusDiffers": focus_differs,
+            "disabledDiffers": disabled_differs,
+        },
     }
 
 
-def run_cases(page, viewport: tuple[int, int], *, mobile_touch: bool = False, seg_focus: bool = False) -> dict:
+def run_cases(
+    page,
+    viewport: tuple[int, int],
+    *,
+    mobile_touch: bool = False,
+    seg_focus: bool = False,
+    browser_version: str = "",
+) -> dict:
     page.set_viewport_size({"width": viewport[0], "height": viewport[1]})
+    page.evaluate(
+        """() => {
+          setMainNav('buh');
+          switchTab('deco', document.getElementById('tab-deco'));
+          const gp = document.getElementById('gasplan');
+          if (gp) gp.style.display = 'none';
+          const legacy = document.querySelector('.legacy-panels');
+          if (legacy) legacy.style.removeProperty('display');
+        }"""
+    )
+    page.locator("body").click(position={"x": 8, "y": 8})
     before_hash = page.evaluate(STATE_HASH_JS)
+    active_before = page.evaluate("() => document.activeElement?.id || ''")
     seg_orders: list = []
     seg_ok = True
     touch_orders: list = []
@@ -296,13 +382,13 @@ def run_cases(page, viewport: tuple[int, int], *, mobile_touch: bool = False, se
             page.set_viewport_size({"width": viewport[0], "height": viewport[1]})
 
         dead = page.evaluate(DEAD_JS)
-        invalid = _invalid_field(page)
+        invalid = _invalid_field(page, viewport=viewport, browser_version=browser_version)
         page.emulate_media(reduced_motion="reduce")
         reduced = page.evaluate(REDUCED_JS)
         page.emulate_media(reduced_motion="no-preference")
     finally:
         page.evaluate(
-            """() => {
+            """(activeId) => {
               setMainNav('buh');
               switchTab('deco', document.getElementById('tab-deco'));
               const gp = document.getElementById('gasplan');
@@ -310,15 +396,21 @@ def run_cases(page, viewport: tuple[int, int], *, mobile_touch: bool = False, se
               const legacy = document.querySelector('.legacy-panels');
               if (legacy) legacy.style.removeProperty('display');
               const el = document.getElementById('cylBot_size');
-              if (el) { el.disabled = false; }
-            }"""
+              if (el) { el.disabled = false; el.blur(); }
+              const target = activeId ? document.getElementById(activeId) : null;
+              if (target && typeof target.focus === 'function') target.focus();
+              else document.body.focus();
+            }""",
+            active_before,
         )
+        page.locator("body").click(position={"x": 8, "y": 8})
         after_hash = page.evaluate(STATE_HASH_JS)
         state_restored = before_hash == after_hash
 
     out = {
         "_detail": {
             "viewport": viewport,
+            "browserVersion": browser_version,
             "seg_orders": seg_orders,
             "touch_orders": touch_orders,
             "dead": dead,
@@ -345,6 +437,24 @@ def run_cases(page, viewport: tuple[int, int], *, mobile_touch: bool = False, se
     return out
 
 
+def _run_viewport(browser, base_url: str, viewport: tuple[int, int], *, mobile_touch: bool, seg_focus: bool) -> dict:
+    context = browser.new_context(viewport={"width": viewport[0], "height": viewport[1]})
+    page = context.new_page()
+    page.set_default_timeout(120000)
+    try:
+        page.goto(f"{base_url}/index.html", wait_until="load")
+        boot_app_page(page, base_url)
+        return run_cases(
+            page,
+            viewport,
+            mobile_touch=mobile_touch,
+            seg_focus=seg_focus,
+            browser_version=browser.version,
+        )
+    finally:
+        context.close()
+
+
 def main() -> int:
     from playwright.sync_api import sync_playwright
 
@@ -358,19 +468,13 @@ def main() -> int:
     with serve_www(ROOT) as base_url:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
-            page = browser.new_page()
-            page.set_default_timeout(120000)
 
-            page.goto(f"{base_url}/index.html", wait_until="load")
-            boot_app_page(page, base_url)
-            mobile = run_cases(page, (375, 667), mobile_touch=True, seg_focus=False)
+            mobile = _run_viewport(browser, base_url, (375, 667), mobile_touch=True, seg_focus=False)
             detail["375x667"] = mobile.pop("_detail")
             for case_id, ok in mobile.items():
                 results[case_id] = results[case_id] and bool(ok)
 
-            page.goto(f"{base_url}/index.html", wait_until="load")
-            boot_app_page(page, base_url)
-            desktop = run_cases(page, (1280, 800), mobile_touch=False, seg_focus=True)
+            desktop = _run_viewport(browser, base_url, (1280, 800), mobile_touch=False, seg_focus=True)
             detail["1280x800"] = desktop.pop("_detail")
             for case_id, ok in desktop.items():
                 results[case_id] = results[case_id] and bool(ok)
@@ -380,6 +484,13 @@ def main() -> int:
     rows = [case_row(case_id, results[case_id]) for case_id in CASE_IDS]
     for case_id in CASE_IDS:
         print(f"  {'✓' if results[case_id] else '✗'} [{case_id}]")
+        if case_id == "SL-C06-FIELD-INVALID-STATE" and not results[case_id]:
+            diagnostics = {
+                viewport: detail.get(viewport, {}).get("invalid")
+                for viewport in detail
+            }
+            print("SL-C06-FIELD-INVALID-STATE diagnostic:")
+            print(json.dumps(diagnostics, indent=2))
     code = 0 if all(results.values()) else 1
     finish_suite(ROOT, rows, code)
     out = ROOT / "dev" / "ui_controls_css_regression_results.json"
