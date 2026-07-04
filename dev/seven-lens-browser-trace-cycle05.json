@@ -1,9 +1,9 @@
 {
   "schema_version": 3,
   "runner_version": 2,
-  "spec": "docs\\seven-lens-traces\\cycle-05-css.json",
-  "spec_sha256": "5d9a6d947931d0beabf8924884ade98da7732222c34028995c5b8540dd665bbd",
-  "commit": "19728b5ea57247940279e3f9c2c2445977434ca7",
+  "spec": "docs/seven-lens-traces/cycle-05-css.json",
+  "spec_sha256": "afea0c9e429544a6b57b0783287655cb6af5649ce91fc6a29527cf4c54999ac6",
+  "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
   "traces": [
     {
       "id": "SL-C05-GF-ROW-MODE-ISOLATION-TRACE",
