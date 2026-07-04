@@ -1,8 +1,12 @@
 {
   "schema_version": 2,
   "cycle": 2,
-  "superseded_by": ["cycle-02-rec-planner", "cycle-02-tec-planner", "cycle-02-mode-isolation"],
-  "superseded_note": "Level 2 REC/TECH split — review continues in sub-cycles 2a/2b/2c",
+  "superseded_by": [
+    "cycle-02-rec-planner",
+    "cycle-02-tec-planner",
+    "cycle-02-mode-isolation"
+  ],
+  "superseded_note": "Level 2 REC/TECH split \u2014 review continues in sub-cycles 2a/2b/2c",
   "target_branch": "dev",
   "baseline_commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
   "audit_commit": "e07ab49cf5c28a9b99c00eb12d3538acec568728",
@@ -330,7 +334,7 @@
         ],
         "trace_id": "SL-C03-BEST-MIX-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "e52b67d47ac2d53813c9e91045d1c726b997060a29300819f89b6ab0d58873c9"
+        "artifact_sha256": "7f6f5235a44b7e5d6eaae2a3d452f24481f22ca492b92bef22b935bcf6f55e25"
       }
     },
     {
@@ -375,7 +379,7 @@
         ],
         "trace_id": "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
         "artifact_path": "dev/seven-lens-browser-trace-cycle02.json",
-        "artifact_sha256": "db1aeb1fafc64ddec337de996f85eabe6b5e127c504c59071a2e2df3569ec4cb"
+        "artifact_sha256": "ee87b240f82a28763ad79573292dd105a76a1c5f04bd4605d9a9505b0fc7757c"
       }
     },
     {
@@ -419,7 +423,7 @@
         ],
         "trace_id": "SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH",
         "artifact_path": "dev/seven-lens-browser-trace-cycle02.json",
-        "artifact_sha256": "db1aeb1fafc64ddec337de996f85eabe6b5e127c504c59071a2e2df3569ec4cb"
+        "artifact_sha256": "ee87b240f82a28763ad79573292dd105a76a1c5f04bd4605d9a9505b0fc7757c"
       }
     },
     {
@@ -465,7 +469,7 @@
         ],
         "trace_id": "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
         "artifact_path": "dev/seven-lens-browser-trace-cycle02.json",
-        "artifact_sha256": "db1aeb1fafc64ddec337de996f85eabe6b5e127c504c59071a2e2df3569ec4cb"
+        "artifact_sha256": "ee87b240f82a28763ad79573292dd105a76a1c5f04bd4605d9a9505b0fc7757c"
       }
     },
     {
@@ -514,7 +518,7 @@
         ],
         "trace_id": "SL-C03-CNS-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "e52b67d47ac2d53813c9e91045d1c726b997060a29300819f89b6ab0d58873c9"
+        "artifact_sha256": "7f6f5235a44b7e5d6eaae2a3d452f24481f22ca492b92bef22b935bcf6f55e25"
       }
     },
     {
@@ -563,7 +567,7 @@
         ],
         "trace_id": "SL-C03-BEST-MIX-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "e52b67d47ac2d53813c9e91045d1c726b997060a29300819f89b6ab0d58873c9"
+        "artifact_sha256": "7f6f5235a44b7e5d6eaae2a3d452f24481f22ca492b92bef22b935bcf6f55e25"
       }
     },
     {

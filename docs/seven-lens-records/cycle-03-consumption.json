@@ -288,7 +288,7 @@
         ],
         "trace_id": "SL-C03-BEST-MIX-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "0e31b22213aa12ae9ac1a66c8c7ddbbd13230996b183dbb3a2b2bc38f6e7253e",
+        "artifact_sha256": "7f6f5235a44b7e5d6eaae2a3d452f24481f22ca492b92bef22b935bcf6f55e25",
         "spec_path": "docs/seven-lens-traces/cycle-03-consumption.json",
         "spec_sha256": "479e1ceeaddd2d151fe3d87904fc3cebdb4e90b3d78c576ac9dfc5344d45c5ce"
       },
@@ -346,7 +346,7 @@
         ],
         "trace_id": "SL-C03-CNS-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "0e31b22213aa12ae9ac1a66c8c7ddbbd13230996b183dbb3a2b2bc38f6e7253e",
+        "artifact_sha256": "7f6f5235a44b7e5d6eaae2a3d452f24481f22ca492b92bef22b935bcf6f55e25",
         "spec_path": "docs/seven-lens-traces/cycle-03-consumption.json",
         "spec_sha256": "479e1ceeaddd2d151fe3d87904fc3cebdb4e90b3d78c576ac9dfc5344d45c5ce"
       },
@@ -404,7 +404,7 @@
         ],
         "trace_id": "SL-C03-BEST-MIX-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "0e31b22213aa12ae9ac1a66c8c7ddbbd13230996b183dbb3a2b2bc38f6e7253e",
+        "artifact_sha256": "7f6f5235a44b7e5d6eaae2a3d452f24481f22ca492b92bef22b935bcf6f55e25",
         "spec_path": "docs/seven-lens-traces/cycle-03-consumption.json",
         "spec_sha256": "479e1ceeaddd2d151fe3d87904fc3cebdb4e90b3d78c576ac9dfc5344d45c5ce"
       },
@@ -462,7 +462,7 @@
         "spec_path": "docs/seven-lens-traces/cycle-03-consumption.json",
         "spec_sha256": "479e1ceeaddd2d151fe3d87904fc3cebdb4e90b3d78c576ac9dfc5344d45c5ce",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "0e31b22213aa12ae9ac1a66c8c7ddbbd13230996b183dbb3a2b2bc38f6e7253e"
+        "artifact_sha256": "7f6f5235a44b7e5d6eaae2a3d452f24481f22ca492b92bef22b935bcf6f55e25"
       },
       "command_argv": [
         "python",

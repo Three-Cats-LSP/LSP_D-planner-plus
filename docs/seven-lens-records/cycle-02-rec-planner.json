@@ -420,9 +420,9 @@
         ],
         "trace_id": "SL-REC-DEPTH-BT-STEPPER",
         "spec_path": "docs/seven-lens-traces/cycle-02-rec-planner.json",
-        "spec_sha256": "796b00ded3e257fef826c7a68acc53b572e8f464c6593a6a47af320874c357fb",
+        "spec_sha256": "007c42429477bb6e7a1855e4ff26ff45d77f7625bf8051d2431c33bb1e42cfab",
         "artifact_path": "dev/seven-lens-browser-trace-2a.json",
-        "artifact_sha256": "3d1c6daeca04f4d4e8eb6557475830bec1f577a72a5e09398568b1fd0a1ff473"
+        "artifact_sha256": "6208e63b88708667bd6b8215f5c8ca7554a7f9ebad23517c81c9698c703e2aea"
       },
       "receipt_path": "dev/seven-lens-evidence-2a-ER-2A-TRACE.json",
       "receipt_sha256": "779ca9a7e81b24295fda699985b6d8c006f2f396cc4079d232f6d17274dcfba5"

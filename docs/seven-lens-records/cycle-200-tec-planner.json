@@ -420,9 +420,9 @@
         ],
         "trace_id": "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
         "spec_path": "docs/seven-lens-traces/cycle-02-tec-planner.json",
-        "spec_sha256": "92a83f552059dafa22dc548d40d85df3f057c05ccecd333019bdefef3ec8545f",
+        "spec_sha256": "2068bd3c9e8f0cb154ced1a21eb4a05c23031f536ed2102697e521169b3a4a15",
         "artifact_path": "dev/seven-lens-browser-trace-2b.json",
-        "artifact_sha256": "efb85bce44b75a8d82606a3d01987361e3d224f5a805913ecb399f2d5fc2cec4"
+        "artifact_sha256": "ce41ea8899a6471bc6b60b0ce418cfef5d2ab51c838a354b87d30188cd6b91f0"
       },
       "receipt_path": "dev/seven-lens-evidence-2b-ER-2B-TRACE.json",
       "receipt_sha256": "3dd322fe7154ed62b9a0b81303d6338929000ad1531d93977b1437407e9fba51"
