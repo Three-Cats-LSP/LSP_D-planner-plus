@@ -215,6 +215,7 @@ def _attestation_only_path(path: str) -> bool:
         normalized.startswith("docs/seven-lens-reports/")
         or normalized.startswith("docs/seven-lens-records/")
         or normalized == "docs/seven-lens-manual-ledger.json"
+        or normalized in {"docs/audit-units.json", "docs/audit-coverage.md"}
         or fnmatch.fnmatch(normalized, "dev/seven-lens-browser-trace-*.json")
     )
 

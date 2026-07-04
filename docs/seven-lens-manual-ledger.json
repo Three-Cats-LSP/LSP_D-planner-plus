@@ -404,13 +404,22 @@
     },
     {
       "unit_id": "UI-CSS-CONTROLS",
-      "review_status": "SEVEN_LENS_FIXER",
+      "review_status": "SEVEN_LENS_REVIEWED",
       "cycle_id": "SL-C06",
       "boundary": "lsp-dplanner-controls.css whole file",
       "reviewer": "Cursor FIXER Cycle 06",
       "review_session": "C06-A",
-      "verification_status": "PENDING",
-      "findings_open": [
+      "verification_status": "PASS",
+      "findings_open": [],
+      "reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
+      "verification_session": "C06-V-A",
+      "verified_source_commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182",
+      "last_checked_commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182",
+      "verified_at": "2026-07-04T17:03:53+00:00",
+      "reviewed_at": "2026-07-04T17:03:53+00:00",
+      "verifier": "Cursor Agent (C06-V-A closure)",
+      "verification_report": "docs/seven-lens-reports/cycle-06-controls-css.md",
+      "findings_closed": [
         "SL-C06-M-01",
         "SL-C06-M-02",
         "SL-C06-L-01",
@@ -419,7 +428,33 @@
         "SL-C06-L-04",
         "SL-C06-L-05"
       ],
-      "protocol_record_exemption": "Cycle 6 FIXER evidence-working record; verification PENDING until VERIFIER chat."
+      "verification_commands": [
+        "python dev/ui_controls_css_regression.py",
+        "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-06-controls.json --output dev/seven-lens-browser-trace-cycle06.json",
+        "python -m tools.audit check --profile static",
+        "python -m tools.audit run --profile ci"
+      ],
+      "lens_results": {
+        "L1": "gas-f-num min 44px touch geometry on narrow viewports.",
+        "L2": "seg-btn :focus-visible ring; field :invalid borders.",
+        "L3": "dead .si-inner/.t-col removed; unified plan SI contract.",
+        "L4": "live .gen-btn-only disable contract; selector grep clean.",
+        "L5": "controls sheet extract parity and link order PASS.",
+        "L6": "invalid inputs and focus rings visible before activation.",
+        "L7": "SUITE-UI-CONTROLS-CSS-REGRESSION + browser traces PASS."
+      },
+      "finding_ids": [
+        "SL-C06-M-01",
+        "SL-C06-M-02",
+        "SL-C06-L-01",
+        "SL-C06-L-02",
+        "SL-C06-L-03",
+        "SL-C06-L-04",
+        "SL-C06-L-05"
+      ],
+      "parts": {
+        "P01": "lsp-dplanner-controls.css:1-528"
+      }
     }
   ]
 }

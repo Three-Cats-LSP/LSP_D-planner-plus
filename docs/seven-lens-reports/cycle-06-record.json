@@ -361,21 +361,29 @@
       "impact": "Keyboard users cannot see focused gas-rule or dive-count segment before activation.",
       "evidence": "Playwright probe 375x667 and 1280x800: outlineStyle none on focused seg-btn; option-pill has focus-visible at :42-43",
       "recommendation": "Add .seg-btn:focus-visible ring matching option-pill-toggle pattern.",
-      "status": "OPEN",
+      "status": "CLOSED",
       "fix_summary": "Added .seg-btn:focus-visible outline (2px accent color-mix, offset) matching option-pill pattern.",
       "regression_ids": [
         "SL-C06-SEG-FOCUS-VISIBLE"
       ],
       "pre_fix_evidence_id": "ER-C06-PRE-CSS",
-      "post_fix_evidence_id": "ER-C06-POST-CSS",
+      "post_fix_evidence_id": "ER-C06-TRACE",
       "baseline_failure": "Keyboard Tab on dive-count/gas-rule .seg-btn at fea770d: outlineStyle auto/none, outlineWidth 0.",
       "evidence_ids": [
         "ER-C06-PRE-CSS",
         "ER-C06-POST-CSS",
         "ER-C06-TRACE",
         "ER-C06-STRUCTURE",
-        "ER-C06-PARITY"
-      ]
+        "ER-C06-PARITY",
+        "ER-C06-RESTORE-CSS",
+        "static",
+        "ci"
+      ],
+      "observable_contract": "Keyboard Tab to dive-count or gas-rule .seg-btn shows a visible :focus-visible outline before activation.",
+      "state_restoration_evidence_id": "ER-C06-RESTORE-CSS",
+      "independent_verification_result": "PASSED (C06-V-A at 67a4c80)",
+      "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
+      "resolution_commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182"
     },
     {
       "id": "SL-C06-M-02",
@@ -387,7 +395,7 @@
       "impact": "Cylinder numeric controls undersize common 44px touch-target guidance on narrow mobile.",
       "evidence": "Playwright geometry on #cylBot_size; imperial 1766 fits without text scroll clipping",
       "recommendation": "Raise min height/padding or min-width for .gas-f-num inputs on narrow viewports.",
-      "status": "OPEN",
+      "status": "CLOSED",
       "fix_summary": "Raised .gas-card-grid .gas-f-num input/select min height and width to 44px on narrow/coarse viewports.",
       "regression_ids": [
         "SL-C06-GAS-NUM-TOUCH-TARGET"
@@ -400,8 +408,16 @@
         "ER-C06-POST-CSS",
         "ER-C06-TRACE",
         "ER-C06-STRUCTURE",
-        "ER-C06-PARITY"
-      ]
+        "ER-C06-PARITY",
+        "ER-C06-RESTORE-CSS",
+        "static",
+        "ci"
+      ],
+      "observable_contract": "TEC planner #cylBot_size bounding box is at least 44\u00d744px on 375px and 667px mobile viewports.",
+      "state_restoration_evidence_id": "ER-C06-RESTORE-CSS",
+      "independent_verification_result": "PASSED (C06-V-A at 67a4c80)",
+      "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
+      "resolution_commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182"
     },
     {
       "id": "SL-C06-L-01",
@@ -413,7 +429,7 @@
       "impact": "Dead CSS for surface-interval numeric connector styling.",
       "evidence": "index.html buildUnifiedPlan :6710-6722 vs buildDiveBlocks :6619; no #diveBlocks in index.html",
       "recommendation": "Remove .si-inner rules or restore markup contract if numeric SI returns.",
-      "status": "OPEN",
+      "status": "CLOSED",
       "fix_summary": "Removed dead .si-inner rules after unified plan migration removed #diveBlocks markup.",
       "regression_ids": [
         "SL-C06-CSS-DEAD-SI-INNER"
@@ -424,10 +440,12 @@
       "evidence_ids": [
         "ER-C06-PRE-CSS",
         "ER-C06-POST-CSS",
-        "ER-C06-TRACE",
-        "ER-C06-STRUCTURE",
-        "ER-C06-PARITY"
-      ]
+        "ER-C06-RESTORE-CSS",
+        "static"
+      ],
+      "independent_verification_result": "PASSED (C06-V-A at 67a4c80)",
+      "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
+      "resolution_commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182"
     },
     {
       "id": "SL-C06-L-02",
@@ -439,7 +457,7 @@
       "impact": "Dead CSS.",
       "evidence": "grep ui/** index.html -> 0 .t-col elements at runtime",
       "recommendation": "Remove .t-col block.",
-      "status": "OPEN",
+      "status": "CLOSED",
       "fix_summary": "Removed dead .t-col rule with zero runtime DOM hits.",
       "regression_ids": [
         "SL-C06-CSS-DEAD-T-COL"
@@ -450,10 +468,12 @@
       "evidence_ids": [
         "ER-C06-PRE-CSS",
         "ER-C06-POST-CSS",
-        "ER-C06-TRACE",
-        "ER-C06-STRUCTURE",
-        "ER-C06-PARITY"
-      ]
+        "ER-C06-RESTORE-CSS",
+        "static"
+      ],
+      "independent_verification_result": "PASSED (C06-V-A at 67a4c80)",
+      "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
+      "resolution_commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182"
     },
     {
       "id": "SL-C06-L-03",
@@ -465,7 +485,7 @@
       "impact": "Misleading disable contract; dead alias except obsolete markup-planner partial.",
       "evidence": "index.html gen-btn buttons; ui/markup-planner.html still pairs gen-btn btn-calc",
       "recommendation": "Drop standalone .btn-calc alias or restore class on live generate buttons.",
-      "status": "OPEN",
+      "status": "CLOSED",
       "fix_summary": "Removed .btn-calc from shared .gen-btn selector groups; live shell uses .gen-btn only (disableDuringCalc .btn-calc contract remains non-CSS follow-up).",
       "regression_ids": [
         "SL-C06-CSS-DEAD-BTN-CALC"
@@ -476,10 +496,12 @@
       "evidence_ids": [
         "ER-C06-PRE-CSS",
         "ER-C06-POST-CSS",
-        "ER-C06-TRACE",
-        "ER-C06-STRUCTURE",
-        "ER-C06-PARITY"
-      ]
+        "ER-C06-RESTORE-CSS",
+        "static"
+      ],
+      "independent_verification_result": "PASSED (C06-V-A at 67a4c80)",
+      "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
+      "resolution_commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182"
     },
     {
       "id": "SL-C06-L-04",
@@ -491,7 +513,7 @@
       "impact": "Invalid cylinder/gas values may look normal until downstream validation.",
       "evidence": "CSS source audit; no :invalid rules in controls sheet",
       "recommendation": "Add invalid/warning border colors for .field input:invalid and select:invalid.",
-      "status": "OPEN",
+      "status": "CLOSED",
       "fix_summary": "Added :user-invalid and :invalid:not(:placeholder-shown) red border/box-shadow on .field inputs and selects.",
       "regression_ids": [
         "SL-C06-FIELD-INVALID-STATE"
@@ -502,10 +524,12 @@
       "evidence_ids": [
         "ER-C06-PRE-CSS",
         "ER-C06-POST-CSS",
-        "ER-C06-TRACE",
-        "ER-C06-STRUCTURE",
-        "ER-C06-PARITY"
-      ]
+        "ER-C06-RESTORE-CSS",
+        "static"
+      ],
+      "independent_verification_result": "PASSED (C06-V-A at 67a4c80)",
+      "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
+      "resolution_commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182"
     },
     {
       "id": "SL-C06-L-05",
@@ -517,7 +541,7 @@
       "impact": "Reduced-motion OS preference not honored on control animations.",
       "evidence": "No @media (prefers-reduced-motion) in lsp-dplanner-controls.css",
       "recommendation": "Add reduced-motion media query zeroing transitions/transforms.",
-      "status": "OPEN",
+      "status": "CLOSED",
       "fix_summary": "Added @media (prefers-reduced-motion: reduce) block zeroing control transitions/transforms.",
       "regression_ids": [
         "SL-C06-REDUCED-MOTION"
@@ -528,10 +552,12 @@
       "evidence_ids": [
         "ER-C06-PRE-CSS",
         "ER-C06-POST-CSS",
-        "ER-C06-TRACE",
-        "ER-C06-STRUCTURE",
-        "ER-C06-PARITY"
-      ]
+        "ER-C06-RESTORE-CSS",
+        "static"
+      ],
+      "independent_verification_result": "PASSED (C06-V-A at 67a4c80)",
+      "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
+      "resolution_commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182"
     }
   ],
   "evidence_runs": [
@@ -597,7 +623,41 @@
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-POST-CSS.json",
       "receipt_sha256": "1f3d755f9d155e62463ee87c89439309b88d000e0ac594d19b1dfb4013606f6b",
       "worktree_clean_before": true,
-      "worktree_clean_after": true
+      "worktree_clean_after": true,
+      "runtime_trace": {
+        "entry_event": "User opens Tec planner gas numerics on a narrow viewport; .gas-f-num inputs meet 44px touch geometry.",
+        "consumer_path": [
+          "setMainNav buh + switchTab planner",
+          "#cylBot_size layout",
+          "getBoundingClientRect height",
+          "lsp-dplanner-controls.css min-height 44px"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "has_size": true
+          },
+          {
+            "stage": "canonical",
+            "has_size": true
+          },
+          {
+            "stage": "consumer",
+            "size_h": 44,
+            "size_w": 68
+          },
+          {
+            "stage": "observable",
+            "pres_h": 44,
+            "overlap": 0
+          }
+        ],
+        "trace_id": "SL-C06-GAS-NUM-TOUCH-TARGET-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle06.json",
+        "spec_path": "docs/seven-lens-traces/cycle-06-controls.json",
+        "artifact_sha256": "af340b2cc32ea14349637c203a5af355d4c5f380fdd4e9fb2f85f0670c5c0040",
+        "spec_sha256": "7ad9df542912bb6428a09795dc3ad32b994995a0727b6c7d2754e590a1f78781"
+      }
     },
     {
       "id": "ER-C06-TRACE",
@@ -627,7 +687,39 @@
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-TRACE.json",
       "receipt_sha256": "51ca9e25d800e368849e8f6a6819fd68786a9d0c14fc618661954fa0ab8ecf84",
       "worktree_clean_before": true,
-      "worktree_clean_after": true
+      "worktree_clean_after": true,
+      "runtime_trace": {
+        "entry_event": "User keyboard-Tabs to dive-count .seg-btn; :focus-visible ring is observable.",
+        "consumer_path": [
+          "Tab key events",
+          "document.activeElement .seg-btn",
+          "getComputedStyle outlineStyle",
+          "lsp-dplanner-controls.css .seg-btn:focus-visible"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "seg_count": 3
+          },
+          {
+            "stage": "canonical",
+            "focused_seg": true
+          },
+          {
+            "stage": "consumer",
+            "outline_style": "none"
+          },
+          {
+            "stage": "observable",
+            "outline_width": 3
+          }
+        ],
+        "trace_id": "SL-C06-SEG-FOCUS-VISIBLE-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle06.json",
+        "spec_path": "docs/seven-lens-traces/cycle-06-controls.json",
+        "artifact_sha256": "af340b2cc32ea14349637c203a5af355d4c5f380fdd4e9fb2f85f0670c5c0040",
+        "spec_sha256": "7ad9df542912bb6428a09795dc3ad32b994995a0727b6c7d2754e590a1f78781"
+      }
     },
     {
       "id": "ER-C06-STRUCTURE",
@@ -763,9 +855,8 @@
     "dev/ui_controls_css_regression.py",
     "dev/c06_pre_controls_regression.py",
     "docs/seven-lens-traces/cycle-06-controls.json",
-    "tools/seven_lens_browser_trace.py",
-    "docs/audit-units.json"
+    "tools/seven_lens_browser_trace.py"
   ],
   "audit_report": "docs/seven-lens-reports/cycle-06-controls-css.md",
-  "notes": "VERIFIER C06-V-A correction: verified_source_commit 67a4c80; prepared_baseline_commit c21493d audit_css_sha256 6511fe627d75\u2026; seven findings remain OPEN."
+  "notes": "CLOSER: all seven Cycle 06 findings CLOSED; evidence bound to verified_source_commit 67a4c80; baseline failures at prepared c21493d."
 }

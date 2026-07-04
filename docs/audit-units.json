@@ -1153,6 +1153,111 @@
       "evidence_cases": [
         "REG-81"
       ]
+    },
+    {
+      "id": "SL-C06-M-01",
+      "unit_id": "UI-CSS-CONTROLS",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 06 controls CSS audit",
+      "summary": "Segmented controls suppress keyboard focus ring",
+      "affected_units": [
+        "UI-CSS-CONTROLS"
+      ],
+      "resolution_commit": "67a4c80",
+      "evidence_cases": [
+        "REG-82"
+      ]
+    },
+    {
+      "id": "SL-C06-M-02",
+      "unit_id": "UI-CSS-CONTROLS",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 06 controls CSS audit",
+      "summary": "Gas numeric fields undersize touch targets",
+      "affected_units": [
+        "UI-CSS-CONTROLS"
+      ],
+      "resolution_commit": "67a4c80",
+      "evidence_cases": [
+        "REG-83"
+      ]
+    },
+    {
+      "id": "SL-C06-L-01",
+      "unit_id": "UI-CSS-CONTROLS",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 06 controls CSS audit",
+      "summary": "Obsolete .si-inner surface-interval rules",
+      "affected_units": [
+        "UI-CSS-CONTROLS"
+      ],
+      "resolution_commit": "67a4c80",
+      "evidence_cases": [
+        "REG-84"
+      ]
+    },
+    {
+      "id": "SL-C06-L-02",
+      "unit_id": "UI-CSS-CONTROLS",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 06 controls CSS audit",
+      "summary": "Obsolete .t-col rule",
+      "affected_units": [
+        "UI-CSS-CONTROLS"
+      ],
+      "resolution_commit": "67a4c80",
+      "evidence_cases": [
+        "REG-85"
+      ]
+    },
+    {
+      "id": "SL-C06-L-03",
+      "unit_id": "UI-CSS-CONTROLS",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 06 controls CSS audit",
+      "summary": "Dead .btn-calc alias in shared .gen-btn selectors",
+      "affected_units": [
+        "UI-CSS-CONTROLS"
+      ],
+      "resolution_commit": "67a4c80",
+      "evidence_cases": [
+        "REG-86"
+      ]
+    },
+    {
+      "id": "SL-C06-L-04",
+      "unit_id": "UI-CSS-CONTROLS",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 06 controls CSS audit",
+      "summary": "Field inputs lack invalid-state styling",
+      "affected_units": [
+        "UI-CSS-CONTROLS"
+      ],
+      "resolution_commit": "67a4c80",
+      "evidence_cases": [
+        "REG-87"
+      ]
+    },
+    {
+      "id": "SL-C06-L-05",
+      "unit_id": "UI-CSS-CONTROLS",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 06 controls CSS audit",
+      "summary": "Control transitions ignore prefers-reduced-motion",
+      "affected_units": [
+        "UI-CSS-CONTROLS"
+      ],
+      "resolution_commit": "67a4c80",
+      "evidence_cases": [
+        "REG-88"
+      ]
     }
   ],
   "units": [
@@ -3683,7 +3788,7 @@
       "evidence": [],
       "issue": "Seven-lens manual audit protocol gate",
       "regression_cases": [],
-      "fingerprint": "16fbcc63bef349ab5b427c2fc3c279e7d181291e301cd5d5b3491b731fffab8d",
+      "fingerprint": "3b3530066f27ea20b446ff877e06130f54dba356c21e198032dc8c59dad2ca5b",
       "last_read_fingerprint": null
     },
     {
