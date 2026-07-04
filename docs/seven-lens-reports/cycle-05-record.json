@@ -574,7 +574,7 @@
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
       "exit_code": 0,
-      "commit": "8ed11da9c66dd044f8736ac7253db4a203b900cb",
+      "commit": "5fd0176804c11962cbd795911d7e1297d8628cb0",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -597,7 +597,7 @@
       "state_restored": true,
       "command": "python -m tools.audit run --profile ci",
       "exit_code": 0,
-      "commit": "8ed11da9c66dd044f8736ac7253db4a203b900cb",
+      "commit": "5fd0176804c11962cbd795911d7e1297d8628cb0",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -629,7 +629,7 @@
       "state_restored": true,
       "command": "python dev/ui_css_regression.py",
       "exit_code": 0,
-      "commit": "8ed11da9c66dd044f8736ac7253db4a203b900cb",
+      "commit": "5fd0176804c11962cbd795911d7e1297d8628cb0",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -650,7 +650,7 @@
       "state_restored": true,
       "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-05-css.json",
       "exit_code": 0,
-      "commit": "8ed11da9c66dd044f8736ac7253db4a203b900cb",
+      "commit": "5fd0176804c11962cbd795911d7e1297d8628cb0",
       "worktree_clean": true,
       "command_argv": [
         "python",

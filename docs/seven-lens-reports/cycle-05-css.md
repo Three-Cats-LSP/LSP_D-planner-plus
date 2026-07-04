@@ -98,4 +98,48 @@ Both units received full L1–L7 notes in `cycle-05-record.json`. Static parity 
 
 **C05-B (modes):** Tab/panel visibility cascade is coherent with `switchTab()`. `.buh-only` isolation depends on `body.algo-buh` from `settings-core.js`. Specificity split on `#gfLowInput`/`#gfHighInput` is intentional (foundation base !important, modes :focus accent). Primary defects are stale tools/REC row selectors, dead legacy classes, and missing export focus-visible.
 
-A separate FIXER chat is required before verification.
+## Independent verification (PASSED)
+
+**Verifier:** Cursor Agent (VERIFIER)  
+**Sessions:** `C05-V-A` (UI-CSS-FOUNDATION), `C05-V-B` (UI-CSS-MODES)  
+**Audit commit:** `ded650c`  
+**Verified source commit:** `c40b71a`  
+**Verification attestation HEAD:** `7de78b2`  
+**verification_status:** `PASSED`
+
+### Branch and worktree
+
+- `HEAD` equals `origin/cursor/seven-lens-cycle-05-css` at `7de78b2`
+- PR targets `dev` (branch policy)
+- Historical `baseline_findings` intact in `cycle-05-record.json`
+- Changes since audit checkpoint limited to: `lsp-dplanner-foundation.css`, `lsp-dplanner-modes.css`, `dev/ui_css_regression.py`, `docs/seven-lens-traces/cycle-05-css.json`, evidence artifacts, and audit metadata
+
+### Pre-fix reproduction (`0e83bcb` execution worktree)
+
+| Finding | Observable failure | Reason confirmed |
+|---------|-------------------|------------------|
+| SL-C05-M-01 | `recBtnOp`/`toolsBtnOp` = 1.0 | Stale `#gfPresetsRow` selectors; V3 uses `#gfPresetsRowV3`/`#gfPresetBtns` |
+| SL-C05-M-02 | `.btn-export` `outlineStyle: none` | `:focus { outline: none }` without `:focus-visible` replacement |
+| SL-C05-L-01..04 | Dead CSS rules present in canonical sheets | Selectors have no markup/JS consumers |
+
+Browser trace at pre-fix: `rec-dimmed`/`tools-dimmed` failed (`1 close 0.5`); body mode classes applied correctly.
+
+### Post-fix confirmation (`c40b71a` / current source)
+
+- GF preset opacity: TEC 1.0; REC/Tools 0.5 — both navigation orders (`buh-rec-tools`, `tools-rec-buh`) — desktop 1280×800 and mobile 375×667
+- Export keyboard Tab reaches `.btn-export` with `outlineWidth: 2`, `outlineStyle: solid`
+- Dead selectors removed; `.brand-logo` and `#themeToggle.theme-pill-toggle` intact
+- Browser trace PASS ×2 fresh contexts; `state_before_sha256` == `state_after_sha256`
+- `python tools/assemble_ui_html.py --verify` PASS
+- `python -m tools.audit check --profile static` PASS
+- `python -m tools.audit run --profile ci` PASS (includes `SUITE-UI-CSS-REGRESSION`)
+- `python -m tools.audit run --profile release` PASS
+
+### Final fingerprints
+
+| Unit | Fingerprint |
+|------|-------------|
+| UI-CSS-FOUNDATION | `f1f5eaa00edd3fd382ff98c27985e51d565539079860d7e59d740bce2d6a1944` |
+| UI-CSS-MODES | `6d911804be64d352c6d0d74a4db18bb61887de96456f8f4dd3ac59e205f7b096` |
+
+Findings remain **OPEN** in this record for the CLOSER chat. Do not merge until closure gates pass.
