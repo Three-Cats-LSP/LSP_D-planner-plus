@@ -119,3 +119,7 @@ Full L1–L7 notes are in `cycle-06-record.json` for both bounded parts.
 | `git status --short` (pre-audit) | clean except new record |
 
 **Integration base:** `7cd58978d7b151c74e99cd65b79148d09b223658` (= `origin/dev` at plan time).
+
+## Audit checkpoint
+
+**audit_commit:** `fea770dc9194b55e3344b10e18e4b9b1a5bfc2ad`
