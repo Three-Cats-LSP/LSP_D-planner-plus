@@ -10,6 +10,8 @@ from unittest.mock import patch
 
 from tools.seven_lens_protocol import (
     LENSES,
+    _file_sha256,
+    _part_hash,
     _validate_evidence_receipt,
     _validate_trace_artifact,
     make_plan,
@@ -36,7 +38,6 @@ class SevenLensProtocolTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         source = self.root / "unit.js"
         source.write_text("\n".join(f"line {i}" for i in range(1, 701)) + "\n", encoding="utf-8")
-        lines = source.read_bytes().splitlines(keepends=True)
         self.resolved = {
             "UNIT": {"path": "unit.js", "start_line": 1, "end_line": 700, "line_count": 700}
         }
@@ -55,7 +56,7 @@ class SevenLensProtocolTests(unittest.TestCase):
             "changed_paths": [],
         }
         for idx, (start, end) in enumerate(((1, 350), (351, 700)), 1):
-            digest = hashlib.sha256(b"".join(lines[start - 1:end])).hexdigest()
+            digest = _part_hash(source, start, end)
             self.record["parts"].append({
                 "id": f"UNIT-P{idx:02d}", "unit_id": "UNIT", "path": "unit.js",
                 "start_line": start, "end_line": end, "line_count": end - start + 1,
@@ -309,11 +310,11 @@ class SevenLensProtocolTests(unittest.TestCase):
             "worktree_clean_after": True, "started_at": "2026-07-04T00:00:00Z",
             "finished_at": "2026-07-04T00:01:00Z",
             "stdout_sha256": "a" * 64, "stderr_sha256": "b" * 64,
-            "executor_sha256": hashlib.sha256(executor.read_bytes()).hexdigest(),
+            "executor_sha256": _file_sha256(executor),
         }
         receipt_path = self.root / "receipt.json"
         receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
-        evidence["receipt_sha256"] = hashlib.sha256(receipt_path.read_bytes()).hexdigest()
+        evidence["receipt_sha256"] = _file_sha256(receipt_path)
         self.assertEqual([], _validate_evidence_receipt(self.root, evidence))
         evidence["command_argv"] = ["python", "different.py"]
         errors = _validate_evidence_receipt(self.root, evidence)

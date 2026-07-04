@@ -299,7 +299,7 @@ function calcGasPlan() {
     let   maxBTEstimate = false;
     if (Number.isFinite(reqL) && reqL > usableL) {
       shortL = reqL - usableL;
-      const plannedBT = parseFloat(document.getElementById('decoBT')?.value) || 0;
+      const plannedBT = parseFloat(getPlannerInputEl('decoBT')?.value) || 0;
       if (plannedBT > 0 && reqL > 0) {
         const bottomPhaseL = window._lastBottomPhaseConsumedL?.[botLabel];
         const rateL = (Number.isFinite(bottomPhaseL) && bottomPhaseL > 0)
@@ -488,7 +488,7 @@ function buildGasPlanText() {
 
   // Pull dive info from last plan
   const depth   = getPlannerInputEl('decoDepth')?.value  || '—';
-  const bt      = document.getElementById('decoBT')?.value     || '—';
+  const bt      = getPlannerInputEl('decoBT')?.value     || '—';
   const lastPlan = window._lastPlan;
   const rtStr   = lastPlan ? `RT ${lastPlan.rt} min` : '';
 

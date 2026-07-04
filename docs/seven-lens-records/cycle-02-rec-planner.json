@@ -169,7 +169,7 @@
       "start_line": 1,
       "end_line": 75,
       "line_count": 75,
-      "content_fingerprint": "ed05a29e79b566b9ef520f5c3447472a4bda4dbc21c7d77ddbf8a73812533019",
+      "content_fingerprint": "1121abb0435abb0d04004e1b1e4392729100d4caf81271fba4391dea1a30d98a",
       "review_session": "cursor/seven-lens-cycle-002-audit",
       "verification_session": "cursor/seven-lens-cycle-002-verify",
       "lens_results": {
@@ -252,7 +252,7 @@
       "start_line": 1,
       "end_line": 9,
       "line_count": 9,
-      "content_fingerprint": "35c0acee5dd59008689b8ba3f1c66747c8fe3de609682c391e236d64ef0a9d0e",
+      "content_fingerprint": "0c720a37e60dca1dd13104199c85bda6949b8a38479384c922ea9f327afc6f43",
       "review_session": "cursor/seven-lens-cycle-002-audit",
       "verification_session": "cursor/seven-lens-cycle-002-verify",
       "lens_results": {
@@ -420,12 +420,12 @@
         ],
         "trace_id": "SL-REC-DEPTH-BT-STEPPER",
         "spec_path": "docs/seven-lens-traces/cycle-02-rec-planner.json",
-        "spec_sha256": "796b00ded3e257fef826c7a68acc53b572e8f464c6593a6a47af320874c357fb",
+        "spec_sha256": "007c42429477bb6e7a1855e4ff26ff45d77f7625bf8051d2431c33bb1e42cfab",
         "artifact_path": "dev/seven-lens-browser-trace-2a.json",
-        "artifact_sha256": "3d1c6daeca04f4d4e8eb6557475830bec1f577a72a5e09398568b1fd0a1ff473"
+        "artifact_sha256": "6208e63b88708667bd6b8215f5c8ca7554a7f9ebad23517c81c9698c703e2aea"
       },
       "receipt_path": "dev/seven-lens-evidence-2a-ER-2A-TRACE.json",
-      "receipt_sha256": "8ef982e6c0d5736e4379c8e4adfef27b5bf41fc774c7ba5a935be5e60102db5c"
+      "receipt_sha256": "779ca9a7e81b24295fda699985b6d8c006f2f396cc4079d232f6d17274dcfba5"
     }
   ],
   "changed_paths": [

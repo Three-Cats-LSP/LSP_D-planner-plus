@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""Refresh seven-lens records, receipts, and audit docs at current HEAD for CI."""
+"""Re-run seven-lens evidence at current HEAD and refresh audit docs for CI."""
 from __future__ import annotations
 
-import hashlib
 import json
 import subprocess
 import sys
@@ -14,7 +13,7 @@ if str(ROOT) not in sys.path:
 
 from tools import audit_coverage
 from tools.audit.migrate_v3 import rebalance_cycle_budgets
-from tools.seven_lens_protocol import _part_hash
+from tools.seven_lens_protocol import _file_sha256, _part_hash
 
 RECORDS = [
     ROOT / "docs/seven-lens-records/cycle-02-rec-planner.json",
@@ -24,24 +23,12 @@ RECORDS = [
     ROOT / "docs/seven-lens-records/cycle-04-tools-modals.json",
 ]
 
-TRACE_ARTIFACTS = {
-    "dev/seven-lens-browser-trace-2a.json",
-    "dev/seven-lens-browser-trace-2b.json",
-    "dev/seven-lens-browser-trace-2c.json",
-    "dev/seven-lens-browser-trace-cycle03.json",
-    "dev/seven-lens-browser-trace-cycle04.json",
-}
-
 
 def _git(*args: str) -> str:
     proc = subprocess.run(["git", *args], cwd=ROOT, text=True, capture_output=True, check=False)
     if proc.returncode:
         raise RuntimeError(proc.stderr.strip() or f"git {' '.join(args)} failed")
     return proc.stdout.strip()
-
-
-def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def _refresh_parts(record: dict) -> None:
@@ -60,7 +47,7 @@ def _refresh_traces(record: dict) -> None:
         for key, path_key in (("spec_sha256", "spec_path"), ("artifact_sha256", "artifact_path")):
             rel = trace.get(path_key)
             if rel and (ROOT / rel).is_file():
-                trace[key] = _sha256(ROOT / rel)
+                trace[key] = _file_sha256(ROOT / rel)
 
 
 def _stamp_head(record: dict, head: str) -> None:
@@ -94,7 +81,7 @@ def _run_evidence(record_path: Path, head: str) -> None:
         if proc.returncode != 0:
             print(proc.stdout, proc.stderr, file=sys.stderr)
             raise RuntimeError(f"{record_path.name} {row['id']} failed")
-        row["receipt_sha256"] = _sha256(receipt_path)
+        row["receipt_sha256"] = _file_sha256(receipt_path)
     record["verified_source_commit"] = head
     record_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
 
@@ -130,52 +117,8 @@ def _update_ledger(head: str) -> None:
     ledger_path.write_text(json.dumps(ledger, indent=2) + "\n", encoding="utf-8")
 
 
-def _sync_record_hashes(record_path: Path, head: str, *, stamp_head: bool) -> None:
-    record = json.loads(record_path.read_text(encoding="utf-8-sig"))
-    _refresh_parts(record)
-    _refresh_traces(record)
-    if stamp_head:
-        _stamp_head(record, head)
-    for row in record.get("evidence_runs", []):
-        receipt_path = ROOT / row.get("receipt_path", "")
-        if receipt_path.is_file():
-            row["receipt_sha256"] = _sha256(receipt_path)
-    record_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
-
-
 def main() -> int:
-    import argparse
-
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--sync-only",
-        action="store_true",
-        help="Refresh fingerprints and receipt hashes without re-running evidence",
-    )
-    parser.add_argument(
-        "--stamp-head",
-        action="store_true",
-        help="With --sync-only, also set verified_source_commit and evidence commit to HEAD",
-    )
-    args = parser.parse_args()
     head = _git("rev-parse", "HEAD")
-    if args.sync_only:
-        for record_path in RECORDS:
-            _sync_record_hashes(record_path, head, stamp_head=args.stamp_head)
-        if args.stamp_head:
-            _update_ledger(head)
-        _refresh_audit_docs()
-        proc = subprocess.run(
-            [sys.executable, "tools/seven_lens_protocol.py", "check-all", "--require-artifacts"],
-            cwd=ROOT,
-            text=True,
-            capture_output=True,
-            check=False,
-        )
-        print(proc.stdout)
-        if proc.stderr:
-            print(proc.stderr, file=sys.stderr)
-        return proc.returncode
     for record_path in RECORDS:
         record = json.loads(record_path.read_text(encoding="utf-8-sig"))
         _refresh_parts(record)

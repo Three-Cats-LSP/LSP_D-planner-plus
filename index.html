@@ -8620,20 +8620,31 @@ function _renderProfilePresetModal() {
     </div>`).join('');
 }
 
-const _PROFILE_GAS_FIELDS = [
+const _PROFILE_TEC_GAS_FIELDS = [
   'decoGas','decoCustomO2','botTrimixO2','botTrimixHe',
   'travelGasMix','travelGasCustomO2','travelGasSwitchMode','travelGasManualDepth',
   'dg1Mix','dg1CustomO2','dg1TrimixO2','dg1TrimixHe',
   'dg2Mix','dg2CustomO2','dg2TrimixO2','dg2TrimixHe',
 ];
+const _PROFILE_REC_GAS_FIELDS = ['gasMix', 'customO2'];
+
+function _profileGasFields() {
+  return (typeof plannerAlgo !== 'undefined' && plannerAlgo === 'rec')
+    ? _PROFILE_REC_GAS_FIELDS
+    : _PROFILE_TEC_GAS_FIELDS;
+}
 
 function _snapshotProfileGases() {
   const g = {};
-  _PROFILE_GAS_FIELDS.forEach(id => { const el = document.getElementById(id); if (el) g[id] = el.value; });
+  _profileGasFields().forEach(id => { const el = document.getElementById(id); if (el) g[id] = el.value; });
   return g;
 }
 
 function _profileGasSummary(gases) {
+  if (gases.gasMix != null) {
+    const mix = gases.gasMix || 'air';
+    return mix === 'custom' ? (gases.customO2 || '?') + '%' : mix;
+  }
   const bot = gases.decoGas || 'air';
   const parts = [bot === 'custom' ? (gases.decoCustomO2 || '?') + '%' :
                  bot === 'trimix' ? (gases.botTrimixO2||'?') + '/' + (gases.botTrimixHe||'?') : bot];
@@ -8676,25 +8687,29 @@ function loadProfilePreset(idx) {
   _syncTecDepthBtSteppers?.();
   // Restore gas fields (older presets may not have gases)
   if (p.gases) {
-    _PROFILE_GAS_FIELDS.forEach(id => {
+    const fields = p.gases.gasMix != null ? _PROFILE_REC_GAS_FIELDS : _PROFILE_TEC_GAS_FIELDS;
+    fields.forEach(id => {
       if (p.gases[id] !== undefined) {
         const el = document.getElementById(id);
         if (el) el.value = p.gases[id];
       }
     });
-    // Fire toggle handlers to show/hide custom fields and update MOD displays
-    toggleDecoCustomO2?.('decoGas', 'decoCustomO2Field');
-    toggleBottomTrimix?.();
-    toggleDecoCustomO2?.('travelGasMix', 'travelGasCustomField');
-    updateTravelGasMOD?.();
-    toggleDecoCustomO2?.('dg1Mix', 'dg1CustomField');
-    toggleDecoTrimix?.(1);
-    toggleDecoCustomO2?.('dg2Mix', 'dg2CustomField');
-    toggleDecoTrimix?.(2);
-    updateGasMODDisplays?.();
+    if (p.gases.gasMix != null) {
+      toggleCustomO2?.();
+    } else {
+      toggleDecoCustomO2?.('decoGas', 'decoCustomO2Field');
+      toggleBottomTrimix?.();
+      toggleDecoCustomO2?.('travelGasMix', 'travelGasCustomField');
+      updateTravelGasMOD?.();
+      toggleDecoCustomO2?.('dg1Mix', 'dg1CustomField');
+      toggleDecoTrimix?.(1);
+      toggleDecoCustomO2?.('dg2Mix', 'dg2CustomField');
+      toggleDecoTrimix?.(2);
+      updateGasMODDisplays?.();
+    }
   }
-  if (p.travelActive || (p.summary && /(?:^|\s)T:/.test(p.summary))) addTravelGas();
-  else removeTravelGas();
+  if (p.gases?.gasMix == null && (p.travelActive || (p.summary && /(?:^|\s)T:/.test(p.summary)))) addTravelGas();
+  else if (p.gases?.gasMix == null) removeTravelGas();
   _syncDepthBtSteppers?.();
   updateCcrGasValidation?.();
   updateGasMODDisplays?.();

@@ -1306,7 +1306,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MODE-STATE"
       },
-      "fingerprint": "a04a7eb27245d592b8be92af5ed1f32822439281d791fbda80d1688fd369387d",
+      "fingerprint": "da2e3b1c7e0a0cd0295d24687060db98cbbe70213ca0a5b8a79fac47e4c07a86",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1488,26 +1488,16 @@
       "path": "results-render-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RENDER"
       },
-      "fingerprint": "711bc8d735fd41b3b3eca8b0c880172b6551c64173bdac5ff964972528fda496",
-      "last_read_fingerprint": "711bc8d735fd41b3b3eca8b0c880172b6551c64173bdac5ff964972528fda496",
+      "fingerprint": "b853f41c51a41e0793f5f74391fa35aaafdbd3aa1be101f8d263a51b87d7aa43",
+      "last_read_fingerprint": null,
       "audit_issue": 147,
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity",
-        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
-        "SUITE-ENGINE-FULL/AUDIT-REG-01"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01",
-        "EXT-02",
-        "REG-01"
-      ],
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Audit issue #147"
     },
     {
@@ -1711,7 +1701,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-WAYPOINTS"
       },
-      "fingerprint": "6679659496e1c93fd0f3b72d8babee094ae7f18f97c571f589221b05a8c99407",
+      "fingerprint": "5900ae4cfe71636fc59fde6eb2ec6535f67e3fce5354b49222bdf3d5e88ac198",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1829,7 +1819,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PROFILE-PRESETS"
       },
-      "fingerprint": "ce2d514f739a98547e56e22921426e9957e28adeff2dac78844171a0145ab57a",
+      "fingerprint": "10d92e1005e32f5a168d046d82d94d68666e8e9a440e30ccdfb896f0524193f9",
       "last_read_fingerprint": null,
       "audit_issue": 159,
       "evidence": [],
@@ -2163,7 +2153,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "59fc770db22a55075c140506e87a0616ae1071c819871bacc230e14ab7143a86",
+      "fingerprint": "b912fc88ae3741e244c120231637f0c674832f2283da1e9a53ad8caf084fca02",
       "last_read_fingerprint": null,
       "evidence": [],
       "issue": "GitHub #140 H-2 / Cycle 5 GP-01�06 � docs/code-review-2026-06-30.md",
@@ -3583,7 +3573,7 @@
       "evidence": [],
       "issue": "Seven-lens manual audit protocol gate",
       "regression_cases": [],
-      "fingerprint": "8a8052df69edfe97a896b6e294032fa7a9c64dbf72aa7a2108be4ae4d8c72c36",
+      "fingerprint": "7c0c6d219416e5e2917088d35634574d764509020fb4c3bfe118277b245024e0",
       "last_read_fingerprint": null
     },
     {
@@ -3598,7 +3588,7 @@
       "evidence": [],
       "issue": "Seven-lens manual audit protocol gate tests",
       "regression_cases": [],
-      "fingerprint": "ea914bf6f44ed6801f5828ed75f8a4e8b499c275eef1f0373b741d2a87b3e599",
+      "fingerprint": "e302a2780b65834ff184a53c95969024e48eaed7437f4a147b41931fff08a9ed",
       "last_read_fingerprint": null
     },
     {
@@ -3961,7 +3951,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "04b1709def79746d40ab531cc5694effb1d97414461317b790098be3e8d0bf33",
+      "fingerprint": "4fe7098c1ab55aa54d0d8ff9f956eff736b031d5b61d505b90a95e0336caeaaa",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3997,7 +3987,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c5d0f2020877981bcf7b7a3d0948391243338225c20982ae19aaa398b56adf1a",
+      "fingerprint": "3218a31cd1a1043aae920c2acbf817adfddba8d9fa3c598f318b96d72c1a049d",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -4774,7 +4764,7 @@
     },
     {
       "cycle": 9,
-      "max_new_application_lines": 990,
+      "max_new_application_lines": 992,
       "application_units": [
         "UI-ENVIRONMENT",
         "UI-MODE-STATE"

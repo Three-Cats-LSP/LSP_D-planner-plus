@@ -41,9 +41,26 @@ def _git_ok(*args: str, root: Path = ROOT) -> bool:
     ).returncode == 0
 
 
+def _normalize_file_bytes(data: bytes) -> bytes:
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError:
+        return data
+    return text.replace("\r\n", "\n").replace("\r", "\n").encode("utf-8")
+
+
+def _file_sha256(path: Path) -> str:
+    return hashlib.sha256(_normalize_file_bytes(path.read_bytes())).hexdigest()
+
+
 def _part_hash(path: Path, start: int, end: int) -> str:
-    lines = path.read_bytes().splitlines(keepends=True)
-    return hashlib.sha256(b"".join(lines[start - 1:end])).hexdigest()
+    text = path.read_text(encoding="utf-8", errors="surrogateescape")
+    lines = text.splitlines(keepends=True)
+    if start < 1 or end < start or start > len(lines):
+        return hashlib.sha256(b"").hexdigest()
+    segment = "".join(lines[start - 1 : end])
+    normalized = segment.replace("\r\n", "\n").replace("\r", "\n")
+    return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
 
 
 def _split_boundary(start: int, end: int, size: int = 500) -> list[tuple[int, int]]:
@@ -157,7 +174,7 @@ def _validate_evidence_receipt(root: Path, evidence: dict[str, Any]) -> list[str
     if not receipt_file.is_file():
         errors.append(f"evidence {evidence_id}: receipt is missing: {receipt_path}")
         return errors
-    actual_hash = hashlib.sha256(receipt_file.read_bytes()).hexdigest()
+    actual_hash = _file_sha256(receipt_file)
     if actual_hash != receipt_hash:
         errors.append(f"evidence {evidence_id}: receipt hash does not match")
         return errors
@@ -181,7 +198,7 @@ def _validate_evidence_receipt(root: Path, evidence: dict[str, Any]) -> list[str
         if not _text(receipt.get(field), 10):
             errors.append(f"evidence {evidence_id}: receipt {field} missing")
     executor = root / "tools" / "seven_lens_evidence.py"
-    expected_executor = hashlib.sha256(executor.read_bytes()).hexdigest() if executor.is_file() else ""
+    expected_executor = _file_sha256(executor) if executor.is_file() else ""
     if receipt.get("executor_sha256") != expected_executor:
         errors.append(f"evidence {evidence_id}: receipt executor fingerprint is stale")
     if receipt.get("worktree_clean_before") is not True:
@@ -413,7 +430,7 @@ def _validate_trace_artifact(
         if require_artifacts:
             errors.append(f"{fid}: browser trace artifact is missing: {artifact_path}")
         return errors
-    if hashlib.sha256(artifact.read_bytes()).hexdigest() != artifact_hash:
+    if _file_sha256(artifact) != artifact_hash:
         errors.append(f"{fid}: browser trace artifact hash does not match")
         return errors
     try:
@@ -434,7 +451,7 @@ def _validate_trace_artifact(
             spec_file = root / spec_path
             if not spec_file.is_file():
                 errors.append(f"{fid}: browser trace spec is missing: {spec_path}")
-            elif hashlib.sha256(spec_file.read_bytes()).hexdigest() != spec_hash:
+            elif _file_sha256(spec_file) != spec_hash:
                 errors.append(f"{fid}: browser trace spec hash does not match")
             if payload.get("spec_sha256") != spec_hash:
                 errors.append(f"{fid}: artifact/spec fingerprint mismatch")

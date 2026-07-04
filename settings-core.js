@@ -725,9 +725,11 @@ function _updatePlannerSubtitle() {
 }
 
 function _updatePlanPanelTip(model) {
-  const tip = document.getElementById('planPanelDecoTip');
-  if (!tip) return;
   const algo = model || plannerAlgo;
+  const tip = algo === 'rec'
+    ? document.getElementById('recPlanPanelTip')
+    : document.getElementById('tecPlanPanelTip');
+  if (!tip) return;
   let desc;
   if (algo === 'rec') {
     desc = 'Recreational dive planning: depth, bottom time, breathing gas, and optional safety stop. NDL limits are computed from PADI recreational tables.';

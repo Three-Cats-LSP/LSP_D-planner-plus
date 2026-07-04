@@ -586,12 +586,8 @@ def _update_ledger(head: str) -> None:
     ledger_path = ROOT / "docs/seven-lens-manual-ledger.json"
     ledger = json.loads(ledger_path.read_text(encoding="utf-8-sig"))
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00")
-    keep = [
-        r
-        for r in ledger["reviews"]
-        if r.get("cycle_id") not in {"SL-C03", "SL-C04"}
-        or r.get("review_status") != "IN_PROGRESS"
-    ]
+    replace_units = {"UI-MARKUP-CONSUMPTION", "UI-MARKUP-TOOLS", "UI-MARKUP-MODALS"}
+    keep = [r for r in ledger["reviews"] if r.get("unit_id") not in replace_units]
     rows = [
         (
             "UI-MARKUP-CONSUMPTION",
