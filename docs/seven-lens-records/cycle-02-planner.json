@@ -328,7 +328,7 @@
         ],
         "trace_id": "SL-C03-BEST-MIX-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "e52b67d47ac2d53813c9e91045d1c726b997060a29300819f89b6ab0d58873c9"
+        "artifact_sha256": "7484dd352dcba56d924239f3938f65ea91dff15e5578597596eedebb6aa6ad64"
       }
     },
     {
@@ -373,7 +373,7 @@
         ],
         "trace_id": "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
         "artifact_path": "dev/seven-lens-browser-trace-cycle02.json",
-        "artifact_sha256": "db1aeb1fafc64ddec337de996f85eabe6b5e127c504c59071a2e2df3569ec4cb"
+        "artifact_sha256": "3b9b229068ad0f043eebcb54b876e74f9e39221b2a90d88f0ed76f8841c0e995"
       }
     },
     {
@@ -417,7 +417,7 @@
         ],
         "trace_id": "SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH",
         "artifact_path": "dev/seven-lens-browser-trace-cycle02.json",
-        "artifact_sha256": "db1aeb1fafc64ddec337de996f85eabe6b5e127c504c59071a2e2df3569ec4cb"
+        "artifact_sha256": "3b9b229068ad0f043eebcb54b876e74f9e39221b2a90d88f0ed76f8841c0e995"
       }
     },
     {
@@ -463,7 +463,7 @@
         ],
         "trace_id": "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
         "artifact_path": "dev/seven-lens-browser-trace-cycle02.json",
-        "artifact_sha256": "db1aeb1fafc64ddec337de996f85eabe6b5e127c504c59071a2e2df3569ec4cb"
+        "artifact_sha256": "3b9b229068ad0f043eebcb54b876e74f9e39221b2a90d88f0ed76f8841c0e995"
       }
     },
     {
@@ -512,7 +512,7 @@
         ],
         "trace_id": "SL-C03-CNS-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "e52b67d47ac2d53813c9e91045d1c726b997060a29300819f89b6ab0d58873c9"
+        "artifact_sha256": "7484dd352dcba56d924239f3938f65ea91dff15e5578597596eedebb6aa6ad64"
       }
     },
     {
@@ -561,7 +561,7 @@
         ],
         "trace_id": "SL-C03-BEST-MIX-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "e52b67d47ac2d53813c9e91045d1c726b997060a29300819f89b6ab0d58873c9"
+        "artifact_sha256": "7484dd352dcba56d924239f3938f65ea91dff15e5578597596eedebb6aa6ad64"
       }
     },
     {

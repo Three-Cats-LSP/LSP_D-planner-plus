@@ -484,7 +484,7 @@
         ],
         "trace_id": "SL-C04-END-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle04.json",
-        "artifact_sha256": "f8803c450eb982dba1210073854c5dbb688289b3491be35e4df227052fbbceb9"
+        "artifact_sha256": "8136991b490e1931720b71cae28ea88e061d1655f77389f920fe0b04321c5e03"
       }
     },
     {
@@ -533,7 +533,7 @@
         ],
         "trace_id": "SL-C04-SI-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle04.json",
-        "artifact_sha256": "f8803c450eb982dba1210073854c5dbb688289b3491be35e4df227052fbbceb9"
+        "artifact_sha256": "8136991b490e1931720b71cae28ea88e061d1655f77389f920fe0b04321c5e03"
       }
     },
     {
@@ -582,7 +582,7 @@
         ],
         "trace_id": "SL-C04-END-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle04.json",
-        "artifact_sha256": "f8803c450eb982dba1210073854c5dbb688289b3491be35e4df227052fbbceb9"
+        "artifact_sha256": "8136991b490e1931720b71cae28ea88e061d1655f77389f920fe0b04321c5e03"
       }
     },
     {
@@ -630,7 +630,7 @@
         ],
         "trace_id": "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "e52b67d47ac2d53813c9e91045d1c726b997060a29300819f89b6ab0d58873c9"
+        "artifact_sha256": "7484dd352dcba56d924239f3938f65ea91dff15e5578597596eedebb6aa6ad64"
       }
     },
     {
@@ -676,7 +676,7 @@
         ],
         "trace_id": "SL-C03-CNS-EDIT-AFTER-SWITCH",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "e52b67d47ac2d53813c9e91045d1c726b997060a29300819f89b6ab0d58873c9"
+        "artifact_sha256": "7484dd352dcba56d924239f3938f65ea91dff15e5578597596eedebb6aa6ad64"
       }
     },
     {
@@ -725,7 +725,7 @@
         ],
         "trace_id": "SL-C04-SI-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle04.json",
-        "artifact_sha256": "f8803c450eb982dba1210073854c5dbb688289b3491be35e4df227052fbbceb9"
+        "artifact_sha256": "8136991b490e1931720b71cae28ea88e061d1655f77389f920fe0b04321c5e03"
       }
     },
     {
