@@ -404,22 +404,20 @@
     },
     {
       "unit_id": "UI-CSS-CONTROLS",
-      "review_status": "SEVEN_LENS_REVIEWED",
+      "review_status": "IN_PROGRESS",
       "cycle_id": "SL-C06",
       "boundary": "lsp-dplanner-controls.css whole file",
       "reviewer": "Cursor FIXER Cycle 06",
       "review_session": "C06-A",
-      "verification_status": "BLOCKED",
-      "findings_open": [
-        "SL-C06-L-04"
-      ],
+      "verification_status": "PASSED",
+      "findings_open": [],
       "reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
-      "verification_session": "C06-V-B",
-      "verified_source_commit": "7d403f44fc8643481414e622ebdcbb45ac430f10",
-      "last_checked_commit": "7d403f44fc8643481414e622ebdcbb45ac430f10",
-      "verified_at": "2026-07-04T18:20:00+00:00",
+      "verification_session": "C06-V-C",
+      "verified_source_commit": "29d1137aa5695143913b5e8de8820f2bc91eaa42",
+      "last_checked_commit": "29d1137aa5695143913b5e8de8820f2bc91eaa42",
+      "verified_at": "2026-07-04T19:30:00+00:00",
       "reviewed_at": "2026-07-04T17:03:53+00:00",
-      "verifier": "Cursor Agent (C06-V-B independent verification)",
+      "verifier": "Cursor Agent (C06-V-C independent verification)",
       "verification_report": "docs/seven-lens-reports/cycle-06-controls-css.md",
       "findings_closed": [
         "SL-C06-M-01",
@@ -427,6 +425,7 @@
         "SL-C06-L-01",
         "SL-C06-L-02",
         "SL-C06-L-03",
+        "SL-C06-L-04",
         "SL-C06-L-05"
       ],
       "verification_commands": [

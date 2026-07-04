@@ -89,7 +89,7 @@ Protocol planner split the unit into `UI-CSS-CONTROLS-P01` (1–500) and `UI-CSS
 - **Failure path:** Set `#cylBot_size` below `min` → browser validity false → border remains default `var(--border)` without distinct error chrome.  
 - **Impact:** Invalid gas/cylinder values may look editable/normal until engine validation or alerts appear later in the flow.  
 - **Regression ID:** `SL-C06-FIELD-INVALID-STATE`  
-- **Status:** OPEN
+- **Status:** CLOSED
 
 ### SL-C06-L-05: Motion transitions ignore `prefers-reduced-motion`
 

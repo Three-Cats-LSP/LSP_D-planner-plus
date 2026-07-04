@@ -195,8 +195,8 @@
     }
   ],
   "audit_commit": "fea770dc9194b55e3344b10e18e4b9b1a5bfc2ad",
-  "verified_source_commit": "7d403f44fc8643481414e622ebdcbb45ac430f10",
-  "verification_status": "BLOCKED",
+  "verified_source_commit": "29d1137aa5695143913b5e8de8820f2bc91eaa42",
+  "verification_status": "PASSED",
   "parts": [
     {
       "id": "UI-CSS-CONTROLS-P01",
@@ -513,22 +513,27 @@
       "impact": "Invalid cylinder/gas values may look normal until downstream validation.",
       "evidence": "CSS source audit; no :invalid rules in controls sheet",
       "recommendation": "Add invalid/warning border colors for .field input:invalid and select:invalid.",
-      "status": "OPEN",
+      "status": "CLOSED",
       "fix_summary": "Added :user-invalid and :invalid:not(:placeholder-shown) red border/box-shadow on .field inputs and selects.",
       "regression_ids": [
         "SL-C06-FIELD-INVALID-STATE"
       ],
       "pre_fix_evidence_id": "ER-C06-PRE-CSS",
       "post_fix_evidence_id": "ER-C06-POST-CSS",
-      "baseline_failure": "No invalid-state CSS in controls sheet at fea770d (regression border check passed accidentally via focus ring).",
+      "baseline_failure": "Prepared baseline cf591de at fea770d CSS: validity invalid but borderIsRed and shadowChanged false after blur.",
       "evidence_ids": [
         "ER-C06-PRE-CSS",
         "ER-C06-POST-CSS",
         "ER-C06-RESTORE-CSS",
-        "ER-C06-TRACE"
+        "ER-C06-TRACE",
+        "static",
+        "ci"
       ],
-      "independent_verification_result": "PENDING (FIXER C06-F): regression/traces rewritten; awaiting fresh VERIFIER pass",
-      "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2"
+      "observable_contract": "Blurred invalid .field input border resolves var(--red); focus accent and disabled states do not retain red invalid chrome.",
+      "state_restoration_evidence_id": "ER-C06-RESTORE-CSS",
+      "independent_verification_result": "PASSED (C06-V-C at 29d1137)",
+      "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
+      "resolution_commit": "29d1137aa5695143913b5e8de8820f2bc91eaa42"
     },
     {
       "id": "SL-C06-L-05",
@@ -582,17 +587,17 @@
       "state_restored": true,
       "command": "python dev/ui_controls_css_regression.py",
       "exit_code": 1,
-      "commit": "f52dc3597910c134d2d9c639fd4161f99d679a12",
+      "commit": "cf591de2eb2919d8cb3c1c5f5ed65eb2f7f53105",
       "worktree_clean": true,
       "command_argv": [
         "python",
         "dev/ui_controls_css_regression.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-PRE-CSS.json",
-      "receipt_sha256": "7f5253f541504a522ee0d5747d5a3deb54d85ac8e3b770acc13b67d890dcb9ab",
+      "receipt_sha256": "24d501d45571125ea6ae12d17662d77541a7e9cfeebdbf848248b203b39ec482",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
-      "prepared_baseline_commit": "f52dc3597910c134d2d9c639fd4161f99d679a12",
+      "prepared_baseline_commit": "cf591de2eb2919d8cb3c1c5f5ed65eb2f7f53105",
       "audit_css_sha256": "6511fe627d75f1bdf790d02c8dadb6a53c4a369b009b7271b9902f81f4225794"
     },
     {
@@ -613,14 +618,14 @@
       "state_restored": true,
       "command": "python dev/ui_controls_css_regression.py",
       "exit_code": 0,
-      "commit": "7d403f44fc8643481414e622ebdcbb45ac430f10",
+      "commit": "29d1137aa5695143913b5e8de8820f2bc91eaa42",
       "worktree_clean": true,
       "command_argv": [
         "python",
         "dev/ui_controls_css_regression.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-POST-CSS.json",
-      "receipt_sha256": "c0d99d870b936d6898533fcbb7228523eab7ae44c5f4cb44ccd3d5e4f0cdeab3",
+      "receipt_sha256": "bd7cbdaf3386fa1f87e6e2fc76cad8f5a942c0cc5c59992ea04db733cb5daa89",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "runtime_trace": {
@@ -654,8 +659,8 @@
         "trace_id": "SL-C06-GAS-NUM-TOUCH-TARGET-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle06.json",
         "spec_path": "docs/seven-lens-traces/cycle-06-controls.json",
-        "artifact_sha256": "5723aacaef6ea7caf2ef94c3dc6f59c978ace3075294cf24a87048d1102a86b9",
-        "spec_sha256": "492d27c02b5524fe2fcee9959d8a3d1f3e4433766f14c830c8873b8616256864"
+        "artifact_sha256": "afd4ad5238048a8b874eeed89150e6dbc5c96a66d20677ff8ae6c2ba68a92acc",
+        "spec_sha256": "4ff730015d2a1345e73c04c838c09f080887bf4abc23d71e7f2cd23642bd1dfc"
       }
     },
     {
@@ -673,7 +678,7 @@
       "state_restored": true,
       "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-06-controls.json --output dev/seven-lens-browser-trace-cycle06.json",
       "exit_code": 0,
-      "commit": "7d403f44fc8643481414e622ebdcbb45ac430f10",
+      "commit": "29d1137aa5695143913b5e8de8820f2bc91eaa42",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -684,7 +689,7 @@
         "dev/seven-lens-browser-trace-cycle06.json"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-TRACE.json",
-      "receipt_sha256": "c2c9c2f2638eaca1530da56aa80034a9e534ae9c36b7b38627a9a887bf598174",
+      "receipt_sha256": "ab7b679b108782904f4cbcc8f1179a579b4e97b56ecd349ccb13543ec2804f18",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "runtime_trace": {
@@ -716,8 +721,8 @@
         "trace_id": "SL-C06-SEG-FOCUS-VISIBLE-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle06.json",
         "spec_path": "docs/seven-lens-traces/cycle-06-controls.json",
-        "artifact_sha256": "5723aacaef6ea7caf2ef94c3dc6f59c978ace3075294cf24a87048d1102a86b9",
-        "spec_sha256": "492d27c02b5524fe2fcee9959d8a3d1f3e4433766f14c830c8873b8616256864"
+        "artifact_sha256": "afd4ad5238048a8b874eeed89150e6dbc5c96a66d20677ff8ae6c2ba68a92acc",
+        "spec_sha256": "4ff730015d2a1345e73c04c838c09f080887bf4abc23d71e7f2cd23642bd1dfc"
       }
     },
     {
@@ -733,14 +738,14 @@
       "state_restored": true,
       "command": "python tools/run_ui_structure_suite.py",
       "exit_code": 0,
-      "commit": "7d403f44fc8643481414e622ebdcbb45ac430f10",
+      "commit": "29d1137aa5695143913b5e8de8820f2bc91eaa42",
       "worktree_clean": true,
       "command_argv": [
         "python",
         "tools/run_ui_structure_suite.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-STRUCTURE.json",
-      "receipt_sha256": "623878136614abf55c185d1d85728da4f5701486db9f9680df045f811529eb30",
+      "receipt_sha256": "afe620b6af970fa655d51681c6652579f9457386dd676fa311f0263463e80aea",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -756,14 +761,14 @@
       "state_restored": true,
       "command": "python tools/extract_ui_css.py",
       "exit_code": 0,
-      "commit": "7d403f44fc8643481414e622ebdcbb45ac430f10",
+      "commit": "29d1137aa5695143913b5e8de8820f2bc91eaa42",
       "worktree_clean": true,
       "command_argv": [
         "python",
         "tools/extract_ui_css.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-PARITY.json",
-      "receipt_sha256": "605e42265106e86d2d794791dde2f68d44d78e24e341c5afb4b71e77533f366f",
+      "receipt_sha256": "cb6912c3767dd1484f0dbb4059bf843998546ea0e22f856c5b389cd268c10fea",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -776,8 +781,8 @@
       ],
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
-      "exit_code": 1,
-      "commit": "7d403f44fc8643481414e622ebdcbb45ac430f10",
+      "exit_code": 0,
+      "commit": "29d1137aa5695143913b5e8de8820f2bc91eaa42",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -801,8 +806,8 @@
       ],
       "state_restored": true,
       "command": "python -m tools.audit run --profile ci",
-      "exit_code": 1,
-      "commit": "7d403f44fc8643481414e622ebdcbb45ac430f10",
+      "exit_code": 0,
+      "commit": "29d1137aa5695143913b5e8de8820f2bc91eaa42",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -835,14 +840,14 @@
       "state_restored": true,
       "command": "python dev/ui_controls_css_regression.py",
       "exit_code": 0,
-      "commit": "7d403f44fc8643481414e622ebdcbb45ac430f10",
+      "commit": "29d1137aa5695143913b5e8de8820f2bc91eaa42",
       "worktree_clean": true,
       "command_argv": [
         "python",
         "dev/ui_controls_css_regression.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-RESTORE-CSS.json",
-      "receipt_sha256": "450b14af1d5ca77da6fa54c957f62047c1013b4c8b2e6763a376eecc22e55b27",
+      "receipt_sha256": "e42a66251fb53442fb86ed3e82e654c3d12d423eeb796e21ad6a62f1c1873116",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "state_before_sha256": "d5ae1ba0ffb06bb48a1ea2bd62d76c73ffd35f70ba519de0baff7d25c9be81fd",
@@ -857,5 +862,5 @@
     "tools/seven_lens_browser_trace.py"
   ],
   "audit_report": "docs/seven-lens-reports/cycle-06-controls-css.md",
-  "notes": "FIXER C06-F: SL-C06-FIELD-INVALID-STATE asserts var(--red) after blur; baseline fea770d fails; SL-C06-L-04 OPEN pending fresh VERIFIER."
+  "notes": "VERIFIER C06-V-C: SL-C06-L-04 independently verified at 3c97791; prepared baseline cf591de fails borderIsRed/shadowChanged with valid invalidity; ledger IN_PROGRESS pending CLOSER."
 }

@@ -1233,12 +1233,13 @@
       "id": "SL-C06-L-04",
       "unit_id": "UI-CSS-CONTROLS",
       "severity": "LOW",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-lens Cycle 06 controls CSS audit",
       "summary": "Field inputs lack invalid-state styling",
       "affected_units": [
         "UI-CSS-CONTROLS"
       ],
+      "resolution_commit": "29d1137",
       "evidence_cases": [
         "REG-87"
       ]
