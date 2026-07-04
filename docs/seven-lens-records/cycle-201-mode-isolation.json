@@ -159,7 +159,7 @@
     }
   ],
   "audit_commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
-  "verified_source_commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+  "verified_source_commit": "6ea719623276bbb0eede4f53986ecad85fc5cdc6",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -266,7 +266,7 @@
         "static"
       ],
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "6ea719623276bbb0eede4f53986ecad85fc5cdc6",
       "worktree_clean": true,
       "receipt_path": "dev/seven-lens-evidence-static.json",
       "receipt_sha256": ""
@@ -289,7 +289,7 @@
         "ci"
       ],
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "6ea719623276bbb0eede4f53986ecad85fc5cdc6",
       "worktree_clean": true,
       "receipt_path": "dev/seven-lens-evidence-ci.json",
       "receipt_sha256": ""
@@ -314,7 +314,7 @@
         "dev/seven-lens-browser-trace-2c.json"
       ],
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "6ea719623276bbb0eede4f53986ecad85fc5cdc6",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "User switches Rec \u2194 B\u00fchlmann; each mode retains its own depth/BT via view snapshots.",
