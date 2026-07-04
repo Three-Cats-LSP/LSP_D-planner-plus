@@ -1,9 +1,9 @@
 {
   "schema_version": 3,
   "runner_version": 2,
-  "spec": "docs\\seven-lens-traces\\cycle-06-controls.json",
-  "spec_sha256": "8324bcb4648ba7aad40e78108e7c2885d29362516828db9276a336c53798e488",
-  "commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d",
+  "spec": "docs/seven-lens-traces/cycle-06-controls.json",
+  "spec_sha256": "2074f351e3b5b22ef466402719085c0f56a3733cbcc2957da5c07f4745153af1",
+  "commit": "cc1add399e3ad87b436827a53190d9ee6f027656",
   "traces": [
     {
       "id": "SL-C06-SEG-FOCUS-VISIBLE-TRACE",
@@ -766,13 +766,15 @@
       "captures": {
         "before": {
           "valid_before": true,
-          "border_before": "rgba(255, 255, 255, 0.08)"
+          "border_before": "rgba(255, 255, 255, 0.08)",
+          "expected_red": "rgb(248, 113, 113)"
         },
         "canonical": {
           "valid_after": true
         },
         "consumer": {
-          "border_changed": true
+          "border_color": "rgb(248, 113, 113)",
+          "box_shadow": "rgba(255, 68, 51, 0.12) 0px 0px 0px 2px"
         }
       },
       "assertions": [
@@ -787,9 +789,14 @@
           "detail": "True equal True"
         },
         {
-          "id": "border-changed",
+          "id": "border-uses-red",
           "passed": true,
-          "detail": "True equal True"
+          "detail": "'rgb(248, 113, 113)' equal 'rgb(248, 113, 113)'"
+        },
+        {
+          "id": "box-shadow-visible",
+          "passed": true,
+          "detail": "'rgba(255, 68, 51, 0.12) 0px 0px 0px 2px' not_equal 'none'"
         }
       ],
       "state_before_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
@@ -887,13 +894,15 @@
           "captures": {
             "before": {
               "valid_before": true,
-              "border_before": "rgba(255, 255, 255, 0.08)"
+              "border_before": "rgba(255, 255, 255, 0.08)",
+              "expected_red": "rgb(248, 113, 113)"
             },
             "canonical": {
               "valid_after": true
             },
             "consumer": {
-              "border_changed": true
+              "border_color": "rgb(248, 113, 113)",
+              "box_shadow": "rgba(255, 68, 51, 0.12) 0px 0px 0px 2px"
             }
           },
           "assertions": [
@@ -908,9 +917,14 @@
               "detail": "True equal True"
             },
             {
-              "id": "border-changed",
+              "id": "border-uses-red",
               "passed": true,
-              "detail": "True equal True"
+              "detail": "'rgb(248, 113, 113)' equal 'rgb(248, 113, 113)'"
+            },
+            {
+              "id": "box-shadow-visible",
+              "passed": true,
+              "detail": "'rgba(255, 68, 51, 0.12) 0px 0px 0px 2px' not_equal 'none'"
             }
           ],
           "state_before_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
@@ -1003,13 +1017,15 @@
           "captures": {
             "before": {
               "valid_before": true,
-              "border_before": "rgba(255, 255, 255, 0.08)"
+              "border_before": "rgba(255, 255, 255, 0.08)",
+              "expected_red": "rgb(248, 113, 113)"
             },
             "canonical": {
               "valid_after": true
             },
             "consumer": {
-              "border_changed": true
+              "border_color": "rgb(248, 113, 113)",
+              "box_shadow": "rgba(255, 68, 51, 0.12) 0px 0px 0px 2px"
             }
           },
           "assertions": [
@@ -1024,9 +1040,14 @@
               "detail": "True equal True"
             },
             {
-              "id": "border-changed",
+              "id": "border-uses-red",
               "passed": true,
-              "detail": "True equal True"
+              "detail": "'rgb(248, 113, 113)' equal 'rgb(248, 113, 113)'"
+            },
+            {
+              "id": "box-shadow-visible",
+              "passed": true,
+              "detail": "'rgba(255, 68, 51, 0.12) 0px 0px 0px 2px' not_equal 'none'"
             }
           ],
           "state_before_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",

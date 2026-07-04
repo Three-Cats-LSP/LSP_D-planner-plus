@@ -2,10 +2,10 @@
   "schema_version": 1,
   "evidence_id": "ER-C06-STRUCTURE",
   "command_argv": [
-    "python",
+    "python3",
     "tools/run_ui_structure_suite.py"
   ],
-  "commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d",
+  "commit": "cc1add399e3ad87b436827a53190d9ee6f027656",
   "exit_code": 0,
   "case_ids": [
     "UI-EXTRACT-CSS",
@@ -13,8 +13,8 @@
   ],
   "worktree_clean_before": true,
   "worktree_clean_after": true,
-  "started_at": "2026-07-04T18:09:37.994852+00:00",
-  "finished_at": "2026-07-04T18:09:40.953180+00:00",
+  "started_at": "2026-07-04T18:25:52.700381+00:00",
+  "finished_at": "2026-07-04T18:25:52.845884+00:00",
   "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"

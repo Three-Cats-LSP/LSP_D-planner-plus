@@ -2,21 +2,21 @@
   "schema_version": 1,
   "evidence_id": "static",
   "command_argv": [
-    "python",
+    "python3",
     "-m",
     "tools.audit",
     "check",
     "--profile",
     "static"
   ],
-  "commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d",
-  "exit_code": 1,
+  "commit": "cc1add399e3ad87b436827a53190d9ee6f027656",
+  "exit_code": 0,
   "case_ids": [],
   "worktree_clean_before": true,
   "worktree_clean_after": true,
-  "started_at": "2026-07-04T18:09:47.995666+00:00",
-  "finished_at": "2026-07-04T18:10:36.721328+00:00",
-  "stdout_sha256": "4a6895ce484c55d33ea8f4823a2ad65127c8ea939727e5ab39deebc4c24464d8",
+  "started_at": "2026-07-04T18:26:14.388916+00:00",
+  "finished_at": "2026-07-04T18:26:20.182019+00:00",
+  "stdout_sha256": "70d588ff949a64278a5bca1964dfec3398021687fcca29a5c697c4a924dcf154",
   "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
 }
