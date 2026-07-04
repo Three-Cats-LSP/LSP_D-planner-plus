@@ -23,11 +23,11 @@
 | tooling | 52 | 0 | 12 | 0 | 40 |
 | ui_core | 16 | 0 | 12 | 0 | 4 |
 | ui_shell | 2 | 0 | 1 | 0 | 1 |
-| web_css | 4 | 0 | 3 | 0 | 1 |
+| web_css | 4 | 0 | 4 | 0 | 0 |
 | web_markup | 7 | 0 | 4 | 1 | 2 |
 | web_runtime | 24 | 0 | 13 | 0 | 11 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **191** | **0** | **65** | **1** | **125** |
+| **Total** | **191** | **0** | **66** | **1** | **124** |
 
 ## Units
 
@@ -59,7 +59,7 @@
 | UI-PWA-LIFECYCLE | pwa | `index.html:9450` | 99 | P1 | VERIFIED | REG-45, EXT-08, COV-01 |
 | UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 418 | P2 | IN_PROGRESS | - |
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 338 | P2 | IN_PROGRESS | - |
-| UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 548 | P2 | VERIFIED | EXT-03, EXT-06, COV-01 |
+| UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 558 | P2 | IN_PROGRESS | - |
 | UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 931 | P1 | IN_PROGRESS | - |
 | UI-MARKUP-HEADER | web_markup | `ui/markup-header.html:1` | 750 | P2 | IN_PROGRESS | - |
 | UI-MARKUP-REC-PLANNER | web_markup | `ui/markup-rec-planner.html:1` | 75 | P1 | IN_PROGRESS | - |
