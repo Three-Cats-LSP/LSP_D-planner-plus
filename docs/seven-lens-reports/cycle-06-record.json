@@ -556,7 +556,7 @@
       "state_restored": true,
       "command": "python dev/c06_pre_controls_regression.py",
       "exit_code": 1,
-      "commit": "7470b4e5f56efb02541b57990e8422002051de35",
+      "commit": "96520fa1ea83b99632db4678f94110361951a9ea",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -583,7 +583,7 @@
       "state_restored": true,
       "command": "python dev/ui_controls_css_regression.py",
       "exit_code": 0,
-      "commit": "7470b4e5f56efb02541b57990e8422002051de35",
+      "commit": "96520fa1ea83b99632db4678f94110361951a9ea",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -607,7 +607,7 @@
       "state_restored": true,
       "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-06-controls.json --output dev/seven-lens-browser-trace-cycle06.json",
       "exit_code": 0,
-      "commit": "7470b4e5f56efb02541b57990e8422002051de35",
+      "commit": "96520fa1ea83b99632db4678f94110361951a9ea",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -633,7 +633,7 @@
       "state_restored": true,
       "command": "python tools/run_ui_structure_suite.py",
       "exit_code": 0,
-      "commit": "7470b4e5f56efb02541b57990e8422002051de35",
+      "commit": "96520fa1ea83b99632db4678f94110361951a9ea",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -654,7 +654,7 @@
       "state_restored": true,
       "command": "python tools/extract_ui_css.py",
       "exit_code": 0,
-      "commit": "7470b4e5f56efb02541b57990e8422002051de35",
+      "commit": "96520fa1ea83b99632db4678f94110361951a9ea",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -673,7 +673,7 @@
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
       "exit_code": 1,
-      "commit": "7470b4e5f56efb02541b57990e8422002051de35",
+      "commit": "96520fa1ea83b99632db4678f94110361951a9ea",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -704,7 +704,7 @@
       "state_restored": true,
       "command": "python dev/ui_controls_css_regression.py",
       "exit_code": 0,
-      "commit": "7470b4e5f56efb02541b57990e8422002051de35",
+      "commit": "96520fa1ea83b99632db4678f94110361951a9ea",
       "worktree_clean": true,
       "command_argv": [
         "python",
