@@ -678,7 +678,7 @@
       "id": "SL-C04-H-03",
       "unit_id": "TOOL-SEVEN-LENS-PROTOCOL",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-Lens Cycle 04 post-merge verification",
       "summary": "Cycles 2-4 are marked reviewed although their protocol records fail closure and Cycle 4 has no evidence runs for five closed findings.",
       "affected_units": [
@@ -686,8 +686,10 @@
         "TEST-SEVEN-LENS-PROTOCOL",
         "TOOL-RUN-AUDIT-COVERAGE-SUITE-PY"
       ],
-      "resolution_commit": null,
-      "evidence_cases": []
+      "resolution_commit": "9aaa378",
+      "evidence_cases": [
+        "COV-01"
+      ]
     },
     {
       "id": "SL-C04-M-03",
@@ -727,7 +729,7 @@
       "id": "SL-C04-H-04",
       "unit_id": "TOOL-SEVEN-LENS-PROTOCOL",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "PR #191 independent closure verification",
       "summary": "Closure evidence was materialized from constants instead of executed commands, allowing fabricated exit codes, cleanliness claims, and unrelated trace reuse.",
       "affected_units": [
@@ -735,8 +737,10 @@
         "TEST-SEVEN-LENS-PROTOCOL",
         "TOOL-SEVEN-LENS-BROWSER-TRACE"
       ],
-      "resolution_commit": null,
-      "evidence_cases": []
+      "resolution_commit": "9aaa378",
+      "evidence_cases": [
+        "COV-01"
+      ]
     },
     {
       "id": "SL-C04-M-05",
@@ -756,7 +760,7 @@
       "id": "SL-C04-H-05",
       "unit_id": "UI-MARKUP-HEADER",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "PR #191 visible-action verification",
       "summary": "planPanelTecSection is nested inside an unclosed planPanelRecSection, leaving gas and technical planner controls hidden in every planner mode.",
       "affected_units": [
@@ -764,8 +768,11 @@
         "UI-MARKUP-PLANNER",
         "UI-PLANNER-SHELL"
       ],
-      "resolution_commit": null,
-      "evidence_cases": []
+      "resolution_commit": "83dac9d",
+      "evidence_cases": [
+        "EXT-04",
+        "COV-01"
+      ]
     },
     {
       "id": "ISSUE-133-ROLLUP",
