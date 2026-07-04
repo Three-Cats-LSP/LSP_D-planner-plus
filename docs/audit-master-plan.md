@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v3-full-reset`
-**Units:** 185 total; 0 unread; 57 in progress; 1 read; 127 verified.
+**Units:** 188 total; 0 unread; 62 in progress; 1 read; 125 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -34,7 +34,7 @@
 | 2 | UI-MARKUP-REC-PLANNER, UI-REC-PLANNER | 84 | - | Cycle 2a: REC planner markup + runRecPlan; SL-REC-DEPTH-BT-STEPPER |
 | 3 | UI-MARKUP-CONSUMPTION | 381 | - | Consumption markup partial READ |
 | 4 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 612 | - | Tools and modals markup partials READ |
-| 5 | UI-CSS-FOUNDATION, UI-CSS-MODES | 826 | - | Foundation and modes CSS READ |
+| 5 | UI-CSS-FOUNDATION, UI-CSS-MODES | 756 | - | Foundation and modes CSS READ |
 | 6 | UI-CSS-CONTROLS | 528 | - | Controls CSS READ |
 | 7 | UI-CSS-RESULTS | 931 | - | Results CSS READ |
 | 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 487 | - | Planner shell and results panel READ |

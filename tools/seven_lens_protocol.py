@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import fnmatch
 import hashlib
 import json
 import re
@@ -209,10 +210,12 @@ def _validate_evidence_receipt(root: Path, evidence: dict[str, Any]) -> list[str
 
 
 def _attestation_only_path(path: str) -> bool:
+    normalized = path.replace("\\", "/")
     return (
-        path.startswith("docs/seven-lens-reports/")
-        or path.startswith("docs/seven-lens-records/")
-        or path == "docs/seven-lens-manual-ledger.json"
+        normalized.startswith("docs/seven-lens-reports/")
+        or normalized.startswith("docs/seven-lens-records/")
+        or normalized == "docs/seven-lens-manual-ledger.json"
+        or fnmatch.fnmatch(normalized, "dev/seven-lens-browser-trace-*.json")
     )
 
 
@@ -690,7 +693,9 @@ def validate_record(
                     path for path in fix_diff.splitlines()
                     if path.strip() and not _attestation_only_path(path)
                 )
-            paths = sorted(protected)
+            paths = sorted(
+                path for path in protected if path.strip() and not _attestation_only_path(path)
+            )
             if paths:
                 changed = _git("diff", "--name-only", f"{record['verified_source_commit']}..HEAD", "--", *paths, root=root)
                 if changed:

@@ -307,6 +307,100 @@
       "parts": {
         "P01": "ui/markup-modals.html"
       }
+    },
+    {
+      "unit_id": "UI-CSS-FOUNDATION",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "f1f5eaa00edd3fd382ff98c27985e51d565539079860d7e59d740bce2d6a1944",
+      "cycle_id": "SL-C05",
+      "boundary": "lsp-dplanner-foundation.css lines 1-418",
+      "reviewer": "Cursor GPT-5.5 Medium",
+      "review_session": "cursor/seven-lens-cycle-05-foundation-audit",
+      "verification_session": "C05-V-A",
+      "lens_results": {
+        "L1": "clamp/safe-area tokens sound; no arithmetic defects.",
+        "L2": "light-theme cascade and modal stacking coherent.",
+        "L3": "body class writers traced; stale #gfPresetsRow selectors fixed.",
+        "L4": "dead .brand-icon / #gfCustomRow .gf-btn rules removed.",
+        "L5": "canonical CSS quartet parity PASS.",
+        "L6": "gas warning colors and mode isolation CSS restored.",
+        "L7": "SUITE-UI-CSS-REGRESSION + browser trace cover mode isolation."
+      },
+      "finding_ids": [
+        "SL-C05-M-01",
+        "SL-C05-L-01",
+        "SL-C05-L-02",
+        "SL-C05-L-03"
+      ],
+      "verification_commands": [
+        "python -m tools.audit check --profile static",
+        "python -m tools.audit run --profile ci",
+        "python dev/ui_css_regression.py",
+        "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-05-css.json"
+      ],
+      "reviewed_at": "2026-07-04T12:00:00+00:00",
+      "verified_at": "2026-07-04T12:30:00+00:00",
+      "verifier": "Cursor Agent (C05-V-A)",
+      "verification_status": "PASS",
+      "verified_source_commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+      "last_checked_commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+      "verification_report": "docs/seven-lens-reports/cycle-05-css.md",
+      "findings_open": [],
+      "findings_closed": [
+        "SL-C05-M-01",
+        "SL-C05-L-01",
+        "SL-C05-L-02",
+        "SL-C05-L-03"
+      ],
+      "parts": {
+        "P01": "lsp-dplanner-foundation.css:1-418"
+      }
+    },
+    {
+      "unit_id": "UI-CSS-MODES",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "6d911804be64d352c6d0d74a4db18bb61887de96456f8f4dd3ac59e205f7b096",
+      "cycle_id": "SL-C05",
+      "boundary": "lsp-dplanner-modes.css lines 1-338",
+      "reviewer": "Cursor GPT-5.5 Medium",
+      "review_session": "cursor/seven-lens-cycle-05-modes-audit",
+      "verification_session": "C05-V-B",
+      "lens_results": {
+        "L1": "responsive @media card padding bounded.",
+        "L2": "tab/panel visibility cascade matches switchTab().",
+        "L3": "body.algo-tools opacity rules retargeted to V3 GF row.",
+        "L4": "dead .algo-switcher / .theme-toggle rules removed.",
+        "L5": "modes sheet second in canonical quartet.",
+        "L6": "export :focus-visible outline restored for keyboard users.",
+        "L7": "SUITE-UI-CSS-REGRESSION + export-focus trace PASS."
+      },
+      "finding_ids": [
+        "SL-C05-M-02",
+        "SL-C05-L-03",
+        "SL-C05-L-04"
+      ],
+      "verification_commands": [
+        "python -m tools.audit check --profile static",
+        "python -m tools.audit run --profile ci",
+        "python dev/ui_css_regression.py",
+        "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-05-export-focus.json"
+      ],
+      "reviewed_at": "2026-07-04T12:00:00+00:00",
+      "verified_at": "2026-07-04T12:30:00+00:00",
+      "verifier": "Cursor Agent (C05-V-B)",
+      "verification_status": "PASS",
+      "verified_source_commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+      "last_checked_commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+      "verification_report": "docs/seven-lens-reports/cycle-05-css.md",
+      "findings_open": [],
+      "findings_closed": [
+        "SL-C05-M-02",
+        "SL-C05-L-03",
+        "SL-C05-L-04"
+      ],
+      "parts": {
+        "P01": "lsp-dplanner-modes.css:1-338"
+      }
     }
   ]
 }

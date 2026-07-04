@@ -1,0 +1,845 @@
+{
+  "schema_version": 4,
+  "cycle": 5,
+  "record_path": "docs/seven-lens-reports/cycle-05-record.json",
+  "target_branch": "dev",
+  "integration_base_commit": "39159b03832d54ebc1a3fc8474cd1225d37ecbaf",
+  "baseline_commit": "39159b03832d54ebc1a3fc8474cd1225d37ecbaf",
+  "baseline_registry_fingerprint": "c18bacf83a19062e9fae28512d62b7bb4e1ffc6bf6915b8f6dacd805096fb6fa",
+  "baseline_findings": [
+    {
+      "id": "SL-C02-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes."
+    },
+    {
+      "id": "SL-C02-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Travel manual depth limits disagree between markup, metric restore, and imperial mode."
+    },
+    {
+      "id": "SL-C02-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Rounded display values become canonical physical inputs; Best Mix and CNS now reproduce the same unit-roundtrip drift."
+    },
+    {
+      "id": "SL-C02-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Min-deco regression checks an adapter property rather than observable schedule behavior."
+    },
+    {
+      "id": "SL-C02-M-06",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle history allowed unresolved findings and a blocked prior record to be deleted or rewritten as passed."
+    },
+    {
+      "id": "SL-C03-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits."
+    },
+    {
+      "id": "SL-C03-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle 3 regressions compare rounded outputs and restore values before units, masking physical-depth drift and corrupting test state."
+    },
+    {
+      "id": "SL-C03-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling."
+    },
+    {
+      "id": "SL-C04-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Depth and cylinder edits after a unit switch leave canonical data-depth-m/data-volume-l stale, so consumers use old values and the next switch discards the edit."
+    },
+    {
+      "id": "SL-C04-H-03",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Cycles 2-4 are marked reviewed although their protocol records fail closure and Cycle 4 has no evidence runs for five closed findings."
+    },
+    {
+      "id": "SL-C04-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle regression setup leaks canonical DOM and settings state, making the full engine suite order-dependent and leaving two contingency cases failing."
+    },
+    {
+      "id": "SL-C04-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Browser trace evidence could pass forced or vacuous single-run checks without proving a real interactive consumer path."
+    },
+    {
+      "id": "SL-C04-H-04",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Closure evidence was materialized from constants instead of executed commands, allowing fabricated exit codes, cleanliness claims, and unrelated trace reuse."
+    },
+    {
+      "id": "SL-C04-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "A dynamic deco cylinder created in imperial mode defaults to 0.4 ft3 while retaining min 1 and step 0.5, making its initial value invalid."
+    },
+    {
+      "id": "SL-C04-H-05",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "planPanelTecSection is nested inside an unclosed planPanelRecSection, leaving gas and technical planner controls hidden in every planner mode."
+    },
+    {
+      "id": "ISSUE-133-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 4C/5H/8M/8L remediated; gated in audit.py issue133 block and engine_regression issue133 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-134-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 1C/4H/7M/7L remediated; gated in audit.py issue134 block and engine_regression issue134 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-135-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 10H/10M/1L remediated; gated in audit.py issue135 block and engine_regression issue135 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-136-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "extract_ui_cores.py uses LSP-EXTRACT marker contract; verified by audit.py and tools/extract_ui_cores.py [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-137-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in 51f95ac; gated in audit.py and engine_regression issue137 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-138-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in fcfb6c4 (v2.53.04); gated in audit.py and engine_regression issue138 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-139-ROLLUP",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "All 3L fixed; #138 40/40 re-verified on 1271d1a; gated in audit.py and engine_regression issue139 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-140-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Surface interval gas/GF kinetics, pooled gas-plan turn pressure, audit case-ID validation, SW cache waitUntil, Android compile gate, coverage self-tests, FileProvider scope, workspace hash drift"
+    },
+    {
+      "id": "ISSUE-141-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "pSCR diluent bypass from computePSCRFractions, resolveCcrSacForGas removed, invalid trimix getN2Frac returns null"
+    },
+    {
+      "id": "REGRESSION-GF-CCR-FIX",
+      "severity": "CRITICAL",
+      "status": "CLOSED",
+      "summary": "GF pre-anchor and CCR endpoint corrected; verification requires REG-06 and REG-07 in the current release run"
+    }
+  ],
+  "audit_commit": "ded650c489da978c5961bb920f2c8834e0ebe46e",
+  "verified_source_commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+  "verification_status": "PASSED",
+  "parts": [
+    {
+      "id": "UI-CSS-FOUNDATION-P01",
+      "unit_id": "UI-CSS-FOUNDATION",
+      "path": "lsp-dplanner-foundation.css",
+      "start_line": 1,
+      "end_line": 418,
+      "line_count": 418,
+      "content_fingerprint": "f1f5eaa00edd3fd382ff98c27985e51d565539079860d7e59d740bce2d6a1944",
+      "review_session": "cursor/seven-lens-cycle-05-foundation-audit",
+      "verification_session": "C05-V-A",
+      "lens_results": {
+        "L1": {
+          "trace": "clamp() tokens :root:9-14; safe-area modal padding :159-179; .app max-width 1280px :330-334; @media only in modes unit for .card",
+          "boundary_cases": [
+            "320px mobile width",
+            "capacitor-native safe-area max(32px)",
+            "light-theme gas #FF4433 rows"
+          ],
+          "evidence": "lsp-dplanner-foundation.css:9-14,159-179,283-296; body overflow-x:hidden:151",
+          "result": "NO_FINDING"
+        },
+        "L2": {
+          "trace": "body.light-theme !important overrides :189-234 cascade over broad div rule :201-204; .buh-only not in foundation; .panel rules in modes",
+          "boundary_cases": [
+            "light-theme chip/metric exceptions",
+            "algo-buh ::after grid z-index 0"
+          ],
+          "evidence": "foundation.css:189-234; modes.css loads after foundation per index.html:32-35",
+          "result": "NO_FINDING"
+        },
+        "L3": {
+          "trace": "setNavMode -> body.algo-tools toggle planner-shell.js:74; _showPlannerView -> body.rec-mode/algo-buh settings-core.js:604-605; toggleTheme -> body.light-theme settings-core.js:933",
+          "boundary_cases": [
+            "REC gfPresetsRow removed post-init",
+            "tools mode clears on settings nav"
+          ],
+          "evidence": "planner-shell.js:116-124 removes #gfPresetsRow; foundation.css:443-454 targets removed id",
+          "result": "FINDING"
+        },
+        "L4": {
+          "trace": "Canonical writers: setPlannerAlgo/_showPlannerView -> body classes; initV3Layout -> DOM ids; markup .brand-logo ui/markup-header.html:64; dynamic #apkUpdateBanner index.html:2490+",
+          "boundary_cases": [
+            ".brand-icon zero markup hits",
+            "#gfCustomRow .gf-btn no .gf-btn child",
+            "#gfPresetsRow removed at runtime"
+          ],
+          "evidence": "selector audit: .brand-icon 0 hits; #gfPresetsRow in markup pre-init only; gfPresetBtns uses .gf-preset-btn settings-core.js:654",
+          "result": "FINDING"
+        },
+        "L5": {
+          "trace": "index.html link order foundation->modes->controls->results; sw.js precache both sheets; extract_ui_css.py CSS_UNITS order",
+          "boundary_cases": [
+            "Pages/www parity via SUITE-PARITY",
+            "no generated-only fixes in scope"
+          ],
+          "evidence": "python -m tools.audit check --profile static SUITE-UI-STRUCTURE PASS; sw.js:73-74",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "gas-bt-cell/gas-tight-row #FF4433 + contrast overrides :283-296; header-warn in modes superseded by results.css; rec-mode GF disable intended via opacity :443-454",
+          "boundary_cases": [
+            "light-theme gas-tight black text on red",
+            "rec-mode GF row stale after init"
+          ],
+          "evidence": "foundation.css:283-296; stale #gfPresetsRow rules after initV3Layout",
+          "result": "FINDING"
+        },
+        "L7": {
+          "trace": "SUITE-UI-STRUCTURE UI-EXTRACT-CSS/UI-CSS-LINK-ORDER string parity only; tests-massive checks gfPresetsRowV3 presence not computed opacity",
+          "boundary_cases": [
+            "no getComputedStyle suite for mode isolation",
+            "no responsive breakpoint CSS tests in foundation"
+          ],
+          "evidence": "tools/run_ui_structure_suite.py; tests-massive.html:1801-1803",
+          "result": "FINDING"
+        }
+      }
+    },
+    {
+      "id": "UI-CSS-MODES-P01",
+      "unit_id": "UI-CSS-MODES",
+      "path": "lsp-dplanner-modes.css",
+      "start_line": 1,
+      "end_line": 338,
+      "line_count": 338,
+      "content_fingerprint": "6d911804be64d352c6d0d74a4db18bb61887de96456f8f4dd3ac59e205f7b096",
+      "review_session": "cursor/seven-lens-cycle-05-modes-audit",
+      "verification_session": "C05-V-B",
+      "lens_results": {
+        "L1": {
+          "trace": "@media (max-width:600px) .card padding :320-322; tabs-nav overflow-x:auto :227-228; .card overflow:hidden :318",
+          "boundary_cases": [
+            "600px card padding 10px 8px",
+            "long tab labels nowrap+scroll"
+          ],
+          "evidence": "lsp-dplanner-modes.css:218-228,320-322",
+          "result": "NO_FINDING"
+        },
+        "L2": {
+          "trace": ".panel display:none !important default :305-306; .panel.active display:block !important :306; switchTab index.html:2886-2890 removes/adds .active; .buh-only hidden unless body.algo-buh :301-302",
+          "boundary_cases": [
+            "tab switch synchronous",
+            "REC hides buh-only via algo-buh false"
+          ],
+          "evidence": "modes.css:301-306; index.html:switchTab; settings-core.js:605",
+          "result": "NO_FINDING"
+        },
+        "L3": {
+          "trace": "body.algo-tools #waterRow/#gfPresetsRow opacity :3-23; body.algo-tools .algo-switcher>div:last-child :27-35; card.collapsible.card-open toggled in markup/JS",
+          "boundary_cases": [
+            "algo-tools cleared leaving tools",
+            "gfPresetsRow removed post-init"
+          ],
+          "evidence": "planner-shell.js:74,116-124; modes.css:3-35",
+          "result": "FINDING"
+        },
+        "L4": {
+          "trace": ".tip-icon contract markup-tec-planner.html; .tab-btn/.algo-btn consumers switchTab/setMainNav; .theme-toggle replaced by .theme-pill-toggle ui/markup-header.html:80",
+          "boundary_cases": [
+            ".algo-switcher 0 markup hits",
+            ".theme-toggle 0 hits",
+            ".gf-btn legacy index.html:2788 only"
+          ],
+          "evidence": "selector audit; results.css:820 theme-pill-toggle:focus-visible",
+          "result": "FINDING"
+        },
+        "L5": {
+          "trace": "modes.css second in canonical quartet; #gfLowInput rules duplicated with foundation (source-order layering); .header-warn duplicated results.css:916 overrides base",
+          "boundary_cases": [
+            "foundation !important base on gf inputs",
+            "downstream results.css wins .header-warn color"
+          ],
+          "evidence": "index.html CSS link order; foundation:413-440 modes:160-172",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": ".header-warn disclaimer styling :174-188; .btn-reset-red vivid red :283-293; .btn-export:focus outline:none :275 removes keyboard focus",
+          "boundary_cases": [
+            "export row safety actions",
+            "disabled GF pointer-events in rec-mode on gfCustomRow only"
+          ],
+          "evidence": "modes.css:275-276 no focus-visible replacement",
+          "result": "FINDING"
+        },
+        "L7": {
+          "trace": "No computed-style tests for .panel.active, .buh-only display, tools-mode opacity, or 600px card padding",
+          "boundary_cases": [
+            "UI-EXTRACT-CSS regeneration",
+            "string fingerprint only"
+          ],
+          "evidence": "tools/run_ui_structure_suite.py; audit-units.json UI-CSS-* evidence SUITE-UI-STRUCTURE",
+          "result": "FINDING"
+        }
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "SL-C05-M-01",
+      "severity": "MEDIUM",
+      "unit_id": "UI-CSS-FOUNDATION",
+      "location": "lsp-dplanner-foundation.css:443-454; lsp-dplanner-modes.css:13-23; planner-shell.js:116-124",
+      "root_cause": "initV3Layout removes #gfPresetsRow while REC/Tools CSS still targets that id; GF UI uses #gfPresetsRowV3/#gfPresetBtns",
+      "failure_path": "Page load -> initV3Layout removes #gfPresetsRow -> body.rec-mode/algo-tools opacity rules never match GF preset buttons",
+      "impact": "Mode-isolation CSS stale; mitigated by view .visible toggles but not enforced at stylesheet layer",
+      "evidence": "planner-shell.js reparent; tests-massive presence-only check",
+      "recommendation": "Retarget mode rules to #gfPresetsRowV3 and #gfPresetBtns; add computed-style regression",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C05-GF-ROW-MODE-ISOLATION"
+      ],
+      "pre_fix_evidence_id": "ER-C05-PRE-CSS",
+      "post_fix_evidence_id": "ER-C05-POST-TRACE",
+      "baseline_failure": "rec/tools GF preset opacity stayed 1.0 at audit commit ded650c",
+      "fix_summary": "Retargeted REC/Tools opacity rules to #gfPresetsRowV3 and #gfPresetBtns",
+      "observable_contract": "GF preset buttons render opacity 0.5 in REC/Tools and 1.0 in B\u00fchlmann after V3 init removes #gfPresetsRow.",
+      "state_restoration_evidence_id": "ER-C05-RESTORE-TRACE",
+      "evidence_ids": [
+        "ER-C05-POST-CSS",
+        "ER-C05-POST-TRACE",
+        "ER-C05-PRE-CSS",
+        "ER-C05-PRE-TRACE",
+        "ER-C05-RESTORE-CSS",
+        "ER-C05-RESTORE-TRACE",
+        "ER-C05-STRUCTURE",
+        "ER-C05-VERIFY-CSS",
+        "ER-C05-VERIFY-TRACE",
+        "ci",
+        "static"
+      ]
+    },
+    {
+      "id": "SL-C05-M-02",
+      "severity": "MEDIUM",
+      "unit_id": "UI-CSS-MODES",
+      "location": "lsp-dplanner-modes.css:275-276",
+      "root_cause": ".btn-export:focus { outline: none } without :focus-visible replacement",
+      "failure_path": "Keyboard Tab to .btn-export -> no visible focus indicator",
+      "impact": "Keyboard users cannot see focused export/copy controls before activation",
+      "evidence": "modes.css:275-276; theme-pill uses focus-visible in results.css:821",
+      "recommendation": "Replace with :focus-visible outline or match theme-pill pattern",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C05-EXPORT-FOCUS-VISIBLE"
+      ],
+      "pre_fix_evidence_id": "ER-C05-PRE-CSS",
+      "post_fix_evidence_id": "ER-C05-POST-CSS",
+      "baseline_failure": "Keyboard-focused .btn-export computed outlineStyle none at ded650c",
+      "fix_summary": "Added .btn-export:focus-visible outline matching theme-pill pattern",
+      "observable_contract": "Keyboard Tab to .btn-export shows a >=2px solid focus outline via :focus-visible.",
+      "state_restoration_evidence_id": "ER-C05-RESTORE-CSS",
+      "evidence_ids": [
+        "ER-C05-POST-CSS",
+        "ER-C05-POST-TRACE",
+        "ER-C05-PRE-CSS",
+        "ER-C05-PRE-TRACE",
+        "ER-C05-RESTORE-CSS",
+        "ER-C05-RESTORE-TRACE",
+        "ER-C05-STRUCTURE",
+        "ER-C05-VERIFY-CSS",
+        "ER-C05-VERIFY-TRACE",
+        "ci",
+        "static"
+      ]
+    },
+    {
+      "id": "SL-C05-L-01",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-FOUNDATION",
+      "location": "lsp-dplanner-foundation.css:359-372",
+      "root_cause": "Markup uses .brand-logo; setBrandIcon is no-op",
+      "failure_path": "N/A \u2014 selectors never match",
+      "impact": "Dead CSS",
+      "evidence": "ui/markup-header.html:64; selector audit 0 hits for brand-icon",
+      "recommendation": "Remove .brand-icon rules or restore emoji icon markup",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C05-CSS-DEAD-BRAND-ICON"
+      ],
+      "pre_fix_evidence_id": "ER-C05-PRE-CSS",
+      "post_fix_evidence_id": "ER-C05-POST-CSS",
+      "baseline_failure": "foundation.css still contained .brand-icon rule at ded650c",
+      "fix_summary": "Removed obsolete .brand-icon and iconGlow rules",
+      "evidence_ids": [
+        "ER-C05-PRE-CSS",
+        "ER-C05-POST-CSS",
+        "static"
+      ]
+    },
+    {
+      "id": "SL-C05-L-02",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-FOUNDATION",
+      "location": "lsp-dplanner-foundation.css:396-410",
+      "root_cause": "#gfCustomRow contains selects only; presets use .gf-preset-btn",
+      "failure_path": "N/A \u2014 .gf-btn absent under #gfCustomRow",
+      "impact": "Dead CSS",
+      "evidence": "ui/markup-header.html:711-748; settings-core.js:654",
+      "recommendation": "Remove obsolete #gfCustomRow .gf-btn rules",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C05-CSS-DEAD-GF-BTN"
+      ],
+      "pre_fix_evidence_id": "ER-C05-PRE-CSS",
+      "post_fix_evidence_id": "ER-C05-POST-CSS",
+      "baseline_failure": "foundation.css still contained #gfCustomRow .gf-btn rules at ded650c",
+      "fix_summary": "Removed obsolete #gfCustomRow .gf-btn block",
+      "evidence_ids": [
+        "ER-C05-PRE-CSS",
+        "ER-C05-POST-CSS",
+        "static"
+      ]
+    },
+    {
+      "id": "SL-C05-L-03",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-MODES",
+      "location": "lsp-dplanner-foundation.css:391-393; lsp-dplanner-modes.css:27-35",
+      "root_cause": "V3 header removed .algo-switcher element",
+      "failure_path": "Tools-mode REF brightness exception never applies",
+      "impact": "Dead CSS; REF/disclaimer unaffected via separate DOM placement",
+      "evidence": "selector audit 0 algo-switcher hits in ui/*.html",
+      "recommendation": "Remove .algo-switcher rules or target #headerBanner/#header-actions",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C05-CSS-DEAD-ALGO-SWITCHER"
+      ],
+      "pre_fix_evidence_id": "ER-C05-PRE-CSS",
+      "post_fix_evidence_id": "ER-C05-POST-CSS",
+      "baseline_failure": "foundation/modes still contained .algo-switcher rules at ded650c",
+      "fix_summary": "Removed dead .algo-switcher rules from foundation and modes",
+      "evidence_ids": [
+        "ER-C05-PRE-CSS",
+        "ER-C05-POST-CSS",
+        "static"
+      ]
+    },
+    {
+      "id": "SL-C05-L-04",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-MODES",
+      "location": "lsp-dplanner-modes.css:191-215",
+      "root_cause": "Theme control uses .theme-pill-toggle styled in results.css",
+      "failure_path": "N/A \u2014 .theme-toggle not in markup",
+      "impact": "Dead CSS in modes unit",
+      "evidence": "ui/markup-header.html:80; lsp-dplanner-results.css:820-821",
+      "recommendation": "Remove .theme-toggle block from modes.css",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C05-CSS-DEAD-THEME-TOGGLE"
+      ],
+      "pre_fix_evidence_id": "ER-C05-PRE-CSS",
+      "post_fix_evidence_id": "ER-C05-POST-CSS",
+      "baseline_failure": "modes.css still contained .theme-toggle block at ded650c",
+      "fix_summary": "Removed obsolete .theme-toggle rules from modes.css",
+      "evidence_ids": [
+        "ER-C05-PRE-CSS",
+        "ER-C05-POST-CSS",
+        "static"
+      ]
+    }
+  ],
+  "evidence_runs": [
+    {
+      "id": "ER-C05-PRE-CSS",
+      "kind": "baseline_failure",
+      "case_ids": [
+        "SL-C05-GF-ROW-MODE-ISOLATION",
+        "SL-C05-EXPORT-FOCUS-VISIBLE",
+        "SL-C05-CSS-DEAD-BRAND-ICON",
+        "SL-C05-CSS-DEAD-GF-BTN",
+        "SL-C05-CSS-DEAD-ALGO-SWITCHER",
+        "SL-C05-CSS-DEAD-THEME-TOGGLE"
+      ],
+      "observable_assertions": [
+        "GF preset opacity 1.0 in rec/tools modes",
+        "export focus outlineStyle none",
+        "dead selector rules present in canonical CSS"
+      ],
+      "state_restored": true,
+      "command": "python dev/ui_css_regression.py",
+      "exit_code": 1,
+      "commit": "0e83bcbc1213defb0bd70da163a5dbad9d80fb74",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "dev/ui_css_regression.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-PRE-CSS.json",
+      "receipt_sha256": "21b3605ac0788d46d5dc21f88d0a8a147a2eb280117a3ac263ec017915057ca9"
+    },
+    {
+      "id": "ER-C05-POST-CSS",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C05-GF-ROW-MODE-ISOLATION",
+        "SL-C05-EXPORT-FOCUS-VISIBLE",
+        "SL-C05-CSS-DEAD-BRAND-ICON",
+        "SL-C05-CSS-DEAD-GF-BTN",
+        "SL-C05-CSS-DEAD-ALGO-SWITCHER",
+        "SL-C05-CSS-DEAD-THEME-TOGGLE"
+      ],
+      "observable_assertions": [
+        "GF preset opacity 0.5 in rec/tools; 1.0 in tec",
+        "export focus outline 2px solid via keyboard Tab",
+        "dead selector rules absent; .brand-logo and theme-pill-toggle intact"
+      ],
+      "state_restored": true,
+      "command": "python dev/ui_css_regression.py",
+      "exit_code": 0,
+      "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "dev/ui_css_regression.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-POST-CSS.json",
+      "receipt_sha256": "bcfe29731d4297a0bcf78d9dc9824b6b6dd1c1e60223d60582e00185c711bc99",
+      "runtime_trace": {
+        "entry_event": "User clicks a visible .btn-export; :focus-visible outline is observable on the focused export control.",
+        "consumer_path": [
+          "click .btn-export",
+          "document.activeElement",
+          "getComputedStyle outlineWidth/outlineStyle",
+          "lsp-dplanner-modes.css :focus-visible rule"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "export_count": 3
+          },
+          {
+            "stage": "canonical",
+            "matches_export": true
+          },
+          {
+            "stage": "consumer",
+            "outline_width": 3
+          },
+          {
+            "stage": "observable",
+            "focus_ring_px": 3
+          }
+        ],
+        "trace_id": "SL-C05-EXPORT-FOCUS-VISIBLE-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle05-export-focus.json",
+        "spec_path": "docs/seven-lens-traces/cycle-05-export-focus.json",
+        "artifact_sha256": "d6ddd49e7a97f97bc0bd740332be3981d17d6cf79e6dbc791f52307a26d26c26",
+        "spec_sha256": "84f7095b8c503a08bc67e53aa1c5b7fb24a87d9d168863a1d3dfc58e66d84954"
+      }
+    },
+    {
+      "id": "ER-C05-PRE-TRACE",
+      "kind": "baseline_failure",
+      "case_ids": [
+        "SL-C05-GF-ROW-MODE-ISOLATION"
+      ],
+      "observable_assertions": [
+        "browser trace rec/tools GF opacity assertions fail at ded650c"
+      ],
+      "state_restored": true,
+      "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-05-css.json --output dev/seven-lens-browser-trace-cycle05-pre.json",
+      "exit_code": 1,
+      "commit": "0e83bcbc1213defb0bd70da163a5dbad9d80fb74",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-05-css.json",
+        "--output",
+        "dev/seven-lens-browser-trace-cycle05-pre.json"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-PRE-TRACE.json",
+      "receipt_sha256": "1e7c0edc37809e071baa45ef6462b87391cafe5dd6f2d52032f027625f2e26b3"
+    },
+    {
+      "id": "ER-C05-POST-TRACE",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C05-GF-ROW-MODE-ISOLATION"
+      ],
+      "observable_assertions": [
+        "browser trace GF mode isolation passes twice in fresh contexts"
+      ],
+      "state_restored": true,
+      "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-05-css.json --output dev/seven-lens-browser-trace-cycle05.json",
+      "exit_code": 0,
+      "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-05-css.json",
+        "--output",
+        "dev/seven-lens-browser-trace-cycle05.json"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-POST-TRACE.json",
+      "trace_id": "SL-C05-GF-ROW-MODE-ISOLATION-TRACE",
+      "receipt_sha256": "4de2bdacae3d7bad5927bbc2cd5d4f735b4fdbd5ca6f07cfbafc1cd03afaa9eb",
+      "runtime_trace": {
+        "entry_event": "User switches B\u00fchlmann \u2192 REC \u2192 Tools; GF preset opacity follows body mode classes on live V3 elements.",
+        "consumer_path": [
+          "navBtn click",
+          "setMainNav/setNavMode writes body.rec-mode and body.algo-tools",
+          "CSS cascade on #gfPresetsRowV3/#gfPresetBtns",
+          "getComputedStyle opacity on .gf-preset-btn"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "has_gf_btn": true
+          },
+          {
+            "stage": "canonical",
+            "rec_mode": true,
+            "tools_mode": true
+          },
+          {
+            "stage": "consumer",
+            "btn_opacity_rec": 0.5,
+            "btn_opacity_tools": 0.5
+          },
+          {
+            "stage": "observable",
+            "btn_opacity_tec": 1.0
+          }
+        ],
+        "trace_id": "SL-C05-GF-ROW-MODE-ISOLATION-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle05.json",
+        "spec_path": "docs/seven-lens-traces/cycle-05-css.json",
+        "artifact_sha256": "f2150cadff630ff1756188e7d42bd44a6b7df6ee9bcda5c77cf2dc1d71da3ef1",
+        "spec_sha256": "afea0c9e429544a6b57b0783287655cb6af5649ce91fc6a29527cf4c54999ac6"
+      }
+    },
+    {
+      "id": "ER-C05-STRUCTURE",
+      "kind": "gate",
+      "case_ids": [
+        "UI-EXTRACT-CSS",
+        "UI-CSS-LINK-ORDER"
+      ],
+      "observable_assertions": [
+        "SUITE-UI-STRUCTURE passes after canonical CSS edits"
+      ],
+      "state_restored": true,
+      "command": "python tools/run_ui_structure_suite.py",
+      "exit_code": 0,
+      "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/run_ui_structure_suite.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-STRUCTURE.json",
+      "receipt_sha256": "dc985a221925e2924cf03487ccd5e1359f909c167c9d035a1b88f5e43fb1acd2"
+    },
+    {
+      "id": "static",
+      "kind": "gate",
+      "case_ids": [],
+      "observable_assertions": [
+        "python -m tools.audit check --profile static PASS at verifier HEAD"
+      ],
+      "state_restored": true,
+      "command": "python -m tools.audit check --profile static",
+      "exit_code": 0,
+      "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "-m",
+        "tools.audit",
+        "check",
+        "--profile",
+        "static"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c05-static.json",
+      "receipt_sha256": "06be5f9c2d3861f0f9ef11f5ae00a15bdb198e33fa3fa4f36ee7eea6b8d8c9fa"
+    },
+    {
+      "id": "ci",
+      "kind": "gate",
+      "case_ids": [],
+      "observable_assertions": [
+        "python -m tools.audit run --profile ci PASS including SUITE-UI-CSS-REGRESSION"
+      ],
+      "state_restored": true,
+      "command": "python -m tools.audit run --profile ci",
+      "exit_code": 0,
+      "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "-m",
+        "tools.audit",
+        "run",
+        "--profile",
+        "ci"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c05-ci.json",
+      "receipt_sha256": "2e3b572ebad00da4f11ab5eb201fb5323c01a0b746a5f6d81df135643e4fd6ff"
+    },
+    {
+      "id": "ER-C05-VERIFY-CSS",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C05-GF-ROW-MODE-ISOLATION",
+        "SL-C05-EXPORT-FOCUS-VISIBLE",
+        "SL-C05-CSS-DEAD-BRAND-ICON",
+        "SL-C05-CSS-DEAD-GF-BTN",
+        "SL-C05-CSS-DEAD-ALGO-SWITCHER",
+        "SL-C05-CSS-DEAD-THEME-TOGGLE"
+      ],
+      "observable_assertions": [
+        "Independent verifier reproduction: GF opacity 0.5 rec/tools 1.0 tec both orders",
+        "export Tab focus outline 2px solid desktop+mobile",
+        "dead selector rules absent"
+      ],
+      "state_restored": true,
+      "command": "python dev/ui_css_regression.py",
+      "exit_code": 0,
+      "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "dev/ui_css_regression.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-VERIFY-CSS.json",
+      "receipt_sha256": "db83f0763a084923b1af9526eb4e59b87efcfd954870ee6f347969f0e4b420ea"
+    },
+    {
+      "id": "ER-C05-VERIFY-TRACE",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C05-GF-ROW-MODE-ISOLATION"
+      ],
+      "observable_assertions": [
+        "Browser trace PASS twice: tec opacity 1.0, rec/tools 0.5, state hashes equal"
+      ],
+      "state_restored": true,
+      "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-05-css.json",
+      "exit_code": 0,
+      "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-05-css.json"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-VERIFY-TRACE.json",
+      "trace_id": "SL-C05-GF-ROW-MODE-ISOLATION-TRACE",
+      "receipt_sha256": "7b1e7802414fb58dda6c24930b507338de365bed0764820b7690465a0db62320"
+    },
+    {
+      "id": "ER-C05-RESTORE-CSS",
+      "kind": "state_restoration",
+      "case_ids": [
+        "SL-C05-GF-ROW-MODE-ISOLATION",
+        "SL-C05-EXPORT-FOCUS-VISIBLE",
+        "SL-C05-CSS-DEAD-BRAND-ICON",
+        "SL-C05-CSS-DEAD-GF-BTN",
+        "SL-C05-CSS-DEAD-ALGO-SWITCHER",
+        "SL-C05-CSS-DEAD-THEME-TOGGLE"
+      ],
+      "observable_assertions": [
+        "ui_css_regression restores DOM/globals after computed-style probes"
+      ],
+      "state_restored": true,
+      "command": "python dev/ui_css_regression.py",
+      "exit_code": 0,
+      "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "dev/ui_css_regression.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-RESTORE-CSS.json",
+      "state_before_sha256": "e37392ae3a510584bfb902b629272e920bf548236466094d95cc680fde77f014",
+      "state_after_sha256": "e37392ae3a510584bfb902b629272e920bf548236466094d95cc680fde77f014",
+      "receipt_sha256": "1977955e6115f68f35e3f1f726c39ee0c5016e70188e8bb078bf380f9526f1b9"
+    },
+    {
+      "id": "ER-C05-RESTORE-TRACE",
+      "kind": "state_restoration",
+      "case_ids": [
+        "SL-C05-GF-ROW-MODE-ISOLATION"
+      ],
+      "observable_assertions": [
+        "GF browser trace state_before_sha256 equals state_after_sha256"
+      ],
+      "state_restored": true,
+      "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-05-css.json --output dev/seven-lens-browser-trace-cycle05.json",
+      "exit_code": 0,
+      "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-05-css.json",
+        "--output",
+        "dev/seven-lens-browser-trace-cycle05.json"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-RESTORE-TRACE.json",
+      "state_before_sha256": "e37392ae3a510584bfb902b629272e920bf548236466094d95cc680fde77f014",
+      "state_after_sha256": "e37392ae3a510584bfb902b629272e920bf548236466094d95cc680fde77f014",
+      "receipt_sha256": "866db3bdbd8a0a66df08563bcaa20129c4db5a6f3e837003aca91163952054f4"
+    }
+  ],
+  "changed_paths": [
+    "lsp-dplanner-foundation.css",
+    "lsp-dplanner-modes.css",
+    "dev/ui_css_regression.py",
+    "docs/seven-lens-traces/cycle-05-css.json"
+  ],
+  "audit_report": "docs/seven-lens-reports/cycle-05-css.md",
+  "notes": "CLOSER: all six findings CLOSED; evidence bound to verified_source_commit c40b71a."
+}

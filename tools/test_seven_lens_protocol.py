@@ -10,6 +10,7 @@ from unittest.mock import patch
 
 from tools.seven_lens_protocol import (
     LENSES,
+    _attestation_only_path,
     _file_sha256,
     _part_hash,
     _validate_evidence_receipt,
@@ -319,6 +320,28 @@ class SevenLensProtocolTests(unittest.TestCase):
         evidence["command_argv"] = ["python", "different.py"]
         errors = _validate_evidence_receipt(self.root, evidence)
         self.assertTrue(any("command_argv does not match" in error for error in errors))
+
+    def test_browser_trace_artifacts_are_attestation_only_paths(self):
+        self.assertTrue(_attestation_only_path("dev/seven-lens-browser-trace-cycle05.json"))
+        self.assertTrue(_attestation_only_path("dev\\seven-lens-browser-trace-cycle05-pre.json"))
+        self.assertTrue(_attestation_only_path("docs/seven-lens-reports/cycle-05-record.json"))
+        self.assertFalse(_attestation_only_path("lsp-dplanner-foundation.css"))
+        self.assertFalse(_attestation_only_path("dev/ui_css_regression.py"))
+
+    def test_post_verification_guard_excludes_browser_trace_artifacts(self):
+        protected = {
+            "lsp-dplanner-foundation.css",
+            "dev/ui_css_regression.py",
+            "dev/seven-lens-browser-trace-cycle05.json",
+            "docs/seven-lens-reports/cycle-05-record.json",
+        }
+        guarded = sorted(
+            path for path in protected if path.strip() and not _attestation_only_path(path)
+        )
+        self.assertEqual(
+            guarded,
+            ["dev/ui_css_regression.py", "lsp-dplanner-foundation.css"],
+        )
 
     def test_reviewed_cycle_without_record_requires_explicit_exemption(self):
         docs = self.root / "docs"

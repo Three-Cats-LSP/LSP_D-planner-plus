@@ -14,10 +14,46 @@ in `docs/seven-lens-records/`.
 | 2 | `UI-MARKUP-PLANNER` | **IN PROGRESS** — schema-v4 evidence required | — | [#191](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/191) |
 | 3 | `UI-MARKUP-CONSUMPTION` | **IN PROGRESS** — schema-v4 evidence required | — | [#191](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/191) |
 | 4 | `UI-MARKUP-TOOLS` + `UI-MARKUP-MODALS` | **BLOCKED** — closure integrity + dynamic card | — | [#191](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/191) |
+| 5 | `UI-CSS-FOUNDATION` + `UI-CSS-MODES` | **CLOSED** — pending merge to `dev` | `c40b71a` | pending |
 
 ---
 
-## 2026-07-04 closure integrity update
+## Cycle 5 — `UI-CSS-FOUNDATION` + `UI-CSS-MODES`
+
+| Field | Value |
+|-------|-------|
+| **Cycle ID** | SL-C05 |
+| **Units** | `UI-CSS-FOUNDATION`, `UI-CSS-MODES` |
+| **Canonical files** | `lsp-dplanner-foundation.css` (418 lines), `lsp-dplanner-modes.css` (338 lines) |
+| **Baseline** | `39159b0` |
+| **Audit commit** | `ded650c` |
+| **Verified source commit** | `c40b71a` |
+| **Branch** | `cursor/seven-lens-cycle-05-css` |
+| **Ledger** | `SEVEN_LENS_REVIEWED` (both units) |
+| **Report** | `docs/seven-lens-reports/cycle-05-css.md` |
+| **Record** | `docs/seven-lens-records/cycle-05-css.json` |
+
+### Findings closed
+
+| ID | Severity | Summary |
+|----|----------|---------|
+| SL-C05-M-01 | MEDIUM | GF mode-isolation CSS targeted removed `#gfPresetsRow` |
+| SL-C05-M-02 | MEDIUM | Export buttons suppressed keyboard focus ring |
+| SL-C05-L-01 | LOW | Obsolete `.brand-icon` rules |
+| SL-C05-L-02 | LOW | Obsolete `#gfCustomRow .gf-btn` rules |
+| SL-C05-L-03 | LOW | Obsolete `.algo-switcher` rules |
+| SL-C05-L-04 | LOW | Obsolete `.theme-toggle` rules |
+
+### Evidence
+
+- Pre-fix failures at audit checkpoint (`ER-C05-PRE-CSS`, `ER-C05-PRE-TRACE`)
+- Post-fix regressions (`dev/ui_css_regression.py`) and browser traces at `c40b71a`
+- Independent verifier reproduction (`ER-C05-VERIFY-CSS`, `ER-C05-VERIFY-TRACE`)
+- Static and CI gates pass at verified source commit
+
+**Next cycle:** Cycle 6 per `docs/audit-master-plan.md` priority schedule.
+
+---
 
 PR #191 application checks pass, but the Cycle 2-4 schema-v2 closure package
 failed artifact hashes, historical checkpoints, and evidence provenance. Those
