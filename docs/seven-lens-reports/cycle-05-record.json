@@ -479,7 +479,7 @@
       "state_restored": true,
       "command": "python dev/ui_css_regression.py",
       "exit_code": 0,
-      "commit": "b6de24bb6cc48d2457a6954a384dab1ca7d40ff2",
+      "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
       "worktree_clean": true,
       "command_argv": ["python", "dev/ui_css_regression.py"],
       "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-POST-CSS.json"
@@ -517,7 +517,7 @@
       "state_restored": true,
       "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-05-css.json --output dev/seven-lens-browser-trace-cycle05.json",
       "exit_code": 0,
-      "commit": "b6de24bb6cc48d2457a6954a384dab1ca7d40ff2",
+      "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -540,7 +540,7 @@
       "state_restored": true,
       "command": "python tools/run_ui_structure_suite.py",
       "exit_code": 0,
-      "commit": "b6de24bb6cc48d2457a6954a384dab1ca7d40ff2",
+      "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
       "worktree_clean": true,
       "command_argv": ["python", "tools/run_ui_structure_suite.py"],
       "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-STRUCTURE.json"
