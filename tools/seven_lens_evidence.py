@@ -106,7 +106,11 @@ def main() -> int:
     }
     receipt_path.parent.mkdir(parents=True, exist_ok=True)
     receipt_path.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
-    print(f"receipt: {receipt_path.relative_to(ROOT)}")
+    try:
+        display_path = receipt_path.relative_to(ROOT)
+    except ValueError:
+        display_path = receipt_path
+    print(f"receipt: {display_path}")
     print(f"sha256: {_sha256(receipt_path.read_bytes())}")
     if result.stdout:
         sys.stdout.buffer.write(result.stdout)
