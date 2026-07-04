@@ -1819,7 +1819,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PROFILE-PRESETS"
       },
-      "fingerprint": "64e03013d5ec99e4c1d52e0ff91914a2f88ab8982fbc725dc4fef428c0d4ed15",
+      "fingerprint": "5f1d96bdefbb9cf3ad3a0227fe8f4dc72c864eb70493bd890b292f6adb319a74",
       "last_read_fingerprint": null,
       "audit_issue": 159,
       "evidence": [],
@@ -4936,7 +4936,7 @@
     },
     {
       "cycle": 27,
-      "max_new_application_lines": 622,
+      "max_new_application_lines": 683,
       "application_units": [
         "UI-PROFILE-PRESETS",
         "UI-CONFIG-PRESETS"

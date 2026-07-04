@@ -8605,7 +8605,7 @@ function _inferLegacyPlannerMode(p) {
   const summary = p.summary || '';
   if (/(?:^|\s)(T:|D1:|D2:)/.test(summary)) return 'tec';
   if (_legacyPresetIsTec(p.gases)) return 'tec';
-  return 'rec';
+  return null;
 }
 
 function _migrateProfilePreset(p) {
@@ -8619,8 +8619,11 @@ function _migrateProfilePreset(p) {
     changed = true;
   }
   if (p.plannerMode !== 'rec' && p.plannerMode !== 'tec') {
-    p.plannerMode = _inferLegacyPlannerMode(p);
-    changed = true;
+    const inferredMode = _inferLegacyPlannerMode(p);
+    if (inferredMode) {
+      p.plannerMode = inferredMode;
+      changed = true;
+    }
   }
   return changed;
 }
@@ -8654,7 +8657,7 @@ function closeDiveProfilePresets() {
 
 function _presetPlannerMode(p) {
   if (p.plannerMode === 'rec' || p.plannerMode === 'tec') return p.plannerMode;
-  return _inferLegacyPlannerMode(p);
+  return _inferLegacyPlannerMode(p) || (plannerAlgo === 'rec' ? 'rec' : 'tec');
 }
 
 function _presetDepthM(p) {
