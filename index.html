@@ -8581,8 +8581,64 @@ const LSP_PROFILE_PRESETS_KEY = 'lspProfilePresets';
 const LSP_PROFILE_PRESETS_MAX = 20;
 
 // AUDIT-UNIT:UI-PROFILE-PRESETS
+function _inferLegacyPresetUnits(depthVal) {
+  const v = parseFloat(depthVal);
+  if (!Number.isFinite(v)) return units;
+  if (v >= 90) return 'imperial';
+  if (v <= 65) return 'metric';
+  return 'metric';
+}
+
+function _legacyPresetIsTec(gases) {
+  const g = gases || {};
+  if (g.gasMix != null) return false;
+  if (g.travelGasMix && g.travelGasMix !== 'none') return true;
+  if (g.dg1Mix && g.dg1Mix !== 'none') return true;
+  if (g.dg2Mix && g.dg2Mix !== 'none') return true;
+  if (g.decoGas === 'trimix') return true;
+  return false;
+}
+
+function _inferLegacyPlannerMode(p) {
+  if (p.gases?.gasMix != null) return 'rec';
+  if (p.travelActive) return 'tec';
+  const summary = p.summary || '';
+  if (/(?:^|\s)(T:|D1:|D2:)/.test(summary)) return 'tec';
+  if (_legacyPresetIsTec(p.gases)) return 'tec';
+  return 'rec';
+}
+
+function _migrateProfilePreset(p) {
+  let changed = false;
+  if (p.unitsAtSave !== 'metric' && p.unitsAtSave !== 'imperial') {
+    p.unitsAtSave = p.units || _inferLegacyPresetUnits(p.depth);
+    changed = true;
+  }
+  if (!Number.isFinite(p.depthM) && p.depth != null) {
+    p.depthM = displayDepthToM(p.depth, p.unitsAtSave);
+    changed = true;
+  }
+  if (p.plannerMode !== 'rec' && p.plannerMode !== 'tec') {
+    p.plannerMode = _inferLegacyPlannerMode(p);
+    changed = true;
+  }
+  return changed;
+}
+
 function getProfilePresets() {
-  try { const r = localStorage.getItem(LSP_PROFILE_PRESETS_KEY); const a = r ? JSON.parse(r) : []; return Array.isArray(a) ? a : []; } catch(e) { return []; }
+  try {
+    const r = localStorage.getItem(LSP_PROFILE_PRESETS_KEY);
+    const a = r ? JSON.parse(r) : [];
+    if (!Array.isArray(a)) return [];
+    let migrated = false;
+    const out = a.map(p => {
+      const copy = Object.assign({}, p);
+      if (_migrateProfilePreset(copy)) migrated = true;
+      return copy;
+    });
+    if (migrated) saveProfilePresets(out);
+    return out;
+  } catch(e) { return []; }
 }
 function saveProfilePresets(arr) {
   try { localStorage.setItem(LSP_PROFILE_PRESETS_KEY, JSON.stringify(arr)); } catch(e) {}
@@ -8598,12 +8654,14 @@ function closeDiveProfilePresets() {
 
 function _presetPlannerMode(p) {
   if (p.plannerMode === 'rec' || p.plannerMode === 'tec') return p.plannerMode;
-  return (p.gases && p.gases.gasMix != null) ? 'rec' : 'tec';
+  return _inferLegacyPlannerMode(p);
 }
 
 function _presetDepthM(p) {
   if (Number.isFinite(p.depthM)) return p.depthM;
-  const savedUnits = p.unitsAtSave || p.units || units;
+  const savedUnits = (p.unitsAtSave === 'metric' || p.unitsAtSave === 'imperial')
+    ? p.unitsAtSave
+    : _inferLegacyPresetUnits(p.depth);
   return displayDepthToM(p.depth, savedUnits);
 }
 
