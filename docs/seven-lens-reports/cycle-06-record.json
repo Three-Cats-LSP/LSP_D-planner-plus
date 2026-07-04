@@ -284,9 +284,9 @@
       "unit_id": "UI-CSS-CONTROLS",
       "path": "lsp-dplanner-controls.css",
       "start_line": 501,
-      "end_line": 548,
-      "line_count": 48,
-      "content_fingerprint": "fc4193322339f8a841ef4f598411657a127808ef34e7979fce016f583e6839f4",
+      "end_line": 549,
+      "line_count": 49,
+      "content_fingerprint": "a1930986bc86c6a717ae0ecf373ae0d4d0d87eb7e802083c3effbeaf4c3c5e70",
       "review_session": "C06-A",
       "verification_session": "C06-V-B",
       "lens_results": {
@@ -629,29 +629,34 @@
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "runtime_trace": {
-        "entry_event": "User edits #cylBot_size below min; invalid border remains the resolved --red token.",
+        "entry_event": "User opens Tec planner gas numerics on a narrow viewport; .gas-f-num inputs meet 44px touch geometry.",
         "consumer_path": [
-          "keyboard edit #cylBot_size",
-          "HTML5 validity.valid false",
-          "getComputedStyle borderColor",
-          "lsp-dplanner-controls.css invalid selector"
+          "setMainNav buh + switchTab planner",
+          "#cylBot_size layout",
+          "getBoundingClientRect height",
+          "lsp-dplanner-controls.css min-height 44px"
         ],
         "captures": [
           {
-            "stage": "before",
-            "valid_before": true,
-            "border_before": "rgba(255, 255, 255, 0.08)"
+            "stage": "input",
+            "has_size": true
           },
           {
             "stage": "canonical",
-            "valid_after": true
+            "has_size": true
           },
           {
             "stage": "consumer",
-            "border_is_red": true
+            "size_h": 44,
+            "size_w": 68
+          },
+          {
+            "stage": "observable",
+            "pres_h": 44,
+            "overlap": 0
           }
         ],
-        "trace_id": "SL-C06-FIELD-INVALID-STATE-TRACE",
+        "trace_id": "SL-C06-GAS-NUM-TOUCH-TARGET-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle06.json",
         "spec_path": "docs/seven-lens-traces/cycle-06-controls.json",
         "artifact_sha256": "73ad3a7d459ebc116640e3a54684253bc701c4c5938f08c54b46c0bd286872ab",
@@ -697,7 +702,7 @@
         ],
         "captures": [
           {
-            "stage": "before",
+            "stage": "input",
             "seg_count": 3
           },
           {
