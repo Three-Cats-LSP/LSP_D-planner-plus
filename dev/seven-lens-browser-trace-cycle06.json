@@ -1,9 +1,9 @@
 {
   "schema_version": 3,
   "runner_version": 2,
-  "spec": "docs\\seven-lens-traces\\cycle-06-controls.json",
-  "spec_sha256": "8324bcb4648ba7aad40e78108e7c2885d29362516828db9276a336c53798e488",
-  "commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d",
+  "spec": "docs/seven-lens-traces/cycle-06-controls.json",
+  "spec_sha256": "ba5bf034a4defde25e70483aa57ae335459b92f377100698cac9b9053b90b00d",
+  "commit": "fcc3cebda54c93139fc2b369c394ed6cc44add59",
   "traces": [
     {
       "id": "SL-C06-SEG-FOCUS-VISIBLE-TRACE",
@@ -772,7 +772,7 @@
           "valid_after": true
         },
         "consumer": {
-          "border_changed": true
+          "border_is_red": true
         }
       },
       "assertions": [
@@ -787,7 +787,7 @@
           "detail": "True equal True"
         },
         {
-          "id": "border-changed",
+          "id": "border-red",
           "passed": true,
           "detail": "True equal True"
         }
@@ -893,7 +893,7 @@
               "valid_after": true
             },
             "consumer": {
-              "border_changed": true
+              "border_is_red": true
             }
           },
           "assertions": [
@@ -908,7 +908,7 @@
               "detail": "True equal True"
             },
             {
-              "id": "border-changed",
+              "id": "border-red",
               "passed": true,
               "detail": "True equal True"
             }
@@ -1009,7 +1009,7 @@
               "valid_after": true
             },
             "consumer": {
-              "border_changed": true
+              "border_is_red": true
             }
           },
           "assertions": [
@@ -1024,7 +1024,7 @@
               "detail": "True equal True"
             },
             {
-              "id": "border-changed",
+              "id": "border-red",
               "passed": true,
               "detail": "True equal True"
             }
