@@ -1098,11 +1098,56 @@
       "issue": "V3 full audit verified \u2014 UI-MARKUP-HEADER"
     },
     {
+      "id": "UI-MARKUP-REC-PLANNER",
+      "path": "ui/markup-rec-planner.html",
+      "layer": "web_markup",
+      "priority": "P1",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": null,
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "Level 2 REC planner view — depth/BT, gas, generate"
+    },
+    {
+      "id": "UI-MARKUP-TEC-PLANNER",
+      "path": "ui/markup-tec-planner.html",
+      "layer": "web_markup",
+      "priority": "P1",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": null,
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "Level 2 TECH planner view — gas cards, GF/VPM, generate"
+    },
+    {
+      "id": "UI-REC-PLANNER",
+      "path": "rec-planner.js",
+      "layer": "ui_core",
+      "priority": "P1",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": null,
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "REC dispatch runRecPlan entry point"
+    },
+    {
       "id": "UI-MARKUP-PLANNER",
       "path": "ui/markup-planner.html",
       "layer": "web_markup",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "SUPERSEDED",
       "boundary": {
         "type": "whole_file"
       },
@@ -1110,7 +1155,7 @@
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
-      "issue": "V3 full audit verified \u2014 UI-MARKUP-PLANNER"
+      "issue": "Superseded by UI-MARKUP-REC-PLANNER and UI-MARKUP-TEC-PLANNER (Level 2 split)"
     },
     {
       "id": "UI-MARKUP-CONSUMPTION",
@@ -4755,10 +4800,35 @@
       "cycle": 2,
       "max_new_application_lines": 600,
       "application_units": [
-        "UI-MARKUP-PLANNER"
+        "UI-MARKUP-REC-PLANNER",
+        "UI-MARKUP-RESULTS-REC",
+        "UI-REC-PLANNER"
       ],
       "engine_reverification": [],
-      "acceptance": "Planner markup partial READ"
+      "acceptance": "Cycle 2a: REC planner markup + rec results + runRecPlan; SL-REC-* regressions"
+    },
+    {
+      "cycle": 20,
+      "max_new_application_lines": 600,
+      "application_units": [
+        "UI-MARKUP-TEC-PLANNER",
+        "UI-MARKUP-RESULTS-TEC",
+        "UI-GAS-CARDS",
+        "UI-GAS-INPUTS"
+      ],
+      "engine_reverification": [],
+      "acceptance": "Cycle 2b: TECH planner markup + tec results + gas cards; SL-C02-* tec cases"
+    },
+    {
+      "cycle": 21,
+      "max_new_application_lines": 400,
+      "application_units": [
+        "UI-PLANNER-SHELL",
+        "UI-RESULTS-PANEL",
+        "UI-SETTINGS-CORE"
+      ],
+      "engine_reverification": [],
+      "acceptance": "Cycle 2c: view swap, persistence namespaces, SL-MODE-REC-TEC-ISOLATION"
     },
     {
       "cycle": 3,
@@ -5635,11 +5705,104 @@
         "index.html"
       ],
       "config": {
-        "child_id": "planPanelTecSection",
-        "forbidden_ancestor_id": "planPanelRecSection"
+        "child_id": "tecPlannerView",
+        "forbidden_ancestor_id": "recPlannerView"
       },
-      "rationale": "Mutually exclusive planner mode sections must be siblings so one mode cannot hide the other mode's controls.",
-      "remediation": "Correct canonical markup boundaries and regenerate index.html."
+      "rationale": "REC and TECH planner views must be siblings; neither may wrap the other.",
+      "remediation": "Keep #recPlannerView and #tecPlannerView as siblings under #plannerView in assembled index.html."
+    },
+    {
+      "id": "AUD-HTML-005",
+      "kind": "html.forbidden_ids_under",
+      "severity": "HIGH",
+      "unit_ids": [
+        "UI-MARKUP-REC-PLANNER",
+        "UI-MARKUP-HEADER"
+      ],
+      "paths": [
+        "index.html"
+      ],
+      "config": {
+        "ancestor_id": "recPlannerView",
+        "forbidden_ids": [
+          "tecDepth",
+          "tecBT",
+          "tecGenerateBtn",
+          "planPanelTecMount",
+          "vpmModeRowV3",
+          "conservatismRowV3",
+          "cylBot_size"
+        ]
+      },
+      "rationale": "REC view must not contain TECH-only control IDs.",
+      "remediation": "Move technical controls into ui/markup-tec-planner.html only."
+    },
+    {
+      "id": "AUD-HTML-006",
+      "kind": "html.forbidden_ids_under",
+      "severity": "HIGH",
+      "unit_ids": [
+        "UI-MARKUP-TEC-PLANNER",
+        "UI-MARKUP-HEADER"
+      ],
+      "paths": [
+        "index.html"
+      ],
+      "config": {
+        "ancestor_id": "tecPlannerView",
+        "forbidden_ids": [
+          "recDepth",
+          "recBT",
+          "recGenerateBtn",
+          "gasMix"
+        ]
+      },
+      "rationale": "TECH view must not contain REC-only control IDs.",
+      "remediation": "Move recreational controls into ui/markup-rec-planner.html only."
+    },
+    {
+      "id": "AUD-HTML-007",
+      "kind": "html.forbidden_id_present",
+      "severity": "HIGH",
+      "unit_ids": [
+        "UI-MARKUP-HEADER"
+      ],
+      "paths": [
+        "index.html"
+      ],
+      "config": {
+        "forbidden_ids": [
+          "planPanelTecMount",
+          "planPanelRecSection",
+          "planPanelTecSection"
+        ]
+      },
+      "rationale": "Technical planner markup must be static; no runtime tec mount placeholder.",
+      "remediation": "Remove legacy planPanelTecMount and nested section wrappers from assembled HTML."
+    },
+    {
+      "id": "AUD-HTML-008",
+      "kind": "html.no_shared_ids_between_subtrees",
+      "severity": "HIGH",
+      "unit_ids": [
+        "UI-MARKUP-REC-PLANNER",
+        "UI-MARKUP-TEC-PLANNER"
+      ],
+      "paths": [
+        "index.html"
+      ],
+      "config": {
+        "ancestor_a": "recPlannerView",
+        "ancestor_b": "tecPlannerView",
+        "forbidden_ids": [
+          "decoDepth",
+          "decoBT",
+          "depth",
+          "bt"
+        ]
+      },
+      "rationale": "Each planner view owns unique depth/BT input IDs.",
+      "remediation": "Use recDepth/recBT in REC view and tecDepth/tecBT in TECH view only."
     },
     {
       "id": "AUD-MIRROR-001",
@@ -5662,6 +5825,14 @@
         "suffix": "})();"
       },
       "ui/markup-header.html": {
+        "prefix": "<!DOCTYPE html><html><head></head><body>",
+        "suffix": "</body></html>"
+      },
+      "ui/markup-rec-planner.html": {
+        "prefix": "<!DOCTYPE html><html><head></head><body>",
+        "suffix": "</body></html>"
+      },
+      "ui/markup-tec-planner.html": {
         "prefix": "<!DOCTYPE html><html><head></head><body>",
         "suffix": "</body></html>"
       },

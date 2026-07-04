@@ -173,6 +173,72 @@ def evaluate_rules(root: Path, registry: dict[str, Any]) -> tuple[list[CheckResu
                 ))
             else:
                 results.append(_base(rule, "PASS", f"#{child_id} is outside #{forbidden_id}"))
+        elif kind == "html.forbidden_ids_under":
+            path = targets[0]
+            config = rule.get("config", {})
+            ancestor_id = config.get("ancestor_id")
+            forbidden = set(config.get("forbidden_ids", []))
+            id_items = files.get(path, {}).get("ids", [])
+            violations = [
+                item for item in id_items
+                if item.get("id") in forbidden and ancestor_id in item.get("ancestorIds", [])
+            ]
+            if violations:
+                v = violations[0]
+                results.append(_base(
+                    rule,
+                    "FAIL",
+                    f"#{v.get('id')} must not appear under #{ancestor_id}",
+                    path=path,
+                    line=v.get("line"),
+                ))
+            else:
+                results.append(_base(rule, "PASS", f"No forbidden IDs under #{ancestor_id}"))
+        elif kind == "html.forbidden_id_present":
+            path = targets[0]
+            forbidden = set(rule.get("config", {}).get("forbidden_ids", []))
+            id_items = files.get(path, {}).get("ids", [])
+            found = [item for item in id_items if item.get("id") in forbidden]
+            if found:
+                v = found[0]
+                results.append(_base(
+                    rule,
+                    "FAIL",
+                    f"Legacy or forbidden id #{v.get('id')} must not be present",
+                    path=path,
+                    line=v.get("line"),
+                ))
+            else:
+                results.append(_base(rule, "PASS", "Forbidden IDs absent"))
+        elif kind == "html.no_shared_ids_between_subtrees":
+            path = targets[0]
+            config = rule.get("config", {})
+            a = config.get("ancestor_a")
+            b = config.get("ancestor_b")
+            watch = set(config.get("forbidden_ids", []))
+            id_items = files.get(path, {}).get("ids", [])
+
+            def ids_under(ancestor: str) -> set[str]:
+                out: set[str] = set()
+                for item in id_items:
+                    iid = item.get("id")
+                    if not iid:
+                        continue
+                    if iid == ancestor or ancestor in item.get("ancestorIds", []):
+                        out.add(iid)
+                return out
+
+            shared = (ids_under(a) & ids_under(b)) & watch
+            if shared:
+                sid = sorted(shared)[0]
+                results.append(_base(
+                    rule,
+                    "FAIL",
+                    f"Shared planner input id #{sid} appears under both #{a} and #{b}",
+                    path=path,
+                ))
+            else:
+                results.append(_base(rule, "PASS", f"No shared forbidden IDs between #{a} and #{b}"))
         elif kind == "extract.no_reinline":
             from tools.extract_ui_cores import INLINE_FORBIDDEN_DEFS
 

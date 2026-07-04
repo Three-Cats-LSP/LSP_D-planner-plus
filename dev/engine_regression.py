@@ -870,8 +870,8 @@ ENGINE_SUITE_JS = r"""
 
   // ── E11: issue #112 planner BT vs descent validation ───────────────────
   out.sections.issue112PlannerBt = (() => {
-    const depthEl = document.getElementById('depth');
-    const btEl = document.getElementById('bt');
+    const depthEl = document.getElementById('recDepth');
+    const btEl = document.getElementById('recBT');
     const rateEl = document.getElementById('descentRate');
     if (!depthEl || !btEl || typeof validatePlannerInputs !== 'function') return { ok: false };
     const prevD = depthEl.value;
@@ -1044,8 +1044,8 @@ ENGINE_SUITE_JS = r"""
     let h2ThrowOk = false;
     if (typeof runContingencyScenario === 'function') {
       try {
-        const depthEl = document.getElementById('decoDepth');
-        const btEl = document.getElementById('decoBT');
+        const depthEl = document.getElementById('tecDepth');
+        const btEl = document.getElementById('tecBT');
         const prevD = depthEl ? depthEl.value : null;
         const prevB = btEl ? btEl.value : null;
         runContingencyScenario(() => { throw new Error('cycle7 probe'); });
@@ -1307,7 +1307,7 @@ ENGINE_SUITE_JS = r"""
       && /ccrPhase:\s*['"]bottom['"]/.test(runUnifiedPlan.toString());
     let contingencyModOk = false;
     if (typeof buildContingencyModViolationAlert === 'function') {
-      const depthEl = document.getElementById('decoDepth');
+      const depthEl = document.getElementById('tecDepth');
       const gasEl = document.getElementById('decoGas');
       const prevD = depthEl?.value;
       const prevG = gasEl?.value;
@@ -1446,7 +1446,7 @@ ENGINE_SUITE_JS = r"""
   // Cycle 33: verify contingency safety, precision, and primary UI isolation.
   out.sections.cycle33 = (() => {
     const ids = [
-      'algorithmSelect', 'circuitSelect', 'decoGas', 'decoDepth', 'decoBT',
+      'algorithmSelect', 'circuitSelect', 'decoGas', 'tecDepth', 'tecBT',
       'ppo2Bottom', 'dg1Mix', 'dg2Mix', 'gpBot_size', 'gpBot_fill', 'gpBot_reserve',
     ];
     const savedInputs = Object.fromEntries(ids.map(id => [id, document.getElementById(id)?.value]));
@@ -1469,7 +1469,7 @@ ENGINE_SUITE_JS = r"""
     let tableSourceOk = false;
     try {
       const depthM = 38.5;
-      set('decoDepth', units === 'metric' ? String(depthM) : String(depthM * 3.28084));
+      set('tecDepth', units === 'metric' ? String(depthM) : String(depthM * 3.28084));
       set('decoGas', 'ean32');
       set('ppo2Bottom', '1.4');
       const toxicityAlert = buildContingencyModViolationAlert(3);
@@ -1489,7 +1489,7 @@ ENGINE_SUITE_JS = r"""
         && Math.abs(preciseRow.shortL - 0.1) < 1e-9;
 
       set('algorithmSelect', 'ZHLC_GF');
-      set('decoDepth', units === 'metric' ? '30' : String(30 * 3.28084));
+      set('tecDepth', units === 'metric' ? '30' : String(30 * 3.28084));
       set('decoBT', '20');
       set('dg1Mix', 'none');
       set('dg2Mix', 'none');
@@ -1535,7 +1535,7 @@ ENGINE_SUITE_JS = r"""
   out.sections.cycle34 = (() => {
     const gasIds = typeof getAllDecoGasIds === 'function' ? getAllDecoGasIds() : [];
     const ids = [
-      'circuitSelect', 'decoGas', 'decoCustomO2', 'decoDepth', 'ppo2Bottom',
+      'circuitSelect', 'decoGas', 'decoCustomO2', 'tecDepth', 'ppo2Bottom',
       'ccrBottomSetpoint', 'diluentUseAsBailout',
       ...gasIds.flatMap(idx => [`dg${idx}Mix`, `dg${idx}CustomO2`]),
     ];
@@ -1556,7 +1556,7 @@ ENGINE_SUITE_JS = r"""
         && getBailoutReserveMixLabel(15, 0.21, 0) === 'EAN50'
         && getBailoutReserveMixLabel(40, 0.21, 0) === 'Air';
 
-      set('decoDepth', units === 'metric' ? '60' : String(60 * 3.28084));
+      set('tecDepth', units === 'metric' ? '60' : String(60 * 3.28084));
       set('ccrBottomSetpoint', '1.3');
       const validation = validateCcrGasConfiguration();
       diluentGuidanceOk = validation.errors.some(msg => msg.includes('Use a leaner diluent'))
@@ -1668,10 +1668,10 @@ ENGINE_SUITE_JS = r"""
     };
   })();
 
-  // Seven-lens cycle 01: depth/bt mirror + stepper sync (SL-C01-M-01).
+  // Seven-lens cycle 01: depth/bt stepper sync (Level 2 — tec view).
   out.sections.sevenLensCycle01 = (() => {
     const FT_PER_M = 3.28084;
-    const fieldIds = ['decoDepth', 'decoBT', 'depth', 'bt'];
+    const fieldIds = ['tecDepth', 'tecBT', 'recDepth', 'recBT'];
     const snapFields = (ids) => Object.fromEntries(
       ids.map(id => [id, document.getElementById(id)?.value])
     );
@@ -1683,25 +1683,23 @@ ENGINE_SUITE_JS = r"""
       _syncDepthBtSteppers?.();
     };
     const snapLabels = () => ({
-      depthLbl: document.getElementById('depthStepperVal')?.textContent,
-      btLbl: document.getElementById('btStepperVal')?.textContent,
+      depthLbl: document.getElementById('tecDepthStepperVal')?.textContent,
+      btLbl: document.getElementById('tecBtStepperVal')?.textContent,
     });
     const restoreLabels = (snap) => {
-      const dl = document.getElementById('depthStepperVal');
-      const bl = document.getElementById('btStepperVal');
+      const dl = document.getElementById('tecDepthStepperVal');
+      const bl = document.getElementById('tecBtStepperVal');
       if (dl && snap.depthLbl != null) dl.textContent = snap.depthLbl;
       if (bl && snap.btLbl != null) bl.textContent = snap.btLbl;
     };
     const syncOk = (d, b) => {
-      const dd = document.getElementById('decoDepth')?.value;
-      const db = document.getElementById('decoBT')?.value;
-      const depth = document.getElementById('depth')?.value;
-      const bt = document.getElementById('bt')?.value;
-      const depthLbl = document.getElementById('depthStepperVal')?.textContent;
-      const btLbl = document.getElementById('btStepperVal')?.textContent;
+      const dd = document.getElementById('tecDepth')?.value;
+      const db = document.getElementById('tecBT')?.value;
+      const depthLbl = document.getElementById('tecDepthStepperVal')?.textContent;
+      const btLbl = document.getElementById('tecBtStepperVal')?.textContent;
       const ds = String(d);
       const bs = String(b);
-      return dd === ds && db === bs && depth === ds && bt === bs && depthLbl === ds && btLbl === bs;
+      return dd === ds && db === bs && depthLbl === ds && btLbl === bs;
     };
     const dispatchInput = (id, value) => {
       const el = document.getElementById(id);
@@ -1719,9 +1717,11 @@ ENGINE_SUITE_JS = r"""
     const baselineFields = snapFields(fieldIds);
     const baselineLabels = snapLabels();
     const prevUnits = typeof units !== 'undefined' ? units : null;
+    const prevPlannerAlgo = typeof plannerAlgo !== 'undefined' ? plannerAlgo : null;
 
     try {
-      if (dispatchInput('decoDepth', '52') && dispatchInput('decoBT', '22')) {
+      if (typeof setPlannerAlgo === 'function') setPlannerAlgo('ZHLC_GF');
+      if (dispatchInput('tecDepth', '52') && dispatchInput('tecBT', '22')) {
         depthStepperSyncOk = syncOk(52, 22);
       }
       restoreFields(baselineFields);
@@ -1750,8 +1750,8 @@ ENGINE_SUITE_JS = r"""
         const wasHeadless = window._zhlHeadless;
         try {
           window._zhlHeadless = false;
-          const dd = document.getElementById('decoDepth');
-          const db = document.getElementById('decoBT');
+          const dd = document.getElementById('tecDepth');
+          const db = document.getElementById('tecBT');
           if (dd) dd.value = '55';
           if (db) db.value = '25';
           appSettings._syncUiAfterRestore({});
@@ -1801,6 +1801,7 @@ ENGINE_SUITE_JS = r"""
       restoreFields(baselineFields);
       restoreLabels(baselineLabels);
       if (prevUnits != null && typeof setUnits === 'function') setUnits(prevUnits);
+      if (prevPlannerAlgo != null && typeof setPlannerAlgo === 'function') setPlannerAlgo(prevPlannerAlgo);
     }
 
     return {
@@ -1842,9 +1843,9 @@ ENGINE_SUITE_JS = r"""
     const prevMode = modeSel?.value;
     const depthInp = document.getElementById('travelGasManualDepth');
     const prevDepthSnap = snapEl('travelGasManualDepth');
-    const decoEl = document.getElementById('decoDepth');
+    const decoEl = document.getElementById('tecDepth');
     const cylEl = document.getElementById('cylBot_size');
-    const prevDecoSnap = snapEl('decoDepth');
+    const prevDecoSnap = snapEl('tecDepth');
     const prevCylSnap = snapEl('cylBot_size');
     const travelMaxFt = Math.round(500 * 3.28084);
     const cylMaxCu = +(50 * 0.0353147).toFixed(2);
@@ -1929,7 +1930,7 @@ ENGINE_SUITE_JS = r"""
     } finally {
       if (modeSel && prevMode != null) modeSel.value = prevMode;
       restoreEl('travelGasManualDepth', prevDepthSnap);
-      restoreEl('decoDepth', prevDecoSnap);
+      restoreEl('tecDepth', prevDecoSnap);
       restoreEl('cylBot_size', prevCylSnap);
       if (prevUnits != null && typeof setUnits === 'function') setUnits(prevUnits);
       updateTravelGasMOD?.();
@@ -1946,6 +1947,55 @@ ENGINE_SUITE_JS = r"""
         && unitRoundtripImmutableOk && travelDepthEditAfterSwitchOk && cylinderSizeEditAfterSwitchOk
         && dynamicDecoCylImperialOk,
     };
+  })();
+
+  // Level 2: REC ↔ TECH mode isolation (SL-MODE-REC-TEC-ISOLATION).
+  out.sections.modeRecTecIsolation = (() => {
+    let ok = false;
+    const snap = (id) => document.getElementById(id)?.value;
+    const prevRecD = snap('recDepth');
+    const prevRecB = snap('recBT');
+    const prevTecD = snap('tecDepth');
+    const prevTecB = snap('tecBT');
+    const prevAlgo = typeof plannerAlgo !== 'undefined' ? plannerAlgo : null;
+    try {
+      if (typeof setPlannerAlgo !== 'function') return { ok: false };
+      setPlannerAlgo('ZHLC_GF');
+      const rd = document.getElementById('recDepth');
+      const rb = document.getElementById('recBT');
+      const td = document.getElementById('tecDepth');
+      const tb = document.getElementById('tecBT');
+      if (td) td.value = '44';
+      if (tb) tb.value = '22';
+      _syncTecDepthBtSteppers?.();
+      setPlannerAlgo('rec');
+      if (rd) rd.value = '33';
+      if (rb) rb.value = '21';
+      _syncRecDepthBtSteppers?.();
+      setPlannerAlgo('ZHLC_GF');
+      const tecRestored = snap('tecDepth') === '44' && snap('tecBT') === '22';
+      if (td) td.value = '55';
+      if (tb) tb.value = '25';
+      _syncTecDepthBtSteppers?.();
+      setPlannerAlgo('rec');
+      const recRestored = snap('recDepth') === '33' && snap('recBT') === '21';
+      setPlannerAlgo('ZHLC_GF');
+      const tecEdited = snap('tecDepth') === '55' && snap('tecBT') === '25';
+      ok = tecRestored && recRestored && tecEdited;
+    } finally {
+      const rd = document.getElementById('recDepth');
+      const rb = document.getElementById('recBT');
+      const td = document.getElementById('tecDepth');
+      const tb = document.getElementById('tecBT');
+      if (rd && prevRecD != null) rd.value = prevRecD;
+      if (rb && prevRecB != null) rb.value = prevRecB;
+      if (td && prevTecD != null) td.value = prevTecD;
+      if (tb && prevTecB != null) tb.value = prevTecB;
+      _syncRecDepthBtSteppers?.();
+      _syncTecDepthBtSteppers?.();
+      if (prevAlgo != null) setPlannerAlgo(prevAlgo);
+    }
+    return { ok };
   })();
 
   // Seven-lens cycle 03: consumption markup contracts (SL-C03).
@@ -2135,8 +2185,8 @@ ENGINE_SUITE_JS = r"""
     const ndl25ean32 = typeof getNitroxNDL === 'function' ? getNitroxNDL(25, 'ean32') : null;
     const rdpOk = rdp11 === 1 && rdp13 === 2 && ndl11 === 230 && ndl13 === 100 && ndl25ean32 === 25;
 
-    const depthEl = document.getElementById('depth');
-    const btEl = document.getElementById('bt');
+    const depthEl = document.getElementById('recDepth');
+    const btEl = document.getElementById('recBT');
     const prevAlgo = typeof algo !== 'undefined' ? algo : null;
     let padiDepthOk = false;
     if (depthEl && btEl && typeof validatePlannerInputs === 'function') {
@@ -2543,7 +2593,7 @@ def run_suite(page) -> dict:
     assert_true(erdp.get("pureMixesOk"), "[ENG-RDP-PURE-MIXES] Air/EAN32/EAN36 NDL tables at 18 m", str(erdp))
     assert_true(erdp.get("customFallbackOk"), "[ENG-RDP-CUSTOM-FALLBACK] non-standard mixes fall back to air table", str(erdp))
     sl01 = s.get("sevenLensCycle01", {})
-    assert_true(sl01.get("depthStepperSyncOk"), "[SL-C01-DEPTH-SYNC] decoDepth/decoBT input events sync depth/bt mirrors and stepper labels", str(sl01))
+    assert_true(sl01.get("depthStepperSyncOk"), "[SL-C01-DEPTH-SYNC] tecDepth/tecBT input events sync stepper labels", str(sl01))
     assert_true(sl01.get("loadPresetSyncOk"), "[SL-C01-PRESET-SYNC] loadProfilePreset syncs depth/bt mirrors and stepper", str(sl01))
     assert_true(sl01.get("settingsRestoreSyncOk"), "[SL-C01-SETTINGS-RESTORE] settings restore syncs depth/bt mirrors and stepper", str(sl01))
     assert_true(sl01.get("altitudeUnitConstraintsOk"), "[SL-C01-ALTITUDE-UNIT-CONSTRAINTS] custom altitude max/step follow display units", str(sl01))
@@ -2555,6 +2605,8 @@ def run_suite(page) -> dict:
     assert_true(sl02.get("travelDepthEditAfterSwitchOk"), "[SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH] travel manual depth edit reaches consumer after imperial switch", str(sl02))
     assert_true(sl02.get("cylinderSizeEditAfterSwitchOk"), "[SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH] cylinder size edit reaches consumer after imperial switch", str(sl02))
     assert_true(sl02.get("dynamicDecoCylImperialOk"), "[SL-C04-DYNAMIC-DECO-CYL-IMPERIAL] dynamic imperial deco cylinder starts valid", str(sl02))
+    iso = s.get("modeRecTecIsolation", {})
+    assert_true(iso.get("ok"), "[SL-MODE-REC-TEC-ISOLATION] REC and TECH depth/BT stay independent across mode switches", str(iso))
     sl03 = s.get("sevenLensCycle03", {})
     assert_true(sl03.get("bestMixDepthUnitsOk"), "[SL-C03-BEST-MIX-DEPTH-UNITS] best mix O2% invariant across equivalent metric/imperial depth", str(sl03))
     assert_true(sl03.get("cnsDepthUnitsOk"), "[SL-C03-CNS-DEPTH-UNITS] CNS ppO2 invariant across equivalent metric/imperial depth", str(sl03))

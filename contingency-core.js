@@ -201,8 +201,8 @@ function runContingencyScenario(modifyFn) {
   const savedSummary = document.getElementById('decoSummary')?.innerHTML || '';
   const savedLastPlan = window._lastPlan;
   const primaryFirstStopDepth = savedLastPlan?.firstStopDepth ?? null;
-  const origDepth = document.getElementById('decoDepth')?.value;
-  const origBT = document.getElementById('decoBT')?.value;
+  const origDepth = getPlannerInputEl('decoDepth')?.value;
+  const origBT = getPlannerInputEl('decoBT')?.value;
   const origDgVals = {};
   for (const idx of getAllDecoGasIds()) {
     const el = document.getElementById(`dg${idx}Mix`);
@@ -227,8 +227,8 @@ function runContingencyScenario(modifyFn) {
       if (!rows.length) return;
 
       ok = true;
-      scenarioDepth = document.getElementById('decoDepth')?.value;
-      scenarioBT = document.getElementById('decoBT')?.value;
+      scenarioDepth = getPlannerInputEl('decoDepth')?.value;
+      scenarioBT = getPlannerInputEl('decoBT')?.value;
       scenarioBotFracs = getBottomGasFractions();
       newRows = scratchTbody.innerHTML;
       lastRun = 0;
@@ -267,11 +267,11 @@ function runContingencyScenario(modifyFn) {
     error = e.message;
   } finally {
     if (origBT != null) {
-      const btEl = document.getElementById('decoBT');
+      const btEl = getPlannerInputEl('decoBT');
       if (btEl) btEl.value = origBT;
     }
     if (origDepth != null) {
-      const depthEl = document.getElementById('decoDepth');
+      const depthEl = getPlannerInputEl('decoDepth');
       if (depthEl) depthEl.value = origDepth;
     }
     for (const [idx, val] of Object.entries(origDgVals)) {
@@ -444,11 +444,11 @@ function calcContingency() {
 
   const { ok, newRows, lastRun, decoTime, lastRunFmt, decoTimeFmt, totalCNS, totalOTUc, decoZoneStart, decozoneDisp, decoStop, tts, planSum, contSurfaceGF, scenarioDepth, scenarioBT, scenarioBotFracs, contLastPlan, contLastTissues, contLastGasConsumed, primaryFirstStopDepth } = runContingencyScenario(() => {
     if (contExtraBT > 0) {
-      const btEl = document.getElementById('decoBT');
+      const btEl = getPlannerInputEl('decoBT');
       if (btEl) btEl.value = parseFloat(btEl.value) + contExtraBT;
     }
     if (contExtraDepth > 0) {
-      const depthEl = document.getElementById('decoDepth');
+      const depthEl = getPlannerInputEl('decoDepth');
       const factor = units === 'metric' ? 1 : 3.28084;
       if (depthEl) depthEl.value = parseFloat(depthEl.value) + Math.round(contExtraDepth * factor);
     }
@@ -478,7 +478,7 @@ function calcContingency() {
   const _emRunFmt  = lastRunFmt  || `${lastRun}'00"`;
   const _emDecoFmt = decoTimeFmt || `${decoTime}'00"`;
   const _emDepthM  = domDepthToM('decoDepth') + (contExtraDepth || 0);
-  const _emBT      = parseFloat(document.getElementById('decoBT')?.value || '0') + (contExtraBT || 0);
+  const _emBT      = parseFloat(getPlannerInputEl('decoBT')?.value || '0') + (contExtraBT || 0);
   const _emPrT     = calcPrTBarMin(_emDepthM, _emBT).toFixed(1);
   const _emOTU     = totalOTUc || '—';
   const cnsColor   = totalCNS && parseFloat(totalCNS) >= 100 ? 'var(--red)' : totalCNS && parseFloat(totalCNS) >= 80 ? 'var(--orange)' : 'var(--text)';

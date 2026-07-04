@@ -1,6 +1,8 @@
 {
   "schema_version": 2,
   "cycle": 2,
+  "superseded_by": ["cycle-02-rec-planner", "cycle-02-tec-planner", "cycle-02-mode-isolation"],
+  "superseded_note": "Level 2 REC/TECH split — review continues in sub-cycles 2a/2b/2c",
   "target_branch": "dev",
   "baseline_commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
   "audit_commit": "e07ab49cf5c28a9b99c00eb12d3538acec568728",

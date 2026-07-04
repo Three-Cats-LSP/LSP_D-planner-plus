@@ -487,7 +487,7 @@ function buildGasPlanText() {
   const ruleName = gp.rule === 'half' ? 'Half Tank' : 'Thirds';
 
   // Pull dive info from last plan
-  const depth   = document.getElementById('decoDepth')?.value  || '—';
+  const depth   = getPlannerInputEl('decoDepth')?.value  || '—';
   const bt      = document.getElementById('decoBT')?.value     || '—';
   const lastPlan = window._lastPlan;
   const rtStr   = lastPlan ? `RT ${lastPlan.rt} min` : '';

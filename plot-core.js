@@ -550,8 +550,8 @@ function drawPlannerProfile() {
   const canvas = document.getElementById('plannerProfileCanvas');
   if (!canvas) return;
 
-  const depthVal = parseFloat(document.getElementById('depth')?.value) || 0;
-  const btVal    = parseFloat(document.getElementById('bt')?.value)    || 0;
+  const depthVal = parseFloat(document.getElementById('recDepth')?.value) || 0;
+  const btVal    = parseFloat(document.getElementById('recBT')?.value)    || 0;
   const wrap = document.getElementById('plannerProfileCanvas-wrap');
   if (!depthVal || !btVal) { if(wrap) wrap.style.display='none'; return; }
   if (wrap) wrap.style.display = 'block';
@@ -597,7 +597,7 @@ function drawPlannerProfile() {
 
 // ─── Build waypoints from Deco Schedule ─────────────────────────────────────
 function _buildDecoProfileWaypoints() {
-  const depthVal  = parseFloat(document.getElementById('decoDepth')?.value) || 0;
+  const depthVal  = parseFloat(getPlannerInputEl('decoDepth')?.value) || 0;
   const btVal     = parseFloat(document.getElementById('decoBT')?.value)    || 0;
   if (!depthVal || !btVal) return null;
 

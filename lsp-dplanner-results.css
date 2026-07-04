@@ -481,6 +481,13 @@ body.light-theme .mode-btn:hover img, body.light-theme .mode-btn.active img { op
 #planPanelRecSection.visible { display: flex; }
 #planPanelTecSection { display: none; flex-direction: column; gap: var(--space-3); }
 #planPanelTecSection.visible { display: flex; }
+/* Level 2: REC vs TECH root planner views (siblings under #plannerView) */
+.planner-mode-view { display: none; flex-direction: column; gap: var(--space-3); }
+.planner-mode-view.visible { display: flex; }
+#recPlannerView,
+#tecPlannerView { flex: 1; min-width: 0; }
+.planner-results-view { display: none; }
+.planner-results-view.visible { display: block; }
 
 .depth-bt-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
 .input-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-3) var(--space-4); display: flex; flex-direction: column; gap: var(--space-1); }

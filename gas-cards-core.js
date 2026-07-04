@@ -485,7 +485,7 @@ function getTravelGasExport() {
   const info = getTravelGasInfo();
   if (!info && fromTable) return fromTable;
   if (!info) return null;
-  const rawD = parseFloat(document.getElementById('decoDepth')?.value) || 0;
+  const rawD = parseFloat(getPlannerInputEl('decoDepth')?.value) || 0;
   const depthM = units === 'metric' ? rawD : rawD / 3.28084;
   const switchM = Math.min(info.switchDepthM, depthM);
   const dU = units === 'metric';

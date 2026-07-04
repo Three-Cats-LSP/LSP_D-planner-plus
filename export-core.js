@@ -224,8 +224,8 @@ function buildDecoPlanHeaderData() {
   const altLabel = altLabelDisp(altM);
   const acclLabel = (typeof altAcclimatized !== 'undefined' ? altAcclimatized : true) ? 'Yes' : 'No';
 
-  const depth = document.getElementById('decoDepth')?.value || '-';
-  const bt = document.getElementById('decoBT')?.value || '-';
+  const depth = getPlannerInputEl('decoDepth')?.value || '-';
+  const bt = getPlannerInputEl('decoBT')?.value || '-';
   const gfLow = mGF?.low ?? '-';
   const gfHigh = mGF?.high ?? '-';
   const ascentRate = domMetricValToDisp(document.getElementById('ascentRate')?.value || '-');
@@ -923,8 +923,8 @@ function buildExportText(mode) {
 
   // ────────────────────────────────────────
   if (mode === 'planner') {
-    const depth   = document.getElementById('depth')?.value  || '-';
-    const bt      = document.getElementById('bt')?.value     || '-';
+    const depth   = document.getElementById('recDepth')?.value  || '-';
+    const bt      = document.getElementById('recBT')?.value     || '-';
     const algo    = document.body.classList.contains('algo-buh') ? 'Bühlmann ZH-L16C' : 'PADI Rec Tables';
     const isRec   = !document.body.classList.contains('algo-buh');
     const gfStr   = !isRec ? `GF ${mGF?.low ?? '-'}/${mGF?.high ?? '-'}` : '';
@@ -969,8 +969,8 @@ function buildExportText(mode) {
 
   // ────────────────────────────────────────
   } else if (mode === 'deco') {
-    const depth = document.getElementById('decoDepth')?.value || '-';
-    const bt    = document.getElementById('decoBT')?.value    || '-';
+    const depth = getPlannerInputEl('decoDepth')?.value || '-';
+    const bt    = getPlannerInputEl('decoBT')?.value    || '-';
 
     // ── helper: shorten mix names for table (trimix-aware) ──
     const shortMix = m => {
@@ -1364,7 +1364,7 @@ function buildSlateText() {
   const _slSum = getPlanSummaryExport(_stotRow);
   const slateSum = {
     ..._slSum,
-    runTime: _slSum.runTime === '-' ? `${document.getElementById('decoBT')?.value || '-'}'00"` : _slSum.runTime,
+    runTime: _slSum.runTime === '-' ? `${getPlannerInputEl('decoBT')?.value || '-'}'00"` : _slSum.runTime,
     decozone: typeof compactExportDepth === 'function' ? compactExportDepth(_slSum.decozone) : _slSum.decozone,
     decoStop: typeof compactExportDepth === 'function' ? compactExportDepth(_slSum.decoStop) : _slSum.decoStop,
   };
@@ -1420,8 +1420,8 @@ function buildMessengerText(mode) {
   if (mode === 'contingency') {
     const c = window._lastContingency;
     if (!c) return null;
-    const depth = c.scenarioDepth ?? document.getElementById('decoDepth')?.value ?? '-';
-    const bt    = c.scenarioBT    ?? document.getElementById('decoBT')?.value    ?? '-';
+    const depth = c.scenarioDepth ?? getPlannerInputEl('decoDepth')?.value ?? '-';
+    const bt    = c.scenarioBT    ?? getPlannerInputEl('decoBT')?.value    ?? '-';
     const du    = units === 'metric' ? 'm' : 'ft';
     const shortMix = m => {
       const s = (m||'').trim().replace(/[📋⚠️🤿]/g,'').trim();
@@ -1480,8 +1480,8 @@ function buildMessengerText(mode) {
   if (!rows.length) return buildExportText(mode);
 
   // One-line context header
-  const depth = document.getElementById('decoDepth')?.value || '-';
-  const bt    = document.getElementById('decoBT')?.value    || '-';
+  const depth = getPlannerInputEl('decoDepth')?.value || '-';
+  const bt    = getPlannerInputEl('decoBT')?.value    || '-';
   const gfL   = mGF.low;
   const gfH   = mGF.high;
   const du    = units === 'metric' ? 'm' : 'ft';
@@ -1623,7 +1623,7 @@ function buildMessengerText(mode) {
     const toMMSS = (n) => { const m = Math.floor(n), s = Math.round((n - m) * 60); return `${m}'${String(s).padStart(2,'0')}"`; };
     planSumCopy = {
       runTime: toMMSS(vx2.rt),
-      tts: vx2.tts || toMMSS(Math.max(0, vx2.rt - parseFloat(document.getElementById('decoBT')?.value || '0'))),
+      tts: vx2.tts || toMMSS(Math.max(0, vx2.rt - parseFloat(getPlannerInputEl('decoBT')?.value || '0'))),
       decoTime: toMMSS(vx2.deco),
       cns: vx2.cns,
       otu: vx2.otu,
@@ -1636,7 +1636,7 @@ function buildMessengerText(mode) {
     const dtV  = document.getElementById('decoDecoTimeDisplay')?.textContent?.trim().replace(/\s*min\s*/,'') || '-';
     const cnsV = document.getElementById('decoCNSDisplay')?.textContent?.trim() || '-';
     const otuV = document.getElementById('decoOTUDisplay')?.textContent?.trim() || '-';
-    const prtN = calcPrTBarMin(domDepthToM('decoDepth'), document.getElementById('decoBT')?.value || '0');
+    const prtN = calcPrTBarMin(domDepthToM('decoDepth'), getPlannerInputEl('decoBT')?.value || '0');
     planSumCopy.runTime = `${rtV}'00"`;
     planSumCopy.decoTime = `${dtV}'00"`;
     planSumCopy.cns = cnsV;
@@ -1644,7 +1644,7 @@ function buildMessengerText(mode) {
     planSumCopy.prt = isNaN(prtN) ? '-' : prtN.toFixed(1);
   }
   if (planSumCopy.prt === '-') {
-    const prtN = calcPrTBarMin(domDepthToM('decoDepth'), document.getElementById('decoBT')?.value || '0');
+    const prtN = calcPrTBarMin(domDepthToM('decoDepth'), getPlannerInputEl('decoBT')?.value || '0');
     if (!isNaN(prtN)) planSumCopy.prt = prtN.toFixed(1);
   }
   result.push('-'.repeat(28));
@@ -1685,8 +1685,8 @@ function exportTXT(mode) {
   const _altSuffix = _expAltM === 0 ? '' : `_Alt${_expAltM}m${_expAccl ? 'Accl' : 'NoAccl'}`;
   let tag = '';
   if (mode === 'deco') {
-    const d    = document.getElementById('decoDepth')?.value || '0';
-    const bt   = document.getElementById('decoBT')?.value    || '0';
+    const d    = getPlannerInputEl('decoDepth')?.value || '0';
+    const bt   = getPlannerInputEl('decoBT')?.value    || '0';
     const algo = document.getElementById('algorithmSelect')?.value || 'ZHLC_GF';
     const cons = document.getElementById('conservatismSelect')?.value || '0';
     const gfHi = mGF?.high || 85;
@@ -1697,12 +1697,12 @@ function exportTXT(mode) {
     else                      algoTag = `GF${gfHi}_C${cons}_VPM-B_GFS`;
     tag = `Deco_${d}${du}_${bt}min_${algoTag}${_altSuffix}`;
   } else if (mode === 'planner') {
-    const d  = document.getElementById('depth')?.value || '0';
-    const bt = document.getElementById('bt')?.value    || '0';
+    const d  = document.getElementById('recDepth')?.value || '0';
+    const bt = document.getElementById('recBT')?.value    || '0';
     tag = `Plan_${d}${du}_${bt}min${_altSuffix}`;
   } else if (mode === 'contingency') {
-    const d  = document.getElementById('decoDepth')?.value || '0';
-    const bt = document.getElementById('decoBT')?.value    || '0';
+    const d  = getPlannerInputEl('decoDepth')?.value || '0';
+    const bt = getPlannerInputEl('decoBT')?.value    || '0';
     const sc = (window._lastContingency?.label || 'Contingency')
                .replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_-]/g, '');
     tag = `Emergency_${d}${du}_${bt}min_${sc}${_altSuffix}`;
@@ -2088,8 +2088,8 @@ async function exportPDF(opts) {
   const _pdfSI        = _pdfRepActive ? (parseFloat(document.getElementById('vpmSurfaceInterval')?.value || '60')) : null;
   const _pdfSacUnit   = (typeof lspSacUnit === 'function') ? lspSacUnit(true) : (units === 'imperial' ? 'ft3/min' : 'L/min');
   const du       = units === 'imperial' ? 'ft' : 'm';
-  const depthVal = document.getElementById('decoDepth')?.value || '—';
-  const btVal    = document.getElementById('decoBT')?.value    || '—';
+  const depthVal = getPlannerInputEl('decoDepth')?.value || '—';
+  const btVal    = getPlannerInputEl('decoBT')?.value    || '—';
   const densityLabel = waterDensityDisplayLabel();
   const _pdfHdr = buildDecoPlanHeaderData();
   const _pdfTravelInfo = _pdfHdr.travelGas;
@@ -2766,8 +2766,8 @@ async function exportContingencyPDF(opts) {
   const timeStr = now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
   const isoDate = now.toISOString().split('T')[0];
   const du    = units === 'imperial' ? 'ft' : 'm';
-  const depth = document.getElementById('decoDepth')?.value || '\u2014';
-  const bt    = document.getElementById('decoBT')?.value    || '\u2014';
+  const depth = getPlannerInputEl('decoDepth')?.value || '\u2014';
+  const bt    = getPlannerInputEl('decoBT')?.value    || '\u2014';
   const scenarioName = (c.label||'Emergency').replace(/[^a-zA-Z0-9_\- ]/g,'').replace(/\s+/g,'_').substring(0,30);
   const fileName = `LSP_${getExportCircuitTag()}_${isoDate}_Emergency_${depth}${du}_${bt}min_${scenarioName}.pdf`;
 

@@ -503,19 +503,30 @@ function setBrandIcon(_mode) {
   /* Static Three Cats LSP logo — mode-specific emoji icons removed. */
 }
 
-function _syncDepthBtSteppers() {
-  const d = parseFloat(document.getElementById('decoDepth')?.value) || 40;
-  const b = parseFloat(document.getElementById('decoBT')?.value) || 30;
-  const dEl = document.getElementById('depth'); if (dEl) dEl.value = d;
-  const bEl = document.getElementById('bt'); if (bEl) bEl.value = b;
-  const dv = document.getElementById('depthStepperVal'); if (dv) dv.textContent = Math.round(d);
-  const bv = document.getElementById('btStepperVal'); if (bv) bv.textContent = Math.round(b);
-  const du = document.getElementById('depthUnitLbl'); if (du) du.textContent = units === 'imperial' ? 'ft' : 'm';
+function _syncRecDepthBtSteppers() {
+  const d = parseFloat(document.getElementById('recDepth')?.value) || 40;
+  const b = parseFloat(document.getElementById('recBT')?.value) || 30;
+  const dv = document.getElementById('recDepthStepperVal'); if (dv) dv.textContent = Math.round(d);
+  const bv = document.getElementById('recBtStepperVal'); if (bv) bv.textContent = Math.round(b);
+  const du = document.getElementById('recDepthUnitLbl'); if (du) du.textContent = units === 'imperial' ? 'ft' : 'm';
 }
 
-function stepDepthBt(field, delta) {
+function _syncTecDepthBtSteppers() {
+  const d = parseFloat(document.getElementById('tecDepth')?.value) || 40;
+  const b = parseFloat(document.getElementById('tecBT')?.value) || 30;
+  const dv = document.getElementById('tecDepthStepperVal'); if (dv) dv.textContent = Math.round(d);
+  const bv = document.getElementById('tecBtStepperVal'); if (bv) bv.textContent = Math.round(b);
+  const du = document.getElementById('tecDepthUnitLbl'); if (du) du.textContent = units === 'imperial' ? 'ft' : 'm';
+}
+
+function _syncDepthBtSteppers() {
+  _syncRecDepthBtSteppers();
+  _syncTecDepthBtSteppers();
+}
+
+function stepRecDepthBt(field, delta) {
   const isDepth = field === 'depth';
-  const id = isDepth ? 'decoDepth' : 'decoBT';
+  const id = isDepth ? 'recDepth' : 'recBT';
   const el = document.getElementById(id);
   if (!el) return;
   let v = parseFloat(el.value) || (isDepth ? 40 : 30);
@@ -527,11 +538,76 @@ function stepDepthBt(field, delta) {
     v = Math.max(1, Math.min(300, v + delta));
   }
   el.value = v;
-  if (isDepth && typeof syncDepthInputCanonical === 'function') syncDepthInputCanonical('decoDepth');
-  _syncDepthBtSteppers();
+  if (isDepth && typeof syncDepthInputCanonical === 'function') syncDepthInputCanonical('recDepth');
+  _syncRecDepthBtSteppers();
+  updateGasMODDisplays?.();
+}
+
+function stepTecDepthBt(field, delta) {
+  const isDepth = field === 'depth';
+  const id = isDepth ? 'tecDepth' : 'tecBT';
+  const el = document.getElementById(id);
+  if (!el) return;
+  let v = parseFloat(el.value) || (isDepth ? 40 : 30);
+  if (isDepth) {
+    const step = units === 'imperial' ? 3 : 1;
+    const maxD = units === 'imperial' ? 394 : 120;
+    v = Math.max(1, Math.min(maxD, v + delta * step));
+  } else {
+    v = Math.max(1, Math.min(300, v + delta));
+  }
+  el.value = v;
+  if (isDepth && typeof syncDepthInputCanonical === 'function') syncDepthInputCanonical('tecDepth');
+  _syncTecDepthBtSteppers();
   updateCcrGasValidation?.();
   updateGasMODDisplays?.();
   if (window._lastContingency) calcContingency?.();
+}
+
+function stepDepthBt(field, delta) {
+  if (plannerAlgo === 'rec') stepRecDepthBt(field, delta);
+  else stepTecDepthBt(field, delta);
+}
+
+function _showPlannerView(view) {
+  const isRec = view === 'rec';
+  const recView = document.getElementById('recPlannerView');
+  const tecView = document.getElementById('tecPlannerView');
+  if (recView) recView.classList.toggle('visible', isRec);
+  if (tecView) tecView.classList.toggle('visible', !isRec);
+  const recRes = document.getElementById('recResultsPanel');
+  const tecRes = document.getElementById('tecResultsPanel');
+  if (recRes) recRes.classList.toggle('visible', isRec);
+  if (tecRes) tecRes.classList.toggle('visible', !isRec);
+  const recTabs = document.getElementById('recResultTabs');
+  const tecTabs = document.getElementById('tecResultTabs');
+  if (recTabs) recTabs.style.display = isRec ? 'flex' : 'none';
+  if (tecTabs) tecTabs.style.display = isRec ? 'none' : 'flex';
+  if (!isRec) _syncGfCurveCardVisibility();
+  else {
+    const gfCard = document.getElementById('gfCurveInlineCard');
+    if (gfCard) gfCard.style.display = 'none';
+    const gfHead = document.getElementById('graphsGfSectionHead');
+    if (gfHead) gfHead.style.display = 'none';
+  }
+  document.querySelectorAll('#resultsPanel #resultTab-dive, #resultsPanel #resultTab-surfint, #resultsPanel #resultTab-avgdepth, #resultsPanel #resultTab-multi, #resultsPanel #resultTab-ndlref').forEach(p => {
+    p.classList.remove('active');
+  });
+  document.querySelectorAll('#resultsPanel #resultTab-profile, #resultsPanel #resultTab-contingency, #resultsPanel #resultTab-graphs, #resultsPanel #resultTab-tissue').forEach(p => {
+    p.classList.remove('active');
+  });
+  const firstRec = document.querySelector('#recResultTabs .result-tab-btn');
+  const firstTec = document.querySelector('#tecResultTabs .result-tab-btn');
+  if (isRec && firstRec) switchResultTab(firstRec.getAttribute('data-tab'), firstRec);
+  else if (!isRec && firstTec) switchResultTab(firstTec.getAttribute('data-tab'), firstTec);
+  setBrandIcon(isRec ? 'rec' : 'planner');
+  document.body.classList.toggle('rec-mode', isRec);
+  document.body.classList.toggle('algo-buh', !isRec);
+  _updatePlannerSubtitle();
+}
+
+function _updatePlanPanelSections() {
+  _showPlannerView(plannerAlgo === 'rec' ? 'rec' : 'tec');
 }
 
 function setConservatismBtn(val, btn) {
@@ -592,8 +668,8 @@ function _highlightGfPresetBtn(val) {
 }
 
 function runGenerateSchedule() {
-  if (plannerAlgo === 'rec') runPlanner();
-  else runDecoSchedule();
+  if (plannerAlgo === 'rec') runRecPlan?.();
+  else runDecoSchedule?.();
 }
 
 function _clearPlannerResults() {
@@ -648,46 +724,6 @@ function _updatePlannerSubtitle() {
   const subEl = document.getElementById('algoSubtitle'); if (subEl) subEl.textContent = sub;
 }
 
-function _updatePlanPanelSections() {
-  const isRec = plannerAlgo === 'rec';
-  const recSec = document.getElementById('planPanelRecSection');
-  const tecSec = document.getElementById('planPanelTecSection');
-  const gfV3 = document.getElementById('gfPresetsRowV3');
-  const consV3 = document.getElementById('conservatismRowV3');
-  const vpmModeV3 = document.getElementById('vpmModeRowV3');
-  const isVpm = plannerAlgo === 'VPMB' || plannerAlgo === 'VPMB_GFS';
-  if (recSec) recSec.classList.toggle('visible', isRec);
-  if (tecSec) tecSec.classList.toggle('visible', !isRec);
-  if (gfV3) gfV3.style.display = (!isRec && (plannerAlgo === 'ZHLC_GF' || plannerAlgo === 'VPMB_GFS')) ? '' : 'none';
-  if (consV3) consV3.classList.toggle('visible', isVpm);
-  if (vpmModeV3) vpmModeV3.classList.toggle('visible', isVpm);
-  const recTabs = document.getElementById('recResultTabs');
-  const tecTabs = document.getElementById('tecResultTabs');
-  if (recTabs) recTabs.style.display = isRec ? 'flex' : 'none';
-  if (tecTabs) tecTabs.style.display = isRec ? 'none' : 'flex';
-  if (!isRec) _syncGfCurveCardVisibility();
-  else {
-    const gfCard = document.getElementById('gfCurveInlineCard');
-    if (gfCard) gfCard.style.display = 'none';
-    const gfHead = document.getElementById('graphsGfSectionHead');
-    if (gfHead) gfHead.style.display = 'none';
-  }
-  document.querySelectorAll('#resultsPanel #resultTab-dive, #resultsPanel #resultTab-surfint, #resultsPanel #resultTab-avgdepth, #resultsPanel #resultTab-multi, #resultsPanel #resultTab-ndlref').forEach(p => {
-    p.classList.remove('active');
-  });
-  document.querySelectorAll('#resultsPanel #resultTab-profile, #resultsPanel #resultTab-contingency, #resultsPanel #resultTab-graphs, #resultsPanel #resultTab-tissue').forEach(p => {
-    p.classList.remove('active');
-  });
-  const firstRec = document.querySelector('#recResultTabs .result-tab-btn');
-  const firstTec = document.querySelector('#tecResultTabs .result-tab-btn');
-  if (isRec && firstRec) switchResultTab(firstRec.getAttribute('data-tab'), firstRec);
-  else if (!isRec && firstTec) switchResultTab(firstTec.getAttribute('data-tab'), firstTec);
-  setBrandIcon(isRec ? 'rec' : 'planner');
-  document.body.classList.toggle('rec-mode', isRec);
-  document.body.classList.toggle('algo-buh', !isRec);
-  _updatePlannerSubtitle();
-}
-
 function _updatePlanPanelTip(model) {
   const tip = document.getElementById('planPanelDecoTip');
   if (!tip) return;
@@ -706,6 +742,8 @@ function _updatePlanPanelTip(model) {
 }
 
 function setPlannerAlgo(model, btn) {
+  const fromView = plannerAlgo === 'rec' ? 'rec' : 'tec';
+  const toView = model === 'rec' ? 'rec' : 'tec';
   plannerAlgo = model;
   if (model === 'VPMB' || model === 'VPMB_GFS') {
     vpmVariant = model;
@@ -728,6 +766,9 @@ function setPlannerAlgo(model, btn) {
     setDecoAlgorithm(model, true);
   }
   _clearPlannerResults();
+  if (fromView !== toView && typeof onPlannerViewSwitch === 'function') {
+    onPlannerViewSwitch(fromView, toView);
+  }
   _updatePlanPanelSections();
   _updatePlanPanelTip(model);
   renderNDLTable?.();

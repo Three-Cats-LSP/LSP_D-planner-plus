@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "repeat": 2,
+  "cycle": 2,
+  "subcycle": "2a",
+  "traces": [
+    {
+      "id": "SL-REC-DEPTH-BT-STEPPER",
+      "case_ids": ["SL-C01-DEPTH-SYNC"],
+      "entry_event": "User edits REC depth/BT via hidden inputs and steppers stay in sync.",
+      "consumer_path": ["recDepth", "recBT", "_syncRecDepthBtSteppers"],
+      "setup": [
+        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+        {"action": "click", "selector": "#navBtnRec"}
+      ],
+      "state": {
+        "selectors": ["#navBtnRec", "#recDepth", "#recBT"],
+        "restore_order": ["#recDepth", "#recBT", "#navBtnRec"],
+        "globals": ["_zhlHeadless"]
+      },
+      "steps": [
+        {"action": "fill", "selector": "#recDepth", "value": "35"},
+        {"action": "fill", "selector": "#recBT", "value": "28"},
+        {"capture": "synced", "values": {
+          "depth_lbl": "document.getElementById('recDepthStepperVal')?.textContent",
+          "bt_lbl": "document.getElementById('recBtStepperVal')?.textContent"
+        }}
+      ],
+      "assertions": [
+        {"id": "rec-depth-stepper", "left": "$.synced.depth_lbl", "op": "equal", "right": "35"},
+        {"id": "rec-bt-stepper", "left": "$.synced.bt_lbl", "op": "equal", "right": "28"}
+      ]
+    }
+  ]
+}

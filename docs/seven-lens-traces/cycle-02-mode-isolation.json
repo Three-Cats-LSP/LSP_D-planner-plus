@@ -1,0 +1,56 @@
+{
+  "schema_version": 3,
+  "repeat": 2,
+  "cycle": 21,
+  "subcycle": "2c",
+  "traces": [
+    {
+      "id": "SL-MODE-REC-TEC-ISOLATION",
+      "case_ids": ["SL-MODE-REC-TEC-ISOLATION"],
+      "entry_event": "User switches Rec ↔ Bühlmann; each mode retains its own depth/BT.",
+      "consumer_path": ["setPlannerAlgo", "onPlannerViewSwitch", "recDepth", "tecDepth"],
+      "setup": [
+        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+        {"action": "click", "selector": "#navBtnBuh"},
+        {"action": "fill", "selector": "#tecDepth", "value": "44"},
+        {"action": "fill", "selector": "#tecBT", "value": "22"},
+        {"action": "click", "selector": "#navBtnRec"},
+        {"action": "fill", "selector": "#recDepth", "value": "33"},
+        {"action": "fill", "selector": "#recBT", "value": "21"}
+      ],
+      "state": {
+        "selectors": ["#navBtnRec", "#navBtnBuh", "#recDepth", "#recBT", "#tecDepth", "#tecBT"],
+        "restore_order": ["#recDepth", "#recBT", "#tecDepth", "#tecBT", "#navBtnBuh"],
+        "globals": ["_zhlHeadless"]
+      },
+      "steps": [
+        {"action": "click", "selector": "#navBtnBuh"},
+        {"capture": "tec_restored", "values": {
+          "tec_d": "document.getElementById('tecDepth')?.value",
+          "tec_b": "document.getElementById('tecBT')?.value",
+          "rec_visible": "document.getElementById('recPlannerView')?.classList.contains('visible')",
+          "tec_visible": "document.getElementById('tecPlannerView')?.classList.contains('visible')"
+        }},
+        {"action": "fill", "selector": "#tecDepth", "value": "55"},
+        {"action": "fill", "selector": "#tecBT", "value": "25"},
+        {"action": "click", "selector": "#navBtnRec"},
+        {"capture": "rec_restored", "values": {
+          "rec_d": "document.getElementById('recDepth')?.value",
+          "rec_b": "document.getElementById('recBT')?.value"
+        }},
+        {"action": "click", "selector": "#navBtnBuh"},
+        {"capture": "tec_edited", "values": {
+          "tec_d": "document.getElementById('tecDepth')?.value",
+          "tec_b": "document.getElementById('tecBT')?.value"
+        }}
+      ],
+      "assertions": [
+        {"id": "tec-view-visible", "left": "$.tec_restored.tec_visible", "op": "equal", "right": true},
+        {"id": "rec-hidden-on-tec", "left": "$.tec_restored.rec_visible", "op": "equal", "right": false},
+        {"id": "tec-depth-restored", "left": "$.tec_restored.tec_d", "op": "equal", "right": "44"},
+        {"id": "rec-depth-restored", "left": "$.rec_restored.rec_d", "op": "equal", "right": "33"},
+        {"id": "tec-depth-edited-persists", "left": "$.tec_edited.tec_d", "op": "equal", "right": "55"}
+      ]
+    }
+  ]
+}

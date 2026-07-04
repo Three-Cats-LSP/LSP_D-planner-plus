@@ -131,25 +131,6 @@ function initV3Layout() {
     consRow.remove();
   }
 
-  // Tec inputs from deco card → planPanelTecMount
-  const decoCard = document.querySelector('#deco > .card');
-  const tecMount = document.getElementById('planPanelTecMount');
-  if (decoCard && tecMount) {
-    const skip = new Set(['algoRow', 'gfPresetsRow', 'conservatismRow', 'decoCardHeaderRow']);
-    Array.from(decoCard.children).forEach(ch => {
-      if (ch.id && skip.has(ch.id)) return;
-      if (ch.querySelector?.('#presetsHeaderBtn') || ch.querySelector?.('#advConfigPresetsBtn')) return;
-      if (ch.querySelector?.('#decoDepth') || ch.querySelector?.('#decoBT')) return;
-      if (ch.classList?.contains('form-grid') && ch.querySelector('#decoDepth')) return;
-      if (ch.tagName === 'BUTTON' && ch.classList.contains('btn-calc')) return;
-      tecMount.appendChild(ch);
-    });
-  }
-
-  // Remove legacy planner duplicate card (inputs moved to v3 panel)
-  const plannerCard = document.querySelector('#planner > .card');
-  if (plannerCard) plannerCard.remove();
-
   // Result tab mounts — rec
   const moveToTab = (id, tab) => {
     const el = document.getElementById(id);
