@@ -332,7 +332,11 @@
       "status": "OPEN",
       "regression_ids": [
         "SL-C05-GF-ROW-MODE-ISOLATION"
-      ]
+      ],
+      "pre_fix_evidence_id": "ER-C05-PRE-CSS",
+      "post_fix_evidence_id": "ER-C05-POST-CSS",
+      "baseline_failure": "rec/tools GF preset opacity stayed 1.0 at audit commit ded650c",
+      "fix_summary": "Retargeted REC/Tools opacity rules to #gfPresetsRowV3 and #gfPresetBtns"
     },
     {
       "id": "SL-C05-M-02",
@@ -347,7 +351,11 @@
       "status": "OPEN",
       "regression_ids": [
         "SL-C05-EXPORT-FOCUS-VISIBLE"
-      ]
+      ],
+      "pre_fix_evidence_id": "ER-C05-PRE-CSS",
+      "post_fix_evidence_id": "ER-C05-POST-CSS",
+      "baseline_failure": "Keyboard-focused .btn-export computed outlineStyle none at ded650c",
+      "fix_summary": "Added .btn-export:focus-visible outline matching theme-pill pattern"
     },
     {
       "id": "SL-C05-L-01",
@@ -362,7 +370,11 @@
       "status": "OPEN",
       "regression_ids": [
         "SL-C05-CSS-DEAD-BRAND-ICON"
-      ]
+      ],
+      "pre_fix_evidence_id": "ER-C05-PRE-CSS",
+      "post_fix_evidence_id": "ER-C05-POST-CSS",
+      "baseline_failure": "foundation.css still contained .brand-icon rule at ded650c",
+      "fix_summary": "Removed obsolete .brand-icon and iconGlow rules"
     },
     {
       "id": "SL-C05-L-02",
@@ -377,7 +389,11 @@
       "status": "OPEN",
       "regression_ids": [
         "SL-C05-CSS-DEAD-GF-BTN"
-      ]
+      ],
+      "pre_fix_evidence_id": "ER-C05-PRE-CSS",
+      "post_fix_evidence_id": "ER-C05-POST-CSS",
+      "baseline_failure": "foundation.css still contained #gfCustomRow .gf-btn rules at ded650c",
+      "fix_summary": "Removed obsolete #gfCustomRow .gf-btn block"
     },
     {
       "id": "SL-C05-L-03",
@@ -392,7 +408,11 @@
       "status": "OPEN",
       "regression_ids": [
         "SL-C05-CSS-DEAD-ALGO-SWITCHER"
-      ]
+      ],
+      "pre_fix_evidence_id": "ER-C05-PRE-CSS",
+      "post_fix_evidence_id": "ER-C05-POST-CSS",
+      "baseline_failure": "foundation/modes still contained .algo-switcher rules at ded650c",
+      "fix_summary": "Removed dead .algo-switcher rules from foundation and modes"
     },
     {
       "id": "SL-C05-L-04",
@@ -407,11 +427,129 @@
       "status": "OPEN",
       "regression_ids": [
         "SL-C05-CSS-DEAD-THEME-TOGGLE"
-      ]
+      ],
+      "pre_fix_evidence_id": "ER-C05-PRE-CSS",
+      "post_fix_evidence_id": "ER-C05-POST-CSS",
+      "baseline_failure": "modes.css still contained .theme-toggle block at ded650c",
+      "fix_summary": "Removed obsolete .theme-toggle rules from modes.css"
     }
   ],
-  "evidence_runs": [],
-  "changed_paths": [],
+  "evidence_runs": [
+    {
+      "id": "ER-C05-PRE-CSS",
+      "kind": "baseline_failure",
+      "case_ids": [
+        "SL-C05-GF-ROW-MODE-ISOLATION",
+        "SL-C05-EXPORT-FOCUS-VISIBLE",
+        "SL-C05-CSS-DEAD-BRAND-ICON",
+        "SL-C05-CSS-DEAD-GF-BTN",
+        "SL-C05-CSS-DEAD-ALGO-SWITCHER",
+        "SL-C05-CSS-DEAD-THEME-TOGGLE"
+      ],
+      "observable_assertions": [
+        "GF preset opacity 1.0 in rec/tools modes",
+        "export focus outlineStyle none",
+        "dead selector rules present in canonical CSS"
+      ],
+      "state_restored": true,
+      "command": "python dev/ui_css_regression.py",
+      "exit_code": 1,
+      "commit": "ded650c489da978c5961bb920f2c8834e0ebe46e",
+      "worktree_clean": true,
+      "command_argv": ["python", "dev/ui_css_regression.py"],
+      "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-PRE-CSS.json"
+    },
+    {
+      "id": "ER-C05-POST-CSS",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C05-GF-ROW-MODE-ISOLATION",
+        "SL-C05-EXPORT-FOCUS-VISIBLE",
+        "SL-C05-CSS-DEAD-BRAND-ICON",
+        "SL-C05-CSS-DEAD-GF-BTN",
+        "SL-C05-CSS-DEAD-ALGO-SWITCHER",
+        "SL-C05-CSS-DEAD-THEME-TOGGLE"
+      ],
+      "observable_assertions": [
+        "GF preset opacity 0.5 in rec/tools; 1.0 in tec",
+        "export focus outline 2px solid via keyboard Tab",
+        "dead selector rules absent; .brand-logo and theme-pill-toggle intact"
+      ],
+      "state_restored": true,
+      "command": "python dev/ui_css_regression.py",
+      "exit_code": 0,
+      "commit": "18fa6cb7d80100a1ef77be2290c1cc101c7392b9",
+      "worktree_clean": true,
+      "command_argv": ["python", "dev/ui_css_regression.py"],
+      "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-POST-CSS.json"
+    },
+    {
+      "id": "ER-C05-PRE-TRACE",
+      "kind": "baseline_failure",
+      "case_ids": ["SL-C05-GF-ROW-MODE-ISOLATION"],
+      "observable_assertions": [
+        "browser trace rec/tools GF opacity assertions fail at ded650c"
+      ],
+      "state_restored": true,
+      "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-05-css.json --output dev/seven-lens-browser-trace-cycle05-pre.json",
+      "exit_code": 1,
+      "commit": "ded650c489da978c5961bb920f2c8834e0ebe46e",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-05-css.json",
+        "--output",
+        "dev/seven-lens-browser-trace-cycle05-pre.json"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-PRE-TRACE.json"
+    },
+    {
+      "id": "ER-C05-POST-TRACE",
+      "kind": "post_fix",
+      "case_ids": ["SL-C05-GF-ROW-MODE-ISOLATION"],
+      "observable_assertions": [
+        "browser trace GF mode isolation passes twice in fresh contexts"
+      ],
+      "state_restored": true,
+      "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-05-css.json --output dev/seven-lens-browser-trace-cycle05.json",
+      "exit_code": 0,
+      "commit": "18fa6cb7d80100a1ef77be2290c1cc101c7392b9",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-05-css.json",
+        "--output",
+        "dev/seven-lens-browser-trace-cycle05.json"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-POST-TRACE.json",
+      "trace_id": "SL-C05-GF-ROW-MODE-ISOLATION-TRACE"
+    },
+    {
+      "id": "ER-C05-STRUCTURE",
+      "kind": "gate",
+      "case_ids": ["UI-EXTRACT-CSS", "UI-CSS-LINK-ORDER"],
+      "observable_assertions": [
+        "SUITE-UI-STRUCTURE passes after canonical CSS edits"
+      ],
+      "state_restored": true,
+      "command": "python tools/run_ui_structure_suite.py",
+      "exit_code": 0,
+      "commit": "18fa6cb7d80100a1ef77be2290c1cc101c7392b9",
+      "worktree_clean": true,
+      "command_argv": ["python", "tools/run_ui_structure_suite.py"],
+      "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-STRUCTURE.json"
+    }
+  ],
+  "changed_paths": [
+    "lsp-dplanner-foundation.css",
+    "lsp-dplanner-modes.css",
+    "dev/ui_css_regression.py",
+    "docs/seven-lens-traces/cycle-05-css.json"
+  ],
   "audit_report": "docs/seven-lens-reports/cycle-05-css.md",
-  "notes": "C05-A foundation 454 lines; C05-B modes 372 lines. Separate review sessions per 600-line protocol. FIXER required."
+  "notes": "FIXER applied canonical CSS retarget/removal plus dev/ui_css_regression.py and cycle-05-css browser trace. All six findings remain OPEN pending VERIFIER. Static fingerprint refresh deferred to verification phase."
 }

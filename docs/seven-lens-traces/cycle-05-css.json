@@ -1,0 +1,80 @@
+{
+  "schema_version": 3,
+  "repeat": 2,
+  "cycle": 5,
+  "traces": [
+    {
+      "id": "SL-C05-GF-ROW-MODE-ISOLATION-TRACE",
+      "case_ids": ["SL-C05-GF-ROW-MODE-ISOLATION"],
+      "entry_event": "User switches Bühlmann → REC → Tools; GF preset opacity follows body mode classes on live V3 elements.",
+      "consumer_path": [
+        "navBtn click",
+        "setMainNav/setNavMode writes body.rec-mode and body.algo-tools",
+        "CSS cascade on #gfPresetsRowV3/#gfPresetBtns",
+        "getComputedStyle opacity on .gf-preset-btn"
+      ],
+      "state": {
+        "selectors": ["#navBtnBuh", "#navBtnRec", "#navBtnTools"],
+        "restore_order": ["#navBtnTools", "#navBtnRec", "#navBtnBuh"],
+        "globals": []
+      },
+      "setup": [
+        {
+          "action": "run_script",
+          "setup_only_reason": "Ensure V3 GF preset buttons exist before mode-switch captures.",
+          "script": "() => { _buildGfPresetBtns?.(); }"
+        }
+      ],
+      "steps": [
+        {
+          "capture": "initial",
+          "values": {
+            "has_gf_btn": "!!document.querySelector('#gfPresetBtns .gf-preset-btn')"
+          }
+        },
+        {
+          "action": "click",
+          "selector": "#navBtnBuh"
+        },
+        {
+          "capture": "tec_mode",
+          "values": {
+            "btn_opacity": "(() => { const b = document.querySelector('#gfPresetBtns .gf-preset-btn'); return b ? parseFloat(getComputedStyle(b).opacity) : null; })()",
+            "rec_mode": "document.body.classList.contains('rec-mode')",
+            "tools_mode": "document.body.classList.contains('algo-tools')"
+          }
+        },
+        {
+          "action": "click",
+          "selector": "#navBtnRec"
+        },
+        {
+          "capture": "rec_mode_cap",
+          "values": {
+            "btn_opacity": "(() => { const b = document.querySelector('#gfPresetBtns .gf-preset-btn'); return b ? parseFloat(getComputedStyle(b).opacity) : null; })()",
+            "rec_mode": "document.body.classList.contains('rec-mode')"
+          }
+        },
+        {
+          "action": "click",
+          "selector": "#navBtnTools"
+        },
+        {
+          "capture": "tools_mode_cap",
+          "values": {
+            "btn_opacity": "(() => { const b = document.querySelector('#gfPresetBtns .gf-preset-btn'); return b ? parseFloat(getComputedStyle(b).opacity) : null; })()",
+            "tools_mode": "document.body.classList.contains('algo-tools')"
+          }
+        }
+      ],
+      "assertions": [
+        {"id": "gf-buttons-present", "left": "$.initial.has_gf_btn", "op": "equal", "right": true},
+        {"id": "tec-full-opacity", "left": "$.tec_mode.btn_opacity", "op": "close", "right": 1, "tolerance": 0.06},
+        {"id": "rec-dimmed", "left": "$.rec_mode_cap.btn_opacity", "op": "close", "right": 0.5, "tolerance": 0.06},
+        {"id": "tools-dimmed", "left": "$.tools_mode_cap.btn_opacity", "op": "close", "right": 0.5, "tolerance": 0.06},
+        {"id": "rec-class-on", "left": "$.rec_mode_cap.rec_mode", "op": "equal", "right": true},
+        {"id": "tools-class-on", "left": "$.tools_mode_cap.tools_mode", "op": "equal", "right": true}
+      ]
+    }
+  ]
+}
