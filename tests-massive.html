@@ -1364,14 +1364,28 @@ function injectStubDecoOutput(d) {
   if (tags && !tags.textContent.trim()) tags.textContent = 'Air';
 }
 
+function plannerDecoDepthEl(doc) {
+  const d = doc || getDoc();
+  if (!d) return null;
+  if (WIN.getPlannerInputEl) return WIN.getPlannerInputEl('decoDepth');
+  return d.getElementById('tecDepth') || d.getElementById('decoDepth');
+}
+
+function plannerDecoBtEl(doc) {
+  const d = doc || getDoc();
+  if (!d) return null;
+  if (WIN.getPlannerInputEl) return WIN.getPlannerInputEl('decoBT');
+  return d.getElementById('tecBT') || d.getElementById('decoBT');
+}
+
 // ── Fast runDecoSchedule helper ───────────────────────────────────────────────
 // Always runs headless during the massive suite; injects stub DOM when tests need output.
 function fastRDS(needsDOM) {
   if (!WIN) return;
   enterMassiveHeadless();
   const d = getDoc();
-  const dEl  = d && d.getElementById('decoDepth');
-  const btEl = d && d.getElementById('decoBT');
+  const dEl  = plannerDecoDepthEl(d);
+  const btEl = plannerDecoBtEl(d);
   const altEl = d && d.getElementById('altitudeSelect');
   const origD   = dEl   ? dEl.value   : null;
   const origBT  = btEl  ? btEl.value  : null;
@@ -1525,8 +1539,8 @@ const TIER2_GROUPS = [
   {
     tier: 2, name: 'T2-A · DOM — Core Elements Present',
     tests: [
-      ['#depth input exists', 'UI', function(){ assert(elExists('depth'), '#depth not found'); return 'found ✓'; }],
-      ['#bt (bottom time) input exists', 'UI', function(){ return elExists('bt') || elExists('bottomTime') || elExists('diveDuration') ? 'found ✓' : (assert(false, 'No bottom time input found')); }],
+      ['#depth input exists', 'UI', function(){ assert(elExists('recDepth') || elExists('tecDepth'), 'recDepth/tecDepth not found'); return 'found ✓'; }],
+      ['#bt (bottom time) input exists', 'UI', function(){ return elExists('recBT') || elExists('tecBT') || elExists('bottomTime') || elExists('diveDuration') ? 'found ✓' : (assert(false, 'No bottom time input found')); }],
       ['#gasMix1 or similar gas selector exists', 'UI', function(){
         const d = getDoc();
         const found = d.querySelector('#gasMix1, #gasMix, #bottomGasMix, #o2percent, select[id*="gas"]');
@@ -1735,7 +1749,7 @@ const TIER2_GROUPS = [
         const opt = sel.querySelector('option[value="ZHLC_GF"]') || sel.querySelector('option[value*="ZHL"], option[value*="GF"]');
         if (opt) { sel.value = opt.value; sel.dispatchEvent(new WIN.Event('change',{bubbles:true})); }
         // Use a shallow NDL dive to keep engine runtime fast
-        const dEl = d.getElementById('decoDepth'), btEl = d.getElementById('decoBT');
+        const dEl = plannerDecoDepthEl(d), btEl = plannerDecoBtEl(d);
         const origD = dEl?.value, origBT = btEl?.value;
         if (dEl) dEl.value = '25'; if (btEl) btEl.value = '20';
         fastRDS();
@@ -1752,7 +1766,7 @@ const TIER2_GROUPS = [
         assert(opt, 'VPMB option not found in algorithm selector');
         sel.value = 'VPMB'; sel.dispatchEvent(new WIN.Event('change',{bubbles:true}));
         // Use a shallow NDL dive to keep VPM engine runtime fast
-        const dEl = d.getElementById('decoDepth'), btEl = d.getElementById('decoBT');
+        const dEl = plannerDecoDepthEl(d), btEl = plannerDecoBtEl(d);
         const origD = dEl?.value, origBT = btEl?.value;
         if (dEl) dEl.value = '25'; if (btEl) btEl.value = '20';
         fastRDS();
@@ -1769,7 +1783,7 @@ const TIER2_GROUPS = [
         assert(opt, 'VPMB_GFS option not found in algorithm selector');
         sel.value = 'VPMB_GFS'; sel.dispatchEvent(new WIN.Event('change',{bubbles:true}));
         // Use a shallow NDL dive to keep VPM engine runtime fast
-        const dEl = d.getElementById('decoDepth'), btEl = d.getElementById('decoBT');
+        const dEl = plannerDecoDepthEl(d), btEl = plannerDecoBtEl(d);
         const origD = dEl?.value, origBT = btEl?.value;
         if (dEl) dEl.value = '25'; if (btEl) btEl.value = '20';
         fastRDS();
@@ -3882,7 +3896,7 @@ async function startTests(skipTier1 = false) {
     try {
       await new Promise(r => setTimeout(r, 20));
       const _d = win.document;
-      const _dEl = _d.getElementById('decoDepth'), _btEl = _d.getElementById('decoBT');
+      const _dEl = plannerDecoDepthEl(_d), _btEl = plannerDecoBtEl(_d);
       const _origD = _dEl?.value, _origBT = _btEl?.value;
       if (_dEl)  _dEl.value  = '10';
       if (_btEl) _btEl.value = '10';
@@ -4055,7 +4069,7 @@ window.runMassiveRegressionCI = function(options) {
       try {
         await new Promise(r => setTimeout(r, 20));
         const _d = win.document;
-        const _dEl = _d.getElementById('decoDepth'), _btEl = _d.getElementById('decoBT');
+        const _dEl = plannerDecoDepthEl(_d), _btEl = plannerDecoBtEl(_d);
         const _origD = _dEl?.value, _origBT = _btEl?.value;
         if (_dEl) _dEl.value = '10';
         if (_btEl) _btEl.value = '10';

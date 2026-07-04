@@ -99,8 +99,8 @@ def run_tests(page, base_url: str):
         res = page.evaluate(
             """([units, depth, bt]) => {
                 if (typeof setUnits === 'function') setUnits(units);
-                document.getElementById('decoDepth').value = depth;
-                document.getElementById('decoBT').value = String(bt);
+                getPlannerInputEl('decoDepth').value = depth;
+                getPlannerInputEl('decoBT').value = String(bt);
                 const dM = domDepthToM('decoDepth');
                 const prt = calcPrTBarMin(dM, bt);
                 return { dM, prt, units: window.units };
@@ -114,9 +114,9 @@ def run_tests(page, base_url: str):
     wrong = page.evaluate(
         """() => {
             window.units = 'imperial';
-            document.getElementById('decoDepth').value = '131';
-            document.getElementById('decoBT').value = '30';
-            const raw = parseFloat(document.getElementById('decoDepth').value);
+            getPlannerInputEl('decoDepth').value = '131';
+            getPlannerInputEl('decoBT').value = '30';
+            const raw = parseFloat(getPlannerInputEl('decoDepth').value);
             return raw * (window.BAR_PER_METRE || 0.1) * Math.sqrt(30);
         }"""
     )
@@ -133,8 +133,8 @@ def run_tests(page, base_url: str):
         """() => {
             window.units = 'imperial';
             if (typeof setUnits === 'function') setUnits('imperial');
-            document.getElementById('decoDepth').value = '131';
-            document.getElementById('decoBT').value = '30';
+            getPlannerInputEl('decoDepth').value = '131';
+            getPlannerInputEl('decoBT').value = '30';
             document.getElementById('descentRate').value = '20';
             document.getElementById('ascentRate').value = '10';
             document.getElementById('lastDecoStop').value = '3';
@@ -183,8 +183,8 @@ def run_tests(page, base_url: str):
             window._zhlHeadless = false;
             window._lastContingency = null;
             document.getElementById('algorithmSelect').value = 'ZHLC_GF';
-            document.getElementById('decoDepth').value = '40';
-            document.getElementById('decoBT').value = '30';
+            getPlannerInputEl('decoDepth').value = '40';
+            getPlannerInputEl('decoBT').value = '30';
             document.getElementById('decoGas').value = 'air';
             document.getElementById('dg1Mix').value = 'ean50';
             document.getElementById('dg2Mix').value = 'o2';
@@ -252,8 +252,8 @@ def run_tests(page, base_url: str):
             window.units = 'imperial';
             window._zhlHeadless = true;
             window._lastContingency = null;
-            document.getElementById('decoDepth').value = '131';
-            document.getElementById('decoBT').value = '30';
+            getPlannerInputEl('decoDepth').value = '131';
+            getPlannerInputEl('decoBT').value = '30';
             document.getElementById('decoGas').value = 'air';
             runDecoSchedule();
             const deadline = Date.now() + 15000;
@@ -304,8 +304,8 @@ def run_tests(page, base_url: str):
                 if (typeof setUnits === 'function') setUnits('metric');
                 window._zhlHeadless = false;
                 window._massiveSuiteActive = false;
-                document.getElementById('decoDepth').value = String(Math.round(depthM));
-                document.getElementById('decoBT').value = String(btMin);
+                getPlannerInputEl('decoDepth').value = String(Math.round(depthM));
+                getPlannerInputEl('decoBT').value = String(btMin);
                 document.getElementById('decoGas').value = 'air';
                 document.getElementById('dg1Mix').value = 'ean50';
                 document.getElementById('dg2Mix').value = 'o2';
@@ -372,8 +372,8 @@ def run_tests(page, base_url: str):
         """async () => {
             if (typeof setUnits === 'function') setUnits('imperial');
             window._massiveSuiteActive = false;
-            document.getElementById('decoDepth').value = '131';
-            document.getElementById('decoBT').value = '30';
+            getPlannerInputEl('decoDepth').value = '131';
+            getPlannerInputEl('decoBT').value = '30';
             runDecoSchedule();
             await new Promise(r => setTimeout(r, 600));
             if (typeof selectContGas === 'function') selectContGas('none');
@@ -411,8 +411,8 @@ def run_tests(page, base_url: str):
             document.getElementById('decoGas').value = 'trimix';
             document.getElementById('botTrimixO2').value = '18';
             document.getElementById('botTrimixHe').value = '45';
-            document.getElementById('decoDepth').value = '50';
-            document.getElementById('decoBT').value = '25';
+            getPlannerInputEl('decoDepth').value = '50';
+            getPlannerInputEl('decoBT').value = '25';
             runDecoSchedule();
             await new Promise(r => setTimeout(r, 400));
             const lines = buildDecoPlanHeaderLines().join('\\n');
@@ -442,8 +442,8 @@ def run_tests(page, base_url: str):
                 if (typeof toggleCircuitFields === 'function') toggleCircuitFields();
                 document.getElementById('algorithmSelect').value = algo;
                 if (typeof setDecoAlgorithm === 'function') setDecoAlgorithm(algo);
-                document.getElementById('decoDepth').value = '40';
-                document.getElementById('decoBT').value = '30';
+                getPlannerInputEl('decoDepth').value = '40';
+                getPlannerInputEl('decoBT').value = '30';
                 document.getElementById('decoGas').value = 'air';
                 document.getElementById('dg1Mix').value = 'ean50';
                 document.getElementById('dg2Mix').value = 'o2';
@@ -500,8 +500,8 @@ def run_tests(page, base_url: str):
             if (typeof toggleCircuitFields === 'function') toggleCircuitFields();
             const dilBailout = document.getElementById('diluentUseAsBailout');
             if (dilBailout) dilBailout.value = 'on';
-            document.getElementById('decoDepth').value = '40';
-            document.getElementById('decoBT').value = '28';
+            getPlannerInputEl('decoDepth').value = '40';
+            getPlannerInputEl('decoBT').value = '28';
             document.getElementById('decoGas').value = 'air';
             document.getElementById('dg1Mix').value = 'ean50';
             document.getElementById('dg2Mix').value = 'o2';
