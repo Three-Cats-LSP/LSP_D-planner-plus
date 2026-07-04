@@ -5,7 +5,7 @@
   "target_branch": "dev",
   "integration_base_commit": "39159b03832d54ebc1a3fc8474cd1225d37ecbaf",
   "baseline_commit": "39159b03832d54ebc1a3fc8474cd1225d37ecbaf",
-  "baseline_registry_fingerprint": "8288430f35e33735cd5252b5b55a2237a3df964b33f6572dc6c0afa78f74b97d",
+  "baseline_registry_fingerprint": "c18bacf83a19062e9fae28512d62b7bb4e1ffc6bf6915b8f6dacd805096fb6fa",
   "baseline_findings": [
     {
       "id": "SL-C02-H-01",
@@ -167,8 +167,8 @@
       "unit_id": "UI-CSS-FOUNDATION",
       "path": "lsp-dplanner-foundation.css",
       "start_line": 1,
-      "end_line": 454,
-      "line_count": 454,
+      "end_line": 418,
+      "line_count": 418,
       "content_fingerprint": "f1f5eaa00edd3fd382ff98c27985e51d565539079860d7e59d740bce2d6a1944",
       "review_session": "cursor/seven-lens-cycle-05-foundation-audit",
       "verification_session": "C05-V-A",
@@ -245,8 +245,8 @@
       "unit_id": "UI-CSS-MODES",
       "path": "lsp-dplanner-modes.css",
       "start_line": 1,
-      "end_line": 372,
-      "line_count": 372,
+      "end_line": 338,
+      "line_count": 338,
       "content_fingerprint": "6d911804be64d352c6d0d74a4db18bb61887de96456f8f4dd3ac59e205f7b096",
       "review_session": "cursor/seven-lens-cycle-05-modes-audit",
       "verification_session": "C05-V-B",
@@ -461,7 +461,7 @@
         "dev/ui_css_regression.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-PRE-CSS.json",
-      "receipt_sha256": "9f693b056d04f92e960c3efaf8bebef6d6edbd9180872a1c97f31e1779005b2e"
+      "receipt_sha256": "21b3605ac0788d46d5dc21f88d0a8a147a2eb280117a3ac263ec017915057ca9"
     },
     {
       "id": "ER-C05-POST-CSS",
@@ -489,7 +489,7 @@
         "dev/ui_css_regression.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-POST-CSS.json",
-      "receipt_sha256": "4fd50cd3c39ac64a6631a9fb9ad94c9cba28d99b3d3bffbf5b373c3d2882ac1c"
+      "receipt_sha256": "c552d93a93769e5b350215258d17fdcae18a269b00f3fecbda418aa653176162"
     },
     {
       "id": "ER-C05-PRE-TRACE",
@@ -514,7 +514,7 @@
         "dev/seven-lens-browser-trace-cycle05-pre.json"
       ],
       "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-PRE-TRACE.json",
-      "receipt_sha256": "62bf04653edbe90aae5e095e29637b8588d1d93418b8532b8055d3539dc2016d"
+      "receipt_sha256": "1e7c0edc37809e071baa45ef6462b87391cafe5dd6f2d52032f027625f2e26b3"
     },
     {
       "id": "ER-C05-POST-TRACE",
@@ -540,7 +540,7 @@
       ],
       "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-POST-TRACE.json",
       "trace_id": "SL-C05-GF-ROW-MODE-ISOLATION-TRACE",
-      "receipt_sha256": "2f1b6a44977f1c229d93a0b5d98e9f4b41ac19c0fd10e910db846a76534eca5a"
+      "receipt_sha256": "6afd864ecdc1027ae473b06f7bc09753732b06799ec883f2172fdb8ac1c03022"
     },
     {
       "id": "ER-C05-STRUCTURE",
@@ -562,7 +562,7 @@
         "tools/run_ui_structure_suite.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-STRUCTURE.json",
-      "receipt_sha256": "6366dea101c87cd929f174e2a1ee3538852e95056a49c23054ed07fd9ed04b6c"
+      "receipt_sha256": "f303c310bfc8928937130761b91e4c2b3f48cba7e780b325cda6b0a537dcfc89"
     },
     {
       "id": "static",
@@ -574,7 +574,7 @@
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
       "exit_code": 0,
-      "commit": "5fd0176804c11962cbd795911d7e1297d8628cb0",
+      "commit": "55874f7583e50422bae79fff530df3e239734744",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -585,7 +585,7 @@
         "static"
       ],
       "receipt_path": "dev/seven-lens-evidence-c05-static.json",
-      "receipt_sha256": ""
+      "receipt_sha256": "0b5b9dc5475f623ea2a396e2e2f3d72539f8afbed3642c22c66c0f07937531e1"
     },
     {
       "id": "ci",
@@ -597,7 +597,7 @@
       "state_restored": true,
       "command": "python -m tools.audit run --profile ci",
       "exit_code": 0,
-      "commit": "5fd0176804c11962cbd795911d7e1297d8628cb0",
+      "commit": "55874f7583e50422bae79fff530df3e239734744",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -608,7 +608,7 @@
         "ci"
       ],
       "receipt_path": "dev/seven-lens-evidence-c05-ci.json",
-      "receipt_sha256": ""
+      "receipt_sha256": "90598fa3c13b037d0ccf43dcb3b1e73286ffa8c95f52dba1449360dd0c281999"
     },
     {
       "id": "ER-C05-VERIFY-CSS",
@@ -629,14 +629,14 @@
       "state_restored": true,
       "command": "python dev/ui_css_regression.py",
       "exit_code": 0,
-      "commit": "5fd0176804c11962cbd795911d7e1297d8628cb0",
+      "commit": "55874f7583e50422bae79fff530df3e239734744",
       "worktree_clean": true,
       "command_argv": [
         "python",
         "dev/ui_css_regression.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-VERIFY-CSS.json",
-      "receipt_sha256": ""
+      "receipt_sha256": "724f5478693803d4d31a21918360307f18ee16e3cf51fb66dbc165b5cef502c9"
     },
     {
       "id": "ER-C05-VERIFY-TRACE",
@@ -650,7 +650,7 @@
       "state_restored": true,
       "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-05-css.json",
       "exit_code": 0,
-      "commit": "5fd0176804c11962cbd795911d7e1297d8628cb0",
+      "commit": "55874f7583e50422bae79fff530df3e239734744",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -660,7 +660,7 @@
       ],
       "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-VERIFY-TRACE.json",
       "trace_id": "SL-C05-GF-ROW-MODE-ISOLATION-TRACE",
-      "receipt_sha256": ""
+      "receipt_sha256": "2c545e0f2e08814699871d089ad15f0a22d4356225219e5d5f40515216b76c04"
     }
   ],
   "changed_paths": [
