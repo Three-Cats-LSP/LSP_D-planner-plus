@@ -34,7 +34,10 @@ def _tracked_clean(root: Path) -> bool:
         path = line[3:].replace("\\", "/") if len(line) > 3 else line
         if line.startswith("?? ") and fnmatch.fnmatch(path, "dev/seven-lens-evidence-*.json"):
             continue
-        if line[:2] in {" M", "M ", "MM"} and fnmatch.fnmatch(path, "docs/seven-lens-records/*.json"):
+        if line[:2] in {" M", "M ", "MM"} and any(
+            fnmatch.fnmatch(path, pat)
+            for pat in ("docs/seven-lens-records/*.json", "docs/seven-lens-manual-ledger.json")
+        ):
             continue
         unexpected.append(line)
     return not unexpected

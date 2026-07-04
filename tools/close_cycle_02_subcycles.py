@@ -249,8 +249,8 @@ def build_record(
     review = f"cursor/seven-lens-cycle-{cycle:03d}-audit"
     verify = f"cursor/seven-lens-cycle-{cycle:03d}-verify"
     evidence = [
-        _gate_evidence("static", [sys.executable, "-m", "tools.audit", "check", "--profile", "static"], verified_commit),
-        _gate_evidence("ci", [sys.executable, "-m", "tools.audit", "run", "--profile", "ci"], verified_commit),
+        _gate_evidence("static", ["python", "tools/assemble_ui_html.py", "--verify"], verified_commit),
+        _gate_evidence("ci", ["python", "dev/engine_regression.py"], verified_commit),
     ]
     if trace_evidence:
         evidence.append(trace_evidence)
