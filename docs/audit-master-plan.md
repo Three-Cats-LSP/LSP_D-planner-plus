@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v3-full-reset`
-**Units:** 191 total; 0 unread; 65 in progress; 1 read; 125 verified.
+**Units:** 191 total; 0 unread; 66 in progress; 1 read; 124 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -35,7 +35,7 @@
 | 3 | UI-MARKUP-CONSUMPTION | 381 | - | Consumption markup partial READ |
 | 4 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 612 | - | Tools and modals markup partials READ |
 | 5 | UI-CSS-FOUNDATION, UI-CSS-MODES | 756 | - | Foundation and modes CSS READ |
-| 6 | UI-CSS-CONTROLS | 548 | - | Controls CSS READ |
+| 6 | UI-CSS-CONTROLS | 550 | - | Controls CSS READ |
 | 7 | UI-CSS-RESULTS | 931 | - | Results CSS READ |
 | 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 487 | - | Planner shell and results panel READ |
 | 9 | UI-ENVIRONMENT, UI-MODE-STATE | 992 | - | settings-core environment and mode state READ |
