@@ -36,7 +36,11 @@ def _tracked_clean(root: Path) -> bool:
             continue
         if line[:2] in {" M", "M ", "MM"} and any(
             fnmatch.fnmatch(path, pat)
-            for pat in ("docs/seven-lens-records/*.json", "docs/seven-lens-manual-ledger.json")
+            for pat in (
+                "docs/seven-lens-records/*.json",
+                "docs/seven-lens-manual-ledger.json",
+                "dev/seven-lens-browser-trace-*.json",
+            )
         ):
             continue
         unexpected.append(line)

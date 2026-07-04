@@ -185,7 +185,7 @@ def _trace_block(trace_id: str, spec: str, artifact: str, entry: str, consumers:
     }
 
 
-def _gate_evidence(evidence_id: str, argv: list[str], commit: str) -> dict[str, Any]:
+def _gate_evidence(evidence_id: str, argv: list[str], commit: str, tag: str) -> dict[str, Any]:
     portable = ["python", *argv[1:]] if argv and Path(str(argv[0])).name.lower().startswith("python") else argv
     return {
         "id": evidence_id,
@@ -198,12 +198,12 @@ def _gate_evidence(evidence_id: str, argv: list[str], commit: str) -> dict[str, 
         "exit_code": 0,
         "commit": commit,
         "worktree_clean": True,
-        "receipt_path": f"dev/seven-lens-evidence-{evidence_id}.json",
+        "receipt_path": f"dev/seven-lens-evidence-{tag}-{evidence_id}.json",
         "receipt_sha256": "",
     }
 
 
-def _post_trace(evidence_id: str, case_ids: list[str], argv: list[str], commit: str, trace: dict[str, Any]) -> dict[str, Any]:
+def _post_trace(evidence_id: str, case_ids: list[str], argv: list[str], commit: str, trace: dict[str, Any], tag: str) -> dict[str, Any]:
     portable = ["python", *argv[1:]] if argv and Path(str(argv[0])).name.lower().startswith("python") else argv
     return {
         "id": evidence_id,
@@ -217,7 +217,7 @@ def _post_trace(evidence_id: str, case_ids: list[str], argv: list[str], commit: 
         "commit": commit,
         "worktree_clean": True,
         "runtime_trace": trace,
-        "receipt_path": f"dev/seven-lens-evidence-{evidence_id}.json",
+        "receipt_path": f"dev/seven-lens-evidence-{tag}-{evidence_id}.json",
         "receipt_sha256": "",
     }
 
@@ -233,6 +233,7 @@ def build_record(
     verified_commit: str,
     resolved: dict[str, dict[str, Any]],
     trace_evidence: dict[str, Any] | None,
+    tag: str,
     changed_paths: list[str],
 ) -> dict[str, Any]:
     reg_hash = hashlib.sha256(baseline_registry_text.encode("utf-8")).hexdigest()
@@ -249,8 +250,8 @@ def build_record(
     review = f"cursor/seven-lens-cycle-{cycle:03d}-audit"
     verify = f"cursor/seven-lens-cycle-{cycle:03d}-verify"
     evidence = [
-        _gate_evidence("static", ["python", "tools/assemble_ui_html.py", "--verify"], verified_commit),
-        _gate_evidence("ci", ["python", "dev/engine_regression.py"], verified_commit),
+        _gate_evidence("static", ["python", "tools/assemble_ui_html.py", "--verify"], verified_commit, tag),
+        _gate_evidence("ci", ["python", "dev/engine_regression.py"], verified_commit, tag),
     ]
     if trace_evidence:
         evidence.append(trace_evidence)
@@ -280,6 +281,7 @@ def write_records(baseline_commit: str, baseline_registry_text: str, audit_commi
     specs = [
         (
             2,
+            "2a",
             "cycle-02-rec-planner.json",
             ["UI-MARKUP-REC-PLANNER", "UI-REC-PLANNER"],
             _post_trace(
@@ -301,11 +303,13 @@ def write_records(baseline_commit: str, baseline_registry_text: str, audit_commi
                     "User steps REC depth via stepper; hidden recDepth and label stay synced.",
                     ["recDepth stepper +", "recDepth value", "_syncRecDepthBtSteppers", "recDepthStepperVal label"],
                 ),
+                "2a",
             ),
             ["ui/markup-rec-planner.html", "rec-planner.js", "planner-inputs-core.js"],
         ),
         (
             200,
+            "2b",
             "cycle-200-tec-planner.json",
             ["UI-MARKUP-TEC-PLANNER"],
             _post_trace(
@@ -327,11 +331,13 @@ def write_records(baseline_commit: str, baseline_registry_text: str, audit_commi
                     "User switches to imperial, edits travel manual depth, and returns to metric.",
                     ["travelGasManualDepth input", "syncDepthInputCanonical", "domDepthToM", "updateTravelGasMOD"],
                 ),
+                "2b",
             ),
             ["ui/markup-tec-planner.html", "gas-cards-core.js"],
         ),
         (
             201,
+            "2c",
             "cycle-201-mode-isolation.json",
             ["UI-PLANNER-INPUTS"],
             _post_trace(
@@ -353,12 +359,13 @@ def write_records(baseline_commit: str, baseline_registry_text: str, audit_commi
                     "User switches Rec ↔ Bühlmann; each mode retains its own depth/BT via view snapshots.",
                     ["navBtnBuh click", "setPlannerAlgo view swap", "onPlannerViewSwitch restore", "tecDepth value persisted"],
                 ),
+                "2c",
             ),
             ["settings-core.js", "planner-inputs-core.js", "planner-shell.js"],
         ),
     ]
     paths: list[Path] = []
-    for cycle, name, units, trace_row, changed in specs:
+    for cycle, tag, name, units, trace_row, changed in specs:
         record = build_record(
             cycle=cycle,
             record_name=name,
@@ -369,6 +376,7 @@ def write_records(baseline_commit: str, baseline_registry_text: str, audit_commi
             verified_commit=verified_commit,
             resolved=resolved,
             trace_evidence=trace_row,
+            tag=tag,
             changed_paths=changed,
         )
         out = RECORDS / name
