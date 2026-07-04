@@ -159,7 +159,7 @@
     }
   ],
   "audit_commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
-  "verified_source_commit": "6ea719623276bbb0eede4f53986ecad85fc5cdc6",
+  "verified_source_commit": "e396050e703c6f306c5ec6fe54689597ce0a5bc2",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -256,17 +256,14 @@
         "static gate PASS"
       ],
       "state_restored": true,
-      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit check --profile static",
+      "command": "python tools/assemble_ui_html.py --verify",
       "command_argv": [
-        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
-        "-m",
-        "tools.audit",
-        "check",
-        "--profile",
-        "static"
+        "python",
+        "tools/assemble_ui_html.py",
+        "--verify"
       ],
       "exit_code": 0,
-      "commit": "6ea719623276bbb0eede4f53986ecad85fc5cdc6",
+      "commit": "e396050e703c6f306c5ec6fe54689597ce0a5bc2",
       "worktree_clean": true,
       "receipt_path": "dev/seven-lens-evidence-static.json",
       "receipt_sha256": ""
@@ -279,17 +276,13 @@
         "ci gate PASS"
       ],
       "state_restored": true,
-      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit run --profile ci",
+      "command": "python dev/engine_regression.py",
       "command_argv": [
-        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
-        "-m",
-        "tools.audit",
-        "run",
-        "--profile",
-        "ci"
+        "python",
+        "dev/engine_regression.py"
       ],
       "exit_code": 0,
-      "commit": "6ea719623276bbb0eede4f53986ecad85fc5cdc6",
+      "commit": "e396050e703c6f306c5ec6fe54689597ce0a5bc2",
       "worktree_clean": true,
       "receipt_path": "dev/seven-lens-evidence-ci.json",
       "receipt_sha256": ""
@@ -304,9 +297,9 @@
         "Browser trace PASS with state restored and repeatable captures"
       ],
       "state_restored": false,
-      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-02-mode-isolation.json --output dev/seven-lens-browser-trace-2c.json",
+      "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-02-mode-isolation.json --output dev/seven-lens-browser-trace-2c.json",
       "command_argv": [
-        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "python",
         "tools/seven_lens_browser_trace.py",
         "--spec",
         "docs/seven-lens-traces/cycle-02-mode-isolation.json",
@@ -314,7 +307,7 @@
         "dev/seven-lens-browser-trace-2c.json"
       ],
       "exit_code": 0,
-      "commit": "6ea719623276bbb0eede4f53986ecad85fc5cdc6",
+      "commit": "e396050e703c6f306c5ec6fe54689597ce0a5bc2",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "User switches Rec \u2194 B\u00fchlmann; each mode retains its own depth/BT via view snapshots.",
@@ -346,7 +339,7 @@
         "spec_path": "docs/seven-lens-traces/cycle-02-mode-isolation.json",
         "spec_sha256": "6cb131f76e482629505f4e7e28207608ea238dcf4d8206bc7d26d744dba9dd91",
         "artifact_path": "dev/seven-lens-browser-trace-2c.json",
-        "artifact_sha256": "2266e94262edc69ec7b6926146bd1c5bacf56c402dfe9d8cccd63892cd3eda44"
+        "artifact_sha256": "295016a98f603949fdc15b9e1b3457052aa22048cd43cba70a0c345eb777694e"
       },
       "receipt_path": "dev/seven-lens-evidence-ER-2C-TRACE.json",
       "receipt_sha256": ""
