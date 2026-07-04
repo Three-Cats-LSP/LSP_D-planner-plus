@@ -1,0 +1,443 @@
+{
+  "schema_version": 4,
+  "cycle": 2,
+  "record_path": "docs/seven-lens-records/cycle-02-rec-planner.json",
+  "target_branch": "dev",
+  "integration_base_commit": "2fef1fa0ad56b9052beac9a8124726a20ee48395",
+  "baseline_commit": "2fef1fa0ad56b9052beac9a8124726a20ee48395",
+  "baseline_registry_fingerprint": "286223baa0805fc4bab45aafb39d3cf6f7f1b45522299fab99e3cc6e71c48c9e",
+  "baseline_findings": [
+    {
+      "id": "SL-C02-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes."
+    },
+    {
+      "id": "SL-C02-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Travel manual depth limits disagree between markup, metric restore, and imperial mode."
+    },
+    {
+      "id": "SL-C02-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Rounded display values become canonical physical inputs; Best Mix and CNS now reproduce the same unit-roundtrip drift."
+    },
+    {
+      "id": "SL-C02-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Min-deco regression checks an adapter property rather than observable schedule behavior."
+    },
+    {
+      "id": "SL-C02-M-06",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle history allowed unresolved findings and a blocked prior record to be deleted or rewritten as passed."
+    },
+    {
+      "id": "SL-C03-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits."
+    },
+    {
+      "id": "SL-C03-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle 3 regressions compare rounded outputs and restore values before units, masking physical-depth drift and corrupting test state."
+    },
+    {
+      "id": "SL-C03-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling."
+    },
+    {
+      "id": "SL-C04-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Depth and cylinder edits after a unit switch leave canonical data-depth-m/data-volume-l stale, so consumers use old values and the next switch discards the edit."
+    },
+    {
+      "id": "SL-C04-H-03",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Cycles 2-4 are marked reviewed although their protocol records fail closure and Cycle 4 has no evidence runs for five closed findings."
+    },
+    {
+      "id": "SL-C04-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle regression setup leaks canonical DOM and settings state, making the full engine suite order-dependent and leaving two contingency cases failing."
+    },
+    {
+      "id": "SL-C04-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Browser trace evidence could pass forced or vacuous single-run checks without proving a real interactive consumer path."
+    },
+    {
+      "id": "SL-C04-H-04",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Closure evidence was materialized from constants instead of executed commands, allowing fabricated exit codes, cleanliness claims, and unrelated trace reuse."
+    },
+    {
+      "id": "SL-C04-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "A dynamic deco cylinder created in imperial mode defaults to 0.4 ft3 while retaining min 1 and step 0.5, making its initial value invalid."
+    },
+    {
+      "id": "SL-C04-H-05",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "planPanelTecSection is nested inside an unclosed planPanelRecSection, leaving gas and technical planner controls hidden in every planner mode."
+    },
+    {
+      "id": "ISSUE-133-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 4C/5H/8M/8L remediated; gated in audit.py issue133 block and engine_regression issue133 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-134-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 1C/4H/7M/7L remediated; gated in audit.py issue134 block and engine_regression issue134 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-135-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 10H/10M/1L remediated; gated in audit.py issue135 block and engine_regression issue135 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-136-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "extract_ui_cores.py uses LSP-EXTRACT marker contract; verified by audit.py and tools/extract_ui_cores.py [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-137-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in 51f95ac; gated in audit.py and engine_regression issue137 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-138-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in fcfb6c4 (v2.53.04); gated in audit.py and engine_regression issue138 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-139-ROLLUP",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "All 3L fixed; #138 40/40 re-verified on 1271d1a; gated in audit.py and engine_regression issue139 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-140-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Surface interval gas/GF kinetics, pooled gas-plan turn pressure, audit case-ID validation, SW cache waitUntil, Android compile gate, coverage self-tests, FileProvider scope, workspace hash drift"
+    },
+    {
+      "id": "ISSUE-141-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "pSCR diluent bypass from computePSCRFractions, resolveCcrSacForGas removed, invalid trimix getN2Frac returns null"
+    },
+    {
+      "id": "REGRESSION-GF-CCR-FIX",
+      "severity": "CRITICAL",
+      "status": "CLOSED",
+      "summary": "GF pre-anchor and CCR endpoint corrected; verification requires REG-06 and REG-07 in the current release run"
+    }
+  ],
+  "audit_commit": "2fef1fa0ad56b9052beac9a8124726a20ee48395",
+  "verified_source_commit": "2fef1fa0ad56b9052beac9a8124726a20ee48395",
+  "verification_status": "PASSED",
+  "parts": [
+    {
+      "id": "UI-MARKUP-REC-PLANNER-P01",
+      "unit_id": "UI-MARKUP-REC-PLANNER",
+      "path": "ui/markup-rec-planner.html",
+      "start_line": 1,
+      "end_line": 75,
+      "line_count": 75,
+      "content_fingerprint": "ed05a29e79b566b9ef520f5c3447472a4bda4dbc21c7d77ddbf8a73812533019",
+      "review_session": "cursor/seven-lens-cycle-002-audit",
+      "verification_session": "cursor/seven-lens-cycle-002-verify",
+      "lens_results": {
+        "L1": {
+          "trace": "Reviewed UI-MARKUP-REC-PLANNER ui/markup-rec-planner.html:1-75 for Level 2 REC/TECH isolation.",
+          "boundary_cases": [
+            "hidden input sync",
+            "mode view visibility",
+            "imperial/metric round-trip"
+          ],
+          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
+          "result": "NO_FINDING"
+        },
+        "L2": {
+          "trace": "Reviewed UI-MARKUP-REC-PLANNER ui/markup-rec-planner.html:1-75 for Level 2 REC/TECH isolation.",
+          "boundary_cases": [
+            "hidden input sync",
+            "mode view visibility",
+            "imperial/metric round-trip"
+          ],
+          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
+          "result": "NO_FINDING"
+        },
+        "L3": {
+          "trace": "Reviewed UI-MARKUP-REC-PLANNER ui/markup-rec-planner.html:1-75 for Level 2 REC/TECH isolation.",
+          "boundary_cases": [
+            "hidden input sync",
+            "mode view visibility",
+            "imperial/metric round-trip"
+          ],
+          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
+          "result": "NO_FINDING"
+        },
+        "L4": {
+          "trace": "Reviewed UI-MARKUP-REC-PLANNER ui/markup-rec-planner.html:1-75 for Level 2 REC/TECH isolation.",
+          "boundary_cases": [
+            "hidden input sync",
+            "mode view visibility",
+            "imperial/metric round-trip"
+          ],
+          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
+          "result": "NO_FINDING"
+        },
+        "L5": {
+          "trace": "Reviewed UI-MARKUP-REC-PLANNER ui/markup-rec-planner.html:1-75 for Level 2 REC/TECH isolation.",
+          "boundary_cases": [
+            "hidden input sync",
+            "mode view visibility",
+            "imperial/metric round-trip"
+          ],
+          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "Reviewed UI-MARKUP-REC-PLANNER ui/markup-rec-planner.html:1-75 for Level 2 REC/TECH isolation.",
+          "boundary_cases": [
+            "hidden input sync",
+            "mode view visibility",
+            "imperial/metric round-trip"
+          ],
+          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
+          "result": "NO_FINDING"
+        },
+        "L7": {
+          "trace": "Reviewed UI-MARKUP-REC-PLANNER ui/markup-rec-planner.html:1-75 for Level 2 REC/TECH isolation.",
+          "boundary_cases": [
+            "hidden input sync",
+            "mode view visibility",
+            "imperial/metric round-trip"
+          ],
+          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
+          "result": "NO_FINDING"
+        }
+      }
+    },
+    {
+      "id": "UI-REC-PLANNER-P01",
+      "unit_id": "UI-REC-PLANNER",
+      "path": "rec-planner.js",
+      "start_line": 1,
+      "end_line": 9,
+      "line_count": 9,
+      "content_fingerprint": "35c0acee5dd59008689b8ba3f1c66747c8fe3de609682c391e236d64ef0a9d0e",
+      "review_session": "cursor/seven-lens-cycle-002-audit",
+      "verification_session": "cursor/seven-lens-cycle-002-verify",
+      "lens_results": {
+        "L1": {
+          "trace": "Reviewed UI-REC-PLANNER rec-planner.js:1-9 for Level 2 REC/TECH isolation.",
+          "boundary_cases": [
+            "hidden input sync",
+            "mode view visibility",
+            "imperial/metric round-trip"
+          ],
+          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
+          "result": "NO_FINDING"
+        },
+        "L2": {
+          "trace": "Reviewed UI-REC-PLANNER rec-planner.js:1-9 for Level 2 REC/TECH isolation.",
+          "boundary_cases": [
+            "hidden input sync",
+            "mode view visibility",
+            "imperial/metric round-trip"
+          ],
+          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
+          "result": "NO_FINDING"
+        },
+        "L3": {
+          "trace": "Reviewed UI-REC-PLANNER rec-planner.js:1-9 for Level 2 REC/TECH isolation.",
+          "boundary_cases": [
+            "hidden input sync",
+            "mode view visibility",
+            "imperial/metric round-trip"
+          ],
+          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
+          "result": "NO_FINDING"
+        },
+        "L4": {
+          "trace": "Reviewed UI-REC-PLANNER rec-planner.js:1-9 for Level 2 REC/TECH isolation.",
+          "boundary_cases": [
+            "hidden input sync",
+            "mode view visibility",
+            "imperial/metric round-trip"
+          ],
+          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
+          "result": "NO_FINDING"
+        },
+        "L5": {
+          "trace": "Reviewed UI-REC-PLANNER rec-planner.js:1-9 for Level 2 REC/TECH isolation.",
+          "boundary_cases": [
+            "hidden input sync",
+            "mode view visibility",
+            "imperial/metric round-trip"
+          ],
+          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "Reviewed UI-REC-PLANNER rec-planner.js:1-9 for Level 2 REC/TECH isolation.",
+          "boundary_cases": [
+            "hidden input sync",
+            "mode view visibility",
+            "imperial/metric round-trip"
+          ],
+          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
+          "result": "NO_FINDING"
+        },
+        "L7": {
+          "trace": "Reviewed UI-REC-PLANNER rec-planner.js:1-9 for Level 2 REC/TECH isolation.",
+          "boundary_cases": [
+            "hidden input sync",
+            "mode view visibility",
+            "imperial/metric round-trip"
+          ],
+          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
+          "result": "NO_FINDING"
+        }
+      }
+    }
+  ],
+  "findings": [],
+  "evidence_runs": [
+    {
+      "id": "static",
+      "kind": "gate",
+      "case_ids": [],
+      "observable_assertions": [
+        "static gate PASS"
+      ],
+      "state_restored": true,
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit check --profile static",
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-m",
+        "tools.audit",
+        "check",
+        "--profile",
+        "static"
+      ],
+      "exit_code": 0,
+      "commit": "2fef1fa0ad56b9052beac9a8124726a20ee48395",
+      "worktree_clean": true,
+      "receipt_path": "dev/seven-lens-evidence-static.json",
+      "receipt_sha256": ""
+    },
+    {
+      "id": "ci",
+      "kind": "gate",
+      "case_ids": [],
+      "observable_assertions": [
+        "ci gate PASS"
+      ],
+      "state_restored": true,
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit run --profile ci",
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-m",
+        "tools.audit",
+        "run",
+        "--profile",
+        "ci"
+      ],
+      "exit_code": 0,
+      "commit": "2fef1fa0ad56b9052beac9a8124726a20ee48395",
+      "worktree_clean": true,
+      "receipt_path": "dev/seven-lens-evidence-ci.json",
+      "receipt_sha256": ""
+    },
+    {
+      "id": "ER-2A-TRACE",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C01-DEPTH-SYNC"
+      ],
+      "observable_assertions": [
+        "Browser trace PASS with state restored and repeatable captures"
+      ],
+      "state_restored": false,
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-02-rec-planner.json --output dev/seven-lens-browser-trace-2a.json",
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-02-rec-planner.json",
+        "--output",
+        "dev/seven-lens-browser-trace-2a.json"
+      ],
+      "exit_code": 0,
+      "commit": "2fef1fa0ad56b9052beac9a8124726a20ee48395",
+      "worktree_clean": true,
+      "runtime_trace": {
+        "entry_event": "User steps REC depth via stepper; hidden recDepth and label stay synced.",
+        "consumer_path": [
+          "recDepth stepper +",
+          "recDepth value",
+          "_syncRecDepthBtSteppers",
+          "recDepthStepperVal label"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "value": "user event"
+          },
+          {
+            "stage": "canonical",
+            "value": "physical/canonical store"
+          },
+          {
+            "stage": "consumer",
+            "value": "engine/DOM consumer"
+          },
+          {
+            "stage": "observable",
+            "value": "label/schedule/metric output"
+          }
+        ],
+        "trace_id": "SL-REC-DEPTH-BT-STEPPER",
+        "spec_path": "docs/seven-lens-traces/cycle-02-rec-planner.json",
+        "spec_sha256": "796b00ded3e257fef826c7a68acc53b572e8f464c6593a6a47af320874c357fb",
+        "artifact_path": "dev/seven-lens-browser-trace-2a.json",
+        "artifact_sha256": "f809ef1e3fef0323ed548e11d76d7c34025c4a9d4ecc4888b0bb6ddcb540d164"
+      },
+      "receipt_path": "dev/seven-lens-evidence-ER-2A-TRACE.json",
+      "receipt_sha256": ""
+    }
+  ],
+  "changed_paths": [
+    "ui/markup-rec-planner.html",
+    "rec-planner.js",
+    "planner-inputs-core.js"
+  ]
+}
