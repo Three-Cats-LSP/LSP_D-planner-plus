@@ -176,10 +176,10 @@
 | TOOL-UPDATE-VERSION | tooling | `tools/update_sw_version.py:1` | 104 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-VENDOR | tooling | `tools/vendor_offline_assets.py:1` | 173 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-VERIFY-ASSETS | tooling | `tools/verify_site_assets.py:1` | 132 | P2 | VERIFIED | COV-01, PARITY-01 |
-| CI-AUDIT | ci | `.github/workflows/audit.yml:1` | 131 | P1 | VERIFIED | COV-01 |
-| CI-APK | ci | `.github/workflows/build-apk.yml:1` | 161 | P1 | VERIFIED | ANDROID-01 |
-| CI-MAIN | ci | `.github/workflows/ci.yml:1` | 189 | P1 | VERIFIED | COV-01 |
-| CI-DEPLOY | ci | `.github/workflows/deploy.yml:1` | 128 | P1 | VERIFIED | COV-01, EXT-07 |
+| CI-AUDIT | ci | `.github/workflows/audit.yml:1` | 135 | P1 | VERIFIED | COV-01 |
+| CI-APK | ci | `.github/workflows/build-apk.yml:1` | 163 | P1 | VERIFIED | ANDROID-01 |
+| CI-MAIN | ci | `.github/workflows/ci.yml:1` | 191 | P1 | VERIFIED | COV-01 |
+| CI-DEPLOY | ci | `.github/workflows/deploy.yml:1` | 130 | P1 | VERIFIED | COV-01, EXT-07 |
 | CI-NOTIFY | ci | `.github/workflows/notify-site.yml:1` | 50 | P2 | VERIFIED | COV-01 |
 | CI-OFFLINE-ZIP | ci | `.github/workflows/build-offline-zip.yml:1` | 119 | P2 | VERIFIED | COV-01 |
 | TOOL-AUDIT-V2-__INIT__-PY | tooling | `tools/audit/__init__.py:1` | 3 | P0 | VERIFIED | COV-01, PARITY-01 |

@@ -3929,8 +3929,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "303415829727d7dcff5b7856e63e8863d09556d68dc1d47f5ffbf9322ff6a9a8",
-      "last_read_fingerprint": "303415829727d7dcff5b7856e63e8863d09556d68dc1d47f5ffbf9322ff6a9a8",
+      "fingerprint": "04b1709def79746d40ab531cc5694effb1d97414461317b790098be3e8d0bf33",
+      "last_read_fingerprint": "04b1709def79746d40ab531cc5694effb1d97414461317b790098be3e8d0bf33",
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
@@ -3949,8 +3949,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "ca43af62e56279a20f9fc5919a096815bb38aa9a6547ccb37a65499284440123",
-      "last_read_fingerprint": "ca43af62e56279a20f9fc5919a096815bb38aa9a6547ccb37a65499284440123",
+      "fingerprint": "aed3f5bccca5e1e075b4f4bff999fc3b9933137e9c5051d0ff55e90d9f8c100e",
+      "last_read_fingerprint": "aed3f5bccca5e1e075b4f4bff999fc3b9933137e9c5051d0ff55e90d9f8c100e",
       "evidence": [
         "SUITE-ANDROID/android-compile"
       ],
@@ -3969,8 +3969,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "e14775d50854c86063686dcc75589f2d9b51bc10e7107b6bd5e1217ee6da0519",
-      "last_read_fingerprint": "e14775d50854c86063686dcc75589f2d9b51bc10e7107b6bd5e1217ee6da0519",
+      "fingerprint": "c5d0f2020877981bcf7b7a3d0948391243338225c20982ae19aaa398b56adf1a",
+      "last_read_fingerprint": "c5d0f2020877981bcf7b7a3d0948391243338225c20982ae19aaa398b56adf1a",
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
@@ -3989,8 +3989,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "7b2f9b102e99020feb33f405499c2c241dc88c52f93ea170b98e0fd93937b31b",
-      "last_read_fingerprint": "7b2f9b102e99020feb33f405499c2c241dc88c52f93ea170b98e0fd93937b31b",
+      "fingerprint": "8bc9c5d83401a0c95450dc69e142c7a837f5a54ef257cdd9153054f0dbe321d6",
+      "last_read_fingerprint": "8bc9c5d83401a0c95450dc69e142c7a837f5a54ef257cdd9153054f0dbe321d6",
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01",
         "SUITE-UI-STRUCTURE/UI-PAGES-ASSETS"
