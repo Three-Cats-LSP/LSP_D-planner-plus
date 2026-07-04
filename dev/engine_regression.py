@@ -1733,7 +1733,17 @@ ENGINE_SUITE_JS = r"""
         const key = typeof LSP_PROFILE_PRESETS_KEY !== 'undefined' ? LSP_PROFILE_PRESETS_KEY : 'lspProfilePresets';
         const prevStorage = localStorage.getItem(key);
         try {
-          localStorage.setItem(key, JSON.stringify([{ name: 't', depth: '48', bt: '18', gases: {} }]));
+          localStorage.setItem(key, JSON.stringify([{
+            name: 't',
+            schemaVersion: 2,
+            migrationStatus: 'confirmed',
+            plannerMode: 'tec',
+            unitsAtSave: 'metric',
+            depthM: 48,
+            depth: '48',
+            bt: '18',
+            gases: {},
+          }]));
           loadProfilePreset(0);
           loadPresetSyncOk = syncOk(48, 18);
         } finally {

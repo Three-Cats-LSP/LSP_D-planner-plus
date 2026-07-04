@@ -8695,6 +8695,9 @@ function _renderProfilePresetModal() {
       : `${p.depth ?? '?'} / ${p.bt ?? '?'}min (setup required)`;
     const setupBtn = complete ? '' :
       `<button onclick="confirmLegacyProfilePreset(${i})" style="padding:5px 10px;background:none;border:1px solid var(--accent);border-radius:6px;color:var(--accent);font-family:inherit;font-size:10px;font-weight:700;cursor:pointer;">Setup</button>`;
+    const loadBtn = complete
+      ? `<button onclick="loadProfilePreset(${i})" style="padding:5px 10px;background:var(--accent);border:none;border-radius:6px;color:#000;font-family:inherit;font-size:10px;font-weight:700;cursor:pointer;">Load</button>`
+      : `<button disabled title="Run Setup to confirm mode and units before loading" style="padding:5px 10px;background:var(--accent);border:none;border-radius:6px;color:#000;font-family:inherit;font-size:10px;font-weight:700;opacity:0.45;cursor:not-allowed;">Load</button>`;
     return `
     <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;background:var(--bg-alt);">
       <div style="flex:1;min-width:0;">
@@ -8702,7 +8705,7 @@ function _renderProfilePresetModal() {
         <div style="color:var(--muted);font-size:10px;margin-top:1px;">${modeLabel} · ${depthLine}${p.summary ? ' · ' + escapeHtmlText(p.summary) : ''}</div>
       </div>
       ${setupBtn}
-      <button onclick="loadProfilePreset(${i})" style="padding:5px 10px;background:var(--accent);border:none;border-radius:6px;color:#000;font-family:inherit;font-size:10px;font-weight:700;cursor:pointer;">Load</button>
+      ${loadBtn}
       <button onclick="deleteProfilePreset(${i})" style="padding:5px 10px;background:none;border:1px solid var(--border);border-radius:6px;color:var(--red);font-family:inherit;font-size:10px;cursor:pointer;">Del</button>
     </div>`;
   }).join('');
@@ -8781,18 +8784,7 @@ function loadProfilePreset(idx) {
   const p = getProfilePresets()[idx];
   if (!p) return;
   if (!_profilePresetIsComplete(p)) {
-    const dEl = getPlannerInputEl('decoDepth');
-    const bEl = getPlannerInputEl('decoBT');
-    if (dEl) {
-      dEl.value = String(p.depth ?? '');
-      syncDepthInputCanonical(dEl.id);
-    }
-    if (bEl && p.bt != null) bEl.value = String(p.bt);
-    _syncRecDepthBtSteppers?.();
-    _syncTecDepthBtSteppers?.();
-    _syncDepthBtSteppers?.();
-    closeDiveProfilePresets();
-    showToast(`Loaded depth/BT into active planner — use Setup to confirm mode & units: ${p.name}`, 'preset');
+    showToast('Run Setup to confirm planner mode and units before loading this preset', 'error', true);
     return;
   }
   _ensurePresetPlannerMode(_presetPlannerMode(p));

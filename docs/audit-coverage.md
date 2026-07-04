@@ -53,10 +53,10 @@
 | UI-TOOLS-EXPOSURE | web_runtime | `index.html:7669` | 225 | P1 | IN_PROGRESS | - |
 | UI-TOOLS-GF | web_runtime | `index.html:7894` | 316 | P2 | IN_PROGRESS | - |
 | UI-SETTINGS | web_runtime | `index.html:8210` | 374 | P1 | IN_PROGRESS | - |
-| UI-PROFILE-PRESETS | web_runtime | `index.html:8584` | 514 | P2 | IN_PROGRESS | - |
-| UI-CONFIG-PRESETS | web_runtime | `index.html:9098` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
-| UI-APP-INIT | web_runtime | `index.html:9283` | 175 | P1 | VERIFIED | EXT-05, COV-01 |
-| UI-PWA-LIFECYCLE | pwa | `index.html:9458` | 99 | P1 | VERIFIED | REG-45, EXT-08, COV-01 |
+| UI-PROFILE-PRESETS | web_runtime | `index.html:8584` | 506 | P2 | IN_PROGRESS | - |
+| UI-CONFIG-PRESETS | web_runtime | `index.html:9090` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
+| UI-APP-INIT | web_runtime | `index.html:9275` | 175 | P1 | VERIFIED | EXT-05, COV-01 |
+| UI-PWA-LIFECYCLE | pwa | `index.html:9450` | 99 | P1 | VERIFIED | REG-45, EXT-08, COV-01 |
 | UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 454 | P2 | VERIFIED | EXT-03, EXT-06, COV-01 |
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 372 | P2 | VERIFIED | EXT-03, EXT-06, COV-01 |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 528 | P2 | VERIFIED | EXT-03, EXT-06, COV-01 |
@@ -118,7 +118,7 @@
 | NATIVE-DRAWABLE-FG | native_android | `android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml:1` | 34 | P3 | VERIFIED | ANDROID-01, COV-01 |
 | NATIVE-ICON | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml:1` | 5 | P3 | VERIFIED | ANDROID-01, COV-01 |
 | NATIVE-ICON-ROUND | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml:1` | 5 | P3 | VERIFIED | ANDROID-01, COV-01 |
-| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 2742 | P1 | IN_PROGRESS | - |
+| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 2752 | P1 | IN_PROGRESS | - |
 | TEST-ISSUE-140-REGRESSION | test_infrastructure | `dev/issue140_regression.py:1` | 99 | P1 | VERIFIED | REG-08, REG-09 |
 | TEST-GAS-CORE-REGRESSION | test_infrastructure | `dev/gas_core_regression.py:1` | 129 | P1 | VERIFIED | REG-10, REG-11, REG-12 |
 | TEST-ISSUE-141-REGRESSION | test_infrastructure | `dev/issue141_regression.py:1` | 108 | P1 | VERIFIED | REG-15, REG-16, REG-18 |

@@ -1819,7 +1819,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PROFILE-PRESETS"
       },
-      "fingerprint": "658b9df0b38e672624d140bb42e33d587714cd70d732f4f99089da0d7b225081",
+      "fingerprint": "8d6704448680e92f76eec458686d5831d8a0d1f3d70d52d9c2c3d10068b9129e",
       "last_read_fingerprint": null,
       "audit_issue": 159,
       "evidence": [],
@@ -2736,7 +2736,7 @@
       "evidence": [],
       "issue": "GitHub #133–#138 audit regressions and Cycle 31–34 verification",
       "regression_cases": [],
-      "fingerprint": "ff5932b648f5fb8c6642ea5df7babc86da61fbe11e4f38cf3f9b36b190d065db",
+      "fingerprint": "a93ee0b7b8ee61cc65bcab28d89a19ec0205e2adb1a11718e9c0bb01e1993751",
       "last_read_fingerprint": null,
       "audit_issue": 169
     },
@@ -4672,7 +4672,7 @@
   "cycles": [
     {
       "cycle": 1,
-      "max_new_application_lines": 900,
+      "max_new_application_lines": 750,
       "application_units": [
         "UI-MARKUP-HEADER"
       ],
@@ -4758,7 +4758,7 @@
     },
     {
       "cycle": 10,
-      "max_new_application_lines": 690,
+      "max_new_application_lines": 679,
       "application_units": [
         "APP-SURFACE-INTERVAL",
         "APP-GAS-TABLE"
@@ -4817,7 +4817,7 @@
     },
     {
       "cycle": 16,
-      "max_new_application_lines": 800,
+      "max_new_application_lines": 755,
       "application_units": [
         "UI-TOOLS-PROFILE",
         "UI-PLOT-INIT"
@@ -4925,7 +4925,7 @@
     },
     {
       "cycle": 26,
-      "max_new_application_lines": 860,
+      "max_new_application_lines": 851,
       "application_units": [
         "UI-TOOLS-TISSUES",
         "UI-TOOLS-EXPOSURE",
@@ -4936,16 +4936,24 @@
     },
     {
       "cycle": 27,
-      "max_new_application_lines": 699,
+      "max_new_application_lines": 600,
       "application_units": [
-        "UI-PROFILE-PRESETS",
-        "UI-CONFIG-PRESETS"
+        "UI-PROFILE-PRESETS"
       ],
       "engine_reverification": [],
-      "acceptance": "Profile and config presets READ"
+      "acceptance": "Dive profile presets READ (depth/BT/mode ownership)"
     },
     {
       "cycle": 28,
+      "max_new_application_lines": 600,
+      "application_units": [
+        "UI-CONFIG-PRESETS"
+      ],
+      "engine_reverification": [],
+      "acceptance": "Advanced config presets READ"
+    },
+    {
+      "cycle": 29,
       "max_new_application_lines": 2418,
       "application_units": [
         "UI-BOOT"
@@ -4954,7 +4962,7 @@
       "acceptance": "index.html shell boot region READ"
     },
     {
-      "cycle": 29,
+      "cycle": 30,
       "max_new_application_lines": 600,
       "application_units": [
         "APP-SERVICE-WORKER",
@@ -4965,7 +4973,7 @@
       "acceptance": "PWA and service worker READ"
     },
     {
-      "cycle": 30,
+      "cycle": 31,
       "max_new_application_lines": 600,
       "application_units": [
         "APP-ZHL-WORKER",
@@ -4975,7 +4983,7 @@
       "acceptance": "ZHL schedule worker and bridge READ"
     },
     {
-      "cycle": 31,
+      "cycle": 32,
       "max_new_application_lines": 600,
       "application_units": [
         "APP-CAPACITOR-BRIDGE",
@@ -4985,7 +4993,7 @@
       "acceptance": "Capacitor and Android select bridge READ"
     },
     {
-      "cycle": 32,
+      "cycle": 33,
       "max_new_application_lines": 600,
       "application_units": [
         "ENG-ZHL-PHYSICS",
@@ -4995,7 +5003,7 @@
       "acceptance": "ZHL physics and gas canonical cores READ"
     },
     {
-      "cycle": 33,
+      "cycle": 34,
       "max_new_application_lines": 657,
       "application_units": [
         "ENG-ZHL-SCHEDULE"
@@ -5004,7 +5012,7 @@
       "acceptance": "ZHL schedule canonical core READ"
     },
     {
-      "cycle": 34,
+      "cycle": 35,
       "max_new_application_lines": 600,
       "application_units": [
         "ENG-ZHL-CCR"
@@ -5013,7 +5021,7 @@
       "acceptance": "ZHL CCR canonical core READ"
     },
     {
-      "cycle": 35,
+      "cycle": 36,
       "max_new_application_lines": 2099,
       "application_units": [
         "ENG-VPM"
@@ -5022,7 +5030,7 @@
       "acceptance": "VPM canonical core READ"
     },
     {
-      "cycle": 36,
+      "cycle": 37,
       "max_new_application_lines": 600,
       "application_units": [
         "ENG-RDP"
@@ -5031,7 +5039,7 @@
       "acceptance": "PADI RDP engine READ"
     },
     {
-      "cycle": 37,
+      "cycle": 38,
       "max_new_application_lines": 2574,
       "application_units": [
         "ENG-VPM-REFERENCE"
@@ -5040,7 +5048,7 @@
       "acceptance": "VPM reference implementation READ"
     },
     {
-      "cycle": 38,
+      "cycle": 39,
       "max_new_application_lines": 600,
       "application_units": [
         "APP-DOWNLOAD"
@@ -5049,7 +5057,7 @@
       "acceptance": "Download page READ"
     },
     {
-      "cycle": 39,
+      "cycle": 40,
       "max_new_application_lines": 600,
       "application_units": [],
       "engine_reverification": [
@@ -5060,7 +5068,7 @@
       "acceptance": "Engine and gas regression harnesses re-verified"
     },
     {
-      "cycle": 40,
+      "cycle": 41,
       "max_new_application_lines": 600,
       "application_units": [],
       "engine_reverification": [
@@ -5073,7 +5081,7 @@
       "acceptance": "Full regression umbrella and release-tier test paths re-verified"
     },
     {
-      "cycle": 41,
+      "cycle": 42,
       "max_new_application_lines": 600,
       "application_units": [
         "APP-PACKAGE"
@@ -5097,7 +5105,7 @@
     },
     {
       "cycle": 201,
-      "max_new_application_lines": 400,
+      "max_new_application_lines": 600,
       "application_units": [
         "UI-PLANNER-INPUTS"
       ],
