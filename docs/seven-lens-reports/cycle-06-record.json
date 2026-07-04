@@ -1,0 +1,443 @@
+{
+  "schema_version": 4,
+  "cycle": 6,
+  "record_path": "docs/seven-lens-reports/cycle-06-record.json",
+  "target_branch": "dev",
+  "integration_base_commit": "7cd58978d7b151c74e99cd65b79148d09b223658",
+  "baseline_commit": "7cd58978d7b151c74e99cd65b79148d09b223658",
+  "baseline_registry_fingerprint": "f5e6a3da37a05bdfee6b9fae4060c97f4435448f635681f2a452719bfb7e91b9",
+  "baseline_findings": [
+    {
+      "id": "SL-C02-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes."
+    },
+    {
+      "id": "SL-C02-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Travel manual depth limits disagree between markup, metric restore, and imperial mode."
+    },
+    {
+      "id": "SL-C02-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Rounded display values become canonical physical inputs; Best Mix and CNS now reproduce the same unit-roundtrip drift."
+    },
+    {
+      "id": "SL-C02-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Min-deco regression checks an adapter property rather than observable schedule behavior."
+    },
+    {
+      "id": "SL-C02-M-06",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle history allowed unresolved findings and a blocked prior record to be deleted or rewritten as passed."
+    },
+    {
+      "id": "SL-C03-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits."
+    },
+    {
+      "id": "SL-C03-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle 3 regressions compare rounded outputs and restore values before units, masking physical-depth drift and corrupting test state."
+    },
+    {
+      "id": "SL-C03-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling."
+    },
+    {
+      "id": "SL-C04-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Depth and cylinder edits after a unit switch leave canonical data-depth-m/data-volume-l stale, so consumers use old values and the next switch discards the edit."
+    },
+    {
+      "id": "SL-C04-H-03",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Cycles 2-4 are marked reviewed although their protocol records fail closure and Cycle 4 has no evidence runs for five closed findings."
+    },
+    {
+      "id": "SL-C04-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle regression setup leaks canonical DOM and settings state, making the full engine suite order-dependent and leaving two contingency cases failing."
+    },
+    {
+      "id": "SL-C04-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Browser trace evidence could pass forced or vacuous single-run checks without proving a real interactive consumer path."
+    },
+    {
+      "id": "SL-C04-H-04",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Closure evidence was materialized from constants instead of executed commands, allowing fabricated exit codes, cleanliness claims, and unrelated trace reuse."
+    },
+    {
+      "id": "SL-C04-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "A dynamic deco cylinder created in imperial mode defaults to 0.4 ft3 while retaining min 1 and step 0.5, making its initial value invalid."
+    },
+    {
+      "id": "SL-C04-H-05",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "planPanelTecSection is nested inside an unclosed planPanelRecSection, leaving gas and technical planner controls hidden in every planner mode."
+    },
+    {
+      "id": "ISSUE-133-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 4C/5H/8M/8L remediated; gated in audit.py issue133 block and engine_regression issue133 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-134-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 1C/4H/7M/7L remediated; gated in audit.py issue134 block and engine_regression issue134 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-135-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 10H/10M/1L remediated; gated in audit.py issue135 block and engine_regression issue135 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-136-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "extract_ui_cores.py uses LSP-EXTRACT marker contract; verified by audit.py and tools/extract_ui_cores.py [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-137-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in 51f95ac; gated in audit.py and engine_regression issue137 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-138-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in fcfb6c4 (v2.53.04); gated in audit.py and engine_regression issue138 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-139-ROLLUP",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "All 3L fixed; #138 40/40 re-verified on 1271d1a; gated in audit.py and engine_regression issue139 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-140-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Surface interval gas/GF kinetics, pooled gas-plan turn pressure, audit case-ID validation, SW cache waitUntil, Android compile gate, coverage self-tests, FileProvider scope, workspace hash drift"
+    },
+    {
+      "id": "ISSUE-141-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "pSCR diluent bypass from computePSCRFractions, resolveCcrSacForGas removed, invalid trimix getN2Frac returns null"
+    },
+    {
+      "id": "REGRESSION-GF-CCR-FIX",
+      "severity": "CRITICAL",
+      "status": "CLOSED",
+      "summary": "GF pre-anchor and CCR endpoint corrected; verification requires REG-06 and REG-07 in the current release run"
+    },
+    {
+      "id": "SL-C05-M-01",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "summary": "Mode-isolation CSS targets removed #gfPresetsRow"
+    },
+    {
+      "id": "SL-C05-M-02",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "summary": "Export buttons suppress keyboard focus ring"
+    },
+    {
+      "id": "SL-C05-L-01",
+      "severity": "LOW",
+      "status": "OPEN",
+      "summary": "Obsolete .brand-icon rules"
+    },
+    {
+      "id": "SL-C05-L-02",
+      "severity": "LOW",
+      "status": "OPEN",
+      "summary": "Obsolete #gfCustomRow .gf-btn rules"
+    },
+    {
+      "id": "SL-C05-L-03",
+      "severity": "LOW",
+      "status": "OPEN",
+      "summary": "Obsolete .algo-switcher rules"
+    },
+    {
+      "id": "SL-C05-L-04",
+      "severity": "LOW",
+      "status": "OPEN",
+      "summary": "Obsolete .theme-toggle rules"
+    }
+  ],
+  "audit_commit": "",
+  "verified_source_commit": "",
+  "verification_status": "PENDING",
+  "parts": [
+    {
+      "id": "UI-CSS-CONTROLS-P01",
+      "unit_id": "UI-CSS-CONTROLS",
+      "path": "lsp-dplanner-controls.css",
+      "start_line": 1,
+      "end_line": 500,
+      "line_count": 500,
+      "content_fingerprint": "87cf75db8d4758f619575de2a7ea3ac2c86d38485060b1a76298b00cfe5608b5",
+      "review_session": "C06-A",
+      "verification_session": "",
+      "lens_results": {
+        "L1": {
+          "trace": "gas-f-num 4.25rem flex :127-129; option-pill calc thumb width/translate :59-71; android panel max-height min(70vh,520px) :202; form-grid minmax(110px,1fr) :94-97",
+          "boundary_cases": [
+            "375px mobile gas input 68x35px",
+            "imperial cylBot_size 1766 no scroll clip",
+            "pill --pill-w inline overrides 72-108px"
+          ],
+          "evidence": "lsp-dplanner-controls.css:59-71,127-129,202; Playwright #cylBot_size geometry",
+          "result": "FINDING"
+        },
+        "L2": {
+          "trace": "click setGasRule -> classList.toggle active on .seg-btn -> .seg-btn.active background :36-38; click toggleStopDepth -> dataset.side -> [data-side=right] thumb translate :71; field :focus box-shadow :150-152",
+          "boundary_cases": [
+            "keyboard seg-btn focus without visible ring",
+            "mouse input :focus glow vs :focus-visible absent",
+            "disabled gen-btn opacity :282"
+          ],
+          "evidence": "gas-plan-core.js:44-50; index.html:3765-3777; Playwright seg outlineStyle none",
+          "result": "FINDING"
+        },
+        "L3": {
+          "trace": "toggleVpmMode -> dataset.side on #vpmModeToggle planner-shell.js:14-19; setDiveCount -> .active on #dc* index.html:6647-6649; android-select-open body class :259; LspAndroidSelect sync on select value patch android-select-picker.js:36-66",
+          "boundary_cases": [
+            "unit switch relabels gas-f-num labels via JS not CSS",
+            "dynamic gas-cards append .gas-card-grid",
+            "stale .si-inner after unified plan migration"
+          ],
+          "evidence": "planner-shell.js:14-19; gas-cards-core.js:275-292; buildUnifiedPlan :6710-6722",
+          "result": "FINDING"
+        },
+        "L4": {
+          "trace": "markup seg-btn/option-pill/gen-btn in index.html+ui/markup-*; setGasRule -> #gpRuleThirds.active; toggleStopDepth -> data-side; export-core dive-plan-banner class string :405; contingency-core alert.warn/dang HTML :144-183",
+          "boundary_cases": [
+            "#diveBlocks absent so .si-inner dead",
+            ".t-col zero hits",
+            ".btn-calc zero hits in index.html"
+          ],
+          "evidence": "index.html:190-227,1265-1266; export-core.js:405; selector grep",
+          "result": "FINDING"
+        },
+        "L5": {
+          "trace": "extract_ui_css.py emits lsp-dplanner-controls.css; index.html link order foundation,modes,controls,results :32-39; sw.js precache controls.css; www/_pages mirror via sync",
+          "boundary_cases": [
+            "UI-EXTRACT-CSS parity",
+            "no generated-only control fixes"
+          ],
+          "evidence": "tools/extract_ui_css.py:24; SUITE-UI-STRUCTURE PASS; sw.js:75",
+          "result": "FINDING"
+        },
+        "L6": {
+          "trace": "alert.deco/narcotic-warn solid red :434-446 with light-theme #111 text :438-447; .dang gas warnings :432; disabled gen-btn opacity :282; seg-btn focus gap blocks keyboard verification of gas rule",
+          "boundary_cases": [
+            "deco alert visible contrast light+dark",
+            "gas-f-num undersize mobile taps",
+            "invalid inputs visually normal"
+          ],
+          "evidence": "Playwright #decoAlerts .alert.deco color; controls.css:432-446",
+          "result": "FINDING"
+        },
+        "L7": {
+          "trace": "SUITE-UI-STRUCTURE UI-EXTRACT-CSS/UI-CSS-LINK-ORDER -> source string/order only; dev/ui_css_regression.py cases SL-C05-* foundation/modes; no getComputedStyle seg-btn/gas-f-num suite",
+          "boundary_cases": [
+            "EXT-03 extract marker",
+            "no computed-style regression for controls selectors"
+          ],
+          "evidence": "dev/ui_css_regression.py CASE_IDS; audit-units.json evidence SUITE-UI-STRUCTURE",
+          "result": "FINDING"
+        }
+      }
+    },
+    {
+      "id": "UI-CSS-CONTROLS-P02",
+      "unit_id": "UI-CSS-CONTROLS",
+      "path": "lsp-dplanner-controls.css",
+      "start_line": 501,
+      "end_line": 528,
+      "line_count": 28,
+      "content_fingerprint": "f525ea55acd48a93366de2fc6c71a6813e5488965819126fb96dc585e71eda98",
+      "review_session": "C06-A",
+      "verification_session": "",
+      "lens_results": {
+        "L1": {
+          "trace": "result-card padding 14px :502-507; rc-title 11px uppercase :512-516; info-box border-left accent :519-525; no responsive breakpoints in tail section",
+          "boundary_cases": [
+            "c-ok/c-warn/c-dang left border 3px :509-511",
+            "info-box margin 10px 0"
+          ],
+          "evidence": "lsp-dplanner-controls.css:501-525",
+          "result": "NO_FINDING"
+        },
+        "L2": {
+          "trace": "runCNS/status update -> statusEl.className = result-card + cls index.html:7886 -> .result-card.c-* border-left colors :509-511",
+          "boundary_cases": [
+            "hover dive-block :464 border-color transition"
+          ],
+          "evidence": "index.html:7886; lsp-dplanner-controls.css:509-511",
+          "result": "NO_FINDING"
+        },
+        "L3": {
+          "trace": "CNS status element keeps id cnsStatus with mutable c-ok/c-warn/c-dang classes; info-box static in tools markup",
+          "boundary_cases": [
+            "mode switch does not clear result-card class on cnsStatus without rerun"
+          ],
+          "evidence": "index.html:1526; results status writer :7886",
+          "result": "NO_FINDING"
+        },
+        "L4": {
+          "trace": ".t-col selector :526 has zero DOM writers/readers in ui/** and index.html runtime",
+          "boundary_cases": [
+            "dead t-col"
+          ],
+          "evidence": "grep .t-col -> 0 runtime elements",
+          "result": "FINDING"
+        },
+        "L5": {
+          "trace": "tail section extracted as part of UI-CSS-CONTROLS whole_file unit; fingerprint matches plan part P02",
+          "boundary_cases": [
+            "528-line unit boundary ends at deco table comment"
+          ],
+          "evidence": "audit-units.json UI-CSS-CONTROLS whole_file; part hash f525ea55",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "result-card.c-dang red left border signals CNS danger; info-box muted safety copy legible",
+          "boundary_cases": [
+            "c-warn yellow border visibility"
+          ],
+          "evidence": "lsp-dplanner-controls.css:509-511,519-525",
+          "result": "NO_FINDING"
+        },
+        "L7": {
+          "trace": "no test asserts result-card computed border-left-color or info-box contrast through user events",
+          "boundary_cases": [
+            "tests check CNS logic not CSS chrome"
+          ],
+          "evidence": "SUITE-UI-STRUCTURE scope; no controls computed-style leaf suite",
+          "result": "NO_FINDING"
+        }
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "SL-C06-M-01",
+      "severity": "MEDIUM",
+      "unit_id": "UI-CSS-CONTROLS",
+      "location": "lsp-dplanner-controls.css:23-38",
+      "root_cause": ".seg-btn styles hover/active only; no :focus-visible replacement; browser outline suppressed on keyboard focus.",
+      "failure_path": "Keyboard Tab -> #gpRuleThirds.focus() -> getComputedStyle.outlineStyle === none",
+      "impact": "Keyboard users cannot see focused gas-rule or dive-count segment before activation.",
+      "evidence": "Playwright probe 375x667 and 1280x800: outlineStyle none on focused seg-btn; option-pill has focus-visible at :42-43",
+      "recommendation": "Add .seg-btn:focus-visible ring matching option-pill-toggle pattern.",
+      "status": "OPEN"
+    },
+    {
+      "id": "SL-C06-M-02",
+      "severity": "MEDIUM",
+      "unit_id": "UI-CSS-CONTROLS",
+      "location": "lsp-dplanner-controls.css:127-129",
+      "root_cause": ".gas-f-num fixed 4.25rem width with ~35px computed height on mobile.",
+      "failure_path": "TEC planner #cylBot_size at 375px viewport -> getBoundingClientRect ~68x35px",
+      "impact": "Cylinder numeric controls undersize common 44px touch-target guidance on narrow mobile.",
+      "evidence": "Playwright geometry on #cylBot_size; imperial 1766 fits without text scroll clipping",
+      "recommendation": "Raise min height/padding or min-width for .gas-f-num inputs on narrow viewports.",
+      "status": "OPEN"
+    },
+    {
+      "id": "SL-C06-L-01",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-CONTROLS",
+      "location": "lsp-dplanner-controls.css:488-499",
+      "root_cause": "#diveBlocks removed; setDiveCount uses buildUnifiedPlan slider SI without .si-inner.",
+      "failure_path": "switchTab(multi) + setDiveCount(3) -> .si-inner count 0",
+      "impact": "Dead CSS for surface-interval numeric connector styling.",
+      "evidence": "index.html buildUnifiedPlan :6710-6722 vs buildDiveBlocks :6619; no #diveBlocks in index.html",
+      "recommendation": "Remove .si-inner rules or restore markup contract if numeric SI returns.",
+      "status": "OPEN"
+    },
+    {
+      "id": "SL-C06-L-02",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-CONTROLS",
+      "location": "lsp-dplanner-controls.css:526",
+      "root_cause": "No canonical markup or runtime generator emits .t-col.",
+      "failure_path": "N/A - selector never matches live DOM",
+      "impact": "Dead CSS.",
+      "evidence": "grep ui/** index.html -> 0 .t-col elements at runtime",
+      "recommendation": "Remove .t-col block.",
+      "status": "OPEN"
+    },
+    {
+      "id": "SL-C06-L-03",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-CONTROLS",
+      "location": "lsp-dplanner-controls.css:262-282; index.html:9287-9293",
+      "root_cause": "Live shell uses .gen-btn only; disableDuringCalc targets empty .btn-calc NodeList.",
+      "failure_path": "Runtime .btn-calc count 0; shared selector only affects .gen-btn elements",
+      "impact": "Misleading disable contract; dead alias except obsolete markup-planner partial.",
+      "evidence": "index.html gen-btn buttons; ui/markup-planner.html still pairs gen-btn btn-calc",
+      "recommendation": "Drop standalone .btn-calc alias or restore class on live generate buttons.",
+      "status": "OPEN"
+    },
+    {
+      "id": "SL-C06-L-04",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-CONTROLS",
+      "location": "lsp-dplanner-controls.css:109-152",
+      "root_cause": "Field inputs lack :invalid/:user-invalid visual differentiation.",
+      "failure_path": "Set number input below min -> validity false -> border stays var(--border)",
+      "impact": "Invalid cylinder/gas values may look normal until downstream validation.",
+      "evidence": "CSS source audit; no :invalid rules in controls sheet",
+      "recommendation": "Add invalid/warning border colors for .field input:invalid and select:invalid.",
+      "status": "OPEN"
+    },
+    {
+      "id": "SL-C06-L-05",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-CONTROLS",
+      "location": "lsp-dplanner-controls.css:31,67,118,271,296,454",
+      "root_cause": "Transitions on seg-btn, pill thumb, inputs, gen-btn, stat, bar-fill without reduced-motion guard.",
+      "failure_path": "prefers-reduced-motion: reduce -> transitions still active",
+      "impact": "Reduced-motion OS preference not honored on control animations.",
+      "evidence": "No @media (prefers-reduced-motion) in lsp-dplanner-controls.css",
+      "recommendation": "Add reduced-motion media query zeroing transitions/transforms.",
+      "status": "OPEN"
+    }
+  ],
+  "evidence_runs": [],
+  "changed_paths": [],
+  "audit_report": "docs/seven-lens-reports/cycle-06-controls-css.md",
+  "notes": "Generated boundaries are review scopes, not permission to skip semantic dependencies."
+}
