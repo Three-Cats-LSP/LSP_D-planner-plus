@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "evidence_id": "ER-C05-POST-CSS",
+  "evidence_id": "ER-C05-RESTORE-CSS",
   "command_argv": [
     "python",
     "dev/ui_css_regression.py"
@@ -17,8 +17,8 @@
   ],
   "worktree_clean_before": true,
   "worktree_clean_after": true,
-  "started_at": "2026-07-04T12:50:50.954110+00:00",
-  "finished_at": "2026-07-04T12:51:03.686868+00:00",
+  "started_at": "2026-07-04T12:55:53.157871+00:00",
+  "finished_at": "2026-07-04T12:56:05.279867+00:00",
   "stdout_sha256": "1a2fe62deeb02c3720f0dd7772aabdd351d7c91c1b0e8987eaecb024fbe0eb3b",
   "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"

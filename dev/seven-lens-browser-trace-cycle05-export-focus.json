@@ -1,0 +1,338 @@
+{
+  "schema_version": 3,
+  "runner_version": 2,
+  "spec": "docs\\seven-lens-traces\\cycle-05-export-focus.json",
+  "spec_sha256": "84f7095b8c503a08bc67e53aa1c5b7fb24a87d9d168863a1d3dfc58e66d84954",
+  "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+  "traces": [
+    {
+      "id": "SL-C05-EXPORT-FOCUS-VISIBLE-TRACE",
+      "entry_event": "User clicks a visible .btn-export; :focus-visible outline is observable on the focused export control.",
+      "consumer_path": [
+        "click .btn-export",
+        "document.activeElement",
+        "getComputedStyle outlineWidth/outlineStyle",
+        "lsp-dplanner-modes.css :focus-visible rule"
+      ],
+      "captures": {
+        "input": {
+          "export_count": 3
+        },
+        "canonical": {
+          "matches_export": true
+        },
+        "consumer": {
+          "outline_width": 3
+        },
+        "observable": {
+          "focus_ring_px": 3
+        }
+      },
+      "assertions": [
+        {
+          "id": "export-present",
+          "passed": true,
+          "detail": "3 close 3"
+        },
+        {
+          "id": "export-focused",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "outline-width",
+          "passed": true,
+          "detail": "3 close 2"
+        },
+        {
+          "id": "focus-visible",
+          "passed": true,
+          "detail": "3 close 2"
+        }
+      ],
+      "state_before_sha256": "e36b402a7d62decee1d24894deca4e52a3eeb42445ef4936cf03730834924ed7",
+      "state_after_sha256": "e36b402a7d62decee1d24894deca4e52a3eeb42445ef4936cf03730834924ed7",
+      "state_before": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "button.btn-export[onclick*=\"copyDiveProfile('deco')\"]": {
+            "value": "",
+            "checked": null,
+            "text": "",
+            "className": "btn-export",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {},
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "button.btn-export[onclick*=\"copyDiveProfile('deco')\"]": {
+            "value": "",
+            "checked": null,
+            "text": "",
+            "className": "btn-export",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {},
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "case_ids": [
+        "SL-C05-EXPORT-FOCUS-VISIBLE"
+      ],
+      "runs": [
+        {
+          "id": "SL-C05-EXPORT-FOCUS-VISIBLE-TRACE",
+          "entry_event": "User clicks a visible .btn-export; :focus-visible outline is observable on the focused export control.",
+          "consumer_path": [
+            "click .btn-export",
+            "document.activeElement",
+            "getComputedStyle outlineWidth/outlineStyle",
+            "lsp-dplanner-modes.css :focus-visible rule"
+          ],
+          "captures": {
+            "input": {
+              "export_count": 3
+            },
+            "canonical": {
+              "matches_export": true
+            },
+            "consumer": {
+              "outline_width": 3
+            },
+            "observable": {
+              "focus_ring_px": 3
+            }
+          },
+          "assertions": [
+            {
+              "id": "export-present",
+              "passed": true,
+              "detail": "3 close 3"
+            },
+            {
+              "id": "export-focused",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "outline-width",
+              "passed": true,
+              "detail": "3 close 2"
+            },
+            {
+              "id": "focus-visible",
+              "passed": true,
+              "detail": "3 close 2"
+            }
+          ],
+          "state_before_sha256": "e36b402a7d62decee1d24894deca4e52a3eeb42445ef4936cf03730834924ed7",
+          "state_after_sha256": "e36b402a7d62decee1d24894deca4e52a3eeb42445ef4936cf03730834924ed7",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "button.btn-export[onclick*=\"copyDiveProfile('deco')\"]": {
+                "value": "",
+                "checked": null,
+                "text": "",
+                "className": "btn-export",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "button.btn-export[onclick*=\"copyDiveProfile('deco')\"]": {
+                "value": "",
+                "checked": null,
+                "text": "",
+                "className": "btn-export",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-C05-EXPORT-FOCUS-VISIBLE-TRACE",
+          "entry_event": "User clicks a visible .btn-export; :focus-visible outline is observable on the focused export control.",
+          "consumer_path": [
+            "click .btn-export",
+            "document.activeElement",
+            "getComputedStyle outlineWidth/outlineStyle",
+            "lsp-dplanner-modes.css :focus-visible rule"
+          ],
+          "captures": {
+            "input": {
+              "export_count": 3
+            },
+            "canonical": {
+              "matches_export": true
+            },
+            "consumer": {
+              "outline_width": 3
+            },
+            "observable": {
+              "focus_ring_px": 3
+            }
+          },
+          "assertions": [
+            {
+              "id": "export-present",
+              "passed": true,
+              "detail": "3 close 3"
+            },
+            {
+              "id": "export-focused",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "outline-width",
+              "passed": true,
+              "detail": "3 close 2"
+            },
+            {
+              "id": "focus-visible",
+              "passed": true,
+              "detail": "3 close 2"
+            }
+          ],
+          "state_before_sha256": "e36b402a7d62decee1d24894deca4e52a3eeb42445ef4936cf03730834924ed7",
+          "state_after_sha256": "e36b402a7d62decee1d24894deca4e52a3eeb42445ef4936cf03730834924ed7",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "button.btn-export[onclick*=\"copyDiveProfile('deco')\"]": {
+                "value": "",
+                "checked": null,
+                "text": "",
+                "className": "btn-export",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "button.btn-export[onclick*=\"copyDiveProfile('deco')\"]": {
+                "value": "",
+                "checked": null,
+                "text": "",
+                "className": "btn-export",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "passed": true
+}

@@ -143,3 +143,24 @@ Browser trace at pre-fix: `rec-dimmed`/`tools-dimmed` failed (`1 close 0.5`); bo
 | UI-CSS-MODES | `6d911804be64d352c6d0d74a4db18bb61887de96456f8f4dd3ac59e205f7b096` |
 
 Findings remain **OPEN** in this record for the CLOSER chat. Do not merge until closure gates pass.
+
+## Closure (CLOSED)
+
+**Closer:** Cursor Agent (CLOSER)  
+**Closure commit:** pending  
+**Merge target:** `dev`  
+**verified_source_commit:** `c40b71a` (unchanged)  
+**verification_status:** `PASSED`
+
+All six findings marked **CLOSED** with schema-v4 evidence receipts at `c40b71a`:
+
+| Finding | Regression ID(s) | Status |
+|---------|------------------|--------|
+| SL-C05-M-01 | `SL-C05-GF-ROW-MODE-ISOLATION` | CLOSED |
+| SL-C05-M-02 | `SL-C05-EXPORT-FOCUS-VISIBLE` | CLOSED |
+| SL-C05-L-01 | `SL-C05-CSS-DEAD-BRAND-ICON` | CLOSED |
+| SL-C05-L-02 | `SL-C05-CSS-DEAD-GF-BTN` | CLOSED |
+| SL-C05-L-03 | `SL-C05-CSS-DEAD-ALGO-SWITCHER` | CLOSED |
+| SL-C05-L-04 | `SL-C05-CSS-DEAD-THEME-TOGGLE` | CLOSED |
+
+Final fingerprints unchanged: `UI-CSS-FOUNDATION` `f1f5eaa…`, `UI-CSS-MODES` `6d911804…`.

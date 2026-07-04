@@ -1,0 +1,65 @@
+{
+  "schema_version": 3,
+  "repeat": 2,
+  "cycle": 5,
+  "traces": [
+    {
+      "id": "SL-C05-EXPORT-FOCUS-VISIBLE-TRACE",
+      "case_ids": ["SL-C05-EXPORT-FOCUS-VISIBLE"],
+      "entry_event": "User clicks a visible .btn-export; :focus-visible outline is observable on the focused export control.",
+      "consumer_path": [
+        "click .btn-export",
+        "document.activeElement",
+        "getComputedStyle outlineWidth/outlineStyle",
+        "lsp-dplanner-modes.css :focus-visible rule"
+      ],
+      "state": {
+        "selectors": ["#navBtnBuh", "button.btn-export[onclick*=\"copyDiveProfile('deco')\"]"],
+        "restore_order": ["#navBtnBuh", "button.btn-export[onclick*=\"copyDiveProfile('deco')\"]"],
+        "globals": []
+      },
+      "setup": [
+        {
+          "action": "click",
+          "selector": "#navBtnBuh"
+        }
+      ],
+      "steps": [
+        {
+          "capture": "input",
+          "values": {
+            "export_count": "document.querySelectorAll('button.btn-export[onclick*=\"copyDiveProfile\"]').length"
+          }
+        },
+        {
+          "action": "click",
+          "selector": "button.btn-export[onclick*=\"copyDiveProfile('deco')\"]"
+        },
+        {
+          "capture": "canonical",
+          "values": {
+            "matches_export": "document.activeElement?.classList?.contains('btn-export') === true"
+          }
+        },
+        {
+          "capture": "consumer",
+          "values": {
+            "outline_width": "(() => { const el = document.activeElement; if (!el?.classList.contains('btn-export')) return 0; return parseFloat(getComputedStyle(el).outlineWidth) || 0; })()"
+          }
+        },
+        {
+          "capture": "observable",
+          "values": {
+            "focus_ring_px": "(() => { const el = document.activeElement; if (!el?.classList.contains('btn-export')) return 0; return parseFloat(getComputedStyle(el).outlineWidth) || 0; })()"
+          }
+        }
+      ],
+      "assertions": [
+        {"id": "export-present", "left": "$.input.export_count", "op": "close", "right": 3, "tolerance": 2},
+        {"id": "export-focused", "left": "$.canonical.matches_export", "op": "equal", "right": true},
+        {"id": "outline-width", "left": "$.consumer.outline_width", "op": "close", "right": 2, "tolerance": 1.5},
+        {"id": "focus-visible", "left": "$.observable.focus_ring_px", "op": "close", "right": 2, "tolerance": 1.5}
+      ]
+    }
+  ]
+}

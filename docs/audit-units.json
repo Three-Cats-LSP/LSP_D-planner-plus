@@ -4782,6 +4782,21 @@
       "last_read_fingerprint": null
     },
     {
+      "id": "TEST-SEVEN-LENS-CYCLE05-EXPORT-FOCUS-TRACE",
+      "path": "docs/seven-lens-traces/cycle-05-export-focus.json",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Cycle 05 export focus-visible browser trace specification",
+      "regression_cases": [],
+      "fingerprint": "84f7095b8c503a08bc67e53aa1c5b7fb24a87d9d168863a1d3dfc58e66d84954",
+      "last_read_fingerprint": null
+    },
+    {
       "id": "TEST-UI-CSS-REGRESSION",
       "path": "dev/ui_css_regression.py",
       "layer": "test_infrastructure",

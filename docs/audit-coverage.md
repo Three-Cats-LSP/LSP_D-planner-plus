@@ -19,7 +19,7 @@
 | native_config | 1 | 0 | 0 | 0 | 1 |
 | pwa | 3 | 0 | 1 | 0 | 2 |
 | release_config | 1 | 0 | 1 | 0 | 0 |
-| test_infrastructure | 41 | 0 | 10 | 0 | 31 |
+| test_infrastructure | 42 | 0 | 11 | 0 | 31 |
 | tooling | 52 | 0 | 12 | 0 | 40 |
 | ui_core | 16 | 0 | 12 | 0 | 4 |
 | ui_shell | 2 | 0 | 1 | 0 | 1 |
@@ -27,7 +27,7 @@
 | web_markup | 7 | 0 | 4 | 1 | 2 |
 | web_runtime | 24 | 0 | 13 | 0 | 11 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **187** | **0** | **61** | **1** | **125** |
+| **Total** | **188** | **0** | **62** | **1** | **125** |
 
 ## Units
 
@@ -219,4 +219,5 @@
 | TOOL-V3-RUN-V3-RELEASE-AUTOMATION-PY | tooling | `tools/audit/run_v3_release_automation.py:1` | 204 | P2 | VERIFIED | COV-01, PARITY-01 |
 | UI-PLANNER-INPUTS | ui_core | `planner-inputs-core.js:1` | 119 | P1 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-CYCLE05-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-05-css.json:1` | 80 | P0 | IN_PROGRESS | - |
+| TEST-SEVEN-LENS-CYCLE05-EXPORT-FOCUS-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-05-export-focus.json:1` | 65 | P0 | IN_PROGRESS | - |
 | TEST-UI-CSS-REGRESSION | test_infrastructure | `dev/ui_css_regression.py:1` | 251 | P0 | IN_PROGRESS | REG-76, REG-77, REG-78, REG-79, REG-80, REG-81 |
