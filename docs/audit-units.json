@@ -3713,7 +3713,7 @@
       "evidence": [],
       "issue": "Seven-lens executed-command receipt generator",
       "regression_cases": [],
-      "fingerprint": "232079e355a65101f3fed6417329de6c8b657d5fbbc72287cf290d47ecc1f062",
+      "fingerprint": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e",
       "last_read_fingerprint": null
     },
     {
@@ -3743,7 +3743,7 @@
       "evidence": [],
       "issue": "Seven-lens browser trace assertion tests",
       "regression_cases": [],
-      "fingerprint": "3b0ccb9e71aa911964d2de48b37259d39d30ec707e0f27699fc9b8207be3b391",
+      "fingerprint": "a4b387da6a71de96bf879a9f6a94a43e52db9fc650f365bc514e3905942ed969",
       "last_read_fingerprint": null
     },
     {
