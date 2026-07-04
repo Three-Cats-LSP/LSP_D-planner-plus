@@ -159,7 +159,7 @@
     }
   ],
   "audit_commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
-  "verified_source_commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
+  "verified_source_commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -349,7 +349,7 @@
         "static"
       ],
       "exit_code": 0,
-      "commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true,
       "receipt_path": "dev/seven-lens-evidence-static.json",
       "receipt_sha256": ""
@@ -372,7 +372,7 @@
         "ci"
       ],
       "exit_code": 0,
-      "commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true,
       "receipt_path": "dev/seven-lens-evidence-ci.json",
       "receipt_sha256": ""
@@ -397,7 +397,7 @@
         "dev/seven-lens-browser-trace-2b.json"
       ],
       "exit_code": 0,
-      "commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "User switches to imperial, edits travel manual depth, and returns to metric.",

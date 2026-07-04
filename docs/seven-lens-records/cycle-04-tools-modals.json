@@ -7,7 +7,7 @@
   "baseline_registry_fingerprint": "73f84576707d1661c6587519d8025ef0492613e2c2238ec08e0dd298212b1e79",
   "baseline_findings": [],
   "audit_commit": "1ac8fb51600177d31c9b8c756b1c22e9b6f618da",
-  "verified_source_commit": "",
+  "verified_source_commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
   "verification_status": "BLOCKED",
   "parts": [
     {
@@ -416,7 +416,7 @@
       "unit_id": "UI-MARKUP-HEADER",
       "location": "ui/markup-header.html:170-210",
       "root_cause": "planPanelRecSection is not closed before planPanelTecSection begins.",
-      "failure_path": "Open REC, Bühlmann, or VPM planner mode and inspect bottom/travel/deco gas controls; an ancestor remains display:none in every mode.",
+      "failure_path": "Open REC, B\u00fchlmann, or VPM planner mode and inspect bottom/travel/deco gas controls; an ancestor remains display:none in every mode.",
       "impact": "Core gas and technical planner controls cannot be reached through the interactive UI.",
       "evidence": "Unforced Playwright fills time out; DOM ancestry shows cylBot_size inside both mutually exclusive mode sections.",
       "recommendation": "Correct canonical markup section boundaries, regenerate index.html, and add visibility/action traces for every planner mode.",
@@ -450,7 +450,7 @@
       "state_restored": true,
       "command": "git checkout 42224fa -- index.html gas-table-core.js surf-interval-core.js ui/markup-tools.html && python dev/engine_regression.py",
       "exit_code": 1,
-      "commit": "42224fa9edb5cb000f739b92cd51dfc1458bb221",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true
     },
     {
@@ -465,7 +465,7 @@
       "state_restored": true,
       "command": "git checkout 42224fa -- ui/markup-modals.html && python dev/engine_regression.py SL-C04-CONFIRM-BACKDROP",
       "exit_code": 1,
-      "commit": "42224fa9edb5cb000f739b92cd51dfc1458bb221",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true
     },
     {
@@ -481,7 +481,7 @@
       "state_restored": true,
       "command": "git checkout b100d961 -- index.html settings-core.js gas-cards-core.js ui/markup-consumption.html ui/markup-planner.html && python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-03-consumption.json",
       "exit_code": 1,
-      "commit": "b100d961377961a9b0dac22e372905c0a76f0044",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true
     },
     {
@@ -496,7 +496,7 @@
       "state_restored": true,
       "command": "python tools/seven_lens_protocol.py check --phase close --record docs/seven-lens-records/cycle-04-tools-modals.json",
       "exit_code": 1,
-      "commit": "b100d961377961a9b0dac22e372905c0a76f0044",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true
     },
     {
@@ -511,7 +511,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C04-END-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "unitsSelect change metric to imperial on END tool",
@@ -560,7 +560,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C04-SI-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "unitsSelect change metric to imperial on surface interval tool",
@@ -609,7 +609,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C04-CONFIRM-BACKDROP",
       "exit_code": 0,
-      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "unitsSelect change metric to imperial on END tool",
@@ -661,7 +661,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py",
       "exit_code": 0,
-      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "User switches to imperial units, edits Best Mix depth, and returns to metric.",
@@ -707,7 +707,7 @@
       "state_restored": false,
       "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-03-consumption.json",
       "exit_code": 0,
-      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "User switches to imperial units, edits CNS depth, and returns to metric.",
@@ -752,7 +752,7 @@
       "state_restored": false,
       "command": "python tools/seven_lens_protocol.py check-all --require-artifacts",
       "exit_code": 0,
-      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "unitsSelect change metric to imperial on surface interval tool",
@@ -801,7 +801,7 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C04-END-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true,
       "state_before_sha256": "64cfc306459799f7bf1d4e2c3b0888e7d860a15858658547962b4c20244e5f61",
       "state_after_sha256": "64cfc306459799f7bf1d4e2c3b0888e7d860a15858658547962b4c20244e5f61"
@@ -818,7 +818,7 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C04-SI-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true,
       "state_before_sha256": "ada2b244648e9a726eb8ac87038eec42fc36e06fccded3c8be00e1e214931319",
       "state_after_sha256": "ada2b244648e9a726eb8ac87038eec42fc36e06fccded3c8be00e1e214931319"
@@ -835,7 +835,7 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C04-CONFIRM-BACKDROP",
       "exit_code": 0,
-      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true,
       "state_before_sha256": "64cfc306459799f7bf1d4e2c3b0888e7d860a15858658547962b4c20244e5f61",
       "state_after_sha256": "64cfc306459799f7bf1d4e2c3b0888e7d860a15858658547962b4c20244e5f61"
@@ -855,7 +855,7 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py",
       "exit_code": 0,
-      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true,
       "state_before_sha256": "62f9d70e0b73f0d64c827aca0a6fe30079c53dfa6110493965c3865559c59e1e",
       "state_after_sha256": "62f9d70e0b73f0d64c827aca0a6fe30079c53dfa6110493965c3865559c59e1e"
@@ -873,7 +873,7 @@
       "state_restored": true,
       "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-03-consumption.json",
       "exit_code": 0,
-      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true,
       "state_before_sha256": "f5769cf14bdadb87641bedb7bcd9d3a137e2aa2ba3d170eacc204856ed35c5d2",
       "state_after_sha256": "f5769cf14bdadb87641bedb7bcd9d3a137e2aa2ba3d170eacc204856ed35c5d2"
@@ -890,7 +890,7 @@
       "state_restored": true,
       "command": "python tools/seven_lens_protocol.py check-all --require-artifacts",
       "exit_code": 0,
-      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true,
       "state_before_sha256": "ada2b244648e9a726eb8ac87038eec42fc36e06fccded3c8be00e1e214931319",
       "state_after_sha256": "ada2b244648e9a726eb8ac87038eec42fc36e06fccded3c8be00e1e214931319"
@@ -905,7 +905,7 @@
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
       "exit_code": 0,
-      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true
     },
     {
@@ -918,7 +918,7 @@
       "state_restored": true,
       "command": "python -m tools.audit run --profile ci",
       "exit_code": 0,
-      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
       "worktree_clean": true
     }
   ],

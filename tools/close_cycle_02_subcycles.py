@@ -377,6 +377,7 @@ def write_records(baseline_commit: str, baseline_registry_text: str, audit_commi
 
 def run_receipts(record_paths: list[Path], commit: str) -> None:
     for record_path in record_paths:
+        record_path = record_path if record_path.is_absolute() else ROOT / record_path
         record = json.loads(record_path.read_text(encoding="utf-8-sig"))
         for row in record.get("evidence_runs", []):
             row["commit"] = commit
