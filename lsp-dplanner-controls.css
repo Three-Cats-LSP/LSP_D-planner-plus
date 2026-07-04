@@ -157,10 +157,10 @@
 .field input:focus, .field select:focus { border-color: var(--accent);
  box-shadow: 0 0 0 3px rgba(0,200,255,0.08);
 }
-.field input:user-invalid:not(:focus):not(:disabled),
-.field select:user-invalid:not(:focus):not(:disabled),
-.field input:invalid:not(:focus):not(:disabled):not(:placeholder-shown),
-.field select:invalid:not(:focus):not(:disabled) { border-color: var(--red);
+.field input:user-invalid:not(:disabled),
+.field select:user-invalid:not(:disabled),
+.field input:invalid:not(:disabled):not(:placeholder-shown),
+.field select:invalid:not(:disabled) { border-color: var(--red);
  box-shadow: 0 0 0 2px rgba(255,68,51,0.12);
 }
 

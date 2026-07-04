@@ -295,6 +295,7 @@ def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> 
     invalid_border_is_red = invalid_styles.get("borderColor") == expected_invalid_border
     invalid_shadow_visible = invalid_styles.get("boxShadow") not in {"none", ""}
     focus_differs = _styles_differ(invalid_styles, focus_styles)
+    focus_preserves_invalid = focused and focus_styles.get("borderColor") == expected_invalid_border
     disabled_differs = _styles_differ(invalid_styles, disabled_styles)
     ok = (
         pristine_valid
@@ -302,7 +303,7 @@ def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> 
         and invalid_visual
         and invalid_border_is_red
         and invalid_shadow_visible
-        and focus_differs
+        and focus_preserves_invalid
         and disabled_differs
         and focused
         and disabled
@@ -354,6 +355,7 @@ def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> 
             "invalidBorderIsRed": invalid_border_is_red,
             "invalidShadowVisible": invalid_shadow_visible,
             "focusDiffers": focus_differs,
+            "focusPreservesInvalid": focus_preserves_invalid,
             "disabledDiffers": disabled_differs,
         },
     }
