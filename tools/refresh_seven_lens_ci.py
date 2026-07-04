@@ -130,8 +130,52 @@ def _update_ledger(head: str) -> None:
     ledger_path.write_text(json.dumps(ledger, indent=2) + "\n", encoding="utf-8")
 
 
+def _sync_record_hashes(record_path: Path, head: str, *, stamp_head: bool) -> None:
+    record = json.loads(record_path.read_text(encoding="utf-8-sig"))
+    _refresh_parts(record)
+    _refresh_traces(record)
+    if stamp_head:
+        _stamp_head(record, head)
+    for row in record.get("evidence_runs", []):
+        receipt_path = ROOT / row.get("receipt_path", "")
+        if receipt_path.is_file():
+            row["receipt_sha256"] = _sha256(receipt_path)
+    record_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+
+
 def main() -> int:
+    import argparse
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--sync-only",
+        action="store_true",
+        help="Refresh fingerprints and receipt hashes without re-running evidence",
+    )
+    parser.add_argument(
+        "--stamp-head",
+        action="store_true",
+        help="With --sync-only, also set verified_source_commit and evidence commit to HEAD",
+    )
+    args = parser.parse_args()
     head = _git("rev-parse", "HEAD")
+    if args.sync_only:
+        for record_path in RECORDS:
+            _sync_record_hashes(record_path, head, stamp_head=args.stamp_head)
+        if args.stamp_head:
+            _update_ledger(head)
+        _refresh_audit_docs()
+        proc = subprocess.run(
+            [sys.executable, "tools/seven_lens_protocol.py", "check-all", "--require-artifacts"],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        print(proc.stdout)
+        if proc.stderr:
+            print(proc.stderr, file=sys.stderr)
+        return proc.returncode
     for record_path in RECORDS:
         record = json.loads(record_path.read_text(encoding="utf-8-sig"))
         _refresh_parts(record)
