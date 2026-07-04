@@ -4,7 +4,7 @@
   "target_branch": "dev",
   "baseline_commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
   "audit_commit": "d9c45c84150b370dd26e6fd9413399e6f2f72f52",
-  "verified_source_commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+  "verified_source_commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -294,7 +294,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C02-MIN-DECO-UNITS",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "runtime_trace": {
         "entry_event": "User switches to imperial with min-deco profile enabled.",
@@ -328,7 +328,7 @@
         ],
         "trace_id": "SL-C02-MIN-DECO-IMPERIAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle02.json",
-        "artifact_sha256": "63a0cb144bc72498b0007fdd657499c54ae9d0cedc4b2379458e255ca18c2446"
+        "artifact_sha256": "40128bb4d33a920777475eb82c4cdb29442cf711d0b2a1ce0b77ffaaf9cc181b"
       }
     },
     {
@@ -343,7 +343,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C02-TRAVEL-DEPTH-CONSTRAINTS",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "runtime_trace": {
         "entry_event": "User switches to imperial, edits travel manual depth, and returns to metric.",
@@ -373,7 +373,7 @@
         ],
         "trace_id": "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
         "artifact_path": "dev/seven-lens-browser-trace-cycle02.json",
-        "artifact_sha256": "63a0cb144bc72498b0007fdd657499c54ae9d0cedc4b2379458e255ca18c2446"
+        "artifact_sha256": "40128bb4d33a920777475eb82c4cdb29442cf711d0b2a1ce0b77ffaaf9cc181b"
       }
     },
     {
@@ -388,7 +388,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "runtime_trace": {
         "entry_event": "User adds a dynamic deco cylinder card in imperial mode.",
@@ -418,7 +418,7 @@
         ],
         "trace_id": "SL-C02-DECO-CYL-IMPERIAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle02.json",
-        "artifact_sha256": "63a0cb144bc72498b0007fdd657499c54ae9d0cedc4b2379458e255ca18c2446"
+        "artifact_sha256": "40128bb4d33a920777475eb82c4cdb29442cf711d0b2a1ce0b77ffaaf9cc181b"
       }
     },
     {
@@ -434,7 +434,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C02-TRAVEL-DEPTH-PHYSICAL-PARITY SL-C02-UNIT-ROUNDTRIP-IMMUTABLE",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "runtime_trace": {
         "entry_event": "User switches to imperial, edits travel manual depth, and returns to metric.",
@@ -464,7 +464,7 @@
         ],
         "trace_id": "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
         "artifact_path": "dev/seven-lens-browser-trace-cycle02.json",
-        "artifact_sha256": "63a0cb144bc72498b0007fdd657499c54ae9d0cedc4b2379458e255ca18c2446"
+        "artifact_sha256": "40128bb4d33a920777475eb82c4cdb29442cf711d0b2a1ce0b77ffaaf9cc181b"
       }
     },
     {
@@ -479,7 +479,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C02-MIN-DECO-UNITS",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "runtime_trace": {
         "entry_event": "User switches to imperial with min-deco profile enabled.",
@@ -513,7 +513,7 @@
         ],
         "trace_id": "SL-C02-MIN-DECO-IMPERIAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle02.json",
-        "artifact_sha256": "63a0cb144bc72498b0007fdd657499c54ae9d0cedc4b2379458e255ca18c2446"
+        "artifact_sha256": "40128bb4d33a920777475eb82c4cdb29442cf711d0b2a1ce0b77ffaaf9cc181b"
       }
     },
     {
@@ -527,9 +527,9 @@
       ],
       "state_restored": false,
       "command": "python tools/run_audit_coverage_suite.py",
-      "exit_code": 1,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
-      "worktree_clean": false,
+      "exit_code": 0,
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
+      "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "User switches to imperial with min-deco profile enabled.",
         "consumer_path": [
@@ -562,7 +562,7 @@
         ],
         "trace_id": "SL-C02-MIN-DECO-IMPERIAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle02.json",
-        "artifact_sha256": "63a0cb144bc72498b0007fdd657499c54ae9d0cedc4b2379458e255ca18c2446"
+        "artifact_sha256": "40128bb4d33a920777475eb82c4cdb29442cf711d0b2a1ce0b77ffaaf9cc181b"
       }
     },
     {
@@ -577,7 +577,7 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C02-MIN-DECO-UNITS",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "state_before_sha256": "9f6cf4a70fa310769e9e89ba9e389a427ed386bf4e7feb52c1a0e12e0c8a0934",
       "state_after_sha256": "9f6cf4a70fa310769e9e89ba9e389a427ed386bf4e7feb52c1a0e12e0c8a0934"
@@ -594,7 +594,7 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C02-TRAVEL-DEPTH-CONSTRAINTS",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "state_before_sha256": "f19598f71dda56b5423d20f71330efb7f87fb44341e657a4159b52c0c2224c68",
       "state_after_sha256": "f19598f71dda56b5423d20f71330efb7f87fb44341e657a4159b52c0c2224c68"
@@ -611,10 +611,10 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
-      "state_before_sha256": "790475b4079ec262e2175470a15ebe00a5e3987f8a07a03c4bede8df9b218c7f",
-      "state_after_sha256": "790475b4079ec262e2175470a15ebe00a5e3987f8a07a03c4bede8df9b218c7f"
+      "state_before_sha256": "5c450e8483d6d373a3ff6673efc462a0dd7175605d7322b748deccccd2a41474",
+      "state_after_sha256": "5c450e8483d6d373a3ff6673efc462a0dd7175605d7322b748deccccd2a41474"
     },
     {
       "id": "ER-02-RESTORE-PARITY",
@@ -629,7 +629,7 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C02-TRAVEL-DEPTH-PHYSICAL-PARITY SL-C02-UNIT-ROUNDTRIP-IMMUTABLE",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "state_before_sha256": "f19598f71dda56b5423d20f71330efb7f87fb44341e657a4159b52c0c2224c68",
       "state_after_sha256": "f19598f71dda56b5423d20f71330efb7f87fb44341e657a4159b52c0c2224c68"
@@ -646,7 +646,7 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C02-MIN-DECO-UNITS",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "state_before_sha256": "9f6cf4a70fa310769e9e89ba9e389a427ed386bf4e7feb52c1a0e12e0c8a0934",
       "state_after_sha256": "9f6cf4a70fa310769e9e89ba9e389a427ed386bf4e7feb52c1a0e12e0c8a0934"
@@ -662,9 +662,9 @@
       ],
       "state_restored": true,
       "command": "python tools/run_audit_coverage_suite.py",
-      "exit_code": 1,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
-      "worktree_clean": false,
+      "exit_code": 0,
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
+      "worktree_clean": true,
       "state_before_sha256": "9f6cf4a70fa310769e9e89ba9e389a427ed386bf4e7feb52c1a0e12e0c8a0934",
       "state_after_sha256": "9f6cf4a70fa310769e9e89ba9e389a427ed386bf4e7feb52c1a0e12e0c8a0934"
     },
@@ -677,9 +677,9 @@
       ],
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
-      "exit_code": 1,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
-      "worktree_clean": false
+      "exit_code": 0,
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
+      "worktree_clean": true
     },
     {
       "id": "ci",
@@ -690,9 +690,9 @@
       ],
       "state_restored": true,
       "command": "python -m tools.audit run --profile ci",
-      "exit_code": 1,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
-      "worktree_clean": false
+      "exit_code": 0,
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
+      "worktree_clean": true
     },
     {
       "id": "COV-01",
@@ -703,9 +703,9 @@
       ],
       "state_restored": true,
       "command": "python tools/run_audit_coverage_suite.py",
-      "exit_code": 1,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
-      "worktree_clean": false
+      "exit_code": 0,
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
+      "worktree_clean": true
     }
   ],
   "changed_paths": [
@@ -714,7 +714,7 @@
     "dev/engine_regression.py",
     "docs/audit-units.json"
   ],
-  "notes": "Closure evidence materialized at 28086c43b48c11599997f4be62fabd39485a17cb with executed regression, browser traces, and gates.",
+  "notes": "Closure evidence materialized at d3fcf6e715d0bc6b0f773999eb7f544f728d4089 with executed regression, browser traces, and gates.",
   "integration_base_commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
   "baseline_registry_fingerprint": "306190fe8c9020f406295647292a9f317504dce6f42f6fe7bd29b6dc01f454ec",
   "baseline_findings": []

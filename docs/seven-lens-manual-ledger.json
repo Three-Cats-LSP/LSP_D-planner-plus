@@ -91,8 +91,8 @@
       "verified_at": "2026-07-03T14:45:00+00:00",
       "verifier": "Cursor (canonical-writers FIXER/VERIFIER at 6f75077)",
       "verification_status": "PASS",
-      "verified_source_commit": "28086c43b48c11599997f4be62fabd39485a17cb",
-      "last_checked_commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "verified_source_commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
+      "last_checked_commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "verification_report": "docs/seven-lens-reports/cycle-02-codex-verification.md",
       "findings_open": [],
       "findings_closed": [
@@ -142,8 +142,8 @@
       "verified_at": "2026-07-03T14:45:00+00:00",
       "verifier": "Cursor (canonical-writers FIXER/VERIFIER at 6f75077)",
       "verification_status": "PASS",
-      "verified_source_commit": "28086c43b48c11599997f4be62fabd39485a17cb",
-      "last_checked_commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "verified_source_commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
+      "last_checked_commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "verification_report": "docs/seven-lens-reports/cycle-03-codex-verification.md",
       "findings_open": [],
       "findings_closed": [
@@ -190,8 +190,8 @@
       "verified_at": "2026-07-03T14:45:00+00:00",
       "verifier": "Cursor (canonical-writers FIXER/VERIFIER at 6f75077)",
       "verification_status": "PASS",
-      "verified_source_commit": "28086c43b48c11599997f4be62fabd39485a17cb",
-      "last_checked_commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "verified_source_commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
+      "last_checked_commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "verification_report": "docs/seven-lens-reports/cycle-04-codex-verification.md",
       "findings_open": [],
       "findings_closed": [
@@ -232,8 +232,8 @@
       "verified_at": "2026-07-03T14:45:00+00:00",
       "verifier": "Cursor (canonical-writers FIXER/VERIFIER at 6f75077)",
       "verification_status": "PASS",
-      "verified_source_commit": "28086c43b48c11599997f4be62fabd39485a17cb",
-      "last_checked_commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "verified_source_commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
+      "last_checked_commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "verification_report": "docs/seven-lens-reports/cycle-04-codex-verification.md",
       "findings_open": [],
       "findings_closed": [

@@ -996,13 +996,28 @@ def main() -> int:
     materialize_browser_artifacts()
     global COMMIT
     COMMIT = _head_commit()
-    for name, builder in (
+    builders = (
         ("cycle-02-planner.json", build_cycle_02),
         ("cycle-03-consumption.json", build_cycle_03),
         ("cycle-04-tools-modals.json", build_cycle_04),
-    ):
+    )
+    built: list[tuple[str, dict[str, Any]]] = []
+    for name, builder in builders:
+        built.append((name, builder()))
+    gate_commands = {
+        row["command"]
+        for _, record in built
+        for row in record.get("evidence_runs", [])
+        if row.get("kind") == "gate"
+    }
+    gate_codes = {cmd: _run(cmd) for cmd in sorted(gate_commands)}
+    for name, record in built:
+        for row in record.get("evidence_runs", []):
+            if row.get("kind") == "gate":
+                row["exit_code"] = gate_codes[row["command"]]
+                row["worktree_clean"] = _git_clean()
         path = ROOT / "docs/seven-lens-records" / name
-        path.write_text(json.dumps(builder(), indent=2) + "\n", encoding="utf-8")
+        path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
         print(f"wrote {path}")
     return 0
 

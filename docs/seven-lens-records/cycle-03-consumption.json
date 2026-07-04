@@ -4,7 +4,7 @@
   "target_branch": "dev",
   "baseline_commit": "6e987af4cd66d8679cc63c5cc2dc371421ae8caa",
   "audit_commit": "e07ab49cf5c28a9b99c00eb12d3538acec568728",
-  "verified_source_commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+  "verified_source_commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -249,7 +249,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C03-BEST-MIX-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "runtime_trace": {
         "entry_event": "unitsSelect change from metric to imperial",
@@ -283,7 +283,7 @@
         ],
         "trace_id": "SL-C03-BEST-MIX-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "01c66ffc01bc72fa224b36b97cfedd19771d63b6e9654ec8f39de2680d6d1cc8"
+        "artifact_sha256": "2247cae9b4e811033a397c0528867c59dcf47ad50d3c57a8f8136e693d7d7ab4"
       }
     },
     {
@@ -298,7 +298,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C03-CNS-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "runtime_trace": {
         "entry_event": "unitsSelect metric to imperial to metric round trip",
@@ -332,7 +332,7 @@
         ],
         "trace_id": "SL-C03-CNS-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "01c66ffc01bc72fa224b36b97cfedd19771d63b6e9654ec8f39de2680d6d1cc8"
+        "artifact_sha256": "2247cae9b4e811033a397c0528867c59dcf47ad50d3c57a8f8136e693d7d7ab4"
       }
     },
     {
@@ -347,7 +347,7 @@
       "state_restored": false,
       "command": "python -m tools.audit check --profile static",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "runtime_trace": {
         "entry_event": "unitsSelect change from metric to imperial",
@@ -381,7 +381,7 @@
         ],
         "trace_id": "SL-C03-BEST-MIX-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "01c66ffc01bc72fa224b36b97cfedd19771d63b6e9654ec8f39de2680d6d1cc8"
+        "artifact_sha256": "2247cae9b4e811033a397c0528867c59dcf47ad50d3c57a8f8136e693d7d7ab4"
       }
     },
     {
@@ -397,7 +397,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C03-PHYSICAL-DEPTH-TRACE SL-C03-REGRESSION-STATE-IMMUTABLE",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "runtime_trace": {
         "entry_event": "User switches to imperial units, edits Best Mix depth, and returns to metric.",
@@ -427,7 +427,7 @@
         ],
         "trace_id": "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "01c66ffc01bc72fa224b36b97cfedd19771d63b6e9654ec8f39de2680d6d1cc8"
+        "artifact_sha256": "2247cae9b4e811033a397c0528867c59dcf47ad50d3c57a8f8136e693d7d7ab4"
       }
     },
     {
@@ -442,10 +442,10 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C03-BEST-MIX-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
-      "state_before_sha256": "eeb9be5aade9622ec564a2066d63bb0f3759208c2861133129c20e929ada8f53",
-      "state_after_sha256": "eeb9be5aade9622ec564a2066d63bb0f3759208c2861133129c20e929ada8f53"
+      "state_before_sha256": "6c985475da82fa5bfc854784f960c85d8233fc35e9e444b5fda323bc71cf55f9",
+      "state_after_sha256": "6c985475da82fa5bfc854784f960c85d8233fc35e9e444b5fda323bc71cf55f9"
     },
     {
       "id": "ER-03-RESTORE-CNS",
@@ -459,7 +459,7 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C03-CNS-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "state_before_sha256": "37555f87624cb4b3ef89b4e99822cf4a4a8451356523e5688125f770513a49bb",
       "state_after_sha256": "37555f87624cb4b3ef89b4e99822cf4a4a8451356523e5688125f770513a49bb"
@@ -476,10 +476,10 @@
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
-      "state_before_sha256": "eeb9be5aade9622ec564a2066d63bb0f3759208c2861133129c20e929ada8f53",
-      "state_after_sha256": "eeb9be5aade9622ec564a2066d63bb0f3759208c2861133129c20e929ada8f53"
+      "state_before_sha256": "6c985475da82fa5bfc854784f960c85d8233fc35e9e444b5fda323bc71cf55f9",
+      "state_after_sha256": "6c985475da82fa5bfc854784f960c85d8233fc35e9e444b5fda323bc71cf55f9"
     },
     {
       "id": "ER-03-RESTORE-PHYSICAL",
@@ -494,7 +494,7 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C03-PHYSICAL-DEPTH-TRACE SL-C03-REGRESSION-STATE-IMMUTABLE",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "state_before_sha256": "32d9b547d41edc711c56883e98b96ef643eeef816b94dce2d7f5f19c9f84af0a",
       "state_after_sha256": "32d9b547d41edc711c56883e98b96ef643eeef816b94dce2d7f5f19c9f84af0a"
@@ -508,9 +508,9 @@
       ],
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
-      "exit_code": 1,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
-      "worktree_clean": false
+      "exit_code": 0,
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
+      "worktree_clean": true
     },
     {
       "id": "ci",
@@ -521,9 +521,9 @@
       ],
       "state_restored": true,
       "command": "python -m tools.audit run --profile ci",
-      "exit_code": 1,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
-      "worktree_clean": false
+      "exit_code": 0,
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
+      "worktree_clean": true
     }
   ],
   "changed_paths": [

@@ -7,7 +7,7 @@
   "baseline_registry_fingerprint": "73f84576707d1661c6587519d8025ef0492613e2c2238ec08e0dd298212b1e79",
   "baseline_findings": [],
   "audit_commit": "1ac8fb51600177d31c9b8c756b1c22e9b6f618da",
-  "verified_source_commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+  "verified_source_commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -450,7 +450,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C04-END-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "runtime_trace": {
         "entry_event": "unitsSelect change metric to imperial on END tool",
@@ -484,7 +484,7 @@
         ],
         "trace_id": "SL-C04-END-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle04.json",
-        "artifact_sha256": "2f53e92e82ae190a477bb55056a672bde791fcaab3ff711301686a93f5e14345"
+        "artifact_sha256": "888058179fee5f4994d678d0261e07fd1bda4d00675206351ad3acee8606c08d"
       }
     },
     {
@@ -499,7 +499,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C04-SI-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "runtime_trace": {
         "entry_event": "unitsSelect change metric to imperial on surface interval tool",
@@ -533,7 +533,7 @@
         ],
         "trace_id": "SL-C04-SI-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle04.json",
-        "artifact_sha256": "2f53e92e82ae190a477bb55056a672bde791fcaab3ff711301686a93f5e14345"
+        "artifact_sha256": "888058179fee5f4994d678d0261e07fd1bda4d00675206351ad3acee8606c08d"
       }
     },
     {
@@ -548,7 +548,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C04-CONFIRM-BACKDROP",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "runtime_trace": {
         "entry_event": "unitsSelect change metric to imperial on END tool",
@@ -582,7 +582,7 @@
         ],
         "trace_id": "SL-C04-END-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle04.json",
-        "artifact_sha256": "2f53e92e82ae190a477bb55056a672bde791fcaab3ff711301686a93f5e14345"
+        "artifact_sha256": "888058179fee5f4994d678d0261e07fd1bda4d00675206351ad3acee8606c08d"
       }
     },
     {
@@ -600,7 +600,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "runtime_trace": {
         "entry_event": "User switches to imperial units, edits Best Mix depth, and returns to metric.",
@@ -630,7 +630,7 @@
         ],
         "trace_id": "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "01c66ffc01bc72fa224b36b97cfedd19771d63b6e9654ec8f39de2680d6d1cc8"
+        "artifact_sha256": "2247cae9b4e811033a397c0528867c59dcf47ad50d3c57a8f8136e693d7d7ab4"
       }
     },
     {
@@ -646,7 +646,7 @@
       "state_restored": false,
       "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-03-consumption.json",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "runtime_trace": {
         "entry_event": "User switches to imperial units, edits CNS depth, and returns to metric.",
@@ -676,7 +676,7 @@
         ],
         "trace_id": "SL-C03-CNS-EDIT-AFTER-SWITCH",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "01c66ffc01bc72fa224b36b97cfedd19771d63b6e9654ec8f39de2680d6d1cc8"
+        "artifact_sha256": "2247cae9b4e811033a397c0528867c59dcf47ad50d3c57a8f8136e693d7d7ab4"
       }
     },
     {
@@ -691,7 +691,7 @@
       "state_restored": false,
       "command": "python tools/seven_lens_protocol.py check-all --require-artifacts",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "runtime_trace": {
         "entry_event": "unitsSelect change metric to imperial on surface interval tool",
@@ -725,7 +725,7 @@
         ],
         "trace_id": "SL-C04-SI-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle04.json",
-        "artifact_sha256": "2f53e92e82ae190a477bb55056a672bde791fcaab3ff711301686a93f5e14345"
+        "artifact_sha256": "888058179fee5f4994d678d0261e07fd1bda4d00675206351ad3acee8606c08d"
       }
     },
     {
@@ -740,10 +740,10 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C04-END-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
-      "state_before_sha256": "64cfc306459799f7bf1d4e2c3b0888e7d860a15858658547962b4c20244e5f61",
-      "state_after_sha256": "64cfc306459799f7bf1d4e2c3b0888e7d860a15858658547962b4c20244e5f61"
+      "state_before_sha256": "a4203a66fc0a02b2a983f429cf87b51bfeb5537fa0d01b8183f7aa376bd9d9c4",
+      "state_after_sha256": "a4203a66fc0a02b2a983f429cf87b51bfeb5537fa0d01b8183f7aa376bd9d9c4"
     },
     {
       "id": "ER-04-RESTORE-SI",
@@ -757,7 +757,7 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C04-SI-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "state_before_sha256": "ada2b244648e9a726eb8ac87038eec42fc36e06fccded3c8be00e1e214931319",
       "state_after_sha256": "ada2b244648e9a726eb8ac87038eec42fc36e06fccded3c8be00e1e214931319"
@@ -774,10 +774,10 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C04-CONFIRM-BACKDROP",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
-      "state_before_sha256": "64cfc306459799f7bf1d4e2c3b0888e7d860a15858658547962b4c20244e5f61",
-      "state_after_sha256": "64cfc306459799f7bf1d4e2c3b0888e7d860a15858658547962b4c20244e5f61"
+      "state_before_sha256": "a4203a66fc0a02b2a983f429cf87b51bfeb5537fa0d01b8183f7aa376bd9d9c4",
+      "state_after_sha256": "a4203a66fc0a02b2a983f429cf87b51bfeb5537fa0d01b8183f7aa376bd9d9c4"
     },
     {
       "id": "ER-04-RESTORE-CANONICAL",
@@ -794,7 +794,7 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "state_before_sha256": "f19598f71dda56b5423d20f71330efb7f87fb44341e657a4159b52c0c2224c68",
       "state_after_sha256": "f19598f71dda56b5423d20f71330efb7f87fb44341e657a4159b52c0c2224c68"
@@ -812,7 +812,7 @@
       "state_restored": true,
       "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-03-consumption.json",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "state_before_sha256": "f5769cf14bdadb87641bedb7bcd9d3a137e2aa2ba3d170eacc204856ed35c5d2",
       "state_after_sha256": "f5769cf14bdadb87641bedb7bcd9d3a137e2aa2ba3d170eacc204856ed35c5d2"
@@ -829,7 +829,7 @@
       "state_restored": true,
       "command": "python tools/seven_lens_protocol.py check-all --require-artifacts",
       "exit_code": 0,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
       "worktree_clean": false,
       "state_before_sha256": "ada2b244648e9a726eb8ac87038eec42fc36e06fccded3c8be00e1e214931319",
       "state_after_sha256": "ada2b244648e9a726eb8ac87038eec42fc36e06fccded3c8be00e1e214931319"
@@ -843,9 +843,9 @@
       ],
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
-      "exit_code": 1,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
-      "worktree_clean": false
+      "exit_code": 0,
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
+      "worktree_clean": true
     },
     {
       "id": "ci",
@@ -856,9 +856,9 @@
       ],
       "state_restored": true,
       "command": "python -m tools.audit run --profile ci",
-      "exit_code": 1,
-      "commit": "28086c43b48c11599997f4be62fabd39485a17cb",
-      "worktree_clean": false
+      "exit_code": 0,
+      "commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
+      "worktree_clean": true
     }
   ],
   "changed_paths": [
