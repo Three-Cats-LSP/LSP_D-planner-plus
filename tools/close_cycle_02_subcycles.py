@@ -186,14 +186,15 @@ def _trace_block(trace_id: str, spec: str, artifact: str, entry: str, consumers:
 
 
 def _gate_evidence(evidence_id: str, argv: list[str], commit: str) -> dict[str, Any]:
+    portable = ["python", *argv[1:]] if argv and Path(str(argv[0])).name.lower().startswith("python") else argv
     return {
         "id": evidence_id,
         "kind": "gate",
         "case_ids": [],
         "observable_assertions": [f"{evidence_id} gate PASS"],
         "state_restored": True,
-        "command": " ".join(argv),
-        "command_argv": argv,
+        "command": " ".join(portable),
+        "command_argv": portable,
         "exit_code": 0,
         "commit": commit,
         "worktree_clean": True,
@@ -203,14 +204,15 @@ def _gate_evidence(evidence_id: str, argv: list[str], commit: str) -> dict[str, 
 
 
 def _post_trace(evidence_id: str, case_ids: list[str], argv: list[str], commit: str, trace: dict[str, Any]) -> dict[str, Any]:
+    portable = ["python", *argv[1:]] if argv and Path(str(argv[0])).name.lower().startswith("python") else argv
     return {
         "id": evidence_id,
         "kind": "post_fix",
         "case_ids": case_ids,
         "observable_assertions": ["Browser trace PASS with state restored and repeatable captures"],
         "state_restored": False,
-        "command": " ".join(argv),
-        "command_argv": argv,
+        "command": " ".join(portable),
+        "command_argv": portable,
         "exit_code": 0,
         "commit": commit,
         "worktree_clean": True,
