@@ -156,12 +156,14 @@
 
 .field input:focus, .field select:focus { border-color: var(--accent);
  box-shadow: 0 0 0 3px rgba(0,200,255,0.08);
+ transition: none;
 }
 .field input:user-invalid:not(:focus):not(:disabled),
 .field select:user-invalid:not(:focus):not(:disabled),
 .field input:invalid:not(:focus):not(:disabled):not(:placeholder-shown),
 .field select:invalid:not(:focus):not(:disabled) { border-color: var(--red);
  box-shadow: 0 0 0 2px rgba(255,68,51,0.12);
+ transition: none;
 }
 
 /* Android WebView/Capacitor: native <select> picker is broken — use android-select-picker.js */
