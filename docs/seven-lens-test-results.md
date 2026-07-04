@@ -11,9 +11,19 @@ in `docs/seven-lens-records/`.
 | Cycle | Unit | Status | Verified commit | PR |
 |------:|------|--------|-----------------|-----|
 | 1 | `UI-MARKUP-HEADER` | **CLOSED** — merged to `dev` | `d39bb3b` | [#177](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/177), [#178](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/178) |
-| 2 | `UI-MARKUP-PLANNER` | **CLOSED** — schema-v2 evidence at `d956648` | `d956648` | [#188](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/188), canonical-writers branch |
-| 3 | `UI-MARKUP-CONSUMPTION` | **CLOSED** — schema-v2 evidence at `d956648` | `d956648` | [#188](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/188), canonical-writers branch |
-| 4 | `UI-MARKUP-TOOLS` + `UI-MARKUP-MODALS` | **CLOSED** — schema-v2 evidence at `d956648` | `d956648` | [#188](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/188), [#189](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/189) |
+| 2 | `UI-MARKUP-PLANNER` | **IN PROGRESS** — schema-v4 evidence required | — | [#191](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/191) |
+| 3 | `UI-MARKUP-CONSUMPTION` | **IN PROGRESS** — schema-v4 evidence required | — | [#191](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/191) |
+| 4 | `UI-MARKUP-TOOLS` + `UI-MARKUP-MODALS` | **BLOCKED** — closure integrity + dynamic card | — | [#191](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/191) |
+
+---
+
+## 2026-07-04 closure integrity update
+
+PR #191 application checks pass, but the Cycle 2-4 schema-v2 closure package
+failed artifact hashes, historical checkpoints, and evidence provenance. Those
+cycles are not closed. Closure now requires schema-v4 executed-command receipts
+and trace-schema-v3 case/spec/commit binding. Stale generated evidence artifacts
+were removed.
 
 ---
 

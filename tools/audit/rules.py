@@ -152,6 +152,27 @@ def evaluate_rules(root: Path, registry: dict[str, Any]) -> tuple[list[CheckResu
                 results.append(_base(rule, "FAIL", f"Required stylesheet order missing {missing}", path=path))
             else:
                 results.append(_base(rule, "PASS", "Required stylesheets load in canonical order"))
+        elif kind == "html.not_descendant":
+            path = targets[0]
+            config = rule.get("config", {})
+            child_id = config.get("child_id")
+            forbidden_id = config.get("forbidden_ancestor_id")
+            child = next(
+                (item for item in files.get(path, {}).get("ids", []) if item.get("id") == child_id),
+                None,
+            )
+            if child is None:
+                results.append(_base(rule, "FAIL", f"Required HTML id {child_id} is missing", path=path))
+            elif forbidden_id in child.get("ancestorIds", []):
+                results.append(_base(
+                    rule,
+                    "FAIL",
+                    f"#{child_id} must not be nested inside #{forbidden_id}",
+                    path=path,
+                    line=child.get("line"),
+                ))
+            else:
+                results.append(_base(rule, "PASS", f"#{child_id} is outside #{forbidden_id}"))
         elif kind == "extract.no_reinline":
             from tools.extract_ui_cores import INLINE_FORBIDDEN_DEFS
 

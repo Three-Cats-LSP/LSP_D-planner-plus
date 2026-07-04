@@ -1,10 +1,11 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "repeat": 2,
   "cycle": 3,
   "traces": [
     {
       "id": "SL-C03-BEST-MIX-PHYSICAL-TRACE",
+      "case_ids": ["SL-C03-BEST-MIX-DEPTH-UNITS"],
       "entry_event": "unitsSelect change from metric to imperial",
       "consumer_path": ["setUnits", "calcBestMix", "domDepthToM", "bestMixResult"],
       "setup": [
@@ -49,6 +50,7 @@
     },
     {
       "id": "SL-C03-CNS-PHYSICAL-TRACE",
+      "case_ids": ["SL-C03-CNS-DEPTH-UNITS"],
       "entry_event": "unitsSelect metric to imperial to metric round trip",
       "consumer_path": ["setUnits", "stampDepthCanonicalBeforeConvert", "domDepthToM", "calcCNS"],
       "setup": [
@@ -106,6 +108,7 @@
     },
     {
       "id": "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
+      "case_ids": ["SL-C03-BEST-MIX-EDIT-AFTER-SWITCH"],
       "entry_event": "User switches to imperial units, edits Best Mix depth, and returns to metric.",
       "consumer_path": ["bestMixDepth input", "calcBestMix", "domDepthToM", "bestMixResult"],
       "setup": [
@@ -144,6 +147,7 @@
     },
     {
       "id": "SL-C03-CNS-EDIT-AFTER-SWITCH",
+      "case_ids": ["SL-C03-CNS-EDIT-AFTER-SWITCH"],
       "entry_event": "User switches to imperial units, edits CNS depth, and returns to metric.",
       "consumer_path": ["cnsDepth input", "calcCNS", "domDepthToM", "cnsPPO2"],
       "setup": [

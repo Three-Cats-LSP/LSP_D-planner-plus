@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEV = ROOT / "dev"
 if str(DEV) not in sys.path:
     sys.path.insert(0, str(DEV))
-TRACE_SCHEMA_VERSION = 2
+TRACE_SCHEMA_VERSION = 3
 
 
 def validate_trace_spec(spec: dict[str, Any]) -> list[str]:
@@ -38,8 +38,15 @@ def validate_trace_spec(spec: dict[str, Any]) -> list[str]:
         if not isinstance(trace.get("entry_event"), str) or len(trace["entry_event"].strip()) < 5:
             errors.append(f"{trace_id}: entry_event missing")
         consumers = trace.get("consumer_path")
-        if not isinstance(consumers, list) or len(consumers) < 2 or not all(isinstance(x, str) and x for x in consumers):
-            errors.append(f"{trace_id}: consumer_path needs at least two named stages")
+        if not isinstance(consumers, list) or len(consumers) < 4 or not all(isinstance(x, str) and x for x in consumers):
+            errors.append(f"{trace_id}: consumer_path needs input, writer, consumer, and observable stages")
+        case_ids = trace.get("case_ids")
+        if not isinstance(case_ids, list) or not case_ids or not all(
+            isinstance(case_id, str) and case_id.strip() for case_id in case_ids
+        ):
+            errors.append(f"{trace_id}: case_ids must be a non-empty list")
+        elif len(case_ids) != len(set(case_ids)):
+            errors.append(f"{trace_id}: case_ids must be unique")
         state = trace.get("state", {})
         selectors = state.get("selectors")
         restore = state.get("restore_order")
@@ -78,12 +85,14 @@ def validate_trace_spec(spec: dict[str, Any]) -> list[str]:
                     errors.append(f"{trace_id}: unsupported {phase_name} action {action!r}")
                 if phase_name == "steps" and row.get("force"):
                     errors.append(f"{trace_id}: tested user actions must not use force")
+                if phase_name == "steps" and action in {"set_global", "run_script"}:
+                    errors.append(f"{trace_id}: tested user actions must use visible Playwright controls")
                 if (
                     phase_name == "setup"
-                    and row.get("force")
+                    and (row.get("force") or action == "run_script")
                     and not (isinstance(row.get("setup_only_reason"), str) and row["setup_only_reason"].strip())
                 ):
-                    errors.append(f"{trace_id}: forced setup action needs setup_only_reason")
+                    errors.append(f"{trace_id}: forced or scripted setup needs setup_only_reason")
                 selector = row.get("selector")
                 if selector and selector not in selectors and phase_name == "steps":
                     errors.append(f"{trace_id}: tested selector {selector} is absent from state snapshot")
@@ -92,6 +101,8 @@ def validate_trace_spec(spec: dict[str, Any]) -> list[str]:
                         errors.append(f"{trace_id}: set_global is allowed only during setup")
                     if row.get("name") not in globals_tracked:
                         errors.append(f"{trace_id}: setup global {row.get('name')} is not state-tracked")
+                if action in {"fill", "select", "click", "check"} and not selector:
+                    errors.append(f"{trace_id}: {action} action needs a selector")
         steps = trace.get("steps", [])
         if not any("action" in row for row in steps):
             errors.append(f"{trace_id}: trace has no tested user action")
@@ -439,6 +450,7 @@ def main() -> int:
                 )
                 first["repeatable"] = repeatable
                 first["repeat_count"] = repeat
+                first["case_ids"] = trace.get("case_ids", [])
                 first["runs"] = runs
                 first["passed"] = repeatable and all(row.get("passed") is True for row in runs)
                 results.append(first)

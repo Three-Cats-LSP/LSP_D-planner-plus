@@ -7,8 +7,8 @@
   "baseline_registry_fingerprint": "73f84576707d1661c6587519d8025ef0492613e2c2238ec08e0dd298212b1e79",
   "baseline_findings": [],
   "audit_commit": "1ac8fb51600177d31c9b8c756b1c22e9b6f618da",
-  "verified_source_commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
-  "verification_status": "PASSED",
+  "verified_source_commit": "",
+  "verification_status": "BLOCKED",
   "parts": [
     {
       "id": "UI-MARKUP-TOOLS-P01",
@@ -302,7 +302,7 @@
       "impact": "A release can present incomplete or stale review evidence as a completed safety audit.",
       "evidence": "check --phase close fails Cycles 2-4; Cycle 4 has no evidence_runs and its five closed findings have empty evidence_ids.",
       "recommendation": "Run check-all from the static audit gate and require ledger-record-commit parity before a reviewed status is accepted.",
-      "status": "CLOSED",
+      "status": "OPEN",
       "regression_ids": [
         "TOOL-SEVEN-LENS-CHECK-ALL"
       ],
@@ -357,7 +357,7 @@
       "impact": "Cursor can close findings with evidence that does not reproduce an actual interactive consumer path.",
       "evidence": "The prior Cycle 3 trace passed a unit switch but never edited the control after switching, so it missed SL-C04-H-02.",
       "recommendation": "Require schema-validated, repeated real interactions, finite captures, state restoration, console cleanliness, and artifact-backed assertions.",
-      "status": "CLOSED",
+      "status": "OPEN",
       "regression_ids": [
         "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
         "SL-C03-CNS-EDIT-AFTER-SWITCH"
@@ -373,6 +373,42 @@
       "post_fix_evidence_id": "ER-04-POST-TRACE",
       "state_restoration_evidence_id": "ER-04-RESTORE-TRACE",
       "observable_contract": "Browser traces require visible edits, finite captures, repeat=2, and clean state restoration."
+    },
+    {
+      "id": "SL-C04-H-04",
+      "severity": "HIGH",
+      "unit_id": "TOOL-SEVEN-LENS-PROTOCOL",
+      "location": "tools/build_seven_lens_closure.py; docs/seven-lens-records/cycle-02-planner.json",
+      "root_cause": "A one-shot materializer wrote successful evidence fields without executing the declared commands.",
+      "failure_path": "Run the close gate against the generated records; artifact hashes and historical checkpoints fail despite PASSED ledger claims.",
+      "impact": "Fabricated or unrelated evidence can be presented as completed safety review work.",
+      "evidence": "PR #191 independent verification found every Cycle 2-4 artifact hash invalid and multiple unrelated traces attached to findings.",
+      "recommendation": "Require schema-v4 command receipts from the audited executor and exact trace case/spec/commit binding.",
+      "status": "OPEN"
+    },
+    {
+      "id": "SL-C04-M-05",
+      "severity": "MEDIUM",
+      "unit_id": "UI-GAS-CARDS",
+      "location": "gas-cards-core.js:285",
+      "root_cause": "Dynamic imperial cylinder markup retains metric min and step attributes.",
+      "failure_path": "Switch to imperial and add deco gas 3; its 0.4 ft3 default is below min 1 and off step 0.5.",
+      "impact": "The newly created cylinder starts invalid and can be rejected or adjusted to an unintended volume.",
+      "evidence": "Chromium checkValidity reports rangeUnderflow and stepMismatch.",
+      "recommendation": "Apply active-unit cylinder constraints when creating every dynamic card and add a dynamic-card browser trace.",
+      "status": "OPEN"
+    },
+    {
+      "id": "SL-C04-H-05",
+      "severity": "HIGH",
+      "unit_id": "UI-MARKUP-HEADER",
+      "location": "ui/markup-header.html:170-210",
+      "root_cause": "planPanelRecSection is not closed before planPanelTecSection begins.",
+      "failure_path": "Open REC, Bühlmann, or VPM planner mode and inspect bottom/travel/deco gas controls; an ancestor remains display:none in every mode.",
+      "impact": "Core gas and technical planner controls cannot be reached through the interactive UI.",
+      "evidence": "Unforced Playwright fills time out; DOM ancestry shows cylBot_size inside both mutually exclusive mode sections.",
+      "recommendation": "Correct canonical markup section boundaries, regenerate index.html, and add visibility/action traces for every planner mode.",
+      "status": "OPEN"
     }
   ],
   "evidence_runs": [

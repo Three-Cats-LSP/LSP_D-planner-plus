@@ -1,10 +1,11 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "repeat": 2,
   "cycle": 2,
   "traces": [
     {
       "id": "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
+      "case_ids": ["SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH"],
       "entry_event": "User switches to imperial, edits travel manual depth, and returns to metric.",
       "consumer_path": ["travelGasManualDepth input", "syncDepthInputCanonical", "domDepthToM", "updateTravelGasMOD"],
       "setup": [
@@ -12,7 +13,7 @@
         {"action": "click", "selector": "#navBtnSettings"},
         {"action": "select", "selector": "#unitsSelect", "value": "metric"},
         {"action": "click", "selector": "#navBtnBuh"},
-        {"action": "run_script", "script": "() => { addTravelGas(); const m = document.getElementById('travelGasSwitchMode'); if (m) m.value = 'manual'; updateTravelGasMOD(); }"},
+        {"action": "run_script", "script": "() => { addTravelGas(); const m = document.getElementById('travelGasSwitchMode'); if (m) m.value = 'manual'; updateTravelGasMOD(); }", "setup_only_reason": "Expose and configure the optional travel-gas control before testing its visible input path."},
         {"action": "fill", "selector": "#travelGasManualDepth", "value": "30", "force": true, "setup_only_reason": "Prime travel manual depth before the visible edit path."}
       ],
       "state": {
@@ -25,7 +26,7 @@
         {"action": "click", "selector": "#navBtnSettings"},
         {"action": "select", "selector": "#unitsSelect", "value": "imperial"},
         {"action": "click", "selector": "#navBtnBuh"},
-        {"action": "run_script", "script": "() => { addTravelGas(); const m = document.getElementById('travelGasSwitchMode'); if (m) m.value = 'manual'; updateTravelGasMOD(); const el = document.getElementById('travelGasManualDepth'); if (el) { el.value = '120'; el.dispatchEvent(new Event('input', {bubbles:true})); } }"},
+        {"action": "fill", "selector": "#travelGasManualDepth", "value": "120"},
         {"capture": "edited", "values": {"input_value": "document.querySelector('#travelGasManualDepth').value", "canonical_m": "Number(document.querySelector('#travelGasManualDepth').dataset.depthM)", "consumer_m": "domDepthToM('travelGasManualDepth')"}},
         {"action": "click", "selector": "#navBtnSettings"},
         {"action": "select", "selector": "#unitsSelect", "value": "metric"},
@@ -40,8 +41,9 @@
     },
     {
       "id": "SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH",
+      "case_ids": ["SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH"],
       "entry_event": "User switches to imperial, edits bottom cylinder size, and returns to metric.",
-      "consumer_path": ["cylBot_size input", "syncVolumeInputCanonical", "domVolumeToL"],
+      "consumer_path": ["cylBot_size input", "syncVolumeInputCanonical", "domVolumeToL", "metric roundtrip display"],
       "setup": [
         {"action": "set_global", "name": "_zhlHeadless", "value": false},
         {"action": "click", "selector": "#navBtnSettings"},
@@ -59,7 +61,7 @@
         {"action": "click", "selector": "#navBtnSettings"},
         {"action": "select", "selector": "#unitsSelect", "value": "imperial"},
         {"action": "click", "selector": "#navBtnBuh"},
-        {"action": "run_script", "script": "() => { const el = document.getElementById('cylBot_size'); if (el) { el.value = '0.5'; el.dispatchEvent(new Event('input', {bubbles:true})); } }"},
+        {"action": "fill", "selector": "#cylBot_size", "value": "0.5"},
         {"capture": "edited", "values": {"input_value": "document.querySelector('#cylBot_size').value", "canonical_l": "Number(document.querySelector('#cylBot_size').dataset.volumeL)", "consumer_l": "domVolumeToL('cylBot_size')"}},
         {"action": "click", "selector": "#navBtnSettings"},
         {"action": "select", "selector": "#unitsSelect", "value": "metric"},

@@ -32,6 +32,9 @@ When the user asks to run, fix, verify, close, or continue a seven-lens cycle:
    and `python tools/seven_lens_protocol.py check-all --require-artifacts`.
    May close only when both exit 0. Then updates `docs/seven-lens-test-results.md`,
    pushes the cycle branch, and merges the PR to `dev` after CI passes.
+   Every evidence command must be executed through
+   `tools/seven_lens_evidence.py`; never synthesize evidence rows or success
+   fields with a record-building script.
 9. Never set `SEVEN_LENS_REVIEWED` in the manual ledger unless
    `check-all --require-artifacts` passes for that cycle's record.
 10. Green automated tests are evidence, not a seven-lens review. Never infer "no
@@ -43,3 +46,6 @@ When the user asks to run, fix, verify, close, or continue a seven-lens cycle:
     imperial initial states. Unit-switch-only traces are incomplete.
 13. For unit conversions, audit value, label, minimum, maximum, step, defaults,
     persistence, and round-trip invariance as one physical contract.
+14. For dynamic/repeated controls, create a new item while already in metric and
+    imperial mode and assert value, min, max, step, validity, canonical state,
+    and final consumer behavior.

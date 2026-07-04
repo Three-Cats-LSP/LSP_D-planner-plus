@@ -4,8 +4,8 @@
   "target_branch": "dev",
   "baseline_commit": "6e987af4cd66d8679cc63c5cc2dc371421ae8caa",
   "audit_commit": "e07ab49cf5c28a9b99c00eb12d3538acec568728",
-  "verified_source_commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
-  "verification_status": "PASSED",
+  "verified_source_commit": "",
+  "verification_status": "BLOCKED",
   "parts": [
     {
       "id": "UI-MARKUP-CONSUMPTION-P01",
