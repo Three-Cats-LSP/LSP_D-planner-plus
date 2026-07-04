@@ -195,7 +195,7 @@
     }
   ],
   "audit_commit": "fea770dc9194b55e3344b10e18e4b9b1a5bfc2ad",
-  "verified_source_commit": "29d1137aa5695143913b5e8de8820f2bc91eaa42",
+  "verified_source_commit": "eaebc15",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -531,9 +531,9 @@
       ],
       "observable_contract": "Blurred invalid .field input border resolves var(--red); focus accent and disabled states do not retain red invalid chrome.",
       "state_restoration_evidence_id": "ER-C06-RESTORE-CSS",
-      "independent_verification_result": "PASSED (C06-V-C at 29d1137)",
+      "independent_verification_result": "PASSED (C06-V-C at eaebc15)",
       "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
-      "resolution_commit": "29d1137aa5695143913b5e8de8820f2bc91eaa42"
+      "resolution_commit": "eaebc15"
     },
     {
       "id": "SL-C06-L-05",
@@ -618,7 +618,7 @@
       "state_restored": true,
       "command": "python dev/ui_controls_css_regression.py",
       "exit_code": 0,
-      "commit": "29d1137aa5695143913b5e8de8820f2bc91eaa42",
+      "commit": "eaebc15",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -678,7 +678,7 @@
       "state_restored": true,
       "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-06-controls.json --output dev/seven-lens-browser-trace-cycle06.json",
       "exit_code": 0,
-      "commit": "29d1137aa5695143913b5e8de8820f2bc91eaa42",
+      "commit": "eaebc15",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -738,7 +738,7 @@
       "state_restored": true,
       "command": "python tools/run_ui_structure_suite.py",
       "exit_code": 0,
-      "commit": "29d1137aa5695143913b5e8de8820f2bc91eaa42",
+      "commit": "eaebc15",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -761,7 +761,7 @@
       "state_restored": true,
       "command": "python tools/extract_ui_css.py",
       "exit_code": 0,
-      "commit": "29d1137aa5695143913b5e8de8820f2bc91eaa42",
+      "commit": "eaebc15",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -782,7 +782,7 @@
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
       "exit_code": 0,
-      "commit": "29d1137aa5695143913b5e8de8820f2bc91eaa42",
+      "commit": "eaebc15",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -807,7 +807,7 @@
       "state_restored": true,
       "command": "python -m tools.audit run --profile ci",
       "exit_code": 0,
-      "commit": "29d1137aa5695143913b5e8de8820f2bc91eaa42",
+      "commit": "eaebc15",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -840,7 +840,7 @@
       "state_restored": true,
       "command": "python dev/ui_controls_css_regression.py",
       "exit_code": 0,
-      "commit": "29d1137aa5695143913b5e8de8820f2bc91eaa42",
+      "commit": "eaebc15",
       "worktree_clean": true,
       "command_argv": [
         "python",
