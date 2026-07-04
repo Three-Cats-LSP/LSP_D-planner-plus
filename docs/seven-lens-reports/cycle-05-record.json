@@ -1,0 +1,417 @@
+{
+  "schema_version": 4,
+  "cycle": 5,
+  "record_path": "docs/seven-lens-reports/cycle-05-record.json",
+  "target_branch": "dev",
+  "integration_base_commit": "39159b03832d54ebc1a3fc8474cd1225d37ecbaf",
+  "baseline_commit": "39159b03832d54ebc1a3fc8474cd1225d37ecbaf",
+  "baseline_registry_fingerprint": "8288430f35e33735cd5252b5b55a2237a3df964b33f6572dc6c0afa78f74b97d",
+  "baseline_findings": [
+    {
+      "id": "SL-C02-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes."
+    },
+    {
+      "id": "SL-C02-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Travel manual depth limits disagree between markup, metric restore, and imperial mode."
+    },
+    {
+      "id": "SL-C02-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Rounded display values become canonical physical inputs; Best Mix and CNS now reproduce the same unit-roundtrip drift."
+    },
+    {
+      "id": "SL-C02-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Min-deco regression checks an adapter property rather than observable schedule behavior."
+    },
+    {
+      "id": "SL-C02-M-06",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle history allowed unresolved findings and a blocked prior record to be deleted or rewritten as passed."
+    },
+    {
+      "id": "SL-C03-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits."
+    },
+    {
+      "id": "SL-C03-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle 3 regressions compare rounded outputs and restore values before units, masking physical-depth drift and corrupting test state."
+    },
+    {
+      "id": "SL-C03-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling."
+    },
+    {
+      "id": "SL-C04-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Depth and cylinder edits after a unit switch leave canonical data-depth-m/data-volume-l stale, so consumers use old values and the next switch discards the edit."
+    },
+    {
+      "id": "SL-C04-H-03",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Cycles 2-4 are marked reviewed although their protocol records fail closure and Cycle 4 has no evidence runs for five closed findings."
+    },
+    {
+      "id": "SL-C04-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle regression setup leaks canonical DOM and settings state, making the full engine suite order-dependent and leaving two contingency cases failing."
+    },
+    {
+      "id": "SL-C04-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Browser trace evidence could pass forced or vacuous single-run checks without proving a real interactive consumer path."
+    },
+    {
+      "id": "SL-C04-H-04",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Closure evidence was materialized from constants instead of executed commands, allowing fabricated exit codes, cleanliness claims, and unrelated trace reuse."
+    },
+    {
+      "id": "SL-C04-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "A dynamic deco cylinder created in imperial mode defaults to 0.4 ft3 while retaining min 1 and step 0.5, making its initial value invalid."
+    },
+    {
+      "id": "SL-C04-H-05",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "planPanelTecSection is nested inside an unclosed planPanelRecSection, leaving gas and technical planner controls hidden in every planner mode."
+    },
+    {
+      "id": "ISSUE-133-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 4C/5H/8M/8L remediated; gated in audit.py issue133 block and engine_regression issue133 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-134-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 1C/4H/7M/7L remediated; gated in audit.py issue134 block and engine_regression issue134 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-135-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 10H/10M/1L remediated; gated in audit.py issue135 block and engine_regression issue135 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-136-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "extract_ui_cores.py uses LSP-EXTRACT marker contract; verified by audit.py and tools/extract_ui_cores.py [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-137-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in 51f95ac; gated in audit.py and engine_regression issue137 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-138-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in fcfb6c4 (v2.53.04); gated in audit.py and engine_regression issue138 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-139-ROLLUP",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "All 3L fixed; #138 40/40 re-verified on 1271d1a; gated in audit.py and engine_regression issue139 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-140-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Surface interval gas/GF kinetics, pooled gas-plan turn pressure, audit case-ID validation, SW cache waitUntil, Android compile gate, coverage self-tests, FileProvider scope, workspace hash drift"
+    },
+    {
+      "id": "ISSUE-141-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "pSCR diluent bypass from computePSCRFractions, resolveCcrSacForGas removed, invalid trimix getN2Frac returns null"
+    },
+    {
+      "id": "REGRESSION-GF-CCR-FIX",
+      "severity": "CRITICAL",
+      "status": "CLOSED",
+      "summary": "GF pre-anchor and CCR endpoint corrected; verification requires REG-06 and REG-07 in the current release run"
+    }
+  ],
+  "audit_commit": "",
+  "verified_source_commit": "",
+  "verification_status": "PENDING",
+  "parts": [
+    {
+      "id": "UI-CSS-FOUNDATION-P01",
+      "unit_id": "UI-CSS-FOUNDATION",
+      "path": "lsp-dplanner-foundation.css",
+      "start_line": 1,
+      "end_line": 454,
+      "line_count": 454,
+      "content_fingerprint": "b460875b35f118ee845481add6776ed2cc2d582cc54bc90b84c5590571d22f9f",
+      "review_session": "cursor/seven-lens-cycle-05-foundation-audit",
+      "verification_session": "",
+      "lens_results": {
+        "L1": {
+          "trace": "clamp() tokens :root:9-14; safe-area modal padding :159-179; .app max-width 1280px :330-334; @media only in modes unit for .card",
+          "boundary_cases": [
+            "320px mobile width",
+            "capacitor-native safe-area max(32px)",
+            "light-theme gas #FF4433 rows"
+          ],
+          "evidence": "lsp-dplanner-foundation.css:9-14,159-179,283-296; body overflow-x:hidden:151",
+          "result": "NO_FINDING"
+        },
+        "L2": {
+          "trace": "body.light-theme !important overrides :189-234 cascade over broad div rule :201-204; .buh-only not in foundation; .panel rules in modes",
+          "boundary_cases": [
+            "light-theme chip/metric exceptions",
+            "algo-buh ::after grid z-index 0"
+          ],
+          "evidence": "foundation.css:189-234; modes.css loads after foundation per index.html:32-35",
+          "result": "NO_FINDING"
+        },
+        "L3": {
+          "trace": "setNavMode -> body.algo-tools toggle planner-shell.js:74; _showPlannerView -> body.rec-mode/algo-buh settings-core.js:604-605; toggleTheme -> body.light-theme settings-core.js:933",
+          "boundary_cases": [
+            "REC gfPresetsRow removed post-init",
+            "tools mode clears on settings nav"
+          ],
+          "evidence": "planner-shell.js:116-124 removes #gfPresetsRow; foundation.css:443-454 targets removed id",
+          "result": "FINDING"
+        },
+        "L4": {
+          "trace": "Canonical writers: setPlannerAlgo/_showPlannerView -> body classes; initV3Layout -> DOM ids; markup .brand-logo ui/markup-header.html:64; dynamic #apkUpdateBanner index.html:2490+",
+          "boundary_cases": [
+            ".brand-icon zero markup hits",
+            "#gfCustomRow .gf-btn no .gf-btn child",
+            "#gfPresetsRow removed at runtime"
+          ],
+          "evidence": "selector audit: .brand-icon 0 hits; #gfPresetsRow in markup pre-init only; gfPresetBtns uses .gf-preset-btn settings-core.js:654",
+          "result": "FINDING"
+        },
+        "L5": {
+          "trace": "index.html link order foundation->modes->controls->results; sw.js precache both sheets; extract_ui_css.py CSS_UNITS order",
+          "boundary_cases": [
+            "Pages/www parity via SUITE-PARITY",
+            "no generated-only fixes in scope"
+          ],
+          "evidence": "python -m tools.audit check --profile static SUITE-UI-STRUCTURE PASS; sw.js:73-74",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "gas-bt-cell/gas-tight-row #FF4433 + contrast overrides :283-296; header-warn in modes superseded by results.css; rec-mode GF disable intended via opacity :443-454",
+          "boundary_cases": [
+            "light-theme gas-tight black text on red",
+            "rec-mode GF row stale after init"
+          ],
+          "evidence": "foundation.css:283-296; stale #gfPresetsRow rules after initV3Layout",
+          "result": "FINDING"
+        },
+        "L7": {
+          "trace": "SUITE-UI-STRUCTURE UI-EXTRACT-CSS/UI-CSS-LINK-ORDER string parity only; tests-massive checks gfPresetsRowV3 presence not computed opacity",
+          "boundary_cases": [
+            "no getComputedStyle suite for mode isolation",
+            "no responsive breakpoint CSS tests in foundation"
+          ],
+          "evidence": "tools/run_ui_structure_suite.py; tests-massive.html:1801-1803",
+          "result": "FINDING"
+        }
+      }
+    },
+    {
+      "id": "UI-CSS-MODES-P01",
+      "unit_id": "UI-CSS-MODES",
+      "path": "lsp-dplanner-modes.css",
+      "start_line": 1,
+      "end_line": 372,
+      "line_count": 372,
+      "content_fingerprint": "9344ab5a3da09d6b9cf7e3843b7a4e6330289cffb6d3715810c152d3db14481e",
+      "review_session": "cursor/seven-lens-cycle-05-modes-audit",
+      "verification_session": "",
+      "lens_results": {
+        "L1": {
+          "trace": "@media (max-width:600px) .card padding :320-322; tabs-nav overflow-x:auto :227-228; .card overflow:hidden :318",
+          "boundary_cases": [
+            "600px card padding 10px 8px",
+            "long tab labels nowrap+scroll"
+          ],
+          "evidence": "lsp-dplanner-modes.css:218-228,320-322",
+          "result": "NO_FINDING"
+        },
+        "L2": {
+          "trace": ".panel display:none !important default :305-306; .panel.active display:block !important :306; switchTab index.html:2886-2890 removes/adds .active; .buh-only hidden unless body.algo-buh :301-302",
+          "boundary_cases": [
+            "tab switch synchronous",
+            "REC hides buh-only via algo-buh false"
+          ],
+          "evidence": "modes.css:301-306; index.html:switchTab; settings-core.js:605",
+          "result": "NO_FINDING"
+        },
+        "L3": {
+          "trace": "body.algo-tools #waterRow/#gfPresetsRow opacity :3-23; body.algo-tools .algo-switcher>div:last-child :27-35; card.collapsible.card-open toggled in markup/JS",
+          "boundary_cases": [
+            "algo-tools cleared leaving tools",
+            "gfPresetsRow removed post-init"
+          ],
+          "evidence": "planner-shell.js:74,116-124; modes.css:3-35",
+          "result": "FINDING"
+        },
+        "L4": {
+          "trace": ".tip-icon contract markup-tec-planner.html; .tab-btn/.algo-btn consumers switchTab/setMainNav; .theme-toggle replaced by .theme-pill-toggle ui/markup-header.html:80",
+          "boundary_cases": [
+            ".algo-switcher 0 markup hits",
+            ".theme-toggle 0 hits",
+            ".gf-btn legacy index.html:2788 only"
+          ],
+          "evidence": "selector audit; results.css:820 theme-pill-toggle:focus-visible",
+          "result": "FINDING"
+        },
+        "L5": {
+          "trace": "modes.css second in canonical quartet; #gfLowInput rules duplicated with foundation (source-order layering); .header-warn duplicated results.css:916 overrides base",
+          "boundary_cases": [
+            "foundation !important base on gf inputs",
+            "downstream results.css wins .header-warn color"
+          ],
+          "evidence": "index.html CSS link order; foundation:413-440 modes:160-172",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": ".header-warn disclaimer styling :174-188; .btn-reset-red vivid red :283-293; .btn-export:focus outline:none :275 removes keyboard focus",
+          "boundary_cases": [
+            "export row safety actions",
+            "disabled GF pointer-events in rec-mode on gfCustomRow only"
+          ],
+          "evidence": "modes.css:275-276 no focus-visible replacement",
+          "result": "FINDING"
+        },
+        "L7": {
+          "trace": "No computed-style tests for .panel.active, .buh-only display, tools-mode opacity, or 600px card padding",
+          "boundary_cases": [
+            "UI-EXTRACT-CSS regeneration",
+            "string fingerprint only"
+          ],
+          "evidence": "tools/run_ui_structure_suite.py; audit-units.json UI-CSS-* evidence SUITE-UI-STRUCTURE",
+          "result": "FINDING"
+        }
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "SL-C05-M-01",
+      "severity": "MEDIUM",
+      "unit_id": "UI-CSS-FOUNDATION",
+      "location": "lsp-dplanner-foundation.css:443-454; lsp-dplanner-modes.css:13-23; planner-shell.js:116-124",
+      "root_cause": "initV3Layout removes #gfPresetsRow while REC/Tools CSS still targets that id; GF UI uses #gfPresetsRowV3/#gfPresetBtns",
+      "failure_path": "Page load -> initV3Layout removes #gfPresetsRow -> body.rec-mode/algo-tools opacity rules never match GF preset buttons",
+      "impact": "Mode-isolation CSS stale; mitigated by view .visible toggles but not enforced at stylesheet layer",
+      "evidence": "planner-shell.js reparent; tests-massive presence-only check",
+      "recommendation": "Retarget mode rules to #gfPresetsRowV3 and #gfPresetBtns; add computed-style regression",
+      "status": "OPEN",
+      "regression_ids": [
+        "SL-C05-GF-ROW-MODE-ISOLATION"
+      ]
+    },
+    {
+      "id": "SL-C05-M-02",
+      "severity": "MEDIUM",
+      "unit_id": "UI-CSS-MODES",
+      "location": "lsp-dplanner-modes.css:275-276",
+      "root_cause": ".btn-export:focus { outline: none } without :focus-visible replacement",
+      "failure_path": "Keyboard Tab to .btn-export -> no visible focus indicator",
+      "impact": "Keyboard users cannot see focused export/copy controls before activation",
+      "evidence": "modes.css:275-276; theme-pill uses focus-visible in results.css:821",
+      "recommendation": "Replace with :focus-visible outline or match theme-pill pattern",
+      "status": "OPEN",
+      "regression_ids": [
+        "SL-C05-EXPORT-FOCUS-VISIBLE"
+      ]
+    },
+    {
+      "id": "SL-C05-L-01",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-FOUNDATION",
+      "location": "lsp-dplanner-foundation.css:359-372",
+      "root_cause": "Markup uses .brand-logo; setBrandIcon is no-op",
+      "failure_path": "N/A \u2014 selectors never match",
+      "impact": "Dead CSS",
+      "evidence": "ui/markup-header.html:64; selector audit 0 hits for brand-icon",
+      "recommendation": "Remove .brand-icon rules or restore emoji icon markup",
+      "status": "OPEN",
+      "regression_ids": [
+        "SL-C05-CSS-DEAD-BRAND-ICON"
+      ]
+    },
+    {
+      "id": "SL-C05-L-02",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-FOUNDATION",
+      "location": "lsp-dplanner-foundation.css:396-410",
+      "root_cause": "#gfCustomRow contains selects only; presets use .gf-preset-btn",
+      "failure_path": "N/A \u2014 .gf-btn absent under #gfCustomRow",
+      "impact": "Dead CSS",
+      "evidence": "ui/markup-header.html:711-748; settings-core.js:654",
+      "recommendation": "Remove obsolete #gfCustomRow .gf-btn rules",
+      "status": "OPEN",
+      "regression_ids": [
+        "SL-C05-CSS-DEAD-GF-BTN"
+      ]
+    },
+    {
+      "id": "SL-C05-L-03",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-MODES",
+      "location": "lsp-dplanner-foundation.css:391-393; lsp-dplanner-modes.css:27-35",
+      "root_cause": "V3 header removed .algo-switcher element",
+      "failure_path": "Tools-mode REF brightness exception never applies",
+      "impact": "Dead CSS; REF/disclaimer unaffected via separate DOM placement",
+      "evidence": "selector audit 0 algo-switcher hits in ui/*.html",
+      "recommendation": "Remove .algo-switcher rules or target #headerBanner/#header-actions",
+      "status": "OPEN",
+      "regression_ids": [
+        "SL-C05-CSS-DEAD-ALGO-SWITCHER"
+      ]
+    },
+    {
+      "id": "SL-C05-L-04",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-MODES",
+      "location": "lsp-dplanner-modes.css:191-215",
+      "root_cause": "Theme control uses .theme-pill-toggle styled in results.css",
+      "failure_path": "N/A \u2014 .theme-toggle not in markup",
+      "impact": "Dead CSS in modes unit",
+      "evidence": "ui/markup-header.html:80; lsp-dplanner-results.css:820-821",
+      "recommendation": "Remove .theme-toggle block from modes.css",
+      "status": "OPEN",
+      "regression_ids": [
+        "SL-C05-CSS-DEAD-THEME-TOGGLE"
+      ]
+    }
+  ],
+  "evidence_runs": [],
+  "changed_paths": [],
+  "audit_report": "docs/seven-lens-reports/cycle-05-css.md",
+  "notes": "C05-A foundation 454 lines; C05-B modes 372 lines. Separate review sessions per 600-line protocol. FIXER required."
+}
