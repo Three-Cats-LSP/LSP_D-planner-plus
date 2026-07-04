@@ -457,7 +457,8 @@
       "commit": "0e83bcbc1213defb0bd70da163a5dbad9d80fb74",
       "worktree_clean": true,
       "command_argv": ["python", "dev/ui_css_regression.py"],
-      "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-PRE-CSS.json"
+      "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-PRE-CSS.json",
+      "receipt_sha256": "9f693b056d04f92e960c3efaf8bebef6d6edbd9180872a1c97f31e1779005b2e"
     },
     {
       "id": "ER-C05-POST-CSS",
@@ -478,7 +479,7 @@
       "state_restored": true,
       "command": "python dev/ui_css_regression.py",
       "exit_code": 0,
-      "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+      "commit": "a552e63bb71d33efc9fecd14ea2a792dd7fa6bc3",
       "worktree_clean": true,
       "command_argv": ["python", "dev/ui_css_regression.py"],
       "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-POST-CSS.json"
@@ -503,7 +504,8 @@
         "--output",
         "dev/seven-lens-browser-trace-cycle05-pre.json"
       ],
-      "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-PRE-TRACE.json"
+      "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-PRE-TRACE.json",
+      "receipt_sha256": "62bf04653edbe90aae5e095e29637b8588d1d93418b8532b8055d3539dc2016d"
     },
     {
       "id": "ER-C05-POST-TRACE",
@@ -515,7 +517,7 @@
       "state_restored": true,
       "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-05-css.json --output dev/seven-lens-browser-trace-cycle05.json",
       "exit_code": 0,
-      "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+      "commit": "a552e63bb71d33efc9fecd14ea2a792dd7fa6bc3",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -538,7 +540,7 @@
       "state_restored": true,
       "command": "python tools/run_ui_structure_suite.py",
       "exit_code": 0,
-      "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+      "commit": "a552e63bb71d33efc9fecd14ea2a792dd7fa6bc3",
       "worktree_clean": true,
       "command_argv": ["python", "tools/run_ui_structure_suite.py"],
       "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-STRUCTURE.json"
