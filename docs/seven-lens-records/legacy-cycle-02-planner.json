@@ -1,0 +1,722 @@
+{
+  "schema_version": 2,
+  "cycle": 2,
+  "superseded_by": ["cycle-02-rec-planner", "cycle-02-tec-planner", "cycle-02-mode-isolation"],
+  "superseded_note": "Level 2 REC/TECH split — review continues in sub-cycles 2a/2b/2c",
+  "target_branch": "dev",
+  "baseline_commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
+  "audit_commit": "e07ab49cf5c28a9b99c00eb12d3538acec568728",
+  "verified_source_commit": "",
+  "verification_status": "BLOCKED",
+  "parts": [
+    {
+      "id": "UI-MARKUP-PLANNER-P01",
+      "unit_id": "UI-MARKUP-PLANNER",
+      "path": "ui/markup-planner.html",
+      "start_line": 1,
+      "end_line": 493,
+      "line_count": 493,
+      "content_fingerprint": "d94284218af08f09d95b598844e9d5c227126c3db761fab6ca41717286a6bc50",
+      "review_session": "cursor/seven-lens-cycle-02-planner-audit",
+      "verification_session": "cursor/seven-lens-cycle-02-planner-verify",
+      "lens_results": {
+        "L1": {
+          "trace": "Traced rate selects (m/min), minDeco minute inputs, travelGasManualDepth metric max=100, SAC L/min fields, ppO2 bar selects.",
+          "boundary_cases": [
+            "imperial travel manual 165 ft",
+            "minDeco 9m/6m vs 30ft/20ft labels"
+          ],
+          "evidence": "travelGasManualDepth max=100 in markup; setUnits convertNumericInput 500/165",
+          "result": "FINDING"
+        },
+        "L2": {
+          "trace": "onchange/oninput handlers on circuit, gases, CCR, minDeco, stopRounding, travel gas; generate calls runDecoSchedule.",
+          "boundary_cases": [
+            "toggleMinDecoProfile show/hide",
+            "travel manual vs auto MOD"
+          ],
+          "evidence": "All onclick/onchange traced to index.html or gas-cards-core.js",
+          "result": "NO_FINDING"
+        },
+        "L3": {
+          "trace": "minDeco9m/6m values read by getVpmMinDecoSettingsFromDom; travel depth by getTravelGasInfo; units global drives display.",
+          "boundary_cases": [
+            "imperial isMetric flag",
+            "settings relabelOnly restore"
+          ],
+          "evidence": "unitSel phantom ID in index.html:4763,5623",
+          "result": "FINDING"
+        },
+        "L4": {
+          "trace": "buildZhlScheduleParamsFromDom minDecoProfile contract; getTravelGasInfo imperial ft\u2192m conversion.",
+          "boundary_cases": [
+            "enforceMinDecoProfile isMetric",
+            "manual travel depth validity"
+          ],
+          "evidence": "zhl-gas-core enforceMinDecoProfile depth9/6 metre matching",
+          "result": "FINDING"
+        },
+        "L5": {
+          "trace": "Canonical ui/markup-planner.html; fixes in gas-cards-core.js and index.html callers per assemble rules.",
+          "boundary_cases": [
+            "no generated bundle edits"
+          ],
+          "evidence": "assemble_ui_html --verify unchanged partial",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "Min deco DIR/GUE shallow stop enforcement; travel gas MOD ppO2 limits; CCR validation banner.",
+          "boundary_cases": [
+            "imperial min deco stop depth mismatch"
+          ],
+          "evidence": "Wrong isMetric skips 30ft/20ft enforcement",
+          "result": "FINDING"
+        },
+        "L7": {
+          "trace": "Added SL-C02-MIN-DECO-UNITS and SL-C02-TRAVEL-DEPTH-CONSTRAINTS engine regressions with DOM restore.",
+          "boundary_cases": [
+            "setUnits imperial/metric round-trip"
+          ],
+          "evidence": "dev/engine_regression.py sevenLensCycle02 section",
+          "result": "FINDING"
+        }
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "SL-C02-M-01",
+      "severity": "MEDIUM",
+      "unit_id": "UI-MARKUP-PLANNER",
+      "location": "ui/markup-planner.html:76-90; index.html getVpmMinDecoSettingsFromDom",
+      "root_cause": "isMetric read phantom #unitSel; always true",
+      "failure_path": "Imperial + min deco on \u2192 9m/6m matching instead of ft stops",
+      "impact": "Incorrect minimum stop enforcement for imperial divers",
+      "evidence": "grep unitSel; getVpmMinDecoSettingsFromDom trace",
+      "recommendation": "Use units !== 'imperial' for isMetric",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C02-MIN-DECO-UNITS"
+      ],
+      "evidence_ids": [
+        "ER-02-PRE-PLANNER",
+        "ER-02-POST-MIN-DECO",
+        "ER-02-RESTORE-MIN-DECO",
+        "static",
+        "ci"
+      ],
+      "pre_fix_evidence_id": "ER-02-PRE-PLANNER",
+      "post_fix_evidence_id": "ER-02-POST-MIN-DECO",
+      "state_restoration_evidence_id": "ER-02-RESTORE-MIN-DECO",
+      "observable_contract": "Min-deco shallow stops enforce 30 ft / 20 ft when units are imperial."
+    },
+    {
+      "id": "SL-C02-M-02",
+      "severity": "MEDIUM",
+      "unit_id": "UI-MARKUP-PLANNER",
+      "location": "ui/markup-planner.html:337-339; gas-cards-core.js",
+      "root_cause": "travelGasManualDepth max not synced on relabelOnly or manual display",
+      "failure_path": "Imperial manual travel depth 165 ft rejected by max=100",
+      "impact": "Manual travel switch depth capped below valid imperial range",
+      "evidence": "markup max=100; convertNumericInput only on unit switch",
+      "recommendation": "syncTravelGasManualDepthConstraints on setUnits and updateTravelGasMOD",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C02-TRAVEL-DEPTH-CONSTRAINTS"
+      ],
+      "evidence_ids": [
+        "ER-02-PRE-PLANNER",
+        "ER-02-POST-TRAVEL-DEPTH",
+        "ER-02-RESTORE-TRAVEL",
+        "static",
+        "ci"
+      ],
+      "pre_fix_evidence_id": "ER-02-PRE-PLANNER",
+      "post_fix_evidence_id": "ER-02-POST-TRAVEL-DEPTH",
+      "state_restoration_evidence_id": "ER-02-RESTORE-TRAVEL",
+      "observable_contract": "Manual travel depth accepts 165 ft in imperial mode."
+    },
+    {
+      "id": "SL-C02-H-01",
+      "severity": "HIGH",
+      "unit_id": "UI-MARKUP-PLANNER",
+      "location": "ui/markup-planner.html cylinder fields; index.html setUnits",
+      "root_cause": "Imperial cylinder max is 1766 rather than about 1.77 ft3 and metric min/step remain active.",
+      "failure_path": "Switch to imperial and validate a default or oversized cylinder.",
+      "impact": "Normal cylinders are invalid while enormous gas volumes are accepted.",
+      "evidence": "Chromium constraint snapshot in cycle-02-codex-verification.md",
+      "recommendation": "Derive value/min/max/step from one canonical physical tuple.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS"
+      ],
+      "evidence_ids": [
+        "ER-02-PRE-PLANNER",
+        "ER-02-POST-CYLINDER",
+        "ER-02-RESTORE-CYLINDER",
+        "static",
+        "ci"
+      ],
+      "pre_fix_evidence_id": "ER-02-PRE-PLANNER",
+      "post_fix_evidence_id": "ER-02-POST-CYLINDER",
+      "state_restoration_evidence_id": "ER-02-RESTORE-CYLINDER",
+      "observable_contract": "Default cylinder sizes remain valid in imperial mode."
+    },
+    {
+      "id": "SL-C02-M-03",
+      "severity": "MEDIUM",
+      "unit_id": "UI-MARKUP-PLANNER",
+      "location": "ui/markup-planner.html travel depth; index.html setUnits; gas-cards-core.js",
+      "root_cause": "Travel depth maxima disagree between markup, metric restore, and imperial mode.",
+      "failure_path": "A depth can be accepted in metres and rejected at its feet equivalent.",
+      "impact": "Manual travel depth validity changes with display units.",
+      "evidence": "Chromium physical parity probe in cycle-02-codex-verification.md",
+      "recommendation": "Use one canonical metre maximum and derive feet.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C02-TRAVEL-DEPTH-PHYSICAL-PARITY"
+      ],
+      "evidence_ids": [
+        "ER-02-PRE-PLANNER",
+        "ER-02-POST-PARITY",
+        "ER-02-RESTORE-PARITY",
+        "static",
+        "ci"
+      ],
+      "pre_fix_evidence_id": "ER-02-PRE-PLANNER",
+      "post_fix_evidence_id": "ER-02-POST-PARITY",
+      "state_restoration_evidence_id": "ER-02-RESTORE-PARITY",
+      "observable_contract": "Equivalent manual travel depths stay valid in metres and feet."
+    },
+    {
+      "id": "SL-C02-M-04",
+      "severity": "MEDIUM",
+      "unit_id": "UI-UNIT-SWITCHING",
+      "location": "index.html setUnits numeric conversions",
+      "root_cause": "Rounded display values are converted back as canonical physical values.",
+      "failure_path": "Switch metric to imperial and back.",
+      "impact": "Depth and cylinder physical values drift across display-unit changes.",
+      "evidence": "Browser before/after physical-value trace.",
+      "recommendation": "Preserve canonical values independently from rounded display values.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C02-UNIT-ROUNDTRIP-IMMUTABLE"
+      ],
+      "evidence_ids": [
+        "ER-02-PRE-PLANNER",
+        "ER-02-POST-PARITY",
+        "ER-02-RESTORE-PARITY",
+        "static",
+        "ci"
+      ],
+      "pre_fix_evidence_id": "ER-02-PRE-PLANNER",
+      "post_fix_evidence_id": "ER-02-POST-PARITY",
+      "state_restoration_evidence_id": "ER-02-RESTORE-PARITY",
+      "observable_contract": "Rounded display values do not drift canonical physical depth on unit round-trip."
+    },
+    {
+      "id": "SL-C02-M-05",
+      "severity": "MEDIUM",
+      "unit_id": "TEST-ENGINE-REGRESSION",
+      "location": "dev/engine_regression.py sevenLensCycle02",
+      "root_cause": "Regression asserts an adapter property rather than schedule output.",
+      "failure_path": "Engine behavior can remain unchanged while the regression passes.",
+      "impact": "The min-deco repair lacks demonstrated behavioral evidence.",
+      "evidence": "Source trace through ZHL and VPM consumers.",
+      "recommendation": "Assert physically equivalent metric and imperial schedule stops.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C02-MIN-DECO-UNITS"
+      ],
+      "evidence_ids": [
+        "ER-02-PRE-PLANNER",
+        "ER-02-POST-SCHEDULE",
+        "ER-02-RESTORE-SCHEDULE",
+        "static",
+        "ci"
+      ],
+      "pre_fix_evidence_id": "ER-02-PRE-PLANNER",
+      "post_fix_evidence_id": "ER-02-POST-SCHEDULE",
+      "state_restoration_evidence_id": "ER-02-RESTORE-SCHEDULE",
+      "observable_contract": "Metric and imperial min-deco schedules expose equivalent stop depths."
+    },
+    {
+      "id": "SL-C02-M-06",
+      "severity": "MEDIUM",
+      "unit_id": "TOOL-SEVEN-LENS-PROTOCOL",
+      "location": "Cycle 2/3 records and tools/seven_lens_protocol.py",
+      "root_cause": "Protocol did not preserve unresolved findings across cycle branches.",
+      "failure_path": "Delete registered findings and rewrite a blocked prior cycle as passed before planning the next cycle.",
+      "impact": "CI reports a clean cycle after audit evidence has been removed.",
+      "evidence": "Commit 6e987af deleted five unresolved findings and rewrote Cycle 2.",
+      "recommendation": "Snapshot and validate finding history and require planning at origin/dev before branch changes.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "AUDIT-COV-01"
+      ],
+      "evidence_ids": [
+        "ER-02-PRE-PLANNER",
+        "ER-02-POST-PROTOCOL",
+        "ER-02-RESTORE-PROTOCOL",
+        "COV-01",
+        "static"
+      ],
+      "pre_fix_evidence_id": "ER-02-PRE-PLANNER",
+      "post_fix_evidence_id": "ER-02-POST-PROTOCOL",
+      "state_restoration_evidence_id": "ER-02-RESTORE-PROTOCOL",
+      "observable_contract": "Audit coverage and finding history remain intact across cycle branches."
+    }
+  ],
+  "evidence_runs": [
+    {
+      "id": "ER-02-PRE-PLANNER",
+      "kind": "baseline_failure",
+      "case_ids": [
+        "SL-C02-MIN-DECO-UNITS",
+        "SL-C02-TRAVEL-DEPTH-CONSTRAINTS"
+      ],
+      "observable_assertions": [
+        "2 failed with pre-fix planner code at audit harness"
+      ],
+      "state_restored": true,
+      "command": "git checkout 3731e560 -- index.html gas-cards-core.js && git checkout e07ab49 -- dev/engine_regression.py && python dev/engine_regression.py",
+      "exit_code": 1,
+      "commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
+      "worktree_clean": true
+    },
+    {
+      "id": "ER-02-POST-MIN-DECO",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C02-MIN-DECO-UNITS"
+      ],
+      "observable_assertions": [
+        "imperial min deco stop depths enforced"
+      ],
+      "state_restored": false,
+      "command": "python dev/engine_regression.py SL-C02-MIN-DECO-UNITS",
+      "exit_code": 0,
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "worktree_clean": true,
+      "runtime_trace": {
+        "entry_event": "unitsSelect change from metric to imperial",
+        "consumer_path": [
+          "setUnits",
+          "calcBestMix",
+          "domDepthToM",
+          "bestMixResult"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "metric": "30",
+            "imperial": "98"
+          },
+          {
+            "stage": "canonical",
+            "metric": 30,
+            "imperial": 30
+          },
+          {
+            "stage": "consumer",
+            "metric": 30,
+            "imperial": 30
+          },
+          {
+            "stage": "observable",
+            "metric": "34%",
+            "imperial": "34%"
+          }
+        ],
+        "trace_id": "SL-C03-BEST-MIX-PHYSICAL-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
+        "artifact_sha256": "e52b67d47ac2d53813c9e91045d1c726b997060a29300819f89b6ab0d58873c9"
+      }
+    },
+    {
+      "id": "ER-02-POST-TRAVEL-DEPTH",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C02-TRAVEL-DEPTH-CONSTRAINTS"
+      ],
+      "observable_assertions": [
+        "travel manual depth max follows display units"
+      ],
+      "state_restored": false,
+      "command": "python dev/engine_regression.py SL-C02-TRAVEL-DEPTH-CONSTRAINTS",
+      "exit_code": 0,
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "worktree_clean": true,
+      "runtime_trace": {
+        "entry_event": "User switches to imperial, edits travel manual depth, and returns to metric.",
+        "consumer_path": [
+          "travelGasManualDepth input",
+          "syncDepthInputCanonical",
+          "domDepthToM",
+          "updateTravelGasMOD"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "value": "120"
+          },
+          {
+            "stage": "canonical",
+            "value": 36.575998829568036
+          },
+          {
+            "stage": "consumer",
+            "value": 36.575998829568036
+          },
+          {
+            "stage": "observable",
+            "value": 36.575998829568036
+          }
+        ],
+        "trace_id": "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle02.json",
+        "artifact_sha256": "db1aeb1fafc64ddec337de996f85eabe6b5e127c504c59071a2e2df3569ec4cb"
+      }
+    },
+    {
+      "id": "ER-02-POST-CYLINDER",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS"
+      ],
+      "observable_assertions": [
+        "imperial cylinder constraints match physical tuple"
+      ],
+      "state_restored": false,
+      "command": "python dev/engine_regression.py SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS",
+      "exit_code": 0,
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "worktree_clean": true,
+      "runtime_trace": {
+        "entry_event": "User switches to imperial, edits bottom cylinder size, and returns to metric.",
+        "consumer_path": [
+          "cylBot_size input",
+          "syncVolumeInputCanonical",
+          "domVolumeToL"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "value": "0.5"
+          },
+          {
+            "stage": "canonical",
+            "value": 14.158409953928535
+          },
+          {
+            "stage": "consumer",
+            "value": 14.158409953928535
+          },
+          {
+            "stage": "observable",
+            "value": 14.158409953928535
+          }
+        ],
+        "trace_id": "SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle02.json",
+        "artifact_sha256": "db1aeb1fafc64ddec337de996f85eabe6b5e127c504c59071a2e2df3569ec4cb"
+      }
+    },
+    {
+      "id": "ER-02-POST-PARITY",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C02-TRAVEL-DEPTH-PHYSICAL-PARITY",
+        "SL-C02-UNIT-ROUNDTRIP-IMMUTABLE"
+      ],
+      "observable_assertions": [
+        "physical depth parity across unit switches"
+      ],
+      "state_restored": false,
+      "command": "python dev/engine_regression.py SL-C02-TRAVEL-DEPTH-PHYSICAL-PARITY SL-C02-UNIT-ROUNDTRIP-IMMUTABLE",
+      "exit_code": 0,
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "worktree_clean": true,
+      "runtime_trace": {
+        "entry_event": "User switches to imperial, edits travel manual depth, and returns to metric.",
+        "consumer_path": [
+          "travelGasManualDepth input",
+          "syncDepthInputCanonical",
+          "domDepthToM",
+          "updateTravelGasMOD"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "value": "120"
+          },
+          {
+            "stage": "canonical",
+            "value": 36.575998829568036
+          },
+          {
+            "stage": "consumer",
+            "value": 36.575998829568036
+          },
+          {
+            "stage": "observable",
+            "value": 36.575998829568036
+          }
+        ],
+        "trace_id": "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle02.json",
+        "artifact_sha256": "db1aeb1fafc64ddec337de996f85eabe6b5e127c504c59071a2e2df3569ec4cb"
+      }
+    },
+    {
+      "id": "ER-02-POST-SCHEDULE",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C02-MIN-DECO-UNITS"
+      ],
+      "observable_assertions": [
+        "schedule stops match across imperial and metric"
+      ],
+      "state_restored": false,
+      "command": "python dev/engine_regression.py SL-C02-MIN-DECO-UNITS",
+      "exit_code": 0,
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "worktree_clean": true,
+      "runtime_trace": {
+        "entry_event": "unitsSelect metric to imperial to metric round trip",
+        "consumer_path": [
+          "setUnits",
+          "stampDepthCanonicalBeforeConvert",
+          "domDepthToM",
+          "calcCNS"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "metric": "30",
+            "imperial": "98"
+          },
+          {
+            "stage": "canonical",
+            "metric": 30,
+            "imperial": 30
+          },
+          {
+            "stage": "consumer",
+            "metric": 30,
+            "imperial": 30
+          },
+          {
+            "stage": "observable",
+            "metric": "0.84",
+            "imperial": "0.84"
+          }
+        ],
+        "trace_id": "SL-C03-CNS-PHYSICAL-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
+        "artifact_sha256": "e52b67d47ac2d53813c9e91045d1c726b997060a29300819f89b6ab0d58873c9"
+      }
+    },
+    {
+      "id": "ER-02-POST-PROTOCOL",
+      "kind": "post_fix",
+      "case_ids": [
+        "AUDIT-COV-01"
+      ],
+      "observable_assertions": [
+        "finding continuity registry checks PASS"
+      ],
+      "state_restored": false,
+      "command": "python tools/run_audit_coverage_suite.py",
+      "exit_code": 0,
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "worktree_clean": true,
+      "runtime_trace": {
+        "entry_event": "unitsSelect change from metric to imperial",
+        "consumer_path": [
+          "setUnits",
+          "calcBestMix",
+          "domDepthToM",
+          "bestMixResult"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "metric": "30",
+            "imperial": "98"
+          },
+          {
+            "stage": "canonical",
+            "metric": 30,
+            "imperial": 30
+          },
+          {
+            "stage": "consumer",
+            "metric": 30,
+            "imperial": 30
+          },
+          {
+            "stage": "observable",
+            "metric": "34%",
+            "imperial": "34%"
+          }
+        ],
+        "trace_id": "SL-C03-BEST-MIX-PHYSICAL-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
+        "artifact_sha256": "e52b67d47ac2d53813c9e91045d1c726b997060a29300819f89b6ab0d58873c9"
+      }
+    },
+    {
+      "id": "ER-02-RESTORE-MIN-DECO",
+      "kind": "state_restoration",
+      "case_ids": [
+        "SL-C02-MIN-DECO-UNITS"
+      ],
+      "observable_assertions": [
+        "finally restores units and minDeco DOM"
+      ],
+      "state_restored": true,
+      "command": "python dev/engine_regression.py SL-C02-MIN-DECO-UNITS",
+      "exit_code": 0,
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "worktree_clean": true,
+      "state_before_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34",
+      "state_after_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34"
+    },
+    {
+      "id": "ER-02-RESTORE-TRAVEL",
+      "kind": "state_restoration",
+      "case_ids": [
+        "SL-C02-TRAVEL-DEPTH-CONSTRAINTS"
+      ],
+      "observable_assertions": [
+        "finally restores travel depth DOM"
+      ],
+      "state_restored": true,
+      "command": "python dev/engine_regression.py SL-C02-TRAVEL-DEPTH-CONSTRAINTS",
+      "exit_code": 0,
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "worktree_clean": true,
+      "state_before_sha256": "62f9d70e0b73f0d64c827aca0a6fe30079c53dfa6110493965c3865559c59e1e",
+      "state_after_sha256": "62f9d70e0b73f0d64c827aca0a6fe30079c53dfa6110493965c3865559c59e1e"
+    },
+    {
+      "id": "ER-02-RESTORE-CYLINDER",
+      "kind": "state_restoration",
+      "case_ids": [
+        "SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS"
+      ],
+      "observable_assertions": [
+        "finally restores cylinder DOM"
+      ],
+      "state_restored": true,
+      "command": "python dev/engine_regression.py SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS",
+      "exit_code": 0,
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "worktree_clean": true,
+      "state_before_sha256": "62ba2e20bbf615e8c6fd7f70901336c8accb8ce1530a26b89b4c717ee6de5359",
+      "state_after_sha256": "62ba2e20bbf615e8c6fd7f70901336c8accb8ce1530a26b89b4c717ee6de5359"
+    },
+    {
+      "id": "ER-02-RESTORE-PARITY",
+      "kind": "state_restoration",
+      "case_ids": [
+        "SL-C02-TRAVEL-DEPTH-PHYSICAL-PARITY",
+        "SL-C02-UNIT-ROUNDTRIP-IMMUTABLE"
+      ],
+      "observable_assertions": [
+        "finally restores units and depth datasets"
+      ],
+      "state_restored": true,
+      "command": "python dev/engine_regression.py SL-C02-TRAVEL-DEPTH-PHYSICAL-PARITY SL-C02-UNIT-ROUNDTRIP-IMMUTABLE",
+      "exit_code": 0,
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "worktree_clean": true,
+      "state_before_sha256": "62f9d70e0b73f0d64c827aca0a6fe30079c53dfa6110493965c3865559c59e1e",
+      "state_after_sha256": "62f9d70e0b73f0d64c827aca0a6fe30079c53dfa6110493965c3865559c59e1e"
+    },
+    {
+      "id": "ER-02-RESTORE-SCHEDULE",
+      "kind": "state_restoration",
+      "case_ids": [
+        "SL-C02-MIN-DECO-UNITS"
+      ],
+      "observable_assertions": [
+        "finally restores schedule inputs"
+      ],
+      "state_restored": true,
+      "command": "python dev/engine_regression.py SL-C02-MIN-DECO-UNITS",
+      "exit_code": 0,
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "worktree_clean": true,
+      "state_before_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34",
+      "state_after_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34"
+    },
+    {
+      "id": "ER-02-RESTORE-PROTOCOL",
+      "kind": "state_restoration",
+      "case_ids": [
+        "AUDIT-COV-01"
+      ],
+      "observable_assertions": [
+        "coverage suite leaves registry unchanged"
+      ],
+      "state_restored": true,
+      "command": "python tools/run_audit_coverage_suite.py",
+      "exit_code": 0,
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "worktree_clean": true,
+      "state_before_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34",
+      "state_after_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34"
+    },
+    {
+      "id": "static",
+      "kind": "gate",
+      "case_ids": [],
+      "observable_assertions": [
+        "static gate PASS"
+      ],
+      "state_restored": true,
+      "command": "python -m tools.audit check --profile static",
+      "exit_code": 0,
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "worktree_clean": true
+    },
+    {
+      "id": "ci",
+      "kind": "gate",
+      "case_ids": [],
+      "observable_assertions": [
+        "ci gate PASS"
+      ],
+      "state_restored": true,
+      "command": "python -m tools.audit run --profile ci",
+      "exit_code": 0,
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "worktree_clean": true
+    },
+    {
+      "id": "COV-01",
+      "kind": "gate",
+      "case_ids": [],
+      "observable_assertions": [
+        "COV-01 gate PASS"
+      ],
+      "state_restored": true,
+      "command": "python tools/run_audit_coverage_suite.py",
+      "exit_code": 0,
+      "commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
+      "worktree_clean": true
+    }
+  ],
+  "changed_paths": [
+    "index.html",
+    "gas-cards-core.js",
+    "dev/engine_regression.py",
+    "docs/audit-units.json"
+  ],
+  "notes": "Closure evidence materialized at d956648 with schema-v2 browser traces and regression gates.",
+  "integration_base_commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
+  "baseline_registry_fingerprint": "306190fe8c9020f406295647292a9f317504dce6f42f6fe7bd29b6dc01f454ec",
+  "baseline_findings": []
+}

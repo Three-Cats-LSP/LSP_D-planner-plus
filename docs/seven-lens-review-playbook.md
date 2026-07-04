@@ -21,6 +21,8 @@ Treat every displayed value plus canonical dataset as a replicated-state system.
 - Use non-round values that reveal conversion drift.
 - Assert that the final physical consumer receives the intended SI value.
 - Verify dynamic controls and newly appended cards, not only fixed initial markup.
+- For repeated controls, create at least one item while already in each unit mode;
+  assert value, min, max, step, validity, canonical state, and final consumer.
 
 ## Stateful Regression Suites
 
@@ -38,6 +40,8 @@ Treat every displayed value plus canonical dataset as a replicated-state system.
 - Reject empty traces, empty assertions, duplicate IDs, non-finite values, evaluation errors, console errors, and page errors.
 - Require repeatable captures and assertions in fresh browser contexts.
 - Hash the trace specification and artifact; bind both to the verified commit.
+- Declare stable case IDs in each trace. A finding may cite a trace only when the
+  trace declares every regression case used by that finding.
 - Include adverse paths: invalid input, minimum, maximum, mode transition, repeated action, and navigation away/back.
 
 ## Safety-Critical Copy
@@ -49,6 +53,9 @@ Treat every displayed value plus canonical dataset as a replicated-state system.
 ## Closure Checklist
 
 - Every HIGH/MEDIUM finding has pre-fix failure, post-fix observable success, stable regression IDs, and state-restoration evidence.
+- Every evidence row has a schema-v4 receipt emitted by
+  `tools/seven_lens_evidence.py`; hand-written exit codes and cleanliness flags
+  are not evidence.
 - Evidence commands ran at the verified source commit and left a clean worktree.
 - Static, CI, release, browser, and engine gates report the same source commit.
 - The manual ledger, cycle record, audit registry, and report contain the same units, findings, status, and commit.

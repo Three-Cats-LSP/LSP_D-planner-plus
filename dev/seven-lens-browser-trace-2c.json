@@ -1,0 +1,440 @@
+{
+  "schema_version": 3,
+  "runner_version": 2,
+  "spec": "docs\\seven-lens-traces\\cycle-02-mode-isolation.json",
+  "spec_sha256": "6cb131f76e482629505f4e7e28207608ea238dcf4d8206bc7d26d744dba9dd91",
+  "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+  "traces": [
+    {
+      "id": "SL-MODE-REC-TEC-ISOLATION",
+      "entry_event": "User switches Rec \u2194 B\u00fchlmann; each mode retains its own depth/BT via view snapshots.",
+      "consumer_path": [
+        "navBtnBuh click",
+        "setPlannerAlgo view swap",
+        "onPlannerViewSwitch restore",
+        "tecDepth value persisted"
+      ],
+      "captures": {
+        "before": {
+          "rec_d": "33",
+          "tec_d": "44"
+        },
+        "tec_restored": {
+          "tec_d": "44",
+          "tec_b": "22",
+          "rec_visible": false,
+          "tec_visible": true
+        },
+        "tec_edited": {
+          "tec_d": "45",
+          "tec_lbl": "45"
+        },
+        "rec_restored": {
+          "rec_d": "33",
+          "rec_b": "21"
+        },
+        "tec_persisted": {
+          "tec_d": "45"
+        }
+      },
+      "assertions": [
+        {
+          "id": "tec-view-visible",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "rec-hidden-on-tec",
+          "passed": true,
+          "detail": "False equal False"
+        },
+        {
+          "id": "tec-depth-restored",
+          "passed": true,
+          "detail": "'44' equal '44'"
+        },
+        {
+          "id": "rec-depth-restored",
+          "passed": true,
+          "detail": "'33' equal '33'"
+        },
+        {
+          "id": "tec-depth-edited-persists",
+          "passed": true,
+          "detail": "'45' equal '45'"
+        }
+      ],
+      "state_before_sha256": "c87bdea9b59cfa564f50638924c7f53d8b98b5db1445774e067172dce8302781",
+      "state_after_sha256": "c87bdea9b59cfa564f50638924c7f53d8b98b5db1445774e067172dce8302781",
+      "state_before": {
+        "elements": {
+          "#navBtnRec": {
+            "value": "",
+            "checked": null,
+            "text": "RECNDL \u00b7 PADI table",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecDepthBtSteppers button[aria-label=\"Increase depth\"]": {
+            "value": "",
+            "checked": null,
+            "text": "+",
+            "className": "stepper-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnRec": {
+            "value": "",
+            "checked": null,
+            "text": "RECNDL \u00b7 PADI table",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecDepthBtSteppers button[aria-label=\"Increase depth\"]": {
+            "value": "",
+            "checked": null,
+            "text": "+",
+            "className": "stepper-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "case_ids": [
+        "SL-MODE-REC-TEC-ISOLATION"
+      ],
+      "runs": [
+        {
+          "id": "SL-MODE-REC-TEC-ISOLATION",
+          "entry_event": "User switches Rec \u2194 B\u00fchlmann; each mode retains its own depth/BT via view snapshots.",
+          "consumer_path": [
+            "navBtnBuh click",
+            "setPlannerAlgo view swap",
+            "onPlannerViewSwitch restore",
+            "tecDepth value persisted"
+          ],
+          "captures": {
+            "before": {
+              "rec_d": "33",
+              "tec_d": "44"
+            },
+            "tec_restored": {
+              "tec_d": "44",
+              "tec_b": "22",
+              "rec_visible": false,
+              "tec_visible": true
+            },
+            "tec_edited": {
+              "tec_d": "45",
+              "tec_lbl": "45"
+            },
+            "rec_restored": {
+              "rec_d": "33",
+              "rec_b": "21"
+            },
+            "tec_persisted": {
+              "tec_d": "45"
+            }
+          },
+          "assertions": [
+            {
+              "id": "tec-view-visible",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "rec-hidden-on-tec",
+              "passed": true,
+              "detail": "False equal False"
+            },
+            {
+              "id": "tec-depth-restored",
+              "passed": true,
+              "detail": "'44' equal '44'"
+            },
+            {
+              "id": "rec-depth-restored",
+              "passed": true,
+              "detail": "'33' equal '33'"
+            },
+            {
+              "id": "tec-depth-edited-persists",
+              "passed": true,
+              "detail": "'45' equal '45'"
+            }
+          ],
+          "state_before_sha256": "c87bdea9b59cfa564f50638924c7f53d8b98b5db1445774e067172dce8302781",
+          "state_after_sha256": "c87bdea9b59cfa564f50638924c7f53d8b98b5db1445774e067172dce8302781",
+          "state_before": {
+            "elements": {
+              "#navBtnRec": {
+                "value": "",
+                "checked": null,
+                "text": "RECNDL \u00b7 PADI table",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecDepthBtSteppers button[aria-label=\"Increase depth\"]": {
+                "value": "",
+                "checked": null,
+                "text": "+",
+                "className": "stepper-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnRec": {
+                "value": "",
+                "checked": null,
+                "text": "RECNDL \u00b7 PADI table",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecDepthBtSteppers button[aria-label=\"Increase depth\"]": {
+                "value": "",
+                "checked": null,
+                "text": "+",
+                "className": "stepper-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-MODE-REC-TEC-ISOLATION",
+          "entry_event": "User switches Rec \u2194 B\u00fchlmann; each mode retains its own depth/BT via view snapshots.",
+          "consumer_path": [
+            "navBtnBuh click",
+            "setPlannerAlgo view swap",
+            "onPlannerViewSwitch restore",
+            "tecDepth value persisted"
+          ],
+          "captures": {
+            "before": {
+              "rec_d": "33",
+              "tec_d": "44"
+            },
+            "tec_restored": {
+              "tec_d": "44",
+              "tec_b": "22",
+              "rec_visible": false,
+              "tec_visible": true
+            },
+            "tec_edited": {
+              "tec_d": "45",
+              "tec_lbl": "45"
+            },
+            "rec_restored": {
+              "rec_d": "33",
+              "rec_b": "21"
+            },
+            "tec_persisted": {
+              "tec_d": "45"
+            }
+          },
+          "assertions": [
+            {
+              "id": "tec-view-visible",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "rec-hidden-on-tec",
+              "passed": true,
+              "detail": "False equal False"
+            },
+            {
+              "id": "tec-depth-restored",
+              "passed": true,
+              "detail": "'44' equal '44'"
+            },
+            {
+              "id": "rec-depth-restored",
+              "passed": true,
+              "detail": "'33' equal '33'"
+            },
+            {
+              "id": "tec-depth-edited-persists",
+              "passed": true,
+              "detail": "'45' equal '45'"
+            }
+          ],
+          "state_before_sha256": "c87bdea9b59cfa564f50638924c7f53d8b98b5db1445774e067172dce8302781",
+          "state_after_sha256": "c87bdea9b59cfa564f50638924c7f53d8b98b5db1445774e067172dce8302781",
+          "state_before": {
+            "elements": {
+              "#navBtnRec": {
+                "value": "",
+                "checked": null,
+                "text": "RECNDL \u00b7 PADI table",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecDepthBtSteppers button[aria-label=\"Increase depth\"]": {
+                "value": "",
+                "checked": null,
+                "text": "+",
+                "className": "stepper-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnRec": {
+                "value": "",
+                "checked": null,
+                "text": "RECNDL \u00b7 PADI table",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecDepthBtSteppers button[aria-label=\"Increase depth\"]": {
+                "value": "",
+                "checked": null,
+                "text": "+",
+                "className": "stepper-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "passed": true
+}

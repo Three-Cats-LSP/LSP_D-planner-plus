@@ -133,6 +133,28 @@ class AuditSystemTests(unittest.TestCase):
             self.assertEqual("FAIL", results[0].status)
             self.assertIn("missing", results[0].message)
 
+    def test_not_descendant_rule_detects_cross_mode_nesting(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "app.html").write_text(
+                "<div id='rec'><div id='tec'></div></div>", encoding="utf-8"
+            )
+            registry = {
+                "source_policy": {"generated": []},
+                "units": [{"path": "app.html"}],
+                "rule_catalog": [{
+                    "id": "MODE-NEST", "kind": "html.not_descendant", "severity": "HIGH",
+                    "unit_ids": ["U"], "paths": ["app.html"],
+                    "config": {"child_id": "tec", "forbidden_ancestor_id": "rec"},
+                    "rationale": "r", "remediation": "x",
+                }],
+            }
+            from .rules import evaluate_rules
+            results, errors = evaluate_rules(root, registry)
+            self.assertEqual([], errors)
+            self.assertEqual("FAIL", results[0].status)
+            self.assertIn("must not be nested", results[0].message)
+
     def test_json_and_markdown_reports_are_generated(self) -> None:
         report = AuditReport(2, "static", "check", "abc")
         report.checks.append(CheckResult("R", "PASS", "LOW", ["U"], "ok"))

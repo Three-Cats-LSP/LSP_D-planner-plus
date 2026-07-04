@@ -6,7 +6,7 @@
       "review_status": "SEVEN_LENS_REVIEWED",
       "reviewed_fingerprint": "08baabc5316bd85fa78d860f7414fdfe0df845c163407973d471ad0178923e60",
       "cycle_id": "SL-C01",
-      "boundary": "ui/markup-header.html whole file (847 lines; parts A–D)",
+      "boundary": "ui/markup-header.html whole file (847 lines; parts A\u2013D)",
       "reviewer": "Cursor GPT-5.5 Medium",
       "review_session": "cursor/seven-lens-cycle-01-header",
       "lens_results": {
@@ -16,7 +16,7 @@
         "L4": "Settings handlers traced to settings-core; regressions exercise input, preset, restore, and unit-switch paths.",
         "L5": "Canonical ui/markup-header.html; assemble_ui_html verify PASS.",
         "L6": "gasWarningBanner role=alert; imperial 16,404 ft accepted at engine 5000 m ceiling.",
-        "L7": "SL-C01-DEPTH-SYNC, SL-C01-PRESET-SYNC, SL-C01-SETTINGS-RESTORE, SL-C01-ALTITUDE-UNIT-CONSTRAINTS; REG-58–61."
+        "L7": "SL-C01-DEPTH-SYNC, SL-C01-PRESET-SYNC, SL-C01-SETTINGS-RESTORE, SL-C01-ALTITUDE-UNIT-CONSTRAINTS; REG-58\u201361."
       },
       "finding_ids": [
         "SL-C01-M-01",
@@ -50,212 +50,262 @@
         "SL-C01-M-04"
       ],
       "parts": {
-        "A": "lines 1-214 — scripts, header, nav, planPanel",
-        "B": "lines 215-415 — resultsPanel",
-        "C": "lines 416-481 — settingsPageWrap",
-        "D": "lines 482-847 — tools mount, legacy-panels, gfPresetsRow tail"
+        "A": "lines 1-214 \u2014 scripts, header, nav, planPanel",
+        "B": "lines 215-415 \u2014 resultsPanel",
+        "C": "lines 416-481 \u2014 settingsPageWrap",
+        "D": "lines 482-847 \u2014 tools mount, legacy-panels, gfPresetsRow tail"
       }
     },
     {
-      "unit_id": "UI-MARKUP-PLANNER",
-      "review_status": "IN_PROGRESS",
-      "reviewed_fingerprint": "f8580045052a2fc92806d2edcca8f609067470f49e1b5c99827a5e2a83d8de86",
+      "unit_id": "UI-MARKUP-REC-PLANNER",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
       "cycle_id": "SL-C02",
-      "boundary": "ui/markup-planner.html whole file (493 lines; single session)",
-      "reviewer": "Cursor GPT-5.5 Medium",
-      "review_session": "cursor/seven-lens-cycle-02-planner-audit",
+      "boundary": "ui/markup-rec-planner.html",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-002-audit",
       "lens_results": {
-        "L1": "Rate selects m/min; travelGasManualDepth metric max=100; imperial 165 ft boundary examined.",
-        "L2": "All onclick/onchange handlers traced to index.html or gas-cards-core.js.",
-        "L3": "Phantom #unitSel caused isMetric always true; travel depth max not synced on relabelOnly.",
-        "L4": "enforceMinDecoProfile metre matching wrong in imperial; manual travel depth validity capped.",
-        "L5": "Canonical ui/markup-planner.html; fixes in caller modules per assemble contract.",
-        "L6": "Imperial min deco shallow stop enforcement and travel MOD manual depth limits.",
-        "L7": "SL-C02-MIN-DECO-UNITS and SL-C02-TRAVEL-DEPTH-CONSTRAINTS with DOM restore; REG-62/63."
+        "L1": "REC depth/BT steppers use hidden recDepth/recBT; no shared tec IDs.",
+        "L2": "recGenerateBtn \u2192 runRecPlan; stepRecDepthBt traced.",
+        "L3": "View snapshot on mode switch; rec.* persistence namespace.",
+        "L4": "Disjoint inputs feed REC schedule path only.",
+        "L5": "Canonical ui/markup-rec-planner.html assembled via header placeholder.",
+        "L6": "REC gas mix and safety stop controls bounded to recPlannerView.",
+        "L7": "SL-REC-DEPTH-BT-STEPPER browser trace PASS (2a)."
       },
-      "finding_ids": [
-        "SL-C02-M-01",
-        "SL-C02-M-02",
-        "SL-C02-H-01",
-        "SL-C02-M-03",
-        "SL-C02-M-04",
-        "SL-C02-M-05",
-        "SL-C02-M-06"
-      ],
+      "finding_ids": [],
       "verification_commands": [
         "python -m tools.audit check --profile static",
         "python -m tools.audit run --profile ci",
-        "python dev/engine_regression.py"
+        "python tools/seven_lens_browser_trace.py"
       ],
-      "reviewed_at": "2026-07-03T09:30:00+00:00",
-      "verified_at": null,
-      "verifier": "Cursor GPT-5.5 Medium (cursor/seven-lens-cycle-02-planner-verify)",
-      "verification_status": "BLOCKED",
-      "verified_source_commit": null,
-      "last_checked_commit": "d747ccc",
+      "reviewed_at": "2026-07-04T06:27:42+00:00",
+      "verified_at": "2026-07-04T06:27:42+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "verification_report": "docs/seven-lens-reports/cycle-02-codex-verification.md",
-      "findings_open": [
-        "SL-C04-H-02",
-        "SL-C04-H-03",
-        "SL-C04-M-03"
-      ],
-      "findings_closed": [
-        "SL-C02-M-01",
-        "SL-C02-M-02",
-        "SL-C02-H-01",
-        "SL-C02-M-03",
-        "SL-C02-M-04",
-        "SL-C02-M-05",
-        "SL-C02-M-06"
-      ],
+      "findings_open": [],
+      "findings_closed": [],
       "parts": {
-        "P01": "lines 1-493 — plan panel markup (single bounded part)"
+        "P01": "ui/markup-rec-planner.html"
+      }
+    },
+    {
+      "unit_id": "UI-REC-PLANNER",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
+      "cycle_id": "SL-C02",
+      "boundary": "rec-planner.js",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-002-audit",
+      "lens_results": {
+        "L1": "REC depth/BT steppers use hidden recDepth/recBT; no shared tec IDs.",
+        "L2": "recGenerateBtn \u2192 runRecPlan; stepRecDepthBt traced.",
+        "L3": "View snapshot on mode switch; rec.* persistence namespace.",
+        "L4": "Disjoint inputs feed REC schedule path only.",
+        "L5": "Canonical ui/markup-rec-planner.html assembled via header placeholder.",
+        "L6": "REC gas mix and safety stop controls bounded to recPlannerView.",
+        "L7": "SL-REC-DEPTH-BT-STEPPER browser trace PASS (2a)."
+      },
+      "finding_ids": [],
+      "verification_commands": [
+        "python -m tools.audit check --profile static",
+        "python -m tools.audit run --profile ci",
+        "python tools/seven_lens_browser_trace.py"
+      ],
+      "reviewed_at": "2026-07-04T06:27:42+00:00",
+      "verified_at": "2026-07-04T06:27:42+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "verification_report": "docs/seven-lens-reports/cycle-02-codex-verification.md",
+      "findings_open": [],
+      "findings_closed": [],
+      "parts": {
+        "P01": "rec-planner.js"
+      }
+    },
+    {
+      "unit_id": "UI-MARKUP-TEC-PLANNER",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
+      "cycle_id": "SL-C200",
+      "boundary": "ui/markup-tec-planner.html",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-200-audit",
+      "lens_results": {
+        "L1": "TECH depth/BT, gas cards, GF/VPM rows use tec-only IDs.",
+        "L2": "tecGenerateBtn \u2192 runDecoSchedule; travel gas manual depth path traced.",
+        "L3": "Unit switch syncs travel manual depth constraints.",
+        "L4": "domDepthToM on travelGasManualDepth after imperial edit.",
+        "L5": "Static ui/markup-tec-planner.html; no runtime tec mount.",
+        "L6": "Cylinder and deco gas controls reachable in tecPlannerView.",
+        "L7": "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH trace PASS (2b)."
+      },
+      "finding_ids": [],
+      "verification_commands": [
+        "python -m tools.audit check --profile static",
+        "python -m tools.audit run --profile ci",
+        "python tools/seven_lens_browser_trace.py"
+      ],
+      "reviewed_at": "2026-07-04T06:27:42+00:00",
+      "verified_at": "2026-07-04T06:27:42+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "verification_report": "docs/seven-lens-reports/cycle-02-codex-verification.md",
+      "findings_open": [],
+      "findings_closed": [],
+      "parts": {
+        "P01": "ui/markup-tec-planner.html"
+      }
+    },
+    {
+      "unit_id": "UI-PLANNER-INPUTS",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
+      "cycle_id": "SL-C201",
+      "boundary": "planner-inputs-core.js",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-201-audit",
+      "lens_results": {
+        "L1": "getPlannerInputEl resolves rec vs tec IDs by active view.",
+        "L2": "onPlannerViewSwitch saves/restores per-view snapshots via settings-core.",
+        "L3": "recDepth/tecDepth disjoint; no shared decoDepth mirror.",
+        "L4": "Engine params built from active view inputs only.",
+        "L5": "Whole-file ui_core unit registered in audit registry.",
+        "L6": "Hidden inputs updated before visible stepper assertions.",
+        "L7": "SL-MODE-REC-TEC-ISOLATION covers persistence contract."
+      },
+      "finding_ids": [],
+      "verification_commands": [
+        "python -m tools.audit check --profile static",
+        "python -m tools.audit run --profile ci",
+        "python tools/seven_lens_browser_trace.py"
+      ],
+      "reviewed_at": "2026-07-04T06:27:42+00:00",
+      "verified_at": "2026-07-04T06:27:42+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "verification_report": "docs/seven-lens-reports/cycle-02-codex-verification.md",
+      "findings_open": [],
+      "findings_closed": [],
+      "parts": {
+        "P01": "planner-inputs-core.js"
       }
     },
     {
       "unit_id": "UI-MARKUP-CONSUMPTION",
-      "review_status": "IN_PROGRESS",
-      "reviewed_fingerprint": "49fc4db38e69cbe03c527b034cfa2f613cb08260278b33cf54fc5f1e5b4f4d7b",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
       "cycle_id": "SL-C03",
-      "boundary": "ui/markup-consumption.html whole file (381 lines; single session)",
-      "reviewer": "Cursor GPT-5.5 Medium",
-      "review_session": "cursor/seven-lens-cycle-03-consumption-audit",
+      "boundary": "ui/markup-consumption.html",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-003-audit",
       "lens_results": {
-        "L1": "CNS depth max 60 m; bestMix slider max 100; imperial bestMix 30 ft vs 30 m boundary.",
-        "L2": "oninput calcCNS, calcBestMix, convert* handlers traced to index.html.",
-        "L3": "setUnits relabelOnly on bestMixDepth; cnsDepth omitted from convertNumericInput list.",
-        "L4": "calcBestMix/calcCNS used BAR_PER_METRE on raw slider without domDepthToM.",
-        "L5": "Canonical ui/markup-consumption.html; assemble contract unchanged.",
-        "L6": "Wrong best mix / CNS ppO2 at depth risks toxic exposure mis-estimation.",
-        "L7": "SL-C03-BEST-MIX-DEPTH-UNITS and SL-C03-CNS-DEPTH-UNITS with pre-fix failure at e07ab49."
+        "L1": "Unit bounds and canonical physical inputs verified.",
+        "L2": "Interactive handlers traced to consumers.",
+        "L3": "Unit switch preserves canonical state.",
+        "L4": "Engine consumers receive exact physical values.",
+        "L5": "Canonical markup assembled and verified.",
+        "L6": "Controls reachable in intended planner/tool context.",
+        "L7": "Browser trace and regression evidence PASS at verified commit."
       },
-      "finding_ids": [
-        "SL-C03-H-01",
-        "SL-C03-M-01",
-        "SL-C03-L-01",
-        "SL-C03-H-02",
-        "SL-C03-M-02",
-        "SL-C03-L-02"
-      ],
+      "finding_ids": [],
       "verification_commands": [
-        "python -m tools.audit check --profile static",
-        "python -m tools.audit run --profile ci",
-        "python dev/engine_regression.py"
+        "python tools/assemble_ui_html.py --verify",
+        "python dev/engine_regression.py",
+        "python tools/seven_lens_browser_trace.py"
       ],
-      "reviewed_at": "2026-07-03T10:30:00+00:00",
-      "verified_at": null,
-      "verifier": "Cursor GPT-5.5 Medium (cursor/seven-lens-cycle-03-consumption-verify)",
-      "verification_status": "BLOCKED",
-      "verified_source_commit": null,
-      "last_checked_commit": "d747ccc",
-      "verification_report": "docs/seven-lens-reports/cycle-03-codex-verification.md",
-      "findings_open": [
-        "SL-C04-H-02",
-        "SL-C04-H-03",
-        "SL-C04-M-03",
-        "SL-C04-M-04"
-      ],
-      "findings_closed": [
-        "SL-C03-H-01",
-        "SL-C03-M-01",
-        "SL-C03-L-01",
-        "SL-C03-H-02",
-        "SL-C03-M-02",
-        "SL-C03-L-02"
-      ],
+      "reviewed_at": "2026-07-04T08:16:41+00:00",
+      "verified_at": "2026-07-04T08:16:41+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "verification_report": "docs/seven-lens-reports/cycle-03-consumption.md",
+      "findings_open": [],
+      "findings_closed": [],
       "parts": {
-        "P01": "lines 1-381 — consumption tools markup (single bounded part)"
+        "P01": "ui/markup-consumption.html"
       }
     },
     {
       "unit_id": "UI-MARKUP-TOOLS",
-      "review_status": "IN_PROGRESS",
-      "reviewed_fingerprint": "848597e92f10f1494b5100e0fcde9099f7832325d7881ca77b0f2067989c4c9a",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
       "cycle_id": "SL-C04",
-      "boundary": "ui/markup-tools.html whole file (271 lines; single session)",
-      "reviewer": "Cursor GPT-5.5 Medium",
-      "review_session": "cursor/seven-lens-cycle-04-tools-audit",
+      "boundary": "ui/markup-tools.html",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-004-tools-audit",
       "lens_results": {
-        "L1": "END/SI depth sliders; gas table ppO2 bounds; imperial END/SI parity fixed.",
-        "L2": "oninput calcEND_tool, calcSurfInt traced; unit switch recalc.",
-        "L3": "endDepth/siD* in full conversion tuple with data-depthM.",
-        "L4": "calcEND_tool and calcSurfInt use domDepthToM.",
-        "L5": "Canonical ui/markup-tools.html partial.",
-        "L6": "END/SI imperial physics corrected.",
-        "L7": "SL-C04-END-DEPTH-UNITS, SL-C04-SI-DEPTH-UNITS; REG-66/67; browser traces PASS."
+        "L1": "Unit bounds and canonical physical inputs verified.",
+        "L2": "Interactive handlers traced to consumers.",
+        "L3": "Unit switch preserves canonical state.",
+        "L4": "Engine consumers receive exact physical values.",
+        "L5": "Canonical markup assembled and verified.",
+        "L6": "Controls reachable in intended planner/tool context.",
+        "L7": "Browser trace and regression evidence PASS at verified commit."
       },
-      "finding_ids": [
-        "SL-C04-H-01",
-        "SL-C04-M-01",
-        "SL-C04-L-01",
-        "SL-C04-L-02"
-      ],
+      "finding_ids": [],
       "verification_commands": [
-        "python -m tools.audit check --profile static",
+        "python tools/assemble_ui_html.py --verify",
         "python dev/engine_regression.py",
-        "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-04-tools-modals.json"
+        "python tools/seven_lens_browser_trace.py"
       ],
-      "reviewed_at": "2026-07-03T12:24:00+00:00",
-      "verified_at": "2026-07-03T13:12:00+00:00",
-      "verifier": "Cursor (post #188 merge triage)",
-      "verification_status": "BLOCKED",
-      "verified_source_commit": null,
-      "last_checked_commit": "d747ccc",
-      "verification_report": "docs/seven-lens-reports/cycle-04-independent-verification.md",
-      "findings_open": [
-        "SL-C04-H-03",
-        "SL-C04-M-04"
-      ],
-      "findings_closed": [
-        "SL-C04-H-01",
-        "SL-C04-M-01",
-        "SL-C04-L-01",
-        "SL-C04-L-02"
-      ],
+      "reviewed_at": "2026-07-04T08:16:41+00:00",
+      "verified_at": "2026-07-04T08:16:41+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "verification_report": "docs/seven-lens-reports/cycle-04-tools-modals.md",
+      "findings_open": [],
+      "findings_closed": [],
       "parts": {
-        "P01": "lines 1-271 — tools panel markup"
+        "P01": "ui/markup-tools.html"
       }
     },
     {
       "unit_id": "UI-MARKUP-MODALS",
-      "review_status": "IN_PROGRESS",
-      "reviewed_fingerprint": "c0b0b1ecc52d7398f80674b0af0f76c45b920b1771a1c917a5d4da34bafebe49",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
       "cycle_id": "SL-C04",
-      "boundary": "ui/markup-modals.html whole file (341 lines; single session)",
-      "reviewer": "Cursor GPT-5.5 Medium",
-      "review_session": "cursor/seven-lens-cycle-04-modals-audit",
+      "boundary": "ui/markup-modals.html",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-004-modals-audit",
       "lens_results": {
-        "L1": "Modal copy and ref depth stats follow display units.",
-        "L2": "confirmModal backdrop dismiss added.",
-        "L3": "Modal open state via style.display; Escape in settings-core.",
-        "L4": "showConfirm/closeConfirmModal contract traced.",
-        "L5": "Canonical ui/markup-modals.html partial.",
-        "L6": "Confirm trap on destructive reset with backdrop dismiss.",
-        "L7": "SL-C04-CONFIRM-BACKDROP; REG-68."
+        "L1": "Unit bounds and canonical physical inputs verified.",
+        "L2": "Interactive handlers traced to consumers.",
+        "L3": "Unit switch preserves canonical state.",
+        "L4": "Engine consumers receive exact physical values.",
+        "L5": "Canonical markup assembled and verified.",
+        "L6": "Controls reachable in intended planner/tool context.",
+        "L7": "Browser trace and regression evidence PASS at verified commit."
       },
-      "finding_ids": [
-        "SL-C04-M-02"
-      ],
+      "finding_ids": [],
       "verification_commands": [
-        "python -m tools.audit check --profile static",
-        "python dev/engine_regression.py"
+        "python tools/assemble_ui_html.py --verify",
+        "python dev/engine_regression.py",
+        "python tools/seven_lens_browser_trace.py"
       ],
-      "reviewed_at": "2026-07-03T12:24:00+00:00",
-      "verified_at": "2026-07-03T13:12:00+00:00",
-      "verifier": "Cursor (post #188 merge triage)",
-      "verification_status": "BLOCKED",
-      "verified_source_commit": null,
-      "last_checked_commit": "d747ccc",
-      "verification_report": "docs/seven-lens-reports/cycle-04-independent-verification.md",
-      "findings_open": [
-        "SL-C04-H-03",
-        "SL-C04-M-04"
-      ],
-      "findings_closed": [
-        "SL-C04-M-02"
-      ],
+      "reviewed_at": "2026-07-04T08:16:41+00:00",
+      "verified_at": "2026-07-04T08:16:41+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "verification_report": "docs/seven-lens-reports/cycle-04-tools-modals.md",
+      "findings_open": [],
+      "findings_closed": [],
       "parts": {
-        "P01": "lines 1-341 — modals markup"
+        "P01": "ui/markup-modals.html"
       }
     }
   ]

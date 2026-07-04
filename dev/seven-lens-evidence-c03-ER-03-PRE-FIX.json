@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ER-03-PRE-FIX",
+  "command_argv": [
+    "python",
+    "dev/engine_regression.py"
+  ],
+  "commit": "b100d961377961a9b0dac22e372905c0a76f0044",
+  "exit_code": 1,
+  "case_ids": [
+    "SL-C03-BEST-MIX-DEPTH-UNITS",
+    "SL-C03-CNS-DEPTH-UNITS"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-04T08:32:04.566710+00:00",
+  "finished_at": "2026-07-04T08:32:19.088537+00:00",
+  "stdout_sha256": "bb67ce34417aeaa3cdd2e64ba8ae0a204f7d0fa9182f8ca1aec18e264f1e0192",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
+}

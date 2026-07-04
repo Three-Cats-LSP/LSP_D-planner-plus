@@ -5,6 +5,12 @@
 <script src="padi-engine.js"></script>
 <script src="vpm-engine-bundle.js"></script>
 <script src="zhl-worker-bridge.js"></script>
+<!-- LSP-EXTRACT-BEGIN:planner-inputs-core -->
+<script src="planner-inputs-core.js"></script>
+<!-- LSP-EXTRACT-END:planner-inputs-core -->
+<!-- LSP-EXTRACT-BEGIN:rec-planner -->
+<script src="rec-planner.js"></script>
+<!-- LSP-EXTRACT-END:rec-planner -->
 <!-- LSP-EXTRACT-BEGIN:settings-core -->
 <script src="settings-core.js"></script>
 <!-- LSP-EXTRACT-END:settings-core -->
@@ -103,121 +109,15 @@
 </div>
 <!-- PLANNER TWO-COLUMN VIEW -->
 <div class="planner-main visible" id="plannerView">
-<section class="v3-panel v4-shell mobile-active" id="planPanel" aria-label="Dive parameters">
-<div class="panel-header-row">
-<div class="panel-title-wrap">
-<div class="panel-title">Dive Parameters</div>
-<span class="tip-icon" id="planPanelDecoTip" onclick="showTip('Dive Parameters','Generates a full ascent profile with deco stops using Bühlmann ZH-L16C + Gradient Factors. Configure up to two decompression gases below — they switch automatically at the specified depths during ascent and are factored into tissue off-gassing.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span>
-</div>
-<div class="panel-header-actions">
-<button class="btn-export" id="presetsHeaderBtn" onclick="openDiveProfilePresets()" title="Save / load dive profile (depth &amp; BT)"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg></button>
-<button class="btn-export" id="advConfigPresetsBtn" onclick="openAdvConfigPresets()" title="Advanced settings presets"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><line x1="3" x2="21" y1="6" y2="6"></line><line x1="3" x2="21" y1="12" y2="12"></line><line x1="3" x2="21" y1="18" y2="18"></line></svg></button>
-</div>
-</div>
-<div class="depth-bt-row" id="depthBtSteppers">
-<div class="input-card">
-<div class="input-card-label" id="depthLbl">Depth</div>
-<div class="input-card-inner">
-<div><span class="stepper-val" id="depthStepperVal">40</span><span class="unit" id="depthUnitLbl">m</span></div>
-<div class="stepper-btns">
-<button type="button" class="stepper-btn" onclick="stepDepthBt('depth',1)" aria-label="Increase depth">+</button>
-<button type="button" class="stepper-btn" onclick="stepDepthBt('depth',-1)" aria-label="Decrease depth">−</button>
-</div>
-</div>
-<input type="hidden" id="decoDepth" value="40" oninput="_syncDepthBtSteppers();updateCcrGasValidation();updateGasMODDisplays();if(window._lastContingency) calcContingency()"/>
-<input type="hidden" id="depth" value="40"/>
-</div>
-<div class="input-card">
-<div class="input-card-label">Bottom Time</div>
-<div class="input-card-inner">
-<div><span class="stepper-val" id="btStepperVal">30</span><span class="unit">min</span></div>
-<div class="stepper-btns">
-<button type="button" class="stepper-btn" onclick="stepDepthBt('bt',1)" aria-label="Increase bottom time">+</button>
-<button type="button" class="stepper-btn" onclick="stepDepthBt('bt',-1)" aria-label="Decrease bottom time">−</button>
-</div>
-</div>
-<input type="hidden" id="decoBT" value="30" oninput="_syncDepthBtSteppers();if(window._lastContingency) calcContingency()"/>
-<input type="hidden" id="bt" value="30"/>
-</div>
-</div>
-<div class="vpm-mode-row" id="vpmModeRowV3">
-<span class="section-label vpm-mode-label" style="margin:0;">VPM Mode<span class="tip-icon" onclick="event.stopPropagation();showTip('VPM Mode','VPM-B — Bubble-mechanics decompression model (Yount & Hoffman). Tracks microscopic bubble nuclei rather than dissolved gas alone. Tends to give deeper first stops and shorter shallow stops than Bühlmann GF.\n\nVPM-B+GFS — Same VPM-B bubble model for deep and mid stops, with Bühlmann Gradient Factor High overlay at shallow stops. Always at least as conservative as VPM-B alone at the surface; useful when VPM-B shallow stops feel too aggressive.\n\n⚠ Conservatism order is profile-dependent: on deep/long trimix dives Bühlmann GF is often longer TTS; on short/shallow dives VPM-B can match or exceed GF. Compare TTS for your specific dive profile.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></span>
-<button type="button" class="option-pill-toggle" id="vpmModeToggle" onclick="toggleVpmMode()" aria-label="Toggle VPM-B or VPM-B+GFS" data-side="left">
-<span class="option-pill-track" style="--pill-w: 108px;">
-<span class="option-pill-thumb" id="vpmModeThumb" aria-hidden="true"></span>
-<span class="option-pill-opt">VPM-B</span>
-<span class="option-pill-opt">+GFS</span>
-</span>
-</button>
-</div>
-<div class="vpm-cons-row" id="conservatismRowV3">
-<span class="section-label" style="margin:0;">Conservatism</span>
-<div class="cons-btns" id="conservatismBtns">
-<button type="button" class="cons-btn" data-val="0" onclick="setConservatismBtn(0,this)">+0</button>
-<button type="button" class="cons-btn" data-val="1" onclick="setConservatismBtn(1,this)">+1</button>
-<button type="button" class="cons-btn" data-val="2" onclick="setConservatismBtn(2,this)">+2</button>
-<button type="button" class="cons-btn" data-val="3" onclick="setConservatismBtn(3,this)">+3</button>
-<button type="button" class="cons-btn" data-val="4" onclick="setConservatismBtn(4,this)">+4</button>
-<button type="button" class="cons-btn" data-val="5" onclick="setConservatismBtn(5,this)">+5</button>
-</div>
-<div id="conservatismSelectMount"></div>
-</div>
-<div id="gfPresetsRowV3" style="display:none;">
-<div class="section-label" id="gfPresetsLabelV3">Gradient Factors</div>
-<div class="gf-preset-row" id="gfPresetBtns"></div>
-<div id="gfPresetsMount"></div>
-</div>
-<div id="planPanelRecSection">
-<div class="ctrl-row" id="recSafetyStopRow">
-<span class="ctrl-label" style="margin-left:0;">Safety Stop:</span>
-<button type="button" class="option-pill-toggle" id="stopDepthToggle" onclick="toggleStopDepth()" aria-label="Toggle safety stop depth" data-side="right">
-<span class="option-pill-track" style="--pill-w: 72px;">
-<span class="option-pill-thumb" aria-hidden="true"></span>
-<span class="option-pill-opt">3 m</span>
-<span class="option-pill-opt">6 m</span>
-</span>
-</button>
-<button type="button" class="option-pill-toggle" id="stopDurToggle" onclick="toggleStopDur()" aria-label="Toggle safety stop duration" data-side="left">
-<span class="option-pill-track" style="--pill-w: 80px;">
-<span class="option-pill-thumb" aria-hidden="true"></span>
-<span class="option-pill-opt">3 min</span>
-<span class="option-pill-opt">5 min</span>
-</span>
-</button>
-</div>
-<div class="field" id="gasMixField">
-<label class="section-label">Breathing Gas</label>
-<select id="gasMix" class="form-select-like" onchange="toggleCustomO2()">
-<option value="air">Air (21%)</option>
-<option value="ean32">EAN32 (32%)</option>
-<option value="ean36">EAN36 (36%)</option>
-<option value="custom">Custom O₂ %</option>
-<option value="trimix">Trimix (O₂/He %)</option>
-</select>
-</div>
-<div class="field" id="customO2Field" style="display:none;">
-<label>O₂ % (21–100)</label>
-<input id="customO2" max="100" min="21" oninput="updateGasMODDisplays()" step="1" type="number" value="32"/>
-</div>
-<div class="field gas-f-num" id="plannerTrimixO2Field" style="display:none;">
-<label>Trimix O₂ % (5–40)</label>
-<input id="plannerTrimixO2" max="40" min="5" step="1" type="number" value="21"/>
-</div>
-<div class="field gas-f-num" id="plannerTrimixHeField" style="display:none;">
-<label>Trimix He % (0–90)</label>
-<input id="plannerTrimixHe" max="90" min="0" step="1" type="number" value="35"/>
-</div>
-<div id="planPanelTecSection" class="visible">
-<div id="planPanelTecMount"></div>
-</div>
-<button class="gen-btn" id="generateBtn" onclick="runGenerateSchedule()">▶ Generate schedule</button>
-</section>
+__ASSEMBLE_REC_PLANNER__
+__ASSEMBLE_TEC_PLANNER__
 <section class="v3-panel results-panel mobile-active" id="resultsPanel" aria-label="Results">
 <div class="results-panel-label">Results</div>
 <div class="result-empty-state" id="resultEmptyState">Configure your dive parameters and press <strong>Generate schedule</strong> to see metrics, profile, and deco table here.</div>
 <div class="metric-grid" id="resultMetricStrip"></div>
 <div class="chip-row" id="resultChipRow"></div>
 <div id="gasWarningBanner" class="gas-warning-banner" style="display:none;" role="alert"></div>
+<div id="recResultsPanel" class="planner-results-view">
 <div class="result-tabs-nav" id="recResultTabs" style="display:none;">
 <button class="result-tab-btn active" data-tab="dive" onclick="switchResultTab('dive',this)">Dive</button>
 <button class="result-tab-btn" data-tab="surfint" onclick="switchResultTab('surfint',this)">Surf Int</button>
@@ -225,17 +125,19 @@
 <button class="result-tab-btn" data-tab="multi" onclick="switchResultTab('multi',this)">Multi Dive</button>
 <button class="result-tab-btn" data-tab="ndlref" onclick="switchResultTab('ndlref',this)">NDL Table</button>
 </div>
+<div class="result-tab-pane" id="resultTab-dive"></div>
+<div class="result-tab-pane" id="resultTab-surfint"></div>
+<div class="result-tab-pane" id="resultTab-avgdepth"></div>
+<div class="result-tab-pane" id="resultTab-multi"></div>
+<div class="result-tab-pane" id="resultTab-ndlref"></div>
+</div>
+<div id="tecResultsPanel" class="planner-results-view visible">
 <div class="result-tabs-nav" id="tecResultTabs">
 <button class="result-tab-btn active" data-tab="profile" onclick="switchResultTab('profile',this)">Dive Profile</button>
 <button class="result-tab-btn" data-tab="contingency" onclick="switchResultTab('contingency',this)">Contingency Plans</button>
 <button class="result-tab-btn" data-tab="graphs" onclick="switchResultTab('graphs',this)">Graphs</button>
 <button class="result-tab-btn" data-tab="tissue" onclick="switchResultTab('tissue',this)">Tissue Saturation</button>
 </div>
-<div class="result-tab-pane" id="resultTab-dive"></div>
-<div class="result-tab-pane" id="resultTab-surfint"></div>
-<div class="result-tab-pane" id="resultTab-avgdepth"></div>
-<div class="result-tab-pane" id="resultTab-multi"></div>
-<div class="result-tab-pane" id="resultTab-ndlref"></div>
 <div class="result-tab-pane active" id="resultTab-profile">
 <div class="results-section-head" id="profileSectionHead">
 <span class="results-section-label">Dive Profile</span>
@@ -411,6 +313,7 @@
 </div>
 </div>
 </div></div>
+</div>
 </section>
 </div>
 <!-- SETTINGS PAGE -->

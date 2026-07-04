@@ -10,6 +10,9 @@ from unittest.mock import patch
 
 from tools.seven_lens_protocol import (
     LENSES,
+    _file_sha256,
+    _part_hash,
+    _validate_evidence_receipt,
     _validate_trace_artifact,
     make_plan,
     validate_record,
@@ -35,7 +38,6 @@ class SevenLensProtocolTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         source = self.root / "unit.js"
         source.write_text("\n".join(f"line {i}" for i in range(1, 701)) + "\n", encoding="utf-8")
-        lines = source.read_bytes().splitlines(keepends=True)
         self.resolved = {
             "UNIT": {"path": "unit.js", "start_line": 1, "end_line": 700, "line_count": 700}
         }
@@ -54,7 +56,7 @@ class SevenLensProtocolTests(unittest.TestCase):
             "changed_paths": [],
         }
         for idx, (start, end) in enumerate(((1, 350), (351, 700)), 1):
-            digest = hashlib.sha256(b"".join(lines[start - 1:end])).hexdigest()
+            digest = _part_hash(source, start, end)
             self.record["parts"].append({
                 "id": f"UNIT-P{idx:02d}", "unit_id": "UNIT", "path": "unit.js",
                 "start_line": start, "end_line": end, "line_count": end - start + 1,
@@ -67,7 +69,9 @@ class SevenLensProtocolTests(unittest.TestCase):
 
     def validate(self, record, phase="close"):
         with patch("tools.seven_lens_protocol._resolved_registry", return_value=({}, self.resolved)):
-            return validate_record(self.root, record, phase, check_git=False)
+            return validate_record(
+                self.root, record, phase, check_git=False, enforce_current_schema=False
+            )
 
     def test_complete_record_passes(self):
         self.assertEqual([], self.validate(self.record))
@@ -268,7 +272,53 @@ class SevenLensProtocolTests(unittest.TestCase):
         (records / "cycle-02.json").write_text(json.dumps(self.record), encoding="utf-8")
         with patch("tools.seven_lens_protocol._resolved_registry", return_value=({}, self.resolved)):
             errors = validate_reviewed_cycles(self.root)
-        self.assertTrue(any("legacy protocol schema" in error for error in errors))
+        self.assertTrue(any("current protocol schema" in error for error in errors))
+
+    def test_real_closure_rejects_non_current_schema(self):
+        with patch("tools.seven_lens_protocol._resolved_registry", return_value=({}, self.resolved)):
+            errors = validate_record(self.root, self.record, "close", check_git=False)
+        self.assertTrue(any("schema_version must be current" in error for error in errors))
+
+    def test_current_schema_evidence_requires_executed_receipt(self):
+        current = copy.deepcopy(self.record)
+        current.update({
+            "schema_version": 4,
+            "record_path": "docs/seven-lens-records/cycle-01.json",
+            "integration_base_commit": "base123",
+            "baseline_commit": "base123",
+            "baseline_registry_fingerprint": "a" * 64,
+            "baseline_findings": [],
+        })
+        errors = self.validate(current)
+        self.assertTrue(any("command_argv" in error for error in errors))
+        self.assertTrue(any("receipt_path" in error for error in errors))
+
+    def test_evidence_receipt_binds_command_commit_and_executor(self):
+        tools = self.root / "tools"
+        tools.mkdir()
+        executor = tools / "seven_lens_evidence.py"
+        executor.write_text("print('executor')\n", encoding="utf-8")
+        evidence = {
+            "id": "static", "command_argv": ["python", "audit.py"],
+            "commit": "abcdef2", "exit_code": 0, "case_ids": [],
+            "receipt_path": "receipt.json",
+        }
+        receipt = {
+            "schema_version": 1, "evidence_id": "static",
+            "command_argv": evidence["command_argv"], "commit": "abcdef2",
+            "exit_code": 0, "case_ids": [], "worktree_clean_before": True,
+            "worktree_clean_after": True, "started_at": "2026-07-04T00:00:00Z",
+            "finished_at": "2026-07-04T00:01:00Z",
+            "stdout_sha256": "a" * 64, "stderr_sha256": "b" * 64,
+            "executor_sha256": _file_sha256(executor),
+        }
+        receipt_path = self.root / "receipt.json"
+        receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+        evidence["receipt_sha256"] = _file_sha256(receipt_path)
+        self.assertEqual([], _validate_evidence_receipt(self.root, evidence))
+        evidence["command_argv"] = ["python", "different.py"]
+        errors = _validate_evidence_receipt(self.root, evidence)
+        self.assertTrue(any("command_argv does not match" in error for error in errors))
 
     def test_reviewed_cycle_without_record_requires_explicit_exemption(self):
         docs = self.root / "docs"

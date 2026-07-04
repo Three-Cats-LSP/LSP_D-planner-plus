@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEV = ROOT / "dev"
 if str(DEV) not in sys.path:
     sys.path.insert(0, str(DEV))
-TRACE_SCHEMA_VERSION = 2
+TRACE_SCHEMA_VERSION = 3
 
 
 def validate_trace_spec(spec: dict[str, Any]) -> list[str]:
@@ -38,8 +38,15 @@ def validate_trace_spec(spec: dict[str, Any]) -> list[str]:
         if not isinstance(trace.get("entry_event"), str) or len(trace["entry_event"].strip()) < 5:
             errors.append(f"{trace_id}: entry_event missing")
         consumers = trace.get("consumer_path")
-        if not isinstance(consumers, list) or len(consumers) < 2 or not all(isinstance(x, str) and x for x in consumers):
-            errors.append(f"{trace_id}: consumer_path needs at least two named stages")
+        if not isinstance(consumers, list) or len(consumers) < 4 or not all(isinstance(x, str) and x for x in consumers):
+            errors.append(f"{trace_id}: consumer_path needs input, writer, consumer, and observable stages")
+        case_ids = trace.get("case_ids")
+        if not isinstance(case_ids, list) or not case_ids or not all(
+            isinstance(case_id, str) and case_id.strip() for case_id in case_ids
+        ):
+            errors.append(f"{trace_id}: case_ids must be a non-empty list")
+        elif len(case_ids) != len(set(case_ids)):
+            errors.append(f"{trace_id}: case_ids must be unique")
         state = trace.get("state", {})
         selectors = state.get("selectors")
         restore = state.get("restore_order")
@@ -74,16 +81,18 @@ def validate_trace_spec(spec: dict[str, Any]) -> list[str]:
                 if "action" not in row:
                     continue
                 action = row.get("action")
-                if action not in {"fill", "select", "click", "check", "set_global"}:
+                if action not in {"fill", "select", "click", "check", "set_global", "run_script"}:
                     errors.append(f"{trace_id}: unsupported {phase_name} action {action!r}")
                 if phase_name == "steps" and row.get("force"):
                     errors.append(f"{trace_id}: tested user actions must not use force")
+                if phase_name == "steps" and action in {"set_global", "run_script"}:
+                    errors.append(f"{trace_id}: tested user actions must use visible Playwright controls")
                 if (
                     phase_name == "setup"
-                    and row.get("force")
+                    and (row.get("force") or action == "run_script")
                     and not (isinstance(row.get("setup_only_reason"), str) and row["setup_only_reason"].strip())
                 ):
-                    errors.append(f"{trace_id}: forced setup action needs setup_only_reason")
+                    errors.append(f"{trace_id}: forced or scripted setup needs setup_only_reason")
                 selector = row.get("selector")
                 if selector and selector not in selectors and phase_name == "steps":
                     errors.append(f"{trace_id}: tested selector {selector} is absent from state snapshot")
@@ -92,6 +101,8 @@ def validate_trace_spec(spec: dict[str, Any]) -> list[str]:
                         errors.append(f"{trace_id}: set_global is allowed only during setup")
                     if row.get("name") not in globals_tracked:
                         errors.append(f"{trace_id}: setup global {row.get('name')} is not state-tracked")
+                if action in {"fill", "select", "click", "check"} and not selector:
+                    errors.append(f"{trace_id}: {action} action needs a selector")
         steps = trace.get("steps", [])
         if not any("action" in row for row in steps):
             errors.append(f"{trace_id}: trace has no tested user action")
@@ -123,8 +134,11 @@ def _resolve_path(value: Any, captures: dict[str, Any]) -> Any:
     if not isinstance(value, str) or not value.startswith("$"):
         return value
     current: Any = captures
-    for part in value[1:].lstrip(".").split("."):
-        current = current[int(part)] if isinstance(current, list) else current[part]
+    try:
+        for part in value[1:].lstrip(".").split("."):
+            current = current[int(part)] if isinstance(current, list) else current[part]
+    except (KeyError, IndexError, TypeError, ValueError):
+        return None
     return current
 
 
@@ -230,6 +244,8 @@ def _act(page, action: dict[str, Any]) -> None:
             "([name, value]) => { window[name] = value; }",
             [str(action.get("name")), action.get("value")],
         )
+    elif kind == "run_script":
+        page.evaluate(str(action.get("script", "")))
     else:
         raise RuntimeError(f"unsupported browser action {kind!r}")
 
@@ -243,12 +259,36 @@ def _restore(page, before: dict[str, Any], spec: dict[str, Any]) -> None:
         locator = page.locator(selector)
         tag = locator.evaluate("el => el.tagName")
         input_type = locator.get_attribute("type")
+        if tag == "BUTTON":
+            if "active" in (state.get("className") or ""):
+                locator.click(force=True)
+            continue
         if tag == "SELECT":
             locator.select_option(str(state["value"]), force=True)
+            if selector == "#unitsSelect":
+                page.evaluate(
+                    "() => { const u = document.getElementById('unitsSelect')?.value; if (typeof setUnits === 'function' && u) setUnits(u); }"
+                )
         elif input_type in {"checkbox", "radio"}:
             locator.set_checked(bool(state["checked"]), force=True)
         elif tag in {"INPUT", "TEXTAREA"} and state["value"] is not None:
             locator.fill(str(state["value"]), force=True)
+            if selector in {"#travelGasManualDepth", "#cylBot_size", "#bestMixDepth", "#cnsDepth"}:
+                page.evaluate(
+                    """([sel, dataset]) => {
+                      const id = sel.slice(1);
+                      if (id.includes('Depth') && typeof syncDepthInputCanonical === 'function') {
+                        syncDepthInputCanonical(id);
+                      } else if (id.includes('size') && typeof syncVolumeInputCanonical === 'function') {
+                        syncVolumeInputCanonical(id);
+                      }
+                      const el = document.querySelector(sel);
+                      if (el && !Object.keys(dataset || {}).length) {
+                        for (const key of Object.keys(el.dataset)) delete el.dataset[key];
+                      }
+                    }""",
+                    [selector, state.get("dataset") or {}],
+                )
         dataset = state.get("dataset") or {}
         locator.evaluate(
             """(el, ds) => {
@@ -267,6 +307,46 @@ def _restore(page, before: dict[str, Any], spec: dict[str, Any]) -> None:
         }""",
         before,
     )
+    page.evaluate(
+        """() => {
+          const raw = localStorage.getItem('lspDiveSettings_v6');
+          if (!raw || typeof appSettings === 'undefined') return;
+          try { appSettings._syncUiAfterRestore?.(JSON.parse(raw)); } catch (_) {}
+        }"""
+    )
+    page.evaluate(
+        """state => {
+          localStorage.clear();
+          sessionStorage.clear();
+          for (const [key, value] of Object.entries(state.localStorage)) localStorage.setItem(key, value);
+          for (const [key, value] of Object.entries(state.sessionStorage)) sessionStorage.setItem(key, value);
+        }""",
+        before,
+    )
+    for selector in selectors:
+        state = before["elements"].get(selector)
+        if state is None:
+            continue
+        if selector in {"#travelGasManualDepth", "#cylBot_size", "#bestMixDepth", "#cnsDepth"}:
+            page.evaluate(
+                """([sel, value, dataset]) => {
+                  const el = document.querySelector(sel);
+                  if (!el || value == null) return;
+                  el.value = String(value);
+                  for (const key of Object.keys(el.dataset)) delete el.dataset[key];
+                  for (const [k, v] of Object.entries(dataset || {})) el.dataset[k] = v;
+                  const id = sel.slice(1);
+                  if (id.includes('Depth') && typeof syncDepthInputCanonical === 'function') {
+                    syncDepthInputCanonical(id);
+                  } else if (id.includes('size') && typeof syncVolumeInputCanonical === 'function') {
+                    syncVolumeInputCanonical(id);
+                  }
+                  if (!Object.keys(dataset || {}).length) {
+                    for (const key of Object.keys(el.dataset)) delete el.dataset[key];
+                  }
+                }""",
+                [selector, state.get("value"), state.get("dataset") or {}],
+            )
 
 
 def run_trace(
@@ -370,6 +450,7 @@ def main() -> int:
                 )
                 first["repeatable"] = repeatable
                 first["repeat_count"] = repeat
+                first["case_ids"] = trace.get("case_ids", [])
                 first["runs"] = runs
                 first["passed"] = repeatable and all(row.get("passed") is True for row in runs)
                 results.append(first)

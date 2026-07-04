@@ -1,10 +1,11 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "repeat": 2,
   "cycle": 4,
   "traces": [
     {
       "id": "SL-C04-END-PHYSICAL-TRACE",
+      "case_ids": ["SL-C04-END-DEPTH-UNITS"],
       "entry_event": "unitsSelect change metric to imperial on END tool",
       "consumer_path": ["setUnits", "calcEND_tool", "domDepthToM", "endAbsP"],
       "setup": [
@@ -50,6 +51,7 @@
     },
     {
       "id": "SL-C04-SI-PHYSICAL-TRACE",
+      "case_ids": ["SL-C04-SI-DEPTH-UNITS"],
       "entry_event": "unitsSelect change metric to imperial on surface interval tool",
       "consumer_path": ["setUnits", "calcSurfInt", "domDepthToM", "siMinResult"],
       "setup": [
@@ -89,6 +91,42 @@
         {"id": "display-feet", "left": "$.imperial.d1_input", "op": "equal", "right": "98"},
         {"id": "consumer-physical-depth", "left": "$.imperial.d1_consumer_m", "op": "close", "right": 30, "tolerance": 0.000001},
         {"id": "observable-parity", "left": "$.metric.observable", "op": "equal", "right": "$.imperial.observable"}
+      ]
+    },
+    {
+      "id": "SL-C04-CONFIRM-BACKDROP-TRACE",
+      "case_ids": ["SL-C04-CONFIRM-BACKDROP"],
+      "entry_event": "User dismisses confirm modal after backdrop handler is present",
+      "consumer_path": ["confirmModal", "onclick", "closeConfirmModal", "display"],
+      "setup": [
+        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+        {"action": "run_script", "script": "document.getElementById('confirmModalMsg').textContent='Reset settings?'; document.getElementById('confirmModal').style.display='flex';", "setup_only_reason": "Open confirm modal before testing dismiss controls."}
+      ],
+      "state": {
+        "selectors": ["#confirmModalCancel"],
+        "restore_order": ["#confirmModalCancel"],
+        "globals": ["_zhlHeadless"]
+      },
+      "steps": [
+        {
+          "capture": "before",
+          "values": {
+            "display": "document.getElementById('confirmModal').style.display",
+            "onclick_ok": "document.getElementById('confirmModal')?.getAttribute('onclick')?.includes('closeConfirmModal(false)') ? 'yes' : 'no'"
+          }
+        },
+        {"action": "click", "selector": "#confirmModalCancel"},
+        {
+          "capture": "after",
+          "values": {
+            "display": "document.getElementById('confirmModal').style.display",
+            "dismissed": "document.getElementById('confirmModal').style.display === 'none' ? 'yes' : 'no'"
+          }
+        }
+      ],
+      "assertions": [
+        {"id": "onclick-handler", "left": "$.before.onclick_ok", "op": "equal", "right": "yes"},
+        {"id": "modal-dismissed", "left": "$.after.dismissed", "op": "equal", "right": "yes"}
       ]
     }
   ]

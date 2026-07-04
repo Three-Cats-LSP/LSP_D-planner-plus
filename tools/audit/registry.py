@@ -17,6 +17,10 @@ VALID_RULE_KINDS = {
     "html.unique_ids",
     "html.script_order",
     "html.css_link_order",
+    "html.not_descendant",
+    "html.forbidden_ids_under",
+    "html.forbidden_id_present",
+    "html.no_shared_ids_between_subtrees",
     "html.dom_references_resolve",
     "extract.no_reinline",
 }

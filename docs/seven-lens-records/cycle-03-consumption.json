@@ -1,10 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 4,
   "cycle": 3,
   "target_branch": "dev",
-  "baseline_commit": "6e987af4cd66d8679cc63c5cc2dc371421ae8caa",
+  "baseline_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
   "audit_commit": "e07ab49cf5c28a9b99c00eb12d3538acec568728",
-  "verified_source_commit": "",
+  "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -14,49 +14,66 @@
       "start_line": 1,
       "end_line": 381,
       "line_count": 381,
-      "content_fingerprint": "49fc4db38e69cbe03c527b034cfa2f613cb08260278b33cf54fc5f1e5b4f4d7b",
+      "content_fingerprint": "263ca45a298bf112a9f673d0058445ce97ce56402620a213013d254bab169d23",
       "review_session": "cursor/seven-lens-cycle-03-consumption-audit",
       "verification_session": "cursor/seven-lens-cycle-03-consumption-verify",
       "lens_results": {
         "L1": {
           "trace": "CNS depth max 60 m; bestMix slider max 100; converter depth slider 1-100 m; volume 12L/0.424 ft3 defaults.",
-          "boundary_cases": ["imperial bestMix 30 ft vs 30 m", "cnsDepth 60 m max", "AL80 reference volumes"],
+          "boundary_cases": [
+            "imperial bestMix 30 ft vs 30 m",
+            "cnsDepth 60 m max",
+            "AL80 reference volumes"
+          ],
           "evidence": "markup-consumption.html:54-55,196-201,284; calcBestMix uses BAR_PER_METRE on raw slider",
           "result": "FINDING"
         },
         "L2": {
           "trace": "oninput calcCNS, calcBestMix, convert* handlers; switchConverter tabs; tool panel visibility.",
-          "boundary_cases": ["unit switch recalc tools"],
+          "boundary_cases": [
+            "unit switch recalc tools"
+          ],
           "evidence": "All handlers traced to index.html functions",
           "result": "NO_FINDING"
         },
         "L3": {
           "trace": "setUnits relabels bestMixDepth display only; cnsDepth omitted from convertNumericInput list.",
-          "boundary_cases": ["metric->imperial relabelOnly", "imperial slider value unchanged"],
+          "boundary_cases": [
+            "metric->imperial relabelOnly",
+            "imperial slider value unchanged"
+          ],
           "evidence": "index.html:3586-3588 setUnits bestMix relabel; no cnsDepth conversion",
           "result": "FINDING"
         },
         "L4": {
           "trace": "calcBestMix depth*BAR_PER_METRE; calcCNS depth*BAR_PER_METRE; renderToolsBmtRefTable compares slider to metre rows.",
-          "boundary_cases": ["imperial highlight row mismatch"],
+          "boundary_cases": [
+            "imperial highlight row mismatch"
+          ],
           "evidence": "index.html:7048-7097",
           "result": "FINDING"
         },
         "L5": {
           "trace": "Canonical ui/markup-consumption.html; assemble contract unchanged.",
-          "boundary_cases": ["no bundle edits"],
+          "boundary_cases": [
+            "no bundle edits"
+          ],
           "evidence": "assemble_ui_html --verify PASS post-fix",
           "result": "NO_FINDING"
         },
         "L6": {
           "trace": "Wrong best mix / CNS ppO2 at depth risks toxic exposure mis-estimation.",
-          "boundary_cases": ["30 ft displayed as 30 m equivalent"],
+          "boundary_cases": [
+            "30 ft displayed as 30 m equivalent"
+          ],
           "evidence": "ATA error ~3.28x for typical imperial slider",
           "result": "FINDING"
         },
         "L7": {
           "trace": "SL-C03-BEST-MIX-DEPTH-UNITS and SL-C03-CNS-DEPTH-UNITS with pre-fix failure at e07ab49.",
-          "boundary_cases": ["setUnits round-trip with data-depthM canonical"],
+          "boundary_cases": [
+            "setUnits round-trip with data-depthM canonical"
+          ],
           "evidence": "dev/engine_regression.py sevenLensCycle03",
           "result": "FINDING"
         }
@@ -76,8 +93,16 @@
       "recommendation": "Convert slider value/min/max on unit switch; read depth in metres for calc",
       "observable_contract": "calcBestMix Best O2% matches metre-equivalent depth after imperial/metric switch",
       "status": "CLOSED",
-      "regression_ids": ["SL-C03-BEST-MIX-DEPTH-UNITS"],
-      "evidence_ids": ["ER-03-PRE-FIX", "ER-03-POST-BESTMIX", "ER-03-RESTORE-BESTMIX", "static", "ci"],
+      "regression_ids": [
+        "SL-C03-BEST-MIX-DEPTH-UNITS"
+      ],
+      "evidence_ids": [
+        "ER-03-PRE-FIX",
+        "ER-03-POST-BESTMIX",
+        "ER-03-RESTORE-BESTMIX",
+        "static",
+        "ci"
+      ],
       "pre_fix_evidence_id": "ER-03-PRE-FIX",
       "post_fix_evidence_id": "ER-03-POST-BESTMIX",
       "state_restoration_evidence_id": "ER-03-RESTORE-BESTMIX"
@@ -94,8 +119,16 @@
       "recommendation": "Sync label/constraints; convert on setUnits; depthToMetres in calcCNS",
       "observable_contract": "calcCNS ppO2 unchanged for physically equivalent depth across unit switch",
       "status": "CLOSED",
-      "regression_ids": ["SL-C03-CNS-DEPTH-UNITS"],
-      "evidence_ids": ["ER-03-PRE-FIX", "ER-03-POST-CNS", "ER-03-RESTORE-CNS", "static", "ci"],
+      "regression_ids": [
+        "SL-C03-CNS-DEPTH-UNITS"
+      ],
+      "evidence_ids": [
+        "ER-03-PRE-FIX",
+        "ER-03-POST-CNS",
+        "ER-03-RESTORE-CNS",
+        "static",
+        "ci"
+      ],
       "pre_fix_evidence_id": "ER-03-PRE-FIX",
       "post_fix_evidence_id": "ER-03-POST-CNS",
       "state_restoration_evidence_id": "ER-03-RESTORE-CNS"
@@ -112,7 +145,9 @@
       "recommendation": "Clarify AL80 as 11.1 L (~0.39 ft3) naming convention",
       "status": "CLOSED",
       "regression_ids": [],
-      "evidence_ids": ["static"]
+      "evidence_ids": [
+        "static"
+      ]
     },
     {
       "id": "SL-C03-H-02",
@@ -126,8 +161,19 @@
       "recommendation": "Describe the bounded planning considerations and avoid an unconditional safety claim.",
       "observable_contract": "Knowledge Base safety guidance does not call an exposure-changing action universally safe.",
       "status": "CLOSED",
-      "regression_ids": ["SL-C03-SHALLOW-STOP-SAFETY-COPY"],
-      "evidence_ids": ["REG-64", "static", "ci"]
+      "regression_ids": [
+        "SL-C03-BEST-MIX-DEPTH-UNITS"
+      ],
+      "evidence_ids": [
+        "ER-03-PRE-FIX",
+        "ER-03-POST-SAFETY",
+        "ER-03-RESTORE-SAFETY",
+        "static",
+        "ci"
+      ],
+      "pre_fix_evidence_id": "ER-03-PRE-FIX",
+      "post_fix_evidence_id": "ER-03-POST-SAFETY",
+      "state_restoration_evidence_id": "ER-03-RESTORE-SAFETY"
     },
     {
       "id": "SL-C03-M-02",
@@ -141,8 +187,19 @@
       "recommendation": "Keep canonical physical values independent of display rounding and assert exact consumer inputs plus hashed before/after state.",
       "observable_contract": "Unit changes preserve exact physical depth through the consumer and regression execution leaves all UI state unchanged.",
       "status": "CLOSED",
-      "regression_ids": ["SL-C03-PHYSICAL-DEPTH-TRACE", "SL-C03-REGRESSION-STATE-IMMUTABLE"],
-      "evidence_ids": ["REG-64", "REG-65", "SL-C03-BROWSER-TRACE", "static", "ci"]
+      "regression_ids": [
+        "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH"
+      ],
+      "evidence_ids": [
+        "ER-03-PRE-FIX",
+        "ER-03-POST-PHYSICAL",
+        "ER-03-RESTORE-PHYSICAL",
+        "static",
+        "ci"
+      ],
+      "pre_fix_evidence_id": "ER-03-PRE-FIX",
+      "post_fix_evidence_id": "ER-03-POST-PHYSICAL",
+      "state_restoration_evidence_id": "ER-03-RESTORE-PHYSICAL"
     },
     {
       "id": "SL-C03-L-02",
@@ -156,86 +213,402 @@
       "recommendation": "Make the Knowledge Base description consistent with the actual GFS constraint and the header guidance.",
       "status": "CLOSED",
       "regression_ids": [],
-      "evidence_ids": ["static", "ci"]
+      "evidence_ids": [
+        "static",
+        "ci"
+      ]
     }
   ],
   "evidence_runs": [
     {
       "id": "ER-03-PRE-FIX",
       "kind": "baseline_failure",
-      "case_ids": ["SL-C03-BEST-MIX-DEPTH-UNITS", "SL-C03-CNS-DEPTH-UNITS"],
-      "observable_assertions": ["2 failed at audit commit e07ab49 with pre-fix index.html"],
+      "case_ids": [
+        "SL-C03-BEST-MIX-DEPTH-UNITS",
+        "SL-C03-CNS-DEPTH-UNITS"
+      ],
+      "observable_assertions": [
+        "166 passed, 2 failed at b100d961 before cycle-3 state-restoration fixes"
+      ],
       "state_restored": true,
-      "command": "git checkout e07ab49 -- index.html ui/markup-consumption.html && python dev/engine_regression.py",
+      "command": "python dev/engine_regression.py",
       "exit_code": 1,
-      "commit": "e07ab49cf5c28a9b99c00eb12d3538acec568728",
-      "worktree_clean": true
+      "commit": "b100d961377961a9b0dac22e372905c0a76f0044",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-ER-03-PRE-FIX.json",
+      "receipt_sha256": "18d84a2577daa48dad6aa1c4bb819514a4e1f14b79d38578f2c327c734470a8f"
     },
     {
       "id": "ER-03-POST-BESTMIX",
       "kind": "post_fix",
-      "case_ids": ["SL-C03-BEST-MIX-DEPTH-UNITS"],
-      "observable_assertions": ["Best O2% invariant; imperial slider 98 ft after 30 m switch"],
+      "case_ids": [
+        "SL-C03-BEST-MIX-DEPTH-UNITS"
+      ],
+      "observable_assertions": [
+        "Best O2% invariant; imperial slider 98 ft after 30 m switch"
+      ],
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C03-BEST-MIX-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "277985ba5e0ccd0f837bcf093bd7263e2c233738",
-      "worktree_clean": true
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "runtime_trace": {
+        "entry_event": "unitsSelect change from metric to imperial",
+        "consumer_path": [
+          "setUnits",
+          "calcBestMix",
+          "domDepthToM",
+          "bestMixResult"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "metric": "30",
+            "imperial": "98"
+          },
+          {
+            "stage": "canonical",
+            "metric": 30,
+            "imperial": 30
+          },
+          {
+            "stage": "consumer",
+            "metric": 30,
+            "imperial": 30
+          },
+          {
+            "stage": "observable",
+            "metric": "34%",
+            "imperial": "34%"
+          }
+        ],
+        "trace_id": "SL-C03-BEST-MIX-PHYSICAL-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
+        "artifact_sha256": "7f6f5235a44b7e5d6eaae2a3d452f24481f22ca492b92bef22b935bcf6f55e25",
+        "spec_path": "docs/seven-lens-traces/cycle-03-consumption.json",
+        "spec_sha256": "479e1ceeaddd2d151fe3d87904fc3cebdb4e90b3d78c576ac9dfc5344d45c5ce"
+      },
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C03-BEST-MIX-DEPTH-UNITS"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-ER-03-POST-BESTMIX.json",
+      "receipt_sha256": "cad3b9b83f9ac004da4277ac43525632326332d112aef28aad6af85dfc0c3b1f"
     },
     {
       "id": "ER-03-POST-CNS",
       "kind": "post_fix",
-      "case_ids": ["SL-C03-CNS-DEPTH-UNITS"],
-      "observable_assertions": ["CNS ppO2 invariant; imperial depth 98 ft with canonical depthM"],
+      "case_ids": [
+        "SL-C03-CNS-DEPTH-UNITS"
+      ],
+      "observable_assertions": [
+        "CNS ppO2 invariant; imperial depth 98 ft with canonical depthM"
+      ],
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C03-CNS-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "277985ba5e0ccd0f837bcf093bd7263e2c233738",
-      "worktree_clean": true
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "runtime_trace": {
+        "entry_event": "unitsSelect metric to imperial to metric round trip",
+        "consumer_path": [
+          "setUnits",
+          "stampDepthCanonicalBeforeConvert",
+          "domDepthToM",
+          "calcCNS"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "metric": "30",
+            "imperial": "98"
+          },
+          {
+            "stage": "canonical",
+            "metric": 30,
+            "imperial": 30
+          },
+          {
+            "stage": "consumer",
+            "metric": 30,
+            "imperial": 30
+          },
+          {
+            "stage": "observable",
+            "metric": "0.84",
+            "imperial": "0.84"
+          }
+        ],
+        "trace_id": "SL-C03-CNS-PHYSICAL-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
+        "artifact_sha256": "7f6f5235a44b7e5d6eaae2a3d452f24481f22ca492b92bef22b935bcf6f55e25",
+        "spec_path": "docs/seven-lens-traces/cycle-03-consumption.json",
+        "spec_sha256": "479e1ceeaddd2d151fe3d87904fc3cebdb4e90b3d78c576ac9dfc5344d45c5ce"
+      },
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C03-CNS-DEPTH-UNITS"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-ER-03-POST-CNS.json",
+      "receipt_sha256": "ffcde607bd0fb97bcffc9dbc665b56c68f13caf417240d7e3fa3a899fb834c6a"
+    },
+    {
+      "id": "ER-03-POST-SAFETY",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C03-BEST-MIX-DEPTH-UNITS"
+      ],
+      "observable_assertions": [
+        "Knowledge Base no longer claims unconditional shallow-stop safety"
+      ],
+      "state_restored": false,
+      "command": "python tools/assemble_ui_html.py --verify",
+      "exit_code": 0,
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "runtime_trace": {
+        "entry_event": "unitsSelect change from metric to imperial",
+        "consumer_path": [
+          "setUnits",
+          "calcBestMix",
+          "domDepthToM",
+          "bestMixResult"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "metric": "30",
+            "imperial": "98"
+          },
+          {
+            "stage": "canonical",
+            "metric": 30,
+            "imperial": 30
+          },
+          {
+            "stage": "consumer",
+            "metric": 30,
+            "imperial": 30
+          },
+          {
+            "stage": "observable",
+            "metric": "34%",
+            "imperial": "34%"
+          }
+        ],
+        "trace_id": "SL-C03-BEST-MIX-PHYSICAL-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
+        "artifact_sha256": "7f6f5235a44b7e5d6eaae2a3d452f24481f22ca492b92bef22b935bcf6f55e25",
+        "spec_path": "docs/seven-lens-traces/cycle-03-consumption.json",
+        "spec_sha256": "479e1ceeaddd2d151fe3d87904fc3cebdb4e90b3d78c576ac9dfc5344d45c5ce"
+      },
+      "command_argv": [
+        "python",
+        "tools/assemble_ui_html.py",
+        "--verify"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-ER-03-POST-SAFETY.json",
+      "receipt_sha256": "652100825b51f1e717b894ec91040e1a466d9c7b647f5035bee9ddd71d12a9ae"
+    },
+    {
+      "id": "ER-03-POST-PHYSICAL",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
+        "SL-C03-PHYSICAL-DEPTH-TRACE",
+        "SL-C03-REGRESSION-STATE-IMMUTABLE"
+      ],
+      "observable_assertions": [
+        "consumer inputs exact; regression restores full DOM state"
+      ],
+      "state_restored": false,
+      "command": "python dev/engine_regression.py SL-C03-PHYSICAL-DEPTH-TRACE SL-C03-REGRESSION-STATE-IMMUTABLE",
+      "exit_code": 0,
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "runtime_trace": {
+        "entry_event": "User switches to imperial units, edits Best Mix depth, and returns to metric.",
+        "consumer_path": [
+          "bestMixDepth input",
+          "calcBestMix",
+          "domDepthToM",
+          "bestMixResult"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "value": "120"
+          },
+          {
+            "stage": "canonical",
+            "value": 36.575998829568036
+          },
+          {
+            "stage": "consumer",
+            "value": 36.575998829568036
+          },
+          {
+            "stage": "observable",
+            "value": 36.575998829568036
+          }
+        ],
+        "trace_id": "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
+        "spec_path": "docs/seven-lens-traces/cycle-03-consumption.json",
+        "spec_sha256": "479e1ceeaddd2d151fe3d87904fc3cebdb4e90b3d78c576ac9dfc5344d45c5ce",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
+        "artifact_sha256": "7f6f5235a44b7e5d6eaae2a3d452f24481f22ca492b92bef22b935bcf6f55e25"
+      },
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C03-PHYSICAL-DEPTH-TRACE",
+        "SL-C03-REGRESSION-STATE-IMMUTABLE"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-ER-03-POST-PHYSICAL.json",
+      "receipt_sha256": "4f9595df834c2a91c90a98b55c6cffb8fcd4c227cbff1ca40898def9db999847"
     },
     {
       "id": "ER-03-RESTORE-BESTMIX",
       "kind": "state_restoration",
-      "case_ids": ["SL-C03-BEST-MIX-DEPTH-UNITS"],
-      "observable_assertions": ["finally restores units and bestMixDepth DOM"],
+      "case_ids": [
+        "SL-C03-BEST-MIX-DEPTH-UNITS"
+      ],
+      "observable_assertions": [
+        "finally restores units and bestMixDepth DOM"
+      ],
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C03-BEST-MIX-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "277985ba5e0ccd0f837bcf093bd7263e2c233738",
-      "worktree_clean": true
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "state_before_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34",
+      "state_after_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34",
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C03-BEST-MIX-DEPTH-UNITS"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-ER-03-RESTORE-BESTMIX.json",
+      "receipt_sha256": "8d4f83c0262d278092ab32b09a98f5edcfe51282bbe38299e35dee5fed0ee593"
     },
     {
       "id": "ER-03-RESTORE-CNS",
       "kind": "state_restoration",
-      "case_ids": ["SL-C03-CNS-DEPTH-UNITS"],
-      "observable_assertions": ["finally restores units and cnsDepth DOM"],
+      "case_ids": [
+        "SL-C03-CNS-DEPTH-UNITS"
+      ],
+      "observable_assertions": [
+        "finally restores units and cnsDepth DOM"
+      ],
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C03-CNS-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "277985ba5e0ccd0f837bcf093bd7263e2c233738",
-      "worktree_clean": true
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "state_before_sha256": "05a01c89e4d995ec0e84dd8c282be8b15d77ca6d9ae620f662b49bb83bf558dd",
+      "state_after_sha256": "05a01c89e4d995ec0e84dd8c282be8b15d77ca6d9ae620f662b49bb83bf558dd",
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C03-CNS-DEPTH-UNITS"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-ER-03-RESTORE-CNS.json",
+      "receipt_sha256": "eae31f56c25de65162f1e7abcad28b52692dd91ec012c26d9055433fcbe7037b"
+    },
+    {
+      "id": "ER-03-RESTORE-SAFETY",
+      "kind": "state_restoration",
+      "case_ids": [
+        "SL-C03-BEST-MIX-DEPTH-UNITS"
+      ],
+      "observable_assertions": [
+        "static gate leaves markup unchanged"
+      ],
+      "state_restored": true,
+      "command": "python tools/assemble_ui_html.py --verify",
+      "exit_code": 0,
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "state_before_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34",
+      "state_after_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34",
+      "command_argv": [
+        "python",
+        "tools/assemble_ui_html.py",
+        "--verify"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-ER-03-RESTORE-SAFETY.json",
+      "receipt_sha256": "95ff79d78e473b15ff794c7a76091b20d3280cdb92db5f0cf3e8678e0e2f9e12"
+    },
+    {
+      "id": "ER-03-RESTORE-PHYSICAL",
+      "kind": "state_restoration",
+      "case_ids": [
+        "SL-C03-PHYSICAL-DEPTH-TRACE",
+        "SL-C03-REGRESSION-STATE-IMMUTABLE"
+      ],
+      "observable_assertions": [
+        "finally restores units, depth datasets, and storage"
+      ],
+      "state_restored": true,
+      "command": "python dev/engine_regression.py SL-C03-PHYSICAL-DEPTH-TRACE SL-C03-REGRESSION-STATE-IMMUTABLE",
+      "exit_code": 0,
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "state_before_sha256": "32d9b547d41edc711c56883e98b96ef643eeef816b94dce2d7f5f19c9f84af0a",
+      "state_after_sha256": "32d9b547d41edc711c56883e98b96ef643eeef816b94dce2d7f5f19c9f84af0a",
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C03-PHYSICAL-DEPTH-TRACE",
+        "SL-C03-REGRESSION-STATE-IMMUTABLE"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-ER-03-RESTORE-PHYSICAL.json",
+      "receipt_sha256": "9fa7ead3cf2dfac9caad414c92d516d778a661810ce6a391b0023cec761cbd26"
     },
     {
       "id": "static",
       "kind": "gate",
       "case_ids": [],
-      "observable_assertions": ["static profile PASS"],
+      "observable_assertions": [
+        "static gate PASS"
+      ],
       "state_restored": true,
-      "command": "python -m tools.audit check --profile static",
+      "command": "python tools/assemble_ui_html.py --verify",
       "exit_code": 0,
-      "commit": "277985ba5e0ccd0f837bcf093bd7263e2c233738",
-      "worktree_clean": true
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/assemble_ui_html.py",
+        "--verify"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-static.json",
+      "receipt_sha256": "3bf6bf97e801b36e78aef63b3b31aad5e0039fbbb0e876a5c8192e77b63d6d06"
     },
     {
       "id": "ci",
       "kind": "gate",
       "case_ids": [],
-      "observable_assertions": ["ci profile 12/12 suites PASS"],
+      "observable_assertions": [
+        "ci gate PASS"
+      ],
       "state_restored": true,
-      "command": "python -m tools.audit run --profile ci",
+      "command": "python dev/engine_regression.py",
       "exit_code": 0,
-      "commit": "277985ba5e0ccd0f837bcf093bd7263e2c233738",
-      "worktree_clean": true
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-ci.json",
+      "receipt_sha256": "f23136c8d8d23603ea2d146beb006f61d607f97b442478d2a31c5789249a9b0c"
     }
   ],
   "changed_paths": [
@@ -245,5 +618,160 @@
     "docs/audit-units.json"
   ],
   "audit_report": "docs/seven-lens-reports/cycle-03-consumption.md",
-  "notes": "BLOCKED by Codex post-merge verification. See cycle-03-codex-verification.md and the browser trace specification."
+  "notes": "Closure evidence materialized at d956648 with schema-v2 browser traces and regression gates.",
+  "integration_base_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+  "baseline_registry_fingerprint": "d40e000bc622879e963d120917c26893abeb8d9e69fc7ee64110115c38010463",
+  "baseline_findings": [
+    {
+      "id": "SL-C02-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes."
+    },
+    {
+      "id": "SL-C02-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Travel manual depth limits disagree between markup, metric restore, and imperial mode."
+    },
+    {
+      "id": "SL-C02-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Rounded display values become canonical physical inputs; Best Mix and CNS now reproduce the same unit-roundtrip drift."
+    },
+    {
+      "id": "SL-C02-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Min-deco regression checks an adapter property rather than observable schedule behavior."
+    },
+    {
+      "id": "SL-C02-M-06",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle history allowed unresolved findings and a blocked prior record to be deleted or rewritten as passed."
+    },
+    {
+      "id": "SL-C03-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits."
+    },
+    {
+      "id": "SL-C03-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle 3 regressions compare rounded outputs and restore values before units, masking physical-depth drift and corrupting test state."
+    },
+    {
+      "id": "SL-C03-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling."
+    },
+    {
+      "id": "SL-C04-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Depth and cylinder edits after a unit switch leave canonical data-depth-m/data-volume-l stale, so consumers use old values and the next switch discards the edit."
+    },
+    {
+      "id": "SL-C04-H-03",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Cycles 2-4 are marked reviewed although their protocol records fail closure and Cycle 4 has no evidence runs for five closed findings."
+    },
+    {
+      "id": "SL-C04-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle regression setup leaks canonical DOM and settings state, making the full engine suite order-dependent and leaving two contingency cases failing."
+    },
+    {
+      "id": "SL-C04-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Browser trace evidence could pass forced or vacuous single-run checks without proving a real interactive consumer path."
+    },
+    {
+      "id": "SL-C04-H-04",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Closure evidence was materialized from constants instead of executed commands, allowing fabricated exit codes, cleanliness claims, and unrelated trace reuse."
+    },
+    {
+      "id": "SL-C04-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "A dynamic deco cylinder created in imperial mode defaults to 0.4 ft3 while retaining min 1 and step 0.5, making its initial value invalid."
+    },
+    {
+      "id": "SL-C04-H-05",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "planPanelTecSection is nested inside an unclosed planPanelRecSection, leaving gas and technical planner controls hidden in every planner mode."
+    },
+    {
+      "id": "ISSUE-133-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 4C/5H/8M/8L remediated; gated in audit.py issue133 block and engine_regression issue133 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-134-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 1C/4H/7M/7L remediated; gated in audit.py issue134 block and engine_regression issue134 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-135-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 10H/10M/1L remediated; gated in audit.py issue135 block and engine_regression issue135 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-136-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "extract_ui_cores.py uses LSP-EXTRACT marker contract; verified by audit.py and tools/extract_ui_cores.py [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-137-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in 51f95ac; gated in audit.py and engine_regression issue137 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-138-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in fcfb6c4 (v2.53.04); gated in audit.py and engine_regression issue138 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-139-ROLLUP",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "All 3L fixed; #138 40/40 re-verified on 1271d1a; gated in audit.py and engine_regression issue139 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-140-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Surface interval gas/GF kinetics, pooled gas-plan turn pressure, audit case-ID validation, SW cache waitUntil, Android compile gate, coverage self-tests, FileProvider scope, workspace hash drift"
+    },
+    {
+      "id": "ISSUE-141-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "pSCR diluent bypass from computePSCRFractions, resolveCcrSacForGas removed, invalid trimix getN2Frac returns null"
+    },
+    {
+      "id": "REGRESSION-GF-CCR-FIX",
+      "severity": "CRITICAL",
+      "status": "CLOSED",
+      "summary": "GF pre-anchor and CCR endpoint corrected; verification requires REG-06 and REG-07 in the current release run"
+    }
+  ],
+  "record_path": "docs/seven-lens-records/cycle-03-consumption.json"
 }

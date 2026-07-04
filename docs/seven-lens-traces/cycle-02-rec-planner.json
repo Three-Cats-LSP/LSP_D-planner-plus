@@ -1,0 +1,39 @@
+{
+  "schema_version": 3,
+  "repeat": 2,
+  "cycle": 2,
+  "subcycle": "2a",
+  "traces": [
+    {
+      "id": "SL-REC-DEPTH-BT-STEPPER",
+      "case_ids": ["SL-C01-DEPTH-SYNC"],
+      "entry_event": "User steps REC depth up and the stepper label follows the hidden recDepth input.",
+      "consumer_path": ["recDepth stepper +", "recDepth value", "_syncRecDepthBtSteppers", "recDepthStepperVal label"],
+      "setup": [
+        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+        {"action": "click", "selector": "#navBtnRec"}
+      ],
+      "state": {
+        "selectors": ["#navBtnRec", "#recDepthBtSteppers button[aria-label=\"Increase depth\"]"],
+        "restore_order": ["#recDepthBtSteppers button[aria-label=\"Increase depth\"]", "#navBtnRec"],
+        "globals": ["_zhlHeadless"]
+      },
+      "steps": [
+        {"capture": "before", "values": {
+          "depth_lbl": "document.getElementById('recDepthStepperVal')?.textContent",
+          "depth_val": "document.getElementById('recDepth')?.value"
+        }},
+        {"action": "click", "selector": "#recDepthBtSteppers button[aria-label=\"Increase depth\"]"},
+        {"capture": "after", "values": {
+          "depth_lbl": "document.getElementById('recDepthStepperVal')?.textContent",
+          "depth_val": "document.getElementById('recDepth')?.value"
+        }}
+      ],
+      "assertions": [
+        {"id": "rec-depth-input-advanced", "left": "$.after.depth_val", "op": "equal", "right": "41"},
+        {"id": "rec-depth-stepper-synced", "left": "$.after.depth_lbl", "op": "equal", "right": "41"},
+        {"id": "rec-depth-changed", "left": "$.before.depth_val", "op": "not_equal", "right": "$.after.depth_val"}
+      ]
+    }
+  ]
+}

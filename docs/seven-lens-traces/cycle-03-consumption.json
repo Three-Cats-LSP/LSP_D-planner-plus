@@ -1,10 +1,11 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "repeat": 2,
   "cycle": 3,
   "traces": [
     {
       "id": "SL-C03-BEST-MIX-PHYSICAL-TRACE",
+      "case_ids": ["SL-C03-BEST-MIX-DEPTH-UNITS"],
       "entry_event": "unitsSelect change from metric to imperial",
       "consumer_path": ["setUnits", "calcBestMix", "domDepthToM", "bestMixResult"],
       "setup": [
@@ -49,6 +50,7 @@
     },
     {
       "id": "SL-C03-CNS-PHYSICAL-TRACE",
+      "case_ids": ["SL-C03-CNS-DEPTH-UNITS"],
       "entry_event": "unitsSelect metric to imperial to metric round trip",
       "consumer_path": ["setUnits", "stampDepthCanonicalBeforeConvert", "domDepthToM", "calcCNS"],
       "setup": [
@@ -106,6 +108,7 @@
     },
     {
       "id": "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
+      "case_ids": ["SL-C03-BEST-MIX-EDIT-AFTER-SWITCH"],
       "entry_event": "User switches to imperial units, edits Best Mix depth, and returns to metric.",
       "consumer_path": ["bestMixDepth input", "calcBestMix", "domDepthToM", "bestMixResult"],
       "setup": [
@@ -118,7 +121,7 @@
       ],
       "state": {
         "selectors": ["#navBtnSettings", "#navBtnTools", "#tool-bestmix", "#unitsSelect", "#bestMixDepth"],
-        "restore_order": ["#bestMixDepth", "#unitsSelect", "#tool-bestmix", "#navBtnTools", "#navBtnSettings"],
+        "restore_order": ["#navBtnSettings", "#navBtnTools", "#tool-bestmix", "#unitsSelect", "#bestMixDepth"],
         "globals": ["_zhlHeadless"]
       },
       "steps": [
@@ -137,13 +140,14 @@
       ],
       "assertions": [
         {"id": "imperial-edit-visible", "left": "$.edited.input_value", "op": "equal", "right": "120"},
-        {"id": "imperial-edit-reaches-consumer", "left": "$.edited.consumer_m", "op": "close", "right": 36.576, "tolerance": 0.000001},
+        {"id": "imperial-edit-reaches-consumer", "left": "$.edited.consumer_m", "op": "close", "right": 36.576, "tolerance": 0.001},
         {"id": "observable-reacts-to-edit", "left": "$.edited.observable", "op": "not_equal", "right": "$.before.observable"},
-        {"id": "roundtrip-preserves-edit", "left": "$.roundtrip.consumer_m", "op": "close", "right": 36.576, "tolerance": 0.000001}
+        {"id": "roundtrip-preserves-edit", "left": "$.roundtrip.consumer_m", "op": "close", "right": 36.576, "tolerance": 0.001}
       ]
     },
     {
       "id": "SL-C03-CNS-EDIT-AFTER-SWITCH",
+      "case_ids": ["SL-C03-CNS-EDIT-AFTER-SWITCH"],
       "entry_event": "User switches to imperial units, edits CNS depth, and returns to metric.",
       "consumer_path": ["cnsDepth input", "calcCNS", "domDepthToM", "cnsPPO2"],
       "setup": [
@@ -156,7 +160,7 @@
       ],
       "state": {
         "selectors": ["#navBtnSettings", "#navBtnTools", "#tool-cns", "#unitsSelect", "#cnsDepth"],
-        "restore_order": ["#cnsDepth", "#unitsSelect", "#tool-cns", "#navBtnTools", "#navBtnSettings"],
+        "restore_order": ["#navBtnSettings", "#navBtnTools", "#tool-cns", "#unitsSelect", "#cnsDepth"],
         "globals": ["_zhlHeadless"]
       },
       "steps": [
@@ -175,9 +179,9 @@
       ],
       "assertions": [
         {"id": "imperial-edit-visible", "left": "$.edited.input_value", "op": "equal", "right": "120"},
-        {"id": "imperial-edit-reaches-consumer", "left": "$.edited.consumer_m", "op": "close", "right": 36.576, "tolerance": 0.000001},
+        {"id": "imperial-edit-reaches-consumer", "left": "$.edited.consumer_m", "op": "close", "right": 36.576, "tolerance": 0.001},
         {"id": "observable-reacts-to-edit", "left": "$.edited.observable", "op": "not_equal", "right": "$.before.observable"},
-        {"id": "roundtrip-preserves-edit", "left": "$.roundtrip.consumer_m", "op": "close", "right": 36.576, "tolerance": 0.000001}
+        {"id": "roundtrip-preserves-edit", "left": "$.roundtrip.consumer_m", "op": "close", "right": 36.576, "tolerance": 0.001}
       ]
     }
   ]

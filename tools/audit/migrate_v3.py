@@ -23,6 +23,8 @@ CSS_UNIT_PATHS: dict[str, str] = {
 
 MARKUP_UNIT_PATHS: dict[str, str] = {
     "UI-MARKUP-HEADER": "ui/markup-header.html",
+    "UI-MARKUP-REC-PLANNER": "ui/markup-rec-planner.html",
+    "UI-MARKUP-TEC-PLANNER": "ui/markup-tec-planner.html",
     "UI-MARKUP-PLANNER": "ui/markup-planner.html",
     "UI-MARKUP-CONSUMPTION": "ui/markup-consumption.html",
     "UI-MARKUP-TOOLS": "ui/markup-tools.html",

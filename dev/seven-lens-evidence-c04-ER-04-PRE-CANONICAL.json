@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ER-04-PRE-CANONICAL",
+  "command_argv": [
+    "python",
+    "tools/seven_lens_browser_trace.py",
+    "--spec",
+    "docs/seven-lens-traces/cycle-03-consumption.json",
+    "--output",
+    "dev/seven-lens-browser-trace-cycle03.json"
+  ],
+  "commit": "b100d961377961a9b0dac22e372905c0a76f0044",
+  "exit_code": 1,
+  "case_ids": [
+    "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
+    "SL-C03-CNS-EDIT-AFTER-SWITCH"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-04T08:46:07.354653+00:00",
+  "finished_at": "2026-07-04T08:46:34.528070+00:00",
+  "stdout_sha256": "7015496698291fe4be8eba4046c60021cd08014a5359c4f678fb927233b0c993",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
+}
