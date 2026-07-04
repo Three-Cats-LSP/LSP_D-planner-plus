@@ -15,7 +15,7 @@ in `docs/seven-lens-records/`.
 | 3 | `UI-MARKUP-CONSUMPTION` | **IN PROGRESS** — schema-v4 evidence required | — | [#191](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/191) |
 | 4 | `UI-MARKUP-TOOLS` + `UI-MARKUP-MODALS` | **BLOCKED** — closure integrity + dynamic card | — | [#191](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/191) |
 | 5 | `UI-CSS-FOUNDATION` + `UI-CSS-MODES` | **CLOSED** — merged to `dev` | `c40b71a` | [#200](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/200) |
-| 6 | `UI-CSS-CONTROLS` | **CLOSED** — pending merge to `dev` | `67a4c80` | pending |
+| 6 | `UI-CSS-CONTROLS` | **BLOCKED** — SL-C06-L-04 pending fresh verifier | — | pending |
 
 ---
 
@@ -66,13 +66,13 @@ in `docs/seven-lens-records/`.
 | **Baseline** | `7cd5897` |
 | **Prepared baseline** | `c21493d` |
 | **Audit commit** | `fea770d` |
-| **Verified source commit** | `67a4c80` |
+| **Verified source commit** | — (blocked; latest fixer evidence at `7d403f4`) |
 | **Branch** | `cursor/seven-lens-cycle-06-controls-css` |
-| **Ledger** | `SEVEN_LENS_REVIEWED` |
+| **Ledger** | `SEVEN_LENS_BLOCKED` |
 | **Report** | `docs/seven-lens-reports/cycle-06-controls-css.md` |
 | **Record** | `docs/seven-lens-records/cycle-06-controls-css.json` |
 
-### Findings closed
+### Findings status
 
 | ID | Severity | Summary |
 |----|----------|---------|
@@ -81,14 +81,14 @@ in `docs/seven-lens-records/`.
 | SL-C06-L-01 | LOW | Obsolete `.si-inner` surface-interval rules |
 | SL-C06-L-02 | LOW | Obsolete `.t-col` rule |
 | SL-C06-L-03 | LOW | Dead `.btn-calc` alias in shared `.gen-btn` selectors |
-| SL-C06-L-04 | LOW | Field inputs lack invalid-state styling |
+| SL-C06-L-04 | LOW | OPEN — field inputs lack invalid-state styling; awaiting fresh verifier |
 | SL-C06-L-05 | LOW | Control transitions ignore `prefers-reduced-motion` |
 
 ### Evidence
 
 - Baseline failures at prepared commit `c21493d` (`ER-C06-PRE-CSS`, audit CSS hash matches `fea770d`)
-- Post-fix regressions and browser traces at `67a4c80` (`ER-C06-POST-CSS`, `ER-C06-TRACE`, `ER-C06-RESTORE-CSS`)
-- Structure/parity gates (`ER-C06-STRUCTURE`, `ER-C06-PARITY`) and static/CI receipts
+- Post-fix regressions and browser traces at `7d403f4` (`ER-C06-POST-CSS`, `ER-C06-TRACE`, `ER-C06-RESTORE-CSS`)
+- Structure/parity gates (`ER-C06-STRUCTURE`, `ER-C06-PARITY`); static/CI receipts remain blocked until verifier closure
 
 **Next cycle:** Cycle 7 (`UI-CSS-RESULTS`).
 

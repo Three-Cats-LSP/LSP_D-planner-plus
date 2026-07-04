@@ -404,7 +404,7 @@
     },
     {
       "unit_id": "UI-CSS-CONTROLS",
-      "review_status": "SEVEN_LENS_REVIEWED",
+      "review_status": "SEVEN_LENS_BLOCKED",
       "cycle_id": "SL-C06",
       "boundary": "lsp-dplanner-controls.css whole file",
       "reviewer": "Cursor FIXER Cycle 06",
