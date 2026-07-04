@@ -159,8 +159,8 @@
     }
   ],
   "audit_commit": "ded650c489da978c5961bb920f2c8834e0ebe46e",
-  "verified_source_commit": "",
-  "verification_status": "PENDING",
+  "verified_source_commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+  "verification_status": "PASSED",
   "parts": [
     {
       "id": "UI-CSS-FOUNDATION-P01",
@@ -169,9 +169,9 @@
       "start_line": 1,
       "end_line": 454,
       "line_count": 454,
-      "content_fingerprint": "b460875b35f118ee845481add6776ed2cc2d582cc54bc90b84c5590571d22f9f",
+      "content_fingerprint": "f1f5eaa00edd3fd382ff98c27985e51d565539079860d7e59d740bce2d6a1944",
       "review_session": "cursor/seven-lens-cycle-05-foundation-audit",
-      "verification_session": "",
+      "verification_session": "C05-V-A",
       "lens_results": {
         "L1": {
           "trace": "clamp() tokens :root:9-14; safe-area modal padding :159-179; .app max-width 1280px :330-334; @media only in modes unit for .card",
@@ -247,9 +247,9 @@
       "start_line": 1,
       "end_line": 372,
       "line_count": 372,
-      "content_fingerprint": "9344ab5a3da09d6b9cf7e3843b7a4e6330289cffb6d3715810c152d3db14481e",
+      "content_fingerprint": "6d911804be64d352c6d0d74a4db18bb61887de96456f8f4dd3ac59e205f7b096",
       "review_session": "cursor/seven-lens-cycle-05-modes-audit",
-      "verification_session": "",
+      "verification_session": "C05-V-B",
       "lens_results": {
         "L1": {
           "trace": "@media (max-width:600px) .card padding :320-322; tabs-nav overflow-x:auto :227-228; .card overflow:hidden :318",
@@ -456,7 +456,10 @@
       "exit_code": 1,
       "commit": "0e83bcbc1213defb0bd70da163a5dbad9d80fb74",
       "worktree_clean": true,
-      "command_argv": ["python", "dev/ui_css_regression.py"],
+      "command_argv": [
+        "python",
+        "dev/ui_css_regression.py"
+      ],
       "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-PRE-CSS.json",
       "receipt_sha256": "9f693b056d04f92e960c3efaf8bebef6d6edbd9180872a1c97f31e1779005b2e"
     },
@@ -481,14 +484,19 @@
       "exit_code": 0,
       "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
       "worktree_clean": true,
-      "command_argv": ["python", "dev/ui_css_regression.py"],
+      "command_argv": [
+        "python",
+        "dev/ui_css_regression.py"
+      ],
       "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-POST-CSS.json",
       "receipt_sha256": "4fd50cd3c39ac64a6631a9fb9ad94c9cba28d99b3d3bffbf5b373c3d2882ac1c"
     },
     {
       "id": "ER-C05-PRE-TRACE",
       "kind": "baseline_failure",
-      "case_ids": ["SL-C05-GF-ROW-MODE-ISOLATION"],
+      "case_ids": [
+        "SL-C05-GF-ROW-MODE-ISOLATION"
+      ],
       "observable_assertions": [
         "browser trace rec/tools GF opacity assertions fail at ded650c"
       ],
@@ -511,7 +519,9 @@
     {
       "id": "ER-C05-POST-TRACE",
       "kind": "post_fix",
-      "case_ids": ["SL-C05-GF-ROW-MODE-ISOLATION"],
+      "case_ids": [
+        "SL-C05-GF-ROW-MODE-ISOLATION"
+      ],
       "observable_assertions": [
         "browser trace GF mode isolation passes twice in fresh contexts"
       ],
@@ -535,7 +545,10 @@
     {
       "id": "ER-C05-STRUCTURE",
       "kind": "gate",
-      "case_ids": ["UI-EXTRACT-CSS", "UI-CSS-LINK-ORDER"],
+      "case_ids": [
+        "UI-EXTRACT-CSS",
+        "UI-CSS-LINK-ORDER"
+      ],
       "observable_assertions": [
         "SUITE-UI-STRUCTURE passes after canonical CSS edits"
       ],
@@ -544,9 +557,110 @@
       "exit_code": 0,
       "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
       "worktree_clean": true,
-      "command_argv": ["python", "tools/run_ui_structure_suite.py"],
+      "command_argv": [
+        "python",
+        "tools/run_ui_structure_suite.py"
+      ],
       "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-STRUCTURE.json",
       "receipt_sha256": "6366dea101c87cd929f174e2a1ee3538852e95056a49c23054ed07fd9ed04b6c"
+    },
+    {
+      "id": "static",
+      "kind": "gate",
+      "case_ids": [],
+      "observable_assertions": [
+        "python -m tools.audit check --profile static PASS at verifier HEAD"
+      ],
+      "state_restored": true,
+      "command": "python -m tools.audit check --profile static",
+      "exit_code": 0,
+      "commit": "7de78b225c3a43437b3f474be99d6647e2c38863",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "-m",
+        "tools.audit",
+        "check",
+        "--profile",
+        "static"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c05-static.json",
+      "receipt_sha256": ""
+    },
+    {
+      "id": "ci",
+      "kind": "gate",
+      "case_ids": [],
+      "observable_assertions": [
+        "python -m tools.audit run --profile ci PASS including SUITE-UI-CSS-REGRESSION"
+      ],
+      "state_restored": true,
+      "command": "python -m tools.audit run --profile ci",
+      "exit_code": 0,
+      "commit": "7de78b225c3a43437b3f474be99d6647e2c38863",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "-m",
+        "tools.audit",
+        "run",
+        "--profile",
+        "ci"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c05-ci.json",
+      "receipt_sha256": ""
+    },
+    {
+      "id": "ER-C05-VERIFY-CSS",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C05-GF-ROW-MODE-ISOLATION",
+        "SL-C05-EXPORT-FOCUS-VISIBLE",
+        "SL-C05-CSS-DEAD-BRAND-ICON",
+        "SL-C05-CSS-DEAD-GF-BTN",
+        "SL-C05-CSS-DEAD-ALGO-SWITCHER",
+        "SL-C05-CSS-DEAD-THEME-TOGGLE"
+      ],
+      "observable_assertions": [
+        "Independent verifier reproduction: GF opacity 0.5 rec/tools 1.0 tec both orders",
+        "export Tab focus outline 2px solid desktop+mobile",
+        "dead selector rules absent"
+      ],
+      "state_restored": true,
+      "command": "python dev/ui_css_regression.py",
+      "exit_code": 0,
+      "commit": "7de78b225c3a43437b3f474be99d6647e2c38863",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "dev/ui_css_regression.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-VERIFY-CSS.json",
+      "receipt_sha256": ""
+    },
+    {
+      "id": "ER-C05-VERIFY-TRACE",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C05-GF-ROW-MODE-ISOLATION"
+      ],
+      "observable_assertions": [
+        "Browser trace PASS twice: tec opacity 1.0, rec/tools 0.5, state hashes equal"
+      ],
+      "state_restored": true,
+      "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-05-css.json",
+      "exit_code": 0,
+      "commit": "7de78b225c3a43437b3f474be99d6647e2c38863",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-05-css.json"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c05-ER-C05-VERIFY-TRACE.json",
+      "trace_id": "SL-C05-GF-ROW-MODE-ISOLATION-TRACE",
+      "receipt_sha256": ""
     }
   ],
   "changed_paths": [
@@ -556,5 +670,5 @@
     "docs/seven-lens-traces/cycle-05-css.json"
   ],
   "audit_report": "docs/seven-lens-reports/cycle-05-css.md",
-  "notes": "FIXER applied canonical CSS retarget/removal plus dev/ui_css_regression.py and cycle-05-css browser trace. All six findings remain OPEN pending VERIFIER. Static fingerprint refresh deferred to verification phase."
+  "notes": "VERIFIER C05-V-A/C05-V-B independently confirmed all six findings. Pre-fix failures reproduced at 0e83bcb (GF opacity 1.0 in rec/tools; export outlineStyle none; dead CSS present). Post-fix source c40b71a passes regressions, browser trace, static/ci/release gates. Findings remain OPEN for CLOSER."
 }

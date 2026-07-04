@@ -563,6 +563,30 @@
     "EXT-08": {
       "suite_id": "SUITE-UI-STRUCTURE",
       "case_id": "UI-SW-PRECACHE"
+    },
+    "REG-76": {
+      "suite_id": "SUITE-UI-CSS-REGRESSION",
+      "case_id": "SL-C05-GF-ROW-MODE-ISOLATION"
+    },
+    "REG-77": {
+      "suite_id": "SUITE-UI-CSS-REGRESSION",
+      "case_id": "SL-C05-EXPORT-FOCUS-VISIBLE"
+    },
+    "REG-78": {
+      "suite_id": "SUITE-UI-CSS-REGRESSION",
+      "case_id": "SL-C05-CSS-DEAD-BRAND-ICON"
+    },
+    "REG-79": {
+      "suite_id": "SUITE-UI-CSS-REGRESSION",
+      "case_id": "SL-C05-CSS-DEAD-GF-BTN"
+    },
+    "REG-80": {
+      "suite_id": "SUITE-UI-CSS-REGRESSION",
+      "case_id": "SL-C05-CSS-DEAD-ALGO-SWITCHER"
+    },
+    "REG-81": {
+      "suite_id": "SUITE-UI-CSS-REGRESSION",
+      "case_id": "SL-C05-CSS-DEAD-THEME-TOGGLE"
     }
   },
   "findings": [
@@ -1011,6 +1035,96 @@
         "REG-06",
         "REG-07"
       ]
+    },
+    {
+      "id": "SL-C05-M-01",
+      "unit_id": "UI-CSS-FOUNDATION",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "issue": "Seven-lens Cycle 05 CSS audit",
+      "summary": "Mode-isolation CSS targets removed #gfPresetsRow",
+      "affected_units": [
+        "UI-CSS-FOUNDATION"
+      ],
+      "resolution_commit": "",
+      "evidence_cases": [
+        "REG-76"
+      ]
+    },
+    {
+      "id": "SL-C05-M-02",
+      "unit_id": "UI-CSS-MODES",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "issue": "Seven-lens Cycle 05 CSS audit",
+      "summary": "Export buttons suppress keyboard focus ring",
+      "affected_units": [
+        "UI-CSS-MODES"
+      ],
+      "resolution_commit": "",
+      "evidence_cases": [
+        "REG-77"
+      ]
+    },
+    {
+      "id": "SL-C05-L-01",
+      "unit_id": "UI-CSS-FOUNDATION",
+      "severity": "LOW",
+      "status": "OPEN",
+      "issue": "Seven-lens Cycle 05 CSS audit",
+      "summary": "Obsolete .brand-icon rules",
+      "affected_units": [
+        "UI-CSS-FOUNDATION"
+      ],
+      "resolution_commit": "",
+      "evidence_cases": [
+        "REG-78"
+      ]
+    },
+    {
+      "id": "SL-C05-L-02",
+      "unit_id": "UI-CSS-FOUNDATION",
+      "severity": "LOW",
+      "status": "OPEN",
+      "issue": "Seven-lens Cycle 05 CSS audit",
+      "summary": "Obsolete #gfCustomRow .gf-btn rules",
+      "affected_units": [
+        "UI-CSS-FOUNDATION"
+      ],
+      "resolution_commit": "",
+      "evidence_cases": [
+        "REG-79"
+      ]
+    },
+    {
+      "id": "SL-C05-L-03",
+      "unit_id": "UI-CSS-MODES",
+      "severity": "LOW",
+      "status": "OPEN",
+      "issue": "Seven-lens Cycle 05 CSS audit",
+      "summary": "Obsolete .algo-switcher rules",
+      "affected_units": [
+        "UI-CSS-MODES"
+      ],
+      "resolution_commit": "",
+      "evidence_cases": [
+        "REG-80"
+      ]
+    },
+    {
+      "id": "SL-C05-L-04",
+      "unit_id": "UI-CSS-MODES",
+      "severity": "LOW",
+      "status": "OPEN",
+      "issue": "Seven-lens Cycle 05 CSS audit",
+      "summary": "Obsolete .theme-toggle rules",
+      "affected_units": [
+        "UI-CSS-MODES"
+      ],
+      "resolution_commit": "",
+      "evidence_cases": [
+        "REG-81"
+      ]
     }
   ],
   "units": [
@@ -1035,22 +1149,14 @@
       "path": "lsp-dplanner-foundation.css",
       "layer": "web_css",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "b460875b35f118ee845481add6776ed2cc2d582cc54bc90b84c5590571d22f9f",
-      "last_read_fingerprint": "b460875b35f118ee845481add6776ed2cc2d582cc54bc90b84c5590571d22f9f",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-EXTRACT-CSS",
-        "SUITE-UI-STRUCTURE/UI-CSS-LINK-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-03",
-        "EXT-06",
-        "COV-01"
-      ],
+      "fingerprint": "f1f5eaa00edd3fd382ff98c27985e51d565539079860d7e59d740bce2d6a1944",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified — UI-CSS-FOUNDATION"
     },
     {
@@ -1058,22 +1164,14 @@
       "path": "lsp-dplanner-modes.css",
       "layer": "web_css",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "9344ab5a3da09d6b9cf7e3843b7a4e6330289cffb6d3715810c152d3db14481e",
-      "last_read_fingerprint": "9344ab5a3da09d6b9cf7e3843b7a4e6330289cffb6d3715810c152d3db14481e",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-EXTRACT-CSS",
-        "SUITE-UI-STRUCTURE/UI-CSS-LINK-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-03",
-        "EXT-06",
-        "COV-01"
-      ],
+      "fingerprint": "6d911804be64d352c6d0d74a4db18bb61887de96456f8f4dd3ac59e205f7b096",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified — UI-CSS-MODES"
     },
     {
@@ -4667,6 +4765,43 @@
       "evidence": [],
       "regression_cases": [],
       "issue": "Level 2 disjoint REC/TECH depth/BT inputs and view snapshots"
+    },
+    {
+      "id": "TEST-SEVEN-LENS-CYCLE05-TRACE",
+      "path": "docs/seven-lens-traces/cycle-05-css.json",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Cycle 05 UI-CSS browser trace specification",
+      "regression_cases": [],
+      "fingerprint": "afea0c9e429544a6b57b0783287655cb6af5649ce91fc6a29527cf4c54999ac6",
+      "last_read_fingerprint": null
+    },
+    {
+      "id": "TEST-UI-CSS-REGRESSION",
+      "path": "dev/ui_css_regression.py",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Cycle 05 UI-CSS computed-style behavioral regression",
+      "regression_cases": [
+        "REG-76",
+        "REG-77",
+        "REG-78",
+        "REG-79",
+        "REG-80",
+        "REG-81"
+      ],
+      "fingerprint": "ab92890db4deec0974e4207ecf31507b355ec65f2448a9728b2d479341dd07cb",
+      "last_read_fingerprint": null
     }
   ],
   "cycles": [
@@ -5479,6 +5614,26 @@
         "UI-CSS-LINK-ORDER",
         "UI-PAGES-ASSETS",
         "UI-SW-PRECACHE"
+      ]
+    },
+    {
+      "id": "SUITE-UI-CSS-REGRESSION",
+      "command": [
+        "{python}",
+        "dev/ui_css_regression.py"
+      ],
+      "profiles": [
+        "ci",
+        "release"
+      ],
+      "timeout_seconds": 180,
+      "case_ids": [
+        "SL-C05-GF-ROW-MODE-ISOLATION",
+        "SL-C05-EXPORT-FOCUS-VISIBLE",
+        "SL-C05-CSS-DEAD-BRAND-ICON",
+        "SL-C05-CSS-DEAD-GF-BTN",
+        "SL-C05-CSS-DEAD-ALGO-SWITCHER",
+        "SL-C05-CSS-DEAD-THEME-TOGGLE"
       ]
     }
   ],
