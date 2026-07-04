@@ -211,6 +211,11 @@
         "pattern": ".seven-lens-evidence/**",
         "kind": "audit_metadata",
         "reason": "Detached git worktrees for baseline evidence"
+      },
+      {
+        "pattern": "tools/refresh_seven_lens_ci.py",
+        "kind": "audit_metadata",
+        "reason": "One-shot CI seven-lens evidence refresh runner"
       }
     ]
   },
@@ -2922,18 +2927,14 @@
       "path": "export_regression.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c881c79e149193aa248a2ea023089d02a3c9e28c3e348593e0d124f868c3e34e",
-      "last_read_fingerprint": "c881c79e149193aa248a2ea023089d02a3c9e28c3e348593e0d124f868c3e34e",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "COV-01"
-      ],
+      "fingerprint": "6245bef4a61957b4c388c69cea4c0bd085ba324590ec5a75649abc9bc232c4cb",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified — TEST-EXPORT"
     },
     {
@@ -3181,18 +3182,14 @@
       "path": "tests-massive.html",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "4c360ba3172bf9f3fb9c04cb74ef200dd97b3af8f6645250a38792065780d083",
-      "last_read_fingerprint": "4c360ba3172bf9f3fb9c04cb74ef200dd97b3af8f6645250a38792065780d083",
-      "regression_cases": [
-        "COV-01"
-      ],
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
+      "fingerprint": "973e96536e6b0aff0bc64140bac7459b098c74ee38c13b57b782f664ee3cab0b",
+      "last_read_fingerprint": null,
+      "regression_cases": [],
+      "evidence": [],
       "issue": "V3 full audit verified — TEST-MASSIVE"
     },
     {
@@ -3960,18 +3957,14 @@
       "path": ".github/workflows/audit.yml",
       "layer": "ci",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "303415829727d7dcff5b7856e63e8863d09556d68dc1d47f5ffbf9322ff6a9a8",
-      "last_read_fingerprint": "303415829727d7dcff5b7856e63e8863d09556d68dc1d47f5ffbf9322ff6a9a8",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "COV-01"
-      ],
+      "fingerprint": "04b1709def79746d40ab531cc5694effb1d97414461317b790098be3e8d0bf33",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 167,
       "issue": "Audit issue #167"
     },
@@ -4000,18 +3993,14 @@
       "path": ".github/workflows/ci.yml",
       "layer": "ci",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "e14775d50854c86063686dcc75589f2d9b51bc10e7107b6bd5e1217ee6da0519",
-      "last_read_fingerprint": "e14775d50854c86063686dcc75589f2d9b51bc10e7107b6bd5e1217ee6da0519",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "COV-01"
-      ],
+      "fingerprint": "c5d0f2020877981bcf7b7a3d0948391243338225c20982ae19aaa398b56adf1a",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 167,
       "issue": "Audit issue #167"
     },
