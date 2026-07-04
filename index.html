@@ -8596,6 +8596,28 @@ function closeDiveProfilePresets() {
   document.getElementById('profilePresetModal').style.display = 'none';
 }
 
+function _presetPlannerMode(p) {
+  if (p.plannerMode === 'rec' || p.plannerMode === 'tec') return p.plannerMode;
+  return (p.gases && p.gases.gasMix != null) ? 'rec' : 'tec';
+}
+
+function _presetDepthM(p) {
+  if (Number.isFinite(p.depthM)) return p.depthM;
+  const savedUnits = p.unitsAtSave || p.units || units;
+  return displayDepthToM(p.depth, savedUnits);
+}
+
+function _presetDepthDisplay(p) {
+  return depthStampToSwitchDisplay(_presetDepthM(p), units);
+}
+
+function _ensurePresetPlannerMode(mode) {
+  const current = plannerAlgo === 'rec' ? 'rec' : 'tec';
+  if (current === mode) return;
+  if (mode === 'rec') setPlannerAlgo('rec');
+  else setPlannerAlgo(current === 'tec' ? plannerAlgo : 'ZHLC_GF');
+}
+
 function _renderProfilePresetModal() {
   const presets = getProfilePresets();
   const du = units === 'metric' ? 'm' : 'ft';
@@ -8609,15 +8631,20 @@ function _renderProfilePresetModal() {
     list.innerHTML = `<div style="color:var(--muted);text-align:center;padding:16px 0;font-size:12px;">No saved profiles yet. Enter depth &amp; BT and click Save.</div>`;
     return;
   }
-  list.innerHTML = presets.map((p, i) => `
+  list.innerHTML = presets.map((p, i) => {
+    const mode = _presetPlannerMode(p);
+    const modeLabel = mode === 'rec' ? 'REC' : 'TEC';
+    const depthDisp = _presetDepthDisplay(p);
+    return `
     <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;background:var(--bg-alt);">
       <div style="flex:1;min-width:0;">
         <div style="color:var(--text);font-weight:700;font-size:12px;">${escapeHtmlText(p.name)}</div>
-        <div style="color:var(--muted);font-size:10px;margin-top:1px;">${p.depth}${du} / ${p.bt}min${p.summary ? ' · ' + escapeHtmlText(p.summary) : ''}</div>
+        <div style="color:var(--muted);font-size:10px;margin-top:1px;">${modeLabel} · ${depthDisp}${du} / ${p.bt}min${p.summary ? ' · ' + escapeHtmlText(p.summary) : ''}</div>
       </div>
       <button onclick="loadProfilePreset(${i})" style="padding:5px 10px;background:var(--accent);border:none;border-radius:6px;color:#000;font-family:inherit;font-size:10px;font-weight:700;cursor:pointer;">Load</button>
       <button onclick="deleteProfilePreset(${i})" style="padding:5px 10px;background:none;border:1px solid var(--border);border-radius:6px;color:var(--red);font-family:inherit;font-size:10px;cursor:pointer;">Del</button>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 const _PROFILE_TEC_GAS_FIELDS = [
@@ -8662,15 +8689,26 @@ function _profileGasSummary(gases) {
 function saveNewProfilePreset() {
   const presets = getProfilePresets();
   if (presets.length >= LSP_PROFILE_PRESETS_MAX) return;
-  const depth = getPlannerInputEl('decoDepth')?.value || '?';
-  const bt    = getPlannerInputEl('decoBT')?.value || '?';
-  const du    = units === 'metric' ? 'm' : 'ft';
+  const depthM = domDepthToM('decoDepth');
+  const bt = parseInt(getPlannerInputEl('decoBT')?.value, 10) || 0;
+  const displayDepth = depthStampToSwitchDisplay(depthM, units);
+  const du = units === 'metric' ? 'm' : 'ft';
+  const plannerMode = plannerAlgo === 'rec' ? 'rec' : 'tec';
   const gases = _snapshotProfileGases();
-  const defName = `${depth}${du} / ${bt}min / ${_profileGasSummary(gases)}`;
+  const defName = `${displayDepth}${du} / ${bt}min / ${_profileGasSummary(gases)}`;
   const name = (window.prompt('Profile name:', defName) || '').trim();
   if (!name) return;
-  presets.push({ name, depth, bt, gases, summary: _profileGasSummary(gases),
-    travelActive: isTravelGasConfigured() });
+  presets.push({
+    name,
+    depthM,
+    bt,
+    plannerMode,
+    unitsAtSave: units,
+    depth: String(displayDepth),
+    gases,
+    summary: _profileGasSummary(gases),
+    travelActive: isTravelGasConfigured(),
+  });
   saveProfilePresets(presets);
   _renderProfilePresetModal();
   showToast('Dive profile saved', 'preset');
@@ -8679,22 +8717,27 @@ function saveNewProfilePreset() {
 function loadProfilePreset(idx) {
   const p = getProfilePresets()[idx];
   if (!p) return;
+  _ensurePresetPlannerMode(_presetPlannerMode(p));
+  const depthDisp = depthStampToSwitchDisplay(_presetDepthM(p), units);
   const dEl = getPlannerInputEl('decoDepth');
   const bEl = getPlannerInputEl('decoBT');
-  if (dEl) dEl.value = p.depth;
-  if (bEl) bEl.value = p.bt;
+  if (dEl) {
+    dEl.value = String(depthDisp);
+    syncDepthInputCanonical(dEl.id);
+  }
+  if (bEl && p.bt != null) bEl.value = String(p.bt);
   _syncRecDepthBtSteppers?.();
   _syncTecDepthBtSteppers?.();
   // Restore gas fields (older presets may not have gases)
   if (p.gases) {
-    const fields = p.gases.gasMix != null ? _PROFILE_REC_GAS_FIELDS : _PROFILE_TEC_GAS_FIELDS;
+    const fields = _presetPlannerMode(p) === 'rec' ? _PROFILE_REC_GAS_FIELDS : _PROFILE_TEC_GAS_FIELDS;
     fields.forEach(id => {
       if (p.gases[id] !== undefined) {
         const el = document.getElementById(id);
         if (el) el.value = p.gases[id];
       }
     });
-    if (p.gases.gasMix != null) {
+    if (_presetPlannerMode(p) === 'rec') {
       toggleCustomO2?.();
     } else {
       toggleDecoCustomO2?.('decoGas', 'decoCustomO2Field');
@@ -8708,8 +8751,8 @@ function loadProfilePreset(idx) {
       updateGasMODDisplays?.();
     }
   }
-  if (p.gases?.gasMix == null && (p.travelActive || (p.summary && /(?:^|\s)T:/.test(p.summary)))) addTravelGas();
-  else if (p.gases?.gasMix == null) removeTravelGas();
+  if (_presetPlannerMode(p) === 'tec' && (p.travelActive || (p.summary && /(?:^|\s)T:/.test(p.summary)))) addTravelGas();
+  else if (_presetPlannerMode(p) === 'tec') removeTravelGas();
   _syncDepthBtSteppers?.();
   updateCcrGasValidation?.();
   updateGasMODDisplays?.();

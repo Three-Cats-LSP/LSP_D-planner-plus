@@ -9,16 +9,16 @@
 
 | Layer | Total | Unread | In progress | Read | Verified |
 |---|---:|---:|---:|---:|---:|
-| build_config | 2 | 0 | 0 | 0 | 2 |
+| build_config | 2 | 0 | 1 | 0 | 1 |
 | ci | 6 | 0 | 2 | 0 | 4 |
 | deploy_config | 1 | 0 | 0 | 0 | 1 |
 | engine | 6 | 0 | 0 | 0 | 6 |
 | engine_reference | 1 | 0 | 0 | 0 | 1 |
-| native_android | 16 | 0 | 0 | 0 | 16 |
+| native_android | 16 | 0 | 1 | 0 | 15 |
 | native_bridge | 2 | 0 | 0 | 0 | 2 |
 | native_config | 1 | 0 | 0 | 0 | 1 |
 | pwa | 3 | 0 | 1 | 0 | 2 |
-| release_config | 1 | 0 | 0 | 0 | 1 |
+| release_config | 1 | 0 | 1 | 0 | 0 |
 | test_infrastructure | 39 | 0 | 8 | 0 | 31 |
 | tooling | 52 | 0 | 12 | 0 | 40 |
 | ui_core | 16 | 0 | 12 | 0 | 4 |
@@ -27,7 +27,7 @@
 | web_markup | 7 | 0 | 4 | 1 | 2 |
 | web_runtime | 24 | 0 | 13 | 0 | 11 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **185** | **0** | **54** | **1** | **130** |
+| **Total** | **185** | **0** | **57** | **1** | **127** |
 
 ## Units
 
@@ -53,10 +53,10 @@
 | UI-TOOLS-EXPOSURE | web_runtime | `index.html:7669` | 225 | P1 | IN_PROGRESS | - |
 | UI-TOOLS-GF | web_runtime | `index.html:7894` | 316 | P2 | IN_PROGRESS | - |
 | UI-SETTINGS | web_runtime | `index.html:8210` | 373 | P1 | IN_PROGRESS | - |
-| UI-PROFILE-PRESETS | web_runtime | `index.html:8583` | 394 | P2 | IN_PROGRESS | - |
-| UI-CONFIG-PRESETS | web_runtime | `index.html:8977` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
-| UI-APP-INIT | web_runtime | `index.html:9162` | 175 | P1 | VERIFIED | EXT-05, COV-01 |
-| UI-PWA-LIFECYCLE | pwa | `index.html:9337` | 99 | P1 | VERIFIED | REG-45, EXT-08, COV-01 |
+| UI-PROFILE-PRESETS | web_runtime | `index.html:8583` | 437 | P2 | IN_PROGRESS | - |
+| UI-CONFIG-PRESETS | web_runtime | `index.html:9020` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
+| UI-APP-INIT | web_runtime | `index.html:9205` | 175 | P1 | VERIFIED | EXT-05, COV-01 |
+| UI-PWA-LIFECYCLE | pwa | `index.html:9380` | 99 | P1 | VERIFIED | REG-45, EXT-08, COV-01 |
 | UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 454 | P2 | VERIFIED | EXT-03, EXT-06, COV-01 |
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 372 | P2 | VERIFIED | EXT-03, EXT-06, COV-01 |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 528 | P2 | VERIFIED | EXT-03, EXT-06, COV-01 |
@@ -97,15 +97,15 @@
 | APP-ZHL-WORKER | worker | `zhl-schedule-worker.js:1` | 23 | P1 | VERIFIED | REG-01, REG-02, REG-03, REG-05 |
 | APP-DOWNLOAD | web_runtime | `download.html:1` | 119 | P3 | VERIFIED | EXT-07, COV-01 |
 | APP-MANIFEST | pwa | `manifest.json:1` | 41 | P2 | VERIFIED | REG-45, EXT-08 |
-| APP-VERSION | release_config | `version.json:1` | 7 | P2 | VERIFIED | COV-01, EXT-07 |
+| APP-VERSION | release_config | `version.json:1` | 7 | P2 | IN_PROGRESS | - |
 | APP-CAPACITOR-CONFIG | native_config | `capacitor.config.json:1` | 14 | P1 | VERIFIED | ANDROID-01, COV-01 |
 | APP-CLOUDFLARE-CONFIG | deploy_config | `wrangler.jsonc:1` | 14 | P2 | VERIFIED | COV-01, EXT-07 |
-| APP-PACKAGE | build_config | `package.json:1` | 40 | P1 | VERIFIED | COV-01 |
+| APP-PACKAGE | build_config | `package.json:1` | 40 | P1 | IN_PROGRESS | - |
 | APP-NODE-VERSION | build_config | `.nvmrc:1` | 1 | P2 | VERIFIED | COV-01, EXT-07 |
 | NATIVE-MAIN-ACTIVITY | native_android | `android/app/src/main/java/com/threecats/lsp/dplannerplus/MainActivity.java:1` | 61 | P1 | VERIFIED | ANDROID-01, COV-01 |
 | NATIVE-MANIFEST | native_android | `android/app/src/main/AndroidManifest.xml:1` | 50 | P1 | VERIFIED | ANDROID-01, COV-01 |
 | NATIVE-BUILD-ROOT | native_android | `android/build.gradle:1` | 29 | P2 | VERIFIED | ANDROID-01, COV-01 |
-| NATIVE-BUILD-APP | native_android | `android/app/build.gradle:1` | 82 | P1 | VERIFIED | ANDROID-01, COV-01 |
+| NATIVE-BUILD-APP | native_android | `android/app/build.gradle:1` | 82 | P1 | IN_PROGRESS | - |
 | NATIVE-SETTINGS | native_android | `android/settings.gradle:1` | 5 | P2 | VERIFIED | ANDROID-01, COV-01 |
 | NATIVE-VARIABLES | native_android | `android/variables.gradle:1` | 16 | P2 | VERIFIED | ANDROID-01, COV-01 |
 | NATIVE-LAYOUT | native_android | `android/app/src/main/res/layout/activity_main.xml:1` | 12 | P2 | VERIFIED | ANDROID-01, COV-01 |

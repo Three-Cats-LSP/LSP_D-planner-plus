@@ -1819,7 +1819,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PROFILE-PRESETS"
       },
-      "fingerprint": "10d92e1005e32f5a168d046d82d94d68666e8e9a440e30ccdfb896f0524193f9",
+      "fingerprint": "64e03013d5ec99e4c1d52e0ff91914a2f88ab8982fbc725dc4fef428c0d4ed15",
       "last_read_fingerprint": null,
       "audit_issue": 159,
       "evidence": [],
@@ -2302,20 +2302,14 @@
       "path": "version.json",
       "layer": "release_config",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "98d4150db2c8ec46c22c6795b430229c0ab87e1ba85a7b58268a0e1d43fb1d66",
-      "last_read_fingerprint": "98d4150db2c8ec46c22c6795b430229c0ab87e1ba85a7b58268a0e1d43fb1d66",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-UI-STRUCTURE/UI-PAGES-ASSETS"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "EXT-07"
-      ],
+      "fingerprint": "f5aa225c177dec7caae1c5106afa260e74002cb5500a06dee6bb0bfdd0385e3f",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified — APP-VERSION"
     },
     {
@@ -2365,18 +2359,14 @@
       "path": "package.json",
       "layer": "build_config",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "366a17b3b8d2f51e7f63b127f17ebcdd3f8bea2c5ca6425efd395bb016118957",
-      "last_read_fingerprint": "366a17b3b8d2f51e7f63b127f17ebcdd3f8bea2c5ca6425efd395bb016118957",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "COV-01"
-      ],
+      "fingerprint": "81f6212de85a99a0be536a081b59eaa14a19c2203c69e105d7c8123400517028",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 167,
       "issue": "Audit issue #167"
     },
@@ -2470,21 +2460,15 @@
       "path": "android/app/build.gradle",
       "layer": "native_android",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "4d5a3649e7d6431fa81d4bcaee29f9000f9eefea7316ee445033ddcba06f0b18",
-      "last_read_fingerprint": "4d5a3649e7d6431fa81d4bcaee29f9000f9eefea7316ee445033ddcba06f0b18",
+      "fingerprint": "1e8658512328d9233db57e90da4d9a860a0c32b534bdafa9f3bdd9b7b5ba8e82",
+      "last_read_fingerprint": null,
       "audit_issue": 168,
-      "evidence": [
-        "SUITE-ANDROID/android-compile",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "ANDROID-01",
-        "COV-01"
-      ],
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Audit issue #168"
     },
     {
@@ -4952,7 +4936,7 @@
     },
     {
       "cycle": 27,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 622,
       "application_units": [
         "UI-PROFILE-PRESETS",
         "UI-CONFIG-PRESETS"

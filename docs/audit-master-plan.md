@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v3-full-reset`
-**Units:** 185 total; 0 unread; 54 in progress; 1 read; 130 verified.
+**Units:** 185 total; 0 unread; 57 in progress; 1 read; 127 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -56,7 +56,7 @@
 | 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 674 | - | Algorithm and settings controls READ |
 | 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1280 | - | Settings persistence and unit helpers READ |
 | 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 851 | - | Tools panels READ |
-| 27 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 579 | - | Profile and config presets READ |
+| 27 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 622 | - | Profile and config presets READ |
 | 28 | UI-BOOT | 2418 | - | index.html shell boot region READ |
 | 29 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 440 | - | PWA and service worker READ |
 | 30 | APP-ZHL-WORKER, APP-ZHL-WORKER-BRIDGE | 159 | - | ZHL schedule worker and bridge READ |
