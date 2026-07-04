@@ -1,11 +1,11 @@
 {
-  "schema_version": 2,
+  "schema_version": 4,
   "cycle": 3,
   "target_branch": "dev",
-  "baseline_commit": "6e987af4cd66d8679cc63c5cc2dc371421ae8caa",
+  "baseline_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
   "audit_commit": "e07ab49cf5c28a9b99c00eb12d3538acec568728",
-  "verified_source_commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
-  "verification_status": "BLOCKED",
+  "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+  "verification_status": "PASSED",
   "parts": [
     {
       "id": "UI-MARKUP-CONSUMPTION-P01",
@@ -162,7 +162,7 @@
       "observable_contract": "Knowledge Base safety guidance does not call an exposure-changing action universally safe.",
       "status": "CLOSED",
       "regression_ids": [
-        "REG-64"
+        "SL-C03-BEST-MIX-DEPTH-UNITS"
       ],
       "evidence_ids": [
         "ER-03-PRE-FIX",
@@ -188,8 +188,7 @@
       "observable_contract": "Unit changes preserve exact physical depth through the consumer and regression execution leaves all UI state unchanged.",
       "status": "CLOSED",
       "regression_ids": [
-        "SL-C03-PHYSICAL-DEPTH-TRACE",
-        "SL-C03-REGRESSION-STATE-IMMUTABLE"
+        "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH"
       ],
       "evidence_ids": [
         "ER-03-PRE-FIX",
@@ -229,13 +228,19 @@
         "SL-C03-CNS-DEPTH-UNITS"
       ],
       "observable_assertions": [
-        "2 failed at audit commit e07ab49 with pre-fix index.html"
+        "166 passed, 2 failed at b100d961 before cycle-3 state-restoration fixes"
       ],
       "state_restored": true,
-      "command": "git checkout e07ab49 -- index.html ui/markup-consumption.html && python dev/engine_regression.py",
+      "command": "python dev/engine_regression.py",
       "exit_code": 1,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
-      "worktree_clean": true
+      "commit": "b100d961377961a9b0dac22e372905c0a76f0044",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-ER-03-PRE-FIX.json",
+      "receipt_sha256": "d94ca9875496fb486bdbf5252f465389d5ba33baa5d7ab310d59486026225495"
     },
     {
       "id": "ER-03-POST-BESTMIX",
@@ -249,7 +254,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C03-BEST-MIX-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "unitsSelect change from metric to imperial",
@@ -283,8 +288,17 @@
         ],
         "trace_id": "SL-C03-BEST-MIX-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "e52b67d47ac2d53813c9e91045d1c726b997060a29300819f89b6ab0d58873c9"
-      }
+        "artifact_sha256": "0e31b22213aa12ae9ac1a66c8c7ddbbd13230996b183dbb3a2b2bc38f6e7253e",
+        "spec_path": "docs/seven-lens-traces/cycle-03-consumption.json",
+        "spec_sha256": "479e1ceeaddd2d151fe3d87904fc3cebdb4e90b3d78c576ac9dfc5344d45c5ce"
+      },
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C03-BEST-MIX-DEPTH-UNITS"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-ER-03-POST-BESTMIX.json",
+      "receipt_sha256": "eea236c9953d10d6f5d56bda7de69bd2d89793fc2258d043076a694cc9320c71"
     },
     {
       "id": "ER-03-POST-CNS",
@@ -298,7 +312,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C03-CNS-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "unitsSelect metric to imperial to metric round trip",
@@ -332,22 +346,31 @@
         ],
         "trace_id": "SL-C03-CNS-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "e52b67d47ac2d53813c9e91045d1c726b997060a29300819f89b6ab0d58873c9"
-      }
+        "artifact_sha256": "0e31b22213aa12ae9ac1a66c8c7ddbbd13230996b183dbb3a2b2bc38f6e7253e",
+        "spec_path": "docs/seven-lens-traces/cycle-03-consumption.json",
+        "spec_sha256": "479e1ceeaddd2d151fe3d87904fc3cebdb4e90b3d78c576ac9dfc5344d45c5ce"
+      },
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C03-CNS-DEPTH-UNITS"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-ER-03-POST-CNS.json",
+      "receipt_sha256": "63ff74c46e62b227309e24f272b83e2efb5d38cf790e9726e96fd55f09f4b26e"
     },
     {
       "id": "ER-03-POST-SAFETY",
       "kind": "post_fix",
       "case_ids": [
-        "REG-64"
+        "SL-C03-BEST-MIX-DEPTH-UNITS"
       ],
       "observable_assertions": [
         "Knowledge Base no longer claims unconditional shallow-stop safety"
       ],
       "state_restored": false,
-      "command": "python -m tools.audit check --profile static",
+      "command": "python tools/assemble_ui_html.py --verify",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "unitsSelect change from metric to imperial",
@@ -381,13 +404,23 @@
         ],
         "trace_id": "SL-C03-BEST-MIX-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "e52b67d47ac2d53813c9e91045d1c726b997060a29300819f89b6ab0d58873c9"
-      }
+        "artifact_sha256": "0e31b22213aa12ae9ac1a66c8c7ddbbd13230996b183dbb3a2b2bc38f6e7253e",
+        "spec_path": "docs/seven-lens-traces/cycle-03-consumption.json",
+        "spec_sha256": "479e1ceeaddd2d151fe3d87904fc3cebdb4e90b3d78c576ac9dfc5344d45c5ce"
+      },
+      "command_argv": [
+        "python",
+        "tools/assemble_ui_html.py",
+        "--verify"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-ER-03-POST-SAFETY.json",
+      "receipt_sha256": "2c60bbc077937d9d6a4c710d35cc4c72ac9d208891deb2b98e96dfa83c87a5b8"
     },
     {
       "id": "ER-03-POST-PHYSICAL",
       "kind": "post_fix",
       "case_ids": [
+        "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
         "SL-C03-PHYSICAL-DEPTH-TRACE",
         "SL-C03-REGRESSION-STATE-IMMUTABLE"
       ],
@@ -397,7 +430,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C03-PHYSICAL-DEPTH-TRACE SL-C03-REGRESSION-STATE-IMMUTABLE",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "User switches to imperial units, edits Best Mix depth, and returns to metric.",
@@ -426,9 +459,19 @@
           }
         ],
         "trace_id": "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
+        "spec_path": "docs/seven-lens-traces/cycle-03-consumption.json",
+        "spec_sha256": "479e1ceeaddd2d151fe3d87904fc3cebdb4e90b3d78c576ac9dfc5344d45c5ce",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "e52b67d47ac2d53813c9e91045d1c726b997060a29300819f89b6ab0d58873c9"
-      }
+        "artifact_sha256": "0e31b22213aa12ae9ac1a66c8c7ddbbd13230996b183dbb3a2b2bc38f6e7253e"
+      },
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C03-PHYSICAL-DEPTH-TRACE",
+        "SL-C03-REGRESSION-STATE-IMMUTABLE"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-ER-03-POST-PHYSICAL.json",
+      "receipt_sha256": "5acf9170b37858bab965bd3b1bf329cd9909adb104753831651435fe13a32c4b"
     },
     {
       "id": "ER-03-RESTORE-BESTMIX",
@@ -442,10 +485,17 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C03-BEST-MIX-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "state_before_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34",
-      "state_after_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34"
+      "state_after_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34",
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C03-BEST-MIX-DEPTH-UNITS"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-ER-03-RESTORE-BESTMIX.json",
+      "receipt_sha256": "8931cae3970c9c0f4fb367c81469dd97b158245fa96d8fc7eb338ae159415388"
     },
     {
       "id": "ER-03-RESTORE-CNS",
@@ -459,27 +509,41 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C03-CNS-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "state_before_sha256": "05a01c89e4d995ec0e84dd8c282be8b15d77ca6d9ae620f662b49bb83bf558dd",
-      "state_after_sha256": "05a01c89e4d995ec0e84dd8c282be8b15d77ca6d9ae620f662b49bb83bf558dd"
+      "state_after_sha256": "05a01c89e4d995ec0e84dd8c282be8b15d77ca6d9ae620f662b49bb83bf558dd",
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C03-CNS-DEPTH-UNITS"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-ER-03-RESTORE-CNS.json",
+      "receipt_sha256": "5b4e62a9f2ed9a17e360643d70ef9473b98e3fe52f98d2dee633ea8f67e0a2dc"
     },
     {
       "id": "ER-03-RESTORE-SAFETY",
       "kind": "state_restoration",
       "case_ids": [
-        "REG-64"
+        "SL-C03-BEST-MIX-DEPTH-UNITS"
       ],
       "observable_assertions": [
         "static gate leaves markup unchanged"
       ],
       "state_restored": true,
-      "command": "python -m tools.audit check --profile static",
+      "command": "python tools/assemble_ui_html.py --verify",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "state_before_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34",
-      "state_after_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34"
+      "state_after_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34",
+      "command_argv": [
+        "python",
+        "tools/assemble_ui_html.py",
+        "--verify"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-ER-03-RESTORE-SAFETY.json",
+      "receipt_sha256": "b7c1f246271f309abc1ebcb822bb0210e2638117b9dda833c427c73329904239"
     },
     {
       "id": "ER-03-RESTORE-PHYSICAL",
@@ -494,10 +558,18 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C03-PHYSICAL-DEPTH-TRACE SL-C03-REGRESSION-STATE-IMMUTABLE",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "state_before_sha256": "32d9b547d41edc711c56883e98b96ef643eeef816b94dce2d7f5f19c9f84af0a",
-      "state_after_sha256": "32d9b547d41edc711c56883e98b96ef643eeef816b94dce2d7f5f19c9f84af0a"
+      "state_after_sha256": "32d9b547d41edc711c56883e98b96ef643eeef816b94dce2d7f5f19c9f84af0a",
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C03-PHYSICAL-DEPTH-TRACE",
+        "SL-C03-REGRESSION-STATE-IMMUTABLE"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-ER-03-RESTORE-PHYSICAL.json",
+      "receipt_sha256": "7b661a17eee047bb27fc1453bd9c5498f700ccf22f74696d9eb08bf0d5a11eaa"
     },
     {
       "id": "static",
@@ -507,10 +579,17 @@
         "static gate PASS"
       ],
       "state_restored": true,
-      "command": "python -m tools.audit check --profile static",
+      "command": "python tools/assemble_ui_html.py --verify",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
-      "worktree_clean": true
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/assemble_ui_html.py",
+        "--verify"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-static.json",
+      "receipt_sha256": "cfc038bd2893c0f0928d2373452c56f321158b9872ef3c2fc37cedccefc37ce9"
     },
     {
       "id": "ci",
@@ -520,10 +599,16 @@
         "ci gate PASS"
       ],
       "state_restored": true,
-      "command": "python -m tools.audit run --profile ci",
+      "command": "python dev/engine_regression.py",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
-      "worktree_clean": true
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c03-ci.json",
+      "receipt_sha256": "871375a33555d2db5900654c61030238b38d942713ed6857e5365d320bfc930e"
     }
   ],
   "changed_paths": [
@@ -534,7 +619,159 @@
   ],
   "audit_report": "docs/seven-lens-reports/cycle-03-consumption.md",
   "notes": "Closure evidence materialized at d956648 with schema-v2 browser traces and regression gates.",
-  "integration_base_commit": "6e987af4cd66d8679cc63c5cc2dc371421ae8caa",
-  "baseline_registry_fingerprint": "c3d0c739574ab46910765882f5b112304acb50c441e2cc96f75a3608805c843b",
-  "baseline_findings": []
+  "integration_base_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+  "baseline_registry_fingerprint": "d40e000bc622879e963d120917c26893abeb8d9e69fc7ee64110115c38010463",
+  "baseline_findings": [
+    {
+      "id": "SL-C02-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes."
+    },
+    {
+      "id": "SL-C02-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Travel manual depth limits disagree between markup, metric restore, and imperial mode."
+    },
+    {
+      "id": "SL-C02-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Rounded display values become canonical physical inputs; Best Mix and CNS now reproduce the same unit-roundtrip drift."
+    },
+    {
+      "id": "SL-C02-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Min-deco regression checks an adapter property rather than observable schedule behavior."
+    },
+    {
+      "id": "SL-C02-M-06",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle history allowed unresolved findings and a blocked prior record to be deleted or rewritten as passed."
+    },
+    {
+      "id": "SL-C03-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits."
+    },
+    {
+      "id": "SL-C03-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle 3 regressions compare rounded outputs and restore values before units, masking physical-depth drift and corrupting test state."
+    },
+    {
+      "id": "SL-C03-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling."
+    },
+    {
+      "id": "SL-C04-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Depth and cylinder edits after a unit switch leave canonical data-depth-m/data-volume-l stale, so consumers use old values and the next switch discards the edit."
+    },
+    {
+      "id": "SL-C04-H-03",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Cycles 2-4 are marked reviewed although their protocol records fail closure and Cycle 4 has no evidence runs for five closed findings."
+    },
+    {
+      "id": "SL-C04-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle regression setup leaks canonical DOM and settings state, making the full engine suite order-dependent and leaving two contingency cases failing."
+    },
+    {
+      "id": "SL-C04-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Browser trace evidence could pass forced or vacuous single-run checks without proving a real interactive consumer path."
+    },
+    {
+      "id": "SL-C04-H-04",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Closure evidence was materialized from constants instead of executed commands, allowing fabricated exit codes, cleanliness claims, and unrelated trace reuse."
+    },
+    {
+      "id": "SL-C04-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "A dynamic deco cylinder created in imperial mode defaults to 0.4 ft3 while retaining min 1 and step 0.5, making its initial value invalid."
+    },
+    {
+      "id": "SL-C04-H-05",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "planPanelTecSection is nested inside an unclosed planPanelRecSection, leaving gas and technical planner controls hidden in every planner mode."
+    },
+    {
+      "id": "ISSUE-133-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 4C/5H/8M/8L remediated; gated in audit.py issue133 block and engine_regression issue133 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-134-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 1C/4H/7M/7L remediated; gated in audit.py issue134 block and engine_regression issue134 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-135-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 10H/10M/1L remediated; gated in audit.py issue135 block and engine_regression issue135 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-136-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "extract_ui_cores.py uses LSP-EXTRACT marker contract; verified by audit.py and tools/extract_ui_cores.py [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-137-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in 51f95ac; gated in audit.py and engine_regression issue137 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-138-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in fcfb6c4 (v2.53.04); gated in audit.py and engine_regression issue138 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-139-ROLLUP",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "All 3L fixed; #138 40/40 re-verified on 1271d1a; gated in audit.py and engine_regression issue139 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-140-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Surface interval gas/GF kinetics, pooled gas-plan turn pressure, audit case-ID validation, SW cache waitUntil, Android compile gate, coverage self-tests, FileProvider scope, workspace hash drift"
+    },
+    {
+      "id": "ISSUE-141-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "pSCR diluent bypass from computePSCRFractions, resolveCcrSacForGas removed, invalid trimix getN2Frac returns null"
+    },
+    {
+      "id": "REGRESSION-GF-CCR-FIX",
+      "severity": "CRITICAL",
+      "status": "CLOSED",
+      "summary": "GF pre-anchor and CCR endpoint corrected; verification requires REG-06 and REG-07 in the current release run"
+    }
+  ],
+  "record_path": "docs/seven-lens-records/cycle-03-consumption.json"
 }

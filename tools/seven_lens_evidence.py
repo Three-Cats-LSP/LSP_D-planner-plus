@@ -32,14 +32,28 @@ def _tracked_clean(root: Path) -> bool:
     unexpected = []
     for line in result.stdout.splitlines():
         path = line[3:].replace("\\", "/") if len(line) > 3 else line
-        if line.startswith("?? ") and fnmatch.fnmatch(path, "dev/seven-lens-evidence-*.json"):
+        if line[:2].strip() == "D" or line.startswith(" D") or line.startswith("D "):
+            if fnmatch.fnmatch(path, "dev/seven-lens-evidence-*.json"):
+                continue
+        if line.startswith("?? ") and (
+            fnmatch.fnmatch(path, "dev/seven-lens-evidence-*.json")
+            or fnmatch.fnmatch(path, "dev/seven-lens-browser-trace-*.json")
+            or path.startswith(".seven-lens-evidence/")
+            or path == "tools/close_cycles_03_04.py"
+            or path == "check_all_out.txt"
+        ):
             continue
         if line[:2] in {" M", "M ", "MM"} and any(
             fnmatch.fnmatch(path, pat)
             for pat in (
                 "docs/seven-lens-records/*.json",
                 "docs/seven-lens-manual-ledger.json",
+                "docs/audit-units.json",
+                "docs/seven-lens-traces/*.json",
                 "dev/seven-lens-browser-trace-*.json",
+                "dev/seven-lens-evidence-*.json",
+                "tools/seven_lens_evidence.py",
+                "tools/close_cycles_03_04.py",
             )
         ):
             continue

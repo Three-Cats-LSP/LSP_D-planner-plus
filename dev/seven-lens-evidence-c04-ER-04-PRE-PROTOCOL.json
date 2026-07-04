@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ER-04-PRE-PROTOCOL",
+  "command_argv": [
+    "python",
+    "tools/seven_lens_protocol.py",
+    "check",
+    "--phase",
+    "close",
+    "--record",
+    "docs/seven-lens-records/cycle-04-tools-modals.json"
+  ],
+  "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+  "exit_code": 1,
+  "case_ids": [
+    "TOOL-SEVEN-LENS-CHECK-ALL"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-04T08:46:35.560290+00:00",
+  "finished_at": "2026-07-04T08:46:43.218819+00:00",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "5c98a95d3eb23731847f2d5318f9ebef7c2f20b41be34fb7e20c6e1f15384645",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
+}

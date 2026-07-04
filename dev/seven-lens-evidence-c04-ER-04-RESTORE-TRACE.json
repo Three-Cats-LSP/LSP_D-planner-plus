@@ -1,24 +1,23 @@
 {
   "schema_version": 1,
-  "evidence_id": "ER-2C-TRACE",
+  "evidence_id": "ER-04-RESTORE-TRACE",
   "command_argv": [
     "python",
     "tools/seven_lens_browser_trace.py",
     "--spec",
-    "docs/seven-lens-traces/cycle-02-mode-isolation.json",
-    "--output",
-    "dev/seven-lens-browser-trace-2c.json"
+    "docs/seven-lens-traces/cycle-03-consumption.json"
   ],
   "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
   "exit_code": 0,
   "case_ids": [
-    "SL-MODE-REC-TEC-ISOLATION"
+    "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
+    "SL-C03-CNS-EDIT-AFTER-SWITCH"
   ],
   "worktree_clean_before": true,
   "worktree_clean_after": true,
-  "started_at": "2026-07-04T08:31:31.485879+00:00",
-  "finished_at": "2026-07-04T08:31:43.035411+00:00",
-  "stdout_sha256": "127df023910b8588409e953ec782f52601cb2346f85d1446435b4147ba7f0044",
+  "started_at": "2026-07-04T08:48:28.758622+00:00",
+  "finished_at": "2026-07-04T08:48:57.735965+00:00",
+  "stdout_sha256": "ef9eafda9897f1d47036e00cc84f3cb457bd8b30431f0b2e4e0bb149383e3956",
   "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
 }

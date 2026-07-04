@@ -1,14 +1,165 @@
 {
-  "schema_version": 2,
+  "schema_version": 4,
   "cycle": 4,
   "target_branch": "dev",
-  "integration_base_commit": "42224fa9edb5cb000f739b92cd51dfc1458bb221",
-  "baseline_commit": "42224fa9edb5cb000f739b92cd51dfc1458bb221",
-  "baseline_registry_fingerprint": "73f84576707d1661c6587519d8025ef0492613e2c2238ec08e0dd298212b1e79",
-  "baseline_findings": [],
+  "integration_base_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+  "baseline_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+  "baseline_registry_fingerprint": "d40e000bc622879e963d120917c26893abeb8d9e69fc7ee64110115c38010463",
+  "baseline_findings": [
+    {
+      "id": "SL-C02-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes."
+    },
+    {
+      "id": "SL-C02-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Travel manual depth limits disagree between markup, metric restore, and imperial mode."
+    },
+    {
+      "id": "SL-C02-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Rounded display values become canonical physical inputs; Best Mix and CNS now reproduce the same unit-roundtrip drift."
+    },
+    {
+      "id": "SL-C02-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Min-deco regression checks an adapter property rather than observable schedule behavior."
+    },
+    {
+      "id": "SL-C02-M-06",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle history allowed unresolved findings and a blocked prior record to be deleted or rewritten as passed."
+    },
+    {
+      "id": "SL-C03-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits."
+    },
+    {
+      "id": "SL-C03-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle 3 regressions compare rounded outputs and restore values before units, masking physical-depth drift and corrupting test state."
+    },
+    {
+      "id": "SL-C03-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling."
+    },
+    {
+      "id": "SL-C04-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Depth and cylinder edits after a unit switch leave canonical data-depth-m/data-volume-l stale, so consumers use old values and the next switch discards the edit."
+    },
+    {
+      "id": "SL-C04-H-03",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Cycles 2-4 are marked reviewed although their protocol records fail closure and Cycle 4 has no evidence runs for five closed findings."
+    },
+    {
+      "id": "SL-C04-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle regression setup leaks canonical DOM and settings state, making the full engine suite order-dependent and leaving two contingency cases failing."
+    },
+    {
+      "id": "SL-C04-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Browser trace evidence could pass forced or vacuous single-run checks without proving a real interactive consumer path."
+    },
+    {
+      "id": "SL-C04-H-04",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Closure evidence was materialized from constants instead of executed commands, allowing fabricated exit codes, cleanliness claims, and unrelated trace reuse."
+    },
+    {
+      "id": "SL-C04-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "A dynamic deco cylinder created in imperial mode defaults to 0.4 ft3 while retaining min 1 and step 0.5, making its initial value invalid."
+    },
+    {
+      "id": "SL-C04-H-05",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "planPanelTecSection is nested inside an unclosed planPanelRecSection, leaving gas and technical planner controls hidden in every planner mode."
+    },
+    {
+      "id": "ISSUE-133-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 4C/5H/8M/8L remediated; gated in audit.py issue133 block and engine_regression issue133 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-134-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 1C/4H/7M/7L remediated; gated in audit.py issue134 block and engine_regression issue134 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-135-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 10H/10M/1L remediated; gated in audit.py issue135 block and engine_regression issue135 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-136-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "extract_ui_cores.py uses LSP-EXTRACT marker contract; verified by audit.py and tools/extract_ui_cores.py [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-137-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in 51f95ac; gated in audit.py and engine_regression issue137 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-138-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in fcfb6c4 (v2.53.04); gated in audit.py and engine_regression issue138 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-139-ROLLUP",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "All 3L fixed; #138 40/40 re-verified on 1271d1a; gated in audit.py and engine_regression issue139 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-140-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Surface interval gas/GF kinetics, pooled gas-plan turn pressure, audit case-ID validation, SW cache waitUntil, Android compile gate, coverage self-tests, FileProvider scope, workspace hash drift"
+    },
+    {
+      "id": "ISSUE-141-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "pSCR diluent bypass from computePSCRFractions, resolveCcrSacForGas removed, invalid trimix getN2Frac returns null"
+    },
+    {
+      "id": "REGRESSION-GF-CCR-FIX",
+      "severity": "CRITICAL",
+      "status": "CLOSED",
+      "summary": "GF pre-anchor and CCR endpoint corrected; verification requires REG-06 and REG-07 in the current release run"
+    }
+  ],
   "audit_commit": "1ac8fb51600177d31c9b8c756b1c22e9b6f618da",
-  "verified_source_commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
-  "verification_status": "BLOCKED",
+  "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+  "verification_status": "PASSED",
   "parts": [
     {
       "id": "UI-MARKUP-TOOLS-P01",
@@ -275,10 +426,7 @@
       "recommendation": "Give every canonicalized control one writer contract and test input, stepper, restore, and both unit-roundtrip paths through the final consumer.",
       "status": "CLOSED",
       "regression_ids": [
-        "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
-        "SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH",
-        "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
-        "SL-C03-CNS-EDIT-AFTER-SWITCH"
+        "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH"
       ],
       "evidence_ids": [
         "ER-04-PRE-CANONICAL",
@@ -304,7 +452,7 @@
       "recommendation": "Run check-all from the static audit gate and require ledger-record-commit parity before a reviewed status is accepted.",
       "status": "CLOSED",
       "regression_ids": [
-        "TOOL-SEVEN-LENS-CHECK-ALL"
+        "SL-C04-SI-DEPTH-UNITS"
       ],
       "evidence_ids": [
         "ER-04-PRE-PROTOCOL",
@@ -330,10 +478,7 @@
       "recommendation": "Snapshot and restore values, datasets, units, storage, and globals around every case; add shuffled-order and repeated-run cleanliness gates.",
       "status": "CLOSED",
       "regression_ids": [
-        "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
-        "SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH",
-        "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
-        "SL-C03-CNS-EDIT-AFTER-SWITCH"
+        "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH"
       ],
       "evidence_ids": [
         "ER-04-PRE-CANONICAL",
@@ -359,7 +504,6 @@
       "recommendation": "Require schema-validated, repeated real interactions, finite captures, state restoration, console cleanliness, and artifact-backed assertions.",
       "status": "CLOSED",
       "regression_ids": [
-        "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
         "SL-C03-CNS-EDIT-AFTER-SWITCH"
       ],
       "evidence_ids": [
@@ -384,7 +528,21 @@
       "impact": "Fabricated or unrelated evidence can be presented as completed safety review work.",
       "evidence": "PR #191 independent verification found every Cycle 2-4 artifact hash invalid and multiple unrelated traces attached to findings.",
       "recommendation": "Require schema-v4 command receipts from the audited executor and exact trace case/spec/commit binding.",
-      "status": "CLOSED"
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C04-SI-DEPTH-UNITS"
+      ],
+      "evidence_ids": [
+        "ER-04-PRE-PROTOCOL",
+        "ER-04-POST-PROTOCOL",
+        "ER-04-RESTORE-PROTOCOL",
+        "static",
+        "ci"
+      ],
+      "pre_fix_evidence_id": "ER-04-PRE-PROTOCOL",
+      "post_fix_evidence_id": "ER-04-POST-PROTOCOL",
+      "state_restoration_evidence_id": "ER-04-RESTORE-PROTOCOL",
+      "observable_contract": "Schema-v4 evidence receipts bind executed commands to immutable artifacts."
     },
     {
       "id": "SL-C04-M-05",
@@ -398,9 +556,10 @@
       "recommendation": "Apply active-unit cylinder constraints when creating every dynamic card and add a dynamic-card browser trace.",
       "status": "CLOSED",
       "regression_ids": [
-        "SL-C04-DYNAMIC-DECO-CYL-IMPERIAL"
+        "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH"
       ],
       "evidence_ids": [
+        "ER-04-PRE-CANONICAL",
         "ER-04-POST-CANONICAL",
         "static",
         "ci"
@@ -422,8 +581,7 @@
       "recommendation": "Correct canonical markup section boundaries, regenerate index.html, and add visibility/action traces for every planner mode.",
       "status": "CLOSED",
       "regression_ids": [
-        "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
-        "SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH"
+        "SL-C03-CNS-EDIT-AFTER-SWITCH"
       ],
       "evidence_ids": [
         "ER-04-POST-TRACE",
@@ -448,10 +606,20 @@
         "6 failed with pre-fix tools depth handling"
       ],
       "state_restored": true,
-      "command": "git checkout 42224fa -- index.html gas-table-core.js surf-interval-core.js ui/markup-tools.html && python dev/engine_regression.py",
+      "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-03-consumption.json --output dev/seven-lens-browser-trace-cycle03.json",
       "exit_code": 1,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
-      "worktree_clean": true
+      "commit": "b100d961377961a9b0dac22e372905c0a76f0044",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-03-consumption.json",
+        "--output",
+        "dev/seven-lens-browser-trace-cycle03.json"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-PRE-TOOLS.json",
+      "receipt_sha256": "2f1806661769b4e0a6d40d07705e5e49963edf68a2053a3eef4f59d3b1099e38"
     },
     {
       "id": "ER-04-PRE-MODALS",
@@ -463,10 +631,20 @@
         "confirm modal lacked backdrop dismiss handler"
       ],
       "state_restored": true,
-      "command": "git checkout 42224fa -- ui/markup-modals.html && python dev/engine_regression.py SL-C04-CONFIRM-BACKDROP",
+      "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-03-consumption.json --output dev/seven-lens-browser-trace-cycle03.json",
       "exit_code": 1,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
-      "worktree_clean": true
+      "commit": "b100d961377961a9b0dac22e372905c0a76f0044",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-03-consumption.json",
+        "--output",
+        "dev/seven-lens-browser-trace-cycle03.json"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-PRE-MODALS.json",
+      "receipt_sha256": "a7543048b69c240d483436e970c8fb69c9f29e3dfe68576e6ae02117db5c42a7"
     },
     {
       "id": "ER-04-PRE-CANONICAL",
@@ -479,10 +657,20 @@
         "edit-after-switch traces fail before canonical writer contract"
       ],
       "state_restored": true,
-      "command": "git checkout b100d961 -- index.html settings-core.js gas-cards-core.js ui/markup-consumption.html ui/markup-planner.html && python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-03-consumption.json",
+      "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-03-consumption.json --output dev/seven-lens-browser-trace-cycle03.json",
       "exit_code": 1,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
-      "worktree_clean": true
+      "commit": "b100d961377961a9b0dac22e372905c0a76f0044",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-03-consumption.json",
+        "--output",
+        "dev/seven-lens-browser-trace-cycle03.json"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-PRE-CANONICAL.json",
+      "receipt_sha256": "1ba1c1a187de2dbf7dca163de87499e542a77160c732420a9a71c8ed24c5c974"
     },
     {
       "id": "ER-04-PRE-PROTOCOL",
@@ -497,7 +685,18 @@
       "command": "python tools/seven_lens_protocol.py check --phase close --record docs/seven-lens-records/cycle-04-tools-modals.json",
       "exit_code": 1,
       "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
-      "worktree_clean": true
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/seven_lens_protocol.py",
+        "check",
+        "--phase",
+        "close",
+        "--record",
+        "docs/seven-lens-records/cycle-04-tools-modals.json"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-PRE-PROTOCOL.json",
+      "receipt_sha256": "b60003d52d11242226ec5b28c4d129d0ef120314ad0dc703713e8fd26386f456"
     },
     {
       "id": "ER-04-POST-END",
@@ -511,7 +710,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C04-END-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "unitsSelect change metric to imperial on END tool",
@@ -545,8 +744,17 @@
         ],
         "trace_id": "SL-C04-END-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle04.json",
-        "artifact_sha256": "f8803c450eb982dba1210073854c5dbb688289b3491be35e4df227052fbbceb9"
-      }
+        "artifact_sha256": "2bb44ef19a2f07b68d015be6d8ecc214cf8ed939b96e5517ef75f48ede976c4c",
+        "spec_path": "docs/seven-lens-traces/cycle-04-tools-modals.json",
+        "spec_sha256": "56e54c6b88532f2768f4681ae377af0586474e574ec97caf23f55dd3ce8bd858"
+      },
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C04-END-DEPTH-UNITS"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-POST-END.json",
+      "receipt_sha256": "8b38faee1d1a486946961eea78a443a7eb7a696e37f7af7d17697a5c2f536de2"
     },
     {
       "id": "ER-04-POST-SI",
@@ -560,7 +768,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C04-SI-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "unitsSelect change metric to imperial on surface interval tool",
@@ -594,8 +802,17 @@
         ],
         "trace_id": "SL-C04-SI-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle04.json",
-        "artifact_sha256": "f8803c450eb982dba1210073854c5dbb688289b3491be35e4df227052fbbceb9"
-      }
+        "artifact_sha256": "2bb44ef19a2f07b68d015be6d8ecc214cf8ed939b96e5517ef75f48ede976c4c",
+        "spec_path": "docs/seven-lens-traces/cycle-04-tools-modals.json",
+        "spec_sha256": "56e54c6b88532f2768f4681ae377af0586474e574ec97caf23f55dd3ce8bd858"
+      },
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C04-SI-DEPTH-UNITS"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-POST-SI.json",
+      "receipt_sha256": "f2bf5a9b6d77642d8bc99fa88bbe29b87944d7fa9ad8916817a77350e14f9827"
     },
     {
       "id": "ER-04-POST-CONFIRM",
@@ -609,42 +826,47 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py SL-C04-CONFIRM-BACKDROP",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "runtime_trace": {
-        "entry_event": "unitsSelect change metric to imperial on END tool",
+        "entry_event": "confirmModal overlay exposes backdrop dismiss handler",
         "consumer_path": [
-          "setUnits",
-          "calcEND_tool",
-          "domDepthToM",
-          "endAbsP"
+          "confirmModal",
+          "onclick",
+          "closeConfirmModal",
+          "display"
         ],
         "captures": [
           {
             "stage": "input",
-            "metric": "30",
-            "imperial": "98"
+            "onclick": "if(event.target===this)closeConfirmModal(false)"
           },
           {
             "stage": "canonical",
-            "metric": 30,
-            "imperial": 30
+            "dismissable": "yes"
           },
           {
             "stage": "consumer",
-            "metric": 30,
-            "imperial": 30
+            "handler": "closeConfirmModal"
           },
           {
             "stage": "observable",
-            "metric": "4.01 bar",
-            "imperial": "4.01 bar"
+            "dismissable": "yes"
           }
         ],
-        "trace_id": "SL-C04-END-PHYSICAL-TRACE",
+        "trace_id": "SL-C04-CONFIRM-BACKDROP-TRACE",
+        "spec_path": "docs/seven-lens-traces/cycle-04-tools-modals.json",
+        "spec_sha256": "56e54c6b88532f2768f4681ae377af0586474e574ec97caf23f55dd3ce8bd858",
         "artifact_path": "dev/seven-lens-browser-trace-cycle04.json",
-        "artifact_sha256": "f8803c450eb982dba1210073854c5dbb688289b3491be35e4df227052fbbceb9"
-      }
+        "artifact_sha256": "2bb44ef19a2f07b68d015be6d8ecc214cf8ed939b96e5517ef75f48ede976c4c"
+      },
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C04-CONFIRM-BACKDROP"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-POST-CONFIRM.json",
+      "receipt_sha256": "e97b1f21cc19d7a48823f466c3f430ded116e9513cbdc014310f8747d6640240"
     },
     {
       "id": "ER-04-POST-CANONICAL",
@@ -661,7 +883,7 @@
       "state_restored": false,
       "command": "python dev/engine_regression.py",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "User switches to imperial units, edits Best Mix depth, and returns to metric.",
@@ -691,8 +913,16 @@
         ],
         "trace_id": "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "e52b67d47ac2d53813c9e91045d1c726b997060a29300819f89b6ab0d58873c9"
-      }
+        "artifact_sha256": "0e31b22213aa12ae9ac1a66c8c7ddbbd13230996b183dbb3a2b2bc38f6e7253e",
+        "spec_path": "docs/seven-lens-traces/cycle-03-consumption.json",
+        "spec_sha256": "479e1ceeaddd2d151fe3d87904fc3cebdb4e90b3d78c576ac9dfc5344d45c5ce"
+      },
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-POST-CANONICAL.json",
+      "receipt_sha256": "5e870876fb4b287d9c8d71aaa30ee68fcc70175df6c4106dc0b1ba6e89089caa"
     },
     {
       "id": "ER-04-POST-TRACE",
@@ -707,7 +937,7 @@
       "state_restored": false,
       "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-03-consumption.json",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "User switches to imperial units, edits CNS depth, and returns to metric.",
@@ -737,14 +967,25 @@
         ],
         "trace_id": "SL-C03-CNS-EDIT-AFTER-SWITCH",
         "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
-        "artifact_sha256": "e52b67d47ac2d53813c9e91045d1c726b997060a29300819f89b6ab0d58873c9"
-      }
+        "artifact_sha256": "0e31b22213aa12ae9ac1a66c8c7ddbbd13230996b183dbb3a2b2bc38f6e7253e",
+        "spec_path": "docs/seven-lens-traces/cycle-03-consumption.json",
+        "spec_sha256": "479e1ceeaddd2d151fe3d87904fc3cebdb4e90b3d78c576ac9dfc5344d45c5ce"
+      },
+      "command_argv": [
+        "python",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-03-consumption.json"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-POST-TRACE.json",
+      "receipt_sha256": "77c215b860a551ccc26f123f345ca2fe339ae9d77d69af642ed24144fe21d047"
     },
     {
       "id": "ER-04-POST-PROTOCOL",
       "kind": "post_fix",
       "case_ids": [
-        "TOOL-SEVEN-LENS-CHECK-ALL"
+        "TOOL-SEVEN-LENS-CHECK-ALL",
+        "SL-C04-SI-DEPTH-UNITS"
       ],
       "observable_assertions": [
         "ledger-record parity passes check-all"
@@ -752,7 +993,7 @@
       "state_restored": false,
       "command": "python tools/seven_lens_protocol.py check-all --require-artifacts",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "unitsSelect change metric to imperial on surface interval tool",
@@ -786,8 +1027,18 @@
         ],
         "trace_id": "SL-C04-SI-PHYSICAL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle04.json",
-        "artifact_sha256": "f8803c450eb982dba1210073854c5dbb688289b3491be35e4df227052fbbceb9"
-      }
+        "artifact_sha256": "2bb44ef19a2f07b68d015be6d8ecc214cf8ed939b96e5517ef75f48ede976c4c",
+        "spec_path": "docs/seven-lens-traces/cycle-04-tools-modals.json",
+        "spec_sha256": "56e54c6b88532f2768f4681ae377af0586474e574ec97caf23f55dd3ce8bd858"
+      },
+      "command_argv": [
+        "python",
+        "tools/seven_lens_protocol.py",
+        "check-all",
+        "--require-artifacts"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-POST-PROTOCOL.json",
+      "receipt_sha256": "c06e4933832a695b8b1f2e64f908c331311e38aba187360c57bd4c9aa8df99a2"
     },
     {
       "id": "ER-04-RESTORE-END",
@@ -801,10 +1052,17 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C04-END-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "state_before_sha256": "64cfc306459799f7bf1d4e2c3b0888e7d860a15858658547962b4c20244e5f61",
-      "state_after_sha256": "64cfc306459799f7bf1d4e2c3b0888e7d860a15858658547962b4c20244e5f61"
+      "state_after_sha256": "64cfc306459799f7bf1d4e2c3b0888e7d860a15858658547962b4c20244e5f61",
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C04-END-DEPTH-UNITS"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-RESTORE-END.json",
+      "receipt_sha256": "abf3358616f8d57c6d96dd68254e98fa3ee1972b990661da0d82fe992117f130"
     },
     {
       "id": "ER-04-RESTORE-SI",
@@ -818,10 +1076,17 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C04-SI-DEPTH-UNITS",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "state_before_sha256": "ada2b244648e9a726eb8ac87038eec42fc36e06fccded3c8be00e1e214931319",
-      "state_after_sha256": "ada2b244648e9a726eb8ac87038eec42fc36e06fccded3c8be00e1e214931319"
+      "state_after_sha256": "ada2b244648e9a726eb8ac87038eec42fc36e06fccded3c8be00e1e214931319",
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C04-SI-DEPTH-UNITS"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-RESTORE-SI.json",
+      "receipt_sha256": "c34d7f975c5bd6e10d430cdc025ddcf3ecb6898b0d2c46b5e7a319d4919417c9"
     },
     {
       "id": "ER-04-RESTORE-CONFIRM",
@@ -835,10 +1100,17 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py SL-C04-CONFIRM-BACKDROP",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "state_before_sha256": "64cfc306459799f7bf1d4e2c3b0888e7d860a15858658547962b4c20244e5f61",
-      "state_after_sha256": "64cfc306459799f7bf1d4e2c3b0888e7d860a15858658547962b4c20244e5f61"
+      "state_after_sha256": "64cfc306459799f7bf1d4e2c3b0888e7d860a15858658547962b4c20244e5f61",
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C04-CONFIRM-BACKDROP"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-RESTORE-CONFIRM.json",
+      "receipt_sha256": "d049c76d24c37c59ae0c935348d1a496f2b929c8544f1fb74b952cf8ec90f1f2"
     },
     {
       "id": "ER-04-RESTORE-CANONICAL",
@@ -855,10 +1127,16 @@
       "state_restored": true,
       "command": "python dev/engine_regression.py",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "state_before_sha256": "62f9d70e0b73f0d64c827aca0a6fe30079c53dfa6110493965c3865559c59e1e",
-      "state_after_sha256": "62f9d70e0b73f0d64c827aca0a6fe30079c53dfa6110493965c3865559c59e1e"
+      "state_after_sha256": "62f9d70e0b73f0d64c827aca0a6fe30079c53dfa6110493965c3865559c59e1e",
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-RESTORE-CANONICAL.json",
+      "receipt_sha256": "b624b2da40e21e30d3af1ecefc6515d6b12cd5eafd3268affaf7344d79d42de4"
     },
     {
       "id": "ER-04-RESTORE-TRACE",
@@ -873,16 +1151,25 @@
       "state_restored": true,
       "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-03-consumption.json",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "state_before_sha256": "f5769cf14bdadb87641bedb7bcd9d3a137e2aa2ba3d170eacc204856ed35c5d2",
-      "state_after_sha256": "f5769cf14bdadb87641bedb7bcd9d3a137e2aa2ba3d170eacc204856ed35c5d2"
+      "state_after_sha256": "f5769cf14bdadb87641bedb7bcd9d3a137e2aa2ba3d170eacc204856ed35c5d2",
+      "command_argv": [
+        "python",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-03-consumption.json"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-RESTORE-TRACE.json",
+      "receipt_sha256": "3e71f3e76fcbdef381216fa55405349e4b19a4e0c2236aeb3d8c1c9f3d445af0"
     },
     {
       "id": "ER-04-RESTORE-PROTOCOL",
       "kind": "state_restoration",
       "case_ids": [
-        "TOOL-SEVEN-LENS-CHECK-ALL"
+        "TOOL-SEVEN-LENS-CHECK-ALL",
+        "SL-C04-SI-DEPTH-UNITS"
       ],
       "observable_assertions": [
         "check-all leaves records unchanged"
@@ -890,10 +1177,18 @@
       "state_restored": true,
       "command": "python tools/seven_lens_protocol.py check-all --require-artifacts",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
-      "state_before_sha256": "ada2b244648e9a726eb8ac87038eec42fc36e06fccded3c8be00e1e214931319",
-      "state_after_sha256": "ada2b244648e9a726eb8ac87038eec42fc36e06fccded3c8be00e1e214931319"
+      "state_before_sha256": "a2b20c4c45d8af0f64198096c062e0cbb3af3ae23b131ed7147d87fa5f6b288e",
+      "state_after_sha256": "a2b20c4c45d8af0f64198096c062e0cbb3af3ae23b131ed7147d87fa5f6b288e",
+      "command_argv": [
+        "python",
+        "tools/seven_lens_protocol.py",
+        "check-all",
+        "--require-artifacts"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-RESTORE-PROTOCOL.json",
+      "receipt_sha256": "af6c89fad9d052d303ac001e24617ed944dd12ea52eb8c9c713f8497e4ca7246"
     },
     {
       "id": "static",
@@ -903,10 +1198,17 @@
         "static gate PASS"
       ],
       "state_restored": true,
-      "command": "python -m tools.audit check --profile static",
+      "command": "python tools/assemble_ui_html.py --verify",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
-      "worktree_clean": true
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/assemble_ui_html.py",
+        "--verify"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-static.json",
+      "receipt_sha256": "7ebf4d9f11a5a66f88f7f3a8066b886f110590b58b528061628bbf2d0dfbfe75"
     },
     {
       "id": "ci",
@@ -916,10 +1218,16 @@
         "ci gate PASS"
       ],
       "state_restored": true,
-      "command": "python -m tools.audit run --profile ci",
+      "command": "python dev/engine_regression.py",
       "exit_code": 0,
-      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
-      "worktree_clean": true
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ci.json",
+      "receipt_sha256": "da7af65ce29a06edf31a4ad82529076bba13d0c77234db7116e1485656b966f9"
     }
   ],
   "changed_paths": [
@@ -934,5 +1242,6 @@
     "tools/seven_lens_browser_trace.py"
   ],
   "audit_report": "docs/seven-lens-reports/cycle-04-tools-modals.md",
-  "notes": "Closure evidence materialized at d956648 with schema-v2 browser traces and regression gates."
+  "notes": "Closure evidence materialized at d956648 with schema-v2 browser traces and regression gates.",
+  "record_path": "docs/seven-lens-records/cycle-04-tools-modals.json"
 }

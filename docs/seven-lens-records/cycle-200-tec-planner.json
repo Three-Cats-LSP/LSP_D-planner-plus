@@ -159,7 +159,7 @@
     }
   ],
   "audit_commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
-  "verified_source_commit": "d5cf65959e39c42a8556c5e429174f487d6c7672",
+  "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -346,10 +346,10 @@
         "--verify"
       ],
       "exit_code": 0,
-      "commit": "d5cf65959e39c42a8556c5e429174f487d6c7672",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "receipt_path": "dev/seven-lens-evidence-2b-static.json",
-      "receipt_sha256": "76d7da32770c8b6d269085e50e0f4cac4ccc67f507c3fb66fc80ac1a8560fbea"
+      "receipt_sha256": "f4edbe12386697789444c13736c05eb6fec52d9010e00f7a8a0d38f1f6b975cd"
     },
     {
       "id": "ci",
@@ -365,10 +365,10 @@
         "dev/engine_regression.py"
       ],
       "exit_code": 0,
-      "commit": "d5cf65959e39c42a8556c5e429174f487d6c7672",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "receipt_path": "dev/seven-lens-evidence-2b-ci.json",
-      "receipt_sha256": "d6569d9a3e56643d5d94561202f040e2313f7b4aa4afc3e00798cf641e6c3a69"
+      "receipt_sha256": "6e4a127bdff48e266b37acb2e8c3517537baf0e6d288c945493f51e8dfc2f42c"
     },
     {
       "id": "ER-2B-TRACE",
@@ -390,7 +390,7 @@
         "dev/seven-lens-browser-trace-2b.json"
       ],
       "exit_code": 0,
-      "commit": "d5cf65959e39c42a8556c5e429174f487d6c7672",
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "User switches to imperial, edits travel manual depth, and returns to metric.",
@@ -422,10 +422,10 @@
         "spec_path": "docs/seven-lens-traces/cycle-02-tec-planner.json",
         "spec_sha256": "92a83f552059dafa22dc548d40d85df3f057c05ccecd333019bdefef3ec8545f",
         "artifact_path": "dev/seven-lens-browser-trace-2b.json",
-        "artifact_sha256": "a8e948c88ece547f89d611e1c5adc8e07c250c8b85efc3bb26a1aa1dd2fe49d2"
+        "artifact_sha256": "efb85bce44b75a8d82606a3d01987361e3d224f5a805913ecb399f2d5fc2cec4"
       },
       "receipt_path": "dev/seven-lens-evidence-2b-ER-2B-TRACE.json",
-      "receipt_sha256": "ed12aceeb304b6a1c3b7212e928e08adcf7f9775653ad3b83b1af602781afd6a"
+      "receipt_sha256": "ae59df8735da81c97b59af5630145cce05dabcff74a5c5261359cc5a6223cdab"
     }
   ],
   "changed_paths": [

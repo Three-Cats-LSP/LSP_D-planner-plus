@@ -201,6 +201,16 @@
         "pattern": "tools/finish_cycle_02_closure.py",
         "kind": "audit_metadata",
         "reason": "One-shot cycle 2 subcycle evidence runner"
+      },
+      {
+        "pattern": "tools/close_cycles_03_04.py",
+        "kind": "audit_metadata",
+        "reason": "One-shot cycle 3/4 schema-v4 closure runner"
+      },
+      {
+        "pattern": ".seven-lens-evidence/**",
+        "kind": "audit_metadata",
+        "reason": "Detached git worktrees for baseline evidence"
       }
     ]
   },
@@ -3606,7 +3616,7 @@
       "evidence": [],
       "issue": "Seven-lens executed-command receipt generator",
       "regression_cases": [],
-      "fingerprint": "454d17abc84cb51d9d69e4dcab99e52472d69203f6d9e482ee5feeddd5622803",
+      "fingerprint": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e",
       "last_read_fingerprint": null
     },
     {
@@ -3681,7 +3691,7 @@
       "evidence": [],
       "issue": "Cycle 04 exact browser value and state trace specification",
       "regression_cases": [],
-      "fingerprint": "51a6c9b028ba6c29d7741035e039b054fdb0b7096d50d770594ef88401843be0",
+      "fingerprint": "56e54c6b88532f2768f4681ae377af0586474e574ec97caf23f55dd3ce8bd858",
       "last_read_fingerprint": null
     },
     {

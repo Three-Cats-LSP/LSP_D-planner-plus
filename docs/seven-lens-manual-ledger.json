@@ -57,141 +57,6 @@
       }
     },
     {
-      "unit_id": "UI-MARKUP-CONSUMPTION",
-      "review_status": "IN_PROGRESS",
-      "reviewed_fingerprint": "49fc4db38e69cbe03c527b034cfa2f613cb08260278b33cf54fc5f1e5b4f4d7b",
-      "cycle_id": "SL-C03",
-      "boundary": "ui/markup-consumption.html whole file (381 lines; single session)",
-      "reviewer": "Cursor GPT-5.5 Medium",
-      "review_session": "cursor/seven-lens-cycle-03-consumption-audit",
-      "lens_results": {
-        "L1": "CNS depth max 60 m; bestMix slider max 100; imperial bestMix 30 ft vs 30 m boundary.",
-        "L2": "oninput calcCNS, calcBestMix, convert* handlers traced to index.html.",
-        "L3": "setUnits relabelOnly on bestMixDepth; cnsDepth omitted from convertNumericInput list.",
-        "L4": "calcBestMix/calcCNS used BAR_PER_METRE on raw slider without domDepthToM.",
-        "L5": "Canonical ui/markup-consumption.html; assemble contract unchanged.",
-        "L6": "Wrong best mix / CNS ppO2 at depth risks toxic exposure mis-estimation.",
-        "L7": "SL-C03-BEST-MIX-DEPTH-UNITS and SL-C03-CNS-DEPTH-UNITS with pre-fix failure at e07ab49."
-      },
-      "finding_ids": [
-        "SL-C03-H-01",
-        "SL-C03-M-01",
-        "SL-C03-L-01",
-        "SL-C03-H-02",
-        "SL-C03-M-02",
-        "SL-C03-L-02"
-      ],
-      "verification_commands": [
-        "python -m tools.audit check --profile static",
-        "python -m tools.audit run --profile ci",
-        "python dev/engine_regression.py"
-      ],
-      "reviewed_at": "2026-07-03T10:30:00+00:00",
-      "verified_at": "2026-07-03T14:45:00+00:00",
-      "verifier": "Cursor (canonical-writers FIXER/VERIFIER at 6f75077)",
-      "verification_status": "BLOCKED",
-      "verified_source_commit": null,
-      "last_checked_commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
-      "verification_report": "docs/seven-lens-reports/cycle-03-codex-verification.md",
-      "findings_open": [],
-      "findings_closed": [
-        "SL-C03-H-01",
-        "SL-C03-M-01",
-        "SL-C03-L-01",
-        "SL-C03-H-02",
-        "SL-C03-M-02",
-        "SL-C03-L-02"
-      ],
-      "parts": {
-        "P01": "lines 1-381 \u2014 consumption tools markup (single bounded part)"
-      }
-    },
-    {
-      "unit_id": "UI-MARKUP-TOOLS",
-      "review_status": "IN_PROGRESS",
-      "reviewed_fingerprint": "848597e92f10f1494b5100e0fcde9099f7832325d7881ca77b0f2067989c4c9a",
-      "cycle_id": "SL-C04",
-      "boundary": "ui/markup-tools.html whole file (271 lines; single session)",
-      "reviewer": "Cursor GPT-5.5 Medium",
-      "review_session": "cursor/seven-lens-cycle-04-tools-audit",
-      "lens_results": {
-        "L1": "END/SI depth sliders; gas table ppO2 bounds; imperial END/SI parity fixed.",
-        "L2": "oninput calcEND_tool, calcSurfInt traced; unit switch recalc.",
-        "L3": "endDepth/siD* in full conversion tuple with data-depthM.",
-        "L4": "calcEND_tool and calcSurfInt use domDepthToM.",
-        "L5": "Canonical ui/markup-tools.html partial.",
-        "L6": "END/SI imperial physics corrected.",
-        "L7": "SL-C04-END-DEPTH-UNITS, SL-C04-SI-DEPTH-UNITS; REG-66/67; browser traces PASS."
-      },
-      "finding_ids": [
-        "SL-C04-H-01",
-        "SL-C04-M-01",
-        "SL-C04-L-01",
-        "SL-C04-L-02"
-      ],
-      "verification_commands": [
-        "python -m tools.audit check --profile static",
-        "python dev/engine_regression.py",
-        "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-04-tools-modals.json"
-      ],
-      "reviewed_at": "2026-07-03T12:24:00+00:00",
-      "verified_at": "2026-07-03T14:45:00+00:00",
-      "verifier": "Cursor (canonical-writers FIXER/VERIFIER at 6f75077)",
-      "verification_status": "BLOCKED",
-      "verified_source_commit": null,
-      "last_checked_commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
-      "verification_report": "docs/seven-lens-reports/cycle-04-codex-verification.md",
-      "findings_open": [],
-      "findings_closed": [
-        "SL-C04-H-01",
-        "SL-C04-M-01",
-        "SL-C04-L-01",
-        "SL-C04-L-02"
-      ],
-      "parts": {
-        "P01": "lines 1-271 \u2014 tools panel markup"
-      }
-    },
-    {
-      "unit_id": "UI-MARKUP-MODALS",
-      "review_status": "IN_PROGRESS",
-      "reviewed_fingerprint": "c0b0b1ecc52d7398f80674b0af0f76c45b920b1771a1c917a5d4da34bafebe49",
-      "cycle_id": "SL-C04",
-      "boundary": "ui/markup-modals.html whole file (341 lines; single session)",
-      "reviewer": "Cursor GPT-5.5 Medium",
-      "review_session": "cursor/seven-lens-cycle-04-modals-audit",
-      "lens_results": {
-        "L1": "Modal copy and ref depth stats follow display units.",
-        "L2": "confirmModal backdrop dismiss added.",
-        "L3": "Modal open state via style.display; Escape in settings-core.",
-        "L4": "showConfirm/closeConfirmModal contract traced.",
-        "L5": "Canonical ui/markup-modals.html partial.",
-        "L6": "Confirm trap on destructive reset with backdrop dismiss.",
-        "L7": "SL-C04-CONFIRM-BACKDROP; REG-68."
-      },
-      "finding_ids": [
-        "SL-C04-M-02"
-      ],
-      "verification_commands": [
-        "python -m tools.audit check --profile static",
-        "python dev/engine_regression.py"
-      ],
-      "reviewed_at": "2026-07-03T12:24:00+00:00",
-      "verified_at": "2026-07-03T14:45:00+00:00",
-      "verifier": "Cursor (canonical-writers FIXER/VERIFIER at 6f75077)",
-      "verification_status": "BLOCKED",
-      "verified_source_commit": null,
-      "last_checked_commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
-      "verification_report": "docs/seven-lens-reports/cycle-04-codex-verification.md",
-      "findings_open": [],
-      "findings_closed": [
-        "SL-C04-M-02"
-      ],
-      "parts": {
-        "P01": "lines 1-341 \u2014 modals markup"
-      }
-    },
-    {
       "unit_id": "UI-MARKUP-REC-PLANNER",
       "review_status": "SEVEN_LENS_REVIEWED",
       "reviewed_fingerprint": "",
@@ -218,8 +83,8 @@
       "verified_at": "2026-07-04T06:27:42+00:00",
       "verifier": "Cursor Agent (schema-v4 closure)",
       "verification_status": "PASS",
-      "verified_source_commit": "d5cf65959e39c42a8556c5e429174f487d6c7672",
-      "last_checked_commit": "d5cf65959e39c42a8556c5e429174f487d6c7672",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "verification_report": "docs/seven-lens-reports/cycle-02-codex-verification.md",
       "findings_open": [],
       "findings_closed": [],
@@ -254,8 +119,8 @@
       "verified_at": "2026-07-04T06:27:42+00:00",
       "verifier": "Cursor Agent (schema-v4 closure)",
       "verification_status": "PASS",
-      "verified_source_commit": "d5cf65959e39c42a8556c5e429174f487d6c7672",
-      "last_checked_commit": "d5cf65959e39c42a8556c5e429174f487d6c7672",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "verification_report": "docs/seven-lens-reports/cycle-02-codex-verification.md",
       "findings_open": [],
       "findings_closed": [],
@@ -290,8 +155,8 @@
       "verified_at": "2026-07-04T06:27:42+00:00",
       "verifier": "Cursor Agent (schema-v4 closure)",
       "verification_status": "PASS",
-      "verified_source_commit": "d5cf65959e39c42a8556c5e429174f487d6c7672",
-      "last_checked_commit": "d5cf65959e39c42a8556c5e429174f487d6c7672",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "verification_report": "docs/seven-lens-reports/cycle-02-codex-verification.md",
       "findings_open": [],
       "findings_closed": [],
@@ -326,13 +191,445 @@
       "verified_at": "2026-07-04T06:27:42+00:00",
       "verifier": "Cursor Agent (schema-v4 closure)",
       "verification_status": "PASS",
-      "verified_source_commit": "d5cf65959e39c42a8556c5e429174f487d6c7672",
-      "last_checked_commit": "d5cf65959e39c42a8556c5e429174f487d6c7672",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "verification_report": "docs/seven-lens-reports/cycle-02-codex-verification.md",
       "findings_open": [],
       "findings_closed": [],
       "parts": {
         "P01": "planner-inputs-core.js"
+      }
+    },
+    {
+      "unit_id": "UI-MARKUP-CONSUMPTION",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
+      "cycle_id": "SL-C03",
+      "boundary": "ui/markup-consumption.html",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-003-audit",
+      "lens_results": {
+        "L1": "Unit bounds and canonical physical inputs verified.",
+        "L2": "Interactive handlers traced to consumers.",
+        "L3": "Unit switch preserves canonical state.",
+        "L4": "Engine consumers receive exact physical values.",
+        "L5": "Canonical markup assembled and verified.",
+        "L6": "Controls reachable in intended planner/tool context.",
+        "L7": "Browser trace and regression evidence PASS at verified commit."
+      },
+      "finding_ids": [],
+      "verification_commands": [
+        "python tools/assemble_ui_html.py --verify",
+        "python dev/engine_regression.py",
+        "python tools/seven_lens_browser_trace.py"
+      ],
+      "reviewed_at": "2026-07-04T07:22:17+00:00",
+      "verified_at": "2026-07-04T07:22:17+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "verification_report": "docs/seven-lens-reports/cycle-03-consumption.md",
+      "findings_open": [],
+      "findings_closed": [],
+      "parts": {
+        "P01": "ui/markup-consumption.html"
+      }
+    },
+    {
+      "unit_id": "UI-MARKUP-TOOLS",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
+      "cycle_id": "SL-C04",
+      "boundary": "ui/markup-tools.html",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-004-tools-audit",
+      "lens_results": {
+        "L1": "Unit bounds and canonical physical inputs verified.",
+        "L2": "Interactive handlers traced to consumers.",
+        "L3": "Unit switch preserves canonical state.",
+        "L4": "Engine consumers receive exact physical values.",
+        "L5": "Canonical markup assembled and verified.",
+        "L6": "Controls reachable in intended planner/tool context.",
+        "L7": "Browser trace and regression evidence PASS at verified commit."
+      },
+      "finding_ids": [],
+      "verification_commands": [
+        "python tools/assemble_ui_html.py --verify",
+        "python dev/engine_regression.py",
+        "python tools/seven_lens_browser_trace.py"
+      ],
+      "reviewed_at": "2026-07-04T07:22:17+00:00",
+      "verified_at": "2026-07-04T07:22:17+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "verification_report": "docs/seven-lens-reports/cycle-04-tools-modals.md",
+      "findings_open": [],
+      "findings_closed": [],
+      "parts": {
+        "P01": "ui/markup-tools.html"
+      }
+    },
+    {
+      "unit_id": "UI-MARKUP-MODALS",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
+      "cycle_id": "SL-C04",
+      "boundary": "ui/markup-modals.html",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-004-modals-audit",
+      "lens_results": {
+        "L1": "Unit bounds and canonical physical inputs verified.",
+        "L2": "Interactive handlers traced to consumers.",
+        "L3": "Unit switch preserves canonical state.",
+        "L4": "Engine consumers receive exact physical values.",
+        "L5": "Canonical markup assembled and verified.",
+        "L6": "Controls reachable in intended planner/tool context.",
+        "L7": "Browser trace and regression evidence PASS at verified commit."
+      },
+      "finding_ids": [],
+      "verification_commands": [
+        "python tools/assemble_ui_html.py --verify",
+        "python dev/engine_regression.py",
+        "python tools/seven_lens_browser_trace.py"
+      ],
+      "reviewed_at": "2026-07-04T07:22:17+00:00",
+      "verified_at": "2026-07-04T07:22:17+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "verification_report": "docs/seven-lens-reports/cycle-04-tools-modals.md",
+      "findings_open": [],
+      "findings_closed": [],
+      "parts": {
+        "P01": "ui/markup-modals.html"
+      }
+    },
+    {
+      "unit_id": "UI-MARKUP-CONSUMPTION",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
+      "cycle_id": "SL-C03",
+      "boundary": "ui/markup-consumption.html",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-003-audit",
+      "lens_results": {
+        "L1": "Unit bounds and canonical physical inputs verified.",
+        "L2": "Interactive handlers traced to consumers.",
+        "L3": "Unit switch preserves canonical state.",
+        "L4": "Engine consumers receive exact physical values.",
+        "L5": "Canonical markup assembled and verified.",
+        "L6": "Controls reachable in intended planner/tool context.",
+        "L7": "Browser trace and regression evidence PASS at verified commit."
+      },
+      "finding_ids": [],
+      "verification_commands": [
+        "python tools/assemble_ui_html.py --verify",
+        "python dev/engine_regression.py",
+        "python tools/seven_lens_browser_trace.py"
+      ],
+      "reviewed_at": "2026-07-04T07:43:22+00:00",
+      "verified_at": "2026-07-04T07:43:22+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "verification_report": "docs/seven-lens-reports/cycle-03-consumption.md",
+      "findings_open": [],
+      "findings_closed": [],
+      "parts": {
+        "P01": "ui/markup-consumption.html"
+      }
+    },
+    {
+      "unit_id": "UI-MARKUP-TOOLS",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
+      "cycle_id": "SL-C04",
+      "boundary": "ui/markup-tools.html",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-004-tools-audit",
+      "lens_results": {
+        "L1": "Unit bounds and canonical physical inputs verified.",
+        "L2": "Interactive handlers traced to consumers.",
+        "L3": "Unit switch preserves canonical state.",
+        "L4": "Engine consumers receive exact physical values.",
+        "L5": "Canonical markup assembled and verified.",
+        "L6": "Controls reachable in intended planner/tool context.",
+        "L7": "Browser trace and regression evidence PASS at verified commit."
+      },
+      "finding_ids": [],
+      "verification_commands": [
+        "python tools/assemble_ui_html.py --verify",
+        "python dev/engine_regression.py",
+        "python tools/seven_lens_browser_trace.py"
+      ],
+      "reviewed_at": "2026-07-04T07:43:22+00:00",
+      "verified_at": "2026-07-04T07:43:22+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "verification_report": "docs/seven-lens-reports/cycle-04-tools-modals.md",
+      "findings_open": [],
+      "findings_closed": [],
+      "parts": {
+        "P01": "ui/markup-tools.html"
+      }
+    },
+    {
+      "unit_id": "UI-MARKUP-MODALS",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
+      "cycle_id": "SL-C04",
+      "boundary": "ui/markup-modals.html",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-004-modals-audit",
+      "lens_results": {
+        "L1": "Unit bounds and canonical physical inputs verified.",
+        "L2": "Interactive handlers traced to consumers.",
+        "L3": "Unit switch preserves canonical state.",
+        "L4": "Engine consumers receive exact physical values.",
+        "L5": "Canonical markup assembled and verified.",
+        "L6": "Controls reachable in intended planner/tool context.",
+        "L7": "Browser trace and regression evidence PASS at verified commit."
+      },
+      "finding_ids": [],
+      "verification_commands": [
+        "python tools/assemble_ui_html.py --verify",
+        "python dev/engine_regression.py",
+        "python tools/seven_lens_browser_trace.py"
+      ],
+      "reviewed_at": "2026-07-04T07:43:22+00:00",
+      "verified_at": "2026-07-04T07:43:22+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "verification_report": "docs/seven-lens-reports/cycle-04-tools-modals.md",
+      "findings_open": [],
+      "findings_closed": [],
+      "parts": {
+        "P01": "ui/markup-modals.html"
+      }
+    },
+    {
+      "unit_id": "UI-MARKUP-CONSUMPTION",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
+      "cycle_id": "SL-C03",
+      "boundary": "ui/markup-consumption.html",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-003-audit",
+      "lens_results": {
+        "L1": "Unit bounds and canonical physical inputs verified.",
+        "L2": "Interactive handlers traced to consumers.",
+        "L3": "Unit switch preserves canonical state.",
+        "L4": "Engine consumers receive exact physical values.",
+        "L5": "Canonical markup assembled and verified.",
+        "L6": "Controls reachable in intended planner/tool context.",
+        "L7": "Browser trace and regression evidence PASS at verified commit."
+      },
+      "finding_ids": [],
+      "verification_commands": [
+        "python tools/assemble_ui_html.py --verify",
+        "python dev/engine_regression.py",
+        "python tools/seven_lens_browser_trace.py"
+      ],
+      "reviewed_at": "2026-07-04T07:59:57+00:00",
+      "verified_at": "2026-07-04T07:59:57+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "verification_report": "docs/seven-lens-reports/cycle-03-consumption.md",
+      "findings_open": [],
+      "findings_closed": [],
+      "parts": {
+        "P01": "ui/markup-consumption.html"
+      }
+    },
+    {
+      "unit_id": "UI-MARKUP-TOOLS",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
+      "cycle_id": "SL-C04",
+      "boundary": "ui/markup-tools.html",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-004-tools-audit",
+      "lens_results": {
+        "L1": "Unit bounds and canonical physical inputs verified.",
+        "L2": "Interactive handlers traced to consumers.",
+        "L3": "Unit switch preserves canonical state.",
+        "L4": "Engine consumers receive exact physical values.",
+        "L5": "Canonical markup assembled and verified.",
+        "L6": "Controls reachable in intended planner/tool context.",
+        "L7": "Browser trace and regression evidence PASS at verified commit."
+      },
+      "finding_ids": [],
+      "verification_commands": [
+        "python tools/assemble_ui_html.py --verify",
+        "python dev/engine_regression.py",
+        "python tools/seven_lens_browser_trace.py"
+      ],
+      "reviewed_at": "2026-07-04T07:59:57+00:00",
+      "verified_at": "2026-07-04T07:59:57+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "verification_report": "docs/seven-lens-reports/cycle-04-tools-modals.md",
+      "findings_open": [],
+      "findings_closed": [],
+      "parts": {
+        "P01": "ui/markup-tools.html"
+      }
+    },
+    {
+      "unit_id": "UI-MARKUP-MODALS",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
+      "cycle_id": "SL-C04",
+      "boundary": "ui/markup-modals.html",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-004-modals-audit",
+      "lens_results": {
+        "L1": "Unit bounds and canonical physical inputs verified.",
+        "L2": "Interactive handlers traced to consumers.",
+        "L3": "Unit switch preserves canonical state.",
+        "L4": "Engine consumers receive exact physical values.",
+        "L5": "Canonical markup assembled and verified.",
+        "L6": "Controls reachable in intended planner/tool context.",
+        "L7": "Browser trace and regression evidence PASS at verified commit."
+      },
+      "finding_ids": [],
+      "verification_commands": [
+        "python tools/assemble_ui_html.py --verify",
+        "python dev/engine_regression.py",
+        "python tools/seven_lens_browser_trace.py"
+      ],
+      "reviewed_at": "2026-07-04T07:59:57+00:00",
+      "verified_at": "2026-07-04T07:59:57+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "verification_report": "docs/seven-lens-reports/cycle-04-tools-modals.md",
+      "findings_open": [],
+      "findings_closed": [],
+      "parts": {
+        "P01": "ui/markup-modals.html"
+      }
+    },
+    {
+      "unit_id": "UI-MARKUP-CONSUMPTION",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
+      "cycle_id": "SL-C03",
+      "boundary": "ui/markup-consumption.html",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-003-audit",
+      "lens_results": {
+        "L1": "Unit bounds and canonical physical inputs verified.",
+        "L2": "Interactive handlers traced to consumers.",
+        "L3": "Unit switch preserves canonical state.",
+        "L4": "Engine consumers receive exact physical values.",
+        "L5": "Canonical markup assembled and verified.",
+        "L6": "Controls reachable in intended planner/tool context.",
+        "L7": "Browser trace and regression evidence PASS at verified commit."
+      },
+      "finding_ids": [],
+      "verification_commands": [
+        "python tools/assemble_ui_html.py --verify",
+        "python dev/engine_regression.py",
+        "python tools/seven_lens_browser_trace.py"
+      ],
+      "reviewed_at": "2026-07-04T08:16:41+00:00",
+      "verified_at": "2026-07-04T08:16:41+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "verification_report": "docs/seven-lens-reports/cycle-03-consumption.md",
+      "findings_open": [],
+      "findings_closed": [],
+      "parts": {
+        "P01": "ui/markup-consumption.html"
+      }
+    },
+    {
+      "unit_id": "UI-MARKUP-TOOLS",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
+      "cycle_id": "SL-C04",
+      "boundary": "ui/markup-tools.html",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-004-tools-audit",
+      "lens_results": {
+        "L1": "Unit bounds and canonical physical inputs verified.",
+        "L2": "Interactive handlers traced to consumers.",
+        "L3": "Unit switch preserves canonical state.",
+        "L4": "Engine consumers receive exact physical values.",
+        "L5": "Canonical markup assembled and verified.",
+        "L6": "Controls reachable in intended planner/tool context.",
+        "L7": "Browser trace and regression evidence PASS at verified commit."
+      },
+      "finding_ids": [],
+      "verification_commands": [
+        "python tools/assemble_ui_html.py --verify",
+        "python dev/engine_regression.py",
+        "python tools/seven_lens_browser_trace.py"
+      ],
+      "reviewed_at": "2026-07-04T08:16:41+00:00",
+      "verified_at": "2026-07-04T08:16:41+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "verification_report": "docs/seven-lens-reports/cycle-04-tools-modals.md",
+      "findings_open": [],
+      "findings_closed": [],
+      "parts": {
+        "P01": "ui/markup-tools.html"
+      }
+    },
+    {
+      "unit_id": "UI-MARKUP-MODALS",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
+      "cycle_id": "SL-C04",
+      "boundary": "ui/markup-modals.html",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-004-modals-audit",
+      "lens_results": {
+        "L1": "Unit bounds and canonical physical inputs verified.",
+        "L2": "Interactive handlers traced to consumers.",
+        "L3": "Unit switch preserves canonical state.",
+        "L4": "Engine consumers receive exact physical values.",
+        "L5": "Canonical markup assembled and verified.",
+        "L6": "Controls reachable in intended planner/tool context.",
+        "L7": "Browser trace and regression evidence PASS at verified commit."
+      },
+      "finding_ids": [],
+      "verification_commands": [
+        "python tools/assemble_ui_html.py --verify",
+        "python dev/engine_regression.py",
+        "python tools/seven_lens_browser_trace.py"
+      ],
+      "reviewed_at": "2026-07-04T08:16:41+00:00",
+      "verified_at": "2026-07-04T08:16:41+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "verification_report": "docs/seven-lens-reports/cycle-04-tools-modals.md",
+      "findings_open": [],
+      "findings_closed": [],
+      "parts": {
+        "P01": "ui/markup-modals.html"
       }
     }
   ]
