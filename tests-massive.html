@@ -1370,8 +1370,8 @@ function fastRDS(needsDOM) {
   if (!WIN) return;
   enterMassiveHeadless();
   const d = getDoc();
-  const dEl  = d && d.getElementById('decoDepth');
-  const btEl = d && d.getElementById('decoBT');
+  const dEl  = plannerEl('decoDepth');
+  const btEl = plannerEl('decoBT');
   const altEl = d && d.getElementById('altitudeSelect');
   const origD   = dEl   ? dEl.value   : null;
   const origBT  = btEl  ? btEl.value  : null;
@@ -1495,12 +1495,21 @@ function getText(id) {
   return el ? (el.textContent || el.innerText || '').trim() : null;
 }
 
+function plannerEl(id) {
+  const d = getDoc();
+  if (!d) return null;
+  if (/^(decoDepth|decoBT|depth|bt)$/.test(id) && typeof WIN.getPlannerInputEl === 'function') {
+    return WIN.getPlannerInputEl(id);
+  }
+  return d.getElementById(id);
+}
+
 function getVal(id) {
-  const el = getDoc().getElementById(id);
+  const el = plannerEl(id);
   return el ? el.value : null;
 }
 
-function elExists(id) { return !!getDoc().getElementById(id); }
+function elExists(id) { return !!plannerEl(id); }
 
 function runCalc() {
   // Try multiple entrypoints
@@ -1735,7 +1744,7 @@ const TIER2_GROUPS = [
         const opt = sel.querySelector('option[value="ZHLC_GF"]') || sel.querySelector('option[value*="ZHL"], option[value*="GF"]');
         if (opt) { sel.value = opt.value; sel.dispatchEvent(new WIN.Event('change',{bubbles:true})); }
         // Use a shallow NDL dive to keep engine runtime fast
-        const dEl = d.getElementById('decoDepth'), btEl = d.getElementById('decoBT');
+        const dEl = plannerEl('decoDepth'), btEl = plannerEl('decoBT');
         const origD = dEl?.value, origBT = btEl?.value;
         if (dEl) dEl.value = '25'; if (btEl) btEl.value = '20';
         fastRDS();
@@ -1752,7 +1761,7 @@ const TIER2_GROUPS = [
         assert(opt, 'VPMB option not found in algorithm selector');
         sel.value = 'VPMB'; sel.dispatchEvent(new WIN.Event('change',{bubbles:true}));
         // Use a shallow NDL dive to keep VPM engine runtime fast
-        const dEl = d.getElementById('decoDepth'), btEl = d.getElementById('decoBT');
+        const dEl = plannerEl('decoDepth'), btEl = plannerEl('decoBT');
         const origD = dEl?.value, origBT = btEl?.value;
         if (dEl) dEl.value = '25'; if (btEl) btEl.value = '20';
         fastRDS();
@@ -1769,7 +1778,7 @@ const TIER2_GROUPS = [
         assert(opt, 'VPMB_GFS option not found in algorithm selector');
         sel.value = 'VPMB_GFS'; sel.dispatchEvent(new WIN.Event('change',{bubbles:true}));
         // Use a shallow NDL dive to keep VPM engine runtime fast
-        const dEl = d.getElementById('decoDepth'), btEl = d.getElementById('decoBT');
+        const dEl = plannerEl('decoDepth'), btEl = plannerEl('decoBT');
         const origD = dEl?.value, origBT = btEl?.value;
         if (dEl) dEl.value = '25'; if (btEl) btEl.value = '20';
         fastRDS();
@@ -3882,7 +3891,8 @@ async function startTests(skipTier1 = false) {
     try {
       await new Promise(r => setTimeout(r, 20));
       const _d = win.document;
-      const _dEl = _d.getElementById('decoDepth'), _btEl = _d.getElementById('decoBT');
+      const _dEl = typeof win.getPlannerInputEl === 'function' ? win.getPlannerInputEl('decoDepth') : _d.getElementById('decoDepth');
+      const _btEl = typeof win.getPlannerInputEl === 'function' ? win.getPlannerInputEl('decoBT') : _d.getElementById('decoBT');
       const _origD = _dEl?.value, _origBT = _btEl?.value;
       if (_dEl)  _dEl.value  = '10';
       if (_btEl) _btEl.value = '10';
@@ -4055,7 +4065,8 @@ window.runMassiveRegressionCI = function(options) {
       try {
         await new Promise(r => setTimeout(r, 20));
         const _d = win.document;
-        const _dEl = _d.getElementById('decoDepth'), _btEl = _d.getElementById('decoBT');
+        const _dEl = typeof win.getPlannerInputEl === 'function' ? win.getPlannerInputEl('decoDepth') : _d.getElementById('decoDepth');
+        const _btEl = typeof win.getPlannerInputEl === 'function' ? win.getPlannerInputEl('decoBT') : _d.getElementById('decoBT');
         const _origD = _dEl?.value, _origBT = _btEl?.value;
         if (_dEl) _dEl.value = '10';
         if (_btEl) _btEl.value = '10';

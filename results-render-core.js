@@ -405,7 +405,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
 
       if (short) {
         // Compute max BT suggestion
-        const bt = parseFloat(document.getElementById('decoBT')?.value) || 0;
+        const bt = parseFloat(getPlannerInputEl('decoBT')?.value) || 0;
         let btSuggest = '';
         if (usableL === 0) {
           btSuggest = 'No usable gas available — fill pressure equals or is below reserve. Use a larger cylinder or higher fill.';

@@ -1334,19 +1334,28 @@ function getText(id) {
   return el ? (el.textContent || el.innerText || '').trim() : null;
 }
 
+function plannerEl(id) {
+  const d = getDoc();
+  if (!d) return null;
+  if (/^(decoDepth|decoBT|depth|bt)$/.test(id) && typeof WIN.getPlannerInputEl === 'function') {
+    return WIN.getPlannerInputEl(id);
+  }
+  return d.getElementById(id);
+}
+
 function getVal(id) {
-  const el = getDoc().getElementById(id);
+  const el = plannerEl(id);
   return el ? el.value : null;
 }
 
-function elExists(id) { return !!getDoc().getElementById(id); }
+function elExists(id) { return !!plannerEl(id); }
 
 function runCalc(needsDOM) {
   // Guaranteed shallow NDL dive.
   // needsDOM=true: full render; needsDOM=false (default): headless (~10x faster on mobile)
   const d = getDoc();
-  const dEl   = d && d.getElementById('decoDepth');
-  const btEl  = d && d.getElementById('decoBT');
+  const dEl   = plannerEl('decoDepth');
+  const btEl  = plannerEl('decoBT');
   const altEl = d && d.getElementById('altitudeSelect');
   const origD   = dEl   ? dEl.value   : null;
   const origBT  = btEl  ? btEl.value  : null;
@@ -1527,7 +1536,7 @@ const TIER2_GROUPS = [
       ['Unit flip: depth label changes to ft', 'UI', function(){
         const d = getDoc();
         WIN.setUnits('imperial');
-        const depthEl = d.getElementById('depth');
+        const depthEl = plannerEl('depth');
         assert(depthEl, '#depth not found');
         // Look for a label near #depth that should say ft or feet
         const lbl = d.querySelector('label[for="depth"], [id*="depthLbl"], [id*="depth_lbl"]');
@@ -3184,7 +3193,8 @@ async function startTests() {
     try {
       await new Promise(r => setTimeout(r, 20));
       const _d = win.document;
-      const _dEl = _d.getElementById('decoDepth'), _btEl = _d.getElementById('decoBT');
+      const _dEl = typeof win.getPlannerInputEl === 'function' ? win.getPlannerInputEl('decoDepth') : _d.getElementById('decoDepth');
+      const _btEl = typeof win.getPlannerInputEl === 'function' ? win.getPlannerInputEl('decoBT') : _d.getElementById('decoBT');
       const _origD = _dEl?.value, _origBT = _btEl?.value;
       if (_dEl)  _dEl.value  = '10';
       if (_btEl) _btEl.value = '10';
