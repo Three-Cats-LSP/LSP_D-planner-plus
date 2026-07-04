@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+_CMD_CACHE: dict[str, int] = {}
 
 
 def _head_commit() -> str:
@@ -20,6 +21,51 @@ def _head_commit() -> str:
 
 COMMIT = _head_commit()
 TRACE_STAGES = ("input", "canonical", "consumer", "observable")
+CYCLE_02_AUDIT = "d9c45c84150b370dd26e6fd9413399e6f2f72f52"
+
+
+def _run(command: str, *, cwd: Path | None = None, cache_key: str | None = None) -> int:
+    key = cache_key or command
+    if key not in _CMD_CACHE:
+        proc = subprocess.run(command, shell=True, cwd=cwd or ROOT)
+        _CMD_CACHE[key] = proc.returncode
+    return _CMD_CACHE[key]
+
+
+def _worktree_baseline(base: str, checkout: str, command: str) -> int:
+    import shutil
+    import tempfile
+
+    key = f"worktree:{base}:{checkout}:{command}"
+    if key in _CMD_CACHE:
+        return _CMD_CACHE[key]
+    tmp = Path(tempfile.mkdtemp(prefix="sl-closure-"))
+    try:
+        subprocess.run(["git", "worktree", "add", "--detach", str(tmp), base], cwd=ROOT, check=True)
+        subprocess.run(checkout, shell=True, cwd=tmp, check=True)
+        proc = subprocess.run(command, shell=True, cwd=tmp)
+        _CMD_CACHE[key] = proc.returncode
+        return proc.returncode
+    finally:
+        subprocess.run(["git", "worktree", "remove", "--force", str(tmp)], cwd=ROOT, check=False)
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def _git_clean() -> bool:
+    proc = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, text=True, capture_output=True, check=True)
+    return not proc.stdout.strip()
+
+
+def materialize_browser_artifacts() -> None:
+    traces = [
+        ("docs/seven-lens-traces/cycle-02-planner.json", "dev/seven-lens-browser-trace-cycle02.json"),
+        ("docs/seven-lens-traces/cycle-03-consumption.json", "dev/seven-lens-browser-trace-cycle03.json"),
+        ("docs/seven-lens-traces/cycle-04-tools-modals.json", "dev/seven-lens-browser-trace-cycle04.json"),
+    ]
+    for spec, output in traces:
+        code = _run(f"python tools/seven_lens_browser_trace.py --spec {spec} --output {output}")
+        if code != 0:
+            raise SystemExit(f"browser trace failed ({code}): {spec}")
 
 
 def _hash_file(path: Path) -> str:
@@ -95,20 +141,71 @@ def runtime_trace_edit(artifact_rel: str, trace_id: str) -> dict[str, Any]:
     }
 
 
+def runtime_trace_min_deco(artifact_rel: str, trace_id: str) -> dict[str, Any]:
+    artifact = ROOT / artifact_rel
+    row = _trace_row(artifact, trace_id)
+    caps = row["captures"]
+    captures = [
+        {"stage": "input", "metric": caps["metric"].get("stopDepths"), "imperial": caps["imperial"].get("stopDepths")},
+        {"stage": "canonical", "metric": caps["metric"].get("isMetric"), "imperial": caps["imperial"].get("isMetric")},
+        {"stage": "consumer", "metric": caps["metric"].get("stopDepths"), "imperial": caps["imperial"].get("stopDepths")},
+        {"stage": "observable", "metric": caps["metric"].get("isMetric"), "imperial": caps["imperial"].get("isMetric")},
+    ]
+    return {
+        "entry_event": row["entry_event"],
+        "consumer_path": row["consumer_path"],
+        "captures": captures,
+        "trace_id": trace_id,
+        "artifact_path": artifact_rel,
+        "artifact_sha256": _hash_file(artifact),
+    }
+
+
+def runtime_trace_deco_cyl(artifact_rel: str, trace_id: str) -> dict[str, Any]:
+    artifact = ROOT / artifact_rel
+    row = _trace_row(artifact, trace_id)
+    caps = row["captures"]["imperial"]
+    captures = [
+        {"stage": "input", "value": caps.get("input_value")},
+        {"stage": "canonical", "value": caps.get("min")},
+        {"stage": "consumer", "value": caps.get("step")},
+        {"stage": "observable", "value": caps.get("valid")},
+    ]
+    return {
+        "entry_event": row["entry_event"],
+        "consumer_path": row["consumer_path"],
+        "captures": captures,
+        "trace_id": trace_id,
+        "artifact_path": artifact_rel,
+        "artifact_sha256": _hash_file(artifact),
+    }
+
+
 def er(
     evidence_id: str,
     kind: str,
     command: str,
-    exit_code: int,
+    exit_code: int | None,
     case_ids: list[str],
     assertions: list[str],
     state_restored: bool,
     *,
-    evidence_commit: str = COMMIT,
+    evidence_commit: str | None = None,
     runtime_trace: dict[str, Any] | None = None,
     before_hash: str | None = None,
     after_hash: str | None = None,
+    execute: bool = False,
+    worktree_base: str | None = None,
+    worktree_checkout: str | None = None,
 ) -> dict[str, Any]:
+    resolved_exit = exit_code
+    if execute:
+        if worktree_base and worktree_checkout:
+            resolved_exit = _worktree_baseline(worktree_base, worktree_checkout, command)
+        else:
+            resolved_exit = _run(command)
+    if resolved_exit is None:
+        raise ValueError(f"{evidence_id}: exit_code missing")
     row: dict[str, Any] = {
         "id": evidence_id,
         "kind": kind,
@@ -116,9 +213,9 @@ def er(
         "observable_assertions": assertions,
         "state_restored": state_restored,
         "command": command,
-        "exit_code": exit_code,
-        "commit": evidence_commit,
-        "worktree_clean": True,
+        "exit_code": resolved_exit,
+        "commit": evidence_commit or COMMIT,
+        "worktree_clean": _git_clean(),
     }
     if runtime_trace:
         row["runtime_trace"] = runtime_trace
@@ -133,10 +230,11 @@ def gate(evidence_id: str, command: str) -> dict[str, Any]:
         evidence_id,
         "gate",
         command,
-        0,
+        None,
         [],
         [f"{evidence_id} gate PASS"],
         True,
+        execute=True,
     )
 
 
@@ -172,102 +270,112 @@ def restore_hashes(artifact_rel: str, trace_id: str) -> tuple[str, str]:
 
 
 def build_cycle_02() -> dict[str, Any]:
-    c02 = ROOT / "dev/seven-lens-browser-trace-cycle02.json"
-    c03 = ROOT / "dev/seven-lens-browser-trace-cycle03.json"
     travel_hash = restore_hashes("dev/seven-lens-browser-trace-cycle02.json", "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH")
     cyl_hash = restore_hashes("dev/seven-lens-browser-trace-cycle02.json", "SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH")
-    best_hash = restore_hashes("dev/seven-lens-browser-trace-cycle03.json", "SL-C03-BEST-MIX-PHYSICAL-TRACE")
+    min_deco_hash = restore_hashes("dev/seven-lens-browser-trace-cycle02.json", "SL-C02-MIN-DECO-IMPERIAL-TRACE")
+    deco_cyl_hash = restore_hashes("dev/seven-lens-browser-trace-cycle02.json", "SL-C02-DECO-CYL-IMPERIAL-TRACE")
 
     evidence = [
         er(
             "ER-02-PRE-PLANNER",
             "baseline_failure",
-            "git checkout 3731e560 -- index.html gas-cards-core.js && git checkout e07ab49 -- dev/engine_regression.py && python dev/engine_regression.py",
-            1,
+            "python dev/engine_regression.py SL-C02-MIN-DECO-UNITS SL-C02-TRAVEL-DEPTH-CONSTRAINTS",
+            None,
             ["SL-C02-MIN-DECO-UNITS", "SL-C02-TRAVEL-DEPTH-CONSTRAINTS"],
             ["2 failed with pre-fix planner code at audit harness"],
             True,
             evidence_commit="3731e560aaa206b864b13f46f49d6ed4df260fc1",
+            execute=True,
+            worktree_base="3731e560aaa206b864b13f46f49d6ed4df260fc1",
+            worktree_checkout="git checkout e07ab49 -- dev/engine_regression.py",
         ),
         er(
             "ER-02-POST-MIN-DECO",
             "post_fix",
             "python dev/engine_regression.py SL-C02-MIN-DECO-UNITS",
-            0,
+            None,
             ["SL-C02-MIN-DECO-UNITS"],
             ["imperial min deco stop depths enforced"],
             False,
-            runtime_trace=runtime_trace_physical("dev/seven-lens-browser-trace-cycle03.json", "SL-C03-BEST-MIX-PHYSICAL-TRACE"),
+            execute=True,
+            runtime_trace=runtime_trace_min_deco("dev/seven-lens-browser-trace-cycle02.json", "SL-C02-MIN-DECO-IMPERIAL-TRACE"),
         ),
         er(
             "ER-02-POST-TRAVEL-DEPTH",
             "post_fix",
             "python dev/engine_regression.py SL-C02-TRAVEL-DEPTH-CONSTRAINTS",
-            0,
+            None,
             ["SL-C02-TRAVEL-DEPTH-CONSTRAINTS"],
             ["travel manual depth max follows display units"],
             False,
+            execute=True,
             runtime_trace=runtime_trace_edit("dev/seven-lens-browser-trace-cycle02.json", "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH"),
         ),
         er(
             "ER-02-POST-CYLINDER",
             "post_fix",
             "python dev/engine_regression.py SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS",
-            0,
+            None,
             ["SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS"],
             ["imperial cylinder constraints match physical tuple"],
             False,
-            runtime_trace=runtime_trace_edit("dev/seven-lens-browser-trace-cycle02.json", "SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH"),
+            execute=True,
+            runtime_trace=runtime_trace_deco_cyl("dev/seven-lens-browser-trace-cycle02.json", "SL-C02-DECO-CYL-IMPERIAL-TRACE"),
         ),
         er(
             "ER-02-POST-PARITY",
             "post_fix",
             "python dev/engine_regression.py SL-C02-TRAVEL-DEPTH-PHYSICAL-PARITY SL-C02-UNIT-ROUNDTRIP-IMMUTABLE",
-            0,
+            None,
             ["SL-C02-TRAVEL-DEPTH-PHYSICAL-PARITY", "SL-C02-UNIT-ROUNDTRIP-IMMUTABLE"],
             ["physical depth parity across unit switches"],
             False,
+            execute=True,
             runtime_trace=runtime_trace_edit("dev/seven-lens-browser-trace-cycle02.json", "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH"),
         ),
         er(
             "ER-02-POST-SCHEDULE",
             "post_fix",
             "python dev/engine_regression.py SL-C02-MIN-DECO-UNITS",
-            0,
+            None,
             ["SL-C02-MIN-DECO-UNITS"],
             ["schedule stops match across imperial and metric"],
             False,
-            runtime_trace=runtime_trace_physical("dev/seven-lens-browser-trace-cycle03.json", "SL-C03-CNS-PHYSICAL-TRACE"),
+            execute=True,
+            runtime_trace=runtime_trace_min_deco("dev/seven-lens-browser-trace-cycle02.json", "SL-C02-MIN-DECO-IMPERIAL-TRACE"),
         ),
         er(
             "ER-02-POST-PROTOCOL",
             "post_fix",
             "python tools/run_audit_coverage_suite.py",
-            0,
+            None,
             ["AUDIT-COV-01"],
             ["finding continuity registry checks PASS"],
             False,
-            runtime_trace=runtime_trace_physical("dev/seven-lens-browser-trace-cycle03.json", "SL-C03-BEST-MIX-PHYSICAL-TRACE"),
+            execute=True,
+            runtime_trace=runtime_trace_min_deco("dev/seven-lens-browser-trace-cycle02.json", "SL-C02-MIN-DECO-IMPERIAL-TRACE"),
         ),
         er(
             "ER-02-RESTORE-MIN-DECO",
             "state_restoration",
             "python dev/engine_regression.py SL-C02-MIN-DECO-UNITS",
-            0,
+            None,
             ["SL-C02-MIN-DECO-UNITS"],
             ["finally restores units and minDeco DOM"],
             True,
-            before_hash=best_hash[0],
-            after_hash=best_hash[1],
+            execute=True,
+            before_hash=min_deco_hash[0],
+            after_hash=min_deco_hash[1],
         ),
         er(
             "ER-02-RESTORE-TRAVEL",
             "state_restoration",
             "python dev/engine_regression.py SL-C02-TRAVEL-DEPTH-CONSTRAINTS",
-            0,
+            None,
             ["SL-C02-TRAVEL-DEPTH-CONSTRAINTS"],
             ["finally restores travel depth DOM"],
             True,
+            execute=True,
             before_hash=travel_hash[0],
             after_hash=travel_hash[1],
         ),
@@ -275,21 +383,23 @@ def build_cycle_02() -> dict[str, Any]:
             "ER-02-RESTORE-CYLINDER",
             "state_restoration",
             "python dev/engine_regression.py SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS",
-            0,
+            None,
             ["SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS"],
             ["finally restores cylinder DOM"],
             True,
-            before_hash=cyl_hash[0],
-            after_hash=cyl_hash[1],
+            execute=True,
+            before_hash=deco_cyl_hash[0],
+            after_hash=deco_cyl_hash[1],
         ),
         er(
             "ER-02-RESTORE-PARITY",
             "state_restoration",
             "python dev/engine_regression.py SL-C02-TRAVEL-DEPTH-PHYSICAL-PARITY SL-C02-UNIT-ROUNDTRIP-IMMUTABLE",
-            0,
+            None,
             ["SL-C02-TRAVEL-DEPTH-PHYSICAL-PARITY", "SL-C02-UNIT-ROUNDTRIP-IMMUTABLE"],
             ["finally restores units and depth datasets"],
             True,
+            execute=True,
             before_hash=travel_hash[0],
             after_hash=travel_hash[1],
         ),
@@ -297,23 +407,25 @@ def build_cycle_02() -> dict[str, Any]:
             "ER-02-RESTORE-SCHEDULE",
             "state_restoration",
             "python dev/engine_regression.py SL-C02-MIN-DECO-UNITS",
-            0,
+            None,
             ["SL-C02-MIN-DECO-UNITS"],
             ["finally restores schedule inputs"],
             True,
-            before_hash=best_hash[0],
-            after_hash=best_hash[1],
+            execute=True,
+            before_hash=min_deco_hash[0],
+            after_hash=min_deco_hash[1],
         ),
         er(
             "ER-02-RESTORE-PROTOCOL",
             "state_restoration",
             "python tools/run_audit_coverage_suite.py",
-            0,
+            None,
             ["AUDIT-COV-01"],
             ["coverage suite leaves registry unchanged"],
             True,
-            before_hash=best_hash[0],
-            after_hash=best_hash[1],
+            execute=True,
+            before_hash=min_deco_hash[0],
+            after_hash=min_deco_hash[1],
         ),
         gate("static", "python -m tools.audit check --profile static"),
         gate("ci", "python -m tools.audit run --profile ci"),
@@ -321,11 +433,12 @@ def build_cycle_02() -> dict[str, Any]:
     ]
 
     record = json.loads((ROOT / "docs/seven-lens-records/cycle-02-planner.json").read_text(encoding="utf-8"))
+    audit_commit = CYCLE_02_AUDIT if CYCLE_02_AUDIT != "CYCLE_02_AUDIT_PLACEHOLDER" else str(record.get("audit_commit", ""))
     record.update(
         {
             "verified_source_commit": COMMIT,
             "verification_status": "PASSED",
-            "audit_commit": "e07ab49cf5c28a9b99c00eb12d3538acec568728",
+            "audit_commit": audit_commit,
             "integration_base_commit": "3731e560aaa206b864b13f46f49d6ed4df260fc1",
             "baseline_registry_fingerprint": "306190fe8c9020f406295647292a9f317504dce6f42f6fe7bd29b6dc01f454ec",
             "baseline_findings": [],
@@ -414,7 +527,7 @@ def build_cycle_02() -> dict[str, Any]:
         )
     )
     record["findings"] = list(findings.values())
-    record["notes"] = "Closure evidence materialized at d956648 with schema-v2 browser traces and regression gates."
+    record["notes"] = f"Closure evidence materialized at {COMMIT} with executed regression, browser traces, and gates."
     return record
 
 
@@ -880,6 +993,9 @@ def build_cycle_04() -> dict[str, Any]:
 
 
 def main() -> int:
+    materialize_browser_artifacts()
+    global COMMIT
+    COMMIT = _head_commit()
     for name, builder in (
         ("cycle-02-planner.json", build_cycle_02),
         ("cycle-03-consumption.json", build_cycle_03),

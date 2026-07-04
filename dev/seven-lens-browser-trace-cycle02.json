@@ -2,8 +2,8 @@
   "schema_version": 2,
   "runner_version": 2,
   "spec": "docs\\seven-lens-traces\\cycle-02-planner.json",
-  "spec_sha256": "67885ee20108a3ca64f3420650be11947f4fbf153daf2c9957d837b2229028d0",
-  "commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+  "spec_sha256": "c7adfc38b7e778dff18fd0d8ad1c8429517636cc30aebc2ba3910622b09e37e3",
+  "commit": "89be820b82f1d83498ea0ade4f61ae8165d8b0b1",
   "traces": [
     {
       "id": "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
@@ -44,8 +44,8 @@
           "detail": "36.575998829568036 close 36.576"
         }
       ],
-      "state_before_sha256": "62f9d70e0b73f0d64c827aca0a6fe30079c53dfa6110493965c3865559c59e1e",
-      "state_after_sha256": "62f9d70e0b73f0d64c827aca0a6fe30079c53dfa6110493965c3865559c59e1e",
+      "state_before_sha256": "f19598f71dda56b5423d20f71330efb7f87fb44341e657a4159b52c0c2224c68",
+      "state_after_sha256": "f19598f71dda56b5423d20f71330efb7f87fb44341e657a4159b52c0c2224c68",
       "state_before": {
         "elements": {
           "#navBtnSettings": {
@@ -86,7 +86,9 @@
             "text": "",
             "className": "",
             "style": null,
-            "dataset": {}
+            "dataset": {
+              "depthM": "30"
+            }
           }
         },
         "globals": {
@@ -140,7 +142,9 @@
             "text": "",
             "className": "",
             "style": null,
-            "dataset": {}
+            "dataset": {
+              "depthM": "30"
+            }
           }
         },
         "globals": {
@@ -201,8 +205,8 @@
               "detail": "36.575998829568036 close 36.576"
             }
           ],
-          "state_before_sha256": "62f9d70e0b73f0d64c827aca0a6fe30079c53dfa6110493965c3865559c59e1e",
-          "state_after_sha256": "62f9d70e0b73f0d64c827aca0a6fe30079c53dfa6110493965c3865559c59e1e",
+          "state_before_sha256": "f19598f71dda56b5423d20f71330efb7f87fb44341e657a4159b52c0c2224c68",
+          "state_after_sha256": "f19598f71dda56b5423d20f71330efb7f87fb44341e657a4159b52c0c2224c68",
           "state_before": {
             "elements": {
               "#navBtnSettings": {
@@ -243,7 +247,9 @@
                 "text": "",
                 "className": "",
                 "style": null,
-                "dataset": {}
+                "dataset": {
+                  "depthM": "30"
+                }
               }
             },
             "globals": {
@@ -297,7 +303,9 @@
                 "text": "",
                 "className": "",
                 "style": null,
-                "dataset": {}
+                "dataset": {
+                  "depthM": "30"
+                }
               }
             },
             "globals": {
@@ -356,8 +364,8 @@
               "detail": "36.575998829568036 close 36.576"
             }
           ],
-          "state_before_sha256": "585a32d6d20d418b5fa005a6fee2ffb8069f974b9cdee9348c0a4baa547f1777",
-          "state_after_sha256": "585a32d6d20d418b5fa005a6fee2ffb8069f974b9cdee9348c0a4baa547f1777",
+          "state_before_sha256": "f19598f71dda56b5423d20f71330efb7f87fb44341e657a4159b52c0c2224c68",
+          "state_after_sha256": "f19598f71dda56b5423d20f71330efb7f87fb44341e657a4159b52c0c2224c68",
           "state_before": {
             "elements": {
               "#navBtnSettings": {
@@ -398,7 +406,9 @@
                 "text": "",
                 "className": "",
                 "style": null,
-                "dataset": {}
+                "dataset": {
+                  "depthM": "30"
+                }
               }
             },
             "globals": {
@@ -407,7 +417,7 @@
             "localStorage": {
               "lspAdvancedOpen": "0",
               "lspCcrAdvOpen": "0",
-              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"decoDepth\":\"40\",\"decoBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"decoDepth\":\"40\",\"decoBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"manual\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":true}",
               "waterDensity": "salt"
             },
             "sessionStorage": {}
@@ -452,7 +462,9 @@
                 "text": "",
                 "className": "",
                 "style": null,
-                "dataset": {}
+                "dataset": {
+                  "depthM": "30"
+                }
               }
             },
             "globals": {
@@ -461,7 +473,7 @@
             "localStorage": {
               "lspAdvancedOpen": "0",
               "lspCcrAdvOpen": "0",
-              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"decoDepth\":\"40\",\"decoBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"decoDepth\":\"40\",\"decoBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"manual\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":true}",
               "waterDensity": "salt"
             },
             "sessionStorage": {}
@@ -512,8 +524,8 @@
           "detail": "14.158409953928535 close 14.158"
         }
       ],
-      "state_before_sha256": "62ba2e20bbf615e8c6fd7f70901336c8accb8ce1530a26b89b4c717ee6de5359",
-      "state_after_sha256": "62ba2e20bbf615e8c6fd7f70901336c8accb8ce1530a26b89b4c717ee6de5359",
+      "state_before_sha256": "50c83ddd44a8dca11e3f4b1e4c0ed2b74c29b823ab8bd736b44f1a62076c5fd1",
+      "state_after_sha256": "50c83ddd44a8dca11e3f4b1e4c0ed2b74c29b823ab8bd736b44f1a62076c5fd1",
       "state_before": {
         "elements": {
           "#navBtnSettings": {
@@ -546,7 +558,9 @@
             "text": "",
             "className": "",
             "style": null,
-            "dataset": {}
+            "dataset": {
+              "volumeL": "12"
+            }
           }
         },
         "globals": {
@@ -592,7 +606,9 @@
             "text": "",
             "className": "",
             "style": null,
-            "dataset": {}
+            "dataset": {
+              "volumeL": "12"
+            }
           }
         },
         "globals": {
@@ -652,8 +668,8 @@
               "detail": "14.158409953928535 close 14.158"
             }
           ],
-          "state_before_sha256": "62ba2e20bbf615e8c6fd7f70901336c8accb8ce1530a26b89b4c717ee6de5359",
-          "state_after_sha256": "62ba2e20bbf615e8c6fd7f70901336c8accb8ce1530a26b89b4c717ee6de5359",
+          "state_before_sha256": "50c83ddd44a8dca11e3f4b1e4c0ed2b74c29b823ab8bd736b44f1a62076c5fd1",
+          "state_after_sha256": "50c83ddd44a8dca11e3f4b1e4c0ed2b74c29b823ab8bd736b44f1a62076c5fd1",
           "state_before": {
             "elements": {
               "#navBtnSettings": {
@@ -686,7 +702,9 @@
                 "text": "",
                 "className": "",
                 "style": null,
-                "dataset": {}
+                "dataset": {
+                  "volumeL": "12"
+                }
               }
             },
             "globals": {
@@ -732,7 +750,9 @@
                 "text": "",
                 "className": "",
                 "style": null,
-                "dataset": {}
+                "dataset": {
+                  "volumeL": "12"
+                }
               }
             },
             "globals": {
@@ -790,8 +810,8 @@
               "detail": "14.158409953928535 close 14.158"
             }
           ],
-          "state_before_sha256": "487362d7c7cd6a52f37f88cabeb53a91893e9357e79fb86eaac4ab323cfcd147",
-          "state_after_sha256": "487362d7c7cd6a52f37f88cabeb53a91893e9357e79fb86eaac4ab323cfcd147",
+          "state_before_sha256": "50c83ddd44a8dca11e3f4b1e4c0ed2b74c29b823ab8bd736b44f1a62076c5fd1",
+          "state_after_sha256": "50c83ddd44a8dca11e3f4b1e4c0ed2b74c29b823ab8bd736b44f1a62076c5fd1",
           "state_before": {
             "elements": {
               "#navBtnSettings": {
@@ -824,8 +844,880 @@
                 "text": "",
                 "className": "",
                 "style": null,
+                "dataset": {
+                  "volumeL": "12"
+                }
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"decoDepth\":\"40\",\"decoBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnSettings": {
+                "value": "",
+                "checked": null,
+                "text": "SettingsWater \u00b7 Units",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#unitsSelect": {
+                "value": "metric",
+                "checked": null,
+                "text": "\nm (metric)\nft (imperial)\n",
+                "className": "u7",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_size": {
+                "value": "12",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {
+                  "volumeL": "12"
+                }
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"decoDepth\":\"40\",\"decoBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "SL-C02-MIN-DECO-IMPERIAL-TRACE",
+      "entry_event": "User switches to imperial with min-deco profile enabled.",
+      "consumer_path": [
+        "setUnits",
+        "getVpmMinDecoSettingsFromDom",
+        "enforceMinDecoProfile",
+        "minDeco stop depths"
+      ],
+      "captures": {
+        "metric": {
+          "isMetric": true,
+          "stopDepths": "30,20"
+        },
+        "imperial": {
+          "isMetric": false,
+          "stopDepths": "30,20"
+        }
+      },
+      "assertions": [
+        {
+          "id": "imperial-not-metric-flag",
+          "passed": true,
+          "detail": "False equal False"
+        },
+        {
+          "id": "imperial-stop-depths",
+          "passed": true,
+          "detail": "'30,20' equal '30,20'"
+        }
+      ],
+      "state_before_sha256": "9f6cf4a70fa310769e9e89ba9e389a427ed386bf4e7feb52c1a0e12e0c8a0934",
+      "state_after_sha256": "9f6cf4a70fa310769e9e89ba9e389a427ed386bf4e7feb52c1a0e12e0c8a0934",
+      "state_before": {
+        "elements": {
+          "#navBtnSettings": {
+            "value": "",
+            "checked": null,
+            "text": "SettingsWater \u00b7 Units",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#unitsSelect": {
+            "value": "metric",
+            "checked": null,
+            "text": "\nm (metric)\nft (imperial)\n",
+            "className": "u7",
+            "style": null,
+            "dataset": {}
+          },
+          "#advancedSettingsToggle": {
+            "value": "",
+            "checked": null,
+            "text": "\n\u25b6\nAdvanced Settings\n\n",
+            "className": "",
+            "style": "display: flex; align-items: center; gap: 7px; width: 100%; background: none; border-color: var(--accent); border-top-style: ; border-top-width: ; border-right-style: ; border-right-width: ; border-bottom-style: ; border-bottom-width: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 6px; padding: 7px 12px; cursor: pointer; color: var(--accent); font-family: inherit; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; text-align: left; transition: 0.2s;",
+            "dataset": {}
+          },
+          "#advancedSettingsBody": {
+            "value": null,
+            "checked": null,
+            "text": "\n\nDescent Rate\n\n10 m/min\n15 m/min\n18 m/min\n20 m/min\n22 m/min\n25 m/min\n30 m/min\n\n\nAscent Rate\n\n3 m/min\n6 m/min\n9 m/min\n10 m/min\n12 m/min\n15 m/min\n18 m/min\n\n\nDeco Ascent Rate\n\n3 m/min\n6 m/min\n9 m/min\n10 m/min\n12 m/min\n\n\nSurf Ascent Rate\n\n3 m/min\n6 m/min\n9 m/min\n\n\nDeco Step Size\n\n1 m\n3 m\n5 m\n\n\nLast Deco Stop\n\n6 m\n3 m\n1 m\n\n\n\nMinimum Stop \n\n2:00\n1:00\n0:30\n0:10\n0:01\n\n\n\nMin Deco \n\nOff\nOn\n\n\n\n\n9m (min)\n\n\n\n6m (min)\n\n\n\n\nStop Rounding \n\nNo\nYes (MultiDeco)\n\n\n\nTransit Mode \n\nSchreiner (accurate)\nMultiDeco compatible\n\n\n\nShallow GF \n\nOff (standard GF)\nOn (MultiDeco-compatible)\n\n\n\nWater Vapor \n\n0.0627 bar (B\u00fchlmann)\n0.0577 bar (MultiDeco)\n\n\n\nHe HT Comp 1 \n\n1.88 min (Baker / VPM-B)\n1.51 min (B\u00fchlmann 2003)\n\n\nBT SAC (L/min)\n\n\nDeco SAC (L/min)\n\n\nContingency SAC \u00d7 \n\n\n\nN\u2082 Narcotic \n\nYes\nNo\n\n\n\nO\u2082 Narcotic \n\nYes\nNo\n\n\nMax Bottom ppO\u2082\n\n1.6 bar\n1.5 bar\n1.4 bar\n1.2 bar\n\n\nMax Deco ppO\u2082\n\n1.6 bar\n1.5 bar\n1.4 bar\n1.2 bar\n\n\n\nO\u2082 @ MOD \n\nAllow at MOD\nStrict ppO\u2082\n\n\n\n",
+            "className": "",
+            "style": "",
+            "dataset": {}
+          },
+          "#minDecoProfileEnable": {
+            "value": "yes",
+            "checked": null,
+            "text": "\nOff\nOn\n",
+            "className": "",
+            "style": null,
+            "dataset": {}
+          },
+          "#minDeco9m": {
+            "value": "1",
+            "checked": false,
+            "text": "",
+            "className": "",
+            "style": null,
+            "dataset": {}
+          },
+          "#minDeco6m": {
+            "value": "3",
+            "checked": false,
+            "text": "",
+            "className": "",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "lspAdvancedOpen": "1",
+          "lspCcrAdvOpen": "0",
+          "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"decoDepth\":\"40\",\"decoBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"yes\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+          "waterDensity": "salt"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnSettings": {
+            "value": "",
+            "checked": null,
+            "text": "SettingsWater \u00b7 Units",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#unitsSelect": {
+            "value": "metric",
+            "checked": null,
+            "text": "\nm (metric)\nft (imperial)\n",
+            "className": "u7",
+            "style": null,
+            "dataset": {}
+          },
+          "#advancedSettingsToggle": {
+            "value": "",
+            "checked": null,
+            "text": "\n\u25b6\nAdvanced Settings\n\n",
+            "className": "",
+            "style": "display: flex; align-items: center; gap: 7px; width: 100%; background: none; border-color: var(--accent); border-top-style: ; border-top-width: ; border-right-style: ; border-right-width: ; border-bottom-style: ; border-bottom-width: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 6px; padding: 7px 12px; cursor: pointer; color: var(--accent); font-family: inherit; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; text-align: left; transition: 0.2s;",
+            "dataset": {}
+          },
+          "#advancedSettingsBody": {
+            "value": null,
+            "checked": null,
+            "text": "\n\nDescent Rate\n\n10 m/min\n15 m/min\n18 m/min\n20 m/min\n22 m/min\n25 m/min\n30 m/min\n\n\nAscent Rate\n\n3 m/min\n6 m/min\n9 m/min\n10 m/min\n12 m/min\n15 m/min\n18 m/min\n\n\nDeco Ascent Rate\n\n3 m/min\n6 m/min\n9 m/min\n10 m/min\n12 m/min\n\n\nSurf Ascent Rate\n\n3 m/min\n6 m/min\n9 m/min\n\n\nDeco Step Size\n\n1 m\n3 m\n5 m\n\n\nLast Deco Stop\n\n6 m\n3 m\n1 m\n\n\n\nMinimum Stop \n\n2:00\n1:00\n0:30\n0:10\n0:01\n\n\n\nMin Deco \n\nOff\nOn\n\n\n\n\n9m (min)\n\n\n\n6m (min)\n\n\n\n\nStop Rounding \n\nNo\nYes (MultiDeco)\n\n\n\nTransit Mode \n\nSchreiner (accurate)\nMultiDeco compatible\n\n\n\nShallow GF \n\nOff (standard GF)\nOn (MultiDeco-compatible)\n\n\n\nWater Vapor \n\n0.0627 bar (B\u00fchlmann)\n0.0577 bar (MultiDeco)\n\n\n\nHe HT Comp 1 \n\n1.88 min (Baker / VPM-B)\n1.51 min (B\u00fchlmann 2003)\n\n\nBT SAC (L/min)\n\n\nDeco SAC (L/min)\n\n\nContingency SAC \u00d7 \n\n\n\nN\u2082 Narcotic \n\nYes\nNo\n\n\n\nO\u2082 Narcotic \n\nYes\nNo\n\n\nMax Bottom ppO\u2082\n\n1.6 bar\n1.5 bar\n1.4 bar\n1.2 bar\n\n\nMax Deco ppO\u2082\n\n1.6 bar\n1.5 bar\n1.4 bar\n1.2 bar\n\n\n\nO\u2082 @ MOD \n\nAllow at MOD\nStrict ppO\u2082\n\n\n\n",
+            "className": "",
+            "style": "",
+            "dataset": {}
+          },
+          "#minDecoProfileEnable": {
+            "value": "yes",
+            "checked": null,
+            "text": "\nOff\nOn\n",
+            "className": "",
+            "style": null,
+            "dataset": {}
+          },
+          "#minDeco9m": {
+            "value": "1",
+            "checked": false,
+            "text": "",
+            "className": "",
+            "style": null,
+            "dataset": {}
+          },
+          "#minDeco6m": {
+            "value": "3",
+            "checked": false,
+            "text": "",
+            "className": "",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "lspAdvancedOpen": "1",
+          "lspCcrAdvOpen": "0",
+          "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"decoDepth\":\"40\",\"decoBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"yes\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+          "waterDensity": "salt"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "runs": [
+        {
+          "id": "SL-C02-MIN-DECO-IMPERIAL-TRACE",
+          "entry_event": "User switches to imperial with min-deco profile enabled.",
+          "consumer_path": [
+            "setUnits",
+            "getVpmMinDecoSettingsFromDom",
+            "enforceMinDecoProfile",
+            "minDeco stop depths"
+          ],
+          "captures": {
+            "metric": {
+              "isMetric": true,
+              "stopDepths": "30,20"
+            },
+            "imperial": {
+              "isMetric": false,
+              "stopDepths": "30,20"
+            }
+          },
+          "assertions": [
+            {
+              "id": "imperial-not-metric-flag",
+              "passed": true,
+              "detail": "False equal False"
+            },
+            {
+              "id": "imperial-stop-depths",
+              "passed": true,
+              "detail": "'30,20' equal '30,20'"
+            }
+          ],
+          "state_before_sha256": "9f6cf4a70fa310769e9e89ba9e389a427ed386bf4e7feb52c1a0e12e0c8a0934",
+          "state_after_sha256": "9f6cf4a70fa310769e9e89ba9e389a427ed386bf4e7feb52c1a0e12e0c8a0934",
+          "state_before": {
+            "elements": {
+              "#navBtnSettings": {
+                "value": "",
+                "checked": null,
+                "text": "SettingsWater \u00b7 Units",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#unitsSelect": {
+                "value": "metric",
+                "checked": null,
+                "text": "\nm (metric)\nft (imperial)\n",
+                "className": "u7",
+                "style": null,
+                "dataset": {}
+              },
+              "#advancedSettingsToggle": {
+                "value": "",
+                "checked": null,
+                "text": "\n\u25b6\nAdvanced Settings\n\n",
+                "className": "",
+                "style": "display: flex; align-items: center; gap: 7px; width: 100%; background: none; border-color: var(--accent); border-top-style: ; border-top-width: ; border-right-style: ; border-right-width: ; border-bottom-style: ; border-bottom-width: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 6px; padding: 7px 12px; cursor: pointer; color: var(--accent); font-family: inherit; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; text-align: left; transition: 0.2s;",
+                "dataset": {}
+              },
+              "#advancedSettingsBody": {
+                "value": null,
+                "checked": null,
+                "text": "\n\nDescent Rate\n\n10 m/min\n15 m/min\n18 m/min\n20 m/min\n22 m/min\n25 m/min\n30 m/min\n\n\nAscent Rate\n\n3 m/min\n6 m/min\n9 m/min\n10 m/min\n12 m/min\n15 m/min\n18 m/min\n\n\nDeco Ascent Rate\n\n3 m/min\n6 m/min\n9 m/min\n10 m/min\n12 m/min\n\n\nSurf Ascent Rate\n\n3 m/min\n6 m/min\n9 m/min\n\n\nDeco Step Size\n\n1 m\n3 m\n5 m\n\n\nLast Deco Stop\n\n6 m\n3 m\n1 m\n\n\n\nMinimum Stop \n\n2:00\n1:00\n0:30\n0:10\n0:01\n\n\n\nMin Deco \n\nOff\nOn\n\n\n\n\n9m (min)\n\n\n\n6m (min)\n\n\n\n\nStop Rounding \n\nNo\nYes (MultiDeco)\n\n\n\nTransit Mode \n\nSchreiner (accurate)\nMultiDeco compatible\n\n\n\nShallow GF \n\nOff (standard GF)\nOn (MultiDeco-compatible)\n\n\n\nWater Vapor \n\n0.0627 bar (B\u00fchlmann)\n0.0577 bar (MultiDeco)\n\n\n\nHe HT Comp 1 \n\n1.88 min (Baker / VPM-B)\n1.51 min (B\u00fchlmann 2003)\n\n\nBT SAC (L/min)\n\n\nDeco SAC (L/min)\n\n\nContingency SAC \u00d7 \n\n\n\nN\u2082 Narcotic \n\nYes\nNo\n\n\n\nO\u2082 Narcotic \n\nYes\nNo\n\n\nMax Bottom ppO\u2082\n\n1.6 bar\n1.5 bar\n1.4 bar\n1.2 bar\n\n\nMax Deco ppO\u2082\n\n1.6 bar\n1.5 bar\n1.4 bar\n1.2 bar\n\n\n\nO\u2082 @ MOD \n\nAllow at MOD\nStrict ppO\u2082\n\n\n\n",
+                "className": "",
+                "style": "",
+                "dataset": {}
+              },
+              "#minDecoProfileEnable": {
+                "value": "yes",
+                "checked": null,
+                "text": "\nOff\nOn\n",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              },
+              "#minDeco9m": {
+                "value": "1",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              },
+              "#minDeco6m": {
+                "value": "3",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
                 "dataset": {}
               }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "1",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"decoDepth\":\"40\",\"decoBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"yes\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnSettings": {
+                "value": "",
+                "checked": null,
+                "text": "SettingsWater \u00b7 Units",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#unitsSelect": {
+                "value": "metric",
+                "checked": null,
+                "text": "\nm (metric)\nft (imperial)\n",
+                "className": "u7",
+                "style": null,
+                "dataset": {}
+              },
+              "#advancedSettingsToggle": {
+                "value": "",
+                "checked": null,
+                "text": "\n\u25b6\nAdvanced Settings\n\n",
+                "className": "",
+                "style": "display: flex; align-items: center; gap: 7px; width: 100%; background: none; border-color: var(--accent); border-top-style: ; border-top-width: ; border-right-style: ; border-right-width: ; border-bottom-style: ; border-bottom-width: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 6px; padding: 7px 12px; cursor: pointer; color: var(--accent); font-family: inherit; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; text-align: left; transition: 0.2s;",
+                "dataset": {}
+              },
+              "#advancedSettingsBody": {
+                "value": null,
+                "checked": null,
+                "text": "\n\nDescent Rate\n\n10 m/min\n15 m/min\n18 m/min\n20 m/min\n22 m/min\n25 m/min\n30 m/min\n\n\nAscent Rate\n\n3 m/min\n6 m/min\n9 m/min\n10 m/min\n12 m/min\n15 m/min\n18 m/min\n\n\nDeco Ascent Rate\n\n3 m/min\n6 m/min\n9 m/min\n10 m/min\n12 m/min\n\n\nSurf Ascent Rate\n\n3 m/min\n6 m/min\n9 m/min\n\n\nDeco Step Size\n\n1 m\n3 m\n5 m\n\n\nLast Deco Stop\n\n6 m\n3 m\n1 m\n\n\n\nMinimum Stop \n\n2:00\n1:00\n0:30\n0:10\n0:01\n\n\n\nMin Deco \n\nOff\nOn\n\n\n\n\n9m (min)\n\n\n\n6m (min)\n\n\n\n\nStop Rounding \n\nNo\nYes (MultiDeco)\n\n\n\nTransit Mode \n\nSchreiner (accurate)\nMultiDeco compatible\n\n\n\nShallow GF \n\nOff (standard GF)\nOn (MultiDeco-compatible)\n\n\n\nWater Vapor \n\n0.0627 bar (B\u00fchlmann)\n0.0577 bar (MultiDeco)\n\n\n\nHe HT Comp 1 \n\n1.88 min (Baker / VPM-B)\n1.51 min (B\u00fchlmann 2003)\n\n\nBT SAC (L/min)\n\n\nDeco SAC (L/min)\n\n\nContingency SAC \u00d7 \n\n\n\nN\u2082 Narcotic \n\nYes\nNo\n\n\n\nO\u2082 Narcotic \n\nYes\nNo\n\n\nMax Bottom ppO\u2082\n\n1.6 bar\n1.5 bar\n1.4 bar\n1.2 bar\n\n\nMax Deco ppO\u2082\n\n1.6 bar\n1.5 bar\n1.4 bar\n1.2 bar\n\n\n\nO\u2082 @ MOD \n\nAllow at MOD\nStrict ppO\u2082\n\n\n\n",
+                "className": "",
+                "style": "",
+                "dataset": {}
+              },
+              "#minDecoProfileEnable": {
+                "value": "yes",
+                "checked": null,
+                "text": "\nOff\nOn\n",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              },
+              "#minDeco9m": {
+                "value": "1",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              },
+              "#minDeco6m": {
+                "value": "3",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "1",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"decoDepth\":\"40\",\"decoBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"yes\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-C02-MIN-DECO-IMPERIAL-TRACE",
+          "entry_event": "User switches to imperial with min-deco profile enabled.",
+          "consumer_path": [
+            "setUnits",
+            "getVpmMinDecoSettingsFromDom",
+            "enforceMinDecoProfile",
+            "minDeco stop depths"
+          ],
+          "captures": {
+            "metric": {
+              "isMetric": true,
+              "stopDepths": "30,20"
+            },
+            "imperial": {
+              "isMetric": false,
+              "stopDepths": "30,20"
+            }
+          },
+          "assertions": [
+            {
+              "id": "imperial-not-metric-flag",
+              "passed": true,
+              "detail": "False equal False"
+            },
+            {
+              "id": "imperial-stop-depths",
+              "passed": true,
+              "detail": "'30,20' equal '30,20'"
+            }
+          ],
+          "state_before_sha256": "9f6cf4a70fa310769e9e89ba9e389a427ed386bf4e7feb52c1a0e12e0c8a0934",
+          "state_after_sha256": "9f6cf4a70fa310769e9e89ba9e389a427ed386bf4e7feb52c1a0e12e0c8a0934",
+          "state_before": {
+            "elements": {
+              "#navBtnSettings": {
+                "value": "",
+                "checked": null,
+                "text": "SettingsWater \u00b7 Units",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#unitsSelect": {
+                "value": "metric",
+                "checked": null,
+                "text": "\nm (metric)\nft (imperial)\n",
+                "className": "u7",
+                "style": null,
+                "dataset": {}
+              },
+              "#advancedSettingsToggle": {
+                "value": "",
+                "checked": null,
+                "text": "\n\u25b6\nAdvanced Settings\n\n",
+                "className": "",
+                "style": "display: flex; align-items: center; gap: 7px; width: 100%; background: none; border-color: var(--accent); border-top-style: ; border-top-width: ; border-right-style: ; border-right-width: ; border-bottom-style: ; border-bottom-width: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 6px; padding: 7px 12px; cursor: pointer; color: var(--accent); font-family: inherit; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; text-align: left; transition: 0.2s;",
+                "dataset": {}
+              },
+              "#advancedSettingsBody": {
+                "value": null,
+                "checked": null,
+                "text": "\n\nDescent Rate\n\n10 m/min\n15 m/min\n18 m/min\n20 m/min\n22 m/min\n25 m/min\n30 m/min\n\n\nAscent Rate\n\n3 m/min\n6 m/min\n9 m/min\n10 m/min\n12 m/min\n15 m/min\n18 m/min\n\n\nDeco Ascent Rate\n\n3 m/min\n6 m/min\n9 m/min\n10 m/min\n12 m/min\n\n\nSurf Ascent Rate\n\n3 m/min\n6 m/min\n9 m/min\n\n\nDeco Step Size\n\n1 m\n3 m\n5 m\n\n\nLast Deco Stop\n\n6 m\n3 m\n1 m\n\n\n\nMinimum Stop \n\n2:00\n1:00\n0:30\n0:10\n0:01\n\n\n\nMin Deco \n\nOff\nOn\n\n\n\n\n9m (min)\n\n\n\n6m (min)\n\n\n\n\nStop Rounding \n\nNo\nYes (MultiDeco)\n\n\n\nTransit Mode \n\nSchreiner (accurate)\nMultiDeco compatible\n\n\n\nShallow GF \n\nOff (standard GF)\nOn (MultiDeco-compatible)\n\n\n\nWater Vapor \n\n0.0627 bar (B\u00fchlmann)\n0.0577 bar (MultiDeco)\n\n\n\nHe HT Comp 1 \n\n1.88 min (Baker / VPM-B)\n1.51 min (B\u00fchlmann 2003)\n\n\nBT SAC (L/min)\n\n\nDeco SAC (L/min)\n\n\nContingency SAC \u00d7 \n\n\n\nN\u2082 Narcotic \n\nYes\nNo\n\n\n\nO\u2082 Narcotic \n\nYes\nNo\n\n\nMax Bottom ppO\u2082\n\n1.6 bar\n1.5 bar\n1.4 bar\n1.2 bar\n\n\nMax Deco ppO\u2082\n\n1.6 bar\n1.5 bar\n1.4 bar\n1.2 bar\n\n\n\nO\u2082 @ MOD \n\nAllow at MOD\nStrict ppO\u2082\n\n\n\n",
+                "className": "",
+                "style": "",
+                "dataset": {}
+              },
+              "#minDecoProfileEnable": {
+                "value": "yes",
+                "checked": null,
+                "text": "\nOff\nOn\n",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              },
+              "#minDeco9m": {
+                "value": "1",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              },
+              "#minDeco6m": {
+                "value": "3",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "1",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"decoDepth\":\"40\",\"decoBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"yes\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnSettings": {
+                "value": "",
+                "checked": null,
+                "text": "SettingsWater \u00b7 Units",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#unitsSelect": {
+                "value": "metric",
+                "checked": null,
+                "text": "\nm (metric)\nft (imperial)\n",
+                "className": "u7",
+                "style": null,
+                "dataset": {}
+              },
+              "#advancedSettingsToggle": {
+                "value": "",
+                "checked": null,
+                "text": "\n\u25b6\nAdvanced Settings\n\n",
+                "className": "",
+                "style": "display: flex; align-items: center; gap: 7px; width: 100%; background: none; border-color: var(--accent); border-top-style: ; border-top-width: ; border-right-style: ; border-right-width: ; border-bottom-style: ; border-bottom-width: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 6px; padding: 7px 12px; cursor: pointer; color: var(--accent); font-family: inherit; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; text-align: left; transition: 0.2s;",
+                "dataset": {}
+              },
+              "#advancedSettingsBody": {
+                "value": null,
+                "checked": null,
+                "text": "\n\nDescent Rate\n\n10 m/min\n15 m/min\n18 m/min\n20 m/min\n22 m/min\n25 m/min\n30 m/min\n\n\nAscent Rate\n\n3 m/min\n6 m/min\n9 m/min\n10 m/min\n12 m/min\n15 m/min\n18 m/min\n\n\nDeco Ascent Rate\n\n3 m/min\n6 m/min\n9 m/min\n10 m/min\n12 m/min\n\n\nSurf Ascent Rate\n\n3 m/min\n6 m/min\n9 m/min\n\n\nDeco Step Size\n\n1 m\n3 m\n5 m\n\n\nLast Deco Stop\n\n6 m\n3 m\n1 m\n\n\n\nMinimum Stop \n\n2:00\n1:00\n0:30\n0:10\n0:01\n\n\n\nMin Deco \n\nOff\nOn\n\n\n\n\n9m (min)\n\n\n\n6m (min)\n\n\n\n\nStop Rounding \n\nNo\nYes (MultiDeco)\n\n\n\nTransit Mode \n\nSchreiner (accurate)\nMultiDeco compatible\n\n\n\nShallow GF \n\nOff (standard GF)\nOn (MultiDeco-compatible)\n\n\n\nWater Vapor \n\n0.0627 bar (B\u00fchlmann)\n0.0577 bar (MultiDeco)\n\n\n\nHe HT Comp 1 \n\n1.88 min (Baker / VPM-B)\n1.51 min (B\u00fchlmann 2003)\n\n\nBT SAC (L/min)\n\n\nDeco SAC (L/min)\n\n\nContingency SAC \u00d7 \n\n\n\nN\u2082 Narcotic \n\nYes\nNo\n\n\n\nO\u2082 Narcotic \n\nYes\nNo\n\n\nMax Bottom ppO\u2082\n\n1.6 bar\n1.5 bar\n1.4 bar\n1.2 bar\n\n\nMax Deco ppO\u2082\n\n1.6 bar\n1.5 bar\n1.4 bar\n1.2 bar\n\n\n\nO\u2082 @ MOD \n\nAllow at MOD\nStrict ppO\u2082\n\n\n\n",
+                "className": "",
+                "style": "",
+                "dataset": {}
+              },
+              "#minDecoProfileEnable": {
+                "value": "yes",
+                "checked": null,
+                "text": "\nOff\nOn\n",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              },
+              "#minDeco9m": {
+                "value": "1",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              },
+              "#minDeco6m": {
+                "value": "3",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "1",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"decoDepth\":\"40\",\"decoBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"yes\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "SL-C02-DECO-CYL-IMPERIAL-TRACE",
+      "entry_event": "User adds a dynamic deco cylinder card in imperial mode.",
+      "consumer_path": [
+        "addDecoGasCard",
+        "defaultDecoCylFieldValues",
+        "syncCylinderSizeConstraints",
+        "cylDg3_size validity"
+      ],
+      "captures": {
+        "metric": {
+          "card_absent": true
+        },
+        "imperial": {
+          "input_value": "0.4",
+          "min": "0.02",
+          "step": "0.02",
+          "valid": true
+        }
+      },
+      "assertions": [
+        {
+          "id": "default-size-present",
+          "passed": true,
+          "detail": "'0.4' equal '0.4'"
+        },
+        {
+          "id": "physical-min-step",
+          "passed": true,
+          "detail": "'0.02' equal '0.02'"
+        },
+        {
+          "id": "default-valid",
+          "passed": true,
+          "detail": "True equal True"
+        }
+      ],
+      "state_before_sha256": "5c450e8483d6d373a3ff6673efc462a0dd7175605d7322b748deccccd2a41474",
+      "state_after_sha256": "5c450e8483d6d373a3ff6673efc462a0dd7175605d7322b748deccccd2a41474",
+      "state_before": {
+        "elements": {
+          "#navBtnSettings": {
+            "value": "",
+            "checked": null,
+            "text": "SettingsWater \u00b7 Units",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#unitsSelect": {
+            "value": "metric",
+            "checked": null,
+            "text": "\nm (metric)\nft (imperial)\n",
+            "className": "u7",
+            "style": null,
+            "dataset": {}
+          },
+          "#addDecoGasBtn": {
+            "value": "",
+            "checked": null,
+            "text": "+ ADD GAS MIX",
+            "className": "",
+            "style": "margin-top: 10px; width: 100%; padding: 9px; background: none; border: 1px dashed var(--border); border-radius: 8px; color: var(--muted); font-family: \"JetBrains Mono\", monospace; font-size: 11px; letter-spacing: 1px; cursor: pointer; transition: 0.2s; display: block;",
+            "dataset": {}
+          },
+          "#cylDg3_size": null
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnSettings": {
+            "value": "",
+            "checked": null,
+            "text": "SettingsWater \u00b7 Units",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#unitsSelect": {
+            "value": "metric",
+            "checked": null,
+            "text": "\nm (metric)\nft (imperial)\n",
+            "className": "u7",
+            "style": null,
+            "dataset": {}
+          },
+          "#addDecoGasBtn": {
+            "value": "",
+            "checked": null,
+            "text": "+ ADD GAS MIX",
+            "className": "",
+            "style": "margin-top: 10px; width: 100%; padding: 9px; background: none; border: 1px dashed var(--border); border-radius: 8px; color: var(--muted); font-family: \"JetBrains Mono\", monospace; font-size: 11px; letter-spacing: 1px; cursor: pointer; transition: 0.2s; display: block;",
+            "dataset": {}
+          },
+          "#cylDg3_size": null
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "runs": [
+        {
+          "id": "SL-C02-DECO-CYL-IMPERIAL-TRACE",
+          "entry_event": "User adds a dynamic deco cylinder card in imperial mode.",
+          "consumer_path": [
+            "addDecoGasCard",
+            "defaultDecoCylFieldValues",
+            "syncCylinderSizeConstraints",
+            "cylDg3_size validity"
+          ],
+          "captures": {
+            "metric": {
+              "card_absent": true
+            },
+            "imperial": {
+              "input_value": "0.4",
+              "min": "0.02",
+              "step": "0.02",
+              "valid": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "default-size-present",
+              "passed": true,
+              "detail": "'0.4' equal '0.4'"
+            },
+            {
+              "id": "physical-min-step",
+              "passed": true,
+              "detail": "'0.02' equal '0.02'"
+            },
+            {
+              "id": "default-valid",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "5c450e8483d6d373a3ff6673efc462a0dd7175605d7322b748deccccd2a41474",
+          "state_after_sha256": "5c450e8483d6d373a3ff6673efc462a0dd7175605d7322b748deccccd2a41474",
+          "state_before": {
+            "elements": {
+              "#navBtnSettings": {
+                "value": "",
+                "checked": null,
+                "text": "SettingsWater \u00b7 Units",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#unitsSelect": {
+                "value": "metric",
+                "checked": null,
+                "text": "\nm (metric)\nft (imperial)\n",
+                "className": "u7",
+                "style": null,
+                "dataset": {}
+              },
+              "#addDecoGasBtn": {
+                "value": "",
+                "checked": null,
+                "text": "+ ADD GAS MIX",
+                "className": "",
+                "style": "margin-top: 10px; width: 100%; padding: 9px; background: none; border: 1px dashed var(--border); border-radius: 8px; color: var(--muted); font-family: \"JetBrains Mono\", monospace; font-size: 11px; letter-spacing: 1px; cursor: pointer; transition: 0.2s; display: block;",
+                "dataset": {}
+              },
+              "#cylDg3_size": null
             },
             "globals": {
               "_zhlHeadless": false
@@ -863,14 +1755,152 @@
                 "style": null,
                 "dataset": {}
               },
-              "#cylBot_size": {
-                "value": "12",
-                "checked": false,
-                "text": "",
+              "#addDecoGasBtn": {
+                "value": "",
+                "checked": null,
+                "text": "+ ADD GAS MIX",
                 "className": "",
+                "style": "margin-top: 10px; width: 100%; padding: 9px; background: none; border: 1px dashed var(--border); border-radius: 8px; color: var(--muted); font-family: \"JetBrains Mono\", monospace; font-size: 11px; letter-spacing: 1px; cursor: pointer; transition: 0.2s; display: block;",
+                "dataset": {}
+              },
+              "#cylDg3_size": null
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-C02-DECO-CYL-IMPERIAL-TRACE",
+          "entry_event": "User adds a dynamic deco cylinder card in imperial mode.",
+          "consumer_path": [
+            "addDecoGasCard",
+            "defaultDecoCylFieldValues",
+            "syncCylinderSizeConstraints",
+            "cylDg3_size validity"
+          ],
+          "captures": {
+            "metric": {
+              "card_absent": true
+            },
+            "imperial": {
+              "input_value": "0.4",
+              "min": "0.02",
+              "step": "0.02",
+              "valid": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "default-size-present",
+              "passed": true,
+              "detail": "'0.4' equal '0.4'"
+            },
+            {
+              "id": "physical-min-step",
+              "passed": true,
+              "detail": "'0.02' equal '0.02'"
+            },
+            {
+              "id": "default-valid",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "5c450e8483d6d373a3ff6673efc462a0dd7175605d7322b748deccccd2a41474",
+          "state_after_sha256": "5c450e8483d6d373a3ff6673efc462a0dd7175605d7322b748deccccd2a41474",
+          "state_before": {
+            "elements": {
+              "#navBtnSettings": {
+                "value": "",
+                "checked": null,
+                "text": "SettingsWater \u00b7 Units",
+                "className": "main-nav-btn",
                 "style": null,
                 "dataset": {}
-              }
+              },
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#unitsSelect": {
+                "value": "metric",
+                "checked": null,
+                "text": "\nm (metric)\nft (imperial)\n",
+                "className": "u7",
+                "style": null,
+                "dataset": {}
+              },
+              "#addDecoGasBtn": {
+                "value": "",
+                "checked": null,
+                "text": "+ ADD GAS MIX",
+                "className": "",
+                "style": "margin-top: 10px; width: 100%; padding: 9px; background: none; border: 1px dashed var(--border); border-radius: 8px; color: var(--muted); font-family: \"JetBrains Mono\", monospace; font-size: 11px; letter-spacing: 1px; cursor: pointer; transition: 0.2s; display: block;",
+                "dataset": {}
+              },
+              "#cylDg3_size": null
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnSettings": {
+                "value": "",
+                "checked": null,
+                "text": "SettingsWater \u00b7 Units",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#unitsSelect": {
+                "value": "metric",
+                "checked": null,
+                "text": "\nm (metric)\nft (imperial)\n",
+                "className": "u7",
+                "style": null,
+                "dataset": {}
+              },
+              "#addDecoGasBtn": {
+                "value": "",
+                "checked": null,
+                "text": "+ ADD GAS MIX",
+                "className": "",
+                "style": "margin-top: 10px; width: 100%; padding: 9px; background: none; border: 1px dashed var(--border); border-radius: 8px; color: var(--muted); font-family: \"JetBrains Mono\", monospace; font-size: 11px; letter-spacing: 1px; cursor: pointer; transition: 0.2s; display: block;",
+                "dataset": {}
+              },
+              "#cylDg3_size": null
             },
             "globals": {
               "_zhlHeadless": false

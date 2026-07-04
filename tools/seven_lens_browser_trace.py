@@ -76,6 +76,8 @@ def validate_trace_spec(spec: dict[str, Any]) -> list[str]:
                 action = row.get("action")
                 if action not in {"fill", "select", "click", "check", "set_global", "run_script"}:
                     errors.append(f"{trace_id}: unsupported {phase_name} action {action!r}")
+                if phase_name == "steps" and action == "run_script":
+                    errors.append(f"{trace_id}: tested steps must not use run_script")
                 if phase_name == "steps" and row.get("force"):
                     errors.append(f"{trace_id}: tested user actions must not use force")
                 if (
@@ -249,8 +251,14 @@ def _restore(page, before: dict[str, Any], spec: dict[str, Any]) -> None:
         tag = locator.evaluate("el => el.tagName")
         input_type = locator.get_attribute("type")
         if tag == "BUTTON":
+            style = state.get("style")
+            if style:
+                locator.evaluate("(el, st) => el.setAttribute('style', st)", style)
             if "active" in (state.get("className") or ""):
                 locator.click(force=True)
+            continue
+        if tag == "DIV" and state.get("style") is not None:
+            locator.evaluate("(el, st) => el.setAttribute('style', st)", state.get("style"))
             continue
         if tag == "SELECT":
             locator.select_option(str(state["value"]), force=True)
@@ -336,6 +344,22 @@ def _restore(page, before: dict[str, Any], spec: dict[str, Any]) -> None:
                 }""",
                 [selector, state.get("value"), state.get("dataset") or {}],
             )
+    page.evaluate(
+        """([beforeElements, selectors]) => {
+          if (selectors.includes('#cylDg3_size') && !beforeElements['#cylDg3_size']) {
+            if (document.querySelector('#cylDg3_size') && typeof removeDecoGasCard === 'function') {
+              removeDecoGasCard(3);
+            }
+          }
+          if (selectors.includes('#advancedSettingsToggle')) {
+            const body = document.getElementById('advancedSettingsBody');
+            const summary = document.getElementById('advancedSettingsSummary');
+            if (body && body.style.display !== 'none' && summary) summary.textContent = '';
+            else if (typeof _updateAdvancedSummary === 'function') _updateAdvancedSummary();
+          }
+        }""",
+        [before.get("elements", {}), selectors],
+    )
 
 
 def run_trace(

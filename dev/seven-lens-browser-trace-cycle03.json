@@ -3,7 +3,7 @@
   "runner_version": 2,
   "spec": "docs\\seven-lens-traces\\cycle-03-consumption.json",
   "spec_sha256": "fb34099d3fe6ad054814c7af0694f57f106e7d57e8ea5b4d14e9d7a56a15d10b",
-  "commit": "d956648c1c97249c0ca01765ec3d577e6fcdf621",
+  "commit": "89be820b82f1d83498ea0ade4f61ae8165d8b0b1",
   "traces": [
     {
       "id": "SL-C03-BEST-MIX-PHYSICAL-TRACE",
@@ -318,8 +318,8 @@
               "detail": "'34%' equal '34%'"
             }
           ],
-          "state_before_sha256": "6c985475da82fa5bfc854784f960c85d8233fc35e9e444b5fda323bc71cf55f9",
-          "state_after_sha256": "6c985475da82fa5bfc854784f960c85d8233fc35e9e444b5fda323bc71cf55f9",
+          "state_before_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34",
+          "state_after_sha256": "43455729230d2a7537850aea0ca4649aa7c2da8ce21d5272e007f6852030ca34",
           "state_before": {
             "elements": {
               "#unitsSelect": {
@@ -353,9 +353,10 @@
               "_zhlHeadless": false
             },
             "localStorage": {
-              "waterDensity": "salt",
               "lspAdvancedOpen": "0",
-              "lspCcrAdvOpen": "0"
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"decoDepth\":\"40\",\"decoBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
             },
             "sessionStorage": {}
           },
@@ -392,9 +393,10 @@
               "_zhlHeadless": false
             },
             "localStorage": {
-              "waterDensity": "salt",
               "lspAdvancedOpen": "0",
-              "lspCcrAdvOpen": "0"
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"decoDepth\":\"40\",\"decoBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
             },
             "sessionStorage": {}
           },

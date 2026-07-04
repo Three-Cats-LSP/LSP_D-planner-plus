@@ -1836,6 +1836,7 @@ ENGINE_SUITE_JS = r"""
     let unitRoundtripImmutableOk = false;
     let travelDepthEditAfterSwitchOk = false;
     let cylinderSizeEditAfterSwitchOk = false;
+    let dynamicDecoCylImperialOk = false;
     const prevUnits = typeof units !== 'undefined' ? units : null;
     const modeSel = document.getElementById('travelGasSwitchMode');
     const prevMode = modeSel?.value;
@@ -1915,6 +1916,16 @@ ENGINE_SUITE_JS = r"""
         cylinderSizeEditAfterSwitchOk =
           depthClose(editedL, 14.158) && depthClose(domVolumeToL('cylBot_size'), 14.158);
       }
+      if (typeof addDecoGasCard === 'function' && typeof setUnits === 'function' && typeof getAllDecoGasIds === 'function') {
+        getAllDecoGasIds().filter(id => id > 2).forEach(id => removeDecoGasCard(id));
+        setUnits('imperial');
+        addDecoGasCard();
+        const dyn = document.getElementById('cylDg3_size');
+        dynamicDecoCylImperialOk = !!dyn
+          && dyn.checkValidity() === true
+          && Number(dyn.min) <= Number(dyn.value);
+        getAllDecoGasIds().filter(id => id > 2).forEach(id => removeDecoGasCard(id));
+      }
     } finally {
       if (modeSel && prevMode != null) modeSel.value = prevMode;
       restoreEl('travelGasManualDepth', prevDepthSnap);
@@ -1930,8 +1941,10 @@ ENGINE_SUITE_JS = r"""
       unitRoundtripImmutableOk,
       travelDepthEditAfterSwitchOk,
       cylinderSizeEditAfterSwitchOk,
+      dynamicDecoCylImperialOk,
       ok: minDecoUnitsOk && travelDepthConstraintsOk && cylinderPhysicalConstraintsOk
-        && unitRoundtripImmutableOk && travelDepthEditAfterSwitchOk && cylinderSizeEditAfterSwitchOk,
+        && unitRoundtripImmutableOk && travelDepthEditAfterSwitchOk && cylinderSizeEditAfterSwitchOk
+        && dynamicDecoCylImperialOk,
     };
   })();
 
