@@ -1311,22 +1311,14 @@
       "path": "lsp-dplanner-controls.css",
       "layer": "web_css",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
-      "last_read_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-EXTRACT-CSS",
-        "SUITE-UI-STRUCTURE/UI-CSS-LINK-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-03",
-        "EXT-06",
-        "COV-01"
-      ],
+      "fingerprint": "76697602783ca5217a67b22251e8dfc776ebfb05a8aee9974806f8cd6fd82dc1",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified \u2014 UI-CSS-CONTROLS"
     },
     {
