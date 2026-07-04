@@ -3,9 +3,9 @@
   "evidence_id": "ER-C06-PRE-CSS",
   "command_argv": [
     "python",
-    "dev/c06_pre_controls_regression.py"
+    "dev/ui_controls_css_regression.py"
   ],
-  "commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182",
+  "commit": "c21493d712829174a6d8757dc8cc4423541a558b",
   "exit_code": 1,
   "case_ids": [
     "SL-C06-SEG-FOCUS-VISIBLE",
@@ -18,9 +18,9 @@
   ],
   "worktree_clean_before": true,
   "worktree_clean_after": true,
-  "started_at": "2026-07-04T15:33:23.926883+00:00",
-  "finished_at": "2026-07-04T15:34:01.891025+00:00",
-  "stdout_sha256": "8f1899f56cf02d1981c28262badb039e8fecca6d5c20ed9ff9635d8e0a86d03e",
+  "started_at": "2026-07-04T16:20:08.035776+00:00",
+  "finished_at": "2026-07-04T16:20:33.452755+00:00",
+  "stdout_sha256": "740c79734a5bac51cccc6011bb002c2f5f921ce1df4b416c169aad38f1941f95",
   "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
 }

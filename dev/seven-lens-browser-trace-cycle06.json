@@ -2,7 +2,7 @@
   "schema_version": 3,
   "runner_version": 2,
   "spec": "docs\\seven-lens-traces\\cycle-06-controls.json",
-  "spec_sha256": "8324bcb4648ba7aad40e78108e7c2885d29362516828db9276a336c53798e488",
+  "spec_sha256": "7ad9df542912bb6428a09795dc3ad32b994995a0727b6c7d2754e590a1f78781",
   "commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182",
   "traces": [
     {
