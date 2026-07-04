@@ -586,7 +586,7 @@
         "dev/ui_controls_css_regression.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-PRE-CSS.json",
-      "receipt_sha256": "f3f64e7e344a14fd526fd41c465bb232536fb8f924161e4c56d29ccb3750e5f5",
+      "receipt_sha256": "7f5253f541504a522ee0d5747d5a3deb54d85ac8e3b770acc13b67d890dcb9ab",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "prepared_baseline_commit": "f52dc3597910c134d2d9c639fd4161f99d679a12",
@@ -617,7 +617,7 @@
         "dev/ui_controls_css_regression.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-POST-CSS.json",
-      "receipt_sha256": "3165b211fbe55c5f5d00bea404cd1e78f97b5b641781816ecfa991bf44791725",
+      "receipt_sha256": "0a42083da0ca25d97f52b7f20c528cd669215bf351741b26fffe71c4708c13c9",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "runtime_trace": {
@@ -651,7 +651,7 @@
         "trace_id": "SL-C06-GAS-NUM-TOUCH-TARGET-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle06.json",
         "spec_path": "docs/seven-lens-traces/cycle-06-controls.json",
-        "artifact_sha256": "558210a15745068ca136c69fb38d5f170106e5c46f4a4f8bdccde0c003f1de7d",
+        "artifact_sha256": "a28673e221cf1f1b7b08f9b4f3e69a7ae6dfdb32c50b9aa84dc89b717601a696",
         "spec_sha256": "8324bcb4648ba7aad40e78108e7c2885d29362516828db9276a336c53798e488"
       }
     },
@@ -681,7 +681,7 @@
         "dev/seven-lens-browser-trace-cycle06.json"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-TRACE.json",
-      "receipt_sha256": "f2f246bbc2833210b99d12f35976fa0185d9b39e01622098d34c07923424017d",
+      "receipt_sha256": "0ec9624c6641d73251cad746af34f3b1dba1febc829f00c966252f63b422451c",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "runtime_trace": {
@@ -713,7 +713,7 @@
         "trace_id": "SL-C06-SEG-FOCUS-VISIBLE-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle06.json",
         "spec_path": "docs/seven-lens-traces/cycle-06-controls.json",
-        "artifact_sha256": "558210a15745068ca136c69fb38d5f170106e5c46f4a4f8bdccde0c003f1de7d",
+        "artifact_sha256": "a28673e221cf1f1b7b08f9b4f3e69a7ae6dfdb32c50b9aa84dc89b717601a696",
         "spec_sha256": "8324bcb4648ba7aad40e78108e7c2885d29362516828db9276a336c53798e488"
       }
     },
@@ -737,7 +737,7 @@
         "tools/run_ui_structure_suite.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-STRUCTURE.json",
-      "receipt_sha256": "50325e5a6f55dd9cbd41ac8341ed1dbd2e2a062d86aac0de078e4d58e8f39936",
+      "receipt_sha256": "29c297dc4e4f1f46c3dc0b430eb959a09c3dedac1974c1413f64418df136b49f",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -760,7 +760,7 @@
         "tools/extract_ui_css.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-PARITY.json",
-      "receipt_sha256": "81ae1cd2869b0bf1fd492b2189a46a96ac04863f8b28b40cf7badeddf9ae7f30",
+      "receipt_sha256": "127618375d1b4759d74f13d77a9c18f3377ca4b214f45ce8d8adf8d077175988",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -785,7 +785,7 @@
         "static"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-static.json",
-      "receipt_sha256": "24e124bd725443eb5edb3a57be97bfd952cb23ce3c7c39e46c83b6b11a6d8ad5",
+      "receipt_sha256": "484a210f7d2a330df784b8c124df0580b32801b0b0b55003884aa88f0053d4ce",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -810,7 +810,7 @@
         "ci"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ci.json",
-      "receipt_sha256": "8d3d00ca3349eca764e05d895748544546acc878fbec3b6f88869d8cdea65c24",
+      "receipt_sha256": "9b671e0b85e355523eda734c5c6a2b92f6dfec5bddf00c42cf2e0bc41cc5596b",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -839,7 +839,7 @@
         "dev/ui_controls_css_regression.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-RESTORE-CSS.json",
-      "receipt_sha256": "8b277d6f3f75b99224f3e7a896c55a3e721056cdbf2a20a6cc351342f18fc4be",
+      "receipt_sha256": "c1ff7c5f4d24ec079d0258ad5d53fd12fa0be4baa981f5e6d40ae40092892da5",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "state_before_sha256": "d5ae1ba0ffb06bb48a1ea2bd62d76c73ffd35f70ba519de0baff7d25c9be81fd",
