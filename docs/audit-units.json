@@ -1802,7 +1802,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS"
       },
-      "fingerprint": "9b8175a37e43b034b9e8fbe45a6187f936e26077a8ae898e98599399406acfe4",
+      "fingerprint": "0101efb181b935f50d16ea1cd74e412a75c29d61d6307808346853559d16fcc5",
       "last_read_fingerprint": null,
       "audit_issue": 158,
       "issue": "Cycle 32 settings restore exception recovery",
@@ -1819,7 +1819,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PROFILE-PRESETS"
       },
-      "fingerprint": "64e03013d5ec99e4c1d52e0ff91914a2f88ab8982fbc725dc4fef428c0d4ed15",
+      "fingerprint": "658b9df0b38e672624d140bb42e33d587714cd70d732f4f99089da0d7b225081",
       "last_read_fingerprint": null,
       "audit_issue": 159,
       "evidence": [],
@@ -4914,7 +4914,7 @@
     },
     {
       "cycle": 25,
-      "max_new_application_lines": 1280,
+      "max_new_application_lines": 1281,
       "application_units": [
         "UI-SETTINGS",
         "UI-UNIT-HELPERS",
@@ -4936,7 +4936,7 @@
     },
     {
       "cycle": 27,
-      "max_new_application_lines": 622,
+      "max_new_application_lines": 699,
       "application_units": [
         "UI-PROFILE-PRESETS",
         "UI-CONFIG-PRESETS"

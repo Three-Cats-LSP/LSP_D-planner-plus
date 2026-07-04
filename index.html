@@ -8579,50 +8579,28 @@ var appSettings = {
 // ── Dive Profile Presets (depth + BT only) ────────────────────────────────
 const LSP_PROFILE_PRESETS_KEY = 'lspProfilePresets';
 const LSP_PROFILE_PRESETS_MAX = 20;
+const LSP_PROFILE_PRESET_SCHEMA = 2;
 
 // AUDIT-UNIT:UI-PROFILE-PRESETS
-function _inferLegacyPresetUnits(depthVal) {
-  const v = parseFloat(depthVal);
-  if (!Number.isFinite(v)) return units;
-  if (v >= 90) return 'imperial';
-  if (v <= 65) return 'metric';
-  return 'metric';
-}
-
-function _legacyPresetIsTec(gases) {
-  const g = gases || {};
-  if (g.gasMix != null) return false;
-  if (g.travelGasMix && g.travelGasMix !== 'none') return true;
-  if (g.dg1Mix && g.dg1Mix !== 'none') return true;
-  if (g.dg2Mix && g.dg2Mix !== 'none') return true;
-  if (g.decoGas === 'trimix') return true;
-  return false;
-}
-
-function _inferLegacyPlannerMode(p) {
-  if (p.gases?.gasMix != null) return 'rec';
-  if (p.travelActive) return 'tec';
-  const summary = p.summary || '';
-  if (/(?:^|\s)(T:|D1:|D2:)/.test(summary)) return 'tec';
-  if (_legacyPresetIsTec(p.gases)) return 'tec';
-  return 'rec';
+function _profilePresetIsComplete(p) {
+  return (p.plannerMode === 'rec' || p.plannerMode === 'tec')
+    && (p.unitsAtSave === 'metric' || p.unitsAtSave === 'imperial')
+    && Number.isFinite(p.depthM);
 }
 
 function _migrateProfilePreset(p) {
-  let changed = false;
-  if (p.unitsAtSave !== 'metric' && p.unitsAtSave !== 'imperial') {
-    p.unitsAtSave = p.units || _inferLegacyPresetUnits(p.depth);
-    changed = true;
+  if (_profilePresetIsComplete(p)) {
+    let changed = false;
+    if (p.schemaVersion !== LSP_PROFILE_PRESET_SCHEMA) {
+      p.schemaVersion = LSP_PROFILE_PRESET_SCHEMA;
+      p.migrationStatus = 'confirmed';
+      changed = true;
+    }
+    return changed;
   }
-  if (!Number.isFinite(p.depthM) && p.depth != null) {
-    p.depthM = displayDepthToM(p.depth, p.unitsAtSave);
-    changed = true;
-  }
-  if (p.plannerMode !== 'rec' && p.plannerMode !== 'tec') {
-    p.plannerMode = _inferLegacyPlannerMode(p);
-    changed = true;
-  }
-  return changed;
+  if (p.migrationStatus === 'unknown') return false;
+  p.migrationStatus = 'unknown';
+  return true;
 }
 
 function getProfilePresets() {
@@ -8653,20 +8631,40 @@ function closeDiveProfilePresets() {
 }
 
 function _presetPlannerMode(p) {
-  if (p.plannerMode === 'rec' || p.plannerMode === 'tec') return p.plannerMode;
-  return _inferLegacyPlannerMode(p);
+  return p.plannerMode === 'rec' ? 'rec' : 'tec';
 }
 
 function _presetDepthM(p) {
-  if (Number.isFinite(p.depthM)) return p.depthM;
-  const savedUnits = (p.unitsAtSave === 'metric' || p.unitsAtSave === 'imperial')
-    ? p.unitsAtSave
-    : _inferLegacyPresetUnits(p.depth);
-  return displayDepthToM(p.depth, savedUnits);
+  return p.depthM;
 }
 
 function _presetDepthDisplay(p) {
   return depthStampToSwitchDisplay(_presetDepthM(p), units);
+}
+
+function confirmLegacyProfilePreset(idx) {
+  const presets = getProfilePresets();
+  const p = presets[idx];
+  if (!p || _profilePresetIsComplete(p)) return;
+  const modeAns = (window.prompt('Planner mode for this preset? Type REC or TEC:', 'TEC') || '').trim().toUpperCase();
+  if (!modeAns) return;
+  const plannerMode = modeAns === 'REC' ? 'rec' : 'tec';
+  const defaultUnits = units === 'imperial' ? 'imperial' : 'metric';
+  const unitsAns = (window.prompt('Units when this depth was saved? Type metric or imperial:', defaultUnits) || '').trim().toLowerCase();
+  if (!unitsAns) return;
+  const unitsAtSave = unitsAns.startsWith('imp') ? 'imperial' : 'metric';
+  const depthM = displayDepthToM(p.depth, unitsAtSave);
+  Object.assign(p, {
+    schemaVersion: LSP_PROFILE_PRESET_SCHEMA,
+    plannerMode,
+    unitsAtSave,
+    depthM,
+    migrationStatus: 'confirmed',
+    depth: String(depthStampToSwitchDisplay(depthM, unitsAtSave)),
+  });
+  saveProfilePresets(presets);
+  _renderProfilePresetModal();
+  showToast('Preset mode and units confirmed', 'preset');
 }
 
 function _ensurePresetPlannerMode(mode) {
@@ -8690,15 +8688,20 @@ function _renderProfilePresetModal() {
     return;
   }
   list.innerHTML = presets.map((p, i) => {
-    const mode = _presetPlannerMode(p);
-    const modeLabel = mode === 'rec' ? 'REC' : 'TEC';
-    const depthDisp = _presetDepthDisplay(p);
+    const complete = _profilePresetIsComplete(p);
+    const modeLabel = complete ? (_presetPlannerMode(p) === 'rec' ? 'REC' : 'TEC') : 'UNKNOWN';
+    const depthLine = complete
+      ? `${_presetDepthDisplay(p)}${du} / ${p.bt}min`
+      : `${p.depth ?? '?'} / ${p.bt ?? '?'}min (setup required)`;
+    const setupBtn = complete ? '' :
+      `<button onclick="confirmLegacyProfilePreset(${i})" style="padding:5px 10px;background:none;border:1px solid var(--accent);border-radius:6px;color:var(--accent);font-family:inherit;font-size:10px;font-weight:700;cursor:pointer;">Setup</button>`;
     return `
     <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;background:var(--bg-alt);">
       <div style="flex:1;min-width:0;">
         <div style="color:var(--text);font-weight:700;font-size:12px;">${escapeHtmlText(p.name)}</div>
-        <div style="color:var(--muted);font-size:10px;margin-top:1px;">${modeLabel} · ${depthDisp}${du} / ${p.bt}min${p.summary ? ' · ' + escapeHtmlText(p.summary) : ''}</div>
+        <div style="color:var(--muted);font-size:10px;margin-top:1px;">${modeLabel} · ${depthLine}${p.summary ? ' · ' + escapeHtmlText(p.summary) : ''}</div>
       </div>
+      ${setupBtn}
       <button onclick="loadProfilePreset(${i})" style="padding:5px 10px;background:var(--accent);border:none;border-radius:6px;color:#000;font-family:inherit;font-size:10px;font-weight:700;cursor:pointer;">Load</button>
       <button onclick="deleteProfilePreset(${i})" style="padding:5px 10px;background:none;border:1px solid var(--border);border-radius:6px;color:var(--red);font-family:inherit;font-size:10px;cursor:pointer;">Del</button>
     </div>`;
@@ -8757,6 +8760,8 @@ function saveNewProfilePreset() {
   const name = (window.prompt('Profile name:', defName) || '').trim();
   if (!name) return;
   presets.push({
+    schemaVersion: LSP_PROFILE_PRESET_SCHEMA,
+    migrationStatus: 'confirmed',
     name,
     depthM,
     bt,
@@ -8775,6 +8780,21 @@ function saveNewProfilePreset() {
 function loadProfilePreset(idx) {
   const p = getProfilePresets()[idx];
   if (!p) return;
+  if (!_profilePresetIsComplete(p)) {
+    const dEl = getPlannerInputEl('decoDepth');
+    const bEl = getPlannerInputEl('decoBT');
+    if (dEl) {
+      dEl.value = String(p.depth ?? '');
+      syncDepthInputCanonical(dEl.id);
+    }
+    if (bEl && p.bt != null) bEl.value = String(p.bt);
+    _syncRecDepthBtSteppers?.();
+    _syncTecDepthBtSteppers?.();
+    _syncDepthBtSteppers?.();
+    closeDiveProfilePresets();
+    showToast(`Loaded depth/BT into active planner — use Setup to confirm mode & units: ${p.name}`, 'preset');
+    return;
+  }
   _ensurePresetPlannerMode(_presetPlannerMode(p));
   const depthDisp = depthStampToSwitchDisplay(_presetDepthM(p), units);
   const dEl = getPlannerInputEl('decoDepth');
