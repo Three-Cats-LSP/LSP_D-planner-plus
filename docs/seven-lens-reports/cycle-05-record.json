@@ -158,7 +158,7 @@
       "summary": "GF pre-anchor and CCR endpoint corrected; verification requires REG-06 and REG-07 in the current release run"
     }
   ],
-  "audit_commit": "",
+  "audit_commit": "ded650c489da978c5961bb920f2c8834e0ebe46e",
   "verified_source_commit": "",
   "verification_status": "PENDING",
   "parts": [
