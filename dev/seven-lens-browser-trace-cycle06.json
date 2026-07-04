@@ -3,7 +3,7 @@
   "runner_version": 2,
   "spec": "docs\\seven-lens-traces\\cycle-06-controls.json",
   "spec_sha256": "4ff730015d2a1345e73c04c838c09f080887bf4abc23d71e7f2cd23642bd1dfc",
-  "commit": "0af4a01c9141be3adcb1f14ff264972c09cf116c",
+  "commit": "7d403f44fc8643481414e622ebdcbb45ac430f10",
   "traces": [
     {
       "id": "SL-C06-SEG-FOCUS-VISIBLE-TRACE",
