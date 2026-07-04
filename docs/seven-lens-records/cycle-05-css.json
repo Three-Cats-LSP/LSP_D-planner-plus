@@ -654,7 +654,7 @@
         "trace_id": "SL-C05-GF-ROW-MODE-ISOLATION-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle05.json",
         "spec_path": "docs/seven-lens-traces/cycle-05-css.json",
-        "artifact_sha256": "72aea4197631ea7d529ee57091aa631b5a9eb55757b85af4d77a1633de2975b5",
+        "artifact_sha256": "f2150cadff630ff1756188e7d42bd44a6b7df6ee9bcda5c77cf2dc1d71da3ef1",
         "spec_sha256": "afea0c9e429544a6b57b0783287655cb6af5649ce91fc6a29527cf4c54999ac6"
       }
     },
