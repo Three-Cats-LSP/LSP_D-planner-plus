@@ -59,7 +59,7 @@ def main() -> int:
     receipt_path = args.receipt if args.receipt.is_absolute() else ROOT / args.receipt
     execution_root = (args.execution_root or ROOT).resolve()
     command = args.command[1:] if args.command[:1] == ["--"] else args.command
-    record = json.loads(record_path.read_text(encoding="utf-8"))
+    record = json.loads(record_path.read_text(encoding="utf-8-sig"))
     rows = [row for row in record.get("evidence_runs", []) if row.get("id") == args.evidence]
     if len(rows) != 1:
         print(f"expected one evidence row {args.evidence!r}", file=sys.stderr)
