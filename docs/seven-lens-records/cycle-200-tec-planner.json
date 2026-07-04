@@ -349,7 +349,7 @@
       "commit": "d5cf65959e39c42a8556c5e429174f487d6c7672",
       "worktree_clean": true,
       "receipt_path": "dev/seven-lens-evidence-2b-static.json",
-      "receipt_sha256": "842e71ac386cc34d2566dda5d3e56db19433a7fd0dd941c435b949f2d73a4b97"
+      "receipt_sha256": "76d7da32770c8b6d269085e50e0f4cac4ccc67f507c3fb66fc80ac1a8560fbea"
     },
     {
       "id": "ci",
@@ -368,7 +368,7 @@
       "commit": "d5cf65959e39c42a8556c5e429174f487d6c7672",
       "worktree_clean": true,
       "receipt_path": "dev/seven-lens-evidence-2b-ci.json",
-      "receipt_sha256": "05cbf68589a935d2eff34cc09d7c52f6d4aa1751e6859cfa444f3658a5da2a48"
+      "receipt_sha256": "d6569d9a3e56643d5d94561202f040e2313f7b4aa4afc3e00798cf641e6c3a69"
     },
     {
       "id": "ER-2B-TRACE",
@@ -425,7 +425,7 @@
         "artifact_sha256": "a8e948c88ece547f89d611e1c5adc8e07c250c8b85efc3bb26a1aa1dd2fe49d2"
       },
       "receipt_path": "dev/seven-lens-evidence-2b-ER-2B-TRACE.json",
-      "receipt_sha256": "8be97c6b8daf68f0f376f6bd14c17a2b04372eb5801fe75dcc16b3a5b34a0d9a"
+      "receipt_sha256": "ed12aceeb304b6a1c3b7212e928e08adcf7f9775653ad3b83b1af602781afd6a"
     }
   ],
   "changed_paths": [
