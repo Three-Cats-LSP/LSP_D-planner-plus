@@ -699,6 +699,31 @@
       "worktree_clean_after": true
     },
     {
+      "id": "ci",
+      "kind": "gate",
+      "case_ids": [],
+      "observable_assertions": [
+        "python -m tools.audit run --profile ci PASS including SUITE-UI-CONTROLS-CSS-REGRESSION"
+      ],
+      "state_restored": true,
+      "command": "python -m tools.audit run --profile ci",
+      "exit_code": 0,
+      "commit": "3661b2537c329c71f66c77eff02c3a65e05ee5da",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "-m",
+        "tools.audit",
+        "run",
+        "--profile",
+        "ci"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c06-ci.json",
+      "receipt_sha256": "eade39a62796ba07d595d953b31253841ab2b9e5f6ac1eecbe24b6a295cb37c7",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
+    },
+    {
       "id": "ER-C06-RESTORE-CSS",
       "kind": "state_restoration",
       "case_ids": [
