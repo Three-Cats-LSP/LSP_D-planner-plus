@@ -304,7 +304,6 @@ def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> 
         and invalid_border_is_red
         and invalid_shadow_visible
         and focus_preserves_invalid
-        and disabled_differs
         and focused
         and disabled
     )

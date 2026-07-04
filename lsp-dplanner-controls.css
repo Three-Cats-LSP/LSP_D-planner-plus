@@ -162,6 +162,7 @@
 .field input:invalid:not(:disabled):not(:placeholder-shown),
 .field select:invalid:not(:disabled) { border-color: var(--red);
  box-shadow: 0 0 0 2px rgba(255,68,51,0.12);
+ transition: none;
 }
 
 /* Android WebView/Capacitor: native <select> picker is broken — use android-select-picker.js */
