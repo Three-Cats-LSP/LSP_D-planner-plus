@@ -47,6 +47,7 @@ def _tracked_clean(root: Path) -> bool:
             fnmatch.fnmatch(path, pat)
             for pat in (
                 "docs/seven-lens-records/*.json",
+                "docs/seven-lens-reports/*.json",
                 "docs/seven-lens-manual-ledger.json",
                 "docs/audit-units.json",
                 "docs/seven-lens-traces/*.json",
