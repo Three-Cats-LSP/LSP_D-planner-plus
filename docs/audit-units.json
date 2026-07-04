@@ -1239,7 +1239,7 @@
       "affected_units": [
         "UI-CSS-CONTROLS"
       ],
-      "resolution_commit": "eaebc15",
+      "resolution_commit": "818d23e",
       "evidence_cases": [
         "REG-87"
       ]
