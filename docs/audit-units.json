@@ -969,7 +969,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "224e272401fcb7bd31c30f6f521897ed4a46d7c39a39093c39ad8d91ac3b0d47",
+      "fingerprint": "094f03d4a375e086c1fd1a14725e7531fc0e7ec43dfcf7cadbecd0ee0136668b",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1076,8 +1076,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "08baabc5316bd85fa78d860f7414fdfe0df845c163407973d471ad0178923e60",
-      "last_read_fingerprint": "08baabc5316bd85fa78d860f7414fdfe0df845c163407973d471ad0178923e60",
+      "fingerprint": "2e8c3e98dfd8863879393738b9336aa63bd7b7a957ad2475375d7d7103504903",
+      "last_read_fingerprint": "2e8c3e98dfd8863879393738b9336aa63bd7b7a957ad2475375d7d7103504903",
       "evidence": [
         "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
         "SUITE-COVERAGE/AUDIT-COV-01"
