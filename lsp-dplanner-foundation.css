@@ -356,21 +356,6 @@ header { display: flex;
   border-radius: 0;
 }
 
-.brand-icon { width: 44px; height: 44px;
- border-radius: 10px;
- display: flex; align-items: center; justify-content: center;
- font-size: 22px;
- line-height: 1;
- font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
- background: linear-gradient(135deg, rgba(0,200,212,0.12), rgba(0,120,160,0.08));
- border: 1px solid var(--accent);
- transition: all 0.4s ease;
- animation: iconGlow 4s ease-in-out infinite;
-}
-@keyframes iconGlow { 0%,100% { box-shadow: 0 0 12px rgba(0,200,212,0.15); }
- 50% { box-shadow: 0 0 24px rgba(0,200,212,0.3); }
-}
-
 .brand-text h1 { font-family: 'Bebas Neue', sans-serif;
  font-size: 24px;
  letter-spacing: 3px;
@@ -385,28 +370,6 @@ header { display: flex;
  text-transform: uppercase;
  color: var(--muted);
  margin-top: 3px;
-}
-
-/* ── ALGO SWITCHER ── */
-.algo-switcher { display: flex;
- gap: 8px;
-}
-
-/* Custom GF styling - match other GF buttons */
-#gfCustomRow .gf-btn { background: var(--bg-alt) !important;
- border: 1px solid var(--border) !important;
- cursor: pointer !important;
- pointer-events: auto !important;
- transition: all 0.2s;
-}
-
-#gfCustomRow .gf-btn:hover { background: var(--card) !important;
- border-color: var(--accent) !important;
-}
-
-#gfCustomRow .gf-btn.active { background: var(--accent) !important;
- color: var(--bg) !important;
- border-color: var(--accent) !important;
 }
 
 /* Custom GF dropdown styling */
@@ -440,13 +403,14 @@ header { display: flex;
 }
 
 /* REC mode - gray out GF settings to show as inactive */
-body.rec-mode #gfPresetsRow,
+body.rec-mode #gfPresetsRowV3,
 body.rec-mode #gfCustomRow { opacity: 0.4 !important;
  pointer-events: none !important;
  cursor: not-allowed !important;
 }
 
-body.rec-mode #gfPresetsRow button,
+body.rec-mode #gfPresetsRowV3 button,
+body.rec-mode #gfPresetBtns button,
 body.rec-mode #gfCustomRow button,
 body.rec-mode #gfCustomRow input,
 body.rec-mode #gfCustomRow select { opacity: 0.5 !important;

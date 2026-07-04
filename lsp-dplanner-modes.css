@@ -10,28 +10,18 @@ body.algo-tools #waterRow span { opacity: 0.5 !important;
  cursor: not-allowed !important;
 }
 
-body.algo-tools #gfPresetsRow,
+body.algo-tools #gfPresetsRowV3,
 body.algo-tools #gfCustomRow { opacity: 0.4 !important;
  pointer-events: none !important;
  cursor: not-allowed !important;
 }
 
-body.algo-tools #gfPresetsRow button,
+body.algo-tools #gfPresetsRowV3 button,
+body.algo-tools #gfPresetBtns button,
 body.algo-tools #gfCustomRow button,
 body.algo-tools #gfCustomRow input,
 body.algo-tools #gfCustomRow select { opacity: 0.5 !important;
  cursor: not-allowed !important;
-}
-
-/* Tools mode - keep Training Use Only and REF fully bright */
-body.algo-tools .algo-switcher > div:last-child { opacity: 1 !important;
- pointer-events: auto !important;
- cursor: auto !important;
-}
-
-body.algo-tools .algo-switcher > div:last-child button,
-body.algo-tools .algo-switcher > div:last-child .header-warn { opacity: 1 !important;
- cursor: pointer !important;
 }
 
 .algo-label-text { font-family: 'JetBrains Mono', monospace;
@@ -187,33 +177,6 @@ body.light-theme .algo-btn-icon.active img { opacity: 1;
  border-color: #ff0000;
 }
 
-/* Theme Toggle Button */
-.theme-toggle { display: inline-flex;
- align-items: center;
- justify-content: center;
- width: 32px;
- height: 32px;
- border-radius: 6px;
- border: 1px solid var(--border);
- background: var(--card);
- color: var(--accent);
- font-size: 16px;
- cursor: pointer;
- transition: all 0.3s ease;
-}
-
-.theme-toggle:hover { border-color: var(--accent);
- background: rgba(0, 200, 255, 0.1);
- box-shadow: 0 2px 8px rgba(0, 200, 255, 0.15);
-}
-
-.theme-icon { display: inline-block;
- transition: transform 0.3s ease;
-}
-
-.theme-toggle:active .theme-icon { transform: rotate(360deg);
-}
-
 /* ── TABS ── */
 .tabs-nav,
 .tools-tabs-nav { display: flex;
@@ -273,6 +236,9 @@ body.light-theme .algo-btn-icon.active img { opacity: 1;
  outline: none;
 }
 .btn-export:focus { outline: none; }
+.btn-export:focus-visible { outline: 2px solid color-mix(in oklab, var(--accent) 55%, transparent);
+ outline-offset: 2px;
+}
 .btn-export:active { background: var(--accent); color: var(--bg); opacity: 1; }
 .btn-export:hover { background: rgba(0,200,255,0.12); }
 .btn-export.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
