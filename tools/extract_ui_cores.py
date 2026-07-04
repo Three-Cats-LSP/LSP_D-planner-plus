@@ -52,6 +52,24 @@ class UiCoreBlock:
 
 UI_CORE_BLOCKS: tuple[UiCoreBlock, ...] = (
     UiCoreBlock(
+        "planner-inputs-core",
+        "planner-inputs-core.js",
+        """/**
+ * REC vs TECH planner input isolation (Level 2).
+ * Each mode owns disjoint depth/BT element IDs; legacy aliases resolve by active mode.
+ */
+""",
+    ),
+    UiCoreBlock(
+        "rec-planner",
+        "rec-planner.js",
+        """/**
+ * REC planner dispatch — reads #recPlannerView inputs only.
+ * Computation stays in index.html runPlanner (PADI path); this is the Level 2 entry point.
+ */
+""",
+    ),
+    UiCoreBlock(
         "settings-core",
         "settings-core.js",
         """/**
@@ -176,6 +194,13 @@ EXPECTED_SCRIPT_ORDER = [b.filename for b in UI_CORE_BLOCKS]
 
 # Spot-check: extracted symbols must not remain as definitions in inline script blocks.
 INLINE_FORBIDDEN_DEFS: dict[str, tuple[str, ...]] = {
+    "planner-inputs-core": (
+        "function resolvePlannerInputId(",
+        "function plannerDepthId(",
+        "function getPlannerInputEl(",
+        "const REC_DEPTH_ID",
+    ),
+    "rec-planner": ("function runRecPlan(",),
     "settings-core": (
         "function setWaterDensity(",
         "function setAltitude(",

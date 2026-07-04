@@ -10,15 +10,19 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 UI_RUNTIME_CORES = [
+    "planner-inputs-core.js",
+    "rec-planner.js",
     "settings-core.js",
-    "contingency-core.js",
-    "export-core.js",
-    "plot-core.js",
+    "surf-interval-core.js",
+    "gas-table-core.js",
     "gas-plan-core.js",
     "gas-cards-core.js",
-    "gas-table-core.js",
-    "surf-interval-core.js",
+    "export-core.js",
+    "plot-core.js",
+    "contingency-core.js",
+    "results-panel.js",
     "results-render-core.js",
+    "planner-shell.js",
 ]
 
 
