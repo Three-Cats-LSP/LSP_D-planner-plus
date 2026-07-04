@@ -2554,6 +2554,7 @@ def run_suite(page) -> dict:
     assert_true(sl02.get("unitRoundtripImmutableOk"), "[SL-C02-UNIT-ROUNDTRIP-IMMUTABLE] metric round-trip preserves stamped depth/volume", str(sl02))
     assert_true(sl02.get("travelDepthEditAfterSwitchOk"), "[SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH] travel manual depth edit reaches consumer after imperial switch", str(sl02))
     assert_true(sl02.get("cylinderSizeEditAfterSwitchOk"), "[SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH] cylinder size edit reaches consumer after imperial switch", str(sl02))
+    assert_true(sl02.get("dynamicDecoCylImperialOk"), "[SL-C04-DYNAMIC-DECO-CYL-IMPERIAL] dynamic imperial deco cylinder starts valid", str(sl02))
     sl03 = s.get("sevenLensCycle03", {})
     assert_true(sl03.get("bestMixDepthUnitsOk"), "[SL-C03-BEST-MIX-DEPTH-UNITS] best mix O2% invariant across equivalent metric/imperial depth", str(sl03))
     assert_true(sl03.get("cnsDepthUnitsOk"), "[SL-C03-CNS-DEPTH-UNITS] CNS ppO2 invariant across equivalent metric/imperial depth", str(sl03))
@@ -2670,6 +2671,7 @@ def _audit_case_rows():
         case_row("SL-C02-UNIT-ROUNDTRIP-IMMUTABLE", case_ok("SL-C02-UNIT-ROUNDTRIP-IMMUTABLE")),
         case_row("SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH", case_ok("SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH")),
         case_row("SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH", case_ok("SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH")),
+        case_row("SL-C04-DYNAMIC-DECO-CYL-IMPERIAL", case_ok("SL-C04-DYNAMIC-DECO-CYL-IMPERIAL")),
         case_row("SL-C03-BEST-MIX-DEPTH-UNITS", case_ok("SL-C03-BEST-MIX-DEPTH-UNITS")),
         case_row("SL-C03-CNS-DEPTH-UNITS", case_ok("SL-C03-CNS-DEPTH-UNITS")),
         case_row("SL-C03-BEST-MIX-EDIT-AFTER-SWITCH", case_ok("SL-C03-BEST-MIX-EDIT-AFTER-SWITCH")),

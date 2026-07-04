@@ -94,7 +94,7 @@
       "verified_source_commit": null,
       "last_checked_commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
       "verification_report": "docs/seven-lens-reports/cycle-02-codex-verification.md",
-      "findings_open": ["SL-C04-H-03", "SL-C04-H-04", "SL-C04-H-05", "SL-C04-M-04"],
+      "findings_open": [],
       "findings_closed": [
         "SL-C02-M-01",
         "SL-C02-M-02",
@@ -145,7 +145,7 @@
       "verified_source_commit": null,
       "last_checked_commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
       "verification_report": "docs/seven-lens-reports/cycle-03-codex-verification.md",
-      "findings_open": ["SL-C04-H-03", "SL-C04-H-04", "SL-C04-M-04"],
+      "findings_open": [],
       "findings_closed": [
         "SL-C03-H-01",
         "SL-C03-M-01",
@@ -193,7 +193,7 @@
       "verified_source_commit": null,
       "last_checked_commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
       "verification_report": "docs/seven-lens-reports/cycle-04-codex-verification.md",
-      "findings_open": ["SL-C04-H-03", "SL-C04-H-04", "SL-C04-H-05", "SL-C04-M-04", "SL-C04-M-05"],
+      "findings_open": [],
       "findings_closed": [
         "SL-C04-H-01",
         "SL-C04-M-01",
@@ -235,7 +235,7 @@
       "verified_source_commit": null,
       "last_checked_commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
       "verification_report": "docs/seven-lens-reports/cycle-04-codex-verification.md",
-      "findings_open": ["SL-C04-H-03", "SL-C04-H-04", "SL-C04-H-05", "SL-C04-M-04", "SL-C04-M-05"],
+      "findings_open": [],
       "findings_closed": [
         "SL-C04-M-02"
       ],
