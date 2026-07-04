@@ -156,14 +156,14 @@
         {
           "capture": "consumer",
           "values": {
-            "border_changed": "(() => { const el = document.getElementById('cylBot_size'); if (!el) return false; const bc = getComputedStyle(el).borderColor; return !el.validity.valid && bc !== 'rgba(255, 255, 255, 0.08)'; })()"
+            "border_is_red": "(() => { const el = document.getElementById('cylBot_size'); if (!el || el.validity.valid) return false; const probe = document.createElement('span'); probe.style.color = getComputedStyle(document.documentElement).getPropertyValue('--red').trim(); document.body.appendChild(probe); const expected = getComputedStyle(probe).color; probe.remove(); return getComputedStyle(el).borderColor === expected; })()"
           }
         }
       ],
       "assertions": [
         {"id": "was-valid", "left": "$.before.valid_before", "op": "equal", "right": true},
         {"id": "now-invalid", "left": "$.canonical.valid_after", "op": "equal", "right": true},
-        {"id": "border-changed", "left": "$.consumer.border_changed", "op": "equal", "right": true}
+        {"id": "border-red", "left": "$.consumer.border_is_red", "op": "equal", "right": true}
       ]
     },
     {
