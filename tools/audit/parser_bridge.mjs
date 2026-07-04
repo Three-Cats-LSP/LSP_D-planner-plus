@@ -47,10 +47,11 @@ function parseJavaScript(path, source, offsetLine = 0) {
   return { functions, domRefs };
 }
 
-function walkHtml(node, visit) {
-  visit(node);
-  for (const child of node.childNodes || []) walkHtml(child, visit);
-  if (node.content) walkHtml(node.content, visit);
+function walkHtml(node, visit, ancestors = []) {
+  visit(node, ancestors);
+  const next = [...ancestors, node];
+  for (const child of node.childNodes || []) walkHtml(child, visit, next);
+  if (node.content) walkHtml(node.content, visit, next);
 }
 
 function textContent(node) {
@@ -85,9 +86,15 @@ for (const relativePath of request.files) {
     const stylesheets = [];
     const functions = [];
     const domRefs = [];
-    walkHtml(document, node => {
+    walkHtml(document, (node, ancestors) => {
       const attrs = Object.fromEntries((node.attrs || []).map(attr => [attr.name, attr.value]));
-      if (attrs.id) ids.push({ id: attrs.id, line: node.sourceCodeLocation?.startLine || null });
+      if (attrs.id) ids.push({
+        id: attrs.id,
+        line: node.sourceCodeLocation?.startLine || null,
+        ancestorIds: ancestors.flatMap(parent =>
+          (parent.attrs || []).filter(attr => attr.name === 'id').map(attr => attr.value)
+        ),
+      });
       if (node.nodeName === 'script') {
         scripts.push({ src: attrs.src || null, line: node.sourceCodeLocation?.startLine || null });
         if (!attrs.src) {

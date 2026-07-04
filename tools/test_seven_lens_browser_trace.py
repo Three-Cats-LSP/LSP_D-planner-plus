@@ -11,12 +11,13 @@ from tools.seven_lens_browser_trace import (
 
 def valid_spec():
     return {
-        "schema_version": 2,
+        "schema_version": 3,
         "repeat": 2,
         "traces": [{
             "id": "TRACE-UNIT-ROUNDTRIP",
             "entry_event": "User changes the visible units selector.",
-            "consumer_path": ["unitsSelect change", "setUnits", "physical consumer"],
+            "consumer_path": ["unitsSelect change", "setUnits", "physical consumer", "rendered depth"],
+            "case_ids": ["TRACE-UNIT-ROUNDTRIP"],
             "state": {
                 "selectors": ["#unitsSelect", "#depth"],
                 "restore_order": ["#depth", "#unitsSelect"],
@@ -58,6 +59,19 @@ class SevenLensBrowserTraceTests(unittest.TestCase):
         spec = valid_spec()
         spec["repeat"] = 1
         self.assertTrue(any("repeat must be" in error for error in validate_trace_spec(spec)))
+
+    def test_scripted_tested_action_is_rejected(self):
+        spec = valid_spec()
+        spec["traces"][0]["steps"][1] = {"action": "run_script", "script": "() => {}"}
+        self.assertTrue(any("visible Playwright controls" in error for error in validate_trace_spec(spec)))
+
+    def test_trace_requires_case_ids_and_full_consumer_path(self):
+        spec = valid_spec()
+        del spec["traces"][0]["case_ids"]
+        spec["traces"][0]["consumer_path"] = ["input", "consumer"]
+        errors = validate_trace_spec(spec)
+        self.assertTrue(any("case_ids" in error for error in errors))
+        self.assertTrue(any("input, writer, consumer, and observable" in error for error in errors))
 
     def test_non_finite_or_evaluation_error_capture_is_rejected(self):
         self.assertFalse(_capture_is_finite({"physical_depth": float("nan")}))

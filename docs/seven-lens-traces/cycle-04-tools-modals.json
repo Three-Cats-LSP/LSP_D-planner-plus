@@ -1,10 +1,11 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "repeat": 2,
   "cycle": 4,
   "traces": [
     {
       "id": "SL-C04-END-PHYSICAL-TRACE",
+      "case_ids": ["SL-C04-END-DEPTH-UNITS"],
       "entry_event": "unitsSelect change metric to imperial on END tool",
       "consumer_path": ["setUnits", "calcEND_tool", "domDepthToM", "endAbsP"],
       "setup": [
@@ -50,6 +51,7 @@
     },
     {
       "id": "SL-C04-SI-PHYSICAL-TRACE",
+      "case_ids": ["SL-C04-SI-DEPTH-UNITS"],
       "entry_event": "unitsSelect change metric to imperial on surface interval tool",
       "consumer_path": ["setUnits", "calcSurfInt", "domDepthToM", "siMinResult"],
       "setup": [

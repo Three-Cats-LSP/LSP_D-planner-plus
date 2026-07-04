@@ -22,6 +22,8 @@ FINDING_FIELDS = (
 MAX_SESSION_LINES = 600
 SEVERITY_RANK = {"LOW": 1, "MEDIUM": 2, "HIGH": 3, "CRITICAL": 4}
 TRACE_STAGES = {"input", "canonical", "consumer", "observable"}
+CURRENT_RECORD_SCHEMA = 4
+EVIDENCE_RECEIPT_SCHEMA = 1
 
 
 def _git(*args: str, root: Path = ROOT) -> str:
@@ -104,7 +106,7 @@ def make_plan(root: Path, cycle_id: int) -> dict[str, Any]:
                 },
             })
     return {
-        "schema_version": 3,
+        "schema_version": CURRENT_RECORD_SCHEMA,
         "cycle": cycle_id,
         "record_path": "",
         "target_branch": "dev",
@@ -136,6 +138,57 @@ def make_plan(root: Path, cycle_id: int) -> dict[str, Any]:
 
 def _text(value: Any, minimum: int = 1) -> bool:
     return isinstance(value, str) and len(value.strip()) >= minimum
+
+
+def _validate_evidence_receipt(root: Path, evidence: dict[str, Any]) -> list[str]:
+    evidence_id = evidence.get("id", "<unknown>")
+    errors: list[str] = []
+    argv = evidence.get("command_argv")
+    if not isinstance(argv, list) or not argv or not all(_text(item) for item in argv):
+        errors.append(f"evidence {evidence_id}: command_argv must be a non-empty string list")
+    receipt_path = evidence.get("receipt_path")
+    receipt_hash = evidence.get("receipt_sha256")
+    if not _text(receipt_path, 5):
+        errors.append(f"evidence {evidence_id}: receipt_path missing")
+        return errors
+    if not _text(receipt_hash, 64):
+        errors.append(f"evidence {evidence_id}: receipt_sha256 missing")
+    receipt_file = root / receipt_path
+    if not receipt_file.is_file():
+        errors.append(f"evidence {evidence_id}: receipt is missing: {receipt_path}")
+        return errors
+    actual_hash = hashlib.sha256(receipt_file.read_bytes()).hexdigest()
+    if actual_hash != receipt_hash:
+        errors.append(f"evidence {evidence_id}: receipt hash does not match")
+        return errors
+    try:
+        receipt = json.loads(receipt_file.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        errors.append(f"evidence {evidence_id}: receipt is malformed: {exc}")
+        return errors
+    expected = {
+        "schema_version": EVIDENCE_RECEIPT_SCHEMA,
+        "evidence_id": evidence_id,
+        "command_argv": argv,
+        "commit": evidence.get("commit"),
+        "exit_code": evidence.get("exit_code"),
+        "case_ids": evidence.get("case_ids", []),
+    }
+    for field, value in expected.items():
+        if receipt.get(field) != value:
+            errors.append(f"evidence {evidence_id}: receipt {field} does not match record")
+    for field in ("started_at", "finished_at", "stdout_sha256", "stderr_sha256"):
+        if not _text(receipt.get(field), 10):
+            errors.append(f"evidence {evidence_id}: receipt {field} missing")
+    executor = root / "tools" / "seven_lens_evidence.py"
+    expected_executor = hashlib.sha256(executor.read_bytes()).hexdigest() if executor.is_file() else ""
+    if receipt.get("executor_sha256") != expected_executor:
+        errors.append(f"evidence {evidence_id}: receipt executor fingerprint is stale")
+    if receipt.get("worktree_clean_before") is not True:
+        errors.append(f"evidence {evidence_id}: receipt started from a dirty worktree")
+    if receipt.get("worktree_clean_after") is not True:
+        errors.append(f"evidence {evidence_id}: receipt left tracked worktree changes")
+    return errors
 
 
 def _attestation_only_path(path: str) -> bool:
@@ -322,6 +375,8 @@ def _validate_evidence(
             and row.get("commit") != record.get("verified_source_commit")
         ):
             errors.append(f"evidence {evidence_id}: must run at verified_source_commit")
+        if record.get("schema_version", 1) >= CURRENT_RECORD_SCHEMA and phase in {"verify", "close"}:
+            errors.extend(_validate_evidence_receipt(root, row))
     if phase in {"verify", "close"} and record.get("verification_status") == "PASSED":
         passed = {
             row.get("id") for row in record.get("evidence_runs", [])
@@ -333,7 +388,14 @@ def _validate_evidence(
 
 
 def _validate_trace_artifact(
-    root: Path, fid: str, trace: dict[str, Any], require_artifacts: bool
+    root: Path,
+    fid: str,
+    trace: dict[str, Any],
+    require_artifacts: bool,
+    *,
+    expected_commit: str = "",
+    required_case_ids: set[str] | None = None,
+    current_schema: bool = False,
 ) -> list[str]:
     errors: list[str] = []
     artifact_path = trace.get("artifact_path")
@@ -361,11 +423,30 @@ def _validate_trace_artifact(
         return errors
     if payload.get("passed") is not True:
         errors.append(f"{fid}: browser trace artifact did not pass")
+    if expected_commit and payload.get("commit") != expected_commit:
+        errors.append(f"{fid}: browser trace artifact commit does not match evidence commit")
+    if current_schema:
+        spec_path = trace.get("spec_path")
+        spec_hash = trace.get("spec_sha256")
+        if not _text(spec_path, 5) or not _text(spec_hash, 64):
+            errors.append(f"{fid}: browser trace lacks immutable spec path/hash")
+        else:
+            spec_file = root / spec_path
+            if not spec_file.is_file():
+                errors.append(f"{fid}: browser trace spec is missing: {spec_path}")
+            elif hashlib.sha256(spec_file.read_bytes()).hexdigest() != spec_hash:
+                errors.append(f"{fid}: browser trace spec hash does not match")
+            if payload.get("spec_sha256") != spec_hash:
+                errors.append(f"{fid}: artifact/spec fingerprint mismatch")
+        if payload.get("schema_version") != 3 or payload.get("runner_version", 0) < 2:
+            errors.append(f"{fid}: browser trace artifact uses an obsolete schema/runner")
     rows = [row for row in payload.get("traces", []) if row.get("id") == trace_id]
     if len(rows) != 1:
         errors.append(f"{fid}: browser trace artifact must contain trace {trace_id} exactly once")
         return errors
     row = rows[0]
+    if required_case_ids and not required_case_ids.issubset(set(row.get("case_ids", []))):
+        errors.append(f"{fid}: browser trace does not declare every finding regression case")
     if row.get("passed") is not True or row.get("repeatable") is not True:
         errors.append(f"{fid}: browser trace is not passing and repeatable")
     if row.get("state_restored") is not True:
@@ -415,7 +496,15 @@ def _validate_closed_finding_evidence(
             if not TRACE_STAGES.issubset(stages):
                 missing = ", ".join(sorted(TRACE_STAGES - stages))
                 errors.append(f"{fid}: post-fix browser trace lacks stages: {missing}")
-            errors.extend(_validate_trace_artifact(root, fid, trace, require_artifacts))
+            errors.extend(_validate_trace_artifact(
+                root,
+                fid,
+                trace,
+                require_artifacts,
+                expected_commit=str(after.get("commit", "")),
+                required_case_ids=regressions,
+                current_schema=record.get("schema_version", 1) >= CURRENT_RECORD_SCHEMA,
+            ))
     return errors
 
 
@@ -537,6 +626,7 @@ def validate_record(
     phase: str,
     check_git: bool = True,
     require_artifacts: bool = True,
+    enforce_current_schema: bool = True,
 ) -> list[str]:
     registry, _ = _resolved_registry(root)
     errors = _validate_parts(root, record, phase)
@@ -551,6 +641,10 @@ def validate_record(
             errors.append("baseline_registry_fingerprint missing")
     if record.get("schema_version", 1) >= 3 and not _text(record.get("record_path"), 5):
         errors.append("record_path missing")
+    if phase == "close" and enforce_current_schema and record.get("schema_version") != CURRENT_RECORD_SCHEMA:
+        errors.append(
+            f"schema_version must be current ({CURRENT_RECORD_SCHEMA}) before closure"
+        )
     if record.get("target_branch") != "dev":
         errors.append("target_branch must be dev")
     if phase in {"verify", "close"} and not _text(record.get("audit_commit"), 7):
@@ -620,8 +714,10 @@ def validate_reviewed_cycles(root: Path, require_artifacts: bool = False) -> lis
             errors.append(f"SL-C{cycle:02d}: expected one protocol record, found {len(paths)}")
             continue
         record = json.loads(paths[0].read_text(encoding="utf-8"))
-        if record.get("schema_version", 0) < 2:
-            errors.append(f"SL-C{cycle:02d}: reviewed cycle uses legacy protocol schema")
+        if record.get("schema_version") != CURRENT_RECORD_SCHEMA:
+            errors.append(
+                f"SL-C{cycle:02d}: reviewed cycle must use current protocol schema {CURRENT_RECORD_SCHEMA}"
+            )
         record_errors = validate_record(
             root, record, "close", check_git=False, require_artifacts=require_artifacts
         )

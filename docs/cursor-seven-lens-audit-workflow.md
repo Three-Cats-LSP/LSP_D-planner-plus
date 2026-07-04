@@ -238,6 +238,8 @@ DOM/global/storage snapshots before and after cleanup; the hashes must match.
 Tested actions must be visible, enabled, and unforced. Run each trace at least
 twice in fresh browser contexts; reject non-finite captures and console/page
 errors.
+`run_script` and `set_global` are setup-only and require a setup reason; they may
+never perform the user action being tested.
 
 For unit-sensitive controls, review the complete physical tuple: value, label,
 minimum, maximum, step, default, persistence, and both conversion directions.
@@ -354,6 +356,11 @@ A cycle closes only when all conditions are true:
   exits 0.
 - `python tools/seven_lens_protocol.py check-all --require-artifacts` exits 0;
   all previously reviewed cycles remain valid.
+- The record uses the current schema and every evidence row has a receipt made by
+  `python tools/seven_lens_evidence.py`; closure scripts may not synthesize
+  evidence results.
+- Baseline-failure receipts run in a prepared clean detached worktree passed with
+  `--execution-root`; the receipt commit must equal that worktree's HEAD.
 - `docs/seven-lens-test-results.md` is updated with the cycle summary.
 - The cycle PR is pushed and merged to `dev` after required CI passes on the final
   PR HEAD.

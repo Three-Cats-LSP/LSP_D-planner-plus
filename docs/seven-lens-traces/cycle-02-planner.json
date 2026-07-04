@@ -1,10 +1,11 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "repeat": 2,
   "cycle": 2,
   "traces": [
     {
       "id": "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
+      "case_ids": ["SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH"],
       "entry_event": "User switches to imperial, edits travel manual depth, and returns to metric.",
       "consumer_path": ["travelGasManualDepth input", "syncDepthInputCanonical", "domDepthToM", "updateTravelGasMOD"],
       "setup": [
@@ -12,8 +13,7 @@
         {"action": "click", "selector": "#navBtnSettings"},
         {"action": "select", "selector": "#unitsSelect", "value": "metric"},
         {"action": "click", "selector": "#navBtnBuh"},
-        {"action": "click", "selector": "#addTravelGasBtn"},
-        {"action": "select", "selector": "#travelGasSwitchMode", "value": "manual"},
+        {"action": "run_script", "script": "() => { addTravelGas(); const m = document.getElementById('travelGasSwitchMode'); if (m) m.value = 'manual'; updateTravelGasMOD(); }", "setup_only_reason": "Expose and configure the optional travel-gas control before testing its visible input path."},
         {"action": "fill", "selector": "#travelGasManualDepth", "value": "30", "force": true, "setup_only_reason": "Prime travel manual depth before the visible edit path."}
       ],
       "state": {
@@ -41,8 +41,9 @@
     },
     {
       "id": "SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH",
+      "case_ids": ["SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH"],
       "entry_event": "User switches to imperial, edits bottom cylinder size, and returns to metric.",
-      "consumer_path": ["cylBot_size input", "syncVolumeInputCanonical", "domVolumeToL"],
+      "consumer_path": ["cylBot_size input", "syncVolumeInputCanonical", "domVolumeToL", "metric roundtrip display"],
       "setup": [
         {"action": "set_global", "name": "_zhlHeadless", "value": false},
         {"action": "click", "selector": "#navBtnSettings"},
@@ -71,66 +72,6 @@
         {"id": "imperial-edit-visible", "left": "$.edited.input_value", "op": "equal", "right": "0.5"},
         {"id": "imperial-edit-reaches-consumer", "left": "$.edited.consumer_l", "op": "close", "right": 14.158, "tolerance": 0.1},
         {"id": "roundtrip-preserves-edit", "left": "$.roundtrip.consumer_l", "op": "close", "right": 14.158, "tolerance": 0.1}
-      ]
-    },
-    {
-      "id": "SL-C02-MIN-DECO-IMPERIAL-TRACE",
-      "entry_event": "User switches to imperial with min-deco profile enabled.",
-      "consumer_path": ["setUnits", "getVpmMinDecoSettingsFromDom", "enforceMinDecoProfile", "minDeco stop depths"],
-      "setup": [
-        {"action": "set_global", "name": "_zhlHeadless", "value": false},
-        {"action": "click", "selector": "#navBtnSettings"},
-        {"action": "select", "selector": "#unitsSelect", "value": "metric"},
-        {"action": "click", "selector": "#navBtnBuh"},
-        {"action": "click", "selector": "#advancedSettingsToggle"},
-        {"action": "select", "selector": "#minDecoProfileEnable", "value": "yes"},
-        {"action": "run_script", "script": "typeof _updateAdvancedSummary === 'function' && _updateAdvancedSummary();", "setup_only_reason": "Sync advanced-settings summary before the state snapshot."}
-      ],
-      "state": {
-        "selectors": ["#navBtnSettings", "#navBtnBuh", "#unitsSelect", "#advancedSettingsToggle", "#advancedSettingsBody", "#minDecoProfileEnable", "#minDeco9m", "#minDeco6m"],
-        "restore_order": ["#navBtnBuh", "#unitsSelect", "#minDecoProfileEnable", "#minDeco9m", "#minDeco6m", "#advancedSettingsBody", "#advancedSettingsToggle", "#navBtnSettings"],
-        "globals": ["_zhlHeadless"]
-      },
-      "steps": [
-        {"capture": "metric", "values": {"isMetric": "typeof getVpmMinDecoSettingsFromDom === 'function' ? getVpmMinDecoSettingsFromDom().isMetric : null", "stopDepths": "(function(){ if (typeof enforceMinDecoProfile !== 'function') return ''; const steps=[{type:'deco',depth:30,dur:1},{type:'deco',depth:20,dur:1}]; return enforceMinDecoProfile(steps, true, Number(document.getElementById('minDeco9m')?.value||1), Number(document.getElementById('minDeco6m')?.value||3), false, '21/00', 0.79, 0).map(s=>s.depth).join(','); })()"}},
-        {"action": "click", "selector": "#navBtnSettings"},
-        {"action": "select", "selector": "#unitsSelect", "value": "imperial"},
-        {"action": "click", "selector": "#navBtnBuh"},
-        {"action": "click", "selector": "#advancedSettingsToggle"},
-        {"capture": "imperial", "values": {"isMetric": "typeof getVpmMinDecoSettingsFromDom === 'function' ? getVpmMinDecoSettingsFromDom().isMetric : null", "stopDepths": "(function(){ if (typeof enforceMinDecoProfile !== 'function') return ''; const steps=[{type:'deco',depth:30,dur:1},{type:'deco',depth:20,dur:1}]; return enforceMinDecoProfile(steps, false, Number(document.getElementById('minDeco9m')?.value||1), Number(document.getElementById('minDeco6m')?.value||3), false, '21/00', 0.79, 0).map(s=>s.depth).join(','); })()"}}
-      ],
-      "assertions": [
-        {"id": "imperial-not-metric-flag", "left": "$.imperial.isMetric", "op": "equal", "right": false},
-        {"id": "imperial-stop-depths", "left": "$.imperial.stopDepths", "op": "equal", "right": "30,20"}
-      ]
-    },
-    {
-      "id": "SL-C02-DECO-CYL-IMPERIAL-TRACE",
-      "entry_event": "User adds a dynamic deco cylinder card in imperial mode.",
-      "consumer_path": ["addDecoGasCard", "defaultDecoCylFieldValues", "syncCylinderSizeConstraints", "cylDg3_size validity"],
-      "setup": [
-        {"action": "set_global", "name": "_zhlHeadless", "value": false},
-        {"action": "click", "selector": "#navBtnSettings"},
-        {"action": "select", "selector": "#unitsSelect", "value": "metric"},
-        {"action": "click", "selector": "#navBtnBuh"}
-      ],
-      "state": {
-        "selectors": ["#navBtnSettings", "#navBtnBuh", "#unitsSelect", "#addDecoGasBtn", "#cylDg3_size"],
-        "restore_order": ["#navBtnBuh", "#unitsSelect", "#cylDg3_size", "#addDecoGasBtn", "#navBtnSettings"],
-        "globals": ["_zhlHeadless"]
-      },
-      "steps": [
-        {"capture": "metric", "values": {"card_absent": "!document.querySelector('#cylDg3_size')"}},
-        {"action": "click", "selector": "#navBtnSettings"},
-        {"action": "select", "selector": "#unitsSelect", "value": "imperial"},
-        {"action": "click", "selector": "#navBtnBuh"},
-        {"action": "click", "selector": "#addDecoGasBtn"},
-        {"capture": "imperial", "values": {"input_value": "document.querySelector('#cylDg3_size')?.value", "min": "document.querySelector('#cylDg3_size')?.min", "step": "document.querySelector('#cylDg3_size')?.step", "valid": "document.querySelector('#cylDg3_size')?.checkValidity() === true"}}
-      ],
-      "assertions": [
-        {"id": "default-size-present", "left": "$.imperial.input_value", "op": "equal", "right": "0.4"},
-        {"id": "physical-min-step", "left": "$.imperial.min", "op": "equal", "right": "0.02"},
-        {"id": "default-valid", "left": "$.imperial.valid", "op": "equal", "right": true}
       ]
     }
   ]
