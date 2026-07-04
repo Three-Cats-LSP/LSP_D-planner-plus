@@ -52,6 +52,24 @@ class UiCoreBlock:
 
 UI_CORE_BLOCKS: tuple[UiCoreBlock, ...] = (
     UiCoreBlock(
+        "planner-inputs-core",
+        "planner-inputs-core.js",
+        """/**
+ * Disjoint REC/TECH planner input accessors and view-switch snapshots.
+ * Loaded by index.html before settings-core.
+ */
+""",
+    ),
+    UiCoreBlock(
+        "rec-planner",
+        "rec-planner.js",
+        """/**
+ * Recreational planner dispatch (runRecPlan entry).
+ * Loaded by index.html before settings-core.
+ */
+""",
+    ),
+    UiCoreBlock(
         "settings-core",
         "settings-core.js",
         """/**

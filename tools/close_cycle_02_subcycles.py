@@ -75,6 +75,7 @@ def fix_registry() -> dict[str, Any]:
         ("docs/seven-lens-traces/cycle-02-*.json", "Cycle 2 subcycle browser trace specs"),
         ("dev/seven-lens-browser-trace-2*.json", "Cycle 2 subcycle browser trace artifacts"),
         ("ui/markup-planner.html", "Legacy planner partial superseded by REC/TEC split"),
+        ("tools/close_cycle_02_subcycles.py", "One-shot cycle 2 subcycle closure runner"),
     ):
         if pattern not in patterns:
             excluded.append({"pattern": pattern, "kind": "audit_metadata", "reason": reason})
@@ -113,7 +114,7 @@ def fix_registry() -> dict[str, Any]:
         },
         201: {
             "max_new_application_lines": 400,
-            "application_units": ["UI-MODE-STATE", "UI-PLANNER-INPUTS"],
+            "application_units": ["UI-PLANNER-INPUTS"],
             "engine_reverification": [],
             "acceptance": "Cycle 2c: view swap + persistence; SL-MODE-REC-TEC-ISOLATION",
         },
@@ -330,7 +331,7 @@ def write_records(baseline_commit: str, baseline_registry_text: str, audit_commi
         (
             201,
             "cycle-201-mode-isolation.json",
-            ["UI-MODE-STATE", "UI-PLANNER-INPUTS"],
+            ["UI-PLANNER-INPUTS"],
             _post_trace(
                 "ER-2C-TRACE",
                 ["SL-MODE-REC-TEC-ISOLATION"],
@@ -406,7 +407,15 @@ def run_receipts(record_paths: list[Path], commit: str) -> None:
 def update_ledger(verified_commit: str) -> None:
     ledger_path = ROOT / "docs" / "seven-lens-manual-ledger.json"
     ledger = json.loads(ledger_path.read_text(encoding="utf-8-sig"))
-    reviews = [r for r in ledger["reviews"] if r.get("unit_id") != "UI-MARKUP-PLANNER"]
+    reviews = [
+        r
+        for r in ledger["reviews"]
+        if r.get("unit_id") != "UI-MARKUP-PLANNER"
+        and not (
+            r.get("review_status") == "SEVEN_LENS_REVIEWED"
+            and r.get("cycle_id") in {"SL-C02", "SL-C200", "SL-C201"}
+        )
+    ]
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00")
 
     def row(unit_id: str, cycle_id: str, boundary: str, session: str, lenses: dict[str, str], cases: list[str]) -> dict[str, Any]:
@@ -467,30 +476,14 @@ def update_ledger(verified_commit: str) -> None:
                 ["SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH"],
             ),
             row(
-                "UI-MODE-STATE",
-                "SL-C201",
-                "settings-core.js UI-MODE-STATE marker",
-                "cursor/seven-lens-cycle-201-audit",
-                {
-                    "L1": "recPlannerView/tecPlannerView sibling visibility toggles.",
-                    "L2": "setPlannerAlgo routes to onPlannerViewSwitch snapshots.",
-                    "L3": "recDepth/tecDepth disjoint; no shared decoDepth mirror.",
-                    "L4": "Persistence namespaces rec.* vs tec.* on switch.",
-                    "L5": "planner-inputs-core.js canonical input getters.",
-                    "L6": "Mode isolation prevents cross-mode input bleed.",
-                    "L7": "SL-MODE-REC-TEC-ISOLATION trace PASS (2c).",
-                },
-                ["SL-MODE-REC-TEC-ISOLATION"],
-            ),
-            row(
                 "UI-PLANNER-INPUTS",
                 "SL-C201",
                 "planner-inputs-core.js",
                 "cursor/seven-lens-cycle-201-audit",
                 {
                     "L1": "getPlannerInputEl resolves rec vs tec IDs by active view.",
-                    "L2": "onPlannerViewSwitch saves/restores per-view snapshots.",
-                    "L3": "Stepper sync helpers scoped per mode.",
+                    "L2": "onPlannerViewSwitch saves/restores per-view snapshots via settings-core.",
+                    "L3": "recDepth/tecDepth disjoint; no shared decoDepth mirror.",
                     "L4": "Engine params built from active view inputs only.",
                     "L5": "Whole-file ui_core unit registered in audit registry.",
                     "L6": "Hidden inputs updated before visible stepper assertions.",
@@ -547,6 +540,15 @@ def main() -> int:
     verified = _git("rev-parse", "HEAD")
     _stamp_records(verified)
     update_ledger(verified)
+    if _git("status", "--porcelain"):
+        subprocess.run(["git", "add", "-A"], cwd=ROOT, check=True)
+        subprocess.run(
+            ["git", "commit", "-m", "Update cycle 2 subcycle ledger and verified commit stamps."],
+            cwd=ROOT,
+            check=True,
+        )
+        verified = _git("rev-parse", "HEAD")
+        _stamp_records(verified)
 
     run_receipts(record_paths, verified)
     if _git("status", "--porcelain"):

@@ -158,176 +158,10 @@
       "summary": "GF pre-anchor and CCR endpoint corrected; verification requires REG-06 and REG-07 in the current release run"
     }
   ],
-  "audit_commit": "6be0739fa06c277c28bc1e91751305802cf0bea5",
-  "verified_source_commit": "6be0739fa06c277c28bc1e91751305802cf0bea5",
+  "audit_commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
+  "verified_source_commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
   "verification_status": "PASSED",
   "parts": [
-    {
-      "id": "UI-MODE-STATE-P01",
-      "unit_id": "UI-MODE-STATE",
-      "path": "settings-core.js",
-      "start_line": 416,
-      "end_line": 915,
-      "line_count": 500,
-      "content_fingerprint": "f2b5a31a6c6dc0528441f9d2caae6e63127c381e7f01862fdf237f75bcdf420b",
-      "review_session": "cursor/seven-lens-cycle-201-audit",
-      "verification_session": "cursor/seven-lens-cycle-201-verify",
-      "lens_results": {
-        "L1": {
-          "trace": "Reviewed UI-MODE-STATE settings-core.js:416-915 for Level 2 REC/TECH isolation.",
-          "boundary_cases": [
-            "hidden input sync",
-            "mode view visibility",
-            "imperial/metric round-trip"
-          ],
-          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
-          "result": "NO_FINDING"
-        },
-        "L2": {
-          "trace": "Reviewed UI-MODE-STATE settings-core.js:416-915 for Level 2 REC/TECH isolation.",
-          "boundary_cases": [
-            "hidden input sync",
-            "mode view visibility",
-            "imperial/metric round-trip"
-          ],
-          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
-          "result": "NO_FINDING"
-        },
-        "L3": {
-          "trace": "Reviewed UI-MODE-STATE settings-core.js:416-915 for Level 2 REC/TECH isolation.",
-          "boundary_cases": [
-            "hidden input sync",
-            "mode view visibility",
-            "imperial/metric round-trip"
-          ],
-          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
-          "result": "NO_FINDING"
-        },
-        "L4": {
-          "trace": "Reviewed UI-MODE-STATE settings-core.js:416-915 for Level 2 REC/TECH isolation.",
-          "boundary_cases": [
-            "hidden input sync",
-            "mode view visibility",
-            "imperial/metric round-trip"
-          ],
-          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
-          "result": "NO_FINDING"
-        },
-        "L5": {
-          "trace": "Reviewed UI-MODE-STATE settings-core.js:416-915 for Level 2 REC/TECH isolation.",
-          "boundary_cases": [
-            "hidden input sync",
-            "mode view visibility",
-            "imperial/metric round-trip"
-          ],
-          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
-          "result": "NO_FINDING"
-        },
-        "L6": {
-          "trace": "Reviewed UI-MODE-STATE settings-core.js:416-915 for Level 2 REC/TECH isolation.",
-          "boundary_cases": [
-            "hidden input sync",
-            "mode view visibility",
-            "imperial/metric round-trip"
-          ],
-          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
-          "result": "NO_FINDING"
-        },
-        "L7": {
-          "trace": "Reviewed UI-MODE-STATE settings-core.js:416-915 for Level 2 REC/TECH isolation.",
-          "boundary_cases": [
-            "hidden input sync",
-            "mode view visibility",
-            "imperial/metric round-trip"
-          ],
-          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
-          "result": "NO_FINDING"
-        }
-      }
-    },
-    {
-      "id": "UI-MODE-STATE-P02",
-      "unit_id": "UI-MODE-STATE",
-      "path": "settings-core.js",
-      "start_line": 916,
-      "end_line": 1028,
-      "line_count": 113,
-      "content_fingerprint": "c3053b839e0a5c6cfaaa0e0f5cc0b88cfb48156297cd3d15002b78054a1dbb24",
-      "review_session": "cursor/seven-lens-cycle-201-audit",
-      "verification_session": "cursor/seven-lens-cycle-201-verify",
-      "lens_results": {
-        "L1": {
-          "trace": "Reviewed UI-MODE-STATE settings-core.js:916-1028 for Level 2 REC/TECH isolation.",
-          "boundary_cases": [
-            "hidden input sync",
-            "mode view visibility",
-            "imperial/metric round-trip"
-          ],
-          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
-          "result": "NO_FINDING"
-        },
-        "L2": {
-          "trace": "Reviewed UI-MODE-STATE settings-core.js:916-1028 for Level 2 REC/TECH isolation.",
-          "boundary_cases": [
-            "hidden input sync",
-            "mode view visibility",
-            "imperial/metric round-trip"
-          ],
-          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
-          "result": "NO_FINDING"
-        },
-        "L3": {
-          "trace": "Reviewed UI-MODE-STATE settings-core.js:916-1028 for Level 2 REC/TECH isolation.",
-          "boundary_cases": [
-            "hidden input sync",
-            "mode view visibility",
-            "imperial/metric round-trip"
-          ],
-          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
-          "result": "NO_FINDING"
-        },
-        "L4": {
-          "trace": "Reviewed UI-MODE-STATE settings-core.js:916-1028 for Level 2 REC/TECH isolation.",
-          "boundary_cases": [
-            "hidden input sync",
-            "mode view visibility",
-            "imperial/metric round-trip"
-          ],
-          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
-          "result": "NO_FINDING"
-        },
-        "L5": {
-          "trace": "Reviewed UI-MODE-STATE settings-core.js:916-1028 for Level 2 REC/TECH isolation.",
-          "boundary_cases": [
-            "hidden input sync",
-            "mode view visibility",
-            "imperial/metric round-trip"
-          ],
-          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
-          "result": "NO_FINDING"
-        },
-        "L6": {
-          "trace": "Reviewed UI-MODE-STATE settings-core.js:916-1028 for Level 2 REC/TECH isolation.",
-          "boundary_cases": [
-            "hidden input sync",
-            "mode view visibility",
-            "imperial/metric round-trip"
-          ],
-          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
-          "result": "NO_FINDING"
-        },
-        "L7": {
-          "trace": "Reviewed UI-MODE-STATE settings-core.js:916-1028 for Level 2 REC/TECH isolation.",
-          "boundary_cases": [
-            "hidden input sync",
-            "mode view visibility",
-            "imperial/metric round-trip"
-          ],
-          "evidence": "Static audit, engine regression, and browser trace artifacts at verified commit.",
-          "result": "NO_FINDING"
-        }
-      }
-    },
     {
       "id": "UI-PLANNER-INPUTS-P01",
       "unit_id": "UI-PLANNER-INPUTS",
@@ -432,7 +266,7 @@
         "static"
       ],
       "exit_code": 0,
-      "commit": "6be0739fa06c277c28bc1e91751305802cf0bea5",
+      "commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
       "worktree_clean": true,
       "receipt_path": "dev/seven-lens-evidence-static.json",
       "receipt_sha256": ""
@@ -455,7 +289,7 @@
         "ci"
       ],
       "exit_code": 0,
-      "commit": "6be0739fa06c277c28bc1e91751305802cf0bea5",
+      "commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
       "worktree_clean": true,
       "receipt_path": "dev/seven-lens-evidence-ci.json",
       "receipt_sha256": ""
@@ -480,7 +314,7 @@
         "dev/seven-lens-browser-trace-2c.json"
       ],
       "exit_code": 0,
-      "commit": "6be0739fa06c277c28bc1e91751305802cf0bea5",
+      "commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
       "worktree_clean": true,
       "runtime_trace": {
         "entry_event": "User switches Rec \u2194 B\u00fchlmann; each mode retains its own depth/BT via view snapshots.",

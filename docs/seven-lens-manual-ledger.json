@@ -57,58 +57,6 @@
       }
     },
     {
-      "unit_id": "UI-MARKUP-PLANNER",
-      "review_status": "IN_PROGRESS",
-      "reviewed_fingerprint": "f8580045052a2fc92806d2edcca8f609067470f49e1b5c99827a5e2a83d8de86",
-      "cycle_id": "SL-C02",
-      "boundary": "ui/markup-planner.html whole file (493 lines; single session)",
-      "reviewer": "Cursor GPT-5.5 Medium",
-      "review_session": "cursor/seven-lens-cycle-02-planner-audit",
-      "lens_results": {
-        "L1": "Rate selects m/min; travelGasManualDepth metric max=100; imperial 165 ft boundary examined.",
-        "L2": "All onclick/onchange handlers traced to index.html or gas-cards-core.js.",
-        "L3": "Phantom #unitSel caused isMetric always true; travel depth max not synced on relabelOnly.",
-        "L4": "enforceMinDecoProfile metre matching wrong in imperial; manual travel depth validity capped.",
-        "L5": "Canonical ui/markup-planner.html; fixes in caller modules per assemble contract.",
-        "L6": "Imperial min deco shallow stop enforcement and travel MOD manual depth limits.",
-        "L7": "SL-C02-MIN-DECO-UNITS and SL-C02-TRAVEL-DEPTH-CONSTRAINTS with DOM restore; REG-62/63."
-      },
-      "finding_ids": [
-        "SL-C02-M-01",
-        "SL-C02-M-02",
-        "SL-C02-H-01",
-        "SL-C02-M-03",
-        "SL-C02-M-04",
-        "SL-C02-M-05",
-        "SL-C02-M-06"
-      ],
-      "verification_commands": [
-        "python -m tools.audit check --profile static",
-        "python -m tools.audit run --profile ci",
-        "python dev/engine_regression.py"
-      ],
-      "reviewed_at": "2026-07-03T09:30:00+00:00",
-      "verified_at": "2026-07-03T14:45:00+00:00",
-      "verifier": "Cursor (canonical-writers FIXER/VERIFIER at 6f75077)",
-      "verification_status": "BLOCKED",
-      "verified_source_commit": null,
-      "last_checked_commit": "81a0482656929c0bce1a73c98ef784b3c55eda0b",
-      "verification_report": "docs/seven-lens-reports/cycle-02-codex-verification.md",
-      "findings_open": [],
-      "findings_closed": [
-        "SL-C02-M-01",
-        "SL-C02-M-02",
-        "SL-C02-H-01",
-        "SL-C02-M-03",
-        "SL-C02-M-04",
-        "SL-C02-M-05",
-        "SL-C02-M-06"
-      ],
-      "parts": {
-        "P01": "lines 1-493 \u2014 plan panel markup (single bounded part)"
-      }
-    },
-    {
       "unit_id": "UI-MARKUP-CONSUMPTION",
       "review_status": "IN_PROGRESS",
       "reviewed_fingerprint": "49fc4db38e69cbe03c527b034cfa2f613cb08260278b33cf54fc5f1e5b4f4d7b",
@@ -241,6 +189,150 @@
       ],
       "parts": {
         "P01": "lines 1-341 \u2014 modals markup"
+      }
+    },
+    {
+      "unit_id": "UI-MARKUP-REC-PLANNER",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
+      "cycle_id": "SL-C02",
+      "boundary": "ui/markup-rec-planner.html",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-002-audit",
+      "lens_results": {
+        "L1": "REC depth/BT steppers use hidden recDepth/recBT; no shared tec IDs.",
+        "L2": "recGenerateBtn \u2192 runRecPlan; stepRecDepthBt traced.",
+        "L3": "View snapshot on mode switch; rec.* persistence namespace.",
+        "L4": "Disjoint inputs feed REC schedule path only.",
+        "L5": "Canonical ui/markup-rec-planner.html assembled via header placeholder.",
+        "L6": "REC gas mix and safety stop controls bounded to recPlannerView.",
+        "L7": "SL-REC-DEPTH-BT-STEPPER browser trace PASS (2a)."
+      },
+      "finding_ids": [],
+      "verification_commands": [
+        "python -m tools.audit check --profile static",
+        "python -m tools.audit run --profile ci",
+        "python tools/seven_lens_browser_trace.py"
+      ],
+      "reviewed_at": "2026-07-04T06:20:10+00:00",
+      "verified_at": "2026-07-04T06:20:10+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
+      "last_checked_commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
+      "verification_report": "docs/seven-lens-reports/cycle-02-codex-verification.md",
+      "findings_open": [],
+      "findings_closed": [],
+      "parts": {
+        "P01": "ui/markup-rec-planner.html"
+      }
+    },
+    {
+      "unit_id": "UI-REC-PLANNER",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
+      "cycle_id": "SL-C02",
+      "boundary": "rec-planner.js",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-002-audit",
+      "lens_results": {
+        "L1": "REC depth/BT steppers use hidden recDepth/recBT; no shared tec IDs.",
+        "L2": "recGenerateBtn \u2192 runRecPlan; stepRecDepthBt traced.",
+        "L3": "View snapshot on mode switch; rec.* persistence namespace.",
+        "L4": "Disjoint inputs feed REC schedule path only.",
+        "L5": "Canonical ui/markup-rec-planner.html assembled via header placeholder.",
+        "L6": "REC gas mix and safety stop controls bounded to recPlannerView.",
+        "L7": "SL-REC-DEPTH-BT-STEPPER browser trace PASS (2a)."
+      },
+      "finding_ids": [],
+      "verification_commands": [
+        "python -m tools.audit check --profile static",
+        "python -m tools.audit run --profile ci",
+        "python tools/seven_lens_browser_trace.py"
+      ],
+      "reviewed_at": "2026-07-04T06:20:10+00:00",
+      "verified_at": "2026-07-04T06:20:10+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
+      "last_checked_commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
+      "verification_report": "docs/seven-lens-reports/cycle-02-codex-verification.md",
+      "findings_open": [],
+      "findings_closed": [],
+      "parts": {
+        "P01": "rec-planner.js"
+      }
+    },
+    {
+      "unit_id": "UI-MARKUP-TEC-PLANNER",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
+      "cycle_id": "SL-C200",
+      "boundary": "ui/markup-tec-planner.html",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-200-audit",
+      "lens_results": {
+        "L1": "TECH depth/BT, gas cards, GF/VPM rows use tec-only IDs.",
+        "L2": "tecGenerateBtn \u2192 runDecoSchedule; travel gas manual depth path traced.",
+        "L3": "Unit switch syncs travel manual depth constraints.",
+        "L4": "domDepthToM on travelGasManualDepth after imperial edit.",
+        "L5": "Static ui/markup-tec-planner.html; no runtime tec mount.",
+        "L6": "Cylinder and deco gas controls reachable in tecPlannerView.",
+        "L7": "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH trace PASS (2b)."
+      },
+      "finding_ids": [],
+      "verification_commands": [
+        "python -m tools.audit check --profile static",
+        "python -m tools.audit run --profile ci",
+        "python tools/seven_lens_browser_trace.py"
+      ],
+      "reviewed_at": "2026-07-04T06:20:10+00:00",
+      "verified_at": "2026-07-04T06:20:10+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
+      "last_checked_commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
+      "verification_report": "docs/seven-lens-reports/cycle-02-codex-verification.md",
+      "findings_open": [],
+      "findings_closed": [],
+      "parts": {
+        "P01": "ui/markup-tec-planner.html"
+      }
+    },
+    {
+      "unit_id": "UI-PLANNER-INPUTS",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "reviewed_fingerprint": "",
+      "cycle_id": "SL-C201",
+      "boundary": "planner-inputs-core.js",
+      "reviewer": "Cursor Agent",
+      "review_session": "cursor/seven-lens-cycle-201-audit",
+      "lens_results": {
+        "L1": "getPlannerInputEl resolves rec vs tec IDs by active view.",
+        "L2": "onPlannerViewSwitch saves/restores per-view snapshots via settings-core.",
+        "L3": "recDepth/tecDepth disjoint; no shared decoDepth mirror.",
+        "L4": "Engine params built from active view inputs only.",
+        "L5": "Whole-file ui_core unit registered in audit registry.",
+        "L6": "Hidden inputs updated before visible stepper assertions.",
+        "L7": "SL-MODE-REC-TEC-ISOLATION covers persistence contract."
+      },
+      "finding_ids": [],
+      "verification_commands": [
+        "python -m tools.audit check --profile static",
+        "python -m tools.audit run --profile ci",
+        "python tools/seven_lens_browser_trace.py"
+      ],
+      "reviewed_at": "2026-07-04T06:20:10+00:00",
+      "verified_at": "2026-07-04T06:20:10+00:00",
+      "verifier": "Cursor Agent (schema-v4 closure)",
+      "verification_status": "PASS",
+      "verified_source_commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
+      "last_checked_commit": "b7b6e1db4455fc573a900ee25d956921adf58a80",
+      "verification_report": "docs/seven-lens-reports/cycle-02-codex-verification.md",
+      "findings_open": [],
+      "findings_closed": [],
+      "parts": {
+        "P01": "planner-inputs-core.js"
       }
     }
   ]

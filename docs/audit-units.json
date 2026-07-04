@@ -173,6 +173,11 @@
         "reason": "Dev helper script"
       },
       {
+        "pattern": "tools/close_cycle_02_subcycles.py",
+        "kind": "one_shot",
+        "reason": "One-shot cycle 2 subcycle closure runner"
+      },
+      {
         "pattern": "dev/audit-release-log.json",
         "kind": "audit_artifact",
         "reason": "Mutable V3 release automation log"
@@ -2179,20 +2184,14 @@
       "path": "sw.js",
       "layer": "pwa",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "e50fba8a208b040f0473dd06731558169bd1e330757ebc0e0f79e71205e3b860",
-      "last_read_fingerprint": "e50fba8a208b040f0473dd06731558169bd1e330757ebc0e0f79e71205e3b860",
-      "evidence": [
-        "SUITE-SW-LIFECYCLE/SW-NETWORK-FIRST-ENGINE",
-        "SUITE-UI-STRUCTURE/UI-SW-PRECACHE"
-      ],
-      "regression_cases": [
-        "REG-45",
-        "EXT-08"
-      ],
+      "fingerprint": "1e82fdc75b23430a4f2c242e073b8b64061aabcbd19d70192575be6cdefcabb7",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 165,
       "issue": "Cycle 31 deployed shell precache and network-first engine delivery"
     },
@@ -3685,21 +3684,15 @@
       "path": "tools/extract_ui_cores.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity"
-      ],
+      "evidence": [],
       "issue": "GitHub #136 marker-based UI core extraction",
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01"
-      ],
-      "fingerprint": "cfa927e430353bcc54c243896a73eee1c9033b21f800d148308562a8bfa85223",
-      "last_read_fingerprint": "cfa927e430353bcc54c243896a73eee1c9033b21f800d148308562a8bfa85223"
+      "regression_cases": [],
+      "fingerprint": "1783724bc33ced1f60eeb7645d905412f9613d078652aff5416dc48211350ac9",
+      "last_read_fingerprint": null
     },
     {
       "id": "TOOL-EXTRACT-ZHL",
@@ -5126,9 +5119,8 @@
     },
     {
       "cycle": 201,
-      "max_new_application_lines": 732,
+      "max_new_application_lines": 400,
       "application_units": [
-        "UI-MODE-STATE",
         "UI-PLANNER-INPUTS"
       ],
       "engine_reverification": [],
