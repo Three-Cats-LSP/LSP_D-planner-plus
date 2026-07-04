@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ER-C06-PARITY",
+  "command_argv": [
+    "python",
+    "tools/extract_ui_css.py"
+  ],
+  "commit": "29fc3947034de797241d17a98e7e6ac206c440ab",
+  "exit_code": 0,
+  "case_ids": [
+    "UI-EXTRACT-CSS"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-04T14:32:50.357906+00:00",
+  "finished_at": "2026-07-04T14:32:51.426350+00:00",
+  "stdout_sha256": "aa8ac9edf0dc30c49ded6703c7853aeee688fa2957617c20843e8501b6c91855",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "232079e355a65101f3fed6417329de6c8b657d5fbbc72287cf290d47ecc1f062"
+}

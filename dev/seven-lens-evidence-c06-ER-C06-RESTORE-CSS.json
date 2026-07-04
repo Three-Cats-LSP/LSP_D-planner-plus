@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ER-C06-RESTORE-CSS",
+  "command_argv": [
+    "python",
+    "dev/ui_controls_css_regression.py"
+  ],
+  "commit": "29fc3947034de797241d17a98e7e6ac206c440ab",
+  "exit_code": 0,
+  "case_ids": [
+    "SL-C06-SEG-FOCUS-VISIBLE",
+    "SL-C06-GAS-NUM-TOUCH-TARGET",
+    "SL-C06-CSS-DEAD-SI-INNER",
+    "SL-C06-CSS-DEAD-T-COL",
+    "SL-C06-CSS-DEAD-BTN-CALC",
+    "SL-C06-FIELD-INVALID-STATE",
+    "SL-C06-REDUCED-MOTION"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-04T14:33:11.018395+00:00",
+  "finished_at": "2026-07-04T14:33:43.482249+00:00",
+  "stdout_sha256": "8891813f285683e9aa680cd5d8747e2b26cea84285d3490336c70f00d603eda9",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "232079e355a65101f3fed6417329de6c8b657d5fbbc72287cf290d47ecc1f062"
+}
