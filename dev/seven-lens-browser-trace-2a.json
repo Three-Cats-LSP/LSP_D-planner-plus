@@ -1,0 +1,329 @@
+{
+  "schema_version": 3,
+  "runner_version": 2,
+  "spec": "docs\\seven-lens-traces\\cycle-02-rec-planner.json",
+  "spec_sha256": "796b00ded3e257fef826c7a68acc53b572e8f464c6593a6a47af320874c357fb",
+  "commit": "fe016cc1c61dacb51338a1e6b183c0a61b2160f8",
+  "traces": [
+    {
+      "id": "SL-REC-DEPTH-BT-STEPPER",
+      "entry_event": "User steps REC depth up and the stepper label follows the hidden recDepth input.",
+      "consumer_path": [
+        "recDepth stepper +",
+        "recDepth value",
+        "_syncRecDepthBtSteppers",
+        "recDepthStepperVal label"
+      ],
+      "captures": {
+        "before": {
+          "depth_lbl": "40",
+          "depth_val": "40"
+        },
+        "after": {
+          "depth_lbl": "41",
+          "depth_val": "41"
+        }
+      },
+      "assertions": [
+        {
+          "id": "rec-depth-input-advanced",
+          "passed": true,
+          "detail": "'41' equal '41'"
+        },
+        {
+          "id": "rec-depth-stepper-synced",
+          "passed": true,
+          "detail": "'41' equal '41'"
+        },
+        {
+          "id": "rec-depth-changed",
+          "passed": true,
+          "detail": "'40' not_equal '41'"
+        }
+      ],
+      "state_before_sha256": "adefc23bd0056275e9f6742b7f95900fa59e54f7ce11861b74ef36e7ba536aef",
+      "state_after_sha256": "adefc23bd0056275e9f6742b7f95900fa59e54f7ce11861b74ef36e7ba536aef",
+      "state_before": {
+        "elements": {
+          "#navBtnRec": {
+            "value": "",
+            "checked": null,
+            "text": "RECNDL \u00b7 PADI table",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#recDepthBtSteppers button[aria-label=\"Increase depth\"]": {
+            "value": "",
+            "checked": null,
+            "text": "+",
+            "className": "stepper-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0",
+          "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+          "waterDensity": "salt"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnRec": {
+            "value": "",
+            "checked": null,
+            "text": "RECNDL \u00b7 PADI table",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#recDepthBtSteppers button[aria-label=\"Increase depth\"]": {
+            "value": "",
+            "checked": null,
+            "text": "+",
+            "className": "stepper-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0",
+          "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+          "waterDensity": "salt"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "case_ids": [
+        "SL-C01-DEPTH-SYNC"
+      ],
+      "runs": [
+        {
+          "id": "SL-REC-DEPTH-BT-STEPPER",
+          "entry_event": "User steps REC depth up and the stepper label follows the hidden recDepth input.",
+          "consumer_path": [
+            "recDepth stepper +",
+            "recDepth value",
+            "_syncRecDepthBtSteppers",
+            "recDepthStepperVal label"
+          ],
+          "captures": {
+            "before": {
+              "depth_lbl": "40",
+              "depth_val": "40"
+            },
+            "after": {
+              "depth_lbl": "41",
+              "depth_val": "41"
+            }
+          },
+          "assertions": [
+            {
+              "id": "rec-depth-input-advanced",
+              "passed": true,
+              "detail": "'41' equal '41'"
+            },
+            {
+              "id": "rec-depth-stepper-synced",
+              "passed": true,
+              "detail": "'41' equal '41'"
+            },
+            {
+              "id": "rec-depth-changed",
+              "passed": true,
+              "detail": "'40' not_equal '41'"
+            }
+          ],
+          "state_before_sha256": "adefc23bd0056275e9f6742b7f95900fa59e54f7ce11861b74ef36e7ba536aef",
+          "state_after_sha256": "adefc23bd0056275e9f6742b7f95900fa59e54f7ce11861b74ef36e7ba536aef",
+          "state_before": {
+            "elements": {
+              "#navBtnRec": {
+                "value": "",
+                "checked": null,
+                "text": "RECNDL \u00b7 PADI table",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#recDepthBtSteppers button[aria-label=\"Increase depth\"]": {
+                "value": "",
+                "checked": null,
+                "text": "+",
+                "className": "stepper-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnRec": {
+                "value": "",
+                "checked": null,
+                "text": "RECNDL \u00b7 PADI table",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#recDepthBtSteppers button[aria-label=\"Increase depth\"]": {
+                "value": "",
+                "checked": null,
+                "text": "+",
+                "className": "stepper-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-REC-DEPTH-BT-STEPPER",
+          "entry_event": "User steps REC depth up and the stepper label follows the hidden recDepth input.",
+          "consumer_path": [
+            "recDepth stepper +",
+            "recDepth value",
+            "_syncRecDepthBtSteppers",
+            "recDepthStepperVal label"
+          ],
+          "captures": {
+            "before": {
+              "depth_lbl": "40",
+              "depth_val": "40"
+            },
+            "after": {
+              "depth_lbl": "41",
+              "depth_val": "41"
+            }
+          },
+          "assertions": [
+            {
+              "id": "rec-depth-input-advanced",
+              "passed": true,
+              "detail": "'41' equal '41'"
+            },
+            {
+              "id": "rec-depth-stepper-synced",
+              "passed": true,
+              "detail": "'41' equal '41'"
+            },
+            {
+              "id": "rec-depth-changed",
+              "passed": true,
+              "detail": "'40' not_equal '41'"
+            }
+          ],
+          "state_before_sha256": "d5d11242d844dcfe2a0d028b3a159c2c7ed674d24e883bba396347ddc9c08f24",
+          "state_after_sha256": "d5d11242d844dcfe2a0d028b3a159c2c7ed674d24e883bba396347ddc9c08f24",
+          "state_before": {
+            "elements": {
+              "#navBtnRec": {
+                "value": "",
+                "checked": null,
+                "text": "RECNDL \u00b7 PADI table",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#recDepthBtSteppers button[aria-label=\"Increase depth\"]": {
+                "value": "",
+                "checked": null,
+                "text": "+",
+                "className": "stepper-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"rec\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnRec": {
+                "value": "",
+                "checked": null,
+                "text": "RECNDL \u00b7 PADI table",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#recDepthBtSteppers button[aria-label=\"Increase depth\"]": {
+                "value": "",
+                "checked": null,
+                "text": "+",
+                "className": "stepper-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"rec\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "passed": true
+}

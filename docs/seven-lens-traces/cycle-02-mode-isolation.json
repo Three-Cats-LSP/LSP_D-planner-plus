@@ -7,23 +7,24 @@
     {
       "id": "SL-MODE-REC-TEC-ISOLATION",
       "case_ids": ["SL-MODE-REC-TEC-ISOLATION"],
-      "entry_event": "User switches Rec ↔ Bühlmann; each mode retains its own depth/BT.",
-      "consumer_path": ["setPlannerAlgo", "onPlannerViewSwitch", "recDepth", "tecDepth"],
+      "entry_event": "User switches Rec ↔ Bühlmann; each mode retains its own depth/BT via view snapshots.",
+      "consumer_path": ["navBtnBuh click", "setPlannerAlgo view swap", "onPlannerViewSwitch restore", "tecDepth value persisted"],
       "setup": [
         {"action": "set_global", "name": "_zhlHeadless", "value": false},
-        {"action": "click", "selector": "#navBtnBuh"},
-        {"action": "fill", "selector": "#tecDepth", "value": "44"},
-        {"action": "fill", "selector": "#tecBT", "value": "22"},
-        {"action": "click", "selector": "#navBtnRec"},
-        {"action": "fill", "selector": "#recDepth", "value": "33"},
-        {"action": "fill", "selector": "#recBT", "value": "21"}
+        {"action": "run_script", "setup_only_reason": "Prime disjoint REC/TECH depth/BT values on hidden inputs before visible nav-only steps.",
+          "script": "() => { setPlannerAlgo('ZHLC_GF'); const td = document.getElementById('tecDepth'); const tb = document.getElementById('tecBT'); if (td) td.value = '44'; if (tb) tb.value = '22'; _syncTecDepthBtSteppers?.(); setPlannerAlgo('rec'); const rd = document.getElementById('recDepth'); const rb = document.getElementById('recBT'); if (rd) rd.value = '33'; if (rb) rb.value = '21'; _syncRecDepthBtSteppers?.(); }"
+        }
       ],
       "state": {
-        "selectors": ["#navBtnRec", "#navBtnBuh", "#recDepth", "#recBT", "#tecDepth", "#tecBT"],
-        "restore_order": ["#recDepth", "#recBT", "#tecDepth", "#tecBT", "#navBtnBuh"],
+        "selectors": ["#navBtnRec", "#navBtnBuh", "#tecDepthBtSteppers button[aria-label=\"Increase depth\"]"],
+        "restore_order": ["#tecDepthBtSteppers button[aria-label=\"Increase depth\"]", "#navBtnRec", "#navBtnBuh"],
         "globals": ["_zhlHeadless"]
       },
       "steps": [
+        {"capture": "before", "values": {
+          "rec_d": "document.getElementById('recDepth')?.value",
+          "tec_d": "document.getElementById('tecDepth')?.value"
+        }},
         {"action": "click", "selector": "#navBtnBuh"},
         {"capture": "tec_restored", "values": {
           "tec_d": "document.getElementById('tecDepth')?.value",
@@ -31,17 +32,19 @@
           "rec_visible": "document.getElementById('recPlannerView')?.classList.contains('visible')",
           "tec_visible": "document.getElementById('tecPlannerView')?.classList.contains('visible')"
         }},
-        {"action": "fill", "selector": "#tecDepth", "value": "55"},
-        {"action": "fill", "selector": "#tecBT", "value": "25"},
+        {"action": "click", "selector": "#tecDepthBtSteppers button[aria-label=\"Increase depth\"]"},
+        {"capture": "tec_edited", "values": {
+          "tec_d": "document.getElementById('tecDepth')?.value",
+          "tec_lbl": "document.getElementById('tecDepthStepperVal')?.textContent"
+        }},
         {"action": "click", "selector": "#navBtnRec"},
         {"capture": "rec_restored", "values": {
           "rec_d": "document.getElementById('recDepth')?.value",
           "rec_b": "document.getElementById('recBT')?.value"
         }},
         {"action": "click", "selector": "#navBtnBuh"},
-        {"capture": "tec_edited", "values": {
-          "tec_d": "document.getElementById('tecDepth')?.value",
-          "tec_b": "document.getElementById('tecBT')?.value"
+        {"capture": "tec_persisted", "values": {
+          "tec_d": "document.getElementById('tecDepth')?.value"
         }}
       ],
       "assertions": [
@@ -49,7 +52,7 @@
         {"id": "rec-hidden-on-tec", "left": "$.tec_restored.rec_visible", "op": "equal", "right": false},
         {"id": "tec-depth-restored", "left": "$.tec_restored.tec_d", "op": "equal", "right": "44"},
         {"id": "rec-depth-restored", "left": "$.rec_restored.rec_d", "op": "equal", "right": "33"},
-        {"id": "tec-depth-edited-persists", "left": "$.tec_edited.tec_d", "op": "equal", "right": "55"}
+        {"id": "tec-depth-edited-persists", "left": "$.tec_persisted.tec_d", "op": "equal", "right": "45"}
       ]
     }
   ]

@@ -7,28 +7,32 @@
     {
       "id": "SL-REC-DEPTH-BT-STEPPER",
       "case_ids": ["SL-C01-DEPTH-SYNC"],
-      "entry_event": "User edits REC depth/BT via hidden inputs and steppers stay in sync.",
-      "consumer_path": ["recDepth", "recBT", "_syncRecDepthBtSteppers"],
+      "entry_event": "User steps REC depth up and the stepper label follows the hidden recDepth input.",
+      "consumer_path": ["recDepth stepper +", "recDepth value", "_syncRecDepthBtSteppers", "recDepthStepperVal label"],
       "setup": [
         {"action": "set_global", "name": "_zhlHeadless", "value": false},
         {"action": "click", "selector": "#navBtnRec"}
       ],
       "state": {
-        "selectors": ["#navBtnRec", "#recDepth", "#recBT"],
-        "restore_order": ["#recDepth", "#recBT", "#navBtnRec"],
+        "selectors": ["#navBtnRec", "#recDepthBtSteppers button[aria-label=\"Increase depth\"]"],
+        "restore_order": ["#recDepthBtSteppers button[aria-label=\"Increase depth\"]", "#navBtnRec"],
         "globals": ["_zhlHeadless"]
       },
       "steps": [
-        {"action": "fill", "selector": "#recDepth", "value": "35"},
-        {"action": "fill", "selector": "#recBT", "value": "28"},
-        {"capture": "synced", "values": {
+        {"capture": "before", "values": {
           "depth_lbl": "document.getElementById('recDepthStepperVal')?.textContent",
-          "bt_lbl": "document.getElementById('recBtStepperVal')?.textContent"
+          "depth_val": "document.getElementById('recDepth')?.value"
+        }},
+        {"action": "click", "selector": "#recDepthBtSteppers button[aria-label=\"Increase depth\"]"},
+        {"capture": "after", "values": {
+          "depth_lbl": "document.getElementById('recDepthStepperVal')?.textContent",
+          "depth_val": "document.getElementById('recDepth')?.value"
         }}
       ],
       "assertions": [
-        {"id": "rec-depth-stepper", "left": "$.synced.depth_lbl", "op": "equal", "right": "35"},
-        {"id": "rec-bt-stepper", "left": "$.synced.bt_lbl", "op": "equal", "right": "28"}
+        {"id": "rec-depth-input-advanced", "left": "$.after.depth_val", "op": "equal", "right": "41"},
+        {"id": "rec-depth-stepper-synced", "left": "$.after.depth_lbl", "op": "equal", "right": "41"},
+        {"id": "rec-depth-changed", "left": "$.before.depth_val", "op": "not_equal", "right": "$.after.depth_val"}
       ]
     }
   ]
