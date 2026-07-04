@@ -138,6 +138,20 @@ def _styles_differ(left: dict | None, right: dict | None) -> bool:
     return left.get("borderColor") != right.get("borderColor") or left.get("boxShadow") != right.get("boxShadow")
 
 
+def _css_color(page, value: str) -> str:
+    return page.evaluate(
+        """value => {
+          const probe = document.createElement('span');
+          probe.style.color = value;
+          document.body.appendChild(probe);
+          const color = getComputedStyle(probe).color;
+          probe.remove();
+          return color;
+        }""",
+        value,
+    )
+
+
 def _keyboard_seg_focus(page, *, gas_rule: bool) -> dict:
     if gas_rule:
         page.evaluate(
@@ -277,12 +291,17 @@ def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> 
         page.evaluate("() => { switchTab('deco', document.getElementById('tab-deco')); }")
 
     invalid_visual = _styles_differ(before_styles, invalid_styles)
+    expected_invalid_border = _css_color(page, "var(--red)")
+    invalid_border_is_red = invalid_styles.get("borderColor") == expected_invalid_border
+    invalid_shadow_visible = invalid_styles.get("boxShadow") not in {"none", ""}
     focus_differs = _styles_differ(invalid_styles, focus_styles)
     disabled_differs = _styles_differ(invalid_styles, disabled_styles)
     ok = (
         pristine_valid
         and after_invalid
         and invalid_visual
+        and invalid_border_is_red
+        and invalid_shadow_visible
         and focus_differs
         and disabled_differs
         and focused
@@ -312,6 +331,7 @@ def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> 
         "borderColors": {
             "before": before_styles.get("borderColor"),
             "invalid": invalid_styles.get("borderColor"),
+            "expectedInvalid": expected_invalid_border,
             "focus": focus_styles.get("borderColor"),
             "disabled": disabled_styles.get("borderColor"),
         },
@@ -331,6 +351,8 @@ def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> 
         },
         "checks": {
             "invalidVisual": invalid_visual,
+            "invalidBorderIsRed": invalid_border_is_red,
+            "invalidShadowVisible": invalid_shadow_visible,
             "focusDiffers": focus_differs,
             "disabledDiffers": disabled_differs,
         },

@@ -139,7 +139,8 @@
           "capture": "before",
           "values": {
             "valid_before": "document.getElementById('cylBot_size')?.validity?.valid === true",
-            "border_before": "getComputedStyle(document.getElementById('cylBot_size')).borderColor"
+            "border_before": "getComputedStyle(document.getElementById('cylBot_size')).borderColor",
+            "expected_red": "(() => { const probe = document.createElement('span'); probe.style.color = 'var(--red)'; document.body.appendChild(probe); const color = getComputedStyle(probe).color; probe.remove(); return color; })()"
           }
         },
         {"action": "click", "selector": "#cylBot_size"},
@@ -156,14 +157,16 @@
         {
           "capture": "consumer",
           "values": {
-            "border_changed": "(() => { const el = document.getElementById('cylBot_size'); if (!el) return false; const bc = getComputedStyle(el).borderColor; return !el.validity.valid && bc !== 'rgba(255, 255, 255, 0.08)'; })()"
+            "border_color": "getComputedStyle(document.getElementById('cylBot_size')).borderColor",
+            "box_shadow": "getComputedStyle(document.getElementById('cylBot_size')).boxShadow"
           }
         }
       ],
       "assertions": [
         {"id": "was-valid", "left": "$.before.valid_before", "op": "equal", "right": true},
         {"id": "now-invalid", "left": "$.canonical.valid_after", "op": "equal", "right": true},
-        {"id": "border-changed", "left": "$.consumer.border_changed", "op": "equal", "right": true}
+        {"id": "border-uses-red", "left": "$.consumer.border_color", "op": "equal", "right": "$.before.expected_red"},
+        {"id": "box-shadow-visible", "left": "$.consumer.box_shadow", "op": "not_equal", "right": "none"}
       ]
     },
     {
