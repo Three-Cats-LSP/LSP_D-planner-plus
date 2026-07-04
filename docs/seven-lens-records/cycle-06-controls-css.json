@@ -556,14 +556,16 @@
       "state_restored": true,
       "command": "python dev/c06_pre_controls_regression.py",
       "exit_code": 1,
-      "commit": "",
+      "commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182",
       "worktree_clean": true,
       "command_argv": [
         "python",
         "dev/c06_pre_controls_regression.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-PRE-CSS.json",
-      "receipt_sha256": ""
+      "receipt_sha256": "c9dab2d685f2110db45061a3b6e8b3cacac78b355eb062f1fb556ba502292ad4",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
     },
     {
       "id": "ER-C06-POST-CSS",
@@ -583,14 +585,16 @@
       "state_restored": true,
       "command": "python dev/ui_controls_css_regression.py",
       "exit_code": 0,
-      "commit": "",
+      "commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182",
       "worktree_clean": true,
       "command_argv": [
         "python",
         "dev/ui_controls_css_regression.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-POST-CSS.json",
-      "receipt_sha256": ""
+      "receipt_sha256": "5b4da7ea731fbf6a9950cefaf58c42cdac671238b9ae1cfbd641d3fc17e6e33e",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
     },
     {
       "id": "ER-C06-TRACE",
@@ -607,7 +611,7 @@
       "state_restored": true,
       "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-06-controls.json --output dev/seven-lens-browser-trace-cycle06.json",
       "exit_code": 0,
-      "commit": "",
+      "commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -618,7 +622,9 @@
         "dev/seven-lens-browser-trace-cycle06.json"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-TRACE.json",
-      "receipt_sha256": ""
+      "receipt_sha256": "7269d63b5f90df029f5357fa736dba5c6492b22aa4f5b9590d62494673d7a2fe",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
     },
     {
       "id": "ER-C06-STRUCTURE",
@@ -633,14 +639,16 @@
       "state_restored": true,
       "command": "python tools/run_ui_structure_suite.py",
       "exit_code": 0,
-      "commit": "",
+      "commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182",
       "worktree_clean": true,
       "command_argv": [
         "python",
         "tools/run_ui_structure_suite.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-STRUCTURE.json",
-      "receipt_sha256": ""
+      "receipt_sha256": "21aa8fbd15bd85c6b055ba9e74ccf36c889c29a981026cd722dac17ed636b50f",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
     },
     {
       "id": "ER-C06-PARITY",
@@ -654,14 +662,16 @@
       "state_restored": true,
       "command": "python tools/extract_ui_css.py",
       "exit_code": 0,
-      "commit": "",
+      "commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182",
       "worktree_clean": true,
       "command_argv": [
         "python",
         "tools/extract_ui_css.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-PARITY.json",
-      "receipt_sha256": ""
+      "receipt_sha256": "230d155794b6a457ef743c366170a3a72abeb8c28d72ff6b2a2e8233593285a6",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
     },
     {
       "id": "static",
@@ -673,7 +683,7 @@
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
       "exit_code": 0,
-      "commit": "",
+      "commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -684,7 +694,9 @@
         "static"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-static.json",
-      "receipt_sha256": ""
+      "receipt_sha256": "6787b3d680fea8d5709e56c5f555e912f214f32869ad7fa47dfcd77ddee36637",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
     },
     {
       "id": "ER-C06-RESTORE-CSS",
@@ -704,14 +716,18 @@
       "state_restored": true,
       "command": "python dev/ui_controls_css_regression.py",
       "exit_code": 0,
-      "commit": "",
+      "commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182",
       "worktree_clean": true,
       "command_argv": [
         "python",
         "dev/ui_controls_css_regression.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-RESTORE-CSS.json",
-      "receipt_sha256": ""
+      "receipt_sha256": "4e50add68e34e9297e5c0b154ed40d66ac434fb07f045d525825cada0c4057ca",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true,
+      "state_before_sha256": "9ddc9b1e6d0a93297b2dbb2e6264635f2442c550fc01e7cb570182ed0f26a330",
+      "state_after_sha256": "9ddc9b1e6d0a93297b2dbb2e6264635f2442c550fc01e7cb570182ed0f26a330"
     }
   ],
   "changed_paths": [

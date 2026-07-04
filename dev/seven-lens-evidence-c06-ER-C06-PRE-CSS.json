@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ER-C06-PRE-CSS",
+  "command_argv": [
+    "python",
+    "dev/c06_pre_controls_regression.py"
+  ],
+  "commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182",
+  "exit_code": 1,
+  "case_ids": [
+    "SL-C06-SEG-FOCUS-VISIBLE",
+    "SL-C06-GAS-NUM-TOUCH-TARGET",
+    "SL-C06-CSS-DEAD-SI-INNER",
+    "SL-C06-CSS-DEAD-T-COL",
+    "SL-C06-CSS-DEAD-BTN-CALC",
+    "SL-C06-FIELD-INVALID-STATE",
+    "SL-C06-REDUCED-MOTION"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-04T15:33:23.926883+00:00",
+  "finished_at": "2026-07-04T15:34:01.891025+00:00",
+  "stdout_sha256": "8f1899f56cf02d1981c28262badb039e8fecca6d5c20ed9ff9635d8e0a86d03e",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
+}

@@ -534,7 +534,202 @@
       ]
     }
   ],
-  "evidence_runs": [],
+  "evidence_runs": [
+    {
+      "id": "ER-C06-PRE-CSS",
+      "kind": "baseline_failure",
+      "case_ids": [
+        "SL-C06-SEG-FOCUS-VISIBLE",
+        "SL-C06-GAS-NUM-TOUCH-TARGET",
+        "SL-C06-CSS-DEAD-SI-INNER",
+        "SL-C06-CSS-DEAD-T-COL",
+        "SL-C06-CSS-DEAD-BTN-CALC",
+        "SL-C06-FIELD-INVALID-STATE",
+        "SL-C06-REDUCED-MOTION"
+      ],
+      "observable_assertions": [
+        "M-01 keyboard seg outline not solid",
+        "M-02 gas-f-num height 35px at 375px",
+        "dead selector rules present",
+        "L-05 transitions active under reduced motion"
+      ],
+      "state_restored": true,
+      "command": "python dev/c06_pre_controls_regression.py",
+      "exit_code": 1,
+      "commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "dev/c06_pre_controls_regression.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-PRE-CSS.json",
+      "receipt_sha256": "c9dab2d685f2110db45061a3b6e8b3cacac78b355eb062f1fb556ba502292ad4",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
+    },
+    {
+      "id": "ER-C06-POST-CSS",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C06-SEG-FOCUS-VISIBLE",
+        "SL-C06-GAS-NUM-TOUCH-TARGET",
+        "SL-C06-CSS-DEAD-SI-INNER",
+        "SL-C06-CSS-DEAD-T-COL",
+        "SL-C06-CSS-DEAD-BTN-CALC",
+        "SL-C06-FIELD-INVALID-STATE",
+        "SL-C06-REDUCED-MOTION"
+      ],
+      "observable_assertions": [
+        "All seven computed-style cases pass twice with equal state hashes"
+      ],
+      "state_restored": true,
+      "command": "python dev/ui_controls_css_regression.py",
+      "exit_code": 0,
+      "commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "dev/ui_controls_css_regression.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-POST-CSS.json",
+      "receipt_sha256": "5b4da7ea731fbf6a9950cefaf58c42cdac671238b9ae1cfbd641d3fc17e6e33e",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
+    },
+    {
+      "id": "ER-C06-TRACE",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C06-SEG-FOCUS-VISIBLE",
+        "SL-C06-GAS-NUM-TOUCH-TARGET",
+        "SL-C06-FIELD-INVALID-STATE",
+        "SL-C06-REDUCED-MOTION"
+      ],
+      "observable_assertions": [
+        "Four browser traces PASS twice with state restoration hashes equal"
+      ],
+      "state_restored": true,
+      "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-06-controls.json --output dev/seven-lens-browser-trace-cycle06.json",
+      "exit_code": 0,
+      "commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-06-controls.json",
+        "--output",
+        "dev/seven-lens-browser-trace-cycle06.json"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-TRACE.json",
+      "receipt_sha256": "7269d63b5f90df029f5357fa736dba5c6492b22aa4f5b9590d62494673d7a2fe",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
+    },
+    {
+      "id": "ER-C06-STRUCTURE",
+      "kind": "gate",
+      "case_ids": [
+        "UI-EXTRACT-CSS",
+        "UI-CSS-LINK-ORDER"
+      ],
+      "observable_assertions": [
+        "SUITE-UI-STRUCTURE passes after canonical CSS edits"
+      ],
+      "state_restored": true,
+      "command": "python tools/run_ui_structure_suite.py",
+      "exit_code": 0,
+      "commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/run_ui_structure_suite.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-STRUCTURE.json",
+      "receipt_sha256": "21aa8fbd15bd85c6b055ba9e74ccf36c889c29a981026cd722dac17ed636b50f",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
+    },
+    {
+      "id": "ER-C06-PARITY",
+      "kind": "gate",
+      "case_ids": [
+        "UI-EXTRACT-CSS"
+      ],
+      "observable_assertions": [
+        "tools/extract_ui_css.py verify OK"
+      ],
+      "state_restored": true,
+      "command": "python tools/extract_ui_css.py",
+      "exit_code": 0,
+      "commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/extract_ui_css.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-PARITY.json",
+      "receipt_sha256": "230d155794b6a457ef743c366170a3a72abeb8c28d72ff6b2a2e8233593285a6",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
+    },
+    {
+      "id": "static",
+      "kind": "gate",
+      "case_ids": [],
+      "observable_assertions": [
+        "python -m tools.audit check --profile static PASS at FIXER HEAD"
+      ],
+      "state_restored": true,
+      "command": "python -m tools.audit check --profile static",
+      "exit_code": 0,
+      "commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "-m",
+        "tools.audit",
+        "check",
+        "--profile",
+        "static"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c06-static.json",
+      "receipt_sha256": "6787b3d680fea8d5709e56c5f555e912f214f32869ad7fa47dfcd77ddee36637",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
+    },
+    {
+      "id": "ER-C06-RESTORE-CSS",
+      "kind": "state_restoration",
+      "case_ids": [
+        "SL-C06-SEG-FOCUS-VISIBLE",
+        "SL-C06-GAS-NUM-TOUCH-TARGET",
+        "SL-C06-CSS-DEAD-SI-INNER",
+        "SL-C06-CSS-DEAD-T-COL",
+        "SL-C06-CSS-DEAD-BTN-CALC",
+        "SL-C06-FIELD-INVALID-STATE",
+        "SL-C06-REDUCED-MOTION"
+      ],
+      "observable_assertions": [
+        "ui_controls_css_regression restores DOM/globals/media after probes"
+      ],
+      "state_restored": true,
+      "command": "python dev/ui_controls_css_regression.py",
+      "exit_code": 0,
+      "commit": "67a4c80c8c652e39ecbe823d7df8843f28b38182",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "dev/ui_controls_css_regression.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-RESTORE-CSS.json",
+      "receipt_sha256": "4e50add68e34e9297e5c0b154ed40d66ac434fb07f045d525825cada0c4057ca",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true,
+      "state_before_sha256": "9ddc9b1e6d0a93297b2dbb2e6264635f2442c550fc01e7cb570182ed0f26a330",
+      "state_after_sha256": "9ddc9b1e6d0a93297b2dbb2e6264635f2442c550fc01e7cb570182ed0f26a330"
+    }
+  ],
   "changed_paths": [
     "lsp-dplanner-controls.css",
     "dev/ui_controls_css_regression.py",
@@ -544,5 +739,5 @@
     "docs/audit-units.json"
   ],
   "audit_report": "docs/seven-lens-reports/cycle-06-controls-css.md",
-  "notes": "Audit report record; evidence_runs synchronized from docs/seven-lens-records/cycle-06-controls-css.json after execution."
+  "notes": "FIXER: seven OPEN findings implemented; evidence bound via cycle-06-controls-css.json; verification PENDING; fresh VERIFIER chat required."
 }
