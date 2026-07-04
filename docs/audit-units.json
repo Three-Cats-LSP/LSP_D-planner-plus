@@ -196,6 +196,11 @@
         "pattern": "ui/markup-planner.html",
         "kind": "audit_metadata",
         "reason": "Legacy planner partial superseded by REC/TEC split"
+      },
+      {
+        "pattern": "tools/finish_cycle_02_closure.py",
+        "kind": "audit_metadata",
+        "reason": "One-shot cycle 2 subcycle evidence runner"
       }
     ]
   },
@@ -3601,7 +3606,7 @@
       "evidence": [],
       "issue": "Seven-lens executed-command receipt generator",
       "regression_cases": [],
-      "fingerprint": "a0b0bdb74355ea5d1282610a3f8f59d34087e6ecd2ee75b117458f17fcf820f1",
+      "fingerprint": "454d17abc84cb51d9d69e4dcab99e52472d69203f6d9e482ee5feeddd5622803",
       "last_read_fingerprint": null
     },
     {

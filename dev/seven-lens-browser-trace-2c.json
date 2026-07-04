@@ -3,7 +3,7 @@
   "runner_version": 2,
   "spec": "docs\\seven-lens-traces\\cycle-02-mode-isolation.json",
   "spec_sha256": "6cb131f76e482629505f4e7e28207608ea238dcf4d8206bc7d26d744dba9dd91",
-  "commit": "c74837af097a4a71353e2095948fa1475cf774d3",
+  "commit": "d5cf65959e39c42a8556c5e429174f487d6c7672",
   "traces": [
     {
       "id": "SL-MODE-REC-TEC-ISOLATION",

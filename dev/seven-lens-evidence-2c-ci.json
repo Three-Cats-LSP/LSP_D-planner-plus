@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ci",
+  "command_argv": [
+    "python",
+    "dev/engine_regression.py"
+  ],
+  "commit": "d5cf65959e39c42a8556c5e429174f487d6c7672",
+  "exit_code": 0,
+  "case_ids": [],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-04T06:38:26.838052+00:00",
+  "finished_at": "2026-07-04T06:38:35.429362+00:00",
+  "stdout_sha256": "847c589d63b01fed02795fa87c1d2b512b2e2f00c27cd6ada94f01e6fc85e089",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "454d17abc84cb51d9d69e4dcab99e52472d69203f6d9e482ee5feeddd5622803"
+}
