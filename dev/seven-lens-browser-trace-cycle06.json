@@ -1,0 +1,1418 @@
+{
+  "schema_version": 3,
+  "runner_version": 2,
+  "spec": "docs\\seven-lens-traces\\cycle-06-controls.json",
+  "spec_sha256": "8324bcb4648ba7aad40e78108e7c2885d29362516828db9276a336c53798e488",
+  "commit": "8bb7d5aebfb5519af44b85f0ab9e13564e687a82",
+  "traces": [
+    {
+      "id": "SL-C06-SEG-FOCUS-VISIBLE-TRACE",
+      "entry_event": "User keyboard-Tabs to dive-count .seg-btn; :focus-visible ring is observable.",
+      "consumer_path": [
+        "Tab key events",
+        "document.activeElement .seg-btn",
+        "getComputedStyle outlineStyle",
+        "lsp-dplanner-controls.css .seg-btn:focus-visible"
+      ],
+      "captures": {
+        "before": {
+          "seg_count": 3
+        },
+        "canonical": {
+          "focused_seg": true
+        },
+        "consumer": {
+          "outline_style": "none"
+        },
+        "observable": {
+          "outline_width": 3
+        }
+      },
+      "assertions": [
+        {
+          "id": "segments-present",
+          "passed": true,
+          "detail": "3 close 3"
+        },
+        {
+          "id": "seg-focused",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "outline-solid",
+          "passed": true,
+          "detail": "3 close 2"
+        }
+      ],
+      "state_before_sha256": "9ddc9b1e6d0a93297b2dbb2e6264635f2442c550fc01e7cb570182ed0f26a330",
+      "state_after_sha256": "9ddc9b1e6d0a93297b2dbb2e6264635f2442c550fc01e7cb570182ed0f26a330",
+      "state_before": {
+        "elements": {
+          "#navBtnRec": {
+            "value": "",
+            "checked": null,
+            "text": "RECNDL \u00b7 PADI table",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#dc2": {
+            "value": "",
+            "checked": null,
+            "text": "2",
+            "className": "seg-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#dc3": {
+            "value": "",
+            "checked": null,
+            "text": "3",
+            "className": "seg-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {},
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnRec": {
+            "value": "",
+            "checked": null,
+            "text": "RECNDL \u00b7 PADI table",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#dc2": {
+            "value": "",
+            "checked": null,
+            "text": "2",
+            "className": "seg-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#dc3": {
+            "value": "",
+            "checked": null,
+            "text": "3",
+            "className": "seg-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {},
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "case_ids": [
+        "SL-C06-SEG-FOCUS-VISIBLE"
+      ],
+      "runs": [
+        {
+          "id": "SL-C06-SEG-FOCUS-VISIBLE-TRACE",
+          "entry_event": "User keyboard-Tabs to dive-count .seg-btn; :focus-visible ring is observable.",
+          "consumer_path": [
+            "Tab key events",
+            "document.activeElement .seg-btn",
+            "getComputedStyle outlineStyle",
+            "lsp-dplanner-controls.css .seg-btn:focus-visible"
+          ],
+          "captures": {
+            "before": {
+              "seg_count": 3
+            },
+            "canonical": {
+              "focused_seg": true
+            },
+            "consumer": {
+              "outline_style": "none"
+            },
+            "observable": {
+              "outline_width": 3
+            }
+          },
+          "assertions": [
+            {
+              "id": "segments-present",
+              "passed": true,
+              "detail": "3 close 3"
+            },
+            {
+              "id": "seg-focused",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "outline-solid",
+              "passed": true,
+              "detail": "3 close 2"
+            }
+          ],
+          "state_before_sha256": "9ddc9b1e6d0a93297b2dbb2e6264635f2442c550fc01e7cb570182ed0f26a330",
+          "state_after_sha256": "9ddc9b1e6d0a93297b2dbb2e6264635f2442c550fc01e7cb570182ed0f26a330",
+          "state_before": {
+            "elements": {
+              "#navBtnRec": {
+                "value": "",
+                "checked": null,
+                "text": "RECNDL \u00b7 PADI table",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#dc2": {
+                "value": "",
+                "checked": null,
+                "text": "2",
+                "className": "seg-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#dc3": {
+                "value": "",
+                "checked": null,
+                "text": "3",
+                "className": "seg-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnRec": {
+                "value": "",
+                "checked": null,
+                "text": "RECNDL \u00b7 PADI table",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#dc2": {
+                "value": "",
+                "checked": null,
+                "text": "2",
+                "className": "seg-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#dc3": {
+                "value": "",
+                "checked": null,
+                "text": "3",
+                "className": "seg-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-C06-SEG-FOCUS-VISIBLE-TRACE",
+          "entry_event": "User keyboard-Tabs to dive-count .seg-btn; :focus-visible ring is observable.",
+          "consumer_path": [
+            "Tab key events",
+            "document.activeElement .seg-btn",
+            "getComputedStyle outlineStyle",
+            "lsp-dplanner-controls.css .seg-btn:focus-visible"
+          ],
+          "captures": {
+            "before": {
+              "seg_count": 3
+            },
+            "canonical": {
+              "focused_seg": true
+            },
+            "consumer": {
+              "outline_style": "none"
+            },
+            "observable": {
+              "outline_width": 3
+            }
+          },
+          "assertions": [
+            {
+              "id": "segments-present",
+              "passed": true,
+              "detail": "3 close 3"
+            },
+            {
+              "id": "seg-focused",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "outline-solid",
+              "passed": true,
+              "detail": "3 close 2"
+            }
+          ],
+          "state_before_sha256": "9ddc9b1e6d0a93297b2dbb2e6264635f2442c550fc01e7cb570182ed0f26a330",
+          "state_after_sha256": "9ddc9b1e6d0a93297b2dbb2e6264635f2442c550fc01e7cb570182ed0f26a330",
+          "state_before": {
+            "elements": {
+              "#navBtnRec": {
+                "value": "",
+                "checked": null,
+                "text": "RECNDL \u00b7 PADI table",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#dc2": {
+                "value": "",
+                "checked": null,
+                "text": "2",
+                "className": "seg-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#dc3": {
+                "value": "",
+                "checked": null,
+                "text": "3",
+                "className": "seg-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnRec": {
+                "value": "",
+                "checked": null,
+                "text": "RECNDL \u00b7 PADI table",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#dc2": {
+                "value": "",
+                "checked": null,
+                "text": "2",
+                "className": "seg-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#dc3": {
+                "value": "",
+                "checked": null,
+                "text": "3",
+                "className": "seg-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "SL-C06-GAS-NUM-TOUCH-TARGET-TRACE",
+      "entry_event": "User opens Tec planner gas numerics on a narrow viewport; .gas-f-num inputs meet 44px touch geometry.",
+      "consumer_path": [
+        "setMainNav buh + switchTab planner",
+        "#cylBot_size layout",
+        "getBoundingClientRect height",
+        "lsp-dplanner-controls.css min-height 44px"
+      ],
+      "captures": {
+        "before": {
+          "has_size": true
+        },
+        "consumer": {
+          "size_h": 44,
+          "size_w": 68
+        },
+        "observable": {
+          "pres_h": 44,
+          "overlap": 0
+        }
+      },
+      "assertions": [
+        {
+          "id": "size-present",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "min-height",
+          "passed": true,
+          "detail": "44 close 44"
+        },
+        {
+          "id": "min-width",
+          "passed": true,
+          "detail": "68 close 44"
+        },
+        {
+          "id": "pres-height",
+          "passed": true,
+          "detail": "44 close 44"
+        },
+        {
+          "id": "no-overlap",
+          "passed": true,
+          "detail": "0 equal 0"
+        }
+      ],
+      "state_before_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
+      "state_after_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
+      "state_before": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#cylBot_size": {
+            "value": "12",
+            "checked": false,
+            "text": "",
+            "className": "",
+            "style": null,
+            "dataset": {}
+          },
+          "#cylBot_pres": {
+            "value": "200",
+            "checked": false,
+            "text": "",
+            "className": "",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {},
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#cylBot_size": {
+            "value": "12",
+            "checked": false,
+            "text": "",
+            "className": "",
+            "style": null,
+            "dataset": {}
+          },
+          "#cylBot_pres": {
+            "value": "200",
+            "checked": false,
+            "text": "",
+            "className": "",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {},
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "case_ids": [
+        "SL-C06-GAS-NUM-TOUCH-TARGET"
+      ],
+      "runs": [
+        {
+          "id": "SL-C06-GAS-NUM-TOUCH-TARGET-TRACE",
+          "entry_event": "User opens Tec planner gas numerics on a narrow viewport; .gas-f-num inputs meet 44px touch geometry.",
+          "consumer_path": [
+            "setMainNav buh + switchTab planner",
+            "#cylBot_size layout",
+            "getBoundingClientRect height",
+            "lsp-dplanner-controls.css min-height 44px"
+          ],
+          "captures": {
+            "before": {
+              "has_size": true
+            },
+            "consumer": {
+              "size_h": 44,
+              "size_w": 68
+            },
+            "observable": {
+              "pres_h": 44,
+              "overlap": 0
+            }
+          },
+          "assertions": [
+            {
+              "id": "size-present",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "min-height",
+              "passed": true,
+              "detail": "44 close 44"
+            },
+            {
+              "id": "min-width",
+              "passed": true,
+              "detail": "68 close 44"
+            },
+            {
+              "id": "pres-height",
+              "passed": true,
+              "detail": "44 close 44"
+            },
+            {
+              "id": "no-overlap",
+              "passed": true,
+              "detail": "0 equal 0"
+            }
+          ],
+          "state_before_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
+          "state_after_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_size": {
+                "value": "12",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_pres": {
+                "value": "200",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_size": {
+                "value": "12",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_pres": {
+                "value": "200",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-C06-GAS-NUM-TOUCH-TARGET-TRACE",
+          "entry_event": "User opens Tec planner gas numerics on a narrow viewport; .gas-f-num inputs meet 44px touch geometry.",
+          "consumer_path": [
+            "setMainNav buh + switchTab planner",
+            "#cylBot_size layout",
+            "getBoundingClientRect height",
+            "lsp-dplanner-controls.css min-height 44px"
+          ],
+          "captures": {
+            "before": {
+              "has_size": true
+            },
+            "consumer": {
+              "size_h": 44,
+              "size_w": 68
+            },
+            "observable": {
+              "pres_h": 44,
+              "overlap": 0
+            }
+          },
+          "assertions": [
+            {
+              "id": "size-present",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "min-height",
+              "passed": true,
+              "detail": "44 close 44"
+            },
+            {
+              "id": "min-width",
+              "passed": true,
+              "detail": "68 close 44"
+            },
+            {
+              "id": "pres-height",
+              "passed": true,
+              "detail": "44 close 44"
+            },
+            {
+              "id": "no-overlap",
+              "passed": true,
+              "detail": "0 equal 0"
+            }
+          ],
+          "state_before_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
+          "state_after_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_size": {
+                "value": "12",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_pres": {
+                "value": "200",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_size": {
+                "value": "12",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_pres": {
+                "value": "200",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "SL-C06-FIELD-INVALID-STATE-TRACE",
+      "entry_event": "User edits #cylBot_size below min; invalid border becomes visible after interaction.",
+      "consumer_path": [
+        "keyboard edit #cylBot_size",
+        "HTML5 validity.valid false",
+        "getComputedStyle borderColor",
+        "lsp-dplanner-controls.css :user-invalid"
+      ],
+      "captures": {
+        "before": {
+          "valid_before": true,
+          "border_before": "rgba(255, 255, 255, 0.08)"
+        },
+        "canonical": {
+          "valid_after": true
+        },
+        "consumer": {
+          "border_changed": true
+        }
+      },
+      "assertions": [
+        {
+          "id": "was-valid",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "now-invalid",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "border-changed",
+          "passed": true,
+          "detail": "True equal True"
+        }
+      ],
+      "state_before_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
+      "state_after_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
+      "state_before": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#cylBot_size": {
+            "value": "12",
+            "checked": false,
+            "text": "",
+            "className": "",
+            "style": null,
+            "dataset": {}
+          },
+          "#cylBot_pres": {
+            "value": "200",
+            "checked": false,
+            "text": "",
+            "className": "",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {},
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#cylBot_size": {
+            "value": "12",
+            "checked": false,
+            "text": "",
+            "className": "",
+            "style": null,
+            "dataset": {}
+          },
+          "#cylBot_pres": {
+            "value": "200",
+            "checked": false,
+            "text": "",
+            "className": "",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {},
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "case_ids": [
+        "SL-C06-FIELD-INVALID-STATE"
+      ],
+      "runs": [
+        {
+          "id": "SL-C06-FIELD-INVALID-STATE-TRACE",
+          "entry_event": "User edits #cylBot_size below min; invalid border becomes visible after interaction.",
+          "consumer_path": [
+            "keyboard edit #cylBot_size",
+            "HTML5 validity.valid false",
+            "getComputedStyle borderColor",
+            "lsp-dplanner-controls.css :user-invalid"
+          ],
+          "captures": {
+            "before": {
+              "valid_before": true,
+              "border_before": "rgba(255, 255, 255, 0.08)"
+            },
+            "canonical": {
+              "valid_after": true
+            },
+            "consumer": {
+              "border_changed": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "was-valid",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "now-invalid",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "border-changed",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
+          "state_after_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_size": {
+                "value": "12",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_pres": {
+                "value": "200",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_size": {
+                "value": "12",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_pres": {
+                "value": "200",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-C06-FIELD-INVALID-STATE-TRACE",
+          "entry_event": "User edits #cylBot_size below min; invalid border becomes visible after interaction.",
+          "consumer_path": [
+            "keyboard edit #cylBot_size",
+            "HTML5 validity.valid false",
+            "getComputedStyle borderColor",
+            "lsp-dplanner-controls.css :user-invalid"
+          ],
+          "captures": {
+            "before": {
+              "valid_before": true,
+              "border_before": "rgba(255, 255, 255, 0.08)"
+            },
+            "canonical": {
+              "valid_after": true
+            },
+            "consumer": {
+              "border_changed": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "was-valid",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "now-invalid",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "border-changed",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
+          "state_after_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_size": {
+                "value": "12",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_pres": {
+                "value": "200",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_size": {
+                "value": "12",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_pres": {
+                "value": "200",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "SL-C06-REDUCED-MOTION-TRACE",
+      "entry_event": "OS prefers-reduced-motion; control transitions zero while state colors remain available.",
+      "consumer_path": [
+        "emulate_media reduced_motion=reduce",
+        "CSS @media prefers-reduced-motion block",
+        "getComputedStyle transitionDuration",
+        "transitionDuration equals 0s"
+      ],
+      "captures": {
+        "before": {
+          "input_duration": "0s"
+        },
+        "consumer": {
+          "input_duration_after": "0s"
+        },
+        "observable": {
+          "input_zero": true
+        }
+      },
+      "assertions": [
+        {
+          "id": "input-zero-before",
+          "passed": true,
+          "detail": "'0s' equal '0s'"
+        },
+        {
+          "id": "input-zero-after",
+          "passed": true,
+          "detail": "'0s' equal '0s'"
+        },
+        {
+          "id": "observable-zero",
+          "passed": true,
+          "detail": "True equal True"
+        }
+      ],
+      "state_before_sha256": "41529230258974f0df5a62d8388e07c8d53a0b0bf8e64877acbc702c0806d3b8",
+      "state_after_sha256": "41529230258974f0df5a62d8388e07c8d53a0b0bf8e64877acbc702c0806d3b8",
+      "state_before": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#cylBot_size": {
+            "value": "12",
+            "checked": false,
+            "text": "",
+            "className": "",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {},
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#cylBot_size": {
+            "value": "12",
+            "checked": false,
+            "text": "",
+            "className": "",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {},
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "case_ids": [
+        "SL-C06-REDUCED-MOTION"
+      ],
+      "runs": [
+        {
+          "id": "SL-C06-REDUCED-MOTION-TRACE",
+          "entry_event": "OS prefers-reduced-motion; control transitions zero while state colors remain available.",
+          "consumer_path": [
+            "emulate_media reduced_motion=reduce",
+            "CSS @media prefers-reduced-motion block",
+            "getComputedStyle transitionDuration",
+            "transitionDuration equals 0s"
+          ],
+          "captures": {
+            "before": {
+              "input_duration": "0s"
+            },
+            "consumer": {
+              "input_duration_after": "0s"
+            },
+            "observable": {
+              "input_zero": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "input-zero-before",
+              "passed": true,
+              "detail": "'0s' equal '0s'"
+            },
+            {
+              "id": "input-zero-after",
+              "passed": true,
+              "detail": "'0s' equal '0s'"
+            },
+            {
+              "id": "observable-zero",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "41529230258974f0df5a62d8388e07c8d53a0b0bf8e64877acbc702c0806d3b8",
+          "state_after_sha256": "41529230258974f0df5a62d8388e07c8d53a0b0bf8e64877acbc702c0806d3b8",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_size": {
+                "value": "12",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_size": {
+                "value": "12",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-C06-REDUCED-MOTION-TRACE",
+          "entry_event": "OS prefers-reduced-motion; control transitions zero while state colors remain available.",
+          "consumer_path": [
+            "emulate_media reduced_motion=reduce",
+            "CSS @media prefers-reduced-motion block",
+            "getComputedStyle transitionDuration",
+            "transitionDuration equals 0s"
+          ],
+          "captures": {
+            "before": {
+              "input_duration": "0s"
+            },
+            "consumer": {
+              "input_duration_after": "0s"
+            },
+            "observable": {
+              "input_zero": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "input-zero-before",
+              "passed": true,
+              "detail": "'0s' equal '0s'"
+            },
+            {
+              "id": "input-zero-after",
+              "passed": true,
+              "detail": "'0s' equal '0s'"
+            },
+            {
+              "id": "observable-zero",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "41529230258974f0df5a62d8388e07c8d53a0b0bf8e64877acbc702c0806d3b8",
+          "state_after_sha256": "41529230258974f0df5a62d8388e07c8d53a0b0bf8e64877acbc702c0806d3b8",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_size": {
+                "value": "12",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#cylBot_size": {
+                "value": "12",
+                "checked": false,
+                "text": "",
+                "className": "",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "passed": true
+}
