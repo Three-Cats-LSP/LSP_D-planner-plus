@@ -240,7 +240,7 @@
         "dev/engine_regression.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c03-ER-03-PRE-FIX.json",
-      "receipt_sha256": "d94ca9875496fb486bdbf5252f465389d5ba33baa5d7ab310d59486026225495"
+      "receipt_sha256": "18d84a2577daa48dad6aa1c4bb819514a4e1f14b79d38578f2c327c734470a8f"
     },
     {
       "id": "ER-03-POST-BESTMIX",
@@ -298,7 +298,7 @@
         "SL-C03-BEST-MIX-DEPTH-UNITS"
       ],
       "receipt_path": "dev/seven-lens-evidence-c03-ER-03-POST-BESTMIX.json",
-      "receipt_sha256": "eea236c9953d10d6f5d56bda7de69bd2d89793fc2258d043076a694cc9320c71"
+      "receipt_sha256": "cad3b9b83f9ac004da4277ac43525632326332d112aef28aad6af85dfc0c3b1f"
     },
     {
       "id": "ER-03-POST-CNS",
@@ -356,7 +356,7 @@
         "SL-C03-CNS-DEPTH-UNITS"
       ],
       "receipt_path": "dev/seven-lens-evidence-c03-ER-03-POST-CNS.json",
-      "receipt_sha256": "63ff74c46e62b227309e24f272b83e2efb5d38cf790e9726e96fd55f09f4b26e"
+      "receipt_sha256": "ffcde607bd0fb97bcffc9dbc665b56c68f13caf417240d7e3fa3a899fb834c6a"
     },
     {
       "id": "ER-03-POST-SAFETY",
@@ -414,7 +414,7 @@
         "--verify"
       ],
       "receipt_path": "dev/seven-lens-evidence-c03-ER-03-POST-SAFETY.json",
-      "receipt_sha256": "2c60bbc077937d9d6a4c710d35cc4c72ac9d208891deb2b98e96dfa83c87a5b8"
+      "receipt_sha256": "652100825b51f1e717b894ec91040e1a466d9c7b647f5035bee9ddd71d12a9ae"
     },
     {
       "id": "ER-03-POST-PHYSICAL",
@@ -471,7 +471,7 @@
         "SL-C03-REGRESSION-STATE-IMMUTABLE"
       ],
       "receipt_path": "dev/seven-lens-evidence-c03-ER-03-POST-PHYSICAL.json",
-      "receipt_sha256": "5acf9170b37858bab965bd3b1bf329cd9909adb104753831651435fe13a32c4b"
+      "receipt_sha256": "4f9595df834c2a91c90a98b55c6cffb8fcd4c227cbff1ca40898def9db999847"
     },
     {
       "id": "ER-03-RESTORE-BESTMIX",
@@ -495,7 +495,7 @@
         "SL-C03-BEST-MIX-DEPTH-UNITS"
       ],
       "receipt_path": "dev/seven-lens-evidence-c03-ER-03-RESTORE-BESTMIX.json",
-      "receipt_sha256": "8931cae3970c9c0f4fb367c81469dd97b158245fa96d8fc7eb338ae159415388"
+      "receipt_sha256": "8d4f83c0262d278092ab32b09a98f5edcfe51282bbe38299e35dee5fed0ee593"
     },
     {
       "id": "ER-03-RESTORE-CNS",
@@ -519,7 +519,7 @@
         "SL-C03-CNS-DEPTH-UNITS"
       ],
       "receipt_path": "dev/seven-lens-evidence-c03-ER-03-RESTORE-CNS.json",
-      "receipt_sha256": "5b4e62a9f2ed9a17e360643d70ef9473b98e3fe52f98d2dee633ea8f67e0a2dc"
+      "receipt_sha256": "eae31f56c25de65162f1e7abcad28b52692dd91ec012c26d9055433fcbe7037b"
     },
     {
       "id": "ER-03-RESTORE-SAFETY",
@@ -543,7 +543,7 @@
         "--verify"
       ],
       "receipt_path": "dev/seven-lens-evidence-c03-ER-03-RESTORE-SAFETY.json",
-      "receipt_sha256": "b7c1f246271f309abc1ebcb822bb0210e2638117b9dda833c427c73329904239"
+      "receipt_sha256": "95ff79d78e473b15ff794c7a76091b20d3280cdb92db5f0cf3e8678e0e2f9e12"
     },
     {
       "id": "ER-03-RESTORE-PHYSICAL",
@@ -569,7 +569,7 @@
         "SL-C03-REGRESSION-STATE-IMMUTABLE"
       ],
       "receipt_path": "dev/seven-lens-evidence-c03-ER-03-RESTORE-PHYSICAL.json",
-      "receipt_sha256": "7b661a17eee047bb27fc1453bd9c5498f700ccf22f74696d9eb08bf0d5a11eaa"
+      "receipt_sha256": "9fa7ead3cf2dfac9caad414c92d516d778a661810ce6a391b0023cec761cbd26"
     },
     {
       "id": "static",
@@ -589,7 +589,7 @@
         "--verify"
       ],
       "receipt_path": "dev/seven-lens-evidence-c03-static.json",
-      "receipt_sha256": "cfc038bd2893c0f0928d2373452c56f321158b9872ef3c2fc37cedccefc37ce9"
+      "receipt_sha256": "3bf6bf97e801b36e78aef63b3b31aad5e0039fbbb0e876a5c8192e77b63d6d06"
     },
     {
       "id": "ci",
@@ -608,7 +608,7 @@
         "dev/engine_regression.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c03-ci.json",
-      "receipt_sha256": "871375a33555d2db5900654c61030238b38d942713ed6857e5365d320bfc930e"
+      "receipt_sha256": "f23136c8d8d23603ea2d146beb006f61d607f97b442478d2a31c5789249a9b0c"
     }
   ],
   "changed_paths": [

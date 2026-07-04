@@ -598,7 +598,7 @@ function drawPlannerProfile() {
 // ─── Build waypoints from Deco Schedule ─────────────────────────────────────
 function _buildDecoProfileWaypoints() {
   const depthVal  = parseFloat(getPlannerInputEl('decoDepth')?.value) || 0;
-  const btVal     = parseFloat(document.getElementById('decoBT')?.value)    || 0;
+  const btVal     = parseFloat(getPlannerInputEl('decoBT')?.value)    || 0;
   if (!depthVal || !btVal) return null;
 
   function parseRunMin(txt) {

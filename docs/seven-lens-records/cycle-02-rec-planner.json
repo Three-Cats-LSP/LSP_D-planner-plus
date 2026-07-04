@@ -169,7 +169,7 @@
       "start_line": 1,
       "end_line": 75,
       "line_count": 75,
-      "content_fingerprint": "ed05a29e79b566b9ef520f5c3447472a4bda4dbc21c7d77ddbf8a73812533019",
+      "content_fingerprint": "1121abb0435abb0d04004e1b1e4392729100d4caf81271fba4391dea1a30d98a",
       "review_session": "cursor/seven-lens-cycle-002-audit",
       "verification_session": "cursor/seven-lens-cycle-002-verify",
       "lens_results": {
@@ -252,7 +252,7 @@
       "start_line": 1,
       "end_line": 9,
       "line_count": 9,
-      "content_fingerprint": "35c0acee5dd59008689b8ba3f1c66747c8fe3de609682c391e236d64ef0a9d0e",
+      "content_fingerprint": "0c720a37e60dca1dd13104199c85bda6949b8a38479384c922ea9f327afc6f43",
       "review_session": "cursor/seven-lens-cycle-002-audit",
       "verification_session": "cursor/seven-lens-cycle-002-verify",
       "lens_results": {
@@ -349,7 +349,7 @@
       "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "receipt_path": "dev/seven-lens-evidence-2a-static.json",
-      "receipt_sha256": "4b58ea39595590bad6afa2d3da2ed87d4cb1cce6c8b497d32f1f78944a40eea5"
+      "receipt_sha256": "06dd6d66a3d8f6687495291142de58edf5ecc055446ca5633cf3510b76fb5715"
     },
     {
       "id": "ci",
@@ -368,7 +368,7 @@
       "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "receipt_path": "dev/seven-lens-evidence-2a-ci.json",
-      "receipt_sha256": "20785da92e8d6049e408fb887e5141409944b46e68df8acf9fa8ff378217ca53"
+      "receipt_sha256": "aa2b39f98c3d11a9beec68ecf0045c7a0abbe6d7dbc0810c86905bbc5ed7d0d5"
     },
     {
       "id": "ER-2A-TRACE",
@@ -425,7 +425,7 @@
         "artifact_sha256": "3d1c6daeca04f4d4e8eb6557475830bec1f577a72a5e09398568b1fd0a1ff473"
       },
       "receipt_path": "dev/seven-lens-evidence-2a-ER-2A-TRACE.json",
-      "receipt_sha256": "8ef982e6c0d5736e4379c8e4adfef27b5bf41fc774c7ba5a935be5e60102db5c"
+      "receipt_sha256": "779ca9a7e81b24295fda699985b6d8c006f2f396cc4079d232f6d17274dcfba5"
     }
   ],
   "changed_paths": [

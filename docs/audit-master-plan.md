@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v3-full-reset`
-**Units:** 181 total; 0 unread; 27 in progress; 0 read; 154 verified.
+**Units:** 185 total; 0 unread; 55 in progress; 1 read; 129 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -30,15 +30,15 @@
 
 | Cycle | Application units | New lines | Engine re-verification | Acceptance |
 |---:|---|---:|---|---|
-| 1 | UI-MARKUP-HEADER | 848 | - | V3 cycle 1: header markup partial READ; SUITE-UI-STRUCTURE must be green |
-| 2 | UI-MARKUP-PLANNER | 493 | - | Planner markup partial READ |
+| 1 | UI-MARKUP-HEADER | 750 | - | V3 cycle 1: header markup partial READ; SUITE-UI-STRUCTURE must be green |
+| 2 | UI-MARKUP-REC-PLANNER, UI-REC-PLANNER | 84 | - | Cycle 2a: REC planner markup + runRecPlan; SL-REC-DEPTH-BT-STEPPER |
 | 3 | UI-MARKUP-CONSUMPTION | 381 | - | Consumption markup partial READ |
 | 4 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 612 | - | Tools and modals markup partials READ |
 | 5 | UI-CSS-FOUNDATION, UI-CSS-MODES | 826 | - | Foundation and modes CSS READ |
 | 6 | UI-CSS-CONTROLS | 528 | - | Controls CSS READ |
-| 7 | UI-CSS-RESULTS | 924 | - | Results CSS READ |
-| 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 506 | - | Planner shell and results panel READ |
-| 9 | UI-ENVIRONMENT, UI-MODE-STATE | 949 | - | settings-core environment and mode state READ |
+| 7 | UI-CSS-RESULTS | 931 | - | Results CSS READ |
+| 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 487 | - | Planner shell and results panel READ |
+| 9 | UI-ENVIRONMENT, UI-MODE-STATE | 990 | - | settings-core environment and mode state READ |
 | 10 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 679 | - | Surface interval and gas table cores READ |
 | 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 516 | ENG-ZHL-GAS | Gas card UI READ |
 | 12 | APP-GAS-PLAN | 546 | - | Gas plan core READ |
@@ -53,12 +53,12 @@
 | 21 | UI-ZHL-HEADLESS-HELPERS, UI-ZHL-HEADLESS-ENGINE | 588 | - | Headless ZHL path READ |
 | 22 | UI-VPM-RUNNER | 473 | ENG-VPM | VPM runner READ |
 | 23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 393 | - | Runtime bootstrap and app init READ |
-| 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 671 | - | Algorithm and settings controls READ |
-| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1274 | - | Settings persistence and unit helpers READ |
+| 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 674 | - | Algorithm and settings controls READ |
+| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1280 | - | Settings persistence and unit helpers READ |
 | 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 851 | - | Tools panels READ |
-| 27 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 562 | - | Profile and config presets READ |
-| 28 | UI-BOOT | 2377 | - | index.html shell boot region READ |
-| 29 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 438 | - | PWA and service worker READ |
+| 27 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 564 | - | Profile and config presets READ |
+| 28 | UI-BOOT | 2418 | - | index.html shell boot region READ |
+| 29 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 440 | - | PWA and service worker READ |
 | 30 | APP-ZHL-WORKER, APP-ZHL-WORKER-BRIDGE | 159 | - | ZHL schedule worker and bridge READ |
 | 31 | APP-CAPACITOR-BRIDGE, APP-ANDROID-SELECT | 548 | - | Capacitor and Android select bridge READ |
 | 32 | ENG-ZHL-PHYSICS, ENG-ZHL-GAS | 373 | - | ZHL physics and gas canonical cores READ |
@@ -71,6 +71,8 @@
 | 39 | - | 0 | TEST-ENGINE-REGRESSION, TEST-ENGINE-VALIDATION, TEST-GAS-CORE-REGRESSION | Engine and gas regression harnesses re-verified |
 | 40 | - | 0 | TEST-RUN-ALL, TEST-SW-LIFECYCLE, TEST-CCR-VALIDATION, TEST-CCR-DIFF-RUNNER, TEST-PSCR-E2E | Full regression umbrella and release-tier test paths re-verified |
 | 41 | APP-PACKAGE | 40 | CI-AUDIT, CI-MAIN, CI-APK, CI-DEPLOY | Package manifest and CI workflows READ |
+| 200 | UI-MARKUP-TEC-PLANNER | 557 | - | Cycle 2b: TECH planner markup; SL-C02-TRAVEL-DEPTH browser trace |
+| 201 | UI-PLANNER-INPUTS | 119 | - | Cycle 2c: view swap + persistence; SL-MODE-REC-TEC-ISOLATION |
 
 ## Definition of Done
 

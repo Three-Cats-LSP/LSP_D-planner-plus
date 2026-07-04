@@ -619,7 +619,7 @@
         "dev/seven-lens-browser-trace-cycle03.json"
       ],
       "receipt_path": "dev/seven-lens-evidence-c04-ER-04-PRE-TOOLS.json",
-      "receipt_sha256": "2f1806661769b4e0a6d40d07705e5e49963edf68a2053a3eef4f59d3b1099e38"
+      "receipt_sha256": "076c99a736b490dcd0cec3e44d891c84c047f9e26428234d9b921d20bde82c46"
     },
     {
       "id": "ER-04-PRE-MODALS",
@@ -644,7 +644,7 @@
         "dev/seven-lens-browser-trace-cycle03.json"
       ],
       "receipt_path": "dev/seven-lens-evidence-c04-ER-04-PRE-MODALS.json",
-      "receipt_sha256": "a7543048b69c240d483436e970c8fb69c9f29e3dfe68576e6ae02117db5c42a7"
+      "receipt_sha256": "ca04dd2c0ab5aa068359686b35ce553f12f6200ffdd6e04f854be10888ad4365"
     },
     {
       "id": "ER-04-PRE-CANONICAL",
@@ -670,7 +670,7 @@
         "dev/seven-lens-browser-trace-cycle03.json"
       ],
       "receipt_path": "dev/seven-lens-evidence-c04-ER-04-PRE-CANONICAL.json",
-      "receipt_sha256": "1ba1c1a187de2dbf7dca163de87499e542a77160c732420a9a71c8ed24c5c974"
+      "receipt_sha256": "2b18b65f572f165e06154cc513f0e1351b5a6914cc00f11fc74a79b9cd77a9c7"
     },
     {
       "id": "ER-04-PRE-PROTOCOL",
@@ -696,7 +696,7 @@
         "docs/seven-lens-records/cycle-04-tools-modals.json"
       ],
       "receipt_path": "dev/seven-lens-evidence-c04-ER-04-PRE-PROTOCOL.json",
-      "receipt_sha256": "b60003d52d11242226ec5b28c4d129d0ef120314ad0dc703713e8fd26386f456"
+      "receipt_sha256": "7e2ea83efa3d90185994a9b9199e08ccebfde6e3741bc2986904c66255c96bdb"
     },
     {
       "id": "ER-04-POST-END",
@@ -754,7 +754,7 @@
         "SL-C04-END-DEPTH-UNITS"
       ],
       "receipt_path": "dev/seven-lens-evidence-c04-ER-04-POST-END.json",
-      "receipt_sha256": "8b38faee1d1a486946961eea78a443a7eb7a696e37f7af7d17697a5c2f536de2"
+      "receipt_sha256": "5d92e258ffbe2a7c96e58a9cedf685c1da200129508337e01e2025a26c513725"
     },
     {
       "id": "ER-04-POST-SI",
@@ -812,7 +812,7 @@
         "SL-C04-SI-DEPTH-UNITS"
       ],
       "receipt_path": "dev/seven-lens-evidence-c04-ER-04-POST-SI.json",
-      "receipt_sha256": "f2bf5a9b6d77642d8bc99fa88bbe29b87944d7fa9ad8916817a77350e14f9827"
+      "receipt_sha256": "8b311ad2e6ecf1b7deee83d5187e684a7ae27dc9c9957fbb82df02d27b7a5ed3"
     },
     {
       "id": "ER-04-POST-CONFIRM",
@@ -866,7 +866,7 @@
         "SL-C04-CONFIRM-BACKDROP"
       ],
       "receipt_path": "dev/seven-lens-evidence-c04-ER-04-POST-CONFIRM.json",
-      "receipt_sha256": "e97b1f21cc19d7a48823f466c3f430ded116e9513cbdc014310f8747d6640240"
+      "receipt_sha256": "addd431afcbc8e962ac85e13ce5233a666b41ecb062fd73b5e27775a91a5576a"
     },
     {
       "id": "ER-04-POST-CANONICAL",
@@ -922,7 +922,7 @@
         "dev/engine_regression.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c04-ER-04-POST-CANONICAL.json",
-      "receipt_sha256": "5e870876fb4b287d9c8d71aaa30ee68fcc70175df6c4106dc0b1ba6e89089caa"
+      "receipt_sha256": "f26a432d3d7dadd721bb381904a4e64487ef64dc54e7965f0a469a2d8a45aacb"
     },
     {
       "id": "ER-04-POST-TRACE",
@@ -978,7 +978,7 @@
         "docs/seven-lens-traces/cycle-03-consumption.json"
       ],
       "receipt_path": "dev/seven-lens-evidence-c04-ER-04-POST-TRACE.json",
-      "receipt_sha256": "77c215b860a551ccc26f123f345ca2fe339ae9d77d69af642ed24144fe21d047"
+      "receipt_sha256": "029a891b234534117a79f654bfd716cde5715735f97968546069250e54264016"
     },
     {
       "id": "ER-04-POST-PROTOCOL",
@@ -1038,7 +1038,7 @@
         "--require-artifacts"
       ],
       "receipt_path": "dev/seven-lens-evidence-c04-ER-04-POST-PROTOCOL.json",
-      "receipt_sha256": "c06e4933832a695b8b1f2e64f908c331311e38aba187360c57bd4c9aa8df99a2"
+      "receipt_sha256": "7a05bce92c174be20af82d91646b07f887afd742bdebf728a16c45484960536b"
     },
     {
       "id": "ER-04-RESTORE-END",
@@ -1062,7 +1062,7 @@
         "SL-C04-END-DEPTH-UNITS"
       ],
       "receipt_path": "dev/seven-lens-evidence-c04-ER-04-RESTORE-END.json",
-      "receipt_sha256": "abf3358616f8d57c6d96dd68254e98fa3ee1972b990661da0d82fe992117f130"
+      "receipt_sha256": "2636c07ee810b40ccd3e8207a9130ca2990976427233a4607cc8bd09daf25657"
     },
     {
       "id": "ER-04-RESTORE-SI",
@@ -1086,7 +1086,7 @@
         "SL-C04-SI-DEPTH-UNITS"
       ],
       "receipt_path": "dev/seven-lens-evidence-c04-ER-04-RESTORE-SI.json",
-      "receipt_sha256": "c34d7f975c5bd6e10d430cdc025ddcf3ecb6898b0d2c46b5e7a319d4919417c9"
+      "receipt_sha256": "7a9ef749a681ae431f25468f4e7142787f71adb233b1dcfef41580860014cb86"
     },
     {
       "id": "ER-04-RESTORE-CONFIRM",
@@ -1110,7 +1110,7 @@
         "SL-C04-CONFIRM-BACKDROP"
       ],
       "receipt_path": "dev/seven-lens-evidence-c04-ER-04-RESTORE-CONFIRM.json",
-      "receipt_sha256": "d049c76d24c37c59ae0c935348d1a496f2b929c8544f1fb74b952cf8ec90f1f2"
+      "receipt_sha256": "7a38a1aa15bf1c5582433ca7f4d52d01b3974f021c3ec6a846141ea60855b9bd"
     },
     {
       "id": "ER-04-RESTORE-CANONICAL",
@@ -1136,7 +1136,7 @@
         "dev/engine_regression.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c04-ER-04-RESTORE-CANONICAL.json",
-      "receipt_sha256": "b624b2da40e21e30d3af1ecefc6515d6b12cd5eafd3268affaf7344d79d42de4"
+      "receipt_sha256": "79d2f060ed1c56a31968f98a166ce73f4557650b8118c3086671c247371186fb"
     },
     {
       "id": "ER-04-RESTORE-TRACE",
@@ -1162,7 +1162,7 @@
         "docs/seven-lens-traces/cycle-03-consumption.json"
       ],
       "receipt_path": "dev/seven-lens-evidence-c04-ER-04-RESTORE-TRACE.json",
-      "receipt_sha256": "3e71f3e76fcbdef381216fa55405349e4b19a4e0c2236aeb3d8c1c9f3d445af0"
+      "receipt_sha256": "1e6e068d68f7a1ba920b9049fd857694f436399578cc2ebf8d15ed6debdabb66"
     },
     {
       "id": "ER-04-RESTORE-PROTOCOL",
@@ -1188,7 +1188,7 @@
         "--require-artifacts"
       ],
       "receipt_path": "dev/seven-lens-evidence-c04-ER-04-RESTORE-PROTOCOL.json",
-      "receipt_sha256": "af6c89fad9d052d303ac001e24617ed944dd12ea52eb8c9c713f8497e4ca7246"
+      "receipt_sha256": "7e63f51c3339a74ad20944d8c338d31119ee31645ef3fb9e5248861bb322fe9a"
     },
     {
       "id": "static",
@@ -1208,7 +1208,7 @@
         "--verify"
       ],
       "receipt_path": "dev/seven-lens-evidence-c04-static.json",
-      "receipt_sha256": "7ebf4d9f11a5a66f88f7f3a8066b886f110590b58b528061628bbf2d0dfbfe75"
+      "receipt_sha256": "a1728edc2f0fbc0b61bd98600daae7abe27a64012ea6c9487309b860c33f8dd1"
     },
     {
       "id": "ci",
@@ -1227,7 +1227,7 @@
         "dev/engine_regression.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c04-ci.json",
-      "receipt_sha256": "da7af65ce29a06edf31a4ad82529076bba13d0c77234db7116e1485656b966f9"
+      "receipt_sha256": "8a1dbba59d3dc72d4ffa8a636682aa3cd657f515e72cc9b2f2c5322eee395238"
     }
   ],
   "changed_paths": [

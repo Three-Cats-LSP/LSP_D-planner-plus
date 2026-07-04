@@ -1341,12 +1341,19 @@ function getVal(id) {
 
 function elExists(id) { return !!getDoc().getElementById(id); }
 
+function plannerInputEl(id) {
+  const d = getDoc();
+  if (!d) return null;
+  if (WIN && typeof WIN.getPlannerInputEl === 'function') return WIN.getPlannerInputEl(id);
+  return d.getElementById(id);
+}
+
 function runCalc(needsDOM) {
   // Guaranteed shallow NDL dive.
   // needsDOM=true: full render; needsDOM=false (default): headless (~10x faster on mobile)
   const d = getDoc();
-  const dEl   = d && d.getElementById('decoDepth');
-  const btEl  = d && d.getElementById('decoBT');
+  const dEl   = plannerInputEl('decoDepth');
+  const btEl  = plannerInputEl('decoBT');
   const altEl = d && d.getElementById('altitudeSelect');
   const origD   = dEl   ? dEl.value   : null;
   const origBT  = btEl  ? btEl.value  : null;
@@ -1401,8 +1408,8 @@ const TIER2_GROUPS = [
   {
     tier: 2, name: 'T2-A · DOM — Core Elements Present',
     tests: [
-      ['#depth input exists', 'UI', function(){ assert(elExists('depth'), '#depth not found'); return 'found ✓'; }],
-      ['#bt (bottom time) input exists', 'UI', function(){ return elExists('bt') || elExists('bottomTime') || elExists('diveDuration') ? 'found ✓' : (assert(false, 'No bottom time input found')); }],
+      ['Active planner depth input exists', 'UI', function(){ const el = plannerInputEl('decoDepth'); assert(el, 'No active planner depth input found'); return `found #${el.id} ✓`; }],
+      ['Active planner bottom time input exists', 'UI', function(){ const el = plannerInputEl('decoBT'); assert(el, 'No active planner bottom time input found'); return `found #${el.id} ✓`; }],
       ['#gasMix1 or similar gas selector exists', 'UI', function(){
         const d = getDoc();
         const found = d.querySelector('#gasMix1, #gasMix, #bottomGasMix, #o2percent, select[id*="gas"]');
@@ -1527,10 +1534,10 @@ const TIER2_GROUPS = [
       ['Unit flip: depth label changes to ft', 'UI', function(){
         const d = getDoc();
         WIN.setUnits('imperial');
-        const depthEl = d.getElementById('depth');
-        assert(depthEl, '#depth not found');
-        // Look for a label near #depth that should say ft or feet
-        const lbl = d.querySelector('label[for="depth"], [id*="depthLbl"], [id*="depth_lbl"]');
+        const depthEl = plannerInputEl('decoDepth');
+        assert(depthEl, 'No active planner depth input found');
+        const depthId = depthEl.id;
+        const lbl = d.querySelector(`label[for="${depthId}"], #${depthId}Lbl, #${depthId}UnitLbl, [id*="${depthId}"][id*="Lbl"]`);
         let ok = false;
         if (lbl) {
           ok = /ft|feet/i.test(lbl.textContent);
@@ -3184,7 +3191,7 @@ async function startTests() {
     try {
       await new Promise(r => setTimeout(r, 20));
       const _d = win.document;
-      const _dEl = _d.getElementById('decoDepth'), _btEl = _d.getElementById('decoBT');
+      const _dEl = plannerInputEl('decoDepth'), _btEl = plannerInputEl('decoBT');
       const _origD = _dEl?.value, _origBT = _btEl?.value;
       if (_dEl)  _dEl.value  = '10';
       if (_btEl) _btEl.value = '10';

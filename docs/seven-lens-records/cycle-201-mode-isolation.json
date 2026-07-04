@@ -169,7 +169,7 @@
       "start_line": 1,
       "end_line": 119,
       "line_count": 119,
-      "content_fingerprint": "55fae0a08848de7cd83feda4386dd65ed4638a18806c4b2e9075fe8f7df11af1",
+      "content_fingerprint": "e241776ac7b6ccafd8e1b66d0ca4903f7b1f5c2cd4d56de791f4e185322e346c",
       "review_session": "cursor/seven-lens-cycle-201-audit",
       "verification_session": "cursor/seven-lens-cycle-201-verify",
       "lens_results": {
@@ -266,7 +266,7 @@
       "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "receipt_path": "dev/seven-lens-evidence-2c-static.json",
-      "receipt_sha256": "308fb482736db45c6da2944635f68ffbc395218343e5bd9edbccafe72fe9937c"
+      "receipt_sha256": "9ebf5cd421c8bd6e82dc58b93f18521d0cb2f216b8ec2927b9a91fc5b55c3f3a"
     },
     {
       "id": "ci",
@@ -285,7 +285,7 @@
       "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
       "worktree_clean": true,
       "receipt_path": "dev/seven-lens-evidence-2c-ci.json",
-      "receipt_sha256": "023c50b55fa021b0eb51b4fd67a4fd5af3f904f99b53cd8aa51c5d3d44a85a36"
+      "receipt_sha256": "1829e58af1d673d218503bab015170644475b659ab8417a6d0802fe498ecec6c"
     },
     {
       "id": "ER-2C-TRACE",
@@ -342,7 +342,7 @@
         "artifact_sha256": "b592e454749146a1102bc02438b6780911a24160d2dc193c5c5d71b4631d6c08"
       },
       "receipt_path": "dev/seven-lens-evidence-2c-ER-2C-TRACE.json",
-      "receipt_sha256": "6e57d3a0752b28db2acfaff8ed576556466c171b4a15503129a055d9eff38e94"
+      "receipt_sha256": "113ea3237209689900ac2fa6327e58bfd82711b987b31ec05e5c9fb4627af517"
     }
   ],
   "changed_paths": [
