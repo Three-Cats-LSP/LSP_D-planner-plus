@@ -3,7 +3,7 @@
   "runner_version": 2,
   "spec": "docs\\seven-lens-traces\\cycle-02-rec-planner.json",
   "spec_sha256": "796b00ded3e257fef826c7a68acc53b572e8f464c6593a6a47af320874c357fb",
-  "commit": "ff64ee9dac78903d555795d907aff167e780d90a",
+  "commit": "c74837af097a4a71353e2095948fa1475cf774d3",
   "traces": [
     {
       "id": "SL-REC-DEPTH-BT-STEPPER",
