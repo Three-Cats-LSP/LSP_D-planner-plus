@@ -415,8 +415,8 @@
       ],
       "reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
       "verification_session": "C06-V-B",
-      "verified_source_commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d",
-      "last_checked_commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d",
+      "verified_source_commit": "0af4a01c9141be3adcb1f14ff264972c09cf116c",
+      "last_checked_commit": "0af4a01c9141be3adcb1f14ff264972c09cf116c",
       "verified_at": "2026-07-04T18:20:00+00:00",
       "reviewed_at": "2026-07-04T17:03:53+00:00",
       "verifier": "Cursor Agent (C06-V-B independent verification)",
@@ -427,7 +427,6 @@
         "SL-C06-L-01",
         "SL-C06-L-02",
         "SL-C06-L-03",
-        "SL-C06-L-04",
         "SL-C06-L-05"
       ],
       "verification_commands": [

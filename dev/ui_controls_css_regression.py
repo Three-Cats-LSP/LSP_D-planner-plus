@@ -38,7 +38,12 @@ STATE_HASH_JS = r"""
   parts.push(document.activeElement?.id || '');
   for (const id of ['cylBot_size', 'cylBot_pres']) {
     const el = document.getElementById(id);
-    parts.push(el ? `${el.value}|${el.disabled}|${el.validity?.valid}` : 'missing');
+    if (!el) {
+      parts.push('missing');
+      continue;
+    }
+    const ds = Object.keys(el.dataset).sort().map(k => `${k}=${el.dataset[k]}`).join(',');
+    parts.push(`${el.value}|${el.disabled}|${el.validity?.valid}|${ds}`);
   }
   parts.push(document.querySelectorAll('.si-inner').length);
   parts.push(document.querySelectorAll('.btn-calc').length);
@@ -119,23 +124,33 @@ REDUCED_JS = r"""
 }
 """
 
-READ_FIELD_STYLES_JS = r"""
+READ_FIELD_PROBE_JS = r"""
 node => {
   const cs = getComputedStyle(node);
+  const probe = document.createElement('span');
+  probe.style.cssText = 'color: var(--red); position: absolute; visibility: hidden;';
+  document.documentElement.appendChild(probe);
+  const resolvedRed = getComputedStyle(probe).color;
+  probe.remove();
   return {
     borderColor: cs.borderColor,
     boxShadow: cs.boxShadow,
     outlineStyle: cs.outlineStyle,
     outlineWidth: cs.outlineWidth,
+    resolvedRed,
+    matchesInvalid: node.matches(':invalid'),
+    validityValid: node.validity.valid,
+    disabled: node.disabled,
+    focused: document.activeElement === node,
   };
 }
 """
 
 
-def _styles_differ(left: dict | None, right: dict | None) -> bool:
+def _shadow_differs(left: dict | None, right: dict | None) -> bool:
     if not left or not right:
         return False
-    return left.get("borderColor") != right.get("borderColor") or left.get("boxShadow") != right.get("boxShadow")
+    return left.get("boxShadow") != right.get("boxShadow")
 
 
 def _keyboard_seg_focus(page, *, gas_rule: bool) -> dict:
@@ -203,12 +218,7 @@ def _keyboard_seg_focus(page, *, gas_rule: bool) -> dict:
 
 
 def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> dict:
-    page.evaluate(
-        """() => {
-          setMainNav('buh');
-          switchTab('planner', document.getElementById('tab-planner'));
-        }"""
-    )
+    page.evaluate("() => { setMainNav('buh'); }")
     el = page.locator("#cylBot_size")
     if el.count() == 0:
         return {
@@ -227,7 +237,11 @@ def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> 
           step: node.step,
           valid: node.validity.valid,
           validationMessage: node.validationMessage,
+          dataset: {...node.dataset},
         })"""
+    )
+    page.evaluate(
+        "() => { switchTab('planner', document.getElementById('tab-planner')); }"
     )
     selector_matches = page.evaluate(
         """() => ({
@@ -236,37 +250,43 @@ def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> 
           targetInField: !!document.querySelector('.field input#cylBot_size'),
         })"""
     )
-    before_styles = el.evaluate(READ_FIELD_STYLES_JS)
-    pristine_valid = bool(snap.get("valid"))
+    pristine = el.evaluate(READ_FIELD_PROBE_JS)
+    pristine_valid = bool(snap.get("valid")) and bool(pristine.get("validityValid"))
+    resolved_red = pristine.get("resolvedRed")
 
     try:
         el.click()
-        el.select_text()
-        el.fill("0")
-        el.evaluate("node => node.dispatchEvent(new Event('input', { bubbles: true }))")
-        page.locator("#cylBot_pres").click()
+        page.keyboard.press("Control+A")
+        page.keyboard.press("Backspace")
+        page.keyboard.type("0")
+        page.keyboard.press("Tab")
+        page.wait_for_timeout(250)
 
-        after_valid = el.evaluate("node => node.validity.valid")
+        blurred = el.evaluate(READ_FIELD_PROBE_JS)
+        after_valid = bool(blurred.get("validityValid"))
         after_invalid = not after_valid
-        invalid_styles = el.evaluate(READ_FIELD_STYLES_JS)
+        matches_invalid = bool(blurred.get("matchesInvalid"))
+        blurred_not_focused = not bool(blurred.get("focused"))
 
         el.click()
-        focused = el.evaluate("node => document.activeElement === node")
-        focus_styles = el.evaluate(READ_FIELD_STYLES_JS)
+        focused_probe = el.evaluate(READ_FIELD_PROBE_JS)
+        focused = bool(focused_probe.get("focused"))
 
         el.evaluate("node => { node.disabled = true; }")
-        disabled = el.evaluate("node => node.disabled")
-        disabled_styles = el.evaluate(READ_FIELD_STYLES_JS)
+        disabled_probe = el.evaluate(READ_FIELD_PROBE_JS)
+        disabled = bool(disabled_probe.get("disabled"))
     finally:
         page.evaluate(
             """(snap) => {
               const node = document.getElementById('cylBot_size');
               if (!node) return;
-              node.disabled = false;
+              node.disabled = snap.disabled;
               node.value = snap.value;
               if (typeof syncVolumeInputCanonical === 'function') {
                 syncVolumeInputCanonical('cylBot_size');
               }
+              for (const key of Object.keys(node.dataset)) delete node.dataset[key];
+              for (const [k, v] of Object.entries(snap.dataset || {})) node.dataset[k] = v;
               node.dispatchEvent(new Event('input', { bubbles: true }));
               node.dispatchEvent(new Event('change', { bubbles: true }));
               node.blur();
@@ -276,15 +296,26 @@ def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> 
         page.locator("body").click(position={"x": 8, "y": 8})
         page.evaluate("() => { switchTab('deco', document.getElementById('tab-deco')); }")
 
-    invalid_visual = _styles_differ(before_styles, invalid_styles)
-    focus_differs = _styles_differ(invalid_styles, focus_styles)
-    disabled_differs = _styles_differ(invalid_styles, disabled_styles)
+    border_is_red = (
+        blurred.get("borderColor") == resolved_red
+        and resolved_red
+        and blurred.get("borderColor") != pristine.get("borderColor")
+    )
+    shadow_changed = _shadow_differs(pristine, blurred)
+    focus_precedence = (
+        focused_probe.get("borderColor") != blurred.get("borderColor")
+        or focused_probe.get("boxShadow") != blurred.get("boxShadow")
+    )
+    disabled_no_red = disabled_probe.get("borderColor") != resolved_red
     ok = (
         pristine_valid
         and after_invalid
-        and invalid_visual
-        and focus_differs
-        and disabled_differs
+        and matches_invalid
+        and blurred_not_focused
+        and border_is_red
+        and shadow_changed
+        and focus_precedence
+        and disabled_no_red
         and focused
         and disabled
     )
@@ -293,9 +324,10 @@ def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> 
         "viewport": list(viewport),
         "browserVersion": browser_version,
         "pristineValid": pristine_valid,
-        "pristineInvalid": not pristine_valid,
         "afterValid": after_valid,
         "afterInvalid": after_invalid,
+        "matchesInvalid": matches_invalid,
+        "blurredNotFocused": blurred_not_focused,
         "selectorMatches": selector_matches,
         "values": {
             "snapshotValue": snap.get("value"),
@@ -309,30 +341,32 @@ def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> 
             "afterValid": after_valid,
             "validationMessage": snap.get("validationMessage"),
         },
+        "resolvedRed": resolved_red,
         "borderColors": {
-            "before": before_styles.get("borderColor"),
-            "invalid": invalid_styles.get("borderColor"),
-            "focus": focus_styles.get("borderColor"),
-            "disabled": disabled_styles.get("borderColor"),
+            "pristine": pristine.get("borderColor"),
+            "blurredInvalid": blurred.get("borderColor"),
+            "focus": focused_probe.get("borderColor"),
+            "disabled": disabled_probe.get("borderColor"),
         },
         "boxShadows": {
-            "before": before_styles.get("boxShadow"),
-            "invalid": invalid_styles.get("boxShadow"),
-            "focus": focus_styles.get("boxShadow"),
-            "disabled": disabled_styles.get("boxShadow"),
+            "pristine": pristine.get("boxShadow"),
+            "blurredInvalid": blurred.get("boxShadow"),
+            "focus": focused_probe.get("boxShadow"),
+            "disabled": disabled_probe.get("boxShadow"),
         },
         "focusState": {
             "focused": focused,
-            "outlineStyle": focus_styles.get("outlineStyle"),
-            "outlineWidth": focus_styles.get("outlineWidth"),
+            "outlineStyle": focused_probe.get("outlineStyle"),
+            "outlineWidth": focused_probe.get("outlineWidth"),
         },
         "disabledState": {
             "disabled": disabled,
         },
         "checks": {
-            "invalidVisual": invalid_visual,
-            "focusDiffers": focus_differs,
-            "disabledDiffers": disabled_differs,
+            "borderIsRed": border_is_red,
+            "shadowChanged": shadow_changed,
+            "focusPrecedence": focus_precedence,
+            "disabledNoRed": disabled_no_red,
         },
     }
 
@@ -396,7 +430,11 @@ def run_cases(
               const legacy = document.querySelector('.legacy-panels');
               if (legacy) legacy.style.removeProperty('display');
               const el = document.getElementById('cylBot_size');
-              if (el) { el.disabled = false; el.blur(); }
+              if (el) {
+                el.disabled = false;
+                for (const key of Object.keys(el.dataset)) delete el.dataset[key];
+                el.blur();
+              }
               const target = activeId ? document.getElementById(activeId) : null;
               if (target && typeof target.focus === 'function') target.focus();
               else document.body.focus();

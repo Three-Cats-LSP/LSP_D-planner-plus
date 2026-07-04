@@ -195,7 +195,7 @@
     }
   ],
   "audit_commit": "fea770dc9194b55e3344b10e18e4b9b1a5bfc2ad",
-  "verified_source_commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d",
+  "verified_source_commit": "0af4a01c9141be3adcb1f14ff264972c09cf116c",
   "verification_status": "BLOCKED",
   "parts": [
     {
@@ -522,9 +522,12 @@
       "post_fix_evidence_id": "ER-C06-POST-CSS",
       "baseline_failure": "No invalid-state CSS in controls sheet at fea770d (regression border check passed accidentally via focus ring).",
       "evidence_ids": [
-        "ER-C06-PRE-CSS"
+        "ER-C06-PRE-CSS",
+        "ER-C06-POST-CSS",
+        "ER-C06-RESTORE-CSS",
+        "ER-C06-TRACE"
       ],
-      "independent_verification_result": "BLOCKED (C06-V-B): SL-C06-FIELD-INVALID-STATE passes on fea770d CSS via :focus ring; does not assert var(--red) invalid styling",
+      "independent_verification_result": "PENDING (FIXER C06-F): regression/traces rewritten; awaiting fresh VERIFIER pass",
       "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2"
     },
     {
@@ -610,7 +613,7 @@
       "state_restored": true,
       "command": "python dev/ui_controls_css_regression.py",
       "exit_code": 0,
-      "commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d",
+      "commit": "0af4a01c9141be3adcb1f14ff264972c09cf116c",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -651,8 +654,8 @@
         "trace_id": "SL-C06-GAS-NUM-TOUCH-TARGET-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle06.json",
         "spec_path": "docs/seven-lens-traces/cycle-06-controls.json",
-        "artifact_sha256": "a28673e221cf1f1b7b08f9b4f3e69a7ae6dfdb32c50b9aa84dc89b717601a696",
-        "spec_sha256": "8324bcb4648ba7aad40e78108e7c2885d29362516828db9276a336c53798e488"
+        "artifact_sha256": "d23b1be7b4a327b08c5eb391c15cac236432a0defa79174d0df52e941c8dd7d1",
+        "spec_sha256": "492d27c02b5524fe2fcee9959d8a3d1f3e4433766f14c830c8873b8616256864"
       }
     },
     {
@@ -670,7 +673,7 @@
       "state_restored": true,
       "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-06-controls.json --output dev/seven-lens-browser-trace-cycle06.json",
       "exit_code": 0,
-      "commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d",
+      "commit": "0af4a01c9141be3adcb1f14ff264972c09cf116c",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -713,8 +716,8 @@
         "trace_id": "SL-C06-SEG-FOCUS-VISIBLE-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle06.json",
         "spec_path": "docs/seven-lens-traces/cycle-06-controls.json",
-        "artifact_sha256": "a28673e221cf1f1b7b08f9b4f3e69a7ae6dfdb32c50b9aa84dc89b717601a696",
-        "spec_sha256": "8324bcb4648ba7aad40e78108e7c2885d29362516828db9276a336c53798e488"
+        "artifact_sha256": "d23b1be7b4a327b08c5eb391c15cac236432a0defa79174d0df52e941c8dd7d1",
+        "spec_sha256": "492d27c02b5524fe2fcee9959d8a3d1f3e4433766f14c830c8873b8616256864"
       }
     },
     {
@@ -730,7 +733,7 @@
       "state_restored": true,
       "command": "python tools/run_ui_structure_suite.py",
       "exit_code": 0,
-      "commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d",
+      "commit": "0af4a01c9141be3adcb1f14ff264972c09cf116c",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -753,7 +756,7 @@
       "state_restored": true,
       "command": "python tools/extract_ui_css.py",
       "exit_code": 0,
-      "commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d",
+      "commit": "0af4a01c9141be3adcb1f14ff264972c09cf116c",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -773,8 +776,8 @@
       ],
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
-      "exit_code": 1,
-      "commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d",
+      "exit_code": 0,
+      "commit": "0af4a01c9141be3adcb1f14ff264972c09cf116c",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -798,8 +801,8 @@
       ],
       "state_restored": true,
       "command": "python -m tools.audit run --profile ci",
-      "exit_code": 1,
-      "commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d",
+      "exit_code": 0,
+      "commit": "0af4a01c9141be3adcb1f14ff264972c09cf116c",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -832,7 +835,7 @@
       "state_restored": true,
       "command": "python dev/ui_controls_css_regression.py",
       "exit_code": 0,
-      "commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d",
+      "commit": "0af4a01c9141be3adcb1f14ff264972c09cf116c",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -854,5 +857,5 @@
     "tools/seven_lens_browser_trace.py"
   ],
   "audit_report": "docs/seven-lens-reports/cycle-06-controls-css.md",
-  "notes": "VERIFIER C06-V-B: evidence re-executed at 1b5d5ce; prepared baseline f52dc35; SL-C06-L-04 reopened (baseline false positive); static/ci SUITE-COVERAGE FAIL."
+  "notes": "FIXER C06-F: SL-C06-FIELD-INVALID-STATE asserts var(--red) after blur; baseline fea770d fails; SL-C06-L-04 OPEN pending fresh VERIFIER."
 }

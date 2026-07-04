@@ -114,16 +114,16 @@
     {
       "id": "SL-C06-FIELD-INVALID-STATE-TRACE",
       "case_ids": ["SL-C06-FIELD-INVALID-STATE"],
-      "entry_event": "User edits #cylBot_size below min; invalid border becomes visible after interaction.",
+      "entry_event": "User edits #cylBot_size below min, tabs away; blurred invalid border resolves var(--red).",
       "consumer_path": [
         "keyboard edit #cylBot_size",
-        "HTML5 validity.valid false",
-        "getComputedStyle borderColor",
-        "lsp-dplanner-controls.css :user-invalid"
+        "Tab blur :user-invalid",
+        "getComputedStyle borderColor vs var(--red)",
+        "lsp-dplanner-controls.css :user-invalid:not(:focus)"
       ],
       "state": {
-        "selectors": ["#navBtnBuh", "#cylBot_size", "#cylBot_pres"],
-        "restore_order": ["#cylBot_pres", "#cylBot_size", "#navBtnBuh"],
+        "selectors": ["#navBtnBuh", "#cylBot_size"],
+        "restore_order": ["#cylBot_size", "#navBtnBuh"],
         "globals": []
       },
       "setup": [
@@ -139,31 +139,61 @@
           "capture": "before",
           "values": {
             "valid_before": "document.getElementById('cylBot_size')?.validity?.valid === true",
-            "border_before": "getComputedStyle(document.getElementById('cylBot_size')).borderColor"
+            "border_before": "getComputedStyle(document.getElementById('cylBot_size')).borderColor",
+            "shadow_before": "getComputedStyle(document.getElementById('cylBot_size')).boxShadow",
+            "resolved_red": "(() => { const p = document.createElement('span'); p.style.color = 'var(--red)'; document.documentElement.appendChild(p); const c = getComputedStyle(p).color; p.remove(); return c; })()",
+            "resolved_accent": "(() => { const p = document.createElement('span'); p.style.color = 'var(--accent)'; document.documentElement.appendChild(p); const c = getComputedStyle(p).color; p.remove(); return c; })()"
           }
         },
         {"action": "click", "selector": "#cylBot_size"},
         {"action": "press_key", "key": "Control+A"},
         {"action": "press_key", "key": "Backspace"},
-        {"action": "type_text", "text": "0"},
-        {"action": "press_key", "key": "Tab"},
+        {"action": "press_key", "key": "0"},
+        {"action": "press_key", "key": "Tab", "delay_ms": 400},
         {
           "capture": "canonical",
           "values": {
-            "valid_after": "document.getElementById('cylBot_size')?.validity?.valid === false"
+            "valid_after": "document.getElementById('cylBot_size')?.validity?.valid === false",
+            "matches_invalid": "document.getElementById('cylBot_size')?.matches(':invalid') === true",
+            "blurred_not_focused": "document.activeElement !== document.getElementById('cylBot_size')"
           }
         },
         {
           "capture": "consumer",
           "values": {
-            "border_changed": "(() => { const el = document.getElementById('cylBot_size'); if (!el) return false; const bc = getComputedStyle(el).borderColor; return !el.validity.valid && bc !== 'rgba(255, 255, 255, 0.08)'; })()"
+            "border_blurred": "getComputedStyle(document.getElementById('cylBot_size')).borderColor",
+            "shadow_blurred": "getComputedStyle(document.getElementById('cylBot_size')).boxShadow",
+            "resolved_red": "(() => { const p = document.createElement('span'); p.style.color = 'var(--red)'; document.documentElement.appendChild(p); const c = getComputedStyle(p).color; p.remove(); return c; })()"
+          }
+        },
+        {"action": "click", "selector": "#cylBot_size", "delay_ms": 300},
+        {
+          "capture": "focus",
+          "values": {
+            "border_focus": "getComputedStyle(document.getElementById('cylBot_size')).borderColor",
+            "focused": "document.activeElement === document.getElementById('cylBot_size')"
+          }
+        },
+        {"action": "set_enabled", "selector": "#cylBot_size", "value": false, "delay_ms": 300},
+        {
+          "capture": "disabled",
+          "values": {
+            "border_disabled": "getComputedStyle(document.getElementById('cylBot_size')).borderColor",
+            "is_disabled": "document.getElementById('cylBot_size')?.disabled === true"
           }
         }
       ],
       "assertions": [
         {"id": "was-valid", "left": "$.before.valid_before", "op": "equal", "right": true},
         {"id": "now-invalid", "left": "$.canonical.valid_after", "op": "equal", "right": true},
-        {"id": "border-changed", "left": "$.consumer.border_changed", "op": "equal", "right": true}
+        {"id": "matches-invalid", "left": "$.canonical.matches_invalid", "op": "equal", "right": true},
+        {"id": "blurred-not-focused", "left": "$.canonical.blurred_not_focused", "op": "equal", "right": true},
+        {"id": "border-is-red", "left": "$.consumer.border_blurred", "op": "equal", "right": "$.consumer.resolved_red"},
+        {"id": "shadow-changed", "left": "$.consumer.shadow_blurred", "op": "not_equal", "right": "$.before.shadow_before"},
+        {"id": "focus-precedence", "left": "$.focus.border_focus", "op": "equal", "right": "$.before.resolved_accent"},
+        {"id": "focused", "left": "$.focus.focused", "op": "equal", "right": true},
+        {"id": "disabled-no-red", "left": "$.disabled.border_disabled", "op": "not_equal", "right": "$.consumer.resolved_red"},
+        {"id": "is-disabled", "left": "$.disabled.is_disabled", "op": "equal", "right": true}
       ]
     },
     {

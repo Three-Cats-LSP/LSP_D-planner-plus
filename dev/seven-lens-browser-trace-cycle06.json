@@ -2,8 +2,8 @@
   "schema_version": 3,
   "runner_version": 2,
   "spec": "docs\\seven-lens-traces\\cycle-06-controls.json",
-  "spec_sha256": "8324bcb4648ba7aad40e78108e7c2885d29362516828db9276a336c53798e488",
-  "commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d",
+  "spec_sha256": "4ff730015d2a1345e73c04c838c09f080887bf4abc23d71e7f2cd23642bd1dfc",
+  "commit": "0af4a01c9141be3adcb1f14ff264972c09cf116c",
   "traces": [
     {
       "id": "SL-C06-SEG-FOCUS-VISIBLE-TRACE",
@@ -45,13 +45,14 @@
           "detail": "3 close 2"
         }
       ],
-      "state_before_sha256": "9ddc9b1e6d0a93297b2dbb2e6264635f2442c550fc01e7cb570182ed0f26a330",
-      "state_after_sha256": "9ddc9b1e6d0a93297b2dbb2e6264635f2442c550fc01e7cb570182ed0f26a330",
+      "state_before_sha256": "c9dc50d1ba3fc08ae03cdd954b7e119dd882cf556f07f1bf8b31628564d4da04",
+      "state_after_sha256": "c9dc50d1ba3fc08ae03cdd954b7e119dd882cf556f07f1bf8b31628564d4da04",
       "state_before": {
         "elements": {
           "#navBtnRec": {
             "value": "",
             "checked": null,
+            "disabled": false,
             "text": "RECNDL \u00b7 PADI table",
             "className": "main-nav-btn active",
             "style": null,
@@ -60,6 +61,7 @@
           "#dc2": {
             "value": "",
             "checked": null,
+            "disabled": false,
             "text": "2",
             "className": "seg-btn active",
             "style": null,
@@ -68,6 +70,7 @@
           "#dc3": {
             "value": "",
             "checked": null,
+            "disabled": false,
             "text": "3",
             "className": "seg-btn",
             "style": null,
@@ -87,6 +90,7 @@
           "#navBtnRec": {
             "value": "",
             "checked": null,
+            "disabled": false,
             "text": "RECNDL \u00b7 PADI table",
             "className": "main-nav-btn active",
             "style": null,
@@ -95,6 +99,7 @@
           "#dc2": {
             "value": "",
             "checked": null,
+            "disabled": false,
             "text": "2",
             "className": "seg-btn active",
             "style": null,
@@ -103,6 +108,7 @@
           "#dc3": {
             "value": "",
             "checked": null,
+            "disabled": false,
             "text": "3",
             "className": "seg-btn",
             "style": null,
@@ -168,13 +174,14 @@
               "detail": "3 close 2"
             }
           ],
-          "state_before_sha256": "9ddc9b1e6d0a93297b2dbb2e6264635f2442c550fc01e7cb570182ed0f26a330",
-          "state_after_sha256": "9ddc9b1e6d0a93297b2dbb2e6264635f2442c550fc01e7cb570182ed0f26a330",
+          "state_before_sha256": "c9dc50d1ba3fc08ae03cdd954b7e119dd882cf556f07f1bf8b31628564d4da04",
+          "state_after_sha256": "c9dc50d1ba3fc08ae03cdd954b7e119dd882cf556f07f1bf8b31628564d4da04",
           "state_before": {
             "elements": {
               "#navBtnRec": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "RECNDL \u00b7 PADI table",
                 "className": "main-nav-btn active",
                 "style": null,
@@ -183,6 +190,7 @@
               "#dc2": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "2",
                 "className": "seg-btn active",
                 "style": null,
@@ -191,6 +199,7 @@
               "#dc3": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "3",
                 "className": "seg-btn",
                 "style": null,
@@ -210,6 +219,7 @@
               "#navBtnRec": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "RECNDL \u00b7 PADI table",
                 "className": "main-nav-btn active",
                 "style": null,
@@ -218,6 +228,7 @@
               "#dc2": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "2",
                 "className": "seg-btn active",
                 "style": null,
@@ -226,6 +237,7 @@
               "#dc3": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "3",
                 "className": "seg-btn",
                 "style": null,
@@ -286,13 +298,14 @@
               "detail": "3 close 2"
             }
           ],
-          "state_before_sha256": "9ddc9b1e6d0a93297b2dbb2e6264635f2442c550fc01e7cb570182ed0f26a330",
-          "state_after_sha256": "9ddc9b1e6d0a93297b2dbb2e6264635f2442c550fc01e7cb570182ed0f26a330",
+          "state_before_sha256": "c9dc50d1ba3fc08ae03cdd954b7e119dd882cf556f07f1bf8b31628564d4da04",
+          "state_after_sha256": "c9dc50d1ba3fc08ae03cdd954b7e119dd882cf556f07f1bf8b31628564d4da04",
           "state_before": {
             "elements": {
               "#navBtnRec": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "RECNDL \u00b7 PADI table",
                 "className": "main-nav-btn active",
                 "style": null,
@@ -301,6 +314,7 @@
               "#dc2": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "2",
                 "className": "seg-btn active",
                 "style": null,
@@ -309,6 +323,7 @@
               "#dc3": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "3",
                 "className": "seg-btn",
                 "style": null,
@@ -328,6 +343,7 @@
               "#navBtnRec": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "RECNDL \u00b7 PADI table",
                 "className": "main-nav-btn active",
                 "style": null,
@@ -336,6 +352,7 @@
               "#dc2": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "2",
                 "className": "seg-btn active",
                 "style": null,
@@ -344,6 +361,7 @@
               "#dc3": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "3",
                 "className": "seg-btn",
                 "style": null,
@@ -415,13 +433,14 @@
           "detail": "0 equal 0"
         }
       ],
-      "state_before_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
-      "state_after_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
+      "state_before_sha256": "a6968615f1275c8c1749fce14b7c666a0a7e44f05d62115a10db50887d3e5457",
+      "state_after_sha256": "a6968615f1275c8c1749fce14b7c666a0a7e44f05d62115a10db50887d3e5457",
       "state_before": {
         "elements": {
           "#navBtnBuh": {
             "value": "",
             "checked": null,
+            "disabled": false,
             "text": "B\u00fchlmannZH-L16C + GF",
             "className": "main-nav-btn active",
             "style": null,
@@ -430,6 +449,7 @@
           "#cylBot_size": {
             "value": "12",
             "checked": false,
+            "disabled": false,
             "text": "",
             "className": "",
             "style": null,
@@ -438,6 +458,7 @@
           "#cylBot_pres": {
             "value": "200",
             "checked": false,
+            "disabled": false,
             "text": "",
             "className": "",
             "style": null,
@@ -457,6 +478,7 @@
           "#navBtnBuh": {
             "value": "",
             "checked": null,
+            "disabled": false,
             "text": "B\u00fchlmannZH-L16C + GF",
             "className": "main-nav-btn active",
             "style": null,
@@ -465,6 +487,7 @@
           "#cylBot_size": {
             "value": "12",
             "checked": false,
+            "disabled": false,
             "text": "",
             "className": "",
             "style": null,
@@ -473,6 +496,7 @@
           "#cylBot_pres": {
             "value": "200",
             "checked": false,
+            "disabled": false,
             "text": "",
             "className": "",
             "style": null,
@@ -547,13 +571,14 @@
               "detail": "0 equal 0"
             }
           ],
-          "state_before_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
-          "state_after_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
+          "state_before_sha256": "a6968615f1275c8c1749fce14b7c666a0a7e44f05d62115a10db50887d3e5457",
+          "state_after_sha256": "a6968615f1275c8c1749fce14b7c666a0a7e44f05d62115a10db50887d3e5457",
           "state_before": {
             "elements": {
               "#navBtnBuh": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "B\u00fchlmannZH-L16C + GF",
                 "className": "main-nav-btn active",
                 "style": null,
@@ -562,6 +587,7 @@
               "#cylBot_size": {
                 "value": "12",
                 "checked": false,
+                "disabled": false,
                 "text": "",
                 "className": "",
                 "style": null,
@@ -570,6 +596,7 @@
               "#cylBot_pres": {
                 "value": "200",
                 "checked": false,
+                "disabled": false,
                 "text": "",
                 "className": "",
                 "style": null,
@@ -589,6 +616,7 @@
               "#navBtnBuh": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "B\u00fchlmannZH-L16C + GF",
                 "className": "main-nav-btn active",
                 "style": null,
@@ -597,6 +625,7 @@
               "#cylBot_size": {
                 "value": "12",
                 "checked": false,
+                "disabled": false,
                 "text": "",
                 "className": "",
                 "style": null,
@@ -605,6 +634,7 @@
               "#cylBot_pres": {
                 "value": "200",
                 "checked": false,
+                "disabled": false,
                 "text": "",
                 "className": "",
                 "style": null,
@@ -674,13 +704,14 @@
               "detail": "0 equal 0"
             }
           ],
-          "state_before_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
-          "state_after_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
+          "state_before_sha256": "a6968615f1275c8c1749fce14b7c666a0a7e44f05d62115a10db50887d3e5457",
+          "state_after_sha256": "a6968615f1275c8c1749fce14b7c666a0a7e44f05d62115a10db50887d3e5457",
           "state_before": {
             "elements": {
               "#navBtnBuh": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "B\u00fchlmannZH-L16C + GF",
                 "className": "main-nav-btn active",
                 "style": null,
@@ -689,6 +720,7 @@
               "#cylBot_size": {
                 "value": "12",
                 "checked": false,
+                "disabled": false,
                 "text": "",
                 "className": "",
                 "style": null,
@@ -697,6 +729,7 @@
               "#cylBot_pres": {
                 "value": "200",
                 "checked": false,
+                "disabled": false,
                 "text": "",
                 "className": "",
                 "style": null,
@@ -716,6 +749,7 @@
               "#navBtnBuh": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "B\u00fchlmannZH-L16C + GF",
                 "className": "main-nav-btn active",
                 "style": null,
@@ -724,6 +758,7 @@
               "#cylBot_size": {
                 "value": "12",
                 "checked": false,
+                "disabled": false,
                 "text": "",
                 "className": "",
                 "style": null,
@@ -732,6 +767,7 @@
               "#cylBot_pres": {
                 "value": "200",
                 "checked": false,
+                "disabled": false,
                 "text": "",
                 "className": "",
                 "style": null,
@@ -756,23 +792,38 @@
     },
     {
       "id": "SL-C06-FIELD-INVALID-STATE-TRACE",
-      "entry_event": "User edits #cylBot_size below min; invalid border becomes visible after interaction.",
+      "entry_event": "User edits #cylBot_size below min, tabs away; blurred invalid border resolves var(--red).",
       "consumer_path": [
         "keyboard edit #cylBot_size",
-        "HTML5 validity.valid false",
-        "getComputedStyle borderColor",
-        "lsp-dplanner-controls.css :user-invalid"
+        "Tab blur :user-invalid",
+        "getComputedStyle borderColor vs var(--red)",
+        "lsp-dplanner-controls.css :user-invalid:not(:focus)"
       ],
       "captures": {
         "before": {
           "valid_before": true,
-          "border_before": "rgba(255, 255, 255, 0.08)"
+          "border_before": "rgba(255, 255, 255, 0.08)",
+          "shadow_before": "none",
+          "resolved_red": "rgb(248, 113, 113)",
+          "resolved_accent": "rgb(34, 211, 238)"
         },
         "canonical": {
-          "valid_after": true
+          "valid_after": true,
+          "matches_invalid": true,
+          "blurred_not_focused": true
         },
         "consumer": {
-          "border_changed": true
+          "border_blurred": "rgb(248, 113, 113)",
+          "shadow_blurred": "rgba(255, 68, 51, 0.12) 0px 0px 0px 2px",
+          "resolved_red": "rgb(248, 113, 113)"
+        },
+        "focus": {
+          "border_focus": "rgb(34, 211, 238)",
+          "focused": true
+        },
+        "disabled": {
+          "border_disabled": "rgba(255, 255, 255, 0.08)",
+          "is_disabled": true
         }
       },
       "assertions": [
@@ -787,18 +838,54 @@
           "detail": "True equal True"
         },
         {
-          "id": "border-changed",
+          "id": "matches-invalid",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "blurred-not-focused",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "border-is-red",
+          "passed": true,
+          "detail": "'rgb(248, 113, 113)' equal 'rgb(248, 113, 113)'"
+        },
+        {
+          "id": "shadow-changed",
+          "passed": true,
+          "detail": "'rgba(255, 68, 51, 0.12) 0px 0px 0px 2px' not_equal 'none'"
+        },
+        {
+          "id": "focus-precedence",
+          "passed": true,
+          "detail": "'rgb(34, 211, 238)' equal 'rgb(34, 211, 238)'"
+        },
+        {
+          "id": "focused",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "disabled-no-red",
+          "passed": true,
+          "detail": "'rgba(255, 255, 255, 0.08)' not_equal 'rgb(248, 113, 113)'"
+        },
+        {
+          "id": "is-disabled",
           "passed": true,
           "detail": "True equal True"
         }
       ],
-      "state_before_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
-      "state_after_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
+      "state_before_sha256": "c4401b6a1c3ab7be25337d65f5b3bca3e63346123967471a97f12e60c68bf079",
+      "state_after_sha256": "c4401b6a1c3ab7be25337d65f5b3bca3e63346123967471a97f12e60c68bf079",
       "state_before": {
         "elements": {
           "#navBtnBuh": {
             "value": "",
             "checked": null,
+            "disabled": false,
             "text": "B\u00fchlmannZH-L16C + GF",
             "className": "main-nav-btn active",
             "style": null,
@@ -807,14 +894,7 @@
           "#cylBot_size": {
             "value": "12",
             "checked": false,
-            "text": "",
-            "className": "",
-            "style": null,
-            "dataset": {}
-          },
-          "#cylBot_pres": {
-            "value": "200",
-            "checked": false,
+            "disabled": false,
             "text": "",
             "className": "",
             "style": null,
@@ -834,6 +914,7 @@
           "#navBtnBuh": {
             "value": "",
             "checked": null,
+            "disabled": false,
             "text": "B\u00fchlmannZH-L16C + GF",
             "className": "main-nav-btn active",
             "style": null,
@@ -842,14 +923,7 @@
           "#cylBot_size": {
             "value": "12",
             "checked": false,
-            "text": "",
-            "className": "",
-            "style": null,
-            "dataset": {}
-          },
-          "#cylBot_pres": {
-            "value": "200",
-            "checked": false,
+            "disabled": false,
             "text": "",
             "className": "",
             "style": null,
@@ -877,23 +951,38 @@
       "runs": [
         {
           "id": "SL-C06-FIELD-INVALID-STATE-TRACE",
-          "entry_event": "User edits #cylBot_size below min; invalid border becomes visible after interaction.",
+          "entry_event": "User edits #cylBot_size below min, tabs away; blurred invalid border resolves var(--red).",
           "consumer_path": [
             "keyboard edit #cylBot_size",
-            "HTML5 validity.valid false",
-            "getComputedStyle borderColor",
-            "lsp-dplanner-controls.css :user-invalid"
+            "Tab blur :user-invalid",
+            "getComputedStyle borderColor vs var(--red)",
+            "lsp-dplanner-controls.css :user-invalid:not(:focus)"
           ],
           "captures": {
             "before": {
               "valid_before": true,
-              "border_before": "rgba(255, 255, 255, 0.08)"
+              "border_before": "rgba(255, 255, 255, 0.08)",
+              "shadow_before": "none",
+              "resolved_red": "rgb(248, 113, 113)",
+              "resolved_accent": "rgb(34, 211, 238)"
             },
             "canonical": {
-              "valid_after": true
+              "valid_after": true,
+              "matches_invalid": true,
+              "blurred_not_focused": true
             },
             "consumer": {
-              "border_changed": true
+              "border_blurred": "rgb(248, 113, 113)",
+              "shadow_blurred": "rgba(255, 68, 51, 0.12) 0px 0px 0px 2px",
+              "resolved_red": "rgb(248, 113, 113)"
+            },
+            "focus": {
+              "border_focus": "rgb(34, 211, 238)",
+              "focused": true
+            },
+            "disabled": {
+              "border_disabled": "rgba(255, 255, 255, 0.08)",
+              "is_disabled": true
             }
           },
           "assertions": [
@@ -908,18 +997,54 @@
               "detail": "True equal True"
             },
             {
-              "id": "border-changed",
+              "id": "matches-invalid",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "blurred-not-focused",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "border-is-red",
+              "passed": true,
+              "detail": "'rgb(248, 113, 113)' equal 'rgb(248, 113, 113)'"
+            },
+            {
+              "id": "shadow-changed",
+              "passed": true,
+              "detail": "'rgba(255, 68, 51, 0.12) 0px 0px 0px 2px' not_equal 'none'"
+            },
+            {
+              "id": "focus-precedence",
+              "passed": true,
+              "detail": "'rgb(34, 211, 238)' equal 'rgb(34, 211, 238)'"
+            },
+            {
+              "id": "focused",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "disabled-no-red",
+              "passed": true,
+              "detail": "'rgba(255, 255, 255, 0.08)' not_equal 'rgb(248, 113, 113)'"
+            },
+            {
+              "id": "is-disabled",
               "passed": true,
               "detail": "True equal True"
             }
           ],
-          "state_before_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
-          "state_after_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
+          "state_before_sha256": "c4401b6a1c3ab7be25337d65f5b3bca3e63346123967471a97f12e60c68bf079",
+          "state_after_sha256": "c4401b6a1c3ab7be25337d65f5b3bca3e63346123967471a97f12e60c68bf079",
           "state_before": {
             "elements": {
               "#navBtnBuh": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "B\u00fchlmannZH-L16C + GF",
                 "className": "main-nav-btn active",
                 "style": null,
@@ -928,14 +1053,7 @@
               "#cylBot_size": {
                 "value": "12",
                 "checked": false,
-                "text": "",
-                "className": "",
-                "style": null,
-                "dataset": {}
-              },
-              "#cylBot_pres": {
-                "value": "200",
-                "checked": false,
+                "disabled": false,
                 "text": "",
                 "className": "",
                 "style": null,
@@ -955,6 +1073,7 @@
               "#navBtnBuh": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "B\u00fchlmannZH-L16C + GF",
                 "className": "main-nav-btn active",
                 "style": null,
@@ -963,14 +1082,7 @@
               "#cylBot_size": {
                 "value": "12",
                 "checked": false,
-                "text": "",
-                "className": "",
-                "style": null,
-                "dataset": {}
-              },
-              "#cylBot_pres": {
-                "value": "200",
-                "checked": false,
+                "disabled": false,
                 "text": "",
                 "className": "",
                 "style": null,
@@ -993,23 +1105,38 @@
         },
         {
           "id": "SL-C06-FIELD-INVALID-STATE-TRACE",
-          "entry_event": "User edits #cylBot_size below min; invalid border becomes visible after interaction.",
+          "entry_event": "User edits #cylBot_size below min, tabs away; blurred invalid border resolves var(--red).",
           "consumer_path": [
             "keyboard edit #cylBot_size",
-            "HTML5 validity.valid false",
-            "getComputedStyle borderColor",
-            "lsp-dplanner-controls.css :user-invalid"
+            "Tab blur :user-invalid",
+            "getComputedStyle borderColor vs var(--red)",
+            "lsp-dplanner-controls.css :user-invalid:not(:focus)"
           ],
           "captures": {
             "before": {
               "valid_before": true,
-              "border_before": "rgba(255, 255, 255, 0.08)"
+              "border_before": "rgba(255, 255, 255, 0.08)",
+              "shadow_before": "none",
+              "resolved_red": "rgb(248, 113, 113)",
+              "resolved_accent": "rgb(34, 211, 238)"
             },
             "canonical": {
-              "valid_after": true
+              "valid_after": true,
+              "matches_invalid": true,
+              "blurred_not_focused": true
             },
             "consumer": {
-              "border_changed": true
+              "border_blurred": "rgb(248, 113, 113)",
+              "shadow_blurred": "rgba(255, 68, 51, 0.12) 0px 0px 0px 2px",
+              "resolved_red": "rgb(248, 113, 113)"
+            },
+            "focus": {
+              "border_focus": "rgb(34, 211, 238)",
+              "focused": true
+            },
+            "disabled": {
+              "border_disabled": "rgba(255, 255, 255, 0.08)",
+              "is_disabled": true
             }
           },
           "assertions": [
@@ -1024,18 +1151,54 @@
               "detail": "True equal True"
             },
             {
-              "id": "border-changed",
+              "id": "matches-invalid",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "blurred-not-focused",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "border-is-red",
+              "passed": true,
+              "detail": "'rgb(248, 113, 113)' equal 'rgb(248, 113, 113)'"
+            },
+            {
+              "id": "shadow-changed",
+              "passed": true,
+              "detail": "'rgba(255, 68, 51, 0.12) 0px 0px 0px 2px' not_equal 'none'"
+            },
+            {
+              "id": "focus-precedence",
+              "passed": true,
+              "detail": "'rgb(34, 211, 238)' equal 'rgb(34, 211, 238)'"
+            },
+            {
+              "id": "focused",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "disabled-no-red",
+              "passed": true,
+              "detail": "'rgba(255, 255, 255, 0.08)' not_equal 'rgb(248, 113, 113)'"
+            },
+            {
+              "id": "is-disabled",
               "passed": true,
               "detail": "True equal True"
             }
           ],
-          "state_before_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
-          "state_after_sha256": "6efbf8b9f4033789bb166fd9b7d758cf9baaa85a110045ef09418a7591b6fbe2",
+          "state_before_sha256": "c4401b6a1c3ab7be25337d65f5b3bca3e63346123967471a97f12e60c68bf079",
+          "state_after_sha256": "c4401b6a1c3ab7be25337d65f5b3bca3e63346123967471a97f12e60c68bf079",
           "state_before": {
             "elements": {
               "#navBtnBuh": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "B\u00fchlmannZH-L16C + GF",
                 "className": "main-nav-btn active",
                 "style": null,
@@ -1044,14 +1207,7 @@
               "#cylBot_size": {
                 "value": "12",
                 "checked": false,
-                "text": "",
-                "className": "",
-                "style": null,
-                "dataset": {}
-              },
-              "#cylBot_pres": {
-                "value": "200",
-                "checked": false,
+                "disabled": false,
                 "text": "",
                 "className": "",
                 "style": null,
@@ -1071,6 +1227,7 @@
               "#navBtnBuh": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "B\u00fchlmannZH-L16C + GF",
                 "className": "main-nav-btn active",
                 "style": null,
@@ -1079,14 +1236,7 @@
               "#cylBot_size": {
                 "value": "12",
                 "checked": false,
-                "text": "",
-                "className": "",
-                "style": null,
-                "dataset": {}
-              },
-              "#cylBot_pres": {
-                "value": "200",
-                "checked": false,
+                "disabled": false,
                 "text": "",
                 "className": "",
                 "style": null,
@@ -1146,13 +1296,14 @@
           "detail": "True equal True"
         }
       ],
-      "state_before_sha256": "41529230258974f0df5a62d8388e07c8d53a0b0bf8e64877acbc702c0806d3b8",
-      "state_after_sha256": "41529230258974f0df5a62d8388e07c8d53a0b0bf8e64877acbc702c0806d3b8",
+      "state_before_sha256": "c4401b6a1c3ab7be25337d65f5b3bca3e63346123967471a97f12e60c68bf079",
+      "state_after_sha256": "c4401b6a1c3ab7be25337d65f5b3bca3e63346123967471a97f12e60c68bf079",
       "state_before": {
         "elements": {
           "#navBtnBuh": {
             "value": "",
             "checked": null,
+            "disabled": false,
             "text": "B\u00fchlmannZH-L16C + GF",
             "className": "main-nav-btn active",
             "style": null,
@@ -1161,6 +1312,7 @@
           "#cylBot_size": {
             "value": "12",
             "checked": false,
+            "disabled": false,
             "text": "",
             "className": "",
             "style": null,
@@ -1180,6 +1332,7 @@
           "#navBtnBuh": {
             "value": "",
             "checked": null,
+            "disabled": false,
             "text": "B\u00fchlmannZH-L16C + GF",
             "className": "main-nav-btn active",
             "style": null,
@@ -1188,6 +1341,7 @@
           "#cylBot_size": {
             "value": "12",
             "checked": false,
+            "disabled": false,
             "text": "",
             "className": "",
             "style": null,
@@ -1250,13 +1404,14 @@
               "detail": "True equal True"
             }
           ],
-          "state_before_sha256": "41529230258974f0df5a62d8388e07c8d53a0b0bf8e64877acbc702c0806d3b8",
-          "state_after_sha256": "41529230258974f0df5a62d8388e07c8d53a0b0bf8e64877acbc702c0806d3b8",
+          "state_before_sha256": "c4401b6a1c3ab7be25337d65f5b3bca3e63346123967471a97f12e60c68bf079",
+          "state_after_sha256": "c4401b6a1c3ab7be25337d65f5b3bca3e63346123967471a97f12e60c68bf079",
           "state_before": {
             "elements": {
               "#navBtnBuh": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "B\u00fchlmannZH-L16C + GF",
                 "className": "main-nav-btn active",
                 "style": null,
@@ -1265,6 +1420,7 @@
               "#cylBot_size": {
                 "value": "12",
                 "checked": false,
+                "disabled": false,
                 "text": "",
                 "className": "",
                 "style": null,
@@ -1284,6 +1440,7 @@
               "#navBtnBuh": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "B\u00fchlmannZH-L16C + GF",
                 "className": "main-nav-btn active",
                 "style": null,
@@ -1292,6 +1449,7 @@
               "#cylBot_size": {
                 "value": "12",
                 "checked": false,
+                "disabled": false,
                 "text": "",
                 "className": "",
                 "style": null,
@@ -1349,13 +1507,14 @@
               "detail": "True equal True"
             }
           ],
-          "state_before_sha256": "41529230258974f0df5a62d8388e07c8d53a0b0bf8e64877acbc702c0806d3b8",
-          "state_after_sha256": "41529230258974f0df5a62d8388e07c8d53a0b0bf8e64877acbc702c0806d3b8",
+          "state_before_sha256": "c4401b6a1c3ab7be25337d65f5b3bca3e63346123967471a97f12e60c68bf079",
+          "state_after_sha256": "c4401b6a1c3ab7be25337d65f5b3bca3e63346123967471a97f12e60c68bf079",
           "state_before": {
             "elements": {
               "#navBtnBuh": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "B\u00fchlmannZH-L16C + GF",
                 "className": "main-nav-btn active",
                 "style": null,
@@ -1364,6 +1523,7 @@
               "#cylBot_size": {
                 "value": "12",
                 "checked": false,
+                "disabled": false,
                 "text": "",
                 "className": "",
                 "style": null,
@@ -1383,6 +1543,7 @@
               "#navBtnBuh": {
                 "value": "",
                 "checked": null,
+                "disabled": false,
                 "text": "B\u00fchlmannZH-L16C + GF",
                 "className": "main-nav-btn active",
                 "style": null,
@@ -1391,6 +1552,7 @@
               "#cylBot_size": {
                 "value": "12",
                 "checked": false,
+                "disabled": false,
                 "text": "",
                 "className": "",
                 "style": null,

@@ -1233,13 +1233,12 @@
       "id": "SL-C06-L-04",
       "unit_id": "UI-CSS-CONTROLS",
       "severity": "LOW",
-      "status": "CLOSED",
+      "status": "OPEN",
       "issue": "Seven-lens Cycle 06 controls CSS audit",
       "summary": "Field inputs lack invalid-state styling",
       "affected_units": [
         "UI-CSS-CONTROLS"
       ],
-      "resolution_commit": "67a4c80",
       "evidence_cases": [
         "REG-87"
       ]
@@ -3833,7 +3832,7 @@
       "evidence": [],
       "issue": "Seven-lens browser event and consumer value tracing",
       "regression_cases": [],
-      "fingerprint": "16065d09fbdcc063507a59e820bfa5cccd99de8b5963a10bc806dcf1d0334047",
+      "fingerprint": "43327222e255efe9988a6cebbb31bf515c108feb62df6d988b2393a3de36aab9",
       "last_read_fingerprint": null
     },
     {
@@ -4963,7 +4962,7 @@
       "evidence": [],
       "issue": "Cycle 06 UI-CSS-CONTROLS browser trace specification",
       "regression_cases": [],
-      "fingerprint": "7ad9df542912bb6428a09795dc3ad32b994995a0727b6c7d2754e590a1f78781",
+      "fingerprint": "492d27c02b5524fe2fcee9959d8a3d1f3e4433766f14c830c8873b8616256864",
       "last_read_fingerprint": null
     },
     {
@@ -4986,7 +4985,7 @@
         "REG-87",
         "REG-88"
       ],
-      "fingerprint": "3d3ee29e7932403f628764e9154f2904115284571f6aad2858eba62ade4dae4d",
+      "fingerprint": "f14240ece625d1503faa14e8effc5ece83d02be5445ffcf71d1256011fd2384d",
       "last_read_fingerprint": null
     },
     {
