@@ -5,7 +5,7 @@
   "target_branch": "dev",
   "integration_base_commit": "7cd58978d7b151c74e99cd65b79148d09b223658",
   "baseline_commit": "7cd58978d7b151c74e99cd65b79148d09b223658",
-  "baseline_registry_fingerprint": "f5e6a3da37a05bdfee6b9fae4060c97f4435448f635681f2a452719bfb7e91b9",
+  "baseline_registry_fingerprint": "432f7466abab61faa6ac26607e232ee2744463aa3db5a8b701b6bae61bf447cc",
   "baseline_findings": [
     {
       "id": "SL-C02-H-01",
@@ -195,8 +195,8 @@
     }
   ],
   "audit_commit": "fea770dc9194b55e3344b10e18e4b9b1a5bfc2ad",
-  "verified_source_commit": "",
-  "verification_status": "PENDING",
+  "verified_source_commit": "7470b4e5f56efb02541b57990e8422002051de35",
+  "verification_status": "PASSED",
   "parts": [
     {
       "id": "UI-CSS-CONTROLS-P01",
@@ -205,9 +205,9 @@
       "start_line": 1,
       "end_line": 500,
       "line_count": 500,
-      "content_fingerprint": "87cf75db8d4758f619575de2a7ea3ac2c86d38485060b1a76298b00cfe5608b5",
+      "content_fingerprint": "f1fe99ca4a101e0cb5875e1b7667bf645e5cd0f86d4292faa9997354fc46caee",
       "review_session": "C06-A",
-      "verification_session": "",
+      "verification_session": "C06-V-A",
       "lens_results": {
         "L1": {
           "trace": "gas-f-num 4.25rem flex :127-129; option-pill calc thumb width/translate :59-71; android panel max-height min(70vh,520px) :202; form-grid minmax(110px,1fr) :94-97",
@@ -284,11 +284,11 @@
       "unit_id": "UI-CSS-CONTROLS",
       "path": "lsp-dplanner-controls.css",
       "start_line": 501,
-      "end_line": 528,
-      "line_count": 28,
-      "content_fingerprint": "f525ea55acd48a93366de2fc6c71a6813e5488965819126fb96dc585e71eda98",
+      "end_line": 548,
+      "line_count": 48,
+      "content_fingerprint": "5f46640cb6e0bfa9412acaa82d7e0c6d0bc03a12b5dc2e89a8f5a9d1b3328efe",
       "review_session": "C06-A",
-      "verification_session": "",
+      "verification_session": "C06-V-A",
       "lens_results": {
         "L1": {
           "trace": "result-card padding 14px :502-507; rc-title 11px uppercase :512-516; info-box border-left accent :519-525; no responsive breakpoints in tail section",
@@ -563,7 +563,7 @@
         "dev/c06_pre_controls_regression.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-PRE-CSS.json",
-      "receipt_sha256": "c9dab2d685f2110db45061a3b6e8b3cacac78b355eb062f1fb556ba502292ad4",
+      "receipt_sha256": "e923d860c02a8388a9bf91677a1048f69aa85895dfe1cb2cca99bf50e1b47ccc",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -592,7 +592,7 @@
         "dev/ui_controls_css_regression.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-POST-CSS.json",
-      "receipt_sha256": "5b4da7ea731fbf6a9950cefaf58c42cdac671238b9ae1cfbd641d3fc17e6e33e",
+      "receipt_sha256": "a02f9ffc83cbaae04d6897b072cf4bcdfa634eef37dd10d902c4b2aa2e8584b7",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -622,7 +622,7 @@
         "dev/seven-lens-browser-trace-cycle06.json"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-TRACE.json",
-      "receipt_sha256": "7269d63b5f90df029f5357fa736dba5c6492b22aa4f5b9590d62494673d7a2fe",
+      "receipt_sha256": "7a4af597bb607792fb9948da52df96055ffd7e98719350d2ef775942ce18219e",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -646,7 +646,7 @@
         "tools/run_ui_structure_suite.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-STRUCTURE.json",
-      "receipt_sha256": "21aa8fbd15bd85c6b055ba9e74ccf36c889c29a981026cd722dac17ed636b50f",
+      "receipt_sha256": "9da20867d0681d125e8352b32aeb4e0acf20d1d2baed67ac56e48ff01c5db9e8",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -669,7 +669,7 @@
         "tools/extract_ui_css.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-PARITY.json",
-      "receipt_sha256": "230d155794b6a457ef743c366170a3a72abeb8c28d72ff6b2a2e8233593285a6",
+      "receipt_sha256": "fd578851bcf54d7868c31cbb0223385d960e2e5135344732ef546dda9b0bda3c",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -694,7 +694,7 @@
         "static"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-static.json",
-      "receipt_sha256": "6787b3d680fea8d5709e56c5f555e912f214f32869ad7fa47dfcd77ddee36637",
+      "receipt_sha256": "e6b906d488d7566842f476b7a168724d588b448a21a8ce8ebf4938abad035c56",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -723,7 +723,7 @@
         "dev/ui_controls_css_regression.py"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ER-C06-RESTORE-CSS.json",
-      "receipt_sha256": "4e50add68e34e9297e5c0b154ed40d66ac434fb07f045d525825cada0c4057ca",
+      "receipt_sha256": "a28306f0dc12ce8ad3406ba150b84d9e198a34cb25541f51a0596faf1f5b55b8",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "state_before_sha256": "9ddc9b1e6d0a93297b2dbb2e6264635f2442c550fc01e7cb570182ed0f26a330",
@@ -739,5 +739,5 @@
     "docs/audit-units.json"
   ],
   "audit_report": "docs/seven-lens-reports/cycle-06-controls-css.md",
-  "notes": "FIXER: seven OPEN findings implemented; evidence bound via cycle-06-controls-css.json; verification PENDING; fresh VERIFIER chat required."
+  "notes": "VERIFIER C06-V-A: independent L1-L7 pass; verified_source_commit 7470b4e; UI-CSS-CONTROLS fingerprint 6d818e2c; seven findings remain OPEN for CLOSER."
 }
