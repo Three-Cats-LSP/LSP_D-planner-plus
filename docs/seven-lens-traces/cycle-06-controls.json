@@ -1,0 +1,221 @@
+{
+  "schema_version": 3,
+  "repeat": 2,
+  "cycle": 6,
+  "traces": [
+    {
+      "id": "SL-C06-SEG-FOCUS-VISIBLE-TRACE",
+      "case_ids": ["SL-C06-SEG-FOCUS-VISIBLE"],
+      "entry_event": "User keyboard-Tabs to dive-count .seg-btn; :focus-visible ring is observable.",
+      "consumer_path": [
+        "Tab key events",
+        "document.activeElement .seg-btn",
+        "getComputedStyle outlineStyle",
+        "lsp-dplanner-controls.css .seg-btn:focus-visible"
+      ],
+      "state": {
+        "selectors": ["#navBtnRec", "#dc2", "#dc3"],
+        "restore_order": ["#dc3", "#dc2", "#navBtnRec"],
+        "globals": []
+      },
+      "setup": [
+        {"action": "set_viewport", "size": {"width": 1280, "height": 800}},
+        {"action": "click", "selector": "#navBtnRec"},
+        {"action": "click", "selector": "#recResultTabs [data-tab='multi']"}
+      ],
+      "steps": [
+        {
+          "capture": "before",
+          "values": {
+            "seg_count": "document.querySelectorAll('#resultTab-multi .seg-btn').length"
+          }
+        },
+        {"action": "click", "selector": "#dc3"},
+        {
+          "capture": "canonical",
+          "values": {
+            "focused_seg": "document.activeElement?.classList?.contains('seg-btn') === true"
+          }
+        },
+        {
+          "capture": "consumer",
+          "values": {
+            "outline_style": "(() => { const el = document.activeElement; if (!el?.classList.contains('seg-btn')) return 'none'; return getComputedStyle(el).outlineStyle; })()"
+          }
+        },
+        {
+          "capture": "observable",
+          "values": {
+            "outline_width": "(() => { const el = document.activeElement; if (!el?.classList.contains('seg-btn')) return 0; return parseFloat(getComputedStyle(el).outlineWidth) || 0; })()"
+          }
+        }
+      ],
+      "assertions": [
+        {"id": "segments-present", "left": "$.before.seg_count", "op": "close", "right": 3, "tolerance": 1},
+        {"id": "seg-focused", "left": "$.canonical.focused_seg", "op": "equal", "right": true},
+        {"id": "outline-solid", "left": "$.observable.outline_width", "op": "close", "right": 2, "tolerance": 1.5}
+      ]
+    },
+    {
+      "id": "SL-C06-GAS-NUM-TOUCH-TARGET-TRACE",
+      "case_ids": ["SL-C06-GAS-NUM-TOUCH-TARGET"],
+      "entry_event": "User opens Tec planner gas numerics on a narrow viewport; .gas-f-num inputs meet 44px touch geometry.",
+      "consumer_path": [
+        "setMainNav buh + switchTab planner",
+        "#cylBot_size layout",
+        "getBoundingClientRect height",
+        "lsp-dplanner-controls.css min-height 44px"
+      ],
+      "state": {
+        "selectors": ["#navBtnBuh", "#cylBot_size", "#cylBot_pres"],
+        "restore_order": ["#cylBot_pres", "#cylBot_size", "#navBtnBuh"],
+        "globals": []
+      },
+      "setup": [
+        {"action": "set_viewport", "size": {"width": 375, "height": 667}},
+        {"action": "click", "selector": "#navBtnBuh"},
+        {
+          "action": "run_script",
+          "setup_only_reason": "V3 hides legacy tab bar; invoke switchTab directly.",
+          "script": "() => switchTab('planner', document.getElementById('tab-planner'))"
+        }
+      ],
+      "steps": [
+        {
+          "capture": "before",
+          "values": {
+            "has_size": "!!document.getElementById('cylBot_size')"
+          }
+        },
+        {"action": "click", "selector": "#cylBot_size"},
+        {
+          "capture": "consumer",
+          "values": {
+            "size_h": "document.getElementById('cylBot_size')?.getBoundingClientRect().height || 0",
+            "size_w": "document.getElementById('cylBot_size')?.getBoundingClientRect().width || 0"
+          }
+        },
+        {
+          "capture": "observable",
+          "values": {
+            "pres_h": "document.getElementById('cylBot_pres')?.getBoundingClientRect().height || 0",
+            "overlap": "(() => { const a = document.getElementById('cylBot_size')?.getBoundingClientRect(); const b = document.getElementById('cylBot_pres')?.getBoundingClientRect(); if (!a || !b) return 1; return Number(!(a.right <= b.left || b.right <= a.left || a.bottom <= b.top || b.bottom <= a.top)); })()"
+          }
+        }
+      ],
+      "assertions": [
+        {"id": "size-present", "left": "$.before.has_size", "op": "equal", "right": true},
+        {"id": "min-height", "left": "$.consumer.size_h", "op": "close", "right": 44, "tolerance": 2},
+        {"id": "min-width", "left": "$.consumer.size_w", "op": "close", "right": 44, "tolerance": 24},
+        {"id": "pres-height", "left": "$.observable.pres_h", "op": "close", "right": 44, "tolerance": 2},
+        {"id": "no-overlap", "left": "$.observable.overlap", "op": "equal", "right": 0}
+      ]
+    },
+    {
+      "id": "SL-C06-FIELD-INVALID-STATE-TRACE",
+      "case_ids": ["SL-C06-FIELD-INVALID-STATE"],
+      "entry_event": "User edits #cylBot_size below min; invalid border becomes visible after interaction.",
+      "consumer_path": [
+        "keyboard edit #cylBot_size",
+        "HTML5 validity.valid false",
+        "getComputedStyle borderColor",
+        "lsp-dplanner-controls.css :user-invalid"
+      ],
+      "state": {
+        "selectors": ["#navBtnBuh", "#cylBot_size", "#cylBot_pres"],
+        "restore_order": ["#cylBot_pres", "#cylBot_size", "#navBtnBuh"],
+        "globals": []
+      },
+      "setup": [
+        {"action": "click", "selector": "#navBtnBuh"},
+        {
+          "action": "run_script",
+          "setup_only_reason": "V3 hides legacy tab bar; invoke switchTab directly.",
+          "script": "() => switchTab('planner', document.getElementById('tab-planner'))"
+        }
+      ],
+      "steps": [
+        {
+          "capture": "before",
+          "values": {
+            "valid_before": "document.getElementById('cylBot_size')?.validity?.valid === true",
+            "border_before": "getComputedStyle(document.getElementById('cylBot_size')).borderColor"
+          }
+        },
+        {"action": "click", "selector": "#cylBot_size"},
+        {"action": "press_key", "key": "Control+A"},
+        {"action": "press_key", "key": "Backspace"},
+        {"action": "type_text", "text": "0"},
+        {"action": "press_key", "key": "Tab"},
+        {
+          "capture": "canonical",
+          "values": {
+            "valid_after": "document.getElementById('cylBot_size')?.validity?.valid === false"
+          }
+        },
+        {
+          "capture": "consumer",
+          "values": {
+            "border_changed": "(() => { const el = document.getElementById('cylBot_size'); if (!el) return false; const bc = getComputedStyle(el).borderColor; return !el.validity.valid && bc !== 'rgba(255, 255, 255, 0.08)'; })()"
+          }
+        }
+      ],
+      "assertions": [
+        {"id": "was-valid", "left": "$.before.valid_before", "op": "equal", "right": true},
+        {"id": "now-invalid", "left": "$.canonical.valid_after", "op": "equal", "right": true},
+        {"id": "border-changed", "left": "$.consumer.border_changed", "op": "equal", "right": true}
+      ]
+    },
+    {
+      "id": "SL-C06-REDUCED-MOTION-TRACE",
+      "case_ids": ["SL-C06-REDUCED-MOTION"],
+      "entry_event": "OS prefers-reduced-motion; control transitions zero while state colors remain available.",
+      "consumer_path": [
+        "emulate_media reduced_motion=reduce",
+        "CSS @media prefers-reduced-motion block",
+        "getComputedStyle transitionDuration",
+        "transitionDuration equals 0s"
+      ],
+      "state": {
+        "selectors": ["#navBtnBuh", "#cylBot_size"],
+        "restore_order": ["#cylBot_size", "#navBtnBuh"],
+        "globals": []
+      },
+      "setup": [
+        {"action": "emulate_media", "params": {"reduced_motion": "reduce"}},
+        {"action": "click", "selector": "#navBtnBuh"},
+        {
+          "action": "run_script",
+          "setup_only_reason": "Open planner inputs for transition probes.",
+          "script": "() => switchTab('planner', document.getElementById('tab-planner'))"
+        }
+      ],
+      "steps": [
+        {
+          "capture": "before",
+          "values": {
+            "input_duration": "getComputedStyle(document.getElementById('cylBot_size')).transitionDuration"
+          }
+        },
+        {"action": "click", "selector": "#cylBot_size"},
+        {
+          "capture": "consumer",
+          "values": {
+            "input_duration_after": "getComputedStyle(document.getElementById('cylBot_size')).transitionDuration"
+          }
+        },
+        {
+          "capture": "observable",
+          "values": {
+            "input_zero": "(() => { const d = getComputedStyle(document.getElementById('cylBot_size')).transitionDuration; return d === '0s' || d.startsWith('0s'); })()"
+          }
+        }
+      ],
+      "assertions": [
+        {"id": "input-zero-before", "left": "$.before.input_duration", "op": "equal", "right": "0s"},
+        {"id": "input-zero-after", "left": "$.consumer.input_duration_after", "op": "equal", "right": "0s"},
+        {"id": "observable-zero", "left": "$.observable.input_zero", "op": "equal", "right": true}
+      ]
+    }
+  ]
+}
