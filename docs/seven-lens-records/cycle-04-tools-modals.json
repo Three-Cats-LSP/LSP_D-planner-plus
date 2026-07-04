@@ -7,7 +7,7 @@
   "baseline_registry_fingerprint": "73f84576707d1661c6587519d8025ef0492613e2c2238ec08e0dd298212b1e79",
   "baseline_findings": [],
   "audit_commit": "1ac8fb51600177d31c9b8c756b1c22e9b6f618da",
-  "verified_source_commit": "d3fcf6e715d0bc6b0f773999eb7f544f728d4089",
+  "verified_source_commit": "03b1adf55472c772171ba9291db171b7b70ba271",
   "verification_status": "PASSED",
   "parts": [
     {
