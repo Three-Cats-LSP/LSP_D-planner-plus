@@ -66,29 +66,29 @@ in `docs/seven-lens-records/`.
 | **Baseline** | `7cd5897` |
 | **Prepared baseline** | `c21493d` |
 | **Audit commit** | `fea770d` |
-| **Verified source commit** | `67a4c80` |
+| **Latest checked source commit** | `7d403f4` |
 | **Branch** | `cursor/seven-lens-cycle-06-controls-css` |
-| **Ledger** | `SEVEN_LENS_REVIEWED` |
+| **Ledger** | `IN_PROGRESS` (BLOCKED; `SL-C06-L-04` remains open) |
 | **Report** | `docs/seven-lens-reports/cycle-06-controls-css.md` |
 | **Record** | `docs/seven-lens-records/cycle-06-controls-css.json` |
 
-### Findings closed
+### Findings status
 
-| ID | Severity | Summary |
-|----|----------|---------|
-| SL-C06-M-01 | MEDIUM | Segmented controls suppress keyboard focus ring |
-| SL-C06-M-02 | MEDIUM | Gas numeric fields undersize touch targets |
-| SL-C06-L-01 | LOW | Obsolete `.si-inner` surface-interval rules |
-| SL-C06-L-02 | LOW | Obsolete `.t-col` rule |
-| SL-C06-L-03 | LOW | Dead `.btn-calc` alias in shared `.gen-btn` selectors |
-| SL-C06-L-04 | LOW | Field inputs lack invalid-state styling |
-| SL-C06-L-05 | LOW | Control transitions ignore `prefers-reduced-motion` |
+| ID | Severity | Status | Summary |
+|----|----------|--------|---------|
+| SL-C06-M-01 | MEDIUM | CLOSED | Segmented controls suppress keyboard focus ring |
+| SL-C06-M-02 | MEDIUM | CLOSED | Gas numeric fields undersize touch targets |
+| SL-C06-L-01 | LOW | CLOSED | Obsolete `.si-inner` surface-interval rules |
+| SL-C06-L-02 | LOW | CLOSED | Obsolete `.t-col` rule |
+| SL-C06-L-03 | LOW | CLOSED | Dead `.btn-calc` alias in shared `.gen-btn` selectors |
+| SL-C06-L-04 | LOW | OPEN | Field inputs lack invalid-state styling |
+| SL-C06-L-05 | LOW | CLOSED | Control transitions ignore `prefers-reduced-motion` |
 
 ### Evidence
 
 - Baseline failures at prepared commit `c21493d` (`ER-C06-PRE-CSS`, audit CSS hash matches `fea770d`)
-- Post-fix regressions and browser traces at `67a4c80` (`ER-C06-POST-CSS`, `ER-C06-TRACE`, `ER-C06-RESTORE-CSS`)
-- Structure/parity gates (`ER-C06-STRUCTURE`, `ER-C06-PARITY`) and static/CI receipts
+- Post-fix regressions and browser traces are stale after the `7d403f4` invalid-state update; fresh verifier evidence is still required before closure.
+- Structure/parity gates (`ER-C06-STRUCTURE`, `ER-C06-PARITY`) and static/CI receipts must be regenerated before restoring `SEVEN_LENS_REVIEWED`.
 
 **Next cycle:** Cycle 7 (`UI-CSS-RESULTS`).
 
