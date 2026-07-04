@@ -76,6 +76,7 @@ def fix_registry() -> dict[str, Any]:
         ("dev/seven-lens-browser-trace-2*.json", "Cycle 2 subcycle browser trace artifacts"),
         ("ui/markup-planner.html", "Legacy planner partial superseded by REC/TEC split"),
         ("tools/close_cycle_02_subcycles.py", "One-shot cycle 2 subcycle closure runner"),
+        ("tools/finish_cycle_02_closure.py", "One-shot cycle 2 subcycle evidence finisher"),
     ):
         if pattern not in patterns:
             excluded.append({"pattern": pattern, "kind": "audit_metadata", "reason": reason})
