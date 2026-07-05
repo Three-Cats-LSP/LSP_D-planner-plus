@@ -818,7 +818,7 @@
         "--profile",
         "static"
       ],
-      "commit": "5af225c8de430c3ba1e1fff1ece738b4f7b10b48",
+      "commit": "124161b7e1a19ac589dfaf7b423a6a8042f34173",
       "observable_assertions": [
         "Non-coverage static suites PASS; SUITE-COVERAGE red while SL-C07 findings remain OPEN"
       ],
@@ -843,7 +843,7 @@
         "--profile",
         "ci"
       ],
-      "commit": "5af225c8de430c3ba1e1fff1ece738b4f7b10b48",
+      "commit": "124161b7e1a19ac589dfaf7b423a6a8042f34173",
       "observable_assertions": [
         "SUITE-UI-RESULTS-CSS-REGRESSION PASS; SUITE-COVERAGE red while SL-C07 findings remain OPEN"
       ],
@@ -868,7 +868,7 @@
         "--profile",
         "release"
       ],
-      "commit": "5af225c8de430c3ba1e1fff1ece738b4f7b10b48",
+      "commit": "124161b7e1a19ac589dfaf7b423a6a8042f34173",
       "observable_assertions": [
         "Release suites PASS except intentional SUITE-COVERAGE OPEN-finding rollup"
       ],
@@ -913,5 +913,5 @@
   "changed_paths": [],
   "audit_report": "docs/seven-lens-reports/cycle-07-results-css.md",
   "notes": "VERIFIER C07-V-A/C07-V-B: independent verification PASSED at acaec31; six findings closed at resolution 1b26dd1.",
-  "closure_evidence_commit": "5af225c8de430c3ba1e1fff1ece738b4f7b10b48"
+  "closure_evidence_commit": "124161b7e1a19ac589dfaf7b423a6a8042f34173"
 }
