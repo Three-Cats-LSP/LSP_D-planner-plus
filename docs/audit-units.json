@@ -1427,13 +1427,14 @@
       "id": "SL-C08-H-01",
       "unit_id": "UI-RESULTS-PANEL",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-lens Cycle 08 planner shell and results panel audit",
       "summary": "setMobilePlanView targets removed #planPanel; mobile plan/results toggle is a no-op and both panels stay visible",
       "affected_units": [
         "UI-RESULTS-PANEL",
         "UI-PLANNER-SHELL"
       ],
+      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9",
       "evidence_cases": [
         "REG-95"
       ]
@@ -1442,12 +1443,13 @@
       "id": "SL-C08-H-02",
       "unit_id": "UI-PLANNER-SHELL",
       "severity": "HIGH",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-lens Cycle 08 planner shell and results panel audit",
       "summary": "setNavMode(planner) re-invokes setPlannerAlgo and clears valid results on Tools/Settings return",
       "affected_units": [
         "UI-PLANNER-SHELL"
       ],
+      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9",
       "evidence_cases": [
         "REG-96"
       ]
