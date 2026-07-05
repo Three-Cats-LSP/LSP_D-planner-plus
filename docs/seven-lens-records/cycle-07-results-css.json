@@ -462,6 +462,18 @@
       "status": "OPEN",
       "regression_ids": [
         "SL-C07-CHIP-YELLOW-ORANGE-PARITY"
+      ],
+      "pre_fix_evidence_id": "ER-C07-PRE-RESULTS",
+      "post_fix_evidence_id": "ER-C07-POST-RESULTS",
+      "evidence_ids": [
+        "ER-C07-PRE-RESULTS",
+        "ER-C07-POST-RESULTS",
+        "ER-C07-TRACE",
+        "ER-C07-PROTOCOL",
+        "ER-C07-PARITY",
+        "static",
+        "ci",
+        "release"
       ]
     },
     {
@@ -477,6 +489,18 @@
       "status": "OPEN",
       "regression_ids": [
         "SL-C07-PPO2-SEVERITY-COLORS"
+      ],
+      "pre_fix_evidence_id": "ER-C07-PRE-RESULTS",
+      "post_fix_evidence_id": "ER-C07-POST-RESULTS",
+      "evidence_ids": [
+        "ER-C07-PRE-RESULTS",
+        "ER-C07-POST-RESULTS",
+        "ER-C07-TRACE",
+        "ER-C07-PROTOCOL",
+        "ER-C07-PARITY",
+        "static",
+        "ci",
+        "release"
       ]
     },
     {
@@ -492,6 +516,18 @@
       "status": "OPEN",
       "regression_ids": [
         "SL-C07-CSS-DEAD-LEGACY-MOBILE-CARD"
+      ],
+      "pre_fix_evidence_id": "ER-C07-PRE-RESULTS",
+      "post_fix_evidence_id": "ER-C07-POST-RESULTS",
+      "evidence_ids": [
+        "ER-C07-PRE-RESULTS",
+        "ER-C07-POST-RESULTS",
+        "ER-C07-TRACE",
+        "ER-C07-PROTOCOL",
+        "ER-C07-PARITY",
+        "static",
+        "ci",
+        "release"
       ]
     },
     {
@@ -507,6 +543,18 @@
       "status": "OPEN",
       "regression_ids": [
         "SL-C07-CSS-DEAD-ALGO-SWITCHER"
+      ],
+      "pre_fix_evidence_id": "ER-C07-PRE-RESULTS",
+      "post_fix_evidence_id": "ER-C07-POST-RESULTS",
+      "evidence_ids": [
+        "ER-C07-PRE-RESULTS",
+        "ER-C07-POST-RESULTS",
+        "ER-C07-TRACE",
+        "ER-C07-PROTOCOL",
+        "ER-C07-PARITY",
+        "static",
+        "ci",
+        "release"
       ]
     },
     {
@@ -522,6 +570,18 @@
       "status": "OPEN",
       "regression_ids": [
         "SL-C07-REDUCED-MOTION-RESULTS"
+      ],
+      "pre_fix_evidence_id": "ER-C07-PRE-RESULTS",
+      "post_fix_evidence_id": "ER-C07-POST-RESULTS",
+      "evidence_ids": [
+        "ER-C07-PRE-RESULTS",
+        "ER-C07-POST-RESULTS",
+        "ER-C07-TRACE",
+        "ER-C07-PROTOCOL",
+        "ER-C07-PARITY",
+        "static",
+        "ci",
+        "release"
       ]
     },
     {
@@ -537,11 +597,210 @@
       "status": "OPEN",
       "regression_ids": [
         "SL-C07-PRINT-RESULTS-CSS"
+      ],
+      "pre_fix_evidence_id": "ER-C07-PRE-RESULTS",
+      "post_fix_evidence_id": "ER-C07-POST-RESULTS",
+      "evidence_ids": [
+        "ER-C07-PRE-RESULTS",
+        "ER-C07-POST-RESULTS",
+        "ER-C07-TRACE",
+        "ER-C07-PROTOCOL",
+        "ER-C07-PARITY",
+        "static",
+        "ci",
+        "release"
       ]
     }
   ],
-  "evidence_runs": [],
-  "changed_paths": [],
+  "evidence_runs": [
+    {
+      "id": "ER-C07-PRE-RESULTS",
+      "kind": "baseline_failure",
+      "case_ids": [
+        "SL-C07-CHIP-YELLOW-DISTINCT",
+        "SL-C07-PPO2-SEVERITY-COLORS",
+        "SL-C07-CSS-DEAD-LEGACY-CARDS",
+        "SL-C07-CSS-DEAD-ALGO-SWITCHER",
+        "SL-C07-REDUCED-MOTION",
+        "SL-C07-PRINT-RESULTS"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/c07_pre_results_regression.py"
+      ],
+      "commit": "c108bc5cf95761563afdc1545aca9e4f31f80f97",
+      "observable_assertions": [
+        "Prepared baseline CSS blob sha256 matches audit commit (9cc80b74a644893514a7f5843dd9b6f620f5e92909649339644e4c56960306aa)",
+        "All six SUITE-UI-RESULTS-CSS-REGRESSION cases FAIL on audit CSS"
+      ],
+      "prepared_baseline_commit": "c108bc5cf95761563afdc1545aca9e4f31f80f97",
+      "audit_css_sha256": "9cc80b74a644893514a7f5843dd9b6f620f5e92909649339644e4c56960306aa",
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/c07_pre_results_regression.py",
+      "worktree_clean": true,
+      "state_restored": true
+    },
+    {
+      "id": "ER-C07-POST-RESULTS",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C07-CHIP-YELLOW-DISTINCT",
+        "SL-C07-PPO2-SEVERITY-COLORS",
+        "SL-C07-CSS-DEAD-LEGACY-CARDS",
+        "SL-C07-CSS-DEAD-ALGO-SWITCHER",
+        "SL-C07-REDUCED-MOTION",
+        "SL-C07-PRINT-RESULTS"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/ui_results_css_regression.py"
+      ],
+      "commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "observable_assertions": [
+        "All six computed-style cases PASS across dark/light/landscape viewports"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_results_css_regression.py",
+      "worktree_clean": true,
+      "state_restored": true
+    },
+    {
+      "id": "ER-C07-TRACE",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C07-CHIP-YELLOW-DISTINCT",
+        "SL-C07-PPO2-SEVERITY-COLORS",
+        "SL-C07-CSS-DEAD-LEGACY-CARDS",
+        "SL-C07-CSS-DEAD-ALGO-SWITCHER",
+        "SL-C07-REDUCED-MOTION",
+        "SL-C07-PRINT-RESULTS"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-07-results.json",
+        "--output",
+        "dev/seven-lens-browser-trace-cycle07.json"
+      ],
+      "commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "observable_assertions": [
+        "Four browser traces PASS twice with state restoration hashes equal"
+      ],
+      "runtime_trace": {
+        "artifact_path": "dev/seven-lens-browser-trace-cycle07.json",
+        "spec_path": "docs/seven-lens-traces/cycle-07-results.json",
+        "artifact_sha256": "015382c1fd1960f18d6f0079eba66bad190b6be907f80527141fc9925a39ade6",
+        "spec_sha256": "a54ca376580926a96983297703e52181e731108820219a48f7900ae07c8e5e66"
+      },
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-07-results.json --output dev/seven-lens-browser-trace-cycle07.json",
+      "worktree_clean": true,
+      "state_restored": true
+    },
+    {
+      "id": "ER-C07-PROTOCOL",
+      "kind": "gate",
+      "case_ids": [],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-m",
+        "unittest",
+        "tools.test_seven_lens_protocol",
+        "tools.test_seven_lens_browser_trace"
+      ],
+      "commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "observable_assertions": [
+        "Seven-lens protocol and browser-trace schema tests PASS"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m unittest tools.test_seven_lens_protocol tools.test_seven_lens_browser_trace",
+      "worktree_clean": true,
+      "state_restored": true
+    },
+    {
+      "id": "ER-C07-PARITY",
+      "kind": "gate",
+      "case_ids": [
+        "UI-EXTRACT-CSS"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "tools/assemble_ui_html.py",
+        "--verify"
+      ],
+      "commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "observable_assertions": [
+        "assemble_ui_html --verify OK after canonical CSS edits"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe tools/assemble_ui_html.py --verify",
+      "worktree_clean": true,
+      "state_restored": true
+    },
+    {
+      "id": "static",
+      "kind": "gate",
+      "case_ids": [],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-m",
+        "tools.audit",
+        "check",
+        "--profile",
+        "static"
+      ],
+      "commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "observable_assertions": [
+        "Non-coverage static suites PASS; SUITE-COVERAGE red while SL-C07 findings remain OPEN"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit check --profile static",
+      "worktree_clean": true,
+      "state_restored": true
+    },
+    {
+      "id": "ci",
+      "kind": "gate",
+      "case_ids": [],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-m",
+        "tools.audit",
+        "run",
+        "--profile",
+        "ci"
+      ],
+      "commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "observable_assertions": [
+        "SUITE-UI-RESULTS-CSS-REGRESSION PASS; SUITE-COVERAGE red while SL-C07 findings remain OPEN"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit run --profile ci",
+      "worktree_clean": true,
+      "state_restored": true
+    },
+    {
+      "id": "release",
+      "kind": "gate",
+      "case_ids": [],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-m",
+        "tools.audit",
+        "run",
+        "--profile",
+        "release"
+      ],
+      "commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "observable_assertions": [
+        "Release suites PASS except intentional SUITE-COVERAGE OPEN-finding rollup"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit run --profile release",
+      "worktree_clean": true,
+      "state_restored": true
+    }
+  ],
+  "changed_paths": [
+    "lsp-dplanner-results.css",
+    "dev/ui_results_css_regression.py",
+    "dev/c07_pre_results_regression.py",
+    "docs/seven-lens-traces/cycle-07-results.json",
+    "docs/audit-units.json"
+  ],
   "audit_report": "docs/seven-lens-reports/cycle-07-results-css.md",
   "notes": "Cycle 7 audit read-only pass for UI-CSS-RESULTS. Sessions C07-A lines 1-500 and C07-B lines 501-931 (931 lines total). Runtime probes used visible #tecGenerateBtn / #recGenerateBtn with window._zhlHeadless=false for DOM rendering."
 }

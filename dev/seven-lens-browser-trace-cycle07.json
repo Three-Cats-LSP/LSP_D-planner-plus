@@ -1,0 +1,1538 @@
+{
+  "schema_version": 3,
+  "runner_version": 2,
+  "spec": "docs\\seven-lens-traces\\cycle-07-results.json",
+  "spec_sha256": "a54ca376580926a96983297703e52181e731108820219a48f7900ae07c8e5e66",
+  "commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+  "traces": [
+    {
+      "id": "SL-C07-CHIP-YELLOW-DISTINCT-TRACE",
+      "entry_event": "User generates a TEC schedule; TTS chip-yellow color differs from OTU chip-orange.",
+      "consumer_path": [
+        "#tecGenerateBtn click",
+        "renderChipRow chip-yellow / chip-orange",
+        "getComputedStyle color",
+        "lsp-dplanner-results.css #resultsPanel .chip-yellow"
+      ],
+      "captures": {
+        "before": {
+          "has_chip_row": true
+        },
+        "canonical": {
+          "has_results": true,
+          "yellow_present": true,
+          "orange_present": true
+        },
+        "consumer": {
+          "yellow_color": "rgb(251, 191, 36)",
+          "orange_color": "rgb(245, 158, 11)"
+        },
+        "observable": {
+          "has_dot": true,
+          "has_tts_label": true
+        }
+      },
+      "assertions": [
+        {
+          "id": "results-rendered",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "chips-present",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "colors-distinct",
+          "passed": true,
+          "detail": "'rgb(251, 191, 36)' not_equal 'rgb(245, 158, 11)'"
+        },
+        {
+          "id": "semantic-dot",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "semantic-label",
+          "passed": true,
+          "detail": "True equal True"
+        }
+      ],
+      "state_before_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+      "state_after_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+      "state_before": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecGenerateBtn": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "\u25b6 Generate schedule",
+            "className": "gen-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecGenerateBtn": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "\u25b6 Generate schedule",
+            "className": "gen-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "case_ids": [
+        "SL-C07-CHIP-YELLOW-DISTINCT"
+      ],
+      "runs": [
+        {
+          "id": "SL-C07-CHIP-YELLOW-DISTINCT-TRACE",
+          "entry_event": "User generates a TEC schedule; TTS chip-yellow color differs from OTU chip-orange.",
+          "consumer_path": [
+            "#tecGenerateBtn click",
+            "renderChipRow chip-yellow / chip-orange",
+            "getComputedStyle color",
+            "lsp-dplanner-results.css #resultsPanel .chip-yellow"
+          ],
+          "captures": {
+            "before": {
+              "has_chip_row": true
+            },
+            "canonical": {
+              "has_results": true,
+              "yellow_present": true,
+              "orange_present": true
+            },
+            "consumer": {
+              "yellow_color": "rgb(251, 191, 36)",
+              "orange_color": "rgb(245, 158, 11)"
+            },
+            "observable": {
+              "has_dot": true,
+              "has_tts_label": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "results-rendered",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "chips-present",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "colors-distinct",
+              "passed": true,
+              "detail": "'rgb(251, 191, 36)' not_equal 'rgb(245, 158, 11)'"
+            },
+            {
+              "id": "semantic-dot",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "semantic-label",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+          "state_after_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-C07-CHIP-YELLOW-DISTINCT-TRACE",
+          "entry_event": "User generates a TEC schedule; TTS chip-yellow color differs from OTU chip-orange.",
+          "consumer_path": [
+            "#tecGenerateBtn click",
+            "renderChipRow chip-yellow / chip-orange",
+            "getComputedStyle color",
+            "lsp-dplanner-results.css #resultsPanel .chip-yellow"
+          ],
+          "captures": {
+            "before": {
+              "has_chip_row": true
+            },
+            "canonical": {
+              "has_results": true,
+              "yellow_present": true,
+              "orange_present": true
+            },
+            "consumer": {
+              "yellow_color": "rgb(251, 191, 36)",
+              "orange_color": "rgb(245, 158, 11)"
+            },
+            "observable": {
+              "has_dot": true,
+              "has_tts_label": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "results-rendered",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "chips-present",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "colors-distinct",
+              "passed": true,
+              "detail": "'rgb(251, 191, 36)' not_equal 'rgb(245, 158, 11)'"
+            },
+            {
+              "id": "semantic-dot",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "semantic-label",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+          "state_after_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "SL-C07-PPO2-SEVERITY-COLORS-TRACE",
+      "entry_event": "User generates 45 m / 25 min TEC plan; schedule PPO2 ok/warn/crit cells have distinct colors.",
+      "consumer_path": [
+        "#tecGenerateBtn click",
+        "decorateDecoTableForV3 ppo2-* classes",
+        "getComputedStyle .col-ppo2",
+        "lsp-dplanner-results.css .ppo2-crit"
+      ],
+      "captures": {
+        "before": {
+          "warn_count": 6,
+          "crit_count": 2,
+          "ok_count": 3
+        },
+        "consumer": {
+          "ok_color": "rgb(74, 222, 128)",
+          "warn_color": "rgb(251, 191, 36)",
+          "crit_color": "rgb(248, 113, 113)",
+          "resolved_red": "rgb(248, 113, 113)"
+        },
+        "observable": {
+          "ok_ne_warn": true
+        }
+      },
+      "assertions": [
+        {
+          "id": "warn-present",
+          "passed": true,
+          "detail": "6 not_equal 0"
+        },
+        {
+          "id": "crit-present",
+          "passed": true,
+          "detail": "2 not_equal 0"
+        },
+        {
+          "id": "ok-ne-warn",
+          "passed": true,
+          "detail": "'rgb(74, 222, 128)' not_equal 'rgb(251, 191, 36)'"
+        },
+        {
+          "id": "warn-ne-crit",
+          "passed": true,
+          "detail": "'rgb(251, 191, 36)' not_equal 'rgb(248, 113, 113)'"
+        },
+        {
+          "id": "crit-is-red",
+          "passed": true,
+          "detail": "'rgb(248, 113, 113)' equal 'rgb(248, 113, 113)'"
+        },
+        {
+          "id": "observable-distinct",
+          "passed": true,
+          "detail": "True equal True"
+        }
+      ],
+      "state_before_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+      "state_after_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+      "state_before": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecGenerateBtn": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "\u25b6 Generate schedule",
+            "className": "gen-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecGenerateBtn": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "\u25b6 Generate schedule",
+            "className": "gen-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "case_ids": [
+        "SL-C07-PPO2-SEVERITY-COLORS"
+      ],
+      "runs": [
+        {
+          "id": "SL-C07-PPO2-SEVERITY-COLORS-TRACE",
+          "entry_event": "User generates 45 m / 25 min TEC plan; schedule PPO2 ok/warn/crit cells have distinct colors.",
+          "consumer_path": [
+            "#tecGenerateBtn click",
+            "decorateDecoTableForV3 ppo2-* classes",
+            "getComputedStyle .col-ppo2",
+            "lsp-dplanner-results.css .ppo2-crit"
+          ],
+          "captures": {
+            "before": {
+              "warn_count": 6,
+              "crit_count": 2,
+              "ok_count": 3
+            },
+            "consumer": {
+              "ok_color": "rgb(74, 222, 128)",
+              "warn_color": "rgb(251, 191, 36)",
+              "crit_color": "rgb(248, 113, 113)",
+              "resolved_red": "rgb(248, 113, 113)"
+            },
+            "observable": {
+              "ok_ne_warn": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "warn-present",
+              "passed": true,
+              "detail": "6 not_equal 0"
+            },
+            {
+              "id": "crit-present",
+              "passed": true,
+              "detail": "2 not_equal 0"
+            },
+            {
+              "id": "ok-ne-warn",
+              "passed": true,
+              "detail": "'rgb(74, 222, 128)' not_equal 'rgb(251, 191, 36)'"
+            },
+            {
+              "id": "warn-ne-crit",
+              "passed": true,
+              "detail": "'rgb(251, 191, 36)' not_equal 'rgb(248, 113, 113)'"
+            },
+            {
+              "id": "crit-is-red",
+              "passed": true,
+              "detail": "'rgb(248, 113, 113)' equal 'rgb(248, 113, 113)'"
+            },
+            {
+              "id": "observable-distinct",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+          "state_after_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-C07-PPO2-SEVERITY-COLORS-TRACE",
+          "entry_event": "User generates 45 m / 25 min TEC plan; schedule PPO2 ok/warn/crit cells have distinct colors.",
+          "consumer_path": [
+            "#tecGenerateBtn click",
+            "decorateDecoTableForV3 ppo2-* classes",
+            "getComputedStyle .col-ppo2",
+            "lsp-dplanner-results.css .ppo2-crit"
+          ],
+          "captures": {
+            "before": {
+              "warn_count": 6,
+              "crit_count": 2,
+              "ok_count": 3
+            },
+            "consumer": {
+              "ok_color": "rgb(74, 222, 128)",
+              "warn_color": "rgb(251, 191, 36)",
+              "crit_color": "rgb(248, 113, 113)",
+              "resolved_red": "rgb(248, 113, 113)"
+            },
+            "observable": {
+              "ok_ne_warn": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "warn-present",
+              "passed": true,
+              "detail": "6 not_equal 0"
+            },
+            {
+              "id": "crit-present",
+              "passed": true,
+              "detail": "2 not_equal 0"
+            },
+            {
+              "id": "ok-ne-warn",
+              "passed": true,
+              "detail": "'rgb(74, 222, 128)' not_equal 'rgb(251, 191, 36)'"
+            },
+            {
+              "id": "warn-ne-crit",
+              "passed": true,
+              "detail": "'rgb(251, 191, 36)' not_equal 'rgb(248, 113, 113)'"
+            },
+            {
+              "id": "crit-is-red",
+              "passed": true,
+              "detail": "'rgb(248, 113, 113)' equal 'rgb(248, 113, 113)'"
+            },
+            {
+              "id": "observable-distinct",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+          "state_after_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "SL-C07-REDUCED-MOTION-TRACE",
+      "entry_event": "OS prefers-reduced-motion; results tab and mode transitions are instant.",
+      "consumer_path": [
+        "emulate_media reduced_motion=reduce",
+        "lsp-dplanner-results.css @media prefers-reduced-motion",
+        "getComputedStyle #tecResultTabs .result-tab-btn transitionDuration",
+        "transitionDuration 0s"
+      ],
+      "captures": {
+        "before": {
+          "tab_duration": "0s"
+        },
+        "consumer": {
+          "mode_duration": "0s",
+          "thumb_duration": "0s"
+        },
+        "observable": {
+          "tab_zero": true
+        }
+      },
+      "assertions": [
+        {
+          "id": "tab-zero",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "mode-zero",
+          "passed": true,
+          "detail": "'0s' equal '0s'"
+        },
+        {
+          "id": "thumb-zero",
+          "passed": true,
+          "detail": "'0s' equal '0s'"
+        }
+      ],
+      "state_before_sha256": "80128470267a8b43cb970b5146443b39c24b4ac53ce7e4762c0ba7c80dedec89",
+      "state_after_sha256": "80128470267a8b43cb970b5146443b39c24b4ac53ce7e4762c0ba7c80dedec89",
+      "state_before": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecGenerateBtn": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "\u25b6 Generate schedule",
+            "className": "gen-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecResultTabs [data-tab='graphs']": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "Graphs",
+            "className": "result-tab-btn",
+            "style": null,
+            "dataset": {
+              "tab": "graphs"
+            }
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecGenerateBtn": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "\u25b6 Generate schedule",
+            "className": "gen-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecResultTabs [data-tab='graphs']": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "Graphs",
+            "className": "result-tab-btn",
+            "style": null,
+            "dataset": {
+              "tab": "graphs"
+            }
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "case_ids": [
+        "SL-C07-REDUCED-MOTION"
+      ],
+      "runs": [
+        {
+          "id": "SL-C07-REDUCED-MOTION-TRACE",
+          "entry_event": "OS prefers-reduced-motion; results tab and mode transitions are instant.",
+          "consumer_path": [
+            "emulate_media reduced_motion=reduce",
+            "lsp-dplanner-results.css @media prefers-reduced-motion",
+            "getComputedStyle #tecResultTabs .result-tab-btn transitionDuration",
+            "transitionDuration 0s"
+          ],
+          "captures": {
+            "before": {
+              "tab_duration": "0s"
+            },
+            "consumer": {
+              "mode_duration": "0s",
+              "thumb_duration": "0s"
+            },
+            "observable": {
+              "tab_zero": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "tab-zero",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "mode-zero",
+              "passed": true,
+              "detail": "'0s' equal '0s'"
+            },
+            {
+              "id": "thumb-zero",
+              "passed": true,
+              "detail": "'0s' equal '0s'"
+            }
+          ],
+          "state_before_sha256": "80128470267a8b43cb970b5146443b39c24b4ac53ce7e4762c0ba7c80dedec89",
+          "state_after_sha256": "80128470267a8b43cb970b5146443b39c24b4ac53ce7e4762c0ba7c80dedec89",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecResultTabs [data-tab='graphs']": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "Graphs",
+                "className": "result-tab-btn",
+                "style": null,
+                "dataset": {
+                  "tab": "graphs"
+                }
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecResultTabs [data-tab='graphs']": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "Graphs",
+                "className": "result-tab-btn",
+                "style": null,
+                "dataset": {
+                  "tab": "graphs"
+                }
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-C07-REDUCED-MOTION-TRACE",
+          "entry_event": "OS prefers-reduced-motion; results tab and mode transitions are instant.",
+          "consumer_path": [
+            "emulate_media reduced_motion=reduce",
+            "lsp-dplanner-results.css @media prefers-reduced-motion",
+            "getComputedStyle #tecResultTabs .result-tab-btn transitionDuration",
+            "transitionDuration 0s"
+          ],
+          "captures": {
+            "before": {
+              "tab_duration": "0s"
+            },
+            "consumer": {
+              "mode_duration": "0s",
+              "thumb_duration": "0s"
+            },
+            "observable": {
+              "tab_zero": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "tab-zero",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "mode-zero",
+              "passed": true,
+              "detail": "'0s' equal '0s'"
+            },
+            {
+              "id": "thumb-zero",
+              "passed": true,
+              "detail": "'0s' equal '0s'"
+            }
+          ],
+          "state_before_sha256": "80128470267a8b43cb970b5146443b39c24b4ac53ce7e4762c0ba7c80dedec89",
+          "state_after_sha256": "80128470267a8b43cb970b5146443b39c24b4ac53ce7e4762c0ba7c80dedec89",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecResultTabs [data-tab='graphs']": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "Graphs",
+                "className": "result-tab-btn",
+                "style": null,
+                "dataset": {
+                  "tab": "graphs"
+                }
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecResultTabs [data-tab='graphs']": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "Graphs",
+                "className": "result-tab-btn",
+                "style": null,
+                "dataset": {
+                  "tab": "graphs"
+                }
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "SL-C07-PRINT-RESULTS-TRACE",
+      "entry_event": "User prints generated TEC results; alerts and schedule rows stay visible.",
+      "consumer_path": [
+        "emulate_media media=print",
+        "lsp-dplanner-results.css @media print",
+        "getComputedStyle #decoAlerts display",
+        "break-inside avoid on schedule rows"
+      ],
+      "captures": {
+        "before": {
+          "has_results": true
+        },
+        "consumer": {
+          "alert_display": "flex",
+          "metric_display": "block",
+          "schedule_display": "table-row"
+        },
+        "observable": {
+          "break_inside": "avoid"
+        }
+      },
+      "assertions": [
+        {
+          "id": "has-results",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "alert-visible",
+          "passed": true,
+          "detail": "'flex' not_equal 'none'"
+        },
+        {
+          "id": "metric-visible",
+          "passed": true,
+          "detail": "'block' not_equal 'none'"
+        },
+        {
+          "id": "schedule-visible",
+          "passed": true,
+          "detail": "'table-row' not_equal 'none'"
+        },
+        {
+          "id": "avoid-break",
+          "passed": true,
+          "detail": "'avoid' equal 'avoid'"
+        }
+      ],
+      "state_before_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+      "state_after_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+      "state_before": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecGenerateBtn": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "\u25b6 Generate schedule",
+            "className": "gen-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecGenerateBtn": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "\u25b6 Generate schedule",
+            "className": "gen-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "case_ids": [
+        "SL-C07-PRINT-RESULTS"
+      ],
+      "runs": [
+        {
+          "id": "SL-C07-PRINT-RESULTS-TRACE",
+          "entry_event": "User prints generated TEC results; alerts and schedule rows stay visible.",
+          "consumer_path": [
+            "emulate_media media=print",
+            "lsp-dplanner-results.css @media print",
+            "getComputedStyle #decoAlerts display",
+            "break-inside avoid on schedule rows"
+          ],
+          "captures": {
+            "before": {
+              "has_results": true
+            },
+            "consumer": {
+              "alert_display": "flex",
+              "metric_display": "block",
+              "schedule_display": "table-row"
+            },
+            "observable": {
+              "break_inside": "avoid"
+            }
+          },
+          "assertions": [
+            {
+              "id": "has-results",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "alert-visible",
+              "passed": true,
+              "detail": "'flex' not_equal 'none'"
+            },
+            {
+              "id": "metric-visible",
+              "passed": true,
+              "detail": "'block' not_equal 'none'"
+            },
+            {
+              "id": "schedule-visible",
+              "passed": true,
+              "detail": "'table-row' not_equal 'none'"
+            },
+            {
+              "id": "avoid-break",
+              "passed": true,
+              "detail": "'avoid' equal 'avoid'"
+            }
+          ],
+          "state_before_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+          "state_after_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-C07-PRINT-RESULTS-TRACE",
+          "entry_event": "User prints generated TEC results; alerts and schedule rows stay visible.",
+          "consumer_path": [
+            "emulate_media media=print",
+            "lsp-dplanner-results.css @media print",
+            "getComputedStyle #decoAlerts display",
+            "break-inside avoid on schedule rows"
+          ],
+          "captures": {
+            "before": {
+              "has_results": true
+            },
+            "consumer": {
+              "alert_display": "flex",
+              "metric_display": "block",
+              "schedule_display": "table-row"
+            },
+            "observable": {
+              "break_inside": "avoid"
+            }
+          },
+          "assertions": [
+            {
+              "id": "has-results",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "alert-visible",
+              "passed": true,
+              "detail": "'flex' not_equal 'none'"
+            },
+            {
+              "id": "metric-visible",
+              "passed": true,
+              "detail": "'block' not_equal 'none'"
+            },
+            {
+              "id": "schedule-visible",
+              "passed": true,
+              "detail": "'table-row' not_equal 'none'"
+            },
+            {
+              "id": "avoid-break",
+              "passed": true,
+              "detail": "'avoid' equal 'avoid'"
+            }
+          ],
+          "state_before_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+          "state_after_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "passed": true
+}

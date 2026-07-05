@@ -1561,7 +1561,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "9cc80b74a644893514a7f5843dd9b6f620f5e92909649339644e4c56960306aa",
+      "fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5278,7 +5278,7 @@
       "evidence": [],
       "issue": "Cycle 07 UI-CSS-RESULTS browser trace specification",
       "regression_cases": [],
-      "fingerprint": "",
+      "fingerprint": "de00b3b9b1c34e41f0e45f71e8dffe0421f1bb49f82f4be78f00da8d882b1cb0",
       "last_read_fingerprint": null
     },
     {
@@ -5300,7 +5300,7 @@
         "REG-93",
         "REG-94"
       ],
-      "fingerprint": "",
+      "fingerprint": "0424a42456507deb53268a21c42e818ca1a2d4154e15b9edb22565a43af26c7c",
       "last_read_fingerprint": null
     },
     {
@@ -5318,7 +5318,7 @@
         "REG-89",
         "REG-90"
       ],
-      "fingerprint": "",
+      "fingerprint": "a1967ff86474d33a38c3b246cfd37d66c09812da558361a8b830a512876381d6",
       "last_read_fingerprint": null
     }
   ],
