@@ -654,7 +654,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_results_css_regression.py"
       ],
-      "commit": "acaec31a3608f1e5d085938817a6907da2465b5c",
+      "commit": "a591f6d431c0fd37dbe301e3cc44d229d9ef9be9",
       "observable_assertions": [
         "All six computed-style cases PASS across dark/light/landscape viewports"
       ],
@@ -681,7 +681,7 @@
         "--output",
         "dev/seven-lens-browser-trace-cycle07.json"
       ],
-      "commit": "acaec31a3608f1e5d085938817a6907da2465b5c",
+      "commit": "a591f6d431c0fd37dbe301e3cc44d229d9ef9be9",
       "observable_assertions": [
         "Four browser traces PASS twice with state restoration hashes equal"
       ],
@@ -706,7 +706,7 @@
         "tools.test_seven_lens_protocol",
         "tools.test_seven_lens_browser_trace"
       ],
-      "commit": "acaec31a3608f1e5d085938817a6907da2465b5c",
+      "commit": "a591f6d431c0fd37dbe301e3cc44d229d9ef9be9",
       "observable_assertions": [
         "Seven-lens protocol and browser-trace schema tests PASS"
       ],
@@ -725,7 +725,7 @@
         "tools/assemble_ui_html.py",
         "--verify"
       ],
-      "commit": "acaec31a3608f1e5d085938817a6907da2465b5c",
+      "commit": "a591f6d431c0fd37dbe301e3cc44d229d9ef9be9",
       "observable_assertions": [
         "assemble_ui_html --verify OK after canonical CSS edits"
       ],
@@ -745,7 +745,7 @@
         "--profile",
         "static"
       ],
-      "commit": "acaec31a3608f1e5d085938817a6907da2465b5c",
+      "commit": "a591f6d431c0fd37dbe301e3cc44d229d9ef9be9",
       "observable_assertions": [
         "Non-coverage static suites PASS; SUITE-COVERAGE red while SL-C07 findings remain OPEN"
       ],
@@ -765,7 +765,7 @@
         "--profile",
         "ci"
       ],
-      "commit": "acaec31a3608f1e5d085938817a6907da2465b5c",
+      "commit": "a591f6d431c0fd37dbe301e3cc44d229d9ef9be9",
       "observable_assertions": [
         "SUITE-UI-RESULTS-CSS-REGRESSION PASS; SUITE-COVERAGE red while SL-C07 findings remain OPEN"
       ],
@@ -785,7 +785,7 @@
         "--profile",
         "release"
       ],
-      "commit": "acaec31a3608f1e5d085938817a6907da2465b5c",
+      "commit": "a591f6d431c0fd37dbe301e3cc44d229d9ef9be9",
       "observable_assertions": [
         "Release suites PASS except intentional SUITE-COVERAGE OPEN-finding rollup"
       ],
