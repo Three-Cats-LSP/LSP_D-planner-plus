@@ -1,0 +1,547 @@
+{
+  "schema_version": 5,
+  "cycle": 7,
+  "record_path": "docs/seven-lens-reports/cycle-07-record.json",
+  "target_branch": "dev",
+  "integration_base_commit": "6b192cf416e332c2f216762be86cce27bb48485c",
+  "baseline_commit": "6b192cf416e332c2f216762be86cce27bb48485c",
+  "baseline_registry_fingerprint": "c123a53858a1287c7889fc85f5b44a43a2446110d87eb7f7da652203d9773b7e",
+  "baseline_findings": [
+    {
+      "id": "SL-C02-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes."
+    },
+    {
+      "id": "SL-C02-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Travel manual depth limits disagree between markup, metric restore, and imperial mode."
+    },
+    {
+      "id": "SL-C02-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Rounded display values become canonical physical inputs; Best Mix and CNS now reproduce the same unit-roundtrip drift."
+    },
+    {
+      "id": "SL-C02-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Min-deco regression checks an adapter property rather than observable schedule behavior."
+    },
+    {
+      "id": "SL-C02-M-06",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle history allowed unresolved findings and a blocked prior record to be deleted or rewritten as passed."
+    },
+    {
+      "id": "SL-C03-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits."
+    },
+    {
+      "id": "SL-C03-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle 3 regressions compare rounded outputs and restore values before units, masking physical-depth drift and corrupting test state."
+    },
+    {
+      "id": "SL-C03-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling."
+    },
+    {
+      "id": "SL-C04-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Depth and cylinder edits after a unit switch leave canonical data-depth-m/data-volume-l stale, so consumers use old values and the next switch discards the edit."
+    },
+    {
+      "id": "SL-C04-H-03",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Cycles 2-4 are marked reviewed although their protocol records fail closure and Cycle 4 has no evidence runs for five closed findings."
+    },
+    {
+      "id": "SL-C04-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle regression setup leaks canonical DOM and settings state, making the full engine suite order-dependent and leaving two contingency cases failing."
+    },
+    {
+      "id": "SL-C04-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Browser trace evidence could pass forced or vacuous single-run checks without proving a real interactive consumer path."
+    },
+    {
+      "id": "SL-C04-H-04",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Closure evidence was materialized from constants instead of executed commands, allowing fabricated exit codes, cleanliness claims, and unrelated trace reuse."
+    },
+    {
+      "id": "SL-C04-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "A dynamic deco cylinder created in imperial mode defaults to 0.4 ft3 while retaining min 1 and step 0.5, making its initial value invalid."
+    },
+    {
+      "id": "SL-C04-H-05",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "planPanelTecSection is nested inside an unclosed planPanelRecSection, leaving gas and technical planner controls hidden in every planner mode."
+    },
+    {
+      "id": "ISSUE-133-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 4C/5H/8M/8L remediated; gated in audit.py issue133 block and engine_regression issue133 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-134-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 1C/4H/7M/7L remediated; gated in audit.py issue134 block and engine_regression issue134 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-135-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 10H/10M/1L remediated; gated in audit.py issue135 block and engine_regression issue135 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-136-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "extract_ui_cores.py uses LSP-EXTRACT marker contract; verified by audit.py and tools/extract_ui_cores.py [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-137-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in 51f95ac; gated in audit.py and engine_regression issue137 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-138-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in fcfb6c4 (v2.53.04); gated in audit.py and engine_regression issue138 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-139-ROLLUP",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "All 3L fixed; #138 40/40 re-verified on 1271d1a; gated in audit.py and engine_regression issue139 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-140-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Surface interval gas/GF kinetics, pooled gas-plan turn pressure, audit case-ID validation, SW cache waitUntil, Android compile gate, coverage self-tests, FileProvider scope, workspace hash drift"
+    },
+    {
+      "id": "ISSUE-141-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "pSCR diluent bypass from computePSCRFractions, resolveCcrSacForGas removed, invalid trimix getN2Frac returns null"
+    },
+    {
+      "id": "REGRESSION-GF-CCR-FIX",
+      "severity": "CRITICAL",
+      "status": "CLOSED",
+      "summary": "GF pre-anchor and CCR endpoint corrected; verification requires REG-06 and REG-07 in the current release run"
+    },
+    {
+      "id": "SL-C05-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Mode-isolation CSS targets removed #gfPresetsRow"
+    },
+    {
+      "id": "SL-C05-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Export buttons suppress keyboard focus ring"
+    },
+    {
+      "id": "SL-C05-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .brand-icon rules"
+    },
+    {
+      "id": "SL-C05-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete #gfCustomRow .gf-btn rules"
+    },
+    {
+      "id": "SL-C05-L-03",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .algo-switcher rules"
+    },
+    {
+      "id": "SL-C05-L-04",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .theme-toggle rules"
+    },
+    {
+      "id": "SL-C06-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Segmented controls suppress keyboard focus ring"
+    },
+    {
+      "id": "SL-C06-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Gas numeric fields undersize touch targets"
+    },
+    {
+      "id": "SL-C06-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .si-inner surface-interval rules"
+    },
+    {
+      "id": "SL-C06-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .t-col rule"
+    },
+    {
+      "id": "SL-C06-L-03",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Dead .btn-calc alias in shared .gen-btn selectors"
+    },
+    {
+      "id": "SL-C06-L-04",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Field inputs lack invalid-state styling"
+    },
+    {
+      "id": "SL-C06-L-05",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Control transitions ignore prefers-reduced-motion"
+    },
+    {
+      "id": "SL-C03-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Convert slider value/min/max on unit switch; read depth in metres for calc"
+    },
+    {
+      "id": "SL-C03-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Sync label/constraints; convert on setUnits; depthToMetres in calcCNS"
+    },
+    {
+      "id": "SL-C03-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Clarify AL80 as 11.1 L (~0.39 ft3) naming convention"
+    },
+    {
+      "id": "SL-C04-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Convert endDepth on setUnits; use domDepthToM in calcEND_tool"
+    },
+    {
+      "id": "SL-C04-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Full depth tuple + domDepthToM in calcSurfInt"
+    },
+    {
+      "id": "SL-C04-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Add backdrop dismiss calling closeConfirmModal(false)"
+    },
+    {
+      "id": "SL-C04-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Fix to Narcotic pressure"
+    },
+    {
+      "id": "SL-C04-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Unit-neutral depth range wording"
+    }
+  ],
+  "audit_commit": "",
+  "verified_source_commit": "",
+  "verification_status": "PENDING",
+  "parts": [
+    {
+      "id": "UI-CSS-RESULTS-P01",
+      "unit_id": "UI-CSS-RESULTS",
+      "path": "lsp-dplanner-results.css",
+      "start_line": 1,
+      "end_line": 500,
+      "line_count": 500,
+      "content_fingerprint": "db0f3bb43fb9d4406cfb4c638dbe5c1172295a98eefa25d3d85a9d130468dada",
+      "review_session": "C07-A",
+      "verification_session": "",
+      "lens_results": {
+        "L1": {
+          "trace": "deco-table-wrap max-content+overflow-x:auto :2-8; gas-plan min-width columns :106-111; mobile @600 card/table-view toggle :184-268; metric-grid 4col :529; #resultsPanel overflow hidden :543",
+          "boundary_cases": [
+            "375px schedule-wrap overflow-x auto",
+            "long gas-plan-gas-mix white-space normal :112",
+            "deco-totals-inner overflow-wrap anywhere :95"
+          ],
+          "evidence": "lsp-dplanner-results.css:2-112,184-268,529-543; Playwright mobile.wrapOverflowX auto",
+          "result": "NO_FINDING"
+        },
+        "L2": {
+          "trace": "runRecPlan/runDecoSchedule -> results-panel.js has-results toggle :114 -> #resultsPanel:not(.has-results) hides metric strip :549-552; switchResultTab -> .result-tab-pane.active :477-478",
+          "boundary_cases": [
+            "empty state vs has-results",
+            "REC vs TEC tab panes",
+            "invalid depth still leaves has-results when prior plan cached (JS writer)"
+          ],
+          "evidence": "results-panel.js:34,114,256-268; Playwright invalid.hasResults true after 999/999 when prior REC succeeded",
+          "result": "NO_FINDING"
+        },
+        "L3": {
+          "trace": "renderMetricCards writes metric-val--* classes :52-78; decorateDecoTableForV3 adds schedule-table row-* :159-191; _setGasWarningBanner toggles #gasWarningBanner display flex :226-236",
+          "boundary_cases": [
+            "unit switch relabels metric .unit via results-panel :98",
+            "contingency stack width 100% override :591 vs global fit-content :22-28"
+          ],
+          "evidence": "results-panel.js:52-78,159-191,226-236; gas-plan-core.js gas-tight-row/gas-bt-cell :396-452",
+          "result": "NO_FINDING"
+        },
+        "L4": {
+          "trace": "index.html #resultsPanel markup + results-render-core row writers -> .deco-row/.asc-row/.deco-table; export-core deco-plan-card :394; contingency-core schedule-table :514",
+          "boundary_cases": [
+            ".algo-switcher zero writers",
+            ".legacy-panels hidden",
+            ".u0-.u21 used in markup-consumption/header"
+          ],
+          "evidence": "index.html:796-960; results-render-core.js:99-846; grep algo-switcher 0",
+          "result": "FINDING"
+        },
+        "L5": {
+          "trace": "extract_ui_css.py UI-CSS-RESULTS -> lsp-dplanner-results.css; index.html link order foundation,modes,controls,results; sw.js precache results.css",
+          "boundary_cases": [
+            "SUITE-PARITY canonical-generated",
+            "AUD-HTML-003 stylesheet order"
+          ],
+          "evidence": "tools/extract_ui_css.py:25; baseline static+release PASS; no generated-only edits",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "gas-tight-row/gas-bt-cell red banner :281-289; body.light-theme #decoAlerts .alert.deco solid red :695-703; gas-switch row-switch yellow :744-745",
+          "boundary_cases": [
+            "light theme alert #111 text",
+            "chip-yellow vs chip-orange collapse :574",
+            "legacy mobile gas-tight !important after background:none :281-283"
+          ],
+          "evidence": "Playwright light.alert bg rgb(255,68,51); chip color parity; switch row rgb(234,179,8)",
+          "result": "FINDING"
+        },
+        "L7": {
+          "trace": "SUITE-UI-STRUCTURE UI-EXTRACT-CSS -> source strings; SUITE-UI-CSS-REGRESSION targets foundation/modes only; no results computed-style leaf suite",
+          "boundary_cases": [
+            "SUITE-BROWSER does not assert resultsPanel computed styles",
+            "release includes UI-CONTROLS-CSS-REGRESSION not results"
+          ],
+          "evidence": "dev/ui_css_regression.py CASE_IDS SL-C05-*; release profile 20 suites PASS without results CSS behavioral cases",
+          "result": "FINDING"
+        }
+      }
+    },
+    {
+      "id": "UI-CSS-RESULTS-P02",
+      "unit_id": "UI-CSS-RESULTS",
+      "path": "lsp-dplanner-results.css",
+      "start_line": 501,
+      "end_line": 931,
+      "line_count": 431,
+      "content_fingerprint": "c2a9caac962550a4b5d73aeb779c30c7ea1572ded8283e88208b9085955e72da",
+      "review_session": "C07-B",
+      "verification_session": "",
+      "lens_results": {
+        "L1": {
+          "trace": "#resultsPanel .schedule-table width 100% :713; metric-val--runtime #2563eb :566; mobile bottom-nav min-height 56px :802; theme-pill 54x28 grid :822-837",
+          "boundary_cases": [
+            "640px metric-grid 2col :931",
+            "landscape 667x375 tabsNav overflow-x auto",
+            "long schedule horizontal scroll :711"
+          ],
+          "evidence": "lsp-dplanner-results.css:566,711-713,795-807,931; Playwright mobile tabsNavOverflow auto",
+          "result": "NO_FINDING"
+        },
+        "L2": {
+          "trace": "switchResultTab contingency -> #resultTab-contingency.active :477; #contingencyScheduleStack .deco-contingency-calc button styling :598-599; decorateContingencyTableForV3 :196-224",
+          "boundary_cases": [
+            "recalc replaces metrics when tecGenerateBtn clicked with new depth",
+            "error path leaves prior table visible (JS)"
+          ],
+          "evidence": "contingency-core.js:514; Playwright recalc.changed true after depth 45->30",
+          "result": "NO_FINDING"
+        },
+        "L3": {
+          "trace": "has-results hides #resultEmptyState :553; #resultsScratch display none :556; #tableViewToggle suppressed in V4 :557; tissue/chart cards transparent shell :585-588",
+          "boundary_cases": [
+            "mobile-active toggles plan/results panels :797-800",
+            "gasWarningBanner display none default :788"
+          ],
+          "evidence": "results-panel.js:125-132; lsp-dplanner-results.css:549-557,788-790",
+          "result": "NO_FINDING"
+        },
+        "L4": {
+          "trace": "schedule-table phase-cell/ph-* icons from results-panel _PHASE_ICON_SVG :10-17; profile-legend-gasswitch uses --gas-switch :616; tissue-sat-* rows :775-786",
+          "boundary_cases": [
+            "ppo2-* classes from _ppo2ClassV3 :145-151",
+            "row-switch neutralized :744-750"
+          ],
+          "evidence": "results-panel.js:145-191; Playwright ppo2 class counts ok3 warn6 hi3 crit2",
+          "result": "FINDING"
+        },
+        "L5": {
+          "trace": "V4 #resultsPanel schedule-table neutralizes legacy tr[data-phase=switch] gold rules :751-755; parity check reproduces identical lsp-dplanner-results.css in www/",
+          "boundary_cases": [
+            "print CSS absent in canonical and mirrors",
+            "chip scoped overrides only in results panel block"
+          ],
+          "evidence": "SUITE-PARITY PASS at baseline; fetch results.css no @media print",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "deco-plan-card red border :676-677; mandatory-stop deco rows styled via tr.deco-row inherit :756; ppo2 severity colors overridden :756-758 vs :739-742",
+          "boundary_cases": [
+            "light-theme deco alert weight 700",
+            "ppo2-warn 1.16 same color as ppo2-ok 0.69",
+            "chip-yellow TTS same as chip-orange OTU"
+          ],
+          "evidence": "Playwright ppo2 samples; chip color parity; light alert contrast",
+          "result": "FINDING"
+        },
+        "L7": {
+          "trace": "No dev/ui_results_css_regression.py; SUITE-UI-CONTROLS-CSS-REGRESSION does not cover #resultsPanel selectors; static gates do not inspect computed PPO2/chip colors",
+          "boundary_cases": [
+            "missing behavioral coverage for chip-yellow/orange",
+            "missing PPO2 severity regression",
+            "missing reduced-motion results selectors"
+          ],
+          "evidence": "Glob no ui_results_css_regression; release PASS without results computed-style cases",
+          "result": "FINDING"
+        }
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "SL-C07-M-01",
+      "severity": "MEDIUM",
+      "unit_id": "UI-CSS-RESULTS",
+      "location": "lsp-dplanner-results.css:574",
+      "root_cause": "#resultsPanel .chip-yellow remaps to --status-orange-dim / --status-orange, identical to .chip-orange in the same scope.",
+      "failure_path": "TEC Generate schedule -> renderChipRow assigns chip-yellow to TTS chip -> getComputedStyle(#resultChipRow .chip-yellow).color === getComputedStyle(.chip-orange).color",
+      "impact": "Yellow versus orange safety tiers collapse in the metric chip row; OTU/TTS/decozone severity cannot be distinguished by color alone.",
+      "evidence": "Playwright 1280x800: chip-yellow and chip-orange both rgb(245,158,11) with identical background rgba(245,158,11,0.12); results-panel.js:93 assigns chip-yellow to TTS",
+      "recommendation": "Restore distinct yellow tokens for .chip-yellow inside #resultsPanel or rename writer classes to match intended palette.",
+      "status": "OPEN",
+      "regression_ids": [
+        "SL-C07-CHIP-YELLOW-ORANGE-PARITY"
+      ]
+    },
+    {
+      "id": "SL-C07-M-02",
+      "severity": "MEDIUM",
+      "unit_id": "UI-CSS-RESULTS",
+      "location": "lsp-dplanner-results.css:756-758",
+      "root_cause": "V4 neutralization rules set tr.deco-row/asc-row/safe-row td { color: inherit }, overriding later .ppo2-* severity colors because tr+td selectors beat class-only PPO2 rules.",
+      "failure_path": "45 m / 25 min TEC plan -> decorateDecoTableForV3 adds col-ppo2 ppo2-warn -> computed color rgb(136,146,164) equals ppo2-ok; ppo2-hi and ppo2-crit both rgb(226,232,240)",
+      "impact": "Schedule PPO2 tiers are visually indistinguishable; elevated and critical ppO2 values do not stand out from nominal cells.",
+      "evidence": "Playwright counts ppo2-warn=6 ppo2-crit=2; samples warn 1.16 and crit 1.61 both muted/light gray not yellow/red; CSS :739-742 vs :756-758 cascade",
+      "recommendation": "Exclude .col-ppo2.ppo2-* from row neutralization or raise PPO2 selector specificity above tr.deco-row td.",
+      "status": "OPEN",
+      "regression_ids": [
+        "SL-C07-PPO2-SEVERITY-COLORS"
+      ]
+    },
+    {
+      "id": "SL-C07-L-01",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-RESULTS",
+      "location": "lsp-dplanner-results.css:184-295",
+      "root_cause": "Mobile card-layout deco-table rules are scoped under .legacy-panels, but .legacy-panels { display: none !important } at :418 hides the entire subtree in the live V4 shell.",
+      "failure_path": "Runtime query .legacy-panels .deco-table:not(.table-view) inside assembled index.html -> 0 visible targets; V4 uses #resultsPanel .schedule-table table layout instead",
+      "impact": "~110 lines of mobile card/table-toggle CSS are dead; maintenance burden and false confidence in legacy card fallback.",
+      "evidence": "Playwright legacyPanelsDisplay none, legacyCardTables 0, v4ScheduleTables 1; planner-shell.js moves modals out of legacy root only",
+      "recommendation": "Remove or relocate mobile card rules to #resultsPanel scope if still needed; drop .legacy-panels coupling.",
+      "status": "OPEN",
+      "regression_ids": [
+        "SL-C07-CSS-DEAD-LEGACY-MOBILE-CARD"
+      ]
+    },
+    {
+      "id": "SL-C07-L-02",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-RESULTS",
+      "location": "lsp-dplanner-results.css:382-384",
+      "root_cause": ".algo-switcher flex-wrap rules target a class absent from assembled index.html (V4 uses .mode-toggle / .main-nav-bar).",
+      "failure_path": "document.querySelectorAll('.algo-switcher').length === 0 at runtime on index.html shell",
+      "impact": "Dead CSS from pre-V4 header layout.",
+      "evidence": "grep index.html algo-switcher -> 0; Playwright dead.algoSwitcherCount 0",
+      "recommendation": "Delete obsolete .algo-switcher block or move surviving rules to active header selectors.",
+      "status": "OPEN",
+      "regression_ids": [
+        "SL-C07-CSS-DEAD-ALGO-SWITCHER"
+      ]
+    },
+    {
+      "id": "SL-C07-L-03",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-RESULTS",
+      "location": "lsp-dplanner-results.css:308,421,474,560,848",
+      "root_cause": ".lsp-slider thumb, .mode-btn, .result-tab-btn, and .theme-pill-thumb declare transitions without @media (prefers-reduced-motion: reduce) overrides (unlike lsp-dplanner-controls.css).",
+      "failure_path": "Browser context reduced_motion=reduce -> getComputedStyle(.result-tab-btn).transitionProperty still 'all'; slider thumb transitionDuration not 0s",
+      "impact": "Results chrome ignores reduced-motion preference on tab/mode/slider/theme affordances.",
+      "evidence": "Playwright landscape context hasReduceQuery true; tabTransition 'all' while controls sheet now gates motion",
+      "recommendation": "Add prefers-reduced-motion block mirroring controls.css pattern for animated results selectors.",
+      "status": "OPEN",
+      "regression_ids": [
+        "SL-C07-REDUCED-MOTION-RESULTS"
+      ]
+    },
+    {
+      "id": "SL-C07-L-04",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-RESULTS",
+      "location": "lsp-dplanner-results.css:1-931",
+      "root_cause": "Canonical results stylesheet defines screen layout only; no @media print rules for schedule tables, alerts, or metric strips.",
+      "failure_path": "fetch('lsp-dplanner-results.css').text -> @media print absent; PDF/export relies on export-core canvas capture not print CSS",
+      "impact": "Browser print/PDF of results panel lacks pagination, alert preservation, and table overflow guarantees defined for on-screen V4 layout.",
+      "evidence": "Playwright print.hasPrintBlock false; export-core.js uses canvas PDF path only",
+      "recommendation": "Add scoped @media print rules for #resultsPanel schedule, alerts, and chip/metric visibility if print is a supported surface.",
+      "status": "OPEN",
+      "regression_ids": [
+        "SL-C07-PRINT-RESULTS-CSS"
+      ]
+    }
+  ],
+  "evidence_runs": [],
+  "changed_paths": [],
+  "audit_report": "docs/seven-lens-reports/cycle-07-results-css.md",
+  "notes": "Cycle 7 audit read-only pass for UI-CSS-RESULTS. Sessions C07-A lines 1-500 and C07-B lines 501-931 (931 lines total). Runtime probes used visible #tecGenerateBtn / #recGenerateBtn with window._zhlHeadless=false for DOM rendering."
+}
