@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ER-C08-PRE-REG76",
+  "command_argv": [
+    "python",
+    "dev/ui_css_regression.py"
+  ],
+  "commit": "ff2bc8a8c4dd87a43db34d458cde3390079a6767",
+  "exit_code": 1,
+  "case_ids": [
+    "SL-C05-GF-ROW-MODE-ISOLATION"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": false,
+  "started_at": "2026-07-05T16:10:00.000000+00:00",
+  "finished_at": "2026-07-05T16:10:14.000000+00:00",
+  "stdout_sha256": "baseline-fixer-repro-375-recBtnOp-1",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e",
+  "detail": {
+    "viewport_375_667": {
+      "order_buh_rec_tools": {
+        "recBtnOp": 1,
+        "expected_recBtnOp_max": 0.55,
+        "ok": false
+      },
+      "order_tools_rec_buh": {
+        "recBtnOp": 0.5,
+        "ok": true
+      }
+    },
+    "root_cause_hint": "stale #tecPlannerView.mobile-active after setMainNav(rec) on mobile"
+  }
+}

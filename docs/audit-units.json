@@ -1879,7 +1879,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MODE-STATE"
       },
-      "fingerprint": "c1712c13e759dda756e670b980d50fab469a2e62b45e2264b728f1c03b630f1f",
+      "fingerprint": "687bae7030815f2679ad5154a1a8b421abcd804275d82536c4e5714062273717",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5309,7 +5309,7 @@
         "REG-80",
         "REG-81"
       ],
-      "fingerprint": "ab92890db4deec0974e4207ecf31507b355ec65f2448a9728b2d479341dd07cb",
+      "fingerprint": "3daac07dc5aab823e222896ed3339c3e6cf9a53f27933f085263132eca1ff8ad",
       "last_read_fingerprint": null
     },
     {

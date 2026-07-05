@@ -70,7 +70,7 @@
 | UI-MARKUP-TOOLS | web_markup | `ui/markup-tools.html:1` | 271 | P2 | VERIFIED | EXT-04, COV-01 |
 | UI-MARKUP-MODALS | web_markup | `ui/markup-modals.html:1` | 341 | P2 | VERIFIED | EXT-04, COV-01 |
 | UI-ENVIRONMENT | ui_core | `settings-core.js:39` | 377 | P1 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
-| UI-MODE-STATE | ui_core | `settings-core.js:416` | 624 | P2 | IN_PROGRESS | - |
+| UI-MODE-STATE | ui_core | `settings-core.js:416` | 625 | P2 | IN_PROGRESS | - |
 | UI-VPM-RENDER | ui_core | `results-render-core.js:17` | 531 | P1 | IN_PROGRESS | - |
 | UI-ZHL-RESULTS | ui_core | `results-render-core.js:548` | 533 | P1 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
 | UI-GAS-INPUTS | ui_core | `gas-cards-core.js:15` | 223 | P1 | IN_PROGRESS | - |
@@ -222,7 +222,7 @@
 | UI-PLANNER-INPUTS | ui_core | `planner-inputs-core.js:1` | 119 | P1 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-CYCLE05-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-05-css.json:1` | 80 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-CYCLE05-EXPORT-FOCUS-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-05-export-focus.json:1` | 65 | P0 | IN_PROGRESS | - |
-| TEST-UI-CSS-REGRESSION | test_infrastructure | `dev/ui_css_regression.py:1` | 251 | P0 | IN_PROGRESS | REG-76, REG-77, REG-78, REG-79, REG-80, REG-81 |
+| TEST-UI-CSS-REGRESSION | test_infrastructure | `dev/ui_css_regression.py:1` | 285 | P0 | IN_PROGRESS | REG-76, REG-77, REG-78, REG-79, REG-80, REG-81 |
 | TEST-SEVEN-LENS-CYCLE06-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-06-controls.json:1` | 251 | P0 | IN_PROGRESS | - |
 | TEST-UI-CONTROLS-CSS-REGRESSION | test_infrastructure | `dev/ui_controls_css_regression.py:1` | 553 | P0 | IN_PROGRESS | REG-82, REG-83, REG-84, REG-85, REG-86, REG-87, REG-88 |
 | TEST-C06-PRE-CONTROLS-REGRESSION | test_infrastructure | `dev/c06_pre_controls_regression.py:1` | 47 | P0 | IN_PROGRESS | REG-82, REG-83 |

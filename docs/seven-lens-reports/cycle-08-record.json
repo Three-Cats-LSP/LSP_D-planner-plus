@@ -322,7 +322,16 @@
   ],
   "audit_commit": "32fda7bbd1896864465f830012a246b58d94109b",
   "verified_source_commit": "941dea26901477eaed8724bd50b2213c653e84f5",
-  "verification_status": "PASSED",
+  "verification_status": "PENDING_INDEPENDENT_VERIFICATION",
+  "fixer": {
+    "regression_id": "REG-76",
+    "finding_id": "SL-C05-M-01",
+    "baseline_commit": "ff2bc8a8c4dd87a43db34d458cde3390079a6767",
+    "source_commit": "72020aa9ac789ca5e8ce8c3e18324db809faad35",
+    "classification": "C",
+    "summary": "Mobile planner mobile-active was stale after setPlannerAlgo view swap, leaving TEC visible in REC and breaking rec-mode GF button opacity; harness now asserts mobile isolation and canonical #gfPresetBtns host.",
+    "requires_independent_verification": true
+  },
   "parts": [
     {
       "id": "UI-PLANNER-SHELL-P01",
