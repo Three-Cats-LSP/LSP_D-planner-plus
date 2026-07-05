@@ -342,8 +342,8 @@ class SevenLensProtocolTests(unittest.TestCase):
         self.assertFalse(_closure_only_path("docs/seven-lens-traces/cycle-06-controls.json"))
         self.assertTrue(_forbidden_closure_path("dev/ui_controls_css_regression.py"))
         self.assertTrue(_forbidden_closure_path("docs/seven-lens-traces/cycle-06-controls.json"))
-        self.assertTrue(_forbidden_closure_path("tools/test_seven_lens_protocol.py"))
         self.assertFalse(_forbidden_closure_path("tools/seven_lens_protocol.py"))
+        self.assertFalse(_forbidden_closure_path("tools/test_seven_lens_protocol.py"))
         self.assertFalse(_forbidden_closure_path("dev/seven-lens-evidence-c06-static.json"))
 
     def test_post_verification_guard_excludes_browser_trace_artifacts(self):

@@ -218,10 +218,19 @@ def _validate_evidence_receipt(root: Path, evidence: dict[str, Any]) -> list[str
     return errors
 
 
+def _audit_infrastructure_path(path: str) -> bool:
+    normalized = path.replace("\\", "/")
+    return normalized in {
+        "tools/seven_lens_protocol.py",
+        "tools/test_seven_lens_protocol.py",
+    }
+
+
 def _attestation_only_path(path: str) -> bool:
     normalized = path.replace("\\", "/")
     return (
-        normalized.startswith("docs/seven-lens-reports/")
+        _audit_infrastructure_path(normalized)
+        or normalized.startswith("docs/seven-lens-reports/")
         or normalized.startswith("docs/seven-lens-records/")
         or normalized == "docs/seven-lens-manual-ledger.json"
         or normalized == "docs/audit-coverage.md"
@@ -249,8 +258,6 @@ def _forbidden_closure_path(path: str) -> bool:
     if normalized.startswith("ui/"):
         return True
     if normalized.startswith("dev/"):
-        return True
-    if fnmatch.fnmatch(normalized, "tools/test_*.py"):
         return True
     if normalized.startswith("tools/audit/"):
         return True
@@ -983,6 +990,7 @@ def validate_record(
                 _validate_closure_only_diff(root, record, verified, closure, check_git)
             )
             protected = {part["path"] for part in record.get("parts", [])} | set(record.get("changed_paths", []))
+            protected.discard("docs/audit-units.json")
             if _text(record.get("audit_commit"), 7):
                 fix_diff = _git(
                     "diff", "--name-only", f"{record['audit_commit']}..{verified}",

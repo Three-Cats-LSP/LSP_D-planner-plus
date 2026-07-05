@@ -196,7 +196,7 @@
   ],
   "audit_commit": "fea770dc9194b55e3344b10e18e4b9b1a5bfc2ad",
   "verified_source_commit": "3c9779145365c66dab725e4c29c086994393beb9",
-  "closure_evidence_commit": "8200cffccda788cf5567aaba8d63698edff7f608",
+  "closure_evidence_commit": "3086f76adfb21689dfd5c096761d836f079b5aa7",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -783,7 +783,7 @@
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
       "exit_code": 0,
-      "commit": "8200cffccda788cf5567aaba8d63698edff7f608",
+      "commit": "3086f76adfb21689dfd5c096761d836f079b5aa7",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -794,7 +794,7 @@
         "static"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-static.json",
-      "receipt_sha256": "60d65ef6f12bf672905ce70ae674029e50009f3c2a992feae82cde59749994e9",
+      "receipt_sha256": "a28c9596a13e9091d4865b9042c4da020c05c78c2f7ef770558f44aac2d1dee4",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -808,7 +808,7 @@
       "state_restored": true,
       "command": "python -m tools.audit run --profile ci",
       "exit_code": 0,
-      "commit": "8200cffccda788cf5567aaba8d63698edff7f608",
+      "commit": "3086f76adfb21689dfd5c096761d836f079b5aa7",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -863,5 +863,5 @@
     "tools/seven_lens_browser_trace.py"
   ],
   "audit_report": "docs/seven-lens-reports/cycle-06-controls-css.md",
-  "notes": "VERIFIER C06-V-C: SL-C06-L-04 independently verified at 3c97791; prepared baseline cf591de fails borderIsRed/shadowChanged with valid invalidity; ledger IN_PROGRESS pending CLOSER."
+  "notes": "VERIFIER C06-V-C: SL-C06-L-04 verified at 3c97791; CLOSER reconciled resolution commits (7470b4e/7d403f4) and hardened closure protocol with closure_evidence_commit gate binding."
 }

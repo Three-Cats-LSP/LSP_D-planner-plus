@@ -3788,7 +3788,7 @@
       "evidence": [],
       "issue": "Seven-lens manual audit protocol gate",
       "regression_cases": [],
-      "fingerprint": "5244469f5b4fed5fe762b09143b9fec140c98f3d823d2f1bb9e38f78032df2a5",
+      "fingerprint": "a1ede76237f1b4bda20bebbe17be0e2872089afc867a42063e908fd8e1052093",
       "last_read_fingerprint": null
     },
     {
@@ -3803,7 +3803,7 @@
       "evidence": [],
       "issue": "Seven-lens manual audit protocol gate tests",
       "regression_cases": [],
-      "fingerprint": "b406073170849b1cea1ee25b1c50287e9252f5510c06e274a02e99eb9b30de13",
+      "fingerprint": "d9767745a1d092233ab4b120cff5817381ee7ac79bc22c2fe5812ca301cdd585",
       "last_read_fingerprint": null
     },
     {
