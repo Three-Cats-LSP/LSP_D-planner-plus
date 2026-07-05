@@ -138,7 +138,7 @@ Protocol: `python tools/seven_lens_protocol.py check --phase audit --record docs
 
 ## Attestation
 
-**attestation_commit:** _(pending)_
+**attestation_commit:** `ceb3514378ed92d61a5b75c8e4448d70f006c0d3` (records `audit_commit` `32fda7b`)
 
 ## Worktree confirmation
 
