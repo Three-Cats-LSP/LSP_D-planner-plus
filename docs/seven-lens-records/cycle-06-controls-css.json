@@ -196,7 +196,7 @@
   ],
   "audit_commit": "fea770dc9194b55e3344b10e18e4b9b1a5bfc2ad",
   "verified_source_commit": "3c9779145365c66dab725e4c29c086994393beb9",
-  "closure_evidence_commit": "6c4d75229ee48947436fcbbad8285bc4bf7fe5e1",
+  "closure_evidence_commit": "8200cffccda788cf5567aaba8d63698edff7f608",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -783,7 +783,7 @@
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
       "exit_code": 0,
-      "commit": "6c4d75229ee48947436fcbbad8285bc4bf7fe5e1",
+      "commit": "8200cffccda788cf5567aaba8d63698edff7f608",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -794,7 +794,7 @@
         "static"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-static.json",
-      "receipt_sha256": "071feadd92e75350a772ed42490bf291a3d0b27d59cb437e08ea3b9d4a0a954e",
+      "receipt_sha256": "60d65ef6f12bf672905ce70ae674029e50009f3c2a992feae82cde59749994e9",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -808,7 +808,7 @@
       "state_restored": true,
       "command": "python -m tools.audit run --profile ci",
       "exit_code": 0,
-      "commit": "6c4d75229ee48947436fcbbad8285bc4bf7fe5e1",
+      "commit": "8200cffccda788cf5567aaba8d63698edff7f608",
       "worktree_clean": true,
       "command_argv": [
         "python",
