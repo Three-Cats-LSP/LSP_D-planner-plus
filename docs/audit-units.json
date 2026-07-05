@@ -3908,7 +3908,7 @@
       "evidence": [],
       "issue": "Seven-lens manual audit protocol gate",
       "regression_cases": [],
-      "fingerprint": "aa7a76fbd66f801abea84847f41054ae12783a066193e3b2e83df777818be9fd",
+      "fingerprint": "0813c53423ce3d714f750d14205ffd17bfd6ec3ebef8bb8a4f1eebd587421b03",
       "last_read_fingerprint": null
     },
     {
@@ -3923,7 +3923,7 @@
       "evidence": [],
       "issue": "Frozen seven-lens protocol historical migrations",
       "regression_cases": [],
-      "fingerprint": "3592ba0007835490dba5e1b58390ce324dec60102431e07d4af3e7e26a52a2b0",
+      "fingerprint": "a53ec8c5a9b663b6c191de0068cc906f37fde32cd33bc7f8de5a0c04eb6541c9",
       "last_read_fingerprint": null
     },
     {
@@ -3953,7 +3953,7 @@
       "evidence": [],
       "issue": "Seven-lens protocol migration golden tests",
       "regression_cases": [],
-      "fingerprint": "5a922c244cffc20080275d551bf3b4fe3621b980e845e68f9c9c942b9ccbcc73",
+      "fingerprint": "42a65cbf79463c218a6c034f6997ebb25cfae128b0bf68bec3c07e5c6c172ded",
       "last_read_fingerprint": null
     },
     {

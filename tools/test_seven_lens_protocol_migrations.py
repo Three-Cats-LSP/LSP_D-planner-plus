@@ -15,6 +15,7 @@ from tools.seven_lens_protocol_migrations import (
     apply_receipt_exit_v1,
     derive_resolution_commit_v1,
     finding_has_proven_resolution,
+    migration_allows_registry_finding_change,
     migration_fingerprint,
 )
 
@@ -193,6 +194,90 @@ class SevenLensMigrationTests(unittest.TestCase):
 
         self.assertTrue(requires_explicit_resolution_commit(record, 5))
         self.assertFalse(requires_explicit_resolution_commit({"schema_version": 4}, 5))
+
+    def test_migration_allows_proven_cross_cycle_registry_closure(self):
+        records = self.root / "docs" / "seven-lens-records"
+        records.mkdir(parents=True)
+        (records / "cycle-05-css.json").write_text(
+            json.dumps({
+                "schema_version": 4,
+                "cycle": 5,
+                "protocol_migrations": [MIGRATION_RESOLUTION_COMMIT_V1, MIGRATION_RECEIPT_EXIT_V1],
+                "verified_source_commit": "abc1234567890",
+                "findings": [{
+                    "id": "SL-C05-M-01",
+                    "severity": "MEDIUM",
+                    "unit_id": "UI-CSS",
+                    "status": "CLOSED",
+                    "summary": "Mode-isolation CSS targets removed row",
+                    "evidence_ids": ["static", "ci"],
+                    "regression_ids": ["REG-76"],
+                    "pre_fix_evidence_id": "pre",
+                    "post_fix_evidence_id": "post",
+                    "state_restoration_evidence_id": "restore",
+                }],
+                "evidence_runs": [
+                    {"id": "static", "kind": "gate", "exit_code": 0, "commit": "abc1234567890"},
+                    {"id": "ci", "kind": "gate", "exit_code": 0, "commit": "abc1234567890"},
+                    {"id": "pre", "kind": "pre_fix", "exit_code": 1, "commit": "abc1234567890"},
+                    {"id": "post", "kind": "post_fix", "exit_code": 0, "commit": "fix1234567890"},
+                    {"id": "restore", "kind": "state_restoration", "exit_code": 0, "commit": "abc1234567890"},
+                ],
+            }),
+            encoding="utf-8",
+        )
+        registry_path = self.root / "docs" / "audit-units.json"
+        registry_path.parent.mkdir(parents=True, exist_ok=True)
+        registry_path.write_text(
+            json.dumps({
+                "findings": [{
+                    "id": "SL-C05-M-01",
+                    "unit_id": "UI-CSS",
+                    "severity": "MEDIUM",
+                    "status": "CLOSED",
+                    "issue": "Seven-lens Cycle 05 CSS audit",
+                    "summary": "Mode-isolation CSS targets removed row",
+                    "affected_units": ["UI-CSS"],
+                    "resolution_commit": "fix1234",
+                    "evidence_cases": ["REG-76"],
+                }],
+                "evidence_catalog": {"REG-76": {"case_id": "REG-76"}},
+            }),
+            encoding="utf-8",
+        )
+
+        def fake_git(*args, root):
+            if args == ("rev-parse", "fix1234567890"):
+                return "fix1234567890" * 5
+            if args == ("rev-parse", "abc1234567890"):
+                return "abc1234567890" * 5
+            if args[0] == "show" and ":docs/audit-units.json" in args[1]:
+                return json.dumps({"findings": []})
+            return ""
+
+        before = {
+            "id": "SL-C05-M-01",
+            "status": "OPEN",
+            "severity": "MEDIUM",
+            "unit_id": "UI-CSS",
+        }
+        after = json.loads(registry_path.read_text())["findings"][0]
+        allowed = migration_allows_registry_finding_change(
+            self.root, "SL-C05-M-01", before, after, git_fn=fake_git
+        )
+        self.assertTrue(allowed)
+        self.assertTrue(
+            migration_allows_registry_finding_change(
+                self.root, "SL-C05-M-01", before, after, git_fn=fake_git
+            )
+        )
+        tampered = dict(after)
+        tampered["resolution_commit"] = "deadbeef"
+        self.assertFalse(
+            migration_allows_registry_finding_change(
+                self.root, "SL-C05-M-01", before, tampered, git_fn=fake_git
+            )
+        )
 
 
 if __name__ == "__main__":

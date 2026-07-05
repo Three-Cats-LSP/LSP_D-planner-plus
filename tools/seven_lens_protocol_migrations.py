@@ -209,6 +209,70 @@ def _finding_closure_issue(cycle: int) -> str:
     return f"Seven-lens Cycle {cycle:02d} audit"
 
 
+def _planned_registry_finding_row(
+    root: Path,
+    record: dict[str, Any],
+    finding: dict[str, Any],
+    registry: dict[str, Any],
+    existing: dict[str, Any] | None,
+    *,
+    git_fn,
+) -> dict[str, Any] | None:
+    finding_id = finding.get("id")
+    if not finding_id or finding.get("status") != "CLOSED":
+        return None
+    if not finding_has_proven_resolution(record, finding):
+        return None
+    resolution = derive_resolution_commit_v1(root, record, finding, git_fn=git_fn)
+    if not resolution:
+        return None
+    cycle = int(record.get("cycle", 0) or 0)
+    expected_evidence = _expected_registry_evidence_cases(finding, registry)
+    if not expected_evidence and finding.get("severity") == "LOW":
+        linked = set(finding.get("evidence_ids", []))
+        if linked.intersection({"static", "ci"}):
+            expected_evidence = ["COV-01"]
+    if not expected_evidence:
+        return None
+    unit_id = str(finding.get("unit_id", ""))
+    summary = finding.get("summary") or finding.get("recommendation") or finding.get("fix_summary") or ""
+    if existing is None:
+        return {
+            "id": finding_id,
+            "unit_id": unit_id,
+            "severity": finding.get("severity"),
+            "status": "CLOSED",
+            "issue": _finding_closure_issue(cycle),
+            "summary": summary if _text(summary, 5) else finding_id,
+            "affected_units": [unit_id] if unit_id else [],
+            "resolution_commit": _short_commit(resolution),
+            "evidence_cases": expected_evidence,
+        }
+    patched = dict(existing)
+    patched["status"] = "CLOSED"
+    patched["resolution_commit"] = _short_commit(resolution)
+    patched.setdefault("issue", _finding_closure_issue(cycle))
+    if not _text(str(patched.get("summary", "")), 5):
+        patched["summary"] = summary if _text(summary, 5) else finding_id
+    if not patched.get("affected_units"):
+        patched["affected_units"] = [unit_id] if unit_id else []
+    if not patched.get("evidence_cases"):
+        patched["evidence_cases"] = expected_evidence
+    patched.setdefault("unit_id", unit_id)
+    patched.setdefault("severity", finding.get("severity"))
+    return patched
+
+
+def _registry_finding_migration_equivalent(expected: dict[str, Any], actual: dict[str, Any]) -> bool:
+    keys = ("id", "unit_id", "severity", "status", "affected_units", "evidence_cases")
+    for key in keys:
+        if expected.get(key) != actual.get(key):
+            return False
+    return _short_commit(str(expected.get("resolution_commit", ""))) == _short_commit(
+        str(actual.get("resolution_commit", ""))
+    )
+
+
 def registry_reconcile_plan_v1(
     root: Path,
     record: dict[str, Any],
@@ -217,8 +281,6 @@ def registry_reconcile_plan_v1(
     git_fn,
 ) -> tuple[list[dict[str, Any]], list[str]]:
     """Return registry finding rows to add/update; never force-close without proof."""
-    cycle = int(record.get("cycle", 0) or 0)
-    issue = _finding_closure_issue(cycle)
     updates: list[dict[str, Any]] = []
     errors: list[str] = []
     current = _registry_findings_map(registry)
@@ -226,49 +288,23 @@ def registry_reconcile_plan_v1(
         finding_id = finding.get("id")
         if not finding_id or finding.get("status") != "CLOSED":
             continue
-        if not finding_has_proven_resolution(record, finding):
+        planned = _planned_registry_finding_row(
+            root, record, finding, registry, current.get(finding_id), git_fn=git_fn
+        )
+        if planned is None:
+            if finding.get("status") == "CLOSED" and finding_has_proven_resolution(record, finding):
+                if not derive_resolution_commit_v1(root, record, finding, git_fn=git_fn):
+                    errors.append(f"{finding_id}: registry reconcile lacks resolution_commit")
             continue
-        resolution = derive_resolution_commit_v1(root, record, finding, git_fn=git_fn)
-        if not resolution:
-            errors.append(f"{finding_id}: registry reconcile lacks resolution_commit")
-            continue
-        expected_evidence = _expected_registry_evidence_cases(finding, registry)
-        if not expected_evidence and finding.get("severity") == "LOW":
-            linked = set(finding.get("evidence_ids", []))
-            if linked.intersection({"static", "ci"}):
-                expected_evidence = ["COV-01"]
-        if not expected_evidence:
-            continue
-        unit_id = str(finding.get("unit_id", ""))
-        summary = finding.get("summary") or finding.get("recommendation") or finding.get("fix_summary") or ""
         existing = current.get(finding_id)
-        if existing is None:
-            updates.append({
-                "id": finding_id,
-                "unit_id": unit_id,
-                "severity": finding.get("severity"),
-                "status": "CLOSED",
-                "issue": issue,
-                "summary": summary if _text(summary, 5) else finding_id,
-                "affected_units": [unit_id] if unit_id else [],
-                "resolution_commit": _short_commit(resolution),
-                "evidence_cases": expected_evidence,
-            })
+        if existing is not None and existing == planned:
             continue
-        if existing.get("status") == "CLOSED":
-            if _short_commit(str(existing.get("resolution_commit", ""))) == _short_commit(resolution):
+        if existing is not None and existing.get("status") == "CLOSED":
+            if _short_commit(str(existing.get("resolution_commit", ""))) == planned.get(
+                "resolution_commit"
+            ) and existing.get("evidence_cases") == planned.get("evidence_cases"):
                 continue
-            patched = dict(existing)
-            patched["resolution_commit"] = _short_commit(resolution)
-            updates.append(patched)
-            continue
-        if existing.get("status") in {"OPEN", "BLOCKED"}:
-            patched = dict(existing)
-            patched["status"] = "CLOSED"
-            patched["resolution_commit"] = _short_commit(resolution)
-            if not patched.get("evidence_cases"):
-                patched["evidence_cases"] = expected_evidence
-            updates.append(patched)
+        updates.append(planned)
     return updates, errors
 
 
@@ -321,6 +357,44 @@ def apply_protocol_migrations(
     if persist:
         return migrated, errors
     return migrated, errors
+
+
+def migration_allows_registry_finding_change(
+    root: Path,
+    finding_id: str,
+    before: dict[str, Any] | None,
+    after: dict[str, Any],
+    *,
+    git_fn,
+) -> bool:
+    match = __import__("re").match(r"SL-C(\d+)-", str(finding_id))
+    if not match:
+        return False
+    cycle = int(match.group(1))
+    record_path = root / "docs" / "seven-lens-records"
+    candidates = sorted(record_path.glob(f"cycle-{cycle:02d}-*.json"))
+    if not candidates:
+        return False
+    record = json.loads(candidates[0].read_text(encoding="utf-8"))
+    if MIGRATION_RESOLUTION_COMMIT_V1 not in record.get("protocol_migrations", []):
+        migrated, errors = apply_protocol_migrations(root, record, git_fn=git_fn)
+        if errors:
+            return False
+        record = migrated
+    finding = next((row for row in record.get("findings", []) if row.get("id") == finding_id), None)
+    if finding is None:
+        return before == after
+    registry = json.loads((root / "docs/audit-units.json").read_text(encoding="utf-8"))
+    updates, _ = registry_reconcile_plan_v1(root, record, registry, git_fn=git_fn)
+    allowed = {row.get("id"): row for row in updates}
+    if finding_id in allowed and _registry_finding_migration_equivalent(allowed[finding_id], after):
+        return True
+    expected = _planned_registry_finding_row(
+        root, record, finding, registry, before, git_fn=git_fn
+    )
+    if expected and _registry_finding_migration_equivalent(expected, after):
+        return True
+    return before == after
 
 
 def requires_explicit_resolution_commit(record: dict[str, Any], current_schema: int) -> bool:

@@ -331,8 +331,11 @@ def _validate_units_fingerprint_realignments(
     errors: list[str] = []
     before_map = {row.get("id"): row for row in before_units}
     after_map = {row.get("id"): row for row in after_units}
-    if before_map.keys() != after_map.keys():
-        errors.append("registry closure changed unit catalog membership or order")
+    if set(before_map) - set(after_map):
+        errors.append("registry closure removed unit catalog entries")
+        return errors
+    if list(before_map) != [uid for uid in after_map if uid in before_map]:
+        errors.append("registry closure reordered existing unit catalog entries")
         return errors
     for unit_id, before in before_map.items():
         after = after_map[unit_id]
@@ -407,7 +410,12 @@ def _validate_registry_closure_mutations(
         old = before_findings.get(finding_id)
         if finding_id not in expected_closed:
             if old != new:
-                errors.append(f"registry closure modified unrelated finding {finding_id}")
+                from tools.seven_lens_protocol_migrations import migration_allows_registry_finding_change
+
+                if not migration_allows_registry_finding_change(
+                    root, finding_id, old, new, git_fn=_git
+                ):
+                    errors.append(f"registry closure modified unrelated finding {finding_id}")
             continue
         record_finding = expected_closed[finding_id]
         expected_rc = _record_finding_resolution(record_finding)
@@ -876,8 +884,25 @@ def _validate_closed_finding_evidence(
     return errors
 
 
+def _finding_proven_closed_in_reviewed_record(root: Path, finding_id: str) -> bool:
+    match = re.match(r"SL-C(\d+)-", str(finding_id))
+    if not match:
+        return False
+    cycle = int(match.group(1))
+    for path in (root / "docs" / "seven-lens-records").glob(f"cycle-{cycle:02d}-*.json"):
+        record = json.loads(path.read_text(encoding="utf-8"))
+        if record.get("verification_status") != "PASSED":
+            continue
+        for row in record.get("findings", []):
+            if row.get("id") == finding_id and row.get("status") == "CLOSED":
+                from tools.seven_lens_protocol_migrations import finding_has_proven_resolution
+
+                return finding_has_proven_resolution(record, row)
+    return False
+
+
 def _validate_finding_continuity(
-    registry: dict[str, Any], record: dict[str, Any], phase: str
+    root: Path, registry: dict[str, Any], record: dict[str, Any], phase: str
 ) -> list[str]:
     if record.get("schema_version", 1) < 2 or phase not in {"audit", "verify", "close"}:
         return []
@@ -898,9 +923,10 @@ def _validate_finding_continuity(
         if old.get("status") != "CLOSED" and new.get("status") == "CLOSED":
             cycle_copy = cycle_findings.get(finding_id, {})
             if cycle_copy.get("status") != "CLOSED" or not cycle_copy.get("evidence_ids"):
-                errors.append(
-                    f"historical finding {finding_id} closed without this cycle's evidence"
-                )
+                if not _finding_proven_closed_in_reviewed_record(root, finding_id):
+                    errors.append(
+                        f"historical finding {finding_id} closed without this cycle's evidence"
+                    )
     return errors
 
 
@@ -1003,7 +1029,7 @@ def validate_record(
     errors.extend(_validate_findings(migrated, phase))
     errors.extend(_validate_evidence(root, migrated, phase, check_git))
     errors.extend(_validate_closed_finding_evidence(root, migrated, phase, require_artifacts))
-    errors.extend(_validate_finding_continuity(registry, migrated, phase))
+    errors.extend(_validate_finding_continuity(root, registry, migrated, phase))
     if migrated.get("schema_version", 1) >= 2:
         if migrated.get("integration_base_commit") != migrated.get("baseline_commit"):
             errors.append("integration_base_commit must equal baseline_commit")
