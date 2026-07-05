@@ -262,7 +262,9 @@ def _audit_infrastructure_path(path: str) -> bool:
     normalized = path.replace("\\", "/")
     return normalized in {
         "tools/seven_lens_protocol.py",
+        "tools/seven_lens_protocol_migrations.py",
         "tools/test_seven_lens_protocol.py",
+        "tools/test_seven_lens_protocol_migrations.py",
     }
 
 
