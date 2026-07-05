@@ -285,8 +285,8 @@
     }
   ],
   "audit_commit": "094162acd2ce89ac01acdef5c2ff326d4f6b5c58",
-  "verified_source_commit": "",
-  "verification_status": "PENDING",
+  "verified_source_commit": "acaec31a3608f1e5d085938817a6907da2465b5c",
+  "verification_status": "PASSED",
   "parts": [
     {
       "id": "UI-CSS-RESULTS-P01",
@@ -295,9 +295,9 @@
       "start_line": 1,
       "end_line": 500,
       "line_count": 500,
-      "content_fingerprint": "db0f3bb43fb9d4406cfb4c638dbe5c1172295a98eefa25d3d85a9d130468dada",
+      "content_fingerprint": "195fbb35eb6d957d1dc19ddf459902ff417abf8c9d5f3754f2ddeee1cb44df1d",
       "review_session": "C07-A",
-      "verification_session": "",
+      "verification_session": "C07-V-A",
       "lens_results": {
         "L1": {
           "trace": "deco-table-wrap max-content+overflow-x:auto :2-8; gas-plan min-width columns :106-111; mobile @600 card/table-view toggle :184-268; metric-grid 4col :529; #resultsPanel overflow hidden :543",
@@ -375,9 +375,9 @@
       "start_line": 501,
       "end_line": 931,
       "line_count": 431,
-      "content_fingerprint": "c2a9caac962550a4b5d73aeb779c30c7ea1572ded8283e88208b9085955e72da",
+      "content_fingerprint": "31a4b2fc9d8eea80bfac20144ecb2154f3b53722adf2b04080d31fedf83ca5e2",
       "review_session": "C07-B",
-      "verification_session": "",
+      "verification_session": "C07-V-B",
       "lens_results": {
         "L1": {
           "trace": "#resultsPanel .schedule-table width 100% :713; metric-val--runtime #2563eb :566; mobile bottom-nav min-height 56px :802; theme-pill 54x28 grid :822-837",
@@ -459,7 +459,7 @@
       "impact": "Yellow versus orange safety tiers collapse in the metric chip row; OTU/TTS/decozone severity cannot be distinguished by color alone.",
       "evidence": "Playwright 1280x800: chip-yellow and chip-orange both rgb(245,158,11) with identical background rgba(245,158,11,0.12); results-panel.js:93 assigns chip-yellow to TTS",
       "recommendation": "Restore distinct yellow tokens for .chip-yellow inside #resultsPanel or rename writer classes to match intended palette.",
-      "status": "OPEN",
+      "status": "CLOSED",
       "regression_ids": [
         "SL-C07-CHIP-YELLOW-ORANGE-PARITY"
       ],
@@ -471,10 +471,18 @@
         "ER-C07-TRACE",
         "ER-C07-PROTOCOL",
         "ER-C07-PARITY",
+        "ER-C07-RESTORE-RESULTS",
         "static",
         "ci",
         "release"
-      ]
+      ],
+      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "fix_summary": "Remapped #resultsPanel .chip-yellow to --yellow-dim/--yellow tokens distinct from chip-orange.",
+      "baseline_failure": "chip-yellow and chip-orange both rgb(245,158,11) under audit CSS.",
+      "observable_contract": "TEC Generate renders #resultChipRow .chip-yellow distinct from .chip-orange in dark and light themes with chip-dot semantic context.",
+      "independent_verification_result": "PASSED (C07-V-B independent verification at acaec31)",
+      "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
+      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS"
     },
     {
       "id": "SL-C07-M-02",
@@ -486,7 +494,7 @@
       "impact": "Schedule PPO2 tiers are visually indistinguishable; elevated and critical ppO2 values do not stand out from nominal cells.",
       "evidence": "Playwright counts ppo2-warn=6 ppo2-crit=2; samples warn 1.16 and crit 1.61 both muted/light gray not yellow/red; CSS :739-742 vs :756-758 cascade",
       "recommendation": "Exclude .col-ppo2.ppo2-* from row neutralization or raise PPO2 selector specificity above tr.deco-row td.",
-      "status": "OPEN",
+      "status": "CLOSED",
       "regression_ids": [
         "SL-C07-PPO2-SEVERITY-COLORS"
       ],
@@ -498,10 +506,18 @@
         "ER-C07-TRACE",
         "ER-C07-PROTOCOL",
         "ER-C07-PARITY",
+        "ER-C07-RESTORE-RESULTS",
         "static",
         "ci",
         "release"
-      ]
+      ],
+      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "fix_summary": "Excluded .col-ppo2 from row neutralization; raised PPO2 td selector specificity with !important.",
+      "baseline_failure": "ppo2-warn/crit computed muted gray identical to ppo2-ok after tr.deco-row td { color: inherit }.",
+      "observable_contract": "45 m TEC schedule renders distinct ppo2-ok/warn/hi/crit colors; ppo2-crit remains red after row neutralization.",
+      "independent_verification_result": "PASSED (C07-V-B independent verification at acaec31)",
+      "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
+      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS"
     },
     {
       "id": "SL-C07-L-01",
@@ -513,7 +529,7 @@
       "impact": "~110 lines of mobile card/table-toggle CSS are dead; maintenance burden and false confidence in legacy card fallback.",
       "evidence": "Playwright legacyPanelsDisplay none, legacyCardTables 0, v4ScheduleTables 1; planner-shell.js moves modals out of legacy root only",
       "recommendation": "Remove or relocate mobile card rules to #resultsPanel scope if still needed; drop .legacy-panels coupling.",
-      "status": "OPEN",
+      "status": "CLOSED",
       "regression_ids": [
         "SL-C07-CSS-DEAD-LEGACY-MOBILE-CARD"
       ],
@@ -525,10 +541,18 @@
         "ER-C07-TRACE",
         "ER-C07-PROTOCOL",
         "ER-C07-PARITY",
+        "ER-C07-RESTORE-RESULTS",
         "static",
         "ci",
         "release"
-      ]
+      ],
+      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "fix_summary": "Removed dead .legacy-panels mobile card/table-toggle CSS block.",
+      "baseline_failure": "~110 lines of .legacy-panels mobile deco card rules present under display:none subtree.",
+      "observable_contract": "No .legacy-panels mobile card selectors in canonical CSS; V4 #resultsPanel .schedule-table mobile layout intact at 375px.",
+      "independent_verification_result": "PASSED (C07-V-A independent verification at acaec31)",
+      "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
+      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS"
     },
     {
       "id": "SL-C07-L-02",
@@ -540,7 +564,7 @@
       "impact": "Dead CSS from pre-V4 header layout.",
       "evidence": "grep index.html algo-switcher -> 0; Playwright dead.algoSwitcherCount 0",
       "recommendation": "Delete obsolete .algo-switcher block or move surviving rules to active header selectors.",
-      "status": "OPEN",
+      "status": "CLOSED",
       "regression_ids": [
         "SL-C07-CSS-DEAD-ALGO-SWITCHER"
       ],
@@ -552,10 +576,18 @@
         "ER-C07-TRACE",
         "ER-C07-PROTOCOL",
         "ER-C07-PARITY",
+        "ER-C07-RESTORE-RESULTS",
         "static",
         "ci",
         "release"
-      ]
+      ],
+      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "fix_summary": "Deleted obsolete .algo-switcher flex-wrap rules.",
+      "baseline_failure": ".algo-switcher rules present with zero index.html writers.",
+      "observable_contract": "Canonical CSS and runtime DOM contain zero .algo-switcher selectors or writers.",
+      "independent_verification_result": "PASSED (C07-V-A independent verification at acaec31)",
+      "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
+      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS"
     },
     {
       "id": "SL-C07-L-03",
@@ -567,7 +599,7 @@
       "impact": "Results chrome ignores reduced-motion preference on tab/mode/slider/theme affordances.",
       "evidence": "Playwright landscape context hasReduceQuery true; tabTransition 'all' while controls sheet now gates motion",
       "recommendation": "Add prefers-reduced-motion block mirroring controls.css pattern for animated results selectors.",
-      "status": "OPEN",
+      "status": "CLOSED",
       "regression_ids": [
         "SL-C07-REDUCED-MOTION-RESULTS"
       ],
@@ -579,10 +611,18 @@
         "ER-C07-TRACE",
         "ER-C07-PROTOCOL",
         "ER-C07-PARITY",
+        "ER-C07-RESTORE-RESULTS",
         "static",
         "ci",
         "release"
-      ]
+      ],
+      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "fix_summary": "Added @media (prefers-reduced-motion: reduce) zero-duration overrides for results animated selectors.",
+      "baseline_failure": "result-tab-btn transitionProperty 'all' with nonzero duration under reduced-motion emulation.",
+      "observable_contract": "prefers-reduced-motion: reduce zeroes result-tab, mode-btn, and theme-pill-thumb transition durations while warnings remain visible.",
+      "independent_verification_result": "PASSED (C07-V-B independent verification at acaec31)",
+      "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
+      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS"
     },
     {
       "id": "SL-C07-L-04",
@@ -594,7 +634,7 @@
       "impact": "Browser print/PDF of results panel lacks pagination, alert preservation, and table overflow guarantees defined for on-screen V4 layout.",
       "evidence": "Playwright print.hasPrintBlock false; export-core.js uses canvas PDF path only",
       "recommendation": "Add scoped @media print rules for #resultsPanel schedule, alerts, and chip/metric visibility if print is a supported surface.",
-      "status": "OPEN",
+      "status": "CLOSED",
       "regression_ids": [
         "SL-C07-PRINT-RESULTS-CSS"
       ],
@@ -606,10 +646,18 @@
         "ER-C07-TRACE",
         "ER-C07-PROTOCOL",
         "ER-C07-PARITY",
+        "ER-C07-RESTORE-RESULTS",
         "static",
         "ci",
         "release"
-      ]
+      ],
+      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "fix_summary": "Added scoped @media print block for #resultsPanel alerts, metrics, schedule rows, and chip strip.",
+      "baseline_failure": "No @media print block in lsp-dplanner-results.css.",
+      "observable_contract": "Print media keeps alerts, metric strip, and schedule rows visible with break-inside avoid; interactive chrome hidden.",
+      "independent_verification_result": "PASSED (C07-V-B independent verification at acaec31)",
+      "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
+      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS"
     }
   ],
   "evidence_runs": [
@@ -639,8 +687,8 @@
       "worktree_clean": true,
       "state_restored": true,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-PRE-RESULTS.json",
-      "receipt_sha256": "19ec20f8b21f47f0c22c5dc7274143654e60180019e09bd84805b4999ce31bcc",
-      "exit_code": 1
+      "receipt_sha256": "",
+      "exit_code": null
     },
     {
       "id": "ER-C07-POST-RESULTS",
@@ -657,16 +705,16 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_results_css_regression.py"
       ],
-      "commit": "929958dd677a01ae766ca4085a4a06dfdb3a7b6e",
+      "commit": "acaec31a3608f1e5d085938817a6907da2465b5c",
       "observable_assertions": [
         "All six computed-style cases PASS across dark/light/landscape viewports"
       ],
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_results_css_regression.py",
       "worktree_clean": true,
       "state_restored": true,
-      "exit_code": 0,
+      "exit_code": null,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-POST-RESULTS.json",
-      "receipt_sha256": "129c31e7fcf38bec61523fe47a716006f53135c48e8f7923f3e7bcd2b3987d88",
+      "receipt_sha256": "",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -689,22 +737,22 @@
         "--output",
         "dev/seven-lens-browser-trace-cycle07.json"
       ],
-      "commit": "929958dd677a01ae766ca4085a4a06dfdb3a7b6e",
+      "commit": "acaec31a3608f1e5d085938817a6907da2465b5c",
       "observable_assertions": [
         "Four browser traces PASS twice with state restoration hashes equal"
       ],
       "runtime_trace": {
         "artifact_path": "dev/seven-lens-browser-trace-cycle07.json",
         "spec_path": "docs/seven-lens-traces/cycle-07-results.json",
-        "artifact_sha256": "015382c1fd1960f18d6f0079eba66bad190b6be907f80527141fc9925a39ade6",
+        "artifact_sha256": "75a7a2bd7c9ca6b3f5a86f217dacb5d2993b170a912ebfec6f792fac6e158634",
         "spec_sha256": "a54ca376580926a96983297703e52181e731108820219a48f7900ae07c8e5e66"
       },
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-07-results.json --output dev/seven-lens-browser-trace-cycle07.json",
       "worktree_clean": true,
       "state_restored": true,
-      "exit_code": 0,
+      "exit_code": null,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-TRACE.json",
-      "receipt_sha256": "0857e691b094147a68aa86a3437fbfd90658158aade226167e78ec1cf4a793b9",
+      "receipt_sha256": "",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -719,16 +767,16 @@
         "tools.test_seven_lens_protocol",
         "tools.test_seven_lens_browser_trace"
       ],
-      "commit": "929958dd677a01ae766ca4085a4a06dfdb3a7b6e",
+      "commit": "acaec31a3608f1e5d085938817a6907da2465b5c",
       "observable_assertions": [
         "Seven-lens protocol and browser-trace schema tests PASS"
       ],
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m unittest tools.test_seven_lens_protocol tools.test_seven_lens_browser_trace",
       "worktree_clean": true,
       "state_restored": true,
-      "exit_code": 0,
+      "exit_code": null,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-PROTOCOL.json",
-      "receipt_sha256": "3e1e11cfb6df4eed646f13e8727e4554c807b4a9ac068d2c74fc2cfb3ca82eab",
+      "receipt_sha256": "",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -743,16 +791,16 @@
         "tools/assemble_ui_html.py",
         "--verify"
       ],
-      "commit": "929958dd677a01ae766ca4085a4a06dfdb3a7b6e",
+      "commit": "acaec31a3608f1e5d085938817a6907da2465b5c",
       "observable_assertions": [
         "assemble_ui_html --verify OK after canonical CSS edits"
       ],
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe tools/assemble_ui_html.py --verify",
       "worktree_clean": true,
       "state_restored": true,
-      "exit_code": 0,
+      "exit_code": null,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-PARITY.json",
-      "receipt_sha256": "8f510b8fdf3a42f3eacb4720015942cc1dab7a5ae4ae8d3b5e9a8ac4f2c85753",
+      "receipt_sha256": "",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -768,16 +816,16 @@
         "--profile",
         "static"
       ],
-      "commit": "929958dd677a01ae766ca4085a4a06dfdb3a7b6e",
+      "commit": "",
       "observable_assertions": [
         "Non-coverage static suites PASS; SUITE-COVERAGE red while SL-C07 findings remain OPEN"
       ],
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit check --profile static",
       "worktree_clean": true,
       "state_restored": true,
-      "exit_code": 1,
+      "exit_code": null,
       "receipt_path": "dev/seven-lens-evidence-c07-static.json",
-      "receipt_sha256": "1e351e5c71df4fe54a00895d4c28a409d009cafcd040580214518557f0c8a36f",
+      "receipt_sha256": "",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -793,16 +841,16 @@
         "--profile",
         "ci"
       ],
-      "commit": "929958dd677a01ae766ca4085a4a06dfdb3a7b6e",
+      "commit": "",
       "observable_assertions": [
         "SUITE-UI-RESULTS-CSS-REGRESSION PASS; SUITE-COVERAGE red while SL-C07 findings remain OPEN"
       ],
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit run --profile ci",
       "worktree_clean": true,
       "state_restored": true,
-      "exit_code": 1,
+      "exit_code": null,
       "receipt_path": "dev/seven-lens-evidence-c07-ci.json",
-      "receipt_sha256": "d0e3cc312a0711e98408f42ce8692e495eb86eb252f9753a186666a342909e15",
+      "receipt_sha256": "",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -818,18 +866,44 @@
         "--profile",
         "release"
       ],
-      "commit": "929958dd677a01ae766ca4085a4a06dfdb3a7b6e",
+      "commit": "",
       "observable_assertions": [
         "Release suites PASS except intentional SUITE-COVERAGE OPEN-finding rollup"
       ],
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit run --profile release",
       "worktree_clean": true,
       "state_restored": true,
-      "exit_code": 1,
+      "exit_code": null,
       "receipt_path": "dev/seven-lens-evidence-c07-release.json",
-      "receipt_sha256": "e6edfcc8fb8ffa3e7407aaffb923396cad1aba215a5ffa75690d89403a405914",
+      "receipt_sha256": "",
       "worktree_clean_before": true,
       "worktree_clean_after": true
+    },
+    {
+      "id": "ER-C07-RESTORE-RESULTS",
+      "kind": "state_restoration",
+      "case_ids": [
+        "SL-C07-CHIP-YELLOW-DISTINCT",
+        "SL-C07-PPO2-SEVERITY-COLORS",
+        "SL-C07-CSS-DEAD-LEGACY-CARDS",
+        "SL-C07-CSS-DEAD-ALGO-SWITCHER",
+        "SL-C07-REDUCED-MOTION",
+        "SL-C07-PRINT-RESULTS"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/ui_results_css_regression.py"
+      ],
+      "commit": "acaec31a3608f1e5d085938817a6907da2465b5c",
+      "observable_assertions": [
+        "ui_results_css_regression restores DOM/globals/media after probes with matching state hashes"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_results_css_regression.py",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": null,
+      "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-RESTORE-RESULTS.json",
+      "receipt_sha256": ""
     }
   ],
   "changed_paths": [
@@ -840,5 +914,5 @@
     "docs/audit-units.json"
   ],
   "audit_report": "docs/seven-lens-reports/cycle-07-results-css.md",
-  "notes": "Cycle 7 audit read-only pass for UI-CSS-RESULTS. Sessions C07-A lines 1-500 and C07-B lines 501-931 (931 lines total). Runtime probes used visible #tecGenerateBtn / #recGenerateBtn with window._zhlHeadless=false for DOM rendering."
+  "notes": "VERIFIER C07-V-A/C07-V-B: independent verification PASSED at acaec31; six findings closed at resolution 1b26dd1; closure metadata pending gate receipts."
 }
