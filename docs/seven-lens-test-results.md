@@ -16,7 +16,7 @@ in `docs/seven-lens-records/`.
 | 4 | `UI-MARKUP-TOOLS` + `UI-MARKUP-MODALS` | **BLOCKED** — closure integrity + dynamic card | — | [#191](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/191) |
 | 5 | `UI-CSS-FOUNDATION` + `UI-CSS-MODES` | **CLOSED** — merged to `dev` | `c40b71a` | [#200](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/200) |
 | 6 | `UI-CSS-CONTROLS` | **CLOSED** — merged to `dev` | `3c97791` | [#202](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/202) |
-| 7 | `UI-CSS-RESULTS` | **CLOSED** — pending merge to `dev` | `63b30d2` | pending |
+| 7 | `UI-CSS-RESULTS` | **CLOSED** — merged to `dev` | `63b30d2` | [#211](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/211) |
 
 ---
 
@@ -109,8 +109,11 @@ in `docs/seven-lens-records/`.
 | **Audit commit** | `094162a` |
 | **Verified source commit** | `63b30d2` |
 | **Resolution commit** | `1b26dd1` |
+| **Closure evidence commit** | `bf311c6` |
+| **Merge commit** | `1febf4e` |
+| **PR** | [#211](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/211) |
 | **Branch** | `cursor/seven-lens-cycle-07-results-css` |
-| **Ledger** | `IN_PROGRESS` (closure attestation pending) |
+| **Ledger** | `SEVEN_LENS_REVIEWED` |
 | **Report** | `docs/seven-lens-reports/cycle-07-results-css.md` |
 | **Record** | `docs/seven-lens-records/cycle-07-results-css.json` |
 
