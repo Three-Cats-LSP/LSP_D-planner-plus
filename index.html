@@ -2635,13 +2635,15 @@ function syncTecGasMixMemory() {
 const CUFT_PER_LITRE = 0.0353147; // litres per cubic foot — SAC/cylinder conversions
 const OTU_EXPONENT = ZhlEngineBundle.OTU_EXPONENT;
 // AUDIT-UNIT:UI-ALGORITHM-SETTINGS
-function setDecoAlgorithm(model, skipSave) {
+function setDecoAlgorithm(model, skipSave, preserveSchedule) {
+  const sel = document.getElementById('algorithmSelect');
+  const prevModel = sel?.value;
+  const modelChanged = prevModel !== model;
   const isVPMB    = model === 'VPMB';
   const isVPMBGFS = model === 'VPMB_GFS';
   const isZHLCGF  = model === 'ZHLC_GF';
   const isVPM     = isVPMB || isVPMBGFS;
   // Sync dropdown
-  const sel = document.getElementById('algorithmSelect');
   if (sel) sel.value = model;
 
   // GF row label + options depend on algorithm
@@ -2711,14 +2713,16 @@ function setDecoAlgorithm(model, skipSave) {
   // Update plan panel tooltip for active algorithm
   _updatePlanPanelTip(model);
 
-  const decoRes = document.getElementById('decoResult');
-  if (decoRes) decoRes.style.display = 'none';
-  const decoTbody = document.getElementById('decoTableBody');
-  if (decoTbody) decoTbody.innerHTML = '';
-  window._lastPlan = null;
-  _lastVPMResult = null;
-  window._lastContingency = null;
-  window._lastVPMExport = null;
+  if (modelChanged && !preserveSchedule) {
+    const decoRes = document.getElementById('decoResult');
+    if (decoRes) decoRes.style.display = 'none';
+    const decoTbody = document.getElementById('decoTableBody');
+    if (decoTbody) decoTbody.innerHTML = '';
+    window._lastPlan = null;
+    _lastVPMResult = null;
+    window._lastContingency = null;
+    window._lastVPMExport = null;
+  }
 
   if (!skipSave && typeof appSettings !== 'undefined' && appSettings.save) {
     setTimeout(() => appSettings.save(false), 100);
@@ -5822,6 +5826,7 @@ function runDecoSchedule() {
   if (!window._zhlHeadless && !_contingencyRunning) {
     const inputVal = validateDecoInputs();
     if (!inputVal.ok) {
+      _clearPlannerResults();
       notifyScheduleError(inputVal.msg);
       return;
     }
@@ -5831,6 +5836,7 @@ function runDecoSchedule() {
     if (!gasVal.ok) {
       updateCcrGasValidation();
       const err0 = gasVal.errors[0];
+      _clearPlannerResults();
       notifyScheduleError(typeof err0 === 'string' ? err0 : (err0?.message || 'CCR gas configuration is invalid.'));
       return;
     }
@@ -5840,6 +5846,7 @@ function runDecoSchedule() {
     if (!domGasVal.ok) {
       updateCcrGasValidation();
       const domErr0 = domGasVal.errors[0];
+      _clearPlannerResults();
       notifyScheduleError(domErr0?.message || 'Invalid gas configuration.');
       return;
     }
@@ -5857,6 +5864,7 @@ function runDecoSchedule() {
     );
     if (!ccrVal.ok) {
       const msg = ccrVal.errors[0].message;
+      _clearPlannerResults();
       notifyScheduleError(msg);
       return;
     }
@@ -9346,9 +9354,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   _syncStopDepthPill();
   _syncStopDurPill();
-
-  _initMobilePlanView();
-  window.addEventListener('resize', _initMobilePlanView);
 
   // ── Restore env settings tab state ─────────────────────────────────
   try {

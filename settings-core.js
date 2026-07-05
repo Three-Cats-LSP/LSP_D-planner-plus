@@ -681,6 +681,10 @@ function _clearPlannerResults() {
   if (contExport) contExport.style.display = 'none';
   _clearResultSummaryStrip();
   _setGasWarningBanner('');
+  const decoBody = document.getElementById('decoTableBody');
+  if (decoBody) decoBody.innerHTML = '';
+  const contBody = document.getElementById('contingencyTableBody');
+  if (contBody) contBody.innerHTML = '';
   const totalsEl = document.getElementById('decoTotals');
   if (totalsEl) { totalsEl.innerHTML = ''; totalsEl.style.display = 'none'; }
   const _pr2 = document.getElementById('plannerResult'); if(_pr2){_pr2.style.display='none';_pr2.innerHTML='';}
@@ -744,8 +748,11 @@ function _updatePlanPanelTip(model) {
 }
 
 function setPlannerAlgo(model, btn) {
+  const prevAlgo = plannerAlgo;
   const fromView = plannerAlgo === 'rec' ? 'rec' : 'tec';
   const toView = model === 'rec' ? 'rec' : 'tec';
+  const algoChanged = prevAlgo !== model;
+  const viewChanged = fromView !== toView;
   plannerAlgo = model;
   if (model === 'VPMB' || model === 'VPMB_GFS') {
     vpmVariant = model;
@@ -765,9 +772,11 @@ function setPlannerAlgo(model, btn) {
     toggleCustomO2?.();
   } else {
     algo = 'buh';
-    setDecoAlgorithm(model, true);
+    setDecoAlgorithm(model, true, !algoChanged && !viewChanged);
   }
-  _clearPlannerResults();
+  if (algoChanged || viewChanged) {
+    _clearPlannerResults();
+  }
   if (fromView !== toView && typeof onPlannerViewSwitch === 'function') {
     onPlannerViewSwitch(fromView, toView);
   }

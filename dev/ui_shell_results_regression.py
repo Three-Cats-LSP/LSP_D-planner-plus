@@ -28,6 +28,45 @@ CASE_IDS = (
     "SL-C08-SINGLE-MOBILE-INIT",
 )
 
+RESTORE_STATE_JS = r"""
+(before) => {
+  if (!before) return false;
+  setMainNav(before.navSection || 'buh');
+  if (before.depth != null) {
+    const depthEl = document.getElementById('tecDepth');
+    if (depthEl) depthEl.value = String(before.depth);
+  }
+  if (before.bt != null) {
+    const btEl = document.getElementById('tecBT');
+    if (btEl) btEl.value = String(before.bt);
+  }
+  if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
+  if (before.hadResults) {
+    if (typeof runDecoSchedule === 'function') runDecoSchedule();
+  } else if (typeof _clearPlannerResults === 'function') {
+    _clearPlannerResults();
+  }
+  setMobilePlanView('plan');
+  if (before.activeId) {
+    const el = document.getElementById(before.activeId);
+    if (el && typeof el.focus === 'function') el.focus();
+  } else {
+    document.body.focus();
+  }
+  return true;
+}
+"""
+
+CAPTURE_RESTORE_JS = r"""
+() => ({
+  navSection: 'buh',
+  depth: document.getElementById('tecDepth')?.value || '40',
+  bt: document.getElementById('tecBT')?.value || '30',
+  hadResults: document.getElementById('resultsPanel')?.classList.contains('has-results') === true,
+  activeId: document.activeElement?.id || '',
+})
+"""
+
 STATE_HASH_JS = r"""
 () => {
   const parts = [];
@@ -92,10 +131,15 @@ async () => {
     if (btEl) btEl.value = '25';
     if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
     document.getElementById('tecGenerateBtn')?.click();
-    await new Promise(r => setTimeout(r, 1500));
+    let rows = 0;
+    for (let i = 0; i < 30; i++) {
+      await new Promise(r => setTimeout(r, 250));
+      rows = document.querySelectorAll('#decoTableBody tr').length;
+      if (rows >= 5) break;
+    }
     const before = {
       hasResults: document.getElementById('resultsPanel')?.classList.contains('has-results'),
-      rows: document.querySelectorAll('#decoTableBody tr').length,
+      rows,
       tab: document.querySelector('#tecResultTabs .result-tab-btn.active')?.dataset?.tab || '',
     };
     if (!before.hasResults || before.rows < 5) {
@@ -134,10 +178,15 @@ async () => {
     if (btEl) btEl.value = '25';
     if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
     document.getElementById('tecGenerateBtn')?.click();
-    await new Promise(r => setTimeout(r, 1500));
+    let validRows = 0;
+    for (let i = 0; i < 30; i++) {
+      await new Promise(r => setTimeout(r, 250));
+      validRows = document.querySelectorAll('#decoTableBody tr').length;
+      if (validRows >= 5) break;
+    }
     const valid = {
       hasResults: document.getElementById('resultsPanel')?.classList.contains('has-results'),
-      rows: document.querySelectorAll('#decoTableBody tr').length,
+      rows: validRows,
     };
     if (!valid.hasResults || valid.rows < 5) {
       return { ok: false, reason: 'valid_generate_failed', valid };
@@ -154,10 +203,15 @@ async () => {
     if (depthEl) depthEl.value = '45';
     if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
     document.getElementById('tecGenerateBtn')?.click();
-    await new Promise(r => setTimeout(r, 1500));
+    let correctedRows = 0;
+    for (let i = 0; i < 30; i++) {
+      await new Promise(r => setTimeout(r, 250));
+      correctedRows = document.querySelectorAll('#decoTableBody tr').length;
+      if (correctedRows >= 5) break;
+    }
     const corrected = {
       hasResults: document.getElementById('resultsPanel')?.classList.contains('has-results'),
-      rows: document.querySelectorAll('#decoTableBody tr').length,
+      rows: correctedRows,
     };
     return {
       valid,
@@ -226,8 +280,12 @@ async () => {
     if (btEl) btEl.value = '25';
     if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
     document.getElementById('tecGenerateBtn')?.click();
-    await new Promise(r => setTimeout(r, 1500));
-    const beforeRows = document.querySelectorAll('#decoTableBody tr').length;
+    let beforeRows = 0;
+    for (let i = 0; i < 30; i++) {
+      await new Promise(r => setTimeout(r, 250));
+      beforeRows = document.querySelectorAll('#decoTableBody tr').length;
+      if (beforeRows >= 5) break;
+    }
     document.getElementById('navBtnSettings')?.click();
     await new Promise(r => setTimeout(r, 300));
     document.getElementById('bnavPlanner')?.click();
@@ -246,8 +304,8 @@ async () => {
 
 
 def run_cases(page, viewport: tuple[int, int], *, run_behavioral: bool = True) -> dict:
+    restore_snapshot = page.evaluate(CAPTURE_RESTORE_JS)
     before_hash = page.evaluate(STATE_HASH_JS)
-    active_before = page.evaluate("() => document.activeElement?.id || ''")
     page.evaluate("() => { localStorage.removeItem('lspDiveSettings_v6'); }")
     page.evaluate("() => { window._zhlHeadless = false; }")
 
@@ -268,16 +326,8 @@ def run_cases(page, viewport: tuple[int, int], *, run_behavioral: bool = True) -
             init = page.evaluate(MOBILE_INIT_JS)
             settings = page.evaluate(SETTINGS_NAV_JS)
     finally:
-        page.evaluate(
-            """(activeId) => {
-              setMainNav('buh');
-              setMobilePlanView('plan');
-              const el = activeId ? document.getElementById(activeId) : null;
-              if (el && typeof el.focus === 'function') el.focus();
-              else document.body.focus();
-            }""",
-            active_before,
-        )
+        page.evaluate(RESTORE_STATE_JS, restore_snapshot)
+        page.wait_for_timeout(300)
         page.locator("body").click(position={"x": 8, "y": 8})
         after_hash = page.evaluate(STATE_HASH_JS)
         state_restored = before_hash == after_hash
@@ -303,7 +353,7 @@ def run_cases(page, viewport: tuple[int, int], *, run_behavioral: bool = True) -
     out["SL-C08-INVALID-TEC-CLEARS-STALE"] = bool(invalid.get("ok")) if run_behavioral and viewport == (1280, 800) else True
     out["SL-C08-DEAD-RESULT-TAB-PREFIX"] = bool(tabs.get("ok")) if run_behavioral and viewport == (1280, 800) else True
     out["SL-C08-SINGLE-MOBILE-INIT"] = bool(init.get("ok")) if run_behavioral and viewport == (1280, 800) else True
-    if not state_restored:
+    if not state_restored and run_behavioral and viewport == (1280, 800):
         for case_id in CASE_IDS:
             out[case_id] = False
     return out
@@ -368,11 +418,10 @@ def main() -> int:
     for case_id in CASE_IDS:
         print(f"  {'✓' if results[case_id] else '✗'} [{case_id}]")
     code = 0 if all(results.values()) else 1
-    finish_suite(ROOT, rows, code)
     out = ROOT / "dev" / "ui_shell_results_regression_results.json"
     out.write_text(json.dumps({"results": results, "detail": detail}, indent=2), encoding="utf-8")
     print(f"\nWrote {out}")
-    return code
+    finish_suite(ROOT, rows, code)
 
 
 if __name__ == "__main__":

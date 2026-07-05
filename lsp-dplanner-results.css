@@ -708,9 +708,11 @@ body.light-theme #gasWarningBanner.gas-warning-banner { background: #fff8f0; bor
 }
 @media (max-width: 640px) {
   .planner-main.visible { display: block; }
-  #planPanel:not(.mobile-active) { display: none !important; }
+  #recPlannerView:not(.mobile-active),
+  #tecPlannerView:not(.mobile-active) { display: none !important; }
   #resultsPanel:not(.mobile-active) { display: none !important; }
-  #planPanel.mobile-active,
+  #recPlannerView.mobile-active,
+  #tecPlannerView.mobile-active,
   #resultsPanel.mobile-active { display: flex !important; }
   .bottom-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 900; background: var(--surface); border-top: 1px solid var(--border-hi); padding: var(--space-2) 0; padding-bottom: calc(var(--space-2) + env(safe-area-inset-bottom, 0px)); gap: 0; }
   .bnav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: var(--space-1) 0; background: none; border: none; color: var(--text-muted); font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.04em; cursor: pointer; min-height: 56px; }

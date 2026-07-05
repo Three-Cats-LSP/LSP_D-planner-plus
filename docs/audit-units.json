@@ -143,6 +143,11 @@
         "reason": "Historical one-shot extraction merge scripts"
       },
       {
+        "pattern": "dev/seven-lens-browser-trace-c08*.json",
+        "kind": "evidence_artifact",
+        "reason": "Cycle 08 seven-lens browser trace evidence"
+      },
+      {
         "pattern": "dev/seven-lens-browser-trace-cycle*.json",
         "kind": "evidence_artifact",
         "reason": "Committed seven-lens browser trace closure evidence"
@@ -1649,7 +1654,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
+      "fingerprint": "8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -1854,7 +1859,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MODE-STATE"
       },
-      "fingerprint": "da2e3b1c7e0a0cd0295d24687060db98cbbe70213ca0a5b8a79fac47e4c07a86",
+      "fingerprint": "c1712c13e759dda756e670b980d50fab469a2e62b45e2264b728f1c03b630f1f",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1865,22 +1870,16 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ALGORITHM-SETTINGS"
       },
-      "fingerprint": "4da7413aa2308a2bc706a8ac6c388b38a6b7bcaff3579cdbc45de6dc4f4fad85",
-      "last_read_fingerprint": "4da7413aa2308a2bc706a8ac6c388b38a6b7bcaff3579cdbc45de6dc4f4fad85",
+      "fingerprint": "44b185ca600352dbb5385367ae5fe064c69ae9b4e0168e238430128cfb75425c",
+      "last_read_fingerprint": null,
       "audit_issue": 163,
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-05",
-        "COV-01"
-      ],
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Audit issue #163"
     },
     {
@@ -2092,7 +2091,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-SETUP"
       },
-      "fingerprint": "acf8ebd27782ea32db46d74b03eafb735038bda11a8b2e87cb75e36183c2ab32",
+      "fingerprint": "79c1abf3dc42d9aca0a0035bdd46ad6fe7b0253334931afdf07bbf91801648bd",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2402,21 +2401,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-APP-INIT"
       },
-      "fingerprint": "523337de99d96008bde2efa9449bfe7d9f476914cba778b17b87b31684cb7850",
-      "last_read_fingerprint": "523337de99d96008bde2efa9449bfe7d9f476914cba778b17b87b31684cb7850",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-05",
-        "COV-01"
-      ],
+      "fingerprint": "97277876c3fd7d63d7f0d9f1a5506262e39d3b5f632f0058c81c4c1291cc0eeb",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 160,
       "issue": "Audit issue #160"
     },
@@ -4939,7 +4932,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "0635e52408b487608f975a39f81306a39c055d521721d17571ad58861acf72ba",
+      "fingerprint": "34442a4721978fc0b34bd8d8e65066fb87f08ea13f91e79c8c474ccc44f31ae9",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -4953,18 +4946,13 @@
       "path": "results-panel.js",
       "layer": "ui_shell",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "b04d5d435b87a83d80e930eb67d8eb59d7a6942f4a9ba3b8bb4b3073547ada6b",
-      "last_read_fingerprint": "b04d5d435b87a83d80e930eb67d8eb59d7a6942f4a9ba3b8bb4b3073547ada6b",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity",
-        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
-        "SUITE-ENGINE-FULL/AUDIT-REG-01"
-      ],
+      "fingerprint": "5753326e01ae9dc9aad521538c749387c35a542e9d1263b0c49c8de74ef5c217",
+      "last_read_fingerprint": null,
+      "evidence": [],
       "regression_cases": [
         "COV-01",
         "PARITY-01",
@@ -5387,7 +5375,7 @@
       "evidence": [],
       "issue": "Cycle 08 UI-PLANNER-SHELL/UI-RESULTS-PANEL browser trace specification",
       "regression_cases": [],
-      "fingerprint": "28c72b12b3ed0af9988761b2f33fd9eb6a357b51b1695aa3b79c2f2c44742517",
+      "fingerprint": "641af5733dcfa89937669c5ebe0c2f606bce76aa5e98b3566701e0688a822d40",
       "last_read_fingerprint": null
     },
     {
@@ -5408,7 +5396,7 @@
         "REG-98",
         "REG-99"
       ],
-      "fingerprint": "",
+      "fingerprint": "8a9ae3b76fea2823f74cfa31e821f8b437ea7667b0510d479792509c604d0c81",
       "last_read_fingerprint": null
     },
     {

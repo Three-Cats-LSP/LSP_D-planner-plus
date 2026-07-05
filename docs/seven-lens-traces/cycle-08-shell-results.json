@@ -5,18 +5,18 @@
   "traces": [
     {
       "id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
-      "case_ids": ["SL-C08-MOBILE-PLAN-PANEL"],
-      "entry_event": "Mobile boot at 375x667; user expects planner inputs first.",
+      "case_ids": ["SL-C08-MOBILE-PANEL-EXCLUSIVE"],
+      "entry_event": "Mobile boot at 375x667; user toggles plan/results via bottom nav intent.",
       "consumer_path": [
-        "DOMContentLoaded initV3Layout -> _initMobilePlanView",
-        "setMobilePlanView('plan') -> #planPanel mobile-active toggle",
-        "lsp-dplanner-results.css #planPanel.mobile-active display flex",
-        "visible #tecPlannerView vs #resultsPanel"
+        "DOMContentLoaded initV3Layout -> _ensureMobilePlanViewBootstrap",
+        "setMobilePlanView('plan'|'results') -> #recPlannerView|#tecPlannerView + #resultsPanel mobile-active",
+        "lsp-dplanner-results.css mobile-active display flex",
+        "visible planner view vs #resultsPanel"
       ],
       "state": {
-        "selectors": ["#bnavPlanner"],
-        "restore_order": ["#bnavPlanner"],
-        "globals": []
+        "selectors": ["#bnavPlanner", "#tecGenerateBtn"],
+        "restore_order": ["#bnavPlanner", "#tecGenerateBtn"],
+        "globals": ["_zhlHeadless"]
       },
       "setup": [
         {"action": "set_viewport", "size": {"width": 375, "height": 667}},
@@ -24,7 +24,8 @@
           "action": "run_script",
           "setup_only_reason": "Clear persisted settings for stable boot.",
           "script": "() => { localStorage.removeItem('lspDiveSettings_v6'); }"
-        }
+        },
+        {"action": "set_global", "name": "_zhlHeadless", "value": false}
       ],
       "steps": [
         {
@@ -39,7 +40,7 @@
         {
           "capture": "canonical",
           "values": {
-            "set_mobile_noop": "(() => { const before = document.getElementById('resultsPanel')?.classList.contains('mobile-active'); if (typeof setMobilePlanView === 'function') setMobilePlanView('plan'); const after = document.getElementById('resultsPanel')?.classList.contains('mobile-active'); return before === after && before === true; })()"
+            "set_mobile_works": "(() => { if (typeof setMobilePlanView !== 'function') return false; setMobilePlanView('results'); const resultsOn = document.getElementById('resultsPanel')?.classList.contains('mobile-active'); setMobilePlanView('plan'); const planOn = document.getElementById('tecPlannerView')?.classList.contains('mobile-active'); return resultsOn && planOn; })()"
           }
         },
         {
@@ -52,31 +53,31 @@
         {
           "capture": "observable",
           "values": {
-            "both_visible": "(() => { const t = getComputedStyle(document.getElementById('tecPlannerView')).display; const r = getComputedStyle(document.getElementById('resultsPanel')).display; return t !== 'none' && r !== 'none'; })()"
+            "exclusive_plan": "(() => { if (typeof setMobilePlanView === 'function') setMobilePlanView('plan'); const t = getComputedStyle(document.getElementById('tecPlannerView')).display; const r = getComputedStyle(document.getElementById('resultsPanel')).display; return t !== 'none' && r === 'none'; })()"
           }
         }
       ],
       "assertions": [
         {"id": "no-plan-panel", "left": "$.before.plan_panel_exists", "op": "equal", "right": false},
-        {"id": "both-mobile-active", "left": "$.before.tec_mobile_active", "op": "equal", "right": true},
-        {"id": "set-mobile-noop", "left": "$.canonical.set_mobile_noop", "op": "equal", "right": true},
-        {"id": "dual-visible", "left": "$.observable.both_visible", "op": "equal", "right": true}
+        {"id": "plan-boot-active", "left": "$.before.tec_mobile_active", "op": "equal", "right": true},
+        {"id": "set-mobile-works", "left": "$.canonical.set_mobile_works", "op": "equal", "right": true},
+        {"id": "exclusive-plan-view", "left": "$.observable.exclusive_plan", "op": "equal", "right": true}
       ]
     },
     {
       "id": "SL-C08-NAV-CLEARS-RESULTS-TRACE",
-      "case_ids": ["SL-C08-NAV-CLEARS-RESULTS"],
+      "case_ids": ["SL-C08-NAV-PRESERVES-RESULTS"],
       "entry_event": "User generates TEC schedule then navigates Tools and back to Planner.",
       "consumer_path": [
         "#tecGenerateBtn click",
         "_renderResultSummaryStrip -> #resultsPanel.has-results",
         "#navBtnTools click -> setNavMode('tools')",
-        "#bnavPlanner click -> setNavMode('planner') -> setPlannerAlgo -> _clearPlannerResults",
-        "#decoTableBody row count"
+        "#bnavPlanner click -> setNavMode('planner') without schedule reset",
+        "#decoTableBody row count preserved"
       ],
       "state": {
-        "selectors": ["#navBtnBuh", "#tecGenerateBtn", "#navBtnTools", "#bnavPlanner"],
-        "restore_order": ["#bnavPlanner", "#navBtnTools", "#tecGenerateBtn", "#navBtnBuh"],
+        "selectors": ["#navBtnBuh", "#tecGenerateBtn", "#navBtnTools"],
+        "restore_order": ["#navBtnTools", "#tecGenerateBtn", "#navBtnBuh"],
         "globals": ["_zhlHeadless"]
       },
       "setup": [
@@ -104,7 +105,7 @@
           }
         },
         {"action": "click", "selector": "#navBtnTools", "delay_ms": 300},
-        {"action": "click", "selector": "#bnavPlanner", "delay_ms": 500},
+        {"action": "click", "selector": "#navBtnBuh", "delay_ms": 500},
         {
           "capture": "consumer",
           "values": {
@@ -116,16 +117,125 @@
         {
           "capture": "observable",
           "values": {
-            "cleared": "(() => { const h = document.getElementById('resultsPanel')?.classList.contains('has-results'); const r = document.querySelectorAll('#decoTableBody tr').length; return !h && r === 0; })()"
+            "preserved": "(() => { const h = document.getElementById('resultsPanel')?.classList.contains('has-results'); const r = document.querySelectorAll('#decoTableBody tr').length; return h && r > 0; })()"
           }
         }
       ],
       "assertions": [
         {"id": "had-results", "left": "$.before.has_results", "op": "equal", "right": true},
         {"id": "had-rows", "left": "$.before.row_count", "op": "not_equal", "right": 0},
-        {"id": "cleared-flag", "left": "$.consumer.has_after", "op": "equal", "right": false},
-        {"id": "cleared-rows", "left": "$.consumer.rows_after", "op": "equal", "right": 0},
+        {"id": "kept-flag", "left": "$.consumer.has_after", "op": "equal", "right": true},
+        {"id": "kept-rows", "left": "$.consumer.rows_after", "op": "not_equal", "right": 0},
+        {"id": "observable-preserved", "left": "$.observable.preserved", "op": "equal", "right": true}
+      ]
+    },
+    {
+      "id": "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE",
+      "case_ids": ["SL-C08-INVALID-TEC-CLEARS-STALE"],
+      "entry_event": "Valid TEC generate then invalid depth submitted through Generate.",
+      "consumer_path": [
+        "#tecGenerateBtn valid click -> has-results + schedule rows",
+        "invalid depth #tecGenerateBtn click",
+        "validateDecoInputs fail -> _clearPlannerResults",
+        "notifyScheduleError toast",
+        "corrected generate restores fresh rows"
+      ],
+      "state": {
+        "selectors": ["#navBtnBuh", "#tecGenerateBtn"],
+        "restore_order": ["#tecGenerateBtn", "#navBtnBuh"],
+        "globals": ["_zhlHeadless"]
+      },
+      "setup": [
+        {"action": "set_viewport", "size": {"width": 1280, "height": 800}},
+        {"action": "click", "selector": "#navBtnBuh"},
+        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+        {
+          "action": "run_script",
+          "setup_only_reason": "Preset depth/BT before visible generate.",
+          "script": "() => { document.getElementById('tecDepth').value = '45'; document.getElementById('tecBT').value = '25'; if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers(); }"
+        },
+        {"action": "click", "selector": "#tecGenerateBtn", "delay_ms": 1500},
+        {
+          "action": "run_script",
+          "setup_only_reason": "Wait for valid schedule rows before invalid-input probe.",
+          "script": "() => new Promise(r => { let n = 0; const t = setInterval(() => { if (document.querySelectorAll('#decoTableBody tr').length >= 5 || ++n > 40) { clearInterval(t); r(true); } }, 250); })"
+        },
+        {
+          "action": "run_script",
+          "setup_only_reason": "Preset invalid depth for the visible Generate rejection path.",
+          "script": "() => { document.getElementById('tecDepth').value = '999'; if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers(); }"
+        }
+      ],
+      "steps": [
+        {
+          "capture": "before",
+          "values": {
+            "rows_valid": "document.querySelectorAll('#decoTableBody tr').length",
+            "has_results": "document.getElementById('resultsPanel')?.classList.contains('has-results') === true"
+          }
+        },
+        {"action": "click", "selector": "#tecGenerateBtn", "delay_ms": 800},
+        {
+          "capture": "consumer",
+          "values": {
+            "has_after_invalid": "document.getElementById('resultsPanel')?.classList.contains('has-results') === true",
+            "rows_after_invalid": "document.querySelectorAll('#decoTableBody tr').length"
+          }
+        },
+        {
+          "capture": "observable",
+          "values": {
+            "cleared": "(() => { const h = document.getElementById('resultsPanel')?.classList.contains('has-results'); const r = document.querySelectorAll('#decoTableBody tr').length; return !h && r === 0; })()"
+          }
+        }
+      ],
+      "assertions": [
+        {"id": "valid-rows", "left": "$.before.rows_valid", "op": "not_equal", "right": 0},
+        {"id": "cleared-flag", "left": "$.consumer.has_after_invalid", "op": "equal", "right": false},
+        {"id": "cleared-rows", "left": "$.consumer.rows_after_invalid", "op": "equal", "right": 0},
         {"id": "observable-cleared", "left": "$.observable.cleared", "op": "equal", "right": true}
+      ]
+    },
+    {
+      "id": "SL-C08-SINGLE-MOBILE-INIT-TRACE",
+      "case_ids": ["SL-C08-SINGLE-MOBILE-INIT"],
+      "entry_event": "Repeated layout bootstrap must not duplicate mobile init listeners.",
+      "consumer_path": [
+        "initV3Layout -> _ensureMobilePlanViewBootstrap",
+        "window._mobilePlanViewBootstrapDone guard",
+        "resize listener registered once",
+        "repeat initV3Layout no-op"
+      ],
+      "state": {
+        "selectors": ["#bnavPlanner"],
+        "restore_order": ["#bnavPlanner"],
+        "globals": []
+      },
+      "setup": [
+        {"action": "set_viewport", "size": {"width": 375, "height": 667}}
+      ],
+      "steps": [
+        {
+          "capture": "before",
+          "values": {
+            "bootstrap_done": "window._mobilePlanViewBootstrapDone === true",
+            "uses_ensure": "typeof initV3Layout === 'function' && initV3Layout.toString().includes('_ensureMobilePlanViewBootstrap')"
+          }
+        },
+        {"action": "click", "selector": "#bnavPlanner", "delay_ms": 300},
+        {
+          "capture": "observable",
+          "values": {
+            "still_single": "window._mobilePlanViewBootstrapDone === true",
+            "plan_active": "document.getElementById('tecPlannerView')?.classList.contains('mobile-active') === true"
+          }
+        }
+      ],
+      "assertions": [
+        {"id": "bootstrap-on-boot", "left": "$.before.bootstrap_done", "op": "equal", "right": true},
+        {"id": "ensure-in-layout", "left": "$.before.uses_ensure", "op": "equal", "right": true},
+        {"id": "repeat-idempotent", "left": "$.observable.still_single", "op": "equal", "right": true},
+        {"id": "planner-view-active", "left": "$.observable.plan_active", "op": "equal", "right": true}
       ]
     }
   ]

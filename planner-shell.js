@@ -84,7 +84,8 @@ function setNavMode(mode) {
   if (mode === 'planner') {
     document.getElementById('bnavPlanner')?.classList.add('active');
     setMobilePlanView('plan');
-    setPlannerAlgo(plannerAlgo);
+    _updatePlanPanelSections();
+    _updatePlannerSubtitle();
     return;
   }
   if (mode === 'tools') {
@@ -182,5 +183,5 @@ function initV3Layout() {
   _syncCircuitBtns();
   _syncDepthBtSteppers();
   _updatePlanPanelSections();
-  _initMobilePlanView();
+  _ensureMobilePlanViewBootstrap();
 }
