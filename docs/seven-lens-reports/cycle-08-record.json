@@ -329,9 +329,9 @@
       "unit_id": "UI-PLANNER-SHELL",
       "path": "planner-shell.js",
       "start_line": 1,
-      "end_line": 186,
-      "line_count": 186,
-      "content_fingerprint": "0635e52408b487608f975a39f81306a39c055d521721d17571ad58861acf72ba",
+      "end_line": 187,
+      "line_count": 187,
+      "content_fingerprint": "34442a4721978fc0b34bd8d8e65066fb87f08ea13f91e79c8c474ccc44f31ae9",
       "review_session": "C08-A",
       "verification_session": "",
       "lens_results": {
@@ -407,9 +407,9 @@
       "unit_id": "UI-RESULTS-PANEL",
       "path": "results-panel.js",
       "start_line": 1,
-      "end_line": 301,
-      "line_count": 301,
-      "content_fingerprint": "b04d5d435b87a83d80e930eb67d8eb59d7a6942f4a9ba3b8bb4b3073547ada6b",
+      "end_line": 313,
+      "line_count": 313,
+      "content_fingerprint": "5753326e01ae9dc9aad521538c749387c35a542e9d1263b0c49c8de74ef5c217",
       "review_session": "C08-A",
       "verification_session": "",
       "lens_results": {
@@ -653,8 +653,56 @@
     "lsp-dplanner-results.css",
     "dev/ui_shell_results_regression.py",
     "docs/seven-lens-traces/cycle-08-shell-results.json",
-    "docs/audit-units.json"
+    "docs/audit-units.json",
+    "dev/seven-lens-evidence-c08-ER-C08-BASELINE-SHELL.json",
+    "dev/seven-lens-evidence-c08-ER-C08-POST-SHELL.json",
+    "dev/seven-lens-evidence-c08-ER-C08-TRACE.json",
+    "dev/seven-lens-browser-trace-c08-post-fix.json"
   ],
   "audit_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
-  "notes": "C08-A single session; 487 canonical lines across UI-PLANNER-SHELL and UI-RESULTS-PANEL."
+  "notes": "C08-A single session; 500 canonical lines across UI-PLANNER-SHELL (187) and UI-RESULTS-PANEL (313). Cross-unit edits invalidate Cycle 7 CSS ledger review and expand Cycle 9/24 declared budgets.",
+  "cross_unit_changed_paths": [
+    "settings-core.js",
+    "index.html",
+    "lsp-dplanner-results.css"
+  ],
+  "invalidation_notes": [
+    {
+      "unit_id": "UI-CSS-RESULTS",
+      "source_cycle": 7,
+      "invalidated_by_cycle": 8,
+      "path": "lsp-dplanner-results.css",
+      "reason": "Cycle 8 mobile plan/results CSS retargeted from removed #planPanel to #recPlannerView/#tecPlannerView; reviewed fingerprint 1800c05b\u2026 differs from registry fingerprint 8f342e7b\u2026.",
+      "ledger_action": "SEVEN_LENS_REVIEWED -> IN_PROGRESS",
+      "verifier_requirement": "Cycle 8 VERIFIER must re-review the complete CSS unit in two <=600-line sessions before restoring SEVEN_LENS_REVIEWED."
+    },
+    {
+      "unit_id": "UI-ENVIRONMENT",
+      "source_cycle": 9,
+      "invalidated_by_cycle": 8,
+      "path": "settings-core.js",
+      "reason": "Cycle 8 setPlannerAlgo/_clearPlannerResults changes touch settings-core.js; Cycle 9 application bundle is now 1001 lines and requires >=2 bounded review sessions."
+    },
+    {
+      "unit_id": "UI-MODE-STATE",
+      "source_cycle": 9,
+      "invalidated_by_cycle": 8,
+      "path": "settings-core.js",
+      "reason": "Cycle 8 navigation and result-clearing logic changed in UI-MODE-STATE marker region; unit remains IN_PROGRESS pending Cycle 9 READ."
+    },
+    {
+      "unit_id": "UI-ALGORITHM-SETTINGS",
+      "source_cycle": 24,
+      "invalidated_by_cycle": 8,
+      "path": "index.html",
+      "reason": "Cycle 8 setDecoAlgorithm preserveSchedule and runDecoSchedule validation clearing changed UI-ALGORITHM-SETTINGS marker region; Cycle 24 bundle is now 678 lines and requires >=2 bounded review sessions."
+    },
+    {
+      "unit_id": "UI-SETTINGS-CONTROLS",
+      "source_cycle": 24,
+      "invalidated_by_cycle": 8,
+      "path": "index.html",
+      "reason": "Cycle 8 index.html bootstrap removed duplicate mobile init; downstream Cycle 24 review must account for the updated settings/shell contract."
+    }
+  ]
 }

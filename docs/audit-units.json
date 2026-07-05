@@ -5524,13 +5524,14 @@
     },
     {
       "cycle": 9,
-      "max_new_application_lines": 992,
+      "max_new_application_lines": 1001,
+      "min_review_sessions": 2,
       "application_units": [
         "UI-ENVIRONMENT",
         "UI-MODE-STATE"
       ],
       "engine_reverification": [],
-      "acceptance": "settings-core environment and mode state READ"
+      "acceptance": "settings-core environment and mode state READ (1001 lines; >=2 bounded sessions)"
     },
     {
       "cycle": 10,
@@ -5680,13 +5681,14 @@
     },
     {
       "cycle": 24,
-      "max_new_application_lines": 674,
+      "max_new_application_lines": 678,
+      "min_review_sessions": 2,
       "application_units": [
         "UI-ALGORITHM-SETTINGS",
         "UI-SETTINGS-CONTROLS"
       ],
       "engine_reverification": [],
-      "acceptance": "Algorithm and settings controls READ"
+      "acceptance": "Algorithm and settings controls READ (678 lines; >=2 bounded sessions)"
     },
     {
       "cycle": 25,

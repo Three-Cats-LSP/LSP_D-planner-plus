@@ -459,13 +459,21 @@
     },
     {
       "unit_id": "UI-CSS-RESULTS",
-      "review_status": "SEVEN_LENS_REVIEWED",
+      "review_status": "IN_PROGRESS",
       "cycle_id": "SL-C07",
       "boundary": "lsp-dplanner-results.css whole file (931 lines; parts P01-P02)",
       "reviewer": "Cursor GPT-5.5 Medium",
       "review_session": "C07-A / C07-B",
       "verification_session": "C07-V-A / C07-V-B",
       "verification_status": "PASSED",
+      "dependency_invalidation": {
+        "invalidated_by_cycle": 8,
+        "invalidated_at_commit": "9240e20",
+        "reason": "Cycle 8 mobile panel CSS retargeted from removed #planPanel to #recPlannerView/#tecPlannerView; registry fingerprint no longer matches the Cycle 7 reviewed fingerprint.",
+        "reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
+        "current_fingerprint": "8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49"
+      },
+      "verifier_requirement": "Cycle 8 VERIFIER must re-review the complete lsp-dplanner-results.css unit in two <=600-line sessions (P01 1-500, P02 501-EOF) before restoring SEVEN_LENS_REVIEWED.",
       "findings_open": [],
       "findings_closed": [
         "SL-C07-M-01",
@@ -511,6 +519,56 @@
       "parts": {
         "P01": "lsp-dplanner-results.css:1-500",
         "P02": "lsp-dplanner-results.css:501-931"
+      }
+    },
+    {
+      "unit_id": "UI-PLANNER-SHELL",
+      "review_status": "IN_PROGRESS",
+      "cycle_id": "SL-C08",
+      "boundary": "planner-shell.js whole file (187 lines)",
+      "reviewer": "Cursor FIXER Cycle 08",
+      "review_session": "C08-A",
+      "verification_status": "PENDING",
+      "findings_open": [
+        "SL-C08-H-02",
+        "SL-C08-L-02"
+      ],
+      "findings_closed": [],
+      "reviewed_fingerprint": "34442a4721978fc0b34bd8d8e65066fb87f08ea13f91e79c8c474ccc44f31ae9",
+      "verified_source_commit": "",
+      "verification_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
+      "finding_ids": [
+        "SL-C08-H-02",
+        "SL-C08-L-02"
+      ],
+      "parts": {
+        "P01": "planner-shell.js:1-187"
+      }
+    },
+    {
+      "unit_id": "UI-RESULTS-PANEL",
+      "review_status": "IN_PROGRESS",
+      "cycle_id": "SL-C08",
+      "boundary": "results-panel.js whole file (313 lines)",
+      "reviewer": "Cursor FIXER Cycle 08",
+      "review_session": "C08-A",
+      "verification_status": "PENDING",
+      "findings_open": [
+        "SL-C08-H-01",
+        "SL-C08-M-01",
+        "SL-C08-L-01"
+      ],
+      "findings_closed": [],
+      "reviewed_fingerprint": "5753326e01ae9dc9aad521538c749387c35a542e9d1263b0c49c8de74ef5c217",
+      "verified_source_commit": "",
+      "verification_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
+      "finding_ids": [
+        "SL-C08-H-01",
+        "SL-C08-M-01",
+        "SL-C08-L-01"
+      ],
+      "parts": {
+        "P01": "results-panel.js:1-313"
       }
     }
   ]

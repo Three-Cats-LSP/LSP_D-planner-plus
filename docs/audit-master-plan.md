@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v3-full-reset`
-**Units:** 196 total; 0 unread; 70 in progress; 1 read; 125 verified.
+**Units:** 198 total; 0 unread; 75 in progress; 1 read; 122 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -36,9 +36,9 @@
 | 4 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 612 | - | Tools and modals markup partials READ |
 | 5 | UI-CSS-FOUNDATION, UI-CSS-MODES | 756 | - | Foundation and modes CSS READ |
 | 6 | UI-CSS-CONTROLS | 548 | - | Controls CSS READ |
-| 7 | UI-CSS-RESULTS | 888 | - | Results CSS READ |
-| 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 487 | - | Planner shell and results panel READ |
-| 9 | UI-ENVIRONMENT, UI-MODE-STATE | 992 | - | settings-core environment and mode state READ |
+| 7 | UI-CSS-RESULTS | 890 | - | Results CSS READ |
+| 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 500 | - | Planner shell and results panel READ |
+| 9 | UI-ENVIRONMENT, UI-MODE-STATE | 1001 | - | settings-core environment and mode state READ (1001 lines; >=2 bounded sessions) |
 | 10 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 679 | - | Surface interval and gas table cores READ |
 | 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 516 | ENG-ZHL-GAS | Gas card UI READ |
 | 12 | APP-GAS-PLAN | 546 | - | Gas plan core READ |
@@ -49,11 +49,11 @@
 | 17 | UI-VPM-RENDER, UI-ZHL-RESULTS | 1064 | - | results-render-core READ |
 | 18 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 511 | ENG-ZHL-SCHEDULE | ZHL/CCR delegate thin layer READ |
 | 19 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 597 | ENG-ZHL-CCR | Deco physics and schedule inputs READ |
-| 20 | UI-ZHL-RUNNER-SETUP, UI-ZHL-RUNNER-ENGINE | 479 | ENG-ZHL-SCHEDULE | ZHL runner setup and engine invocation READ |
+| 20 | UI-ZHL-RUNNER-SETUP, UI-ZHL-RUNNER-ENGINE | 483 | ENG-ZHL-SCHEDULE | ZHL runner setup and engine invocation READ |
 | 21 | UI-ZHL-HEADLESS-HELPERS, UI-ZHL-HEADLESS-ENGINE | 588 | - | Headless ZHL path READ |
 | 22 | UI-VPM-RUNNER | 473 | ENG-VPM | VPM runner READ |
-| 23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 393 | - | Runtime bootstrap and app init READ |
-| 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 674 | - | Algorithm and settings controls READ |
+| 23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 390 | - | Runtime bootstrap and app init READ |
+| 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 678 | - | Algorithm and settings controls READ (678 lines; >=2 bounded sessions) |
 | 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1281 | - | Settings persistence and unit helpers READ |
 | 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 851 | - | Tools panels READ |
 | 27 | UI-PROFILE-PRESETS | 506 | - | Dive profile presets READ (depth/BT/mode ownership) |
