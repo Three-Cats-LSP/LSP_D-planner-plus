@@ -1374,6 +1374,62 @@
       ]
     },
     {
+      "id": "SL-C08-H-01",
+      "unit_id": "UI-RESULTS-PANEL",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "issue": "Seven-lens Cycle 08 planner shell and results panel audit",
+      "summary": "setMobilePlanView targets removed #planPanel; mobile plan/results toggle is a no-op and both panels stay visible",
+      "affected_units": [
+        "UI-RESULTS-PANEL",
+        "UI-PLANNER-SHELL"
+      ]
+    },
+    {
+      "id": "SL-C08-H-02",
+      "unit_id": "UI-PLANNER-SHELL",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "issue": "Seven-lens Cycle 08 planner shell and results panel audit",
+      "summary": "setNavMode(planner) re-invokes setPlannerAlgo and clears valid results on Tools/Settings return",
+      "affected_units": [
+        "UI-PLANNER-SHELL"
+      ]
+    },
+    {
+      "id": "SL-C08-M-01",
+      "unit_id": "UI-RESULTS-PANEL",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "issue": "Seven-lens Cycle 08 planner shell and results panel audit",
+      "summary": "Invalid TEC generate leaves prior has-results metrics and schedule rows authoritative",
+      "affected_units": [
+        "UI-RESULTS-PANEL"
+      ]
+    },
+    {
+      "id": "SL-C08-L-01",
+      "unit_id": "UI-RESULTS-PANEL",
+      "severity": "LOW",
+      "status": "OPEN",
+      "issue": "Seven-lens Cycle 08 planner shell and results panel audit",
+      "summary": "Dead prefix assignment in switchResultTab; LSP_V4_SPLIT_PROFILE_SCHEDULE unused",
+      "affected_units": [
+        "UI-RESULTS-PANEL"
+      ]
+    },
+    {
+      "id": "SL-C08-L-02",
+      "unit_id": "UI-PLANNER-SHELL",
+      "severity": "LOW",
+      "status": "OPEN",
+      "issue": "Seven-lens Cycle 08 planner shell and results panel audit",
+      "summary": "initV3Layout and DOMContentLoaded both call _initMobilePlanView",
+      "affected_units": [
+        "UI-PLANNER-SHELL"
+      ]
+    },
+    {
       "id": "SL-C03-H-01",
       "unit_id": "UI-MARKUP-CONSUMPTION",
       "severity": "HIGH",
@@ -5291,6 +5347,21 @@
       "issue": "Cycle 07 UI-CSS-RESULTS browser trace specification",
       "regression_cases": [],
       "fingerprint": "de00b3b9b1c34e41f0e45f71e8dffe0421f1bb49f82f4be78f00da8d882b1cb0",
+      "last_read_fingerprint": null
+    },
+    {
+      "id": "TEST-SEVEN-LENS-CYCLE08-TRACE",
+      "path": "docs/seven-lens-traces/cycle-08-shell-results.json",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Cycle 08 UI-PLANNER-SHELL/UI-RESULTS-PANEL browser trace specification",
+      "regression_cases": [],
+      "fingerprint": "28c72b12b3ed0af9988761b2f33fd9eb6a357b51b1695aa3b79c2f2c44742517",
       "last_read_fingerprint": null
     },
     {

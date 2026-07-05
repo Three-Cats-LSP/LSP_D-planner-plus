@@ -1,0 +1,132 @@
+{
+  "schema_version": 3,
+  "repeat": 2,
+  "cycle": 8,
+  "traces": [
+    {
+      "id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
+      "case_ids": ["SL-C08-MOBILE-PLAN-PANEL"],
+      "entry_event": "Mobile boot at 375x667; user expects planner inputs first.",
+      "consumer_path": [
+        "DOMContentLoaded initV3Layout -> _initMobilePlanView",
+        "setMobilePlanView('plan') -> #planPanel mobile-active toggle",
+        "lsp-dplanner-results.css #planPanel.mobile-active display flex",
+        "visible #tecPlannerView vs #resultsPanel"
+      ],
+      "state": {
+        "selectors": ["#bnavPlanner"],
+        "restore_order": ["#bnavPlanner"],
+        "globals": []
+      },
+      "setup": [
+        {"action": "set_viewport", "size": {"width": 375, "height": 667}},
+        {
+          "action": "run_script",
+          "setup_only_reason": "Clear persisted settings for stable boot.",
+          "script": "() => { localStorage.removeItem('lspDiveSettings_v6'); }"
+        }
+      ],
+      "steps": [
+        {
+          "capture": "before",
+          "values": {
+            "plan_panel_exists": "!!document.getElementById('planPanel')",
+            "tec_mobile_active": "document.getElementById('tecPlannerView')?.classList.contains('mobile-active') === true",
+            "results_mobile_active": "document.getElementById('resultsPanel')?.classList.contains('mobile-active') === true"
+          }
+        },
+        {"action": "click", "selector": "#bnavPlanner", "delay_ms": 300},
+        {
+          "capture": "canonical",
+          "values": {
+            "set_mobile_noop": "(() => { const before = document.getElementById('resultsPanel')?.classList.contains('mobile-active'); if (typeof setMobilePlanView === 'function') setMobilePlanView('plan'); const after = document.getElementById('resultsPanel')?.classList.contains('mobile-active'); return before === after && before === true; })()"
+          }
+        },
+        {
+          "capture": "consumer",
+          "values": {
+            "tec_display": "getComputedStyle(document.getElementById('tecPlannerView')).display",
+            "results_display": "getComputedStyle(document.getElementById('resultsPanel')).display"
+          }
+        },
+        {
+          "capture": "observable",
+          "values": {
+            "both_visible": "(() => { const t = getComputedStyle(document.getElementById('tecPlannerView')).display; const r = getComputedStyle(document.getElementById('resultsPanel')).display; return t !== 'none' && r !== 'none'; })()"
+          }
+        }
+      ],
+      "assertions": [
+        {"id": "no-plan-panel", "left": "$.before.plan_panel_exists", "op": "equal", "right": false},
+        {"id": "both-mobile-active", "left": "$.before.tec_mobile_active", "op": "equal", "right": true},
+        {"id": "set-mobile-noop", "left": "$.canonical.set_mobile_noop", "op": "equal", "right": true},
+        {"id": "dual-visible", "left": "$.observable.both_visible", "op": "equal", "right": true}
+      ]
+    },
+    {
+      "id": "SL-C08-NAV-CLEARS-RESULTS-TRACE",
+      "case_ids": ["SL-C08-NAV-CLEARS-RESULTS"],
+      "entry_event": "User generates TEC schedule then navigates Tools and back to Planner.",
+      "consumer_path": [
+        "#tecGenerateBtn click",
+        "_renderResultSummaryStrip -> #resultsPanel.has-results",
+        "#navBtnTools click -> setNavMode('tools')",
+        "#bnavPlanner click -> setNavMode('planner') -> setPlannerAlgo -> _clearPlannerResults",
+        "#decoTableBody row count"
+      ],
+      "state": {
+        "selectors": ["#navBtnBuh", "#tecGenerateBtn", "#navBtnTools", "#bnavPlanner"],
+        "restore_order": ["#bnavPlanner", "#navBtnTools", "#tecGenerateBtn", "#navBtnBuh"],
+        "globals": ["_zhlHeadless"]
+      },
+      "setup": [
+        {"action": "set_viewport", "size": {"width": 1280, "height": 800}},
+        {
+          "action": "run_script",
+          "setup_only_reason": "Clear persisted settings for stable generate.",
+          "script": "() => { localStorage.removeItem('lspDiveSettings_v6'); }"
+        },
+        {"action": "click", "selector": "#navBtnBuh"},
+        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+        {
+          "action": "run_script",
+          "setup_only_reason": "Preset depth/BT before visible generate.",
+          "script": "() => { document.getElementById('tecDepth').value = '45'; document.getElementById('tecBT').value = '25'; if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers(); }"
+        }
+      ],
+      "steps": [
+        {"action": "click", "selector": "#tecGenerateBtn", "delay_ms": 1500},
+        {
+          "capture": "before",
+          "values": {
+            "has_results": "document.getElementById('resultsPanel')?.classList.contains('has-results') === true",
+            "row_count": "document.querySelectorAll('#decoTableBody tr').length"
+          }
+        },
+        {"action": "click", "selector": "#navBtnTools", "delay_ms": 300},
+        {"action": "click", "selector": "#bnavPlanner", "delay_ms": 500},
+        {
+          "capture": "consumer",
+          "values": {
+            "has_after": "document.getElementById('resultsPanel')?.classList.contains('has-results') === true",
+            "rows_after": "document.querySelectorAll('#decoTableBody tr').length",
+            "deco_display": "document.getElementById('decoResult')?.style.display || ''"
+          }
+        },
+        {
+          "capture": "observable",
+          "values": {
+            "cleared": "(() => { const h = document.getElementById('resultsPanel')?.classList.contains('has-results'); const r = document.querySelectorAll('#decoTableBody tr').length; return !h && r === 0; })()"
+          }
+        }
+      ],
+      "assertions": [
+        {"id": "had-results", "left": "$.before.has_results", "op": "equal", "right": true},
+        {"id": "had-rows", "left": "$.before.row_count", "op": "not_equal", "right": 0},
+        {"id": "cleared-flag", "left": "$.consumer.has_after", "op": "equal", "right": false},
+        {"id": "cleared-rows", "left": "$.consumer.rows_after", "op": "equal", "right": 0},
+        {"id": "observable-cleared", "left": "$.observable.cleared", "op": "equal", "right": true}
+      ]
+    }
+  ]
+}

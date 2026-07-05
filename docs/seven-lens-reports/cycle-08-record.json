@@ -1,0 +1,563 @@
+{
+  "schema_version": 5,
+  "cycle": 8,
+  "record_path": "docs/seven-lens-reports/cycle-08-record.json",
+  "target_branch": "dev",
+  "integration_base_commit": "c63dcaf2e9a29f1ff1e179e6c6195ca6fc15452b",
+  "baseline_commit": "c63dcaf2e9a29f1ff1e179e6c6195ca6fc15452b",
+  "baseline_registry_fingerprint": "166f5bade23e1c3b7033e13189c9e758397ba7a0052e4f25b44c1f5e75c96eb2",
+  "baseline_findings": [
+    {
+      "id": "SL-C02-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes."
+    },
+    {
+      "id": "SL-C02-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Travel manual depth limits disagree between markup, metric restore, and imperial mode."
+    },
+    {
+      "id": "SL-C02-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Rounded display values become canonical physical inputs; Best Mix and CNS now reproduce the same unit-roundtrip drift."
+    },
+    {
+      "id": "SL-C02-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Min-deco regression checks an adapter property rather than observable schedule behavior."
+    },
+    {
+      "id": "SL-C02-M-06",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle history allowed unresolved findings and a blocked prior record to be deleted or rewritten as passed."
+    },
+    {
+      "id": "SL-C03-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits."
+    },
+    {
+      "id": "SL-C03-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle 3 regressions compare rounded outputs and restore values before units, masking physical-depth drift and corrupting test state."
+    },
+    {
+      "id": "SL-C03-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling."
+    },
+    {
+      "id": "SL-C04-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Depth and cylinder edits after a unit switch leave canonical data-depth-m/data-volume-l stale, so consumers use old values and the next switch discards the edit."
+    },
+    {
+      "id": "SL-C04-H-03",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Cycles 2-4 are marked reviewed although their protocol records fail closure and Cycle 4 has no evidence runs for five closed findings."
+    },
+    {
+      "id": "SL-C04-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle regression setup leaks canonical DOM and settings state, making the full engine suite order-dependent and leaving two contingency cases failing."
+    },
+    {
+      "id": "SL-C04-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Browser trace evidence could pass forced or vacuous single-run checks without proving a real interactive consumer path."
+    },
+    {
+      "id": "SL-C04-H-04",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Closure evidence was materialized from constants instead of executed commands, allowing fabricated exit codes, cleanliness claims, and unrelated trace reuse."
+    },
+    {
+      "id": "SL-C04-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "A dynamic deco cylinder created in imperial mode defaults to 0.4 ft3 while retaining min 1 and step 0.5, making its initial value invalid."
+    },
+    {
+      "id": "SL-C04-H-05",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "planPanelTecSection is nested inside an unclosed planPanelRecSection, leaving gas and technical planner controls hidden in every planner mode."
+    },
+    {
+      "id": "ISSUE-133-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 4C/5H/8M/8L remediated; gated in audit.py issue133 block and engine_regression issue133 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-134-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 1C/4H/7M/7L remediated; gated in audit.py issue134 block and engine_regression issue134 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-135-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 10H/10M/1L remediated; gated in audit.py issue135 block and engine_regression issue135 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-136-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "extract_ui_cores.py uses LSP-EXTRACT marker contract; verified by audit.py and tools/extract_ui_cores.py [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-137-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in 51f95ac; gated in audit.py and engine_regression issue137 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-138-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in fcfb6c4 (v2.53.04); gated in audit.py and engine_regression issue138 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-139-ROLLUP",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "All 3L fixed; #138 40/40 re-verified on 1271d1a; gated in audit.py and engine_regression issue139 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-140-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Surface interval gas/GF kinetics, pooled gas-plan turn pressure, audit case-ID validation, SW cache waitUntil, Android compile gate, coverage self-tests, FileProvider scope, workspace hash drift"
+    },
+    {
+      "id": "ISSUE-141-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "pSCR diluent bypass from computePSCRFractions, resolveCcrSacForGas removed, invalid trimix getN2Frac returns null"
+    },
+    {
+      "id": "REGRESSION-GF-CCR-FIX",
+      "severity": "CRITICAL",
+      "status": "CLOSED",
+      "summary": "GF pre-anchor and CCR endpoint corrected; verification requires REG-06 and REG-07 in the current release run"
+    },
+    {
+      "id": "SL-C05-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Mode-isolation CSS targets removed #gfPresetsRow"
+    },
+    {
+      "id": "SL-C05-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Export buttons suppress keyboard focus ring"
+    },
+    {
+      "id": "SL-C05-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .brand-icon rules"
+    },
+    {
+      "id": "SL-C05-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete #gfCustomRow .gf-btn rules"
+    },
+    {
+      "id": "SL-C05-L-03",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .algo-switcher rules"
+    },
+    {
+      "id": "SL-C05-L-04",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .theme-toggle rules"
+    },
+    {
+      "id": "SL-C06-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Segmented controls suppress keyboard focus ring"
+    },
+    {
+      "id": "SL-C06-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Gas numeric fields undersize touch targets"
+    },
+    {
+      "id": "SL-C06-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .si-inner surface-interval rules"
+    },
+    {
+      "id": "SL-C06-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .t-col rule"
+    },
+    {
+      "id": "SL-C06-L-03",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Dead .btn-calc alias in shared .gen-btn selectors"
+    },
+    {
+      "id": "SL-C06-L-04",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Field inputs lack invalid-state styling"
+    },
+    {
+      "id": "SL-C06-L-05",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Control transitions ignore prefers-reduced-motion"
+    },
+    {
+      "id": "SL-C07-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Results chip-yellow renders with orange palette identical to chip-orange"
+    },
+    {
+      "id": "SL-C07-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Schedule row neutralization overrides PPO2 severity colors"
+    },
+    {
+      "id": "SL-C07-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Legacy mobile deco card CSS unreachable under hidden .legacy-panels"
+    },
+    {
+      "id": "SL-C07-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .algo-switcher rules with zero live DOM writers"
+    },
+    {
+      "id": "SL-C07-L-03",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Results panel transitions ignore prefers-reduced-motion"
+    },
+    {
+      "id": "SL-C07-L-04",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "No @media print rules in canonical results CSS"
+    },
+    {
+      "id": "SL-C03-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Convert slider value/min/max on unit switch; read depth in metres for calc"
+    },
+    {
+      "id": "SL-C03-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Sync label/constraints; convert on setUnits; depthToMetres in calcCNS"
+    },
+    {
+      "id": "SL-C03-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Clarify AL80 as 11.1 L (~0.39 ft3) naming convention"
+    },
+    {
+      "id": "SL-C04-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Convert endDepth on setUnits; use domDepthToM in calcEND_tool"
+    },
+    {
+      "id": "SL-C04-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Full depth tuple + domDepthToM in calcSurfInt"
+    },
+    {
+      "id": "SL-C04-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Add backdrop dismiss calling closeConfirmModal(false)"
+    },
+    {
+      "id": "SL-C04-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Fix to Narcotic pressure"
+    },
+    {
+      "id": "SL-C04-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Unit-neutral depth range wording"
+    }
+  ],
+  "audit_commit": "",
+  "verified_source_commit": "",
+  "verification_status": "PENDING",
+  "parts": [
+    {
+      "id": "UI-PLANNER-SHELL-P01",
+      "unit_id": "UI-PLANNER-SHELL",
+      "path": "planner-shell.js",
+      "start_line": 1,
+      "end_line": 186,
+      "line_count": 186,
+      "content_fingerprint": "0635e52408b487608f975a39f81306a39c055d521721d17571ad58861acf72ba",
+      "review_session": "C08-A",
+      "verification_session": "",
+      "lens_results": {
+        "L1": {
+          "trace": "vpmVariant localStorage parse :7-12; setNavMode visibility toggles #plannerView/#toolsPageWrap :70-74; mobile CSS expects #planPanel.mobile-active (lsp-dplanner-results.css:711) but DOM uses #recPlannerView/#tecPlannerView",
+          "boundary_cases": [
+            "missing #settingsPageWrap nodes",
+            "mode ref early return without navMode write :63-66",
+            "640px matchMedia breakpoint vs CSS 640px"
+          ],
+          "evidence": "planner-shell.js:61-100; markup rec/tec planner mobile-active classes; Playwright mobile both panels flex",
+          "result": "FINDING"
+        },
+        "L2": {
+          "trace": "#navBtnTools click -> setMainNav(tools) -> setNavMode(tools) :53; #bnavPlanner click -> setMainNav(buh) -> setNavMode(planner) -> setPlannerAlgo(plannerAlgo) -> _clearPlannerResults :84-88",
+          "boundary_cases": [
+            "initV3Layout one-shot _v3LayoutDone :102-104",
+            "setNavMode ref returns after toggleReference :63-66",
+            "repeated initV3Layout no-op"
+          ],
+          "evidence": "planner-shell.js:46-100,102-186; Playwright nav clear probe; trace SL-C08-NAV-CLEARS-RESULTS-TRACE FAIL",
+          "result": "FINDING"
+        },
+        "L3": {
+          "trace": "initV3Layout reparents GF row, result tab panes, modals to body :115-177; setNavMode sets body.algo-tools :74; vpmVariant module let + localStorage :7-12",
+          "boundary_cases": [
+            "moveChildren skipIds removes skipped nodes :110",
+            "CNS panel removed after move :159-164",
+            "tools panel mount :173-177"
+          ],
+          "evidence": "planner-shell.js:102-177; index.html assembled markup IDs stable post-init",
+          "result": "NO_FINDING"
+        },
+        "L4": {
+          "trace": "index.html onclick setMainNav/setNavMode; initV3Layout calls _buildGfPresetBtns _syncConservatismBtns _updatePlanPanelSections _initMobilePlanView from settings-core/results-panel :180-185",
+          "boundary_cases": [
+            "missing mount nodes skip reparent",
+            "setVpmMode requires VPMB|VPMB_GFS :29-30"
+          ],
+          "evidence": "planner-shell.js:180-185; settings-core.js:609-641; extract_ui_cores.py planner-shell boundary",
+          "result": "NO_FINDING"
+        },
+        "L5": {
+          "trace": "index.html LSP-EXTRACT planner-shell.js + results-panel.js script order; sw.js precache both; SUITE-PARITY PASS",
+          "boundary_cases": [
+            "www/ sync via serve_www",
+            "no re-inlined shell in index AUD-MIRROR-001"
+          ],
+          "evidence": "baseline static+release PASS; tools/ui_assets.py UI_SHELL_SCRIPTS",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "setNavMode(planner) -> setPlannerAlgo -> _clearPlannerResults clears metrics/tables :84-88; navigation away/back loses valid TEC schedule",
+          "boundary_cases": [
+            "Tools->Planner same algo",
+            "Settings restore env=1 setMainNav settings on boot"
+          ],
+          "evidence": "Playwright hasBefore true hasAfterNav false rowsAfter 0; settings-core.js:675-770",
+          "result": "FINDING"
+        },
+        "L7": {
+          "trace": "SUITE-BROWSER generic flows; no setNavMode result preservation case; no initV3Layout duplicate listener regression",
+          "boundary_cases": [
+            "release 21/21 PASS without shell lifecycle cases"
+          ],
+          "evidence": "grep switchResultTab setMobilePlanView in dev regression empty; audit matrices 7-8 fail manually",
+          "result": "FINDING"
+        }
+      }
+    },
+    {
+      "id": "UI-RESULTS-PANEL-P01",
+      "unit_id": "UI-RESULTS-PANEL",
+      "path": "results-panel.js",
+      "start_line": 1,
+      "end_line": 301,
+      "line_count": 301,
+      "content_fingerprint": "b04d5d435b87a83d80e930eb67d8eb59d7a6942f4a9ba3b8bb4b3073547ada6b",
+      "review_session": "C08-A",
+      "verification_session": "",
+      "lens_results": {
+        "L1": {
+          "trace": "switchResultTab pane lists rec vs tec :257-261; _splitMetricValUnit parse :36-40; setMobilePlanView matchMedia 640px :126",
+          "boundary_cases": [
+            "empty metric strip when no data",
+            "CNS chip thresholds 50/80 :46-50",
+            "decozone chip omitted when dash :94"
+          ],
+          "evidence": "results-panel.js:36-94,125-132,256-301",
+          "result": "FINDING"
+        },
+        "L2": {
+          "trace": "#tecResultTabs button click -> switchResultTab(name,btn) -> pane #resultTab-* active class :256-268; surfint lazy renderSurfIntPanel :270-282",
+          "boundary_cases": [
+            "btn null skips nav active toggle",
+            "graphs/tissue setTimeout 50ms :286-299",
+            "setMobilePlanView early return :127-129"
+          ],
+          "evidence": "results-panel.js:256-301; Playwright mobile setMobilePlanView noop",
+          "result": "FINDING"
+        },
+        "L3": {
+          "trace": "_renderResultSummaryStrip adds has-results :96-114; _clearResultSummaryStrip removes :29-34; decorateDecoTableForV3 mutates tbody cell innerHTML :159-191",
+          "boundary_cases": [
+            "gas banner display flex/none :226-236",
+            "contingency phase normalize :193-194"
+          ],
+          "evidence": "results-panel.js:29-115,159-237",
+          "result": "NO_FINDING"
+        },
+        "L4": {
+          "trace": "inline onclick switchResultTab in markup-header; _onPlanResultsReady expects plannerAlgo !== rec for graph cards :116-122; global LSP_V4_SPLIT_PROFILE_SCHEDULE unused :8",
+          "boundary_cases": [
+            "isRec panes vs tec panes",
+            "dead prefix assignment :258"
+          ],
+          "evidence": "ui/markup-header.html:121-139; results-panel.js:8,258",
+          "result": "FINDING"
+        },
+        "L5": {
+          "trace": "results-panel.js extracted to standalone; same functions in www/ via sync; SUITE-PARITY PASS",
+          "boundary_cases": [
+            "generated Pages copies include script src"
+          ],
+          "evidence": "baseline release SUITE-PARITY PASS; sw.js line results-panel.js",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "valid generate -> _renderResultSummaryStrip -> has-results; invalid generate -> notifyScheduleError only -> strip uncleared",
+          "boundary_cases": [
+            "invalid depth after valid TEC",
+            "gas banner persists until _setGasWarningBanner empty"
+          ],
+          "evidence": "Playwright invalid-after-valid; index.html runDecoSchedule :5823-5827; export-core notifyScheduleError :1268-1270",
+          "result": "FINDING"
+        },
+        "L7": {
+          "trace": "SUITE-UI-RESULTS-CSS-REGRESSION calls switchResultTab but not setMobilePlanView invalid-clear; no invalid-generate strip test",
+          "boundary_cases": [
+            "dev/ui_results_css_regression.py setMobilePlanView results after generate"
+          ],
+          "evidence": "grep setMobilePlanView in dev regression; release PASS without SL-C08 cases",
+          "result": "FINDING"
+        }
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "SL-C08-H-01",
+      "severity": "HIGH",
+      "unit_id": "UI-RESULTS-PANEL",
+      "location": "results-panel.js:125-131",
+      "root_cause": "setMobilePlanView requires #planPanel which V4 markup removed; early return leaves #tecPlannerView and #resultsPanel both mobile-active.",
+      "failure_path": "375x667 boot -> both panels display:flex -> setMobilePlanView(plan) no-op -> _onPlanResultsReady cannot show results-only view.",
+      "impact": "Mobile users see stacked planner and results; plan/results bottom-nav intent broken.",
+      "evidence": "Playwright mobile-init planPanel:false tecDisplay:flex resultsDisplay:flex; trace SL-C08-MOBILE-PLAN-PANEL-TRACE FAIL x2",
+      "recommendation": "Retarget setMobilePlanView/_initMobilePlanView to visible planner view (#recPlannerView|#tecPlannerView) and align mobile CSS selectors.",
+      "status": "OPEN",
+      "regression_ids": [
+        "SL-C08-MOBILE-PLAN-PANEL"
+      ]
+    },
+    {
+      "id": "SL-C08-H-02",
+      "severity": "HIGH",
+      "unit_id": "UI-PLANNER-SHELL",
+      "location": "planner-shell.js:84-88",
+      "root_cause": "setNavMode(planner) calls setPlannerAlgo(plannerAlgo) which always invokes _clearPlannerResults even when algorithm unchanged.",
+      "failure_path": "TEC generate -> Tools nav -> bnav Planner -> has-results cleared and deco rows removed.",
+      "impact": "Valid schedules lost on benign navigation; export/safety context disappears.",
+      "evidence": "Playwright desktop-generate hasBefore true hasAfterNav false rowsAfter 0; trace SL-C08-NAV-CLEARS-RESULTS-TRACE FAIL x2",
+      "recommendation": "Separate nav-mode visibility from algorithm reset; clear results only on algo/view change or explicit new generate.",
+      "status": "OPEN",
+      "regression_ids": [
+        "SL-C08-NAV-CLEARS-RESULTS"
+      ]
+    },
+    {
+      "id": "SL-C08-M-01",
+      "severity": "MEDIUM",
+      "unit_id": "UI-RESULTS-PANEL",
+      "location": "results-panel.js:29-35",
+      "root_cause": "Success writers add has-results via _renderResultSummaryStrip but runDecoSchedule validation failures never call _clearResultSummaryStrip/_clearPlannerResults.",
+      "failure_path": "Valid 45m TEC plan -> invalid depth 999 generate -> toast error -> has-results and 15 rows persist.",
+      "impact": "Stale schedule remains authoritative after rejected input.",
+      "evidence": "Playwright invalid-after-valid hasAfterInvalid true rowsAfterInvalid 15",
+      "recommendation": "Clear results strip and hide schedule on validation/engine errors before return; or centralize fail-closed in notifyScheduleError.",
+      "status": "OPEN",
+      "regression_ids": [
+        "SL-C08-STALE-INVALID-RESULTS"
+      ]
+    },
+    {
+      "id": "SL-C08-L-01",
+      "severity": "LOW",
+      "unit_id": "UI-RESULTS-PANEL",
+      "location": "results-panel.js:258",
+      "root_cause": "const prefix assigns empty string in both branches; unused LSP_V4_SPLIT_PROFILE_SCHEDULE flag.",
+      "failure_path": "Any switchResultTab call \u2014 dead assignment only.",
+      "impact": "Obscures intended pane ID prefix contract; maintenance noise.",
+      "evidence": "Source read switchResultTab :256-261; window.LSP_V4_SPLIT_PROFILE_SCHEDULE false unused",
+      "recommendation": "Remove dead prefix or wire LSP_V4_SPLIT_PROFILE_SCHEDULE pane mapping.",
+      "status": "OPEN",
+      "regression_ids": [
+        "SL-C08-SWITCH-TAB-PREFIX-DEAD"
+      ]
+    },
+    {
+      "id": "SL-C08-L-02",
+      "severity": "LOW",
+      "unit_id": "UI-PLANNER-SHELL",
+      "location": "planner-shell.js:185",
+      "root_cause": "initV3Layout calls _initMobilePlanView while index.html DOMContentLoaded also calls it and registers resize listener.",
+      "failure_path": "Boot double _initMobilePlanView (currently no-op on broken mobile path).",
+      "impact": "Redundant init; unclear ownership between shell and bootstrap.",
+      "evidence": "planner-shell.js:185; index.html:9350-9351",
+      "recommendation": "Keep mobile init in one bootstrap location only.",
+      "status": "OPEN",
+      "regression_ids": [
+        "SL-C08-DUP-MOBILE-INIT"
+      ]
+    }
+  ],
+  "evidence_runs": [],
+  "changed_paths": [],
+  "audit_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
+  "notes": "C08-A single session; 487 canonical lines across UI-PLANNER-SHELL and UI-RESULTS-PANEL."
+}
