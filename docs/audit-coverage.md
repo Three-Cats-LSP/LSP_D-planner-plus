@@ -19,15 +19,15 @@
 | native_config | 1 | 0 | 0 | 0 | 1 |
 | pwa | 3 | 0 | 1 | 0 | 2 |
 | release_config | 1 | 0 | 1 | 0 | 0 |
-| test_infrastructure | 45 | 0 | 14 | 0 | 31 |
-| tooling | 52 | 0 | 12 | 0 | 40 |
+| test_infrastructure | 46 | 0 | 15 | 0 | 31 |
+| tooling | 53 | 0 | 13 | 0 | 40 |
 | ui_core | 16 | 0 | 12 | 0 | 4 |
 | ui_shell | 2 | 0 | 1 | 0 | 1 |
 | web_css | 4 | 0 | 3 | 0 | 1 |
 | web_markup | 7 | 0 | 4 | 1 | 2 |
 | web_runtime | 24 | 0 | 13 | 0 | 11 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **191** | **0** | **65** | **1** | **125** |
+| **Total** | **193** | **0** | **67** | **1** | **125** |
 
 ## Units
 
@@ -159,8 +159,10 @@
 | TOOL-BUILD-ZHL | tooling | `tools/build_zhl_bundle.py:1` | 390 | P1 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-CHECK-PARITY | tooling | `tools/check_engine_parity.py:1` | 311 | P1 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-RUN-AUDIT-COVERAGE-SUITE-PY | tooling | `tools/run_audit_coverage_suite.py:1` | 65 | P0 | IN_PROGRESS | - |
-| TOOL-SEVEN-LENS-PROTOCOL | tooling | `tools/seven_lens_protocol.py:1` | 1159 | P0 | IN_PROGRESS | - |
+| TOOL-SEVEN-LENS-PROTOCOL | tooling | `tools/seven_lens_protocol.py:1` | 1248 | P0 | IN_PROGRESS | - |
+| TOOL-SEVEN-LENS-PROTOCOL-MIGRATIONS | tooling | `tools/seven_lens_protocol_migrations.py:1` | 327 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-PROTOCOL | test_infrastructure | `tools/test_seven_lens_protocol.py:1` | 640 | P0 | IN_PROGRESS | - |
+| TEST-SEVEN-LENS-PROTOCOL-MIGRATIONS | test_infrastructure | `tools/test_seven_lens_protocol_migrations.py:1` | 199 | P0 | IN_PROGRESS | - |
 | TOOL-SEVEN-LENS-EVIDENCE | tooling | `tools/seven_lens_evidence.py:1` | 146 | P0 | IN_PROGRESS | - |
 | TOOL-SEVEN-LENS-BROWSER-TRACE | tooling | `tools/seven_lens_browser_trace.py:1` | 509 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-BROWSER-TRACE | test_infrastructure | `tools/test_seven_lens_browser_trace.py:1` | 144 | P0 | IN_PROGRESS | - |

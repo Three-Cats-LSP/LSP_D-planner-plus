@@ -34,6 +34,7 @@ def main() -> int:
             "tools.audit.test_system",
             "tools.test_ui_structure_suite",
             "tools.test_seven_lens_protocol",
+            "tools.test_seven_lens_protocol_migrations",
             "tools.test_seven_lens_browser_trace",
         ],
         cwd=ROOT,

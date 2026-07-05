@@ -23,7 +23,8 @@ FINDING_FIELDS = (
 MAX_SESSION_LINES = 600
 SEVERITY_RANK = {"LOW": 1, "MEDIUM": 2, "HIGH": 3, "CRITICAL": 4}
 TRACE_STAGES = {"input", "canonical", "consumer", "observable"}
-CURRENT_RECORD_SCHEMA = 4
+CURRENT_RECORD_SCHEMA = 5
+LEGACY_RECORD_SCHEMA = 4
 EVIDENCE_RECEIPT_SCHEMA = 1
 
 
@@ -165,6 +166,45 @@ def _short_commit(commit: str) -> str:
 
 def _record_finding_resolution(record_finding: dict[str, Any]) -> str:
     return _short_commit(str(record_finding.get("resolution_commit", "")))
+
+
+def _load_validated_receipt(root: Path, evidence: dict[str, Any]) -> dict[str, Any] | None:
+    receipt_path = evidence.get("receipt_path")
+    receipt_hash = evidence.get("receipt_sha256")
+    if not _text(receipt_path, 5) or not _text(receipt_hash, 64):
+        return None
+    receipt_file = root / str(receipt_path)
+    if not receipt_file.is_file() or _file_sha256(receipt_file) != receipt_hash:
+        return None
+    try:
+        return json.loads(receipt_file.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def _prepare_record_for_validation(
+    root: Path,
+    record: dict[str, Any],
+    *,
+    check_git: bool = True,
+) -> tuple[dict[str, Any], list[str]]:
+    from tools.seven_lens_protocol_migrations import (
+        LEGACY_RECORD_SCHEMA,
+        apply_protocol_migrations,
+        requires_explicit_resolution_commit,
+    )
+
+    schema = int(record.get("schema_version", 1) or 0)
+    if schema > CURRENT_RECORD_SCHEMA:
+        return record, [f"unsupported schema_version {schema}"]
+    if schema < LEGACY_RECORD_SCHEMA:
+        return record, []
+    migrated, errors = apply_protocol_migrations(root, record, git_fn=_git)
+    if requires_explicit_resolution_commit(record, CURRENT_RECORD_SCHEMA):
+        for finding in migrated.get("findings", []):
+            if finding.get("status") == "CLOSED" and not _text(finding.get("resolution_commit"), 7):
+                errors.append(f"{finding.get('id')}: resolution_commit missing")
+    return migrated, errors
 
 
 def _validate_evidence_receipt(root: Path, evidence: dict[str, Any]) -> list[str]:
@@ -595,8 +635,6 @@ def _validate_findings(record: dict[str, Any], phase: str) -> list[str]:
         if phase in {"verify", "close"} and finding.get("status") == "CLOSED":
             regressions = finding.get("regression_ids", [])
             linked = finding.get("evidence_ids", [])
-            if phase == "close" and not _text(finding.get("resolution_commit"), 7):
-                errors.append(f"{fid}: resolution_commit missing")
             if finding.get("severity") in {"CRITICAL", "HIGH", "MEDIUM"} and not regressions:
                 errors.append(f"{fid}: closed finding lacks behavioral regression IDs")
             if not linked or any(item not in evidence_ids for item in linked):
@@ -641,6 +679,12 @@ def _validate_evidence(
             errors.append(f"evidence {evidence_id}: commit does not exist")
         if not isinstance(row.get("exit_code"), int):
             errors.append(f"evidence {evidence_id}: integer exit_code missing")
+        receipt = _load_validated_receipt(root, row) if record.get("schema_version", 1) >= LEGACY_RECORD_SCHEMA else None
+        effective_exit = row.get("exit_code")
+        if receipt is not None and isinstance(receipt.get("exit_code"), int):
+            if effective_exit != receipt.get("exit_code"):
+                errors.append(f"evidence {evidence_id}: record exit_code does not match receipt")
+            effective_exit = receipt.get("exit_code")
         if not isinstance(row.get("worktree_clean"), bool):
             errors.append(f"evidence {evidence_id}: worktree_clean must be boolean")
         if row.get("kind") not in {"baseline_failure", "post_fix", "state_restoration", "gate"}:
@@ -663,9 +707,9 @@ def _validate_evidence(
                 errors.append(f"evidence {evidence_id}: state snapshot hashes missing")
             elif before != after:
                 errors.append(f"evidence {evidence_id}: before/after state snapshots differ")
-        if row.get("kind") == "baseline_failure" and row.get("exit_code") == 0:
+        if row.get("kind") == "baseline_failure" and effective_exit == 0:
             errors.append(f"evidence {evidence_id}: baseline failure must fail before the fix")
-        if row.get("kind") in {"post_fix", "state_restoration", "gate"} and row.get("exit_code") != 0:
+        if row.get("kind") in {"post_fix", "state_restoration", "gate"} and effective_exit != 0:
             errors.append(f"evidence {evidence_id}: passing evidence has nonzero exit_code")
         verified = str(record.get("verified_source_commit", ""))
         closure = str(record.get("closure_evidence_commit", "") or verified)
@@ -680,7 +724,7 @@ def _validate_evidence(
                 errors.append(f"evidence {evidence_id}: must run at verified_source_commit")
             elif kind == "gate" and evidence_id in {"static", "ci"} and commit != closure:
                 errors.append(f"evidence {evidence_id}: must run at closure_evidence_commit")
-        if record.get("schema_version", 1) >= CURRENT_RECORD_SCHEMA and phase in {"verify", "close"}:
+        if record.get("schema_version", 1) >= LEGACY_RECORD_SCHEMA and phase in {"verify", "close"}:
             errors.extend(_validate_evidence_receipt(root, row))
     gate_ids = {"static", "ci"}
     gate_rows = [
@@ -696,13 +740,16 @@ def _validate_evidence(
         and not _text(str(record.get("closure_evidence_commit", "")), 7)
     ):
         errors.append("closure_evidence_commit required when static/ci run after verified_source_commit")
-    if record.get("schema_version", 1) >= CURRENT_RECORD_SCHEMA and phase in {"verify", "close"}:
+    if record.get("schema_version", 1) >= LEGACY_RECORD_SCHEMA and phase in {"verify", "close"}:
         errors.extend(_validate_unreferenced_receipts(root, record))
     if phase in {"verify", "close"} and record.get("verification_status") == "PASSED":
-        passed = {
-            row.get("id") for row in record.get("evidence_runs", [])
-            if row.get("exit_code") == 0 and row.get("worktree_clean") is True
-        }
+        passed = set()
+        for row in record.get("evidence_runs", []):
+            receipt = _load_validated_receipt(root, row)
+            exit_code = receipt.get("exit_code") if receipt is not None else row.get("exit_code")
+            clean = receipt.get("worktree_clean_after") if receipt is not None else row.get("worktree_clean")
+            if exit_code == 0 and clean is True:
+                passed.add(row.get("id"))
         if missing := {"static", "ci"} - passed:
             errors.append("required clean evidence missing: " + ", ".join(sorted(missing)))
     return errors
@@ -949,51 +996,54 @@ def validate_record(
     require_artifacts: bool = True,
     enforce_current_schema: bool = True,
 ) -> list[str]:
+    migrated, migration_errors = _prepare_record_for_validation(root, record, check_git=check_git)
+    errors = list(migration_errors)
     registry, _ = _resolved_registry(root)
-    errors = _validate_parts(root, record, phase)
-    errors.extend(_validate_findings(record, phase))
-    errors.extend(_validate_evidence(root, record, phase, check_git))
-    errors.extend(_validate_closed_finding_evidence(root, record, phase, require_artifacts))
-    errors.extend(_validate_finding_continuity(registry, record, phase))
-    if record.get("schema_version", 1) >= 2:
-        if record.get("integration_base_commit") != record.get("baseline_commit"):
+    errors.extend(_validate_parts(root, migrated, phase))
+    errors.extend(_validate_findings(migrated, phase))
+    errors.extend(_validate_evidence(root, migrated, phase, check_git))
+    errors.extend(_validate_closed_finding_evidence(root, migrated, phase, require_artifacts))
+    errors.extend(_validate_finding_continuity(registry, migrated, phase))
+    if migrated.get("schema_version", 1) >= 2:
+        if migrated.get("integration_base_commit") != migrated.get("baseline_commit"):
             errors.append("integration_base_commit must equal baseline_commit")
-        if not _text(record.get("baseline_registry_fingerprint"), 64):
+        if not _text(migrated.get("baseline_registry_fingerprint"), 64):
             errors.append("baseline_registry_fingerprint missing")
-    if record.get("schema_version", 1) >= 3 and not _text(record.get("record_path"), 5):
+    if migrated.get("schema_version", 1) >= 3 and not _text(migrated.get("record_path"), 5):
         errors.append("record_path missing")
-    if phase == "close" and enforce_current_schema and record.get("schema_version") != CURRENT_RECORD_SCHEMA:
-        errors.append(
-            f"schema_version must be current ({CURRENT_RECORD_SCHEMA}) before closure"
-        )
-    if record.get("target_branch") != "dev":
+    if phase == "close" and enforce_current_schema and migrated.get("schema_version") != CURRENT_RECORD_SCHEMA:
+        if migrated.get("schema_version") != LEGACY_RECORD_SCHEMA:
+            errors.append(
+                f"schema_version must be current ({CURRENT_RECORD_SCHEMA}) before closure"
+            )
+    if migrated.get("target_branch") != "dev":
         errors.append("target_branch must be dev")
-    if phase in {"verify", "close"} and not _text(record.get("audit_commit"), 7):
+    if phase in {"verify", "close"} and not _text(migrated.get("audit_commit"), 7):
         errors.append("audit_commit missing")
     if phase in {"verify", "close"}:
-        errors.extend(_validate_audit_checkpoint(root, record, check_git))
-    if phase in {"verify", "close"} and record.get("verification_status") not in {"PASSED", "BLOCKED"}:
+        errors.extend(_validate_audit_checkpoint(root, migrated, check_git))
+    if phase in {"verify", "close"} and migrated.get("verification_status") not in {"PASSED", "BLOCKED"}:
         errors.append("verification_status must be PASSED or BLOCKED")
-    if phase in {"verify", "close"} and record.get("verification_status") == "PASSED" and not _text(record.get("verified_source_commit"), 7):
+    if phase in {"verify", "close"} and migrated.get("verification_status") == "PASSED" and not _text(migrated.get("verified_source_commit"), 7):
         errors.append("verified_source_commit missing")
     if phase == "close":
-        if record.get("verification_status") != "PASSED":
+        if migrated.get("verification_status") != "PASSED":
             errors.append("verification_status must be PASSED")
-        if not _text(record.get("verified_source_commit"), 7):
+        if not _text(migrated.get("verified_source_commit"), 7):
             errors.append("verified_source_commit missing")
         if check_git and _git("status", "--porcelain", root=root):
             errors.append("tracked or untracked worktree is not clean")
-        if check_git and _text(record.get("verified_source_commit"), 7):
-            verified = str(record["verified_source_commit"])
-            closure = str(record.get("closure_evidence_commit", "") or verified)
+        if check_git and _text(migrated.get("verified_source_commit"), 7):
+            verified = str(migrated["verified_source_commit"])
+            closure = str(migrated.get("closure_evidence_commit", "") or verified)
             errors.extend(
-                _validate_closure_only_diff(root, record, verified, closure, check_git)
+                _validate_closure_only_diff(root, migrated, verified, closure, check_git)
             )
-            protected = {part["path"] for part in record.get("parts", [])} | set(record.get("changed_paths", []))
+            protected = {part["path"] for part in migrated.get("parts", [])} | set(migrated.get("changed_paths", []))
             protected.discard("docs/audit-units.json")
-            if _text(record.get("audit_commit"), 7):
+            if _text(migrated.get("audit_commit"), 7):
                 fix_diff = _git(
-                    "diff", "--name-only", f"{record['audit_commit']}..{verified}",
+                    "diff", "--name-only", f"{migrated['audit_commit']}..{verified}",
                     root=root,
                 )
                 protected.update(
@@ -1077,9 +1127,10 @@ def validate_reviewed_cycles(root: Path, require_artifacts: bool = False) -> lis
             errors.append(f"SL-C{cycle:02d}: expected one protocol record, found {len(paths)}")
             continue
         record = json.loads(paths[0].read_text(encoding="utf-8"))
-        if record.get("schema_version") != CURRENT_RECORD_SCHEMA:
+        schema = record.get("schema_version")
+        if schema not in {LEGACY_RECORD_SCHEMA, CURRENT_RECORD_SCHEMA}:
             errors.append(
-                f"SL-C{cycle:02d}: reviewed cycle must use current protocol schema {CURRENT_RECORD_SCHEMA}"
+                f"SL-C{cycle:02d}: reviewed cycle must use schema {LEGACY_RECORD_SCHEMA} or {CURRENT_RECORD_SCHEMA}"
             )
         record_errors = validate_record(
             root, record, "close", check_git=False, require_artifacts=require_artifacts
@@ -1116,6 +1167,14 @@ def main() -> int:
     check.add_argument("--record", type=Path, required=True)
     check_all = sub.add_parser("check-all")
     check_all.add_argument("--require-artifacts", action="store_true")
+    migrate = sub.add_parser("migrate", help="Apply frozen historical migrations to a cycle record")
+    migrate.add_argument("--record", type=Path, required=True)
+    migrate.add_argument("--write", action="store_true", help="Persist migrated record JSON")
+    migrate.add_argument(
+        "--reconcile-registry",
+        action="store_true",
+        help="Update docs/audit-units.json only when record evidence proves closure",
+    )
     args = parser.parse_args()
     try:
         if args.command == "plan":
@@ -1139,6 +1198,36 @@ def main() -> int:
                     print(f"- {error}", file=sys.stderr)
                 return 1
             print("SEVEN-LENS REVIEWED-CYCLE GATE: PASS")
+            return 0
+        if args.command == "migrate":
+            from tools.seven_lens_protocol_migrations import (
+                apply_protocol_migrations,
+                apply_registry_reconcile_v1,
+            )
+
+            record_path = args.record if args.record.is_absolute() else ROOT / args.record
+            record = json.loads(record_path.read_text(encoding="utf-8"))
+            migrated, errors = apply_protocol_migrations(ROOT, record, git_fn=_git)
+            if args.reconcile_registry:
+                registry_path = ROOT / "docs/audit-units.json"
+                registry = json.loads(registry_path.read_text(encoding="utf-8"))
+                registry, reg_errors = apply_registry_reconcile_v1(
+                    ROOT, migrated, registry, git_fn=_git
+                )
+                errors.extend(reg_errors)
+                if args.write and not reg_errors:
+                    registry_path.write_text(json.dumps(registry, indent=2) + "\n", encoding="utf-8")
+                    print(f"reconciled registry from {record_path.relative_to(ROOT)}")
+            if errors:
+                print("SEVEN-LENS MIGRATION: BLOCKED", file=sys.stderr)
+                for error in errors:
+                    print(f"- {error}", file=sys.stderr)
+                return 1
+            if args.write:
+                record_path.write_text(json.dumps(migrated, indent=2) + "\n", encoding="utf-8")
+                print(f"migrated {record_path.relative_to(ROOT)}")
+            else:
+                print(json.dumps(migrated, indent=2))
             return 0
         record_path = args.record if args.record.is_absolute() else ROOT / args.record
         record = json.loads(record_path.read_text(encoding="utf-8"))

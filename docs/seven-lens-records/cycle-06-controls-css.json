@@ -1,5 +1,5 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "cycle": 6,
   "record_path": "docs/seven-lens-reports/cycle-06-record.json",
   "target_branch": "dev",
@@ -782,7 +782,7 @@
       ],
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
-      "exit_code": 0,
+      "exit_code": 1,
       "commit": "5257cbb8b9b26ccb1760546036285236d4bfc4ff",
       "worktree_clean": true,
       "command_argv": [
@@ -807,7 +807,7 @@
       ],
       "state_restored": true,
       "command": "python -m tools.audit run --profile ci",
-      "exit_code": 0,
+      "exit_code": 1,
       "commit": "5257cbb8b9b26ccb1760546036285236d4bfc4ff",
       "worktree_clean": true,
       "command_argv": [
@@ -863,5 +863,9 @@
     "tools/seven_lens_browser_trace.py"
   ],
   "audit_report": "docs/seven-lens-reports/cycle-06-controls-css.md",
-  "notes": "VERIFIER C06-V-C: SL-C06-L-04 verified at 3c97791; CLOSER reconciled resolution commits (7470b4e/7d403f4) and hardened closure protocol with closure_evidence_commit gate binding."
+  "notes": "VERIFIER C06-V-C: SL-C06-L-04 verified at 3c97791; CLOSER reconciled resolution commits (7470b4e/7d403f4) and hardened closure protocol with closure_evidence_commit gate binding.",
+  "protocol_migrations": [
+    "resolution-commit-v1",
+    "receipt-exit-v1"
+  ]
 }

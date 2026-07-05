@@ -1068,13 +1068,13 @@
       "id": "SL-C05-M-01",
       "unit_id": "UI-CSS-FOUNDATION",
       "severity": "MEDIUM",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-lens Cycle 05 CSS audit",
       "summary": "Mode-isolation CSS targets removed #gfPresetsRow",
       "affected_units": [
         "UI-CSS-FOUNDATION"
       ],
-      "resolution_commit": "",
+      "resolution_commit": "c40b71a",
       "evidence_cases": [
         "REG-76"
       ]
@@ -1083,13 +1083,13 @@
       "id": "SL-C05-M-02",
       "unit_id": "UI-CSS-MODES",
       "severity": "MEDIUM",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-lens Cycle 05 CSS audit",
       "summary": "Export buttons suppress keyboard focus ring",
       "affected_units": [
         "UI-CSS-MODES"
       ],
-      "resolution_commit": "",
+      "resolution_commit": "c40b71a",
       "evidence_cases": [
         "REG-77"
       ]
@@ -1098,13 +1098,13 @@
       "id": "SL-C05-L-01",
       "unit_id": "UI-CSS-FOUNDATION",
       "severity": "LOW",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-lens Cycle 05 CSS audit",
       "summary": "Obsolete .brand-icon rules",
       "affected_units": [
         "UI-CSS-FOUNDATION"
       ],
-      "resolution_commit": "",
+      "resolution_commit": "c40b71a",
       "evidence_cases": [
         "REG-78"
       ]
@@ -1113,13 +1113,13 @@
       "id": "SL-C05-L-02",
       "unit_id": "UI-CSS-FOUNDATION",
       "severity": "LOW",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-lens Cycle 05 CSS audit",
       "summary": "Obsolete #gfCustomRow .gf-btn rules",
       "affected_units": [
         "UI-CSS-FOUNDATION"
       ],
-      "resolution_commit": "",
+      "resolution_commit": "c40b71a",
       "evidence_cases": [
         "REG-79"
       ]
@@ -1128,13 +1128,13 @@
       "id": "SL-C05-L-03",
       "unit_id": "UI-CSS-MODES",
       "severity": "LOW",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-lens Cycle 05 CSS audit",
       "summary": "Obsolete .algo-switcher rules",
       "affected_units": [
         "UI-CSS-MODES"
       ],
-      "resolution_commit": "",
+      "resolution_commit": "c40b71a",
       "evidence_cases": [
         "REG-80"
       ]
@@ -1143,13 +1143,13 @@
       "id": "SL-C05-L-04",
       "unit_id": "UI-CSS-MODES",
       "severity": "LOW",
-      "status": "OPEN",
+      "status": "CLOSED",
       "issue": "Seven-lens Cycle 05 CSS audit",
       "summary": "Obsolete .theme-toggle rules",
       "affected_units": [
         "UI-CSS-MODES"
       ],
-      "resolution_commit": "",
+      "resolution_commit": "c40b71a",
       "evidence_cases": [
         "REG-81"
       ]
@@ -1257,6 +1257,126 @@
       "resolution_commit": "7470b4e",
       "evidence_cases": [
         "REG-88"
+      ]
+    },
+    {
+      "id": "SL-C03-H-01",
+      "unit_id": "UI-MARKUP-CONSUMPTION",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 03 audit",
+      "summary": "Convert slider value/min/max on unit switch; read depth in metres for calc",
+      "affected_units": [
+        "UI-MARKUP-CONSUMPTION"
+      ],
+      "resolution_commit": "00732b5",
+      "evidence_cases": [
+        "REG-64"
+      ]
+    },
+    {
+      "id": "SL-C03-M-01",
+      "unit_id": "UI-MARKUP-CONSUMPTION",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 03 audit",
+      "summary": "Sync label/constraints; convert on setUnits; depthToMetres in calcCNS",
+      "affected_units": [
+        "UI-MARKUP-CONSUMPTION"
+      ],
+      "resolution_commit": "00732b5",
+      "evidence_cases": [
+        "REG-65"
+      ]
+    },
+    {
+      "id": "SL-C03-L-01",
+      "unit_id": "UI-MARKUP-CONSUMPTION",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 03 audit",
+      "summary": "Clarify AL80 as 11.1 L (~0.39 ft3) naming convention",
+      "affected_units": [
+        "UI-MARKUP-CONSUMPTION"
+      ],
+      "resolution_commit": "00732b5",
+      "evidence_cases": [
+        "COV-01"
+      ]
+    },
+    {
+      "id": "SL-C04-H-01",
+      "unit_id": "UI-MARKUP-TOOLS",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 04 audit",
+      "summary": "Convert endDepth on setUnits; use domDepthToM in calcEND_tool",
+      "affected_units": [
+        "UI-MARKUP-TOOLS"
+      ],
+      "resolution_commit": "00732b5",
+      "evidence_cases": [
+        "REG-66"
+      ]
+    },
+    {
+      "id": "SL-C04-M-01",
+      "unit_id": "UI-MARKUP-TOOLS",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 04 audit",
+      "summary": "Full depth tuple + domDepthToM in calcSurfInt",
+      "affected_units": [
+        "UI-MARKUP-TOOLS"
+      ],
+      "resolution_commit": "00732b5",
+      "evidence_cases": [
+        "REG-67"
+      ]
+    },
+    {
+      "id": "SL-C04-M-02",
+      "unit_id": "UI-MARKUP-MODALS",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 04 audit",
+      "summary": "Add backdrop dismiss calling closeConfirmModal(false)",
+      "affected_units": [
+        "UI-MARKUP-MODALS"
+      ],
+      "resolution_commit": "00732b5",
+      "evidence_cases": [
+        "REG-68"
+      ]
+    },
+    {
+      "id": "SL-C04-L-01",
+      "unit_id": "UI-MARKUP-TOOLS",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 04 audit",
+      "summary": "Fix to Narcotic pressure",
+      "affected_units": [
+        "UI-MARKUP-TOOLS"
+      ],
+      "resolution_commit": "00732b5",
+      "evidence_cases": [
+        "COV-01"
+      ]
+    },
+    {
+      "id": "SL-C04-L-02",
+      "unit_id": "UI-MARKUP-TOOLS",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 04 audit",
+      "summary": "Unit-neutral depth range wording",
+      "affected_units": [
+        "UI-MARKUP-TOOLS"
+      ],
+      "resolution_commit": "00732b5",
+      "evidence_cases": [
+        "COV-01"
       ]
     }
   ],
@@ -3788,7 +3908,22 @@
       "evidence": [],
       "issue": "Seven-lens manual audit protocol gate",
       "regression_cases": [],
-      "fingerprint": "de1e4a41546916a0e617ac518c19c92fcdaa2b9d222423ac8a4c15dcafe42a20",
+      "fingerprint": "aa7a76fbd66f801abea84847f41054ae12783a066193e3b2e83df777818be9fd",
+      "last_read_fingerprint": null
+    },
+    {
+      "id": "TOOL-SEVEN-LENS-PROTOCOL-MIGRATIONS",
+      "path": "tools/seven_lens_protocol_migrations.py",
+      "layer": "tooling",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Frozen seven-lens protocol historical migrations",
+      "regression_cases": [],
+      "fingerprint": "3592ba0007835490dba5e1b58390ce324dec60102431e07d4af3e7e26a52a2b0",
       "last_read_fingerprint": null
     },
     {
@@ -3803,7 +3938,22 @@
       "evidence": [],
       "issue": "Seven-lens manual audit protocol gate tests",
       "regression_cases": [],
-      "fingerprint": "d9767745a1d092233ab4b120cff5817381ee7ac79bc22c2fe5812ca301cdd585",
+      "fingerprint": "704cf27d3b823a2a5b3739e83879354d351beec5bd5b354ddb275e668ccd39fb",
+      "last_read_fingerprint": null
+    },
+    {
+      "id": "TEST-SEVEN-LENS-PROTOCOL-MIGRATIONS",
+      "path": "tools/test_seven_lens_protocol_migrations.py",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Seven-lens protocol migration golden tests",
+      "regression_cases": [],
+      "fingerprint": "5a922c244cffc20080275d551bf3b4fe3621b980e845e68f9c9c942b9ccbcc73",
       "last_read_fingerprint": null
     },
     {

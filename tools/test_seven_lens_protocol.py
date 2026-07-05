@@ -277,7 +277,7 @@ class SevenLensProtocolTests(unittest.TestCase):
         (records / "cycle-02.json").write_text(json.dumps(self.record), encoding="utf-8")
         with patch("tools.seven_lens_protocol._resolved_registry", return_value=({}, self.resolved)):
             errors = validate_reviewed_cycles(self.root)
-        self.assertTrue(any("current protocol schema" in error for error in errors))
+        self.assertTrue(any("schema 4 or 5" in error for error in errors))
 
     def test_real_closure_rejects_non_current_schema(self):
         with patch("tools.seven_lens_protocol._resolved_registry", return_value=({}, self.resolved)):
