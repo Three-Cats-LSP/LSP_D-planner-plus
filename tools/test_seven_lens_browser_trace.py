@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import unittest
+from pathlib import Path
 
 from tools.seven_lens_browser_trace import (
+    _CANONICAL_DEPTH_SELECTORS,
     _capture_is_finite,
     evaluate_assertion,
     validate_trace_spec,
@@ -138,6 +140,15 @@ class SevenLensBrowserTraceTests(unittest.TestCase):
             "right": "$.after.depth",
         }]
         self.assertEqual(validate_trace_spec(spec), [])
+
+    def test_restore_uses_planner_depth_selectors(self):
+        self.assertIn("#tecDepth", _CANONICAL_DEPTH_SELECTORS)
+        self.assertIn("#recDepth", _CANONICAL_DEPTH_SELECTORS)
+
+    def test_restore_persisted_settings_uses_restore_fields(self):
+        source = Path(__file__).resolve().parents[0].joinpath("seven_lens_browser_trace.py").read_text(encoding="utf-8")
+        self.assertIn("appSettings._restoreFields", source)
+        self.assertNotIn("_syncUiAfterRestore?.(JSON.parse(raw))", source)
 
 
 if __name__ == "__main__":
