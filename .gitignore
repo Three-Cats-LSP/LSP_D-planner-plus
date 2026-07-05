@@ -13,6 +13,7 @@ keystore.properties
 node_modules/
 www/
 _pages/
+_site/
 
 # Android build artifacts
 android/.gradle/
