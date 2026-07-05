@@ -286,6 +286,7 @@
   ],
   "audit_commit": "094162acd2ce89ac01acdef5c2ff326d4f6b5c58",
   "verified_source_commit": "63b30d2df28d5cbe497fc8055c44a3eac57e0855",
+  "closure_evidence_commit": "bf311c69d4817207d2ff77f321cc2be6f8503224",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -887,16 +888,16 @@
         "--profile",
         "static"
       ],
-      "commit": "92fef148f4c144265ca4caf7ce95f2378c0a24ec",
+      "commit": "bf311c69d4817207d2ff77f321cc2be6f8503224",
       "observable_assertions": [
-        "Non-coverage static suites PASS; SUITE-COVERAGE red while SL-C07 findings remain OPEN"
+        "All static suites PASS including SUITE-COVERAGE at closure commit"
       ],
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit check --profile static",
       "worktree_clean": true,
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c07-static.json",
-      "receipt_sha256": "e5a82084a70d22146e857b9876f1a6ef80301252b8d192213fe10561a37da289",
+      "receipt_sha256": "8de49e1a4165bc0bb31b0b74099823ef29b9fcaa0d56a72ce0e128152a9e3859",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -912,16 +913,16 @@
         "--profile",
         "ci"
       ],
-      "commit": "92fef148f4c144265ca4caf7ce95f2378c0a24ec",
+      "commit": "bf311c69d4817207d2ff77f321cc2be6f8503224",
       "observable_assertions": [
-        "SUITE-UI-RESULTS-CSS-REGRESSION PASS; SUITE-COVERAGE red while SL-C07 findings remain OPEN"
+        "All CI suites PASS at closure commit"
       ],
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit run --profile ci",
       "worktree_clean": true,
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c07-ci.json",
-      "receipt_sha256": "ca84b684f054f5ae7ede2b9351240c7503c09e8a04037aa91601e4dc460b9ae1",
+      "receipt_sha256": "cc9742fed45302483351c72c848c6045ac27f51d6690c9825f90fc71e133ca53",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -937,16 +938,16 @@
         "--profile",
         "release"
       ],
-      "commit": "92fef148f4c144265ca4caf7ce95f2378c0a24ec",
+      "commit": "bf311c69d4817207d2ff77f321cc2be6f8503224",
       "observable_assertions": [
-        "Release suites PASS except intentional SUITE-COVERAGE OPEN-finding rollup"
+        "All release suites PASS at closure commit"
       ],
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit run --profile release",
       "worktree_clean": true,
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c07-release.json",
-      "receipt_sha256": "2405a4162948aa3a33b8dbe638609bbc079b9a44d091c4469e53300e9eca4d3d",
+      "receipt_sha256": "63269a03f21c38b408e6ace8205644708dc8e085801959e17d02ff709642c04a",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -983,5 +984,5 @@
   ],
   "changed_paths": [],
   "audit_report": "docs/seven-lens-reports/cycle-07-results-css.md",
-  "notes": "VERIFIER: protected verification-state at 63b30d2 with pre-populated registry evidence_cases; closure evidence invalidated pending CLOSER."
+  "notes": "CLOSER: registry closed at bf311c6; static/ci/release gate receipts bound to closure_evidence_commit."
 }
