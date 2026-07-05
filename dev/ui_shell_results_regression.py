@@ -421,6 +421,7 @@ def main() -> int:
     out = ROOT / "dev" / "ui_shell_results_regression_results.json"
     out.write_text(json.dumps({"results": results, "detail": detail}, indent=2), encoding="utf-8")
     print(f"\nWrote {out}")
+    out.unlink(missing_ok=True)
     finish_suite(ROOT, rows, code)
 
 
