@@ -243,6 +243,116 @@ _CANONICAL_DEPTH_SELECTORS = {
     "#recBT",
 }
 
+# Bound to index.html input debounce: setTimeout(() => appSettings.save(false), 1000)
+SETTINGS_SAVE_DEBOUNCE_MS = 1000
+SETTINGS_SAVE_DEBOUNCE_SETTLE_MS = 100
+SETTINGS_SAVE_DEBOUNCE_WAIT_MS = SETTINGS_SAVE_DEBOUNCE_MS + SETTINGS_SAVE_DEBOUNCE_SETTLE_MS
+
+_RESTORE_SESSION_BEGIN_JS = """() => {
+  const session = {
+    hadAppSettings: typeof appSettings !== 'undefined',
+    previousRestoreInProgress: false,
+    patched: false,
+  };
+  if (!session.hadAppSettings) {
+    window.__traceRestoreSession = session;
+    return session;
+  }
+  session.previousRestoreInProgress = !!appSettings._restoreInProgress;
+  appSettings._restoreInProgress = true;
+  session.origSave = appSettings.save.bind(appSettings);
+  appSettings.save = function(v) {
+    if (window.__traceRestoreSession) return;
+    return session.origSave(v);
+  };
+  session.patched = true;
+  window.__traceRestoreSession = session;
+  return session;
+}"""
+
+_RESTORE_SESSION_END_JS = """() => {
+  const session = window.__traceRestoreSession;
+  if (!session) return;
+  if (session.patched && typeof appSettings !== 'undefined') {
+    appSettings.save = session.origSave;
+    appSettings._restoreInProgress = session.previousRestoreInProgress;
+  }
+  delete window.__traceRestoreSession;
+}"""
+
+_APPLY_STORAGE_SNAPSHOT_JS = """(state) => {
+  localStorage.clear();
+  sessionStorage.clear();
+  for (const [key, value] of Object.entries(state.localStorage || {})) localStorage.setItem(key, value);
+  for (const [key, value] of Object.entries(state.sessionStorage || {})) sessionStorage.setItem(key, value);
+  for (const [key, value] of Object.entries(state.globals || {})) window[key] = value;
+}"""
+
+_INVOKE_RESTORE_FIELDS_JS = """() => {
+  if (typeof appSettings === 'undefined' || typeof appSettings._restoreFields !== 'function') {
+    return { invoked: false };
+  }
+  const raw = localStorage.getItem('lspDiveSettings_v6');
+  if (!raw) return { invoked: false };
+  try { appSettings._restoreFields(JSON.parse(raw)); } catch (_) {}
+  if (window.__traceRestoreSession) appSettings._restoreInProgress = true;
+  return { invoked: true };
+}"""
+
+_SYNC_DOM_FROM_STORAGE_JS = """() => {
+  const raw = localStorage.getItem('lspDiveSettings_v6');
+  if (!raw) return { synced: false };
+  let values;
+  try { values = JSON.parse(raw); } catch (_) { return { synced: false }; }
+  for (const id of ['tecDepth', 'tecBT', 'recDepth', 'recBT']) {
+    const el = document.getElementById(id);
+    if (el && values[id] != null) el.value = String(values[id]);
+  }
+  if (values.__units__ && typeof setUnits === 'function') setUnits(values.__units__, { relabelOnly: true });
+  for (const id of ['tecDepth', 'tecBT', 'recDepth', 'recBT']) {
+    if (typeof syncDepthInputCanonical === 'function' && id.includes('Depth')) syncDepthInputCanonical(id);
+  }
+  return { synced: true };
+}"""
+
+_VERIFY_PERSISTED_CONSISTENCY_JS = """(expected) => {
+  const raw = localStorage.getItem('lspDiveSettings_v6');
+  const expectedRaw = expected.localStorage?.['lspDiveSettings_v6'];
+  if (!expectedRaw) return { ok: !raw, mismatches: raw ? ['unexpected localStorage'] : [] };
+  if (!raw) return { ok: false, mismatches: ['missing localStorage'] };
+  let parsed;
+  let expectedParsed;
+  try { parsed = JSON.parse(raw); expectedParsed = JSON.parse(expectedRaw); }
+  catch (_) { return { ok: false, mismatches: ['parse error'] }; }
+  const fields = ['tecDepth', 'tecBT', 'recDepth', 'recBT', '__units__'];
+  const mismatches = [];
+  for (const field of fields) {
+    if (!Object.prototype.hasOwnProperty.call(expectedParsed, field)) continue;
+    if (String(parsed[field]) !== String(expectedParsed[field])) mismatches.push('ls:' + field);
+    const el = document.getElementById(field.startsWith('__') ? null : field);
+    if (el && String(el.value) !== String(expectedParsed[field])) mismatches.push('dom:' + field);
+  }
+  return { ok: mismatches.length === 0, mismatches };
+}"""
+
+_CAPTURE_RESTORE_DIAGNOSTICS_JS = """() => ({
+  restoreInProgress: typeof appSettings !== 'undefined' ? !!appSettings._restoreInProgress : null,
+  restoreSessionActive: !!window.__traceRestoreSession,
+  plannerAlgo: typeof plannerAlgo !== 'undefined' ? plannerAlgo : null,
+  navMode: typeof navMode !== 'undefined' ? navMode : null,
+  units: typeof units !== 'undefined' ? units : null,
+  tecDepthDom: document.getElementById('tecDepth')?.value ?? null,
+  tecDepthLs: (() => {
+    try {
+      const raw = localStorage.getItem('lspDiveSettings_v6');
+      return raw ? JSON.parse(raw).tecDepth ?? null : null;
+    } catch (_) { return null; }
+  })(),
+  hasResults: document.getElementById('resultsPanel')?.classList.contains('has-results') ?? null,
+  recMobileActive: document.getElementById('recPlannerView')?.classList.contains('mobile-active') ?? null,
+  tecMobileActive: document.getElementById('tecPlannerView')?.classList.contains('mobile-active') ?? null,
+})"""
+
 
 def _sync_canonical_input(page, selector: str, state: dict[str, Any]) -> None:
     if selector not in _CANONICAL_DEPTH_SELECTORS:
@@ -268,37 +378,53 @@ def _sync_canonical_input(page, selector: str, state: dict[str, Any]) -> None:
     )
 
 
+def _restore_session_begin(page) -> dict[str, Any]:
+    return page.evaluate(_RESTORE_SESSION_BEGIN_JS)
+
+
+def _restore_session_end(page) -> None:
+    page.evaluate(_RESTORE_SESSION_END_JS)
+
+
+def _apply_storage_snapshot(page, before: dict[str, Any]) -> None:
+    page.evaluate(_APPLY_STORAGE_SNAPSHOT_JS, before)
+
+
+def _invoke_restore_fields(page) -> dict[str, Any]:
+    return page.evaluate(_INVOKE_RESTORE_FIELDS_JS)
+
+
+def _sync_dom_from_storage(page) -> dict[str, Any]:
+    return page.evaluate(_SYNC_DOM_FROM_STORAGE_JS)
+
+
+def _wait_settings_debounce_contract(page) -> None:
+    page.wait_for_timeout(SETTINGS_SAVE_DEBOUNCE_WAIT_MS)
+
+
+def _verify_persisted_consistency(page, before: dict[str, Any]) -> None:
+    check = page.evaluate(_VERIFY_PERSISTED_CONSISTENCY_JS, before)
+    if not check.get("ok"):
+        mismatches = check.get("mismatches") or []
+        raise RuntimeError(f"persisted settings inconsistent after restore: {mismatches}")
+
+
+def capture_restore_diagnostics(page) -> dict[str, Any]:
+    """Post-suite probe: restore flag, planner state, and persistence alignment."""
+    return page.evaluate(_CAPTURE_RESTORE_DIAGNOSTICS_JS)
+
+
 def _restore_persisted_settings(page, before: dict[str, Any]) -> None:
-    page.evaluate(
-        "() => { if (typeof appSettings !== 'undefined') appSettings._restoreInProgress = true; }"
-    )
-    page.evaluate(
-        """state => {
-          localStorage.clear();
-          sessionStorage.clear();
-          for (const [key, value] of Object.entries(state.localStorage)) localStorage.setItem(key, value);
-          for (const [key, value] of Object.entries(state.sessionStorage)) sessionStorage.setItem(key, value);
-          for (const [key, value] of Object.entries(state.globals)) window[key] = value;
-        }""",
-        before,
-    )
-    page.evaluate(
-        """() => {
-          const raw = localStorage.getItem('lspDiveSettings_v6');
-          if (!raw || typeof appSettings === 'undefined') return;
-          try { appSettings._restoreFields(JSON.parse(raw)); } catch (_) {}
-        }"""
-    )
-    page.wait_for_timeout(1100)
-    page.evaluate(
-        """state => {
-          localStorage.clear();
-          sessionStorage.clear();
-          for (const [key, value] of Object.entries(state.localStorage)) localStorage.setItem(key, value);
-          for (const [key, value] of Object.entries(state.sessionStorage)) sessionStorage.setItem(key, value);
-        }""",
-        before,
-    )
+    _restore_session_begin(page)
+    try:
+        _apply_storage_snapshot(page, before)
+        _invoke_restore_fields(page)
+        _wait_settings_debounce_contract(page)
+        _apply_storage_snapshot(page, before)
+        _sync_dom_from_storage(page)
+        _verify_persisted_consistency(page, before)
+    finally:
+        _restore_session_end(page)
 
 
 def _act(page, action: dict[str, Any]) -> None:
