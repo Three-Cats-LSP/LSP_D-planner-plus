@@ -374,9 +374,9 @@
       "unit_id": "UI-CSS-RESULTS",
       "path": "lsp-dplanner-results.css",
       "start_line": 501,
-      "end_line": 888,
-      "line_count": 388,
-      "content_fingerprint": "2eed1ec58a9806ea85aea5b62bc43a7f187e74ae7c0e6cc7e85386b316aefb14",
+      "end_line": 890,
+      "line_count": 390,
+      "content_fingerprint": "fc3fe81a27c5d45948065bd6d9071ed0fde7e14d48f8a9a57feddab4bfe9ddee",
       "review_session": "C07-B",
       "verification_session": "C07-V-B",
       "lens_results": {
@@ -984,5 +984,40 @@
   ],
   "changed_paths": [],
   "audit_report": "docs/seven-lens-reports/cycle-07-results-css.md",
-  "notes": "CLOSER: registry closed at bf311c6; static/ci/release gate receipts bound to closure_evidence_commit."
+  "notes": "CLOSER: registry closed at bf311c6; static/ci/release gate receipts bound to closure_evidence_commit. Cycle 8 dependency re-review C07-R2-A (1-500) and C07-R2-B (501-890) clean at fingerprint 8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49.",
+  "dependency_re_reviews": [
+    {
+      "session": "C07-R2-A",
+      "part_id": "UI-CSS-RESULTS-P01",
+      "start_line": 1,
+      "end_line": 500,
+      "content_fingerprint": "90c2e9d1cd13216a5fbda047f64a7212d9a90abfa7ab54848dd5557a35fbc80d",
+      "trigger": "Cycle 8 lsp-dplanner-results.css mobile selector dependency invalidation (lines 1-500 unchanged)",
+      "focus": [
+        "Cycle 8 mobile selector delta absent in P01 range",
+        "chip-yellow/PPO2/print/reduced-motion Cycle 7 fixes preserved",
+        "legacy-panels hidden; V4 results shell selectors intact"
+      ],
+      "result": "NO_NEW_FINDING",
+      "reviewed_at": "2026-07-06T00:36:00+09:00",
+      "verifier": "Cursor Agent (DEPENDENCY RE-VERIFIER)"
+    },
+    {
+      "session": "C07-R2-B",
+      "part_id": "UI-CSS-RESULTS-P02",
+      "start_line": 501,
+      "end_line": 890,
+      "content_fingerprint": "fc3fe81a27c5d45948065bd6d9071ed0fde7e14d48f8a9a57feddab4bfe9ddee",
+      "trigger": "Cycle 8 retargeted @media (max-width:640px) exclusivity from #planPanel to #recPlannerView/#tecPlannerView/#resultsPanel",
+      "focus": [
+        "mobile-active exclusivity cascade and !important specificity",
+        "adjacent landscape/header @media (max-width:640px) rules",
+        "has-results visibility; print and prefers-reduced-motion blocks",
+        "PPO2 !important severity and chip-yellow distinct tokens"
+      ],
+      "result": "NO_NEW_FINDING",
+      "reviewed_at": "2026-07-06T00:36:00+09:00",
+      "verifier": "Cursor Agent (DEPENDENCY RE-VERIFIER)"
+    }
+  ]
 }
