@@ -107,7 +107,9 @@ Full L1–L7 notes are in `cycle-07-record.json` for both parts.
 
 ## Audit checkpoint
 
-*(filled after audit commit)*
+**audit_commit:** `094162acd2ce89ac01acdef5c2ff326d4f6b5c58`
+
+Post-audit static: `python -m tools.audit check --profile static` → FAIL (SUITE-COVERAGE release-blocking OPEN SL-C07-M-01/M-02); expected after registry OPEN findings.
 
 ## Attestation
 
