@@ -1287,91 +1287,79 @@
       "id": "SL-C07-M-01",
       "unit_id": "UI-CSS-RESULTS",
       "severity": "MEDIUM",
-      "status": "CLOSED",
+      "status": "OPEN",
       "issue": "Seven-lens Cycle 07 results CSS audit",
       "summary": "Results chip-yellow renders with orange palette identical to chip-orange",
       "affected_units": [
         "UI-CSS-RESULTS"
       ],
-      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
-      "evidence_cases": [
-        "REG-89"
-      ]
+      "resolution_commit": "",
+      "evidence_cases": []
     },
     {
       "id": "SL-C07-M-02",
       "unit_id": "UI-CSS-RESULTS",
       "severity": "MEDIUM",
-      "status": "CLOSED",
+      "status": "OPEN",
       "issue": "Seven-lens Cycle 07 results CSS audit",
       "summary": "Schedule row neutralization overrides PPO2 severity colors",
       "affected_units": [
         "UI-CSS-RESULTS"
       ],
-      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
-      "evidence_cases": [
-        "REG-90"
-      ]
+      "resolution_commit": "",
+      "evidence_cases": []
     },
     {
       "id": "SL-C07-L-01",
       "unit_id": "UI-CSS-RESULTS",
       "severity": "LOW",
-      "status": "CLOSED",
+      "status": "OPEN",
       "issue": "Seven-lens Cycle 07 results CSS audit",
       "summary": "Legacy mobile deco card CSS unreachable under hidden .legacy-panels",
       "affected_units": [
         "UI-CSS-RESULTS"
       ],
-      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
-      "evidence_cases": [
-        "REG-91"
-      ]
+      "resolution_commit": "",
+      "evidence_cases": []
     },
     {
       "id": "SL-C07-L-02",
       "unit_id": "UI-CSS-RESULTS",
       "severity": "LOW",
-      "status": "CLOSED",
+      "status": "OPEN",
       "issue": "Seven-lens Cycle 07 results CSS audit",
       "summary": "Obsolete .algo-switcher rules with zero live DOM writers",
       "affected_units": [
         "UI-CSS-RESULTS"
       ],
-      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
-      "evidence_cases": [
-        "REG-92"
-      ]
+      "resolution_commit": "",
+      "evidence_cases": []
     },
     {
       "id": "SL-C07-L-03",
       "unit_id": "UI-CSS-RESULTS",
       "severity": "LOW",
-      "status": "CLOSED",
+      "status": "OPEN",
       "issue": "Seven-lens Cycle 07 results CSS audit",
       "summary": "Results panel transitions ignore prefers-reduced-motion",
       "affected_units": [
         "UI-CSS-RESULTS"
       ],
-      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
-      "evidence_cases": [
-        "REG-93"
-      ]
+      "resolution_commit": "",
+      "evidence_cases": []
     },
     {
       "id": "SL-C07-L-04",
       "unit_id": "UI-CSS-RESULTS",
       "severity": "LOW",
-      "status": "CLOSED",
+      "status": "OPEN",
       "issue": "Seven-lens Cycle 07 results CSS audit",
       "summary": "No @media print rules in canonical results CSS",
       "affected_units": [
         "UI-CSS-RESULTS"
       ],
-      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
-      "evidence_cases": [
-        "REG-94"
-      ]
+      "resolution_commit": "",
+      "evidence_cases": []
     },
     {
       "id": "SL-C03-H-01",

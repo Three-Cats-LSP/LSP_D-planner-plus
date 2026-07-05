@@ -295,7 +295,7 @@
       "start_line": 1,
       "end_line": 500,
       "line_count": 500,
-      "content_fingerprint": "195fbb35eb6d957d1dc19ddf459902ff417abf8c9d5f3754f2ddeee1cb44df1d",
+      "content_fingerprint": "90c2e9d1cd13216a5fbda047f64a7212d9a90abfa7ab54848dd5557a35fbc80d",
       "review_session": "C07-A",
       "verification_session": "C07-V-A",
       "lens_results": {
@@ -373,9 +373,9 @@
       "unit_id": "UI-CSS-RESULTS",
       "path": "lsp-dplanner-results.css",
       "start_line": 501,
-      "end_line": 931,
-      "line_count": 431,
-      "content_fingerprint": "31a4b2fc9d8eea80bfac20144ecb2154f3b53722adf2b04080d31fedf83ca5e2",
+      "end_line": 888,
+      "line_count": 388,
+      "content_fingerprint": "2eed1ec58a9806ea85aea5b62bc43a7f187e74ae7c0e6cc7e85386b316aefb14",
       "review_session": "C07-B",
       "verification_session": "C07-V-B",
       "lens_results": {
@@ -461,10 +461,17 @@
       "recommendation": "Restore distinct yellow tokens for .chip-yellow inside #resultsPanel or rename writer classes to match intended palette.",
       "status": "CLOSED",
       "regression_ids": [
-        "SL-C07-CHIP-YELLOW-ORANGE-PARITY"
+        "SL-C07-CHIP-YELLOW-DISTINCT"
       ],
+      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "fix_summary": "Remapped #resultsPanel .chip-yellow to --yellow-dim/--yellow tokens distinct from chip-orange.",
+      "baseline_failure": "chip-yellow and chip-orange both rgb(245,158,11) under audit CSS.",
+      "observable_contract": "TEC Generate renders #resultChipRow .chip-yellow distinct from .chip-orange in dark and light themes with chip-dot semantic context.",
+      "independent_verification_result": "PASSED (C07-V-B independent verification at acaec31)",
+      "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
       "pre_fix_evidence_id": "ER-C07-PRE-RESULTS",
-      "post_fix_evidence_id": "ER-C07-POST-RESULTS",
+      "post_fix_evidence_id": "ER-C07-TRACE",
+      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS",
       "evidence_ids": [
         "ER-C07-PRE-RESULTS",
         "ER-C07-POST-RESULTS",
@@ -475,14 +482,7 @@
         "static",
         "ci",
         "release"
-      ],
-      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
-      "fix_summary": "Remapped #resultsPanel .chip-yellow to --yellow-dim/--yellow tokens distinct from chip-orange.",
-      "baseline_failure": "chip-yellow and chip-orange both rgb(245,158,11) under audit CSS.",
-      "observable_contract": "TEC Generate renders #resultChipRow .chip-yellow distinct from .chip-orange in dark and light themes with chip-dot semantic context.",
-      "independent_verification_result": "PASSED (C07-V-B independent verification at acaec31)",
-      "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
-      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS"
+      ]
     },
     {
       "id": "SL-C07-M-02",
@@ -498,8 +498,15 @@
       "regression_ids": [
         "SL-C07-PPO2-SEVERITY-COLORS"
       ],
+      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "fix_summary": "Excluded .col-ppo2 from row neutralization; raised PPO2 td selector specificity with !important.",
+      "baseline_failure": "ppo2-warn/crit computed muted gray identical to ppo2-ok after tr.deco-row td { color: inherit }.",
+      "observable_contract": "45 m TEC schedule renders distinct ppo2-ok/warn/hi/crit colors; ppo2-crit remains red after row neutralization.",
+      "independent_verification_result": "PASSED (C07-V-B independent verification at acaec31)",
+      "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
       "pre_fix_evidence_id": "ER-C07-PRE-RESULTS",
       "post_fix_evidence_id": "ER-C07-POST-RESULTS",
+      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS",
       "evidence_ids": [
         "ER-C07-PRE-RESULTS",
         "ER-C07-POST-RESULTS",
@@ -510,14 +517,7 @@
         "static",
         "ci",
         "release"
-      ],
-      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
-      "fix_summary": "Excluded .col-ppo2 from row neutralization; raised PPO2 td selector specificity with !important.",
-      "baseline_failure": "ppo2-warn/crit computed muted gray identical to ppo2-ok after tr.deco-row td { color: inherit }.",
-      "observable_contract": "45 m TEC schedule renders distinct ppo2-ok/warn/hi/crit colors; ppo2-crit remains red after row neutralization.",
-      "independent_verification_result": "PASSED (C07-V-B independent verification at acaec31)",
-      "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
-      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS"
+      ]
     },
     {
       "id": "SL-C07-L-01",
@@ -531,10 +531,17 @@
       "recommendation": "Remove or relocate mobile card rules to #resultsPanel scope if still needed; drop .legacy-panels coupling.",
       "status": "CLOSED",
       "regression_ids": [
-        "SL-C07-CSS-DEAD-LEGACY-MOBILE-CARD"
+        "SL-C07-CSS-DEAD-LEGACY-CARDS"
       ],
+      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "fix_summary": "Removed dead .legacy-panels mobile card/table-toggle CSS block.",
+      "baseline_failure": "~110 lines of .legacy-panels mobile deco card rules present under display:none subtree.",
+      "observable_contract": "No .legacy-panels mobile card selectors in canonical CSS; V4 #resultsPanel .schedule-table mobile layout intact at 375px.",
+      "independent_verification_result": "PASSED (C07-V-A independent verification at acaec31)",
+      "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
       "pre_fix_evidence_id": "ER-C07-PRE-RESULTS",
       "post_fix_evidence_id": "ER-C07-POST-RESULTS",
+      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS",
       "evidence_ids": [
         "ER-C07-PRE-RESULTS",
         "ER-C07-POST-RESULTS",
@@ -545,14 +552,7 @@
         "static",
         "ci",
         "release"
-      ],
-      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
-      "fix_summary": "Removed dead .legacy-panels mobile card/table-toggle CSS block.",
-      "baseline_failure": "~110 lines of .legacy-panels mobile deco card rules present under display:none subtree.",
-      "observable_contract": "No .legacy-panels mobile card selectors in canonical CSS; V4 #resultsPanel .schedule-table mobile layout intact at 375px.",
-      "independent_verification_result": "PASSED (C07-V-A independent verification at acaec31)",
-      "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
-      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS"
+      ]
     },
     {
       "id": "SL-C07-L-02",
@@ -568,8 +568,15 @@
       "regression_ids": [
         "SL-C07-CSS-DEAD-ALGO-SWITCHER"
       ],
+      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "fix_summary": "Deleted obsolete .algo-switcher flex-wrap rules.",
+      "baseline_failure": ".algo-switcher rules present with zero index.html writers.",
+      "observable_contract": "Canonical CSS and runtime DOM contain zero .algo-switcher selectors or writers.",
+      "independent_verification_result": "PASSED (C07-V-A independent verification at acaec31)",
+      "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
       "pre_fix_evidence_id": "ER-C07-PRE-RESULTS",
       "post_fix_evidence_id": "ER-C07-POST-RESULTS",
+      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS",
       "evidence_ids": [
         "ER-C07-PRE-RESULTS",
         "ER-C07-POST-RESULTS",
@@ -580,14 +587,7 @@
         "static",
         "ci",
         "release"
-      ],
-      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
-      "fix_summary": "Deleted obsolete .algo-switcher flex-wrap rules.",
-      "baseline_failure": ".algo-switcher rules present with zero index.html writers.",
-      "observable_contract": "Canonical CSS and runtime DOM contain zero .algo-switcher selectors or writers.",
-      "independent_verification_result": "PASSED (C07-V-A independent verification at acaec31)",
-      "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
-      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS"
+      ]
     },
     {
       "id": "SL-C07-L-03",
@@ -601,20 +601,7 @@
       "recommendation": "Add prefers-reduced-motion block mirroring controls.css pattern for animated results selectors.",
       "status": "CLOSED",
       "regression_ids": [
-        "SL-C07-REDUCED-MOTION-RESULTS"
-      ],
-      "pre_fix_evidence_id": "ER-C07-PRE-RESULTS",
-      "post_fix_evidence_id": "ER-C07-POST-RESULTS",
-      "evidence_ids": [
-        "ER-C07-PRE-RESULTS",
-        "ER-C07-POST-RESULTS",
-        "ER-C07-TRACE",
-        "ER-C07-PROTOCOL",
-        "ER-C07-PARITY",
-        "ER-C07-RESTORE-RESULTS",
-        "static",
-        "ci",
-        "release"
+        "SL-C07-REDUCED-MOTION"
       ],
       "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
       "fix_summary": "Added @media (prefers-reduced-motion: reduce) zero-duration overrides for results animated selectors.",
@@ -622,24 +609,9 @@
       "observable_contract": "prefers-reduced-motion: reduce zeroes result-tab, mode-btn, and theme-pill-thumb transition durations while warnings remain visible.",
       "independent_verification_result": "PASSED (C07-V-B independent verification at acaec31)",
       "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
-      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS"
-    },
-    {
-      "id": "SL-C07-L-04",
-      "severity": "LOW",
-      "unit_id": "UI-CSS-RESULTS",
-      "location": "lsp-dplanner-results.css:1-931",
-      "root_cause": "Canonical results stylesheet defines screen layout only; no @media print rules for schedule tables, alerts, or metric strips.",
-      "failure_path": "fetch('lsp-dplanner-results.css').text -> @media print absent; PDF/export relies on export-core canvas capture not print CSS",
-      "impact": "Browser print/PDF of results panel lacks pagination, alert preservation, and table overflow guarantees defined for on-screen V4 layout.",
-      "evidence": "Playwright print.hasPrintBlock false; export-core.js uses canvas PDF path only",
-      "recommendation": "Add scoped @media print rules for #resultsPanel schedule, alerts, and chip/metric visibility if print is a supported surface.",
-      "status": "CLOSED",
-      "regression_ids": [
-        "SL-C07-PRINT-RESULTS-CSS"
-      ],
       "pre_fix_evidence_id": "ER-C07-PRE-RESULTS",
       "post_fix_evidence_id": "ER-C07-POST-RESULTS",
+      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS",
       "evidence_ids": [
         "ER-C07-PRE-RESULTS",
         "ER-C07-POST-RESULTS",
@@ -650,6 +622,21 @@
         "static",
         "ci",
         "release"
+      ]
+    },
+    {
+      "id": "SL-C07-L-04",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-RESULTS",
+      "location": "lsp-dplanner-results.css:1-888",
+      "root_cause": "Canonical results stylesheet defines screen layout only; no @media print rules for schedule tables, alerts, or metric strips.",
+      "failure_path": "fetch('lsp-dplanner-results.css').text -> @media print absent; PDF/export relies on export-core canvas capture not print CSS",
+      "impact": "Browser print/PDF of results panel lacks pagination, alert preservation, and table overflow guarantees defined for on-screen V4 layout.",
+      "evidence": "Playwright print.hasPrintBlock false; export-core.js uses canvas PDF path only",
+      "recommendation": "Add scoped @media print rules for #resultsPanel schedule, alerts, and chip/metric visibility if print is a supported surface.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C07-PRINT-RESULTS"
       ],
       "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
       "fix_summary": "Added scoped @media print block for #resultsPanel alerts, metrics, schedule rows, and chip strip.",
@@ -657,7 +644,20 @@
       "observable_contract": "Print media keeps alerts, metric strip, and schedule rows visible with break-inside avoid; interactive chrome hidden.",
       "independent_verification_result": "PASSED (C07-V-B independent verification at acaec31)",
       "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
-      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS"
+      "pre_fix_evidence_id": "ER-C07-PRE-RESULTS",
+      "post_fix_evidence_id": "ER-C07-POST-RESULTS",
+      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS",
+      "evidence_ids": [
+        "ER-C07-PRE-RESULTS",
+        "ER-C07-POST-RESULTS",
+        "ER-C07-TRACE",
+        "ER-C07-PROTOCOL",
+        "ER-C07-PARITY",
+        "ER-C07-RESTORE-RESULTS",
+        "static",
+        "ci",
+        "release"
+      ]
     }
   ],
   "evidence_runs": [
@@ -687,7 +687,7 @@
       "worktree_clean": true,
       "state_restored": true,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-PRE-RESULTS.json",
-      "receipt_sha256": "4f6634cde0bd0fc0ddf275d0d8ed7af916bfada9c20105ec792d1a7f73f47c9e",
+      "receipt_sha256": "bca24e5732e066c6a5154df01b9e99e6c9fdfb8fea6016a6ab8ed1ed3d6164d4",
       "exit_code": 1,
       "worktree_clean_before": true,
       "worktree_clean_after": true
@@ -716,9 +716,48 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-POST-RESULTS.json",
-      "receipt_sha256": "03fcf7e6a848ea6eff6633192959df4abdf195317034c32be639e5baa36b9fa9",
+      "receipt_sha256": "610b279317da9e01976fc68d9ee3372da739b2e36bdaf7413a74d46039e80a71",
       "worktree_clean_before": true,
-      "worktree_clean_after": true
+      "worktree_clean_after": true,
+      "runtime_trace": {
+        "entry_event": "User generates 45 m / 25 min TEC plan; schedule PPO2 ok/warn/crit cells have distinct colors.",
+        "consumer_path": [
+          "#tecGenerateBtn click",
+          "decorateDecoTableForV3 ppo2-* classes",
+          "getComputedStyle .col-ppo2",
+          "lsp-dplanner-results.css .ppo2-crit"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "warn_count": 6,
+            "crit_count": 2,
+            "ok_count": 3
+          },
+          {
+            "stage": "canonical",
+            "warn_count": 6,
+            "crit_count": 2,
+            "ok_count": 3
+          },
+          {
+            "stage": "consumer",
+            "ok_color": "rgb(74, 222, 128)",
+            "warn_color": "rgb(251, 191, 36)",
+            "crit_color": "rgb(248, 113, 113)",
+            "resolved_red": "rgb(248, 113, 113)"
+          },
+          {
+            "stage": "observable",
+            "ok_ne_warn": true
+          }
+        ],
+        "trace_id": "SL-C07-PPO2-SEVERITY-COLORS-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle07.json",
+        "artifact_sha256": "988927af289c624e40319f8280d598e89c149d669909d4fd21fe1e69ca28b137",
+        "spec_path": "docs/seven-lens-traces/cycle-07-results.json",
+        "spec_sha256": "de00b3b9b1c34e41f0e45f71e8dffe0421f1bb49f82f4be78f00da8d882b1cb0"
+      }
     },
     {
       "id": "ER-C07-TRACE",
@@ -744,17 +783,47 @@
         "Four browser traces PASS twice with state restoration hashes equal"
       ],
       "runtime_trace": {
+        "entry_event": "User generates a TEC schedule; TTS chip-yellow color differs from OTU chip-orange.",
+        "consumer_path": [
+          "#tecGenerateBtn click",
+          "renderChipRow chip-yellow / chip-orange",
+          "getComputedStyle color",
+          "lsp-dplanner-results.css #resultsPanel .chip-yellow"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "has_chip_row": true
+          },
+          {
+            "stage": "canonical",
+            "has_results": true,
+            "yellow_present": true,
+            "orange_present": true
+          },
+          {
+            "stage": "consumer",
+            "yellow_color": "rgb(251, 191, 36)",
+            "orange_color": "rgb(245, 158, 11)"
+          },
+          {
+            "stage": "observable",
+            "has_dot": true,
+            "has_tts_label": true
+          }
+        ],
+        "trace_id": "SL-C07-CHIP-YELLOW-DISTINCT-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle07.json",
+        "artifact_sha256": "988927af289c624e40319f8280d598e89c149d669909d4fd21fe1e69ca28b137",
         "spec_path": "docs/seven-lens-traces/cycle-07-results.json",
-        "artifact_sha256": "22d337bee58391f6cdcfd15190375cdf24999bd097cd8930d3b577dbdac44e6c",
-        "spec_sha256": "a54ca376580926a96983297703e52181e731108820219a48f7900ae07c8e5e66"
+        "spec_sha256": "de00b3b9b1c34e41f0e45f71e8dffe0421f1bb49f82f4be78f00da8d882b1cb0"
       },
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-07-results.json --output dev/seven-lens-browser-trace-cycle07.json",
       "worktree_clean": true,
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-TRACE.json",
-      "receipt_sha256": "d11bdc915ec55791f475106007a9540ec9f190cbe08e9769bfd18351c4c17731",
+      "receipt_sha256": "9aa172976726a644b46e3777b14c2d14613a634777561c4f59b2c7e389e221d9",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -778,7 +847,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-PROTOCOL.json",
-      "receipt_sha256": "225c117dc94a5d971410f01006ae2b171b2fe22f44806db5440ac9b97570814e",
+      "receipt_sha256": "e9e16b7a9a6d4c1cdbbe709851265d2179badedfe9f46ef1981262a26897eeca",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -802,7 +871,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-PARITY.json",
-      "receipt_sha256": "7ec000672d70f5a5dbc81d751706a735bc79c65da1849b107a77ea0c30a35635",
+      "receipt_sha256": "636ec8cd01720489d27475845ccc6367f8e2cc9a15249cc7e609fe85e2ee0ac3",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -827,7 +896,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c07-static.json",
-      "receipt_sha256": "05a655d91f9d0554b3dc625b4b48be16b29c4300074da5dd7f204a3a0e8c3cef",
+      "receipt_sha256": "e5a82084a70d22146e857b9876f1a6ef80301252b8d192213fe10561a37da289",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -852,7 +921,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c07-ci.json",
-      "receipt_sha256": "2df308758750936ac2a460e0aa1c29aa9ab42efc6c57dfd93794ca07e1ab1761",
+      "receipt_sha256": "ca84b684f054f5ae7ede2b9351240c7503c09e8a04037aa91601e4dc460b9ae1",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -877,7 +946,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c07-release.json",
-      "receipt_sha256": "9e9d72edea32afde6c27fe269e8030a5b9b04039cd7c790a1d4a49aa54c4b028",
+      "receipt_sha256": "2405a4162948aa3a33b8dbe638609bbc079b9a44d091c4469e53300e9eca4d3d",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -905,18 +974,14 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-RESTORE-RESULTS.json",
-      "receipt_sha256": "612d351059cf07ec2538ca1e3b46eed80eed975639de32e70e485da199faa975",
+      "receipt_sha256": "caa00bb48973d2483d864272d43196703ee541917419a4ad2bd0412cb1eeb5cc",
       "worktree_clean_before": true,
-      "worktree_clean_after": true
+      "worktree_clean_after": true,
+      "state_before_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+      "state_after_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278"
     }
   ],
-  "changed_paths": [
-    "lsp-dplanner-results.css",
-    "dev/ui_results_css_regression.py",
-    "dev/c07_pre_results_regression.py",
-    "docs/seven-lens-traces/cycle-07-results.json",
-    "docs/audit-units.json"
-  ],
+  "changed_paths": [],
   "audit_report": "docs/seven-lens-reports/cycle-07-results-css.md",
   "notes": "VERIFIER C07-V-A/C07-V-B: independent verification PASSED at acaec31; closure evidence at 92fef14.",
   "closure_evidence_commit": "92fef148f4c144265ca4caf7ce95f2378c0a24ec"
