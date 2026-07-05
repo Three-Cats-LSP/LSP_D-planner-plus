@@ -196,7 +196,7 @@
   ],
   "audit_commit": "fea770dc9194b55e3344b10e18e4b9b1a5bfc2ad",
   "verified_source_commit": "3c9779145365c66dab725e4c29c086994393beb9",
-  "closure_evidence_commit": "",
+  "closure_evidence_commit": "6a4d683fed0cb1c2e48edfb274298c0896ff53d5",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -783,7 +783,7 @@
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
       "exit_code": 0,
-      "commit": "7ac4fff59dc3bc18eaa6ac32d3319d6afb9a760b",
+      "commit": "6a4d683fed0cb1c2e48edfb274298c0896ff53d5",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -808,7 +808,7 @@
       "state_restored": true,
       "command": "python -m tools.audit run --profile ci",
       "exit_code": 0,
-      "commit": "7ac4fff59dc3bc18eaa6ac32d3319d6afb9a760b",
+      "commit": "6a4d683fed0cb1c2e48edfb274298c0896ff53d5",
       "worktree_clean": true,
       "command_argv": [
         "python",
