@@ -196,7 +196,7 @@
   ],
   "audit_commit": "fea770dc9194b55e3344b10e18e4b9b1a5bfc2ad",
   "verified_source_commit": "3c9779145365c66dab725e4c29c086994393beb9",
-  "closure_evidence_commit": "c205488babe4d3f08ad7af27dd6e506cb7552941",
+  "closure_evidence_commit": "5257cbb8b9b26ccb1760546036285236d4bfc4ff",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -783,7 +783,7 @@
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
       "exit_code": 0,
-      "commit": "c205488babe4d3f08ad7af27dd6e506cb7552941",
+      "commit": "5257cbb8b9b26ccb1760546036285236d4bfc4ff",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -794,7 +794,7 @@
         "static"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-static.json",
-      "receipt_sha256": "a28c9596a13e9091d4865b9042c4da020c05c78c2f7ef770558f44aac2d1dee4",
+      "receipt_sha256": "f98f57e1b4415cab518f74ca1d1c2dc9e28d53c3af2d52fe974af19411c0dcd7",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -808,7 +808,7 @@
       "state_restored": true,
       "command": "python -m tools.audit run --profile ci",
       "exit_code": 0,
-      "commit": "c205488babe4d3f08ad7af27dd6e506cb7552941",
+      "commit": "5257cbb8b9b26ccb1760546036285236d4bfc4ff",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -819,7 +819,7 @@
         "ci"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ci.json",
-      "receipt_sha256": "87aa9808faaaacf088c07106d1f584e378736cc078cd9051f19f103f4cd078d9",
+      "receipt_sha256": "1294e5afae91fb7702cb286a001d8afaba7fa64ba81184ca2bcf92622c2d2e87",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
