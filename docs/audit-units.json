@@ -1294,7 +1294,9 @@
         "UI-CSS-RESULTS"
       ],
       "resolution_commit": "",
-      "evidence_cases": []
+      "evidence_cases": [
+        "REG-89"
+      ]
     },
     {
       "id": "SL-C07-M-02",
@@ -1307,7 +1309,9 @@
         "UI-CSS-RESULTS"
       ],
       "resolution_commit": "",
-      "evidence_cases": []
+      "evidence_cases": [
+        "REG-90"
+      ]
     },
     {
       "id": "SL-C07-L-01",
@@ -1320,7 +1324,9 @@
         "UI-CSS-RESULTS"
       ],
       "resolution_commit": "",
-      "evidence_cases": []
+      "evidence_cases": [
+        "REG-91"
+      ]
     },
     {
       "id": "SL-C07-L-02",
@@ -1333,7 +1339,9 @@
         "UI-CSS-RESULTS"
       ],
       "resolution_commit": "",
-      "evidence_cases": []
+      "evidence_cases": [
+        "REG-92"
+      ]
     },
     {
       "id": "SL-C07-L-03",
@@ -1346,7 +1354,9 @@
         "UI-CSS-RESULTS"
       ],
       "resolution_commit": "",
-      "evidence_cases": []
+      "evidence_cases": [
+        "REG-93"
+      ]
     },
     {
       "id": "SL-C07-L-04",
@@ -1359,7 +1369,9 @@
         "UI-CSS-RESULTS"
       ],
       "resolution_commit": "",
-      "evidence_cases": []
+      "evidence_cases": [
+        "REG-94"
+      ]
     },
     {
       "id": "SL-C03-H-01",
