@@ -3,7 +3,7 @@
   "runner_version": 2,
   "spec": "docs\\seven-lens-traces\\cycle-08-shell-results.json",
   "spec_sha256": "3c65bafc9c22a3918e43eb1d2959be7a413af6fc8d0098631b0899cc036e5f32",
-  "commit": "47ba706307d5951270bb81a590e2510bb0b54c66",
+  "commit": "941dea26901477eaed8724bd50b2213c653e84f5",
   "traces": [
     {
       "id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
