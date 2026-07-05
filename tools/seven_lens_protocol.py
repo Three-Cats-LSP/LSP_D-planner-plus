@@ -1119,6 +1119,15 @@ def validate_record(
                         errors.extend(_validate_generated_coverage_doc(root))
                 except RuntimeError:
                     pass
+    if migrated.get("cycle") == 8:
+        mirror = root / "docs/seven-lens-records/cycle-08-shell-results.json"
+        report = root / "docs/seven-lens-reports/cycle-08-record.json"
+        if mirror.is_file() and report.is_file() and mirror.read_bytes() != report.read_bytes():
+            errors.append(
+                "cycle 8 record mirror diverged: "
+                "docs/seven-lens-records/cycle-08-shell-results.json "
+                "!= docs/seven-lens-reports/cycle-08-record.json"
+            )
     return errors
 
 
