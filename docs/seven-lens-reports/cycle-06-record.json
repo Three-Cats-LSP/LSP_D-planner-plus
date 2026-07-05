@@ -1,5 +1,5 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "cycle": 6,
   "record_path": "docs/seven-lens-reports/cycle-06-record.json",
   "target_branch": "dev",
@@ -196,6 +196,7 @@
   ],
   "audit_commit": "fea770dc9194b55e3344b10e18e4b9b1a5bfc2ad",
   "verified_source_commit": "3c9779145365c66dab725e4c29c086994393beb9",
+  "closure_evidence_commit": "f708883536b80c3c5379cb5f3f114b977a004fa5",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -383,7 +384,7 @@
       "state_restoration_evidence_id": "ER-C06-RESTORE-CSS",
       "independent_verification_result": "PASSED (C06-V-B at 1b5d5ce)",
       "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
-      "resolution_commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d"
+      "resolution_commit": "7470b4e5f56efb02541b57990e8422002051de35"
     },
     {
       "id": "SL-C06-M-02",
@@ -413,11 +414,11 @@
         "static",
         "ci"
       ],
-      "observable_contract": "TEC planner #cylBot_size bounding box is at least 44\u00d744px on 375px and 667px mobile viewports.",
+      "observable_contract": "TEC planner #cylBot_size bounding box is at least 44×44px on 375px and 667px mobile viewports.",
       "state_restoration_evidence_id": "ER-C06-RESTORE-CSS",
       "independent_verification_result": "PASSED (C06-V-B at 1b5d5ce)",
       "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
-      "resolution_commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d"
+      "resolution_commit": "7470b4e5f56efb02541b57990e8422002051de35"
     },
     {
       "id": "SL-C06-L-01",
@@ -445,7 +446,7 @@
       ],
       "independent_verification_result": "PASSED (C06-V-B at 1b5d5ce)",
       "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
-      "resolution_commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d"
+      "resolution_commit": "7470b4e5f56efb02541b57990e8422002051de35"
     },
     {
       "id": "SL-C06-L-02",
@@ -473,7 +474,7 @@
       ],
       "independent_verification_result": "PASSED (C06-V-B at 1b5d5ce)",
       "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
-      "resolution_commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d"
+      "resolution_commit": "7470b4e5f56efb02541b57990e8422002051de35"
     },
     {
       "id": "SL-C06-L-03",
@@ -501,7 +502,7 @@
       ],
       "independent_verification_result": "PASSED (C06-V-B at 1b5d5ce)",
       "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
-      "resolution_commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d"
+      "resolution_commit": "7470b4e5f56efb02541b57990e8422002051de35"
     },
     {
       "id": "SL-C06-L-04",
@@ -533,7 +534,7 @@
       "state_restoration_evidence_id": "ER-C06-RESTORE-CSS",
       "independent_verification_result": "PASSED (C06-V-C at 3c97791)",
       "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
-      "resolution_commit": "3c9779145365c66dab725e4c29c086994393beb9"
+      "resolution_commit": "7d403f44fc8643481414e622ebdcbb45ac430f10"
     },
     {
       "id": "SL-C06-L-05",
@@ -561,7 +562,7 @@
       ],
       "independent_verification_result": "PASSED (C06-V-B at 1b5d5ce)",
       "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
-      "resolution_commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d"
+      "resolution_commit": "7470b4e5f56efb02541b57990e8422002051de35"
     }
   ],
   "evidence_runs": [
@@ -782,7 +783,7 @@
       "state_restored": true,
       "command": "python -m tools.audit check --profile static",
       "exit_code": 0,
-      "commit": "7ac4fff59dc3bc18eaa6ac32d3319d6afb9a760b",
+      "commit": "f708883536b80c3c5379cb5f3f114b977a004fa5",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -793,7 +794,7 @@
         "static"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-static.json",
-      "receipt_sha256": "071feadd92e75350a772ed42490bf291a3d0b27d59cb437e08ea3b9d4a0a954e",
+      "receipt_sha256": "1679710382bfca2f45c0a56281b9532e8735266d780be5d9987163b5bc9132e4",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -807,7 +808,7 @@
       "state_restored": true,
       "command": "python -m tools.audit run --profile ci",
       "exit_code": 0,
-      "commit": "7ac4fff59dc3bc18eaa6ac32d3319d6afb9a760b",
+      "commit": "f708883536b80c3c5379cb5f3f114b977a004fa5",
       "worktree_clean": true,
       "command_argv": [
         "python",
@@ -818,7 +819,7 @@
         "ci"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ci.json",
-      "receipt_sha256": "87aa9808faaaacf088c07106d1f584e378736cc078cd9051f19f103f4cd078d9",
+      "receipt_sha256": "f592cad3d26b633607cee3d6fea9b73f840329beef0c4c992058bccbe55539f5",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -862,5 +863,9 @@
     "tools/seven_lens_browser_trace.py"
   ],
   "audit_report": "docs/seven-lens-reports/cycle-06-controls-css.md",
-  "notes": "VERIFIER C06-V-C: SL-C06-L-04 independently verified at 3c97791; prepared baseline cf591de fails borderIsRed/shadowChanged with valid invalidity; ledger IN_PROGRESS pending CLOSER."
+  "notes": "VERIFIER C06-V-C: SL-C06-L-04 verified at 3c97791; CLOSER promoted ledger to SEVEN_LENS_REVIEWED at closure HEAD 620ce53.",
+  "protocol_migrations": [
+    "resolution-commit-v1",
+    "receipt-exit-v1"
+  ]
 }
