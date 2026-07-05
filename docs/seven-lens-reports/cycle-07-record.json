@@ -285,7 +285,7 @@
     }
   ],
   "audit_commit": "094162acd2ce89ac01acdef5c2ff326d4f6b5c58",
-  "verified_source_commit": "acaec31a3608f1e5d085938817a6907da2465b5c",
+  "verified_source_commit": "63b30d2df28d5cbe497fc8055c44a3eac57e0855",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -707,7 +707,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_results_css_regression.py"
       ],
-      "commit": "acaec31a3608f1e5d085938817a6907da2465b5c",
+      "commit": "63b30d2df28d5cbe497fc8055c44a3eac57e0855",
       "observable_assertions": [
         "All six computed-style cases PASS across dark/light/landscape viewports"
       ],
@@ -716,7 +716,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-POST-RESULTS.json",
-      "receipt_sha256": "610b279317da9e01976fc68d9ee3372da739b2e36bdaf7413a74d46039e80a71",
+      "receipt_sha256": "27d33e2666cb7215608f1a509f979ff85b247227a10a731f586675fd02a65e34",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "runtime_trace": {
@@ -754,7 +754,7 @@
         ],
         "trace_id": "SL-C07-PPO2-SEVERITY-COLORS-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle07.json",
-        "artifact_sha256": "988927af289c624e40319f8280d598e89c149d669909d4fd21fe1e69ca28b137",
+        "artifact_sha256": "e053f980e9d1c242747a5ee5eb44d3cfc58555b2585cf5ab66458ee1ff832f81",
         "spec_path": "docs/seven-lens-traces/cycle-07-results.json",
         "spec_sha256": "de00b3b9b1c34e41f0e45f71e8dffe0421f1bb49f82f4be78f00da8d882b1cb0"
       }
@@ -778,7 +778,7 @@
         "--output",
         "dev/seven-lens-browser-trace-cycle07.json"
       ],
-      "commit": "acaec31a3608f1e5d085938817a6907da2465b5c",
+      "commit": "63b30d2df28d5cbe497fc8055c44a3eac57e0855",
       "observable_assertions": [
         "Four browser traces PASS twice with state restoration hashes equal"
       ],
@@ -814,7 +814,7 @@
         ],
         "trace_id": "SL-C07-CHIP-YELLOW-DISTINCT-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-cycle07.json",
-        "artifact_sha256": "988927af289c624e40319f8280d598e89c149d669909d4fd21fe1e69ca28b137",
+        "artifact_sha256": "e053f980e9d1c242747a5ee5eb44d3cfc58555b2585cf5ab66458ee1ff832f81",
         "spec_path": "docs/seven-lens-traces/cycle-07-results.json",
         "spec_sha256": "de00b3b9b1c34e41f0e45f71e8dffe0421f1bb49f82f4be78f00da8d882b1cb0"
       },
@@ -823,7 +823,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-TRACE.json",
-      "receipt_sha256": "9aa172976726a644b46e3777b14c2d14613a634777561c4f59b2c7e389e221d9",
+      "receipt_sha256": "9636985544ebe5d5b65c8944c25868ad17c9b0a60092e9c1f447295bfcb0244d",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -862,7 +862,7 @@
         "tools/assemble_ui_html.py",
         "--verify"
       ],
-      "commit": "acaec31a3608f1e5d085938817a6907da2465b5c",
+      "commit": "63b30d2df28d5cbe497fc8055c44a3eac57e0855",
       "observable_assertions": [
         "assemble_ui_html --verify OK after canonical CSS edits"
       ],
@@ -871,7 +871,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-PARITY.json",
-      "receipt_sha256": "636ec8cd01720489d27475845ccc6367f8e2cc9a15249cc7e609fe85e2ee0ac3",
+      "receipt_sha256": "fb0b516ea5f433d9a90cffd748992370fb2b560f4ec80fae77fa9f74fcd5b18a",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -965,7 +965,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_results_css_regression.py"
       ],
-      "commit": "acaec31a3608f1e5d085938817a6907da2465b5c",
+      "commit": "63b30d2df28d5cbe497fc8055c44a3eac57e0855",
       "observable_assertions": [
         "ui_results_css_regression restores DOM/globals/media after probes with matching state hashes"
       ],
@@ -974,7 +974,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-RESTORE-RESULTS.json",
-      "receipt_sha256": "caa00bb48973d2483d864272d43196703ee541917419a4ad2bd0412cb1eeb5cc",
+      "receipt_sha256": "33db916ac65befc71bef5e4610d38e860a5c59c630890d3744e03ea9ab962cee",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "state_before_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
@@ -983,6 +983,5 @@
   ],
   "changed_paths": [],
   "audit_report": "docs/seven-lens-reports/cycle-07-results-css.md",
-  "notes": "VERIFIER C07-V-A/C07-V-B: independent verification PASSED at acaec31; closure evidence at 92fef14.",
-  "closure_evidence_commit": "92fef148f4c144265ca4caf7ce95f2378c0a24ec"
+  "notes": "VERIFIER: protected verification-state at 63b30d2 with pre-populated registry evidence_cases; closure evidence invalidated pending CLOSER."
 }
