@@ -19,7 +19,7 @@
 | native_config | 1 | 0 | 0 | 0 | 1 |
 | pwa | 3 | 0 | 1 | 0 | 2 |
 | release_config | 1 | 0 | 1 | 0 | 0 |
-| test_infrastructure | 46 | 0 | 15 | 0 | 31 |
+| test_infrastructure | 49 | 0 | 18 | 0 | 31 |
 | tooling | 53 | 0 | 13 | 0 | 40 |
 | ui_core | 16 | 0 | 12 | 0 | 4 |
 | ui_shell | 2 | 0 | 1 | 0 | 1 |
@@ -27,7 +27,7 @@
 | web_markup | 7 | 0 | 4 | 1 | 2 |
 | web_runtime | 24 | 0 | 13 | 0 | 11 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **193** | **0** | **67** | **1** | **125** |
+| **Total** | **196** | **0** | **70** | **1** | **125** |
 
 ## Units
 
@@ -60,7 +60,7 @@
 | UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 418 | P2 | IN_PROGRESS | - |
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 338 | P2 | IN_PROGRESS | - |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 548 | P2 | VERIFIED | EXT-03, EXT-06, COV-01 |
-| UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 931 | P1 | IN_PROGRESS | - |
+| UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 888 | P1 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
 | UI-MARKUP-HEADER | web_markup | `ui/markup-header.html:1` | 750 | P2 | IN_PROGRESS | - |
 | UI-MARKUP-REC-PLANNER | web_markup | `ui/markup-rec-planner.html:1` | 75 | P1 | IN_PROGRESS | - |
 | UI-MARKUP-TEC-PLANNER | web_markup | `ui/markup-tec-planner.html:1` | 557 | P1 | IN_PROGRESS | - |
@@ -226,3 +226,6 @@
 | TEST-SEVEN-LENS-CYCLE06-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-06-controls.json:1` | 251 | P0 | IN_PROGRESS | - |
 | TEST-UI-CONTROLS-CSS-REGRESSION | test_infrastructure | `dev/ui_controls_css_regression.py:1` | 553 | P0 | IN_PROGRESS | REG-82, REG-83, REG-84, REG-85, REG-86, REG-87, REG-88 |
 | TEST-C06-PRE-CONTROLS-REGRESSION | test_infrastructure | `dev/c06_pre_controls_regression.py:1` | 47 | P0 | IN_PROGRESS | REG-82, REG-83 |
+| TEST-SEVEN-LENS-CYCLE07-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-07-results.json:1` | 526 | P0 | IN_PROGRESS | - |
+| TEST-UI-RESULTS-CSS-REGRESSION | test_infrastructure | `dev/ui_results_css_regression.py:1` | 407 | P0 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
+| TEST-C07-PRE-RESULTS-REGRESSION | test_infrastructure | `dev/c07_pre_results_regression.py:1` | 48 | P0 | IN_PROGRESS | REG-89, REG-90 |
