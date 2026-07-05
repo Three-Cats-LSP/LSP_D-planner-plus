@@ -794,7 +794,7 @@
         "static"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-static.json",
-      "receipt_sha256": "f98f57e1b4415cab518f74ca1d1c2dc9e28d53c3af2d52fe974af19411c0dcd7",
+      "receipt_sha256": "0ee849b688eec0bf5767de81e7d94db125d4975fe20d6306f2dc3eece7bb79fa",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -819,7 +819,7 @@
         "ci"
       ],
       "receipt_path": "dev/seven-lens-evidence-c06-ci.json",
-      "receipt_sha256": "1294e5afae91fb7702cb286a001d8afaba7fa64ba81184ca2bcf92622c2d2e87",
+      "receipt_sha256": "55a530d86f1bd75d5ff2d3a7f25208ad40f3010c52cc8bed2c532473a4c4de23",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
