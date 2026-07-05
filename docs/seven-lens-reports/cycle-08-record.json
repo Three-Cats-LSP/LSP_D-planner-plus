@@ -590,7 +590,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_shell_results_regression.py"
       ],
-      "commit": "7f86cfd6145c7fe52016dc058f872381d6ccf147",
+      "commit": "477bfc3418f9b47d5987582cd01ae65b23d93681",
       "observable_assertions": [
         "All five shell/results regression cases PASS at 1280x800, 375x667, and 667x375 with state restoration"
       ]
@@ -612,7 +612,7 @@
         "--output",
         "dev/seven-lens-browser-trace-c08-post-fix.json"
       ],
-      "commit": "7f86cfd6145c7fe52016dc058f872381d6ccf147",
+      "commit": "477bfc3418f9b47d5987582cd01ae65b23d93681",
       "observable_assertions": [
         "Four Cycle 08 browser traces PASS with repeat=2 and exact state restoration hashes"
       ],
