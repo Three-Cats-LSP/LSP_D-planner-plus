@@ -669,7 +669,7 @@
       "state_restored": true,
       "exit_code": 1,
       "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-BASELINE-SHELL.json",
-      "receipt_sha256": "2aae128330351543a77ea01affc9b8f9c5ec52c205826bb0b671a4549a6f56b3",
+      "receipt_sha256": "254068f091fa1658787071848f158eb3fb1c7a986d80793f191cb60c760deee5",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -696,7 +696,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-SHELL.json",
-      "receipt_sha256": "cfdce17d448c993c9e49eef3f9f625193455f5865edb4273eb158936075dab57",
+      "receipt_sha256": "9b40e7a8c003503f8814b0bb7544b0bc40b48b34f7125be8583a3ba9a601518f",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "runtime_trace": {
@@ -730,7 +730,7 @@
         ],
         "trace_id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "e9a0a603cef858a9458abbbfac1cb31e0825a41d9ed42c111698912ab25d2a36",
+        "artifact_sha256": "ad7aed51153e11e1a6fa42802ca617710c71579b39306f99f53d30f271146b26",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
         "spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d"
       }
@@ -760,10 +760,10 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-TRACE.json",
-      "receipt_sha256": "70f7e8333d710dd1471cb73cde218e2f8ff1d5e8ecd40cf2fb8237f939f79735",
+      "receipt_sha256": "899ebc62071a0f1124e48f2c509f19a1da7679342e3ab12d7c7d0e02343b7ab4",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
-      "trace_artifact_sha256": "e9a0a603cef858a9458abbbfac1cb31e0825a41d9ed42c111698912ab25d2a36",
+      "trace_artifact_sha256": "ad7aed51153e11e1a6fa42802ca617710c71579b39306f99f53d30f271146b26",
       "trace_spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d",
       "id": "ER-C08-TRACE",
       "runtime_trace": {
@@ -797,7 +797,7 @@
         ],
         "trace_id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "e9a0a603cef858a9458abbbfac1cb31e0825a41d9ed42c111698912ab25d2a36",
+        "artifact_sha256": "ad7aed51153e11e1a6fa42802ca617710c71579b39306f99f53d30f271146b26",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
         "spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d"
       }
@@ -825,7 +825,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-RESTORE-SHELL.json",
-      "receipt_sha256": "263c80aaaab0c7b3a9ad4642719dab10e313a57d82cd1096d1ef5004339f9309",
+      "receipt_sha256": "e44c6812731c48e10ef89f7def69ba2852698c411f1a811c2b4c9d53d41ced22",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "state_before_sha256": "3864aa159903c00d964d56602af6b5d6f46c3e18bced97e4bb3fa87f9ec25e0e",
@@ -850,7 +850,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-NAV.json",
-      "receipt_sha256": "b6d3b1b962c24a5ca23304a3682d8e264d5cffa7ede04c9a29275936cf9c0674",
+      "receipt_sha256": "0584246cddfd5d2282336f5e6a28c266aead55e1e0762e7bf6e371b4739f2605",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "runtime_trace": {
@@ -884,7 +884,7 @@
         ],
         "trace_id": "SL-C08-NAV-CLEARS-RESULTS-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "e9a0a603cef858a9458abbbfac1cb31e0825a41d9ed42c111698912ab25d2a36",
+        "artifact_sha256": "ad7aed51153e11e1a6fa42802ca617710c71579b39306f99f53d30f271146b26",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
         "spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d"
       }
@@ -908,7 +908,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-INVALID.json",
-      "receipt_sha256": "6dabb98da9795ece25e027e7e306eb9252da587e2f60b8773131169315a0c43e",
+      "receipt_sha256": "44f5e9d0c55085c6ae9a0c1fb8d60bab20af7200eb461c10499eb52888ff0100",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "runtime_trace": {
@@ -941,7 +941,7 @@
         ],
         "trace_id": "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "e9a0a603cef858a9458abbbfac1cb31e0825a41d9ed42c111698912ab25d2a36",
+        "artifact_sha256": "ad7aed51153e11e1a6fa42802ca617710c71579b39306f99f53d30f271146b26",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
         "spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d"
       }
@@ -1003,10 +1003,10 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-TEC-RESTORE.json",
-      "receipt_sha256": "c7cdd104d0ae01bbbb05bf3e46f5018acd32c41d7c9f6bd813097a231816735e",
+      "receipt_sha256": "4b8e64943998763e2ae601a534b4668ba92bcf0ef161653b9534718fbea60f0f",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
-      "trace_artifact_sha256": "e9a0a603cef858a9458abbbfac1cb31e0825a41d9ed42c111698912ab25d2a36",
+      "trace_artifact_sha256": "ad7aed51153e11e1a6fa42802ca617710c71579b39306f99f53d30f271146b26",
       "trace_spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d"
     },
     {
