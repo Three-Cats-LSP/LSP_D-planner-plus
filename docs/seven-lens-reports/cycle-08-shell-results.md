@@ -130,7 +130,15 @@ Full L1–L7 notes are in `cycle-08-record.json` for both parts.
 
 ## Audit checkpoint
 
-Post-audit static check expected **FAIL** on `SUITE-COVERAGE` once OPEN HIGH findings are registered — intentional rollup blocker.
+**audit_commit:** `32fda7bbd1896864465f830012a246b58d94109b`
+
+Post-audit static: `python -m tools.audit check --profile static` → FAIL (`SUITE-COVERAGE` release-blocking OPEN SL-C08-H-01/H-02); expected after registry OPEN findings.
+
+Protocol: `python tools/seven_lens_protocol.py check --phase audit --record docs/seven-lens-reports/cycle-08-record.json` → PASS (pre-attestation).
+
+## Attestation
+
+**attestation_commit:** _(pending)_
 
 ## Worktree confirmation
 
