@@ -296,7 +296,7 @@
       "start_line": 1,
       "end_line": 500,
       "line_count": 500,
-      "content_fingerprint": "90c2e9d1cd13216a5fbda047f64a7212d9a90abfa7ab54848dd5557a35fbc80d",
+      "content_fingerprint": "43a487d392909bc748197e713a3e2ce8340b16e3f53fe258a8036b189613f641",
       "review_session": "C07-A",
       "verification_session": "C07-V-A",
       "lens_results": {
@@ -374,9 +374,9 @@
       "unit_id": "UI-CSS-RESULTS",
       "path": "lsp-dplanner-results.css",
       "start_line": 501,
-      "end_line": 890,
-      "line_count": 390,
-      "content_fingerprint": "fc3fe81a27c5d45948065bd6d9071ed0fde7e14d48f8a9a57feddab4bfe9ddee",
+      "end_line": 892,
+      "line_count": 392,
+      "content_fingerprint": "563f36d0a31198828aac04594ea4fd73738d0ffa3eaff20643938e1e9140abdd",
       "review_session": "C07-B",
       "verification_session": "C07-V-B",
       "lens_results": {
