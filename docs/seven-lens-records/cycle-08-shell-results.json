@@ -335,7 +335,7 @@
   "trace_restoration_fixer": {
     "trace_id": "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE",
     "baseline_commit": "44054aebdef90d70eadf5d69d1893aae3c680a5d",
-    "protected_commit": "60f8750",
+    "protected_commit": "60f87502c20cc6228596f1c1fca586ac829aca94",
     "classification": "B",
     "summary": "Browser trace cleanup called _syncUiAfterRestore only, leaving hidden tecDepth=999 in DOM while debounced appSettings.save could persist it after localStorage restore; runner now uses _restoreFields and persistence settle.",
     "requires_independent_verification": true
@@ -750,9 +750,9 @@
         "--output",
         "dev/seven-lens-browser-trace-c08-post-fix.json"
       ],
-      "commit": "941dea26901477eaed8724bd50b2213c653e84f5",
+      "commit": "f7a702117f0b4a0b59e132ac21afa33dd0773214",
       "observable_assertions": [
-        "Four Cycle 08 browser traces PASS with repeat=2 and exact state restoration hashes"
+        "Four Cycle 08 browser traces PASS with repeat=2, exact state restoration hashes, and INVALID-TEC localStorage tecDepth restored"
       ],
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-08-shell-results.json --output dev/seven-lens-browser-trace-c08-post-fix.json",
       "worktree_clean": true,
@@ -762,7 +762,7 @@
       "receipt_sha256": "d0ebcfae05da3de581e64f2dec7c19b4b742e9d094403f6aa5bab51ec3444aba",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
-      "trace_artifact_sha256": "a24101c033dc15cc0db71a2fad1656bfe2962791e8a0f8e83e052ae4f673d9e5",
+      "trace_artifact_sha256": "b502e8f2fe084a9c107087dc1f233e9915125a2e63cc019b7796d2282d3c4e1a",
       "trace_spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d",
       "id": "ER-C08-TRACE",
       "runtime_trace": {
@@ -795,8 +795,8 @@
           }
         ],
         "trace_id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
-        "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "a24101c033dc15cc0db71a2fad1656bfe2962791e8a0f8e83e052ae4f673d9e5",
+        "artifact_path": "dev/seven-lens-browser-trace-c08-post-tec-restore.json",
+        "artifact_sha256": "b502e8f2fe084a9c107087dc1f233e9915125a2e63cc019b7796d2282d3c4e1a",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
         "spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d"
       }
@@ -944,6 +944,65 @@
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
         "spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d"
       }
+    },
+    {
+      "id": "ER-C08-PRE-TEC-RESTORE",
+      "kind": "baseline_failure",
+      "case_ids": [
+        "SL-C08-INVALID-TEC-CLEARS-STALE"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-08-shell-results.json",
+        "--output",
+        "dev/seven-lens-browser-trace-c08-pre-tec-restore-baseline.json"
+      ],
+      "prepared_baseline_commit": "44054aebdef90d70eadf5d69d1893aae3c680a5d",
+      "commit": "44054aebdef90d70eadf5d69d1893aae3c680a5d",
+      "observable_assertions": [
+        "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE behavioral assertions PASS but state_restored false with tecDepth 999 persisted"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-08-shell-results.json --output dev/seven-lens-browser-trace-c08-pre-tec-restore-baseline.json",
+      "worktree_clean": true,
+      "state_restored": false,
+      "exit_code": 1,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-PRE-TEC-RESTORE.json",
+      "receipt_sha256": "ca3e53fc0896cb0d86793e446a4c4aea015ba71f30ea541f67c9beb8a89c3e4e",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true,
+      "trace_artifact_sha256": "12ee81ab8d63ad43effb46f5b977539aedf6978c01e79e7b11e8058cc296be56",
+      "trace_spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d"
+    },
+    {
+      "id": "ER-C08-POST-TEC-RESTORE",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C08-INVALID-TEC-CLEARS-STALE"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-08-shell-results.json",
+        "--output",
+        "dev/seven-lens-browser-trace-c08-post-tec-restore.json"
+      ],
+      "commit": "f7a702117f0b4a0b59e132ac21afa33dd0773214",
+      "observable_assertions": [
+        "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE PASS with state_restored true across repeat=2 and three fresh-context runs"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-08-shell-results.json --output dev/seven-lens-browser-trace-c08-post-tec-restore.json",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-TEC-RESTORE.json",
+      "receipt_sha256": "b966ce57c9ab7675e89359863dc3b6579f5429e66e1362afcb4341c490549656",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true,
+      "trace_artifact_sha256": "b502e8f2fe084a9c107087dc1f233e9915125a2e63cc019b7796d2282d3c4e1a",
+      "trace_spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d"
     }
   ],
   "changed_paths": [
@@ -958,7 +1017,13 @@
     "dev/seven-lens-evidence-c08-ER-C08-BASELINE-SHELL.json",
     "dev/seven-lens-evidence-c08-ER-C08-POST-SHELL.json",
     "dev/seven-lens-evidence-c08-ER-C08-TRACE.json",
-    "dev/seven-lens-browser-trace-c08-post-fix.json"
+    "dev/seven-lens-browser-trace-c08-post-fix.json",
+    "tools/seven_lens_browser_trace.py",
+    "tools/test_seven_lens_browser_trace.py",
+    "dev/seven-lens-browser-trace-c08-pre-tec-restore-baseline.json",
+    "dev/seven-lens-browser-trace-c08-post-tec-restore.json",
+    "dev/seven-lens-evidence-c08-ER-C08-PRE-TEC-RESTORE.json",
+    "dev/seven-lens-evidence-c08-ER-C08-POST-TEC-RESTORE.json"
   ],
   "cross_unit_changed_paths": [
     "settings-core.js",

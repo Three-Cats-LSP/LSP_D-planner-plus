@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ER-C08-POST-TEC-RESTORE",
+  "command_argv": [
+    "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+    "tools/seven_lens_browser_trace.py",
+    "--spec",
+    "docs/seven-lens-traces/cycle-08-shell-results.json",
+    "--output",
+    "dev/seven-lens-browser-trace-c08-post-tec-restore.json"
+  ],
+  "commit": "f7a702117f0b4a0b59e132ac21afa33dd0773214",
+  "exit_code": 0,
+  "case_ids": [
+    "SL-C08-INVALID-TEC-CLEARS-STALE"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-05T16:39:49.491459+00:00",
+  "finished_at": "2026-07-05T16:39:49.491459+00:00",
+  "stdout_sha256": "83d06c8f9b2810fcfbd32ee7fc95c1d2b11ad30463ef90d22d9ef8146eb689ff",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e",
+  "detail": {
+    "trace_id": "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE",
+    "state_restored": true,
+    "repeat_runs": 3,
+    "artifact_path": "dev/seven-lens-browser-trace-c08-post-tec-restore.json",
+    "artifact_sha256": "b502e8f2fe084a9c107087dc1f233e9915125a2e63cc019b7796d2282d3c4e1a",
+    "spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d"
+  }
+}
