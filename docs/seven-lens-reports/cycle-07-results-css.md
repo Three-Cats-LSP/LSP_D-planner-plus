@@ -113,7 +113,7 @@ Post-audit static: `python -m tools.audit check --profile static` → FAIL (SUIT
 
 ## Attestation
 
-*(filled after attestation commit)*
+**attestation_commit:** `a7b277786be867deaf60b52fdfc4c4b8fc94a674` (records `audit_commit` `094162a`)
 
 ## Worktree confirmation
 
