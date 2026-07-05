@@ -180,106 +180,20 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 .deco-table .safe-row td { color:var(--green); }
 .deco-table .asc-row td { color:var(--muted); }
 
-/* ── MOBILE: card-style deco table ── */
-@media (max-width: 600px) { #tableViewToggle { display:flex !important; }
-
- .legacy-panels .deco-table:not(.table-view) thead { display:none; }
- .legacy-panels .deco-table:not(.table-view), .deco-table:not(.table-view) tbody, .deco-table:not(.table-view) tr, .deco-table:not(.table-view) td { display:block; width:100%; }
-
- .legacy-panels .deco-table:not(.table-view) tr { margin-bottom:8px;
- border-radius:8px;
- border:1px solid var(--border);
- overflow:hidden;
- background:var(--card);
- }
-
- /* Gas switch row — display as a compact flex row, not stacked cards */
- .legacy-panels .deco-table:not(.table-view) tr[data-phase="switch"] { display:flex !important; align-items:center; gap:0; padding:6px 10px; border-radius:6px; }
- .legacy-panels .deco-table:not(.table-view) tr[data-phase="switch"] td { display:inline !important; width:auto !important; padding:0 !important; border:none !important; background:transparent !important; }
- .legacy-panels .deco-table:not(.table-view) tr[data-phase="switch"] td:first-child { width:auto !important; flex:none !important; padding-right:6px !important; }
- .legacy-panels .deco-table:not(.table-view) tr[data-phase="switch"] td:nth-child(2) { flex: none !important; padding-right: 6px !important; }
- .legacy-panels .deco-table:not(.table-view) tr[data-phase="switch"] td[data-label="Mix"] { flex: 1 !important; }
- /* Hide empty cells in switch row on mobile */
- .legacy-panels .deco-table:not(.table-view) tr[data-phase="switch"] td:nth-child(n+3):not([data-label="Mix"]):not([data-label="PPO2"]) { display:none !important; }
- .legacy-panels .deco-table:not(.table-view) tr[data-phase="switch"] td[data-label="PPO2"]::before { content:"ppO₂ "; color:var(--muted); font-weight:400; }
- .legacy-panels .deco-table:not(.table-view) tr[data-phase="switch"] td[data-label="PPO2"] { margin-left:auto; }
-
- /* First cell = icon header bar */
- .legacy-panels .deco-table:not(.table-view) td:first-child { width:100% !important;
- display:flex;
- align-items:center;
- justify-content:flex-start;
- gap:10px;
- padding:9px 12px;
- font-size:16px;
- background:rgba(0,200,255,0.04);
- border-bottom:1px solid var(--border);
- text-align:left !important;
- }
-
- /* Other cells: show label on left, value on right */
- .legacy-panels .deco-table:not(.table-view) td:not(:first-child) { display:flex;
- justify-content:space-between;
- align-items:center;
- padding:6px 14px;
- font-size:12px;
- border-bottom:1px solid var(--border);
- }
-
- .legacy-panels .deco-table:not(.table-view) td:not(:first-child)::before { content: attr(data-label);
- font-size:9px;
- letter-spacing:1.5px;
- text-transform:uppercase;
- color:var(--muted);
- font-weight:600;
- flex-shrink:0;
- margin-right:8px;
- }
-
- .legacy-panels .deco-table:not(.table-view) td:last-child { border-bottom:none; }
-
- /* Table view on mobile — force standard table layout */
- .legacy-panels .deco-table.table-view { font-size:10px !important;
- table-layout:auto !important;
- width:min-content !important;
- }
- .legacy-panels .deco-table.table-view thead { display:table-header-group !important; }
- .legacy-panels .deco-table.table-view tbody { display:table-row-group !important; }
- .legacy-panels .deco-table.table-view tr { display:table-row !important;
- background:none !important;
- border:none !important;
- margin:0 !important;
- border-radius:0 !important;
- overflow:visible !important;
- }
- .legacy-panels .deco-table.table-view td { display:table-cell !important;
- padding:5px 6px !important;
- font-size:10px !important;
- border-bottom:1px solid var(--border) !important;
- }
- .legacy-panels .deco-table.table-view td:first-child { display:table-cell !important;
- width:28px !important;
- background:none !important;
- text-align:center !important;
- padding:5px 4px !important;
- font-size:10px !important;
- }
- .legacy-panels .deco-table.table-view td::before { display:none !important; }
- .legacy-panels .deco-table.table-view th { display:table-cell !important; padding:5px 6px !important; font-size:8px !important; }
- .legacy-panels .deco-table.table-view thead tr { display:table-row !important; background:none !important; }
+/* ── MOBILE: gas plan + tight warning overrides ── */
+@media (max-width: 600px) {
  /* Gas plan table — responsive */
  .gas-plan-table { font-size:10px !important; }
  .gas-plan-table th { padding:6px 5px !important; font-size:8px !important; white-space:nowrap !important; word-break:keep-all !important; overflow-wrap:normal !important; line-height:1.2 !important; letter-spacing:0.04em !important; }
  .gas-plan-table td { padding:5px 5px !important; font-size:10px !important; }
 
- /* BT banner + tight warning rows — must come AFTER background:none rules above to win */
+ /* BT banner + tight warning rows */
  .gas-bt-cell { background:#FF4433 !important; color:#fff !important; }
  .gas-bt-cell *, .gas-bt-cell strong, .gas-bt-cell span { color:#fff !important; }
  body.light-theme .gas-bt-cell { color:#000 !important; }
  body.light-theme .gas-bt-cell *, body.light-theme .gas-bt-cell strong, body.light-theme .gas-bt-cell span { color:#000 !important; }
 
  .deco-table tr.gas-tight-row td,
- /* Intentional duplicate of base gas-tight-row rules — keeps !important override after mobile background:none resets */
  .deco-table tr.gas-tight-row td:first-child { background:#FF4433 !important; color:#fff !important; font-weight:600 !important; border-bottom:1px solid var(--border) !important; }
  .deco-table tr.gas-tight-row td span,
  .deco-table tr.gas-tight-row td * { color:#fff !important; }
@@ -287,11 +201,6 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
  body.light-theme .deco-table tr.gas-tight-row td:first-child { background:#FF4433 !important; color:#000 !important; }
  body.light-theme .deco-table tr.gas-tight-row td span,
  body.light-theme .deco-table tr.gas-tight-row td * { color:#000 !important; }
- .legacy-panels .deco-table.table-view tr[data-phase="switch"] td { border-bottom: 1px solid var(--border) !important; }
-
- .legacy-panels .deco-table:not(.table-view) tr.deco-totals-row { margin-bottom: 0; border: none; background: transparent; }
- .legacy-panels .deco-table:not(.table-view) tr.deco-totals-row td { display: block !important; width: 100% !important; padding: 0 !important; border: none !important; background: transparent !important; }
- .legacy-panels .deco-table:not(.table-view) tr.deco-totals-row td::before { display: none !important; }
 }
 
 /* ── LSP SLIDER ── */
@@ -378,10 +287,6 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 }
 @media(min-width:641px) { .mobile-only { display:none !important; } }
 @media(max-width:640px) {
- /* Settings wrap on mobile */
- .algo-switcher { flex-wrap: wrap !important; gap: 8px !important;
-   padding: 8px 14px !important; justify-content: flex-start !important; }
- .algo-switcher > div { justify-content: flex-start !important; margin-left: 0 !important; }
  .brand-text h1 { font-size:22px; }
  .tabs-nav { flex-wrap:wrap; }
 }
@@ -571,7 +476,8 @@ body.light-theme .mode-btn:hover img, body.light-theme .mode-btn.active img { op
 #resultsPanel .metric-val[class*="metric-val--"] .unit { color: inherit; opacity: 0.82; }
 #resultsPanel .chip-green { background: var(--status-green-dim); color: var(--status-green); border-color: color-mix(in oklab, var(--status-green) 30%, transparent); }
 #resultsPanel .chip-orange { background: var(--status-orange-dim); color: var(--status-orange); border-color: color-mix(in oklab, var(--status-orange) 30%, transparent); }
-#resultsPanel .chip-yellow { background: var(--status-orange-dim); color: var(--status-orange); border-color: color-mix(in oklab, var(--status-orange) 30%, transparent); }
+#resultsPanel .chip-yellow { background: var(--yellow-dim); color: var(--yellow); border-color: color-mix(in oklab, var(--yellow) 30%, transparent); }
+body.light-theme #resultsPanel .chip-yellow { background: var(--yellow-dim) !important; color: var(--yellow) !important; border-color: color-mix(in oklab, var(--yellow) 30%, transparent) !important; }
 #resultsPanel .chip-red { background: var(--status-red-dim); color: var(--status-red); border-color: color-mix(in oklab, var(--status-red) 30%, transparent); }
 #resultsPanel .metric-lbl { font-size: 9px; letter-spacing: 0.1em; }
 #resultsPanel .chip { padding: 4px 10px; font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.03em; border-radius: var(--radius-full); }
@@ -753,16 +659,24 @@ body.light-theme #resultsPanel #decoAlertsNarcotic .alert .tip-icon { color: #11
 #resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td { color: inherit !important; font-size: inherit !important; font-weight: inherit !important; border-bottom: 1px solid var(--border) !important; }
 #resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td:first-child,
 #resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td:first-child { color: inherit !important; font-size: inherit !important; text-align: center !important; }
-#resultsPanel .deco-table.schedule-table tr.deco-row td,
-#resultsPanel .deco-table.schedule-table tr.safe-row td,
-#resultsPanel .deco-table.schedule-table tr.asc-row td { color: inherit; font-weight: inherit; }
+#resultsPanel .deco-table.schedule-table tr.deco-row td:not(.col-ppo2),
+#resultsPanel .deco-table.schedule-table tr.safe-row td:not(.col-ppo2),
+#resultsPanel .deco-table.schedule-table tr.asc-row td:not(.col-ppo2) { color: inherit; font-weight: inherit; }
 #resultsPanel .legend-item.legend-switch { color: var(--gas-switch); }
 body.light-theme #resultsPanel .deco-table.schedule-table .ph-switch,
 body.light-theme #resultsPanel .legend-item.legend-switch,
 body.light-theme #resultsPanel .deco-table.schedule-table tr.row-switch td { color: var(--gas-switch) !important; }
-#resultsPanel .deco-table.schedule-table tr.row-descent td { color: var(--text-muted); }
+#resultsPanel .deco-table.schedule-table tr.row-descent td:not(.col-ppo2) { color: var(--text-muted); }
 #resultsPanel .deco-table.schedule-table tr.row-descent .col-depth { color: var(--text); }
 #resultsPanel .deco-table.schedule-table tr.row-summary td { background: color-mix(in oklab, var(--accent) 4%, transparent); border-top: 1px solid var(--border-hi); border-bottom: 1px solid var(--border); padding: 9px 6px; font-size: 10px; color: var(--text-muted); }
+#resultsPanel .deco-table.schedule-table td.col-ppo2.ppo2-ok { color: var(--green) !important; }
+#resultsPanel .deco-table.schedule-table td.col-ppo2.ppo2-warn { color: var(--yellow) !important; }
+#resultsPanel .deco-table.schedule-table td.col-ppo2.ppo2-hi { color: var(--orange) !important; }
+#resultsPanel .deco-table.schedule-table td.col-ppo2.ppo2-crit { color: var(--red) !important; }
+body.light-theme #resultsPanel .deco-table.schedule-table td.col-ppo2.ppo2-ok { color: var(--green) !important; }
+body.light-theme #resultsPanel .deco-table.schedule-table td.col-ppo2.ppo2-warn { color: var(--yellow) !important; }
+body.light-theme #resultsPanel .deco-table.schedule-table td.col-ppo2.ppo2-hi { color: var(--orange) !important; }
+body.light-theme #resultsPanel .deco-table.schedule-table td.col-ppo2.ppo2-crit { color: var(--red) !important; }
 #resultsPanel .deco-table.schedule-table .summary-stat span { color: var(--text); font-weight: 600; }
 #resultsPanel .schedule-totals { display: flex; flex-wrap: wrap; gap: 4px 18px; padding: 9px 0 0; font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); border-top: 1px solid var(--border-hi); margin-top: var(--space-2); }
 #resultsPanel .schedule-totals .stat strong { color: var(--text); font-weight: 600; }
@@ -929,3 +843,46 @@ body:not(.light-theme) .theme-pill-moon { color: var(--theme-moon-on-thumb); }
 #gfPresetsMount #gfCustomRow.is-open { display: flex !important; }
 .hidden-v3 { display: none !important; }
 @media (max-width: 600px) { .metric-grid { grid-template-columns: repeat(2, 1fr); } .mode-btn { padding: 6px 8px; font-size: 10px; } }
+
+@media (prefers-reduced-motion: reduce) {
+ .lsp-slider::-webkit-slider-thumb,
+ .mode-btn,
+ .result-tab-btn,
+ #resultsPanel .result-tab-btn,
+ .theme-pill-track,
+ .theme-pill-thumb,
+ #resultsPanel #contingencyScheduleStack .deco-contingency-calc { transition: none !important; }
+}
+
+@media print {
+ #resultsPanel { overflow: visible !important; break-inside: avoid; }
+ #resultsPanel .result-tabs-nav,
+ #resultsPanel .deco-contingency-calc,
+ #resultsPanel #tableViewToggle,
+ .theme-pill,
+ .header-ref-btn,
+ .bnav-wrap { display: none !important; }
+ #resultsPanel .result-tab-pane { display: none !important; }
+ #resultsPanel #resultTab-profile { display: flex !important; }
+ #resultsPanel #resultMetricStrip,
+ #resultsPanel #resultChipRow,
+ #resultsPanel #decoAlerts,
+ #resultsPanel #decoAlertsNarcotic,
+ #resultsPanel .schedule-wrap,
+ #resultsPanel .deco-table-legend.legend { display: block !important; }
+ #resultsPanel #decoAlerts .alert.deco,
+ #resultsPanel #decoAlertsNarcotic .alert.deco,
+ #resultsPanel #decoAlerts .alert.narcotic-warn,
+ #resultsPanel #decoAlertsNarcotic .alert.narcotic-warn {
+   background: #fff !important;
+   border: 2px solid #111 !important;
+   color: #111 !important;
+   -webkit-print-color-adjust: exact;
+   print-color-adjust: exact;
+ }
+ #resultsPanel .deco-table.schedule-table tr,
+ #resultsPanel .deco-table.schedule-table td,
+ #resultsPanel .schedule-totals { break-inside: avoid; page-break-inside: avoid; }
+ #resultsPanel .deco-table.schedule-table .ppo2-crit { color: #b91c1c !important; }
+ #resultsPanel .deco-table.schedule-table .ppo2-warn { color: #92400e !important; }
+}

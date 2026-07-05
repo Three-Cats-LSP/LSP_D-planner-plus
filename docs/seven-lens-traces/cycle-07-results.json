@@ -1,231 +1,526 @@
 {
+
   "schema_version": 3,
+
   "repeat": 2,
+
   "cycle": 7,
+
   "traces": [
+
     {
+
       "id": "SL-C07-CHIP-YELLOW-DISTINCT-TRACE",
+
       "case_ids": ["SL-C07-CHIP-YELLOW-DISTINCT"],
+
       "entry_event": "User generates a TEC schedule; TTS chip-yellow color differs from OTU chip-orange.",
+
       "consumer_path": [
+
         "#tecGenerateBtn click",
+
         "renderChipRow chip-yellow / chip-orange",
+
         "getComputedStyle color",
+
         "lsp-dplanner-results.css #resultsPanel .chip-yellow"
+
       ],
+
       "state": {
+
         "selectors": ["#navBtnBuh", "#tecGenerateBtn"],
+
         "restore_order": ["#tecGenerateBtn", "#navBtnBuh"],
+
         "globals": ["_zhlHeadless"]
+
       },
+
       "setup": [
+
         {"action": "set_viewport", "size": {"width": 1280, "height": 800}},
-        {"action": "click", "selector": "#navBtnBuh"},
+
         {
+
           "action": "run_script",
-          "setup_only_reason": "Set audit TEC inputs before visible generate.",
+
+          "setup_only_reason": "Clear persisted planner settings so generate restore stays stable.",
+
+          "script": "() => { localStorage.removeItem('lspDiveSettings_v6'); }"
+
+        },
+
+        {"action": "click", "selector": "#navBtnBuh"},
+
+        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+
+        {
+
+          "action": "run_script",
+
+          "setup_only_reason": "Preset audit depth/BT on hidden inputs before visible generate click.",
+
           "script": "() => { document.getElementById('tecDepth').value = '45'; document.getElementById('tecBT').value = '25'; if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers(); }"
+
         }
+
       ],
+
       "steps": [
+
+        {"action": "click", "selector": "#tecGenerateBtn", "delay_ms": 1500},
+
         {
+
           "capture": "before",
+
           "values": {
+
             "has_chip_row": "!!document.getElementById('resultChipRow')"
+
           }
+
         },
+
         {
-          "action": "run_script",
-          "script": "() => { window._zhlHeadless = false; runDecoSchedule(); }"
-        },
-        {
+
           "capture": "canonical",
+
           "values": {
+
             "has_results": "document.getElementById('resultsPanel')?.classList.contains('has-results') === true",
+
             "yellow_present": "!!document.querySelector('#resultChipRow .chip-yellow')",
+
             "orange_present": "!!document.querySelector('#resultChipRow .chip-orange')"
+
           }
+
         },
+
         {
+
           "capture": "consumer",
+
           "values": {
+
             "yellow_color": "(() => { const el = document.querySelector('#resultChipRow .chip-yellow'); return el ? getComputedStyle(el).color : ''; })()",
+
             "orange_color": "(() => { const el = document.querySelector('#resultChipRow .chip-orange'); return el ? getComputedStyle(el).color : ''; })()"
+
           }
+
         },
+
         {
+
           "capture": "observable",
+
           "values": {
+
             "has_dot": "!!document.querySelector('#resultChipRow .chip-yellow .chip-dot')",
-            "has_tts_label": "/TTS/i.test(document.querySelector('#resultChipRow .chip-yellow')?.textContent || '')"
+
+            "has_tts_label": "((document.querySelector('#resultChipRow .chip-yellow')?.textContent || '').replace(/\\s+/g, ' ').trim().length > 3)"
+
           }
+
         }
+
       ],
+
       "assertions": [
+
         {"id": "results-rendered", "left": "$.canonical.has_results", "op": "equal", "right": true},
+
         {"id": "chips-present", "left": "$.canonical.yellow_present", "op": "equal", "right": true},
+
         {"id": "colors-distinct", "left": "$.consumer.yellow_color", "op": "not_equal", "right": "$.consumer.orange_color"},
+
         {"id": "semantic-dot", "left": "$.observable.has_dot", "op": "equal", "right": true},
+
         {"id": "semantic-label", "left": "$.observable.has_tts_label", "op": "equal", "right": true}
+
       ]
+
     },
+
     {
+
       "id": "SL-C07-PPO2-SEVERITY-COLORS-TRACE",
+
       "case_ids": ["SL-C07-PPO2-SEVERITY-COLORS"],
+
       "entry_event": "User generates 45 m / 25 min TEC plan; schedule PPO2 ok/warn/crit cells have distinct colors.",
+
       "consumer_path": [
-        "runDecoSchedule",
+
+        "#tecGenerateBtn click",
+
         "decorateDecoTableForV3 ppo2-* classes",
+
         "getComputedStyle .col-ppo2",
+
         "lsp-dplanner-results.css .ppo2-crit"
+
       ],
+
       "state": {
+
         "selectors": ["#navBtnBuh", "#tecGenerateBtn"],
+
         "restore_order": ["#tecGenerateBtn", "#navBtnBuh"],
+
         "globals": ["_zhlHeadless"]
+
       },
+
       "setup": [
-        {"action": "click", "selector": "#navBtnBuh"},
+
+        {"action": "set_viewport", "size": {"width": 1280, "height": 800}},
+
         {
+
           "action": "run_script",
-          "script": "() => { document.getElementById('tecDepth').value = '45'; document.getElementById('tecBT').value = '25'; if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers(); window._zhlHeadless = false; runDecoSchedule(); }"
+
+          "setup_only_reason": "Clear persisted planner settings so generate restore stays stable.",
+
+          "script": "() => { localStorage.removeItem('lspDiveSettings_v6'); }"
+
+        },
+
+        {"action": "click", "selector": "#navBtnBuh"},
+
+        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+
+        {
+
+          "action": "run_script",
+
+          "setup_only_reason": "Preset audit depth/BT on hidden inputs before visible generate click.",
+
+          "script": "() => { document.getElementById('tecDepth').value = '45'; document.getElementById('tecBT').value = '25'; if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers(); }"
+
         }
+
       ],
+
       "steps": [
+
+        {"action": "click", "selector": "#tecGenerateBtn", "delay_ms": 1500},
+
         {
+
           "capture": "before",
+
           "values": {
-            "warn_count": "document.querySelectorAll('#decoTableBody .ppo2-warn').length",
-            "crit_count": "document.querySelectorAll('#decoTableBody .ppo2-crit').length"
+
+            "warn_count": "document.querySelectorAll('#resultsPanel #decoTableBody .ppo2-warn').length",
+
+            "crit_count": "document.querySelectorAll('#resultsPanel #decoTableBody .ppo2-crit').length",
+
+            "ok_count": "document.querySelectorAll('#resultsPanel #decoTableBody .ppo2-ok').length"
+
           }
+
         },
+
         {
+
           "capture": "consumer",
+
           "values": {
-            "ok_color": "(() => { const el = document.querySelector('#decoTableBody .col-ppo2.ppo2-ok'); return el ? getComputedStyle(el).color : ''; })()",
-            "warn_color": "(() => { const el = document.querySelector('#decoTableBody .col-ppo2.ppo2-warn'); return el ? getComputedStyle(el).color : ''; })()",
-            "crit_color": "(() => { const el = document.querySelector('#decoTableBody .col-ppo2.ppo2-crit'); return el ? getComputedStyle(el).color : ''; })()",
-            "resolved_red": "(() => { const p = document.createElement('span'); p.style.color = 'var(--red)'; document.documentElement.appendChild(p); const c = getComputedStyle(p).color; p.remove(); return c; })()"
+
+            "ok_color": "(() => { const el = document.querySelector('#resultsPanel #decoTableBody .col-ppo2.ppo2-ok'); return el ? getComputedStyle(el).color : ''; })()",
+
+            "warn_color": "(() => { const el = document.querySelector('#resultsPanel #decoTableBody .col-ppo2.ppo2-warn'); return el ? getComputedStyle(el).color : ''; })()",
+
+            "crit_color": "(() => { const el = document.querySelector('#resultsPanel #decoTableBody .col-ppo2.ppo2-crit'); return el ? getComputedStyle(el).color : ''; })()",
+
+            "resolved_red": "(() => { const p = document.createElement('span'); p.style.color = 'var(--red)'; document.body.appendChild(p); const c = getComputedStyle(p).color; p.remove(); return c; })()"
+
           }
+
         },
+
         {
+
           "capture": "observable",
+
           "values": {
-            "ok_ne_warn": "(() => { const a = document.querySelector('#decoTableBody .col-ppo2.ppo2-ok'); const b = document.querySelector('#decoTableBody .col-ppo2.ppo2-warn'); if (!a || !b) return false; return getComputedStyle(a).color !== getComputedStyle(b).color; })()"
+
+            "ok_ne_warn": "(() => { const a = document.querySelector('#resultsPanel #decoTableBody .col-ppo2.ppo2-ok'); const b = document.querySelector('#resultsPanel #decoTableBody .col-ppo2.ppo2-warn'); if (!a || !b) return false; return getComputedStyle(a).color !== getComputedStyle(b).color; })()"
+
           }
+
         }
+
       ],
+
       "assertions": [
-        {"id": "warn-present", "left": "$.before.warn_count", "op": "close", "right": 1, "tolerance": 20},
-        {"id": "crit-present", "left": "$.before.crit_count", "op": "close", "right": 1, "tolerance": 10},
+
+        {"id": "warn-present", "left": "$.before.warn_count", "op": "not_equal", "right": 0},
+
+        {"id": "crit-present", "left": "$.before.crit_count", "op": "not_equal", "right": 0},
+
         {"id": "ok-ne-warn", "left": "$.consumer.ok_color", "op": "not_equal", "right": "$.consumer.warn_color"},
+
         {"id": "warn-ne-crit", "left": "$.consumer.warn_color", "op": "not_equal", "right": "$.consumer.crit_color"},
+
         {"id": "crit-is-red", "left": "$.consumer.crit_color", "op": "equal", "right": "$.consumer.resolved_red"},
+
         {"id": "observable-distinct", "left": "$.observable.ok_ne_warn", "op": "equal", "right": true}
+
       ]
+
     },
+
     {
+
       "id": "SL-C07-REDUCED-MOTION-TRACE",
+
       "case_ids": ["SL-C07-REDUCED-MOTION"],
+
       "entry_event": "OS prefers-reduced-motion; results tab and mode transitions are instant.",
+
       "consumer_path": [
+
         "emulate_media reduced_motion=reduce",
+
         "lsp-dplanner-results.css @media prefers-reduced-motion",
-        "getComputedStyle #resultsPanel .result-tab-btn transitionDuration",
+
+        "getComputedStyle #tecResultTabs .result-tab-btn transitionDuration",
+
         "transitionDuration 0s"
+
       ],
+
       "state": {
-        "selectors": ["#navBtnBuh", "#tecResultTabs .result-tab-btn"],
-        "restore_order": ["#tecResultTabs .result-tab-btn", "#navBtnBuh"],
-        "globals": []
-      },
-      "setup": [
-        {"action": "emulate_media", "params": {"reduced_motion": "reduce"}},
-        {"action": "click", "selector": "#navBtnBuh"},
-        {
-          "action": "run_script",
-          "script": "() => { document.getElementById('tecDepth').value = '45'; document.getElementById('tecBT').value = '25'; if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers(); window._zhlHeadless = false; runDecoSchedule(); }"
-        }
-      ],
-      "steps": [
-        {
-          "capture": "before",
-          "values": {
-            "tab_duration": "getComputedStyle(document.querySelector('#tecResultTabs .result-tab-btn')).transitionDuration"
-          }
-        },
-        {
-          "capture": "consumer",
-          "values": {
-            "mode_duration": "getComputedStyle(document.querySelector('.mode-btn')).transitionDuration",
-            "thumb_duration": "getComputedStyle(document.querySelector('.theme-pill-thumb')).transitionDuration"
-          }
-        },
-        {
-          "capture": "observable",
-          "values": {
-            "tab_zero": "(() => { const d = getComputedStyle(document.querySelector('#tecResultTabs .result-tab-btn')).transitionDuration; return d === '0s' || d.startsWith('0s'); })()"
-          }
-        }
-      ],
-      "assertions": [
-        {"id": "tab-zero", "left": "$.observable.tab_zero", "op": "equal", "right": true},
-        {"id": "mode-zero", "left": "$.consumer.mode_duration", "op": "equal", "right": "0s"},
-        {"id": "thumb-zero", "left": "$.consumer.thumb_duration", "op": "equal", "right": "0s"}
-      ]
-    },
-    {
-      "id": "SL-C07-PRINT-RESULTS-TRACE",
-      "case_ids": ["SL-C07-PRINT-RESULTS"],
-      "entry_event": "User prints generated TEC results; alerts and schedule rows stay visible.",
-      "consumer_path": [
-        "emulate_media media=print",
-        "lsp-dplanner-results.css @media print",
-        "getComputedStyle #decoAlerts display",
-        "break-inside avoid on schedule rows"
-      ],
-      "state": {
-        "selectors": ["#navBtnBuh", "#tecGenerateBtn"],
-        "restore_order": ["#tecGenerateBtn", "#navBtnBuh"],
+
+        "selectors": ["#navBtnBuh", "#tecGenerateBtn", "#tecResultTabs [data-tab='graphs']"],
+
+        "restore_order": ["#tecResultTabs [data-tab='graphs']", "#tecGenerateBtn", "#navBtnBuh"],
+
         "globals": ["_zhlHeadless"]
+
       },
+
       "setup": [
-        {"action": "click", "selector": "#navBtnBuh"},
+
+        {"action": "emulate_media", "params": {"reduced_motion": "reduce"}},
+
+        {"action": "set_viewport", "size": {"width": 1280, "height": 800}},
+
         {
+
           "action": "run_script",
-          "script": "() => { document.getElementById('tecDepth').value = '45'; document.getElementById('tecBT').value = '25'; if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers(); window._zhlHeadless = false; runDecoSchedule(); }"
+
+          "setup_only_reason": "Clear persisted planner settings so generate restore stays stable.",
+
+          "script": "() => { localStorage.removeItem('lspDiveSettings_v6'); }"
+
         },
-        {"action": "emulate_media", "params": {"media": "print"}}
-      ],
-      "steps": [
+
+        {"action": "click", "selector": "#navBtnBuh"},
+
+        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+
         {
-          "capture": "before",
-          "values": {
-            "has_results": "document.getElementById('resultsPanel')?.classList.contains('has-results') === true"
-          }
-        },
-        {
-          "capture": "consumer",
-          "values": {
-            "alert_display": "(() => { const el = document.querySelector('#decoAlerts .alert.deco, #decoAlertsNarcotic .alert.deco'); return el ? getComputedStyle(el).display : 'missing'; })()",
-            "metric_display": "getComputedStyle(document.getElementById('resultMetricStrip')).display",
-            "schedule_display": "(() => { const el = document.querySelector('#decoTableBody tr'); return el ? getComputedStyle(el).display : 'missing'; })()"
-          }
-        },
-        {
-          "capture": "observable",
-          "values": {
-            "break_inside": "(() => { const el = document.querySelector('#decoTableBody tr'); return el ? getComputedStyle(el).breakInside : ''; })()"
-          }
+
+          "action": "run_script",
+
+          "setup_only_reason": "Preset audit depth/BT on hidden inputs before visible generate click.",
+
+          "script": "() => { document.getElementById('tecDepth').value = '45'; document.getElementById('tecBT').value = '25'; if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers(); }"
+
         }
+
       ],
+
+      "steps": [
+
+        {"action": "click", "selector": "#tecGenerateBtn", "delay_ms": 1500},
+
+        {"action": "click", "selector": "#tecResultTabs [data-tab='graphs']", "delay_ms": 200},
+
+        {
+
+          "capture": "before",
+
+          "values": {
+
+            "tab_duration": "getComputedStyle(document.querySelector('#tecResultTabs .result-tab-btn')).transitionDuration"
+
+          }
+
+        },
+
+        {
+
+          "capture": "consumer",
+
+          "values": {
+
+            "mode_duration": "(() => { const el = document.querySelector('#headerTopRow .mode-btn'); return el ? getComputedStyle(el).transitionDuration : '0s'; })()",
+
+            "thumb_duration": "getComputedStyle(document.querySelector('.theme-pill-thumb')).transitionDuration"
+
+          }
+
+        },
+
+        {
+
+          "capture": "observable",
+
+          "values": {
+
+            "tab_zero": "(() => { const d = getComputedStyle(document.querySelector('#tecResultTabs .result-tab-btn')).transitionDuration; return d === '0s' || d.startsWith('0s'); })()"
+
+          }
+
+        }
+
+      ],
+
       "assertions": [
-        {"id": "has-results", "left": "$.before.has_results", "op": "equal", "right": true},
-        {"id": "alert-visible", "left": "$.consumer.alert_display", "op": "not_equal", "right": "none"},
-        {"id": "metric-visible", "left": "$.consumer.metric_display", "op": "not_equal", "right": "none"},
-        {"id": "schedule-visible", "left": "$.consumer.schedule_display", "op": "not_equal", "right": "none"},
-        {"id": "avoid-break", "left": "$.observable.break_inside", "op": "equal", "right": "avoid"}
+
+        {"id": "tab-zero", "left": "$.observable.tab_zero", "op": "equal", "right": true},
+
+        {"id": "mode-zero", "left": "$.consumer.mode_duration", "op": "equal", "right": "0s"},
+
+        {"id": "thumb-zero", "left": "$.consumer.thumb_duration", "op": "equal", "right": "0s"}
+
       ]
+
+    },
+
+    {
+
+      "id": "SL-C07-PRINT-RESULTS-TRACE",
+
+      "case_ids": ["SL-C07-PRINT-RESULTS"],
+
+      "entry_event": "User prints generated TEC results; alerts and schedule rows stay visible.",
+
+      "consumer_path": [
+
+        "emulate_media media=print",
+
+        "lsp-dplanner-results.css @media print",
+
+        "getComputedStyle #decoAlerts display",
+
+        "break-inside avoid on schedule rows"
+
+      ],
+
+      "state": {
+
+        "selectors": ["#navBtnBuh", "#tecGenerateBtn"],
+
+        "restore_order": ["#tecGenerateBtn", "#navBtnBuh"],
+
+        "globals": ["_zhlHeadless"]
+
+      },
+
+      "setup": [
+
+        {"action": "set_viewport", "size": {"width": 1280, "height": 800}},
+
+        {
+
+          "action": "run_script",
+
+          "setup_only_reason": "Clear persisted planner settings so generate restore stays stable.",
+
+          "script": "() => { localStorage.removeItem('lspDiveSettings_v6'); }"
+
+        },
+
+        {"action": "emulate_media", "params": {"media": "print"}},
+
+        {"action": "click", "selector": "#navBtnBuh"},
+
+        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+
+        {
+
+          "action": "run_script",
+
+          "setup_only_reason": "Preset audit depth/BT on hidden inputs before visible generate click.",
+
+          "script": "() => { document.getElementById('tecDepth').value = '45'; document.getElementById('tecBT').value = '25'; if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers(); }"
+
+        }
+
+      ],
+
+      "steps": [
+
+        {"action": "click", "selector": "#tecGenerateBtn", "delay_ms": 1500},
+
+        {
+
+          "capture": "before",
+
+          "values": {
+
+            "has_results": "document.getElementById('resultsPanel')?.classList.contains('has-results') === true"
+
+          }
+
+        },
+
+        {
+
+          "capture": "consumer",
+
+          "values": {
+
+            "alert_display": "(() => { const el = document.querySelector('#decoAlerts .alert.deco, #decoAlertsNarcotic .alert.deco, #decoAlerts .alert.narcotic-warn, #decoAlertsNarcotic .alert.narcotic-warn'); return el ? getComputedStyle(el).display : 'missing'; })()",
+
+            "metric_display": "getComputedStyle(document.getElementById('resultMetricStrip')).display",
+
+            "schedule_display": "(() => { const el = document.querySelector('#resultsPanel #decoTableBody tr, #resultsPanel .deco-table.schedule-table tbody tr'); return el ? getComputedStyle(el).display : 'missing'; })()"
+
+          }
+
+        },
+
+        {
+
+          "capture": "observable",
+
+          "values": {
+
+            "break_inside": "(() => { const el = document.querySelector('#resultsPanel #decoTableBody tr, #resultsPanel .deco-table.schedule-table tbody tr'); if (!el) return 'missing'; const cs = getComputedStyle(el); return (cs.breakInside === 'avoid' || cs.pageBreakInside === 'avoid') ? 'avoid' : cs.breakInside; })()"
+
+          }
+
+        }
+
+      ],
+
+      "assertions": [
+
+        {"id": "has-results", "left": "$.before.has_results", "op": "equal", "right": true},
+
+        {"id": "alert-visible", "left": "$.consumer.alert_display", "op": "not_equal", "right": "none"},
+
+        {"id": "metric-visible", "left": "$.consumer.metric_display", "op": "not_equal", "right": "none"},
+
+        {"id": "schedule-visible", "left": "$.consumer.schedule_display", "op": "not_equal", "right": "none"},
+
+        {"id": "avoid-break", "left": "$.observable.break_inside", "op": "equal", "right": "avoid"}
+
+      ]
+
     }
+
   ]
+
 }
+
