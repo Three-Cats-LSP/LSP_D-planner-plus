@@ -16,6 +16,7 @@ in `docs/seven-lens-records/`.
 | 4 | `UI-MARKUP-TOOLS` + `UI-MARKUP-MODALS` | **BLOCKED** — closure integrity + dynamic card | — | [#191](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/191) |
 | 5 | `UI-CSS-FOUNDATION` + `UI-CSS-MODES` | **CLOSED** — merged to `dev` | `c40b71a` | [#200](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/200) |
 | 6 | `UI-CSS-CONTROLS` | **CLOSED** — merged to `dev` | `3c97791` | [#202](https://github.com/Three-Cats-LSP/LSP_D-planner-plus/pull/202) |
+| 7 | `UI-CSS-RESULTS` | **CLOSED** — pending merge to `dev` | `63b30d2` | pending |
 
 ---
 
@@ -95,6 +96,42 @@ in `docs/seven-lens-records/`.
 
 **Next cycle:** Cycle 7 (`UI-CSS-RESULTS`).
 
+---
+
+## Cycle 7 — `UI-CSS-RESULTS`
+
+| Field | Value |
+|-------|-------|
+| **Cycle ID** | SL-C07 |
+| **Unit** | `UI-CSS-RESULTS` |
+| **Canonical file** | `lsp-dplanner-results.css` (931 lines) |
+| **Baseline** | `c108bc5` |
+| **Audit commit** | `094162a` |
+| **Verified source commit** | `63b30d2` |
+| **Resolution commit** | `1b26dd1` |
+| **Branch** | `cursor/seven-lens-cycle-07-results-css` |
+| **Ledger** | `IN_PROGRESS` (closure attestation pending) |
+| **Report** | `docs/seven-lens-reports/cycle-07-results-css.md` |
+| **Record** | `docs/seven-lens-records/cycle-07-results-css.json` |
+
+### Findings closed
+
+| ID | Severity | Summary |
+|----|----------|---------|
+| SL-C07-M-01 | MEDIUM | Results chip-yellow renders with orange palette identical to chip-orange |
+| SL-C07-M-02 | MEDIUM | Schedule row neutralization overrides PPO2 severity colors |
+| SL-C07-L-01 | LOW | Legacy mobile deco card CSS unreachable under hidden `.legacy-panels` |
+| SL-C07-L-02 | LOW | Obsolete `.algo-switcher` rules with zero live DOM writers |
+| SL-C07-L-03 | LOW | Results panel transitions ignore `prefers-reduced-motion` |
+| SL-C07-L-04 | LOW | No `@media print` rules in canonical results CSS |
+
+### Evidence
+
+- Baseline failures at prepared commit `c108bc5` (`ER-C07-PRE-RESULTS`, audit CSS hash matches audit checkpoint)
+- Post-fix regressions and browser traces at `63b30d2` (`ER-C07-POST-RESULTS`, `ER-C07-TRACE`, `ER-C07-RESTORE-RESULTS`)
+- Parity gate (`ER-C07-PARITY`) and static/CI/release receipts at closure commit
+
+**Next cycle:** Cycle 8 (`UI-PLANNER-SHELL` + `UI-RESULTS-PANEL`).
 
 ---
 
