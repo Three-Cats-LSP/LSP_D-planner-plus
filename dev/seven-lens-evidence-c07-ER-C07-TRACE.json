@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ER-C07-TRACE",
+  "command_argv": [
+    "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+    "tools/seven_lens_browser_trace.py",
+    "--spec",
+    "docs/seven-lens-traces/cycle-07-results.json",
+    "--output",
+    "dev/seven-lens-browser-trace-cycle07.json"
+  ],
+  "commit": "929958dd677a01ae766ca4085a4a06dfdb3a7b6e",
+  "exit_code": 0,
+  "case_ids": [
+    "SL-C07-CHIP-YELLOW-DISTINCT",
+    "SL-C07-PPO2-SEVERITY-COLORS",
+    "SL-C07-CSS-DEAD-LEGACY-CARDS",
+    "SL-C07-CSS-DEAD-ALGO-SWITCHER",
+    "SL-C07-REDUCED-MOTION",
+    "SL-C07-PRINT-RESULTS"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-05T07:23:14.115396+00:00",
+  "finished_at": "2026-07-05T07:23:59.678646+00:00",
+  "stdout_sha256": "8c04d026c0f11c24409a477eda42d814906ececb527c4814f4578b729adc403d",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
+}

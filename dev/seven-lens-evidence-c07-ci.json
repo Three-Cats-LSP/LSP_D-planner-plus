@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ci",
+  "command_argv": [
+    "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+    "-m",
+    "tools.audit",
+    "run",
+    "--profile",
+    "ci"
+  ],
+  "commit": "929958dd677a01ae766ca4085a4a06dfdb3a7b6e",
+  "exit_code": 1,
+  "case_ids": [],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-05T07:25:02.054498+00:00",
+  "finished_at": "2026-07-05T07:28:49.136900+00:00",
+  "stdout_sha256": "1658c56df2081153ac5913edb0f86d18de7e011e5dc84b9a04542dc6c9e90474",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
+}
