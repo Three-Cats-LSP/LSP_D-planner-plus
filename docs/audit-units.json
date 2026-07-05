@@ -4156,7 +4156,7 @@
       "evidence": [],
       "issue": "GitHub #140 M-3 coverage + audit self-tests",
       "regression_cases": [],
-      "fingerprint": "63b29c2b82543c1e85cab4ecd931eb0e0df4ebeb7cb1df712a286a95f6b4e94a",
+      "fingerprint": "f6515c3127cb2bf1fafee066f0f1524ab0e756a90d47234135816216cf1122c3",
       "last_read_fingerprint": null
     },
     {
@@ -4881,20 +4881,14 @@
       "path": "tools/audit/runner.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "8d5858e9c3562e5f8a05d6b8db97a3365db32fbbe80bee9b7263c010ed93db04",
-      "last_read_fingerprint": "8d5858e9c3562e5f8a05d6b8db97a3365db32fbbe80bee9b7263c010ed93db04",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01"
-      ],
+      "fingerprint": "a0f5d649e291c3fe668be8230726bb413c1766b3f1493c5c79ccba9b5c932551",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Ground-up audit architecture"
     },
     {

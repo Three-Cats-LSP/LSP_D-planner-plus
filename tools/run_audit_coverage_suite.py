@@ -2,6 +2,7 @@
 """Audit coverage validation plus Audit v2 self-tests (SUITE-COVERAGE)."""
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -13,7 +14,20 @@ if str(ROOT) not in sys.path:
 from tools.audit.suite_emit import case_row, finish_suite  # noqa: E402
 
 
+def _self_test_modules(profile: str) -> list[str]:
+    modules = [
+        "tools.audit.test_system",
+        "tools.test_ui_structure_suite",
+        "tools.test_seven_lens_protocol",
+        "tools.test_seven_lens_protocol_migrations",
+    ]
+    if profile != "static":
+        modules.append("tools.test_seven_lens_browser_trace")
+    return modules
+
+
 def main() -> int:
+    profile = (os.environ.get("LSP_AUDIT_PROFILE") or "static").strip() or "static"
     cov = subprocess.run(
         [sys.executable, "tools/audit_coverage.py", "--check"],
         cwd=ROOT,
@@ -31,11 +45,7 @@ def main() -> int:
             sys.executable,
             "-m",
             "unittest",
-            "tools.audit.test_system",
-            "tools.test_ui_structure_suite",
-            "tools.test_seven_lens_protocol",
-            "tools.test_seven_lens_protocol_migrations",
-            "tools.test_seven_lens_browser_trace",
+            *_self_test_modules(profile),
         ],
         cwd=ROOT,
         capture_output=True,

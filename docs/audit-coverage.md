@@ -20,14 +20,14 @@
 | pwa | 3 | 0 | 1 | 0 | 2 |
 | release_config | 1 | 0 | 1 | 0 | 0 |
 | test_infrastructure | 55 | 0 | 25 | 0 | 30 |
-| tooling | 53 | 0 | 13 | 0 | 40 |
+| tooling | 53 | 0 | 14 | 0 | 39 |
 | ui_core | 16 | 0 | 13 | 0 | 3 |
 | ui_shell | 2 | 0 | 2 | 0 | 0 |
 | web_css | 4 | 0 | 3 | 0 | 1 |
 | web_markup | 7 | 0 | 4 | 1 | 2 |
 | web_runtime | 24 | 0 | 15 | 0 | 9 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **202** | **0** | **81** | **1** | **120** |
+| **Total** | **202** | **0** | **82** | **1** | **119** |
 
 ## Units
 
@@ -161,7 +161,7 @@
 | TOOL-BUILD-VPM | tooling | `tools/build_vpm_bundle.py:1` | 104 | P1 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-BUILD-ZHL | tooling | `tools/build_zhl_bundle.py:1` | 390 | P1 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-CHECK-PARITY | tooling | `tools/check_engine_parity.py:1` | 311 | P1 | VERIFIED | COV-01, PARITY-01 |
-| TOOL-RUN-AUDIT-COVERAGE-SUITE-PY | tooling | `tools/run_audit_coverage_suite.py:1` | 66 | P0 | IN_PROGRESS | - |
+| TOOL-RUN-AUDIT-COVERAGE-SUITE-PY | tooling | `tools/run_audit_coverage_suite.py:1` | 76 | P0 | IN_PROGRESS | - |
 | TOOL-SEVEN-LENS-PROTOCOL | tooling | `tools/seven_lens_protocol.py:1` | 1285 | P0 | IN_PROGRESS | - |
 | TOOL-SEVEN-LENS-PROTOCOL-MIGRATIONS | tooling | `tools/seven_lens_protocol_migrations.py:1` | 401 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-PROTOCOL | test_infrastructure | `tools/test_seven_lens_protocol.py:1` | 640 | P0 | IN_PROGRESS | - |
@@ -201,7 +201,7 @@
 | TOOL-AUDIT-V2-REGISTRY-PY | tooling | `tools/audit/registry.py:1` | 232 | P0 | IN_PROGRESS | - |
 | TOOL-AUDIT-V2-REPORTING-PY | tooling | `tools/audit/reporting.py:1` | 92 | P0 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-AUDIT-V2-RULES-PY | tooling | `tools/audit/rules.py:1` | 281 | P0 | IN_PROGRESS | - |
-| TOOL-AUDIT-V2-RUNNER-PY | tooling | `tools/audit/runner.py:1` | 99 | P0 | VERIFIED | COV-01, PARITY-01 |
+| TOOL-AUDIT-V2-RUNNER-PY | tooling | `tools/audit/runner.py:1` | 104 | P0 | IN_PROGRESS | - |
 | TOOL-AUDIT-V2-CASE_REPORT-PY | tooling | `tools/audit/case_report.py:1` | 93 | P0 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-AUDIT-V2-SUITE_EMIT-PY | tooling | `tools/audit/suite_emit.py:1` | 32 | P0 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-AUDIT-V2-WORKSPACE-PY | tooling | `tools/audit/workspace.py:1` | 89 | P0 | VERIFIED | COV-01, PARITY-01 |

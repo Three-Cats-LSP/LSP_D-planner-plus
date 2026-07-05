@@ -53,7 +53,12 @@ def run_suites(root: Path, registry: dict[str, Any], profile: str) -> list[Suite
     for suite in selected:
         command = _command(suite["command"])
         env_overrides = {str(key): str(value) for key, value in suite.get("env", {}).items()}
-        env = {**os.environ, **env_overrides, "LSP_AUDIT_SUITE_ID": suite["id"]}
+        env = {
+            **os.environ,
+            **env_overrides,
+            "LSP_AUDIT_SUITE_ID": suite["id"],
+            "LSP_AUDIT_PROFILE": profile,
+        }
         key = (tuple(command), tuple(sorted(env_overrides.items())))
         if key in cache:
             prior = cache[key]
