@@ -49,6 +49,7 @@ class TestHttpLifecycleTests(unittest.TestCase):
                 find_available_port(host, port, allow_fallback=False)
         finally:
             blocker.shutdown()
+            blocker.server_close()
             thread.join(timeout=2)
 
     def test_fallback_selects_different_port_when_default_occupied(self):
@@ -62,6 +63,7 @@ class TestHttpLifecycleTests(unittest.TestCase):
             self.assertNotEqual(chosen, port)
         finally:
             blocker.shutdown()
+            blocker.server_close()
             thread.join(timeout=2)
 
     def test_wrong_root_rejected(self):

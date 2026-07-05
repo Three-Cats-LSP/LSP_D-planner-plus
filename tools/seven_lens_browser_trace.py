@@ -12,6 +12,8 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 DEV = ROOT / "dev"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 if str(DEV) not in sys.path:
     sys.path.insert(0, str(DEV))
 TRACE_SCHEMA_VERSION = 3
@@ -621,6 +623,8 @@ def main() -> int:
                 results.append(first)
         finally:
             browser.close()
+    from tools.seven_lens_protocol import _file_sha256
+
     git_commit = subprocess.run(
         ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True, capture_output=True, check=True
     ).stdout.strip()
@@ -628,7 +632,7 @@ def main() -> int:
         "schema_version": TRACE_SCHEMA_VERSION,
         "runner_version": 2,
         "spec": str(args.spec),
-        "spec_sha256": hashlib.sha256(spec_path.read_bytes()).hexdigest(),
+        "spec_sha256": _file_sha256(spec_path),
         "commit": git_commit,
         "traces": results,
         "passed": bool(results) and all(r["passed"] for r in results),

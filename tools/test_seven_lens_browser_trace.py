@@ -542,8 +542,38 @@ class SuiteOrderRegressionTests(unittest.TestCase):
     def test_trace_then_shell_three_times(self):
         spec = ROOT / "docs/seven-lens-traces/cycle-08-shell-results.json"
         trace_out = ROOT / "dev/seven-lens-browser-trace-suite-order-temp.json"
-        for run in range(3):
-            proc = subprocess.run(
+        try:
+            for run in range(3):
+                proc = subprocess.run(
+                    [
+                        sys.executable,
+                        str(ROOT / "tools/seven_lens_browser_trace.py"),
+                        "--spec", str(spec),
+                        "--output", str(trace_out),
+                    ],
+                    cwd=ROOT, capture_output=True, text=True,
+                )
+                self.assertEqual(proc.returncode, 0, f"trace run {run + 1}: {proc.stdout}\n{proc.stderr}")
+            shell_proc = subprocess.run(
+                [sys.executable, str(ROOT / "dev/ui_shell_results_regression.py")],
+                cwd=ROOT, capture_output=True, text=True,
+            )
+            self.assertEqual(shell_proc.returncode, 0, shell_proc.stdout + shell_proc.stderr)
+            self.assertIn("[SL-C08-NAV-PRESERVES-RESULTS]", shell_proc.stdout)
+            self.assertNotIn("✗ [SL-C08-NAV-PRESERVES-RESULTS]", shell_proc.stdout)
+        finally:
+            trace_out.unlink(missing_ok=True)
+
+    def test_shell_then_trace(self):
+        spec = ROOT / "docs/seven-lens-traces/cycle-08-shell-results.json"
+        trace_out = ROOT / "dev/seven-lens-browser-trace-suite-order-temp2.json"
+        try:
+            shell_proc = subprocess.run(
+                [sys.executable, str(ROOT / "dev/ui_shell_results_regression.py")],
+                cwd=ROOT, capture_output=True, text=True,
+            )
+            self.assertEqual(shell_proc.returncode, 0, shell_proc.stdout + shell_proc.stderr)
+            trace_proc = subprocess.run(
                 [
                     sys.executable,
                     str(ROOT / "tools/seven_lens_browser_trace.py"),
@@ -552,32 +582,9 @@ class SuiteOrderRegressionTests(unittest.TestCase):
                 ],
                 cwd=ROOT, capture_output=True, text=True,
             )
-            self.assertEqual(proc.returncode, 0, f"trace run {run + 1}: {proc.stdout}\n{proc.stderr}")
-        shell_proc = subprocess.run(
-            [sys.executable, str(ROOT / "dev/ui_shell_results_regression.py")],
-            cwd=ROOT, capture_output=True, text=True,
-        )
-        self.assertEqual(shell_proc.returncode, 0, shell_proc.stdout + shell_proc.stderr)
-        self.assertIn("[SL-C08-NAV-PRESERVES-RESULTS]", shell_proc.stdout)
-        self.assertNotIn("✗ [SL-C08-NAV-PRESERVES-RESULTS]", shell_proc.stdout)
-
-    def test_shell_then_trace(self):
-        spec = ROOT / "docs/seven-lens-traces/cycle-08-shell-results.json"
-        shell_proc = subprocess.run(
-            [sys.executable, str(ROOT / "dev/ui_shell_results_regression.py")],
-            cwd=ROOT, capture_output=True, text=True,
-        )
-        self.assertEqual(shell_proc.returncode, 0, shell_proc.stdout + shell_proc.stderr)
-        trace_proc = subprocess.run(
-            [
-                sys.executable,
-                str(ROOT / "tools/seven_lens_browser_trace.py"),
-                "--spec", str(spec),
-                "--output", str(ROOT / "dev/seven-lens-browser-trace-suite-order-temp2.json"),
-            ],
-            cwd=ROOT, capture_output=True, text=True,
-        )
-        self.assertEqual(trace_proc.returncode, 0, trace_proc.stdout + trace_proc.stderr)
+            self.assertEqual(trace_proc.returncode, 0, trace_proc.stdout + trace_proc.stderr)
+        finally:
+            trace_out.unlink(missing_ok=True)
 
 
 if __name__ == "__main__":

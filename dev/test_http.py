@@ -55,6 +55,15 @@ def _port_is_open(host: str, port: int) -> bool:
         return sock.connect_ex((host, port)) == 0
 
 
+def _port_can_bind(host: str, port: int) -> bool:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        try:
+            sock.bind((host, port))
+        except OSError:
+            return False
+        return True
+
+
 def find_available_port(
     host: str = DEFAULT_HOST,
     preferred: int = DEFAULT_PORT,
@@ -66,7 +75,7 @@ def find_available_port(
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.bind((host, 0))
             return int(sock.getsockname()[1])
-    if not _port_is_open(host, preferred):
+    if not _port_is_open(host, preferred) and _port_can_bind(host, preferred):
         return preferred
     if not allow_fallback:
         raise PortInUseError(
