@@ -528,6 +528,22 @@ class SevenLensBrowserTraceTests(unittest.TestCase):
         )
 
 
+class ShellRestoreDebounceTests(unittest.TestCase):
+    def test_shell_regression_waits_settings_debounce_contract(self):
+        """Prepared baseline: 300ms restore wait loses race to 1000ms appSettings.save debounce."""
+        src = (ROOT / "dev/ui_shell_results_regression.py").read_text(encoding="utf-8")
+        self.assertIn(
+            "SETTINGS_SAVE_DEBOUNCE_WAIT_MS",
+            src,
+            "ui_shell_results_regression must wait the full settings debounce contract after restore",
+        )
+        self.assertIn(
+            "__traceRestoreSession",
+            src,
+            "ui_shell_results_regression must block debounced save during restore like browser trace",
+        )
+
+
 class SuiteOrderRegressionTests(unittest.TestCase):
     def test_trace_then_shell_three_times(self):
         spec = ROOT / "docs/seven-lens-traces/cycle-08-shell-results.json"
