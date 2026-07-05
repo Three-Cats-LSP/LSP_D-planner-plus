@@ -687,8 +687,10 @@
       "worktree_clean": true,
       "state_restored": true,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-PRE-RESULTS.json",
-      "receipt_sha256": "",
-      "exit_code": null
+      "receipt_sha256": "4f6634cde0bd0fc0ddf275d0d8ed7af916bfada9c20105ec792d1a7f73f47c9e",
+      "exit_code": 1,
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
     },
     {
       "id": "ER-C07-POST-RESULTS",
@@ -712,9 +714,9 @@
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_results_css_regression.py",
       "worktree_clean": true,
       "state_restored": true,
-      "exit_code": null,
+      "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-POST-RESULTS.json",
-      "receipt_sha256": "",
+      "receipt_sha256": "03fcf7e6a848ea6eff6633192959df4abdf195317034c32be639e5baa36b9fa9",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -744,15 +746,15 @@
       "runtime_trace": {
         "artifact_path": "dev/seven-lens-browser-trace-cycle07.json",
         "spec_path": "docs/seven-lens-traces/cycle-07-results.json",
-        "artifact_sha256": "75a7a2bd7c9ca6b3f5a86f217dacb5d2993b170a912ebfec6f792fac6e158634",
+        "artifact_sha256": "22d337bee58391f6cdcfd15190375cdf24999bd097cd8930d3b577dbdac44e6c",
         "spec_sha256": "a54ca376580926a96983297703e52181e731108820219a48f7900ae07c8e5e66"
       },
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-07-results.json --output dev/seven-lens-browser-trace-cycle07.json",
       "worktree_clean": true,
       "state_restored": true,
-      "exit_code": null,
+      "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-TRACE.json",
-      "receipt_sha256": "",
+      "receipt_sha256": "d11bdc915ec55791f475106007a9540ec9f190cbe08e9769bfd18351c4c17731",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -774,9 +776,9 @@
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m unittest tools.test_seven_lens_protocol tools.test_seven_lens_browser_trace",
       "worktree_clean": true,
       "state_restored": true,
-      "exit_code": null,
+      "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-PROTOCOL.json",
-      "receipt_sha256": "",
+      "receipt_sha256": "225c117dc94a5d971410f01006ae2b171b2fe22f44806db5440ac9b97570814e",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -798,9 +800,9 @@
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe tools/assemble_ui_html.py --verify",
       "worktree_clean": true,
       "state_restored": true,
-      "exit_code": null,
+      "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-PARITY.json",
-      "receipt_sha256": "",
+      "receipt_sha256": "7ec000672d70f5a5dbc81d751706a735bc79c65da1849b107a77ea0c30a35635",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -816,7 +818,7 @@
         "--profile",
         "static"
       ],
-      "commit": "113669b45f26c09362165b47ae22f5faa2e8f54f",
+      "commit": "2052f5f26331dcca4586eeaf297ab628d8d813ab",
       "observable_assertions": [
         "Non-coverage static suites PASS; SUITE-COVERAGE red while SL-C07 findings remain OPEN"
       ],
@@ -841,7 +843,7 @@
         "--profile",
         "ci"
       ],
-      "commit": "113669b45f26c09362165b47ae22f5faa2e8f54f",
+      "commit": "2052f5f26331dcca4586eeaf297ab628d8d813ab",
       "observable_assertions": [
         "SUITE-UI-RESULTS-CSS-REGRESSION PASS; SUITE-COVERAGE red while SL-C07 findings remain OPEN"
       ],
@@ -866,7 +868,7 @@
         "--profile",
         "release"
       ],
-      "commit": "113669b45f26c09362165b47ae22f5faa2e8f54f",
+      "commit": "2052f5f26331dcca4586eeaf297ab628d8d813ab",
       "observable_assertions": [
         "Release suites PASS except intentional SUITE-COVERAGE OPEN-finding rollup"
       ],
@@ -901,9 +903,11 @@
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_results_css_regression.py",
       "worktree_clean": true,
       "state_restored": true,
-      "exit_code": null,
+      "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-RESTORE-RESULTS.json",
-      "receipt_sha256": ""
+      "receipt_sha256": "612d351059cf07ec2538ca1e3b46eed80eed975639de32e70e485da199faa975",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
     }
   ],
   "changed_paths": [
@@ -914,6 +918,6 @@
     "docs/audit-units.json"
   ],
   "audit_report": "docs/seven-lens-reports/cycle-07-results-css.md",
-  "notes": "VERIFIER C07-V-A/C07-V-B: independent verification PASSED at acaec31; six findings closed at resolution 1b26dd1; closure metadata pending gate receipts.",
-  "closure_evidence_commit": "113669b45f26c09362165b47ae22f5faa2e8f54f"
+  "notes": "VERIFIER C07-V-A/C07-V-B: independent verification PASSED at acaec31; six findings closed at resolution 1b26dd1.",
+  "closure_evidence_commit": "2052f5f26331dcca4586eeaf297ab628d8d813ab"
 }
