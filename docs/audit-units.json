@@ -1415,7 +1415,7 @@
         "UI-PLANNER-SHELL"
       ],
       "evidence_cases": [
-        "SL-C08-MOBILE-PANEL-EXCLUSIVE"
+        "REG-95"
       ]
     },
     {
@@ -1429,7 +1429,7 @@
         "UI-PLANNER-SHELL"
       ],
       "evidence_cases": [
-        "SL-C08-NAV-PRESERVES-RESULTS"
+        "REG-96"
       ]
     },
     {
@@ -1443,7 +1443,7 @@
         "UI-RESULTS-PANEL"
       ],
       "evidence_cases": [
-        "SL-C08-INVALID-TEC-CLEARS-STALE"
+        "REG-97"
       ]
     },
     {
@@ -1457,7 +1457,7 @@
         "UI-RESULTS-PANEL"
       ],
       "evidence_cases": [
-        "SL-C08-DEAD-RESULT-TAB-PREFIX"
+        "REG-98"
       ]
     },
     {
@@ -1471,7 +1471,7 @@
         "UI-PLANNER-SHELL"
       ],
       "evidence_cases": [
-        "SL-C08-SINGLE-MOBILE-INIT"
+        "REG-99"
       ]
     },
     {
