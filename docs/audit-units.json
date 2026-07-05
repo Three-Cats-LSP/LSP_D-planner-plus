@@ -669,6 +669,26 @@
     "REG-99": {
       "suite_id": "SUITE-UI-SHELL-RESULTS-REGRESSION",
       "case_id": "SL-C08-SINGLE-MOBILE-INIT"
+    },
+    "REG-100": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-VIS-GAS-DOT-SINGLE-SOURCE"
+    },
+    "REG-101": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-VIS-GAS-SWITCH-TOKEN-PARITY"
+    },
+    "REG-102": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-VIS-DESKTOP-TWO-COLUMN-LAYOUT"
+    },
+    "REG-103": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-VIS-DECO-BANNER-GAS-LABELS"
+    },
+    "REG-104": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-VIS-SWITCH-ROW-THEME-PARITY"
     }
   },
   "findings": [
@@ -1606,7 +1626,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "4a5f35f4f63087c9ebdc04157e571a69038f94939b964c97d78bb743a11c29a2",
+      "fingerprint": "9abfebdbec8644c9bd611afe03d3a97ee644e59ce94ee74729fcb44afd580171",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1621,7 +1641,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f1f5eaa00edd3fd382ff98c27985e51d565539079860d7e59d740bce2d6a1944",
+      "fingerprint": "0884eeb214333bd4f852f0bff99873e584ea18d2300b14545b321051065c1841",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1674,7 +1694,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49",
+      "fingerprint": "633e1e8b125233258703fe4bfdd4b439e3770b1a1d673847e3f4c16ac2d967e0",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -1726,7 +1746,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1ba50aaba4967341aa8fe4e62b548b64fecb15c0110a3c205e40ba904856c843",
+      "fingerprint": "3f5d47dfb3a8ddad62bd13b17ae95e0b27dc68bbdccb4bd9b4a585b27753139d",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1969,7 +1989,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-CCR-DELEGATES"
       },
-      "fingerprint": "34507cd32813d39c2db1777dad487961c40643c00ee5766d5f041cc455ca730b",
+      "fingerprint": "076f424784a0798ed4b341443a931365b9bdd085703ad86affeb8f037ea400ed",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2236,25 +2256,15 @@
       "path": "plot-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-RENDER"
       },
-      "fingerprint": "2efbc8f85a066175e4ef4f03b5d44169137a81c14ddcf226bdbce56fc9822f58",
-      "last_read_fingerprint": "2efbc8f85a066175e4ef4f03b5d44169137a81c14ddcf226bdbce56fc9822f58",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity",
-        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
-        "SUITE-ENGINE-FULL/AUDIT-REG-01"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01",
-        "EXT-02",
-        "REG-01"
-      ],
+      "fingerprint": "1612232a976b485aaddb29f3e7b2155f2d1cd6609fdf8817cd0dc402d022b61d",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 154,
       "issue": "Audit issue #154"
     },
@@ -2698,7 +2708,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "41c4254d713102d9a8632538ab6b43f6db96abc9f35f9828c138da45c5fc4df7",
+      "fingerprint": "37c25ebf64f1ee6cab079b575e24b93de76e55c79c698393c2c005099abf55fe",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2867,7 +2877,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f5aa225c177dec7caae1c5106afa260e74002cb5500a06dee6bb0bfdd0385e3f",
+      "fingerprint": "2ed9314bbe82022a1510f2f31323ccfdad6858eea78a7fa471781e07239c0f76",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2924,7 +2934,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "81f6212de85a99a0be536a081b59eaa14a19c2203c69e105d7c8123400517028",
+      "fingerprint": "884d60eb5dec4219598b68e2142a04197a0f4b095c65d6445077e489e09e15be",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3025,7 +3035,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1e8658512328d9233db57e90da4d9a860a0c32b534bdafa9f3bdd9b7b5ba8e82",
+      "fingerprint": "ef4382e13029165a1ada6f4b6754e4a72d5a6cbe12d5f0531b8a1c562dd86360",
       "last_read_fingerprint": null,
       "audit_issue": 168,
       "evidence": [],
@@ -5483,6 +5493,27 @@
       "last_read_fingerprint": null
     },
     {
+      "id": "TEST-UI-VISUAL-CONTRACT-REGRESSION",
+      "path": "dev/ui_visual_contract_regression.py",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Issue #214 cross-unit visual contract regression for planner and results UI",
+      "regression_cases": [
+        "REG-100",
+        "REG-101",
+        "REG-102",
+        "REG-103",
+        "REG-104"
+      ],
+      "fingerprint": "8c8721f9243d7bc6548734211d276b7440e68647e2b3810b3d349675a49d3185",
+      "last_read_fingerprint": null
+    },
+    {
       "id": "TEST-C07-PRE-RESULTS-REGRESSION",
       "path": "dev/c07_pre_results_regression.py",
       "layer": "test_infrastructure",
@@ -5640,13 +5671,14 @@
     },
     {
       "cycle": 15,
-      "max_new_application_lines": 621,
+      "max_new_application_lines": 623,
+      "min_review_sessions": 2,
       "application_units": [
         "UI-PLOT-RENDER",
         "UI-PLOT-WAYPOINTS"
       ],
       "engine_reverification": [],
-      "acceptance": "plot-core render and waypoints READ"
+      "acceptance": "plot-core render and waypoints READ in at least 2 bounded sessions"
     },
     {
       "cycle": 16,
@@ -6393,6 +6425,25 @@
         "SL-C08-INVALID-TEC-CLEARS-STALE",
         "SL-C08-DEAD-RESULT-TAB-PREFIX",
         "SL-C08-SINGLE-MOBILE-INIT"
+      ]
+    },
+    {
+      "id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "command": [
+        "{python}",
+        "dev/ui_visual_contract_regression.py"
+      ],
+      "profiles": [
+        "ci",
+        "release"
+      ],
+      "timeout_seconds": 300,
+      "case_ids": [
+        "SL-VIS-GAS-DOT-SINGLE-SOURCE",
+        "SL-VIS-GAS-SWITCH-TOKEN-PARITY",
+        "SL-VIS-DESKTOP-TWO-COLUMN-LAYOUT",
+        "SL-VIS-DECO-BANNER-GAS-LABELS",
+        "SL-VIS-SWITCH-ROW-THEME-PARITY"
       ]
     }
   ],

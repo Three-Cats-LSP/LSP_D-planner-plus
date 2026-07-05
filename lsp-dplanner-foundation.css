@@ -79,6 +79,8 @@
  --status-red-dim: rgba(248,113,113,0.12);
  --gas-switch: #fbbf24;
  --gas-switch-dim: rgba(251,191,36,0.12);
+ --gas-switch-label-bg: #FFD700;
+ --gas-switch-label-text: #007A33;
 }
 
 /* LIGHT THEME */
@@ -137,6 +139,8 @@ body.light-theme {
  --status-red-dim: rgba(239,68,68,0.12);
  --gas-switch: #eab308;
  --gas-switch-dim: rgba(234,179,8,0.14);
+ --gas-switch-label-bg: #FFD700;
+ --gas-switch-label-text: #007A33;
 }
 
 /* body.algo-buh: do not redefine --accent as var(--accent) — that circular ref invalidates the token on body and all descendants */

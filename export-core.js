@@ -362,19 +362,19 @@ function renderDecoPlanHeaderHtml(data, opts) {
 
   const chips = [];
   if (data.travelGas) {
-    chips.push(`<span class="gas-pill travel-gas"><span class="pill-dot"></span>Travel ${_escHtmlPre(data.travelGas.gas)} @ ${_escHtmlPre(data.travelGas.depth)}</span>`);
+    chips.push(`<span class="gas-pill travel-gas"><span class="pill-dot"></span>Travel: ${_escHtmlPre(data.travelGas.gas)} @ ${_escHtmlPre(data.travelGas.depth)}</span>`);
   }
   if (isCcrOnLoopProfile({ circuit: data.circuit, bailout: data.ccrBailout })) {
-    chips.push(`<span class="gas-pill bottom-gas"><span class="pill-dot"></span>Loop ${_escHtmlPre(loopMixLabelFor(data.bottomGasShort, { circuit: data.circuit, bailout: data.ccrBailout }))}</span>`);
+    chips.push(`<span class="gas-pill bottom-gas"><span class="pill-dot"></span>Loop: ${_escHtmlPre(loopMixLabelFor(data.bottomGasShort, { circuit: data.circuit, bailout: data.ccrBailout }))}</span>`);
   } else {
     const botLbl = (data.circuit === 'CCR' || data.circuit === 'pSCR') ? 'Diluent' : 'Bottom';
-    chips.push(`<span class="gas-pill bottom-gas"><span class="pill-dot"></span>${botLbl} ${_escHtmlPre(data.bottomGasShort)}</span>`);
+    chips.push(`<span class="gas-pill bottom-gas"><span class="pill-dot"></span>${botLbl}: ${_escHtmlPre(data.bottomGasShort)}</span>`);
   }
   if (!isCcrOnLoopProfile({ circuit: data.circuit, bailout: data.ccrBailout })) {
     const chipPrefix = (data.circuit === 'CCR' || data.circuit === 'pSCR') ? 'Bailout' : 'Deco';
     data.decoGases.forEach((g, i) => {
       const cls = i === 0 ? 'deco1' : 'deco2';
-      chips.push(`<span class="gas-pill ${cls}"><span class="pill-dot"></span>${chipPrefix} ${i + 1} ${_escHtmlPre(g.gas)} @ ${_escHtmlPre(g.depth)}</span>`);
+      chips.push(`<span class="gas-pill ${cls}"><span class="pill-dot"></span>${chipPrefix} ${i + 1}: ${_escHtmlPre(g.gas)} @ ${_escHtmlPre(g.depth)}</span>`);
     });
   }
 
@@ -3252,4 +3252,3 @@ async function buildGasPlanPDF() {
   doc.save(fileName);
   showExportToast();
 }
-

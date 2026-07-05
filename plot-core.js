@@ -156,6 +156,8 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
   const red     = _lspCssVar('--red', isLight ? '#dc2626' : '#f87171');
   const green   = _lspCssVar('--green', isLight ? '#16a34a' : '#4ade80');
   const orange  = _lspCssVar('--orange', isLight ? '#b45309' : '#fbbf24');
+  const gasSwitchBg = _lspCssVar('--gas-switch-label-bg', '#FFD700');
+  const gasSwitchText = _lspCssVar('--gas-switch-label-text', '#007A33');
   const profileLine = accent;
 
   ctx.fillStyle = bg;
@@ -246,7 +248,7 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
     // Dashed vertical line from flag bottom to switch depth
     // Gas switch colour: #FFD700 bg / #007A33 text — matches deco table switch row (nitrox sticker convention)
     ctx.save();
-    ctx.strokeStyle = '#FFD700';
+    ctx.strokeStyle = gasSwitchBg;
     ctx.lineWidth = 1;
     ctx.setLineDash([3, 3]);
     ctx.globalAlpha = 0.7;
@@ -263,12 +265,12 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
     const fx = nearRight ? x - flagW : x + 1;
 
     ctx.save();
-    ctx.fillStyle = '#FFD700';
+    ctx.fillStyle = gasSwitchBg;
     ctx.globalAlpha = 0.95;
     if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(fx, flagTopY, flagW, flagH, 2); ctx.fill(); }
     else { ctx.fillRect(fx, flagTopY, flagW, flagH); }
 
-    ctx.fillStyle = '#007A33';
+    ctx.fillStyle = gasSwitchText;
     ctx.globalAlpha = 1;
     ctx.font = `700 ${isMobile ? 6 : 7}px "JetBrains Mono",monospace`;
     ctx.textAlign = 'left';
@@ -529,7 +531,7 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
   const legendEl = document.getElementById(canvasId === 'decoProfileCanvas' ? 'decoProfileLegend' : 'plannerProfileLegend');
   if (legendEl) {
     const switchCount = waypoints.filter(wp => wp.type === 'gasswitch').length;
-    const gasChangeItem = `<span class="legend-item"><span style="display:inline-block;width:14px;height:10px;background:#FFD700;border-radius:2px;border:1px solid rgba(0,122,51,0.35);"></span> Gas change${switchCount ? ` (${switchCount})` : ''}</span>`;
+    const gasChangeItem = `<span class="legend-item"><span class="gas-switch-swatch" style="display:inline-block;width:14px;height:10px;background:var(--gas-switch-label-bg);border-radius:2px;border:1px solid color-mix(in oklab, var(--gas-switch-label-text) 35%, transparent);"></span> Gas change${switchCount ? ` (${switchCount})` : ''}</span>`;
     const legendColors = { red, green, accent, orange, muted, profileLine };
     const legendRows = _buildProfileLegendTableRows(waypoints, legendColors);
     const keyLegend = `<div class="profile-legend-keys" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px;">

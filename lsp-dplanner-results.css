@@ -362,10 +362,6 @@ body.light-theme .mode-btn:hover img, body.light-theme .mode-btn.active img { op
 
 .planner-main { display: none; grid-template-columns: 1fr 1fr; gap: var(--space-5); align-items: start; }
 .planner-main.visible { display: grid; }
-@media (max-width: 900px) {
-  .planner-main.visible { grid-template-columns: 1fr; }
-  #resultsPanel { border-top: 1px solid var(--border); padding-top: var(--space-4); }
-}
 
 .v3-panel { background: var(--surface); border-radius: var(--radius-xl); border: 1px solid var(--border); padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); box-shadow: var(--shadow-sm); }
 .panel-title { font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); }
@@ -390,7 +386,8 @@ body.light-theme .mode-btn:hover img, body.light-theme .mode-btn.active img { op
 .planner-mode-view { display: none; flex-direction: column; gap: var(--space-3); }
 .planner-mode-view.visible { display: flex; }
 #recPlannerView,
-#tecPlannerView { flex: 1; min-width: 0; }
+#tecPlannerView { flex: 1; min-width: 0; grid-column: 1; grid-row: 1; }
+#resultsPanel { grid-column: 2; grid-row: 1; }
 .planner-results-view { display: none; }
 .planner-results-view.visible { display: block; }
 
@@ -413,9 +410,9 @@ body.light-theme .mode-btn:hover img, body.light-theme .mode-btn.active img { op
 .gas-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--accent); box-shadow: 0 0 0 2px color-mix(in oklab, currentColor 25%, transparent); }
 .gas-dot--bottom { background: var(--accent); color: var(--accent); }
 .gas-dot--travel { background: var(--yellow); color: var(--yellow); }
-.gas-dot--deco1 { background: var(--yellow); color: var(--yellow); }
-.gas-dot--deco2 { background: var(--orange); color: var(--orange); }
-.gas-dot--o2 { background: var(--orange); color: var(--orange); }
+.gas-dot--deco1,
+.gas-dot--deco2,
+.gas-dot--o2 { background: var(--gas-switch-label-bg); color: var(--gas-switch-label-bg); }
 .gas-card-title-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
 .gas-mod { font-size: var(--text-xs); color: var(--text-muted); font-family: var(--font-mono); white-space: nowrap; flex-shrink: 0; }
 
@@ -592,7 +589,7 @@ body.light-theme #resultsPanel .deco-plan-card { background: #fff5f4; border-col
 #resultsPanel .gas-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: var(--space-2); }
 #resultsPanel .gas-pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 16px; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; border: 2px solid; white-space: nowrap; }
 #resultsPanel .gas-pill.bottom-gas { background: #fff; border-color: #4169E1; color: #111; }
-#resultsPanel .gas-pill.deco1, #resultsPanel .gas-pill.deco2, #resultsPanel .gas-pill.deco-gas { background: #fffbeb; border-color: #d4a017; color: #7a5a00; }
+#resultsPanel .gas-pill.deco1, #resultsPanel .gas-pill.deco2, #resultsPanel .gas-pill.deco-gas { background: var(--gas-switch-label-bg); border-color: var(--gas-switch-label-text); color: var(--gas-switch-label-text); }
 #resultsPanel .gas-pill.travel-gas { background: #fff8f0; border-color: #ff9900; color: #994400; }
 body.light-theme #resultsPanel .gas-pill.bottom-gas { background: #f0f4ff; }
 #resultsPanel .gas-pill .pill-dot { display: none; }
@@ -654,11 +651,13 @@ body.light-theme #resultsPanel #decoAlertsNarcotic .alert .tip-icon { color: #11
 #resultsPanel .deco-table.schedule-table tr.row-switch .col-ppo2.ppo2-warn,
 #resultsPanel .deco-table.schedule-table tr.row-switch .col-ppo2.ppo2-hi,
 #resultsPanel .deco-table.schedule-table tr.row-switch .col-ppo2.ppo2-crit { color: inherit; }
-/* V4 schedule tables: neutralize legacy V1–V3 row rules inside results panel */
-#resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td,
-#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td { color: inherit !important; font-size: inherit !important; font-weight: inherit !important; border-bottom: 1px solid var(--border) !important; }
+/* V4 schedule gas-switch contract: renderer writes data-phase, not row-switch. */
+#resultsPanel .deco-table.schedule-table tr[data-phase="switch"],
+#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] { background: color-mix(in oklab, var(--gas-switch) 8%, transparent); }
+#resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td:not([data-label="PPO2"]),
+#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td:not([data-label="PPO2"]) { color: var(--gas-switch) !important; font-size: inherit !important; border-bottom: 1px solid var(--border) !important; }
 #resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td:first-child,
-#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td:first-child { color: inherit !important; font-size: inherit !important; text-align: center !important; }
+#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td:first-child { color: var(--gas-switch) !important; font-size: inherit !important; text-align: center !important; }
 #resultsPanel .deco-table.schedule-table tr.deco-row td:not(.col-ppo2),
 #resultsPanel .deco-table.schedule-table tr.safe-row td:not(.col-ppo2),
 #resultsPanel .deco-table.schedule-table tr.asc-row td:not(.col-ppo2) { color: inherit; font-weight: inherit; }
@@ -708,6 +707,9 @@ body.light-theme #gasWarningBanner.gas-warning-banner { background: #fff8f0; bor
 }
 @media (max-width: 640px) {
   .planner-main.visible { display: block; }
+  #recPlannerView,
+  #tecPlannerView,
+  #resultsPanel { grid-column: auto; grid-row: auto; }
   #recPlannerView:not(.mobile-active),
   #tecPlannerView:not(.mobile-active) { display: none !important; }
   #resultsPanel:not(.mobile-active) { display: none !important; }

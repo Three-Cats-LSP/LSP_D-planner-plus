@@ -113,6 +113,33 @@ finding is discovered.
   themselves, or claim evidence that was not executed.
 - Confirm CI, Pages, APK, offline ZIP, and local commands use equivalent sources.
 
+## Mandatory Cross-Unit Visual Contract Gate
+
+Every cycle that reads or changes markup, CSS, rendering, navigation, or a
+canonical DOM writer must validate the assembled application as a whole. A
+selector-level or source-string assertion is not sufficient.
+
+- Exercise dark and light themes at 1280x800, 1024x768, 768x720, 667x600,
+  375x667, and 667x375 when the affected surface exists at those sizes.
+- Assert layout relationships from bounding boxes: required columns, ordering,
+  containment, visibility, and absence of overlap or unused collapsed columns.
+- Compare computed colors to semantic design tokens. Related graph, legend,
+  card, banner, and table roles must resolve to the same token where the design
+  contract says they are equivalent.
+- Assert exact user-facing labels and punctuation when wording identifies a
+  safety role, gas role, unit, algorithm, or state.
+- Trace both static markup and every canonical writer that can replace its text,
+  classes, inline styles, or children. Fail on duplicated decoration produced by
+  markup plus a legacy writer.
+- Generate the real result through visible controls before inspecting output.
+  Injecting fixture markup or changing a hidden compatibility select cannot
+  prove the visible contract.
+- Capture full-surface screenshots before and after UI fixes. Screenshot review
+  supplements computed assertions; it never replaces them.
+- Run `SUITE-UI-VISUAL-CONTRACT-REGRESSION` after every UI/CSS/rendering fix.
+  Any failure invalidates verification even when the cycle's focused suite is
+  green.
+
 ## Cycle Scope
 
 1. Read `docs/audit-master-plan.md` and `docs/audit-units.json`.
@@ -210,6 +237,9 @@ Start only after the audit report is complete.
 4. Use stable evidence IDs and register them in the actual leaf suite.
 5. Regenerate bundles and assembled artifacts through repository tools.
 6. Avoid unrelated refactors and formatting churn.
+7. For UI changes, update or add cross-unit visual contracts before changing
+   production styling. Preserve the failing pre-fix capture and passing final
+   capture at the same themes and viewports.
 
 Behavioral regressions must exercise the public or user event path that failed;
 calling the repaired helper directly is insufficient when event wiring is part of
