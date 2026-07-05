@@ -9,14 +9,14 @@
     "--profile",
     "static"
   ],
-  "commit": "6a4d683fed0cb1c2e48edfb274298c0896ff53d5",
-  "exit_code": 2,
+  "commit": "6c4d75229ee48947436fcbbad8285bc4bf7fe5e1",
+  "exit_code": 1,
   "case_ids": [],
   "worktree_clean_before": true,
   "worktree_clean_after": true,
-  "started_at": "2026-07-05T04:07:14.743783+00:00",
-  "finished_at": "2026-07-05T04:07:20.312453+00:00",
-  "stdout_sha256": "a23f7a8a1a19b69e670d30187faf84571946be099189aadf7df90c5bc4b98215",
+  "started_at": "2026-07-05T04:08:09.176099+00:00",
+  "finished_at": "2026-07-05T04:08:57.115474+00:00",
+  "stdout_sha256": "bce4a6576223d8c11714dc959d549dcb90318d8031466c15540ea80660ee702c",
   "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
 }

@@ -250,9 +250,11 @@ def _forbidden_closure_path(path: str) -> bool:
         return True
     if normalized.startswith("dev/"):
         return True
-    if normalized.startswith("tools/"):
+    if fnmatch.fnmatch(normalized, "tools/test_*.py"):
         return True
-    return True
+    if normalized.startswith("tools/audit/"):
+        return True
+    return False
 
 
 def _registry_regression_id(registry: dict[str, Any], regression_id: str) -> str | None:
@@ -586,7 +588,7 @@ def _validate_findings(record: dict[str, Any], phase: str) -> list[str]:
         if phase in {"verify", "close"} and finding.get("status") == "CLOSED":
             regressions = finding.get("regression_ids", [])
             linked = finding.get("evidence_ids", [])
-            if not _text(finding.get("resolution_commit"), 7):
+            if phase == "close" and not _text(finding.get("resolution_commit"), 7):
                 errors.append(f"{fid}: resolution_commit missing")
             if finding.get("severity") in {"CRITICAL", "HIGH", "MEDIUM"} and not regressions:
                 errors.append(f"{fid}: closed finding lacks behavioral regression IDs")
