@@ -351,7 +351,8 @@
         "ER-C05-VERIFY-TRACE",
         "ci",
         "static"
-      ]
+      ],
+      "resolution_commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364"
     },
     {
       "id": "SL-C05-M-02",
@@ -385,7 +386,8 @@
         "ER-C05-VERIFY-TRACE",
         "ci",
         "static"
-      ]
+      ],
+      "resolution_commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364"
     },
     {
       "id": "SL-C05-L-01",
@@ -409,7 +411,8 @@
         "ER-C05-PRE-CSS",
         "ER-C05-POST-CSS",
         "static"
-      ]
+      ],
+      "resolution_commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364"
     },
     {
       "id": "SL-C05-L-02",
@@ -433,7 +436,8 @@
         "ER-C05-PRE-CSS",
         "ER-C05-POST-CSS",
         "static"
-      ]
+      ],
+      "resolution_commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364"
     },
     {
       "id": "SL-C05-L-03",
@@ -457,7 +461,8 @@
         "ER-C05-PRE-CSS",
         "ER-C05-POST-CSS",
         "static"
-      ]
+      ],
+      "resolution_commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364"
     },
     {
       "id": "SL-C05-L-04",
@@ -481,7 +486,8 @@
         "ER-C05-PRE-CSS",
         "ER-C05-POST-CSS",
         "static"
-      ]
+      ],
+      "resolution_commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364"
     }
   ],
   "evidence_runs": [
