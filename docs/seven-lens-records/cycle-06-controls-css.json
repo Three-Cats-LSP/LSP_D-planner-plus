@@ -196,6 +196,7 @@
   ],
   "audit_commit": "fea770dc9194b55e3344b10e18e4b9b1a5bfc2ad",
   "verified_source_commit": "3c9779145365c66dab725e4c29c086994393beb9",
+  "closure_evidence_commit": "",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -383,7 +384,7 @@
       "state_restoration_evidence_id": "ER-C06-RESTORE-CSS",
       "independent_verification_result": "PASSED (C06-V-B at 1b5d5ce)",
       "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
-      "resolution_commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d"
+      "resolution_commit": "7470b4e5f56efb02541b57990e8422002051de35"
     },
     {
       "id": "SL-C06-M-02",
@@ -417,7 +418,7 @@
       "state_restoration_evidence_id": "ER-C06-RESTORE-CSS",
       "independent_verification_result": "PASSED (C06-V-B at 1b5d5ce)",
       "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
-      "resolution_commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d"
+      "resolution_commit": "7470b4e5f56efb02541b57990e8422002051de35"
     },
     {
       "id": "SL-C06-L-01",
@@ -445,7 +446,7 @@
       ],
       "independent_verification_result": "PASSED (C06-V-B at 1b5d5ce)",
       "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
-      "resolution_commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d"
+      "resolution_commit": "7470b4e5f56efb02541b57990e8422002051de35"
     },
     {
       "id": "SL-C06-L-02",
@@ -473,7 +474,7 @@
       ],
       "independent_verification_result": "PASSED (C06-V-B at 1b5d5ce)",
       "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
-      "resolution_commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d"
+      "resolution_commit": "7470b4e5f56efb02541b57990e8422002051de35"
     },
     {
       "id": "SL-C06-L-03",
@@ -501,7 +502,7 @@
       ],
       "independent_verification_result": "PASSED (C06-V-B at 1b5d5ce)",
       "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
-      "resolution_commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d"
+      "resolution_commit": "7470b4e5f56efb02541b57990e8422002051de35"
     },
     {
       "id": "SL-C06-L-04",
@@ -533,7 +534,7 @@
       "state_restoration_evidence_id": "ER-C06-RESTORE-CSS",
       "independent_verification_result": "PASSED (C06-V-C at 3c97791)",
       "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
-      "resolution_commit": "3c9779145365c66dab725e4c29c086994393beb9"
+      "resolution_commit": "7d403f44fc8643481414e622ebdcbb45ac430f10"
     },
     {
       "id": "SL-C06-L-05",
@@ -561,7 +562,7 @@
       ],
       "independent_verification_result": "PASSED (C06-V-B at 1b5d5ce)",
       "final_reviewed_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
-      "resolution_commit": "1b5d5cef82975ac3c4d3b1deb0dfb6f63dbca89d"
+      "resolution_commit": "7470b4e5f56efb02541b57990e8422002051de35"
     }
   ],
   "evidence_runs": [

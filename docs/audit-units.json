@@ -1164,7 +1164,7 @@
       "affected_units": [
         "UI-CSS-CONTROLS"
       ],
-      "resolution_commit": "67a4c80",
+      "resolution_commit": "7470b4e",
       "evidence_cases": [
         "REG-82"
       ]
@@ -1179,7 +1179,7 @@
       "affected_units": [
         "UI-CSS-CONTROLS"
       ],
-      "resolution_commit": "67a4c80",
+      "resolution_commit": "7470b4e",
       "evidence_cases": [
         "REG-83"
       ]
@@ -1194,7 +1194,7 @@
       "affected_units": [
         "UI-CSS-CONTROLS"
       ],
-      "resolution_commit": "67a4c80",
+      "resolution_commit": "7470b4e",
       "evidence_cases": [
         "REG-84"
       ]
@@ -1209,7 +1209,7 @@
       "affected_units": [
         "UI-CSS-CONTROLS"
       ],
-      "resolution_commit": "67a4c80",
+      "resolution_commit": "7470b4e",
       "evidence_cases": [
         "REG-85"
       ]
@@ -1224,7 +1224,7 @@
       "affected_units": [
         "UI-CSS-CONTROLS"
       ],
-      "resolution_commit": "67a4c80",
+      "resolution_commit": "7470b4e",
       "evidence_cases": [
         "REG-86"
       ]
@@ -1239,7 +1239,7 @@
       "affected_units": [
         "UI-CSS-CONTROLS"
       ],
-      "resolution_commit": "3c97791",
+      "resolution_commit": "7d403f4",
       "evidence_cases": [
         "REG-87"
       ]
@@ -1254,7 +1254,7 @@
       "affected_units": [
         "UI-CSS-CONTROLS"
       ],
-      "resolution_commit": "67a4c80",
+      "resolution_commit": "7470b4e",
       "evidence_cases": [
         "REG-88"
       ]

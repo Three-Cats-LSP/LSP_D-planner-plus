@@ -158,6 +158,15 @@ def _text(value: Any, minimum: int = 1) -> bool:
     return isinstance(value, str) and len(value.strip()) >= minimum
 
 
+def _short_commit(commit: str) -> str:
+    value = str(commit or "").strip()
+    return value[:7] if len(value) >= 7 else value
+
+
+def _record_finding_resolution(record_finding: dict[str, Any]) -> str:
+    return _short_commit(str(record_finding.get("resolution_commit", "")))
+
+
 def _validate_evidence_receipt(root: Path, evidence: dict[str, Any]) -> list[str]:
     evidence_id = evidence.get("id", "<unknown>")
     errors: list[str] = []
@@ -216,8 +225,34 @@ def _attestation_only_path(path: str) -> bool:
         or normalized.startswith("docs/seven-lens-records/")
         or normalized == "docs/seven-lens-manual-ledger.json"
         or normalized == "docs/audit-coverage.md"
+        or normalized == "docs/audit-master-plan.md"
         or fnmatch.fnmatch(normalized, "dev/seven-lens-browser-trace-*.json")
+        or fnmatch.fnmatch(normalized, "dev/seven-lens-evidence-*.json")
     )
+
+
+def _closure_only_path(path: str) -> bool:
+    normalized = path.replace("\\", "/")
+    if _attestation_only_path(normalized):
+        return True
+    return normalized == "docs/audit-units.json"
+
+
+def _forbidden_closure_path(path: str) -> bool:
+    normalized = path.replace("\\", "/")
+    if _closure_only_path(normalized):
+        return False
+    if normalized.startswith("docs/seven-lens-traces/"):
+        return True
+    if normalized.startswith("lsp-dplanner-") or normalized == "index.html":
+        return True
+    if normalized.startswith("ui/"):
+        return True
+    if normalized.startswith("dev/"):
+        return True
+    if normalized.startswith("tools/"):
+        return True
+    return True
 
 
 def _registry_regression_id(registry: dict[str, Any], regression_id: str) -> str | None:
@@ -286,10 +321,15 @@ def _validate_registry_closure_mutations(
         errors.append("docs/audit-units.json missing at closure HEAD")
         return errors
     after = json.loads(after_path.read_text(encoding="utf-8"))
-    expected_closed = {
+    record_findings = {
         row.get("id"): row
         for row in record.get("findings", [])
-        if row.get("status") == "CLOSED" and _text(row.get("id"), 5)
+        if _text(row.get("id"), 5)
+    }
+    expected_closed = {
+        finding_id: row
+        for finding_id, row in record_findings.items()
+        if row.get("status") == "CLOSED"
     }
     immutable_top_level = [
         key for key in before if key not in {"findings", "units"}
@@ -321,12 +361,30 @@ def _validate_registry_closure_mutations(
                 errors.append(f"registry closure modified unrelated finding {finding_id}")
             continue
         record_finding = expected_closed[finding_id]
+        expected_rc = _record_finding_resolution(record_finding)
+        if not expected_rc:
+            errors.append(f"registry closure finding {finding_id} lacks record resolution_commit")
+            continue
         expected_evidence = _expected_registry_evidence_cases(record_finding, after)
         unit_id = str(record_finding.get("unit_id", ""))
+        if old is not None and old == new:
+            if new.get("status") != "CLOSED":
+                errors.append(f"registry closure finding {finding_id} must remain CLOSED")
+            elif _short_commit(str(new.get("resolution_commit", ""))) != expected_rc:
+                errors.append(f"registry closure finding {finding_id} resolution_commit mismatch")
+            continue
+        if old is not None and old.get("status") == "CLOSED" and new.get("status") == "CLOSED":
+            diff_keys = {
+                key for key in set(old) | set(new) if old.get(key) != new.get(key)
+            }
+            if diff_keys <= {"resolution_commit"}:
+                if _short_commit(str(new.get("resolution_commit", ""))) != expected_rc:
+                    errors.append(f"registry closure finding {finding_id} resolution_commit mismatch")
+                continue
         if old is None:
             if new.get("status") != "CLOSED":
                 errors.append(f"registry closure finding {finding_id} must be CLOSED")
-            if new.get("resolution_commit") != verified_commit[:7]:
+            if _short_commit(str(new.get("resolution_commit", ""))) != expected_rc:
                 errors.append(f"registry closure finding {finding_id} resolution_commit mismatch")
             if new.get("unit_id") != unit_id:
                 errors.append(f"registry closure finding {finding_id} unit_id mismatch")
@@ -352,7 +410,7 @@ def _validate_registry_closure_mutations(
                 errors.append(f"registry closure finding {finding_id} changed immutable field {key}")
         if new.get("status") != "CLOSED":
             errors.append(f"registry closure finding {finding_id} must end CLOSED")
-        if new.get("resolution_commit") != verified_commit[:7]:
+        if _short_commit(str(new.get("resolution_commit", ""))) != expected_rc:
             errors.append(f"registry closure finding {finding_id} resolution_commit mismatch")
         if new.get("evidence_cases") != expected_evidence:
             errors.append(f"registry closure finding {finding_id} evidence_cases mismatch")
@@ -387,6 +445,58 @@ def _audit_metadata_path(path: str) -> bool:
             "docs/audit-master-plan.md",
         }
     )
+
+
+def _validate_unreferenced_receipts(root: Path, record: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    referenced = {
+        str(row.get("receipt_path", "")).replace("\\", "/")
+        for row in record.get("evidence_runs", [])
+        if _text(row.get("receipt_path"), 5)
+    }
+    cycle = int(record.get("cycle", 0) or 0)
+    if cycle < 1:
+        return errors
+    for path in sorted(root.glob(f"dev/seven-lens-evidence-c{cycle:02d}-*.json")):
+        rel = path.relative_to(root).as_posix()
+        if rel not in referenced:
+            errors.append(f"unreferenced attestation receipt: {rel}")
+    return errors
+
+
+def _validate_closure_only_diff(
+    root: Path,
+    record: dict[str, Any],
+    verified_commit: str,
+    closure_commit: str,
+    check_git: bool,
+) -> list[str]:
+    if not check_git or not _text(verified_commit, 7) or not _text(closure_commit, 7):
+        return []
+    if verified_commit == closure_commit:
+        return []
+    errors: list[str] = []
+    if not _git_ok("merge-base", "--is-ancestor", verified_commit, closure_commit, root=root):
+        errors.append("closure_evidence_commit does not descend from verified_source_commit")
+        return errors
+    try:
+        changed = [
+            path for path in _git(
+                "diff", "--name-only", f"{verified_commit}..{closure_commit}", root=root
+            ).splitlines()
+            if path.strip()
+        ]
+    except RuntimeError as exc:
+        errors.append(f"cannot inspect closure diff: {exc}")
+        return errors
+    forbidden = [path for path in changed if _forbidden_closure_path(path)]
+    if forbidden:
+        errors.append(
+            "closure-only diff contains forbidden paths: " + ", ".join(sorted(forbidden))
+        )
+    if "docs/audit-units.json" in changed:
+        errors.extend(_validate_registry_closure_mutations(root, record, verified_commit))
+    return errors
 
 
 def _validate_parts(root: Path, record: dict[str, Any], phase: str) -> list[str]:
@@ -476,6 +586,8 @@ def _validate_findings(record: dict[str, Any], phase: str) -> list[str]:
         if phase in {"verify", "close"} and finding.get("status") == "CLOSED":
             regressions = finding.get("regression_ids", [])
             linked = finding.get("evidence_ids", [])
+            if not _text(finding.get("resolution_commit"), 7):
+                errors.append(f"{fid}: resolution_commit missing")
             if finding.get("severity") in {"CRITICAL", "HIGH", "MEDIUM"} and not regressions:
                 errors.append(f"{fid}: closed finding lacks behavioral regression IDs")
             if not linked or any(item not in evidence_ids for item in linked):
@@ -546,15 +658,37 @@ def _validate_evidence(
             errors.append(f"evidence {evidence_id}: baseline failure must fail before the fix")
         if row.get("kind") in {"post_fix", "state_restoration", "gate"} and row.get("exit_code") != 0:
             errors.append(f"evidence {evidence_id}: passing evidence has nonzero exit_code")
+        verified = str(record.get("verified_source_commit", ""))
+        closure = str(record.get("closure_evidence_commit", "") or verified)
         if (
             phase == "close"
             and record.get("schema_version", 1) >= 3
-            and row.get("kind") in {"post_fix", "state_restoration", "gate"}
-            and row.get("commit") != record.get("verified_source_commit")
+            and _text(verified, 7)
         ):
-            errors.append(f"evidence {evidence_id}: must run at verified_source_commit")
+            kind = row.get("kind")
+            commit = str(row.get("commit", ""))
+            if kind in {"post_fix", "state_restoration"} and commit != verified:
+                errors.append(f"evidence {evidence_id}: must run at verified_source_commit")
+            elif kind == "gate" and evidence_id in {"static", "ci"} and commit != closure:
+                errors.append(f"evidence {evidence_id}: must run at closure_evidence_commit")
         if record.get("schema_version", 1) >= CURRENT_RECORD_SCHEMA and phase in {"verify", "close"}:
             errors.extend(_validate_evidence_receipt(root, row))
+    gate_ids = {"static", "ci"}
+    gate_rows = [
+        row for row in record.get("evidence_runs", [])
+        if row.get("id") in gate_ids
+    ]
+    verified = str(record.get("verified_source_commit", ""))
+    if (
+        phase == "close"
+        and record.get("schema_version", 1) >= 3
+        and _text(verified, 7)
+        and any(str(row.get("commit", "")) != verified for row in gate_rows)
+        and not _text(str(record.get("closure_evidence_commit", "")), 7)
+    ):
+        errors.append("closure_evidence_commit required when static/ci run after verified_source_commit")
+    if record.get("schema_version", 1) >= CURRENT_RECORD_SCHEMA and phase in {"verify", "close"}:
+        errors.extend(_validate_unreferenced_receipts(root, record))
     if phase in {"verify", "close"} and record.get("verification_status") == "PASSED":
         passed = {
             row.get("id") for row in record.get("evidence_runs", [])
@@ -841,10 +975,15 @@ def validate_record(
         if check_git and _git("status", "--porcelain", root=root):
             errors.append("tracked or untracked worktree is not clean")
         if check_git and _text(record.get("verified_source_commit"), 7):
+            verified = str(record["verified_source_commit"])
+            closure = str(record.get("closure_evidence_commit", "") or verified)
+            errors.extend(
+                _validate_closure_only_diff(root, record, verified, closure, check_git)
+            )
             protected = {part["path"] for part in record.get("parts", [])} | set(record.get("changed_paths", []))
             if _text(record.get("audit_commit"), 7):
                 fix_diff = _git(
-                    "diff", "--name-only", f"{record['audit_commit']}..{record['verified_source_commit']}",
+                    "diff", "--name-only", f"{record['audit_commit']}..{verified}",
                     root=root,
                 )
                 protected.update(
@@ -856,30 +995,40 @@ def validate_record(
             )
             if paths:
                 changed = _git(
-                    "diff", "--name-only", f"{record['verified_source_commit']}..HEAD", "--", *paths, root=root
+                    "diff", "--name-only", f"{verified}..HEAD", "--", *paths, root=root
                 )
                 changed_list = [path for path in changed.splitlines() if path.strip()]
-                if "docs/audit-units.json" in changed_list:
-                    errors.extend(
-                        _validate_registry_closure_mutations(
-                            root, record, str(record["verified_source_commit"])
-                        )
-                    )
-                    changed_list = [path for path in changed_list if path != "docs/audit-units.json"]
-                coverage_path = root / "docs/audit-coverage.md"
-                if coverage_path.is_file() and check_git:
-                    try:
-                        if _git(
-                            "diff", "--name-only", f"{record['verified_source_commit']}..HEAD",
-                            "--", "docs/audit-coverage.md", root=root,
-                        ).strip():
-                            errors.extend(_validate_generated_coverage_doc(root))
-                    except RuntimeError:
-                        pass
                 if changed_list:
                     errors.append(
                         "reviewed source/test changed after verification: " + ", ".join(changed_list)
                     )
+            if _text(closure, 7):
+                try:
+                    head = _git("rev-parse", "HEAD", root=root)
+                    if closure != head:
+                        post_closure = [
+                            path for path in _git(
+                                "diff", "--name-only", f"{closure}..HEAD", root=root
+                            ).splitlines()
+                            if path.strip() and not _attestation_only_path(path)
+                        ]
+                        if post_closure:
+                            errors.append(
+                                "post-closure diff contains non-attestation paths: "
+                                + ", ".join(post_closure)
+                            )
+                except RuntimeError:
+                    pass
+            coverage_path = root / "docs/audit-coverage.md"
+            if coverage_path.is_file() and check_git:
+                try:
+                    if _git(
+                        "diff", "--name-only", f"{verified}..HEAD",
+                        "--", "docs/audit-coverage.md", root=root,
+                    ).strip():
+                        errors.extend(_validate_generated_coverage_doc(root))
+                except RuntimeError:
+                    pass
     return errors
 
 
