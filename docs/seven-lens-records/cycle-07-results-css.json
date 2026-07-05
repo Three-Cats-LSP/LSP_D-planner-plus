@@ -816,7 +816,7 @@
         "--profile",
         "static"
       ],
-      "commit": "",
+      "commit": "113669b45f26c09362165b47ae22f5faa2e8f54f",
       "observable_assertions": [
         "Non-coverage static suites PASS; SUITE-COVERAGE red while SL-C07 findings remain OPEN"
       ],
@@ -841,7 +841,7 @@
         "--profile",
         "ci"
       ],
-      "commit": "",
+      "commit": "113669b45f26c09362165b47ae22f5faa2e8f54f",
       "observable_assertions": [
         "SUITE-UI-RESULTS-CSS-REGRESSION PASS; SUITE-COVERAGE red while SL-C07 findings remain OPEN"
       ],
@@ -866,7 +866,7 @@
         "--profile",
         "release"
       ],
-      "commit": "",
+      "commit": "113669b45f26c09362165b47ae22f5faa2e8f54f",
       "observable_assertions": [
         "Release suites PASS except intentional SUITE-COVERAGE OPEN-finding rollup"
       ],
@@ -914,5 +914,6 @@
     "docs/audit-units.json"
   ],
   "audit_report": "docs/seven-lens-reports/cycle-07-results-css.md",
-  "notes": "VERIFIER C07-V-A/C07-V-B: independent verification PASSED at acaec31; six findings closed at resolution 1b26dd1; closure metadata pending gate receipts."
+  "notes": "VERIFIER C07-V-A/C07-V-B: independent verification PASSED at acaec31; six findings closed at resolution 1b26dd1; closure metadata pending gate receipts.",
+  "closure_evidence_commit": "113669b45f26c09362165b47ae22f5faa2e8f54f"
 }
