@@ -321,7 +321,7 @@
     }
   ],
   "audit_commit": "32fda7bbd1896864465f830012a246b58d94109b",
-  "verified_source_commit": "715ac37784aedfed088af188763bd06158701453",
+  "verified_source_commit": "9ad76732fbce7594ce8df10e16dced37e2aaf0f7",
   "verification_status": "PENDING_INDEPENDENT_VERIFICATION",
   "fixer": {
     "regression_id": "REG-76",
@@ -335,11 +335,11 @@
   "trace_restoration_fixer": {
     "trace_id": "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE",
     "baseline_commit": "44054aebdef90d70eadf5d69d1893aae3c680a5d",
-    "protected_commit": "715ac37784aedfed088af188763bd06158701453",
+    "protected_commit": "9ad76732fbce7594ce8df10e16dced37e2aaf0f7",
     "classification": "B",
     "summary": "Browser trace cleanup lacked guaranteed restore-session finally; debounced save could persist polluted DOM and leave nested _restoreInProgress wrong. Shell regression now shares the same debounce-safe restore path; HTTP harness verifies #bnavPlanner and avoids occupied port 8765 collisions.",
     "requires_independent_verification": true,
-    "lifecycle_fix_commit": "715ac37784aedfed088af188763bd06158701453"
+    "lifecycle_fix_commit": "9ad76732fbce7594ce8df10e16dced37e2aaf0f7"
   },
   "parts": [
     {
@@ -687,7 +687,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_shell_results_regression.py"
       ],
-      "commit": "715ac37784aedfed088af188763bd06158701453",
+      "commit": "9ad76732fbce7594ce8df10e16dced37e2aaf0f7",
       "observable_assertions": [
         "All five shell/results regression cases PASS at 1280x800, 375x667, and 667x375 with state restoration"
       ],
@@ -730,7 +730,7 @@
         ],
         "trace_id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "c20f6583cd9ac607ac89869b4608580c8a9f7367248498e724328b362bf1ee94",
+        "artifact_sha256": "e9a0a603cef858a9458abbbfac1cb31e0825a41d9ed42c111698912ab25d2a36",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
         "spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d"
       }
@@ -751,7 +751,7 @@
         "--output",
         "dev/seven-lens-browser-trace-c08-post-fix.json"
       ],
-      "commit": "715ac37784aedfed088af188763bd06158701453",
+      "commit": "9ad76732fbce7594ce8df10e16dced37e2aaf0f7",
       "observable_assertions": [
         "Four Cycle 08 browser traces PASS with repeat=2, exact state restoration hashes, and INVALID-TEC localStorage tecDepth restored"
       ],
@@ -760,10 +760,10 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-TRACE.json",
-      "receipt_sha256": "a32e1f83a13dc97b0d2438d2775e94ed1f5bb01b80856d51767587ebe2e16f55",
+      "receipt_sha256": "70f7e8333d710dd1471cb73cde218e2f8ff1d5e8ecd40cf2fb8237f939f79735",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
-      "trace_artifact_sha256": "c20f6583cd9ac607ac89869b4608580c8a9f7367248498e724328b362bf1ee94",
+      "trace_artifact_sha256": "e9a0a603cef858a9458abbbfac1cb31e0825a41d9ed42c111698912ab25d2a36",
       "trace_spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d",
       "id": "ER-C08-TRACE",
       "runtime_trace": {
@@ -797,7 +797,7 @@
         ],
         "trace_id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "c20f6583cd9ac607ac89869b4608580c8a9f7367248498e724328b362bf1ee94",
+        "artifact_sha256": "e9a0a603cef858a9458abbbfac1cb31e0825a41d9ed42c111698912ab25d2a36",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
         "spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d"
       }
@@ -816,7 +816,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_shell_results_regression.py"
       ],
-      "commit": "715ac37784aedfed088af188763bd06158701453",
+      "commit": "9ad76732fbce7594ce8df10e16dced37e2aaf0f7",
       "observable_assertions": [
         "ui_shell_results_regression restores DOM/globals after probes with matching state hashes"
       ],
@@ -841,7 +841,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_shell_results_regression.py"
       ],
-      "commit": "715ac37784aedfed088af188763bd06158701453",
+      "commit": "9ad76732fbce7594ce8df10e16dced37e2aaf0f7",
       "observable_assertions": [
         "Regression case SL-C08-NAV-PRESERVES-RESULTS PASS at verified source"
       ],
@@ -884,7 +884,7 @@
         ],
         "trace_id": "SL-C08-NAV-CLEARS-RESULTS-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "c20f6583cd9ac607ac89869b4608580c8a9f7367248498e724328b362bf1ee94",
+        "artifact_sha256": "e9a0a603cef858a9458abbbfac1cb31e0825a41d9ed42c111698912ab25d2a36",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
         "spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d"
       }
@@ -899,7 +899,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_shell_results_regression.py"
       ],
-      "commit": "715ac37784aedfed088af188763bd06158701453",
+      "commit": "9ad76732fbce7594ce8df10e16dced37e2aaf0f7",
       "observable_assertions": [
         "Regression case SL-C08-INVALID-TEC-CLEARS-STALE PASS at verified source"
       ],
@@ -941,7 +941,7 @@
         ],
         "trace_id": "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "c20f6583cd9ac607ac89869b4608580c8a9f7367248498e724328b362bf1ee94",
+        "artifact_sha256": "e9a0a603cef858a9458abbbfac1cb31e0825a41d9ed42c111698912ab25d2a36",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
         "spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d"
       }
@@ -994,7 +994,7 @@
         "--output",
         "dev/seven-lens-browser-trace-c08-post-tec-restore.json"
       ],
-      "commit": "715ac37784aedfed088af188763bd06158701453",
+      "commit": "9ad76732fbce7594ce8df10e16dced37e2aaf0f7",
       "observable_assertions": [
         "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE PASS with state_restored true across repeat=2 at lifecycle fix commit"
       ],
@@ -1003,10 +1003,10 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-TEC-RESTORE.json",
-      "receipt_sha256": "900b00a7a4c48dab65b570f58ea79f09425475036580e9784bc151b900c65a1b",
+      "receipt_sha256": "c7cdd104d0ae01bbbb05bf3e46f5018acd32c41d7c9f6bd813097a231816735e",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
-      "trace_artifact_sha256": "b6dcc7f7e8f64b7236b334c24822be85548208fd7d53d878c044aaf5b8461367",
+      "trace_artifact_sha256": "e9a0a603cef858a9458abbbfac1cb31e0825a41d9ed42c111698912ab25d2a36",
       "trace_spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d"
     },
     {
