@@ -3893,7 +3893,7 @@
       "evidence": [],
       "issue": "GitHub #140 M-3 coverage + audit self-tests",
       "regression_cases": [],
-      "fingerprint": "a663d6186990c2e9c99cb163bf8d07227df0699552d8a6f0edd364f3fa872359",
+      "fingerprint": "63b29c2b82543c1e85cab4ecd931eb0e0df4ebeb7cb1df712a286a95f6b4e94a",
       "last_read_fingerprint": null
     },
     {
