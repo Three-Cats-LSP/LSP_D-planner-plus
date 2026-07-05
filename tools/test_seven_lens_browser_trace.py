@@ -97,6 +97,48 @@ class SevenLensBrowserTraceTests(unittest.TestCase):
         )
         self.assertTrue(ok)
 
+    def test_setup_viewport_and_emulate_media_are_accepted(self):
+        spec = valid_spec()
+        spec["traces"][0]["setup"] = [
+            {"action": "set_viewport", "size": {"width": 375, "height": 667}},
+            {"action": "emulate_media", "params": {"reduced_motion": "reduce"}},
+        ]
+        self.assertEqual(validate_trace_spec(spec), [])
+
+    def test_setup_press_key_and_type_text_require_fields(self):
+        spec = valid_spec()
+        spec["traces"][0]["setup"] = [{"action": "press_key"}]
+        self.assertTrue(any("press_key action needs key" in error for error in validate_trace_spec(spec)))
+        spec["traces"][0]["setup"] = [{"action": "type_text"}]
+        self.assertTrue(any("type_text action needs text" in error for error in validate_trace_spec(spec)))
+
+    def test_viewport_and_emulate_media_rejected_in_tested_steps(self):
+        spec = valid_spec()
+        spec["traces"][0]["steps"] = [
+            {"capture": "before", "values": {"depth": "Number(depth.value)"}},
+            {"action": "set_viewport", "size": {"width": 375, "height": 667}},
+            {"capture": "after", "values": {"depth": "Number(depth.value)"}},
+        ]
+        errors = validate_trace_spec(spec)
+        self.assertTrue(any("set_viewport is allowed only during setup" in error for error in errors))
+
+    def test_press_key_and_type_text_allowed_in_tested_steps(self):
+        spec = valid_spec()
+        spec["traces"][0]["steps"] = [
+            {"capture": "before", "values": {"depth": "Number(depth.value)"}},
+            {"action": "click", "selector": "#depth"},
+            {"action": "press_key", "key": "Tab"},
+            {"action": "type_text", "text": "0"},
+            {"capture": "after", "values": {"depth": "Number(depth.value)"}},
+        ]
+        spec["traces"][0]["assertions"] = [{
+            "id": "changed",
+            "left": "$.before.depth",
+            "op": "not_equal",
+            "right": "$.after.depth",
+        }]
+        self.assertEqual(validate_trace_spec(spec), [])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -432,5 +432,9 @@
     "ui/markup-rec-planner.html",
     "rec-planner.js",
     "planner-inputs-core.js"
+  ],
+  "protocol_migrations": [
+    "resolution-commit-v1",
+    "receipt-exit-v1"
   ]
 }

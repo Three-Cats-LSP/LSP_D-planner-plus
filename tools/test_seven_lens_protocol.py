@@ -11,10 +11,14 @@ from unittest.mock import patch
 from tools.seven_lens_protocol import (
     LENSES,
     _attestation_only_path,
+    _closure_only_path,
     _file_sha256,
+    _forbidden_closure_path,
     _part_hash,
     _validate_evidence_receipt,
+    _validate_registry_closure_mutations,
     _validate_trace_artifact,
+    _validate_unreferenced_receipts,
     make_plan,
     validate_record,
     validate_reviewed_cycles,
@@ -273,7 +277,7 @@ class SevenLensProtocolTests(unittest.TestCase):
         (records / "cycle-02.json").write_text(json.dumps(self.record), encoding="utf-8")
         with patch("tools.seven_lens_protocol._resolved_registry", return_value=({}, self.resolved)):
             errors = validate_reviewed_cycles(self.root)
-        self.assertTrue(any("current protocol schema" in error for error in errors))
+        self.assertTrue(any("schema 4 or 5" in error for error in errors))
 
     def test_real_closure_rejects_non_current_schema(self):
         with patch("tools.seven_lens_protocol._resolved_registry", return_value=({}, self.resolved)):
@@ -324,9 +328,23 @@ class SevenLensProtocolTests(unittest.TestCase):
     def test_browser_trace_artifacts_are_attestation_only_paths(self):
         self.assertTrue(_attestation_only_path("dev/seven-lens-browser-trace-cycle05.json"))
         self.assertTrue(_attestation_only_path("dev\\seven-lens-browser-trace-cycle05-pre.json"))
+        self.assertTrue(_attestation_only_path("dev/seven-lens-evidence-c06-static.json"))
         self.assertTrue(_attestation_only_path("docs/seven-lens-reports/cycle-05-record.json"))
+        self.assertTrue(_attestation_only_path("docs/audit-coverage.md"))
+        self.assertFalse(_attestation_only_path("docs/audit-units.json"))
         self.assertFalse(_attestation_only_path("lsp-dplanner-foundation.css"))
         self.assertFalse(_attestation_only_path("dev/ui_css_regression.py"))
+
+    def test_closure_only_path_rejects_application_source(self):
+        self.assertTrue(_closure_only_path("docs/audit-units.json"))
+        self.assertTrue(_closure_only_path("dev/seven-lens-evidence-c06-ci.json"))
+        self.assertFalse(_closure_only_path("lsp-dplanner-controls.css"))
+        self.assertFalse(_closure_only_path("docs/seven-lens-traces/cycle-06-controls.json"))
+        self.assertTrue(_forbidden_closure_path("dev/ui_controls_css_regression.py"))
+        self.assertTrue(_forbidden_closure_path("docs/seven-lens-traces/cycle-06-controls.json"))
+        self.assertFalse(_forbidden_closure_path("tools/seven_lens_protocol.py"))
+        self.assertFalse(_forbidden_closure_path("tools/test_seven_lens_protocol.py"))
+        self.assertFalse(_forbidden_closure_path("dev/seven-lens-evidence-c06-static.json"))
 
     def test_post_verification_guard_excludes_browser_trace_artifacts(self):
         protected = {
@@ -354,6 +372,268 @@ class SevenLensProtocolTests(unittest.TestCase):
         }), encoding="utf-8")
         errors = validate_reviewed_cycles(self.root)
         self.assertTrue(any("no protocol record or exemption" in error for error in errors))
+
+    def test_registry_closure_allows_cycle_finding_rows(self):
+        docs = self.root / "docs"
+        docs.mkdir(parents=True)
+        before = {
+            "schema_version": 3,
+            "findings": [],
+            "units": [],
+            "evidence_catalog": {
+                "REG-82": {"suite_id": "SUITE-X", "case_id": "SL-C06-SEG-FOCUS-VISIBLE"},
+            },
+            "suites": {},
+            "rules": {},
+            "cycles": [],
+        }
+        after = copy.deepcopy(before)
+        after["findings"] = [{
+            "id": "SL-C06-M-01",
+            "unit_id": "UI-CSS-CONTROLS",
+            "severity": "MEDIUM",
+            "status": "CLOSED",
+            "issue": "Seven-lens Cycle 06 controls CSS audit",
+            "summary": "Segmented controls suppress keyboard focus ring",
+            "affected_units": ["UI-CSS-CONTROLS"],
+            "resolution_commit": "abcdef2",
+            "evidence_cases": ["REG-82"],
+        }]
+        (docs / "audit-units.json").write_text(json.dumps(after), encoding="utf-8")
+        record = {
+            "cycle": 6,
+            "findings": [{
+                "id": "SL-C06-M-01",
+                "unit_id": "UI-CSS-CONTROLS",
+                "severity": "MEDIUM",
+                "status": "CLOSED",
+                "regression_ids": ["SL-C06-SEG-FOCUS-VISIBLE"],
+                "resolution_commit": "abcdef2",
+            }],
+        }
+        with patch(
+            "tools.seven_lens_protocol._git",
+            return_value=json.dumps(before),
+        ):
+            errors = _validate_registry_closure_mutations(self.root, record, "abcdef2")
+        self.assertEqual([], errors)
+
+    def test_registry_closure_allows_already_closed_unchanged_finding(self):
+        docs = self.root / "docs"
+        docs.mkdir(parents=True)
+        finding = {
+            "id": "SL-C06-M-01",
+            "unit_id": "UI-CSS-CONTROLS",
+            "severity": "MEDIUM",
+            "status": "CLOSED",
+            "issue": "Seven-lens Cycle 06 controls CSS audit",
+            "summary": "Segmented controls suppress keyboard focus ring",
+            "affected_units": ["UI-CSS-CONTROLS"],
+            "resolution_commit": "7470b4e",
+            "evidence_cases": ["REG-82"],
+        }
+        registry = {
+            "schema_version": 3,
+            "findings": [finding],
+            "units": [],
+            "evidence_catalog": {
+                "REG-82": {"suite_id": "SUITE-X", "case_id": "SL-C06-SEG-FOCUS-VISIBLE"},
+            },
+            "suites": {},
+            "rules": {},
+            "cycles": [],
+        }
+        (docs / "audit-units.json").write_text(json.dumps(registry), encoding="utf-8")
+        record = {
+            "cycle": 6,
+            "findings": [{
+                "id": "SL-C06-M-01",
+                "unit_id": "UI-CSS-CONTROLS",
+                "severity": "MEDIUM",
+                "status": "CLOSED",
+                "regression_ids": ["SL-C06-SEG-FOCUS-VISIBLE"],
+                "resolution_commit": "7470b4e",
+            }],
+        }
+        with patch(
+            "tools.seven_lens_protocol._git",
+            return_value=json.dumps(registry),
+        ):
+            errors = _validate_registry_closure_mutations(self.root, record, "verified1")
+        self.assertEqual([], errors)
+
+    def test_registry_closure_uses_record_resolution_commit(self):
+        docs = self.root / "docs"
+        docs.mkdir(parents=True)
+        before = {
+            "schema_version": 3,
+            "findings": [{
+                "id": "SL-C06-L-04",
+                "unit_id": "UI-CSS-CONTROLS",
+                "severity": "LOW",
+                "status": "OPEN",
+                "issue": "Seven-lens Cycle 06 controls CSS audit",
+                "summary": "Field inputs lack invalid-state styling",
+                "affected_units": ["UI-CSS-CONTROLS"],
+                "resolution_commit": "",
+                "evidence_cases": ["REG-87"],
+            }],
+            "units": [],
+            "evidence_catalog": {
+                "REG-87": {"suite_id": "SUITE-X", "case_id": "SL-C06-FIELD-INVALID-STATE"},
+            },
+            "suites": {},
+            "rules": {},
+            "cycles": [],
+        }
+        after = copy.deepcopy(before)
+        after["findings"][0]["status"] = "CLOSED"
+        after["findings"][0]["resolution_commit"] = "7d403f4"
+        (docs / "audit-units.json").write_text(json.dumps(after), encoding="utf-8")
+        record = {
+            "cycle": 6,
+            "findings": [{
+                "id": "SL-C06-L-04",
+                "unit_id": "UI-CSS-CONTROLS",
+                "severity": "LOW",
+                "status": "CLOSED",
+                "regression_ids": ["SL-C06-FIELD-INVALID-STATE"],
+                "resolution_commit": "7d403f4",
+            }],
+        }
+        with patch(
+            "tools.seven_lens_protocol._git",
+            return_value=json.dumps(before),
+        ):
+            errors = _validate_registry_closure_mutations(self.root, record, "verified1")
+        self.assertEqual([], errors)
+
+    def test_evidence_receipt_rejects_altered_hash(self):
+        tools = self.root / "tools"
+        tools.mkdir()
+        executor = tools / "seven_lens_evidence.py"
+        executor.write_text("print('executor')\n", encoding="utf-8")
+        evidence = {
+            "id": "static", "command_argv": ["python", "audit.py"],
+            "commit": "abcdef2", "exit_code": 0, "case_ids": [],
+            "receipt_path": "receipt.json",
+            "receipt_sha256": "0" * 64,
+        }
+        receipt = {
+            "schema_version": 1, "evidence_id": "static",
+            "command_argv": evidence["command_argv"], "commit": "abcdef2",
+            "exit_code": 0, "case_ids": [], "worktree_clean_before": True,
+            "worktree_clean_after": True, "started_at": "2026-07-04T00:00:00Z",
+            "finished_at": "2026-07-04T00:01:00Z",
+            "stdout_sha256": "a" * 64, "stderr_sha256": "b" * 64,
+            "executor_sha256": _file_sha256(executor),
+        }
+        (self.root / "receipt.json").write_text(json.dumps(receipt), encoding="utf-8")
+        errors = _validate_evidence_receipt(self.root, evidence)
+        self.assertTrue(any("receipt hash does not match" in error for error in errors))
+
+    def test_unreferenced_cycle_receipt_is_rejected(self):
+        dev = self.root / "dev"
+        dev.mkdir()
+        orphan = dev / "seven-lens-evidence-c06-orphan.json"
+        orphan.write_text("{}", encoding="utf-8")
+        record = {
+            "cycle": 6,
+            "evidence_runs": [{
+                "id": "static",
+                "receipt_path": "dev/seven-lens-evidence-c06-static.json",
+            }],
+        }
+        errors = _validate_unreferenced_receipts(self.root, record)
+        self.assertTrue(any("unreferenced attestation receipt" in error for error in errors))
+
+    def test_gate_evidence_binds_to_closure_evidence_commit(self):
+        record = copy.deepcopy(self.record)
+        record.update({
+            "schema_version": 4,
+            "verified_source_commit": "verified1",
+            "closure_evidence_commit": "closure1",
+            "evidence_runs": [
+                {
+                    "id": "static", "kind": "gate", "case_ids": [],
+                    "command": "python audit static", "commit": "closure1",
+                    "exit_code": 0, "worktree_clean": True,
+                },
+                {
+                    "id": "ci", "kind": "gate", "case_ids": [],
+                    "command": "python audit ci", "commit": "closure1",
+                    "exit_code": 0, "worktree_clean": True,
+                },
+                {
+                    "id": "after", "kind": "post_fix", "case_ids": ["CASE-1"],
+                    "observable_assertions": ["ok"], "state_restored": False,
+                    "command": "python probe.py", "commit": "verified1",
+                    "exit_code": 0, "worktree_clean": True,
+                },
+            ],
+        })
+        errors = self.validate(record)
+        self.assertFalse(any("must run at verified_source_commit" in e for e in errors if "static" in e or "ci" in e))
+        record["evidence_runs"][0]["commit"] = "verified1"
+        errors = self.validate(record)
+        self.assertTrue(any("must run at closure_evidence_commit" in e for e in errors))
+
+    def test_registry_closure_rejects_unrelated_finding_edits(self):
+        docs = self.root / "docs"
+        docs.mkdir(parents=True)
+        before = {
+            "schema_version": 3,
+            "findings": [{
+                "id": "SL-C05-M-01",
+                "unit_id": "UI-CSS-FOUNDATION",
+                "severity": "MEDIUM",
+                "status": "OPEN",
+                "issue": "Seven-lens Cycle 05 CSS audit",
+                "summary": "Mode-isolation CSS targets removed #gfPresetsRow",
+                "affected_units": ["UI-CSS-FOUNDATION"],
+                "resolution_commit": "",
+                "evidence_cases": ["REG-76"],
+            }],
+            "units": [],
+            "evidence_catalog": {
+                "REG-76": {"suite_id": "SUITE-X", "case_id": "SL-C05-GF-ROW-MODE-ISOLATION"},
+                "REG-82": {"suite_id": "SUITE-X", "case_id": "SL-C06-SEG-FOCUS-VISIBLE"},
+            },
+            "suites": {},
+            "rules": {},
+            "cycles": [],
+        }
+        after = copy.deepcopy(before)
+        after["findings"][0]["summary"] = "tampered summary"
+        after["findings"].append({
+            "id": "SL-C06-M-01",
+            "unit_id": "UI-CSS-CONTROLS",
+            "severity": "MEDIUM",
+            "status": "CLOSED",
+            "issue": "Seven-lens Cycle 06 controls CSS audit",
+            "summary": "Segmented controls suppress keyboard focus ring",
+            "affected_units": ["UI-CSS-CONTROLS"],
+            "resolution_commit": "abcdef2",
+            "evidence_cases": ["REG-82"],
+        })
+        (docs / "audit-units.json").write_text(json.dumps(after), encoding="utf-8")
+        record = {
+            "cycle": 6,
+            "findings": [{
+                "id": "SL-C06-M-01",
+                "unit_id": "UI-CSS-CONTROLS",
+                "severity": "MEDIUM",
+                "status": "CLOSED",
+                "regression_ids": ["SL-C06-SEG-FOCUS-VISIBLE"],
+                "resolution_commit": "abcdef2",
+            }],
+        }
+        with patch(
+            "tools.seven_lens_protocol._git",
+            return_value=json.dumps(before),
+        ):
+            errors = _validate_registry_closure_mutations(self.root, record, "abcdef2")
+        self.assertTrue(any("unrelated finding SL-C05-M-01" in error for error in errors))
 
 
 if __name__ == "__main__":

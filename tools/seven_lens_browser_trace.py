@@ -81,15 +81,16 @@ def validate_trace_spec(spec: dict[str, Any]) -> list[str]:
                 if "action" not in row:
                     continue
                 action = row.get("action")
-                if action not in {"fill", "select", "click", "check", "set_global", "run_script"}:
+                if action not in {"fill", "select", "click", "check", "set_enabled", "set_global", "run_script", "set_viewport", "emulate_media", "press_key", "type_text"}:
                     errors.append(f"{trace_id}: unsupported {phase_name} action {action!r}")
                 if phase_name == "steps" and row.get("force"):
                     errors.append(f"{trace_id}: tested user actions must not use force")
-                if phase_name == "steps" and action in {"set_global", "run_script"}:
+                if phase_name == "steps" and action in {"set_global", "run_script", "set_viewport", "emulate_media"}:
                     errors.append(f"{trace_id}: tested user actions must use visible Playwright controls")
                 if (
                     phase_name == "setup"
                     and (row.get("force") or action == "run_script")
+                    and action not in {"set_viewport", "emulate_media"}
                     and not (isinstance(row.get("setup_only_reason"), str) and row["setup_only_reason"].strip())
                 ):
                     errors.append(f"{trace_id}: forced or scripted setup needs setup_only_reason")
@@ -101,8 +102,14 @@ def validate_trace_spec(spec: dict[str, Any]) -> list[str]:
                         errors.append(f"{trace_id}: set_global is allowed only during setup")
                     if row.get("name") not in globals_tracked:
                         errors.append(f"{trace_id}: setup global {row.get('name')} is not state-tracked")
-                if action in {"fill", "select", "click", "check"} and not selector:
+                if action in {"set_viewport", "emulate_media"} and phase_name != "setup":
+                    errors.append(f"{trace_id}: {action} is allowed only during setup")
+                if action in {"fill", "select", "click", "check", "set_enabled"} and not selector:
                     errors.append(f"{trace_id}: {action} action needs a selector")
+                if action == "press_key" and not row.get("key"):
+                    errors.append(f"{trace_id}: press_key action needs key")
+                if action == "type_text" and not row.get("text"):
+                    errors.append(f"{trace_id}: type_text action needs text")
         steps = trace.get("steps", [])
         if not any("action" in row for row in steps):
             errors.append(f"{trace_id}: trace has no tested user action")
@@ -210,6 +217,7 @@ def _state_snapshot(page, spec: dict[str, Any]) -> dict[str, Any]:
             elements[selector] = el ? {
               value: 'value' in el ? el.value : null,
               checked: 'checked' in el ? el.checked : null,
+              disabled: 'disabled' in el ? el.disabled : null,
               text: el.textContent,
               className: el.className,
               style: el.getAttribute('style'),
@@ -239,6 +247,8 @@ def _act(page, action: dict[str, Any]) -> None:
         locator.click(force=force)
     elif kind == "check":
         locator.set_checked(bool(action.get("value")), force=force)
+    elif kind == "set_enabled":
+        locator.evaluate("(el, enabled) => { el.disabled = !enabled; }", bool(action.get("value", True)))
     elif kind == "set_global":
         page.evaluate(
             "([name, value]) => { window[name] = value; }",
@@ -246,6 +256,19 @@ def _act(page, action: dict[str, Any]) -> None:
         )
     elif kind == "run_script":
         page.evaluate(str(action.get("script", "")))
+    elif kind == "set_viewport":
+        size = action.get("size") or {}
+        page.set_viewport_size({"width": int(size.get("width", 1280)), "height": int(size.get("height", 800))})
+    elif kind == "emulate_media":
+        params = {k: v for k, v in (action.get("params") or {}).items() if v is not None}
+        page.emulate_media(**params)
+    elif kind == "press_key":
+        repeats = int(action.get("repeat", 1))
+        key = str(action.get("key", ""))
+        for _ in range(max(1, repeats)):
+            page.keyboard.press(key)
+    elif kind == "type_text":
+        page.keyboard.type(str(action.get("text", "")))
     else:
         raise RuntimeError(f"unsupported browser action {kind!r}")
 
@@ -273,6 +296,8 @@ def _restore(page, before: dict[str, Any], spec: dict[str, Any]) -> None:
             locator.set_checked(bool(state["checked"]), force=True)
         elif tag in {"INPUT", "TEXTAREA"} and state["value"] is not None:
             locator.fill(str(state["value"]), force=True)
+            if "disabled" in state and state["disabled"] is not None:
+                locator.evaluate("(el, disabled) => { el.disabled = disabled; }", bool(state["disabled"]))
             if selector in {"#travelGasManualDepth", "#cylBot_size", "#bestMixDepth", "#cnsDepth"}:
                 page.evaluate(
                     """([sel, dataset]) => {
@@ -283,8 +308,9 @@ def _restore(page, before: dict[str, Any], spec: dict[str, Any]) -> None:
                         syncVolumeInputCanonical(id);
                       }
                       const el = document.querySelector(sel);
-                      if (el && !Object.keys(dataset || {}).length) {
+                      if (el) {
                         for (const key of Object.keys(el.dataset)) delete el.dataset[key];
+                        for (const [k, v] of Object.entries(dataset || {})) el.dataset[k] = v;
                       }
                     }""",
                     [selector, state.get("dataset") or {}],
@@ -363,6 +389,9 @@ def run_trace(
         for step in trace.get("steps", []):
             if "action" in step:
                 _act(page, step)
+                delay_ms = step.get("delay_ms")
+                if delay_ms:
+                    page.wait_for_timeout(int(delay_ms))
             if "capture" in step:
                 captures[step["capture"]] = _sanitize_capture(
                     _capture(page, step.get("values", {}))

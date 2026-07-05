@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ER-C06-TRACE",
+  "command_argv": [
+    "python",
+    "tools/seven_lens_browser_trace.py",
+    "--spec",
+    "docs/seven-lens-traces/cycle-06-controls.json",
+    "--output",
+    "dev/seven-lens-browser-trace-cycle06.json"
+  ],
+  "commit": "3c9779145365c66dab725e4c29c086994393beb9",
+  "exit_code": 0,
+  "case_ids": [
+    "SL-C06-SEG-FOCUS-VISIBLE",
+    "SL-C06-GAS-NUM-TOUCH-TARGET",
+    "SL-C06-FIELD-INVALID-STATE",
+    "SL-C06-REDUCED-MOTION"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-04T19:18:34.447949+00:00",
+  "finished_at": "2026-07-04T19:19:02.689554+00:00",
+  "stdout_sha256": "8503c294c79c871f4aedb4d0bacb791034acfc486215aa760769ae0e3c156f68",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
+}

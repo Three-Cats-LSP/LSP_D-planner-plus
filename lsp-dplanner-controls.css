@@ -33,6 +33,9 @@
  letter-spacing: 0.5px;
 }
 .seg-btn:hover { color: var(--text); }
+.seg-btn:focus-visible { outline: 2px solid color-mix(in oklab, var(--accent) 55%, transparent);
+ outline-offset: 2px;
+}
 .seg-btn.active { background: rgba(0,200,255,0.12);
  color: var(--accent);
 }
@@ -126,7 +129,11 @@
 .gas-card-grid .gas-f-switch { flex: 2.5 1 172px; min-width: 0; }
 .gas-card-grid .gas-f-num { flex: 0 0 4.25rem; width: 4.25rem; max-width: 4.25rem; }
 .gas-card-grid .gas-f-num input,
-.gas-card-grid .gas-f-num select { padding-left: 6px; padding-right: 6px; text-align: center; }
+.gas-card-grid .gas-f-num select { padding-left: 6px; padding-right: 6px; text-align: center; box-sizing: border-box; }
+@media (max-width: 480px), (max-height: 480px), (pointer: coarse) {
+ .gas-card-grid .gas-f-num input,
+ .gas-card-grid .gas-f-num select { min-height: 44px; min-width: 44px; }
+}
 .gas-card-grid .switch-depth-display { font-size: 11px; padding: 8px 6px; }
 .field select { width: 100%;
  background: var(--surface);
@@ -149,6 +156,12 @@
 
 .field input:focus, .field select:focus { border-color: var(--accent);
  box-shadow: 0 0 0 3px rgba(0,200,255,0.08);
+}
+.field input:user-invalid:not(:focus):not(:disabled),
+.field select:user-invalid:not(:focus):not(:disabled),
+.field input:invalid:not(:focus):not(:disabled):not(:placeholder-shown),
+.field select:invalid:not(:focus):not(:disabled) { border-color: var(--red);
+ box-shadow: 0 0 0 2px rgba(255,68,51,0.12);
 }
 
 /* Android WebView/Capacitor: native <select> picker is broken — use android-select-picker.js */
@@ -259,7 +272,7 @@ body.light-theme .lsp-android-select-item.is-selected { background: rgba(0, 119,
 body.lsp-android-select-open { overflow: hidden; }
 
 /* ── BUTTON (primary generate — shared Rec + Tec) ── */
-.gen-btn, .btn-calc {
+.gen-btn {
  display: flex; align-items: center; justify-content: center; gap: var(--space-2);
  width: 100%; padding: var(--space-3) var(--space-4); border-radius: var(--radius-lg);
  background-color: var(--accent) !important;
@@ -272,14 +285,14 @@ body.lsp-android-select-open { overflow: hidden; }
  letter-spacing: 0.02em; text-transform: none;
  -webkit-appearance: none; appearance: none;
 }
-.gen-btn:hover, .btn-calc:hover {
+.gen-btn:hover {
  background-color: var(--accent-hover) !important;
  color: var(--btn-primary-text) !important;
  -webkit-text-fill-color: var(--btn-primary-text) !important;
  transform: translateY(-1px); box-shadow: 0 4px 16px var(--accent-glow);
 }
-.gen-btn:active, .btn-calc:active { transform: translateY(0); }
-.gen-btn:disabled, .btn-calc:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+.gen-btn:active { transform: translateY(0); }
+.gen-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 
 /* ── STATS ── */
 .stats { display: grid;
@@ -487,16 +500,6 @@ body.light-theme .ok { background:#f0fff4; border-color:#116622; color:#116622; 
 /* SI connector */
 .si-connector { display:flex; align-items:center; gap:10px; padding:6px 10px; }
 .si-line { flex:1; height:1px; background:var(--border-hi); }
-.si-inner { display:flex; align-items:center; gap:8px;
- background:rgba(0,200,255,0.04); border:1px solid var(--border);
- border-radius:6px; padding:6px 12px; flex-shrink:0;
-}
-.si-inner label { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); }
-.si-inner input { width:68px; background:var(--surface); border:1px solid var(--border); border-radius:4px;
- padding:5px 8px; color:#fff; font-family:'JetBrains Mono',monospace; font-size:12px;
- outline:none; text-align:center;
-}
-.si-inner input:focus { border-color:var(--accent); }
 
 /* Result dive cards */
 .result-card { background: var(--card2);
@@ -523,6 +526,23 @@ body.light-theme .ok { background:#f0fff4; border-color:#116622; color:#116622; 
  font-size: 12px; line-height: 1.6; margin: 10px 0;
  color: var(--muted);
 }
-.t-col { display:flex; flex-direction:column; align-items:center; gap:4px; }
+
+@media (prefers-reduced-motion: reduce) {
+ .seg-btn,
+ .option-pill-thumb,
+ .field input,
+ .field select,
+ .gen-btn,
+ .stat,
+ .bar-fill,
+ .dive-block,
+ .dive-num,
+ .dive-hdr-lbl,
+ .result-card { transition: none !important; }
+ .option-pill-toggle[data-side="right"] .option-pill-thumb,
+ .gen-btn:hover,
+ .gen-btn:active,
+ .stat:hover { transform: none !important; }
+}
 
 /* ── DECO TABLE ── */

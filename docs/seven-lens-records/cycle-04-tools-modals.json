@@ -328,7 +328,8 @@
       ],
       "pre_fix_evidence_id": "ER-04-PRE-TOOLS",
       "post_fix_evidence_id": "ER-04-POST-END",
-      "state_restoration_evidence_id": "ER-04-RESTORE-END"
+      "state_restoration_evidence_id": "ER-04-RESTORE-END",
+      "resolution_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636"
     },
     {
       "id": "SL-C04-M-01",
@@ -354,7 +355,8 @@
       ],
       "pre_fix_evidence_id": "ER-04-PRE-TOOLS",
       "post_fix_evidence_id": "ER-04-POST-SI",
-      "state_restoration_evidence_id": "ER-04-RESTORE-SI"
+      "state_restoration_evidence_id": "ER-04-RESTORE-SI",
+      "resolution_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636"
     },
     {
       "id": "SL-C04-M-02",
@@ -380,7 +382,8 @@
       ],
       "pre_fix_evidence_id": "ER-04-PRE-MODALS",
       "post_fix_evidence_id": "ER-04-POST-CONFIRM",
-      "state_restoration_evidence_id": "ER-04-RESTORE-CONFIRM"
+      "state_restoration_evidence_id": "ER-04-RESTORE-CONFIRM",
+      "resolution_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636"
     },
     {
       "id": "SL-C04-L-01",
@@ -396,7 +399,8 @@
       "regression_ids": [],
       "evidence_ids": [
         "static"
-      ]
+      ],
+      "resolution_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636"
     },
     {
       "id": "SL-C04-L-02",
@@ -412,7 +416,8 @@
       "regression_ids": [],
       "evidence_ids": [
         "static"
-      ]
+      ],
+      "resolution_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636"
     },
     {
       "id": "SL-C04-H-02",
@@ -438,7 +443,8 @@
       "pre_fix_evidence_id": "ER-04-PRE-CANONICAL",
       "post_fix_evidence_id": "ER-04-POST-CANONICAL",
       "state_restoration_evidence_id": "ER-04-RESTORE-CANONICAL",
-      "observable_contract": "Edited depth and volume values survive imperial/metric round-trips through the final consumer."
+      "observable_contract": "Edited depth and volume values survive imperial/metric round-trips through the final consumer.",
+      "resolution_commit": "6f75077084f1dc65288faa8094de24a49e22d333"
     },
     {
       "id": "SL-C04-H-03",
@@ -464,7 +470,8 @@
       "pre_fix_evidence_id": "ER-04-PRE-PROTOCOL",
       "post_fix_evidence_id": "ER-04-POST-PROTOCOL",
       "state_restoration_evidence_id": "ER-04-RESTORE-PROTOCOL",
-      "observable_contract": "check-all --require-artifacts passes before a cycle is marked SEVEN_LENS_REVIEWED."
+      "observable_contract": "check-all --require-artifacts passes before a cycle is marked SEVEN_LENS_REVIEWED.",
+      "resolution_commit": "81a46aefbbfcdfb8ff2bc62a236619e572fce2fa"
     },
     {
       "id": "SL-C04-M-03",
@@ -490,7 +497,8 @@
       "pre_fix_evidence_id": "ER-04-PRE-CANONICAL",
       "post_fix_evidence_id": "ER-04-POST-CANONICAL",
       "state_restoration_evidence_id": "ER-04-RESTORE-CANONICAL",
-      "observable_contract": "Engine regression restores units, datasets, and storage after every seven-lens case."
+      "observable_contract": "Engine regression restores units, datasets, and storage after every seven-lens case.",
+      "resolution_commit": "6f75077084f1dc65288faa8094de24a49e22d333"
     },
     {
       "id": "SL-C04-M-04",
@@ -516,7 +524,8 @@
       "pre_fix_evidence_id": "ER-04-PRE-CANONICAL",
       "post_fix_evidence_id": "ER-04-POST-TRACE",
       "state_restoration_evidence_id": "ER-04-RESTORE-TRACE",
-      "observable_contract": "Browser traces require visible edits, finite captures, repeat=2, and clean state restoration."
+      "observable_contract": "Browser traces require visible edits, finite captures, repeat=2, and clean state restoration.",
+      "resolution_commit": "81a46aefbbfcdfb8ff2bc62a236619e572fce2fa"
     },
     {
       "id": "SL-C04-H-04",
@@ -542,7 +551,8 @@
       "pre_fix_evidence_id": "ER-04-PRE-PROTOCOL",
       "post_fix_evidence_id": "ER-04-POST-PROTOCOL",
       "state_restoration_evidence_id": "ER-04-RESTORE-PROTOCOL",
-      "observable_contract": "Schema-v4 evidence receipts bind executed commands to immutable artifacts."
+      "observable_contract": "Schema-v4 evidence receipts bind executed commands to immutable artifacts.",
+      "resolution_commit": "81a46aefbbfcdfb8ff2bc62a236619e572fce2fa"
     },
     {
       "id": "SL-C04-M-05",
@@ -567,7 +577,8 @@
       "pre_fix_evidence_id": "ER-04-PRE-CANONICAL",
       "post_fix_evidence_id": "ER-04-POST-CANONICAL",
       "state_restoration_evidence_id": "ER-04-RESTORE-CANONICAL",
-      "observable_contract": "A dynamic imperial deco cylinder starts with valid min/step and passes checkValidity at its default size."
+      "observable_contract": "A dynamic imperial deco cylinder starts with valid min/step and passes checkValidity at its default size.",
+      "resolution_commit": "28086c43b48c11599997f4be62fabd39485a17cb"
     },
     {
       "id": "SL-C04-H-05",
@@ -591,7 +602,8 @@
       "pre_fix_evidence_id": "ER-04-PRE-CANONICAL",
       "post_fix_evidence_id": "ER-04-POST-TRACE",
       "state_restoration_evidence_id": "ER-04-RESTORE-TRACE",
-      "observable_contract": "Gas and technical planner controls are reachable in every planner mode without forced actions."
+      "observable_contract": "Gas and technical planner controls are reachable in every planner mode without forced actions.",
+      "resolution_commit": "28086c43b48c11599997f4be62fabd39485a17cb"
     }
   ],
   "evidence_runs": [
@@ -1243,5 +1255,9 @@
   ],
   "audit_report": "docs/seven-lens-reports/cycle-04-tools-modals.md",
   "notes": "Closure evidence materialized at d956648 with schema-v2 browser traces and regression gates.",
-  "record_path": "docs/seven-lens-records/cycle-04-tools-modals.json"
+  "record_path": "docs/seven-lens-records/cycle-04-tools-modals.json",
+  "protocol_migrations": [
+    "resolution-commit-v1",
+    "receipt-exit-v1"
+  ]
 }
