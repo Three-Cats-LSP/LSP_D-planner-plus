@@ -332,6 +332,14 @@
     "summary": "Mobile planner mobile-active was stale after setPlannerAlgo view swap, leaving TEC visible in REC and breaking rec-mode GF button opacity; harness now asserts mobile isolation and canonical #gfPresetBtns host.",
     "requires_independent_verification": true
   },
+  "trace_restoration_fixer": {
+    "trace_id": "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE",
+    "baseline_commit": "44054aebdef90d70eadf5d69d1893aae3c680a5d",
+    "protected_commit": "60f8750",
+    "classification": "B",
+    "summary": "Browser trace cleanup called _syncUiAfterRestore only, leaving hidden tecDepth=999 in DOM while debounced appSettings.save could persist it after localStorage restore; runner now uses _restoreFields and persistence settle.",
+    "requires_independent_verification": true
+  },
   "parts": [
     {
       "id": "UI-PLANNER-SHELL-P01",
@@ -965,7 +973,7 @@
       "source_cycle": 9,
       "invalidated_by_cycle": 8,
       "path": "settings-core.js",
-      "reason": "Cycle 8 setPlannerAlgo/_clearPlannerResults changes touch settings-core.js; Cycle 9 application bundle is now 1001 lines and requires >=2 bounded review sessions."
+      "reason": "Cycle 8 setPlannerAlgo/_clearPlannerResults changes touch settings-core.js; Cycle 9 application bundle is now 1002 lines and requires >=2 bounded review sessions."
     },
     {
       "unit_id": "UI-MODE-STATE",
