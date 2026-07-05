@@ -1413,6 +1413,9 @@
       "affected_units": [
         "UI-RESULTS-PANEL",
         "UI-PLANNER-SHELL"
+      ],
+      "evidence_cases": [
+        "SL-C08-MOBILE-PANEL-EXCLUSIVE"
       ]
     },
     {
@@ -1424,6 +1427,9 @@
       "summary": "setNavMode(planner) re-invokes setPlannerAlgo and clears valid results on Tools/Settings return",
       "affected_units": [
         "UI-PLANNER-SHELL"
+      ],
+      "evidence_cases": [
+        "SL-C08-NAV-PRESERVES-RESULTS"
       ]
     },
     {
@@ -1435,6 +1441,9 @@
       "summary": "Invalid TEC generate leaves prior has-results metrics and schedule rows authoritative",
       "affected_units": [
         "UI-RESULTS-PANEL"
+      ],
+      "evidence_cases": [
+        "SL-C08-INVALID-TEC-CLEARS-STALE"
       ]
     },
     {
@@ -1446,6 +1455,9 @@
       "summary": "Dead prefix assignment in switchResultTab; LSP_V4_SPLIT_PROFILE_SCHEDULE unused",
       "affected_units": [
         "UI-RESULTS-PANEL"
+      ],
+      "evidence_cases": [
+        "SL-C08-DEAD-RESULT-TAB-PREFIX"
       ]
     },
     {
@@ -1457,6 +1469,9 @@
       "summary": "initV3Layout and DOMContentLoaded both call _initMobilePlanView",
       "affected_units": [
         "UI-PLANNER-SHELL"
+      ],
+      "evidence_cases": [
+        "SL-C08-SINGLE-MOBILE-INIT"
       ]
     },
     {

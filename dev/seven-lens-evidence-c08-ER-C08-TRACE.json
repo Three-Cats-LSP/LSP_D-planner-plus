@@ -15,13 +15,13 @@
     "SL-C08-MOBILE-PANEL-EXCLUSIVE",
     "SL-C08-NAV-PRESERVES-RESULTS",
     "SL-C08-INVALID-TEC-CLEARS-STALE",
-    "SL-C08-SINGLE-MOBILE-INIT"
+    "SL-C08-DEAD-RESULT-TAB-PREFIX"
   ],
   "worktree_clean_before": true,
   "worktree_clean_after": true,
-  "started_at": "2026-07-05T13:21:49.728317+00:00",
-  "finished_at": "2026-07-05T13:22:33.320391+00:00",
-  "stdout_sha256": "2a040c59ab68efa90de69e8f5f2ccd35ae152d522479068f9c659b673f36b38e",
+  "started_at": "2026-07-05T14:28:13.339053+00:00",
+  "finished_at": "2026-07-05T14:29:10.559447+00:00",
+  "stdout_sha256": "9c76a42e1bfb7751fa2b2bb27c9c9643581145c191d85354768047b3e34a3ecb",
   "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
 }
