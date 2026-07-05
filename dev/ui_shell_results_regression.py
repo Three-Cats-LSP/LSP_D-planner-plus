@@ -17,6 +17,7 @@ if str(_DEV) not in sys.path:
     sys.path.insert(0, str(_DEV))
 
 from playwright_boot import boot_app_page  # noqa: E402
+from playwright_restore import CAPTURE_PROBE_STATE_JS, restore_probe_state  # noqa: E402
 from test_http import serve_www  # noqa: E402
 from tools.audit.suite_emit import case_row, finish_suite  # noqa: E402
 
@@ -28,44 +29,7 @@ CASE_IDS = (
     "SL-C08-SINGLE-MOBILE-INIT",
 )
 
-RESTORE_STATE_JS = r"""
-(before) => {
-  if (!before) return false;
-  setMainNav(before.navSection || 'buh');
-  if (before.depth != null) {
-    const depthEl = document.getElementById('tecDepth');
-    if (depthEl) depthEl.value = String(before.depth);
-  }
-  if (before.bt != null) {
-    const btEl = document.getElementById('tecBT');
-    if (btEl) btEl.value = String(before.bt);
-  }
-  if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
-  if (before.hadResults) {
-    if (typeof runDecoSchedule === 'function') runDecoSchedule();
-  } else if (typeof _clearPlannerResults === 'function') {
-    _clearPlannerResults();
-  }
-  setMobilePlanView('plan');
-  if (before.activeId) {
-    const el = document.getElementById(before.activeId);
-    if (el && typeof el.focus === 'function') el.focus();
-  } else {
-    document.body.focus();
-  }
-  return true;
-}
-"""
-
-CAPTURE_RESTORE_JS = r"""
-() => ({
-  navSection: 'buh',
-  depth: document.getElementById('tecDepth')?.value || '40',
-  bt: document.getElementById('tecBT')?.value || '30',
-  hadResults: document.getElementById('resultsPanel')?.classList.contains('has-results') === true,
-  activeId: document.activeElement?.id || '',
-})
-"""
+CAPTURE_RESTORE_JS = CAPTURE_PROBE_STATE_JS
 
 STATE_HASH_JS = r"""
 () => {
@@ -326,8 +290,7 @@ def run_cases(page, viewport: tuple[int, int], *, run_behavioral: bool = True) -
             init = page.evaluate(MOBILE_INIT_JS)
             settings = page.evaluate(SETTINGS_NAV_JS)
     finally:
-        page.evaluate(RESTORE_STATE_JS, restore_snapshot)
-        page.wait_for_timeout(300)
+        restore_probe_state(page, restore_snapshot)
         page.locator("body").click(position={"x": 8, "y": 8})
         after_hash = page.evaluate(STATE_HASH_JS)
         state_restored = before_hash == after_hash

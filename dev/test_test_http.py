@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import socket
-import subprocess
 import sys
 import tempfile
 import threading
@@ -20,7 +19,9 @@ from test_http import (  # noqa: E402
     DEFAULT_PORT,
     PortInUseError,
     find_available_port,
+    make_handler,
     serve_root,
+    serve_www,
     verify_app_root,
 )
 
@@ -139,37 +140,21 @@ class TestHttpLifecycleTests(unittest.TestCase):
             self.assertEqual(len(ports), 2)
             self.assertNotEqual(ports[0], ports[1])
 
-    def test_occupied_default_port_does_not_serve_foreign_root(self):
-        """When DEFAULT_PORT is taken by a foreign listener, serve_www must not silently reuse it."""
+    def test_occupied_default_port_falls_back_without_foreign_root(self):
         host = DEFAULT_HOST
         with tempfile.TemporaryDirectory() as wrong:
             wrong_root = Path(wrong)
             (wrong_root / "index.html").write_text("<html><body>foreign</body></html>", encoding="utf-8")
-            blocker = ThreadingHTTPServer((host, DEFAULT_PORT), _QuietHandler)
+            blocker = ThreadingHTTPServer((host, DEFAULT_PORT), make_handler(wrong_root))
             thread = threading.Thread(target=blocker.serve_forever, daemon=True)
             thread.start()
             try:
-                proc = subprocess.run(
-                    [
-                        sys.executable,
-                        "-c",
-                        (
-                            "import sys; sys.path.insert(0, 'dev'); "
-                            "from pathlib import Path; "
-                            "from test_http import serve_root; "
-                            "root = Path('.'); "
-                            "with serve_root(root / 'www' if (root / 'www/index.html').is_file() else root, "
-                            f"host={host!r}, port={DEFAULT_PORT}, allow_fallback=True, verify_app=True): "
-                            "pass"
-                        ),
-                    ],
-                    cwd=ROOT,
-                    capture_output=True,
-                    text=True,
-                )
-                self.assertNotEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+                with serve_www(ROOT, host=host, port=DEFAULT_PORT, sync=True, allow_fallback=True) as base_url:
+                    self.assertNotIn(f":{DEFAULT_PORT}/", base_url)
+                    verify_app_root(base_url)
             finally:
                 blocker.shutdown()
+                blocker.server_close()
                 thread.join(timeout=2)
 
 
