@@ -143,6 +143,11 @@
         "reason": "Historical one-shot extraction merge scripts"
       },
       {
+        "pattern": "dev/ui_shell_results_regression_results.json",
+        "kind": "evidence_artifact",
+        "reason": "Cycle 08 shell/results regression run output"
+      },
+      {
         "pattern": "dev/seven-lens-browser-trace-c08*.json",
         "kind": "evidence_artifact",
         "reason": "Cycle 08 seven-lens browser trace evidence"
