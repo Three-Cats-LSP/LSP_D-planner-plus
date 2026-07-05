@@ -639,6 +639,26 @@
     "REG-94": {
       "suite_id": "SUITE-UI-RESULTS-CSS-REGRESSION",
       "case_id": "SL-C07-PRINT-RESULTS"
+    },
+    "REG-95": {
+      "suite_id": "SUITE-UI-SHELL-RESULTS-REGRESSION",
+      "case_id": "SL-C08-MOBILE-PANEL-EXCLUSIVE"
+    },
+    "REG-96": {
+      "suite_id": "SUITE-UI-SHELL-RESULTS-REGRESSION",
+      "case_id": "SL-C08-NAV-PRESERVES-RESULTS"
+    },
+    "REG-97": {
+      "suite_id": "SUITE-UI-SHELL-RESULTS-REGRESSION",
+      "case_id": "SL-C08-INVALID-TEC-CLEARS-STALE"
+    },
+    "REG-98": {
+      "suite_id": "SUITE-UI-SHELL-RESULTS-REGRESSION",
+      "case_id": "SL-C08-DEAD-RESULT-TAB-PREFIX"
+    },
+    "REG-99": {
+      "suite_id": "SUITE-UI-SHELL-RESULTS-REGRESSION",
+      "case_id": "SL-C08-SINGLE-MOBILE-INIT"
     }
   },
   "findings": [
@@ -4922,7 +4942,10 @@
       "fingerprint": "0635e52408b487608f975a39f81306a39c055d521721d17571ad58861acf72ba",
       "last_read_fingerprint": null,
       "evidence": [],
-      "regression_cases": [],
+      "regression_cases": [
+        "REG-96",
+        "REG-99"
+      ],
       "issue": "V3 full audit verified \u2014 UI-PLANNER-SHELL"
     },
     {
@@ -4946,7 +4969,10 @@
         "COV-01",
         "PARITY-01",
         "EXT-02",
-        "REG-01"
+        "REG-01",
+        "REG-95",
+        "REG-97",
+        "REG-98"
       ],
       "issue": "V3 full audit verified \u2014 UI-RESULTS-PANEL"
     },
@@ -5362,6 +5388,27 @@
       "issue": "Cycle 08 UI-PLANNER-SHELL/UI-RESULTS-PANEL browser trace specification",
       "regression_cases": [],
       "fingerprint": "28c72b12b3ed0af9988761b2f33fd9eb6a357b51b1695aa3b79c2f2c44742517",
+      "last_read_fingerprint": null
+    },
+    {
+      "id": "TEST-UI-SHELL-RESULTS-REGRESSION",
+      "path": "dev/ui_shell_results_regression.py",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Cycle 08 UI-PLANNER-SHELL/UI-RESULTS-PANEL behavioral regression",
+      "regression_cases": [
+        "REG-95",
+        "REG-96",
+        "REG-97",
+        "REG-98",
+        "REG-99"
+      ],
+      "fingerprint": "",
       "last_read_fingerprint": null
     },
     {
@@ -6276,6 +6323,25 @@
         "SL-C07-CSS-DEAD-ALGO-SWITCHER",
         "SL-C07-REDUCED-MOTION",
         "SL-C07-PRINT-RESULTS"
+      ]
+    },
+    {
+      "id": "SUITE-UI-SHELL-RESULTS-REGRESSION",
+      "command": [
+        "{python}",
+        "dev/ui_shell_results_regression.py"
+      ],
+      "profiles": [
+        "ci",
+        "release"
+      ],
+      "timeout_seconds": 300,
+      "case_ids": [
+        "SL-C08-MOBILE-PANEL-EXCLUSIVE",
+        "SL-C08-NAV-PRESERVES-RESULTS",
+        "SL-C08-INVALID-TEC-CLEARS-STALE",
+        "SL-C08-DEAD-RESULT-TAB-PREFIX",
+        "SL-C08-SINGLE-MOBILE-INIT"
       ]
     }
   ],
