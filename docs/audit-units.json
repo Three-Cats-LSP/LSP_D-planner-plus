@@ -615,6 +615,30 @@
     "REG-88": {
       "suite_id": "SUITE-UI-CONTROLS-CSS-REGRESSION",
       "case_id": "SL-C06-REDUCED-MOTION"
+    },
+    "REG-89": {
+      "suite_id": "SUITE-UI-RESULTS-CSS-REGRESSION",
+      "case_id": "SL-C07-CHIP-YELLOW-DISTINCT"
+    },
+    "REG-90": {
+      "suite_id": "SUITE-UI-RESULTS-CSS-REGRESSION",
+      "case_id": "SL-C07-PPO2-SEVERITY-COLORS"
+    },
+    "REG-91": {
+      "suite_id": "SUITE-UI-RESULTS-CSS-REGRESSION",
+      "case_id": "SL-C07-CSS-DEAD-LEGACY-CARDS"
+    },
+    "REG-92": {
+      "suite_id": "SUITE-UI-RESULTS-CSS-REGRESSION",
+      "case_id": "SL-C07-CSS-DEAD-ALGO-SWITCHER"
+    },
+    "REG-93": {
+      "suite_id": "SUITE-UI-RESULTS-CSS-REGRESSION",
+      "case_id": "SL-C07-REDUCED-MOTION"
+    },
+    "REG-94": {
+      "suite_id": "SUITE-UI-RESULTS-CSS-REGRESSION",
+      "case_id": "SL-C07-PRINT-RESULTS"
     }
   },
   "findings": [
@@ -1540,7 +1564,14 @@
       "fingerprint": "9cc80b74a644893514a7f5843dd9b6f620f5e92909649339644e4c56960306aa",
       "last_read_fingerprint": null,
       "evidence": [],
-      "regression_cases": [],
+      "regression_cases": [
+        "REG-89",
+        "REG-90",
+        "REG-91",
+        "REG-92",
+        "REG-93",
+        "REG-94"
+      ],
       "issue": "V3 full audit verified \u2014 UI-CSS-RESULTS"
     },
     {
@@ -5234,6 +5265,61 @@
       ],
       "fingerprint": "3274b8f93f5bca53f77a7afd96d34f55357e1e9b394b6fd0d2a539ef7d32d774",
       "last_read_fingerprint": null
+    },
+    {
+      "id": "TEST-SEVEN-LENS-CYCLE07-TRACE",
+      "path": "docs/seven-lens-traces/cycle-07-results.json",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Cycle 07 UI-CSS-RESULTS browser trace specification",
+      "regression_cases": [],
+      "fingerprint": "",
+      "last_read_fingerprint": null
+    },
+    {
+      "id": "TEST-UI-RESULTS-CSS-REGRESSION",
+      "path": "dev/ui_results_css_regression.py",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Cycle 07 UI-CSS-RESULTS computed-style behavioral regression",
+      "regression_cases": [
+        "REG-89",
+        "REG-90",
+        "REG-91",
+        "REG-92",
+        "REG-93",
+        "REG-94"
+      ],
+      "fingerprint": "",
+      "last_read_fingerprint": null
+    },
+    {
+      "id": "TEST-C07-PRE-RESULTS-REGRESSION",
+      "path": "dev/c07_pre_results_regression.py",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Cycle 07 pre-fix results CSS regression wrapper",
+      "regression_cases": [
+        "REG-89",
+        "REG-90"
+      ],
+      "fingerprint": "",
+      "last_read_fingerprint": null
     }
   ],
   "cycles": [
@@ -6087,6 +6173,26 @@
         "SL-C06-CSS-DEAD-BTN-CALC",
         "SL-C06-FIELD-INVALID-STATE",
         "SL-C06-REDUCED-MOTION"
+      ]
+    },
+    {
+      "id": "SUITE-UI-RESULTS-CSS-REGRESSION",
+      "command": [
+        "{python}",
+        "dev/ui_results_css_regression.py"
+      ],
+      "profiles": [
+        "ci",
+        "release"
+      ],
+      "timeout_seconds": 240,
+      "case_ids": [
+        "SL-C07-CHIP-YELLOW-DISTINCT",
+        "SL-C07-PPO2-SEVERITY-COLORS",
+        "SL-C07-CSS-DEAD-LEGACY-CARDS",
+        "SL-C07-CSS-DEAD-ALGO-SWITCHER",
+        "SL-C07-REDUCED-MOTION",
+        "SL-C07-PRINT-RESULTS"
       ]
     }
   ],
