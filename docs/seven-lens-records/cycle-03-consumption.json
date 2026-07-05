@@ -105,7 +105,8 @@
       ],
       "pre_fix_evidence_id": "ER-03-PRE-FIX",
       "post_fix_evidence_id": "ER-03-POST-BESTMIX",
-      "state_restoration_evidence_id": "ER-03-RESTORE-BESTMIX"
+      "state_restoration_evidence_id": "ER-03-RESTORE-BESTMIX",
+      "resolution_commit": "b5bcbe7d994f9c87226c38da180718bbf5d42f10"
     },
     {
       "id": "SL-C03-M-01",
@@ -131,7 +132,8 @@
       ],
       "pre_fix_evidence_id": "ER-03-PRE-FIX",
       "post_fix_evidence_id": "ER-03-POST-CNS",
-      "state_restoration_evidence_id": "ER-03-RESTORE-CNS"
+      "state_restoration_evidence_id": "ER-03-RESTORE-CNS",
+      "resolution_commit": "b5bcbe7d994f9c87226c38da180718bbf5d42f10"
     },
     {
       "id": "SL-C03-L-01",
@@ -147,7 +149,8 @@
       "regression_ids": [],
       "evidence_ids": [
         "static"
-      ]
+      ],
+      "resolution_commit": "b5bcbe7d994f9c87226c38da180718bbf5d42f10"
     },
     {
       "id": "SL-C03-H-02",
@@ -173,7 +176,8 @@
       ],
       "pre_fix_evidence_id": "ER-03-PRE-FIX",
       "post_fix_evidence_id": "ER-03-POST-SAFETY",
-      "state_restoration_evidence_id": "ER-03-RESTORE-SAFETY"
+      "state_restoration_evidence_id": "ER-03-RESTORE-SAFETY",
+      "resolution_commit": "437bbf6ecbfe896384cf0ed7e1a3f9cb62b9a9be"
     },
     {
       "id": "SL-C03-M-02",
@@ -199,7 +203,8 @@
       ],
       "pre_fix_evidence_id": "ER-03-PRE-FIX",
       "post_fix_evidence_id": "ER-03-POST-PHYSICAL",
-      "state_restoration_evidence_id": "ER-03-RESTORE-PHYSICAL"
+      "state_restoration_evidence_id": "ER-03-RESTORE-PHYSICAL",
+      "resolution_commit": "437bbf6ecbfe896384cf0ed7e1a3f9cb62b9a9be"
     },
     {
       "id": "SL-C03-L-02",
@@ -216,7 +221,8 @@
       "evidence_ids": [
         "static",
         "ci"
-      ]
+      ],
+      "resolution_commit": "437bbf6ecbfe896384cf0ed7e1a3f9cb62b9a9be"
     }
   ],
   "evidence_runs": [
