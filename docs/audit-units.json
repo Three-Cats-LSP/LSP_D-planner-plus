@@ -3622,19 +3622,60 @@
       "path": "dev/test_http.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "fb84be11784a6961dd07d9669c41eba819da0609d0978b02d0ff272f6dc0f0e7",
-      "last_read_fingerprint": "fb84be11784a6961dd07d9669c41eba819da0609d0978b02d0ff272f6dc0f0e7",
-      "regression_cases": [
-        "COV-01"
-      ],
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
+      "fingerprint": "231f4167a80e219fb54db87e7feb475a2d09d108c62d078f5ec54944b5132fd0",
+      "last_read_fingerprint": null,
+      "regression_cases": [],
+      "evidence": [],
       "issue": "V3 full audit verified \u2014 TEST-HTTP"
+    },
+    {
+      "id": "TEST-PLAYWRIGHT-RESTORE",
+      "path": "dev/playwright_restore.py",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Playwright debounce-safe restore helpers for shell regressions",
+      "regression_cases": [],
+      "fingerprint": "5962b1332fc7196f2f6184fc63628eaec20ecaa6fd189e4cb8f576248c154757",
+      "last_read_fingerprint": null
+    },
+    {
+      "id": "TEST-TEST-HTTP",
+      "path": "dev/test_test_http.py",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "HTTP server port lifecycle regression tests",
+      "regression_cases": [],
+      "fingerprint": "81a2369a31fe662402108141f5765ca5ab8f70b574727da66d14dd9f111966ff",
+      "last_read_fingerprint": null
+    },
+    {
+      "id": "TEST-CYCLE-08-RECORD-SYNC",
+      "path": "tools/test_cycle_08_record_sync.py",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Cycle 8 record mirror byte-identity gate",
+      "regression_cases": [],
+      "fingerprint": "5fdb67262fb32464baa4e8466c4d99ecf40a854c1da256752e072dcfd3953abb",
+      "last_read_fingerprint": null
     },
     {
       "id": "TEST-LEGACY",
@@ -4118,7 +4159,7 @@
       "evidence": [],
       "issue": "Seven-lens manual audit protocol gate",
       "regression_cases": [],
-      "fingerprint": "eeda43867605f14bcfc8f419258423426e99cc912ac76bcafab0d588804ff7c5",
+      "fingerprint": "0578469f2243e5885f6485ea1dffd602638b4f22f05497776d5127bb396a3934",
       "last_read_fingerprint": null
     },
     {
@@ -4208,7 +4249,7 @@
       "evidence": [],
       "issue": "Seven-lens browser trace assertion tests",
       "regression_cases": [],
-      "fingerprint": "48a6b9f46dd7693a00bf8c92599f522aaa24067cbd6756254dfb20814f4f6916",
+      "fingerprint": "867033871c60ee1d3068cddb4d32e2e513138dc4bb2357db0900bdea2bffc545",
       "last_read_fingerprint": null
     },
     {
@@ -5416,7 +5457,7 @@
         "REG-98",
         "REG-99"
       ],
-      "fingerprint": "2660311adbea3cbe5c492e80c6210812fd7a2c543108fc94d7c04fa7b4f73ec9",
+      "fingerprint": "035306e029d6dbe330fbd1bba4302ac4d577a19c7cdcdc83f389e16fb8012715",
       "last_read_fingerprint": null
     },
     {

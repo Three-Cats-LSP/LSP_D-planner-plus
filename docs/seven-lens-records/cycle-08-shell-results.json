@@ -730,7 +730,7 @@
         ],
         "trace_id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "3b1bc1fc7eff492a3e630da8db411a5d2e2e58efee224a83e2ff7c7548dd3e38",
+        "artifact_sha256": "c20f6583cd9ac607ac89869b4608580c8a9f7367248498e724328b362bf1ee94",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
         "spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d"
       }
@@ -763,7 +763,7 @@
       "receipt_sha256": "a32e1f83a13dc97b0d2438d2775e94ed1f5bb01b80856d51767587ebe2e16f55",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
-      "trace_artifact_sha256": "3b1bc1fc7eff492a3e630da8db411a5d2e2e58efee224a83e2ff7c7548dd3e38",
+      "trace_artifact_sha256": "c20f6583cd9ac607ac89869b4608580c8a9f7367248498e724328b362bf1ee94",
       "trace_spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d",
       "id": "ER-C08-TRACE",
       "runtime_trace": {
@@ -797,7 +797,7 @@
         ],
         "trace_id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "3b1bc1fc7eff492a3e630da8db411a5d2e2e58efee224a83e2ff7c7548dd3e38",
+        "artifact_sha256": "c20f6583cd9ac607ac89869b4608580c8a9f7367248498e724328b362bf1ee94",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
         "spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d"
       }
@@ -884,7 +884,7 @@
         ],
         "trace_id": "SL-C08-NAV-CLEARS-RESULTS-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "3b1bc1fc7eff492a3e630da8db411a5d2e2e58efee224a83e2ff7c7548dd3e38",
+        "artifact_sha256": "c20f6583cd9ac607ac89869b4608580c8a9f7367248498e724328b362bf1ee94",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
         "spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d"
       }
@@ -941,7 +941,7 @@
         ],
         "trace_id": "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "3b1bc1fc7eff492a3e630da8db411a5d2e2e58efee224a83e2ff7c7548dd3e38",
+        "artifact_sha256": "c20f6583cd9ac607ac89869b4608580c8a9f7367248498e724328b362bf1ee94",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
         "spec_sha256": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d"
       }
