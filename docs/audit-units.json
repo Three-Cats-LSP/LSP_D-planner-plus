@@ -2450,23 +2450,15 @@
       "path": "index.html",
       "layer": "pwa",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PWA-LIFECYCLE"
       },
-      "fingerprint": "0646b53b2325d0249aad57576704a08e99a9e34f685680998dc11465c1da661d",
-      "last_read_fingerprint": "0646b53b2325d0249aad57576704a08e99a9e34f685680998dc11465c1da661d",
-      "evidence": [
-        "SUITE-SW-LIFECYCLE/SW-NETWORK-FIRST-ENGINE",
-        "SUITE-UI-STRUCTURE/UI-SW-PRECACHE",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "REG-45",
-        "EXT-08",
-        "COV-01"
-      ],
+      "fingerprint": "a328c6638659e3d5410c2a44a3c268817a4f635828de738dbe390450bac0b9fa",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified \u2014 UI-PWA-LIFECYCLE"
     },
     {

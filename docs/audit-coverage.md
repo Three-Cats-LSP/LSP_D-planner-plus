@@ -17,7 +17,7 @@
 | native_android | 16 | 0 | 1 | 0 | 15 |
 | native_bridge | 2 | 0 | 0 | 0 | 2 |
 | native_config | 1 | 0 | 0 | 0 | 1 |
-| pwa | 3 | 0 | 1 | 0 | 2 |
+| pwa | 3 | 0 | 2 | 0 | 1 |
 | release_config | 1 | 0 | 1 | 0 | 0 |
 | test_infrastructure | 55 | 0 | 25 | 0 | 30 |
 | tooling | 53 | 0 | 14 | 0 | 39 |
@@ -27,7 +27,7 @@
 | web_markup | 7 | 0 | 4 | 1 | 2 |
 | web_runtime | 24 | 0 | 15 | 0 | 9 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **202** | **0** | **82** | **1** | **119** |
+| **Total** | **202** | **0** | **83** | **1** | **118** |
 
 ## Units
 
@@ -56,7 +56,7 @@
 | UI-PROFILE-PRESETS | web_runtime | `index.html:8592` | 506 | P2 | IN_PROGRESS | - |
 | UI-CONFIG-PRESETS | web_runtime | `index.html:9098` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
 | UI-APP-INIT | web_runtime | `index.html:9283` | 172 | P1 | IN_PROGRESS | - |
-| UI-PWA-LIFECYCLE | pwa | `index.html:9455` | 99 | P1 | VERIFIED | REG-45, EXT-08, COV-01 |
+| UI-PWA-LIFECYCLE | pwa | `index.html:9455` | 99 | P1 | IN_PROGRESS | - |
 | UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 422 | P2 | IN_PROGRESS | - |
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 338 | P2 | IN_PROGRESS | - |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 548 | P2 | VERIFIED | EXT-03, EXT-06, COV-01 |
