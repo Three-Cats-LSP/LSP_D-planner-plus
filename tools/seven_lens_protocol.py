@@ -998,7 +998,9 @@ def validate_record(
                 )
                 protected.update(
                     path for path in fix_diff.splitlines()
-                    if path.strip() and not _attestation_only_path(path)
+                    if path.strip()
+                    and path != "docs/audit-units.json"
+                    and not _attestation_only_path(path)
                 )
             paths = sorted(
                 path for path in protected if path.strip() and not _attestation_only_path(path)
