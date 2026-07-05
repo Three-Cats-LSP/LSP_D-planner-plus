@@ -31,17 +31,39 @@ CASE_IDS = (
 
 GF_JS = r"""
 (mode) => {
+  const isMobile = window.matchMedia('(max-width: 640px)').matches;
   const read = () => {
-    const btn = document.querySelector('#gfPresetBtns .gf-preset-btn');
     const row = document.getElementById('gfPresetsRowV3');
+    const wrap = document.getElementById('gfPresetBtns');
+    const host = wrap?.closest('#tecPlannerView, #recPlannerView') || null;
+    const btn = wrap?.querySelector('.gf-preset-btn') || null;
     const btnOp = btn ? parseFloat(getComputedStyle(btn).opacity) : null;
     const rowOp = row ? parseFloat(getComputedStyle(row).opacity) : null;
+    const recView = document.getElementById('recPlannerView');
+    const tecView = document.getElementById('tecPlannerView');
+    const expectRec = document.body.classList.contains('rec-mode');
+    const mobileIsolationOk = !isMobile
+      || typeof navMode === 'undefined'
+      || navMode !== 'planner'
+      || (expectRec
+        ? recView?.classList.contains('mobile-active') && !tecView?.classList.contains('mobile-active')
+        : !recView?.classList.contains('mobile-active') && tecView?.classList.contains('mobile-active'));
+    const hostVisible = !!host
+      && host.classList.contains('mobile-active')
+      && getComputedStyle(host).display !== 'none';
+    const staleVisibleHost = isMobile
+      && document.body.classList.contains('rec-mode')
+      && host?.id === 'tecPlannerView'
+      && hostVisible;
     return {
       btnOp,
       rowOp,
       rec: document.body.classList.contains('rec-mode'),
       tools: document.body.classList.contains('algo-tools'),
       hasBtn: !!btn,
+      mobileIsolationOk,
+      staleVisibleHost,
+      hostId: host?.id || null,
     };
   };
   const snapNav = () => ({
@@ -73,7 +95,13 @@ GF_JS = r"""
           && rec.rec
           && tools.tools
           && !tec.rec
-          && !tec.tools,
+          && !tec.tools
+          && rec.mobileIsolationOk
+          && tools.mobileIsolationOk
+          && tec.mobileIsolationOk
+          && !rec.staleVisibleHost
+          && !tools.staleVisibleHost
+          && !tec.staleVisibleHost,
       };
     }
     setMainNav('buh');
@@ -94,7 +122,13 @@ GF_JS = r"""
         && rec.rec
         && tools.tools
         && !tec.rec
-        && !tec.tools,
+        && !tec.tools
+        && rec.mobileIsolationOk
+        && tools.mobileIsolationOk
+        && tec.mobileIsolationOk
+        && !rec.staleVisibleHost
+        && !tools.staleVisibleHost
+        && !tec.staleVisibleHost,
     };
   } finally {
     if (prev.toolsActive) setMainNav('tools');
@@ -223,7 +257,7 @@ def main() -> int:
             page.goto(f"{base_url}/index.html", wait_until="load")
             boot_app_page(page, base_url)
 
-            for viewport in ((1280, 800), (375, 667)):
+            for viewport in ((1280, 800), (375, 667), (667, 375)):
                 page.goto(f"{base_url}/index.html", wait_until="load")
                 boot_app_page(page, base_url)
                 run = run_cases(page, viewport)

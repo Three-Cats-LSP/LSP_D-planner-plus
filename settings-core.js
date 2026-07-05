@@ -604,6 +604,7 @@ function _showPlannerView(view) {
   document.body.classList.toggle('rec-mode', isRec);
   document.body.classList.toggle('algo-buh', !isRec);
   _updatePlannerSubtitle();
+  if (typeof setMobilePlanView === 'function') setMobilePlanView('plan');
 }
 
 function _updatePlanPanelSections() {
