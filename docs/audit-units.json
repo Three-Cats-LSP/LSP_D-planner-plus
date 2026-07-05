@@ -3626,7 +3626,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "231f4167a80e219fb54db87e7feb475a2d09d108c62d078f5ec54944b5132fd0",
+      "fingerprint": "9d1a7b52c6378428cf182f36655de42078a1dfc76a38b0dfaf9f940b51cb1af2",
       "last_read_fingerprint": null,
       "regression_cases": [],
       "evidence": [],
@@ -3659,7 +3659,7 @@
       "evidence": [],
       "issue": "HTTP server port lifecycle regression tests",
       "regression_cases": [],
-      "fingerprint": "81a2369a31fe662402108141f5765ca5ab8f70b574727da66d14dd9f111966ff",
+      "fingerprint": "88f377f7b1fea97b0ff1ffcff0c36069c6349fc2281628f6e59beee7ed3b5ca8",
       "last_read_fingerprint": null
     },
     {
