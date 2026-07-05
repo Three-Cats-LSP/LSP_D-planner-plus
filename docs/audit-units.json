@@ -2381,7 +2381,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS"
       },
-      "fingerprint": "0101efb181b935f50d16ea1cd74e412a75c29d61d6307808346853559d16fcc5",
+      "fingerprint": "c8061aa593148baed51910c4f2be09fccac83b50de30f61641c363e066514eba",
       "last_read_fingerprint": null,
       "audit_issue": 158,
       "issue": "Cycle 32 settings restore exception recovery",
@@ -5768,7 +5768,7 @@
     },
     {
       "cycle": 25,
-      "max_new_application_lines": 1281,
+      "max_new_application_lines": 1283,
       "application_units": [
         "UI-SETTINGS",
         "UI-UNIT-HELPERS",
