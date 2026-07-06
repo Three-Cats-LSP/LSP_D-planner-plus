@@ -252,7 +252,7 @@
       "start_line": 501,
       "end_line": 557,
       "line_count": 57,
-      "content_fingerprint": "41a03a57cf99a9eceef9bfd65baf5c65118f92e9539924e5f87139df00256c8c",
+      "content_fingerprint": "30a4816baccc81d5a7302fee6bdbe9a8bc4810b1d4035c4194a14e35f0a6e6bc",
       "review_session": "cursor/seven-lens-cycle-200-audit",
       "verification_session": "cursor/seven-lens-cycle-200-verify",
       "lens_results": {
@@ -431,5 +431,25 @@
   "changed_paths": [
     "ui/markup-tec-planner.html",
     "gas-cards-core.js"
+  ],
+  "dependency_re_reviews": [
+    {
+      "session": "C08-DEP-TEC-MARKUP",
+      "part_id": "UI-MARKUP-TEC-PLANNER-P02",
+      "start_line": 501,
+      "end_line": 557,
+      "prior_content_fingerprint": "41a03a57cf99a9eceef9bfd65baf5c65118f92e9539924e5f87139df00256c8c",
+      "content_fingerprint": "30a4816baccc81d5a7302fee6bdbe9a8bc4810b1d4035c4194a14e35f0a6e6bc",
+      "whole_file_fingerprint": "3f5d47dfb3a8ddad62bd13b17ae95e0b27dc68bbdccb4bd9b4a585b27753139d",
+      "trigger": "Cycle 8 PR #215 replaces emoji Bottom Gas marker with CSS gas-dot contract",
+      "focus": [
+        "VPM/TEC repetitive controls remain inside #tecPlannerView planner column",
+        "single gas-dot per gas card title row",
+        "no duplicate gas markers from legacy writers"
+      ],
+      "result": "NO_NEW_FINDING",
+      "reviewed_at": "2026-07-06T01:09:13.648040+00:00",
+      "verifier": "Cursor Agent (C08-V-B attestation corrector)"
+    }
   ]
 }

@@ -134,9 +134,9 @@
 | TEST-PSCR-E2E | test_infrastructure | `dev/validate_pscr_e2e.py:1` | 435 | P1 | VERIFIED | REG-46 |
 | TEST-SW-LIFECYCLE | test_infrastructure | `dev/sw_lifecycle_test.py:1` | 86 | P1 | VERIFIED | REG-45 |
 | TEST-PLAYWRIGHT-BOOT | test_infrastructure | `dev/playwright_boot.py:1` | 54 | P2 | VERIFIED | COV-01 |
-| TEST-HTTP | test_infrastructure | `dev/test_http.py:1` | 183 | P2 | IN_PROGRESS | - |
+| TEST-HTTP | test_infrastructure | `dev/test_http.py:1` | 192 | P2 | IN_PROGRESS | - |
 | TEST-PLAYWRIGHT-RESTORE | test_infrastructure | `dev/playwright_restore.py:1` | 88 | P0 | IN_PROGRESS | - |
-| TEST-TEST-HTTP | test_infrastructure | `dev/test_test_http.py:1` | 162 | P0 | IN_PROGRESS | - |
+| TEST-TEST-HTTP | test_infrastructure | `dev/test_test_http.py:1` | 164 | P0 | IN_PROGRESS | - |
 | TEST-CYCLE-08-RECORD-SYNC | test_infrastructure | `tools/test_cycle_08_record_sync.py:1` | 25 | P0 | IN_PROGRESS | - |
 | TEST-LEGACY | test_infrastructure | `dev/legacy.js:1` | 517 | P3 | VERIFIED | COV-01 |
 | TEST-HARNESS | test_infrastructure | `lsp-test-harness.js:1` | 155 | P1 | VERIFIED | COV-01 |
@@ -167,8 +167,8 @@
 | TEST-SEVEN-LENS-PROTOCOL | test_infrastructure | `tools/test_seven_lens_protocol.py:1` | 640 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-PROTOCOL-MIGRATIONS | test_infrastructure | `tools/test_seven_lens_protocol_migrations.py:1` | 284 | P0 | IN_PROGRESS | - |
 | TOOL-SEVEN-LENS-EVIDENCE | tooling | `tools/seven_lens_evidence.py:1` | 146 | P0 | IN_PROGRESS | - |
-| TOOL-SEVEN-LENS-BROWSER-TRACE | tooling | `tools/seven_lens_browser_trace.py:1` | 645 | P0 | IN_PROGRESS | - |
-| TEST-SEVEN-LENS-BROWSER-TRACE | test_infrastructure | `tools/test_seven_lens_browser_trace.py:1` | 584 | P0 | IN_PROGRESS | - |
+| TOOL-SEVEN-LENS-BROWSER-TRACE | tooling | `tools/seven_lens_browser_trace.py:1` | 649 | P0 | IN_PROGRESS | - |
+| TEST-SEVEN-LENS-BROWSER-TRACE | test_infrastructure | `tools/test_seven_lens_browser_trace.py:1` | 591 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-CYCLE02-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-02-planner.json:1` | 78 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-CYCLE03-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-03-consumption.json:1` | 188 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-CYCLE04-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-04-tools-modals.json:1` | 133 | P0 | IN_PROGRESS | - |

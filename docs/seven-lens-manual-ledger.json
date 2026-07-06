@@ -162,7 +162,16 @@
       "findings_closed": [],
       "parts": {
         "P01": "ui/markup-tec-planner.html"
-      }
+      },
+      "dependency_re_review": {
+        "session": "C08-DEP-TEC-MARKUP",
+        "reviewed_fingerprint_at_review": "41a03a57cf99a9eceef9bfd65baf5c65118f92e9539924e5f87139df00256c8c",
+        "current_fingerprint": "3f5d47dfb3a8ddad62bd13b17ae95e0b27dc68bbdccb4bd9b4a585b27753139d",
+        "result": "NO_NEW_FINDING",
+        "reviewed_at": "2026-07-06T01:09:13.648040+00:00",
+        "verifier": "Cursor Agent (C08-V-B attestation corrector)"
+      },
+      "last_read_fingerprint": "3f5d47dfb3a8ddad62bd13b17ae95e0b27dc68bbdccb4bd9b4a585b27753139d"
     },
     {
       "unit_id": "UI-PLANNER-INPUTS",
@@ -354,7 +363,16 @@
       ],
       "parts": {
         "P01": "lsp-dplanner-foundation.css:1-418"
-      }
+      },
+      "dependency_re_review": {
+        "session": "C08-DEP-FOUNDATION",
+        "reviewed_fingerprint_at_review": "f1f5eaa00edd3fd382ff98c27985e51d565539079860d7e59d740bce2d6a1944",
+        "current_fingerprint": "0884eeb214333bd4f852f0bff99873e584ea18d2300b14545b321051065c1841",
+        "result": "NO_NEW_FINDING",
+        "reviewed_at": "2026-07-06T01:09:13.648040+00:00",
+        "verifier": "Cursor Agent (C08-V-B attestation corrector)"
+      },
+      "last_read_fingerprint": "0884eeb214333bd4f852f0bff99873e584ea18d2300b14545b321051065c1841"
     },
     {
       "unit_id": "UI-CSS-MODES",
@@ -512,7 +530,17 @@
       "parts": {
         "P01": "lsp-dplanner-results.css:1-500",
         "P02": "lsp-dplanner-results.css:501-890"
-      }
+      },
+      "dependency_re_review": {
+        "session": "C08-DEP-RESULTS-A/C08-DEP-RESULTS-B",
+        "reviewed_fingerprint_at_review": "8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49",
+        "current_fingerprint_p01": "43a487d392909bc748197e713a3e2ce8340b16e3f53fe258a8036b189613f641",
+        "current_fingerprint_p02": "563f36d0a31198828aac04594ea4fd73738d0ffa3eaff20643938e1e9140abdd",
+        "result": "NO_NEW_FINDING",
+        "reviewed_at": "2026-07-06T01:09:13.648040+00:00",
+        "verifier": "Cursor Agent (C08-V-B attestation corrector)"
+      },
+      "last_read_fingerprint": "563f36d0a31198828aac04594ea4fd73738d0ffa3eaff20643938e1e9140abdd"
     },
     {
       "unit_id": "UI-PLANNER-SHELL",
@@ -528,7 +556,7 @@
         "SL-C08-L-02"
       ],
       "reviewed_fingerprint": "34442a4721978fc0b34bd8d8e65066fb87f08ea13f91e79c8c474ccc44f31ae9",
-      "verified_source_commit": "941dea26901477eaed8724bd50b2213c653e84f5",
+      "verified_source_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
       "verification_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
       "finding_ids": [
         "SL-C08-H-02",
@@ -537,8 +565,8 @@
       "parts": {
         "P01": "planner-shell.js:1-187"
       },
-      "verification_session": "C08-V-A",
-      "verifier": "Cursor Agent (C08-V-A independent verification)"
+      "verification_session": "C08-V-B",
+      "verifier": "Cursor Agent (C08-V-B attestation corrector)"
     },
     {
       "unit_id": "UI-RESULTS-PANEL",
@@ -555,7 +583,7 @@
         "SL-C08-L-01"
       ],
       "reviewed_fingerprint": "5753326e01ae9dc9aad521538c749387c35a542e9d1263b0c49c8de74ef5c217",
-      "verified_source_commit": "941dea26901477eaed8724bd50b2213c653e84f5",
+      "verified_source_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
       "verification_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
       "finding_ids": [
         "SL-C08-H-01",
@@ -565,8 +593,8 @@
       "parts": {
         "P01": "results-panel.js:1-313"
       },
-      "verification_session": "C08-V-A",
-      "verifier": "Cursor Agent (C08-V-A independent verification)"
+      "verification_session": "C08-V-B",
+      "verifier": "Cursor Agent (C08-V-B attestation corrector)"
     }
   ]
 }
