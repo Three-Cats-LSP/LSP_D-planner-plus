@@ -55,7 +55,7 @@
 | 23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 390 | - | Runtime bootstrap and app init READ |
 | 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 678 | - | Algorithm and settings controls READ (678 lines; >=2 bounded sessions) |
 | 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1281 | - | Settings persistence and unit helpers READ |
-| 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 851 | - | Tools panels READ |
+| 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 851 | - | Tools panels READ in >=2 bounded sessions; implement and verify the tissue-saturation seven-band value scale in docs/tissue-saturation-color-roadmap.md, including UI/export parity and accessibility |
 | 27 | UI-PROFILE-PRESETS | 506 | - | Dive profile presets READ (depth/BT/mode ownership) |
 | 28 | UI-CONFIG-PRESETS | 185 | - | Advanced config presets READ |
 | 29 | UI-BOOT | 2418 | - | index.html shell boot region READ |
