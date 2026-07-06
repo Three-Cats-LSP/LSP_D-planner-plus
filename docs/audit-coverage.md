@@ -17,17 +17,17 @@
 | native_android | 16 | 0 | 1 | 0 | 15 |
 | native_bridge | 2 | 0 | 0 | 0 | 2 |
 | native_config | 1 | 0 | 0 | 0 | 1 |
-| pwa | 3 | 0 | 1 | 0 | 2 |
+| pwa | 3 | 0 | 2 | 0 | 1 |
 | release_config | 1 | 0 | 1 | 0 | 0 |
 | test_infrastructure | 55 | 0 | 25 | 0 | 30 |
-| tooling | 53 | 0 | 14 | 0 | 39 |
+| tooling | 53 | 0 | 16 | 0 | 37 |
 | ui_core | 16 | 0 | 13 | 0 | 3 |
 | ui_shell | 2 | 0 | 2 | 0 | 0 |
 | web_css | 4 | 0 | 3 | 0 | 1 |
 | web_markup | 7 | 0 | 4 | 1 | 2 |
 | web_runtime | 24 | 0 | 15 | 0 | 9 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **202** | **0** | **83** | **1** | **118** |
+| **Total** | **202** | **0** | **86** | **1** | **115** |
 
 ## Units
 
@@ -56,11 +56,11 @@
 | UI-PROFILE-PRESETS | web_runtime | `index.html:8592` | 506 | P2 | IN_PROGRESS | - |
 | UI-CONFIG-PRESETS | web_runtime | `index.html:9098` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
 | UI-APP-INIT | web_runtime | `index.html:9283` | 172 | P1 | IN_PROGRESS | - |
-| UI-PWA-LIFECYCLE | pwa | `index.html:9455` | 99 | P1 | VERIFIED | REG-45, EXT-08, COV-01 |
-| UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 422 | P2 | IN_PROGRESS | - |
+| UI-PWA-LIFECYCLE | pwa | `index.html:9455` | 84 | P1 | IN_PROGRESS | - |
+| UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 420 | P2 | IN_PROGRESS | - |
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 338 | P2 | IN_PROGRESS | - |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 548 | P2 | VERIFIED | EXT-03, EXT-06, COV-01 |
-| UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 896 | P1 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
+| UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 890 | P1 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
 | UI-MARKUP-HEADER | web_markup | `ui/markup-header.html:1` | 750 | P2 | IN_PROGRESS | - |
 | UI-MARKUP-REC-PLANNER | web_markup | `ui/markup-rec-planner.html:1` | 75 | P1 | IN_PROGRESS | - |
 | UI-MARKUP-TEC-PLANNER | web_markup | `ui/markup-tec-planner.html:1` | 557 | P1 | IN_PROGRESS | - |
@@ -194,7 +194,7 @@
 | TOOL-AUDIT-V2-__INIT__-PY | tooling | `tools/audit/__init__.py:1` | 3 | P0 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-AUDIT-V2-__MAIN__-PY | tooling | `tools/audit/__main__.py:1` | 5 | P0 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-AUDIT-V2-CLI-PY | tooling | `tools/audit/cli.py:1` | 188 | P0 | VERIFIED | COV-01, PARITY-01 |
-| TOOL-AUDIT-V2-LEGACY_V1-PY | tooling | `tools/audit/legacy_v1.py:1` | 7446 | P0 | VERIFIED | COV-01, PARITY-01 |
+| TOOL-AUDIT-V2-LEGACY_V1-PY | tooling | `tools/audit/legacy_v1.py:1` | 7446 | P0 | IN_PROGRESS | - |
 | TOOL-AUDIT-V2-MIGRATE_V2-PY | tooling | `tools/audit/migrate_v2.py:1` | 185 | P0 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-AUDIT-V2-MODEL-PY | tooling | `tools/audit/model.py:1` | 72 | P0 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-AUDIT-V2-PARSER_BRIDGE-MJS | tooling | `tools/audit/parser_bridge.mjs:1` | 132 | P0 | IN_PROGRESS | - |
@@ -205,9 +205,9 @@
 | TOOL-AUDIT-V2-CASE_REPORT-PY | tooling | `tools/audit/case_report.py:1` | 93 | P0 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-AUDIT-V2-SUITE_EMIT-PY | tooling | `tools/audit/suite_emit.py:1` | 32 | P0 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-AUDIT-V2-WORKSPACE-PY | tooling | `tools/audit/workspace.py:1` | 89 | P0 | VERIFIED | COV-01, PARITY-01 |
-| TOOL-AUDIT-V2-AUDIT-LEGACY-MIGRATION-JSON | tooling | `docs/audit-legacy-migration.json:1` | 37671 | P0 | VERIFIED | COV-01, PARITY-01 |
+| TOOL-AUDIT-V2-AUDIT-LEGACY-MIGRATION-JSON | tooling | `docs/audit-legacy-migration.json:1` | 37671 | P0 | IN_PROGRESS | - |
 | TOOL-AUDIT-V2-TEST_SYSTEM-PY | tooling | `tools/audit/test_system.py:1` | 206 | P0 | IN_PROGRESS | - |
-| UI-PLANNER-SHELL | ui_shell | `planner-shell.js:1` | 187 | P1 | IN_PROGRESS | REG-96, REG-99 |
+| UI-PLANNER-SHELL | ui_shell | `planner-shell.js:1` | 186 | P1 | IN_PROGRESS | REG-96, REG-99 |
 | UI-RESULTS-PANEL | ui_shell | `results-panel.js:1` | 313 | P1 | IN_PROGRESS | COV-01, PARITY-01, EXT-02, REG-01, REG-95, REG-97, REG-98 |
 | TOOL-V3-ASSEMBLE_UI_HTML-PY | tooling | `tools/assemble_ui_html.py:1` | 181 | P2 | IN_PROGRESS | - |
 | TOOL-V3-EXTRACT_UI_CSS-PY | tooling | `tools/extract_ui_css.py:1` | 136 | P2 | VERIFIED | COV-01, PARITY-01 |
@@ -233,5 +233,5 @@
 | TEST-SEVEN-LENS-CYCLE08-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-08-shell-results.json:1` | 242 | P0 | IN_PROGRESS | - |
 | TEST-UI-SHELL-RESULTS-REGRESSION | test_infrastructure | `dev/ui_shell_results_regression.py:1` | 392 | P0 | IN_PROGRESS | REG-95, REG-96, REG-97, REG-98, REG-99 |
 | TEST-UI-RESULTS-CSS-REGRESSION | test_infrastructure | `dev/ui_results_css_regression.py:1` | 407 | P0 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
-| TEST-UI-VISUAL-CONTRACT-REGRESSION | test_infrastructure | `dev/ui_visual_contract_regression.py:1` | 500 | P0 | IN_PROGRESS | REG-100, REG-101, REG-102, REG-103, REG-104, REG-105, REG-106 |
+| TEST-UI-VISUAL-CONTRACT-REGRESSION | test_infrastructure | `dev/ui_visual_contract_regression.py:1` | 665 | P0 | IN_PROGRESS | REG-100, REG-101, REG-102, REG-103, REG-104, REG-105, REG-106, REG-107 |
 | TEST-C07-PRE-RESULTS-REGRESSION | test_infrastructure | `dev/c07_pre_results_regression.py:1` | 48 | P0 | IN_PROGRESS | REG-89, REG-90 |

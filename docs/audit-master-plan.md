@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v3-full-reset`
-**Units:** 202 total; 0 unread; 83 in progress; 1 read; 118 verified.
+**Units:** 202 total; 0 unread; 86 in progress; 1 read; 115 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -34,10 +34,10 @@
 | 2 | UI-MARKUP-REC-PLANNER, UI-REC-PLANNER | 84 | - | Cycle 2a: REC planner markup + runRecPlan; SL-REC-DEPTH-BT-STEPPER |
 | 3 | UI-MARKUP-CONSUMPTION | 381 | - | Consumption markup partial READ |
 | 4 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 612 | - | Tools and modals markup partials READ |
-| 5 | UI-CSS-FOUNDATION, UI-CSS-MODES | 760 | - | Foundation and modes CSS READ |
+| 5 | UI-CSS-FOUNDATION, UI-CSS-MODES | 758 | - | Foundation and modes CSS READ |
 | 6 | UI-CSS-CONTROLS | 548 | - | Controls CSS READ |
-| 7 | UI-CSS-RESULTS | 896 | - | Results CSS READ |
-| 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 500 | - | Planner shell and results panel READ |
+| 7 | UI-CSS-RESULTS | 890 | - | Results CSS READ |
+| 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 499 | - | Planner shell and results panel READ |
 | 9 | UI-ENVIRONMENT, UI-MODE-STATE | 1002 | - | settings-core environment and mode state READ (1002 lines; >=2 bounded sessions) |
 | 10 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 679 | - | Surface interval and gas table cores READ |
 | 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 516 | ENG-ZHL-GAS | Gas card UI READ |
@@ -59,7 +59,7 @@
 | 27 | UI-PROFILE-PRESETS | 506 | - | Dive profile presets READ (depth/BT/mode ownership) |
 | 28 | UI-CONFIG-PRESETS | 185 | - | Advanced config presets READ |
 | 29 | UI-BOOT | 2418 | - | index.html shell boot region READ |
-| 30 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 440 | - | PWA and service worker READ |
+| 30 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 425 | - | PWA and service worker READ |
 | 31 | APP-ZHL-WORKER, APP-ZHL-WORKER-BRIDGE | 159 | - | ZHL schedule worker and bridge READ |
 | 32 | APP-CAPACITOR-BRIDGE, APP-ANDROID-SELECT | 548 | - | Capacitor and Android select bridge READ |
 | 33 | ENG-ZHL-PHYSICS, ENG-ZHL-GAS | 373 | - | ZHL physics and gas canonical cores READ |

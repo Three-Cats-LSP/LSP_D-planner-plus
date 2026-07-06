@@ -1658,7 +1658,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "0884eeb214333bd4f852f0bff99873e584ea18d2300b14545b321051065c1841",
+      "fingerprint": "ca79cfc844b33090dbb9d2f57d56a5fa89699f4ec984bcfb6b1ffa988ae16996",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1711,7 +1711,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "e41b75104489f0f600cf486d1f998dd54b50a7e4635c20fa59b28d7a522458ad",
+      "fingerprint": "898dd4c79d105d90280ddd19aeb92239b0efdc41c023191f5897e3754857d04d",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2465,23 +2465,15 @@
       "path": "index.html",
       "layer": "pwa",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PWA-LIFECYCLE"
       },
-      "fingerprint": "0646b53b2325d0249aad57576704a08e99a9e34f685680998dc11465c1da661d",
-      "last_read_fingerprint": "0646b53b2325d0249aad57576704a08e99a9e34f685680998dc11465c1da661d",
-      "evidence": [
-        "SUITE-SW-LIFECYCLE/SW-NETWORK-FIRST-ENGINE",
-        "SUITE-UI-STRUCTURE/UI-SW-PRECACHE",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "REG-45",
-        "EXT-08",
-        "COV-01"
-      ],
+      "fingerprint": "255f82c28c0802d66199080187b9a7526297e68b9c5701b69f71027cc848dde2",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified \u2014 UI-PWA-LIFECYCLE"
     },
     {
@@ -3643,7 +3635,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "9d1a7b52c6378428cf182f36655de42078a1dfc76a38b0dfaf9f940b51cb1af2",
+      "fingerprint": "e1eb81b2a456a91e22fdf66b9a50e05bb79307d0997eac970567793573533230",
       "last_read_fingerprint": null,
       "regression_cases": [],
       "evidence": [],
@@ -3676,7 +3668,7 @@
       "evidence": [],
       "issue": "HTTP server port lifecycle regression tests",
       "regression_cases": [],
-      "fingerprint": "88f377f7b1fea97b0ff1ffcff0c36069c6349fc2281628f6e59beee7ed3b5ca8",
+      "fingerprint": "77b5ed77739d2af381090456f6af1955867b8fb78211f67ba2cbbcc9054066c3",
       "last_read_fingerprint": null
     },
     {
@@ -4751,20 +4743,14 @@
       "path": "tools/audit/legacy_v1.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "b75e2f92ec060f9e8b774ad36e9aee5dc27cf4ef6867619d1cf4e84b164c1ec4",
-      "last_read_fingerprint": "b75e2f92ec060f9e8b774ad36e9aee5dc27cf4ef6867619d1cf4e84b164c1ec4",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01"
-      ],
+      "fingerprint": "249c8648e5808906150523ce070d7747f9ef592425915e4d5414f1c468a3b01e",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Ground-up audit architecture"
     },
     {
@@ -4964,20 +4950,14 @@
       "path": "docs/audit-legacy-migration.json",
       "layer": "tooling",
       "priority": "P0",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "76021617c60dd49f442b571b5313739be105d49cde104ebc604dd2117dc6c771",
-      "last_read_fingerprint": "76021617c60dd49f442b571b5313739be105d49cde104ebc604dd2117dc6c771",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01"
-      ],
+      "fingerprint": "4d2257cea1ffa30cfd0525a9df3b4065eb8727091ab8213e1845883a52c9fb11",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Ground-up audit architecture"
     },
     {
@@ -5004,7 +4984,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "34442a4721978fc0b34bd8d8e65066fb87f08ea13f91e79c8c474ccc44f31ae9",
+      "fingerprint": "e126c65a22d84696d99a0fec4ece5ce46ed1c158957b3778e7a066e4f9a47cb6",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5447,7 +5427,7 @@
       "evidence": [],
       "issue": "Cycle 08 UI-PLANNER-SHELL/UI-RESULTS-PANEL browser trace specification",
       "regression_cases": [],
-      "fingerprint": "80b103025cf8267f1b94c22e0bfa58aa7d7b0de10ac79a2482dc561d968b2d0d",
+      "fingerprint": "cfd7d039215edccf883b5637b5835e40ce015387297c78e5ca5242a6a3cd60e4",
       "last_read_fingerprint": null
     },
     {
@@ -5468,7 +5448,7 @@
         "REG-98",
         "REG-99"
       ],
-      "fingerprint": "035306e029d6dbe330fbd1bba4302ac4d577a19c7cdcdc83f389e16fb8012715",
+      "fingerprint": "927f756f0803459f2fbc16f329385311766ba394d75d25f33c9374d3f39120dd",
       "last_read_fingerprint": null
     },
     {
@@ -5511,9 +5491,10 @@
         "REG-103",
         "REG-104",
         "REG-105",
-        "REG-106"
+        "REG-106",
+        "REG-107"
       ],
-      "fingerprint": "61a9c46010773e3359f729cd2fb833c66cfe9d4c2bcfb2f54f7e425bcab9fe80",
+      "fingerprint": "30d6e53eaa75012d4c817f591086ed0384b5a329e17914e681d75f776e40e8b1",
       "last_read_fingerprint": null
     },
     {
@@ -6449,7 +6430,8 @@
         "SL-VIS-DECO-BANNER-GAS-LABELS",
         "SL-VIS-SWITCH-ROW-THEME-PARITY",
         "SL-C08-MOBILE-NAV-TILE-GRID",
-        "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"
+        "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT",
+        "SL-C08-NO-REDUNDANT-BOTTOM-NAV"
       ]
     }
   ],

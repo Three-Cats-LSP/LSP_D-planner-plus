@@ -374,9 +374,9 @@
       "unit_id": "UI-CSS-RESULTS",
       "path": "lsp-dplanner-results.css",
       "start_line": 501,
-      "end_line": 896,
-      "line_count": 396,
-      "content_fingerprint": "b8c725de745d0bae928351cf69768435fe019e6ce37c61b77e85bf56f745168d",
+      "end_line": 890,
+      "line_count": 390,
+      "content_fingerprint": "86fa76a4614b811c807065d6bd301e5b1f60201a32d28a522abb348b0307b509",
       "review_session": "C07-B",
       "verification_session": "C07-V-B",
       "lens_results": {

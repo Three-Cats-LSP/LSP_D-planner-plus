@@ -680,6 +680,25 @@
       "stable_case": "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT",
       "pre_fix_evidence_id": "ER-C08-BASELINE-NAV-GAS",
       "post_fix_evidence_id": "ER-C08-POST-NAV-GAS"
+    },
+    {
+      "id": "SL-C08-M-04",
+      "severity": "MEDIUM",
+      "unit_id": "UI-PLANNER-SHELL",
+      "location": "index.html:9537-9551; planner-shell.js:61-92; lsp-dplanner-results.css:708-727",
+      "root_cause": "Fixed mobile #bottomNav duplicates main mode row and header Ref control, reserves ~72px viewport height, and maintains a second navigation-state owner via .bnav-btn active writers in setNavMode.",
+      "failure_path": "375x667 boot -> #bottomNav display:flex min-height 56px -> duplicate Planner/Tools/Settings/Ref beside #mainNavBar -> setNavMode toggles .bnav-btn.active independently of .main-nav-btn.",
+      "impact": "Wasted mobile viewport; divergent nav highlight state; redundant route owners.",
+      "evidence": "REG-107 SL-C08-NO-REDUNDANT-BOTTOM-NAV FAIL at baseline 864be89 with bottomNavHeight>=56 and duplicateControls all true.",
+      "recommendation": "Remove bottom nav markup/CSS/JS writers; retain canonical #mainNavBar and #navRef; restore safe-area padding without bar reserve.",
+      "status": "OPEN",
+      "verification_status": "PENDING_INDEPENDENT_VERIFICATION",
+      "regression_ids": [
+        "SL-C08-NO-REDUNDANT-BOTTOM-NAV"
+      ],
+      "stable_case": "SL-C08-NO-REDUNDANT-BOTTOM-NAV",
+      "pre_fix_evidence_id": "ER-C08-BASELINE-BOTTOM-NAV",
+      "post_fix_evidence_id": "ER-C08-POST-BOTTOM-NAV"
     }
   ],
   "evidence_runs": [
@@ -1224,6 +1243,53 @@
       "receipt_sha256": "ebfd566555feb1729aa5bcbd88bc8b4b1de0a780c305845235c88b2d7dae7ae4",
       "worktree_clean_before": true,
       "worktree_clean_after": true
+    },
+    {
+      "id": "ER-C08-BASELINE-BOTTOM-NAV",
+      "kind": "baseline_failure",
+      "case_ids": [
+        "SL-C08-NO-REDUNDANT-BOTTOM-NAV"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/ui_visual_contract_regression.py"
+      ],
+      "prepared_baseline_commit": "864be89c7af34faacf0b208f3503bd0d398467f4",
+      "commit": "864be89c7af34faacf0b208f3503bd0d398467f4",
+      "observable_assertions": [
+        "REG-107 FAIL at baseline: #bottomNav visible ~56px with duplicate Planner/Tools/Settings/Ref controls"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_visual_contract_regression.py",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 1,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-BASELINE-BOTTOM-NAV.json",
+      "receipt_sha256": "4d55c6e6c1f85627d3fa143f8718164e4ca8ce186e34b3a9acfe27297e3c8afd",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
+    },
+    {
+      "id": "ER-C08-POST-BOTTOM-NAV",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C08-NO-REDUNDANT-BOTTOM-NAV"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/ui_visual_contract_regression.py"
+      ],
+      "commit": "8e437a1fc38bd4bf50c280a38aa323f2372214d5",
+      "observable_assertions": [
+        "REG-107 PASS at fix commit: bottom nav absent, canonical mode row navigation verified"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_visual_contract_regression.py",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-BOTTOM-NAV.json",
+      "receipt_sha256": "59ce14b234aab22ff0510c8aa2df42084450072becddaafc37346225844d26e8",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
     }
   ],
   "changed_paths": [
@@ -1373,10 +1439,24 @@
       "invalidated_by_cycle": 8,
       "path": "dev/ui_visual_contract_regression.py",
       "reason": "REG-105 and REG-106 bound to SL-C08-MOBILE-NAV-TILE-GRID and SL-C08-OPERATIONAL-GAS-LABEL-FORMAT."
+    },
+    {
+      "unit_id": "UI-PLANNER-SHELL",
+      "source_cycle": 8,
+      "invalidated_by_cycle": 8,
+      "path": "planner-shell.js",
+      "reason": "SL-C08-M-04 removes bottom-nav active writers from setNavMode; shell nav state ownership requires dependency re-verification."
+    },
+    {
+      "unit_id": "UI-MARKUP-HEADER",
+      "source_cycle": 2,
+      "invalidated_by_cycle": 8,
+      "path": "index.html",
+      "reason": "SL-C08-M-04 removes #bottomNav markup from assembled shell; header/main-nav contract is now sole mobile navigation surface."
     }
   ],
   "audit_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
-  "notes": "C08 fixer: SL-C08-M-02 nav grid + SL-C08-M-03 gas labels OPEN; prior C08-V-B findings remain CLOSED at 1c62425; ledger IN_PROGRESS; closure_evidence_commit absent; fresh independent VERIFIER required.",
+  "notes": "C08 fixer: SL-C08-M-02/M-03/M-04 OPEN; prior C08-V-B findings CLOSED at 1c62425; ledger IN_PROGRESS; closure_evidence_commit absent; fresh independent VERIFIER required.",
   "visual_contract_integrator": {
     "pr": 215,
     "source_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
@@ -1431,12 +1511,15 @@
     "dev/seven-lens-evidence-c08-static.json",
     "dev/seven-lens-evidence-c08-ci.json",
     "dev/seven-lens-evidence-c08-ER-C08-BASELINE-NAV-GAS.json",
-    "dev/seven-lens-evidence-c08-ER-C08-POST-NAV-GAS.json"
+    "dev/seven-lens-evidence-c08-ER-C08-POST-NAV-GAS.json",
+    "dev/seven-lens-evidence-c08-ER-C08-BASELINE-BOTTOM-NAV.json",
+    "dev/seven-lens-evidence-c08-ER-C08-POST-BOTTOM-NAV.json"
   ],
   "fixer_nav_gas": {
     "finding_ids": [
       "SL-C08-M-02",
-      "SL-C08-M-03"
+      "SL-C08-M-03",
+      "SL-C08-M-04"
     ],
     "regression_ids": [
       "REG-105",

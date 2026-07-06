@@ -147,6 +147,10 @@ selector-level or source-string assertion is not sufficient.
   adapters, generated bundles, schedule renderers, graph labels, contingency
   output, and exports. Reject adapter special-cases such as `EAN50`/`EAN80` that
   bypass zero-padded `OO/HH` notation.
+- Reject duplicate navigation surfaces that expose the same routes through both
+  the main mode row and a fixed mobile footer bar. Removing a duplicate bar must
+  delete markup, CSS, and JavaScript writers—not merely hide them with
+  `display:none`.
 
 ## Cycle Scope
 

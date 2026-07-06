@@ -90,6 +90,18 @@ Treat every displayed value plus canonical dataset as a replicated-state system.
 - Regressions must reject `EAN50`, `EAN 50`, `EAN80`, percentage notation, and
   unpadded single-digit O2 such as `8/70`.
 
+## Duplicate Navigation Surfaces
+
+- Reject a second navigation bar or fixed footer control row when the same routes
+  are already reachable through the main mode row and global header.
+- Flag multiple state owners for one route (`setNavMode`, bottom-nav active
+  writers, and main-nav highlight must not diverge).
+- After removing a duplicate surface, assert the markup, CSS selectors, and
+  JavaScript ID writers are deleted—not merely hidden.
+- Verify mobile portrait and landscape retain canonical navigation, safe-area
+  padding without reserved dead height, and no orphan spacing at the viewport
+  bottom.
+
 ## Safety-Critical Copy
 
 - Treat absolute words such as "safe", "always", and "never" as behavioral claims.
