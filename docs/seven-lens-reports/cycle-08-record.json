@@ -1218,7 +1218,7 @@
       "worktree_clean": true,
       "state_restored": true,
       "exit_code": 0,
-      "commit": "4803d4e68c52457a255e0ee42d244a09016cfbf1",
+      "commit": "c8aa0fea5d89e4dd47081a7a6a1939ea9335f346",
       "prepared_baseline_commit": null
     }
   ],
