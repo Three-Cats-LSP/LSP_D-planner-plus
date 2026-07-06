@@ -1219,7 +1219,11 @@
       "state_restored": true,
       "exit_code": 0,
       "commit": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a",
-      "prepared_baseline_commit": null
+      "prepared_baseline_commit": null,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-NAV-GAS.json",
+      "receipt_sha256": "ebfd566555feb1729aa5bcbd88bc8b4b1de0a780c305845235c88b2d7dae7ae4",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
     }
   ],
   "changed_paths": [
@@ -1425,7 +1429,9 @@
   ],
   "evidence_artifacts": [
     "dev/seven-lens-evidence-c08-static.json",
-    "dev/seven-lens-evidence-c08-ci.json"
+    "dev/seven-lens-evidence-c08-ci.json",
+    "dev/seven-lens-evidence-c08-ER-C08-BASELINE-NAV-GAS.json",
+    "dev/seven-lens-evidence-c08-ER-C08-POST-NAV-GAS.json"
   ],
   "fixer_nav_gas": {
     "finding_ids": [
@@ -1438,6 +1444,7 @@
     ],
     "baseline_commit": "ea18ac054f53c70c7bcffac8cbe789d5fa6c4de4",
     "protected_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
-    "requires_independent_verification": true
+    "requires_independent_verification": true,
+    "source_commit": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a"
   }
 }
