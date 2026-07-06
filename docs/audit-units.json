@@ -5797,13 +5797,14 @@
     {
       "cycle": 26,
       "max_new_application_lines": 851,
+      "min_review_sessions": 2,
       "application_units": [
         "UI-TOOLS-TISSUES",
         "UI-TOOLS-EXPOSURE",
         "UI-TOOLS-GF"
       ],
       "engine_reverification": [],
-      "acceptance": "Tools panels READ"
+      "acceptance": "Tools panels READ in >=2 bounded sessions; implement and verify the tissue-saturation seven-band value scale in docs/tissue-saturation-color-roadmap.md, including UI/export parity and accessibility"
     },
     {
       "cycle": 27,
