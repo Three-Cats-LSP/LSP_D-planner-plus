@@ -322,7 +322,7 @@
   ],
   "audit_commit": "32fda7bbd1896864465f830012a246b58d94109b",
   "verified_source_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
-  "verification_status": "PASSED",
+  "verification_status": "PENDING_INDEPENDENT_VERIFICATION",
   "fixer": {
     "regression_id": "REG-76",
     "finding_id": "SL-C05-M-01",
@@ -642,6 +642,44 @@
         "ER-C08-TRACE",
         "ER-C08-RESTORE-SHELL"
       ]
+    },
+    {
+      "id": "SL-C08-M-02",
+      "severity": "MEDIUM",
+      "unit_id": "UI-CSS-RESULTS",
+      "location": "lsp-dplanner-results.css:343-353",
+      "root_cause": "Portrait 2-column grid auto-placement leaves Tools without a lower divider and Settings in a half-width cell beside a blank non-interactive grid cell; tablet 3-column row leaves an orphan cell beside Tools/Settings.",
+      "failure_path": "375x667 boot -> main-nav 2-col grid -> item 4 lacks border-bottom -> item 5 half-width -> orphan cell at row 3 col 2.",
+      "impact": "Mobile navigation shows dead grid space; Tools/Settings separator missing; unequal hit areas.",
+      "evidence": "REG-105 SL-C08-MOBILE-NAV-TILE-GRID FAIL at ea18ac0 across 375x667, 400x800, 480x800, 667x375; elementFromPoint orphan beside Settings.",
+      "recommendation": "Span Settings full final portrait row; add Tools lower divider; fill tablet row with Settings grid-column span.",
+      "status": "OPEN",
+      "verification_status": "PENDING_INDEPENDENT_VERIFICATION",
+      "regression_ids": [
+        "SL-C08-MOBILE-NAV-TILE-GRID"
+      ],
+      "stable_case": "SL-C08-MOBILE-NAV-TILE-GRID",
+      "pre_fix_evidence_id": "ER-C08-BASELINE-NAV-GAS",
+      "post_fix_evidence_id": "ER-C08-POST-NAV-GAS"
+    },
+    {
+      "id": "SL-C08-M-03",
+      "severity": "MEDIUM",
+      "unit_id": "ENGINE-ZHL-ADAPTER",
+      "location": "tools/build_zhl_bundle.py:50-91",
+      "root_cause": "build_zhl_bundle.py postamble shadows schedule-core getGasLabel with EAN32/36/50/80 special cases; buildZhlDecoGasesFromEngine hard-codes EAN50/EAN80 labels into generated zhl-engine-bundle.js schedule steps.",
+      "failure_path": "ean50 deco gas -> buildZhlDecoGasesFromEngine -> schedule row gas EAN50 -> pills/export show EAN50 despite canonical getGasLabel returning 50/00.",
+      "impact": "Operational plan gas labels violate OO/HH display contract across schedule, pills, graph, contingency, and exports.",
+      "evidence": "REG-106 SL-C08-OPERATIONAL-GAS-LABEL-FORMAT FAIL at ea18ac0; forbidden EAN50/EAN80 in schedule mix cells while banners already show 50/00.",
+      "recommendation": "Remove adapter shadow formatter; delegate deco gas labels to schedule-core getGasLabel; rebuild bundle; pad single-digit O2 in canonical formatter.",
+      "status": "OPEN",
+      "verification_status": "PENDING_INDEPENDENT_VERIFICATION",
+      "regression_ids": [
+        "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"
+      ],
+      "stable_case": "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT",
+      "pre_fix_evidence_id": "ER-C08-BASELINE-NAV-GAS",
+      "post_fix_evidence_id": "ER-C08-POST-NAV-GAS"
     }
   ],
   "evidence_runs": [
@@ -1136,6 +1174,46 @@
       "receipt_sha256": "c6d61c1eee9350e1db0a07b81a6f6765d7ecdcb5720358b02831a6bda3a184a5",
       "worktree_clean_before": true,
       "worktree_clean_after": true
+    },
+    {
+      "id": "ER-C08-BASELINE-NAV-GAS",
+      "kind": "baseline_failure",
+      "case_ids": [
+        "SL-C08-MOBILE-NAV-TILE-GRID",
+        "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/ui_visual_contract_regression.py"
+      ],
+      "prepared_baseline_commit": "ea18ac054f53c70c7bcffac8cbe789d5fa6c4de4",
+      "commit": "ea18ac054f53c70c7bcffac8cbe789d5fa6c4de4",
+      "observable_assertions": [
+        "REG-105 and REG-106 FAIL at baseline commit ea18ac0 on protected nav grid orphan cell and EAN50/EAN80 operational labels"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_visual_contract_regression.py",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 1
+    },
+    {
+      "id": "ER-C08-POST-NAV-GAS",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C08-MOBILE-NAV-TILE-GRID",
+        "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/ui_visual_contract_regression.py"
+      ],
+      "observable_assertions": [
+        "REG-105 and REG-106 PASS at fix commit with nav grid separators and canonical OO/HH operational labels"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_visual_contract_regression.py",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0
     }
   ],
   "changed_paths": [
@@ -1171,7 +1249,12 @@
     "plot-core.js",
     "ui/markup-tec-planner.html",
     "dev/seven-lens-evidence-c08-static.json",
-    "dev/seven-lens-evidence-c08-ci.json"
+    "dev/seven-lens-evidence-c08-ci.json",
+    "zhl-schedule-core.js",
+    "tools/build_zhl_bundle.py",
+    "zhl-engine-bundle.js",
+    "docs/cursor-seven-lens-audit-workflow.md",
+    "docs/seven-lens-review-playbook.md"
   ],
   "cross_unit_changed_paths": [
     "settings-core.js",
@@ -1252,10 +1335,38 @@
       "invalidated_by_cycle": 8,
       "path": "dev/ui_visual_contract_regression.py",
       "reason": "PR #215 introduces SUITE-UI-VISUAL-CONTRACT-REGRESSION bound to REG-100 through REG-104."
+    },
+    {
+      "unit_id": "UI-CSS-RESULTS",
+      "source_cycle": 8,
+      "invalidated_by_cycle": 8,
+      "path": "lsp-dplanner-results.css",
+      "reason": "SL-C08-M-02 responsive main-nav grid row-fill and separator contract requires dependency re-verification."
+    },
+    {
+      "unit_id": "ENGINE-ZHL-ADAPTER",
+      "source_cycle": 8,
+      "invalidated_by_cycle": 8,
+      "path": "tools/build_zhl_bundle.py",
+      "reason": "SL-C08-M-03 removes shadow getGasLabel and EAN50/EAN80 adapter labels; bundle parity re-review required."
+    },
+    {
+      "unit_id": "ENGINE-ZHL-BUNDLE",
+      "source_cycle": 8,
+      "invalidated_by_cycle": 8,
+      "path": "zhl-engine-bundle.js",
+      "reason": "Regenerated after canonical gas label propagation; schedule step labels must match schedule-core formatter."
+    },
+    {
+      "unit_id": "TEST-UI-VISUAL-CONTRACT-REGRESSION",
+      "source_cycle": 8,
+      "invalidated_by_cycle": 8,
+      "path": "dev/ui_visual_contract_regression.py",
+      "reason": "REG-105 and REG-106 bound to SL-C08-MOBILE-NAV-TILE-GRID and SL-C08-OPERATIONAL-GAS-LABEL-FORMAT."
     }
   ],
   "audit_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
-  "notes": "C08-V-B attestation corrector: protected source 1c62425; metadata base 2a678aa; registry REG-95..99 CLOSED at resolution 9240e20; ledger IN_PROGRESS; closure_evidence_commit absent.",
+  "notes": "C08 fixer: SL-C08-M-02 nav grid + SL-C08-M-03 gas labels OPEN; prior C08-V-B findings remain CLOSED at 1c62425; ledger IN_PROGRESS; closure_evidence_commit absent; fresh independent VERIFIER required.",
   "visual_contract_integrator": {
     "pr": 215,
     "source_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
@@ -1309,5 +1420,18 @@
   "evidence_artifacts": [
     "dev/seven-lens-evidence-c08-static.json",
     "dev/seven-lens-evidence-c08-ci.json"
-  ]
+  ],
+  "fixer_nav_gas": {
+    "finding_ids": [
+      "SL-C08-M-02",
+      "SL-C08-M-03"
+    ],
+    "regression_ids": [
+      "REG-105",
+      "REG-106"
+    ],
+    "baseline_commit": "ea18ac054f53c70c7bcffac8cbe789d5fa6c4de4",
+    "protected_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
+    "requires_independent_verification": true
+  }
 }

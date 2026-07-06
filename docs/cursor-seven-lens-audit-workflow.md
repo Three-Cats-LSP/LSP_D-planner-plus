@@ -139,6 +139,14 @@ selector-level or source-string assertion is not sufficient.
 - Run `SUITE-UI-VISUAL-CONTRACT-REGRESSION` after every UI/CSS/rendering fix.
   Any failure invalidates verification even when the cycle's focused suite is
   green.
+- For responsive main-navigation grids with an odd item count, assert every
+  viewport fills intentional complete rows: no orphan cells, no dead hit areas,
+  visible separators including Tools→Settings, and preserved desktop five-column
+  parity above the tablet breakpoint.
+- For operational gas labels, trace the canonical formatter through engine
+  adapters, generated bundles, schedule renderers, graph labels, contingency
+  output, and exports. Reject adapter special-cases such as `EAN50`/`EAN80` that
+  bypass zero-padded `OO/HH` notation.
 
 ## Cycle Scope
 

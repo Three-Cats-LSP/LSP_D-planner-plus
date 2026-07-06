@@ -62,6 +62,34 @@ Treat every displayed value plus canonical dataset as a replicated-state system.
 - A UI cycle cannot close while the cross-unit visual suite is red, even if the
   defect originated before the cycle's nominal source boundary.
 
+## Responsive Navigation Grids
+
+- Odd navigation-item counts on responsive grids require explicit row-filling
+  rules. Do not rely on auto-placement when the final row would leave an orphan
+  cell.
+- Every tile must retain a coherent visible boundary: lower dividers between
+  stacked rows, right dividers between columns, and a separator between Tools and
+  Settings on portrait layouts.
+- Reject orphan grid cells, unequal hit areas, and false navigation targets
+  exposed by empty grid areas.
+- Active-state styling must not erase required separators. Prefer accent borders
+  that preserve row/column dividers rather than clearing them.
+- Assert layout from computed grid placement, bounding boxes, and element-from-point
+  probes at every required viewport in both themes.
+
+## Canonical Display Format Propagation
+
+- Operational plan gas labels must use one canonical formatter for schedule rows,
+  banner pills, graph labels, contingency output, and text/slate/PDF exports.
+- Air → `Air`, 100% oxygen → `100%`, every other mix → zero-padded `OO/HH`.
+- Do not rename internal values such as `ean50`; educational copy may keep EAN
+  terminology.
+- Engine adapter/build-source code must not shadow or bypass the canonical
+  formatter. Generated bundles must be rebuilt from canonical sources; never patch
+  only the generated artifact.
+- Regressions must reject `EAN50`, `EAN 50`, `EAN80`, percentage notation, and
+  unpadded single-digit O2 such as `8/70`.
+
 ## Safety-Critical Copy
 
 - Treat absolute words such as "safe", "always", and "never" as behavioral claims.
