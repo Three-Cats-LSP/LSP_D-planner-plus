@@ -654,13 +654,16 @@
       "evidence": "REG-105 SL-C08-MOBILE-NAV-TILE-GRID FAIL at ea18ac0 across 375x667, 400x800, 480x800, 667x375; elementFromPoint orphan beside Settings.",
       "recommendation": "Span Settings full final portrait row; add Tools lower divider; fill tablet row with Settings grid-column span.",
       "status": "OPEN",
-      "verification_status": "PENDING_INDEPENDENT_VERIFICATION",
+      "verification_status": "PASSED",
       "regression_ids": [
         "SL-C08-MOBILE-NAV-TILE-GRID"
       ],
       "stable_case": "SL-C08-MOBILE-NAV-TILE-GRID",
       "pre_fix_evidence_id": "ER-C08-BASELINE-NAV-GAS",
-      "post_fix_evidence_id": "ER-C08-POST-NAV-GAS"
+      "post_fix_evidence_id": "ER-C08-POST-NAV-GAS",
+      "verified_source_commit": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a",
+      "independent_verification_result": "PASSED (C08-V-C independent verification)",
+      "verification_session": "C08-V-C"
     },
     {
       "id": "SL-C08-M-03",
@@ -673,13 +676,16 @@
       "evidence": "REG-106 SL-C08-OPERATIONAL-GAS-LABEL-FORMAT FAIL at ea18ac0; forbidden EAN50/EAN80 in schedule mix cells while banners already show 50/00.",
       "recommendation": "Remove adapter shadow formatter; delegate deco gas labels to schedule-core getGasLabel; rebuild bundle; pad single-digit O2 in canonical formatter.",
       "status": "OPEN",
-      "verification_status": "PENDING_INDEPENDENT_VERIFICATION",
+      "verification_status": "PASSED",
       "regression_ids": [
         "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"
       ],
       "stable_case": "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT",
       "pre_fix_evidence_id": "ER-C08-BASELINE-NAV-GAS",
-      "post_fix_evidence_id": "ER-C08-POST-NAV-GAS"
+      "post_fix_evidence_id": "ER-C08-POST-NAV-GAS",
+      "verified_source_commit": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a",
+      "independent_verification_result": "PASSED (C08-V-C independent verification)",
+      "verification_session": "C08-V-C"
     },
     {
       "id": "SL-C08-M-04",
@@ -692,13 +698,16 @@
       "evidence": "REG-107 SL-C08-NO-REDUNDANT-BOTTOM-NAV FAIL at baseline 864be89 with bottomNavHeight>=56 and duplicateControls all true.",
       "recommendation": "Remove bottom nav markup/CSS/JS writers; retain canonical #mainNavBar and #navRef; restore safe-area padding without bar reserve.",
       "status": "OPEN",
-      "verification_status": "PENDING_INDEPENDENT_VERIFICATION",
+      "verification_status": "PASSED",
       "regression_ids": [
         "SL-C08-NO-REDUNDANT-BOTTOM-NAV"
       ],
       "stable_case": "SL-C08-NO-REDUNDANT-BOTTOM-NAV",
       "pre_fix_evidence_id": "ER-C08-BASELINE-BOTTOM-NAV",
-      "post_fix_evidence_id": "ER-C08-POST-BOTTOM-NAV"
+      "post_fix_evidence_id": "ER-C08-POST-BOTTOM-NAV",
+      "verified_source_commit": "8e437a1fc38bd4bf50c280a38aa323f2372214d5",
+      "independent_verification_result": "PASSED (C08-V-C independent verification)",
+      "verification_session": "C08-V-C"
     }
   ],
   "evidence_runs": [
@@ -1456,7 +1465,7 @@
     }
   ],
   "audit_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
-  "notes": "C08 fixer: SL-C08-M-02/M-03/M-04 OPEN; prior C08-V-B findings CLOSED at 1c62425; ledger IN_PROGRESS; closure_evidence_commit absent; fresh independent VERIFIER required.",
+  "notes": "C08-V-C supplemental verification PASSED for SL-C08-M-02/M-03/M-04 at metadata HEAD f535654; findings remain OPEN pending CLOSER; ledger IN_PROGRESS; closure_evidence_commit absent.",
   "visual_contract_integrator": {
     "pr": 215,
     "source_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
@@ -1472,6 +1481,58 @@
     "verified_source_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
     "verified_at": "2026-07-06T03:47:02.736689+00:00",
     "reviewer": "Cursor Agent (C08-V-B attestation corrector)"
+  },
+  "supplemental_verifier_attestation": {
+    "role": "INDEPENDENT_VERIFIER",
+    "session": "C08-V-C",
+    "metadata_head": "f53565434a16ce2615fe4eba5c39579037e2fdaf",
+    "protected_source_commits": {
+      "SL-C08-M-02": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a",
+      "SL-C08-M-03": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a",
+      "SL-C08-M-04": "8e437a1fc38bd4bf50c280a38aa323f2372214d5"
+    },
+    "finding_ids": [
+      "SL-C08-M-02",
+      "SL-C08-M-03",
+      "SL-C08-M-04"
+    ],
+    "verified_at": "2026-07-06T05:32:00.000000+00:00",
+    "reviewer": "Cursor Agent (C08-V-C independent verifier)",
+    "gate_results": {
+      "ui_visual_contract_regression": 0,
+      "ui_shell_results_regression": 0,
+      "ui_results_css_regression": 0,
+      "ui_css_regression": 0,
+      "build_zhl_bundle_check": 0,
+      "assemble_ui_html_verify": 0,
+      "unittest_protocol_and_trace": 0,
+      "engine_parity": 0,
+      "seven_lens_check_all": 0
+    },
+    "receipt_hashes": {
+      "ER-C08-BASELINE-NAV-GAS": "10ace366754b97d4f8c000db5777304f0ec6deb3b288d9a5565cb34dca2c70d1",
+      "ER-C08-POST-NAV-GAS": "ebfd566555feb1729aa5bcbd88bc8b4b1de0a780c305845235c88b2d7dae7ae4",
+      "ER-C08-BASELINE-BOTTOM-NAV": "4d55c6e6c1f85627d3fa143f8718164e4ca8ce186e34b3a9acfe27297e3c8afd",
+      "ER-C08-POST-BOTTOM-NAV": "59ce14b234aab22ff0510c8aa2df42084450072becddaafc37346225844d26e8"
+    },
+    "dependency_reverification": {
+      "UI-CSS-RESULTS": "PASSED — REG-105 nav grid contract at 375/400/480/667/1280 in dark+light",
+      "ENG-ZHL-SCHEDULE": "PASSED — canonical getGasLabel OO/HH in zhl-schedule-core.js",
+      "TOOL-BUILD-ZHL": "PASSED — build_zhl_bundle.py delegates labels; --check exit 0",
+      "ENGINE-ZHL-BUNDLE": "PASSED — no EAN50/EAN80 in generated bundle; npm parity OK",
+      "TEST-UI-VISUAL-CONTRACT-REGRESSION": "PASSED — REG-105/106/107 green at HEAD f535654",
+      "UI-PLANNER-SHELL": "PASSED — setNavMode has no .bnav-btn writers",
+      "UI-MARKUP-HEADER": "PASSED — #bottomNav absent from index.html",
+      "UI-CSS-FOUNDATION": "PASSED — .bnav-btn rules removed"
+    },
+    "verifier_findings": [
+      {
+        "id": "SL-C08-VF-L-01",
+        "severity": "LOW",
+        "location": "lsp-dplanner-results.css:333",
+        "summary": "Orphaned .mode-ref-btn rule remains with zero DOM/markup writers; dead CSS only."
+      }
+    ]
   },
   "dependency_re_reviews": [
     {
