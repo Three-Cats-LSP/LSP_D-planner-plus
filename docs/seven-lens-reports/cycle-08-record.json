@@ -1194,7 +1194,11 @@
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_visual_contract_regression.py",
       "worktree_clean": true,
       "state_restored": true,
-      "exit_code": 1
+      "exit_code": 1,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-BASELINE-NAV-GAS.json",
+      "receipt_sha256": "10ace366754b97d4f8c000db5777304f0ec6deb3b288d9a5565cb34dca2c70d1",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
     },
     {
       "id": "ER-C08-POST-NAV-GAS",
@@ -1213,7 +1217,9 @@
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_visual_contract_regression.py",
       "worktree_clean": true,
       "state_restored": true,
-      "exit_code": 0
+      "exit_code": 0,
+      "commit": "51831a3102eb9e6ac9e6bb0e1af38e51e70f21f8",
+      "prepared_baseline_commit": null
     }
   ],
   "changed_paths": [

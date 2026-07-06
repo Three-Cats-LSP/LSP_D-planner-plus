@@ -1707,7 +1707,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "633e1e8b125233258703fe4bfdd4b439e3770b1a1d673847e3f4c16ac2d967e0",
+      "fingerprint": "e41b75104489f0f600cf486d1f998dd54b50a7e4635c20fa59b28d7a522458ad",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2562,24 +2562,14 @@
       "path": "zhl-schedule-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "d7279942cdf33e329f3f519116c57396019850eff57bd05214cf2387e251e637",
-      "last_read_fingerprint": "d7279942cdf33e329f3f519116c57396019850eff57bd05214cf2387e251e637",
-      "evidence": [
-        "SUITE-BROWSER/gf-pinned-schedules",
-        "SUITE-ENGINE-FULL/ZHL-ML-CONT-GAS",
-        "SUITE-ENGINE-FULL/ZHL-ML-ASCENT-RATE",
-        "SUITE-ENGINE-FULL/CYCLE7-STOP-ROUNDING"
-      ],
-      "regression_cases": [
-        "REG-06",
-        "REG-22",
-        "REG-23",
-        "REG-38"
-      ],
+      "fingerprint": "b640142a6ca98c10f9a93550b140ff50b0d4ea4a8e34413d92088e427f2fab02",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Cycle 35: imperial O2 switch depth + wholeMinStops API parity via bundle builder"
     },
     {
@@ -4118,20 +4108,14 @@
       "path": "tools/build_zhl_bundle.py",
       "layer": "tooling",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1286717116c9d9c5d263bd817681ff3a719dc43e84be443cb31c69a4ac59477e",
-      "last_read_fingerprint": "1286717116c9d9c5d263bd817681ff3a719dc43e84be443cb31c69a4ac59477e",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01"
-      ],
+      "fingerprint": "1aaa397ebf7f09cf8b98119aa51f460623d2320c8ffc634254dd351f2e9f1c0d",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified \u2014 TOOL-BUILD-ZHL"
     },
     {
@@ -5525,7 +5509,7 @@
         "REG-105",
         "REG-106"
       ],
-      "fingerprint": "8c8721f9243d7bc6548734211d276b7440e68647e2b3810b3d349675a49d3185",
+      "fingerprint": "61a9c46010773e3359f729cd2fb833c66cfe9d4c2bcfb2f54f7e425bcab9fe80",
       "last_read_fingerprint": null
     },
     {

@@ -12,7 +12,7 @@
 | build_config | 2 | 0 | 1 | 0 | 1 |
 | ci | 6 | 0 | 2 | 0 | 4 |
 | deploy_config | 1 | 0 | 0 | 0 | 1 |
-| engine | 6 | 0 | 0 | 0 | 6 |
+| engine | 6 | 0 | 1 | 0 | 5 |
 | engine_reference | 1 | 0 | 0 | 0 | 1 |
 | native_android | 16 | 0 | 1 | 0 | 15 |
 | native_bridge | 2 | 0 | 0 | 0 | 2 |
@@ -20,14 +20,14 @@
 | pwa | 3 | 0 | 1 | 0 | 2 |
 | release_config | 1 | 0 | 1 | 0 | 0 |
 | test_infrastructure | 55 | 0 | 25 | 0 | 30 |
-| tooling | 53 | 0 | 13 | 0 | 40 |
+| tooling | 53 | 0 | 14 | 0 | 39 |
 | ui_core | 16 | 0 | 13 | 0 | 3 |
 | ui_shell | 2 | 0 | 2 | 0 | 0 |
 | web_css | 4 | 0 | 3 | 0 | 1 |
 | web_markup | 7 | 0 | 4 | 1 | 2 |
 | web_runtime | 24 | 0 | 15 | 0 | 9 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **202** | **0** | **81** | **1** | **120** |
+| **Total** | **202** | **0** | **83** | **1** | **118** |
 
 ## Units
 
@@ -60,7 +60,7 @@
 | UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 422 | P2 | IN_PROGRESS | - |
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 338 | P2 | IN_PROGRESS | - |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 548 | P2 | VERIFIED | EXT-03, EXT-06, COV-01 |
-| UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 892 | P1 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
+| UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 896 | P1 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
 | UI-MARKUP-HEADER | web_markup | `ui/markup-header.html:1` | 750 | P2 | IN_PROGRESS | - |
 | UI-MARKUP-REC-PLANNER | web_markup | `ui/markup-rec-planner.html:1` | 75 | P1 | IN_PROGRESS | - |
 | UI-MARKUP-TEC-PLANNER | web_markup | `ui/markup-tec-planner.html:1` | 557 | P1 | IN_PROGRESS | - |
@@ -81,7 +81,7 @@
 | ENG-ZHL-PHYSICS | engine | `zhl-physics-core.js:1` | 189 | P1 | VERIFIED | REG-01, REG-22, REG-23 |
 | ENG-ZHL-GAS | engine | `zhl-gas-core.js:1` | 184 | P1 | VERIFIED | REG-10, REG-11, REG-12, REG-13, REG-14 |
 | ENG-ZHL-CCR | engine | `zhl-ccr-core.js:1` | 404 | P0 | VERIFIED | REG-06, REG-07, REG-29, REG-42 |
-| ENG-ZHL-SCHEDULE | engine | `zhl-schedule-core.js:1` | 657 | P0 | VERIFIED | REG-06, REG-22, REG-23, REG-38 |
+| ENG-ZHL-SCHEDULE | engine | `zhl-schedule-core.js:1` | 657 | P0 | IN_PROGRESS | - |
 | ENG-VPM | engine | `vpm-engine-core.js:1` | 2099 | P0 | VERIFIED | REG-31, REG-32, REG-33, REG-34 |
 | ENG-VPM-REFERENCE | engine_reference | `vpmb.py:1` | 2574 | P2 | VERIFIED | REG-01, REG-31 |
 | ENG-RDP | engine | `padi-engine.js:1` | 101 | P1 | VERIFIED | REG-24, REG-25, REG-56, REG-57 |
@@ -159,7 +159,7 @@
 | TOOL-AUDIT-COVERAGE-TEST | test_infrastructure | `tools/test_audit_coverage.py:1` | 211 | P1 | VERIFIED | COV-01 |
 | TOOL-BUILD-PAGES | tooling | `tools/build_pages_site.py:1` | 144 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-BUILD-VPM | tooling | `tools/build_vpm_bundle.py:1` | 104 | P1 | VERIFIED | COV-01, PARITY-01 |
-| TOOL-BUILD-ZHL | tooling | `tools/build_zhl_bundle.py:1` | 390 | P1 | VERIFIED | COV-01, PARITY-01 |
+| TOOL-BUILD-ZHL | tooling | `tools/build_zhl_bundle.py:1` | 374 | P1 | IN_PROGRESS | - |
 | TOOL-CHECK-PARITY | tooling | `tools/check_engine_parity.py:1` | 311 | P1 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-RUN-AUDIT-COVERAGE-SUITE-PY | tooling | `tools/run_audit_coverage_suite.py:1` | 66 | P0 | IN_PROGRESS | - |
 | TOOL-SEVEN-LENS-PROTOCOL | tooling | `tools/seven_lens_protocol.py:1` | 1285 | P0 | IN_PROGRESS | - |
@@ -233,5 +233,5 @@
 | TEST-SEVEN-LENS-CYCLE08-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-08-shell-results.json:1` | 242 | P0 | IN_PROGRESS | - |
 | TEST-UI-SHELL-RESULTS-REGRESSION | test_infrastructure | `dev/ui_shell_results_regression.py:1` | 392 | P0 | IN_PROGRESS | REG-95, REG-96, REG-97, REG-98, REG-99 |
 | TEST-UI-RESULTS-CSS-REGRESSION | test_infrastructure | `dev/ui_results_css_regression.py:1` | 407 | P0 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
-| TEST-UI-VISUAL-CONTRACT-REGRESSION | test_infrastructure | `dev/ui_visual_contract_regression.py:1` | 191 | P0 | IN_PROGRESS | REG-100, REG-101, REG-102, REG-103, REG-104 |
+| TEST-UI-VISUAL-CONTRACT-REGRESSION | test_infrastructure | `dev/ui_visual_contract_regression.py:1` | 500 | P0 | IN_PROGRESS | REG-100, REG-101, REG-102, REG-103, REG-104, REG-105, REG-106 |
 | TEST-C07-PRE-RESULTS-REGRESSION | test_infrastructure | `dev/c07_pre_results_regression.py:1` | 48 | P0 | IN_PROGRESS | REG-89, REG-90 |
