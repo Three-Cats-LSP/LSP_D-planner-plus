@@ -689,6 +689,14 @@
     "REG-104": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
       "case_id": "SL-VIS-SWITCH-ROW-THEME-PARITY"
+    },
+    "REG-105": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-C08-MOBILE-NAV-TILE-GRID"
+    },
+    "REG-106": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"
     }
   },
   "findings": [
@@ -5513,7 +5521,9 @@
         "REG-101",
         "REG-102",
         "REG-103",
-        "REG-104"
+        "REG-104",
+        "REG-105",
+        "REG-106"
       ],
       "fingerprint": "8c8721f9243d7bc6548734211d276b7440e68647e2b3810b3d349675a49d3185",
       "last_read_fingerprint": null
@@ -6449,7 +6459,9 @@
         "SL-VIS-GAS-SWITCH-TOKEN-PARITY",
         "SL-VIS-DESKTOP-TWO-COLUMN-LAYOUT",
         "SL-VIS-DECO-BANNER-GAS-LABELS",
-        "SL-VIS-SWITCH-ROW-THEME-PARITY"
+        "SL-VIS-SWITCH-ROW-THEME-PARITY",
+        "SL-C08-MOBILE-NAV-TILE-GRID",
+        "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"
       ]
     }
   ],

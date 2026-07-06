@@ -16,6 +16,7 @@ if str(ROOT / "dev") not in sys.path:
     sys.path.insert(0, str(ROOT / "dev"))
 
 from playwright_boot import boot_app_page  # noqa: E402
+from playwright_restore import CAPTURE_PROBE_STATE_JS, restore_probe_state  # noqa: E402
 from test_http import serve_www  # noqa: E402
 from tools.audit.suite_emit import case_row, finish_suite  # noqa: E402
 
@@ -26,8 +27,25 @@ CASE_IDS = (
     "SL-VIS-DESKTOP-TWO-COLUMN-LAYOUT",
     "SL-VIS-DECO-BANNER-GAS-LABELS",
     "SL-VIS-SWITCH-ROW-THEME-PARITY",
+    "SL-C08-MOBILE-NAV-TILE-GRID",
+    "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT",
 )
 
+NAV_VIEWPORTS = (
+    (375, 667),
+    (400, 800),
+    (480, 800),
+    (667, 375),
+    (1280, 800),
+)
+
+NAV_BTN_IDS = (
+    "navBtnRec",
+    "navBtnBuh",
+    "navBtnVpm",
+    "navBtnTools",
+    "navBtnSettings",
+)
 
 GENERATE_JS = r"""
 async () => {
@@ -106,6 +124,220 @@ CAPTURE_JS = r"""
 }
 """
 
+NAV_GRID_PROBE_JS = r"""
+async (btnIds) => {
+  const nav = document.getElementById('mainNavBar');
+  if (!nav) return { ok: false, reason: 'missing_nav' };
+  const navRect = nav.getBoundingClientRect();
+  const cols = getComputedStyle(nav).gridTemplateColumns.split(' ').filter(Boolean).length;
+  const width = window.innerWidth;
+  const portrait = width <= 420;
+  const tablet = width > 420 && width <= 720;
+  const desktop = width > 720;
+
+  const borderVisible = (el, side) => {
+    const cs = getComputedStyle(el);
+    const prop = side === 'bottom' ? 'borderBottomWidth' : 'borderRightWidth';
+    const style = side === 'bottom' ? cs.borderBottomStyle : cs.borderRightStyle;
+    return parseFloat(cs[prop]) > 0 && style !== 'none';
+  };
+
+  const probeBtn = (id) => {
+    const el = document.getElementById(id);
+    if (!el) return null;
+    const rect = el.getBoundingClientRect();
+    const cs = getComputedStyle(el);
+    return {
+      id,
+      left: rect.left,
+      top: rect.top,
+      right: rect.right,
+      bottom: rect.bottom,
+      width: rect.width,
+      height: rect.height,
+      gridColumn: cs.gridColumnStart + '/' + cs.gridColumnEnd,
+      gridRow: cs.gridRowStart + '/' + cs.gridRowEnd,
+      borderBottom: borderVisible(el, 'bottom'),
+      borderRight: borderVisible(el, 'right'),
+      active: el.classList.contains('active'),
+    };
+  };
+
+  const orphanProbe = () => {
+    const settings = document.getElementById('navBtnSettings');
+    if (!settings) return { orphan: true, reason: 'missing_settings' };
+    const sRect = settings.getBoundingClientRect();
+    const x = sRect.right + Math.max(4, (navRect.right - sRect.right) / 2);
+    const y = sRect.top + sRect.height / 2;
+    if (x >= navRect.right - 2) return { orphan: false };
+    const hit = document.elementFromPoint(x, y);
+    const orphan = !hit || (hit.id !== 'navBtnSettings' && !hit.classList?.contains('main-nav-btn'));
+    return { orphan, hitId: hit?.id || null, x, y };
+  };
+
+  const activeRuns = [];
+  for (const id of btnIds) {
+    const btn = document.getElementById(id);
+    if (!btn) continue;
+    btn.click();
+    await new Promise(r => setTimeout(r, 80));
+    const buttons = btnIds.map(probeBtn).filter(Boolean);
+    const tools = buttons.find(b => b.id === 'navBtnTools');
+    const settings = buttons.find(b => b.id === 'navBtnSettings');
+    const areaSum = buttons.reduce((sum, b) => sum + b.width * b.height, 0);
+    const coverage = areaSum / Math.max(1, navRect.width * navRect.height);
+  const settingsFullRow = !portrait || (settings && settings.width >= navRect.width * 0.9);
+    const toolsSeparated = !portrait || (tools && tools.borderBottom);
+    const desktopEqual = desktop && buttons.length === 5
+      && buttons.every(b => Math.abs(b.width - navRect.width / 5) < navRect.width * 0.08);
+    const tabletFilled = !tablet || (
+      settings && settings.gridColumn.includes('span')
+        ? settings.width >= navRect.width * 0.55
+        : settings && settings.width >= navRect.width * 0.28
+    );
+    const orphan = orphanProbe();
+    activeRuns.push({
+      activeId: id,
+      buttons,
+      coverage,
+      settingsFullRow,
+      toolsSeparated,
+      desktopEqual,
+      tabletFilled,
+      orphan,
+      cols,
+    });
+  }
+
+  document.getElementById('navBtnBuh')?.click();
+  await new Promise(r => setTimeout(r, 50));
+
+  const finalButtons = btnIds.map(probeBtn).filter(Boolean);
+  const finalOrphan = orphanProbe();
+  const toolsFinal = finalButtons.find(b => b.id === 'navBtnTools');
+  const settingsFinal = finalButtons.find(b => b.id === 'navBtnSettings');
+
+  const ok = activeRuns.every(run => {
+    if (run.orphan.orphan) return false;
+    if (portrait && !run.settingsFullRow) return false;
+    if (portrait && !run.toolsSeparated) return false;
+    if (desktop && !run.desktopEqual) return false;
+    if (tablet && !run.tabletFilled) return false;
+    return run.buttons.length === 5;
+  }) && !finalOrphan.orphan
+    && (!portrait || (settingsFinal && settingsFinal.width >= navRect.width * 0.9))
+    && (!portrait || (toolsFinal && toolsFinal.borderBottom));
+
+  return {
+    ok,
+    width,
+    portrait,
+    tablet,
+    desktop,
+    cols,
+    navRect: { width: navRect.width, height: navRect.height },
+    finalButtons,
+    finalOrphan,
+    activeRuns,
+  };
+}
+"""
+
+GAS_LABEL_PROBE_JS = r"""
+async () => {
+  const forbidden = /\bEAN\s*\d+\b|\bEAN\d+\b|(?<!100)\b\d{1,2}%\b|\b[0-9]\/(?:\d{2}|\d)\b/i;
+  const canonicalCases = [
+    [0.21, 0, 'Air'],
+    [1.0, 0, '100%'],
+    [0.50, 0, '50/00'],
+    [0.80, 0, '80/00'],
+    [0.32, 0, '32/00'],
+    [0.18, 0.45, '18/45'],
+    [0.08, 0.70, '08/70'],
+  ];
+  const canonical = canonicalCases.map(([o2, he, expected]) => {
+    const actual = getGasLabel(o2, he);
+    const bundleActual = ZhlEngineBundle?.getGasLabel?.(o2, he);
+    return {
+      expected,
+      actual,
+      bundleActual,
+      ok: actual === expected && bundleActual === expected,
+    };
+  });
+
+  const setMix = (id, val) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value = val;
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  };
+  const setCustomTrimix = (prefix, o2, he) => {
+    setMix(`${prefix}Mix`, 'trimix');
+    const o2El = document.getElementById(`${prefix}TrimixO2`);
+    const heEl = document.getElementById(`${prefix}TrimixHe`);
+    if (o2El) { o2El.value = String(o2); o2El.dispatchEvent(new Event('input', { bubbles: true })); }
+    if (heEl) { heEl.value = String(he); heEl.dispatchEvent(new Event('input', { bubbles: true })); }
+  };
+
+  window._zhlHeadless = false;
+  setMainNav('buh');
+  setMix('dg1Mix', 'ean50');
+  setMix('dg2Mix', 'ean80');
+  setCustomTrimix('dg3', 18, 45);
+  setCustomTrimix('dg4', 8, 70);
+  setMix('dg5Mix', 'o2');
+
+  const depth = document.getElementById('tecDepth');
+  const bt = document.getElementById('tecBT');
+  if (depth) depth.value = '50';
+  if (bt) bt.value = '20';
+  if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
+  document.getElementById('tecGenerateBtn')?.click();
+  let generated = false;
+  for (let i = 0; i < 40; i++) {
+    await new Promise(r => setTimeout(r, 250));
+    if (document.querySelectorAll('#decoTableBody tr').length >= 5) {
+      generated = true;
+      break;
+    }
+  }
+
+  const collectTexts = () => {
+    const texts = [];
+    document.querySelectorAll('#decoTableBody td[data-label="Mix"], #decoTableBody tr[data-phase="switch"] td[data-label="Mix"]')
+      .forEach(td => texts.push(td.textContent.trim()));
+    document.querySelectorAll('#resultsPanel .gas-pills .gas-pill')
+      .forEach(el => texts.push(el.textContent.trim()));
+    document.querySelectorAll('#decoProfileLegend .legend-item')
+      .forEach(el => texts.push(el.textContent.trim()));
+    document.querySelectorAll('#decoProfileSvg text')
+      .forEach(el => texts.push(el.textContent.trim()));
+    if (typeof buildExportText === 'function') texts.push(buildExportText('deco'));
+    if (typeof buildContingencyText === 'function') {
+      try { texts.push(buildContingencyText('lost_gas')); } catch (_) {}
+    }
+    return texts.filter(Boolean);
+  };
+
+  const labels = collectTexts();
+  const joined = labels.join('\n');
+  const forbiddenHits = (joined.match(new RegExp(forbidden.source, forbidden.flags + 'g')) || []);
+  const operationalRequired = ['50/00', '80/00'];
+  const operationalOk = operationalRequired.every(label => joined.includes(label));
+
+  return {
+    generated,
+    canonical,
+    canonicalOk: canonical.every(row => row.ok),
+    labelsSample: labels.slice(0, 40),
+    forbiddenHits: [...new Set(forbiddenHits)],
+    operationalOk,
+    parityOk: canonical.every(row => row.actual === row.bundleActual),
+  };
+}
+"""
+
 
 def _capture(browser, base_url: str, viewport: tuple[int, int], light: bool) -> dict:
     context = browser.new_context(viewport={"width": viewport[0], "height": viewport[1]})
@@ -128,11 +360,60 @@ def _capture(browser, base_url: str, viewport: tuple[int, int], light: bool) -> 
         context.close()
 
 
+def _capture_nav(browser, base_url: str, viewport: tuple[int, int], light: bool) -> dict:
+    context = browser.new_context(viewport={"width": viewport[0], "height": viewport[1]})
+    page = context.new_page()
+    page.set_default_timeout(120_000)
+    errors: list[str] = []
+    page.on("pageerror", lambda exc: errors.append(str(exc)))
+    page.on("console", lambda msg: errors.append(msg.text) if msg.type == "error" else None)
+    probe_state = None
+    try:
+        boot_app_page(page, base_url)
+        probe_state = page.evaluate(CAPTURE_PROBE_STATE_JS)
+        page.evaluate(
+            "light => document.body.classList.toggle('light-theme', light)", light
+        )
+        dark_probe = page.evaluate(NAV_GRID_PROBE_JS, list(NAV_BTN_IDS))
+        page.evaluate("() => document.body.classList.add('light-theme')")
+        light_probe = page.evaluate(NAV_GRID_PROBE_JS, list(NAV_BTN_IDS))
+        return {
+            "dark": dark_probe,
+            "light": light_probe,
+            "console_errors": errors,
+        }
+    finally:
+        if probe_state is not None:
+            restore_probe_state(page, probe_state)
+        context.close()
+
+
+def _capture_gas_labels(browser, base_url: str) -> dict:
+    context = browser.new_context(viewport={"width": 1280, "height": 800})
+    page = context.new_page()
+    page.set_default_timeout(120_000)
+    errors: list[str] = []
+    page.on("pageerror", lambda exc: errors.append(str(exc)))
+    page.on("console", lambda msg: errors.append(msg.text) if msg.type == "error" else None)
+    probe_state = None
+    try:
+        boot_app_page(page, base_url)
+        probe_state = page.evaluate(CAPTURE_PROBE_STATE_JS)
+        result = page.evaluate(GAS_LABEL_PROBE_JS)
+        result["console_errors"] = errors
+        return result
+    finally:
+        if probe_state is not None:
+            restore_probe_state(page, probe_state)
+        context.close()
+
+
 def main() -> int:
     from playwright.sync_api import sync_playwright
 
     results = {case_id: True for case_id in CASE_IDS}
     details: dict[str, dict] = {}
+    nav_details: dict[str, dict] = {}
 
     with serve_www(ROOT, port=0) as base_url:
         with sync_playwright() as p:
@@ -141,6 +422,12 @@ def main() -> int:
                 key = f"{width}x{height}-dark"
                 details[key] = _capture(browser, base_url, (width, height), False)
             details["1280x800-light"] = _capture(browser, base_url, (1280, 800), True)
+
+            for width, height in NAV_VIEWPORTS:
+                key = f"{width}x{height}"
+                nav_details[key] = _capture_nav(browser, base_url, (width, height), False)
+
+            gas_details = _capture_gas_labels(browser, base_url)
             browser.close()
 
     dark = details["1280x800-dark"]
@@ -178,10 +465,32 @@ def main() -> int:
         for c in (dark, light)
     )
 
+    nav_ok = all(
+        capture["dark"]["ok"]
+        and capture["light"]["ok"]
+        and not capture["console_errors"]
+        for capture in nav_details.values()
+    )
+    results["SL-C08-MOBILE-NAV-TILE-GRID"] = nav_ok
+
+    gas_ok = (
+        gas_details.get("generated")
+        and gas_details.get("canonicalOk")
+        and gas_details.get("parityOk")
+        and gas_details.get("operationalOk")
+        and not gas_details.get("forbiddenHits")
+        and not gas_details.get("console_errors")
+    )
+    results["SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"] = bool(gas_ok)
+
     for case_id, passed in results.items():
         print(f"  {'PASS' if passed else 'FAIL'} [{case_id}]")
     if not all(results.values()):
-        print(json.dumps(details, indent=2))
+        print(json.dumps({
+            "visual": details,
+            "nav": nav_details,
+            "gas": gas_details,
+        }, indent=2))
 
     rows = [case_row(case_id, passed) for case_id, passed in results.items()]
     finish_suite(ROOT, rows, 0 if all(results.values()) else 1)
