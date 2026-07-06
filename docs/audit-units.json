@@ -697,6 +697,10 @@
     "REG-106": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
       "case_id": "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"
+    },
+    "REG-107": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-C08-NO-REDUNDANT-BOTTOM-NAV"
     }
   },
   "findings": [

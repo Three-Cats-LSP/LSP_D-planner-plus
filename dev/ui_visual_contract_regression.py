@@ -29,6 +29,7 @@ CASE_IDS = (
     "SL-VIS-SWITCH-ROW-THEME-PARITY",
     "SL-C08-MOBILE-NAV-TILE-GRID",
     "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT",
+    "SL-C08-NO-REDUNDANT-BOTTOM-NAV",
 )
 
 NAV_VIEWPORTS = (
@@ -45,6 +46,12 @@ NAV_BTN_IDS = (
     "navBtnVpm",
     "navBtnTools",
     "navBtnSettings",
+)
+
+BOTTOM_NAV_VIEWPORTS = (
+    (375, 667),
+    (667, 375),
+    (1280, 800),
 )
 
 GENERATE_JS = r"""
@@ -339,6 +346,125 @@ async () => {
 """
 
 
+BOTTOM_NAV_PROBE_JS = r"""
+async () => {
+  const vis = (id) => {
+    const el = document.getElementById(id);
+    if (!el) return 'missing';
+    return getComputedStyle(el).display;
+  };
+  const width = window.innerWidth;
+  const mobile = width <= 640;
+
+  const bottomNav = document.getElementById('bottomNav');
+  const bottomNavPresent = !!bottomNav;
+  const bottomNavVisible = !!(bottomNav && getComputedStyle(bottomNav).display !== 'none');
+  const bottomNavHeight = bottomNav?.getBoundingClientRect().height || 0;
+
+  const bnavButtons = document.querySelectorAll('.bnav-btn').length;
+  const duplicateControls = {
+    planner: !!document.getElementById('bnavPlanner') && !!document.getElementById('navBtnBuh'),
+    tools: !!document.getElementById('bnavTools') && !!document.getElementById('navBtnTools'),
+    settings: !!document.getElementById('bnavSettings') && !!document.getElementById('navBtnSettings'),
+    ref: !!document.getElementById('bnavRef') && !!document.getElementById('navRef'),
+  };
+
+  let cssHasBottomNav = false;
+  for (const sheet of document.styleSheets) {
+    try {
+      for (const rule of sheet.cssRules || []) {
+        const text = rule.cssText || '';
+        if (text.includes('.bottom-nav') || text.includes('.bnav-btn')) {
+          cssHasBottomNav = true;
+          break;
+        }
+      }
+    } catch (_) {}
+    if (cssHasBottomNav) break;
+  }
+
+  const setNavModeSrc = typeof setNavMode === 'function' ? setNavMode.toString() : '';
+  const shellHasBnavWriters = /bnav|bottomNav|bottom-nav/.test(setNavModeSrc);
+
+  const app = document.querySelector('.app');
+  const appPaddingBottom = app ? parseFloat(getComputedStyle(app).paddingBottom) : 0;
+  const appRect = app?.getBoundingClientRect();
+  const bottomGap = appRect ? Math.max(0, window.innerHeight - appRect.bottom) : 0;
+
+  const navChecks = {};
+  document.getElementById('navBtnRec')?.click();
+  await new Promise(r => setTimeout(r, 120));
+  navChecks.rec = vis('plannerView') !== 'none';
+
+  document.getElementById('navBtnBuh')?.click();
+  await new Promise(r => setTimeout(r, 120));
+  navChecks.buh = vis('tecPlannerView') !== 'none';
+
+  document.getElementById('navBtnVpm')?.click();
+  await new Promise(r => setTimeout(r, 120));
+  navChecks.vpm = vis('tecPlannerView') !== 'none';
+
+  document.getElementById('navBtnTools')?.click();
+  await new Promise(r => setTimeout(r, 120));
+  navChecks.tools = document.getElementById('toolsPageWrap')?.classList.contains('visible') === true;
+
+  document.getElementById('navBtnSettings')?.click();
+  await new Promise(r => setTimeout(r, 120));
+  navChecks.settings = document.getElementById('settingsPageWrap')?.classList.contains('visible') === true;
+
+  document.getElementById('navRef')?.click();
+  await new Promise(r => setTimeout(r, 120));
+  const refModal = document.getElementById('referenceModal');
+  navChecks.ref = refModal ? getComputedStyle(refModal).display !== 'none' : false;
+  if (refModal && getComputedStyle(refModal).display !== 'none') {
+    document.querySelector('#referenceModal button[onclick*="toggleReference"]')?.click();
+    await new Promise(r => setTimeout(r, 80));
+  }
+
+  document.getElementById('navBtnBuh')?.click();
+  await new Promise(r => setTimeout(r, 120));
+  if (typeof setMobilePlanView === 'function') setMobilePlanView('results');
+  await new Promise(r => setTimeout(r, 120));
+  const onResults = vis('resultsPanel') !== 'none';
+  document.getElementById('navBtnBuh')?.click();
+  await new Promise(r => setTimeout(r, 120));
+  const backToPlanner = vis('tecPlannerView') !== 'none' && vis('resultsPanel') === 'none';
+
+  const desktopNavCount = width > 640
+    ? document.querySelectorAll('#mainNavBar .main-nav-btn').length
+    : null;
+
+  const ok = !bottomNavPresent
+    && bnavButtons === 0
+    && !shellHasBnavWriters
+    && !cssHasBottomNav
+    && Object.values(navChecks).every(Boolean)
+    && backToPlanner
+    && (mobile ? !bottomNavVisible && bottomNavHeight < 1 && appPaddingBottom < 64 : true)
+    && (mobile ? bottomGap < 8 : desktopNavCount === 5);
+
+  return {
+    width,
+    mobile,
+    bottomNavPresent,
+    bottomNavVisible,
+    bottomNavHeight,
+    duplicateControls,
+    bnavButtons,
+    cssHasBottomNav,
+    shellHasBnavWriters,
+    appPaddingBottom,
+    bottomGap,
+    navChecks,
+    onResults,
+    backToPlanner,
+    desktopNavCount,
+    ok,
+  };
+}
+"""
+
+
 def _capture(browser, base_url: str, viewport: tuple[int, int], light: bool) -> dict:
     context = browser.new_context(viewport={"width": viewport[0], "height": viewport[1]})
     page = context.new_page()
@@ -388,6 +514,29 @@ def _capture_nav(browser, base_url: str, viewport: tuple[int, int], light: bool)
         context.close()
 
 
+def _capture_bottom_nav(browser, base_url: str, viewport: tuple[int, int], light: bool) -> dict:
+    context = browser.new_context(viewport={"width": viewport[0], "height": viewport[1]})
+    page = context.new_page()
+    page.set_default_timeout(120_000)
+    errors: list[str] = []
+    page.on("pageerror", lambda exc: errors.append(str(exc)))
+    page.on("console", lambda msg: errors.append(msg.text) if msg.type == "error" else None)
+    probe_state = None
+    try:
+        boot_app_page(page, base_url)
+        probe_state = page.evaluate(CAPTURE_PROBE_STATE_JS)
+        page.evaluate(
+            "light => document.body.classList.toggle('light-theme', light)", light
+        )
+        probe = page.evaluate(BOTTOM_NAV_PROBE_JS)
+        probe["console_errors"] = errors
+        return probe
+    finally:
+        if probe_state is not None:
+            restore_probe_state(page, probe_state)
+        context.close()
+
+
 def _capture_gas_labels(browser, base_url: str) -> dict:
     context = browser.new_context(viewport={"width": 1280, "height": 800})
     page = context.new_page()
@@ -414,6 +563,7 @@ def main() -> int:
     results = {case_id: True for case_id in CASE_IDS}
     details: dict[str, dict] = {}
     nav_details: dict[str, dict] = {}
+    bottom_nav_details: dict[str, dict] = {}
 
     with serve_www(ROOT, port=0) as base_url:
         with sync_playwright() as p:
@@ -426,6 +576,13 @@ def main() -> int:
             for width, height in NAV_VIEWPORTS:
                 key = f"{width}x{height}"
                 nav_details[key] = _capture_nav(browser, base_url, (width, height), False)
+
+            for width, height in BOTTOM_NAV_VIEWPORTS:
+                for light in (False, True):
+                    key = f"{width}x{height}-{'light' if light else 'dark'}"
+                    bottom_nav_details[key] = _capture_bottom_nav(
+                        browser, base_url, (width, height), light
+                    )
 
             gas_details = _capture_gas_labels(browser, base_url)
             browser.close()
@@ -483,12 +640,20 @@ def main() -> int:
     )
     results["SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"] = bool(gas_ok)
 
+    bottom_nav_ok = all(
+        capture.get("ok")
+        and not capture.get("console_errors")
+        for capture in bottom_nav_details.values()
+    )
+    results["SL-C08-NO-REDUNDANT-BOTTOM-NAV"] = bottom_nav_ok
+
     for case_id, passed in results.items():
         print(f"  {'PASS' if passed else 'FAIL'} [{case_id}]")
     if not all(results.values()):
         print(json.dumps({
             "visual": details,
             "nav": nav_details,
+            "bottom_nav": bottom_nav_details,
             "gas": gas_details,
         }, indent=2))
 
