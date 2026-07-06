@@ -322,7 +322,7 @@
   ],
   "audit_commit": "32fda7bbd1896864465f830012a246b58d94109b",
   "verified_source_commit": "f1f6207d5485d84603662efeb2e66ca00e8bf8a3",
-  "verification_status": "PENDING_INDEPENDENT_VERIFICATION",
+  "verification_status": "PASSED",
   "fixer": {
     "regression_id": "REG-76",
     "finding_id": "SL-C05-M-01",
@@ -1605,7 +1605,7 @@
     }
   ],
   "audit_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
-  "notes": "C08-FIXER evidence repair at f1f6207: supplemental browser traces for REG-105/106/107; findings SL-C08-M-02/M-03/M-04 remain OPEN; ledger IN_PROGRESS; closure_evidence_commit absent; verification_status PENDING_INDEPENDENT_VERIFICATION.",
+  "notes": "C08-V-D independent verification PASSED at metadata HEAD 887dec0 against protected source f1f6207: 7/7 browser traces (repeat=2), REG-105/106/107 behavioral contracts, static/ci/release green; findings SL-C08-M-02/M-03/M-04 remain OPEN; ledger IN_PROGRESS; closure_evidence_commit absent; CLOSER may begin.",
   "visual_contract_integrator": {
     "pr": 215,
     "source_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
@@ -1674,6 +1674,64 @@
         "summary": "Orphaned .mode-ref-btn rule remains with zero DOM/markup writers; dead CSS only."
       }
     ]
+  },
+  "evidence_repair_verifier_attestation": {
+    "role": "INDEPENDENT_VERIFIER",
+    "session": "C08-V-D",
+    "metadata_head": "887dec0ab643eba6e75b987ed5eb06064a6fa5bc",
+    "verified_source_commit": "f1f6207d5485d84603662efeb2e66ca00e8bf8a3",
+    "finding_ids": [
+      "SL-C08-M-02",
+      "SL-C08-M-03",
+      "SL-C08-M-04"
+    ],
+    "regression_ids": [
+      "REG-105",
+      "REG-106",
+      "REG-107"
+    ],
+    "verified_at": "2026-07-06T13:22:30.000000+00:00",
+    "reviewer": "Cursor Agent (C08-V-D independent verifier)",
+    "gate_results": {
+      "seven_lens_browser_trace": 0,
+      "ui_visual_contract_regression": 0,
+      "ui_shell_results_regression": 0,
+      "ui_results_css_regression": 0,
+      "ui_css_regression": 0,
+      "engine_regression": 0,
+      "build_zhl_bundle_check": 0,
+      "assemble_ui_html_verify": 0,
+      "unittest_protocol_and_trace": 0,
+      "seven_lens_check_all": 0,
+      "audit_static": 0,
+      "audit_ci": 0,
+      "audit_release": 0
+    },
+    "trace_verification": {
+      "trace_count": 7,
+      "repeat": 2,
+      "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
+      "spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8",
+      "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
+      "artifact_sha256": "236cc50edfd57c9f7a3b6226e9d4c179c833e5df18d9854b3cf1aa68d822da20",
+      "case_ids": [
+        "SL-C08-MOBILE-NAV-TILE-GRID",
+        "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT",
+        "SL-C08-NO-REDUNDANT-BOTTOM-NAV"
+      ]
+    },
+    "receipt_hashes": {
+      "ER-C08-BASELINE-NAV-GAS": "26f32381880345a6ecce534838a803f4d25a4dfda5b72aec255cdaa1f06786a7",
+      "ER-C08-POST-NAV-GRID": "3d2f76e76c52a8098ebfbbdcdfe7e014e8a3c6c1489e690c44a54ce8c2ac9ea1",
+      "ER-C08-POST-GAS-LABELS": "17989bdb2732cab81681f646890134c3690beeeb044aee337bd0b6cc3af2ccee",
+      "ER-C08-BASELINE-BOTTOM-NAV": "58d80c2e4226b951bf65d816e1679362bd516aef4bfbd032baa2652bf94b00b4",
+      "ER-C08-POST-BOTTOM-NAV": "661fbcafcf810db08f7d6be6770c53636a8c24c64fccccb7959626994c33d806"
+    },
+    "behavioral_contracts": {
+      "REG-105": "PASSED — mobile nav grid has no orphan cell; Tools/Settings borders/dividers; canonical nav usable",
+      "REG-106": "PASSED — operational gas labels use Air, 100%, or OO/HH; no EAN50/EAN80 in schedule/banner/graph/export-visible consumers",
+      "REG-107": "PASSED — #bottomNav absent; no duplicate fixed bottom nav; no dead 72px reserve; canonical main nav works"
+    }
   },
   "dependency_re_reviews": [
     {
