@@ -5427,7 +5427,7 @@
       "evidence": [],
       "issue": "Cycle 08 UI-PLANNER-SHELL/UI-RESULTS-PANEL browser trace specification",
       "regression_cases": [],
-      "fingerprint": "cfd7d039215edccf883b5637b5835e40ce015387297c78e5ca5242a6a3cd60e4",
+      "fingerprint": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8",
       "last_read_fingerprint": null
     },
     {
