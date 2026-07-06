@@ -1165,16 +1165,16 @@
         "--profile",
         "static"
       ],
-      "commit": "f1f6207d5485d84603662efeb2e66ca00e8bf8a3",
+      "commit": "36b5d752792c40e8387411032e905fde00d59d8b",
       "observable_assertions": [
-        "Static profile PASS after C08-V-B registry closure at metadata HEAD"
+        "STATIC profile PASS at FIXER rebinding HEAD 36b5d75"
       ],
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit check --profile static",
       "worktree_clean": true,
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-static.json",
-      "receipt_sha256": "6fce0f89b7136e6f2fd64dfd7c86e942554584d7f8b85c2903f7e68030e0312d",
+      "receipt_sha256": "8102107ed6f83dda735fcd25e3f95fbaad7a2d6483a4c980805d9da63318237a",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -1190,16 +1190,16 @@
         "--profile",
         "ci"
       ],
-      "commit": "f1f6207d5485d84603662efeb2e66ca00e8bf8a3",
+      "commit": "36b5d752792c40e8387411032e905fde00d59d8b",
       "observable_assertions": [
-        "CI profile PASS after C08-V-B registry closure at metadata HEAD"
+        "CI profile PASS at FIXER rebinding HEAD 36b5d75"
       ],
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit run --profile ci",
       "worktree_clean": true,
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-ci.json",
-      "receipt_sha256": "31bf7deb34cd7e557744a5828f98c16ea762c7ddd5470b35a3712bd498521b69",
+      "receipt_sha256": "fa6cfde1f99af56932c978daaab2fbcf9f03baaa185d0b8fa86081cedd5d6d73",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -1728,9 +1728,9 @@
       "ER-C08-POST-BOTTOM-NAV": "661fbcafcf810db08f7d6be6770c53636a8c24c64fccccb7959626994c33d806"
     },
     "behavioral_contracts": {
-      "REG-105": "PASSED — mobile nav grid has no orphan cell; Tools/Settings borders/dividers; canonical nav usable",
-      "REG-106": "PASSED — operational gas labels use Air, 100%, or OO/HH; no EAN50/EAN80 in schedule/banner/graph/export-visible consumers",
-      "REG-107": "PASSED — #bottomNav absent; no duplicate fixed bottom nav; no dead 72px reserve; canonical main nav works"
+      "REG-105": "PASSED \u2014 mobile nav grid has no orphan cell; Tools/Settings borders/dividers; canonical nav usable",
+      "REG-106": "PASSED \u2014 operational gas labels use Air, 100%, or OO/HH; no EAN50/EAN80 in schedule/banner/graph/export-visible consumers",
+      "REG-107": "PASSED \u2014 #bottomNav absent; no duplicate fixed bottom nav; no dead 72px reserve; canonical main nav works"
     }
   },
   "dependency_re_reviews": [
