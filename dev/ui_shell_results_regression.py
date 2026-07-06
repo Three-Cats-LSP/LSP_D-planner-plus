@@ -83,8 +83,37 @@ async () => {
 }
 """
 
+WAIT_SCHEDULE_READY_JS = r"""
+async (minRows = 5, timeoutMs = 15000, settleMs = 400) => {
+  const deadline = Date.now() + timeoutMs;
+  let last = { hasResults: false, rows: 0 };
+  let stableSince = 0;
+  let stableRows = -1;
+  while (Date.now() < deadline) {
+    const hasResults = document.getElementById('resultsPanel')?.classList.contains('has-results') === true;
+    const rows = document.querySelectorAll('#decoTableBody tr').length;
+    last = { hasResults, rows };
+    if (hasResults && rows >= minRows) {
+      if (rows === stableRows) {
+        if (!stableSince) stableSince = Date.now();
+        if (Date.now() - stableSince >= settleMs) return last;
+      } else {
+        stableRows = rows;
+        stableSince = Date.now();
+      }
+    } else {
+      stableRows = -1;
+      stableSince = 0;
+    }
+    await new Promise(r => setTimeout(r, 200));
+  }
+  return last;
+}
+"""
+
 NAV_PRESERVES_JS = r"""
 async () => {
+  const waitScheduleReady = """ + WAIT_SCHEDULE_READY_JS.strip() + r""";
   const prevHeadless = window._zhlHeadless;
   window._zhlHeadless = false;
   try {
@@ -95,15 +124,10 @@ async () => {
     if (btEl) btEl.value = '25';
     if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
     document.getElementById('tecGenerateBtn')?.click();
-    let rows = 0;
-    for (let i = 0; i < 30; i++) {
-      await new Promise(r => setTimeout(r, 250));
-      rows = document.querySelectorAll('#decoTableBody tr').length;
-      if (rows >= 5) break;
-    }
+    const ready = await waitScheduleReady(5);
     const before = {
-      hasResults: document.getElementById('resultsPanel')?.classList.contains('has-results'),
-      rows,
+      hasResults: ready.hasResults,
+      rows: ready.rows,
       tab: document.querySelector('#tecResultTabs .result-tab-btn.active')?.dataset?.tab || '',
     };
     if (!before.hasResults || before.rows < 5) {
@@ -112,10 +136,10 @@ async () => {
     document.getElementById('navBtnTools')?.click();
     await new Promise(r => setTimeout(r, 300));
     document.getElementById('navBtnBuh')?.click();
-    await new Promise(r => setTimeout(r, 500));
+    const afterReady = await waitScheduleReady(5, 15000, 400);
     const after = {
-      hasResults: document.getElementById('resultsPanel')?.classList.contains('has-results'),
-      rows: document.querySelectorAll('#decoTableBody tr').length,
+      hasResults: afterReady.hasResults,
+      rows: afterReady.rows,
       tab: document.querySelector('#tecResultTabs .result-tab-btn.active')?.dataset?.tab || '',
       decoDisplay: document.getElementById('decoResult')?.style.display || '',
     };
@@ -234,6 +258,7 @@ MOBILE_INIT_JS = r"""
 
 SETTINGS_NAV_JS = r"""
 async () => {
+  const waitScheduleReady = """ + WAIT_SCHEDULE_READY_JS.strip() + r""";
   const prevHeadless = window._zhlHeadless;
   window._zhlHeadless = false;
   try {
@@ -244,21 +269,19 @@ async () => {
     if (btEl) btEl.value = '25';
     if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
     document.getElementById('tecGenerateBtn')?.click();
-    let beforeRows = 0;
-    for (let i = 0; i < 30; i++) {
-      await new Promise(r => setTimeout(r, 250));
-      beforeRows = document.querySelectorAll('#decoTableBody tr').length;
-      if (beforeRows >= 5) break;
+    const beforeReady = await waitScheduleReady(5);
+    const beforeRows = beforeReady.rows;
+    if (!beforeReady.hasResults || beforeRows < 5) {
+      return { beforeRows, afterRows: 0, ok: false, reason: 'generate_failed' };
     }
     document.getElementById('navBtnSettings')?.click();
     await new Promise(r => setTimeout(r, 300));
     document.getElementById('navBtnBuh')?.click();
-    await new Promise(r => setTimeout(r, 500));
-    const afterRows = document.querySelectorAll('#decoTableBody tr').length;
+    const afterReady = await waitScheduleReady(5, 15000, 400);
     return {
       beforeRows,
-      afterRows,
-      ok: beforeRows >= 5 && afterRows >= beforeRows,
+      afterRows: afterReady.rows,
+      ok: afterReady.hasResults && afterReady.rows >= beforeRows,
     };
   } finally {
     window._zhlHeadless = prevHeadless;

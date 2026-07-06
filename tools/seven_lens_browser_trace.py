@@ -19,6 +19,12 @@ if str(DEV) not in sys.path:
 TRACE_SCHEMA_VERSION = 3
 
 
+def _is_ephemeral_trace_output(path: Path) -> bool:
+    """Suite-order and other regression probes must not leak into dev/."""
+    normalized = path.name.replace("\\", "/")
+    return "-temp" in normalized or normalized.endswith(".tmp.json")
+
+
 def validate_trace_spec(spec: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if spec.get("schema_version") != TRACE_SCHEMA_VERSION:
@@ -637,12 +643,17 @@ def main() -> int:
         "traces": results,
         "passed": bool(results) and all(r["passed"] for r in results),
     }
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(artifact, indent=2) + "\n", encoding="utf-8")
-    print(f"SEVEN-LENS BROWSER TRACE: {'PASS' if artifact['passed'] else 'FAIL'}")
-    for row in results:
-        print(f"  [{'PASS' if row['passed'] else 'FAIL'}] {row['id']}")
-    return 0 if artifact["passed"] else 1
+    ephemeral = _is_ephemeral_trace_output(output)
+    try:
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(json.dumps(artifact, indent=2) + "\n", encoding="utf-8")
+        print(f"SEVEN-LENS BROWSER TRACE: {'PASS' if artifact['passed'] else 'FAIL'}")
+        for row in results:
+            print(f"  [{'PASS' if row['passed'] else 'FAIL'}] {row['id']}")
+        return 0 if artifact["passed"] else 1
+    finally:
+        if ephemeral:
+            output.unlink(missing_ok=True)
 
 
 if __name__ == "__main__":

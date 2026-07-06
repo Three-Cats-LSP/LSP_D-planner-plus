@@ -3306,7 +3306,7 @@
       "evidence": [],
       "issue": "GitHub #133\u2013#138 audit regressions and Cycle 31\u201334 verification",
       "regression_cases": [],
-      "fingerprint": "a93ee0b7b8ee61cc65bcab28d89a19ec0205e2adb1a11718e9c0bb01e1993751",
+      "fingerprint": "7947bd61e6aa62b5f876dc60c7da1308d85cf82026ba80293c3dec78219837ef",
       "last_read_fingerprint": null,
       "audit_issue": 169
     },
@@ -4237,7 +4237,7 @@
       "evidence": [],
       "issue": "Seven-lens browser event and consumer value tracing",
       "regression_cases": [],
-      "fingerprint": "2da9d3885834c40da66e016b51388375e0cf1baae132050eb3f8af458ee44279",
+      "fingerprint": "dcd595a937de18d9624b5bddfcf516e4df866b9fdf5b26cbc1d7ff54dd7dbab3",
       "last_read_fingerprint": null
     },
     {
@@ -4252,7 +4252,7 @@
       "evidence": [],
       "issue": "Seven-lens browser trace assertion tests",
       "regression_cases": [],
-      "fingerprint": "c91d915d86caa7536e08bc759fd533a8a303c606613e998bada610a5c7d735c6",
+      "fingerprint": "6bdbf7ded465126736bdf2e5724f1ebab91ca278f5e0c521d45dfc9b936fe15a",
       "last_read_fingerprint": null
     },
     {
@@ -5448,7 +5448,7 @@
         "REG-98",
         "REG-99"
       ],
-      "fingerprint": "927f756f0803459f2fbc16f329385311766ba394d75d25f33c9374d3f39120dd",
+      "fingerprint": "194c02cfbd3423f48ee6749bbefaa51e0787f0c3b4dfdc34ee08cca779d06fdd",
       "last_read_fingerprint": null
     },
     {

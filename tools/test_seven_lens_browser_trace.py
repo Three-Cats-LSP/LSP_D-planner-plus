@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 from typing import Any
@@ -19,6 +20,17 @@ from tools.seven_lens_browser_trace import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def _ephemeral_trace_output(suffix: str = "") -> Path:
+    handle = tempfile.NamedTemporaryFile(
+        suffix=f"{suffix}.json",
+        prefix="seven-lens-browser-trace-suite-order-",
+        delete=False,
+    )
+    path = Path(handle.name)
+    handle.close()
+    return path
 
 
 def valid_spec():
@@ -541,7 +553,7 @@ class ShellRestoreDebounceTests(unittest.TestCase):
 class SuiteOrderRegressionTests(unittest.TestCase):
     def test_trace_then_shell_three_times(self):
         spec = ROOT / "docs/seven-lens-traces/cycle-08-shell-results.json"
-        trace_out = ROOT / "dev/seven-lens-browser-trace-suite-order-temp.json"
+        trace_out = _ephemeral_trace_output("temp")
         try:
             for run in range(3):
                 proc = subprocess.run(
@@ -566,7 +578,7 @@ class SuiteOrderRegressionTests(unittest.TestCase):
 
     def test_shell_then_trace(self):
         spec = ROOT / "docs/seven-lens-traces/cycle-08-shell-results.json"
-        trace_out = ROOT / "dev/seven-lens-browser-trace-suite-order-temp2.json"
+        trace_out = _ephemeral_trace_output("temp2")
         try:
             shell_proc = subprocess.run(
                 [sys.executable, str(ROOT / "dev/ui_shell_results_regression.py")],
