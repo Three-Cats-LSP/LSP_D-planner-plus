@@ -111,7 +111,7 @@ async () => {
     }
     document.getElementById('navBtnTools')?.click();
     await new Promise(r => setTimeout(r, 300));
-    document.getElementById('bnavPlanner')?.click();
+    document.getElementById('navBtnBuh')?.click();
     await new Promise(r => setTimeout(r, 500));
     const after = {
       hasResults: document.getElementById('resultsPanel')?.classList.contains('has-results'),
@@ -252,7 +252,7 @@ async () => {
     }
     document.getElementById('navBtnSettings')?.click();
     await new Promise(r => setTimeout(r, 300));
-    document.getElementById('bnavPlanner')?.click();
+    document.getElementById('navBtnBuh')?.click();
     await new Promise(r => setTimeout(r, 500));
     const afterRows = document.querySelectorAll('#decoTableBody tr').length;
     return {

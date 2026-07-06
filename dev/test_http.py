@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8765
-APP_PLANNER_MARKERS = (b"bnavPlanner", b'id="bnavPlanner"', b"id='bnavPlanner'")
+APP_PLANNER_MARKERS = (b"mainNavBar", b'id="mainNavBar"', b'id="navBtnBuh"')
 
 # Copied beside synced www/ so Playwright hits the same app shell as Capacitor/APK.
 STAGE_DIRS = ("tests", "lib")
@@ -108,7 +108,7 @@ def verify_app_root(base_url: str, *, timeout: float = 10.0, max_bytes: int = 2_
         raise RuntimeError(f"Cannot verify app root at {index_url}: {exc}") from exc
     if not any(marker in body for marker in APP_PLANNER_MARKERS):
         raise RuntimeError(
-            f"Served root at {base_url} is not the LSP planner app (missing #bnavPlanner). "
+            f"Served root at {base_url} is not the LSP planner app (missing #mainNavBar). "
             "Another process may already be bound to the requested port."
         )
 

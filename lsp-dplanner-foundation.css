@@ -224,8 +224,6 @@ body.light-theme .algo-sub              { color: var(--text-faint) !important; }
 body.light-theme .results-section-label { color: var(--accent) !important; }
 body.light-theme .gas-warning-banner    { color: var(--orange) !important; }
 body.light-theme .gas-warning-banner *  { color: inherit !important; }
-body.light-theme .bnav-btn.active       { color: var(--accent) !important; }
-body.light-theme .bnav-btn              { color: var(--text-muted) !important; }
 body.light-theme .stepper-val           { color: var(--text) !important; }
 body.light-theme .result-tab-btn.active { color: var(--accent) !important; }
 body.light-theme .gf-preset-btn.active  { color: var(--accent) !important; }

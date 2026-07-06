@@ -73,13 +73,13 @@ class TestHttpLifecycleTests(unittest.TestCase):
             with serve_root(root, port=_free_port(), verify_app=False) as base_url:
                 with self.assertRaises(RuntimeError) as ctx:
                     verify_app_root(base_url)
-                self.assertIn("bnavPlanner", str(ctx.exception))
+                self.assertIn("mainNavBar", str(ctx.exception))
 
     def test_selected_port_propagates_through_serve_root(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / "index.html").write_text(
-                '<html><body><button id="bnavPlanner"></button></body></html>',
+                '<html><body><div id="mainNavBar"><button id="navBtnBuh"></button></div></body></html>',
                 encoding="utf-8",
             )
             preferred = _free_port()
@@ -90,7 +90,7 @@ class TestHttpLifecycleTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / "index.html").write_text(
-                '<html><body><button id="bnavPlanner"></button></body></html>',
+                '<html><body><div id="mainNavBar"><button id="navBtnBuh"></button></div></body></html>',
                 encoding="utf-8",
             )
             port = _free_port()
@@ -106,7 +106,7 @@ class TestHttpLifecycleTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / "index.html").write_text(
-                '<html><body><button id="bnavPlanner"></button></body></html>',
+                '<html><body><div id="mainNavBar"><button id="navBtnBuh"></button></div></body></html>',
                 encoding="utf-8",
             )
             ports = []
@@ -119,7 +119,7 @@ class TestHttpLifecycleTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / "index.html").write_text(
-                '<html><body><button id="bnavPlanner"></button></body></html>',
+                '<html><body><div id="mainNavBar"><button id="navBtnBuh"></button></div></body></html>',
                 encoding="utf-8",
             )
             ports: list[int] = []

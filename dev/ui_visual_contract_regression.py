@@ -439,9 +439,9 @@ async () => {
     && !shellHasBnavWriters
     && !cssHasBottomNav
     && Object.values(navChecks).every(Boolean)
-    && backToPlanner
-    && (mobile ? !bottomNavVisible && bottomNavHeight < 1 && appPaddingBottom < 64 : true)
-    && (mobile ? bottomGap < 8 : desktopNavCount === 5);
+    && (mobile ? backToPlanner : true)
+    && (mobile ? !bottomNavVisible && bottomNavHeight < 1 && appPaddingBottom < 64 : desktopNavCount === 5)
+    && bottomGap < 8;
 
   return {
     width,

@@ -6,7 +6,7 @@
     {
       "id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
       "case_ids": ["SL-C08-MOBILE-PANEL-EXCLUSIVE"],
-      "entry_event": "Mobile boot at 375x667; user toggles plan/results via bottom nav intent.",
+      "entry_event": "Mobile boot at 375x667; user toggles plan/results via main mode row.",
       "consumer_path": [
         "DOMContentLoaded initV3Layout -> _ensureMobilePlanViewBootstrap",
         "setMobilePlanView('plan'|'results') -> #recPlannerView|#tecPlannerView + #resultsPanel mobile-active",
@@ -14,8 +14,8 @@
         "visible planner view vs #resultsPanel"
       ],
       "state": {
-        "selectors": ["#bnavPlanner", "#tecGenerateBtn"],
-        "restore_order": ["#bnavPlanner", "#tecGenerateBtn"],
+        "selectors": ["#navBtnBuh", "#tecGenerateBtn"],
+        "restore_order": ["#navBtnBuh", "#tecGenerateBtn"],
         "globals": ["_zhlHeadless"]
       },
       "setup": [
@@ -36,7 +36,7 @@
             "results_mobile_active": "document.getElementById('resultsPanel')?.classList.contains('mobile-active') === true"
           }
         },
-        {"action": "click", "selector": "#bnavPlanner", "delay_ms": 300},
+        {"action": "click", "selector": "#navBtnBuh", "delay_ms": 300},
         {
           "capture": "canonical",
           "values": {
@@ -72,7 +72,7 @@
         "#tecGenerateBtn click",
         "_renderResultSummaryStrip -> #resultsPanel.has-results",
         "#navBtnTools click -> setNavMode('tools')",
-        "#bnavPlanner click -> setNavMode('planner') without schedule reset",
+        "#navBtnBuh click -> setNavMode('planner') without schedule reset",
         "#decoTableBody row count preserved"
       ],
       "state": {
@@ -207,8 +207,8 @@
         "repeat initV3Layout no-op"
       ],
       "state": {
-        "selectors": ["#bnavPlanner"],
-        "restore_order": ["#bnavPlanner"],
+        "selectors": ["#navBtnBuh"],
+        "restore_order": ["#navBtnBuh"],
         "globals": []
       },
       "setup": [
@@ -222,7 +222,7 @@
             "uses_ensure": "typeof initV3Layout === 'function' && initV3Layout.toString().includes('_ensureMobilePlanViewBootstrap')"
           }
         },
-        {"action": "click", "selector": "#bnavPlanner", "delay_ms": 300},
+        {"action": "click", "selector": "#navBtnBuh", "delay_ms": 300},
         {
           "capture": "observable",
           "values": {

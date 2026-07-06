@@ -59,9 +59,7 @@ function setMainNav(section, btn) {
 }
 
 function setNavMode(mode) {
-  document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
   if (mode === 'ref') {
-    document.getElementById('bnavRef')?.classList.add('active');
     toggleReference();
     return;
   }
@@ -74,7 +72,6 @@ function setNavMode(mode) {
   document.body.classList.toggle('algo-tools', mode === 'tools');
   syncEnvRowDisplay?.();
   if (mode === 'settings') {
-    document.getElementById('bnavSettings')?.classList.add('active');
     _highlightMainNav('settings');
     document.getElementById('algoLabel').textContent = 'SETTINGS';
     document.getElementById('algoSubtitle').textContent = 'Water · Units · Altitude';
@@ -82,14 +79,16 @@ function setNavMode(mode) {
     return;
   }
   if (mode === 'planner') {
-    document.getElementById('bnavPlanner')?.classList.add('active');
+    const section = plannerAlgo === 'rec'
+      ? 'rec'
+      : (plannerAlgo === 'ZHLC_GF' ? 'buh' : 'vpm');
+    _highlightMainNav(section);
     setMobilePlanView('plan');
     _updatePlanPanelSections();
     _updatePlannerSubtitle();
     return;
   }
   if (mode === 'tools') {
-    document.getElementById('bnavTools')?.classList.add('active');
     _highlightMainNav('tools');
     algo = 'tools';
     document.getElementById('algoLabel').textContent = 'TOOLS';
