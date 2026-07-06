@@ -10,7 +10,7 @@ function getGasLabel(fO2, fHe) {
   const o2pct = Math.round(fO2 * 100);
   const hePct = Math.round((fHe || 0) * 100);
   if (o2pct === 21 && hePct === 0) return 'Air';
-  return `${o2pct}/${String(hePct).padStart(2, '0')}`;
+  return `${String(o2pct).padStart(2, '0')}/${String(hePct).padStart(2, '0')}`;
 }
 
 function insertMdpStopDepths(stopDepths, enabled, min9m, min6m) {
