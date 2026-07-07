@@ -494,7 +494,7 @@
         "SL-C07-L-03",
         "SL-C07-L-04"
       ],
-      "reviewed_fingerprint": "6a8acb742295f087674bc0d974ca53aac00d0a6c3a3b461befb3c2ccfaac3703",
+      "reviewed_fingerprint": "a285604c348376de871a8fa34d29c4996620ab2f9df897fb7ffc7817487b8d1a",
       "verified_source_commit": "63b30d2df28d5cbe497fc8055c44a3eac57e0855",
       "last_checked_commit": "pending-current-cycle-9",
       "verified_at": "2026-07-05T10:08:17+00:00",
@@ -532,16 +532,16 @@
         "P02": "lsp-dplanner-results.css:501-967"
       },
       "dependency_re_review": {
-        "session": "C09-DEP-RESULTS-SCHEDULE-COLUMN-ORDER",
+        "session": "C09-DEP-RESULTS-CONTINGENCY-GAS-BARS",
         "reviewed_fingerprint_at_review": "a0e026fc004bdf058cd6e44ded0a0d1faf1621ec679f205cf4555a5fc4e7b224",
-        "current_fingerprint": "6a8acb742295f087674bc0d974ca53aac00d0a6c3a3b461befb3c2ccfaac3703",
+        "current_fingerprint": "a285604c348376de871a8fa34d29c4996620ab2f9df897fb7ffc7817487b8d1a",
         "current_fingerprint_p01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
-        "current_fingerprint_p02": "234b1bd22d1b8dc15c5c6b72e07db541aa034ad806032ff9b2d37c5827f8b9f6",
+        "current_fingerprint_p02": "eed22e208485f60ad1690f25675cdd65bc9f8d0126c57e6d75f5a23ab36dfa39",
         "result": "NO_NEW_FINDING",
-        "verified_at": "2026-07-07T14:12:28Z",
+        "verified_at": "2026-07-08T00:00:00Z",
         "verifier": "Codex simplified dependency re-review"
       },
-      "last_read_fingerprint": "6a8acb742295f087674bc0d974ca53aac00d0a6c3a3b461befb3c2ccfaac3703"
+      "last_read_fingerprint": "a285604c348376de871a8fa34d29c4996620ab2f9df897fb7ffc7817487b8d1a"
     },
     {
       "unit_id": "UI-PLANNER-SHELL",

@@ -38,6 +38,7 @@ CASE_IDS = (
     "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD",
     "SL-C09-MOBILE-TISSUE-TAB-VISIBLE",
     "SL-VIS-GAS-CONSUMPTION-BARS",
+    "SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS",
 )
 
 NAV_VIEWPORTS = (
@@ -638,6 +639,62 @@ async () => {
 """
 
 
+CONTINGENCY_GAS_PROBE_JS = r"""
+async () => {
+  const setVal = (id, value) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value = value;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  };
+  window._zhlHeadless = false;
+  setMainNav('buh');
+  setVal('tecDepth', '40');
+  setVal('tecBT', '30');
+  setVal('cylBot_size', '1');
+  setVal('cylBot_pres', '80');
+  setVal('cylBot_reserve', '50');
+  if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
+  document.getElementById('tecGenerateBtn')?.click();
+  let generated = false;
+  for (let i = 0; i < 60; i++) {
+    await new Promise(r => setTimeout(r, 250));
+    if (document.querySelectorAll('#decoTableBody tr').length >= 5) {
+      generated = true;
+      break;
+    }
+  }
+  if (typeof switchResultTab === 'function') {
+    switchResultTab('contingency', document.querySelector('#tecResultTabs [data-tab="contingency"]'));
+  }
+  if (typeof selectContBT === 'function') selectContBT(3);
+  if (typeof calcContingency === 'function') calcContingency();
+  for (let i = 0; i < 40; i++) {
+    await new Promise(r => setTimeout(r, 250));
+    if (document.querySelectorAll('#emergencyGasConsumption .gas-usage-card').length > 0) break;
+  }
+  const emergency = document.getElementById('emergencyGasConsumption');
+  const cards = [...document.querySelectorAll('#emergencyGasConsumption .gas-usage-card')];
+  const warnings = [...document.querySelectorAll('#emergencyGasConsumption .gas-consumption-warning, #emergencyGasConsumption .gas-usage-card--critical')];
+  return {
+    generated,
+    visible: !!emergency && getComputedStyle(emergency).display !== 'none',
+    tableCount: document.querySelectorAll('#emergencyGasConsumption table.gas-plan-table').length,
+    cardCount: cards.length,
+    criticalCount: document.querySelectorAll('#emergencyGasConsumption .gas-usage-card--critical').length,
+    warningText: document.querySelector('#emergencyGasConsumption .gas-consumption-warning')?.textContent?.trim() || '',
+    hasThreshold: !!document.querySelector('#emergencyGasConsumption #gasLowThresholdPct'),
+    labels: cards.map(el => el.dataset.gasLabel || ''),
+    hasBars: cards.every(el => !!el.querySelector('.gas-usage-track') && !!el.querySelector('.gas-usage-remaining-bar')),
+    hasTurnPressureInline: cards.some(el => /Used:.*Turn Pressure:/i.test(el.querySelector('.gas-usage-foot')?.textContent || '')),
+    hasTurnPressColumn: /TURN\s+PRESS(?!URE)/i.test(emergency?.textContent || ''),
+    warningCount: warnings.length,
+  };
+}
+"""
+
+
 BOTTOM_NAV_PROBE_JS = r"""
 async () => {
   const vis = (id) => {
@@ -841,6 +898,22 @@ def _capture_bottom_nav(browser, base_url: str, viewport: tuple[int, int], light
         context.close()
 
 
+def _capture_contingency_gas(browser, base_url: str) -> dict:
+    context = browser.new_context(viewport={"width": 375, "height": 667})
+    page = context.new_page()
+    page.set_default_timeout(120_000)
+    errors: list[str] = []
+    page.on("pageerror", lambda exc: errors.append(str(exc)))
+    page.on("console", lambda msg: errors.append(msg.text) if msg.type == "error" else None)
+    try:
+        boot_app_page(page, base_url)
+        capture = page.evaluate(CONTINGENCY_GAS_PROBE_JS)
+        capture["console_errors"] = errors
+        return capture
+    finally:
+        context.close()
+
+
 def _capture_gas_labels(browser, base_url: str) -> dict:
     context = browser.new_context(viewport={"width": 1280, "height": 800})
     page = context.new_page()
@@ -931,6 +1004,7 @@ def main() -> int:
             gas_details = _capture_gas_labels(browser, base_url)
             mobile_warning_details = _capture_mobile_warnings(browser, base_url)
             vpm_details = _capture_vpm_mode(browser, base_url)
+            contingency_gas_details = _capture_contingency_gas(browser, base_url)
             browser.close()
 
     dark = details["1280x800-dark"]
@@ -1022,6 +1096,19 @@ def main() -> int:
         and c["gasConsumptionBars"]["sufficientLeftBorderOnly"]
         for c in captures
     )
+    results["SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS"] = bool(
+        contingency_gas_details.get("generated")
+        and contingency_gas_details.get("visible")
+        and contingency_gas_details.get("tableCount") == 0
+        and contingency_gas_details.get("cardCount", 0) >= 1
+        and contingency_gas_details.get("criticalCount", 0) >= 1
+        and contingency_gas_details.get("hasBars")
+        and contingency_gas_details.get("hasThreshold")
+        and contingency_gas_details.get("hasTurnPressureInline")
+        and not contingency_gas_details.get("hasTurnPressColumn")
+        and "Air" in contingency_gas_details.get("warningText", "")
+        and not contingency_gas_details.get("console_errors")
+    )
 
     nav_ok = all(
         capture["dark"]["ok"]
@@ -1075,6 +1162,7 @@ def main() -> int:
             "gas": gas_details,
             "mobile_warning": mobile_warning_details,
             "vpm": vpm_details,
+            "contingency_gas": contingency_gas_details,
         }, indent=2))
 
     rows = [case_row(case_id, passed) for case_id, passed in results.items()]

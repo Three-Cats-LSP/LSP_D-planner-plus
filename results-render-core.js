@@ -34,9 +34,13 @@ function getGasLowThresholdPct() {
 function setGasLowThresholdPct(value) {
   const next = Math.min(50, Math.max(5, Math.round(Number.parseFloat(value) || 20)));
   localStorage.setItem(GAS_LOW_THRESHOLD_KEY, String(next));
-  const gasEl = document.getElementById('gasConsumptionSummary');
-  if (gasEl && gasEl.style.display !== 'none' && window._lastGasConsumed) {
-    renderGasConsumptionBars(gasEl, window._lastGasConsumed, { title: 'Gas Consumption' });
+  const mainGasEl = document.getElementById('gasConsumptionSummary');
+  if (mainGasEl && mainGasEl.style.display !== 'none' && window._lastGasConsumed) {
+    renderGasConsumptionBars(mainGasEl, window._lastGasConsumed, { title: 'Gas Consumption' });
+  }
+  const emergencyGasEl = document.getElementById('emergencyGasConsumption');
+  if (emergencyGasEl && emergencyGasEl.style.display !== 'none' && window._contingencyScratchGasConsumed) {
+    renderGasConsumptionBars(emergencyGasEl, window._contingencyScratchGasConsumed, { title: 'Emergency Gas Consumption' });
   }
 }
 
@@ -1171,47 +1175,8 @@ function renderZhlScheduleResults(ctx) {
       calcGasPlan();
       renderGasConsumptionBars(gasEl, gasConsumed, { title: cardTitle });
     } else {
-      // Emergency plan — keep simple sufficient/short table
-      const volUnitV2 = lspVolUnit();
-      const presUnitV2 = units === 'imperial' ? 'psi' : 'bar';
-      const fracE = (_gasRule === 'half') ? 0.5 : (1/3);
-      const sacUnitE = lspSacUnit();
-      let emergRows = '';
-      let emergWarn = '';
-      Object.entries(gasConsumed).forEach(([gas, reqL], gi) => {
-        const cylIds = [['cylBot_size','cylBot_pres','cylBot_reserve'],['cylTravelGas_size','cylTravelGas_pres','cylTravelGas_reserve'],['cylDg1_size','cylDg1_pres','cylDg1_reserve'],['cylDg2_size','cylDg2_pres','cylDg2_reserve']][gi];
-        if (!cylIds) return;
-        const sR = parseFloat(document.getElementById(cylIds[0])?.value)||0;
-        const fR = parseFloat(document.getElementById(cylIds[1])?.value)||0;
-        const rR = parseFloat(document.getElementById(cylIds[2])?.value)||0;
-        const sL = units==='imperial'?sR*28.3168:sR;
-        const fB = units==='imperial'?fR/14.5038:fR;
-        const rB = units==='imperial'?rR/14.5038:rR;
-        const avail = sL>0&&fB>rB?(fB-rB)*sL:null;
-        const reqValid = Number.isFinite(reqL);
-        const short2 = reqValid && avail!=null && reqL>avail;
-        const sufCol2 = !reqValid ? 'var(--orange)' : short2?'var(--red)':avail!=null?'var(--green)':'var(--muted)';
-        const reqVolE = gpVolWithUnit(reqL);
-        const availVolE = avail != null ? gpVolWithUnit(avail) : null;
-        const shortVolE = gpVolWithUnit(Math.max(0, reqL - (avail || 0)));
-        const sufTxt2 = !reqValid ? 'Invalid gas' : short2?`✗ short ${shortVolE}`:avail!=null?'✓ OK':'—';
-        emergRows += `<tr><td style="font-weight:700;">${gas}</td><td style="color:${short2?'var(--red)':'var(--text)'};">${reqVolE}</td><td style="color:${avail!=null?(short2?'var(--red)':'var(--green)'):'var(--muted)'};">${availVolE != null ? availVolE : '—'}</td><td style="color:${sufCol2};font-weight:700;">${sufTxt2}</td></tr>`;
-        if (short2) emergWarn += `<div class="alert dang" style="margin-top:6px;"><span>⚠</span><div><strong>${gas} insufficient</strong> — need ${reqVolE}, have ${availVolE}.</div></div>`;
-      });
-      const html2 = `<div style="margin-top:14px;">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">${cardTitle}</div>
-        <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
-          <table class="gas-plan-table" style="margin-top:0;">
-            <colgroup><col style="width:20%"><col style="width:25%"><col style="width:25%"><col style="width:30%"></colgroup>
-            <thead><tr><th>GAS</th><th>REQUIRED</th><th>AVAILABLE</th><th>STATUS</th></tr></thead>
-            <tbody>${emergRows}</tbody>
-          </table>
-        </div>
-        ${emergWarn}
-      </div>`;
-      gasEl.innerHTML = html2;
-      gasEl.style.display = 'block';
-      _setGasWarningBanner('');
+      window._contingencyScratchGasConsumed = Object.assign({}, gasConsumed);
+      renderGasConsumptionBars(gasEl, gasConsumed, { title: cardTitle });
     }
 
   } else if (!_contingencyRunning) {

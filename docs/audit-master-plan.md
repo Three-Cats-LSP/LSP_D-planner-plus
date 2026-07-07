@@ -46,7 +46,7 @@
 | 14 | APP-EXPORT | 3254 | - | export-core text/PDF READ |
 | 15 | UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 622 | - | plot-core render and waypoints READ in at least 2 bounded sessions |
 | 16 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 755 | - | Profile tool and plot init READ |
-| 17 | UI-VPM-RENDER, UI-ZHL-RESULTS | 989 | - | results-render-core READ |
+| 17 | UI-VPM-RENDER, UI-ZHL-RESULTS | 950 | - | results-render-core READ |
 | 18 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 511 | ENG-ZHL-SCHEDULE | ZHL/CCR delegate thin layer READ |
 | 19 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 597 | ENG-ZHL-CCR | Deco physics and schedule inputs READ |
 | 20 | UI-ZHL-RUNNER-SETUP, UI-ZHL-RUNNER-ENGINE | 483 | ENG-ZHL-SCHEDULE | ZHL runner setup and engine invocation READ |

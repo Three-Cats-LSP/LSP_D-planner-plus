@@ -739,6 +739,10 @@
     "REG-115": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
       "case_id": "SL-C09-MOBILE-TISSUE-TAB-VISIBLE"
+    },
+    "REG-116": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS"
     }
   },
   "findings": [
@@ -1794,7 +1798,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "6a8acb742295f087674bc0d974ca53aac00d0a6c3a3b461befb3c2ccfaac3703",
+      "fingerprint": "a285604c348376de871a8fa34d29c4996620ab2f9df897fb7ffc7817487b8d1a",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2271,7 +2275,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
-      "fingerprint": "f8e97bcf66cf5ebb846f3976d80846c767e26eb23d93a295735c0144a71d4946",
+      "fingerprint": "faeac43f5c7b1c3fbf65fc4cd47a2915f69965d7bda956901336589ea956837e",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5617,7 +5621,7 @@
         "REG-110",
         "REG-111"
       ],
-      "fingerprint": "2de421d444760aad4617060cbc988c20a2ecdd64ee16959455207414497ec560",
+      "fingerprint": "c62596df6d6b9ad647b79732ff4dcbc48171e4358189caa615b45477e83e0ccb",
       "last_read_fingerprint": null
     },
     {
@@ -6563,7 +6567,8 @@
         "SL-C09-SWITCH-ROW-BACKGROUND-PARITY",
         "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD",
         "SL-C09-MOBILE-TISSUE-TAB-VISIBLE",
-        "SL-VIS-GAS-CONSUMPTION-BARS"
+        "SL-VIS-GAS-CONSUMPTION-BARS",
+        "SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS"
       ]
     }
   ],
