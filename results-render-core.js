@@ -215,7 +215,7 @@ function renderGasConsumptionBars(container, gasConsumed, options) {
   }).join('');
 
   const warningHtml = warnings.length
-    ? `<div class="gas-consumption-warning alert dang"><span>!</span><div>${warnings.map(_gasCardHtml).join('<br>')}</div></div>`
+    ? `<div class="gas-consumption-warning alert dang"><span aria-hidden="true">⚠</span><div>${warnings.map(_gasCardHtml).join('<br>')}</div></div>`
     : '';
   const sacUnit = lspSacUnit();
   const sacBottom = document.getElementById('sacBottom')?.value || '';

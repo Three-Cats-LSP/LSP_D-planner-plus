@@ -482,7 +482,7 @@
       "boundary": "lsp-dplanner-results.css whole file (967 lines; parts P01 1-500 / P02 501-967)",
       "reviewer": "Cursor GPT-5.5 Medium",
       "review_session": "C07-A / C07-B",
-      "verification_session": "C07-V-A / C07-V-B / C07-R2-A / C07-R2-B / C09-DEP-RESULTS-A/B / C09-DEP-RESULTS-SCHEDULE-GEOMETRY / C09-DEP-RESULTS-MIX-LANE / C09-DEP-RESULTS-MOBILE-SCHEDULE-SCROLL / C09-DEP-RESULTS-SCHEDULE-COLUMN-ORDER",
+      "verification_session": "C07-V-A / C07-V-B / C07-R2-A / C07-R2-B / C09-DEP-RESULTS-A/B / C09-DEP-RESULTS-SCHEDULE-GEOMETRY / C09-DEP-RESULTS-MIX-LANE / C09-DEP-RESULTS-MOBILE-SCHEDULE-SCROLL / C09-DEP-RESULTS-SCHEDULE-COLUMN-ORDER / C09-DEP-RESULTS-GAS-WARNING-BANNERS",
       "verification_status": "PASSED",
       "verifier_requirement": "Cycle 9 dependency invalidation cleared by simplified re-review: P01 lines 1-500 and P02 lines 501-967.",
       "findings_open": [],
@@ -494,7 +494,7 @@
         "SL-C07-L-03",
         "SL-C07-L-04"
       ],
-      "reviewed_fingerprint": "a285604c348376de871a8fa34d29c4996620ab2f9df897fb7ffc7817487b8d1a",
+      "reviewed_fingerprint": "03e4ed71537e63a499e7532f240066fbc7833942c2aa6278899c35fdcc5034a4",
       "verified_source_commit": "63b30d2df28d5cbe497fc8055c44a3eac57e0855",
       "last_checked_commit": "pending-current-cycle-9",
       "verified_at": "2026-07-05T10:08:17+00:00",
@@ -532,16 +532,16 @@
         "P02": "lsp-dplanner-results.css:501-967"
       },
       "dependency_re_review": {
-        "session": "C09-DEP-RESULTS-CONTINGENCY-GAS-BARS",
-        "reviewed_fingerprint_at_review": "a0e026fc004bdf058cd6e44ded0a0d1faf1621ec679f205cf4555a5fc4e7b224",
-        "current_fingerprint": "a285604c348376de871a8fa34d29c4996620ab2f9df897fb7ffc7817487b8d1a",
+        "session": "C09-DEP-RESULTS-GAS-WARNING-BANNERS",
+        "reviewed_fingerprint_at_review": "a285604c348376de871a8fa34d29c4996620ab2f9df897fb7ffc7817487b8d1a",
+        "current_fingerprint": "03e4ed71537e63a499e7532f240066fbc7833942c2aa6278899c35fdcc5034a4",
         "current_fingerprint_p01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
-        "current_fingerprint_p02": "eed22e208485f60ad1690f25675cdd65bc9f8d0126c57e6d75f5a23ab36dfa39",
+        "current_fingerprint_p02": "e66c626af3f9a3354d78956d7cada94e27dc926ddeb1dfea641e1b6829c5d724",
         "result": "NO_NEW_FINDING",
         "verified_at": "2026-07-08T00:00:00Z",
         "verifier": "Codex simplified dependency re-review"
       },
-      "last_read_fingerprint": "a285604c348376de871a8fa34d29c4996620ab2f9df897fb7ffc7817487b8d1a"
+      "last_read_fingerprint": "03e4ed71537e63a499e7532f240066fbc7833942c2aa6278899c35fdcc5034a4"
     },
     {
       "unit_id": "UI-PLANNER-SHELL",

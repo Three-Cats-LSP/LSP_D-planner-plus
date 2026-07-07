@@ -576,6 +576,11 @@ async () => {
     criticalGasCards: document.querySelectorAll('.gas-usage-card--critical').length,
     warningText: document.getElementById('gasWarningBanner')?.textContent?.trim() || '',
     cardWarningText: document.querySelector('.gas-consumption-warning')?.textContent?.trim() || '',
+    warningIconText: document.querySelector('#gasWarningBanner') ? getComputedStyle(document.querySelector('#gasWarningBanner'), '::before').content : '',
+    cardWarningIconText: document.querySelector('.gas-consumption-warning span')?.textContent?.trim() || '',
+    warningColor: document.getElementById('gasWarningBanner') ? getComputedStyle(document.getElementById('gasWarningBanner')).color.replace(/\s+/g, '').toLowerCase() : '',
+    cardWarningColor: document.querySelector('.gas-consumption-warning') ? getComputedStyle(document.querySelector('.gas-consumption-warning')).color.replace(/\s+/g, '').toLowerCase() : '',
+    criticalCardColor: document.querySelector('.gas-usage-card--critical') ? getComputedStyle(document.querySelector('.gas-usage-card--critical')).borderTopColor.replace(/\s+/g, '').toLowerCase() : '',
     checks,
     overflow,
     bodyScrollWidth: document.documentElement.scrollWidth,
@@ -584,6 +589,8 @@ async () => {
       && candidates.length >= 2
       && document.querySelectorAll('.gas-usage-card--critical').length >= 1
       && /Bottom|Air|No gas supply|Critical/i.test(document.querySelector('.gas-consumption-warning')?.textContent || '')
+      && document.querySelector('.gas-consumption-warning span')?.textContent?.trim() === '⚠'
+      && !(document.querySelector('.gas-consumption-warning')?.textContent || '').trim().startsWith('!')
       && overflow.length === 0
       && !bodyOverflow,
   };
@@ -1237,6 +1244,10 @@ def main() -> int:
 
     results["SL-C09-MOBILE-WARNING-WRAP"] = bool(
         mobile_warning_details.get("ok")
+        and "⚠" in mobile_warning_details.get("warningIconText", "")
+        and mobile_warning_details.get("cardWarningIconText") == "⚠"
+        and mobile_warning_details.get("warningColor") == mobile_warning_details.get("criticalCardColor")
+        and mobile_warning_details.get("cardWarningColor") == mobile_warning_details.get("criticalCardColor")
         and not mobile_warning_details.get("console_errors")
     )
     results["SL-C09-VPM-MODE-TOGGLE"] = bool(
