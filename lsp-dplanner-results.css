@@ -735,6 +735,34 @@ body.light-theme #resultsPanel .deco-table.schedule-table td.col-ppo2.ppo2-crit 
 #resultsPanel .leg-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 #resultsPanel .leg-icon { display: inline-flex; width: 14px; align-items: center; justify-content: center; flex-shrink: 0; }
 
+@media (max-width: 640px) {
+  #resultsPanel .schedule-wrap { padding-left: var(--space-2); padding-right: var(--space-2); overflow-x: visible; }
+  #resultsPanel .schedule-wrap > .deco-table-wrap { width: 100%; overflow-x: visible; }
+  #resultsPanel .deco-table.schedule-table { width: 100%; min-width: 0; table-layout: fixed; font-size: 10px; }
+  #resultsPanel .deco-table.schedule-table thead th { padding: 6px 2px; font-size: 8px; letter-spacing: 0.08em; }
+  #resultsPanel .deco-table.schedule-table tbody td { padding: 4px 2px; font-size: 10px; letter-spacing: 0; }
+  #resultsPanel .deco-table.schedule-table th:nth-child(1),
+  #resultsPanel .deco-table.schedule-table td:nth-child(1) { width: 8%; }
+  #resultsPanel .deco-table.schedule-table th:nth-child(2),
+  #resultsPanel .deco-table.schedule-table td:nth-child(2) { width: 14%; }
+  #resultsPanel .deco-table.schedule-table th:nth-child(3),
+  #resultsPanel .deco-table.schedule-table td:nth-child(3) { width: 13%; }
+  #resultsPanel .deco-table.schedule-table th:nth-child(4),
+  #resultsPanel .deco-table.schedule-table td:nth-child(4) { width: 16%; text-align: right; }
+  #resultsPanel .deco-table.schedule-table th:nth-child(5),
+  #resultsPanel .deco-table.schedule-table td:nth-child(5) { width: 17%; text-align: center; }
+  #resultsPanel .deco-table.schedule-table th:nth-child(6),
+  #resultsPanel .deco-table.schedule-table td:nth-child(6) { width: 15%; text-align: right; }
+  #resultsPanel .deco-table.schedule-table th:nth-child(7),
+  #resultsPanel .deco-table.schedule-table td:nth-child(7) { width: 17%; text-align: right; }
+  #resultsPanel .deco-table.schedule-table .phase-cell { padding: 0 1px; }
+  #resultsPanel .deco-table.schedule-table .ph { width: 16px; height: 16px; }
+  #resultsPanel .deco-table.schedule-table .col-depth { font-size: 10px; }
+  #resultsPanel .deco-table.schedule-table .col-gas { font-size: 9.5px; }
+  #resultsPanel .deco-table.schedule-table .col-ead { font-size: 9px; }
+  #resultsPanel .schedule-totals { gap: 3px 10px; font-size: 9px; padding: 8px 6px; }
+}
+
 /* Tissue saturation — status colors (bars + compartment detail table) */
 .deco-table.tissue-table tr.tissue-sat-safe td { background: var(--status-green-dim); }
 .deco-table.tissue-table tr.tissue-sat-caution td { background: var(--status-orange-dim); }

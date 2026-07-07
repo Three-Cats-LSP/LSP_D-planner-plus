@@ -1782,7 +1782,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "ee665a0790e8e03d6f33c02f7c0686e1a4277e94a54ab8d85fffa3997fd87fdc",
+      "fingerprint": "43ca8dc644ac41887d2c4a329e6bed9f9d61a71c7e78c61585041899248db388",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5605,7 +5605,7 @@
         "REG-110",
         "REG-111"
       ],
-      "fingerprint": "6d6e91f271f63edc5e298f9b4fb8c43063b9b27f8a6b1fd3a2bdb97c4b1446d9",
+      "fingerprint": "0ed71b9af7f184a6194404509d2ff6a96bb1cdc0f204fdfe696132a8b0b01656",
       "last_read_fingerprint": null
     },
     {
@@ -5687,7 +5687,7 @@
     },
     {
       "cycle": 7,
-      "max_new_application_lines": 937,
+      "max_new_application_lines": 965,
       "application_units": [
         "UI-CSS-RESULTS"
       ],

@@ -200,10 +200,16 @@ CAPTURE_JS = r"""
       runBeforeMix: !!(runHead && mixHead && runHead.center < mixHead.center),
       sevenCellsPerRow: nonSummaryRows.length > 0 && nonSummaryRows.every(row => row.cells.length === 7),
       noVisibleTts: !headerTexts.some(text => text.toUpperCase() === 'TTS') && ttsCells.length === 0,
-      depthCompact: !!(depthHead && stopHead && mixHead && phaseCell && depthHead.width <= stopHead.width * 1.05 && depthHead.width < mixHead.width && depthHead.width >= phaseCell.width),
+      depthCompact: !!(depthHead && stopHead && mixHead && phaseCell && (
+        window.innerWidth <= 640
+          ? depthHead.width <= 42 && depthHead.width < mixHead.width && depthHead.width >= phaseCell.width
+          : depthHead.width <= stopHead.width * 1.05 && depthHead.width < mixHead.width && depthHead.width >= phaseCell.width
+      )),
       mixLaneAligned: !!(mixHead && mixCell && switchMixCell && Math.abs(mixHead.center - mixCell.center) <= 4 && Math.abs(mixCell.center - switchMixCell.center) <= 4),
-      mixCompact: !!(mixHead && runHead && mixHead.width <= runHead.width * 0.95),
-      mobileScrollReady: !schedule || window.innerWidth > 640 || !!(scheduleWrap && scheduleRect && scheduleWrapRect && getComputedStyle(scheduleWrap).overflowX === 'auto' && scheduleRect.width > scheduleWrapRect.width),
+      mixCompact: !!(mixHead && runHead && (
+        window.innerWidth <= 640 ? mixHead.width <= 50 : mixHead.width <= runHead.width * 0.95
+      )),
+      mobileScrollReady: !schedule || window.innerWidth > 640 || !!(scheduleWrap && scheduleRect && scheduleWrapRect && scheduleRect.width <= scheduleWrapRect.width + 1 && getComputedStyle(scheduleWrap).overflowX !== 'scroll' && document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1),
     },
     gasConsumptionBars: {
       visible: !!(gasSummary && getComputedStyle(gasSummary).display !== 'none'),
@@ -874,7 +880,7 @@ def main() -> int:
     with serve_www(ROOT, port=0) as base_url:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
-            for width, height in ((1280, 800), (1024, 768), (768, 720), (667, 600)):
+            for width, height in ((1280, 800), (1024, 768), (768, 720), (667, 600), (375, 667)):
                 key = f"{width}x{height}-dark"
                 details[key] = _capture(browser, base_url, (width, height), False)
             details["1280x800-light"] = _capture(browser, base_url, (1280, 800), True)
@@ -911,7 +917,7 @@ def main() -> int:
     )
     results["SL-VIS-DESKTOP-TWO-COLUMN-LAYOUT"] = all(
         bool(c["layout"] and c["layout"]["sideBySide"])
-        for key, c in details.items() if not key.endswith("-light")
+        for key, c in details.items() if not key.endswith("-light") and int(key.split("x", 1)[0]) > 640
     )
     results["SL-VIS-DECO-BANNER-GAS-LABELS"] = all(
         c["generated"]
