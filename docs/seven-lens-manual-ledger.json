@@ -544,7 +544,7 @@
     },
     {
       "unit_id": "UI-PLANNER-SHELL",
-      "review_status": "IN_PROGRESS",
+      "review_status": "SEVEN_LENS_REVIEWED",
       "cycle_id": "SL-C08",
       "boundary": "planner-shell.js whole file (187 lines)",
       "reviewer": "Cursor FIXER Cycle 08",
@@ -553,24 +553,29 @@
       "findings_open": [],
       "findings_closed": [
         "SL-C08-H-02",
-        "SL-C08-L-02"
+        "SL-C08-L-02",
+        "SL-C08-M-04"
       ],
       "reviewed_fingerprint": "34442a4721978fc0b34bd8d8e65066fb87f08ea13f91e79c8c474ccc44f31ae9",
-      "verified_source_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
+      "verified_source_commit": "b4e9375f63b3be88e2e50e8a3d62a7f5e87d5d73",
       "verification_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
       "finding_ids": [
         "SL-C08-H-02",
-        "SL-C08-L-02"
+        "SL-C08-L-02",
+        "SL-C08-M-04"
       ],
       "parts": {
         "P01": "planner-shell.js:1-187"
       },
-      "verification_session": "C08-V-B",
-      "verifier": "Cursor Agent (C08-V-B attestation corrector)"
+      "verification_session": "C08-V-C / C08-V-D",
+      "verifier": "Cursor Agent (C08 CLOSER)",
+      "last_checked_commit": "f5bef4e",
+      "verified_at": "2026-07-07T05:23:50+00:00",
+      "closed_at": "2026-07-07T05:23:50+00:00"
     },
     {
       "unit_id": "UI-RESULTS-PANEL",
-      "review_status": "IN_PROGRESS",
+      "review_status": "SEVEN_LENS_REVIEWED",
       "cycle_id": "SL-C08",
       "boundary": "results-panel.js whole file (313 lines)",
       "reviewer": "Cursor FIXER Cycle 08",
@@ -583,7 +588,7 @@
         "SL-C08-L-01"
       ],
       "reviewed_fingerprint": "5753326e01ae9dc9aad521538c749387c35a542e9d1263b0c49c8de74ef5c217",
-      "verified_source_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
+      "verified_source_commit": "b4e9375f63b3be88e2e50e8a3d62a7f5e87d5d73",
       "verification_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
       "finding_ids": [
         "SL-C08-H-01",
@@ -593,8 +598,11 @@
       "parts": {
         "P01": "results-panel.js:1-313"
       },
-      "verification_session": "C08-V-B",
-      "verifier": "Cursor Agent (C08-V-B attestation corrector)"
+      "verification_session": "C08-V-C / C08-V-D",
+      "verifier": "Cursor Agent (C08 CLOSER)",
+      "last_checked_commit": "f5bef4e",
+      "verified_at": "2026-07-07T05:23:50+00:00",
+      "closed_at": "2026-07-07T05:23:50+00:00"
     }
   ]
 }

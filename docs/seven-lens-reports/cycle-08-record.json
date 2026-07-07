@@ -653,17 +653,24 @@
       "impact": "Mobile navigation shows dead grid space; Tools/Settings separator missing; unequal hit areas.",
       "evidence": "REG-105 SL-C08-MOBILE-NAV-TILE-GRID FAIL at ea18ac0 across 375x667, 400x800, 480x800, 667x375; elementFromPoint orphan beside Settings.",
       "recommendation": "Span Settings full final portrait row; add Tools lower divider; fill tablet row with Settings grid-column span.",
-      "status": "OPEN",
-      "verification_status": "PASSED",
+      "status": "CLOSED",
       "regression_ids": [
         "SL-C08-MOBILE-NAV-TILE-GRID"
       ],
       "stable_case": "SL-C08-MOBILE-NAV-TILE-GRID",
       "pre_fix_evidence_id": "ER-C08-BASELINE-NAV-GAS",
       "post_fix_evidence_id": "ER-C08-POST-NAV-GRID",
-      "verified_source_commit": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a",
-      "independent_verification_result": "PASSED (C08-V-C independent verification)",
-      "verification_session": "C08-V-C"
+      "resolution_commit": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a",
+      "fix_summary": "Span Settings full final portrait row; add Tools lower divider; fill tablet row with Settings grid-column span.",
+      "evidence_ids": [
+        "ER-C08-BASELINE-NAV-GAS",
+        "ER-C08-POST-NAV-GRID",
+        "ER-C08-RESTORE-SHELL",
+        "static",
+        "ci"
+      ],
+      "observable_contract": "375/667/800 portrait #mainNavBar grid fills Settings on the final row with Tools lower divider; no orphan non-interactive grid cell beside Settings at tablet widths.",
+      "state_restoration_evidence_id": "ER-C08-RESTORE-SHELL"
     },
     {
       "id": "SL-C08-M-03",
@@ -675,17 +682,24 @@
       "impact": "Operational plan gas labels violate OO/HH display contract across schedule, pills, graph, contingency, and exports.",
       "evidence": "REG-106 SL-C08-OPERATIONAL-GAS-LABEL-FORMAT FAIL at ea18ac0; forbidden EAN50/EAN80 in schedule mix cells while banners already show 50/00.",
       "recommendation": "Remove adapter shadow formatter; delegate deco gas labels to schedule-core getGasLabel; rebuild bundle; pad single-digit O2 in canonical formatter.",
-      "status": "OPEN",
-      "verification_status": "PASSED",
+      "status": "CLOSED",
       "regression_ids": [
         "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"
       ],
       "stable_case": "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT",
       "pre_fix_evidence_id": "ER-C08-BASELINE-NAV-GAS",
       "post_fix_evidence_id": "ER-C08-POST-GAS-LABELS",
-      "verified_source_commit": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a",
-      "independent_verification_result": "PASSED (C08-V-C independent verification)",
-      "verification_session": "C08-V-C"
+      "resolution_commit": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a",
+      "fix_summary": "Remove adapter shadow formatter; delegate deco gas labels to schedule-core getGasLabel; rebuild bundle with canonical OO/HH labels.",
+      "evidence_ids": [
+        "ER-C08-BASELINE-NAV-GAS",
+        "ER-C08-POST-GAS-LABELS",
+        "ER-C08-RESTORE-SHELL",
+        "static",
+        "ci"
+      ],
+      "observable_contract": "TEC schedule and operational gas consumers show canonical getGasLabel OO/HH strings; forbidden EAN50/EAN80 literals absent from mix cells, pills, and banners.",
+      "state_restoration_evidence_id": "ER-C08-RESTORE-SHELL"
     },
     {
       "id": "SL-C08-M-04",
@@ -697,17 +711,24 @@
       "impact": "Wasted mobile viewport; divergent nav highlight state; redundant route owners.",
       "evidence": "REG-107 SL-C08-NO-REDUNDANT-BOTTOM-NAV FAIL at baseline 864be89 with bottomNavHeight>=56 and duplicateControls all true.",
       "recommendation": "Remove bottom nav markup/CSS/JS writers; retain canonical #mainNavBar and #navRef; restore safe-area padding without bar reserve.",
-      "status": "OPEN",
-      "verification_status": "PASSED",
+      "status": "CLOSED",
       "regression_ids": [
         "SL-C08-NO-REDUNDANT-BOTTOM-NAV"
       ],
       "stable_case": "SL-C08-NO-REDUNDANT-BOTTOM-NAV",
       "pre_fix_evidence_id": "ER-C08-BASELINE-BOTTOM-NAV",
       "post_fix_evidence_id": "ER-C08-POST-BOTTOM-NAV",
-      "verified_source_commit": "8e437a1fc38bd4bf50c280a38aa323f2372214d5",
-      "independent_verification_result": "PASSED (C08-V-C independent verification)",
-      "verification_session": "C08-V-C"
+      "resolution_commit": "8e437a1fc38bd4bf50c280a38aa323f2372214d5",
+      "fix_summary": "Remove bottom nav markup/CSS/JS writers; retain canonical #mainNavBar and #navRef; restore safe-area padding without bar reserve.",
+      "evidence_ids": [
+        "ER-C08-BASELINE-BOTTOM-NAV",
+        "ER-C08-POST-BOTTOM-NAV",
+        "ER-C08-RESTORE-SHELL",
+        "static",
+        "ci"
+      ],
+      "observable_contract": "Mobile boot shows no #bottomNav or .bnav-btn writers; #mainNavBar remains the sole Planner/Tools/Settings/Ref navigation surface without duplicate controls.",
+      "state_restoration_evidence_id": "ER-C08-RESTORE-SHELL"
     }
   ],
   "evidence_runs": [
@@ -1165,18 +1186,18 @@
         "--profile",
         "static"
       ],
-      "commit": "36b5d752792c40e8387411032e905fde00d59d8b",
+      "commit": "f5bef4ede409fec3766746c035446cdad19cca86",
       "observable_assertions": [
-        "STATIC profile PASS at FIXER rebinding HEAD 36b5d75"
+        "STATIC profile PASS at closure_evidence_commit f5bef4e"
       ],
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit check --profile static",
       "worktree_clean": true,
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-static.json",
-      "receipt_sha256": "8102107ed6f83dda735fcd25e3f95fbaad7a2d6483a4c980805d9da63318237a",
       "worktree_clean_before": true,
-      "worktree_clean_after": true
+      "worktree_clean_after": true,
+      "receipt_sha256": "712caf7e4ce5cc21f2a36e5d22b036b3863446c85cb21a7d36540546566a115d"
     },
     {
       "id": "ci",
@@ -1190,18 +1211,18 @@
         "--profile",
         "ci"
       ],
-      "commit": "36b5d752792c40e8387411032e905fde00d59d8b",
+      "commit": "f5bef4ede409fec3766746c035446cdad19cca86",
       "observable_assertions": [
-        "CI profile PASS at FIXER rebinding HEAD 36b5d75"
+        "CI profile PASS at closure_evidence_commit f5bef4e"
       ],
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit run --profile ci",
       "worktree_clean": true,
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-ci.json",
-      "receipt_sha256": "fa6cfde1f99af56932c978daaab2fbcf9f03baaa185d0b8fa86081cedd5d6d73",
       "worktree_clean_before": true,
-      "worktree_clean_after": true
+      "worktree_clean_after": true,
+      "receipt_sha256": "0ed0bbc7ad8471ef1cdbd5b81d29684c7a37484451731f07aa6e3035e669cdb5"
     },
     {
       "id": "ER-C08-BASELINE-NAV-GAS",
@@ -1605,7 +1626,7 @@
     }
   ],
   "audit_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
-  "notes": "C08 FIXER advanced verified_source_commit to 2cc9b00 absorbing 887dec0 supplemental traces and 2cc9b00 SUITE-COVERAGE tooling; SL-C08-M-03 unit_id aligned to TOOL-BUILD-ZHL; findings SL-C08-M-02/M-03/M-04 remain OPEN; ledger IN_PROGRESS; closure_evidence_commit absent; CLOSER may retry.",
+  "notes": "Cycle 8 CLOSER bound closure_evidence_commit at registry closure; SL-C08-M-02/M-03/M-04 CLOSED; ledger promoted SEVEN_LENS_REVIEWED; SL-C08-VF-L-01 remains open LOW follow-up.",
   "visual_contract_integrator": {
     "pr": 215,
     "source_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
@@ -1816,5 +1837,6 @@
       "SL-C08-M-03: record unit_id TOOL-BUILD-ZHL matches registry catalog"
     ],
     "reviewer": "Cursor Agent (C08 FIXER closure-history)"
-  }
+  },
+  "closure_evidence_commit": "f5bef4ede409fec3766746c035446cdad19cca86"
 }
