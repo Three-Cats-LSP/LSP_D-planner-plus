@@ -695,8 +695,8 @@ body.light-theme #resultsPanel #decoAlertsNarcotic .alert .tip-icon { color: #11
 #resultsPanel .deco-table.schedule-table .ppo2-hi { color: var(--orange); }
 #resultsPanel .deco-table.schedule-table .ppo2-crit { color: var(--red); }
 #resultsPanel .deco-table.schedule-table .col-ead { color: var(--text-faint); text-align: right; }
-#resultsPanel .deco-table.schedule-table tr.row-switch { background: color-mix(in oklab, var(--gas-switch-label-bg) 8%, transparent); }
-#resultsPanel .deco-table.schedule-table tr.row-switch td { color: var(--gas-switch-label-bg); border-top: 1px dashed color-mix(in oklab, var(--gas-switch-label-bg) 28%, transparent); border-bottom: 1px dashed color-mix(in oklab, var(--gas-switch-label-bg) 28%, transparent); }
+#resultsPanel .deco-table.schedule-table tr.row-switch { background: transparent; }
+#resultsPanel .deco-table.schedule-table tr.row-switch td { color: var(--gas-switch-label-bg); border-bottom: 1px solid var(--border); }
 #resultsPanel .deco-table.schedule-table tr.row-switch .col-gas { font-weight: 600; }
 #resultsPanel .deco-table.schedule-table tr.row-switch .col-ppo2.ppo2-ok,
 #resultsPanel .deco-table.schedule-table tr.row-switch .col-ppo2.ppo2-warn,
@@ -704,7 +704,7 @@ body.light-theme #resultsPanel #decoAlertsNarcotic .alert .tip-icon { color: #11
 #resultsPanel .deco-table.schedule-table tr.row-switch .col-ppo2.ppo2-crit { color: inherit; }
 /* V4 schedule gas-switch contract: renderer writes data-phase, not row-switch. */
 #resultsPanel .deco-table.schedule-table tr[data-phase="switch"],
-#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] { background: color-mix(in oklab, var(--gas-switch-label-bg) 8%, transparent); }
+#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] { background: transparent; }
 #resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td:not([data-label="PPO2"]),
 #resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td:not([data-label="PPO2"]) { color: var(--gas-switch-label-bg) !important; font-size: inherit !important; border-bottom: 1px solid var(--border) !important; }
 #resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td:first-child,
@@ -797,6 +797,8 @@ body.light-theme #gasWarningBanner.gas-warning-banner { background: #fff8f0; bor
   #resultsPanel #decoAlerts,
   #resultsPanel #decoAlertsNarcotic { margin-left: var(--space-2); margin-right: var(--space-2); max-width: calc(100% - var(--space-2) * 2); }
   #resultsPanel #gasConsumptionSummary { padding-left: var(--space-2); padding-right: var(--space-2); }
+  #resultsPanel .result-tabs-nav { flex-wrap: wrap; overflow-x: visible; }
+  #resultsPanel .result-tab-btn { flex: 1 1 calc(50% - 2px); min-width: 0; padding: 7px 8px; text-align: center; font-size: 9px; letter-spacing: 0.045em; }
 }
 
 .tools-page-wrap { display: none; flex-direction: column; gap: var(--space-4); }

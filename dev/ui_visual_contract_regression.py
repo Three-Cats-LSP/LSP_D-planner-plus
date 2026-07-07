@@ -34,6 +34,9 @@ CASE_IDS = (
     "SL-C09-MOBILE-WARNING-WRAP",
     "SL-C09-VPM-MODE-TOGGLE",
     "SL-C09-SCHEDULE-COLUMN-GEOMETRY",
+    "SL-C09-SWITCH-ROW-BACKGROUND-PARITY",
+    "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD",
+    "SL-C09-MOBILE-TISSUE-TAB-VISIBLE",
     "SL-VIS-GAS-CONSUMPTION-BARS",
 )
 
@@ -92,6 +95,8 @@ CAPTURE_JS = r"""
     return resolved;
   };
   const root = getComputedStyle(document.body);
+  if (typeof drawDecoProfile === 'function') drawDecoProfile();
+  if (typeof drawDecoProfileFull === 'function') drawDecoProfileFull();
   const title = document.getElementById('diluentCardTitle');
   const titleRow = title?.closest('.gas-card-title-row');
   const dots = titleRow ? titleRow.querySelectorAll('.gas-dot') : [];
@@ -119,6 +124,8 @@ CAPTURE_JS = r"""
   const scheduleWrap = schedule?.closest('.schedule-wrap');
   const firstBodyRow = schedule?.querySelector('tbody tr:not([data-phase="switch"]):not(.row-summary)');
   const firstSwitchRow = schedule?.querySelector('tbody tr[data-phase="switch"]');
+  const normalRowBg = rgb(style(firstBodyRow, 'backgroundColor'));
+  const switchRowBgs = switchRows.map(row => rgb(style(row, 'backgroundColor')));
   const headers = schedule ? [...schedule.querySelectorAll('thead th')] : [];
   const cells = firstBodyRow ? [...firstBodyRow.querySelectorAll('td')] : [];
   const scheduleSwitchCells = firstSwitchRow ? [...firstSwitchRow.querySelectorAll('td')] : [];
@@ -161,6 +168,15 @@ CAPTURE_JS = r"""
   const swatchBg = rgb(style(graphSwatch, 'backgroundColor'));
   const decoDotColors = decoDots.map(el => rgb(style(el, 'backgroundColor')));
   const decoPills = pills.filter(el => el.classList.contains('deco1') || el.classList.contains('deco2'));
+  const decoWps = Array.isArray(window._decoWaypoints) ? window._decoWaypoints : [];
+  const decoStopTimes = decoWps
+    .filter(wp => ['deco', 'safety', 'gasswitch'].includes(wp.type) && Number.isFinite(Number(wp.t)))
+    .map(wp => Number(wp.t));
+  const uniqueDecoStopTimes = [...new Set(decoStopTimes.map(t => Math.round(t * 10) / 10))];
+  const resultTabsNav = document.getElementById('tecResultTabs');
+  const tissueTab = resultTabsNav?.querySelector('[data-tab="tissue"]');
+  const tissueRect = tissueTab?.getBoundingClientRect();
+  const tabsRect = resultTabsNav?.getBoundingClientRect();
   return {
     title: title?.textContent?.trim() || '',
     bottomDotCount: dots.length,
@@ -174,7 +190,22 @@ CAPTURE_JS = r"""
     decoPillColors: decoPills.map(el => rgb(style(el, 'color'))),
     switchRowCount: switchRows.length,
     switchCellColors: switchCells.map(el => rgb(style(el, 'color'))),
+    switchRowBackgrounds: switchRowBgs,
+    normalRowBackground: normalRowBg,
     expectedSwitch,
+    graphWaypoints: {
+      count: decoStopTimes.length,
+      uniqueCount: uniqueDecoStopTimes.length,
+      minTime: decoStopTimes.length ? Math.min(...decoStopTimes) : 0,
+      maxTime: decoStopTimes.length ? Math.max(...decoStopTimes) : 0,
+      times: uniqueDecoStopTimes.slice(0, 20),
+    },
+    tissueTab: tissueTab && tissueRect && tabsRect ? {
+      text: tissueTab.textContent.trim(),
+      display: getComputedStyle(tissueTab).display,
+      visible: tissueRect.width > 20 && tissueRect.height > 10,
+      withinNav: tissueRect.left >= tabsRect.left - 1 && tissueRect.right <= tabsRect.right + 1,
+    } : null,
     scheduleColumns: {
       headerTexts,
       hasTtsHeader: headerTexts.some(text => text.toUpperCase() === 'TTS'),
@@ -935,6 +966,27 @@ def main() -> int:
         and bool(c["switchCellColors"])
         and all(color == c["expectedSwitch"] for color in c["switchCellColors"])
         for c in (dark, light)
+    )
+    results["SL-C09-SWITCH-ROW-BACKGROUND-PARITY"] = all(
+        c["generated"]
+        and c["switchRowCount"] >= 1
+        and bool(c["switchRowBackgrounds"])
+        and all(color == c["normalRowBackground"] for color in c["switchRowBackgrounds"])
+        for c in captures
+    )
+    results["SL-C09-GRAPH-WAYPOINT-TIME-SPREAD"] = all(
+        c["generated"]
+        and c["graphWaypoints"]["count"] >= 5
+        and c["graphWaypoints"]["uniqueCount"] >= 5
+        and (c["graphWaypoints"]["maxTime"] - c["graphWaypoints"]["minTime"]) >= 15
+        for c in captures
+    )
+    results["SL-C09-MOBILE-TISSUE-TAB-VISIBLE"] = all(
+        c["generated"]
+        and c["tissueTab"]
+        and c["tissueTab"]["visible"]
+        and c["tissueTab"]["withinNav"]
+        for key, c in details.items() if int(key.split("x", 1)[0]) <= 640
     )
     results["SL-C09-SCHEDULE-COLUMN-GEOMETRY"] = all(
         c["generated"]

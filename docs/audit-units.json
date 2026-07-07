@@ -727,6 +727,18 @@
     "REG-112": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
       "case_id": "SL-VIS-GAS-CONSUMPTION-BARS"
+    },
+    "REG-113": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-C09-SWITCH-ROW-BACKGROUND-PARITY"
+    },
+    "REG-114": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD"
+    },
+    "REG-115": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-C09-MOBILE-TISSUE-TAB-VISIBLE"
     }
   },
   "findings": [
@@ -1782,7 +1794,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "b127e306c22be3d050c978b5c134ca697fd8b65bcb498250cd93ba542428ac96",
+      "fingerprint": "6a8acb742295f087674bc0d974ca53aac00d0a6c3a3b461befb3c2ccfaac3703",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2356,7 +2368,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-WAYPOINTS"
       },
-      "fingerprint": "5900ae4cfe71636fc59fde6eb2ec6535f67e3fce5354b49222bdf3d5e88ac198",
+      "fingerprint": "bd41ea0aa532861b20f7dc17e8a8bbd1e25c2ee085ca3c45ce5f9d9cf4b4dd55",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5605,7 +5617,7 @@
         "REG-110",
         "REG-111"
       ],
-      "fingerprint": "b9bb9b5ceab58a6c0f92b72710d76392dec1db1d27d5aa29ed7c6fb42df5db16",
+      "fingerprint": "2de421d444760aad4617060cbc988c20a2ecdd64ee16959455207414497ec560",
       "last_read_fingerprint": null
     },
     {
@@ -5687,7 +5699,7 @@
     },
     {
       "cycle": 7,
-      "max_new_application_lines": 965,
+      "max_new_application_lines": 967,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
@@ -6548,6 +6560,9 @@
         "SL-C09-MOBILE-WARNING-WRAP",
         "SL-C09-VPM-MODE-TOGGLE",
         "SL-C09-SCHEDULE-COLUMN-GEOMETRY",
+        "SL-C09-SWITCH-ROW-BACKGROUND-PARITY",
+        "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD",
+        "SL-C09-MOBILE-TISSUE-TAB-VISIBLE",
         "SL-VIS-GAS-CONSUMPTION-BARS"
       ]
     }

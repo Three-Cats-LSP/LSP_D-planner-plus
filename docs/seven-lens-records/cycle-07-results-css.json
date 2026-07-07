@@ -374,9 +374,9 @@
       "unit_id": "UI-CSS-RESULTS",
       "path": "lsp-dplanner-results.css",
       "start_line": 501,
-      "end_line": 965,
-      "line_count": 465,
-      "content_fingerprint": "e7adb665735c784554b48c5c0063162e250fc0648c9771c4e128f9f4f76119ea",
+      "end_line": 967,
+      "line_count": 467,
+      "content_fingerprint": "234b1bd22d1b8dc15c5c6b72e07db541aa034ad806032ff9b2d37c5827f8b9f6",
       "review_session": "C07-B",
       "verification_session": "C07-V-B",
       "lens_results": {
@@ -984,7 +984,7 @@
   ],
   "changed_paths": [],
   "audit_report": "docs/seven-lens-reports/cycle-07-results-css.md",
-  "notes": "CLOSER: registry closed at bf311c6; static/ci/release gate receipts bound to closure_evidence_commit. Cycle 8 dependency re-review C07-R2-A (1-500) and C07-R2-B (501-890) clean at fingerprint 8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49. Cycle 9 dependency re-review refreshed UI-CSS-RESULTS parts to 1-500 / 501-899; NO_NEW_FINDING. Schedule geometry dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Mix-lane dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Mobile schedule scroll dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Deco schedule column-order dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-913; NO_NEW_FINDING. Gas consumption bar redesign dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-937; NO_NEW_FINDING. Mobile compact schedule table dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-965; NO_NEW_FINDING. Gas consumption remaining-bar dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-965; NO_NEW_FINDING.",
+  "notes": "CLOSER: registry closed at bf311c6; static/ci/release gate receipts bound to closure_evidence_commit. Cycle 8 dependency re-review C07-R2-A (1-500) and C07-R2-B (501-890) clean at fingerprint 8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49. Cycle 9 dependency re-review refreshed UI-CSS-RESULTS parts to 1-500 / 501-899; NO_NEW_FINDING. Schedule geometry dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Mix-lane dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Mobile schedule scroll dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Deco schedule column-order dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-913; NO_NEW_FINDING. Gas consumption bar redesign dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-937; NO_NEW_FINDING. Mobile compact schedule table dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-965; NO_NEW_FINDING. Gas consumption remaining-bar dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-965; NO_NEW_FINDING. Graph/tissue-tab/switch-row dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-967; NO_NEW_FINDING.",
   "dependency_re_reviews": [
     {
       "session": "C07-R2-A",
@@ -1219,6 +1219,26 @@
       },
       "trigger": "Gas Consumption bar visual changed from used-fill to remaining-drain model.",
       "review_scope": "Gas Consumption bar CSS selector only; prior Cycle 7 findings unchanged.",
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-08T00:00:00Z",
+      "verifier": "Codex simplified dependency re-review"
+    },
+    {
+      "session": "C09-DEP-RESULTS-GRAPH-TAB-SWITCH-ROW",
+      "part_id": "UI-CSS-RESULTS",
+      "unit_id": "UI-CSS-RESULTS",
+      "path": "lsp-dplanner-results.css",
+      "content_fingerprint": "6a8acb742295f087674bc0d974ca53aac00d0a6c3a3b461befb3c2ccfaac3703",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
+        "UI-CSS-RESULTS-P02": "234b1bd22d1b8dc15c5c6b72e07db541aa034ad806032ff9b2d37c5827f8b9f6"
+      },
+      "boundaries": {
+        "UI-CSS-RESULTS-P01": "lines 1-500",
+        "UI-CSS-RESULTS-P02": "lines 501-967"
+      },
+      "trigger": "Switch-row background tint removed and mobile result tabs wrapped after graph waypoint/tissue-tab regression fix.",
+      "review_scope": "Schedule switch-row and mobile result-tab CSS only; prior Cycle 7 chip/PPO2/print/reduced-motion findings unchanged.",
       "result": "NO_NEW_FINDING",
       "verified_at": "2026-07-08T00:00:00Z",
       "verifier": "Codex simplified dependency re-review"

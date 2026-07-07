@@ -619,6 +619,7 @@ function _buildDecoProfileWaypoints() {
   const descentT = depthVal / dRate;
 
   const fmtDepLbl = (d) => units === 'metric' ? d + 'm' : Math.round(d * 3.28084) + 'ft';
+  const cellText = (tr, label) => tr.querySelector(`td[data-label="${label}"]`)?.textContent?.trim() || '';
 
   const wps = [{ t: 0, depth: 0, type: 'surface' }];
   let t = descentT;
@@ -631,11 +632,10 @@ function _buildDecoProfileWaypoints() {
     const phase = tr.dataset.phase;
     if (phase === 'switch') return;
     if (phase !== 'deco' && phase !== 'safety' && phase !== 'ascent') return;
-    const tds    = tr.querySelectorAll('td');
-    const run    = parseRunMin(tds[4]?.textContent);
-    const depthTxt = tds[1]?.textContent?.trim() || '';
-    const ppo2   = parseFloat(tds[6]?.textContent) || 0;
-    const gas    = tds[3]?.textContent?.trim() || null;
+    const run    = parseRunMin(cellText(tr, 'Run'));
+    const depthTxt = cellText(tr, 'Depth');
+    const ppo2   = parseFloat(cellText(tr, 'PPO2')) || 0;
+    const gas    = cellText(tr, 'Mix') || null;
 
     if (phase === 'ascent') {
       const toDepth = parseFloat(depthTxt) || 0;
@@ -644,7 +644,7 @@ function _buildDecoProfileWaypoints() {
       const depth = parseFloat(depthTxt) || 0;
       const showLabel = !labelledDepths.has(depth);
       if (showLabel) labelledDepths.add(depth);
-      const stopTime = tds[2]?.textContent?.trim() || '';
+      const stopTime = cellText(tr, 'Stop');
       const stopNum = wps.filter(w => w.dot).length + 1;
       wps.push({ t: run, depth, type: phase, gas,
         dot: true,
@@ -657,16 +657,15 @@ function _buildDecoProfileWaypoints() {
 
   const switchWps = [];
   document.querySelectorAll('#decoTableBody tr[data-phase="switch"], #decoTableBody tr.row-switch').forEach(tr => {
-    const tds = tr.querySelectorAll('td');
-    const switchDepthTxt = (tds[1]?.textContent || '').trim();
-    const switchGas = (tds[3]?.textContent || '').trim().replace(/[🔵🔴⇄↓↑🤿⚠️]/g, '').trim() || '';
+    const switchDepthTxt = cellText(tr, 'Depth');
+    const switchGas = cellText(tr, 'Mix');
     const depM = switchDepthTxt.match(/([\d.]+)\s*(m|ft)\b/i) || switchDepthTxt.match(/([\d.]+)/);
     if (!depM) return;
     const switchDepth = parseFloat(depM[1]);
-    const switchPpo2 = parseFloat(String(tds[6]?.textContent || '').replace(/[^\d.]/g, ''));
-    const switchRun = parseRunMin(tds[4]?.textContent)
-      || parseRunMin(tr.nextElementSibling?.cells?.[4]?.textContent)
-      || parseRunMin(tr.previousElementSibling?.cells?.[4]?.textContent);
+    const switchPpo2 = parseFloat(cellText(tr, 'PPO2').replace(/[^\d.]/g, ''));
+    const switchRun = parseRunMin(cellText(tr, 'Run'))
+      || parseRunMin(tr.nextElementSibling ? cellText(tr.nextElementSibling, 'Run') : '')
+      || parseRunMin(tr.previousElementSibling ? cellText(tr.previousElementSibling, 'Run') : '');
     const nextWp = wps.find(w => w.depth <= switchDepth + 1 && w.depth >= switchDepth - 1 && w.type !== 'bottom');
     const switchT = switchRun > 0 ? switchRun : (nextWp?.t ?? 0);
     switchWps.push({
@@ -683,7 +682,7 @@ function _buildDecoProfileWaypoints() {
 
   const allPhaseRows = Array.from(document.querySelectorAll('#decoTableBody tr[data-phase]'))
     .filter(tr => tr.dataset.phase !== 'totals');
-  const lastT = parseRunMin(allPhaseRows[allPhaseRows.length - 1]?.querySelectorAll('td')[4]?.textContent) || btVal + descentT;
+  const lastT = parseRunMin(allPhaseRows.length ? cellText(allPhaseRows[allPhaseRows.length - 1], 'Run') : '') || btVal + descentT;
   wps.push({ t: lastT, depth: 0, type: 'surface' });
 
   return { wps, depthVal, lastT };
