@@ -482,7 +482,7 @@
       "boundary": "lsp-dplanner-results.css whole file (915 lines; parts P01 1-500 / P02 501-915)",
       "reviewer": "Cursor GPT-5.5 Medium",
       "review_session": "C07-A / C07-B",
-      "verification_session": "C07-V-A / C07-V-B / C07-R2-A / C07-R2-B / C09-DEP-RESULTS-A/B / C09-DEP-RESULTS-SCHEDULE-GEOMETRY",
+      "verification_session": "C07-V-A / C07-V-B / C07-R2-A / C07-R2-B / C09-DEP-RESULTS-A/B / C09-DEP-RESULTS-SCHEDULE-GEOMETRY / C09-DEP-RESULTS-MIX-LANE",
       "verification_status": "PASSED",
       "verifier_requirement": "Cycle 9 dependency invalidation cleared by simplified re-review: P01 lines 1-500 and P02 lines 501-915.",
       "findings_open": [],
@@ -494,12 +494,12 @@
         "SL-C07-L-03",
         "SL-C07-L-04"
       ],
-      "reviewed_fingerprint": "83dc664a423bbaeacbc99bf98c943afec8eb34bda1bd1dd3679a91f262c0545d",
+      "reviewed_fingerprint": "44c26878e732f713d007670881bf68702b0e014b9c038478d4ea0d04ff8b887d",
       "verified_source_commit": "63b30d2df28d5cbe497fc8055c44a3eac57e0855",
       "last_checked_commit": "pending-current-cycle-9",
       "verified_at": "2026-07-05T10:08:17+00:00",
       "closed_at": "2026-07-05T12:00:00+00:00",
-      "reviewed_at": "2026-07-07T12:12:35.488395+00:00",
+      "reviewed_at": "2026-07-07T12:56:37.758277+00:00",
       "verifier": "Codex simplified dependency re-review",
       "verification_report": "docs/seven-lens-reports/cycle-07-results-css.md",
       "verification_commands": [
@@ -519,28 +519,28 @@
         "SL-C07-L-04"
       ],
       "lens_results": {
-        "L1": "640px mobile-active exclusivity preserved; schedule table fixed-layout columns align headers/body and compact Depth/Stop widths.",
+        "L1": "640px mobile-active exclusivity preserved; schedule table fixed-layout columns align headers/body with compact Depth/Stop and centered Mix lane.",
         "L2": "has-results toggle unchanged; mobile-active JS-driven; reduced-motion zero-duration transitions preserved.",
         "L3": "chip-yellow distinct from chip-orange; PPO2 td.col-ppo2 !important severity colors preserved.",
         "L4": "#recPlannerView/#tecPlannerView align with V4 markup; dead legacy mobile card and .algo-switcher remain removed.",
         "L5": "extract_ui_css parity; @media print block intact; assemble contract unchanged.",
         "L6": "light-theme alert contrast; PPO2/chip severity colors; gas-switch row-switch styling preserved.",
-        "L7": "SUITE-UI-RESULTS-CSS-REGRESSION REG-89..REG-94 plus SUITE-UI-VISUAL-CONTRACT-REGRESSION REG-111 cover schedule geometry; no new CSS behavioral defect."
+        "L7": "SUITE-UI-RESULTS-CSS-REGRESSION REG-89..REG-94 plus SUITE-UI-VISUAL-CONTRACT-REGRESSION REG-111 cover schedule geometry and mix-lane alignment; no new CSS behavioral defect."
       },
       "parts": {
         "P01": "lsp-dplanner-results.css:1-500",
         "P02": "lsp-dplanner-results.css:501-915"
       },
       "dependency_re_review": {
-        "session": "C09-DEP-RESULTS-SCHEDULE-GEOMETRY",
-        "reviewed_fingerprint_at_review": "83dc664a423bbaeacbc99bf98c943afec8eb34bda1bd1dd3679a91f262c0545d",
+        "session": "C09-DEP-RESULTS-MIX-LANE",
+        "reviewed_fingerprint_at_review": "44c26878e732f713d007670881bf68702b0e014b9c038478d4ea0d04ff8b887d",
         "current_fingerprint_p01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
-        "current_fingerprint_p02": "0959cabf086131f4160938cceab3395ab23edf4d52cf41f9368d301bd64e6bf0",
+        "current_fingerprint_p02": "ef8eaa4c98fc83f5382c6c227b1b3ee3286740f0ee265b93dee66960e9140137",
         "result": "NO_NEW_FINDING",
-        "reviewed_at": "2026-07-07T12:12:35.488395+00:00",
+        "reviewed_at": "2026-07-07T12:56:37.758277+00:00",
         "verifier": "Codex simplified dependency re-review"
       },
-      "last_read_fingerprint": "0959cabf086131f4160938cceab3395ab23edf4d52cf41f9368d301bd64e6bf0"
+      "last_read_fingerprint": "ef8eaa4c98fc83f5382c6c227b1b3ee3286740f0ee265b93dee66960e9140137"
     },
     {
       "unit_id": "UI-PLANNER-SHELL",

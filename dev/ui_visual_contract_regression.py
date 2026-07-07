@@ -103,8 +103,10 @@ CAPTURE_JS = r"""
   );
   const schedule = document.querySelector('#resultsPanel .schedule-table');
   const firstBodyRow = schedule?.querySelector('tbody tr:not([data-phase="switch"]):not(.row-summary)');
+  const firstSwitchRow = schedule?.querySelector('tbody tr[data-phase="switch"]');
   const headers = schedule ? [...schedule.querySelectorAll('thead th')] : [];
   const cells = firstBodyRow ? [...firstBodyRow.querySelectorAll('td')] : [];
+  const scheduleSwitchCells = firstSwitchRow ? [...firstSwitchRow.querySelectorAll('td')] : [];
   const geom = (el) => {
     if (!el) return null;
     const rect = el.getBoundingClientRect();
@@ -113,8 +115,11 @@ CAPTURE_JS = r"""
   const depthHead = geom(headers[1]);
   const stopHead = geom(headers[2]);
   const mixHead = geom(headers[3]);
+  const runHead = geom(headers[4]);
   const depthCell = geom(cells[1]);
   const stopCell = geom(cells[2]);
+  const mixCell = geom(cells[3]);
+  const switchMixCell = geom(scheduleSwitchCells[3]);
   const phaseCell = geom(cells[0]);
   const planner = document.getElementById('tecPlannerView')?.getBoundingClientRect();
   const results = document.getElementById('resultsPanel')?.getBoundingClientRect();
@@ -142,13 +147,18 @@ CAPTURE_JS = r"""
       depthHead,
       stopHead,
       mixHead,
+      runHead,
       depthCell,
       stopCell,
+      mixCell,
+      switchMixCell,
       phaseCell,
       tableLayout: schedule ? getComputedStyle(schedule).tableLayout : '',
       depthAligned: !!(depthHead && depthCell && Math.abs(depthHead.center - depthCell.center) <= 4),
       stopAligned: !!(stopHead && stopCell && Math.abs(stopHead.center - stopCell.center) <= 4),
-      depthCompact: !!(depthHead && mixHead && phaseCell && depthHead.width <= mixHead.width * 0.8 && depthHead.width >= phaseCell.width),
+      depthCompact: !!(depthHead && stopHead && mixHead && phaseCell && depthHead.width <= stopHead.width * 1.05 && depthHead.width < mixHead.width && depthHead.width >= phaseCell.width),
+      mixLaneAligned: !!(mixHead && mixCell && switchMixCell && Math.abs(mixHead.center - mixCell.center) <= 4 && Math.abs(mixCell.center - switchMixCell.center) <= 4),
+      mixCompact: !!(mixHead && runHead && mixHead.width <= runHead.width * 0.8),
     },
     layout: planner && results ? {
       plannerLeft: planner.left,
@@ -855,6 +865,8 @@ def main() -> int:
         and c["scheduleColumns"]["depthAligned"]
         and c["scheduleColumns"]["stopAligned"]
         and c["scheduleColumns"]["depthCompact"]
+        and c["scheduleColumns"]["mixLaneAligned"]
+        and c["scheduleColumns"]["mixCompact"]
         for c in captures
     )
 
