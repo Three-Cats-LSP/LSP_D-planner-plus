@@ -43,14 +43,19 @@
 #contingencyScheduleStack .deco-plan-caption,
 #contingencyScheduleStack .deco-table-legend,
 #contingencyScheduleStack .deco-totals-inner {
- width: fit-content;
+ width: 100%;
  max-width: 100%;
+ min-width: 0;
+ box-sizing: border-box;
+ overflow-wrap: anywhere;
 }
 #decoResult #decoAlerts,
 #decoResult #decoAlertsNarcotic,
 #decoResult #decoAlertsEmergency {
- width: fit-content;
+ width: 100%;
  max-width: 100%;
+ min-width: 0;
+ box-sizing: border-box;
 }
 .deco-totals-row td {
  padding: 0 !important;
@@ -183,12 +188,14 @@ body.light-theme .switch-legend-icon { color: #FFBF00 !important; }
 /* ── MOBILE: gas plan + tight warning overrides ── */
 @media (max-width: 600px) {
  /* Gas plan table — responsive */
- .gas-plan-table { font-size:10px !important; }
- .gas-plan-table th { padding:6px 5px !important; font-size:8px !important; white-space:nowrap !important; word-break:keep-all !important; overflow-wrap:normal !important; line-height:1.2 !important; letter-spacing:0.04em !important; }
- .gas-plan-table td { padding:5px 5px !important; font-size:10px !important; }
+ .gas-plan-table { width:100% !important; min-width:0 !important; max-width:100% !important; table-layout:fixed !important; font-size:10px !important; }
+ .gas-plan-table th { min-width:0 !important; padding:6px 4px !important; font-size:8px !important; white-space:normal !important; word-break:normal !important; overflow-wrap:anywhere !important; line-height:1.2 !important; letter-spacing:0.04em !important; }
+ .gas-plan-table td { min-width:0 !important; padding:5px 4px !important; font-size:10px !important; }
+ .gas-plan-table th:nth-child(n),
+ .gas-plan-table td:nth-child(n) { min-width:0 !important; max-width:none !important; }
 
  /* BT banner + tight warning rows */
- .gas-bt-cell { background:#FF4433 !important; color:#fff !important; }
+ .gas-bt-cell { background:#FF4433 !important; color:#fff !important; white-space:normal !important; overflow:visible !important; text-overflow:clip !important; overflow-wrap:anywhere !important; word-break:normal !important; min-width:0 !important; max-width:100% !important; box-sizing:border-box !important; }
  .gas-bt-cell *, .gas-bt-cell strong, .gas-bt-cell span { color:#fff !important; }
  body.light-theme .gas-bt-cell { color:#000 !important; }
  body.light-theme .gas-bt-cell *, body.light-theme .gas-bt-cell strong, body.light-theme .gas-bt-cell span { color:#000 !important; }
@@ -571,12 +578,14 @@ body.light-theme #resultsPanel .chip-yellow { background: var(--yellow-dim) !imp
 #resultsPanel #decoProfileLegend tr.profile-legend-gasswitch td { color: var(--gas-switch); }
 #resultsPanel #decoProfileCanvas-hint { padding: 0 var(--space-4) var(--space-2); }
 #resultsPanel #decoResult.results-v3-card { background: transparent; border: none; box-shadow: none; margin: 0; padding: 0; }
-#resultsPanel #decoAlerts { margin: var(--space-1) var(--space-4) 0; }
+#resultsPanel #decoAlerts { margin: var(--space-1) var(--space-4) 0; min-width: 0; max-width: calc(100% - var(--space-4) * 2); box-sizing: border-box; }
 #resultsPanel #decoAlerts:empty { display: none; margin: 0; }
-#resultsPanel #decoAlertsNarcotic { margin: var(--space-2) var(--space-4) 0; }
+#resultsPanel #decoAlertsNarcotic { margin: var(--space-2) var(--space-4) 0; min-width: 0; max-width: calc(100% - var(--space-4) * 2); box-sizing: border-box; }
 #resultsPanel #decoAlertsNarcotic:empty { display: none; margin: 0; }
 #resultsPanel #decoAlerts .alert,
-#resultsPanel #decoAlertsNarcotic .alert { display: flex; align-items: flex-start; gap: var(--space-2); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); font-size: 12px; line-height: 1.45; margin: 0 0 var(--space-2); }
+#resultsPanel #decoAlertsNarcotic .alert { display: flex; align-items: flex-start; gap: var(--space-2); width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); font-size: 12px; line-height: 1.45; margin: 0 0 var(--space-2); white-space: normal; overflow-wrap: anywhere; word-break: normal; }
+#resultsPanel #decoAlerts .alert > *,
+#resultsPanel #decoAlertsNarcotic .alert > * { min-width: 0; overflow-wrap: anywhere; }
 #resultsPanel #decoAlerts .alert:first-child,
 #resultsPanel #decoAlertsNarcotic .alert:first-child { margin-top: 0; }
 #resultsPanel .deco-plan-caption { margin: var(--space-2) var(--space-4) 0; }
@@ -702,8 +711,9 @@ body.light-theme #resultsPanel .deco-table.schedule-table td.col-ppo2.ppo2-crit 
 .deco-table.tissue-table tr.tissue-sat-caution:hover td { background: color-mix(in oklab, var(--status-orange) 20%, transparent); }
 .deco-table.tissue-table tr.tissue-sat-warn:hover td { background: color-mix(in oklab, var(--status-red) 16%, transparent); }
 
-#gasWarningBanner.gas-warning-banner { display: none; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); background: var(--orange-dim); border: 1px solid var(--orange); border-radius: var(--radius-md); color: var(--orange); font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.04em; margin-top: var(--space-2); }
+#gasWarningBanner.gas-warning-banner { display: none; align-items: flex-start; gap: var(--space-3); width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; padding: var(--space-3) var(--space-4); background: var(--orange-dim); border: 1px solid var(--orange); border-radius: var(--radius-md); color: var(--orange); font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.04em; line-height: 1.35; margin-top: var(--space-2); white-space: normal; overflow-wrap: anywhere; word-break: normal; }
 #gasWarningBanner.gas-warning-banner::before { content: '⚠'; font-size: 1rem; flex-shrink: 0; }
+#gasWarningBanner.gas-warning-banner > * { min-width: 0; overflow-wrap: anywhere; }
 body.light-theme #gasWarningBanner.gas-warning-banner { background: #fff8f0; border-color: #c87800; color: #c87800; }
 @media (min-width: 641px) {
   .app { padding-bottom: var(--space-4); }
@@ -718,6 +728,9 @@ body.light-theme #gasWarningBanner.gas-warning-banner { background: #fff8f0; bor
   .app { padding-bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px)); }
   #headerTopRow .mode-toggle.algo-toggle { display: none !important; }
   #headerTopRow .header-actions { order: 3; width: 100%; justify-content: flex-end !important; padding: 0 14px 6px !important; }
+  #resultsPanel #decoAlerts,
+  #resultsPanel #decoAlertsNarcotic { margin-left: var(--space-2); margin-right: var(--space-2); max-width: calc(100% - var(--space-2) * 2); }
+  #resultsPanel #gasConsumptionSummary { padding-left: var(--space-2); padding-right: var(--space-2); }
 }
 
 .tools-page-wrap { display: none; flex-direction: column; gap: var(--space-4); }

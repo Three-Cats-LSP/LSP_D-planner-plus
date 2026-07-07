@@ -2670,6 +2670,8 @@ function setDecoAlgorithm(model, skipSave, preserveSchedule) {
   if (gfV3 && plannerAlgo !== 'rec') gfV3.style.display = showGF ? '' : 'none';
 
   // Conservatism row: show for VPM-B and VPM-B/GFS
+  const vpmModeV3 = document.getElementById('vpmModeRowV3');
+  if (vpmModeV3 && plannerAlgo !== 'rec') vpmModeV3.classList.toggle('visible', isVPM);
   const consV3 = document.getElementById('conservatismRowV3');
   if (consV3 && plannerAlgo !== 'rec') consV3.classList.toggle('visible', isVPM);
 

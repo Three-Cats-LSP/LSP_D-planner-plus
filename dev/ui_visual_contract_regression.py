@@ -30,6 +30,9 @@ CASE_IDS = (
     "SL-C08-MOBILE-NAV-TILE-GRID",
     "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT",
     "SL-C08-NO-REDUNDANT-BOTTOM-NAV",
+    "SL-C09-GAS-SWITCH-TERMINOLOGY",
+    "SL-C09-MOBILE-WARNING-WRAP",
+    "SL-C09-VPM-MODE-TOGGLE",
 )
 
 NAV_VIEWPORTS = (
@@ -330,6 +333,16 @@ async () => {
   const labels = collectTexts();
   const joined = labels.join('\n');
   const forbiddenHits = (joined.match(new RegExp(forbidden.source, forbidden.flags + 'g')) || []);
+  const terminologyRoots = [
+    document.getElementById('resultsPanel'),
+    document.getElementById('diveGraphCard'),
+    document.getElementById('decoProfileLegend'),
+    document.getElementById('plannerProfileLegend'),
+  ].filter(Boolean);
+  const terminologyText = terminologyRoots.map(el => el.textContent || '').join('\n');
+  const gasChangeTextHits = terminologyText.match(/Gas\s+change/gi) || [];
+  const gasChangeContractHits = [...document.querySelectorAll('[id*="gas-change" i], [class*="gas-change" i]')]
+    .map(el => ({ id: el.id || '', className: String(el.className || '') }));
   const operationalRequired = ['50/00', '80/00'];
   const operationalOk = operationalRequired.every(label => joined.includes(label));
 
@@ -341,7 +354,140 @@ async () => {
     forbiddenHits: [...new Set(forbiddenHits)],
     operationalOk,
     parityOk: canonical.every(row => row.actual === row.bundleActual),
+    terminologyOk: gasChangeTextHits.length === 0
+      && gasChangeContractHits.length === 0
+      && /Gas\s+switch/i.test(terminologyText),
+    gasChangeTextHits: [...new Set(gasChangeTextHits)],
+    gasChangeContractHits,
   };
+}
+"""
+
+
+MOBILE_WARNING_PROBE_JS = r"""
+async () => {
+  const setVal = (id, value) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value = value;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  };
+  const rectInfo = (el) => {
+    const rect = el.getBoundingClientRect();
+    return {
+      tag: el.tagName,
+      id: el.id || '',
+      className: String(el.className || ''),
+      text: (el.textContent || '').trim().slice(0, 120),
+      left: rect.left,
+      right: rect.right,
+      width: rect.width,
+      clientWidth: el.clientWidth,
+      scrollWidth: el.scrollWidth,
+      overflowX: getComputedStyle(el).overflowX,
+      whiteSpace: getComputedStyle(el).whiteSpace,
+    };
+  };
+
+  window._zhlHeadless = false;
+  setMainNav('buh');
+  setVal('tecDepth', '40');
+  setVal('tecBT', '30');
+  setVal('cylBot_size', '1');
+  setVal('cylBot_pres', '80');
+  setVal('cylBot_reserve', '50');
+  if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
+  document.getElementById('tecGenerateBtn')?.click();
+  let generated = false;
+  for (let i = 0; i < 60; i++) {
+    await new Promise(r => setTimeout(r, 250));
+    if (document.querySelectorAll('#decoTableBody tr').length >= 5
+        && getComputedStyle(document.getElementById('gasConsumptionSummary')).display !== 'none') {
+      generated = true;
+      break;
+    }
+  }
+
+  const viewportWidth = document.documentElement.clientWidth;
+  const candidates = [
+    ...document.querySelectorAll('#decoAlerts .alert, #decoAlertsNarcotic .alert, #gasWarningBanner, .gas-bt-cell'),
+  ].filter(el => {
+    const style = getComputedStyle(el);
+    const rect = el.getBoundingClientRect();
+    return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+  });
+  const checks = candidates.map(rectInfo);
+  const overflow = checks.filter(row =>
+    row.left < -1
+    || row.right > viewportWidth + 1
+    || row.scrollWidth > row.clientWidth + 2
+    || row.whiteSpace === 'nowrap'
+  );
+  const bodyOverflow = document.documentElement.scrollWidth > viewportWidth + 1;
+  return {
+    generated,
+    viewportWidth,
+    alertCount: document.querySelectorAll('#decoAlerts .alert, #decoAlertsNarcotic .alert').length,
+    gasBtCount: document.querySelectorAll('.gas-bt-cell').length,
+    checks,
+    overflow,
+    bodyScrollWidth: document.documentElement.scrollWidth,
+    bodyOverflow,
+    ok: generated && candidates.length >= 2 && overflow.length === 0 && !bodyOverflow,
+  };
+}
+"""
+
+
+VPM_MODE_PROBE_JS = r"""
+async () => {
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const visible = id => {
+    const el = document.getElementById(id);
+    if (!el) return false;
+    const style = getComputedStyle(el);
+    return style.display !== 'none' && style.visibility !== 'hidden' && el.getBoundingClientRect().width > 0;
+  };
+  const state = () => ({
+    plannerAlgo: typeof plannerAlgo !== 'undefined' ? plannerAlgo : null,
+    algorithmSelect: document.getElementById('algorithmSelect')?.value || '',
+    vpmVariant: typeof vpmVariant !== 'undefined' ? vpmVariant : null,
+    navVpmActive: document.getElementById('navBtnVpm')?.classList.contains('active') === true,
+    vpmRowVisible: visible('vpmModeRowV3'),
+    conservatismVisible: visible('conservatismRowV3'),
+    gfVisible: visible('gfPresetsRowV3'),
+    gfLabel: document.getElementById('gfPresetsLabelV3')?.textContent?.trim() || '',
+    subtitle: document.getElementById('algoSubtitle')?.textContent?.trim() || '',
+    toggleSide: document.getElementById('vpmModeToggle')?.dataset.side || '',
+  });
+
+  setPlannerAlgo('VPMB');
+  await wait(250);
+  const vpm = state();
+  document.getElementById('vpmModeToggle')?.click();
+  await wait(250);
+  const gfs = state();
+  document.getElementById('vpmModeToggle')?.click();
+  await wait(250);
+  const back = state();
+
+  const ok = vpm.plannerAlgo === 'VPMB'
+    && vpm.algorithmSelect === 'VPMB'
+    && vpm.navVpmActive
+    && vpm.vpmRowVisible
+    && vpm.conservatismVisible
+    && !vpm.gfVisible
+    && gfs.plannerAlgo === 'VPMB_GFS'
+    && gfs.algorithmSelect === 'VPMB_GFS'
+    && gfs.vpmRowVisible
+    && gfs.conservatismVisible
+    && gfs.gfVisible
+    && /GFS\s*Hi/i.test(gfs.gfLabel)
+    && back.plannerAlgo === 'VPMB'
+    && back.algorithmSelect === 'VPMB'
+    && !back.gfVisible;
+  return { vpm, gfs, back, ok };
 }
 """
 
@@ -569,6 +715,46 @@ def _capture_gas_labels(browser, base_url: str) -> dict:
         context.close()
 
 
+def _capture_mobile_warnings(browser, base_url: str) -> dict:
+    context = browser.new_context(viewport={"width": 375, "height": 667})
+    page = context.new_page()
+    page.set_default_timeout(120_000)
+    errors: list[str] = []
+    page.on("pageerror", lambda exc: errors.append(str(exc)))
+    page.on("console", lambda msg: errors.append(msg.text) if msg.type == "error" else None)
+    probe_state = None
+    try:
+        boot_app_page(page, base_url)
+        probe_state = page.evaluate(CAPTURE_PROBE_STATE_JS)
+        result = page.evaluate(MOBILE_WARNING_PROBE_JS)
+        result["console_errors"] = errors
+        return result
+    finally:
+        if probe_state is not None:
+            restore_probe_state(page, probe_state)
+        context.close()
+
+
+def _capture_vpm_mode(browser, base_url: str) -> dict:
+    context = browser.new_context(viewport={"width": 1280, "height": 800})
+    page = context.new_page()
+    page.set_default_timeout(120_000)
+    errors: list[str] = []
+    page.on("pageerror", lambda exc: errors.append(str(exc)))
+    page.on("console", lambda msg: errors.append(msg.text) if msg.type == "error" else None)
+    probe_state = None
+    try:
+        boot_app_page(page, base_url)
+        probe_state = page.evaluate(CAPTURE_PROBE_STATE_JS)
+        result = page.evaluate(VPM_MODE_PROBE_JS)
+        result["console_errors"] = errors
+        return result
+    finally:
+        if probe_state is not None:
+            restore_probe_state(page, probe_state)
+        context.close()
+
+
 def main() -> int:
     from playwright.sync_api import sync_playwright
 
@@ -597,6 +783,8 @@ def main() -> int:
                     )
 
             gas_details = _capture_gas_labels(browser, base_url)
+            mobile_warning_details = _capture_mobile_warnings(browser, base_url)
+            vpm_details = _capture_vpm_mode(browser, base_url)
             browser.close()
 
     dark = details["1280x800-dark"]
@@ -652,12 +840,29 @@ def main() -> int:
     )
     results["SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"] = bool(gas_ok)
 
+    results["SL-C09-GAS-SWITCH-TERMINOLOGY"] = bool(
+        gas_details.get("generated")
+        and gas_details.get("terminologyOk")
+        and not gas_details.get("gasChangeTextHits")
+        and not gas_details.get("gasChangeContractHits")
+        and not gas_details.get("console_errors")
+    )
+
     bottom_nav_ok = all(
         capture.get("ok")
         and not capture.get("console_errors")
         for capture in bottom_nav_details.values()
     )
     results["SL-C08-NO-REDUNDANT-BOTTOM-NAV"] = bottom_nav_ok
+
+    results["SL-C09-MOBILE-WARNING-WRAP"] = bool(
+        mobile_warning_details.get("ok")
+        and not mobile_warning_details.get("console_errors")
+    )
+    results["SL-C09-VPM-MODE-TOGGLE"] = bool(
+        vpm_details.get("ok")
+        and not vpm_details.get("console_errors")
+    )
 
     for case_id, passed in results.items():
         print(f"  {'PASS' if passed else 'FAIL'} [{case_id}]")
@@ -667,6 +872,8 @@ def main() -> int:
             "nav": nav_details,
             "bottom_nav": bottom_nav_details,
             "gas": gas_details,
+            "mobile_warning": mobile_warning_details,
+            "vpm": vpm_details,
         }, indent=2))
 
     rows = [case_row(case_id, passed) for case_id, passed in results.items()]

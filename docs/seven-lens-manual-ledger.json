@@ -6,7 +6,7 @@
       "review_status": "SEVEN_LENS_REVIEWED",
       "reviewed_fingerprint": "08baabc5316bd85fa78d860f7414fdfe0df845c163407973d471ad0178923e60",
       "cycle_id": "SL-C01",
-      "boundary": "ui/markup-header.html whole file (847 lines; parts A–D)",
+      "boundary": "ui/markup-header.html whole file (847 lines; parts A\u2013D)",
       "reviewer": "Cursor GPT-5.5 Medium",
       "review_session": "cursor/seven-lens-cycle-01-header",
       "lens_results": {
@@ -16,7 +16,7 @@
         "L4": "Settings handlers traced to settings-core; regressions exercise input, preset, restore, and unit-switch paths.",
         "L5": "Canonical ui/markup-header.html; assemble_ui_html verify PASS.",
         "L6": "gasWarningBanner role=alert; imperial 16,404 ft accepted at engine 5000 m ceiling.",
-        "L7": "SL-C01-DEPTH-SYNC, SL-C01-PRESET-SYNC, SL-C01-SETTINGS-RESTORE, SL-C01-ALTITUDE-UNIT-CONSTRAINTS; REG-58–61."
+        "L7": "SL-C01-DEPTH-SYNC, SL-C01-PRESET-SYNC, SL-C01-SETTINGS-RESTORE, SL-C01-ALTITUDE-UNIT-CONSTRAINTS; REG-58\u201361."
       },
       "finding_ids": [
         "SL-C01-M-01",
@@ -50,10 +50,10 @@
         "SL-C01-M-04"
       ],
       "parts": {
-        "A": "lines 1-214 — scripts, header, nav, planPanel",
-        "B": "lines 215-415 — resultsPanel",
-        "C": "lines 416-481 — settingsPageWrap",
-        "D": "lines 482-847 — tools mount, legacy-panels, gfPresetsRow tail"
+        "A": "lines 1-214 \u2014 scripts, header, nav, planPanel",
+        "B": "lines 215-415 \u2014 resultsPanel",
+        "C": "lines 416-481 \u2014 settingsPageWrap",
+        "D": "lines 482-847 \u2014 tools mount, legacy-panels, gfPresetsRow tail"
       }
     },
     {
@@ -66,7 +66,7 @@
       "review_session": "cursor/seven-lens-cycle-002-audit",
       "lens_results": {
         "L1": "REC depth/BT steppers use hidden recDepth/recBT; no shared tec IDs.",
-        "L2": "recGenerateBtn → runRecPlan; stepRecDepthBt traced.",
+        "L2": "recGenerateBtn \u2192 runRecPlan; stepRecDepthBt traced.",
         "L3": "View snapshot on mode switch; rec.* persistence namespace.",
         "L4": "Disjoint inputs feed REC schedule path only.",
         "L5": "Canonical ui/markup-rec-planner.html assembled via header placeholder.",
@@ -102,7 +102,7 @@
       "review_session": "cursor/seven-lens-cycle-002-audit",
       "lens_results": {
         "L1": "REC depth/BT steppers use hidden recDepth/recBT; no shared tec IDs.",
-        "L2": "recGenerateBtn → runRecPlan; stepRecDepthBt traced.",
+        "L2": "recGenerateBtn \u2192 runRecPlan; stepRecDepthBt traced.",
         "L3": "View snapshot on mode switch; rec.* persistence namespace.",
         "L4": "Disjoint inputs feed REC schedule path only.",
         "L5": "Canonical ui/markup-rec-planner.html assembled via header placeholder.",
@@ -138,7 +138,7 @@
       "review_session": "cursor/seven-lens-cycle-200-audit",
       "lens_results": {
         "L1": "TECH depth/BT, gas cards, GF/VPM rows use tec-only IDs.",
-        "L2": "tecGenerateBtn → runDecoSchedule; travel gas manual depth path traced.",
+        "L2": "tecGenerateBtn \u2192 runDecoSchedule; travel gas manual depth path traced.",
         "L3": "Unit switch syncs travel manual depth constraints.",
         "L4": "domDepthToM on travelGasManualDepth after imperial edit.",
         "L5": "Static ui/markup-tec-planner.html; no runtime tec mount.",
@@ -479,12 +479,12 @@
       "unit_id": "UI-CSS-RESULTS",
       "review_status": "SEVEN_LENS_REVIEWED",
       "cycle_id": "SL-C07",
-      "boundary": "lsp-dplanner-results.css whole file (890 lines; parts P01 1-500 / P02 501-890)",
+      "boundary": "lsp-dplanner-results.css whole file (899 lines; parts P01 1-500 / P02 501-899)",
       "reviewer": "Cursor GPT-5.5 Medium",
       "review_session": "C07-A / C07-B",
-      "verification_session": "C07-V-A / C07-V-B / C07-R2-A / C07-R2-B",
+      "verification_session": "C07-V-A / C07-V-B / C07-R2-A / C07-R2-B / C09-DEP-RESULTS-A/B",
       "verification_status": "PASSED",
-      "verifier_requirement": "Cycle 8 dependency invalidation cleared by independent CSS re-review sessions C07-R2-A (lines 1-500) and C07-R2-B (lines 501-890).",
+      "verifier_requirement": "Cycle 9 dependency invalidation cleared by simplified re-review: P01 lines 1-500 and P02 lines 501-899.",
       "findings_open": [],
       "findings_closed": [
         "SL-C07-M-01",
@@ -494,13 +494,13 @@
         "SL-C07-L-03",
         "SL-C07-L-04"
       ],
-      "reviewed_fingerprint": "8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49",
+      "reviewed_fingerprint": "e1950ea03521a03f7171bd0e7e3f834506d6c2c544f070c090e8055f6eb07150",
       "verified_source_commit": "63b30d2df28d5cbe497fc8055c44a3eac57e0855",
-      "last_checked_commit": "c2d7708",
+      "last_checked_commit": "pending-current-cycle-9",
       "verified_at": "2026-07-05T10:08:17+00:00",
       "closed_at": "2026-07-05T12:00:00+00:00",
-      "reviewed_at": "2026-07-06T00:36:00+09:00",
-      "verifier": "Cursor Agent (C07-R2-A / C07-R2-B Cycle 8 dependency re-review)",
+      "reviewed_at": "2026-07-07T11:25:37.098795+00:00",
+      "verifier": "Codex simplified Cycle 9 dependency re-review",
       "verification_report": "docs/seven-lens-reports/cycle-07-results-css.md",
       "verification_commands": [
         "python dev/ui_results_css_regression.py",
@@ -529,18 +529,18 @@
       },
       "parts": {
         "P01": "lsp-dplanner-results.css:1-500",
-        "P02": "lsp-dplanner-results.css:501-890"
+        "P02": "lsp-dplanner-results.css:501-899"
       },
       "dependency_re_review": {
-        "session": "C08-DEP-RESULTS-A/C08-DEP-RESULTS-B",
-        "reviewed_fingerprint_at_review": "8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49",
-        "current_fingerprint_p01": "43a487d392909bc748197e713a3e2ce8340b16e3f53fe258a8036b189613f641",
-        "current_fingerprint_p02": "563f36d0a31198828aac04594ea4fd73738d0ffa3eaff20643938e1e9140abdd",
+        "session": "C09-DEP-RESULTS-A/C09-DEP-RESULTS-B",
+        "reviewed_fingerprint_at_review": "e1950ea03521a03f7171bd0e7e3f834506d6c2c544f070c090e8055f6eb07150",
+        "current_fingerprint_p01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
+        "current_fingerprint_p02": "1d31ea046837ab602ae9c55936732dc9be060386dc4348f63351ad5445f71a2c",
         "result": "NO_NEW_FINDING",
-        "reviewed_at": "2026-07-06T01:09:13.648040+00:00",
-        "verifier": "Cursor Agent (C08-V-B attestation corrector)"
+        "reviewed_at": "2026-07-07T11:25:37.098795+00:00",
+        "verifier": "Codex simplified Cycle 9 dependency re-review"
       },
-      "last_read_fingerprint": "563f36d0a31198828aac04594ea4fd73738d0ffa3eaff20643938e1e9140abdd"
+      "last_read_fingerprint": "1d31ea046837ab602ae9c55936732dc9be060386dc4348f63351ad5445f71a2c"
     },
     {
       "unit_id": "UI-PLANNER-SHELL",

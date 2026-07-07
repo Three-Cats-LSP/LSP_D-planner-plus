@@ -531,12 +531,12 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
   const legendEl = document.getElementById(canvasId === 'decoProfileCanvas' ? 'decoProfileLegend' : 'plannerProfileLegend');
   if (legendEl) {
     const switchCount = waypoints.filter(wp => wp.type === 'gasswitch').length;
-    const gasChangeItem = `<span class="legend-item"><span class="gas-switch-swatch" style="display:inline-block;width:14px;height:10px;background:var(--gas-switch-label-bg);border-radius:2px;border:1px solid color-mix(in oklab, var(--gas-switch-label-text) 35%, transparent);"></span> Gas change${switchCount ? ` (${switchCount})` : ''}</span>`;
+    const gasSwitchItem = `<span class="legend-item"><span class="gas-switch-swatch" style="display:inline-block;width:14px;height:10px;background:var(--gas-switch-label-bg);border-radius:2px;border:1px solid color-mix(in oklab, var(--gas-switch-label-text) 35%, transparent);"></span> Gas switch${switchCount ? ` (${switchCount})` : ''}</span>`;
     const legendColors = { red, green, accent, orange, muted, profileLine };
     const legendRows = _buildProfileLegendTableRows(waypoints, legendColors);
     const keyLegend = `<div class="profile-legend-keys" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
         <span class="legend-item"><span style="display:inline-block;width:18px;height:2px;background:${profileLine};border-radius:1px;"></span> OC depth</span>
-        ${gasChangeItem}
+        ${gasSwitchItem}
         <span class="legend-item"><span class="leg-dot" style="background:${red}"></span> Deco stop</span>
         ${simple ? '' : `<span class="legend-item"><span style="display:inline-block;width:18px;height:0;border-top:2px dashed ${red};"></span> Ceiling</span>`}
       </div>`;

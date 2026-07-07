@@ -296,7 +296,7 @@
       "start_line": 1,
       "end_line": 500,
       "line_count": 500,
-      "content_fingerprint": "2afe26c5049fbe0e464c34aa4c523633f41b2a2730fc0608a0ca9bc9456ab5de",
+      "content_fingerprint": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
       "review_session": "C07-A",
       "verification_session": "C07-V-A",
       "lens_results": {
@@ -374,9 +374,9 @@
       "unit_id": "UI-CSS-RESULTS",
       "path": "lsp-dplanner-results.css",
       "start_line": 501,
-      "end_line": 886,
-      "line_count": 386,
-      "content_fingerprint": "f680961615f935ec0c57406a5afb8ae127f241364436a07502d8f5487f742ef8",
+      "end_line": 899,
+      "line_count": 399,
+      "content_fingerprint": "1d31ea046837ab602ae9c55936732dc9be060386dc4348f63351ad5445f71a2c",
       "review_session": "C07-B",
       "verification_session": "C07-V-B",
       "lens_results": {
@@ -984,7 +984,7 @@
   ],
   "changed_paths": [],
   "audit_report": "docs/seven-lens-reports/cycle-07-results-css.md",
-  "notes": "CLOSER: registry closed at bf311c6; static/ci/release gate receipts bound to closure_evidence_commit. Cycle 8 dependency re-review C07-R2-A (1-500) and C07-R2-B (501-890) clean at fingerprint 8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49.",
+  "notes": "CLOSER: registry closed at bf311c6; static/ci/release gate receipts bound to closure_evidence_commit. Cycle 8 dependency re-review C07-R2-A (1-500) and C07-R2-B (501-890) clean at fingerprint 8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49. Cycle 9 dependency re-review refreshed UI-CSS-RESULTS parts to 1-500 / 501-899; NO_NEW_FINDING.",
   "dependency_re_reviews": [
     {
       "session": "C07-R2-A",
@@ -1056,6 +1056,27 @@
       "reviewed_at": "2026-07-06T01:09:13.648040+00:00",
       "verifier": "Cursor Agent (C08-V-B attestation corrector)",
       "line_count": 386
+    },
+    {
+      "session": "C09-DEP-RESULTS-A/C09-DEP-RESULTS-B",
+      "part_id": "UI-CSS-RESULTS",
+      "start_line": 1,
+      "end_line": 899,
+      "content_fingerprint": "e1950ea03521a03f7171bd0e7e3f834506d6c2c544f070c090e8055f6eb07150",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
+        "UI-CSS-RESULTS-P02": "1d31ea046837ab602ae9c55936732dc9be060386dc4348f63351ad5445f71a2c"
+      },
+      "trigger": "Cycle 9 mobile warning containment and gas-switch terminology CSS/legend changes",
+      "focus": [
+        "gas-switch row and legend token parity preserved",
+        "mobile warning banners and gas consumption BT warning wrap within viewport",
+        "Cycle 7 chip/PPO2/reduced-motion/print contracts preserved by visual regression suite"
+      ],
+      "result": "NO_NEW_FINDING",
+      "reviewed_at": "2026-07-07T11:25:37.098795+00:00",
+      "verifier": "Codex simplified Cycle 9 dependency re-review",
+      "line_count": 899
     }
   ]
 }
