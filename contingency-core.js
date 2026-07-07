@@ -316,7 +316,7 @@ function buildContingencyButtons() {
     const label = el?.selectedOptions[0]?.text || '';
     console.log('[Contingency] dg'+idx+'Mix:', el?.value, 'label:', label);
     if (el && el.value !== 'none') {
-      const gasName = label.replace(/\(.*?\)/g,'').trim() || ('Gas ' + idx);
+      const gasName = contingencyGasDisplayLabel(idx) || ('Gas ' + idx);
       gases.push({ id: idx, name: gasName });
     }
   }
@@ -359,6 +359,16 @@ function buildContingencyButtons() {
   selectContGas(restoredGasLose, gases);
   selectContBT(0);
   selectContDepth(0);
+}
+
+function contingencyGasDisplayLabel(idx) {
+  const fracs = typeof getDecoCardFractions === 'function' ? getDecoCardFractions(idx) : null;
+  if (fracs && Number.isFinite(fracs.fO2) && Number.isFinite(fracs.fHe)) {
+    return getGasLabel(fracs.fO2, fracs.fHe);
+  }
+  const el = document.getElementById('dg' + idx + 'Mix');
+  const label = el?.selectedOptions[0]?.text || '';
+  return shortMixLabel(label.replace(/\(.*?\)/g, '').trim());
 }
 
 function selectContGas(val, gases) {
@@ -419,7 +429,7 @@ function calcContingency() {
   const gases = [];
   for (const idx of getAllDecoGasIds()) {
     const el = document.getElementById('dg' + idx + 'Mix');
-    const label = el?.selectedOptions[0]?.text?.replace(/\(.*?\)/g,'').trim() || ('Gas ' + idx);
+    const label = contingencyGasDisplayLabel(idx) || ('Gas ' + idx);
     if (el && el.value !== 'none') gases.push({ id: idx, name: label });
   }
 

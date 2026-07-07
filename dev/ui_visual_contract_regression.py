@@ -846,6 +846,9 @@ async () => {
       selectedBeforeCalc,
       selectedAfterCalc,
       picked: lossBtn?.id || '',
+      labelsCanonical: afterGasButtons.concat(beforeGasButtons).every(btn => !/\bEAN\s*\d+\b|\bEAN\d+\b/i.test(btn.text))
+        && afterGasButtons.some(btn => /Lose\s+50\/00/i.test(btn.text)),
+      scenarioCanonical: !/\bEAN\s*\d+\b|\bEAN\d+\b/i.test(document.getElementById('contingencyResult')?.textContent || ''),
       ok: vpmContingencyGasOk,
     },
   };
@@ -1582,6 +1585,8 @@ def main() -> int:
     )
     results["SL-C09-VPM-CONTINGENCY-GAS-LOSS-STABLE"] = bool(
         vpm_details.get("vpmContingencyGas", {}).get("ok")
+        and vpm_details.get("vpmContingencyGas", {}).get("labelsCanonical")
+        and vpm_details.get("vpmContingencyGas", {}).get("scenarioCanonical")
         and not vpm_details.get("console_errors")
     )
     travel_trimix = gas_details.get("travelTrimix", {})
