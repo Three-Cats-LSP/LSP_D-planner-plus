@@ -2,33 +2,35 @@
   "schema_version": 3,
   "runner_version": 2,
   "spec": "docs\\seven-lens-traces\\cycle-08-shell-results.json",
-  "spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8",
-  "commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+  "spec_sha256": "681ad7fa0cb22056310c18f837b7bd1ec3ea31e65022f4d03bd78c67e1c8eb98",
+  "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
   "traces": [
     {
       "id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
-      "entry_event": "Mobile boot at 375x667; user toggles plan/results via main mode row.",
+      "entry_event": "Mobile boot at 375x667; user generates a schedule and keeps Dive Parameters plus results in one scroll stack.",
       "consumer_path": [
         "DOMContentLoaded initV3Layout -> _ensureMobilePlanViewBootstrap",
-        "setMobilePlanView('plan'|'results') -> #recPlannerView|#tecPlannerView + #resultsPanel mobile-active",
-        "lsp-dplanner-results.css mobile-active display flex",
-        "visible planner view vs #resultsPanel"
+        "#tecGenerateBtn -> _onPlanResultsReady -> setMobilePlanView(\"stack\")",
+        "lsp-dplanner-results.css shows active planner and #resultsPanel.has-results together",
+        "visible planner view plus #resultsPanel schedule remain in the same mobile scroll"
       ],
       "captures": {
         "before": {
           "plan_panel_exists": false,
-          "tec_mobile_active": true,
-          "results_mobile_active": false
+          "tec_visible": true,
+          "results_hidden_before": true
         },
         "canonical": {
-          "set_mobile_works": true
+          "has_results": true,
+          "row_count": 14,
+          "enough_rows": true
         },
         "consumer": {
           "tec_display": "flex",
-          "results_display": "none"
+          "results_display": "flex"
         },
         "observable": {
-          "exclusive_plan": true
+          "stacked_after_generate": true
         }
       },
       "assertions": [
@@ -38,17 +40,27 @@
           "detail": "False equal False"
         },
         {
-          "id": "plan-boot-active",
+          "id": "plan-boot-visible",
           "passed": true,
           "detail": "True equal True"
         },
         {
-          "id": "set-mobile-works",
+          "id": "results-hidden-before-generate",
           "passed": true,
           "detail": "True equal True"
         },
         {
-          "id": "exclusive-plan-view",
+          "id": "schedule-generated",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "schedule-rows",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "stacked-after-generate",
           "passed": true,
           "detail": "True equal True"
         }
@@ -130,28 +142,30 @@
       "runs": [
         {
           "id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
-          "entry_event": "Mobile boot at 375x667; user toggles plan/results via main mode row.",
+          "entry_event": "Mobile boot at 375x667; user generates a schedule and keeps Dive Parameters plus results in one scroll stack.",
           "consumer_path": [
             "DOMContentLoaded initV3Layout -> _ensureMobilePlanViewBootstrap",
-            "setMobilePlanView('plan'|'results') -> #recPlannerView|#tecPlannerView + #resultsPanel mobile-active",
-            "lsp-dplanner-results.css mobile-active display flex",
-            "visible planner view vs #resultsPanel"
+            "#tecGenerateBtn -> _onPlanResultsReady -> setMobilePlanView(\"stack\")",
+            "lsp-dplanner-results.css shows active planner and #resultsPanel.has-results together",
+            "visible planner view plus #resultsPanel schedule remain in the same mobile scroll"
           ],
           "captures": {
             "before": {
               "plan_panel_exists": false,
-              "tec_mobile_active": true,
-              "results_mobile_active": false
+              "tec_visible": true,
+              "results_hidden_before": true
             },
             "canonical": {
-              "set_mobile_works": true
+              "has_results": true,
+              "row_count": 14,
+              "enough_rows": true
             },
             "consumer": {
               "tec_display": "flex",
-              "results_display": "none"
+              "results_display": "flex"
             },
             "observable": {
-              "exclusive_plan": true
+              "stacked_after_generate": true
             }
           },
           "assertions": [
@@ -161,17 +175,27 @@
               "detail": "False equal False"
             },
             {
-              "id": "plan-boot-active",
+              "id": "plan-boot-visible",
               "passed": true,
               "detail": "True equal True"
             },
             {
-              "id": "set-mobile-works",
+              "id": "results-hidden-before-generate",
               "passed": true,
               "detail": "True equal True"
             },
             {
-              "id": "exclusive-plan-view",
+              "id": "schedule-generated",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "schedule-rows",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "stacked-after-generate",
               "passed": true,
               "detail": "True equal True"
             }
@@ -248,28 +272,30 @@
         },
         {
           "id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
-          "entry_event": "Mobile boot at 375x667; user toggles plan/results via main mode row.",
+          "entry_event": "Mobile boot at 375x667; user generates a schedule and keeps Dive Parameters plus results in one scroll stack.",
           "consumer_path": [
             "DOMContentLoaded initV3Layout -> _ensureMobilePlanViewBootstrap",
-            "setMobilePlanView('plan'|'results') -> #recPlannerView|#tecPlannerView + #resultsPanel mobile-active",
-            "lsp-dplanner-results.css mobile-active display flex",
-            "visible planner view vs #resultsPanel"
+            "#tecGenerateBtn -> _onPlanResultsReady -> setMobilePlanView(\"stack\")",
+            "lsp-dplanner-results.css shows active planner and #resultsPanel.has-results together",
+            "visible planner view plus #resultsPanel schedule remain in the same mobile scroll"
           ],
           "captures": {
             "before": {
               "plan_panel_exists": false,
-              "tec_mobile_active": true,
-              "results_mobile_active": false
+              "tec_visible": true,
+              "results_hidden_before": true
             },
             "canonical": {
-              "set_mobile_works": true
+              "has_results": true,
+              "row_count": 14,
+              "enough_rows": true
             },
             "consumer": {
               "tec_display": "flex",
-              "results_display": "none"
+              "results_display": "flex"
             },
             "observable": {
-              "exclusive_plan": true
+              "stacked_after_generate": true
             }
           },
           "assertions": [
@@ -279,17 +305,27 @@
               "detail": "False equal False"
             },
             {
-              "id": "plan-boot-active",
+              "id": "plan-boot-visible",
               "passed": true,
               "detail": "True equal True"
             },
             {
-              "id": "set-mobile-works",
+              "id": "results-hidden-before-generate",
               "passed": true,
               "detail": "True equal True"
             },
             {
-              "id": "exclusive-plan-view",
+              "id": "schedule-generated",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "schedule-rows",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "stacked-after-generate",
               "passed": true,
               "detail": "True equal True"
             }
@@ -1917,8 +1953,8 @@
               "detail": "True equal True"
             }
           ],
-          "state_before_sha256": "d80012b0ee10bed39cf2db972156292a8fa27107fa92c3e2b6b5e467ca51d328",
-          "state_after_sha256": "d80012b0ee10bed39cf2db972156292a8fa27107fa92c3e2b6b5e467ca51d328",
+          "state_before_sha256": "6bf3e148e7404bc0d73b3966018d6052fddfb6fa64824817dc64054c3b164f4a",
+          "state_after_sha256": "6bf3e148e7404bc0d73b3966018d6052fddfb6fa64824817dc64054c3b164f4a",
           "state_before": {
             "elements": {
               "#navBtnBuh": {
@@ -1973,7 +2009,7 @@
             "localStorage": {
               "lspAdvancedOpen": "0",
               "lspCcrAdvOpen": "0",
-              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"VPMB\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"VPMB\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
               "waterDensity": "salt",
               "vpmVariant": "VPMB"
             },
@@ -2033,7 +2069,7 @@
             "localStorage": {
               "lspAdvancedOpen": "0",
               "lspCcrAdvOpen": "0",
-              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"VPMB\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"VPMB\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
               "waterDensity": "salt",
               "vpmVariant": "VPMB"
             },
@@ -2587,8 +2623,8 @@
           "detail": "True equal True"
         }
       ],
-      "state_before_sha256": "c5a74032ff6b726c8946cd7c6965599e3fddb5bc5b9bfd9e49777335c8802283",
-      "state_after_sha256": "c5a74032ff6b726c8946cd7c6965599e3fddb5bc5b9bfd9e49777335c8802283",
+      "state_before_sha256": "28e7c6fb3732d5584bb3dbe56ef1a6bdee7467576be16bff0d451d8e8941ca53",
+      "state_after_sha256": "28e7c6fb3732d5584bb3dbe56ef1a6bdee7467576be16bff0d451d8e8941ca53",
       "state_before": {
         "elements": {
           "#navBtnBuh": {
@@ -2624,6 +2660,15 @@
             "disabled": false,
             "text": "?",
             "className": "tip-icon tip-btn header-ref-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecGenerateBtn": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "\u25b6 Generate schedule",
+            "className": "gen-btn",
             "style": null,
             "dataset": {}
           }
@@ -2673,6 +2718,15 @@
             "disabled": false,
             "text": "?",
             "className": "tip-icon tip-btn header-ref-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecGenerateBtn": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "\u25b6 Generate schedule",
+            "className": "gen-btn",
             "style": null,
             "dataset": {}
           }
@@ -2769,8 +2823,8 @@
               "detail": "True equal True"
             }
           ],
-          "state_before_sha256": "c5a74032ff6b726c8946cd7c6965599e3fddb5bc5b9bfd9e49777335c8802283",
-          "state_after_sha256": "c5a74032ff6b726c8946cd7c6965599e3fddb5bc5b9bfd9e49777335c8802283",
+          "state_before_sha256": "28e7c6fb3732d5584bb3dbe56ef1a6bdee7467576be16bff0d451d8e8941ca53",
+          "state_after_sha256": "28e7c6fb3732d5584bb3dbe56ef1a6bdee7467576be16bff0d451d8e8941ca53",
           "state_before": {
             "elements": {
               "#navBtnBuh": {
@@ -2806,6 +2860,15 @@
                 "disabled": false,
                 "text": "?",
                 "className": "tip-icon tip-btn header-ref-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
                 "style": null,
                 "dataset": {}
               }
@@ -2855,6 +2918,15 @@
                 "disabled": false,
                 "text": "?",
                 "className": "tip-icon tip-btn header-ref-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
                 "style": null,
                 "dataset": {}
               }
@@ -2946,8 +3018,8 @@
               "detail": "True equal True"
             }
           ],
-          "state_before_sha256": "b2057b2e593ced4a813987b0f29d2547add9a0aadbe94113b1c2b9af9f9cb99d",
-          "state_after_sha256": "b2057b2e593ced4a813987b0f29d2547add9a0aadbe94113b1c2b9af9f9cb99d",
+          "state_before_sha256": "28e7c6fb3732d5584bb3dbe56ef1a6bdee7467576be16bff0d451d8e8941ca53",
+          "state_after_sha256": "28e7c6fb3732d5584bb3dbe56ef1a6bdee7467576be16bff0d451d8e8941ca53",
           "state_before": {
             "elements": {
               "#navBtnBuh": {
@@ -2985,16 +3057,24 @@
                 "className": "tip-icon tip-btn header-ref-btn",
                 "style": null,
                 "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
               }
             },
             "globals": {
               "_zhlHeadless": false
             },
             "localStorage": {
+              "waterDensity": "salt",
               "lspAdvancedOpen": "0",
-              "lspCcrAdvOpen": "0",
-              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
-              "waterDensity": "salt"
+              "lspCcrAdvOpen": "0"
             },
             "sessionStorage": {}
           },
@@ -3035,16 +3115,24 @@
                 "className": "tip-icon tip-btn header-ref-btn",
                 "style": null,
                 "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
               }
             },
             "globals": {
               "_zhlHeadless": false
             },
             "localStorage": {
+              "waterDensity": "salt",
               "lspAdvancedOpen": "0",
-              "lspCcrAdvOpen": "0",
-              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
-              "waterDensity": "salt"
+              "lspCcrAdvOpen": "0"
             },
             "sessionStorage": {}
           },

@@ -6,7 +6,7 @@
       "review_status": "SEVEN_LENS_REVIEWED",
       "reviewed_fingerprint": "08baabc5316bd85fa78d860f7414fdfe0df845c163407973d471ad0178923e60",
       "cycle_id": "SL-C01",
-      "boundary": "ui/markup-header.html whole file (847 lines; parts A\u2013D)",
+      "boundary": "ui/markup-header.html whole file (847 lines; parts A–D)",
       "reviewer": "Cursor GPT-5.5 Medium",
       "review_session": "cursor/seven-lens-cycle-01-header",
       "lens_results": {
@@ -16,7 +16,7 @@
         "L4": "Settings handlers traced to settings-core; regressions exercise input, preset, restore, and unit-switch paths.",
         "L5": "Canonical ui/markup-header.html; assemble_ui_html verify PASS.",
         "L6": "gasWarningBanner role=alert; imperial 16,404 ft accepted at engine 5000 m ceiling.",
-        "L7": "SL-C01-DEPTH-SYNC, SL-C01-PRESET-SYNC, SL-C01-SETTINGS-RESTORE, SL-C01-ALTITUDE-UNIT-CONSTRAINTS; REG-58\u201361."
+        "L7": "SL-C01-DEPTH-SYNC, SL-C01-PRESET-SYNC, SL-C01-SETTINGS-RESTORE, SL-C01-ALTITUDE-UNIT-CONSTRAINTS; REG-58–61."
       },
       "finding_ids": [
         "SL-C01-M-01",
@@ -50,10 +50,10 @@
         "SL-C01-M-04"
       ],
       "parts": {
-        "A": "lines 1-214 \u2014 scripts, header, nav, planPanel",
-        "B": "lines 215-415 \u2014 resultsPanel",
-        "C": "lines 416-481 \u2014 settingsPageWrap",
-        "D": "lines 482-847 \u2014 tools mount, legacy-panels, gfPresetsRow tail"
+        "A": "lines 1-214 — scripts, header, nav, planPanel",
+        "B": "lines 215-415 — resultsPanel",
+        "C": "lines 416-481 — settingsPageWrap",
+        "D": "lines 482-847 — tools mount, legacy-panels, gfPresetsRow tail"
       }
     },
     {
@@ -66,7 +66,7 @@
       "review_session": "cursor/seven-lens-cycle-002-audit",
       "lens_results": {
         "L1": "REC depth/BT steppers use hidden recDepth/recBT; no shared tec IDs.",
-        "L2": "recGenerateBtn \u2192 runRecPlan; stepRecDepthBt traced.",
+        "L2": "recGenerateBtn → runRecPlan; stepRecDepthBt traced.",
         "L3": "View snapshot on mode switch; rec.* persistence namespace.",
         "L4": "Disjoint inputs feed REC schedule path only.",
         "L5": "Canonical ui/markup-rec-planner.html assembled via header placeholder.",
@@ -102,7 +102,7 @@
       "review_session": "cursor/seven-lens-cycle-002-audit",
       "lens_results": {
         "L1": "REC depth/BT steppers use hidden recDepth/recBT; no shared tec IDs.",
-        "L2": "recGenerateBtn \u2192 runRecPlan; stepRecDepthBt traced.",
+        "L2": "recGenerateBtn → runRecPlan; stepRecDepthBt traced.",
         "L3": "View snapshot on mode switch; rec.* persistence namespace.",
         "L4": "Disjoint inputs feed REC schedule path only.",
         "L5": "Canonical ui/markup-rec-planner.html assembled via header placeholder.",
@@ -138,7 +138,7 @@
       "review_session": "cursor/seven-lens-cycle-200-audit",
       "lens_results": {
         "L1": "TECH depth/BT, gas cards, GF/VPM rows use tec-only IDs.",
-        "L2": "tecGenerateBtn \u2192 runDecoSchedule; travel gas manual depth path traced.",
+        "L2": "tecGenerateBtn → runDecoSchedule; travel gas manual depth path traced.",
         "L3": "Unit switch syncs travel manual depth constraints.",
         "L4": "domDepthToM on travelGasManualDepth after imperial edit.",
         "L5": "Static ui/markup-tec-planner.html; no runtime tec mount.",
@@ -557,7 +557,7 @@
         "SL-C08-M-04"
       ],
       "reviewed_fingerprint": "c9dc4b2f509fc9666f56898f0723571a20922b7c5e869fdb301412c1ab5778cd",
-      "verified_source_commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+      "verified_source_commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
       "verification_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
       "finding_ids": [
         "SL-C08-H-02",
@@ -569,7 +569,7 @@
       },
       "verification_session": "C08-V-C / C08-V-D",
       "verifier": "Cursor Agent (C08 CLOSER)",
-      "last_checked_commit": "34a241c",
+      "last_checked_commit": "1372b40",
       "verified_at": "2026-07-07T05:23:50+00:00",
       "closed_at": "2026-07-07T05:23:50+00:00"
     },
@@ -577,7 +577,7 @@
       "unit_id": "UI-RESULTS-PANEL",
       "review_status": "SEVEN_LENS_REVIEWED",
       "cycle_id": "SL-C08",
-      "boundary": "results-panel.js whole file (313 lines)",
+      "boundary": "results-panel.js whole file (312 lines)",
       "reviewer": "Cursor FIXER Cycle 08",
       "review_session": "C08-A",
       "verification_status": "PASSED",
@@ -587,8 +587,8 @@
         "SL-C08-M-01",
         "SL-C08-L-01"
       ],
-      "reviewed_fingerprint": "5753326e01ae9dc9aad521538c749387c35a542e9d1263b0c49c8de74ef5c217",
-      "verified_source_commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+      "reviewed_fingerprint": "1d09b7cb7452cc402f30527e8b693adc6bc32f835ae66fefd7e72a0d42c77543",
+      "verified_source_commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
       "verification_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
       "finding_ids": [
         "SL-C08-H-01",
@@ -596,11 +596,11 @@
         "SL-C08-L-01"
       ],
       "parts": {
-        "P01": "results-panel.js:1-313"
+        "P01": "results-panel.js:1-312"
       },
       "verification_session": "C08-V-C / C08-V-D",
       "verifier": "Cursor Agent (C08 CLOSER)",
-      "last_checked_commit": "34a241c",
+      "last_checked_commit": "1372b40",
       "verified_at": "2026-07-07T05:23:50+00:00",
       "closed_at": "2026-07-07T05:23:50+00:00"
     }

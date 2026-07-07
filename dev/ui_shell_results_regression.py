@@ -50,6 +50,32 @@ STATE_HASH_JS = r"""
 
 MOBILE_EXCLUSIVE_JS = r"""
 async () => {
+  const waitScheduleReady = async (minRows = 5, timeoutMs = 15000, settleMs = 400) => {
+    const deadline = Date.now() + timeoutMs;
+    let stableRows = -1;
+    let stableSince = 0;
+    while (Date.now() < deadline) {
+      const hasResults = document.getElementById('resultsPanel')?.classList.contains('has-results') === true;
+      const rows = document.querySelectorAll('#decoTableBody tr').length;
+      if (hasResults && rows >= minRows) {
+        if (rows === stableRows) {
+          if (!stableSince) stableSince = Date.now();
+          if (Date.now() - stableSince >= settleMs) return { hasResults, rows };
+        } else {
+          stableRows = rows;
+          stableSince = Date.now();
+        }
+      } else {
+        stableRows = -1;
+        stableSince = 0;
+      }
+      await new Promise(r => setTimeout(r, 200));
+    }
+    return {
+      hasResults: document.getElementById('resultsPanel')?.classList.contains('has-results') === true,
+      rows: document.querySelectorAll('#decoTableBody tr').length,
+    };
+  };
   const vis = (id) => {
     const el = document.getElementById(id);
     if (!el) return 'missing';
@@ -59,26 +85,46 @@ async () => {
   const planId = activePlan();
   const beforePlan = vis(planId);
   const beforeResults = vis('resultsPanel');
-  const bothBefore = beforePlan !== 'none' && beforeResults !== 'none';
+  const resultsPanel = document.getElementById('resultsPanel');
+  const hasResultsBefore = resultsPanel?.classList.contains('has-results') === true;
+  const validInitialState = hasResultsBefore
+    ? beforePlan !== 'none' && beforeResults !== 'none'
+    : beforePlan !== 'none' && beforeResults === 'none';
+
+  if (!hasResultsBefore) {
+    const prevHeadless = window._zhlHeadless;
+    window._zhlHeadless = false;
+    try {
+      document.getElementById('tecGenerateBtn')?.click();
+      await waitScheduleReady(5, 15000, 400);
+    } finally {
+      window._zhlHeadless = prevHeadless;
+    }
+  }
 
   if (typeof setMobilePlanView === 'function') setMobilePlanView('plan');
   await new Promise(r => setTimeout(r, 100));
-  const planOnly = vis(planId) !== 'none' && vis('resultsPanel') === 'none';
+  const planStillVisible = vis(planId) !== 'none';
 
   if (typeof setMobilePlanView === 'function') setMobilePlanView('results');
   await new Promise(r => setTimeout(r, 100));
-  const resultsOnly = vis('resultsPanel') !== 'none' && vis(planId) === 'none';
+  const stackedAfterResults = vis('resultsPanel') !== 'none' && vis(planId) !== 'none';
 
   if (typeof setMobilePlanView === 'function') setMobilePlanView('plan');
   await new Promise(r => setTimeout(r, 50));
+  const stackedAfterPlan = resultsPanel?.classList.contains('has-results')
+    ? vis('resultsPanel') !== 'none' && vis(planId) !== 'none'
+    : vis(planId) !== 'none';
 
   return {
     planId,
-    bothBefore,
-    planOnly,
-    resultsOnly,
+    hasResultsBefore,
+    validInitialState,
+    planStillVisible,
+    stackedAfterResults,
+    stackedAfterPlan,
     inactiveHidden: vis(plannerAlgo === 'rec' ? 'tecPlannerView' : 'recPlannerView') === 'none',
-    ok: !bothBefore && planOnly && resultsOnly,
+    ok: validInitialState && planStillVisible && stackedAfterResults && stackedAfterPlan,
   };
 }
 """

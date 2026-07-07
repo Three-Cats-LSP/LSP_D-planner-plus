@@ -5,42 +5,73 @@
   "traces": [
     {
       "id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
-      "case_ids": ["SL-C08-MOBILE-PANEL-EXCLUSIVE"],
-      "entry_event": "Mobile boot at 375x667; user toggles plan/results via main mode row.",
+      "case_ids": [
+        "SL-C08-MOBILE-PANEL-EXCLUSIVE"
+      ],
+      "entry_event": "Mobile boot at 375x667; user generates a schedule and keeps Dive Parameters plus results in one scroll stack.",
       "consumer_path": [
         "DOMContentLoaded initV3Layout -> _ensureMobilePlanViewBootstrap",
-        "setMobilePlanView('plan'|'results') -> #recPlannerView|#tecPlannerView + #resultsPanel mobile-active",
-        "lsp-dplanner-results.css mobile-active display flex",
-        "visible planner view vs #resultsPanel"
+        "#tecGenerateBtn -> _onPlanResultsReady -> setMobilePlanView(\"stack\")",
+        "lsp-dplanner-results.css shows active planner and #resultsPanel.has-results together",
+        "visible planner view plus #resultsPanel schedule remain in the same mobile scroll"
       ],
       "state": {
-        "selectors": ["#navBtnBuh", "#tecGenerateBtn"],
-        "restore_order": ["#navBtnBuh", "#tecGenerateBtn"],
-        "globals": ["_zhlHeadless"]
+        "selectors": [
+          "#navBtnBuh",
+          "#tecGenerateBtn"
+        ],
+        "restore_order": [
+          "#navBtnBuh",
+          "#tecGenerateBtn"
+        ],
+        "globals": [
+          "_zhlHeadless"
+        ]
       },
       "setup": [
-        {"action": "set_viewport", "size": {"width": 375, "height": 667}},
+        {
+          "action": "set_viewport",
+          "size": {
+            "width": 375,
+            "height": 667
+          }
+        },
         {
           "action": "run_script",
           "setup_only_reason": "Clear persisted settings for stable boot.",
           "script": "() => { localStorage.removeItem('lspDiveSettings_v6'); if (typeof appSettings !== 'undefined' && appSettings.save) appSettings.save = function() {}; }"
         },
-        {"action": "set_global", "name": "_zhlHeadless", "value": false}
+        {
+          "action": "set_global",
+          "name": "_zhlHeadless",
+          "value": false
+        }
       ],
       "steps": [
         {
           "capture": "before",
           "values": {
             "plan_panel_exists": "!!document.getElementById('planPanel')",
-            "tec_mobile_active": "document.getElementById('tecPlannerView')?.classList.contains('mobile-active') === true",
-            "results_mobile_active": "document.getElementById('resultsPanel')?.classList.contains('mobile-active') === true"
+            "tec_visible": "getComputedStyle(document.getElementById('tecPlannerView')).display !== 'none'",
+            "results_hidden_before": "getComputedStyle(document.getElementById('resultsPanel')).display === 'none'"
           }
         },
-        {"action": "click", "selector": "#navBtnBuh", "delay_ms": 300},
+        {
+          "action": "click",
+          "selector": "#navBtnBuh",
+          "delay_ms": 300
+        },
+        {
+          "action": "click",
+          "selector": "#tecGenerateBtn",
+          "delay_ms": 1200
+        },
         {
           "capture": "canonical",
           "values": {
-            "set_mobile_works": "(() => { if (typeof setMobilePlanView !== 'function') return false; setMobilePlanView('results'); const resultsOn = document.getElementById('resultsPanel')?.classList.contains('mobile-active'); setMobilePlanView('plan'); const planOn = document.getElementById('tecPlannerView')?.classList.contains('mobile-active'); return resultsOn && planOn; })()"
+            "has_results": "document.getElementById('resultsPanel')?.classList.contains('has-results') === true",
+            "row_count": "document.querySelectorAll('#decoTableBody tr').length",
+            "enough_rows": "document.querySelectorAll('#decoTableBody tr').length >= 5"
           }
         },
         {
@@ -53,20 +84,54 @@
         {
           "capture": "observable",
           "values": {
-            "exclusive_plan": "(() => { if (typeof setMobilePlanView === 'function') setMobilePlanView('plan'); const t = getComputedStyle(document.getElementById('tecPlannerView')).display; const r = getComputedStyle(document.getElementById('resultsPanel')).display; return t !== 'none' && r === 'none'; })()"
+            "stacked_after_generate": "(() => { const t=getComputedStyle(document.getElementById('tecPlannerView')).display; const r=getComputedStyle(document.getElementById('resultsPanel')).display; return t !== 'none' && r !== 'none'; })()"
           }
         }
       ],
       "assertions": [
-        {"id": "no-plan-panel", "left": "$.before.plan_panel_exists", "op": "equal", "right": false},
-        {"id": "plan-boot-active", "left": "$.before.tec_mobile_active", "op": "equal", "right": true},
-        {"id": "set-mobile-works", "left": "$.canonical.set_mobile_works", "op": "equal", "right": true},
-        {"id": "exclusive-plan-view", "left": "$.observable.exclusive_plan", "op": "equal", "right": true}
+        {
+          "id": "no-plan-panel",
+          "left": "$.before.plan_panel_exists",
+          "op": "equal",
+          "right": false
+        },
+        {
+          "id": "plan-boot-visible",
+          "left": "$.before.tec_visible",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "results-hidden-before-generate",
+          "left": "$.before.results_hidden_before",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "schedule-generated",
+          "left": "$.canonical.has_results",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "schedule-rows",
+          "left": "$.canonical.enough_rows",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "stacked-after-generate",
+          "left": "$.observable.stacked_after_generate",
+          "op": "equal",
+          "right": true
+        }
       ]
     },
     {
       "id": "SL-C08-NAV-CLEARS-RESULTS-TRACE",
-      "case_ids": ["SL-C08-NAV-PRESERVES-RESULTS"],
+      "case_ids": [
+        "SL-C08-NAV-PRESERVES-RESULTS"
+      ],
       "entry_event": "User generates TEC schedule then navigates Tools and back to Planner.",
       "consumer_path": [
         "#tecGenerateBtn click",
@@ -76,19 +141,42 @@
         "#decoTableBody row count preserved"
       ],
       "state": {
-        "selectors": ["#navBtnBuh", "#tecGenerateBtn", "#navBtnTools"],
-        "restore_order": ["#navBtnTools", "#tecGenerateBtn", "#navBtnBuh"],
-        "globals": ["_zhlHeadless"]
+        "selectors": [
+          "#navBtnBuh",
+          "#tecGenerateBtn",
+          "#navBtnTools"
+        ],
+        "restore_order": [
+          "#navBtnTools",
+          "#tecGenerateBtn",
+          "#navBtnBuh"
+        ],
+        "globals": [
+          "_zhlHeadless"
+        ]
       },
       "setup": [
-        {"action": "set_viewport", "size": {"width": 1280, "height": 800}},
+        {
+          "action": "set_viewport",
+          "size": {
+            "width": 1280,
+            "height": 800
+          }
+        },
         {
           "action": "run_script",
           "setup_only_reason": "Clear persisted settings for stable generate.",
           "script": "() => { localStorage.removeItem('lspDiveSettings_v6'); }"
         },
-        {"action": "click", "selector": "#navBtnBuh"},
-        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+        {
+          "action": "click",
+          "selector": "#navBtnBuh"
+        },
+        {
+          "action": "set_global",
+          "name": "_zhlHeadless",
+          "value": false
+        },
         {
           "action": "run_script",
           "setup_only_reason": "Preset depth/BT before visible generate.",
@@ -96,7 +184,11 @@
         }
       ],
       "steps": [
-        {"action": "click", "selector": "#tecGenerateBtn", "delay_ms": 1500},
+        {
+          "action": "click",
+          "selector": "#tecGenerateBtn",
+          "delay_ms": 1500
+        },
         {
           "capture": "before",
           "values": {
@@ -104,8 +196,16 @@
             "row_count": "document.querySelectorAll('#decoTableBody tr').length"
           }
         },
-        {"action": "click", "selector": "#navBtnTools", "delay_ms": 300},
-        {"action": "click", "selector": "#navBtnBuh", "delay_ms": 500},
+        {
+          "action": "click",
+          "selector": "#navBtnTools",
+          "delay_ms": 300
+        },
+        {
+          "action": "click",
+          "selector": "#navBtnBuh",
+          "delay_ms": 500
+        },
         {
           "capture": "consumer",
           "values": {
@@ -122,16 +222,43 @@
         }
       ],
       "assertions": [
-        {"id": "had-results", "left": "$.before.has_results", "op": "equal", "right": true},
-        {"id": "had-rows", "left": "$.before.row_count", "op": "not_equal", "right": 0},
-        {"id": "kept-flag", "left": "$.consumer.has_after", "op": "equal", "right": true},
-        {"id": "kept-rows", "left": "$.consumer.rows_after", "op": "not_equal", "right": 0},
-        {"id": "observable-preserved", "left": "$.observable.preserved", "op": "equal", "right": true}
+        {
+          "id": "had-results",
+          "left": "$.before.has_results",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "had-rows",
+          "left": "$.before.row_count",
+          "op": "not_equal",
+          "right": 0
+        },
+        {
+          "id": "kept-flag",
+          "left": "$.consumer.has_after",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "kept-rows",
+          "left": "$.consumer.rows_after",
+          "op": "not_equal",
+          "right": 0
+        },
+        {
+          "id": "observable-preserved",
+          "left": "$.observable.preserved",
+          "op": "equal",
+          "right": true
+        }
       ]
     },
     {
       "id": "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE",
-      "case_ids": ["SL-C08-INVALID-TEC-CLEARS-STALE"],
+      "case_ids": [
+        "SL-C08-INVALID-TEC-CLEARS-STALE"
+      ],
       "entry_event": "Valid TEC generate then invalid depth submitted through Generate.",
       "consumer_path": [
         "#tecGenerateBtn valid click -> has-results + schedule rows",
@@ -141,20 +268,45 @@
         "corrected generate restores fresh rows"
       ],
       "state": {
-        "selectors": ["#navBtnBuh", "#tecGenerateBtn"],
-        "restore_order": ["#tecGenerateBtn", "#navBtnBuh"],
-        "globals": ["_zhlHeadless"]
+        "selectors": [
+          "#navBtnBuh",
+          "#tecGenerateBtn"
+        ],
+        "restore_order": [
+          "#tecGenerateBtn",
+          "#navBtnBuh"
+        ],
+        "globals": [
+          "_zhlHeadless"
+        ]
       },
       "setup": [
-        {"action": "set_viewport", "size": {"width": 1280, "height": 800}},
-        {"action": "click", "selector": "#navBtnBuh"},
-        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+        {
+          "action": "set_viewport",
+          "size": {
+            "width": 1280,
+            "height": 800
+          }
+        },
+        {
+          "action": "click",
+          "selector": "#navBtnBuh"
+        },
+        {
+          "action": "set_global",
+          "name": "_zhlHeadless",
+          "value": false
+        },
         {
           "action": "run_script",
           "setup_only_reason": "Preset depth/BT before visible generate.",
           "script": "() => { document.getElementById('tecDepth').value = '45'; document.getElementById('tecBT').value = '25'; if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers(); }"
         },
-        {"action": "click", "selector": "#tecGenerateBtn", "delay_ms": 1500},
+        {
+          "action": "click",
+          "selector": "#tecGenerateBtn",
+          "delay_ms": 1500
+        },
         {
           "action": "run_script",
           "setup_only_reason": "Wait for valid schedule rows before invalid-input probe.",
@@ -174,7 +326,11 @@
             "has_results": "document.getElementById('resultsPanel')?.classList.contains('has-results') === true"
           }
         },
-        {"action": "click", "selector": "#tecGenerateBtn", "delay_ms": 800},
+        {
+          "action": "click",
+          "selector": "#tecGenerateBtn",
+          "delay_ms": 800
+        },
         {
           "capture": "consumer",
           "values": {
@@ -190,15 +346,37 @@
         }
       ],
       "assertions": [
-        {"id": "valid-rows", "left": "$.before.rows_valid", "op": "not_equal", "right": 0},
-        {"id": "cleared-flag", "left": "$.consumer.has_after_invalid", "op": "equal", "right": false},
-        {"id": "cleared-rows", "left": "$.consumer.rows_after_invalid", "op": "equal", "right": 0},
-        {"id": "observable-cleared", "left": "$.observable.cleared", "op": "equal", "right": true}
+        {
+          "id": "valid-rows",
+          "left": "$.before.rows_valid",
+          "op": "not_equal",
+          "right": 0
+        },
+        {
+          "id": "cleared-flag",
+          "left": "$.consumer.has_after_invalid",
+          "op": "equal",
+          "right": false
+        },
+        {
+          "id": "cleared-rows",
+          "left": "$.consumer.rows_after_invalid",
+          "op": "equal",
+          "right": 0
+        },
+        {
+          "id": "observable-cleared",
+          "left": "$.observable.cleared",
+          "op": "equal",
+          "right": true
+        }
       ]
     },
     {
       "id": "SL-C08-SINGLE-MOBILE-INIT-TRACE",
-      "case_ids": ["SL-C08-SINGLE-MOBILE-INIT"],
+      "case_ids": [
+        "SL-C08-SINGLE-MOBILE-INIT"
+      ],
       "entry_event": "Repeated layout bootstrap must not duplicate mobile init listeners.",
       "consumer_path": [
         "initV3Layout -> _ensureMobilePlanViewBootstrap",
@@ -207,12 +385,22 @@
         "repeat initV3Layout no-op"
       ],
       "state": {
-        "selectors": ["#navBtnBuh"],
-        "restore_order": ["#navBtnBuh"],
+        "selectors": [
+          "#navBtnBuh"
+        ],
+        "restore_order": [
+          "#navBtnBuh"
+        ],
         "globals": []
       },
       "setup": [
-        {"action": "set_viewport", "size": {"width": 375, "height": 667}}
+        {
+          "action": "set_viewport",
+          "size": {
+            "width": 375,
+            "height": 667
+          }
+        }
       ],
       "steps": [
         {
@@ -222,7 +410,11 @@
             "uses_ensure": "typeof initV3Layout === 'function' && initV3Layout.toString().includes('_ensureMobilePlanViewBootstrap')"
           }
         },
-        {"action": "click", "selector": "#navBtnBuh", "delay_ms": 300},
+        {
+          "action": "click",
+          "selector": "#navBtnBuh",
+          "delay_ms": 300
+        },
         {
           "capture": "observable",
           "values": {
@@ -232,15 +424,37 @@
         }
       ],
       "assertions": [
-        {"id": "bootstrap-on-boot", "left": "$.before.bootstrap_done", "op": "equal", "right": true},
-        {"id": "ensure-in-layout", "left": "$.before.uses_ensure", "op": "equal", "right": true},
-        {"id": "repeat-idempotent", "left": "$.observable.still_single", "op": "equal", "right": true},
-        {"id": "planner-view-active", "left": "$.observable.plan_active", "op": "equal", "right": true}
+        {
+          "id": "bootstrap-on-boot",
+          "left": "$.before.bootstrap_done",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "ensure-in-layout",
+          "left": "$.before.uses_ensure",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "repeat-idempotent",
+          "left": "$.observable.still_single",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "planner-view-active",
+          "left": "$.observable.plan_active",
+          "op": "equal",
+          "right": true
+        }
       ]
     },
     {
       "id": "SL-C08-MOBILE-NAV-TILE-GRID-TRACE",
-      "case_ids": ["SL-C08-MOBILE-NAV-TILE-GRID"],
+      "case_ids": [
+        "SL-C08-MOBILE-NAV-TILE-GRID"
+      ],
       "entry_event": "Mobile/tablet boot; user activates each canonical #mainNavBar mode button.",
       "consumer_path": [
         "#mainNavBar responsive CSS grid at <=420px portrait and tablet breakpoints",
@@ -249,9 +463,23 @@
         "elementFromPoint beside Settings must not hit blank grid cell"
       ],
       "state": {
-        "selectors": ["#navBtnBuh", "#navBtnTools", "#navBtnSettings", "#navBtnRec", "#navBtnVpm"],
-        "restore_order": ["#navBtnVpm", "#navBtnRec", "#navBtnSettings", "#navBtnTools", "#navBtnBuh"],
-        "globals": ["_zhlHeadless"]
+        "selectors": [
+          "#navBtnBuh",
+          "#navBtnTools",
+          "#navBtnSettings",
+          "#navBtnRec",
+          "#navBtnVpm"
+        ],
+        "restore_order": [
+          "#navBtnVpm",
+          "#navBtnRec",
+          "#navBtnSettings",
+          "#navBtnTools",
+          "#navBtnBuh"
+        ],
+        "globals": [
+          "_zhlHeadless"
+        ]
       },
       "setup": [
         {
@@ -259,32 +487,66 @@
           "setup_only_reason": "Clear persisted settings for stable nav grid boot.",
           "script": "() => { localStorage.removeItem('lspDiveSettings_v6'); }"
         },
-        {"action": "set_global", "name": "_zhlHeadless", "value": false},
-        {"action": "set_viewport", "size": {"width": 375, "height": 667}},
+        {
+          "action": "set_global",
+          "name": "_zhlHeadless",
+          "value": false
+        },
+        {
+          "action": "set_viewport",
+          "size": {
+            "width": 375,
+            "height": 667
+          }
+        },
         {
           "action": "run_script",
           "setup_only_reason": "Probe nav grid contract at 375x667.",
           "script": "async () => { const btnIds=['navBtnRec','navBtnBuh','navBtnVpm','navBtnTools','navBtnSettings']; const probe=async()=>{const nav=document.getElementById('mainNavBar');if(!nav)return{ok:false};const navRect=nav.getBoundingClientRect();const width=window.innerWidth;const portrait=width<=420;const tablet=width>420&&width<=720;const desktop=width>720;const borderVisible=(el,side)=>{const cs=getComputedStyle(el);const prop=side==='bottom'?'borderBottomWidth':'borderRightWidth';const style=side==='bottom'?cs.borderBottomStyle:cs.borderRightStyle;return parseFloat(cs[prop])>0&&style!=='none';};const probeBtn=(id)=>{const el=document.getElementById(id);if(!el)return null;const rect=el.getBoundingClientRect();const cs=getComputedStyle(el);return{id,left:rect.left,top:rect.top,right:rect.right,bottom:rect.bottom,width:rect.width,height:rect.height,gridColumn:cs.gridColumnStart+'/'+cs.gridColumnEnd,gridRow:cs.gridRowStart+'/'+cs.gridRowEnd,borderBottom:borderVisible(el,'bottom'),borderRight:borderVisible(el,'right'),active:el.classList.contains('active')};};const orphanProbe=()=>{const settings=document.getElementById('navBtnSettings');if(!settings)return{orphan:true};const sRect=settings.getBoundingClientRect();const x=sRect.right+Math.max(4,(navRect.right-sRect.right)/2);const y=sRect.top+sRect.height/2;if(x>=navRect.right-2)return{orphan:false};const hit=document.elementFromPoint(x,y);return{orphan:!hit||(hit.id!=='navBtnSettings'&&!hit.classList?.contains('main-nav-btn')),hitId:hit?.id||null}};const activeRuns=[];for(const id of btnIds){const btn=document.getElementById(id);if(!btn)continue;btn.click();await new Promise(r=>setTimeout(r,80));const buttons=btnIds.map(probeBtn).filter(Boolean);const tools=buttons.find(b=>b.id==='navBtnTools');const settings=buttons.find(b=>b.id==='navBtnSettings');const settingsFullRow=!portrait||(settings&&settings.width>=navRect.width*0.9);const toolsSeparated=!portrait||(tools&&tools.borderBottom);const desktopEqual=desktop&&buttons.length===5&&buttons.every(b=>Math.abs(b.width-navRect.width/5)<navRect.width*0.08);const tabletFilled=!tablet||(settings&&settings.gridColumn.includes('span')?settings.width>=navRect.width*0.55:settings&&settings.width>=navRect.width*0.28);const orphan=orphanProbe();activeRuns.push({activeId:id,settingsFullRow,toolsSeparated,desktopEqual,tabletFilled,orphan,buttons:buttons.length});}document.getElementById('navBtnBuh')?.click();await new Promise(r=>setTimeout(r,50));const finalButtons=btnIds.map(probeBtn).filter(Boolean);const finalOrphan=orphanProbe();const toolsFinal=finalButtons.find(b=>b.id==='navBtnTools');const settingsFinal=finalButtons.find(b=>b.id==='navBtnSettings');const ok=activeRuns.every(run=>{if(run.orphan.orphan)return false;if(portrait&&!run.settingsFullRow)return false;if(portrait&&!run.toolsSeparated)return false;if(desktop&&!run.desktopEqual)return false;if(tablet&&!run.tabletFilled)return false;return run.buttons===5;})&&!finalOrphan.orphan&&(!portrait||(settingsFinal&&settingsFinal.width>=navRect.width*0.9))&&(!portrait||(toolsFinal&&toolsFinal.borderBottom));return{ok,width,portrait,tablet,desktop,finalOrphan};}; window.__navProbe375=await probe(); }"
         },
-        {"action": "set_viewport", "size": {"width": 400, "height": 800}},
+        {
+          "action": "set_viewport",
+          "size": {
+            "width": 400,
+            "height": 800
+          }
+        },
         {
           "action": "run_script",
           "setup_only_reason": "Probe nav grid contract at 400x800.",
           "script": "async () => { const btnIds=['navBtnRec','navBtnBuh','navBtnVpm','navBtnTools','navBtnSettings']; const probe=async()=>{const nav=document.getElementById('mainNavBar');if(!nav)return{ok:false};const navRect=nav.getBoundingClientRect();const width=window.innerWidth;const portrait=width<=420;const tablet=width>420&&width<=720;const desktop=width>720;const borderVisible=(el,side)=>{const cs=getComputedStyle(el);const prop=side==='bottom'?'borderBottomWidth':'borderRightWidth';const style=side==='bottom'?cs.borderBottomStyle:cs.borderRightStyle;return parseFloat(cs[prop])>0&&style!=='none';};const probeBtn=(id)=>{const el=document.getElementById(id);if(!el)return null;const rect=el.getBoundingClientRect();const cs=getComputedStyle(el);return{id,width:rect.width,height:rect.height,borderBottom:borderVisible(el,'bottom'),borderRight:borderVisible(el,'right')};};const orphanProbe=()=>{const settings=document.getElementById('navBtnSettings');if(!settings)return{orphan:true};const sRect=settings.getBoundingClientRect();const x=sRect.right+Math.max(4,(navRect.right-sRect.right)/2);const y=sRect.top+sRect.height/2;if(x>=navRect.right-2)return{orphan:false};const hit=document.elementFromPoint(x,y);return{orphan:!hit||(hit.id!=='navBtnSettings'&&!hit.classList?.contains('main-nav-btn'))}};for(const id of btnIds){document.getElementById(id)?.click();await new Promise(r=>setTimeout(r,60));}document.getElementById('navBtnBuh')?.click();const finalButtons=btnIds.map(probeBtn).filter(Boolean);const toolsFinal=finalButtons.find(b=>b.id==='navBtnTools');const settingsFinal=finalButtons.find(b=>b.id==='navBtnSettings');const ok=!orphanProbe().orphan&&(!portrait||(settingsFinal&&settingsFinal.width>=navRect.width*0.9))&&(!portrait||(toolsFinal&&toolsFinal.borderBottom));return{ok,width};}; window.__navProbe400=await probe(); }"
         },
-        {"action": "set_viewport", "size": {"width": 480, "height": 800}},
+        {
+          "action": "set_viewport",
+          "size": {
+            "width": 480,
+            "height": 800
+          }
+        },
         {
           "action": "run_script",
           "setup_only_reason": "Probe nav grid contract at 480x800 tablet.",
           "script": "async () => { const btnIds=['navBtnRec','navBtnBuh','navBtnVpm','navBtnTools','navBtnSettings']; const probe=async()=>{const nav=document.getElementById('mainNavBar');if(!nav)return{ok:false};const navRect=nav.getBoundingClientRect();const width=window.innerWidth;const tablet=width>420&&width<=720;const probeBtn=(id)=>{const el=document.getElementById(id);if(!el)return null;const rect=el.getBoundingClientRect();const cs=getComputedStyle(el);return{id,width:rect.width,gridColumn:cs.gridColumnStart+'/'+cs.gridColumnEnd};};for(const id of btnIds){document.getElementById(id)?.click();await new Promise(r=>setTimeout(r,60));}document.getElementById('navBtnBuh')?.click();const settings=btnIds.map(probeBtn).find(b=>b&&b.id==='navBtnSettings');const tabletFilled=!tablet||(settings&&settings.gridColumn.includes('span')?settings.width>=navRect.width*0.55:settings&&settings.width>=navRect.width*0.28);return{ok:tabletFilled,width};}; window.__navProbe480=await probe(); }"
         },
-        {"action": "set_viewport", "size": {"width": 667, "height": 375}},
+        {
+          "action": "set_viewport",
+          "size": {
+            "width": 667,
+            "height": 375
+          }
+        },
         {
           "action": "run_script",
           "setup_only_reason": "Probe nav grid contract at 667x375 landscape mobile.",
           "script": "async () => { const btnIds=['navBtnRec','navBtnBuh','navBtnVpm','navBtnTools','navBtnSettings']; const probe=async()=>{const nav=document.getElementById('mainNavBar');if(!nav)return{ok:false};const navRect=nav.getBoundingClientRect();const width=window.innerWidth;const portrait=width<=420;const borderVisible=(el,side)=>{const cs=getComputedStyle(el);const prop=side==='bottom'?'borderBottomWidth':'borderRightWidth';const style=side==='bottom'?cs.borderBottomStyle:cs.borderRightStyle;return parseFloat(cs[prop])>0&&style!=='none';};const probeBtn=(id)=>{const el=document.getElementById(id);if(!el)return null;const rect=el.getBoundingClientRect();return{id,width:rect.width,borderBottom:borderVisible(el,'bottom')};};for(const id of btnIds){document.getElementById(id)?.click();await new Promise(r=>setTimeout(r,60));}document.getElementById('navBtnBuh')?.click();const finalButtons=btnIds.map(probeBtn).filter(Boolean);const toolsFinal=finalButtons.find(b=>b.id==='navBtnTools');const settingsFinal=finalButtons.find(b=>b.id==='navBtnSettings');const ok=(!portrait||(settingsFinal&&settingsFinal.width>=navRect.width*0.9))&&(!portrait||(toolsFinal&&toolsFinal.borderBottom));return{ok,width};}; window.__navProbe667=await probe(); }"
         },
-        {"action": "set_viewport", "size": {"width": 375, "height": 667}}
+        {
+          "action": "set_viewport",
+          "size": {
+            "width": 375,
+            "height": 667
+          }
+        }
       ],
       "steps": [
         {
@@ -297,9 +559,21 @@
             "probe667": "window.__navProbe667?.ok === true"
           }
         },
-        {"action": "click", "selector": "#navBtnTools", "delay_ms": 200},
-        {"action": "click", "selector": "#navBtnSettings", "delay_ms": 200},
-        {"action": "click", "selector": "#navBtnBuh", "delay_ms": 200},
+        {
+          "action": "click",
+          "selector": "#navBtnTools",
+          "delay_ms": 200
+        },
+        {
+          "action": "click",
+          "selector": "#navBtnSettings",
+          "delay_ms": 200
+        },
+        {
+          "action": "click",
+          "selector": "#navBtnBuh",
+          "delay_ms": 200
+        },
         {
           "capture": "canonical",
           "values": {
@@ -324,20 +598,67 @@
         }
       ],
       "assertions": [
-        {"id": "nav-host", "left": "$.before.nav_exists", "op": "equal", "right": true},
-        {"id": "viewport-375", "left": "$.before.probe375", "op": "equal", "right": true},
-        {"id": "viewport-400", "left": "$.before.probe400", "op": "equal", "right": true},
-        {"id": "viewport-480", "left": "$.before.probe480", "op": "equal", "right": true},
-        {"id": "viewport-667", "left": "$.before.probe667", "op": "equal", "right": true},
-        {"id": "tools-divider", "left": "$.consumer.tools_border", "op": "equal", "right": true},
-        {"id": "settings-full-row", "left": "$.consumer.settings_width", "op": "not_equal", "right": 0},
-        {"id": "all-viewports", "left": "$.observable.all_viewports_ok", "op": "equal", "right": true},
-        {"id": "planner-nav", "left": "$.observable.planner_reachable", "op": "equal", "right": true}
+        {
+          "id": "nav-host",
+          "left": "$.before.nav_exists",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "viewport-375",
+          "left": "$.before.probe375",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "viewport-400",
+          "left": "$.before.probe400",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "viewport-480",
+          "left": "$.before.probe480",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "viewport-667",
+          "left": "$.before.probe667",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "tools-divider",
+          "left": "$.consumer.tools_border",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "settings-full-row",
+          "left": "$.consumer.settings_width",
+          "op": "not_equal",
+          "right": 0
+        },
+        {
+          "id": "all-viewports",
+          "left": "$.observable.all_viewports_ok",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "planner-nav",
+          "left": "$.observable.planner_reachable",
+          "op": "equal",
+          "right": true
+        }
       ]
     },
     {
       "id": "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT-TRACE",
-      "case_ids": ["SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"],
+      "case_ids": [
+        "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"
+      ],
       "entry_event": "User configures TEC deco gases and generates schedule through visible Generate.",
       "consumer_path": [
         "#dg1Mix ean50 + #dg2Mix ean80 + trimix presets -> #tecGenerateBtn",
@@ -346,19 +667,40 @@
         "Air remains Air and 100% remains 100% across schedule/banner/graph consumers"
       ],
       "state": {
-        "selectors": ["#navBtnBuh", "#tecGenerateBtn"],
-        "restore_order": ["#tecGenerateBtn", "#navBtnBuh"],
-        "globals": ["_zhlHeadless"]
+        "selectors": [
+          "#navBtnBuh",
+          "#tecGenerateBtn"
+        ],
+        "restore_order": [
+          "#tecGenerateBtn",
+          "#navBtnBuh"
+        ],
+        "globals": [
+          "_zhlHeadless"
+        ]
       },
       "setup": [
-        {"action": "set_viewport", "size": {"width": 1280, "height": 800}},
+        {
+          "action": "set_viewport",
+          "size": {
+            "width": 1280,
+            "height": 800
+          }
+        },
         {
           "action": "run_script",
           "setup_only_reason": "Clear persisted settings and preset deco gases for label contract probe.",
           "script": "() => { localStorage.removeItem('lspDiveSettings_v6'); }"
         },
-        {"action": "click", "selector": "#navBtnBuh"},
-        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+        {
+          "action": "click",
+          "selector": "#navBtnBuh"
+        },
+        {
+          "action": "set_global",
+          "name": "_zhlHeadless",
+          "value": false
+        },
         {
           "action": "run_script",
           "setup_only_reason": "Preset TEC deco gases with ean50/ean80/trimix before visible generate.",
@@ -374,7 +716,11 @@
             "canonical_50": "getGasLabel(0.50,0)==='50/00'"
           }
         },
-        {"action": "click", "selector": "#tecGenerateBtn", "delay_ms": 2000},
+        {
+          "action": "click",
+          "selector": "#tecGenerateBtn",
+          "delay_ms": 2000
+        },
         {
           "capture": "canonical",
           "values": {
@@ -400,21 +746,73 @@
         }
       ],
       "assertions": [
-        {"id": "canonical-air", "left": "$.before.canonical_air", "op": "equal", "right": true},
-        {"id": "canonical-100", "left": "$.before.canonical_100", "op": "equal", "right": true},
-        {"id": "canonical-50", "left": "$.before.canonical_50", "op": "equal", "right": true},
-        {"id": "generated", "left": "$.canonical.has_rows", "op": "equal", "right": true},
-        {"id": "bundle-parity", "left": "$.canonical.bundle_50", "op": "equal", "right": true},
-        {"id": "schedule-50", "left": "$.consumer.schedule_has_50", "op": "equal", "right": true},
-        {"id": "no-ean50", "left": "$.consumer.schedule_no_ean50", "op": "equal", "right": true},
-        {"id": "pills-50", "left": "$.consumer.pills_have_50", "op": "equal", "right": true},
-        {"id": "air-present", "left": "$.observable.air_label", "op": "equal", "right": true},
-        {"id": "operational-contract", "left": "$.observable.operational_ok", "op": "equal", "right": true}
+        {
+          "id": "canonical-air",
+          "left": "$.before.canonical_air",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "canonical-100",
+          "left": "$.before.canonical_100",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "canonical-50",
+          "left": "$.before.canonical_50",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "generated",
+          "left": "$.canonical.has_rows",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "bundle-parity",
+          "left": "$.canonical.bundle_50",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "schedule-50",
+          "left": "$.consumer.schedule_has_50",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "no-ean50",
+          "left": "$.consumer.schedule_no_ean50",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "pills-50",
+          "left": "$.consumer.pills_have_50",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "air-present",
+          "left": "$.observable.air_label",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "operational-contract",
+          "left": "$.observable.operational_ok",
+          "op": "equal",
+          "right": true
+        }
       ]
     },
     {
       "id": "SL-C08-NO-REDUNDANT-BOTTOM-NAV-TRACE",
-      "case_ids": ["SL-C08-NO-REDUNDANT-BOTTOM-NAV"],
+      "case_ids": [
+        "SL-C08-NO-REDUNDANT-BOTTOM-NAV"
+      ],
       "entry_event": "Mobile boot at 375x667; user navigates via canonical #mainNavBar only.",
       "consumer_path": [
         "DOM boot must not mount #bottomNav or .bnav-btn writers",
@@ -423,9 +821,23 @@
         "setMobilePlanView results roundtrip without duplicate bottom controls"
       ],
       "state": {
-        "selectors": ["#navBtnBuh", "#navBtnTools", "#navBtnSettings", "#navRef"],
-        "restore_order": ["#navRef", "#navBtnSettings", "#navBtnTools", "#navBtnBuh"],
-        "globals": ["_zhlHeadless"]
+        "selectors": [
+      "#navBtnBuh",
+      "#navBtnTools",
+      "#navBtnSettings",
+      "#navRef",
+      "#tecGenerateBtn"
+        ],
+        "restore_order": [
+      "#navRef",
+      "#navBtnSettings",
+      "#navBtnTools",
+      "#navBtnBuh",
+      "#tecGenerateBtn"
+        ],
+        "globals": [
+          "_zhlHeadless"
+        ]
       },
       "setup": [
         {
@@ -433,20 +845,42 @@
           "setup_only_reason": "Clear persisted settings for stable mobile shell boot.",
           "script": "() => { localStorage.removeItem('lspDiveSettings_v6'); }"
         },
-        {"action": "set_global", "name": "_zhlHeadless", "value": false},
-        {"action": "set_viewport", "size": {"width": 375, "height": 667}},
+        {
+          "action": "set_global",
+          "name": "_zhlHeadless",
+          "value": false
+        },
+        {
+          "action": "set_viewport",
+          "size": {
+            "width": 375,
+            "height": 667
+          }
+        },
         {
           "action": "run_script",
           "setup_only_reason": "Probe bottom-nav absence and viewport reserve at 375x667.",
           "script": "() => { const bottomNav=document.getElementById('bottomNav'); const app=document.querySelector('.app'); window.__bottomProbe375={bottomNavPresent:!!bottomNav,bottomNavVisible:!!(bottomNav&&getComputedStyle(bottomNav).display!=='none'),bottomNavHeight:bottomNav?.getBoundingClientRect().height||0,bnavButtons:document.querySelectorAll('.bnav-btn').length,appPaddingBottom:app?parseFloat(getComputedStyle(app).paddingBottom):0,shellHasBnavWriters:typeof setNavMode==='function'&&/bnav|bottomNav|bottom-nav/.test(setNavMode.toString())}; }"
         },
-        {"action": "set_viewport", "size": {"width": 667, "height": 375}},
+        {
+          "action": "set_viewport",
+          "size": {
+            "width": 667,
+            "height": 375
+          }
+        },
         {
           "action": "run_script",
           "setup_only_reason": "Probe bottom-nav absence at 667x375 landscape.",
           "script": "() => { const bottomNav=document.getElementById('bottomNav'); window.__bottomProbe667={bottomNavPresent:!!bottomNav,bnavButtons:document.querySelectorAll('.bnav-btn').length}; }"
         },
-        {"action": "set_viewport", "size": {"width": 375, "height": 667}}
+        {
+          "action": "set_viewport",
+          "size": {
+            "width": 375,
+            "height": 667
+          }
+        }
       ],
       "steps": [
         {
@@ -457,9 +891,21 @@
             "probe375_ok": "!window.__bottomProbe375?.bottomNavPresent && window.__bottomProbe375?.bnavButtons===0 && !window.__bottomProbe375?.shellHasBnavWriters && window.__bottomProbe375?.appPaddingBottom < 64"
           }
         },
-        {"action": "click", "selector": "#navBtnTools", "delay_ms": 200},
-        {"action": "click", "selector": "#navBtnSettings", "delay_ms": 200},
-        {"action": "click", "selector": "#navBtnBuh", "delay_ms": 200},
+        {
+          "action": "click",
+          "selector": "#navBtnTools",
+          "delay_ms": 200
+        },
+        {
+          "action": "click",
+          "selector": "#navBtnSettings",
+          "delay_ms": 200
+        },
+        {
+          "action": "click",
+          "selector": "#navBtnBuh",
+          "delay_ms": 200
+        },
         {
           "capture": "canonical",
           "values": {
@@ -474,25 +920,74 @@
             "bottom_gap": "(() => { const app=document.querySelector('.app'); const rect=app?.getBoundingClientRect(); return rect?Math.max(0,window.innerHeight-rect.bottom):0; })()"
           }
         },
+    {
+      "action": "click",
+      "selector": "#tecGenerateBtn",
+      "delay_ms": 12000
+    },
+    {
+      "capture": "observable",
+      "values": {
+        "landscape_ok": "!window.__bottomProbe667?.bottomNavPresent && window.__bottomProbe667?.bnavButtons===0",
+        "mobile_results_roundtrip": "(() => { const has=document.getElementById('resultsPanel')?.classList.contains('has-results')===true; const rows=document.querySelectorAll('#decoTableBody tr').length; const onResults=getComputedStyle(document.getElementById('resultsPanel')).display!=='none'; const backPlanner=getComputedStyle(document.getElementById('tecPlannerView')).display!=='none'; return has && rows>=5 && onResults && backPlanner; })()",
+        "ref_reachable": "(() => { const m=document.getElementById('referenceModal'); return !!document.getElementById('navRef') && !!m; })()"
+      }
+    },
         {
-          "capture": "observable",
-          "values": {
-            "landscape_ok": "!window.__bottomProbe667?.bottomNavPresent && window.__bottomProbe667?.bnavButtons===0",
-            "mobile_results_roundtrip": "(() => { if(typeof setMobilePlanView!=='function')return false; setMobilePlanView('results'); const onResults=getComputedStyle(document.getElementById('resultsPanel')).display!=='none'; setMobilePlanView('plan'); const backPlanner=getComputedStyle(document.getElementById('tecPlannerView')).display!=='none'; return onResults && backPlanner; })()",
-            "ref_reachable": "(() => { const m=document.getElementById('referenceModal'); return !!document.getElementById('navRef') && !!m; })()"
-          }
-        },
-        {"action": "click", "selector": "#navRef", "delay_ms": 300}
+          "action": "click",
+          "selector": "#navRef",
+          "delay_ms": 300
+        }
       ],
       "assertions": [
-        {"id": "absent-bottom-nav", "left": "$.before.no_bottom_nav", "op": "equal", "right": true},
-        {"id": "no-bnav-buttons", "left": "$.before.no_bnav_buttons", "op": "equal", "right": true},
-        {"id": "mobile375-probe", "left": "$.before.probe375_ok", "op": "equal", "right": true},
-        {"id": "canonical-main-nav", "left": "$.canonical.still_no_bottom", "op": "equal", "right": true},
-        {"id": "no-dead-reserve", "left": "$.consumer.bottom_gap", "op": "not_equal", "right": 72},
-        {"id": "landscape-probe", "left": "$.observable.landscape_ok", "op": "equal", "right": true},
-        {"id": "results-roundtrip", "left": "$.observable.mobile_results_roundtrip", "op": "equal", "right": true},
-        {"id": "ref-control", "left": "$.observable.ref_reachable", "op": "equal", "right": true}
+        {
+          "id": "absent-bottom-nav",
+          "left": "$.before.no_bottom_nav",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "no-bnav-buttons",
+          "left": "$.before.no_bnav_buttons",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "mobile375-probe",
+          "left": "$.before.probe375_ok",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "canonical-main-nav",
+          "left": "$.canonical.still_no_bottom",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "no-dead-reserve",
+          "left": "$.consumer.bottom_gap",
+          "op": "not_equal",
+          "right": 72
+        },
+        {
+          "id": "landscape-probe",
+          "left": "$.observable.landscape_ok",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "results-roundtrip",
+          "left": "$.observable.mobile_results_roundtrip",
+          "op": "equal",
+          "right": true
+        },
+        {
+          "id": "ref-control",
+          "left": "$.observable.ref_reachable",
+          "op": "equal",
+          "right": true
+        }
       ]
     }
   ]

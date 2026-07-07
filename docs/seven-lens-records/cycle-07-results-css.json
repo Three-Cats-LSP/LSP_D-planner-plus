@@ -374,9 +374,9 @@
       "unit_id": "UI-CSS-RESULTS",
       "path": "lsp-dplanner-results.css",
       "start_line": 501,
-      "end_line": 890,
-      "line_count": 390,
-      "content_fingerprint": "86fa76a4614b811c807065d6bd301e5b1f60201a32d28a522abb348b0307b509",
+      "end_line": 886,
+      "line_count": 386,
+      "content_fingerprint": "f680961615f935ec0c57406a5afb8ae127f241364436a07502d8f5487f742ef8",
       "review_session": "C07-B",
       "verification_session": "C07-V-B",
       "lens_results": {
@@ -991,7 +991,7 @@
       "part_id": "UI-CSS-RESULTS-P01",
       "start_line": 1,
       "end_line": 500,
-      "content_fingerprint": "90c2e9d1cd13216a5fbda047f64a7212d9a90abfa7ab54848dd5557a35fbc80d",
+      "content_fingerprint": "2afe26c5049fbe0e464c34aa4c523633f41b2a2730fc0608a0ca9bc9456ab5de",
       "trigger": "Cycle 8 lsp-dplanner-results.css mobile selector dependency invalidation (lines 1-500 unchanged)",
       "focus": [
         "Cycle 8 mobile selector delta absent in P01 range",
@@ -1000,14 +1000,15 @@
       ],
       "result": "NO_NEW_FINDING",
       "reviewed_at": "2026-07-06T00:36:00+09:00",
-      "verifier": "Cursor Agent (DEPENDENCY RE-VERIFIER)"
+      "verifier": "Cursor Agent (DEPENDENCY RE-VERIFIER)",
+      "line_count": 500
     },
     {
       "session": "C07-R2-B",
       "part_id": "UI-CSS-RESULTS-P02",
       "start_line": 501,
-      "end_line": 890,
-      "content_fingerprint": "fc3fe81a27c5d45948065bd6d9071ed0fde7e14d48f8a9a57feddab4bfe9ddee",
+      "end_line": 886,
+      "content_fingerprint": "f680961615f935ec0c57406a5afb8ae127f241364436a07502d8f5487f742ef8",
       "trigger": "Cycle 8 retargeted @media (max-width:640px) exclusivity from #planPanel to #recPlannerView/#tecPlannerView/#resultsPanel",
       "focus": [
         "mobile-active exclusivity cascade and !important specificity",
@@ -1017,7 +1018,8 @@
       ],
       "result": "NO_NEW_FINDING",
       "reviewed_at": "2026-07-06T00:36:00+09:00",
-      "verifier": "Cursor Agent (DEPENDENCY RE-VERIFIER)"
+      "verifier": "Cursor Agent (DEPENDENCY RE-VERIFIER)",
+      "line_count": 386
     },
     {
       "session": "C08-DEP-RESULTS-A",
@@ -1025,7 +1027,7 @@
       "start_line": 1,
       "end_line": 500,
       "prior_content_fingerprint": "90c2e9d1cd13216a5fbda047f64a7212d9a90abfa7ab54848dd5557a35fbc80d",
-      "content_fingerprint": "43a487d392909bc748197e713a3e2ce8340b16e3f53fe258a8036b189613f641",
+      "content_fingerprint": "2afe26c5049fbe0e464c34aa4c523633f41b2a2730fc0608a0ca9bc9456ab5de",
       "trigger": "Cycle 8 PR #215 gas-dot and planner-main layout delta in P02; P01 boundary re-read",
       "focus": [
         "chip-yellow/PPO2 severity tokens unchanged",
@@ -1034,15 +1036,16 @@
       ],
       "result": "NO_NEW_FINDING",
       "reviewed_at": "2026-07-06T01:09:13.648040+00:00",
-      "verifier": "Cursor Agent (C08-V-B attestation corrector)"
+      "verifier": "Cursor Agent (C08-V-B attestation corrector)",
+      "line_count": 500
     },
     {
       "session": "C08-DEP-RESULTS-B",
       "part_id": "UI-CSS-RESULTS-P02",
       "start_line": 501,
-      "end_line": 892,
+      "end_line": 886,
       "prior_content_fingerprint": "fc3fe81a27c5d45948065bd6d9071ed0fde7e14d48f8a9a57feddab4bfe9ddee",
-      "content_fingerprint": "563f36d0a31198828aac04594ea4fd73738d0ffa3eaff20643938e1e9140abdd",
+      "content_fingerprint": "f680961615f935ec0c57406a5afb8ae127f241364436a07502d8f5487f742ef8",
       "trigger": "Cycle 8 PR #215 visual contracts: gas-dot, mobile-active, gas-switch rows",
       "focus": [
         "#recPlannerView/#tecPlannerView/#resultsPanel mobile-active exclusivity",
@@ -1051,7 +1054,8 @@
       ],
       "result": "NO_NEW_FINDING",
       "reviewed_at": "2026-07-06T01:09:13.648040+00:00",
-      "verifier": "Cursor Agent (C08-V-B attestation corrector)"
+      "verifier": "Cursor Agent (C08-V-B attestation corrector)",
+      "line_count": 386
     }
   ]
 }

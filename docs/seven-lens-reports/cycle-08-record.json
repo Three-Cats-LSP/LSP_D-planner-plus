@@ -321,7 +321,7 @@
     }
   ],
   "audit_commit": "32fda7bbd1896864465f830012a246b58d94109b",
-  "verified_source_commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+  "verified_source_commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
   "verification_status": "PASSED",
   "fixer": {
     "regression_id": "REG-76",
@@ -425,9 +425,9 @@
       "unit_id": "UI-RESULTS-PANEL",
       "path": "results-panel.js",
       "start_line": 1,
-      "end_line": 313,
-      "line_count": 313,
-      "content_fingerprint": "5753326e01ae9dc9aad521538c749387c35a542e9d1263b0c49c8de74ef5c217",
+      "end_line": 312,
+      "line_count": 312,
+      "content_fingerprint": "1d09b7cb7452cc402f30527e8b693adc6bc32f835ae66fefd7e72a0d42c77543",
       "review_session": "C08-A",
       "verification_session": "C08-V-B",
       "lens_results": {
@@ -591,7 +591,7 @@
       "unit_id": "UI-RESULTS-PANEL",
       "location": "results-panel.js:258",
       "root_cause": "const prefix assigns empty string in both branches; unused LSP_V4_SPLIT_PROFILE_SCHEDULE flag.",
-      "failure_path": "Any switchResultTab call \u2014 dead assignment only.",
+      "failure_path": "Any switchResultTab call — dead assignment only.",
       "impact": "Obscures intended pane ID prefix contract; maintenance noise.",
       "evidence": "Source read switchResultTab :256-261; window.LSP_V4_SPLIT_PROFILE_SCHEDULE false unused",
       "recommendation": "Remove dead prefix or wire LSP_V4_SPLIT_PROFILE_SCHEDULE pane mapping.",
@@ -774,7 +774,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_shell_results_regression.py"
       ],
-      "commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
       "observable_assertions": [
         "All five shell/results regression cases PASS at 1280x800, 375x667, and 667x375 with state restoration"
       ],
@@ -783,7 +783,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-SHELL.json",
-      "receipt_sha256": "17329a97c8bc53579447d049950be22b57d7fdb11663cda7e583d009ae051943",
+      "receipt_sha256": "74f72a78eea9356389f1a918861acfef8b6fa0db343ae718e86feb43e9d0b664",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "runtime_trace": {
@@ -817,9 +817,9 @@
         ],
         "trace_id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "bdeba4cdbb388bea4cf304544b8e869413d0b26acd292f6bbfa22979f090d756",
+        "artifact_sha256": "28682e713e93a25740b6152d52d0b6233909147f24b3f74a1ed7d26040904274",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
-        "spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8"
+        "spec_sha256": "681ad7fa0cb22056310c18f837b7bd1ec3ea31e65022f4d03bd78c67e1c8eb98"
       }
     },
     {
@@ -838,7 +838,7 @@
         "--output",
         "dev/seven-lens-browser-trace-c08-post-fix.json"
       ],
-      "commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
       "observable_assertions": [
         "Four Cycle 08 browser traces PASS with repeat=2, exact state restoration hashes, and INVALID-TEC localStorage tecDepth restored"
       ],
@@ -847,7 +847,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-TRACE.json",
-      "receipt_sha256": "b4afe7089ef52962283596a2e7ee717a665002d3cc45b4abe7af56b582bf42b9",
+      "receipt_sha256": "58afe911a3d86156ed9b0afb116b018dcc2c90d4ae283ca7cb0d7f2ca96f50ef",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "trace_artifact_sha256": "5cb52f793927e5ee3c7acc2257cbea41583efd3f92d9df6e5a03d70a98d085d7",
@@ -884,9 +884,9 @@
         ],
         "trace_id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "bdeba4cdbb388bea4cf304544b8e869413d0b26acd292f6bbfa22979f090d756",
+        "artifact_sha256": "28682e713e93a25740b6152d52d0b6233909147f24b3f74a1ed7d26040904274",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
-        "spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8"
+        "spec_sha256": "681ad7fa0cb22056310c18f837b7bd1ec3ea31e65022f4d03bd78c67e1c8eb98"
       }
     },
     {
@@ -903,7 +903,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_shell_results_regression.py"
       ],
-      "commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
       "observable_assertions": [
         "ui_shell_results_regression restores DOM/globals after probes with matching state hashes"
       ],
@@ -912,7 +912,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-RESTORE-SHELL.json",
-      "receipt_sha256": "d656e71d6bdd33643e032f4b13d939426e17a439e92ab40d35a288c34c2c1bbd",
+      "receipt_sha256": "88ac49114acb5f13540647a6c6cc7fe634c4e8982ff5ff17de7f06d47b66ae4b",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "state_before_sha256": "3864aa159903c00d964d56602af6b5d6f46c3e18bced97e4bb3fa87f9ec25e0e",
@@ -928,7 +928,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_shell_results_regression.py"
       ],
-      "commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
       "observable_assertions": [
         "Regression case SL-C08-NAV-PRESERVES-RESULTS PASS at verified source"
       ],
@@ -937,7 +937,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-NAV.json",
-      "receipt_sha256": "852aee3aa55768f6dd47736636753d3ab36d43672178f5eead6d36232748255b",
+      "receipt_sha256": "b56ae5a661d2687e80bf17fbc503cc9813085da7a54efcb0523212bf5a8f1e21",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "runtime_trace": {
@@ -971,9 +971,9 @@
         ],
         "trace_id": "SL-C08-NAV-CLEARS-RESULTS-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "bdeba4cdbb388bea4cf304544b8e869413d0b26acd292f6bbfa22979f090d756",
+        "artifact_sha256": "28682e713e93a25740b6152d52d0b6233909147f24b3f74a1ed7d26040904274",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
-        "spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8"
+        "spec_sha256": "681ad7fa0cb22056310c18f837b7bd1ec3ea31e65022f4d03bd78c67e1c8eb98"
       }
     },
     {
@@ -986,7 +986,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_shell_results_regression.py"
       ],
-      "commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
       "observable_assertions": [
         "Regression case SL-C08-INVALID-TEC-CLEARS-STALE PASS at verified source"
       ],
@@ -995,7 +995,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-INVALID.json",
-      "receipt_sha256": "3e4a890c1636a35e93fb608cad6a4ddc71b51d853c27233f7e49a785ee9e5e31",
+      "receipt_sha256": "1d6d813ae562fc5bc4e04166772d682604ad017d6ed793d145b5df7990e32960",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "runtime_trace": {
@@ -1028,9 +1028,9 @@
         ],
         "trace_id": "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "bdeba4cdbb388bea4cf304544b8e869413d0b26acd292f6bbfa22979f090d756",
+        "artifact_sha256": "28682e713e93a25740b6152d52d0b6233909147f24b3f74a1ed7d26040904274",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
-        "spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8"
+        "spec_sha256": "681ad7fa0cb22056310c18f837b7bd1ec3ea31e65022f4d03bd78c67e1c8eb98"
       }
     },
     {
@@ -1081,7 +1081,7 @@
         "--output",
         "dev/seven-lens-browser-trace-c08-post-tec-restore.json"
       ],
-      "commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
       "observable_assertions": [
         "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE PASS with state_restored true across repeat=2 at lifecycle fix commit"
       ],
@@ -1090,7 +1090,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-TEC-RESTORE.json",
-      "receipt_sha256": "1c3c735a87d19d5caf4cc2dc9eee687e91f1618b4519e68b31f1edb91bc6e290",
+      "receipt_sha256": "f90c456fc28b0fafa0c58ae00837e2cfb6ec7977a8c7c66b408e0fd6d605278c",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "trace_artifact_sha256": "5cb52f793927e5ee3c7acc2257cbea41583efd3f92d9df6e5a03d70a98d085d7",
@@ -1134,7 +1134,7 @@
         "python",
         "dev/ui_css_regression.py"
       ],
-      "commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
       "observable_assertions": [
         "REG-76 application fix PASS at 72020aa"
       ],
@@ -1143,7 +1143,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-REG76.json",
-      "receipt_sha256": "4c8d57c4ef9b5da33a3b821fc28154687c8e13a58b7ae26ebc2cb6a351a03a67",
+      "receipt_sha256": "64f41614155267514b6f743b197b0db47236626501c3c6c0fcf9cf187b2181df",
       "worktree_clean_before": true,
       "worktree_clean_after": true
     },
@@ -1161,13 +1161,13 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_visual_contract_regression.py"
       ],
-      "commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
       "observable_assertions": [
         "All five SUITE-UI-VISUAL-CONTRACT-REGRESSION cases PASS at 1280x800 desktop and 375x667 mobile"
       ],
       "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_visual_contract_regression.py",
       "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-VISUAL.json",
-      "receipt_sha256": "b285b9498439cc98e5bc75cb4dcdb7302a4661861252fdbf66e3c0fcc511597a",
+      "receipt_sha256": "69a160022225d1d65631ab22018015d93335f9a471ace703dfa2964b5503fcee",
       "exit_code": 0,
       "worktree_clean": true,
       "worktree_clean_before": true,
@@ -1186,7 +1186,7 @@
         "--profile",
         "static"
       ],
-      "commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
       "observable_assertions": [
         "STATIC profile PASS at closure_evidence_commit f5bef4e"
       ],
@@ -1197,7 +1197,7 @@
       "receipt_path": "dev/seven-lens-evidence-c08-static.json",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
-      "receipt_sha256": "6ff097d897472c8c80ad2a3951c92fc28b28de9625fbd88ab7edc06f6a8b3275"
+      "receipt_sha256": "78fcec36a3052b77426f8ea832fc37421da1f4b6806a48b5e6ace73956214112"
     },
     {
       "id": "ci",
@@ -1211,7 +1211,7 @@
         "--profile",
         "ci"
       ],
-      "commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
       "observable_assertions": [
         "CI profile PASS at closure_evidence_commit f5bef4e"
       ],
@@ -1222,7 +1222,7 @@
       "receipt_path": "dev/seven-lens-evidence-c08-ci.json",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
-      "receipt_sha256": "04e8796fb4baac21f1a450e14d7b24010f42ced7040eeea1aa5ea14cf3c66729"
+      "receipt_sha256": "f88efe43610bb1a55542b4b944335e66a963be685f2c209766f086d7787be278"
     },
     {
       "id": "ER-C08-BASELINE-NAV-GAS",
@@ -1283,7 +1283,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_visual_contract_regression.py"
       ],
-      "commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
       "observable_assertions": [
         "REG-107 PASS at fix commit: bottom nav absent, canonical mode row navigation verified"
       ],
@@ -1292,7 +1292,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-BOTTOM-NAV.json",
-      "receipt_sha256": "7faca31c2487c139032cd7444de6ba44b3dd378f7dcbfc2c50ef63482f032a6a",
+      "receipt_sha256": "7104e74403f6df0a7e64d61eeb05c35e850ec5b74da6508014f1872d30e9facf",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "runtime_trace": {
@@ -1329,9 +1329,9 @@
         ],
         "trace_id": "SL-C08-NO-REDUNDANT-BOTTOM-NAV-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "bdeba4cdbb388bea4cf304544b8e869413d0b26acd292f6bbfa22979f090d756",
+        "artifact_sha256": "28682e713e93a25740b6152d52d0b6233909147f24b3f74a1ed7d26040904274",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
-        "spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8"
+        "spec_sha256": "681ad7fa0cb22056310c18f837b7bd1ec3ea31e65022f4d03bd78c67e1c8eb98"
       }
     },
     {
@@ -1344,7 +1344,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_visual_contract_regression.py"
       ],
-      "commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
       "observable_assertions": [
         "REG-105 SL-C08-MOBILE-NAV-TILE-GRID PASS at verified source with nav grid separators across mobile viewports"
       ],
@@ -1353,7 +1353,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-NAV-GRID.json",
-      "receipt_sha256": "84449329912e53d61502fc2a16741b2073e8dac36be0412afe00ff2d23b25284",
+      "receipt_sha256": "ecfc4f7997188243921b26343fc50dc837839e9c6869bb1eb1e654dce97c6407",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "runtime_trace": {
@@ -1392,9 +1392,9 @@
         ],
         "trace_id": "SL-C08-MOBILE-NAV-TILE-GRID-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "bdeba4cdbb388bea4cf304544b8e869413d0b26acd292f6bbfa22979f090d756",
+        "artifact_sha256": "28682e713e93a25740b6152d52d0b6233909147f24b3f74a1ed7d26040904274",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
-        "spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8"
+        "spec_sha256": "681ad7fa0cb22056310c18f837b7bd1ec3ea31e65022f4d03bd78c67e1c8eb98"
       }
     },
     {
@@ -1407,7 +1407,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_visual_contract_regression.py"
       ],
-      "commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
       "observable_assertions": [
         "REG-106 SL-C08-OPERATIONAL-GAS-LABEL-FORMAT PASS at verified source with canonical OO/HH operational labels"
       ],
@@ -1416,7 +1416,7 @@
       "state_restored": true,
       "exit_code": 0,
       "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-GAS-LABELS.json",
-      "receipt_sha256": "121089c4fd5254e86832648acc5edb20a4ad8bc5b68ef4ff8658c107b04e923f",
+      "receipt_sha256": "fad2bce185e200de57e7d28de1bf62bb54756a842bb5d865b02c28f59198b295",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
       "runtime_trace": {
@@ -1454,9 +1454,9 @@
         ],
         "trace_id": "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "bdeba4cdbb388bea4cf304544b8e869413d0b26acd292f6bbfa22979f090d756",
+        "artifact_sha256": "28682e713e93a25740b6152d52d0b6233909147f24b3f74a1ed7d26040904274",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
-        "spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8"
+        "spec_sha256": "681ad7fa0cb22056310c18f837b7bd1ec3ea31e65022f4d03bd78c67e1c8eb98"
       }
     }
   ],
@@ -1678,14 +1678,14 @@
       "ER-C08-POST-BOTTOM-NAV": "fa62ae01ab93e754591afcd5f0f49047ad28c4a404679250f2e0a8c2ffd1237a"
     },
     "dependency_reverification": {
-      "UI-CSS-RESULTS": "PASSED \u2014 REG-105 nav grid contract at 375/400/480/667/1280 in dark+light",
-      "ENG-ZHL-SCHEDULE": "PASSED \u2014 canonical getGasLabel OO/HH in zhl-schedule-core.js",
-      "TOOL-BUILD-ZHL": "PASSED \u2014 build_zhl_bundle.py delegates labels; --check exit 0",
-      "ENGINE-ZHL-BUNDLE": "PASSED \u2014 no EAN50/EAN80 in generated bundle; npm parity OK",
-      "TEST-UI-VISUAL-CONTRACT-REGRESSION": "PASSED \u2014 REG-105/106/107 green at HEAD f535654",
-      "UI-PLANNER-SHELL": "PASSED \u2014 setNavMode has no .bnav-btn writers",
-      "UI-MARKUP-HEADER": "PASSED \u2014 #bottomNav absent from index.html",
-      "UI-CSS-FOUNDATION": "PASSED \u2014 .bnav-btn rules removed"
+      "UI-CSS-RESULTS": "PASSED — REG-105 nav grid contract at 375/400/480/667/1280 in dark+light",
+      "ENG-ZHL-SCHEDULE": "PASSED — canonical getGasLabel OO/HH in zhl-schedule-core.js",
+      "TOOL-BUILD-ZHL": "PASSED — build_zhl_bundle.py delegates labels; --check exit 0",
+      "ENGINE-ZHL-BUNDLE": "PASSED — no EAN50/EAN80 in generated bundle; npm parity OK",
+      "TEST-UI-VISUAL-CONTRACT-REGRESSION": "PASSED — REG-105/106/107 green at HEAD f535654",
+      "UI-PLANNER-SHELL": "PASSED — setNavMode has no .bnav-btn writers",
+      "UI-MARKUP-HEADER": "PASSED — #bottomNav absent from index.html",
+      "UI-CSS-FOUNDATION": "PASSED — .bnav-btn rules removed"
     },
     "verifier_findings": [
       {
@@ -1749,9 +1749,9 @@
       "ER-C08-POST-BOTTOM-NAV": "661fbcafcf810db08f7d6be6770c53636a8c24c64fccccb7959626994c33d806"
     },
     "behavioral_contracts": {
-      "REG-105": "PASSED \u2014 mobile nav grid has no orphan cell; Tools/Settings borders/dividers; canonical nav usable",
-      "REG-106": "PASSED \u2014 operational gas labels use Air, 100%, or OO/HH; no EAN50/EAN80 in schedule/banner/graph/export-visible consumers",
-      "REG-107": "PASSED \u2014 #bottomNav absent; no duplicate fixed bottom nav; no dead 72px reserve; canonical main nav works"
+      "REG-105": "PASSED — mobile nav grid has no orphan cell; Tools/Settings borders/dividers; canonical nav usable",
+      "REG-106": "PASSED — operational gas labels use Air, 100%, or OO/HH; no EAN50/EAN80 in schedule/banner/graph/export-visible consumers",
+      "REG-107": "PASSED — #bottomNav absent; no duplicate fixed bottom nav; no dead 72px reserve; canonical main nav works"
     }
   },
   "dependency_re_reviews": [
@@ -1838,7 +1838,7 @@
     ],
     "reviewer": "Cursor Agent (C08 FIXER closure-history)"
   },
-  "closure_evidence_commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+  "closure_evidence_commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
   "final_closer_attestation": {
     "session": "C08-C-FINAL-CODEX",
     "verified_source_commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
@@ -1851,5 +1851,13 @@
     "final_rebind_head": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
     "closure_evidence_commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
     "note": "Final local closer rebind after PR #217 Linux CI fixes; post-fix evidence rerun at PR head and static/ci closure receipts bound at the same head."
+  },
+  "post_merge_hotfix_attestation": {
+    "session": "C08-post-merge-mobile-stack-gas-switch",
+    "verified_source_commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
+    "summary": "Revalidated Cycle 8 after post-merge hotfix for mobile planner/results stack and gas-switch color parity.",
+    "closure_evidence_commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
+    "trace_spec_sha256": "681ad7fa0cb22056310c18f837b7bd1ec3ea31e65022f4d03bd78c67e1c8eb98",
+    "trace_artifact_sha256": "28682e713e93a25740b6152d52d0b6233909147f24b3f74a1ed7d26040904274"
   }
 }

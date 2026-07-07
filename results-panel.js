@@ -120,7 +120,7 @@ function _onPlanResultsReady() {
     const decoRes = document.getElementById('decoResult');
     if (decoRes) decoRes.style.display = 'block';
   }
-  setMobilePlanView('results');
+  setMobilePlanView('stack');
 }
 function setMobilePlanView(view) {
   if (!window.matchMedia('(max-width: 640px)').matches) return;
@@ -130,11 +130,10 @@ function setMobilePlanView(view) {
   if (!results) return;
   const activePlan = plannerAlgo === 'rec' ? rec : tec;
   if (!activePlan) return;
-  const showPlan = view === 'plan';
-  const showResults = view === 'results';
-  rec?.classList.toggle('mobile-active', showPlan && activePlan === rec);
-  tec?.classList.toggle('mobile-active', showPlan && activePlan === tec);
-  results.classList.toggle('mobile-active', showResults);
+  const hasResults = results.classList.contains('has-results');
+  rec?.classList.toggle('mobile-active', activePlan === rec);
+  tec?.classList.toggle('mobile-active', activePlan === tec);
+  results.classList.toggle('mobile-active', hasResults || view === 'results' || view === 'stack');
 }
 function _initMobilePlanView() {
   if (window.matchMedia('(max-width: 640px)').matches) {
