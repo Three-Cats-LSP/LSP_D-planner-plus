@@ -229,54 +229,48 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
   ctx.restore(); // end deco shading clip
   }
 
-  // ── Gas switch flags — pinned to top of plot area, line to switch depth ──
-  const switchWpsVis = waypoints.filter(wp => wp.type === 'gasswitch' && wp.t >= tMin && wp.t <= tMax);
-  switchWpsVis.forEach((wp, si) => {
-    const x = toX(wp.t);
-    const yDepth = toY(wp.depth || 0);
-    const flagH = isMobile ? 11 : 13;
-    const rawLabel = wp.gasLabel ? '⇄ ' + wp.gasLabel : '⇄';
-    const maxLen = isMobile ? 9 : 12;
-    const displayLabel = rawLabel.length > maxLen ? rawLabel.slice(0, maxLen) : rawLabel;
-    const charW = isMobile ? 4.5 : 5.5;
-    const flagW = Math.max(22, displayLabel.length * charW + 8);
+  // ── Gas switch flags — rendered after profile line so labels stay above the graph ──
+  function drawGasSwitchFlags() {
+    const switchWpsVis = waypoints.filter(wp => wp.type === 'gasswitch' && wp.t >= tMin && wp.t <= tMax);
+    switchWpsVis.forEach((wp, si) => {
+      const x = toX(wp.t), yDepth = toY(wp.depth || 0), flagH = isMobile ? 11 : 13;
+      const rawLabel = wp.gasLabel ? '⇄ ' + wp.gasLabel : '⇄';
+      const maxLen = isMobile ? 9 : 12, displayLabel = rawLabel.length > maxLen ? rawLabel.slice(0, maxLen) : rawLabel;
+      const charW = isMobile ? 4.5 : 5.5, flagW = Math.max(22, displayLabel.length * charW + 8);
 
-    // Stagger: even flags at top, odd flags one row lower
-    const row = si % 2;
-    const flagTopY = PAD.top + row * (flagH + 3) + 1;
+      // Stagger flags near the top, but keep each one above its graph line where possible.
+      const row = si % 2, preferredTop = PAD.top + row * (flagH + 3) + 1, aboveLineTop = yDepth - flagH - 4;
+      const flagTopY = Math.max(PAD.top + 1, Math.min(preferredTop, aboveLineTop));
 
-    // Dashed vertical line from flag bottom to switch depth
-    // Gas switch colour: #FFD700 bg / #007A33 text — matches deco table switch row (nitrox sticker convention)
-    ctx.save();
-    ctx.strokeStyle = gasSwitchBg;
-    ctx.lineWidth = 1;
-    ctx.setLineDash([3, 3]);
-    ctx.globalAlpha = 0.7;
-    ctx.beginPath();
-    ctx.moveTo(x, flagTopY + flagH);
-    ctx.lineTo(x, yDepth);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.globalAlpha = 1;
-    ctx.restore();
+      ctx.save();
+      ctx.strokeStyle = gasSwitchBg;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.globalAlpha = 0.7;
+      ctx.beginPath();
+      ctx.moveTo(x, flagTopY + flagH);
+      ctx.lineTo(x, yDepth);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.globalAlpha = 1;
+      ctx.restore();
 
-    // Flag rectangle — right or left depending on space
-    const nearRight = x + flagW + 2 > PAD.left + PW;
-    const fx = nearRight ? x - flagW : x + 1;
+      const nearRight = x + flagW + 2 > PAD.left + PW, fx = nearRight ? x - flagW : x + 1;
 
-    ctx.save();
-    ctx.fillStyle = gasSwitchBg;
-    ctx.globalAlpha = 0.95;
-    if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(fx, flagTopY, flagW, flagH, 2); ctx.fill(); }
-    else { ctx.fillRect(fx, flagTopY, flagW, flagH); }
+      ctx.save();
+      ctx.fillStyle = gasSwitchBg;
+      ctx.globalAlpha = 0.98;
+      if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(fx, flagTopY, flagW, flagH, 2); ctx.fill(); }
+      else { ctx.fillRect(fx, flagTopY, flagW, flagH); }
 
-    ctx.fillStyle = gasSwitchText;
-    ctx.globalAlpha = 1;
-    ctx.font = `700 ${isMobile ? 6 : 7}px "JetBrains Mono",monospace`;
-    ctx.textAlign = 'left';
-    ctx.fillText(displayLabel, fx + 3, flagTopY + flagH - 3);
-    ctx.restore();
-  });
+      ctx.fillStyle = gasSwitchText;
+      ctx.globalAlpha = 1;
+      ctx.font = `700 ${isMobile ? 6 : 7}px "JetBrains Mono",monospace`;
+      ctx.textAlign = 'left';
+      ctx.fillText(displayLabel, fx + 3, flagTopY + flagH - 3);
+      ctx.restore();
+    });
+  }
 
   // ── Profile line with per-gas color zones ──
   const pathWps = waypoints.filter(wp => wp.type !== 'gasswitch');
@@ -523,6 +517,8 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
     }
   });
 
+  drawGasSwitchFlags();
+
   // ── Axis label ──
   ctx.fillStyle = muted; ctx.font = monoFont; ctx.textAlign = 'right';
   ctx.fillText('0' + _du, PAD.left - 5, PAD.top + 4);
@@ -531,7 +527,7 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
   const legendEl = document.getElementById(canvasId === 'decoProfileCanvas' ? 'decoProfileLegend' : 'plannerProfileLegend');
   if (legendEl) {
     const switchCount = waypoints.filter(wp => wp.type === 'gasswitch').length;
-    const gasSwitchItem = `<span class="legend-item"><span class="gas-switch-swatch" style="display:inline-block;width:14px;height:10px;background:var(--gas-switch-label-bg);border-radius:2px;border:1px solid color-mix(in oklab, var(--gas-switch-label-text) 35%, transparent);"></span> Gas switch${switchCount ? ` (${switchCount})` : ''}</span>`;
+    const gasSwitchItem = `<span class="legend-item legend-switch"><svg class="leg-icon" width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 3h12M10 1l3 2-3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 7H1M4 5l-3 2 3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Gas Switch${switchCount ? ` (${switchCount})` : ''}</span>`;
     const legendColors = { red, green, accent, orange, muted, profileLine };
     const legendRows = _buildProfileLegendTableRows(waypoints, legendColors);
     const keyLegend = `<div class="profile-legend-keys" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px;">

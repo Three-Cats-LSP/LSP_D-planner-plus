@@ -44,7 +44,7 @@
 | 12 | APP-GAS-PLAN | 546 | - | Gas plan core READ |
 | 13 | APP-CONTINGENCY | 562 | - | Contingency core READ |
 | 14 | APP-EXPORT | 3254 | - | export-core text/PDF READ |
-| 15 | UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 622 | - | plot-core render and waypoints READ in at least 2 bounded sessions |
+| 15 | UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 618 | - | plot-core render and waypoints READ in at least 2 bounded sessions |
 | 16 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 755 | - | Profile tool and plot init READ |
 | 17 | UI-VPM-RENDER, UI-ZHL-RESULTS | 950 | - | results-render-core READ |
 | 18 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 511 | ENG-ZHL-SCHEDULE | ZHL/CCR delegate thin layer READ |

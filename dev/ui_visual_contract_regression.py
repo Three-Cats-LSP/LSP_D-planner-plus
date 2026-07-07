@@ -103,7 +103,7 @@ CAPTURE_JS = r"""
   const title = document.getElementById('diluentCardTitle');
   const titleRow = title?.closest('.gas-card-title-row');
   const dots = titleRow ? titleRow.querySelectorAll('.gas-dot') : [];
-  const graphSwatch = document.querySelector('#decoProfileLegend .gas-switch-swatch');
+  const graphSwitchLegend = document.querySelector('#decoProfileLegend .legend-switch');
   const decoDots = [...document.querySelectorAll('.deco-gas-card .gas-dot')];
   const pills = [...document.querySelectorAll('#resultsPanel .gas-pills .gas-pill')];
   const gasSummary = document.getElementById('gasConsumptionSummary');
@@ -168,7 +168,7 @@ CAPTURE_JS = r"""
   const expectedBg = resolveColor(root.getPropertyValue('--gas-switch-label-bg'));
   const expectedSwitch = expectedBg;
   const expectedText = resolveColor(root.getPropertyValue('--gas-switch-label-text'));
-  const swatchBg = rgb(style(graphSwatch, 'backgroundColor'));
+  const graphSwitchColor = rgb(style(graphSwitchLegend, 'color'));
   const decoDotColors = decoDots.map(el => rgb(style(el, 'backgroundColor')));
   const decoPills = pills.filter(el => el.classList.contains('deco1') || el.classList.contains('deco2'));
   const decoWps = Array.isArray(window._decoWaypoints) ? window._decoWaypoints : [];
@@ -199,7 +199,7 @@ CAPTURE_JS = r"""
     title: title?.textContent?.trim() || '',
     bottomDotCount: dots.length,
     titleHasEmoji: /[\u{1F535}\u{1F7E1}\u{1F7E0}\u{1F7E2}]/u.test(title?.textContent || ''),
-    swatchBg,
+    graphSwitchColor,
     expectedBg,
     expectedText,
     decoDotColors,
@@ -211,6 +211,7 @@ CAPTURE_JS = r"""
     switchRowBackgrounds: switchRowBgs,
     normalRowBackground: normalRowBg,
     expectedSwitch,
+    graphSwitchLegendText: graphSwitchLegend?.textContent?.trim() || '',
     graphWaypoints: {
       count: decoStopTimes.length,
       uniqueCount: uniqueDecoStopTimes.length,
@@ -1129,7 +1130,8 @@ def main() -> int:
     )
     results["SL-VIS-GAS-SWITCH-TOKEN-PARITY"] = all(
         c["generated"]
-        and c["swatchBg"] == c["expectedBg"]
+        and c["graphSwitchColor"] == c["expectedBg"]
+        and "Gas Switch" in c["graphSwitchLegendText"]
         and bool(c["decoDotColors"])
         and all(color == c["expectedBg"] for color in c["decoDotColors"])
         for c in captures

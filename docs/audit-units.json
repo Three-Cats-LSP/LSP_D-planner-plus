@@ -2359,7 +2359,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-RENDER"
       },
-      "fingerprint": "4d758b4f7bc8425093540813ee66e1703ec686d957809d72efe8f5fafd9fe2b9",
+      "fingerprint": "2507361cdd6cca21ef07929f3d3d56bb2942b53265ae9bce09fd3a67fbc706d7",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5625,7 +5625,7 @@
         "REG-110",
         "REG-111"
       ],
-      "fingerprint": "f42057116adac129f4fa30a9c15dfc77aa8cfa0b64d880ca24e77c46fc9b12d7",
+      "fingerprint": "b9048cc441aa0004bf84bc1baa889c7b3568be29b5fa40ff7cd87aecd2f31905",
       "last_read_fingerprint": null
     },
     {
