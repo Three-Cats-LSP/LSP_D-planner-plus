@@ -1778,7 +1778,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "44c26878e732f713d007670881bf68702b0e014b9c038478d4ea0d04ff8b887d",
+      "fingerprint": "a0e026fc004bdf058cd6e44ded0a0d1faf1621ec679f205cf4555a5fc4e7b224",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5611,7 +5611,7 @@
         "REG-110",
         "REG-111"
       ],
-      "fingerprint": "da4205e40c9ea04dd0b05b73b7aaaa06285e9735372133117f486b344cc81938",
+      "fingerprint": "ffc20f55bb098c88a8848191c3bd15cf2abc524211328ab40625c08485d2e991",
       "last_read_fingerprint": null
     },
     {

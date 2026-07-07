@@ -102,6 +102,7 @@ CAPTURE_JS = r"""
     [...row.querySelectorAll('td:not([data-label="PPO2"])')]
   );
   const schedule = document.querySelector('#resultsPanel .schedule-table');
+  const scheduleWrap = schedule?.closest('.schedule-wrap');
   const firstBodyRow = schedule?.querySelector('tbody tr:not([data-phase="switch"]):not(.row-summary)');
   const firstSwitchRow = schedule?.querySelector('tbody tr[data-phase="switch"]');
   const headers = schedule ? [...schedule.querySelectorAll('thead th')] : [];
@@ -121,6 +122,19 @@ CAPTURE_JS = r"""
   const mixCell = geom(cells[3]);
   const switchMixCell = geom(scheduleSwitchCells[3]);
   const phaseCell = geom(cells[0]);
+  const scheduleReadableCells = schedule ? [...schedule.querySelectorAll('thead th, tbody tr:not(.row-summary) td')] : [];
+  const clippedScheduleCells = scheduleReadableCells.filter(el => {
+    const cs = getComputedStyle(el);
+    return (cs.overflowX === 'hidden' || cs.textOverflow === 'ellipsis') && el.scrollWidth > el.clientWidth + 1;
+  }).map(el => ({
+    text: (el.textContent || '').trim(),
+    clientWidth: el.clientWidth,
+    scrollWidth: el.scrollWidth,
+    overflowX: getComputedStyle(el).overflowX,
+    textOverflow: getComputedStyle(el).textOverflow,
+  }));
+  const scheduleRect = schedule ? schedule.getBoundingClientRect() : null;
+  const scheduleWrapRect = scheduleWrap ? scheduleWrap.getBoundingClientRect() : null;
   const planner = document.getElementById('tecPlannerView')?.getBoundingClientRect();
   const results = document.getElementById('resultsPanel')?.getBoundingClientRect();
   const expectedBg = resolveColor(root.getPropertyValue('--gas-switch-label-bg'));
@@ -154,11 +168,16 @@ CAPTURE_JS = r"""
       switchMixCell,
       phaseCell,
       tableLayout: schedule ? getComputedStyle(schedule).tableLayout : '',
+      tableWidth: scheduleRect?.width || 0,
+      wrapWidth: scheduleWrapRect?.width || 0,
+      wrapOverflowX: scheduleWrap ? getComputedStyle(scheduleWrap).overflowX : '',
+      clippedCells: clippedScheduleCells,
       depthAligned: !!(depthHead && depthCell && Math.abs(depthHead.center - depthCell.center) <= 4),
       stopAligned: !!(stopHead && stopCell && Math.abs(stopHead.center - stopCell.center) <= 4),
       depthCompact: !!(depthHead && stopHead && mixHead && phaseCell && depthHead.width <= stopHead.width * 1.05 && depthHead.width < mixHead.width && depthHead.width >= phaseCell.width),
       mixLaneAligned: !!(mixHead && mixCell && switchMixCell && Math.abs(mixHead.center - mixCell.center) <= 4 && Math.abs(mixCell.center - switchMixCell.center) <= 4),
       mixCompact: !!(mixHead && runHead && mixHead.width <= runHead.width * 0.8),
+      mobileScrollReady: !schedule || window.innerWidth > 640 || !!(scheduleWrap && scheduleRect && scheduleWrapRect && getComputedStyle(scheduleWrap).overflowX === 'auto' && scheduleRect.width > scheduleWrapRect.width),
     },
     layout: planner && results ? {
       plannerLeft: planner.left,
@@ -867,6 +886,8 @@ def main() -> int:
         and c["scheduleColumns"]["depthCompact"]
         and c["scheduleColumns"]["mixLaneAligned"]
         and c["scheduleColumns"]["mixCompact"]
+        and c["scheduleColumns"]["mobileScrollReady"]
+        and not c["scheduleColumns"]["clippedCells"]
         for c in captures
     )
 

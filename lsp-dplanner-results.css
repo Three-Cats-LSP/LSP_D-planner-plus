@@ -626,14 +626,14 @@ body.light-theme #resultsPanel #decoAlertsNarcotic .alert.narcotic-warn * {
 body.light-theme #resultsPanel #decoAlertsNarcotic .alert .tip-icon { color: #111 !important; opacity: 0.85; }
 #resultsPanel .schedule-wrap { padding: 0 var(--space-4) var(--space-3); overflow-x: auto; display: flex; flex-direction: column; gap: 0; }
 #resultsPanel .schedule-wrap > .deco-table-wrap { margin-bottom: 0; }
-#resultsPanel .deco-table.schedule-table { width: 100%; table-layout: fixed; margin-top: 0; font-size: 11px; }
+#resultsPanel .deco-table.schedule-table { width: 100%; min-width: 520px; table-layout: fixed; margin-top: 0; font-size: 11px; }
 #resultsPanel .deco-table.schedule-table thead { display: table-header-group; }
 #resultsPanel .deco-table.schedule-table tbody { display: table-row-group; }
 #resultsPanel .deco-table.schedule-table tr { display: table-row; margin: 0; border: none; background: transparent; padding: 0; }
-#resultsPanel .deco-table.schedule-table td { display: table-cell; width: auto; padding: 5px 6px; border-bottom: 1px solid var(--border); }
+#resultsPanel .deco-table.schedule-table td { display: table-cell; width: auto; padding: 5px 6px; border-bottom: 1px solid var(--border); overflow: visible; text-overflow: clip; }
 #resultsPanel .deco-table.schedule-table td::before { display: none; content: none; }
 #resultsPanel .deco-table.schedule-table td:first-child { width: 22px; text-align: center; background: transparent; }
-#resultsPanel .deco-table.schedule-table thead th { padding: 7px 6px; text-align: left; font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); border-bottom: 1px solid var(--border-hi); background: transparent; }
+#resultsPanel .deco-table.schedule-table thead th { padding: 7px 6px; text-align: left; font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); border-bottom: 1px solid var(--border-hi); background: transparent; overflow: visible; text-overflow: clip; }
 #resultsPanel .deco-table.schedule-table thead th.align-r, #resultsPanel .deco-table.schedule-table td.align-r { text-align: right; }
 #resultsPanel .deco-table.schedule-table th:nth-child(1),
 #resultsPanel .deco-table.schedule-table td:nth-child(1) { width: 7%; }

@@ -376,7 +376,7 @@
       "start_line": 501,
       "end_line": 915,
       "line_count": 415,
-      "content_fingerprint": "ef8eaa4c98fc83f5382c6c227b1b3ee3286740f0ee265b93dee66960e9140137",
+      "content_fingerprint": "3023736d29f0d874a291bca8c0d889767d5bd7bb5b49c1e010b0aab1a00777eb",
       "review_session": "C07-B",
       "verification_session": "C07-V-B",
       "lens_results": {
@@ -984,7 +984,7 @@
   ],
   "changed_paths": [],
   "audit_report": "docs/seven-lens-reports/cycle-07-results-css.md",
-  "notes": "CLOSER: registry closed at bf311c6; static/ci/release gate receipts bound to closure_evidence_commit. Cycle 8 dependency re-review C07-R2-A (1-500) and C07-R2-B (501-890) clean at fingerprint 8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49. Cycle 9 dependency re-review refreshed UI-CSS-RESULTS parts to 1-500 / 501-899; NO_NEW_FINDING. Schedule geometry dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Mix-lane dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING.",
+  "notes": "CLOSER: registry closed at bf311c6; static/ci/release gate receipts bound to closure_evidence_commit. Cycle 8 dependency re-review C07-R2-A (1-500) and C07-R2-B (501-890) clean at fingerprint 8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49. Cycle 9 dependency re-review refreshed UI-CSS-RESULTS parts to 1-500 / 501-899; NO_NEW_FINDING. Schedule geometry dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Mix-lane dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Mobile schedule scroll dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING.",
   "dependency_re_reviews": [
     {
       "session": "C07-R2-A",
@@ -1117,6 +1117,27 @@
       ],
       "result": "NO_NEW_FINDING",
       "reviewed_at": "2026-07-07T12:56:37.758277+00:00",
+      "verifier": "Codex simplified dependency re-review",
+      "line_count": 915
+    },
+    {
+      "session": "C09-DEP-RESULTS-MOBILE-SCHEDULE-SCROLL",
+      "part_id": "UI-CSS-RESULTS",
+      "start_line": 1,
+      "end_line": 915,
+      "content_fingerprint": "a0e026fc004bdf058cd6e44ded0a0d1faf1621ec679f205cf4555a5fc4e7b224",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
+        "UI-CSS-RESULTS-P02": "3023736d29f0d874a291bca8c0d889767d5bd7bb5b49c1e010b0aab1a00777eb"
+      },
+      "trigger": "Mobile schedule table readability fix: min-width scroll lane and no cell ellipsis",
+      "focus": [
+        "schedule table keeps full readable columns on mobile via horizontal scroll",
+        "schedule cells do not use hidden overflow or ellipsis truncation",
+        "desktop Depth/Stop/Mix geometry contracts remain covered by visual regression suite"
+      ],
+      "result": "NO_NEW_FINDING",
+      "reviewed_at": "2026-07-07T13:55:54.268150+00:00",
       "verifier": "Codex simplified dependency re-review",
       "line_count": 915
     }
