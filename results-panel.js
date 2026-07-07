@@ -83,15 +83,14 @@ function renderChipRow({ surfGF, otu, tts, decozone, unit }) {
   const surfNum = _parseChipNum(surfGF);
   const gfColor = surfNum == null ? 'chip-yellow' : (surfNum > 85 ? 'chip-red' : surfNum > 75 ? 'chip-orange' : 'chip-green');
   const otuNum = _parseChipNum(otu);
-  const otuColor = otuNum == null ? 'chip-yellow' : (otuNum > 300 ? 'chip-red' : otuNum > 200 ? 'chip-orange' : 'chip-yellow');
+  const otuColor = otuNum == null ? 'chip-info' : (otuNum > 300 ? 'chip-red' : otuNum > 200 ? 'chip-orange' : 'chip-green');
   const dzRaw = String(decozone || '').trim();
-  const dzColor = dzRaw && dzRaw !== '—' && !/^0\s*m/i.test(dzRaw) ? 'chip-orange' : 'chip-green';
   const dzUnit = unit || 'm';
   row.innerHTML = `
     <span class="chip ${gfColor}"><span class="chip-dot"></span>Surf GF ${surfGF || '—'}</span>
     <span class="chip ${otuColor}"><span class="chip-dot"></span>OTU ${otu || '—'}</span>
-    <span class="chip chip-yellow"><span class="chip-dot"></span>TTS ${tts || '—'}</span>
-    ${dzRaw && dzRaw !== '—' ? `<span class="chip ${dzColor}"><span class="chip-dot"></span>Decozone ${dzRaw}${/m|ft/i.test(dzRaw) ? '' : dzUnit}</span>` : ''}`;
+    <span class="chip chip-info"><span class="chip-dot"></span>TTS ${tts || '—'}</span>
+    ${dzRaw && dzRaw !== '—' ? `<span class="chip chip-deco"><span class="chip-dot"></span>Decozone ${dzRaw}${/m|ft/i.test(dzRaw) ? '' : dzUnit}</span>` : ''}`;
 }
 function _renderResultSummaryStrip(data) {
   const panel = document.getElementById('resultsPanel');

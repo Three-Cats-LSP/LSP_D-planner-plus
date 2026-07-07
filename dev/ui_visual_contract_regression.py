@@ -37,6 +37,7 @@ CASE_IDS = (
     "SL-C09-SWITCH-ROW-BACKGROUND-PARITY",
     "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD",
     "SL-C09-MOBILE-TISSUE-TAB-VISIBLE",
+    "SL-C09-SUMMARY-CHIP-PALETTE",
     "SL-VIS-GAS-CONSUMPTION-BARS",
     "SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS",
     "SL-VIS-GAS-CONSUMPTION-VOLUME-FIRST-UNITS",
@@ -179,6 +180,21 @@ CAPTURE_JS = r"""
   const tissueTab = resultTabsNav?.querySelector('[data-tab="tissue"]');
   const tissueRect = tissueTab?.getBoundingClientRect();
   const tabsRect = resultTabsNav?.getBoundingClientRect();
+  const chipByLabel = label => [...document.querySelectorAll('#resultChipRow .chip')]
+    .find(el => (el.textContent || '').trim().startsWith(label));
+  const chipSnapshot = el => el ? ({
+    text: (el.textContent || '').trim(),
+    color: rgb(style(el, 'color')),
+    background: rgb(style(el, 'backgroundColor')),
+    border: rgb(style(el, 'borderTopColor')),
+    classes: el.className,
+  }) : null;
+  const metricCardBackground = rgb(style(document.querySelector('#resultMetricStrip .metric-card'), 'backgroundColor'));
+  const runtimeTextColor = rgb(style(document.querySelector('#resultMetricStrip .metric-val--runtime'), 'color'));
+  const decoTextColor = rgb(style(document.querySelector('#resultMetricStrip .metric-val--deco'), 'color'));
+  const statusGreen = resolveColor(root.getPropertyValue('--status-green'));
+  const statusOrange = resolveColor(root.getPropertyValue('--status-orange'));
+  const statusRed = resolveColor(root.getPropertyValue('--status-red'));
   return {
     title: title?.textContent?.trim() || '',
     bottomDotCount: dots.length,
@@ -208,6 +224,16 @@ CAPTURE_JS = r"""
       visible: tissueRect.width > 20 && tissueRect.height > 10,
       withinNav: tissueRect.left >= tabsRect.left - 1 && tissueRect.right <= tabsRect.right + 1,
     } : null,
+    summaryChips: {
+      surfGF: chipSnapshot(chipByLabel('Surf GF')),
+      otu: chipSnapshot(chipByLabel('OTU')),
+      tts: chipSnapshot(chipByLabel('TTS')),
+      decozone: chipSnapshot(chipByLabel('Decozone')),
+      metricCardBackground,
+      runtimeTextColor,
+      decoTextColor,
+      statusColors: [statusGreen, statusOrange, statusRed],
+    },
     scheduleColumns: {
       headerTexts,
       hasTtsHeader: headerTexts.some(text => text.toUpperCase() === 'TTS'),
@@ -1163,6 +1189,20 @@ def main() -> int:
         and c["scheduleColumns"]["mixCompact"]
         and c["scheduleColumns"]["mobileScrollReady"]
         and not c["scheduleColumns"]["clippedCells"]
+        for c in captures
+    )
+    results["SL-C09-SUMMARY-CHIP-PALETTE"] = all(
+        c["generated"]
+        and c["summaryChips"]["surfGF"]
+        and c["summaryChips"]["surfGF"]["color"] in c["summaryChips"]["statusColors"]
+        and c["summaryChips"]["otu"]
+        and c["summaryChips"]["otu"]["color"] in c["summaryChips"]["statusColors"]
+        and c["summaryChips"]["tts"]
+        and c["summaryChips"]["tts"]["background"] == c["summaryChips"]["metricCardBackground"]
+        and c["summaryChips"]["tts"]["color"] == c["summaryChips"]["runtimeTextColor"]
+        and c["summaryChips"]["decozone"]
+        and c["summaryChips"]["decozone"]["background"] == c["summaryChips"]["metricCardBackground"]
+        and c["summaryChips"]["decozone"]["color"] == c["summaryChips"]["decoTextColor"]
         for c in captures
     )
     results["SL-VIS-GAS-CONSUMPTION-BARS"] = all(

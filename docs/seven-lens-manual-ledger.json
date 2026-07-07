@@ -482,7 +482,7 @@
       "boundary": "lsp-dplanner-results.css whole file (967 lines; parts P01 1-500 / P02 501-967)",
       "reviewer": "Cursor GPT-5.5 Medium",
       "review_session": "C07-A / C07-B",
-      "verification_session": "C07-V-A / C07-V-B / C07-R2-A / C07-R2-B / C09-DEP-RESULTS-A/B / C09-DEP-RESULTS-SCHEDULE-GEOMETRY / C09-DEP-RESULTS-MIX-LANE / C09-DEP-RESULTS-MOBILE-SCHEDULE-SCROLL / C09-DEP-RESULTS-SCHEDULE-COLUMN-ORDER / C09-DEP-RESULTS-GAS-WARNING-BANNERS",
+      "verification_session": "C07-V-A / C07-V-B / C07-R2-A / C07-R2-B / C09-DEP-RESULTS-A/B / C09-DEP-RESULTS-SCHEDULE-GEOMETRY / C09-DEP-RESULTS-MIX-LANE / C09-DEP-RESULTS-MOBILE-SCHEDULE-SCROLL / C09-DEP-RESULTS-SCHEDULE-COLUMN-ORDER / C09-DEP-RESULTS-GAS-WARNING-BANNERS / C09-DEP-RESULTS-SUMMARY-CHIP-PALETTE",
       "verification_status": "PASSED",
       "verifier_requirement": "Cycle 9 dependency invalidation cleared by simplified re-review: P01 lines 1-500 and P02 lines 501-967.",
       "findings_open": [],
@@ -494,7 +494,7 @@
         "SL-C07-L-03",
         "SL-C07-L-04"
       ],
-      "reviewed_fingerprint": "03e4ed71537e63a499e7532f240066fbc7833942c2aa6278899c35fdcc5034a4",
+      "reviewed_fingerprint": "f7768afdb09dce7d23418046cfa2e09aadd69ddc5b0a83d547a16218a33056b1",
       "verified_source_commit": "63b30d2df28d5cbe497fc8055c44a3eac57e0855",
       "last_checked_commit": "pending-current-cycle-9",
       "verified_at": "2026-07-05T10:08:17+00:00",
@@ -532,16 +532,16 @@
         "P02": "lsp-dplanner-results.css:501-967"
       },
       "dependency_re_review": {
-        "session": "C09-DEP-RESULTS-GAS-WARNING-BANNERS",
-        "reviewed_fingerprint_at_review": "a285604c348376de871a8fa34d29c4996620ab2f9df897fb7ffc7817487b8d1a",
-        "current_fingerprint": "03e4ed71537e63a499e7532f240066fbc7833942c2aa6278899c35fdcc5034a4",
-        "current_fingerprint_p01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
+        "session": "C09-DEP-RESULTS-SUMMARY-CHIP-PALETTE",
+        "reviewed_fingerprint_at_review": "03e4ed71537e63a499e7532f240066fbc7833942c2aa6278899c35fdcc5034a4",
+        "current_fingerprint": "f7768afdb09dce7d23418046cfa2e09aadd69ddc5b0a83d547a16218a33056b1",
+        "current_fingerprint_p01": "448d13c68fffb1305c8218fe36c3b0dfc4eb9715321ae9481292b2077bcdb0a7",
         "current_fingerprint_p02": "e66c626af3f9a3354d78956d7cada94e27dc926ddeb1dfea641e1b6829c5d724",
         "result": "NO_NEW_FINDING",
         "verified_at": "2026-07-08T00:00:00Z",
         "verifier": "Codex simplified dependency re-review"
       },
-      "last_read_fingerprint": "03e4ed71537e63a499e7532f240066fbc7833942c2aa6278899c35fdcc5034a4"
+      "last_read_fingerprint": "f7768afdb09dce7d23418046cfa2e09aadd69ddc5b0a83d547a16218a33056b1"
     },
     {
       "unit_id": "UI-PLANNER-SHELL",
@@ -578,7 +578,7 @@
       "unit_id": "UI-RESULTS-PANEL",
       "review_status": "SEVEN_LENS_REVIEWED",
       "cycle_id": "SL-C08",
-      "boundary": "results-panel.js whole file (312 lines)",
+      "boundary": "results-panel.js whole file (310 lines)",
       "reviewer": "Cursor FIXER Cycle 08",
       "review_session": "C08-A",
       "verification_status": "PASSED",
@@ -588,7 +588,7 @@
         "SL-C08-M-01",
         "SL-C08-L-01"
       ],
-      "reviewed_fingerprint": "5622a3aa0e618e6bf74aadc78b36ce01d3928c755d41431b457647a160b73feb",
+      "reviewed_fingerprint": "3f27ef8c906c85ebeb0a24c479720b2100620b23af6e520d5113d567343975b6",
       "verified_source_commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
       "verification_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
       "finding_ids": [
@@ -597,21 +597,21 @@
         "SL-C08-L-01"
       ],
       "parts": {
-        "P01": "results-panel.js:1-312"
+        "P01": "results-panel.js:1-310"
       },
-      "verification_session": "C08-V-C / C08-V-D / C09-DEP-RESULTS-PANEL-SCHEDULE-LABEL-DECORATION",
+      "verification_session": "C08-V-C / C08-V-D / C09-DEP-RESULTS-PANEL-SCHEDULE-LABEL-DECORATION / C09-DEP-RESULTS-PANEL-SUMMARY-CHIP-PALETTE",
       "verifier": "Cursor Agent (C08 CLOSER)",
-      "last_checked_commit": "1372b40",
+      "last_checked_commit": "pending-current-cycle-9",
       "verified_at": "2026-07-07T05:23:50+00:00",
       "closed_at": "2026-07-07T05:23:50+00:00",
-      "last_read_fingerprint": "5622a3aa0e618e6bf74aadc78b36ce01d3928c755d41431b457647a160b73feb",
-      "verifier_requirement": "Cycle 9 dependency invalidation cleared by simplified re-review: UI-RESULTS-PANEL lines 1-311.",
+      "last_read_fingerprint": "3f27ef8c906c85ebeb0a24c479720b2100620b23af6e520d5113d567343975b6",
+      "verifier_requirement": "Cycle 9 dependency invalidation cleared by simplified re-review: UI-RESULTS-PANEL lines 1-310.",
       "dependency_re_review": {
-        "session": "C09-DEP-RESULTS-PANEL-SCHEDULE-LABEL-DECORATION",
-        "reviewed_fingerprint_at_review": "1d09b7cb7452cc402f30527e8b693adc6bc32f835ae66fefd7e72a0d42c77543",
-        "current_fingerprint": "5622a3aa0e618e6bf74aadc78b36ce01d3928c755d41431b457647a160b73feb",
+        "session": "C09-DEP-RESULTS-PANEL-SUMMARY-CHIP-PALETTE",
+        "reviewed_fingerprint_at_review": "5622a3aa0e618e6bf74aadc78b36ce01d3928c755d41431b457647a160b73feb",
+        "current_fingerprint": "3f27ef8c906c85ebeb0a24c479720b2100620b23af6e520d5113d567343975b6",
         "result": "NO_NEW_FINDING",
-        "verified_at": "2026-07-07T14:12:28Z",
+        "verified_at": "2026-07-08T00:00:00Z",
         "verifier": "Codex simplified dependency re-review"
       }
     },

@@ -425,9 +425,9 @@
       "unit_id": "UI-RESULTS-PANEL",
       "path": "results-panel.js",
       "start_line": 1,
-      "end_line": 311,
-      "line_count": 311,
-      "content_fingerprint": "5622a3aa0e618e6bf74aadc78b36ce01d3928c755d41431b457647a160b73feb",
+      "end_line": 310,
+      "line_count": 310,
+      "content_fingerprint": "3f27ef8c906c85ebeb0a24c479720b2100620b23af6e520d5113d567343975b6",
       "review_session": "C08-A",
       "verification_session": "C08-V-B",
       "lens_results": {
@@ -1874,5 +1874,22 @@
     "closure_evidence_commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
     "trace_spec_sha256": "681ad7fa0cb22056310c18f837b7bd1ec3ea31e65022f4d03bd78c67e1c8eb98",
     "trace_artifact_sha256": "28682e713e93a25740b6152d52d0b6233909147f24b3f74a1ed7d26040904274"
-  }
+  },
+  "dependency_reverification": [
+    {
+      "session": "C09-DEP-RESULTS-PANEL-SUMMARY-CHIP-PALETTE",
+      "part_id": "UI-RESULTS-PANEL",
+      "unit_id": "UI-RESULTS-PANEL",
+      "path": "results-panel.js",
+      "content_fingerprint": "3f27ef8c906c85ebeb0a24c479720b2100620b23af6e520d5113d567343975b6",
+      "boundaries": {
+        "UI-RESULTS-PANEL-P01": "lines 1-310"
+      },
+      "trigger": "Result summary chip renderer changed class mapping for Surf GF, OTU, TTS, and Decozone.",
+      "review_scope": "Summary chip class mapping only; prior Cycle 8 panel findings remain closed and unchanged.",
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-08T00:00:00Z",
+      "verifier": "Codex simplified dependency re-review"
+    }
+  ]
 }

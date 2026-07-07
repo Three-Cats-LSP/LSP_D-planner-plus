@@ -296,7 +296,7 @@
       "start_line": 1,
       "end_line": 500,
       "line_count": 500,
-      "content_fingerprint": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
+      "content_fingerprint": "448d13c68fffb1305c8218fe36c3b0dfc4eb9715321ae9481292b2077bcdb0a7",
       "review_session": "C07-A",
       "verification_session": "C07-V-A",
       "lens_results": {
@@ -1279,6 +1279,26 @@
       },
       "trigger": "Gas warning banners changed from stray ASCII marker to warning icon and critical gas red styling.",
       "review_scope": "Gas warning banner color/icon CSS only; prior Cycle 7 chip/PPO2/print/reduced-motion findings unchanged.",
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-08T00:00:00Z",
+      "verifier": "Codex simplified dependency re-review"
+    },
+    {
+      "session": "C09-DEP-RESULTS-SUMMARY-CHIP-PALETTE",
+      "part_id": "UI-CSS-RESULTS",
+      "unit_id": "UI-CSS-RESULTS",
+      "path": "lsp-dplanner-results.css",
+      "content_fingerprint": "f7768afdb09dce7d23418046cfa2e09aadd69ddc5b0a83d547a16218a33056b1",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "448d13c68fffb1305c8218fe36c3b0dfc4eb9715321ae9481292b2077bcdb0a7",
+        "UI-CSS-RESULTS-P02": "e66c626af3f9a3354d78956d7cada94e27dc926ddeb1dfea641e1b6829c5d724"
+      },
+      "boundaries": {
+        "UI-CSS-RESULTS-P01": "lines 1-500",
+        "UI-CSS-RESULTS-P02": "lines 501-967"
+      },
+      "trigger": "Result summary chips changed palette: Surf GF/OTU status colors, TTS info colors, Decozone deco colors.",
+      "review_scope": "Result summary chip palette CSS only; prior Cycle 7 chip/PPO2/print/reduced-motion findings unchanged.",
       "result": "NO_NEW_FINDING",
       "verified_at": "2026-07-08T00:00:00Z",
       "verifier": "Codex simplified dependency re-review"
