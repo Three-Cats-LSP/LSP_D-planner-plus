@@ -38,7 +38,7 @@
 | 6 | UI-CSS-CONTROLS | 548 | - | Controls CSS READ |
 | 7 | UI-CSS-RESULTS | 886 | - | Results CSS READ |
 | 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 513 | - | Planner shell and results panel READ |
-| 9 | UI-ENVIRONMENT, UI-MODE-STATE | 1004 | - | settings-core environment and mode state READ (1002 lines; >=2 bounded sessions) |
+| 9 | UI-ENVIRONMENT, UI-MODE-STATE | 1004 | - | settings-core environment and mode state READ (1002 lines; >=2 bounded sessions); explicitly verify VPM switch behavior and enforce app-wide gas-switch terminology: the diving procedure is labeled and identified as "Gas switch" everywhere, with no user-facing "Gas change" labels or new gas-change IDs/classes/contracts |
 | 10 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 679 | - | Surface interval and gas table cores READ |
 | 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 516 | ENG-ZHL-GAS | Gas card UI READ |
 | 12 | APP-GAS-PLAN | 546 | - | Gas plan core READ |
