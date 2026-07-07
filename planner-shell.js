@@ -52,7 +52,20 @@ function setMainNav(section, btn) {
   }
   if (section === 'tools') { setNavMode('tools'); return; }
   if (section === 'settings') { setNavMode('settings'); return; }
+  const returningFromAux = navMode === 'tools' || navMode === 'settings';
+  const targetModel = section === 'rec'
+    ? 'rec'
+    : section === 'buh'
+      ? 'ZHLC_GF'
+      : section === 'vpm'
+        ? vpmVariant
+        : plannerAlgo;
   setNavMode('planner');
+  if (returningFromAux && targetModel === plannerAlgo) {
+    algo = plannerAlgo === 'rec' ? 'padi' : 'buh';
+    _highlightMainNav(section);
+    return;
+  }
   if (section === 'rec') setPlannerAlgo('rec', btn || document.getElementById('navBtnRec'));
   else if (section === 'buh') setPlannerAlgo('ZHLC_GF', btn || document.getElementById('navBtnBuh'));
   else if (section === 'vpm') setPlannerAlgo(vpmVariant, btn || document.getElementById('navBtnVpm'));
@@ -86,6 +99,8 @@ function setNavMode(mode) {
     setMobilePlanView('plan');
     _updatePlanPanelSections();
     _updatePlannerSubtitle();
+    algo = plannerAlgo === 'rec' ? 'padi' : 'buh';
+    if (typeof appSettings !== 'undefined' && appSettings.save) appSettings.save(false);
     return;
   }
   if (mode === 'tools') {

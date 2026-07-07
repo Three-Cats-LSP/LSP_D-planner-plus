@@ -190,6 +190,7 @@ function _updateEnvSummary() {
 }
 
 function setWaterDensity(type, customKgM3) {
+  const prevBar = BAR_PER_METRE;
   if (type === 'custom') {
     const kg = parseFloat(customKgM3 || document.getElementById('waterCustomInput')?.value || 1025);
     BAR_PER_METRE = (kg * 9.80665) / 100000;
@@ -203,6 +204,7 @@ function setWaterDensity(type, customKgM3) {
   if (customRow) customRow.style.display = type === 'custom' ? 'flex' : 'none';
   localStorage.setItem('waterDensity', type);
   if (type === 'custom') localStorage.setItem('waterDensityCustom', customKgM3 || document.getElementById('waterCustomInput')?.value || 1025);
+  if (BAR_PER_METRE === prevBar) return;
   replanAfterEnvChange();
 }
 

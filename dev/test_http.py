@@ -57,6 +57,7 @@ def _port_is_open(host: str, port: int) -> bool:
 
 def _port_can_bind(host: str, port: int) -> bool:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         try:
             sock.bind((host, port))
         except OSError:

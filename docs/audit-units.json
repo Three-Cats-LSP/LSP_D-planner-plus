@@ -1935,26 +1935,16 @@
       "path": "settings-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ENVIRONMENT"
       },
-      "fingerprint": "21351eca56327ac0d74c4412cb073b57523d78668ca95fd465c67dfa197e08ba",
-      "last_read_fingerprint": "21351eca56327ac0d74c4412cb073b57523d78668ca95fd465c67dfa197e08ba",
+      "fingerprint": "439368a89834973c16189864e156fe5a34b66622aac1a3371aaa664bbeffcbea",
+      "last_read_fingerprint": null,
       "audit_issue": 139,
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity",
-        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
-        "SUITE-ENGINE-FULL/AUDIT-REG-01"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01",
-        "EXT-02",
-        "REG-01"
-      ],
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Audit issue #139"
     },
     {
@@ -1983,7 +1973,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ALGORITHM-SETTINGS"
       },
-      "fingerprint": "44b185ca600352dbb5385367ae5fe064c69ae9b4e0168e238430128cfb75425c",
+      "fingerprint": "556128e7e8c18916ba85a77864a036765968dd41f1bf42d9715cc7523da11857",
       "last_read_fingerprint": null,
       "audit_issue": 163,
       "evidence": [],
@@ -2114,7 +2104,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS-CONTROLS"
       },
-      "fingerprint": "49987240a3632ff0ddfe89baa5ca3efc8b8a783df9c93f5a2e52d0b0b9b0b666",
+      "fingerprint": "803522bdb43128fd1023059370cfb0797a23857e22b2913c1135737b45150fc5",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2447,7 +2437,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS"
       },
-      "fingerprint": "0101efb181b935f50d16ea1cd74e412a75c29d61d6307808346853559d16fcc5",
+      "fingerprint": "e8f35d70c14b7cf15f4bf8416e915269312b056a1bd33d27b4ff16d0145bbfb6",
       "last_read_fingerprint": null,
       "audit_issue": 158,
       "issue": "Cycle 32 settings restore exception recovery",
@@ -3686,7 +3676,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "e1eb81b2a456a91e22fdf66b9a50e05bb79307d0997eac970567793573533230",
+      "fingerprint": "442829d45fe88c4c41b3dce7f0db51df6814b22cd438562fd3f5c530fa5e0c30",
       "last_read_fingerprint": null,
       "regression_cases": [],
       "evidence": [],
@@ -5081,7 +5071,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "e126c65a22d84696d99a0fec4ece5ce46ed1c158957b3778e7a066e4f9a47cb6",
+      "fingerprint": "c9dc4b2f509fc9666f56898f0723571a20922b7c5e869fdb301412c1ab5778cd",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [

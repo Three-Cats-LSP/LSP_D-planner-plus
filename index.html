@@ -2769,6 +2769,7 @@ function handleGFSelect(val) {
 }
 
 function setGF(low, high) {
+  const unchanged = mGF.low === low && mGF.high === high;
   mGF.low = low;
   mGF.high = high;
 
@@ -2794,17 +2795,19 @@ function setGF(low, high) {
 
   if (!window._zhlHeadless) renderNDLTable();
 
-  // GF FIX: re-run deco schedule with updated GF values instead of hiding result
-  const decoRes = document.getElementById('decoResult');
-  if (!window._zhlHeadless && decoRes && decoRes.style.display !== 'none' && decoRes.innerHTML.trim()) {
-    runDecoSchedule();
-  } else {
-    const pr = document.getElementById('plannerResult');
-    if (pr) pr.style.display = 'none';
-  }
+  if (!unchanged) {
+    // GF FIX: re-run deco schedule with updated GF values instead of hiding result
+    const decoRes = document.getElementById('decoResult');
+    if (!window._zhlHeadless && decoRes && decoRes.style.display !== 'none' && decoRes.innerHTML.trim()) {
+      runDecoSchedule();
+    } else {
+      const pr = document.getElementById('plannerResult');
+      if (pr) pr.style.display = 'none';
+    }
 
-  if (typeof appSettings !== 'undefined' && appSettings.save) {
-    setTimeout(() => appSettings.save(false), 100);
+    if (typeof appSettings !== 'undefined' && appSettings.save) {
+      setTimeout(() => appSettings.save(false), 100);
+    }
   }
   _highlightGfPresetBtn();
 }
@@ -5318,6 +5321,15 @@ function clearZhlRepState() {
 function onConservatismChange() {
   _syncConservatismBtns();
   if (window._zhlHeadless) return;
+  const sel = document.getElementById('conservatismSelect');
+  const nextVal = sel?.value || '2';
+  if (sel && sel.dataset.lspLastValue === nextVal) {
+    if (typeof appSettings !== 'undefined' && appSettings.save) {
+      appSettings.save(false);
+    }
+    return;
+  }
+  if (sel) sel.dataset.lspLastValue = nextVal;
   const decoRes = document.getElementById('decoResult');
   if (decoRes && decoRes.style.display !== 'none' && decoRes.innerHTML.trim()) {
     runDecoSchedule();
@@ -8321,7 +8333,9 @@ var appSettings = {
     const fields = this.getExistingFields();
     
     // Always save the current algorithm and unit system
-    values['__algo__'] = window.algo || 'padi';
+    values['__algo__'] = (navMode === 'tools' || navMode === 'settings')
+      ? (plannerAlgo === 'rec' ? 'padi' : 'buh')
+      : (window.algo || 'padi');
     values['__plannerAlgo__'] = plannerAlgo || 'ZHLC_GF';
     values['__navMode__'] = navMode || 'planner';
     values['__units__'] = units || 'metric';
@@ -8495,16 +8509,20 @@ var appSettings = {
       }
       const el = document.getElementById(id);
       if (!el) return;
+      let changed = false;
       if (el.type === 'checkbox') {
-        el.checked = values[id] === true || values[id] === 'true';
+        const next = values[id] === true || values[id] === 'true';
+        changed = el.checked !== next;
+        el.checked = next;
       } else {
+        changed = String(el.value) !== String(values[id]);
         el.value = values[id];
       }
       if (id === 'gfLowInput' || id === 'gfHighInput') {
         restored++;
         return;
       }
-      if (!window._zhlHeadless) {
+      if (!window._zhlHeadless && changed) {
         pendingChangeEls.push(el);
       }
       restored++;
