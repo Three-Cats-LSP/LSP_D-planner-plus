@@ -374,9 +374,9 @@
       "unit_id": "UI-CSS-RESULTS",
       "path": "lsp-dplanner-results.css",
       "start_line": 501,
-      "end_line": 899,
-      "line_count": 399,
-      "content_fingerprint": "1d31ea046837ab602ae9c55936732dc9be060386dc4348f63351ad5445f71a2c",
+      "end_line": 915,
+      "line_count": 415,
+      "content_fingerprint": "0959cabf086131f4160938cceab3395ab23edf4d52cf41f9368d301bd64e6bf0",
       "review_session": "C07-B",
       "verification_session": "C07-V-B",
       "lens_results": {
@@ -984,7 +984,7 @@
   ],
   "changed_paths": [],
   "audit_report": "docs/seven-lens-reports/cycle-07-results-css.md",
-  "notes": "CLOSER: registry closed at bf311c6; static/ci/release gate receipts bound to closure_evidence_commit. Cycle 8 dependency re-review C07-R2-A (1-500) and C07-R2-B (501-890) clean at fingerprint 8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49. Cycle 9 dependency re-review refreshed UI-CSS-RESULTS parts to 1-500 / 501-899; NO_NEW_FINDING.",
+  "notes": "CLOSER: registry closed at bf311c6; static/ci/release gate receipts bound to closure_evidence_commit. Cycle 8 dependency re-review C07-R2-A (1-500) and C07-R2-B (501-890) clean at fingerprint 8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49. Cycle 9 dependency re-review refreshed UI-CSS-RESULTS parts to 1-500 / 501-899; NO_NEW_FINDING. Schedule geometry dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING.",
   "dependency_re_reviews": [
     {
       "session": "C07-R2-A",
@@ -1077,6 +1077,27 @@
       "reviewed_at": "2026-07-07T11:25:37.098795+00:00",
       "verifier": "Codex simplified Cycle 9 dependency re-review",
       "line_count": 899
+    },
+    {
+      "session": "C09-DEP-RESULTS-SCHEDULE-GEOMETRY",
+      "part_id": "UI-CSS-RESULTS",
+      "start_line": 1,
+      "end_line": 915,
+      "content_fingerprint": "83dc664a423bbaeacbc99bf98c943afec8eb34bda1bd1dd3679a91f262c0545d",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
+        "UI-CSS-RESULTS-P02": "0959cabf086131f4160938cceab3395ab23edf4d52cf41f9368d301bd64e6bf0"
+      },
+      "trigger": "Schedule table column geometry fix in lsp-dplanner-results.css",
+      "focus": [
+        "fixed-layout schedule table keeps header/body columns aligned",
+        "Depth and Stop columns are compact and no wider than needed",
+        "Cycle 7 chip/PPO2/reduced-motion/print contracts preserved by visual regression suite"
+      ],
+      "result": "NO_NEW_FINDING",
+      "reviewed_at": "2026-07-07T12:12:35.488395+00:00",
+      "verifier": "Codex simplified dependency re-review",
+      "line_count": 915
     }
   ]
 }

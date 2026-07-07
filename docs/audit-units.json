@@ -719,6 +719,10 @@
     "REG-110": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
       "case_id": "SL-C09-VPM-MODE-TOGGLE"
+    },
+    "REG-111": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-C09-SCHEDULE-COLUMN-GEOMETRY"
     }
   },
   "findings": [
@@ -1774,7 +1778,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "e1950ea03521a03f7171bd0e7e3f834506d6c2c544f070c090e8055f6eb07150",
+      "fingerprint": "83dc664a423bbaeacbc99bf98c943afec8eb34bda1bd1dd3679a91f262c0545d",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5604,9 +5608,10 @@
         "REG-107",
         "REG-108",
         "REG-109",
-        "REG-110"
+        "REG-110",
+        "REG-111"
       ],
-      "fingerprint": "5a45a74d0e728a2f88c05dea5a5989b6d07bd9e79be800dd2dc440cb1dca2d92",
+      "fingerprint": "b78bf82c1630f9803ee9e3ed7c220c9522882f6de0c8bde622c5d18802e5a1df",
       "last_read_fingerprint": null
     },
     {
@@ -6546,7 +6551,8 @@
         "SL-C08-NO-REDUNDANT-BOTTOM-NAV",
         "SL-C09-GAS-SWITCH-TERMINOLOGY",
         "SL-C09-MOBILE-WARNING-WRAP",
-        "SL-C09-VPM-MODE-TOGGLE"
+        "SL-C09-VPM-MODE-TOGGLE",
+        "SL-C09-SCHEDULE-COLUMN-GEOMETRY"
       ]
     }
   ],

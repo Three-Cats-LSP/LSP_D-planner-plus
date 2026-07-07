@@ -33,6 +33,7 @@ CASE_IDS = (
     "SL-C09-GAS-SWITCH-TERMINOLOGY",
     "SL-C09-MOBILE-WARNING-WRAP",
     "SL-C09-VPM-MODE-TOGGLE",
+    "SL-C09-SCHEDULE-COLUMN-GEOMETRY",
 )
 
 NAV_VIEWPORTS = (
@@ -100,6 +101,21 @@ CAPTURE_JS = r"""
   const switchCells = switchRows.flatMap(row =>
     [...row.querySelectorAll('td:not([data-label="PPO2"])')]
   );
+  const schedule = document.querySelector('#resultsPanel .schedule-table');
+  const firstBodyRow = schedule?.querySelector('tbody tr:not([data-phase="switch"]):not(.row-summary)');
+  const headers = schedule ? [...schedule.querySelectorAll('thead th')] : [];
+  const cells = firstBodyRow ? [...firstBodyRow.querySelectorAll('td')] : [];
+  const geom = (el) => {
+    if (!el) return null;
+    const rect = el.getBoundingClientRect();
+    return { left: rect.left, right: rect.right, width: rect.width, center: rect.left + rect.width / 2 };
+  };
+  const depthHead = geom(headers[1]);
+  const stopHead = geom(headers[2]);
+  const mixHead = geom(headers[3]);
+  const depthCell = geom(cells[1]);
+  const stopCell = geom(cells[2]);
+  const phaseCell = geom(cells[0]);
   const planner = document.getElementById('tecPlannerView')?.getBoundingClientRect();
   const results = document.getElementById('resultsPanel')?.getBoundingClientRect();
   const expectedBg = resolveColor(root.getPropertyValue('--gas-switch-label-bg'));
@@ -122,6 +138,18 @@ CAPTURE_JS = r"""
     switchRowCount: switchRows.length,
     switchCellColors: switchCells.map(el => rgb(style(el, 'color'))),
     expectedSwitch,
+    scheduleColumns: {
+      depthHead,
+      stopHead,
+      mixHead,
+      depthCell,
+      stopCell,
+      phaseCell,
+      tableLayout: schedule ? getComputedStyle(schedule).tableLayout : '',
+      depthAligned: !!(depthHead && depthCell && Math.abs(depthHead.center - depthCell.center) <= 4),
+      stopAligned: !!(stopHead && stopCell && Math.abs(stopHead.center - stopCell.center) <= 4),
+      depthCompact: !!(depthHead && mixHead && phaseCell && depthHead.width <= mixHead.width * 0.8 && depthHead.width >= phaseCell.width),
+    },
     layout: planner && results ? {
       plannerLeft: planner.left,
       plannerRight: planner.right,
@@ -820,6 +848,14 @@ def main() -> int:
         and bool(c["switchCellColors"])
         and all(color == c["expectedSwitch"] for color in c["switchCellColors"])
         for c in (dark, light)
+    )
+    results["SL-C09-SCHEDULE-COLUMN-GEOMETRY"] = all(
+        c["generated"]
+        and c["scheduleColumns"]["tableLayout"] == "fixed"
+        and c["scheduleColumns"]["depthAligned"]
+        and c["scheduleColumns"]["stopAligned"]
+        and c["scheduleColumns"]["depthCompact"]
+        for c in captures
     )
 
     nav_ok = all(
