@@ -488,7 +488,7 @@ def _act(page, action: dict[str, Any]) -> None:
         page.set_viewport_size({"width": width, "height": height})
         page.wait_for_function(
             "([w, h]) => window.innerWidth === w && window.innerHeight === h",
-            [width, height],
+            arg=[width, height],
             timeout=TRACE_ACTION_TIMEOUT_MS,
         )
         page.wait_for_timeout(50)
