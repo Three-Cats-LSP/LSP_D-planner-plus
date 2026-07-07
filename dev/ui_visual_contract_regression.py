@@ -99,8 +99,8 @@ CAPTURE_JS = r"""
   );
   const planner = document.getElementById('tecPlannerView')?.getBoundingClientRect();
   const results = document.getElementById('resultsPanel')?.getBoundingClientRect();
-  const expectedSwitch = resolveColor(root.getPropertyValue('--gas-switch'));
   const expectedBg = resolveColor(root.getPropertyValue('--gas-switch-label-bg'));
+  const expectedSwitch = expectedBg;
   const expectedText = resolveColor(root.getPropertyValue('--gas-switch-label-text'));
   const swatchBg = rgb(style(graphSwatch, 'backgroundColor'));
   const decoDotColors = decoDots.map(el => rgb(style(el, 'backgroundColor')));
@@ -423,12 +423,24 @@ async () => {
 
   document.getElementById('navBtnBuh')?.click();
   await new Promise(r => setTimeout(r, 120));
-  if (typeof setMobilePlanView === 'function') setMobilePlanView('results');
-  await new Promise(r => setTimeout(r, 120));
+  const prevHeadless = window._zhlHeadless;
+  window._zhlHeadless = false;
+  try {
+    document.getElementById('tecGenerateBtn')?.click();
+    const deadline = Date.now() + 15000;
+    while (Date.now() < deadline) {
+      const hasResults = document.getElementById('resultsPanel')?.classList.contains('has-results') === true;
+      const rows = document.querySelectorAll('#decoTableBody tr').length;
+      if (hasResults && rows >= 5) break;
+      await new Promise(r => setTimeout(r, 200));
+    }
+  } finally {
+    window._zhlHeadless = prevHeadless;
+  }
   const onResults = vis('resultsPanel') !== 'none';
   document.getElementById('navBtnBuh')?.click();
   await new Promise(r => setTimeout(r, 120));
-  const backToPlanner = vis('tecPlannerView') !== 'none' && vis('resultsPanel') === 'none';
+  const backToPlanner = vis('tecPlannerView') !== 'none' && vis('resultsPanel') !== 'none';
 
   const desktopNavCount = width > 640
     ? document.querySelectorAll('#mainNavBar .main-nav-btn').length

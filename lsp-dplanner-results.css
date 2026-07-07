@@ -648,8 +648,8 @@ body.light-theme #resultsPanel #decoAlertsNarcotic .alert .tip-icon { color: #11
 #resultsPanel .deco-table.schedule-table .ppo2-hi { color: var(--orange); }
 #resultsPanel .deco-table.schedule-table .ppo2-crit { color: var(--red); }
 #resultsPanel .deco-table.schedule-table .col-ead { color: var(--text-faint); text-align: right; }
-#resultsPanel .deco-table.schedule-table tr.row-switch { background: color-mix(in oklab, var(--gas-switch) 8%, transparent); }
-#resultsPanel .deco-table.schedule-table tr.row-switch td { color: var(--gas-switch); border-top: 1px dashed color-mix(in oklab, var(--gas-switch) 28%, transparent); border-bottom: 1px dashed color-mix(in oklab, var(--gas-switch) 28%, transparent); }
+#resultsPanel .deco-table.schedule-table tr.row-switch { background: color-mix(in oklab, var(--gas-switch-label-bg) 8%, transparent); }
+#resultsPanel .deco-table.schedule-table tr.row-switch td { color: var(--gas-switch-label-bg); border-top: 1px dashed color-mix(in oklab, var(--gas-switch-label-bg) 28%, transparent); border-bottom: 1px dashed color-mix(in oklab, var(--gas-switch-label-bg) 28%, transparent); }
 #resultsPanel .deco-table.schedule-table tr.row-switch .col-gas { font-weight: 600; }
 #resultsPanel .deco-table.schedule-table tr.row-switch .col-ppo2.ppo2-ok,
 #resultsPanel .deco-table.schedule-table tr.row-switch .col-ppo2.ppo2-warn,
@@ -657,18 +657,18 @@ body.light-theme #resultsPanel #decoAlertsNarcotic .alert .tip-icon { color: #11
 #resultsPanel .deco-table.schedule-table tr.row-switch .col-ppo2.ppo2-crit { color: inherit; }
 /* V4 schedule gas-switch contract: renderer writes data-phase, not row-switch. */
 #resultsPanel .deco-table.schedule-table tr[data-phase="switch"],
-#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] { background: color-mix(in oklab, var(--gas-switch) 8%, transparent); }
+#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] { background: color-mix(in oklab, var(--gas-switch-label-bg) 8%, transparent); }
 #resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td:not([data-label="PPO2"]),
-#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td:not([data-label="PPO2"]) { color: var(--gas-switch) !important; font-size: inherit !important; border-bottom: 1px solid var(--border) !important; }
+#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td:not([data-label="PPO2"]) { color: var(--gas-switch-label-bg) !important; font-size: inherit !important; border-bottom: 1px solid var(--border) !important; }
 #resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td:first-child,
-#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td:first-child { color: var(--gas-switch) !important; font-size: inherit !important; text-align: center !important; }
+#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td:first-child { color: var(--gas-switch-label-bg) !important; font-size: inherit !important; text-align: center !important; }
 #resultsPanel .deco-table.schedule-table tr.deco-row td:not(.col-ppo2),
 #resultsPanel .deco-table.schedule-table tr.safe-row td:not(.col-ppo2),
 #resultsPanel .deco-table.schedule-table tr.asc-row td:not(.col-ppo2) { color: inherit; font-weight: inherit; }
-#resultsPanel .legend-item.legend-switch { color: var(--gas-switch); }
+#resultsPanel .legend-item.legend-switch { color: var(--gas-switch-label-bg); }
 body.light-theme #resultsPanel .deco-table.schedule-table .ph-switch,
 body.light-theme #resultsPanel .legend-item.legend-switch,
-body.light-theme #resultsPanel .deco-table.schedule-table tr.row-switch td { color: var(--gas-switch) !important; }
+body.light-theme #resultsPanel .deco-table.schedule-table tr.row-switch td { color: var(--gas-switch-label-bg) !important; }
 #resultsPanel .deco-table.schedule-table tr.row-descent td:not(.col-ppo2) { color: var(--text-muted); }
 #resultsPanel .deco-table.schedule-table tr.row-descent .col-depth { color: var(--text); }
 #resultsPanel .deco-table.schedule-table tr.row-summary td { background: color-mix(in oklab, var(--accent) 4%, transparent); border-top: 1px solid var(--border-hi); border-bottom: 1px solid var(--border); padding: 9px 6px; font-size: 10px; color: var(--text-muted); }
@@ -713,12 +713,8 @@ body.light-theme #gasWarningBanner.gas-warning-banner { background: #fff8f0; bor
   #recPlannerView,
   #tecPlannerView,
   #resultsPanel { grid-column: auto; grid-row: auto; }
-  #recPlannerView:not(.mobile-active),
-  #tecPlannerView:not(.mobile-active) { display: none !important; }
-  #resultsPanel:not(.mobile-active) { display: none !important; }
-  #recPlannerView.mobile-active,
-  #tecPlannerView.mobile-active,
-  #resultsPanel.mobile-active { display: flex !important; }
+  #resultsPanel:not(.has-results) { display: none !important; }
+  #resultsPanel.has-results { display: flex !important; }
   .app { padding-bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px)); }
   #headerTopRow .mode-toggle.algo-toggle { display: none !important; }
   #headerTopRow .header-actions { order: 3; width: 100%; justify-content: flex-end !important; padding: 0 14px 6px !important; }
