@@ -546,7 +546,7 @@
       "unit_id": "UI-PLANNER-SHELL",
       "review_status": "SEVEN_LENS_REVIEWED",
       "cycle_id": "SL-C08",
-      "boundary": "planner-shell.js whole file (187 lines)",
+      "boundary": "planner-shell.js whole file (201 lines)",
       "reviewer": "Cursor FIXER Cycle 08",
       "review_session": "C08-A",
       "verification_status": "PASSED",
@@ -556,8 +556,8 @@
         "SL-C08-L-02",
         "SL-C08-M-04"
       ],
-      "reviewed_fingerprint": "34442a4721978fc0b34bd8d8e65066fb87f08ea13f91e79c8c474ccc44f31ae9",
-      "verified_source_commit": "b4e9375f63b3be88e2e50e8a3d62a7f5e87d5d73",
+      "reviewed_fingerprint": "c9dc4b2f509fc9666f56898f0723571a20922b7c5e869fdb301412c1ab5778cd",
+      "verified_source_commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
       "verification_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
       "finding_ids": [
         "SL-C08-H-02",
@@ -565,11 +565,11 @@
         "SL-C08-M-04"
       ],
       "parts": {
-        "P01": "planner-shell.js:1-187"
+        "P01": "planner-shell.js:1-201"
       },
       "verification_session": "C08-V-C / C08-V-D",
       "verifier": "Cursor Agent (C08 CLOSER)",
-      "last_checked_commit": "f5bef4e",
+      "last_checked_commit": "34a241c",
       "verified_at": "2026-07-07T05:23:50+00:00",
       "closed_at": "2026-07-07T05:23:50+00:00"
     },
@@ -588,7 +588,7 @@
         "SL-C08-L-01"
       ],
       "reviewed_fingerprint": "5753326e01ae9dc9aad521538c749387c35a542e9d1263b0c49c8de74ef5c217",
-      "verified_source_commit": "b4e9375f63b3be88e2e50e8a3d62a7f5e87d5d73",
+      "verified_source_commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
       "verification_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
       "finding_ids": [
         "SL-C08-H-01",
@@ -600,7 +600,7 @@
       },
       "verification_session": "C08-V-C / C08-V-D",
       "verifier": "Cursor Agent (C08 CLOSER)",
-      "last_checked_commit": "f5bef4e",
+      "last_checked_commit": "34a241c",
       "verified_at": "2026-07-07T05:23:50+00:00",
       "closed_at": "2026-07-07T05:23:50+00:00"
     }

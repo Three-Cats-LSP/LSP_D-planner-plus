@@ -9,16 +9,16 @@
     "--output",
     "dev/seven-lens-browser-trace-c08-post-tec-restore.json"
   ],
-  "commit": "b4e9375f63b3be88e2e50e8a3d62a7f5e87d5d73",
+  "commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
   "exit_code": 0,
   "case_ids": [
     "SL-C08-INVALID-TEC-CLEARS-STALE"
   ],
   "worktree_clean_before": true,
   "worktree_clean_after": true,
-  "started_at": "2026-07-07T03:57:02.866501+00:00",
-  "finished_at": "2026-07-07T03:59:02.195294+00:00",
+  "started_at": "2026-07-07T08:16:24.023970+00:00",
+  "finished_at": "2026-07-07T08:17:39.541741+00:00",
   "stdout_sha256": "7739f5227dcd0b3725eed85d593ae3f0a170d8c7b4c70fd927060529c384da5a",
-  "stderr_sha256": "71be15ee4baf31f3e77badda6a96d14b7ae0f9c10eb6f2b2dd4d4d61948a028c",
+  "stderr_sha256": "111c2a4122621a769bc8b8516694f58447a9709439e58483b05c9bdb04e7412e",
   "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
 }
