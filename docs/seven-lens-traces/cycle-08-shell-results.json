@@ -23,7 +23,7 @@
         {
           "action": "run_script",
           "setup_only_reason": "Clear persisted settings for stable boot.",
-          "script": "() => { localStorage.removeItem('lspDiveSettings_v6'); if (typeof appSettings !== 'undefined' && appSettings.save) appSettings.save = function() {}; if (typeof setMainNav === 'function') setMainNav('buh'); if (typeof setMobilePlanView === 'function') setMobilePlanView('plan'); }"
+          "script": "() => { localStorage.removeItem('lspDiveSettings_v6'); if (typeof appSettings !== 'undefined' && appSettings.save) appSettings.save = function() {}; }"
         },
         {"action": "set_global", "name": "_zhlHeadless", "value": false}
       ],

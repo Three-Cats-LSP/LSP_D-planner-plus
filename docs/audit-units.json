@@ -4318,7 +4318,7 @@
       "evidence": [],
       "issue": "Seven-lens browser event and consumer value tracing",
       "regression_cases": [],
-      "fingerprint": "8f9fe7e4f094e8b28eb5fe819d888272e21c51d1e8f9060f1dbfe768cdc59264",
+      "fingerprint": "d032b9c8e373627c8830f3b58ae13edf538317a467292f00a5e97936bc8688c3",
       "last_read_fingerprint": null
     },
     {
@@ -5524,7 +5524,7 @@
       "evidence": [],
       "issue": "Cycle 08 UI-PLANNER-SHELL/UI-RESULTS-PANEL browser trace specification",
       "regression_cases": [],
-      "fingerprint": "252f5dc9b5b7eab2d2923b0afe9dd73e4e5b282b4e3206e40d6763b2e1d3d8a9",
+      "fingerprint": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8",
       "last_read_fingerprint": null
     },
     {

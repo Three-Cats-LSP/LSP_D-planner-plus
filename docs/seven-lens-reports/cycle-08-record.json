@@ -774,7 +774,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_shell_results_regression.py"
       ],
-      "commit": "5e9e750f887d6f829c711226529632fd08966e04",
+      "commit": "b4e9375f63b3be88e2e50e8a3d62a7f5e87d5d73",
       "observable_assertions": [
         "All five shell/results regression cases PASS at 1280x800, 375x667, and 667x375 with state restoration"
       ],
@@ -817,9 +817,9 @@
         ],
         "trace_id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "cb9582cf84b00f9405eab0d1d21bc5beb850b59076d7dd58e8d85fbb0e7c696e",
+        "artifact_sha256": "5cb52f793927e5ee3c7acc2257cbea41583efd3f92d9df6e5a03d70a98d085d7",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
-        "spec_sha256": "252f5dc9b5b7eab2d2923b0afe9dd73e4e5b282b4e3206e40d6763b2e1d3d8a9"
+        "spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8"
       }
     },
     {
@@ -838,7 +838,7 @@
         "--output",
         "dev/seven-lens-browser-trace-c08-post-fix.json"
       ],
-      "commit": "5e9e750f887d6f829c711226529632fd08966e04",
+      "commit": "b4e9375f63b3be88e2e50e8a3d62a7f5e87d5d73",
       "observable_assertions": [
         "Four Cycle 08 browser traces PASS with repeat=2, exact state restoration hashes, and INVALID-TEC localStorage tecDepth restored"
       ],
@@ -850,8 +850,8 @@
       "receipt_sha256": "1a4f7751242ce89a9d62a670d5dcf46132b94fe0ef22ac5fd94fadf5c4618d0b",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
-      "trace_artifact_sha256": "cb9582cf84b00f9405eab0d1d21bc5beb850b59076d7dd58e8d85fbb0e7c696e",
-      "trace_spec_sha256": "252f5dc9b5b7eab2d2923b0afe9dd73e4e5b282b4e3206e40d6763b2e1d3d8a9",
+      "trace_artifact_sha256": "5cb52f793927e5ee3c7acc2257cbea41583efd3f92d9df6e5a03d70a98d085d7",
+      "trace_spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8",
       "id": "ER-C08-TRACE",
       "runtime_trace": {
         "entry_event": "Mobile boot at 375x667; user toggles plan/results via bottom nav intent.",
@@ -884,9 +884,9 @@
         ],
         "trace_id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "cb9582cf84b00f9405eab0d1d21bc5beb850b59076d7dd58e8d85fbb0e7c696e",
+        "artifact_sha256": "5cb52f793927e5ee3c7acc2257cbea41583efd3f92d9df6e5a03d70a98d085d7",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
-        "spec_sha256": "252f5dc9b5b7eab2d2923b0afe9dd73e4e5b282b4e3206e40d6763b2e1d3d8a9"
+        "spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8"
       }
     },
     {
@@ -928,7 +928,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_shell_results_regression.py"
       ],
-      "commit": "5e9e750f887d6f829c711226529632fd08966e04",
+      "commit": "b4e9375f63b3be88e2e50e8a3d62a7f5e87d5d73",
       "observable_assertions": [
         "Regression case SL-C08-NAV-PRESERVES-RESULTS PASS at verified source"
       ],
@@ -971,9 +971,9 @@
         ],
         "trace_id": "SL-C08-NAV-CLEARS-RESULTS-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "cb9582cf84b00f9405eab0d1d21bc5beb850b59076d7dd58e8d85fbb0e7c696e",
+        "artifact_sha256": "5cb52f793927e5ee3c7acc2257cbea41583efd3f92d9df6e5a03d70a98d085d7",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
-        "spec_sha256": "252f5dc9b5b7eab2d2923b0afe9dd73e4e5b282b4e3206e40d6763b2e1d3d8a9"
+        "spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8"
       }
     },
     {
@@ -986,7 +986,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_shell_results_regression.py"
       ],
-      "commit": "5e9e750f887d6f829c711226529632fd08966e04",
+      "commit": "b4e9375f63b3be88e2e50e8a3d62a7f5e87d5d73",
       "observable_assertions": [
         "Regression case SL-C08-INVALID-TEC-CLEARS-STALE PASS at verified source"
       ],
@@ -1028,9 +1028,9 @@
         ],
         "trace_id": "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "cb9582cf84b00f9405eab0d1d21bc5beb850b59076d7dd58e8d85fbb0e7c696e",
+        "artifact_sha256": "5cb52f793927e5ee3c7acc2257cbea41583efd3f92d9df6e5a03d70a98d085d7",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
-        "spec_sha256": "252f5dc9b5b7eab2d2923b0afe9dd73e4e5b282b4e3206e40d6763b2e1d3d8a9"
+        "spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8"
       }
     },
     {
@@ -1061,8 +1061,8 @@
       "receipt_sha256": "cf014ef3e408a180bddd7c0cd65d11a522385e5d82319bb24f49322b08c2edd8",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
-      "trace_artifact_sha256": "cb9582cf84b00f9405eab0d1d21bc5beb850b59076d7dd58e8d85fbb0e7c696e",
-      "trace_spec_sha256": "252f5dc9b5b7eab2d2923b0afe9dd73e4e5b282b4e3206e40d6763b2e1d3d8a9",
+      "trace_artifact_sha256": "5cb52f793927e5ee3c7acc2257cbea41583efd3f92d9df6e5a03d70a98d085d7",
+      "trace_spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8",
       "nondeterministic": true,
       "prepared_baseline_artifact": "dev/seven-lens-browser-trace-c08-prepared-baseline.json",
       "prepared_baseline_artifact_sha256": "a9223c5952c5ba938f88a888720a45623db08abb40d91c101835394c2da5bea5"
@@ -1093,8 +1093,8 @@
       "receipt_sha256": "dff02f9f748d5fb31fee36fe82a40ab4f581045f3ee2b4756bae9e5bf015b03c",
       "worktree_clean_before": true,
       "worktree_clean_after": true,
-      "trace_artifact_sha256": "cb9582cf84b00f9405eab0d1d21bc5beb850b59076d7dd58e8d85fbb0e7c696e",
-      "trace_spec_sha256": "252f5dc9b5b7eab2d2923b0afe9dd73e4e5b282b4e3206e40d6763b2e1d3d8a9"
+      "trace_artifact_sha256": "5cb52f793927e5ee3c7acc2257cbea41583efd3f92d9df6e5a03d70a98d085d7",
+      "trace_spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8"
     },
     {
       "id": "ER-C08-PRE-REG76",
@@ -1283,7 +1283,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_visual_contract_regression.py"
       ],
-      "commit": "5e9e750f887d6f829c711226529632fd08966e04",
+      "commit": "b4e9375f63b3be88e2e50e8a3d62a7f5e87d5d73",
       "observable_assertions": [
         "REG-107 PASS at fix commit: bottom nav absent, canonical mode row navigation verified"
       ],
@@ -1329,9 +1329,9 @@
         ],
         "trace_id": "SL-C08-NO-REDUNDANT-BOTTOM-NAV-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "cb9582cf84b00f9405eab0d1d21bc5beb850b59076d7dd58e8d85fbb0e7c696e",
+        "artifact_sha256": "5cb52f793927e5ee3c7acc2257cbea41583efd3f92d9df6e5a03d70a98d085d7",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
-        "spec_sha256": "252f5dc9b5b7eab2d2923b0afe9dd73e4e5b282b4e3206e40d6763b2e1d3d8a9"
+        "spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8"
       }
     },
     {
@@ -1344,7 +1344,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_visual_contract_regression.py"
       ],
-      "commit": "5e9e750f887d6f829c711226529632fd08966e04",
+      "commit": "b4e9375f63b3be88e2e50e8a3d62a7f5e87d5d73",
       "observable_assertions": [
         "REG-105 SL-C08-MOBILE-NAV-TILE-GRID PASS at verified source with nav grid separators across mobile viewports"
       ],
@@ -1392,9 +1392,9 @@
         ],
         "trace_id": "SL-C08-MOBILE-NAV-TILE-GRID-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "cb9582cf84b00f9405eab0d1d21bc5beb850b59076d7dd58e8d85fbb0e7c696e",
+        "artifact_sha256": "5cb52f793927e5ee3c7acc2257cbea41583efd3f92d9df6e5a03d70a98d085d7",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
-        "spec_sha256": "252f5dc9b5b7eab2d2923b0afe9dd73e4e5b282b4e3206e40d6763b2e1d3d8a9"
+        "spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8"
       }
     },
     {
@@ -1407,7 +1407,7 @@
         "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
         "dev/ui_visual_contract_regression.py"
       ],
-      "commit": "5e9e750f887d6f829c711226529632fd08966e04",
+      "commit": "b4e9375f63b3be88e2e50e8a3d62a7f5e87d5d73",
       "observable_assertions": [
         "REG-106 SL-C08-OPERATIONAL-GAS-LABEL-FORMAT PASS at verified source with canonical OO/HH operational labels"
       ],
@@ -1454,9 +1454,9 @@
         ],
         "trace_id": "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT-TRACE",
         "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-        "artifact_sha256": "cb9582cf84b00f9405eab0d1d21bc5beb850b59076d7dd58e8d85fbb0e7c696e",
+        "artifact_sha256": "5cb52f793927e5ee3c7acc2257cbea41583efd3f92d9df6e5a03d70a98d085d7",
         "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
-        "spec_sha256": "252f5dc9b5b7eab2d2923b0afe9dd73e4e5b282b4e3206e40d6763b2e1d3d8a9"
+        "spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8"
       }
     }
   ],
@@ -1732,9 +1732,9 @@
       "trace_count": 7,
       "repeat": 2,
       "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
-      "spec_sha256": "252f5dc9b5b7eab2d2923b0afe9dd73e4e5b282b4e3206e40d6763b2e1d3d8a9",
+      "spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8",
       "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
-      "artifact_sha256": "cb9582cf84b00f9405eab0d1d21bc5beb850b59076d7dd58e8d85fbb0e7c696e",
+      "artifact_sha256": "236cc50edfd57c9f7a3b6226e9d4c179c833e5df18d9854b3cf1aa68d822da20",
       "case_ids": [
         "SL-C08-MOBILE-NAV-TILE-GRID",
         "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT",

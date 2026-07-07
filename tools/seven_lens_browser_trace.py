@@ -484,6 +484,14 @@ def _act(page, action: dict[str, Any]) -> None:
     elif kind == "set_viewport":
         size = action.get("size") or {}
         page.set_viewport_size({"width": int(size.get("width", 1280)), "height": int(size.get("height", 800))})
+        page.evaluate(
+            """() => new Promise(resolve => {
+              requestAnimationFrame(() => {
+                if (typeof _initMobilePlanView === 'function') _initMobilePlanView();
+                resolve();
+              });
+            })"""
+        )
     elif kind == "emulate_media":
         params = {k: v for k, v in (action.get("params") or {}).items() if v is not None}
         page.emulate_media(**params)
