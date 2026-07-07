@@ -169,7 +169,7 @@
       "start_line": 1,
       "end_line": 500,
       "line_count": 500,
-      "content_fingerprint": "30d732cd811888ab3e90ff02d244e61b6ef2bcb220e831e318c71c4cc3aebe72",
+      "content_fingerprint": "6e46633ef47543ea9336472bd92b6b647b3f07c3787049f63b6b4c610a8e23d8",
       "review_session": "cursor/seven-lens-cycle-200-audit",
       "verification_session": "cursor/seven-lens-cycle-200-verify",
       "lens_results": {
@@ -250,14 +250,14 @@
       "unit_id": "UI-MARKUP-TEC-PLANNER",
       "path": "ui/markup-tec-planner.html",
       "start_line": 501,
-      "end_line": 557,
-      "line_count": 57,
-      "content_fingerprint": "30a4816baccc81d5a7302fee6bdbe9a8bc4810b1d4035c4194a14e35f0a6e6bc",
+      "end_line": 570,
+      "line_count": 70,
+      "content_fingerprint": "48a5eb502e3ad75e548bfac31f4239d9670031646bfff89cbeb7aa284db3e02e",
       "review_session": "cursor/seven-lens-cycle-200-audit",
       "verification_session": "cursor/seven-lens-cycle-200-verify",
       "lens_results": {
         "L1": {
-          "trace": "Reviewed UI-MARKUP-TEC-PLANNER ui/markup-tec-planner.html:501-557 for Level 2 REC/TECH isolation.",
+          "trace": "Reviewed UI-MARKUP-TEC-PLANNER ui/markup-tec-planner.html:501-570 for Level 2 REC/TECH isolation.",
           "boundary_cases": [
             "hidden input sync",
             "mode view visibility",
@@ -267,7 +267,7 @@
           "result": "NO_FINDING"
         },
         "L2": {
-          "trace": "Reviewed UI-MARKUP-TEC-PLANNER ui/markup-tec-planner.html:501-557 for Level 2 REC/TECH isolation.",
+          "trace": "Reviewed UI-MARKUP-TEC-PLANNER ui/markup-tec-planner.html:501-570 for Level 2 REC/TECH isolation.",
           "boundary_cases": [
             "hidden input sync",
             "mode view visibility",
@@ -277,7 +277,7 @@
           "result": "NO_FINDING"
         },
         "L3": {
-          "trace": "Reviewed UI-MARKUP-TEC-PLANNER ui/markup-tec-planner.html:501-557 for Level 2 REC/TECH isolation.",
+          "trace": "Reviewed UI-MARKUP-TEC-PLANNER ui/markup-tec-planner.html:501-570 for Level 2 REC/TECH isolation.",
           "boundary_cases": [
             "hidden input sync",
             "mode view visibility",
@@ -287,7 +287,7 @@
           "result": "NO_FINDING"
         },
         "L4": {
-          "trace": "Reviewed UI-MARKUP-TEC-PLANNER ui/markup-tec-planner.html:501-557 for Level 2 REC/TECH isolation.",
+          "trace": "Reviewed UI-MARKUP-TEC-PLANNER ui/markup-tec-planner.html:501-570 for Level 2 REC/TECH isolation.",
           "boundary_cases": [
             "hidden input sync",
             "mode view visibility",
@@ -297,7 +297,7 @@
           "result": "NO_FINDING"
         },
         "L5": {
-          "trace": "Reviewed UI-MARKUP-TEC-PLANNER ui/markup-tec-planner.html:501-557 for Level 2 REC/TECH isolation.",
+          "trace": "Reviewed UI-MARKUP-TEC-PLANNER ui/markup-tec-planner.html:501-570 for Level 2 REC/TECH isolation.",
           "boundary_cases": [
             "hidden input sync",
             "mode view visibility",
@@ -307,7 +307,7 @@
           "result": "NO_FINDING"
         },
         "L6": {
-          "trace": "Reviewed UI-MARKUP-TEC-PLANNER ui/markup-tec-planner.html:501-557 for Level 2 REC/TECH isolation.",
+          "trace": "Reviewed UI-MARKUP-TEC-PLANNER ui/markup-tec-planner.html:501-570 for Level 2 REC/TECH isolation.",
           "boundary_cases": [
             "hidden input sync",
             "mode view visibility",
@@ -317,7 +317,7 @@
           "result": "NO_FINDING"
         },
         "L7": {
-          "trace": "Reviewed UI-MARKUP-TEC-PLANNER ui/markup-tec-planner.html:501-557 for Level 2 REC/TECH isolation.",
+          "trace": "Reviewed UI-MARKUP-TEC-PLANNER ui/markup-tec-planner.html:501-570 for Level 2 REC/TECH isolation.",
           "boundary_cases": [
             "hidden input sync",
             "mode view visibility",
@@ -437,15 +437,16 @@
       "session": "C08-DEP-TEC-MARKUP",
       "part_id": "UI-MARKUP-TEC-PLANNER-P02",
       "start_line": 501,
-      "end_line": 557,
+      "end_line": 570,
       "prior_content_fingerprint": "41a03a57cf99a9eceef9bfd65baf5c65118f92e9539924e5f87139df00256c8c",
-      "content_fingerprint": "30a4816baccc81d5a7302fee6bdbe9a8bc4810b1d4035c4194a14e35f0a6e6bc",
-      "whole_file_fingerprint": "3f5d47dfb3a8ddad62bd13b17ae95e0b27dc68bbdccb4bd9b4a585b27753139d",
-      "trigger": "Cycle 8 PR #215 replaces emoji Bottom Gas marker with CSS gas-dot contract",
+      "content_fingerprint": "48a5eb502e3ad75e548bfac31f4239d9670031646bfff89cbeb7aa284db3e02e",
+      "whole_file_fingerprint": "d5b8b157126ffdc8ca2ec0977a22a2a65ec4526d21fec4d65118e656665545bd",
+      "trigger": "Travel gas card gained Trimix O₂/He controls and explicit surface-breathable MinOD display",
       "focus": [
         "VPM/TEC repetitive controls remain inside #tecPlannerView planner column",
         "single gas-dot per gas card title row",
-        "no duplicate gas markers from legacy writers"
+        "no duplicate gas markers from legacy writers",
+        "travel gas Trimix fields match gas-card field layout and remain inside #tecPlannerView"
       ],
       "result": "NO_NEW_FINDING",
       "reviewed_at": "2026-07-06T01:09:13.648040+00:00",

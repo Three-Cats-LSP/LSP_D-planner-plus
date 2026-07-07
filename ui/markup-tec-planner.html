@@ -378,16 +378,25 @@
 <div class="gas-card-grid u0">
 <div class="field gas-f-mix">
 <label>Gas Mix</label>
-<select id="travelGasMix" onchange="toggleDecoCustomO2('travelGasMix','travelGasCustomField');updateTravelGasMOD()" title="Travel gas breathing mix. Used from surface to switch depth on descent, and above bottom gas MOD on ascent.">
+<select id="travelGasMix" onchange="toggleDecoCustomO2('travelGasMix','travelGasCustomField');toggleTravelTrimix();updateTravelGasMOD()" title="Travel gas breathing mix. Used from surface to switch depth on descent, and above bottom gas MOD on ascent.">
 <option selected="" value="air">Air (21%)</option>
 <option value="ean32">EAN32 (32%)</option>
 <option value="ean36">EAN36 (36%)</option>
 <option value="custom">Custom O₂ %</option>
+<option value="trimix">Trimix (O₂/He %)</option>
 </select>
 </div>
 <div class="field gas-f-num" id="travelGasCustomField" style="display:none;">
 <label>O₂ %</label>
-<input id="travelGasCustomO2" max="40" min="16" oninput="updateTravelGasMOD()" step="1" title="Custom O₂% for travel gas. Keep below 40% — travel gas is used at shallow depths where high O₂ would be toxic." type="number" value="21"/>
+<input id="travelGasCustomO2" max="40" min="18" oninput="updateTravelGasMOD()" step="1" title="Custom O₂% for travel gas. Travel gas must be breathable at the surface, so O₂ must be at least 18%." type="number" value="21"/>
+</div>
+<div class="field gas-f-num" id="travelGasTrimixO2Field" style="display:none;">
+<label>O₂ %</label>
+<input id="travelGasTrimixO2" max="40" min="18" oninput="updateTravelGasMOD()" placeholder="21" step="1" title="Trimix O₂% for travel gas. Travel gas must be breathable at the surface, so O₂ must be at least 18%." type="number" value="21"/>
+</div>
+<div class="field gas-f-num" id="travelGasTrimixHeField" style="display:none;">
+<label>He %</label>
+<input id="travelGasTrimixHe" max="90" min="0" oninput="updateTravelGasMOD()" placeholder="35" step="1" title="Trimix helium percentage for travel gas." type="number" value="35"/>
 </div>
 <div class="field gas-f-num">
 <label>Switch</label>
@@ -403,6 +412,10 @@
 <div class="field gas-f-switch">
 <label>Switch Depth</label>
 <input id="travelGasMODDisplay" placeholder="Select gas" readonly="" style="cursor:default;" title="Auto mode: shows travel gas MOD — deepest depth where travel gas ppO₂ stays within the Bottom ppO₂ limit. Manual mode: shows what the auto depth would be for reference." type="text"/>
+</div>
+<div class="field gas-f-switch">
+<label>MinOD</label>
+<input id="travelGasMinODDisplay" readonly="" style="cursor:default;" title="Minimum operating depth. Travel gas must be breathable at the surface, so MinOD must be 0." type="text" value="0 m"/>
 </div>
 <div class="field gas-f-num">
 <label>Size (L)</label>

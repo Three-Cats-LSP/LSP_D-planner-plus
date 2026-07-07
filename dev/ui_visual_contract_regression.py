@@ -34,6 +34,7 @@ CASE_IDS = (
     "SL-C09-MOBILE-WARNING-WRAP",
     "SL-C09-VPM-MODE-TOGGLE",
     "SL-C09-VPM-CONTINGENCY-GAS-LOSS-STABLE",
+    "SL-C09-TRAVEL-GAS-TRIMIX-CARD",
     "SL-C09-SCHEDULE-COLUMN-GEOMETRY",
     "SL-C09-SWITCH-ROW-BACKGROUND-PARITY",
     "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD",
@@ -538,6 +539,39 @@ async () => {
 
   const labels = collectTexts();
   const joined = labels.join('\n');
+  if (typeof addTravelGas === 'function') addTravelGas();
+  setCustomTrimix('travelGas', 18, 45);
+  if (typeof updateTravelGasMOD === 'function') updateTravelGasMOD();
+  await new Promise(r => setTimeout(r, 50));
+  const travelCard = document.getElementById('travelGasCard');
+  const travelInfo = typeof getTravelGasInfo === 'function' ? getTravelGasInfo() : null;
+  const travelCustomField = document.getElementById('travelGasCustomField');
+  const travelO2Field = document.getElementById('travelGasTrimixO2Field');
+  const travelHeField = document.getElementById('travelGasTrimixHeField');
+  const travelMod = document.getElementById('travelGasMODDisplay')?.value || '';
+  const travelMinOD = document.getElementById('travelGasMinODDisplay')?.value || '';
+  const visible = el => !!el && getComputedStyle(el).display !== 'none' && el.getBoundingClientRect().width > 0;
+  const travelTrimix = {
+    optionExists: !!document.querySelector('#travelGasMix option[value="trimix"]'),
+    cardVisible: visible(travelCard),
+    customHidden: !!travelCustomField && getComputedStyle(travelCustomField).display === 'none',
+    o2Visible: visible(travelO2Field),
+    heVisible: visible(travelHeField),
+    fieldCount: travelCard ? travelCard.querySelectorAll('.gas-card-grid .field').length : 0,
+    mixField: !!travelCard?.querySelector('.gas-f-mix #travelGasMix'),
+    switchField: !!travelCard?.querySelector('.gas-f-switch #travelGasMODDisplay'),
+    minOdField: !!travelCard?.querySelector('.gas-f-switch #travelGasMinODDisplay'),
+    sizeFields: travelCard ? travelCard.querySelectorAll('.gas-f-num input').length : 0,
+    customMin: document.getElementById('travelGasCustomO2')?.min || '',
+    trimixMin: document.getElementById('travelGasTrimixO2')?.min || '',
+    label: travelInfo?.label || '',
+    fO2: travelInfo?.fO2,
+    fHe: travelInfo?.fHe,
+    fN2: travelInfo?.fN2,
+    modText: travelMod,
+    modUsesO2: /\(ppO₂\s+/.test(travelMod) || /\(ppO2\s+/.test(travelMod),
+    minOdText: travelMinOD,
+  };
   const forbiddenHits = (joined.match(new RegExp(forbidden.source, forbidden.flags + 'g')) || []);
   const terminologyRoots = [
     document.getElementById('resultsPanel'),
@@ -556,6 +590,7 @@ async () => {
     labelsSample: labels.slice(0, 40),
     forbiddenHits: [...new Set(forbiddenHits)],
     operationalOk,
+    travelTrimix,
     parityOk: canonical.every(row => row.actual === row.bundleActual),
     terminologyOk: gasChangeTextHits.length === 0
       && gasChangeContractHits.length === 0
@@ -1535,6 +1570,27 @@ def main() -> int:
     results["SL-C09-VPM-CONTINGENCY-GAS-LOSS-STABLE"] = bool(
         vpm_details.get("vpmContingencyGas", {}).get("ok")
         and not vpm_details.get("console_errors")
+    )
+    travel_trimix = gas_details.get("travelTrimix", {})
+    results["SL-C09-TRAVEL-GAS-TRIMIX-CARD"] = bool(
+        travel_trimix.get("optionExists")
+        and travel_trimix.get("cardVisible")
+        and travel_trimix.get("customHidden")
+        and travel_trimix.get("o2Visible")
+        and travel_trimix.get("heVisible")
+        and travel_trimix.get("mixField")
+        and travel_trimix.get("switchField")
+        and travel_trimix.get("minOdField")
+        and travel_trimix.get("fieldCount", 0) >= 7
+        and travel_trimix.get("customMin") == "18"
+        and travel_trimix.get("trimixMin") == "18"
+        and travel_trimix.get("label") == "18/45"
+        and abs(float(travel_trimix.get("fO2", 0)) - 0.18) < 0.001
+        and abs(float(travel_trimix.get("fHe", 0)) - 0.45) < 0.001
+        and abs(float(travel_trimix.get("fN2", 0)) - 0.37) < 0.001
+        and travel_trimix.get("modUsesO2")
+        and travel_trimix.get("minOdText") in ("0 m", "0 ft")
+        and not gas_details.get("console_errors")
     )
 
     for case_id, passed in results.items():

@@ -751,6 +751,10 @@
     "REG-118": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
       "case_id": "SL-C09-VPM-CONTINGENCY-GAS-LOSS-STABLE"
+    },
+    "REG-119": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-C09-TRAVEL-GAS-TRIMIX-CARD"
     }
   },
   "findings": [
@@ -1738,7 +1742,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "150df958cdebb21c18cfd9ad8d03303ed54c276fbb068eaac3008470c5bf9244",
+      "fingerprint": "fcb1f4ca7af6b92232dfba28777a85d7cffe718bf47beb2b94f9776c744cafab",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1850,7 +1854,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "9070dc47b53e0abe5097190e0653b5eb819951f7a62351a8646f5c329f8bfb94",
+      "fingerprint": "d5b8b157126ffdc8ca2ec0977a22a2a65ec4526d21fec4d65118e656665545bd",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2122,21 +2126,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SCHEDULE-INPUTS"
       },
-      "fingerprint": "716e3948232430f69f7bc507a5785aa3e7396de36a2d8fb68b24e2257b7acd9c",
-      "last_read_fingerprint": "716e3948232430f69f7bc507a5785aa3e7396de36a2d8fb68b24e2257b7acd9c",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-05",
-        "COV-01"
-      ],
+      "fingerprint": "9ad2837eec1e2696c39fbb8d8f4f44e1eef0b21adcaf390d776d3c41922b7501",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 145,
       "issue": "Audit issue #145"
     },
@@ -2218,7 +2216,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-CARDS"
       },
-      "fingerprint": "81a0d670614db33ff75369448742e9ee30c239f728ef9c8f9919a2c9c0c79f74",
+      "fingerprint": "65f17a5bf3b27639f0c3d26b751a52b518950f15ff7eb25be982bffc1c923002",
       "last_read_fingerprint": null,
       "audit_issue": 148,
       "evidence": [],
@@ -2461,7 +2459,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS"
       },
-      "fingerprint": "e8f35d70c14b7cf15f4bf8416e915269312b056a1bd33d27b4ff16d0145bbfb6",
+      "fingerprint": "b4681378fd10474414cec5f1f3c542c5806252b55f6eb254bbe72b58ace65bb8",
       "last_read_fingerprint": null,
       "audit_issue": 158,
       "issue": "Cycle 32 settings restore exception recovery",
@@ -2478,7 +2476,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PROFILE-PRESETS"
       },
-      "fingerprint": "8d6704448680e92f76eec458686d5831d8a0d1f3d70d52d9c2c3d10068b9129e",
+      "fingerprint": "dc570d73d7d332e9eab0b134a6a668585760e1b489418ef359997b30d5dafeb6",
       "last_read_fingerprint": null,
       "audit_issue": 159,
       "evidence": [],
@@ -5609,7 +5607,7 @@
         "REG-110",
         "REG-111"
       ],
-      "fingerprint": "f293be8f79fb40fcd9c135aee48ea7c2a2a79420b94ded15a5c859a8a367aa50",
+      "fingerprint": "de955acbc30f887c95b7cab4bfc054363a4b0419335c5f3021e311532799e02a",
       "last_read_fingerprint": null
     },
     {
@@ -5814,7 +5812,7 @@
     },
     {
       "cycle": 19,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 606,
       "application_units": [
         "UI-DECO-PHYSICS",
         "UI-SCHEDULE-INPUTS"
@@ -5822,7 +5820,8 @@
       "engine_reverification": [
         "ENG-ZHL-CCR"
       ],
-      "acceptance": "Deco physics and schedule inputs READ"
+      "min_review_sessions": 2,
+      "acceptance": "Deco physics and schedule inputs READ across at least 2 bounded sessions"
     },
     {
       "cycle": 20,
@@ -5880,14 +5879,15 @@
     },
     {
       "cycle": 25,
-      "max_new_application_lines": 1287,
+      "max_new_application_lines": 1288,
       "application_units": [
         "UI-SETTINGS",
         "UI-UNIT-HELPERS",
         "UI-UNIT-SWITCHING"
       ],
       "engine_reverification": [],
-      "acceptance": "Settings persistence and unit helpers READ"
+      "min_review_sessions": 3,
+      "acceptance": "Settings persistence and unit helpers READ across at least 3 bounded sessions"
     },
     {
       "cycle": 26,
@@ -6552,6 +6552,7 @@
         "SL-C09-MOBILE-WARNING-WRAP",
         "SL-C09-VPM-MODE-TOGGLE",
         "SL-C09-VPM-CONTINGENCY-GAS-LOSS-STABLE",
+        "SL-C09-TRAVEL-GAS-TRIMIX-CARD",
         "SL-C09-SCHEDULE-COLUMN-GEOMETRY",
         "SL-C09-SWITCH-ROW-BACKGROUND-PARITY",
         "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD",

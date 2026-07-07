@@ -166,12 +166,12 @@
       "dependency_re_review": {
         "session": "C08-DEP-TEC-MARKUP",
         "reviewed_fingerprint_at_review": "41a03a57cf99a9eceef9bfd65baf5c65118f92e9539924e5f87139df00256c8c",
-        "current_fingerprint": "3f5d47dfb3a8ddad62bd13b17ae95e0b27dc68bbdccb4bd9b4a585b27753139d",
+        "current_fingerprint": "d5b8b157126ffdc8ca2ec0977a22a2a65ec4526d21fec4d65118e656665545bd",
         "result": "NO_NEW_FINDING",
         "reviewed_at": "2026-07-06T01:09:13.648040+00:00",
         "verifier": "Cursor Agent (C08-V-B attestation corrector)"
       },
-      "last_read_fingerprint": "3f5d47dfb3a8ddad62bd13b17ae95e0b27dc68bbdccb4bd9b4a585b27753139d"
+      "last_read_fingerprint": "d5b8b157126ffdc8ca2ec0977a22a2a65ec4526d21fec4d65118e656665545bd"
     },
     {
       "unit_id": "UI-PLANNER-INPUTS",

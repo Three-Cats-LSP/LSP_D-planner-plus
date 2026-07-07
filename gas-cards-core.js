@@ -381,20 +381,30 @@ function getTravelGasFromTable() {
 function getTravelGasInfo() {
   if (!isTravelGasConfigured()) return null;
   const mix = document.getElementById('travelGasMix')?.value || 'air';
-  let fN2;
-  if (mix === 'air')   fN2 = FN2_AIR;
-  else if (mix === 'ean32') fN2 = FN2_EAN32;
-  else if (mix === 'ean36') fN2 = FN2_EAN36;
+  let fO2;
+  let fHe = 0;
+  if (mix === 'air') fO2 = 0.21;
+  else if (mix === 'ean32') fO2 = 0.32;
+  else if (mix === 'ean36') fO2 = 0.36;
   else if (mix === 'custom') {
     const o2 = parseFloat(document.getElementById('travelGasCustomO2')?.value) || 21;
-    fN2 = (100 - Math.min(40, Math.max(16, o2))) / 100;
-  } else fN2 = FN2_AIR;
+    fO2 = Math.min(40, Math.max(18, o2)) / 100;
+  } else if (mix === 'trimix') {
+    const o2 = readDomO2Pct('travelGasTrimixO2');
+    const he = readDomHePct('travelGasTrimixHe');
+    if (!Number.isFinite(o2) || !Number.isFinite(he)) {
+      fO2 = NaN;
+      fHe = NaN;
+    } else {
+      fO2 = Math.min(0.99, Math.max(0.18, o2 / 100));
+      fHe = Math.min(0.95, Math.max(0, he / 100));
+    }
+  } else fO2 = 0.21;
+  const fN2 = Number.isFinite(fO2) && Number.isFinite(fHe) ? 1 - fO2 - fHe : NaN;
 
-  // Uniform O2/He format for travel gas label
-  const _trvO2 = mix === 'air' ? 21 : mix === 'ean32' ? 32 : mix === 'ean36' ? 36
-    : mix === 'custom' ? Math.round((1-fN2)*100) : 21;
-  const fO2 = 1 - fN2;
-  const label = _trvO2 === 21 ? 'Air' : _trvO2 >= 99 ? '100%' : `${_trvO2}/00`;
+  const label = Number.isFinite(fO2) && Number.isFinite(fHe)
+    ? getGasLabel(fO2, fHe)
+    : 'Travel';
 
   const mode = document.getElementById('travelGasSwitchMode')?.value || 'auto';
   const ppO2Bot = parseFloat(document.getElementById('ppo2Bottom')?.value) || 1.4;
@@ -408,7 +418,7 @@ function getTravelGasInfo() {
     else switchDepthM = calcGasMODm(fO2, ppO2Bot);
   }
 
-  return { fN2, fO2, fHe: 0, label, switchDepthM };
+  return { fN2, fO2, fHe, label, switchDepthM };
 }
 
 /** Resolve travel gas O₂/He for decoGases; null fO2 when fractions are invalid. */
@@ -495,8 +505,11 @@ function getTravelGasExport() {
 
 function updateTravelGasMOD() {
   syncTravelGasManualDepthConstraints?.();
+  toggleDecoCustomO2?.('travelGasMix', 'travelGasCustomField');
+  toggleTravelTrimix?.();
   const info = getTravelGasInfo();
   const dispEl = document.getElementById('travelGasMODDisplay');
+  const minOdEl = document.getElementById('travelGasMinODDisplay');
   const manualField = document.getElementById('travelGasManualDepthField');
   const manualLbl   = document.getElementById('travelGasManualDepthLbl');
   const mode = document.getElementById('travelGasSwitchMode')?.value || 'auto';
@@ -505,11 +518,16 @@ function updateTravelGasMOD() {
   if (manualField) manualField.style.display = mode === 'manual' ? 'block' : 'none';
   if (manualLbl)   manualLbl.textContent = `Switch Depth (${units === 'imperial' ? 'ft' : 'm'})`;
 
-  if (!info) { if (dispEl) dispEl.value = '—'; return; }
+  if (!info) {
+    if (dispEl) dispEl.value = '—';
+    if (minOdEl) minOdEl.value = '—';
+    return;
+  }
 
   const dU = units === 'metric';
   const modDisp = dU ? info.switchDepthM + ' m' : Math.round(info.switchDepthM * 3.28084) + ' ft';
-  const ppO2AtSwitch = ((altSurfaceP + info.switchDepthM * BAR_PER_METRE) * (1 - info.fN2)).toFixed(2);
+  const ppO2AtSwitch = ((altSurfaceP + info.switchDepthM * BAR_PER_METRE) * info.fO2).toFixed(2);
+  if (minOdEl) minOdEl.value = dU ? '0 m' : '0 ft';
 
   if (dispEl) {
     dispEl.value = mode === 'auto'

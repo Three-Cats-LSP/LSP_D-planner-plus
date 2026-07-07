@@ -607,16 +607,25 @@
 <div class="gas-card-grid u0">
 <div class="field gas-f-mix">
 <label>Gas Mix</label>
-<select id="travelGasMix" onchange="toggleDecoCustomO2('travelGasMix','travelGasCustomField');updateTravelGasMOD()" title="Travel gas breathing mix. Used from surface to switch depth on descent, and above bottom gas MOD on ascent.">
+<select id="travelGasMix" onchange="toggleDecoCustomO2('travelGasMix','travelGasCustomField');toggleTravelTrimix();updateTravelGasMOD()" title="Travel gas breathing mix. Used from surface to switch depth on descent, and above bottom gas MOD on ascent.">
 <option selected="" value="air">Air (21%)</option>
 <option value="ean32">EAN32 (32%)</option>
 <option value="ean36">EAN36 (36%)</option>
 <option value="custom">Custom O₂ %</option>
+<option value="trimix">Trimix (O₂/He %)</option>
 </select>
 </div>
 <div class="field gas-f-num" id="travelGasCustomField" style="display:none;">
 <label>O₂ %</label>
-<input id="travelGasCustomO2" max="40" min="16" oninput="updateTravelGasMOD()" step="1" title="Custom O₂% for travel gas. Keep below 40% — travel gas is used at shallow depths where high O₂ would be toxic." type="number" value="21"/>
+<input id="travelGasCustomO2" max="40" min="18" oninput="updateTravelGasMOD()" step="1" title="Custom O₂% for travel gas. Travel gas must be breathable at the surface, so O₂ must be at least 18%." type="number" value="21"/>
+</div>
+<div class="field gas-f-num" id="travelGasTrimixO2Field" style="display:none;">
+<label>O₂ %</label>
+<input id="travelGasTrimixO2" max="40" min="18" oninput="updateTravelGasMOD()" placeholder="21" step="1" title="Trimix O₂% for travel gas. Travel gas must be breathable at the surface, so O₂ must be at least 18%." type="number" value="21"/>
+</div>
+<div class="field gas-f-num" id="travelGasTrimixHeField" style="display:none;">
+<label>He %</label>
+<input id="travelGasTrimixHe" max="90" min="0" oninput="updateTravelGasMOD()" placeholder="35" step="1" title="Trimix helium percentage for travel gas." type="number" value="35"/>
 </div>
 <div class="field gas-f-num">
 <label>Switch</label>
@@ -632,6 +641,10 @@
 <div class="field gas-f-switch">
 <label>Switch Depth</label>
 <input id="travelGasMODDisplay" placeholder="Select gas" readonly="" style="cursor:default;" title="Auto mode: shows travel gas MOD — deepest depth where travel gas ppO₂ stays within the Bottom ppO₂ limit. Manual mode: shows what the auto depth would be for reference." type="text"/>
+</div>
+<div class="field gas-f-switch">
+<label>MinOD</label>
+<input id="travelGasMinODDisplay" readonly="" style="cursor:default;" title="Minimum operating depth. Travel gas must be breathable at the surface, so MinOD must be 0." type="text" value="0 m"/>
 </div>
 <div class="field gas-f-num">
 <label>Size (L)</label>
@@ -4698,6 +4711,14 @@ function toggleDecoTrimix(idx) {
   if (hef) hef.style.display = isTrimix ? 'block' : 'none';
 }
 
+function toggleTravelTrimix() {
+  const isTrimix = document.getElementById('travelGasMix')?.value === 'trimix';
+  const o2f = document.getElementById('travelGasTrimixO2Field');
+  const hef = document.getElementById('travelGasTrimixHeField');
+  if (o2f) o2f.style.display = isTrimix ? 'block' : 'none';
+  if (hef) hef.style.display = isTrimix ? 'block' : 'none';
+}
+
 // Read raw percent inputs from DOM without clamping (for validation only).
 function readDomO2Pct(elementId) {
   const raw = document.getElementById(elementId)?.value;
@@ -8442,6 +8463,7 @@ var appSettings = {
     toggleDecoCustomO2?.('decoGas', 'decoCustomO2Field');
     toggleBottomTrimix?.();
     toggleDecoCustomO2?.('travelGasMix', 'travelGasCustomField');
+    toggleTravelTrimix?.();
     updateTravelGasMOD?.();
     for (const idx of getAllDecoGasIds()) {
       toggleDecoCustomO2?.(`dg${idx}Mix`, `dg${idx}CustomField`);
@@ -8718,7 +8740,7 @@ function _renderProfilePresetModal() {
 
 const _PROFILE_TEC_GAS_FIELDS = [
   'decoGas','decoCustomO2','botTrimixO2','botTrimixHe',
-  'travelGasMix','travelGasCustomO2','travelGasSwitchMode','travelGasManualDepth',
+  'travelGasMix','travelGasCustomO2','travelGasTrimixO2','travelGasTrimixHe','travelGasSwitchMode','travelGasManualDepth',
   'dg1Mix','dg1CustomO2','dg1TrimixO2','dg1TrimixHe',
   'dg2Mix','dg2CustomO2','dg2TrimixO2','dg2TrimixHe',
 ];
@@ -8745,7 +8767,8 @@ function _profileGasSummary(gases) {
   const parts = [bot === 'custom' ? (gases.decoCustomO2 || '?') + '%' :
                  bot === 'trimix' ? (gases.botTrimixO2||'?') + '/' + (gases.botTrimixHe||'?') : bot];
   if (gases.travelGasMix && gases.travelGasMix !== 'none')
-    parts.push('T:' + (gases.travelGasMix === 'custom' ? (gases.travelGasCustomO2||'?')+'%' : gases.travelGasMix));
+    parts.push('T:' + (gases.travelGasMix === 'custom' ? (gases.travelGasCustomO2||'?')+'%' :
+                       gases.travelGasMix === 'trimix' ? (gases.travelGasTrimixO2||'?')+'/'+(gases.travelGasTrimixHe||'?') : gases.travelGasMix));
   if (gases.dg1Mix && gases.dg1Mix !== 'none')
     parts.push('D1:' + (gases.dg1Mix === 'custom' ? (gases.dg1CustomO2||'?')+'%' :
                         gases.dg1Mix === 'trimix' ? (gases.dg1TrimixO2||'?')+'/'+(gases.dg1TrimixHe||'?') : gases.dg1Mix));
@@ -8818,6 +8841,7 @@ function loadProfilePreset(idx) {
       toggleDecoCustomO2?.('decoGas', 'decoCustomO2Field');
       toggleBottomTrimix?.();
       toggleDecoCustomO2?.('travelGasMix', 'travelGasCustomField');
+      toggleTravelTrimix?.();
       updateTravelGasMOD?.();
       toggleDecoCustomO2?.('dg1Mix', 'dg1CustomField');
       toggleDecoTrimix?.(1);
