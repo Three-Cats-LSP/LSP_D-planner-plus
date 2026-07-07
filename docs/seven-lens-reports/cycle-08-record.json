@@ -1605,7 +1605,7 @@
     }
   ],
   "audit_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
-  "notes": "C08-V-D independent verification PASSED at metadata HEAD 38aecbc with verified_source_commit advanced to absorb 887dec0 supplemental browser traces and 38aecbc SUITE-COVERAGE timeout tooling; findings SL-C08-M-02/M-03/M-04 remain OPEN; ledger IN_PROGRESS; closure_evidence_commit absent; CLOSER may retry.",
+  "notes": "C08 FIXER advanced verified_source_commit to 38aecbc absorbing 887dec0 supplemental traces and 38aecbc SUITE-COVERAGE tooling; SL-C08-M-03 unit_id aligned to TOOL-BUILD-ZHL; findings SL-C08-M-02/M-03/M-04 remain OPEN; ledger IN_PROGRESS; closure_evidence_commit absent; CLOSER may retry.",
   "visual_contract_integrator": {
     "pr": 215,
     "source_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
@@ -1733,30 +1733,6 @@
       "REG-107": "PASSED \u2014 #bottomNav absent; no duplicate fixed bottom nav; no dead 72px reserve; canonical main nav works"
     }
   },
-  "fixer_closure_history_attestation": {
-    "role": "FIXER",
-    "session": "C08-FIXER-CLOSURE-HISTORY",
-    "prior_verified_source_commit": "f1f6207d5485d84603662efeb2e66ca00e8bf8a3",
-    "absorbed_commits": [
-      "887dec0ab643eba6e75b987ed5eb06064a6fa5bc",
-      "38aecbc15bacbded0dbcb245028af15860732729"
-    ],
-    "protected_paths_accepted": [
-      "docs/seven-lens-traces/cycle-08-shell-results.json",
-      "tools/seven_lens_browser_trace.py",
-      "tools/test_seven_lens_browser_trace.py",
-      "tests/ccr-differential/build_assets.py",
-      "tests/ccr-differential/manifest.json",
-      "tools/run_audit_coverage_suite.py",
-      "tools/sync_www.py"
-    ],
-    "rationale": "887dec0 adds REG-105/106/107 supplemental browser traces required for SL-C08-M-02/M-03/M-04 independent verification evidence; 38aecbc bounds SUITE-COVERAGE runtime via trace timeout guards and write_text_if_changed CCR asset rebuild without semantic fixture drift.",
-    "registry_realignments": [
-      "TEST-CCR-DIFF-BUILD: restore VERIFIED/COV-01 metadata with fingerprint-only realignment for build_assets.py",
-      "SL-C08-M-03: record unit_id TOOL-BUILD-ZHL matches registry catalog path tools/build_zhl_bundle.py"
-    ],
-    "reviewer": "Cursor Agent (C08 FIXER closure-history)"
-  },
   "dependency_re_reviews": [
     {
       "unit_id": "UI-CSS-FOUNDATION",
@@ -1815,5 +1791,30 @@
     "protected_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
     "requires_independent_verification": true,
     "source_commit": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a"
+  },
+  "fixer_closure_history_attestation": {
+    "role": "FIXER",
+    "session": "C08-FIXER-CLOSURE-HISTORY",
+    "prior_verified_source_commit": "f1f6207d5485d84603662efeb2e66ca00e8bf8a3",
+    "verified_source_commit": "38aecbc15bacbded0dbcb245028af15860732729",
+    "absorbed_commits": [
+      "887dec0ab643eba6e75b987ed5eb06064a6fa5bc",
+      "38aecbc15bacbded0dbcb245028af15860732729"
+    ],
+    "protected_paths_accepted": [
+      "docs/seven-lens-traces/cycle-08-shell-results.json",
+      "tools/seven_lens_browser_trace.py",
+      "tools/test_seven_lens_browser_trace.py",
+      "tests/ccr-differential/build_assets.py",
+      "tests/ccr-differential/manifest.json",
+      "tools/run_audit_coverage_suite.py",
+      "tools/sync_www.py"
+    ],
+    "rationale": "887dec0 supplemental REG-105/106/107 browser traces are required for SL-C08-M-02/M-03/M-04 independent verification attestation; 38aecbc bounds SUITE-COVERAGE runtime without semantic CCR fixture drift.",
+    "registry_realignments": [
+      "TEST-CCR-DIFF-BUILD: restore VERIFIED/COV-01 with fingerprint-only realignment for build_assets.py",
+      "SL-C08-M-03: record unit_id TOOL-BUILD-ZHL matches registry catalog"
+    ],
+    "reviewer": "Cursor Agent (C08 FIXER closure-history)"
   }
 }
