@@ -482,9 +482,9 @@
       "boundary": "lsp-dplanner-results.css whole file (915 lines; parts P01 1-500 / P02 501-915)",
       "reviewer": "Cursor GPT-5.5 Medium",
       "review_session": "C07-A / C07-B",
-      "verification_session": "C07-V-A / C07-V-B / C07-R2-A / C07-R2-B / C09-DEP-RESULTS-A/B / C09-DEP-RESULTS-SCHEDULE-GEOMETRY / C09-DEP-RESULTS-MIX-LANE / C09-DEP-RESULTS-MOBILE-SCHEDULE-SCROLL",
+      "verification_session": "C07-V-A / C07-V-B / C07-R2-A / C07-R2-B / C09-DEP-RESULTS-A/B / C09-DEP-RESULTS-SCHEDULE-GEOMETRY / C09-DEP-RESULTS-MIX-LANE / C09-DEP-RESULTS-MOBILE-SCHEDULE-SCROLL / C09-DEP-RESULTS-SCHEDULE-COLUMN-ORDER",
       "verification_status": "PASSED",
-      "verifier_requirement": "Cycle 9 dependency invalidation cleared by simplified re-review: P01 lines 1-500 and P02 lines 501-915.",
+      "verifier_requirement": "Cycle 9 dependency invalidation cleared by simplified re-review: P01 lines 1-500 and P02 lines 501-913.",
       "findings_open": [],
       "findings_closed": [
         "SL-C07-M-01",
@@ -494,7 +494,7 @@
         "SL-C07-L-03",
         "SL-C07-L-04"
       ],
-      "reviewed_fingerprint": "a0e026fc004bdf058cd6e44ded0a0d1faf1621ec679f205cf4555a5fc4e7b224",
+      "reviewed_fingerprint": "bb3acb7aa101e0a6288b5b62e681adea6add6dd6e83cb19295ced4b67b505df7",
       "verified_source_commit": "63b30d2df28d5cbe497fc8055c44a3eac57e0855",
       "last_checked_commit": "pending-current-cycle-9",
       "verified_at": "2026-07-05T10:08:17+00:00",
@@ -532,15 +532,16 @@
         "P02": "lsp-dplanner-results.css:501-915"
       },
       "dependency_re_review": {
-        "session": "C09-DEP-RESULTS-MOBILE-SCHEDULE-SCROLL",
+        "session": "C09-DEP-RESULTS-SCHEDULE-COLUMN-ORDER",
         "reviewed_fingerprint_at_review": "a0e026fc004bdf058cd6e44ded0a0d1faf1621ec679f205cf4555a5fc4e7b224",
+        "current_fingerprint": "bb3acb7aa101e0a6288b5b62e681adea6add6dd6e83cb19295ced4b67b505df7",
         "current_fingerprint_p01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
-        "current_fingerprint_p02": "3023736d29f0d874a291bca8c0d889767d5bd7bb5b49c1e010b0aab1a00777eb",
+        "current_fingerprint_p02": "08cad860abfd4b5ec03b72d7defe0b8342b32765aceb4c981013c77d7a214ee4",
         "result": "NO_NEW_FINDING",
-        "reviewed_at": "2026-07-07T13:55:54.268150+00:00",
+        "verified_at": "2026-07-07T14:12:28Z",
         "verifier": "Codex simplified dependency re-review"
       },
-      "last_read_fingerprint": "3023736d29f0d874a291bca8c0d889767d5bd7bb5b49c1e010b0aab1a00777eb"
+      "last_read_fingerprint": "bb3acb7aa101e0a6288b5b62e681adea6add6dd6e83cb19295ced4b67b505df7"
     },
     {
       "unit_id": "UI-PLANNER-SHELL",
@@ -587,7 +588,7 @@
         "SL-C08-M-01",
         "SL-C08-L-01"
       ],
-      "reviewed_fingerprint": "1d09b7cb7452cc402f30527e8b693adc6bc32f835ae66fefd7e72a0d42c77543",
+      "reviewed_fingerprint": "5622a3aa0e618e6bf74aadc78b36ce01d3928c755d41431b457647a160b73feb",
       "verified_source_commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
       "verification_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
       "finding_ids": [
@@ -598,11 +599,21 @@
       "parts": {
         "P01": "results-panel.js:1-312"
       },
-      "verification_session": "C08-V-C / C08-V-D",
+      "verification_session": "C08-V-C / C08-V-D / C09-DEP-RESULTS-PANEL-SCHEDULE-LABEL-DECORATION",
       "verifier": "Cursor Agent (C08 CLOSER)",
       "last_checked_commit": "1372b40",
       "verified_at": "2026-07-07T05:23:50+00:00",
-      "closed_at": "2026-07-07T05:23:50+00:00"
+      "closed_at": "2026-07-07T05:23:50+00:00",
+      "last_read_fingerprint": "5622a3aa0e618e6bf74aadc78b36ce01d3928c755d41431b457647a160b73feb",
+      "verifier_requirement": "Cycle 9 dependency invalidation cleared by simplified re-review: UI-RESULTS-PANEL lines 1-311.",
+      "dependency_re_review": {
+        "session": "C09-DEP-RESULTS-PANEL-SCHEDULE-LABEL-DECORATION",
+        "reviewed_fingerprint_at_review": "1d09b7cb7452cc402f30527e8b693adc6bc32f835ae66fefd7e72a0d42c77543",
+        "current_fingerprint": "5622a3aa0e618e6bf74aadc78b36ce01d3928c755d41431b457647a160b73feb",
+        "result": "NO_NEW_FINDING",
+        "verified_at": "2026-07-07T14:12:28Z",
+        "verifier": "Codex simplified dependency re-review"
+      }
     },
     {
       "review_status": "SEVEN_LENS_REVIEWED",

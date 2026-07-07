@@ -4,7 +4,7 @@
  * Globals read: units, altSurfaceP, BAR_PER_METRE, OTU_EXPONENT, mGF, narcoticN2, narcoticO2,
  *   _contingencyRunning, _gasRule, fmtPpO2, ppO2Check, calcEND, getTravelGasInfo, toMMSS,
  *   formatDecoZoneStart, formatDecoStopDepth, updateDecoSummaryHtml, buildPlanInfoRowHtml,
- *   _renderResultSummaryStrip, _onPlanResultsReady, injectTtsCells, decorateDecoTableForV3,
+ *   _renderResultSummaryStrip, _onPlanResultsReady, decorateDecoTableForV3,
  *   scheduleDecoScheduleStackSync, renderDecoAlerts, _syncCylToGasPlan, calcGasPlan,
  *   lspVolUnit, lspSacUnit, gpVolWithUnit, _applyGasWarningStyles, _updateGasWarningBannerFromCard,
  *   _setGasWarningBanner, ccrGasLitres, accumGasLitres, addBailoutStressReserve, sacDomToLpm,
@@ -84,9 +84,8 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
         <td style="text-align:center;">⇄</td>
         <td data-label="Depth">${switchDepthDisp}</td>
         <td data-label="Stop"></td>
-        <td data-label="Mix">${switchMixDisp}</td>
         <td data-label="Run"></td>
-        <td data-label="TTS"></td>
+        <td data-label="Mix">${switchMixDisp}</td>
         <td data-label="PPO2">${switchPpO2}</td>
         <td data-label="EAD"></td>
       </tr>`;
@@ -100,8 +99,8 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
         <td><span style="font-size:18px;color:var(--red);">↓</span></td>
         <td data-label="Depth">0 → ${dU ? seg.endDepth : Math.round(seg.endDepth * 3.28084)}${du}</td>
         <td data-label="Stop"></td>
-        <td data-label="Mix" style="color:${gc};">${gasDisp}</td>
         <td data-label="Run" style="color:var(--accent);">${rtDisp}</td>
+        <td data-label="Mix" style="color:${gc};">${gasDisp}</td>
         <td data-label="PPO2" style="color:var(--muted);">${vpmDisplayPpo2(seg.endDepth, o2pct, hepct, seg)}</td>
         <td data-label="EAD" style="color:var(--muted);">—</td>
       </tr>`;
@@ -114,8 +113,8 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
         <td><span style="color:var(--accent);font-size:13px;">🔵</span></td>
         <td data-label="Depth" style="color:var(--accent);">${dU ? seg.depth : Math.round(seg.depth * 3.28084)}${du}</td>
         <td data-label="Stop" style="color:var(--accent);">${fmtT(seg.time)}</td>
-        <td data-label="Mix" style="color:${gc};">${gasDisp}</td>
         <td data-label="Run" style="color:var(--accent);">${rtDisp}</td>
+        <td data-label="Mix" style="color:${gc};">${gasDisp}</td>
         <td data-label="PPO2" style="color:var(--muted);">${ppO2b}</td>
         <td data-label="EAD" style="color:var(--muted);">—</td>
       </tr>`;
@@ -127,8 +126,8 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
         <td><span class="asc-color" style="font-size:18px;">↑</span></td>
         <td data-label="Depth" class="asc-color">${toD}${du}</td>
         <td data-label="Stop" class="asc-color" style="font-size:11px;color:var(--muted);">${fmtT(seg.time)}</td>
-        <td data-label="Mix" style="color:${gc};">${gasDisp}</td>
         <td data-label="Run" class="asc-color">${rtDisp}</td>
+        <td data-label="Mix" style="color:${gc};">${gasDisp}</td>
         <td data-label="PPO2" style="color:var(--muted);">${ppO2a}</td>
         <td data-label="EAD" style="color:var(--muted);"></td>
       </tr>`;
@@ -151,8 +150,8 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
         <td><span style="color:${seg.vpmStopCapHit ? 'var(--orange)' : rowBgVPM ? '#b30000' : 'var(--red)'};font-size:13px;">${seg.vpmStopCapHit ? '⚠' : '🔴'}</span></td>
         <td data-label="Depth" style="color:${seg.vpmStopCapHit ? 'var(--orange)' : rowBgVPM ? '#b30000' : 'var(--red)'};font-weight:600;">${dU ? seg.depth : Math.round(seg.depth * 3.28084)}${du}</td>
         <td data-label="Stop" style="color:${seg.vpmStopCapHit ? 'var(--orange)' : rowBgVPM ? '#b30000' : 'var(--red)'};font-weight:600;">${fmtT(seg.time)}${seg.vpmStopCapHit ? ' ⚠' : ''}</td>
-        <td data-label="Mix" style="color:${gc};">${gasDisp}</td>
         <td data-label="Run" style="color:var(--text);">${rtDisp}</td>
+        <td data-label="Mix" style="color:${gc};">${gasDisp}</td>
         <td data-label="PPO2" style="${rowBgVPM?'color:#b30000;font-weight:700;':ppO2Color}">${ppO2s}</td>
         <td data-label="EAD" style="color:var(--muted);">—</td>
       </tr>`;
@@ -220,8 +219,6 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   });
   _onPlanResultsReady();
 
-  // Inject TTS cells into deco table rows
-  injectTtsCells('decoTableBody', vpmRtAtBottomEnd);
   decorateDecoTableForV3();
   scheduleDecoScheduleStackSync();
 
@@ -248,10 +245,9 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   document.querySelectorAll('#decoTableBody tr[data-phase]').forEach(tr => {
     const ph = tr.dataset.phase;
     if (ph === 'switch' || ph === 'totals') return;
-    const tds = tr.querySelectorAll('td');
-    const mixRaw = tds[3]?.textContent?.trim() || '';
-    const stopRaw = tds[2]?.textContent?.trim() || '';
-    const depthRaw = tds[1]?.textContent?.trim() || '';
+    const mixRaw = tr.querySelector('td[data-label="Mix"]')?.textContent?.trim() || '';
+    const stopRaw = tr.querySelector('td[data-label="Stop"]')?.textContent?.trim() || '';
+    const depthRaw = tr.querySelector('td[data-label="Depth"]')?.textContent?.trim() || '';
     const depthM2 = endParseDepthM(depthRaw) ?? (parseFloat(depthRaw) || 0);
     const durMin = (() => { const p = stopRaw.split(':'); return p.length===2 ? parseInt(p[0]) + parseInt(p[1])/60 : parseFloat(stopRaw)||0; })();
     if (!durMin || !mixRaw || mixRaw === '-') return;
@@ -681,8 +677,8 @@ function renderZhlScheduleResults(ctx) {
       <td><span style="font-size:18px;color:#ff8080;">↓</span></td>
       <td data-label="Depth" style="color:#ff8080;">0→${travelSwitchDisp}</td>
       <td data-label="Stop" style="color:#ff8080;"></td>
-      <td data-label="Mix"><span style="color:#ff9900;font-weight:700;">${travelInfoRow.label}</span></td>
       <td data-label="Run" style="color:#ff8080;">${fmtMM(rowRT)}</td>
+      <td data-label="Mix"><span style="color:#ff9900;font-weight:700;">${travelInfoRow.label}</span></td>
       <td data-label="PPO2" style="color:var(--muted);">${travelPPO2}</td>
       <td data-label="EAD" style="color:var(--muted);"></td>
     </tr>`;
@@ -699,8 +695,8 @@ function renderZhlScheduleResults(ctx) {
       <td><span style="font-size:18px;color:#ff8080;">↓</span></td>
       <td data-label="Depth" style="color:#ff8080;">${travelSwitchDisp}→${dU?rawD+'m':mToFt(rawD)+'ft'}</td>
       <td data-label="Stop" style="color:#ff8080;"></td>
-      <td data-label="Mix"><span style="color:var(--accent);">${loopMixLabel}</span></td>
       <td data-label="Run" style="color:#ff8080;">${fmtMM(rowRT)}</td>
+      <td data-label="Mix"><span style="color:var(--accent);">${loopMixLabel}</span></td>
       <td data-label="PPO2" style="color:var(--muted);">${descentPPO2}</td>
       <td data-label="EAD" style="color:var(--muted);"></td>
     </tr>`;
@@ -716,8 +712,8 @@ function renderZhlScheduleResults(ctx) {
       <td><span style="font-size:18px;color:#ff8080;">↓</span></td>
       <td data-label="Depth" style="color:#ff8080;">0→${dU?rawD+'m':mToFt(rawD)+'ft'}</td>
       <td data-label="Stop" style="color:#ff8080;"></td>
-      <td data-label="Mix"><span style="color:var(--accent);">${loopMixLabel}</span></td>
       <td data-label="Run" style="color:#ff8080;">${fmtMM(rowRT)}</td>
+      <td data-label="Mix"><span style="color:var(--accent);">${loopMixLabel}</span></td>
       <td data-label="PPO2" style="color:var(--muted);">${descentPPO2}</td>
       <td data-label="EAD" style="color:var(--muted);"></td>
     </tr>`;
@@ -744,8 +740,8 @@ function renderZhlScheduleResults(ctx) {
     <td>🔵</td>
     <td data-label="Depth" style="color:var(--accent);">${dU?rawD+'m':mToFt(rawD)+'ft'}</td>
     <td data-label="Stop" style="color:var(--accent);">${fmtMM(btAtDepthMin)}</td>
-    <td data-label="Mix"><span style="color:var(--accent);">${loopMixLabel}</span></td>
     <td data-label="Run" style="color:var(--accent);">${fmtMM(rowRT)}</td>
+    <td data-label="Mix"><span style="color:var(--accent);">${loopMixLabel}</span></td>
     <td data-label="PPO2" style="color:var(--muted);">${btPPO2}</td>
     <td data-label="EAD" style="color:var(--muted);"></td>
   </tr>`;
@@ -788,9 +784,8 @@ function renderZhlScheduleResults(ctx) {
         <td style="text-align:center;">⇄</td>
         <td data-label="Depth">${switchDepthDisp}</td>
         <td data-label="Stop"></td>
-        <td data-label="Mix">${switchMixDisp}</td>
         <td data-label="Run"></td>
-        <td data-label="TTS"></td>
+        <td data-label="Mix">${switchMixDisp}</td>
         <td data-label="PPO2" style="${sppColor}">${fmtPpO2(switchPpO2)}</td>
         <td data-label="EAD"></td>
       </tr>`;
@@ -818,8 +813,8 @@ function renderZhlScheduleResults(ctx) {
         <td>🔴</td>
         <td data-label="Depth">${dU?s.depth+'m':mToFt(s.depth)+'ft'}</td>
         <td data-label="Stop" style="color:${rowBg?'#b30000':'var(--red)'};">${fmtMM(stepDur)}</td>
-        <td data-label="Mix" style="color:${rowBg?'#b30000':'var(--red)'}">${(s.gas || '—').toUpperCase()}</td>
         <td data-label="Run">${rtDisp}</td>
+        <td data-label="Mix" style="color:${rowBg?'#b30000':'var(--red)'}">${(s.gas || '—').toUpperCase()}</td>
         <td data-label="PPO2" style="${rowBg?'color:#b30000;font-weight:700;':pO2Color}">${pO2Val.toFixed(2)}</td>
         <td data-label="EAD" style="color:${rowBg?'#555':'var(--muted)'};font-size:11px;">${eadDisp}</td>
       </tr>`;
@@ -832,8 +827,8 @@ function renderZhlScheduleResults(ctx) {
         <td style="font-size:16px;">🟢</td>
         <td data-label="Depth">${dU?s.depth+'m':mToFt(s.depth)+'ft'}</td>
         <td data-label="Stop" style="color:var(--green);">${fmtMM(stepDur)}</td>
-        <td data-label="Mix" style="color:${gasColor};">${(s.gas || '—').toUpperCase()}</td>
         <td data-label="Run">${rtDisp}</td>
+        <td data-label="Mix" style="color:${gasColor};">${(s.gas || '—').toUpperCase()}</td>
         <td data-label="PPO2" style="color:var(--muted);">${Number.isFinite(pO2Val) ? pO2Val.toFixed(2) : '—'}</td>
         <td data-label="EAD" style="color:var(--muted);font-size:11px;">${fmtEAD(s.depth, s.fN2)}</td>
       </tr>`;
@@ -847,8 +842,8 @@ function renderZhlScheduleResults(ctx) {
         <td><span style="font-size:18px;" class="asc-color">↑</span></td>
         <td data-label="Depth" class="asc-color">${dU?s.to+'m':mToFt(s.to)+'ft'}</td>
         <td data-label="Stop" class="asc-color" style="font-size:11px;color:var(--muted);">${fmtMM(s.dur)}</td>
-        <td data-label="Mix" style="color:${gasColor};">${(s.gas || '—').toUpperCase()}</td>
         <td data-label="Run" class="asc-color">${rtDisp}</td>
+        <td data-label="Mix" style="color:${gasColor};">${(s.gas || '—').toUpperCase()}</td>
         <td data-label="PPO2" style="${pO2Color}">${Number.isFinite(pO2Val) ? pO2Val.toFixed(2) : '—'}</td>
         <td data-label="EAD" style="color:var(--muted);"></td>
       </tr>`;
@@ -922,8 +917,6 @@ function renderZhlScheduleResults(ctx) {
   { const _decoRes = document.getElementById('decoResult'); if (_decoRes) _decoRes.style.display = 'block'; }
   { const _tBtn=document.getElementById('tissueChartToggleBtn'); const _cBtn=document.getElementById('contingencyJumpBtn'); if(_tBtn)_tBtn.style.display='inline-block'; if(_cBtn)_cBtn.style.display='inline-block'; }
 
-  // Inject TTS cells into deco table rows
-  injectTtsCells('decoTableBody', rtAtBottomEnd);
   decorateDecoTableForV3();
   scheduleDecoScheduleStackSync();
 

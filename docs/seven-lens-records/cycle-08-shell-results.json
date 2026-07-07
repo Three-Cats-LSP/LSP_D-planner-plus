@@ -425,9 +425,9 @@
       "unit_id": "UI-RESULTS-PANEL",
       "path": "results-panel.js",
       "start_line": 1,
-      "end_line": 312,
-      "line_count": 312,
-      "content_fingerprint": "1d09b7cb7452cc402f30527e8b693adc6bc32f835ae66fefd7e72a0d42c77543",
+      "end_line": 311,
+      "line_count": 311,
+      "content_fingerprint": "5622a3aa0e618e6bf74aadc78b36ce01d3928c755d41431b457647a160b73feb",
       "review_session": "C08-A",
       "verification_session": "C08-V-B",
       "lens_results": {
@@ -1626,7 +1626,7 @@
     }
   ],
   "audit_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
-  "notes": "Cycle 8 CLOSER bound closure_evidence_commit at registry closure; SL-C08-M-02/M-03/M-04 CLOSED; ledger promoted SEVEN_LENS_REVIEWED; SL-C08-VF-L-01 remains open LOW follow-up.",
+  "notes": "Cycle 8 CLOSER bound closure_evidence_commit at registry closure; SL-C08-M-02/M-03/M-04 CLOSED; ledger promoted SEVEN_LENS_REVIEWED; SL-C08-VF-L-01 remains open LOW follow-up. Deco schedule column-order dependency re-review refreshed UI-RESULTS-PANEL to 1-311; NO_NEW_FINDING.",
   "visual_contract_integrator": {
     "pr": 215,
     "source_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
@@ -1786,6 +1786,21 @@
       "prior_fingerprint": "41a03a57cf99a9eceef9bfd65baf5c65118f92e9539924e5f87139df00256c8c",
       "content_fingerprint": "3f5d47dfb3a8ddad62bd13b17ae95e0b27dc68bbdccb4bd9b4a585b27753139d",
       "result": "NO_NEW_FINDING"
+    },
+    {
+      "session": "C09-DEP-RESULTS-PANEL-SCHEDULE-LABEL-DECORATION",
+      "part_id": "UI-RESULTS-PANEL-P01",
+      "unit_id": "UI-RESULTS-PANEL",
+      "path": "results-panel.js",
+      "start_line": 1,
+      "end_line": 311,
+      "line_count": 311,
+      "content_fingerprint": "5622a3aa0e618e6bf74aadc78b36ce01d3928c755d41431b457647a160b73feb",
+      "trigger": "Schedule decorators now classify visible table cells by data-label after Run/Mix reorder and TTS column removal.",
+      "review_scope": "decorateDecoTableForV3/decorateContingencyTableForV3 cell decoration contract only; Cycle 8 navigation and stale-results fixes remain unchanged.",
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-07T14:12:28Z",
+      "verifier": "Codex simplified dependency re-review"
     }
   ],
   "evidence_artifacts": [

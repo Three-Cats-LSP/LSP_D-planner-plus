@@ -1710,7 +1710,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "9abfebdbec8644c9bd611afe03d3a97ee644e59ce94ee74729fcb44afd580171",
+      "fingerprint": "cb63681d843e03d8d447d37ce54e34d3515ba4db8a8898d6823dc2e7a543ec7a",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1778,7 +1778,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a0e026fc004bdf058cd6e44ded0a0d1faf1621ec679f205cf4555a5fc4e7b224",
+      "fingerprint": "bb3acb7aa101e0a6288b5b62e681adea6add6dd6e83cb19295ced4b67b505df7",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -1800,7 +1800,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "7e42c398d5b9a7f4b8fa77c84019ff5e018478dbfd566bb1d86ae72b1ec0e44c",
+      "fingerprint": "5256ab1d6a36298ee579042c74c313f7778eb20539fb973f1d4908150f65eaa7",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2164,7 +2164,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RENDER"
       },
-      "fingerprint": "b853f41c51a41e0793f5f74391fa35aaafdbd3aa1be101f8d263a51b87d7aa43",
+      "fingerprint": "ec8ddce3a82c2c5b496246e2094ba04fe46dbb1d395a18812f40af7041516d21",
       "last_read_fingerprint": null,
       "audit_issue": 147,
       "evidence": [],
@@ -2250,25 +2250,15 @@
       "path": "results-render-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
-      "fingerprint": "aacc548e6d3c82a8517498347c29980f79f630907c43810c199c1bdf72391326",
-      "last_read_fingerprint": "aacc548e6d3c82a8517498347c29980f79f630907c43810c199c1bdf72391326",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity",
-        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
-        "SUITE-ENGINE-FULL/AUDIT-REG-01"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01",
-        "EXT-02",
-        "REG-01"
-      ],
+      "fingerprint": "568c7f31d1cc688d1b8adc0e8e9041ae933d87ff7d09044c33f30975b26a3382",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 151,
       "issue": "Audit issue #151"
     },
@@ -5115,7 +5105,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1d09b7cb7452cc402f30527e8b693adc6bc32f835ae66fefd7e72a0d42c77543",
+      "fingerprint": "5622a3aa0e618e6bf74aadc78b36ce01d3928c755d41431b457647a160b73feb",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5611,7 +5601,7 @@
         "REG-110",
         "REG-111"
       ],
-      "fingerprint": "ffc20f55bb098c88a8848191c3bd15cf2abc524211328ab40625c08485d2e991",
+      "fingerprint": "3c394239d16d215dc22a08d71d66b03c9d46042fac0a45515790b27dfdc0f1cc",
       "last_read_fingerprint": null
     },
     {

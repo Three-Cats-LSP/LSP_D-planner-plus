@@ -108,6 +108,9 @@ CAPTURE_JS = r"""
   const headers = schedule ? [...schedule.querySelectorAll('thead th')] : [];
   const cells = firstBodyRow ? [...firstBodyRow.querySelectorAll('td')] : [];
   const scheduleSwitchCells = firstSwitchRow ? [...firstSwitchRow.querySelectorAll('td')] : [];
+  const headerTexts = headers.slice(1).map(el => (el.textContent || '').trim());
+  const nonSummaryRows = schedule ? [...schedule.querySelectorAll('tbody tr[data-phase]:not(.row-summary)')] : [];
+  const ttsCells = schedule ? [...schedule.querySelectorAll('td[data-label="TTS"]')] : [];
   const geom = (el) => {
     if (!el) return null;
     const rect = el.getBoundingClientRect();
@@ -115,12 +118,13 @@ CAPTURE_JS = r"""
   };
   const depthHead = geom(headers[1]);
   const stopHead = geom(headers[2]);
-  const mixHead = geom(headers[3]);
-  const runHead = geom(headers[4]);
+  const runHead = geom(headers[3]);
+  const mixHead = geom(headers[4]);
   const depthCell = geom(cells[1]);
   const stopCell = geom(cells[2]);
-  const mixCell = geom(cells[3]);
-  const switchMixCell = geom(scheduleSwitchCells[3]);
+  const runCell = geom(cells[3]);
+  const mixCell = geom(cells[4]);
+  const switchMixCell = geom(scheduleSwitchCells[4]);
   const phaseCell = geom(cells[0]);
   const scheduleReadableCells = schedule ? [...schedule.querySelectorAll('thead th, tbody tr:not(.row-summary) td')] : [];
   const clippedScheduleCells = scheduleReadableCells.filter(el => {
@@ -158,12 +162,17 @@ CAPTURE_JS = r"""
     switchCellColors: switchCells.map(el => rgb(style(el, 'color'))),
     expectedSwitch,
     scheduleColumns: {
+      headerTexts,
+      hasTtsHeader: headerTexts.some(text => text.toUpperCase() === 'TTS'),
+      ttsCellCount: ttsCells.length,
+      rowCellCounts: nonSummaryRows.map(row => row.cells.length),
       depthHead,
       stopHead,
-      mixHead,
       runHead,
+      mixHead,
       depthCell,
       stopCell,
+      runCell,
       mixCell,
       switchMixCell,
       phaseCell,
@@ -174,9 +183,12 @@ CAPTURE_JS = r"""
       clippedCells: clippedScheduleCells,
       depthAligned: !!(depthHead && depthCell && Math.abs(depthHead.center - depthCell.center) <= 4),
       stopAligned: !!(stopHead && stopCell && Math.abs(stopHead.center - stopCell.center) <= 4),
+      runBeforeMix: !!(runHead && mixHead && runHead.center < mixHead.center),
+      sevenCellsPerRow: nonSummaryRows.length > 0 && nonSummaryRows.every(row => row.cells.length === 7),
+      noVisibleTts: !headerTexts.some(text => text.toUpperCase() === 'TTS') && ttsCells.length === 0,
       depthCompact: !!(depthHead && stopHead && mixHead && phaseCell && depthHead.width <= stopHead.width * 1.05 && depthHead.width < mixHead.width && depthHead.width >= phaseCell.width),
       mixLaneAligned: !!(mixHead && mixCell && switchMixCell && Math.abs(mixHead.center - mixCell.center) <= 4 && Math.abs(mixCell.center - switchMixCell.center) <= 4),
-      mixCompact: !!(mixHead && runHead && mixHead.width <= runHead.width * 0.8),
+      mixCompact: !!(mixHead && runHead && mixHead.width <= runHead.width * 0.95),
       mobileScrollReady: !schedule || window.innerWidth > 640 || !!(scheduleWrap && scheduleRect && scheduleWrapRect && getComputedStyle(scheduleWrap).overflowX === 'auto' && scheduleRect.width > scheduleWrapRect.width),
     },
     layout: planner && results ? {
@@ -881,6 +893,10 @@ def main() -> int:
     results["SL-C09-SCHEDULE-COLUMN-GEOMETRY"] = all(
         c["generated"]
         and c["scheduleColumns"]["tableLayout"] == "fixed"
+        and c["scheduleColumns"]["headerTexts"] == ["Depth", "Stop", "Run", "Mix", "ppO₂", "EAD"]
+        and c["scheduleColumns"]["sevenCellsPerRow"]
+        and c["scheduleColumns"]["noVisibleTts"]
+        and c["scheduleColumns"]["runBeforeMix"]
         and c["scheduleColumns"]["depthAligned"]
         and c["scheduleColumns"]["stopAligned"]
         and c["scheduleColumns"]["depthCompact"]

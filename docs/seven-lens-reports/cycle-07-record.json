@@ -374,9 +374,9 @@
       "unit_id": "UI-CSS-RESULTS",
       "path": "lsp-dplanner-results.css",
       "start_line": 501,
-      "end_line": 915,
-      "line_count": 415,
-      "content_fingerprint": "3023736d29f0d874a291bca8c0d889767d5bd7bb5b49c1e010b0aab1a00777eb",
+      "end_line": 913,
+      "line_count": 413,
+      "content_fingerprint": "08cad860abfd4b5ec03b72d7defe0b8342b32765aceb4c981013c77d7a214ee4",
       "review_session": "C07-B",
       "verification_session": "C07-V-B",
       "lens_results": {
@@ -984,7 +984,7 @@
   ],
   "changed_paths": [],
   "audit_report": "docs/seven-lens-reports/cycle-07-results-css.md",
-  "notes": "CLOSER: registry closed at bf311c6; static/ci/release gate receipts bound to closure_evidence_commit. Cycle 8 dependency re-review C07-R2-A (1-500) and C07-R2-B (501-890) clean at fingerprint 8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49. Cycle 9 dependency re-review refreshed UI-CSS-RESULTS parts to 1-500 / 501-899; NO_NEW_FINDING. Schedule geometry dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Mix-lane dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Mobile schedule scroll dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING.",
+  "notes": "CLOSER: registry closed at bf311c6; static/ci/release gate receipts bound to closure_evidence_commit. Cycle 8 dependency re-review C07-R2-A (1-500) and C07-R2-B (501-890) clean at fingerprint 8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49. Cycle 9 dependency re-review refreshed UI-CSS-RESULTS parts to 1-500 / 501-899; NO_NEW_FINDING. Schedule geometry dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Mix-lane dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Mobile schedule scroll dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Deco schedule column-order dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-913; NO_NEW_FINDING.",
   "dependency_re_reviews": [
     {
       "session": "C07-R2-A",
@@ -1140,6 +1140,26 @@
       "reviewed_at": "2026-07-07T13:55:54.268150+00:00",
       "verifier": "Codex simplified dependency re-review",
       "line_count": 915
+    },
+    {
+      "session": "C09-DEP-RESULTS-SCHEDULE-COLUMN-ORDER",
+      "part_id": "UI-CSS-RESULTS",
+      "unit_id": "UI-CSS-RESULTS",
+      "path": "lsp-dplanner-results.css",
+      "content_fingerprint": "bb3acb7aa101e0a6288b5b62e681adea6add6dd6e83cb19295ced4b67b505df7",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
+        "UI-CSS-RESULTS-P02": "08cad860abfd4b5ec03b72d7defe0b8342b32765aceb4c981013c77d7a214ee4"
+      },
+      "boundaries": {
+        "UI-CSS-RESULTS-P01": "lines 1-500",
+        "UI-CSS-RESULTS-P02": "lines 501-913"
+      },
+      "trigger": "Visible deco schedule table reordered to Phase, Depth, Stop, Run, Mix, ppO?, EAD and TTS column removed.",
+      "review_scope": "Schedule table width rules and column styling only; prior Cycle 7 chip/PPO?/print/reduced-motion findings remain closed and unchanged.",
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-07T14:12:28Z",
+      "verifier": "Codex simplified dependency re-review"
     }
   ]
 }

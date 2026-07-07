@@ -189,18 +189,23 @@ function decorateDecoTableForV3() {
     cells[0].classList.add('phase-cell');
     const iconPh = ph === 'ascent' && cells[1]?.textContent?.includes('0') ? 'surface' : ph;
     if (_PHASE_ICON_SVG[iconPh]) cells[0].innerHTML = _PHASE_ICON_SVG[iconPh];
-    if (cells[1]) cells[1].classList.add('col-depth');
-    if (cells[2]) cells[2].classList.add('col-time', 'stop');
-    if (cells[3]) {
-      cells[3].classList.add('col-gas', _gasMixClassV3(cells[3].textContent));
-    }
-    if (cells[4]) cells[4].classList.add('col-time', 'run', 'align-r');
-    if (cells[5]) cells[5].classList.add('col-tts', 'align-r');
-    if (cells[6]) {
-      cells[6].classList.add('col-ppo2', 'align-r', _ppo2ClassV3(cells[6].textContent));
-    }
-    if (cells[7]) cells[7].classList.add('col-ead', 'align-r');
+    _decorateScheduleCellsByLabel(tr);
   });
+}
+function _decorateScheduleCellsByLabel(tr) {
+  const byLabel = label => tr.querySelector(`td[data-label="${label}"]`);
+  const depth = byLabel('Depth');
+  const stop = byLabel('Stop');
+  const run = byLabel('Run');
+  const mix = byLabel('Mix');
+  const ppo2 = byLabel('PPO2');
+  const ead = byLabel('EAD');
+  if (depth) depth.classList.add('col-depth');
+  if (stop) stop.classList.add('col-time', 'stop');
+  if (run) run.classList.add('col-time', 'run', 'align-r');
+  if (mix) mix.classList.add('col-gas', _gasMixClassV3(mix.textContent));
+  if (ppo2) ppo2.classList.add('col-ppo2', 'align-r', _ppo2ClassV3(ppo2.textContent));
+  if (ead) ead.classList.add('col-ead', 'align-r');
 }
 function _normalizeContingencyPhase(ph) {
   return String(ph || '').replace(/^contingency-/, '');
@@ -226,13 +231,7 @@ function decorateContingencyTableForV3() {
     cells[0].classList.add('phase-cell');
     const iconPh = ph === 'ascent' && cells[1]?.textContent?.includes('0') ? 'surface' : ph;
     if (_PHASE_ICON_SVG[iconPh]) cells[0].innerHTML = _PHASE_ICON_SVG[iconPh];
-    if (cells[1]) cells[1].classList.add('col-depth');
-    if (cells[2]) cells[2].classList.add('col-time', 'stop');
-    if (cells[3]) cells[3].classList.add('col-gas', _gasMixClassV3(cells[3].textContent));
-    if (cells[4]) cells[4].classList.add('col-time', 'run', 'align-r');
-    if (cells[5]) cells[5].classList.add('col-tts', 'align-r');
-    if (cells[6]) cells[6].classList.add('col-ppo2', 'align-r', _ppo2ClassV3(cells[6].textContent));
-    if (cells[7]) cells[7].classList.add('col-ead', 'align-r');
+    _decorateScheduleCellsByLabel(tr);
   });
 }
 function _setGasWarningBanner(message) {

@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v3-full-reset`
-**Units:** 205 total; 0 unread; 86 in progress; 4 read; 115 verified.
+**Units:** 205 total; 0 unread; 87 in progress; 4 read; 114 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -36,8 +36,8 @@
 | 4 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 612 | - | Tools and modals markup partials READ |
 | 5 | UI-CSS-FOUNDATION, UI-CSS-MODES | 758 | - | Foundation and modes CSS READ |
 | 6 | UI-CSS-CONTROLS | 548 | - | Controls CSS READ |
-| 7 | UI-CSS-RESULTS | 915 | - | Results CSS READ |
-| 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 513 | - | Planner shell and results panel READ |
+| 7 | UI-CSS-RESULTS | 913 | - | Results CSS READ |
+| 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 512 | - | Planner shell and results panel READ |
 | 9 | UI-ENVIRONMENT, UI-MODE-STATE | 1004 | - | settings-core environment and mode state READ (1002 lines; >=2 bounded sessions); explicitly verify VPM switch behavior; enforce app-wide gas-switch terminology: the diving procedure is labeled and identified as "Gas switch" everywhere, with no user-facing "Gas change" labels or new gas-change IDs/classes/contracts; verify mobile warning/alert banners and gas-consumption warnings wrap inside the viewport without horizontal clipping or overflow |
 | 10 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 679 | - | Surface interval and gas table cores READ |
 | 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 516 | ENG-ZHL-GAS | Gas card UI READ |
@@ -46,7 +46,7 @@
 | 14 | APP-EXPORT | 3254 | - | export-core text/PDF READ |
 | 15 | UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 623 | - | plot-core render and waypoints READ in at least 2 bounded sessions |
 | 16 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 755 | - | Profile tool and plot init READ |
-| 17 | UI-VPM-RENDER, UI-ZHL-RESULTS | 1064 | - | results-render-core READ |
+| 17 | UI-VPM-RENDER, UI-ZHL-RESULTS | 1057 | - | results-render-core READ |
 | 18 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 511 | ENG-ZHL-SCHEDULE | ZHL/CCR delegate thin layer READ |
 | 19 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 597 | ENG-ZHL-CCR | Deco physics and schedule inputs READ |
 | 20 | UI-ZHL-RUNNER-SETUP, UI-ZHL-RUNNER-ENGINE | 483 | ENG-ZHL-SCHEDULE | ZHL runner setup and engine invocation READ |
