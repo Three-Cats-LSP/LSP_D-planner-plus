@@ -768,6 +768,7 @@ async () => {
   const graphLegend = document.getElementById('contingencyProfileLegend');
   const schedule = document.querySelector('#contingencyResult .schedule-table');
   const scheduleWrap = schedule?.closest('.schedule-wrap');
+  const bailoutDuplicate = document.querySelector('#decoAlertsEmergency [data-warning="bailout-contingency"]');
   const headers = schedule ? [...schedule.querySelectorAll('thead th')].slice(1).map(el => (el.textContent || '').trim()) : [];
   const nonSummaryRows = schedule ? [...schedule.querySelectorAll('tbody tr[data-phase]:not(.row-summary)')] : [];
   const ttsCells = schedule ? [...schedule.querySelectorAll('td[data-label="TTS"]')] : [];
@@ -796,6 +797,7 @@ async () => {
     warningCount: warnings.length,
     graphVisible: !!graph && graphRect.width > 100 && graphRect.height > 80,
     graphLegendText: graphLegend?.textContent?.trim() || '',
+    graphStopTableCount: document.querySelectorAll('#contingencyProfileLegend .profile-legend-table').length,
     scheduleHeaders: headers,
     hasTtsHeader: headers.some(text => text.toUpperCase() === 'TTS'),
     ttsCellCount: ttsCells.length,
@@ -803,6 +805,8 @@ async () => {
     graphBeforeSchedule: !!(graphRect && scheduleRect && graphRect.bottom <= scheduleRect.top),
     gasBelowSchedule: !!(scheduleRect && gasRect && gasRect.top >= scheduleRect.bottom),
     resultBeforeGas: !!(resultRect && gasRect && resultRect.bottom <= gasRect.top),
+    bailoutDuplicateText: bailoutDuplicate?.textContent?.trim() || '',
+    bailoutDuplicateCount: document.querySelectorAll('#decoAlertsEmergency [data-warning="bailout-contingency"]').length,
   };
 }
 """
@@ -1333,13 +1337,15 @@ def main() -> int:
         contingency_gas_details.get("generated")
         and contingency_gas_details.get("graphVisible")
         and "Gas Switch" in contingency_gas_details.get("graphLegendText", "")
-        and contingency_gas_details.get("scheduleHeaders") == ["Depth", "Stop", "Run", "Mix", "ppO₂", "EAD"]
+        and contingency_gas_details.get("graphStopTableCount") == 0
+        and contingency_gas_details.get("scheduleHeaders") == ["Depth", "Stop", "Run", "Mix", "ppO\u2082", "EAD"]
         and not contingency_gas_details.get("hasTtsHeader")
         and contingency_gas_details.get("ttsCellCount") == 0
         and contingency_gas_details.get("sevenCellsPerRow")
         and contingency_gas_details.get("graphBeforeSchedule")
         and contingency_gas_details.get("gasBelowSchedule")
         and contingency_gas_details.get("resultBeforeGas")
+        and contingency_gas_details.get("bailoutDuplicateCount") == 0
         and not contingency_gas_details.get("console_errors")
     )
     results["SL-VIS-GAS-CONSUMPTION-VOLUME-FIRST-UNITS"] = bool(

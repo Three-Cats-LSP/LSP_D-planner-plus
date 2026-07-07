@@ -2351,7 +2351,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-RENDER"
       },
-      "fingerprint": "c4fc1247856d9d1d5dd0f6e0a223d6f8e66b7786a6b1baf0ab6cbcea473ca871",
+      "fingerprint": "cfe8904d8ca5371e87fe2b5c1db45c1ab616e7051d9a995ae8f927b1640b594b",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2764,7 +2764,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "7c52b659138f99b522a2c6a143917316a7f5a617c02d5ce973654be70f647ff9",
+      "fingerprint": "766b4ff02d937a36e6bbfd0f89334bc225457d6bfddfa6068ff29abdc122a66f",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5617,7 +5617,7 @@
         "REG-110",
         "REG-111"
       ],
-      "fingerprint": "acffac0fa8eb4f0fad1503fb5a5986e15590bc189a620c58307798efad14c2b3",
+      "fingerprint": "8596f6bdc17b151bf094459c813ea7394c1da1130734b51be5463d05258bbc13",
       "last_read_fingerprint": null
     },
     {
@@ -5779,14 +5779,14 @@
     },
     {
       "cycle": 15,
-      "max_new_application_lines": 640,
+      "max_new_application_lines": 641,
       "min_review_sessions": 2,
       "application_units": [
         "UI-PLOT-RENDER",
         "UI-PLOT-WAYPOINTS"
       ],
       "engine_reverification": [],
-      "acceptance": "plot-core render and waypoints READ in at least 2 bounded sessions"
+      "acceptance": "plot-core render and waypoints READ in at least 2 bounded sessions (641 lines total)"
     },
     {
       "cycle": 16,

@@ -541,7 +541,8 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
         <span class="legend-item"><span class="leg-dot" style="background:${red}"></span> Deco stop</span>
         ${simple ? '' : `<span class="legend-item"><span style="display:inline-block;width:18px;height:0;border-top:2px dashed ${red};"></span> Ceiling</span>`}
       </div>`;
-    const tableHtml = (!simple && legendRows.length) ? _renderProfileLegendTableHtml(legendRows, legendColors) : '';
+    const showStopTable = !simple && canvasId !== 'contingencyProfileCanvas';
+    const tableHtml = (showStopTable && legendRows.length) ? _renderProfileLegendTableHtml(legendRows, legendColors) : '';
     legendEl.style.display = tableHtml ? 'block' : 'flex';
     legendEl.innerHTML = keyLegend + tableHtml;
   }
