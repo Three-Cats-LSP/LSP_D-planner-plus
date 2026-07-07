@@ -17,8 +17,10 @@ lsp-dplanner-modes.css
 lsp-dplanner-results.css
 manifest.json
 padi-engine.js
+planner-inputs-core.js
 planner-shell.js
 plot-core.js
+rec-planner.js
 results-panel.js
 results-render-core.js
 settings-core.js

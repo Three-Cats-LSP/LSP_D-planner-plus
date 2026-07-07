@@ -64,6 +64,12 @@
         "reason": "Vendored third-party offline assets"
       },
       {
+        "pattern": "_site/**",
+        "generator": "python tools/assemble_pages_preview.py",
+        "check": "python -m unittest tools.test_assemble_pages_preview",
+        "reason": "Combined production and development GitHub Pages artifact"
+      },
+      {
         "pattern": "android/app/capacitor.build.gradle",
         "generator": "npm run cap:sync",
         "check": "npm run cap:sync",
@@ -4111,8 +4117,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "276a70794a3ee871970f7de6c9921a9c6823470d0c1bc5f2565871a05d3811b3",
-      "last_read_fingerprint": "276a70794a3ee871970f7de6c9921a9c6823470d0c1bc5f2565871a05d3811b3",
+      "fingerprint": "76e1e0d136277d9591448863fae8b6fcff0a5581d3662cf1eb7cb675f6776cef",
+      "last_read_fingerprint": "76e1e0d136277d9591448863fae8b6fcff0a5581d3662cf1eb7cb675f6776cef",
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01",
         "SUITE-PARITY/canonical-generated-parity"
@@ -4122,6 +4128,36 @@
         "PARITY-01"
       ],
       "issue": "V3 full audit verified \u2014 TOOL-BUILD-PAGES"
+    },
+    {
+      "id": "TOOL-ASSEMBLE-PAGES-PREVIEW",
+      "path": "tools/assemble_pages_preview.py",
+      "layer": "tooling",
+      "priority": "P2",
+      "status": "READ",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "cada1f7dad2f659ccd61bed1d92ea356c3c21bc1cd3c647492e6f131703af39a",
+      "last_read_fingerprint": "cada1f7dad2f659ccd61bed1d92ea356c3c21bc1cd3c647492e6f131703af39a",
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "Development Pages preview implementation review"
+    },
+    {
+      "id": "TEST-ASSEMBLE-PAGES-PREVIEW",
+      "path": "tools/test_assemble_pages_preview.py",
+      "layer": "test",
+      "priority": "P2",
+      "status": "READ",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "c563edfa898e04db4155a31ae6d36f4160a575131eff6251cf0f4b8c59c3f0be",
+      "last_read_fingerprint": "c563edfa898e04db4155a31ae6d36f4160a575131eff6251cf0f4b8c59c3f0be",
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "Development Pages preview implementation review"
     },
     {
       "id": "TOOL-BUILD-VPM",
@@ -4679,6 +4715,22 @@
       ],
       "audit_issue": 167,
       "issue": "Audit issue #167"
+    },
+    {
+      "id": "CI-DEPLOY-DEV-PREVIEW",
+      "path": ".github/workflows/deploy-dev-preview.yml",
+      "layer": "ci",
+      "priority": "P2",
+      "status": "READ",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "e7eb149cfad19a77abd66e9301b8a9b02043d79ef50a098e85593a51131572e6",
+      "last_read_fingerprint": "e7eb149cfad19a77abd66e9301b8a9b02043d79ef50a098e85593a51131572e6",
+      "evidence": [],
+      "regression_cases": [],
+      "audit_issue": 167,
+      "issue": "Development Pages preview implementation review"
     },
     {
       "id": "CI-NOTIFY",

@@ -10,7 +10,7 @@
 | Layer | Total | Unread | In progress | Read | Verified |
 |---|---:|---:|---:|---:|---:|
 | build_config | 2 | 0 | 1 | 0 | 1 |
-| ci | 6 | 0 | 2 | 0 | 4 |
+| ci | 7 | 0 | 2 | 1 | 4 |
 | deploy_config | 1 | 0 | 0 | 0 | 1 |
 | engine | 6 | 0 | 1 | 0 | 5 |
 | engine_reference | 1 | 0 | 0 | 0 | 1 |
@@ -19,15 +19,16 @@
 | native_config | 1 | 0 | 0 | 0 | 1 |
 | pwa | 3 | 0 | 2 | 0 | 1 |
 | release_config | 1 | 0 | 1 | 0 | 0 |
+| test | 1 | 0 | 0 | 1 | 0 |
 | test_infrastructure | 55 | 0 | 25 | 0 | 30 |
-| tooling | 53 | 0 | 16 | 0 | 37 |
+| tooling | 54 | 0 | 16 | 1 | 37 |
 | ui_core | 16 | 0 | 13 | 0 | 3 |
 | ui_shell | 2 | 0 | 2 | 0 | 0 |
 | web_css | 4 | 0 | 3 | 0 | 1 |
 | web_markup | 7 | 0 | 4 | 1 | 2 |
 | web_runtime | 24 | 0 | 15 | 0 | 9 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **202** | **0** | **86** | **1** | **115** |
+| **Total** | **205** | **0** | **86** | **4** | **115** |
 
 ## Units
 
@@ -157,7 +158,9 @@
 | TOOL-AUDIT | tooling | `audit.py:1` | 16 | P1 | VERIFIED | COV-01, PARITY-01, REG-01, REG-02, REG-03, REG-05 |
 | TOOL-AUDIT-COVERAGE | tooling | `tools/audit_coverage.py:1` | 453 | P1 | VERIFIED | COV-01 |
 | TOOL-AUDIT-COVERAGE-TEST | test_infrastructure | `tools/test_audit_coverage.py:1` | 211 | P1 | VERIFIED | COV-01 |
-| TOOL-BUILD-PAGES | tooling | `tools/build_pages_site.py:1` | 144 | P2 | VERIFIED | COV-01, PARITY-01 |
+| TOOL-BUILD-PAGES | tooling | `tools/build_pages_site.py:1` | 146 | P2 | VERIFIED | COV-01, PARITY-01 |
+| TOOL-ASSEMBLE-PAGES-PREVIEW | tooling | `tools/assemble_pages_preview.py:1` | 126 | P2 | READ | - |
+| TEST-ASSEMBLE-PAGES-PREVIEW | test | `tools/test_assemble_pages_preview.py:1` | 48 | P2 | READ | - |
 | TOOL-BUILD-VPM | tooling | `tools/build_vpm_bundle.py:1` | 104 | P1 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-BUILD-ZHL | tooling | `tools/build_zhl_bundle.py:1` | 374 | P1 | IN_PROGRESS | - |
 | TOOL-CHECK-PARITY | tooling | `tools/check_engine_parity.py:1` | 311 | P1 | VERIFIED | COV-01, PARITY-01 |
@@ -189,6 +192,7 @@
 | CI-APK | ci | `.github/workflows/build-apk.yml:1` | 161 | P1 | VERIFIED | ANDROID-01 |
 | CI-MAIN | ci | `.github/workflows/ci.yml:1` | 194 | P1 | IN_PROGRESS | - |
 | CI-DEPLOY | ci | `.github/workflows/deploy.yml:1` | 128 | P1 | VERIFIED | COV-01, EXT-07 |
+| CI-DEPLOY-DEV-PREVIEW | ci | `.github/workflows/deploy-dev-preview.yml:1` | 75 | P2 | READ | - |
 | CI-NOTIFY | ci | `.github/workflows/notify-site.yml:1` | 50 | P2 | VERIFIED | COV-01 |
 | CI-OFFLINE-ZIP | ci | `.github/workflows/build-offline-zip.yml:1` | 119 | P2 | VERIFIED | COV-01 |
 | TOOL-AUDIT-V2-__INIT__-PY | tooling | `tools/audit/__init__.py:1` | 3 | P0 | VERIFIED | COV-01, PARITY-01 |
