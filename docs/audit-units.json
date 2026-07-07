@@ -1935,16 +1935,26 @@
       "path": "settings-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "IN_PROGRESS",
+      "status": "VERIFIED",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ENVIRONMENT"
       },
       "fingerprint": "439368a89834973c16189864e156fe5a34b66622aac1a3371aaa664bbeffcbea",
-      "last_read_fingerprint": null,
+      "last_read_fingerprint": "439368a89834973c16189864e156fe5a34b66622aac1a3371aaa664bbeffcbea",
       "audit_issue": 139,
-      "evidence": [],
-      "regression_cases": [],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01",
+        "SUITE-PARITY/canonical-generated-parity",
+        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
+        "SUITE-ENGINE-FULL/AUDIT-REG-01"
+      ],
+      "regression_cases": [
+        "COV-01",
+        "PARITY-01",
+        "EXT-02",
+        "REG-01"
+      ],
       "issue": "Audit issue #139"
     },
     {
@@ -5682,7 +5692,7 @@
     },
     {
       "cycle": 9,
-      "max_new_application_lines": 1002,
+      "max_new_application_lines": 1004,
       "min_review_sessions": 2,
       "application_units": [
         "UI-ENVIRONMENT",
@@ -5840,7 +5850,7 @@
     },
     {
       "cycle": 24,
-      "max_new_application_lines": 678,
+      "max_new_application_lines": 690,
       "min_review_sessions": 2,
       "application_units": [
         "UI-ALGORITHM-SETTINGS",
@@ -5851,7 +5861,7 @@
     },
     {
       "cycle": 25,
-      "max_new_application_lines": 1281,
+      "max_new_application_lines": 1287,
       "application_units": [
         "UI-SETTINGS",
         "UI-UNIT-HELPERS",

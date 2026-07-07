@@ -37,8 +37,8 @@
 | 5 | UI-CSS-FOUNDATION, UI-CSS-MODES | 758 | - | Foundation and modes CSS READ |
 | 6 | UI-CSS-CONTROLS | 548 | - | Controls CSS READ |
 | 7 | UI-CSS-RESULTS | 890 | - | Results CSS READ |
-| 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 499 | - | Planner shell and results panel READ |
-| 9 | UI-ENVIRONMENT, UI-MODE-STATE | 1002 | - | settings-core environment and mode state READ (1002 lines; >=2 bounded sessions) |
+| 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 514 | - | Planner shell and results panel READ |
+| 9 | UI-ENVIRONMENT, UI-MODE-STATE | 1004 | - | settings-core environment and mode state READ (1002 lines; >=2 bounded sessions) |
 | 10 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 679 | - | Surface interval and gas table cores READ |
 | 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 516 | ENG-ZHL-GAS | Gas card UI READ |
 | 12 | APP-GAS-PLAN | 546 | - | Gas plan core READ |
@@ -53,8 +53,8 @@
 | 21 | UI-ZHL-HEADLESS-HELPERS, UI-ZHL-HEADLESS-ENGINE | 588 | - | Headless ZHL path READ |
 | 22 | UI-VPM-RUNNER | 473 | ENG-VPM | VPM runner READ |
 | 23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 390 | - | Runtime bootstrap and app init READ |
-| 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 678 | - | Algorithm and settings controls READ (678 lines; >=2 bounded sessions) |
-| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1281 | - | Settings persistence and unit helpers READ |
+| 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 690 | - | Algorithm and settings controls READ (678 lines; >=2 bounded sessions) |
+| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1287 | - | Settings persistence and unit helpers READ |
 | 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 851 | - | Tools panels READ in >=2 bounded sessions; implement and verify the tissue-saturation seven-band value scale in docs/tissue-saturation-color-roadmap.md, including UI/export parity and accessibility |
 | 27 | UI-PROFILE-PRESETS | 506 | - | Dive profile presets READ (depth/BT/mode ownership) |
 | 28 | UI-CONFIG-PRESETS | 185 | - | Advanced config presets READ |
