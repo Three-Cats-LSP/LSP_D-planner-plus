@@ -11,6 +11,12 @@ prose reports do not replace the protocol gate.
 Read `docs/seven-lens-review-playbook.md` before every phase. It is the shared
 review knowledge base for recurring failure patterns and evidence standards.
 
+Before starting any cycle after Cycle 8, read
+`docs/seven-lens-protocol-simplification-pass.md`. It freezes completed cycles as
+reviewed history and makes ready-to-close validation a VERIFIER responsibility.
+CLOSER must not discover or repair evidence problems; if closure blockers appear,
+return the cycle to VERIFIER/FIXER instead of patching protocol rules mid-cycle.
+
 ## Core Rule
 
 Passing static checks, regressions, parity checks, or release suites is automated
