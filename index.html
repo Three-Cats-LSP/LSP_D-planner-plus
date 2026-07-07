@@ -7391,16 +7391,16 @@ function renderTissueLoadChart() {
 
   // Column header
   html += '<div style="overflow-x:auto;">';
-  html += '<table style="width:100%;border-collapse:collapse;font-family:\'JetBrains Mono\',monospace;font-size:9px;">';
+  html += '<table style="width:100%;border-collapse:collapse;font-family:\'JetBrains Mono\',monospace;font-size:9px;table-layout:auto;">';
 
   // Header row
   html += '<thead><tr>';
-  html += '<th style="text-align:left;color:var(--muted);padding:3px 6px 6px 0;white-space:nowrap;min-width:52px;">Comp</th>';
-  html += '<th style="text-align:left;color:var(--muted);padding:3px 6px 6px 0;white-space:nowrap;min-width:52px;">t&#189; (min)</th>';
+  html += '<th style="text-align:left;color:var(--muted);padding:3px 4px 6px 0;white-space:nowrap;min-width:34px;">Comp</th>';
+  html += '<th style="text-align:left;color:var(--muted);padding:3px 4px 6px 0;white-space:nowrap;min-width:42px;">t&#189; (min)</th>';
   for (const s of decoSteps) {
     const depthDisplay = Math.round(s.depth * conv) + ' ' + uLbl;
     const stopMin = s.dur >= 1 ? Math.round(s.dur) + "'" : "<1'";
-    html += '<th style="text-align:center;padding:3px 4px 6px;white-space:nowrap;">';
+    html += '<th style="text-align:center;padding:3px 2px 6px;white-space:nowrap;">';
     html += '<span style="color:var(--accent);">' + depthDisplay + '</span>';
     html += '<br><span style="color:var(--muted);font-size:8px;">' + stopMin + '</span>';
     html += '</th>';
@@ -7411,8 +7411,8 @@ function renderTissueLoadChart() {
   for (let i = 0; i < 16; i++) {
     const [htN2, a_n2, b_n2] = ZHL16C[i];
     html += '<tr style="border-top:1px solid var(--border)">';
-    html += '<td style="color:var(--muted);padding:4px 6px 4px 0;white-space:nowrap;">C' + (i + 1) + '</td>';
-    html += '<td style="color:var(--muted);padding:4px 6px 4px 0;white-space:nowrap;">' + htN2 + '</td>';
+    html += '<td style="color:var(--muted);padding:4px 4px 4px 0;white-space:nowrap;">C' + (i + 1) + '</td>';
+    html += '<td style="color:var(--muted);padding:4px 4px 4px 0;white-space:nowrap;">' + htN2 + '</td>';
 
     for (const s of decoSteps) {
       const t = s._tissues[i];
@@ -7445,9 +7445,9 @@ function renderTissueLoadChart() {
       const barCol = sat.bar;
       const textCol = sat.text;
 
-      html += '<td style="padding:4px 4px;">';
-      html += '<div style="min-width:52px;max-width:80px;">';
-      html += '<div style="background:var(--card2);border-radius:3px;height:10px;overflow:hidden;margin-bottom:2px;">';
+      html += '<td style="padding:4px 2px;">';
+      html += '<div style="min-width:34px;max-width:42px;">';
+      html += '<div style="background:var(--card2);border-radius:3px;height:9px;overflow:hidden;margin-bottom:2px;">';
       html += '<div style="width:' + barPct + '%;height:100%;background:' + barCol + ';transition:width 0.3s;"></div>';
       html += '</div>';
       html += '<span style="font-size:8px;color:' + textCol + ';">' + clampedPct + '%</span>';

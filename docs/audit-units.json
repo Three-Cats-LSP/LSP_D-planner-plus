@@ -2374,22 +2374,16 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-TISSUES"
       },
-      "fingerprint": "4da71c311ed94f99e464c9392dc50fc66e122f8794b084a6d53f99289b4a6789",
-      "last_read_fingerprint": "4da71c311ed94f99e464c9392dc50fc66e122f8794b084a6d53f99289b4a6789",
+      "fingerprint": "4ebde0e6b8560f05c722b5bdc5bec6e717f116c636c988cde15a72eed4334532",
+      "last_read_fingerprint": null,
       "audit_issue": 156,
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-05",
-        "COV-01"
-      ],
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Audit issue #156"
     },
     {
