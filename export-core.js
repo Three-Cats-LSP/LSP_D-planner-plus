@@ -1440,6 +1440,21 @@ function buildMessengerText(mode) {
     result.push(_cStamp);
     result.push('-'.repeat(28));
     result.push(`${depth}${du} / ${bt}min / ${c.label}`);
+    const hdr = buildDecoPlanHeaderData();
+    result.push(`Algorithm   : ${hdr.algoNameExp} (${hdr.algoSettings})`);
+    if (hdr.circuit && hdr.circuit !== 'OC') result.push(`Circuit     : ${hdr.ccrLabel}${hdr.ccrBailout ? ' (bailout)' : ''}`);
+    if (hdr.isVPMExport) result.push(`He Half-Time: ${hdr.heHtLabel}`);
+    if (isCcrOnLoopProfile({ circuit: hdr.circuit, bailout: hdr.ccrBailout })) {
+      result.push(`Loop gas    : ${loopMixLabelFor(hdr.bottomGasShort, { circuit: hdr.circuit, bailout: hdr.ccrBailout })}`);
+    } else {
+      const botPrefix = (hdr.circuit === 'CCR' || hdr.circuit === 'pSCR') ? 'Diluent     ' : 'Bottom Gas  ';
+      result.push(`${botPrefix}: ${hdr.bottomGas}`);
+    }
+    if (hdr.travelGas) result.push(`Travel Gas  : ${hdr.travelGas.gas} (switch @ ${hdr.travelGas.depth})`);
+    if (!isCcrOnLoopProfile({ circuit: hdr.circuit, bailout: hdr.ccrBailout })) {
+      const gasPrefix = (hdr.circuit === 'CCR' || hdr.circuit === 'pSCR') ? 'Bailout mix' : 'Deco Gas';
+      hdr.decoGases.forEach((g, i) => result.push(`${gasPrefix} ${i + 1}  : ${g.gas} (switch @ ${g.depth})`));
+    }
 
     const cRnd = (document.getElementById('stopRounding')?.value||'fractional')==='wholeminute'?'Yes':'No';
     const cWV  = parseFloat(document.getElementById('waterVapor')?.value||'0.0627');

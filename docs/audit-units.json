@@ -755,6 +755,10 @@
     "REG-119": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
       "case_id": "SL-C09-TRAVEL-GAS-TRIMIX-CARD"
+    },
+    "REG-120": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-C09-CONTINGENCY-COPY-PLAN-CONTEXT"
     }
   },
   "findings": [
@@ -2770,7 +2774,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "37c25ebf64f1ee6cab079b575e24b93de76e55c79c698393c2c005099abf55fe",
+      "fingerprint": "dae6796856dd80dbbd1762f2d23b15bdc44505a562d24d1a39398cbb4cea7b12",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5607,7 +5611,7 @@
         "REG-110",
         "REG-111"
       ],
-      "fingerprint": "de955acbc30f887c95b7cab4bfc054363a4b0419335c5f3021e311532799e02a",
+      "fingerprint": "3f6cc929e0e406dfceb0d2172e8cb9bf08251faa0aeaf27fab0bcffe5e99c8a3",
       "last_read_fingerprint": null
     },
     {
@@ -5760,12 +5764,13 @@
     },
     {
       "cycle": 14,
-      "max_new_application_lines": 3255,
+      "max_new_application_lines": 3269,
       "application_units": [
         "APP-EXPORT"
       ],
       "engine_reverification": [],
-      "acceptance": "export-core text/PDF READ"
+      "min_review_sessions": 6,
+      "acceptance": "export-core text/PDF READ across at least 6 bounded sessions"
     },
     {
       "cycle": 15,
@@ -6553,6 +6558,7 @@
         "SL-C09-VPM-MODE-TOGGLE",
         "SL-C09-VPM-CONTINGENCY-GAS-LOSS-STABLE",
         "SL-C09-TRAVEL-GAS-TRIMIX-CARD",
+        "SL-C09-CONTINGENCY-COPY-PLAN-CONTEXT",
         "SL-C09-SCHEDULE-COLUMN-GEOMETRY",
         "SL-C09-SWITCH-ROW-BACKGROUND-PARITY",
         "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD",

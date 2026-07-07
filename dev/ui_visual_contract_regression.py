@@ -35,6 +35,7 @@ CASE_IDS = (
     "SL-C09-VPM-MODE-TOGGLE",
     "SL-C09-VPM-CONTINGENCY-GAS-LOSS-STABLE",
     "SL-C09-TRAVEL-GAS-TRIMIX-CARD",
+    "SL-C09-CONTINGENCY-COPY-PLAN-CONTEXT",
     "SL-C09-SCHEDULE-COLUMN-GEOMETRY",
     "SL-C09-SWITCH-ROW-BACKGROUND-PARITY",
     "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD",
@@ -915,6 +916,7 @@ async () => {
   const schedule = document.querySelector('#contingencyResult .schedule-table');
   const scheduleWrap = schedule?.closest('.schedule-wrap');
   const bailoutDuplicate = document.querySelector('#decoAlertsEmergency [data-warning="bailout-contingency"]');
+  const copyText = typeof buildMessengerText === 'function' ? (buildMessengerText('contingency') || '') : '';
   const headers = schedule ? [...schedule.querySelectorAll('thead th')].slice(1).map(el => (el.textContent || '').trim()) : [];
   const nonSummaryRows = schedule ? [...schedule.querySelectorAll('tbody tr[data-phase]:not(.row-summary)')] : [];
   const ttsCells = schedule ? [...schedule.querySelectorAll('td[data-label="TTS"]')] : [];
@@ -953,6 +955,12 @@ async () => {
     resultBeforeGas: !!(resultRect && gasRect && resultRect.bottom <= gasRect.top),
     bailoutDuplicateText: bailoutDuplicate?.textContent?.trim() || '',
     bailoutDuplicateCount: document.querySelectorAll('#decoAlertsEmergency [data-warning="bailout-contingency"]').length,
+    copyText,
+    copyHasPlanContext: /Algorithm\s*:/.test(copyText)
+      && /(?:Buhlmann|VPM-B|VPM-B\+GFS)/i.test(copyText)
+      && /(?:GF\s*\d+\/\d+|Conservatism\s*\+\d+|GF Hi\s*\d+)/i.test(copyText)
+      && /(?:Bottom Gas|Diluent|Loop gas)\s*:/.test(copyText)
+      && /(?:Deco Gas|Bailout mix)\s+1\s*:/.test(copyText),
   };
 }
 """
@@ -1503,6 +1511,11 @@ def main() -> int:
         and contingency_gas_details.get("gasBelowSchedule")
         and contingency_gas_details.get("resultBeforeGas")
         and contingency_gas_details.get("bailoutDuplicateCount") == 0
+        and not contingency_gas_details.get("console_errors")
+    )
+    results["SL-C09-CONTINGENCY-COPY-PLAN-CONTEXT"] = bool(
+        contingency_gas_details.get("generated")
+        and contingency_gas_details.get("copyHasPlanContext")
         and not contingency_gas_details.get("console_errors")
     )
     results["SL-VIS-GAS-CONSUMPTION-VOLUME-FIRST-UNITS"] = bool(

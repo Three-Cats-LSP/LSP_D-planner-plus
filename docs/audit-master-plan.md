@@ -43,7 +43,7 @@
 | 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 534 | ENG-ZHL-GAS | Gas card UI READ |
 | 12 | APP-GAS-PLAN | 546 | - | Gas plan core READ |
 | 13 | APP-CONTINGENCY | 577 | - | Contingency core READ |
-| 14 | APP-EXPORT | 3254 | - | export-core text/PDF READ |
+| 14 | APP-EXPORT | 3269 | - | export-core text/PDF READ across at least 6 bounded sessions |
 | 15 | UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 629 | - | plot-core render and waypoints READ in at least 2 bounded sessions (641 lines total) |
 | 16 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 755 | - | Profile tool and plot init READ |
 | 17 | UI-VPM-RENDER, UI-ZHL-RESULTS | 948 | - | results-render-core READ |

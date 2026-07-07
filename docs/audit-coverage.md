@@ -89,7 +89,7 @@
 | APP-ANDROID-SELECT | native_bridge | `android-select-picker.js:1` | 270 | P1 | VERIFIED | ANDROID-01, REG-45 |
 | APP-CAPACITOR-BRIDGE | native_bridge | `capacitor-bridge.js:1` | 278 | P1 | VERIFIED | ANDROID-01, REG-45 |
 | APP-CONTINGENCY | ui_core | `contingency-core.js:1` | 577 | P1 | IN_PROGRESS | - |
-| APP-EXPORT | ui_core | `export-core.js:1` | 3254 | P2 | IN_PROGRESS | - |
+| APP-EXPORT | ui_core | `export-core.js:1` | 3269 | P2 | IN_PROGRESS | - |
 | APP-GAS-PLAN | ui_core | `gas-plan-core.js:1` | 546 | P1 | IN_PROGRESS | - |
 | APP-GAS-TABLE | ui_core | `gas-table-core.js:1` | 305 | P2 | IN_PROGRESS | - |
 | APP-SURFACE-INTERVAL | ui_core | `surf-interval-core.js:1` | 374 | P1 | IN_PROGRESS | - |
@@ -237,5 +237,5 @@
 | TEST-SEVEN-LENS-CYCLE08-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-08-shell-results.json:1` | 994 | P0 | IN_PROGRESS | - |
 | TEST-UI-SHELL-RESULTS-REGRESSION | test_infrastructure | `dev/ui_shell_results_regression.py:1` | 485 | P0 | IN_PROGRESS | REG-95, REG-96, REG-97, REG-98, REG-99 |
 | TEST-UI-RESULTS-CSS-REGRESSION | test_infrastructure | `dev/ui_results_css_regression.py:1` | 407 | P0 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
-| TEST-UI-VISUAL-CONTRACT-REGRESSION | test_infrastructure | `dev/ui_visual_contract_regression.py:1` | 1615 | P0 | IN_PROGRESS | REG-100, REG-101, REG-102, REG-103, REG-104, REG-105, REG-106, REG-107, REG-108, REG-109, REG-110, REG-111 |
+| TEST-UI-VISUAL-CONTRACT-REGRESSION | test_infrastructure | `dev/ui_visual_contract_regression.py:1` | 1628 | P0 | IN_PROGRESS | REG-100, REG-101, REG-102, REG-103, REG-104, REG-105, REG-106, REG-107, REG-108, REG-109, REG-110, REG-111 |
 | TEST-C07-PRE-RESULTS-REGRESSION | test_infrastructure | `dev/c07_pre_results_regression.py:1` | 48 | P0 | IN_PROGRESS | REG-89, REG-90 |
