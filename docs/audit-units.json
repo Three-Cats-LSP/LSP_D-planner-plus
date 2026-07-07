@@ -4318,7 +4318,7 @@
       "evidence": [],
       "issue": "Seven-lens browser event and consumer value tracing",
       "regression_cases": [],
-      "fingerprint": "8f9fe7e4f094e8b28eb5fe819d888272e21c51d1e8f9060f1dbfe768cdc59264",
+      "fingerprint": "e9fcab9839ef5754643e2a6da928bad7bbd68f563a55bbf094bc47f611efa82e",
       "last_read_fingerprint": null
     },
     {
@@ -4333,7 +4333,7 @@
       "evidence": [],
       "issue": "Seven-lens browser trace assertion tests",
       "regression_cases": [],
-      "fingerprint": "af6244d126054b55b449ac4bc303f203d7e31c760c3044112442e8842b487fae",
+      "fingerprint": "416074e0b9056b00d978d6371fbd0d1fcdbc8810211e252128ff3ca08e98abd5",
       "last_read_fingerprint": null
     },
     {
@@ -5545,7 +5545,7 @@
         "REG-98",
         "REG-99"
       ],
-      "fingerprint": "194c02cfbd3423f48ee6749bbefaa51e0787f0c3b4dfdc34ee08cca779d06fdd",
+      "fingerprint": "37d65a8f8301f7e0759c485235880eb33ef3c5fe617c905d201ef55bb66f2640",
       "last_read_fingerprint": null
     },
     {
