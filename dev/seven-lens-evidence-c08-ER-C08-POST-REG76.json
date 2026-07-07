@@ -5,7 +5,7 @@
     "python",
     "dev/ui_css_regression.py"
   ],
-  "commit": "f1f6207d5485d84603662efeb2e66ca00e8bf8a3",
+  "commit": "b4e9375f63b3be88e2e50e8a3d62a7f5e87d5d73",
   "exit_code": 0,
   "case_ids": [
     "SL-C05-GF-ROW-MODE-ISOLATION",
@@ -17,9 +17,9 @@
   ],
   "worktree_clean_before": true,
   "worktree_clean_after": true,
-  "started_at": "2026-07-06T10:28:29.512925+00:00",
-  "finished_at": "2026-07-06T10:28:49.064058+00:00",
-  "stdout_sha256": "53780c05afc831607a8142f628491c90bbb33b4bd87281593e30fbb82454a077",
+  "started_at": "2026-07-07T03:59:05.532042+00:00",
+  "finished_at": "2026-07-07T03:59:33.066291+00:00",
+  "stdout_sha256": "6a7c63b1be708d92e30d72d89e01da8caa3259498c5835394926803b3aae92a3",
   "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
 }
