@@ -723,6 +723,10 @@
     "REG-111": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
       "case_id": "SL-C09-SCHEDULE-COLUMN-GEOMETRY"
+    },
+    "REG-112": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-VIS-GAS-CONSUMPTION-BARS"
     }
   },
   "findings": [
@@ -1778,7 +1782,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "bb3acb7aa101e0a6288b5b62e681adea6add6dd6e83cb19295ced4b67b505df7",
+      "fingerprint": "ee665a0790e8e03d6f33c02f7c0686e1a4277e94a54ab8d85fffa3997fd87fdc",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2164,7 +2168,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RENDER"
       },
-      "fingerprint": "ec8ddce3a82c2c5b496246e2094ba04fe46dbb1d395a18812f40af7041516d21",
+      "fingerprint": "7d85467a20aabba028a7130035d730add3d526797a0f96be3e5f0830a64054c3",
       "last_read_fingerprint": null,
       "audit_issue": 147,
       "evidence": [],
@@ -2255,7 +2259,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
-      "fingerprint": "568c7f31d1cc688d1b8adc0e8e9041ae933d87ff7d09044c33f30975b26a3382",
+      "fingerprint": "f8e97bcf66cf5ebb846f3976d80846c767e26eb23d93a295735c0144a71d4946",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5601,7 +5605,7 @@
         "REG-110",
         "REG-111"
       ],
-      "fingerprint": "3c394239d16d215dc22a08d71d66b03c9d46042fac0a45515790b27dfdc0f1cc",
+      "fingerprint": "6d6e91f271f63edc5e298f9b4fb8c43063b9b27f8a6b1fd3a2bdb97c4b1446d9",
       "last_read_fingerprint": null
     },
     {
@@ -5683,12 +5687,13 @@
     },
     {
       "cycle": 7,
-      "max_new_application_lines": 931,
+      "max_new_application_lines": 937,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "Results CSS READ"
+      "acceptance": "Results CSS READ (2 bounded sessions)",
+      "min_review_sessions": 2
     },
     {
       "cycle": 8,
@@ -6542,7 +6547,8 @@
         "SL-C09-GAS-SWITCH-TERMINOLOGY",
         "SL-C09-MOBILE-WARNING-WRAP",
         "SL-C09-VPM-MODE-TOGGLE",
-        "SL-C09-SCHEDULE-COLUMN-GEOMETRY"
+        "SL-C09-SCHEDULE-COLUMN-GEOMETRY",
+        "SL-VIS-GAS-CONSUMPTION-BARS"
       ]
     }
   ],

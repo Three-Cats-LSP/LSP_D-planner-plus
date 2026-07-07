@@ -34,6 +34,7 @@ CASE_IDS = (
     "SL-C09-MOBILE-WARNING-WRAP",
     "SL-C09-VPM-MODE-TOGGLE",
     "SL-C09-SCHEDULE-COLUMN-GEOMETRY",
+    "SL-VIS-GAS-CONSUMPTION-BARS",
 )
 
 NAV_VIEWPORTS = (
@@ -97,6 +98,19 @@ CAPTURE_JS = r"""
   const graphSwatch = document.querySelector('#decoProfileLegend .gas-switch-swatch');
   const decoDots = [...document.querySelectorAll('.deco-gas-card .gas-dot')];
   const pills = [...document.querySelectorAll('#resultsPanel .gas-pills .gas-pill')];
+  const gasSummary = document.getElementById('gasConsumptionSummary');
+  const gasCards = [...document.querySelectorAll('#gasConsumptionSummary .gas-usage-card')];
+  const gasLabels = gasCards.map(el => el.dataset.gasLabel || el.querySelector('.gas-usage-mix')?.textContent?.trim() || '');
+  const gasFooters = gasCards.map(el => el.querySelector('.gas-usage-foot')?.textContent?.trim() || '');
+  const gasRemaining = gasCards.map(el => el.querySelector('.gas-usage-remaining')?.textContent?.trim() || '');
+  const gasBarWidths = gasCards.map(el => {
+    const used = el.querySelector('.gas-usage-used');
+    return used ? used.getBoundingClientRect().width : 0;
+  });
+  const gasTracks = gasCards.map(el => {
+    const track = el.querySelector('.gas-usage-track');
+    return track ? track.getBoundingClientRect().width : 0;
+  });
   const switchRows = [...document.querySelectorAll('#resultsPanel .schedule-table tr[data-phase="switch"]')];
   const switchCells = switchRows.flatMap(row =>
     [...row.querySelectorAll('td:not([data-label="PPO2"])')]
@@ -190,6 +204,24 @@ CAPTURE_JS = r"""
       mixLaneAligned: !!(mixHead && mixCell && switchMixCell && Math.abs(mixHead.center - mixCell.center) <= 4 && Math.abs(mixCell.center - switchMixCell.center) <= 4),
       mixCompact: !!(mixHead && runHead && mixHead.width <= runHead.width * 0.95),
       mobileScrollReady: !schedule || window.innerWidth > 640 || !!(scheduleWrap && scheduleRect && scheduleWrapRect && getComputedStyle(scheduleWrap).overflowX === 'auto' && scheduleRect.width > scheduleWrapRect.width),
+    },
+    gasConsumptionBars: {
+      visible: !!(gasSummary && getComputedStyle(gasSummary).display !== 'none'),
+      cardCount: gasCards.length,
+      tableCount: document.querySelectorAll('#gasConsumptionSummary table.gas-plan-table').length,
+      thresholdValue: document.getElementById('gasLowThresholdPct')?.value || '',
+      labels: gasLabels,
+      forbiddenLabels: gasLabels.filter(text => /EAN\d+/i.test(text)),
+      hasAir: gasLabels.includes('Air'),
+      hasO2: gasLabels.includes('100%'),
+      hasDecoMix: gasLabels.some(text => /^\d{2}\/\d{2}$/.test(text)),
+      footerTexts: gasFooters,
+      remainingTexts: gasRemaining,
+      hasTurnPressureInline: gasFooters.some(text => /Used:.*Turn Pressure:/i.test(text)),
+      hasTurnPressColumn: /TURN\s+PRESS(?!URE)/i.test(gasSummary?.textContent || ''),
+      barsPresent: gasCards.length > 0 && gasCards.every((el, i) => !!el.querySelector('.gas-usage-track') && gasBarWidths[i] > 0 && gasTracks[i] > 0),
+      metricUnits: gasRemaining.every(text => /bar/.test(text) && /\bL\)/.test(text)),
+      sufficientLeftBorderOnly: gasCards.some(el => el.classList.contains('gas-usage-card--ok') && parseFloat(getComputedStyle(el).borderLeftWidth) > parseFloat(getComputedStyle(el).borderTopWidth)),
     },
     layout: planner && results ? {
       plannerLeft: planner.left,
@@ -480,7 +512,7 @@ async () => {
 
   const viewportWidth = document.documentElement.clientWidth;
   const candidates = [
-    ...document.querySelectorAll('#decoAlerts .alert, #decoAlertsNarcotic .alert, #gasWarningBanner, .gas-bt-cell'),
+    ...document.querySelectorAll('#decoAlerts .alert, #decoAlertsNarcotic .alert, #gasWarningBanner, .gas-consumption-warning, .gas-usage-card--critical'),
   ].filter(el => {
     const style = getComputedStyle(el);
     const rect = el.getBoundingClientRect();
@@ -498,12 +530,19 @@ async () => {
     generated,
     viewportWidth,
     alertCount: document.querySelectorAll('#decoAlerts .alert, #decoAlertsNarcotic .alert').length,
-    gasBtCount: document.querySelectorAll('.gas-bt-cell').length,
+    criticalGasCards: document.querySelectorAll('.gas-usage-card--critical').length,
+    warningText: document.getElementById('gasWarningBanner')?.textContent?.trim() || '',
+    cardWarningText: document.querySelector('.gas-consumption-warning')?.textContent?.trim() || '',
     checks,
     overflow,
     bodyScrollWidth: document.documentElement.scrollWidth,
     bodyOverflow,
-    ok: generated && candidates.length >= 2 && overflow.length === 0 && !bodyOverflow,
+    ok: generated
+      && candidates.length >= 2
+      && document.querySelectorAll('.gas-usage-card--critical').length >= 1
+      && /Bottom|Air|No gas supply|Critical/i.test(document.querySelector('.gas-consumption-warning')?.textContent || '')
+      && overflow.length === 0
+      && !bodyOverflow,
   };
 }
 """
@@ -904,6 +943,23 @@ def main() -> int:
         and c["scheduleColumns"]["mixCompact"]
         and c["scheduleColumns"]["mobileScrollReady"]
         and not c["scheduleColumns"]["clippedCells"]
+        for c in captures
+    )
+    results["SL-VIS-GAS-CONSUMPTION-BARS"] = all(
+        c["generated"]
+        and c["gasConsumptionBars"]["visible"]
+        and c["gasConsumptionBars"]["cardCount"] >= 3
+        and c["gasConsumptionBars"]["tableCount"] == 0
+        and c["gasConsumptionBars"]["thresholdValue"] == "20"
+        and c["gasConsumptionBars"]["hasAir"]
+        and c["gasConsumptionBars"]["hasO2"]
+        and c["gasConsumptionBars"]["hasDecoMix"]
+        and not c["gasConsumptionBars"]["forbiddenLabels"]
+        and c["gasConsumptionBars"]["barsPresent"]
+        and c["gasConsumptionBars"]["metricUnits"]
+        and c["gasConsumptionBars"]["hasTurnPressureInline"]
+        and not c["gasConsumptionBars"]["hasTurnPressColumn"]
+        and c["gasConsumptionBars"]["sufficientLeftBorderOnly"]
         for c in captures
     )
 

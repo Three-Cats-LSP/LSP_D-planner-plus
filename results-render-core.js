@@ -14,6 +14,222 @@
  *   window._lastBottomPhaseConsumedL, window._contingencyScratchGasConsumed
  */
 
+const GAS_LOW_THRESHOLD_KEY = 'gasLowThresholdPct';
+
+function _gasCardHtml(value) {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function getGasLowThresholdPct() {
+  const raw = Number.parseFloat(localStorage.getItem(GAS_LOW_THRESHOLD_KEY));
+  const val = Number.isFinite(raw) ? raw : 20;
+  return Math.min(50, Math.max(5, Math.round(val)));
+}
+
+function setGasLowThresholdPct(value) {
+  const next = Math.min(50, Math.max(5, Math.round(Number.parseFloat(value) || 20)));
+  localStorage.setItem(GAS_LOW_THRESHOLD_KEY, String(next));
+  const gasEl = document.getElementById('gasConsumptionSummary');
+  if (gasEl && gasEl.style.display !== 'none' && window._lastGasConsumed) {
+    renderGasConsumptionBars(gasEl, window._lastGasConsumed, { title: 'Gas Consumption' });
+  }
+}
+
+if (typeof window !== 'undefined') {
+  window.getGasLowThresholdPct = getGasLowThresholdPct;
+  window.setGasLowThresholdPct = setGasLowThresholdPct;
+}
+
+function _gasPresText(bar) {
+  const unit = units === 'imperial' ? 'psi' : 'bar';
+  return `${gpPresDisp(Math.max(0, bar))} ${unit}`;
+}
+
+function _gasVolText(litres) {
+  return `${gpVolDisp(Math.max(0, litres))} ${lspVolUnit()}`;
+}
+
+function _gasConsumedForLabel(gasConsumed, label) {
+  if (!gasConsumed || !label) return 0;
+  if (Number.isFinite(gasConsumed[label])) return gasConsumed[label];
+  const key = Object.keys(gasConsumed).find(k => k.toLowerCase() === label.toLowerCase());
+  if (key && Number.isFinite(gasConsumed[key])) return gasConsumed[key];
+  if (typeof gpRequiredFor === 'function') {
+    const matched = gpRequiredFor(label);
+    if (Number.isFinite(matched)) return matched;
+  }
+  return 0;
+}
+
+function _configuredGasCylinders() {
+  const rows = [];
+  const bottom = getBottomGasFractions();
+  if (bottom) {
+    rows.push({
+      key: 'bottom',
+      role: 'Bottom',
+      label: getGasLabel(bottom.fO2, bottom.fHe),
+      sizeId: 'cylBot_size',
+      fillId: 'cylBot_pres',
+      reserveId: 'cylBot_reserve',
+      turn: true,
+    });
+  }
+
+  if (isTravelGasConfigured() && document.getElementById('cylTravelGas_size')) {
+    const travel = getTravelGasInfo();
+    rows.push({
+      key: 'travel',
+      role: 'Travel',
+      label: travel?.label || getDecoGasLabel('travelGasMix', 'travelGasCustomO2') || 'Travel',
+      sizeId: 'cylTravelGas_size',
+      fillId: 'cylTravelGas_pres',
+      reserveId: 'cylTravelGas_reserve',
+      turn: false,
+    });
+  }
+
+  getAllDecoGasIds().forEach(idx => {
+    const fracs = getDecoCardFractions(idx);
+    if (!fracs || !(fracs.fO2 > 0)) return;
+    rows.push({
+      key: `deco${idx}`,
+      role: `Deco ${idx}`,
+      label: getGasLabel(fracs.fO2, fracs.fHe),
+      sizeId: `cylDg${idx}_size`,
+      fillId: `cylDg${idx}_pres`,
+      reserveId: `cylDg${idx}_reserve`,
+      turn: false,
+    });
+  });
+  return rows.filter(row => row.label && document.getElementById(row.sizeId));
+}
+
+function _buildGasUsageModel(gasConsumed) {
+  const cylinders = _configuredGasCylinders().map(row => {
+    const sizeL = gpSizeL(row.sizeId);
+    const fillBar = gpPresBar(row.fillId);
+    const reserveBar = gpPresBar(row.reserveId);
+    const totalL = Math.max(0, sizeL * fillBar);
+    const usableL = Math.max(0, sizeL * Math.max(0, fillBar - reserveBar));
+    return { ...row, sizeL, fillBar, reserveBar, totalL, usableL };
+  });
+
+  const usableByLabel = {};
+  const countByLabel = {};
+  cylinders.forEach(row => {
+    const key = row.label.toLowerCase();
+    usableByLabel[key] = (usableByLabel[key] || 0) + row.usableL;
+    countByLabel[key] = (countByLabel[key] || 0) + 1;
+  });
+
+  return cylinders.map(row => {
+    const key = row.label.toLowerCase();
+    const requiredL = _gasConsumedForLabel(gasConsumed, row.label);
+    let usedL = requiredL;
+    if (countByLabel[key] > 1) {
+      usedL = usableByLabel[key] > 0
+        ? requiredL * (row.usableL / usableByLabel[key])
+        : requiredL / countByLabel[key];
+    }
+    const usedBar = row.sizeL > 0 ? usedL / row.sizeL : 0;
+    const remainingUsableL = row.usableL - usedL;
+    const remainingTotalL = row.totalL - usedL;
+    const remainingBar = row.sizeL > 0 ? remainingTotalL / row.sizeL : 0;
+    const shortfallL = Math.max(0, -remainingUsableL);
+    const remainingPercent = row.usableL > 0 ? Math.max(0, remainingUsableL / row.usableL * 100) : 0;
+    const usedPercentOfTotal = row.totalL > 0 ? Math.min(100, Math.max(0, usedL / row.totalL * 100)) : 0;
+    const turnPressureBar = row.turn && typeof computePooledBottomTurnBars === 'function'
+      ? computePooledBottomTurnBars(row.sizeL, row.fillBar, row.reserveBar, 0, _gasRule === 'half' ? 0.5 : 1 / 3)?.turnBar
+      : null;
+    return {
+      ...row,
+      displayName: `${row.label} ${row.role}`,
+      usedL,
+      usedBar,
+      remainingTotalL: Math.max(0, remainingTotalL),
+      remainingBar: Math.max(0, remainingBar),
+      remainingPercent,
+      usedPercentOfTotal,
+      shortfallL,
+      turnPressureBar,
+    };
+  });
+}
+
+function _gasUsageStatus(row, threshold) {
+  if (!(row.totalL > 0) || row.shortfallL > 0 || row.remainingPercent < threshold) return 'critical';
+  if (row.remainingPercent <= 50) return 'caution';
+  return 'ok';
+}
+
+function renderGasConsumptionBars(container, gasConsumed, options) {
+  if (!container) return;
+  const title = options?.title || 'Gas Consumption';
+  const threshold = getGasLowThresholdPct();
+  const rows = _buildGasUsageModel(gasConsumed || {});
+  if (!rows.length) {
+    container.innerHTML = '';
+    container.style.display = 'none';
+    _setGasWarningBanner('');
+    return;
+  }
+
+  const warnings = [];
+  const rowHtml = rows.map(row => {
+    const status = _gasUsageStatus(row, threshold);
+    if (status === 'critical') {
+      if (!(row.totalL > 0)) {
+        warnings.push(`No gas supply: ${row.displayName} has no configured cylinder supply`);
+      } else if (row.shortfallL > 0) {
+        warnings.push(`No gas supply: ${row.displayName} needs ${_gasPresText(row.usedBar)}, cylinder has ${_gasPresText(row.fillBar)}`);
+      } else {
+        warnings.push(`Critical: ${row.displayName} below ${threshold}% remaining`);
+      }
+    }
+    const turn = Number.isFinite(row.turnPressureBar)
+      ? `<span>Turn Pressure: <strong>${_gasPresText(row.turnPressureBar)}</strong></span>`
+      : '';
+    return `<div class="gas-usage-card gas-usage-card--${status}" data-gas-label="${_gasCardHtml(row.label)}" data-gas-role="${_gasCardHtml(row.role)}" style="--gas-used-pct:${row.usedPercentOfTotal.toFixed(2)}%;">
+      <div class="gas-usage-head">
+        <div class="gas-usage-title"><span class="gas-usage-mix">${_gasCardHtml(row.label)}</span><span class="gas-usage-role">${_gasCardHtml(row.role)}</span></div>
+        <div class="gas-usage-remaining">${_gasPresText(row.remainingBar)} <span>(${_gasVolText(row.remainingTotalL)})</span></div>
+      </div>
+      <div class="gas-usage-scale"><span>0</span><span>${_gasPresText(row.fillBar)}</span></div>
+      <div class="gas-usage-track" aria-label="${_gasCardHtml(row.displayName)} usage"><div class="gas-usage-used"></div></div>
+      <div class="gas-usage-foot"><span>Used: <strong>${_gasPresText(row.usedBar)}</strong> (${_gasVolText(row.usedL)})</span>${turn}</div>
+    </div>`;
+  }).join('');
+
+  const warningHtml = warnings.length
+    ? `<div class="gas-consumption-warning alert dang"><span>!</span><div>${warnings.map(_gasCardHtml).join('<br>')}</div></div>`
+    : '';
+  const sacUnit = lspSacUnit();
+  const sacBottom = document.getElementById('sacBottom')?.value || '';
+  const sacDeco = document.getElementById('sacDeco')?.value || '';
+  container.innerHTML = `<div class="card collapsible card-open gas-consumption-card">
+    <div class="card-title" onclick="toggleCard(this)">${_gasCardHtml(title)}<span class="card-caret">v</span></div>
+    <div class="card-collapsible-body">
+      <div class="gas-consumption-toolbar">
+        <label class="gas-threshold-control">Low gas
+          <input id="gasLowThresholdPct" type="number" min="5" max="50" step="1" value="${threshold}" onchange="setGasLowThresholdPct(this.value)" inputmode="numeric">
+          <span>%</span>
+        </label>
+      </div>
+      ${warningHtml}
+      <div class="gas-consumption-bars">${rowHtml}</div>
+      <div class="gas-consumption-note">SAC bottom: ${_gasCardHtml(sacBottom)} ${_gasCardHtml(sacUnit)} &middot; deco: ${_gasCardHtml(sacDeco)} ${_gasCardHtml(sacUnit)}</div>
+    </div>
+  </div>`;
+  container.style.display = 'block';
+  _updateGasWarningBannerFromCard(container);
+}
+
 // AUDIT-UNIT:UI-VPM-RENDER
 function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct, decoGases, model, _vpmBotFracs) {
   const dU = units === 'metric';
@@ -425,46 +641,13 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
       }
     }
 
-    // ── Gas Consumption card (VPM) — rendered via calcGasPlan() ──
+    // Gas Consumption result card (VPM) uses the last plan consumption but
+    // keeps calcGasPlan() available for the Gas Plan tab/export path.
     window._lastGasConsumed = Object.assign({}, gasConsVPM);
+    window._lastBottomPhaseConsumedL = {};
     _syncCylToGasPlan();
     calcGasPlan();
-    const gpBodyVPM = document.getElementById('gpResultBody');
-    const gpNoteVPM = document.getElementById('gpResultNote');
-    const ruleLblVPM = (_gasRule === 'half') ? 'HALF' : 'THIRDS';
-    const sacUnitVPM2 = lspSacUnit();
-    let ghtml = `<div class="card collapsible card-open" style="margin-top:8px;">
-      <div class="card-title" onclick="toggleCard(this)">Gas Consumption<span class="card-caret">▾</span></div>
-      <div class="card-collapsible-body">
-      <div style="display:flex;justify-content:flex-end;align-items:center;margin-bottom:10px;">
-        <div style="display:flex;gap:4px;align-items:center;">
-          <button onclick="showGasRuleInfo()" style="background:none;border:1px solid var(--border);border-radius:50%;width:16px;height:16px;font-size:9px;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;flex-shrink:0;" title="About gas rules">?</button>
-          <span style="font-size:10px;color:var(--muted);margin-right:4px;">Rule:</span>
-          <button class="btn-export${_gasRule!=='half'?' active':''}" style="padding:3px 8px;font-size:11px;" onclick="setGasRule('thirds')" id="gasRuleTBtn">Thirds</button>
-          <button class="btn-export${_gasRule==='half'?' active':''}" style="padding:3px 8px;font-size:11px;" onclick="setGasRule('half')" id="gasRuleHBtn">Half</button>
-        </div>
-      </div>
-      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
-        <table class="gas-plan-table" style="margin-top:0;">
-          <colgroup></colgroup>
-          <thead><tr>
-            <th>GAS</th>
-            <th>TOTAL VOL</th>
-            <th>${ruleLblVPM}</th>
-            <th>TURN PRESS</th>
-            <th>SUFFICIENT</th>
-            <th>MARGIN</th>
-          </tr></thead>
-          <tbody>${gpBodyVPM ? gpBodyVPM.innerHTML : ''}</tbody>
-        </table>
-      </div>
-      ${gpNoteVPM?.innerHTML ? `<div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:8px;">${gpNoteVPM.innerHTML}</div>` : ''}
-      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:8px;letter-spacing:1px;">SAC bottom: ${sacBottomDisp} ${sacUnitVPM2} · deco: ${sacDecoDisp} ${sacUnitVPM2}</div>
-      </div></div>`;
-    gasElVPM.innerHTML = ghtml;
-    _applyGasWarningStyles(gasElVPM);
-    gasElVPM.style.display = 'block';
-    _updateGasWarningBannerFromCard(gasElVPM);
+    renderGasConsumptionBars(gasElVPM, gasConsVPM, { title: 'Gas Consumption' });
   }
 
   // Contingency Plans — re-runs Bühlmann internally, works fine with VPM settings
@@ -978,50 +1161,15 @@ function renderZhlScheduleResults(ctx) {
     const sacUnitBHL = lspSacUnit();
     const fracBHL   = (_gasRule === 'half') ? 0.5 : (1/3);
     const ruleLblBHL = (_gasRule === 'half') ? 'HALF' : 'THIRDS';
-    // ── Gas Consumption card — rendered via calcGasPlan() ──
+    // Gas Consumption result card renders per-cylinder bars. calcGasPlan()
+    // remains available for the Gas Plan tab/export path.
     const cardTitle = _contingencyRunning ? 'Emergency Gas Consumption' : 'Gas Consumption';
     if (!_contingencyRunning) {
-      // Store consumed gas so calcGasPlan() can cross-check
       window._lastGasConsumed = Object.assign({}, gasConsumed);
       window._lastBottomPhaseConsumedL = Object.assign({}, bottomPhaseConsumed);
-      // Run Gas Plan render into a temp tbody, then build card
+      _syncCylToGasPlan();
       calcGasPlan();
-      const gpBody = document.getElementById('gpResultBody');
-      const gpNote = document.getElementById('gpResultNote');
-      const ruleLblCard = (_gasRule === 'half') ? 'HALF' : 'THIRDS';
-      const sacUnitBHL2 = lspSacUnit();
-      const html = `<div class="card collapsible card-open" style="margin-top:8px;">
-        <div class="card-title" onclick="toggleCard(this)">${cardTitle}<span class="card-caret">▾</span></div>
-        <div class="card-collapsible-body">
-        <div style="display:flex;justify-content:flex-end;align-items:center;margin-bottom:10px;">
-          <div style="display:flex;gap:4px;align-items:center;">
-            <button onclick="showGasRuleInfo()" style="background:none;border:1px solid var(--border);border-radius:50%;width:16px;height:16px;font-size:9px;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;flex-shrink:0;" title="About gas rules">?</button>
-            <span style="font-size:10px;color:var(--muted);margin-right:4px;">Rule:</span>
-            <button class="btn-export${_gasRule!=='half'?' active':''}" style="padding:3px 8px;font-size:11px;" onclick="setGasRule('thirds')">Thirds</button>
-            <button class="btn-export${_gasRule==='half'?' active':''}" style="padding:3px 8px;font-size:11px;" onclick="setGasRule('half')">Half</button>
-          </div>
-        </div>
-        <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
-          <table class="gas-plan-table" style="margin-top:0;">
-            <colgroup></colgroup>
-            <thead><tr>
-              <th>GAS</th>
-              <th>TOTAL VOL</th>
-              <th>${ruleLblCard}</th>
-              <th>TURN PRESS</th>
-              <th>SUFFICIENT</th>
-              <th>MARGIN</th>
-            </tr></thead>
-            <tbody>${gpBody ? gpBody.innerHTML : ''}</tbody>
-          </table>
-        </div>
-        ${gpNote ? gpNote.innerHTML ? `<div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:8px;">${gpNote.innerHTML}</div>` : '' : ''}
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:8px;letter-spacing:1px;">SAC bottom: ${sacBottomDisp} ${sacUnitBHL2} · deco: ${sacDecoDisp} ${sacUnitBHL2}</div>
-        </div></div>`;
-      gasEl.innerHTML = html;
-      gasEl.style.display = 'block';
-      _applyGasWarningStyles(gasEl);
-      _updateGasWarningBannerFromCard(gasEl);
+      renderGasConsumptionBars(gasEl, gasConsumed, { title: cardTitle });
     } else {
       // Emergency plan — keep simple sufficient/short table
       const volUnitV2 = lspVolUnit();
