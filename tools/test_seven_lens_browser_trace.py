@@ -563,12 +563,17 @@ class SuiteOrderRegressionTests(unittest.TestCase):
                     str(ROOT / "tools/seven_lens_browser_trace.py"),
                     "--spec", str(spec),
                     "--output", str(trace_out),
+                    "--case-id", "SL-C08-NAV-PRESERVES-RESULTS",
                 ],
                 cwd=ROOT, capture_output=True, text=True,
             )
             self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
             shell_proc = subprocess.run(
-                [sys.executable, str(ROOT / "dev/ui_shell_results_regression.py")],
+                [
+                    sys.executable,
+                    str(ROOT / "dev/ui_shell_results_regression.py"),
+                    "--case-id", "SL-C08-NAV-PRESERVES-RESULTS",
+                ],
                 cwd=ROOT, capture_output=True, text=True,
             )
             self.assertEqual(shell_proc.returncode, 0, shell_proc.stdout + shell_proc.stderr)
@@ -582,7 +587,11 @@ class SuiteOrderRegressionTests(unittest.TestCase):
         trace_out = _ephemeral_trace_output("temp2")
         try:
             shell_proc = subprocess.run(
-                [sys.executable, str(ROOT / "dev/ui_shell_results_regression.py")],
+                [
+                    sys.executable,
+                    str(ROOT / "dev/ui_shell_results_regression.py"),
+                    "--case-id", "SL-C08-NAV-PRESERVES-RESULTS",
+                ],
                 cwd=ROOT, capture_output=True, text=True,
             )
             self.assertEqual(shell_proc.returncode, 0, shell_proc.stdout + shell_proc.stderr)
@@ -592,6 +601,7 @@ class SuiteOrderRegressionTests(unittest.TestCase):
                     str(ROOT / "tools/seven_lens_browser_trace.py"),
                     "--spec", str(spec),
                     "--output", str(trace_out),
+                    "--case-id", "SL-C08-NAV-PRESERVES-RESULTS",
                 ],
                 cwd=ROOT, capture_output=True, text=True,
             )

@@ -5,6 +5,7 @@ from __future__ import annotations
 import subprocess
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -40,12 +41,34 @@ def main() -> int:
         "audit_coverage --check",
         [sys.executable, "tools/audit_coverage.py", "--check"],
     )
-    reviewed = run_step(
-        "seven_lens_protocol check-all",
-        [sys.executable, "tools/seven_lens_protocol.py", "check-all"],
-    )
+    parallel_steps = [
+        (
+            "seven_lens_protocol check-all",
+            [sys.executable, "tools/seven_lens_protocol.py", "check-all"],
+        ),
+        *[
+            (f"unittest {module}", [sys.executable, "-m", "unittest", module])
+            for module in UNIT_TEST_MODULES
+        ],
+    ]
+    results_by_label: dict[str, subprocess.CompletedProcess[str]] = {}
+    if cov.returncode == 0:
+        with ThreadPoolExecutor(max_workers=min(4, len(parallel_steps))) as executor:
+            futures = {
+                executor.submit(run_step, label, command): label
+                for label, command in parallel_steps
+            }
+            for future in as_completed(futures):
+                label = futures[future]
+                results_by_label[label] = future.result()
+    else:
+        results_by_label = {
+            label: subprocess.CompletedProcess(command, 1, "", "skipped after coverage failure")
+            for label, command in parallel_steps
+        }
+    reviewed = results_by_label["seven_lens_protocol check-all"]
     test_results = [
-        run_step(f"unittest {module}", [sys.executable, "-m", "unittest", module])
+        results_by_label[f"unittest {module}"]
         for module in UNIT_TEST_MODULES
     ]
     passed = (

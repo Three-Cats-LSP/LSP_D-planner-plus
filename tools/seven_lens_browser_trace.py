@@ -609,6 +609,18 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--spec", type=Path, required=True)
     parser.add_argument("--output", type=Path, default=Path("dev/seven-lens-browser-trace.json"))
+    parser.add_argument(
+        "--trace-id",
+        action="append",
+        default=[],
+        help="Run only matching trace id(s). Intended for focused infrastructure regressions; omitted evidence runs execute the full spec.",
+    )
+    parser.add_argument(
+        "--case-id",
+        action="append",
+        default=[],
+        help="Run only traces that declare the given stable case id(s). Intended for focused infrastructure regressions.",
+    )
     args = parser.parse_args()
     spec_path = args.spec if args.spec.is_absolute() else ROOT / args.spec
     output = args.output if args.output.is_absolute() else ROOT / args.output
@@ -624,12 +636,25 @@ def main() -> int:
     from playwright_boot import boot_app_page
     from test_http import serve_www
 
+    selected_traces = spec.get("traces", [])
+    if args.trace_id or args.case_id:
+        trace_ids = set(args.trace_id)
+        case_ids = set(args.case_id)
+        selected_traces = [
+            trace for trace in selected_traces
+            if trace.get("id") in trace_ids
+            or bool(case_ids.intersection(set(trace.get("case_ids", []))))
+        ]
+        if not selected_traces:
+            print("SEVEN-LENS BROWSER TRACE: no traces matched filter", file=sys.stderr)
+            return 2
+
     results = []
     repeat = spec.get("repeat", 2)
     with serve_www(ROOT) as base_url, sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         try:
-            for trace in spec.get("traces", []):
+            for trace in selected_traces:
                 runs = []
                 for run_index in range(repeat):
                     run_started = time.perf_counter()

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import sys
+import argparse
 from pathlib import Path
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -420,41 +421,57 @@ def _run_viewport(browser, base_url: str, viewport: tuple[int, int], *, run_beha
 
 def main() -> int:
     from playwright.sync_api import sync_playwright
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--case-id",
+        action="append",
+        default=[],
+        help="Run only the selected stable case id(s). Omit for the full shell/results regression.",
+    )
+    args = parser.parse_args()
+    selected_cases = tuple(args.case_id) if args.case_id else CASE_IDS
+    unknown = sorted(set(selected_cases) - set(CASE_IDS))
+    if unknown:
+        print(f"Unknown case id(s): {', '.join(unknown)}", file=sys.stderr)
+        return 2
 
     print("=" * 60)
     print("Cycle 08 — UI-SHELL-RESULTS behavioral regression")
     print("=" * 60)
 
-    results: dict[str, bool] = {case_id: True for case_id in CASE_IDS}
+    results: dict[str, bool] = {case_id: True for case_id in selected_cases}
     detail: dict = {}
 
     with serve_www(ROOT) as base_url:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
 
-            desktop = _run_viewport(browser, base_url, (1280, 800))
-            detail["1280x800"] = desktop.pop("_detail")
-            for case_id, ok in desktop.items():
-                results[case_id] = results[case_id] and bool(ok)
+            if any(case_id != "SL-C08-MOBILE-PANEL-EXCLUSIVE" for case_id in selected_cases):
+                desktop = _run_viewport(browser, base_url, (1280, 800))
+                detail["1280x800"] = desktop.pop("_detail")
+                for case_id, ok in desktop.items():
+                    if case_id in results:
+                        results[case_id] = results[case_id] and bool(ok)
 
-            portrait = _run_viewport(browser, base_url, (375, 667), run_behavioral=False)
-            detail["375x667"] = portrait.pop("_detail")
-            results["SL-C08-MOBILE-PANEL-EXCLUSIVE"] = (
-                results["SL-C08-MOBILE-PANEL-EXCLUSIVE"]
-                and bool(portrait.get("SL-C08-MOBILE-PANEL-EXCLUSIVE"))
-            )
+            if "SL-C08-MOBILE-PANEL-EXCLUSIVE" in selected_cases:
+                portrait = _run_viewport(browser, base_url, (375, 667), run_behavioral=False)
+                detail["375x667"] = portrait.pop("_detail")
+                results["SL-C08-MOBILE-PANEL-EXCLUSIVE"] = (
+                    results["SL-C08-MOBILE-PANEL-EXCLUSIVE"]
+                    and bool(portrait.get("SL-C08-MOBILE-PANEL-EXCLUSIVE"))
+                )
 
-            landscape = _run_viewport(browser, base_url, (667, 375), run_behavioral=False)
-            detail["667x375"] = landscape.pop("_detail")
-            results["SL-C08-MOBILE-PANEL-EXCLUSIVE"] = (
-                results["SL-C08-MOBILE-PANEL-EXCLUSIVE"]
-                and bool(landscape.get("SL-C08-MOBILE-PANEL-EXCLUSIVE"))
-            )
+                landscape = _run_viewport(browser, base_url, (667, 375), run_behavioral=False)
+                detail["667x375"] = landscape.pop("_detail")
+                results["SL-C08-MOBILE-PANEL-EXCLUSIVE"] = (
+                    results["SL-C08-MOBILE-PANEL-EXCLUSIVE"]
+                    and bool(landscape.get("SL-C08-MOBILE-PANEL-EXCLUSIVE"))
+                )
 
             browser.close()
 
-    rows = [case_row(case_id, results[case_id]) for case_id in CASE_IDS]
-    for case_id in CASE_IDS:
+    rows = [case_row(case_id, results[case_id]) for case_id in selected_cases]
+    for case_id in selected_cases:
         print(f"  {'✓' if results[case_id] else '✗'} [{case_id}]")
     code = 0 if all(results.values()) else 1
     out = ROOT / "dev" / "ui_shell_results_regression_results.json"
