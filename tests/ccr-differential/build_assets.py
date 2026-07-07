@@ -18,6 +18,12 @@ def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def write_text_if_changed(path: Path, text: str) -> None:
+    if path.exists() and path.read_text(encoding="utf-8") == text:
+        return
+    path.write_text(text, encoding="utf-8", newline="\n")
+
+
 def base_env() -> dict:
     return {
         "surfacePressureBar": 1.01325,
@@ -266,9 +272,7 @@ def main() -> None:
     fixture_dir = OUT / "fixtures"
     fixture_dir.mkdir(parents=True, exist_ok=True)
     for fx in fixtures:
-        (fixture_dir / f"{fx['id']}.json").write_text(
-            json.dumps(fx, indent=2), encoding="utf-8"
-        )
+        write_text_if_changed(fixture_dir / f"{fx['id']}.json", json.dumps(fx, indent=2))
     for orphan in fixture_dir.glob("CCR-*.json"):
         if orphan.stem not in {fx["id"] for fx in fixtures}:
             orphan.unlink()
@@ -303,7 +307,7 @@ def main() -> None:
         gdir = OUT / "goldens" / engine_key
         gdir.mkdir(parents=True, exist_ok=True)
         for sid, g in goldens.items():
-            (gdir / f"{sid}.json").write_text(json.dumps(g, indent=2), encoding="utf-8")
+            write_text_if_changed(gdir / f"{sid}.json", json.dumps(g, indent=2))
 
     expected = [
         {
@@ -595,11 +599,9 @@ def main() -> None:
             "reviewer": "ccr_open_reference.py subsurface preset",
         },
     ]
-    (OUT / "expected-differences.json").write_text(
-        json.dumps(expected, indent=2), encoding="utf-8"
-    )
+    write_text_if_changed(OUT / "expected-differences.json", json.dumps(expected, indent=2))
 
-    (OUT / "known-lsp-defects.json").write_text("[]\n", encoding="utf-8")
+    write_text_if_changed(OUT / "known-lsp-defects.json", "[]\n")
 
     manifest = {
         "schemaVersion": 2,
@@ -622,7 +624,7 @@ def main() -> None:
         "inputsChecksum": sha256_file(KB / "inputs.json"),
         "multidecoChecksum": sha256_file(KB / "multideco-results.json"),
     }
-    (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    write_text_if_changed(OUT / "manifest.json", json.dumps(manifest, indent=2))
     print(
         f"Wrote {len(fixtures)} fixtures, "
         f"{len(md_goldens)} MultiDeco, {len(dk_goldens)} DiveKit, "

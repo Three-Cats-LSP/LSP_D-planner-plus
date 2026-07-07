@@ -3938,18 +3938,14 @@
       "path": "tests/ccr-differential/build_assets.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "94f9bc84d0572395974e24d018c263b7469a9f6b499da738ab2b7a6f9ab4a064",
-      "last_read_fingerprint": "94f9bc84d0572395974e24d018c263b7469a9f6b499da738ab2b7a6f9ab4a064",
-      "regression_cases": [
-        "COV-01"
-      ],
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
+      "fingerprint": "185c9f5f4df3d7925bb1fcf7e92861c458444c220d1b3189a2062c840d3ddf86",
+      "last_read_fingerprint": null,
+      "regression_cases": [],
+      "evidence": [],
       "issue": "V3 full audit verified \u2014 TEST-CCR-DIFF-BUILD"
     },
     {
@@ -4147,7 +4143,7 @@
       "evidence": [],
       "issue": "GitHub #140 M-3 coverage + audit self-tests",
       "regression_cases": [],
-      "fingerprint": "63b29c2b82543c1e85cab4ecd931eb0e0df4ebeb7cb1df712a286a95f6b4e94a",
+      "fingerprint": "4d254a92c3d83721894e154ecd463bbd53a3a12e5f1cffd913aa7f1e447c6801",
       "last_read_fingerprint": null
     },
     {
@@ -4237,7 +4233,7 @@
       "evidence": [],
       "issue": "Seven-lens browser event and consumer value tracing",
       "regression_cases": [],
-      "fingerprint": "dcd595a937de18d9624b5bddfcf516e4df866b9fdf5b26cbc1d7ff54dd7dbab3",
+      "fingerprint": "8f9fe7e4f094e8b28eb5fe819d888272e21c51d1e8f9060f1dbfe768cdc59264",
       "last_read_fingerprint": null
     },
     {
@@ -4252,7 +4248,7 @@
       "evidence": [],
       "issue": "Seven-lens browser trace assertion tests",
       "regression_cases": [],
-      "fingerprint": "6bdbf7ded465126736bdf2e5724f1ebab91ca278f5e0c521d45dfc9b936fe15a",
+      "fingerprint": "af6244d126054b55b449ac4bc303f203d7e31c760c3044112442e8842b487fae",
       "last_read_fingerprint": null
     },
     {
@@ -4492,7 +4488,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "4a40f9a451537530fba8a373cb2d79dd53320416e17e037b0ee73086b462c18c",
+      "fingerprint": "f9a422515760c582fa6f6e0409793b8aa8bb6c45e6f93b3a4c18a989f0463c46",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],

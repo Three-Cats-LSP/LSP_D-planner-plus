@@ -551,21 +551,22 @@ class ShellRestoreDebounceTests(unittest.TestCase):
 
 
 class SuiteOrderRegressionTests(unittest.TestCase):
-    def test_trace_then_shell_three_times(self):
+    def test_repeated_trace_then_shell(self):
         spec = ROOT / "docs/seven-lens-traces/cycle-08-shell-results.json"
         trace_out = _ephemeral_trace_output("temp")
         try:
-            for run in range(3):
-                proc = subprocess.run(
-                    [
-                        sys.executable,
-                        str(ROOT / "tools/seven_lens_browser_trace.py"),
-                        "--spec", str(spec),
-                        "--output", str(trace_out),
-                    ],
-                    cwd=ROOT, capture_output=True, text=True,
-                )
-                self.assertEqual(proc.returncode, 0, f"trace run {run + 1}: {proc.stdout}\n{proc.stderr}")
+            # The trace spec already repeats each trace in fresh contexts; this
+            # test only needs one full trace process before the shell regression.
+            proc = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "tools/seven_lens_browser_trace.py"),
+                    "--spec", str(spec),
+                    "--output", str(trace_out),
+                ],
+                cwd=ROOT, capture_output=True, text=True,
+            )
+            self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
             shell_proc = subprocess.run(
                 [sys.executable, str(ROOT / "dev/ui_shell_results_regression.py")],
                 cwd=ROOT, capture_output=True, text=True,

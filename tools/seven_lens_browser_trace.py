@@ -7,6 +7,7 @@ import hashlib
 import json
 import subprocess
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
@@ -17,6 +18,7 @@ if str(ROOT) not in sys.path:
 if str(DEV) not in sys.path:
     sys.path.insert(0, str(DEV))
 TRACE_SCHEMA_VERSION = 3
+TRACE_ACTION_TIMEOUT_MS = 45_000
 
 
 def _is_ephemeral_trace_output(path: Path) -> bool:
@@ -458,7 +460,27 @@ def _act(page, action: dict[str, Any]) -> None:
             [str(action.get("name")), action.get("value")],
         )
     elif kind == "run_script":
-        page.evaluate(str(action.get("script", "")))
+        page.evaluate(
+            """async ([source, timeoutMs]) => {
+              const runnable = (0, eval)(source);
+              const valuePromise = typeof runnable === 'function'
+                ? Promise.resolve(runnable())
+                : Promise.resolve(runnable);
+              let timer;
+              const timeoutPromise = new Promise((_, reject) => {
+                timer = setTimeout(
+                  () => reject(new Error(`run_script timed out after ${timeoutMs} ms`)),
+                  timeoutMs
+                );
+              });
+              try {
+                return await Promise.race([valuePromise, timeoutPromise]);
+              } finally {
+                clearTimeout(timer);
+              }
+            }""",
+            [str(action.get("script", "")), int(action.get("timeout_ms", TRACE_ACTION_TIMEOUT_MS))],
+        )
     elif kind == "set_viewport":
         size = action.get("size") or {}
         page.set_viewport_size({"width": int(size.get("width", 1280)), "height": int(size.get("height", 800))})
@@ -604,9 +626,17 @@ def main() -> int:
         try:
             for trace in spec.get("traces", []):
                 runs = []
-                for _ in range(repeat):
+                for run_index in range(repeat):
+                    run_started = time.perf_counter()
+                    print(
+                        f"TRACE {trace.get('id')} run {run_index + 1}/{repeat}: start",
+                        file=sys.stderr,
+                        flush=True,
+                    )
                     context = browser.new_context()
                     page = context.new_page()
+                    page.set_default_timeout(TRACE_ACTION_TIMEOUT_MS)
+                    page.set_default_navigation_timeout(180_000)
                     console_errors: list[str] = []
                     page_errors: list[str] = []
                     page.on("console", lambda msg, out=console_errors: out.append(msg.text) if msg.type == "error" else None)
@@ -614,6 +644,12 @@ def main() -> int:
                     boot_app_page(page, base_url)
                     runs.append(run_trace(page, trace, console_errors, page_errors))
                     context.close()
+                    print(
+                        f"TRACE {trace.get('id')} run {run_index + 1}/{repeat}: "
+                        f"{int((time.perf_counter() - run_started) * 1000)} ms",
+                        file=sys.stderr,
+                        flush=True,
+                    )
                 first = dict(runs[0])
                 repeatable = all(
                     _stable_json(row.get("captures")) == _stable_json(first.get("captures"))

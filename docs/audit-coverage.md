@@ -19,7 +19,7 @@
 | native_config | 1 | 0 | 0 | 0 | 1 |
 | pwa | 3 | 0 | 2 | 0 | 1 |
 | release_config | 1 | 0 | 1 | 0 | 0 |
-| test_infrastructure | 55 | 0 | 25 | 0 | 30 |
+| test_infrastructure | 55 | 0 | 26 | 0 | 29 |
 | tooling | 53 | 0 | 16 | 0 | 37 |
 | ui_core | 16 | 0 | 13 | 0 | 3 |
 | ui_shell | 2 | 0 | 2 | 0 | 0 |
@@ -27,7 +27,7 @@
 | web_markup | 7 | 0 | 4 | 1 | 2 |
 | web_runtime | 24 | 0 | 15 | 0 | 9 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **202** | **0** | **86** | **1** | **115** |
+| **Total** | **202** | **0** | **87** | **1** | **114** |
 
 ## Units
 
@@ -151,7 +151,7 @@
 | TEST-CAP-FIXTURE | test_infrastructure | `dev/fixtures/capacitor-bridge.html:1` | 30 | P2 | VERIFIED | COV-01 |
 | TEST-ANDROID-UNIT | test_infrastructure | `android/app/src/test/java/com/getcapacitor/myapp/ExampleUnitTest.java:1` | 18 | P3 | VERIFIED | ANDROID-01, COV-01 |
 | TEST-ANDROID-INSTRUMENTED | test_infrastructure | `android/app/src/androidTest/java/com/getcapacitor/myapp/ExampleInstrumentedTest.java:1` | 26 | P3 | VERIFIED | ANDROID-01, COV-01 |
-| TEST-CCR-DIFF-BUILD | test_infrastructure | `tests/ccr-differential/build_assets.py:1` | 634 | P2 | VERIFIED | COV-01 |
+| TEST-CCR-DIFF-BUILD | test_infrastructure | `tests/ccr-differential/build_assets.py:1` | 636 | P2 | IN_PROGRESS | - |
 | TEST-CCR-DIFF-LIB-PY | test_infrastructure | `tests/ccr-differential/lib/ccr_open_reference.py:1` | 325 | P1 | VERIFIED | COV-01 |
 | TEST-CCR-DIFF-LIB-JS | test_infrastructure | `tests/ccr-differential/lib/ccrdiff.js:1` | 418 | P1 | VERIFIED | COV-01 |
 | TOOL-AUDIT | tooling | `audit.py:1` | 16 | P1 | VERIFIED | COV-01, PARITY-01, REG-01, REG-02, REG-03, REG-05 |
@@ -161,14 +161,14 @@
 | TOOL-BUILD-VPM | tooling | `tools/build_vpm_bundle.py:1` | 104 | P1 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-BUILD-ZHL | tooling | `tools/build_zhl_bundle.py:1` | 374 | P1 | IN_PROGRESS | - |
 | TOOL-CHECK-PARITY | tooling | `tools/check_engine_parity.py:1` | 311 | P1 | VERIFIED | COV-01, PARITY-01 |
-| TOOL-RUN-AUDIT-COVERAGE-SUITE-PY | tooling | `tools/run_audit_coverage_suite.py:1` | 66 | P0 | IN_PROGRESS | - |
+| TOOL-RUN-AUDIT-COVERAGE-SUITE-PY | tooling | `tools/run_audit_coverage_suite.py:1` | 68 | P0 | IN_PROGRESS | - |
 | TOOL-SEVEN-LENS-PROTOCOL | tooling | `tools/seven_lens_protocol.py:1` | 1285 | P0 | IN_PROGRESS | - |
 | TOOL-SEVEN-LENS-PROTOCOL-MIGRATIONS | tooling | `tools/seven_lens_protocol_migrations.py:1` | 401 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-PROTOCOL | test_infrastructure | `tools/test_seven_lens_protocol.py:1` | 640 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-PROTOCOL-MIGRATIONS | test_infrastructure | `tools/test_seven_lens_protocol_migrations.py:1` | 284 | P0 | IN_PROGRESS | - |
 | TOOL-SEVEN-LENS-EVIDENCE | tooling | `tools/seven_lens_evidence.py:1` | 146 | P0 | IN_PROGRESS | - |
-| TOOL-SEVEN-LENS-BROWSER-TRACE | tooling | `tools/seven_lens_browser_trace.py:1` | 660 | P0 | IN_PROGRESS | - |
-| TEST-SEVEN-LENS-BROWSER-TRACE | test_infrastructure | `tools/test_seven_lens_browser_trace.py:1` | 603 | P0 | IN_PROGRESS | - |
+| TOOL-SEVEN-LENS-BROWSER-TRACE | tooling | `tools/seven_lens_browser_trace.py:1` | 696 | P0 | IN_PROGRESS | - |
+| TEST-SEVEN-LENS-BROWSER-TRACE | test_infrastructure | `tools/test_seven_lens_browser_trace.py:1` | 604 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-CYCLE02-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-02-planner.json:1` | 78 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-CYCLE03-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-03-consumption.json:1` | 188 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-CYCLE04-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-04-tools-modals.json:1` | 133 | P0 | IN_PROGRESS | - |
@@ -181,7 +181,7 @@
 | TOOL-PATCH-TIER3 | tooling | `tools/patch_tier3_index.py:1` | 244 | P3 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-PATCH-VPM | tooling | `tools/patch_vpm_bundle_index.py:1` | 25 | P3 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-PATCH-ZHL | tooling | `tools/patch_zhl_engine.py:1` | 121 | P3 | VERIFIED | COV-01, PARITY-01 |
-| TOOL-SYNC-WWW | tooling | `tools/sync_www.py:1` | 122 | P1 | IN_PROGRESS | - |
+| TOOL-SYNC-WWW | tooling | `tools/sync_www.py:1` | 141 | P1 | IN_PROGRESS | - |
 | TOOL-UPDATE-VERSION | tooling | `tools/update_sw_version.py:1` | 104 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-VENDOR | tooling | `tools/vendor_offline_assets.py:1` | 173 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-VERIFY-ASSETS | tooling | `tools/verify_site_assets.py:1` | 132 | P2 | VERIFIED | COV-01, PARITY-01 |
