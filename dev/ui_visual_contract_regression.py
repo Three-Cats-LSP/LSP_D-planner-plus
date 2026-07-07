@@ -39,6 +39,7 @@ CASE_IDS = (
     "SL-C09-MOBILE-TISSUE-TAB-VISIBLE",
     "SL-VIS-GAS-CONSUMPTION-BARS",
     "SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS",
+    "SL-VIS-GAS-CONSUMPTION-VOLUME-FIRST-UNITS",
 )
 
 NAV_VIEWPORTS = (
@@ -259,7 +260,10 @@ CAPTURE_JS = r"""
       hasTurnPressColumn: /TURN\s+PRESS(?!URE)/i.test(gasSummary?.textContent || ''),
       barsPresent: gasCards.length > 0 && gasCards.every((el, i) => !!el.querySelector('.gas-usage-track') && !!el.querySelector('.gas-usage-remaining-bar') && gasBarWidths[i] >= 0 && gasTracks[i] > 0),
       remainingBarModel: gasCards.length > 0 && gasCards.every(el => !el.querySelector('.gas-usage-used')),
-      metricUnits: gasRemaining.every(text => /bar/.test(text) && /\bL\)/.test(text)),
+      metricUnits: gasRemaining.every(text => /\bL\b/.test(text) && /\(.*bar\)/.test(text))
+        && gasFooters.every(text => /Used:\s*\d+(?:\.\d+)?\s*L\s*\(.*bar\)/i.test(text)),
+      metricVolumeFirst: gasRemaining.every(text => /^\d+(?:\.\d+)?\s*L\s*\(/.test(text))
+        && gasFooters.every(text => /Used:\s*\d+(?:\.\d+)?\s*L\s*\(/i.test(text)),
       sufficientLeftBorderOnly: gasCards.some(el => el.classList.contains('gas-usage-card--ok') && parseFloat(getComputedStyle(el).borderLeftWidth) > parseFloat(getComputedStyle(el).borderTopWidth)),
     },
     layout: planner && results ? {
@@ -695,6 +699,65 @@ async () => {
 """
 
 
+GAS_VOLUME_FIRST_UNITS_PROBE_JS = r"""
+async () => {
+  const setVal = (id, value) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value = value;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  };
+  const captureCard = root => {
+    const cards = [...document.querySelectorAll(`${root} .gas-usage-card`)];
+    const remaining = cards.map(el => el.querySelector('.gas-usage-remaining')?.textContent?.trim() || '');
+    const footers = cards.map(el => el.querySelector('.gas-usage-foot')?.textContent?.trim() || '');
+    return {
+      cardCount: cards.length,
+      remaining,
+      footers,
+      volumeFirst: remaining.every(text => /^\d+(?:\.\d+)?\s*ft/i.test(text) && /\(.*psi\)/i.test(text))
+        && footers.every(text => /Used:\s*\d+(?:\.\d+)?\s*ft/i.test(text) && /\(.*psi\)/i.test(text)),
+      noBarLitresOrder: !remaining.concat(footers).some(text => /\b(?:bar|psi)\s*\(/i.test(text)),
+    };
+  };
+  window._zhlHeadless = false;
+  setMainNav('buh');
+  if (typeof setUnits === 'function') setUnits('imperial');
+  await new Promise(r => setTimeout(r, 200));
+  setVal('tecDepth', '131');
+  setVal('tecBT', '30');
+  if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
+  document.getElementById('tecGenerateBtn')?.click();
+  let generated = false;
+  for (let i = 0; i < 60; i++) {
+    await new Promise(r => setTimeout(r, 250));
+    if (document.querySelectorAll('#gasConsumptionSummary .gas-usage-card').length >= 3) {
+      generated = true;
+      break;
+    }
+  }
+  const main = captureCard('#gasConsumptionSummary');
+  if (typeof switchResultTab === 'function') {
+    switchResultTab('contingency', document.querySelector('#tecResultTabs [data-tab="contingency"]'));
+  }
+  if (typeof selectContBT === 'function') selectContBT(3);
+  if (typeof calcContingency === 'function') calcContingency();
+  for (let i = 0; i < 40; i++) {
+    await new Promise(r => setTimeout(r, 250));
+    if (document.querySelectorAll('#emergencyGasConsumption .gas-usage-card').length > 0) break;
+  }
+  const contingency = captureCard('#emergencyGasConsumption');
+  return {
+    generated,
+    units: typeof units !== 'undefined' ? units : '',
+    main,
+    contingency,
+  };
+}
+"""
+
+
 BOTTOM_NAV_PROBE_JS = r"""
 async () => {
   const vis = (id) => {
@@ -914,6 +977,22 @@ def _capture_contingency_gas(browser, base_url: str) -> dict:
         context.close()
 
 
+def _capture_gas_volume_first_units(browser, base_url: str) -> dict:
+    context = browser.new_context(viewport={"width": 1280, "height": 800})
+    page = context.new_page()
+    page.set_default_timeout(120_000)
+    errors: list[str] = []
+    page.on("pageerror", lambda exc: errors.append(str(exc)))
+    page.on("console", lambda msg: errors.append(msg.text) if msg.type == "error" else None)
+    try:
+        boot_app_page(page, base_url)
+        capture = page.evaluate(GAS_VOLUME_FIRST_UNITS_PROBE_JS)
+        capture["console_errors"] = errors
+        return capture
+    finally:
+        context.close()
+
+
 def _capture_gas_labels(browser, base_url: str) -> dict:
     context = browser.new_context(viewport={"width": 1280, "height": 800})
     page = context.new_page()
@@ -1005,6 +1084,7 @@ def main() -> int:
             mobile_warning_details = _capture_mobile_warnings(browser, base_url)
             vpm_details = _capture_vpm_mode(browser, base_url)
             contingency_gas_details = _capture_contingency_gas(browser, base_url)
+            gas_units_details = _capture_gas_volume_first_units(browser, base_url)
             browser.close()
 
     dark = details["1280x800-dark"]
@@ -1091,6 +1171,7 @@ def main() -> int:
         and c["gasConsumptionBars"]["barsPresent"]
         and c["gasConsumptionBars"]["remainingBarModel"]
         and c["gasConsumptionBars"]["metricUnits"]
+        and c["gasConsumptionBars"]["metricVolumeFirst"]
         and c["gasConsumptionBars"]["hasTurnPressureInline"]
         and not c["gasConsumptionBars"]["hasTurnPressColumn"]
         and c["gasConsumptionBars"]["sufficientLeftBorderOnly"]
@@ -1108,6 +1189,17 @@ def main() -> int:
         and not contingency_gas_details.get("hasTurnPressColumn")
         and "Air" in contingency_gas_details.get("warningText", "")
         and not contingency_gas_details.get("console_errors")
+    )
+    results["SL-VIS-GAS-CONSUMPTION-VOLUME-FIRST-UNITS"] = bool(
+        gas_units_details.get("generated")
+        and gas_units_details.get("units") == "imperial"
+        and gas_units_details.get("main", {}).get("cardCount", 0) >= 3
+        and gas_units_details.get("main", {}).get("volumeFirst")
+        and gas_units_details.get("main", {}).get("noBarLitresOrder")
+        and gas_units_details.get("contingency", {}).get("cardCount", 0) >= 1
+        and gas_units_details.get("contingency", {}).get("volumeFirst")
+        and gas_units_details.get("contingency", {}).get("noBarLitresOrder")
+        and not gas_units_details.get("console_errors")
     )
 
     nav_ok = all(
@@ -1163,6 +1255,7 @@ def main() -> int:
             "mobile_warning": mobile_warning_details,
             "vpm": vpm_details,
             "contingency_gas": contingency_gas_details,
+            "gas_units": gas_units_details,
         }, indent=2))
 
     rows = [case_row(case_id, passed) for case_id, passed in results.items()]

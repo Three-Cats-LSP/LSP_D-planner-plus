@@ -58,6 +58,10 @@ function _gasVolText(litres) {
   return `${gpVolDisp(Math.max(0, litres))} ${lspVolUnit()}`;
 }
 
+function _gasVolPresText(litres, bar) {
+  return `${_gasVolText(litres)} (${_gasPresText(bar)})`;
+}
+
 function _gasConsumedForLabel(gasConsumed, label) {
   if (!gasConsumed || !label) return 0;
   if (Number.isFinite(gasConsumed[label])) return gasConsumed[label];
@@ -191,7 +195,7 @@ function renderGasConsumptionBars(container, gasConsumed, options) {
       if (!(row.totalL > 0)) {
         warnings.push(`No gas supply: ${row.displayName} has no configured cylinder supply`);
       } else if (row.shortfallL > 0) {
-        warnings.push(`No gas supply: ${row.displayName} needs ${_gasPresText(row.usedBar)}, cylinder has ${_gasPresText(row.fillBar)}`);
+        warnings.push(`No gas supply: ${row.displayName} needs ${_gasVolPresText(row.usedL, row.usedBar)}, cylinder has ${_gasVolPresText(row.totalL, row.fillBar)}`);
       } else {
         warnings.push(`Critical: ${row.displayName} below ${threshold}% remaining`);
       }
@@ -202,11 +206,11 @@ function renderGasConsumptionBars(container, gasConsumed, options) {
     return `<div class="gas-usage-card gas-usage-card--${status}" data-gas-label="${_gasCardHtml(row.label)}" data-gas-role="${_gasCardHtml(row.role)}" style="--gas-remaining-pct:${row.remainingPercentOfTotal.toFixed(2)}%;">
       <div class="gas-usage-head">
         <div class="gas-usage-title"><span class="gas-usage-mix">${_gasCardHtml(row.label)}</span><span class="gas-usage-role">${_gasCardHtml(row.role)}</span></div>
-        <div class="gas-usage-remaining">${_gasPresText(row.remainingBar)} <span>(${_gasVolText(row.remainingTotalL)})</span></div>
+        <div class="gas-usage-remaining">${_gasVolText(row.remainingTotalL)} <span>(${_gasPresText(row.remainingBar)})</span></div>
       </div>
       <div class="gas-usage-scale"><span>0</span><span>${_gasPresText(row.fillBar)}</span></div>
       <div class="gas-usage-track" aria-label="${_gasCardHtml(row.displayName)} remaining gas"><div class="gas-usage-remaining-bar"></div></div>
-      <div class="gas-usage-foot"><span>Used: <strong>${_gasPresText(row.usedBar)}</strong> (${_gasVolText(row.usedL)})</span>${turn}</div>
+      <div class="gas-usage-foot"><span>Used: <strong>${_gasVolText(row.usedL)}</strong> (${_gasPresText(row.usedBar)})</span>${turn}</div>
     </div>`;
   }).join('');
 

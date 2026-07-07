@@ -743,6 +743,10 @@
     "REG-116": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
       "case_id": "SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS"
+    },
+    "REG-117": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-VIS-GAS-CONSUMPTION-VOLUME-FIRST-UNITS"
     }
   },
   "findings": [
@@ -5621,7 +5625,7 @@
         "REG-110",
         "REG-111"
       ],
-      "fingerprint": "c62596df6d6b9ad647b79732ff4dcbc48171e4358189caa615b45477e83e0ccb",
+      "fingerprint": "48674f83d805149784a536cf6db4290bae4eed96fe0573034add2d94257ac4c1",
       "last_read_fingerprint": null
     },
     {
@@ -6568,7 +6572,8 @@
         "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD",
         "SL-C09-MOBILE-TISSUE-TAB-VISIBLE",
         "SL-VIS-GAS-CONSUMPTION-BARS",
-        "SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS"
+        "SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS",
+        "SL-VIS-GAS-CONSUMPTION-VOLUME-FIRST-UNITS"
       ]
     }
   ],
