@@ -307,8 +307,8 @@ function runContingencyScenario(modifyFn) {
 function buildContingencyButtons() {
   const btns = document.getElementById('gasLossButtons');
   if (!btns) { console.error('[Contingency] gasLossButtons not found'); return; }
+  const previousGasLose = contGasLose;
   btns.innerHTML = '';
-  contGasLose = 'none';
 
   const gases = [];
   for (const idx of getAllDecoGasIds()) {
@@ -352,7 +352,11 @@ function buildContingencyButtons() {
     btns.appendChild(btn);
   }
 
-  selectContGas('none', gases);
+  const validGasIds = new Set(gases.map(g => String(g.id)));
+  const restoredGasLose = previousGasLose === 'both'
+    ? (gases.length >= 2 ? 'both' : 'none')
+    : validGasIds.has(String(previousGasLose)) ? String(previousGasLose) : 'none';
+  selectContGas(restoredGasLose, gases);
   selectContBT(0);
   selectContDepth(0);
 }

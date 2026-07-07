@@ -717,7 +717,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   const contCard = document.getElementById('contingencyCard');
   if (contCard) contCard.style.display = 'block';
   { const _cBtn=document.getElementById('contingencyJumpBtn'); if(_cBtn)_cBtn.style.display='inline-block'; }
-  buildContingencyButtons();
+  if (!_contingencyRunning) buildContingencyButtons();
   const contRes = document.getElementById('contingencyResult');
   if (contRes) contRes.style.display = 'none';
 

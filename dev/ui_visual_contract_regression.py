@@ -33,6 +33,7 @@ CASE_IDS = (
     "SL-C09-GAS-SWITCH-TERMINOLOGY",
     "SL-C09-MOBILE-WARNING-WRAP",
     "SL-C09-VPM-MODE-TOGGLE",
+    "SL-C09-VPM-CONTINGENCY-GAS-LOSS-STABLE",
     "SL-C09-SCHEDULE-COLUMN-GEOMETRY",
     "SL-C09-SWITCH-ROW-BACKGROUND-PARITY",
     "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD",
@@ -722,6 +723,20 @@ async () => {
     subtitle: document.getElementById('algoSubtitle')?.textContent?.trim() || '',
     toggleSide: document.getElementById('vpmModeToggle')?.dataset.side || '',
   });
+  const setVal = (id, value) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value = value;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  };
+  const gasButtonState = () => [...document.querySelectorAll('#gasLossButtons .cont-gas-btn')].map(btn => ({
+    id: btn.id,
+    text: (btn.textContent || '').trim(),
+    border: getComputedStyle(btn).borderTopColor.replace(/\s+/g, '').toLowerCase(),
+    color: getComputedStyle(btn).color.replace(/\s+/g, '').toLowerCase(),
+    active: btn.id === ('contGas-' + (typeof contGasLose !== 'undefined' ? contGasLose : '')),
+  }));
 
   setPlannerAlgo('VPMB');
   await wait(250);
@@ -732,6 +747,45 @@ async () => {
   document.getElementById('vpmModeToggle')?.click();
   await wait(250);
   const back = state();
+
+  if (typeof setMainNav === 'function') setMainNav('vpm');
+  await wait(250);
+  setVal('tecDepth', '40');
+  setVal('tecBT', '25');
+  if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
+  document.getElementById('tecGenerateBtn')?.click();
+  for (let i = 0; i < 80; i++) {
+    await wait(250);
+    if (document.querySelectorAll('#decoTableBody tr[data-phase]').length >= 5
+      && document.querySelectorAll('#gasLossButtons .cont-gas-btn').length >= 2) break;
+  }
+  if (typeof switchResultTab === 'function') {
+    switchResultTab('contingency', document.querySelector('#tecResultTabs [data-tab="contingency"]'));
+  }
+  if (typeof buildContingencyButtons === 'function'
+    && document.querySelectorAll('#gasLossButtons .cont-gas-btn').length < 2) {
+    buildContingencyButtons();
+  }
+  await wait(250);
+  const beforeGasButtons = gasButtonState();
+  const lossBtn = beforeGasButtons.find(btn => btn.id !== 'contGas-none' && btn.id !== 'contGas-both');
+  if (lossBtn) document.getElementById(lossBtn.id)?.click();
+  await wait(100);
+  const selectedBeforeCalc = typeof contGasLose !== 'undefined' ? contGasLose : '';
+  if (typeof calcContingency === 'function') calcContingency();
+  for (let i = 0; i < 80; i++) {
+    await wait(250);
+    if (document.querySelector('#contingencyResult .schedule-table')) break;
+  }
+  const afterGasButtons = gasButtonState();
+  const selectedAfterCalc = typeof contGasLose !== 'undefined' ? contGasLose : '';
+  const vpmContingencyGasOk = !!lossBtn
+    && beforeGasButtons.length >= 2
+    && afterGasButtons.length === beforeGasButtons.length
+    && afterGasButtons.some(btn => btn.id === lossBtn.id)
+    && selectedBeforeCalc === selectedAfterCalc
+    && selectedAfterCalc === lossBtn.id.replace('contGas-', '')
+    && afterGasButtons.some(btn => btn.id === lossBtn.id && btn.active);
 
   const ok = vpm.plannerAlgo === 'VPMB'
     && vpm.algorithmSelect === 'VPMB'
@@ -748,7 +802,17 @@ async () => {
     && back.plannerAlgo === 'VPMB'
     && back.algorithmSelect === 'VPMB'
     && !back.gfVisible;
-  return { vpm, gfs, back, ok };
+  return {
+    vpm, gfs, back, ok,
+    vpmContingencyGas: {
+      beforeGasButtons,
+      afterGasButtons,
+      selectedBeforeCalc,
+      selectedAfterCalc,
+      picked: lossBtn?.id || '',
+      ok: vpmContingencyGasOk,
+    },
+  };
 }
 """
 
@@ -1466,6 +1530,10 @@ def main() -> int:
     )
     results["SL-C09-VPM-MODE-TOGGLE"] = bool(
         vpm_details.get("ok")
+        and not vpm_details.get("console_errors")
+    )
+    results["SL-C09-VPM-CONTINGENCY-GAS-LOSS-STABLE"] = bool(
+        vpm_details.get("vpmContingencyGas", {}).get("ok")
         and not vpm_details.get("console_errors")
     )
 

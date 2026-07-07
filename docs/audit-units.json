@@ -747,6 +747,10 @@
     "REG-117": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
       "case_id": "SL-VIS-GAS-CONSUMPTION-VOLUME-FIRST-UNITS"
+    },
+    "REG-118": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-C09-VPM-CONTINGENCY-GAS-LOSS-STABLE"
     }
   },
   "findings": [
@@ -2180,7 +2184,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RENDER"
       },
-      "fingerprint": "4a81671ad130de0fb6ea3bfefd9fcbbc47562bcd5f867560fc90466b84029153",
+      "fingerprint": "1e29774a1a627c16485bcf8ccfa00300726279bc5035a0e1ff24f0e0cb2ac937",
       "last_read_fingerprint": null,
       "audit_issue": 147,
       "evidence": [],
@@ -2752,7 +2756,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "766b4ff02d937a36e6bbfd0f89334bc225457d6bfddfa6068ff29abdc122a66f",
+      "fingerprint": "39e62ae81607199d3c730c1b68476a4fd7cda1d1a75f3e232165e1168dfd0e15",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5605,7 +5609,7 @@
         "REG-110",
         "REG-111"
       ],
-      "fingerprint": "7bb29388ff53b5a1f376b47e789fa45723820b5d94260f4b4f89fbf1a57372f1",
+      "fingerprint": "f293be8f79fb40fcd9c135aee48ea7c2a2a79420b94ded15a5c859a8a367aa50",
       "last_read_fingerprint": null
     },
     {
@@ -6547,6 +6551,7 @@
         "SL-C09-GAS-SWITCH-TERMINOLOGY",
         "SL-C09-MOBILE-WARNING-WRAP",
         "SL-C09-VPM-MODE-TOGGLE",
+        "SL-C09-VPM-CONTINGENCY-GAS-LOSS-STABLE",
         "SL-C09-SCHEDULE-COLUMN-GEOMETRY",
         "SL-C09-SWITCH-ROW-BACKGROUND-PARITY",
         "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD",
