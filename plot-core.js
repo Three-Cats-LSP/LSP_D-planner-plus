@@ -95,7 +95,7 @@ function _renderProfileLegendTableHtml(rows, colors) {
     <tbody>${rows.map(row => {
       const pColor = row.ppo2 >= 1.6 ? red : row.ppo2 >= 1.4 ? orange : muted;
       const rowCls = row.kind === 'gasswitch' ? ' class="profile-legend-gasswitch"' : '';
-      const rowBg = row.kind === 'gasswitch' ? ' style="border-bottom:1px solid var(--border);background:color-mix(in oklab, var(--gas-switch) 8%, transparent);"' : ' style="border-bottom:1px solid var(--border);"';
+      const rowBg = ' style="border-bottom:1px solid var(--border);"';
       return `<tr${rowCls}${rowBg}>
         <td style="padding:5px 6px;color:${row.color};font-weight:600;">${row.num}</td>
         <td style="padding:5px 6px;color:${row.color};">${row.stop}</td>

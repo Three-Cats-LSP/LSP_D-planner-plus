@@ -141,6 +141,11 @@ CAPTURE_JS = r"""
   const firstSwitchRow = schedule?.querySelector('tbody tr[data-phase="switch"]');
   const normalRowBg = rgb(style(firstBodyRow, 'backgroundColor'));
   const switchRowBgs = switchRows.map(row => rgb(style(row, 'backgroundColor')));
+  const graphRows = [...document.querySelectorAll('#plannerProfileLegend .profile-legend-table tbody tr')];
+  const graphNormalRow = graphRows.find(row => !row.classList.contains('profile-legend-gasswitch'));
+  const graphSwitchRows = graphRows.filter(row => row.classList.contains('profile-legend-gasswitch'));
+  const graphNormalRowBg = rgb(style(graphNormalRow, 'backgroundColor'));
+  const graphSwitchRowBgs = graphSwitchRows.map(row => rgb(style(row, 'backgroundColor')));
   const headers = schedule ? [...schedule.querySelectorAll('thead th')] : [];
   const cells = firstBodyRow ? [...firstBodyRow.querySelectorAll('td')] : [];
   const scheduleSwitchCells = firstSwitchRow ? [...firstSwitchRow.querySelectorAll('td')] : [];
@@ -224,6 +229,8 @@ CAPTURE_JS = r"""
     switchCellColors: switchCells.map(el => rgb(style(el, 'color'))),
     switchRowBackgrounds: switchRowBgs,
     normalRowBackground: normalRowBg,
+    graphSwitchRowBackgrounds: graphSwitchRowBgs,
+    graphNormalRowBackground: graphNormalRowBg,
     expectedSwitch,
     graphSwitchLegendText: graphSwitchLegend?.textContent?.trim() || '',
     graphWaypoints: {
@@ -1230,6 +1237,8 @@ def main() -> int:
         and c["switchRowCount"] >= 1
         and bool(c["switchRowBackgrounds"])
         and all(color == c["normalRowBackground"] for color in c["switchRowBackgrounds"])
+        and bool(c["graphSwitchRowBackgrounds"])
+        and all(color == c["graphNormalRowBackground"] for color in c["graphSwitchRowBackgrounds"])
         for c in captures
     )
     results["SL-C09-GRAPH-WAYPOINT-TIME-SPREAD"] = all(
