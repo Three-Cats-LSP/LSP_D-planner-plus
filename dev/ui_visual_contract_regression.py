@@ -38,6 +38,7 @@ CASE_IDS = (
     "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD",
     "SL-C09-MOBILE-TISSUE-TAB-VISIBLE",
     "SL-C09-SUMMARY-CHIP-PALETTE",
+    "SL-C09-RESULT-TABS-GAP",
     "SL-VIS-GAS-CONSUMPTION-BARS",
     "SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS",
     "SL-VIS-GAS-CONSUMPTION-VOLUME-FIRST-UNITS",
@@ -180,6 +181,8 @@ CAPTURE_JS = r"""
   const tissueTab = resultTabsNav?.querySelector('[data-tab="tissue"]');
   const tissueRect = tissueTab?.getBoundingClientRect();
   const tabsRect = resultTabsNav?.getBoundingClientRect();
+  const activeResultPane = document.querySelector('#tecResultTabs ~ .result-tab-pane.active');
+  const activePaneRect = activeResultPane?.getBoundingClientRect();
   const chipByLabel = label => [...document.querySelectorAll('#resultChipRow .chip')]
     .find(el => (el.textContent || '').trim().startsWith(label));
   const chipSnapshot = el => el ? ({
@@ -224,6 +227,11 @@ CAPTURE_JS = r"""
       display: getComputedStyle(tissueTab).display,
       visible: tissueRect.width > 20 && tissueRect.height > 10,
       withinNav: tissueRect.left >= tabsRect.left - 1 && tissueRect.right <= tabsRect.right + 1,
+    } : null,
+    resultTabsGap: tabsRect && activePaneRect ? {
+      gap: activePaneRect.top - tabsRect.bottom,
+      tabsBottom: tabsRect.bottom,
+      paneTop: activePaneRect.top,
     } : null,
     summaryChips: {
       surfGF: chipSnapshot(chipByLabel('Surf GF')),
@@ -1205,6 +1213,12 @@ def main() -> int:
         and c["summaryChips"]["decozone"]
         and c["summaryChips"]["decozone"]["background"] == c["summaryChips"]["metricCardBackground"]
         and c["summaryChips"]["decozone"]["color"] == c["summaryChips"]["decoTextColor"]
+        for c in captures
+    )
+    results["SL-C09-RESULT-TABS-GAP"] = all(
+        c["generated"]
+        and c["resultTabsGap"]
+        and c["resultTabsGap"]["gap"] >= 6
         for c in captures
     )
     results["SL-VIS-GAS-CONSUMPTION-BARS"] = all(

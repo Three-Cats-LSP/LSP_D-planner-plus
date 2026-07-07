@@ -468,7 +468,7 @@ body.light-theme .mode-btn:hover img, body.light-theme .mode-btn.active img { op
 #resultsPanel.has-results #resultChipRow { display: flex; }
 #resultsScratch { display: none; }
 #resultsPanel #tableViewToggle { display: none; }
-#resultsPanel .result-tabs-nav { display: flex; gap: 2px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 4px; overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap; margin-bottom: 0; }
+#resultsPanel .result-tabs-nav { display: flex; gap: 2px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 4px; overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap; margin-bottom: var(--space-2); }
 #resultsPanel .result-tabs-nav::-webkit-scrollbar { display: none; }
 #resultsPanel .result-tab-btn { flex-shrink: 0; padding: 7px 14px; border: 1px solid transparent; background: transparent; color: var(--text-faint); font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; border-radius: var(--radius-md); }
 #resultsPanel .result-tab-btn:hover { color: var(--text); background: color-mix(in oklab, var(--accent) 4%, transparent); }
