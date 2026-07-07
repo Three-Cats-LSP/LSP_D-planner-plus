@@ -1978,21 +1978,15 @@
       "path": "settings-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MODE-STATE"
       },
       "fingerprint": "687bae7030815f2679ad5154a1a8b421abcd804275d82536c4e5714062273717",
-      "last_read_fingerprint": "687bae7030815f2679ad5154a1a8b421abcd804275d82536c4e5714062273717",
-      "evidence": [
-        "SUITE-UI-VISUAL-CONTRACT-REGRESSION/SL-C09-VPM-MODE-TOGGLE",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "REG-110",
-        "COV-01"
-      ],
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified — UI-MODE-STATE"
     },
     {

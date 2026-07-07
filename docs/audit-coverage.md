@@ -22,13 +22,13 @@
 | test | 1 | 0 | 0 | 1 | 0 |
 | test_infrastructure | 55 | 0 | 25 | 0 | 30 |
 | tooling | 54 | 0 | 16 | 1 | 37 |
-| ui_core | 16 | 0 | 12 | 1 | 3 |
+| ui_core | 16 | 0 | 13 | 0 | 3 |
 | ui_shell | 2 | 0 | 2 | 0 | 0 |
 | web_css | 4 | 0 | 3 | 0 | 1 |
 | web_markup | 7 | 0 | 4 | 1 | 2 |
 | web_runtime | 24 | 0 | 15 | 0 | 9 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **205** | **0** | **85** | **5** | **115** |
+| **Total** | **205** | **0** | **86** | **4** | **115** |
 
 ## Units
 
@@ -71,7 +71,7 @@
 | UI-MARKUP-TOOLS | web_markup | `ui/markup-tools.html:1` | 271 | P2 | VERIFIED | EXT-04, COV-01 |
 | UI-MARKUP-MODALS | web_markup | `ui/markup-modals.html:1` | 341 | P2 | VERIFIED | EXT-04, COV-01 |
 | UI-ENVIRONMENT | ui_core | `settings-core.js:39` | 379 | P1 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
-| UI-MODE-STATE | ui_core | `settings-core.js:418` | 625 | P2 | READ | REG-110, COV-01 |
+| UI-MODE-STATE | ui_core | `settings-core.js:418` | 625 | P2 | IN_PROGRESS | - |
 | UI-VPM-RENDER | ui_core | `results-render-core.js:17` | 531 | P1 | IN_PROGRESS | - |
 | UI-ZHL-RESULTS | ui_core | `results-render-core.js:548` | 533 | P1 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
 | UI-GAS-INPUTS | ui_core | `gas-cards-core.js:15` | 223 | P1 | IN_PROGRESS | - |
