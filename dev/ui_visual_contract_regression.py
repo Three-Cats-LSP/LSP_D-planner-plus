@@ -41,6 +41,7 @@ CASE_IDS = (
     "SL-C09-RESULT-TABS-GAP",
     "SL-VIS-GAS-CONSUMPTION-BARS",
     "SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS",
+    "SL-VIS-CONTINGENCY-MAIN-DECO-LAYOUT",
     "SL-VIS-GAS-CONSUMPTION-VOLUME-FIRST-UNITS",
 )
 
@@ -723,6 +724,18 @@ async () => {
   const emergency = document.getElementById('emergencyGasConsumption');
   const cards = [...document.querySelectorAll('#emergencyGasConsumption .gas-usage-card')];
   const warnings = [...document.querySelectorAll('#emergencyGasConsumption .gas-consumption-warning, #emergencyGasConsumption .gas-usage-card--critical')];
+  const result = document.getElementById('contingencyResult');
+  const graph = document.getElementById('contingencyProfileCanvas');
+  const graphLegend = document.getElementById('contingencyProfileLegend');
+  const schedule = document.querySelector('#contingencyResult .schedule-table');
+  const scheduleWrap = schedule?.closest('.schedule-wrap');
+  const headers = schedule ? [...schedule.querySelectorAll('thead th')].slice(1).map(el => (el.textContent || '').trim()) : [];
+  const nonSummaryRows = schedule ? [...schedule.querySelectorAll('tbody tr[data-phase]:not(.row-summary)')] : [];
+  const ttsCells = schedule ? [...schedule.querySelectorAll('td[data-label="TTS"]')] : [];
+  const resultRect = result?.getBoundingClientRect();
+  const graphRect = graph?.getBoundingClientRect();
+  const scheduleRect = scheduleWrap?.getBoundingClientRect();
+  const gasRect = emergency?.getBoundingClientRect();
   return {
     generated,
     visible: !!emergency && getComputedStyle(emergency).display !== 'none',
@@ -736,6 +749,15 @@ async () => {
     hasTurnPressureInline: cards.some(el => /Used:.*Turn Pressure:/i.test(el.querySelector('.gas-usage-foot')?.textContent || '')),
     hasTurnPressColumn: /TURN\s+PRESS(?!URE)/i.test(emergency?.textContent || ''),
     warningCount: warnings.length,
+    graphVisible: !!graph && graphRect.width > 100 && graphRect.height > 80,
+    graphLegendText: graphLegend?.textContent?.trim() || '',
+    scheduleHeaders: headers,
+    hasTtsHeader: headers.some(text => text.toUpperCase() === 'TTS'),
+    ttsCellCount: ttsCells.length,
+    sevenCellsPerRow: nonSummaryRows.length > 0 && nonSummaryRows.every(row => row.cells.length === 7),
+    graphBeforeSchedule: !!(graphRect && scheduleRect && graphRect.bottom <= scheduleRect.top),
+    gasBelowSchedule: !!(scheduleRect && gasRect && gasRect.top >= scheduleRect.bottom),
+    resultBeforeGas: !!(resultRect && gasRect && resultRect.bottom <= gasRect.top),
   };
 }
 """
@@ -1251,6 +1273,19 @@ def main() -> int:
         and contingency_gas_details.get("hasTurnPressureInline")
         and not contingency_gas_details.get("hasTurnPressColumn")
         and "Air" in contingency_gas_details.get("warningText", "")
+        and not contingency_gas_details.get("console_errors")
+    )
+    results["SL-VIS-CONTINGENCY-MAIN-DECO-LAYOUT"] = bool(
+        contingency_gas_details.get("generated")
+        and contingency_gas_details.get("graphVisible")
+        and "Gas Switch" in contingency_gas_details.get("graphLegendText", "")
+        and contingency_gas_details.get("scheduleHeaders") == ["Depth", "Stop", "Run", "Mix", "ppO₂", "EAD"]
+        and not contingency_gas_details.get("hasTtsHeader")
+        and contingency_gas_details.get("ttsCellCount") == 0
+        and contingency_gas_details.get("sevenCellsPerRow")
+        and contingency_gas_details.get("graphBeforeSchedule")
+        and contingency_gas_details.get("gasBelowSchedule")
+        and contingency_gas_details.get("resultBeforeGas")
         and not contingency_gas_details.get("console_errors")
     )
     results["SL-VIS-GAS-CONSUMPTION-VOLUME-FIRST-UNITS"] = bool(

@@ -76,9 +76,9 @@
 | UI-ZHL-RESULTS | ui_core | `results-render-core.js:735` | 456 | P1 | IN_PROGRESS | - |
 | UI-GAS-INPUTS | ui_core | `gas-cards-core.js:15` | 223 | P1 | IN_PROGRESS | - |
 | UI-GAS-CARDS | ui_core | `gas-cards-core.js:238` | 293 | P1 | IN_PROGRESS | - |
-| UI-PLOT-RENDER | ui_core | `plot-core.js:109` | 437 | P2 | IN_PROGRESS | - |
-| UI-PLOT-WAYPOINTS | ui_core | `plot-core.js:546` | 181 | P2 | IN_PROGRESS | - |
-| UI-TOOLS-PROFILE | ui_core | `plot-core.js:727` | 262 | P2 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
+| UI-PLOT-RENDER | ui_core | `plot-core.js:109` | 442 | P2 | IN_PROGRESS | - |
+| UI-PLOT-WAYPOINTS | ui_core | `plot-core.js:551` | 198 | P2 | IN_PROGRESS | - |
+| UI-TOOLS-PROFILE | ui_core | `plot-core.js:749` | 262 | P2 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
 | ENG-ZHL-PHYSICS | engine | `zhl-physics-core.js:1` | 189 | P1 | VERIFIED | REG-01, REG-22, REG-23 |
 | ENG-ZHL-GAS | engine | `zhl-gas-core.js:1` | 184 | P1 | VERIFIED | REG-10, REG-11, REG-12, REG-13, REG-14 |
 | ENG-ZHL-CCR | engine | `zhl-ccr-core.js:1` | 404 | P0 | VERIFIED | REG-06, REG-07, REG-29, REG-42 |
@@ -88,7 +88,7 @@
 | ENG-RDP | engine | `padi-engine.js:1` | 101 | P1 | VERIFIED | REG-24, REG-25, REG-56, REG-57 |
 | APP-ANDROID-SELECT | native_bridge | `android-select-picker.js:1` | 270 | P1 | VERIFIED | ANDROID-01, REG-45 |
 | APP-CAPACITOR-BRIDGE | native_bridge | `capacitor-bridge.js:1` | 278 | P1 | VERIFIED | ANDROID-01, REG-45 |
-| APP-CONTINGENCY | ui_core | `contingency-core.js:1` | 562 | P1 | IN_PROGRESS | - |
+| APP-CONTINGENCY | ui_core | `contingency-core.js:1` | 573 | P1 | IN_PROGRESS | - |
 | APP-EXPORT | ui_core | `export-core.js:1` | 3254 | P2 | IN_PROGRESS | - |
 | APP-GAS-PLAN | ui_core | `gas-plan-core.js:1` | 546 | P1 | IN_PROGRESS | - |
 | APP-GAS-TABLE | ui_core | `gas-table-core.js:1` | 305 | P2 | IN_PROGRESS | - |
@@ -237,5 +237,5 @@
 | TEST-SEVEN-LENS-CYCLE08-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-08-shell-results.json:1` | 994 | P0 | IN_PROGRESS | - |
 | TEST-UI-SHELL-RESULTS-REGRESSION | test_infrastructure | `dev/ui_shell_results_regression.py:1` | 485 | P0 | IN_PROGRESS | REG-95, REG-96, REG-97, REG-98, REG-99 |
 | TEST-UI-RESULTS-CSS-REGRESSION | test_infrastructure | `dev/ui_results_css_regression.py:1` | 407 | P0 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
-| TEST-UI-VISUAL-CONTRACT-REGRESSION | test_infrastructure | `dev/ui_visual_contract_regression.py:1` | 1333 | P0 | IN_PROGRESS | REG-100, REG-101, REG-102, REG-103, REG-104, REG-105, REG-106, REG-107, REG-108, REG-109, REG-110, REG-111 |
+| TEST-UI-VISUAL-CONTRACT-REGRESSION | test_infrastructure | `dev/ui_visual_contract_regression.py:1` | 1368 | P0 | IN_PROGRESS | REG-100, REG-101, REG-102, REG-103, REG-104, REG-105, REG-106, REG-107, REG-108, REG-109, REG-110, REG-111 |
 | TEST-C07-PRE-RESULTS-REGRESSION | test_infrastructure | `dev/c07_pre_results_regression.py:1` | 48 | P0 | IN_PROGRESS | REG-89, REG-90 |

@@ -42,9 +42,9 @@
 | 10 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 679 | - | Surface interval and gas table cores READ |
 | 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 516 | ENG-ZHL-GAS | Gas card UI READ |
 | 12 | APP-GAS-PLAN | 546 | - | Gas plan core READ |
-| 13 | APP-CONTINGENCY | 562 | - | Contingency core READ |
+| 13 | APP-CONTINGENCY | 573 | - | Contingency core READ |
 | 14 | APP-EXPORT | 3254 | - | export-core text/PDF READ |
-| 15 | UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 618 | - | plot-core render and waypoints READ in at least 2 bounded sessions |
+| 15 | UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 640 | - | plot-core render and waypoints READ in at least 2 bounded sessions |
 | 16 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 755 | - | Profile tool and plot init READ |
 | 17 | UI-VPM-RENDER, UI-ZHL-RESULTS | 950 | - | results-render-core READ |
 | 18 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 511 | ENG-ZHL-SCHEDULE | ZHL/CCR delegate thin layer READ |

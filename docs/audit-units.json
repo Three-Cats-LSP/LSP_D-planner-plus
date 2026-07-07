@@ -1734,7 +1734,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "cb63681d843e03d8d447d37ce54e34d3515ba4db8a8898d6823dc2e7a543ec7a",
+      "fingerprint": "3aa1607ae9dcef846e66337dbc8f150516f23ced53c7a2a960278f920defccfb",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1824,7 +1824,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "5256ab1d6a36298ee579042c74c313f7778eb20539fb973f1d4908150f65eaa7",
+      "fingerprint": "7fe7e25442e30056bb6049f77f7e710da8379c283e47106bf6389aca4220d607",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2359,7 +2359,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-RENDER"
       },
-      "fingerprint": "2507361cdd6cca21ef07929f3d3d56bb2942b53265ae9bce09fd3a67fbc706d7",
+      "fingerprint": "c4fc1247856d9d1d5dd0f6e0a223d6f8e66b7786a6b1baf0ab6cbcea473ca871",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2376,7 +2376,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-WAYPOINTS"
       },
-      "fingerprint": "bd41ea0aa532861b20f7dc17e8a8bbd1e25c2ee085ca3c45ce5f9d9cf4b4dd55",
+      "fingerprint": "a51295ed8d8268699201470908365d7d621f3ca2cd01f37831f4c20960b5f422",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2772,7 +2772,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "2dac8653a3e437b84f36685721eadd4d2c136eb213ac94debe7bdedbc0bbf359",
+      "fingerprint": "7c52b659138f99b522a2c6a143917316a7f5a617c02d5ce973654be70f647ff9",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5625,7 +5625,7 @@
         "REG-110",
         "REG-111"
       ],
-      "fingerprint": "e72c90ea81bbe1fdacf39b568dec3820e6049ea3e087a131f78192d4e2ea4cc2",
+      "fingerprint": "287f6ec3a4c716ac40dc50e35cf98bf2aec111defa80dc67814a92d8104f42af",
       "last_read_fingerprint": null
     },
     {
@@ -5787,7 +5787,7 @@
     },
     {
       "cycle": 15,
-      "max_new_application_lines": 623,
+      "max_new_application_lines": 640,
       "min_review_sessions": 2,
       "application_units": [
         "UI-PLOT-RENDER",

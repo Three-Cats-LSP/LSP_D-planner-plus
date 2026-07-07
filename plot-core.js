@@ -524,7 +524,12 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
   ctx.fillText('0' + _du, PAD.left - 5, PAD.top + 4);
 
   // ── Mobile legend below graph ──
-  const legendEl = document.getElementById(canvasId === 'decoProfileCanvas' ? 'decoProfileLegend' : 'plannerProfileLegend');
+  const legendId = canvasId === 'decoProfileCanvas'
+    ? 'decoProfileLegend'
+    : canvasId === 'contingencyProfileCanvas'
+      ? 'contingencyProfileLegend'
+      : 'plannerProfileLegend';
+  const legendEl = document.getElementById(legendId);
   if (legendEl) {
     const switchCount = waypoints.filter(wp => wp.type === 'gasswitch').length;
     const gasSwitchItem = `<span class="legend-item legend-switch"><svg class="leg-icon" width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 3h12M10 1l3 2-3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 7H1M4 5l-3 2 3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Gas Switch${switchCount ? ` (${switchCount})` : ''}</span>`;
@@ -594,7 +599,7 @@ function drawPlannerProfile() {
 }
 
 // ─── Build waypoints from Deco Schedule ─────────────────────────────────────
-function _buildDecoProfileWaypoints() {
+function _buildDecoProfileWaypoints(tbodyId = 'decoTableBody') {
   const depthVal  = parseFloat(getPlannerInputEl('decoDepth')?.value) || 0;
   const btVal     = parseFloat(getPlannerInputEl('decoBT')?.value)    || 0;
   if (!depthVal || !btVal) return null;
@@ -624,8 +629,11 @@ function _buildDecoProfileWaypoints() {
   wps.push({ t, depth: depthVal, type: 'bottom' });
 
   const labelledDepths = new Set();
-  document.querySelectorAll('#decoTableBody tr[data-phase]').forEach(tr => {
-    const phase = tr.dataset.phase;
+  const tbody = document.getElementById(tbodyId);
+  if (!tbody) return null;
+  const phaseOf = tr => String(tr.dataset.phase || '').replace(/^contingency-/, '');
+  tbody.querySelectorAll('tr[data-phase]').forEach(tr => {
+    const phase = phaseOf(tr);
     if (phase === 'switch') return;
     if (phase !== 'deco' && phase !== 'safety' && phase !== 'ascent') return;
     const run    = parseRunMin(cellText(tr, 'Run'));
@@ -652,7 +660,7 @@ function _buildDecoProfileWaypoints() {
   });
 
   const switchWps = [];
-  document.querySelectorAll('#decoTableBody tr[data-phase="switch"], #decoTableBody tr.row-switch').forEach(tr => {
+  tbody.querySelectorAll('tr[data-phase$="switch"], tr.row-switch').forEach(tr => {
     const switchDepthTxt = cellText(tr, 'Depth');
     const switchGas = cellText(tr, 'Mix');
     const depM = switchDepthTxt.match(/([\d.]+)\s*(m|ft)\b/i) || switchDepthTxt.match(/([\d.]+)/);
@@ -676,12 +684,26 @@ function _buildDecoProfileWaypoints() {
   wps.push(...switchWps);
   wps.sort((a, b) => a.t - b.t);
 
-  const allPhaseRows = Array.from(document.querySelectorAll('#decoTableBody tr[data-phase]'))
-    .filter(tr => tr.dataset.phase !== 'totals');
+  const allPhaseRows = Array.from(tbody.querySelectorAll('tr[data-phase]'))
+    .filter(tr => phaseOf(tr) !== 'totals' && phaseOf(tr) !== 'info');
   const lastT = parseRunMin(allPhaseRows.length ? cellText(allPhaseRows[allPhaseRows.length - 1], 'Run') : '') || btVal + descentT;
   wps.push({ t: lastT, depth: 0, type: 'surface' });
 
   return { wps, depthVal, lastT };
+}
+
+function drawContingencyProfile() {
+  const canvas = document.getElementById('contingencyProfileCanvas');
+  if (!canvas) return;
+  const built = _buildDecoProfileWaypoints('contingencyTableBody');
+  if (!built) return;
+  const { wps, depthVal, lastT } = built;
+  window._contingencyWaypoints = wps;
+  drawDiveProfile('contingencyProfileCanvas', wps, {
+    maxDepth: depthVal,
+    totalTime: lastT,
+    simple: true,
+  });
 }
 
 function drawDecoProfile() {

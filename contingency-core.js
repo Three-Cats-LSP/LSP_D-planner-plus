@@ -473,6 +473,10 @@ function calcContingency() {
   }
 
   resultEl.style.display = 'block';
+  const emergencyGasEl = document.getElementById('emergencyGasConsumption');
+  if (emergencyGasEl && emergencyGasEl.previousElementSibling !== resultEl) {
+    resultEl.after(emergencyGasEl);
+  }
   const exportActions = document.getElementById('contingencyExportActions');
   if (exportActions) exportActions.style.display = 'flex';
   const _emRunFmt  = lastRunFmt  || `${lastRun}'00"`;
@@ -509,10 +513,17 @@ function calcContingency() {
         <div style="font-size:11px;margin-top:3px;opacity:0.85;">${msg}</div></div>
       </div>
     </div>
+    <div class="contingency-graph-block">
+      <div class="results-section-head"><span class="results-section-label">Dive Graph</span></div>
+      <div class="profile-canvas-shell">
+        <canvas id="contingencyProfileCanvas" width="760" height="260"></canvas>
+      </div>
+      <div id="contingencyProfileLegend" class="profile-legend"></div>
+    </div>
     <div class="schedule-wrap">
       <div class="deco-table-wrap">
         <table class="deco-table schedule-table table-view">
-          <thead><tr><th class="phase-cell" aria-label="Phase"></th><th>Depth</th><th>Stop</th><th>Mix</th><th class="align-r">Run</th><th class="align-r">TTS</th><th class="align-r">PPO₂</th><th class="align-r">EAD</th></tr></thead>
+          <thead><tr><th class="phase-cell" aria-label="Phase"></th><th>Depth</th><th>Stop</th><th class="align-r">Run</th><th>Mix</th><th class="align-r">ppO₂</th><th class="align-r">EAD</th></tr></thead>
           <tbody id="contingencyTableBody">${(newRows || '').replace(/data-phase="/g, 'data-phase="contingency-').replace(/<tr[^>]*data-phase="contingency-totals"[^>]*>[\s\S]*?<\/tr>/gi, '')}${emInfoRow}</tbody>
         </table>
       </div>
@@ -541,8 +552,8 @@ function calcContingency() {
     window._lastContingency.emAlertsHtml = emAlerts.innerHTML;
     window._lastContingency.warningBailoutContingency = bailoutAlert.warningBailoutContingency;
   }
-  if (typeof injectTtsCells === 'function') injectTtsCells('contingencyTableBody');
   if (typeof decorateContingencyTableForV3 === 'function') decorateContingencyTableForV3();
+  if (typeof drawContingencyProfile === 'function') drawContingencyProfile();
   scheduleDecoScheduleStackSync();
   } catch (e) {
     console.error('[Contingency]', e);
