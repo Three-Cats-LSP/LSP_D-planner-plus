@@ -3938,14 +3938,18 @@
       "path": "tests/ccr-differential/build_assets.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "IN_PROGRESS",
+      "status": "VERIFIED",
       "boundary": {
         "type": "whole_file"
       },
       "fingerprint": "185c9f5f4df3d7925bb1fcf7e92861c458444c220d1b3189a2062c840d3ddf86",
-      "last_read_fingerprint": null,
-      "regression_cases": [],
-      "evidence": [],
+      "last_read_fingerprint": "185c9f5f4df3d7925bb1fcf7e92861c458444c220d1b3189a2062c840d3ddf86",
+      "regression_cases": [
+        "COV-01"
+      ],
+      "evidence": [
+        "SUITE-COVERAGE/AUDIT-COV-01"
+      ],
       "issue": "V3 full audit verified \u2014 TEST-CCR-DIFF-BUILD"
     },
     {
