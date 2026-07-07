@@ -1802,7 +1802,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "cd64959cc739adaaa233880529ba893fbb57a239f49b0310faceccf9da2a56f8",
+      "fingerprint": "c339d6d0c7d321c223fd28febc38525685cc5bc2d08ac4d79a0b9546838faf2a",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5129,7 +5129,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3f27ef8c906c85ebeb0a24c479720b2100620b23af6e520d5113d567343975b6",
+      "fingerprint": "1e1de22691a03a3b5628a51f3995ad866adebba49a9357749afe03c35e1a29dc",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5625,7 +5625,7 @@
         "REG-110",
         "REG-111"
       ],
-      "fingerprint": "287f6ec3a4c716ac40dc50e35cf98bf2aec111defa80dc67814a92d8104f42af",
+      "fingerprint": "aef744209a6afafbb90653692f2a73a7fa76a9224f795027aef4c052ae2579a4",
       "last_read_fingerprint": null
     },
     {
@@ -5707,7 +5707,7 @@
     },
     {
       "cycle": 7,
-      "max_new_application_lines": 967,
+      "max_new_application_lines": 977,
       "application_units": [
         "UI-CSS-RESULTS"
       ],

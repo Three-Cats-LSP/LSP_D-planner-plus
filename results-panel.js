@@ -245,6 +245,18 @@ function _setGasWarningBanner(message) {
   banner.textContent = text;
   banner.style.display = 'flex';
 }
+function _setGasWarningBannerHtml(html) {
+  const banner = document.getElementById('gasWarningBanner');
+  if (!banner) return;
+  const content = String(html || '').trim();
+  if (!content) {
+    banner.textContent = '';
+    banner.style.display = 'none';
+    return;
+  }
+  banner.innerHTML = content;
+  banner.style.display = 'flex';
+}
 function _updateGasWarningBannerFromCard(gasEl) {
   if (!gasEl || gasEl.style.display === 'none') {
     _setGasWarningBanner('');
@@ -252,6 +264,11 @@ function _updateGasWarningBannerFromCard(gasEl) {
   }
   const alert = gasEl.querySelector('.alert.dang');
   if (alert) {
+    const copy = alert.querySelector('.gas-warning-copy');
+    if (copy) {
+      _setGasWarningBannerHtml(copy.innerHTML);
+      return;
+    }
     const msg = alert.textContent.replace(/\s+/g, ' ').trim();
     _setGasWarningBanner(msg || 'Gas shortfall detected in Gas Consumption.');
     return;

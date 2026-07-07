@@ -574,6 +574,16 @@ body.light-theme #resultsPanel .chip-yellow { background: var(--yellow-dim) !imp
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-role { font-family:var(--font-mono); font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-remaining { font-family:var(--font-mono); font-size:12px; font-weight:800; color:var(--text); text-align:right; white-space:nowrap; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-remaining span { color:var(--muted); font-weight:600; }
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-measure,
+#gasWarningBanner.gas-warning-banner .gas-measure { font-weight:800; }
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-measure { white-space:nowrap; }
+#gasWarningBanner.gas-warning-banner .gas-measure { white-space:normal; overflow-wrap:anywhere; word-break:break-word; }
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-unit,
+#gasWarningBanner.gas-warning-banner .gas-unit { font-size:0.82em; font-weight:800; margin-left:0; }
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-pres-wrap { color:var(--muted); }
+:is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-measure { font-weight:800; white-space:nowrap; }
+:is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-unit { font-size:0.82em; font-weight:800; margin-left:0; }
+:is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-pres-wrap { color:var(--muted); }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-scale { display:flex; justify-content:space-between; color:var(--text-faint); font-family:var(--font-mono); font-size:9px; margin-bottom:3px; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-track { height:8px; border-radius:999px; background:var(--gas-track); overflow:hidden; box-shadow:inset 0 0 0 1px rgba(0,0,0,0.08); }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-remaining-bar { width:var(--gas-remaining-pct); height:100%; border-radius:999px; background:var(--gas-status); min-width:0; transition:width 0.2s ease; }

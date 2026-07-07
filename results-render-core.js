@@ -51,15 +51,34 @@ if (typeof window !== 'undefined') {
 
 function _gasPresText(bar) {
   const unit = units === 'imperial' ? 'psi' : 'bar';
-  return `${gpPresDisp(Math.max(0, bar))} ${unit}`;
+  return `${gpPresDisp(Math.max(0, bar))}${unit}`;
 }
 
 function _gasVolText(litres) {
-  return `${gpVolDisp(Math.max(0, litres))} ${lspVolUnit()}`;
+  return `${gpVolDisp(Math.max(0, litres))}${lspVolUnit()}`;
 }
 
 function _gasVolPresText(litres, bar) {
   return `${_gasVolText(litres)} (${_gasPresText(bar)})`;
+}
+
+function _gasMeasureHtml(text) {
+  const raw = String(text == null ? '' : text);
+  const match = raw.match(/^(.+?)(ft³|ft3|psi|bar|L)$/i);
+  if (!match) return _gasCardHtml(raw);
+  return `<strong class="gas-measure"><span class="gas-value">${_gasCardHtml(match[1])}</span><span class="gas-unit" style="font-size:0.82em;font-weight:800;margin-left:0;">${_gasCardHtml(match[2])}</span></strong>`;
+}
+
+function _gasPresHtml(bar) {
+  return _gasMeasureHtml(_gasPresText(bar));
+}
+
+function _gasVolHtml(litres) {
+  return _gasMeasureHtml(_gasVolText(litres));
+}
+
+function _gasVolPresHtml(litres, bar) {
+  return `${_gasVolHtml(litres)} <span class="gas-pres-wrap">(${_gasPresHtml(bar)})</span>`;
 }
 
 function _gasConsumedForLabel(gasConsumed, label) {
@@ -193,29 +212,29 @@ function renderGasConsumptionBars(container, gasConsumed, options) {
     const status = _gasUsageStatus(row, threshold);
     if (status === 'critical') {
       if (!(row.totalL > 0)) {
-        warnings.push(`No gas supply: ${row.displayName} has no configured cylinder supply`);
+        warnings.push(`No gas supply: ${_gasCardHtml(row.displayName)} has no configured cylinder supply`);
       } else if (row.shortfallL > 0) {
-        warnings.push(`No gas supply: ${row.displayName} needs ${_gasVolPresText(row.usedL, row.usedBar)}, cylinder has ${_gasVolPresText(row.totalL, row.fillBar)}`);
+        warnings.push(`No gas supply: ${_gasCardHtml(row.displayName)} needs ${_gasVolPresHtml(row.usedL, row.usedBar)}, cylinder has ${_gasVolPresHtml(row.totalL, row.fillBar)}`);
       } else {
-        warnings.push(`Critical: ${row.displayName} below ${threshold}% remaining`);
+        warnings.push(`Critical: ${_gasCardHtml(row.displayName)} below <strong class="gas-measure">${threshold}<span class="gas-unit">%</span></strong> remaining`);
       }
     }
     const turn = Number.isFinite(row.turnPressureBar)
-      ? `<span>Turn Pressure: <strong>${_gasPresText(row.turnPressureBar)}</strong></span>`
+      ? `<span>Turn Pressure: ${_gasPresHtml(row.turnPressureBar)}</span>`
       : '';
     return `<div class="gas-usage-card gas-usage-card--${status}" data-gas-label="${_gasCardHtml(row.label)}" data-gas-role="${_gasCardHtml(row.role)}" style="--gas-remaining-pct:${row.remainingPercentOfTotal.toFixed(2)}%;">
       <div class="gas-usage-head">
         <div class="gas-usage-title"><span class="gas-usage-mix">${_gasCardHtml(row.label)}</span><span class="gas-usage-role">${_gasCardHtml(row.role)}</span></div>
-        <div class="gas-usage-remaining">${_gasVolText(row.remainingTotalL)} <span>(${_gasPresText(row.remainingBar)})</span></div>
+        <div class="gas-usage-remaining">${_gasVolHtml(row.remainingTotalL)} <span>(${_gasPresHtml(row.remainingBar)})</span></div>
       </div>
-      <div class="gas-usage-scale"><span>0</span><span>${_gasPresText(row.fillBar)}</span></div>
+      <div class="gas-usage-scale"><span>0</span><span>${_gasPresHtml(row.fillBar)}</span></div>
       <div class="gas-usage-track" aria-label="${_gasCardHtml(row.displayName)} remaining gas"><div class="gas-usage-remaining-bar"></div></div>
-      <div class="gas-usage-foot"><span>Used: <strong>${_gasVolText(row.usedL)}</strong> (${_gasPresText(row.usedBar)})</span>${turn}</div>
+      <div class="gas-usage-foot"><span>Used: ${_gasVolHtml(row.usedL)} <span class="gas-pres-wrap">(${_gasPresHtml(row.usedBar)})</span></span>${turn}</div>
     </div>`;
   }).join('');
 
   const warningHtml = warnings.length
-    ? `<div class="gas-consumption-warning alert dang"><span aria-hidden="true">⚠</span><div>${warnings.map(_gasCardHtml).join('<br>')}</div></div>`
+    ? `<div class="gas-consumption-warning alert dang"><span aria-hidden="true">⚠</span><div class="gas-warning-copy">${warnings.join('<br>')}</div></div>`
     : '';
   const sacUnit = lspSacUnit();
   const sacBottom = document.getElementById('sacBottom')?.value || '';

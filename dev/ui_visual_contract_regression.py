@@ -113,6 +113,16 @@ CAPTURE_JS = r"""
   const gasLabels = gasCards.map(el => el.dataset.gasLabel || el.querySelector('.gas-usage-mix')?.textContent?.trim() || '');
   const gasFooters = gasCards.map(el => el.querySelector('.gas-usage-foot')?.textContent?.trim() || '');
   const gasRemaining = gasCards.map(el => el.querySelector('.gas-usage-remaining')?.textContent?.trim() || '');
+  const gasUnitSpans = [...document.querySelectorAll('#gasConsumptionSummary .gas-unit, #gasWarningBanner .gas-unit')];
+  const gasMeasureSpans = [...document.querySelectorAll('#gasConsumptionSummary .gas-measure, #gasWarningBanner .gas-measure')];
+  const gasUnitStyleOk = gasUnitSpans.length > 0 && gasUnitSpans.every(unit => {
+    const value = unit.closest('.gas-measure')?.querySelector('.gas-value');
+    if (!value) return true;
+    const unitSize = parseFloat(getComputedStyle(unit).fontSize);
+    const valueSize = parseFloat(getComputedStyle(value).fontSize);
+    const weight = getComputedStyle(unit).fontWeight;
+    return unitSize < valueSize && (parseInt(weight, 10) >= 700 || weight === 'bold');
+  });
   const gasBarWidths = gasCards.map(el => {
     const remaining = el.querySelector('.gas-usage-remaining-bar');
     return remaining ? remaining.getBoundingClientRect().width : 0;
@@ -292,14 +302,20 @@ CAPTURE_JS = r"""
       hasDecoMix: gasLabels.some(text => /^\d{2}\/\d{2}$/.test(text)),
       footerTexts: gasFooters,
       remainingTexts: gasRemaining,
+      compactUnits: [...gasRemaining, ...gasFooters, document.getElementById('gasWarningBanner')?.textContent || ''].every(text => !/\d\s+(?:L|bar|psi|ftÂ³|ft³|ft3)\b/i.test(text)),
+      unitStyleOk: gasUnitStyleOk,
+      measureBold: gasMeasureSpans.length > 0 && gasMeasureSpans.every(el => {
+        const weight = getComputedStyle(el).fontWeight;
+        return parseInt(weight, 10) >= 700 || weight === 'bold';
+      }),
       hasTurnPressureInline: gasFooters.some(text => /Used:.*Turn Pressure:/i.test(text)),
       hasTurnPressColumn: /TURN\s+PRESS(?!URE)/i.test(gasSummary?.textContent || ''),
       barsPresent: gasCards.length > 0 && gasCards.every((el, i) => !!el.querySelector('.gas-usage-track') && !!el.querySelector('.gas-usage-remaining-bar') && gasBarWidths[i] >= 0 && gasTracks[i] > 0),
       remainingBarModel: gasCards.length > 0 && gasCards.every(el => !el.querySelector('.gas-usage-used')),
-      metricUnits: gasRemaining.every(text => /\bL\b/.test(text) && /\(.*bar\)/.test(text))
-        && gasFooters.every(text => /Used:\s*\d+(?:\.\d+)?\s*L\s*\(.*bar\)/i.test(text)),
-      metricVolumeFirst: gasRemaining.every(text => /^\d+(?:\.\d+)?\s*L\s*\(/.test(text))
-        && gasFooters.every(text => /Used:\s*\d+(?:\.\d+)?\s*L\s*\(/i.test(text)),
+      metricUnits: gasRemaining.every(text => /\dL\b/.test(text) && /\(.*bar\)/.test(text))
+        && gasFooters.every(text => /Used:\s*\d+(?:\.\d+)?L\s*\(.*bar\)/i.test(text)),
+      metricVolumeFirst: gasRemaining.every(text => /^\d+(?:\.\d+)?L\s*\(/.test(text))
+        && gasFooters.every(text => /Used:\s*\d+(?:\.\d+)?L\s*\(/i.test(text)),
       sufficientLeftBorderOnly: gasCards.some(el => el.classList.contains('gas-usage-card--ok') && parseFloat(getComputedStyle(el).borderLeftWidth) > parseFloat(getComputedStyle(el).borderTopWidth)),
     },
     layout: planner && results ? {
@@ -724,6 +740,16 @@ async () => {
   const emergency = document.getElementById('emergencyGasConsumption');
   const cards = [...document.querySelectorAll('#emergencyGasConsumption .gas-usage-card')];
   const warnings = [...document.querySelectorAll('#emergencyGasConsumption .gas-consumption-warning, #emergencyGasConsumption .gas-usage-card--critical')];
+  const unitSpans = [...document.querySelectorAll('#emergencyGasConsumption .gas-unit')];
+  const measureSpans = [...document.querySelectorAll('#emergencyGasConsumption .gas-measure')];
+  const unitStyleOk = unitSpans.length > 0 && unitSpans.every(unit => {
+    const value = unit.closest('.gas-measure')?.querySelector('.gas-value');
+    if (!value) return true;
+    const unitSize = parseFloat(getComputedStyle(unit).fontSize);
+    const valueSize = parseFloat(getComputedStyle(value).fontSize);
+    const weight = getComputedStyle(unit).fontWeight;
+    return unitSize < valueSize && (parseInt(weight, 10) >= 700 || weight === 'bold');
+  });
   const result = document.getElementById('contingencyResult');
   const graph = document.getElementById('contingencyProfileCanvas');
   const graphLegend = document.getElementById('contingencyProfileLegend');
@@ -743,6 +769,12 @@ async () => {
     cardCount: cards.length,
     criticalCount: document.querySelectorAll('#emergencyGasConsumption .gas-usage-card--critical').length,
     warningText: document.querySelector('#emergencyGasConsumption .gas-consumption-warning')?.textContent?.trim() || '',
+    compactUnits: [...cards.map(el => el.textContent || ''), document.querySelector('#emergencyGasConsumption .gas-consumption-warning')?.textContent || ''].every(text => !/\d\s+(?:L|bar|psi|ftÂ³|ft³|ft3)\b/i.test(text)),
+    unitStyleOk,
+    measureBold: measureSpans.length > 0 && measureSpans.every(el => {
+      const weight = getComputedStyle(el).fontWeight;
+      return parseInt(weight, 10) >= 700 || weight === 'bold';
+    }),
     hasThreshold: !!document.querySelector('#emergencyGasConsumption #gasLowThresholdPct'),
     labels: cards.map(el => el.dataset.gasLabel || ''),
     hasBars: cards.every(el => !!el.querySelector('.gas-usage-track') && !!el.querySelector('.gas-usage-remaining-bar')),
@@ -780,8 +812,9 @@ async () => {
       cardCount: cards.length,
       remaining,
       footers,
-      volumeFirst: remaining.every(text => /^\d+(?:\.\d+)?\s*ft/i.test(text) && /\(.*psi\)/i.test(text))
-        && footers.every(text => /Used:\s*\d+(?:\.\d+)?\s*ft/i.test(text) && /\(.*psi\)/i.test(text)),
+      compactUnits: !remaining.concat(footers).some(text => /\d\s+(?:L|bar|psi|ftÂ³|ft³|ft3)\b/i.test(text)),
+      volumeFirst: remaining.every(text => /^\d+(?:\.\d+)?(?:ftÂ³|ft³|ft3)/i.test(text) && /\(.*psi\)/i.test(text))
+        && footers.every(text => /Used:\s*\d+(?:\.\d+)?(?:ftÂ³|ft³|ft3)/i.test(text) && /\(.*psi\)/i.test(text)),
       noBarLitresOrder: !remaining.concat(footers).some(text => /\b(?:bar|psi)\s*\(/i.test(text)),
     };
   };
@@ -1257,6 +1290,9 @@ def main() -> int:
         and c["gasConsumptionBars"]["remainingBarModel"]
         and c["gasConsumptionBars"]["metricUnits"]
         and c["gasConsumptionBars"]["metricVolumeFirst"]
+        and c["gasConsumptionBars"]["compactUnits"]
+        and c["gasConsumptionBars"]["unitStyleOk"]
+        and c["gasConsumptionBars"]["measureBold"]
         and c["gasConsumptionBars"]["hasTurnPressureInline"]
         and not c["gasConsumptionBars"]["hasTurnPressColumn"]
         and c["gasConsumptionBars"]["sufficientLeftBorderOnly"]
@@ -1272,6 +1308,9 @@ def main() -> int:
         and contingency_gas_details.get("hasThreshold")
         and contingency_gas_details.get("hasTurnPressureInline")
         and not contingency_gas_details.get("hasTurnPressColumn")
+        and contingency_gas_details.get("compactUnits")
+        and contingency_gas_details.get("unitStyleOk")
+        and contingency_gas_details.get("measureBold")
         and "Air" in contingency_gas_details.get("warningText", "")
         and not contingency_gas_details.get("console_errors")
     )
@@ -1293,9 +1332,11 @@ def main() -> int:
         and gas_units_details.get("units") == "imperial"
         and gas_units_details.get("main", {}).get("cardCount", 0) >= 3
         and gas_units_details.get("main", {}).get("volumeFirst")
+        and gas_units_details.get("main", {}).get("compactUnits")
         and gas_units_details.get("main", {}).get("noBarLitresOrder")
         and gas_units_details.get("contingency", {}).get("cardCount", 0) >= 1
         and gas_units_details.get("contingency", {}).get("volumeFirst")
+        and gas_units_details.get("contingency", {}).get("compactUnits")
         and gas_units_details.get("contingency", {}).get("noBarLitresOrder")
         and not gas_units_details.get("console_errors")
     )

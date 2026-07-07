@@ -374,9 +374,9 @@
       "unit_id": "UI-CSS-RESULTS",
       "path": "lsp-dplanner-results.css",
       "start_line": 501,
-      "end_line": 967,
-      "line_count": 467,
-      "content_fingerprint": "e66c626af3f9a3354d78956d7cada94e27dc926ddeb1dfea641e1b6829c5d724",
+      "end_line": 977,
+      "line_count": 477,
+      "content_fingerprint": "446e2d974e06125e514b72130d770f93c0a31a57ff3e46cdca27a91b5d5b3b9f",
       "review_session": "C07-B",
       "verification_session": "C07-V-B",
       "lens_results": {
@@ -1319,6 +1319,23 @@
       },
       "trigger": "Result tabs bar margin restored so active result cards do not visually overlap tab borders.",
       "review_scope": "Result tabs margin CSS only; prior Cycle 7 chip/PPO2/print/reduced-motion findings unchanged.",
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-08T00:00:00Z",
+      "verifier": "Codex simplified dependency re-review"
+    }
+  ],
+  "dependency_revalidations": [
+    {
+      "session": "C09-DEP-RESULTS-GAS-UNIT-COMPACTNESS",
+      "unit_id": "UI-CSS-RESULTS",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "48f2df43a18e7892b11d6ec2d2f909a7271e1b2a7d04183715b5165955eba19b",
+        "UI-CSS-RESULTS-P02": "446e2d974e06125e514b72130d770f93c0a31a57ff3e46cdca27a91b5d5b3b9f"
+      },
+      "part_boundaries": {
+        "UI-CSS-RESULTS-P01": "lines 1-500",
+        "UI-CSS-RESULTS-P02": "lines 501-977"
+      },
       "result": "NO_NEW_FINDING",
       "verified_at": "2026-07-08T00:00:00Z",
       "verifier": "Codex simplified dependency re-review"
