@@ -12,7 +12,7 @@
 | C08-A | `UI-PLANNER-SHELL` | `planner-shell.js` | 1–201 | `UI-PLANNER-SHELL-P01` |
 | C08-A | `UI-RESULTS-PANEL` | `results-panel.js` | 1–301 | `UI-RESULTS-PANEL-P01` |
 
-**Combined canonical lines:** 487 (186 + 301). Single session **C08-A** — under 600-line limit.
+**Combined canonical lines:** 502 (201 + 301). Single session **C08-A** — under 600-line limit.
 
 **Dependency context traced (not reviewed coverage):** `ui/markup-header.html`, `ui/markup-rec-planner.html`, `ui/markup-tec-planner.html`, `index.html` bootstrap/delegates, `settings-core.js` (`setPlannerAlgo`, `_showPlannerView`, `_clearPlannerResults`), `planner-inputs-core.js`, `results-render-core.js`, `contingency-core.js`, `plot-core.js`, `export-core.js` (`notifyScheduleError`), `lsp-dplanner-results.css` mobile rules, generated `www/` parity.
 
