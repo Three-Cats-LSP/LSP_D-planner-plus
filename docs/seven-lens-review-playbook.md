@@ -62,6 +62,27 @@ Treat every displayed value plus canonical dataset as a replicated-state system.
 - A UI cycle cannot close while the cross-unit visual suite is red, even if the
   defect originated before the cycle's nominal source boundary.
 
+## Post-Cycle-9 App Contracts
+
+- Deco schedule table shape is a product contract: `Phase`, `Depth`, `Stop`,
+  `Run`, `Mix`, `ppO2`, `EAD`. Do not reintroduce a visible `TTS` column.
+- Main deco and contingency schedules must use the same column order, widths,
+  gas-switch formatting, and light/dark/mobile behavior.
+- Gas-switch rows must not invent a separate background treatment unless the
+  design contract changes; use the same semantic yellow for icon/text/legend.
+- Operational gases render as `Air`, `100%`, or `OO/HH` across schedules,
+  graphs, contingency controls, banners, exports, and generated bundles.
+- Gas consumption is a bar-card experience, not a table. Values are
+  volume-first (`L(bar)` or `ft3(psi)`), and the bar represents remaining gas
+  draining from full toward zero.
+- Warning banners use the unified contingency-readable warning style with one
+  warning icon. Reject duplicate icons, leftover `!` prefixes, and inconsistent
+  fonts between main deco and contingency.
+- The full dive graph is part of Dive Profile. There is no separate Graphs tab;
+  GF curve belongs under Tissues.
+- Travel gas cards follow the same gas-card design as deco/bottom gases, with
+  trimix support, `Switch Depth`, and a surface-breathable MinOD requirement.
+
 ## Responsive Navigation Grids
 
 - Odd navigation-item counts on responsive grids require explicit row-filling

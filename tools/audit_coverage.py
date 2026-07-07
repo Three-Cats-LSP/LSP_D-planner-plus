@@ -323,10 +323,15 @@ def render_coverage(registry: dict[str, Any], resolved: dict[str, dict[str, Any]
 def render_master(registry: dict[str, Any], resolved: dict[str, dict[str, Any]]) -> str:
     data = summary(registry, resolved)
     s = data["statuses"]
+    risk_groups = registry.get("risk_first_execution_order", [])
+
+    def md_cell(value: Any) -> str:
+        return str(value).replace("|", "\\|")
+
     lines = [
         "# Audit Master Plan v3.0",
         "",
-        "> V3 full-audit schedule (cycles 1+). Policy and unit metadata live in `docs/audit-units.json`.",
+        "> V3 full-audit schedule. Policy, unit metadata, and risk-first execution order live in `docs/audit-units.json`.",
         "",
         f"**Baseline:** `{registry['baseline_commit']}`",
         f"**Epoch:** `{registry.get('audit_epoch', 'v3')}`",
@@ -335,8 +340,10 @@ def render_master(registry: dict[str, Any], resolved: dict[str, dict[str, Any]])
         "",
         "## Operating Rules",
         "",
-        "- Audit P0 before P1, then P2/P3. Unit priority is not finding severity.",
+        "- After Cycle 9, execute cycles in the risk-first order below, not numeric order.",
+        "- Unit priority is metadata; risk-first cycle order is the audit execution queue.",
         "- A cycle reads the listed application units; `max_new_application_lines` is sized to fit the unit bundle.",
+        "- Recalculate cycle line counts from current source before starting a cycle; split each cycle into <=600-line review sessions.",
         "- Record actual findings only; there are no finding quotas or projections.",
         "- `VERIFIED` requires a current fingerprint and evidence that passes in the current audit profile.",
         "- Generated artifacts are validated by their generator and parity command, not manual READ coverage.",
@@ -352,17 +359,34 @@ def render_master(registry: dict[str, Any], resolved: dict[str, dict[str, Any]])
         "6. Safety regression",
         "7. Tooling and CI",
         "",
+    ]
+    if risk_groups:
+        lines.extend([
+            "## Risk-First Execution Order",
+            "",
+            "| Group | Focus | Cycles |",
+            "|---:|---|---|",
+        ])
+        for group in risk_groups:
+            cycles = ", ".join(str(cycle) for cycle in group.get("cycles", []))
+            lines.append(f"| {group['group']} | {group['focus']} | {cycles} |")
+        lines.extend([
+            "",
+            "Run the first unfinished cycle in this table. The numeric cycle table below remains the coverage registry, not the execution queue.",
+            "",
+        ])
+    lines.extend([
         "## Cycles",
         "",
         "| Cycle | Application units | New lines | Engine re-verification | Acceptance |",
         "|---:|---|---:|---|---|",
-    ]
+    ])
     for cycle in registry.get("cycles", []):
         app_ids = cycle.get("application_units", [])
         actual = sum(resolved[unit_id]["line_count"] for unit_id in app_ids)
         engines = ", ".join(cycle.get("engine_reverification", [])) or "-"
         lines.append(
-            f"| {cycle['cycle']} | {', '.join(app_ids) or '-'} | {actual} | {engines} | {cycle['acceptance']} |"
+            f"| {cycle['cycle']} | {md_cell(', '.join(app_ids) or '-')} | {actual} | {md_cell(engines)} | {md_cell(cycle['acceptance'])} |"
         )
     lines.extend([
         "",

@@ -1750,7 +1750,7 @@
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
-      "issue": "V3 full audit verified — UI-BOOT"
+      "issue": "V3 full audit verified \u2014 UI-BOOT"
     },
     {
       "id": "UI-CSS-FOUNDATION",
@@ -1765,7 +1765,7 @@
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
-      "issue": "V3 full audit verified — UI-CSS-FOUNDATION"
+      "issue": "V3 full audit verified \u2014 UI-CSS-FOUNDATION"
     },
     {
       "id": "UI-CSS-MODES",
@@ -1780,7 +1780,7 @@
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
-      "issue": "V3 full audit verified — UI-CSS-MODES"
+      "issue": "V3 full audit verified \u2014 UI-CSS-MODES"
     },
     {
       "id": "UI-CSS-CONTROLS",
@@ -1795,7 +1795,7 @@
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
-      "issue": "V3 full audit verified — UI-CSS-CONTROLS"
+      "issue": "V3 full audit verified \u2014 UI-CSS-CONTROLS"
     },
     {
       "id": "UI-CSS-RESULTS",
@@ -1817,7 +1817,7 @@
         "REG-93",
         "REG-94"
       ],
-      "issue": "V3 full audit verified — UI-CSS-RESULTS"
+      "issue": "V3 full audit verified \u2014 UI-CSS-RESULTS"
     },
     {
       "id": "UI-MARKUP-HEADER",
@@ -1832,7 +1832,7 @@
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
-      "issue": "V3 full audit verified — UI-MARKUP-HEADER"
+      "issue": "V3 full audit verified \u2014 UI-MARKUP-HEADER"
     },
     {
       "id": "UI-MARKUP-REC-PLANNER",
@@ -1847,7 +1847,7 @@
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
-      "issue": "Level 2 REC planner view — depth/BT, gas, generate"
+      "issue": "Level 2 REC planner view \u2014 depth/BT, gas, generate"
     },
     {
       "id": "UI-MARKUP-TEC-PLANNER",
@@ -1862,7 +1862,7 @@
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
-      "issue": "Level 2 TECH planner view — gas cards, GF/VPM, generate"
+      "issue": "Level 2 TECH planner view \u2014 gas cards, GF/VPM, generate"
     },
     {
       "id": "UI-REC-PLANNER",
@@ -1907,7 +1907,7 @@
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
-      "issue": "V3 full audit verified — UI-MARKUP-CONSUMPTION"
+      "issue": "V3 full audit verified \u2014 UI-MARKUP-CONSUMPTION"
     },
     {
       "id": "UI-MARKUP-TOOLS",
@@ -1928,7 +1928,7 @@
         "EXT-04",
         "COV-01"
       ],
-      "issue": "V3 full audit verified — UI-MARKUP-TOOLS"
+      "issue": "V3 full audit verified \u2014 UI-MARKUP-TOOLS"
     },
     {
       "id": "UI-MARKUP-MODALS",
@@ -1949,7 +1949,7 @@
         "EXT-04",
         "COV-01"
       ],
-      "issue": "V3 full audit verified — UI-MARKUP-MODALS"
+      "issue": "V3 full audit verified \u2014 UI-MARKUP-MODALS"
     },
     {
       "id": "UI-RUNTIME-BOOTSTRAP",
@@ -2015,7 +2015,7 @@
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
-      "issue": "V3 full audit verified — UI-MODE-STATE"
+      "issue": "V3 full audit verified \u2014 UI-MODE-STATE"
     },
     {
       "id": "UI-ALGORITHM-SETTINGS",
@@ -2048,7 +2048,7 @@
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
-      "issue": "V3 full audit verified — UI-UNIT-HELPERS"
+      "issue": "V3 full audit verified \u2014 UI-UNIT-HELPERS"
     },
     {
       "id": "UI-UNIT-SWITCHING",
@@ -2064,7 +2064,7 @@
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
-      "issue": "V3 full audit verified — UI-UNIT-SWITCHING"
+      "issue": "V3 full audit verified \u2014 UI-UNIT-SWITCHING"
     },
     {
       "id": "UI-ZHL-DELEGATES",
@@ -2225,7 +2225,7 @@
       "audit_issue": 148,
       "evidence": [],
       "regression_cases": [],
-      "issue": "Cycle 35 structured read — no actionable findings"
+      "issue": "Cycle 35 structured read \u2014 no actionable findings"
     },
     {
       "id": "UI-ZHL-RUNNER-SETUP",
@@ -2241,7 +2241,7 @@
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
-      "issue": "Cycle 35 structured read — no actionable findings",
+      "issue": "Cycle 35 structured read \u2014 no actionable findings",
       "audit_issue": 149
     },
     {
@@ -2541,7 +2541,7 @@
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
-      "issue": "V3 full audit verified — UI-PWA-LIFECYCLE"
+      "issue": "V3 full audit verified \u2014 UI-PWA-LIFECYCLE"
     },
     {
       "id": "ENG-ZHL-PHYSICS",
@@ -2564,7 +2564,7 @@
         "REG-22",
         "REG-23"
       ],
-      "issue": "V3 full audit verified — ENG-ZHL-PHYSICS"
+      "issue": "V3 full audit verified \u2014 ENG-ZHL-PHYSICS"
     },
     {
       "id": "ENG-ZHL-GAS",
@@ -2680,7 +2680,7 @@
         "REG-01",
         "REG-31"
       ],
-      "issue": "V3 full audit verified — ENG-VPM-REFERENCE"
+      "issue": "V3 full audit verified \u2014 ENG-VPM-REFERENCE"
     },
     {
       "id": "ENG-RDP",
@@ -2705,7 +2705,7 @@
         "REG-56",
         "REG-57"
       ],
-      "issue": "V3 full audit verified — ENG-RDP"
+      "issue": "V3 full audit verified \u2014 ENG-RDP"
     },
     {
       "id": "APP-ANDROID-SELECT",
@@ -2726,7 +2726,7 @@
         "ANDROID-01",
         "REG-45"
       ],
-      "issue": "V3 full audit verified — APP-ANDROID-SELECT"
+      "issue": "V3 full audit verified \u2014 APP-ANDROID-SELECT"
     },
     {
       "id": "APP-CAPACITOR-BRIDGE",
@@ -2747,7 +2747,7 @@
         "ANDROID-01",
         "REG-45"
       ],
-      "issue": "V3 full audit verified — APP-CAPACITOR-BRIDGE"
+      "issue": "V3 full audit verified \u2014 APP-CAPACITOR-BRIDGE"
     },
     {
       "id": "APP-CONTINGENCY",
@@ -2793,7 +2793,7 @@
       "fingerprint": "b912fc88ae3741e244c120231637f0c674832f2283da1e9a53ad8caf084fca02",
       "last_read_fingerprint": null,
       "evidence": [],
-      "issue": "GitHub #140 H-2 / Cycle 5 GP-01�06 � docs/code-review-2026-06-30.md",
+      "issue": "GitHub #140 H-2 / Cycle 5 GP-01\ufffd06 \ufffd docs/code-review-2026-06-30.md",
       "regression_cases": []
     },
     {
@@ -2808,7 +2808,7 @@
       "fingerprint": "f752db7c39b97db8b016acfd5cc1df60f0a9f656972786f50f8352dbca1020a9",
       "last_read_fingerprint": null,
       "evidence": [],
-      "issue": "Cycle 5 GT-01�06 � docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GT-01\ufffd06 \ufffd docs/code-review-2026-06-30.md",
       "regression_cases": []
     },
     {
@@ -2823,7 +2823,7 @@
       "fingerprint": "2b0a6880339f3c6d576cecfd092ca8618765ab866a4a945fee8fd1b6497227ad",
       "last_read_fingerprint": null,
       "evidence": [],
-      "issue": "GitHub #142 � Dive 2 gas override",
+      "issue": "GitHub #142 \ufffd Dive 2 gas override",
       "regression_cases": []
     },
     {
@@ -2865,7 +2865,7 @@
         "REG-03",
         "REG-05"
       ],
-      "issue": "V3 full audit verified — APP-ZHL-WORKER-BRIDGE"
+      "issue": "V3 full audit verified \u2014 APP-ZHL-WORKER-BRIDGE"
     },
     {
       "id": "APP-ZHL-WORKER",
@@ -2890,7 +2890,7 @@
         "REG-03",
         "REG-05"
       ],
-      "issue": "V3 full audit verified — APP-ZHL-WORKER"
+      "issue": "V3 full audit verified \u2014 APP-ZHL-WORKER"
     },
     {
       "id": "APP-DOWNLOAD",
@@ -2911,7 +2911,7 @@
         "EXT-07",
         "COV-01"
       ],
-      "issue": "V3 full audit verified — APP-DOWNLOAD"
+      "issue": "V3 full audit verified \u2014 APP-DOWNLOAD"
     },
     {
       "id": "APP-MANIFEST",
@@ -2932,7 +2932,7 @@
         "REG-45",
         "EXT-08"
       ],
-      "issue": "V3 full audit verified — APP-MANIFEST"
+      "issue": "V3 full audit verified \u2014 APP-MANIFEST"
     },
     {
       "id": "APP-VERSION",
@@ -2947,7 +2947,7 @@
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
-      "issue": "V3 full audit verified — APP-VERSION"
+      "issue": "V3 full audit verified \u2014 APP-VERSION"
     },
     {
       "id": "APP-CAPACITOR-CONFIG",
@@ -2968,7 +2968,7 @@
         "SUITE-ANDROID/android-compile",
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — APP-CAPACITOR-CONFIG"
+      "issue": "V3 full audit verified \u2014 APP-CAPACITOR-CONFIG"
     },
     {
       "id": "APP-CLOUDFLARE-CONFIG",
@@ -2989,7 +2989,7 @@
         "SUITE-COVERAGE/AUDIT-COV-01",
         "SUITE-UI-STRUCTURE/UI-PAGES-ASSETS"
       ],
-      "issue": "V3 full audit verified — APP-CLOUDFLARE-CONFIG"
+      "issue": "V3 full audit verified \u2014 APP-CLOUDFLARE-CONFIG"
     },
     {
       "id": "APP-PACKAGE",
@@ -3026,7 +3026,7 @@
         "SUITE-COVERAGE/AUDIT-COV-01",
         "SUITE-UI-STRUCTURE/UI-PAGES-ASSETS"
       ],
-      "issue": "V3 full audit verified — APP-NODE-VERSION"
+      "issue": "V3 full audit verified \u2014 APP-NODE-VERSION"
     },
     {
       "id": "NATIVE-MAIN-ACTIVITY",
@@ -3069,7 +3069,7 @@
         "SUITE-ANDROID/android-compile",
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — NATIVE-MANIFEST"
+      "issue": "V3 full audit verified \u2014 NATIVE-MANIFEST"
     },
     {
       "id": "NATIVE-BUILD-ROOT",
@@ -3090,7 +3090,7 @@
         "SUITE-ANDROID/android-compile",
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — NATIVE-BUILD-ROOT"
+      "issue": "V3 full audit verified \u2014 NATIVE-BUILD-ROOT"
     },
     {
       "id": "NATIVE-BUILD-APP",
@@ -3127,7 +3127,7 @@
         "SUITE-ANDROID/android-compile",
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — NATIVE-SETTINGS"
+      "issue": "V3 full audit verified \u2014 NATIVE-SETTINGS"
     },
     {
       "id": "NATIVE-VARIABLES",
@@ -3148,7 +3148,7 @@
         "SUITE-ANDROID/android-compile",
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — NATIVE-VARIABLES"
+      "issue": "V3 full audit verified \u2014 NATIVE-VARIABLES"
     },
     {
       "id": "NATIVE-LAYOUT",
@@ -3169,7 +3169,7 @@
         "SUITE-ANDROID/android-compile",
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — NATIVE-LAYOUT"
+      "issue": "V3 full audit verified \u2014 NATIVE-LAYOUT"
     },
     {
       "id": "NATIVE-FILE-PATHS",
@@ -3212,7 +3212,7 @@
         "SUITE-ANDROID/android-compile",
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — NATIVE-STRINGS"
+      "issue": "V3 full audit verified \u2014 NATIVE-STRINGS"
     },
     {
       "id": "NATIVE-STYLES",
@@ -3233,7 +3233,7 @@
         "SUITE-ANDROID/android-compile",
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — NATIVE-STYLES"
+      "issue": "V3 full audit verified \u2014 NATIVE-STYLES"
     },
     {
       "id": "NATIVE-COLORS",
@@ -3254,7 +3254,7 @@
         "SUITE-ANDROID/android-compile",
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — NATIVE-COLORS"
+      "issue": "V3 full audit verified \u2014 NATIVE-COLORS"
     },
     {
       "id": "NATIVE-LAUNCHER-BG",
@@ -3275,7 +3275,7 @@
         "SUITE-ANDROID/android-compile",
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — NATIVE-LAUNCHER-BG"
+      "issue": "V3 full audit verified \u2014 NATIVE-LAUNCHER-BG"
     },
     {
       "id": "NATIVE-DRAWABLE-BG",
@@ -3296,7 +3296,7 @@
         "SUITE-ANDROID/android-compile",
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — NATIVE-DRAWABLE-BG"
+      "issue": "V3 full audit verified \u2014 NATIVE-DRAWABLE-BG"
     },
     {
       "id": "NATIVE-DRAWABLE-FG",
@@ -3317,7 +3317,7 @@
         "SUITE-ANDROID/android-compile",
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — NATIVE-DRAWABLE-FG"
+      "issue": "V3 full audit verified \u2014 NATIVE-DRAWABLE-FG"
     },
     {
       "id": "NATIVE-ICON",
@@ -3338,7 +3338,7 @@
         "SUITE-ANDROID/android-compile",
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — NATIVE-ICON"
+      "issue": "V3 full audit verified \u2014 NATIVE-ICON"
     },
     {
       "id": "NATIVE-ICON-ROUND",
@@ -3359,7 +3359,7 @@
         "SUITE-ANDROID/android-compile",
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — NATIVE-ICON-ROUND"
+      "issue": "V3 full audit verified \u2014 NATIVE-ICON-ROUND"
     },
     {
       "id": "TEST-ENGINE-REGRESSION",
@@ -3371,7 +3371,7 @@
         "type": "whole_file"
       },
       "evidence": [],
-      "issue": "GitHub #133–#138 audit regressions and Cycle 31–34 verification",
+      "issue": "GitHub #133\u2013#138 audit regressions and Cycle 31\u201334 verification",
       "regression_cases": [],
       "fingerprint": "7947bd61e6aa62b5f876dc60c7da1308d85cf82026ba80293c3dec78219837ef",
       "last_read_fingerprint": null,
@@ -3412,7 +3412,7 @@
         "SUITE-GAS-CORE/T-GT-01",
         "SUITE-GAS-CORE/T-GP-02"
       ],
-      "issue": "Cycle 5 GP/GT behavioral regression � docs/code-review-2026-06-30.md",
+      "issue": "Cycle 5 GP/GT behavioral regression \ufffd docs/code-review-2026-06-30.md",
       "regression_cases": [
         "REG-10",
         "REG-11",
@@ -3546,7 +3546,7 @@
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
-      "issue": "V3 full audit verified — TEST-EXPORT"
+      "issue": "V3 full audit verified \u2014 TEST-EXPORT"
     },
     {
       "id": "TEST-RUN-ALL",
@@ -3595,7 +3595,7 @@
       "evidence": [
         "SUITE-BROWSER/gf-pinned-schedules"
       ],
-      "issue": "V3 full audit verified — TEST-BROWSER-RUNNER"
+      "issue": "V3 full audit verified \u2014 TEST-BROWSER-RUNNER"
     },
     {
       "id": "TEST-NATIVE-RUNNER",
@@ -3614,7 +3614,7 @@
       "evidence": [
         "SUITE-ANDROID/android-compile"
       ],
-      "issue": "V3 full audit verified — TEST-NATIVE-RUNNER"
+      "issue": "V3 full audit verified \u2014 TEST-NATIVE-RUNNER"
     },
     {
       "id": "TEST-CCR-DIFF-RUNNER",
@@ -3691,7 +3691,7 @@
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — TEST-PLAYWRIGHT-BOOT"
+      "issue": "V3 full audit verified \u2014 TEST-PLAYWRIGHT-BOOT"
     },
     {
       "id": "TEST-HTTP",
@@ -3706,7 +3706,7 @@
       "last_read_fingerprint": null,
       "regression_cases": [],
       "evidence": [],
-      "issue": "V3 full audit verified — TEST-HTTP"
+      "issue": "V3 full audit verified \u2014 TEST-HTTP"
     },
     {
       "id": "TEST-PLAYWRIGHT-RESTORE",
@@ -3770,7 +3770,7 @@
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — TEST-LEGACY"
+      "issue": "V3 full audit verified \u2014 TEST-LEGACY"
     },
     {
       "id": "TEST-HARNESS",
@@ -3789,7 +3789,7 @@
       "regression_cases": [
         "COV-01"
       ],
-      "issue": "V3 full audit verified — TEST-HARNESS"
+      "issue": "V3 full audit verified \u2014 TEST-HARNESS"
     },
     {
       "id": "TEST-MAIN",
@@ -3808,7 +3808,7 @@
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — TEST-MAIN"
+      "issue": "V3 full audit verified \u2014 TEST-MAIN"
     },
     {
       "id": "TEST-EXTENDED",
@@ -3827,7 +3827,7 @@
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — TEST-EXTENDED"
+      "issue": "V3 full audit verified \u2014 TEST-EXTENDED"
     },
     {
       "id": "TEST-MASSIVE",
@@ -3842,7 +3842,7 @@
       "last_read_fingerprint": null,
       "regression_cases": [],
       "evidence": [],
-      "issue": "V3 full audit verified — TEST-MASSIVE"
+      "issue": "V3 full audit verified \u2014 TEST-MASSIVE"
     },
     {
       "id": "TEST-MASSIVE-MAIN",
@@ -3861,7 +3861,7 @@
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — TEST-MASSIVE-MAIN"
+      "issue": "V3 full audit verified \u2014 TEST-MASSIVE-MAIN"
     },
     {
       "id": "TEST-VERIFY",
@@ -3880,7 +3880,7 @@
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — TEST-VERIFY"
+      "issue": "V3 full audit verified \u2014 TEST-VERIFY"
     },
     {
       "id": "TEST-PSCR-OTU-CNS",
@@ -3899,7 +3899,7 @@
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — TEST-PSCR-OTU-CNS"
+      "issue": "V3 full audit verified \u2014 TEST-PSCR-OTU-CNS"
     },
     {
       "id": "TEST-CCR-DIFF-HTML",
@@ -3918,7 +3918,7 @@
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — TEST-CCR-DIFF-HTML"
+      "issue": "V3 full audit verified \u2014 TEST-CCR-DIFF-HTML"
     },
     {
       "id": "TEST-NATIVE-FIXTURE",
@@ -3937,7 +3937,7 @@
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — TEST-NATIVE-FIXTURE"
+      "issue": "V3 full audit verified \u2014 TEST-NATIVE-FIXTURE"
     },
     {
       "id": "TEST-CAP-FIXTURE",
@@ -3956,7 +3956,7 @@
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — TEST-CAP-FIXTURE"
+      "issue": "V3 full audit verified \u2014 TEST-CAP-FIXTURE"
     },
     {
       "id": "TEST-ANDROID-UNIT",
@@ -3977,7 +3977,7 @@
         "SUITE-ANDROID/android-compile",
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — TEST-ANDROID-UNIT"
+      "issue": "V3 full audit verified \u2014 TEST-ANDROID-UNIT"
     },
     {
       "id": "TEST-ANDROID-INSTRUMENTED",
@@ -3998,7 +3998,7 @@
         "SUITE-ANDROID/android-compile",
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — TEST-ANDROID-INSTRUMENTED"
+      "issue": "V3 full audit verified \u2014 TEST-ANDROID-INSTRUMENTED"
     },
     {
       "id": "TEST-CCR-DIFF-BUILD",
@@ -4017,7 +4017,7 @@
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — TEST-CCR-DIFF-BUILD"
+      "issue": "V3 full audit verified \u2014 TEST-CCR-DIFF-BUILD"
     },
     {
       "id": "TEST-CCR-DIFF-LIB-PY",
@@ -4036,7 +4036,7 @@
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — TEST-CCR-DIFF-LIB-PY"
+      "issue": "V3 full audit verified \u2014 TEST-CCR-DIFF-LIB-PY"
     },
     {
       "id": "TEST-CCR-DIFF-LIB-JS",
@@ -4055,7 +4055,7 @@
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
-      "issue": "V3 full audit verified — TEST-CCR-DIFF-LIB-JS"
+      "issue": "V3 full audit verified \u2014 TEST-CCR-DIFF-LIB-JS"
     },
     {
       "id": "TOOL-AUDIT",
@@ -4082,7 +4082,7 @@
         "REG-03",
         "REG-05"
       ],
-      "issue": "GitHub #133–#139 structured environment audit gates; release regression 9/9",
+      "issue": "GitHub #133\u2013#139 structured environment audit gates; release regression 9/9",
       "fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d",
       "last_read_fingerprint": "f6762ccfeadf6277b65f16cd2037bdcb149cfed99de0cb880af9842eedd2a37d"
     },
@@ -4102,8 +4102,8 @@
       "regression_cases": [
         "COV-01"
       ],
-      "fingerprint": "7b56faeb23943398bd68c2470dbb56813b2e398b0d4548df15d60a4bc3b58b4c",
-      "last_read_fingerprint": "7b56faeb23943398bd68c2470dbb56813b2e398b0d4548df15d60a4bc3b58b4c"
+      "fingerprint": "f9fd94d2a203c542b5605c4db96bf9a61a2c5336fa06331af8f1d52f0127fbac",
+      "last_read_fingerprint": "f9fd94d2a203c542b5605c4db96bf9a61a2c5336fa06331af8f1d52f0127fbac"
     },
     {
       "id": "TOOL-AUDIT-COVERAGE-TEST",
@@ -4122,7 +4122,7 @@
       "regression_cases": [
         "COV-01"
       ],
-      "issue": "V3 full audit verified — TOOL-AUDIT-COVERAGE-TEST"
+      "issue": "V3 full audit verified \u2014 TOOL-AUDIT-COVERAGE-TEST"
     },
     {
       "id": "TOOL-BUILD-PAGES",
@@ -4143,7 +4143,7 @@
         "COV-01",
         "PARITY-01"
       ],
-      "issue": "V3 full audit verified — TOOL-BUILD-PAGES"
+      "issue": "V3 full audit verified \u2014 TOOL-BUILD-PAGES"
     },
     {
       "id": "TOOL-ASSEMBLE-PAGES-PREVIEW",
@@ -4194,7 +4194,7 @@
         "SUITE-COVERAGE/AUDIT-COV-01",
         "SUITE-PARITY/canonical-generated-parity"
       ],
-      "issue": "V3 full audit verified — TOOL-BUILD-VPM"
+      "issue": "V3 full audit verified \u2014 TOOL-BUILD-VPM"
     },
     {
       "id": "TOOL-BUILD-ZHL",
@@ -4209,7 +4209,7 @@
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
-      "issue": "V3 full audit verified — TOOL-BUILD-ZHL"
+      "issue": "V3 full audit verified \u2014 TOOL-BUILD-ZHL"
     },
     {
       "id": "TOOL-CHECK-PARITY",
@@ -4230,7 +4230,7 @@
         "COV-01",
         "PARITY-01"
       ],
-      "issue": "V3 full audit verified — TOOL-CHECK-PARITY"
+      "issue": "V3 full audit verified \u2014 TOOL-CHECK-PARITY"
     },
     {
       "id": "TOOL-RUN-AUDIT-COVERAGE-SUITE-PY",
@@ -4431,7 +4431,7 @@
         "SUITE-COVERAGE/AUDIT-COV-01",
         "SUITE-PARITY/canonical-generated-parity"
       ],
-      "issue": "V3 full audit verified — TOOL-EXTRACT-ZHL"
+      "issue": "V3 full audit verified \u2014 TOOL-EXTRACT-ZHL"
     },
     {
       "id": "TOOL-INSERT-ZHL",
@@ -4452,7 +4452,7 @@
         "SUITE-COVERAGE/AUDIT-COV-01",
         "SUITE-PARITY/canonical-generated-parity"
       ],
-      "issue": "V3 full audit verified — TOOL-INSERT-ZHL"
+      "issue": "V3 full audit verified \u2014 TOOL-INSERT-ZHL"
     },
     {
       "id": "TOOL-MERGE-CCR",
@@ -4473,7 +4473,7 @@
         "SUITE-COVERAGE/AUDIT-COV-01",
         "SUITE-PARITY/canonical-generated-parity"
       ],
-      "issue": "V3 full audit verified — TOOL-MERGE-CCR"
+      "issue": "V3 full audit verified \u2014 TOOL-MERGE-CCR"
     },
     {
       "id": "TOOL-PATCH-DECO",
@@ -4494,7 +4494,7 @@
         "SUITE-COVERAGE/AUDIT-COV-01",
         "SUITE-PARITY/canonical-generated-parity"
       ],
-      "issue": "V3 full audit verified — TOOL-PATCH-DECO"
+      "issue": "V3 full audit verified \u2014 TOOL-PATCH-DECO"
     },
     {
       "id": "TOOL-PATCH-SCHEDULE",
@@ -4515,7 +4515,7 @@
         "SUITE-COVERAGE/AUDIT-COV-01",
         "SUITE-PARITY/canonical-generated-parity"
       ],
-      "issue": "V3 full audit verified — TOOL-PATCH-SCHEDULE"
+      "issue": "V3 full audit verified \u2014 TOOL-PATCH-SCHEDULE"
     },
     {
       "id": "TOOL-PATCH-TIER3",
@@ -4536,7 +4536,7 @@
         "SUITE-COVERAGE/AUDIT-COV-01",
         "SUITE-PARITY/canonical-generated-parity"
       ],
-      "issue": "V3 full audit verified — TOOL-PATCH-TIER3"
+      "issue": "V3 full audit verified \u2014 TOOL-PATCH-TIER3"
     },
     {
       "id": "TOOL-PATCH-VPM",
@@ -4557,7 +4557,7 @@
         "SUITE-COVERAGE/AUDIT-COV-01",
         "SUITE-PARITY/canonical-generated-parity"
       ],
-      "issue": "V3 full audit verified — TOOL-PATCH-VPM"
+      "issue": "V3 full audit verified \u2014 TOOL-PATCH-VPM"
     },
     {
       "id": "TOOL-PATCH-ZHL",
@@ -4578,7 +4578,7 @@
         "SUITE-COVERAGE/AUDIT-COV-01",
         "SUITE-PARITY/canonical-generated-parity"
       ],
-      "issue": "V3 full audit verified — TOOL-PATCH-ZHL"
+      "issue": "V3 full audit verified \u2014 TOOL-PATCH-ZHL"
     },
     {
       "id": "TOOL-SYNC-WWW",
@@ -4593,7 +4593,7 @@
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
-      "issue": "V3 full audit verified — TOOL-SYNC-WWW"
+      "issue": "V3 full audit verified \u2014 TOOL-SYNC-WWW"
     },
     {
       "id": "TOOL-UPDATE-VERSION",
@@ -4614,7 +4614,7 @@
         "SUITE-COVERAGE/AUDIT-COV-01",
         "SUITE-PARITY/canonical-generated-parity"
       ],
-      "issue": "V3 full audit verified — TOOL-UPDATE-VERSION"
+      "issue": "V3 full audit verified \u2014 TOOL-UPDATE-VERSION"
     },
     {
       "id": "TOOL-VENDOR",
@@ -4635,7 +4635,7 @@
         "SUITE-COVERAGE/AUDIT-COV-01",
         "SUITE-PARITY/canonical-generated-parity"
       ],
-      "issue": "V3 full audit verified — TOOL-VENDOR"
+      "issue": "V3 full audit verified \u2014 TOOL-VENDOR"
     },
     {
       "id": "TOOL-VERIFY-ASSETS",
@@ -4656,7 +4656,7 @@
         "SUITE-COVERAGE/AUDIT-COV-01",
         "SUITE-PARITY/canonical-generated-parity"
       ],
-      "issue": "V3 full audit verified — TOOL-VERIFY-ASSETS"
+      "issue": "V3 full audit verified \u2014 TOOL-VERIFY-ASSETS"
     },
     {
       "id": "CI-AUDIT",
@@ -5104,7 +5104,7 @@
         "REG-96",
         "REG-99"
       ],
-      "issue": "V3 full audit verified — UI-PLANNER-SHELL"
+      "issue": "V3 full audit verified \u2014 UI-PLANNER-SHELL"
     },
     {
       "id": "UI-RESULTS-PANEL",
@@ -5127,7 +5127,7 @@
         "REG-97",
         "REG-98"
       ],
-      "issue": "V3 full audit verified — UI-RESULTS-PANEL"
+      "issue": "V3 full audit verified \u2014 UI-RESULTS-PANEL"
     },
     {
       "id": "TOOL-V3-ASSEMBLE_UI_HTML-PY",
@@ -5636,31 +5636,32 @@
   "cycles": [
     {
       "cycle": 1,
-      "max_new_application_lines": 750,
+      "max_new_application_lines": 730,
       "application_units": [
         "UI-MARKUP-HEADER"
       ],
       "engine_reverification": [],
-      "acceptance": "V3 cycle 1: header markup partial READ; SUITE-UI-STRUCTURE must be green"
+      "acceptance": "V3 cycle 1: header markup partial READ; SUITE-UI-STRUCTURE must be green; current lines: 730; sessions: 2",
+      "min_review_sessions": 2
     },
     {
       "cycle": 2,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 84,
       "application_units": [
         "UI-MARKUP-REC-PLANNER",
         "UI-REC-PLANNER"
       ],
       "engine_reverification": [],
-      "acceptance": "Cycle 2a: REC planner markup + runRecPlan; SL-REC-DEPTH-BT-STEPPER"
+      "acceptance": "Cycle 2a: REC planner markup + runRecPlan; SL-REC-DEPTH-BT-STEPPER; current lines: 84; sessions: 1"
     },
     {
       "cycle": 3,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 381,
       "application_units": [
         "UI-MARKUP-CONSUMPTION"
       ],
       "engine_reverification": [],
-      "acceptance": "Consumption markup partial READ"
+      "acceptance": "Consumption markup partial READ; current lines: 381; sessions: 1"
     },
     {
       "cycle": 4,
@@ -5670,57 +5671,59 @@
         "UI-MARKUP-MODALS"
       ],
       "engine_reverification": [],
-      "acceptance": "Tools and modals markup partials READ"
+      "acceptance": "Tools and modals markup partials READ; current lines: 612; sessions: 2",
+      "min_review_sessions": 2
     },
     {
       "cycle": 5,
-      "max_new_application_lines": 826,
+      "max_new_application_lines": 758,
       "application_units": [
         "UI-CSS-FOUNDATION",
         "UI-CSS-MODES"
       ],
       "engine_reverification": [],
-      "acceptance": "Foundation and modes CSS READ"
+      "acceptance": "Foundation and modes CSS READ; current lines: 758; sessions: 2",
+      "min_review_sessions": 2
     },
     {
       "cycle": 6,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 548,
       "application_units": [
         "UI-CSS-CONTROLS"
       ],
       "engine_reverification": [],
-      "acceptance": "Controls CSS READ"
+      "acceptance": "Controls CSS READ; current lines: 548; sessions: 1"
     },
     {
       "cycle": 7,
-      "max_new_application_lines": 985,
+      "max_new_application_lines": 970,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "Results CSS READ (2 bounded sessions)",
+      "acceptance": "Results CSS READ (2 bounded sessions); current lines: 970; sessions: 2",
       "min_review_sessions": 2
     },
     {
       "cycle": 8,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 526,
       "application_units": [
         "UI-PLANNER-SHELL",
         "UI-RESULTS-PANEL"
       ],
       "engine_reverification": [],
-      "acceptance": "Planner shell and results panel READ"
+      "acceptance": "Planner shell and results panel READ; current lines: 526; sessions: 1"
     },
     {
       "cycle": 9,
-      "max_new_application_lines": 1004,
+      "max_new_application_lines": 999,
       "min_review_sessions": 2,
       "application_units": [
         "UI-ENVIRONMENT",
         "UI-MODE-STATE"
       ],
       "engine_reverification": [],
-      "acceptance": "settings-core environment and mode state READ (1002 lines; >=2 bounded sessions); explicitly verify VPM switch behavior; enforce app-wide gas-switch terminology: the diving procedure is labeled and identified as \"Gas switch\" everywhere, with no user-facing \"Gas change\" labels or new gas-change IDs/classes/contracts; verify mobile warning/alert banners and gas-consumption warnings wrap inside the viewport without horizontal clipping or overflow"
+      "acceptance": "settings-core environment and mode state READ (1002 lines; >=2 bounded sessions); explicitly verify VPM switch behavior; enforce app-wide gas-switch terminology: the diving procedure is labeled and identified as \"Gas switch\" everywhere, with no user-facing \"Gas change\" labels or new gas-change IDs/classes/contracts; verify mobile warning/alert banners and gas-consumption warnings wrap inside the viewport without horizontal clipping or overflow; current lines: 999; sessions: 2"
     },
     {
       "cycle": 10,
@@ -5730,11 +5733,12 @@
         "APP-GAS-TABLE"
       ],
       "engine_reverification": [],
-      "acceptance": "Surface interval and gas table cores READ"
+      "acceptance": "Surface interval and gas table cores READ; current lines: 679; sessions: 2",
+      "min_review_sessions": 2
     },
     {
       "cycle": 11,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 534,
       "application_units": [
         "UI-GAS-INPUTS",
         "UI-GAS-CARDS"
@@ -5742,25 +5746,25 @@
       "engine_reverification": [
         "ENG-ZHL-GAS"
       ],
-      "acceptance": "Gas card UI READ"
+      "acceptance": "Gas card UI READ; current lines: 534; sessions: 1"
     },
     {
       "cycle": 12,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 546,
       "application_units": [
         "APP-GAS-PLAN"
       ],
       "engine_reverification": [],
-      "acceptance": "Gas plan core READ"
+      "acceptance": "Gas plan core READ; current lines: 546; sessions: 1"
     },
     {
       "cycle": 13,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 587,
       "application_units": [
         "APP-CONTINGENCY"
       ],
       "engine_reverification": [],
-      "acceptance": "Contingency core READ"
+      "acceptance": "Contingency core READ; current lines: 587; sessions: 1"
     },
     {
       "cycle": 14,
@@ -5770,18 +5774,18 @@
       ],
       "engine_reverification": [],
       "min_review_sessions": 6,
-      "acceptance": "export-core text/PDF READ across at least 6 bounded sessions"
+      "acceptance": "export-core text/PDF READ across at least 6 bounded sessions; current lines: 3269; sessions: 6"
     },
     {
       "cycle": 15,
-      "max_new_application_lines": 641,
+      "max_new_application_lines": 629,
       "min_review_sessions": 2,
       "application_units": [
         "UI-PLOT-RENDER",
         "UI-PLOT-WAYPOINTS"
       ],
       "engine_reverification": [],
-      "acceptance": "plot-core render and waypoints READ in at least 2 bounded sessions (641 lines total)"
+      "acceptance": "plot-core render and waypoints READ in at least 2 bounded sessions (641 lines total); current lines: 629; sessions: 2"
     },
     {
       "cycle": 16,
@@ -5791,21 +5795,23 @@
         "UI-PLOT-INIT"
       ],
       "engine_reverification": [],
-      "acceptance": "Profile tool and plot init READ"
+      "acceptance": "Profile tool and plot init READ; current lines: 755; sessions: 2",
+      "min_review_sessions": 2
     },
     {
       "cycle": 17,
-      "max_new_application_lines": 1064,
+      "max_new_application_lines": 948,
       "application_units": [
         "UI-VPM-RENDER",
         "UI-ZHL-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "results-render-core READ"
+      "acceptance": "results-render-core READ; current lines: 948; sessions: 2",
+      "min_review_sessions": 2
     },
     {
       "cycle": 18,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 511,
       "application_units": [
         "UI-ZHL-DELEGATES",
         "UI-CCR-DELEGATES"
@@ -5813,11 +5819,11 @@
       "engine_reverification": [
         "ENG-ZHL-SCHEDULE"
       ],
-      "acceptance": "ZHL/CCR delegate thin layer READ"
+      "acceptance": "ZHL/CCR delegate thin layer READ; current lines: 511; sessions: 1"
     },
     {
       "cycle": 19,
-      "max_new_application_lines": 606,
+      "max_new_application_lines": 605,
       "application_units": [
         "UI-DECO-PHYSICS",
         "UI-SCHEDULE-INPUTS"
@@ -5826,11 +5832,11 @@
         "ENG-ZHL-CCR"
       ],
       "min_review_sessions": 2,
-      "acceptance": "Deco physics and schedule inputs READ across at least 2 bounded sessions"
+      "acceptance": "Deco physics and schedule inputs READ across at least 2 bounded sessions; current lines: 605; sessions: 2"
     },
     {
       "cycle": 20,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 480,
       "application_units": [
         "UI-ZHL-RUNNER-SETUP",
         "UI-ZHL-RUNNER-ENGINE"
@@ -5838,38 +5844,38 @@
       "engine_reverification": [
         "ENG-ZHL-SCHEDULE"
       ],
-      "acceptance": "ZHL runner setup and engine invocation READ"
+      "acceptance": "ZHL runner setup and engine invocation READ; current lines: 480; sessions: 1"
     },
     {
       "cycle": 21,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 588,
       "application_units": [
         "UI-ZHL-HEADLESS-HELPERS",
         "UI-ZHL-HEADLESS-ENGINE"
       ],
       "engine_reverification": [],
-      "acceptance": "Headless ZHL path READ"
+      "acceptance": "Headless ZHL path READ; current lines: 588; sessions: 1"
     },
     {
       "cycle": 22,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 473,
       "application_units": [
         "UI-VPM-RUNNER"
       ],
       "engine_reverification": [
         "ENG-VPM"
       ],
-      "acceptance": "VPM runner READ"
+      "acceptance": "VPM runner READ; current lines: 473; sessions: 1"
     },
     {
       "cycle": 23,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 390,
       "application_units": [
         "UI-RUNTIME-BOOTSTRAP",
         "UI-APP-INIT"
       ],
       "engine_reverification": [],
-      "acceptance": "Runtime bootstrap and app init READ"
+      "acceptance": "Runtime bootstrap and app init READ; current lines: 390; sessions: 1"
     },
     {
       "cycle": 24,
@@ -5880,7 +5886,7 @@
         "UI-SETTINGS-CONTROLS"
       ],
       "engine_reverification": [],
-      "acceptance": "Algorithm and settings controls READ (692 lines; >=2 bounded sessions)"
+      "acceptance": "Algorithm and settings controls READ (692 lines; >=2 bounded sessions); current lines: 692; sessions: 2"
     },
     {
       "cycle": 25,
@@ -5892,7 +5898,7 @@
       ],
       "engine_reverification": [],
       "min_review_sessions": 3,
-      "acceptance": "Settings persistence and unit helpers READ across at least 3 bounded sessions"
+      "acceptance": "Settings persistence and unit helpers READ across at least 3 bounded sessions; current lines: 1288; sessions: 3"
     },
     {
       "cycle": 26,
@@ -5904,75 +5910,76 @@
         "UI-TOOLS-GF"
       ],
       "engine_reverification": [],
-      "acceptance": "Tools panels READ in >=2 bounded sessions; implement and verify the tissue-saturation seven-band value scale in docs/tissue-saturation-color-roadmap.md, including UI/export parity and accessibility"
+      "acceptance": "Tools panels READ in >=2 bounded sessions; implement and verify the tissue-saturation seven-band value scale in docs/tissue-saturation-color-roadmap.md, including UI/export parity and accessibility; current lines: 851; sessions: 2"
     },
     {
       "cycle": 27,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 508,
       "application_units": [
         "UI-PROFILE-PRESETS"
       ],
       "engine_reverification": [],
-      "acceptance": "Dive profile presets READ (depth/BT/mode ownership)"
+      "acceptance": "Dive profile presets READ (depth/BT/mode ownership); current lines: 508; sessions: 1"
     },
     {
       "cycle": 28,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 185,
       "application_units": [
         "UI-CONFIG-PRESETS"
       ],
       "engine_reverification": [],
-      "acceptance": "Advanced config presets READ"
+      "acceptance": "Advanced config presets READ; current lines: 185; sessions: 1"
     },
     {
       "cycle": 29,
-      "max_new_application_lines": 2418,
+      "max_new_application_lines": 2411,
       "application_units": [
         "UI-BOOT"
       ],
       "engine_reverification": [],
-      "acceptance": "index.html shell boot region READ"
+      "acceptance": "index.html shell boot region READ; current lines: 2411; sessions: 5",
+      "min_review_sessions": 5
     },
     {
       "cycle": 30,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 425,
       "application_units": [
         "APP-SERVICE-WORKER",
         "UI-PWA-LIFECYCLE",
         "APP-MANIFEST"
       ],
       "engine_reverification": [],
-      "acceptance": "PWA and service worker READ"
+      "acceptance": "PWA and service worker READ; current lines: 425; sessions: 1"
     },
     {
       "cycle": 31,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 159,
       "application_units": [
         "APP-ZHL-WORKER",
         "APP-ZHL-WORKER-BRIDGE"
       ],
       "engine_reverification": [],
-      "acceptance": "ZHL schedule worker and bridge READ"
+      "acceptance": "ZHL schedule worker and bridge READ; current lines: 159; sessions: 1"
     },
     {
       "cycle": 32,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 548,
       "application_units": [
         "APP-CAPACITOR-BRIDGE",
         "APP-ANDROID-SELECT"
       ],
       "engine_reverification": [],
-      "acceptance": "Capacitor and Android select bridge READ"
+      "acceptance": "Capacitor and Android select bridge READ; current lines: 548; sessions: 1"
     },
     {
       "cycle": 33,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 373,
       "application_units": [
         "ENG-ZHL-PHYSICS",
         "ENG-ZHL-GAS"
       ],
       "engine_reverification": [],
-      "acceptance": "ZHL physics and gas canonical cores READ"
+      "acceptance": "ZHL physics and gas canonical cores READ; current lines: 373; sessions: 1"
     },
     {
       "cycle": 34,
@@ -5981,16 +5988,17 @@
         "ENG-ZHL-SCHEDULE"
       ],
       "engine_reverification": [],
-      "acceptance": "ZHL schedule canonical core READ"
+      "acceptance": "ZHL schedule canonical core READ; current lines: 657; sessions: 2",
+      "min_review_sessions": 2
     },
     {
       "cycle": 35,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 404,
       "application_units": [
         "ENG-ZHL-CCR"
       ],
       "engine_reverification": [],
-      "acceptance": "ZHL CCR canonical core READ"
+      "acceptance": "ZHL CCR canonical core READ; current lines: 404; sessions: 1"
     },
     {
       "cycle": 36,
@@ -5999,16 +6007,17 @@
         "ENG-VPM"
       ],
       "engine_reverification": [],
-      "acceptance": "VPM canonical core READ"
+      "acceptance": "VPM canonical core READ; current lines: 2099; sessions: 4",
+      "min_review_sessions": 4
     },
     {
       "cycle": 37,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 101,
       "application_units": [
         "ENG-RDP"
       ],
       "engine_reverification": [],
-      "acceptance": "PADI RDP engine READ"
+      "acceptance": "PADI RDP engine READ; current lines: 101; sessions: 1"
     },
     {
       "cycle": 38,
@@ -6017,31 +6026,32 @@
         "ENG-VPM-REFERENCE"
       ],
       "engine_reverification": [],
-      "acceptance": "VPM reference implementation READ"
+      "acceptance": "VPM reference implementation READ; current lines: 2574; sessions: 5",
+      "min_review_sessions": 5
     },
     {
       "cycle": 39,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 119,
       "application_units": [
         "APP-DOWNLOAD"
       ],
       "engine_reverification": [],
-      "acceptance": "Download page READ"
+      "acceptance": "Download page READ; current lines: 119; sessions: 1"
     },
     {
       "cycle": 40,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 0,
       "application_units": [],
       "engine_reverification": [
         "TEST-ENGINE-REGRESSION",
         "TEST-ENGINE-VALIDATION",
         "TEST-GAS-CORE-REGRESSION"
       ],
-      "acceptance": "Engine and gas regression harnesses re-verified"
+      "acceptance": "Engine and gas regression harnesses re-verified; current lines: 0; no application-source review"
     },
     {
       "cycle": 41,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 0,
       "application_units": [],
       "engine_reverification": [
         "TEST-RUN-ALL",
@@ -6050,11 +6060,11 @@
         "TEST-CCR-DIFF-RUNNER",
         "TEST-PSCR-E2E"
       ],
-      "acceptance": "Full regression umbrella and release-tier test paths re-verified"
+      "acceptance": "Full regression umbrella and release-tier test paths re-verified; current lines: 0; no application-source review"
     },
     {
       "cycle": 42,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 40,
       "application_units": [
         "APP-PACKAGE"
       ],
@@ -6064,25 +6074,25 @@
         "CI-APK",
         "CI-DEPLOY"
       ],
-      "acceptance": "Package manifest and CI workflows READ"
+      "acceptance": "Package manifest and CI workflows READ; current lines: 40; sessions: 1"
     },
     {
       "cycle": 200,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 570,
       "application_units": [
         "UI-MARKUP-TEC-PLANNER"
       ],
       "engine_reverification": [],
-      "acceptance": "Cycle 2b: TECH planner markup; SL-C02-TRAVEL-DEPTH browser trace"
+      "acceptance": "Cycle 2b: TECH planner markup; SL-C02-TRAVEL-DEPTH browser trace; current lines: 570; sessions: 1"
     },
     {
       "cycle": 201,
-      "max_new_application_lines": 600,
+      "max_new_application_lines": 119,
       "application_units": [
         "UI-PLANNER-INPUTS"
       ],
       "engine_reverification": [],
-      "acceptance": "Cycle 2c: view swap + persistence; SL-MODE-REC-TEC-ISOLATION"
+      "acceptance": "Cycle 2c: view swap + persistence; SL-MODE-REC-TEC-ISOLATION; current lines: 119; sessions: 1"
     }
   ],
   "suite_catalog": [
@@ -6146,7 +6156,7 @@
         "legacy-v1-clean-baseline",
         "extract-ui-marker-contract"
       ],
-      "retired_reason": "Legacy cutover complete — ledger independently replaced"
+      "retired_reason": "Legacy cutover complete \u2014 ledger independently replaced"
     },
     {
       "id": "SUITE-EXPORT",
@@ -6839,5 +6849,82 @@
     "native": "Capacitor Android bridge",
     "ci": "GitHub Actions workflows"
   },
-  "audit_epoch": "v3-full-reset"
+  "audit_epoch": "v3-full-reset",
+  "risk_first_execution_order": [
+    {
+      "group": 1,
+      "focus": "Production engines and safety-critical paths",
+      "cycles": [
+        33,
+        34,
+        35,
+        36,
+        38,
+        37
+      ]
+    },
+    {
+      "group": 2,
+      "focus": "Planner mode/state paths",
+      "cycles": [
+        19,
+        18,
+        20,
+        21,
+        22,
+        31
+      ]
+    },
+    {
+      "group": 3,
+      "focus": "Results, export, and consumption correctness",
+      "cycles": [
+        24,
+        25,
+        10,
+        11,
+        12,
+        13
+      ]
+    },
+    {
+      "group": 4,
+      "focus": "Core UI renderers and interaction surfaces",
+      "cycles": [
+        17,
+        14,
+        15,
+        16
+      ]
+    },
+    {
+      "group": 5,
+      "focus": "Runtime, boot, workers, and storage",
+      "cycles": [
+        23,
+        29,
+        30,
+        32
+      ]
+    },
+    {
+      "group": 6,
+      "focus": "Presets, configuration, tissues, and reference settings",
+      "cycles": [
+        27,
+        28,
+        26,
+        39
+      ]
+    },
+    {
+      "group": 7,
+      "focus": "Lower-risk generated, deployment, and release support",
+      "cycles": [
+        40,
+        41,
+        42
+      ]
+    }
+  ]
 }

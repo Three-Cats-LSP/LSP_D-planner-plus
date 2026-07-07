@@ -161,7 +161,9 @@ selector-level or source-string assertion is not sufficient.
 ## Cycle Scope
 
 1. Read `docs/audit-master-plan.md` and `docs/audit-units.json`.
-2. Select the next units in priority order: P0, then P1, P2, and P3.
+2. Select the next unfinished cycle from the registry's
+   `risk_first_execution_order`. Do not return to numeric cycle order unless the
+   registry is deliberately changed.
 3. Limit each manual review or verification session to at most 600 new
    application-source lines. Do not combine several documented parts into a
    single session when their combined boundary exceeds this limit.
@@ -173,8 +175,43 @@ selector-level or source-string assertion is not sufficient.
 6. Read the complete selected boundary plus direct callers and callees needed to
    validate contracts. Dependency context does not count as reviewed coverage.
 
-The existing 41-cycle V3 schedule contains several scopes above 600 lines. Split
-those scopes for manual work instead of closing them in one session.
+The registry stores the current line budget and minimum session count for every
+cycle. If a source edit changes a boundary, regenerate the audit docs before
+planning the next cycle and split the work using the updated line count.
+
+## Locked Post-Cycle-9 Design Contracts
+
+Future cycles must preserve these app contracts unless a new product decision
+explicitly changes them:
+
+- Main and contingency schedules use the same visible columns and order:
+  `Phase`, `Depth`, `Stop`, `Run`, `Mix`, `ppO2`, `EAD`. The visible table has
+  no `TTS` column; TTS may remain in summaries, exports, and text reports.
+- Schedule rows keep the `Mix` column aligned for normal rows and gas-switch
+  rows. Mobile may use compact widths, but values must not overlap, truncate
+  into ellipses, or require a hidden clipped table.
+- Operational gas labels are canonical everywhere: `Air`, `100%`, or
+  zero-padded `OO/HH`. Reject stale `EAN50`/`EAN80` UI, contingency, graph,
+  export, and generated-bundle output.
+- The procedure name is `Gas Switch` everywhere in the interface. Do not
+  introduce `Gas change` labels or IDs for user-facing text.
+- Main deco and contingency plans share the same schedule styling, graph layout,
+  warning banner language, and gas-consumption bar-card model.
+- Gas consumption cards are volume-first: metric `L(bar)`, imperial
+  `ft3(psi)`. Bars show remaining supply draining from full toward zero.
+- Warning banners use one readable warning style in light and dark themes, with
+  one visible warning icon and no duplicated ASCII/Unicode leftovers.
+- Desktop uses the two-column planner/results layout; mobile uses the compact
+  single-column layout without duplicate bottom navigation.
+- The Graphs tab is removed. The full dive graph lives in Dive Profile, the GF
+  curve lives in Tissues, and the tab label is `Tissues`.
+- Travel gas uses the same card grammar as other gas mixes, supports trimix, and
+  shows `Switch Depth` plus `MinOD` with travel gas breathable at the surface.
+
+Every UI cycle must exercise desktop/mobile and light/dark views for the
+contracts it can affect. A cycle that touches renderers, CSS, gas labels,
+contingency, graphing, export, or generated bundles must run
+`dev/ui_visual_contract_regression.py`.
 
 ## Phase A: Baseline
 

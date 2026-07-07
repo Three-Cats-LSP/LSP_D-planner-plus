@@ -156,7 +156,7 @@
 | TEST-CCR-DIFF-LIB-PY | test_infrastructure | `tests/ccr-differential/lib/ccr_open_reference.py:1` | 325 | P1 | VERIFIED | COV-01 |
 | TEST-CCR-DIFF-LIB-JS | test_infrastructure | `tests/ccr-differential/lib/ccrdiff.js:1` | 418 | P1 | VERIFIED | COV-01 |
 | TOOL-AUDIT | tooling | `audit.py:1` | 16 | P1 | VERIFIED | COV-01, PARITY-01, REG-01, REG-02, REG-03, REG-05 |
-| TOOL-AUDIT-COVERAGE | tooling | `tools/audit_coverage.py:1` | 453 | P1 | VERIFIED | COV-01 |
+| TOOL-AUDIT-COVERAGE | tooling | `tools/audit_coverage.py:1` | 477 | P1 | VERIFIED | COV-01 |
 | TOOL-AUDIT-COVERAGE-TEST | test_infrastructure | `tools/test_audit_coverage.py:1` | 211 | P1 | VERIFIED | COV-01 |
 | TOOL-BUILD-PAGES | tooling | `tools/build_pages_site.py:1` | 146 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-ASSEMBLE-PAGES-PREVIEW | tooling | `tools/assemble_pages_preview.py:1` | 126 | P2 | READ | - |
