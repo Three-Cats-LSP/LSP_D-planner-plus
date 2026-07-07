@@ -1512,6 +1512,51 @@
       "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9"
     },
     {
+      "id": "SL-C08-M-02",
+      "unit_id": "UI-CSS-RESULTS",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 08 controls CSS audit",
+      "summary": "Portrait 2-column grid auto-placement leaves Tools without a lower divider and Settings in a half-width cell beside a blank non-interactive grid cell; tablet 3-column row leaves an orphan cell beside Tools/Settings.",
+      "affected_units": [
+        "UI-CSS-RESULTS"
+      ],
+      "evidence_cases": [
+        "REG-105"
+      ],
+      "resolution_commit": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a"
+    },
+    {
+      "id": "SL-C08-M-03",
+      "unit_id": "TOOL-BUILD-ZHL",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 08 controls CSS audit",
+      "summary": "build_zhl_bundle.py postamble shadows schedule-core getGasLabel with EAN32/36/50/80 special cases; buildZhlDecoGasesFromEngine hard-codes EAN50/EAN80 labels into generated zhl-engine-bundle.js schedule steps.",
+      "affected_units": [
+        "TOOL-BUILD-ZHL"
+      ],
+      "evidence_cases": [
+        "REG-106"
+      ],
+      "resolution_commit": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a"
+    },
+    {
+      "id": "SL-C08-M-04",
+      "unit_id": "UI-PLANNER-SHELL",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 08 controls CSS audit",
+      "summary": "Fixed mobile #bottomNav duplicates main mode row and header Ref control, reserves viewport height, and maintains a second navigation-state owner via .bnav-btn active writers in setNavMode.",
+      "affected_units": [
+        "UI-PLANNER-SHELL"
+      ],
+      "evidence_cases": [
+        "REG-107"
+      ],
+      "resolution_commit": "8e437a1fc38bd4bf50c280a38aa323f2372214d5"
+    },
+    {
       "id": "SL-C03-H-01",
       "unit_id": "UI-MARKUP-CONSUMPTION",
       "severity": "HIGH",
