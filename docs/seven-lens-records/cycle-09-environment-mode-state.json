@@ -5,7 +5,7 @@
   "target_branch": "dev",
   "integration_base_commit": "6af174d781e6d8eaf9d67f751a04897a65fbec76",
   "baseline_commit": "6af174d781e6d8eaf9d67f751a04897a65fbec76",
-  "baseline_registry_fingerprint": "a818d0d8dbabb8773ad1706707b94181c75ad2266b0da9597110d5277a36ac1d",
+  "baseline_registry_fingerprint": "57cb6fc283cb2e49fa1e1f16469f25c323eed2cf32d71f96e013a8cf0e9ed988",
   "baseline_findings": [
     {
       "id": "SL-C02-H-01",
