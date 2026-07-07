@@ -169,9 +169,9 @@
       "start_line": 1,
       "end_line": 420,
       "line_count": 420,
-      "content_fingerprint": "5ec72c983360035726bbba08eaa3c737ff5864218b0961ec4764fe2279b8a57c",
+      "content_fingerprint": "ba21bddd548be42a8c7781c514911da4434e4f6ffdc5569cfcb9bed95a2bd1f2",
       "review_session": "cursor/seven-lens-cycle-05-foundation-audit",
-      "verification_session": "C09-DEP-WARNING-BANNER-PALETTE",
+      "verification_session": "RISK-BATCH-33-38-FOUNDATION-CHIP-TOKEN",
       "lens_results": {
         "L1": {
           "trace": "clamp() tokens :root:9-14; safe-area modal padding :159-179; .app max-width 1280px :330-334; @media only in modes unit for .card",
@@ -238,6 +238,16 @@
           "evidence": "tools/run_ui_structure_suite.py; tests-massive.html:1801-1803",
           "result": "FINDING"
         }
+      },
+      "dependency_re_review": {
+        "trigger": "Light-theme .chip-yellow was restored to var(--yellow) after results CSS regression caught a stale var(--status-orange) override.",
+        "result": "NO_NEW_FINDING",
+        "reviewed_at": "2026-07-07T21:11:30.091551+00:00",
+        "evidence": [
+          "python dev/ui_results_css_regression.py",
+          "python dev/ui_visual_contract_regression.py"
+        ],
+        "scope": "foundation light-theme chip token only; Cycle 5 GF row isolation selectors unchanged"
       }
     },
     {
@@ -337,7 +347,7 @@
       "post_fix_evidence_id": "ER-C05-POST-TRACE",
       "baseline_failure": "rec/tools GF preset opacity stayed 1.0 at audit commit ded650c",
       "fix_summary": "Retargeted REC/Tools opacity rules to #gfPresetsRowV3 and #gfPresetBtns",
-      "observable_contract": "GF preset buttons render opacity 0.5 in REC/Tools and 1.0 in Bühlmann after V3 init removes #gfPresetsRow.",
+      "observable_contract": "GF preset buttons render opacity 0.5 in REC/Tools and 1.0 in B\u00fchlmann after V3 init removes #gfPresetsRow.",
       "state_restoration_evidence_id": "ER-C05-RESTORE-TRACE",
       "evidence_ids": [
         "ER-C05-POST-CSS",
@@ -393,7 +403,7 @@
       "unit_id": "UI-CSS-FOUNDATION",
       "location": "lsp-dplanner-foundation.css:359-372",
       "root_cause": "Markup uses .brand-logo; setBrandIcon is no-op",
-      "failure_path": "N/A — selectors never match",
+      "failure_path": "N/A \u2014 selectors never match",
       "impact": "Dead CSS",
       "evidence": "ui/markup-header.html:64; selector audit 0 hits for brand-icon",
       "recommendation": "Remove .brand-icon rules or restore emoji icon markup",
@@ -417,7 +427,7 @@
       "unit_id": "UI-CSS-FOUNDATION",
       "location": "lsp-dplanner-foundation.css:396-410",
       "root_cause": "#gfCustomRow contains selects only; presets use .gf-preset-btn",
-      "failure_path": "N/A — .gf-btn absent under #gfCustomRow",
+      "failure_path": "N/A \u2014 .gf-btn absent under #gfCustomRow",
       "impact": "Dead CSS",
       "evidence": "ui/markup-header.html:711-748; settings-core.js:654",
       "recommendation": "Remove obsolete #gfCustomRow .gf-btn rules",
@@ -465,7 +475,7 @@
       "unit_id": "UI-CSS-MODES",
       "location": "lsp-dplanner-modes.css:191-215",
       "root_cause": "Theme control uses .theme-pill-toggle styled in results.css",
-      "failure_path": "N/A — .theme-toggle not in markup",
+      "failure_path": "N/A \u2014 .theme-toggle not in markup",
       "impact": "Dead CSS in modes unit",
       "evidence": "ui/markup-header.html:80; lsp-dplanner-results.css:820-821",
       "recommendation": "Remove .theme-toggle block from modes.css",
@@ -624,7 +634,7 @@
       "trace_id": "SL-C05-GF-ROW-MODE-ISOLATION-TRACE",
       "receipt_sha256": "4de2bdacae3d7bad5927bbc2cd5d4f735b4fdbd5ca6f07cfbafc1cd03afaa9eb",
       "runtime_trace": {
-        "entry_event": "User switches Bühlmann → REC → Tools; GF preset opacity follows body mode classes on live V3 elements.",
+        "entry_event": "User switches B\u00fchlmann \u2192 REC \u2192 Tools; GF preset opacity follows body mode classes on live V3 elements.",
         "consumer_path": [
           "navBtn click",
           "setMainNav/setNavMode writes body.rec-mode and body.algo-tools",

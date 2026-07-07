@@ -6,7 +6,7 @@
       "review_status": "SEVEN_LENS_REVIEWED",
       "reviewed_fingerprint": "08baabc5316bd85fa78d860f7414fdfe0df845c163407973d471ad0178923e60",
       "cycle_id": "SL-C01",
-      "boundary": "ui/markup-header.html whole file (847 lines; parts A–D)",
+      "boundary": "ui/markup-header.html whole file (847 lines; parts A\u2013D)",
       "reviewer": "Cursor GPT-5.5 Medium",
       "review_session": "cursor/seven-lens-cycle-01-header",
       "lens_results": {
@@ -16,7 +16,7 @@
         "L4": "Settings handlers traced to settings-core; regressions exercise input, preset, restore, and unit-switch paths.",
         "L5": "Canonical ui/markup-header.html; assemble_ui_html verify PASS.",
         "L6": "gasWarningBanner role=alert; imperial 16,404 ft accepted at engine 5000 m ceiling.",
-        "L7": "SL-C01-DEPTH-SYNC, SL-C01-PRESET-SYNC, SL-C01-SETTINGS-RESTORE, SL-C01-ALTITUDE-UNIT-CONSTRAINTS; REG-58–61."
+        "L7": "SL-C01-DEPTH-SYNC, SL-C01-PRESET-SYNC, SL-C01-SETTINGS-RESTORE, SL-C01-ALTITUDE-UNIT-CONSTRAINTS; REG-58\u201361."
       },
       "finding_ids": [
         "SL-C01-M-01",
@@ -50,10 +50,10 @@
         "SL-C01-M-04"
       ],
       "parts": {
-        "A": "lines 1-214 — scripts, header, nav, planPanel",
-        "B": "lines 215-415 — resultsPanel",
-        "C": "lines 416-481 — settingsPageWrap",
-        "D": "lines 482-847 — tools mount, legacy-panels, gfPresetsRow tail"
+        "A": "lines 1-214 \u2014 scripts, header, nav, planPanel",
+        "B": "lines 215-415 \u2014 resultsPanel",
+        "C": "lines 416-481 \u2014 settingsPageWrap",
+        "D": "lines 482-847 \u2014 tools mount, legacy-panels, gfPresetsRow tail"
       }
     },
     {
@@ -66,7 +66,7 @@
       "review_session": "cursor/seven-lens-cycle-002-audit",
       "lens_results": {
         "L1": "REC depth/BT steppers use hidden recDepth/recBT; no shared tec IDs.",
-        "L2": "recGenerateBtn → runRecPlan; stepRecDepthBt traced.",
+        "L2": "recGenerateBtn \u2192 runRecPlan; stepRecDepthBt traced.",
         "L3": "View snapshot on mode switch; rec.* persistence namespace.",
         "L4": "Disjoint inputs feed REC schedule path only.",
         "L5": "Canonical ui/markup-rec-planner.html assembled via header placeholder.",
@@ -102,7 +102,7 @@
       "review_session": "cursor/seven-lens-cycle-002-audit",
       "lens_results": {
         "L1": "REC depth/BT steppers use hidden recDepth/recBT; no shared tec IDs.",
-        "L2": "recGenerateBtn → runRecPlan; stepRecDepthBt traced.",
+        "L2": "recGenerateBtn \u2192 runRecPlan; stepRecDepthBt traced.",
         "L3": "View snapshot on mode switch; rec.* persistence namespace.",
         "L4": "Disjoint inputs feed REC schedule path only.",
         "L5": "Canonical ui/markup-rec-planner.html assembled via header placeholder.",
@@ -138,7 +138,7 @@
       "review_session": "cursor/seven-lens-cycle-200-audit",
       "lens_results": {
         "L1": "TECH depth/BT, gas cards, GF/VPM rows use tec-only IDs.",
-        "L2": "tecGenerateBtn → runDecoSchedule; travel gas manual depth path traced.",
+        "L2": "tecGenerateBtn \u2192 runDecoSchedule; travel gas manual depth path traced.",
         "L3": "Unit switch syncs travel manual depth constraints.",
         "L4": "domDepthToM on travelGasManualDepth after imperial edit.",
         "L5": "Static ui/markup-tec-planner.html; no runtime tec mount.",
@@ -320,9 +320,9 @@
     {
       "unit_id": "UI-CSS-FOUNDATION",
       "review_status": "SEVEN_LENS_REVIEWED",
-      "reviewed_fingerprint": "f1f5eaa00edd3fd382ff98c27985e51d565539079860d7e59d740bce2d6a1944",
+      "reviewed_fingerprint": "ba21bddd548be42a8c7781c514911da4434e4f6ffdc5569cfcb9bed95a2bd1f2",
       "cycle_id": "SL-C05",
-      "boundary": "lsp-dplanner-foundation.css lines 1-418",
+      "boundary": "lsp-dplanner-foundation.css lines 1-420",
       "reviewer": "Cursor GPT-5.5 Medium",
       "review_session": "cursor/seven-lens-cycle-05-foundation-audit",
       "verification_session": "C05-V-A",
@@ -352,7 +352,7 @@
       "verifier": "Cursor Agent (C05-V-A)",
       "verification_status": "PASS",
       "verified_source_commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
-      "last_checked_commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+      "last_checked_commit": "WORKTREE",
       "verification_report": "docs/seven-lens-reports/cycle-05-css.md",
       "findings_open": [],
       "findings_closed": [
@@ -362,17 +362,22 @@
         "SL-C05-L-03"
       ],
       "parts": {
-        "P01": "lsp-dplanner-foundation.css:1-418"
+        "P01": "lsp-dplanner-foundation.css:1-420"
       },
       "dependency_re_review": {
-        "session": "C08-DEP-FOUNDATION",
-        "reviewed_fingerprint_at_review": "f1f5eaa00edd3fd382ff98c27985e51d565539079860d7e59d740bce2d6a1944",
-        "current_fingerprint": "0884eeb214333bd4f852f0bff99873e584ea18d2300b14545b321051065c1841",
+        "session": "RISK-BATCH-33-38-FOUNDATION-CHIP-TOKEN",
+        "trigger": "Light-theme .chip-yellow token corrected after Cycle 7 results CSS regression detected a stale orange override.",
+        "boundary": "lsp-dplanner-foundation.css:1-420",
+        "current_fingerprint": "ba21bddd548be42a8c7781c514911da4434e4f6ffdc5569cfcb9bed95a2bd1f2",
         "result": "NO_NEW_FINDING",
-        "reviewed_at": "2026-07-06T01:09:13.648040+00:00",
-        "verifier": "Cursor Agent (C08-V-B attestation corrector)"
+        "reviewed_at": "2026-07-07T21:11:30.091551+00:00",
+        "verifier": "Codex risk-first batch verifier",
+        "evidence": [
+          "python dev/ui_results_css_regression.py",
+          "python dev/ui_visual_contract_regression.py"
+        ]
       },
-      "last_read_fingerprint": "0884eeb214333bd4f852f0bff99873e584ea18d2300b14545b321051065c1841"
+      "last_read_fingerprint": "ba21bddd548be42a8c7781c514911da4434e4f6ffdc5569cfcb9bed95a2bd1f2"
     },
     {
       "unit_id": "UI-CSS-MODES",

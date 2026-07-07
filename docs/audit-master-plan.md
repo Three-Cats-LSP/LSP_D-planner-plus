@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v3-full-reset`
-**Units:** 205 total; 0 unread; 92 in progress; 3 read; 110 verified.
+**Units:** 205 total; 0 unread; 90 in progress; 3 read; 112 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -81,7 +81,7 @@ Run the first unfinished cycle in this table. The numeric cycle table below rema
 | 33 | ENG-ZHL-PHYSICS, ENG-ZHL-GAS | 373 | - | ZHL physics and gas canonical cores READ; current lines: 373; sessions: 1 |
 | 34 | ENG-ZHL-SCHEDULE | 657 | - | ZHL schedule canonical core READ; current lines: 657; sessions: 2 |
 | 35 | ENG-ZHL-CCR | 404 | - | ZHL CCR canonical core READ; current lines: 404; sessions: 1 |
-| 36 | ENG-VPM | 2099 | - | VPM canonical core READ; current lines: 2099; sessions: 4 |
+| 36 | ENG-VPM | 2106 | - | VPM canonical core READ; current lines: 2106; sessions: 4 |
 | 37 | ENG-RDP | 101 | - | PADI RDP engine READ; current lines: 101; sessions: 1 |
 | 38 | ENG-VPM-REFERENCE | 2574 | - | VPM reference implementation READ; current lines: 2574; sessions: 5 |
 | 39 | APP-DOWNLOAD | 119 | - | Download page READ; current lines: 119; sessions: 1 |

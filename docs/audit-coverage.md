@@ -12,7 +12,7 @@
 | build_config | 2 | 0 | 1 | 0 | 1 |
 | ci | 7 | 0 | 2 | 1 | 4 |
 | deploy_config | 1 | 0 | 0 | 0 | 1 |
-| engine | 6 | 0 | 1 | 0 | 5 |
+| engine | 6 | 0 | 0 | 0 | 6 |
 | engine_reference | 1 | 0 | 0 | 0 | 1 |
 | native_android | 16 | 0 | 1 | 0 | 15 |
 | native_bridge | 2 | 0 | 0 | 0 | 2 |
@@ -20,7 +20,7 @@
 | pwa | 3 | 0 | 2 | 0 | 1 |
 | release_config | 1 | 0 | 1 | 0 | 0 |
 | test | 1 | 0 | 0 | 1 | 0 |
-| test_infrastructure | 55 | 0 | 25 | 0 | 30 |
+| test_infrastructure | 55 | 0 | 24 | 0 | 31 |
 | tooling | 54 | 0 | 16 | 1 | 37 |
 | ui_core | 16 | 0 | 14 | 0 | 2 |
 | ui_shell | 2 | 0 | 2 | 0 | 0 |
@@ -28,7 +28,7 @@
 | web_markup | 7 | 0 | 5 | 0 | 2 |
 | web_runtime | 24 | 0 | 18 | 0 | 6 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **205** | **0** | **92** | **3** | **110** |
+| **Total** | **205** | **0** | **90** | **3** | **112** |
 
 ## Units
 
@@ -82,8 +82,8 @@
 | ENG-ZHL-PHYSICS | engine | `zhl-physics-core.js:1` | 189 | P1 | VERIFIED | REG-01, REG-22, REG-23 |
 | ENG-ZHL-GAS | engine | `zhl-gas-core.js:1` | 184 | P1 | VERIFIED | REG-10, REG-11, REG-12, REG-13, REG-14 |
 | ENG-ZHL-CCR | engine | `zhl-ccr-core.js:1` | 404 | P0 | VERIFIED | REG-06, REG-07, REG-29, REG-42 |
-| ENG-ZHL-SCHEDULE | engine | `zhl-schedule-core.js:1` | 657 | P0 | IN_PROGRESS | - |
-| ENG-VPM | engine | `vpm-engine-core.js:1` | 2099 | P0 | VERIFIED | REG-31, REG-32, REG-33, REG-34 |
+| ENG-ZHL-SCHEDULE | engine | `zhl-schedule-core.js:1` | 657 | P0 | VERIFIED | REG-22, REG-23, REG-62 |
+| ENG-VPM | engine | `vpm-engine-core.js:1` | 2106 | P0 | VERIFIED | REG-31, REG-32, REG-33, REG-34, REG-121 |
 | ENG-VPM-REFERENCE | engine_reference | `vpmb.py:1` | 2574 | P2 | VERIFIED | REG-01, REG-31 |
 | ENG-RDP | engine | `padi-engine.js:1` | 101 | P1 | VERIFIED | REG-24, REG-25, REG-56, REG-57 |
 | APP-ANDROID-SELECT | native_bridge | `android-select-picker.js:1` | 270 | P1 | VERIFIED | ANDROID-01, REG-45 |
@@ -119,7 +119,7 @@
 | NATIVE-DRAWABLE-FG | native_android | `android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml:1` | 34 | P3 | VERIFIED | ANDROID-01, COV-01 |
 | NATIVE-ICON | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml:1` | 5 | P3 | VERIFIED | ANDROID-01, COV-01 |
 | NATIVE-ICON-ROUND | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml:1` | 5 | P3 | VERIFIED | ANDROID-01, COV-01 |
-| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 2752 | P1 | IN_PROGRESS | - |
+| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 2764 | P1 | VERIFIED | REG-121 |
 | TEST-ISSUE-140-REGRESSION | test_infrastructure | `dev/issue140_regression.py:1` | 99 | P1 | VERIFIED | REG-08, REG-09 |
 | TEST-GAS-CORE-REGRESSION | test_infrastructure | `dev/gas_core_regression.py:1` | 129 | P1 | VERIFIED | REG-10, REG-11, REG-12 |
 | TEST-ISSUE-141-REGRESSION | test_infrastructure | `dev/issue141_regression.py:1` | 108 | P1 | VERIFIED | REG-15, REG-16, REG-18 |
@@ -236,6 +236,6 @@
 | TEST-SEVEN-LENS-CYCLE07-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-07-results.json:1` | 526 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-CYCLE08-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-08-shell-results.json:1` | 994 | P0 | IN_PROGRESS | - |
 | TEST-UI-SHELL-RESULTS-REGRESSION | test_infrastructure | `dev/ui_shell_results_regression.py:1` | 485 | P0 | IN_PROGRESS | REG-95, REG-96, REG-97, REG-98, REG-99 |
-| TEST-UI-RESULTS-CSS-REGRESSION | test_infrastructure | `dev/ui_results_css_regression.py:1` | 407 | P0 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
+| TEST-UI-RESULTS-CSS-REGRESSION | test_infrastructure | `dev/ui_results_css_regression.py:1` | 417 | P0 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
 | TEST-UI-VISUAL-CONTRACT-REGRESSION | test_infrastructure | `dev/ui_visual_contract_regression.py:1` | 1633 | P0 | IN_PROGRESS | REG-100, REG-101, REG-102, REG-103, REG-104, REG-105, REG-106, REG-107, REG-108, REG-109, REG-110, REG-111 |
 | TEST-C07-PRE-RESULTS-REGRESSION | test_infrastructure | `dev/c07_pre_results_regression.py:1` | 48 | P0 | IN_PROGRESS | REG-89, REG-90 |

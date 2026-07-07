@@ -86,6 +86,15 @@ ENGINE_SUITE_JS = r"""
     trimixZhl: zhl(lv(60, 20, 18, 45), []),
     trimixVpm: vpm(lv(60, 20, 18, 45), [], {}, 'VPMB'),
   };
+  const vpmLabelPlan = vpm(air40, [{ depth: 21, o2: 50, he: 0 }, { depth: 6, o2: 100, he: 0 }], {}, 'VPMB');
+  const vpmGasLabels = [...new Set((vpmLabelPlan.plan || []).map(s => s.gas).filter(Boolean))];
+  out.sections.vpmGasLabels = {
+    labels: vpmGasLabels,
+    ok: vpmGasLabels.includes('Air')
+      && vpmGasLabels.includes('50/00')
+      && vpmGasLabels.includes('100%')
+      && !vpmGasLabels.some(label => ['21/0', '50/0', '100/0'].includes(label) || /^EAN/.test(label)),
+  };
 
   // ── B: VPM water density / pressure gradient ───────────────────────────
   const wLv = lv(40, 25, 21, 0);
@@ -2518,6 +2527,8 @@ def run_suite(page) -> dict:
     assert_true(va["loadTypeOk"], "VPMEngine.load is a function")
     assert_true(va["loadReturnOk"], "VPMEngine.load() returns true")
     assert_true(va["gfsStricter"]["ok"], "VPM-B/GFS tighter GFS does not shorten runtime vs loose GFS")
+    vpm_labels = s.get("vpmGasLabels", {})
+    assert_true(vpm_labels.get("ok"), "[CYCLE36-VPM-GAS-LABELS] VPM core emits canonical gas labels", str(vpm_labels))
 
     cr = s["cross"]
     assert_true(cr["bothFinite"] and cr["otuInRange"], "ZHL/VPM OTU finite and in range on 40/25 air")
@@ -2721,6 +2732,7 @@ def _audit_case_rows():
         case_row("CYCLE35-O2-SWITCH-DEPTH", case_ok("CYCLE35-O2-SWITCH-DEPTH")),
         case_row("CYCLE35-WHOLE-MIN-STOPS-PROP", case_ok("CYCLE35-WHOLE-MIN-STOPS-PROP")),
         case_row("CYCLE35-WHOLE-MIN-STOPS-EFFECT", case_ok("CYCLE35-WHOLE-MIN-STOPS-EFFECT")),
+        case_row("CYCLE36-VPM-GAS-LABELS", case_ok("CYCLE36-VPM-GAS-LABELS")),
         case_row("ENG-RDP-PURE-MIXES", case_ok("ENG-RDP-PURE-MIXES")),
         case_row("ENG-RDP-CUSTOM-FALLBACK", case_ok("ENG-RDP-CUSTOM-FALLBACK")),
         case_row("SL-C01-DEPTH-SYNC", case_ok("SL-C01-DEPTH-SYNC")),

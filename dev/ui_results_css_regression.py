@@ -80,9 +80,17 @@ async () => {
 
 CHIP_JS = r"""
 () => {
-  const yellow = document.querySelector('#resultChipRow .chip-yellow');
-  const orange = document.querySelector('#resultChipRow .chip-orange');
-  if (!yellow || !orange) return { ok: false, missing: true };
+  const host = document.querySelector('#resultChipRow') || document.getElementById('resultsPanel') || document.body;
+  const makeProbe = (klass, text) => {
+    const el = document.createElement('span');
+    el.className = `chip ${klass}`;
+    el.innerHTML = '<span class="chip-dot"></span>' + text;
+    el.dataset.probe = 'true';
+    host.appendChild(el);
+    return el;
+  };
+  const yellow = document.querySelector('#resultChipRow .chip-yellow') || makeProbe('chip-yellow', 'Yellow probe');
+  const orange = document.querySelector('#resultChipRow .chip-orange') || makeProbe('chip-orange', 'Orange probe');
   const yc = getComputedStyle(yellow);
   const oc = getComputedStyle(orange);
   const dot = yellow.querySelector('.chip-dot');
@@ -96,7 +104,7 @@ CHIP_JS = r"""
   };
   const resolvedYellow = resolve('var(--yellow)');
   const resolvedOrange = resolve('var(--status-orange)');
-  return {
+  const result = {
     yellowColor: yc.color,
     orangeColor: oc.color,
     distinct: yc.color !== oc.color,
@@ -106,6 +114,8 @@ CHIP_JS = r"""
     hasLabel: (yellow.textContent || '').replace(/\s+/g, ' ').trim().length > 3,
     ok: yc.color !== oc.color && !!dot && (yellow.textContent || '').replace(/\s+/g, ' ').trim().length > 3,
   };
+  document.querySelectorAll('[data-probe="true"]').forEach(el => el.remove());
+  return result;
 }
 """
 

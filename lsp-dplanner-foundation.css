@@ -217,7 +217,7 @@ body.light-theme #resultsPanel .metric-val.metric-val--cns-caution { color: var(
 body.light-theme #resultsPanel .metric-val.metric-val--cns-warn { color: var(--status-red) !important; }
 body.light-theme .chip-green            { color: var(--status-green) !important; }
 body.light-theme .chip-orange           { color: var(--status-orange) !important; }
-body.light-theme .chip-yellow           { color: var(--status-orange) !important; }
+body.light-theme .chip-yellow           { color: var(--yellow) !important; }
 body.light-theme .chip-red              { color: var(--status-red) !important; }
 body.light-theme .algo-bar-btn.active   { color: var(--accent) !important; }
 body.light-theme .algo-sub              { color: var(--text-faint) !important; }

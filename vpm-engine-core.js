@@ -997,6 +997,13 @@
         if (ppO2 < 0.50) return 0;
         return time * getCNSRate(ppO2);
     }
+    function vpmGasLabel(o2Pct, hePct) {
+        const o2 = Math.round(Number(o2Pct) || 0);
+        const he = Math.round(Number(hePct) || 0);
+        if (o2 >= 100 && he === 0) return '100%';
+        if (o2 === 21 && he === 0) return 'Air';
+        return `${String(o2).padStart(2, '0')}/${String(he).padStart(2, '0')}`;
+    }
     function calculate(levels, decoGases, settings, model) {
         model = model || 'VPMB';
         settings = Object.assign({}, settings || {});
@@ -1059,7 +1066,7 @@
             return {
             o2: f.o2Frac,
             he: f.heFrac,
-            label: `${f.o2Pct}/${f.hePct}`,
+            label: vpmGasLabel(f.o2Pct, f.hePct),
             depthOverrideOn: g.depthOverrideOn === true || g.depthOverrideOn === 1 || g.depthOverrideOn === '1',
             depthOverride: g.depthOverride != null && g.depthOverride !== '' ? Number(g.depthOverride) : null
         };
@@ -1432,7 +1439,7 @@
             ctx.currentDepth = level.depth;
             ctx.currentO2 = level.o2 / 100;
             ctx.currentHe = level.he / 100;
-            ctx.currentGasLabel = `${level.o2}/${level.he}`;
+            ctx.currentGasLabel = vpmGasLabel(level.o2, level.he);
             if (level.time <= 0) return;
             settings._scrRuntimeMin = ctx.runtime;
             loadTissuesConstant(ctx.state, level.depth, level.time, ctx.currentO2, ctx.currentHe, settings, ctx.currentSP);
@@ -1576,7 +1583,7 @@
         const isCCR = isRebreatherCircuit(settings.circuit) && !settings.bailout;
         let curO2 = levels[0].o2 / 100;
         let curHe = levels[0].he / 100;
-        let curGasLabel = `${levels[0].o2}/${levels[0].he}`;
+        let curGasLabel = vpmGasLabel(levels[0].o2, levels[0].he);
         let forcedOCMode = isCCR && !!levels[0].oc;
         let curSP = forcedOCMode ? 0 : getEffectiveSetpoint(levels[0], isCCR, settings, levels[0].depth, 'descent');
         function runInterLevelDecoAscent(targetDepth) {
@@ -1814,15 +1821,15 @@
                     type: 'descent', startDepth: currentDepth, endDepth: depth,
                     time: Math.round(descTime * 10) / 10,
                     runtime: Math.round(runtime * 10) / 10,
-                    gas: `${level.o2}/${level.he}`, o2: level.o2, he: level.he,
+                    gas: vpmGasLabel(level.o2, level.he), o2: level.o2, he: level.he,
                     setpoint: sp > 0 ? sp : 0
                 });
-                curO2 = o2Frac; curHe = heFrac; curGasLabel = `${level.o2}/${level.he}`; curSP = sp;
+                curO2 = o2Frac; curHe = heFrac; curGasLabel = vpmGasLabel(level.o2, level.he); curSP = sp;
             } else if (depth < currentDepth) {
                 if (runInterLevelDecoAscent(depth) === null) {
                     return vpmStopCapError(vpmStopCapFailedDepth != null ? vpmStopCapFailedDepth : depth, plan);
                 }
-                curO2 = o2Frac; curHe = heFrac; curGasLabel = `${level.o2}/${level.he}`; curSP = sp;
+                curO2 = o2Frac; curHe = heFrac; curGasLabel = vpmGasLabel(level.o2, level.he); curSP = sp;
             }
             const travelRate = depth < currentDepth ? ascentRate : descentRate;
             const descTimeFromLevel = Math.abs(depth - currentDepth) / travelRate;
@@ -1839,7 +1846,7 @@
                 plan.push({
                     type: 'bottom', depth, time: Math.round(bottomTime * 10) / 10,
                     runtime: Math.round(runtime * 10) / 10,
-                    gas: `${level.o2}/${level.he}`, o2: level.o2, he: level.he,
+                    gas: vpmGasLabel(level.o2, level.he), o2: level.o2, he: level.he,
                     setpoint: bottomSp > 0 ? bottomSp : 0
                 });
                 curSP = bottomSp;
@@ -1855,7 +1862,7 @@
             : levels[levels.length - 1];
         const currentO2 = lastLevel.o2 / 100;
         const currentHe = lastLevel.he / 100;
-        const currentGasLabel = `${lastLevel.o2}/${lastLevel.he}`;
+        const currentGasLabel = vpmGasLabel(lastLevel.o2, lastLevel.he);
         const currentSP = forcedOCMode ? 0 : getEffectiveSetpoint(lastLevel, isCCR, settings, lastLevel.depth, 'bottom');
         const startOfAscentState = cloneVPMState(state);
         const runtimeStartOfAscent = runtime;
@@ -1964,7 +1971,7 @@
                     totalCNSStartOfAscent,
                     levels[levels.length - 1].o2 / 100,
                     levels[levels.length - 1].he / 100,
-                    `${levels[levels.length - 1].o2}/${levels[levels.length - 1].he}`,
+                    vpmGasLabel(levels[levels.length - 1].o2, levels[levels.length - 1].he),
                     forcedOCMode ? 0 : getEffectiveSetpoint(levels[levels.length - 1], isCCR, settings, depthStartOfAscent, 'deco'),
                     null,
                     forcedOCMode
@@ -2010,7 +2017,7 @@
                         totalCNSStartOfAscent,
                         levels[levels.length - 1].o2 / 100,
                         levels[levels.length - 1].he / 100,
-                        `${levels[levels.length - 1].o2}/${levels[levels.length - 1].he}`,
+                        vpmGasLabel(levels[levels.length - 1].o2, levels[levels.length - 1].he),
                         forcedOCMode ? 0 : getEffectiveSetpoint(levels[levels.length - 1], isCCR, settings, depthStartOfAscent, 'deco'),
                         plan,
                         forcedOCMode
