@@ -31,6 +31,13 @@ CASE_IDS = (
 
 CAPTURE_RESTORE_JS = CAPTURE_PROBE_STATE_JS
 
+def _wait_settings_idle(page) -> None:
+    page.wait_for_function(
+        "() => !window.appSettings || window.appSettings._loadPending !== true",
+        timeout=10000,
+    )
+
+
 STATE_HASH_JS = r"""
 () => {
   const parts = [];
@@ -291,6 +298,7 @@ async () => {
 
 
 def run_cases(page, viewport: tuple[int, int], *, run_behavioral: bool = True) -> dict:
+    _wait_settings_idle(page)
     restore_snapshot = page.evaluate(CAPTURE_RESTORE_JS)
     before_hash = page.evaluate(STATE_HASH_JS)
     page.evaluate("() => { localStorage.removeItem('lspDiveSettings_v6'); }")
