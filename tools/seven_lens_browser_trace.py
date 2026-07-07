@@ -551,6 +551,11 @@ def run_trace(
     try:
         for action in trace.get("setup", []):
             _act(page, action)
+        viewport_width = int((page.viewport_size or {}).get("width") or 1280)
+        if viewport_width <= 640:
+            page.evaluate(
+                "() => { if (typeof _initMobilePlanView === 'function') _initMobilePlanView(); }"
+            )
         before = _state_snapshot(page, state_spec)
         for step in trace.get("steps", []):
             if "action" in step:
