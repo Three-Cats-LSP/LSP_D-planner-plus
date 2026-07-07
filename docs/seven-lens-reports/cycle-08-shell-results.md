@@ -9,7 +9,7 @@
 
 | Session | Unit | Boundary | Lines | Part ID |
 |---------|------|----------|------:|---------|
-| C08-A | `UI-PLANNER-SHELL` | `planner-shell.js` | 1–186 | `UI-PLANNER-SHELL-P01` |
+| C08-A | `UI-PLANNER-SHELL` | `planner-shell.js` | 1–201 | `UI-PLANNER-SHELL-P01` |
 | C08-A | `UI-RESULTS-PANEL` | `results-panel.js` | 1–301 | `UI-RESULTS-PANEL-P01` |
 
 **Combined canonical lines:** 487 (186 + 301). Single session **C08-A** — under 600-line limit.
