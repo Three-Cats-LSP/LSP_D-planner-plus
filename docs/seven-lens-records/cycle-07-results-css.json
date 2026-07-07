@@ -374,9 +374,9 @@
       "unit_id": "UI-CSS-RESULTS",
       "path": "lsp-dplanner-results.css",
       "start_line": 501,
-      "end_line": 977,
-      "line_count": 477,
-      "content_fingerprint": "7f55c995eb2f10ee8cb6ee762e44b1b4247cc87bdc0dad265a2819924415da12",
+      "end_line": 978,
+      "line_count": 478,
+      "content_fingerprint": "cb237ec402902ff4329bf06441b617ffc49ad60e86770046ff04e8d8ae5623b5",
       "review_session": "C07-B",
       "verification_session": "C09-DEP-WARNING-BANNER-PALETTE-B",
       "lens_results": {
@@ -1357,6 +1357,15 @@
         "SL-C09-MOBILE-WARNING-WRAP",
         "SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS"
       ]
+    },
+    {
+      "unit_id": "UI-CSS-RESULTS",
+      "part_id": "UI-CSS-RESULTS-P02",
+      "reason": "Gas warning typography alignment changed reviewed CSS only; no Cycle 7 findings reopened.",
+      "status": "NO_NEW_FINDING",
+      "start_line": 501,
+      "end_line": 978,
+      "content_fingerprint": "cb237ec402902ff4329bf06441b617ffc49ad60e86770046ff04e8d8ae5623b5"
     }
   ]
 }

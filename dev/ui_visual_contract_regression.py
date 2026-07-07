@@ -628,6 +628,40 @@ async () => {
     || row.whiteSpace === 'nowrap'
   );
   const bodyOverflow = document.documentElement.scrollWidth > viewportWidth + 1;
+  const styleOf = el => {
+    if (!el) return {};
+    const s = getComputedStyle(el);
+    return {
+      fontFamily: s.fontFamily,
+      fontSize: s.fontSize,
+      fontWeight: s.fontWeight,
+      letterSpacing: s.letterSpacing,
+      lineHeight: s.lineHeight,
+      gap: s.gap,
+    };
+  };
+  const closePx = (a, b, tolerance = 0.75) => {
+    const av = parseFloat(a);
+    const bv = parseFloat(b);
+    return Number.isFinite(av) && Number.isFinite(bv) && Math.abs(av - bv) <= tolerance;
+  };
+  const zeroLetterSpacing = value => value === 'normal' || Math.abs(parseFloat(value) || 0) <= 0.1;
+  const gasWarningStyle = styleOf(document.getElementById('gasWarningBanner'));
+  const cardWarningStyle = styleOf(document.querySelector('.gas-consumption-warning'));
+  const decoWarningStyle = styleOf(document.querySelector('#decoAlerts .alert, #decoAlertsNarcotic .alert'));
+  const warningTypographyOk =
+    /Outfit/i.test(gasWarningStyle.fontFamily || '')
+    && /Outfit/i.test(cardWarningStyle.fontFamily || '')
+    && closePx(gasWarningStyle.fontSize, decoWarningStyle.fontSize)
+    && closePx(cardWarningStyle.fontSize, decoWarningStyle.fontSize)
+    && closePx(gasWarningStyle.lineHeight, decoWarningStyle.lineHeight, 1.5)
+    && closePx(cardWarningStyle.lineHeight, decoWarningStyle.lineHeight, 1.5)
+    && parseInt(gasWarningStyle.fontWeight || '0', 10) >= 600
+    && parseInt(cardWarningStyle.fontWeight || '0', 10) >= 600
+    && zeroLetterSpacing(gasWarningStyle.letterSpacing)
+    && zeroLetterSpacing(cardWarningStyle.letterSpacing)
+    && !/mono|JetBrains/i.test(gasWarningStyle.fontFamily || '')
+    && !/mono|JetBrains/i.test(cardWarningStyle.fontFamily || '');
   return {
     generated,
     viewportWidth,
@@ -645,6 +679,10 @@ async () => {
     cardWarningBackground: document.querySelector('.gas-consumption-warning') ? getComputedStyle(document.querySelector('.gas-consumption-warning')).backgroundColor.replace(/\s+/g, '').toLowerCase() : '',
     warningBorder: document.getElementById('gasWarningBanner') ? getComputedStyle(document.getElementById('gasWarningBanner')).borderTopColor.replace(/\s+/g, '').toLowerCase() : '',
     cardWarningBorder: document.querySelector('.gas-consumption-warning') ? getComputedStyle(document.querySelector('.gas-consumption-warning')).borderTopColor.replace(/\s+/g, '').toLowerCase() : '',
+    gasWarningStyle,
+    cardWarningStyle,
+    decoWarningStyle,
+    warningTypographyOk,
     criticalCardColor: document.querySelector('.gas-usage-card--critical') ? getComputedStyle(document.querySelector('.gas-usage-card--critical')).borderTopColor.replace(/\s+/g, '').toLowerCase() : '',
     checks,
     overflow,
@@ -656,6 +694,7 @@ async () => {
       && /Bottom|Air|No gas supply|Critical/i.test(document.querySelector('.gas-consumption-warning')?.textContent || '')
       && document.querySelector('.gas-consumption-warning span')?.textContent?.trim() === '⚠'
       && !(document.querySelector('.gas-consumption-warning')?.textContent || '').trim().startsWith('!')
+      && warningTypographyOk
       && overflow.length === 0
       && !bodyOverflow,
   };

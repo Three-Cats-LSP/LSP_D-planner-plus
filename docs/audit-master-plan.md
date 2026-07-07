@@ -36,7 +36,7 @@
 | 4 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 612 | - | Tools and modals markup partials READ |
 | 5 | UI-CSS-FOUNDATION, UI-CSS-MODES | 758 | - | Foundation and modes CSS READ |
 | 6 | UI-CSS-CONTROLS | 548 | - | Controls CSS READ |
-| 7 | UI-CSS-RESULTS | 977 | - | Results CSS READ (2 bounded sessions) |
+| 7 | UI-CSS-RESULTS | 978 | - | Results CSS READ (2 bounded sessions) |
 | 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 528 | - | Planner shell and results panel READ |
 | 9 | UI-ENVIRONMENT, UI-MODE-STATE | 1004 | - | settings-core environment and mode state READ (1002 lines; >=2 bounded sessions); explicitly verify VPM switch behavior; enforce app-wide gas-switch terminology: the diving procedure is labeled and identified as "Gas switch" everywhere, with no user-facing "Gas change" labels or new gas-change IDs/classes/contracts; verify mobile warning/alert banners and gas-consumption warnings wrap inside the viewport without horizontal clipping or overflow |
 | 10 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 679 | - | Surface interval and gas table cores READ |
