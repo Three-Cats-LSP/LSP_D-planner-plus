@@ -104,8 +104,8 @@ CAPTURE_JS = r"""
   const gasFooters = gasCards.map(el => el.querySelector('.gas-usage-foot')?.textContent?.trim() || '');
   const gasRemaining = gasCards.map(el => el.querySelector('.gas-usage-remaining')?.textContent?.trim() || '');
   const gasBarWidths = gasCards.map(el => {
-    const used = el.querySelector('.gas-usage-used');
-    return used ? used.getBoundingClientRect().width : 0;
+    const remaining = el.querySelector('.gas-usage-remaining-bar');
+    return remaining ? remaining.getBoundingClientRect().width : 0;
   });
   const gasTracks = gasCards.map(el => {
     const track = el.querySelector('.gas-usage-track');
@@ -225,7 +225,8 @@ CAPTURE_JS = r"""
       remainingTexts: gasRemaining,
       hasTurnPressureInline: gasFooters.some(text => /Used:.*Turn Pressure:/i.test(text)),
       hasTurnPressColumn: /TURN\s+PRESS(?!URE)/i.test(gasSummary?.textContent || ''),
-      barsPresent: gasCards.length > 0 && gasCards.every((el, i) => !!el.querySelector('.gas-usage-track') && gasBarWidths[i] > 0 && gasTracks[i] > 0),
+      barsPresent: gasCards.length > 0 && gasCards.every((el, i) => !!el.querySelector('.gas-usage-track') && !!el.querySelector('.gas-usage-remaining-bar') && gasBarWidths[i] >= 0 && gasTracks[i] > 0),
+      remainingBarModel: gasCards.length > 0 && gasCards.every(el => !el.querySelector('.gas-usage-used')),
       metricUnits: gasRemaining.every(text => /bar/.test(text) && /\bL\)/.test(text)),
       sufficientLeftBorderOnly: gasCards.some(el => el.classList.contains('gas-usage-card--ok') && parseFloat(getComputedStyle(el).borderLeftWidth) > parseFloat(getComputedStyle(el).borderTopWidth)),
     },
@@ -962,6 +963,7 @@ def main() -> int:
         and c["gasConsumptionBars"]["hasDecoMix"]
         and not c["gasConsumptionBars"]["forbiddenLabels"]
         and c["gasConsumptionBars"]["barsPresent"]
+        and c["gasConsumptionBars"]["remainingBarModel"]
         and c["gasConsumptionBars"]["metricUnits"]
         and c["gasConsumptionBars"]["hasTurnPressureInline"]
         and not c["gasConsumptionBars"]["hasTurnPressColumn"]

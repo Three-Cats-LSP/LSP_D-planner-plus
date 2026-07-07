@@ -143,7 +143,7 @@ function _buildGasUsageModel(gasConsumed) {
     const remainingBar = row.sizeL > 0 ? remainingTotalL / row.sizeL : 0;
     const shortfallL = Math.max(0, -remainingUsableL);
     const remainingPercent = row.usableL > 0 ? Math.max(0, remainingUsableL / row.usableL * 100) : 0;
-    const usedPercentOfTotal = row.totalL > 0 ? Math.min(100, Math.max(0, usedL / row.totalL * 100)) : 0;
+    const remainingPercentOfTotal = row.totalL > 0 ? Math.min(100, Math.max(0, remainingTotalL / row.totalL * 100)) : 0;
     const turnPressureBar = row.turn && typeof computePooledBottomTurnBars === 'function'
       ? computePooledBottomTurnBars(row.sizeL, row.fillBar, row.reserveBar, 0, _gasRule === 'half' ? 0.5 : 1 / 3)?.turnBar
       : null;
@@ -155,7 +155,7 @@ function _buildGasUsageModel(gasConsumed) {
       remainingTotalL: Math.max(0, remainingTotalL),
       remainingBar: Math.max(0, remainingBar),
       remainingPercent,
-      usedPercentOfTotal,
+      remainingPercentOfTotal,
       shortfallL,
       turnPressureBar,
     };
@@ -195,13 +195,13 @@ function renderGasConsumptionBars(container, gasConsumed, options) {
     const turn = Number.isFinite(row.turnPressureBar)
       ? `<span>Turn Pressure: <strong>${_gasPresText(row.turnPressureBar)}</strong></span>`
       : '';
-    return `<div class="gas-usage-card gas-usage-card--${status}" data-gas-label="${_gasCardHtml(row.label)}" data-gas-role="${_gasCardHtml(row.role)}" style="--gas-used-pct:${row.usedPercentOfTotal.toFixed(2)}%;">
+    return `<div class="gas-usage-card gas-usage-card--${status}" data-gas-label="${_gasCardHtml(row.label)}" data-gas-role="${_gasCardHtml(row.role)}" style="--gas-remaining-pct:${row.remainingPercentOfTotal.toFixed(2)}%;">
       <div class="gas-usage-head">
         <div class="gas-usage-title"><span class="gas-usage-mix">${_gasCardHtml(row.label)}</span><span class="gas-usage-role">${_gasCardHtml(row.role)}</span></div>
         <div class="gas-usage-remaining">${_gasPresText(row.remainingBar)} <span>(${_gasVolText(row.remainingTotalL)})</span></div>
       </div>
       <div class="gas-usage-scale"><span>0</span><span>${_gasPresText(row.fillBar)}</span></div>
-      <div class="gas-usage-track" aria-label="${_gasCardHtml(row.displayName)} usage"><div class="gas-usage-used"></div></div>
+      <div class="gas-usage-track" aria-label="${_gasCardHtml(row.displayName)} remaining gas"><div class="gas-usage-remaining-bar"></div></div>
       <div class="gas-usage-foot"><span>Used: <strong>${_gasPresText(row.usedBar)}</strong> (${_gasVolText(row.usedL)})</span>${turn}</div>
     </div>`;
   }).join('');
