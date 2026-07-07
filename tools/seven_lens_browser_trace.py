@@ -483,7 +483,15 @@ def _act(page, action: dict[str, Any]) -> None:
         )
     elif kind == "set_viewport":
         size = action.get("size") or {}
-        page.set_viewport_size({"width": int(size.get("width", 1280)), "height": int(size.get("height", 800))})
+        width = int(size.get("width", 1280))
+        height = int(size.get("height", 800))
+        page.set_viewport_size({"width": width, "height": height})
+        page.wait_for_function(
+            "([w, h]) => window.innerWidth === w && window.innerHeight === h",
+            [width, height],
+            timeout=TRACE_ACTION_TIMEOUT_MS,
+        )
+        page.wait_for_timeout(50)
     elif kind == "emulate_media":
         params = {k: v for k, v in (action.get("params") or {}).items() if v is not None}
         page.emulate_media(**params)
