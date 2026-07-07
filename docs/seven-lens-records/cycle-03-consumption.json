@@ -14,7 +14,7 @@
       "start_line": 1,
       "end_line": 381,
       "line_count": 381,
-      "content_fingerprint": "263ca45a298bf112a9f673d0058445ce97ce56402620a213013d254bab169d23",
+      "content_fingerprint": "bbc44df62b3231cb2c17cab4e1ade0a47342f9b02e0ff09acb1d526f09441d46",
       "review_session": "cursor/seven-lens-cycle-03-consumption-audit",
       "verification_session": "cursor/seven-lens-cycle-03-consumption-verify",
       "lens_results": {
@@ -783,5 +783,12 @@
   "protocol_migrations": [
     "resolution-commit-v1",
     "receipt-exit-v1"
+  ],
+  "dependency_revalidations": [
+    {
+      "part_id": "UI-MARKUP-CONSUMPTION-P01",
+      "result": "NO_NEW_FINDING",
+      "note": "C09 dependency recheck after graph-tab simplification comment cleanup; no new finding."
+    }
   ]
 }

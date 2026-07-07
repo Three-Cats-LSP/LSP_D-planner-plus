@@ -266,7 +266,7 @@ TAB_PREFIX_JS = r"""
   const src = typeof switchResultTab === 'function' ? switchResultTab.toString() : '';
   const deadPrefix = /const prefix = isRec \? '' : ''/.test(src);
   setMainNav('buh');
-  const tabs = ['profile', 'contingency', 'graphs', 'tissue'];
+  const tabs = ['profile', 'contingency', 'tissue'];
   const results = [];
   for (const name of tabs) {
     const btn = document.querySelector(`#tecResultTabs [data-tab='${name}']`);

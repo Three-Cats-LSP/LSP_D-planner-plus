@@ -493,7 +493,6 @@ body.light-theme #resultsPanel .chip-yellow { background: var(--yellow-dim) !imp
 #resultsPanel #resultTab-profile.active { gap: 0; }
 #resultsPanel #resultTab-profile > #profileSectionHead.results-section-head { padding: var(--space-2) var(--space-4) var(--space-1); }
 #resultsPanel #resultTab-profile { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 0; overflow: hidden; }
-#resultsPanel #resultTab-graphs { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 0; overflow: hidden; gap: 0; }
 #resultsPanel #resultTab-contingency { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 0; overflow: hidden; gap: var(--space-3); }
 #resultsPanel #resultTab-tissue { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 0; overflow: hidden; gap: var(--space-3); }
 #resultsPanel #tissueLoadCard { width: 100%; box-sizing: border-box; }
@@ -505,6 +504,11 @@ body.light-theme #resultsPanel .chip-yellow { background: var(--yellow-dim) !imp
 #resultsPanel #contingencyScheduleStack { display: block; width: 100%; max-width: none; }
 #resultsPanel #contingencyResult { padding: 0 0 var(--space-4); width: 100%; box-sizing: border-box; }
 #resultsPanel #contingencyResult .deco-plan-caption { margin: 0 var(--space-4) var(--space-3); }
+#resultsPanel #contingencyResult .contingency-graph-block { width: 100%; max-width: 100%; box-sizing: border-box; padding: 0 var(--space-4) var(--space-2); overflow: hidden; }
+#resultsPanel #contingencyResult .contingency-graph-block .results-section-head { padding: 0 0 var(--space-2); }
+#resultsPanel #contingencyResult .profile-canvas-shell { width: 100%; max-width: 100%; box-sizing: border-box; overflow: hidden; }
+#resultsPanel #contingencyResult #contingencyProfileCanvas { width: 100%; max-width: 100%; height: auto; aspect-ratio: 760 / 260; min-height: 180px; display: block; box-sizing: border-box; border-radius: var(--radius-md); background: var(--surface); border: 1px solid var(--border); }
+#resultsPanel #contingencyResult #contingencyProfileLegend { display: none !important; }
 #resultsPanel #contingencyResult .schedule-wrap { padding: 0; overflow-x: auto; width: 100%; box-sizing: border-box; }
 #resultsPanel #contingencyResult .deco-table-wrap { width: 100%; max-width: 100%; }
 #resultsPanel #contingencyResult .deco-table-legend.legend { border-top: 1px solid var(--border); margin-top: 10px; }
@@ -512,18 +516,15 @@ body.light-theme #resultsPanel .chip-yellow { background: var(--yellow-dim) !imp
 #resultsPanel #contingencyScheduleStack .deco-contingency-calc { width: 100%; box-sizing: border-box; padding: 11px 14px; background: color-mix(in oklab, var(--red) 10%, transparent); color: var(--red); border: 1px solid color-mix(in oklab, var(--red) 35%, transparent); border-radius: var(--radius-md); cursor: pointer; font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; transition: background 0.2s ease; }
 #resultsPanel #contingencyScheduleStack .deco-contingency-calc:hover { background: color-mix(in oklab, var(--red) 18%, transparent); }
 #resultsPanel .results-section-head--sub { padding: 0; margin: 0; }
-#resultsPanel #graphsDiveSectionHead.results-section-head--sub,
-#resultsPanel #graphsGfSectionHead.results-section-head--sub { padding: var(--space-3) var(--space-4) var(--space-1); margin: 0; border-bottom: 1px solid var(--border); }
-#resultsPanel #graphsGfSectionHead.results-section-head--sub { border-top: 1px solid var(--border-hi); padding-top: var(--space-2); }
+#resultsPanel #tissueGfSectionHead.results-section-head--sub { padding: var(--space-3) var(--space-4) var(--space-1); margin: 0; border-bottom: 1px solid var(--border); }
 #resultsPanel #fullDiveGraphCard .card-title,
 #resultsPanel #gfCurveInlineCard .card-title { display: none !important; }
 #resultsPanel .profile-legend-keys { display: flex; gap: var(--space-3); flex-wrap: wrap; font-family: var(--font-mono); font-size: 9px; color: var(--text-faint); }
 #resultsPanel .profile-legend-keys .legend-item { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
 #resultsPanel #fullDiveGraphCard.card { background: transparent; border: none; box-shadow: none; margin: 0; padding: 0; }
-#resultsPanel #fullDiveGraphCard .card-collapsible-body { padding: 0 var(--space-4) var(--space-3); }
-#resultsPanel #resultTab-graphs #plannerProfileCanvas-wrap { margin-top: 0; }
-#resultsPanel #resultTab-graphs #plannerProfileLegend { margin-top: 0; }
-#resultsPanel #plannerProfileCanvas-wrap canvas { border-radius: var(--radius-md); background: var(--surface); border: 1px solid var(--border); min-height: 200px; }
+#resultsPanel #fullDiveGraphCard .card-collapsible-body { padding: var(--space-3) var(--space-4) var(--space-2); box-sizing: border-box; max-width: 100%; overflow: hidden; }
+#resultsPanel #plannerProfileCanvas-wrap { margin-top: 0 !important; max-width: 100%; box-sizing: border-box; }
+#resultsPanel #plannerProfileCanvas-wrap canvas { width: 100%; max-width: 100%; box-sizing: border-box; border-radius: var(--radius-md); background: var(--surface); border: 1px solid var(--border); min-height: 200px; display: block; }
 #resultsPanel #plannerProfileLegend { display: flex; flex-direction: column; gap: var(--space-2); flex-wrap: nowrap; padding: var(--space-2) 0 var(--space-1); font-family: var(--font-mono); font-size: 9px; color: var(--text-faint); }
 #resultsPanel #plannerProfileLegend .profile-legend-keys { width: 100%; }
 #resultsPanel #plannerProfileLegend .profile-legend-table { margin-top: var(--space-2); }
@@ -602,15 +603,6 @@ body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumpt
 .results-section-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 #resultsPanel #tissueChartToggleBtn,
 #resultsPanel #contingencyJumpBtn { display: none !important; }
-#resultsPanel #diveGraphCard.card { background: transparent; border: none; box-shadow: none; margin: 0; padding: 0; }
-#resultsPanel #diveGraphCard .card-title, #resultsPanel #diveGraphCard .card-caret { display: none !important; }
-#resultsPanel #diveGraphCard .card-collapsible-body { padding: 0 var(--space-4) var(--space-2); }
-#resultsPanel #decoProfileCanvas-wrap canvas { border-radius: var(--radius-md); background: var(--surface); border: 1px solid var(--border); min-height: 110px; }
-#resultsPanel #decoProfileLegend, #resultsPanel .profile-legend { display: flex; flex-direction: column; gap: var(--space-2); flex-wrap: nowrap; padding: 0 var(--space-4) var(--space-2); font-family: var(--font-mono); font-size: 9px; color: var(--text-faint); }
-#resultsPanel #decoProfileLegend .profile-legend-keys,
-#resultsPanel .profile-legend .profile-legend-keys { width: 100%; }
-#resultsPanel #decoProfileLegend tr.profile-legend-gasswitch td { color: var(--gas-switch); }
-#resultsPanel #decoProfileCanvas-hint { padding: 0 var(--space-4) var(--space-2); }
 #resultsPanel #decoResult.results-v3-card { background: transparent; border: none; box-shadow: none; margin: 0; padding: 0; }
 #resultsPanel #decoAlerts { margin: var(--space-1) var(--space-4) 0; min-width: 0; max-width: calc(100% - var(--space-4) * 2); box-sizing: border-box; }
 #resultsPanel #decoAlerts:empty { display: none; margin: 0; }

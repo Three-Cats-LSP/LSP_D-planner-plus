@@ -114,8 +114,8 @@ function _renderResultSummaryStrip(data) {
 }
 function _onPlanResultsReady() {
   if (plannerAlgo !== 'rec') {
-    const dgc = document.getElementById('diveGraphCard');
-    if (dgc) { dgc.style.display = 'block'; dgc.classList.add('card-open'); }
+    const graphCard = document.getElementById('fullDiveGraphCard');
+    if (graphCard) { graphCard.style.display = 'block'; graphCard.classList.add('card-open'); }
     const decoRes = document.getElementById('decoResult');
     if (decoRes) decoRes.style.display = 'block';
   }
@@ -284,7 +284,7 @@ function switchResultTab(name, btn) {
   const isRec = plannerAlgo === 'rec';
   const panes = isRec
     ? ['dive','surfint','avgdepth','multi','ndlref']
-    : ['profile','contingency','graphs','tissue'];
+    : ['profile','contingency','tissue'];
   const nav = isRec ? document.getElementById('recResultTabs') : document.getElementById('tecResultTabs');
   const panel = document.getElementById('resultsPanel');
   nav?.querySelectorAll('.result-tab-btn').forEach(b => b.classList.toggle('active', b === btn));
@@ -309,8 +309,7 @@ function switchResultTab(name, btn) {
   }
   if (name === 'ndlref') renderNDLTable?.();
   if (name === 'multi') buildDiveBlocks?.();
-  if (name === 'graphs') setTimeout(() => { _syncGraphsSectionHeads?.(); drawDecoProfileFull?.(); drawGFCurve?.(); attachGFCurveInteraction?.(); }, 50);
-  if (name === 'profile') setTimeout(() => drawDecoProfile?.(), 50);
+  if (name === 'profile') setTimeout(() => { drawDecoProfileFull?.(); }, 50);
   if (name === 'tissue') {
     const card = document.getElementById('tissueLoadCard');
     const inner = document.getElementById('tissueLoadInnerCard');
@@ -323,5 +322,6 @@ function switchResultTab(name, btn) {
       if (tissues?.length) updateTissueViz?.(tissues, mGF?.high ?? 85);
       renderTissueLoadChart?.();
     }
+    setTimeout(() => { _syncGfCurveCardVisibility?.(); drawGFCurve?.(); attachGFCurveInteraction?.(); }, 50);
   }
 }

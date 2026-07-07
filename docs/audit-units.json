@@ -1734,7 +1734,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "3aa1607ae9dcef846e66337dbc8f150516f23ced53c7a2a960278f920defccfb",
+      "fingerprint": "58615770501aa6515e05b9febbf4f2e6e2f855b81829469e5391272d4bff106e",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1794,7 +1794,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "fb549fdab81503fa1bc32ba83f3387cd98cf57212b55f8d5d4708c281f62f275",
+      "fingerprint": "792ac3e87c317157cea37242e538b32bda46711261410f4192d1242756af0599",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -1816,7 +1816,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "7fe7e25442e30056bb6049f77f7e710da8379c283e47106bf6389aca4220d607",
+      "fingerprint": "0b46baa52b89ce14d723220cd427fa58c6270078cff948cbaea345033883bb9c",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1891,7 +1891,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "263ca45a298bf112a9f673d0058445ce97ce56402620a213013d254bab169d23",
+      "fingerprint": "bbc44df62b3231cb2c17cab4e1ade0a47342f9b02e0ff09acb1d526f09441d46",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1999,7 +1999,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MODE-STATE"
       },
-      "fingerprint": "687bae7030815f2679ad5154a1a8b421abcd804275d82536c4e5714062273717",
+      "fingerprint": "249b2674f51d7f49fa2f39054bbffc42b96720c949263cf4d748d5f9c6ae4c1b",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2180,7 +2180,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RENDER"
       },
-      "fingerprint": "7d85467a20aabba028a7130035d730add3d526797a0f96be3e5f0830a64054c3",
+      "fingerprint": "4a81671ad130de0fb6ea3bfefd9fcbbc47562bcd5f867560fc90466b84029153",
       "last_read_fingerprint": null,
       "audit_issue": 147,
       "evidence": [],
@@ -2243,21 +2243,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-ENGINE"
       },
-      "fingerprint": "b7f5b5d2e55241725ba64403c0a8e301f0fc01f017dea8daebdd7126a138e85c",
-      "last_read_fingerprint": "b7f5b5d2e55241725ba64403c0a8e301f0fc01f017dea8daebdd7126a138e85c",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-05",
-        "COV-01"
-      ],
+      "fingerprint": "691b2e6c4442ace6d03dc2a2d070191cc9f06953c76bb86ac82dc8af8101a2a2",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 150,
       "issue": "Audit issue #150"
     },
@@ -2271,7 +2265,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
-      "fingerprint": "faeac43f5c7b1c3fbf65fc4cd47a2915f69965d7bda956901336589ea956837e",
+      "fingerprint": "0db11723adb3550df9db3f68fdc77a27b68e4ed6116cf9082a298d97f09011d5",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2351,7 +2345,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-RENDER"
       },
-      "fingerprint": "cfe8904d8ca5371e87fe2b5c1db45c1ab616e7051d9a995ae8f927b1640b594b",
+      "fingerprint": "2222f1cd2cd7a91071f5199bb0982d854060a27c6756c4e3854e8e4350d62fd4",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5103,7 +5097,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c9dc4b2f509fc9666f56898f0723571a20922b7c5e869fdb301412c1ab5778cd",
+      "fingerprint": "86a6ad16b929f107dca05adcbb66548dc444ead80979bc6a9599ec047b008784",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5121,7 +5115,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "14d1b908493396a626b982388c8e6013639aeffe0a0f3069ef0e8baffae5c29c",
+      "fingerprint": "096649997da5b44ff9760787f13b1b56b248d552b4a25965abd4ef50f46c9ba9",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5567,7 +5561,7 @@
         "REG-98",
         "REG-99"
       ],
-      "fingerprint": "3be13586ca42dd2b26bf67b2829f6d424706a4baf55c7805424794e3b96b3d01",
+      "fingerprint": "3fec06a3173dc56c5ff84a40259643825ac697bb1f570894099c2bbb4da8c42e",
       "last_read_fingerprint": null
     },
     {
@@ -5617,7 +5611,7 @@
         "REG-110",
         "REG-111"
       ],
-      "fingerprint": "fd2f34241b702239908e20e436999028a6b2e979def321290970766ce235ef9d",
+      "fingerprint": "7bb29388ff53b5a1f376b47e789fa45723820b5d94260f4b4f89fbf1a57372f1",
       "last_read_fingerprint": null
     },
     {

@@ -531,20 +531,8 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
       : 'plannerProfileLegend';
   const legendEl = document.getElementById(legendId);
   if (legendEl) {
-    const switchCount = waypoints.filter(wp => wp.type === 'gasswitch').length;
-    const gasSwitchItem = `<span class="legend-item legend-switch"><svg class="leg-icon" width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 3h12M10 1l3 2-3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 7H1M4 5l-3 2 3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Gas Switch${switchCount ? ` (${switchCount})` : ''}</span>`;
-    const legendColors = { red, green, accent, orange, muted, profileLine };
-    const legendRows = _buildProfileLegendTableRows(waypoints, legendColors);
-    const keyLegend = `<div class="profile-legend-keys" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
-        <span class="legend-item"><span style="display:inline-block;width:18px;height:2px;background:${profileLine};border-radius:1px;"></span> OC depth</span>
-        ${gasSwitchItem}
-        <span class="legend-item"><span class="leg-dot" style="background:${red}"></span> Deco stop</span>
-        ${simple ? '' : `<span class="legend-item"><span style="display:inline-block;width:18px;height:0;border-top:2px dashed ${red};"></span> Ceiling</span>`}
-      </div>`;
-    const showStopTable = !simple && canvasId !== 'contingencyProfileCanvas';
-    const tableHtml = (showStopTable && legendRows.length) ? _renderProfileLegendTableHtml(legendRows, legendColors) : '';
-    legendEl.style.display = tableHtml ? 'block' : 'flex';
-    legendEl.innerHTML = keyLegend + tableHtml;
+    legendEl.style.display = 'none';
+    legendEl.innerHTML = '';
   }
 }
 

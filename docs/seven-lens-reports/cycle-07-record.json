@@ -296,7 +296,7 @@
       "start_line": 1,
       "end_line": 500,
       "line_count": 500,
-      "content_fingerprint": "48f2df43a18e7892b11d6ec2d2f909a7271e1b2a7d04183715b5165955eba19b",
+      "content_fingerprint": "7cd8b3bc6e25abbbd5241d00d30ed45d39f996db5660193e8ee91896441fff6f",
       "review_session": "C07-A",
       "verification_session": "C09-DEP-WARNING-BANNER-PALETTE-A",
       "lens_results": {
@@ -374,9 +374,9 @@
       "unit_id": "UI-CSS-RESULTS",
       "path": "lsp-dplanner-results.css",
       "start_line": 501,
-      "end_line": 978,
-      "line_count": 478,
-      "content_fingerprint": "cb237ec402902ff4329bf06441b617ffc49ad60e86770046ff04e8d8ae5623b5",
+      "end_line": 970,
+      "line_count": 470,
+      "content_fingerprint": "c891a0876d67ce1ea506cc6077143df5458ea4dc4dcb6796b5292fa52069850b",
       "review_session": "C07-B",
       "verification_session": "C09-DEP-WARNING-BANNER-PALETTE-B",
       "lens_results": {
@@ -1366,6 +1366,16 @@
       "start_line": 501,
       "end_line": 978,
       "content_fingerprint": "cb237ec402902ff4329bf06441b617ffc49ad60e86770046ff04e8d8ae5623b5"
+    },
+    {
+      "part_id": "UI-CSS-RESULTS-P01",
+      "result": "NO_NEW_FINDING",
+      "note": "C09 dependency recheck after full graph/tabs layout CSS; no new finding."
+    },
+    {
+      "part_id": "UI-CSS-RESULTS-P02",
+      "result": "NO_NEW_FINDING",
+      "note": "C09 dependency recheck after full graph/tabs layout CSS; no new finding."
     }
   ]
 }

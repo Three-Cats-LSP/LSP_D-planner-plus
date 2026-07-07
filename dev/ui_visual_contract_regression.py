@@ -100,12 +100,10 @@ CAPTURE_JS = r"""
     return resolved;
   };
   const root = getComputedStyle(document.body);
-  if (typeof drawDecoProfile === 'function') drawDecoProfile();
   if (typeof drawDecoProfileFull === 'function') drawDecoProfileFull();
   const title = document.getElementById('diluentCardTitle');
   const titleRow = title?.closest('.gas-card-title-row');
   const dots = titleRow ? titleRow.querySelectorAll('.gas-dot') : [];
-  const graphSwitchLegend = document.querySelector('#decoProfileLegend .legend-switch');
   const decoDots = [...document.querySelectorAll('.deco-gas-card .gas-dot')];
   const pills = [...document.querySelectorAll('#resultsPanel .gas-pills .gas-pill')];
   const gasSummary = document.getElementById('gasConsumptionSummary');
@@ -141,11 +139,6 @@ CAPTURE_JS = r"""
   const firstSwitchRow = schedule?.querySelector('tbody tr[data-phase="switch"]');
   const normalRowBg = rgb(style(firstBodyRow, 'backgroundColor'));
   const switchRowBgs = switchRows.map(row => rgb(style(row, 'backgroundColor')));
-  const graphRows = [...document.querySelectorAll('#plannerProfileLegend .profile-legend-table tbody tr')];
-  const graphNormalRow = graphRows.find(row => !row.classList.contains('profile-legend-gasswitch'));
-  const graphSwitchRows = graphRows.filter(row => row.classList.contains('profile-legend-gasswitch'));
-  const graphNormalRowBg = rgb(style(graphNormalRow, 'backgroundColor'));
-  const graphSwitchRowBgs = graphSwitchRows.map(row => rgb(style(row, 'backgroundColor')));
   const headers = schedule ? [...schedule.querySelectorAll('thead th')] : [];
   const cells = firstBodyRow ? [...firstBodyRow.querySelectorAll('td')] : [];
   const scheduleSwitchCells = firstSwitchRow ? [...firstSwitchRow.querySelectorAll('td')] : [];
@@ -185,20 +178,26 @@ CAPTURE_JS = r"""
   const expectedBg = resolveColor(root.getPropertyValue('--gas-switch-label-bg'));
   const expectedSwitch = expectedBg;
   const expectedText = resolveColor(root.getPropertyValue('--gas-switch-label-text'));
-  const graphSwitchColor = rgb(style(graphSwitchLegend, 'color'));
   const decoDotColors = decoDots.map(el => rgb(style(el, 'backgroundColor')));
   const decoPills = pills.filter(el => el.classList.contains('deco1') || el.classList.contains('deco2'));
-  const decoWps = Array.isArray(window._decoWaypoints) ? window._decoWaypoints : [];
-  const decoStopTimes = decoWps
+  const graphWps = Array.isArray(window._plannerWaypoints) ? window._plannerWaypoints : [];
+  const decoStopTimes = graphWps
     .filter(wp => ['deco', 'safety', 'gasswitch'].includes(wp.type) && Number.isFinite(Number(wp.t)))
     .map(wp => Number(wp.t));
   const uniqueDecoStopTimes = [...new Set(decoStopTimes.map(t => Math.round(t * 10) / 10))];
   const resultTabsNav = document.getElementById('tecResultTabs');
+  const tabButtons = resultTabsNav ? [...resultTabsNav.querySelectorAll('.result-tab-btn')] : [];
   const tissueTab = resultTabsNav?.querySelector('[data-tab="tissue"]');
   const tissueRect = tissueTab?.getBoundingClientRect();
   const tabsRect = resultTabsNav?.getBoundingClientRect();
   const activeResultPane = document.querySelector('#tecResultTabs ~ .result-tab-pane.active');
   const activePaneRect = activeResultPane?.getBoundingClientRect();
+  const fullGraphCard = document.getElementById('fullDiveGraphCard');
+  const fullGraphBody = fullGraphCard?.querySelector('.card-collapsible-body');
+  const fullGraphCanvas = document.getElementById('plannerProfileCanvas');
+  const fullGraphCanvasRect = fullGraphCanvas?.getBoundingClientRect();
+  const fullGraphBodyRect = fullGraphBody?.getBoundingClientRect();
+  const gfCurveCard = document.getElementById('gfCurveInlineCard');
   const chipByLabel = label => [...document.querySelectorAll('#resultChipRow .chip')]
     .find(el => (el.textContent || '').trim().startsWith(label));
   const chipSnapshot = el => el ? ({
@@ -218,7 +217,6 @@ CAPTURE_JS = r"""
     title: title?.textContent?.trim() || '',
     bottomDotCount: dots.length,
     titleHasEmoji: /[\u{1F535}\u{1F7E1}\u{1F7E0}\u{1F7E2}]/u.test(title?.textContent || ''),
-    graphSwitchColor,
     expectedBg,
     expectedText,
     decoDotColors,
@@ -229,10 +227,18 @@ CAPTURE_JS = r"""
     switchCellColors: switchCells.map(el => rgb(style(el, 'color'))),
     switchRowBackgrounds: switchRowBgs,
     normalRowBackground: normalRowBg,
-    graphSwitchRowBackgrounds: graphSwitchRowBgs,
-    graphNormalRowBackground: graphNormalRowBg,
     expectedSwitch,
-    graphSwitchLegendText: graphSwitchLegend?.textContent?.trim() || '',
+    resultTabs: {
+      labels: tabButtons.map(btn => btn.textContent.trim()),
+      tabs: tabButtons.map(btn => btn.dataset.tab),
+      hasGraphsTab: !!resultTabsNav?.querySelector('[data-tab="graphs"]'),
+      tissueLabel: tissueTab?.textContent.trim() || '',
+      gfInsideTissue: !!(gfCurveCard && document.getElementById('resultTab-tissue')?.contains(gfCurveCard)),
+      graphInsideProfile: !!(fullGraphCard && document.getElementById('resultTab-profile')?.contains(fullGraphCard)),
+      simpleGraphRemoved: !document.getElementById('decoProfileCanvas') && !document.getElementById('diveGraphCard'),
+      graphLegendRemoved: document.querySelectorAll('#plannerProfileLegend .profile-legend-table, #decoProfileLegend .profile-legend-table').length === 0,
+      fullGraphWithinBody: !!(fullGraphCanvasRect && fullGraphBodyRect && fullGraphCanvasRect.left >= fullGraphBodyRect.left - 1 && fullGraphCanvasRect.right <= fullGraphBodyRect.right + 1),
+    },
     graphWaypoints: {
       count: decoStopTimes.length,
       uniqueCount: uniqueDecoStopTimes.length,
@@ -522,10 +528,6 @@ async () => {
       .forEach(td => texts.push(td.textContent.trim()));
     document.querySelectorAll('#resultsPanel .gas-pills .gas-pill')
       .forEach(el => texts.push(el.textContent.trim()));
-    document.querySelectorAll('#decoProfileLegend .legend-item')
-      .forEach(el => texts.push(el.textContent.trim()));
-    document.querySelectorAll('#decoProfileSvg text')
-      .forEach(el => texts.push(el.textContent.trim()));
     if (typeof buildExportText === 'function') texts.push(buildExportText('deco'));
     if (typeof buildContingencyText === 'function') {
       try { texts.push(buildContingencyText('lost_gas')); } catch (_) {}
@@ -538,9 +540,6 @@ async () => {
   const forbiddenHits = (joined.match(new RegExp(forbidden.source, forbidden.flags + 'g')) || []);
   const terminologyRoots = [
     document.getElementById('resultsPanel'),
-    document.getElementById('diveGraphCard'),
-    document.getElementById('decoProfileLegend'),
-    document.getElementById('plannerProfileLegend'),
   ].filter(Boolean);
   const terminologyText = terminologyRoots.map(el => el.textContent || '').join('\n');
   const gasChangeTextHits = terminologyText.match(/Gas\s+change/gi) || [];
@@ -785,9 +784,18 @@ async () => {
   }
   if (typeof selectContBT === 'function') selectContBT(3);
   if (typeof calcContingency === 'function') calcContingency();
-  for (let i = 0; i < 40; i++) {
+  if (typeof switchResultTab === 'function') {
+    switchResultTab('contingency', document.querySelector('#tecResultTabs [data-tab="contingency"]'));
+  }
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  for (let i = 0; i < 60; i++) {
     await new Promise(r => setTimeout(r, 250));
-    if (document.querySelectorAll('#emergencyGasConsumption .gas-usage-card').length > 0) break;
+    if (typeof switchResultTab === 'function') {
+      switchResultTab('contingency', document.querySelector('#tecResultTabs [data-tab="contingency"]'));
+    }
+    const graphReady = document.getElementById('contingencyProfileCanvas')?.getBoundingClientRect()?.width > 100;
+    const gasReady = document.querySelectorAll('#emergencyGasConsumption .gas-usage-card').length > 0;
+    if (graphReady && gasReady) break;
   }
   const emergency = document.getElementById('emergencyGasConsumption');
   const cards = [...document.querySelectorAll('#emergencyGasConsumption .gas-usage-card')];
@@ -1249,10 +1257,22 @@ def main() -> int:
     )
     results["SL-VIS-GAS-SWITCH-TOKEN-PARITY"] = all(
         c["generated"]
-        and c["graphSwitchColor"] == c["expectedBg"]
-        and "Gas Switch" in c["graphSwitchLegendText"]
         and bool(c["decoDotColors"])
         and all(color == c["expectedBg"] for color in c["decoDotColors"])
+        and c["switchRowCount"] >= 1
+        and all(color == c["expectedSwitch"] for color in c["switchCellColors"])
+        for c in captures
+    )
+    results["SL-C09-RESULT-TAB-SIMPLIFICATION"] = all(
+        c["generated"]
+        and c["resultTabs"]["tabs"] == ["profile", "contingency", "tissue"]
+        and c["resultTabs"]["labels"] == ["Dive Profile", "Contingency Plans", "Tissues"]
+        and not c["resultTabs"]["hasGraphsTab"]
+        and c["resultTabs"]["gfInsideTissue"]
+        and c["resultTabs"]["graphInsideProfile"]
+        and c["resultTabs"]["simpleGraphRemoved"]
+        and c["resultTabs"]["graphLegendRemoved"]
+        and c["resultTabs"]["fullGraphWithinBody"]
         for c in captures
     )
     results["SL-VIS-DESKTOP-TWO-COLUMN-LAYOUT"] = all(
@@ -1280,8 +1300,6 @@ def main() -> int:
         and c["switchRowCount"] >= 1
         and bool(c["switchRowBackgrounds"])
         and all(color == c["normalRowBackground"] for color in c["switchRowBackgrounds"])
-        and bool(c["graphSwitchRowBackgrounds"])
-        and all(color == c["graphNormalRowBackground"] for color in c["graphSwitchRowBackgrounds"])
         for c in captures
     )
     results["SL-C09-GRAPH-WAYPOINT-TIME-SPREAD"] = all(
@@ -1294,6 +1312,7 @@ def main() -> int:
     results["SL-C09-MOBILE-TISSUE-TAB-VISIBLE"] = all(
         c["generated"]
         and c["tissueTab"]
+        and c["tissueTab"]["text"] == "Tissues"
         and c["tissueTab"]["visible"]
         and c["tissueTab"]["withinNav"]
         for key, c in details.items() if int(key.split("x", 1)[0]) <= 640
@@ -1375,7 +1394,7 @@ def main() -> int:
     results["SL-VIS-CONTINGENCY-MAIN-DECO-LAYOUT"] = bool(
         contingency_gas_details.get("generated")
         and contingency_gas_details.get("graphVisible")
-        and "Gas Switch" in contingency_gas_details.get("graphLegendText", "")
+        and not contingency_gas_details.get("graphLegendText", "")
         and contingency_gas_details.get("graphStopTableCount") == 0
         and contingency_gas_details.get("scheduleHeaders") == ["Depth", "Stop", "Run", "Mix", "ppO\u2082", "EAD"]
         and not contingency_gas_details.get("hasTtsHeader")

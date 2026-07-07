@@ -463,7 +463,7 @@
       "start_line": 418,
       "end_line": 917,
       "line_count": 500,
-      "content_fingerprint": "d13b7c7f8783fd46909e099888922e2431561abb1ab1e9892036c7abf33b61a1",
+      "content_fingerprint": "f958e167879e0fcc1edaa2ee25fb938beff6677f91c4f025266c782396020005",
       "review_session": "C09-B-MODE-STATE-1",
       "verification_session": "C09-V-B-MODE-STATE-1",
       "lens_results": {
@@ -544,9 +544,9 @@
       "unit_id": "UI-MODE-STATE",
       "path": "settings-core.js",
       "start_line": 918,
-      "end_line": 1042,
-      "line_count": 125,
-      "content_fingerprint": "7d0ca52c6312de89cc112c960dca6bd6165dbf13cd06daef8e64c13fd62b2a6e",
+      "end_line": 1037,
+      "line_count": 120,
+      "content_fingerprint": "0c4652eb993191bc660064ceb36880701b8c1bd85d8c4235d071a842a2564b3a",
       "review_session": "C09-C-MODE-STATE-2",
       "verification_session": "C09-V-C-MODE-STATE-2",
       "lens_results": {
@@ -699,5 +699,17 @@
   "reviewed_at": "2026-07-07T13:17:12.245569+00:00",
   "verified_at": "2026-07-07T13:38:12.663793+00:00",
   "closure_evidence_commit": "33972d953475d1753d462189f18fe2e556c61a14",
-  "closed_at": "2026-07-07T13:38:12.663793+00:00"
+  "closed_at": "2026-07-07T13:38:12.663793+00:00",
+  "dependency_revalidations": [
+    {
+      "part_id": "UI-MODE-STATE-P01",
+      "result": "NO_NEW_FINDING",
+      "note": "C09 self recheck after theme redraw cleanup; no new finding."
+    },
+    {
+      "part_id": "UI-MODE-STATE-P02",
+      "result": "NO_NEW_FINDING",
+      "note": "C09 self recheck after theme redraw cleanup; no new finding."
+    }
+  ]
 }

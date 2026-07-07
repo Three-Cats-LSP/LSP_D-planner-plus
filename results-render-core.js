@@ -195,6 +195,53 @@ function _gasUsageStatus(row, threshold) {
   return 'ok';
 }
 
+function _gasWarningMessages(rows, threshold) {
+  const messages = [];
+  const groupedShortfalls = new Map();
+  rows.forEach(row => {
+    const status = _gasUsageStatus(row, threshold);
+    if (status !== 'critical') return;
+    const labelKey = String(row.label || row.displayName || '').toLowerCase();
+    if (!(row.totalL > 0)) {
+      if (!groupedShortfalls.has(`nosupply:${labelKey}`)) {
+        groupedShortfalls.set(`nosupply:${labelKey}`, {
+          type: 'nosupply',
+          label: row.label || row.displayName,
+          displayNames: [],
+        });
+      }
+      groupedShortfalls.get(`nosupply:${labelKey}`).displayNames.push(row.displayName);
+    } else if (row.shortfallL > 0) {
+      if (!groupedShortfalls.has(`short:${labelKey}`)) {
+        groupedShortfalls.set(`short:${labelKey}`, {
+          type: 'short',
+          label: row.label,
+          displayNames: [],
+          usedL: 0,
+          totalL: 0,
+        });
+      }
+      const group = groupedShortfalls.get(`short:${labelKey}`);
+      group.displayNames.push(row.displayName);
+      group.usedL += row.usedL;
+      group.totalL += row.totalL;
+    } else {
+      messages.push(`Critical: ${_gasCardHtml(row.displayName)} below <strong class="gas-measure">${threshold}<span class="gas-unit">%</span></strong> remaining`);
+    }
+  });
+  groupedShortfalls.forEach(group => {
+    const roleText = group.displayNames.length > 1
+      ? ` (${group.displayNames.map(name => String(name).replace(String(group.label), '').trim()).filter(Boolean).join(' + ')})`
+      : '';
+    if (group.type === 'nosupply') {
+      messages.push(`No gas supply: ${_gasCardHtml(group.label)}${_gasCardHtml(roleText)} has no configured cylinder supply`);
+    } else {
+      messages.push(`No gas supply: ${_gasCardHtml(group.label)}${_gasCardHtml(roleText)} needs ${_gasVolHtml(group.usedL)}, cylinders have ${_gasVolHtml(group.totalL)}`);
+    }
+  });
+  return messages;
+}
+
 function renderGasConsumptionBars(container, gasConsumed, options) {
   if (!container) return;
   const title = options?.title || 'Gas Consumption';
@@ -207,18 +254,8 @@ function renderGasConsumptionBars(container, gasConsumed, options) {
     return;
   }
 
-  const warnings = [];
   const rowHtml = rows.map(row => {
     const status = _gasUsageStatus(row, threshold);
-    if (status === 'critical') {
-      if (!(row.totalL > 0)) {
-        warnings.push(`No gas supply: ${_gasCardHtml(row.displayName)} has no configured cylinder supply`);
-      } else if (row.shortfallL > 0) {
-        warnings.push(`No gas supply: ${_gasCardHtml(row.displayName)} needs ${_gasVolPresHtml(row.usedL, row.usedBar)}, cylinder has ${_gasVolPresHtml(row.totalL, row.fillBar)}`);
-      } else {
-        warnings.push(`Critical: ${_gasCardHtml(row.displayName)} below <strong class="gas-measure">${threshold}<span class="gas-unit">%</span></strong> remaining`);
-      }
-    }
     const turn = Number.isFinite(row.turnPressureBar)
       ? `<span>Turn Pressure: ${_gasPresHtml(row.turnPressureBar)}</span>`
       : '';
@@ -233,6 +270,7 @@ function renderGasConsumptionBars(container, gasConsumed, options) {
     </div>`;
   }).join('');
 
+  const warnings = _gasWarningMessages(rows, threshold);
   const warningHtml = warnings.length
     ? `<div class="gas-consumption-warning alert dang"><span aria-hidden="true">⚠</span><div class="gas-warning-copy">${warnings.join('<br>')}</div></div>`
     : '';
@@ -471,13 +509,11 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
 
   // ── POST-RENDER: show/hide same cards as Bühlmann ────────────────────────
   // Dive graph — works for VPM (reads table rows)
-  const _dgcVPM = document.getElementById('diveGraphCard');
-  if (_dgcVPM) _dgcVPM.style.display = 'block';
   const _fdgcVPM = document.getElementById('fullDiveGraphCard');
   if (_fdgcVPM) _fdgcVPM.style.display = 'block';
   _syncGraphsSectionHeads?.();
   const vpmScheduleGen = window._decoScheduleSeq;
-  setTimeout(() => { if (!isStaleDecoScheduleGen(vpmScheduleGen)) { drawDecoProfile(); drawDecoProfileFull(); } }, 100);
+  setTimeout(() => { if (!isStaleDecoScheduleGen(vpmScheduleGen)) { drawDecoProfileFull(); } }, 100);
 
   // Gas Consumption — compute from rendered table rows
   const gasConsVPM = {};
@@ -685,7 +721,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   const contRes = document.getElementById('contingencyResult');
   if (contRes) contRes.style.display = 'none';
 
-  // Tissue Saturation, GF Curve — Bühlmann-only: hide GF card on VPM
+  // Tissues, GF Curve — Bühlmann-only: hide GF card on VPM
   const gfcVpm = document.getElementById('gfCurveInlineCard');
   if (gfcVpm) gfcVpm.style.display = _plannerShowsGfCurve() ? 'block' : 'none';
 
@@ -1061,7 +1097,7 @@ function renderZhlScheduleResults(ctx) {
   });
   tbody.innerHTML += _decoRowBuf;
 
-  // ── Update Tissue Saturation tab with final deco tissues ──
+  // ── Update Tissues tab with final deco tissues ──
   if (!_contingencyRunning) {
     lastTissues = tissues;
     updateTissueViz(tissues, mGF.high);

@@ -347,9 +347,9 @@
       "unit_id": "UI-PLANNER-SHELL",
       "path": "planner-shell.js",
       "start_line": 1,
-      "end_line": 201,
-      "line_count": 201,
-      "content_fingerprint": "c9dc4b2f509fc9666f56898f0723571a20922b7c5e869fdb301412c1ab5778cd",
+      "end_line": 199,
+      "line_count": 199,
+      "content_fingerprint": "86a6ad16b929f107dca05adcbb66548dc444ead80979bc6a9599ec047b008784",
       "review_session": "C08-A",
       "verification_session": "C08-V-B",
       "lens_results": {
@@ -427,7 +427,7 @@
       "start_line": 1,
       "end_line": 327,
       "line_count": 327,
-      "content_fingerprint": "14d1b908493396a626b982388c8e6013639aeffe0a0f3069ef0e8baffae5c29c",
+      "content_fingerprint": "096649997da5b44ff9760787f13b1b56b248d552b4a25965abd4ef50f46c9ba9",
       "review_session": "C08-A",
       "verification_session": "C09-DEP-WARNING-BANNER-HTML",
       "lens_results": {
@@ -1914,6 +1914,16 @@
         "SL-C09-MOBILE-WARNING-WRAP",
         "SL-VIS-GAS-CONSUMPTION-BARS"
       ]
+    },
+    {
+      "part_id": "UI-PLANNER-SHELL-P01",
+      "result": "NO_NEW_FINDING",
+      "note": "C09 dependency recheck after full graph mount reparenting; no new finding."
+    },
+    {
+      "part_id": "UI-RESULTS-PANEL-P01",
+      "result": "NO_NEW_FINDING",
+      "note": "C09 dependency recheck after Graphs tab removal; no new finding."
     }
   ]
 }

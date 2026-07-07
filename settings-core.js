@@ -589,13 +589,13 @@ function _showPlannerView(view) {
   else {
     const gfCard = document.getElementById('gfCurveInlineCard');
     if (gfCard) gfCard.style.display = 'none';
-    const gfHead = document.getElementById('graphsGfSectionHead');
+    const gfHead = document.getElementById('tissueGfSectionHead');
     if (gfHead) gfHead.style.display = 'none';
   }
   document.querySelectorAll('#resultsPanel #resultTab-dive, #resultsPanel #resultTab-surfint, #resultsPanel #resultTab-avgdepth, #resultsPanel #resultTab-multi, #resultsPanel #resultTab-ndlref').forEach(p => {
     p.classList.remove('active');
   });
-  document.querySelectorAll('#resultsPanel #resultTab-profile, #resultsPanel #resultTab-contingency, #resultsPanel #resultTab-graphs, #resultsPanel #resultTab-tissue').forEach(p => {
+  document.querySelectorAll('#resultsPanel #resultTab-profile, #resultsPanel #resultTab-contingency, #resultsPanel #resultTab-tissue').forEach(p => {
     p.classList.remove('active');
   });
   const firstRec = document.querySelector('#recResultTabs .result-tab-btn');
@@ -676,8 +676,8 @@ function runGenerateSchedule() {
 }
 
 function _clearPlannerResults() {
-  ['decoResult','gasConsumptionSummary','contingencyCard','contingencyResult','diveGraphCard','fullDiveGraphCard','gfCurveInlineCard','tissueLoadCard',
-   'plannerProfileCanvas-wrap','recSurfIntContainer','tecSurfIntContainer','graphsDiveSectionHead','graphsGfSectionHead'].forEach(id => {
+  ['decoResult','gasConsumptionSummary','contingencyCard','contingencyResult','fullDiveGraphCard','gfCurveInlineCard','tissueLoadCard',
+   'plannerProfileCanvas-wrap','recSurfIntContainer','tecSurfIntContainer','tissueGfSectionHead'].forEach(id => {
     const el = document.getElementById(id); if (el) el.style.display = 'none';
   });
   const contExport = document.getElementById('contingencyExportActions');
@@ -702,7 +702,7 @@ function _plannerShowsGfCurve() {
 }
 function _syncGfCurveCardVisibility() {
   const gfc = document.getElementById('gfCurveInlineCard');
-  const gfHead = document.getElementById('graphsGfSectionHead');
+  const gfHead = document.getElementById('tissueGfSectionHead');
   const hasPlan = document.getElementById('decoResult')?.style.display !== 'none';
   const show = _plannerShowsGfCurve() && hasPlan && !_contingencyRunning;
   if (gfc) {
@@ -712,10 +712,6 @@ function _syncGfCurveCardVisibility() {
   if (gfHead) gfHead.style.display = show ? 'flex' : 'none';
 }
 function _syncGraphsSectionHeads() {
-  const hasPlan = document.getElementById('decoResult')?.style.display !== 'none';
-  const diveHead = document.getElementById('graphsDiveSectionHead');
-  const fdgc = document.getElementById('fullDiveGraphCard');
-  if (diveHead) diveHead.style.display = (hasPlan && fdgc?.style.display !== 'none') ? 'flex' : 'none';
   _syncGfCurveCardVisibility();
 }
 
@@ -976,7 +972,6 @@ function toggleTheme() {
   // Redraw canvases for new theme
   setTimeout(() => {
     drawPlannerProfile();
-    drawDecoProfile();
     drawDecoProfileFull();
     drawGFCurve();
   }, 50);

@@ -155,11 +155,9 @@ function initV3Layout() {
   const fullGraphMount = document.getElementById('fullDiveGraphMount');
   const profileWrap = document.getElementById('plannerProfileCanvas-wrap');
   const profileHint = document.getElementById('plannerProfileCanvas-hint');
-  const profileLegend = document.getElementById('plannerProfileLegend');
   if (fullGraphMount && profileWrap) {
     fullGraphMount.appendChild(profileWrap);
     if (profileHint) fullGraphMount.appendChild(profileHint);
-    if (profileLegend) fullGraphMount.appendChild(profileLegend);
   }
   moveToTab('plannerResult', 'dive');
   const surfPanel = document.getElementById('surfint');
