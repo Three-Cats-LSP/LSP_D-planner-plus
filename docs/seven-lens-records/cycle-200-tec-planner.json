@@ -169,7 +169,7 @@
       "start_line": 1,
       "end_line": 500,
       "line_count": 500,
-      "content_fingerprint": "92f5338b82f886122c7d5f75908c965b5704ecc1bf5b1b429d059dd03e9a56b0",
+      "content_fingerprint": "30d732cd811888ab3e90ff02d244e61b6ef2bcb220e831e318c71c4cc3aebe72",
       "review_session": "cursor/seven-lens-cycle-200-audit",
       "verification_session": "cursor/seven-lens-cycle-200-verify",
       "lens_results": {
@@ -450,6 +450,13 @@
       "result": "NO_NEW_FINDING",
       "reviewed_at": "2026-07-06T01:09:13.648040+00:00",
       "verifier": "Cursor Agent (C08-V-B attestation corrector)"
+    }
+  ],
+  "dependency_revalidations": [
+    {
+      "part_id": "UI-MARKUP-TEC-PLANNER-P01",
+      "result": "NO_NEW_FINDING",
+      "note": "Travel gas title token and Switch Depth label aligned with gas cards; no new finding."
     }
   ]
 }

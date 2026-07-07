@@ -296,7 +296,7 @@
       "start_line": 1,
       "end_line": 500,
       "line_count": 500,
-      "content_fingerprint": "7cd8b3bc6e25abbbd5241d00d30ed45d39f996db5660193e8ee91896441fff6f",
+      "content_fingerprint": "a5de5f4e62577d39a24c2039e3323cfe90c45936e2f12899cbd9837250206cc5",
       "review_session": "C07-A",
       "verification_session": "C09-DEP-WARNING-BANNER-PALETTE-A",
       "lens_results": {
@@ -1376,6 +1376,11 @@
       "part_id": "UI-CSS-RESULTS-P02",
       "result": "NO_NEW_FINDING",
       "note": "C09 dependency recheck after full graph/tabs layout CSS; no new finding."
+    },
+    {
+      "part_id": "UI-CSS-RESULTS-P01",
+      "result": "NO_NEW_FINDING",
+      "note": "Travel gas bullet token aligned with deco gas switch token; no new finding."
     }
   ]
 }

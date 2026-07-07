@@ -25,10 +25,10 @@
 | ui_core | 16 | 0 | 14 | 0 | 2 |
 | ui_shell | 2 | 0 | 2 | 0 | 0 |
 | web_css | 4 | 0 | 4 | 0 | 0 |
-| web_markup | 7 | 0 | 4 | 1 | 2 |
+| web_markup | 7 | 0 | 5 | 0 | 2 |
 | web_runtime | 24 | 0 | 16 | 0 | 8 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **205** | **0** | **89** | **4** | **112** |
+| **Total** | **205** | **0** | **90** | **3** | **112** |
 
 ## Units
 
@@ -66,7 +66,7 @@
 | UI-MARKUP-REC-PLANNER | web_markup | `ui/markup-rec-planner.html:1` | 75 | P1 | IN_PROGRESS | - |
 | UI-MARKUP-TEC-PLANNER | web_markup | `ui/markup-tec-planner.html:1` | 557 | P1 | IN_PROGRESS | - |
 | UI-REC-PLANNER | ui_core | `rec-planner.js:1` | 9 | P1 | IN_PROGRESS | - |
-| UI-MARKUP-PLANNER | web_markup | `ui/markup-planner.html:1` | 493 | P1 | READ | - |
+| UI-MARKUP-PLANNER | web_markup | `ui/markup-planner.html:1` | 493 | P1 | IN_PROGRESS | - |
 | UI-MARKUP-CONSUMPTION | web_markup | `ui/markup-consumption.html:1` | 381 | P1 | IN_PROGRESS | - |
 | UI-MARKUP-TOOLS | web_markup | `ui/markup-tools.html:1` | 271 | P2 | VERIFIED | EXT-04, COV-01 |
 | UI-MARKUP-MODALS | web_markup | `ui/markup-modals.html:1` | 341 | P2 | VERIFIED | EXT-04, COV-01 |

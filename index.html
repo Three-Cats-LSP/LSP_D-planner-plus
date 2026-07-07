@@ -601,7 +601,7 @@
 <!-- Travel Gas Card -->
 <div id="travelGasCard" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:8px;display:none;">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-<div class="gas-card-title-row"><span class="gas-dot gas-dot--travel" aria-hidden="true"></span><div style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:#ff9f43;">TRAVEL GAS — DESCENT / ASCENT TRANSIT</div></div>
+<div class="gas-card-title-row"><span class="gas-dot gas-dot--travel" aria-hidden="true"></span><div class="dg-card-title gas-card-title--travel" style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--gas-switch-label-bg);">TRAVEL GAS — DESCENT / ASCENT TRANSIT</div></div>
 <button onclick="removeTravelGas()" onmouseout="this.style.color='var(--muted)'" onmouseover="this.style.color='var(--red)'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 4px;" title="Remove travel gas">✕</button>
 </div>
 <div class="gas-card-grid u0">
@@ -630,7 +630,7 @@
 <input id="travelGasManualDepth" max="100" min="1" oninput="syncDepthInputCanonical('travelGasManualDepth');updateTravelGasMOD()" step="1" title="Manually set the depth where you switch from travel gas to bottom gas on descent (and back on ascent)." type="number" value="30"/>
 </div>
 <div class="field gas-f-switch">
-<label>Auto Switch Depth (MOD)</label>
+<label>Switch Depth</label>
 <input id="travelGasMODDisplay" placeholder="Select gas" readonly="" style="cursor:default;" title="Auto mode: shows travel gas MOD — deepest depth where travel gas ppO₂ stays within the Bottom ppO₂ limit. Manual mode: shows what the auto depth would be for reference." type="text"/>
 </div>
 <div class="field gas-f-num">

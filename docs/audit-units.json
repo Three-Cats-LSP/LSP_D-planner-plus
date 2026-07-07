@@ -1734,7 +1734,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "58615770501aa6515e05b9febbf4f2e6e2f855b81829469e5391272d4bff106e",
+      "fingerprint": "150df958cdebb21c18cfd9ad8d03303ed54c276fbb068eaac3008470c5bf9244",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1794,7 +1794,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "792ac3e87c317157cea37242e538b32bda46711261410f4192d1242756af0599",
+      "fingerprint": "b801d2bb33bddfb91bee840e94c60eea3a37d96dc777a7d87c764306458fd69d",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -1846,7 +1846,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3f5d47dfb3a8ddad62bd13b17ae95e0b27dc68bbdccb4bd9b4a585b27753139d",
+      "fingerprint": "9070dc47b53e0abe5097190e0653b5eb819951f7a62351a8646f5c329f8bfb94",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1872,12 +1872,12 @@
       "path": "ui/markup-planner.html",
       "layer": "web_markup",
       "priority": "P1",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "d94284218af08f09d95b598844e9d5c227126c3db761fab6ca41717286a6bc50",
-      "last_read_fingerprint": "d94284218af08f09d95b598844e9d5c227126c3db761fab6ca41717286a6bc50",
+      "fingerprint": "156dbf4213042897e21cd537db5ca125512eec48ca318c6ea3dea1c882ec1063",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
       "issue": "Obsolete partial retained; superseded by UI-MARKUP-REC/TEC-PLANNER"
