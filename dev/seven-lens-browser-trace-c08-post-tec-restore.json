@@ -1,0 +1,3061 @@
+{
+  "schema_version": 3,
+  "runner_version": 2,
+  "spec": "docs\\seven-lens-traces\\cycle-08-shell-results.json",
+  "spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8",
+  "commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+  "traces": [
+    {
+      "id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
+      "entry_event": "Mobile boot at 375x667; user toggles plan/results via main mode row.",
+      "consumer_path": [
+        "DOMContentLoaded initV3Layout -> _ensureMobilePlanViewBootstrap",
+        "setMobilePlanView('plan'|'results') -> #recPlannerView|#tecPlannerView + #resultsPanel mobile-active",
+        "lsp-dplanner-results.css mobile-active display flex",
+        "visible planner view vs #resultsPanel"
+      ],
+      "captures": {
+        "before": {
+          "plan_panel_exists": false,
+          "tec_mobile_active": true,
+          "results_mobile_active": false
+        },
+        "canonical": {
+          "set_mobile_works": true
+        },
+        "consumer": {
+          "tec_display": "flex",
+          "results_display": "none"
+        },
+        "observable": {
+          "exclusive_plan": true
+        }
+      },
+      "assertions": [
+        {
+          "id": "no-plan-panel",
+          "passed": true,
+          "detail": "False equal False"
+        },
+        {
+          "id": "plan-boot-active",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "set-mobile-works",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "exclusive-plan-view",
+          "passed": true,
+          "detail": "True equal True"
+        }
+      ],
+      "state_before_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+      "state_after_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+      "state_before": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecGenerateBtn": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "\u25b6 Generate schedule",
+            "className": "gen-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecGenerateBtn": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "\u25b6 Generate schedule",
+            "className": "gen-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "case_ids": [
+        "SL-C08-MOBILE-PANEL-EXCLUSIVE"
+      ],
+      "runs": [
+        {
+          "id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
+          "entry_event": "Mobile boot at 375x667; user toggles plan/results via main mode row.",
+          "consumer_path": [
+            "DOMContentLoaded initV3Layout -> _ensureMobilePlanViewBootstrap",
+            "setMobilePlanView('plan'|'results') -> #recPlannerView|#tecPlannerView + #resultsPanel mobile-active",
+            "lsp-dplanner-results.css mobile-active display flex",
+            "visible planner view vs #resultsPanel"
+          ],
+          "captures": {
+            "before": {
+              "plan_panel_exists": false,
+              "tec_mobile_active": true,
+              "results_mobile_active": false
+            },
+            "canonical": {
+              "set_mobile_works": true
+            },
+            "consumer": {
+              "tec_display": "flex",
+              "results_display": "none"
+            },
+            "observable": {
+              "exclusive_plan": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "no-plan-panel",
+              "passed": true,
+              "detail": "False equal False"
+            },
+            {
+              "id": "plan-boot-active",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "set-mobile-works",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "exclusive-plan-view",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+          "state_after_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
+          "entry_event": "Mobile boot at 375x667; user toggles plan/results via main mode row.",
+          "consumer_path": [
+            "DOMContentLoaded initV3Layout -> _ensureMobilePlanViewBootstrap",
+            "setMobilePlanView('plan'|'results') -> #recPlannerView|#tecPlannerView + #resultsPanel mobile-active",
+            "lsp-dplanner-results.css mobile-active display flex",
+            "visible planner view vs #resultsPanel"
+          ],
+          "captures": {
+            "before": {
+              "plan_panel_exists": false,
+              "tec_mobile_active": true,
+              "results_mobile_active": false
+            },
+            "canonical": {
+              "set_mobile_works": true
+            },
+            "consumer": {
+              "tec_display": "flex",
+              "results_display": "none"
+            },
+            "observable": {
+              "exclusive_plan": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "no-plan-panel",
+              "passed": true,
+              "detail": "False equal False"
+            },
+            {
+              "id": "plan-boot-active",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "set-mobile-works",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "exclusive-plan-view",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+          "state_after_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "SL-C08-NAV-CLEARS-RESULTS-TRACE",
+      "entry_event": "User generates TEC schedule then navigates Tools and back to Planner.",
+      "consumer_path": [
+        "#tecGenerateBtn click",
+        "_renderResultSummaryStrip -> #resultsPanel.has-results",
+        "#navBtnTools click -> setNavMode('tools')",
+        "#navBtnBuh click -> setNavMode('planner') without schedule reset",
+        "#decoTableBody row count preserved"
+      ],
+      "captures": {
+        "before": {
+          "has_results": true,
+          "row_count": 15
+        },
+        "consumer": {
+          "has_after": true,
+          "rows_after": 15,
+          "deco_display": "block"
+        },
+        "observable": {
+          "preserved": true
+        }
+      },
+      "assertions": [
+        {
+          "id": "had-results",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "had-rows",
+          "passed": true,
+          "detail": "15 not_equal 0"
+        },
+        {
+          "id": "kept-flag",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "kept-rows",
+          "passed": true,
+          "detail": "15 not_equal 0"
+        },
+        {
+          "id": "observable-preserved",
+          "passed": true,
+          "detail": "True equal True"
+        }
+      ],
+      "state_before_sha256": "3864aa159903c00d964d56602af6b5d6f46c3e18bced97e4bb3fa87f9ec25e0e",
+      "state_after_sha256": "3864aa159903c00d964d56602af6b5d6f46c3e18bced97e4bb3fa87f9ec25e0e",
+      "state_before": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecGenerateBtn": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "\u25b6 Generate schedule",
+            "className": "gen-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnTools": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "ToolsCalculators",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecGenerateBtn": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "\u25b6 Generate schedule",
+            "className": "gen-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnTools": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "ToolsCalculators",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "case_ids": [
+        "SL-C08-NAV-PRESERVES-RESULTS"
+      ],
+      "runs": [
+        {
+          "id": "SL-C08-NAV-CLEARS-RESULTS-TRACE",
+          "entry_event": "User generates TEC schedule then navigates Tools and back to Planner.",
+          "consumer_path": [
+            "#tecGenerateBtn click",
+            "_renderResultSummaryStrip -> #resultsPanel.has-results",
+            "#navBtnTools click -> setNavMode('tools')",
+            "#navBtnBuh click -> setNavMode('planner') without schedule reset",
+            "#decoTableBody row count preserved"
+          ],
+          "captures": {
+            "before": {
+              "has_results": true,
+              "row_count": 15
+            },
+            "consumer": {
+              "has_after": true,
+              "rows_after": 15,
+              "deco_display": "block"
+            },
+            "observable": {
+              "preserved": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "had-results",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "had-rows",
+              "passed": true,
+              "detail": "15 not_equal 0"
+            },
+            {
+              "id": "kept-flag",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "kept-rows",
+              "passed": true,
+              "detail": "15 not_equal 0"
+            },
+            {
+              "id": "observable-preserved",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "3864aa159903c00d964d56602af6b5d6f46c3e18bced97e4bb3fa87f9ec25e0e",
+          "state_after_sha256": "3864aa159903c00d964d56602af6b5d6f46c3e18bced97e4bb3fa87f9ec25e0e",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnTools": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "ToolsCalculators",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnTools": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "ToolsCalculators",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-C08-NAV-CLEARS-RESULTS-TRACE",
+          "entry_event": "User generates TEC schedule then navigates Tools and back to Planner.",
+          "consumer_path": [
+            "#tecGenerateBtn click",
+            "_renderResultSummaryStrip -> #resultsPanel.has-results",
+            "#navBtnTools click -> setNavMode('tools')",
+            "#navBtnBuh click -> setNavMode('planner') without schedule reset",
+            "#decoTableBody row count preserved"
+          ],
+          "captures": {
+            "before": {
+              "has_results": true,
+              "row_count": 15
+            },
+            "consumer": {
+              "has_after": true,
+              "rows_after": 15,
+              "deco_display": "block"
+            },
+            "observable": {
+              "preserved": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "had-results",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "had-rows",
+              "passed": true,
+              "detail": "15 not_equal 0"
+            },
+            {
+              "id": "kept-flag",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "kept-rows",
+              "passed": true,
+              "detail": "15 not_equal 0"
+            },
+            {
+              "id": "observable-preserved",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "3864aa159903c00d964d56602af6b5d6f46c3e18bced97e4bb3fa87f9ec25e0e",
+          "state_after_sha256": "3864aa159903c00d964d56602af6b5d6f46c3e18bced97e4bb3fa87f9ec25e0e",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnTools": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "ToolsCalculators",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnTools": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "ToolsCalculators",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE",
+      "entry_event": "Valid TEC generate then invalid depth submitted through Generate.",
+      "consumer_path": [
+        "#tecGenerateBtn valid click -> has-results + schedule rows",
+        "invalid depth #tecGenerateBtn click",
+        "validateDecoInputs fail -> _clearPlannerResults",
+        "notifyScheduleError toast",
+        "corrected generate restores fresh rows"
+      ],
+      "captures": {
+        "before": {
+          "rows_valid": 15,
+          "has_results": true
+        },
+        "consumer": {
+          "has_after_invalid": false,
+          "rows_after_invalid": 0
+        },
+        "observable": {
+          "cleared": true
+        }
+      },
+      "assertions": [
+        {
+          "id": "valid-rows",
+          "passed": true,
+          "detail": "15 not_equal 0"
+        },
+        {
+          "id": "cleared-flag",
+          "passed": true,
+          "detail": "False equal False"
+        },
+        {
+          "id": "cleared-rows",
+          "passed": true,
+          "detail": "0 equal 0"
+        },
+        {
+          "id": "observable-cleared",
+          "passed": true,
+          "detail": "True equal True"
+        }
+      ],
+      "state_before_sha256": "f232e7710864c656107ba024458e63c5e72e3b250733aeece0236cc07e195fc7",
+      "state_after_sha256": "f232e7710864c656107ba024458e63c5e72e3b250733aeece0236cc07e195fc7",
+      "state_before": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecGenerateBtn": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "\u25b6 Generate schedule",
+            "className": "gen-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0",
+          "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"45\",\"tecBT\":\"25\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"12\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+          "waterDensity": "salt"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecGenerateBtn": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "\u25b6 Generate schedule",
+            "className": "gen-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0",
+          "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"45\",\"tecBT\":\"25\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"12\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+          "waterDensity": "salt"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "case_ids": [
+        "SL-C08-INVALID-TEC-CLEARS-STALE"
+      ],
+      "runs": [
+        {
+          "id": "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE",
+          "entry_event": "Valid TEC generate then invalid depth submitted through Generate.",
+          "consumer_path": [
+            "#tecGenerateBtn valid click -> has-results + schedule rows",
+            "invalid depth #tecGenerateBtn click",
+            "validateDecoInputs fail -> _clearPlannerResults",
+            "notifyScheduleError toast",
+            "corrected generate restores fresh rows"
+          ],
+          "captures": {
+            "before": {
+              "rows_valid": 15,
+              "has_results": true
+            },
+            "consumer": {
+              "has_after_invalid": false,
+              "rows_after_invalid": 0
+            },
+            "observable": {
+              "cleared": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "valid-rows",
+              "passed": true,
+              "detail": "15 not_equal 0"
+            },
+            {
+              "id": "cleared-flag",
+              "passed": true,
+              "detail": "False equal False"
+            },
+            {
+              "id": "cleared-rows",
+              "passed": true,
+              "detail": "0 equal 0"
+            },
+            {
+              "id": "observable-cleared",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "f232e7710864c656107ba024458e63c5e72e3b250733aeece0236cc07e195fc7",
+          "state_after_sha256": "f232e7710864c656107ba024458e63c5e72e3b250733aeece0236cc07e195fc7",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"45\",\"tecBT\":\"25\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"12\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"45\",\"tecBT\":\"25\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"12\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE",
+          "entry_event": "Valid TEC generate then invalid depth submitted through Generate.",
+          "consumer_path": [
+            "#tecGenerateBtn valid click -> has-results + schedule rows",
+            "invalid depth #tecGenerateBtn click",
+            "validateDecoInputs fail -> _clearPlannerResults",
+            "notifyScheduleError toast",
+            "corrected generate restores fresh rows"
+          ],
+          "captures": {
+            "before": {
+              "rows_valid": 15,
+              "has_results": true
+            },
+            "consumer": {
+              "has_after_invalid": false,
+              "rows_after_invalid": 0
+            },
+            "observable": {
+              "cleared": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "valid-rows",
+              "passed": true,
+              "detail": "15 not_equal 0"
+            },
+            {
+              "id": "cleared-flag",
+              "passed": true,
+              "detail": "False equal False"
+            },
+            {
+              "id": "cleared-rows",
+              "passed": true,
+              "detail": "0 equal 0"
+            },
+            {
+              "id": "observable-cleared",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "f232e7710864c656107ba024458e63c5e72e3b250733aeece0236cc07e195fc7",
+          "state_after_sha256": "f232e7710864c656107ba024458e63c5e72e3b250733aeece0236cc07e195fc7",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"45\",\"tecBT\":\"25\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"12\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"45\",\"tecBT\":\"25\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"12\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "SL-C08-SINGLE-MOBILE-INIT-TRACE",
+      "entry_event": "Repeated layout bootstrap must not duplicate mobile init listeners.",
+      "consumer_path": [
+        "initV3Layout -> _ensureMobilePlanViewBootstrap",
+        "window._mobilePlanViewBootstrapDone guard",
+        "resize listener registered once",
+        "repeat initV3Layout no-op"
+      ],
+      "captures": {
+        "before": {
+          "bootstrap_done": true,
+          "uses_ensure": true
+        },
+        "observable": {
+          "still_single": true,
+          "plan_active": true
+        }
+      },
+      "assertions": [
+        {
+          "id": "bootstrap-on-boot",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "ensure-in-layout",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "repeat-idempotent",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "planner-view-active",
+          "passed": true,
+          "detail": "True equal True"
+        }
+      ],
+      "state_before_sha256": "eb1e1377cb3b67aeb596cbebb65e354e3d81f8bc28f88fd42d94769695d54bc5",
+      "state_after_sha256": "eb1e1377cb3b67aeb596cbebb65e354e3d81f8bc28f88fd42d94769695d54bc5",
+      "state_before": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {},
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {},
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "case_ids": [
+        "SL-C08-SINGLE-MOBILE-INIT"
+      ],
+      "runs": [
+        {
+          "id": "SL-C08-SINGLE-MOBILE-INIT-TRACE",
+          "entry_event": "Repeated layout bootstrap must not duplicate mobile init listeners.",
+          "consumer_path": [
+            "initV3Layout -> _ensureMobilePlanViewBootstrap",
+            "window._mobilePlanViewBootstrapDone guard",
+            "resize listener registered once",
+            "repeat initV3Layout no-op"
+          ],
+          "captures": {
+            "before": {
+              "bootstrap_done": true,
+              "uses_ensure": true
+            },
+            "observable": {
+              "still_single": true,
+              "plan_active": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "bootstrap-on-boot",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "ensure-in-layout",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "repeat-idempotent",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "planner-view-active",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "eb1e1377cb3b67aeb596cbebb65e354e3d81f8bc28f88fd42d94769695d54bc5",
+          "state_after_sha256": "eb1e1377cb3b67aeb596cbebb65e354e3d81f8bc28f88fd42d94769695d54bc5",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-C08-SINGLE-MOBILE-INIT-TRACE",
+          "entry_event": "Repeated layout bootstrap must not duplicate mobile init listeners.",
+          "consumer_path": [
+            "initV3Layout -> _ensureMobilePlanViewBootstrap",
+            "window._mobilePlanViewBootstrapDone guard",
+            "resize listener registered once",
+            "repeat initV3Layout no-op"
+          ],
+          "captures": {
+            "before": {
+              "bootstrap_done": true,
+              "uses_ensure": true
+            },
+            "observable": {
+              "still_single": true,
+              "plan_active": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "bootstrap-on-boot",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "ensure-in-layout",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "repeat-idempotent",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "planner-view-active",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "eb1e1377cb3b67aeb596cbebb65e354e3d81f8bc28f88fd42d94769695d54bc5",
+          "state_after_sha256": "eb1e1377cb3b67aeb596cbebb65e354e3d81f8bc28f88fd42d94769695d54bc5",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "SL-C08-MOBILE-NAV-TILE-GRID-TRACE",
+      "entry_event": "Mobile/tablet boot; user activates each canonical #mainNavBar mode button.",
+      "consumer_path": [
+        "#mainNavBar responsive CSS grid at <=420px portrait and tablet breakpoints",
+        "#navBtnTools click -> setNavMode(tools) with lower border divider",
+        "#navBtnSettings click -> full-width final portrait row without orphan cell",
+        "elementFromPoint beside Settings must not hit blank grid cell"
+      ],
+      "captures": {
+        "before": {
+          "nav_exists": true,
+          "probe375": true,
+          "probe400": true,
+          "probe480": true,
+          "probe667": true
+        },
+        "canonical": {
+          "tools_visible": false,
+          "settings_visible": false
+        },
+        "consumer": {
+          "tools_border": true,
+          "settings_width": 325,
+          "nav_width": 327
+        },
+        "observable": {
+          "all_viewports_ok": true,
+          "planner_reachable": true
+        }
+      },
+      "assertions": [
+        {
+          "id": "nav-host",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "viewport-375",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "viewport-400",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "viewport-480",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "viewport-667",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "tools-divider",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "settings-full-row",
+          "passed": true,
+          "detail": "325 not_equal 0"
+        },
+        {
+          "id": "all-viewports",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "planner-nav",
+          "passed": true,
+          "detail": "True equal True"
+        }
+      ],
+      "state_before_sha256": "d80012b0ee10bed39cf2db972156292a8fa27107fa92c3e2b6b5e467ca51d328",
+      "state_after_sha256": "d80012b0ee10bed39cf2db972156292a8fa27107fa92c3e2b6b5e467ca51d328",
+      "state_before": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnTools": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "ToolsCalculators",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnSettings": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "SettingsWater \u00b7 Units",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnRec": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "RECNDL \u00b7 PADI table",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnVpm": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "VPMBubble Model",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0",
+          "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"VPMB\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"VPMB\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+          "waterDensity": "salt",
+          "vpmVariant": "VPMB"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnTools": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "ToolsCalculators",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnSettings": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "SettingsWater \u00b7 Units",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnRec": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "RECNDL \u00b7 PADI table",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnVpm": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "VPMBubble Model",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0",
+          "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"VPMB\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"VPMB\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+          "waterDensity": "salt",
+          "vpmVariant": "VPMB"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "case_ids": [
+        "SL-C08-MOBILE-NAV-TILE-GRID"
+      ],
+      "runs": [
+        {
+          "id": "SL-C08-MOBILE-NAV-TILE-GRID-TRACE",
+          "entry_event": "Mobile/tablet boot; user activates each canonical #mainNavBar mode button.",
+          "consumer_path": [
+            "#mainNavBar responsive CSS grid at <=420px portrait and tablet breakpoints",
+            "#navBtnTools click -> setNavMode(tools) with lower border divider",
+            "#navBtnSettings click -> full-width final portrait row without orphan cell",
+            "elementFromPoint beside Settings must not hit blank grid cell"
+          ],
+          "captures": {
+            "before": {
+              "nav_exists": true,
+              "probe375": true,
+              "probe400": true,
+              "probe480": true,
+              "probe667": true
+            },
+            "canonical": {
+              "tools_visible": false,
+              "settings_visible": false
+            },
+            "consumer": {
+              "tools_border": true,
+              "settings_width": 325,
+              "nav_width": 327
+            },
+            "observable": {
+              "all_viewports_ok": true,
+              "planner_reachable": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "nav-host",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "viewport-375",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "viewport-400",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "viewport-480",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "viewport-667",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "tools-divider",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "settings-full-row",
+              "passed": true,
+              "detail": "325 not_equal 0"
+            },
+            {
+              "id": "all-viewports",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "planner-nav",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "d80012b0ee10bed39cf2db972156292a8fa27107fa92c3e2b6b5e467ca51d328",
+          "state_after_sha256": "d80012b0ee10bed39cf2db972156292a8fa27107fa92c3e2b6b5e467ca51d328",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnTools": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "ToolsCalculators",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnSettings": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "SettingsWater \u00b7 Units",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnRec": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "RECNDL \u00b7 PADI table",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnVpm": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "VPMBubble Model",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"VPMB\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"VPMB\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt",
+              "vpmVariant": "VPMB"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnTools": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "ToolsCalculators",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnSettings": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "SettingsWater \u00b7 Units",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnRec": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "RECNDL \u00b7 PADI table",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnVpm": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "VPMBubble Model",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"VPMB\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"VPMB\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt",
+              "vpmVariant": "VPMB"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-C08-MOBILE-NAV-TILE-GRID-TRACE",
+          "entry_event": "Mobile/tablet boot; user activates each canonical #mainNavBar mode button.",
+          "consumer_path": [
+            "#mainNavBar responsive CSS grid at <=420px portrait and tablet breakpoints",
+            "#navBtnTools click -> setNavMode(tools) with lower border divider",
+            "#navBtnSettings click -> full-width final portrait row without orphan cell",
+            "elementFromPoint beside Settings must not hit blank grid cell"
+          ],
+          "captures": {
+            "before": {
+              "nav_exists": true,
+              "probe375": true,
+              "probe400": true,
+              "probe480": true,
+              "probe667": true
+            },
+            "canonical": {
+              "tools_visible": false,
+              "settings_visible": false
+            },
+            "consumer": {
+              "tools_border": true,
+              "settings_width": 325,
+              "nav_width": 327
+            },
+            "observable": {
+              "all_viewports_ok": true,
+              "planner_reachable": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "nav-host",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "viewport-375",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "viewport-400",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "viewport-480",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "viewport-667",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "tools-divider",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "settings-full-row",
+              "passed": true,
+              "detail": "325 not_equal 0"
+            },
+            {
+              "id": "all-viewports",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "planner-nav",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "d80012b0ee10bed39cf2db972156292a8fa27107fa92c3e2b6b5e467ca51d328",
+          "state_after_sha256": "d80012b0ee10bed39cf2db972156292a8fa27107fa92c3e2b6b5e467ca51d328",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnTools": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "ToolsCalculators",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnSettings": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "SettingsWater \u00b7 Units",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnRec": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "RECNDL \u00b7 PADI table",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnVpm": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "VPMBubble Model",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"VPMB\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"VPMB\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt",
+              "vpmVariant": "VPMB"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnTools": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "ToolsCalculators",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnSettings": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "SettingsWater \u00b7 Units",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnRec": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "RECNDL \u00b7 PADI table",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnVpm": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "VPMBubble Model",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"VPMB\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"VPMB\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt",
+              "vpmVariant": "VPMB"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT-TRACE",
+      "entry_event": "User configures TEC deco gases and generates schedule through visible Generate.",
+      "consumer_path": [
+        "#dg1Mix ean50 + #dg2Mix ean80 + trimix presets -> #tecGenerateBtn",
+        "buildZhlDecoGasesFromEngine -> schedule-core getGasLabel OO/HH",
+        "#decoTableBody Mix cells and gas pills show 50/00 not EAN50",
+        "Air remains Air and 100% remains 100% across schedule/banner/graph consumers"
+      ],
+      "captures": {
+        "before": {
+          "canonical_air": true,
+          "canonical_100": true,
+          "canonical_50": true
+        },
+        "canonical": {
+          "has_rows": true,
+          "bundle_50": true
+        },
+        "consumer": {
+          "schedule_has_50": true,
+          "schedule_no_ean50": true,
+          "pills_have_50": true
+        },
+        "observable": {
+          "air_label": true,
+          "hundred_label": false,
+          "operational_ok": true
+        }
+      },
+      "assertions": [
+        {
+          "id": "canonical-air",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "canonical-100",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "canonical-50",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "generated",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "bundle-parity",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "schedule-50",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "no-ean50",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "pills-50",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "air-present",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "operational-contract",
+          "passed": true,
+          "detail": "True equal True"
+        }
+      ],
+      "state_before_sha256": "1a44979107e396efcc089b1a49190334c1ebd4552f61ae73370bab1a9ba5a2a3",
+      "state_after_sha256": "1a44979107e396efcc089b1a49190334c1ebd4552f61ae73370bab1a9ba5a2a3",
+      "state_before": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecGenerateBtn": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "\u25b6 Generate schedule",
+            "className": "gen-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0",
+          "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"ean80\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+          "waterDensity": "salt"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#tecGenerateBtn": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "\u25b6 Generate schedule",
+            "className": "gen-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0",
+          "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"ean80\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+          "waterDensity": "salt"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "case_ids": [
+        "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"
+      ],
+      "runs": [
+        {
+          "id": "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT-TRACE",
+          "entry_event": "User configures TEC deco gases and generates schedule through visible Generate.",
+          "consumer_path": [
+            "#dg1Mix ean50 + #dg2Mix ean80 + trimix presets -> #tecGenerateBtn",
+            "buildZhlDecoGasesFromEngine -> schedule-core getGasLabel OO/HH",
+            "#decoTableBody Mix cells and gas pills show 50/00 not EAN50",
+            "Air remains Air and 100% remains 100% across schedule/banner/graph consumers"
+          ],
+          "captures": {
+            "before": {
+              "canonical_air": true,
+              "canonical_100": true,
+              "canonical_50": true
+            },
+            "canonical": {
+              "has_rows": true,
+              "bundle_50": true
+            },
+            "consumer": {
+              "schedule_has_50": true,
+              "schedule_no_ean50": true,
+              "pills_have_50": true
+            },
+            "observable": {
+              "air_label": true,
+              "hundred_label": false,
+              "operational_ok": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "canonical-air",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "canonical-100",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "canonical-50",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "generated",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "bundle-parity",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "schedule-50",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "no-ean50",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "pills-50",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "air-present",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "operational-contract",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "1a44979107e396efcc089b1a49190334c1ebd4552f61ae73370bab1a9ba5a2a3",
+          "state_after_sha256": "1a44979107e396efcc089b1a49190334c1ebd4552f61ae73370bab1a9ba5a2a3",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"ean80\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"ean80\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT-TRACE",
+          "entry_event": "User configures TEC deco gases and generates schedule through visible Generate.",
+          "consumer_path": [
+            "#dg1Mix ean50 + #dg2Mix ean80 + trimix presets -> #tecGenerateBtn",
+            "buildZhlDecoGasesFromEngine -> schedule-core getGasLabel OO/HH",
+            "#decoTableBody Mix cells and gas pills show 50/00 not EAN50",
+            "Air remains Air and 100% remains 100% across schedule/banner/graph consumers"
+          ],
+          "captures": {
+            "before": {
+              "canonical_air": true,
+              "canonical_100": true,
+              "canonical_50": true
+            },
+            "canonical": {
+              "has_rows": true,
+              "bundle_50": true
+            },
+            "consumer": {
+              "schedule_has_50": true,
+              "schedule_no_ean50": true,
+              "pills_have_50": true
+            },
+            "observable": {
+              "air_label": true,
+              "hundred_label": false,
+              "operational_ok": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "canonical-air",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "canonical-100",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "canonical-50",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "generated",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "bundle-parity",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "schedule-50",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "no-ean50",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "pills-50",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "air-present",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "operational-contract",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "1a44979107e396efcc089b1a49190334c1ebd4552f61ae73370bab1a9ba5a2a3",
+          "state_after_sha256": "1a44979107e396efcc089b1a49190334c1ebd4552f61ae73370bab1a9ba5a2a3",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"ean80\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#tecGenerateBtn": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "\u25b6 Generate schedule",
+                "className": "gen-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"ean80\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "SL-C08-NO-REDUNDANT-BOTTOM-NAV-TRACE",
+      "entry_event": "Mobile boot at 375x667; user navigates via canonical #mainNavBar only.",
+      "consumer_path": [
+        "DOM boot must not mount #bottomNav or .bnav-btn writers",
+        "lsp-dplanner-results.css must not reserve fixed bottom nav height",
+        "#mainNavBar Planner/Tools/Settings/Ref routes remain reachable",
+        "setMobilePlanView results roundtrip without duplicate bottom controls"
+      ],
+      "captures": {
+        "before": {
+          "no_bottom_nav": true,
+          "no_bnav_buttons": true,
+          "probe375_ok": true
+        },
+        "canonical": {
+          "main_nav_tools": false,
+          "still_no_bottom": true
+        },
+        "consumer": {
+          "planner_visible": true,
+          "bottom_gap": 0
+        },
+        "observable": {
+          "landscape_ok": true,
+          "mobile_results_roundtrip": true,
+          "ref_reachable": true
+        }
+      },
+      "assertions": [
+        {
+          "id": "absent-bottom-nav",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "no-bnav-buttons",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "mobile375-probe",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "canonical-main-nav",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "no-dead-reserve",
+          "passed": true,
+          "detail": "0 not_equal 72"
+        },
+        {
+          "id": "landscape-probe",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "results-roundtrip",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "ref-control",
+          "passed": true,
+          "detail": "True equal True"
+        }
+      ],
+      "state_before_sha256": "c5a74032ff6b726c8946cd7c6965599e3fddb5bc5b9bfd9e49777335c8802283",
+      "state_after_sha256": "c5a74032ff6b726c8946cd7c6965599e3fddb5bc5b9bfd9e49777335c8802283",
+      "state_before": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnTools": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "ToolsCalculators",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnSettings": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "SettingsWater \u00b7 Units",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#navRef": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "?",
+            "className": "tip-icon tip-btn header-ref-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnTools": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "ToolsCalculators",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnSettings": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "SettingsWater \u00b7 Units",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#navRef": {
+            "value": "",
+            "checked": null,
+            "disabled": false,
+            "text": "?",
+            "className": "tip-icon tip-btn header-ref-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {
+          "_zhlHeadless": false
+        },
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "case_ids": [
+        "SL-C08-NO-REDUNDANT-BOTTOM-NAV"
+      ],
+      "runs": [
+        {
+          "id": "SL-C08-NO-REDUNDANT-BOTTOM-NAV-TRACE",
+          "entry_event": "Mobile boot at 375x667; user navigates via canonical #mainNavBar only.",
+          "consumer_path": [
+            "DOM boot must not mount #bottomNav or .bnav-btn writers",
+            "lsp-dplanner-results.css must not reserve fixed bottom nav height",
+            "#mainNavBar Planner/Tools/Settings/Ref routes remain reachable",
+            "setMobilePlanView results roundtrip without duplicate bottom controls"
+          ],
+          "captures": {
+            "before": {
+              "no_bottom_nav": true,
+              "no_bnav_buttons": true,
+              "probe375_ok": true
+            },
+            "canonical": {
+              "main_nav_tools": false,
+              "still_no_bottom": true
+            },
+            "consumer": {
+              "planner_visible": true,
+              "bottom_gap": 0
+            },
+            "observable": {
+              "landscape_ok": true,
+              "mobile_results_roundtrip": true,
+              "ref_reachable": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "absent-bottom-nav",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "no-bnav-buttons",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "mobile375-probe",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "canonical-main-nav",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "no-dead-reserve",
+              "passed": true,
+              "detail": "0 not_equal 72"
+            },
+            {
+              "id": "landscape-probe",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "results-roundtrip",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "ref-control",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "c5a74032ff6b726c8946cd7c6965599e3fddb5bc5b9bfd9e49777335c8802283",
+          "state_after_sha256": "c5a74032ff6b726c8946cd7c6965599e3fddb5bc5b9bfd9e49777335c8802283",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnTools": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "ToolsCalculators",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnSettings": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "SettingsWater \u00b7 Units",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navRef": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "?",
+                "className": "tip-icon tip-btn header-ref-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnTools": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "ToolsCalculators",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnSettings": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "SettingsWater \u00b7 Units",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navRef": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "?",
+                "className": "tip-icon tip-btn header-ref-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-C08-NO-REDUNDANT-BOTTOM-NAV-TRACE",
+          "entry_event": "Mobile boot at 375x667; user navigates via canonical #mainNavBar only.",
+          "consumer_path": [
+            "DOM boot must not mount #bottomNav or .bnav-btn writers",
+            "lsp-dplanner-results.css must not reserve fixed bottom nav height",
+            "#mainNavBar Planner/Tools/Settings/Ref routes remain reachable",
+            "setMobilePlanView results roundtrip without duplicate bottom controls"
+          ],
+          "captures": {
+            "before": {
+              "no_bottom_nav": true,
+              "no_bnav_buttons": true,
+              "probe375_ok": true
+            },
+            "canonical": {
+              "main_nav_tools": false,
+              "still_no_bottom": true
+            },
+            "consumer": {
+              "planner_visible": true,
+              "bottom_gap": 0
+            },
+            "observable": {
+              "landscape_ok": true,
+              "mobile_results_roundtrip": true,
+              "ref_reachable": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "absent-bottom-nav",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "no-bnav-buttons",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "mobile375-probe",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "canonical-main-nav",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "no-dead-reserve",
+              "passed": true,
+              "detail": "0 not_equal 72"
+            },
+            {
+              "id": "landscape-probe",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "results-roundtrip",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "ref-control",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "b2057b2e593ced4a813987b0f29d2547add9a0aadbe94113b1c2b9af9f9cb99d",
+          "state_after_sha256": "b2057b2e593ced4a813987b0f29d2547add9a0aadbe94113b1c2b9af9f9cb99d",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnTools": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "ToolsCalculators",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnSettings": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "SettingsWater \u00b7 Units",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navRef": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "?",
+                "className": "tip-icon tip-btn header-ref-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnTools": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "ToolsCalculators",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnSettings": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "SettingsWater \u00b7 Units",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navRef": {
+                "value": "",
+                "checked": null,
+                "disabled": false,
+                "text": "?",
+                "className": "tip-icon tip-btn header-ref-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {
+              "_zhlHeadless": false
+            },
+            "localStorage": {
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0",
+              "lspDiveSettings_v6": "{\"__algo__\":\"padi\",\"__plannerAlgo__\":\"ZHLC_GF\",\"__navMode__\":\"planner\",\"__units__\":\"metric\",\"tecDepth\":\"40\",\"tecBT\":\"30\",\"decoGas\":\"air\",\"decoCustomO2\":\"21\",\"descentRate\":\"20\",\"ascentRate\":\"10\",\"decoAscentRate\":\"3\",\"surfaceAscentRate\":\"3\",\"decoStep\":\"3\",\"lastDecoStop\":\"3\",\"minStopTime\":\"2\",\"stopRounding\":\"wholeminute\",\"decoTransitMode\":\"multideco\",\"waterVapor\":\"0.0577\",\"ppo2Bottom\":\"1.4\",\"ppo2Deco\":\"1.6\",\"waterDensitySelect\":\"salt\",\"circuitSelect\":\"OC\",\"ccrDecoSetpoint\":\"1.3\",\"ccrBottomSetpoint\":\"1.2\",\"ccrDescentSetpoint\":\"0.7\",\"ccrBailoutToggle\":\"off\",\"diluentUseAsBailout\":\"off\",\"ccrBailoutGfLow\":\"50\",\"ccrBailoutGfHigh\":\"85\",\"ccrLoopVolume\":\"10\",\"ccrMetabolicO2\":\"1.5\",\"ccrSacStress\":\"50\",\"ccrSacDeco\":\"25\",\"ccrStressTime\":\"10\",\"ccrProblemSolve\":\"3\",\"ccrSetpoint\":\"1.3\",\"scrLoopVolume\":\"10\",\"scrMetabolicO2\":\"1.5\",\"minDecoProfileEnable\":\"no\",\"minDeco9m\":\"1\",\"minDeco6m\":\"3\",\"algorithmSelect\":\"ZHLC_GF\",\"conservatismSelect\":\"0\",\"gfPresetSelect\":\"20/85\",\"heHalfTimeMode\":\"baker\",\"gasMix\":\"air\",\"customO2\":\"32\",\"plannerTrimixO2\":\"21\",\"plannerTrimixHe\":\"35\",\"botTrimixO2\":\"21\",\"botTrimixHe\":\"35\",\"dg1Mix\":\"ean50\",\"dg1CustomO2\":\"50\",\"dg2Mix\":\"o2\",\"dg2CustomO2\":\"80\",\"dg1TrimixO2\":\"21\",\"dg1TrimixHe\":\"35\",\"dg2TrimixO2\":\"21\",\"dg2TrimixHe\":\"35\",\"n2NarcSel\":\"yes\",\"o2NarcSel\":\"yes\",\"o2AtMODSelect\":\"on\",\"vpmRepMode\":false,\"vpmSurfaceInterval\":\"60\",\"zhlRepMode\":false,\"zhlSurfaceInterval\":\"60\",\"priorDiveDays\":\"0\",\"priorDiveHours\":\"0\",\"priorDiveMinutes\":\"0\",\"priorDiveOTU\":\"0\",\"priorDiveCNS\":\"0\",\"shallowGradient\":\"off\",\"siD1Depth\":\"30\",\"siD1BT\":\"25\",\"siD2Depth\":\"30\",\"siD2BT\":\"25\",\"siGfLow\":\"30\",\"siD2O2\":\"\",\"siD2He\":\"0\",\"travelGasMix\":\"air\",\"travelGasCustomO2\":\"21\",\"travelGasSwitchMode\":\"auto\",\"travelGasManualDepth\":\"30\",\"sacBottom\":\"22\",\"sacDeco\":\"20\",\"contingencySacMultiplier\":\"1.5\",\"cylBot_size\":\"12\",\"cylBot_pres\":\"200\",\"cylBot_reserve\":\"50\",\"cylDg1_size\":\"11\",\"cylDg1_pres\":\"200\",\"cylDg1_reserve\":\"50\",\"cylDg2_size\":\"11\",\"cylDg2_pres\":\"200\",\"cylDg2_reserve\":\"50\",\"cylTravelGas_size\":\"12\",\"cylTravelGas_pres\":\"200\",\"cylTravelGas_reserve\":\"50\",\"gpBot_size\":\"12\",\"gpBot_fill\":\"200\",\"gpBot_reserve\":\"50\",\"gpTravel_size\":\"11\",\"gpTravel_fill\":\"200\",\"gpTravel_reserve\":\"50\",\"gpDg1_size\":\"11\",\"gpDg1_fill\":\"200\",\"gpDg1_reserve\":\"50\",\"gpDg2_size\":\"11\",\"gpDg2_fill\":\"200\",\"gpDg2_reserve\":\"50\",\"recDepth\":\"40\",\"recBT\":\"30\",\"ndlRange\":\"shallow\",\"__decoCardIds\":[1,2],\"__dgNextIdx\":3,\"travelGasActive\":false}",
+              "waterDensity": "salt"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "passed": true
+}

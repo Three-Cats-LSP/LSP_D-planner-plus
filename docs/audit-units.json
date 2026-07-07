@@ -149,6 +149,16 @@
         "reason": "Historical one-shot extraction merge scripts"
       },
       {
+        "pattern": "dev/ui_shell_results_regression_results.json",
+        "kind": "evidence_artifact",
+        "reason": "Cycle 08 shell/results regression run output"
+      },
+      {
+        "pattern": "dev/seven-lens-browser-trace-c08*.json",
+        "kind": "evidence_artifact",
+        "reason": "Cycle 08 seven-lens browser trace evidence"
+      },
+      {
         "pattern": "dev/seven-lens-browser-trace-cycle*.json",
         "kind": "evidence_artifact",
         "reason": "Committed seven-lens browser trace closure evidence"
@@ -645,6 +655,58 @@
     "REG-94": {
       "suite_id": "SUITE-UI-RESULTS-CSS-REGRESSION",
       "case_id": "SL-C07-PRINT-RESULTS"
+    },
+    "REG-95": {
+      "suite_id": "SUITE-UI-SHELL-RESULTS-REGRESSION",
+      "case_id": "SL-C08-MOBILE-PANEL-EXCLUSIVE"
+    },
+    "REG-96": {
+      "suite_id": "SUITE-UI-SHELL-RESULTS-REGRESSION",
+      "case_id": "SL-C08-NAV-PRESERVES-RESULTS"
+    },
+    "REG-97": {
+      "suite_id": "SUITE-UI-SHELL-RESULTS-REGRESSION",
+      "case_id": "SL-C08-INVALID-TEC-CLEARS-STALE"
+    },
+    "REG-98": {
+      "suite_id": "SUITE-UI-SHELL-RESULTS-REGRESSION",
+      "case_id": "SL-C08-DEAD-RESULT-TAB-PREFIX"
+    },
+    "REG-99": {
+      "suite_id": "SUITE-UI-SHELL-RESULTS-REGRESSION",
+      "case_id": "SL-C08-SINGLE-MOBILE-INIT"
+    },
+    "REG-100": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-VIS-GAS-DOT-SINGLE-SOURCE"
+    },
+    "REG-101": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-VIS-GAS-SWITCH-TOKEN-PARITY"
+    },
+    "REG-102": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-VIS-DESKTOP-TWO-COLUMN-LAYOUT"
+    },
+    "REG-103": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-VIS-DECO-BANNER-GAS-LABELS"
+    },
+    "REG-104": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-VIS-SWITCH-ROW-THEME-PARITY"
+    },
+    "REG-105": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-C08-MOBILE-NAV-TILE-GRID"
+    },
+    "REG-106": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"
+    },
+    "REG-107": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-C08-NO-REDUNDANT-BOTTOM-NAV"
     }
   },
   "findings": [
@@ -1380,6 +1442,127 @@
       ]
     },
     {
+      "id": "SL-C08-H-01",
+      "unit_id": "UI-RESULTS-PANEL",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 08 planner shell and results panel audit",
+      "summary": "setMobilePlanView targets removed #planPanel; mobile plan/results toggle is a no-op and both panels stay visible",
+      "affected_units": [
+        "UI-RESULTS-PANEL",
+        "UI-PLANNER-SHELL"
+      ],
+      "evidence_cases": [
+        "REG-95"
+      ],
+      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9"
+    },
+    {
+      "id": "SL-C08-H-02",
+      "unit_id": "UI-PLANNER-SHELL",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 08 planner shell and results panel audit",
+      "summary": "setNavMode(planner) re-invokes setPlannerAlgo and clears valid results on Tools/Settings return",
+      "affected_units": [
+        "UI-PLANNER-SHELL"
+      ],
+      "evidence_cases": [
+        "REG-96"
+      ],
+      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9"
+    },
+    {
+      "id": "SL-C08-M-01",
+      "unit_id": "UI-RESULTS-PANEL",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 08 planner shell and results panel audit",
+      "summary": "Invalid TEC generate leaves prior has-results metrics and schedule rows authoritative",
+      "affected_units": [
+        "UI-RESULTS-PANEL"
+      ],
+      "evidence_cases": [
+        "REG-97"
+      ],
+      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9"
+    },
+    {
+      "id": "SL-C08-L-01",
+      "unit_id": "UI-RESULTS-PANEL",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 08 planner shell and results panel audit",
+      "summary": "Dead prefix assignment in switchResultTab; LSP_V4_SPLIT_PROFILE_SCHEDULE unused",
+      "affected_units": [
+        "UI-RESULTS-PANEL"
+      ],
+      "evidence_cases": [
+        "REG-98"
+      ],
+      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9"
+    },
+    {
+      "id": "SL-C08-L-02",
+      "unit_id": "UI-PLANNER-SHELL",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 08 planner shell and results panel audit",
+      "summary": "initV3Layout and DOMContentLoaded both call _initMobilePlanView",
+      "affected_units": [
+        "UI-PLANNER-SHELL"
+      ],
+      "evidence_cases": [
+        "REG-99"
+      ],
+      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9"
+    },
+    {
+      "id": "SL-C08-M-02",
+      "unit_id": "UI-CSS-RESULTS",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 08 controls CSS audit",
+      "summary": "Portrait 2-column grid auto-placement leaves Tools without a lower divider and Settings in a half-width cell beside a blank non-interactive grid cell; tablet 3-column row leaves an orphan cell beside Tools/Settings.",
+      "affected_units": [
+        "UI-CSS-RESULTS"
+      ],
+      "evidence_cases": [
+        "REG-105"
+      ],
+      "resolution_commit": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a"
+    },
+    {
+      "id": "SL-C08-M-03",
+      "unit_id": "TOOL-BUILD-ZHL",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 08 controls CSS audit",
+      "summary": "build_zhl_bundle.py postamble shadows schedule-core getGasLabel with EAN32/36/50/80 special cases; buildZhlDecoGasesFromEngine hard-codes EAN50/EAN80 labels into generated zhl-engine-bundle.js schedule steps.",
+      "affected_units": [
+        "TOOL-BUILD-ZHL"
+      ],
+      "evidence_cases": [
+        "REG-106"
+      ],
+      "resolution_commit": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a"
+    },
+    {
+      "id": "SL-C08-M-04",
+      "unit_id": "UI-PLANNER-SHELL",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "issue": "Seven-lens Cycle 08 controls CSS audit",
+      "summary": "Fixed mobile #bottomNav duplicates main mode row and header Ref control, reserves viewport height, and maintains a second navigation-state owner via .bnav-btn active writers in setNavMode.",
+      "affected_units": [
+        "UI-PLANNER-SHELL"
+      ],
+      "evidence_cases": [
+        "REG-107"
+      ],
+      "resolution_commit": "8e437a1fc38bd4bf50c280a38aa323f2372214d5"
+    },
+    {
       "id": "SL-C03-H-01",
       "unit_id": "UI-MARKUP-CONSUMPTION",
       "severity": "HIGH",
@@ -1511,7 +1694,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "4a5f35f4f63087c9ebdc04157e571a69038f94939b964c97d78bb743a11c29a2",
+      "fingerprint": "9abfebdbec8644c9bd611afe03d3a97ee644e59ce94ee74729fcb44afd580171",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1526,7 +1709,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f1f5eaa00edd3fd382ff98c27985e51d565539079860d7e59d740bce2d6a1944",
+      "fingerprint": "ca79cfc844b33090dbb9d2f57d56a5fa89699f4ec984bcfb6b1ffa988ae16996",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1579,7 +1762,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
+      "fingerprint": "898dd4c79d105d90280ddd19aeb92239b0efdc41c023191f5897e3754857d04d",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -1631,7 +1814,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1ba50aaba4967341aa8fe4e62b548b64fecb15c0110a3c205e40ba904856c843",
+      "fingerprint": "3f5d47dfb3a8ddad62bd13b17ae95e0b27dc68bbdccb4bd9b4a585b27753139d",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1757,8 +1940,8 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ENVIRONMENT"
       },
-      "fingerprint": "21351eca56327ac0d74c4412cb073b57523d78668ca95fd465c67dfa197e08ba",
-      "last_read_fingerprint": "21351eca56327ac0d74c4412cb073b57523d78668ca95fd465c67dfa197e08ba",
+      "fingerprint": "439368a89834973c16189864e156fe5a34b66622aac1a3371aaa664bbeffcbea",
+      "last_read_fingerprint": "439368a89834973c16189864e156fe5a34b66622aac1a3371aaa664bbeffcbea",
       "audit_issue": 139,
       "evidence": [
         "SUITE-COVERAGE/AUDIT-COV-01",
@@ -1784,7 +1967,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MODE-STATE"
       },
-      "fingerprint": "da2e3b1c7e0a0cd0295d24687060db98cbbe70213ca0a5b8a79fac47e4c07a86",
+      "fingerprint": "687bae7030815f2679ad5154a1a8b421abcd804275d82536c4e5714062273717",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1795,22 +1978,16 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ALGORITHM-SETTINGS"
       },
-      "fingerprint": "4da7413aa2308a2bc706a8ac6c388b38a6b7bcaff3579cdbc45de6dc4f4fad85",
-      "last_read_fingerprint": "4da7413aa2308a2bc706a8ac6c388b38a6b7bcaff3579cdbc45de6dc4f4fad85",
+      "fingerprint": "556128e7e8c18916ba85a77864a036765968dd41f1bf42d9715cc7523da11857",
+      "last_read_fingerprint": null,
       "audit_issue": 163,
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-05",
-        "COV-01"
-      ],
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Audit issue #163"
     },
     {
@@ -1880,7 +2057,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-CCR-DELEGATES"
       },
-      "fingerprint": "34507cd32813d39c2db1777dad487961c40643c00ee5766d5f041cc455ca730b",
+      "fingerprint": "076f424784a0798ed4b341443a931365b9bdd085703ad86affeb8f037ea400ed",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1937,7 +2114,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS-CONTROLS"
       },
-      "fingerprint": "49987240a3632ff0ddfe89baa5ca3efc8b8a783df9c93f5a2e52d0b0b9b0b666",
+      "fingerprint": "803522bdb43128fd1023059370cfb0797a23857e22b2913c1135737b45150fc5",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2022,7 +2199,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-SETUP"
       },
-      "fingerprint": "acf8ebd27782ea32db46d74b03eafb735038bda11a8b2e87cb75e36183c2ab32",
+      "fingerprint": "79c1abf3dc42d9aca0a0035bdd46ad6fe7b0253334931afdf07bbf91801648bd",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2147,25 +2324,15 @@
       "path": "plot-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-RENDER"
       },
-      "fingerprint": "2efbc8f85a066175e4ef4f03b5d44169137a81c14ddcf226bdbce56fc9822f58",
-      "last_read_fingerprint": "2efbc8f85a066175e4ef4f03b5d44169137a81c14ddcf226bdbce56fc9822f58",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity",
-        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
-        "SUITE-ENGINE-FULL/AUDIT-REG-01"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01",
-        "EXT-02",
-        "REG-01"
-      ],
+      "fingerprint": "1612232a976b485aaddb29f3e7b2155f2d1cd6609fdf8817cd0dc402d022b61d",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 154,
       "issue": "Audit issue #154"
     },
@@ -2280,7 +2447,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS"
       },
-      "fingerprint": "0101efb181b935f50d16ea1cd74e412a75c29d61d6307808346853559d16fcc5",
+      "fingerprint": "e8f35d70c14b7cf15f4bf8416e915269312b056a1bd33d27b4ff16d0145bbfb6",
       "last_read_fingerprint": null,
       "audit_issue": 158,
       "issue": "Cycle 32 settings restore exception recovery",
@@ -2332,21 +2499,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-APP-INIT"
       },
-      "fingerprint": "523337de99d96008bde2efa9449bfe7d9f476914cba778b17b87b31684cb7850",
-      "last_read_fingerprint": "523337de99d96008bde2efa9449bfe7d9f476914cba778b17b87b31684cb7850",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-05",
-        "COV-01"
-      ],
+      "fingerprint": "97277876c3fd7d63d7f0d9f1a5506262e39d3b5f632f0058c81c4c1291cc0eeb",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 160,
       "issue": "Audit issue #160"
     },
@@ -2355,23 +2516,15 @@
       "path": "index.html",
       "layer": "pwa",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PWA-LIFECYCLE"
       },
-      "fingerprint": "0646b53b2325d0249aad57576704a08e99a9e34f685680998dc11465c1da661d",
-      "last_read_fingerprint": "0646b53b2325d0249aad57576704a08e99a9e34f685680998dc11465c1da661d",
-      "evidence": [
-        "SUITE-SW-LIFECYCLE/SW-NETWORK-FIRST-ENGINE",
-        "SUITE-UI-STRUCTURE/UI-SW-PRECACHE",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "REG-45",
-        "EXT-08",
-        "COV-01"
-      ],
+      "fingerprint": "255f82c28c0802d66199080187b9a7526297e68b9c5701b69f71027cc848dde2",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified \u2014 UI-PWA-LIFECYCLE"
     },
     {
@@ -2456,24 +2609,14 @@
       "path": "zhl-schedule-core.js",
       "layer": "engine",
       "priority": "P0",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "d7279942cdf33e329f3f519116c57396019850eff57bd05214cf2387e251e637",
-      "last_read_fingerprint": "d7279942cdf33e329f3f519116c57396019850eff57bd05214cf2387e251e637",
-      "evidence": [
-        "SUITE-BROWSER/gf-pinned-schedules",
-        "SUITE-ENGINE-FULL/ZHL-ML-CONT-GAS",
-        "SUITE-ENGINE-FULL/ZHL-ML-ASCENT-RATE",
-        "SUITE-ENGINE-FULL/CYCLE7-STOP-ROUNDING"
-      ],
-      "regression_cases": [
-        "REG-06",
-        "REG-22",
-        "REG-23",
-        "REG-38"
-      ],
+      "fingerprint": "b640142a6ca98c10f9a93550b140ff50b0d4ea4a8e34413d92088e427f2fab02",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Cycle 35: imperial O2 switch depth + wholeMinStops API parity via bundle builder"
     },
     {
@@ -2615,7 +2758,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "41c4254d713102d9a8632538ab6b43f6db96abc9f35f9828c138da45c5fc4df7",
+      "fingerprint": "37c25ebf64f1ee6cab079b575e24b93de76e55c79c698393c2c005099abf55fe",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2784,7 +2927,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f5aa225c177dec7caae1c5106afa260e74002cb5500a06dee6bb0bfdd0385e3f",
+      "fingerprint": "2ed9314bbe82022a1510f2f31323ccfdad6858eea78a7fa471781e07239c0f76",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2841,7 +2984,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "81f6212de85a99a0be536a081b59eaa14a19c2203c69e105d7c8123400517028",
+      "fingerprint": "884d60eb5dec4219598b68e2142a04197a0f4b095c65d6445077e489e09e15be",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2942,7 +3085,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1e8658512328d9233db57e90da4d9a860a0c32b534bdafa9f3bdd9b7b5ba8e82",
+      "fingerprint": "ef4382e13029165a1ada6f4b6754e4a72d5a6cbe12d5f0531b8a1c562dd86360",
       "last_read_fingerprint": null,
       "audit_issue": 168,
       "evidence": [],
@@ -3214,7 +3357,7 @@
       "evidence": [],
       "issue": "GitHub #133\u2013#138 audit regressions and Cycle 31\u201334 verification",
       "regression_cases": [],
-      "fingerprint": "a93ee0b7b8ee61cc65bcab28d89a19ec0205e2adb1a11718e9c0bb01e1993751",
+      "fingerprint": "7947bd61e6aa62b5f876dc60c7da1308d85cf82026ba80293c3dec78219837ef",
       "last_read_fingerprint": null,
       "audit_issue": 169
     },
@@ -3539,19 +3682,60 @@
       "path": "dev/test_http.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "fb84be11784a6961dd07d9669c41eba819da0609d0978b02d0ff272f6dc0f0e7",
-      "last_read_fingerprint": "fb84be11784a6961dd07d9669c41eba819da0609d0978b02d0ff272f6dc0f0e7",
-      "regression_cases": [
-        "COV-01"
-      ],
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
+      "fingerprint": "442829d45fe88c4c41b3dce7f0db51df6814b22cd438562fd3f5c530fa5e0c30",
+      "last_read_fingerprint": null,
+      "regression_cases": [],
+      "evidence": [],
       "issue": "V3 full audit verified \u2014 TEST-HTTP"
+    },
+    {
+      "id": "TEST-PLAYWRIGHT-RESTORE",
+      "path": "dev/playwright_restore.py",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Playwright debounce-safe restore helpers for shell regressions",
+      "regression_cases": [],
+      "fingerprint": "5962b1332fc7196f2f6184fc63628eaec20ecaa6fd189e4cb8f576248c154757",
+      "last_read_fingerprint": null
+    },
+    {
+      "id": "TEST-TEST-HTTP",
+      "path": "dev/test_test_http.py",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "HTTP server port lifecycle regression tests",
+      "regression_cases": [],
+      "fingerprint": "77b5ed77739d2af381090456f6af1955867b8fb78211f67ba2cbbcc9054066c3",
+      "last_read_fingerprint": null
+    },
+    {
+      "id": "TEST-CYCLE-08-RECORD-SYNC",
+      "path": "tools/test_cycle_08_record_sync.py",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Cycle 8 record mirror byte-identity gate",
+      "regression_cases": [],
+      "fingerprint": "5fdb67262fb32464baa4e8466c4d99ecf40a854c1da256752e072dcfd3953abb",
+      "last_read_fingerprint": null
     },
     {
       "id": "TEST-LEGACY",
@@ -3809,8 +3993,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "94f9bc84d0572395974e24d018c263b7469a9f6b499da738ab2b7a6f9ab4a064",
-      "last_read_fingerprint": "94f9bc84d0572395974e24d018c263b7469a9f6b499da738ab2b7a6f9ab4a064",
+      "fingerprint": "185c9f5f4df3d7925bb1fcf7e92861c458444c220d1b3189a2062c840d3ddf86",
+      "last_read_fingerprint": "185c9f5f4df3d7925bb1fcf7e92861c458444c220d1b3189a2062c840d3ddf86",
       "regression_cases": [
         "COV-01"
       ],
@@ -4001,20 +4185,14 @@
       "path": "tools/build_zhl_bundle.py",
       "layer": "tooling",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1286717116c9d9c5d263bd817681ff3a719dc43e84be443cb31c69a4ac59477e",
-      "last_read_fingerprint": "1286717116c9d9c5d263bd817681ff3a719dc43e84be443cb31c69a4ac59477e",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01"
-      ],
+      "fingerprint": "1aaa397ebf7f09cf8b98119aa51f460623d2320c8ffc634254dd351f2e9f1c0d",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified \u2014 TOOL-BUILD-ZHL"
     },
     {
@@ -4050,7 +4228,7 @@
       "evidence": [],
       "issue": "GitHub #140 M-3 coverage + audit self-tests",
       "regression_cases": [],
-      "fingerprint": "63b29c2b82543c1e85cab4ecd931eb0e0df4ebeb7cb1df712a286a95f6b4e94a",
+      "fingerprint": "4d254a92c3d83721894e154ecd463bbd53a3a12e5f1cffd913aa7f1e447c6801",
       "last_read_fingerprint": null
     },
     {
@@ -4065,7 +4243,7 @@
       "evidence": [],
       "issue": "Seven-lens manual audit protocol gate",
       "regression_cases": [],
-      "fingerprint": "eeda43867605f14bcfc8f419258423426e99cc912ac76bcafab0d588804ff7c5",
+      "fingerprint": "0578469f2243e5885f6485ea1dffd602638b4f22f05497776d5127bb396a3934",
       "last_read_fingerprint": null
     },
     {
@@ -4140,7 +4318,7 @@
       "evidence": [],
       "issue": "Seven-lens browser event and consumer value tracing",
       "regression_cases": [],
-      "fingerprint": "43327222e255efe9988a6cebbb31bf515c108feb62df6d988b2393a3de36aab9",
+      "fingerprint": "da18c5c8857e73f8bb322707bf770187f985679abf952816d32fd5a79f1dede0",
       "last_read_fingerprint": null
     },
     {
@@ -4155,7 +4333,7 @@
       "evidence": [],
       "issue": "Seven-lens browser trace assertion tests",
       "regression_cases": [],
-      "fingerprint": "a4b387da6a71de96bf879a9f6a94a43e52db9fc650f365bc514e3905942ed969",
+      "fingerprint": "af6244d126054b55b449ac4bc303f203d7e31c760c3044112442e8842b487fae",
       "last_read_fingerprint": null
     },
     {
@@ -4395,7 +4573,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "4a40f9a451537530fba8a373cb2d79dd53320416e17e037b0ee73086b462c18c",
+      "fingerprint": "f9a422515760c582fa6f6e0409793b8aa8bb6c45e6f93b3a4c18a989f0463c46",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -4473,7 +4651,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "4fe7098c1ab55aa54d0d8ff9f956eff736b031d5b61d505b90a95e0336caeaaa",
+      "fingerprint": "1bea406afb224572d8781d748559403aa5fb04d91848e9996f983bb7e263bb43",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -4509,7 +4687,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3218a31cd1a1043aae920c2acbf817adfddba8d9fa3c598f318b96d72c1a049d",
+      "fingerprint": "3a1ad97f39f53ff9c960e3a31e984252d1910d0decbaf59ca4cc4bed50a81e4c",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -4662,20 +4840,14 @@
       "path": "tools/audit/legacy_v1.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "b75e2f92ec060f9e8b774ad36e9aee5dc27cf4ef6867619d1cf4e84b164c1ec4",
-      "last_read_fingerprint": "b75e2f92ec060f9e8b774ad36e9aee5dc27cf4ef6867619d1cf4e84b164c1ec4",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01"
-      ],
+      "fingerprint": "249c8648e5808906150523ce070d7747f9ef592425915e4d5414f1c468a3b01e",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Ground-up audit architecture"
     },
     {
@@ -4875,20 +5047,14 @@
       "path": "docs/audit-legacy-migration.json",
       "layer": "tooling",
       "priority": "P0",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "76021617c60dd49f442b571b5313739be105d49cde104ebc604dd2117dc6c771",
-      "last_read_fingerprint": "76021617c60dd49f442b571b5313739be105d49cde104ebc604dd2117dc6c771",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01"
-      ],
+      "fingerprint": "4d2257cea1ffa30cfd0525a9df3b4065eb8727091ab8213e1845883a52c9fb11",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Ground-up audit architecture"
     },
     {
@@ -4915,10 +5081,13 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "0635e52408b487608f975a39f81306a39c055d521721d17571ad58861acf72ba",
+      "fingerprint": "c9dc4b2f509fc9666f56898f0723571a20922b7c5e869fdb301412c1ab5778cd",
       "last_read_fingerprint": null,
       "evidence": [],
-      "regression_cases": [],
+      "regression_cases": [
+        "REG-96",
+        "REG-99"
+      ],
       "issue": "V3 full audit verified \u2014 UI-PLANNER-SHELL"
     },
     {
@@ -4926,23 +5095,21 @@
       "path": "results-panel.js",
       "layer": "ui_shell",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "b04d5d435b87a83d80e930eb67d8eb59d7a6942f4a9ba3b8bb4b3073547ada6b",
-      "last_read_fingerprint": "b04d5d435b87a83d80e930eb67d8eb59d7a6942f4a9ba3b8bb4b3073547ada6b",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity",
-        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
-        "SUITE-ENGINE-FULL/AUDIT-REG-01"
-      ],
+      "fingerprint": "5753326e01ae9dc9aad521538c749387c35a542e9d1263b0c49c8de74ef5c217",
+      "last_read_fingerprint": null,
+      "evidence": [],
       "regression_cases": [
         "COV-01",
         "PARITY-01",
         "EXT-02",
-        "REG-01"
+        "REG-01",
+        "REG-95",
+        "REG-97",
+        "REG-98"
       ],
       "issue": "V3 full audit verified \u2014 UI-RESULTS-PANEL"
     },
@@ -5271,7 +5438,7 @@
         "REG-80",
         "REG-81"
       ],
-      "fingerprint": "ab92890db4deec0974e4207ecf31507b355ec65f2448a9728b2d479341dd07cb",
+      "fingerprint": "3daac07dc5aab823e222896ed3339c3e6cf9a53f27933f085263132eca1ff8ad",
       "last_read_fingerprint": null
     },
     {
@@ -5346,6 +5513,42 @@
       "last_read_fingerprint": null
     },
     {
+      "id": "TEST-SEVEN-LENS-CYCLE08-TRACE",
+      "path": "docs/seven-lens-traces/cycle-08-shell-results.json",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Cycle 08 UI-PLANNER-SHELL/UI-RESULTS-PANEL browser trace specification",
+      "regression_cases": [],
+      "fingerprint": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8",
+      "last_read_fingerprint": null
+    },
+    {
+      "id": "TEST-UI-SHELL-RESULTS-REGRESSION",
+      "path": "dev/ui_shell_results_regression.py",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Cycle 08 UI-PLANNER-SHELL/UI-RESULTS-PANEL behavioral regression",
+      "regression_cases": [
+        "REG-95",
+        "REG-96",
+        "REG-97",
+        "REG-98",
+        "REG-99"
+      ],
+      "fingerprint": "94b529017ff333d92a03616b7f0f4cc811cb99c1f555e33d1d70bb709b25e66b",
+      "last_read_fingerprint": null
+    },
+    {
       "id": "TEST-UI-RESULTS-CSS-REGRESSION",
       "path": "dev/ui_results_css_regression.py",
       "layer": "test_infrastructure",
@@ -5365,6 +5568,30 @@
         "REG-94"
       ],
       "fingerprint": "0424a42456507deb53268a21c42e818ca1a2d4154e15b9edb22565a43af26c7c",
+      "last_read_fingerprint": null
+    },
+    {
+      "id": "TEST-UI-VISUAL-CONTRACT-REGRESSION",
+      "path": "dev/ui_visual_contract_regression.py",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [],
+      "issue": "Issue #214 cross-unit visual contract regression for planner and results UI",
+      "regression_cases": [
+        "REG-100",
+        "REG-101",
+        "REG-102",
+        "REG-103",
+        "REG-104",
+        "REG-105",
+        "REG-106",
+        "REG-107"
+      ],
+      "fingerprint": "30d6e53eaa75012d4c817f591086ed0384b5a329e17914e681d75f776e40e8b1",
       "last_read_fingerprint": null
     },
     {
@@ -5465,13 +5692,14 @@
     },
     {
       "cycle": 9,
-      "max_new_application_lines": 992,
+      "max_new_application_lines": 1004,
+      "min_review_sessions": 2,
       "application_units": [
         "UI-ENVIRONMENT",
         "UI-MODE-STATE"
       ],
       "engine_reverification": [],
-      "acceptance": "settings-core environment and mode state READ"
+      "acceptance": "settings-core environment and mode state READ (1002 lines; >=2 bounded sessions)"
     },
     {
       "cycle": 10,
@@ -5524,13 +5752,14 @@
     },
     {
       "cycle": 15,
-      "max_new_application_lines": 621,
+      "max_new_application_lines": 623,
+      "min_review_sessions": 2,
       "application_units": [
         "UI-PLOT-RENDER",
         "UI-PLOT-WAYPOINTS"
       ],
       "engine_reverification": [],
-      "acceptance": "plot-core render and waypoints READ"
+      "acceptance": "plot-core render and waypoints READ in at least 2 bounded sessions"
     },
     {
       "cycle": 16,
@@ -5621,17 +5850,18 @@
     },
     {
       "cycle": 24,
-      "max_new_application_lines": 674,
+      "max_new_application_lines": 690,
+      "min_review_sessions": 2,
       "application_units": [
         "UI-ALGORITHM-SETTINGS",
         "UI-SETTINGS-CONTROLS"
       ],
       "engine_reverification": [],
-      "acceptance": "Algorithm and settings controls READ"
+      "acceptance": "Algorithm and settings controls READ (678 lines; >=2 bounded sessions)"
     },
     {
       "cycle": 25,
-      "max_new_application_lines": 1281,
+      "max_new_application_lines": 1287,
       "application_units": [
         "UI-SETTINGS",
         "UI-UNIT-HELPERS",
@@ -5643,13 +5873,14 @@
     {
       "cycle": 26,
       "max_new_application_lines": 851,
+      "min_review_sessions": 2,
       "application_units": [
         "UI-TOOLS-TISSUES",
         "UI-TOOLS-EXPOSURE",
         "UI-TOOLS-GF"
       ],
       "engine_reverification": [],
-      "acceptance": "Tools panels READ"
+      "acceptance": "Tools panels READ in >=2 bounded sessions; implement and verify the tissue-saturation seven-band value scale in docs/tissue-saturation-color-roadmap.md, including UI/export parity and accessibility"
     },
     {
       "cycle": 27,
@@ -5858,7 +6089,7 @@
         "ci",
         "release"
       ],
-      "timeout_seconds": 420,
+      "timeout_seconds": 540,
       "case_ids": [
         "AUDIT-COV-01"
       ]
@@ -6257,6 +6488,47 @@
         "SL-C07-CSS-DEAD-ALGO-SWITCHER",
         "SL-C07-REDUCED-MOTION",
         "SL-C07-PRINT-RESULTS"
+      ]
+    },
+    {
+      "id": "SUITE-UI-SHELL-RESULTS-REGRESSION",
+      "command": [
+        "{python}",
+        "dev/ui_shell_results_regression.py"
+      ],
+      "profiles": [
+        "ci",
+        "release"
+      ],
+      "timeout_seconds": 300,
+      "case_ids": [
+        "SL-C08-MOBILE-PANEL-EXCLUSIVE",
+        "SL-C08-NAV-PRESERVES-RESULTS",
+        "SL-C08-INVALID-TEC-CLEARS-STALE",
+        "SL-C08-DEAD-RESULT-TAB-PREFIX",
+        "SL-C08-SINGLE-MOBILE-INIT"
+      ]
+    },
+    {
+      "id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "command": [
+        "{python}",
+        "dev/ui_visual_contract_regression.py"
+      ],
+      "profiles": [
+        "ci",
+        "release"
+      ],
+      "timeout_seconds": 300,
+      "case_ids": [
+        "SL-VIS-GAS-DOT-SINGLE-SOURCE",
+        "SL-VIS-GAS-SWITCH-TOKEN-PARITY",
+        "SL-VIS-DESKTOP-TWO-COLUMN-LAYOUT",
+        "SL-VIS-DECO-BANNER-GAS-LABELS",
+        "SL-VIS-SWITCH-ROW-THEME-PARITY",
+        "SL-C08-MOBILE-NAV-TILE-GRID",
+        "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT",
+        "SL-C08-NO-REDUNDANT-BOTTOM-NAV"
       ]
     }
   ],

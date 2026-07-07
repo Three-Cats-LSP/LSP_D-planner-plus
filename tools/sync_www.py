@@ -5,6 +5,7 @@ import json
 import re
 import shutil
 import sys
+import time
 from pathlib import Path
 
 _TOOLS = Path(__file__).resolve().parent
@@ -58,6 +59,9 @@ ROOT_DIRS = [
     "vendor",
 ]
 
+RMTREE_RETRIES = 6
+RMTREE_RETRY_DELAY_SECONDS = 0.5
+
 
 def parse_app_version(app_version_js: str) -> str:
     match = re.search(r"APP_VERSION\s*=\s*['\"]([^'\"]+)['\"]", app_version_js)
@@ -86,6 +90,21 @@ def write_version_json(version: str) -> None:
     (ROOT / "version.json").write_text(text, encoding="utf-8", newline="\n")
 
 
+def remove_tree_with_retries(path: Path) -> None:
+    """Bound transient Windows file locks from recently closed Playwright servers."""
+    last_error: OSError | None = None
+    for attempt in range(RMTREE_RETRIES):
+        try:
+            shutil.rmtree(path)
+            return
+        except OSError as exc:
+            last_error = exc
+            if attempt == RMTREE_RETRIES - 1:
+                break
+            time.sleep(RMTREE_RETRY_DELAY_SECONDS)
+    raise RuntimeError(f"Could not remove {path} after {RMTREE_RETRIES} attempts: {last_error}") from last_error
+
+
 def sync_www() -> None:
     from update_sw_version import main as verify_app_version
     verify_app_version()
@@ -95,7 +114,7 @@ def sync_www() -> None:
     write_version_json(app_version)
 
     if WWW.exists():
-        shutil.rmtree(WWW)
+        remove_tree_with_retries(WWW)
     WWW.mkdir(parents=True)
 
     for name in ROOT_FILES:

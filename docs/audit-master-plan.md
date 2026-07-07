@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v3-full-reset`
-**Units:** 199 total; 0 unread; 70 in progress; 4 read; 125 verified.
+**Units:** 205 total; 0 unread; 86 in progress; 4 read; 115 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -34,32 +34,32 @@
 | 2 | UI-MARKUP-REC-PLANNER, UI-REC-PLANNER | 84 | - | Cycle 2a: REC planner markup + runRecPlan; SL-REC-DEPTH-BT-STEPPER |
 | 3 | UI-MARKUP-CONSUMPTION | 381 | - | Consumption markup partial READ |
 | 4 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 612 | - | Tools and modals markup partials READ |
-| 5 | UI-CSS-FOUNDATION, UI-CSS-MODES | 756 | - | Foundation and modes CSS READ |
+| 5 | UI-CSS-FOUNDATION, UI-CSS-MODES | 758 | - | Foundation and modes CSS READ |
 | 6 | UI-CSS-CONTROLS | 548 | - | Controls CSS READ |
-| 7 | UI-CSS-RESULTS | 888 | - | Results CSS READ |
-| 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 487 | - | Planner shell and results panel READ |
-| 9 | UI-ENVIRONMENT, UI-MODE-STATE | 992 | - | settings-core environment and mode state READ |
+| 7 | UI-CSS-RESULTS | 890 | - | Results CSS READ |
+| 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 514 | - | Planner shell and results panel READ |
+| 9 | UI-ENVIRONMENT, UI-MODE-STATE | 1004 | - | settings-core environment and mode state READ (1002 lines; >=2 bounded sessions) |
 | 10 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 679 | - | Surface interval and gas table cores READ |
 | 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 516 | ENG-ZHL-GAS | Gas card UI READ |
 | 12 | APP-GAS-PLAN | 546 | - | Gas plan core READ |
 | 13 | APP-CONTINGENCY | 562 | - | Contingency core READ |
-| 14 | APP-EXPORT | 3255 | - | export-core text/PDF READ |
-| 15 | UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 621 | - | plot-core render and waypoints READ |
+| 14 | APP-EXPORT | 3254 | - | export-core text/PDF READ |
+| 15 | UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 623 | - | plot-core render and waypoints READ in at least 2 bounded sessions |
 | 16 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 755 | - | Profile tool and plot init READ |
 | 17 | UI-VPM-RENDER, UI-ZHL-RESULTS | 1064 | - | results-render-core READ |
 | 18 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 511 | ENG-ZHL-SCHEDULE | ZHL/CCR delegate thin layer READ |
 | 19 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 597 | ENG-ZHL-CCR | Deco physics and schedule inputs READ |
-| 20 | UI-ZHL-RUNNER-SETUP, UI-ZHL-RUNNER-ENGINE | 479 | ENG-ZHL-SCHEDULE | ZHL runner setup and engine invocation READ |
+| 20 | UI-ZHL-RUNNER-SETUP, UI-ZHL-RUNNER-ENGINE | 483 | ENG-ZHL-SCHEDULE | ZHL runner setup and engine invocation READ |
 | 21 | UI-ZHL-HEADLESS-HELPERS, UI-ZHL-HEADLESS-ENGINE | 588 | - | Headless ZHL path READ |
 | 22 | UI-VPM-RUNNER | 473 | ENG-VPM | VPM runner READ |
-| 23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 393 | - | Runtime bootstrap and app init READ |
-| 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 674 | - | Algorithm and settings controls READ |
-| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1281 | - | Settings persistence and unit helpers READ |
-| 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 851 | - | Tools panels READ |
+| 23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 390 | - | Runtime bootstrap and app init READ |
+| 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 690 | - | Algorithm and settings controls READ (678 lines; >=2 bounded sessions) |
+| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1287 | - | Settings persistence and unit helpers READ |
+| 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 851 | - | Tools panels READ in >=2 bounded sessions; implement and verify the tissue-saturation seven-band value scale in docs/tissue-saturation-color-roadmap.md, including UI/export parity and accessibility |
 | 27 | UI-PROFILE-PRESETS | 506 | - | Dive profile presets READ (depth/BT/mode ownership) |
 | 28 | UI-CONFIG-PRESETS | 185 | - | Advanced config presets READ |
 | 29 | UI-BOOT | 2418 | - | index.html shell boot region READ |
-| 30 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 440 | - | PWA and service worker READ |
+| 30 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 425 | - | PWA and service worker READ |
 | 31 | APP-ZHL-WORKER, APP-ZHL-WORKER-BRIDGE | 159 | - | ZHL schedule worker and bridge READ |
 | 32 | APP-CAPACITOR-BRIDGE, APP-ANDROID-SELECT | 548 | - | Capacitor and Android select bridge READ |
 | 33 | ENG-ZHL-PHYSICS, ENG-ZHL-GAS | 373 | - | ZHL physics and gas canonical cores READ |

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ER-C08-TRACE",
+  "command_argv": [
+    "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+    "tools/seven_lens_browser_trace.py",
+    "--spec",
+    "docs/seven-lens-traces/cycle-08-shell-results.json",
+    "--output",
+    "dev/seven-lens-browser-trace-c08-post-fix.json"
+  ],
+  "commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+  "exit_code": 0,
+  "case_ids": [
+    "SL-C08-MOBILE-PANEL-EXCLUSIVE",
+    "SL-C08-NAV-PRESERVES-RESULTS",
+    "SL-C08-INVALID-TEC-CLEARS-STALE",
+    "SL-C08-DEAD-RESULT-TAB-PREFIX"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-07T08:14:11.147200+00:00",
+  "finished_at": "2026-07-07T08:15:19.997599+00:00",
+  "stdout_sha256": "7739f5227dcd0b3725eed85d593ae3f0a170d8c7b4c70fd927060529c384da5a",
+  "stderr_sha256": "623d200ab9768aea94f21cd321957ca27211bae2e574978a1cc93844ecf67f30",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
+}

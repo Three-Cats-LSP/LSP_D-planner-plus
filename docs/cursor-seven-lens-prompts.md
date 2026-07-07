@@ -40,6 +40,11 @@ final consumer -> roundtrip from both initial unit systems. A unit-switch-only
 trace is incomplete.
 For repeated or dynamic controls, create a new item while already in both unit
 modes and assert its value/min/max/step/validity before using it.
+For every UI/CSS/rendering scope, run SUITE-UI-VISUAL-CONTRACT-REGRESSION and
+inspect the assembled page in both themes. Record bounding-box layout at all
+required viewports, exact safety/gas labels, and computed semantic-token colors.
+Trace canonical writers that mutate reviewed markup; static selector existence
+does not prove the visible result.
 
 Run:
 python tools/seven_lens_protocol.py check --phase audit --record <RECORD>
@@ -67,6 +72,10 @@ Register stable case IDs in the leaf suite and evidence catalog. Regenerate
 derived files only through repository tools. Record changed paths, regression
 IDs, and targeted results in <RECORD>, commit, then STOP. A fresh chat must run
 VERIFIER.
+
+For UI fixes, preserve matching pre/post screenshots and run
+SUITE-UI-VISUAL-CONTRACT-REGRESSION. Do not accept a focused selector test when
+the full planner/result layout, theme palette, or canonical writer output changes.
 
 For every MEDIUM/HIGH/CRITICAL finding, run the new case against the pre-fix
 commit and record the expected failure. Assert observable output, never merely a
@@ -99,6 +108,10 @@ explicitly tolerated physical values at the consumer stage, not merely equal
 rounded UI strings. Confirm before/after state hashes match.
 Reject forced tested actions, non-finite captures, empty assertions, console/page
 errors, and traces that do not repeat identically in fresh contexts.
+For UI changes, independently inspect full-surface screenshots and re-run
+SUITE-UI-VISUAL-CONTRACT-REGRESSION. Verification is BLOCKED if semantic colors,
+exact labels, or bounding-box layout differ from the approved contract, even
+when every focused cycle case passes.
 
 Record `verified_source_commit` and set verification_status to PASSED only when
 all source and evidence checks succeed; otherwise set it to BLOCKED. Then run:

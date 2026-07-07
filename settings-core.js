@@ -190,6 +190,7 @@ function _updateEnvSummary() {
 }
 
 function setWaterDensity(type, customKgM3) {
+  const prevBar = BAR_PER_METRE;
   if (type === 'custom') {
     const kg = parseFloat(customKgM3 || document.getElementById('waterCustomInput')?.value || 1025);
     BAR_PER_METRE = (kg * 9.80665) / 100000;
@@ -203,6 +204,7 @@ function setWaterDensity(type, customKgM3) {
   if (customRow) customRow.style.display = type === 'custom' ? 'flex' : 'none';
   localStorage.setItem('waterDensity', type);
   if (type === 'custom') localStorage.setItem('waterDensityCustom', customKgM3 || document.getElementById('waterCustomInput')?.value || 1025);
+  if (BAR_PER_METRE === prevBar) return;
   replanAfterEnvChange();
 }
 
@@ -604,6 +606,7 @@ function _showPlannerView(view) {
   document.body.classList.toggle('rec-mode', isRec);
   document.body.classList.toggle('algo-buh', !isRec);
   _updatePlannerSubtitle();
+  if (typeof setMobilePlanView === 'function') setMobilePlanView('plan');
 }
 
 function _updatePlanPanelSections() {
@@ -681,6 +684,10 @@ function _clearPlannerResults() {
   if (contExport) contExport.style.display = 'none';
   _clearResultSummaryStrip();
   _setGasWarningBanner('');
+  const decoBody = document.getElementById('decoTableBody');
+  if (decoBody) decoBody.innerHTML = '';
+  const contBody = document.getElementById('contingencyTableBody');
+  if (contBody) contBody.innerHTML = '';
   const totalsEl = document.getElementById('decoTotals');
   if (totalsEl) { totalsEl.innerHTML = ''; totalsEl.style.display = 'none'; }
   const _pr2 = document.getElementById('plannerResult'); if(_pr2){_pr2.style.display='none';_pr2.innerHTML='';}
@@ -744,8 +751,11 @@ function _updatePlanPanelTip(model) {
 }
 
 function setPlannerAlgo(model, btn) {
+  const prevAlgo = plannerAlgo;
   const fromView = plannerAlgo === 'rec' ? 'rec' : 'tec';
   const toView = model === 'rec' ? 'rec' : 'tec';
+  const algoChanged = prevAlgo !== model;
+  const viewChanged = fromView !== toView;
   plannerAlgo = model;
   if (model === 'VPMB' || model === 'VPMB_GFS') {
     vpmVariant = model;
@@ -765,9 +775,11 @@ function setPlannerAlgo(model, btn) {
     toggleCustomO2?.();
   } else {
     algo = 'buh';
-    setDecoAlgorithm(model, true);
+    setDecoAlgorithm(model, true, !algoChanged && !viewChanged);
   }
-  _clearPlannerResults();
+  if (algoChanged || viewChanged) {
+    _clearPlannerResults();
+  }
   if (fromView !== toView && typeof onPlannerViewSwitch === 'function') {
     onPlannerViewSwitch(fromView, toView);
   }

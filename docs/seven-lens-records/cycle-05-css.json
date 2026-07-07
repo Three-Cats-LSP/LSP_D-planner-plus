@@ -167,9 +167,9 @@
       "unit_id": "UI-CSS-FOUNDATION",
       "path": "lsp-dplanner-foundation.css",
       "start_line": 1,
-      "end_line": 418,
-      "line_count": 418,
-      "content_fingerprint": "f1f5eaa00edd3fd382ff98c27985e51d565539079860d7e59d740bce2d6a1944",
+      "end_line": 420,
+      "line_count": 420,
+      "content_fingerprint": "ca79cfc844b33090dbb9d2f57d56a5fa89699f4ec984bcfb6b1ffa988ae16996",
       "review_session": "cursor/seven-lens-cycle-05-foundation-audit",
       "verification_session": "C05-V-A",
       "lens_results": {
@@ -851,5 +851,24 @@
   "protocol_migrations": [
     "resolution-commit-v1",
     "receipt-exit-v1"
+  ],
+  "dependency_re_reviews": [
+    {
+      "session": "C08-DEP-FOUNDATION",
+      "part_id": "UI-CSS-FOUNDATION-P01",
+      "start_line": 1,
+      "end_line": 422,
+      "prior_content_fingerprint": "f1f5eaa00edd3fd382ff98c27985e51d565539079860d7e59d740bce2d6a1944",
+      "content_fingerprint": "0884eeb214333bd4f852f0bff99873e584ea18d2300b14545b321051065c1841",
+      "trigger": "Cycle 8 PR #215 adds --gas-switch-label-* tokens to foundation.css",
+      "focus": [
+        "gas-switch and gas-switch-label-bg/text tokens light/dark",
+        "existing mode-isolation and dead-rule removals preserved",
+        "visual contract token parity with results.css and plot-core.js"
+      ],
+      "result": "NO_NEW_FINDING",
+      "reviewed_at": "2026-07-06T01:09:13.648040+00:00",
+      "verifier": "Cursor Agent (C08-V-B attestation corrector)"
+    }
   ]
 }

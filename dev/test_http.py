@@ -1,21 +1,31 @@
 """Shared quiet HTTP server for Playwright / browser test harnesses."""
 from __future__ import annotations
 
-import os
 import shutil
+import socket
 import subprocess
 import sys
 import tempfile
 import threading
+import urllib.error
+import urllib.request
 from contextlib import contextmanager
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
+DEFAULT_HOST = "127.0.0.1"
+DEFAULT_PORT = 8765
+APP_PLANNER_MARKERS = (b"mainNavBar", b'id="mainNavBar"', b'id="navBtnBuh"')
+
 # Copied beside synced www/ so Playwright hits the same app shell as Capacitor/APK.
 STAGE_DIRS = ("tests", "lib")
 STAGE_GLOB = "tests-*.html"
+
+
+class PortInUseError(RuntimeError):
+    """Raised when a fixed test port is occupied and fallback is disabled."""
 
 
 class QuietHTTPRequestHandler(SimpleHTTPRequestHandler):
@@ -37,6 +47,71 @@ def make_handler(root: Path):
             super().__init__(*args, directory=str(root), **kwargs)
 
     return Handler
+
+
+def _port_is_open(host: str, port: int) -> bool:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.settimeout(0.2)
+        return sock.connect_ex((host, port)) == 0
+
+
+def _port_can_bind(host: str, port: int) -> bool:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        try:
+            sock.bind((host, port))
+        except OSError:
+            return False
+        return True
+
+
+def find_available_port(
+    host: str = DEFAULT_HOST,
+    preferred: int = DEFAULT_PORT,
+    *,
+    allow_fallback: bool = True,
+) -> int:
+    """Return preferred when free, otherwise an ephemeral port or raise clearly."""
+    if preferred == 0:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+            sock.bind((host, 0))
+            return int(sock.getsockname()[1])
+    if not _port_is_open(host, preferred) and _port_can_bind(host, preferred):
+        return preferred
+    if not allow_fallback:
+        raise PortInUseError(
+            f"Port {preferred} on {host} is already in use; refusing to bind silently."
+        )
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.bind((host, 0))
+        return int(sock.getsockname()[1])
+
+
+def verify_app_root(base_url: str, *, timeout: float = 10.0, max_bytes: int = 2_097_152) -> None:
+    """Ensure the served index.html is the LSP planner shell, not a foreign listener."""
+    index_url = f"{base_url.rstrip('/')}/index.html"
+    try:
+        with urllib.request.urlopen(index_url, timeout=timeout) as resp:
+            if resp.status != 200:
+                raise RuntimeError(f"Unexpected HTTP {resp.status} from {index_url}")
+            chunks: list[bytes] = []
+            remaining = max_bytes
+            while remaining > 0:
+                part = resp.read(min(remaining, 65536))
+                if not part:
+                    break
+                chunks.append(part)
+                if any(marker in part for marker in APP_PLANNER_MARKERS):
+                    return
+                remaining -= len(part)
+            body = b"".join(chunks)
+    except urllib.error.URLError as exc:
+        raise RuntimeError(f"Cannot verify app root at {index_url}: {exc}") from exc
+    if not any(marker in body for marker in APP_PLANNER_MARKERS):
+        raise RuntimeError(
+            f"Served root at {base_url} is not the LSP planner app (missing #mainNavBar). "
+            "Another process may already be bound to the requested port."
+        )
 
 
 def stage_regression_harness(www: Path, root: Path = ROOT) -> None:
@@ -62,27 +137,38 @@ def stage_regression_harness(www: Path, root: Path = ROOT) -> None:
 
 
 @contextmanager
-def serve_root(root: Path, host: str = "127.0.0.1", port: int = 8765):
-    prev = os.getcwd()
-    os.chdir(root)
-    server = ThreadingHTTPServer((host, port), make_handler(root))
+def serve_root(
+    root: Path,
+    host: str = DEFAULT_HOST,
+    port: int = DEFAULT_PORT,
+    *,
+    allow_fallback: bool = True,
+    verify_app: bool = True,
+):
+    chosen_port = find_available_port(host, port, allow_fallback=allow_fallback)
+    server = ThreadingHTTPServer((host, chosen_port), make_handler(root))
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
+    base_url = f"http://{host}:{server.server_port}/"
     try:
-        yield f"http://{host}:{server.server_port}/"
+        if verify_app:
+            verify_app_root(base_url)
+        yield base_url
     finally:
         server.shutdown()
+        server.server_close()
         thread.join(timeout=2)
-        os.chdir(prev)
 
 
 @contextmanager
 def serve_www(
     root: Path = ROOT,
-    host: str = "127.0.0.1",
-    port: int = 8765,
+    host: str = DEFAULT_HOST,
+    port: int = DEFAULT_PORT,
     *,
     sync: bool = True,
+    allow_fallback: bool = True,
+    verify_app: bool = True,
 ):
     """Run sync_www.py, stage regression harness files, serve from www/."""
     sync_script = root / "tools" / "sync_www.py"
@@ -97,5 +183,11 @@ def serve_www(
         serve_dir = Path(tmp) / "www"
         shutil.copytree(www, serve_dir)
         stage_regression_harness(serve_dir, root)
-        with serve_root(serve_dir, host, port) as base_url:
+        with serve_root(
+            serve_dir,
+            host,
+            port,
+            allow_fallback=allow_fallback,
+            verify_app=verify_app,
+        ) as base_url:
             yield base_url

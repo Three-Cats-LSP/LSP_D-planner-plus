@@ -4562,11 +4562,11 @@ if 'function showTip' in js and 'hoist' not in js and re.search(r"querySelectorA
 else:
     fail("Legacy modals must be hoisted out of .legacy-panels for showTip to work")
 
-_mode_row = html.split('id="bnavPlanner"', 1)
+_mode_row = html.split('id="mainNavBar"', 1)
 if len(_mode_row) < 2:
     _mode_row = html.split('<div class="mode-toggle ', 1)
 if "syncEnvRowDisplay" in js and len(_mode_row) > 1 and (
-    re.search(r'id="(?:nav|bnav)Settings"[^>]*onclick="(?:toggleEnvSettings|setMainNav)\(', _mode_row[1][:3500])
+    re.search(r'id="navBtnSettings"[^>]*onclick="setMainNav\(', _mode_row[1][:3500])
 ):
     ok("ENV settings reachable from primary nav (Settings control)")
 else:
@@ -4583,9 +4583,9 @@ else:
     fail("Planner layout missing plannerView or algorithm controls")
 
 if (
-    re.search(r'id="(?:nav|bnav)Planner"[^<]*(?:<img|<svg)', html)
-    and re.search(r'id="(?:nav|bnav)Settings"', html)
-    and (".mode-btn" in html or "bnav-btn" in html)
+    re.search(r'id="navBtn(?:Rec|Buh|Vpm)"', html)
+    and re.search(r'id="navBtnSettings"', html)
+    and "main-nav-btn" in html
 ):
     ok("Primary nav uses mode button styling")
 else:

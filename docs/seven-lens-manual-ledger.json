@@ -162,7 +162,16 @@
       "findings_closed": [],
       "parts": {
         "P01": "ui/markup-tec-planner.html"
-      }
+      },
+      "dependency_re_review": {
+        "session": "C08-DEP-TEC-MARKUP",
+        "reviewed_fingerprint_at_review": "41a03a57cf99a9eceef9bfd65baf5c65118f92e9539924e5f87139df00256c8c",
+        "current_fingerprint": "3f5d47dfb3a8ddad62bd13b17ae95e0b27dc68bbdccb4bd9b4a585b27753139d",
+        "result": "NO_NEW_FINDING",
+        "reviewed_at": "2026-07-06T01:09:13.648040+00:00",
+        "verifier": "Cursor Agent (C08-V-B attestation corrector)"
+      },
+      "last_read_fingerprint": "3f5d47dfb3a8ddad62bd13b17ae95e0b27dc68bbdccb4bd9b4a585b27753139d"
     },
     {
       "unit_id": "UI-PLANNER-INPUTS",
@@ -354,7 +363,16 @@
       ],
       "parts": {
         "P01": "lsp-dplanner-foundation.css:1-418"
-      }
+      },
+      "dependency_re_review": {
+        "session": "C08-DEP-FOUNDATION",
+        "reviewed_fingerprint_at_review": "f1f5eaa00edd3fd382ff98c27985e51d565539079860d7e59d740bce2d6a1944",
+        "current_fingerprint": "0884eeb214333bd4f852f0bff99873e584ea18d2300b14545b321051065c1841",
+        "result": "NO_NEW_FINDING",
+        "reviewed_at": "2026-07-06T01:09:13.648040+00:00",
+        "verifier": "Cursor Agent (C08-V-B attestation corrector)"
+      },
+      "last_read_fingerprint": "0884eeb214333bd4f852f0bff99873e584ea18d2300b14545b321051065c1841"
     },
     {
       "unit_id": "UI-CSS-MODES",
@@ -461,11 +479,12 @@
       "unit_id": "UI-CSS-RESULTS",
       "review_status": "SEVEN_LENS_REVIEWED",
       "cycle_id": "SL-C07",
-      "boundary": "lsp-dplanner-results.css whole file (931 lines; parts P01-P02)",
+      "boundary": "lsp-dplanner-results.css whole file (890 lines; parts P01 1-500 / P02 501-890)",
       "reviewer": "Cursor GPT-5.5 Medium",
       "review_session": "C07-A / C07-B",
-      "verification_session": "C07-V-A / C07-V-B",
+      "verification_session": "C07-V-A / C07-V-B / C07-R2-A / C07-R2-B",
       "verification_status": "PASSED",
+      "verifier_requirement": "Cycle 8 dependency invalidation cleared by independent CSS re-review sessions C07-R2-A (lines 1-500) and C07-R2-B (lines 501-890).",
       "findings_open": [],
       "findings_closed": [
         "SL-C07-M-01",
@@ -475,13 +494,13 @@
         "SL-C07-L-03",
         "SL-C07-L-04"
       ],
-      "reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
+      "reviewed_fingerprint": "8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49",
       "verified_source_commit": "63b30d2df28d5cbe497fc8055c44a3eac57e0855",
-      "last_checked_commit": "bf311c69d4817207d2ff77f321cc2be6f8503224",
+      "last_checked_commit": "c2d7708",
       "verified_at": "2026-07-05T10:08:17+00:00",
       "closed_at": "2026-07-05T12:00:00+00:00",
-      "reviewed_at": "2026-07-05T08:12:00+00:00",
-      "verifier": "Cursor Agent (C07-V-A / C07-V-B independent verification)",
+      "reviewed_at": "2026-07-06T00:36:00+09:00",
+      "verifier": "Cursor Agent (C07-R2-A / C07-R2-B Cycle 8 dependency re-review)",
       "verification_report": "docs/seven-lens-reports/cycle-07-results-css.md",
       "verification_commands": [
         "python dev/ui_results_css_regression.py",
@@ -500,18 +519,90 @@
         "SL-C07-L-04"
       ],
       "lens_results": {
-        "L1": "V4 schedule-wrap overflow-x auto; print break-inside avoid on rows.",
-        "L2": "has-results toggle; reduced-motion zero-duration transitions.",
-        "L3": "renderChipRow chip-yellow; decorateDecoTableForV3 ppo2-* classes.",
-        "L4": "dead legacy mobile card and .algo-switcher removed; live schedule-table writers only.",
-        "L5": "extract_ui_css parity; assemble_ui_html --verify PASS.",
-        "L6": "distinct chip-yellow/orange and PPO2 severity colors; light-theme alert contrast.",
-        "L7": "SUITE-UI-RESULTS-CSS-REGRESSION + browser traces PASS."
+        "L1": "640px mobile-active exclusivity on #recPlannerView/#tecPlannerView/#resultsPanel; schedule-wrap overflow-x auto; print break-inside avoid.",
+        "L2": "has-results toggle unchanged; mobile-active JS-driven; reduced-motion zero-duration transitions preserved.",
+        "L3": "chip-yellow distinct from chip-orange; PPO2 td.col-ppo2 !important severity colors preserved.",
+        "L4": "#recPlannerView/#tecPlannerView align with V4 markup; dead legacy mobile card and .algo-switcher remain removed.",
+        "L5": "extract_ui_css parity; @media print block intact; assemble contract unchanged.",
+        "L6": "light-theme alert contrast; PPO2/chip severity colors; gas-switch row-switch styling preserved.",
+        "L7": "SUITE-UI-RESULTS-CSS-REGRESSION REG-89..REG-94 still bound; no new CSS behavioral defect."
       },
       "parts": {
         "P01": "lsp-dplanner-results.css:1-500",
-        "P02": "lsp-dplanner-results.css:501-931"
-      }
+        "P02": "lsp-dplanner-results.css:501-890"
+      },
+      "dependency_re_review": {
+        "session": "C08-DEP-RESULTS-A/C08-DEP-RESULTS-B",
+        "reviewed_fingerprint_at_review": "8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49",
+        "current_fingerprint_p01": "43a487d392909bc748197e713a3e2ce8340b16e3f53fe258a8036b189613f641",
+        "current_fingerprint_p02": "563f36d0a31198828aac04594ea4fd73738d0ffa3eaff20643938e1e9140abdd",
+        "result": "NO_NEW_FINDING",
+        "reviewed_at": "2026-07-06T01:09:13.648040+00:00",
+        "verifier": "Cursor Agent (C08-V-B attestation corrector)"
+      },
+      "last_read_fingerprint": "563f36d0a31198828aac04594ea4fd73738d0ffa3eaff20643938e1e9140abdd"
+    },
+    {
+      "unit_id": "UI-PLANNER-SHELL",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "cycle_id": "SL-C08",
+      "boundary": "planner-shell.js whole file (201 lines)",
+      "reviewer": "Cursor FIXER Cycle 08",
+      "review_session": "C08-A",
+      "verification_status": "PASSED",
+      "findings_open": [],
+      "findings_closed": [
+        "SL-C08-H-02",
+        "SL-C08-L-02",
+        "SL-C08-M-04"
+      ],
+      "reviewed_fingerprint": "c9dc4b2f509fc9666f56898f0723571a20922b7c5e869fdb301412c1ab5778cd",
+      "verified_source_commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+      "verification_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
+      "finding_ids": [
+        "SL-C08-H-02",
+        "SL-C08-L-02",
+        "SL-C08-M-04"
+      ],
+      "parts": {
+        "P01": "planner-shell.js:1-201"
+      },
+      "verification_session": "C08-V-C / C08-V-D",
+      "verifier": "Cursor Agent (C08 CLOSER)",
+      "last_checked_commit": "34a241c",
+      "verified_at": "2026-07-07T05:23:50+00:00",
+      "closed_at": "2026-07-07T05:23:50+00:00"
+    },
+    {
+      "unit_id": "UI-RESULTS-PANEL",
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "cycle_id": "SL-C08",
+      "boundary": "results-panel.js whole file (313 lines)",
+      "reviewer": "Cursor FIXER Cycle 08",
+      "review_session": "C08-A",
+      "verification_status": "PASSED",
+      "findings_open": [],
+      "findings_closed": [
+        "SL-C08-H-01",
+        "SL-C08-M-01",
+        "SL-C08-L-01"
+      ],
+      "reviewed_fingerprint": "5753326e01ae9dc9aad521538c749387c35a542e9d1263b0c49c8de74ef5c217",
+      "verified_source_commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+      "verification_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
+      "finding_ids": [
+        "SL-C08-H-01",
+        "SL-C08-M-01",
+        "SL-C08-L-01"
+      ],
+      "parts": {
+        "P01": "results-panel.js:1-313"
+      },
+      "verification_session": "C08-V-C / C08-V-D",
+      "verifier": "Cursor Agent (C08 CLOSER)",
+      "last_checked_commit": "34a241c",
+      "verified_at": "2026-07-07T05:23:50+00:00",
+      "closed_at": "2026-07-07T05:23:50+00:00"
     }
   ]
 }

@@ -52,16 +52,27 @@ function setMainNav(section, btn) {
   }
   if (section === 'tools') { setNavMode('tools'); return; }
   if (section === 'settings') { setNavMode('settings'); return; }
+  const returningFromAux = navMode === 'tools' || navMode === 'settings';
+  const targetModel = section === 'rec'
+    ? 'rec'
+    : section === 'buh'
+      ? 'ZHLC_GF'
+      : section === 'vpm'
+        ? vpmVariant
+        : plannerAlgo;
   setNavMode('planner');
+  if (returningFromAux && targetModel === plannerAlgo) {
+    algo = plannerAlgo === 'rec' ? 'padi' : 'buh';
+    _highlightMainNav(section);
+    return;
+  }
   if (section === 'rec') setPlannerAlgo('rec', btn || document.getElementById('navBtnRec'));
   else if (section === 'buh') setPlannerAlgo('ZHLC_GF', btn || document.getElementById('navBtnBuh'));
   else if (section === 'vpm') setPlannerAlgo(vpmVariant, btn || document.getElementById('navBtnVpm'));
 }
 
 function setNavMode(mode) {
-  document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
   if (mode === 'ref') {
-    document.getElementById('bnavRef')?.classList.add('active');
     toggleReference();
     return;
   }
@@ -74,7 +85,6 @@ function setNavMode(mode) {
   document.body.classList.toggle('algo-tools', mode === 'tools');
   syncEnvRowDisplay?.();
   if (mode === 'settings') {
-    document.getElementById('bnavSettings')?.classList.add('active');
     _highlightMainNav('settings');
     document.getElementById('algoLabel').textContent = 'SETTINGS';
     document.getElementById('algoSubtitle').textContent = 'Water · Units · Altitude';
@@ -82,13 +92,18 @@ function setNavMode(mode) {
     return;
   }
   if (mode === 'planner') {
-    document.getElementById('bnavPlanner')?.classList.add('active');
+    const section = plannerAlgo === 'rec'
+      ? 'rec'
+      : (plannerAlgo === 'ZHLC_GF' ? 'buh' : 'vpm');
+    _highlightMainNav(section);
     setMobilePlanView('plan');
-    setPlannerAlgo(plannerAlgo);
+    _updatePlanPanelSections();
+    _updatePlannerSubtitle();
+    algo = plannerAlgo === 'rec' ? 'padi' : 'buh';
+    if (typeof appSettings !== 'undefined' && appSettings.save) appSettings.save(false);
     return;
   }
   if (mode === 'tools') {
-    document.getElementById('bnavTools')?.classList.add('active');
     _highlightMainNav('tools');
     algo = 'tools';
     document.getElementById('algoLabel').textContent = 'TOOLS';
@@ -182,5 +197,5 @@ function initV3Layout() {
   _syncCircuitBtns();
   _syncDepthBtSteppers();
   _updatePlanPanelSections();
-  _initMobilePlanView();
+  _ensureMobilePlanViewBootstrap();
 }

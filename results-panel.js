@@ -124,19 +124,32 @@ function _onPlanResultsReady() {
 }
 function setMobilePlanView(view) {
   if (!window.matchMedia('(max-width: 640px)').matches) return;
-  const plan = document.getElementById('planPanel');
+  const rec = document.getElementById('recPlannerView');
+  const tec = document.getElementById('tecPlannerView');
   const results = document.getElementById('resultsPanel');
-  if (!plan || !results) return;
-  plan.classList.toggle('mobile-active', view === 'plan');
-  results.classList.toggle('mobile-active', view === 'results');
+  if (!results) return;
+  const activePlan = plannerAlgo === 'rec' ? rec : tec;
+  if (!activePlan) return;
+  const showPlan = view === 'plan';
+  const showResults = view === 'results';
+  rec?.classList.toggle('mobile-active', showPlan && activePlan === rec);
+  tec?.classList.toggle('mobile-active', showPlan && activePlan === tec);
+  results.classList.toggle('mobile-active', showResults);
 }
 function _initMobilePlanView() {
   if (window.matchMedia('(max-width: 640px)').matches) {
     setMobilePlanView('plan');
   } else {
-    document.getElementById('planPanel')?.classList.remove('mobile-active');
+    document.getElementById('recPlannerView')?.classList.remove('mobile-active');
+    document.getElementById('tecPlannerView')?.classList.remove('mobile-active');
     document.getElementById('resultsPanel')?.classList.remove('mobile-active');
   }
+}
+function _ensureMobilePlanViewBootstrap() {
+  if (window._mobilePlanViewBootstrapDone) return;
+  window._mobilePlanViewBootstrapDone = true;
+  _initMobilePlanView();
+  window.addEventListener('resize', _initMobilePlanView);
 }
 function _hideResultEmptyState() {
   const empty = document.getElementById('resultEmptyState');
@@ -255,7 +268,6 @@ function _updateGasWarningBannerFromCard(gasEl) {
 }
 function switchResultTab(name, btn) {
   const isRec = plannerAlgo === 'rec';
-  const prefix = isRec ? '' : '';
   const panes = isRec
     ? ['dive','surfint','avgdepth','multi','ndlref']
     : ['profile','contingency','graphs','tissue'];

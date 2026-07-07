@@ -7,14 +7,24 @@ import hashlib
 import json
 import subprocess
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 DEV = ROOT / "dev"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 if str(DEV) not in sys.path:
     sys.path.insert(0, str(DEV))
 TRACE_SCHEMA_VERSION = 3
+TRACE_ACTION_TIMEOUT_MS = 45_000
+
+
+def _is_ephemeral_trace_output(path: Path) -> bool:
+    """Suite-order and other regression probes must not leak into dev/."""
+    normalized = path.name.replace("\\", "/")
+    return "-temp" in normalized or normalized.endswith(".tmp.json")
 
 
 def validate_trace_spec(spec: dict[str, Any]) -> list[str]:
@@ -232,6 +242,201 @@ def _state_snapshot(page, spec: dict[str, Any]) -> dict[str, Any]:
     )
 
 
+_CANONICAL_DEPTH_SELECTORS = {
+    "#travelGasManualDepth",
+    "#cylBot_size",
+    "#bestMixDepth",
+    "#cnsDepth",
+    "#tecDepth",
+    "#tecBT",
+    "#recDepth",
+    "#recBT",
+}
+
+# Bound to index.html input debounce: setTimeout(() => appSettings.save(false), 1000)
+SETTINGS_SAVE_DEBOUNCE_MS = 1000
+SETTINGS_SAVE_DEBOUNCE_SETTLE_MS = 100
+SETTINGS_SAVE_DEBOUNCE_WAIT_MS = SETTINGS_SAVE_DEBOUNCE_MS + SETTINGS_SAVE_DEBOUNCE_SETTLE_MS
+
+_RESTORE_SESSION_BEGIN_JS = """() => {
+  const session = {
+    hadAppSettings: typeof appSettings !== 'undefined',
+    previousRestoreInProgress: false,
+    patched: false,
+  };
+  if (!session.hadAppSettings) {
+    window.__traceRestoreSession = session;
+    return session;
+  }
+  session.previousRestoreInProgress = !!appSettings._restoreInProgress;
+  appSettings._restoreInProgress = true;
+  session.origSave = appSettings.save.bind(appSettings);
+  appSettings.save = function(v) {
+    if (window.__traceRestoreSession) return;
+    return session.origSave(v);
+  };
+  session.patched = true;
+  window.__traceRestoreSession = session;
+  return session;
+}"""
+
+_RESTORE_SESSION_END_JS = """() => {
+  const session = window.__traceRestoreSession;
+  if (!session) return;
+  if (session.patched && typeof appSettings !== 'undefined') {
+    appSettings.save = session.origSave;
+    appSettings._restoreInProgress = session.previousRestoreInProgress;
+  }
+  delete window.__traceRestoreSession;
+}"""
+
+_APPLY_STORAGE_SNAPSHOT_JS = """(state) => {
+  localStorage.clear();
+  sessionStorage.clear();
+  for (const [key, value] of Object.entries(state.localStorage || {})) localStorage.setItem(key, value);
+  for (const [key, value] of Object.entries(state.sessionStorage || {})) sessionStorage.setItem(key, value);
+  for (const [key, value] of Object.entries(state.globals || {})) window[key] = value;
+}"""
+
+_INVOKE_RESTORE_FIELDS_JS = """() => {
+  if (typeof appSettings === 'undefined' || typeof appSettings._restoreFields !== 'function') {
+    return { invoked: false };
+  }
+  const raw = localStorage.getItem('lspDiveSettings_v6');
+  if (!raw) return { invoked: false };
+  try { appSettings._restoreFields(JSON.parse(raw)); } catch (_) {}
+  if (window.__traceRestoreSession) appSettings._restoreInProgress = true;
+  return { invoked: true };
+}"""
+
+_SYNC_DOM_FROM_STORAGE_JS = """() => {
+  const raw = localStorage.getItem('lspDiveSettings_v6');
+  if (!raw) return { synced: false };
+  let values;
+  try { values = JSON.parse(raw); } catch (_) { return { synced: false }; }
+  for (const id of ['tecDepth', 'tecBT', 'recDepth', 'recBT']) {
+    const el = document.getElementById(id);
+    if (el && values[id] != null) el.value = String(values[id]);
+  }
+  if (values.__units__ && typeof setUnits === 'function') setUnits(values.__units__, { relabelOnly: true });
+  for (const id of ['tecDepth', 'tecBT', 'recDepth', 'recBT']) {
+    if (typeof syncDepthInputCanonical === 'function' && id.includes('Depth')) syncDepthInputCanonical(id);
+  }
+  return { synced: true };
+}"""
+
+_VERIFY_PERSISTED_CONSISTENCY_JS = """(expected) => {
+  const raw = localStorage.getItem('lspDiveSettings_v6');
+  const expectedRaw = expected.localStorage?.['lspDiveSettings_v6'];
+  if (!expectedRaw) return { ok: !raw, mismatches: raw ? ['unexpected localStorage'] : [] };
+  if (!raw) return { ok: false, mismatches: ['missing localStorage'] };
+  let parsed;
+  let expectedParsed;
+  try { parsed = JSON.parse(raw); expectedParsed = JSON.parse(expectedRaw); }
+  catch (_) { return { ok: false, mismatches: ['parse error'] }; }
+  const fields = ['tecDepth', 'tecBT', 'recDepth', 'recBT', '__units__'];
+  const mismatches = [];
+  for (const field of fields) {
+    if (!Object.prototype.hasOwnProperty.call(expectedParsed, field)) continue;
+    if (String(parsed[field]) !== String(expectedParsed[field])) mismatches.push('ls:' + field);
+    const el = document.getElementById(field.startsWith('__') ? null : field);
+    if (el && String(el.value) !== String(expectedParsed[field])) mismatches.push('dom:' + field);
+  }
+  return { ok: mismatches.length === 0, mismatches };
+}"""
+
+_CAPTURE_RESTORE_DIAGNOSTICS_JS = """() => ({
+  restoreInProgress: typeof appSettings !== 'undefined' ? !!appSettings._restoreInProgress : null,
+  restoreSessionActive: !!window.__traceRestoreSession,
+  plannerAlgo: typeof plannerAlgo !== 'undefined' ? plannerAlgo : null,
+  navMode: typeof navMode !== 'undefined' ? navMode : null,
+  units: typeof units !== 'undefined' ? units : null,
+  tecDepthDom: document.getElementById('tecDepth')?.value ?? null,
+  tecDepthLs: (() => {
+    try {
+      const raw = localStorage.getItem('lspDiveSettings_v6');
+      return raw ? JSON.parse(raw).tecDepth ?? null : null;
+    } catch (_) { return null; }
+  })(),
+  hasResults: document.getElementById('resultsPanel')?.classList.contains('has-results') ?? null,
+  recMobileActive: document.getElementById('recPlannerView')?.classList.contains('mobile-active') ?? null,
+  tecMobileActive: document.getElementById('tecPlannerView')?.classList.contains('mobile-active') ?? null,
+})"""
+
+
+def _sync_canonical_input(page, selector: str, state: dict[str, Any]) -> None:
+    if selector not in _CANONICAL_DEPTH_SELECTORS:
+        return
+    page.evaluate(
+        """([sel, value, dataset]) => {
+          const el = document.querySelector(sel);
+          if (!el || value == null) return;
+          el.value = String(value);
+          for (const key of Object.keys(el.dataset)) delete el.dataset[key];
+          for (const [k, v] of Object.entries(dataset || {})) el.dataset[k] = v;
+          const id = sel.slice(1);
+          if (id.includes('Depth') && typeof syncDepthInputCanonical === 'function') {
+            syncDepthInputCanonical(id);
+          } else if (id.includes('size') && typeof syncVolumeInputCanonical === 'function') {
+            syncVolumeInputCanonical(id);
+          }
+          if (!Object.keys(dataset || {}).length) {
+            for (const key of Object.keys(el.dataset)) delete el.dataset[key];
+          }
+        }""",
+        [selector, state.get("value"), state.get("dataset") or {}],
+    )
+
+
+def _restore_session_begin(page) -> dict[str, Any]:
+    return page.evaluate(_RESTORE_SESSION_BEGIN_JS)
+
+
+def _restore_session_end(page) -> None:
+    page.evaluate(_RESTORE_SESSION_END_JS)
+
+
+def _apply_storage_snapshot(page, before: dict[str, Any]) -> None:
+    page.evaluate(_APPLY_STORAGE_SNAPSHOT_JS, before)
+
+
+def _invoke_restore_fields(page) -> dict[str, Any]:
+    return page.evaluate(_INVOKE_RESTORE_FIELDS_JS)
+
+
+def _sync_dom_from_storage(page) -> dict[str, Any]:
+    return page.evaluate(_SYNC_DOM_FROM_STORAGE_JS)
+
+
+def _wait_settings_debounce_contract(page) -> None:
+    page.wait_for_timeout(SETTINGS_SAVE_DEBOUNCE_WAIT_MS)
+
+
+def _verify_persisted_consistency(page, before: dict[str, Any]) -> None:
+    check = page.evaluate(_VERIFY_PERSISTED_CONSISTENCY_JS, before)
+    if not check.get("ok"):
+        mismatches = check.get("mismatches") or []
+        raise RuntimeError(f"persisted settings inconsistent after restore: {mismatches}")
+
+
+def capture_restore_diagnostics(page) -> dict[str, Any]:
+    """Post-suite probe: restore flag, planner state, and persistence alignment."""
+    return page.evaluate(_CAPTURE_RESTORE_DIAGNOSTICS_JS)
+
+
+def _restore_persisted_settings(page, before: dict[str, Any]) -> None:
+    _restore_session_begin(page)
+    try:
+        _apply_storage_snapshot(page, before)
+        _invoke_restore_fields(page)
+        _wait_settings_debounce_contract(page)
+        _apply_storage_snapshot(page, before)
+        _sync_dom_from_storage(page)
+        _verify_persisted_consistency(page, before)
+    finally:
+        _restore_session_end(page)
+
+
 def _act(page, action: dict[str, Any]) -> None:
     selector = action.get("selector")
     locator = page.locator(selector) if selector else None
@@ -255,7 +460,27 @@ def _act(page, action: dict[str, Any]) -> None:
             [str(action.get("name")), action.get("value")],
         )
     elif kind == "run_script":
-        page.evaluate(str(action.get("script", "")))
+        page.evaluate(
+            """async ([source, timeoutMs]) => {
+              const runnable = (0, eval)(source);
+              const valuePromise = typeof runnable === 'function'
+                ? Promise.resolve(runnable())
+                : Promise.resolve(runnable);
+              let timer;
+              const timeoutPromise = new Promise((_, reject) => {
+                timer = setTimeout(
+                  () => reject(new Error(`run_script timed out after ${timeoutMs} ms`)),
+                  timeoutMs
+                );
+              });
+              try {
+                return await Promise.race([valuePromise, timeoutPromise]);
+              } finally {
+                clearTimeout(timer);
+              }
+            }""",
+            [str(action.get("script", "")), int(action.get("timeout_ms", TRACE_ACTION_TIMEOUT_MS))],
+        )
     elif kind == "set_viewport":
         size = action.get("size") or {}
         page.set_viewport_size({"width": int(size.get("width", 1280)), "height": int(size.get("height", 800))})
@@ -298,23 +523,8 @@ def _restore(page, before: dict[str, Any], spec: dict[str, Any]) -> None:
             locator.fill(str(state["value"]), force=True)
             if "disabled" in state and state["disabled"] is not None:
                 locator.evaluate("(el, disabled) => { el.disabled = disabled; }", bool(state["disabled"]))
-            if selector in {"#travelGasManualDepth", "#cylBot_size", "#bestMixDepth", "#cnsDepth"}:
-                page.evaluate(
-                    """([sel, dataset]) => {
-                      const id = sel.slice(1);
-                      if (id.includes('Depth') && typeof syncDepthInputCanonical === 'function') {
-                        syncDepthInputCanonical(id);
-                      } else if (id.includes('size') && typeof syncVolumeInputCanonical === 'function') {
-                        syncVolumeInputCanonical(id);
-                      }
-                      const el = document.querySelector(sel);
-                      if (el) {
-                        for (const key of Object.keys(el.dataset)) delete el.dataset[key];
-                        for (const [k, v] of Object.entries(dataset || {})) el.dataset[k] = v;
-                      }
-                    }""",
-                    [selector, state.get("dataset") or {}],
-                )
+            if selector in _CANONICAL_DEPTH_SELECTORS:
+                _sync_canonical_input(page, selector, state)
         dataset = state.get("dataset") or {}
         locator.evaluate(
             """(el, ds) => {
@@ -323,56 +533,12 @@ def _restore(page, before: dict[str, Any], spec: dict[str, Any]) -> None:
             }""",
             dataset,
         )
-    page.evaluate(
-        """state => {
-          localStorage.clear();
-          sessionStorage.clear();
-          for (const [key, value] of Object.entries(state.localStorage)) localStorage.setItem(key, value);
-          for (const [key, value] of Object.entries(state.sessionStorage)) sessionStorage.setItem(key, value);
-          for (const [key, value] of Object.entries(state.globals)) window[key] = value;
-        }""",
-        before,
-    )
-    page.evaluate(
-        """() => {
-          const raw = localStorage.getItem('lspDiveSettings_v6');
-          if (!raw || typeof appSettings === 'undefined') return;
-          try { appSettings._syncUiAfterRestore?.(JSON.parse(raw)); } catch (_) {}
-        }"""
-    )
-    page.evaluate(
-        """state => {
-          localStorage.clear();
-          sessionStorage.clear();
-          for (const [key, value] of Object.entries(state.localStorage)) localStorage.setItem(key, value);
-          for (const [key, value] of Object.entries(state.sessionStorage)) sessionStorage.setItem(key, value);
-        }""",
-        before,
-    )
+    _restore_persisted_settings(page, before)
     for selector in selectors:
         state = before["elements"].get(selector)
         if state is None:
             continue
-        if selector in {"#travelGasManualDepth", "#cylBot_size", "#bestMixDepth", "#cnsDepth"}:
-            page.evaluate(
-                """([sel, value, dataset]) => {
-                  const el = document.querySelector(sel);
-                  if (!el || value == null) return;
-                  el.value = String(value);
-                  for (const key of Object.keys(el.dataset)) delete el.dataset[key];
-                  for (const [k, v] of Object.entries(dataset || {})) el.dataset[k] = v;
-                  const id = sel.slice(1);
-                  if (id.includes('Depth') && typeof syncDepthInputCanonical === 'function') {
-                    syncDepthInputCanonical(id);
-                  } else if (id.includes('size') && typeof syncVolumeInputCanonical === 'function') {
-                    syncVolumeInputCanonical(id);
-                  }
-                  if (!Object.keys(dataset || {}).length) {
-                    for (const key of Object.keys(el.dataset)) delete el.dataset[key];
-                  }
-                }""",
-                [selector, state.get("value"), state.get("dataset") or {}],
-            )
+        _sync_canonical_input(page, selector, state)
 
 
 def run_trace(
@@ -385,6 +551,11 @@ def run_trace(
     try:
         for action in trace.get("setup", []):
             _act(page, action)
+        viewport_width = int((page.viewport_size or {}).get("width") or 1280)
+        if viewport_width <= 640:
+            page.evaluate(
+                "() => { if (typeof _initMobilePlanView === 'function') _initMobilePlanView(); }"
+            )
         before = _state_snapshot(page, state_spec)
         for step in trace.get("steps", []):
             if "action" in step:
@@ -460,9 +631,17 @@ def main() -> int:
         try:
             for trace in spec.get("traces", []):
                 runs = []
-                for _ in range(repeat):
+                for run_index in range(repeat):
+                    run_started = time.perf_counter()
+                    print(
+                        f"TRACE {trace.get('id')} run {run_index + 1}/{repeat}: start",
+                        file=sys.stderr,
+                        flush=True,
+                    )
                     context = browser.new_context()
                     page = context.new_page()
+                    page.set_default_timeout(TRACE_ACTION_TIMEOUT_MS)
+                    page.set_default_navigation_timeout(180_000)
                     console_errors: list[str] = []
                     page_errors: list[str] = []
                     page.on("console", lambda msg, out=console_errors: out.append(msg.text) if msg.type == "error" else None)
@@ -470,6 +649,12 @@ def main() -> int:
                     boot_app_page(page, base_url)
                     runs.append(run_trace(page, trace, console_errors, page_errors))
                     context.close()
+                    print(
+                        f"TRACE {trace.get('id')} run {run_index + 1}/{repeat}: "
+                        f"{int((time.perf_counter() - run_started) * 1000)} ms",
+                        file=sys.stderr,
+                        flush=True,
+                    )
                 first = dict(runs[0])
                 repeatable = all(
                     _stable_json(row.get("captures")) == _stable_json(first.get("captures"))
@@ -485,6 +670,8 @@ def main() -> int:
                 results.append(first)
         finally:
             browser.close()
+    from tools.seven_lens_protocol import _file_sha256
+
     git_commit = subprocess.run(
         ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True, capture_output=True, check=True
     ).stdout.strip()
@@ -492,17 +679,22 @@ def main() -> int:
         "schema_version": TRACE_SCHEMA_VERSION,
         "runner_version": 2,
         "spec": str(args.spec),
-        "spec_sha256": hashlib.sha256(spec_path.read_bytes()).hexdigest(),
+        "spec_sha256": _file_sha256(spec_path),
         "commit": git_commit,
         "traces": results,
         "passed": bool(results) and all(r["passed"] for r in results),
     }
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(artifact, indent=2) + "\n", encoding="utf-8")
-    print(f"SEVEN-LENS BROWSER TRACE: {'PASS' if artifact['passed'] else 'FAIL'}")
-    for row in results:
-        print(f"  [{'PASS' if row['passed'] else 'FAIL'}] {row['id']}")
-    return 0 if artifact["passed"] else 1
+    ephemeral = _is_ephemeral_trace_output(output)
+    try:
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(json.dumps(artifact, indent=2) + "\n", encoding="utf-8")
+        print(f"SEVEN-LENS BROWSER TRACE: {'PASS' if artifact['passed'] else 'FAIL'}")
+        for row in results:
+            print(f"  [{'PASS' if row['passed'] else 'FAIL'}] {row['id']}")
+        return 0 if artifact["passed"] else 1
+    finally:
+        if ephemeral:
+            output.unlink(missing_ok=True)
 
 
 if __name__ == "__main__":

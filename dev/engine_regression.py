@@ -1000,7 +1000,7 @@ ENGINE_SUITE_JS = r"""
       if (s === hold10) { seenHold = true; continue; }
       if (seenHold && s.type === 'ascent') { ascAfterHold = s; break; }
     }
-    const gasOk = hold10?.gas === 'EAN50' && ascAfterHold?.gas === 'EAN50';
+    const gasOk = hold10?.gas === '50/00' && ascAfterHold?.gas === '50/00';
     const expectMainRate = (10 - base.lastStop) / base.ascentRate;
     const rateOk = ascAfterHold && Math.abs(ascAfterHold.time - expectMainRate) < 0.15;
     const notDecoRate = !ascAfterHold || Math.abs(ascAfterHold.time - (10 - base.lastStop) / base.decoAscentRate) > 0.3;
@@ -1553,7 +1553,7 @@ ENGINE_SUITE_JS = r"""
       set('dg1Mix', 'ean50');
       set('dg2Mix', 'o2');
       bailoutGasSelectionOk = getBailoutReserveMixLabel(6, 0.21, 0) === '100%'
-        && getBailoutReserveMixLabel(15, 0.21, 0) === 'EAN50'
+        && getBailoutReserveMixLabel(15, 0.21, 0) === '50/00'
         && getBailoutReserveMixLabel(40, 0.21, 0) === 'Air';
 
       set('tecDepth', units === 'metric' ? '60' : String(60 * 3.28084));

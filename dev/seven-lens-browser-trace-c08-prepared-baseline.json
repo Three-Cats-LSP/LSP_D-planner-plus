@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "prepared_baseline_commit": "f8074d7c04d89edbcac7cb82dbfac86908cbb7c4",
+  "behavioral_test_commit": "f5243b0",
+  "source": "tools/test_seven_lens_browser_trace.py RestorationSimulator + restore_persisted_settings_prefix",
+  "deterministic_failures": [
+    {
+      "id": "nested-save-block-not-preserved",
+      "reason": "Pre-fix runner sets _restoreInProgress without finally restoring nested prior true after _restoreFields clears the flag."
+    },
+    {
+      "id": "delayed-save-contract-violated",
+      "reason": "Pre-fix runner lacks save-session patch; debounced appSettings.save(false) can persist polluted DOM after localStorage snapshot reapply."
+    },
+    {
+      "id": "exception-cleanup-failure",
+      "reason": "Pre-fix runner has no guaranteed finally guard when _restoreFields throws; _restoreInProgress can remain true."
+    }
+  ],
+  "nondeterministic_observation": {
+    "artifact_path": "dev/seven-lens-browser-trace-c08-pre-tec-restore-baseline.json",
+    "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-PRE-TEC-RESTORE.json",
+    "provenance_commit": "44054aebdef90d70eadf5d69d1893aae3c680a5d",
+    "note": "Observed tecDepth 45->999 race at 44054ae; not independently reproducible as deterministic baseline_failure evidence."
+  }
+}
