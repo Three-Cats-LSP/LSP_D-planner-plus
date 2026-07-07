@@ -368,8 +368,8 @@
       "summary": "Unit-neutral depth range wording"
     }
   ],
-  "audit_commit": "",
-  "verified_source_commit": "6af174d781e6d8eaf9d67f751a04897a65fbec76",
+  "audit_commit": "33972d953475d1753d462189f18fe2e556c61a14",
+  "verified_source_commit": "33972d953475d1753d462189f18fe2e556c61a14",
   "verification_status": "PASSED",
   "parts": [
     {
@@ -627,24 +627,28 @@
   "evidence_runs": [
     {
       "id": "ER-C09-VISUAL-CONTRACT",
-      "kind": "post_fix",
+      "kind": "gate",
+      "command": "python dev/ui_visual_contract_regression.py",
       "command_argv": [
         "python",
         "dev/ui_visual_contract_regression.py"
       ],
-      "commit": "6af174d781e6d8eaf9d67f751a04897a65fbec76",
+      "commit": "33972d953475d1753d462189f18fe2e556c61a14",
       "exit_code": 0,
+      "worktree_clean": true,
       "case_ids": [
         "SL-C09-GAS-SWITCH-TERMINOLOGY",
         "SL-C09-MOBILE-WARNING-WRAP",
         "SL-C09-VPM-MODE-TOGGLE",
         "SL-C09-SCHEDULE-COLUMN-GEOMETRY"
       ],
-      "receipt": "dev/seven-lens-evidence-c09-ER-C09-VISUAL-CONTRACT.json"
+      "receipt_path": "dev/seven-lens-evidence-c09-ER-C09-VISUAL-CONTRACT.json",
+      "receipt_sha256": "1871edb0926d70f3fb3e058dc84352c1c731b69acf23448a4861dbd828460987"
     },
     {
-      "id": "ER-C09-STATIC",
+      "id": "static",
       "kind": "gate",
+      "command": "python -m tools.audit check --profile static",
       "command_argv": [
         "python",
         "-m",
@@ -653,18 +657,21 @@
         "--profile",
         "static"
       ],
-      "commit": "6af174d781e6d8eaf9d67f751a04897a65fbec76",
+      "commit": "33972d953475d1753d462189f18fe2e556c61a14",
       "exit_code": 0,
+      "worktree_clean": true,
       "case_ids": [
         "AUDIT-COV-01",
         "canonical-generated-parity",
         "UI-EXTRACT-CORES"
       ],
-      "receipt": "dev/seven-lens-evidence-c09-ER-C09-STATIC.json"
+      "receipt_path": "dev/seven-lens-evidence-c09-static.json",
+      "receipt_sha256": "98dfd33de3636f5cf8baf7ad3444587c5c4fda16b59ea3a09ffe03412d7c4c62"
     },
     {
-      "id": "ER-C09-CI",
+      "id": "ci",
       "kind": "gate",
+      "command": "python -m tools.audit run --profile ci",
       "command_argv": [
         "python",
         "-m",
@@ -673,20 +680,24 @@
         "--profile",
         "ci"
       ],
-      "commit": "6af174d781e6d8eaf9d67f751a04897a65fbec76",
+      "commit": "33972d953475d1753d462189f18fe2e556c61a14",
       "exit_code": 0,
+      "worktree_clean": true,
       "case_ids": [
         "AUDIT-COV-01",
         "AUDIT-REG-01",
         "SL-C09-VPM-MODE-TOGGLE"
       ],
-      "receipt": "dev/seven-lens-evidence-c09-ER-C09-CI.json"
+      "receipt_path": "dev/seven-lens-evidence-c09-ci.json",
+      "receipt_sha256": "63768b822dc76f62709ff77393f8a9072e2acf74b5082c457c9b31eacfbf8f5f"
     }
   ],
   "changed_paths": [],
   "audit_report": "",
-  "notes": "Cycle 9 completed under simplified protocol. UI-ENVIRONMENT and UI-MODE-STATE reviewed in three bounded parts; prior Cycle 9 production fixes for VPM mode toggle, Gas Switch terminology, mobile warning wrapping, and schedule table geometry are covered by REG-108..REG-111. No new findings.",
+  "notes": "Cycle 9 CLOSED under simplified protocol. UI-ENVIRONMENT and UI-MODE-STATE reviewed in three bounded parts; VPM switch behavior, Gas Switch terminology, mobile warning wrapping, and schedule table geometry are covered by REG-108..REG-111. No new findings.",
   "review_status": "SEVEN_LENS_REVIEWED",
   "reviewed_at": "2026-07-07T13:17:12.245569+00:00",
-  "verified_at": "2026-07-07T13:17:12.245569+00:00"
+  "verified_at": "2026-07-07T13:38:12.663793+00:00",
+  "closure_evidence_commit": "33972d953475d1753d462189f18fe2e556c61a14",
+  "closed_at": "2026-07-07T13:38:12.663793+00:00"
 }

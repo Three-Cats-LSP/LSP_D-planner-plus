@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v3-full-reset`
-**Units:** 205 total; 0 unread; 86 in progress; 4 read; 115 verified.
+**Units:** 205 total; 0 unread; 85 in progress; 5 read; 115 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules

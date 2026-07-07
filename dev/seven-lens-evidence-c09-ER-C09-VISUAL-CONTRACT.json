@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ER-C09-VISUAL-CONTRACT",
+  "command_argv": [
+    "python",
+    "dev/ui_visual_contract_regression.py"
+  ],
+  "commit": "33972d953475d1753d462189f18fe2e556c61a14",
+  "exit_code": 0,
+  "case_ids": [
+    "SL-C09-GAS-SWITCH-TERMINOLOGY",
+    "SL-C09-MOBILE-WARNING-WRAP",
+    "SL-C09-VPM-MODE-TOGGLE",
+    "SL-C09-SCHEDULE-COLUMN-GEOMETRY"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-07T13:30:46.108470+00:00",
+  "finished_at": "2026-07-07T13:31:58.243242+00:00",
+  "stdout_sha256": "cc0bb694232654fb6673d93859295ac73a00b7b4bca1022ea0ea7c70deeae835",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ci",
+  "command_argv": [
+    "python",
+    "-m",
+    "tools.audit",
+    "run",
+    "--profile",
+    "ci"
+  ],
+  "commit": "33972d953475d1753d462189f18fe2e556c61a14",
+  "exit_code": 0,
+  "case_ids": [
+    "AUDIT-COV-01",
+    "AUDIT-REG-01",
+    "SL-C09-VPM-MODE-TOGGLE"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-07T13:33:19.841192+00:00",
+  "finished_at": "2026-07-07T13:37:37.504974+00:00",
+  "stdout_sha256": "cdc597d8f3deaab9fc4b3eb91debef6f6128cdd8942826bfb6eedaa9dad3018d",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
+}

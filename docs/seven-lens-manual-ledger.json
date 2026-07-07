@@ -603,6 +603,65 @@
       "last_checked_commit": "1372b40",
       "verified_at": "2026-07-07T05:23:50+00:00",
       "closed_at": "2026-07-07T05:23:50+00:00"
+    },
+    {
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "cycle_id": "SL-C09",
+      "reviewer": "Codex",
+      "review_session": "C09-A-ENVIRONMENT / C09-B-MODE-STATE-1 / C09-C-MODE-STATE-2",
+      "verification_session": "C09-V-A-ENVIRONMENT / C09-V-B-MODE-STATE-1 / C09-V-C-MODE-STATE-2",
+      "verification_status": "PASSED",
+      "verified_source_commit": "33972d953475d1753d462189f18fe2e556c61a14",
+      "last_checked_commit": "33972d953475d1753d462189f18fe2e556c61a14",
+      "reviewed_at": "2026-07-07T13:30:32.163462+00:00",
+      "verified_at": "2026-07-07T13:38:12.663793+00:00",
+      "verifier": "Codex simplified Cycle 9 verifier",
+      "verification_report": "docs/seven-lens-records/cycle-09-environment-mode-state.json",
+      "finding_ids": [],
+      "findings_open": [],
+      "findings_closed": [],
+      "verification_commands": [
+        "python dev/ui_visual_contract_regression.py",
+        "python -m tools.audit check --profile static",
+        "python -m tools.audit run --profile ci"
+      ],
+      "unit_id": "UI-ENVIRONMENT",
+      "boundary": "settings-core.js:39-417",
+      "reviewed_fingerprint": "439368a89834973c16189864e156fe5a34b66622aac1a3371aaa664bbeffcbea",
+      "parts": {
+        "P01": "settings-core.js:39-417"
+      },
+      "closed_at": "2026-07-07T13:38:12.663793+00:00"
+    },
+    {
+      "review_status": "SEVEN_LENS_REVIEWED",
+      "cycle_id": "SL-C09",
+      "reviewer": "Codex",
+      "review_session": "C09-A-ENVIRONMENT / C09-B-MODE-STATE-1 / C09-C-MODE-STATE-2",
+      "verification_session": "C09-V-A-ENVIRONMENT / C09-V-B-MODE-STATE-1 / C09-V-C-MODE-STATE-2",
+      "verification_status": "PASSED",
+      "verified_source_commit": "33972d953475d1753d462189f18fe2e556c61a14",
+      "last_checked_commit": "33972d953475d1753d462189f18fe2e556c61a14",
+      "reviewed_at": "2026-07-07T13:30:32.163462+00:00",
+      "verified_at": "2026-07-07T13:38:12.663793+00:00",
+      "verifier": "Codex simplified Cycle 9 verifier",
+      "verification_report": "docs/seven-lens-records/cycle-09-environment-mode-state.json",
+      "finding_ids": [],
+      "findings_open": [],
+      "findings_closed": [],
+      "verification_commands": [
+        "python dev/ui_visual_contract_regression.py",
+        "python -m tools.audit check --profile static",
+        "python -m tools.audit run --profile ci"
+      ],
+      "unit_id": "UI-MODE-STATE",
+      "boundary": "settings-core.js:418-1042 (P01 418-917 / P02 918-1042)",
+      "reviewed_fingerprint": "687bae7030815f2679ad5154a1a8b421abcd804275d82536c4e5714062273717",
+      "parts": {
+        "P01": "settings-core.js:418-917",
+        "P02": "settings-core.js:918-1042"
+      },
+      "closed_at": "2026-07-07T13:38:12.663793+00:00"
     }
   ]
 }
