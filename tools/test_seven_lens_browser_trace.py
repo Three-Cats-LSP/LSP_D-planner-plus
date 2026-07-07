@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib.util
 import json
 import subprocess
 import sys
@@ -31,6 +32,13 @@ def _ephemeral_trace_output(suffix: str = "") -> Path:
     path = Path(handle.name)
     handle.close()
     return path
+
+
+def _playwright_available() -> bool:
+    try:
+        return importlib.util.find_spec("playwright.sync_api") is not None
+    except ModuleNotFoundError:
+        return False
 
 
 def valid_spec():
@@ -550,6 +558,10 @@ class ShellRestoreDebounceTests(unittest.TestCase):
         self.assertIn("_restore_session_begin", restore_src)
 
 
+@unittest.skipUnless(
+    _playwright_available(),
+    "Playwright is required for browser trace/shell subprocess order tests",
+)
 class SuiteOrderRegressionTests(unittest.TestCase):
     def test_repeated_trace_then_shell(self):
         spec = ROOT / "docs/seven-lens-traces/cycle-08-shell-results.json"

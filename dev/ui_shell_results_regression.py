@@ -353,7 +353,6 @@ def _run_viewport(browser, base_url: str, viewport: tuple[int, int], *, run_beha
     page.on("pageerror", lambda exc: errors.append(str(exc)))
     page.on("console", lambda msg: errors.append(msg.text) if msg.type == "error" else None)
     try:
-        page.goto(f"{base_url}/index.html", wait_until="load")
         boot_app_page(page, base_url)
         result = run_cases(page, viewport, run_behavioral=run_behavioral)
         result["_detail"]["console_errors"] = errors
