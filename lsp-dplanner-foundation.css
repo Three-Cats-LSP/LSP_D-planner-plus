@@ -222,7 +222,7 @@ body.light-theme .chip-red              { color: var(--status-red) !important; }
 body.light-theme .algo-bar-btn.active   { color: var(--accent) !important; }
 body.light-theme .algo-sub              { color: var(--text-faint) !important; }
 body.light-theme .results-section-label { color: var(--accent) !important; }
-body.light-theme .gas-warning-banner    { color: var(--orange) !important; }
+body.light-theme .gas-warning-banner    { color: #cc0000 !important; }
 body.light-theme .gas-warning-banner *  { color: inherit !important; }
 body.light-theme .stepper-val           { color: var(--text) !important; }
 body.light-theme .result-tab-btn.active { color: var(--accent) !important; }

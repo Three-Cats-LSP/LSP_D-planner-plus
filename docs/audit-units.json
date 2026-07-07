@@ -1749,7 +1749,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "ca79cfc844b33090dbb9d2f57d56a5fa89699f4ec984bcfb6b1ffa988ae16996",
+      "fingerprint": "5ec72c983360035726bbba08eaa3c737ff5864218b0961ec4764fe2279b8a57c",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1775,22 +1775,14 @@
       "path": "lsp-dplanner-controls.css",
       "layer": "web_css",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
-      "last_read_fingerprint": "6d818e2cd567b940e5b59394178c674b5e48196f2c29778a99012ad41b11f9c2",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-EXTRACT-CSS",
-        "SUITE-UI-STRUCTURE/UI-CSS-LINK-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-03",
-        "EXT-06",
-        "COV-01"
-      ],
+      "fingerprint": "6fe4e4def28dc04f9f4a06857222225751b277f24ee1b2a5c685412bb7e0adfc",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified — UI-CSS-CONTROLS"
     },
     {
@@ -1802,7 +1794,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c339d6d0c7d321c223fd28febc38525685cc5bc2d08ac4d79a0b9546838faf2a",
+      "fingerprint": "3b83f625b851d8e1f4429c8b27ad7797a24cf922eab833864c4e7397af4bcc08",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5129,7 +5121,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1e1de22691a03a3b5628a51f3995ad866adebba49a9357749afe03c35e1a29dc",
+      "fingerprint": "14d1b908493396a626b982388c8e6013639aeffe0a0f3069ef0e8baffae5c29c",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5625,7 +5617,7 @@
         "REG-110",
         "REG-111"
       ],
-      "fingerprint": "aef744209a6afafbb90653692f2a73a7fa76a9224f795027aef4c052ae2579a4",
+      "fingerprint": "7d6facfdb50171fd16d8e2b291f03889b1a92b2aacdd0e18af4a6fb90843f578",
       "last_read_fingerprint": null
     },
     {
@@ -5707,7 +5699,7 @@
     },
     {
       "cycle": 7,
-      "max_new_application_lines": 977,
+      "max_new_application_lines": 985,
       "application_units": [
         "UI-CSS-RESULTS"
       ],

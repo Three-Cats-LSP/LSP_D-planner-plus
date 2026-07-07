@@ -628,10 +628,16 @@ async () => {
     criticalGasCards: document.querySelectorAll('.gas-usage-card--critical').length,
     warningText: document.getElementById('gasWarningBanner')?.textContent?.trim() || '',
     cardWarningText: document.querySelector('.gas-consumption-warning')?.textContent?.trim() || '',
-    warningIconText: document.querySelector('#gasWarningBanner') ? getComputedStyle(document.querySelector('#gasWarningBanner'), '::before').content : '',
+    warningIconText: document.querySelector('#gasWarningBanner > span[aria-hidden="true"]')?.textContent?.trim() || '',
+    warningPseudoIconText: document.querySelector('#gasWarningBanner') ? getComputedStyle(document.querySelector('#gasWarningBanner'), '::before').content : '',
+    warningIconCount: document.querySelectorAll('#gasWarningBanner > span[aria-hidden="true"]').length,
     cardWarningIconText: document.querySelector('.gas-consumption-warning span')?.textContent?.trim() || '',
     warningColor: document.getElementById('gasWarningBanner') ? getComputedStyle(document.getElementById('gasWarningBanner')).color.replace(/\s+/g, '').toLowerCase() : '',
     cardWarningColor: document.querySelector('.gas-consumption-warning') ? getComputedStyle(document.querySelector('.gas-consumption-warning')).color.replace(/\s+/g, '').toLowerCase() : '',
+    warningBackground: document.getElementById('gasWarningBanner') ? getComputedStyle(document.getElementById('gasWarningBanner')).backgroundColor.replace(/\s+/g, '').toLowerCase() : '',
+    cardWarningBackground: document.querySelector('.gas-consumption-warning') ? getComputedStyle(document.querySelector('.gas-consumption-warning')).backgroundColor.replace(/\s+/g, '').toLowerCase() : '',
+    warningBorder: document.getElementById('gasWarningBanner') ? getComputedStyle(document.getElementById('gasWarningBanner')).borderTopColor.replace(/\s+/g, '').toLowerCase() : '',
+    cardWarningBorder: document.querySelector('.gas-consumption-warning') ? getComputedStyle(document.querySelector('.gas-consumption-warning')).borderTopColor.replace(/\s+/g, '').toLowerCase() : '',
     criticalCardColor: document.querySelector('.gas-usage-card--critical') ? getComputedStyle(document.querySelector('.gas-usage-card--critical')).borderTopColor.replace(/\s+/g, '').toLowerCase() : '',
     checks,
     overflow,
@@ -1376,10 +1382,13 @@ def main() -> int:
 
     results["SL-C09-MOBILE-WARNING-WRAP"] = bool(
         mobile_warning_details.get("ok")
-        and "⚠" in mobile_warning_details.get("warningIconText", "")
-        and mobile_warning_details.get("cardWarningIconText") == "⚠"
-        and mobile_warning_details.get("warningColor") == mobile_warning_details.get("criticalCardColor")
-        and mobile_warning_details.get("cardWarningColor") == mobile_warning_details.get("criticalCardColor")
+        and mobile_warning_details.get("warningIconText") == "\u26a0"
+        and mobile_warning_details.get("warningPseudoIconText") in ("none", '""')
+        and mobile_warning_details.get("warningIconCount") == 1
+        and mobile_warning_details.get("cardWarningIconText") == "\u26a0"
+        and mobile_warning_details.get("warningColor") == mobile_warning_details.get("cardWarningColor")
+        and mobile_warning_details.get("warningBackground") == mobile_warning_details.get("cardWarningBackground")
+        and mobile_warning_details.get("warningBorder") == mobile_warning_details.get("cardWarningBorder")
         and not mobile_warning_details.get("console_errors")
     )
     results["SL-C09-VPM-MODE-TOGGLE"] = bool(

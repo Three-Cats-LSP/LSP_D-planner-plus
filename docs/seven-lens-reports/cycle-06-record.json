@@ -206,9 +206,9 @@
       "start_line": 1,
       "end_line": 500,
       "line_count": 500,
-      "content_fingerprint": "f1fe99ca4a101e0cb5875e1b7667bf645e5cd0f86d4292faa9997354fc46caee",
+      "content_fingerprint": "12de763543a3a4822db602d0be4cc44a2b5affe54aa2762b9badd272a90cffda",
       "review_session": "C06-A",
-      "verification_session": "C06-V-B",
+      "verification_session": "C09-DEP-WARNING-BANNER-PALETTE",
       "lens_results": {
         "L1": {
           "trace": "gas-f-num 4.25rem flex :127-129; option-pill calc thumb width/translate :59-71; android panel max-height min(70vh,520px) :202; form-grid minmax(110px,1fr) :94-97",
@@ -867,5 +867,16 @@
   "protocol_migrations": [
     "resolution-commit-v1",
     "receipt-exit-v1"
+  ],
+  "dependency_revalidations": [
+    {
+      "session": "C09-DEP-WARNING-BANNER-PALETTE",
+      "result": "NO_NEW_FINDING",
+      "reason": "Alert palette changed from solid red to shared pale-red warning treatment; no control layout or interaction finding introduced.",
+      "validated_by": [
+        "SL-C09-MOBILE-WARNING-WRAP",
+        "SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS"
+      ]
+    }
   ]
 }

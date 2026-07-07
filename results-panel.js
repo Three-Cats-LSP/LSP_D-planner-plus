@@ -254,7 +254,7 @@ function _setGasWarningBannerHtml(html) {
     banner.style.display = 'none';
     return;
   }
-  banner.innerHTML = content;
+  banner.innerHTML = `<span aria-hidden="true">⚠</span><div class="gas-warning-copy">${content}</div>`;
   banner.style.display = 'flex';
 }
 function _updateGasWarningBannerFromCard(gasEl) {

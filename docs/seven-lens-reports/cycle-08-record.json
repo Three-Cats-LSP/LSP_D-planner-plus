@@ -427,9 +427,9 @@
       "start_line": 1,
       "end_line": 327,
       "line_count": 327,
-      "content_fingerprint": "1e1de22691a03a3b5628a51f3995ad866adebba49a9357749afe03c35e1a29dc",
+      "content_fingerprint": "14d1b908493396a626b982388c8e6013639aeffe0a0f3069ef0e8baffae5c29c",
       "review_session": "C08-A",
-      "verification_session": "C08-V-B",
+      "verification_session": "C09-DEP-WARNING-BANNER-HTML",
       "lens_results": {
         "L1": {
           "trace": "switchResultTab pane lists rec vs tec :257-261; _splitMetricValUnit parse :36-40; setMobilePlanView matchMedia 640px :126",
@@ -1905,6 +1905,15 @@
       "result": "NO_NEW_FINDING",
       "verified_at": "2026-07-08T00:00:00Z",
       "verifier": "Codex simplified dependency re-review"
+    },
+    {
+      "session": "C09-DEP-WARNING-BANNER-HTML",
+      "result": "NO_NEW_FINDING",
+      "reason": "Gas warning banner now renders one real unicode icon and preserves warning HTML; panel state/update behavior remains valid.",
+      "validated_by": [
+        "SL-C09-MOBILE-WARNING-WRAP",
+        "SL-VIS-GAS-CONSUMPTION-BARS"
+      ]
     }
   ]
 }
