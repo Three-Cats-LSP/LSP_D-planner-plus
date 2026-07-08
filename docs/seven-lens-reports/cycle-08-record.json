@@ -427,7 +427,7 @@
       "start_line": 1,
       "end_line": 311,
       "line_count": 311,
-      "content_fingerprint": "2ee429e8db4fdbf3240f5dd6a7061b2193fbc42e5370064ff6cba952bbe893be",
+      "content_fingerprint": "e9a5ca94a35fb403f96151a10cb0ca579f10554f7f4b93c7ea8c1a382627e952",
       "review_session": "C08-A",
       "verification_session": "C09-DEP-WARNING-BANNER-HTML",
       "lens_results": {
@@ -1795,7 +1795,7 @@
       "start_line": 1,
       "end_line": 311,
       "line_count": 311,
-      "content_fingerprint": "5622a3aa0e618e6bf74aadc78b36ce01d3928c755d41431b457647a160b73feb",
+      "content_fingerprint": "e9a5ca94a35fb403f96151a10cb0ca579f10554f7f4b93c7ea8c1a382627e952",
       "trigger": "Schedule decorators now classify visible table cells by data-label after Run/Mix reorder and TTS column removal.",
       "review_scope": "decorateDecoTableForV3/decorateContingencyTableForV3 cell decoration contract only; Cycle 8 navigation and stale-results fixes remain unchanged.",
       "result": "NO_NEW_FINDING",
@@ -1881,9 +1881,9 @@
       "part_id": "UI-RESULTS-PANEL",
       "unit_id": "UI-RESULTS-PANEL",
       "path": "results-panel.js",
-      "content_fingerprint": "3f27ef8c906c85ebeb0a24c479720b2100620b23af6e520d5113d567343975b6",
+      "content_fingerprint": "e9a5ca94a35fb403f96151a10cb0ca579f10554f7f4b93c7ea8c1a382627e952",
       "boundaries": {
-        "UI-RESULTS-PANEL-P01": "lines 1-310"
+        "UI-RESULTS-PANEL-P01": "lines 1-311"
       },
       "trigger": "Result summary chip renderer changed class mapping for Surf GF, OTU, TTS, and Decozone.",
       "review_scope": "Summary chip class mapping only; prior Cycle 8 panel findings remain closed and unchanged.",
@@ -1897,10 +1897,10 @@
       "session": "C09-DEP-RESULTS-PANEL-GAS-WARNING-HTML",
       "unit_id": "UI-RESULTS-PANEL",
       "part_fingerprints": {
-        "UI-RESULTS-PANEL-P01": "1e1de22691a03a3b5628a51f3995ad866adebba49a9357749afe03c35e1a29dc"
+        "UI-RESULTS-PANEL-P01": "e9a5ca94a35fb403f96151a10cb0ca579f10554f7f4b93c7ea8c1a382627e952"
       },
       "part_boundaries": {
-        "UI-RESULTS-PANEL-P01": "lines 1-327"
+        "UI-RESULTS-PANEL-P01": "lines 1-311"
       },
       "result": "NO_NEW_FINDING",
       "verified_at": "2026-07-08T00:00:00Z",

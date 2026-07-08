@@ -155,6 +155,20 @@ CAPTURE_JS = r"""
   const scheduleSwitchCells = firstSwitchRow ? [...firstSwitchRow.querySelectorAll('td')] : [];
   const headerTexts = headers.slice(1).map(el => (el.textContent || '').trim());
   const nonSummaryRows = schedule ? [...schedule.querySelectorAll('tbody tr[data-phase]:not(.row-summary)')] : [];
+  const decoPhaseTexts = schedule
+    ? [...schedule.querySelectorAll('tbody tr[data-phase="deco"] td:first-child')]
+      .map(el => (el.textContent || '').trim())
+    : [];
+  const decoPhaseIcons = schedule
+    ? [...schedule.querySelectorAll('tbody tr[data-phase="deco"] td:first-child .ph-deco svg')]
+      .map(svg => {
+        const circles = [...svg.querySelectorAll('circle')];
+        return {
+          circleCount: circles.length,
+          outlineCircleCount: circles.filter(circle => (circle.getAttribute('fill') || '').toLowerCase() === 'none').length,
+        };
+      })
+    : [];
   const ttsCells = schedule ? [...schedule.querySelectorAll('td[data-label="TTS"]')] : [];
   const geom = (el) => {
     if (!el) return null;
@@ -315,6 +329,12 @@ CAPTURE_JS = r"""
       wrapWidth: scheduleWrapRect?.width || 0,
       wrapOverflowX: scheduleWrap ? getComputedStyle(scheduleWrap).overflowX : '',
       clippedCells: clippedScheduleCells,
+      decoPhaseTexts,
+      decoPhaseIcons,
+      decoStopPlainBullets: decoPhaseTexts.some(text => text)
+        ? decoPhaseTexts.every(text => text === '\u25cf')
+        : decoPhaseIcons.length > 0
+          && decoPhaseIcons.every(icon => icon.circleCount === 1 && icon.outlineCircleCount === 0),
       depthAligned: !!(depthHead && depthCell && Math.abs(depthHead.center - depthCell.center) <= 4),
       stopAligned: !!(stopHead && stopCell && Math.abs(stopHead.center - stopCell.center) <= 4),
       runBeforeMix: !!(runHead && mixHead && runHead.center < mixHead.center),
@@ -1864,6 +1884,7 @@ def main() -> int:
         and c["scheduleColumns"]["mixLaneAligned"]
         and c["scheduleColumns"]["mixCompact"]
         and c["scheduleColumns"]["mobileScrollReady"]
+        and c["scheduleColumns"]["decoStopPlainBullets"]
         and not c["scheduleColumns"]["clippedCells"]
         for c in captures
     )

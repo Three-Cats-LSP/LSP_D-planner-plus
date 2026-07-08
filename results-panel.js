@@ -12,8 +12,8 @@ const _PHASE_ICON_SVG = {
   bottom: '<span class="ph ph-bottom" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="6" cy="6" r="5"/></svg></span>',
   ascent: '<span class="ph ph-ascent" aria-hidden="true"><svg width="12" height="14" viewBox="0 0 12 14" fill="none"><path d="M6 13V3M2 5l4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>',
   surface: '<span class="ph ph-surface" aria-hidden="true"><svg width="12" height="14" viewBox="0 0 12 14" fill="none"><path d="M6 13V3M2 5l4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>',
-  deco: '<span class="ph ph-deco" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="5" cy="5" r="2.5"/></svg></span>',
-  safety: '<span class="ph ph-deco" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="4.5" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="5" cy="5" r="2.5"/></svg></span>',
+  deco: '<span class="ph ph-deco" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="4"/></svg></span>',
+  safety: '<span class="ph ph-deco" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="4"/></svg></span>',
   switch: '<span class="ph ph-switch" aria-hidden="true"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 3h12M10 1l3 2-3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 7H1M4 5l-3 2 3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>',
 };
 function buildScheduleLegendHtml() {

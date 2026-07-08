@@ -465,7 +465,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
           ? 'background:rgba(255,255,0,0.25);'
           : '';
       html += `<tr class="deco-row" data-phase="deco" style="${rowBgVPM}"${capNote} ${rowBgVPM && !seg.vpmStopCapHit ? 'data-cnshi="1"' : ''}>
-        <td><span style="color:${seg.vpmStopCapHit ? 'var(--orange)' : rowBgVPM ? '#b30000' : 'var(--red)'};font-size:13px;">${seg.vpmStopCapHit ? '⚠' : '🔴'}</span></td>
+        <td><span style="color:${seg.vpmStopCapHit ? 'var(--orange)' : rowBgVPM ? '#b30000' : 'var(--red)'};font-size:13px;">${seg.vpmStopCapHit ? '⚠' : '●'}</span></td>
         <td data-label="Depth" style="color:${seg.vpmStopCapHit ? 'var(--orange)' : rowBgVPM ? '#b30000' : 'var(--red)'};font-weight:600;">${dU ? seg.depth : Math.round(seg.depth * 3.28084)}${du}</td>
         <td data-label="Stop" style="color:${seg.vpmStopCapHit ? 'var(--orange)' : rowBgVPM ? '#b30000' : 'var(--red)'};font-weight:600;">${fmtT(seg.time)}${seg.vpmStopCapHit ? ' ⚠' : ''}</td>
         <td data-label="Run" style="color:var(--text);">${rtDisp}</td>
@@ -1106,7 +1106,7 @@ function renderZhlScheduleResults(ctx) {
           ? 'background:rgba(255,255,0,0.25);'
           : '';
       _decoRowBuf += `<tr class="deco-row" data-phase="deco" style="${rowBg}" ${rowBg ? 'data-cnshi="1"' : ''}>
-        <td>🔴</td>
+        <td><span style="color:var(--red);">●</span></td>
         <td data-label="Depth">${dU?s.depth+'m':mToFt(s.depth)+'ft'}</td>
         <td data-label="Stop" style="color:${rowBg?'#b30000':'var(--red)'};">${fmtMM(stepDur)}</td>
         <td data-label="Run">${rtDisp}</td>

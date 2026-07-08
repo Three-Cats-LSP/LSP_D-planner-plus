@@ -2255,7 +2255,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RENDER"
       },
-      "fingerprint": "6afa9c678bb417e54f7c6ade06d0d7fa4c9e5baf822b8017f7b9755b2c10df34",
+      "fingerprint": "aa8a93d4ca74464681dde305e9b75444bf935ef5aa1ddc5690a8cb8de9eb5f5e",
       "last_read_fingerprint": null,
       "audit_issue": 147,
       "evidence": [],
@@ -2344,7 +2344,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
-      "fingerprint": "57f6f66e736ed9b8ce7483efe11a005a041f261e8c7f29b22671b13cb6f282f4",
+      "fingerprint": "04d5e3fbd58d5b52c9c8ef123ea742c0056b3384699b11a40d47f2520b34d333",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5237,7 +5237,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "2ee429e8db4fdbf3240f5dd6a7061b2193fbc42e5370064ff6cba952bbe893be",
+      "fingerprint": "e9a5ca94a35fb403f96151a10cb0ca579f10554f7f4b93c7ea8c1a382627e952",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5735,7 +5735,7 @@
         "REG-137",
         "REG-138"
       ],
-      "fingerprint": "94d21c598b4a6d0a321cb3880c434fb35ea0bde069968b3e10daf52496922bf4",
+      "fingerprint": "ca5b38cf912374e19d67d0520ac7bac73e456bc401f1f20735dfd7c18800f9a6",
       "last_read_fingerprint": null
     },
     {
