@@ -633,8 +633,11 @@ body.light-theme #resultsPanel .gas-pill.bottom-gas { background: #f0f4ff; }
 body.light-theme #resultsPanel .gas-pill.travel-gas { background: #f0f4ff; color: #111; border-color: var(--gas-travel); }
 #resultsPanel .gas-pill .pill-dot { display: none; }
 #resultsPanel .gas-consumption-narcotic { margin: 0 0 var(--space-2); }
+#resultsPanel .gas-consumption-cns { margin: 0 0 var(--space-2); }
 #resultsPanel .gas-consumption-narcotic .alert { display: flex; align-items: flex-start; gap: var(--space-2); width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); font-size: 12px; line-height: 1.45; margin: 0; white-space: normal; overflow-wrap: anywhere; word-break: normal; }
+#resultsPanel .gas-consumption-cns .alert { display: flex; align-items: flex-start; gap: var(--space-2); width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); font-size: 12px; line-height: 1.45; margin: 0; white-space: normal; overflow-wrap: anywhere; word-break: normal; }
 #resultsPanel .gas-consumption-narcotic .alert > * { min-width: 0; overflow-wrap: anywhere; }
+#resultsPanel .gas-consumption-cns .alert > * { min-width: 0; overflow-wrap: anywhere; }
 #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn { background:rgba(255,68,51,0.18); border:1px solid #ff4433; color:#fff; font-weight:700; }
 #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn * { color:#fff !important; }
 #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn .tip-icon { color:#fff !important; opacity:0.85; }

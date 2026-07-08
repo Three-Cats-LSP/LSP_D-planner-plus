@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v3-full-reset`
-**Units:** 207 total; 0 unread; 92 in progress; 3 read; 112 verified.
+**Units:** 207 total; 0 unread; 93 in progress; 3 read; 111 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -52,9 +52,9 @@ Run the first unfinished cycle in this table. The numeric cycle table below rema
 | 4 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 612 | - | Tools and modals markup partials READ; current lines: 612; sessions: 2 |
 | 5 | UI-CSS-FOUNDATION, UI-CSS-MODES | 760 | - | Foundation/modes CSS READ (2 bounded sessions); current lines: 760; sessions: 2 |
 | 6 | UI-CSS-CONTROLS | 548 | - | Controls CSS READ; current lines: 548; sessions: 1 |
-| 7 | UI-CSS-RESULTS | 986 | - | Results CSS READ (2 bounded sessions); current lines: 986; sessions: 2 |
+| 7 | UI-CSS-RESULTS | 989 | - | Results CSS READ (2 bounded sessions); current lines: 989; sessions: 2 |
 | 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 508 | - | Planner shell and results panel READ; current lines: 526; sessions: 1 |
-| 9 | UI-ENVIRONMENT, UI-MODE-STATE | 999 | - | settings-core environment and mode state READ (1002 lines; >=2 bounded sessions); explicitly verify VPM switch behavior; enforce app-wide gas-switch terminology: the diving procedure is labeled and identified as "Gas switch" everywhere, with no user-facing "Gas change" labels or new gas-change IDs/classes/contracts; verify mobile warning/alert banners and gas-consumption warnings wrap inside the viewport without horizontal clipping or overflow; current lines: 999; sessions: 2 |
+| 9 | UI-ENVIRONMENT, UI-MODE-STATE | 1001 | - | Environment/mode state READ (2 bounded sessions); current lines: 1001; sessions: 2 |
 | 10 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 679 | - | Surface interval and gas table cores READ; current lines: 679; sessions: 2 |
 | 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 507 | ENG-ZHL-GAS | Gas card UI READ; current lines: 534; sessions: 1 |
 | 12 | APP-GAS-PLAN | 546 | - | Gas plan core READ; current lines: 546; sessions: 1 |

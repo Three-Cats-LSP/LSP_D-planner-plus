@@ -1862,7 +1862,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "8b811568c27e58d26f2d5c8f5902eeed528867fc08648d6e501f25b04e3b2bb0",
+      "fingerprint": "532630e31b9f33e413e54c4a6efc84b7372eef0f15e0597c6436d38df2bf8f48",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2035,26 +2035,16 @@
       "path": "settings-core.js",
       "layer": "ui_core",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ENVIRONMENT"
       },
-      "fingerprint": "439368a89834973c16189864e156fe5a34b66622aac1a3371aaa664bbeffcbea",
-      "last_read_fingerprint": "439368a89834973c16189864e156fe5a34b66622aac1a3371aaa664bbeffcbea",
+      "fingerprint": "fb009d0b70c9f5ed196b0c84636758d2d79e71dde87104551ecc64a4c5b5553e",
+      "last_read_fingerprint": null,
       "audit_issue": 139,
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity",
-        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
-        "SUITE-ENGINE-FULL/AUDIT-REG-01"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01",
-        "EXT-02",
-        "REG-01"
-      ],
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Audit issue #139"
     },
     {
@@ -2067,7 +2057,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MODE-STATE"
       },
-      "fingerprint": "249b2674f51d7f49fa2f39054bbffc42b96720c949263cf4d748d5f9c6ae4c1b",
+      "fingerprint": "af479f1974c32eaf0f7494c8e87be90b2622ac846c5a6eda7e0bd5d60dd07824",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5828,12 +5818,12 @@
     },
     {
       "cycle": 7,
-      "max_new_application_lines": 986,
+      "max_new_application_lines": 989,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "Results CSS READ (2 bounded sessions); current lines: 986; sessions: 2",
+      "acceptance": "Results CSS READ (2 bounded sessions); current lines: 989; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -5848,14 +5838,14 @@
     },
     {
       "cycle": 9,
-      "max_new_application_lines": 999,
+      "max_new_application_lines": 1001,
       "min_review_sessions": 2,
       "application_units": [
         "UI-ENVIRONMENT",
         "UI-MODE-STATE"
       ],
       "engine_reverification": [],
-      "acceptance": "settings-core environment and mode state READ (1002 lines; >=2 bounded sessions); explicitly verify VPM switch behavior; enforce app-wide gas-switch terminology: the diving procedure is labeled and identified as \"Gas switch\" everywhere, with no user-facing \"Gas change\" labels or new gas-change IDs/classes/contracts; verify mobile warning/alert banners and gas-consumption warnings wrap inside the viewport without horizontal clipping or overflow; current lines: 999; sessions: 2"
+      "acceptance": "Environment/mode state READ (2 bounded sessions); current lines: 1001; sessions: 2"
     },
     {
       "cycle": 10,
