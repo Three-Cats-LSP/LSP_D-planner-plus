@@ -318,7 +318,7 @@ CAPTURE_JS = r"""
       depthAligned: !!(depthHead && depthCell && Math.abs(depthHead.center - depthCell.center) <= 4),
       stopAligned: !!(stopHead && stopCell && Math.abs(stopHead.center - stopCell.center) <= 4),
       runBeforeMix: !!(runHead && mixHead && runHead.center < mixHead.center),
-      sevenCellsPerRow: nonSummaryRows.length > 0 && nonSummaryRows.every(row => row.cells.length === 7),
+      sevenCellsPerRow: nonSummaryRows.length > 0 && nonSummaryRows.every(row => row.cells.length === 8),
       noVisibleTts: !headerTexts.some(text => text.toUpperCase() === 'TTS') && ttsCells.length === 0,
       depthCompact: !!(depthHead && stopHead && mixHead && phaseCell && (
         window.innerWidth <= 640
@@ -1000,7 +1000,7 @@ async () => {
     scheduleHeaders: headers,
     hasTtsHeader: headers.some(text => text.toUpperCase() === 'TTS'),
     ttsCellCount: ttsCells.length,
-    sevenCellsPerRow: nonSummaryRows.length > 0 && nonSummaryRows.every(row => row.cells.length === 7),
+    sevenCellsPerRow: nonSummaryRows.length > 0 && nonSummaryRows.every(row => row.cells.length === 8),
     graphBeforeSchedule: !!(graphRect && scheduleRect && graphRect.bottom <= scheduleRect.top),
     gasBelowSchedule: !!(scheduleRect && gasRect && gasRect.top >= scheduleRect.bottom),
     resultBeforeGas: !!(resultRect && gasRect && resultRect.bottom <= gasRect.top),
@@ -1452,18 +1452,25 @@ async () => {
   document.getElementById('tecGenerateBtn')?.click();
   for (let i = 0; i < 50; i++) {
     await wait(120);
-    if (document.querySelector('#decoTableBody tr[data-phase="error"]')) break;
+    if (String(document.body.textContent || '').includes('BEYOND MOD')) break;
   }
   const errorRow = document.querySelector('#decoTableBody tr[data-phase="error"]');
   const cell = errorRow?.querySelector('td') || null;
   const graphCard = document.getElementById('fullDiveGraphCard');
   const gasCard = document.getElementById('gasConsumptionSummary');
+  const resultEl = document.getElementById('decoResult');
+  const resultsPanel = document.getElementById('resultsPanel');
+  const emptyState = document.getElementById('resultEmptyState');
   const cnsText = document.getElementById('decoCNSDisplay')?.textContent || '';
+  const toastText = document.getElementById('toast-schedule')?.textContent || '';
   return {
     errorRowCount: document.querySelectorAll('#decoTableBody tr[data-phase="error"]').length,
     colspan: cell ? Number(cell.getAttribute('colspan')) : null,
-    expected: typeof scheduleColumnCount === 'function' ? scheduleColumnCount() : 7,
-    text: cell?.textContent || '',
+    expected: typeof scheduleColumnCount === 'function' ? scheduleColumnCount() : 8,
+    text: toastText,
+    resultVisible: !!resultEl && getComputedStyle(resultEl).display !== 'none',
+    hasResults: !!resultsPanel && resultsPanel.classList.contains('has-results'),
+    emptyVisible: !!emptyState && getComputedStyle(emptyState).display !== 'none',
     graphVisible: !!graphCard && getComputedStyle(graphCard).display !== 'none',
     gasVisible: !!gasCard && getComputedStyle(gasCard).display !== 'none',
     planRows: document.querySelectorAll('#decoTableBody tr[data-phase]:not([data-phase="error"])').length,
@@ -1521,18 +1528,25 @@ async () => {
   document.getElementById('tecGenerateBtn')?.click();
   for (let i = 0; i < 50; i++) {
     await wait(120);
-    if (document.querySelector('#decoTableBody tr[data-phase="error"]')) break;
+    if (String(document.body.textContent || '').includes('BEYOND MOD')) break;
   }
   const errorRow = document.querySelector('#decoTableBody tr[data-phase="error"]');
   const cell = errorRow?.querySelector('td') || null;
   const graphCard = document.getElementById('fullDiveGraphCard');
   const gasCard = document.getElementById('gasConsumptionSummary');
+  const resultEl = document.getElementById('decoResult');
+  const resultsPanel = document.getElementById('resultsPanel');
+  const emptyState = document.getElementById('resultEmptyState');
   const cnsText = document.getElementById('decoCNSDisplay')?.textContent || '';
+  const toastText = document.getElementById('toast-schedule')?.textContent || '';
   return {
     errorRowCount: document.querySelectorAll('#decoTableBody tr[data-phase="error"]').length,
     colspan: cell ? Number(cell.getAttribute('colspan')) : null,
-    expected: typeof scheduleColumnCount === 'function' ? scheduleColumnCount() : 7,
-    text: cell?.textContent || '',
+    expected: typeof scheduleColumnCount === 'function' ? scheduleColumnCount() : 8,
+    text: toastText,
+    resultVisible: !!resultEl && getComputedStyle(resultEl).display !== 'none',
+    hasResults: !!resultsPanel && resultsPanel.classList.contains('has-results'),
+    emptyVisible: !!emptyState && getComputedStyle(emptyState).display !== 'none',
     graphVisible: !!graphCard && getComputedStyle(graphCard).display !== 'none',
     gasVisible: !!gasCard && getComputedStyle(gasCard).display !== 'none',
     planRows: document.querySelectorAll('#decoTableBody tr[data-phase]:not([data-phase="error"])').length,
@@ -1668,7 +1682,7 @@ async () => {
   const table = tbody?.closest('table');
   const errorRows = [...document.querySelectorAll('#decoTableBody tr[data-phase="error"]')];
   const cell = errorRows[0]?.querySelector('td') || null;
-  const expected = typeof scheduleColumnCount === 'function' ? scheduleColumnCount() : 7;
+  const expected = typeof scheduleColumnCount === 'function' ? scheduleColumnCount() : 8;
   const tableRect = table ? table.getBoundingClientRect() : null;
   const cellRect = cell ? cell.getBoundingClientRect() : null;
   const text = cell?.textContent || '';
@@ -1832,7 +1846,8 @@ def main() -> int:
         and c["scheduleColumns"]["tableLayout"] == "fixed"
         and c["scheduleColumns"]["headerTexts"][:4] == ["Depth", "Stop", "Run", "Mix"]
         and c["scheduleColumns"]["headerTexts"][4].startswith("ppO")
-        and c["scheduleColumns"]["headerTexts"][5] == "EAD"
+        and c["scheduleColumns"]["headerTexts"][5] == "CNS"
+        and c["scheduleColumns"]["headerTexts"][6] == "EAD"
         and c["scheduleColumns"]["sevenCellsPerRow"]
         and c["scheduleColumns"]["noVisibleTts"]
         and c["scheduleColumns"]["runBeforeMix"]
@@ -1919,7 +1934,7 @@ def main() -> int:
         and contingency_gas_details.get("graphVisible")
         and not contingency_gas_details.get("graphLegendText", "")
         and contingency_gas_details.get("graphStopTableCount") == 0
-        and contingency_gas_details.get("scheduleHeaders") == ["Depth", "Stop", "Run", "Mix", "ppO\u2082", "EAD"]
+        and contingency_gas_details.get("scheduleHeaders") == ["Depth", "Stop", "Run", "Mix", "ppO\u2082", "CNS", "EAD"]
         and not contingency_gas_details.get("hasTtsHeader")
         and contingency_gas_details.get("ttsCellCount") == 0
         and contingency_gas_details.get("sevenCellsPerRow")
@@ -2002,12 +2017,16 @@ def main() -> int:
         and not vpm_details.get("console_errors")
     )
     results["SL-C09-VPM-BEYOND-MOD-BLOCKS"] = bool(
-        vpm_beyond_mod_details.get("errorRowCount") == 1
-        and vpm_beyond_mod_details.get("colspan") == vpm_beyond_mod_details.get("expected") == 7
+        vpm_beyond_mod_details.get("errorRowCount") == 0
+        and vpm_beyond_mod_details.get("colspan") is None
+        and vpm_beyond_mod_details.get("expected") == 8
         and "BEYOND MOD" in vpm_beyond_mod_details.get("text", "")
         and "EAN32" not in vpm_beyond_mod_details.get("text", "")
         and "32/00" in vpm_beyond_mod_details.get("text", "")
         and "actual" in vpm_beyond_mod_details.get("text", "")
+        and not vpm_beyond_mod_details.get("resultVisible")
+        and not vpm_beyond_mod_details.get("hasResults")
+        and vpm_beyond_mod_details.get("emptyVisible")
         and not vpm_beyond_mod_details.get("graphVisible")
         and not vpm_beyond_mod_details.get("gasVisible")
         and vpm_beyond_mod_details.get("planRows") == 0
@@ -2016,12 +2035,16 @@ def main() -> int:
         and not vpm_beyond_mod_details.get("console_errors")
     )
     results["SL-C09-ZHL-BEYOND-MOD-BLOCKS"] = bool(
-        zhl_beyond_mod_details.get("errorRowCount") == 1
-        and zhl_beyond_mod_details.get("colspan") == zhl_beyond_mod_details.get("expected") == 7
+        zhl_beyond_mod_details.get("errorRowCount") == 0
+        and zhl_beyond_mod_details.get("colspan") is None
+        and zhl_beyond_mod_details.get("expected") == 8
         and "BEYOND MOD" in zhl_beyond_mod_details.get("text", "")
         and "EAN32" not in zhl_beyond_mod_details.get("text", "")
         and "32/00" in zhl_beyond_mod_details.get("text", "")
         and "actual" in zhl_beyond_mod_details.get("text", "")
+        and not zhl_beyond_mod_details.get("resultVisible")
+        and not zhl_beyond_mod_details.get("hasResults")
+        and zhl_beyond_mod_details.get("emptyVisible")
         and not zhl_beyond_mod_details.get("graphVisible")
         and not zhl_beyond_mod_details.get("gasVisible")
         and zhl_beyond_mod_details.get("planRows") == 0
@@ -2073,7 +2096,7 @@ def main() -> int:
     )
     vpm_error_geometry_ok = all(
         detail.get("errorRowCount") == 1
-        and detail.get("colspan") == detail.get("expected") == 7
+        and detail.get("colspan") == detail.get("expected") == 8
         and detail.get("hasHelper")
         and detail.get("geometryOk")
         and "VPM engine failed to load" in detail.get("text", "")

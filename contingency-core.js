@@ -537,7 +537,7 @@ function calcContingency() {
     <div class="schedule-wrap">
       <div class="deco-table-wrap">
         <table class="deco-table schedule-table table-view">
-          <thead><tr><th class="phase-cell" aria-label="Phase"></th><th>Depth</th><th>Stop</th><th class="align-r">Run</th><th>Mix</th><th class="align-r">ppO₂</th><th class="align-r">EAD</th></tr></thead>
+          <thead><tr><th class="phase-cell" aria-label="Phase"></th><th>Depth</th><th>Stop</th><th class="align-r">Run</th><th>Mix</th><th class="align-r">ppO₂</th><th class="align-r">CNS</th><th class="align-r">EAD</th></tr></thead>
           <tbody id="contingencyTableBody">${(newRows || '').replace(/data-phase="/g, 'data-phase="contingency-').replace(/<tr[^>]*data-phase="contingency-totals"[^>]*>[\s\S]*?<\/tr>/gi, '')}${emInfoRow}</tbody>
         </table>
       </div>

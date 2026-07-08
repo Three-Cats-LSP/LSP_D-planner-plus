@@ -81,6 +81,20 @@ function _gasVolPresHtml(litres, bar) {
   return `${_gasVolHtml(litres)} <span class="gas-pres-wrap">(${_gasPresHtml(bar)})</span>`;
 }
 
+function scheduleCnsDisplay(cnsPct) {
+  const n = Number(cnsPct);
+  return Number.isFinite(n) ? `${n.toFixed(1)}%` : '';
+}
+
+function scheduleCnsStyle(cnsPct) {
+  const n = Number(cnsPct);
+  if (!Number.isFinite(n)) return 'color:var(--muted);';
+  if (n >= 100) return 'color:var(--red);font-weight:700;';
+  if (n >= 80) return 'color:var(--orange);font-weight:700;';
+  if (n >= 50) return 'color:var(--yellow);font-weight:700;';
+  return 'color:var(--green);';
+}
+
 function _gasConsumedForLabel(gasConsumed, label) {
   if (!gasConsumed || !label) return 0;
   if (Number.isFinite(gasConsumed[label])) return gasConsumed[label];
@@ -386,6 +400,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
         <td data-label="Run"></td>
         <td data-label="Mix">${switchMixDisp}</td>
         <td data-label="PPO2">${switchPpO2}</td>
+        <td data-label="CNS"></td>
         <td data-label="EAD"></td>
       </tr>`;
       prevGas = segGas;
@@ -401,6 +416,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
         <td data-label="Run" style="color:var(--accent);">${rtDisp}</td>
         <td data-label="Mix" style="color:${gc};">${gasDisp}</td>
         <td data-label="PPO2" style="color:var(--muted);">${vpmDisplayPpo2(seg.endDepth, o2pct, hepct, seg)}</td>
+        <td data-label="CNS" style="${scheduleCnsStyle(seg._cumCNS)}">${scheduleCnsDisplay(seg._cumCNS)}</td>
         <td data-label="EAD" style="color:var(--muted);">—</td>
       </tr>`;
       prevGas = segGas;
@@ -415,6 +431,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
         <td data-label="Run" style="color:var(--accent);">${rtDisp}</td>
         <td data-label="Mix" style="color:${gc};">${gasDisp}</td>
         <td data-label="PPO2" style="color:var(--muted);">${ppO2b}</td>
+        <td data-label="CNS" style="${scheduleCnsStyle(seg._cumCNS)}">${scheduleCnsDisplay(seg._cumCNS)}</td>
         <td data-label="EAD" style="color:var(--muted);">—</td>
       </tr>`;
     } else if (seg.type === 'ascent') {
@@ -428,6 +445,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
         <td data-label="Run" class="asc-color">${rtDisp}</td>
         <td data-label="Mix" style="color:${gc};">${gasDisp}</td>
         <td data-label="PPO2" style="color:var(--muted);">${ppO2a}</td>
+        <td data-label="CNS" style="${scheduleCnsStyle(seg._cumCNS)}">${scheduleCnsDisplay(seg._cumCNS)}</td>
         <td data-label="EAD" style="color:var(--muted);"></td>
       </tr>`;
     } else if (seg.type === 'stop') {
@@ -452,6 +470,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
         <td data-label="Run" style="color:var(--text);">${rtDisp}</td>
         <td data-label="Mix" style="color:${gc};">${gasDisp}</td>
         <td data-label="PPO2" style="${rowBgVPM?'color:#b30000;font-weight:700;':ppO2Color}">${ppO2s}</td>
+        <td data-label="CNS" style="${rowBgVPM?'color:#b30000;font-weight:700;':scheduleCnsStyle(cumCnsPctVPM)}">${scheduleCnsDisplay(cumCnsPctVPM)}</td>
         <td data-label="EAD" style="color:var(--muted);">—</td>
       </tr>`;
     }
@@ -951,6 +970,7 @@ function renderZhlScheduleResults(ctx) {
       <td data-label="Run" style="color:#ff8080;">${fmtMM(rowRT)}</td>
       <td data-label="Mix"><span style="color:#ff9900;font-weight:700;">${travelInfoRow.label}</span></td>
       <td data-label="PPO2" style="color:var(--muted);">${travelPPO2}</td>
+      <td data-label="CNS" style="${scheduleCnsStyle(totalCNSfrac * 100)}">${scheduleCnsDisplay(totalCNSfrac * 100)}</td>
       <td data-label="EAD" style="color:var(--muted);"></td>
     </tr>`;
 
@@ -969,6 +989,7 @@ function renderZhlScheduleResults(ctx) {
       <td data-label="Run" style="color:#ff8080;">${fmtMM(rowRT)}</td>
       <td data-label="Mix"><span style="color:var(--accent);">${loopMixLabel}</span></td>
       <td data-label="PPO2" style="color:var(--muted);">${descentPPO2}</td>
+      <td data-label="CNS" style="${scheduleCnsStyle(totalCNSfrac * 100)}">${scheduleCnsDisplay(totalCNSfrac * 100)}</td>
       <td data-label="EAD" style="color:var(--muted);"></td>
     </tr>`;
   } else {
@@ -986,6 +1007,7 @@ function renderZhlScheduleResults(ctx) {
       <td data-label="Run" style="color:#ff8080;">${fmtMM(rowRT)}</td>
       <td data-label="Mix"><span style="color:var(--accent);">${loopMixLabel}</span></td>
       <td data-label="PPO2" style="color:var(--muted);">${descentPPO2}</td>
+      <td data-label="CNS" style="${scheduleCnsStyle(totalCNSfrac * 100)}">${scheduleCnsDisplay(totalCNSfrac * 100)}</td>
       <td data-label="EAD" style="color:var(--muted);"></td>
     </tr>`;
   }
@@ -1014,6 +1036,7 @@ function renderZhlScheduleResults(ctx) {
     <td data-label="Run" style="color:var(--accent);">${fmtMM(rowRT)}</td>
     <td data-label="Mix"><span style="color:var(--accent);">${loopMixLabel}</span></td>
     <td data-label="PPO2" style="color:var(--muted);">${btPPO2}</td>
+    <td data-label="CNS" style="${scheduleCnsStyle(totalCNSfrac * 100)}">${scheduleCnsDisplay(totalCNSfrac * 100)}</td>
     <td data-label="EAD" style="color:var(--muted);"></td>
   </tr>`;
 
@@ -1058,6 +1081,7 @@ function renderZhlScheduleResults(ctx) {
         <td data-label="Run"></td>
         <td data-label="Mix">${switchMixDisp}</td>
         <td data-label="PPO2" style="${sppColor}">${fmtPpO2(switchPpO2)}</td>
+        <td data-label="CNS"></td>
         <td data-label="EAD"></td>
       </tr>`;
     }
@@ -1087,6 +1111,7 @@ function renderZhlScheduleResults(ctx) {
         <td data-label="Run">${rtDisp}</td>
         <td data-label="Mix" style="color:${rowBg?'#b30000':'var(--red)'}">${(s.gas || '—').toUpperCase()}</td>
         <td data-label="PPO2" style="${rowBg?'color:#b30000;font-weight:700;':pO2Color}">${pO2Val.toFixed(2)}</td>
+        <td data-label="CNS" style="${rowBg?'color:#b30000;font-weight:700;':scheduleCnsStyle(totalCNSfrac * 100)}">${scheduleCnsDisplay(totalCNSfrac * 100)}</td>
         <td data-label="EAD" style="color:${rowBg?'#555':'var(--muted)'};font-size:11px;">${eadDisp}</td>
       </tr>`;
     // ── SAFETY STOP ROW ──
@@ -1101,6 +1126,7 @@ function renderZhlScheduleResults(ctx) {
         <td data-label="Run">${rtDisp}</td>
         <td data-label="Mix" style="color:${gasColor};">${(s.gas || '—').toUpperCase()}</td>
         <td data-label="PPO2" style="color:var(--muted);">${Number.isFinite(pO2Val) ? pO2Val.toFixed(2) : '—'}</td>
+        <td data-label="CNS" style="${scheduleCnsStyle(totalCNSfrac * 100)}">${scheduleCnsDisplay(totalCNSfrac * 100)}</td>
         <td data-label="EAD" style="color:var(--muted);font-size:11px;">${fmtEAD(s.depth, s.fN2)}</td>
       </tr>`;
     // ── ASCENT ROW ──
@@ -1116,6 +1142,7 @@ function renderZhlScheduleResults(ctx) {
         <td data-label="Run" class="asc-color">${rtDisp}</td>
         <td data-label="Mix" style="color:${gasColor};">${(s.gas || '—').toUpperCase()}</td>
         <td data-label="PPO2" style="${pO2Color}">${Number.isFinite(pO2Val) ? pO2Val.toFixed(2) : '—'}</td>
+        <td data-label="CNS" style="${scheduleCnsStyle(totalCNSfrac * 100)}">${scheduleCnsDisplay(totalCNSfrac * 100)}</td>
         <td data-label="EAD" style="color:var(--muted);"></td>
       </tr>`;
     }

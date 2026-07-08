@@ -3,7 +3,7 @@
  * and plan exposure totals. Loaded after results-render-core and before planner-shell.
  */
 'use strict';
-const SCHEDULE_TABLE_COLUMNS = Object.freeze(['Phase', 'Depth', 'Stop', 'Run', 'Mix', 'PPO2', 'EAD']);
+const SCHEDULE_TABLE_COLUMNS = Object.freeze(['Phase', 'Depth', 'Stop', 'Run', 'Mix', 'PPO2', 'CNS', 'EAD']);
 
 function scheduleColumnCount() {
   return SCHEDULE_TABLE_COLUMNS.length;
@@ -2222,16 +2222,7 @@ function fmtPpO2(v) {
 
 function renderBlockingScheduleError(message) {
   _clearPlannerResults?.();
-  renderScheduleErrorRow(message);
   notifyScheduleError?.(message);
-  const resultEl = document.getElementById('decoResult');
-  if (resultEl) resultEl.style.display = 'block';
-  const resultsPanel = document.getElementById('resultsPanel');
-  if (resultsPanel) resultsPanel.classList.add('has-results');
-  const graphCard = document.getElementById('fullDiveGraphCard');
-  if (graphCard) graphCard.style.display = 'none';
-  const gasCard = document.getElementById('gasConsumptionSummary');
-  if (gasCard) gasCard.style.display = 'none';
   scheduleDecoScheduleStackSync?.();
 }
 

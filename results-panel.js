@@ -198,12 +198,14 @@ function _decorateScheduleCellsByLabel(tr) {
   const run = byLabel('Run');
   const mix = byLabel('Mix');
   const ppo2 = byLabel('PPO2');
+  const cns = byLabel('CNS');
   const ead = byLabel('EAD');
   if (depth) depth.classList.add('col-depth');
   if (stop) stop.classList.add('col-time', 'stop');
   if (run) run.classList.add('col-time', 'run', 'align-r');
   if (mix) mix.classList.add('col-gas', _gasMixClassV3(mix.textContent));
   if (ppo2) ppo2.classList.add('col-ppo2', 'align-r', _ppo2ClassV3(ppo2.textContent));
+  if (cns) cns.classList.add('col-cns', 'align-r');
   if (ead) ead.classList.add('col-ead', 'align-r');
 }
 function _normalizeContingencyPhase(ph) {

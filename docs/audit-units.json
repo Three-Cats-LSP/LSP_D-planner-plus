@@ -1818,7 +1818,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "398a1ba485920850a496c88e23ec308c9c1f98e3187a106459ddcce20d0fa0b0",
+      "fingerprint": "c7c38a059b05a1776d4d717c161b7a47a82a4a38356b197a3897d77106614283",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1878,7 +1878,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "ac4e7064aa2049f6f7358bb1bae25759cdd9313b8515b2788faa7f75154260fb",
+      "fingerprint": "dbb03b3202178cb01a02d7b6575b1cdfc8e9b35b3e9f546d69c1badbc8f25f9a",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -1900,7 +1900,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "682f072d28986b7da08869cd3df94f9763eb1742532074e1832ab0b1493f9386",
+      "fingerprint": "28bae95a68790d6d2a4c313fa5f035ac5f03988df2c4581c261fbb9c9254744a",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2214,7 +2214,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS-CONTROLS"
       },
-      "fingerprint": "fff2599339f748f2e71ec925b15c176048fa61203a71e7634f362ec5f67f4685",
+      "fingerprint": "2bee28ffd31d09bcf521383ed5e1a5422101ce6a36fbc211686637be87fc2cf0",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2255,7 +2255,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RENDER"
       },
-      "fingerprint": "d220bfbfca101244cde53be29f3e634a84fdd0c391cfbd4d3246db919670845c",
+      "fingerprint": "6afa9c678bb417e54f7c6ade06d0d7fa4c9e5baf822b8017f7b9755b2c10df34",
       "last_read_fingerprint": null,
       "audit_issue": 147,
       "evidence": [],
@@ -2344,7 +2344,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
-      "fingerprint": "0db11723adb3550df9db3f68fdc77a27b68e4ed6116cf9082a298d97f09011d5",
+      "fingerprint": "57f6f66e736ed9b8ce7483efe11a005a041f261e8c7f29b22671b13cb6f282f4",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2852,7 +2852,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "47c2d807fb0382b65ac2c2d13efa2f500884e33d9333a846281ee8ca51d9a433",
+      "fingerprint": "d541e2b627cfbf74e60c1af40390f7dfd9b22e2b5c565d8ff022b3905d227fdd",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5241,7 +5241,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a4ebd430a505006426ee451a6ad592d67a54da2f249e08a58d60beb69f1797aa",
+      "fingerprint": "2ee429e8db4fdbf3240f5dd6a7061b2193fbc42e5370064ff6cba952bbe893be",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5739,7 +5739,7 @@
         "REG-137",
         "REG-138"
       ],
-      "fingerprint": "10e9569879c54875ad4a6f2d992e2c9d0bdaf3611d50ee7c8bc6da7ed7b83d9d",
+      "fingerprint": "38e497b924dd5006a17fdcb00b46c6c9c0419dcbf82c7b6ac8bcc76dac6118f5",
       "last_read_fingerprint": null
     },
     {
@@ -5824,12 +5824,12 @@
     },
     {
       "cycle": 7,
-      "max_new_application_lines": 992,
+      "max_new_application_lines": 998,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "Results CSS READ (2 bounded sessions); current lines: 992; sessions: 2",
+      "acceptance": "Results CSS READ (2 bounded sessions); current lines: 998; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -5928,13 +5928,13 @@
     },
     {
       "cycle": 17,
-      "max_new_application_lines": 956,
+      "max_new_application_lines": 968,
       "application_units": [
         "UI-VPM-RENDER",
         "UI-ZHL-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "results-render-core READ; current lines: 956; sessions: 2",
+      "acceptance": "results-render-core READ; current lines: 968; sessions: 2",
       "min_review_sessions": 2
     },
     {

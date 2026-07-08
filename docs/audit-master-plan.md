@@ -52,8 +52,8 @@ Run the first unfinished cycle in this table. The numeric cycle table below rema
 | 4 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 612 | - | Tools and modals markup partials READ; current lines: 612; sessions: 2 |
 | 5 | UI-CSS-FOUNDATION, UI-CSS-MODES | 760 | - | Foundation/modes CSS READ (2 bounded sessions); current lines: 760; sessions: 2 |
 | 6 | UI-CSS-CONTROLS | 548 | - | Controls CSS READ; current lines: 548; sessions: 1 |
-| 7 | UI-CSS-RESULTS | 992 | - | Results CSS READ (2 bounded sessions); current lines: 992; sessions: 2 |
-| 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 508 | - | Planner shell and results panel READ; current lines: 526; sessions: 1 |
+| 7 | UI-CSS-RESULTS | 998 | - | Results CSS READ (2 bounded sessions); current lines: 998; sessions: 2 |
+| 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 510 | - | Planner shell and results panel READ; current lines: 526; sessions: 1 |
 | 9 | UI-ENVIRONMENT, UI-MODE-STATE | 1001 | - | Environment/mode state READ (2 bounded sessions); current lines: 1001; sessions: 2 |
 | 10 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 679 | - | Surface interval and gas table cores READ; current lines: 679; sessions: 2 |
 | 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 507 | ENG-ZHL-GAS | Gas card UI READ; current lines: 534; sessions: 1 |
@@ -62,14 +62,14 @@ Run the first unfinished cycle in this table. The numeric cycle table below rema
 | 14 | APP-EXPORT | 3269 | - | export-core text/PDF READ across at least 6 bounded sessions; current lines: 3269; sessions: 6 |
 | 15 | UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 632 | - | plot-core render and waypoints READ in at least 2 bounded sessions; current lines: 632; sessions: 2 |
 | 16 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 755 | - | Profile tool and plot init READ; current lines: 755; sessions: 2 |
-| 17 | UI-VPM-RENDER, UI-ZHL-RESULTS | 955 | - | results-render-core READ; current lines: 956; sessions: 2 |
+| 17 | UI-VPM-RENDER, UI-ZHL-RESULTS | 968 | - | results-render-core READ; current lines: 968; sessions: 2 |
 | 18 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 511 | ENG-ZHL-SCHEDULE | ZHL/CCR delegate thin layer READ; current lines: 511; sessions: 1 |
 | 19 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 605 | ENG-ZHL-CCR | Deco physics and schedule inputs READ across at least 2 bounded sessions; current lines: 605; sessions: 2 |
 | 20 | UI-ZHL-RUNNER-SETUP, UI-ZHL-RUNNER-ENGINE | 478 | ENG-ZHL-SCHEDULE | ZHL runner setup and engine invocation READ; current lines: 480; sessions: 1 |
 | 21 | UI-ZHL-HEADLESS-HELPERS, UI-ZHL-HEADLESS-ENGINE | 588 | - | Headless ZHL path READ; current lines: 588; sessions: 1 |
 | 22 | UI-VPM-RUNNER | 491 | ENG-VPM | VPM runner READ; current lines: 491; sessions: 1 |
 | 23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 390 | - | Runtime bootstrap and app init READ; current lines: 390; sessions: 1 |
-| 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 730 | - | Algorithm and settings controls READ in >=2 bounded sessions; current lines: 730; sessions: 2 |
+| 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 721 | - | Algorithm and settings controls READ in >=2 bounded sessions; current lines: 730; sessions: 2 |
 | 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 921 | - | Settings persistence and unit helpers READ across at least 3 bounded sessions; current lines: 1312; sessions: 3 |
 | 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 860 | - | Tools panels READ in >=2 bounded sessions; implement and verify the tissue-saturation seven-band value scale in docs/tissue-saturation-color-roadmap.md, including UI/export parity and accessibility; current lines: 861; sessions: 2 |
 | 27 | UI-PROFILE-PRESETS | 508 | - | Dive profile presets READ (depth/BT/mode ownership); current lines: 508; sessions: 1 |
