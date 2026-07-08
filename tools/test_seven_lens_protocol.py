@@ -20,6 +20,7 @@ from tools.seven_lens_protocol import (
     _validate_trace_artifact,
     _validate_unreferenced_receipts,
     make_plan,
+    sync_reviewed_boundaries,
     validate_record,
     validate_reviewed_cycles,
 )
@@ -101,6 +102,60 @@ class SevenLensProtocolTests(unittest.TestCase):
         broken = copy.deepcopy(self.record)
         broken["parts"][0]["content_fingerprint"] = "0" * 64
         self.assertTrue(any("fingerprint is stale" in e for e in self.validate(broken)))
+
+    def test_sync_reviewed_boundaries_repairs_same_part_count_drift(self):
+        docs = self.root / "docs"
+        records = docs / "seven-lens-records"
+        records.mkdir(parents=True)
+        (docs / "seven-lens-manual-ledger.json").write_text(json.dumps({
+            "reviews": [{
+                "cycle_id": "SL-C01",
+                "unit_id": "UNIT",
+                "review_status": "SEVEN_LENS_REVIEWED",
+                "verification_status": "PASSED",
+                "verified_source_commit": "abcdef2",
+                "findings_open": [],
+            }]
+        }), encoding="utf-8")
+        record = copy.deepcopy(self.record)
+        record["cycle"] = 1
+        record["parts"][1]["start_line"] = 501
+        record["parts"][1]["end_line"] = 690
+        record["parts"][1]["line_count"] = 190
+        record["parts"][1]["content_fingerprint"] = "0" * 64
+        path = records / "cycle-01-unit.json"
+        path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+        with patch("tools.seven_lens_protocol._resolved_registry", return_value=({}, self.resolved)):
+            changed, errors = sync_reviewed_boundaries(self.root, write=True)
+        self.assertEqual([], errors)
+        self.assertEqual(["docs/seven-lens-records/cycle-01-unit.json"], changed)
+        repaired = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(501, repaired["parts"][1]["start_line"])
+        self.assertEqual(700, repaired["parts"][1]["end_line"])
+        self.assertEqual(200, repaired["parts"][1]["line_count"])
+        self.assertEqual(_part_hash(self.root / "unit.js", 501, 700), repaired["parts"][1]["content_fingerprint"])
+
+    def test_sync_reviewed_boundaries_blocks_new_part_without_rereview(self):
+        docs = self.root / "docs"
+        records = docs / "seven-lens-records"
+        records.mkdir(parents=True)
+        (docs / "seven-lens-manual-ledger.json").write_text(json.dumps({
+            "reviews": [{
+                "cycle_id": "SL-C01",
+                "unit_id": "UNIT",
+                "review_status": "SEVEN_LENS_REVIEWED",
+                "verification_status": "PASSED",
+                "verified_source_commit": "abcdef2",
+                "findings_open": [],
+            }]
+        }), encoding="utf-8")
+        path = records / "cycle-01-unit.json"
+        path.write_text(json.dumps(self.record, indent=2) + "\n", encoding="utf-8")
+        grown = {"UNIT": {"path": "unit.js", "start_line": 1, "end_line": 1001, "line_count": 1001}}
+        with patch("tools.seven_lens_protocol._resolved_registry", return_value=({}, grown)):
+            changed, errors = sync_reviewed_boundaries(self.root, write=True)
+        self.assertEqual([], changed)
+        self.assertTrue(any("re-review required" in error for error in errors))
 
     def test_open_finding_blocks_close(self):
         broken = copy.deepcopy(self.record)

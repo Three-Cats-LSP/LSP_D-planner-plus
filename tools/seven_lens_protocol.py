@@ -1193,6 +1193,102 @@ def validate_reviewed_cycles(root: Path, require_artifacts: bool = False) -> lis
     return errors
 
 
+def _reviewed_cycle_ids(root: Path) -> tuple[set[int], list[str]]:
+    ledger_path = root / "docs" / "seven-lens-manual-ledger.json"
+    if not ledger_path.is_file():
+        return set(), ["manual seven-lens ledger is missing"]
+    ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+    cycles: set[int] = set()
+    errors: list[str] = []
+    for row in ledger.get("reviews", []):
+        if row.get("review_status") != "SEVEN_LENS_REVIEWED":
+            continue
+        match = re.fullmatch(r"SL-C(\d+)", str(row.get("cycle_id", "")))
+        if not match:
+            errors.append(f"ledger has invalid cycle_id {row.get('cycle_id')!r}")
+            continue
+        cycles.add(int(match.group(1)))
+    return cycles, errors
+
+
+def _cycle_record_candidates(root: Path, cycle: int) -> list[Path]:
+    candidates = [
+        *sorted((root / "docs" / "seven-lens-records").glob(f"cycle-{cycle:02d}-*.json")),
+        *sorted((root / "docs" / "seven-lens-reports").glob(f"cycle-{cycle:02d}-*record*.json")),
+    ]
+    unique: list[Path] = []
+    seen: set[Path] = set()
+    for path in candidates:
+        resolved = path.resolve()
+        if resolved not in seen:
+            unique.append(path)
+            seen.add(resolved)
+    return unique
+
+
+def _sync_record_part_boundaries(
+    root: Path, record: dict[str, Any], resolved: dict[str, dict[str, Any]]
+) -> tuple[bool, list[str]]:
+    errors: list[str] = []
+    changed = False
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for part in record.get("parts", []):
+        unit_id = str(part.get("unit_id", ""))
+        if unit_id:
+            grouped.setdefault(unit_id, []).append(part)
+    for unit_id, parts in grouped.items():
+        unit = resolved.get(unit_id)
+        if not unit:
+            errors.append(f"{unit_id}: unknown unit")
+            continue
+        current_ranges = _split_boundary(unit["start_line"], unit["end_line"])
+        ordered = sorted(parts, key=lambda row: (row.get("start_line", 0), row.get("id", "")))
+        if len(current_ranges) != len(ordered):
+            errors.append(
+                f"{unit_id}: current split has {len(current_ranges)} parts; "
+                f"record has {len(ordered)} parts; re-review required"
+            )
+            continue
+        for index, (part, (start, end)) in enumerate(zip(ordered, current_ranges), 1):
+            path = root / unit["path"]
+            expected = {
+                "id": f"{unit_id}-P{index:02d}",
+                "unit_id": unit_id,
+                "path": unit["path"],
+                "start_line": start,
+                "end_line": end,
+                "line_count": end - start + 1,
+                "content_fingerprint": _part_hash(path, start, end),
+            }
+            for key, value in expected.items():
+                if part.get(key) != value:
+                    part[key] = value
+                    changed = True
+    return changed, errors
+
+
+def sync_reviewed_boundaries(root: Path, write: bool = False) -> tuple[list[str], list[str]]:
+    cycles, errors = _reviewed_cycle_ids(root)
+    if errors:
+        return [], errors
+    _, resolved = _resolved_registry(root)
+    changed_paths: list[str] = []
+    for cycle in sorted(cycles):
+        for path in _cycle_record_candidates(root, cycle):
+            try:
+                record = json.loads(path.read_text(encoding="utf-8"))
+            except json.JSONDecodeError as exc:
+                errors.append(f"{path.relative_to(root)}: invalid JSON: {exc}")
+                continue
+            changed, record_errors = _sync_record_part_boundaries(root, record, resolved)
+            errors.extend(f"{path.relative_to(root)}: {error}" for error in record_errors)
+            if changed:
+                changed_paths.append(path.relative_to(root).as_posix())
+                if write:
+                    path.write_text(json.dumps(record, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return changed_paths, errors
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -1204,6 +1300,11 @@ def main() -> int:
     check.add_argument("--record", type=Path, required=True)
     check_all = sub.add_parser("check-all")
     check_all.add_argument("--require-artifacts", action="store_true")
+    sync_reviewed = sub.add_parser(
+        "sync-reviewed-boundaries",
+        help="Refresh reviewed cycle record part boundaries/fingerprints after line-only drift",
+    )
+    sync_reviewed.add_argument("--write", action="store_true", help="Persist boundary/fingerprint updates")
     migrate = sub.add_parser("migrate", help="Apply frozen historical migrations to a cycle record")
     migrate.add_argument("--record", type=Path, required=True)
     migrate.add_argument("--write", action="store_true", help="Persist migrated record JSON")
@@ -1233,8 +1334,28 @@ def main() -> int:
                 print("SEVEN-LENS REVIEWED-CYCLE GATE: BLOCKED", file=sys.stderr)
                 for error in errors:
                     print(f"- {error}", file=sys.stderr)
+                print(
+                    "Hint: if these are line-boundary or fingerprint drift after source edits, "
+                    "run `python tools/seven_lens_protocol.py sync-reviewed-boundaries --write`.",
+                    file=sys.stderr,
+                )
                 return 1
             print("SEVEN-LENS REVIEWED-CYCLE GATE: PASS")
+            return 0
+        if args.command == "sync-reviewed-boundaries":
+            changed, errors = sync_reviewed_boundaries(ROOT, write=args.write)
+            if errors:
+                print("SEVEN-LENS BOUNDARY SYNC: BLOCKED", file=sys.stderr)
+                for error in errors:
+                    print(f"- {error}", file=sys.stderr)
+                return 1
+            if changed:
+                action = "updated" if args.write else "would update"
+                print(f"SEVEN-LENS BOUNDARY SYNC: {action} {len(changed)} record(s)")
+                for path in changed:
+                    print(f"- {path}")
+            else:
+                print("SEVEN-LENS BOUNDARY SYNC: no changes")
             return 0
         if args.command == "migrate":
             from tools.seven_lens_protocol_migrations import (
