@@ -374,9 +374,9 @@
       "unit_id": "UI-CSS-RESULTS",
       "path": "lsp-dplanner-results.css",
       "start_line": 501,
-      "end_line": 989,
-      "line_count": 489,
-      "content_fingerprint": "e7b2352c09bd66085fcd800296da5947e60be7f8da7592509e7a13de3bc2ce36",
+      "end_line": 992,
+      "line_count": 492,
+      "content_fingerprint": "d6efc4a929251cfcd9cbf5826d1ca5dcd4455df656914891073a9fa1196fcb9f",
       "review_session": "C07-B",
       "verification_session": "C09-DEP-DECO-CARD-SLATE-B",
       "lens_results": {

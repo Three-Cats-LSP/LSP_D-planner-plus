@@ -279,10 +279,6 @@ function renderGasConsumptionBars(container, gasConsumed, options) {
   const gasCardNarcoticHtml = narcoticHtml
     ? `<div class="gas-consumption-narcotic">${narcoticHtml}</div>`
     : '';
-  const cnsHtml = !_contingencyRunning ? String(_pendingGasConsumptionCnsAlert || '').trim() : '';
-  const gasCardCnsHtml = cnsHtml
-    ? `<div class="gas-consumption-cns">${cnsHtml}</div>`
-    : '';
   const sacUnit = lspSacUnit();
   const sacBottom = document.getElementById('sacBottom')?.value || '';
   const sacDeco = document.getElementById('sacDeco')?.value || '';
@@ -297,7 +293,6 @@ function renderGasConsumptionBars(container, gasConsumed, options) {
       </div>
       ${warningHtml}
       ${gasCardNarcoticHtml}
-      ${gasCardCnsHtml}
       <div class="gas-consumption-bars">${rowHtml}</div>
       <div class="gas-consumption-note">SAC bottom: ${_gasCardHtml(sacBottom)} ${_gasCardHtml(sacUnit)} &middot; deco: ${_gasCardHtml(sacDeco)} ${_gasCardHtml(sacUnit)}</div>
     </div>

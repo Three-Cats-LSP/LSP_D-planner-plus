@@ -1847,7 +1847,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "e49d5e0e05634c1120e39625c9e686f263bed51d915a79a943ae14f00339e8ff",
+      "fingerprint": "c73d117c9a07a4a402857a60be7e2bb249582481dad62b3c8ae5fd66b2af5d97",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1862,7 +1862,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "532630e31b9f33e413e54c4a6efc84b7372eef0f15e0597c6436d38df2bf8f48",
+      "fingerprint": "ac4e7064aa2049f6f7358bb1bae25759cdd9313b8515b2788faa7f75154260fb",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2040,7 +2040,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ENVIRONMENT"
       },
-      "fingerprint": "fb009d0b70c9f5ed196b0c84636758d2d79e71dde87104551ecc64a4c5b5553e",
+      "fingerprint": "439368a89834973c16189864e156fe5a34b66622aac1a3371aaa664bbeffcbea",
       "last_read_fingerprint": null,
       "audit_issue": 139,
       "evidence": [],
@@ -2057,7 +2057,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MODE-STATE"
       },
-      "fingerprint": "af479f1974c32eaf0f7494c8e87be90b2622ac846c5a6eda7e0bd5d60dd07824",
+      "fingerprint": "ad08dd11aa26b3a7ccca4384aa3e3b0f606f07d4ce186612ad4fa2a516ec7b53",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5818,12 +5818,12 @@
     },
     {
       "cycle": 7,
-      "max_new_application_lines": 989,
+      "max_new_application_lines": 992,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "Results CSS READ (2 bounded sessions); current lines: 989; sessions: 2",
+      "acceptance": "Results CSS READ (2 bounded sessions); current lines: 992; sessions: 2",
       "min_review_sessions": 2
     },
     {

@@ -633,12 +633,9 @@ body.light-theme #resultsPanel .gas-pill.bottom-gas { background: #f0f4ff; }
 body.light-theme #resultsPanel .gas-pill.travel-gas { background: #f0f4ff; color: #111; border-color: var(--gas-travel); }
 #resultsPanel .gas-pill .pill-dot { display: none; }
 #resultsPanel .gas-consumption-narcotic { margin: 0 0 var(--space-2); }
-#resultsPanel .gas-consumption-cns { margin: 0 0 var(--space-2); }
 #resultsPanel .gas-consumption-narcotic .alert { display: flex; align-items: flex-start; gap: var(--space-2); width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); font-size: 12px; line-height: 1.45; margin: 0; white-space: normal; overflow-wrap: anywhere; word-break: normal; }
-#resultsPanel .gas-consumption-cns .alert { display: flex; align-items: flex-start; gap: var(--space-2); width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); font-size: 12px; line-height: 1.45; margin: 0; white-space: normal; overflow-wrap: anywhere; word-break: normal; }
 #resultsPanel .gas-consumption-narcotic .alert > * { min-width: 0; overflow-wrap: anywhere; }
-#resultsPanel .gas-consumption-cns .alert > * { min-width: 0; overflow-wrap: anywhere; }
-#resultsPanel .gas-consumption-narcotic .alert.narcotic-warn { background:rgba(255,68,51,0.18); border:1px solid #ff4433; color:#fff; font-weight:700; }
+#resultsPanel .gas-consumption-narcotic .alert.narcotic-warn { background:#ff4433; border:1px solid #ff4433; color:#fff; font-weight:700; }
 #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn * { color:#fff !important; }
 #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn .tip-icon { color:#fff !important; opacity:0.85; }
 #resultsPanel .deco-params { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); line-height: 1.6; }
@@ -647,13 +644,17 @@ body.light-theme #resultsPanel #decoAlerts .alert.deco,
 body.light-theme #resultsPanel #decoAlertsNarcotic .alert.deco,
 body.light-theme #resultsPanel #decoAlerts .alert.narcotic-warn,
 body.light-theme #resultsPanel #decoAlertsNarcotic .alert.narcotic-warn {
-  background: #fff0f0;
-  border: 1px solid #cc0000;
-  color: #cc0000;
+  background: #ff4433;
+  border: 1px solid #111;
+  color: #111;
   font-weight: 700;
 }
-body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-consumption-warning,
 body.light-theme #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn {
+  background: #ff4433;
+  border: 1px solid #111;
+  color: #111 !important;
+}
+body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-consumption-warning {
   background: #fff0f0;
   border: 1px solid #cc0000;
   color: #cc0000 !important;
@@ -662,10 +663,12 @@ body.light-theme #resultsPanel #decoAlerts .alert.deco *,
 body.light-theme #resultsPanel #decoAlertsNarcotic .alert.deco *,
 body.light-theme #resultsPanel #decoAlerts .alert.narcotic-warn *,
 body.light-theme #resultsPanel #decoAlertsNarcotic .alert.narcotic-warn * {
-  color: #cc0000 !important;
+  color: #111 !important;
 }
-body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-consumption-warning *,
 body.light-theme #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn * {
+  color: #111 !important;
+}
+body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-consumption-warning * {
   color: #cc0000 !important;
 }
 body.light-theme #resultsPanel #decoAlertsNarcotic .alert .tip-icon { color: #cc0000 !important; opacity: 0.85; }

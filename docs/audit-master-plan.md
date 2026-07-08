@@ -52,9 +52,9 @@ Run the first unfinished cycle in this table. The numeric cycle table below rema
 | 4 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 612 | - | Tools and modals markup partials READ; current lines: 612; sessions: 2 |
 | 5 | UI-CSS-FOUNDATION, UI-CSS-MODES | 760 | - | Foundation/modes CSS READ (2 bounded sessions); current lines: 760; sessions: 2 |
 | 6 | UI-CSS-CONTROLS | 548 | - | Controls CSS READ; current lines: 548; sessions: 1 |
-| 7 | UI-CSS-RESULTS | 989 | - | Results CSS READ (2 bounded sessions); current lines: 989; sessions: 2 |
+| 7 | UI-CSS-RESULTS | 992 | - | Results CSS READ (2 bounded sessions); current lines: 992; sessions: 2 |
 | 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 508 | - | Planner shell and results panel READ; current lines: 526; sessions: 1 |
-| 9 | UI-ENVIRONMENT, UI-MODE-STATE | 1001 | - | Environment/mode state READ (2 bounded sessions); current lines: 1001; sessions: 2 |
+| 9 | UI-ENVIRONMENT, UI-MODE-STATE | 999 | - | Environment/mode state READ (2 bounded sessions); current lines: 1001; sessions: 2 |
 | 10 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 679 | - | Surface interval and gas table cores READ; current lines: 679; sessions: 2 |
 | 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 507 | ENG-ZHL-GAS | Gas card UI READ; current lines: 534; sessions: 1 |
 | 12 | APP-GAS-PLAN | 546 | - | Gas plan core READ; current lines: 546; sessions: 1 |
