@@ -36,6 +36,7 @@ PAGES_UI_ASSETS: tuple[str, ...] = (
     "contingency-core.js",
     "results-panel.js",
     "results-render-core.js",
+    "schedule-runner-core.js",
     "planner-shell.js",
 )
 
@@ -48,6 +49,7 @@ SW_REQUIRED_UI_SCRIPTS: tuple[str, ...] = (
     "contingency-core.js",
     "results-panel.js",
     "results-render-core.js",
+    "schedule-runner-core.js",
     "planner-shell.js",
     "gas-cards-core.js",
     "plot-core.js",

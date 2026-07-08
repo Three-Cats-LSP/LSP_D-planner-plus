@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v3-full-reset`
-**Units:** 207 total; 0 unread; 93 in progress; 3 read; 111 verified.
+**Units:** 207 total; 0 unread; 96 in progress; 3 read; 108 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -46,7 +46,7 @@ Run the first unfinished cycle in this table. The numeric cycle table below rema
 
 | Cycle | Application units | New lines | Engine re-verification | Acceptance |
 |---:|---|---:|---|---|
-| 1 | UI-MARKUP-HEADER | 730 | - | V3 cycle 1: header markup partial READ; SUITE-UI-STRUCTURE must be green; current lines: 730; sessions: 2 |
+| 1 | UI-MARKUP-HEADER | 734 | - | V3 cycle 1: header markup partial READ; SUITE-UI-STRUCTURE must be green; current lines: 734; sessions: 2 |
 | 2 | UI-MARKUP-REC-PLANNER, UI-REC-PLANNER | 84 | - | Cycle 2a: REC planner markup + runRecPlan; SL-REC-DEPTH-BT-STEPPER; current lines: 84; sessions: 1 |
 | 3 | UI-MARKUP-CONSUMPTION | 381 | - | Consumption markup partial READ; current lines: 381; sessions: 1 |
 | 4 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 612 | - | Tools and modals markup partials READ; current lines: 612; sessions: 2 |
@@ -65,17 +65,17 @@ Run the first unfinished cycle in this table. The numeric cycle table below rema
 | 17 | UI-VPM-RENDER, UI-ZHL-RESULTS | 955 | - | results-render-core READ; current lines: 955; sessions: 2 |
 | 18 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 511 | ENG-ZHL-SCHEDULE | ZHL/CCR delegate thin layer READ; current lines: 511; sessions: 1 |
 | 19 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 605 | ENG-ZHL-CCR | Deco physics and schedule inputs READ across at least 2 bounded sessions; current lines: 605; sessions: 2 |
-| 20 | UI-ZHL-RUNNER-SETUP, UI-ZHL-RUNNER-ENGINE | 480 | ENG-ZHL-SCHEDULE | ZHL runner setup and engine invocation READ; current lines: 480; sessions: 1 |
+| 20 | UI-ZHL-RUNNER-SETUP, UI-ZHL-RUNNER-ENGINE | 465 | ENG-ZHL-SCHEDULE | ZHL runner setup and engine invocation READ; current lines: 480; sessions: 1 |
 | 21 | UI-ZHL-HEADLESS-HELPERS, UI-ZHL-HEADLESS-ENGINE | 588 | - | Headless ZHL path READ; current lines: 588; sessions: 1 |
-| 22 | UI-VPM-RUNNER | 486 | ENG-VPM | VPM runner READ; current lines: 486; sessions: 1 |
+| 22 | UI-VPM-RUNNER | 491 | ENG-VPM | VPM runner READ; current lines: 491; sessions: 1 |
 | 23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 390 | - | Runtime bootstrap and app init READ; current lines: 390; sessions: 1 |
-| 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 692 | - | Algorithm and settings controls READ (692 lines; >=2 bounded sessions); current lines: 692; sessions: 2 |
-| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1312 | - | Settings persistence and unit helpers READ across at least 3 bounded sessions; current lines: 1312; sessions: 3 |
+| 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 725 | - | Algorithm and settings controls READ (725 lines; >=2 bounded sessions); current lines: 725; sessions: 2 |
+| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 921 | - | Settings persistence and unit helpers READ across at least 3 bounded sessions; current lines: 1312; sessions: 3 |
 | 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 851 | - | Tools panels READ in >=2 bounded sessions; implement and verify the tissue-saturation seven-band value scale in docs/tissue-saturation-color-roadmap.md, including UI/export parity and accessibility; current lines: 851; sessions: 2 |
 | 27 | UI-PROFILE-PRESETS | 508 | - | Dive profile presets READ (depth/BT/mode ownership); current lines: 508; sessions: 1 |
 | 28 | UI-CONFIG-PRESETS | 185 | - | Advanced config presets READ; current lines: 185; sessions: 1 |
-| 29 | UI-BOOT | 2403 | - | index.html shell boot region READ; current lines: 2411; sessions: 5 |
-| 30 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 425 | - | PWA and service worker READ; current lines: 425; sessions: 1 |
+| 29 | UI-BOOT | 2406 | - | index.html shell boot region READ; current lines: 2411; sessions: 5 |
+| 30 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 427 | - | PWA and service worker READ; current lines: 427; sessions: 1 |
 | 31 | APP-ZHL-WORKER, APP-ZHL-WORKER-BRIDGE | 159 | - | ZHL schedule worker and bridge READ; current lines: 159; sessions: 1 |
 | 32 | APP-CAPACITOR-BRIDGE, APP-ANDROID-SELECT | 548 | - | Capacitor and Android select bridge READ; current lines: 548; sessions: 1 |
 | 33 | ENG-ZHL-PHYSICS, ENG-ZHL-GAS | 373 | - | ZHL physics and gas canonical cores READ; current lines: 373; sessions: 1 |

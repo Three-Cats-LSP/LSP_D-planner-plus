@@ -34,6 +34,7 @@ CASE_IDS = (
     "SL-C09-MOBILE-WARNING-WRAP",
     "SL-C09-VPM-MODE-TOGGLE",
     "SL-C09-VPM-CONTINGENCY-GAS-LOSS-STABLE",
+    "SL-C09-VPM-BEYOND-MOD-BLOCKS",
     "SL-C09-TRAVEL-GAS-TRIMIX-CARD",
     "SL-C09-CONTINGENCY-COPY-PLAN-CONTEXT",
     "SL-C09-SCHEDULE-COLUMN-GEOMETRY",
@@ -1412,6 +1413,74 @@ def _capture_vpm_mode(browser, base_url: str) -> dict:
         context.close()
 
 
+def _capture_vpm_beyond_mod(browser, base_url: str) -> dict:
+    context = browser.new_context(viewport={"width": 1280, "height": 800})
+    page = context.new_page()
+    page.set_default_timeout(120_000)
+    errors: list[str] = []
+    page.on("pageerror", lambda exc: errors.append(str(exc)))
+    page.on("console", lambda msg: errors.append(msg.text) if msg.type == "error" else None)
+    probe_state = None
+    try:
+        boot_app_page(page, base_url)
+        probe_state = page.evaluate(CAPTURE_PROBE_STATE_JS)
+        result = page.evaluate(
+            r"""
+async () => {
+  window._zhlHeadless = false;
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const setVal = (id, value) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value = value;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  };
+  if (typeof setMainNav === 'function') setMainNav('vpm');
+  await wait(250);
+  setVal('tecDepth', '70');
+  setVal('tecBT', '25');
+  setVal('decoGas', 'ean32');
+  setVal('ppo2Bottom', '1.4');
+  if (typeof toggleDecoCustomO2 === 'function') toggleDecoCustomO2('decoGas', 'decoCustomO2Field');
+  if (typeof updateGasMODDisplays === 'function') updateGasMODDisplays();
+  if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
+  document.getElementById('tecGenerateBtn')?.click();
+  for (let i = 0; i < 50; i++) {
+    await wait(120);
+    if (document.querySelector('#decoTableBody tr[data-phase="error"]')) break;
+  }
+  const errorRow = document.querySelector('#decoTableBody tr[data-phase="error"]');
+  const cell = errorRow?.querySelector('td') || null;
+  const graphCard = document.getElementById('fullDiveGraphCard');
+  const gasCard = document.getElementById('gasConsumptionSummary');
+  const cnsText = document.getElementById('decoCNSDisplay')?.textContent || '';
+  return {
+    errorRowCount: document.querySelectorAll('#decoTableBody tr[data-phase="error"]').length,
+    colspan: cell ? Number(cell.getAttribute('colspan')) : null,
+    expected: typeof scheduleColumnCount === 'function' ? scheduleColumnCount() : 7,
+    text: cell?.textContent || '',
+    graphVisible: !!graphCard && getComputedStyle(graphCard).display !== 'none',
+    gasVisible: !!gasCard && getComputedStyle(gasCard).display !== 'none',
+    planRows: document.querySelectorAll('#decoTableBody tr[data-phase]:not([data-phase="error"])').length,
+    cnsText,
+    hasRunnerHelper: typeof validateVpmOcBottomGasPpo2 === 'function'
+      && typeof renderVpmBlockingScheduleError === 'function',
+  };
+}
+""",
+        )
+        result["console_errors"] = [
+            err for err in errors
+            if "Cannot generate schedule" not in err
+        ]
+        return result
+    finally:
+        if probe_state is not None:
+            restore_probe_state(page, probe_state)
+        context.close()
+
+
 def _capture_schedule_error_contract(browser, base_url: str, viewport: tuple[int, int]) -> dict:
     context = browser.new_context(viewport={"width": viewport[0], "height": viewport[1]})
     page = context.new_page()
@@ -1510,6 +1579,7 @@ def main() -> int:
             gas_details = _capture_gas_labels(browser, base_url)
             mobile_warning_details = _capture_mobile_warnings(browser, base_url)
             vpm_details = _capture_vpm_mode(browser, base_url)
+            vpm_beyond_mod_details = _capture_vpm_beyond_mod(browser, base_url)
             high_cns_details = _capture_high_cns_alert(browser, base_url)
             schedule_error_details = {
                 f"{width}x{height}": _capture_schedule_error_contract(browser, base_url, (width, height))
@@ -1772,6 +1842,20 @@ def main() -> int:
         and vpm_details.get("vpmContingencyGas", {}).get("scenarioCanonical")
         and not vpm_details.get("console_errors")
     )
+    results["SL-C09-VPM-BEYOND-MOD-BLOCKS"] = bool(
+        vpm_beyond_mod_details.get("errorRowCount") == 1
+        and vpm_beyond_mod_details.get("colspan") == vpm_beyond_mod_details.get("expected") == 7
+        and "BEYOND MOD" in vpm_beyond_mod_details.get("text", "")
+        and "EAN32" not in vpm_beyond_mod_details.get("text", "")
+        and "32/00" in vpm_beyond_mod_details.get("text", "")
+        and "actual" in vpm_beyond_mod_details.get("text", "")
+        and not vpm_beyond_mod_details.get("graphVisible")
+        and not vpm_beyond_mod_details.get("gasVisible")
+        and vpm_beyond_mod_details.get("planRows") == 0
+        and "2065" not in vpm_beyond_mod_details.get("cnsText", "")
+        and vpm_beyond_mod_details.get("hasRunnerHelper")
+        and not vpm_beyond_mod_details.get("console_errors")
+    )
     travel_trimix = gas_details.get("travelTrimix", {})
     results["SL-C09-TRAVEL-GAS-TRIMIX-CARD"] = bool(
         travel_trimix.get("optionExists")
@@ -1798,18 +1882,22 @@ def main() -> int:
     )
     index_src = (ROOT / "index.html").read_text(encoding="utf-8")
     render_src = (ROOT / "results-render-core.js").read_text(encoding="utf-8")
-    vpm_runner_src = index_src.split("// AUDIT-UNIT:UI-VPM-RUNNER", 1)[-1].split("// AUDIT-UNIT:", 1)[0]
-    zhl_runner_src = index_src.split("// AUDIT-UNIT:UI-ZHL-RUNNER-ENGINE", 1)[-1].split("// AUDIT-UNIT:", 1)[0]
+    schedule_src = (ROOT / "schedule-runner-core.js").read_text(encoding="utf-8")
+    vpm_runner_src = schedule_src.split("// AUDIT-UNIT:UI-VPM-RUNNER", 1)[-1].split("// AUDIT-UNIT:", 1)[0]
+    zhl_runner_src = schedule_src.split("// AUDIT-UNIT:UI-ZHL-RUNNER-ENGINE", 1)[-1].split("// AUDIT-UNIT:", 1)[0]
     vpm_render_src = render_src.split("// AUDIT-UNIT:UI-VPM-RENDER", 1)[-1].split("// AUDIT-UNIT:", 1)[0]
     schedule_contract_ok = (
-        "SCHEDULE_TABLE_COLUMNS" in index_src
-        and "function scheduleColumnCount" in index_src
-        and "function scheduleErrorRowHtml" in index_src
-        and "function scheduleCell" in index_src
+        "SCHEDULE_TABLE_COLUMNS" in schedule_src
+        and "function scheduleColumnCount" in schedule_src
+        and "function scheduleErrorRowHtml" in schedule_src
+        and "function scheduleCell" in schedule_src
         and "renderScheduleErrorRow" in vpm_runner_src
         and 'colspan="8"' not in vpm_runner_src
         and 'colspan="8"' not in zhl_runner_src
         and vpm_runner_src.count("renderScheduleErrorRow") >= 5
+        and "function runVPMSchedule(" not in index_src
+        and "function runDecoSchedule(" not in index_src
+        and "const SCHEDULE_TABLE_COLUMNS" not in index_src
     )
     vpm_error_geometry_ok = all(
         detail.get("errorRowCount") == 1
@@ -1823,8 +1911,8 @@ def main() -> int:
     canonical_src_ok = (
         gas_ok
         and "getGasLabel" in vpm_render_src
-        and "getGasLabel(bottomFO2" in index_src
-        and "getGasLabel(fracs.fO2" in index_src
+        and "getGasLabel(bottomFO2" in schedule_src
+        and "getGasLabel(fracs.fO2" in schedule_src
         and not gas_details.get("forbiddenHits")
     )
     results["SL-BATCH2-VPM-ERROR-COLSPAN"] = (
@@ -1845,6 +1933,7 @@ def main() -> int:
             "gas": gas_details,
             "mobile_warning": mobile_warning_details,
             "vpm": vpm_details,
+            "vpm_beyond_mod": vpm_beyond_mod_details,
             "schedule_error": schedule_error_details,
             "contingency_gas": contingency_gas_details,
             "gas_units": gas_units_details,

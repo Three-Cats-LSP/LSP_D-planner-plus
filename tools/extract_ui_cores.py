@@ -180,6 +180,15 @@ UI_CORE_BLOCKS: tuple[UiCoreBlock, ...] = (
 """,
     ),
     UiCoreBlock(
+        "schedule-runner-core",
+        "schedule-runner-core.js",
+        """/**
+ * Schedule runner core - VPM/ZHL UI orchestration, visible schedule table contract,
+ * and plan exposure totals. Loaded after results-render-core and before planner-shell.
+ */
+""",
+    ),
+    UiCoreBlock(
         "planner-shell",
         "planner-shell.js",
         """/**
@@ -240,6 +249,12 @@ INLINE_FORBIDDEN_DEFS: dict[str, tuple[str, ...]] = {
     "results-render-core": (
         "function renderVPMResults(",
         "function renderZhlScheduleResults(",
+    ),
+    "schedule-runner-core": (
+        "const SCHEDULE_TABLE_COLUMNS",
+        "function runVPMSchedule(",
+        "function runDecoSchedule(",
+        "function computePlanExposureTotals(",
     ),
     "planner-shell": ("function initV3Layout(", "function setNavMode("),
 }

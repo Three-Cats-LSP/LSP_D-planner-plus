@@ -51,6 +51,7 @@ ROOT_FILES = [
     "contingency-core.js",
     "results-panel.js",
     "results-render-core.js",
+    "schedule-runner-core.js",
     "planner-shell.js",
 ]
 

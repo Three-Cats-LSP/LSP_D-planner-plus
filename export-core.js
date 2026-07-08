@@ -834,7 +834,7 @@ function exportScheduleMixCell(layoutKey, phase, mix) {
   const s = (mix || '').trim();
   if (s === '100%') return (' ' + s).padEnd(5);
   if (phase === 'Des') return s.padEnd(layoutKey === 'deco' ? 6 : 5);
-  if (s === '50/00') return s.padEnd(6);
+  if (s.length >= 5) return s.padEnd(6);
   return s.padEnd(layoutKey === 'deco' ? 5 : 4);
 }
 
@@ -1353,9 +1353,9 @@ function buildSlateText() {
     const tds = tr.querySelectorAll('td');
     const depRaw = clean(tds[1]?.textContent).replace(/(m|ft)$/i, '');
     const dep = (depRaw + du).padStart(5);
-    const run = clean(tds[4]?.textContent).padStart(5);
-    const gas = shortMix(tds[3]?.textContent).padEnd(6);
-    const ppo2 = clean(tds[6]?.textContent).padStart(4);
+    const run = clean(tds[3]?.textContent).padStart(5);
+    const gas = shortMix(tds[4]?.textContent).padEnd(6);
+    const ppo2 = clean(tds[5]?.textContent).padStart(4);
     out.push(`${dep}  ${run}  ${gas} ${ppo2}`);
   });
 

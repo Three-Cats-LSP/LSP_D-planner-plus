@@ -815,6 +815,14 @@
     "REG-134": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
       "case_id": "SCHEDULE-CANONICAL-GAS-LABELS"
+    },
+    "REG-135": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-C09-HIGH-CNS-DECO-ALERT"
+    },
+    "REG-136": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-C09-VPM-BEYOND-MOD-BLOCKS"
     }
   },
   "findings": [
@@ -1802,7 +1810,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "3b17dea5babb16b64d5261b6f3ce2272a7610b1a91afa75edd43d4d8b766c17f",
+      "fingerprint": "c42e14e57f8f675effa74b8dc77badf1216c036cb3cf2ada4cb81db19617c6f6",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1884,7 +1892,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "cd7fa334cffcd2ce449084ae33b2f33a237edc8236a1a2c5d044a4df106f30b4",
+      "fingerprint": "02e135ddb5cd6264ba9067a09e7492bbdcc71de3a76a07253c564318b13acfed",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2090,7 +2098,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-UNIT-HELPERS"
       },
-      "fingerprint": "e42c53bd2ee30008e5d9a8f7abf8359b8ca4da0cdfd889178fbd044e63b1113a",
+      "fingerprint": "3fef37b7ddd7200bef5635df6f40ea7146c60c6f7bb9e0330d89f344bfe5a3a5",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2098,7 +2106,7 @@
     },
     {
       "id": "UI-UNIT-SWITCHING",
-      "path": "index.html",
+      "path": "schedule-runner-core.js",
       "layer": "web_runtime",
       "priority": "P1",
       "status": "IN_PROGRESS",
@@ -2114,7 +2122,7 @@
     },
     {
       "id": "UI-ZHL-DELEGATES",
-      "path": "index.html",
+      "path": "schedule-runner-core.js",
       "layer": "web_runtime",
       "priority": "P0",
       "status": "VERIFIED",
@@ -2139,7 +2147,7 @@
     },
     {
       "id": "UI-CCR-DELEGATES",
-      "path": "index.html",
+      "path": "schedule-runner-core.js",
       "layer": "web_runtime",
       "priority": "P0",
       "status": "IN_PROGRESS",
@@ -2156,7 +2164,7 @@
     },
     {
       "id": "UI-DECO-PHYSICS",
-      "path": "index.html",
+      "path": "schedule-runner-core.js",
       "layer": "web_runtime",
       "priority": "P0",
       "status": "IN_PROGRESS",
@@ -2173,7 +2181,7 @@
     },
     {
       "id": "UI-SCHEDULE-INPUTS",
-      "path": "index.html",
+      "path": "schedule-runner-core.js",
       "layer": "web_runtime",
       "priority": "P0",
       "status": "IN_PROGRESS",
@@ -2190,7 +2198,7 @@
     },
     {
       "id": "UI-SETTINGS-CONTROLS",
-      "path": "index.html",
+      "path": "schedule-runner-core.js",
       "layer": "web_runtime",
       "priority": "P1",
       "status": "IN_PROGRESS",
@@ -2198,7 +2206,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS-CONTROLS"
       },
-      "fingerprint": "803522bdb43128fd1023059370cfb0797a23857e22b2913c1135737b45150fc5",
+      "fingerprint": "3ffe8685e7afe086d1680f52e35e316cd384f4e9efee61f152d27e71f7bd67eb",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2207,7 +2215,7 @@
     },
     {
       "id": "UI-VPM-RUNNER",
-      "path": "index.html",
+      "path": "schedule-runner-core.js",
       "layer": "web_runtime",
       "priority": "P0",
       "status": "IN_PROGRESS",
@@ -2215,14 +2223,15 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RUNNER"
       },
-      "fingerprint": "068c5efd9aa368641264863f2bd3639d162055e9512a3e8329f9c01f3f5e6992",
+      "fingerprint": "9218f3c7855e31a0d5398ab3b65982b58abe3aa0d52345aec39f781554294469",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
         "REG-131",
         "REG-132",
         "REG-133",
-        "REG-134"
+        "REG-134",
+        "REG-136"
       ],
       "audit_issue": 146,
       "issue": "Audit issue #146"
@@ -2280,7 +2289,7 @@
     },
     {
       "id": "UI-ZHL-RUNNER-SETUP",
-      "path": "index.html",
+      "path": "schedule-runner-core.js",
       "layer": "web_runtime",
       "priority": "P0",
       "status": "IN_PROGRESS",
@@ -2297,7 +2306,7 @@
     },
     {
       "id": "UI-ZHL-RUNNER-ENGINE",
-      "path": "index.html",
+      "path": "schedule-runner-core.js",
       "layer": "web_runtime",
       "priority": "P0",
       "status": "IN_PROGRESS",
@@ -2305,7 +2314,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-ENGINE"
       },
-      "fingerprint": "854ac7499ccba8a70027cf77283b760fd6d3a83605e97178ad472258c06394a5",
+      "fingerprint": "9791e2baac0d6e38fdaa4d11e6a20e214a79d0df861e3307076a336b9efa66b0",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2591,7 +2600,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PWA-LIFECYCLE"
       },
-      "fingerprint": "255f82c28c0802d66199080187b9a7526297e68b9c5701b69f71027cc848dde2",
+      "fingerprint": "a72d7b25d597c2b573234199a640228d9b2625f6d2a60f797b5d2b08cb815873",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2848,7 +2857,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "dae6796856dd80dbbd1762f2d23b15bdc44505a562d24d1a39398cbb4cea7b12",
+      "fingerprint": "72844570c65265066f35d91f8bada2145e9a149d56a5c568ea6d6c28900b0f1d",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2909,7 +2918,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1e82fdc75b23430a4f2c242e073b8b64061aabcbd19d70192575be6cdefcabb7",
+      "fingerprint": "3f95e767c9c5fc30023518dae85069ee46b1d1fecfc7c75483ae014517dac81c",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -4247,20 +4256,14 @@
       "path": "tools/build_pages_site.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "76e1e0d136277d9591448863fae8b6fcff0a5581d3662cf1eb7cb675f6776cef",
-      "last_read_fingerprint": "76e1e0d136277d9591448863fae8b6fcff0a5581d3662cf1eb7cb675f6776cef",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01"
-      ],
+      "fingerprint": "15e4dee17e8fa01d23f12628e1fb2358e92eac93b718bf8b2f7c299aa6e38a1e",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified â€” TOOL-BUILD-PAGES"
     },
     {
@@ -4334,20 +4337,14 @@
       "path": "tools/check_engine_parity.py",
       "layer": "tooling",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "645a8ced3169d1263403ee9bb6972b13cd128e708adb01844d8a22bd33df45cc",
-      "last_read_fingerprint": "645a8ced3169d1263403ee9bb6972b13cd128e708adb01844d8a22bd33df45cc",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01"
-      ],
+      "fingerprint": "384c0812fd1ddbd95b739811488c39ffd26aa3e347740d23073d025f76b06915",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified â€” TOOL-CHECK-PARITY"
     },
     {
@@ -4527,7 +4524,7 @@
       "evidence": [],
       "issue": "GitHub #136 marker-based UI core extraction",
       "regression_cases": [],
-      "fingerprint": "1783724bc33ced1f60eeb7645d905412f9613d078652aff5416dc48211350ac9",
+      "fingerprint": "de4b9ebb8d495ad12c837d357b6cb6f95b94e89c9bb713273ead6fa218212459",
       "last_read_fingerprint": null
     },
     {
@@ -4707,7 +4704,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f9a422515760c582fa6f6e0409793b8aa8bb6c45e6f93b3a4c18a989f0463c46",
+      "fingerprint": "89b3de78c985f5875d6a1302ead8d91ff52cda2167ce576f805c15a3b175ee94",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5324,20 +5321,14 @@
       "path": "tools/ui_assets.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "d6d124882de12c385b665b40e56bd4da03df1e1ced79f9bd7bfc9084abc927fa",
-      "last_read_fingerprint": "d6d124882de12c385b665b40e56bd4da03df1e1ced79f9bd7bfc9084abc927fa",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01"
-      ],
+      "fingerprint": "eece3de8f68a315d5e9d5f026ef74675b92b224eba55edf4627a0fafead796b8",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Audit V3 environment"
     },
     {
@@ -5731,9 +5722,11 @@
         "REG-131",
         "REG-132",
         "REG-133",
-        "REG-134"
+        "REG-134",
+        "REG-135",
+        "REG-136"
       ],
-      "fingerprint": "618e22c0fddc408ec915ea1960a6d511540eeedfce29be666b38cc3f7498a7fc",
+      "fingerprint": "4f1425267c46403e8a058d3a891f316660b79592272ddcf2c3b814e6728cab4d",
       "last_read_fingerprint": null
     },
     {
@@ -5758,12 +5751,12 @@
   "cycles": [
     {
       "cycle": 1,
-      "max_new_application_lines": 730,
+      "max_new_application_lines": 734,
       "application_units": [
         "UI-MARKUP-HEADER"
       ],
       "engine_reverification": [],
-      "acceptance": "V3 cycle 1: header markup partial READ; SUITE-UI-STRUCTURE must be green; current lines: 730; sessions: 2",
+      "acceptance": "V3 cycle 1: header markup partial READ; SUITE-UI-STRUCTURE must be green; current lines: 734; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -5980,14 +5973,15 @@
     },
     {
       "cycle": 22,
-      "max_new_application_lines": 486,
+      "max_new_application_lines": 491,
       "application_units": [
         "UI-VPM-RUNNER"
       ],
       "engine_reverification": [
         "ENG-VPM"
       ],
-      "acceptance": "VPM runner READ; current lines: 486; sessions: 1"
+      "acceptance": "VPM runner READ; current lines: 491; sessions: 1",
+      "min_review_sessions": 1
     },
     {
       "cycle": 23,
@@ -6001,14 +5995,14 @@
     },
     {
       "cycle": 24,
-      "max_new_application_lines": 692,
+      "max_new_application_lines": 725,
       "min_review_sessions": 2,
       "application_units": [
         "UI-ALGORITHM-SETTINGS",
         "UI-SETTINGS-CONTROLS"
       ],
       "engine_reverification": [],
-      "acceptance": "Algorithm and settings controls READ (692 lines; >=2 bounded sessions); current lines: 692; sessions: 2"
+      "acceptance": "Algorithm and settings controls READ (725 lines; >=2 bounded sessions); current lines: 725; sessions: 2"
     },
     {
       "cycle": 25,
@@ -6064,14 +6058,15 @@
     },
     {
       "cycle": 30,
-      "max_new_application_lines": 425,
+      "max_new_application_lines": 427,
       "application_units": [
         "APP-SERVICE-WORKER",
         "UI-PWA-LIFECYCLE",
         "APP-MANIFEST"
       ],
       "engine_reverification": [],
-      "acceptance": "PWA and service worker READ; current lines: 425; sessions: 1"
+      "acceptance": "PWA and service worker READ; current lines: 427; sessions: 1",
+      "min_review_sessions": 1
     },
     {
       "cycle": 31,
@@ -6725,7 +6720,9 @@
         "SL-BATCH2-VPM-ERROR-COLSPAN",
         "SCHEDULE-ERROR-ROW-COLUMN-CONTRACT",
         "VPM-INVALID-ERROR-ROW-GEOMETRY",
-        "SCHEDULE-CANONICAL-GAS-LABELS"
+        "SCHEDULE-CANONICAL-GAS-LABELS",
+        "SL-C09-HIGH-CNS-DECO-ALERT",
+        "SL-C09-VPM-BEYOND-MOD-BLOCKS"
       ]
     }
   ],
