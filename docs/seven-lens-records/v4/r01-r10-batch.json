@@ -1,0 +1,105 @@
+{
+  "schema": "v4-simplified-batch-record",
+  "batch_id": "R01-R10",
+  "epoch": "v4-risk-first-reset",
+  "baseline_commit": "799a47eb3fa228b776484049ff6d1d7594ffad63",
+  "status": "REVIEWED",
+  "scope": [
+    {
+      "cycle": "R01",
+      "units": ["ENG-ZHL-PHYSICS", "ENG-ZHL-GAS"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R02",
+      "units": ["ENG-ZHL-SCHEDULE"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R03",
+      "units": ["ENG-ZHL-CCR"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R04",
+      "units": ["ENG-VPM"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R05",
+      "units": ["ENG-VPM-REFERENCE"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R06",
+      "units": ["ENG-RDP"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R07",
+      "units": ["UI-DECO-PHYSICS", "UI-SCHEDULE-INPUTS"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R08",
+      "units": ["UI-ZHL-DELEGATES", "UI-CCR-DELEGATES"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R09",
+      "units": ["UI-ZHL-RUNNER-SETUP", "UI-ZHL-RUNNER-ENGINE"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R10",
+      "units": ["UI-ZHL-HEADLESS-HELPERS", "UI-ZHL-HEADLESS-ENGINE"],
+      "result": "NO_FINDINGS"
+    }
+  ],
+  "implementation_changes": [
+    {
+      "id": "R10-INFRA-01",
+      "type": "refactor",
+      "summary": "Extracted remaining ZHL headless adapter from index.html into zhl-headless-adapter.js.",
+      "files": [
+        "zhl-headless-adapter.js",
+        "index.html",
+        "ui/markup-header.html",
+        "tools/extract_ui_cores.py",
+        "tools/ui_assets.py",
+        "tools/build_pages_site.py",
+        "tools/sync_www.py",
+        "tools/check_engine_parity.py",
+        "sw.js"
+      ]
+    },
+    {
+      "id": "R10-INFRA-02",
+      "type": "audit_inventory",
+      "summary": "Recalculated V4 active source boundaries and fingerprints after extraction.",
+      "files": [
+        "docs/audit-units.json",
+        "docs/audit-coverage.md",
+        "docs/audit-master-plan.md"
+      ]
+    }
+  ],
+  "regressions_run": [
+    "python dev/engine_regression.py",
+    "node dev/vpm_direct_regression.js",
+    "npm.cmd run check:engine-parity",
+    "python dev/ui_visual_contract_regression.py",
+    "python tools/extract_ui_cores.py",
+    "python tools/assemble_ui_html.py --verify",
+    "python tools/audit_coverage.py --write-docs",
+    "python tools/seven_lens_protocol.py check-all --require-artifacts",
+    "python -m tools.audit check --profile static",
+    "python -m tools.audit run --profile ci"
+  ],
+  "findings": [],
+  "recommendations": [
+    "Keep runtime adapters extracted and forbid reintroducing ZHL/VPM callable wrappers into index.html.",
+    "For later R cycles, keep using targeted visual contracts for recent design changes before broad CI gates.",
+    "Consider splitting VPM reference review into smaller deterministic smoke sections if deeper algorithm review is needed."
+  ]
+}

@@ -93,6 +93,7 @@ const REQUIRED_PRECACHE = [
   APP_BASE + 'results-panel.js',
   APP_BASE + 'results-render-core.js',
   APP_BASE + 'schedule-runner-core.js',
+  APP_BASE + 'zhl-headless-adapter.js',
   APP_BASE + 'planner-shell.js',
 ];
 

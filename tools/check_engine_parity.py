@@ -20,6 +20,7 @@ UI_RUNTIME_CORES = [
     "surf-interval-core.js",
     "results-render-core.js",
     "schedule-runner-core.js",
+    "zhl-headless-adapter.js",
 ]
 
 

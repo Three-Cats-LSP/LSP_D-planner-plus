@@ -38,6 +38,7 @@ PAGES_UI_ASSETS: tuple[str, ...] = (
     "results-panel.js",
     "results-render-core.js",
     "schedule-runner-core.js",
+    "zhl-headless-adapter.js",
     "planner-shell.js",
 )
 
@@ -51,6 +52,7 @@ SW_REQUIRED_UI_SCRIPTS: tuple[str, ...] = (
     "results-panel.js",
     "results-render-core.js",
     "schedule-runner-core.js",
+    "zhl-headless-adapter.js",
     "planner-shell.js",
     "gas-cards-core.js",
     "plot-core.js",

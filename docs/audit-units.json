@@ -1818,7 +1818,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "c7c38a059b05a1776d4d717c161b7a47a82a4a38356b197a3897d77106614283",
+      "fingerprint": "df43b6e00d4525cee2ff32d3b40b45a641a1358f2a6077fe736274ef48163804",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1900,7 +1900,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "28bae95a68790d6d2a4c313fa5f035ac5f03988df2c4581c261fbb9c9254744a",
+      "fingerprint": "6e02398f114ecefdc3e03db3dbda0727d18805f44424c9c898210fe05ac8701f",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2106,7 +2106,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-UNIT-HELPERS"
       },
-      "fingerprint": "3fef37b7ddd7200bef5635df6f40ea7146c60c6f7bb9e0330d89f344bfe5a3a5",
+      "fingerprint": "16d241ff90d730752fc2db31815b9ee0296739cbeb4ebd3530811f768dadc974",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2353,7 +2353,7 @@
     },
     {
       "id": "UI-ZHL-HEADLESS-HELPERS",
-      "path": "index.html",
+      "path": "zhl-headless-adapter.js",
       "layer": "web_runtime",
       "priority": "P1",
       "status": "VERIFIED",
@@ -2370,13 +2370,13 @@
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
       "issue": "Audit #134",
-      "fingerprint": "3678c11ab261aec2ccf3ae92febf586e33844a5f2bcfaf525946654d88abee62",
-      "last_read_fingerprint": "3678c11ab261aec2ccf3ae92febf586e33844a5f2bcfaf525946654d88abee62",
+      "fingerprint": "56ad9654553c8765eccd69f9d725a73af6cdfb0f98964c8607ee944f88eeb82c",
+      "last_read_fingerprint": "56ad9654553c8765eccd69f9d725a73af6cdfb0f98964c8607ee944f88eeb82c",
       "audit_issue": 152
     },
     {
       "id": "UI-ZHL-HEADLESS-ENGINE",
-      "path": "index.html",
+      "path": "zhl-headless-adapter.js",
       "layer": "web_runtime",
       "priority": "P0",
       "status": "VERIFIED",
@@ -2393,8 +2393,8 @@
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
       "issue": "Audit #134; Cycle 31 CCR repetitive NDL phase",
-      "fingerprint": "0bde20e5bb27c45c1dd8b978ab24669c6b4bacd92129c6bcb4b7a809c9308828",
-      "last_read_fingerprint": "0bde20e5bb27c45c1dd8b978ab24669c6b4bacd92129c6bcb4b7a809c9308828",
+      "fingerprint": "74df31a60a79c120886915709c935744df4642f30b170dcd43d5bf1f8c89cd06",
+      "last_read_fingerprint": "74df31a60a79c120886915709c935744df4642f30b170dcd43d5bf1f8c89cd06",
       "audit_issue": 153
     },
     {
@@ -2611,7 +2611,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PWA-LIFECYCLE"
       },
-      "fingerprint": "a72d7b25d597c2b573234199a640228d9b2625f6d2a60f797b5d2b08cb815873",
+      "fingerprint": "255f82c28c0802d66199080187b9a7526297e68b9c5701b69f71027cc848dde2",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2929,7 +2929,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "7f1aafa193082e18628545d685fda829bcd72ce830e740797a8b88f1a17c92cd",
+      "fingerprint": "7786fdb1b0f701ddbe69dddece0e9ba08264c0299c5118c31f4904ea97715bf0",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -4267,7 +4267,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3f2d20ba0071f134c996fc1544822b75d72a7b845d8fc68e2a144fb5d405089b",
+      "fingerprint": "8fc84677899c400fbb4b75ceba933d41a33ce72d0d9dbe525eeca8eca956f2d4",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -4348,7 +4348,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "384c0812fd1ddbd95b739811488c39ffd26aa3e347740d23073d025f76b06915",
+      "fingerprint": "bf41f4a4c24c51fe52b9eee4f2b823b0497e88bc4b6ab0a5d7aeb1268ed300bf",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -4531,7 +4531,7 @@
       "evidence": [],
       "issue": "GitHub #136 marker-based UI core extraction",
       "regression_cases": [],
-      "fingerprint": "fc7133a9ee71cb92faea840c3f67b72c2f80cb0dea0f50055822bfb6153da340",
+      "fingerprint": "45f36e15d3967f3bc1b82beb5026c5062aefd09ea706ffb27d0ba35df215c352",
       "last_read_fingerprint": null
     },
     {
@@ -4711,7 +4711,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "16cbbddfcd232c51e4cc2afcd5fa4641609d74810f03edac61e43f9a02aaf993",
+      "fingerprint": "4d5911bf846cdfaed2c77be65c0ba6a2e7c803c68f6a6b8ec79506c57c1622b3",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5332,7 +5332,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "9e794ff1d3de288852887c15774ab968bfae2af6fd0c1f09261b03f21783768c",
+      "fingerprint": "d83889d3ff417b1fd3d08bb8ba904ebb110f1ee8a04fdfb97dd21908a18dad0a",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5897,14 +5897,14 @@
     },
     {
       "cycle": "R14",
-      "max_new_application_lines": 921,
+      "max_new_application_lines": 1200,
       "application_units": [
         "UI-SETTINGS",
         "UI-UNIT-HELPERS",
         "UI-UNIT-SWITCHING"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R14: Settings persistence and unit helpers risk-first READ; current lines: 921; sessions: 2",
+      "acceptance": "V4 R14: Settings persistence and unit helpers risk-first READ; current lines: 1200; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6003,12 +6003,12 @@
     },
     {
       "cycle": "R24",
-      "max_new_application_lines": 2410,
+      "max_new_application_lines": 2414,
       "application_units": [
         "UI-BOOT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R24: index.html shell boot region risk-first READ; current lines: 2410; sessions: 5",
+      "acceptance": "V4 R24: index.html shell boot region risk-first READ; current lines: 2414; sessions: 5",
       "min_review_sessions": 5
     },
     {
@@ -6111,12 +6111,12 @@
     },
     {
       "cycle": "R34",
-      "max_new_application_lines": 738,
+      "max_new_application_lines": 742,
       "application_units": [
         "UI-MARKUP-HEADER"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R34: Header markup risk-first READ; current lines: 738; sessions: 2",
+      "acceptance": "V4 R34: Header markup risk-first READ; current lines: 742; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6787,6 +6787,8 @@
           "contingency-core.js",
           "results-panel.js",
           "results-render-core.js",
+          "schedule-runner-core.js",
+          "zhl-headless-adapter.js",
           "planner-shell.js"
         ]
       },

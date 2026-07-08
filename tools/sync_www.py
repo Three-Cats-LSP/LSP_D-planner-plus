@@ -53,6 +53,7 @@ ROOT_FILES = [
     "results-panel.js",
     "results-render-core.js",
     "schedule-runner-core.js",
+    "zhl-headless-adapter.js",
     "planner-shell.js",
 ]
 

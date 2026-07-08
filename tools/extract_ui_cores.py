@@ -201,6 +201,16 @@ UI_CORE_BLOCKS: tuple[UiCoreBlock, ...] = (
 """,
     ),
     UiCoreBlock(
+        "zhl-headless-adapter",
+        "zhl-headless-adapter.js",
+        """/**
+ * ZHL headless adapter.
+ * Browser-facing test/API wrapper around zhl-engine-bundle.js and zhl-worker-bridge.js.
+ * Loaded after schedule-runner-core and before planner-shell.
+ */
+""",
+    ),
+    UiCoreBlock(
         "planner-shell",
         "planner-shell.js",
         """/**
@@ -271,6 +281,12 @@ INLINE_FORBIDDEN_DEFS: dict[str, tuple[str, ...]] = {
         "function runVPMSchedule(",
         "function runDecoSchedule(",
         "function computePlanExposureTotals(",
+    ),
+    "zhl-headless-adapter": (
+        "const ZHLEngine = (() => {",
+        "function validateEngineInputs(",
+        "function validateCcrCalculationInputs(",
+        "function validateZhlHeadlessProfile(",
     ),
     "planner-shell": ("function initV3Layout(", "function setNavMode("),
 }
@@ -426,7 +442,7 @@ def verify_extracted_state(html: str | None = None) -> None:
     anchor_idx = html.find(SCRIPT_INSERT_AFTER)
     if anchor_idx == -1:
         raise ExtractionError("zhl-worker-bridge.js script anchor missing from index.html head")
-    head_slice = html[anchor_idx : anchor_idx + 2000]
+    head_slice = html[anchor_idx : anchor_idx + 6000]
     pos = 0
     for filename in EXPECTED_SCRIPT_ORDER:
         needle = f'<script src="{filename}"></script>'
