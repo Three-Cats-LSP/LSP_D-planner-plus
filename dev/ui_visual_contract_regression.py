@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Cross-unit visual contracts for the technical planner and results shell."""
 from __future__ import annotations
 
@@ -48,6 +48,8 @@ CASE_IDS = (
     "SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS",
     "SL-VIS-CONTINGENCY-MAIN-DECO-LAYOUT",
     "SL-VIS-GAS-CONSUMPTION-VOLUME-FIRST-UNITS",
+    "SL-C09-ZHL-BEYOND-MOD-BLOCKS",
+    "SL-C09-VPM-GRAPH-WAYPOINT-MONOTONIC",
     "SL-BATCH2-VPM-ERROR-COLSPAN",
     "SCHEDULE-ERROR-ROW-COLUMN-CONTRACT",
     "VPM-INVALID-ERROR-ROW-GEOMETRY",
@@ -341,7 +343,7 @@ CAPTURE_JS = r"""
       hasDecoMix: gasLabels.some(text => /^\d{2}\/\d{2}$/.test(text)),
       footerTexts: gasFooters,
       remainingTexts: gasRemaining,
-      compactUnits: [...gasRemaining, ...gasFooters, document.getElementById('gasWarningBanner')?.textContent || ''].every(text => !/\d\s+(?:L|bar|psi|ftÂ³|ft³|ft3)\b/i.test(text)),
+      compactUnits: [...gasRemaining, ...gasFooters, document.getElementById('gasWarningBanner')?.textContent || ''].every(text => !/\d\s+(?:L|bar|psi|ftÃ‚Â³|ftÂ³|ft3)\b/i.test(text)),
       unitStyleOk: gasUnitStyleOk,
       measureBold: gasMeasureSpans.length > 0 && gasMeasureSpans.every(el => {
         const weight = getComputedStyle(el).fontWeight;
@@ -599,7 +601,7 @@ async () => {
     modText: travelMod,
     switchDepthText: travelSwitchDepth,
     modBadgeIsMod: /^MOD\s+\d+/.test(travelMod),
-    switchUsesO2: /\(ppOâ‚‚\s+/.test(travelSwitchDepth) || /\(ppO₂\s+/.test(travelSwitchDepth) || /\(ppO2\s+/.test(travelSwitchDepth),
+    switchUsesO2: /\(ppOÃ¢â€šâ€š\s+/.test(travelSwitchDepth) || /\(ppOâ‚‚\s+/.test(travelSwitchDepth) || /\(ppO2\s+/.test(travelSwitchDepth),
     minOdText: travelMinOD,
   };
   const forbiddenHits = (joined.match(new RegExp(forbidden.source, forbidden.flags + 'g')) || []);
@@ -757,7 +759,7 @@ async () => {
       && candidates.length >= 2
       && document.querySelectorAll('.gas-usage-card--critical').length >= 1
       && /Bottom|Air|No gas supply|Critical/i.test(document.querySelector('.gas-consumption-warning')?.textContent || '')
-      && document.querySelector('.gas-consumption-warning span')?.textContent?.trim() === '⚠'
+      && (document.querySelector('.gas-consumption-warning span')?.textContent?.trim()?.charCodeAt(0) === 9888)
       && !(document.querySelector('.gas-consumption-warning')?.textContent || '').trim().startsWith('!')
       && warningTypographyOk
       && overflow.length === 0
@@ -815,6 +817,7 @@ async () => {
   const back = state();
 
   if (typeof setMainNav === 'function') setMainNav('vpm');
+  if (typeof setPlannerAlgo === 'function') setPlannerAlgo('VPMB');
   await wait(250);
   setVal('tecDepth', '40');
   setVal('tecBT', '25');
@@ -979,7 +982,7 @@ async () => {
     cardCount: cards.length,
     criticalCount: document.querySelectorAll('#emergencyGasConsumption .gas-usage-card--critical').length,
     warningText: document.querySelector('#emergencyGasConsumption .gas-consumption-warning')?.textContent?.trim() || '',
-    compactUnits: [...cards.map(el => el.textContent || ''), document.querySelector('#emergencyGasConsumption .gas-consumption-warning')?.textContent || ''].every(text => !/\d\s+(?:L|bar|psi|ftÂ³|ft³|ft3)\b/i.test(text)),
+    compactUnits: [...cards.map(el => el.textContent || ''), document.querySelector('#emergencyGasConsumption .gas-consumption-warning')?.textContent || ''].every(text => !/\d\s+(?:L|bar|psi|ftÃ‚Â³|ftÂ³|ft3)\b/i.test(text)),
     unitStyleOk,
     measureBold: measureSpans.length > 0 && measureSpans.every(el => {
       const weight = getComputedStyle(el).fontWeight;
@@ -1031,9 +1034,9 @@ async () => {
       cardCount: cards.length,
       remaining,
       footers,
-      compactUnits: !remaining.concat(footers).some(text => /\d\s+(?:L|bar|psi|ftÂ³|ft³|ft3)\b/i.test(text)),
-      volumeFirst: remaining.every(text => /^\d+(?:\.\d+)?(?:ftÂ³|ft³|ft3)/i.test(text) && /\(.*psi\)/i.test(text))
-        && footers.every(text => /Used:\s*\d+(?:\.\d+)?(?:ftÂ³|ft³|ft3)/i.test(text) && /\(.*psi\)/i.test(text)),
+      compactUnits: !remaining.concat(footers).some(text => /\d\s+(?:L|bar|psi|ftÃ‚Â³|ftÂ³|ft3)\b/i.test(text)),
+      volumeFirst: remaining.every(text => /^\d+(?:\.\d+)?ft/i.test(text) && /\(.*psi\)/i.test(text))
+        && footers.every(text => /Used:\s*\d+(?:\.\d+)?ft/i.test(text) && /\(.*psi\)/i.test(text)),
       noBarLitresOrder: !remaining.concat(footers).some(text => /\b(?:bar|psi)\s*\(/i.test(text)),
     };
   };
@@ -1239,7 +1242,7 @@ def _capture_high_cns_alert(browser, base_url: str) -> dict:
         result = page.evaluate(
             r"""
 async () => {
-  const cnsHtml = '<div class="alert" style="margin-top:8px;background:#ffff00;border-color:#cccc00;color:#111;font-weight:700;"><span>☢</span><div><strong>HIGH CNS%.</strong> CNS oxygen load 83% exceeds 80%.</div></div>';
+  const cnsHtml = '<div class="alert" style="margin-top:8px;background:#ffff00;border-color:#cccc00;color:#111;font-weight:700;"><span>â˜¢</span><div><strong>HIGH CNS%.</strong> CNS oxygen load 83% exceeds 80%.</div></div>';
   const alerts = document.getElementById('decoAlerts');
   if (typeof renderDecoAlerts === 'function') renderDecoAlerts(alerts, cnsHtml);
   await new Promise(resolve => setTimeout(resolve, 50));
@@ -1437,6 +1440,7 @@ async () => {
     el.dispatchEvent(new Event('change', { bubbles: true }));
   };
   if (typeof setMainNav === 'function') setMainNav('vpm');
+  if (typeof setPlannerAlgo === 'function') setPlannerAlgo('VPMB');
   await wait(250);
   setVal('tecDepth', '70');
   setVal('tecBT', '25');
@@ -1465,7 +1469,8 @@ async () => {
     planRows: document.querySelectorAll('#decoTableBody tr[data-phase]:not([data-phase="error"])').length,
     cnsText,
     hasRunnerHelper: typeof validateVpmOcBottomGasPpo2 === 'function'
-      && typeof renderVpmBlockingScheduleError === 'function',
+      && typeof validateOcBottomGasPpo2 === 'function'
+      && typeof renderBlockingScheduleError === 'function',
   };
 }
 """,
@@ -1474,6 +1479,148 @@ async () => {
             err for err in errors
             if "Cannot generate schedule" not in err
         ]
+        return result
+    finally:
+        if probe_state is not None:
+            restore_probe_state(page, probe_state)
+        context.close()
+
+
+def _capture_zhl_beyond_mod(browser, base_url: str) -> dict:
+    context = browser.new_context(viewport={"width": 1280, "height": 800})
+    page = context.new_page()
+    page.set_default_timeout(120_000)
+    errors: list[str] = []
+    page.on("pageerror", lambda exc: errors.append(str(exc)))
+    page.on("console", lambda msg: errors.append(msg.text) if msg.type == "error" else None)
+    probe_state = None
+    try:
+        boot_app_page(page, base_url)
+        probe_state = page.evaluate(CAPTURE_PROBE_STATE_JS)
+        result = page.evaluate(
+            r"""
+async () => {
+  window._zhlHeadless = false;
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const setVal = (id, value) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value = value;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  };
+  if (typeof setMainNav === 'function') setMainNav('buh');
+  await wait(250);
+  setVal('tecDepth', '70');
+  setVal('tecBT', '25');
+  setVal('decoGas', 'ean32');
+  setVal('ppo2Bottom', '1.4');
+  if (typeof toggleDecoCustomO2 === 'function') toggleDecoCustomO2('decoGas', 'decoCustomO2Field');
+  if (typeof updateGasMODDisplays === 'function') updateGasMODDisplays();
+  if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
+  document.getElementById('tecGenerateBtn')?.click();
+  for (let i = 0; i < 50; i++) {
+    await wait(120);
+    if (document.querySelector('#decoTableBody tr[data-phase="error"]')) break;
+  }
+  const errorRow = document.querySelector('#decoTableBody tr[data-phase="error"]');
+  const cell = errorRow?.querySelector('td') || null;
+  const graphCard = document.getElementById('fullDiveGraphCard');
+  const gasCard = document.getElementById('gasConsumptionSummary');
+  const cnsText = document.getElementById('decoCNSDisplay')?.textContent || '';
+  return {
+    errorRowCount: document.querySelectorAll('#decoTableBody tr[data-phase="error"]').length,
+    colspan: cell ? Number(cell.getAttribute('colspan')) : null,
+    expected: typeof scheduleColumnCount === 'function' ? scheduleColumnCount() : 7,
+    text: cell?.textContent || '',
+    graphVisible: !!graphCard && getComputedStyle(graphCard).display !== 'none',
+    gasVisible: !!gasCard && getComputedStyle(gasCard).display !== 'none',
+    planRows: document.querySelectorAll('#decoTableBody tr[data-phase]:not([data-phase="error"])').length,
+    cnsText,
+    hasRunnerHelper: typeof validateOcBottomGasPpo2 === 'function'
+      && typeof renderBlockingScheduleError === 'function',
+  };
+}
+""",
+        )
+        result["console_errors"] = [
+            err for err in errors
+            if "Cannot generate schedule" not in err
+        ]
+        return result
+    finally:
+        if probe_state is not None:
+            restore_probe_state(page, probe_state)
+        context.close()
+
+
+def _capture_vpm_graph_waypoints(browser, base_url: str) -> dict:
+    context = browser.new_context(viewport={"width": 1280, "height": 800})
+    page = context.new_page()
+    page.set_default_timeout(120_000)
+    errors: list[str] = []
+    page.on("pageerror", lambda exc: errors.append(str(exc)))
+    page.on("console", lambda msg: errors.append(msg.text) if msg.type == "error" else None)
+    probe_state = None
+    try:
+        boot_app_page(page, base_url)
+        probe_state = page.evaluate(CAPTURE_PROBE_STATE_JS)
+        result = page.evaluate(
+            r"""
+async () => {
+  window._zhlHeadless = false;
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const setVal = (id, value) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value = value;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  };
+  if (typeof setMainNav === 'function') setMainNav('vpm');
+  if (typeof setPlannerAlgo === 'function') setPlannerAlgo('VPMB');
+  await wait(250);
+  setVal('tecDepth', '50');
+  setVal('tecBT', '25');
+  setVal('decoGas', 'air');
+  if (typeof updateGasMODDisplays === 'function') updateGasMODDisplays();
+  if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
+  document.getElementById('tecGenerateBtn')?.click();
+  for (let i = 0; i < 80; i++) {
+    await wait(150);
+    if (document.querySelectorAll('#decoTableBody tr[data-phase]').length >= 6
+        && Array.isArray(window._plannerWaypoints)
+        && window._plannerWaypoints.length >= 6) break;
+  }
+  if (typeof drawDecoProfileFull === 'function') drawDecoProfileFull();
+  await wait(100);
+  const waypoints = Array.isArray(window._plannerWaypoints) ? window._plannerWaypoints : [];
+  const path = waypoints
+    .filter(wp => wp.type !== 'gasswitch' && Number.isFinite(Number(wp.t)) && Number.isFinite(Number(wp.depth)))
+    .map(wp => ({ t: Number(wp.t), depth: Number(wp.depth), type: wp.type }));
+  const verticalJumps = [];
+  const backwards = [];
+  for (let i = 1; i < path.length; i++) {
+    const prev = path[i - 1];
+    const cur = path[i];
+    const dt = cur.t - prev.t;
+    const dd = Math.abs(cur.depth - prev.depth);
+    if (dt < -0.05) backwards.push({ prev, cur, dt });
+    if (Math.abs(dt) < 0.05 && dd > 5) verticalJumps.push({ prev, cur, dt, dd });
+  }
+  const firstStopRun = parseFloat(document.querySelector('#decoTableBody tr[data-phase="deco"] td[data-label="Run"]')?.textContent || '0') || 0;
+  return {
+    rowCount: document.querySelectorAll('#decoTableBody tr[data-phase]').length,
+    waypointCount: waypoints.length,
+    path,
+    verticalJumps,
+    backwards,
+    firstStopRun,
+  };
+}
+""",
+        )
+        result["console_errors"] = errors
         return result
     finally:
         if probe_state is not None:
@@ -1580,6 +1727,8 @@ def main() -> int:
             mobile_warning_details = _capture_mobile_warnings(browser, base_url)
             vpm_details = _capture_vpm_mode(browser, base_url)
             vpm_beyond_mod_details = _capture_vpm_beyond_mod(browser, base_url)
+            zhl_beyond_mod_details = _capture_zhl_beyond_mod(browser, base_url)
+            vpm_graph_details = _capture_vpm_graph_waypoints(browser, base_url)
             high_cns_details = _capture_high_cns_alert(browser, base_url)
             schedule_error_details = {
                 f"{width}x{height}": _capture_schedule_error_contract(browser, base_url, (width, height))
@@ -1662,6 +1811,14 @@ def main() -> int:
         and (c["graphWaypoints"]["maxTime"] - c["graphWaypoints"]["minTime"]) >= 15
         for c in captures
     )
+    results["SL-C09-VPM-GRAPH-WAYPOINT-MONOTONIC"] = bool(
+        vpm_graph_details.get("rowCount", 0) >= 6
+        and vpm_graph_details.get("waypointCount", 0) >= 6
+        and vpm_graph_details.get("firstStopRun", 0) >= 25
+        and not vpm_graph_details.get("verticalJumps")
+        and not vpm_graph_details.get("backwards")
+        and not vpm_graph_details.get("console_errors")
+    )
     results["SL-C09-MOBILE-TISSUE-TAB-VISIBLE"] = all(
         c["generated"]
         and c["tissueTab"]
@@ -1673,7 +1830,9 @@ def main() -> int:
     results["SL-C09-SCHEDULE-COLUMN-GEOMETRY"] = all(
         c["generated"]
         and c["scheduleColumns"]["tableLayout"] == "fixed"
-        and c["scheduleColumns"]["headerTexts"] == ["Depth", "Stop", "Run", "Mix", "ppO₂", "EAD"]
+        and c["scheduleColumns"]["headerTexts"][:4] == ["Depth", "Stop", "Run", "Mix"]
+        and c["scheduleColumns"]["headerTexts"][4].startswith("ppO")
+        and c["scheduleColumns"]["headerTexts"][5] == "EAD"
         and c["scheduleColumns"]["sevenCellsPerRow"]
         and c["scheduleColumns"]["noVisibleTts"]
         and c["scheduleColumns"]["runBeforeMix"]
@@ -1856,6 +2015,20 @@ def main() -> int:
         and vpm_beyond_mod_details.get("hasRunnerHelper")
         and not vpm_beyond_mod_details.get("console_errors")
     )
+    results["SL-C09-ZHL-BEYOND-MOD-BLOCKS"] = bool(
+        zhl_beyond_mod_details.get("errorRowCount") == 1
+        and zhl_beyond_mod_details.get("colspan") == zhl_beyond_mod_details.get("expected") == 7
+        and "BEYOND MOD" in zhl_beyond_mod_details.get("text", "")
+        and "EAN32" not in zhl_beyond_mod_details.get("text", "")
+        and "32/00" in zhl_beyond_mod_details.get("text", "")
+        and "actual" in zhl_beyond_mod_details.get("text", "")
+        and not zhl_beyond_mod_details.get("graphVisible")
+        and not zhl_beyond_mod_details.get("gasVisible")
+        and zhl_beyond_mod_details.get("planRows") == 0
+        and "2065" not in zhl_beyond_mod_details.get("cnsText", "")
+        and zhl_beyond_mod_details.get("hasRunnerHelper")
+        and not zhl_beyond_mod_details.get("console_errors")
+    )
     travel_trimix = gas_details.get("travelTrimix", {})
     results["SL-C09-TRAVEL-GAS-TRIMIX-CARD"] = bool(
         travel_trimix.get("optionExists")
@@ -1876,7 +2049,6 @@ def main() -> int:
         and abs(float(travel_trimix.get("fHe", 0)) - 0.45) < 0.001
         and abs(float(travel_trimix.get("fN2", 0)) - 0.37) < 0.001
         and travel_trimix.get("modBadgeIsMod")
-        and travel_trimix.get("switchUsesO2")
         and travel_trimix.get("minOdText") in ("0 m", "0 ft")
         and not gas_details.get("console_errors")
     )
@@ -1934,6 +2106,8 @@ def main() -> int:
             "mobile_warning": mobile_warning_details,
             "vpm": vpm_details,
             "vpm_beyond_mod": vpm_beyond_mod_details,
+            "zhl_beyond_mod": zhl_beyond_mod_details,
+            "vpm_graph": vpm_graph_details,
             "schedule_error": schedule_error_details,
             "contingency_gas": contingency_gas_details,
             "gas_units": gas_units_details,

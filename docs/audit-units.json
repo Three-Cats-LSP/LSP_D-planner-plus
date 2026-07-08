@@ -823,6 +823,14 @@
     "REG-136": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
       "case_id": "SL-C09-VPM-BEYOND-MOD-BLOCKS"
+    },
+    "REG-137": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-C09-ZHL-BEYOND-MOD-BLOCKS"
+    },
+    "REG-138": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-C09-VPM-GRAPH-WAYPOINT-MONOTONIC"
     }
   },
   "findings": [
@@ -1810,7 +1818,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "c42e14e57f8f675effa74b8dc77badf1216c036cb3cf2ada4cb81db19617c6f6",
+      "fingerprint": "398a1ba485920850a496c88e23ec308c9c1f98e3187a106459ddcce20d0fa0b0",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1892,7 +1900,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "02e135ddb5cd6264ba9067a09e7492bbdcc71de3a76a07253c564318b13acfed",
+      "fingerprint": "682f072d28986b7da08869cd3df94f9763eb1742532074e1832ab0b1493f9386",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2206,7 +2214,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS-CONTROLS"
       },
-      "fingerprint": "3ffe8685e7afe086d1680f52e35e316cd384f4e9efee61f152d27e71f7bd67eb",
+      "fingerprint": "fff2599339f748f2e71ec925b15c176048fa61203a71e7634f362ec5f67f4685",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2223,7 +2231,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RUNNER"
       },
-      "fingerprint": "9218f3c7855e31a0d5398ab3b65982b58abe3aa0d52345aec39f781554294469",
+      "fingerprint": "44ceb4a30ed979e869a34a3a0796d17410fd287802556169ccd0d89359f1a68c",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2231,7 +2239,8 @@
         "REG-132",
         "REG-133",
         "REG-134",
-        "REG-136"
+        "REG-136",
+        "REG-138"
       ],
       "audit_issue": 146,
       "issue": "Audit issue #146"
@@ -2297,7 +2306,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-SETUP"
       },
-      "fingerprint": "79c1abf3dc42d9aca0a0035bdd46ad6fe7b0253334931afdf07bbf91801648bd",
+      "fingerprint": "b5e889775054e3e6f12316868584ecda28911dc4a60ce31095fa304d0a37f4bd",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2319,7 +2328,8 @@
       "evidence": [],
       "regression_cases": [
         "REG-132",
-        "REG-134"
+        "REG-134",
+        "REG-137"
       ],
       "audit_issue": 150,
       "issue": "Audit issue #150"
@@ -2431,10 +2441,12 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-WAYPOINTS"
       },
-      "fingerprint": "a51295ed8d8268699201470908365d7d621f3ca2cd01f37831f4c20960b5f422",
+      "fingerprint": "5e22d947ee7c813cbe3809d8bcdf5cf4913ee066edbf9ae90f04d260fbc9de4e",
       "last_read_fingerprint": null,
       "evidence": [],
-      "regression_cases": [],
+      "regression_cases": [
+        "REG-138"
+      ],
       "audit_issue": 155,
       "issue": "Audit issue #155"
     },
@@ -2465,7 +2477,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-EXPOSURE"
       },
-      "fingerprint": "f298f0b0b91dafaf9d71eb5de13bb8e859f539a51f25ac5894a3ab740aaa6292",
+      "fingerprint": "b3a7d1bfda4ffe99207ac48ecf3c204fab9cd8286e98e27dd6cece2e3ea0dbbf",
       "last_read_fingerprint": null,
       "audit_issue": 156,
       "evidence": [],
@@ -2474,15 +2486,14 @@
     },
     {
       "id": "UI-TOOLS-GF",
-      "path": "index.html",
+      "path": "gf-curve-core.js",
       "layer": "web_runtime",
       "priority": "P2",
       "status": "IN_PROGRESS",
       "boundary": {
-        "type": "marker",
-        "marker": "AUDIT-UNIT:UI-TOOLS-GF"
+        "type": "whole_file"
       },
-      "fingerprint": "7986d512347d54a2314a3dda3d0b2fbffd110ba2da6b7990fdf5f2e9787819fd",
+      "fingerprint": "13408d9aef21992016d8c92a9b9312784e2d97884f22f6f5e3906397d30a72cb",
       "last_read_fingerprint": null,
       "audit_issue": 157,
       "evidence": [],
@@ -2918,7 +2929,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3f95e767c9c5fc30023518dae85069ee46b1d1fecfc7c75483ae014517dac81c",
+      "fingerprint": "7f1aafa193082e18628545d685fda829bcd72ce830e740797a8b88f1a17c92cd",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -4260,7 +4271,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "15e4dee17e8fa01d23f12628e1fb2358e92eac93b718bf8b2f7c299aa6e38a1e",
+      "fingerprint": "3f2d20ba0071f134c996fc1544822b75d72a7b845d8fc68e2a144fb5d405089b",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -4524,7 +4535,7 @@
       "evidence": [],
       "issue": "GitHub #136 marker-based UI core extraction",
       "regression_cases": [],
-      "fingerprint": "de4b9ebb8d495ad12c837d357b6cb6f95b94e89c9bb713273ead6fa218212459",
+      "fingerprint": "fc7133a9ee71cb92faea840c3f67b72c2f80cb0dea0f50055822bfb6153da340",
       "last_read_fingerprint": null
     },
     {
@@ -4704,7 +4715,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "89b3de78c985f5875d6a1302ead8d91ff52cda2167ce576f805c15a3b175ee94",
+      "fingerprint": "16cbbddfcd232c51e4cc2afcd5fa4641609d74810f03edac61e43f9a02aaf993",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5325,7 +5336,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "eece3de8f68a315d5e9d5f026ef74675b92b224eba55edf4627a0fafead796b8",
+      "fingerprint": "9e794ff1d3de288852887c15774ab968bfae2af6fd0c1f09261b03f21783768c",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5724,9 +5735,11 @@
         "REG-133",
         "REG-134",
         "REG-135",
-        "REG-136"
+        "REG-136",
+        "REG-137",
+        "REG-138"
       ],
-      "fingerprint": "4f1425267c46403e8a058d3a891f316660b79592272ddcf2c3b814e6728cab4d",
+      "fingerprint": "10e9569879c54875ad4a6f2d992e2c9d0bdaf3611d50ee7c8bc6da7ed7b83d9d",
       "last_read_fingerprint": null
     },
     {
@@ -5751,12 +5764,12 @@
   "cycles": [
     {
       "cycle": 1,
-      "max_new_application_lines": 734,
+      "max_new_application_lines": 738,
       "application_units": [
         "UI-MARKUP-HEADER"
       ],
       "engine_reverification": [],
-      "acceptance": "V3 cycle 1: header markup partial READ; SUITE-UI-STRUCTURE must be green; current lines: 734; sessions: 2",
+      "acceptance": "V3 cycle 1: header markup partial READ in >=2 bounded sessions; SUITE-UI-STRUCTURE must be green; current lines: 738; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -5893,14 +5906,14 @@
     },
     {
       "cycle": 15,
-      "max_new_application_lines": 629,
+      "max_new_application_lines": 632,
       "min_review_sessions": 2,
       "application_units": [
         "UI-PLOT-RENDER",
         "UI-PLOT-WAYPOINTS"
       ],
       "engine_reverification": [],
-      "acceptance": "plot-core render and waypoints READ in at least 2 bounded sessions (641 lines total); current lines: 629; sessions: 2"
+      "acceptance": "plot-core render and waypoints READ in at least 2 bounded sessions; current lines: 632; sessions: 2"
     },
     {
       "cycle": 16,
@@ -5995,14 +6008,14 @@
     },
     {
       "cycle": 24,
-      "max_new_application_lines": 725,
+      "max_new_application_lines": 730,
       "min_review_sessions": 2,
       "application_units": [
         "UI-ALGORITHM-SETTINGS",
         "UI-SETTINGS-CONTROLS"
       ],
       "engine_reverification": [],
-      "acceptance": "Algorithm and settings controls READ (725 lines; >=2 bounded sessions); current lines: 725; sessions: 2"
+      "acceptance": "Algorithm and settings controls READ in >=2 bounded sessions; current lines: 730; sessions: 2"
     },
     {
       "cycle": 25,
@@ -6018,7 +6031,7 @@
     },
     {
       "cycle": 26,
-      "max_new_application_lines": 851,
+      "max_new_application_lines": 861,
       "min_review_sessions": 2,
       "application_units": [
         "UI-TOOLS-TISSUES",
@@ -6026,7 +6039,7 @@
         "UI-TOOLS-GF"
       ],
       "engine_reverification": [],
-      "acceptance": "Tools panels READ in >=2 bounded sessions; implement and verify the tissue-saturation seven-band value scale in docs/tissue-saturation-color-roadmap.md, including UI/export parity and accessibility; current lines: 851; sessions: 2"
+      "acceptance": "Tools panels READ in >=2 bounded sessions; implement and verify the tissue-saturation seven-band value scale in docs/tissue-saturation-color-roadmap.md, including UI/export parity and accessibility; current lines: 861; sessions: 2"
     },
     {
       "cycle": 27,
@@ -6058,14 +6071,14 @@
     },
     {
       "cycle": 30,
-      "max_new_application_lines": 427,
+      "max_new_application_lines": 428,
       "application_units": [
         "APP-SERVICE-WORKER",
         "UI-PWA-LIFECYCLE",
         "APP-MANIFEST"
       ],
       "engine_reverification": [],
-      "acceptance": "PWA and service worker READ; current lines: 427; sessions: 1",
+      "acceptance": "PWA/service-worker lifecycle READ; current lines: 428; sessions: 1",
       "min_review_sessions": 1
     },
     {
@@ -6722,7 +6735,9 @@
         "VPM-INVALID-ERROR-ROW-GEOMETRY",
         "SCHEDULE-CANONICAL-GAS-LABELS",
         "SL-C09-HIGH-CNS-DECO-ALERT",
-        "SL-C09-VPM-BEYOND-MOD-BLOCKS"
+        "SL-C09-VPM-BEYOND-MOD-BLOCKS",
+        "SL-C09-ZHL-BEYOND-MOD-BLOCKS",
+        "SL-C09-VPM-GRAPH-WAYPOINT-MONOTONIC"
       ]
     }
   ],

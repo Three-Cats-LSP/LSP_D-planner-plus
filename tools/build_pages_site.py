@@ -46,6 +46,7 @@ ROOT_FILES = [
     "gas-cards-core.js",
     "export-core.js",
     "plot-core.js",
+    "gf-curve-core.js",
     "contingency-core.js",
     "results-panel.js",
     "results-render-core.js",

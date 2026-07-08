@@ -88,6 +88,7 @@ const REQUIRED_PRECACHE = [
   APP_BASE + 'gas-cards-core.js',
   APP_BASE + 'export-core.js',
   APP_BASE + 'plot-core.js',
+  APP_BASE + 'gf-curve-core.js',
   APP_BASE + 'contingency-core.js',
   APP_BASE + 'results-panel.js',
   APP_BASE + 'results-render-core.js',

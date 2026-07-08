@@ -150,6 +150,18 @@ UI_CORE_BLOCKS: tuple[UiCoreBlock, ...] = (
 """,
     ),
     UiCoreBlock(
+        "gf-curve-core",
+        "gf-curve-core.js",
+        """/**
+ * GF curve visualizer and interaction.
+ * Loaded by index.html after plot-core.
+ * Globals read: setupHiDPI, _lspCssVar, getPlannerInputEl, units, mGF,
+ *   ZHL16C, gfAdjustedMValue, altSurfaceP, BAR_PER_METRE, WATER_VAPOR, FN2_AIR.
+ * Globals written: (GF curve DOM only)
+ */
+""",
+    ),
+    UiCoreBlock(
         "contingency-core",
         "contingency-core.js",
         """/**
@@ -238,6 +250,10 @@ INLINE_FORBIDDEN_DEFS: dict[str, tuple[str, ...]] = {
         "function drawDecoProfile(",
         "function drawDiveProfile(",
         "function attachDiveProfileInteraction(",
+    ),
+    "gf-curve-core": (
+        "function drawGFCurve(",
+        "function attachGFCurveInteraction(",
     ),
     "contingency-core": (
         "function runContingencyScenario(",

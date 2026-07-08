@@ -610,17 +610,20 @@ function _buildDecoProfileWaypoints(tbodyId = 'decoTableBody') {
 
   const fmtDepLbl = (d) => units === 'metric' ? d + 'm' : Math.round(d * 3.28084) + 'ft';
   const cellText = (tr, label) => tr.querySelector(`td[data-label="${label}"]`)?.textContent?.trim() || '';
+  const tbody = document.getElementById(tbodyId);
+  if (!tbody) return null;
+  const phaseOf = tr => String(tr.dataset.phase || '').replace(/^contingency-/, '');
 
   const wps = [{ t: 0, depth: 0, type: 'surface' }];
   let t = descentT;
   wps.push({ t, depth: depthVal, type: 'bottom', dot: true, label: fmtDepLbl(depthVal) });
-  t = btVal;
+  const bottomRunRow = Array.from(tbody.querySelectorAll('tr[data-phase]'))
+    .find(tr => ['bottom', 'level', 'lvl'].includes(phaseOf(tr)));
+  const renderedBottomRun = bottomRunRow ? parseRunMin(cellText(bottomRunRow, 'Run')) : 0;
+  t = renderedBottomRun > 0 ? renderedBottomRun : btVal;
   wps.push({ t, depth: depthVal, type: 'bottom' });
 
   const labelledDepths = new Set();
-  const tbody = document.getElementById(tbodyId);
-  if (!tbody) return null;
-  const phaseOf = tr => String(tr.dataset.phase || '').replace(/^contingency-/, '');
   tbody.querySelectorAll('tr[data-phase]').forEach(tr => {
     const phase = phaseOf(tr);
     if (phase === 'switch') return;

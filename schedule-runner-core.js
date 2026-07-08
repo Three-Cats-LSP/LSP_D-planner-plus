@@ -2220,7 +2220,7 @@ function fmtPpO2(v) {
   return Number.isFinite(v) ? v.toFixed(2) : String(v);
 }
 
-function renderVpmBlockingScheduleError(message) {
+function renderBlockingScheduleError(message) {
   _clearPlannerResults?.();
   renderScheduleErrorRow(message);
   notifyScheduleError?.(message);
@@ -2235,7 +2235,7 @@ function renderVpmBlockingScheduleError(message) {
   scheduleDecoScheduleStackSync?.();
 }
 
-function validateVpmOcBottomGasPpo2(depthM, bottomFracs, ppo2Limit, settings) {
+function validateOcBottomGasPpo2(depthM, bottomFracs, ppo2Limit, settings, algorithmLabel) {
   if (!bottomFracs || !Number.isFinite(depthM) || depthM <= 0) return { ok: true };
   if (isRebreatherCircuit(settings?.circuit || 'OC')) return { ok: true };
   const actual = ppO2Check(depthM, bottomFracs.fN2, bottomFracs.fHe);
@@ -2246,11 +2246,16 @@ function validateVpmOcBottomGasPpo2(depthM, bottomFracs, ppo2Limit, settings) {
   const modDisp = units === 'imperial' ? Math.round(modM * 3.28084) : modM;
   const du = units === 'imperial' ? 'ft' : 'm';
   const label = getGasLabel(bottomFracs.fO2, bottomFracs.fHe);
+  const algoPrefix = algorithmLabel ? `${algorithmLabel}: ` : '';
   return {
     ok: false,
     actual,
-    message: `VPM: BEYOND MOD. ${depthDisp}${du} exceeds ${label} MOD of ${modDisp}${du} at actual ${actual.toFixed(2)} bar ppO₂. Use a lower O₂ bottom gas, add a travel gas, or reduce depth.`,
+    message: `${algoPrefix}BEYOND MOD. ${depthDisp}${du} exceeds ${label} MOD of ${modDisp}${du} at actual ${actual.toFixed(2)} bar ppO₂. Use a lower O₂ bottom gas, add a travel gas, or reduce depth.`,
   };
+}
+
+function validateVpmOcBottomGasPpo2(depthM, bottomFracs, ppo2Limit, settings) {
+  return validateOcBottomGasPpo2(depthM, bottomFracs, ppo2Limit, settings, 'VPM');
 }
 
 // ── VPM SCHEDULE RUNNER ──────────────────────────────────────────────
@@ -2445,7 +2450,7 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
   const bottomHePct = Math.round(_vpmBotFracs.fHe * 100);
   const vpmBottomPpo2 = validateVpmOcBottomGasPpo2(depthM, _vpmBotFracs, ppo2Bottom, settings);
   if (!vpmBottomPpo2.ok) {
-    renderVpmBlockingScheduleError(vpmBottomPpo2.message);
+    renderBlockingScheduleError(vpmBottomPpo2.message);
     return;
   }
 
@@ -2876,7 +2881,20 @@ function runDecoSchedule() {
   const rawD   = parseFloat(getPlannerInputEl('decoDepth')?.value) || 40;
   const depthM = units === 'metric' ? rawD : rawD / 3.28084;
   const bt     = parseInt(getPlannerInputEl('decoBT')?.value) || 30;
+  const bottomFracsForPpo2 = getBottomGasFractions();
   const _uiCcr = getCCRSettingsFromDOM();
+  const bottomPpo2Limit = parseFloat(document.getElementById('ppo2Bottom')?.value) || 1.4;
+  const zhlBottomPpo2 = validateOcBottomGasPpo2(
+    depthM,
+    bottomFracsForPpo2,
+    bottomPpo2Limit,
+    mergeCCRSettings(_uiCcr),
+    'Bühlmann'
+  );
+  if (!zhlBottomPpo2.ok && !window._zhlHeadless && !_contingencyRunning) {
+    renderBlockingScheduleError(zhlBottomPpo2.message);
+    return;
+  }
   if (!window._zhlHeadless && isRebreatherCircuit(_uiCcr.circuit)) {
     const bot = getDomBottomGasPct();
     const ccrVal = validateCcrCalculationInputs(
