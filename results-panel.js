@@ -258,26 +258,8 @@ function _setGasWarningBannerHtml(html) {
   banner.style.display = 'flex';
 }
 function _updateGasWarningBannerFromCard(gasEl) {
-  if (!gasEl || gasEl.style.display === 'none') {
-    _setGasWarningBanner('');
-    return;
-  }
-  const alert = gasEl.querySelector('.alert.dang');
-  if (alert) {
-    const copy = alert.querySelector('.gas-warning-copy');
-    if (copy) {
-      _setGasWarningBannerHtml(copy.innerHTML);
-      return;
-    }
-    const msg = alert.textContent.replace(/\s+/g, ' ').trim();
-    _setGasWarningBanner(msg || 'Gas shortfall detected in Gas Consumption.');
-    return;
-  }
-  const shortRow = Array.from(gasEl.querySelectorAll('tr')).find(tr => /(^|\s)short(\s|$)/i.test((tr.textContent || '').replace(/\s+/g, ' ')));
-  if (shortRow) {
-    _setGasWarningBanner('Gas shortfall detected in Gas Consumption. Review required vs available volumes.');
-    return;
-  }
+  // Gas warnings render inside the Gas Consumption card. Do not mirror them into
+  // the global top banner; that creates duplicate warnings above the tabs.
   _setGasWarningBanner('');
 }
 function switchResultTab(name, btn) {

@@ -606,8 +606,7 @@ body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumpt
 #resultsPanel #decoResult.results-v3-card { background: transparent; border: none; box-shadow: none; margin: 0; padding: 0; }
 #resultsPanel #decoAlerts { margin: var(--space-1) var(--space-4) 0; min-width: 0; max-width: calc(100% - var(--space-4) * 2); box-sizing: border-box; }
 #resultsPanel #decoAlerts:empty { display: none; margin: 0; }
-#resultsPanel #decoAlertsNarcotic { margin: var(--space-2) var(--space-4) 0; min-width: 0; max-width: calc(100% - var(--space-4) * 2); box-sizing: border-box; }
-#resultsPanel #decoAlertsNarcotic:empty { display: none; margin: 0; }
+#resultsPanel #decoAlertsNarcotic { display: none !important; margin: 0; }
 #resultsPanel #decoAlerts .alert,
 #resultsPanel #decoAlertsNarcotic .alert { display: flex; align-items: flex-start; gap: var(--space-2); width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); font-size: 12px; line-height: 1.45; margin: 0 0 var(--space-2); white-space: normal; overflow-wrap: anywhere; word-break: normal; }
 #resultsPanel #decoAlerts .alert > *,
@@ -633,6 +632,12 @@ body.light-theme #resultsPanel .deco-plan-card { background: #f3f4f6; border-col
 body.light-theme #resultsPanel .gas-pill.bottom-gas { background: #f0f4ff; }
 body.light-theme #resultsPanel .gas-pill.travel-gas { background: #f0f4ff; color: #111; border-color: #ff9900; }
 #resultsPanel .gas-pill .pill-dot { display: none; }
+#resultsPanel .gas-consumption-narcotic { margin: 0 0 var(--space-2); }
+#resultsPanel .gas-consumption-narcotic .alert { display: flex; align-items: flex-start; gap: var(--space-2); width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); font-size: 12px; line-height: 1.45; margin: 0; white-space: normal; overflow-wrap: anywhere; word-break: normal; }
+#resultsPanel .gas-consumption-narcotic .alert > * { min-width: 0; overflow-wrap: anywhere; }
+#resultsPanel .gas-consumption-narcotic .alert.narcotic-warn { background:#fff0f0; border:1px solid #cc0000; color:#cc0000; font-weight:700; }
+#resultsPanel .gas-consumption-narcotic .alert.narcotic-warn * { color:#cc0000 !important; }
+#resultsPanel .gas-consumption-narcotic .alert.narcotic-warn .tip-icon { color:#cc0000 !important; opacity:0.85; }
 #resultsPanel .deco-params { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); line-height: 1.6; }
 #resultsPanel .deco-params span { color: var(--text); font-weight: 600; }
 body.light-theme #resultsPanel #decoAlerts .alert.deco,

@@ -1802,7 +1802,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "2a7c66b78c0baed3c21c91e488e3814ad849da440497911842bcf456a68b0501",
+      "fingerprint": "21770eb09ada24d6154531d384f3db4e3049c43ea7a2e650fb9d54ea7892a5b9",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1862,7 +1862,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "941b704f414d6ec4f576035adc1744d4b412a87a0936f98cbaee1653d1669fd5",
+      "fingerprint": "d02918edbac554a9aef9c63d6892d51d415d73e04724330b8e0f66314a29efbc",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -1884,7 +1884,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "0b46baa52b89ce14d723220cd427fa58c6270078cff948cbaea345033883bb9c",
+      "fingerprint": "cd7fa334cffcd2ce449084ae33b2f33a237edc8236a1a2c5d044a4df106f30b4",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5243,7 +5243,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "096649997da5b44ff9760787f13b1b56b248d552b4a25965abd4ef50f46c9ba9",
+      "fingerprint": "a4ebd430a505006426ee451a6ad592d67a54da2f249e08a58d60beb69f1797aa",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5743,7 +5743,7 @@
         "REG-133",
         "REG-134"
       ],
-      "fingerprint": "41eba87b29d795a4b00d7a07bc74824d3fef551b3a432afbe34fc7f09ee7e8cf",
+      "fingerprint": "8b980e7a9e6618ed5c1986927ebffa4691c2184f129211aaab430d1e15864c7f",
       "last_read_fingerprint": null
     },
     {
@@ -5828,12 +5828,12 @@
     },
     {
       "cycle": 7,
-      "max_new_application_lines": 971,
+      "max_new_application_lines": 976,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "Results CSS READ (2 bounded sessions); current lines: 971; sessions: 2",
+      "acceptance": "Results CSS READ (2 bounded sessions); current lines: 976; sessions: 2",
       "min_review_sessions": 2
     },
     {

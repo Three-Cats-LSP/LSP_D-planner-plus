@@ -221,7 +221,7 @@ CAPTURE_JS = r"""
   const statusOrange = resolveColor(root.getPropertyValue('--status-orange'));
   const statusRed = resolveColor(root.getPropertyValue('--status-red'));
   const decoPlanCard = document.querySelector('#resultsPanel .deco-plan-card');
-  const hazardAlert = document.querySelector('#resultsPanel #decoAlerts .alert.deco, #resultsPanel #decoAlertsNarcotic .alert.deco, #resultsPanel #decoAlertsNarcotic .alert.narcotic-warn');
+  const hazardAlert = document.querySelector('#resultsPanel #decoAlerts .alert.deco, #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn');
   const decoPlanCardStyle = decoPlanCard ? {
     background: rgb(style(decoPlanCard, 'backgroundColor')),
     border: rgb(style(decoPlanCard, 'borderTopColor')),
@@ -709,32 +709,32 @@ async () => {
     return Number.isFinite(av) && Number.isFinite(bv) && Math.abs(av - bv) <= tolerance;
   };
   const zeroLetterSpacing = value => value === 'normal' || Math.abs(parseFloat(value) || 0) <= 0.1;
-  const gasWarningStyle = styleOf(document.getElementById('gasWarningBanner'));
+  const gasWarningBanner = document.getElementById('gasWarningBanner');
+  const gasWarningStyle = styleOf(gasWarningBanner);
   const cardWarningStyle = styleOf(document.querySelector('.gas-consumption-warning'));
   const decoWarningStyle = styleOf(document.querySelector('#decoAlerts .alert, #decoAlertsNarcotic .alert'));
   const warningTypographyOk =
-    /Outfit/i.test(gasWarningStyle.fontFamily || '')
-    && /Outfit/i.test(cardWarningStyle.fontFamily || '')
+    /Outfit/i.test(cardWarningStyle.fontFamily || '')
     && closePx(gasWarningStyle.fontSize, decoWarningStyle.fontSize)
     && closePx(cardWarningStyle.fontSize, decoWarningStyle.fontSize)
-    && closePx(gasWarningStyle.lineHeight, decoWarningStyle.lineHeight, 1.5)
     && closePx(cardWarningStyle.lineHeight, decoWarningStyle.lineHeight, 1.5)
-    && parseInt(gasWarningStyle.fontWeight || '0', 10) >= 600
     && parseInt(cardWarningStyle.fontWeight || '0', 10) >= 600
-    && zeroLetterSpacing(gasWarningStyle.letterSpacing)
     && zeroLetterSpacing(cardWarningStyle.letterSpacing)
-    && !/mono|JetBrains/i.test(gasWarningStyle.fontFamily || '')
     && !/mono|JetBrains/i.test(cardWarningStyle.fontFamily || '');
+  const topGasBannerHidden = !gasWarningBanner
+    || getComputedStyle(gasWarningBanner).display === 'none'
+    || !gasWarningBanner.textContent.trim();
   return {
     generated,
     viewportWidth,
     alertCount: document.querySelectorAll('#decoAlerts .alert, #decoAlertsNarcotic .alert').length,
     criticalGasCards: document.querySelectorAll('.gas-usage-card--critical').length,
-    warningText: document.getElementById('gasWarningBanner')?.textContent?.trim() || '',
+    warningText: gasWarningBanner?.textContent?.trim() || '',
     cardWarningText: document.querySelector('.gas-consumption-warning')?.textContent?.trim() || '',
     warningIconText: document.querySelector('#gasWarningBanner > span[aria-hidden="true"]')?.textContent?.trim() || '',
-    warningPseudoIconText: document.querySelector('#gasWarningBanner') ? getComputedStyle(document.querySelector('#gasWarningBanner'), '::before').content : '',
+    warningPseudoIconText: gasWarningBanner ? getComputedStyle(gasWarningBanner, '::before').content : '',
     warningIconCount: document.querySelectorAll('#gasWarningBanner > span[aria-hidden="true"]').length,
+    topGasBannerHidden,
     cardWarningIconText: document.querySelector('.gas-consumption-warning span')?.textContent?.trim() || '',
     warningColor: document.getElementById('gasWarningBanner') ? getComputedStyle(document.getElementById('gasWarningBanner')).color.replace(/\s+/g, '').toLowerCase() : '',
     cardWarningColor: document.querySelector('.gas-consumption-warning') ? getComputedStyle(document.querySelector('.gas-consumption-warning')).color.replace(/\s+/g, '').toLowerCase() : '',
@@ -1697,13 +1697,12 @@ def main() -> int:
 
     results["SL-C09-MOBILE-WARNING-WRAP"] = bool(
         mobile_warning_details.get("ok")
-        and mobile_warning_details.get("warningIconText") == "\u26a0"
+        and mobile_warning_details.get("topGasBannerHidden")
+        and not mobile_warning_details.get("warningText")
+        and mobile_warning_details.get("warningIconText") in ("", None)
         and mobile_warning_details.get("warningPseudoIconText") in ("none", '""')
-        and mobile_warning_details.get("warningIconCount") == 1
+        and mobile_warning_details.get("warningIconCount") == 0
         and mobile_warning_details.get("cardWarningIconText") == "\u26a0"
-        and mobile_warning_details.get("warningColor") == mobile_warning_details.get("cardWarningColor")
-        and mobile_warning_details.get("warningBackground") == mobile_warning_details.get("cardWarningBackground")
-        and mobile_warning_details.get("warningBorder") == mobile_warning_details.get("cardWarningBorder")
         and not mobile_warning_details.get("console_errors")
     )
     results["SL-C09-VPM-MODE-TOGGLE"] = bool(
