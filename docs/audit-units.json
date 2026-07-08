@@ -799,6 +799,10 @@
     "REG-130": {
       "suite_id": "SUITE-VPM-DIRECT",
       "case_id": "RDP-REC-MIX-NARROWNESS"
+    },
+    "REG-131": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-BATCH2-VPM-ERROR-COLSPAN"
     }
   },
   "findings": [
@@ -2209,10 +2213,12 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RUNNER"
       },
-      "fingerprint": "275e8a857231e784120f15e47119248d28d71b56e2f5e3f4a6c0c0c4019a7d72",
+      "fingerprint": "100ef46509d277a69c81ad6804a537cef24db2d5afea0df255380a38a3280413",
       "last_read_fingerprint": null,
       "evidence": [],
-      "regression_cases": [],
+      "regression_cases": [
+        "REG-131"
+      ],
       "audit_issue": 146,
       "issue": "Audit issue #146"
     },
@@ -2260,7 +2266,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-CARDS"
       },
-      "fingerprint": "8a32bb9d8c615cd6cd2f0d62ea75c58de26e5c1d1dc26134826b811fc92ac83c",
+      "fingerprint": "181021565433151a2ab41a296e30405a1277e0a0f69915b20bc7cb5e913f9376",
       "last_read_fingerprint": null,
       "audit_issue": 148,
       "evidence": [],
@@ -5713,9 +5719,10 @@
         "REG-108",
         "REG-109",
         "REG-110",
-        "REG-111"
+        "REG-111",
+        "REG-131"
       ],
-      "fingerprint": "301520ae9489c5464ae46a67be1b04b4875498dc510d475918c2fb47e4101b86",
+      "fingerprint": "5c45c43a255c9bdf92c5265cab3b7a9fce3c765afaf446700e2fcf0db066316f",
       "last_read_fingerprint": null
     },
     {
@@ -6703,7 +6710,8 @@
         "SL-C09-RESULT-TAB-SIMPLIFICATION",
         "SL-C09-RESULT-TABS-GAP",
         "SL-C09-SUMMARY-CHIP-PALETTE",
-        "SL-VIS-CONTINGENCY-MAIN-DECO-LAYOUT"
+        "SL-VIS-CONTINGENCY-MAIN-DECO-LAYOUT",
+        "SL-BATCH2-VPM-ERROR-COLSPAN"
       ]
     }
   ],

@@ -44,7 +44,7 @@
 | UI-DECO-PHYSICS | web_runtime | `index.html:4327` | 232 | P0 | IN_PROGRESS | - |
 | UI-SCHEDULE-INPUTS | web_runtime | `index.html:4559` | 373 | P0 | IN_PROGRESS | - |
 | UI-SETTINGS-CONTROLS | web_runtime | `index.html:4932` | 399 | P1 | IN_PROGRESS | - |
-| UI-VPM-RUNNER | web_runtime | `index.html:5331` | 473 | P0 | IN_PROGRESS | - |
+| UI-VPM-RUNNER | web_runtime | `index.html:5331` | 473 | P0 | IN_PROGRESS | REG-131 |
 | UI-ZHL-RUNNER-SETUP | web_runtime | `index.html:5804` | 131 | P0 | IN_PROGRESS | - |
 | UI-ZHL-RUNNER-ENGINE | web_runtime | `index.html:5935` | 349 | P0 | IN_PROGRESS | - |
 | UI-ZHL-HEADLESS-HELPERS | web_runtime | `index.html:6284` | 201 | P1 | VERIFIED | EXT-05, COV-01 |
@@ -75,7 +75,7 @@
 | UI-VPM-RENDER | ui_core | `results-render-core.js:298` | 492 | P1 | IN_PROGRESS | - |
 | UI-ZHL-RESULTS | ui_core | `results-render-core.js:790` | 456 | P1 | IN_PROGRESS | - |
 | UI-GAS-INPUTS | ui_core | `gas-cards-core.js:15` | 223 | P1 | IN_PROGRESS | - |
-| UI-GAS-CARDS | ui_core | `gas-cards-core.js:238` | 285 | P1 | IN_PROGRESS | - |
+| UI-GAS-CARDS | ui_core | `gas-cards-core.js:238` | 284 | P1 | IN_PROGRESS | - |
 | UI-PLOT-RENDER | ui_core | `plot-core.js:109` | 431 | P2 | IN_PROGRESS | - |
 | UI-PLOT-WAYPOINTS | ui_core | `plot-core.js:540` | 198 | P2 | IN_PROGRESS | - |
 | UI-TOOLS-PROFILE | ui_core | `plot-core.js:738` | 262 | P2 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
@@ -239,5 +239,5 @@
 | TEST-SEVEN-LENS-CYCLE08-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-08-shell-results.json:1` | 994 | P0 | IN_PROGRESS | - |
 | TEST-UI-SHELL-RESULTS-REGRESSION | test_infrastructure | `dev/ui_shell_results_regression.py:1` | 485 | P0 | IN_PROGRESS | REG-95, REG-96, REG-97, REG-98, REG-99 |
 | TEST-UI-RESULTS-CSS-REGRESSION | test_infrastructure | `dev/ui_results_css_regression.py:1` | 417 | P0 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
-| TEST-UI-VISUAL-CONTRACT-REGRESSION | test_infrastructure | `dev/ui_visual_contract_regression.py:1` | 1642 | P0 | IN_PROGRESS | REG-100, REG-101, REG-102, REG-103, REG-104, REG-105, REG-106, REG-107, REG-108, REG-109, REG-110, REG-111 |
+| TEST-UI-VISUAL-CONTRACT-REGRESSION | test_infrastructure | `dev/ui_visual_contract_regression.py:1` | 1649 | P0 | IN_PROGRESS | REG-100, REG-101, REG-102, REG-103, REG-104, REG-105, REG-106, REG-107, REG-108, REG-109, REG-110, REG-111, REG-131 |
 | TEST-C07-PRE-RESULTS-REGRESSION | test_infrastructure | `dev/c07_pre_results_regression.py:1` | 48 | P0 | IN_PROGRESS | REG-89, REG-90 |

@@ -56,7 +56,7 @@ Run the first unfinished cycle in this table. The numeric cycle table below rema
 | 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 526 | - | Planner shell and results panel READ; current lines: 526; sessions: 1 |
 | 9 | UI-ENVIRONMENT, UI-MODE-STATE | 999 | - | settings-core environment and mode state READ (1002 lines; >=2 bounded sessions); explicitly verify VPM switch behavior; enforce app-wide gas-switch terminology: the diving procedure is labeled and identified as "Gas switch" everywhere, with no user-facing "Gas change" labels or new gas-change IDs/classes/contracts; verify mobile warning/alert banners and gas-consumption warnings wrap inside the viewport without horizontal clipping or overflow; current lines: 999; sessions: 2 |
 | 10 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 679 | - | Surface interval and gas table cores READ; current lines: 679; sessions: 2 |
-| 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 508 | ENG-ZHL-GAS | Gas card UI READ; current lines: 534; sessions: 1 |
+| 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 507 | ENG-ZHL-GAS | Gas card UI READ; current lines: 534; sessions: 1 |
 | 12 | APP-GAS-PLAN | 546 | - | Gas plan core READ; current lines: 546; sessions: 1 |
 | 13 | APP-CONTINGENCY | 587 | - | Contingency core READ; current lines: 587; sessions: 1 |
 | 14 | APP-EXPORT | 3269 | - | export-core text/PDF READ across at least 6 bounded sessions; current lines: 3269; sessions: 6 |

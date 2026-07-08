@@ -46,6 +46,7 @@ CASE_IDS = (
     "SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS",
     "SL-VIS-CONTINGENCY-MAIN-DECO-LAYOUT",
     "SL-VIS-GAS-CONSUMPTION-VOLUME-FIRST-UNITS",
+    "SL-BATCH2-VPM-ERROR-COLSPAN",
 )
 
 NAV_VIEWPORTS = (
@@ -1618,6 +1619,12 @@ def main() -> int:
         and travel_trimix.get("switchUsesO2")
         and travel_trimix.get("minOdText") in ("0 m", "0 ft")
         and not gas_details.get("console_errors")
+    )
+    index_src = (ROOT / "index.html").read_text(encoding="utf-8")
+    vpm_runner_src = index_src.split("// AUDIT-UNIT:UI-VPM-RUNNER", 1)[-1].split("// AUDIT-UNIT:", 1)[0]
+    results["SL-BATCH2-VPM-ERROR-COLSPAN"] = (
+        'colspan="8"' not in vpm_runner_src
+        and vpm_runner_src.count('colspan="7"') >= 5
     )
 
     for case_id, passed in results.items():

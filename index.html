@@ -5406,7 +5406,7 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
     if (!siCheck.ok) {
       const tbody = document.getElementById('decoTableBody');
       const msg = siCheck.msg || 'Invalid VPM surface interval.';
-      if (tbody) tbody.innerHTML = `<tr><td colspan="8" style="color:var(--red);padding:12px;">${msg}</td></tr>`;
+      if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="color:var(--red);padding:12px;">${msg}</td></tr>`;
       else alert(msg);
       return;
     }
@@ -5438,7 +5438,7 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
   if (!_vpmBotFracs) {
     const tbody = document.getElementById('decoTableBody');
     const msg = 'Cannot run VPM schedule: invalid bottom gas configuration.';
-    if (tbody) tbody.innerHTML = `<tr><td colspan="8" style="color:var(--red);padding:12px;">${msg}</td></tr>`;
+    if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="color:var(--red);padding:12px;">${msg}</td></tr>`;
     else alert(msg);
     return;
   }
@@ -5459,7 +5459,7 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
     const msg = 'VPM engine failed to load (vpm-engine-bundle.js). Check network or refresh.';
     console.error('[VPM]', msg);
     const tbody = document.getElementById('decoTableBody');
-    if (tbody) tbody.innerHTML = `<tr><td colspan="8" style="color:var(--red);padding:12px;">${msg}</td></tr>`;
+    if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="color:var(--red);padding:12px;">${msg}</td></tr>`;
     return;
   }
   try {
@@ -5467,7 +5467,7 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
   } catch(e) {
     console.error('[VPM] Engine error:', e);
     const tbody = document.getElementById('decoTableBody');
-    if (tbody) tbody.innerHTML = `<tr><td colspan="8" style="color:var(--red);padding:12px;">VPM Error: ${e.message}</td></tr>`;
+    if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="color:var(--red);padding:12px;">VPM Error: ${e.message}</td></tr>`;
     return;
   }
 
@@ -5477,7 +5477,7 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
   }
   if (result.error) {
     const tbody = document.getElementById('decoTableBody');
-    if (tbody) tbody.innerHTML = `<tr><td colspan="8" style="color:var(--red);padding:12px;">VPM Error: ${result.error}</td></tr>`;
+    if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="color:var(--red);padding:12px;">VPM Error: ${result.error}</td></tr>`;
     return;
   }
 
