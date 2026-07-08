@@ -44,20 +44,20 @@
 | UI-DECO-PHYSICS | web_runtime | `index.html:4352` | 232 | P0 | IN_PROGRESS | - |
 | UI-SCHEDULE-INPUTS | web_runtime | `index.html:4584` | 373 | P0 | IN_PROGRESS | - |
 | UI-SETTINGS-CONTROLS | web_runtime | `index.html:4957` | 399 | P1 | IN_PROGRESS | - |
-| UI-VPM-RUNNER | web_runtime | `index.html:5356` | 466 | P0 | IN_PROGRESS | REG-131, REG-132, REG-133, REG-134 |
-| UI-ZHL-RUNNER-SETUP | web_runtime | `index.html:5822` | 131 | P0 | IN_PROGRESS | - |
-| UI-ZHL-RUNNER-ENGINE | web_runtime | `index.html:5953` | 349 | P0 | IN_PROGRESS | REG-132, REG-134 |
-| UI-ZHL-HEADLESS-HELPERS | web_runtime | `index.html:6302` | 201 | P1 | VERIFIED | EXT-05, COV-01 |
-| UI-ZHL-HEADLESS-ENGINE | web_runtime | `index.html:6503` | 387 | P0 | VERIFIED | EXT-05, COV-01 |
-| UI-PLOT-INIT | web_runtime | `index.html:6890` | 493 | P2 | IN_PROGRESS | - |
-| UI-TOOLS-TISSUES | web_runtime | `index.html:7383` | 310 | P2 | IN_PROGRESS | - |
-| UI-TOOLS-EXPOSURE | web_runtime | `index.html:7693` | 225 | P1 | IN_PROGRESS | - |
-| UI-TOOLS-GF | web_runtime | `index.html:7918` | 316 | P2 | IN_PROGRESS | - |
-| UI-SETTINGS | web_runtime | `index.html:8234` | 381 | P1 | IN_PROGRESS | - |
-| UI-PROFILE-PRESETS | web_runtime | `index.html:8615` | 508 | P2 | IN_PROGRESS | - |
-| UI-CONFIG-PRESETS | web_runtime | `index.html:9123` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
-| UI-APP-INIT | web_runtime | `index.html:9308` | 172 | P1 | IN_PROGRESS | - |
-| UI-PWA-LIFECYCLE | pwa | `index.html:9480` | 84 | P1 | IN_PROGRESS | - |
+| UI-VPM-RUNNER | web_runtime | `index.html:5356` | 486 | P0 | IN_PROGRESS | REG-131, REG-132, REG-133, REG-134 |
+| UI-ZHL-RUNNER-SETUP | web_runtime | `index.html:5842` | 131 | P0 | IN_PROGRESS | - |
+| UI-ZHL-RUNNER-ENGINE | web_runtime | `index.html:5973` | 349 | P0 | IN_PROGRESS | REG-132, REG-134 |
+| UI-ZHL-HEADLESS-HELPERS | web_runtime | `index.html:6322` | 201 | P1 | VERIFIED | EXT-05, COV-01 |
+| UI-ZHL-HEADLESS-ENGINE | web_runtime | `index.html:6523` | 387 | P0 | VERIFIED | EXT-05, COV-01 |
+| UI-PLOT-INIT | web_runtime | `index.html:6910` | 493 | P2 | IN_PROGRESS | - |
+| UI-TOOLS-TISSUES | web_runtime | `index.html:7403` | 310 | P2 | IN_PROGRESS | - |
+| UI-TOOLS-EXPOSURE | web_runtime | `index.html:7713` | 225 | P1 | IN_PROGRESS | - |
+| UI-TOOLS-GF | web_runtime | `index.html:7938` | 316 | P2 | IN_PROGRESS | - |
+| UI-SETTINGS | web_runtime | `index.html:8254` | 386 | P1 | IN_PROGRESS | - |
+| UI-PROFILE-PRESETS | web_runtime | `index.html:8640` | 508 | P2 | IN_PROGRESS | - |
+| UI-CONFIG-PRESETS | web_runtime | `index.html:9148` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
+| UI-APP-INIT | web_runtime | `index.html:9333` | 172 | P1 | IN_PROGRESS | - |
+| UI-PWA-LIFECYCLE | pwa | `index.html:9505` | 84 | P1 | IN_PROGRESS | - |
 | UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 420 | P2 | IN_PROGRESS | - |
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 338 | P2 | IN_PROGRESS | - |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 548 | P2 | IN_PROGRESS | - |
@@ -72,8 +72,8 @@
 | UI-MARKUP-MODALS | web_markup | `ui/markup-modals.html:1` | 341 | P2 | VERIFIED | EXT-04, COV-01 |
 | UI-ENVIRONMENT | ui_core | `settings-core.js:39` | 379 | P1 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
 | UI-MODE-STATE | ui_core | `settings-core.js:418` | 620 | P2 | IN_PROGRESS | - |
-| UI-VPM-RENDER | ui_core | `results-render-core.js:298` | 492 | P1 | IN_PROGRESS | - |
-| UI-ZHL-RESULTS | ui_core | `results-render-core.js:790` | 456 | P1 | IN_PROGRESS | - |
+| UI-VPM-RENDER | ui_core | `results-render-core.js:298` | 499 | P1 | IN_PROGRESS | - |
+| UI-ZHL-RESULTS | ui_core | `results-render-core.js:797` | 456 | P1 | IN_PROGRESS | - |
 | UI-GAS-INPUTS | ui_core | `gas-cards-core.js:15` | 223 | P1 | IN_PROGRESS | - |
 | UI-GAS-CARDS | ui_core | `gas-cards-core.js:238` | 284 | P1 | IN_PROGRESS | - |
 | UI-PLOT-RENDER | ui_core | `plot-core.js:109` | 431 | P2 | IN_PROGRESS | - |
@@ -88,7 +88,7 @@
 | ENG-RDP | engine | `padi-engine.js:1` | 101 | P1 | VERIFIED | REG-24, REG-25, REG-56, REG-57, REG-130 |
 | APP-ANDROID-SELECT | native_bridge | `android-select-picker.js:1` | 270 | P1 | VERIFIED | ANDROID-01, REG-45 |
 | APP-CAPACITOR-BRIDGE | native_bridge | `capacitor-bridge.js:1` | 278 | P1 | VERIFIED | ANDROID-01, REG-45 |
-| APP-CONTINGENCY | ui_core | `contingency-core.js:1` | 587 | P1 | IN_PROGRESS | - |
+| APP-CONTINGENCY | ui_core | `contingency-core.js:1` | 594 | P1 | IN_PROGRESS | - |
 | APP-EXPORT | ui_core | `export-core.js:1` | 3269 | P2 | IN_PROGRESS | - |
 | APP-GAS-PLAN | ui_core | `gas-plan-core.js:1` | 546 | P1 | IN_PROGRESS | - |
 | APP-GAS-TABLE | ui_core | `gas-table-core.js:1` | 305 | P2 | IN_PROGRESS | - |
@@ -119,7 +119,7 @@
 | NATIVE-DRAWABLE-FG | native_android | `android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml:1` | 34 | P3 | VERIFIED | ANDROID-01, COV-01 |
 | NATIVE-ICON | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml:1` | 5 | P3 | VERIFIED | ANDROID-01, COV-01 |
 | NATIVE-ICON-ROUND | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml:1` | 5 | P3 | VERIFIED | ANDROID-01, COV-01 |
-| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 2773 | P1 | IN_PROGRESS | - |
+| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 2787 | P1 | IN_PROGRESS | - |
 | TEST-VPM-DIRECT-HOST | test_infrastructure | `dev/vpm_direct_host.js:1` | 161 | P0 | VERIFIED | REG-126, REG-127 |
 | TEST-VPM-DIRECT-REGRESSION | test_infrastructure | `dev/vpm_direct_regression.js:1` | 125 | P0 | VERIFIED | REG-126, REG-127, REG-128, REG-129, REG-130 |
 | TEST-ISSUE-140-REGRESSION | test_infrastructure | `dev/issue140_regression.py:1` | 99 | P1 | VERIFIED | REG-08, REG-09 |
@@ -239,5 +239,5 @@
 | TEST-SEVEN-LENS-CYCLE08-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-08-shell-results.json:1` | 994 | P0 | IN_PROGRESS | - |
 | TEST-UI-SHELL-RESULTS-REGRESSION | test_infrastructure | `dev/ui_shell_results_regression.py:1` | 485 | P0 | IN_PROGRESS | REG-95, REG-96, REG-97, REG-98, REG-99 |
 | TEST-UI-RESULTS-CSS-REGRESSION | test_infrastructure | `dev/ui_results_css_regression.py:1` | 417 | P0 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
-| TEST-UI-VISUAL-CONTRACT-REGRESSION | test_infrastructure | `dev/ui_visual_contract_regression.py:1` | 1785 | P0 | IN_PROGRESS | REG-100, REG-101, REG-102, REG-103, REG-104, REG-105, REG-106, REG-107, REG-108, REG-109, REG-110, REG-111, REG-131, REG-132, REG-133, REG-134 |
+| TEST-UI-VISUAL-CONTRACT-REGRESSION | test_infrastructure | `dev/ui_visual_contract_regression.py:1` | 1802 | P0 | IN_PROGRESS | REG-100, REG-101, REG-102, REG-103, REG-104, REG-105, REG-106, REG-107, REG-108, REG-109, REG-110, REG-111, REG-131, REG-132, REG-133, REG-134 |
 | TEST-C07-PRE-RESULTS-REGRESSION | test_infrastructure | `dev/c07_pre_results_regression.py:1` | 48 | P0 | IN_PROGRESS | REG-89, REG-90 |

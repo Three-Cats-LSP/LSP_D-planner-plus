@@ -544,6 +544,13 @@ function calcContingency() {
       ${typeof buildScheduleLegendHtml === 'function' ? buildScheduleLegendHtml() : ''}
     </div>
     <div id="decoAlertsEmergency" style="margin-top:8px;"></div>`;
+  if (emergencyGasEl && contLastGasConsumed && Object.keys(contLastGasConsumed).length
+    && typeof renderGasConsumptionBars === 'function') {
+    renderGasConsumptionBars(emergencyGasEl, contLastGasConsumed, { title: 'Emergency Gas Consumption' });
+  } else if (emergencyGasEl) {
+    emergencyGasEl.style.display = 'none';
+    emergencyGasEl.innerHTML = '';
+  }
 
   // Store for export
   window._lastContingency = { label, lastRun, decoTime, lastRunFmt, decoTimeFmt, totalCNS, totalOTU: _emOTU, totalPrT: _emPrT, decoZoneStart, decozoneDisp: _emDecozone, decoStop: _emDecoStop, tts: _emTts, newRows, severity, icon, msg, surfGF: contSurfaceGF != null ? Math.round(contSurfaceGF) + '%' : '-', scenarioDepth, scenarioBT, scenarioBotFracs, emAlertsHtml: '', contLastPlan, contLastTissues };

@@ -2225,7 +2225,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RUNNER"
       },
-      "fingerprint": "47cb0a5282b9e13f50bc766dbd53e881c4a285cb8bafe593c3c06e7cf2197d4d",
+      "fingerprint": "068c5efd9aa368641264863f2bd3639d162055e9512a3e8329f9c01f3f5e6992",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2247,7 +2247,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RENDER"
       },
-      "fingerprint": "1e29774a1a627c16485bcf8ccfa00300726279bc5035a0e1ff24f0e0cb2ac937",
+      "fingerprint": "d220bfbfca101244cde53be29f3e634a84fdd0c391cfbd4d3246db919670845c",
       "last_read_fingerprint": null,
       "audit_issue": 147,
       "evidence": [],
@@ -2315,7 +2315,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-ENGINE"
       },
-      "fingerprint": "691b2e6c4442ace6d03dc2a2d070191cc9f06953c76bb86ac82dc8af8101a2a2",
+      "fingerprint": "854ac7499ccba8a70027cf77283b760fd6d3a83605e97178ad472258c06394a5",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2527,7 +2527,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS"
       },
-      "fingerprint": "2773e1d33d234c4dbb0ceadbc45046b96e9a26db9738f697a32a7d11e2f360df",
+      "fingerprint": "3ba8b87be0a1608927808019e8334eb61049814ecd72535b8a669a14c3e4bf85",
       "last_read_fingerprint": null,
       "audit_issue": 158,
       "issue": "Cycle 32 settings restore exception recovery",
@@ -2842,7 +2842,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c324592079ed5e787c0b54892d949884639fe310113f67e829bb60f431427c58",
+      "fingerprint": "47c2d807fb0382b65ac2c2d13efa2f500884e33d9333a846281ee8ca51d9a433",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3457,7 +3457,7 @@
       "evidence": [],
       "issue": "GitHub #133â€“#138 audit regressions and Cycle 31â€“34 verification",
       "regression_cases": [],
-      "fingerprint": "0b5e7dfa27b9748a02d039bed960b0d765c218a2942ac23bdcd8bacf12c892a0",
+      "fingerprint": "9655c84ff5a51471152da4f043a947d5ef6cef55e1039b8603abc20dc61112fa",
       "last_read_fingerprint": null,
       "audit_issue": 169
     },
@@ -5743,7 +5743,7 @@
         "REG-133",
         "REG-134"
       ],
-      "fingerprint": "cd7a39da9cb02ac67f60ac4ab43dd9ed6cba47b1ec2102f4f57d52def1592b59",
+      "fingerprint": "41eba87b29d795a4b00d7a07bc74824d3fef551b3a432afbe34fc7f09ee7e8cf",
       "last_read_fingerprint": null
     },
     {
@@ -5891,12 +5891,12 @@
     },
     {
       "cycle": 13,
-      "max_new_application_lines": 587,
+      "max_new_application_lines": 594,
       "application_units": [
         "APP-CONTINGENCY"
       ],
       "engine_reverification": [],
-      "acceptance": "Contingency core READ; current lines: 587; sessions: 1"
+      "acceptance": "Contingency core READ; current lines: 594; sessions: 1"
     },
     {
       "cycle": 14,
@@ -5932,13 +5932,13 @@
     },
     {
       "cycle": 17,
-      "max_new_application_lines": 948,
+      "max_new_application_lines": 955,
       "application_units": [
         "UI-VPM-RENDER",
         "UI-ZHL-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "results-render-core READ; current lines: 948; sessions: 2",
+      "acceptance": "results-render-core READ; current lines: 955; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -5990,14 +5990,14 @@
     },
     {
       "cycle": 22,
-      "max_new_application_lines": 473,
+      "max_new_application_lines": 486,
       "application_units": [
         "UI-VPM-RUNNER"
       ],
       "engine_reverification": [
         "ENG-VPM"
       ],
-      "acceptance": "VPM runner READ; current lines: 473; sessions: 1"
+      "acceptance": "VPM runner READ; current lines: 486; sessions: 1"
     },
     {
       "cycle": 23,
@@ -6022,7 +6022,7 @@
     },
     {
       "cycle": 25,
-      "max_new_application_lines": 1307,
+      "max_new_application_lines": 1312,
       "application_units": [
         "UI-SETTINGS",
         "UI-UNIT-HELPERS",
@@ -6030,7 +6030,7 @@
       ],
       "engine_reverification": [],
       "min_review_sessions": 3,
-      "acceptance": "Settings persistence and unit helpers READ across at least 3 bounded sessions; current lines: 1307; sessions: 3"
+      "acceptance": "Settings persistence and unit helpers READ across at least 3 bounded sessions; current lines: 1312; sessions: 3"
     },
     {
       "cycle": 26,

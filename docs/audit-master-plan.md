@@ -58,19 +58,19 @@ Run the first unfinished cycle in this table. The numeric cycle table below rema
 | 10 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 679 | - | Surface interval and gas table cores READ; current lines: 679; sessions: 2 |
 | 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 507 | ENG-ZHL-GAS | Gas card UI READ; current lines: 534; sessions: 1 |
 | 12 | APP-GAS-PLAN | 546 | - | Gas plan core READ; current lines: 546; sessions: 1 |
-| 13 | APP-CONTINGENCY | 587 | - | Contingency core READ; current lines: 587; sessions: 1 |
+| 13 | APP-CONTINGENCY | 594 | - | Contingency core READ; current lines: 594; sessions: 1 |
 | 14 | APP-EXPORT | 3269 | - | export-core text/PDF READ across at least 6 bounded sessions; current lines: 3269; sessions: 6 |
 | 15 | UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 629 | - | plot-core render and waypoints READ in at least 2 bounded sessions (641 lines total); current lines: 629; sessions: 2 |
 | 16 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 755 | - | Profile tool and plot init READ; current lines: 755; sessions: 2 |
-| 17 | UI-VPM-RENDER, UI-ZHL-RESULTS | 948 | - | results-render-core READ; current lines: 948; sessions: 2 |
+| 17 | UI-VPM-RENDER, UI-ZHL-RESULTS | 955 | - | results-render-core READ; current lines: 955; sessions: 2 |
 | 18 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 511 | ENG-ZHL-SCHEDULE | ZHL/CCR delegate thin layer READ; current lines: 511; sessions: 1 |
 | 19 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 605 | ENG-ZHL-CCR | Deco physics and schedule inputs READ across at least 2 bounded sessions; current lines: 605; sessions: 2 |
 | 20 | UI-ZHL-RUNNER-SETUP, UI-ZHL-RUNNER-ENGINE | 480 | ENG-ZHL-SCHEDULE | ZHL runner setup and engine invocation READ; current lines: 480; sessions: 1 |
 | 21 | UI-ZHL-HEADLESS-HELPERS, UI-ZHL-HEADLESS-ENGINE | 588 | - | Headless ZHL path READ; current lines: 588; sessions: 1 |
-| 22 | UI-VPM-RUNNER | 466 | ENG-VPM | VPM runner READ; current lines: 473; sessions: 1 |
+| 22 | UI-VPM-RUNNER | 486 | ENG-VPM | VPM runner READ; current lines: 486; sessions: 1 |
 | 23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 390 | - | Runtime bootstrap and app init READ; current lines: 390; sessions: 1 |
 | 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 692 | - | Algorithm and settings controls READ (692 lines; >=2 bounded sessions); current lines: 692; sessions: 2 |
-| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1307 | - | Settings persistence and unit helpers READ across at least 3 bounded sessions; current lines: 1307; sessions: 3 |
+| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1312 | - | Settings persistence and unit helpers READ across at least 3 bounded sessions; current lines: 1312; sessions: 3 |
 | 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 851 | - | Tools panels READ in >=2 bounded sessions; implement and verify the tissue-saturation seven-band value scale in docs/tissue-saturation-color-roadmap.md, including UI/export parity and accessibility; current lines: 851; sessions: 2 |
 | 27 | UI-PROFILE-PRESETS | 508 | - | Dive profile presets READ (depth/BT/mode ownership); current lines: 508; sessions: 1 |
 | 28 | UI-CONFIG-PRESETS | 185 | - | Advanced config presets READ; current lines: 185; sessions: 1 |

@@ -767,6 +767,7 @@ async () => {
 
 VPM_MODE_PROBE_JS = r"""
 async () => {
+  window._zhlHeadless = false;
   const wait = ms => new Promise(r => setTimeout(r, ms));
   const visible = id => {
     const el = document.getElementById(id);
@@ -838,17 +839,28 @@ async () => {
   if (typeof calcContingency === 'function') calcContingency();
   for (let i = 0; i < 80; i++) {
     await wait(250);
-    if (document.querySelector('#contingencyResult .schedule-table')) break;
+    if (document.querySelector('#contingencyResult .schedule-table')
+      && document.querySelectorAll('#emergencyGasConsumption .gas-usage-card').length > 0) break;
   }
   const afterGasButtons = gasButtonState();
   const selectedAfterCalc = typeof contGasLose !== 'undefined' ? contGasLose : '';
+  const emergencyGas = document.getElementById('emergencyGasConsumption');
+  const emergencyGasCards = [...document.querySelectorAll('#emergencyGasConsumption .gas-usage-card')];
+  const emergencyGasWarning = document.querySelector('#emergencyGasConsumption .gas-consumption-warning');
+  const emergencyGasVisible = !!emergencyGas
+    && getComputedStyle(emergencyGas).display !== 'none'
+    && emergencyGas.getBoundingClientRect().width > 100;
+  const mainGasCards = [...document.querySelectorAll('#gasConsumptionSummary .gas-usage-card')];
   const vpmContingencyGasOk = !!lossBtn
     && beforeGasButtons.length >= 2
     && afterGasButtons.length === beforeGasButtons.length
     && afterGasButtons.some(btn => btn.id === lossBtn.id)
     && selectedBeforeCalc === selectedAfterCalc
     && selectedAfterCalc === lossBtn.id.replace('contGas-', '')
-    && afterGasButtons.some(btn => btn.id === lossBtn.id && btn.active);
+    && afterGasButtons.some(btn => btn.id === lossBtn.id && btn.active)
+    && emergencyGasVisible
+    && emergencyGasCards.length > 0
+    && !document.querySelector('#emergencyGasConsumption table.gas-plan-table');
 
   const ok = vpm.plannerAlgo === 'VPMB'
     && vpm.algorithmSelect === 'VPMB'
@@ -876,6 +888,10 @@ async () => {
       labelsCanonical: afterGasButtons.concat(beforeGasButtons).every(btn => !/\bEAN\s*\d+\b|\bEAN\d+\b/i.test(btn.text))
         && afterGasButtons.some(btn => /Lose\s+50\/00/i.test(btn.text)),
       scenarioCanonical: !/\bEAN\s*\d+\b|\bEAN\d+\b/i.test(document.getElementById('contingencyResult')?.textContent || ''),
+      emergencyGasVisible,
+      emergencyGasCardCount: emergencyGasCards.length,
+      emergencyGasWarningText: emergencyGasWarning?.textContent?.trim() || '',
+      mainGasCardCount: mainGasCards.length,
       ok: vpmContingencyGasOk,
     },
   };
@@ -1365,6 +1381,7 @@ def _capture_schedule_error_contract(browser, base_url: str, viewport: tuple[int
         result = page.evaluate(
             r"""
 async () => {
+  window._zhlHeadless = false;
   const wait = ms => new Promise(r => setTimeout(r, ms));
   if (typeof setPlannerAlgo === 'function') setPlannerAlgo('VPMB');
   if (typeof setMainNav === 'function') setMainNav('vpm');

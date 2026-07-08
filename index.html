@@ -5592,12 +5592,32 @@ function validatePlannerInputs() {
   return { ok: true };
 }
 
+const REP_SURFACE_INTERVAL_DEFAULT_MIN = 60;
+const REP_SURFACE_INTERVAL_MAX_MIN = 10080;
+
+function sanitizeRepetitiveSurfaceInterval(raw, fallback = REP_SURFACE_INTERVAL_DEFAULT_MIN) {
+  const value = Number(raw);
+  if (!Number.isFinite(value) || value < 0 || value > REP_SURFACE_INTERVAL_MAX_MIN) {
+    return fallback;
+  }
+  return Math.round(value);
+}
+
+function normalizeRepetitiveSurfaceIntervalInput(id, fallback = REP_SURFACE_INTERVAL_DEFAULT_MIN) {
+  const el = document.getElementById(id);
+  const value = sanitizeRepetitiveSurfaceInterval(el?.value, fallback);
+  if (el && String(el.value) !== String(value)) {
+    el.value = String(value);
+  }
+  return value;
+}
+
 function validateVpmSurfaceInterval() {
   const vpmRepEl = document.getElementById('vpmRepMode');
   if (!vpmRepEl?.checked) return { ok: true, value: 0 };
   const raw = document.getElementById('vpmSurfaceInterval')?.value;
   const si = parseFloat(raw);
-  if (!Number.isFinite(si) || si < 0 || si > 10080) {
+  if (!Number.isFinite(si) || si < 0 || si > REP_SURFACE_INTERVAL_MAX_MIN) {
     return { ok: false, msg: 'Surface interval must be a number from 0 to 10080 minutes.' };
   }
   return { ok: true, value: si };
@@ -5651,7 +5671,7 @@ function saveZhlRepState(tissues, surfaceIntervalMin, exposure) {
     const lp = window._lastPlan;
     window._zhlRepState = {
       tissues,
-      surfaceIntervalMin: surfaceIntervalMin || 0,
+      surfaceIntervalMin: sanitizeRepetitiveSurfaceInterval(surfaceIntervalMin, REP_SURFACE_INTERVAL_DEFAULT_MIN),
       surfaceP: altSurfaceP || SEA_LEVEL_P,
       totalCNS: exposure?.totalCNS ?? lp?.totalCNS,
       totalOTU: exposure?.totalOTU ?? lp?.totalOTU,
@@ -5665,7 +5685,7 @@ function getZhlRepStateForSchedule() {
   if (!zhlRepEl?.checked || !snap) return null;
   return {
     tissues: snap.tissues,
-    surfaceIntervalMin: snap.surfaceIntervalMin ?? 0,
+    surfaceIntervalMin: sanitizeRepetitiveSurfaceInterval(snap.surfaceIntervalMin, REP_SURFACE_INTERVAL_DEFAULT_MIN),
     surfaceP: snap.surfaceP ?? (altSurfaceP || SEA_LEVEL_P),
     totalCNS: snap.totalCNS,
     totalOTU: snap.totalOTU,
@@ -5990,7 +6010,7 @@ function runDecoSchedule() {
     totalCNS: _headlessExposure.totalCNS,
   };
   if (!_contingencyRunning && tissues && tissues.length) {
-    saveZhlRepState(tissues, parseFloat(document.getElementById('zhlSurfaceInterval')?.value || '0') || 0, { totalCNS: _headlessExposure.totalCNS, totalOTU: _headlessExposure.totalOTU });
+    saveZhlRepState(tissues, normalizeRepetitiveSurfaceIntervalInput('zhlSurfaceInterval', REP_SURFACE_INTERVAL_DEFAULT_MIN), { totalCNS: _headlessExposure.totalCNS, totalOTU: _headlessExposure.totalOTU });
     const zhlRepRow = document.getElementById('zhlRepRow');
     if (zhlRepRow) zhlRepRow.style.display = 'flex';
   }
@@ -8357,6 +8377,8 @@ var appSettings = {
       if (el) {
         if (id === 'gasMix') {
           values[id] = getPersistedGasMix();
+        } else if (id === 'vpmSurfaceInterval' || id === 'zhlSurfaceInterval') {
+          values[id] = String(sanitizeRepetitiveSurfaceInterval(el.value, REP_SURFACE_INTERVAL_DEFAULT_MIN));
         } else {
           values[id] = el.type === 'checkbox' ? el.checked : (el.value || '');
         }
@@ -8520,8 +8542,11 @@ var appSettings = {
         changed = el.checked !== next;
         el.checked = next;
       } else {
-        changed = String(el.value) !== String(values[id]);
-        el.value = values[id];
+        const next = (id === 'vpmSurfaceInterval' || id === 'zhlSurfaceInterval')
+          ? String(sanitizeRepetitiveSurfaceInterval(values[id], REP_SURFACE_INTERVAL_DEFAULT_MIN))
+          : values[id];
+        changed = String(el.value) !== String(next);
+        el.value = next;
       }
       if (id === 'gfLowInput' || id === 'gfHighInput') {
         restored++;

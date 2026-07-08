@@ -286,7 +286,19 @@ ENGINE_SUITE_JS = r"""
     const neg = validateVpmSurfaceInterval();
     if (siEl) siEl.value = prevSi;
     if (repEl) repEl.checked = prevRep;
-    return { rejectsNegative: !neg.ok };
+    const sanitizerOk = typeof sanitizeRepetitiveSurfaceInterval === 'function'
+      && sanitizeRepetitiveSurfaceInterval('300000000') === 60
+      && sanitizeRepetitiveSurfaceInterval('-5') === 60
+      && sanitizeRepetitiveSurfaceInterval('90') === 90;
+    const restoreFn = typeof appSettings !== 'undefined' && typeof appSettings._restoreFields === 'function'
+      ? appSettings._restoreFields.toString()
+      : '';
+    const saveFn = typeof appSettings !== 'undefined' && typeof appSettings.save === 'function'
+      ? appSettings.save.toString()
+      : '';
+    const persistBoundaryOk = /sanitizeRepetitiveSurfaceInterval/.test(restoreFn)
+      && /sanitizeRepetitiveSurfaceInterval/.test(saveFn);
+    return { rejectsNegative: !neg.ok, sanitizerOk, persistBoundaryOk };
   })();
 
   // ── E7: Tec gas mix memory across Rec mode (issue #106 verification M-1) ─
@@ -2442,6 +2454,8 @@ def run_suite(page) -> dict:
 
     sv = s.get("vpmSiValidate", {})
     assert_true(sv.get("rejectsNegative"), "validateVpmSurfaceInterval rejects negative SI (issue #106 M-2)", str(sv))
+    assert_true(sv.get("sanitizerOk"), "repetitive surface interval sanitizer resets corrupted persisted values to 60 min", str(sv))
+    assert_true(sv.get("persistBoundaryOk"), "repetitive surface interval restore/save boundaries sanitize persisted values", str(sv))
 
     tg = s.get("tecGasMixMemory", {})
     assert_true(tg.get("ok"), "Tec gasMix memory tracks EAN32 after trimix (issue #106 verify M-1)", str(tg))

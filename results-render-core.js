@@ -547,7 +547,9 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
       );
     }
   }
-  const gasElVPM = document.getElementById('gasConsumptionSummary');
+  const gasElVPM = _contingencyRunning
+    ? document.getElementById('emergencyGasConsumption')
+    : document.getElementById('gasConsumptionSummary');
   if (gasElVPM && Object.keys(gasConsVPM).length) {
     const cylIds = [['cylBot_size','cylBot_pres'],['cylDg1_size','cylDg1_pres'],['cylDg2_size','cylDg2_pres'],['cylTravelGas_size','cylTravelGas_pres']];
     const cylCapVPM = {};
@@ -704,13 +706,18 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
       }
     }
 
-    // Gas Consumption result card (VPM) uses the last plan consumption but
-    // keeps calcGasPlan() available for the Gas Plan tab/export path.
-    window._lastGasConsumed = Object.assign({}, gasConsVPM);
-    window._lastBottomPhaseConsumedL = {};
-    _syncCylToGasPlan();
-    calcGasPlan();
-    renderGasConsumptionBars(gasElVPM, gasConsVPM, { title: 'Gas Consumption' });
+    if (_contingencyRunning) {
+      window._contingencyScratchGasConsumed = Object.assign({}, gasConsVPM);
+      renderGasConsumptionBars(gasElVPM, gasConsVPM, { title: 'Emergency Gas Consumption' });
+    } else {
+      // Gas Consumption result card (VPM) uses the last plan consumption but
+      // keeps calcGasPlan() available for the Gas Plan tab/export path.
+      window._lastGasConsumed = Object.assign({}, gasConsVPM);
+      window._lastBottomPhaseConsumedL = {};
+      _syncCylToGasPlan();
+      calcGasPlan();
+      renderGasConsumptionBars(gasElVPM, gasConsVPM, { title: 'Gas Consumption' });
+    }
   }
 
   // Contingency Plans — re-runs Bühlmann internally, works fine with VPM settings
