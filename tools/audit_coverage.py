@@ -329,9 +329,9 @@ def render_master(registry: dict[str, Any], resolved: dict[str, dict[str, Any]])
         return str(value).replace("|", "\\|")
 
     lines = [
-        "# Audit Master Plan v3.0",
+        "# Audit Master Plan v4.0",
         "",
-        "> V3 full-audit schedule. Policy, unit metadata, and risk-first execution order live in `docs/audit-units.json`.",
+        "> V4 risk-first reset schedule. Policy, unit metadata, frozen history, and active R-cycle order live in `docs/audit-units.json`.",
         "",
         f"**Baseline:** `{registry['baseline_commit']}`",
         f"**Epoch:** `{registry.get('audit_epoch', 'v3')}`",
@@ -340,7 +340,8 @@ def render_master(registry: dict[str, Any], resolved: dict[str, dict[str, Any]])
         "",
         "## Operating Rules",
         "",
-        "- After Cycle 9, execute cycles in the risk-first order below, not numeric order.",
+        "- Execute active V4 `Rxx` cycles in the risk-first order below.",
+        "- Earlier `SL-Cxx` records are frozen historical evidence and are not the active execution queue.",
         "- Unit priority is metadata; risk-first cycle order is the audit execution queue.",
         "- A cycle reads the listed application units; `max_new_application_lines` is sized to fit the unit bundle.",
         "- Recalculate cycle line counts from current source before starting a cycle; split each cycle into <=600-line review sessions.",
@@ -372,7 +373,7 @@ def render_master(registry: dict[str, Any], resolved: dict[str, dict[str, Any]])
             lines.append(f"| {group['group']} | {group['focus']} | {cycles} |")
         lines.extend([
             "",
-            "Run the first unfinished cycle in this table. The numeric cycle table below remains the coverage registry, not the execution queue.",
+            "Run the first unfinished `Rxx` cycle in this table. The cycle table below is the active V4 coverage registry.",
             "",
         ])
     lines.extend([

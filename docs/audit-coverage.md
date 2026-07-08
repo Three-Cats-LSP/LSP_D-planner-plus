@@ -21,14 +21,14 @@
 | release_config | 1 | 0 | 1 | 0 | 0 |
 | test | 1 | 0 | 0 | 1 | 0 |
 | test_infrastructure | 57 | 0 | 26 | 0 | 31 |
-| tooling | 54 | 0 | 19 | 1 | 34 |
+| tooling | 54 | 0 | 20 | 1 | 33 |
 | ui_core | 16 | 0 | 15 | 0 | 1 |
 | ui_shell | 2 | 0 | 2 | 0 | 0 |
 | web_css | 4 | 0 | 4 | 0 | 0 |
 | web_markup | 7 | 0 | 5 | 0 | 2 |
 | web_runtime | 24 | 0 | 18 | 0 | 6 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **207** | **0** | **96** | **3** | **108** |
+| **Total** | **207** | **0** | **97** | **3** | **107** |
 
 ## Units
 
@@ -158,7 +158,7 @@
 | TEST-CCR-DIFF-LIB-PY | test_infrastructure | `tests/ccr-differential/lib/ccr_open_reference.py:1` | 325 | P1 | VERIFIED | COV-01 |
 | TEST-CCR-DIFF-LIB-JS | test_infrastructure | `tests/ccr-differential/lib/ccrdiff.js:1` | 418 | P1 | VERIFIED | COV-01 |
 | TOOL-AUDIT | tooling | `audit.py:1` | 16 | P1 | VERIFIED | COV-01, PARITY-01, REG-01, REG-02, REG-03, REG-05 |
-| TOOL-AUDIT-COVERAGE | tooling | `tools/audit_coverage.py:1` | 477 | P1 | VERIFIED | COV-01 |
+| TOOL-AUDIT-COVERAGE | tooling | `tools/audit_coverage.py:1` | 478 | P1 | IN_PROGRESS | - |
 | TOOL-AUDIT-COVERAGE-TEST | test_infrastructure | `tools/test_audit_coverage.py:1` | 211 | P1 | VERIFIED | COV-01 |
 | TOOL-BUILD-PAGES | tooling | `tools/build_pages_site.py:1` | 148 | P2 | IN_PROGRESS | - |
 | TOOL-ASSEMBLE-PAGES-PREVIEW | tooling | `tools/assemble_pages_preview.py:1` | 126 | P2 | READ | - |
@@ -167,7 +167,7 @@
 | TOOL-BUILD-ZHL | tooling | `tools/build_zhl_bundle.py:1` | 374 | P1 | IN_PROGRESS | - |
 | TOOL-CHECK-PARITY | tooling | `tools/check_engine_parity.py:1` | 312 | P1 | IN_PROGRESS | - |
 | TOOL-RUN-AUDIT-COVERAGE-SUITE-PY | tooling | `tools/run_audit_coverage_suite.py:1` | 104 | P0 | IN_PROGRESS | - |
-| TOOL-SEVEN-LENS-PROTOCOL | tooling | `tools/seven_lens_protocol.py:1` | 1406 | P0 | IN_PROGRESS | - |
+| TOOL-SEVEN-LENS-PROTOCOL | tooling | `tools/seven_lens_protocol.py:1` | 1417 | P0 | IN_PROGRESS | - |
 | TOOL-SEVEN-LENS-PROTOCOL-MIGRATIONS | tooling | `tools/seven_lens_protocol_migrations.py:1` | 401 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-PROTOCOL | test_infrastructure | `tools/test_seven_lens_protocol.py:1` | 695 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-PROTOCOL-MIGRATIONS | test_infrastructure | `tools/test_seven_lens_protocol_migrations.py:1` | 284 | P0 | IN_PROGRESS | - |

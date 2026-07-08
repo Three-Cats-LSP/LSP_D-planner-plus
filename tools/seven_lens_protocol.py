@@ -89,7 +89,17 @@ def _resolved_registry(root: Path) -> tuple[dict[str, Any], dict[str, dict[str, 
     return registry, resolved
 
 
-def make_plan(root: Path, cycle_id: int) -> dict[str, Any]:
+def _normalize_cycle_id(value: Any) -> Any:
+    text = str(value).strip()
+    if re.fullmatch(r"\d+", text):
+        return int(text)
+    match = re.fullmatch(r"[Rr](\d+)", text)
+    if match:
+        return f"R{int(match.group(1)):02d}"
+    return text
+
+
+def make_plan(root: Path, cycle_id: Any) -> dict[str, Any]:
     registry, resolved = _resolved_registry(root)
     if _git("status", "--porcelain", root=root):
         raise RuntimeError("plan requires a clean worktree")
@@ -99,7 +109,8 @@ def make_plan(root: Path, cycle_id: int) -> dict[str, Any]:
         raise RuntimeError(
             "plan must run before cycle work begins: HEAD must equal origin/dev"
         )
-    cycle = next((row for row in registry.get("cycles", []) if row.get("cycle") == cycle_id), None)
+    normalized_cycle_id = _normalize_cycle_id(cycle_id)
+    cycle = next((row for row in registry.get("cycles", []) if _normalize_cycle_id(row.get("cycle")) == normalized_cycle_id), None)
     if not cycle:
         raise ValueError(f"cycle {cycle_id} is not registered")
     parts = []
@@ -126,7 +137,7 @@ def make_plan(root: Path, cycle_id: int) -> dict[str, Any]:
             })
     return {
         "schema_version": CURRENT_RECORD_SCHEMA,
-        "cycle": cycle_id,
+        "cycle": normalized_cycle_id,
         "record_path": "",
         "target_branch": "dev",
         "integration_base_commit": integration_base,
@@ -1293,7 +1304,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
     plan = sub.add_parser("plan")
-    plan.add_argument("--cycle", type=int, required=True)
+    plan.add_argument("--cycle", required=True)
     plan.add_argument("--output", type=Path)
     check = sub.add_parser("check")
     check.add_argument("--phase", choices=("audit", "verify", "close"), required=True)
