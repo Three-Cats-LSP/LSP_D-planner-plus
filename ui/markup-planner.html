@@ -309,9 +309,12 @@
 </div>
 <!-- Travel Gas Card -->
 <div id="travelGasCard" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:8px;display:none;">
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;">
 <div class="gas-card-title-row"><span class="gas-dot gas-dot--travel" aria-hidden="true"></span><div class="dg-card-title gas-card-title--travel" style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--gas-switch-label-bg);">TRAVEL GAS — DESCENT / ASCENT TRANSIT</div></div>
-<button onclick="removeTravelGas()" onmouseout="this.style.color='var(--muted)'" onmouseover="this.style.color='var(--red)'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 4px;" title="Remove travel gas">✕</button>
+<div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+<span class="gas-mod" id="travelGasMODDisplay" title="Calculated travel gas MOD using Bottom ppO₂ limit">—</span>
+<button onclick="removeTravelGas()" onmouseout="this.style.color='var(--muted)'" onmouseover="this.style.color='var(--red)'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 4px;" title="Remove travel gas">×</button>
+</div>
 </div>
 <div class="gas-card-grid u0">
 <div class="field gas-f-mix">
@@ -327,20 +330,13 @@
 <label>O₂ %</label>
 <input id="travelGasCustomO2" max="40" min="16" oninput="updateTravelGasMOD()" step="1" title="Custom O₂% for travel gas. Keep below 40% — travel gas is used at shallow depths where high O₂ would be toxic." type="number" value="21"/>
 </div>
-<div class="field gas-f-num">
-<label>Switch</label>
-<select id="travelGasSwitchMode" onchange="updateTravelGasMOD()" style="font-size:11px;" title="Auto: switch depth = travel gas MOD at ppO₂ Bottom limit (recommended). Manual: you set the depth yourself.">
-<option selected="" value="auto">Auto (MOD)</option>
-<option value="manual">Manual</option>
-</select>
-</div>
-<div class="field gas-f-num" id="travelGasManualDepthField" style="display:none;">
-<label id="travelGasManualDepthLbl">Depth (m)</label>
-<input id="travelGasManualDepth" max="100" min="1" oninput="syncDepthInputCanonical('travelGasManualDepth');updateTravelGasMOD()" step="1" title="Manually set the depth where you switch from travel gas to bottom gas on descent (and back on ascent)." type="number" value="30"/>
-</div>
 <div class="field gas-f-switch">
 <label>Switch Depth</label>
-<input id="travelGasMODDisplay" placeholder="Select gas" readonly="" style="cursor:default;" title="Auto mode: shows travel gas MOD — deepest depth where travel gas ppO₂ stays within the Bottom ppO₂ limit. Manual mode: shows what the auto depth would be for reference." type="text"/>
+<input id="travelGasSwitchDepthDisplay" placeholder="Select gas" readonly="" style="cursor:default;" title="Automatic travel switch depth. Travel gas is breathed from the surface to this depth on descent, and again above bottom gas MOD on ascent." type="text"/>
+</div>
+<div class="field gas-f-switch">
+<label>MinOD</label>
+<input id="travelGasMinODDisplay" readonly="" style="cursor:default;" title="Minimum operating depth. Travel gas must be breathable at the surface, so MinOD must be 0." type="text" value="0 m"/>
 </div>
 <div class="field gas-f-num">
 <label>Size (L)</label>

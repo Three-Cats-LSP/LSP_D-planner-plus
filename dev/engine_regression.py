@@ -1858,18 +1858,21 @@ ENGINE_SUITE_JS = r"""
     let cylinderSizeEditAfterSwitchOk = false;
     let dynamicDecoCylImperialOk = false;
     const prevUnits = typeof units !== 'undefined' ? units : null;
-    const modeSel = document.getElementById('travelGasSwitchMode');
-    const prevMode = modeSel?.value;
-    const depthInp = document.getElementById('travelGasManualDepth');
-    const prevDepthSnap = snapEl('travelGasManualDepth');
+    const switchDepthEl = document.getElementById('travelGasSwitchDepthDisplay');
+    const prevSwitchDepthSnap = snapEl('travelGasSwitchDepthDisplay');
+    const travelMixEl = document.getElementById('travelGasMix');
+    const travelCustomEl = document.getElementById('travelGasCustomO2');
+    const prevTravelMix = travelMixEl?.value;
+    const prevTravelCustom = travelCustomEl?.value;
+    const travelWasConfigured = typeof isTravelGasConfigured === 'function' ? isTravelGasConfigured() : false;
     const decoEl = document.getElementById('tecDepth');
     const cylEl = document.getElementById('cylBot_size');
     const prevDecoSnap = snapEl('tecDepth');
     const prevCylSnap = snapEl('cylBot_size');
-    const travelMaxFt = Math.round(500 * 3.28084);
     const cylMaxCu = +(50 * 0.0353147).toFixed(2);
     const cylMinCu = +(0.5 * 0.0353147).toFixed(2);
     try {
+      if (!travelWasConfigured && typeof addTravelGas === 'function') addTravelGas();
       if (typeof enforceMinDecoProfile === 'function') {
         const steps = [
           { type: 'deco', depth: 30, dur: 1 },
@@ -1880,18 +1883,18 @@ ENGINE_SUITE_JS = r"""
         const d20 = outSteps.find(s => s.type === 'deco' && s.depth === 20);
         minDecoUnitsOk = !!(d30 && d30.dur >= 5 && d20 && d20.dur >= 3);
       }
-      if (typeof setUnits === 'function' && typeof syncTravelGasManualDepthConstraints === 'function') {
-        if (modeSel) modeSel.value = 'manual';
-        updateTravelGasMOD?.();
+      if (typeof setUnits === 'function' && switchDepthEl) {
         setUnits('metric');
-        const metricMax = Number(depthInp?.max);
+        updateTravelGasMOD?.();
+        const metricDisplay = switchDepthEl.value || '';
         setUnits('imperial');
-        const imperialMax = Number(depthInp?.max);
-        if (depthInp) {
-          depthInp.value = String(travelMaxFt);
-          travelDepthConstraintsOk =
-            metricMax === 500 && imperialMax === travelMaxFt && depthInp.checkValidity() === true;
-        }
+        updateTravelGasMOD?.();
+        const imperialDisplay = switchDepthEl.value || '';
+        travelDepthConstraintsOk = !document.getElementById('travelGasSwitchMode')
+          && !document.getElementById('travelGasManualDepth')
+          && switchDepthEl.readOnly === true
+          && /m/.test(metricDisplay)
+          && /ft/.test(imperialDisplay);
       }
       if (typeof setUnits === 'function' && cylEl) {
         setUnits('imperial');
@@ -1910,19 +1913,23 @@ ENGINE_SUITE_JS = r"""
         setUnits('metric');
         unitRoundtripImmutableOk = decoEl.value === '40' && cylEl.value === '12';
       }
-      if (typeof setUnits === 'function' && depthInp && modeSel) {
-        modeSel.value = 'manual';
+      if (typeof setUnits === 'function' && switchDepthEl && travelMixEl && travelCustomEl) {
+        setUnits('metric');
+        travelMixEl.value = 'custom';
+        travelCustomEl.value = '32';
         updateTravelGasMOD?.();
-        setUnits('metric');
-        depthInp.value = '30';
-        syncDepthInputCanonical?.('travelGasManualDepth');
+        const metricInfo = getTravelGasInfo?.();
+        const metricDisplay = switchDepthEl.value || '';
         setUnits('imperial');
-        depthInp.value = '120';
-        syncDepthInputCanonical?.('travelGasManualDepth');
-        const editedM = domDepthToM('travelGasManualDepth');
+        updateTravelGasMOD?.();
+        const imperialInfo = getTravelGasInfo?.();
+        const imperialDisplay = switchDepthEl.value || '';
         setUnits('metric');
-        travelDepthEditAfterSwitchOk =
-          depthClose(editedM, 36.576) && depthClose(domDepthToM('travelGasManualDepth'), 36.576);
+        updateTravelGasMOD?.();
+        travelDepthEditAfterSwitchOk = metricInfo && imperialInfo
+          && depthClose(metricInfo.switchDepthM, imperialInfo.switchDepthM)
+          && /m/.test(metricDisplay)
+          && /ft/.test(imperialDisplay);
       }
       if (typeof setUnits === 'function' && cylEl) {
         setUnits('metric');
@@ -1947,8 +1954,10 @@ ENGINE_SUITE_JS = r"""
         getAllDecoGasIds().filter(id => id > 2).forEach(id => removeDecoGasCard(id));
       }
     } finally {
-      if (modeSel && prevMode != null) modeSel.value = prevMode;
-      restoreEl('travelGasManualDepth', prevDepthSnap);
+      restoreEl('travelGasSwitchDepthDisplay', prevSwitchDepthSnap);
+      if (travelMixEl && prevTravelMix != null) travelMixEl.value = prevTravelMix;
+      if (travelCustomEl && prevTravelCustom != null) travelCustomEl.value = prevTravelCustom;
+      if (!travelWasConfigured && typeof removeTravelGas === 'function') removeTravelGas();
       restoreEl('tecDepth', prevDecoSnap);
       restoreEl('cylBot_size', prevCylSnap);
       if (prevUnits != null && typeof setUnits === 'function') setUnits(prevUnits);

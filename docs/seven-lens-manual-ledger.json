@@ -6,7 +6,7 @@
       "review_status": "SEVEN_LENS_REVIEWED",
       "reviewed_fingerprint": "08baabc5316bd85fa78d860f7414fdfe0df845c163407973d471ad0178923e60",
       "cycle_id": "SL-C01",
-      "boundary": "ui/markup-header.html whole file (847 lines; parts A\u2013D)",
+      "boundary": "ui/markup-header.html whole file (847 lines; parts A–D)",
       "reviewer": "Cursor GPT-5.5 Medium",
       "review_session": "cursor/seven-lens-cycle-01-header",
       "lens_results": {
@@ -16,7 +16,7 @@
         "L4": "Settings handlers traced to settings-core; regressions exercise input, preset, restore, and unit-switch paths.",
         "L5": "Canonical ui/markup-header.html; assemble_ui_html verify PASS.",
         "L6": "gasWarningBanner role=alert; imperial 16,404 ft accepted at engine 5000 m ceiling.",
-        "L7": "SL-C01-DEPTH-SYNC, SL-C01-PRESET-SYNC, SL-C01-SETTINGS-RESTORE, SL-C01-ALTITUDE-UNIT-CONSTRAINTS; REG-58\u201361."
+        "L7": "SL-C01-DEPTH-SYNC, SL-C01-PRESET-SYNC, SL-C01-SETTINGS-RESTORE, SL-C01-ALTITUDE-UNIT-CONSTRAINTS; REG-58–61."
       },
       "finding_ids": [
         "SL-C01-M-01",
@@ -50,10 +50,10 @@
         "SL-C01-M-04"
       ],
       "parts": {
-        "A": "lines 1-214 \u2014 scripts, header, nav, planPanel",
-        "B": "lines 215-415 \u2014 resultsPanel",
-        "C": "lines 416-481 \u2014 settingsPageWrap",
-        "D": "lines 482-847 \u2014 tools mount, legacy-panels, gfPresetsRow tail"
+        "A": "lines 1-214 — scripts, header, nav, planPanel",
+        "B": "lines 215-415 — resultsPanel",
+        "C": "lines 416-481 — settingsPageWrap",
+        "D": "lines 482-847 — tools mount, legacy-panels, gfPresetsRow tail"
       }
     },
     {
@@ -66,7 +66,7 @@
       "review_session": "cursor/seven-lens-cycle-002-audit",
       "lens_results": {
         "L1": "REC depth/BT steppers use hidden recDepth/recBT; no shared tec IDs.",
-        "L2": "recGenerateBtn \u2192 runRecPlan; stepRecDepthBt traced.",
+        "L2": "recGenerateBtn → runRecPlan; stepRecDepthBt traced.",
         "L3": "View snapshot on mode switch; rec.* persistence namespace.",
         "L4": "Disjoint inputs feed REC schedule path only.",
         "L5": "Canonical ui/markup-rec-planner.html assembled via header placeholder.",
@@ -102,7 +102,7 @@
       "review_session": "cursor/seven-lens-cycle-002-audit",
       "lens_results": {
         "L1": "REC depth/BT steppers use hidden recDepth/recBT; no shared tec IDs.",
-        "L2": "recGenerateBtn \u2192 runRecPlan; stepRecDepthBt traced.",
+        "L2": "recGenerateBtn → runRecPlan; stepRecDepthBt traced.",
         "L3": "View snapshot on mode switch; rec.* persistence namespace.",
         "L4": "Disjoint inputs feed REC schedule path only.",
         "L5": "Canonical ui/markup-rec-planner.html assembled via header placeholder.",
@@ -138,12 +138,12 @@
       "review_session": "cursor/seven-lens-cycle-200-audit",
       "lens_results": {
         "L1": "TECH depth/BT, gas cards, GF/VPM rows use tec-only IDs.",
-        "L2": "tecGenerateBtn \u2192 runDecoSchedule; travel gas manual depth path traced.",
-        "L3": "Unit switch syncs travel manual depth constraints.",
-        "L4": "domDepthToM on travelGasManualDepth after imperial edit.",
+        "L2": "tecGenerateBtn -> runDecoSchedule; travel gas automatic switch-depth path traced.",
+        "L3": "Unit switch syncs travel switch-depth display and MinOD.",
+        "L4": "getTravelGasInfo consumes automatic MOD-derived switch depth.",
         "L5": "Static ui/markup-tec-planner.html; no runtime tec mount.",
         "L6": "Cylinder and deco gas controls reachable in tecPlannerView.",
-        "L7": "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH trace PASS (2b)."
+        "L7": "Automatic travel switch contract regression PASS."
       },
       "finding_ids": [],
       "verification_commands": [
@@ -156,12 +156,13 @@
       "verifier": "Cursor Agent (schema-v4 closure)",
       "verification_status": "PASS",
       "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
-      "last_checked_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "last_checked_commit": "PENDING_CURRENT_COMMIT",
       "verification_report": "docs/seven-lens-reports/cycle-02-codex-verification.md",
       "findings_open": [],
       "findings_closed": [],
       "parts": {
-        "P01": "ui/markup-tec-planner.html"
+        "P01": "ui/markup-tec-planner.html:1-500",
+        "P02": "ui/markup-tec-planner.html:501-562"
       },
       "dependency_re_review": {
         "session": "C08-DEP-TEC-MARKUP",

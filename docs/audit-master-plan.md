@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v3-full-reset`
-**Units:** 207 total; 0 unread; 90 in progress; 3 read; 114 verified.
+**Units:** 207 total; 0 unread; 92 in progress; 3 read; 112 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -56,7 +56,7 @@ Run the first unfinished cycle in this table. The numeric cycle table below rema
 | 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 526 | - | Planner shell and results panel READ; current lines: 526; sessions: 1 |
 | 9 | UI-ENVIRONMENT, UI-MODE-STATE | 999 | - | settings-core environment and mode state READ (1002 lines; >=2 bounded sessions); explicitly verify VPM switch behavior; enforce app-wide gas-switch terminology: the diving procedure is labeled and identified as "Gas switch" everywhere, with no user-facing "Gas change" labels or new gas-change IDs/classes/contracts; verify mobile warning/alert banners and gas-consumption warnings wrap inside the viewport without horizontal clipping or overflow; current lines: 999; sessions: 2 |
 | 10 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 679 | - | Surface interval and gas table cores READ; current lines: 679; sessions: 2 |
-| 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 534 | ENG-ZHL-GAS | Gas card UI READ; current lines: 534; sessions: 1 |
+| 11 | UI-GAS-INPUTS, UI-GAS-CARDS | 508 | ENG-ZHL-GAS | Gas card UI READ; current lines: 534; sessions: 1 |
 | 12 | APP-GAS-PLAN | 546 | - | Gas plan core READ; current lines: 546; sessions: 1 |
 | 13 | APP-CONTINGENCY | 587 | - | Contingency core READ; current lines: 587; sessions: 1 |
 | 14 | APP-EXPORT | 3269 | - | export-core text/PDF READ across at least 6 bounded sessions; current lines: 3269; sessions: 6 |
@@ -70,11 +70,11 @@ Run the first unfinished cycle in this table. The numeric cycle table below rema
 | 22 | UI-VPM-RUNNER | 473 | ENG-VPM | VPM runner READ; current lines: 473; sessions: 1 |
 | 23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 390 | - | Runtime bootstrap and app init READ; current lines: 390; sessions: 1 |
 | 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 692 | - | Algorithm and settings controls READ (692 lines; >=2 bounded sessions); current lines: 692; sessions: 2 |
-| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1288 | - | Settings persistence and unit helpers READ across at least 3 bounded sessions; current lines: 1288; sessions: 3 |
+| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1282 | - | Settings persistence and unit helpers READ across at least 3 bounded sessions; current lines: 1288; sessions: 3 |
 | 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 851 | - | Tools panels READ in >=2 bounded sessions; implement and verify the tissue-saturation seven-band value scale in docs/tissue-saturation-color-roadmap.md, including UI/export parity and accessibility; current lines: 851; sessions: 2 |
 | 27 | UI-PROFILE-PRESETS | 508 | - | Dive profile presets READ (depth/BT/mode ownership); current lines: 508; sessions: 1 |
 | 28 | UI-CONFIG-PRESETS | 185 | - | Advanced config presets READ; current lines: 185; sessions: 1 |
-| 29 | UI-BOOT | 2411 | - | index.html shell boot region READ; current lines: 2411; sessions: 5 |
+| 29 | UI-BOOT | 2403 | - | index.html shell boot region READ; current lines: 2411; sessions: 5 |
 | 30 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 425 | - | PWA and service worker READ; current lines: 425; sessions: 1 |
 | 31 | APP-ZHL-WORKER, APP-ZHL-WORKER-BRIDGE | 159 | - | ZHL schedule worker and bridge READ; current lines: 159; sessions: 1 |
 | 32 | APP-CAPACITOR-BRIDGE, APP-ANDROID-SELECT | 548 | - | Capacitor and Android select bridge READ; current lines: 548; sessions: 1 |
@@ -88,7 +88,7 @@ Run the first unfinished cycle in this table. The numeric cycle table below rema
 | 40 | - | 0 | TEST-ENGINE-REGRESSION, TEST-ENGINE-VALIDATION, TEST-GAS-CORE-REGRESSION | Engine and gas regression harnesses re-verified; current lines: 0; no application-source review |
 | 41 | - | 0 | TEST-RUN-ALL, TEST-SW-LIFECYCLE, TEST-CCR-VALIDATION, TEST-CCR-DIFF-RUNNER, TEST-PSCR-E2E | Full regression umbrella and release-tier test paths re-verified; current lines: 0; no application-source review |
 | 42 | APP-PACKAGE | 40 | CI-AUDIT, CI-MAIN, CI-APK, CI-DEPLOY | Package manifest and CI workflows READ; current lines: 40; sessions: 1 |
-| 200 | UI-MARKUP-TEC-PLANNER | 570 | - | Cycle 2b: TECH planner markup; SL-C02-TRAVEL-DEPTH browser trace; current lines: 570; sessions: 1 |
+| 200 | UI-MARKUP-TEC-PLANNER | 562 | - | Cycle 2b: TECH planner markup; SL-C02-TRAVEL-DEPTH browser trace; current lines: 570; sessions: 1 |
 | 201 | UI-PLANNER-INPUTS | 119 | - | Cycle 2c: view swap + persistence; SL-MODE-REC-TEC-ISOLATION; current lines: 119; sessions: 1 |
 
 ## Definition of Done

@@ -406,17 +406,11 @@ function getTravelGasInfo() {
     ? getGasLabel(fO2, fHe)
     : 'Travel';
 
-  const mode = document.getElementById('travelGasSwitchMode')?.value || 'auto';
   const ppO2Bot = parseFloat(document.getElementById('ppo2Bottom')?.value) || 1.4;
-  let switchDepthM;
-  if (mode === 'manual') {
-    const rawVal = parseFloat(document.getElementById('travelGasManualDepth')?.value) || 30;
-    switchDepthM = units === 'imperial' ? rawVal / 3.28084 : rawVal;
-  } else {
-    // Auto: MOD based on bottom gas ppO2 limit
-    if (fO2 <= 0) switchDepthM = 0;
-    else switchDepthM = calcGasMODm(fO2, ppO2Bot);
-  }
+  // Travel gas switch depth is automatic: the gas MOD at the bottom ppO2
+  // limit. The manual switch control was removed so this card has one
+  // canonical depth owner, like the other gas cards.
+  const switchDepthM = fO2 <= 0 ? 0 : calcGasMODm(fO2, ppO2Bot);
 
   return { fN2, fO2, fHe, label, switchDepthM };
 }
@@ -504,22 +498,16 @@ function getTravelGasExport() {
 }
 
 function updateTravelGasMOD() {
-  syncTravelGasManualDepthConstraints?.();
   toggleDecoCustomO2?.('travelGasMix', 'travelGasCustomField');
   toggleTravelTrimix?.();
   const info = getTravelGasInfo();
   const dispEl = document.getElementById('travelGasMODDisplay');
+  const switchEl = document.getElementById('travelGasSwitchDepthDisplay');
   const minOdEl = document.getElementById('travelGasMinODDisplay');
-  const manualField = document.getElementById('travelGasManualDepthField');
-  const manualLbl   = document.getElementById('travelGasManualDepthLbl');
-  const mode = document.getElementById('travelGasSwitchMode')?.value || 'auto';
-
-  // Show/hide manual depth field
-  if (manualField) manualField.style.display = mode === 'manual' ? 'block' : 'none';
-  if (manualLbl)   manualLbl.textContent = `Switch Depth (${units === 'imperial' ? 'ft' : 'm'})`;
 
   if (!info) {
-    if (dispEl) dispEl.value = '—';
+    _setModDisplay(dispEl, '—');
+    if (switchEl) switchEl.value = '—';
     if (minOdEl) minOdEl.value = '—';
     return;
   }
@@ -528,21 +516,6 @@ function updateTravelGasMOD() {
   const modDisp = dU ? info.switchDepthM + ' m' : Math.round(info.switchDepthM * 3.28084) + ' ft';
   const ppO2AtSwitch = ((altSurfaceP + info.switchDepthM * BAR_PER_METRE) * info.fO2).toFixed(2);
   if (minOdEl) minOdEl.value = dU ? '0 m' : '0 ft';
-
-  if (dispEl) {
-    dispEl.value = mode === 'auto'
-      ? `${modDisp}  (ppO₂ ${ppO2AtSwitch})`
-      : `Auto: ${modDisp}`;
-  }
-}
-
-/** Keep #travelGasManualDepth min/max in display units (metric m or imperial ft). */
-function syncTravelGasManualDepthConstraints() {
-  const inp = document.getElementById('travelGasManualDepth');
-  if (!inp) return;
-  const imperial = units === 'imperial';
-  const maxM = 500;
-  inp.min = '1';
-  inp.max = String(imperial ? Math.round(maxM * 3.28084) : maxM);
-  inp.step = '1';
+  _setModDisplay(dispEl, `MOD ${modDisp}`, `Travel gas MOD at Bottom ppO₂ limit. ppO₂ ${ppO2AtSwitch} at switch depth.`);
+  if (switchEl) switchEl.value = `${modDisp}  (ppO₂ ${ppO2AtSwitch})`;
 }

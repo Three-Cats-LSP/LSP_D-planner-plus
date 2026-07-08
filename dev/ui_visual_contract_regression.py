@@ -549,7 +549,9 @@ async () => {
   const travelCustomField = document.getElementById('travelGasCustomField');
   const travelO2Field = document.getElementById('travelGasTrimixO2Field');
   const travelHeField = document.getElementById('travelGasTrimixHeField');
-  const travelMod = document.getElementById('travelGasMODDisplay')?.value || '';
+  const travelModEl = document.getElementById('travelGasMODDisplay');
+  const travelMod = travelModEl?.value || travelModEl?.textContent?.trim() || '';
+  const travelSwitchDepth = document.getElementById('travelGasSwitchDepthDisplay')?.value || '';
   const travelMinOD = document.getElementById('travelGasMinODDisplay')?.value || '';
   const visible = el => !!el && getComputedStyle(el).display !== 'none' && el.getBoundingClientRect().width > 0;
   const travelTrimix = {
@@ -560,8 +562,10 @@ async () => {
     heVisible: visible(travelHeField),
     fieldCount: travelCard ? travelCard.querySelectorAll('.gas-card-grid .field').length : 0,
     mixField: !!travelCard?.querySelector('.gas-f-mix #travelGasMix'),
-    switchField: !!travelCard?.querySelector('.gas-f-switch #travelGasMODDisplay'),
+    modBadge: !!travelCard?.querySelector('.gas-mod#travelGasMODDisplay'),
+    switchField: !!travelCard?.querySelector('.gas-f-switch #travelGasSwitchDepthDisplay'),
     minOdField: !!travelCard?.querySelector('.gas-f-switch #travelGasMinODDisplay'),
+    noSwitchMode: !document.getElementById('travelGasSwitchMode') && !document.getElementById('travelGasManualDepth'),
     sizeFields: travelCard ? travelCard.querySelectorAll('.gas-f-num input').length : 0,
     customMin: document.getElementById('travelGasCustomO2')?.min || '',
     trimixMin: document.getElementById('travelGasTrimixO2')?.min || '',
@@ -570,7 +574,9 @@ async () => {
     fHe: travelInfo?.fHe,
     fN2: travelInfo?.fN2,
     modText: travelMod,
-    modUsesO2: /\(ppO₂\s+/.test(travelMod) || /\(ppO2\s+/.test(travelMod),
+    switchDepthText: travelSwitchDepth,
+    modBadgeIsMod: /^MOD\s+\d+/.test(travelMod),
+    switchUsesO2: /\(ppOâ‚‚\s+/.test(travelSwitchDepth) || /\(ppO₂\s+/.test(travelSwitchDepth) || /\(ppO2\s+/.test(travelSwitchDepth),
     minOdText: travelMinOD,
   };
   const forbiddenHits = (joined.match(new RegExp(forbidden.source, forbidden.flags + 'g')) || []);
@@ -1597,8 +1603,10 @@ def main() -> int:
         and travel_trimix.get("o2Visible")
         and travel_trimix.get("heVisible")
         and travel_trimix.get("mixField")
+        and travel_trimix.get("modBadge")
         and travel_trimix.get("switchField")
         and travel_trimix.get("minOdField")
+        and travel_trimix.get("noSwitchMode")
         and travel_trimix.get("fieldCount", 0) >= 7
         and travel_trimix.get("customMin") == "18"
         and travel_trimix.get("trimixMin") == "18"
@@ -1606,7 +1614,8 @@ def main() -> int:
         and abs(float(travel_trimix.get("fO2", 0)) - 0.18) < 0.001
         and abs(float(travel_trimix.get("fHe", 0)) - 0.45) < 0.001
         and abs(float(travel_trimix.get("fN2", 0)) - 0.37) < 0.001
-        and travel_trimix.get("modUsesO2")
+        and travel_trimix.get("modBadgeIsMod")
+        and travel_trimix.get("switchUsesO2")
         and travel_trimix.get("minOdText") in ("0 m", "0 ft")
         and not gas_details.get("console_errors")
     )

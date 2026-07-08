@@ -600,9 +600,12 @@
 </div>
 <!-- Travel Gas Card -->
 <div id="travelGasCard" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:8px;display:none;">
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;">
 <div class="gas-card-title-row"><span class="gas-dot gas-dot--travel" aria-hidden="true"></span><div class="dg-card-title gas-card-title--travel" style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--gas-switch-label-bg);">TRAVEL GAS — DESCENT / ASCENT TRANSIT</div></div>
-<button onclick="removeTravelGas()" onmouseout="this.style.color='var(--muted)'" onmouseover="this.style.color='var(--red)'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 4px;" title="Remove travel gas">✕</button>
+<div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+<span class="gas-mod" id="travelGasMODDisplay" title="Calculated travel gas MOD using Bottom ppO₂ limit">—</span>
+<button onclick="removeTravelGas()" onmouseout="this.style.color='var(--muted)'" onmouseover="this.style.color='var(--red)'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 4px;" title="Remove travel gas">×</button>
+</div>
 </div>
 <div class="gas-card-grid u0">
 <div class="field gas-f-mix">
@@ -627,20 +630,9 @@
 <label>He %</label>
 <input id="travelGasTrimixHe" max="90" min="0" oninput="updateTravelGasMOD()" placeholder="35" step="1" title="Trimix helium percentage for travel gas." type="number" value="35"/>
 </div>
-<div class="field gas-f-num">
-<label>Switch</label>
-<select id="travelGasSwitchMode" onchange="updateTravelGasMOD()" style="font-size:11px;" title="Auto: switch depth = travel gas MOD at ppO₂ Bottom limit (recommended). Manual: you set the depth yourself.">
-<option selected="" value="auto">Auto (MOD)</option>
-<option value="manual">Manual</option>
-</select>
-</div>
-<div class="field gas-f-num" id="travelGasManualDepthField" style="display:none;">
-<label id="travelGasManualDepthLbl">Depth (m)</label>
-<input id="travelGasManualDepth" max="100" min="1" oninput="syncDepthInputCanonical('travelGasManualDepth');updateTravelGasMOD()" step="1" title="Manually set the depth where you switch from travel gas to bottom gas on descent (and back on ascent)." type="number" value="30"/>
-</div>
 <div class="field gas-f-switch">
 <label>Switch Depth</label>
-<input id="travelGasMODDisplay" placeholder="Select gas" readonly="" style="cursor:default;" title="Auto mode: shows travel gas MOD — deepest depth where travel gas ppO₂ stays within the Bottom ppO₂ limit. Manual mode: shows what the auto depth would be for reference." type="text"/>
+<input id="travelGasSwitchDepthDisplay" placeholder="Select gas" readonly="" style="cursor:default;" title="Automatic travel switch depth. Travel gas is breathed from the surface to this depth on descent, and again above bottom gas MOD on ascent." type="text"/>
 </div>
 <div class="field gas-f-switch">
 <label>MinOD</label>
@@ -3571,12 +3563,6 @@ function setUnits(u, opts) {
     }
     el.dataset.depthM = String(metres);
   };
-
-  const travelMaxFt = Math.round(500 * FT_PER_M);
-  // ── Travel gas manual switch depth ──
-  convertNumericInput('travelGasManualDepth', v => Math.round(v * FT_PER_M), v => Math.round(v / FT_PER_M), 500, travelMaxFt);
-  setTxt('travelGasManualDepthLbl', `Switch Depth (${u === 'imperial' ? 'ft' : 'm'})`);
-  syncTravelGasManualDepthConstraints?.();
 
   applyDepthUnitSwitch('recDepth', 100, 330);
   applyDepthUnitSwitch('tecDepth', 120, 394);
@@ -8256,7 +8242,7 @@ var appSettings = {
     'priorDiveDays', 'priorDiveHours', 'priorDiveMinutes', 'priorDiveOTU', 'priorDiveCNS',
     'shallowGradient',
     'siD1Depth', 'siD1BT', 'siD2Depth', 'siD2BT', 'siGfLow', 'siD2O2', 'siD2He',
-    'travelGasMix', 'travelGasCustomO2', 'travelGasTrimixO2', 'travelGasTrimixHe', 'travelGasSwitchMode', 'travelGasManualDepth',
+    'travelGasMix', 'travelGasCustomO2', 'travelGasTrimixO2', 'travelGasTrimixHe',
     'sacBottom', 'sacDeco', 'contingencySacMultiplier',
     'cylBot_size', 'cylBot_pres', 'cylBot_reserve',
     'cylDg1_size', 'cylDg1_pres', 'cylDg1_reserve',
@@ -8740,7 +8726,7 @@ function _renderProfilePresetModal() {
 
 const _PROFILE_TEC_GAS_FIELDS = [
   'decoGas','decoCustomO2','botTrimixO2','botTrimixHe',
-  'travelGasMix','travelGasCustomO2','travelGasTrimixO2','travelGasTrimixHe','travelGasSwitchMode','travelGasManualDepth',
+  'travelGasMix','travelGasCustomO2','travelGasTrimixO2','travelGasTrimixHe',
   'dg1Mix','dg1CustomO2','dg1TrimixO2','dg1TrimixHe',
   'dg2Mix','dg2CustomO2','dg2TrimixO2','dg2TrimixHe',
 ];
