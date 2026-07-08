@@ -50,7 +50,7 @@ Run the first unfinished cycle in this table. The numeric cycle table below rema
 | 2 | UI-MARKUP-REC-PLANNER, UI-REC-PLANNER | 84 | - | Cycle 2a: REC planner markup + runRecPlan; SL-REC-DEPTH-BT-STEPPER; current lines: 84; sessions: 1 |
 | 3 | UI-MARKUP-CONSUMPTION | 381 | - | Consumption markup partial READ; current lines: 381; sessions: 1 |
 | 4 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 612 | - | Tools and modals markup partials READ; current lines: 612; sessions: 2 |
-| 5 | UI-CSS-FOUNDATION, UI-CSS-MODES | 758 | - | Foundation and modes CSS READ; current lines: 758; sessions: 2 |
+| 5 | UI-CSS-FOUNDATION, UI-CSS-MODES | 760 | - | Foundation/modes CSS READ (2 bounded sessions); current lines: 760; sessions: 2 |
 | 6 | UI-CSS-CONTROLS | 548 | - | Controls CSS READ; current lines: 548; sessions: 1 |
 | 7 | UI-CSS-RESULTS | 986 | - | Results CSS READ (2 bounded sessions); current lines: 986; sessions: 2 |
 | 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 508 | - | Planner shell and results panel READ; current lines: 526; sessions: 1 |

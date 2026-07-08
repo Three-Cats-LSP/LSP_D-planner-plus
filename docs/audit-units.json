@@ -1802,7 +1802,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "21770eb09ada24d6154531d384f3db4e3049c43ea7a2e650fb9d54ea7892a5b9",
+      "fingerprint": "3b17dea5babb16b64d5261b6f3ce2272a7610b1a91afa75edd43d4d8b766c17f",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1817,7 +1817,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "ba21bddd548be42a8c7781c514911da4434e4f6ffdc5569cfcb9bed95a2bd1f2",
+      "fingerprint": "38b27207abdc8022bff985ad449fc3a4e616f060c5c5fa96f1a9c42bbb32402e",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1862,7 +1862,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "50666b6d40f76e626e9a0b2929c78a07e21b6219d6901a83e58d9eac6c07a8f7",
+      "fingerprint": "8b811568c27e58d26f2d5c8f5902eeed528867fc08648d6e501f25b04e3b2bb0",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -1914,7 +1914,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "4c4823c981b60a086cf1ffd8b6cf4cecc3c0d8fed0207019912ed9f005345534",
+      "fingerprint": "7a44452d08d2cb2ebbfc6f91af6fa6c5540bfdfe29a065271f7fcfe9e59bf518",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1944,7 +1944,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "e02f1244f815306634156915eca5b66d5b47759cc78844db838f1f20f09d9980",
+      "fingerprint": "e94ae2f37aa0d2ca6c51ee7502cfb0eb8d77e6ca4edaa3caf39217d1864531e7",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5808,13 +5808,13 @@
     },
     {
       "cycle": 5,
-      "max_new_application_lines": 758,
+      "max_new_application_lines": 760,
       "application_units": [
         "UI-CSS-FOUNDATION",
         "UI-CSS-MODES"
       ],
       "engine_reverification": [],
-      "acceptance": "Foundation and modes CSS READ; current lines: 758; sessions: 2",
+      "acceptance": "Foundation/modes CSS READ (2 bounded sessions); current lines: 760; sessions: 2",
       "min_review_sessions": 2
     },
     {
