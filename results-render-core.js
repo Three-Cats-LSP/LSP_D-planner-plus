@@ -242,6 +242,18 @@ function _gasWarningMessages(rows, threshold) {
   return messages;
 }
 
+function _gasWarningMessageForRow(row, threshold) {
+  const status = _gasUsageStatus(row, threshold);
+  if (status !== 'critical') return '';
+  if (!(row.totalL > 0)) {
+    return `No gas supply: ${_gasCardHtml(row.displayName)} has no configured cylinder supply`;
+  }
+  if (row.shortfallL > 0) {
+    return `No gas supply: ${_gasCardHtml(row.displayName)} needs ${_gasVolHtml(row.usedL)}, cylinder has ${_gasVolHtml(row.totalL)}`;
+  }
+  return `Critical: ${_gasCardHtml(row.displayName)} below <strong class="gas-measure">${threshold}<span class="gas-unit">%</span></strong> remaining`;
+}
+
 function renderGasConsumptionBars(container, gasConsumed, options) {
   if (!container) return;
   const title = options?.title || 'Gas Consumption';
@@ -259,7 +271,12 @@ function renderGasConsumptionBars(container, gasConsumed, options) {
     const turn = Number.isFinite(row.turnPressureBar)
       ? `<span>Turn Pressure: ${_gasPresHtml(row.turnPressureBar)}</span>`
       : '';
+    const cardWarning = _gasWarningMessageForRow(row, threshold);
+    const cardWarningHtml = cardWarning
+      ? `<div class="gas-consumption-warning alert dang"><span aria-hidden="true">&#9888;</span><div class="gas-warning-copy">${cardWarning}</div></div>`
+      : '';
     return `<div class="gas-usage-card gas-usage-card--${status}" data-gas-label="${_gasCardHtml(row.label)}" data-gas-role="${_gasCardHtml(row.role)}" style="--gas-remaining-pct:${row.remainingPercentOfTotal.toFixed(2)}%;">
+      ${cardWarningHtml}
       <div class="gas-usage-head">
         <div class="gas-usage-title"><span class="gas-usage-mix">${_gasCardHtml(row.label)}</span><span class="gas-usage-role">${_gasCardHtml(row.role)}</span></div>
         <div class="gas-usage-remaining">${_gasVolHtml(row.remainingTotalL)} <span>(${_gasPresHtml(row.remainingBar)})</span></div>
@@ -270,10 +287,6 @@ function renderGasConsumptionBars(container, gasConsumed, options) {
     </div>`;
   }).join('');
 
-  const warnings = _gasWarningMessages(rows, threshold);
-  const warningHtml = warnings.length
-    ? `<div class="gas-consumption-warning alert dang"><span aria-hidden="true">⚠</span><div class="gas-warning-copy">${warnings.join('<br>')}</div></div>`
-    : '';
   const narcoticSource = !_contingencyRunning ? document.getElementById('decoAlertsNarcotic') : null;
   const narcoticHtml = narcoticSource ? String(narcoticSource.innerHTML || '').trim() : '';
   const gasCardNarcoticHtml = narcoticHtml
@@ -291,7 +304,6 @@ function renderGasConsumptionBars(container, gasConsumed, options) {
           <span>%</span>
         </label>
       </div>
-      ${warningHtml}
       ${gasCardNarcoticHtml}
       <div class="gas-consumption-bars">${rowHtml}</div>
       <div class="gas-consumption-note">SAC bottom: ${_gasCardHtml(sacBottom)} ${_gasCardHtml(sacUnit)} &middot; deco: ${_gasCardHtml(sacDeco)} ${_gasCardHtml(sacUnit)}</div>

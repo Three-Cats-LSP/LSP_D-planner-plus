@@ -62,7 +62,7 @@ Run the first unfinished cycle in this table. The numeric cycle table below rema
 | 14 | APP-EXPORT | 3269 | - | export-core text/PDF READ across at least 6 bounded sessions; current lines: 3269; sessions: 6 |
 | 15 | UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 632 | - | plot-core render and waypoints READ in at least 2 bounded sessions; current lines: 632; sessions: 2 |
 | 16 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 755 | - | Profile tool and plot init READ; current lines: 755; sessions: 2 |
-| 17 | UI-VPM-RENDER, UI-ZHL-RESULTS | 955 | - | results-render-core READ; current lines: 955; sessions: 2 |
+| 17 | UI-VPM-RENDER, UI-ZHL-RESULTS | 955 | - | results-render-core READ; current lines: 956; sessions: 2 |
 | 18 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 511 | ENG-ZHL-SCHEDULE | ZHL/CCR delegate thin layer READ; current lines: 511; sessions: 1 |
 | 19 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 605 | ENG-ZHL-CCR | Deco physics and schedule inputs READ across at least 2 bounded sessions; current lines: 605; sessions: 2 |
 | 20 | UI-ZHL-RUNNER-SETUP, UI-ZHL-RUNNER-ENGINE | 478 | ENG-ZHL-SCHEDULE | ZHL runner setup and engine invocation READ; current lines: 480; sessions: 1 |

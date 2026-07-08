@@ -2407,7 +2407,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-INIT"
       },
-      "fingerprint": "a10bd6d9da225e2f029810a22ea4d3cc3ffc256bdd1f1e8b0252a00f85aa77e4",
+      "fingerprint": "357d69c87fdd7cde61d240d97fcbc4e13e63db069179af6a6b6840b8171fd57d",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5928,13 +5928,13 @@
     },
     {
       "cycle": 17,
-      "max_new_application_lines": 955,
+      "max_new_application_lines": 956,
       "application_units": [
         "UI-VPM-RENDER",
         "UI-ZHL-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "results-render-core READ; current lines: 955; sessions: 2",
+      "acceptance": "results-render-core READ; current lines: 956; sessions: 2",
       "min_review_sessions": 2
     },
     {

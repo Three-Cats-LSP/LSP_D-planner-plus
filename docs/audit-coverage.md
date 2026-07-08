@@ -71,8 +71,8 @@
 | UI-VPM-RUNNER | web_runtime | `schedule-runner-core.js:2339` | 491 | P0 | IN_PROGRESS | REG-131, REG-132, REG-133, REG-134, REG-136, REG-138 |
 | UI-ZHL-RUNNER-SETUP | web_runtime | `schedule-runner-core.js:2830` | 144 | P0 | IN_PROGRESS | - |
 | UI-ZHL-RUNNER-ENGINE | web_runtime | `schedule-runner-core.js:2974` | 334 | P0 | IN_PROGRESS | REG-132, REG-134, REG-137 |
-| UI-VPM-RENDER | ui_core | `results-render-core.js:304` | 499 | P1 | IN_PROGRESS | - |
-| UI-ZHL-RESULTS | ui_core | `results-render-core.js:803` | 456 | P1 | IN_PROGRESS | - |
+| UI-VPM-RENDER | ui_core | `results-render-core.js:316` | 499 | P1 | IN_PROGRESS | - |
+| UI-ZHL-RESULTS | ui_core | `results-render-core.js:815` | 456 | P1 | IN_PROGRESS | - |
 | UI-GAS-INPUTS | ui_core | `gas-cards-core.js:15` | 223 | P1 | IN_PROGRESS | - |
 | UI-GAS-CARDS | ui_core | `gas-cards-core.js:238` | 284 | P1 | IN_PROGRESS | - |
 | UI-PLOT-RENDER | ui_core | `plot-core.js:109` | 431 | P2 | IN_PROGRESS | - |
