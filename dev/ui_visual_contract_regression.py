@@ -681,7 +681,7 @@ async () => {
 
   const viewportWidth = document.documentElement.clientWidth;
   const candidates = [
-    ...document.querySelectorAll('#decoAlerts .alert, #decoAlertsNarcotic .alert, #gasWarningBanner, .gas-consumption-warning, .gas-usage-card--critical'),
+    ...document.querySelectorAll('#decoAlerts .alert, #decoAlertsNarcotic .alert, #gasWarningBanner, .gas-usage-inline-warning, .gas-usage-card--critical, .gas-usage-card--nogas'),
   ].filter(el => {
     const style = getComputedStyle(el);
     const rect = el.getBoundingClientRect();
@@ -715,8 +715,10 @@ async () => {
   const zeroLetterSpacing = value => value === 'normal' || Math.abs(parseFloat(value) || 0) <= 0.1;
   const gasWarningBanner = document.getElementById('gasWarningBanner');
   const gasWarningStyle = styleOf(gasWarningBanner);
-  const cardWarningStyle = styleOf(document.querySelector('.gas-consumption-warning'));
+  const inlineWarning = document.querySelector('.gas-usage-inline-warning');
+  const cardWarningStyle = styleOf(inlineWarning);
   const decoWarningStyle = styleOf(document.querySelector('#decoAlerts .alert, #decoAlertsNarcotic .alert'));
+  const oldCardWarningCount = document.querySelectorAll('.gas-usage-card .gas-consumption-warning').length;
   const warningTypographyOk =
     /Outfit/i.test(cardWarningStyle.fontFamily || '')
     && closePx(gasWarningStyle.fontSize, decoWarningStyle.fontSize)
@@ -732,20 +734,22 @@ async () => {
     generated,
     viewportWidth,
     alertCount: document.querySelectorAll('#decoAlerts .alert, #decoAlertsNarcotic .alert').length,
-    criticalGasCards: document.querySelectorAll('.gas-usage-card--critical').length,
+    criticalGasCards: document.querySelectorAll('.gas-usage-card--critical, .gas-usage-card--nogas').length,
+    noGasCards: document.querySelectorAll('.gas-usage-card--nogas').length,
     warningText: gasWarningBanner?.textContent?.trim() || '',
-    cardWarningText: document.querySelector('.gas-consumption-warning')?.textContent?.trim() || '',
+    cardWarningText: inlineWarning?.textContent?.trim() || '',
     warningIconText: document.querySelector('#gasWarningBanner > span[aria-hidden="true"]')?.textContent?.trim() || '',
     warningPseudoIconText: gasWarningBanner ? getComputedStyle(gasWarningBanner, '::before').content : '',
     warningIconCount: document.querySelectorAll('#gasWarningBanner > span[aria-hidden="true"]').length,
     topGasBannerHidden,
-    cardWarningIconText: document.querySelector('.gas-consumption-warning span')?.textContent?.trim() || '',
+    cardWarningIconText: document.querySelector('.gas-usage-inline-warning span')?.textContent?.trim() || '',
+    oldCardWarningCount,
     warningColor: document.getElementById('gasWarningBanner') ? getComputedStyle(document.getElementById('gasWarningBanner')).color.replace(/\s+/g, '').toLowerCase() : '',
-    cardWarningColor: document.querySelector('.gas-consumption-warning') ? getComputedStyle(document.querySelector('.gas-consumption-warning')).color.replace(/\s+/g, '').toLowerCase() : '',
+    cardWarningColor: inlineWarning ? getComputedStyle(inlineWarning).color.replace(/\s+/g, '').toLowerCase() : '',
     warningBackground: document.getElementById('gasWarningBanner') ? getComputedStyle(document.getElementById('gasWarningBanner')).backgroundColor.replace(/\s+/g, '').toLowerCase() : '',
-    cardWarningBackground: document.querySelector('.gas-consumption-warning') ? getComputedStyle(document.querySelector('.gas-consumption-warning')).backgroundColor.replace(/\s+/g, '').toLowerCase() : '',
+    cardWarningBackground: inlineWarning ? getComputedStyle(inlineWarning).backgroundColor.replace(/\s+/g, '').toLowerCase() : '',
     warningBorder: document.getElementById('gasWarningBanner') ? getComputedStyle(document.getElementById('gasWarningBanner')).borderTopColor.replace(/\s+/g, '').toLowerCase() : '',
-    cardWarningBorder: document.querySelector('.gas-consumption-warning') ? getComputedStyle(document.querySelector('.gas-consumption-warning')).borderTopColor.replace(/\s+/g, '').toLowerCase() : '',
+    cardWarningBorder: inlineWarning ? getComputedStyle(inlineWarning).borderTopColor.replace(/\s+/g, '').toLowerCase() : '',
     gasWarningStyle,
     cardWarningStyle,
     decoWarningStyle,
@@ -757,10 +761,11 @@ async () => {
     bodyOverflow,
     ok: generated
       && candidates.length >= 2
-      && document.querySelectorAll('.gas-usage-card--critical').length >= 1
-      && /Bottom|Air|No gas supply|Critical/i.test(document.querySelector('.gas-consumption-warning')?.textContent || '')
-      && (document.querySelector('.gas-consumption-warning span')?.textContent?.trim()?.charCodeAt(0) === 9888)
-      && !(document.querySelector('.gas-consumption-warning')?.textContent || '').trim().startsWith('!')
+      && document.querySelectorAll('.gas-usage-card--nogas').length >= 1
+      && /Bottom|Air|No gas supply|Critical/i.test(inlineWarning?.textContent || '')
+      && (document.querySelector('.gas-usage-inline-warning span')?.textContent?.trim()?.charCodeAt(0) === 9888)
+      && !(inlineWarning?.textContent || '').trim().startsWith('!')
+      && oldCardWarningCount === 0
       && warningTypographyOk
       && overflow.length === 0
       && !bodyOverflow,
@@ -851,7 +856,7 @@ async () => {
   const selectedAfterCalc = typeof contGasLose !== 'undefined' ? contGasLose : '';
   const emergencyGas = document.getElementById('emergencyGasConsumption');
   const emergencyGasCards = [...document.querySelectorAll('#emergencyGasConsumption .gas-usage-card')];
-  const emergencyGasWarning = document.querySelector('#emergencyGasConsumption .gas-consumption-warning');
+  const emergencyGasWarning = document.querySelector('#emergencyGasConsumption .gas-usage-inline-warning');
   const emergencyGasVisible = !!emergencyGas
     && getComputedStyle(emergencyGas).display !== 'none'
     && emergencyGas.getBoundingClientRect().width > 100;
@@ -950,7 +955,7 @@ async () => {
   }
   const emergency = document.getElementById('emergencyGasConsumption');
   const cards = [...document.querySelectorAll('#emergencyGasConsumption .gas-usage-card')];
-  const warnings = [...document.querySelectorAll('#emergencyGasConsumption .gas-consumption-warning, #emergencyGasConsumption .gas-usage-card--critical')];
+  const warnings = [...document.querySelectorAll('#emergencyGasConsumption .gas-usage-inline-warning, #emergencyGasConsumption .gas-usage-card--critical, #emergencyGasConsumption .gas-usage-card--nogas')];
   const unitSpans = [...document.querySelectorAll('#emergencyGasConsumption .gas-unit')];
   const measureSpans = [...document.querySelectorAll('#emergencyGasConsumption .gas-measure')];
   const unitStyleOk = unitSpans.length > 0 && unitSpans.every(unit => {
@@ -980,9 +985,11 @@ async () => {
     visible: !!emergency && getComputedStyle(emergency).display !== 'none',
     tableCount: document.querySelectorAll('#emergencyGasConsumption table.gas-plan-table').length,
     cardCount: cards.length,
-    criticalCount: document.querySelectorAll('#emergencyGasConsumption .gas-usage-card--critical').length,
-    warningText: document.querySelector('#emergencyGasConsumption .gas-consumption-warning')?.textContent?.trim() || '',
-    compactUnits: [...cards.map(el => el.textContent || ''), document.querySelector('#emergencyGasConsumption .gas-consumption-warning')?.textContent || ''].every(text => !/\d\s+(?:L|bar|psi|ftÃ‚Â³|ftÂ³|ft3)\b/i.test(text)),
+    criticalCount: document.querySelectorAll('#emergencyGasConsumption .gas-usage-card--critical, #emergencyGasConsumption .gas-usage-card--nogas').length,
+    noGasCount: document.querySelectorAll('#emergencyGasConsumption .gas-usage-card--nogas').length,
+    warningText: document.querySelector('#emergencyGasConsumption .gas-usage-inline-warning')?.textContent?.trim() || '',
+    oldWarningCount: document.querySelectorAll('#emergencyGasConsumption .gas-usage-card .gas-consumption-warning').length,
+    compactUnits: [...cards.map(el => el.textContent || ''), document.querySelector('#emergencyGasConsumption .gas-usage-inline-warning')?.textContent || ''].every(text => !/\d\s+(?:L|bar|psi|ftÃ‚Â³|ftÂ³|ft3)\b/i.test(text)),
     unitStyleOk,
     measureBold: measureSpans.length > 0 && measureSpans.every(el => {
       const weight = getComputedStyle(el).fontWeight;
@@ -1927,6 +1934,7 @@ def main() -> int:
         and contingency_gas_details.get("unitStyleOk")
         and contingency_gas_details.get("measureBold")
         and "Air" in contingency_gas_details.get("warningText", "")
+        and contingency_gas_details.get("oldWarningCount") == 0
         and not contingency_gas_details.get("console_errors")
     )
     results["SL-VIS-CONTINGENCY-MAIN-DECO-LAYOUT"] = bool(

@@ -204,7 +204,8 @@ function _buildGasUsageModel(gasConsumed) {
 }
 
 function _gasUsageStatus(row, threshold) {
-  if (!(row.totalL > 0) || row.shortfallL > 0 || row.remainingPercent < threshold) return 'critical';
+  if (!(row.totalL > 0) || row.shortfallL > 0) return 'nogas';
+  if (row.remainingPercent < threshold) return 'critical';
   if (row.remainingPercent <= 50) return 'caution';
   return 'ok';
 }
@@ -214,7 +215,7 @@ function _gasWarningMessages(rows, threshold) {
   const groupedShortfalls = new Map();
   rows.forEach(row => {
     const status = _gasUsageStatus(row, threshold);
-    if (status !== 'critical') return;
+    if (status !== 'critical' && status !== 'nogas') return;
     const labelKey = String(row.label || row.displayName || '').toLowerCase();
     if (!(row.totalL > 0)) {
       if (!groupedShortfalls.has(`nosupply:${labelKey}`)) {
@@ -258,7 +259,7 @@ function _gasWarningMessages(rows, threshold) {
 
 function _gasWarningMessageForRow(row, threshold) {
   const status = _gasUsageStatus(row, threshold);
-  if (status !== 'critical') return '';
+  if (status !== 'critical' && status !== 'nogas') return '';
   if (!(row.totalL > 0)) {
     return `No gas supply: ${_gasCardHtml(row.displayName)} has no configured cylinder supply`;
   }
@@ -287,14 +288,14 @@ function renderGasConsumptionBars(container, gasConsumed, options) {
       : '';
     const cardWarning = _gasWarningMessageForRow(row, threshold);
     const cardWarningHtml = cardWarning
-      ? `<div class="gas-consumption-warning alert dang"><span aria-hidden="true">&#9888;</span><div class="gas-warning-copy">${cardWarning}</div></div>`
+      ? `<div class="gas-usage-inline-warning gas-usage-inline-warning--${status}"><span aria-hidden="true">&#9888;</span><div class="gas-warning-copy">${cardWarning}</div></div>`
       : '';
     return `<div class="gas-usage-card gas-usage-card--${status}" data-gas-label="${_gasCardHtml(row.label)}" data-gas-role="${_gasCardHtml(row.role)}" style="--gas-remaining-pct:${row.remainingPercentOfTotal.toFixed(2)}%;">
-      ${cardWarningHtml}
       <div class="gas-usage-head">
         <div class="gas-usage-title"><span class="gas-usage-mix">${_gasCardHtml(row.label)}</span><span class="gas-usage-role">${_gasCardHtml(row.role)}</span></div>
         <div class="gas-usage-remaining">${_gasVolHtml(row.remainingTotalL)} <span>(${_gasPresHtml(row.remainingBar)})</span></div>
       </div>
+      ${cardWarningHtml}
       <div class="gas-usage-scale"><span>0</span><span>${_gasPresHtml(row.fillBar)}</span></div>
       <div class="gas-usage-track" aria-label="${_gasCardHtml(row.displayName)} remaining gas"><div class="gas-usage-remaining-bar"></div></div>
       <div class="gas-usage-foot"><span>Used: ${_gasVolHtml(row.usedL)} <span class="gas-pres-wrap">(${_gasPresHtml(row.usedBar)})</span></span>${turn}</div>
