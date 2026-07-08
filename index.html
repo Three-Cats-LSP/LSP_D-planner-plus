@@ -3058,6 +3058,31 @@ function escHtmlAttr(s) {
   return String(s ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;');
 }
 
+const SCHEDULE_TABLE_COLUMNS = Object.freeze(['Phase', 'Depth', 'Stop', 'Run', 'Mix', 'PPO2', 'EAD']);
+
+function scheduleColumnCount() {
+  return SCHEDULE_TABLE_COLUMNS.length;
+}
+
+function scheduleCell(label, value, attrs) {
+  const attrText = attrs ? ' ' + String(attrs).trim() : '';
+  const dataLabel = label && label !== 'Phase' ? ` data-label="${escHtmlAttr(label)}"` : '';
+  const safeValue = typeof escapeHtmlText === 'function'
+    ? escapeHtmlText(value ?? '')
+    : String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return `<td${dataLabel}${attrText}>${safeValue}</td>`;
+}
+
+function scheduleErrorRowHtml(message) {
+  return `<tr data-phase="error">${scheduleCell('', message, `colspan="${scheduleColumnCount()}" class="schedule-error-cell" style="color:var(--red);padding:12px;"`)}</tr>`;
+}
+
+function renderScheduleErrorRow(message, tbodyId) {
+  const tbody = document.getElementById(tbodyId || 'decoTableBody');
+  if (tbody) tbody.innerHTML = scheduleErrorRowHtml(message);
+  return !!tbody;
+}
+
 function fmtRowTTS(rowRunMin, rtAtBottomEnd, finalRunMin) {
   if (rowRunMin == null || isNaN(rowRunMin) || rowRunMin < rtAtBottomEnd - 0.001) return '—';
   return toMMSS(Math.max(0, finalRunMin - rowRunMin));
@@ -5404,10 +5429,8 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
   if (vpmRepEl && vpmRepEl.checked && _lastVPMResult) {
     const siCheck = validateVpmSurfaceInterval();
     if (!siCheck.ok) {
-      const tbody = document.getElementById('decoTableBody');
       const msg = siCheck.msg || 'Invalid VPM surface interval.';
-      if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="color:var(--red);padding:12px;">${msg}</td></tr>`;
-      else alert(msg);
+      if (!renderScheduleErrorRow(msg)) alert(msg);
       return;
     }
     const siMin = siCheck.value;
@@ -5436,10 +5459,8 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
   const bottomGasEl = document.getElementById('decoGas');
   const _vpmBotFracs = getBottomGasFractions();
   if (!_vpmBotFracs) {
-    const tbody = document.getElementById('decoTableBody');
     const msg = 'Cannot run VPM schedule: invalid bottom gas configuration.';
-    if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="color:var(--red);padding:12px;">${msg}</td></tr>`;
-    else alert(msg);
+    if (!renderScheduleErrorRow(msg)) alert(msg);
     return;
   }
   const bottomO2pct = Math.round(_vpmBotFracs.fO2 * 100);
@@ -5458,16 +5479,14 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
   if (!vpmApi || typeof vpmApi.calculate !== 'function') {
     const msg = 'VPM engine failed to load (vpm-engine-bundle.js). Check network or refresh.';
     console.error('[VPM]', msg);
-    const tbody = document.getElementById('decoTableBody');
-    if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="color:var(--red);padding:12px;">${msg}</td></tr>`;
+    renderScheduleErrorRow(msg);
     return;
   }
   try {
     result = vpmApi.calculate(levels, decoGases, settings, model);
   } catch(e) {
     console.error('[VPM] Engine error:', e);
-    const tbody = document.getElementById('decoTableBody');
-    if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="color:var(--red);padding:12px;">VPM Error: ${e.message}</td></tr>`;
+    renderScheduleErrorRow(`VPM Error: ${e.message}`);
     return;
   }
 
@@ -5476,8 +5495,7 @@ function runVPMSchedule(depthM, bt, descentRate, ascentRate, decoAscentRate, sur
     return;
   }
   if (result.error) {
-    const tbody = document.getElementById('decoTableBody');
-    if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="color:var(--red);padding:12px;">VPM Error: ${result.error}</td></tr>`;
+    renderScheduleErrorRow(`VPM Error: ${result.error}`);
     return;
   }
 

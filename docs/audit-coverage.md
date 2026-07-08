@@ -37,27 +37,27 @@
 | UI-BOOT | web_runtime | `index.html:1` | 2403 | P2 | IN_PROGRESS | - |
 | UI-RUNTIME-BOOTSTRAP | web_runtime | `index.html:2404` | 218 | P1 | VERIFIED | EXT-05, COV-01 |
 | UI-ALGORITHM-SETTINGS | web_runtime | `index.html:2622` | 293 | P1 | IN_PROGRESS | - |
-| UI-UNIT-HELPERS | web_runtime | `index.html:2915` | 529 | P1 | IN_PROGRESS | - |
-| UI-UNIT-SWITCHING | web_runtime | `index.html:3444` | 372 | P1 | IN_PROGRESS | - |
-| UI-ZHL-DELEGATES | web_runtime | `index.html:3816` | 141 | P0 | VERIFIED | REG-15, REG-16, REG-18 |
-| UI-CCR-DELEGATES | web_runtime | `index.html:3957` | 370 | P0 | IN_PROGRESS | - |
-| UI-DECO-PHYSICS | web_runtime | `index.html:4327` | 232 | P0 | IN_PROGRESS | - |
-| UI-SCHEDULE-INPUTS | web_runtime | `index.html:4559` | 373 | P0 | IN_PROGRESS | - |
-| UI-SETTINGS-CONTROLS | web_runtime | `index.html:4932` | 399 | P1 | IN_PROGRESS | - |
-| UI-VPM-RUNNER | web_runtime | `index.html:5331` | 473 | P0 | IN_PROGRESS | REG-131 |
-| UI-ZHL-RUNNER-SETUP | web_runtime | `index.html:5804` | 131 | P0 | IN_PROGRESS | - |
-| UI-ZHL-RUNNER-ENGINE | web_runtime | `index.html:5935` | 349 | P0 | IN_PROGRESS | - |
-| UI-ZHL-HEADLESS-HELPERS | web_runtime | `index.html:6284` | 201 | P1 | VERIFIED | EXT-05, COV-01 |
-| UI-ZHL-HEADLESS-ENGINE | web_runtime | `index.html:6485` | 387 | P0 | VERIFIED | EXT-05, COV-01 |
-| UI-PLOT-INIT | web_runtime | `index.html:6872` | 493 | P2 | IN_PROGRESS | - |
-| UI-TOOLS-TISSUES | web_runtime | `index.html:7365` | 310 | P2 | IN_PROGRESS | - |
-| UI-TOOLS-EXPOSURE | web_runtime | `index.html:7675` | 225 | P1 | IN_PROGRESS | - |
-| UI-TOOLS-GF | web_runtime | `index.html:7900` | 316 | P2 | IN_PROGRESS | - |
-| UI-SETTINGS | web_runtime | `index.html:8216` | 381 | P1 | IN_PROGRESS | - |
-| UI-PROFILE-PRESETS | web_runtime | `index.html:8597` | 508 | P2 | IN_PROGRESS | - |
-| UI-CONFIG-PRESETS | web_runtime | `index.html:9105` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
-| UI-APP-INIT | web_runtime | `index.html:9290` | 172 | P1 | IN_PROGRESS | - |
-| UI-PWA-LIFECYCLE | pwa | `index.html:9462` | 84 | P1 | IN_PROGRESS | - |
+| UI-UNIT-HELPERS | web_runtime | `index.html:2915` | 554 | P1 | IN_PROGRESS | - |
+| UI-UNIT-SWITCHING | web_runtime | `index.html:3469` | 372 | P1 | IN_PROGRESS | - |
+| UI-ZHL-DELEGATES | web_runtime | `index.html:3841` | 141 | P0 | VERIFIED | REG-15, REG-16, REG-18 |
+| UI-CCR-DELEGATES | web_runtime | `index.html:3982` | 370 | P0 | IN_PROGRESS | - |
+| UI-DECO-PHYSICS | web_runtime | `index.html:4352` | 232 | P0 | IN_PROGRESS | - |
+| UI-SCHEDULE-INPUTS | web_runtime | `index.html:4584` | 373 | P0 | IN_PROGRESS | - |
+| UI-SETTINGS-CONTROLS | web_runtime | `index.html:4957` | 399 | P1 | IN_PROGRESS | - |
+| UI-VPM-RUNNER | web_runtime | `index.html:5356` | 466 | P0 | IN_PROGRESS | REG-131, REG-132, REG-133, REG-134 |
+| UI-ZHL-RUNNER-SETUP | web_runtime | `index.html:5822` | 131 | P0 | IN_PROGRESS | - |
+| UI-ZHL-RUNNER-ENGINE | web_runtime | `index.html:5953` | 349 | P0 | IN_PROGRESS | REG-132, REG-134 |
+| UI-ZHL-HEADLESS-HELPERS | web_runtime | `index.html:6302` | 201 | P1 | VERIFIED | EXT-05, COV-01 |
+| UI-ZHL-HEADLESS-ENGINE | web_runtime | `index.html:6503` | 387 | P0 | VERIFIED | EXT-05, COV-01 |
+| UI-PLOT-INIT | web_runtime | `index.html:6890` | 493 | P2 | IN_PROGRESS | - |
+| UI-TOOLS-TISSUES | web_runtime | `index.html:7383` | 310 | P2 | IN_PROGRESS | - |
+| UI-TOOLS-EXPOSURE | web_runtime | `index.html:7693` | 225 | P1 | IN_PROGRESS | - |
+| UI-TOOLS-GF | web_runtime | `index.html:7918` | 316 | P2 | IN_PROGRESS | - |
+| UI-SETTINGS | web_runtime | `index.html:8234` | 381 | P1 | IN_PROGRESS | - |
+| UI-PROFILE-PRESETS | web_runtime | `index.html:8615` | 508 | P2 | IN_PROGRESS | - |
+| UI-CONFIG-PRESETS | web_runtime | `index.html:9123` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
+| UI-APP-INIT | web_runtime | `index.html:9308` | 172 | P1 | IN_PROGRESS | - |
+| UI-PWA-LIFECYCLE | pwa | `index.html:9480` | 84 | P1 | IN_PROGRESS | - |
 | UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 420 | P2 | IN_PROGRESS | - |
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 338 | P2 | IN_PROGRESS | - |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 548 | P2 | IN_PROGRESS | - |
@@ -166,7 +166,7 @@
 | TOOL-BUILD-VPM | tooling | `tools/build_vpm_bundle.py:1` | 104 | P1 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-BUILD-ZHL | tooling | `tools/build_zhl_bundle.py:1` | 374 | P1 | IN_PROGRESS | - |
 | TOOL-CHECK-PARITY | tooling | `tools/check_engine_parity.py:1` | 311 | P1 | VERIFIED | COV-01, PARITY-01 |
-| TOOL-RUN-AUDIT-COVERAGE-SUITE-PY | tooling | `tools/run_audit_coverage_suite.py:1` | 91 | P0 | IN_PROGRESS | - |
+| TOOL-RUN-AUDIT-COVERAGE-SUITE-PY | tooling | `tools/run_audit_coverage_suite.py:1` | 104 | P0 | IN_PROGRESS | - |
 | TOOL-SEVEN-LENS-PROTOCOL | tooling | `tools/seven_lens_protocol.py:1` | 1285 | P0 | IN_PROGRESS | - |
 | TOOL-SEVEN-LENS-PROTOCOL-MIGRATIONS | tooling | `tools/seven_lens_protocol_migrations.py:1` | 401 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-PROTOCOL | test_infrastructure | `tools/test_seven_lens_protocol.py:1` | 640 | P0 | IN_PROGRESS | - |
@@ -239,5 +239,5 @@
 | TEST-SEVEN-LENS-CYCLE08-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-08-shell-results.json:1` | 994 | P0 | IN_PROGRESS | - |
 | TEST-UI-SHELL-RESULTS-REGRESSION | test_infrastructure | `dev/ui_shell_results_regression.py:1` | 485 | P0 | IN_PROGRESS | REG-95, REG-96, REG-97, REG-98, REG-99 |
 | TEST-UI-RESULTS-CSS-REGRESSION | test_infrastructure | `dev/ui_results_css_regression.py:1` | 417 | P0 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
-| TEST-UI-VISUAL-CONTRACT-REGRESSION | test_infrastructure | `dev/ui_visual_contract_regression.py:1` | 1649 | P0 | IN_PROGRESS | REG-100, REG-101, REG-102, REG-103, REG-104, REG-105, REG-106, REG-107, REG-108, REG-109, REG-110, REG-111, REG-131 |
+| TEST-UI-VISUAL-CONTRACT-REGRESSION | test_infrastructure | `dev/ui_visual_contract_regression.py:1` | 1756 | P0 | IN_PROGRESS | REG-100, REG-101, REG-102, REG-103, REG-104, REG-105, REG-106, REG-107, REG-108, REG-109, REG-110, REG-111, REG-131, REG-132, REG-133, REG-134 |
 | TEST-C07-PRE-RESULTS-REGRESSION | test_infrastructure | `dev/c07_pre_results_regression.py:1` | 48 | P0 | IN_PROGRESS | REG-89, REG-90 |

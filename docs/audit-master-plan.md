@@ -67,10 +67,10 @@ Run the first unfinished cycle in this table. The numeric cycle table below rema
 | 19 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 605 | ENG-ZHL-CCR | Deco physics and schedule inputs READ across at least 2 bounded sessions; current lines: 605; sessions: 2 |
 | 20 | UI-ZHL-RUNNER-SETUP, UI-ZHL-RUNNER-ENGINE | 480 | ENG-ZHL-SCHEDULE | ZHL runner setup and engine invocation READ; current lines: 480; sessions: 1 |
 | 21 | UI-ZHL-HEADLESS-HELPERS, UI-ZHL-HEADLESS-ENGINE | 588 | - | Headless ZHL path READ; current lines: 588; sessions: 1 |
-| 22 | UI-VPM-RUNNER | 473 | ENG-VPM | VPM runner READ; current lines: 473; sessions: 1 |
+| 22 | UI-VPM-RUNNER | 466 | ENG-VPM | VPM runner READ; current lines: 473; sessions: 1 |
 | 23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 390 | - | Runtime bootstrap and app init READ; current lines: 390; sessions: 1 |
 | 24 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 692 | - | Algorithm and settings controls READ (692 lines; >=2 bounded sessions); current lines: 692; sessions: 2 |
-| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1282 | - | Settings persistence and unit helpers READ across at least 3 bounded sessions; current lines: 1288; sessions: 3 |
+| 25 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1307 | - | Settings persistence and unit helpers READ across at least 3 bounded sessions; current lines: 1307; sessions: 3 |
 | 26 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 851 | - | Tools panels READ in >=2 bounded sessions; implement and verify the tissue-saturation seven-band value scale in docs/tissue-saturation-color-roadmap.md, including UI/export parity and accessibility; current lines: 851; sessions: 2 |
 | 27 | UI-PROFILE-PRESETS | 508 | - | Dive profile presets READ (depth/BT/mode ownership); current lines: 508; sessions: 1 |
 | 28 | UI-CONFIG-PRESETS | 185 | - | Advanced config presets READ; current lines: 185; sessions: 1 |

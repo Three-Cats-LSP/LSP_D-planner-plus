@@ -803,6 +803,18 @@
     "REG-131": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
       "case_id": "SL-BATCH2-VPM-ERROR-COLSPAN"
+    },
+    "REG-132": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SCHEDULE-ERROR-ROW-COLUMN-CONTRACT"
+    },
+    "REG-133": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "VPM-INVALID-ERROR-ROW-GEOMETRY"
+    },
+    "REG-134": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SCHEDULE-CANONICAL-GAS-LABELS"
     }
   },
   "findings": [
@@ -2088,7 +2100,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-UNIT-HELPERS"
       },
-      "fingerprint": "80b255743af41038854618c8921a0537296b634a3f30a43fdef983b7d0d58ed9",
+      "fingerprint": "e42c53bd2ee30008e5d9a8f7abf8359b8ca4da0cdfd889178fbd044e63b1113a",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2213,11 +2225,14 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RUNNER"
       },
-      "fingerprint": "100ef46509d277a69c81ad6804a537cef24db2d5afea0df255380a38a3280413",
+      "fingerprint": "47cb0a5282b9e13f50bc766dbd53e881c4a285cb8bafe593c3c06e7cf2197d4d",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
-        "REG-131"
+        "REG-131",
+        "REG-132",
+        "REG-133",
+        "REG-134"
       ],
       "audit_issue": 146,
       "issue": "Audit issue #146"
@@ -2303,7 +2318,10 @@
       "fingerprint": "691b2e6c4442ace6d03dc2a2d070191cc9f06953c76bb86ac82dc8af8101a2a2",
       "last_read_fingerprint": null,
       "evidence": [],
-      "regression_cases": [],
+      "regression_cases": [
+        "REG-132",
+        "REG-134"
+      ],
       "audit_issue": 150,
       "issue": "Audit issue #150"
     },
@@ -4354,7 +4372,7 @@
       "evidence": [],
       "issue": "GitHub #140 M-3 coverage + audit self-tests",
       "regression_cases": [],
-      "fingerprint": "39aa061353f87f1c617075bc23186780a6f68b4306c6d4393518db694b4d7633",
+      "fingerprint": "6e4ab298cdea65755090b592c7126a040dde784be57b0f1bef2564c1534217d9",
       "last_read_fingerprint": null
     },
     {
@@ -5720,9 +5738,12 @@
         "REG-109",
         "REG-110",
         "REG-111",
-        "REG-131"
+        "REG-131",
+        "REG-132",
+        "REG-133",
+        "REG-134"
       ],
-      "fingerprint": "5c45c43a255c9bdf92c5265cab3b7a9fce3c765afaf446700e2fcf0db066316f",
+      "fingerprint": "8759dcc75987b2884ebfe0e0976c73ac5821f6a96ea25850feee64a3c8215049",
       "last_read_fingerprint": null
     },
     {
@@ -6001,7 +6022,7 @@
     },
     {
       "cycle": 25,
-      "max_new_application_lines": 1288,
+      "max_new_application_lines": 1307,
       "application_units": [
         "UI-SETTINGS",
         "UI-UNIT-HELPERS",
@@ -6009,7 +6030,7 @@
       ],
       "engine_reverification": [],
       "min_review_sessions": 3,
-      "acceptance": "Settings persistence and unit helpers READ across at least 3 bounded sessions; current lines: 1288; sessions: 3"
+      "acceptance": "Settings persistence and unit helpers READ across at least 3 bounded sessions; current lines: 1307; sessions: 3"
     },
     {
       "cycle": 26,
@@ -6711,7 +6732,10 @@
         "SL-C09-RESULT-TABS-GAP",
         "SL-C09-SUMMARY-CHIP-PALETTE",
         "SL-VIS-CONTINGENCY-MAIN-DECO-LAYOUT",
-        "SL-BATCH2-VPM-ERROR-COLSPAN"
+        "SL-BATCH2-VPM-ERROR-COLSPAN",
+        "SCHEDULE-ERROR-ROW-COLUMN-CONTRACT",
+        "VPM-INVALID-ERROR-ROW-GEOMETRY",
+        "SCHEDULE-CANONICAL-GAS-LABELS"
       ]
     }
   ],

@@ -47,6 +47,9 @@ CASE_IDS = (
     "SL-VIS-CONTINGENCY-MAIN-DECO-LAYOUT",
     "SL-VIS-GAS-CONSUMPTION-VOLUME-FIRST-UNITS",
     "SL-BATCH2-VPM-ERROR-COLSPAN",
+    "SCHEDULE-ERROR-ROW-COLUMN-CONTRACT",
+    "VPM-INVALID-ERROR-ROW-GEOMETRY",
+    "SCHEDULE-CANONICAL-GAS-LABELS",
 )
 
 NAV_VIEWPORTS = (
@@ -1331,6 +1334,73 @@ def _capture_vpm_mode(browser, base_url: str) -> dict:
         context.close()
 
 
+def _capture_schedule_error_contract(browser, base_url: str, viewport: tuple[int, int]) -> dict:
+    context = browser.new_context(viewport={"width": viewport[0], "height": viewport[1]})
+    page = context.new_page()
+    page.set_default_timeout(120_000)
+    errors: list[str] = []
+    page.on("pageerror", lambda exc: errors.append(str(exc)))
+    page.on("console", lambda msg: errors.append(msg.text) if msg.type == "error" else None)
+    probe_state = None
+    try:
+        boot_app_page(page, base_url)
+        probe_state = page.evaluate(CAPTURE_PROBE_STATE_JS)
+        result = page.evaluate(
+            r"""
+async () => {
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  if (typeof setPlannerAlgo === 'function') setPlannerAlgo('VPMB');
+  if (typeof setMainNav === 'function') setMainNav('vpm');
+  await wait(250);
+  const originalVpmEngine = window.VPMEngine;
+  const originalHeadless = window._zhlHeadless;
+  window._zhlHeadless = false;
+  window.VPMEngine = null;
+  if (typeof runVPMSchedule === 'function') runVPMSchedule(40, 25, 20, 10, 3, 3, 3, 3, 1, 1.4, 1.6, 'VPMB', true);
+  else document.getElementById('tecGenerateBtn')?.click();
+  for (let i = 0; i < 50; i++) {
+    await wait(100);
+    if (document.querySelector('#decoTableBody tr[data-phase="error"]')) break;
+  }
+  window.VPMEngine = originalVpmEngine;
+  window._zhlHeadless = originalHeadless;
+  const decoResult = document.getElementById('decoResult');
+  const resultsPanel = document.getElementById('resultsPanel');
+  if (decoResult) decoResult.style.display = 'block';
+  if (resultsPanel) resultsPanel.classList.add('has-results');
+  await wait(50);
+  const tbody = document.getElementById('decoTableBody');
+  const table = tbody?.closest('table');
+  const errorRows = [...document.querySelectorAll('#decoTableBody tr[data-phase="error"]')];
+  const cell = errorRows[0]?.querySelector('td') || null;
+  const expected = typeof scheduleColumnCount === 'function' ? scheduleColumnCount() : 7;
+  const tableRect = table ? table.getBoundingClientRect() : null;
+  const cellRect = cell ? cell.getBoundingClientRect() : null;
+  const text = cell?.textContent || '';
+  return {
+    expected,
+    errorRowCount: errorRows.length,
+    colspan: cell ? Number(cell.getAttribute('colspan')) : null,
+    hasHelper: typeof scheduleErrorRowHtml === 'function' && typeof renderScheduleErrorRow === 'function',
+    text,
+    tableWidth: tableRect ? tableRect.width : 0,
+    cellWidth: cellRect ? cellRect.width : 0,
+    geometryOk: !!(tableRect && cellRect && cellRect.width > 0 && tableRect.width > 0 && cellRect.width <= tableRect.width + 2),
+  };
+}
+""",
+        )
+        result["console_errors"] = [
+            err for err in errors
+            if "VPM engine failed to load" not in err
+        ]
+        return result
+    finally:
+        if probe_state is not None:
+            restore_probe_state(page, probe_state)
+        context.close()
+
+
 def main() -> int:
     from playwright.sync_api import sync_playwright
 
@@ -1361,6 +1431,10 @@ def main() -> int:
             gas_details = _capture_gas_labels(browser, base_url)
             mobile_warning_details = _capture_mobile_warnings(browser, base_url)
             vpm_details = _capture_vpm_mode(browser, base_url)
+            schedule_error_details = {
+                f"{width}x{height}": _capture_schedule_error_contract(browser, base_url, (width, height))
+                for width, height in ((1280, 800), (375, 667))
+            }
             contingency_gas_details = _capture_contingency_gas(browser, base_url)
             gas_units_details = _capture_gas_volume_first_units(browser, base_url)
             browser.close()
@@ -1621,11 +1695,43 @@ def main() -> int:
         and not gas_details.get("console_errors")
     )
     index_src = (ROOT / "index.html").read_text(encoding="utf-8")
+    render_src = (ROOT / "results-render-core.js").read_text(encoding="utf-8")
     vpm_runner_src = index_src.split("// AUDIT-UNIT:UI-VPM-RUNNER", 1)[-1].split("// AUDIT-UNIT:", 1)[0]
+    zhl_runner_src = index_src.split("// AUDIT-UNIT:UI-ZHL-RUNNER-ENGINE", 1)[-1].split("// AUDIT-UNIT:", 1)[0]
+    vpm_render_src = render_src.split("// AUDIT-UNIT:UI-VPM-RENDER", 1)[-1].split("// AUDIT-UNIT:", 1)[0]
+    schedule_contract_ok = (
+        "SCHEDULE_TABLE_COLUMNS" in index_src
+        and "function scheduleColumnCount" in index_src
+        and "function scheduleErrorRowHtml" in index_src
+        and "function scheduleCell" in index_src
+        and "renderScheduleErrorRow" in vpm_runner_src
+        and 'colspan="8"' not in vpm_runner_src
+        and 'colspan="8"' not in zhl_runner_src
+        and vpm_runner_src.count("renderScheduleErrorRow") >= 5
+    )
+    vpm_error_geometry_ok = all(
+        detail.get("errorRowCount") == 1
+        and detail.get("colspan") == detail.get("expected") == 7
+        and detail.get("hasHelper")
+        and detail.get("geometryOk")
+        and "VPM engine failed to load" in detail.get("text", "")
+        and not detail.get("console_errors")
+        for detail in schedule_error_details.values()
+    )
+    canonical_src_ok = (
+        gas_ok
+        and "getGasLabel" in vpm_render_src
+        and "getGasLabel(bottomFO2" in index_src
+        and "getGasLabel(fracs.fO2" in index_src
+        and not gas_details.get("forbiddenHits")
+    )
     results["SL-BATCH2-VPM-ERROR-COLSPAN"] = (
         'colspan="8"' not in vpm_runner_src
-        and vpm_runner_src.count('colspan="7"') >= 5
+        and vpm_runner_src.count("renderScheduleErrorRow") >= 5
     )
+    results["SCHEDULE-ERROR-ROW-COLUMN-CONTRACT"] = schedule_contract_ok
+    results["VPM-INVALID-ERROR-ROW-GEOMETRY"] = vpm_error_geometry_ok
+    results["SCHEDULE-CANONICAL-GAS-LABELS"] = bool(canonical_src_ok)
 
     for case_id, passed in results.items():
         print(f"  {'PASS' if passed else 'FAIL'} [{case_id}]")
@@ -1637,6 +1743,7 @@ def main() -> int:
             "gas": gas_details,
             "mobile_warning": mobile_warning_details,
             "vpm": vpm_details,
+            "schedule_error": schedule_error_details,
             "contingency_gas": contingency_gas_details,
             "gas_units": gas_units_details,
         }, indent=2))
