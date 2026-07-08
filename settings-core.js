@@ -415,11 +415,13 @@ function appendHeHtSyncAlert(container) {
 }
 let _pendingDecoAlerts = '';
 let _pendingDecoAlertsNarcotic = '';
+let _pendingDecoAlertsCns = '';
 // AUDIT-UNIT:UI-MODE-STATE
 function renderDecoAlerts(container, cnsHtml) {
   if (!container) return;
   refreshTravelGasFractionWarning();
-  container.innerHTML = (_pendingDecoAlerts || '') + (cnsHtml || '') + (_travelGasFractionWarning || '');
+  if (arguments.length >= 2) _pendingDecoAlertsCns = cnsHtml || '';
+  container.innerHTML = (_pendingDecoAlerts || '') + (_pendingDecoAlertsCns || '') + (_travelGasFractionWarning || '');
   appendHeHtSyncAlert(container);
   const narcContainer = document.getElementById('decoAlertsNarcotic');
   if (narcContainer) {

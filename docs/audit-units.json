@@ -2040,7 +2040,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ENVIRONMENT"
       },
-      "fingerprint": "439368a89834973c16189864e156fe5a34b66622aac1a3371aaa664bbeffcbea",
+      "fingerprint": "821ce3e343c615727492ce5080d19bd199f3d8c7dc6ecf6d2a9e45a9f168ff84",
       "last_read_fingerprint": null,
       "audit_issue": 139,
       "evidence": [],
@@ -2057,7 +2057,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MODE-STATE"
       },
-      "fingerprint": "ad08dd11aa26b3a7ccca4384aa3e3b0f606f07d4ce186612ad4fa2a516ec7b53",
+      "fingerprint": "7c615611e9eac33a673ce61eba09c58bd3aea16b9d6de2c932d473a8961d08e4",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5733,7 +5733,7 @@
         "REG-133",
         "REG-134"
       ],
-      "fingerprint": "cfefca50354f9293a2815680a0fec7f1e289448da6aecd41db67de1c936b72db",
+      "fingerprint": "618e22c0fddc408ec915ea1960a6d511540eeedfce29be666b38cc3f7498a7fc",
       "last_read_fingerprint": null
     },
     {

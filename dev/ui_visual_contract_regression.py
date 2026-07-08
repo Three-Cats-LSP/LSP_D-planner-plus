@@ -42,6 +42,7 @@ CASE_IDS = (
     "SL-C09-MOBILE-TISSUE-TAB-VISIBLE",
     "SL-C09-SUMMARY-CHIP-PALETTE",
     "SL-C09-RESULT-TABS-GAP",
+    "SL-C09-HIGH-CNS-DECO-ALERT",
     "SL-VIS-GAS-CONSUMPTION-BARS",
     "SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS",
     "SL-VIS-CONTINGENCY-MAIN-DECO-LAYOUT",
@@ -1224,6 +1225,50 @@ def _capture(browser, base_url: str, viewport: tuple[int, int], light: bool) -> 
         context.close()
 
 
+def _capture_high_cns_alert(browser, base_url: str) -> dict:
+    context = browser.new_context(viewport={"width": 375, "height": 667})
+    page = context.new_page()
+    page.set_default_timeout(120_000)
+    errors: list[str] = []
+    page.on("pageerror", lambda exc: errors.append(str(exc)))
+    page.on("console", lambda msg: errors.append(msg.text) if msg.type == "error" else None)
+    try:
+        boot_app_page(page, base_url)
+        generated = bool(page.evaluate(GENERATE_JS))
+        result = page.evaluate(
+            r"""
+async () => {
+  const cnsHtml = '<div class="alert" style="margin-top:8px;background:#ffff00;border-color:#cccc00;color:#111;font-weight:700;"><span>☢</span><div><strong>HIGH CNS%.</strong> CNS oxygen load 83% exceeds 80%.</div></div>';
+  const alerts = document.getElementById('decoAlerts');
+  if (typeof renderDecoAlerts === 'function') renderDecoAlerts(alerts, cnsHtml);
+  await new Promise(resolve => setTimeout(resolve, 50));
+  const alert = [...document.querySelectorAll('#decoAlerts .alert')]
+    .find(el => /HIGH CNS%/.test(el.textContent || '')) || null;
+  const gasCardAlert = document.querySelector('#gasConsumptionSummary .gas-consumption-cns, #gasConsumptionSummary .alert strong');
+  const decoCard = document.querySelector('#resultsPanel .deco-plan-card');
+  const style = alert ? getComputedStyle(alert) : null;
+  const rect = el => {
+    const r = el?.getBoundingClientRect();
+    return r ? { top: r.top, bottom: r.bottom, left: r.left, right: r.right, width: r.width, height: r.height } : null;
+  };
+  return {
+    alertText: alert?.textContent?.trim() || '',
+    alertBackground: style?.backgroundColor || '',
+    alertColor: style?.color || '',
+    alertRect: rect(alert),
+    decoCardRect: rect(decoCard),
+    inGasCard: !!(gasCardAlert && /HIGH CNS%/.test(gasCardAlert.textContent || '')),
+  };
+}
+""",
+        )
+        result["generated"] = generated
+        result["console_errors"] = errors
+        return result
+    finally:
+        context.close()
+
+
 def _capture_nav(browser, base_url: str, viewport: tuple[int, int], light: bool) -> dict:
     context = browser.new_context(viewport={"width": viewport[0], "height": viewport[1]})
     page = context.new_page()
@@ -1465,6 +1510,7 @@ def main() -> int:
             gas_details = _capture_gas_labels(browser, base_url)
             mobile_warning_details = _capture_mobile_warnings(browser, base_url)
             vpm_details = _capture_vpm_mode(browser, base_url)
+            high_cns_details = _capture_high_cns_alert(browser, base_url)
             schedule_error_details = {
                 f"{width}x{height}": _capture_schedule_error_contract(browser, base_url, (width, height))
                 for width, height in ((1280, 800), (375, 667))
@@ -1589,6 +1635,17 @@ def main() -> int:
         and c["resultTabsGap"]
         and c["resultTabsGap"]["gap"] >= 6
         for c in captures
+    )
+    results["SL-C09-HIGH-CNS-DECO-ALERT"] = bool(
+        high_cns_details.get("generated")
+        and "HIGH CNS%." in high_cns_details.get("alertText", "")
+        and high_cns_details.get("alertBackground") in ("rgb(255, 255, 0)", "rgb(255,255,0)")
+        and high_cns_details.get("alertColor") in ("rgb(17, 17, 17)", "rgb(17,17,17)", "rgb(0, 0, 0)", "rgb(0,0,0)")
+        and high_cns_details.get("alertRect")
+        and high_cns_details.get("decoCardRect")
+        and high_cns_details["alertRect"]["top"] >= high_cns_details["decoCardRect"]["bottom"] - 1
+        and not high_cns_details.get("inGasCard")
+        and not high_cns_details.get("console_errors")
     )
     results["SL-VIS-GAS-CONSUMPTION-BARS"] = all(
         c["generated"]
