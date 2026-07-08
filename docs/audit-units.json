@@ -779,6 +779,26 @@
     "REG-125": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
       "case_id": "SL-VIS-CONTINGENCY-MAIN-DECO-LAYOUT"
+    },
+    "REG-126": {
+      "suite_id": "SUITE-VPM-DIRECT",
+      "case_id": "VPM-DIRECT-OC-SMOKE"
+    },
+    "REG-127": {
+      "suite_id": "SUITE-VPM-DIRECT",
+      "case_id": "VPM-DIRECT-TRIMIX-SMOKE"
+    },
+    "REG-128": {
+      "suite_id": "SUITE-VPM-DIRECT",
+      "case_id": "VPM-REFERENCE-OC-SMOKE"
+    },
+    "REG-129": {
+      "suite_id": "SUITE-VPM-DIRECT",
+      "case_id": "VPM-REFERENCE-TRIMIX-SMOKE"
+    },
+    "REG-130": {
+      "suite_id": "SUITE-VPM-DIRECT",
+      "case_id": "RDP-REC-MIX-NARROWNESS"
     }
   },
   "findings": [
@@ -2679,14 +2699,18 @@
         "SUITE-ENGINE-FULL/CYCLE7-VPM-STATE-VALIDATION",
         "SUITE-ENGINE-FULL/CYCLE7-VPM-SETTINGS-VALIDATION",
         "SUITE-ENGINE-FULL/CYCLE7-VPM-ALTITUDE-EXPOSURE",
-        "SUITE-ENGINE-FULL/CYCLE36-VPM-GAS-LABELS"
+        "SUITE-ENGINE-FULL/CYCLE36-VPM-GAS-LABELS",
+        "SUITE-VPM-DIRECT/VPM-DIRECT-OC-SMOKE",
+        "SUITE-VPM-DIRECT/VPM-DIRECT-TRIMIX-SMOKE"
       ],
       "regression_cases": [
         "REG-31",
         "REG-32",
         "REG-33",
         "REG-34",
-        "REG-121"
+        "REG-121",
+        "REG-126",
+        "REG-127"
       ],
       "audit_issue": 166,
       "issue": "Audit issue #166"
@@ -2704,11 +2728,15 @@
       "last_read_fingerprint": "337a84085e0b5a492ec6310a0b98edac4edcfa2bb16028792ca769881815726b",
       "evidence": [
         "SUITE-ENGINE-FULL/AUDIT-REG-01",
-        "SUITE-ENGINE-FULL/CYCLE7-VPM-EXPOSURE-CARRY"
+        "SUITE-ENGINE-FULL/CYCLE7-VPM-EXPOSURE-CARRY",
+        "SUITE-VPM-DIRECT/VPM-REFERENCE-OC-SMOKE",
+        "SUITE-VPM-DIRECT/VPM-REFERENCE-TRIMIX-SMOKE"
       ],
       "regression_cases": [
         "REG-01",
-        "REG-31"
+        "REG-31",
+        "REG-128",
+        "REG-129"
       ],
       "issue": "V3 full audit verified \u00e2\u20ac\u201d ENG-VPM-REFERENCE"
     },
@@ -2727,13 +2755,15 @@
         "SUITE-ENGINE-FULL/CYCLE6-RDP-CEILING",
         "SUITE-ENGINE-FULL/CYCLE6-PADI-DEPTH",
         "SUITE-ENGINE-FULL/ENG-RDP-PURE-MIXES",
-        "SUITE-ENGINE-FULL/ENG-RDP-CUSTOM-FALLBACK"
+        "SUITE-ENGINE-FULL/ENG-RDP-CUSTOM-FALLBACK",
+        "SUITE-VPM-DIRECT/RDP-REC-MIX-NARROWNESS"
       ],
       "regression_cases": [
         "REG-24",
         "REG-25",
         "REG-56",
-        "REG-57"
+        "REG-57",
+        "REG-130"
       ],
       "issue": "V3 full audit verified \u00e2\u20ac\u201d ENG-RDP"
     },
@@ -3410,6 +3440,54 @@
       "fingerprint": "08528a541361aa1f57ef80f7ba98ef7c91537a8c7b42e7a80f6935561ee0244d",
       "last_read_fingerprint": "08528a541361aa1f57ef80f7ba98ef7c91537a8c7b42e7a80f6935561ee0244d",
       "audit_issue": 169
+    },
+    {
+      "id": "TEST-VPM-DIRECT-HOST",
+      "path": "dev/vpm_direct_host.js",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "VERIFIED",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [
+        "SUITE-VPM-DIRECT/VPM-DIRECT-OC-SMOKE",
+        "SUITE-VPM-DIRECT/VPM-DIRECT-TRIMIX-SMOKE"
+      ],
+      "issue": "Engine safety follow-up: reusable Node VPM host fixture",
+      "regression_cases": [
+        "REG-126",
+        "REG-127"
+      ],
+      "fingerprint": "a1f2c3face779639e1ff40180282fe9c80cec088d6ecb80c9ecca06837aaa615",
+      "last_read_fingerprint": "a1f2c3face779639e1ff40180282fe9c80cec088d6ecb80c9ecca06837aaa615"
+    },
+    {
+      "id": "TEST-VPM-DIRECT-REGRESSION",
+      "path": "dev/vpm_direct_regression.js",
+      "layer": "test_infrastructure",
+      "priority": "P0",
+      "status": "VERIFIED",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "evidence": [
+        "SUITE-VPM-DIRECT/VPM-DIRECT-OC-SMOKE",
+        "SUITE-VPM-DIRECT/VPM-DIRECT-TRIMIX-SMOKE",
+        "SUITE-VPM-DIRECT/VPM-REFERENCE-OC-SMOKE",
+        "SUITE-VPM-DIRECT/VPM-REFERENCE-TRIMIX-SMOKE",
+        "SUITE-VPM-DIRECT/RDP-REC-MIX-NARROWNESS"
+      ],
+      "issue": "Engine safety follow-up: direct VPM smoke and RDP narrowness suite",
+      "regression_cases": [
+        "REG-126",
+        "REG-127",
+        "REG-128",
+        "REG-129",
+        "REG-130"
+      ],
+      "fingerprint": "550704298dcaab5f2a153d5232a16e09e6c25550ac7046a19de9773a2a260de0",
+      "last_read_fingerprint": "550704298dcaab5f2a153d5232a16e09e6c25550ac7046a19de9773a2a260de0"
     },
     {
       "id": "TEST-ISSUE-140-REGRESSION",
@@ -6296,6 +6374,25 @@
         "SL-C04-SI-DEPTH-UNITS",
         "SL-C04-CONFIRM-BACKDROP",
         "SL-C04-DYNAMIC-DECO-CYL-IMPERIAL"
+      ]
+    },
+    {
+      "id": "SUITE-VPM-DIRECT",
+      "command": [
+        "node",
+        "dev/vpm_direct_regression.js"
+      ],
+      "profiles": [
+        "ci",
+        "release"
+      ],
+      "timeout_seconds": 60,
+      "case_ids": [
+        "VPM-DIRECT-OC-SMOKE",
+        "VPM-DIRECT-TRIMIX-SMOKE",
+        "VPM-REFERENCE-OC-SMOKE",
+        "VPM-REFERENCE-TRIMIX-SMOKE",
+        "RDP-REC-MIX-NARROWNESS"
       ]
     },
     {

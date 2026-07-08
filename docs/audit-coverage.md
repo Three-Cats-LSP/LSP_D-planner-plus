@@ -20,7 +20,7 @@
 | pwa | 3 | 0 | 2 | 0 | 1 |
 | release_config | 1 | 0 | 1 | 0 | 0 |
 | test | 1 | 0 | 0 | 1 | 0 |
-| test_infrastructure | 55 | 0 | 24 | 0 | 31 |
+| test_infrastructure | 57 | 0 | 24 | 0 | 33 |
 | tooling | 54 | 0 | 16 | 1 | 37 |
 | ui_core | 16 | 0 | 14 | 0 | 2 |
 | ui_shell | 2 | 0 | 2 | 0 | 0 |
@@ -28,7 +28,7 @@
 | web_markup | 7 | 0 | 5 | 0 | 2 |
 | web_runtime | 24 | 0 | 18 | 0 | 6 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **205** | **0** | **90** | **3** | **112** |
+| **Total** | **207** | **0** | **90** | **3** | **114** |
 
 ## Units
 
@@ -83,9 +83,9 @@
 | ENG-ZHL-GAS | engine | `zhl-gas-core.js:1` | 184 | P1 | VERIFIED | REG-10, REG-11, REG-12, REG-13, REG-14 |
 | ENG-ZHL-CCR | engine | `zhl-ccr-core.js:1` | 404 | P0 | VERIFIED | REG-06, REG-07, REG-29, REG-42 |
 | ENG-ZHL-SCHEDULE | engine | `zhl-schedule-core.js:1` | 657 | P0 | VERIFIED | REG-22, REG-23, REG-62 |
-| ENG-VPM | engine | `vpm-engine-core.js:1` | 2106 | P0 | VERIFIED | REG-31, REG-32, REG-33, REG-34, REG-121 |
-| ENG-VPM-REFERENCE | engine_reference | `vpmb.py:1` | 2574 | P2 | VERIFIED | REG-01, REG-31 |
-| ENG-RDP | engine | `padi-engine.js:1` | 101 | P1 | VERIFIED | REG-24, REG-25, REG-56, REG-57 |
+| ENG-VPM | engine | `vpm-engine-core.js:1` | 2106 | P0 | VERIFIED | REG-31, REG-32, REG-33, REG-34, REG-121, REG-126, REG-127 |
+| ENG-VPM-REFERENCE | engine_reference | `vpmb.py:1` | 2574 | P2 | VERIFIED | REG-01, REG-31, REG-128, REG-129 |
+| ENG-RDP | engine | `padi-engine.js:1` | 101 | P1 | VERIFIED | REG-24, REG-25, REG-56, REG-57, REG-130 |
 | APP-ANDROID-SELECT | native_bridge | `android-select-picker.js:1` | 270 | P1 | VERIFIED | ANDROID-01, REG-45 |
 | APP-CAPACITOR-BRIDGE | native_bridge | `capacitor-bridge.js:1` | 278 | P1 | VERIFIED | ANDROID-01, REG-45 |
 | APP-CONTINGENCY | ui_core | `contingency-core.js:1` | 587 | P1 | IN_PROGRESS | - |
@@ -120,6 +120,8 @@
 | NATIVE-ICON | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml:1` | 5 | P3 | VERIFIED | ANDROID-01, COV-01 |
 | NATIVE-ICON-ROUND | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml:1` | 5 | P3 | VERIFIED | ANDROID-01, COV-01 |
 | TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 2764 | P1 | VERIFIED | REG-121 |
+| TEST-VPM-DIRECT-HOST | test_infrastructure | `dev/vpm_direct_host.js:1` | 161 | P0 | VERIFIED | REG-126, REG-127 |
+| TEST-VPM-DIRECT-REGRESSION | test_infrastructure | `dev/vpm_direct_regression.js:1` | 125 | P0 | VERIFIED | REG-126, REG-127, REG-128, REG-129, REG-130 |
 | TEST-ISSUE-140-REGRESSION | test_infrastructure | `dev/issue140_regression.py:1` | 99 | P1 | VERIFIED | REG-08, REG-09 |
 | TEST-GAS-CORE-REGRESSION | test_infrastructure | `dev/gas_core_regression.py:1` | 129 | P1 | VERIFIED | REG-10, REG-11, REG-12 |
 | TEST-ISSUE-141-REGRESSION | test_infrastructure | `dev/issue141_regression.py:1` | 108 | P1 | VERIFIED | REG-15, REG-16, REG-18 |
