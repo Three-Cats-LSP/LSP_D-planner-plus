@@ -220,6 +220,20 @@ CAPTURE_JS = r"""
   const statusGreen = resolveColor(root.getPropertyValue('--status-green'));
   const statusOrange = resolveColor(root.getPropertyValue('--status-orange'));
   const statusRed = resolveColor(root.getPropertyValue('--status-red'));
+  const decoPlanCard = document.querySelector('#resultsPanel .deco-plan-card');
+  const hazardAlert = document.querySelector('#resultsPanel #decoAlerts .alert.deco, #resultsPanel #decoAlertsNarcotic .alert.deco, #resultsPanel #decoAlertsNarcotic .alert.narcotic-warn');
+  const decoPlanCardStyle = decoPlanCard ? {
+    background: rgb(style(decoPlanCard, 'backgroundColor')),
+    border: rgb(style(decoPlanCard, 'borderTopColor')),
+    titleColor: rgb(style(decoPlanCard.querySelector('.deco-plan-title'), 'color')),
+    travelBackground: rgb(style(decoPlanCard.querySelector('.gas-pill.travel-gas'), 'backgroundColor')),
+    travelColor: rgb(style(decoPlanCard.querySelector('.gas-pill.travel-gas'), 'color')),
+    travelBorder: rgb(style(decoPlanCard.querySelector('.gas-pill.travel-gas'), 'borderTopColor')),
+  } : null;
+  const hazardAlertStyle = hazardAlert ? {
+    background: rgb(style(hazardAlert, 'backgroundColor')),
+    border: rgb(style(hazardAlert, 'borderTopColor')),
+  } : null;
   return {
     title: title?.textContent?.trim() || '',
     bottomDotCount: dots.length,
@@ -230,6 +244,9 @@ CAPTURE_JS = r"""
     pillTexts: pills.map(el => el.textContent.trim()),
     decoPillBackgrounds: decoPills.map(el => rgb(style(el, 'backgroundColor'))),
     decoPillColors: decoPills.map(el => rgb(style(el, 'color'))),
+    decoPlanCardStyle,
+    hazardAlertStyle,
+    hasTravelPill: pills.some(el => el.classList.contains('travel-gas')),
     switchRowCount: switchRows.length,
     switchCellColors: switchCells.map(el => rgb(style(el, 'color'))),
     switchRowBackgrounds: switchRowBgs,
@@ -1477,6 +1494,18 @@ def main() -> int:
         and bool(c["decoPillBackgrounds"])
         and all(color == c["expectedBg"] for color in c["decoPillBackgrounds"])
         and all(color == c["expectedText"] for color in c["decoPillColors"])
+        and c["decoPlanCardStyle"]
+        and c["hazardAlertStyle"]
+        and c["decoPlanCardStyle"]["background"] != c["hazardAlertStyle"]["background"]
+        and c["decoPlanCardStyle"]["border"] != c["hazardAlertStyle"]["border"]
+        and c["decoPlanCardStyle"]["titleColor"] == "rgb(255,68,51)"
+        and (
+            not c["hasTravelPill"]
+            or (
+                c["decoPlanCardStyle"]["travelColor"] == "rgb(17,17,17)"
+                and c["decoPlanCardStyle"]["travelBorder"] == "rgb(255,153,0)"
+            )
+        )
         for c in (dark, light)
     )
     results["SL-VIS-SWITCH-ROW-THEME-PARITY"] = all(

@@ -298,7 +298,7 @@
       "line_count": 500,
       "content_fingerprint": "a5de5f4e62577d39a24c2039e3323cfe90c45936e2f12899cbd9837250206cc5",
       "review_session": "C07-A",
-      "verification_session": "C09-DEP-WARNING-BANNER-PALETTE-A",
+      "verification_session": "C09-DEP-DECO-CARD-SLATE-A",
       "lens_results": {
         "L1": {
           "trace": "deco-table-wrap max-content+overflow-x:auto :2-8; gas-plan min-width columns :106-111; mobile @600 card/table-view toggle :184-268; metric-grid 4col :529; #resultsPanel overflow hidden :543",
@@ -374,11 +374,11 @@
       "unit_id": "UI-CSS-RESULTS",
       "path": "lsp-dplanner-results.css",
       "start_line": 501,
-      "end_line": 970,
-      "line_count": 470,
-      "content_fingerprint": "c891a0876d67ce1ea506cc6077143df5458ea4dc4dcb6796b5292fa52069850b",
+      "end_line": 971,
+      "line_count": 471,
+      "content_fingerprint": "b075a1835446c53657da4e4928a9adfe05b633d875d15d53bbbaf1a97c7fe81f",
       "review_session": "C07-B",
-      "verification_session": "C09-DEP-WARNING-BANNER-PALETTE-B",
+      "verification_session": "C09-DEP-DECO-CARD-SLATE-B",
       "lens_results": {
         "L1": {
           "trace": "#resultsPanel .schedule-table width 100% :713; metric-val--runtime #2563eb :566; mobile bottom-nav min-height 56px :802; theme-pill 54x28 grid :822-837",
@@ -984,7 +984,7 @@
   ],
   "changed_paths": [],
   "audit_report": "docs/seven-lens-reports/cycle-07-results-css.md",
-  "notes": "CLOSER: registry closed at bf311c6; static/ci/release gate receipts bound to closure_evidence_commit. Cycle 8 dependency re-review C07-R2-A (1-500) and C07-R2-B (501-890) clean at fingerprint 8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49. Cycle 9 dependency re-review refreshed UI-CSS-RESULTS parts to 1-500 / 501-899; NO_NEW_FINDING. Schedule geometry dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Mix-lane dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Mobile schedule scroll dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Deco schedule column-order dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-913; NO_NEW_FINDING. Gas consumption bar redesign dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-937; NO_NEW_FINDING. Mobile compact schedule table dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-965; NO_NEW_FINDING. Gas consumption remaining-bar dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-965; NO_NEW_FINDING. Graph/tissue-tab/switch-row dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-967; NO_NEW_FINDING. Contingency gas-bar dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-967; NO_NEW_FINDING.",
+  "notes": "CLOSER: registry closed at bf311c6; static/ci/release gate receipts bound to closure_evidence_commit. Cycle 8 dependency re-review C07-R2-A (1-500) and C07-R2-B (501-890) clean at fingerprint 8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49. Cycle 9 dependency re-review refreshed UI-CSS-RESULTS parts to 1-500 / 501-899; NO_NEW_FINDING. Schedule geometry dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Mix-lane dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Mobile schedule scroll dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Deco schedule column-order dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-913; NO_NEW_FINDING. Gas consumption bar redesign dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-937; NO_NEW_FINDING. Mobile compact schedule table dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-965; NO_NEW_FINDING. Gas consumption remaining-bar dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-965; NO_NEW_FINDING. Graph/tissue-tab/switch-row dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-967; NO_NEW_FINDING. Contingency gas-bar dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-967; NO_NEW_FINDING. Deco plan card slate dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-971; NO_NEW_FINDING.",
   "dependency_re_reviews": [
     {
       "session": "C07-R2-A",
@@ -1175,13 +1175,17 @@
       },
       "boundaries": {
         "UI-CSS-RESULTS-P01": "lines 1-500",
-        "UI-CSS-RESULTS-P02": "lines 501-937"
+        "UI-CSS-RESULTS-P02": "lines 501-971"
       },
       "trigger": "Gas Consumption result card redesigned from table into per-cylinder usage bars.",
       "review_scope": "Gas Consumption CSS additions only; prior Cycle 7 chip/PPO2/print/reduced-motion findings remain closed and unchanged.",
       "result": "NO_NEW_FINDING",
       "verified_at": "2026-07-07T00:00:00Z",
-      "verifier": "Codex simplified dependency re-review"
+      "verifier": "Codex simplified dependency re-review",
+      "fingerprints": {
+        "UI-CSS-RESULTS-P01": "a5de5f4e62577d39a24c2039e3323cfe90c45936e2f12899cbd9837250206cc5",
+        "UI-CSS-RESULTS-P02": "b075a1835446c53657da4e4928a9adfe05b633d875d15d53bbbaf1a97c7fe81f"
+      }
     },
     {
       "session": "C09-DEP-RESULTS-MOBILE-COMPACT-SCHEDULE",
@@ -1195,13 +1199,17 @@
       },
       "boundaries": {
         "UI-CSS-RESULTS-P01": "lines 1-500",
-        "UI-CSS-RESULTS-P02": "lines 501-965"
+        "UI-CSS-RESULTS-P02": "lines 501-971"
       },
       "trigger": "Mobile deco schedule table changed to compact no-scroll layout.",
       "review_scope": "Mobile schedule table width/padding/font overrides only; desktop schedule and prior Cycle 7 findings unchanged.",
       "result": "NO_NEW_FINDING",
       "verified_at": "2026-07-08T00:00:00Z",
-      "verifier": "Codex simplified dependency re-review"
+      "verifier": "Codex simplified dependency re-review",
+      "fingerprints": {
+        "UI-CSS-RESULTS-P01": "a5de5f4e62577d39a24c2039e3323cfe90c45936e2f12899cbd9837250206cc5",
+        "UI-CSS-RESULTS-P02": "b075a1835446c53657da4e4928a9adfe05b633d875d15d53bbbaf1a97c7fe81f"
+      }
     },
     {
       "session": "C09-DEP-RESULTS-GAS-REMAINING-BAR",
@@ -1215,13 +1223,17 @@
       },
       "boundaries": {
         "UI-CSS-RESULTS-P01": "lines 1-500",
-        "UI-CSS-RESULTS-P02": "lines 501-965"
+        "UI-CSS-RESULTS-P02": "lines 501-971"
       },
       "trigger": "Gas Consumption bar visual changed from used-fill to remaining-drain model.",
       "review_scope": "Gas Consumption bar CSS selector only; prior Cycle 7 findings unchanged.",
       "result": "NO_NEW_FINDING",
       "verified_at": "2026-07-08T00:00:00Z",
-      "verifier": "Codex simplified dependency re-review"
+      "verifier": "Codex simplified dependency re-review",
+      "fingerprints": {
+        "UI-CSS-RESULTS-P01": "a5de5f4e62577d39a24c2039e3323cfe90c45936e2f12899cbd9837250206cc5",
+        "UI-CSS-RESULTS-P02": "b075a1835446c53657da4e4928a9adfe05b633d875d15d53bbbaf1a97c7fe81f"
+      }
     },
     {
       "session": "C09-DEP-RESULTS-GRAPH-TAB-SWITCH-ROW",
@@ -1235,13 +1247,17 @@
       },
       "boundaries": {
         "UI-CSS-RESULTS-P01": "lines 1-500",
-        "UI-CSS-RESULTS-P02": "lines 501-967"
+        "UI-CSS-RESULTS-P02": "lines 501-971"
       },
       "trigger": "Switch-row background tint removed and mobile result tabs wrapped after graph waypoint/tissue-tab regression fix.",
       "review_scope": "Schedule switch-row and mobile result-tab CSS only; prior Cycle 7 chip/PPO2/print/reduced-motion findings unchanged.",
       "result": "NO_NEW_FINDING",
       "verified_at": "2026-07-08T00:00:00Z",
-      "verifier": "Codex simplified dependency re-review"
+      "verifier": "Codex simplified dependency re-review",
+      "fingerprints": {
+        "UI-CSS-RESULTS-P01": "a5de5f4e62577d39a24c2039e3323cfe90c45936e2f12899cbd9837250206cc5",
+        "UI-CSS-RESULTS-P02": "b075a1835446c53657da4e4928a9adfe05b633d875d15d53bbbaf1a97c7fe81f"
+      }
     },
     {
       "session": "C09-DEP-RESULTS-CONTINGENCY-GAS-BARS",
@@ -1255,13 +1271,17 @@
       },
       "boundaries": {
         "UI-CSS-RESULTS-P01": "lines 1-500",
-        "UI-CSS-RESULTS-P02": "lines 501-967"
+        "UI-CSS-RESULTS-P02": "lines 501-971"
       },
       "trigger": "Emergency contingency gas consumption card changed from table to shared per-cylinder gas bars.",
       "review_scope": "Gas Consumption selector scope expanded to emergency card; prior Cycle 7 chip/PPO2/print/reduced-motion findings unchanged.",
       "result": "NO_NEW_FINDING",
       "verified_at": "2026-07-08T00:00:00Z",
-      "verifier": "Codex simplified dependency re-review"
+      "verifier": "Codex simplified dependency re-review",
+      "fingerprints": {
+        "UI-CSS-RESULTS-P01": "a5de5f4e62577d39a24c2039e3323cfe90c45936e2f12899cbd9837250206cc5",
+        "UI-CSS-RESULTS-P02": "b075a1835446c53657da4e4928a9adfe05b633d875d15d53bbbaf1a97c7fe81f"
+      }
     },
     {
       "session": "C09-DEP-RESULTS-GAS-WARNING-BANNERS",
@@ -1275,13 +1295,17 @@
       },
       "boundaries": {
         "UI-CSS-RESULTS-P01": "lines 1-500",
-        "UI-CSS-RESULTS-P02": "lines 501-967"
+        "UI-CSS-RESULTS-P02": "lines 501-971"
       },
       "trigger": "Gas warning banners changed from stray ASCII marker to warning icon and critical gas red styling.",
       "review_scope": "Gas warning banner color/icon CSS only; prior Cycle 7 chip/PPO2/print/reduced-motion findings unchanged.",
       "result": "NO_NEW_FINDING",
       "verified_at": "2026-07-08T00:00:00Z",
-      "verifier": "Codex simplified dependency re-review"
+      "verifier": "Codex simplified dependency re-review",
+      "fingerprints": {
+        "UI-CSS-RESULTS-P01": "a5de5f4e62577d39a24c2039e3323cfe90c45936e2f12899cbd9837250206cc5",
+        "UI-CSS-RESULTS-P02": "b075a1835446c53657da4e4928a9adfe05b633d875d15d53bbbaf1a97c7fe81f"
+      }
     },
     {
       "session": "C09-DEP-RESULTS-SUMMARY-CHIP-PALETTE",
@@ -1295,13 +1319,17 @@
       },
       "boundaries": {
         "UI-CSS-RESULTS-P01": "lines 1-500",
-        "UI-CSS-RESULTS-P02": "lines 501-967"
+        "UI-CSS-RESULTS-P02": "lines 501-971"
       },
       "trigger": "Result summary chips changed palette: Surf GF/OTU status colors, TTS info colors, Decozone deco colors.",
       "review_scope": "Result summary chip palette CSS only; prior Cycle 7 chip/PPO2/print/reduced-motion findings unchanged.",
       "result": "NO_NEW_FINDING",
       "verified_at": "2026-07-08T00:00:00Z",
-      "verifier": "Codex simplified dependency re-review"
+      "verifier": "Codex simplified dependency re-review",
+      "fingerprints": {
+        "UI-CSS-RESULTS-P01": "a5de5f4e62577d39a24c2039e3323cfe90c45936e2f12899cbd9837250206cc5",
+        "UI-CSS-RESULTS-P02": "b075a1835446c53657da4e4928a9adfe05b633d875d15d53bbbaf1a97c7fe81f"
+      }
     },
     {
       "session": "C09-DEP-RESULTS-TABS-GAP",
@@ -1315,13 +1343,33 @@
       },
       "boundaries": {
         "UI-CSS-RESULTS-P01": "lines 1-500",
-        "UI-CSS-RESULTS-P02": "lines 501-967"
+        "UI-CSS-RESULTS-P02": "lines 501-971"
       },
       "trigger": "Result tabs bar margin restored so active result cards do not visually overlap tab borders.",
       "review_scope": "Result tabs margin CSS only; prior Cycle 7 chip/PPO2/print/reduced-motion findings unchanged.",
       "result": "NO_NEW_FINDING",
       "verified_at": "2026-07-08T00:00:00Z",
-      "verifier": "Codex simplified dependency re-review"
+      "verifier": "Codex simplified dependency re-review",
+      "fingerprints": {
+        "UI-CSS-RESULTS-P01": "a5de5f4e62577d39a24c2039e3323cfe90c45936e2f12899cbd9837250206cc5",
+        "UI-CSS-RESULTS-P02": "b075a1835446c53657da4e4928a9adfe05b633d875d15d53bbbaf1a97c7fe81f"
+      }
+    },
+    {
+      "unit_id": "UI-CSS-RESULTS",
+      "part_id": "UI-CSS-RESULTS",
+      "trigger": "Deco plan card Option 3 slate restyle dependency re-review",
+      "result": "NO_NEW_FINDING",
+      "review_session": "C09-DEP-DECO-CARD-SLATE-A/B",
+      "fingerprints": {
+        "UI-CSS-RESULTS-P01": "a5de5f4e62577d39a24c2039e3323cfe90c45936e2f12899cbd9837250206cc5",
+        "UI-CSS-RESULTS-P02": "b075a1835446c53657da4e4928a9adfe05b633d875d15d53bbbaf1a97c7fe81f"
+      },
+      "boundaries": {
+        "UI-CSS-RESULTS-P01": "lines 1-500",
+        "UI-CSS-RESULTS-P02": "lines 501-971"
+      },
+      "notes": "Only deco-plan-card shell and travel-gas pill palette changed; visual contract keeps hazard banners red and deco plan card neutral slate."
     }
   ],
   "dependency_revalidations": [
