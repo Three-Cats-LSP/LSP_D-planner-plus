@@ -52,7 +52,7 @@ Run the first unfinished cycle in this table. The numeric cycle table below rema
 | 4 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 612 | - | Tools and modals markup partials READ; current lines: 612; sessions: 2 |
 | 5 | UI-CSS-FOUNDATION, UI-CSS-MODES | 758 | - | Foundation and modes CSS READ; current lines: 758; sessions: 2 |
 | 6 | UI-CSS-CONTROLS | 548 | - | Controls CSS READ; current lines: 548; sessions: 1 |
-| 7 | UI-CSS-RESULTS | 976 | - | Results CSS READ (2 bounded sessions); current lines: 976; sessions: 2 |
+| 7 | UI-CSS-RESULTS | 986 | - | Results CSS READ (2 bounded sessions); current lines: 986; sessions: 2 |
 | 8 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 508 | - | Planner shell and results panel READ; current lines: 526; sessions: 1 |
 | 9 | UI-ENVIRONMENT, UI-MODE-STATE | 999 | - | settings-core environment and mode state READ (1002 lines; >=2 bounded sessions); explicitly verify VPM switch behavior; enforce app-wide gas-switch terminology: the diving procedure is labeled and identified as "Gas switch" everywhere, with no user-facing "Gas change" labels or new gas-change IDs/classes/contracts; verify mobile warning/alert banners and gas-consumption warnings wrap inside the viewport without horizontal clipping or overflow; current lines: 999; sessions: 2 |
 | 10 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 679 | - | Surface interval and gas table cores READ; current lines: 679; sessions: 2 |

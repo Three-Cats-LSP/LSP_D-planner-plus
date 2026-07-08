@@ -442,10 +442,10 @@ body.light-theme .dpb-chip--o2     { background: #e8faff; }
 .alert span { flex-shrink: 0; }
 .ok { background:rgba(38,208,124,0.07); border-color:rgba(38,208,124,0.22); color:#70f0aa; }
 .warn { background:rgba(255,183,3,0.07); border-color:rgba(255,183,3,0.22); color:#ffcc40; }
-.dang { background:#fff0f0; border:1px solid #cc0000; color:#cc0000 !important; font-weight:600; }
+.dang { background:rgba(255,68,51,0.18); border:1px solid #ff4433; color:#fff !important; font-weight:600; }
 .info { background:rgba(0,200,255,0.06); border-color:rgba(0,200,255,0.2); color:#60d8ff; }
-.deco { background:#fff0f0; border:1px solid #cc0000; color:#cc0000; font-weight:700; }
-.alert.narcotic-warn { background:#fff0f0; border:1px solid #cc0000; color:#cc0000; font-weight:700; }
+.deco { background:rgba(255,68,51,0.18); border:1px solid #ff4433; color:#fff; font-weight:700; }
+.alert.narcotic-warn { background:rgba(255,68,51,0.18); border:1px solid #ff4433; color:#fff; font-weight:700; }
 
 /* Light theme: emergency deco / narcotic alerts — solid red + dark text */
 body.light-theme .deco,

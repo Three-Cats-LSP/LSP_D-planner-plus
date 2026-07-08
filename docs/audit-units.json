@@ -1847,7 +1847,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "6fe4e4def28dc04f9f4a06857222225751b277f24ee1b2a5c685412bb7e0adfc",
+      "fingerprint": "e49d5e0e05634c1120e39625c9e686f263bed51d915a79a943ae14f00339e8ff",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1862,7 +1862,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "d02918edbac554a9aef9c63d6892d51d415d73e04724330b8e0f66314a29efbc",
+      "fingerprint": "50666b6d40f76e626e9a0b2929c78a07e21b6219d6901a83e58d9eac6c07a8f7",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5743,7 +5743,7 @@
         "REG-133",
         "REG-134"
       ],
-      "fingerprint": "8b980e7a9e6618ed5c1986927ebffa4691c2184f129211aaab430d1e15864c7f",
+      "fingerprint": "cfefca50354f9293a2815680a0fec7f1e289448da6aecd41db67de1c936b72db",
       "last_read_fingerprint": null
     },
     {
@@ -5828,12 +5828,12 @@
     },
     {
       "cycle": 7,
-      "max_new_application_lines": 976,
+      "max_new_application_lines": 986,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "Results CSS READ (2 bounded sessions); current lines: 976; sessions: 2",
+      "acceptance": "Results CSS READ (2 bounded sessions); current lines: 986; sessions: 2",
       "min_review_sessions": 2
     },
     {
