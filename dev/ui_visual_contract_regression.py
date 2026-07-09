@@ -736,6 +736,16 @@ async () => {
   const gasWarningBanner = document.getElementById('gasWarningBanner');
   const gasWarningStyle = styleOf(gasWarningBanner);
   const inlineWarning = document.querySelector('.gas-usage-inline-warning');
+  const criticalProbe = document.querySelector('.gas-usage-card--critical') || (() => {
+    const host = document.querySelector('#gasConsumptionSummary .gas-consumption-bars') || document.body;
+    const probe = document.createElement('div');
+    probe.className = 'gas-usage-card gas-usage-card--critical';
+    probe.style.position = 'absolute';
+    probe.style.visibility = 'hidden';
+    probe.style.pointerEvents = 'none';
+    host.appendChild(probe);
+    return probe;
+  })();
   const noGasCard = document.querySelector('.gas-usage-card--nogas');
   const cardWarningStyle = styleOf(inlineWarning);
   const decoWarningStyle = styleOf(document.querySelector('#decoAlerts .alert, #decoAlertsNarcotic .alert'));
@@ -775,7 +785,7 @@ async () => {
     cardWarningStyle,
     decoWarningStyle,
     warningTypographyOk,
-    criticalCardColor: document.querySelector('.gas-usage-card--critical') ? getComputedStyle(document.querySelector('.gas-usage-card--critical')).borderTopColor.replace(/\s+/g, '').toLowerCase() : '',
+    criticalCardColor: criticalProbe ? getComputedStyle(criticalProbe).borderTopColor.replace(/\s+/g, '').toLowerCase() : '',
     noGasCardColor: noGasCard ? getComputedStyle(noGasCard).borderTopColor.replace(/\s+/g, '').toLowerCase() : '',
     noGasStatusColor: noGasCard ? getComputedStyle(noGasCard).getPropertyValue('--gas-status').trim().toLowerCase() : '',
     checks,
@@ -2039,6 +2049,7 @@ def main() -> int:
         and mobile_warning_details.get("cardWarningColor") in ("rgb(255,49,49)", "rgb(255,59,48)")
         and mobile_warning_details.get("noGasCardColor") in ("rgb(255,49,49)", "rgb(220,38,38)")
         and mobile_warning_details.get("noGasStatusColor") in ("#dc2626", "rgb(220,38,38)")
+        and mobile_warning_details.get("criticalCardColor") in ("rgb(245,158,11)",)
         and not mobile_warning_details.get("console_errors")
     )
     results["SL-C09-VPM-MODE-TOGGLE"] = bool(
