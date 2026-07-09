@@ -121,12 +121,14 @@
 <button class="tools-bar-btn" id="tool-knowledge" onclick="switchTool('knowledge',this)">Knowledge</button>
 </div>
 <!-- PLANNER TWO-COLUMN VIEW -->
-<div class="planner-main visible" id="plannerView">
 <div class="mobile-algo-chips" id="mobileAlgoChips" aria-label="Algorithm">
 <button type="button" class="mobile-algo-chip" id="mobChipRec" onclick="setMainNav('rec',this)">REC</button>
 <button type="button" class="mobile-algo-chip active" id="mobChipBuh" onclick="setMainNav('buh',this)">Bühlmann</button>
 <button type="button" class="mobile-algo-chip" id="mobChipVpm" onclick="setMainNav('vpm',this)">VPM</button>
+<button type="button" class="mobile-algo-chip" id="mobChipTools" onclick="setMainNav('tools',this)">Tools</button>
+<button type="button" class="mobile-algo-chip" id="mobChipSettings" onclick="setMainNav('settings',this)">Settings</button>
 </div>
+<div class="planner-main visible" id="plannerView">
 __ASSEMBLE_REC_PLANNER__
 
 __ASSEMBLE_TEC_PLANNER__

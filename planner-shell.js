@@ -12,6 +12,7 @@ let vpmVariant = (() => {
 })();
 
 let mobileTab = 'plan';
+let mobileResultTab = 'profile';
 
 function isMobileShell() {
   return window.matchMedia('(max-width: 767px)').matches;
@@ -26,15 +27,16 @@ function isMobileTab(tab) {
 }
 
 function syncMobileResultsNav() {
-  const btn = document.getElementById('mobNavResults');
   const hasResults = document.getElementById('resultsPanel')?.classList.contains('has-results');
-  if (!btn) return;
-  btn.disabled = !hasResults;
-  btn.setAttribute('aria-disabled', hasResults ? 'false' : 'true');
+  document.querySelectorAll('#appBottomNav .nav-item').forEach(btn => {
+    btn.disabled = !hasResults;
+    btn.setAttribute('aria-disabled', hasResults ? 'false' : 'true');
+  });
+  _highlightMobileBottomNav(mobileTab);
 }
 
 function _syncMobileAlgoChips(section) {
-  const map = { rec: 'mobChipRec', buh: 'mobChipBuh', vpm: 'mobChipVpm' };
+  const map = { rec: 'mobChipRec', buh: 'mobChipBuh', vpm: 'mobChipVpm', tools: 'mobChipTools', settings: 'mobChipSettings' };
   document.querySelectorAll('#mobileAlgoChips .mobile-algo-chip').forEach(b => b.classList.remove('active'));
   const id = map[section];
   if (id) document.getElementById(id)?.classList.add('active');
@@ -42,8 +44,9 @@ function _syncMobileAlgoChips(section) {
 window._syncMobileAlgoChips = _syncMobileAlgoChips;
 
 function _highlightMobileBottomNav(tab) {
+  const hasResults = document.getElementById('resultsPanel')?.classList.contains('has-results');
   document.querySelectorAll('#appBottomNav .nav-item').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.tab === tab);
+    btn.classList.toggle('active', !!hasResults && tab === 'results' && btn.dataset.resultTab === mobileResultTab);
   });
 }
 
@@ -83,6 +86,24 @@ function setMobileTab(tab, opts) {
   }
 }
 
+function setMobileResultTab(name) {
+  if (!isMobileShell()) return;
+  if (name !== 'profile' && name !== 'contingency' && name !== 'tissue') return;
+  const hasResults = document.getElementById('resultsPanel')?.classList.contains('has-results');
+  if (!hasResults) return;
+  mobileResultTab = name;
+  if (mobileTab !== 'results') setMobileTab('results', { skipNavMode: true, force: true });
+  const btn = document.querySelector(`#tecResultTabs [data-tab="${name}"]`);
+  if (typeof switchResultTab === 'function') switchResultTab(name, btn);
+  _highlightMobileBottomNav('results');
+}
+
+function _setMobileResultTabActive(name) {
+  if (name !== 'profile' && name !== 'contingency' && name !== 'tissue') return;
+  mobileResultTab = name;
+  _highlightMobileBottomNav(mobileTab);
+}
+
 function _clearMobileShellState() {
   mobileTab = 'plan';
   document.body.classList.remove('mobile-tab-plan', 'mobile-tab-results', 'mobile-tab-tools', 'mobile-tab-settings');
@@ -115,6 +136,8 @@ window.isMobileShell = isMobileShell;
 window.isMobileTab = isMobileTab;
 window.getMobileTab = getMobileTab;
 window.setMobileTab = setMobileTab;
+window.setMobileResultTab = setMobileResultTab;
+window._setMobileResultTabActive = _setMobileResultTabActive;
 window.syncMobileResultsNav = syncMobileResultsNav;
 
 function _syncVpmModeUI(model) {
@@ -147,7 +170,7 @@ function _highlightMainNav(section) {
   document.querySelectorAll('#mainNavBar .main-nav-btn').forEach(b => b.classList.remove('active'));
   const id = map[section];
   if (id) document.getElementById(id)?.classList.add('active');
-  if (section === 'rec' || section === 'buh' || section === 'vpm') _syncMobileAlgoChips(section);
+  _syncMobileAlgoChips(section);
 }
 window._highlightMainNav = _highlightMainNav;
 

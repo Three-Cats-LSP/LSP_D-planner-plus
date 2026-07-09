@@ -1,5 +1,5 @@
 /* AUDIT-UNIT:UI-CSS-MOBILE-SHELL */
-/* Mobile native shell — Plan | Results | Tools | Settings bottom nav (≤767px) */
+/* Mobile native shell — top route row + bottom result tabs (≤767px) */
 
 /* ── Desktop: shell elements inert ── */
 .app-bottom-nav,
@@ -52,7 +52,9 @@
   }
 
   .app-bottom-nav .nav-item .nav-icon {
-    font-size: 18px;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    font-weight: 800;
     line-height: 1;
     opacity: 0.85;
   }
@@ -157,7 +159,7 @@
     padding: 0;
   }
 
-  /* Algorithm chips inside Plan tab */
+  /* Route chips: REC / Bühlmann / VPM / Tools / Settings */
   .mobile-algo-chips {
     display: flex;
     gap: 6px;
@@ -165,6 +167,7 @@
     overflow-x: auto;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
+    flex-shrink: 0;
   }
 
   .mobile-algo-chips::-webkit-scrollbar {
@@ -175,7 +178,7 @@
     flex-shrink: 0;
     min-height: 40px;
     min-width: 48px;
-    padding: 8px 14px;
+    padding: 8px 12px;
     border-radius: 10px;
     border: 1px solid var(--border-med);
     background: var(--surface-2);
@@ -264,7 +267,10 @@
     display: none !important;
   }
 
-  body.mobile-tab-results .mobile-algo-chips,
+  body.mobile-tab-results .mobile-algo-chips {
+    display: flex;
+  }
+
   body.mobile-tab-results #toolsBar {
     display: none !important;
   }
@@ -285,7 +291,7 @@
   }
 
   body.mobile-tab-tools .mobile-algo-chips {
-    display: none !important;
+    display: flex !important;
   }
 
   body.mobile-tab-settings #plannerView,
@@ -298,9 +304,49 @@
     display: flex !important;
   }
 
-  body.mobile-tab-settings #toolsBar,
-  body.mobile-tab-settings .mobile-algo-chips {
+  body.mobile-tab-settings #toolsBar {
     display: none !important;
+  }
+
+  body.mobile-tab-settings .mobile-algo-chips {
+    display: flex !important;
+  }
+
+  #tecResultTabs {
+    display: none !important;
+  }
+
+  .deco-gas-card .gas-card-grid {
+    gap: 8px;
+    align-items: flex-end;
+  }
+
+  .deco-gas-card .gas-card-grid .gas-f-mix {
+    flex: 1 0 100%;
+  }
+
+  .deco-gas-card .gas-card-grid .gas-f-switch {
+    flex: 1 1 128px;
+    min-width: 112px;
+  }
+
+  .deco-gas-card .gas-card-grid .gas-f-num {
+    flex: 0 0 58px;
+    width: 58px;
+    max-width: 58px;
+  }
+
+  .deco-gas-card .gas-card-grid .gas-f-num input,
+  .deco-gas-card .gas-card-grid .gas-f-num select {
+    min-width: 44px;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  .deco-gas-card .gas-card-grid .switch-depth-display {
+    font-size: 10px;
+    padding-left: 6px;
+    padding-right: 6px;
   }
 
   /* Material touch targets */

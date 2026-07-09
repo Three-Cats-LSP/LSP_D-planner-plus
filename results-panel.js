@@ -329,6 +329,9 @@ function switchResultTab(name, btn) {
     const el = panel?.querySelector('#resultTab-' + p);
     if (el) el.classList.toggle('active', p === name);
   });
+  if (!isRec && typeof isMobileShell === 'function' && isMobileShell()) {
+    window._setMobileResultTabActive?.(name);
+  }
   if (name === 'avgdepth') setTimeout(calcAvgDepth, 50);
   if (name === 'surfint') {
     const c = document.getElementById('mainSurfIntContainer');

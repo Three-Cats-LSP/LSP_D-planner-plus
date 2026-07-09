@@ -214,8 +214,11 @@ CAPTURE_JS = r"""
   const resultTabsNav = document.getElementById('tecResultTabs');
   const tabButtons = resultTabsNav ? [...resultTabsNav.querySelectorAll('.result-tab-btn')] : [];
   const tissueTab = resultTabsNav?.querySelector('[data-tab="tissue"]');
+  const bottomTissueTab = document.querySelector('#appBottomNav [data-result-tab="tissue"]');
   const tissueRect = tissueTab?.getBoundingClientRect();
+  const bottomTissueRect = bottomTissueTab?.getBoundingClientRect();
   const tabsRect = resultTabsNav?.getBoundingClientRect();
+  const bottomTabsRect = document.getElementById('appBottomNav')?.getBoundingClientRect();
   const activeResultPane = document.querySelector('#tecResultTabs ~ .result-tab-pane.active');
   const activePaneRect = activeResultPane?.getBoundingClientRect();
   const fullGraphCard = document.getElementById('fullDiveGraphCard');
@@ -294,6 +297,12 @@ CAPTURE_JS = r"""
       display: getComputedStyle(tissueTab).display,
       visible: tissueRect.width > 20 && tissueRect.height > 10,
       withinNav: tissueRect.left >= tabsRect.left - 1 && tissueRect.right <= tabsRect.right + 1,
+    } : null,
+    mobileBottomTissueTab: bottomTissueTab && bottomTissueRect && bottomTabsRect ? {
+      text: bottomTissueTab.textContent.trim(),
+      display: getComputedStyle(bottomTissueTab).display,
+      visible: bottomTissueRect.width > 20 && bottomTissueRect.height > 10,
+      withinNav: bottomTissueRect.left >= bottomTabsRect.left - 1 && bottomTissueRect.right <= bottomTabsRect.right + 1,
     } : null,
     resultTabsGap: tabsRect && activePaneRect ? {
       gap: activePaneRect.top - tabsRect.bottom,
@@ -1904,10 +1913,10 @@ def main() -> int:
     )
     results["SL-C09-MOBILE-TISSUE-TAB-VISIBLE"] = all(
         c["generated"]
-        and c["tissueTab"]
-        and c["tissueTab"]["text"] == "Tissues"
-        and c["tissueTab"]["visible"]
-        and c["tissueTab"]["withinNav"]
+        and c["mobileBottomTissueTab"]
+        and "Tissues" in c["mobileBottomTissueTab"]["text"]
+        and c["mobileBottomTissueTab"]["visible"]
+        and c["mobileBottomTissueTab"]["withinNav"]
         for key, c in details.items() if int(key.split("x", 1)[0]) <= 640
     )
     results["SL-C09-SCHEDULE-COLUMN-GEOMETRY"] = all(

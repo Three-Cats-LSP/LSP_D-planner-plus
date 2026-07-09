@@ -167,12 +167,14 @@
 <button class="tools-bar-btn" id="tool-knowledge" onclick="switchTool('knowledge',this)">Knowledge</button>
 </div>
 <!-- PLANNER TWO-COLUMN VIEW -->
-<div class="planner-main visible" id="plannerView">
 <div class="mobile-algo-chips" id="mobileAlgoChips" aria-label="Algorithm">
 <button type="button" class="mobile-algo-chip" id="mobChipRec" onclick="setMainNav('rec',this)">REC</button>
 <button type="button" class="mobile-algo-chip active" id="mobChipBuh" onclick="setMainNav('buh',this)">Bühlmann</button>
 <button type="button" class="mobile-algo-chip" id="mobChipVpm" onclick="setMainNav('vpm',this)">VPM</button>
+<button type="button" class="mobile-algo-chip" id="mobChipTools" onclick="setMainNav('tools',this)">Tools</button>
+<button type="button" class="mobile-algo-chip" id="mobChipSettings" onclick="setMainNav('settings',this)">Settings</button>
 </div>
+<div class="planner-main visible" id="plannerView">
 <section class="v3-panel v4-shell mobile-active planner-mode-view" id="recPlannerView" aria-label="Recreational dive parameters">
 <div class="panel-header-row">
 <div class="panel-title-wrap">
@@ -2422,11 +2424,10 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 <p id="mainVersionLabel" style="color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;margin-top:6px;letter-spacing:1px;opacity:0.5;"></p>
 </div>
 </main>
-<nav class="app-bottom-nav" id="appBottomNav" aria-label="Main navigation">
-<button type="button" class="nav-item active" id="mobNavPlan" data-tab="plan" onclick="setMobileTab('plan')"><span class="nav-icon" aria-hidden="true">◎</span><span>Plan</span></button>
-<button type="button" class="nav-item" id="mobNavResults" data-tab="results" onclick="setMobileTab('results')" disabled aria-disabled="true"><span class="nav-icon" aria-hidden="true">▣</span><span>Results</span></button>
-<button type="button" class="nav-item" id="mobNavTools" data-tab="tools" onclick="setMobileTab('tools')"><span class="nav-icon" aria-hidden="true">⧉</span><span>Tools</span></button>
-<button type="button" class="nav-item" id="mobNavSettings" data-tab="settings" onclick="setMobileTab('settings')"><span class="nav-icon" aria-hidden="true">⚙</span><span>Settings</span></button>
+<nav class="app-bottom-nav" id="appBottomNav" aria-label="Results navigation">
+<button type="button" class="nav-item active" id="mobNavProfile" data-result-tab="profile" onclick="setMobileResultTab('profile')" disabled aria-disabled="true"><span class="nav-icon" aria-hidden="true">DP</span><span>Dive Profile</span></button>
+<button type="button" class="nav-item" id="mobNavContingency" data-result-tab="contingency" onclick="setMobileResultTab('contingency')" disabled aria-disabled="true"><span class="nav-icon" aria-hidden="true">CP</span><span>Contingency</span></button>
+<button type="button" class="nav-item" id="mobNavTissue" data-result-tab="tissue" onclick="setMobileResultTab('tissue')" disabled aria-disabled="true"><span class="nav-icon" aria-hidden="true">TS</span><span>Tissues</span></button>
 </nav>
 </div><!-- /app -->
 <script>
