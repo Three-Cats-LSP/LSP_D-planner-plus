@@ -296,7 +296,7 @@ function renderGasConsumptionBars(container, gasConsumed, options) {
         <div class="gas-usage-remaining">${_gasVolHtml(row.remainingTotalL)} <span>(${_gasPresHtml(row.remainingBar)})</span></div>
       </div>
       ${cardWarningHtml}
-      <div class="gas-usage-scale"><span>0</span><span>${_gasPresHtml(row.fillBar)}</span></div>
+      <div class="gas-usage-scale"><span>0</span><span>${_gasVolHtml(row.totalL)} <span class="gas-pres-wrap">(${_gasPresHtml(row.fillBar)})</span></span></div>
       <div class="gas-usage-track" aria-label="${_gasCardHtml(row.displayName)} remaining gas"><div class="gas-usage-remaining-bar"></div></div>
       <div class="gas-usage-foot"><span>Used: ${_gasVolHtml(row.usedL)} <span class="gas-pres-wrap">(${_gasPresHtml(row.usedBar)})</span></span>${turn}</div>
     </div>`;

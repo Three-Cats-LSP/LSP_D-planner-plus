@@ -122,6 +122,7 @@ CAPTURE_JS = r"""
   const gasLabels = gasCards.map(el => el.dataset.gasLabel || el.querySelector('.gas-usage-mix')?.textContent?.trim() || '');
   const gasFooters = gasCards.map(el => el.querySelector('.gas-usage-foot')?.textContent?.trim() || '');
   const gasRemaining = gasCards.map(el => el.querySelector('.gas-usage-remaining')?.textContent?.trim() || '');
+  const gasScales = gasCards.map(el => el.querySelector('.gas-usage-scale')?.textContent?.trim() || '');
   const gasUnitSpans = [...document.querySelectorAll('#gasConsumptionSummary .gas-unit, #gasWarningBanner .gas-unit')];
   const gasMeasureSpans = [...document.querySelectorAll('#gasConsumptionSummary .gas-measure, #gasWarningBanner .gas-measure')];
   const gasUnitStyleOk = gasUnitSpans.length > 0 && gasUnitSpans.every(unit => {
@@ -363,7 +364,8 @@ CAPTURE_JS = r"""
       hasDecoMix: gasLabels.some(text => /^\d{2}\/\d{2}$/.test(text)),
       footerTexts: gasFooters,
       remainingTexts: gasRemaining,
-      compactUnits: [...gasRemaining, ...gasFooters, document.getElementById('gasWarningBanner')?.textContent || ''].every(text => !/\d\s+(?:L|bar|psi|ftÃ‚Â³|ftÂ³|ft3)\b/i.test(text)),
+      scaleTexts: gasScales,
+      compactUnits: [...gasRemaining, ...gasFooters, ...gasScales, document.getElementById('gasWarningBanner')?.textContent || ''].every(text => !/\d\s+(?:L|bar|psi|ftÃ‚Â³|ftÂ³|ft3)\b/i.test(text)),
       unitStyleOk: gasUnitStyleOk,
       measureBold: gasMeasureSpans.length > 0 && gasMeasureSpans.every(el => {
         const weight = getComputedStyle(el).fontWeight;
@@ -374,9 +376,11 @@ CAPTURE_JS = r"""
       barsPresent: gasCards.length > 0 && gasCards.every((el, i) => !!el.querySelector('.gas-usage-track') && !!el.querySelector('.gas-usage-remaining-bar') && gasBarWidths[i] >= 0 && gasTracks[i] > 0),
       remainingBarModel: gasCards.length > 0 && gasCards.every(el => !el.querySelector('.gas-usage-used')),
       metricUnits: gasRemaining.every(text => /\dL\b/.test(text) && /\(.*bar\)/.test(text))
-        && gasFooters.every(text => /Used:\s*\d+(?:\.\d+)?L\s*\(.*bar\)/i.test(text)),
+        && gasFooters.every(text => /Used:\s*\d+(?:\.\d+)?L\s*\(.*bar\)/i.test(text))
+        && gasScales.every(text => /\dL\b/.test(text) && /\(.*bar\)/.test(text)),
       metricVolumeFirst: gasRemaining.every(text => /^\d+(?:\.\d+)?L\s*\(/.test(text))
-        && gasFooters.every(text => /Used:\s*\d+(?:\.\d+)?L\s*\(/i.test(text)),
+        && gasFooters.every(text => /Used:\s*\d+(?:\.\d+)?L\s*\(/i.test(text))
+        && gasScales.every(text => /0\d+(?:\.\d+)?L\s*\(/.test(text)),
       sufficientLeftBorderOnly: gasCards.some(el => el.classList.contains('gas-usage-card--ok') && parseFloat(getComputedStyle(el).borderLeftWidth) > parseFloat(getComputedStyle(el).borderTopWidth)),
     },
     layout: planner && results ? {
@@ -792,6 +796,8 @@ async () => {
     remainingParenColor: document.querySelector('.gas-usage-remaining span') ? getComputedStyle(document.querySelector('.gas-usage-remaining span')).color.replace(/\s+/g, '').toLowerCase() : '',
     remainingFontWeight: document.querySelector('.gas-usage-remaining') ? getComputedStyle(document.querySelector('.gas-usage-remaining')).fontWeight : '',
     remainingParenFontWeight: document.querySelector('.gas-usage-remaining span') ? getComputedStyle(document.querySelector('.gas-usage-remaining span')).fontWeight : '',
+    usedTextColor: document.querySelector('.gas-usage-foot') ? getComputedStyle(document.querySelector('.gas-usage-foot')).color.replace(/\s+/g, '').toLowerCase() : '',
+    usedMeasureColor: document.querySelector('.gas-usage-foot .gas-measure') ? getComputedStyle(document.querySelector('.gas-usage-foot .gas-measure')).color.replace(/\s+/g, '').toLowerCase() : '',
     checks,
     overflow,
     bodyScrollWidth: document.documentElement.scrollWidth,
@@ -2057,6 +2063,8 @@ def main() -> int:
         and mobile_warning_details.get("remainingTextColor") == mobile_warning_details.get("remainingParenColor")
         and int(mobile_warning_details.get("remainingFontWeight") or 0) >= 700
         and int(mobile_warning_details.get("remainingParenFontWeight") or 0) >= 700
+        and mobile_warning_details.get("usedTextColor") == mobile_warning_details.get("usedMeasureColor")
+        and mobile_warning_details.get("usedTextColor") != mobile_warning_details.get("remainingTextColor")
         and not mobile_warning_details.get("console_errors")
     )
     results["SL-C09-VPM-MODE-TOGGLE"] = bool(
