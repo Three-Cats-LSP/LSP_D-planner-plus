@@ -27,6 +27,7 @@ from playwright_boot import boot_app_page  # noqa: E402
 
 PASS = []
 FAIL = []
+CASE_RESULTS = {}
 
 TEST_SETTINGS = {
     "metric": True,
@@ -529,6 +530,7 @@ self.onmessage = function(e) {
         settings,
     )
     page.unroute("**/zhl-schedule-worker.js")
+    CASE_RESULTS["ZHL-WORKER-CALC-ERROR-SINGLE-REQUEST"] = bool(result.get("ok"))
     if result.get("ok"):
         ok("ZHL worker calculation error rejects one request without killing worker")
     else:
@@ -570,4 +572,14 @@ if __name__ == "__main__":
     sys.path.insert(0, str(ROOT))
     from tools.audit.suite_emit import case_row, finish_suite
 
-    finish_suite(ROOT, [case_row("engine-input-validation", code == 0)], code)
+    finish_suite(
+        ROOT,
+        [
+            case_row("engine-input-validation", code == 0),
+            case_row(
+                "ZHL-WORKER-CALC-ERROR-SINGLE-REQUEST",
+                CASE_RESULTS.get("ZHL-WORKER-CALC-ERROR-SINGLE-REQUEST") is True,
+            ),
+        ],
+        code,
+    )

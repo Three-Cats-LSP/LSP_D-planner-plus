@@ -5,8 +5,12 @@ sources, and other repo-only assets so deploy artifacts stay small.
 """
 from __future__ import annotations
 
+import os
 import shutil
 import sys
+import tempfile
+import time
+from contextlib import contextmanager
 from pathlib import Path
 
 _TOOLS = Path(__file__).resolve().parent
@@ -15,6 +19,7 @@ if str(_TOOLS) not in sys.path:
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "_pages"
+BUILD_LOCK_PATH = Path(tempfile.gettempdir()) / "lsp-dplanner-build-pages.lock"
 
 ROOT_FILES = [
     ".nojekyll",
@@ -90,45 +95,80 @@ def _copy_tree_filtered(src: Path, dst: Path) -> None:
             shutil.copy2(item, target)
 
 
+@contextmanager
+def _build_pages_lock(timeout_s: float = 180.0):
+    """Serialize Pages artifact writes across parallel audit profiles."""
+    deadline = time.monotonic() + timeout_s
+    fd: int | None = None
+    while fd is None:
+        try:
+            fd = os.open(str(BUILD_LOCK_PATH), os.O_CREAT | os.O_EXCL | os.O_RDWR)
+            os.write(fd, f"{os.getpid()}\n".encode("ascii", "replace"))
+        except FileExistsError:
+            if time.monotonic() > deadline:
+                try:
+                    age_s = time.time() - BUILD_LOCK_PATH.stat().st_mtime
+                except OSError:
+                    age_s = 0
+                if age_s > timeout_s:
+                    try:
+                        BUILD_LOCK_PATH.unlink()
+                        continue
+                    except OSError:
+                        pass
+                raise TimeoutError(f"Timed out waiting for Pages build lock: {BUILD_LOCK_PATH}")
+            time.sleep(0.1)
+    try:
+        yield
+    finally:
+        if fd is not None:
+            os.close(fd)
+        try:
+            BUILD_LOCK_PATH.unlink()
+        except FileNotFoundError:
+            pass
+
+
 def build_pages_site() -> Path:
     from assemble_ui_html import verify_partials
     from update_sw_version import main as verify_app_version
     from sync_www import parse_app_version, write_version_json
 
-    verify_partials()
-    verify_app_version()
-    app_version = parse_app_version((ROOT / "app-version.js").read_text(encoding="utf-8"))
-    write_version_json(app_version)
+    with _build_pages_lock():
+        verify_partials()
+        verify_app_version()
+        app_version = parse_app_version((ROOT / "app-version.js").read_text(encoding="utf-8"))
+        write_version_json(app_version)
 
-    if OUT.exists():
-        shutil.rmtree(OUT)
-    OUT.mkdir(parents=True)
+        if OUT.exists():
+            shutil.rmtree(OUT)
+        OUT.mkdir(parents=True)
 
-    for name in ROOT_FILES:
-        src = ROOT / name
-        if not src.is_file():
-            raise SystemExit(f"Missing required Pages asset: {name}")
-        shutil.copy2(src, OUT / name)
+        for name in ROOT_FILES:
+            src = ROOT / name
+            if not src.is_file():
+                raise SystemExit(f"Missing required Pages asset: {name}")
+            shutil.copy2(src, OUT / name)
 
-    for name in ROOT_DIRS:
-        src = ROOT / name
-        if not src.is_dir():
-            raise SystemExit(f"Missing required Pages directory: {name}")
-        shutil.copytree(src, OUT / name)
+        for name in ROOT_DIRS:
+            src = ROOT / name
+            if not src.is_dir():
+                raise SystemExit(f"Missing required Pages directory: {name}")
+            shutil.copytree(src, OUT / name)
 
-    ccr_src = ROOT / CCR_DIFF
-    if not ccr_src.is_dir():
-        raise SystemExit(f"Missing required Pages directory: {CCR_DIFF}")
-    _copy_tree_filtered(ccr_src, OUT / CCR_DIFF)
+        ccr_src = ROOT / CCR_DIFF
+        if not ccr_src.is_dir():
+            raise SystemExit(f"Missing required Pages directory: {CCR_DIFF}")
+        _copy_tree_filtered(ccr_src, OUT / CCR_DIFF)
 
-    file_count = sum(1 for p in OUT.rglob("*") if p.is_file())
-    total_bytes = sum(p.stat().st_size for p in OUT.rglob("*") if p.is_file())
-    manifest = ROOT / "site-assets-manifest.txt"
-    manifest.write_text(
-        "\n".join(sorted(p.relative_to(OUT).as_posix() for p in OUT.rglob("*") if p.is_file()))
-        + "\n",
-        encoding="utf-8",
-    )
+        file_count = sum(1 for p in OUT.rglob("*") if p.is_file())
+        total_bytes = sum(p.stat().st_size for p in OUT.rglob("*") if p.is_file())
+        manifest = ROOT / "site-assets-manifest.txt"
+        manifest.write_text(
+            "\n".join(sorted(p.relative_to(OUT).as_posix() for p in OUT.rglob("*") if p.is_file()))
+            + "\n",
+            encoding="utf-8",
+        )
     print(f"Built Pages site: {file_count} files, {total_bytes / 1024 / 1024:.2f} MB -> {OUT}")
     print(f"Wrote asset manifest ({file_count} paths) -> {manifest}")
     return OUT

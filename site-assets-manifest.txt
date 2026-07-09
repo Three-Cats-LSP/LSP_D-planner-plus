@@ -8,6 +8,7 @@ export-core.js
 gas-cards-core.js
 gas-plan-core.js
 gas-table-core.js
+gf-curve-core.js
 icon-192.png
 icon-512.png
 index.html
@@ -23,6 +24,7 @@ plot-core.js
 rec-planner.js
 results-panel.js
 results-render-core.js
+schedule-runner-core.js
 settings-core.js
 surf-interval-core.js
 sw.js
@@ -133,5 +135,6 @@ vendor/pdf-fonts.js
 version.json
 vpm-engine-bundle.js
 zhl-engine-bundle.js
+zhl-headless-adapter.js
 zhl-schedule-worker.js
 zhl-worker-bridge.js

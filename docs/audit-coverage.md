@@ -127,7 +127,7 @@
 | TEST-ISSUE-141-REGRESSION | test_infrastructure | `dev/issue141_regression.py:1` | 108 | P1 | VERIFIED | REG-15, REG-16, REG-18 |
 | TEST-ISSUE-142-REGRESSION | test_infrastructure | `dev/surf_interval_regression.py:1` | 124 | P1 | VERIFIED | REG-17, REG-19, REG-20, REG-21 |
 | TEST-ANDROID-COMPILE | test_infrastructure | `dev/run_android_compile_check.py:1` | 101 | P2 | VERIFIED | ANDROID-01 |
-| TEST-ENGINE-VALIDATION | test_infrastructure | `engine_validation_regression.py:1` | 573 | P1 | VERIFIED | REG-01, COV-01 |
+| TEST-ENGINE-VALIDATION | test_infrastructure | `engine_validation_regression.py:1` | 585 | P1 | VERIFIED | REG-01, REG-139, COV-01 |
 | TEST-CCR-VALIDATION | test_infrastructure | `dev/ccr_engine_validation_regression.py:1` | 359 | P1 | VERIFIED | REG-29, REG-42 |
 | TEST-EXPORT | test_infrastructure | `export_regression.py:1` | 598 | P2 | IN_PROGRESS | - |
 | TEST-RUN-ALL | test_infrastructure | `dev/run_all_regression.py:1` | 36 | P1 | VERIFIED | COV-01, PARITY-01, REG-06, REG-07, ANDROID-01, REG-45 |
@@ -137,7 +137,7 @@
 | TEST-PSCR-E2E | test_infrastructure | `dev/validate_pscr_e2e.py:1` | 435 | P1 | VERIFIED | REG-46 |
 | TEST-SW-LIFECYCLE | test_infrastructure | `dev/sw_lifecycle_test.py:1` | 86 | P1 | VERIFIED | REG-45 |
 | TEST-PLAYWRIGHT-BOOT | test_infrastructure | `dev/playwright_boot.py:1` | 54 | P2 | VERIFIED | COV-01 |
-| TEST-HTTP | test_infrastructure | `dev/test_http.py:1` | 193 | P2 | IN_PROGRESS | - |
+| TEST-HTTP | test_infrastructure | `dev/test_http.py:1` | 231 | P2 | IN_PROGRESS | - |
 | TEST-PLAYWRIGHT-RESTORE | test_infrastructure | `dev/playwright_restore.py:1` | 88 | P0 | IN_PROGRESS | - |
 | TEST-TEST-HTTP | test_infrastructure | `dev/test_test_http.py:1` | 164 | P0 | IN_PROGRESS | - |
 | TEST-CYCLE-08-RECORD-SYNC | test_infrastructure | `tools/test_cycle_08_record_sync.py:1` | 25 | P0 | IN_PROGRESS | - |
@@ -160,7 +160,7 @@
 | TOOL-AUDIT | tooling | `audit.py:1` | 16 | P1 | VERIFIED | COV-01, PARITY-01, REG-01, REG-02, REG-03, REG-05 |
 | TOOL-AUDIT-COVERAGE | tooling | `tools/audit_coverage.py:1` | 478 | P1 | IN_PROGRESS | - |
 | TOOL-AUDIT-COVERAGE-TEST | test_infrastructure | `tools/test_audit_coverage.py:1` | 211 | P1 | VERIFIED | COV-01 |
-| TOOL-BUILD-PAGES | tooling | `tools/build_pages_site.py:1` | 149 | P2 | IN_PROGRESS | - |
+| TOOL-BUILD-PAGES | tooling | `tools/build_pages_site.py:1` | 189 | P2 | IN_PROGRESS | - |
 | TOOL-ASSEMBLE-PAGES-PREVIEW | tooling | `tools/assemble_pages_preview.py:1` | 126 | P2 | READ | - |
 | TEST-ASSEMBLE-PAGES-PREVIEW | test | `tools/test_assemble_pages_preview.py:1` | 48 | P2 | READ | - |
 | TOOL-BUILD-VPM | tooling | `tools/build_vpm_bundle.py:1` | 104 | P1 | VERIFIED | COV-01, PARITY-01 |

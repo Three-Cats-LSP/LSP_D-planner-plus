@@ -3,10 +3,12 @@ from __future__ import annotations
 
 import shutil
 import socket
+import os
 import subprocess
 import sys
 import tempfile
 import threading
+import time
 import urllib.error
 import urllib.request
 from contextlib import contextmanager
@@ -22,6 +24,7 @@ APP_PLANNER_MARKERS = (b"mainNavBar", b'id="mainNavBar"', b'id="navBtnBuh"')
 # Copied beside synced www/ so Playwright hits the same app shell as Capacitor/APK.
 STAGE_DIRS = ("tests", "lib")
 STAGE_GLOB = "tests-*.html"
+SYNC_LOCK_PATH = Path(tempfile.gettempdir()) / "lsp-dplanner-sync-www.lock"
 
 
 class PortInUseError(RuntimeError):
@@ -137,6 +140,40 @@ def stage_regression_harness(www: Path, root: Path = ROOT) -> None:
 
 
 @contextmanager
+def _sync_www_lock(timeout_s: float = 120.0):
+    """Serialize sync_www and www snapshotting across parallel browser tests."""
+    deadline = time.monotonic() + timeout_s
+    fd: int | None = None
+    while fd is None:
+        try:
+            fd = os.open(str(SYNC_LOCK_PATH), os.O_CREAT | os.O_EXCL | os.O_RDWR)
+            os.write(fd, f"{os.getpid()}\n".encode("ascii", "replace"))
+        except FileExistsError:
+            if time.monotonic() > deadline:
+                try:
+                    age_s = time.time() - SYNC_LOCK_PATH.stat().st_mtime
+                except OSError:
+                    age_s = 0
+                if age_s > timeout_s:
+                    try:
+                        SYNC_LOCK_PATH.unlink()
+                        continue
+                    except OSError:
+                        pass
+                raise TimeoutError(f"Timed out waiting for sync_www lock: {SYNC_LOCK_PATH}")
+            time.sleep(0.1)
+    try:
+        yield
+    finally:
+        if fd is not None:
+            os.close(fd)
+        try:
+            SYNC_LOCK_PATH.unlink()
+        except FileNotFoundError:
+            pass
+
+
+@contextmanager
 def serve_root(
     root: Path,
     host: str = DEFAULT_HOST,
@@ -172,16 +209,17 @@ def serve_www(
 ):
     """Run sync_www.py, stage regression harness files, serve from www/."""
     sync_script = root / "tools" / "sync_www.py"
-    if sync:
-        if not sync_script.is_file():
-            raise FileNotFoundError(f"sync_www.py missing: {sync_script}")
-        subprocess.run([sys.executable, str(sync_script)], cwd=str(root), check=True)
-    www = root / "www"
-    if not (www / "index.html").is_file():
-        raise FileNotFoundError(f"www/index.html missing after sync — run tools/sync_www.py")
     with tempfile.TemporaryDirectory(prefix="lsp-www-") as tmp:
         serve_dir = Path(tmp) / "www"
-        shutil.copytree(www, serve_dir)
+        with _sync_www_lock():
+            if sync:
+                if not sync_script.is_file():
+                    raise FileNotFoundError(f"sync_www.py missing: {sync_script}")
+                subprocess.run([sys.executable, str(sync_script)], cwd=str(root), check=True)
+            www = root / "www"
+            if not (www / "index.html").is_file():
+                raise FileNotFoundError(f"www/index.html missing after sync — run tools/sync_www.py")
+            shutil.copytree(www, serve_dir)
         stage_regression_harness(serve_dir, root)
         with serve_root(
             serve_dir,

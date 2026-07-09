@@ -831,6 +831,10 @@
     "REG-138": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
       "case_id": "SL-C09-VPM-GRAPH-WAYPOINT-MONOTONIC"
+    },
+    "REG-139": {
+      "suite_id": "SUITE-ENGINE-VALIDATION",
+      "case_id": "ZHL-WORKER-CALC-ERROR-SINGLE-REQUEST"
     }
   },
   "findings": [
@@ -3640,14 +3644,16 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "ca7db45d9c42ba704db858ad7f6ac5ea95c1c5db32e2a50f046386e0963fad02",
-      "last_read_fingerprint": "ca7db45d9c42ba704db858ad7f6ac5ea95c1c5db32e2a50f046386e0963fad02",
+      "fingerprint": "41d4cddb317247817fee60e72c7a3abaecaa22b98020fa1281a56f71923e2de7",
+      "last_read_fingerprint": "41d4cddb317247817fee60e72c7a3abaecaa22b98020fa1281a56f71923e2de7",
       "evidence": [
         "SUITE-ENGINE-FULL/AUDIT-REG-01",
+        "SUITE-ENGINE-VALIDATION/ZHL-WORKER-CALC-ERROR-SINGLE-REQUEST",
         "SUITE-COVERAGE/AUDIT-COV-01"
       ],
       "regression_cases": [
         "REG-01",
+        "REG-139",
         "COV-01"
       ],
       "audit_issue": 169,
@@ -3844,7 +3850,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "442829d45fe88c4c41b3dce7f0db51df6814b22cd438562fd3f5c530fa5e0c30",
+      "fingerprint": "f350d00177ed28950274490d5d57211f3bc63e89f6099a70426bc21a39270b7b",
       "last_read_fingerprint": null,
       "regression_cases": [],
       "evidence": [],
@@ -4267,7 +4273,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "8fc84677899c400fbb4b75ceba933d41a33ce72d0d9dbe525eeca8eca956f2d4",
+      "fingerprint": "67a16a66147ef74e606f509c4390d5b75bb721a824a4828bb0e0d316f34803b6",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -6291,7 +6297,8 @@
       ],
       "timeout_seconds": 300,
       "case_ids": [
-        "engine-input-validation"
+        "engine-input-validation",
+        "ZHL-WORKER-CALC-ERROR-SINGLE-REQUEST"
       ]
     },
     {
