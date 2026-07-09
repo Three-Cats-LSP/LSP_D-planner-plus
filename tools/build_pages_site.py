@@ -37,6 +37,7 @@ ROOT_FILES = [
     "lsp-dplanner-modes.css",
     "lsp-dplanner-controls.css",
     "lsp-dplanner-results.css",
+    "lsp-dplanner-mobile-shell.css",
     "zhl-engine-bundle.js",
     "padi-engine.js",
     "vpm-engine-bundle.js",

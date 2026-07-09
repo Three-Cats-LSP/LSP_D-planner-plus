@@ -347,9 +347,9 @@
       "unit_id": "UI-PLANNER-SHELL",
       "path": "planner-shell.js",
       "start_line": 1,
-      "end_line": 199,
-      "line_count": 199,
-      "content_fingerprint": "86a6ad16b929f107dca05adcbb66548dc444ead80979bc6a9599ec047b008784",
+      "end_line": 329,
+      "line_count": 329,
+      "content_fingerprint": "1c813445bfab86ee3ed1dce1af1ec3728316fd3c25da5197a62e3f1ff0a2c89f",
       "review_session": "C08-A",
       "verification_session": "C08-V-B",
       "lens_results": {
@@ -425,10 +425,10 @@
       "unit_id": "UI-RESULTS-PANEL",
       "path": "results-panel.js",
       "start_line": 1,
-      "end_line": 311,
-      "line_count": 311,
-      "content_fingerprint": "e9a5ca94a35fb403f96151a10cb0ca579f10554f7f4b93c7ea8c1a382627e952",
-      "review_session": "C08-A",
+      "end_line": 364,
+      "line_count": 364,
+      "content_fingerprint": "2698a7fb8fd4a23a150c09e3f018541d18d6b47d453cda1b0e4c1b91872be826",
+      "review_session": "C08-B",
       "verification_session": "C09-DEP-WARNING-BANNER-HTML",
       "lens_results": {
         "L1": {

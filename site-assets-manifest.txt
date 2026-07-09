@@ -14,6 +14,7 @@ icon-512.png
 index.html
 lsp-dplanner-controls.css
 lsp-dplanner-foundation.css
+lsp-dplanner-mobile-shell.css
 lsp-dplanner-modes.css
 lsp-dplanner-results.css
 manifest.json

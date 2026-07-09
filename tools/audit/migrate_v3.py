@@ -19,6 +19,7 @@ CSS_UNIT_PATHS: dict[str, str] = {
     "UI-CSS-MODES": "lsp-dplanner-modes.css",
     "UI-CSS-CONTROLS": "lsp-dplanner-controls.css",
     "UI-CSS-RESULTS": "lsp-dplanner-results.css",
+    "UI-CSS-MOBILE-SHELL": "lsp-dplanner-mobile-shell.css",
 }
 
 MARKUP_UNIT_PATHS: dict[str, str] = {

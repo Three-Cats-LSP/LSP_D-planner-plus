@@ -62,7 +62,7 @@
 <!-- LSP-EXTRACT-END:planner-shell -->
 <script defer src="vendor/jspdf.umd.min.js"></script>
 </head>
-<body>
+<body class="mobile-theme-console">
 <!-- Bubbles (PADI mode) -->
 <div class="bubbles" id="bubbles"></div>
 <div class="app">
@@ -100,6 +100,7 @@
 </div>
 </div>
 </header>
+<main class="app-content" id="appContent">
 <!-- MAIN NAV — Rec · Bühlmann · VPM · Tools · Settings -->
 <div class="main-nav-bar visible" id="mainNavBar">
 <button class="main-nav-btn" id="navBtnRec" onclick="setMainNav('rec',this)">REC<span class="algo-sub">NDL · PADI table</span></button>
@@ -121,8 +122,17 @@
 </div>
 <!-- PLANNER TWO-COLUMN VIEW -->
 <div class="planner-main visible" id="plannerView">
+<div class="mobile-algo-chips" id="mobileAlgoChips" aria-label="Algorithm">
+<button type="button" class="mobile-algo-chip" id="mobChipRec" onclick="setMainNav('rec',this)">REC</button>
+<button type="button" class="mobile-algo-chip active" id="mobChipBuh" onclick="setMainNav('buh',this)">Bühlmann</button>
+<button type="button" class="mobile-algo-chip" id="mobChipVpm" onclick="setMainNav('vpm',this)">VPM</button>
+</div>
 __ASSEMBLE_REC_PLANNER__
+
 __ASSEMBLE_TEC_PLANNER__
+
+<!-- ── Gas Consumption ── -->
+
 <section class="v3-panel results-panel mobile-active" id="resultsPanel" aria-label="Results">
 <div class="results-panel-label">Results</div>
 <div class="result-empty-state" id="resultEmptyState">Configure your dive parameters and press <strong>Generate schedule</strong> to see metrics, profile, and deco table here.</div>

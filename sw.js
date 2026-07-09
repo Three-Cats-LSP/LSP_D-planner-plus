@@ -74,6 +74,7 @@ const REQUIRED_PRECACHE = [
   APP_BASE + 'lsp-dplanner-modes.css',
   APP_BASE + 'lsp-dplanner-controls.css',
   APP_BASE + 'lsp-dplanner-results.css',
+  APP_BASE + 'lsp-dplanner-mobile-shell.css',
   APP_BASE + 'zhl-engine-bundle.js',
   APP_BASE + 'padi-engine.js',
   APP_BASE + 'vpm-engine-bundle.js',

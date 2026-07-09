@@ -23,6 +23,7 @@ CSS_UNITS: tuple[tuple[str, str, str], ...] = (
     ("UI-CSS-MODES", "lsp-dplanner-modes.css", "/* AUDIT-UNIT:UI-CSS-MODES */\n"),
     ("UI-CSS-CONTROLS", "lsp-dplanner-controls.css", "/* AUDIT-UNIT:UI-CSS-CONTROLS */\n"),
     ("UI-CSS-RESULTS", "lsp-dplanner-results.css", "/* AUDIT-UNIT:UI-CSS-RESULTS */\n"),
+    ("UI-CSS-MOBILE-SHELL", "lsp-dplanner-mobile-shell.css", "/* AUDIT-UNIT:UI-CSS-MOBILE-SHELL */\n"),
 )
 
 LINK_TEMPLATE = """<!-- AUDIT-UNIT:UI-CSS-FOUNDATION -->
@@ -32,7 +33,9 @@ LINK_TEMPLATE = """<!-- AUDIT-UNIT:UI-CSS-FOUNDATION -->
 <!-- AUDIT-UNIT:UI-CSS-CONTROLS -->
 <link href="lsp-dplanner-controls.css" rel="stylesheet"/>
 <!-- AUDIT-UNIT:UI-CSS-RESULTS -->
-<link href="lsp-dplanner-results.css" rel="stylesheet"/>"""
+<link href="lsp-dplanner-results.css" rel="stylesheet"/>
+<!-- AUDIT-UNIT:UI-CSS-MOBILE-SHELL -->
+<link href="lsp-dplanner-mobile-shell.css" rel="stylesheet"/>"""
 
 
 class CssExtractionError(Exception):

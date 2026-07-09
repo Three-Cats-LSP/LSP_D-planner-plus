@@ -21,45 +21,46 @@
 | release_config | 1 | 0 | 1 | 0 | 0 |
 | test | 1 | 0 | 0 | 1 | 0 |
 | test_infrastructure | 57 | 0 | 28 | 0 | 29 |
-| tooling | 54 | 0 | 21 | 1 | 32 |
+| tooling | 54 | 0 | 22 | 1 | 31 |
 | ui_core | 16 | 0 | 15 | 0 | 1 |
 | ui_shell | 2 | 0 | 2 | 0 | 0 |
-| web_css | 4 | 0 | 4 | 0 | 0 |
-| web_markup | 7 | 0 | 5 | 0 | 2 |
+| web_css | 5 | 0 | 5 | 0 | 0 |
+| web_markup | 7 | 0 | 6 | 0 | 1 |
 | web_runtime | 24 | 0 | 18 | 0 | 6 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **207** | **0** | **102** | **3** | **102** |
+| **Total** | **208** | **0** | **105** | **3** | **100** |
 
 ## Units
 
 | Unit | Layer | Source | Lines | Priority | Status | Evidence |
 |---|---|---|---:|---|---|---|
-| UI-BOOT | web_runtime | `index.html:2` | 2414 | P2 | IN_PROGRESS | - |
-| UI-RUNTIME-BOOTSTRAP | web_runtime | `index.html:2416` | 218 | P1 | VERIFIED | EXT-05, COV-01 |
-| UI-ALGORITHM-SETTINGS | web_runtime | `index.html:2634` | 293 | P1 | IN_PROGRESS | - |
-| UI-UNIT-HELPERS | web_runtime | `index.html:2927` | 442 | P1 | IN_PROGRESS | - |
-| UI-PLOT-INIT | web_runtime | `index.html:3369` | 493 | P2 | IN_PROGRESS | - |
-| UI-TOOLS-TISSUES | web_runtime | `index.html:3862` | 310 | P2 | IN_PROGRESS | - |
-| UI-TOOLS-EXPOSURE | web_runtime | `index.html:4172` | 233 | P1 | IN_PROGRESS | - |
-| UI-SETTINGS | web_runtime | `index.html:4405` | 386 | P1 | IN_PROGRESS | - |
-| UI-PROFILE-PRESETS | web_runtime | `index.html:4791` | 508 | P2 | IN_PROGRESS | - |
-| UI-CONFIG-PRESETS | web_runtime | `index.html:5299` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
-| UI-APP-INIT | web_runtime | `index.html:5484` | 172 | P1 | IN_PROGRESS | - |
-| UI-PWA-LIFECYCLE | pwa | `index.html:5656` | 84 | P1 | IN_PROGRESS | - |
+| UI-BOOT | web_runtime | `index.html:2` | 2431 | P2 | IN_PROGRESS | - |
+| UI-RUNTIME-BOOTSTRAP | web_runtime | `index.html:2433` | 218 | P1 | VERIFIED | EXT-05, COV-01 |
+| UI-ALGORITHM-SETTINGS | web_runtime | `index.html:2651` | 293 | P1 | IN_PROGRESS | - |
+| UI-UNIT-HELPERS | web_runtime | `index.html:2944` | 442 | P1 | IN_PROGRESS | - |
+| UI-PLOT-INIT | web_runtime | `index.html:3386` | 493 | P2 | IN_PROGRESS | - |
+| UI-TOOLS-TISSUES | web_runtime | `index.html:3879` | 310 | P2 | IN_PROGRESS | - |
+| UI-TOOLS-EXPOSURE | web_runtime | `index.html:4189` | 233 | P1 | IN_PROGRESS | - |
+| UI-SETTINGS | web_runtime | `index.html:4422` | 386 | P1 | IN_PROGRESS | - |
+| UI-PROFILE-PRESETS | web_runtime | `index.html:4808` | 508 | P2 | IN_PROGRESS | - |
+| UI-CONFIG-PRESETS | web_runtime | `index.html:5316` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
+| UI-APP-INIT | web_runtime | `index.html:5501` | 172 | P1 | IN_PROGRESS | - |
+| UI-PWA-LIFECYCLE | pwa | `index.html:5673` | 84 | P1 | IN_PROGRESS | - |
 | UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 422 | P2 | IN_PROGRESS | - |
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 338 | P2 | IN_PROGRESS | - |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 548 | P2 | IN_PROGRESS | - |
 | UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 1009 | P1 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
-| UI-MARKUP-HEADER | web_markup | `ui/markup-header.html:1` | 742 | P2 | IN_PROGRESS | - |
+| UI-CSS-MOBILE-SHELL | web_css | `lsp-dplanner-mobile-shell.css:1` | 369 | P2 | IN_PROGRESS | - |
+| UI-MARKUP-HEADER | web_markup | `ui/markup-header.html:1` | 752 | P2 | IN_PROGRESS | - |
 | UI-MARKUP-REC-PLANNER | web_markup | `ui/markup-rec-planner.html:1` | 75 | P1 | IN_PROGRESS | - |
-| UI-MARKUP-TEC-PLANNER | web_markup | `ui/markup-tec-planner.html:1` | 562 | P1 | IN_PROGRESS | - |
+| UI-MARKUP-TEC-PLANNER | web_markup | `ui/markup-tec-planner.html:1` | 560 | P1 | IN_PROGRESS | - |
 | UI-REC-PLANNER | ui_core | `rec-planner.js:1` | 9 | P1 | IN_PROGRESS | - |
 | UI-MARKUP-PLANNER | web_markup | `ui/markup-planner.html:1` | 489 | P1 | IN_PROGRESS | - |
 | UI-MARKUP-CONSUMPTION | web_markup | `ui/markup-consumption.html:1` | 381 | P1 | IN_PROGRESS | - |
 | UI-MARKUP-TOOLS | web_markup | `ui/markup-tools.html:1` | 271 | P2 | VERIFIED | EXT-04, COV-01 |
-| UI-MARKUP-MODALS | web_markup | `ui/markup-modals.html:1` | 341 | P2 | VERIFIED | EXT-04, COV-01 |
+| UI-MARKUP-MODALS | web_markup | `ui/markup-modals.html:1` | 348 | P2 | IN_PROGRESS | - |
 | UI-ENVIRONMENT | ui_core | `settings-core.js:39` | 380 | P1 | IN_PROGRESS | - |
-| UI-MODE-STATE | ui_core | `settings-core.js:419` | 621 | P2 | IN_PROGRESS | - |
+| UI-MODE-STATE | ui_core | `settings-core.js:419` | 631 | P2 | IN_PROGRESS | - |
 | UI-UNIT-SWITCHING | web_runtime | `schedule-runner-core.js:414` | 372 | P1 | IN_PROGRESS | - |
 | UI-ZHL-DELEGATES | web_runtime | `schedule-runner-core.js:786` | 141 | P0 | VERIFIED | REG-15, REG-16, REG-18 |
 | UI-CCR-DELEGATES | web_runtime | `schedule-runner-core.js:927` | 370 | P0 | IN_PROGRESS | - |
@@ -93,7 +94,7 @@
 | APP-GAS-PLAN | ui_core | `gas-plan-core.js:1` | 546 | P1 | IN_PROGRESS | - |
 | APP-GAS-TABLE | ui_core | `gas-table-core.js:1` | 305 | P2 | IN_PROGRESS | - |
 | APP-SURFACE-INTERVAL | ui_core | `surf-interval-core.js:1` | 374 | P1 | IN_PROGRESS | - |
-| APP-SERVICE-WORKER | pwa | `sw.js:1` | 303 | P1 | IN_PROGRESS | - |
+| APP-SERVICE-WORKER | pwa | `sw.js:1` | 304 | P1 | IN_PROGRESS | - |
 | APP-ZHL-WORKER-BRIDGE | worker | `zhl-worker-bridge.js:1` | 136 | P1 | VERIFIED | REG-01, REG-02, REG-03, REG-05 |
 | APP-ZHL-WORKER | worker | `zhl-schedule-worker.js:1` | 23 | P1 | VERIFIED | REG-01, REG-02, REG-03, REG-05 |
 | APP-DOWNLOAD | web_runtime | `download.html:1` | 119 | P3 | VERIFIED | EXT-07, COV-01 |
@@ -160,7 +161,7 @@
 | TOOL-AUDIT | tooling | `audit.py:1` | 16 | P1 | VERIFIED | COV-01, PARITY-01, REG-01, REG-02, REG-03, REG-05 |
 | TOOL-AUDIT-COVERAGE | tooling | `tools/audit_coverage.py:1` | 480 | P1 | IN_PROGRESS | - |
 | TOOL-AUDIT-COVERAGE-TEST | test_infrastructure | `tools/test_audit_coverage.py:1` | 211 | P1 | VERIFIED | COV-01 |
-| TOOL-BUILD-PAGES | tooling | `tools/build_pages_site.py:1` | 189 | P2 | IN_PROGRESS | - |
+| TOOL-BUILD-PAGES | tooling | `tools/build_pages_site.py:1` | 190 | P2 | IN_PROGRESS | - |
 | TOOL-ASSEMBLE-PAGES-PREVIEW | tooling | `tools/assemble_pages_preview.py:1` | 126 | P2 | READ | - |
 | TEST-ASSEMBLE-PAGES-PREVIEW | test | `tools/test_assemble_pages_preview.py:1` | 48 | P2 | READ | - |
 | TOOL-BUILD-VPM | tooling | `tools/build_vpm_bundle.py:1` | 104 | P1 | VERIFIED | COV-01, PARITY-01 |
@@ -186,7 +187,7 @@
 | TOOL-PATCH-TIER3 | tooling | `tools/patch_tier3_index.py:1` | 244 | P3 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-PATCH-VPM | tooling | `tools/patch_vpm_bundle_index.py:1` | 25 | P3 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-PATCH-ZHL | tooling | `tools/patch_zhl_engine.py:1` | 121 | P3 | VERIFIED | COV-01, PARITY-01 |
-| TOOL-SYNC-WWW | tooling | `tools/sync_www.py:1` | 144 | P1 | IN_PROGRESS | - |
+| TOOL-SYNC-WWW | tooling | `tools/sync_www.py:1` | 145 | P1 | IN_PROGRESS | - |
 | TOOL-UPDATE-VERSION | tooling | `tools/update_sw_version.py:1` | 104 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-VENDOR | tooling | `tools/vendor_offline_assets.py:1` | 173 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-VERIFY-ASSETS | tooling | `tools/verify_site_assets.py:1` | 132 | P2 | VERIFIED | COV-01, PARITY-01 |
@@ -213,11 +214,11 @@
 | TOOL-AUDIT-V2-WORKSPACE-PY | tooling | `tools/audit/workspace.py:1` | 89 | P0 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-AUDIT-V2-AUDIT-LEGACY-MIGRATION-JSON | tooling | `docs/audit-legacy-migration.json:1` | 37671 | P0 | IN_PROGRESS | - |
 | TOOL-AUDIT-V2-TEST_SYSTEM-PY | tooling | `tools/audit/test_system.py:1` | 206 | P0 | IN_PROGRESS | - |
-| UI-PLANNER-SHELL | ui_shell | `planner-shell.js:1` | 199 | P1 | IN_PROGRESS | REG-96, REG-99 |
-| UI-RESULTS-PANEL | ui_shell | `results-panel.js:1` | 311 | P1 | IN_PROGRESS | COV-01, PARITY-01, EXT-02, REG-01, REG-95, REG-97, REG-98 |
+| UI-PLANNER-SHELL | ui_shell | `planner-shell.js:1` | 329 | P1 | IN_PROGRESS | REG-96, REG-99 |
+| UI-RESULTS-PANEL | ui_shell | `results-panel.js:1` | 364 | P1 | IN_PROGRESS | COV-01, PARITY-01, EXT-02, REG-01, REG-95, REG-97, REG-98 |
 | TOOL-V3-ASSEMBLE_UI_HTML-PY | tooling | `tools/assemble_ui_html.py:1` | 181 | P2 | IN_PROGRESS | - |
-| TOOL-V3-EXTRACT_UI_CSS-PY | tooling | `tools/extract_ui_css.py:1` | 136 | P2 | VERIFIED | COV-01, PARITY-01 |
-| TOOL-V3-MIGRATE_V3-PY | tooling | `tools/audit/migrate_v3.py:1` | 409 | P2 | IN_PROGRESS | - |
+| TOOL-V3-EXTRACT_UI_CSS-PY | tooling | `tools/extract_ui_css.py:1` | 139 | P2 | IN_PROGRESS | - |
+| TOOL-V3-MIGRATE_V3-PY | tooling | `tools/audit/migrate_v3.py:1` | 410 | P2 | IN_PROGRESS | - |
 | TOOL-V3-RUN_UI_STRUCTURE_SUITE-PY | tooling | `tools/run_ui_structure_suite.py:1` | 94 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-V3-UI_ASSETS-PY | tooling | `tools/ui_assets.py:1` | 60 | P2 | IN_PROGRESS | - |
 | TOOL-V3-VERIFY_SW_ASSETS-PY | tooling | `tools/verify_sw_assets.py:1` | 59 | P2 | VERIFIED | COV-01, PARITY-01 |
@@ -231,7 +232,7 @@
 | UI-PLANNER-INPUTS | ui_core | `planner-inputs-core.js:1` | 119 | P1 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-CYCLE05-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-05-css.json:1` | 80 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-CYCLE05-EXPORT-FOCUS-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-05-export-focus.json:1` | 65 | P0 | IN_PROGRESS | - |
-| TEST-UI-CSS-REGRESSION | test_infrastructure | `dev/ui_css_regression.py:1` | 285 | P0 | IN_PROGRESS | REG-76, REG-77, REG-78, REG-79, REG-80, REG-81 |
+| TEST-UI-CSS-REGRESSION | test_infrastructure | `dev/ui_css_regression.py:1` | 286 | P0 | IN_PROGRESS | REG-76, REG-77, REG-78, REG-79, REG-80, REG-81 |
 | TEST-SEVEN-LENS-CYCLE06-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-06-controls.json:1` | 251 | P0 | IN_PROGRESS | - |
 | TEST-UI-CONTROLS-CSS-REGRESSION | test_infrastructure | `dev/ui_controls_css_regression.py:1` | 559 | P0 | IN_PROGRESS | REG-82, REG-83, REG-84, REG-85, REG-86, REG-87, REG-88 |
 | TEST-C06-PRE-CONTROLS-REGRESSION | test_infrastructure | `dev/c06_pre_controls_regression.py:1` | 47 | P0 | IN_PROGRESS | REG-82, REG-83 |

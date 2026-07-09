@@ -250,9 +250,9 @@
       "unit_id": "UI-MARKUP-TEC-PLANNER",
       "path": "ui/markup-tec-planner.html",
       "start_line": 501,
-      "end_line": 562,
-      "line_count": 62,
-      "content_fingerprint": "6978961f51d8037253c8715b8a78c670935f45a0888ef3f68525deef42332ae1",
+      "end_line": 560,
+      "line_count": 60,
+      "content_fingerprint": "bbcf50ef3610c5e81e4afd46f74cbe26d4b64f4b78f848e6c8c2a4effbb2c959",
       "review_session": "cursor/seven-lens-cycle-200-audit",
       "verification_session": "cursor/seven-lens-cycle-200-verify",
       "lens_results": {
