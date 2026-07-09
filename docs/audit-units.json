@@ -2945,8 +2945,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "7ffff8505b071bad0781da0a5b365b90fe45b93c1586e6257384905a12363dcc",
-      "last_read_fingerprint": "7ffff8505b071bad0781da0a5b365b90fe45b93c1586e6257384905a12363dcc",
+      "fingerprint": "c21d82b7ac8498844c6b506217bd0f5f14d90fc25def2635fab9a9be86639fb2",
+      "last_read_fingerprint": "c21d82b7ac8498844c6b506217bd0f5f14d90fc25def2635fab9a9be86639fb2",
       "evidence": [
         "SUITE-ENGINE-FULL/AUDIT-REG-01",
         "SUITE-ENGINE-FULL/AUDIT-REG-02",
@@ -3640,8 +3640,8 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3000b4928ea0c295dfc499cc2a09785287d7ab569a87005b131183a9cf4138ba",
-      "last_read_fingerprint": "3000b4928ea0c295dfc499cc2a09785287d7ab569a87005b131183a9cf4138ba",
+      "fingerprint": "ca7db45d9c42ba704db858ad7f6ac5ea95c1c5db32e2a50f046386e0963fad02",
+      "last_read_fingerprint": "ca7db45d9c42ba704db858ad7f6ac5ea95c1c5db32e2a50f046386e0963fad02",
       "evidence": [
         "SUITE-ENGINE-FULL/AUDIT-REG-01",
         "SUITE-COVERAGE/AUDIT-COV-01"

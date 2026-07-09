@@ -127,7 +127,7 @@
 | TEST-ISSUE-141-REGRESSION | test_infrastructure | `dev/issue141_regression.py:1` | 108 | P1 | VERIFIED | REG-15, REG-16, REG-18 |
 | TEST-ISSUE-142-REGRESSION | test_infrastructure | `dev/surf_interval_regression.py:1` | 124 | P1 | VERIFIED | REG-17, REG-19, REG-20, REG-21 |
 | TEST-ANDROID-COMPILE | test_infrastructure | `dev/run_android_compile_check.py:1` | 101 | P2 | VERIFIED | ANDROID-01 |
-| TEST-ENGINE-VALIDATION | test_infrastructure | `engine_validation_regression.py:1` | 521 | P1 | VERIFIED | REG-01, COV-01 |
+| TEST-ENGINE-VALIDATION | test_infrastructure | `engine_validation_regression.py:1` | 573 | P1 | VERIFIED | REG-01, COV-01 |
 | TEST-CCR-VALIDATION | test_infrastructure | `dev/ccr_engine_validation_regression.py:1` | 359 | P1 | VERIFIED | REG-29, REG-42 |
 | TEST-EXPORT | test_infrastructure | `export_regression.py:1` | 598 | P2 | IN_PROGRESS | - |
 | TEST-RUN-ALL | test_infrastructure | `dev/run_all_regression.py:1` | 36 | P1 | VERIFIED | COV-01, PARITY-01, REG-06, REG-07, ANDROID-01, REG-45 |

@@ -1,0 +1,104 @@
+{
+  "schema": "v4-simplified-batch-record",
+  "batch_id": "R11-R22",
+  "epoch": "v4-risk-first-reset",
+  "baseline_commit": "6d18dd60c2203cf1eb8d683d0c52e6a4671582c8",
+  "status": "REVIEWED",
+  "scope": [
+    {
+      "cycle": "R11",
+      "units": ["UI-VPM-RUNNER"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R12",
+      "units": ["APP-ZHL-WORKER", "APP-ZHL-WORKER-BRIDGE"],
+      "result": "FINDING_FIXED"
+    },
+    {
+      "cycle": "R13",
+      "units": ["UI-ALGORITHM-SETTINGS", "UI-SETTINGS-CONTROLS"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R14",
+      "units": ["UI-SETTINGS", "UI-UNIT-HELPERS", "UI-UNIT-SWITCHING"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R15",
+      "units": ["APP-SURFACE-INTERVAL", "APP-GAS-TABLE"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R16",
+      "units": ["UI-GAS-INPUTS", "UI-GAS-CARDS"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R17",
+      "units": ["APP-GAS-PLAN"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R18",
+      "units": ["APP-CONTINGENCY"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R19",
+      "units": ["UI-VPM-RENDER", "UI-ZHL-RESULTS"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R20",
+      "units": ["APP-EXPORT"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R21",
+      "units": ["UI-PLOT-RENDER", "UI-PLOT-WAYPOINTS"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R22",
+      "units": ["UI-TOOLS-PROFILE", "UI-PLOT-INIT"],
+      "result": "NO_FINDINGS"
+    }
+  ],
+  "findings": [
+    {
+      "id": "R12-WORKER-01",
+      "severity": "HIGH",
+      "unit": "APP-ZHL-WORKER-BRIDGE",
+      "summary": "A normal worker calculation error was treated as a worker crash, rejecting all pending jobs and increasing the crash counter.",
+      "root_cause": "The worker onmessage ok:false branch called handleWorkerFailure(...), which terminates the worker and rejects every pending request. Calculation errors are per-request results and should not poison the worker bridge.",
+      "fix": "Changed the ok:false branch to settle only the matching pending request with an Error while keeping the live worker usable.",
+      "regression": "engine_validation_regression.py now scripts a worker that fails the first request and succeeds the second; the second request must resolve from the same live bridge path."
+    }
+  ],
+  "regressions_run": [
+    "python engine_validation_regression.py",
+    "python dev/engine_regression.py",
+    "node dev/vpm_direct_regression.js",
+    "npm.cmd run check:engine-parity",
+    "python dev/ui_visual_contract_regression.py",
+    "python dev/ui_shell_results_regression.py",
+    "python dev/ui_results_css_regression.py",
+    "python dev/ui_css_regression.py",
+    "python dev/gas_core_regression.py",
+    "python dev/surf_interval_regression.py",
+    "python dev/run_native_regression.py",
+    "python tools/assemble_ui_html.py --verify",
+    "python tools/audit_coverage.py --write-docs"
+  ],
+  "workflow_notes": [
+    "Do not run sync_www-backed browser suites in parallel; they share the www staging directory and can create false missing-file failures.",
+    "The simplified V4 flow stayed focused: one real finding, one code fix, one targeted regression, then gates."
+  ],
+  "recommendations": [
+    "Add a stable case ID for the new worker calculation-error bridge regression in a future registry cleanup pass.",
+    "Consider giving sync_www-backed browser tests isolated temp publish directories so they can safely run in parallel.",
+    "Keep export coverage tied to static/native/visual gates unless a concrete export bug appears; avoid adding broad slow browser traces without a behavioral reason."
+  ]
+}
