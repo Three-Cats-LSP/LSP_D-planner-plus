@@ -24,6 +24,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Extract app version from app-version.js
         id: version
@@ -34,7 +36,7 @@ jobs:
           MAJOR="${PARTS[0]:-0}"
           MINOR="${PARTS[1]:-0}"
           PATCH="${PARTS[2]:-0}"
-          VERSION_CODE=$(( MAJOR * 1000000 + MINOR * 1000 + PATCH ))
+          VERSION_CODE=$(( MAJOR * 10000 + MINOR * 100 + PATCH ))
           echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_OUTPUT
           echo "Detected version: $VERSION (code: $VERSION_CODE)"
 
@@ -62,6 +64,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: Install Playwright for SUITE-COVERAGE browser-trace unit tests
+        run: |
+          sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list /etc/apt/sources.list.d/microsoft-*.list
+          sudo apt-get update -q
+          python -m pip install --upgrade pip
+          pip install playwright
+          playwright install chromium --with-deps
 
       - name: Rebuild bundles, parity check, and audit v2 static gate
         run: |
