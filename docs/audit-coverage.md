@@ -20,7 +20,7 @@
 | pwa | 3 | 0 | 2 | 0 | 1 |
 | release_config | 1 | 0 | 1 | 0 | 0 |
 | test | 1 | 0 | 0 | 1 | 0 |
-| test_infrastructure | 57 | 0 | 27 | 0 | 30 |
+| test_infrastructure | 57 | 0 | 28 | 0 | 29 |
 | tooling | 54 | 0 | 21 | 1 | 32 |
 | ui_core | 16 | 0 | 15 | 0 | 1 |
 | ui_shell | 2 | 0 | 2 | 0 | 0 |
@@ -28,7 +28,7 @@
 | web_markup | 7 | 0 | 5 | 0 | 2 |
 | web_runtime | 24 | 0 | 18 | 0 | 6 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **207** | **0** | **101** | **3** | **103** |
+| **Total** | **207** | **0** | **102** | **3** | **102** |
 
 ## Units
 
@@ -154,7 +154,7 @@
 | TEST-CAP-FIXTURE | test_infrastructure | `dev/fixtures/capacitor-bridge.html:1` | 30 | P2 | VERIFIED | COV-01 |
 | TEST-ANDROID-UNIT | test_infrastructure | `android/app/src/test/java/com/getcapacitor/myapp/ExampleUnitTest.java:1` | 18 | P3 | VERIFIED | ANDROID-01, COV-01 |
 | TEST-ANDROID-INSTRUMENTED | test_infrastructure | `android/app/src/androidTest/java/com/getcapacitor/myapp/ExampleInstrumentedTest.java:1` | 26 | P3 | VERIFIED | ANDROID-01, COV-01 |
-| TEST-CCR-DIFF-BUILD | test_infrastructure | `tests/ccr-differential/build_assets.py:1` | 636 | P2 | VERIFIED | COV-01 |
+| TEST-CCR-DIFF-BUILD | test_infrastructure | `tests/ccr-differential/build_assets.py:1` | 711 | P2 | IN_PROGRESS | - |
 | TEST-CCR-DIFF-LIB-PY | test_infrastructure | `tests/ccr-differential/lib/ccr_open_reference.py:1` | 325 | P1 | VERIFIED | COV-01 |
 | TEST-CCR-DIFF-LIB-JS | test_infrastructure | `tests/ccr-differential/lib/ccrdiff.js:1` | 418 | P1 | VERIFIED | COV-01 |
 | TOOL-AUDIT | tooling | `audit.py:1` | 16 | P1 | VERIFIED | COV-01, PARITY-01, REG-01, REG-02, REG-03, REG-05 |

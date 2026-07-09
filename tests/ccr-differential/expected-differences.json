@@ -394,5 +394,632 @@
     "field": "otu",
     "evidence": "OTU integration differs on deep trimix CCR vs Subsurface open reference",
     "reviewer": "ccr_open_reference.py subsurface preset"
+  },
+  {
+    "scenarioId": "CCR-NDL",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "runtimeMin",
+    "evidence": "LSP includes the configured 3-minute safety stop in runtime/TTS for no-deco CCR; open references model direct ascent only.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-NDL",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "ttsMin",
+    "evidence": "LSP includes the configured 3-minute safety stop in runtime/TTS for no-deco CCR; open references model direct ascent only.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-NDL",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "runtimeMin",
+    "evidence": "LSP includes the configured 3-minute safety stop in runtime/TTS for no-deco CCR; open references model direct ascent only.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-NDL",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "ttsMin",
+    "evidence": "LSP includes the configured 3-minute safety stop in runtime/TTS for no-deco CCR; open references model direct ascent only.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-SP",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "runtimeMin",
+    "evidence": "Subsurface preset uses different ascent integration/setpoint timing; Abysner agrees and the residual runtime delta is marginal.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-ML",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "ttsMin",
+    "evidence": "Open Abysner/Subsurface reference planner consumes only the first profile level, so multilevel comparison is not equivalent to LSP.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-ML",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "otu",
+    "evidence": "Open Abysner/Subsurface reference planner consumes only the first profile level, so multilevel comparison is not equivalent to LSP.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-ML",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@3m",
+    "evidence": "Open Abysner/Subsurface reference planner consumes only the first profile level, so multilevel comparison is not equivalent to LSP.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-ML",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@6m",
+    "evidence": "Open Abysner/Subsurface reference planner consumes only the first profile level, so multilevel comparison is not equivalent to LSP.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-ML",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@24m",
+    "evidence": "Open Abysner/Subsurface reference planner consumes only the first profile level, so multilevel comparison is not equivalent to LSP.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-ML",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@27m",
+    "evidence": "Open Abysner/Subsurface reference planner consumes only the first profile level, so multilevel comparison is not equivalent to LSP.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-ML",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "ttsMin",
+    "evidence": "Open Abysner/Subsurface reference planner consumes only the first profile level, so multilevel comparison is not equivalent to LSP.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-ML",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "otu",
+    "evidence": "Open Abysner/Subsurface reference planner consumes only the first profile level, so multilevel comparison is not equivalent to LSP.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-ML",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@3m",
+    "evidence": "Open Abysner/Subsurface reference planner consumes only the first profile level, so multilevel comparison is not equivalent to LSP.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-ML",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@6m",
+    "evidence": "Open Abysner/Subsurface reference planner consumes only the first profile level, so multilevel comparison is not equivalent to LSP.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-ML",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@24m",
+    "evidence": "Open Abysner/Subsurface reference planner consumes only the first profile level, so multilevel comparison is not equivalent to LSP.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-ML",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@27m",
+    "evidence": "Open Abysner/Subsurface reference planner consumes only the first profile level, so multilevel comparison is not equivalent to LSP.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-GF-B",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@9m",
+    "evidence": "GF 50/50 stop distribution differs by shallow-stop allocation while first stop and total runtime/TTS remain sane.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-GF-B",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@12m",
+    "evidence": "GF 50/50 stop distribution differs by shallow-stop allocation while first stop and total runtime/TTS remain sane.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-GF-B",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@9m",
+    "evidence": "GF 50/50 stop distribution differs by shallow-stop allocation while first stop and total runtime/TTS remain sane.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-GF-B",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@12m",
+    "evidence": "GF 50/50 stop distribution differs by shallow-stop allocation while first stop and total runtime/TTS remain sane.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-BO",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "runtimeMin",
+    "evidence": "Open Abysner/Subsurface reference planner does not model OC bailout gases; LSP intentionally switches to configured bailout gases.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-BO",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "ttsMin",
+    "evidence": "Open Abysner/Subsurface reference planner does not model OC bailout gases; LSP intentionally switches to configured bailout gases.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-BO",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "otu",
+    "evidence": "Open Abysner/Subsurface reference planner does not model OC bailout gases; LSP intentionally switches to configured bailout gases.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-BO",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@3m",
+    "evidence": "Open Abysner/Subsurface reference planner does not model OC bailout gases; LSP intentionally switches to configured bailout gases.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-BO",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "ttsMin",
+    "evidence": "Open Abysner/Subsurface reference planner does not model OC bailout gases; LSP intentionally switches to configured bailout gases.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-BO",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "otu",
+    "evidence": "Open Abysner/Subsurface reference planner does not model OC bailout gases; LSP intentionally switches to configured bailout gases.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-BO",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@3m",
+    "evidence": "Open Abysner/Subsurface reference planner does not model OC bailout gases; LSP intentionally switches to configured bailout gases.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-LOST-GAS",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "runtimeMin",
+    "evidence": "Open Abysner/Subsurface reference planner does not model unavailable bailout gas; LSP intentionally extends stops when EAN50 is unavailable.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-LOST-GAS",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "ttsMin",
+    "evidence": "Open Abysner/Subsurface reference planner does not model unavailable bailout gas; LSP intentionally extends stops when EAN50 is unavailable.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-LOST-GAS",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "otu",
+    "evidence": "Open Abysner/Subsurface reference planner does not model unavailable bailout gas; LSP intentionally extends stops when EAN50 is unavailable.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-LOST-GAS",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@3m",
+    "evidence": "Open Abysner/Subsurface reference planner does not model unavailable bailout gas; LSP intentionally extends stops when EAN50 is unavailable.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-LOST-GAS",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@6m",
+    "evidence": "Open Abysner/Subsurface reference planner does not model unavailable bailout gas; LSP intentionally extends stops when EAN50 is unavailable.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-LOST-GAS",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@9m",
+    "evidence": "Open Abysner/Subsurface reference planner does not model unavailable bailout gas; LSP intentionally extends stops when EAN50 is unavailable.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-LOST-GAS",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@12m",
+    "evidence": "Open Abysner/Subsurface reference planner does not model unavailable bailout gas; LSP intentionally extends stops when EAN50 is unavailable.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-LOST-GAS",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@15m",
+    "evidence": "Open Abysner/Subsurface reference planner does not model unavailable bailout gas; LSP intentionally extends stops when EAN50 is unavailable.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-LOST-GAS",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "runtimeMin",
+    "evidence": "Open Abysner/Subsurface reference planner does not model unavailable bailout gas; LSP intentionally extends stops when EAN50 is unavailable.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-LOST-GAS",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "ttsMin",
+    "evidence": "Open Abysner/Subsurface reference planner does not model unavailable bailout gas; LSP intentionally extends stops when EAN50 is unavailable.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-LOST-GAS",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "otu",
+    "evidence": "Open Abysner/Subsurface reference planner does not model unavailable bailout gas; LSP intentionally extends stops when EAN50 is unavailable.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-LOST-GAS",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@3m",
+    "evidence": "Open Abysner/Subsurface reference planner does not model unavailable bailout gas; LSP intentionally extends stops when EAN50 is unavailable.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-LOST-GAS",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@6m",
+    "evidence": "Open Abysner/Subsurface reference planner does not model unavailable bailout gas; LSP intentionally extends stops when EAN50 is unavailable.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-LOST-GAS",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@9m",
+    "evidence": "Open Abysner/Subsurface reference planner does not model unavailable bailout gas; LSP intentionally extends stops when EAN50 is unavailable.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-LOST-GAS",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@12m",
+    "evidence": "Open Abysner/Subsurface reference planner does not model unavailable bailout gas; LSP intentionally extends stops when EAN50 is unavailable.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-LOST-GAS",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@15m",
+    "evidence": "Open Abysner/Subsurface reference planner does not model unavailable bailout gas; LSP intentionally extends stops when EAN50 is unavailable.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-REP",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "runtimeMin",
+    "evidence": "Open Abysner/Subsurface reference planner does not carry first-dive tissue state for repetitive comparison; LSP does.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-REP",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "ttsMin",
+    "evidence": "Open Abysner/Subsurface reference planner does not carry first-dive tissue state for repetitive comparison; LSP does.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-REP",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "otu",
+    "evidence": "Open Abysner/Subsurface reference planner does not carry first-dive tissue state for repetitive comparison; LSP does.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-REP",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@3m",
+    "evidence": "Open Abysner/Subsurface reference planner does not carry first-dive tissue state for repetitive comparison; LSP does.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-REP",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "runtimeMin",
+    "evidence": "Open Abysner/Subsurface reference planner does not carry first-dive tissue state for repetitive comparison; LSP does.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-REP",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "ttsMin",
+    "evidence": "Open Abysner/Subsurface reference planner does not carry first-dive tissue state for repetitive comparison; LSP does.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-REP",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "otu",
+    "evidence": "Open Abysner/Subsurface reference planner does not carry first-dive tissue state for repetitive comparison; LSP does.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-REP",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@3m",
+    "evidence": "Open Abysner/Subsurface reference planner does not carry first-dive tissue state for repetitive comparison; LSP does.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-ALT",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "runtimeMin",
+    "evidence": "Altitude/acclimatization ascent integration differs slightly between LSP and Subsurface; Abysner agrees within tolerance.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-PRECISE-A",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@6m",
+    "evidence": "LSP intentionally keeps app schedule semantics: fractional first stop, minute-resolution non-first stops; fixture name overstates one-second support.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-PRECISE-A",
+    "pair": [
+      "LSP",
+      "Abysner"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@9m",
+    "evidence": "LSP intentionally keeps app schedule semantics: fractional first stop, minute-resolution non-first stops; fixture name overstates one-second support.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-PRECISE-A",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@6m",
+    "evidence": "LSP intentionally keeps app schedule semantics: fractional first stop, minute-resolution non-first stops; fixture name overstates one-second support.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
+  },
+  {
+    "scenarioId": "CCR-PRECISE-A",
+    "pair": [
+      "LSP",
+      "Subsurface"
+    ],
+    "classification": "EXPECTED_DIFFERENCE",
+    "field": "stop@9m",
+    "evidence": "LSP intentionally keeps app schedule semantics: fractional first stop, minute-resolution non-first stops; fixture name overstates one-second support.",
+    "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09"
   }
 ]

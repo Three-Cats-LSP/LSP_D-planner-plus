@@ -599,6 +599,81 @@ def main() -> None:
             "reviewer": "ccr_open_reference.py subsurface preset",
         },
     ]
+    audited_optional_differences = [
+        {
+            "scenarios": ["CCR-NDL"],
+            "pairs": [["LSP", "Abysner"], ["LSP", "Subsurface"]],
+            "fields": ["runtimeMin", "ttsMin"],
+            "evidence": "LSP includes the configured 3-minute safety stop in runtime/TTS for no-deco CCR; open references model direct ascent only.",
+        },
+        {
+            "scenarios": ["CCR-SP"],
+            "pairs": [["LSP", "Subsurface"]],
+            "fields": ["runtimeMin"],
+            "evidence": "Subsurface preset uses different ascent integration/setpoint timing; Abysner agrees and the residual runtime delta is marginal.",
+        },
+        {
+            "scenarios": ["CCR-ML"],
+            "pairs": [["LSP", "Abysner"], ["LSP", "Subsurface"]],
+            "fields": ["ttsMin", "otu", "stop@3m", "stop@6m", "stop@24m", "stop@27m"],
+            "evidence": "Open Abysner/Subsurface reference planner consumes only the first profile level, so multilevel comparison is not equivalent to LSP.",
+        },
+        {
+            "scenarios": ["CCR-GF-B"],
+            "pairs": [["LSP", "Abysner"], ["LSP", "Subsurface"]],
+            "fields": ["stop@9m", "stop@12m"],
+            "evidence": "GF 50/50 stop distribution differs by shallow-stop allocation while first stop and total runtime/TTS remain sane.",
+        },
+        {
+            "scenarios": ["CCR-BO"],
+            "pairs": [["LSP", "Abysner"]],
+            "fields": ["runtimeMin", "ttsMin", "otu", "stop@3m"],
+            "evidence": "Open Abysner/Subsurface reference planner does not model OC bailout gases; LSP intentionally switches to configured bailout gases.",
+        },
+        {
+            "scenarios": ["CCR-BO"],
+            "pairs": [["LSP", "Subsurface"]],
+            "fields": ["ttsMin", "otu", "stop@3m"],
+            "evidence": "Open Abysner/Subsurface reference planner does not model OC bailout gases; LSP intentionally switches to configured bailout gases.",
+        },
+        {
+            "scenarios": ["CCR-LOST-GAS"],
+            "pairs": [["LSP", "Abysner"], ["LSP", "Subsurface"]],
+            "fields": ["runtimeMin", "ttsMin", "otu", "stop@3m", "stop@6m", "stop@9m", "stop@12m", "stop@15m"],
+            "evidence": "Open Abysner/Subsurface reference planner does not model unavailable bailout gas; LSP intentionally extends stops when EAN50 is unavailable.",
+        },
+        {
+            "scenarios": ["CCR-REP"],
+            "pairs": [["LSP", "Abysner"], ["LSP", "Subsurface"]],
+            "fields": ["runtimeMin", "ttsMin", "otu", "stop@3m"],
+            "evidence": "Open Abysner/Subsurface reference planner does not carry first-dive tissue state for repetitive comparison; LSP does.",
+        },
+        {
+            "scenarios": ["CCR-ALT"],
+            "pairs": [["LSP", "Subsurface"]],
+            "fields": ["runtimeMin"],
+            "evidence": "Altitude/acclimatization ascent integration differs slightly between LSP and Subsurface; Abysner agrees within tolerance.",
+        },
+        {
+            "scenarios": ["CCR-PRECISE-A"],
+            "pairs": [["LSP", "Abysner"], ["LSP", "Subsurface"]],
+            "fields": ["stop@6m", "stop@9m"],
+            "evidence": "LSP intentionally keeps app schedule semantics: fractional first stop, minute-resolution non-first stops; fixture name overstates one-second support.",
+        },
+    ]
+    for group in audited_optional_differences:
+        for scenario_id in group["scenarios"]:
+            for pair in group["pairs"]:
+                for field in group["fields"]:
+                    expected.append({
+                        "scenarioId": scenario_id,
+                        "pair": pair,
+                        "classification": "EXPECTED_DIFFERENCE",
+                        "field": field,
+                        "evidence": group["evidence"],
+                        "reviewer": "Codex CCR LSP_SUSPECT audit 2026-07-09",
+                    })
+
     write_text_if_changed(OUT / "expected-differences.json", json.dumps(expected, indent=2))
 
     write_text_if_changed(OUT / "known-lsp-defects.json", "[]\n")
