@@ -380,11 +380,39 @@ __ASSEMBLE_TEC_PLANNER__
 </select>
 </div>
 <div class="settings-version-label" id="appVersionLabel">Version 2.30.0</div>
+<div class="settings-app-links" aria-label="Application links and support">
+<div class="settings-app-links-title">App Links</div>
+<div class="settings-app-link-list">
+<a href="https://threecats-lsp.com" rel="noopener noreferrer" target="_blank">Three Cats LSP</a>
+<a href="https://github.com/Three-Cats-LSP/LSP_D-planner-plus" rel="noopener noreferrer" target="_blank">Source on GitHub</a>
+<a href="https://threecats-lsp.com/d-planner-plus/download.html" rel="noopener noreferrer" target="_blank">Download Android APK</a>
+<a href="https://www.instagram.com/threecats_lsp" rel="noopener noreferrer" target="_blank">Instagram</a>
+<a href="https://www.thingiverse.com/Roman_Markovtsev/designs" rel="noopener noreferrer" target="_blank">Thingiverse Designs</a>
+<a href="https://threecats-lsp.com/t-viewer/" rel="noopener noreferrer" target="_blank">T-Viewer</a>
+<a href="https://threecats-lsp.com/get-in-water/" rel="noopener noreferrer" target="_blank">Get In Water</a>
+<a class="settings-donate-link" href="https://paypal.me/ThreeCatsLSP" rel="noopener noreferrer" target="_blank">Support Development via PayPal</a>
+</div>
+</div>
 </div>
 </section>
 </div>
 <!-- TOOLS FULL PAGE -->
-<div class="tools-page-wrap v4-shell" id="toolsPageWrap">
+<div class="tools-page-wrap v4-shell mobile-tool-list" id="toolsPageWrap">
+<div class="mobile-tools-list" id="mobileToolsList" aria-label="Tools list">
+<div class="mobile-tools-list-title">Calculators &amp; Tables</div>
+<button type="button" class="mobile-tool-row" data-tool="mod" onclick="switchTool('mod')"><span class="mobile-tool-icon">&#8597;</span><span><strong>MOD</strong><small>Max op. depth</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+<button type="button" class="mobile-tool-row" data-tool="bestmix" onclick="switchTool('bestmix')"><span class="mobile-tool-icon">&#9671;</span><span><strong>Best Mix</strong><small>O2 % for depth</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+<button type="button" class="mobile-tool-row" data-tool="endcalc" onclick="switchTool('endcalc')"><span class="mobile-tool-icon">&#9729;</span><span><strong>END Calc</strong><small>Narcotic depth</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+<button type="button" class="mobile-tool-row" data-tool="eadtable" onclick="switchTool('eadtable')"><span class="mobile-tool-icon">&#8776;</span><span><strong>EAD Table</strong><small>Air equivalent</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+<button type="button" class="mobile-tool-row" data-tool="gastable" onclick="switchTool('gastable')"><span class="mobile-tool-icon">&#9635;</span><span><strong>Gas Table</strong><small>MOD &amp; MND</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+<button type="button" class="mobile-tool-row" data-tool="converter" onclick="switchTool('converter')"><span class="mobile-tool-icon">&#8644;</span><span><strong>Unit Converter</strong><small>Bar &middot; L &middot; m &middot; C</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+<button type="button" class="mobile-tool-row" data-tool="cns" onclick="switchTool('cns')"><span class="mobile-tool-icon">&#9762;</span><span><strong>CNS O2</strong><small>Toxicity limits</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+<button type="button" class="mobile-tool-row" data-tool="knowledge" onclick="switchTool('knowledge')"><span class="mobile-tool-icon">&#9776;</span><span><strong>Knowledge</strong><small>References &amp; docs</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+</div>
+<div class="mobile-tool-detail-bar" id="mobileToolDetailBar">
+<button type="button" class="mobile-tool-back" onclick="showMobileToolsList()">&lsaquo; Back</button>
+<span id="mobileToolTitle">Tools</span>
+</div>
 <div id="toolsPanelMount"></div>
 </div>
 <div class="legacy-panels">

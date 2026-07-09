@@ -1060,11 +1060,39 @@
 </select>
 </div>
 <div class="settings-version-label" id="appVersionLabel">Version 2.30.0</div>
+<div class="settings-app-links" aria-label="Application links and support">
+<div class="settings-app-links-title">App Links</div>
+<div class="settings-app-link-list">
+<a href="https://threecats-lsp.com" rel="noopener noreferrer" target="_blank">Three Cats LSP</a>
+<a href="https://github.com/Three-Cats-LSP/LSP_D-planner-plus" rel="noopener noreferrer" target="_blank">Source on GitHub</a>
+<a href="https://threecats-lsp.com/d-planner-plus/download.html" rel="noopener noreferrer" target="_blank">Download Android APK</a>
+<a href="https://www.instagram.com/threecats_lsp" rel="noopener noreferrer" target="_blank">Instagram</a>
+<a href="https://www.thingiverse.com/Roman_Markovtsev/designs" rel="noopener noreferrer" target="_blank">Thingiverse Designs</a>
+<a href="https://threecats-lsp.com/t-viewer/" rel="noopener noreferrer" target="_blank">T-Viewer</a>
+<a href="https://threecats-lsp.com/get-in-water/" rel="noopener noreferrer" target="_blank">Get In Water</a>
+<a class="settings-donate-link" href="https://paypal.me/ThreeCatsLSP" rel="noopener noreferrer" target="_blank">Support Development via PayPal</a>
+</div>
+</div>
 </div>
 </section>
 </div>
 <!-- TOOLS FULL PAGE -->
-<div class="tools-page-wrap v4-shell" id="toolsPageWrap">
+<div class="tools-page-wrap v4-shell mobile-tool-list" id="toolsPageWrap">
+<div class="mobile-tools-list" id="mobileToolsList" aria-label="Tools list">
+<div class="mobile-tools-list-title">Calculators &amp; Tables</div>
+<button type="button" class="mobile-tool-row" data-tool="mod" onclick="switchTool('mod')"><span class="mobile-tool-icon">&#8597;</span><span><strong>MOD</strong><small>Max op. depth</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+<button type="button" class="mobile-tool-row" data-tool="bestmix" onclick="switchTool('bestmix')"><span class="mobile-tool-icon">&#9671;</span><span><strong>Best Mix</strong><small>O2 % for depth</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+<button type="button" class="mobile-tool-row" data-tool="endcalc" onclick="switchTool('endcalc')"><span class="mobile-tool-icon">&#9729;</span><span><strong>END Calc</strong><small>Narcotic depth</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+<button type="button" class="mobile-tool-row" data-tool="eadtable" onclick="switchTool('eadtable')"><span class="mobile-tool-icon">&#8776;</span><span><strong>EAD Table</strong><small>Air equivalent</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+<button type="button" class="mobile-tool-row" data-tool="gastable" onclick="switchTool('gastable')"><span class="mobile-tool-icon">&#9635;</span><span><strong>Gas Table</strong><small>MOD &amp; MND</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+<button type="button" class="mobile-tool-row" data-tool="converter" onclick="switchTool('converter')"><span class="mobile-tool-icon">&#8644;</span><span><strong>Unit Converter</strong><small>Bar &middot; L &middot; m &middot; C</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+<button type="button" class="mobile-tool-row" data-tool="cns" onclick="switchTool('cns')"><span class="mobile-tool-icon">&#9762;</span><span><strong>CNS O2</strong><small>Toxicity limits</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+<button type="button" class="mobile-tool-row" data-tool="knowledge" onclick="switchTool('knowledge')"><span class="mobile-tool-icon">&#9776;</span><span><strong>Knowledge</strong><small>References &amp; docs</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+</div>
+<div class="mobile-tool-detail-bar" id="mobileToolDetailBar">
+<button type="button" class="mobile-tool-back" onclick="showMobileToolsList()">&lsaquo; Back</button>
+<span id="mobileToolTitle">Tools</span>
+</div>
 <div id="toolsPanelMount"></div>
 </div>
 <div class="legacy-panels">
@@ -2345,7 +2373,7 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 <div class="stat"><div class="stat-val y">1.4 bar</div><div class="stat-lbl">ppO₂ Limit</div></div>
 </div>
 </div>
-<div class="app-footer-promo" style="margin-top:24px; padding-top:24px; border-top: 1px solid var(--border); text-align:center;">
+<div class="reference-links-block" style="margin-top:24px; padding-top:24px; border-top: 1px solid var(--border); text-align:center;">
 <div class="card-title">Links</div>
 <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;">
 <a href="https://threecats-lsp.com" onmouseout="this.style.borderColor='var(--border-hi)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" rel="noopener noreferrer" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;transition:border-color 0.2s,color 0.2s;" target="_blank"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Three Cats LSP · Diver's Toolkit</span></a>
@@ -2367,7 +2395,7 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 </div>
 </div>
 <!-- Footer: Instagram + GitHub -->
-<div style="text-align: center; padding: 14px 24px 24px; background: transparent; border-top: none; margin-top: -2px;">
+<div class="app-shell-footer-links" style="text-align: center; padding: 14px 24px 24px; background: transparent; border-top: none; margin-top: -2px;">
 <div style="display:inline-flex;align-items:center;gap:14px;">
 <a href="https://www.instagram.com/threecats_lsp" onmouseout="this.style.transform='scale(1)';this.style.opacity='0.8'" onmouseover="this.style.transform='scale(1.15)';this.style.opacity='1'" rel="noopener noreferrer" style="display:flex;align-items:center;transition:transform 0.2s ease,opacity 0.2s ease;opacity:0.8;" target="_blank" title="Follow @threecats_lsp on Instagram">
 <svg fill="none" height="36" viewbox="0 0 50 50" width="36" xmlns="http://www.w3.org/2000/svg">
@@ -3993,6 +4021,31 @@ function renderTissueLoadChart() {
   chartEl.innerHTML = html;
 }
 
+const TOOL_LABELS = {
+  bestmix: 'Best Mix',
+  mod: 'MOD',
+  endcalc: 'END Calc',
+  eadtable: 'EAD Table',
+  gastable: 'Gas Table',
+  converter: 'Unit Converter',
+  cns: 'CNS O2',
+  knowledge: 'Knowledge'
+};
+
+function isMobileToolsShell() {
+  return !!(window.matchMedia && window.matchMedia('(max-width: 767px)').matches);
+}
+
+function showMobileToolsList() {
+  const wrap = document.getElementById('toolsPageWrap');
+  if (!wrap) return;
+  wrap.classList.add('mobile-tool-list');
+  wrap.classList.remove('mobile-tool-detail');
+  const title = document.getElementById('mobileToolTitle');
+  if (title) title.textContent = 'Tools';
+}
+window.showMobileToolsList = showMobileToolsList;
+
 // Init tools on tab open
 function switchTool(name, btn) {
   ['bestmix','mod','endcalc','eadtable','gastable','converter','cns','knowledge'].forEach(t => {
@@ -4006,6 +4059,16 @@ function switchTool(name, btn) {
   });
   if (btn && btn.classList.contains('tools-bar-btn')) {
     document.querySelectorAll('#toolsBar .tools-bar-btn').forEach(b => b.classList.toggle('active', b === btn));
+  }
+  document.querySelectorAll('#mobileToolsList .mobile-tool-row').forEach(row => {
+    row.classList.toggle('active', row.dataset.tool === name);
+  });
+  const wrap = document.getElementById('toolsPageWrap');
+  if (wrap && isMobileToolsShell()) {
+    wrap.classList.remove('mobile-tool-list');
+    wrap.classList.add('mobile-tool-detail');
+    const title = document.getElementById('mobileToolTitle');
+    if (title) title.textContent = TOOL_LABELS[name] || 'Tools';
   }
   document.querySelectorAll('#tool-panel-' + name + ' .lsp-slider').forEach(s => updateSliderFill(s));
   if (name === 'mod')       { calcMODTool(); renderModRefTable(); }

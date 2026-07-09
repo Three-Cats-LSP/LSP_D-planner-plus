@@ -259,6 +259,7 @@ function setNavMode(mode, opts) {
     document.getElementById('algoSubtitle').textContent = 'Dive Planning Tools & Calculators';
     setBrandIcon('tools');
     initTools();
+    if (isMobileShell() && typeof showMobileToolsList === 'function') showMobileToolsList();
     if (typeof appSettings !== 'undefined' && appSettings.save) setTimeout(() => appSettings.save(false), 100);
   }
 }

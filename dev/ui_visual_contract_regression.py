@@ -1164,15 +1164,23 @@ async () => {
   const mainVersionVisible = !!(mainVersion && getComputedStyle(mainVersion).display !== 'none' && mainVersionRect.height > 0 && mainVersionRect.width > 0);
   const refRect = document.getElementById('navRef')?.getBoundingClientRect();
   const headerRefCompact = !mobile || (!!refRect && refRect.width <= 32 && refRect.height <= 32);
+  const appShellFooter = document.querySelector('.app-shell-footer-links');
+  const appShellFooterHidden = !appShellFooter || getComputedStyle(appShellFooter).display === 'none';
   const chipSamples = [];
   const sampleChips = (label) => {
     const chips = document.getElementById('mobileAlgoChips');
     if (!chips) return;
     const r = chips.getBoundingClientRect();
+    const buttons = Array.from(chips.querySelectorAll('.mobile-algo-chip')).map(btn => btn.getBoundingClientRect());
+    const groupCenter = buttons.length
+      ? (buttons[0].left + buttons[buttons.length - 1].right) / 2
+      : 0;
     chipSamples.push({
       label,
       top: Math.round(r.top),
       bottom: Math.round(r.bottom),
+      gapFromHeader: Math.round(r.top - (document.querySelector('header')?.getBoundingClientRect().bottom || 0)),
+      centerError: Math.abs(groupCenter - window.innerWidth / 2),
       active: Array.from(chips.querySelectorAll('.active')).map(btn => btn.textContent.trim()),
     });
   };
@@ -1225,16 +1233,47 @@ async () => {
   await new Promise(r => setTimeout(r, 120));
   navChecks.tools = document.getElementById('toolsPageWrap')?.classList.contains('visible') === true;
   sampleChips('tools');
+  const mobileToolsListVisible = mobile
+    ? getComputedStyle(document.getElementById('mobileToolsList')).display !== 'none'
+    : true;
+  const mobileToolRows = document.querySelectorAll('#mobileToolsList .mobile-tool-row').length;
+  const mobileToolsPanelHiddenOnList = mobile
+    ? getComputedStyle(document.getElementById('toolsPanelMount')).display === 'none'
+    : true;
+  if (mobile) {
+    document.querySelector('#mobileToolsList .mobile-tool-row[data-tool="mod"]')?.click();
+    await new Promise(r => setTimeout(r, 160));
+  }
+  const mobileToolDetailVisible = mobile
+    ? document.getElementById('toolsPageWrap')?.classList.contains('mobile-tool-detail') === true
+      && getComputedStyle(document.getElementById('mobileToolDetailBar')).display !== 'none'
+      && getComputedStyle(document.getElementById('toolsPanelMount')).display !== 'none'
+    : true;
+  const mobileToolTitle = document.getElementById('mobileToolTitle')?.textContent?.trim() || '';
+  if (mobile) {
+    document.querySelector('#mobileToolDetailBar .mobile-tool-back')?.click();
+    await new Promise(r => setTimeout(r, 120));
+  }
+  const mobileToolsBackToList = mobile
+    ? document.getElementById('toolsPageWrap')?.classList.contains('mobile-tool-list') === true
+      && getComputedStyle(document.getElementById('mobileToolsList')).display !== 'none'
+      && getComputedStyle(document.getElementById('toolsPanelMount')).display === 'none'
+    : true;
 
   document.getElementById('navBtnSettings')?.click();
   await new Promise(r => setTimeout(r, 120));
   navChecks.settings = document.getElementById('settingsPageWrap')?.classList.contains('visible') === true;
   sampleChips('settings');
+  const settingsLinkCount = document.querySelectorAll('.settings-app-link-list a').length;
 
   document.getElementById('navRef')?.click();
   await new Promise(r => setTimeout(r, 120));
   const refModal = document.getElementById('referenceModal');
   navChecks.ref = refModal ? getComputedStyle(refModal).display !== 'none' : false;
+  const referenceLinksVisible = (() => {
+    const block = document.querySelector('#referenceModal .reference-links-block');
+    return !!block && getComputedStyle(block).display !== 'none' && block.querySelectorAll('a').length >= 6;
+  })();
   if (refModal && getComputedStyle(refModal).display !== 'none') {
     document.querySelector('#referenceModal button[onclick*="toggleReference"]')?.click();
     await new Promise(r => setTimeout(r, 80));
@@ -1288,8 +1327,18 @@ async () => {
         && appBottomPlanEnabled
         && !mainVersionVisible
         && headerRefCompact
+        && appShellFooterHidden
+        && settingsLinkCount >= 8
+        && referenceLinksVisible
+        && mobileToolsListVisible
+        && mobileToolRows >= 8
+        && mobileToolsPanelHiddenOnList
+        && mobileToolDetailVisible
+        && mobileToolTitle === 'MOD'
+        && mobileToolsBackToList
         && chipSamples.length >= 3
         && chipSamples.every(s => Math.abs(s.top - chipSamples[0].top) <= 1)
+        && chipSamples.every(s => s.centerError <= 2 && s.gapFromHeader >= 4)
       : desktopNavCount === 5 && (!appBottomNavVisible || appBottomNavHeight < 1))
     && bottomGap < 8;
 
@@ -1307,6 +1356,15 @@ async () => {
     appBottomPlanEnabled,
     mainVersionVisible,
     headerRefCompact,
+    appShellFooterHidden,
+    settingsLinkCount,
+    referenceLinksVisible,
+    mobileToolsListVisible,
+    mobileToolRows,
+    mobileToolsPanelHiddenOnList,
+    mobileToolDetailVisible,
+    mobileToolTitle,
+    mobileToolsBackToList,
     chipSamples,
     duplicateControls,
     bnavButtons,
