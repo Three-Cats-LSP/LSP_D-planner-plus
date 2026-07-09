@@ -29,10 +29,10 @@
   .app-bottom-nav .nav-item {
     flex: 1 1 0;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 2px;
+    gap: 0;
     min-height: 48px;
     min-width: 48px;
     padding: 6px 4px;
@@ -42,7 +42,7 @@
     background: transparent;
     color: var(--text-muted);
     font-family: system-ui, -apple-system, Roboto, sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -51,12 +51,13 @@
     -webkit-tap-highlight-color: transparent;
   }
 
+  .app-bottom-nav .nav-item > span {
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
   .app-bottom-nav .nav-item .nav-icon {
-    font-size: 11px;
-    font-family: var(--font-mono);
-    font-weight: 800;
-    line-height: 1;
-    opacity: 0.85;
+    display: none;
   }
 
   .app-bottom-nav .nav-item:hover:not(:disabled) {
@@ -163,11 +164,14 @@
   .mobile-algo-chips {
     display: flex;
     gap: 6px;
-    padding: 0 0 var(--space-2);
+    padding: 0 var(--space-3) var(--space-2);
     overflow-x: auto;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
     flex-shrink: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    z-index: 30;
   }
 
   .mobile-algo-chips::-webkit-scrollbar {
@@ -349,6 +353,47 @@
     padding-right: 6px;
   }
 
+  #ccrFieldsRow .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #ccrFieldsRow .circuit-mode-field,
+  #ccrFieldsRow #ccrBailoutRow {
+    grid-column: 1 / -1;
+  }
+
+  #ccrFieldsRow .circ-btns {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  #ccrFieldsRow #ccrBailoutRow select {
+    width: 100%;
+  }
+
+  #diluentGasCard .gas-card-grid {
+    gap: 8px;
+    align-items: flex-end;
+  }
+
+  #diluentGasCard .gas-card-grid .gas-f-mix {
+    flex: 1 0 100%;
+  }
+
+  #diluentGasCard .gas-card-grid .gas-f-num {
+    flex: 0 0 74px;
+    width: 74px;
+    max-width: 74px;
+  }
+
+  #diluentGasCard .gas-card-grid .gas-f-num input,
+  #diluentGasCard .gas-card-grid .gas-f-num select {
+    min-width: 44px;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
   /* Material touch targets */
   .stepper-btn,
   .gen-btn,
@@ -358,10 +403,16 @@
   .tools-bar-btn,
   .result-tab-btn,
   .option-pill-toggle,
-  .theme-pill-toggle,
-  .header-ref-btn {
+  .theme-pill-toggle {
     min-height: 44px;
     min-width: 44px;
+  }
+
+  .header-ref-btn {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    min-height: 28px;
   }
 
   .settings-version-label {
@@ -373,6 +424,10 @@
     font-size: 10px;
     letter-spacing: 1px;
     opacity: 0.72;
+  }
+
+  #mainVersionLabel {
+    display: none !important;
   }
 
   .gen-btn {

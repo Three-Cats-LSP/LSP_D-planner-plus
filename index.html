@@ -146,6 +146,13 @@
 </div>
 </div>
 </header>
+<div class="mobile-algo-chips" id="mobileAlgoChips" aria-label="Main navigation">
+<button type="button" class="mobile-algo-chip" id="mobChipRec" onclick="setMainNav('rec',this)">REC</button>
+<button type="button" class="mobile-algo-chip active" id="mobChipBuh" onclick="setMainNav('buh',this)">Bühlmann</button>
+<button type="button" class="mobile-algo-chip" id="mobChipVpm" onclick="setMainNav('vpm',this)">VPM</button>
+<button type="button" class="mobile-algo-chip" id="mobChipTools" onclick="setMainNav('tools',this)">Tools</button>
+<button type="button" class="mobile-algo-chip" id="mobChipSettings" onclick="setMainNav('settings',this)">Settings</button>
+</div>
 <main class="app-content" id="appContent">
 <!-- MAIN NAV — Rec · Bühlmann · VPM · Tools · Settings -->
 <div class="main-nav-bar visible" id="mainNavBar">
@@ -167,13 +174,6 @@
 <button class="tools-bar-btn" id="tool-knowledge" onclick="switchTool('knowledge',this)">Knowledge</button>
 </div>
 <!-- PLANNER TWO-COLUMN VIEW -->
-<div class="mobile-algo-chips" id="mobileAlgoChips" aria-label="Algorithm">
-<button type="button" class="mobile-algo-chip" id="mobChipRec" onclick="setMainNav('rec',this)">REC</button>
-<button type="button" class="mobile-algo-chip active" id="mobChipBuh" onclick="setMainNav('buh',this)">Bühlmann</button>
-<button type="button" class="mobile-algo-chip" id="mobChipVpm" onclick="setMainNav('vpm',this)">VPM</button>
-<button type="button" class="mobile-algo-chip" id="mobChipTools" onclick="setMainNav('tools',this)">Tools</button>
-<button type="button" class="mobile-algo-chip" id="mobChipSettings" onclick="setMainNav('settings',this)">Settings</button>
-</div>
 <div class="planner-main visible" id="plannerView">
 <section class="v3-panel v4-shell mobile-active planner-mode-view" id="recPlannerView" aria-label="Recreational dive parameters">
 <div class="panel-header-row">
@@ -492,7 +492,7 @@
 <div id="ccrFieldsRow" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:10px;">
 <div style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--accent);margin-bottom:10px;">🔄 DIVE TYPE</div>
 <div class="form-grid u0">
-<div class="field">
+<div class="field circuit-mode-field">
 <label>Circuit</label>
 <select id="circuitSelect" class="hidden-v3" aria-hidden="true" tabindex="-1">
 <option selected="" value="OC">Open Circuit (OC)</option>
@@ -811,6 +811,7 @@
 <span id="zhlRepLabel" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);"></span>
 </div>
 </section>
+
 
 <!-- ── Gas Consumption ── -->
 
@@ -2424,10 +2425,11 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 <p id="mainVersionLabel" style="color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;margin-top:6px;letter-spacing:1px;opacity:0.5;"></p>
 </div>
 </main>
-<nav class="app-bottom-nav" id="appBottomNav" aria-label="Results navigation">
-<button type="button" class="nav-item active" id="mobNavProfile" data-result-tab="profile" onclick="setMobileResultTab('profile')" disabled aria-disabled="true"><span class="nav-icon" aria-hidden="true">DP</span><span>Dive Profile</span></button>
-<button type="button" class="nav-item" id="mobNavContingency" data-result-tab="contingency" onclick="setMobileResultTab('contingency')" disabled aria-disabled="true"><span class="nav-icon" aria-hidden="true">CP</span><span>Contingency</span></button>
-<button type="button" class="nav-item" id="mobNavTissue" data-result-tab="tissue" onclick="setMobileResultTab('tissue')" disabled aria-disabled="true"><span class="nav-icon" aria-hidden="true">TS</span><span>Tissues</span></button>
+<nav class="app-bottom-nav" id="appBottomNav" aria-label="Main and results navigation">
+<button type="button" class="nav-item active" id="mobNavPlan" data-tab="plan" onclick="setMobileTab('plan')" aria-disabled="false"><span>Plan</span></button>
+<button type="button" class="nav-item" id="mobNavProfile" data-result-tab="profile" onclick="setMobileResultTab('profile')" disabled aria-disabled="true"><span>Profile</span></button>
+<button type="button" class="nav-item" id="mobNavContingency" data-result-tab="contingency" onclick="setMobileResultTab('contingency')" disabled aria-disabled="true"><span>Contingency</span></button>
+<button type="button" class="nav-item" id="mobNavTissue" data-result-tab="tissue" onclick="setMobileResultTab('tissue')" disabled aria-disabled="true"><span>Tissues</span></button>
 </nav>
 </div><!-- /app -->
 <script>

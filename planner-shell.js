@@ -28,10 +28,15 @@ function isMobileTab(tab) {
 
 function syncMobileResultsNav() {
   const hasResults = document.getElementById('resultsPanel')?.classList.contains('has-results');
-  document.querySelectorAll('#appBottomNav .nav-item').forEach(btn => {
+  document.querySelectorAll('#appBottomNav [data-result-tab]').forEach(btn => {
     btn.disabled = !hasResults;
     btn.setAttribute('aria-disabled', hasResults ? 'false' : 'true');
   });
+  const planBtn = document.querySelector('#appBottomNav [data-tab="plan"]');
+  if (planBtn) {
+    planBtn.disabled = false;
+    planBtn.setAttribute('aria-disabled', 'false');
+  }
   _highlightMobileBottomNav(mobileTab);
 }
 
@@ -46,7 +51,9 @@ window._syncMobileAlgoChips = _syncMobileAlgoChips;
 function _highlightMobileBottomNav(tab) {
   const hasResults = document.getElementById('resultsPanel')?.classList.contains('has-results');
   document.querySelectorAll('#appBottomNav .nav-item').forEach(btn => {
-    btn.classList.toggle('active', !!hasResults && tab === 'results' && btn.dataset.resultTab === mobileResultTab);
+    const isPlan = tab === 'plan' && btn.dataset.tab === 'plan';
+    const isResult = !!hasResults && tab === 'results' && btn.dataset.resultTab === mobileResultTab;
+    btn.classList.toggle('active', isPlan || isResult);
   });
 }
 

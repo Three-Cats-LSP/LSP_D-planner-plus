@@ -1154,6 +1154,29 @@ async () => {
   const appBottomNavPresent = !!appBottomNav;
   const appBottomNavVisible = !!(appBottomNav && getComputedStyle(appBottomNav).display !== 'none');
   const appBottomNavHeight = appBottomNav?.getBoundingClientRect().height || 0;
+  const appBottomLabels = appBottomNav
+    ? Array.from(appBottomNav.querySelectorAll('.nav-item')).map(btn => btn.textContent.trim())
+    : [];
+  const appBottomHasGhostIcons = appBottomNav ? /\b(DP|CP|TS)\b/.test(appBottomNav.textContent || '') : false;
+  const appBottomPlanEnabled = !!document.querySelector('#appBottomNav [data-tab="plan"]:not(:disabled)');
+  const mainVersion = document.getElementById('mainVersionLabel');
+  const mainVersionRect = mainVersion?.getBoundingClientRect();
+  const mainVersionVisible = !!(mainVersion && getComputedStyle(mainVersion).display !== 'none' && mainVersionRect.height > 0 && mainVersionRect.width > 0);
+  const refRect = document.getElementById('navRef')?.getBoundingClientRect();
+  const headerRefCompact = !mobile || (!!refRect && refRect.width <= 32 && refRect.height <= 32);
+  const chipSamples = [];
+  const sampleChips = (label) => {
+    const chips = document.getElementById('mobileAlgoChips');
+    if (!chips) return;
+    const r = chips.getBoundingClientRect();
+    chipSamples.push({
+      label,
+      top: Math.round(r.top),
+      bottom: Math.round(r.bottom),
+      active: Array.from(chips.querySelectorAll('.active')).map(btn => btn.textContent.trim()),
+    });
+  };
+  sampleChips('initial');
 
   const bnavButtons = document.querySelectorAll('.bnav-btn').length;
   const duplicateControls = {
@@ -1201,10 +1224,12 @@ async () => {
   document.getElementById('navBtnTools')?.click();
   await new Promise(r => setTimeout(r, 120));
   navChecks.tools = document.getElementById('toolsPageWrap')?.classList.contains('visible') === true;
+  sampleChips('tools');
 
   document.getElementById('navBtnSettings')?.click();
   await new Promise(r => setTimeout(r, 120));
   navChecks.settings = document.getElementById('settingsPageWrap')?.classList.contains('visible') === true;
+  sampleChips('settings');
 
   document.getElementById('navRef')?.click();
   await new Promise(r => setTimeout(r, 120));
@@ -1255,7 +1280,16 @@ async () => {
     && Object.values(navChecks).every(Boolean)
     && (mobile ? backToPlanner : true)
     && (mobile
-      ? appBottomNavPresent && appBottomNavVisible && appBottomNavHeight >= 48
+      ? appBottomNavPresent
+        && appBottomNavVisible
+        && appBottomNavHeight >= 48
+        && JSON.stringify(appBottomLabels) === JSON.stringify(['Plan', 'Profile', 'Contingency', 'Tissues'])
+        && !appBottomHasGhostIcons
+        && appBottomPlanEnabled
+        && !mainVersionVisible
+        && headerRefCompact
+        && chipSamples.length >= 3
+        && chipSamples.every(s => Math.abs(s.top - chipSamples[0].top) <= 1)
       : desktopNavCount === 5 && (!appBottomNavVisible || appBottomNavHeight < 1))
     && bottomGap < 8;
 
@@ -1268,6 +1302,12 @@ async () => {
     appBottomNavPresent,
     appBottomNavVisible,
     appBottomNavHeight,
+    appBottomLabels,
+    appBottomHasGhostIcons,
+    appBottomPlanEnabled,
+    mainVersionVisible,
+    headerRefCompact,
+    chipSamples,
     duplicateControls,
     bnavButtons,
     cssHasBottomNav,

@@ -463,7 +463,7 @@
       "start_line": 419,
       "end_line": 918,
       "line_count": 500,
-      "content_fingerprint": "640a4788d79d483b63a091a16b702889b5d9e21a77b589417c8fe14e73967f32",
+      "content_fingerprint": "c1b84919604e1cf1a67c2efb728414472c2ece1edcab6bdf0ba838ce707102da",
       "review_session": "C09-B-MODE-STATE-1",
       "verification_session": "C09-V-B-MODE-STATE-1",
       "lens_results": {
@@ -544,9 +544,9 @@
       "unit_id": "UI-MODE-STATE",
       "path": "settings-core.js",
       "start_line": 919,
-      "end_line": 1049,
-      "line_count": 131,
-      "content_fingerprint": "96fb50ae1e6707977baba137b794a142cab1d7586bbe50cef6fe71234295b0e2",
+      "end_line": 1050,
+      "line_count": 132,
+      "content_fingerprint": "ba4fe8716f44290d44814891b15e0defc3a7c53eeb4d3d9083e3cda27f4c74b5",
       "review_session": "C09-C-MODE-STATE-2",
       "verification_session": "C09-V-C-MODE-STATE-2",
       "lens_results": {

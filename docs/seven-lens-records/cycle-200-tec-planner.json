@@ -169,7 +169,7 @@
       "start_line": 1,
       "end_line": 500,
       "line_count": 500,
-      "content_fingerprint": "c482297c3b4504d18d23a710105133ff51e36b85a685bc0ef39ca5e84ff591ef",
+      "content_fingerprint": "cc06bd0e7706a18dabcb6ad29898ea38453b35f877fff01442397354d0908b24",
       "review_session": "cursor/seven-lens-cycle-200-audit",
       "verification_session": "cursor/seven-lens-cycle-200-verify",
       "lens_results": {
@@ -252,7 +252,7 @@
       "start_line": 501,
       "end_line": 560,
       "line_count": 60,
-      "content_fingerprint": "bbcf50ef3610c5e81e4afd46f74cbe26d4b64f4b78f848e6c8c2a4effbb2c959",
+      "content_fingerprint": "83613e3b6a0c25157d86d840eff76ed7739f8890649cf5e8c26ef8864e3a3b6f",
       "review_session": "cursor/seven-lens-cycle-200-audit",
       "verification_session": "cursor/seven-lens-cycle-200-verify",
       "lens_results": {

@@ -296,7 +296,7 @@
       "start_line": 1,
       "end_line": 500,
       "line_count": 500,
-      "content_fingerprint": "0f3ffbe3af96d5049afa5d41423fc4552546f041b2e99b65b2e18b4ecd9ea5b6",
+      "content_fingerprint": "ed173736a5da30e5bfd3d7f134ecc11e136bc8043369f749b55f8a27dd13d374",
       "review_session": "C07-A",
       "verification_session": "C09-DEP-DECO-CARD-SLATE-A",
       "lens_results": {
@@ -376,7 +376,7 @@
       "start_line": 501,
       "end_line": 1000,
       "line_count": 500,
-      "content_fingerprint": "64b505463162bbdb12b31246e4f5f594b2245c288a0d469f5b49eb44adc8b0ed",
+      "content_fingerprint": "515e94b9238890830474ff60f1275ef332a83f10a4edab89f3e816205f8a0dbd",
       "review_session": "C07-B",
       "verification_session": "C09-DEP-DECO-CARD-SLATE-B",
       "lens_results": {
