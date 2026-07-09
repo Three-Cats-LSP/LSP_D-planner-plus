@@ -386,7 +386,7 @@ async function runAll() {
 
 window.runCCRDiffAll = runAll;
 
-if (location.search.includes('autorun=1')) {
+if (!location.search.includes('autorun=0')) {
 
   runAll().catch(e => {
 

@@ -4001,7 +4001,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c918f2ea784ea7ef4357de10ba4807c8d3f3da560db18ad1da6d4a3e0f273127",
+      "fingerprint": "0096d32231d6f923ff73ea50cb464de885cc91734ea7352bf752be989d428b2c",
       "last_read_fingerprint": null,
       "regression_cases": [],
       "evidence": [],
@@ -4050,18 +4050,14 @@
       "path": "tests-ccr-differential.html",
       "layer": "test_infrastructure",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3bd34d6f0968243e6e30aa747a08a3041edde27c658c85f0a33b090ab64ae02a",
-      "last_read_fingerprint": "3bd34d6f0968243e6e30aa747a08a3041edde27c658c85f0a33b090ab64ae02a",
-      "regression_cases": [
-        "COV-01"
-      ],
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
+      "fingerprint": "a6ceac2103748d5e41d1571f5ac9acaeff6e1aec128820c5ad0b5c7e4f58702a",
+      "last_read_fingerprint": null,
+      "regression_cases": [],
+      "evidence": [],
       "issue": "V3 full audit verified â€” TEST-CCR-DIFF-HTML"
     },
     {
@@ -5604,7 +5600,7 @@
         "REG-87",
         "REG-88"
       ],
-      "fingerprint": "01c475dfb13951c20bd79b7d092585f49b65946f8a348a184c91d1166769265b",
+      "fingerprint": "b2ac7d8a9a1ec1fda9f9526bf296cd8c1e3c92bee0a288eebf319181614dac4a",
       "last_read_fingerprint": null
     },
     {

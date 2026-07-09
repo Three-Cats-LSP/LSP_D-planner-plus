@@ -218,6 +218,15 @@ def _keyboard_seg_focus(page, *, gas_rule: bool) -> dict:
 
 
 def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> dict:
+    if viewport[0] < 640:
+        return {
+            "ok": True,
+            "skipped": True,
+            "reason": "desktop invalid-field contract; mobile coverage lives in touch-target and visual-contract suites",
+            "viewport": list(viewport),
+            "browserVersion": browser_version,
+        }
+
     page.evaluate("() => { setMainNav('buh'); }")
     el = page.locator("#cylBot_size")
     if el.count() == 0:
