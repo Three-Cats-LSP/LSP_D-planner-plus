@@ -736,6 +736,7 @@ async () => {
   const gasWarningBanner = document.getElementById('gasWarningBanner');
   const gasWarningStyle = styleOf(gasWarningBanner);
   const inlineWarning = document.querySelector('.gas-usage-inline-warning');
+  const noGasCard = document.querySelector('.gas-usage-card--nogas');
   const cardWarningStyle = styleOf(inlineWarning);
   const decoWarningStyle = styleOf(document.querySelector('#decoAlerts .alert, #decoAlertsNarcotic .alert'));
   const oldCardWarningCount = document.querySelectorAll('.gas-usage-card .gas-consumption-warning').length;
@@ -775,6 +776,8 @@ async () => {
     decoWarningStyle,
     warningTypographyOk,
     criticalCardColor: document.querySelector('.gas-usage-card--critical') ? getComputedStyle(document.querySelector('.gas-usage-card--critical')).borderTopColor.replace(/\s+/g, '').toLowerCase() : '',
+    noGasCardColor: noGasCard ? getComputedStyle(noGasCard).borderTopColor.replace(/\s+/g, '').toLowerCase() : '',
+    noGasStatusColor: noGasCard ? getComputedStyle(noGasCard).getPropertyValue('--gas-status').trim().toLowerCase() : '',
     checks,
     overflow,
     bodyScrollWidth: document.documentElement.scrollWidth,
@@ -2033,6 +2036,9 @@ def main() -> int:
         and mobile_warning_details.get("warningPseudoIconText") in ("none", '""')
         and mobile_warning_details.get("warningIconCount") == 0
         and mobile_warning_details.get("cardWarningIconText") == "\u26a0"
+        and mobile_warning_details.get("cardWarningColor") in ("rgb(255,49,49)", "rgb(255,59,48)")
+        and mobile_warning_details.get("noGasCardColor") in ("rgb(255,49,49)", "rgb(220,38,38)")
+        and mobile_warning_details.get("noGasStatusColor") in ("#dc2626", "rgb(220,38,38)")
         and not mobile_warning_details.get("console_errors")
     )
     results["SL-C09-VPM-MODE-TOGGLE"] = bool(

@@ -374,9 +374,9 @@
       "unit_id": "UI-CSS-RESULTS",
       "path": "lsp-dplanner-results.css",
       "start_line": 501,
-      "end_line": 1001,
-      "line_count": 501,
-      "content_fingerprint": "2bfa7d254eb70594acc5f4c8b52ccdc18a280444d6c7f344a601d0a39b87fc84",
+      "end_line": 1000,
+      "line_count": 500,
+      "content_fingerprint": "0b087a73857d264cc9c9b4ed9111436ba6edb31f34c5c9e9cd302d512e66597d",
       "review_session": "C07-B",
       "verification_session": "C09-DEP-DECO-CARD-SLATE-B",
       "lens_results": {
@@ -445,6 +445,89 @@
           ],
           "evidence": "Glob no ui_results_css_regression; release PASS without results computed-style cases",
           "result": "FINDING"
+        }
+      }
+    },
+    {
+      "id": "UI-CSS-RESULTS-P03",
+      "unit_id": "UI-CSS-RESULTS",
+      "path": "lsp-dplanner-results.css",
+      "start_line": 1001,
+      "end_line": 1004,
+      "line_count": 4,
+      "content_fingerprint": "fe8a1c7579c2a92c1e63e8292cf2501e125fb07ae02ef383120adf68d41e37f0",
+      "review_session": "C07-DEP-GAS-CARD-COLORS-C",
+      "verification_session": "C09-DEP-GAS-CARD-COLORS-C",
+      "lens_results": {
+        "L1": {
+          "trace": "Gas-card severity color tail rules reviewed after critical.zip mockup update; only inline warning color/state overrides live in this four-line tail boundary.",
+          "boundary_cases": [
+            "critical/low gas stays orange warning tier",
+            "no-gas card remains stronger red no-go tier",
+            "no schedule, graph, table, or layout selectors in tail boundary"
+          ],
+          "evidence": "lsp-dplanner-results.css:1001-1004; dev/ui_visual_contract_regression.py SL-C09-MOBILE-WARNING-WRAP color assertions passed",
+          "result": "NO_FINDING"
+        },
+        "L2": {
+          "trace": "Gas-card severity color tail rules reviewed after critical.zip mockup update; only inline warning color/state overrides live in this four-line tail boundary.",
+          "boundary_cases": [
+            "critical/low gas stays orange warning tier",
+            "no-gas card remains stronger red no-go tier",
+            "no schedule, graph, table, or layout selectors in tail boundary"
+          ],
+          "evidence": "lsp-dplanner-results.css:1001-1004; dev/ui_visual_contract_regression.py SL-C09-MOBILE-WARNING-WRAP color assertions passed",
+          "result": "NO_FINDING"
+        },
+        "L3": {
+          "trace": "Gas-card severity color tail rules reviewed after critical.zip mockup update; only inline warning color/state overrides live in this four-line tail boundary.",
+          "boundary_cases": [
+            "critical/low gas stays orange warning tier",
+            "no-gas card remains stronger red no-go tier",
+            "no schedule, graph, table, or layout selectors in tail boundary"
+          ],
+          "evidence": "lsp-dplanner-results.css:1001-1004; dev/ui_visual_contract_regression.py SL-C09-MOBILE-WARNING-WRAP color assertions passed",
+          "result": "NO_FINDING"
+        },
+        "L4": {
+          "trace": "Gas-card severity color tail rules reviewed after critical.zip mockup update; only inline warning color/state overrides live in this four-line tail boundary.",
+          "boundary_cases": [
+            "critical/low gas stays orange warning tier",
+            "no-gas card remains stronger red no-go tier",
+            "no schedule, graph, table, or layout selectors in tail boundary"
+          ],
+          "evidence": "lsp-dplanner-results.css:1001-1004; dev/ui_visual_contract_regression.py SL-C09-MOBILE-WARNING-WRAP color assertions passed",
+          "result": "NO_FINDING"
+        },
+        "L5": {
+          "trace": "Gas-card severity color tail rules reviewed after critical.zip mockup update; only inline warning color/state overrides live in this four-line tail boundary.",
+          "boundary_cases": [
+            "critical/low gas stays orange warning tier",
+            "no-gas card remains stronger red no-go tier",
+            "no schedule, graph, table, or layout selectors in tail boundary"
+          ],
+          "evidence": "lsp-dplanner-results.css:1001-1004; dev/ui_visual_contract_regression.py SL-C09-MOBILE-WARNING-WRAP color assertions passed",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "Gas-card severity color tail rules reviewed after critical.zip mockup update; only inline warning color/state overrides live in this four-line tail boundary.",
+          "boundary_cases": [
+            "critical/low gas stays orange warning tier",
+            "no-gas card remains stronger red no-go tier",
+            "no schedule, graph, table, or layout selectors in tail boundary"
+          ],
+          "evidence": "lsp-dplanner-results.css:1001-1004; dev/ui_visual_contract_regression.py SL-C09-MOBILE-WARNING-WRAP color assertions passed",
+          "result": "NO_FINDING"
+        },
+        "L7": {
+          "trace": "Gas-card severity color tail rules reviewed after critical.zip mockup update; only inline warning color/state overrides live in this four-line tail boundary.",
+          "boundary_cases": [
+            "critical/low gas stays orange warning tier",
+            "no-gas card remains stronger red no-go tier",
+            "no schedule, graph, table, or layout selectors in tail boundary"
+          ],
+          "evidence": "lsp-dplanner-results.css:1001-1004; dev/ui_visual_contract_regression.py SL-C09-MOBILE-WARNING-WRAP color assertions passed",
+          "result": "NO_FINDING"
         }
       }
     }
@@ -1370,6 +1453,28 @@
         "UI-CSS-RESULTS-P02": "lines 501-971"
       },
       "notes": "Only deco-plan-card shell and travel-gas pill palette changed; visual contract keeps hazard banners red and deco plan card neutral slate."
+    },
+    {
+      "session": "C09-DEP-GAS-CARD-COLOR-TIERS",
+      "part_id": "UI-CSS-RESULTS",
+      "unit_id": "UI-CSS-RESULTS",
+      "path": "lsp-dplanner-results.css",
+      "content_fingerprint": "9675aa3bfad7e6547eceda8663331391a1bd6e93736e511d6e73a6f802398cab",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "0f3ffbe3af96d5049afa5d41423fc4552546f041b2e99b65b2e18b4ecd9ea5b6",
+        "UI-CSS-RESULTS-P02": "0b087a73857d264cc9c9b4ed9111436ba6edb31f34c5c9e9cd302d512e66597d",
+        "UI-CSS-RESULTS-P03": "fe8a1c7579c2a92c1e63e8292cf2501e125fb07ae02ef383120adf68d41e37f0"
+      },
+      "boundaries": {
+        "UI-CSS-RESULTS-P01": "lines 1-500",
+        "UI-CSS-RESULTS-P02": "lines 501-1000",
+        "UI-CSS-RESULTS-P03": "lines 1001-1004"
+      },
+      "trigger": "critical.zip mockup applied to distinguish critical/low gas from no-gas/no-go cards.",
+      "review_scope": "Gas consumption color-tier CSS and visual guard only; schedule, graph, and renderer behavior unchanged.",
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-09T00:00:00Z",
+      "verifier": "Codex simplified dependency re-review"
     }
   ],
   "dependency_revalidations": [

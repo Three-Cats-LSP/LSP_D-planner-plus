@@ -563,14 +563,17 @@ body.light-theme #resultsPanel .chip-yellow { background: var(--yellow-dim) !imp
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-consumption-toolbar { display:flex; justify-content:flex-end; align-items:center; gap:var(--space-2); margin-bottom:var(--space-2); }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-threshold-control { display:inline-flex; align-items:center; gap:5px; font-family:var(--font-mono); font-size:10px; color:var(--muted); }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-threshold-control input { width:48px; min-height:28px; padding:3px 5px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface); color:var(--text); font-family:var(--font-mono); font-size:11px; text-align:right; }
-#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning { display:flex; gap:var(--space-2); align-items:flex-start; margin:2px 0 6px; box-sizing:border-box; white-space:normal; overflow-wrap:anywhere; color:var(--status-red) !important; font-family:'Outfit', sans-serif; font-size:12px; font-weight:700; letter-spacing:0; line-height:1.45; }
-#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning * { color:var(--status-red) !important; }
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning { display:flex; gap:var(--space-2); align-items:flex-start; margin:2px 0 6px; box-sizing:border-box; white-space:normal; overflow-wrap:anywhere; font-family:'Outfit', sans-serif; font-size:12px; font-weight:700; letter-spacing:0; line-height:1.45; }
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--critical,
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--critical * { color:#E8590C !important; }
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--nogas,
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--nogas * { color:#FF3B30 !important; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-consumption-bars { display:flex; flex-direction:column; gap:var(--space-2); }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card { --gas-status:var(--status-green); --gas-track:rgba(148,163,184,0.22); border:1px solid var(--border); border-left:4px solid var(--gas-status); border-radius:var(--radius-md); padding:var(--space-3); background:rgba(255,255,255,0.025); box-shadow:0 1px 0 rgba(255,255,255,0.02) inset; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--ok { --gas-status:var(--status-green); }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--caution { --gas-status:var(--status-orange); }
-#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--critical { --gas-status:var(--status-red); border-color:var(--status-red); border-left-color:var(--status-red); background:rgba(255,68,51,0.08); }
-#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas { --gas-status:#991b1b; border-color:#ef4444; border-left-color:#991b1b; background:rgba(127,29,29,0.30); box-shadow:0 0 0 1px rgba(239,68,68,0.18) inset; }
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--critical { --gas-status:#E8590C; border-color:#E8590C; border-left-color:#E8590C; background:rgba(232,89,12,0.10); }
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas { --gas-status:#DC2626; border-color:#DC2626; border-left-color:#991b1b; background:rgba(220,38,38,0.16); box-shadow:0 0 0 1px rgba(239,68,68,0.18) inset; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-head { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--space-2); margin-bottom:5px; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-title { display:flex; align-items:baseline; gap:7px; min-width:0; flex-wrap:wrap; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-mix { font-family:var(--font-mono); font-size:13px; font-weight:800; color:var(--gas-status); letter-spacing:0.02em; }
@@ -594,8 +597,8 @@ body.light-theme #resultsPanel .chip-yellow { background: var(--yellow-dim) !imp
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-foot strong { color:var(--text); }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-consumption-note { font-family:var(--font-mono); font-size:10px; color:var(--muted); margin-top:var(--space-2); letter-spacing:0.04em; overflow-wrap:anywhere; }
 body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card { background:#fff; }
-body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--critical { background:#fff5f4; }
-body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas { --gas-status:#991b1b; background:#ffe4e6; border-color:#7f1d1d; border-left-color:#7f1d1d; box-shadow:0 0 0 1px rgba(127,29,29,0.10) inset; }
+body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--critical { background:#fff3ea; border-color:#E8590C; border-left-color:#E8590C; }
+body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas { --gas-status:#DC2626; background:#ffe4e2; border-color:#FF3131; border-left-color:#B91C1C; box-shadow:0 0 0 1px rgba(127,29,29,0.10) inset; }
 #resultsPanel .profile-export-actions { margin-left: auto; }
 .results-section-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); padding: var(--space-3) var(--space-4) var(--space-2); flex-wrap: wrap; }
 .results-section-label { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent); }
@@ -657,7 +660,10 @@ body.light-theme #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn {
   border: 1px solid #111;
   color: #111 !important;
 }
-body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning { color: #cc0000 !important; }
+body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--critical,
+body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--critical * { color:#E8590C !important; }
+body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--nogas,
+body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--nogas * { color:#FF3131 !important; }
 body.light-theme #resultsPanel #decoAlerts .alert.deco *,
 body.light-theme #resultsPanel #decoAlertsNarcotic .alert.deco *,
 body.light-theme #resultsPanel #decoAlerts .alert.narcotic-warn *,
@@ -667,13 +673,10 @@ body.light-theme #resultsPanel #decoAlertsNarcotic .alert.narcotic-warn * {
 body.light-theme #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn * {
   color: #111 !important;
 }
-body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning * {
-  color: #cc0000 !important;
-}
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas .gas-usage-inline-warning,
-#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas .gas-usage-inline-warning * { color:#fff !important; }
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas .gas-usage-inline-warning * { color:#FF3B30 !important; }
 body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas .gas-usage-inline-warning,
-body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas .gas-usage-inline-warning * { color:#7f1d1d !important; }
+body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas .gas-usage-inline-warning * { color:#FF3131 !important; }
 body.light-theme #resultsPanel #decoAlertsNarcotic .alert .tip-icon { color: #cc0000 !important; opacity: 0.85; }
 #resultsPanel .schedule-wrap { padding: 0 var(--space-4) var(--space-3); overflow-x: auto; display: flex; flex-direction: column; gap: 0; }
 #resultsPanel .schedule-wrap > .deco-table-wrap { margin-bottom: 0; }
