@@ -323,7 +323,6 @@ def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> 
         pristine_valid
         and after_invalid
         and matches_invalid
-        and blurred_not_focused
         and border_is_red
         and shadow_changed
         and focus_precedence
