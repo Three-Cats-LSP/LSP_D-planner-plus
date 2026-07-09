@@ -4879,20 +4879,14 @@
       "path": "tools/update_sw_version.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "785afc666783012a1a0e40750f2ee3bc048cd29396711bdeceb9d0fa2dd484d8",
-      "last_read_fingerprint": "785afc666783012a1a0e40750f2ee3bc048cd29396711bdeceb9d0fa2dd484d8",
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01"
-      ],
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity"
-      ],
+      "fingerprint": "41431391fb74db6e5fd4f6f2df92317e37a90380ffa639b38c39d6317e33021f",
+      "last_read_fingerprint": null,
+      "regression_cases": [],
+      "evidence": [],
       "issue": "V3 full audit verified \u00e2\u20ac\u201d TOOL-UPDATE-VERSION"
     },
     {

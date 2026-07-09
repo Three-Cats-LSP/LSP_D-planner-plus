@@ -21,14 +21,14 @@
 | release_config | 1 | 0 | 1 | 0 | 0 |
 | test | 1 | 0 | 0 | 1 | 0 |
 | test_infrastructure | 57 | 0 | 28 | 0 | 29 |
-| tooling | 54 | 0 | 22 | 1 | 31 |
+| tooling | 54 | 0 | 23 | 1 | 30 |
 | ui_core | 16 | 0 | 15 | 0 | 1 |
 | ui_shell | 2 | 0 | 2 | 0 | 0 |
 | web_css | 5 | 0 | 5 | 0 | 0 |
 | web_markup | 7 | 0 | 6 | 0 | 1 |
 | web_runtime | 24 | 0 | 18 | 0 | 6 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **208** | **0** | **105** | **3** | **100** |
+| **Total** | **208** | **0** | **106** | **3** | **99** |
 
 ## Units
 
@@ -188,7 +188,7 @@
 | TOOL-PATCH-VPM | tooling | `tools/patch_vpm_bundle_index.py:1` | 25 | P3 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-PATCH-ZHL | tooling | `tools/patch_zhl_engine.py:1` | 121 | P3 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-SYNC-WWW | tooling | `tools/sync_www.py:1` | 145 | P1 | IN_PROGRESS | - |
-| TOOL-UPDATE-VERSION | tooling | `tools/update_sw_version.py:1` | 104 | P2 | VERIFIED | COV-01, PARITY-01 |
+| TOOL-UPDATE-VERSION | tooling | `tools/update_sw_version.py:1` | 101 | P2 | IN_PROGRESS | - |
 | TOOL-VENDOR | tooling | `tools/vendor_offline_assets.py:1` | 173 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-VERIFY-ASSETS | tooling | `tools/verify_site_assets.py:1` | 132 | P2 | VERIFIED | COV-01, PARITY-01 |
 | CI-AUDIT | ci | `.github/workflows/audit.yml:1` | 143 | P1 | IN_PROGRESS | - |

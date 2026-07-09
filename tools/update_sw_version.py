@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import json
 import re
-import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,8 +28,6 @@ def verify_sw_derives_cache(version: str) -> None:
         raise SystemExit("sw.js must importScripts('app-version.js')")
     if "const CACHE_VERSION = 'lsp-dplanner-plus-v' + APP_VERSION" not in sw:
         raise SystemExit("sw.js must derive CACHE_VERSION from APP_VERSION")
-    if f"lsp-dplanner-plus-v{version}" not in f"lsp-dplanner-plus-v{version}":
-        pass  # derived at runtime — no static string required
 
 
 def verify_index_loads_version_js() -> None:
@@ -38,7 +35,7 @@ def verify_index_loads_version_js() -> None:
     if 'src="app-version.js"' not in html and "src='app-version.js'" not in html:
         raise SystemExit("index.html must load app-version.js")
     if re.search(r"const APP_VERSION\s*=\s*'", html):
-        raise SystemExit("index.html must not duplicate APP_VERSION — use app-version.js")
+        raise SystemExit("index.html must not duplicate APP_VERSION; use app-version.js")
 
 
 def sync_package_json(version: str) -> bool:
@@ -69,18 +66,18 @@ def sync_gradle(version: str) -> bool:
 
 def sync_readme_badge(version: str) -> bool:
     text = README.read_text(encoding="utf-8")
-    updated, n = re.subn(
-        r"(> v)([\d.]+)( · MIT)",
-        rf"\g<1>{version}\3",
-        text,
-        count=1,
-    )
-    if n != 1:
-        raise SystemExit("README badge line not found (> vX.Y.Z · MIT)")
-    if updated == text:
-        return False
-    README.write_text(updated, encoding="utf-8")
-    return True
+    patterns = [
+        (r"(- Current version:\s*)([\d.]+)", rf"\g<1>{version}"),
+        (r"(> v)([\d.]+)(\s*.\s*MIT)", rf"\g<1>{version}\3"),
+    ]
+    for pattern, replacement in patterns:
+        updated, n = re.subn(pattern, replacement, text, count=1)
+        if n == 1:
+            if updated == text:
+                return False
+            README.write_text(updated, encoding="utf-8")
+            return True
+    raise SystemExit("README version line not found")
 
 
 def main() -> None:
