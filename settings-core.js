@@ -760,10 +760,11 @@ function setPlannerAlgo(model, btn) {
     try { localStorage.setItem('vpmVariant', model); } catch (e) {}
     _syncVpmModeUI?.(model);
   }
-  document.querySelectorAll('#mainNavBar .main-nav-btn').forEach(b => b.classList.remove('active'));
-  const navMap = { rec: 'navBtnRec', ZHLC_GF: 'navBtnBuh', VPMB: 'navBtnVpm', VPMB_GFS: 'navBtnVpm' };
-  if (btn && btn.classList?.contains('main-nav-btn')) btn.classList.add('active');
+  const navSection = model === 'rec' ? 'rec' : ((model === 'VPMB' || model === 'VPMB_GFS') ? 'vpm' : 'buh');
+  if (typeof _highlightMainNav === 'function') _highlightMainNav(navSection);
   else {
+    document.querySelectorAll('#mainNavBar .main-nav-btn').forEach(b => b.classList.remove('active'));
+    const navMap = { rec: 'navBtnRec', ZHLC_GF: 'navBtnBuh', VPMB: 'navBtnVpm', VPMB_GFS: 'navBtnVpm' };
     const id = navMap[model];
     if (id) document.getElementById(id)?.classList.add('active');
   }

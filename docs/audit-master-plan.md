@@ -80,15 +80,15 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R31 | - | 0 | TEST-ENGINE-REGRESSION, TEST-ENGINE-VALIDATION, TEST-GAS-CORE-REGRESSION | V4 R31: Engine and gas regression harnesses re-verified; no application-source review; current lines: 0; no application-source review |
 | R32 | - | 0 | TEST-RUN-ALL, TEST-SW-LIFECYCLE, TEST-CCR-VALIDATION, TEST-CCR-DIFF-RUNNER, TEST-PSCR-E2E | V4 R32: Full regression umbrella and release-tier test paths re-verified; no application-source review; current lines: 0; no application-source review |
 | R33 | APP-PACKAGE | 40 | CI-AUDIT, CI-MAIN, CI-APK, CI-DEPLOY | V4 R33: Package manifest and CI workflows risk-first READ; current lines: 40; sessions: 1 |
-| R34 | UI-MARKUP-HEADER | 752 | - | V4 R34: Header markup risk-first READ; current lines: 742; sessions: 2 |
+| R34 | UI-MARKUP-HEADER | 753 | - | V4 R34: Header markup risk-first READ; current lines: 753; sessions: 2 |
 | R35 | UI-MARKUP-REC-PLANNER, UI-REC-PLANNER | 84 | - | V4 R35: REC planner markup and runner risk-first READ; current lines: 84; sessions: 1 |
 | R36 | UI-MARKUP-TEC-PLANNER, UI-PLANNER-INPUTS | 679 | - | V4 R36: TEC planner markup and planner input ownership risk-first READ; current lines: 681; sessions: 2 |
 | R37 | UI-MARKUP-CONSUMPTION | 381 | - | V4 R37: Consumption markup risk-first READ; current lines: 381; sessions: 1 |
-| R38 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 619 | - | V4 R38: Tools and modal markup risk-first READ; current lines: 612; sessions: 2 |
+| R38 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 618 | - | V4 R38: Tools and modal markup risk-first READ; current lines: 612; sessions: 2 |
 | R39 | UI-CSS-FOUNDATION, UI-CSS-MODES | 760 | - | V4 R39: Foundation and mode CSS risk-first READ; current lines: 760; sessions: 2 |
 | R40 | UI-CSS-CONTROLS | 548 | - | V4 R40: Controls CSS risk-first READ; current lines: 548; sessions: 1 |
 | R41 | UI-CSS-RESULTS | 1009 | - | V4 R41: Results CSS risk-first design-lock READ; current lines: 1009; sessions: 2 |
-| R42 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 693 | - | V4 R42: Planner shell and results panel design-lock READ; current lines: 510; sessions: 1 |
+| R42 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 683 | - | V4 R42: Planner shell and results panel design-lock READ; current lines: 510; sessions: 1 |
 
 ## Definition of Done
 

@@ -1972,7 +1972,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "b85a9cdca8afbeff64f636bcc8707747c60bee86e4639c59660affcc4986ee14",
+      "fingerprint": "765c5310b779295b1cb66f17d3e64931d78dfcc61559f0b1b752458c847a76db",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2032,7 +2032,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "d1d3fbfcf57d8f388fb8f3602a15de92757ce517335f99f52e4c63876df6365f",
+      "fingerprint": "e2dce0d721c8044a2ec19f9925a31c898380c3f7c5de572f913a185bf3d9985a",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2054,7 +2054,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f21e6f2026fba83fe31da2d9c1d7e72cba35d54b267b09b19198deea1bf39231",
+      "fingerprint": "4bfd34308f381907f6523ba97963f8e97e7cee60dac289396eac085f36a795cb",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2069,7 +2069,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f9148857cb82be1689107f42e20ec67a00e835fb8c14342d256c704d2b3d31d1",
+      "fingerprint": "de8ba65b5f5ce7f4440ef2cdb21251f373c3fe858317d6365dfa1472f262780e",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2180,7 +2180,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "bd8f87e354b9b6958f9eb19ce98e40dd18c1fbcc3dde7a2455c73633d98584c4",
+      "fingerprint": "48aca6569ef9eecbaa29cc48a977a10d72d331a972ffc3457b745744aaa1001d",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2236,7 +2236,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MODE-STATE"
       },
-      "fingerprint": "c09975b11f8ac80d21baf271acc35caae2acaf45b47f3a4a7d78d71b39d8784b",
+      "fingerprint": "ca84ba7e24840812d3f86f220cbda9a40d677d918412c9036e0f177927a62601",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5360,7 +5360,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1c813445bfab86ee3ed1dce1af1ec3728316fd3c25da5197a62e3f1ff0a2c89f",
+      "fingerprint": "4c4b4b4b7cfdecc321a19be71261447c64761bd6deba06fe7cb6c90bf88d5bbd",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -6246,12 +6246,12 @@
     },
     {
       "cycle": "R34",
-      "max_new_application_lines": 752,
+      "max_new_application_lines": 753,
       "application_units": [
         "UI-MARKUP-HEADER"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R34: Header markup risk-first READ; current lines: 742; sessions: 2",
+      "acceptance": "V4 R34: Header markup risk-first READ; current lines: 753; sessions: 2",
       "min_review_sessions": 2
     },
     {

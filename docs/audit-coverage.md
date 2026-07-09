@@ -50,17 +50,17 @@
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 338 | P2 | IN_PROGRESS | - |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 548 | P2 | IN_PROGRESS | - |
 | UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 1009 | P1 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
-| UI-CSS-MOBILE-SHELL | web_css | `lsp-dplanner-mobile-shell.css:1` | 369 | P2 | IN_PROGRESS | - |
-| UI-MARKUP-HEADER | web_markup | `ui/markup-header.html:1` | 752 | P2 | IN_PROGRESS | - |
+| UI-CSS-MOBILE-SHELL | web_css | `lsp-dplanner-mobile-shell.css:1` | 403 | P2 | IN_PROGRESS | - |
+| UI-MARKUP-HEADER | web_markup | `ui/markup-header.html:1` | 753 | P2 | IN_PROGRESS | - |
 | UI-MARKUP-REC-PLANNER | web_markup | `ui/markup-rec-planner.html:1` | 75 | P1 | IN_PROGRESS | - |
 | UI-MARKUP-TEC-PLANNER | web_markup | `ui/markup-tec-planner.html:1` | 560 | P1 | IN_PROGRESS | - |
 | UI-REC-PLANNER | ui_core | `rec-planner.js:1` | 9 | P1 | IN_PROGRESS | - |
 | UI-MARKUP-PLANNER | web_markup | `ui/markup-planner.html:1` | 489 | P1 | IN_PROGRESS | - |
 | UI-MARKUP-CONSUMPTION | web_markup | `ui/markup-consumption.html:1` | 381 | P1 | IN_PROGRESS | - |
 | UI-MARKUP-TOOLS | web_markup | `ui/markup-tools.html:1` | 271 | P2 | VERIFIED | EXT-04, COV-01 |
-| UI-MARKUP-MODALS | web_markup | `ui/markup-modals.html:1` | 348 | P2 | IN_PROGRESS | - |
+| UI-MARKUP-MODALS | web_markup | `ui/markup-modals.html:1` | 347 | P2 | IN_PROGRESS | - |
 | UI-ENVIRONMENT | ui_core | `settings-core.js:39` | 380 | P1 | IN_PROGRESS | - |
-| UI-MODE-STATE | ui_core | `settings-core.js:419` | 631 | P2 | IN_PROGRESS | - |
+| UI-MODE-STATE | ui_core | `settings-core.js:419` | 632 | P2 | IN_PROGRESS | - |
 | UI-UNIT-SWITCHING | web_runtime | `schedule-runner-core.js:414` | 372 | P1 | IN_PROGRESS | - |
 | UI-ZHL-DELEGATES | web_runtime | `schedule-runner-core.js:786` | 141 | P0 | VERIFIED | REG-15, REG-16, REG-18 |
 | UI-CCR-DELEGATES | web_runtime | `schedule-runner-core.js:927` | 370 | P0 | IN_PROGRESS | - |
@@ -214,7 +214,7 @@
 | TOOL-AUDIT-V2-WORKSPACE-PY | tooling | `tools/audit/workspace.py:1` | 89 | P0 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-AUDIT-V2-AUDIT-LEGACY-MIGRATION-JSON | tooling | `docs/audit-legacy-migration.json:1` | 37671 | P0 | IN_PROGRESS | - |
 | TOOL-AUDIT-V2-TEST_SYSTEM-PY | tooling | `tools/audit/test_system.py:1` | 206 | P0 | IN_PROGRESS | - |
-| UI-PLANNER-SHELL | ui_shell | `planner-shell.js:1` | 329 | P1 | IN_PROGRESS | REG-96, REG-99 |
+| UI-PLANNER-SHELL | ui_shell | `planner-shell.js:1` | 319 | P1 | IN_PROGRESS | REG-96, REG-99 |
 | UI-RESULTS-PANEL | ui_shell | `results-panel.js:1` | 364 | P1 | IN_PROGRESS | COV-01, PARITY-01, EXT-02, REG-01, REG-95, REG-97, REG-98 |
 | TOOL-V3-ASSEMBLE_UI_HTML-PY | tooling | `tools/assemble_ui_html.py:1` | 181 | P2 | IN_PROGRESS | - |
 | TOOL-V3-EXTRACT_UI_CSS-PY | tooling | `tools/extract_ui_css.py:1` | 139 | P2 | IN_PROGRESS | - |

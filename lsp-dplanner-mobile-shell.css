@@ -106,11 +106,22 @@
 
   /* Slim header */
   #headerTopRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    gap: 8px;
     padding: 8px 10px !important;
     border-radius: 0;
     border-left: none;
     border-right: none;
     border-top: none;
+  }
+
+  #headerTopRow .brand-lockup {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding-left: 0 !important;
   }
 
   #headerTopRow .brand-text p {
@@ -119,6 +130,17 @@
 
   #headerBanner {
     display: none !important;
+  }
+
+  #headerTopRow .header-actions {
+    display: inline-flex !important;
+    order: 2;
+    width: auto !important;
+    margin-left: 0;
+    padding: 0 !important;
+    gap: 8px;
+    justify-content: flex-end !important;
+    flex: 0 0 auto;
   }
 
   #headerTopRow .brand-logo {
@@ -177,6 +199,7 @@
     color: var(--accent);
     background: color-mix(in oklab, var(--accent) 14%, transparent);
     border-color: color-mix(in oklab, var(--accent) 35%, transparent);
+    box-shadow: inset 0 -2px 0 var(--accent);
   }
 
   .planner-main.visible {
@@ -293,6 +316,17 @@
   .header-ref-btn {
     min-height: 44px;
     min-width: 44px;
+  }
+
+  .settings-version-label {
+    margin-top: 6px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    opacity: 0.72;
   }
 
   .gen-btn {

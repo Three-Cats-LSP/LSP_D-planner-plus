@@ -149,21 +149,10 @@ function _highlightMainNav(section) {
   if (id) document.getElementById(id)?.classList.add('active');
   if (section === 'rec' || section === 'buh' || section === 'vpm') _syncMobileAlgoChips(section);
 }
+window._highlightMainNav = _highlightMainNav;
 
 function setMainNav(section, btn) {
-  if (btn) {
-    document.querySelectorAll('#mainNavBar .main-nav-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    if (btn.classList.contains('mobile-algo-chip')) {
-      document.querySelectorAll('#mobileAlgoChips .mobile-algo-chip').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const deskMap = { mobChipRec: 'navBtnRec', mobChipBuh: 'navBtnBuh', mobChipVpm: 'navBtnVpm' };
-      const deskId = deskMap[btn.id];
-      if (deskId) document.getElementById(deskId)?.classList.add('active');
-    }
-  } else {
-    _highlightMainNav(section);
-  }
+  _highlightMainNav(section);
   if (section === 'tools') {
     if (isMobileShell()) setMobileTab('tools');
     else setNavMode('tools');
@@ -189,9 +178,10 @@ function setMainNav(section, btn) {
     _highlightMainNav(section);
     return;
   }
-  if (section === 'rec') setPlannerAlgo('rec', btn || document.getElementById('navBtnRec'));
-  else if (section === 'buh') setPlannerAlgo('ZHLC_GF', btn || document.getElementById('navBtnBuh'));
-  else if (section === 'vpm') setPlannerAlgo(vpmVariant, btn || document.getElementById('navBtnVpm'));
+  if (section === 'rec') setPlannerAlgo('rec');
+  else if (section === 'buh') setPlannerAlgo('ZHLC_GF');
+  else if (section === 'vpm') setPlannerAlgo(vpmVariant);
+  _highlightMainNav(section);
 }
 
 function setNavMode(mode, opts) {
