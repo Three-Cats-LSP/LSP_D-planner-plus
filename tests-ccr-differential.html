@@ -388,11 +388,15 @@ window.runCCRDiffAll = runAll;
 
 if (!location.search.includes('autorun=0')) {
 
-  runAll().catch(e => {
+  window.addEventListener('load', () => {
 
-    document.getElementById('status').innerHTML = '<span class="fail">' + e.message + '</span>';
+    runAll().catch(e => {
 
-    throw e;
+      document.getElementById('status').innerHTML = '<span class="fail">' + e.message + '</span>';
+
+      throw e;
+
+    });
 
   });
 
@@ -403,4 +407,3 @@ if (!location.search.includes('autorun=0')) {
 </body>
 
 </html>
-
