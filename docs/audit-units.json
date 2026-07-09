@@ -1972,7 +1972,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "f7c540afa6401847cd811a08f3dcf81a187dd8696ad40a0471ec69599e298f70",
+      "fingerprint": "981c7f61621cd9387d04a073657ccb152d797a6b65af3b913e90a21b8cbdbc11",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2069,7 +2069,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "bd86e1c4f987980be03f75a4e0677b0121d576fe356f487a845c868076dd6260",
+      "fingerprint": "a41d0c5341062ace7195139ce68955a0e7b085d841525b876a3b40c224b47bc2",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
