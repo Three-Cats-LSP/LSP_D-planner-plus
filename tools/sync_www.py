@@ -5,6 +5,7 @@ import json
 import re
 import shutil
 import sys
+import time
 from pathlib import Path
 
 _TOOLS = Path(__file__).resolve().parent
@@ -29,21 +30,40 @@ ROOT_FILES = [
     "icon-192.png",
     "icon-512.png",
     "sw.js",
+    "lsp-dplanner-foundation.css",
+    "lsp-dplanner-modes.css",
+    "lsp-dplanner-controls.css",
+    "lsp-dplanner-results.css",
     "zhl-engine-bundle.js",
+    "padi-engine.js",
     "vpm-engine-bundle.js",
     "zhl-worker-bridge.js",
     "zhl-schedule-worker.js",
+    "planner-inputs-core.js",
+    "rec-planner.js",
+    "settings-core.js",
     "surf-interval-core.js",
     "gas-table-core.js",
     "gas-plan-core.js",
+    "gas-cards-core.js",
     "export-core.js",
+    "plot-core.js",
+    "gf-curve-core.js",
     "contingency-core.js",
+    "results-panel.js",
+    "results-render-core.js",
+    "schedule-runner-core.js",
+    "zhl-headless-adapter.js",
+    "planner-shell.js",
 ]
 
 # Directories copied recursively (vendor fonts, jsPDF, partner icons)
 ROOT_DIRS = [
     "vendor",
 ]
+
+RMTREE_RETRIES = 6
+RMTREE_RETRY_DELAY_SECONDS = 0.5
 
 
 def parse_app_version(app_version_js: str) -> str:
@@ -65,12 +85,27 @@ def write_version_json(version: str) -> None:
     payload = {
         "version": version,
         "versionCode": version_to_code(version),
-        "apkFileName": f"LSP_D-planner-plus-v{version}.apk",
         "apkUrl": GITHUB_RELEASE_APK,
+        "apkFileName": f"LSP_D-planner-plus-v{version}.apk",
         "downloadPage": f"{VERSION_JSON_URL_BASE}/download.html",
     }
     text = json.dumps(payload, indent=2) + "\n"
     (ROOT / "version.json").write_text(text, encoding="utf-8", newline="\n")
+
+
+def remove_tree_with_retries(path: Path) -> None:
+    """Bound transient Windows file locks from recently closed Playwright servers."""
+    last_error: OSError | None = None
+    for attempt in range(RMTREE_RETRIES):
+        try:
+            shutil.rmtree(path)
+            return
+        except OSError as exc:
+            last_error = exc
+            if attempt == RMTREE_RETRIES - 1:
+                break
+            time.sleep(RMTREE_RETRY_DELAY_SECONDS)
+    raise RuntimeError(f"Could not remove {path} after {RMTREE_RETRIES} attempts: {last_error}") from last_error
 
 
 def sync_www() -> None:
@@ -82,20 +117,22 @@ def sync_www() -> None:
     write_version_json(app_version)
 
     if WWW.exists():
-        shutil.rmtree(WWW)
+        remove_tree_with_retries(WWW)
     WWW.mkdir(parents=True)
 
     for name in ROOT_FILES:
         src = ROOT / name
         if not src.is_file():
             raise SystemExit(f"Missing required web asset: {name}")
-        shutil.copy2(src, WWW / name)
+        dest = WWW / name
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(src, dest)
 
     for name in ROOT_DIRS:
         src = ROOT / name
         if not src.is_dir():
             raise SystemExit(f"Missing required web directory: {name}")
-        shutil.copytree(src, WWW / name)
+        shutil.copytree(src, WWW / name, dirs_exist_ok=True)
 
     shutil.copy2(ROOT / "version.json", WWW / "version.json")
 

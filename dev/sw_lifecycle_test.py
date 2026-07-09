@@ -20,12 +20,27 @@ ROOT = Path(__file__).resolve().parents[1]
 def main() -> int:
     from playwright.sync_api import sync_playwright
 
-    with serve_www(ROOT) as base_url:
+    with serve_www(ROOT, port=0) as base_url:
         base = base_url.rstrip("/") + "/"
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
-            page.goto(f"{base}index.html?regression=1", wait_until="domcontentloaded", timeout=60000)
+            page.goto(f"{base}version.json", wait_until="domcontentloaded", timeout=60000)
+            page.wait_for_load_state("load", timeout=60000)
+            page.evaluate(
+                """
+                async (swUrl) => {
+                  await navigator.serviceWorker.register(swUrl);
+                  await Promise.race([
+                    navigator.serviceWorker.ready,
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('service worker readiness timeout')), 45000)),
+                  ]);
+                }
+                """,
+                f"{base}sw.js",
+            )
+            page.reload(wait_until="domcontentloaded", timeout=60000)
+            page.wait_for_function("navigator.serviceWorker.controller !== null", timeout=10000)
             result = page.evaluate(
                 """
                 async (base) => {
@@ -43,7 +58,12 @@ def main() -> int:
                   const versionOnActivate = swBlock.includes('localStorage.setItem(SW_VERSION_KEY, APP_VERSION)');
                   const shellReadyMsg = swText.includes('SW_SHELL_READY')
                     && swBlock.includes("event.data.type === 'SW_SHELL_READY'");
-                  return { ok: guards && noBlindSkip && noEagerMigration && versionOnActivate && shellReadyMsg, guards, noBlindSkip, noEagerMigration, versionOnActivate, shellReadyMsg };
+                  const cacheKeys = await caches.keys();
+                  await Promise.all(cacheKeys.filter(k => k.startsWith('lsp-dplanner-plus-v')).map(k => caches.delete(k)));
+                  const engineResponse = await fetch(base + 'zhl-engine-bundle.js?sw-network-first-probe=' + Date.now(), { cache: 'reload' });
+                  const engineText = await engineResponse.text();
+                  const networkFirstEngine = engineResponse.ok && engineText.includes('ZhlEngineBundle');
+                  return { ok: guards && noBlindSkip && noEagerMigration && versionOnActivate && shellReadyMsg && networkFirstEngine, guards, noBlindSkip, noEagerMigration, versionOnActivate, shellReadyMsg, networkFirstEngine, engineStatus: engineResponse.status };
                 }
                 """,
                 base,
@@ -59,4 +79,8 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    code = main()
+    sys.path.insert(0, str(ROOT))
+    from tools.audit.suite_emit import case_row, finish_suite
+
+    finish_suite(ROOT, [case_row("SW-NETWORK-FIRST-ENGINE", code == 0)], code)

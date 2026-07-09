@@ -1,0 +1,485 @@
+#!/usr/bin/env python3
+"""Seven-lens Cycle 08 UI-PLANNER-SHELL + UI-RESULTS-PANEL behavioral regression."""
+from __future__ import annotations
+
+import json
+import sys
+import argparse
+from pathlib import Path
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
+ROOT = Path(__file__).resolve().parents[1]
+_DEV = ROOT / "dev"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+if str(_DEV) not in sys.path:
+    sys.path.insert(0, str(_DEV))
+
+from playwright_boot import boot_app_page  # noqa: E402
+from playwright_restore import CAPTURE_PROBE_STATE_JS, restore_probe_state  # noqa: E402
+from test_http import serve_www  # noqa: E402
+from tools.audit.suite_emit import case_row, finish_suite  # noqa: E402
+
+CASE_IDS = (
+    "SL-C08-MOBILE-PANEL-EXCLUSIVE",
+    "SL-C08-NAV-PRESERVES-RESULTS",
+    "SL-C08-INVALID-TEC-CLEARS-STALE",
+    "SL-C08-DEAD-RESULT-TAB-PREFIX",
+    "SL-C08-SINGLE-MOBILE-INIT",
+)
+
+CAPTURE_RESTORE_JS = CAPTURE_PROBE_STATE_JS
+
+STATE_HASH_JS = r"""
+() => {
+  const parts = [];
+  parts.push(document.body.className);
+  parts.push(typeof navMode !== 'undefined' ? navMode : '');
+  parts.push(typeof plannerAlgo !== 'undefined' ? plannerAlgo : '');
+  parts.push(typeof units !== 'undefined' ? units : '');
+  parts.push(document.getElementById('tecDepth')?.value || '');
+  parts.push(document.getElementById('tecBT')?.value || '');
+  parts.push(document.getElementById('resultsPanel')?.classList.contains('has-results') ? '1' : '0');
+  parts.push(document.querySelectorAll('#decoTableBody tr').length);
+  parts.push(document.querySelector('#tecResultTabs .result-tab-btn.active')?.dataset?.tab || '');
+  parts.push(document.activeElement?.id || '');
+  return parts.join('::');
+}
+"""
+
+MOBILE_EXCLUSIVE_JS = r"""
+async () => {
+  const waitScheduleReady = async (minRows = 5, timeoutMs = 15000, settleMs = 400) => {
+    const deadline = Date.now() + timeoutMs;
+    let stableRows = -1;
+    let stableSince = 0;
+    while (Date.now() < deadline) {
+      const hasResults = document.getElementById('resultsPanel')?.classList.contains('has-results') === true;
+      const rows = document.querySelectorAll('#decoTableBody tr').length;
+      if (hasResults && rows >= minRows) {
+        if (rows === stableRows) {
+          if (!stableSince) stableSince = Date.now();
+          if (Date.now() - stableSince >= settleMs) return { hasResults, rows };
+        } else {
+          stableRows = rows;
+          stableSince = Date.now();
+        }
+      } else {
+        stableRows = -1;
+        stableSince = 0;
+      }
+      await new Promise(r => setTimeout(r, 200));
+    }
+    return {
+      hasResults: document.getElementById('resultsPanel')?.classList.contains('has-results') === true,
+      rows: document.querySelectorAll('#decoTableBody tr').length,
+    };
+  };
+  const vis = (id) => {
+    const el = document.getElementById(id);
+    if (!el) return 'missing';
+    return getComputedStyle(el).display;
+  };
+  const activePlan = () => (plannerAlgo === 'rec' ? 'recPlannerView' : 'tecPlannerView');
+  const planId = activePlan();
+  const beforePlan = vis(planId);
+  const beforeResults = vis('resultsPanel');
+  const resultsPanel = document.getElementById('resultsPanel');
+  const hasResultsBefore = resultsPanel?.classList.contains('has-results') === true;
+  const validInitialState = hasResultsBefore
+    ? beforePlan !== 'none' && beforeResults !== 'none'
+    : beforePlan !== 'none' && beforeResults === 'none';
+
+  if (!hasResultsBefore) {
+    const prevHeadless = window._zhlHeadless;
+    window._zhlHeadless = false;
+    try {
+      document.getElementById('tecGenerateBtn')?.click();
+      await waitScheduleReady(5, 15000, 400);
+    } finally {
+      window._zhlHeadless = prevHeadless;
+    }
+  }
+
+  if (typeof setMobilePlanView === 'function') setMobilePlanView('plan');
+  await new Promise(r => setTimeout(r, 100));
+  const planStillVisible = vis(planId) !== 'none';
+
+  if (typeof setMobilePlanView === 'function') setMobilePlanView('results');
+  await new Promise(r => setTimeout(r, 100));
+  const stackedAfterResults = vis('resultsPanel') !== 'none' && vis(planId) !== 'none';
+
+  if (typeof setMobilePlanView === 'function') setMobilePlanView('plan');
+  await new Promise(r => setTimeout(r, 50));
+  const stackedAfterPlan = resultsPanel?.classList.contains('has-results')
+    ? vis('resultsPanel') !== 'none' && vis(planId) !== 'none'
+    : vis(planId) !== 'none';
+
+  return {
+    planId,
+    hasResultsBefore,
+    validInitialState,
+    planStillVisible,
+    stackedAfterResults,
+    stackedAfterPlan,
+    inactiveHidden: vis(plannerAlgo === 'rec' ? 'tecPlannerView' : 'recPlannerView') === 'none',
+    ok: validInitialState && planStillVisible && stackedAfterResults && stackedAfterPlan,
+  };
+}
+"""
+
+WAIT_SCHEDULE_READY_JS = r"""
+async (minRows = 5, timeoutMs = 15000, settleMs = 400) => {
+  const deadline = Date.now() + timeoutMs;
+  let last = { hasResults: false, rows: 0 };
+  let stableSince = 0;
+  let stableRows = -1;
+  while (Date.now() < deadline) {
+    const hasResults = document.getElementById('resultsPanel')?.classList.contains('has-results') === true;
+    const rows = document.querySelectorAll('#decoTableBody tr').length;
+    last = { hasResults, rows };
+    if (hasResults && rows >= minRows) {
+      if (rows === stableRows) {
+        if (!stableSince) stableSince = Date.now();
+        if (Date.now() - stableSince >= settleMs) return last;
+      } else {
+        stableRows = rows;
+        stableSince = Date.now();
+      }
+    } else {
+      stableRows = -1;
+      stableSince = 0;
+    }
+    await new Promise(r => setTimeout(r, 200));
+  }
+  return last;
+}
+"""
+
+NAV_PRESERVES_JS = r"""
+async () => {
+  const waitScheduleReady = """ + WAIT_SCHEDULE_READY_JS.strip() + r""";
+  const prevHeadless = window._zhlHeadless;
+  window._zhlHeadless = false;
+  try {
+    setMainNav('buh');
+    const depthEl = document.getElementById('tecDepth');
+    const btEl = document.getElementById('tecBT');
+    if (depthEl) depthEl.value = '45';
+    if (btEl) btEl.value = '25';
+    if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
+    document.getElementById('tecGenerateBtn')?.click();
+    const ready = await waitScheduleReady(5);
+    const before = {
+      hasResults: ready.hasResults,
+      rows: ready.rows,
+      tab: document.querySelector('#tecResultTabs .result-tab-btn.active')?.dataset?.tab || '',
+    };
+    if (!before.hasResults || before.rows < 5) {
+      return { ok: false, reason: 'generate_failed', before };
+    }
+    document.getElementById('navBtnTools')?.click();
+    await new Promise(r => setTimeout(r, 300));
+    document.getElementById('navBtnBuh')?.click();
+    const afterReady = await waitScheduleReady(5, 15000, 400);
+    const after = {
+      hasResults: afterReady.hasResults,
+      rows: afterReady.rows,
+      tab: document.querySelector('#tecResultTabs .result-tab-btn.active')?.dataset?.tab || '',
+      decoDisplay: document.getElementById('decoResult')?.style.display || '',
+    };
+    return {
+      before,
+      after,
+      ok: after.hasResults && after.rows >= before.rows && after.rows > 0,
+    };
+  } finally {
+    window._zhlHeadless = prevHeadless;
+  }
+}
+"""
+
+INVALID_CLEARS_JS = r"""
+async () => {
+  const prevHeadless = window._zhlHeadless;
+  window._zhlHeadless = false;
+  try {
+    setMainNav('buh');
+    const depthEl = document.getElementById('tecDepth');
+    const btEl = document.getElementById('tecBT');
+    if (depthEl) depthEl.value = '45';
+    if (btEl) btEl.value = '25';
+    if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
+    document.getElementById('tecGenerateBtn')?.click();
+    let validRows = 0;
+    for (let i = 0; i < 30; i++) {
+      await new Promise(r => setTimeout(r, 250));
+      validRows = document.querySelectorAll('#decoTableBody tr').length;
+      if (validRows >= 5) break;
+    }
+    const valid = {
+      hasResults: document.getElementById('resultsPanel')?.classList.contains('has-results'),
+      rows: validRows,
+    };
+    if (!valid.hasResults || valid.rows < 5) {
+      return { ok: false, reason: 'valid_generate_failed', valid };
+    }
+    if (depthEl) depthEl.value = '999';
+    if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
+    document.getElementById('tecGenerateBtn')?.click();
+    await new Promise(r => setTimeout(r, 800));
+    const afterInvalid = {
+      hasResults: document.getElementById('resultsPanel')?.classList.contains('has-results'),
+      rows: document.querySelectorAll('#decoTableBody tr').length,
+      toastVisible: !!document.querySelector('.toast.schedule, .toast-error, [class*="toast"]'),
+    };
+    if (depthEl) depthEl.value = '45';
+    if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
+    document.getElementById('tecGenerateBtn')?.click();
+    let correctedRows = 0;
+    for (let i = 0; i < 30; i++) {
+      await new Promise(r => setTimeout(r, 250));
+      correctedRows = document.querySelectorAll('#decoTableBody tr').length;
+      if (correctedRows >= 5) break;
+    }
+    const corrected = {
+      hasResults: document.getElementById('resultsPanel')?.classList.contains('has-results'),
+      rows: correctedRows,
+    };
+    return {
+      valid,
+      afterInvalid,
+      corrected,
+      ok: !afterInvalid.hasResults && afterInvalid.rows === 0
+        && corrected.hasResults && corrected.rows >= 5,
+    };
+  } finally {
+    window._zhlHeadless = prevHeadless;
+  }
+}
+"""
+
+TAB_PREFIX_JS = r"""
+() => {
+  const src = typeof switchResultTab === 'function' ? switchResultTab.toString() : '';
+  const deadPrefix = /const prefix = isRec \? '' : ''/.test(src);
+  setMainNav('buh');
+  const tabs = ['profile', 'contingency', 'tissue'];
+  const results = [];
+  for (const name of tabs) {
+    const btn = document.querySelector(`#tecResultTabs [data-tab='${name}']`);
+    if (!btn) { results.push({ name, missing: true }); continue; }
+    btn.click();
+    const pane = document.getElementById('resultTab-' + name);
+    results.push({
+      name,
+      paneActive: pane?.classList.contains('active') === true,
+      btnActive: btn.classList.contains('active'),
+    });
+  }
+  const allActive = results.every(r => r.paneActive && r.btnActive);
+  return { deadPrefix, results, ok: !deadPrefix && allActive };
+}
+"""
+
+MOBILE_INIT_JS = r"""
+() => {
+  const initSrc = typeof initV3Layout === 'function' ? initV3Layout.toString() : '';
+  const usesEnsure = initSrc.includes('_ensureMobilePlanViewBootstrap');
+  const guard = window._mobilePlanViewBootstrapDone === true;
+  if (typeof _ensureMobilePlanViewBootstrap === 'function') {
+    _ensureMobilePlanViewBootstrap();
+    _ensureMobilePlanViewBootstrap();
+  }
+  if (typeof initV3Layout === 'function') initV3Layout();
+  return {
+    usesEnsure,
+    guard,
+    guardAfterRepeat: window._mobilePlanViewBootstrapDone === true,
+    ok: usesEnsure && guard && window._mobilePlanViewBootstrapDone === true,
+  };
+}
+"""
+
+SETTINGS_NAV_JS = r"""
+async () => {
+  const waitScheduleReady = """ + WAIT_SCHEDULE_READY_JS.strip() + r""";
+  const prevHeadless = window._zhlHeadless;
+  window._zhlHeadless = false;
+  try {
+    setMainNav('buh');
+    const depthEl = document.getElementById('tecDepth');
+    const btEl = document.getElementById('tecBT');
+    if (depthEl) depthEl.value = '45';
+    if (btEl) btEl.value = '25';
+    if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
+    document.getElementById('tecGenerateBtn')?.click();
+    const beforeReady = await waitScheduleReady(5);
+    const beforeRows = beforeReady.rows;
+    if (!beforeReady.hasResults || beforeRows < 5) {
+      return { beforeRows, afterRows: 0, ok: false, reason: 'generate_failed' };
+    }
+    document.getElementById('navBtnSettings')?.click();
+    await new Promise(r => setTimeout(r, 300));
+    document.getElementById('navBtnBuh')?.click();
+    const afterReady = await waitScheduleReady(5, 15000, 400);
+    return {
+      beforeRows,
+      afterRows: afterReady.rows,
+      ok: afterReady.hasResults && afterReady.rows >= beforeRows,
+    };
+  } finally {
+    window._zhlHeadless = prevHeadless;
+  }
+}
+"""
+
+
+def run_cases(page, viewport: tuple[int, int], *, run_behavioral: bool = True) -> dict:
+    restore_snapshot = page.evaluate(CAPTURE_RESTORE_JS)
+    before_hash = page.evaluate(STATE_HASH_JS)
+    page.evaluate(
+        """() => {
+          localStorage.removeItem('lspDiveSettings_v6');
+          if (typeof appSettings !== 'undefined') {
+            appSettings._loadPending = false;
+            appSettings._restoreInProgress = false;
+          }
+        }"""
+    )
+    page.evaluate("() => { window._zhlHeadless = false; }")
+
+    mobile = {}
+    nav = {}
+    invalid = {}
+    tabs = {}
+    init = {}
+    settings = {}
+
+    try:
+        if viewport[0] <= 640:
+            mobile = page.evaluate(MOBILE_EXCLUSIVE_JS)
+        if run_behavioral and viewport == (1280, 800):
+            nav = page.evaluate(NAV_PRESERVES_JS)
+            invalid = page.evaluate(INVALID_CLEARS_JS)
+            tabs = page.evaluate(TAB_PREFIX_JS)
+            init = page.evaluate(MOBILE_INIT_JS)
+            settings = page.evaluate(SETTINGS_NAV_JS)
+    finally:
+        restore_probe_state(page, restore_snapshot)
+        page.locator("body").click(position={"x": 8, "y": 8})
+        after_hash = page.evaluate(STATE_HASH_JS)
+        state_restored = before_hash == after_hash
+
+    out = {
+        "_detail": {
+            "viewport": viewport,
+            "mobile": mobile,
+            "nav": nav,
+            "invalid": invalid,
+            "tabs": tabs,
+            "init": init,
+            "settings": settings,
+            "state_restored": state_restored,
+            "before_hash": before_hash,
+            "after_hash": after_hash,
+        },
+    }
+    mobile_ok = bool(mobile.get("ok")) if viewport[0] <= 640 else True
+    nav_ok = bool(nav.get("ok")) and bool(settings.get("ok")) if run_behavioral and viewport == (1280, 800) else True
+    out["SL-C08-MOBILE-PANEL-EXCLUSIVE"] = mobile_ok
+    out["SL-C08-NAV-PRESERVES-RESULTS"] = nav_ok if run_behavioral and viewport == (1280, 800) else True
+    out["SL-C08-INVALID-TEC-CLEARS-STALE"] = bool(invalid.get("ok")) if run_behavioral and viewport == (1280, 800) else True
+    out["SL-C08-DEAD-RESULT-TAB-PREFIX"] = bool(tabs.get("ok")) if run_behavioral and viewport == (1280, 800) else True
+    out["SL-C08-SINGLE-MOBILE-INIT"] = bool(init.get("ok")) if run_behavioral and viewport == (1280, 800) else True
+    if not state_restored and run_behavioral and viewport == (1280, 800):
+        for case_id in CASE_IDS:
+            out[case_id] = False
+    return out
+
+
+def _run_viewport(browser, base_url: str, viewport: tuple[int, int], *, run_behavioral: bool = True) -> dict:
+    context = browser.new_context(viewport={"width": viewport[0], "height": viewport[1]})
+    page = context.new_page()
+    page.set_default_timeout(120000)
+    errors: list[str] = []
+    page.on("pageerror", lambda exc: errors.append(str(exc)))
+    page.on("console", lambda msg: errors.append(msg.text) if msg.type == "error" else None)
+    try:
+        boot_app_page(page, base_url)
+        result = run_cases(page, viewport, run_behavioral=run_behavioral)
+        result["_detail"]["console_errors"] = errors
+        if errors:
+            for case_id in CASE_IDS:
+                result[case_id] = False
+        return result
+    finally:
+        context.close()
+
+
+def main() -> int:
+    from playwright.sync_api import sync_playwright
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--case-id",
+        action="append",
+        default=[],
+        help="Run only the selected stable case id(s). Omit for the full shell/results regression.",
+    )
+    args = parser.parse_args()
+    selected_cases = tuple(args.case_id) if args.case_id else CASE_IDS
+    unknown = sorted(set(selected_cases) - set(CASE_IDS))
+    if unknown:
+        print(f"Unknown case id(s): {', '.join(unknown)}", file=sys.stderr)
+        return 2
+
+    print("=" * 60)
+    print("Cycle 08 — UI-SHELL-RESULTS behavioral regression")
+    print("=" * 60)
+
+    results: dict[str, bool] = {case_id: True for case_id in selected_cases}
+    detail: dict = {}
+
+    with serve_www(ROOT) as base_url:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+
+            if any(case_id != "SL-C08-MOBILE-PANEL-EXCLUSIVE" for case_id in selected_cases):
+                desktop = _run_viewport(browser, base_url, (1280, 800))
+                detail["1280x800"] = desktop.pop("_detail")
+                for case_id, ok in desktop.items():
+                    if case_id in results:
+                        results[case_id] = results[case_id] and bool(ok)
+
+            if "SL-C08-MOBILE-PANEL-EXCLUSIVE" in selected_cases:
+                portrait = _run_viewport(browser, base_url, (375, 667), run_behavioral=False)
+                detail["375x667"] = portrait.pop("_detail")
+                results["SL-C08-MOBILE-PANEL-EXCLUSIVE"] = (
+                    results["SL-C08-MOBILE-PANEL-EXCLUSIVE"]
+                    and bool(portrait.get("SL-C08-MOBILE-PANEL-EXCLUSIVE"))
+                )
+
+                landscape = _run_viewport(browser, base_url, (667, 375), run_behavioral=False)
+                detail["667x375"] = landscape.pop("_detail")
+                results["SL-C08-MOBILE-PANEL-EXCLUSIVE"] = (
+                    results["SL-C08-MOBILE-PANEL-EXCLUSIVE"]
+                    and bool(landscape.get("SL-C08-MOBILE-PANEL-EXCLUSIVE"))
+                )
+
+            browser.close()
+
+    rows = [case_row(case_id, results[case_id]) for case_id in selected_cases]
+    for case_id in selected_cases:
+        print(f"  {'✓' if results[case_id] else '✗'} [{case_id}]")
+    code = 0 if all(results.values()) else 1
+    out = ROOT / "dev" / "ui_shell_results_regression_results.json"
+    out.write_text(json.dumps({"results": results, "detail": detail}, indent=2), encoding="utf-8")
+    print(f"\nWrote {out}")
+    out.unlink(missing_ok=True)
+    finish_suite(ROOT, rows, code)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,428 @@
+{
+  "schema_version": 3,
+  "runner_version": 2,
+  "spec": "docs\\seven-lens-traces\\cycle-05-css.json",
+  "spec_sha256": "afea0c9e429544a6b57b0783287655cb6af5649ce91fc6a29527cf4c54999ac6",
+  "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+  "traces": [
+    {
+      "id": "SL-C05-GF-ROW-MODE-ISOLATION-TRACE",
+      "entry_event": "User switches B\u00fchlmann \u2192 REC \u2192 Tools; GF preset opacity follows body mode classes on live V3 elements.",
+      "consumer_path": [
+        "navBtn click",
+        "setMainNav/setNavMode writes body.rec-mode and body.algo-tools",
+        "CSS cascade on #gfPresetsRowV3/#gfPresetBtns",
+        "getComputedStyle opacity on .gf-preset-btn"
+      ],
+      "captures": {
+        "initial": {
+          "has_gf_btn": true
+        },
+        "tec_mode": {
+          "btn_opacity": 1,
+          "rec_mode": false,
+          "tools_mode": false
+        },
+        "rec_mode_cap": {
+          "btn_opacity": 0.5,
+          "rec_mode": true
+        },
+        "tools_mode_cap": {
+          "btn_opacity": 0.5,
+          "tools_mode": true
+        }
+      },
+      "assertions": [
+        {
+          "id": "gf-buttons-present",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "tec-full-opacity",
+          "passed": true,
+          "detail": "1 close 1"
+        },
+        {
+          "id": "rec-dimmed",
+          "passed": true,
+          "detail": "0.5 close 0.5"
+        },
+        {
+          "id": "tools-dimmed",
+          "passed": true,
+          "detail": "0.5 close 0.5"
+        },
+        {
+          "id": "rec-class-on",
+          "passed": true,
+          "detail": "True equal True"
+        },
+        {
+          "id": "tools-class-on",
+          "passed": true,
+          "detail": "True equal True"
+        }
+      ],
+      "state_before_sha256": "e37392ae3a510584bfb902b629272e920bf548236466094d95cc680fde77f014",
+      "state_after_sha256": "e37392ae3a510584bfb902b629272e920bf548236466094d95cc680fde77f014",
+      "state_before": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnRec": {
+            "value": "",
+            "checked": null,
+            "text": "RECNDL \u00b7 PADI table",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnTools": {
+            "value": "",
+            "checked": null,
+            "text": "ToolsCalculators",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {},
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_after": {
+        "elements": {
+          "#navBtnBuh": {
+            "value": "",
+            "checked": null,
+            "text": "B\u00fchlmannZH-L16C + GF",
+            "className": "main-nav-btn active",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnRec": {
+            "value": "",
+            "checked": null,
+            "text": "RECNDL \u00b7 PADI table",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          },
+          "#navBtnTools": {
+            "value": "",
+            "checked": null,
+            "text": "ToolsCalculators",
+            "className": "main-nav-btn",
+            "style": null,
+            "dataset": {}
+          }
+        },
+        "globals": {},
+        "localStorage": {
+          "waterDensity": "salt",
+          "lspAdvancedOpen": "0",
+          "lspCcrAdvOpen": "0"
+        },
+        "sessionStorage": {}
+      },
+      "state_restored": true,
+      "console_errors": [],
+      "page_errors": [],
+      "error": "",
+      "passed": true,
+      "repeatable": true,
+      "repeat_count": 2,
+      "case_ids": [
+        "SL-C05-GF-ROW-MODE-ISOLATION"
+      ],
+      "runs": [
+        {
+          "id": "SL-C05-GF-ROW-MODE-ISOLATION-TRACE",
+          "entry_event": "User switches B\u00fchlmann \u2192 REC \u2192 Tools; GF preset opacity follows body mode classes on live V3 elements.",
+          "consumer_path": [
+            "navBtn click",
+            "setMainNav/setNavMode writes body.rec-mode and body.algo-tools",
+            "CSS cascade on #gfPresetsRowV3/#gfPresetBtns",
+            "getComputedStyle opacity on .gf-preset-btn"
+          ],
+          "captures": {
+            "initial": {
+              "has_gf_btn": true
+            },
+            "tec_mode": {
+              "btn_opacity": 1,
+              "rec_mode": false,
+              "tools_mode": false
+            },
+            "rec_mode_cap": {
+              "btn_opacity": 0.5,
+              "rec_mode": true
+            },
+            "tools_mode_cap": {
+              "btn_opacity": 0.5,
+              "tools_mode": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "gf-buttons-present",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "tec-full-opacity",
+              "passed": true,
+              "detail": "1 close 1"
+            },
+            {
+              "id": "rec-dimmed",
+              "passed": true,
+              "detail": "0.5 close 0.5"
+            },
+            {
+              "id": "tools-dimmed",
+              "passed": true,
+              "detail": "0.5 close 0.5"
+            },
+            {
+              "id": "rec-class-on",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "tools-class-on",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "e37392ae3a510584bfb902b629272e920bf548236466094d95cc680fde77f014",
+          "state_after_sha256": "e37392ae3a510584bfb902b629272e920bf548236466094d95cc680fde77f014",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnRec": {
+                "value": "",
+                "checked": null,
+                "text": "RECNDL \u00b7 PADI table",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnTools": {
+                "value": "",
+                "checked": null,
+                "text": "ToolsCalculators",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnRec": {
+                "value": "",
+                "checked": null,
+                "text": "RECNDL \u00b7 PADI table",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnTools": {
+                "value": "",
+                "checked": null,
+                "text": "ToolsCalculators",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        },
+        {
+          "id": "SL-C05-GF-ROW-MODE-ISOLATION-TRACE",
+          "entry_event": "User switches B\u00fchlmann \u2192 REC \u2192 Tools; GF preset opacity follows body mode classes on live V3 elements.",
+          "consumer_path": [
+            "navBtn click",
+            "setMainNav/setNavMode writes body.rec-mode and body.algo-tools",
+            "CSS cascade on #gfPresetsRowV3/#gfPresetBtns",
+            "getComputedStyle opacity on .gf-preset-btn"
+          ],
+          "captures": {
+            "initial": {
+              "has_gf_btn": true
+            },
+            "tec_mode": {
+              "btn_opacity": 1,
+              "rec_mode": false,
+              "tools_mode": false
+            },
+            "rec_mode_cap": {
+              "btn_opacity": 0.5,
+              "rec_mode": true
+            },
+            "tools_mode_cap": {
+              "btn_opacity": 0.5,
+              "tools_mode": true
+            }
+          },
+          "assertions": [
+            {
+              "id": "gf-buttons-present",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "tec-full-opacity",
+              "passed": true,
+              "detail": "1 close 1"
+            },
+            {
+              "id": "rec-dimmed",
+              "passed": true,
+              "detail": "0.5 close 0.5"
+            },
+            {
+              "id": "tools-dimmed",
+              "passed": true,
+              "detail": "0.5 close 0.5"
+            },
+            {
+              "id": "rec-class-on",
+              "passed": true,
+              "detail": "True equal True"
+            },
+            {
+              "id": "tools-class-on",
+              "passed": true,
+              "detail": "True equal True"
+            }
+          ],
+          "state_before_sha256": "e37392ae3a510584bfb902b629272e920bf548236466094d95cc680fde77f014",
+          "state_after_sha256": "e37392ae3a510584bfb902b629272e920bf548236466094d95cc680fde77f014",
+          "state_before": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnRec": {
+                "value": "",
+                "checked": null,
+                "text": "RECNDL \u00b7 PADI table",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnTools": {
+                "value": "",
+                "checked": null,
+                "text": "ToolsCalculators",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_after": {
+            "elements": {
+              "#navBtnBuh": {
+                "value": "",
+                "checked": null,
+                "text": "B\u00fchlmannZH-L16C + GF",
+                "className": "main-nav-btn active",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnRec": {
+                "value": "",
+                "checked": null,
+                "text": "RECNDL \u00b7 PADI table",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              },
+              "#navBtnTools": {
+                "value": "",
+                "checked": null,
+                "text": "ToolsCalculators",
+                "className": "main-nav-btn",
+                "style": null,
+                "dataset": {}
+              }
+            },
+            "globals": {},
+            "localStorage": {
+              "waterDensity": "salt",
+              "lspAdvancedOpen": "0",
+              "lspCcrAdvOpen": "0"
+            },
+            "sessionStorage": {}
+          },
+          "state_restored": true,
+          "console_errors": [],
+          "page_errors": [],
+          "error": "",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "passed": true
+}

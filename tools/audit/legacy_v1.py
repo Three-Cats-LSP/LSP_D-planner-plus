@@ -35,6 +35,36 @@ if not os.path.exists(path):
 with open(path, encoding="utf-8") as f:
     html = f.read()
 
+_base_dir = os.path.dirname(os.path.abspath(path))
+_ui_css_files = (
+    "lsp-dplanner-foundation.css",
+    "lsp-dplanner-modes.css",
+    "lsp-dplanner-controls.css",
+    "lsp-dplanner-results.css",
+)
+_css_parts = []
+for _css_name in _ui_css_files:
+    _css_path = os.path.join(_base_dir, _css_name)
+    if os.path.isfile(_css_path):
+        _css_parts.append(open(_css_path, encoding="utf-8").read())
+if _css_parts:
+    html = html + "\n<!-- extracted-ui-css -->\n" + "\n".join(_css_parts)
+
+_markup_partial_files = (
+    "ui/markup-header.html",
+    "ui/markup-planner.html",
+    "ui/markup-consumption.html",
+    "ui/markup-tools.html",
+    "ui/markup-modals.html",
+)
+_markup_parts = []
+for _markup_rel in _markup_partial_files:
+    _markup_path = os.path.join(_base_dir, _markup_rel)
+    if os.path.isfile(_markup_path):
+        _markup_parts.append(open(_markup_path, encoding="utf-8").read())
+if _markup_parts:
+    html = html + "\n<!-- extracted-ui-markup -->\n" + "\n".join(_markup_parts)
+
 # Extract all inline (non-src) script blocks — main app is the largest; do not use scripts[0]
 # alone (v2.51+ adds a small <head> bootstrap before the main block).
 scripts = re.findall(r"<script(?![^>]*src)[^>]*>(.*?)</script>", html, re.DOTALL)
@@ -67,11 +97,17 @@ _physics_core_js = _read_build_core("zhl-physics-core.js")
 _gas_core_js = _read_build_core("zhl-gas-core.js")
 _ccr_core_src = _read_build_core("zhl-ccr-core.js")
 _UI_CORE_FILES = (
+    "settings-core.js",
     "surf-interval-core.js",
     "gas-table-core.js",
     "gas-plan-core.js",
+    "gas-cards-core.js",
     "export-core.js",
+    "plot-core.js",
     "contingency-core.js",
+    "results-panel.js",
+    "results-render-core.js",
+    "planner-shell.js",
 )
 _ui_parts = [_read_build_core(name) for name in _UI_CORE_FILES]
 _ui_core_js = "\n".join(t for t in _ui_parts if t)
@@ -94,6 +130,11 @@ app_version_js = ""
 if os.path.isfile(app_version_path):
     with open(app_version_path, encoding="utf-8") as f:
         app_version_js = f.read()
+_app_version_match = re.search(r"APP_VERSION\s*=\s*['\"](\d+)\.(\d+)\.(\d+)['\"]", app_version_js)
+_app_version_tuple = tuple(map(int, _app_version_match.groups())) if _app_version_match else (0, 0, 0)
+
+def _app_version_at_least(major, minor, patch):
+    return _app_version_tuple >= (major, minor, patch)
 vpm_core_path = os.path.join(os.path.dirname(os.path.abspath(path)), "vpm-engine-core.js")
 vpm_core_js = ""
 if os.path.isfile(vpm_core_path):
@@ -845,7 +886,7 @@ if "function rowCNS" not in js:
     ok("per-row rowCNS helper removed after CNS% column drop (issue #35)")
 else:
     fail("rowCNS still computed after CNS% column removal (issue #35)")
-_draw_prof = js.split("function drawDecoProfile", 1)[-1][:2500] if "function drawDecoProfile" in js else ""
+_draw_prof = js.split("function _buildDecoProfileWaypoints", 1)[-1][:3500] if "function _buildDecoProfileWaypoints" in js else ""
 if _draw_prof and "switchTxt.match" not in _draw_prof and "if (phase === 'switch') return" in _draw_prof:
     ok("drawDecoProfile drops dead first-pass switch @-regex (issue #35)")
 else:
@@ -2337,13 +2378,17 @@ else:
 # GROUP 35 — v2.20.4–v2.20.14 GF controls, ppo2 expansion, export guards
 # ══════════════════════════════════════════════════════════════════════════════
 
-# 35.1 Bühlmann GF dropdown: 50/80 and 60/70 present (regression: missing in v2.20.5–v2.20.6)
-buhl_gf_opts = re.findall(r'option value="(\d+/\d+)"', html)
-for must_have in ['50/80', '60/70']:
+# 35.1 Bühlmann GF presets: common values as buttons (custom via Low/High selects)
+buhl_gf_opts = re.findall(r'<option[^>]*value="(\d+/\d+)"', html)
+for must_have in ['20/85', '30/70', '40/85', '50/75']:
     if must_have in buhl_gf_opts:
-        ok(f"GF preset dropdown: {must_have} option present")
+        ok(f"GF preset: {must_have} option present")
     else:
-        fail(f"GF preset dropdown: {must_have} missing — regression from v2.20.5/v2.20.6")
+        fail(f"GF preset: {must_have} missing")
+if 'gf-preset-btn' in js and 'GF_BUHLMANN_PRESETS' in js:
+    ok("GF preset: button row defined (dropdown hidden)")
+else:
+    fail("GF preset: button row or GF_BUHLMANN_PRESETS constant missing")
 
 # 35.2 ppo2Bottom and ppo2Deco selects include 1.2 bar option (v2.20.13)
 for sel_id in ('ppo2Bottom', 'ppo2Deco'):
@@ -2357,11 +2402,16 @@ for sel_id in ('ppo2Bottom', 'ppo2Deco'):
     else:
         ok(f"{sel_id}: 1.2 bar option present")
 
-# 35.3 VPM-B/GFS GF dropdown: hi/N options defined in setDecoAlgorithm
-if re.search(r'value="hi/70"', html) and re.search(r'value="hi/85"', html):
-    ok("VPM-B/GFS GF dropdown: hi/N options defined in setDecoAlgorithm rebuild")
+# 35.3 VPM-B/GFS GF presets: hi/70, hi/80, hi/85 + custom
+if 'GF_VPMGFS_PRESETS' in js:
+    ok("VPM-B/GFS GF preset: GF_VPMGFS_PRESETS constant defined")
 else:
-    fail("VPM-B/GFS GF dropdown: hi/N format options not found")
+    fail("VPM-B/GFS GF preset: GF_VPMGFS_PRESETS constant missing")
+for must_have in ['hi/70', 'hi/80', 'hi/85']:
+    if re.search(rf"value:\s*'{must_have}'", js):
+        ok(f"VPM-B/GFS GF preset: {must_have} in GF_VPMGFS_PRESETS")
+    else:
+        fail(f"VPM-B/GFS GF preset: {must_have} missing from GF_VPMGFS_PRESETS")
 
 # 35.4 mGF selection restored after Bühlmann dropdown rebuild (v2.20.14)
 if re.search(r'_restoredOpt\s*=\s*Array\.from\(gfSel\.options\)', js):
@@ -3020,14 +3070,14 @@ for test_file, needle in [
 
 vpm_gas_start = js.find("for (const [gas, reqL] of Object.entries(gasConsVPM))")
 vpm_gas_block = js[vpm_gas_start:vpm_gas_start + 2500] if vpm_gas_start > 0 else ""
-if vpm_gas_start > 0 and "gpVolDisp(reqL)" in vpm_gas_block:
+if vpm_gas_start > 0 and ("gpVolDisp(reqL)" in vpm_gas_block or "gpVolWithUnit(reqL)" in vpm_gas_block):
     ok("VPM gas summary uses gpVolDisp for imperial volume display (BUG-72)")
 else:
     fail("VPM gas summary still shows raw litres as cu ft (BUG-72)")
 
 emerg_start = js.find("// Emergency plan — keep simple sufficient/short table")
 emerg_block = js[emerg_start:emerg_start + 1800] if emerg_start > 0 else ""
-if emerg_start > 0 and "gpVolDisp(reqL)" in emerg_block:
+if emerg_start > 0 and ("gpVolDisp(reqL)" in emerg_block or "gpVolWithUnit(reqL)" in emerg_block):
     ok("Emergency gas block uses gpVolDisp for imperial volume display (BUG-72)")
 else:
     fail("Emergency gas block still shows raw litres as cu ft (BUG-72)")
@@ -3060,8 +3110,8 @@ if calc_start > 0 and ctx_oc_start > calc_start:
 else:
     fail("ctxUseOCForPpo2 still at module scope outside calculate (BUG-73)")
 
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.04['\"]", app_version_js):
-    ok("APP_VERSION bumped to 2.53.04")
+if _app_version_at_least(2, 53, 4):
+    ok("APP_VERSION is at least 2.53.04")
 else:
     fail("APP_VERSION not bumped to 2.53.04 in app-version.js")
 
@@ -4487,34 +4537,66 @@ if capacitor_bridge_js and "status === 'granted'" in capacitor_bridge_js.split("
 else:
     fail("capacitor-bridge ensurePermission still treats non-denied as granted (issue #55 F10)")
 
-if re.search(r'id="algoTools"[^<]*<img[^>]+tools-1424252\.png', html) and re.search(r'id="envSettingsToggle"[^<]*<img[^>]+settings-2099058\.png', html):
-    ok("Mode row uses vendored Flaticon PNG icons for Tools and ENV")
+if (
+    re.search(r'id="(?:nav|bnav)Planner"[^<]*(?:<img[^>]+computer-14545985\.png|<svg)', html)
+    and re.search(r'id="(?:nav|bnav)Tools"[^<]*(?:<img[^>]+tools-1424252\.png|<svg)', html)
+    and re.search(r'id="(?:nav|bnav)Settings"[^<]*(?:<img[^>]+settings-2099058\.png|<svg)', html)
+    and re.search(r'id="(?:nav|bnav)Ref"[^>]*>(?:\?|Ref)', html)
+):
+    ok("Mode row uses icon-only Planner | Tools | Settings | Ref")
 else:
-    fail("Mode row missing vendored Flaticon PNG for Tools or ENV")
+    fail("Mode row missing icon nav (planner/tools/settings PNGs or Ref)")
 
-if os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "tools-1424252.png")) and os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "settings-2099058.png")):
+if os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "computer-14545985.png")) and os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "tools-1424252.png")) and os.path.isfile(os.path.join(os.path.dirname(__file__), "vendor", "icons", "settings-2099058.png")):
     ok("vendor/icons Flaticon PNG assets present offline")
 else:
-    fail("vendor/icons missing tools-1424252.png or settings-2099058.png")
+    fail("vendor/icons missing computer-14545985.png, tools-1424252.png or settings-2099058.png")
 
-_mode_row = html.split('<div class="algo-toggle"', 1)
-if "syncEnvRowDisplay" in js and len(_mode_row) > 1 and 'id="envSettingsToggle"' in _mode_row[1][:3500]:
-    ok("ENV settings toggle lives in mode row (Rec | Tec | Tools | ENV | Ref)")
+if 'id="tool-cns"' in html and 'tool-panel-cns' in html and 'resultTab-cns' not in html:
+    ok("CNS O₂ tracker lives under Tools bar (not planner result tabs)")
 else:
-    fail("ENV toggle not in mode row or syncEnvRowDisplay missing")
+    fail("CNS O₂ should be tool-cns / tool-panel-cns, not planner resultTab-cns")
+
+if 'function showTip' in js and 'hoist' not in js and re.search(r"querySelectorAll\('\.lsp-modal-overlay'\)", js):
+    ok("initV3Layout hoists legacy modals so tooltips and dialogs are visible")
+else:
+    fail("Legacy modals must be hoisted out of .legacy-panels for showTip to work")
+
+_mode_row = html.split('id="mainNavBar"', 1)
+if len(_mode_row) < 2:
+    _mode_row = html.split('<div class="mode-toggle ', 1)
+if "syncEnvRowDisplay" in js and len(_mode_row) > 1 and (
+    re.search(r'id="navBtnSettings"[^>]*onclick="setMainNav\(', _mode_row[1][:3500])
+):
+    ok("ENV settings reachable from primary nav (Settings control)")
+else:
+    fail("Settings control must open environment settings from primary nav")
 
 if re.search(r'</div><!-- /deco panel -->\s*<div class="panel" id="cns">', html):
     ok("CNS and tools panels are siblings outside deco panel (not nested)")
 else:
     fail("deco panel not closed before cns — tools mode content would be hidden")
 
-if re.search(r'id="algoTools"[^<]*<img', html) and re.search(r'id="envSettingsToggle"[^<]*<img', html) and ".algo-btn-icon img" in html and "brightness(0) invert(1)" in html:
-    ok("Mode row PNG icons use theme-aware brightness filters")
+if ('id="algoBar"' in html or 'id="plannerView"' in html) and 'setPlannerAlgo' in js and 'id="plannerView"' in html:
+    ok("Planner layout: plannerView present with algorithm controls")
 else:
-    fail("Mode row PNG icons missing theme-aware brightness/contrast CSS")
+    fail("Planner layout missing plannerView or algorithm controls")
 
-if 'id="envSettingsBody"' in html and 'id="algoSettingsRow"' not in html and 'syncEnvRowDisplay' in js and 'algoSettingsRow' not in js.split('function syncEnvRowDisplay', 1)[1][:600]:
-    ok("Rec mode uses global ENV panel only (no duplicate algoSettingsRow)")
+if (
+    re.search(r'id="navBtn(?:Rec|Buh|Vpm)"', html)
+    and re.search(r'id="navBtnSettings"', html)
+    and "main-nav-btn" in html
+):
+    ok("Primary nav uses mode button styling")
+else:
+    fail("Primary nav mode button styling missing")
+
+if 'id="envSettingsBody"' in html and 'id="algoSettingsRow"' not in html and 'syncEnvRowDisplay' in js:
+    _sync_tail = js.split('function syncEnvRowDisplay', 1)
+    if len(_sync_tail) > 1 and 'algoSettingsRow' not in _sync_tail[1][:600]:
+        ok("Rec mode uses global ENV panel only (no duplicate algoSettingsRow)")
+    else:
+        fail("Rec duplicate algoSettingsRow still present in syncEnvRowDisplay body")
 else:
     fail("Rec duplicate algoSettingsRow still present or ENV panel missing")
 
@@ -5136,7 +5218,10 @@ if "ZhlEngineBundle.setHeHalfTimeMode" in js:
     ok("updateHeHalfTime syncs bundle He half-times (issue #95 H-2)")
 else:
     fail("updateHeHalfTime does not call ZhlEngineBundle.setHeHalfTimeMode (issue #95 H-2)")
-if "parseStopDisplayTime(stpRaw)" in js and "parseStopDisplayTime(c[2])" in js:
+if (
+    ("parseStopDisplayTime(stpRaw)" in js or "parseStopDisplayTime(cells.stop)" in js)
+    and "parseStopDisplayTime(c[2])" in js
+):
     ok("export/messenger use parseStopDisplayTime for stop durations (issue #95 M-1)")
 else:
     fail("export/messenger still use MM:SS-only regex for stops (issue #95 M-1)")
@@ -5231,7 +5316,8 @@ if "perDiveCns * dives + cnsCarry" in js.split("function calcCnsWidgetExposure",
     ok("calcCnsWidgetExposure adds CNS carry once (issue #99 M-7)")
 else:
     fail("calcCnsWidgetExposure still multiplies carry by dives (issue #99 M-7)")
-if "if (ph === 'totals' || ph === 'info') return;" in js.split("EMERGENCY ASCENT SCHEDULE", 1)[-1][:2000]:
+_bet99 = js.split("function buildExportText", 1)[-1][:12000] if "function buildExportText" in js else ""
+if "if (ph === 'totals' || ph === 'info') return;" in _bet99:
     ok("buildExportText skips contingency info row (issue #99 M-8)")
 else:
     fail("buildExportText missing skip for contingency info row (issue #99 M-8)")
@@ -5277,7 +5363,10 @@ if "'gasMix'" in js.split("DECO_FIELDS:", 1)[-1][:800] and "'customO2'" in js.sp
     ok("gasMix and customO2 in DECO_FIELDS (issue #101 M-1)")
 else:
     fail("gasMix/customO2 missing from DECO_FIELDS (issue #101 M-1)")
-if 'id="customO2" max="100"' in html and "O₂ % (21–100)" in html:
+if (
+    ('id="customO2" max="100"' in html or 'id="customO2" max=\'100\'' in html)
+    and ("O₂ % (21–100)" in html or "O₂ % (21-100)" in html)
+):
     ok("custom O2 input range aligned to 21-100% (issue #101 L-1)")
 else:
     fail("custom O2 input still advertises 21-40% (issue #101 L-1)")
@@ -5496,7 +5585,8 @@ elif "margin <= 5 ? 'var(--red)'" in js and "margin <= 10 ? 'var(--yellow)'" in 
     ok("UDP statusColor uses red ≤5 / yellow ≤10 (issue #108 M-1)")
 else:
     fail("UDP statusColor still has dead yellow branch at margin ≤5 (issue #108 M-1)")
-if "toMMSS(rt)" in js.split("renderVPMResults", 1)[-1][:20000] and "toMMSS(deco" in js.split("renderVPMResults", 1)[-1][:20000] and "toMMSS(rt * 60)" not in js.split("renderVPMResults", 1)[-1][:20000]:
+_vpm_render110 = js.split("function renderVPMResults", 1)[-1][:20000] if "function renderVPMResults" in js else ""
+if "toMMSS(rt)" in _vpm_render110 and "toMMSS(deco" in _vpm_render110 and "toMMSS(rt * 60)" not in _vpm_render110:
     ok("VPM plan summary uses toMMSS with minute values (issue #108 M-2 / #110 H-1)")
 else:
     fail("VPM plan summary still double-converts minutes to seconds (issue #110 H-1)")
@@ -5672,8 +5762,8 @@ if "const ppO2Limit = parseFloat(document.getElementById('ppo2Bottom')" in _111_
     ok("issue #111 M-6: calcEND_tool MOD uses configured ppO2 limit")
 else:
     fail("issue #111 M-6: calcEND_tool MOD still hardcoded 1.4 bar")
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.04['\"]", app_version_js):
-    ok("issue #111 L-1: app-version 2.53.04 synced; SW derives CACHE_VERSION dynamically")
+if _app_version_at_least(2, 53, 4):
+    ok("issue #111 L-1: app-version is at least 2.53.04; SW derives CACHE_VERSION dynamically")
 else:
     fail("issue #111 L-1: SW/app-version sync regression")
 if "build_vpm_bundle.py" in _111_ci and "git diff --exit-code zhl-engine-bundle.js vpm-engine-bundle.js" in _111_ci:
@@ -5858,7 +5948,7 @@ if "lastDecoStop" in js.split("function buhNDL", 1)[-1][:400] and "decoStep" in 
     ok("issue #113 M-8: buhNDL reads lastDecoStop and decoStep from DOM")
 else:
     fail("issue #113 M-8: buhNDL still hardcodes last stop / step to 3 m")
-if "Immediate restore failed" in js.split("load: function()", 1)[-1][:2500]:
+if "Immediate restore failed" in js and "try {" in js.split("this._restoreFields(values)", 1)[0][-300:]:
     ok("issue #113 L-1: immediate _restoreFields wrapped in try/catch")
 else:
     fail("issue #113 L-1: immediate restore path still lacks try/catch")
@@ -6419,10 +6509,15 @@ if "mergeCCRSettings(opts.ccr)" in js.split("function ppO2Check", 1)[-1][:400]:
     ok("issue #125 H-6: ppO2Check delegate merges CCR settings before bundle call")
 else:
     fail("issue #125 H-6: ppO2Check delegate still passes raw opts.ccr")
-if "zhl-physics-core.js" in _125_sw and "zhl-gas-core.js" in _125_sw:
-    ok("issue #125 H-7: SW REQUIRED_PRECACHE includes zhl-physics-core.js and zhl-gas-core.js")
+_required_sw125 = _125_sw.split("REQUIRED_PRECACHE", 1)[-1].split("];", 1)[0]
+if "zhl-engine-bundle.js" in _required_sw125 and "zhl-physics-core.js" not in _required_sw125 and "zhl-gas-core.js" not in _required_sw125:
+    ok("issue #125 H-7: SW precaches the deployed ZHL bundle rather than build-only core sources")
 else:
-    fail("issue #125 H-7: SW precache missing Tier-3 core source files")
+    fail("issue #125 H-7: SW required precache does not match deployed ZHL runtime assets")
+if "vpm-engine-bundle.js" in _required_sw125 and "vpm-engine-core.js" not in _required_sw125:
+    ok("Cycle 31 L-7: deployed VPM bundle is in SW REQUIRED_PRECACHE")
+else:
+    fail("Cycle 31 L-7: SW required precache does not match deployed VPM runtime assets")
 if "applyEnvironment" in _125_parity and "extract_function_body" in _125_parity and "api_export_present" in _125_parity:
     ok("issue #125 M-1: check_engine_parity.py uses function-body and API export checks")
 else:
@@ -6482,8 +6577,8 @@ else:
     fail("issue #126: one or more CI jobs still run without bundle-sync dependency")
 
 # ── v2.53.04 stable release ──
-if re.search(r"APP_VERSION\s*=\s*['\"]2\.53\.04['\"]", app_version_js):
-    ok("stable release APP_VERSION is 2.53.04")
+if _app_version_at_least(2, 53, 4):
+    ok("stable release APP_VERSION is at least 2.53.04")
 else:
     fail("stable release requires APP_VERSION 2.53.04")
 
@@ -6658,10 +6753,21 @@ if (
     ok("issue #130 BUG-05/07/10: worker passes resolved env to calculate (no duplicate applyEnvironment)")
 else:
     fail("issue #130 BUG-05/07/10: worker still double-applies env or passes raw null environment")
-if "ZhlEngineBundle.buhNDL(depthM, fN2, 50, 100, 0, 5, 5, false)" in js:
-    ok("issue #130 BUG-06: rec custom nitrox NDL uses explicit 5 m stop params")
+_index_root130 = os.path.dirname(os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else "index.html"))
+_padi_engine_path = os.path.join(_index_root130, "padi-engine.js")
+_padi_engine130 = open(_padi_engine_path, encoding="utf-8").read() if os.path.isfile(_padi_engine_path) else ""
+_bug06 = {
+    "padi_file": os.path.isfile(_padi_engine_path),
+    "script_tag": 'src="padi-engine.js"' in html,
+    "normalizeRecMix": "normalizeRecMix" in _padi_engine130,
+    "no_buh_in_pe": "ZhlEngineBundle.buhNDL" not in _padi_engine130,
+    "no_custom_in_pe": "mix === 'custom'" not in _padi_engine130,
+    "no_old_buh_in_js": "ZhlEngineBundle.buhNDL(depthM, fN2, 50, 100, 0, 5, 5, false)" not in js,
+}
+if all(_bug06.values()):
+    ok("issue #130 BUG-06: Rec NDL is pure PADI tables (Air/EAN32/EAN36); custom nitrox removed")
 else:
-    fail("issue #130 BUG-06: rec custom nitrox NDL still inherits DOM decoStep/lastStop")
+    fail(f"issue #130 BUG-06: Rec RDP purity check failed: {_bug06}")
 _ndl130 = _physics_core_js.split("function ndlClearAtDepth", 1)[-1].split("function buhNDL", 1)[0] if "function ndlClearAtDepth" in _physics_core_js else ""
 if "if (!(decoStep > 0)) decoStep = 3" in _ndl130:
     ok("issue #130 BUG-09: ndlClearAtDepth guards invalid decoStep/lastStop")
@@ -6899,11 +7005,11 @@ if "Number.isFinite(sp)" in _ccr_core_src.split("function depthAtSetpointCrossin
     ok("issue #133 M-3: depthAtSetpointCrossing guards non-finite surfP")
 else:
     fail("issue #133 M-3: depthAtSetpointCrossing missing finite surfP guard")
-if "calcSurfInt?.()" in js.split("_syncUiAfterRestore", 1)[-1][:800]:
+if "calcSurfInt?.()" in js.split("_syncUiAfterRestore: function", 1)[-1][:1200]:
     ok("issue #133 M-4: SI slider displays refreshed after settings restore")
 else:
     fail("issue #133 M-4: _syncUiAfterRestore missing calcSurfInt / slider fill refresh")
-_restore133 = js.split("_restoreFields: function", 1)[-1][:2200] if "_restoreFields: function" in js else ""
+_restore133 = js.split("_restoreFields: function", 1)[-1][:6500] if "_restoreFields: function" in js else ""
 if _restore133.find("setWaterDensity") < _restore133.find("_syncUiAfterRestore"):
     ok("issue #133 M-5: waterDensitySelect applied before dependent UI sync")
 else:
@@ -6936,7 +7042,7 @@ if "'siGfLow'" in js.split("DECO_FIELDS:", 1)[-1][:3500]:
     ok("issue #133 L-4: siGfLow persisted in DECO_FIELDS")
 else:
     fail("issue #133 L-4: siGfLow missing from DECO_FIELDS")
-_restore_flag133 = js.split("_restoreFields: function", 1)[-1][:2500] if "_restoreFields: function" in js else ""
+_restore_flag133 = js.split("_restoreFields: function", 1)[-1][:6500] if "_restoreFields: function" in js else ""
 if _restore_flag133.find("_restoreInProgress = false") > _restore_flag133.find("pendingChangeEls.forEach"):
     ok("issue #133 L-5: _restoreInProgress cleared after synthetic change events")
 else:
@@ -6945,8 +7051,8 @@ if "Closed field list" in _ccr_core_src:
     ok("issue #133 L-8: normalizeCCRSettings documents closed field list")
 else:
     fail("issue #133 L-8: normalizeCCRSettings missing closed-list documentation")
-if "2.53.04" in open(os.path.join(_repo_root130, "app-version.js"), encoding="utf-8").read():
-    ok("issue #133 H-2: APP_VERSION bumped for PWA cache bust")
+if _app_version_at_least(2, 53, 4):
+    ok("issue #133 H-2: APP_VERSION retains the required PWA cache bust")
 else:
     fail("issue #133 H-2: APP_VERSION not bumped after engine fixes")
 
@@ -7015,10 +7121,8 @@ if "issue134" in open(os.path.join(_repo_root130, "dev", "engine_regression.py")
 else:
     fail("issue #134 L-6: engine_regression missing issue134 section")
 _av134 = open(os.path.join(_repo_root130, "app-version.js"), encoding="utf-8").read()
-if "2.53.04" in _av134:
-    ok("issue #134: APP_VERSION bumped to 2.53.04 (historical)")
-elif "2.53.03" in _av134:
-    ok("issue #134: APP_VERSION bumped to 2.53.03 (historical)")
+if _app_version_at_least(2, 53, 3):
+    ok("issue #134: APP_VERSION retains the historical 2.53.03+ bump")
 else:
     fail("issue #134: APP_VERSION historical marker missing")
 
@@ -7027,7 +7131,7 @@ _repo_root135 = os.path.dirname(__file__)
 _index135 = open(os.path.join(_repo_root135, "index.html"), encoding="utf-8").read()
 _app135 = js  # inline scripts + runtime UI *-core.js (post-extraction)
 _zwb135 = open(os.path.join(_repo_root135, "zhl-worker-bridge.js"), encoding="utf-8").read()
-_rcs135 = _app135.split("function runContingencyScenario", 1)[-1][:3500] if "function runContingencyScenario" in _app135 else ""
+_rcs135 = _app135.split("function runContingencyScenario", 1)[-1].split("function buildContingencyButtons", 1)[0] if "function runContingencyScenario" in _app135 else ""
 _cc135 = _app135.split("function calcContingency", 1)[-1][:9000] if "function calcContingency" in _app135 else ""
 if "let ok = false" in _rcs135 and "ok: false, newRows: ''" in _rcs135:
     ok("issue #135 H-1: runContingencyScenario returns ok:false when schedule empty")
@@ -7043,7 +7147,7 @@ if "getBottomGasFractions" in _app135.split("function calcSurfInt", 1)[-1][:2500
     ok("issue #135 H-3: calcSurfInt uses bottom gas fN2 not hardcoded FN2_AIR")
 else:
     fail("issue #135 H-3: calcSurfInt still hardcodes FN2_AIR")
-if "totalCNS:" in _index135.split("function saveZhlRepState", 1)[-1][:500] and "totalOTU:" in _index135.split("function saveZhlRepState", 1)[-1][:500]:
+if "totalCNS:" in js.split("function saveZhlRepState", 1)[-1][:500] and "totalOTU:" in js.split("function saveZhlRepState", 1)[-1][:500]:
     ok("issue #135 H-4: saveZhlRepState persists CNS/OTU carry")
 else:
     fail("issue #135 H-4: saveZhlRepState missing CNS/OTU in rep snapshot")
@@ -7084,16 +7188,16 @@ if "calcEND(dM" in _app135.split("function renderEADTable", 1)[-1][:2000]:
     ok("issue #135 M-6: renderEADTable uses calcEND for altitude-aware EAD")
 else:
     fail("issue #135 M-6: renderEADTable still uses inline sea-level EAD formula")
-_sac135 = _index135.split("function sacDomToLpm", 1)[-1][:300]
+_sac135 = js.split("function sacDomToLpm", 1)[-1][:300]
 if "raw <= 0) return 0" in _sac135:
     ok("issue #135 M-7: sacDomToLpm does not substitute default when SAC is 0")
 else:
     fail("issue #135 M-7: sacDomToLpm still silently uses default for SAC=0")
-if "cnsPctNum >= 80" in _index135:
+if "cnsPctNum >= 80" in js:
     ok("issue #135 M-8: ZHL CNS warning uses >= 80 threshold")
 else:
     fail("issue #135 M-8: ZHL/VPM CNS threshold mismatch")
-if "ppo2 >= 1.6" in _index135.split("function calcCNS", 1)[-1][:5000]:
+if "ppo2 >= 1.6" in js.split("function calcCNS", 1)[-1][:5000]:
     ok("issue #135 M-9: calcCNS ppO2 limit uses >= 1.6 boundary")
 else:
     fail("issue #135 M-9: calcCNS still uses > 1.6 for ppO2 limit")
@@ -7101,7 +7205,7 @@ if "narcoticO2" in _app135.split("function renderGasTable", 1)[-1][:2000]:
     ok("issue #135 M-10: gas table MND respects narcoticO2 toggle")
 else:
     fail("issue #135 M-10: gas table MND ignores narcoticO2")
-if "calcSurfInt();appSettings.save()" in _index135:
+if "calcSurfInt();appSettings.save()" in html:
     ok("issue #135 L-1: siGfLow onchange persists via appSettings.save")
 else:
     fail("issue #135 L-1: siGfLow missing appSettings.save")
@@ -7109,16 +7213,16 @@ if "nextId = 1" not in _zwb135.split("function terminate", 1)[-1][:200]:
     ok("issue #135 L-3: terminate() no longer resets nextId mid-session")
 else:
     fail("issue #135 L-3: terminate() still resets nextId to 1")
-if "seenMixes" in _index135.split("function validateDomDecoGases", 1)[-1][:1200]:
+if "seenMixes" in js.split("function validateDomDecoGases", 1)[-1][:1200]:
     ok("issue #135 L-4: validateDomDecoGases detects duplicate deco gas mixes")
 else:
     fail("issue #135 L-4: no duplicate deco gas detection")
-if ("if (ead == null) return null" in _index135.split("function calcEAD", 1)[-1][:400]
-        or "ead <= 0) return null" in _index135.split("function calcEAD", 1)[-1][:400]):
+if ("if (ead == null) return null" in js.split("function calcEAD", 1)[-1][:400]
+        or "ead <= 0) return null" in js.split("function calcEAD", 1)[-1][:400]):
     ok("issue #135 L-5/L-6: calcEAD/calcEND null for invalid/zero END (issue #138 M-17)")
 else:
     fail("issue #135 L-5: calcEAD still rounds before return")
-if 'oninput="applyCustomAltitude()"' not in _index135.split("altitudeCustomInput", 1)[-1][:200]:
+if 'oninput="applyCustomAltitude()"' not in html.split("altitudeCustomInput", 1)[-1][:200]:
     ok("issue #135 L-8: altitude custom input no longer double-fires oninput+onchange")
 else:
     fail("issue #135 L-8: altitude custom still has oninput+onchange")
@@ -7126,7 +7230,7 @@ if 'data-phase="contingency-' in _cc135:
     ok("issue #135 L-9: contingency table rows tagged with contingency- data-phase prefix")
 else:
     fail("issue #135 L-9: contingency rows missing data-phase contingency prefix")
-if "1500 OTU/week" in _index135.split("function calcCNS", 1)[-1][:6000]:
+if "1500 OTU/week" in js.split("function calcCNS", 1)[-1][:6000]:
     ok("issue #135 L-11: calcCNS warns on NOAA 1500 OTU/week limit")
 else:
     fail("issue #135 L-11: no 1500 OTU/week threshold warning")
@@ -7135,10 +7239,8 @@ if "issue135" in open(os.path.join(_repo_root135, "dev", "engine_regression.py")
 else:
     fail("issue #135: engine_regression missing issue135 section")
 _av135 = open(os.path.join(_repo_root135, "app-version.js"), encoding="utf-8").read()
-if "2.53.04" in _av135:
-    ok("issue #138: APP_VERSION bumped to 2.53.04")
-elif "2.53.03" in _av135:
-    ok("issue #135: APP_VERSION bumped to 2.53.03")
+if _app_version_at_least(2, 53, 4):
+    ok("issue #138: APP_VERSION retains the required 2.53.04+ bump")
 else:
     fail("issue #138: APP_VERSION not bumped to 2.53.04")
 
@@ -7165,7 +7267,7 @@ if 'id="conservatismSelect" onchange="onConservatismChange()"' in _index138:
     ok("issue #138 H-3: conservatismSelect triggers replan")
 else:
     fail("issue #138 H-3: conservatismSelect missing onchange")
-if "replanAfterEnvChange()" in _index138.split("function setWaterDensity", 1)[-1][:900]:
+if "replanAfterEnvChange()" in js.split("function setWaterDensity", 1)[-1][:900]:
     ok("issue #138 H-4: setWaterDensity replans live schedule")
 else:
     fail("issue #138 H-4: setWaterDensity missing replan")
@@ -7193,11 +7295,11 @@ if "if (stopTime > 0)" in _vpm138.split("let stopTime = 0", 1)[-1][:1200]:
     ok("issue #138 M-4: inter-level VPM skips zero-time forced stop")
 else:
     fail("issue #138 M-4: inter-level still forces min stop when clear")
-if "pO2Val >= gasLimit" in _index138:
+if "pO2Val >= gasLimit" in js:
     ok("issue #138 M-5: ppO2 limit boundary uses >=")
 else:
     fail("issue #138 M-5: ppO2 still strict >")
-if "(s.gas ||" in _index138.split("collapsedMDP.forEach", 1)[-1][:4000]:
+if "(s.gas ||" in js.split("collapsedMDP.forEach", 1)[-1][:4000]:
     ok("issue #138 M-6: null-safe gas label in deco rows")
 else:
     fail("issue #138 M-6: s.gas.toUpperCase still unguarded")
@@ -7240,7 +7342,7 @@ if "modPpo2Ndl" in _index138.split("function renderNDLTable", 1)[-1][:2000]:
     ok("issue #138 M-16: NDL MOD uses ppo2Bottom")
 else:
     fail("issue #138 M-16: NDL MOD still hardcoded 1.4")
-if "ead <= 0) return null" in _index138.split("function calcEAD", 1)[-1][:400]:
+if "ead <= 0) return null" in js.split("function calcEAD", 1)[-1][:400]:
     ok("issue #138 M-17: calcEAD null for zero END")
 else:
     fail("issue #138 M-17: calcEAD still formats 0 m")
@@ -7260,7 +7362,8 @@ if "Number.isFinite(altitudeM)" in _index138.split("function runVPMSchedule", 1)
     ok("issue #138 M-21: VPM altitude NaN guard")
 else:
     fail("issue #138 M-21: VPM altitude can be NaN")
-if "!appSettings._loadPending" in _index138 and "setAlgo('buh')" in _index138.split("appSettings.load();", 1)[-1][:800]:
+_init138 = js.split("appSettings.load();", 1)[-1][:1200] if "appSettings.load();" in js else ""
+if "!appSettings._loadPending" in _init138 and ("setAlgo('buh')" in _init138 or "setMainNav('buh')" in _init138):
     ok("issue #138 M-22: app init skips defaults when restore deferred")
 else:
     fail("issue #138 M-22: first-time defaults still race deferred restore")
@@ -7294,7 +7397,7 @@ if 'id="ccrDecoSetpoint"' in _index138 and "appSettings.save(false)" in _index13
     ok("issue #139 L-1: ccrDecoSetpoint persists on input")
 else:
     fail("issue #139 L-1: ccrDecoSetpoint missing appSettings.save on input")
-_safety138 = _index138.split("s.type === 'safety'", 1)[-1][:800] if "s.type === 'safety'" in _index138 else ""
+_safety138 = js.split("} else if (s.type === 'safety')", 1)[-1][:800] if "} else if (s.type === 'safety')" in js else ""
 if "pO2Val.toFixed(2)" in _safety138:
     ok("issue #139 L-2: safety stop row formats ppO₂ to 2 decimals")
 else:

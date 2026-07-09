@@ -52,6 +52,33 @@ class UiCoreBlock:
 
 UI_CORE_BLOCKS: tuple[UiCoreBlock, ...] = (
     UiCoreBlock(
+        "planner-inputs-core",
+        "planner-inputs-core.js",
+        """/**
+ * Disjoint REC/TECH planner input accessors and view-switch snapshots.
+ * Loaded by index.html before settings-core.
+ */
+""",
+    ),
+    UiCoreBlock(
+        "rec-planner",
+        "rec-planner.js",
+        """/**
+ * Recreational planner dispatch (runRecPlan entry).
+ * Loaded by index.html before settings-core.
+ */
+""",
+    ),
+    UiCoreBlock(
+        "settings-core",
+        "settings-core.js",
+        """/**
+ * Environment and planner mode/state orchestration — RUNTIME UI CORE.
+ * Loaded by index.html before other UI runtime cores.
+ */
+""",
+    ),
+    UiCoreBlock(
         "surf-interval-core",
         "surf-interval-core.js",
         """/**
@@ -90,15 +117,47 @@ UI_CORE_BLOCKS: tuple[UiCoreBlock, ...] = (
 """,
     ),
     UiCoreBlock(
+        "gas-cards-core",
+        "gas-cards-core.js",
+        """/**
+ * Deco / travel / bailout gas card UI — MOD displays, dynamic cards, travel gas.
+ * Loaded by index.html before main inline script.
+ */
+""",
+    ),
+    UiCoreBlock(
         "export-core",
         "export-core.js",
         """/**
- * Unified export / clipboard / PDF — RUNTIME UI CORE.
+ * Unified export engine — copy, text export, clipboard, slate, and all PDF variants.
  * Loaded by index.html before main inline script.
  * Globals read: units, mGF, altitudeM, altAcclimatized, window._lastPlan, window._lastContingency,
- *   window._lastGasPlan, getExportCircuitTag, getContingencySummaryExport, validateDomDecoGases,
- *   waterDensityDisplayLabel, ensurePDFFontsForPDF, cleanPDF, drawDecoPlanBannerPDF, and DOM ids
+ *   window._lastGasPlan, getContingencySummaryExport, validateDomDecoGases, waterDensityDisplayLabel,
+ *   getBottomGasFractions, drawDecoProfile, drawGFCurve, and DOM ids
  * Globals written: (toast DOM only)
+ */
+""",
+    ),
+    UiCoreBlock(
+        "plot-core",
+        "plot-core.js",
+        """/**
+ * Dive profile graph — canvas render, waypoints, zoom/pan interaction.
+ * Loaded by index.html before main inline script.
+ * Globals read: units, document, window._decoGasSegments, window._decoCeilingWps, _lspCssVar
+ * Globals written: window._decoWaypoints, window._plannerWaypoints, _graphZoom, _graphOpts
+ */
+""",
+    ),
+    UiCoreBlock(
+        "gf-curve-core",
+        "gf-curve-core.js",
+        """/**
+ * GF curve visualizer and interaction.
+ * Loaded by index.html after plot-core.
+ * Globals read: setupHiDPI, _lspCssVar, getPlannerInputEl, units, mGF,
+ *   ZHL16C, gfAdjustedMValue, altSurfaceP, BAR_PER_METRE, WATER_VAPOR, FN2_AIR.
+ * Globals written: (GF curve DOM only)
  */
 """,
     ),
@@ -114,17 +173,122 @@ UI_CORE_BLOCKS: tuple[UiCoreBlock, ...] = (
  */
 """,
     ),
+    UiCoreBlock(
+        "results-panel",
+        "results-panel.js",
+        """/**
+ * Results panel shell — metrics, chips, tabs, schedule decoration.
+ * Loaded by index.html before main inline script.
+ */
+""",
+    ),
+    UiCoreBlock(
+        "results-render-core",
+        "results-render-core.js",
+        """/**
+ * Schedule results rendering — VPM and Bühlmann deco table, summary, gas consumption.
+ * Loaded by index.html before main inline script.
+ */
+""",
+    ),
+    UiCoreBlock(
+        "schedule-runner-core",
+        "schedule-runner-core.js",
+        """/**
+ * Schedule runner core - VPM/ZHL UI orchestration, visible schedule table contract,
+ * and plan exposure totals. Loaded after results-render-core and before planner-shell.
+ */
+""",
+    ),
+    UiCoreBlock(
+        "zhl-headless-adapter",
+        "zhl-headless-adapter.js",
+        """/**
+ * ZHL headless adapter.
+ * Browser-facing test/API wrapper around zhl-engine-bundle.js and zhl-worker-bridge.js.
+ * Loaded after schedule-runner-core and before planner-shell.
+ */
+""",
+    ),
+    UiCoreBlock(
+        "planner-shell",
+        "planner-shell.js",
+        """/**
+ * Planner/tools navigation shell and V4 layout bootstrap.
+ * Loaded by index.html before main inline script.
+ */
+""",
+    ),
 )
 
 EXPECTED_SCRIPT_ORDER = [b.filename for b in UI_CORE_BLOCKS]
 
 # Spot-check: extracted symbols must not remain as definitions in inline script blocks.
 INLINE_FORBIDDEN_DEFS: dict[str, tuple[str, ...]] = {
+    "settings-core": (
+        "function setWaterDensity(",
+        "function setAltitude(",
+        "function calcEND(",
+        "function renderDecoAlerts(",
+        "function setPlannerAlgo(",
+        "function toggleTheme(",
+        "let navMode",
+        "let BAR_PER_METRE",
+    ),
     "surf-interval-core": ("function calcSurfInt(",),
     "gas-table-core": ("function renderGasTable(", "function calcEND_tool("),
-    "gas-plan-core": ("function calcGasPlan(", "let _gasRule"),
-    "export-core": ("function buildExportText(", "async function exportPDF("),
-    "contingency-core": ("function runContingencyScenario(", "function calcContingency("),
+    "gas-plan-core": ("function calcGasPlan(", "let _gasRule", "async function buildGasPlanPDF("),
+    "gas-cards-core": (
+        "function getAllDecoGasIds(",
+        "function updateGasMODDisplays(",
+        "function appendDecoGasCardAtIdx(",
+        "function addDecoGasCard(",
+        "function getTravelGasExport(",
+        "let _dgNextIdx",
+    ),
+    "export-core": (
+        "function buildExportText(",
+        "async function exportPDF(",
+        "function buildDecoPlanHeaderData(",
+        "async function exportContingencyPDF(",
+        "async function buildGasPlanPDF(",
+        "async function ensurePDFFontsForPDF(",
+    ),
+    "plot-core": (
+        "function setupHiDPI(",
+        "function _drawDiveProfileCore(",
+        "function drawDecoProfile(",
+        "function drawDiveProfile(",
+        "function attachDiveProfileInteraction(",
+    ),
+    "gf-curve-core": (
+        "function drawGFCurve(",
+        "function attachGFCurveInteraction(",
+    ),
+    "contingency-core": (
+        "function runContingencyScenario(",
+        "function calcContingency(",
+        "async function exportContingencyPDF(",
+        "async function ensurePDFFontsForPDF(",
+    ),
+    "results-panel": ("function switchResultTab(", "function _renderResultSummaryStrip("),
+    "results-render-core": (
+        "function renderVPMResults(",
+        "function renderZhlScheduleResults(",
+    ),
+    "schedule-runner-core": (
+        "const SCHEDULE_TABLE_COLUMNS",
+        "function runVPMSchedule(",
+        "function runDecoSchedule(",
+        "function computePlanExposureTotals(",
+    ),
+    "zhl-headless-adapter": (
+        "const ZHLEngine = (() => {",
+        "function validateEngineInputs(",
+        "function validateCcrCalculationInputs(",
+        "function validateZhlHeadlessProfile(",
+    ),
+    "planner-shell": ("function initV3Layout(", "function setNavMode("),
 }
 
 
@@ -278,7 +442,7 @@ def verify_extracted_state(html: str | None = None) -> None:
     anchor_idx = html.find(SCRIPT_INSERT_AFTER)
     if anchor_idx == -1:
         raise ExtractionError("zhl-worker-bridge.js script anchor missing from index.html head")
-    head_slice = html[anchor_idx : anchor_idx + 1200]
+    head_slice = html[anchor_idx : anchor_idx + 6000]
     pos = 0
     for filename in EXPECTED_SCRIPT_ORDER:
         needle = f'<script src="{filename}"></script>'

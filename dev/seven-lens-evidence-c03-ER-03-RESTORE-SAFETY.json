@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ER-03-RESTORE-SAFETY",
+  "command_argv": [
+    "python",
+    "tools/assemble_ui_html.py",
+    "--verify"
+  ],
+  "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+  "exit_code": 0,
+  "case_ids": [
+    "SL-C03-BEST-MIX-DEPTH-UNITS"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-04T08:33:37.848760+00:00",
+  "finished_at": "2026-07-04T08:33:38.382556+00:00",
+  "stdout_sha256": "f396db76ec5a5e9d29282bc4665fb55006a750acce11bceb635fb7faaf354be2",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ER-C07-PARITY",
+  "command_argv": [
+    "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+    "tools/assemble_ui_html.py",
+    "--verify"
+  ],
+  "commit": "63b30d2df28d5cbe497fc8055c44a3eac57e0855",
+  "exit_code": 0,
+  "case_ids": [
+    "UI-EXTRACT-CSS"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-05T11:09:56.817075+00:00",
+  "finished_at": "2026-07-05T11:09:57.405994+00:00",
+  "stdout_sha256": "f396db76ec5a5e9d29282bc4665fb55006a750acce11bceb635fb7faaf354be2",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
+}

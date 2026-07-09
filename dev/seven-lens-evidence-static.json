@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "evidence_id": "static",
+  "command_argv": [
+    "python",
+    "tools/assemble_ui_html.py",
+    "--verify"
+  ],
+  "commit": "e396050e703c6f306c5ec6fe54689597ce0a5bc2",
+  "exit_code": 0,
+  "case_ids": [],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-04T06:27:44.675731+00:00",
+  "finished_at": "2026-07-04T06:27:45.946699+00:00",
+  "stdout_sha256": "f396db76ec5a5e9d29282bc4665fb55006a750acce11bceb635fb7faaf354be2",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "a0b0bdb74355ea5d1282610a3f8f59d34087e6ecd2ee75b117458f17fcf820f1"
+}

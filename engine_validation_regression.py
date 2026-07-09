@@ -27,6 +27,7 @@ from playwright_boot import boot_app_page  # noqa: E402
 
 PASS = []
 FAIL = []
+CASE_RESULTS = {}
 
 TEST_SETTINGS = {
     "metric": True,
@@ -486,6 +487,56 @@ def run_worker_recovery_check(page, port):
         fail(f"ZHL worker recovery failed: {recovery}")
 
 
+def run_worker_calculation_error_check(page, port):
+    settings = TEST_SETTINGS
+    scripted_worker = """
+let calls = 0;
+self.onmessage = function(e) {
+  calls += 1;
+  if (calls === 1) {
+    self.postMessage({ id: e.data.id, ok: false, error: 'synthetic calculation error' });
+  } else {
+    self.postMessage({ id: e.data.id, ok: true, result: { totalRuntime: 42, marker: 'same-worker-ok' } });
+  }
+};
+"""
+    page.route(
+        "**/zhl-schedule-worker.js",
+        lambda route: route.fulfill(
+            status=200,
+            content_type="application/javascript",
+            body=scripted_worker,
+        ),
+    )
+    boot_app_page(page, f"http://127.0.0.1:{port}")
+    result = page.evaluate(
+        """async (settings) => {
+      const levels = [{ depth: 40, time: 25, o2: 21, he: 0 }];
+      const profileSplit = window.ZhlEngineBundle.splitZhlProfileLevels(levels);
+      const env = getZhlEnvironment(settings);
+      let first = '';
+      try {
+        await window.ZhlWorkerBridge.calculateInWorker(levels, [], settings, profileSplit, env);
+      } catch (e) {
+        first = e && e.message || String(e);
+      }
+      try {
+        const second = await window.ZhlWorkerBridge.calculateInWorker(levels, [], settings, profileSplit, env);
+        return { ok: first.includes('synthetic calculation error') && second?.marker === 'same-worker-ok', first, second };
+      } catch (e) {
+        return { ok: false, first, secondError: e && e.message || String(e) };
+      }
+    }""",
+        settings,
+    )
+    page.unroute("**/zhl-schedule-worker.js")
+    CASE_RESULTS["ZHL-WORKER-CALC-ERROR-SINGLE-REQUEST"] = bool(result.get("ok"))
+    if result.get("ok"):
+        ok("ZHL worker calculation error rejects one request without killing worker")
+    else:
+        fail(f"ZHL worker calculation error handling failed: {result}")
+
+
 def main():
     from playwright.sync_api import sync_playwright
 
@@ -503,6 +554,9 @@ def main():
             recovery_page = browser.new_page()
             run_worker_recovery_check(recovery_page, port)
             recovery_page.close()
+            calc_error_page = browser.new_page()
+            run_worker_calculation_error_check(calc_error_page, port)
+            calc_error_page.close()
             browser.close()
     finally:
         httpd.shutdown()
@@ -518,4 +572,14 @@ if __name__ == "__main__":
     sys.path.insert(0, str(ROOT))
     from tools.audit.suite_emit import case_row, finish_suite
 
-    finish_suite(ROOT, [case_row("engine-input-validation", code == 0)], code)
+    finish_suite(
+        ROOT,
+        [
+            case_row("engine-input-validation", code == 0),
+            case_row(
+                "ZHL-WORKER-CALC-ERROR-SINGLE-REQUEST",
+                CASE_RESULTS.get("ZHL-WORKER-CALC-ERROR-SINGLE-REQUEST") is True,
+            ),
+        ],
+        code,
+    )

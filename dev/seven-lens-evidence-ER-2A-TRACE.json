@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ER-2A-TRACE",
+  "command_argv": [
+    "python",
+    "tools/seven_lens_browser_trace.py",
+    "--spec",
+    "docs/seven-lens-traces/cycle-02-rec-planner.json",
+    "--output",
+    "dev/seven-lens-browser-trace-2a.json"
+  ],
+  "commit": "e396050e703c6f306c5ec6fe54689597ce0a5bc2",
+  "exit_code": 0,
+  "case_ids": [
+    "SL-C01-DEPTH-SYNC"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": false,
+  "started_at": "2026-07-04T06:28:05.573696+00:00",
+  "finished_at": "2026-07-04T06:28:24.176930+00:00",
+  "stdout_sha256": "f12754d494ed89cbe94149a5afc3a2ae30d19b2a800aa12843ab010894095860",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "a0b0bdb74355ea5d1282610a3f8f59d34087e6ecd2ee75b117458f17fcf820f1"
+}

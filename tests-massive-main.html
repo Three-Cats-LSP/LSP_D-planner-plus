@@ -1660,11 +1660,11 @@ const TIER2_GROUPS = [
         assert(sel, 'Algorithm selector not found');
         // Switch to VPMB_GFS
         sel.value = 'VPMB_GFS'; sel.dispatchEvent(new WIN.Event('change',{bubbles:true}));
-        // GF presets row must be visible
-        const presetsRow = d.getElementById('gfPresetsRow');
-        assert(presetsRow, 'gfPresetsRow not found');
+        // GF presets row must be visible (V3 layout uses gfPresetsRowV3; legacy gfPresetsRow is removed)
+        const presetsRow = d.getElementById('gfPresetsRowV3') || d.getElementById('gfPresetsRow');
+        assert(presetsRow, 'gfPresetsRowV3/gfPresetsRow not found');
         const presetsVisible = presetsRow.style.display !== 'none';
-        assert(presetsVisible, 'gfPresetsRow hidden in VPMB_GFS mode');
+        assert(presetsVisible, 'GF presets row hidden in VPMB_GFS mode');
         // GF label should say 'GF Hi:' not 'GF:'
         const gfLabel = d.getElementById('gfLabel');
         if (gfLabel) {
@@ -2090,11 +2090,13 @@ const TIER3_GROUPS = [
         assert(size, 'cylTravelGas_size not found');
         return 'cylTravelGas_pres + _size ✓';
       }],
-      ['travelGasManualDepth input exists', 'SCN', function(){
+      ['Travel gas uses automatic switch display, no manual controls', 'SCN', function(){
         WIN.addTravelGas();
         const d = getDoc();
-        const el = d.getElementById('travelGasManualDepth');
-        assert(el, 'travelGasManualDepth not found');
+        assert(!d.getElementById('travelGasManualDepth'), 'travelGasManualDepth should be removed');
+        assert(!d.getElementById('travelGasSwitchMode'), 'travelGasSwitchMode should be removed');
+        const el = d.getElementById('travelGasSwitchDepthDisplay');
+        assert(el, 'travelGasSwitchDepthDisplay not found');
         return 'found ✓';
       }],
       ['runDecoSchedule works with travel gas active', 'SCN', function(){
@@ -2132,9 +2134,9 @@ const TIER3_GROUPS = [
         WIN.addTravelGas();
         WIN.setUnits('imperial');
         const d = getDoc();
-        const el = d.getElementById('travelGasManualDepth');
+        const el = d.getElementById('travelGasSwitchDepthDisplay');
         // label should change
-        const lbl = d.querySelector('label[for="travelGasManualDepth"]');
+        const lbl = el && /ft/.test(el.value) ? { textContent: el.value } : null;
         WIN.setUnits('metric');
         return lbl ? `label: "${lbl.textContent.trim()}" (reset to metric) ✓` : 'label not found — unit switch ran without crash ✓';
       }],

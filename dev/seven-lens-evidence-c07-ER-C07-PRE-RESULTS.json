@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ER-C07-PRE-RESULTS",
+  "command_argv": [
+    "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+    "dev/c07_pre_results_regression.py"
+  ],
+  "commit": "c108bc5cf95761563afdc1545aca9e4f31f80f97",
+  "exit_code": 1,
+  "case_ids": [
+    "SL-C07-CHIP-YELLOW-DISTINCT",
+    "SL-C07-PPO2-SEVERITY-COLORS",
+    "SL-C07-CSS-DEAD-LEGACY-CARDS",
+    "SL-C07-CSS-DEAD-ALGO-SWITCHER",
+    "SL-C07-REDUCED-MOTION",
+    "SL-C07-PRINT-RESULTS"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-05T10:13:51.087403+00:00",
+  "finished_at": "2026-07-05T10:14:16.788349+00:00",
+  "stdout_sha256": "75d01b3ae77a69415e4979c63a99c54d5e053463e05fc5f4a901888443f6c063",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
+}

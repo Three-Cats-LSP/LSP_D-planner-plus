@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ER-C05-STRUCTURE",
+  "command_argv": [
+    "python",
+    "tools/run_ui_structure_suite.py"
+  ],
+  "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+  "exit_code": 0,
+  "case_ids": [
+    "UI-EXTRACT-CSS",
+    "UI-CSS-LINK-ORDER"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-04T12:51:25.661896+00:00",
+  "finished_at": "2026-07-04T12:51:27.611610+00:00",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
+}

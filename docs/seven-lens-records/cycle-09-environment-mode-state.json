@@ -1,0 +1,715 @@
+{
+  "schema_version": 5,
+  "cycle": 9,
+  "record_path": "docs/seven-lens-records/cycle-09-environment-mode-state.json",
+  "target_branch": "dev",
+  "integration_base_commit": "6af174d781e6d8eaf9d67f751a04897a65fbec76",
+  "baseline_commit": "6af174d781e6d8eaf9d67f751a04897a65fbec76",
+  "baseline_registry_fingerprint": "95fdc15ab464d70a3f4979f59c623abe4cc48632f397c4f80f0556d7f82002be",
+  "baseline_findings": [
+    {
+      "id": "SL-C02-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes."
+    },
+    {
+      "id": "SL-C02-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Travel manual depth limits disagree between markup, metric restore, and imperial mode."
+    },
+    {
+      "id": "SL-C02-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Rounded display values become canonical physical inputs; Best Mix and CNS now reproduce the same unit-roundtrip drift."
+    },
+    {
+      "id": "SL-C02-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Min-deco regression checks an adapter property rather than observable schedule behavior."
+    },
+    {
+      "id": "SL-C02-M-06",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle history allowed unresolved findings and a blocked prior record to be deleted or rewritten as passed."
+    },
+    {
+      "id": "SL-C03-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits."
+    },
+    {
+      "id": "SL-C03-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle 3 regressions compare rounded outputs and restore values before units, masking physical-depth drift and corrupting test state."
+    },
+    {
+      "id": "SL-C03-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling."
+    },
+    {
+      "id": "SL-C04-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Depth and cylinder edits after a unit switch leave canonical data-depth-m/data-volume-l stale, so consumers use old values and the next switch discards the edit."
+    },
+    {
+      "id": "SL-C04-H-03",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Cycles 2-4 are marked reviewed although their protocol records fail closure and Cycle 4 has no evidence runs for five closed findings."
+    },
+    {
+      "id": "SL-C04-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle regression setup leaks canonical DOM and settings state, making the full engine suite order-dependent and leaving two contingency cases failing."
+    },
+    {
+      "id": "SL-C04-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Browser trace evidence could pass forced or vacuous single-run checks without proving a real interactive consumer path."
+    },
+    {
+      "id": "SL-C04-H-04",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Closure evidence was materialized from constants instead of executed commands, allowing fabricated exit codes, cleanliness claims, and unrelated trace reuse."
+    },
+    {
+      "id": "SL-C04-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "A dynamic deco cylinder created in imperial mode defaults to 0.4 ft3 while retaining min 1 and step 0.5, making its initial value invalid."
+    },
+    {
+      "id": "SL-C04-H-05",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "planPanelTecSection is nested inside an unclosed planPanelRecSection, leaving gas and technical planner controls hidden in every planner mode."
+    },
+    {
+      "id": "ISSUE-133-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 4C/5H/8M/8L remediated; gated in audit.py issue133 block and engine_regression issue133 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-134-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 1C/4H/7M/7L remediated; gated in audit.py issue134 block and engine_regression issue134 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-135-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 10H/10M/1L remediated; gated in audit.py issue135 block and engine_regression issue135 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-136-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "extract_ui_cores.py uses LSP-EXTRACT marker contract; verified by audit.py and tools/extract_ui_cores.py [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-137-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in 51f95ac; gated in audit.py and engine_regression issue137 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-138-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in fcfb6c4 (v2.53.04); gated in audit.py and engine_regression issue138 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-139-ROLLUP",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "All 3L fixed; #138 40/40 re-verified on 1271d1a; gated in audit.py and engine_regression issue139 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-140-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Surface interval gas/GF kinetics, pooled gas-plan turn pressure, audit case-ID validation, SW cache waitUntil, Android compile gate, coverage self-tests, FileProvider scope, workspace hash drift"
+    },
+    {
+      "id": "ISSUE-141-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "pSCR diluent bypass from computePSCRFractions, resolveCcrSacForGas removed, invalid trimix getN2Frac returns null"
+    },
+    {
+      "id": "REGRESSION-GF-CCR-FIX",
+      "severity": "CRITICAL",
+      "status": "CLOSED",
+      "summary": "GF pre-anchor and CCR endpoint corrected; verification requires REG-06 and REG-07 in the current release run"
+    },
+    {
+      "id": "SL-C05-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Mode-isolation CSS targets removed #gfPresetsRow"
+    },
+    {
+      "id": "SL-C05-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Export buttons suppress keyboard focus ring"
+    },
+    {
+      "id": "SL-C05-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .brand-icon rules"
+    },
+    {
+      "id": "SL-C05-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete #gfCustomRow .gf-btn rules"
+    },
+    {
+      "id": "SL-C05-L-03",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .algo-switcher rules"
+    },
+    {
+      "id": "SL-C05-L-04",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .theme-toggle rules"
+    },
+    {
+      "id": "SL-C06-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Segmented controls suppress keyboard focus ring"
+    },
+    {
+      "id": "SL-C06-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Gas numeric fields undersize touch targets"
+    },
+    {
+      "id": "SL-C06-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .si-inner surface-interval rules"
+    },
+    {
+      "id": "SL-C06-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .t-col rule"
+    },
+    {
+      "id": "SL-C06-L-03",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Dead .btn-calc alias in shared .gen-btn selectors"
+    },
+    {
+      "id": "SL-C06-L-04",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Field inputs lack invalid-state styling"
+    },
+    {
+      "id": "SL-C06-L-05",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Control transitions ignore prefers-reduced-motion"
+    },
+    {
+      "id": "SL-C07-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Results chip-yellow renders with orange palette identical to chip-orange"
+    },
+    {
+      "id": "SL-C07-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Schedule row neutralization overrides PPO2 severity colors"
+    },
+    {
+      "id": "SL-C07-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Legacy mobile deco card CSS unreachable under hidden .legacy-panels"
+    },
+    {
+      "id": "SL-C07-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .algo-switcher rules with zero live DOM writers"
+    },
+    {
+      "id": "SL-C07-L-03",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Results panel transitions ignore prefers-reduced-motion"
+    },
+    {
+      "id": "SL-C07-L-04",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "No @media print rules in canonical results CSS"
+    },
+    {
+      "id": "SL-C08-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "setMobilePlanView targets removed #planPanel; mobile plan/results toggle is a no-op and both panels stay visible"
+    },
+    {
+      "id": "SL-C08-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "setNavMode(planner) re-invokes setPlannerAlgo and clears valid results on Tools/Settings return"
+    },
+    {
+      "id": "SL-C08-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Invalid TEC generate leaves prior has-results metrics and schedule rows authoritative"
+    },
+    {
+      "id": "SL-C08-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Dead prefix assignment in switchResultTab; LSP_V4_SPLIT_PROFILE_SCHEDULE unused"
+    },
+    {
+      "id": "SL-C08-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "initV3Layout and DOMContentLoaded both call _initMobilePlanView"
+    },
+    {
+      "id": "SL-C08-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Portrait 2-column grid auto-placement leaves Tools without a lower divider and Settings in a half-width cell beside a blank non-interactive grid cell; tablet 3-column row leaves an orphan cell beside Tools/Settings."
+    },
+    {
+      "id": "SL-C08-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "build_zhl_bundle.py postamble shadows schedule-core getGasLabel with EAN32/36/50/80 special cases; buildZhlDecoGasesFromEngine hard-codes EAN50/EAN80 labels into generated zhl-engine-bundle.js schedule steps."
+    },
+    {
+      "id": "SL-C08-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Fixed mobile #bottomNav duplicates main mode row and header Ref control, reserves viewport height, and maintains a second navigation-state owner via .bnav-btn active writers in setNavMode."
+    },
+    {
+      "id": "SL-C03-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Convert slider value/min/max on unit switch; read depth in metres for calc"
+    },
+    {
+      "id": "SL-C03-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Sync label/constraints; convert on setUnits; depthToMetres in calcCNS"
+    },
+    {
+      "id": "SL-C03-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Clarify AL80 as 11.1 L (~0.39 ft3) naming convention"
+    },
+    {
+      "id": "SL-C04-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Convert endDepth on setUnits; use domDepthToM in calcEND_tool"
+    },
+    {
+      "id": "SL-C04-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Full depth tuple + domDepthToM in calcSurfInt"
+    },
+    {
+      "id": "SL-C04-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Add backdrop dismiss calling closeConfirmModal(false)"
+    },
+    {
+      "id": "SL-C04-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Fix to Narcotic pressure"
+    },
+    {
+      "id": "SL-C04-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Unit-neutral depth range wording"
+    }
+  ],
+  "audit_commit": "33972d953475d1753d462189f18fe2e556c61a14",
+  "verified_source_commit": "33972d953475d1753d462189f18fe2e556c61a14",
+  "verification_status": "PASSED",
+  "parts": [
+    {
+      "id": "UI-ENVIRONMENT-P01",
+      "unit_id": "UI-ENVIRONMENT",
+      "path": "settings-core.js",
+      "start_line": 39,
+      "end_line": 418,
+      "line_count": 380,
+      "content_fingerprint": "821ce3e343c615727492ce5080d19bd199f3d8c7dc6ecf6d2a9e45a9f168ff84",
+      "review_session": "C09-A-ENVIRONMENT",
+      "verification_session": "C09-V-A-ENVIRONMENT",
+      "lens_results": {
+        "L1": {
+          "trace": "settings-core.js:39-208 defines BAR_PER_METRE from canonical water density constants and custom kg/m3; calcEND/calcNarcPP use altSurfaceP + depthM * BAR_PER_METRE.",
+          "boundary_cases": [
+            "salt/fresh/EN13319/custom density",
+            "END with helium fraction",
+            "all narcotic toggles disabled returns null"
+          ],
+          "evidence": "Source review settings-core.js:39-208; static AUD-JS/AUD-PARSE; visual contract verifies downstream warnings remain visible.",
+          "result": "NO_FINDING"
+        },
+        "L2": {
+          "trace": "setWaterDensity -> replanAfterEnvChange -> renderNDLTable/runDecoSchedule/runPlanner only when interactive results exist; _zhlHeadless early-return prevents test/headless UI mutation.",
+          "boundary_cases": [
+            "unchanged density returns without replan",
+            "headless calculation skips UI replan",
+            "existing deco/planner result replans after env change"
+          ],
+          "evidence": "settings-core.js:192-221; engine and static gates pass; no new failure path found.",
+          "result": "NO_FINDING"
+        },
+        "L3": {
+          "trace": "Altitude globals exposed through Object.defineProperties; setAltitude clamps altitudeM to 0..5000 and persists lspAltitude/lspAcclimatized; water density persists waterDensity/custom.",
+          "boundary_cases": [
+            "custom altitude display unit conversion",
+            "saved acclimatization restore",
+            "custom water density localStorage path"
+          ],
+          "evidence": "settings-core.js:22-30,192-207,264-374; static and CI gates pass.",
+          "result": "NO_FINDING"
+        },
+        "L4": {
+          "trace": "Environment globals BAR_PER_METRE/WATER_VAPOR/altSurfaceP are kept on window for engine/tool consumers; VPM half-time sync checks _syncHeHalfTimes/_setHeHT1 before warning fallback.",
+          "boundary_cases": [
+            "VPMEngine missing sync API",
+            "custom water density updates window.BAR_PER_METRE",
+            "END parser converts ft to m"
+          ],
+          "evidence": "settings-core.js:145-164,192-200,384-416; engine parity/static pass.",
+          "result": "NO_FINDING"
+        },
+        "L5": {
+          "trace": "settings-core.js is canonical UI core loaded by assembled index; assemble_ui_html parity and static UI structure pass.",
+          "boundary_cases": [
+            "canonical source extracted to index/www",
+            "script order before consumers",
+            "no re-inlined duplicate core definitions"
+          ],
+          "evidence": "python tools/assemble_ui_html.py --verify; python -m tools.audit check --profile static.",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "Narcotic END tooltip and warning inputs keep NOAA/IANTD O2 narcotic default; warning render appends travel gas fraction and He half-time sync alerts.",
+          "boundary_cases": [
+            "END > 30m warning still user-visible",
+            "travel gas fraction warning appended",
+            "He sync unavailable warning appended"
+          ],
+          "evidence": "settings-core.js:51-69,419-429; visual regression SL-C09-MOBILE-WARNING-WRAP passes.",
+          "result": "NO_FINDING"
+        },
+        "L7": {
+          "trace": "Cycle 9 contracts are guarded by SUITE-UI-VISUAL-CONTRACT-REGRESSION cases REG-108..111 plus static/CI profiles.",
+          "boundary_cases": [
+            "gas-switch terminology",
+            "mobile warning wrap",
+            "VPM/VPM+GFS toggle",
+            "schedule column geometry"
+          ],
+          "evidence": "dev/ui_visual_contract_regression.py passes all SL-C09 cases.",
+          "result": "NO_FINDING"
+        }
+      }
+    },
+    {
+      "id": "UI-MODE-STATE-P01",
+      "unit_id": "UI-MODE-STATE",
+      "path": "settings-core.js",
+      "start_line": 419,
+      "end_line": 918,
+      "line_count": 500,
+      "content_fingerprint": "4aabb740fe811471875a624097d16eb4f6e5d5a2e2dd2398200d2e944ed63893",
+      "review_session": "C09-B-MODE-STATE-1",
+      "verification_session": "C09-V-B-MODE-STATE-1",
+      "lens_results": {
+        "L1": {
+          "trace": "stepRecDepthBt/stepTecDepthBt clamp depth and BT by unit mode; VPM+GFS hides GF low and preserves GF high semantics.",
+          "boundary_cases": [
+            "imperial 3ft depth step",
+            "metric 1m depth step",
+            "VPMB_GFS custom GF high only"
+          ],
+          "evidence": "settings-core.js:529-566,629-663; visual VPM mode toggle pass.",
+          "result": "NO_FINDING"
+        },
+        "L2": {
+          "trace": "setPlannerAlgo computes fromView/toView, updates nav, calls setDecoAlgorithm with preserveSchedule only when no real change, clears results on algo/view change.",
+          "boundary_cases": [
+            "Tools/Settings return must not clear results",
+            "REC/TEC switch clears stale results",
+            "VPMB to VPMB_GFS updates vpmVariant"
+          ],
+          "evidence": "settings-core.js:753-790; SUITE-UI-SHELL-RESULTS and visual contracts pass.",
+          "result": "NO_FINDING"
+        },
+        "L3": {
+          "trace": "plannerAlgo/navMode/algo/vpmVariant/localStorage/appSettings.save are updated in one path; _showPlannerView resyncs mobile-active after REC/TEC switch.",
+          "boundary_cases": [
+            "mobile stale TEC host after REC switch",
+            "persisted vpmVariant",
+            "body rec-mode/algo-buh classes"
+          ],
+          "evidence": "settings-core.js:574-609,753-790; REG-76 and visual nav contracts pass.",
+          "result": "NO_FINDING"
+        },
+        "L4": {
+          "trace": "setPlannerAlgo calls setDecoAlgorithm(model, true, preserveSchedule) for TEC algorithms and _syncVpmModeUI(model) for VPM variants.",
+          "boundary_cases": [
+            "VPMB no GF row",
+            "VPMB_GFS GF row visible",
+            "Buhlmann preset list restored after VPM+GFS"
+          ],
+          "evidence": "settings-core.js:464-497,629-663,753-779; SL-C09-VPM-MODE-TOGGLE passes.",
+          "result": "NO_FINDING"
+        },
+        "L5": {
+          "trace": "Mode state lives in settings-core.js canonical source; visible nav and result panel consumers are assembled from canonical UI partials.",
+          "boundary_cases": [
+            "main nav active state",
+            "results panel tab switch",
+            "no bottom-nav duplicate writer"
+          ],
+          "evidence": "assemble_ui_html verify; static UI structure; visual contract no redundant bottom nav.",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "_clearPlannerResults removes stale schedules, gas consumption, contingency, graph/tissue state and last VPM export before new incompatible mode output.",
+          "boundary_cases": [
+            "invalid TEC generate after prior valid plan",
+            "VPM export cleared on setAlgo",
+            "contingency stale table cleared"
+          ],
+          "evidence": "settings-core.js:678-698; SL-C08-INVALID-TEC-CLEARS-STALE remains green under CI.",
+          "result": "NO_FINDING"
+        },
+        "L7": {
+          "trace": "Mode-state contracts are covered by shell/results regressions, visual contracts, and CI static/coverage suites.",
+          "boundary_cases": [
+            "suite-order shell trace",
+            "VPM toggle observable state",
+            "gas-switch terminology no stale labels"
+          ],
+          "evidence": "python -m tools.audit run --profile ci; dev/ui_visual_contract_regression.py.",
+          "result": "NO_FINDING"
+        }
+      }
+    },
+    {
+      "id": "UI-MODE-STATE-P02",
+      "unit_id": "UI-MODE-STATE",
+      "path": "settings-core.js",
+      "start_line": 919,
+      "end_line": 1039,
+      "line_count": 121,
+      "content_fingerprint": "38ea3d59aa3919b978786512520567527cf84cbbe739b7858593d938702576c1",
+      "review_session": "C09-C-MODE-STATE-2",
+      "verification_session": "C09-V-C-MODE-STATE-2",
+      "lens_results": {
+        "L1": {
+          "trace": "P02 has no decompression arithmetic; it routes table-view, modal back, theme, and status-bar state only.",
+          "boundary_cases": [
+            "table view scroll wrapper",
+            "theme status-bar color",
+            "native back modal stack"
+          ],
+          "evidence": "settings-core.js:808-1038; static parse and UI structure pass.",
+          "result": "NO_FINDING"
+        },
+        "L2": {
+          "trace": "toggleTableView wraps/unwraps table and reschedules decoration; native back handler exits after first open modal match; theme redraws canvases after 50ms.",
+          "boundary_cases": [
+            "repeat table toggle",
+            "Android select sheet first",
+            "theme redraw after existing results"
+          ],
+          "evidence": "settings-core.js:808-898,943-982; visual and static gates pass.",
+          "result": "NO_FINDING"
+        },
+        "L3": {
+          "trace": "localStorage decoTableView/diveTheme and cookie diveTheme are the only persistent writes; Capacitor App listener is guarded by _lspModalBackHooked.",
+          "boundary_cases": [
+            "first cold native load",
+            "resume from background",
+            "missing Capacitor bridge"
+          ],
+          "evidence": "settings-core.js:831-852,888-898,943-1038; no duplicate listener path found.",
+          "result": "NO_FINDING"
+        },
+        "L4": {
+          "trace": "showTip/closeTip, gas rule modal, warning/reference modal APIs guard DOM existence where needed and match onclick consumers.",
+          "boundary_cases": [
+            "missing tip modal nodes",
+            "warning modal display none/block",
+            "reference modal toggle"
+          ],
+          "evidence": "settings-core.js:901-934; static duplicate-id and HTML contract pass.",
+          "result": "NO_FINDING"
+        },
+        "L5": {
+          "trace": "Theme and modal handlers are canonical runtime core; assembled index keeps the same script order and IDs.",
+          "boundary_cases": [
+            "theme-color-active meta exists",
+            "settingsHelpModal/native modals IDs",
+            "deco table wrapper class names"
+          ],
+          "evidence": "assemble_ui_html verify; static AUD-HTML-002/003 pass.",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "Warning modal and tip surfaces do not suppress decompression warnings; mobile warning wrapping is validated in full app output.",
+          "boundary_cases": [
+            "warning banner with long BT text",
+            "deco alert wrap",
+            "narcotic alert wrap"
+          ],
+          "evidence": "SL-C09-MOBILE-WARNING-WRAP pass from visual suite.",
+          "result": "NO_FINDING"
+        },
+        "L7": {
+          "trace": "P02 state paths are guarded by visual contract, shell/results, static, and CI coverage suites; no source-only assertion is relied on for user-visible contracts.",
+          "boundary_cases": [
+            "dark/light theme",
+            "mobile/desktop results",
+            "native bridge guards"
+          ],
+          "evidence": "static and CI audit profiles pass.",
+          "result": "NO_FINDING"
+        }
+      }
+    }
+  ],
+  "findings": [],
+  "evidence_runs": [
+    {
+      "id": "ER-C09-VISUAL-CONTRACT",
+      "kind": "gate",
+      "command": "python dev/ui_visual_contract_regression.py",
+      "command_argv": [
+        "python",
+        "dev/ui_visual_contract_regression.py"
+      ],
+      "commit": "33972d953475d1753d462189f18fe2e556c61a14",
+      "exit_code": 0,
+      "worktree_clean": true,
+      "case_ids": [
+        "SL-C09-GAS-SWITCH-TERMINOLOGY",
+        "SL-C09-MOBILE-WARNING-WRAP",
+        "SL-C09-VPM-MODE-TOGGLE",
+        "SL-C09-SCHEDULE-COLUMN-GEOMETRY"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c09-ER-C09-VISUAL-CONTRACT.json",
+      "receipt_sha256": "1871edb0926d70f3fb3e058dc84352c1c731b69acf23448a4861dbd828460987"
+    },
+    {
+      "id": "static",
+      "kind": "gate",
+      "command": "python -m tools.audit check --profile static",
+      "command_argv": [
+        "python",
+        "-m",
+        "tools.audit",
+        "check",
+        "--profile",
+        "static"
+      ],
+      "commit": "33972d953475d1753d462189f18fe2e556c61a14",
+      "exit_code": 0,
+      "worktree_clean": true,
+      "case_ids": [
+        "AUDIT-COV-01",
+        "canonical-generated-parity",
+        "UI-EXTRACT-CORES"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c09-static.json",
+      "receipt_sha256": "98dfd33de3636f5cf8baf7ad3444587c5c4fda16b59ea3a09ffe03412d7c4c62"
+    },
+    {
+      "id": "ci",
+      "kind": "gate",
+      "command": "python -m tools.audit run --profile ci",
+      "command_argv": [
+        "python",
+        "-m",
+        "tools.audit",
+        "run",
+        "--profile",
+        "ci"
+      ],
+      "commit": "33972d953475d1753d462189f18fe2e556c61a14",
+      "exit_code": 0,
+      "worktree_clean": true,
+      "case_ids": [
+        "AUDIT-COV-01",
+        "AUDIT-REG-01",
+        "SL-C09-VPM-MODE-TOGGLE"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c09-ci.json",
+      "receipt_sha256": "63768b822dc76f62709ff77393f8a9072e2acf74b5082c457c9b31eacfbf8f5f"
+    }
+  ],
+  "changed_paths": [],
+  "audit_report": "",
+  "notes": "Cycle 9 CLOSED under simplified protocol. UI-ENVIRONMENT and UI-MODE-STATE reviewed in three bounded parts; VPM switch behavior, Gas Switch terminology, mobile warning wrapping, and schedule table geometry are covered by REG-108..REG-111. No new findings.",
+  "review_status": "SEVEN_LENS_REVIEWED",
+  "reviewed_at": "2026-07-07T13:17:12.245569+00:00",
+  "verified_at": "2026-07-07T13:38:12.663793+00:00",
+  "closure_evidence_commit": "33972d953475d1753d462189f18fe2e556c61a14",
+  "closed_at": "2026-07-07T13:38:12.663793+00:00",
+  "dependency_revalidations": [
+    {
+      "part_id": "UI-MODE-STATE-P01",
+      "result": "NO_NEW_FINDING",
+      "note": "C09 self recheck after theme redraw cleanup; no new finding."
+    },
+    {
+      "part_id": "UI-MODE-STATE-P02",
+      "result": "NO_NEW_FINDING",
+      "note": "C09 self recheck after theme redraw cleanup; no new finding."
+    }
+  ]
+}

@@ -86,6 +86,15 @@ ENGINE_SUITE_JS = r"""
     trimixZhl: zhl(lv(60, 20, 18, 45), []),
     trimixVpm: vpm(lv(60, 20, 18, 45), [], {}, 'VPMB'),
   };
+  const vpmLabelPlan = vpm(air40, [{ depth: 21, o2: 50, he: 0 }, { depth: 6, o2: 100, he: 0 }], {}, 'VPMB');
+  const vpmGasLabels = [...new Set((vpmLabelPlan.plan || []).map(s => s.gas).filter(Boolean))];
+  out.sections.vpmGasLabels = {
+    labels: vpmGasLabels,
+    ok: vpmGasLabels.includes('Air')
+      && vpmGasLabels.includes('50/00')
+      && vpmGasLabels.includes('100%')
+      && !vpmGasLabels.some(label => ['21/0', '50/0', '100/0'].includes(label) || /^EAN/.test(label)),
+  };
 
   // ── B: VPM water density / pressure gradient ───────────────────────────
   const wLv = lv(40, 25, 21, 0);
@@ -277,7 +286,19 @@ ENGINE_SUITE_JS = r"""
     const neg = validateVpmSurfaceInterval();
     if (siEl) siEl.value = prevSi;
     if (repEl) repEl.checked = prevRep;
-    return { rejectsNegative: !neg.ok };
+    const sanitizerOk = typeof sanitizeRepetitiveSurfaceInterval === 'function'
+      && sanitizeRepetitiveSurfaceInterval('300000000') === 60
+      && sanitizeRepetitiveSurfaceInterval('-5') === 60
+      && sanitizeRepetitiveSurfaceInterval('90') === 90;
+    const restoreFn = typeof appSettings !== 'undefined' && typeof appSettings._restoreFields === 'function'
+      ? appSettings._restoreFields.toString()
+      : '';
+    const saveFn = typeof appSettings !== 'undefined' && typeof appSettings.save === 'function'
+      ? appSettings.save.toString()
+      : '';
+    const persistBoundaryOk = /sanitizeRepetitiveSurfaceInterval/.test(restoreFn)
+      && /sanitizeRepetitiveSurfaceInterval/.test(saveFn);
+    return { rejectsNegative: !neg.ok, sanitizerOk, persistBoundaryOk };
   })();
 
   // ── E7: Tec gas mix memory across Rec mode (issue #106 verification M-1) ─
@@ -317,20 +338,8 @@ ENGINE_SUITE_JS = r"""
 
   // ── E9: planner trimix O2+He validation (issue #98 H-2) ────────────────
   out.sections.issue98TrimixValidate = (() => {
-    const o2El = document.getElementById('plannerTrimixO2');
-    const heEl = document.getElementById('plannerTrimixHe');
-    const mixEl = document.getElementById('gasMix');
-    if (!o2El || !heEl || !mixEl || typeof validatePlannerInputs !== 'function') return { ok: false };
-    const prevMix = mixEl.value;
-    const prevO2 = o2El.value;
-    const prevHe = heEl.value;
-    mixEl.value = 'trimix';
-    o2El.value = '40';
-    heEl.value = '90';
-    const bad = validatePlannerInputs();
-    o2El.value = prevO2;
-    heEl.value = prevHe;
-    mixEl.value = prevMix;
+    if (typeof validateGasFractionsPct !== 'function') return { ok: false };
+    const bad = validateGasFractionsPct(40, 90, 'plannerTrimix');
     return { ok: !!(bad && !bad.ok) };
   })();
 
@@ -539,10 +548,11 @@ ENGINE_SUITE_JS = r"""
     const dg5He = document.getElementById('dg5TrimixHe');
     if (dg5O2) dg5O2.value = '18';
     if (dg5He) dg5He.value = '45';
+    appSettings._restoreInProgress = false;
     appSettings.save(false);
     const saved = JSON.parse(localStorage.getItem('lspDiveSettings_v6') || '{}');
     const cardsOk = Array.isArray(saved.__decoCardIds) && saved.__decoCardIds.includes(3) && saved.__decoCardIds.includes(5);
-    const valuesOk = saved.dg3Mix === 'ean50' && saved.dg5Mix === 'trimix' && saved.dg5TrimixO2 === '18';
+    const valuesOk = saved.dg3Mix === 'ean50' && saved.dg5Mix === 'trimix' && String(saved.dg5TrimixO2) === '18';
     dg3.value = 'none';
     dg5.value = 'none';
     appSettings._restoreFields(saved);
@@ -550,7 +560,7 @@ ENGINE_SUITE_JS = r"""
     const layoutOk = JSON.stringify(restoredIds) === JSON.stringify(saved.__decoCardIds);
     const restoredOk = document.getElementById('dg3Mix')?.value === 'ean50'
       && document.getElementById('dg5Mix')?.value === 'trimix'
-      && document.getElementById('dg5TrimixO2')?.value === '18';
+      && String(document.getElementById('dg5TrimixO2')?.value) === '18';
     window._zhlHeadless = prevHeadless;
     mixEl.value = prevMix;
     toggleCustomO2?.();
@@ -848,7 +858,7 @@ ENGINE_SUITE_JS = r"""
     const dec = document.getElementById('ccrDecoSetpoint');
     const l1Ok = !!(bot && bot.getAttribute('oninput') && bot.getAttribute('oninput').includes('appSettings.save(false)')
       && dec && dec.getAttribute('oninput') && dec.getAttribute('oninput').includes('appSettings.save(false)'));
-    const rdFn = typeof runDecoSchedule === 'function' ? runDecoSchedule.toString() : '';
+    const rdFn = typeof renderZhlScheduleResults === 'function' ? renderZhlScheduleResults.toString() : '';
     const safetySlice = rdFn.split("s.type === 'safety'")[1] || '';
     const l2Ok = safetySlice.includes('pO2Val.toFixed(2)');
     const gfFn = typeof setCustomGF === 'function' ? setCustomGF.toString() : '';
@@ -881,8 +891,8 @@ ENGINE_SUITE_JS = r"""
 
   // ── E11: issue #112 planner BT vs descent validation ───────────────────
   out.sections.issue112PlannerBt = (() => {
-    const depthEl = document.getElementById('depth');
-    const btEl = document.getElementById('bt');
+    const depthEl = document.getElementById('recDepth');
+    const btEl = document.getElementById('recBT');
     const rateEl = document.getElementById('descentRate');
     if (!depthEl || !btEl || typeof validatePlannerInputs !== 'function') return { ok: false };
     const prevD = depthEl.value;
@@ -936,7 +946,8 @@ ENGINE_SUITE_JS = r"""
       if (ppo2El) ppo2El.value = '1.4';
       if (typeof setWaterDensity === 'function') setWaterDensity('salt');
       if (typeof updateGasMODDisplays === 'function') updateGasMODDisplays();
-      const botTxt = document.getElementById('botMODDisplay')?.value || '';
+      const botEl = document.getElementById('botMODDisplay');
+      const botTxt = (botEl?.textContent || botEl?.value || '').trim();
       const fracs = typeof getBottomGasFractions === 'function' ? getBottomGasFractions() : { fO2: 0.21 };
       const fO2 = fracs.fO2;
       const ppLim = 1.4;
@@ -1010,7 +1021,7 @@ ENGINE_SUITE_JS = r"""
       if (s === hold10) { seenHold = true; continue; }
       if (seenHold && s.type === 'ascent') { ascAfterHold = s; break; }
     }
-    const gasOk = hold10?.gas === 'EAN50' && ascAfterHold?.gas === 'EAN50';
+    const gasOk = hold10?.gas === '50/00' && ascAfterHold?.gas === '50/00';
     const expectMainRate = (10 - base.lastStop) / base.ascentRate;
     const rateOk = ascAfterHold && Math.abs(ascAfterHold.time - expectMainRate) < 0.15;
     const notDecoRate = !ascAfterHold || Math.abs(ascAfterHold.time - (10 - base.lastStop) / base.decoAscentRate) > 0.3;
@@ -1054,8 +1065,8 @@ ENGINE_SUITE_JS = r"""
     let h2ThrowOk = false;
     if (typeof runContingencyScenario === 'function') {
       try {
-        const depthEl = document.getElementById('decoDepth');
-        const btEl = document.getElementById('decoBT');
+        const depthEl = document.getElementById('tecDepth');
+        const btEl = document.getElementById('tecBT');
         const prevD = depthEl ? depthEl.value : null;
         const prevB = btEl ? btEl.value : null;
         runContingencyScenario(() => { throw new Error('cycle7 probe'); });
@@ -1283,6 +1294,928 @@ ENGINE_SUITE_JS = r"""
     };
   })();
 
+  // ── Cycle 31 post-fix verification (C-04 trimix inert, pSCR env sync, contingency MOD) ─
+  out.sections.cycle31 = (() => {
+    let c04Ok = false;
+    if (typeof getInspiredInertPressures === 'function') {
+      const surfP = typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325;
+      const ppH2O = typeof WATER_VAPOR !== 'undefined' ? WATER_VAPOR : 0.0627;
+      const barM = BAR_PER_METRE || 0.1;
+      const sp = 1.3;
+      const fO2 = 0.18;
+      const fHe = 0.45;
+      const fN2d = Math.max(0, 1 - fO2 - fHe);
+      const pAmb40 = surfP + 40 * barM;
+      _syncZhlBundleEnv();
+      const insp = getInspiredInertPressures(pAmb40, sp, fO2, fHe, { circuit: 'CCR', setpoint: sp });
+      const pInert = Math.max(0, pAmb40 - sp - ppH2O);
+      const den = Math.max(0.001, fN2d + fHe);
+      c04Ok = Math.abs(insp.pN2 - pInert * fN2d / den) < 1e-6
+        && Math.abs(insp.pHe - pInert * fHe / den) < 1e-6;
+    }
+    let pscrLoopSyncOk = false;
+    if (typeof computePSCRFractions === 'function') {
+      _syncZhlBundleEnv();
+      const pAmb = (typeof altSurfaceP !== 'undefined' ? altSurfaceP : 1.01325) + 30 * (BAR_PER_METRE || 0.1);
+      const fr5 = computePSCRFractions(pAmb, 0.32, 0, { circuit: 'pSCR', scrLoopVolume: 5, scrMetabolicO2: 1.5 });
+      const fr15 = computePSCRFractions(pAmb, 0.32, 0, { circuit: 'pSCR', scrLoopVolume: 15, scrMetabolicO2: 1.5 });
+      pscrLoopSyncOk = !!(fr5 && fr15 && Math.abs(fr5.fO2 - fr15.fO2) > 1e-4);
+    }
+    const shallowPersistOk = typeof appSettings !== 'undefined'
+      && Array.isArray(appSettings.DECO_FIELDS)
+      && appSettings.DECO_FIELDS.includes('shallowGradient');
+    const repetitiveBottomPhaseOk = typeof runUnifiedPlan === 'function'
+      && /ccrPhase:\s*['"]bottom['"]/.test(runUnifiedPlan.toString());
+    let contingencyModOk = false;
+    if (typeof buildContingencyModViolationAlert === 'function') {
+      const depthEl = document.getElementById('tecDepth');
+      const gasEl = document.getElementById('decoGas');
+      const prevD = depthEl?.value;
+      const prevG = gasEl?.value;
+      if (depthEl) depthEl.value = '55';
+      if (gasEl) gasEl.value = 'air';
+      const alert = buildContingencyModViolationAlert(5);
+      contingencyModOk = typeof alert === 'string' && alert.includes('BEYOND MOD');
+      if (depthEl && prevD != null) depthEl.value = prevD;
+      if (gasEl && prevG != null) gasEl.value = prevG;
+    }
+    return {
+      ok: c04Ok && pscrLoopSyncOk && shallowPersistOk && contingencyModOk && repetitiveBottomPhaseOk,
+      c04Ok,
+      pscrLoopSyncOk,
+      shallowPersistOk,
+      contingencyModOk,
+      repetitiveBottomPhaseOk,
+    };
+  })();
+
+  // ── Cycle 32: contingency bailout dual-check (UI-13 / gas-plan-core) ─────
+  out.sections.cycle32 = (() => {
+    const rdFn = typeof renderZhlScheduleResults === 'function' ? renderZhlScheduleResults.toString() : '';
+    const sacScaleOk = /getContingencySacMultiplier/.test(rdFn) && /contSacMult/.test(rdFn);
+    const scratchGasOk = /_contingencyScratchGasConsumed/.test(rdFn);
+    const calcFn = typeof calcContingency === 'function' ? calcContingency.toString() : '';
+    const bailoutDualOk = /buildContingencyBailoutGasAlert/.test(calcFn)
+      && /contLastGasConsumed/.test(calcFn)
+      && /warningBailoutContingency/.test(calcFn);
+    const gasSwitchOk = typeof revalidateContingencyGasSwitchDepth === 'function'
+      && /getConfiguredBailoutMixes/.test(revalidateContingencyGasSwitchDepth.toString());
+    const errorRecoveryOk = /finally\s*\{/.test(calcFn)
+      && /_contingencyRunning\s*=\s*false/.test(calcFn)
+      && /_scheduleWorkerBusy\s*=\s*false/.test(calcFn);
+    const persistOk = typeof appSettings !== 'undefined'
+      && Array.isArray(appSettings.DECO_FIELDS)
+      && appSettings.DECO_FIELDS.includes('contingencySacMultiplier');
+
+    let sacFuncOk = false;
+    if (typeof getContingencySacMultiplier === 'function' && typeof scaleGasConsumedMap === 'function') {
+      const el = document.getElementById('contingencySacMultiplier');
+      const prev = el ? el.value : null;
+      if (el) el.value = '2';
+      const mult = getContingencySacMultiplier();
+      const scaled = scaleGasConsumedMap({ AIR: 100 }, mult);
+      sacFuncOk = mult === 2 && Math.abs(scaled.AIR - 200) < 1e-6;
+      if (el && prev != null) el.value = prev;
+    }
+
+    let bailoutWarnOk = false;
+    if (typeof calculateGasRequirementsFromConsumed === 'function' && typeof buildContingencyBailoutGasAlert === 'function') {
+      const el = document.getElementById('gpDg1_size');
+      const fill = document.getElementById('gpDg1_fill');
+      const res = document.getElementById('gpDg1_reserve');
+      const prevS = el ? el.value : null;
+      const prevF = fill ? fill.value : null;
+      const prevR = res ? res.value : null;
+      if (el) el.value = '1';
+      if (fill) fill.value = '50';
+      if (res) res.value = '0';
+      const alert = buildContingencyBailoutGasAlert({ 'EAN 50': 5000 });
+      bailoutWarnOk = alert.warningBailoutContingency === true
+        && typeof alert.html === 'string'
+        && alert.html.includes('BAILOUT INSUFFICIENT');
+      if (el && prevS != null) el.value = prevS;
+      if (fill && prevF != null) fill.value = prevF;
+      if (res && prevR != null) res.value = prevR;
+    }
+
+    let bailoutEligibilityOk = false;
+    if (typeof gpAvailLForGasLabel === 'function') {
+      const ids = ['circuitSelect', 'decoGas', 'diluentUseAsBailout', 'gpBot_size', 'gpBot_fill', 'gpBot_reserve'];
+      const saved = Object.fromEntries(ids.map(id => [id, document.getElementById(id)?.value]));
+      const set = (id, value) => { const el = document.getElementById(id); if (el) el.value = value; };
+      set('circuitSelect', 'CCR');
+      set('decoGas', 'air');
+      set('diluentUseAsBailout', 'off');
+      set('gpBot_size', '11');
+      set('gpBot_fill', '200');
+      set('gpBot_reserve', '50');
+      const excluded = gpAvailLForGasLabel('Air', { bailoutFocus: true });
+      set('diluentUseAsBailout', 'on');
+      const included = gpAvailLForGasLabel('Air', { bailoutFocus: true });
+      bailoutEligibilityOk = Math.abs(excluded) < 1e-6 && included >= 1650;
+      Object.entries(saved).forEach(([id, value]) => { if (value != null) set(id, value); });
+    }
+
+    let gasSwitchDepthOk = false;
+    if (typeof revalidateContingencyGasSwitchDepth === 'function') {
+      const html = revalidateContingencyGasSwitchDepth(
+        { firstStopDepth: 18 },
+        { firstStopDepth: 27 },
+      );
+      gasSwitchDepthOk = typeof html === 'string' && html.includes('GAS SWITCH REVIEW');
+    }
+
+    let throwRecoveryOk = false;
+    if (typeof runContingencyScenario === 'function') {
+      try {
+        runContingencyScenario(() => { throw new Error('cycle32 probe'); });
+        throwRecoveryOk = _contingencyRunning === false && window._scheduleWorkerBusy === false;
+      } catch (_) { throwRecoveryOk = false; }
+    }
+
+    let settingsRecoveryOk = false;
+    if (typeof appSettings !== 'undefined' && typeof appSettings._restoreFields === 'function') {
+      const originalSync = appSettings._syncUiAfterRestore;
+      const previousHeadless = window._zhlHeadless;
+      window._zhlHeadless = true;
+      appSettings._syncUiAfterRestore = () => { throw new Error('settings recovery probe'); };
+      try { appSettings._restoreFields({}); } catch (_) {}
+      settingsRecoveryOk = appSettings._restoreInProgress === false;
+      appSettings._syncUiAfterRestore = originalSync;
+      window._zhlHeadless = previousHeadless;
+      appSettings._restoreInProgress = false;
+    }
+
+    return {
+      ok: sacScaleOk && scratchGasOk && bailoutDualOk && gasSwitchOk && errorRecoveryOk && persistOk
+        && sacFuncOk && bailoutWarnOk && bailoutEligibilityOk && gasSwitchDepthOk && throwRecoveryOk && settingsRecoveryOk,
+      sacScaleOk,
+      scratchGasOk,
+      bailoutDualOk,
+      gasSwitchOk,
+      errorRecoveryOk,
+      persistOk,
+      sacFuncOk,
+      bailoutWarnOk,
+      bailoutEligibilityOk,
+      gasSwitchDepthOk,
+      throwRecoveryOk,
+      settingsRecoveryOk,
+    };
+  })();
+
+  // Cycle 33: verify contingency safety, precision, and primary UI isolation.
+  out.sections.cycle33 = (() => {
+    const ids = [
+      'algorithmSelect', 'circuitSelect', 'decoGas', 'tecDepth', 'tecBT',
+      'ppo2Bottom', 'dg1Mix', 'dg2Mix', 'gpBot_size', 'gpBot_fill', 'gpBot_reserve',
+    ];
+    const savedInputs = Object.fromEntries(ids.map(id => [id, document.getElementById(id)?.value]));
+    const set = (id, value) => { const el = document.getElementById(id); if (el) el.value = value; };
+    const mainTbody = document.getElementById('decoTableBody');
+    const summaryEl = document.getElementById('decoSummary');
+    const gasSummaryEl = document.getElementById('gasConsumptionSummary');
+    const savedUi = {
+      table: mainTbody?.innerHTML,
+      summary: summaryEl?.innerHTML,
+      gasSummary: gasSummaryEl?.innerHTML,
+      lastPlan: window._lastPlan,
+      lastGasConsumed: window._lastGasConsumed,
+      lastBottomPhaseConsumedL: window._lastBottomPhaseConsumedL,
+      zhlHeadless: window._zhlHeadless,
+    };
+    let ppo2ToxicityOk = false;
+    let gasPrecisionOk = false;
+    let primaryGasStateOk = false;
+    let tableSourceOk = false;
+    try {
+      const depthM = 38.5;
+      set('tecDepth', units === 'metric' ? String(depthM) : String(depthM * 3.28084));
+      set('decoGas', 'ean32');
+      set('ppo2Bottom', '1.4');
+      const toxicityAlert = buildContingencyModViolationAlert(3);
+      ppo2ToxicityOk = toxicityAlert.includes('BEYOND MOD')
+        && toxicityAlert.includes('actual 1.65 bar')
+        && toxicityAlert.includes('CNS oxygen toxicity risk');
+
+      set('circuitSelect', 'OC');
+      set('decoGas', 'air');
+      set('gpBot_size', '1');
+      set('gpBot_fill', '100');
+      set('gpBot_reserve', '0');
+      const precise = calculateGasRequirementsFromConsumed({ Air: 100.1 }, { bailoutFocus: true });
+      const preciseRow = precise.rows.find(row => row.label === 'Air');
+      gasPrecisionOk = precise.warningBailoutContingency === true
+        && preciseRow?.reqL === 100.1
+        && Math.abs(preciseRow.shortL - 0.1) < 1e-9;
+
+      set('algorithmSelect', 'ZHLC_GF');
+      set('tecDepth', units === 'metric' ? '30' : String(30 * 3.28084));
+      set('decoBT', '20');
+      set('dg1Mix', 'none');
+      set('dg2Mix', 'none');
+      window._zhlHeadless = false;
+      runDecoSchedule();
+      const primaryGas = JSON.stringify(window._lastGasConsumed || {});
+      const primaryPlan = window._lastPlan;
+      const primaryTable = mainTbody?.innerHTML;
+      const primaryGasHtml = gasSummaryEl?.innerHTML;
+      const contingency = runContingencyScenario(() => set('decoBT', '25'));
+      primaryGasStateOk = contingency.ok === true
+        && window._lastPlan === primaryPlan
+        && JSON.stringify(window._lastGasConsumed || {}) === primaryGas
+        && gasSummaryEl?.innerHTML === primaryGasHtml;
+      tableSourceOk = contingency.ok === true
+        && mainTbody?.innerHTML === primaryTable
+        && !mainTbody?.innerHTML.includes('EMERGENCY CONTINGENCY');
+    } catch (_) {
+      ppo2ToxicityOk = false;
+      gasPrecisionOk = false;
+      primaryGasStateOk = false;
+      tableSourceOk = false;
+    } finally {
+      Object.entries(savedInputs).forEach(([id, value]) => { if (value != null) set(id, value); });
+      if (mainTbody && savedUi.table != null) mainTbody.innerHTML = savedUi.table;
+      if (summaryEl && savedUi.summary != null) summaryEl.innerHTML = savedUi.summary;
+      if (gasSummaryEl && savedUi.gasSummary != null) gasSummaryEl.innerHTML = savedUi.gasSummary;
+      window._lastPlan = savedUi.lastPlan;
+      window._lastGasConsumed = savedUi.lastGasConsumed;
+      window._lastBottomPhaseConsumedL = savedUi.lastBottomPhaseConsumedL;
+      window._zhlHeadless = savedUi.zhlHeadless;
+    }
+    return {
+      ok: ppo2ToxicityOk && gasPrecisionOk && primaryGasStateOk && tableSourceOk,
+      ppo2ToxicityOk,
+      gasPrecisionOk,
+      primaryGasStateOk,
+      tableSourceOk,
+    };
+  })();
+
+  // Cycle 34: gas input / MOD display and CCR panel delegates.
+  out.sections.cycle34 = (() => {
+    const gasIds = typeof getAllDecoGasIds === 'function' ? getAllDecoGasIds() : [];
+    const ids = [
+      'circuitSelect', 'decoGas', 'decoCustomO2', 'tecDepth', 'ppo2Bottom',
+      'ccrBottomSetpoint', 'diluentUseAsBailout',
+      ...gasIds.flatMap(idx => [`dg${idx}Mix`, `dg${idx}CustomO2`]),
+    ];
+    const saved = Object.fromEntries(ids.map(id => [id, document.getElementById(id)?.value]));
+    const set = (id, value) => { const el = document.getElementById(id); if (el) el.value = value; };
+    let bailoutGasSelectionOk = false;
+    let diluentGuidanceOk = false;
+    let invalidModDisplayOk = false;
+    try {
+      gasIds.forEach(idx => set(`dg${idx}Mix`, 'none'));
+      set('circuitSelect', 'CCR');
+      set('decoGas', 'air');
+      set('ppo2Bottom', '1.4');
+      set('diluentUseAsBailout', 'on');
+      set('dg1Mix', 'ean50');
+      set('dg2Mix', 'o2');
+      bailoutGasSelectionOk = getBailoutReserveMixLabel(6, 0.21, 0) === '100%'
+        && getBailoutReserveMixLabel(15, 0.21, 0) === '50/00'
+        && getBailoutReserveMixLabel(40, 0.21, 0) === 'Air';
+
+      set('tecDepth', units === 'metric' ? '60' : String(60 * 3.28084));
+      set('ccrBottomSetpoint', '1.3');
+      const validation = validateCcrGasConfiguration();
+      diluentGuidanceOk = validation.errors.some(msg => msg.includes('Use a leaner diluent'))
+        && !validation.errors.some(msg => msg.includes('Use a richer diluent'));
+
+      set('circuitSelect', 'OC');
+      set('decoGas', 'custom');
+      set('decoCustomO2', '150');
+      set('dg1Mix', 'custom');
+      set('dg1CustomO2', '150');
+      set('dg2Mix', 'none');
+      updateGasMODDisplays();
+      const botMod = document.getElementById('botMODDisplay');
+      const dg1Mod = document.getElementById('dg1MODDisplay');
+      const botTxt = (botMod?.textContent || botMod?.value || '').trim();
+      const dg1Txt = (dg1Mod?.textContent || dg1Mod?.value || '').trim();
+      invalidModDisplayOk = botTxt === '—'
+        && dg1Txt === '—'
+        && (botMod?.title || '').includes('at most 100 percent')
+        && (dg1Mod?.title || '').includes('at most 100 percent');
+    } catch (_) {
+      bailoutGasSelectionOk = false;
+      diluentGuidanceOk = false;
+      invalidModDisplayOk = false;
+    } finally {
+      Object.entries(saved).forEach(([id, value]) => { if (value != null) set(id, value); });
+      updateGasMODDisplays();
+    }
+    return {
+      ok: bailoutGasSelectionOk && diluentGuidanceOk && invalidModDisplayOk,
+      bailoutGasSelectionOk,
+      diluentGuidanceOk,
+      invalidModDisplayOk,
+    };
+  })();
+
+  // Cycle 35: gas cards / ZHL runner setup + schedule engine parity.
+  out.sections.cycle35 = (() => {
+    let imperialO2SwitchOk = false;
+    let wholeMinStopsPropOk = false;
+    let wholeMinStopsEffectOk = false;
+    if (typeof zhlOptimalSwitchDepth === 'function') {
+      const ctx = { ppo2Bottom: 1.4, ppo2Deco: 1.6, lastStop: 3, decoStep: 3, metric: false };
+      const depthM = zhlOptimalSwitchDepth(1.0, ctx);
+      imperialO2SwitchOk = depthM === 6;
+    }
+    const b = window.ZhlEngineBundle;
+    if (b && typeof b.buildZhlScheduleParamsFromEngine === 'function') {
+      const params = b.buildZhlScheduleParamsFromEngine(
+        [{ depth: 40, time: 25, o2: 21, he: 0 }],
+        [{ o2: 50, he: 0 }],
+        { wholeMinStops: false, metric: true, gfLo: 30, gfHi: 85 },
+      );
+      wholeMinStopsPropOk = params && params.wholeMinStops === false;
+    }
+    if (b && typeof b.buildZhlScheduleParamsFromEngine === 'function') {
+      const lv = [{ depth: 40, time: 25, o2: 21, he: 0 }];
+      const deco = [{ o2: 50, he: 0 }];
+      const eng = {
+        metric: true, gfLo: 30, gfHi: 85, stepSize: 3, lastStop: 3, minStopTime: 2,
+        descentRate: 20, ascentRate: 10, decoAscentRate: 3, ppO2Bottom: 1.4, ppO2Deco: 1.6,
+      };
+      const pFalse = b.buildZhlScheduleParamsFromEngine(lv, deco, { ...eng, wholeMinStops: false });
+      const pOmit = b.buildZhlScheduleParamsFromEngine(lv, deco, { ...eng });
+      const pTrue = b.buildZhlScheduleParamsFromEngine(lv, deco, { ...eng, wholeMinStops: true });
+      wholeMinStopsEffectOk = pFalse.wholeMinStops === false
+        && pOmit.wholeMinStops === true
+        && pTrue.wholeMinStops === true;
+    }
+    return {
+      ok: imperialO2SwitchOk && wholeMinStopsPropOk && wholeMinStopsEffectOk,
+      imperialO2SwitchOk,
+      wholeMinStopsPropOk,
+      wholeMinStopsEffectOk,
+    };
+  })();
+
+  // ENG-RDP: standalone PADI table engine — Air / EAN32 / EAN36 only.
+  out.sections.engRdp = (() => {
+    const pe = window.PadiEngine;
+    const bundleOk = !!(pe && typeof pe.padiTableRowIndex === 'function');
+    const ndl18air = bundleOk ? pe.getNitroxNDL(18, 'air') : null;
+    const ndl18ean36 = bundleOk ? pe.getNitroxNDL(18, 'ean36') : null;
+    const ndl18ean32 = bundleOk ? pe.getNitroxNDL(18, 'ean32') : null;
+    const pureMixesOk = ndl18air === 60 && ndl18ean36 === 100 && ndl18ean32 === 75;
+    const customFallbackOk = bundleOk && pe.getNitroxNDL(18, 'custom') === ndl18air
+      && pe.getNitroxNDL(18, 'trimix') === ndl18air;
+    const normalizeOk = bundleOk
+      && pe.normalizeRecMix('custom') === 'air'
+      && pe.normalizeRecMix('ean32') === 'ean32';
+    const gasMixEl = document.getElementById('gasMix');
+    const prevAlgo = typeof algo !== 'undefined' ? algo : null;
+    let recGasUiOk = false;
+    if (gasMixEl && typeof setPlannerAlgo === 'function') {
+      setPlannerAlgo('rec');
+      const visible = Array.from(gasMixEl.options).filter(o => o.style.display !== 'none');
+      recGasUiOk = visible.length === 3
+        && visible.every(o => ['air', 'ean32', 'ean36'].includes(o.value))
+        && !visible.some(o => o.value === 'custom');
+      if (prevAlgo != null) setAlgo(prevAlgo);
+    }
+    return {
+      ok: bundleOk && pureMixesOk && customFallbackOk && normalizeOk && recGasUiOk,
+      bundleOk,
+      pureMixesOk,
+      customFallbackOk,
+      normalizeOk,
+      recGasUiOk,
+    };
+  })();
+
+  // Seven-lens cycle 01: depth/bt stepper sync (Level 2 — tec view).
+  out.sections.sevenLensCycle01 = (() => {
+    const FT_PER_M = 3.28084;
+    const fieldIds = ['tecDepth', 'tecBT', 'recDepth', 'recBT'];
+    const snapFields = (ids) => Object.fromEntries(
+      ids.map(id => [id, document.getElementById(id)?.value])
+    );
+    const restoreFields = (snap) => {
+      Object.entries(snap).forEach(([id, value]) => {
+        const el = document.getElementById(id);
+        if (el && value != null) el.value = value;
+      });
+      _syncDepthBtSteppers?.();
+    };
+    const snapLabels = () => ({
+      depthLbl: document.getElementById('tecDepthStepperVal')?.textContent,
+      btLbl: document.getElementById('tecBtStepperVal')?.textContent,
+    });
+    const restoreLabels = (snap) => {
+      const dl = document.getElementById('tecDepthStepperVal');
+      const bl = document.getElementById('tecBtStepperVal');
+      if (dl && snap.depthLbl != null) dl.textContent = snap.depthLbl;
+      if (bl && snap.btLbl != null) bl.textContent = snap.btLbl;
+    };
+    const syncOk = (d, b) => {
+      const dd = document.getElementById('tecDepth')?.value;
+      const db = document.getElementById('tecBT')?.value;
+      const depthLbl = document.getElementById('tecDepthStepperVal')?.textContent;
+      const btLbl = document.getElementById('tecBtStepperVal')?.textContent;
+      const ds = String(d);
+      const bs = String(b);
+      return dd === ds && db === bs && depthLbl === ds && btLbl === bs;
+    };
+    const dispatchInput = (id, value) => {
+      const el = document.getElementById(id);
+      if (!el) return false;
+      el.value = value;
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      return true;
+    };
+
+    let depthStepperSyncOk = false;
+    let loadPresetSyncOk = false;
+    let settingsRestoreSyncOk = false;
+    let altitudeUnitConstraintsOk = false;
+
+    const baselineFields = snapFields(fieldIds);
+    const baselineLabels = snapLabels();
+    const prevUnits = typeof units !== 'undefined' ? units : null;
+    const prevPlannerAlgo = typeof plannerAlgo !== 'undefined' ? plannerAlgo : null;
+
+    try {
+      if (typeof setPlannerAlgo === 'function') setPlannerAlgo('ZHLC_GF');
+      if (dispatchInput('tecDepth', '52') && dispatchInput('tecBT', '22')) {
+        depthStepperSyncOk = syncOk(52, 22);
+      }
+      restoreFields(baselineFields);
+      restoreLabels(baselineLabels);
+
+      if (typeof loadProfilePreset === 'function') {
+        const presetFields = snapFields(fieldIds);
+        const presetLabels = snapLabels();
+        const key = typeof LSP_PROFILE_PRESETS_KEY !== 'undefined' ? LSP_PROFILE_PRESETS_KEY : 'lspProfilePresets';
+        const prevStorage = localStorage.getItem(key);
+        try {
+          localStorage.setItem(key, JSON.stringify([{
+            name: 't',
+            schemaVersion: 2,
+            migrationStatus: 'confirmed',
+            plannerMode: 'tec',
+            unitsAtSave: 'metric',
+            depthM: 48,
+            depth: '48',
+            bt: '18',
+            gases: {},
+          }]));
+          loadProfilePreset(0);
+          loadPresetSyncOk = syncOk(48, 18);
+        } finally {
+          if (prevStorage == null) localStorage.removeItem(key);
+          else localStorage.setItem(key, prevStorage);
+          restoreFields(presetFields);
+          restoreLabels(presetLabels);
+        }
+      }
+
+      if (typeof appSettings !== 'undefined' && typeof appSettings._syncUiAfterRestore === 'function') {
+        const restoreFieldsSnap = snapFields(fieldIds);
+        const restoreLabelsSnap = snapLabels();
+        const wasHeadless = window._zhlHeadless;
+        try {
+          window._zhlHeadless = false;
+          const dd = document.getElementById('tecDepth');
+          const db = document.getElementById('tecBT');
+          if (dd) dd.value = '55';
+          if (db) db.value = '25';
+          appSettings._syncUiAfterRestore({});
+          settingsRestoreSyncOk = syncOk(55, 25);
+        } finally {
+          window._zhlHeadless = wasHeadless;
+          restoreFields(restoreFieldsSnap);
+          restoreLabels(restoreLabelsSnap);
+        }
+      }
+
+      if (typeof setUnits === 'function' && typeof syncAltitudeCustomInputConstraints === 'function') {
+        const altSel = document.getElementById('altitudeSelect');
+        const altInp = document.getElementById('altitudeCustomInput');
+        const altRow = document.getElementById('altitudeCustomRow');
+        const selSnap = altSel?.value;
+        const rowDisp = altRow?.style.display;
+        try {
+          if (altSel) {
+            altSel.value = 'custom';
+            handleAltitudeSelect('custom');
+          }
+          setUnits('metric');
+          const metricMax = Number(altInp?.max);
+          const metricStep = Number(altInp?.step);
+          setUnits('imperial');
+          const imperialMax = Number(altInp?.max);
+          const imperialFt = Math.round(5000 * FT_PER_M);
+          if (altInp) {
+            altInp.value = String(imperialFt);
+            altitudeUnitConstraintsOk =
+              metricMax === 5000 && metricStep === 50
+              && imperialMax === imperialFt
+              && Number(altInp?.step) === 1
+              && altInp.checkValidity() === true;
+          }
+        } finally {
+          if (prevUnits != null) setUnits(prevUnits);
+          if (altSel && selSnap != null) {
+            altSel.value = selSnap;
+            handleAltitudeSelect(selSnap);
+          }
+          if (altRow && rowDisp != null) altRow.style.display = rowDisp;
+        }
+      }
+    } finally {
+      restoreFields(baselineFields);
+      restoreLabels(baselineLabels);
+      if (prevUnits != null && typeof setUnits === 'function') setUnits(prevUnits);
+      if (prevPlannerAlgo != null && typeof setPlannerAlgo === 'function') setPlannerAlgo(prevPlannerAlgo);
+    }
+
+    return {
+      depthStepperSyncOk,
+      loadPresetSyncOk,
+      settingsRestoreSyncOk,
+      altitudeUnitConstraintsOk,
+      ok: depthStepperSyncOk && loadPresetSyncOk && settingsRestoreSyncOk && altitudeUnitConstraintsOk,
+    };
+  })();
+
+  // Seven-lens cycle 02: planner markup contracts (SL-C02).
+  out.sections.sevenLensCycle02 = (() => {
+    const snapEl = (id) => {
+      const el = document.getElementById(id);
+      if (!el) return null;
+      return { value: el.value, depthM: el.dataset.depthM, volumeL: el.dataset.volumeL };
+    };
+    const restoreEl = (id, snap) => {
+      if (!snap) return;
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (snap.value != null) el.value = snap.value;
+      if (snap.depthM != null) el.dataset.depthM = snap.depthM;
+      else delete el.dataset.depthM;
+      if (snap.volumeL != null) el.dataset.volumeL = snap.volumeL;
+      else delete el.dataset.volumeL;
+    };
+    const depthClose = (a, b) => Math.abs(a - b) < 0.001;
+    let minDecoUnitsOk = false;
+    let travelDepthConstraintsOk = false;
+    let cylinderPhysicalConstraintsOk = false;
+    let unitRoundtripImmutableOk = false;
+    let travelDepthEditAfterSwitchOk = false;
+    let cylinderSizeEditAfterSwitchOk = false;
+    let dynamicDecoCylImperialOk = false;
+    const prevUnits = typeof units !== 'undefined' ? units : null;
+    const switchDepthEl = document.getElementById('travelGasSwitchDepthDisplay');
+    const prevSwitchDepthSnap = snapEl('travelGasSwitchDepthDisplay');
+    const travelMixEl = document.getElementById('travelGasMix');
+    const travelCustomEl = document.getElementById('travelGasCustomO2');
+    const prevTravelMix = travelMixEl?.value;
+    const prevTravelCustom = travelCustomEl?.value;
+    const travelWasConfigured = typeof isTravelGasConfigured === 'function' ? isTravelGasConfigured() : false;
+    const decoEl = document.getElementById('tecDepth');
+    const cylEl = document.getElementById('cylBot_size');
+    const prevDecoSnap = snapEl('tecDepth');
+    const prevCylSnap = snapEl('cylBot_size');
+    const cylMaxCu = +(50 * 0.0353147).toFixed(2);
+    const cylMinCu = +(0.5 * 0.0353147).toFixed(2);
+    try {
+      if (!travelWasConfigured && typeof addTravelGas === 'function') addTravelGas();
+      if (typeof enforceMinDecoProfile === 'function') {
+        const steps = [
+          { type: 'deco', depth: 30, dur: 1 },
+          { type: 'deco', depth: 20, dur: 1 },
+        ];
+        const outSteps = enforceMinDecoProfile(steps, true, 5, 3, false, '21/00', 0.79, 0);
+        const d30 = outSteps.find(s => s.type === 'deco' && s.depth === 30);
+        const d20 = outSteps.find(s => s.type === 'deco' && s.depth === 20);
+        minDecoUnitsOk = !!(d30 && d30.dur >= 5 && d20 && d20.dur >= 3);
+      }
+      if (typeof setUnits === 'function' && switchDepthEl) {
+        setUnits('metric');
+        updateTravelGasMOD?.();
+        const metricDisplay = switchDepthEl.value || '';
+        setUnits('imperial');
+        updateTravelGasMOD?.();
+        const imperialDisplay = switchDepthEl.value || '';
+        travelDepthConstraintsOk = !document.getElementById('travelGasSwitchMode')
+          && !document.getElementById('travelGasManualDepth')
+          && switchDepthEl.readOnly === true
+          && /m/.test(metricDisplay)
+          && /ft/.test(imperialDisplay);
+      }
+      if (typeof setUnits === 'function' && cylEl) {
+        setUnits('imperial');
+        cylinderPhysicalConstraintsOk =
+          Number(cylEl.max) === cylMaxCu &&
+          Number(cylEl.min) === cylMinCu &&
+          cylEl.checkValidity() === true;
+      }
+      if (typeof setUnits === 'function' && decoEl && cylEl) {
+        setUnits('metric');
+        decoEl.value = '40';
+        cylEl.value = '12';
+        decoEl.dataset.depthM = '40';
+        cylEl.dataset.volumeL = '12';
+        setUnits('imperial');
+        setUnits('metric');
+        unitRoundtripImmutableOk = decoEl.value === '40' && cylEl.value === '12';
+      }
+      if (typeof setUnits === 'function' && switchDepthEl && travelMixEl && travelCustomEl) {
+        setUnits('metric');
+        travelMixEl.value = 'custom';
+        travelCustomEl.value = '32';
+        updateTravelGasMOD?.();
+        const metricInfo = getTravelGasInfo?.();
+        const metricDisplay = switchDepthEl.value || '';
+        setUnits('imperial');
+        updateTravelGasMOD?.();
+        const imperialInfo = getTravelGasInfo?.();
+        const imperialDisplay = switchDepthEl.value || '';
+        setUnits('metric');
+        updateTravelGasMOD?.();
+        travelDepthEditAfterSwitchOk = metricInfo && imperialInfo
+          && depthClose(metricInfo.switchDepthM, imperialInfo.switchDepthM)
+          && /m/.test(metricDisplay)
+          && /ft/.test(imperialDisplay);
+      }
+      if (typeof setUnits === 'function' && cylEl) {
+        setUnits('metric');
+        cylEl.value = '12';
+        syncVolumeInputCanonical?.('cylBot_size');
+        setUnits('imperial');
+        cylEl.value = '0.5';
+        syncVolumeInputCanonical?.('cylBot_size');
+        const editedL = domVolumeToL('cylBot_size');
+        setUnits('metric');
+        cylinderSizeEditAfterSwitchOk =
+          depthClose(editedL, 14.158) && depthClose(domVolumeToL('cylBot_size'), 14.158);
+      }
+      if (typeof addDecoGasCard === 'function' && typeof setUnits === 'function' && typeof getAllDecoGasIds === 'function') {
+        getAllDecoGasIds().filter(id => id > 2).forEach(id => removeDecoGasCard(id));
+        setUnits('imperial');
+        addDecoGasCard();
+        const dyn = document.getElementById('cylDg3_size');
+        dynamicDecoCylImperialOk = !!dyn
+          && dyn.checkValidity() === true
+          && Number(dyn.min) <= Number(dyn.value);
+        getAllDecoGasIds().filter(id => id > 2).forEach(id => removeDecoGasCard(id));
+      }
+    } finally {
+      restoreEl('travelGasSwitchDepthDisplay', prevSwitchDepthSnap);
+      if (travelMixEl && prevTravelMix != null) travelMixEl.value = prevTravelMix;
+      if (travelCustomEl && prevTravelCustom != null) travelCustomEl.value = prevTravelCustom;
+      if (!travelWasConfigured && typeof removeTravelGas === 'function') removeTravelGas();
+      restoreEl('tecDepth', prevDecoSnap);
+      restoreEl('cylBot_size', prevCylSnap);
+      if (prevUnits != null && typeof setUnits === 'function') setUnits(prevUnits);
+      updateTravelGasMOD?.();
+    }
+    return {
+      minDecoUnitsOk,
+      travelDepthConstraintsOk,
+      cylinderPhysicalConstraintsOk,
+      unitRoundtripImmutableOk,
+      travelDepthEditAfterSwitchOk,
+      cylinderSizeEditAfterSwitchOk,
+      dynamicDecoCylImperialOk,
+      ok: minDecoUnitsOk && travelDepthConstraintsOk && cylinderPhysicalConstraintsOk
+        && unitRoundtripImmutableOk && travelDepthEditAfterSwitchOk && cylinderSizeEditAfterSwitchOk
+        && dynamicDecoCylImperialOk,
+    };
+  })();
+
+  // Level 2: REC ↔ TECH mode isolation (SL-MODE-REC-TEC-ISOLATION).
+  out.sections.modeRecTecIsolation = (() => {
+    let ok = false;
+    const snap = (id) => document.getElementById(id)?.value;
+    const prevRecD = snap('recDepth');
+    const prevRecB = snap('recBT');
+    const prevTecD = snap('tecDepth');
+    const prevTecB = snap('tecBT');
+    const prevAlgo = typeof plannerAlgo !== 'undefined' ? plannerAlgo : null;
+    try {
+      if (typeof setPlannerAlgo !== 'function') return { ok: false };
+      setPlannerAlgo('ZHLC_GF');
+      const rd = document.getElementById('recDepth');
+      const rb = document.getElementById('recBT');
+      const td = document.getElementById('tecDepth');
+      const tb = document.getElementById('tecBT');
+      if (td) td.value = '44';
+      if (tb) tb.value = '22';
+      _syncTecDepthBtSteppers?.();
+      setPlannerAlgo('rec');
+      if (rd) rd.value = '33';
+      if (rb) rb.value = '21';
+      _syncRecDepthBtSteppers?.();
+      setPlannerAlgo('ZHLC_GF');
+      const tecRestored = snap('tecDepth') === '44' && snap('tecBT') === '22';
+      if (td) td.value = '55';
+      if (tb) tb.value = '25';
+      _syncTecDepthBtSteppers?.();
+      setPlannerAlgo('rec');
+      const recRestored = snap('recDepth') === '33' && snap('recBT') === '21';
+      setPlannerAlgo('ZHLC_GF');
+      const tecEdited = snap('tecDepth') === '55' && snap('tecBT') === '25';
+      ok = tecRestored && recRestored && tecEdited;
+    } finally {
+      const rd = document.getElementById('recDepth');
+      const rb = document.getElementById('recBT');
+      const td = document.getElementById('tecDepth');
+      const tb = document.getElementById('tecBT');
+      if (rd && prevRecD != null) rd.value = prevRecD;
+      if (rb && prevRecB != null) rb.value = prevRecB;
+      if (td && prevTecD != null) td.value = prevTecD;
+      if (tb && prevTecB != null) tb.value = prevTecB;
+      _syncRecDepthBtSteppers?.();
+      _syncTecDepthBtSteppers?.();
+      if (prevAlgo != null) setPlannerAlgo(prevAlgo);
+    }
+    return { ok };
+  })();
+
+  // Seven-lens cycle 03: consumption markup contracts (SL-C03).
+  out.sections.sevenLensCycle03 = (() => {
+    const snapEl = (id) => {
+      const el = document.getElementById(id);
+      if (!el) return null;
+      return { value: el.value, depthM: el.dataset.depthM };
+    };
+    const restoreEl = (id, snap) => {
+      if (!snap) return;
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (snap.value != null) el.value = snap.value;
+      if (snap.depthM != null) el.dataset.depthM = snap.depthM;
+      else delete el.dataset.depthM;
+    };
+    const depthClose = (a, b) => Math.abs(a - b) < 0.001;
+    let bestMixDepthUnitsOk = false;
+    let cnsDepthUnitsOk = false;
+    let bestMixEditAfterSwitchOk = false;
+    let cnsEditAfterSwitchOk = false;
+    const prevUnits = typeof units !== 'undefined' ? units : null;
+    const bmEl = document.getElementById('bestMixDepth');
+    const cnsEl = document.getElementById('cnsDepth');
+    const ppo2El = document.getElementById('bestMixPPO2');
+    const prevBmSnap = snapEl('bestMixDepth');
+    const prevCnsSnap = snapEl('cnsDepth');
+    const prevPpo2 = ppo2El?.value;
+    try {
+      if (typeof setUnits === 'function' && typeof calcBestMix === 'function' && bmEl && ppo2El) {
+        setUnits('metric');
+        bmEl.value = '30';
+        bmEl.dataset.depthM = '30';
+        ppo2El.value = '14';
+        calcBestMix();
+        const metricO2 = document.getElementById('bestMixResult')?.textContent;
+        setUnits('imperial');
+        calcBestMix();
+        const imperialO2 = document.getElementById('bestMixResult')?.textContent;
+        setUnits('metric');
+        calcBestMix();
+        const roundtripO2 = document.getElementById('bestMixResult')?.textContent;
+        bestMixDepthUnitsOk =
+          metricO2 === imperialO2 &&
+          metricO2 === roundtripO2 &&
+          Math.round(parseFloat(bmEl.value)) === 30 &&
+          depthClose(domDepthToM('bestMixDepth'), 30) &&
+          depthClose(parseFloat(bmEl.dataset.depthM), 30);
+      }
+      if (typeof setUnits === 'function' && typeof calcCNS === 'function' && cnsEl) {
+        setUnits('metric');
+        cnsEl.value = '30';
+        cnsEl.dataset.depthM = '30';
+        calcCNS();
+        const metricPpo2 = document.getElementById('cnsPPO2')?.textContent;
+        setUnits('imperial');
+        calcCNS();
+        const imperialPpo2 = document.getElementById('cnsPPO2')?.textContent;
+        setUnits('metric');
+        calcCNS();
+        const roundtripPpo2 = document.getElementById('cnsPPO2')?.textContent;
+        cnsDepthUnitsOk =
+          metricPpo2 === imperialPpo2 &&
+          metricPpo2 === roundtripPpo2 &&
+          Math.round(parseFloat(cnsEl.value)) === 30 &&
+          depthClose(domDepthToM('cnsDepth'), 30) &&
+          depthClose(parseFloat(cnsEl.dataset.depthM), 30);
+      }
+      if (typeof setUnits === 'function' && bmEl && typeof calcBestMix === 'function') {
+        setUnits('metric');
+        bmEl.value = '30';
+        syncDepthInputCanonical?.('bestMixDepth');
+        calcBestMix();
+        setUnits('imperial');
+        bmEl.value = '120';
+        syncDepthInputCanonical?.('bestMixDepth');
+        calcBestMix();
+        const editedM = domDepthToM('bestMixDepth');
+        setUnits('metric');
+        bestMixEditAfterSwitchOk =
+          depthClose(editedM, 36.576) && depthClose(domDepthToM('bestMixDepth'), 36.576);
+      }
+      if (typeof setUnits === 'function' && cnsEl && typeof calcCNS === 'function') {
+        setUnits('metric');
+        cnsEl.value = '30';
+        syncDepthInputCanonical?.('cnsDepth');
+        calcCNS();
+        setUnits('imperial');
+        cnsEl.value = '120';
+        syncDepthInputCanonical?.('cnsDepth');
+        calcCNS();
+        const editedM = domDepthToM('cnsDepth');
+        setUnits('metric');
+        cnsEditAfterSwitchOk =
+          depthClose(editedM, 36.576) && depthClose(domDepthToM('cnsDepth'), 36.576);
+      }
+    } finally {
+      restoreEl('bestMixDepth', prevBmSnap);
+      restoreEl('cnsDepth', prevCnsSnap);
+      if (ppo2El && prevPpo2 != null) ppo2El.value = prevPpo2;
+      if (prevUnits != null && typeof setUnits === 'function') setUnits(prevUnits);
+      calcBestMix?.();
+      calcCNS?.();
+    }
+    return {
+      bestMixDepthUnitsOk,
+      cnsDepthUnitsOk,
+      bestMixEditAfterSwitchOk,
+      cnsEditAfterSwitchOk,
+      ok: bestMixDepthUnitsOk && cnsDepthUnitsOk && bestMixEditAfterSwitchOk && cnsEditAfterSwitchOk,
+    };
+  })();
+
+  // Seven-lens cycle 04: tools/modals markup contracts (SL-C04).
+  out.sections.sevenLensCycle04 = (() => {
+    let endDepthUnitsOk = false;
+    let siDepthUnitsOk = false;
+    let confirmBackdropOk = false;
+    const prevUnits = typeof units !== 'undefined' ? units : null;
+    const endEl = document.getElementById('endDepth');
+    const siD1El = document.getElementById('siD1Depth');
+    const siD1BtEl = document.getElementById('siD1BT');
+    const siD2El = document.getElementById('siD2Depth');
+    const siD2BtEl = document.getElementById('siD2BT');
+    const prevEnd = endEl?.value;
+    const prevSiD1 = siD1El?.value;
+    const prevSiD1Bt = siD1BtEl?.value;
+    const prevSiD2 = siD2El?.value;
+    const prevSiD2Bt = siD2BtEl?.value;
+    try {
+      if (typeof setUnits === 'function') setUnits('metric');
+      if (typeof setUnits === 'function' && typeof calcEND_tool === 'function' && endEl) {
+        setUnits('metric');
+        endEl.value = '30';
+        syncDepthInputCanonical('endDepth');
+        calcEND_tool();
+        const metricAbs = document.getElementById('endAbsP')?.textContent;
+        setUnits('imperial');
+        calcEND_tool();
+        const imperialAbs = document.getElementById('endAbsP')?.textContent;
+        endDepthUnitsOk =
+          metricAbs === imperialAbs && Math.round(parseFloat(endEl.value)) === 98;
+      }
+      if (typeof setUnits === 'function' && typeof calcSurfInt === 'function' && siD1El && siD2El) {
+        setUnits('metric');
+        siD1El.value = '30';
+        siD1BtEl.value = '25';
+        siD2El.value = '18';
+        siD2BtEl.value = '20';
+        syncDepthInputCanonical('siD1Depth');
+        syncDepthInputCanonical('siD2Depth');
+        calcSurfInt();
+        const metricSi = document.getElementById('siMinResult')?.textContent;
+        setUnits('imperial');
+        calcSurfInt();
+        const imperialSi = document.getElementById('siMinResult')?.textContent;
+        siDepthUnitsOk =
+          metricSi === imperialSi && Math.round(parseFloat(siD1El.value)) === 98;
+      }
+      const confirmModal = document.getElementById('confirmModal');
+      confirmBackdropOk = !!confirmModal?.getAttribute('onclick')?.includes('closeConfirmModal(false)');
+    } finally {
+      if (endEl && prevEnd != null) endEl.value = prevEnd;
+      if (siD1El && prevSiD1 != null) siD1El.value = prevSiD1;
+      if (siD1BtEl && prevSiD1Bt != null) siD1BtEl.value = prevSiD1Bt;
+      if (siD2El && prevSiD2 != null) siD2El.value = prevSiD2;
+      if (siD2BtEl && prevSiD2Bt != null) siD2BtEl.value = prevSiD2Bt;
+      if (prevUnits != null && typeof setUnits === 'function') setUnits(prevUnits);
+      calcEND_tool?.();
+      calcSurfInt?.();
+    }
+    return {
+      endDepthUnitsOk,
+      siDepthUnitsOk,
+      confirmBackdropOk,
+      ok: endDepthUnitsOk && siDepthUnitsOk && confirmBackdropOk,
+    };
+  })();
+
   // ── Cycle 6 audit fixes (rec planner, RDP, pSCR, trimix, Bühlmann BT) ───
   out.sections.cycle6 = (() => {
     const rdp11 = typeof padiTableRowIndex === 'function' ? padiTableRowIndex(11) : null;
@@ -1292,8 +2225,8 @@ ENGINE_SUITE_JS = r"""
     const ndl25ean32 = typeof getNitroxNDL === 'function' ? getNitroxNDL(25, 'ean32') : null;
     const rdpOk = rdp11 === 1 && rdp13 === 2 && ndl11 === 230 && ndl13 === 100 && ndl25ean32 === 25;
 
-    const depthEl = document.getElementById('depth');
-    const btEl = document.getElementById('bt');
+    const depthEl = document.getElementById('recDepth');
+    const btEl = document.getElementById('recBT');
     const prevAlgo = typeof algo !== 'undefined' ? algo : null;
     let padiDepthOk = false;
     if (depthEl && btEl && typeof validatePlannerInputs === 'function') {
@@ -1521,6 +2454,8 @@ def run_suite(page) -> dict:
 
     sv = s.get("vpmSiValidate", {})
     assert_true(sv.get("rejectsNegative"), "validateVpmSurfaceInterval rejects negative SI (issue #106 M-2)", str(sv))
+    assert_true(sv.get("sanitizerOk"), "repetitive surface interval sanitizer resets corrupted persisted values to 60 min", str(sv))
+    assert_true(sv.get("persistBoundaryOk"), "repetitive surface interval restore/save boundaries sanitize persisted values", str(sv))
 
     tg = s.get("tecGasMixMemory", {})
     assert_true(tg.get("ok"), "Tec gasMix memory tracks EAN32 after trimix (issue #106 verify M-1)", str(tg))
@@ -1615,6 +2550,8 @@ def run_suite(page) -> dict:
     assert_true(va["loadTypeOk"], "VPMEngine.load is a function")
     assert_true(va["loadReturnOk"], "VPMEngine.load() returns true")
     assert_true(va["gfsStricter"]["ok"], "VPM-B/GFS tighter GFS does not shorten runtime vs loose GFS")
+    vpm_labels = s.get("vpmGasLabels", {})
+    assert_true(vpm_labels.get("ok"), "[CYCLE36-VPM-GAS-LABELS] VPM core emits canonical gas labels", str(vpm_labels))
 
     cr = s["cross"]
     assert_true(cr["bothFinite"] and cr["otuInRange"], "ZHL/VPM OTU finite and in range on 40/25 air")
@@ -1669,6 +2606,62 @@ def run_suite(page) -> dict:
     assert_true(vmdp.get("ok"), "[VPM-MDP-NDL] min-deco inserts 9m/6m stops on no-decompression dive", str(vmdp))
     studio = s.get("studioFixes", {})
     assert_true(studio.get("ok"), "[STUDIO-FIXES] water density + schedule gen guards present", str(studio))
+    c31 = s.get("cycle31", {})
+    assert_true(c31.get("c04Ok"), "[CYCLE31-C04] CCR trimix inert PP uses fN2/(fN2+fHe) ratio", str(c31))
+    assert_true(c31.get("pscrLoopSyncOk"), "[CYCLE31-PSCR] pSCR loop volume changes inspired fractions", str(c31))
+    assert_true(c31.get("shallowPersistOk"), "[CYCLE31-SHALLOW] shallowGradient in DECO_FIELDS", str(c31))
+    assert_true(c31.get("contingencyModOk"), "[CYCLE31-CONTINGENCY-MOD] went-deeper contingency flags MOD violation", str(c31))
+    assert_true(c31.get("repetitiveBottomPhaseOk"), "[CYCLE31-CCR-NDL-PHASE] repetitive CCR NDL uses bottom setpoint phase", str(c31))
+    c32 = s.get("cycle32", {})
+    assert_true(c32.get("bailoutWarnOk"), "[CYCLE32-L6] test_contingency_bailout_insufficiency_warning", str(c32))
+    assert_true(c32.get("sacFuncOk") and c32.get("sacScaleOk"), "[CYCLE32-L1] test_contingency_sac_scaling", str(c32))
+    assert_true(c32.get("gasSwitchDepthOk") and c32.get("gasSwitchOk"), "[CYCLE32-L3] test_contingency_gas_switch_depth_shift", str(c32))
+    assert_true(c32.get("throwRecoveryOk") and c32.get("errorRecoveryOk"), "[CYCLE32-L2] test_contingency_error_recovery", str(c32))
+    assert_true(c32.get("bailoutEligibilityOk"), "[CYCLE32-BAILOUT-ELIGIBILITY] disabled diluent is excluded from bailout availability", str(c32))
+    assert_true(c32.get("settingsRecoveryOk"), "[CYCLE32-SETTINGS-RECOVERY] restore lock clears after exception", str(c32))
+    c33 = s.get("cycle33", {})
+    assert_true(c33.get("ppo2ToxicityOk"), "[CYCLE33-PPO2-TOXICITY] test_contingency_ppo2_toxicity_violation", str(c33))
+    assert_true(c33.get("primaryGasStateOk"), "[CYCLE33-PRIMARY-GAS-INTEGRITY] test_primary_gas_state_integrity_during_contingency", str(c33))
+    assert_true(c33.get("gasPrecisionOk"), "[CYCLE33-GAS-PRECISION] test_gas_volume_rounding_conservatism", str(c33))
+    assert_true(c33.get("tableSourceOk"), "[CYCLE33-TABLE-SOURCE] test_table_render_source_consistency", str(c33))
+    c34 = s.get("cycle34", {})
+    assert_true(c34.get("bailoutGasSelectionOk"), "[CYCLE34-BAILOUT-GAS-SELECTION] richest breathable bailout gas is selected by depth", str(c34))
+    assert_true(c34.get("diluentGuidanceOk"), "[CYCLE34-DILUENT-GUIDANCE] shallow MOD recommends a leaner diluent", str(c34))
+    assert_true(c34.get("invalidModDisplayOk"), "[CYCLE34-INVALID-MOD-DISPLAY] invalid custom gases do not display clamped MOD values", str(c34))
+    c35 = s.get("cycle35", {})
+    assert_true(c35.get("imperialO2SwitchOk"), "[CYCLE35-O2-SWITCH-DEPTH] test_zhl_imperial_pure_o2_switch_depth_uses_6m_not_20m", str(c35))
+    assert_true(c35.get("wholeMinStopsPropOk"), "[CYCLE35-WHOLE-MIN-STOPS-PROP] buildZhlScheduleParamsFromEngine propagates wholeMinStops", str(c35))
+    assert_true(c35.get("wholeMinStopsEffectOk"), "[CYCLE35-WHOLE-MIN-STOPS-EFFECT] test_zhl_engine_calculate_respects_whole_min_stops_false", str(c35))
+    erdp = s.get("engRdp", {})
+    assert_true(erdp.get("bundleOk"), "[ENG-RDP-PURE-MIXES] PadiEngine bundle loads", str(erdp))
+    assert_true(erdp.get("pureMixesOk"), "[ENG-RDP-PURE-MIXES] Air/EAN32/EAN36 NDL tables at 18 m", str(erdp))
+    assert_true(erdp.get("customFallbackOk"), "[ENG-RDP-CUSTOM-FALLBACK] non-standard mixes fall back to air table", str(erdp))
+    sl01 = s.get("sevenLensCycle01", {})
+    assert_true(sl01.get("depthStepperSyncOk"), "[SL-C01-DEPTH-SYNC] tecDepth/tecBT input events sync stepper labels", str(sl01))
+    assert_true(sl01.get("loadPresetSyncOk"), "[SL-C01-PRESET-SYNC] loadProfilePreset syncs depth/bt mirrors and stepper", str(sl01))
+    assert_true(sl01.get("settingsRestoreSyncOk"), "[SL-C01-SETTINGS-RESTORE] settings restore syncs depth/bt mirrors and stepper", str(sl01))
+    assert_true(sl01.get("altitudeUnitConstraintsOk"), "[SL-C01-ALTITUDE-UNIT-CONSTRAINTS] custom altitude max/step follow display units", str(sl01))
+    sl02 = s.get("sevenLensCycle02", {})
+    assert_true(sl02.get("minDecoUnitsOk"), "[SL-C02-MIN-DECO-UNITS] min deco profile enforces imperial stop depths", str(sl02))
+    assert_true(sl02.get("travelDepthConstraintsOk"), "[SL-C02-TRAVEL-DEPTH-CONSTRAINTS] travel manual depth max follows display units", str(sl02))
+    assert_true(sl02.get("cylinderPhysicalConstraintsOk"), "[SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS] imperial cylinder size min/max/step are physical", str(sl02))
+    assert_true(sl02.get("unitRoundtripImmutableOk"), "[SL-C02-UNIT-ROUNDTRIP-IMMUTABLE] metric round-trip preserves stamped depth/volume", str(sl02))
+    assert_true(sl02.get("travelDepthEditAfterSwitchOk"), "[SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH] travel manual depth edit reaches consumer after imperial switch", str(sl02))
+    assert_true(sl02.get("cylinderSizeEditAfterSwitchOk"), "[SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH] cylinder size edit reaches consumer after imperial switch", str(sl02))
+    assert_true(sl02.get("dynamicDecoCylImperialOk"), "[SL-C04-DYNAMIC-DECO-CYL-IMPERIAL] dynamic imperial deco cylinder starts valid", str(sl02))
+    iso = s.get("modeRecTecIsolation", {})
+    assert_true(iso.get("ok"), "[SL-MODE-REC-TEC-ISOLATION] REC and TECH depth/BT stay independent across mode switches", str(iso))
+    sl03 = s.get("sevenLensCycle03", {})
+    assert_true(sl03.get("bestMixDepthUnitsOk"), "[SL-C03-BEST-MIX-DEPTH-UNITS] best mix O2% invariant across equivalent metric/imperial depth", str(sl03))
+    assert_true(sl03.get("cnsDepthUnitsOk"), "[SL-C03-CNS-DEPTH-UNITS] CNS ppO2 invariant across equivalent metric/imperial depth", str(sl03))
+    assert_true(sl03.get("bestMixEditAfterSwitchOk"), "[SL-C03-BEST-MIX-EDIT-AFTER-SWITCH] best mix depth edit reaches consumer after imperial switch", str(sl03))
+    assert_true(sl03.get("cnsEditAfterSwitchOk"), "[SL-C03-CNS-EDIT-AFTER-SWITCH] CNS depth edit reaches consumer after imperial switch", str(sl03))
+    sl04 = s.get("sevenLensCycle04", {})
+    assert_true(sl04.get("endDepthUnitsOk"), "[SL-C04-END-DEPTH-UNITS] END abs pressure invariant across equivalent metric/imperial depth", str(sl04))
+    assert_true(sl04.get("siDepthUnitsOk"), "[SL-C04-SI-DEPTH-UNITS] surface interval result invariant across equivalent metric/imperial depth", str(sl04))
+    assert_true(sl04.get("confirmBackdropOk"), "[SL-C04-CONFIRM-BACKDROP] confirm modal dismisses on backdrop click", str(sl04))
+    assert_true(erdp.get("normalizeOk"), "[ENG-RDP-CUSTOM-FALLBACK] normalizeRecMix restricts to standard gases", str(erdp))
+    assert_true(erdp.get("recGasUiOk"), "[ENG-RDP-CUSTOM-FALLBACK] Rec mode hides custom gas option", str(erdp))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
     sw_block = sw_install.split("addEventListener('install'")[1].split("addEventListener('activate'")[0] if "addEventListener('install'" in sw_install else ""
     assert_true("clients.matchAll" not in sw_block, "[CYCLE7-L2] SW install handler does not postMessage before claim")
@@ -1742,6 +2735,47 @@ def _audit_case_rows():
         case_row("CYCLE7-PERSONAL-DEFAULTS", case_ok("CYCLE7-PERSONAL-DEFAULTS")),
         case_row("CYCLE7-RESET-UI-SYNC", case_ok("CYCLE7-RESET-UI-SYNC")),
         case_row("CYCLE7-STOP-ROUNDING", case_ok("CYCLE7-STOP-ROUNDING")),
+        case_row("CYCLE31-C04", case_ok("CYCLE31-C04")),
+        case_row("CYCLE31-PSCR", case_ok("CYCLE31-PSCR")),
+        case_row("CYCLE31-CONTINGENCY-MOD", case_ok("CYCLE31-CONTINGENCY-MOD")),
+        case_row("CYCLE31-CCR-NDL-PHASE", case_ok("CYCLE31-CCR-NDL-PHASE")),
+        case_row("CYCLE32-L1", case_ok("CYCLE32-L1")),
+        case_row("CYCLE32-L2", case_ok("CYCLE32-L2")),
+        case_row("CYCLE32-L3", case_ok("CYCLE32-L3")),
+        case_row("CYCLE32-L6", case_ok("CYCLE32-L6")),
+        case_row("CYCLE32-BAILOUT-ELIGIBILITY", case_ok("CYCLE32-BAILOUT-ELIGIBILITY")),
+        case_row("CYCLE32-SETTINGS-RECOVERY", case_ok("CYCLE32-SETTINGS-RECOVERY")),
+        case_row("CYCLE33-PPO2-TOXICITY", case_ok("CYCLE33-PPO2-TOXICITY")),
+        case_row("CYCLE33-PRIMARY-GAS-INTEGRITY", case_ok("CYCLE33-PRIMARY-GAS-INTEGRITY")),
+        case_row("CYCLE33-GAS-PRECISION", case_ok("CYCLE33-GAS-PRECISION")),
+        case_row("CYCLE33-TABLE-SOURCE", case_ok("CYCLE33-TABLE-SOURCE")),
+        case_row("CYCLE34-BAILOUT-GAS-SELECTION", case_ok("CYCLE34-BAILOUT-GAS-SELECTION")),
+        case_row("CYCLE34-DILUENT-GUIDANCE", case_ok("CYCLE34-DILUENT-GUIDANCE")),
+        case_row("CYCLE34-INVALID-MOD-DISPLAY", case_ok("CYCLE34-INVALID-MOD-DISPLAY")),
+        case_row("CYCLE35-O2-SWITCH-DEPTH", case_ok("CYCLE35-O2-SWITCH-DEPTH")),
+        case_row("CYCLE35-WHOLE-MIN-STOPS-PROP", case_ok("CYCLE35-WHOLE-MIN-STOPS-PROP")),
+        case_row("CYCLE35-WHOLE-MIN-STOPS-EFFECT", case_ok("CYCLE35-WHOLE-MIN-STOPS-EFFECT")),
+        case_row("CYCLE36-VPM-GAS-LABELS", case_ok("CYCLE36-VPM-GAS-LABELS")),
+        case_row("ENG-RDP-PURE-MIXES", case_ok("ENG-RDP-PURE-MIXES")),
+        case_row("ENG-RDP-CUSTOM-FALLBACK", case_ok("ENG-RDP-CUSTOM-FALLBACK")),
+        case_row("SL-C01-DEPTH-SYNC", case_ok("SL-C01-DEPTH-SYNC")),
+        case_row("SL-C01-PRESET-SYNC", case_ok("SL-C01-PRESET-SYNC")),
+        case_row("SL-C01-SETTINGS-RESTORE", case_ok("SL-C01-SETTINGS-RESTORE")),
+        case_row("SL-C01-ALTITUDE-UNIT-CONSTRAINTS", case_ok("SL-C01-ALTITUDE-UNIT-CONSTRAINTS")),
+        case_row("SL-C02-MIN-DECO-UNITS", case_ok("SL-C02-MIN-DECO-UNITS")),
+        case_row("SL-C02-TRAVEL-DEPTH-CONSTRAINTS", case_ok("SL-C02-TRAVEL-DEPTH-CONSTRAINTS")),
+        case_row("SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS", case_ok("SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS")),
+        case_row("SL-C02-UNIT-ROUNDTRIP-IMMUTABLE", case_ok("SL-C02-UNIT-ROUNDTRIP-IMMUTABLE")),
+        case_row("SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH", case_ok("SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH")),
+        case_row("SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH", case_ok("SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH")),
+        case_row("SL-C04-DYNAMIC-DECO-CYL-IMPERIAL", case_ok("SL-C04-DYNAMIC-DECO-CYL-IMPERIAL")),
+        case_row("SL-C03-BEST-MIX-DEPTH-UNITS", case_ok("SL-C03-BEST-MIX-DEPTH-UNITS")),
+        case_row("SL-C03-CNS-DEPTH-UNITS", case_ok("SL-C03-CNS-DEPTH-UNITS")),
+        case_row("SL-C03-BEST-MIX-EDIT-AFTER-SWITCH", case_ok("SL-C03-BEST-MIX-EDIT-AFTER-SWITCH")),
+        case_row("SL-C03-CNS-EDIT-AFTER-SWITCH", case_ok("SL-C03-CNS-EDIT-AFTER-SWITCH")),
+        case_row("SL-C04-END-DEPTH-UNITS", case_ok("SL-C04-END-DEPTH-UNITS")),
+        case_row("SL-C04-SI-DEPTH-UNITS", case_ok("SL-C04-SI-DEPTH-UNITS")),
+        case_row("SL-C04-CONFIRM-BACKDROP", case_ok("SL-C04-CONFIRM-BACKDROP")),
     ]
 
 

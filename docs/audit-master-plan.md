@@ -1,15 +1,19 @@
-# Audit Master Plan v2.0
+# Audit Master Plan v4.0
 
-> Generated schedule and totals. Policy and unit metadata live in `docs/audit-units.json`.
+> V4 risk-first reset schedule. Policy, unit metadata, frozen history, and active R-cycle order live in `docs/audit-units.json`.
 
-**Baseline:** `fd805111eab2fba349a9303a6e208106b798f82b`
-**Units:** 158 total; 48 unread; 43 in progress; 62 read; 5 verified.
+**Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
+**Epoch:** `v4-risk-first-reset`
+**Units:** 207 total; 0 unread; 97 in progress; 3 read; 107 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
 
-- Audit P0 before P1, then P2/P3. Unit priority is not finding severity.
-- A cycle may read at most 600 new application-source lines plus one bounded engine re-verification unit.
+- Execute active V4 `Rxx` cycles in the risk-first order below.
+- Earlier `SL-Cxx` records are frozen historical evidence and are not the active execution queue.
+- Unit priority is metadata; risk-first cycle order is the audit execution queue.
+- A cycle reads the listed application units; `max_new_application_lines` is sized to fit the unit bundle.
+- Recalculate cycle line counts from current source before starting a cycle; split each cycle into <=600-line review sessions.
 - Record actual findings only; there are no finding quotas or projections.
 - `VERIFIED` requires a current fingerprint and evidence that passes in the current audit profile.
 - Generated artifacts are validated by their generator and parity command, not manual READ coverage.
@@ -25,36 +29,66 @@
 6. Safety regression
 7. Tooling and CI
 
-## Cycles 5-12
+## Risk-First Execution Order
+
+| Group | Focus | Cycles |
+|---:|---|---|
+| 1 | Production engines and safety-critical paths | R01, R02, R03, R04, R05, R06 |
+| 2 | Planner mode/state and runner paths | R07, R08, R09, R10, R11, R12 |
+| 3 | Results, export, and consumption correctness | R13, R14, R15, R16, R17, R18 |
+| 4 | Core renderers and graph/export surfaces | R19, R20, R21, R22 |
+| 5 | Runtime, boot, workers, and native | R23, R24, R25, R26 |
+| 6 | Presets, tissues, lower-risk support | R27, R28, R29, R30, R31, R32, R33 |
+| 7 | Markup, base CSS, and current design-lock re-review | R34, R35, R36, R37, R38, R39, R40, R41, R42 |
+
+Run the first unfinished `Rxx` cycle in this table. The cycle table below is the active V4 coverage registry.
+
+## Cycles
 
 | Cycle | Application units | New lines | Engine re-verification | Acceptance |
 |---:|---|---:|---|---|
-| 5 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 487 | ENG-ZHL-SCHEDULE | Delegate units fully READ; schedule findings linked to regression IDs |
-| 6 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 590 | ENG-ZHL-CCR | Physics and schedule input paths READ; no unresolved P0 finding |
-| 7 | UI-SETTINGS-CONTROLS, UI-VPM-RUNNER | 561 | ENG-VPM | Settings restoration and VPM invocation contracts READ |
-| 8 | UI-VPM-RENDER | 530 | ENG-VPM | VPM rendering and safety warning propagation READ |
-| 9 | UI-GAS-CARDS | 575 | ENG-ZHL-GAS | Dynamic gas-card units and persistence READ |
-| 10 | UI-GAS-INPUTS, UI-ZHL-RUNNER-SETUP | 310 | ENG-ZHL-SCHEDULE | Gas validation and ZHL parameter construction READ |
-| 11 | UI-ZHL-RUNNER-ENGINE | 342 | ENG-ZHL-SCHEDULE | Canonical ZHL execution path READ with parity evidence |
-| 12 | UI-ZHL-RESULTS | 502 | ENG-ZHL-PHYSICS | Result construction, exposure totals, and safety fields READ |
-| 13 | UI-ZHL-HEADLESS-HELPERS | 201 | - | Headless ZHL helper path READ; issue #152 |
-| 14 | UI-ZHL-HEADLESS-ENGINE | 385 | - | Headless ZHL engine invocation READ; issue #153 |
-| 15 | UI-PLOT-INIT, UI-PLOT-RENDER | 535 | - | Profile plot init and render READ; issue #154 |
-| 16 | UI-PLOT-WAYPOINTS | 528 | - | Waypoint plot interaction READ; issue #155 |
-| 17 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE | 530 | - | Tissue and exposure tools READ; issue #156 |
-| 18 | UI-TOOLS-GF, UI-TOOLS-PROFILE | 579 | - | GF and profile tools READ; issue #157 |
-| 19 | UI-SETTINGS | 346 | - | Settings persistence READ; issue #158 |
-| 20 | UI-PROFILE-PRESETS, UI-CONFIG-PRESETS | 557 | - | Profile and config presets READ; issue #159 |
-| 21 | UI-APP-INIT | 165 | - | App init and boot hooks READ; issue #160 |
-| 22 | - | 0 | UI-ZHL-DELEGATES | ZHL delegate re-read READ; issue #161 |
-| 23 | UI-RUNTIME-BOOTSTRAP | 270 | - | Runtime bootstrap READ; issue #162 |
-| 24 | UI-ALGORITHM-SETTINGS | 360 | - | Algorithm settings READ; issue #163 |
-| 25 | - | 0 | APP-CONTINGENCY | Contingency core READ; issue #164 |
-| 26 | - | 0 | APP-EXPORT, APP-SERVICE-WORKER | Export and service worker READ; issue #165 |
-| 27 | - | 0 | ENG-VPM | VPM engine re-read READ; issue #166 |
-| 28 | APP-PACKAGE | 40 | CI-AUDIT, CI-APK, CI-MAIN, CI-DEPLOY, CI-NOTIFY | Package manifest and CI workflows READ; issue #167 |
-| 29 | - | 0 | NATIVE-MAIN-ACTIVITY, NATIVE-BUILD-APP, NATIVE-FILE-PATHS, TEST-CCR-VALIDATION, TEST-CCR-DIFF-RUNNER | Native Android and CCR test paths READ; issue #168 |
-| 30 | - | 0 | TEST-RUN-ALL, TEST-ENGINE-REGRESSION, TEST-ENGINE-VALIDATION, TEST-GAS-CORE-REGRESSION | Test runner suite READ; issue #169 |
+| R01 | ENG-ZHL-PHYSICS, ENG-ZHL-GAS | 373 | - | V4 R01: ZHL physics and gas canonical cores risk-first READ; current lines: 373; sessions: 1 |
+| R02 | ENG-ZHL-SCHEDULE | 657 | - | V4 R02: ZHL schedule canonical core risk-first READ; current lines: 657; sessions: 2 |
+| R03 | ENG-ZHL-CCR | 404 | - | V4 R03: ZHL CCR canonical core risk-first READ; current lines: 404; sessions: 1 |
+| R04 | ENG-VPM | 2106 | - | V4 R04: VPM canonical core risk-first READ; current lines: 2106; sessions: 4 |
+| R05 | ENG-VPM-REFERENCE | 2574 | - | V4 R05: VPM reference implementation risk-first READ; current lines: 2574; sessions: 5 |
+| R06 | ENG-RDP | 101 | - | V4 R06: PADI RDP engine risk-first READ; current lines: 101; sessions: 1 |
+| R07 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 605 | ENG-ZHL-CCR | V4 R07: Deco physics and schedule inputs risk-first READ; current lines: 605; sessions: 2 |
+| R08 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 511 | ENG-ZHL-SCHEDULE | V4 R08: ZHL/CCR delegate thin layer risk-first READ; current lines: 511; sessions: 1 |
+| R09 | UI-ZHL-RUNNER-SETUP, UI-ZHL-RUNNER-ENGINE | 478 | ENG-ZHL-SCHEDULE | V4 R09: ZHL runner setup and engine invocation risk-first READ; current lines: 478; sessions: 1 |
+| R10 | UI-ZHL-HEADLESS-HELPERS, UI-ZHL-HEADLESS-ENGINE | 285 | - | V4 R10: Headless ZHL path risk-first READ; current lines: 588; sessions: 1 |
+| R11 | UI-VPM-RUNNER | 491 | ENG-VPM | V4 R11: VPM runner risk-first READ; current lines: 491; sessions: 1 |
+| R12 | APP-ZHL-WORKER, APP-ZHL-WORKER-BRIDGE | 159 | - | V4 R12: ZHL schedule worker and bridge risk-first READ; current lines: 159; sessions: 1 |
+| R13 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 721 | - | V4 R13: Algorithm and settings controls risk-first READ; current lines: 721; sessions: 2 |
+| R14 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1200 | - | V4 R14: Settings persistence and unit helpers risk-first READ; current lines: 1200; sessions: 2 |
+| R15 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 679 | - | V4 R15: Surface interval and gas table cores risk-first READ; current lines: 679; sessions: 2 |
+| R16 | UI-GAS-INPUTS, UI-GAS-CARDS | 507 | ENG-ZHL-GAS | V4 R16: Gas input/card UI risk-first READ; current lines: 507; sessions: 1 |
+| R17 | APP-GAS-PLAN | 546 | - | V4 R17: Gas plan core risk-first READ; current lines: 546; sessions: 1 |
+| R18 | APP-CONTINGENCY | 594 | - | V4 R18: Contingency core risk-first READ; current lines: 594; sessions: 1 |
+| R19 | UI-VPM-RENDER, UI-ZHL-RESULTS | 968 | - | V4 R19: VPM/ZHL results rendering risk-first READ; current lines: 968; sessions: 2 |
+| R20 | APP-EXPORT | 3269 | - | V4 R20: Export text/PDF risk-first READ; current lines: 3269; sessions: 6 |
+| R21 | UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 632 | - | V4 R21: Plot render and waypoint graph risk-first READ; current lines: 632; sessions: 2 |
+| R22 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 755 | - | V4 R22: Profile tool and plot init risk-first READ; current lines: 755; sessions: 2 |
+| R23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 390 | - | V4 R23: Runtime bootstrap and app init risk-first READ; current lines: 390; sessions: 1 |
+| R24 | UI-BOOT | 2414 | - | V4 R24: index.html shell boot region risk-first READ; current lines: 2414; sessions: 5 |
+| R25 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 428 | - | V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 428; sessions: 1 |
+| R26 | APP-CAPACITOR-BRIDGE, APP-ANDROID-SELECT | 548 | - | V4 R26: Capacitor and Android bridge risk-first READ; current lines: 548; sessions: 1 |
+| R27 | UI-PROFILE-PRESETS | 508 | - | V4 R27: Dive profile presets risk-first READ; current lines: 508; sessions: 1 |
+| R28 | UI-CONFIG-PRESETS | 185 | - | V4 R28: Advanced config presets risk-first READ; current lines: 185; sessions: 1 |
+| R29 | UI-TOOLS-TISSUES, UI-TOOLS-EXPOSURE, UI-TOOLS-GF | 860 | - | V4 R29: Tools tissues/exposure/GF risk-first READ; current lines: 860; sessions: 2 |
+| R30 | APP-DOWNLOAD | 119 | - | V4 R30: Download page risk-first READ; current lines: 119; sessions: 1 |
+| R31 | - | 0 | TEST-ENGINE-REGRESSION, TEST-ENGINE-VALIDATION, TEST-GAS-CORE-REGRESSION | V4 R31: Engine and gas regression harnesses re-verified; no application-source review; current lines: 0; no application-source review |
+| R32 | - | 0 | TEST-RUN-ALL, TEST-SW-LIFECYCLE, TEST-CCR-VALIDATION, TEST-CCR-DIFF-RUNNER, TEST-PSCR-E2E | V4 R32: Full regression umbrella and release-tier test paths re-verified; no application-source review; current lines: 0; no application-source review |
+| R33 | APP-PACKAGE | 40 | CI-AUDIT, CI-MAIN, CI-APK, CI-DEPLOY | V4 R33: Package manifest and CI workflows risk-first READ; current lines: 40; sessions: 1 |
+| R34 | UI-MARKUP-HEADER | 742 | - | V4 R34: Header markup risk-first READ; current lines: 742; sessions: 2 |
+| R35 | UI-MARKUP-REC-PLANNER, UI-REC-PLANNER | 84 | - | V4 R35: REC planner markup and runner risk-first READ; current lines: 84; sessions: 1 |
+| R36 | UI-MARKUP-TEC-PLANNER, UI-PLANNER-INPUTS | 681 | - | V4 R36: TEC planner markup and planner input ownership risk-first READ; current lines: 681; sessions: 2 |
+| R37 | UI-MARKUP-CONSUMPTION | 381 | - | V4 R37: Consumption markup risk-first READ; current lines: 381; sessions: 1 |
+| R38 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 612 | - | V4 R38: Tools and modal markup risk-first READ; current lines: 612; sessions: 2 |
+| R39 | UI-CSS-FOUNDATION, UI-CSS-MODES | 760 | - | V4 R39: Foundation and mode CSS risk-first READ; current lines: 760; sessions: 2 |
+| R40 | UI-CSS-CONTROLS | 548 | - | V4 R40: Controls CSS risk-first READ; current lines: 548; sessions: 1 |
+| R41 | UI-CSS-RESULTS | 1009 | - | V4 R41: Results CSS risk-first design-lock READ; current lines: 1009; sessions: 2 |
+| R42 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 510 | - | V4 R42: Planner shell and results panel design-lock READ; current lines: 510; sessions: 1 |
 
 ## Definition of Done
 

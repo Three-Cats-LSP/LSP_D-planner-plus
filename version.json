@@ -1,7 +1,7 @@
 {
-  "version": "2.53.04",
-  "versionCode": 25304,
-  "apkFileName": "LSP_D-planner-plus-v2.53.04.apk",
+  "version": "3.0.0",
+  "versionCode": 30000,
   "apkUrl": "https://github.com/Three-Cats-LSP/LSP_D-planner-plus/releases/latest/download/LSP_D-planner-plus.apk",
+  "apkFileName": "LSP_D-planner-plus-v3.0.0.apk",
   "downloadPage": "https://threecats-lsp.com/d-planner-plus/download.html"
 }

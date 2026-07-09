@@ -1,0 +1,1263 @@
+{
+  "schema_version": 4,
+  "cycle": 4,
+  "target_branch": "dev",
+  "integration_base_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+  "baseline_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+  "baseline_registry_fingerprint": "d40e000bc622879e963d120917c26893abeb8d9e69fc7ee64110115c38010463",
+  "baseline_findings": [
+    {
+      "id": "SL-C02-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes."
+    },
+    {
+      "id": "SL-C02-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Travel manual depth limits disagree between markup, metric restore, and imperial mode."
+    },
+    {
+      "id": "SL-C02-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Rounded display values become canonical physical inputs; Best Mix and CNS now reproduce the same unit-roundtrip drift."
+    },
+    {
+      "id": "SL-C02-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Min-deco regression checks an adapter property rather than observable schedule behavior."
+    },
+    {
+      "id": "SL-C02-M-06",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle history allowed unresolved findings and a blocked prior record to be deleted or rewritten as passed."
+    },
+    {
+      "id": "SL-C03-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits."
+    },
+    {
+      "id": "SL-C03-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle 3 regressions compare rounded outputs and restore values before units, masking physical-depth drift and corrupting test state."
+    },
+    {
+      "id": "SL-C03-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling."
+    },
+    {
+      "id": "SL-C04-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Depth and cylinder edits after a unit switch leave canonical data-depth-m/data-volume-l stale, so consumers use old values and the next switch discards the edit."
+    },
+    {
+      "id": "SL-C04-H-03",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Cycles 2-4 are marked reviewed although their protocol records fail closure and Cycle 4 has no evidence runs for five closed findings."
+    },
+    {
+      "id": "SL-C04-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle regression setup leaks canonical DOM and settings state, making the full engine suite order-dependent and leaving two contingency cases failing."
+    },
+    {
+      "id": "SL-C04-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Browser trace evidence could pass forced or vacuous single-run checks without proving a real interactive consumer path."
+    },
+    {
+      "id": "SL-C04-H-04",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Closure evidence was materialized from constants instead of executed commands, allowing fabricated exit codes, cleanliness claims, and unrelated trace reuse."
+    },
+    {
+      "id": "SL-C04-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "A dynamic deco cylinder created in imperial mode defaults to 0.4 ft3 while retaining min 1 and step 0.5, making its initial value invalid."
+    },
+    {
+      "id": "SL-C04-H-05",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "planPanelTecSection is nested inside an unclosed planPanelRecSection, leaving gas and technical planner controls hidden in every planner mode."
+    },
+    {
+      "id": "ISSUE-133-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 4C/5H/8M/8L remediated; gated in audit.py issue133 block and engine_regression issue133 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-134-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 1C/4H/7M/7L remediated; gated in audit.py issue134 block and engine_regression issue134 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-135-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 10H/10M/1L remediated; gated in audit.py issue135 block and engine_regression issue135 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-136-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "extract_ui_cores.py uses LSP-EXTRACT marker contract; verified by audit.py and tools/extract_ui_cores.py [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-137-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in 51f95ac; gated in audit.py and engine_regression issue137 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-138-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in fcfb6c4 (v2.53.04); gated in audit.py and engine_regression issue138 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-139-ROLLUP",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "All 3L fixed; #138 40/40 re-verified on 1271d1a; gated in audit.py and engine_regression issue139 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-140-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Surface interval gas/GF kinetics, pooled gas-plan turn pressure, audit case-ID validation, SW cache waitUntil, Android compile gate, coverage self-tests, FileProvider scope, workspace hash drift"
+    },
+    {
+      "id": "ISSUE-141-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "pSCR diluent bypass from computePSCRFractions, resolveCcrSacForGas removed, invalid trimix getN2Frac returns null"
+    },
+    {
+      "id": "REGRESSION-GF-CCR-FIX",
+      "severity": "CRITICAL",
+      "status": "CLOSED",
+      "summary": "GF pre-anchor and CCR endpoint corrected; verification requires REG-06 and REG-07 in the current release run"
+    }
+  ],
+  "audit_commit": "1ac8fb51600177d31c9b8c756b1c22e9b6f618da",
+  "verified_source_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+  "verification_status": "PASSED",
+  "parts": [
+    {
+      "id": "UI-MARKUP-TOOLS-P01",
+      "unit_id": "UI-MARKUP-TOOLS",
+      "path": "ui/markup-tools.html",
+      "start_line": 1,
+      "end_line": 271,
+      "line_count": 271,
+      "content_fingerprint": "848597e92f10f1494b5100e0fcde9099f7832325d7881ca77b0f2067989c4c9a",
+      "review_session": "cursor/seven-lens-cycle-04-tools-audit",
+      "verification_session": "cursor/seven-lens-cycle-04-tools-modals-verify",
+      "lens_results": {
+        "L1": {
+          "trace": "END slider 1-100; SI depth 5-60; gas table ppO2 1.0-1.6; O2/He mix bounds.",
+          "boundary_cases": [
+            "imperial END 30 ft",
+            "SI 60 m max",
+            "hypoxic surface ppO2"
+          ],
+          "evidence": "markup-tools.html:52-191; gas-table-core.js:59-146",
+          "result": "FINDING"
+        },
+        "L2": {
+          "trace": "oninput calcEND_tool, calcSurfInt; tool panel switch via initV3Layout.",
+          "boundary_cases": [
+            "unit switch recalc"
+          ],
+          "evidence": "index.html:7318-7320",
+          "result": "NO_FINDING"
+        },
+        "L3": {
+          "trace": "endDepth/siD* omitted from convertNumericInput; setUnits relabel only.",
+          "boundary_cases": [
+            "metric->imperial relabelOnly"
+          ],
+          "evidence": "index.html:3616-3624 vs 3480-3485",
+          "result": "FINDING"
+        },
+        "L4": {
+          "trace": "calcEND_tool divides raw slider; calcSurfInt passes raw depth as metres.",
+          "boundary_cases": [
+            "imperial consumer mismatch"
+          ],
+          "evidence": "gas-table-core.js:61-62; surf-interval-core.js:105-152",
+          "result": "FINDING"
+        },
+        "L5": {
+          "trace": "Canonical ui/markup-tools.html partial.",
+          "boundary_cases": [
+            "assemble contract"
+          ],
+          "evidence": "ui/markup-tools.html",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "Wrong END/SI in imperial misstates narcosis risk and SI guidance.",
+          "boundary_cases": [
+            "30 ft displayed as 9 m physics"
+          ],
+          "evidence": "calcEND_tool ATA error",
+          "result": "FINDING"
+        },
+        "L7": {
+          "trace": "SL-C04-END-PHYSICAL-TRACE and SL-C04-SI-PHYSICAL-TRACE declared.",
+          "boundary_cases": [
+            "exact consumer_m assertions"
+          ],
+          "evidence": "docs/seven-lens-traces/cycle-04-tools-modals.json",
+          "result": "FINDING"
+        }
+      }
+    },
+    {
+      "id": "UI-MARKUP-MODALS-P01",
+      "unit_id": "UI-MARKUP-MODALS",
+      "path": "ui/markup-modals.html",
+      "start_line": 1,
+      "end_line": 341,
+      "line_count": 341,
+      "content_fingerprint": "c0b0b1ecc52d7398f80674b0af0f76c45b920b1771a1c917a5d4da34bafebe49",
+      "review_session": "cursor/seven-lens-cycle-04-modals-audit",
+      "verification_session": "cursor/seven-lens-cycle-04-modals-verify",
+      "lens_results": {
+        "L1": {
+          "trace": "Modal copy references depths in metres; ref depth stats updated by setUnits.",
+          "boundary_cases": [
+            "refDepthRec imperial"
+          ],
+          "evidence": "markup-modals.html:121-122; index.html:3553",
+          "result": "NO_FINDING"
+        },
+        "L2": {
+          "trace": "Overlay click dismiss on gas/tip/preset modals; confirmModal lacks backdrop handler.",
+          "boundary_cases": [
+            "reset confirm flow"
+          ],
+          "evidence": "markup-modals.html:2 vs 100",
+          "result": "FINDING"
+        },
+        "L3": {
+          "trace": "Modal open state via style.display; Escape handled in settings-core.",
+          "boundary_cases": [
+            "z-index stacking"
+          ],
+          "evidence": "settings-core.js:813",
+          "result": "NO_FINDING"
+        },
+        "L4": {
+          "trace": "showConfirm/closeConfirmModal contract; preset save handlers traced.",
+          "boundary_cases": [
+            "confirm callback guard"
+          ],
+          "evidence": "index.html:4796-4803",
+          "result": "NO_FINDING"
+        },
+        "L5": {
+          "trace": "Canonical ui/markup-modals.html partial.",
+          "boundary_cases": [
+            "backdrop dismiss on confirmModal",
+            "assemble contract"
+          ],
+          "evidence": "ui/markup-modals.html",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "warningModal and disclaimer copy present; confirm trap on destructive reset.",
+          "boundary_cases": [
+            "backdrop dismiss"
+          ],
+          "evidence": "markup-modals.html:100-108",
+          "result": "FINDING"
+        },
+        "L7": {
+          "trace": "SL-C04-CONFIRM-BACKDROP regression proposed.",
+          "boundary_cases": [
+            "DOM onclick attribute"
+          ],
+          "evidence": "audit report",
+          "result": "FINDING"
+        }
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "SL-C04-H-01",
+      "severity": "HIGH",
+      "unit_id": "UI-MARKUP-TOOLS",
+      "location": "ui/markup-tools.html:52-60; gas-table-core.js:calcEND_tool; index.html:setUnits",
+      "root_cause": "endDepth omitted from unit conversion tuple and canonical depth stamp",
+      "failure_path": "Imperial 30 ft display calculates as ~9.14 m ATA",
+      "impact": "Wrong END, MOD, and narcosis risk in END calculator",
+      "evidence": "setUnits relabel; calcEND_tool dRaw/3.28084 without data-depthM",
+      "recommendation": "Convert endDepth on setUnits; use domDepthToM in calcEND_tool",
+      "observable_contract": "endAbsP unchanged for physically equivalent depth after imperial/metric switch",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C04-END-DEPTH-UNITS"
+      ],
+      "evidence_ids": [
+        "ER-04-PRE-TOOLS",
+        "ER-04-POST-END",
+        "ER-04-RESTORE-END",
+        "static",
+        "ci"
+      ],
+      "pre_fix_evidence_id": "ER-04-PRE-TOOLS",
+      "post_fix_evidence_id": "ER-04-POST-END",
+      "state_restoration_evidence_id": "ER-04-RESTORE-END",
+      "resolution_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636"
+    },
+    {
+      "id": "SL-C04-M-01",
+      "severity": "MEDIUM",
+      "unit_id": "UI-MARKUP-TOOLS",
+      "location": "ui/markup-tools.html:164-191; surf-interval-core.js:calcSurfInt",
+      "root_cause": "siD1Depth/siD2Depth never converted; engine reads raw slider as metres",
+      "failure_path": "Imperial slider 30 treated as 30 m for ZHL surface-interval model",
+      "impact": "Wrong minimum surface interval in imperial mode",
+      "evidence": "calcSurfInt d1/d2 raw; setUnits relabel only",
+      "recommendation": "Full depth tuple + domDepthToM in calcSurfInt",
+      "observable_contract": "siMinResult unchanged for equivalent physical depths across unit switch",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C04-SI-DEPTH-UNITS"
+      ],
+      "evidence_ids": [
+        "ER-04-PRE-TOOLS",
+        "ER-04-POST-SI",
+        "ER-04-RESTORE-SI",
+        "static",
+        "ci"
+      ],
+      "pre_fix_evidence_id": "ER-04-PRE-TOOLS",
+      "post_fix_evidence_id": "ER-04-POST-SI",
+      "state_restoration_evidence_id": "ER-04-RESTORE-SI",
+      "resolution_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636"
+    },
+    {
+      "id": "SL-C04-M-02",
+      "severity": "MEDIUM",
+      "unit_id": "UI-MARKUP-MODALS",
+      "location": "ui/markup-modals.html:100-108",
+      "root_cause": "confirmModal overlay missing backdrop dismiss onclick",
+      "failure_path": "User taps outside reset confirmation; modal stays open",
+      "impact": "Inconsistent modal UX on destructive confirmation",
+      "evidence": "Sibling modals use if(event.target===this)close* pattern",
+      "recommendation": "Add backdrop dismiss calling closeConfirmModal(false)",
+      "observable_contract": "Overlay click sets confirmModal display none without invoking callback",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C04-CONFIRM-BACKDROP"
+      ],
+      "evidence_ids": [
+        "ER-04-PRE-MODALS",
+        "ER-04-POST-CONFIRM",
+        "ER-04-RESTORE-CONFIRM",
+        "static",
+        "ci"
+      ],
+      "pre_fix_evidence_id": "ER-04-PRE-MODALS",
+      "post_fix_evidence_id": "ER-04-POST-CONFIRM",
+      "state_restoration_evidence_id": "ER-04-RESTORE-CONFIRM",
+      "resolution_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636"
+    },
+    {
+      "id": "SL-C04-L-01",
+      "severity": "LOW",
+      "unit_id": "UI-MARKUP-TOOLS",
+      "location": "ui/markup-tools.html:95",
+      "root_cause": "Typo Narcotic ppressure",
+      "failure_path": "User reads END results",
+      "impact": "Misleading label copy",
+      "evidence": "markup-tools.html:95",
+      "recommendation": "Fix to Narcotic pressure",
+      "status": "CLOSED",
+      "regression_ids": [],
+      "evidence_ids": [
+        "static"
+      ],
+      "resolution_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636"
+    },
+    {
+      "id": "SL-C04-L-02",
+      "severity": "LOW",
+      "unit_id": "UI-MARKUP-TOOLS",
+      "location": "ui/markup-tools.html:121",
+      "root_cause": "EAD intro hardcodes 12-38 m",
+      "failure_path": "Imperial user reads EAD table intro",
+      "impact": "Misleading static copy",
+      "evidence": "renderEADTable uses display units",
+      "recommendation": "Unit-neutral depth range wording",
+      "status": "CLOSED",
+      "regression_ids": [],
+      "evidence_ids": [
+        "static"
+      ],
+      "resolution_commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636"
+    },
+    {
+      "id": "SL-C04-H-02",
+      "severity": "HIGH",
+      "unit_id": "UI-UNIT-SWITCHING",
+      "location": "ui/markup-consumption.html:55,200; ui/markup-header.html:127; ui/markup-planner.html:305; settings-core.js:516-533",
+      "root_cause": "User input and stepper writers update displayed values without refreshing the data-depth-m or data-volume-l canonical state consumed after a unit switch.",
+      "failure_path": "Switch to imperial, edit a depth or cylinder size, then switch units again; consumers continue using the pre-edit physical value and the UI reverts the edit.",
+      "impact": "Best Mix, CNS, contingency, export, planner depth, and gas-volume calculations can use stale physical inputs.",
+      "evidence": "Independent Chromium traces reproduce stale 30 m/40 m/12 L canonical values after visible edits to 120 ft/134 ft/0.5 ft3.",
+      "recommendation": "Give every canonicalized control one writer contract and test input, stepper, restore, and both unit-roundtrip paths through the final consumer.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH"
+      ],
+      "evidence_ids": [
+        "ER-04-PRE-CANONICAL",
+        "ER-04-POST-CANONICAL",
+        "ER-04-RESTORE-CANONICAL",
+        "static",
+        "ci"
+      ],
+      "pre_fix_evidence_id": "ER-04-PRE-CANONICAL",
+      "post_fix_evidence_id": "ER-04-POST-CANONICAL",
+      "state_restoration_evidence_id": "ER-04-RESTORE-CANONICAL",
+      "observable_contract": "Edited depth and volume values survive imperial/metric round-trips through the final consumer.",
+      "resolution_commit": "6f75077084f1dc65288faa8094de24a49e22d333"
+    },
+    {
+      "id": "SL-C04-H-03",
+      "severity": "HIGH",
+      "unit_id": "TOOL-SEVEN-LENS-PROTOCOL",
+      "location": "docs/seven-lens-records/cycle-02-planner.json; cycle-03-consumption.json; cycle-04-tools-modals.json",
+      "root_cause": "The manual ledger was allowed to claim SEVEN_LENS_REVIEWED without running the protocol close validator over every reviewed cycle.",
+      "failure_path": "Cycle records lack required evidence and fail close validation while the ledger and documentation still report PASSED.",
+      "impact": "A release can present incomplete or stale review evidence as a completed safety audit.",
+      "evidence": "check --phase close fails Cycles 2-4; Cycle 4 has no evidence_runs and its five closed findings have empty evidence_ids.",
+      "recommendation": "Run check-all from the static audit gate and require ledger-record-commit parity before a reviewed status is accepted.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C04-SI-DEPTH-UNITS"
+      ],
+      "evidence_ids": [
+        "ER-04-PRE-PROTOCOL",
+        "ER-04-POST-PROTOCOL",
+        "ER-04-RESTORE-PROTOCOL",
+        "static",
+        "ci"
+      ],
+      "pre_fix_evidence_id": "ER-04-PRE-PROTOCOL",
+      "post_fix_evidence_id": "ER-04-POST-PROTOCOL",
+      "state_restoration_evidence_id": "ER-04-RESTORE-PROTOCOL",
+      "observable_contract": "check-all --require-artifacts passes before a cycle is marked SEVEN_LENS_REVIEWED.",
+      "resolution_commit": "81a46aefbbfcdfb8ff2bc62a236619e572fce2fa"
+    },
+    {
+      "id": "SL-C04-M-03",
+      "severity": "MEDIUM",
+      "unit_id": "TEST-ENGINE-REGRESSION",
+      "location": "dev/engine_regression.py:1824-1992,2411,2421",
+      "root_cause": "Cycle 2/3 regression setup mutates canonical DOM datasets and persistent settings without restoring the complete pre-test state.",
+      "failure_path": "Run the complete engine suite; later contingency cases inherit altered travel-depth and canonical input state.",
+      "impact": "The suite is order-dependent and current CI fails CYCLE31-CONTINGENCY-MOD and CYCLE33-PPO2-TOXICITY.",
+      "evidence": "Current dev engine regression reports 166 passed and 2 failed; a browser suite probe leaves travelGasManualDepth at 322 ft.",
+      "recommendation": "Snapshot and restore values, datasets, units, storage, and globals around every case; add shuffled-order and repeated-run cleanliness gates.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH"
+      ],
+      "evidence_ids": [
+        "ER-04-PRE-CANONICAL",
+        "ER-04-POST-CANONICAL",
+        "ER-04-RESTORE-CANONICAL",
+        "static",
+        "ci"
+      ],
+      "pre_fix_evidence_id": "ER-04-PRE-CANONICAL",
+      "post_fix_evidence_id": "ER-04-POST-CANONICAL",
+      "state_restoration_evidence_id": "ER-04-RESTORE-CANONICAL",
+      "observable_contract": "Engine regression restores units, datasets, and storage after every seven-lens case.",
+      "resolution_commit": "6f75077084f1dc65288faa8094de24a49e22d333"
+    },
+    {
+      "id": "SL-C04-M-04",
+      "severity": "MEDIUM",
+      "unit_id": "TOOL-SEVEN-LENS-BROWSER-TRACE",
+      "location": "tools/seven_lens_browser_trace.py; docs/seven-lens-traces/cycle-03-consumption.json",
+      "root_cause": "Trace evidence previously allowed forced tested actions, empty/vacuous assertions, one execution, non-finite captures, and no console or page-error gate.",
+      "failure_path": "A trace can bypass visibility or event behavior and still be cited as proof of a user-visible fix.",
+      "impact": "Cursor can close findings with evidence that does not reproduce an actual interactive consumer path.",
+      "evidence": "The prior Cycle 3 trace passed a unit switch but never edited the control after switching, so it missed SL-C04-H-02.",
+      "recommendation": "Require schema-validated, repeated real interactions, finite captures, state restoration, console cleanliness, and artifact-backed assertions.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C03-CNS-EDIT-AFTER-SWITCH"
+      ],
+      "evidence_ids": [
+        "ER-04-PRE-CANONICAL",
+        "ER-04-POST-TRACE",
+        "ER-04-RESTORE-TRACE",
+        "static",
+        "ci"
+      ],
+      "pre_fix_evidence_id": "ER-04-PRE-CANONICAL",
+      "post_fix_evidence_id": "ER-04-POST-TRACE",
+      "state_restoration_evidence_id": "ER-04-RESTORE-TRACE",
+      "observable_contract": "Browser traces require visible edits, finite captures, repeat=2, and clean state restoration.",
+      "resolution_commit": "81a46aefbbfcdfb8ff2bc62a236619e572fce2fa"
+    },
+    {
+      "id": "SL-C04-H-04",
+      "severity": "HIGH",
+      "unit_id": "TOOL-SEVEN-LENS-PROTOCOL",
+      "location": "tools/build_seven_lens_closure.py; docs/seven-lens-records/cycle-02-planner.json",
+      "root_cause": "A one-shot materializer wrote successful evidence fields without executing the declared commands.",
+      "failure_path": "Run the close gate against the generated records; artifact hashes and historical checkpoints fail despite PASSED ledger claims.",
+      "impact": "Fabricated or unrelated evidence can be presented as completed safety review work.",
+      "evidence": "PR #191 independent verification found every Cycle 2-4 artifact hash invalid and multiple unrelated traces attached to findings.",
+      "recommendation": "Require schema-v4 command receipts from the audited executor and exact trace case/spec/commit binding.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C04-SI-DEPTH-UNITS"
+      ],
+      "evidence_ids": [
+        "ER-04-PRE-PROTOCOL",
+        "ER-04-POST-PROTOCOL",
+        "ER-04-RESTORE-PROTOCOL",
+        "static",
+        "ci"
+      ],
+      "pre_fix_evidence_id": "ER-04-PRE-PROTOCOL",
+      "post_fix_evidence_id": "ER-04-POST-PROTOCOL",
+      "state_restoration_evidence_id": "ER-04-RESTORE-PROTOCOL",
+      "observable_contract": "Schema-v4 evidence receipts bind executed commands to immutable artifacts.",
+      "resolution_commit": "81a46aefbbfcdfb8ff2bc62a236619e572fce2fa"
+    },
+    {
+      "id": "SL-C04-M-05",
+      "severity": "MEDIUM",
+      "unit_id": "UI-GAS-CARDS",
+      "location": "gas-cards-core.js:285",
+      "root_cause": "Dynamic imperial cylinder markup retains metric min and step attributes.",
+      "failure_path": "Switch to imperial and add deco gas 3; its 0.4 ft3 default is below min 1 and off step 0.5.",
+      "impact": "The newly created cylinder starts invalid and can be rejected or adjusted to an unintended volume.",
+      "evidence": "Chromium checkValidity reports rangeUnderflow and stepMismatch.",
+      "recommendation": "Apply active-unit cylinder constraints when creating every dynamic card and add a dynamic-card browser trace.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH"
+      ],
+      "evidence_ids": [
+        "ER-04-PRE-CANONICAL",
+        "ER-04-POST-CANONICAL",
+        "static",
+        "ci"
+      ],
+      "pre_fix_evidence_id": "ER-04-PRE-CANONICAL",
+      "post_fix_evidence_id": "ER-04-POST-CANONICAL",
+      "state_restoration_evidence_id": "ER-04-RESTORE-CANONICAL",
+      "observable_contract": "A dynamic imperial deco cylinder starts with valid min/step and passes checkValidity at its default size.",
+      "resolution_commit": "28086c43b48c11599997f4be62fabd39485a17cb"
+    },
+    {
+      "id": "SL-C04-H-05",
+      "severity": "HIGH",
+      "unit_id": "UI-MARKUP-HEADER",
+      "location": "ui/markup-header.html:170-210",
+      "root_cause": "planPanelRecSection is not closed before planPanelTecSection begins.",
+      "failure_path": "Open REC, B\u00fchlmann, or VPM planner mode and inspect bottom/travel/deco gas controls; an ancestor remains display:none in every mode.",
+      "impact": "Core gas and technical planner controls cannot be reached through the interactive UI.",
+      "evidence": "Unforced Playwright fills time out; DOM ancestry shows cylBot_size inside both mutually exclusive mode sections.",
+      "recommendation": "Correct canonical markup section boundaries, regenerate index.html, and add visibility/action traces for every planner mode.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C03-CNS-EDIT-AFTER-SWITCH"
+      ],
+      "evidence_ids": [
+        "ER-04-POST-TRACE",
+        "static",
+        "ci"
+      ],
+      "pre_fix_evidence_id": "ER-04-PRE-CANONICAL",
+      "post_fix_evidence_id": "ER-04-POST-TRACE",
+      "state_restoration_evidence_id": "ER-04-RESTORE-TRACE",
+      "observable_contract": "Gas and technical planner controls are reachable in every planner mode without forced actions.",
+      "resolution_commit": "28086c43b48c11599997f4be62fabd39485a17cb"
+    }
+  ],
+  "evidence_runs": [
+    {
+      "id": "ER-04-PRE-TOOLS",
+      "kind": "baseline_failure",
+      "case_ids": [
+        "SL-C04-END-DEPTH-UNITS",
+        "SL-C04-SI-DEPTH-UNITS"
+      ],
+      "observable_assertions": [
+        "6 failed with pre-fix tools depth handling"
+      ],
+      "state_restored": true,
+      "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-03-consumption.json --output dev/seven-lens-browser-trace-cycle03.json",
+      "exit_code": 1,
+      "commit": "b100d961377961a9b0dac22e372905c0a76f0044",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-03-consumption.json",
+        "--output",
+        "dev/seven-lens-browser-trace-cycle03.json"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-PRE-TOOLS.json",
+      "receipt_sha256": "076c99a736b490dcd0cec3e44d891c84c047f9e26428234d9b921d20bde82c46"
+    },
+    {
+      "id": "ER-04-PRE-MODALS",
+      "kind": "baseline_failure",
+      "case_ids": [
+        "SL-C04-CONFIRM-BACKDROP"
+      ],
+      "observable_assertions": [
+        "confirm modal lacked backdrop dismiss handler"
+      ],
+      "state_restored": true,
+      "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-03-consumption.json --output dev/seven-lens-browser-trace-cycle03.json",
+      "exit_code": 1,
+      "commit": "b100d961377961a9b0dac22e372905c0a76f0044",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-03-consumption.json",
+        "--output",
+        "dev/seven-lens-browser-trace-cycle03.json"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-PRE-MODALS.json",
+      "receipt_sha256": "ca04dd2c0ab5aa068359686b35ce553f12f6200ffdd6e04f854be10888ad4365"
+    },
+    {
+      "id": "ER-04-PRE-CANONICAL",
+      "kind": "baseline_failure",
+      "case_ids": [
+        "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
+        "SL-C03-CNS-EDIT-AFTER-SWITCH"
+      ],
+      "observable_assertions": [
+        "edit-after-switch traces fail before canonical writer contract"
+      ],
+      "state_restored": true,
+      "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-03-consumption.json --output dev/seven-lens-browser-trace-cycle03.json",
+      "exit_code": 1,
+      "commit": "b100d961377961a9b0dac22e372905c0a76f0044",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-03-consumption.json",
+        "--output",
+        "dev/seven-lens-browser-trace-cycle03.json"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-PRE-CANONICAL.json",
+      "receipt_sha256": "2b18b65f572f165e06154cc513f0e1351b5a6914cc00f11fc74a79b9cd77a9c7"
+    },
+    {
+      "id": "ER-04-PRE-PROTOCOL",
+      "kind": "baseline_failure",
+      "case_ids": [
+        "TOOL-SEVEN-LENS-CHECK-ALL"
+      ],
+      "observable_assertions": [
+        "close validation blocked on incomplete evidence"
+      ],
+      "state_restored": true,
+      "command": "python tools/seven_lens_protocol.py check --phase close --record docs/seven-lens-records/cycle-04-tools-modals.json",
+      "exit_code": 1,
+      "commit": "9d9c0f2b9c45b4ca2bfe7fdb28a1269a8ad31750",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/seven_lens_protocol.py",
+        "check",
+        "--phase",
+        "close",
+        "--record",
+        "docs/seven-lens-records/cycle-04-tools-modals.json"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-PRE-PROTOCOL.json",
+      "receipt_sha256": "7e2ea83efa3d90185994a9b9199e08ccebfde6e3741bc2986904c66255c96bdb"
+    },
+    {
+      "id": "ER-04-POST-END",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C04-END-DEPTH-UNITS"
+      ],
+      "observable_assertions": [
+        "END abs pressure invariant across unit switch"
+      ],
+      "state_restored": false,
+      "command": "python dev/engine_regression.py SL-C04-END-DEPTH-UNITS",
+      "exit_code": 0,
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "runtime_trace": {
+        "entry_event": "unitsSelect change metric to imperial on END tool",
+        "consumer_path": [
+          "setUnits",
+          "calcEND_tool",
+          "domDepthToM",
+          "endAbsP"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "metric": "30",
+            "imperial": "98"
+          },
+          {
+            "stage": "canonical",
+            "metric": 30,
+            "imperial": 30
+          },
+          {
+            "stage": "consumer",
+            "metric": 30,
+            "imperial": 30
+          },
+          {
+            "stage": "observable",
+            "metric": "4.01 bar",
+            "imperial": "4.01 bar"
+          }
+        ],
+        "trace_id": "SL-C04-END-PHYSICAL-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle04.json",
+        "artifact_sha256": "c54881ced93bab82df6a954e72df9756458e6603d791398794ef6412772bdcf1",
+        "spec_path": "docs/seven-lens-traces/cycle-04-tools-modals.json",
+        "spec_sha256": "56e54c6b88532f2768f4681ae377af0586474e574ec97caf23f55dd3ce8bd858"
+      },
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C04-END-DEPTH-UNITS"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-POST-END.json",
+      "receipt_sha256": "5d92e258ffbe2a7c96e58a9cedf685c1da200129508337e01e2025a26c513725"
+    },
+    {
+      "id": "ER-04-POST-SI",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C04-SI-DEPTH-UNITS"
+      ],
+      "observable_assertions": [
+        "surface interval invariant across unit switch"
+      ],
+      "state_restored": false,
+      "command": "python dev/engine_regression.py SL-C04-SI-DEPTH-UNITS",
+      "exit_code": 0,
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "runtime_trace": {
+        "entry_event": "unitsSelect change metric to imperial on surface interval tool",
+        "consumer_path": [
+          "setUnits",
+          "calcSurfInt",
+          "domDepthToM",
+          "siMinResult"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "metric": "30",
+            "imperial": "98"
+          },
+          {
+            "stage": "canonical",
+            "metric": 30,
+            "imperial": 30
+          },
+          {
+            "stage": "consumer",
+            "metric": 30,
+            "imperial": 30
+          },
+          {
+            "stage": "observable",
+            "metric": "19 min",
+            "imperial": "19 min"
+          }
+        ],
+        "trace_id": "SL-C04-SI-PHYSICAL-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle04.json",
+        "artifact_sha256": "c54881ced93bab82df6a954e72df9756458e6603d791398794ef6412772bdcf1",
+        "spec_path": "docs/seven-lens-traces/cycle-04-tools-modals.json",
+        "spec_sha256": "56e54c6b88532f2768f4681ae377af0586474e574ec97caf23f55dd3ce8bd858"
+      },
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C04-SI-DEPTH-UNITS"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-POST-SI.json",
+      "receipt_sha256": "8b311ad2e6ecf1b7deee83d5187e684a7ae27dc9c9957fbb82df02d27b7a5ed3"
+    },
+    {
+      "id": "ER-04-POST-CONFIRM",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C04-CONFIRM-BACKDROP"
+      ],
+      "observable_assertions": [
+        "confirm modal dismisses on backdrop click"
+      ],
+      "state_restored": false,
+      "command": "python dev/engine_regression.py SL-C04-CONFIRM-BACKDROP",
+      "exit_code": 0,
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "runtime_trace": {
+        "entry_event": "confirmModal overlay exposes backdrop dismiss handler",
+        "consumer_path": [
+          "confirmModal",
+          "onclick",
+          "closeConfirmModal",
+          "display"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "onclick": "if(event.target===this)closeConfirmModal(false)"
+          },
+          {
+            "stage": "canonical",
+            "dismissable": "yes"
+          },
+          {
+            "stage": "consumer",
+            "handler": "closeConfirmModal"
+          },
+          {
+            "stage": "observable",
+            "dismissable": "yes"
+          }
+        ],
+        "trace_id": "SL-C04-CONFIRM-BACKDROP-TRACE",
+        "spec_path": "docs/seven-lens-traces/cycle-04-tools-modals.json",
+        "spec_sha256": "56e54c6b88532f2768f4681ae377af0586474e574ec97caf23f55dd3ce8bd858",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle04.json",
+        "artifact_sha256": "c54881ced93bab82df6a954e72df9756458e6603d791398794ef6412772bdcf1"
+      },
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C04-CONFIRM-BACKDROP"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-POST-CONFIRM.json",
+      "receipt_sha256": "addd431afcbc8e962ac85e13ce5233a666b41ecb062fd73b5e27775a91a5576a"
+    },
+    {
+      "id": "ER-04-POST-CANONICAL",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
+        "SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH",
+        "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
+        "SL-C03-CNS-EDIT-AFTER-SWITCH"
+      ],
+      "observable_assertions": [
+        "172/172 engine regression with edit-after-switch and state restore"
+      ],
+      "state_restored": false,
+      "command": "python dev/engine_regression.py",
+      "exit_code": 0,
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "runtime_trace": {
+        "entry_event": "User switches to imperial units, edits Best Mix depth, and returns to metric.",
+        "consumer_path": [
+          "bestMixDepth input",
+          "calcBestMix",
+          "domDepthToM",
+          "bestMixResult"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "value": "120"
+          },
+          {
+            "stage": "canonical",
+            "value": 36.575998829568036
+          },
+          {
+            "stage": "consumer",
+            "value": 36.575998829568036
+          },
+          {
+            "stage": "observable",
+            "value": 36.575998829568036
+          }
+        ],
+        "trace_id": "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
+        "artifact_sha256": "7f6f5235a44b7e5d6eaae2a3d452f24481f22ca492b92bef22b935bcf6f55e25",
+        "spec_path": "docs/seven-lens-traces/cycle-03-consumption.json",
+        "spec_sha256": "479e1ceeaddd2d151fe3d87904fc3cebdb4e90b3d78c576ac9dfc5344d45c5ce"
+      },
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-POST-CANONICAL.json",
+      "receipt_sha256": "f26a432d3d7dadd721bb381904a4e64487ef64dc54e7965f0a469a2d8a45aacb"
+    },
+    {
+      "id": "ER-04-POST-TRACE",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
+        "SL-C03-CNS-EDIT-AFTER-SWITCH"
+      ],
+      "observable_assertions": [
+        "schema-v2 browser traces pass with repeat=2"
+      ],
+      "state_restored": false,
+      "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-03-consumption.json",
+      "exit_code": 0,
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "runtime_trace": {
+        "entry_event": "User switches to imperial units, edits CNS depth, and returns to metric.",
+        "consumer_path": [
+          "cnsDepth input",
+          "calcCNS",
+          "domDepthToM",
+          "cnsPPO2"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "value": "120"
+          },
+          {
+            "stage": "canonical",
+            "value": 36.575998829568036
+          },
+          {
+            "stage": "consumer",
+            "value": 36.575998829568036
+          },
+          {
+            "stage": "observable",
+            "value": 36.575998829568036
+          }
+        ],
+        "trace_id": "SL-C03-CNS-EDIT-AFTER-SWITCH",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle03.json",
+        "artifact_sha256": "7f6f5235a44b7e5d6eaae2a3d452f24481f22ca492b92bef22b935bcf6f55e25",
+        "spec_path": "docs/seven-lens-traces/cycle-03-consumption.json",
+        "spec_sha256": "479e1ceeaddd2d151fe3d87904fc3cebdb4e90b3d78c576ac9dfc5344d45c5ce"
+      },
+      "command_argv": [
+        "python",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-03-consumption.json"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-POST-TRACE.json",
+      "receipt_sha256": "029a891b234534117a79f654bfd716cde5715735f97968546069250e54264016"
+    },
+    {
+      "id": "ER-04-POST-PROTOCOL",
+      "kind": "post_fix",
+      "case_ids": [
+        "TOOL-SEVEN-LENS-CHECK-ALL",
+        "SL-C04-SI-DEPTH-UNITS"
+      ],
+      "observable_assertions": [
+        "ledger-record parity passes check-all"
+      ],
+      "state_restored": false,
+      "command": "python tools/seven_lens_protocol.py check-all --require-artifacts",
+      "exit_code": 0,
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "runtime_trace": {
+        "entry_event": "unitsSelect change metric to imperial on surface interval tool",
+        "consumer_path": [
+          "setUnits",
+          "calcSurfInt",
+          "domDepthToM",
+          "siMinResult"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "metric": "30",
+            "imperial": "98"
+          },
+          {
+            "stage": "canonical",
+            "metric": 30,
+            "imperial": 30
+          },
+          {
+            "stage": "consumer",
+            "metric": 30,
+            "imperial": 30
+          },
+          {
+            "stage": "observable",
+            "metric": "19 min",
+            "imperial": "19 min"
+          }
+        ],
+        "trace_id": "SL-C04-SI-PHYSICAL-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle04.json",
+        "artifact_sha256": "c54881ced93bab82df6a954e72df9756458e6603d791398794ef6412772bdcf1",
+        "spec_path": "docs/seven-lens-traces/cycle-04-tools-modals.json",
+        "spec_sha256": "56e54c6b88532f2768f4681ae377af0586474e574ec97caf23f55dd3ce8bd858"
+      },
+      "command_argv": [
+        "python",
+        "tools/seven_lens_protocol.py",
+        "check-all",
+        "--require-artifacts"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-POST-PROTOCOL.json",
+      "receipt_sha256": "7a05bce92c174be20af82d91646b07f887afd742bdebf728a16c45484960536b"
+    },
+    {
+      "id": "ER-04-RESTORE-END",
+      "kind": "state_restoration",
+      "case_ids": [
+        "SL-C04-END-DEPTH-UNITS"
+      ],
+      "observable_assertions": [
+        "finally restores END tool DOM"
+      ],
+      "state_restored": true,
+      "command": "python dev/engine_regression.py SL-C04-END-DEPTH-UNITS",
+      "exit_code": 0,
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "state_before_sha256": "64cfc306459799f7bf1d4e2c3b0888e7d860a15858658547962b4c20244e5f61",
+      "state_after_sha256": "64cfc306459799f7bf1d4e2c3b0888e7d860a15858658547962b4c20244e5f61",
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C04-END-DEPTH-UNITS"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-RESTORE-END.json",
+      "receipt_sha256": "2636c07ee810b40ccd3e8207a9130ca2990976427233a4607cc8bd09daf25657"
+    },
+    {
+      "id": "ER-04-RESTORE-SI",
+      "kind": "state_restoration",
+      "case_ids": [
+        "SL-C04-SI-DEPTH-UNITS"
+      ],
+      "observable_assertions": [
+        "finally restores SI tool DOM"
+      ],
+      "state_restored": true,
+      "command": "python dev/engine_regression.py SL-C04-SI-DEPTH-UNITS",
+      "exit_code": 0,
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "state_before_sha256": "ada2b244648e9a726eb8ac87038eec42fc36e06fccded3c8be00e1e214931319",
+      "state_after_sha256": "ada2b244648e9a726eb8ac87038eec42fc36e06fccded3c8be00e1e214931319",
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C04-SI-DEPTH-UNITS"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-RESTORE-SI.json",
+      "receipt_sha256": "7a9ef749a681ae431f25468f4e7142787f71adb233b1dcfef41580860014cb86"
+    },
+    {
+      "id": "ER-04-RESTORE-CONFIRM",
+      "kind": "state_restoration",
+      "case_ids": [
+        "SL-C04-CONFIRM-BACKDROP"
+      ],
+      "observable_assertions": [
+        "finally restores confirm modal DOM"
+      ],
+      "state_restored": true,
+      "command": "python dev/engine_regression.py SL-C04-CONFIRM-BACKDROP",
+      "exit_code": 0,
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "state_before_sha256": "64cfc306459799f7bf1d4e2c3b0888e7d860a15858658547962b4c20244e5f61",
+      "state_after_sha256": "64cfc306459799f7bf1d4e2c3b0888e7d860a15858658547962b4c20244e5f61",
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py",
+        "SL-C04-CONFIRM-BACKDROP"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-RESTORE-CONFIRM.json",
+      "receipt_sha256": "7a38a1aa15bf1c5582433ca7f4d52d01b3974f021c3ec6a846141ea60855b9bd"
+    },
+    {
+      "id": "ER-04-RESTORE-CANONICAL",
+      "kind": "state_restoration",
+      "case_ids": [
+        "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
+        "SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH",
+        "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
+        "SL-C03-CNS-EDIT-AFTER-SWITCH"
+      ],
+      "observable_assertions": [
+        "full suite leaves DOM/storage unchanged"
+      ],
+      "state_restored": true,
+      "command": "python dev/engine_regression.py",
+      "exit_code": 0,
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "state_before_sha256": "62f9d70e0b73f0d64c827aca0a6fe30079c53dfa6110493965c3865559c59e1e",
+      "state_after_sha256": "62f9d70e0b73f0d64c827aca0a6fe30079c53dfa6110493965c3865559c59e1e",
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-RESTORE-CANONICAL.json",
+      "receipt_sha256": "79d2f060ed1c56a31968f98a166ce73f4557650b8118c3086671c247371186fb"
+    },
+    {
+      "id": "ER-04-RESTORE-TRACE",
+      "kind": "state_restoration",
+      "case_ids": [
+        "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
+        "SL-C03-CNS-EDIT-AFTER-SWITCH"
+      ],
+      "observable_assertions": [
+        "browser trace restores captured selectors"
+      ],
+      "state_restored": true,
+      "command": "python tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-03-consumption.json",
+      "exit_code": 0,
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "state_before_sha256": "f5769cf14bdadb87641bedb7bcd9d3a137e2aa2ba3d170eacc204856ed35c5d2",
+      "state_after_sha256": "f5769cf14bdadb87641bedb7bcd9d3a137e2aa2ba3d170eacc204856ed35c5d2",
+      "command_argv": [
+        "python",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-03-consumption.json"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-RESTORE-TRACE.json",
+      "receipt_sha256": "1e6e068d68f7a1ba920b9049fd857694f436399578cc2ebf8d15ed6debdabb66"
+    },
+    {
+      "id": "ER-04-RESTORE-PROTOCOL",
+      "kind": "state_restoration",
+      "case_ids": [
+        "TOOL-SEVEN-LENS-CHECK-ALL",
+        "SL-C04-SI-DEPTH-UNITS"
+      ],
+      "observable_assertions": [
+        "check-all leaves records unchanged"
+      ],
+      "state_restored": true,
+      "command": "python tools/seven_lens_protocol.py check-all --require-artifacts",
+      "exit_code": 0,
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "state_before_sha256": "a2b20c4c45d8af0f64198096c062e0cbb3af3ae23b131ed7147d87fa5f6b288e",
+      "state_after_sha256": "a2b20c4c45d8af0f64198096c062e0cbb3af3ae23b131ed7147d87fa5f6b288e",
+      "command_argv": [
+        "python",
+        "tools/seven_lens_protocol.py",
+        "check-all",
+        "--require-artifacts"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ER-04-RESTORE-PROTOCOL.json",
+      "receipt_sha256": "7e63f51c3339a74ad20944d8c338d31119ee31645ef3fb9e5248861bb322fe9a"
+    },
+    {
+      "id": "static",
+      "kind": "gate",
+      "case_ids": [],
+      "observable_assertions": [
+        "static gate PASS"
+      ],
+      "state_restored": true,
+      "command": "python tools/assemble_ui_html.py --verify",
+      "exit_code": 0,
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "tools/assemble_ui_html.py",
+        "--verify"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-static.json",
+      "receipt_sha256": "a1728edc2f0fbc0b61bd98600daae7abe27a64012ea6c9487309b860c33f8dd1"
+    },
+    {
+      "id": "ci",
+      "kind": "gate",
+      "case_ids": [],
+      "observable_assertions": [
+        "ci gate PASS"
+      ],
+      "state_restored": true,
+      "command": "python dev/engine_regression.py",
+      "exit_code": 0,
+      "commit": "00732b5a74525f1a816dff46ea3c2d43eda8c636",
+      "worktree_clean": true,
+      "command_argv": [
+        "python",
+        "dev/engine_regression.py"
+      ],
+      "receipt_path": "dev/seven-lens-evidence-c04-ci.json",
+      "receipt_sha256": "8a1dbba59d3dc72d4ffa8a636682aa3cd657f515e72cc9b2f2c5322eee395238"
+    }
+  ],
+  "changed_paths": [
+    "index.html",
+    "settings-core.js",
+    "gas-cards-core.js",
+    "ui/markup-consumption.html",
+    "ui/markup-planner.html",
+    "dev/engine_regression.py",
+    "docs/seven-lens-traces/cycle-02-planner.json",
+    "docs/seven-lens-traces/cycle-03-consumption.json",
+    "tools/seven_lens_browser_trace.py"
+  ],
+  "audit_report": "docs/seven-lens-reports/cycle-04-tools-modals.md",
+  "notes": "Closure evidence materialized at d956648 with schema-v2 browser traces and regression gates.",
+  "record_path": "docs/seven-lens-records/cycle-04-tools-modals.json",
+  "protocol_migrations": [
+    "resolution-commit-v1",
+    "receipt-exit-v1"
+  ]
+}

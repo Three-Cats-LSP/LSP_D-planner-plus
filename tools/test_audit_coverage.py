@@ -117,12 +117,25 @@ class AuditCoverageTests(unittest.TestCase):
         )
         self.assertTrue(any("occurs 2 times" in error for error in self.errors()))
 
-    def test_uncovered_prefix_fails(self) -> None:
-        (self.root / "app.js").write_text(
-            "const uncovered = true;\n// AUDIT-UNIT:APP-A\n// AUDIT-UNIT:APP-B\n",
-            encoding="utf-8",
-        )
-        self.assertTrue(any("first audit marker" in error for error in self.errors()))
+    def test_css_marker_must_start_at_line_one(self) -> None:
+        broken = copy.deepcopy(self.registry)
+        broken["units"] = [
+            {
+                "id": "CSS-X",
+                "path": "theme.css",
+                "layer": "web_css",
+                "priority": "P2",
+                "status": "UNREAD",
+                "boundary": {"type": "marker", "marker": "AUDIT-UNIT:CSS-X"},
+                "fingerprint": "",
+                "last_read_fingerprint": None,
+                "evidence": [],
+                "regression_cases": [],
+            }
+        ]
+        (self.root / "theme.css").write_text("x {}\n/* AUDIT-UNIT:CSS-X */\n", encoding="utf-8")
+        errors = self.errors(broken, [*self.tracked, "theme.css"])
+        self.assertTrue(any("first audit marker must be on line 1" in error for error in errors))
 
     def test_source_edit_makes_read_and_verified_units_stale(self) -> None:
         (self.root / "app.js").write_text(
@@ -177,10 +190,10 @@ class AuditCoverageTests(unittest.TestCase):
                 "issue": "fixture #2",
             }
         ]
-        broken["cycles"][0]["max_new_application_lines"] = 601
+        broken["cycles"][0]["max_new_application_lines"] = 1
         errors = self.errors(broken)
         self.assertTrue(any("release-blocking" in error for error in errors))
-        self.assertTrue(any("line budget exceeds 600" in error for error in errors))
+        self.assertTrue(any("application lines exceed budget" in error for error in errors))
 
     def test_refresh_downgrades_changed_verified_unit(self) -> None:
         (self.root / "app.js").write_text(

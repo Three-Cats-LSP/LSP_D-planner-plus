@@ -1,0 +1,111 @@
+{
+  "schema": "v4-simplified-batch-record",
+  "batch_id": "R23-R33",
+  "epoch": "v4-risk-first-reset",
+  "baseline_commit": "c6daedb9c63c8e2217d0f3f8f5979cc517f346b0",
+  "status": "REVIEWED",
+  "pre_batch_improvements": [
+    {
+      "id": "R23-INFRA-01",
+      "summary": "Registered REG-139 for the ZHL worker calculation-error single-request regression.",
+      "files": ["engine_validation_regression.py", "docs/audit-units.json"]
+    },
+    {
+      "id": "R23-INFRA-02",
+      "summary": "Serialized sync_www plus www snapshotting so parallel Playwright suites do not corrupt the shared www staging directory.",
+      "files": ["dev/test_http.py"]
+    },
+    {
+      "id": "R23-INFRA-03",
+      "summary": "Kept export coverage pragmatic through existing native bridge, static, visual, assembly, and export regression gates."
+    },
+    {
+      "id": "R33-INFRA-01",
+      "summary": "Serialized GitHub Pages artifact generation so parallel audit profiles do not race on _pages/ and site-assets-manifest.txt.",
+      "files": ["tools/build_pages_site.py"]
+    }
+  ],
+  "scope": [
+    {
+      "cycle": "R23",
+      "units": ["UI-RUNTIME-BOOTSTRAP", "UI-APP-INIT"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R24",
+      "units": ["UI-BOOT"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R25",
+      "units": ["APP-SERVICE-WORKER", "UI-PWA-LIFECYCLE", "APP-MANIFEST"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R26",
+      "units": ["APP-CAPACITOR-BRIDGE", "APP-ANDROID-SELECT"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R27",
+      "units": ["UI-PROFILE-PRESETS"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R28",
+      "units": ["UI-CONFIG-PRESETS"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R29",
+      "units": ["UI-TOOLS-TISSUES", "UI-TOOLS-EXPOSURE", "UI-TOOLS-GF"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R30",
+      "units": ["APP-DOWNLOAD"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R31",
+      "units": ["TEST-ENGINE-REGRESSION", "TEST-ENGINE-VALIDATION", "TEST-GAS-CORE-REGRESSION"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R32",
+      "units": ["TEST-RUN-ALL", "TEST-SW-LIFECYCLE", "TEST-CCR-VALIDATION", "TEST-CCR-DIFF-RUNNER", "TEST-PSCR-E2E"],
+      "result": "NO_FINDINGS"
+    },
+    {
+      "cycle": "R33",
+      "units": ["APP-PACKAGE", "CI-AUDIT", "CI-MAIN", "CI-APK", "CI-DEPLOY"],
+      "result": "NO_FINDINGS"
+    }
+  ],
+  "findings": [],
+  "regressions_run": [
+    "python engine_validation_regression.py",
+    "python dev/ui_shell_results_regression.py and python dev/ui_results_css_regression.py in parallel",
+    "python tools/assemble_ui_html.py --verify",
+    "python tools/run_ui_structure_suite.py",
+    "python dev/run_native_regression.py",
+    "python dev/sw_lifecycle_test.py",
+    "python dev/ui_visual_contract_regression.py",
+    "python dev/surf_interval_regression.py",
+    "python dev/gas_core_regression.py",
+    "python tools/build_pages_site.py",
+    "python dev/engine_regression.py",
+    "python dev/ccr_engine_validation_regression.py",
+    "SKIP_AUDIT=1 python dev/validate_pscr_e2e.py",
+    "python dev/run_ccr_differential.py",
+    "python dev/run_android_compile_check.py",
+    "node dev/vpm_direct_regression.js",
+    "python tools/audit_coverage.py --write-docs"
+  ],
+  "recommendations": [
+    "Keep sync_www-backed browser suites parallel-safe by holding the snapshot lock until the temp served directory has been copied.",
+    "Keep build_pages_site serialized when running audit profiles concurrently because _pages is a shared deployment artifact.",
+    "Run pSCR E2E through the registered suite environment or set SKIP_AUDIT=1 locally; direct legacy audit invocation is intentionally outside the V4 fast path.",
+    "Local Android compile remains SDK-dependent; rely on GitHub Actions for the full Android compile gate when no local SDK is configured."
+  ]
+}

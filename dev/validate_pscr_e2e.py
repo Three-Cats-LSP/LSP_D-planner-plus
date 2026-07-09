@@ -34,7 +34,7 @@ PROFILES = [
     {"id": "P2", "depth": 20, "o2": 36, "he": 0, "bt": 40, "label": "20 m · EAN36 · 40 min (shallow nitrox)"},
     {"id": "P3", "depth": 30, "o2": 32, "he": 0, "bt": 25, "label": "30 m · EAN32 · 25 min (mid-depth)"},
     {"id": "P4", "depth": 40, "o2": 32, "he": 0, "bt": 30, "label": "40 m · EAN32 · 30 min (moderate deco)"},
-    {"id": "P5", "depth": 60, "o2": 36, "he": 0, "bt": 20, "label": "60 m · EAN36 · 20 min (deep nitrox)"},
+    {"id": "P5", "depth": 60, "o2": 18, "he": 45, "bt": 15, "label": "60 m · TMX18/45 · 15 min (deep trimix)"},
 ]
 
 
@@ -229,6 +229,11 @@ def validate_profile(prof: dict, raw: dict) -> list[dict]:
         "detail": f"footer {zhl['totalOTU']} · plan {zhl['planOTU']}",
     })
     checks.append({
+        "name": "VPM CNS vs plan walk (±3%)",
+        "pass": near(vpm["totalCNS"], vpm["planCNS"], 3.0),
+        "detail": f"footer {vpm['totalCNS']}% · plan {vpm['planCNS']}%",
+    })
+    checks.append({
         "name": "ZHL CNS vs plan walk (±1.5%)",
         "pass": near(zhl["totalCNS"], zhl["planCNS"], 1.5),
         "detail": f"footer {zhl['totalCNS']}% · plan {zhl['planCNS']}%",
@@ -293,7 +298,7 @@ def render_markdown(audit: dict, results: dict) -> str:
         "",
         "## Executive summary",
         "",
-        "Five diverse pSCR profiles (15–60 m, EAN32/EAN36) were executed against the live",
+        "Five diverse pSCR profiles (15–60 m, nitrox/trimix) were executed against the live",
         "`index.html` engine via headless Chromium. Each profile cross-checks:",
         "",
         "1. **Gas consumption** — diluent O₂ delivery vs metabolic demand (BUG-75 bypass model)",
@@ -390,7 +395,7 @@ def render_markdown(audit: dict, results: dict) -> str:
         lines.append(
             "**Approved for v2.30.30 push.** pSCR gas planning, OTU/CNS accumulation, and "
             "Bühlmann baseline deco obligations are internally consistent across the validated "
-            "profile envelope (15–60 m, EAN32/EAN36, on-loop pSCR)."
+            "profile envelope (15–60 m, MOD-valid nitrox/trimix, on-loop pSCR)."
         )
     else:
         lines.append("**Do not push** until failing checks above are resolved.")

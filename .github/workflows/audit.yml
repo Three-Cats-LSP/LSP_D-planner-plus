@@ -36,6 +36,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -54,6 +56,14 @@ jobs:
           python tools/sync_www.py
           npx cap sync android
 
+      - name: Install Playwright for SUITE-COVERAGE browser-trace unit tests
+        run: |
+          sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list /etc/apt/sources.list.d/microsoft-*.list
+          sudo apt-get update -q
+          python -m pip install --upgrade pip
+          pip install playwright
+          playwright install chromium --with-deps
+
       - name: Build Pages site (_pages/)
         run: python tools/build_pages_site.py
 
@@ -62,6 +72,9 @@ jobs:
 
       - name: Run registry-driven static audit
         run: python -m tools.audit check --profile static
+
+      - name: Seven-lens reviewed-cycle gate
+        run: python tools/seven_lens_protocol.py check-all --require-artifacts
 
       - name: Upload static audit reports
         if: always()
@@ -78,6 +91,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5

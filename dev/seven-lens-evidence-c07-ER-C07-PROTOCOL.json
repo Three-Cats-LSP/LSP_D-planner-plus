@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ER-C07-PROTOCOL",
+  "command_argv": [
+    "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+    "-m",
+    "unittest",
+    "tools.test_seven_lens_protocol",
+    "tools.test_seven_lens_browser_trace"
+  ],
+  "commit": "acaec31a3608f1e5d085938817a6907da2465b5c",
+  "exit_code": 0,
+  "case_ids": [],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-05T10:12:46.840861+00:00",
+  "finished_at": "2026-07-05T10:13:05.392601+00:00",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "7f20415e351cdc4246cd6a26dd81d9fdfbbd3483c3d0f56d8826fd1bcd72d13a",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
+}

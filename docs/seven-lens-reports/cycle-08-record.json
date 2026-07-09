@@ -1,0 +1,1929 @@
+{
+  "schema_version": 5,
+  "cycle": 8,
+  "record_path": "docs/seven-lens-reports/cycle-08-record.json",
+  "target_branch": "dev",
+  "integration_base_commit": "c63dcaf2e9a29f1ff1e179e6c6195ca6fc15452b",
+  "baseline_commit": "c63dcaf2e9a29f1ff1e179e6c6195ca6fc15452b",
+  "baseline_registry_fingerprint": "166f5bade23e1c3b7033e13189c9e758397ba7a0052e4f25b44c1f5e75c96eb2",
+  "baseline_findings": [
+    {
+      "id": "SL-C02-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes."
+    },
+    {
+      "id": "SL-C02-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Travel manual depth limits disagree between markup, metric restore, and imperial mode."
+    },
+    {
+      "id": "SL-C02-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Rounded display values become canonical physical inputs; Best Mix and CNS now reproduce the same unit-roundtrip drift."
+    },
+    {
+      "id": "SL-C02-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Min-deco regression checks an adapter property rather than observable schedule behavior."
+    },
+    {
+      "id": "SL-C02-M-06",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle history allowed unresolved findings and a blocked prior record to be deleted or rewritten as passed."
+    },
+    {
+      "id": "SL-C03-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits."
+    },
+    {
+      "id": "SL-C03-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle 3 regressions compare rounded outputs and restore values before units, masking physical-depth drift and corrupting test state."
+    },
+    {
+      "id": "SL-C03-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling."
+    },
+    {
+      "id": "SL-C04-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Depth and cylinder edits after a unit switch leave canonical data-depth-m/data-volume-l stale, so consumers use old values and the next switch discards the edit."
+    },
+    {
+      "id": "SL-C04-H-03",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Cycles 2-4 are marked reviewed although their protocol records fail closure and Cycle 4 has no evidence runs for five closed findings."
+    },
+    {
+      "id": "SL-C04-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle regression setup leaks canonical DOM and settings state, making the full engine suite order-dependent and leaving two contingency cases failing."
+    },
+    {
+      "id": "SL-C04-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Browser trace evidence could pass forced or vacuous single-run checks without proving a real interactive consumer path."
+    },
+    {
+      "id": "SL-C04-H-04",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Closure evidence was materialized from constants instead of executed commands, allowing fabricated exit codes, cleanliness claims, and unrelated trace reuse."
+    },
+    {
+      "id": "SL-C04-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "A dynamic deco cylinder created in imperial mode defaults to 0.4 ft3 while retaining min 1 and step 0.5, making its initial value invalid."
+    },
+    {
+      "id": "SL-C04-H-05",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "planPanelTecSection is nested inside an unclosed planPanelRecSection, leaving gas and technical planner controls hidden in every planner mode."
+    },
+    {
+      "id": "ISSUE-133-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 4C/5H/8M/8L remediated; gated in audit.py issue133 block and engine_regression issue133 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-134-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 1C/4H/7M/7L remediated; gated in audit.py issue134 block and engine_regression issue134 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-135-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 10H/10M/1L remediated; gated in audit.py issue135 block and engine_regression issue135 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-136-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "extract_ui_cores.py uses LSP-EXTRACT marker contract; verified by audit.py and tools/extract_ui_cores.py [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-137-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in 51f95ac; gated in audit.py and engine_regression issue137 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-138-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in fcfb6c4 (v2.53.04); gated in audit.py and engine_regression issue138 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-139-ROLLUP",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "All 3L fixed; #138 40/40 re-verified on 1271d1a; gated in audit.py and engine_regression issue139 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-140-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Surface interval gas/GF kinetics, pooled gas-plan turn pressure, audit case-ID validation, SW cache waitUntil, Android compile gate, coverage self-tests, FileProvider scope, workspace hash drift"
+    },
+    {
+      "id": "ISSUE-141-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "pSCR diluent bypass from computePSCRFractions, resolveCcrSacForGas removed, invalid trimix getN2Frac returns null"
+    },
+    {
+      "id": "REGRESSION-GF-CCR-FIX",
+      "severity": "CRITICAL",
+      "status": "CLOSED",
+      "summary": "GF pre-anchor and CCR endpoint corrected; verification requires REG-06 and REG-07 in the current release run"
+    },
+    {
+      "id": "SL-C05-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Mode-isolation CSS targets removed #gfPresetsRow"
+    },
+    {
+      "id": "SL-C05-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Export buttons suppress keyboard focus ring"
+    },
+    {
+      "id": "SL-C05-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .brand-icon rules"
+    },
+    {
+      "id": "SL-C05-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete #gfCustomRow .gf-btn rules"
+    },
+    {
+      "id": "SL-C05-L-03",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .algo-switcher rules"
+    },
+    {
+      "id": "SL-C05-L-04",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .theme-toggle rules"
+    },
+    {
+      "id": "SL-C06-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Segmented controls suppress keyboard focus ring"
+    },
+    {
+      "id": "SL-C06-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Gas numeric fields undersize touch targets"
+    },
+    {
+      "id": "SL-C06-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .si-inner surface-interval rules"
+    },
+    {
+      "id": "SL-C06-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .t-col rule"
+    },
+    {
+      "id": "SL-C06-L-03",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Dead .btn-calc alias in shared .gen-btn selectors"
+    },
+    {
+      "id": "SL-C06-L-04",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Field inputs lack invalid-state styling"
+    },
+    {
+      "id": "SL-C06-L-05",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Control transitions ignore prefers-reduced-motion"
+    },
+    {
+      "id": "SL-C07-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Results chip-yellow renders with orange palette identical to chip-orange"
+    },
+    {
+      "id": "SL-C07-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Schedule row neutralization overrides PPO2 severity colors"
+    },
+    {
+      "id": "SL-C07-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Legacy mobile deco card CSS unreachable under hidden .legacy-panels"
+    },
+    {
+      "id": "SL-C07-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .algo-switcher rules with zero live DOM writers"
+    },
+    {
+      "id": "SL-C07-L-03",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Results panel transitions ignore prefers-reduced-motion"
+    },
+    {
+      "id": "SL-C07-L-04",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "No @media print rules in canonical results CSS"
+    },
+    {
+      "id": "SL-C03-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Convert slider value/min/max on unit switch; read depth in metres for calc"
+    },
+    {
+      "id": "SL-C03-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Sync label/constraints; convert on setUnits; depthToMetres in calcCNS"
+    },
+    {
+      "id": "SL-C03-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Clarify AL80 as 11.1 L (~0.39 ft3) naming convention"
+    },
+    {
+      "id": "SL-C04-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Convert endDepth on setUnits; use domDepthToM in calcEND_tool"
+    },
+    {
+      "id": "SL-C04-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Full depth tuple + domDepthToM in calcSurfInt"
+    },
+    {
+      "id": "SL-C04-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Add backdrop dismiss calling closeConfirmModal(false)"
+    },
+    {
+      "id": "SL-C04-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Fix to Narcotic pressure"
+    },
+    {
+      "id": "SL-C04-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Unit-neutral depth range wording"
+    }
+  ],
+  "audit_commit": "32fda7bbd1896864465f830012a246b58d94109b",
+  "verified_source_commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
+  "verification_status": "PASSED",
+  "fixer": {
+    "regression_id": "REG-76",
+    "finding_id": "SL-C05-M-01",
+    "baseline_commit": "ff2bc8a8c4dd87a43db34d458cde3390079a6767",
+    "source_commit": "72020aa9ac789ca5e8ce8c3e18324db809faad35",
+    "classification": "C",
+    "summary": "Mobile planner mobile-active was stale after setPlannerAlgo view swap, leaving TEC visible in REC and breaking rec-mode GF button opacity; harness now asserts mobile isolation and canonical #gfPresetBtns host.",
+    "requires_independent_verification": true
+  },
+  "trace_restoration_fixer": {
+    "trace_id": "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE",
+    "baseline_commit": "44054aebdef90d70eadf5d69d1893aae3c680a5d",
+    "protected_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
+    "classification": "B",
+    "summary": "Browser trace cleanup lacked guaranteed restore-session finally; debounced save could persist polluted DOM and leave nested _restoreInProgress wrong. Shell regression now shares the same debounce-safe restore path; HTTP harness verifies #bnavPlanner and avoids occupied port 8765 collisions.",
+    "requires_independent_verification": true,
+    "lifecycle_fix_commit": "715ac37784aedfed088af188763bd06158701453"
+  },
+  "parts": [
+    {
+      "id": "UI-PLANNER-SHELL-P01",
+      "unit_id": "UI-PLANNER-SHELL",
+      "path": "planner-shell.js",
+      "start_line": 1,
+      "end_line": 199,
+      "line_count": 199,
+      "content_fingerprint": "86a6ad16b929f107dca05adcbb66548dc444ead80979bc6a9599ec047b008784",
+      "review_session": "C08-A",
+      "verification_session": "C08-V-B",
+      "lens_results": {
+        "L1": {
+          "trace": "vpmVariant localStorage parse :7-12; setNavMode visibility toggles #plannerView/#toolsPageWrap :70-74; mobile CSS expects #planPanel.mobile-active (lsp-dplanner-results.css:711) but DOM uses #recPlannerView/#tecPlannerView",
+          "boundary_cases": [
+            "missing #settingsPageWrap nodes",
+            "mode ref early return without navMode write :63-66",
+            "640px matchMedia breakpoint vs CSS 640px"
+          ],
+          "evidence": "planner-shell.js:61-100; markup rec/tec planner mobile-active classes; Playwright mobile both panels flex",
+          "result": "FINDING"
+        },
+        "L2": {
+          "trace": "#navBtnTools click -> setMainNav(tools) -> setNavMode(tools) :53; #bnavPlanner click -> setMainNav(buh) -> setNavMode(planner) -> setPlannerAlgo(plannerAlgo) -> _clearPlannerResults :84-88",
+          "boundary_cases": [
+            "initV3Layout one-shot _v3LayoutDone :102-104",
+            "setNavMode ref returns after toggleReference :63-66",
+            "repeated initV3Layout no-op"
+          ],
+          "evidence": "planner-shell.js:46-100,102-186; Playwright nav clear probe; trace SL-C08-NAV-CLEARS-RESULTS-TRACE FAIL",
+          "result": "FINDING"
+        },
+        "L3": {
+          "trace": "initV3Layout reparents GF row, result tab panes, modals to body :115-177; setNavMode sets body.algo-tools :74; vpmVariant module let + localStorage :7-12",
+          "boundary_cases": [
+            "moveChildren skipIds removes skipped nodes :110",
+            "CNS panel removed after move :159-164",
+            "tools panel mount :173-177"
+          ],
+          "evidence": "planner-shell.js:102-177; index.html assembled markup IDs stable post-init",
+          "result": "NO_FINDING"
+        },
+        "L4": {
+          "trace": "index.html onclick setMainNav/setNavMode; initV3Layout calls _buildGfPresetBtns _syncConservatismBtns _updatePlanPanelSections _initMobilePlanView from settings-core/results-panel :180-185",
+          "boundary_cases": [
+            "missing mount nodes skip reparent",
+            "setVpmMode requires VPMB|VPMB_GFS :29-30"
+          ],
+          "evidence": "planner-shell.js:180-185; settings-core.js:609-641; extract_ui_cores.py planner-shell boundary",
+          "result": "NO_FINDING"
+        },
+        "L5": {
+          "trace": "index.html LSP-EXTRACT planner-shell.js + results-panel.js script order; sw.js precache both; SUITE-PARITY PASS",
+          "boundary_cases": [
+            "www/ sync via serve_www",
+            "no re-inlined shell in index AUD-MIRROR-001"
+          ],
+          "evidence": "baseline static+release PASS; tools/ui_assets.py UI_SHELL_SCRIPTS",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "setNavMode(planner) -> setPlannerAlgo -> _clearPlannerResults clears metrics/tables :84-88; navigation away/back loses valid TEC schedule",
+          "boundary_cases": [
+            "Tools->Planner same algo",
+            "Settings restore env=1 setMainNav settings on boot"
+          ],
+          "evidence": "Playwright hasBefore true hasAfterNav false rowsAfter 0; settings-core.js:675-770",
+          "result": "FINDING"
+        },
+        "L7": {
+          "trace": "SUITE-BROWSER generic flows; no setNavMode result preservation case; no initV3Layout duplicate listener regression",
+          "boundary_cases": [
+            "release 21/21 PASS without shell lifecycle cases"
+          ],
+          "evidence": "grep switchResultTab setMobilePlanView in dev regression empty; audit matrices 7-8 fail manually",
+          "result": "FINDING"
+        }
+      }
+    },
+    {
+      "id": "UI-RESULTS-PANEL-P01",
+      "unit_id": "UI-RESULTS-PANEL",
+      "path": "results-panel.js",
+      "start_line": 1,
+      "end_line": 311,
+      "line_count": 311,
+      "content_fingerprint": "e9a5ca94a35fb403f96151a10cb0ca579f10554f7f4b93c7ea8c1a382627e952",
+      "review_session": "C08-A",
+      "verification_session": "C09-DEP-WARNING-BANNER-HTML",
+      "lens_results": {
+        "L1": {
+          "trace": "switchResultTab pane lists rec vs tec :257-261; _splitMetricValUnit parse :36-40; setMobilePlanView matchMedia 640px :126",
+          "boundary_cases": [
+            "empty metric strip when no data",
+            "CNS chip thresholds 50/80 :46-50",
+            "decozone chip omitted when dash :94"
+          ],
+          "evidence": "results-panel.js:36-94,125-132,256-301",
+          "result": "FINDING"
+        },
+        "L2": {
+          "trace": "#tecResultTabs button click -> switchResultTab(name,btn) -> pane #resultTab-* active class :256-268; surfint lazy renderSurfIntPanel :270-282",
+          "boundary_cases": [
+            "btn null skips nav active toggle",
+            "graphs/tissue setTimeout 50ms :286-299",
+            "setMobilePlanView early return :127-129"
+          ],
+          "evidence": "results-panel.js:256-301; Playwright mobile setMobilePlanView noop",
+          "result": "FINDING"
+        },
+        "L3": {
+          "trace": "_renderResultSummaryStrip adds has-results :96-114; _clearResultSummaryStrip removes :29-34; decorateDecoTableForV3 mutates tbody cell innerHTML :159-191",
+          "boundary_cases": [
+            "gas banner display flex/none :226-236",
+            "contingency phase normalize :193-194"
+          ],
+          "evidence": "results-panel.js:29-115,159-237",
+          "result": "NO_FINDING"
+        },
+        "L4": {
+          "trace": "inline onclick switchResultTab in markup-header; _onPlanResultsReady expects plannerAlgo !== rec for graph cards :116-122; global LSP_V4_SPLIT_PROFILE_SCHEDULE unused :8",
+          "boundary_cases": [
+            "isRec panes vs tec panes",
+            "dead prefix assignment :258"
+          ],
+          "evidence": "ui/markup-header.html:121-139; results-panel.js:8,258",
+          "result": "FINDING"
+        },
+        "L5": {
+          "trace": "results-panel.js extracted to standalone; same functions in www/ via sync; SUITE-PARITY PASS",
+          "boundary_cases": [
+            "generated Pages copies include script src"
+          ],
+          "evidence": "baseline release SUITE-PARITY PASS; sw.js line results-panel.js",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "valid generate -> _renderResultSummaryStrip -> has-results; invalid generate -> notifyScheduleError only -> strip uncleared",
+          "boundary_cases": [
+            "invalid depth after valid TEC",
+            "gas banner persists until _setGasWarningBanner empty"
+          ],
+          "evidence": "Playwright invalid-after-valid; index.html runDecoSchedule :5823-5827; export-core notifyScheduleError :1268-1270",
+          "result": "FINDING"
+        },
+        "L7": {
+          "trace": "SUITE-UI-RESULTS-CSS-REGRESSION calls switchResultTab but not setMobilePlanView invalid-clear; no invalid-generate strip test",
+          "boundary_cases": [
+            "dev/ui_results_css_regression.py setMobilePlanView results after generate"
+          ],
+          "evidence": "grep setMobilePlanView in dev regression; release PASS without SL-C08 cases",
+          "result": "FINDING"
+        }
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "SL-C08-H-01",
+      "severity": "HIGH",
+      "unit_id": "UI-RESULTS-PANEL",
+      "location": "results-panel.js:125-131",
+      "root_cause": "setMobilePlanView requires #planPanel which V4 markup removed; early return leaves #tecPlannerView and #resultsPanel both mobile-active.",
+      "failure_path": "375x667 boot -> both panels display:flex -> setMobilePlanView(plan) no-op -> _onPlanResultsReady cannot show results-only view.",
+      "impact": "Mobile users see stacked planner and results; plan/results bottom-nav intent broken.",
+      "evidence": "Playwright mobile-init planPanel:false tecDisplay:flex resultsDisplay:flex; trace SL-C08-MOBILE-PLAN-PANEL-TRACE FAIL x2",
+      "recommendation": "Retarget setMobilePlanView/_initMobilePlanView to visible planner view (#recPlannerView|#tecPlannerView) and align mobile CSS selectors.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C08-MOBILE-PANEL-EXCLUSIVE"
+      ],
+      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9",
+      "fix_summary": "Retargeted setMobilePlanView to #recPlannerView/#tecPlannerView and aligned mobile CSS selectors.",
+      "baseline_failure": "Both #tecPlannerView and #resultsPanel remained mobile-active; setMobilePlanView was a no-op without #planPanel.",
+      "observable_contract": "375x667 and 667x375 mobile boot shows exactly one of #recPlannerView|#tecPlannerView or #resultsPanel via mobile-active; setMobilePlanView toggles exclusive visibility; no #planPanel dependency.",
+      "independent_verification_result": "PASSED (C08-V-B attestation corrector)",
+      "pre_fix_evidence_id": "ER-C08-BASELINE-SHELL",
+      "post_fix_evidence_id": "ER-C08-POST-SHELL",
+      "state_restoration_evidence_id": "ER-C08-RESTORE-SHELL",
+      "evidence_ids": [
+        "ER-C08-BASELINE-SHELL",
+        "ER-C08-POST-SHELL",
+        "ER-C08-TRACE",
+        "ER-C08-RESTORE-SHELL"
+      ]
+    },
+    {
+      "id": "SL-C08-H-02",
+      "severity": "HIGH",
+      "unit_id": "UI-PLANNER-SHELL",
+      "location": "planner-shell.js:84-88",
+      "root_cause": "setNavMode(planner) calls setPlannerAlgo(plannerAlgo) which always invokes _clearPlannerResults even when algorithm unchanged.",
+      "failure_path": "TEC generate -> Tools nav -> bnav Planner -> has-results cleared and deco rows removed.",
+      "impact": "Valid schedules lost on benign navigation; export/safety context disappears.",
+      "evidence": "Playwright desktop-generate hasBefore true hasAfterNav false rowsAfter 0; trace SL-C08-NAV-CLEARS-RESULTS-TRACE FAIL x2",
+      "recommendation": "Separate nav-mode visibility from algorithm reset; clear results only on algo/view change or explicit new generate.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C08-NAV-PRESERVES-RESULTS"
+      ],
+      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9",
+      "fix_summary": "Removed setPlannerAlgo call from setNavMode(planner); schedule preserved on benign navigation.",
+      "baseline_failure": "Tools->Planner re-invoked setPlannerAlgo and cleared has-results plus #decoTableBody rows.",
+      "observable_contract": "Valid TEC generate, Tools and Settings navigation, and return preserve has-results, schedule rows, and active result tab without algorithm reset.",
+      "independent_verification_result": "PASSED (C08-V-B attestation corrector)",
+      "pre_fix_evidence_id": "ER-C08-BASELINE-SHELL",
+      "post_fix_evidence_id": "ER-C08-POST-NAV",
+      "state_restoration_evidence_id": "ER-C08-RESTORE-SHELL",
+      "evidence_ids": [
+        "ER-C08-BASELINE-SHELL",
+        "ER-C08-POST-NAV",
+        "ER-C08-TRACE",
+        "ER-C08-RESTORE-SHELL"
+      ]
+    },
+    {
+      "id": "SL-C08-M-01",
+      "severity": "MEDIUM",
+      "unit_id": "UI-RESULTS-PANEL",
+      "location": "results-panel.js:29-35",
+      "root_cause": "Success writers add has-results via _renderResultSummaryStrip but runDecoSchedule validation failures never call _clearResultSummaryStrip/_clearPlannerResults.",
+      "failure_path": "Valid 45m TEC plan -> invalid depth 999 generate -> toast error -> has-results and 15 rows persist.",
+      "impact": "Stale schedule remains authoritative after rejected input.",
+      "evidence": "Playwright invalid-after-valid hasAfterInvalid true rowsAfterInvalid 15",
+      "recommendation": "Clear results strip and hide schedule on validation/engine errors before return; or centralize fail-closed in notifyScheduleError.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C08-INVALID-TEC-CLEARS-STALE"
+      ],
+      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9",
+      "fix_summary": "runDecoSchedule validation early-returns call _clearPlannerResults before notifyScheduleError.",
+      "baseline_failure": "Invalid 999 m generate left prior has-results and 15 schedule rows authoritative.",
+      "observable_contract": "Invalid depth/time/gas after valid TEC plan clears has-results, schedule rows, banners, and cached globals; corrected input regenerates fresh rows.",
+      "independent_verification_result": "PASSED (C08-V-B attestation corrector)",
+      "pre_fix_evidence_id": "ER-C08-BASELINE-SHELL",
+      "post_fix_evidence_id": "ER-C08-POST-INVALID",
+      "state_restoration_evidence_id": "ER-C08-RESTORE-SHELL",
+      "evidence_ids": [
+        "ER-C08-BASELINE-SHELL",
+        "ER-C08-POST-INVALID",
+        "ER-C08-TRACE",
+        "ER-C08-RESTORE-SHELL"
+      ]
+    },
+    {
+      "id": "SL-C08-L-01",
+      "severity": "LOW",
+      "unit_id": "UI-RESULTS-PANEL",
+      "location": "results-panel.js:258",
+      "root_cause": "const prefix assigns empty string in both branches; unused LSP_V4_SPLIT_PROFILE_SCHEDULE flag.",
+      "failure_path": "Any switchResultTab call — dead assignment only.",
+      "impact": "Obscures intended pane ID prefix contract; maintenance noise.",
+      "evidence": "Source read switchResultTab :256-261; window.LSP_V4_SPLIT_PROFILE_SCHEDULE false unused",
+      "recommendation": "Remove dead prefix or wire LSP_V4_SPLIT_PROFILE_SCHEDULE pane mapping.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C08-DEAD-RESULT-TAB-PREFIX"
+      ],
+      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9",
+      "fix_summary": "Removed dead prefix assignment and unused LSP_V4_SPLIT_PROFILE_SCHEDULE branch from switchResultTab.",
+      "baseline_failure": "const prefix assigned empty string in both branches.",
+      "observable_contract": "switchResultTab selects #resultTab-* panes by direct id without dead prefix branch; active tab button and pane ARIA/class state stay aligned.",
+      "independent_verification_result": "PASSED (C08-V-B attestation corrector)",
+      "pre_fix_evidence_id": "ER-C08-BASELINE-SHELL",
+      "post_fix_evidence_id": "ER-C08-POST-SHELL",
+      "state_restoration_evidence_id": "ER-C08-RESTORE-SHELL",
+      "evidence_ids": [
+        "ER-C08-BASELINE-SHELL",
+        "ER-C08-POST-SHELL",
+        "ER-C08-TRACE",
+        "ER-C08-RESTORE-SHELL"
+      ]
+    },
+    {
+      "id": "SL-C08-L-02",
+      "severity": "LOW",
+      "unit_id": "UI-PLANNER-SHELL",
+      "location": "planner-shell.js:185",
+      "root_cause": "initV3Layout calls _initMobilePlanView while index.html DOMContentLoaded also calls it and registers resize listener.",
+      "failure_path": "Boot double _initMobilePlanView (currently no-op on broken mobile path).",
+      "impact": "Redundant init; unclear ownership between shell and bootstrap.",
+      "evidence": "planner-shell.js:185; index.html:9350-9351",
+      "recommendation": "Keep mobile init in one bootstrap location only.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C08-SINGLE-MOBILE-INIT"
+      ],
+      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9",
+      "fix_summary": "Centralized mobile bootstrap in planner-shell _ensureMobilePlanViewBootstrap; removed duplicate index.html init.",
+      "baseline_failure": "initV3Layout and DOMContentLoaded both called _initMobilePlanView.",
+      "observable_contract": "Single _ensureMobilePlanViewBootstrap guard registers one resize listener; repeated initV3Layout remains idempotent.",
+      "independent_verification_result": "PASSED (C08-V-B attestation corrector)",
+      "pre_fix_evidence_id": "ER-C08-BASELINE-SHELL",
+      "post_fix_evidence_id": "ER-C08-POST-SHELL",
+      "state_restoration_evidence_id": "ER-C08-RESTORE-SHELL",
+      "evidence_ids": [
+        "ER-C08-BASELINE-SHELL",
+        "ER-C08-POST-SHELL",
+        "ER-C08-TRACE",
+        "ER-C08-RESTORE-SHELL"
+      ]
+    },
+    {
+      "id": "SL-C08-M-02",
+      "severity": "MEDIUM",
+      "unit_id": "UI-CSS-RESULTS",
+      "location": "lsp-dplanner-results.css:343-353",
+      "root_cause": "Portrait 2-column grid auto-placement leaves Tools without a lower divider and Settings in a half-width cell beside a blank non-interactive grid cell; tablet 3-column row leaves an orphan cell beside Tools/Settings.",
+      "failure_path": "375x667 boot -> main-nav 2-col grid -> item 4 lacks border-bottom -> item 5 half-width -> orphan cell at row 3 col 2.",
+      "impact": "Mobile navigation shows dead grid space; Tools/Settings separator missing; unequal hit areas.",
+      "evidence": "REG-105 SL-C08-MOBILE-NAV-TILE-GRID FAIL at ea18ac0 across 375x667, 400x800, 480x800, 667x375; elementFromPoint orphan beside Settings.",
+      "recommendation": "Span Settings full final portrait row; add Tools lower divider; fill tablet row with Settings grid-column span.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C08-MOBILE-NAV-TILE-GRID"
+      ],
+      "stable_case": "SL-C08-MOBILE-NAV-TILE-GRID",
+      "pre_fix_evidence_id": "ER-C08-BASELINE-NAV-GAS",
+      "post_fix_evidence_id": "ER-C08-POST-NAV-GRID",
+      "resolution_commit": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a",
+      "fix_summary": "Span Settings full final portrait row; add Tools lower divider; fill tablet row with Settings grid-column span.",
+      "evidence_ids": [
+        "ER-C08-BASELINE-NAV-GAS",
+        "ER-C08-POST-NAV-GRID",
+        "ER-C08-RESTORE-SHELL",
+        "static",
+        "ci"
+      ],
+      "observable_contract": "375/667/800 portrait #mainNavBar grid fills Settings on the final row with Tools lower divider; no orphan non-interactive grid cell beside Settings at tablet widths.",
+      "state_restoration_evidence_id": "ER-C08-RESTORE-SHELL"
+    },
+    {
+      "id": "SL-C08-M-03",
+      "severity": "MEDIUM",
+      "unit_id": "TOOL-BUILD-ZHL",
+      "location": "tools/build_zhl_bundle.py:50-91",
+      "root_cause": "build_zhl_bundle.py postamble shadows schedule-core getGasLabel with EAN32/36/50/80 special cases; buildZhlDecoGasesFromEngine hard-codes EAN50/EAN80 labels into generated zhl-engine-bundle.js schedule steps.",
+      "failure_path": "ean50 deco gas -> buildZhlDecoGasesFromEngine -> schedule row gas EAN50 -> pills/export show EAN50 despite canonical getGasLabel returning 50/00.",
+      "impact": "Operational plan gas labels violate OO/HH display contract across schedule, pills, graph, contingency, and exports.",
+      "evidence": "REG-106 SL-C08-OPERATIONAL-GAS-LABEL-FORMAT FAIL at ea18ac0; forbidden EAN50/EAN80 in schedule mix cells while banners already show 50/00.",
+      "recommendation": "Remove adapter shadow formatter; delegate deco gas labels to schedule-core getGasLabel; rebuild bundle; pad single-digit O2 in canonical formatter.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"
+      ],
+      "stable_case": "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT",
+      "pre_fix_evidence_id": "ER-C08-BASELINE-NAV-GAS",
+      "post_fix_evidence_id": "ER-C08-POST-GAS-LABELS",
+      "resolution_commit": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a",
+      "fix_summary": "Remove adapter shadow formatter; delegate deco gas labels to schedule-core getGasLabel; rebuild bundle with canonical OO/HH labels.",
+      "evidence_ids": [
+        "ER-C08-BASELINE-NAV-GAS",
+        "ER-C08-POST-GAS-LABELS",
+        "ER-C08-RESTORE-SHELL",
+        "static",
+        "ci"
+      ],
+      "observable_contract": "TEC schedule and operational gas consumers show canonical getGasLabel OO/HH strings; forbidden EAN50/EAN80 literals absent from mix cells, pills, and banners.",
+      "state_restoration_evidence_id": "ER-C08-RESTORE-SHELL"
+    },
+    {
+      "id": "SL-C08-M-04",
+      "severity": "MEDIUM",
+      "unit_id": "UI-PLANNER-SHELL",
+      "location": "index.html:9537-9551; planner-shell.js:61-92; lsp-dplanner-results.css:708-727",
+      "root_cause": "Fixed mobile #bottomNav duplicates main mode row and header Ref control, reserves ~72px viewport height, and maintains a second navigation-state owner via .bnav-btn active writers in setNavMode.",
+      "failure_path": "375x667 boot -> #bottomNav display:flex min-height 56px -> duplicate Planner/Tools/Settings/Ref beside #mainNavBar -> setNavMode toggles .bnav-btn.active independently of .main-nav-btn.",
+      "impact": "Wasted mobile viewport; divergent nav highlight state; redundant route owners.",
+      "evidence": "REG-107 SL-C08-NO-REDUNDANT-BOTTOM-NAV FAIL at baseline 864be89 with bottomNavHeight>=56 and duplicateControls all true.",
+      "recommendation": "Remove bottom nav markup/CSS/JS writers; retain canonical #mainNavBar and #navRef; restore safe-area padding without bar reserve.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C08-NO-REDUNDANT-BOTTOM-NAV"
+      ],
+      "stable_case": "SL-C08-NO-REDUNDANT-BOTTOM-NAV",
+      "pre_fix_evidence_id": "ER-C08-BASELINE-BOTTOM-NAV",
+      "post_fix_evidence_id": "ER-C08-POST-BOTTOM-NAV",
+      "resolution_commit": "8e437a1fc38bd4bf50c280a38aa323f2372214d5",
+      "fix_summary": "Remove bottom nav markup/CSS/JS writers; retain canonical #mainNavBar and #navRef; restore safe-area padding without bar reserve.",
+      "evidence_ids": [
+        "ER-C08-BASELINE-BOTTOM-NAV",
+        "ER-C08-POST-BOTTOM-NAV",
+        "ER-C08-RESTORE-SHELL",
+        "static",
+        "ci"
+      ],
+      "observable_contract": "Mobile boot shows no #bottomNav or .bnav-btn writers; #mainNavBar remains the sole Planner/Tools/Settings/Ref navigation surface without duplicate controls.",
+      "state_restoration_evidence_id": "ER-C08-RESTORE-SHELL"
+    }
+  ],
+  "evidence_runs": [
+    {
+      "id": "ER-C08-BASELINE-SHELL",
+      "kind": "baseline_failure",
+      "case_ids": [
+        "SL-C08-MOBILE-PANEL-EXCLUSIVE",
+        "SL-C08-NAV-PRESERVES-RESULTS",
+        "SL-C08-INVALID-TEC-CLEARS-STALE",
+        "SL-C08-SINGLE-MOBILE-INIT",
+        "SL-C08-DEAD-RESULT-TAB-PREFIX"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/ui_shell_results_regression.py"
+      ],
+      "prepared_baseline_commit": "f297d3c6ec3a164133fe6f39d2060fd62954b3a9",
+      "commit": "f297d3c6ec3a164133fe6f39d2060fd62954b3a9",
+      "observable_assertions": [
+        "All five SUITE-UI-SHELL-RESULTS-REGRESSION cases FAIL on audit shell behavior at baseline commit f297d3c"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_shell_results_regression.py",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 1,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-BASELINE-SHELL.json",
+      "receipt_sha256": "254068f091fa1658787071848f158eb3fb1c7a986d80793f191cb60c760deee5",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
+    },
+    {
+      "id": "ER-C08-POST-SHELL",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C08-MOBILE-PANEL-EXCLUSIVE",
+        "SL-C08-NAV-PRESERVES-RESULTS",
+        "SL-C08-INVALID-TEC-CLEARS-STALE",
+        "SL-C08-SINGLE-MOBILE-INIT",
+        "SL-C08-DEAD-RESULT-TAB-PREFIX"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/ui_shell_results_regression.py"
+      ],
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
+      "observable_assertions": [
+        "All five shell/results regression cases PASS at 1280x800, 375x667, and 667x375 with state restoration"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_shell_results_regression.py",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-SHELL.json",
+      "receipt_sha256": "74f72a78eea9356389f1a918861acfef8b6fa0db343ae718e86feb43e9d0b664",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true,
+      "runtime_trace": {
+        "entry_event": "Mobile boot at 375x667; user toggles plan/results via bottom nav intent.",
+        "consumer_path": [
+          "DOMContentLoaded initV3Layout -> _ensureMobilePlanViewBootstrap",
+          "setMobilePlanView('plan'|'results') -> #recPlannerView|#tecPlannerView + #resultsPanel mobile-active",
+          "lsp-dplanner-results.css mobile-active display flex",
+          "visible planner view vs #resultsPanel"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "plan_panel_exists": false,
+            "tec_mobile_active": true,
+            "results_mobile_active": false
+          },
+          {
+            "stage": "canonical",
+            "set_mobile_works": true
+          },
+          {
+            "stage": "consumer",
+            "tec_display": "flex",
+            "results_display": "none"
+          },
+          {
+            "stage": "observable",
+            "exclusive_plan": true
+          }
+        ],
+        "trace_id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
+        "artifact_sha256": "28682e713e93a25740b6152d52d0b6233909147f24b3f74a1ed7d26040904274",
+        "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
+        "spec_sha256": "681ad7fa0cb22056310c18f837b7bd1ec3ea31e65022f4d03bd78c67e1c8eb98"
+      }
+    },
+    {
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C08-MOBILE-PANEL-EXCLUSIVE",
+        "SL-C08-NAV-PRESERVES-RESULTS",
+        "SL-C08-INVALID-TEC-CLEARS-STALE",
+        "SL-C08-DEAD-RESULT-TAB-PREFIX"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-08-shell-results.json",
+        "--output",
+        "dev/seven-lens-browser-trace-c08-post-fix.json"
+      ],
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
+      "observable_assertions": [
+        "Four Cycle 08 browser traces PASS with repeat=2, exact state restoration hashes, and INVALID-TEC localStorage tecDepth restored"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-08-shell-results.json --output dev/seven-lens-browser-trace-c08-post-fix.json",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-TRACE.json",
+      "receipt_sha256": "58afe911a3d86156ed9b0afb116b018dcc2c90d4ae283ca7cb0d7f2ca96f50ef",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true,
+      "trace_artifact_sha256": "5cb52f793927e5ee3c7acc2257cbea41583efd3f92d9df6e5a03d70a98d085d7",
+      "trace_spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8",
+      "id": "ER-C08-TRACE",
+      "runtime_trace": {
+        "entry_event": "Mobile boot at 375x667; user toggles plan/results via bottom nav intent.",
+        "consumer_path": [
+          "DOMContentLoaded initV3Layout -> _ensureMobilePlanViewBootstrap",
+          "setMobilePlanView('plan'|'results') -> #recPlannerView|#tecPlannerView + #resultsPanel mobile-active",
+          "lsp-dplanner-results.css mobile-active display flex",
+          "visible planner view vs #resultsPanel"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "plan_panel_exists": false,
+            "tec_mobile_active": true,
+            "results_mobile_active": false
+          },
+          {
+            "stage": "canonical",
+            "set_mobile_works": true
+          },
+          {
+            "stage": "consumer",
+            "tec_display": "flex",
+            "results_display": "none"
+          },
+          {
+            "stage": "observable",
+            "exclusive_plan": true
+          }
+        ],
+        "trace_id": "SL-C08-MOBILE-PLAN-PANEL-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
+        "artifact_sha256": "28682e713e93a25740b6152d52d0b6233909147f24b3f74a1ed7d26040904274",
+        "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
+        "spec_sha256": "681ad7fa0cb22056310c18f837b7bd1ec3ea31e65022f4d03bd78c67e1c8eb98"
+      }
+    },
+    {
+      "id": "ER-C08-RESTORE-SHELL",
+      "kind": "state_restoration",
+      "case_ids": [
+        "SL-C08-MOBILE-PANEL-EXCLUSIVE",
+        "SL-C08-NAV-PRESERVES-RESULTS",
+        "SL-C08-INVALID-TEC-CLEARS-STALE",
+        "SL-C08-SINGLE-MOBILE-INIT",
+        "SL-C08-DEAD-RESULT-TAB-PREFIX"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/ui_shell_results_regression.py"
+      ],
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
+      "observable_assertions": [
+        "ui_shell_results_regression restores DOM/globals after probes with matching state hashes"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_shell_results_regression.py",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-RESTORE-SHELL.json",
+      "receipt_sha256": "88ac49114acb5f13540647a6c6cc7fe634c4e8982ff5ff17de7f06d47b66ae4b",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true,
+      "state_before_sha256": "3864aa159903c00d964d56602af6b5d6f46c3e18bced97e4bb3fa87f9ec25e0e",
+      "state_after_sha256": "3864aa159903c00d964d56602af6b5d6f46c3e18bced97e4bb3fa87f9ec25e0e"
+    },
+    {
+      "id": "ER-C08-POST-NAV",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C08-NAV-PRESERVES-RESULTS"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/ui_shell_results_regression.py"
+      ],
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
+      "observable_assertions": [
+        "Regression case SL-C08-NAV-PRESERVES-RESULTS PASS at verified source"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_shell_results_regression.py",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-NAV.json",
+      "receipt_sha256": "b56ae5a661d2687e80bf17fbc503cc9813085da7a54efcb0523212bf5a8f1e21",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true,
+      "runtime_trace": {
+        "entry_event": "User generates TEC schedule then navigates Tools and back to Planner.",
+        "consumer_path": [
+          "#tecGenerateBtn click",
+          "_renderResultSummaryStrip -> #resultsPanel.has-results",
+          "#navBtnTools click -> setNavMode(tools)",
+          "#bnavPlanner click -> setNavMode(planner) without schedule reset",
+          "#decoTableBody row count preserved"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "has_results": true,
+            "row_count": 15
+          },
+          {
+            "stage": "canonical"
+          },
+          {
+            "stage": "consumer",
+            "has_after": true,
+            "rows_after": 15,
+            "deco_display": "block"
+          },
+          {
+            "stage": "observable",
+            "preserved": true
+          }
+        ],
+        "trace_id": "SL-C08-NAV-CLEARS-RESULTS-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
+        "artifact_sha256": "28682e713e93a25740b6152d52d0b6233909147f24b3f74a1ed7d26040904274",
+        "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
+        "spec_sha256": "681ad7fa0cb22056310c18f837b7bd1ec3ea31e65022f4d03bd78c67e1c8eb98"
+      }
+    },
+    {
+      "id": "ER-C08-POST-INVALID",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C08-INVALID-TEC-CLEARS-STALE"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/ui_shell_results_regression.py"
+      ],
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
+      "observable_assertions": [
+        "Regression case SL-C08-INVALID-TEC-CLEARS-STALE PASS at verified source"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_shell_results_regression.py",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-INVALID.json",
+      "receipt_sha256": "1d6d813ae562fc5bc4e04166772d682604ad017d6ed793d145b5df7990e32960",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true,
+      "runtime_trace": {
+        "entry_event": "Valid TEC generate then invalid depth submitted through Generate.",
+        "consumer_path": [
+          "#tecGenerateBtn valid click -> has-results + schedule rows",
+          "invalid depth #tecGenerateBtn click",
+          "validateDecoInputs fail -> _clearPlannerResults",
+          "notifyScheduleError toast",
+          "corrected generate restores fresh rows"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "rows_valid": 15,
+            "has_results": true
+          },
+          {
+            "stage": "canonical"
+          },
+          {
+            "stage": "consumer",
+            "has_after_invalid": false,
+            "rows_after_invalid": 0
+          },
+          {
+            "stage": "observable",
+            "cleared": true
+          }
+        ],
+        "trace_id": "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
+        "artifact_sha256": "28682e713e93a25740b6152d52d0b6233909147f24b3f74a1ed7d26040904274",
+        "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
+        "spec_sha256": "681ad7fa0cb22056310c18f837b7bd1ec3ea31e65022f4d03bd78c67e1c8eb98"
+      }
+    },
+    {
+      "id": "ER-C08-PRE-TEC-RESTORE",
+      "kind": "baseline_failure",
+      "case_ids": [
+        "SL-C08-INVALID-TEC-CLEARS-STALE"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-08-shell-results.json",
+        "--output",
+        "dev/seven-lens-browser-trace-c08-pre-tec-restore-baseline.json"
+      ],
+      "prepared_baseline_commit": "f5243b00f9aa17be393cb278fa1528683388db30",
+      "commit": "44054aebdef90d70eadf5d69d1893aae3c680a5d",
+      "observable_assertions": [
+        "Prepared baseline behavioral simulator deterministically fails nested save-block, debounce contract, and exception cleanup at f8074d7 restoration code",
+        "Original 44054ae browser artifact tecDepth 45->999 preserved as nondeterministic race observation only"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-08-shell-results.json --output dev/seven-lens-browser-trace-c08-pre-tec-restore-baseline.json",
+      "worktree_clean": true,
+      "state_restored": false,
+      "exit_code": 1,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-PRE-TEC-RESTORE.json",
+      "receipt_sha256": "cf014ef3e408a180bddd7c0cd65d11a522385e5d82319bb24f49322b08c2edd8",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true,
+      "trace_artifact_sha256": "5cb52f793927e5ee3c7acc2257cbea41583efd3f92d9df6e5a03d70a98d085d7",
+      "trace_spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8",
+      "nondeterministic": true,
+      "prepared_baseline_artifact": "dev/seven-lens-browser-trace-c08-prepared-baseline.json",
+      "prepared_baseline_artifact_sha256": "a9223c5952c5ba938f88a888720a45623db08abb40d91c101835394c2da5bea5"
+    },
+    {
+      "id": "ER-C08-POST-TEC-RESTORE",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C08-INVALID-TEC-CLEARS-STALE"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-08-shell-results.json",
+        "--output",
+        "dev/seven-lens-browser-trace-c08-post-tec-restore.json"
+      ],
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
+      "observable_assertions": [
+        "SL-C08-INVALID-TEC-CLEARS-STALE-TRACE PASS with state_restored true across repeat=2 at lifecycle fix commit"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-08-shell-results.json --output dev/seven-lens-browser-trace-c08-post-tec-restore.json",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-TEC-RESTORE.json",
+      "receipt_sha256": "f90c456fc28b0fafa0c58ae00837e2cfb6ec7977a8c7c66b408e0fd6d605278c",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true,
+      "trace_artifact_sha256": "5cb52f793927e5ee3c7acc2257cbea41583efd3f92d9df6e5a03d70a98d085d7",
+      "trace_spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8"
+    },
+    {
+      "id": "ER-C08-PRE-REG76",
+      "kind": "baseline_failure",
+      "case_ids": [
+        "SL-C05-GF-ROW-MODE-ISOLATION"
+      ],
+      "command_argv": [
+        "python",
+        "dev/ui_css_regression.py"
+      ],
+      "commit": "ff2bc8a8c4dd87a43db34d458cde3390079a6767",
+      "observable_assertions": [
+        "REG-76 baseline: stale #tecPlannerView.mobile-active after setMainNav(rec) on mobile"
+      ],
+      "command": "python dev/ui_css_regression.py",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 1,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-PRE-REG76.json",
+      "receipt_sha256": "1eac831248ed2484f214cb06c4d231c489a06df9d60c64738affca1c190dd5bd",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
+    },
+    {
+      "id": "ER-C08-POST-REG76",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C05-GF-ROW-MODE-ISOLATION",
+        "SL-C05-EXPORT-FOCUS-VISIBLE",
+        "SL-C05-CSS-DEAD-BRAND-ICON",
+        "SL-C05-CSS-DEAD-GF-BTN",
+        "SL-C05-CSS-DEAD-ALGO-SWITCHER",
+        "SL-C05-CSS-DEAD-THEME-TOGGLE"
+      ],
+      "command_argv": [
+        "python",
+        "dev/ui_css_regression.py"
+      ],
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
+      "observable_assertions": [
+        "REG-76 application fix PASS at 72020aa"
+      ],
+      "command": "python dev/ui_css_regression.py",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-REG76.json",
+      "receipt_sha256": "64f41614155267514b6f743b197b0db47236626501c3c6c0fcf9cf187b2181df",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
+    },
+    {
+      "id": "ER-C08-POST-VISUAL",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-VIS-GAS-DOT-SINGLE-SOURCE",
+        "SL-VIS-GAS-SWITCH-TOKEN-PARITY",
+        "SL-VIS-DESKTOP-TWO-COLUMN-LAYOUT",
+        "SL-VIS-DECO-BANNER-GAS-LABELS",
+        "SL-VIS-SWITCH-ROW-THEME-PARITY"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/ui_visual_contract_regression.py"
+      ],
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
+      "observable_assertions": [
+        "All five SUITE-UI-VISUAL-CONTRACT-REGRESSION cases PASS at 1280x800 desktop and 375x667 mobile"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_visual_contract_regression.py",
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-VISUAL.json",
+      "receipt_sha256": "69a160022225d1d65631ab22018015d93335f9a471ace703dfa2964b5503fcee",
+      "exit_code": 0,
+      "worktree_clean": true,
+      "worktree_clean_before": true,
+      "worktree_clean_after": true,
+      "state_restored": true
+    },
+    {
+      "id": "static",
+      "kind": "gate",
+      "case_ids": [],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-m",
+        "tools.audit",
+        "check",
+        "--profile",
+        "static"
+      ],
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
+      "observable_assertions": [
+        "STATIC profile PASS at closure_evidence_commit f5bef4e"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit check --profile static",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c08-static.json",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true,
+      "receipt_sha256": "78fcec36a3052b77426f8ea832fc37421da1f4b6806a48b5e6ace73956214112"
+    },
+    {
+      "id": "ci",
+      "kind": "gate",
+      "case_ids": [],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-m",
+        "tools.audit",
+        "run",
+        "--profile",
+        "ci"
+      ],
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
+      "observable_assertions": [
+        "CI profile PASS at closure_evidence_commit f5bef4e"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit run --profile ci",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c08-ci.json",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true,
+      "receipt_sha256": "f88efe43610bb1a55542b4b944335e66a963be685f2c209766f086d7787be278"
+    },
+    {
+      "id": "ER-C08-BASELINE-NAV-GAS",
+      "kind": "baseline_failure",
+      "case_ids": [
+        "SL-C08-MOBILE-NAV-TILE-GRID",
+        "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/ui_visual_contract_regression.py"
+      ],
+      "prepared_baseline_commit": "ea18ac054f53c70c7bcffac8cbe789d5fa6c4de4",
+      "commit": "ea18ac054f53c70c7bcffac8cbe789d5fa6c4de4",
+      "observable_assertions": [
+        "REG-105 and REG-106 FAIL at baseline commit ea18ac0 on protected nav grid orphan cell and EAN50/EAN80 operational labels"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_visual_contract_regression.py",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 1,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-BASELINE-NAV-GAS.json",
+      "receipt_sha256": "26f32381880345a6ecce534838a803f4d25a4dfda5b72aec255cdaa1f06786a7",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
+    },
+    {
+      "id": "ER-C08-BASELINE-BOTTOM-NAV",
+      "kind": "baseline_failure",
+      "case_ids": [
+        "SL-C08-NO-REDUNDANT-BOTTOM-NAV"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/ui_visual_contract_regression.py"
+      ],
+      "prepared_baseline_commit": "864be89c7af34faacf0b208f3503bd0d398467f4",
+      "commit": "864be89c7af34faacf0b208f3503bd0d398467f4",
+      "observable_assertions": [
+        "REG-107 FAIL at baseline: #bottomNav visible ~56px with duplicate Planner/Tools/Settings/Ref controls"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_visual_contract_regression.py",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 1,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-BASELINE-BOTTOM-NAV.json",
+      "receipt_sha256": "58d80c2e4226b951bf65d816e1679362bd516aef4bfbd032baa2652bf94b00b4",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
+    },
+    {
+      "id": "ER-C08-POST-BOTTOM-NAV",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C08-NO-REDUNDANT-BOTTOM-NAV"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/ui_visual_contract_regression.py"
+      ],
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
+      "observable_assertions": [
+        "REG-107 PASS at fix commit: bottom nav absent, canonical mode row navigation verified"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_visual_contract_regression.py",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-BOTTOM-NAV.json",
+      "receipt_sha256": "7104e74403f6df0a7e64d61eeb05c35e850ec5b74da6508014f1872d30e9facf",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true,
+      "runtime_trace": {
+        "entry_event": "Mobile boot at 375x667; user navigates via canonical #mainNavBar only.",
+        "consumer_path": [
+          "DOM boot must not mount #bottomNav or .bnav-btn writers",
+          "lsp-dplanner-results.css must not reserve fixed bottom nav height",
+          "#mainNavBar Planner/Tools/Settings/Ref routes remain reachable",
+          "setMobilePlanView results roundtrip without duplicate bottom controls"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "no_bottom_nav": true,
+            "no_bnav_buttons": true,
+            "probe375_ok": true
+          },
+          {
+            "stage": "canonical",
+            "main_nav_tools": false,
+            "still_no_bottom": true
+          },
+          {
+            "stage": "consumer",
+            "planner_visible": true,
+            "bottom_gap": 0
+          },
+          {
+            "stage": "observable",
+            "landscape_ok": true,
+            "mobile_results_roundtrip": true,
+            "ref_reachable": true
+          }
+        ],
+        "trace_id": "SL-C08-NO-REDUNDANT-BOTTOM-NAV-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
+        "artifact_sha256": "28682e713e93a25740b6152d52d0b6233909147f24b3f74a1ed7d26040904274",
+        "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
+        "spec_sha256": "681ad7fa0cb22056310c18f837b7bd1ec3ea31e65022f4d03bd78c67e1c8eb98"
+      }
+    },
+    {
+      "id": "ER-C08-POST-NAV-GRID",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C08-MOBILE-NAV-TILE-GRID"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/ui_visual_contract_regression.py"
+      ],
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
+      "observable_assertions": [
+        "REG-105 SL-C08-MOBILE-NAV-TILE-GRID PASS at verified source with nav grid separators across mobile viewports"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_visual_contract_regression.py",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-NAV-GRID.json",
+      "receipt_sha256": "ecfc4f7997188243921b26343fc50dc837839e9c6869bb1eb1e654dce97c6407",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true,
+      "runtime_trace": {
+        "entry_event": "Mobile/tablet boot; user activates each canonical #mainNavBar mode button.",
+        "consumer_path": [
+          "#mainNavBar responsive CSS grid at <=420px portrait and tablet breakpoints",
+          "#navBtnTools click -> setNavMode(tools) with lower border divider",
+          "#navBtnSettings click -> full-width final portrait row without orphan cell",
+          "elementFromPoint beside Settings must not hit blank grid cell"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "nav_exists": true,
+            "probe375": true,
+            "probe400": true,
+            "probe480": true,
+            "probe667": true
+          },
+          {
+            "stage": "canonical",
+            "tools_visible": false,
+            "settings_visible": false
+          },
+          {
+            "stage": "consumer",
+            "tools_border": true,
+            "settings_width": 325,
+            "nav_width": 327
+          },
+          {
+            "stage": "observable",
+            "all_viewports_ok": true,
+            "planner_reachable": true
+          }
+        ],
+        "trace_id": "SL-C08-MOBILE-NAV-TILE-GRID-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
+        "artifact_sha256": "28682e713e93a25740b6152d52d0b6233909147f24b3f74a1ed7d26040904274",
+        "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
+        "spec_sha256": "681ad7fa0cb22056310c18f837b7bd1ec3ea31e65022f4d03bd78c67e1c8eb98"
+      }
+    },
+    {
+      "id": "ER-C08-POST-GAS-LABELS",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/ui_visual_contract_regression.py"
+      ],
+      "commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
+      "observable_assertions": [
+        "REG-106 SL-C08-OPERATIONAL-GAS-LABEL-FORMAT PASS at verified source with canonical OO/HH operational labels"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_visual_contract_regression.py",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c08-ER-C08-POST-GAS-LABELS.json",
+      "receipt_sha256": "fad2bce185e200de57e7d28de1bf62bb54756a842bb5d865b02c28f59198b295",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true,
+      "runtime_trace": {
+        "entry_event": "User configures TEC deco gases and generates schedule through visible Generate.",
+        "consumer_path": [
+          "#dg1Mix ean50 + #dg2Mix ean80 + trimix presets -> #tecGenerateBtn",
+          "buildZhlDecoGasesFromEngine -> schedule-core getGasLabel OO/HH",
+          "#decoTableBody Mix cells and gas pills show 50/00 not EAN50",
+          "Air remains Air and 100% remains 100% across schedule/banner/graph consumers"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "canonical_air": true,
+            "canonical_100": true,
+            "canonical_50": true
+          },
+          {
+            "stage": "canonical",
+            "has_rows": true,
+            "bundle_50": true
+          },
+          {
+            "stage": "consumer",
+            "schedule_has_50": true,
+            "schedule_no_ean50": true,
+            "pills_have_50": true
+          },
+          {
+            "stage": "observable",
+            "air_label": true,
+            "hundred_label": false,
+            "operational_ok": true
+          }
+        ],
+        "trace_id": "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
+        "artifact_sha256": "28682e713e93a25740b6152d52d0b6233909147f24b3f74a1ed7d26040904274",
+        "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
+        "spec_sha256": "681ad7fa0cb22056310c18f837b7bd1ec3ea31e65022f4d03bd78c67e1c8eb98"
+      }
+    }
+  ],
+  "changed_paths": [
+    "dev/playwright_restore.py",
+    "dev/seven-lens-browser-trace-c08-post-fix.json",
+    "dev/seven-lens-browser-trace-c08-post-tec-restore.json",
+    "dev/seven-lens-browser-trace-c08-pre-tec-restore-baseline.json",
+    "dev/seven-lens-browser-trace-c08-prepared-baseline.json",
+    "dev/seven-lens-evidence-c08-ER-C08-BASELINE-SHELL.json",
+    "dev/seven-lens-evidence-c08-ER-C08-POST-GAS-LABELS.json",
+    "dev/seven-lens-evidence-c08-ER-C08-POST-NAV-GRID.json",
+    "dev/seven-lens-evidence-c08-ER-C08-POST-REG76.json",
+    "dev/seven-lens-evidence-c08-ER-C08-POST-SHELL.json",
+    "dev/seven-lens-evidence-c08-ER-C08-POST-TEC-RESTORE.json",
+    "dev/seven-lens-evidence-c08-ER-C08-PRE-REG76.json",
+    "dev/seven-lens-evidence-c08-ER-C08-PRE-TEC-RESTORE.json",
+    "dev/seven-lens-evidence-c08-ER-C08-TRACE.json",
+    "dev/seven-lens-evidence-c08-ci.json",
+    "dev/seven-lens-evidence-c08-static.json",
+    "dev/seven-lens-restoration-prepared-baseline.json",
+    "dev/test_http.py",
+    "dev/test_test_http.py",
+    "dev/ui_shell_results_regression.py",
+    "dev/ui_visual_contract_regression.py",
+    "docs/audit-units.json",
+    "docs/cursor-seven-lens-audit-workflow.md",
+    "docs/seven-lens-review-playbook.md",
+    "docs/seven-lens-traces/cycle-08-shell-results.json",
+    "export-core.js",
+    "index.html",
+    "lsp-dplanner-foundation.css",
+    "lsp-dplanner-results.css",
+    "planner-shell.js",
+    "plot-core.js",
+    "results-panel.js",
+    "settings-core.js",
+    "tools/build_zhl_bundle.py",
+    "tools/seven_lens_browser_trace.py",
+    "tools/test_cycle_08_record_sync.py",
+    "tools/test_seven_lens_browser_trace.py",
+    "ui/markup-tec-planner.html",
+    "zhl-engine-bundle.js",
+    "zhl-schedule-core.js"
+  ],
+  "cross_unit_changed_paths": [
+    "settings-core.js",
+    "index.html",
+    "lsp-dplanner-results.css",
+    "lsp-dplanner-foundation.css",
+    "plot-core.js",
+    "export-core.js",
+    "ui/markup-tec-planner.html"
+  ],
+  "invalidation_notes": [
+    {
+      "unit_id": "UI-ENVIRONMENT",
+      "source_cycle": 9,
+      "invalidated_by_cycle": 8,
+      "path": "settings-core.js",
+      "reason": "Cycle 8 setPlannerAlgo/_clearPlannerResults changes touch settings-core.js; Cycle 9 application bundle is now 1002 lines and requires >=2 bounded review sessions."
+    },
+    {
+      "unit_id": "UI-MODE-STATE",
+      "source_cycle": 9,
+      "invalidated_by_cycle": 8,
+      "path": "settings-core.js",
+      "reason": "REG-76 fix retargets _showPlannerView to resync setMobilePlanView after REC/TEC swaps; UI-MODE-STATE marker region changed again and remains IN_PROGRESS pending Cycle 9 READ."
+    },
+    {
+      "unit_id": "UI-ALGORITHM-SETTINGS",
+      "source_cycle": 24,
+      "invalidated_by_cycle": 8,
+      "path": "index.html",
+      "reason": "Cycle 8 setDecoAlgorithm preserveSchedule and runDecoSchedule validation clearing changed UI-ALGORITHM-SETTINGS marker region; Cycle 24 bundle is now 678 lines and requires >=2 bounded review sessions."
+    },
+    {
+      "unit_id": "UI-SETTINGS-CONTROLS",
+      "source_cycle": 24,
+      "invalidated_by_cycle": 8,
+      "path": "index.html",
+      "reason": "Cycle 8 index.html bootstrap removed duplicate mobile init; downstream Cycle 24 review must account for the updated settings/shell contract."
+    },
+    {
+      "unit_id": "UI-CSS-RESULTS",
+      "source_cycle": 7,
+      "invalidated_by_cycle": 8,
+      "path": "lsp-dplanner-results.css",
+      "reason": "PR #215 visual contract restores gas-dot, gas-switch row, two-column desktop layout, and mobile breakpoint contracts in canonical results CSS."
+    },
+    {
+      "unit_id": "UI-CSS-FOUNDATION",
+      "source_cycle": 5,
+      "invalidated_by_cycle": 8,
+      "path": "lsp-dplanner-foundation.css",
+      "reason": "PR #215 adds gas-switch-label tokens used by deco gas pills and graph legend swatches."
+    },
+    {
+      "unit_id": "UI-PLOT-CORE",
+      "source_cycle": 10,
+      "invalidated_by_cycle": 8,
+      "path": "plot-core.js",
+      "reason": "PR #215 aligns graph gas-change legend swatch and banner Bottom/Deco label rendering with CSS token contract."
+    },
+    {
+      "unit_id": "UI-EXPORT-CORE",
+      "source_cycle": 11,
+      "invalidated_by_cycle": 8,
+      "path": "export-core.js",
+      "reason": "PR #215 aligns export gas banner text with Bottom/Deco visual contract labels."
+    },
+    {
+      "unit_id": "UI-MARKUP-TEC-PLANNER",
+      "source_cycle": 2,
+      "invalidated_by_cycle": 8,
+      "path": "ui/markup-tec-planner.html",
+      "reason": "PR #215 replaces duplicate Bottom Gas marker with CSS gas-dot contract in assembled markup partial."
+    },
+    {
+      "unit_id": "TEST-UI-VISUAL-CONTRACT-REGRESSION",
+      "source_cycle": 8,
+      "invalidated_by_cycle": 8,
+      "path": "dev/ui_visual_contract_regression.py",
+      "reason": "PR #215 introduces SUITE-UI-VISUAL-CONTRACT-REGRESSION bound to REG-100 through REG-104."
+    },
+    {
+      "unit_id": "UI-CSS-RESULTS",
+      "source_cycle": 8,
+      "invalidated_by_cycle": 8,
+      "path": "lsp-dplanner-results.css",
+      "reason": "SL-C08-M-02 responsive main-nav grid row-fill and separator contract requires dependency re-verification."
+    },
+    {
+      "unit_id": "TOOL-BUILD-ZHL",
+      "source_cycle": 8,
+      "invalidated_by_cycle": 8,
+      "path": "tools/build_zhl_bundle.py",
+      "reason": "SL-C08-M-03 removes shadow getGasLabel and EAN50/EAN80 adapter labels; bundle parity re-review required."
+    },
+    {
+      "unit_id": "ENGINE-ZHL-BUNDLE",
+      "source_cycle": 8,
+      "invalidated_by_cycle": 8,
+      "path": "zhl-engine-bundle.js",
+      "reason": "Regenerated after canonical gas label propagation; schedule step labels must match schedule-core formatter."
+    },
+    {
+      "unit_id": "TEST-UI-VISUAL-CONTRACT-REGRESSION",
+      "source_cycle": 8,
+      "invalidated_by_cycle": 8,
+      "path": "dev/ui_visual_contract_regression.py",
+      "reason": "REG-105 and REG-106 bound to SL-C08-MOBILE-NAV-TILE-GRID and SL-C08-OPERATIONAL-GAS-LABEL-FORMAT."
+    },
+    {
+      "unit_id": "UI-PLANNER-SHELL",
+      "source_cycle": 8,
+      "invalidated_by_cycle": 8,
+      "path": "planner-shell.js",
+      "reason": "SL-C08-M-04 removes bottom-nav active writers from setNavMode; shell nav state ownership requires dependency re-verification."
+    },
+    {
+      "unit_id": "UI-MARKUP-HEADER",
+      "source_cycle": 2,
+      "invalidated_by_cycle": 8,
+      "path": "index.html",
+      "reason": "SL-C08-M-04 removes #bottomNav markup from assembled shell; header/main-nav contract is now sole mobile navigation surface."
+    }
+  ],
+  "audit_report": "docs/seven-lens-reports/cycle-08-shell-results.md",
+  "notes": "Cycle 8 CLOSER bound closure_evidence_commit at registry closure; SL-C08-M-02/M-03/M-04 CLOSED; ledger promoted SEVEN_LENS_REVIEWED; SL-C08-VF-L-01 remains open LOW follow-up. Deco schedule column-order dependency re-review refreshed UI-RESULTS-PANEL to 1-311; NO_NEW_FINDING.",
+  "visual_contract_integrator": {
+    "pr": 215,
+    "source_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
+    "integration_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
+    "parent_commit": "e4170f51a6efd895cae939ee0ad26e02fe4c3312",
+    "summary": "PR #215 restores planner visual contracts: CSS gas-dot sole marker, deco gas yellow token, desktop two-column layout with results right, mobile single-panel <=640px, Bottom/Deco banner labels, green-on-yellow deco pills, gas-switch row theme parity, VPM/TEC controls in planner grid column.",
+    "requires_independent_verification": true
+  },
+  "verifier_attestation": {
+    "role": "VERIFIER_ATTESTATION_CORRECTOR",
+    "session": "C08-V-B",
+    "metadata_base": "2a678aa861e50a689b1c6d707a0e2aaa4ab574a0",
+    "verified_source_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
+    "verified_at": "2026-07-06T03:47:02.736689+00:00",
+    "reviewer": "Cursor Agent (C08-V-B attestation corrector)"
+  },
+  "supplemental_verifier_attestation": {
+    "role": "INDEPENDENT_VERIFIER",
+    "session": "C08-V-C",
+    "metadata_head": "f1f6207d5485d84603662efeb2e66ca00e8bf8a3",
+    "protected_source_commits": {
+      "SL-C08-M-02": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a",
+      "SL-C08-M-03": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a",
+      "SL-C08-M-04": "8e437a1fc38bd4bf50c280a38aa323f2372214d5"
+    },
+    "finding_ids": [
+      "SL-C08-M-02",
+      "SL-C08-M-03",
+      "SL-C08-M-04"
+    ],
+    "verified_at": "2026-07-06T05:32:00.000000+00:00",
+    "reviewer": "Cursor Agent (C08-V-C independent verifier)",
+    "gate_results": {
+      "ui_visual_contract_regression": 0,
+      "ui_shell_results_regression": 0,
+      "ui_results_css_regression": 0,
+      "ui_css_regression": 0,
+      "build_zhl_bundle_check": 0,
+      "assemble_ui_html_verify": 0,
+      "unittest_protocol_and_trace": 0,
+      "engine_parity": 0,
+      "seven_lens_check_all": 0
+    },
+    "receipt_hashes": {
+      "ER-C08-BASELINE-NAV-GAS": "10ace366754b97d4f8c000db5777304f0ec6deb3b288d9a5565cb34dca2c70d1",
+      "ER-C08-POST-NAV-GRID": "f90045b6a89d4582958e93291feb23d25185f48f63c5361b2d40bdba9612a3fc",
+      "ER-C08-POST-GAS-LABELS": "ec10361fe8463520c4a2b7a0ffc560b757f7910f7ab28b183f95695a93f16434",
+      "ER-C08-BASELINE-BOTTOM-NAV": "4d55c6e6c1f85627d3fa143f8718164e4ca8ce186e34b3a9acfe27297e3c8afd",
+      "ER-C08-POST-BOTTOM-NAV": "fa62ae01ab93e754591afcd5f0f49047ad28c4a404679250f2e0a8c2ffd1237a"
+    },
+    "dependency_reverification": {
+      "UI-CSS-RESULTS": "PASSED — REG-105 nav grid contract at 375/400/480/667/1280 in dark+light",
+      "ENG-ZHL-SCHEDULE": "PASSED — canonical getGasLabel OO/HH in zhl-schedule-core.js",
+      "TOOL-BUILD-ZHL": "PASSED — build_zhl_bundle.py delegates labels; --check exit 0",
+      "ENGINE-ZHL-BUNDLE": "PASSED — no EAN50/EAN80 in generated bundle; npm parity OK",
+      "TEST-UI-VISUAL-CONTRACT-REGRESSION": "PASSED — REG-105/106/107 green at HEAD f535654",
+      "UI-PLANNER-SHELL": "PASSED — setNavMode has no .bnav-btn writers",
+      "UI-MARKUP-HEADER": "PASSED — #bottomNav absent from index.html",
+      "UI-CSS-FOUNDATION": "PASSED — .bnav-btn rules removed"
+    },
+    "verifier_findings": [
+      {
+        "id": "SL-C08-VF-L-01",
+        "severity": "LOW",
+        "location": "lsp-dplanner-results.css:333",
+        "summary": "Orphaned .mode-ref-btn rule remains with zero DOM/markup writers; dead CSS only."
+      }
+    ]
+  },
+  "evidence_repair_verifier_attestation": {
+    "role": "INDEPENDENT_VERIFIER",
+    "session": "C08-V-D",
+    "metadata_head": "887dec0ab643eba6e75b987ed5eb06064a6fa5bc",
+    "verified_source_commit": "b4e9375f63b3be88e2e50e8a3d62a7f5e87d5d73",
+    "finding_ids": [
+      "SL-C08-M-02",
+      "SL-C08-M-03",
+      "SL-C08-M-04"
+    ],
+    "regression_ids": [
+      "REG-105",
+      "REG-106",
+      "REG-107"
+    ],
+    "verified_at": "2026-07-06T13:22:30.000000+00:00",
+    "reviewer": "Cursor Agent (C08-V-D independent verifier)",
+    "gate_results": {
+      "seven_lens_browser_trace": 0,
+      "ui_visual_contract_regression": 0,
+      "ui_shell_results_regression": 0,
+      "ui_results_css_regression": 0,
+      "ui_css_regression": 0,
+      "engine_regression": 0,
+      "build_zhl_bundle_check": 0,
+      "assemble_ui_html_verify": 0,
+      "unittest_protocol_and_trace": 0,
+      "seven_lens_check_all": 0,
+      "audit_static": 0,
+      "audit_ci": 0,
+      "audit_release": 0
+    },
+    "trace_verification": {
+      "trace_count": 7,
+      "repeat": 2,
+      "spec_path": "docs/seven-lens-traces/cycle-08-shell-results.json",
+      "spec_sha256": "850ad53f3685224ce075825f18f15eb9ce037ec255cbb35b871a8b43d9ffaec8",
+      "artifact_path": "dev/seven-lens-browser-trace-c08-post-fix.json",
+      "artifact_sha256": "236cc50edfd57c9f7a3b6226e9d4c179c833e5df18d9854b3cf1aa68d822da20",
+      "case_ids": [
+        "SL-C08-MOBILE-NAV-TILE-GRID",
+        "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT",
+        "SL-C08-NO-REDUNDANT-BOTTOM-NAV"
+      ]
+    },
+    "receipt_hashes": {
+      "ER-C08-BASELINE-NAV-GAS": "26f32381880345a6ecce534838a803f4d25a4dfda5b72aec255cdaa1f06786a7",
+      "ER-C08-POST-NAV-GRID": "3d2f76e76c52a8098ebfbbdcdfe7e014e8a3c6c1489e690c44a54ce8c2ac9ea1",
+      "ER-C08-POST-GAS-LABELS": "17989bdb2732cab81681f646890134c3690beeeb044aee337bd0b6cc3af2ccee",
+      "ER-C08-BASELINE-BOTTOM-NAV": "58d80c2e4226b951bf65d816e1679362bd516aef4bfbd032baa2652bf94b00b4",
+      "ER-C08-POST-BOTTOM-NAV": "661fbcafcf810db08f7d6be6770c53636a8c24c64fccccb7959626994c33d806"
+    },
+    "behavioral_contracts": {
+      "REG-105": "PASSED — mobile nav grid has no orphan cell; Tools/Settings borders/dividers; canonical nav usable",
+      "REG-106": "PASSED — operational gas labels use Air, 100%, or OO/HH; no EAN50/EAN80 in schedule/banner/graph/export-visible consumers",
+      "REG-107": "PASSED — #bottomNav absent; no duplicate fixed bottom nav; no dead 72px reserve; canonical main nav works"
+    }
+  },
+  "dependency_re_reviews": [
+    {
+      "unit_id": "UI-CSS-FOUNDATION",
+      "session": "C08-DEP-FOUNDATION",
+      "boundary": "lsp-dplanner-foundation.css:1-422",
+      "prior_fingerprint": "f1f5eaa00edd3fd382ff98c27985e51d565539079860d7e59d740bce2d6a1944",
+      "content_fingerprint": "0884eeb214333bd4f852f0bff99873e584ea18d2300b14545b321051065c1841",
+      "result": "NO_NEW_FINDING"
+    },
+    {
+      "unit_id": "UI-CSS-RESULTS",
+      "session": "C08-DEP-RESULTS-A",
+      "boundary": "lsp-dplanner-results.css:1-500",
+      "prior_fingerprint": "90c2e9d1cd13216a5fbda047f64a7212d9a90abfa7ab54848dd5557a35fbc80d",
+      "content_fingerprint": "43a487d392909bc748197e713a3e2ce8340b16e3f53fe258a8036b189613f641",
+      "result": "NO_NEW_FINDING"
+    },
+    {
+      "unit_id": "UI-CSS-RESULTS",
+      "session": "C08-DEP-RESULTS-B",
+      "boundary": "lsp-dplanner-results.css:501-892",
+      "prior_fingerprint": "fc3fe81a27c5d45948065bd6d9071ed0fde7e14d48f8a9a57feddab4bfe9ddee",
+      "content_fingerprint": "563f36d0a31198828aac04594ea4fd73738d0ffa3eaff20643938e1e9140abdd",
+      "result": "NO_NEW_FINDING"
+    },
+    {
+      "unit_id": "UI-MARKUP-TEC-PLANNER",
+      "session": "C08-DEP-TEC-MARKUP",
+      "boundary": "ui/markup-tec-planner.html:1-557",
+      "prior_fingerprint": "41a03a57cf99a9eceef9bfd65baf5c65118f92e9539924e5f87139df00256c8c",
+      "content_fingerprint": "3f5d47dfb3a8ddad62bd13b17ae95e0b27dc68bbdccb4bd9b4a585b27753139d",
+      "result": "NO_NEW_FINDING"
+    },
+    {
+      "session": "C09-DEP-RESULTS-PANEL-SCHEDULE-LABEL-DECORATION",
+      "part_id": "UI-RESULTS-PANEL-P01",
+      "unit_id": "UI-RESULTS-PANEL",
+      "path": "results-panel.js",
+      "start_line": 1,
+      "end_line": 311,
+      "line_count": 311,
+      "content_fingerprint": "e9a5ca94a35fb403f96151a10cb0ca579f10554f7f4b93c7ea8c1a382627e952",
+      "trigger": "Schedule decorators now classify visible table cells by data-label after Run/Mix reorder and TTS column removal.",
+      "review_scope": "decorateDecoTableForV3/decorateContingencyTableForV3 cell decoration contract only; Cycle 8 navigation and stale-results fixes remain unchanged.",
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-07T14:12:28Z",
+      "verifier": "Codex simplified dependency re-review"
+    }
+  ],
+  "evidence_artifacts": [
+    "dev/seven-lens-evidence-c08-ER-C08-BASELINE-BOTTOM-NAV.json",
+    "dev/seven-lens-evidence-c08-ER-C08-BASELINE-NAV-GAS.json",
+    "dev/seven-lens-evidence-c08-ER-C08-POST-BOTTOM-NAV.json",
+    "dev/seven-lens-evidence-c08-ER-C08-POST-GAS-LABELS.json",
+    "dev/seven-lens-evidence-c08-ER-C08-POST-NAV-GAS.json",
+    "dev/seven-lens-evidence-c08-ER-C08-POST-NAV-GRID.json",
+    "dev/seven-lens-evidence-c08-ci.json",
+    "dev/seven-lens-evidence-c08-static.json"
+  ],
+  "fixer_nav_gas": {
+    "finding_ids": [
+      "SL-C08-M-02",
+      "SL-C08-M-03",
+      "SL-C08-M-04"
+    ],
+    "regression_ids": [
+      "REG-105",
+      "REG-106"
+    ],
+    "baseline_commit": "ea18ac054f53c70c7bcffac8cbe789d5fa6c4de4",
+    "protected_commit": "1c62425bc8101245b2eab222dd0c3d38286e885b",
+    "requires_independent_verification": true,
+    "source_commit": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a"
+  },
+  "fixer_closure_history_attestation": {
+    "role": "FIXER",
+    "session": "C08-FIXER-CLOSURE-HISTORY",
+    "prior_verified_source_commit": "f1f6207d5485d84603662efeb2e66ca00e8bf8a3",
+    "verified_source_commit": "b4e9375f63b3be88e2e50e8a3d62a7f5e87d5d73",
+    "absorbed_commits": [
+      "887dec0ab643eba6e75b987ed5eb06064a6fa5bc",
+      "38aecbc15bacbded0dbcb245028af15860732729"
+    ],
+    "protected_paths_accepted": [
+      "docs/seven-lens-traces/cycle-08-shell-results.json",
+      "tools/seven_lens_browser_trace.py",
+      "tools/test_seven_lens_browser_trace.py",
+      "tests/ccr-differential/build_assets.py",
+      "tests/ccr-differential/manifest.json",
+      "tools/run_audit_coverage_suite.py",
+      "tools/sync_www.py"
+    ],
+    "rationale": "887dec0 supplemental REG-105/106/107 browser traces are required for SL-C08-M-02/M-03/M-04 independent verification attestation; 38aecbc bounds SUITE-COVERAGE runtime without semantic CCR fixture drift.",
+    "registry_realignments": [
+      "TEST-CCR-DIFF-BUILD: restore VERIFIED/COV-01 with fingerprint-only realignment for build_assets.py",
+      "SL-C08-M-03: record unit_id TOOL-BUILD-ZHL matches registry catalog"
+    ],
+    "reviewer": "Cursor Agent (C08 FIXER closure-history)"
+  },
+  "closure_evidence_commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
+  "final_closer_attestation": {
+    "session": "C08-C-FINAL-CODEX",
+    "verified_source_commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+    "reason": "Rebound Cycle 8 verification/evidence to PR head after Linux CI schedule-preservation and trace isolation fixes passed on GitHub.",
+    "preserves_closed_findings": [
+      "SL-C08-M-02",
+      "SL-C08-M-03",
+      "SL-C08-M-04"
+    ],
+    "final_rebind_head": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+    "closure_evidence_commit": "34a241cc36d801a4badb1f31d46265f052f9fbe9",
+    "note": "Final local closer rebind after PR #217 Linux CI fixes; post-fix evidence rerun at PR head and static/ci closure receipts bound at the same head."
+  },
+  "post_merge_hotfix_attestation": {
+    "session": "C08-post-merge-mobile-stack-gas-switch",
+    "verified_source_commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
+    "summary": "Revalidated Cycle 8 after post-merge hotfix for mobile planner/results stack and gas-switch color parity.",
+    "closure_evidence_commit": "1372b40b00a13ae36ff0fc23f3bba36601fd7555",
+    "trace_spec_sha256": "681ad7fa0cb22056310c18f837b7bd1ec3ea31e65022f4d03bd78c67e1c8eb98",
+    "trace_artifact_sha256": "28682e713e93a25740b6152d52d0b6233909147f24b3f74a1ed7d26040904274"
+  },
+  "dependency_reverification": [
+    {
+      "session": "C09-DEP-RESULTS-PANEL-SUMMARY-CHIP-PALETTE",
+      "part_id": "UI-RESULTS-PANEL",
+      "unit_id": "UI-RESULTS-PANEL",
+      "path": "results-panel.js",
+      "content_fingerprint": "e9a5ca94a35fb403f96151a10cb0ca579f10554f7f4b93c7ea8c1a382627e952",
+      "boundaries": {
+        "UI-RESULTS-PANEL-P01": "lines 1-311"
+      },
+      "trigger": "Result summary chip renderer changed class mapping for Surf GF, OTU, TTS, and Decozone.",
+      "review_scope": "Summary chip class mapping only; prior Cycle 8 panel findings remain closed and unchanged.",
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-08T00:00:00Z",
+      "verifier": "Codex simplified dependency re-review"
+    }
+  ],
+  "dependency_revalidations": [
+    {
+      "session": "C09-DEP-RESULTS-PANEL-GAS-WARNING-HTML",
+      "unit_id": "UI-RESULTS-PANEL",
+      "part_fingerprints": {
+        "UI-RESULTS-PANEL-P01": "e9a5ca94a35fb403f96151a10cb0ca579f10554f7f4b93c7ea8c1a382627e952"
+      },
+      "part_boundaries": {
+        "UI-RESULTS-PANEL-P01": "lines 1-311"
+      },
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-08T00:00:00Z",
+      "verifier": "Codex simplified dependency re-review"
+    },
+    {
+      "session": "C09-DEP-WARNING-BANNER-HTML",
+      "result": "NO_NEW_FINDING",
+      "reason": "Gas warning banner now renders one real unicode icon and preserves warning HTML; panel state/update behavior remains valid.",
+      "validated_by": [
+        "SL-C09-MOBILE-WARNING-WRAP",
+        "SL-VIS-GAS-CONSUMPTION-BARS"
+      ]
+    },
+    {
+      "part_id": "UI-PLANNER-SHELL-P01",
+      "result": "NO_NEW_FINDING",
+      "note": "C09 dependency recheck after full graph mount reparenting; no new finding."
+    },
+    {
+      "part_id": "UI-RESULTS-PANEL-P01",
+      "result": "NO_NEW_FINDING",
+      "note": "C09 dependency recheck after Graphs tab removal; no new finding."
+    }
+  ]
+}

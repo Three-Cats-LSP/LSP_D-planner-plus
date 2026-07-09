@@ -1,0 +1,322 @@
+/* Deprecated — runtime tokens live in lsp-dplanner-foundation.css */
+
+/* ==========================================================
+   LSP D-Planner+ — Design Token CSS
+   Extracted from desktop + mobile mockups (v3)
+   Both light and dark mode via data-theme attribute.
+
+   Usage:
+     Dark  (default): <html data-theme="dark">
+     Light:           <html data-theme="light">
+   ========================================================== */
+
+/* ----------------------------------------------------------
+   FONTS
+   Load before using these variables:
+
+   Satoshi (body):
+   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+
+   JetBrains Mono (numeric / data):
+   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+   ---------------------------------------------------------- */
+:root {
+  --font-body: 'Satoshi', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Mono', monospace;
+}
+
+
+/* ==========================================================
+   DARK MODE  (primary / default)
+   ========================================================== */
+:root,
+[data-theme="dark"] {
+
+  /* ── Surfaces ──────────────────────────────────────────── */
+  --color-bg:              #0f1117;   /* page background          */
+  --color-surface:         #161b24;   /* cards, header, nav       */
+  --color-surface-2:       #1c2333;   /* input fields, inner cards */
+  --color-surface-3:       #222a3a;   /* hover states, toggle bg   */
+
+  /* ── Borders ───────────────────────────────────────────── */
+  --color-border:          rgba(255, 255, 255, 0.08);   /* subtle dividers  */
+  --color-border-mid:      rgba(255, 255, 255, 0.13);   /* visible borders  */
+
+  /* ── Text ──────────────────────────────────────────────── */
+  --color-text:            #e2e8f0;   /* primary text             */
+  --color-text-muted:      #8892a4;   /* secondary / labels       */
+  --color-text-faint:      #4a5568;   /* placeholders / captions  */
+
+  /* ── Primary accent — Cyan ─────────────────────────────── */
+  --color-accent:          #22d3ee;
+  --color-accent-dim:      rgba(34, 211, 238, 0.12);  /* tinted bg         */
+  --color-accent-glow:     rgba(34, 211, 238, 0.22);  /* focus ring / glow */
+  --color-accent-border:   rgba(34, 211, 238, 0.20);  /* chip border       */
+
+  /* ── Success — Green ───────────────────────────────────── */
+  --color-green:           #4ade80;
+  --color-green-dim:       rgba(74, 222, 128, 0.12);
+  --color-green-border:    rgba(74, 222, 128, 0.20);
+
+  /* ── Warning — Amber ───────────────────────────────────── */
+  --color-amber:           #fbbf24;
+  --color-amber-dim:       rgba(251, 191, 36,  0.12);
+  --color-amber-border:    rgba(251, 191, 36,  0.20);
+
+  /* ── Danger — Red ──────────────────────────────────────── */
+  --color-red:             #f87171;
+  --color-red-dim:         rgba(248, 113, 113, 0.12);
+  --color-red-border:      rgba(248, 113, 113, 0.20);
+
+  /* ── Secondary — Purple (VPM-B mode indicator) ──────────── */
+  --color-purple:          #a78bfa;
+  --color-purple-dim:      rgba(167, 139, 250, 0.12);
+  --color-purple-border:   rgba(167, 139, 250, 0.20);
+
+  /* ── Shadows ───────────────────────────────────────────── */
+  --shadow-sm:  0 1px 2px  rgba(0, 0, 0, 0.20);
+  --shadow-md:  0 4px 12px rgba(0, 0, 0, 0.30);
+  --shadow-lg:  0 12px 32px rgba(0, 0, 0, 0.40);
+
+  /* ── Radius ────────────────────────────────────────────── */
+  --radius-xs:   4px;
+  --radius-sm:   6px;
+  --radius-md:   8px;
+  --radius-lg:   10px;
+  --radius-xl:   12px;
+  --radius-2xl:  16px;
+  --radius-full: 9999px;
+
+  /* ── Transitions ───────────────────────────────────────── */
+  --transition-fast:   150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-base:   180ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow:   250ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ── Semantic / Component aliases ──────────────────────── */
+  --color-btn-primary-bg:     var(--color-accent);
+  --color-btn-primary-text:   #0a1628;   /* dark ink on bright cyan */
+  --color-btn-primary-hover:  #38bdf8;
+
+  --color-input-bg:           var(--color-surface-2);
+  --color-input-border:       var(--color-border-mid);
+  --color-input-focus-border: var(--color-accent);
+  --color-input-focus-ring:   var(--color-accent-glow);
+
+  --color-tab-active:         var(--color-accent);
+  --color-tab-active-border:  var(--color-accent);
+  --color-tab-inactive:       var(--color-text-muted);
+
+  --color-algo-active-bg:     var(--color-surface);
+  --color-algo-active-text:   var(--color-accent);
+  --color-algo-inactive-text: var(--color-text-muted);
+
+  --color-nav-active:         var(--color-accent);
+  --color-nav-inactive:       var(--color-text-faint);
+
+  --color-chip-cyan-bg:       var(--color-accent-dim);
+  --color-chip-cyan-text:     var(--color-accent);
+  --color-chip-cyan-border:   var(--color-accent-border);
+
+  --color-chip-amber-bg:      var(--color-amber-dim);
+  --color-chip-amber-text:    var(--color-amber);
+  --color-chip-amber-border:  var(--color-amber-border);
+
+  --color-chip-green-bg:      var(--color-green-dim);
+  --color-chip-green-text:    var(--color-green);
+  --color-chip-green-border:  var(--color-green-border);
+
+  --color-warning-banner-bg:      var(--color-amber-dim);
+  --color-warning-banner-border:  rgba(251, 191, 36, 0.25);
+  --color-warning-banner-text:    var(--color-amber);
+
+  --color-deco-row-bg:        rgba(34, 211, 238, 0.04);
+
+  --color-ppo2-ok:            var(--color-green);
+  --color-ppo2-warn:          var(--color-amber);
+  --color-ppo2-danger:        var(--color-red);
+
+  --color-metric-runtime:     var(--color-text);
+  --color-metric-deco:        var(--color-accent);
+  --color-metric-cns:         var(--color-amber);
+  --color-metric-firststop:   var(--color-green);
+
+  --color-ndl-remain:         var(--color-green);
+  --color-safety-stop:        var(--color-amber);
+
+  /* planning-aid badge */
+  --color-badge-bg:           rgba(251, 191, 36, 0.12);
+  --color-badge-text:         var(--color-amber);
+  --color-badge-border:       rgba(251, 191, 36, 0.20);
+
+  /* gas dot colours */
+  --color-gas-bottom:         var(--color-accent);   /* bottom / Air   */
+  --color-gas-deco1:          var(--color-green);    /* Deco 1 / EAN50 */
+  --color-gas-deco2:          var(--color-purple);   /* Deco 2         */
+
+  /* profile canvas */
+  --color-profile-line:       var(--color-accent);
+  --color-profile-fill-top:   rgba(34, 211, 238, 0.18);
+  --color-profile-fill-bot:   rgba(34, 211, 238, 0.02);
+  --color-profile-dot-switch: var(--color-green);
+  --color-profile-dot-deco:   var(--color-red);
+  --color-profile-grid:       var(--color-text-faint);
+
+  /* REC profile */
+  --color-profile-rec-line:     var(--color-green);
+  --color-profile-rec-fill-top: rgba(74, 222, 128, 0.18);
+  --color-profile-rec-fill-bot: rgba(74, 222, 128, 0.02);
+}
+
+
+/* ==========================================================
+   LIGHT MODE
+   ========================================================== */
+[data-theme="light"] {
+
+  /* ── Surfaces ──────────────────────────────────────────── */
+  --color-bg:              #f0f4f8;
+  --color-surface:         #ffffff;
+  --color-surface-2:       #f7f9fc;
+  --color-surface-3:       #edf2f7;
+
+  /* ── Borders ───────────────────────────────────────────── */
+  --color-border:          rgba(0, 0, 0, 0.08);
+  --color-border-mid:      rgba(0, 0, 0, 0.14);
+
+  /* ── Text ──────────────────────────────────────────────── */
+  --color-text:            #1a202c;
+  --color-text-muted:      #4a5568;
+  --color-text-faint:      #a0aec0;
+
+  /* ── Primary accent — Cyan (shifted darker for contrast) ── */
+  --color-accent:          #0891b2;
+  --color-accent-dim:      rgba(8, 145, 178, 0.10);
+  --color-accent-glow:     rgba(8, 145, 178, 0.18);
+  --color-accent-border:   rgba(8, 145, 178, 0.22);
+
+  /* ── Success — Green ───────────────────────────────────── */
+  --color-green:           #16a34a;
+  --color-green-dim:       rgba(22, 163, 74, 0.10);
+  --color-green-border:    rgba(22, 163, 74, 0.22);
+
+  /* ── Warning — Amber ───────────────────────────────────── */
+  --color-amber:           #b45309;
+  --color-amber-dim:       rgba(180, 83, 9, 0.08);
+  --color-amber-border:    rgba(180, 83, 9, 0.20);
+
+  /* ── Danger — Red ──────────────────────────────────────── */
+  --color-red:             #dc2626;
+  --color-red-dim:         rgba(220, 38, 38, 0.08);
+  --color-red-border:      rgba(220, 38, 38, 0.20);
+
+  /* ── Secondary — Purple ────────────────────────────────── */
+  --color-purple:          #7c3aed;
+  --color-purple-dim:      rgba(124, 58, 237, 0.08);
+  --color-purple-border:   rgba(124, 58, 237, 0.20);
+
+  /* ── Shadows ───────────────────────────────────────────── */
+  --shadow-sm:  0 1px 3px  rgba(0, 0, 0, 0.08);
+  --shadow-md:  0 4px 12px rgba(0, 0, 0, 0.10);
+  --shadow-lg:  0 12px 32px rgba(0, 0, 0, 0.14);
+
+  /* ── Semantic / Component aliases ──────────────────────── */
+  --color-btn-primary-bg:     var(--color-accent);
+  --color-btn-primary-text:   #ffffff;
+  --color-btn-primary-hover:  #0e7490;
+
+  --color-input-bg:           var(--color-surface);
+  --color-input-border:       var(--color-border-mid);
+  --color-input-focus-border: var(--color-accent);
+  --color-input-focus-ring:   var(--color-accent-glow);
+
+  --color-badge-bg:           rgba(180, 83, 9, 0.08);
+  --color-badge-text:         var(--color-amber);
+  --color-badge-border:       rgba(180, 83, 9, 0.20);
+
+  --color-deco-row-bg:        rgba(8, 145, 178, 0.04);
+
+  --color-profile-line:       var(--color-accent);
+  --color-profile-fill-top:   rgba(8, 145, 178, 0.14);
+  --color-profile-fill-bot:   rgba(8, 145, 178, 0.01);
+  --color-profile-dot-switch: var(--color-green);
+  --color-profile-dot-deco:   var(--color-red);
+
+  --color-profile-rec-line:     var(--color-green);
+  --color-profile-rec-fill-top: rgba(22, 163, 74, 0.14);
+  --color-profile-rec-fill-bot: rgba(22, 163, 74, 0.01);
+}
+
+
+/* ==========================================================
+   SYSTEM PREFERENCE FALLBACK
+   Applies dark mode when no data-theme is set and the OS is
+   in dark mode (i.e., before JS runs).
+   ========================================================== */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    /* mirrors [data-theme="dark"] block above */
+    --color-bg:              #0f1117;
+    --color-surface:         #161b24;
+    --color-surface-2:       #1c2333;
+    --color-surface-3:       #222a3a;
+    --color-border:          rgba(255, 255, 255, 0.08);
+    --color-border-mid:      rgba(255, 255, 255, 0.13);
+    --color-text:            #e2e8f0;
+    --color-text-muted:      #8892a4;
+    --color-text-faint:      #4a5568;
+    --color-accent:          #22d3ee;
+    --color-accent-dim:      rgba(34, 211, 238, 0.12);
+    --color-accent-glow:     rgba(34, 211, 238, 0.22);
+    --color-green:           #4ade80;
+    --color-green-dim:       rgba(74, 222, 128, 0.12);
+    --color-amber:           #fbbf24;
+    --color-amber-dim:       rgba(251, 191, 36,  0.12);
+    --color-red:             #f87171;
+    --color-red-dim:         rgba(248, 113, 113, 0.12);
+    --color-purple:          #a78bfa;
+    --color-purple-dim:      rgba(167, 139, 250, 0.12);
+    --shadow-sm:  0 1px 2px  rgba(0, 0, 0, 0.20);
+    --shadow-md:  0 4px 12px rgba(0, 0, 0, 0.30);
+    --shadow-lg:  0 12px 32px rgba(0, 0, 0, 0.40);
+  }
+}
+
+
+/* ==========================================================
+   QUICK-REFERENCE PALETTE GUIDE
+   ==========================================================
+
+   ROLE                      DARK                LIGHT
+   ────────────────────────  ──────────────────  ──────────────────
+   Page background           #0f1117             #f0f4f8
+   Card / panel surface      #161b24             #ffffff
+   Input / inner card        #1c2333             #f7f9fc
+   Hover / raised state      #222a3a             #edf2f7
+   Subtle border             rgba(255,255,255,   rgba(0,0,0,
+                              0.08)               0.08)
+   Visible border            rgba(255,255,255,   rgba(0,0,0,
+                              0.13)               0.14)
+
+   Primary text              #e2e8f0             #1a202c
+   Secondary text            #8892a4             #4a5568
+   Placeholder / caption     #4a5568             #a0aec0
+
+   Accent — Cyan             #22d3ee (dark)      #0891b2 (light)
+   Success — Green           #4ade80 (dark)      #16a34a (light)
+   Warning — Amber           #fbbf24 (dark)      #b45309 (light)
+   Danger — Red              #f87171 (dark)      #dc2626 (light)
+   Secondary — Purple        #a78bfa (dark)      #7c3aed (light)
+
+   ── Data meanings ──────────────────────────────────────
+   Cyan    → primary accent, RUN TIME, active controls, TTS
+   Green   → success, gas switch dot, NDL remaining, FIRST STOP
+   Amber   → warning, CNS O₂, safety stop, OTU, gas short
+   Red     → deco stop dots, danger PPO₂
+   Purple  → VPM-B mode indicator
+
+   ── PPO₂ traffic-light ─────────────────────────────────
+   ≤ 1.40 bar    green     (--color-ppo2-ok)
+   1.41–1.60 bar amber     (--color-ppo2-warn)
+   > 1.60 bar    red       (--color-ppo2-danger)
+
+   ==========================================================*/

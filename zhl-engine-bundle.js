@@ -777,7 +777,7 @@ function getGasLabel(fO2, fHe) {
   const o2pct = Math.round(fO2 * 100);
   const hePct = Math.round((fHe || 0) * 100);
   if (o2pct === 21 && hePct === 0) return 'Air';
-  return `${o2pct}/${String(hePct).padStart(2, '0')}`;
+  return `${String(o2pct).padStart(2, '0')}/${String(hePct).padStart(2, '0')}`;
 }
 
 function insertMdpStopDepths(stopDepths, enabled, min9m, min6m) {
@@ -1427,18 +1427,6 @@ function runZhlScheduleCore(params) {
 
   const _scheduleCoreGetGasLabel = getGasLabel;
 
-  function getGasLabel(fO2, fHe) {
-    const o2 = Math.round(fO2 * 100);
-    const he = Math.round((fHe || 0) * 100);
-    if (he > 0) return o2 + '/' + he;
-    if (o2 === 21) return 'Air';
-    if (o2 === 32) return 'EAN32';
-    if (o2 === 36) return 'EAN36';
-    if (o2 === 50) return 'EAN50';
-    if (o2 >= 99) return '100%';
-    return 'EAN' + o2;
-  }
-
   function zhlOptimalSwitchDepth(fO2, ctx) {
     const ppo2High = ctx.ppo2Deco;
     const ppo2Mid = 1.5;
@@ -1450,7 +1438,7 @@ function runZhlScheduleCore(params) {
       return ppo2Low;
     }
     if (fO2 <= 0) return 0;
-    if (fO2 >= 0.995) return Math.max(ctx.lastStop, ctx.metric ? 6 : 20);
+    if (fO2 >= 0.995) return Math.max(ctx.lastStop, 6);
     const limit = getPPO2Limit(fO2);
     const exactMOD = (limit / fO2 - altSurfaceP) / BAR_PER_METRE;
     const snapped = Math.floor(exactMOD / ctx.decoStep) * ctx.decoStep;
@@ -1464,11 +1452,7 @@ function runZhlScheduleCore(params) {
       const fO2 = o2pct / 100;
       const fHe = hePct / 100;
       const fN2 = Math.max(0, 1 - fO2 - fHe);
-      let label;
-      if (o2pct === 100) label = '100%';
-      else if (o2pct === 50 && hePct === 0) label = 'EAN50';
-      else if (o2pct === 80 && hePct === 0) label = 'EAN80';
-      else label = getGasLabel(fO2, fHe);
+      const label = getGasLabel(fO2, fHe);
       const depth = zhlOptimalSwitchDepth(fO2, ctx);
       return { depth, fN2, fHe, fO2, label };
     });
@@ -1526,6 +1510,7 @@ function runZhlScheduleCore(params) {
       ppo2Bottom: switchCtx.ppo2Bottom,
       ppo2Deco: switchCtx.ppo2Deco,
       minStopTime: s.minStopTime || 1,
+      wholeMinStops: s.wholeMinStops !== false,
       switchPauseT: 0,
       mdCompatMode: s.mdCompatMode !== false,
       lastStop: switchCtx.lastStop,

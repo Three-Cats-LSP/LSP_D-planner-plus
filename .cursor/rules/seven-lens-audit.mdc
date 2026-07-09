@@ -1,0 +1,51 @@
+---
+description: Enforce the repository seven-lens protocol whenever performing or verifying a manual audit cycle
+alwaysApply: false
+---
+
+# Seven-lens audit protocol
+
+When the user asks to run, fix, verify, close, or continue a seven-lens cycle:
+
+1. Read `docs/seven-lens-review-playbook.md`,
+   `docs/cursor-seven-lens-audit-workflow.md`, and
+   `docs/cursor-seven-lens-prompts.md` before acting.
+2. If the cycle was BLOCKED, read the active Codex verification report in
+   `docs/seven-lens-reports/` and the cycle record in `docs/seven-lens-records/`.
+3. Run `python tools/seven_lens_protocol.py plan --cycle <N> --output
+   docs/seven-lens-records/cycle-<NN>-*.json` before reading source.
+4. Work in exactly one role per chat: AUDITOR, FIXER, VERIFIER, or CLOSER.
+   Stop at the role boundary. Never describe your own fix pass as independent.
+5. The AUDITOR is read-only for application source and tests. Complete every
+   generated part and every L1-L7 record before proposing fixes. Every L2/L4/L7
+   conclusion must quote `entry_event -> consumer_path`; without a concrete
+   consumer path the result is `INCOMPLETE`, not `NO_FINDING`.
+6. The FIXER implements only recorded findings and adds isolated behavioral
+   evidence. Every probe must fail on the pre-fix commit, assert the final
+   algorithm consumer (not a label, flag, or dataset stamp alone), and restore
+   full state in `finally`.
+7. The VERIFIER uses a fresh chat/context, reads final source rather than relying
+   on the fix summary, reproduces failures through the real UI entry path, runs
+   edit-after-switch traces, and inspects raw browser trace artifact JSON.
+8. The CLOSER runs both:
+   `python tools/seven_lens_protocol.py check --phase close --record <record>`
+   and `python tools/seven_lens_protocol.py check-all --require-artifacts`.
+   May close only when both exit 0. Then updates `docs/seven-lens-test-results.md`,
+   pushes the cycle branch, and merges the PR to `dev` after CI passes.
+   Every evidence command must be executed through
+   `tools/seven_lens_evidence.py`; never synthesize evidence rows or success
+   fields with a record-building script.
+9. Never set `SEVEN_LENS_REVIEWED` in the manual ledger unless
+   `check-all --require-artifacts` passes for that cycle's record.
+10. Green automated tests are evidence, not a seven-lens review. Never infer "no
+    bugs" or reviewed status from test results alone. Never accept a partial
+    engine regression (e.g. 166/168) when the suite mutates shared DOM state.
+11. Work against `dev`. Never target or modify `main` for this audit program.
+12. For every dual-unit control, require browser traces for
+    switch -> visible unforced edit -> consumer -> roundtrip from metric and
+    imperial initial states. Unit-switch-only traces are incomplete.
+13. For unit conversions, audit value, label, minimum, maximum, step, defaults,
+    persistence, and round-trip invariance as one physical contract.
+14. For dynamic/repeated controls, create a new item while already in metric and
+    imperial mode and assert value, min, max, step, validity, canonical state,
+    and final consumer behavior.

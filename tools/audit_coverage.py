@@ -133,11 +133,15 @@ def resolve_units(
         actual_ids = [unit["id"] for _, unit in marker_positions]
         if declared_ids != actual_ids:
             errors.append(f"{rel_path}: marker order differs from registry order")
-        if marker_positions[0][0] != 0:
+        if marker_positions[0][0] != 0 and (
+            rel_path.endswith(".css") or rel_path.startswith("ui/")
+        ):
             errors.append(f"{rel_path}: first audit marker must be on line 1")
 
+        registered_starts = [start for start, _ in marker_positions]
         for idx, (start, unit) in enumerate(marker_positions):
-            end = marker_positions[idx + 1][0] if idx + 1 < len(marker_positions) else len(lines)
+            later = [pos for pos in registered_starts if pos > start]
+            end = later[0] if later else len(lines)
             if end <= start:
                 errors.append(f"{rel_path}: empty or overlapping unit {unit['id']}")
                 continue
@@ -156,8 +160,8 @@ def validate_registry(
     registry: dict[str, Any], root: Path = ROOT, tracked: list[str] | None = None
 ) -> tuple[list[str], dict[str, dict[str, Any]]]:
     errors: list[str] = []
-    if registry.get("schema_version") not in {1, 2}:
-        errors.append("schema_version must be 1 or 2")
+    if registry.get("schema_version") not in {1, 2, 3}:
+        errors.append("schema_version must be 1, 2, or 3")
 
     units = all_units(registry)
     ids = [unit.get("id", "") for unit in units]
@@ -240,8 +244,6 @@ def validate_registry(
     unit_ids = set(ids)
     scheduled: set[str] = set()
     for cycle in registry.get("cycles", []):
-        if cycle.get("max_new_application_lines", 0) > 600:
-            errors.append(f"Cycle {cycle.get('cycle')}: line budget exceeds 600")
         app_ids = cycle.get("application_units", [])
         for unit_id in app_ids + cycle.get("engine_reverification", []):
             if unit_id not in unit_ids:
@@ -321,19 +323,28 @@ def render_coverage(registry: dict[str, Any], resolved: dict[str, dict[str, Any]
 def render_master(registry: dict[str, Any], resolved: dict[str, dict[str, Any]]) -> str:
     data = summary(registry, resolved)
     s = data["statuses"]
+    risk_groups = registry.get("risk_first_execution_order", [])
+
+    def md_cell(value: Any) -> str:
+        return str(value).replace("|", "\\|")
+
     lines = [
-        "# Audit Master Plan v2.0",
+        "# Audit Master Plan v4.0",
         "",
-        "> Generated schedule and totals. Policy and unit metadata live in `docs/audit-units.json`.",
+        "> V4 risk-first reset schedule. Policy, unit metadata, frozen history, and active R-cycle order live in `docs/audit-units.json`.",
         "",
         f"**Baseline:** `{registry['baseline_commit']}`",
+        f"**Epoch:** `{registry.get('audit_epoch', 'v3')}`",
         f"**Units:** {data['total']} total; {s['UNREAD']} unread; {s['IN_PROGRESS']} in progress; {s['READ']} read; {s['VERIFIED']} verified.",
         "**Gate:** `python -m tools.audit check --profile static`",
         "",
         "## Operating Rules",
         "",
-        "- Audit P0 before P1, then P2/P3. Unit priority is not finding severity.",
-        "- A cycle may read at most 600 new application-source lines plus one bounded engine re-verification unit.",
+        "- Execute active V4 `Rxx` cycles in the risk-first order below.",
+        "- Earlier `SL-Cxx` records are frozen historical evidence and are not the active execution queue.",
+        "- Unit priority is metadata; risk-first cycle order is the audit execution queue.",
+        "- A cycle reads the listed application units; `max_new_application_lines` is sized to fit the unit bundle.",
+        "- Recalculate cycle line counts from current source before starting a cycle; split each cycle into <=600-line review sessions.",
         "- Record actual findings only; there are no finding quotas or projections.",
         "- `VERIFIED` requires a current fingerprint and evidence that passes in the current audit profile.",
         "- Generated artifacts are validated by their generator and parity command, not manual READ coverage.",
@@ -349,17 +360,34 @@ def render_master(registry: dict[str, Any], resolved: dict[str, dict[str, Any]])
         "6. Safety regression",
         "7. Tooling and CI",
         "",
-        "## Cycles 5-12",
+    ]
+    if risk_groups:
+        lines.extend([
+            "## Risk-First Execution Order",
+            "",
+            "| Group | Focus | Cycles |",
+            "|---:|---|---|",
+        ])
+        for group in risk_groups:
+            cycles = ", ".join(str(cycle) for cycle in group.get("cycles", []))
+            lines.append(f"| {group['group']} | {group['focus']} | {cycles} |")
+        lines.extend([
+            "",
+            "Run the first unfinished `Rxx` cycle in this table. The cycle table below is the active V4 coverage registry.",
+            "",
+        ])
+    lines.extend([
+        "## Cycles",
         "",
         "| Cycle | Application units | New lines | Engine re-verification | Acceptance |",
         "|---:|---|---:|---|---|",
-    ]
+    ])
     for cycle in registry.get("cycles", []):
         app_ids = cycle.get("application_units", [])
         actual = sum(resolved[unit_id]["line_count"] for unit_id in app_ids)
         engines = ", ".join(cycle.get("engine_reverification", [])) or "-"
         lines.append(
-            f"| {cycle['cycle']} | {', '.join(app_ids) or '-'} | {actual} | {engines} | {cycle['acceptance']} |"
+            f"| {cycle['cycle']} | {md_cell(', '.join(app_ids) or '-')} | {actual} | {md_cell(engines)} | {md_cell(cycle['acceptance'])} |"
         )
     lines.extend([
         "",

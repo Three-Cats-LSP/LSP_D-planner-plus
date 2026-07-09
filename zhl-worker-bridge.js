@@ -79,7 +79,7 @@
           consecutiveWorkerFailures = 0;
           settlePending(id, true, result);
         } else {
-          handleWorkerFailure(error || 'ZHL worker calculation failed');
+          settlePending(id, false, new Error(error || 'ZHL worker calculation failed'));
         }
       };
       worker.onerror = function (err) {

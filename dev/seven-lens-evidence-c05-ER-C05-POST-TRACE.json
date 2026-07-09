@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ER-C05-POST-TRACE",
+  "command_argv": [
+    "python",
+    "tools/seven_lens_browser_trace.py",
+    "--spec",
+    "docs/seven-lens-traces/cycle-05-css.json",
+    "--output",
+    "dev/seven-lens-browser-trace-cycle05.json"
+  ],
+  "commit": "c40b71ae98200f02d0c4735c5f3a9c686e13c364",
+  "exit_code": 0,
+  "case_ids": [
+    "SL-C05-GF-ROW-MODE-ISOLATION"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-04T12:51:13.400985+00:00",
+  "finished_at": "2026-07-04T12:51:24.420116+00:00",
+  "stdout_sha256": "a7ae1604349a753e98db9c9046e0a9cfef02aa4f1295822dc67d6960f4953e32",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
+}

@@ -1,3 +1,4 @@
 Mode-row icon assets (LSP D-Planner+):
+- computer-14545985.png — Dive Planner icon by https://www.flaticon.com/free-icon/computer_14545985
 - tools-1424252.png — Tools icon by https://www.flaticon.com/free-icon/tools_1424252
 - settings-2099058.png — Settings icon by https://www.flaticon.com/free-icon/settings_2099058

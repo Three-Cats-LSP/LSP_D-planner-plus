@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "evidence_id": "static",
+  "command_argv": [
+    "python",
+    "-m",
+    "tools.audit",
+    "check",
+    "--profile",
+    "static"
+  ],
+  "commit": "33972d953475d1753d462189f18fe2e556c61a14",
+  "exit_code": 0,
+  "case_ids": [
+    "AUDIT-COV-01",
+    "canonical-generated-parity",
+    "UI-EXTRACT-CORES"
+  ],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-07T13:31:59.799008+00:00",
+  "finished_at": "2026-07-07T13:33:18.273002+00:00",
+  "stdout_sha256": "1a4b500eac7f29ec84fad213f5dac1b6174d946fa11b64717d772ed66adb49c5",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
+}

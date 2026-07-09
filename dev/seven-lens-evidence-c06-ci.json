@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ci",
+  "command_argv": [
+    "python",
+    "-m",
+    "tools.audit",
+    "run",
+    "--profile",
+    "ci"
+  ],
+  "commit": "f708883536b80c3c5379cb5f3f114b977a004fa5",
+  "exit_code": 0,
+  "case_ids": [],
+  "worktree_clean_before": true,
+  "worktree_clean_after": true,
+  "started_at": "2026-07-05T04:45:55.935786+00:00",
+  "finished_at": "2026-07-05T04:48:16.544002+00:00",
+  "stdout_sha256": "31336f0d5eb35cd0b3bee081e761c9a04229e279e6ede2d90605cbcbd90fa56b",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executor_sha256": "1ef7f00b39bd801eaca1d86ab7a61920f1814cf9347c813513f5fd36d7c3277e"
+}

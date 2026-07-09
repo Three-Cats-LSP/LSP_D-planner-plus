@@ -1,0 +1,133 @@
+{
+  "schema_version": 3,
+  "repeat": 2,
+  "cycle": 4,
+  "traces": [
+    {
+      "id": "SL-C04-END-PHYSICAL-TRACE",
+      "case_ids": ["SL-C04-END-DEPTH-UNITS"],
+      "entry_event": "unitsSelect change metric to imperial on END tool",
+      "consumer_path": ["setUnits", "calcEND_tool", "domDepthToM", "endAbsP"],
+      "setup": [
+        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+        {"action": "click", "selector": "#navBtnSettings"},
+        {"action": "select", "selector": "#unitsSelect", "value": "metric"},
+        {"action": "fill", "selector": "#endDepth", "value": "30", "force": true, "setup_only_reason": "Prepare the hidden END panel before testing the visible unit selector."},
+        {"action": "fill", "selector": "#endO2", "value": "21", "force": true, "setup_only_reason": "Prepare the hidden END panel before testing the visible unit selector."},
+        {"action": "fill", "selector": "#endHe", "value": "0", "force": true, "setup_only_reason": "Prepare the hidden END panel before testing the visible unit selector."}
+      ],
+      "state": {
+        "selectors": ["#unitsSelect", "#endDepth", "#endO2", "#endHe"],
+        "restore_order": ["#unitsSelect", "#endDepth", "#endO2", "#endHe"],
+        "globals": ["_zhlHeadless"]
+      },
+      "steps": [
+        {
+          "capture": "metric",
+          "values": {
+            "input_value": "document.querySelector('#endDepth').value",
+            "canonical_m": "Number(document.querySelector('#endDepth').dataset.depthM || NaN)",
+            "consumer_m": "domDepthToM('endDepth')",
+            "observable": "document.querySelector('#endAbsP').textContent"
+          }
+        },
+        {"action": "select", "selector": "#unitsSelect", "value": "imperial"},
+        {
+          "capture": "imperial",
+          "values": {
+            "input_value": "document.querySelector('#endDepth').value",
+            "canonical_m": "Number(document.querySelector('#endDepth').dataset.depthM || NaN)",
+            "consumer_m": "domDepthToM('endDepth')",
+            "observable": "document.querySelector('#endAbsP').textContent"
+          }
+        }
+      ],
+      "assertions": [
+        {"id": "display-feet", "left": "$.imperial.input_value", "op": "equal", "right": "98"},
+        {"id": "canonical-physical-depth", "left": "$.imperial.canonical_m", "op": "close", "right": 30, "tolerance": 0.000001},
+        {"id": "consumer-physical-depth", "left": "$.imperial.consumer_m", "op": "close", "right": 30, "tolerance": 0.000001},
+        {"id": "observable-parity", "left": "$.metric.observable", "op": "equal", "right": "$.imperial.observable"}
+      ]
+    },
+    {
+      "id": "SL-C04-SI-PHYSICAL-TRACE",
+      "case_ids": ["SL-C04-SI-DEPTH-UNITS"],
+      "entry_event": "unitsSelect change metric to imperial on surface interval tool",
+      "consumer_path": ["setUnits", "calcSurfInt", "domDepthToM", "siMinResult"],
+      "setup": [
+        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+        {"action": "click", "selector": "#navBtnSettings"},
+        {"action": "select", "selector": "#unitsSelect", "value": "metric"},
+        {"action": "fill", "selector": "#siD1Depth", "value": "30", "force": true, "setup_only_reason": "Prepare the hidden surface-interval panel before testing the visible unit selector."},
+        {"action": "fill", "selector": "#siD1BT", "value": "25", "force": true, "setup_only_reason": "Prepare the hidden surface-interval panel before testing the visible unit selector."},
+        {"action": "fill", "selector": "#siD2Depth", "value": "18", "force": true, "setup_only_reason": "Prepare the hidden surface-interval panel before testing the visible unit selector."},
+        {"action": "fill", "selector": "#siD2BT", "value": "20", "force": true, "setup_only_reason": "Prepare the hidden surface-interval panel before testing the visible unit selector."}
+      ],
+      "state": {
+        "selectors": ["#unitsSelect", "#siD1Depth", "#siD1BT", "#siD2Depth", "#siD2BT"],
+        "restore_order": ["#unitsSelect", "#siD1Depth", "#siD1BT", "#siD2Depth", "#siD2BT"],
+        "globals": ["_zhlHeadless"]
+      },
+      "steps": [
+        {
+          "capture": "metric",
+          "values": {
+            "d1_input": "document.querySelector('#siD1Depth').value",
+            "d1_consumer_m": "domDepthToM('siD1Depth')",
+            "observable": "document.querySelector('#siMinResult').textContent"
+          }
+        },
+        {"action": "select", "selector": "#unitsSelect", "value": "imperial"},
+        {
+          "capture": "imperial",
+          "values": {
+            "d1_input": "document.querySelector('#siD1Depth').value",
+            "d1_consumer_m": "domDepthToM('siD1Depth')",
+            "observable": "document.querySelector('#siMinResult').textContent"
+          }
+        }
+      ],
+      "assertions": [
+        {"id": "display-feet", "left": "$.imperial.d1_input", "op": "equal", "right": "98"},
+        {"id": "consumer-physical-depth", "left": "$.imperial.d1_consumer_m", "op": "close", "right": 30, "tolerance": 0.000001},
+        {"id": "observable-parity", "left": "$.metric.observable", "op": "equal", "right": "$.imperial.observable"}
+      ]
+    },
+    {
+      "id": "SL-C04-CONFIRM-BACKDROP-TRACE",
+      "case_ids": ["SL-C04-CONFIRM-BACKDROP"],
+      "entry_event": "User dismisses confirm modal after backdrop handler is present",
+      "consumer_path": ["confirmModal", "onclick", "closeConfirmModal", "display"],
+      "setup": [
+        {"action": "set_global", "name": "_zhlHeadless", "value": false},
+        {"action": "run_script", "script": "document.getElementById('confirmModalMsg').textContent='Reset settings?'; document.getElementById('confirmModal').style.display='flex';", "setup_only_reason": "Open confirm modal before testing dismiss controls."}
+      ],
+      "state": {
+        "selectors": ["#confirmModalCancel"],
+        "restore_order": ["#confirmModalCancel"],
+        "globals": ["_zhlHeadless"]
+      },
+      "steps": [
+        {
+          "capture": "before",
+          "values": {
+            "display": "document.getElementById('confirmModal').style.display",
+            "onclick_ok": "document.getElementById('confirmModal')?.getAttribute('onclick')?.includes('closeConfirmModal(false)') ? 'yes' : 'no'"
+          }
+        },
+        {"action": "click", "selector": "#confirmModalCancel"},
+        {
+          "capture": "after",
+          "values": {
+            "display": "document.getElementById('confirmModal').style.display",
+            "dismissed": "document.getElementById('confirmModal').style.display === 'none' ? 'yes' : 'no'"
+          }
+        }
+      ],
+      "assertions": [
+        {"id": "onclick-handler", "left": "$.before.onclick_ok", "op": "equal", "right": "yes"},
+        {"id": "modal-dismissed", "left": "$.after.dismissed", "op": "equal", "right": "yes"}
+      ]
+    }
+  ]
+}

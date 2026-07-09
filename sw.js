@@ -33,7 +33,7 @@ function isSafetyCriticalEngineAsset(pathname) {
     || leaf === 'vpm-engine-core.js';
 }
 
-async function networkFirstWithCacheFallback(request, url) {
+async function networkFirstWithCacheFallback(event, request, url) {
   const cacheKey = new Request(url.origin + url.pathname);
   try {
     const response = await fetch(request);
@@ -70,19 +70,31 @@ const OFFLINE_INDEX = APP_BASE + 'index.html';
 const REQUIRED_PRECACHE = [
   OFFLINE_INDEX,
   APP_BASE + 'app-version.js',
-  APP_BASE + 'zhl-physics-core.js',
-  APP_BASE + 'zhl-gas-core.js',
+  APP_BASE + 'lsp-dplanner-foundation.css',
+  APP_BASE + 'lsp-dplanner-modes.css',
+  APP_BASE + 'lsp-dplanner-controls.css',
+  APP_BASE + 'lsp-dplanner-results.css',
   APP_BASE + 'zhl-engine-bundle.js',
+  APP_BASE + 'padi-engine.js',
   APP_BASE + 'vpm-engine-bundle.js',
   APP_BASE + 'zhl-worker-bridge.js',
   APP_BASE + 'zhl-schedule-worker.js',
-  APP_BASE + 'zhl-ccr-core.js',
-  APP_BASE + 'zhl-schedule-core.js',
+  APP_BASE + 'planner-inputs-core.js',
+  APP_BASE + 'rec-planner.js',
+  APP_BASE + 'settings-core.js',
   APP_BASE + 'surf-interval-core.js',
   APP_BASE + 'gas-table-core.js',
   APP_BASE + 'gas-plan-core.js',
+  APP_BASE + 'gas-cards-core.js',
   APP_BASE + 'export-core.js',
+  APP_BASE + 'plot-core.js',
+  APP_BASE + 'gf-curve-core.js',
   APP_BASE + 'contingency-core.js',
+  APP_BASE + 'results-panel.js',
+  APP_BASE + 'results-render-core.js',
+  APP_BASE + 'schedule-runner-core.js',
+  APP_BASE + 'zhl-headless-adapter.js',
+  APP_BASE + 'planner-shell.js',
 ];
 
 // Required for offline/PWA startup (Tier-3 ZHL + self-hosted fonts/icons)
@@ -93,6 +105,7 @@ const OPTIONAL_PRECACHE = [
   APP_BASE + 'vendor/fonts/fonts.css',
   APP_BASE + 'vendor/fonts/DejaVuSans.ttf',
   APP_BASE + 'vendor/fonts/DejaVuSans-Bold.ttf',
+  APP_BASE + 'vendor/pdf-fonts.js',
   APP_BASE + 'vendor/fonts/JTUSjIg69CK48gW7PXoo9Wdhyzbi.woff2',
   APP_BASE + 'vendor/fonts/JTUSjIg69CK48gW7PXoo9Wlhyw.woff2',
   APP_BASE + 'vendor/fonts/QGYvz_MVcBeNP4NJtEtq.woff2',
@@ -104,6 +117,7 @@ const OPTIONAL_PRECACHE = [
   APP_BASE + 'vendor/fonts/tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2',
   APP_BASE + 'vendor/fonts/tDbV2o-flEEny0FZhsfKu5WU4xD_OwG_TA.woff2',
   APP_BASE + 'vendor/icons/giw-icon-192.png',
+  APP_BASE + 'vendor/icons/computer-14545985.png',
   APP_BASE + 'vendor/icons/tools-1424252.png',
   APP_BASE + 'vendor/icons/settings-2099058.png',
   APP_BASE + 'manifest.json',
@@ -255,7 +269,7 @@ self.addEventListener('fetch', event => {
 
   // Network-first for decompression engine assets — avoid serving stale physics after updates
   if (isSafetyCriticalEngineAsset(url.pathname)) {
-    event.respondWith(networkFirstWithCacheFallback(event.request, url));
+    event.respondWith(networkFirstWithCacheFallback(event, event.request, url));
     return;
   }
 

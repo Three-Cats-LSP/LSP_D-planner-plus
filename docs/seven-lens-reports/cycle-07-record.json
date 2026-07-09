@@ -1,0 +1,1539 @@
+{
+  "schema_version": 5,
+  "cycle": 7,
+  "record_path": "docs/seven-lens-reports/cycle-07-record.json",
+  "target_branch": "dev",
+  "integration_base_commit": "6b192cf416e332c2f216762be86cce27bb48485c",
+  "baseline_commit": "6b192cf416e332c2f216762be86cce27bb48485c",
+  "baseline_registry_fingerprint": "c123a53858a1287c7889fc85f5b44a43a2446110d87eb7f7da652203d9773b7e",
+  "baseline_findings": [
+    {
+      "id": "SL-C02-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Imperial cylinder constraints use max 1766 ft3 and retain metric min/step, rejecting defaults while permitting impossible gas volumes."
+    },
+    {
+      "id": "SL-C02-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Travel manual depth limits disagree between markup, metric restore, and imperial mode."
+    },
+    {
+      "id": "SL-C02-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Rounded display values become canonical physical inputs; Best Mix and CNS now reproduce the same unit-roundtrip drift."
+    },
+    {
+      "id": "SL-C02-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Min-deco regression checks an adapter property rather than observable schedule behavior."
+    },
+    {
+      "id": "SL-C02-M-06",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle history allowed unresolved findings and a blocked prior record to be deleted or rewritten as passed."
+    },
+    {
+      "id": "SL-C03-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Knowledge Base states that extending shallow stops is safe without qualifying oxygen exposure, gas reserve, or plan-recalculation limits."
+    },
+    {
+      "id": "SL-C03-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle 3 regressions compare rounded outputs and restore values before units, masking physical-depth drift and corrupting test state."
+    },
+    {
+      "id": "SL-C03-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "VPM-B+GFS copy says it helps when shallow stops feel too long, contradicting the app's accurate description that GFS adds a conservative surface ceiling."
+    },
+    {
+      "id": "SL-C04-H-02",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Depth and cylinder edits after a unit switch leave canonical data-depth-m/data-volume-l stale, so consumers use old values and the next switch discards the edit."
+    },
+    {
+      "id": "SL-C04-H-03",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Cycles 2-4 are marked reviewed although their protocol records fail closure and Cycle 4 has no evidence runs for five closed findings."
+    },
+    {
+      "id": "SL-C04-M-03",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Cycle regression setup leaks canonical DOM and settings state, making the full engine suite order-dependent and leaving two contingency cases failing."
+    },
+    {
+      "id": "SL-C04-M-04",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Browser trace evidence could pass forced or vacuous single-run checks without proving a real interactive consumer path."
+    },
+    {
+      "id": "SL-C04-H-04",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Closure evidence was materialized from constants instead of executed commands, allowing fabricated exit codes, cleanliness claims, and unrelated trace reuse."
+    },
+    {
+      "id": "SL-C04-M-05",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "A dynamic deco cylinder created in imperial mode defaults to 0.4 ft3 while retaining min 1 and step 0.5, making its initial value invalid."
+    },
+    {
+      "id": "SL-C04-H-05",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "planPanelTecSection is nested inside an unclosed planPanelRecSection, leaving gas and technical planner controls hidden in every planner mode."
+    },
+    {
+      "id": "ISSUE-133-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 4C/5H/8M/8L remediated; gated in audit.py issue133 block and engine_regression issue133 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-134-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 1C/4H/7M/7L remediated; gated in audit.py issue134 block and engine_regression issue134 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-135-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "All 10H/10M/1L remediated; gated in audit.py issue135 block and engine_regression issue135 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-136-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "extract_ui_cores.py uses LSP-EXTRACT marker contract; verified by audit.py and tools/extract_ui_cores.py [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-137-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in 51f95ac; gated in audit.py and engine_regression issue137 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-138-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Fixed in fcfb6c4 (v2.53.04); gated in audit.py and engine_regression issue138 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-139-ROLLUP",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "All 3L fixed; #138 40/40 re-verified on 1271d1a; gated in audit.py and engine_regression issue139 [cutover: evidence repointed from LEGACY-BASELINE to V3 regression IDs]"
+    },
+    {
+      "id": "ISSUE-140-ROLLUP",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Surface interval gas/GF kinetics, pooled gas-plan turn pressure, audit case-ID validation, SW cache waitUntil, Android compile gate, coverage self-tests, FileProvider scope, workspace hash drift"
+    },
+    {
+      "id": "ISSUE-141-ROLLUP",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "pSCR diluent bypass from computePSCRFractions, resolveCcrSacForGas removed, invalid trimix getN2Frac returns null"
+    },
+    {
+      "id": "REGRESSION-GF-CCR-FIX",
+      "severity": "CRITICAL",
+      "status": "CLOSED",
+      "summary": "GF pre-anchor and CCR endpoint corrected; verification requires REG-06 and REG-07 in the current release run"
+    },
+    {
+      "id": "SL-C05-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Mode-isolation CSS targets removed #gfPresetsRow"
+    },
+    {
+      "id": "SL-C05-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Export buttons suppress keyboard focus ring"
+    },
+    {
+      "id": "SL-C05-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .brand-icon rules"
+    },
+    {
+      "id": "SL-C05-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete #gfCustomRow .gf-btn rules"
+    },
+    {
+      "id": "SL-C05-L-03",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .algo-switcher rules"
+    },
+    {
+      "id": "SL-C05-L-04",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .theme-toggle rules"
+    },
+    {
+      "id": "SL-C06-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Segmented controls suppress keyboard focus ring"
+    },
+    {
+      "id": "SL-C06-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Gas numeric fields undersize touch targets"
+    },
+    {
+      "id": "SL-C06-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .si-inner surface-interval rules"
+    },
+    {
+      "id": "SL-C06-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Obsolete .t-col rule"
+    },
+    {
+      "id": "SL-C06-L-03",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Dead .btn-calc alias in shared .gen-btn selectors"
+    },
+    {
+      "id": "SL-C06-L-04",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Field inputs lack invalid-state styling"
+    },
+    {
+      "id": "SL-C06-L-05",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Control transitions ignore prefers-reduced-motion"
+    },
+    {
+      "id": "SL-C03-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Convert slider value/min/max on unit switch; read depth in metres for calc"
+    },
+    {
+      "id": "SL-C03-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Sync label/constraints; convert on setUnits; depthToMetres in calcCNS"
+    },
+    {
+      "id": "SL-C03-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Clarify AL80 as 11.1 L (~0.39 ft3) naming convention"
+    },
+    {
+      "id": "SL-C04-H-01",
+      "severity": "HIGH",
+      "status": "CLOSED",
+      "summary": "Convert endDepth on setUnits; use domDepthToM in calcEND_tool"
+    },
+    {
+      "id": "SL-C04-M-01",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Full depth tuple + domDepthToM in calcSurfInt"
+    },
+    {
+      "id": "SL-C04-M-02",
+      "severity": "MEDIUM",
+      "status": "CLOSED",
+      "summary": "Add backdrop dismiss calling closeConfirmModal(false)"
+    },
+    {
+      "id": "SL-C04-L-01",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Fix to Narcotic pressure"
+    },
+    {
+      "id": "SL-C04-L-02",
+      "severity": "LOW",
+      "status": "CLOSED",
+      "summary": "Unit-neutral depth range wording"
+    }
+  ],
+  "audit_commit": "094162acd2ce89ac01acdef5c2ff326d4f6b5c58",
+  "verified_source_commit": "63b30d2df28d5cbe497fc8055c44a3eac57e0855",
+  "closure_evidence_commit": "bf311c69d4817207d2ff77f321cc2be6f8503224",
+  "verification_status": "PASSED",
+  "parts": [
+    {
+      "id": "UI-CSS-RESULTS-P01",
+      "unit_id": "UI-CSS-RESULTS",
+      "path": "lsp-dplanner-results.css",
+      "start_line": 1,
+      "end_line": 500,
+      "line_count": 500,
+      "content_fingerprint": "0f3ffbe3af96d5049afa5d41423fc4552546f041b2e99b65b2e18b4ecd9ea5b6",
+      "review_session": "C07-A",
+      "verification_session": "C09-DEP-DECO-CARD-SLATE-A",
+      "lens_results": {
+        "L1": {
+          "trace": "deco-table-wrap max-content+overflow-x:auto :2-8; gas-plan min-width columns :106-111; mobile @600 card/table-view toggle :184-268; metric-grid 4col :529; #resultsPanel overflow hidden :543",
+          "boundary_cases": [
+            "375px schedule-wrap overflow-x auto",
+            "long gas-plan-gas-mix white-space normal :112",
+            "deco-totals-inner overflow-wrap anywhere :95"
+          ],
+          "evidence": "lsp-dplanner-results.css:2-112,184-268,529-543; Playwright mobile.wrapOverflowX auto",
+          "result": "NO_FINDING"
+        },
+        "L2": {
+          "trace": "runRecPlan/runDecoSchedule -> results-panel.js has-results toggle :114 -> #resultsPanel:not(.has-results) hides metric strip :549-552; switchResultTab -> .result-tab-pane.active :477-478",
+          "boundary_cases": [
+            "empty state vs has-results",
+            "REC vs TEC tab panes",
+            "invalid depth still leaves has-results when prior plan cached (JS writer)"
+          ],
+          "evidence": "results-panel.js:34,114,256-268; Playwright invalid.hasResults true after 999/999 when prior REC succeeded",
+          "result": "NO_FINDING"
+        },
+        "L3": {
+          "trace": "renderMetricCards writes metric-val--* classes :52-78; decorateDecoTableForV3 adds schedule-table row-* :159-191; _setGasWarningBanner toggles #gasWarningBanner display flex :226-236",
+          "boundary_cases": [
+            "unit switch relabels metric .unit via results-panel :98",
+            "contingency stack width 100% override :591 vs global fit-content :22-28"
+          ],
+          "evidence": "results-panel.js:52-78,159-191,226-236; gas-plan-core.js gas-tight-row/gas-bt-cell :396-452",
+          "result": "NO_FINDING"
+        },
+        "L4": {
+          "trace": "index.html #resultsPanel markup + results-render-core row writers -> .deco-row/.asc-row/.deco-table; export-core deco-plan-card :394; contingency-core schedule-table :514",
+          "boundary_cases": [
+            ".algo-switcher zero writers",
+            ".legacy-panels hidden",
+            ".u0-.u21 used in markup-consumption/header"
+          ],
+          "evidence": "index.html:796-960; results-render-core.js:99-846; grep algo-switcher 0",
+          "result": "FINDING"
+        },
+        "L5": {
+          "trace": "extract_ui_css.py UI-CSS-RESULTS -> lsp-dplanner-results.css; index.html link order foundation,modes,controls,results; sw.js precache results.css",
+          "boundary_cases": [
+            "SUITE-PARITY canonical-generated",
+            "AUD-HTML-003 stylesheet order"
+          ],
+          "evidence": "tools/extract_ui_css.py:25; baseline static+release PASS; no generated-only edits",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "gas-tight-row/gas-bt-cell red banner :281-289; body.light-theme #decoAlerts .alert.deco solid red :695-703; gas-switch row-switch yellow :744-745",
+          "boundary_cases": [
+            "light theme alert #111 text",
+            "chip-yellow vs chip-orange collapse :574",
+            "legacy mobile gas-tight !important after background:none :281-283"
+          ],
+          "evidence": "Playwright light.alert bg rgb(255,68,51); chip color parity; switch row rgb(234,179,8)",
+          "result": "FINDING"
+        },
+        "L7": {
+          "trace": "SUITE-UI-STRUCTURE UI-EXTRACT-CSS -> source strings; SUITE-UI-CSS-REGRESSION targets foundation/modes only; no results computed-style leaf suite",
+          "boundary_cases": [
+            "SUITE-BROWSER does not assert resultsPanel computed styles",
+            "release includes UI-CONTROLS-CSS-REGRESSION not results"
+          ],
+          "evidence": "dev/ui_css_regression.py CASE_IDS SL-C05-*; release profile 20 suites PASS without results CSS behavioral cases",
+          "result": "FINDING"
+        }
+      }
+    },
+    {
+      "id": "UI-CSS-RESULTS-P02",
+      "unit_id": "UI-CSS-RESULTS",
+      "path": "lsp-dplanner-results.css",
+      "start_line": 501,
+      "end_line": 1000,
+      "line_count": 500,
+      "content_fingerprint": "64b505463162bbdb12b31246e4f5f594b2245c288a0d469f5b49eb44adc8b0ed",
+      "review_session": "C07-B",
+      "verification_session": "C09-DEP-DECO-CARD-SLATE-B",
+      "lens_results": {
+        "L1": {
+          "trace": "#resultsPanel .schedule-table width 100% :713; metric-val--runtime #2563eb :566; mobile bottom-nav min-height 56px :802; theme-pill 54x28 grid :822-837",
+          "boundary_cases": [
+            "640px metric-grid 2col :931",
+            "landscape 667x375 tabsNav overflow-x auto",
+            "long schedule horizontal scroll :711"
+          ],
+          "evidence": "lsp-dplanner-results.css:566,711-713,795-807,931; Playwright mobile tabsNavOverflow auto",
+          "result": "NO_FINDING"
+        },
+        "L2": {
+          "trace": "switchResultTab contingency -> #resultTab-contingency.active :477; #contingencyScheduleStack .deco-contingency-calc button styling :598-599; decorateContingencyTableForV3 :196-224",
+          "boundary_cases": [
+            "recalc replaces metrics when tecGenerateBtn clicked with new depth",
+            "error path leaves prior table visible (JS)"
+          ],
+          "evidence": "contingency-core.js:514; Playwright recalc.changed true after depth 45->30",
+          "result": "NO_FINDING"
+        },
+        "L3": {
+          "trace": "has-results hides #resultEmptyState :553; #resultsScratch display none :556; #tableViewToggle suppressed in V4 :557; tissue/chart cards transparent shell :585-588",
+          "boundary_cases": [
+            "mobile-active toggles plan/results panels :797-800",
+            "gasWarningBanner display none default :788"
+          ],
+          "evidence": "results-panel.js:125-132; lsp-dplanner-results.css:549-557,788-790",
+          "result": "NO_FINDING"
+        },
+        "L4": {
+          "trace": "schedule-table phase-cell/ph-* icons from results-panel _PHASE_ICON_SVG :10-17; profile-legend-gasswitch uses --gas-switch :616; tissue-sat-* rows :775-786",
+          "boundary_cases": [
+            "ppo2-* classes from _ppo2ClassV3 :145-151",
+            "row-switch neutralized :744-750"
+          ],
+          "evidence": "results-panel.js:145-191; Playwright ppo2 class counts ok3 warn6 hi3 crit2",
+          "result": "FINDING"
+        },
+        "L5": {
+          "trace": "V4 #resultsPanel schedule-table neutralizes legacy tr[data-phase=switch] gold rules :751-755; parity check reproduces identical lsp-dplanner-results.css in www/",
+          "boundary_cases": [
+            "print CSS absent in canonical and mirrors",
+            "chip scoped overrides only in results panel block"
+          ],
+          "evidence": "SUITE-PARITY PASS at baseline; fetch results.css no @media print",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "deco-plan-card red border :676-677; mandatory-stop deco rows styled via tr.deco-row inherit :756; ppo2 severity colors overridden :756-758 vs :739-742",
+          "boundary_cases": [
+            "light-theme deco alert weight 700",
+            "ppo2-warn 1.16 same color as ppo2-ok 0.69",
+            "chip-yellow TTS same as chip-orange OTU"
+          ],
+          "evidence": "Playwright ppo2 samples; chip color parity; light alert contrast",
+          "result": "FINDING"
+        },
+        "L7": {
+          "trace": "No dev/ui_results_css_regression.py; SUITE-UI-CONTROLS-CSS-REGRESSION does not cover #resultsPanel selectors; static gates do not inspect computed PPO2/chip colors",
+          "boundary_cases": [
+            "missing behavioral coverage for chip-yellow/orange",
+            "missing PPO2 severity regression",
+            "missing reduced-motion results selectors"
+          ],
+          "evidence": "Glob no ui_results_css_regression; release PASS without results computed-style cases",
+          "result": "FINDING"
+        }
+      }
+    },
+    {
+      "id": "UI-CSS-RESULTS-P03",
+      "unit_id": "UI-CSS-RESULTS",
+      "path": "lsp-dplanner-results.css",
+      "start_line": 1001,
+      "end_line": 1009,
+      "line_count": 9,
+      "content_fingerprint": "632813fc11e82ccf35d67da62eee8ae2d4e35f2907098632ba1417f4c4a4c9b9",
+      "review_session": "C07-DEP-GAS-CARD-COLORS-C",
+      "verification_session": "C09-DEP-GAS-CARD-COLORS-C",
+      "lens_results": {
+        "L1": {
+          "trace": "Gas-card severity color and footer/header typography tail rules reviewed after critical.zip mockup update; only gas-card text/color overrides live in this tail boundary.",
+          "boundary_cases": [
+            "critical/low gas stays orange warning tier",
+            "no-gas card remains stronger red no-go tier",
+            "no schedule, graph, table, or layout selectors in tail boundary"
+          ],
+          "evidence": "lsp-dplanner-results.css:1001-1009; dev/ui_visual_contract_regression.py SL-C09-MOBILE-WARNING-WRAP color and typography assertions passed",
+          "result": "NO_FINDING"
+        },
+        "L2": {
+          "trace": "Gas-card severity color and footer/header typography tail rules reviewed after critical.zip mockup update; only gas-card text/color overrides live in this tail boundary.",
+          "boundary_cases": [
+            "critical/low gas stays orange warning tier",
+            "no-gas card remains stronger red no-go tier",
+            "no schedule, graph, table, or layout selectors in tail boundary"
+          ],
+          "evidence": "lsp-dplanner-results.css:1001-1009; dev/ui_visual_contract_regression.py SL-C09-MOBILE-WARNING-WRAP color and typography assertions passed",
+          "result": "NO_FINDING"
+        },
+        "L3": {
+          "trace": "Gas-card severity color and footer/header typography tail rules reviewed after critical.zip mockup update; only gas-card text/color overrides live in this tail boundary.",
+          "boundary_cases": [
+            "critical/low gas stays orange warning tier",
+            "no-gas card remains stronger red no-go tier",
+            "no schedule, graph, table, or layout selectors in tail boundary"
+          ],
+          "evidence": "lsp-dplanner-results.css:1001-1009; dev/ui_visual_contract_regression.py SL-C09-MOBILE-WARNING-WRAP color and typography assertions passed",
+          "result": "NO_FINDING"
+        },
+        "L4": {
+          "trace": "Gas-card severity color and footer/header typography tail rules reviewed after critical.zip mockup update; only gas-card text/color overrides live in this tail boundary.",
+          "boundary_cases": [
+            "critical/low gas stays orange warning tier",
+            "no-gas card remains stronger red no-go tier",
+            "no schedule, graph, table, or layout selectors in tail boundary"
+          ],
+          "evidence": "lsp-dplanner-results.css:1001-1009; dev/ui_visual_contract_regression.py SL-C09-MOBILE-WARNING-WRAP color and typography assertions passed",
+          "result": "NO_FINDING"
+        },
+        "L5": {
+          "trace": "Gas-card severity color and footer/header typography tail rules reviewed after critical.zip mockup update; only gas-card text/color overrides live in this tail boundary.",
+          "boundary_cases": [
+            "critical/low gas stays orange warning tier",
+            "no-gas card remains stronger red no-go tier",
+            "no schedule, graph, table, or layout selectors in tail boundary"
+          ],
+          "evidence": "lsp-dplanner-results.css:1001-1009; dev/ui_visual_contract_regression.py SL-C09-MOBILE-WARNING-WRAP color and typography assertions passed",
+          "result": "NO_FINDING"
+        },
+        "L6": {
+          "trace": "Gas-card severity color and footer/header typography tail rules reviewed after critical.zip mockup update; only gas-card text/color overrides live in this tail boundary.",
+          "boundary_cases": [
+            "critical/low gas stays orange warning tier",
+            "no-gas card remains stronger red no-go tier",
+            "no schedule, graph, table, or layout selectors in tail boundary"
+          ],
+          "evidence": "lsp-dplanner-results.css:1001-1009; dev/ui_visual_contract_regression.py SL-C09-MOBILE-WARNING-WRAP color and typography assertions passed",
+          "result": "NO_FINDING"
+        },
+        "L7": {
+          "trace": "Gas-card severity color and footer/header typography tail rules reviewed after critical.zip mockup update; only gas-card text/color overrides live in this tail boundary.",
+          "boundary_cases": [
+            "critical/low gas stays orange warning tier",
+            "no-gas card remains stronger red no-go tier",
+            "no schedule, graph, table, or layout selectors in tail boundary"
+          ],
+          "evidence": "lsp-dplanner-results.css:1001-1009; dev/ui_visual_contract_regression.py SL-C09-MOBILE-WARNING-WRAP color and typography assertions passed",
+          "result": "NO_FINDING"
+        }
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "SL-C07-M-01",
+      "severity": "MEDIUM",
+      "unit_id": "UI-CSS-RESULTS",
+      "location": "lsp-dplanner-results.css:574",
+      "root_cause": "#resultsPanel .chip-yellow remaps to --status-orange-dim / --status-orange, identical to .chip-orange in the same scope.",
+      "failure_path": "TEC Generate schedule -> renderChipRow assigns chip-yellow to TTS chip -> getComputedStyle(#resultChipRow .chip-yellow).color === getComputedStyle(.chip-orange).color",
+      "impact": "Yellow versus orange safety tiers collapse in the metric chip row; OTU/TTS/decozone severity cannot be distinguished by color alone.",
+      "evidence": "Playwright 1280x800: chip-yellow and chip-orange both rgb(245,158,11) with identical background rgba(245,158,11,0.12); results-panel.js:93 assigns chip-yellow to TTS",
+      "recommendation": "Restore distinct yellow tokens for .chip-yellow inside #resultsPanel or rename writer classes to match intended palette.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C07-CHIP-YELLOW-DISTINCT"
+      ],
+      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "fix_summary": "Remapped #resultsPanel .chip-yellow to --yellow-dim/--yellow tokens distinct from chip-orange.",
+      "baseline_failure": "chip-yellow and chip-orange both rgb(245,158,11) under audit CSS.",
+      "observable_contract": "TEC Generate renders #resultChipRow .chip-yellow distinct from .chip-orange in dark and light themes with chip-dot semantic context.",
+      "independent_verification_result": "PASSED (C07-V-B independent verification at acaec31)",
+      "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
+      "pre_fix_evidence_id": "ER-C07-PRE-RESULTS",
+      "post_fix_evidence_id": "ER-C07-TRACE",
+      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS",
+      "evidence_ids": [
+        "ER-C07-PRE-RESULTS",
+        "ER-C07-POST-RESULTS",
+        "ER-C07-TRACE",
+        "ER-C07-PROTOCOL",
+        "ER-C07-PARITY",
+        "ER-C07-RESTORE-RESULTS",
+        "static",
+        "ci",
+        "release"
+      ]
+    },
+    {
+      "id": "SL-C07-M-02",
+      "severity": "MEDIUM",
+      "unit_id": "UI-CSS-RESULTS",
+      "location": "lsp-dplanner-results.css:756-758",
+      "root_cause": "V4 neutralization rules set tr.deco-row/asc-row/safe-row td { color: inherit }, overriding later .ppo2-* severity colors because tr+td selectors beat class-only PPO2 rules.",
+      "failure_path": "45 m / 25 min TEC plan -> decorateDecoTableForV3 adds col-ppo2 ppo2-warn -> computed color rgb(136,146,164) equals ppo2-ok; ppo2-hi and ppo2-crit both rgb(226,232,240)",
+      "impact": "Schedule PPO2 tiers are visually indistinguishable; elevated and critical ppO2 values do not stand out from nominal cells.",
+      "evidence": "Playwright counts ppo2-warn=6 ppo2-crit=2; samples warn 1.16 and crit 1.61 both muted/light gray not yellow/red; CSS :739-742 vs :756-758 cascade",
+      "recommendation": "Exclude .col-ppo2.ppo2-* from row neutralization or raise PPO2 selector specificity above tr.deco-row td.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C07-PPO2-SEVERITY-COLORS"
+      ],
+      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "fix_summary": "Excluded .col-ppo2 from row neutralization; raised PPO2 td selector specificity with !important.",
+      "baseline_failure": "ppo2-warn/crit computed muted gray identical to ppo2-ok after tr.deco-row td { color: inherit }.",
+      "observable_contract": "45 m TEC schedule renders distinct ppo2-ok/warn/hi/crit colors; ppo2-crit remains red after row neutralization.",
+      "independent_verification_result": "PASSED (C07-V-B independent verification at acaec31)",
+      "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
+      "pre_fix_evidence_id": "ER-C07-PRE-RESULTS",
+      "post_fix_evidence_id": "ER-C07-POST-RESULTS",
+      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS",
+      "evidence_ids": [
+        "ER-C07-PRE-RESULTS",
+        "ER-C07-POST-RESULTS",
+        "ER-C07-TRACE",
+        "ER-C07-PROTOCOL",
+        "ER-C07-PARITY",
+        "ER-C07-RESTORE-RESULTS",
+        "static",
+        "ci",
+        "release"
+      ]
+    },
+    {
+      "id": "SL-C07-L-01",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-RESULTS",
+      "location": "lsp-dplanner-results.css:184-295",
+      "root_cause": "Mobile card-layout deco-table rules are scoped under .legacy-panels, but .legacy-panels { display: none !important } at :418 hides the entire subtree in the live V4 shell.",
+      "failure_path": "Runtime query .legacy-panels .deco-table:not(.table-view) inside assembled index.html -> 0 visible targets; V4 uses #resultsPanel .schedule-table table layout instead",
+      "impact": "~110 lines of mobile card/table-toggle CSS are dead; maintenance burden and false confidence in legacy card fallback.",
+      "evidence": "Playwright legacyPanelsDisplay none, legacyCardTables 0, v4ScheduleTables 1; planner-shell.js moves modals out of legacy root only",
+      "recommendation": "Remove or relocate mobile card rules to #resultsPanel scope if still needed; drop .legacy-panels coupling.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C07-CSS-DEAD-LEGACY-CARDS"
+      ],
+      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "fix_summary": "Removed dead .legacy-panels mobile card/table-toggle CSS block.",
+      "baseline_failure": "~110 lines of .legacy-panels mobile deco card rules present under display:none subtree.",
+      "observable_contract": "No .legacy-panels mobile card selectors in canonical CSS; V4 #resultsPanel .schedule-table mobile layout intact at 375px.",
+      "independent_verification_result": "PASSED (C07-V-A independent verification at acaec31)",
+      "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
+      "pre_fix_evidence_id": "ER-C07-PRE-RESULTS",
+      "post_fix_evidence_id": "ER-C07-POST-RESULTS",
+      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS",
+      "evidence_ids": [
+        "ER-C07-PRE-RESULTS",
+        "ER-C07-POST-RESULTS",
+        "ER-C07-TRACE",
+        "ER-C07-PROTOCOL",
+        "ER-C07-PARITY",
+        "ER-C07-RESTORE-RESULTS",
+        "static",
+        "ci",
+        "release"
+      ]
+    },
+    {
+      "id": "SL-C07-L-02",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-RESULTS",
+      "location": "lsp-dplanner-results.css:382-384",
+      "root_cause": ".algo-switcher flex-wrap rules target a class absent from assembled index.html (V4 uses .mode-toggle / .main-nav-bar).",
+      "failure_path": "document.querySelectorAll('.algo-switcher').length === 0 at runtime on index.html shell",
+      "impact": "Dead CSS from pre-V4 header layout.",
+      "evidence": "grep index.html algo-switcher -> 0; Playwright dead.algoSwitcherCount 0",
+      "recommendation": "Delete obsolete .algo-switcher block or move surviving rules to active header selectors.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C07-CSS-DEAD-ALGO-SWITCHER"
+      ],
+      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "fix_summary": "Deleted obsolete .algo-switcher flex-wrap rules.",
+      "baseline_failure": ".algo-switcher rules present with zero index.html writers.",
+      "observable_contract": "Canonical CSS and runtime DOM contain zero .algo-switcher selectors or writers.",
+      "independent_verification_result": "PASSED (C07-V-A independent verification at acaec31)",
+      "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
+      "pre_fix_evidence_id": "ER-C07-PRE-RESULTS",
+      "post_fix_evidence_id": "ER-C07-POST-RESULTS",
+      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS",
+      "evidence_ids": [
+        "ER-C07-PRE-RESULTS",
+        "ER-C07-POST-RESULTS",
+        "ER-C07-TRACE",
+        "ER-C07-PROTOCOL",
+        "ER-C07-PARITY",
+        "ER-C07-RESTORE-RESULTS",
+        "static",
+        "ci",
+        "release"
+      ]
+    },
+    {
+      "id": "SL-C07-L-03",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-RESULTS",
+      "location": "lsp-dplanner-results.css:308,421,474,560,848",
+      "root_cause": ".lsp-slider thumb, .mode-btn, .result-tab-btn, and .theme-pill-thumb declare transitions without @media (prefers-reduced-motion: reduce) overrides (unlike lsp-dplanner-controls.css).",
+      "failure_path": "Browser context reduced_motion=reduce -> getComputedStyle(.result-tab-btn).transitionProperty still 'all'; slider thumb transitionDuration not 0s",
+      "impact": "Results chrome ignores reduced-motion preference on tab/mode/slider/theme affordances.",
+      "evidence": "Playwright landscape context hasReduceQuery true; tabTransition 'all' while controls sheet now gates motion",
+      "recommendation": "Add prefers-reduced-motion block mirroring controls.css pattern for animated results selectors.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C07-REDUCED-MOTION"
+      ],
+      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "fix_summary": "Added @media (prefers-reduced-motion: reduce) zero-duration overrides for results animated selectors.",
+      "baseline_failure": "result-tab-btn transitionProperty 'all' with nonzero duration under reduced-motion emulation.",
+      "observable_contract": "prefers-reduced-motion: reduce zeroes result-tab, mode-btn, and theme-pill-thumb transition durations while warnings remain visible.",
+      "independent_verification_result": "PASSED (C07-V-B independent verification at acaec31)",
+      "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
+      "pre_fix_evidence_id": "ER-C07-PRE-RESULTS",
+      "post_fix_evidence_id": "ER-C07-POST-RESULTS",
+      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS",
+      "evidence_ids": [
+        "ER-C07-PRE-RESULTS",
+        "ER-C07-POST-RESULTS",
+        "ER-C07-TRACE",
+        "ER-C07-PROTOCOL",
+        "ER-C07-PARITY",
+        "ER-C07-RESTORE-RESULTS",
+        "static",
+        "ci",
+        "release"
+      ]
+    },
+    {
+      "id": "SL-C07-L-04",
+      "severity": "LOW",
+      "unit_id": "UI-CSS-RESULTS",
+      "location": "lsp-dplanner-results.css:1-888",
+      "root_cause": "Canonical results stylesheet defines screen layout only; no @media print rules for schedule tables, alerts, or metric strips.",
+      "failure_path": "fetch('lsp-dplanner-results.css').text -> @media print absent; PDF/export relies on export-core canvas capture not print CSS",
+      "impact": "Browser print/PDF of results panel lacks pagination, alert preservation, and table overflow guarantees defined for on-screen V4 layout.",
+      "evidence": "Playwright print.hasPrintBlock false; export-core.js uses canvas PDF path only",
+      "recommendation": "Add scoped @media print rules for #resultsPanel schedule, alerts, and chip/metric visibility if print is a supported surface.",
+      "status": "CLOSED",
+      "regression_ids": [
+        "SL-C07-PRINT-RESULTS"
+      ],
+      "resolution_commit": "1b26dd1474713313789a9c3df90785d804a93e6a",
+      "fix_summary": "Added scoped @media print block for #resultsPanel alerts, metrics, schedule rows, and chip strip.",
+      "baseline_failure": "No @media print block in lsp-dplanner-results.css.",
+      "observable_contract": "Print media keeps alerts, metric strip, and schedule rows visible with break-inside avoid; interactive chrome hidden.",
+      "independent_verification_result": "PASSED (C07-V-B independent verification at acaec31)",
+      "final_reviewed_fingerprint": "1800c05b12ca736925fabc57e4adcf810d71d4cb8605a9953051b18454861c69",
+      "pre_fix_evidence_id": "ER-C07-PRE-RESULTS",
+      "post_fix_evidence_id": "ER-C07-POST-RESULTS",
+      "state_restoration_evidence_id": "ER-C07-RESTORE-RESULTS",
+      "evidence_ids": [
+        "ER-C07-PRE-RESULTS",
+        "ER-C07-POST-RESULTS",
+        "ER-C07-TRACE",
+        "ER-C07-PROTOCOL",
+        "ER-C07-PARITY",
+        "ER-C07-RESTORE-RESULTS",
+        "static",
+        "ci",
+        "release"
+      ]
+    }
+  ],
+  "evidence_runs": [
+    {
+      "id": "ER-C07-PRE-RESULTS",
+      "kind": "baseline_failure",
+      "case_ids": [
+        "SL-C07-CHIP-YELLOW-DISTINCT",
+        "SL-C07-PPO2-SEVERITY-COLORS",
+        "SL-C07-CSS-DEAD-LEGACY-CARDS",
+        "SL-C07-CSS-DEAD-ALGO-SWITCHER",
+        "SL-C07-REDUCED-MOTION",
+        "SL-C07-PRINT-RESULTS"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/c07_pre_results_regression.py"
+      ],
+      "commit": "c108bc5cf95761563afdc1545aca9e4f31f80f97",
+      "observable_assertions": [
+        "Prepared baseline CSS blob sha256 matches audit commit (9cc80b74a644893514a7f5843dd9b6f620f5e92909649339644e4c56960306aa)",
+        "All six SUITE-UI-RESULTS-CSS-REGRESSION cases FAIL on audit CSS"
+      ],
+      "prepared_baseline_commit": "c108bc5cf95761563afdc1545aca9e4f31f80f97",
+      "audit_css_sha256": "9cc80b74a644893514a7f5843dd9b6f620f5e92909649339644e4c56960306aa",
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/c07_pre_results_regression.py",
+      "worktree_clean": true,
+      "state_restored": true,
+      "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-PRE-RESULTS.json",
+      "receipt_sha256": "bca24e5732e066c6a5154df01b9e99e6c9fdfb8fea6016a6ab8ed1ed3d6164d4",
+      "exit_code": 1,
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
+    },
+    {
+      "id": "ER-C07-POST-RESULTS",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C07-CHIP-YELLOW-DISTINCT",
+        "SL-C07-PPO2-SEVERITY-COLORS",
+        "SL-C07-CSS-DEAD-LEGACY-CARDS",
+        "SL-C07-CSS-DEAD-ALGO-SWITCHER",
+        "SL-C07-REDUCED-MOTION",
+        "SL-C07-PRINT-RESULTS"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/ui_results_css_regression.py"
+      ],
+      "commit": "63b30d2df28d5cbe497fc8055c44a3eac57e0855",
+      "observable_assertions": [
+        "All six computed-style cases PASS across dark/light/landscape viewports"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_results_css_regression.py",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-POST-RESULTS.json",
+      "receipt_sha256": "27d33e2666cb7215608f1a509f979ff85b247227a10a731f586675fd02a65e34",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true,
+      "runtime_trace": {
+        "entry_event": "User generates 45 m / 25 min TEC plan; schedule PPO2 ok/warn/crit cells have distinct colors.",
+        "consumer_path": [
+          "#tecGenerateBtn click",
+          "decorateDecoTableForV3 ppo2-* classes",
+          "getComputedStyle .col-ppo2",
+          "lsp-dplanner-results.css .ppo2-crit"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "warn_count": 6,
+            "crit_count": 2,
+            "ok_count": 3
+          },
+          {
+            "stage": "canonical",
+            "warn_count": 6,
+            "crit_count": 2,
+            "ok_count": 3
+          },
+          {
+            "stage": "consumer",
+            "ok_color": "rgb(74, 222, 128)",
+            "warn_color": "rgb(251, 191, 36)",
+            "crit_color": "rgb(248, 113, 113)",
+            "resolved_red": "rgb(248, 113, 113)"
+          },
+          {
+            "stage": "observable",
+            "ok_ne_warn": true
+          }
+        ],
+        "trace_id": "SL-C07-PPO2-SEVERITY-COLORS-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle07.json",
+        "artifact_sha256": "e053f980e9d1c242747a5ee5eb44d3cfc58555b2585cf5ab66458ee1ff832f81",
+        "spec_path": "docs/seven-lens-traces/cycle-07-results.json",
+        "spec_sha256": "de00b3b9b1c34e41f0e45f71e8dffe0421f1bb49f82f4be78f00da8d882b1cb0"
+      }
+    },
+    {
+      "id": "ER-C07-TRACE",
+      "kind": "post_fix",
+      "case_ids": [
+        "SL-C07-CHIP-YELLOW-DISTINCT",
+        "SL-C07-PPO2-SEVERITY-COLORS",
+        "SL-C07-CSS-DEAD-LEGACY-CARDS",
+        "SL-C07-CSS-DEAD-ALGO-SWITCHER",
+        "SL-C07-REDUCED-MOTION",
+        "SL-C07-PRINT-RESULTS"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "tools/seven_lens_browser_trace.py",
+        "--spec",
+        "docs/seven-lens-traces/cycle-07-results.json",
+        "--output",
+        "dev/seven-lens-browser-trace-cycle07.json"
+      ],
+      "commit": "63b30d2df28d5cbe497fc8055c44a3eac57e0855",
+      "observable_assertions": [
+        "Four browser traces PASS twice with state restoration hashes equal"
+      ],
+      "runtime_trace": {
+        "entry_event": "User generates a TEC schedule; TTS chip-yellow color differs from OTU chip-orange.",
+        "consumer_path": [
+          "#tecGenerateBtn click",
+          "renderChipRow chip-yellow / chip-orange",
+          "getComputedStyle color",
+          "lsp-dplanner-results.css #resultsPanel .chip-yellow"
+        ],
+        "captures": [
+          {
+            "stage": "input",
+            "has_chip_row": true
+          },
+          {
+            "stage": "canonical",
+            "has_results": true,
+            "yellow_present": true,
+            "orange_present": true
+          },
+          {
+            "stage": "consumer",
+            "yellow_color": "rgb(251, 191, 36)",
+            "orange_color": "rgb(245, 158, 11)"
+          },
+          {
+            "stage": "observable",
+            "has_dot": true,
+            "has_tts_label": true
+          }
+        ],
+        "trace_id": "SL-C07-CHIP-YELLOW-DISTINCT-TRACE",
+        "artifact_path": "dev/seven-lens-browser-trace-cycle07.json",
+        "artifact_sha256": "e053f980e9d1c242747a5ee5eb44d3cfc58555b2585cf5ab66458ee1ff832f81",
+        "spec_path": "docs/seven-lens-traces/cycle-07-results.json",
+        "spec_sha256": "de00b3b9b1c34e41f0e45f71e8dffe0421f1bb49f82f4be78f00da8d882b1cb0"
+      },
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe tools/seven_lens_browser_trace.py --spec docs/seven-lens-traces/cycle-07-results.json --output dev/seven-lens-browser-trace-cycle07.json",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-TRACE.json",
+      "receipt_sha256": "9636985544ebe5d5b65c8944c25868ad17c9b0a60092e9c1f447295bfcb0244d",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
+    },
+    {
+      "id": "ER-C07-PROTOCOL",
+      "kind": "gate",
+      "case_ids": [],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-m",
+        "unittest",
+        "tools.test_seven_lens_protocol",
+        "tools.test_seven_lens_browser_trace"
+      ],
+      "commit": "acaec31a3608f1e5d085938817a6907da2465b5c",
+      "observable_assertions": [
+        "Seven-lens protocol and browser-trace schema tests PASS"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m unittest tools.test_seven_lens_protocol tools.test_seven_lens_browser_trace",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-PROTOCOL.json",
+      "receipt_sha256": "e9e16b7a9a6d4c1cdbbe709851265d2179badedfe9f46ef1981262a26897eeca",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
+    },
+    {
+      "id": "ER-C07-PARITY",
+      "kind": "gate",
+      "case_ids": [
+        "UI-EXTRACT-CSS"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "tools/assemble_ui_html.py",
+        "--verify"
+      ],
+      "commit": "63b30d2df28d5cbe497fc8055c44a3eac57e0855",
+      "observable_assertions": [
+        "assemble_ui_html --verify OK after canonical CSS edits"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe tools/assemble_ui_html.py --verify",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-PARITY.json",
+      "receipt_sha256": "fb0b516ea5f433d9a90cffd748992370fb2b560f4ec80fae77fa9f74fcd5b18a",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
+    },
+    {
+      "id": "static",
+      "kind": "gate",
+      "case_ids": [],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-m",
+        "tools.audit",
+        "check",
+        "--profile",
+        "static"
+      ],
+      "commit": "bf311c69d4817207d2ff77f321cc2be6f8503224",
+      "observable_assertions": [
+        "All static suites PASS including SUITE-COVERAGE at closure commit"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit check --profile static",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c07-static.json",
+      "receipt_sha256": "8de49e1a4165bc0bb31b0b74099823ef29b9fcaa0d56a72ce0e128152a9e3859",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
+    },
+    {
+      "id": "ci",
+      "kind": "gate",
+      "case_ids": [],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-m",
+        "tools.audit",
+        "run",
+        "--profile",
+        "ci"
+      ],
+      "commit": "bf311c69d4817207d2ff77f321cc2be6f8503224",
+      "observable_assertions": [
+        "All CI suites PASS at closure commit"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit run --profile ci",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c07-ci.json",
+      "receipt_sha256": "cc9742fed45302483351c72c848c6045ac27f51d6690c9825f90fc71e133ca53",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
+    },
+    {
+      "id": "release",
+      "kind": "gate",
+      "case_ids": [],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-m",
+        "tools.audit",
+        "run",
+        "--profile",
+        "release"
+      ],
+      "commit": "bf311c69d4817207d2ff77f321cc2be6f8503224",
+      "observable_assertions": [
+        "All release suites PASS at closure commit"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe -m tools.audit run --profile release",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c07-release.json",
+      "receipt_sha256": "63269a03f21c38b408e6ace8205644708dc8e085801959e17d02ff709642c04a",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true
+    },
+    {
+      "id": "ER-C07-RESTORE-RESULTS",
+      "kind": "state_restoration",
+      "case_ids": [
+        "SL-C07-CHIP-YELLOW-DISTINCT",
+        "SL-C07-PPO2-SEVERITY-COLORS",
+        "SL-C07-CSS-DEAD-LEGACY-CARDS",
+        "SL-C07-CSS-DEAD-ALGO-SWITCHER",
+        "SL-C07-REDUCED-MOTION",
+        "SL-C07-PRINT-RESULTS"
+      ],
+      "command_argv": [
+        "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "dev/ui_results_css_regression.py"
+      ],
+      "commit": "63b30d2df28d5cbe497fc8055c44a3eac57e0855",
+      "observable_assertions": [
+        "ui_results_css_regression restores DOM/globals/media after probes with matching state hashes"
+      ],
+      "command": "C:\\Users\\Roman\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe dev/ui_results_css_regression.py",
+      "worktree_clean": true,
+      "state_restored": true,
+      "exit_code": 0,
+      "receipt_path": "dev/seven-lens-evidence-c07-ER-C07-RESTORE-RESULTS.json",
+      "receipt_sha256": "33db916ac65befc71bef5e4610d38e860a5c59c630890d3744e03ea9ab962cee",
+      "worktree_clean_before": true,
+      "worktree_clean_after": true,
+      "state_before_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278",
+      "state_after_sha256": "4e98fab7006104cbfee2af68b39c256f0dca6795191566f8ef4674e4e17e6278"
+    }
+  ],
+  "changed_paths": [],
+  "audit_report": "docs/seven-lens-reports/cycle-07-results-css.md",
+  "notes": "CLOSER: registry closed at bf311c6; static/ci/release gate receipts bound to closure_evidence_commit. Cycle 8 dependency re-review C07-R2-A (1-500) and C07-R2-B (501-890) clean at fingerprint 8f342e7b6a41e9204fd0a3bf062ab7a60feff077dfc90e29c63a00c5ee7aca49. Cycle 9 dependency re-review refreshed UI-CSS-RESULTS parts to 1-500 / 501-899; NO_NEW_FINDING. Schedule geometry dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Mix-lane dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Mobile schedule scroll dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-915; NO_NEW_FINDING. Deco schedule column-order dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-913; NO_NEW_FINDING. Gas consumption bar redesign dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-937; NO_NEW_FINDING. Mobile compact schedule table dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-965; NO_NEW_FINDING. Gas consumption remaining-bar dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-965; NO_NEW_FINDING. Graph/tissue-tab/switch-row dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-967; NO_NEW_FINDING. Contingency gas-bar dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-967; NO_NEW_FINDING. Deco plan card slate dependency re-review refreshed UI-CSS-RESULTS to 1-500 / 501-971; NO_NEW_FINDING.",
+  "dependency_re_reviews": [
+    {
+      "session": "C07-R2-A",
+      "part_id": "UI-CSS-RESULTS-P01",
+      "start_line": 1,
+      "end_line": 500,
+      "content_fingerprint": "2afe26c5049fbe0e464c34aa4c523633f41b2a2730fc0608a0ca9bc9456ab5de",
+      "trigger": "Cycle 8 lsp-dplanner-results.css mobile selector dependency invalidation (lines 1-500 unchanged)",
+      "focus": [
+        "Cycle 8 mobile selector delta absent in P01 range",
+        "chip-yellow/PPO2/print/reduced-motion Cycle 7 fixes preserved",
+        "legacy-panels hidden; V4 results shell selectors intact"
+      ],
+      "result": "NO_NEW_FINDING",
+      "reviewed_at": "2026-07-06T00:36:00+09:00",
+      "verifier": "Cursor Agent (DEPENDENCY RE-VERIFIER)",
+      "line_count": 500
+    },
+    {
+      "session": "C07-R2-B",
+      "part_id": "UI-CSS-RESULTS-P02",
+      "start_line": 501,
+      "end_line": 886,
+      "content_fingerprint": "f680961615f935ec0c57406a5afb8ae127f241364436a07502d8f5487f742ef8",
+      "trigger": "Cycle 8 retargeted @media (max-width:640px) exclusivity from #planPanel to #recPlannerView/#tecPlannerView/#resultsPanel",
+      "focus": [
+        "mobile-active exclusivity cascade and !important specificity",
+        "adjacent landscape/header @media (max-width:640px) rules",
+        "has-results visibility; print and prefers-reduced-motion blocks",
+        "PPO2 !important severity and chip-yellow distinct tokens"
+      ],
+      "result": "NO_NEW_FINDING",
+      "reviewed_at": "2026-07-06T00:36:00+09:00",
+      "verifier": "Cursor Agent (DEPENDENCY RE-VERIFIER)",
+      "line_count": 386
+    },
+    {
+      "session": "C08-DEP-RESULTS-A",
+      "part_id": "UI-CSS-RESULTS-P01",
+      "start_line": 1,
+      "end_line": 500,
+      "prior_content_fingerprint": "90c2e9d1cd13216a5fbda047f64a7212d9a90abfa7ab54848dd5557a35fbc80d",
+      "content_fingerprint": "2afe26c5049fbe0e464c34aa4c523633f41b2a2730fc0608a0ca9bc9456ab5de",
+      "trigger": "Cycle 8 PR #215 gas-dot and planner-main layout delta in P02; P01 boundary re-read",
+      "focus": [
+        "chip-yellow/PPO2 severity tokens unchanged",
+        "gas-dot class definitions at boundary with P02",
+        "planner-main two-column grid contract"
+      ],
+      "result": "NO_NEW_FINDING",
+      "reviewed_at": "2026-07-06T01:09:13.648040+00:00",
+      "verifier": "Cursor Agent (C08-V-B attestation corrector)",
+      "line_count": 500
+    },
+    {
+      "session": "C08-DEP-RESULTS-B",
+      "part_id": "UI-CSS-RESULTS-P02",
+      "start_line": 501,
+      "end_line": 886,
+      "prior_content_fingerprint": "fc3fe81a27c5d45948065bd6d9071ed0fde7e14d48f8a9a57feddab4bfe9ddee",
+      "content_fingerprint": "f680961615f935ec0c57406a5afb8ae127f241364436a07502d8f5487f742ef8",
+      "trigger": "Cycle 8 PR #215 visual contracts: gas-dot, mobile-active, gas-switch rows",
+      "focus": [
+        "#recPlannerView/#tecPlannerView/#resultsPanel mobile-active exclusivity",
+        "gas-switch schedule row yellow token parity both themes",
+        "deco gas pill green-on-yellow; desktop two-column layout"
+      ],
+      "result": "NO_NEW_FINDING",
+      "reviewed_at": "2026-07-06T01:09:13.648040+00:00",
+      "verifier": "Cursor Agent (C08-V-B attestation corrector)",
+      "line_count": 386
+    },
+    {
+      "session": "C09-DEP-RESULTS-A/C09-DEP-RESULTS-B",
+      "part_id": "UI-CSS-RESULTS",
+      "start_line": 1,
+      "end_line": 899,
+      "content_fingerprint": "e1950ea03521a03f7171bd0e7e3f834506d6c2c544f070c090e8055f6eb07150",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
+        "UI-CSS-RESULTS-P02": "1d31ea046837ab602ae9c55936732dc9be060386dc4348f63351ad5445f71a2c"
+      },
+      "trigger": "Cycle 9 mobile warning containment and gas-switch terminology CSS/legend changes",
+      "focus": [
+        "gas-switch row and legend token parity preserved",
+        "mobile warning banners and gas consumption BT warning wrap within viewport",
+        "Cycle 7 chip/PPO2/reduced-motion/print contracts preserved by visual regression suite"
+      ],
+      "result": "NO_NEW_FINDING",
+      "reviewed_at": "2026-07-07T11:25:37.098795+00:00",
+      "verifier": "Codex simplified Cycle 9 dependency re-review",
+      "line_count": 899
+    },
+    {
+      "session": "C09-DEP-RESULTS-SCHEDULE-GEOMETRY",
+      "part_id": "UI-CSS-RESULTS",
+      "start_line": 1,
+      "end_line": 915,
+      "content_fingerprint": "83dc664a423bbaeacbc99bf98c943afec8eb34bda1bd1dd3679a91f262c0545d",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
+        "UI-CSS-RESULTS-P02": "0959cabf086131f4160938cceab3395ab23edf4d52cf41f9368d301bd64e6bf0"
+      },
+      "trigger": "Schedule table column geometry fix in lsp-dplanner-results.css",
+      "focus": [
+        "fixed-layout schedule table keeps header/body columns aligned",
+        "Depth and Stop columns are compact and no wider than needed",
+        "Cycle 7 chip/PPO2/reduced-motion/print contracts preserved by visual regression suite"
+      ],
+      "result": "NO_NEW_FINDING",
+      "reviewed_at": "2026-07-07T12:12:35.488395+00:00",
+      "verifier": "Codex simplified dependency re-review",
+      "line_count": 915
+    },
+    {
+      "session": "C09-DEP-RESULTS-MIX-LANE",
+      "part_id": "UI-CSS-RESULTS",
+      "start_line": 1,
+      "end_line": 915,
+      "content_fingerprint": "44c26878e732f713d007670881bf68702b0e014b9c038478d4ea0d04ff8b887d",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
+        "UI-CSS-RESULTS-P02": "ef8eaa4c98fc83f5382c6c227b1b3ee3286740f0ee265b93dee66960e9140137"
+      },
+      "trigger": "Schedule table Mix lane spacing refinement in lsp-dplanner-results.css",
+      "focus": [
+        "Mix and gas-switch mix cells share one centered visual lane",
+        "Mix column is compact relative to Run while preserving Depth/Stop alignment",
+        "Cycle 7 chip/PPO2/reduced-motion/print contracts preserved by visual regression suite"
+      ],
+      "result": "NO_NEW_FINDING",
+      "reviewed_at": "2026-07-07T12:56:37.758277+00:00",
+      "verifier": "Codex simplified dependency re-review",
+      "line_count": 915
+    },
+    {
+      "session": "C09-DEP-RESULTS-MOBILE-SCHEDULE-SCROLL",
+      "part_id": "UI-CSS-RESULTS",
+      "start_line": 1,
+      "end_line": 915,
+      "content_fingerprint": "a0e026fc004bdf058cd6e44ded0a0d1faf1621ec679f205cf4555a5fc4e7b224",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
+        "UI-CSS-RESULTS-P02": "3023736d29f0d874a291bca8c0d889767d5bd7bb5b49c1e010b0aab1a00777eb"
+      },
+      "trigger": "Mobile schedule table readability fix: min-width scroll lane and no cell ellipsis",
+      "focus": [
+        "schedule table keeps full readable columns on mobile via horizontal scroll",
+        "schedule cells do not use hidden overflow or ellipsis truncation",
+        "desktop Depth/Stop/Mix geometry contracts remain covered by visual regression suite"
+      ],
+      "result": "NO_NEW_FINDING",
+      "reviewed_at": "2026-07-07T13:55:54.268150+00:00",
+      "verifier": "Codex simplified dependency re-review",
+      "line_count": 915
+    },
+    {
+      "session": "C09-DEP-RESULTS-SCHEDULE-COLUMN-ORDER",
+      "part_id": "UI-CSS-RESULTS",
+      "unit_id": "UI-CSS-RESULTS",
+      "path": "lsp-dplanner-results.css",
+      "content_fingerprint": "bb3acb7aa101e0a6288b5b62e681adea6add6dd6e83cb19295ced4b67b505df7",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
+        "UI-CSS-RESULTS-P02": "08cad860abfd4b5ec03b72d7defe0b8342b32765aceb4c981013c77d7a214ee4"
+      },
+      "boundaries": {
+        "UI-CSS-RESULTS-P01": "lines 1-500",
+        "UI-CSS-RESULTS-P02": "lines 501-913"
+      },
+      "trigger": "Visible deco schedule table reordered to Phase, Depth, Stop, Run, Mix, ppO?, EAD and TTS column removed.",
+      "review_scope": "Schedule table width rules and column styling only; prior Cycle 7 chip/PPO?/print/reduced-motion findings remain closed and unchanged.",
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-07T14:12:28Z",
+      "verifier": "Codex simplified dependency re-review"
+    }
+  ],
+  "dependency_reverification": [
+    {
+      "session": "C09-DEP-RESULTS-GAS-CONSUMPTION-BARS",
+      "part_id": "UI-CSS-RESULTS",
+      "unit_id": "UI-CSS-RESULTS",
+      "path": "lsp-dplanner-results.css",
+      "content_fingerprint": "ee665a0790e8e03d6f33c02f7c0686e1a4277e94a54ab8d85fffa3997fd87fdc",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
+        "UI-CSS-RESULTS-P02": "f642b8b11302edb2735f0ba7c004824a7023fa11f509b791d4dd13a2b8b33c9c"
+      },
+      "boundaries": {
+        "UI-CSS-RESULTS-P01": "lines 1-500",
+        "UI-CSS-RESULTS-P02": "lines 501-971"
+      },
+      "trigger": "Gas Consumption result card redesigned from table into per-cylinder usage bars.",
+      "review_scope": "Gas Consumption CSS additions only; prior Cycle 7 chip/PPO2/print/reduced-motion findings remain closed and unchanged.",
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-07T00:00:00Z",
+      "verifier": "Codex simplified dependency re-review",
+      "fingerprints": {
+        "UI-CSS-RESULTS-P01": "a5de5f4e62577d39a24c2039e3323cfe90c45936e2f12899cbd9837250206cc5",
+        "UI-CSS-RESULTS-P02": "b075a1835446c53657da4e4928a9adfe05b633d875d15d53bbbaf1a97c7fe81f"
+      }
+    },
+    {
+      "session": "C09-DEP-RESULTS-MOBILE-COMPACT-SCHEDULE",
+      "part_id": "UI-CSS-RESULTS",
+      "unit_id": "UI-CSS-RESULTS",
+      "path": "lsp-dplanner-results.css",
+      "content_fingerprint": "43ca8dc644ac41887d2c4a329e6bed9f9d61a71c7e78c61585041899248db388",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
+        "UI-CSS-RESULTS-P02": "5b447690228ac8f4438459596ab6de8fc443dab12add11251eb2f8b3a875224f"
+      },
+      "boundaries": {
+        "UI-CSS-RESULTS-P01": "lines 1-500",
+        "UI-CSS-RESULTS-P02": "lines 501-971"
+      },
+      "trigger": "Mobile deco schedule table changed to compact no-scroll layout.",
+      "review_scope": "Mobile schedule table width/padding/font overrides only; desktop schedule and prior Cycle 7 findings unchanged.",
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-08T00:00:00Z",
+      "verifier": "Codex simplified dependency re-review",
+      "fingerprints": {
+        "UI-CSS-RESULTS-P01": "a5de5f4e62577d39a24c2039e3323cfe90c45936e2f12899cbd9837250206cc5",
+        "UI-CSS-RESULTS-P02": "b075a1835446c53657da4e4928a9adfe05b633d875d15d53bbbaf1a97c7fe81f"
+      }
+    },
+    {
+      "session": "C09-DEP-RESULTS-GAS-REMAINING-BAR",
+      "part_id": "UI-CSS-RESULTS",
+      "unit_id": "UI-CSS-RESULTS",
+      "path": "lsp-dplanner-results.css",
+      "content_fingerprint": "b127e306c22be3d050c978b5c134ca697fd8b65bcb498250cd93ba542428ac96",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
+        "UI-CSS-RESULTS-P02": "e7adb665735c784554b48c5c0063162e250fc0648c9771c4e128f9f4f76119ea"
+      },
+      "boundaries": {
+        "UI-CSS-RESULTS-P01": "lines 1-500",
+        "UI-CSS-RESULTS-P02": "lines 501-971"
+      },
+      "trigger": "Gas Consumption bar visual changed from used-fill to remaining-drain model.",
+      "review_scope": "Gas Consumption bar CSS selector only; prior Cycle 7 findings unchanged.",
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-08T00:00:00Z",
+      "verifier": "Codex simplified dependency re-review",
+      "fingerprints": {
+        "UI-CSS-RESULTS-P01": "a5de5f4e62577d39a24c2039e3323cfe90c45936e2f12899cbd9837250206cc5",
+        "UI-CSS-RESULTS-P02": "b075a1835446c53657da4e4928a9adfe05b633d875d15d53bbbaf1a97c7fe81f"
+      }
+    },
+    {
+      "session": "C09-DEP-RESULTS-GRAPH-TAB-SWITCH-ROW",
+      "part_id": "UI-CSS-RESULTS",
+      "unit_id": "UI-CSS-RESULTS",
+      "path": "lsp-dplanner-results.css",
+      "content_fingerprint": "6a8acb742295f087674bc0d974ca53aac00d0a6c3a3b461befb3c2ccfaac3703",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
+        "UI-CSS-RESULTS-P02": "234b1bd22d1b8dc15c5c6b72e07db541aa034ad806032ff9b2d37c5827f8b9f6"
+      },
+      "boundaries": {
+        "UI-CSS-RESULTS-P01": "lines 1-500",
+        "UI-CSS-RESULTS-P02": "lines 501-971"
+      },
+      "trigger": "Switch-row background tint removed and mobile result tabs wrapped after graph waypoint/tissue-tab regression fix.",
+      "review_scope": "Schedule switch-row and mobile result-tab CSS only; prior Cycle 7 chip/PPO2/print/reduced-motion findings unchanged.",
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-08T00:00:00Z",
+      "verifier": "Codex simplified dependency re-review",
+      "fingerprints": {
+        "UI-CSS-RESULTS-P01": "a5de5f4e62577d39a24c2039e3323cfe90c45936e2f12899cbd9837250206cc5",
+        "UI-CSS-RESULTS-P02": "b075a1835446c53657da4e4928a9adfe05b633d875d15d53bbbaf1a97c7fe81f"
+      }
+    },
+    {
+      "session": "C09-DEP-RESULTS-CONTINGENCY-GAS-BARS",
+      "part_id": "UI-CSS-RESULTS",
+      "unit_id": "UI-CSS-RESULTS",
+      "path": "lsp-dplanner-results.css",
+      "content_fingerprint": "a285604c348376de871a8fa34d29c4996620ab2f9df897fb7ffc7817487b8d1a",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
+        "UI-CSS-RESULTS-P02": "eed22e208485f60ad1690f25675cdd65bc9f8d0126c57e6d75f5a23ab36dfa39"
+      },
+      "boundaries": {
+        "UI-CSS-RESULTS-P01": "lines 1-500",
+        "UI-CSS-RESULTS-P02": "lines 501-971"
+      },
+      "trigger": "Emergency contingency gas consumption card changed from table to shared per-cylinder gas bars.",
+      "review_scope": "Gas Consumption selector scope expanded to emergency card; prior Cycle 7 chip/PPO2/print/reduced-motion findings unchanged.",
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-08T00:00:00Z",
+      "verifier": "Codex simplified dependency re-review",
+      "fingerprints": {
+        "UI-CSS-RESULTS-P01": "a5de5f4e62577d39a24c2039e3323cfe90c45936e2f12899cbd9837250206cc5",
+        "UI-CSS-RESULTS-P02": "b075a1835446c53657da4e4928a9adfe05b633d875d15d53bbbaf1a97c7fe81f"
+      }
+    },
+    {
+      "session": "C09-DEP-RESULTS-GAS-WARNING-BANNERS",
+      "part_id": "UI-CSS-RESULTS",
+      "unit_id": "UI-CSS-RESULTS",
+      "path": "lsp-dplanner-results.css",
+      "content_fingerprint": "03e4ed71537e63a499e7532f240066fbc7833942c2aa6278899c35fdcc5034a4",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "fdb66bb9a2d16abcb6f1b8f8ca8997b0145f4cc2cb8cf7479967b4b21ac3a566",
+        "UI-CSS-RESULTS-P02": "e66c626af3f9a3354d78956d7cada94e27dc926ddeb1dfea641e1b6829c5d724"
+      },
+      "boundaries": {
+        "UI-CSS-RESULTS-P01": "lines 1-500",
+        "UI-CSS-RESULTS-P02": "lines 501-971"
+      },
+      "trigger": "Gas warning banners changed from stray ASCII marker to warning icon and critical gas red styling.",
+      "review_scope": "Gas warning banner color/icon CSS only; prior Cycle 7 chip/PPO2/print/reduced-motion findings unchanged.",
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-08T00:00:00Z",
+      "verifier": "Codex simplified dependency re-review",
+      "fingerprints": {
+        "UI-CSS-RESULTS-P01": "a5de5f4e62577d39a24c2039e3323cfe90c45936e2f12899cbd9837250206cc5",
+        "UI-CSS-RESULTS-P02": "b075a1835446c53657da4e4928a9adfe05b633d875d15d53bbbaf1a97c7fe81f"
+      }
+    },
+    {
+      "session": "C09-DEP-RESULTS-SUMMARY-CHIP-PALETTE",
+      "part_id": "UI-CSS-RESULTS",
+      "unit_id": "UI-CSS-RESULTS",
+      "path": "lsp-dplanner-results.css",
+      "content_fingerprint": "f7768afdb09dce7d23418046cfa2e09aadd69ddc5b0a83d547a16218a33056b1",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "448d13c68fffb1305c8218fe36c3b0dfc4eb9715321ae9481292b2077bcdb0a7",
+        "UI-CSS-RESULTS-P02": "e66c626af3f9a3354d78956d7cada94e27dc926ddeb1dfea641e1b6829c5d724"
+      },
+      "boundaries": {
+        "UI-CSS-RESULTS-P01": "lines 1-500",
+        "UI-CSS-RESULTS-P02": "lines 501-971"
+      },
+      "trigger": "Result summary chips changed palette: Surf GF/OTU status colors, TTS info colors, Decozone deco colors.",
+      "review_scope": "Result summary chip palette CSS only; prior Cycle 7 chip/PPO2/print/reduced-motion findings unchanged.",
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-08T00:00:00Z",
+      "verifier": "Codex simplified dependency re-review",
+      "fingerprints": {
+        "UI-CSS-RESULTS-P01": "a5de5f4e62577d39a24c2039e3323cfe90c45936e2f12899cbd9837250206cc5",
+        "UI-CSS-RESULTS-P02": "b075a1835446c53657da4e4928a9adfe05b633d875d15d53bbbaf1a97c7fe81f"
+      }
+    },
+    {
+      "session": "C09-DEP-RESULTS-TABS-GAP",
+      "part_id": "UI-CSS-RESULTS",
+      "unit_id": "UI-CSS-RESULTS",
+      "path": "lsp-dplanner-results.css",
+      "content_fingerprint": "cd64959cc739adaaa233880529ba893fbb57a239f49b0310faceccf9da2a56f8",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "48f2df43a18e7892b11d6ec2d2f909a7271e1b2a7d04183715b5165955eba19b",
+        "UI-CSS-RESULTS-P02": "e66c626af3f9a3354d78956d7cada94e27dc926ddeb1dfea641e1b6829c5d724"
+      },
+      "boundaries": {
+        "UI-CSS-RESULTS-P01": "lines 1-500",
+        "UI-CSS-RESULTS-P02": "lines 501-971"
+      },
+      "trigger": "Result tabs bar margin restored so active result cards do not visually overlap tab borders.",
+      "review_scope": "Result tabs margin CSS only; prior Cycle 7 chip/PPO2/print/reduced-motion findings unchanged.",
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-08T00:00:00Z",
+      "verifier": "Codex simplified dependency re-review",
+      "fingerprints": {
+        "UI-CSS-RESULTS-P01": "a5de5f4e62577d39a24c2039e3323cfe90c45936e2f12899cbd9837250206cc5",
+        "UI-CSS-RESULTS-P02": "b075a1835446c53657da4e4928a9adfe05b633d875d15d53bbbaf1a97c7fe81f"
+      }
+    },
+    {
+      "unit_id": "UI-CSS-RESULTS",
+      "part_id": "UI-CSS-RESULTS",
+      "trigger": "Deco plan card Option 3 slate restyle dependency re-review",
+      "result": "NO_NEW_FINDING",
+      "review_session": "C09-DEP-DECO-CARD-SLATE-A/B",
+      "fingerprints": {
+        "UI-CSS-RESULTS-P01": "a5de5f4e62577d39a24c2039e3323cfe90c45936e2f12899cbd9837250206cc5",
+        "UI-CSS-RESULTS-P02": "b075a1835446c53657da4e4928a9adfe05b633d875d15d53bbbaf1a97c7fe81f"
+      },
+      "boundaries": {
+        "UI-CSS-RESULTS-P01": "lines 1-500",
+        "UI-CSS-RESULTS-P02": "lines 501-971"
+      },
+      "notes": "Only deco-plan-card shell and travel-gas pill palette changed; visual contract keeps hazard banners red and deco plan card neutral slate."
+    },
+    {
+      "session": "C09-DEP-GAS-CARD-COLOR-TIERS",
+      "part_id": "UI-CSS-RESULTS",
+      "unit_id": "UI-CSS-RESULTS",
+      "path": "lsp-dplanner-results.css",
+      "content_fingerprint": "d1d3fbfcf57d8f388fb8f3602a15de92757ce517335f99f52e4c63876df6365f",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "0f3ffbe3af96d5049afa5d41423fc4552546f041b2e99b65b2e18b4ecd9ea5b6",
+        "UI-CSS-RESULTS-P02": "64b505463162bbdb12b31246e4f5f594b2245c288a0d469f5b49eb44adc8b0ed",
+        "UI-CSS-RESULTS-P03": "632813fc11e82ccf35d67da62eee8ae2d4e35f2907098632ba1417f4c4a4c9b9"
+      },
+      "boundaries": {
+        "UI-CSS-RESULTS-P01": "lines 1-500",
+        "UI-CSS-RESULTS-P02": "lines 501-1000",
+        "UI-CSS-RESULTS-P03": "lines 1001-1009"
+      },
+      "trigger": "critical.zip proposed gas-card typography applied: top-right remaining is strong, footer Used row is muted, capacity scale is volume-first, critical/low gas is orange, no-gas/no-go remains red.",
+      "review_scope": "Gas consumption color-tier CSS and visual guard only; schedule, graph, and renderer behavior unchanged.",
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-09T00:00:00Z",
+      "verifier": "Codex simplified dependency re-review"
+    }
+  ],
+  "dependency_revalidations": [
+    {
+      "session": "C09-DEP-RESULTS-GAS-UNIT-COMPACTNESS",
+      "unit_id": "UI-CSS-RESULTS",
+      "part_fingerprints": {
+        "UI-CSS-RESULTS-P01": "48f2df43a18e7892b11d6ec2d2f909a7271e1b2a7d04183715b5165955eba19b",
+        "UI-CSS-RESULTS-P02": "446e2d974e06125e514b72130d770f93c0a31a57ff3e46cdca27a91b5d5b3b9f"
+      },
+      "part_boundaries": {
+        "UI-CSS-RESULTS-P01": "lines 1-500",
+        "UI-CSS-RESULTS-P02": "lines 501-977"
+      },
+      "result": "NO_NEW_FINDING",
+      "verified_at": "2026-07-08T00:00:00Z",
+      "verifier": "Codex simplified dependency re-review"
+    },
+    {
+      "session": "C09-DEP-WARNING-BANNER-PALETTE-A",
+      "result": "NO_NEW_FINDING",
+      "boundary": "lsp-dplanner-results.css:1-500",
+      "validated_by": [
+        "SL-C09-MOBILE-WARNING-WRAP",
+        "SL-VIS-GAS-CONSUMPTION-BARS"
+      ]
+    },
+    {
+      "session": "C09-DEP-WARNING-BANNER-PALETTE-B",
+      "result": "NO_NEW_FINDING",
+      "boundary": "lsp-dplanner-results.css:501-977",
+      "validated_by": [
+        "SL-C09-MOBILE-WARNING-WRAP",
+        "SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS"
+      ]
+    },
+    {
+      "unit_id": "UI-CSS-RESULTS",
+      "part_id": "UI-CSS-RESULTS-P02",
+      "reason": "Gas warning typography alignment changed reviewed CSS only; no Cycle 7 findings reopened.",
+      "status": "NO_NEW_FINDING",
+      "start_line": 501,
+      "end_line": 978,
+      "content_fingerprint": "cb237ec402902ff4329bf06441b617ffc49ad60e86770046ff04e8d8ae5623b5"
+    },
+    {
+      "part_id": "UI-CSS-RESULTS-P01",
+      "result": "NO_NEW_FINDING",
+      "note": "C09 dependency recheck after full graph/tabs layout CSS; no new finding."
+    },
+    {
+      "part_id": "UI-CSS-RESULTS-P02",
+      "result": "NO_NEW_FINDING",
+      "note": "C09 dependency recheck after full graph/tabs layout CSS; no new finding."
+    },
+    {
+      "part_id": "UI-CSS-RESULTS-P01",
+      "result": "NO_NEW_FINDING",
+      "note": "Travel gas bullet token aligned with deco gas switch token; no new finding."
+    }
+  ]
+}
