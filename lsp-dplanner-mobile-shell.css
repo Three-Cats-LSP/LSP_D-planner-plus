@@ -1,0 +1,368 @@
+/* Mobile native shell — Plan | Results | Tools | Settings bottom nav (≤767px) */
+
+/* ── Desktop: shell elements inert ── */
+.app-bottom-nav,
+.mobile-algo-chips {
+  display: none;
+}
+
+/* ── Mobile browser + native shell ── */
+@media (max-width: 767px) {
+  .app-bottom-nav {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 200;
+    align-items: stretch;
+    justify-content: space-around;
+    gap: 0;
+    min-height: 56px;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--surface);
+    border-top: 1px solid var(--border-hi);
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.18);
+  }
+
+  .app-bottom-nav .nav-item {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-height: 48px;
+    min-width: 48px;
+    padding: 6px 4px;
+    border: none;
+    border-radius: 10px;
+    margin: 4px 2px;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: system-ui, -apple-system, Roboto, sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color var(--transition), background var(--transition);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .app-bottom-nav .nav-item .nav-icon {
+    font-size: 18px;
+    line-height: 1;
+    opacity: 0.85;
+  }
+
+  .app-bottom-nav .nav-item:hover:not(:disabled) {
+    color: var(--text);
+    background: var(--accent-dim);
+  }
+
+  .app-bottom-nav .nav-item.active {
+    color: var(--accent);
+    background: color-mix(in oklab, var(--accent) 12%, transparent);
+    box-shadow: inset 0 -2px 0 var(--accent);
+  }
+
+  .app-bottom-nav .nav-item:disabled,
+  .app-bottom-nav .nav-item[aria-disabled="true"] {
+    opacity: 0.38;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .app {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    inset: 0;
+    max-width: none;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) 0 env(safe-area-inset-left, 0px);
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .app-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding: var(--space-2) var(--space-3) calc(64px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Hide desktop top nav on mobile — algo chips replace REC/Bühlmann/VPM */
+  #mainNavBar {
+    display: none !important;
+  }
+
+  /* Slim header */
+  #headerTopRow {
+    padding: 8px 10px !important;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+  }
+
+  #headerTopRow .brand-text p {
+    display: none;
+  }
+
+  #headerBanner {
+    display: none !important;
+  }
+
+  #headerTopRow .brand-logo {
+    height: 36px;
+  }
+
+  #headerTopRow .brand-text h1 {
+    font-size: 15px;
+    letter-spacing: 1px;
+  }
+
+  header {
+    flex-shrink: 0;
+    padding: 0;
+  }
+
+  /* Algorithm chips inside Plan tab */
+  .mobile-algo-chips {
+    display: flex;
+    gap: 6px;
+    padding: 0 0 var(--space-2);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mobile-algo-chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-algo-chip {
+    flex-shrink: 0;
+    min-height: 40px;
+    min-width: 48px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border-med);
+    background: var(--surface-2);
+    color: var(--text-muted);
+    font-family: system-ui, -apple-system, Roboto, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all var(--transition);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-algo-chip:hover {
+    color: var(--text);
+    border-color: var(--accent);
+  }
+
+  .mobile-algo-chip.active {
+    color: var(--accent);
+    background: color-mix(in oklab, var(--accent) 14%, transparent);
+    border-color: color-mix(in oklab, var(--accent) 35%, transparent);
+  }
+
+  .planner-main.visible {
+    display: block;
+  }
+
+  /* Tab-driven visibility */
+  body.mobile-tab-plan #plannerView {
+    display: block !important;
+  }
+
+  body.mobile-tab-plan #recPlannerView.planner-mode-view.visible,
+  body.mobile-tab-plan #tecPlannerView.planner-mode-view.visible {
+    display: flex !important;
+  }
+
+  body.mobile-tab-plan #resultsPanel {
+    display: none !important;
+  }
+
+  body.mobile-view-stack.mobile-tab-plan #resultsPanel.has-results {
+    display: flex !important;
+  }
+
+  body.mobile-view-stack.mobile-tab-plan #recPlannerView.planner-mode-view.visible,
+  body.mobile-view-stack.mobile-tab-plan #tecPlannerView.planner-mode-view.visible {
+    display: flex !important;
+  }
+
+  body.mobile-tab-plan #settingsPageWrap,
+  body.mobile-tab-plan #toolsPageWrap {
+    display: none !important;
+  }
+
+  body.mobile-tab-plan .mobile-algo-chips {
+    display: flex;
+  }
+
+  body.mobile-tab-plan #toolsBar {
+    display: none !important;
+  }
+
+  body.mobile-tab-results #plannerView {
+    display: block !important;
+  }
+
+  body.mobile-tab-results #recPlannerView,
+  body.mobile-tab-results #tecPlannerView {
+    display: none !important;
+  }
+
+  body.mobile-tab-results #resultsPanel.has-results {
+    display: flex !important;
+  }
+
+  body.mobile-tab-results #resultsPanel:not(.has-results) {
+    display: none !important;
+  }
+
+  body.mobile-tab-results #settingsPageWrap,
+  body.mobile-tab-results #toolsPageWrap {
+    display: none !important;
+  }
+
+  body.mobile-tab-results .mobile-algo-chips,
+  body.mobile-tab-results #toolsBar {
+    display: none !important;
+  }
+
+  body.mobile-tab-tools #plannerView,
+  body.mobile-tab-tools #settingsPageWrap {
+    display: none !important;
+  }
+
+  body.mobile-tab-tools #toolsPageWrap.visible,
+  body.mobile-tab-tools #toolsPageWrap {
+    display: flex !important;
+  }
+
+  body.mobile-tab-tools #toolsBar.visible,
+  body.mobile-tab-tools #toolsBar {
+    display: flex !important;
+  }
+
+  body.mobile-tab-tools .mobile-algo-chips {
+    display: none !important;
+  }
+
+  body.mobile-tab-settings #plannerView,
+  body.mobile-tab-settings #toolsPageWrap {
+    display: none !important;
+  }
+
+  body.mobile-tab-settings #settingsPageWrap.visible,
+  body.mobile-tab-settings #settingsPageWrap {
+    display: flex !important;
+  }
+
+  body.mobile-tab-settings #toolsBar,
+  body.mobile-tab-settings .mobile-algo-chips {
+    display: none !important;
+  }
+
+  /* Material touch targets */
+  .stepper-btn,
+  .gen-btn,
+  .circ-btn,
+  .gf-preset-btn,
+  .cons-btn,
+  .tools-bar-btn,
+  .result-tab-btn,
+  .option-pill-toggle,
+  .theme-pill-toggle,
+  .header-ref-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .gen-btn {
+    border-radius: 12px;
+    min-height: 48px;
+    font-family: system-ui, -apple-system, Roboto, sans-serif;
+  }
+
+  .input-card {
+    border-radius: 12px;
+  }
+
+  /* Hide web footer promo block in mobile shell */
+  .app-footer-promo {
+    display: none;
+  }
+
+  /* Theme variant B — Material elevated bottom bar */
+  body.mobile-theme-material .app-bottom-nav {
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.28);
+  }
+
+  body.mobile-theme-material .app-bottom-nav .nav-item.active {
+    box-shadow: none;
+    background: color-mix(in oklab, var(--accent) 18%, transparent);
+    border-radius: 12px;
+  }
+}
+
+/* ── Android native-only stricter app behavior ── */
+html.capacitor-native *,
+html.android-webview * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html.capacitor-native input,
+html.capacitor-native textarea,
+html.android-webview input,
+html.android-webview textarea {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+@media (max-width: 767px) {
+  html.capacitor-native,
+  html.capacitor-native body,
+  html.android-webview,
+  html.android-webview body {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
+
+  html.capacitor-native .app-bottom-nav,
+  html.android-webview .app-bottom-nav {
+    box-shadow: 0 -6px 28px rgba(0, 0, 0, 0.32);
+  }
+
+  html.capacitor-native .app-content,
+  html.android-webview .app-content {
+    overscroll-behavior-y: contain;
+  }
+
+  html.capacitor-native .app-footer-promo,
+  html.android-webview .app-footer-promo {
+    display: none !important;
+  }
+}

@@ -49,8 +49,9 @@ GF_JS = r"""
         ? recView?.classList.contains('mobile-active') && !tecView?.classList.contains('mobile-active')
         : !recView?.classList.contains('mobile-active') && tecView?.classList.contains('mobile-active'));
     const hostVisible = !!host
-      && host.classList.contains('mobile-active')
-      && getComputedStyle(host).display !== 'none';
+      && host.classList.contains('visible')
+      && getComputedStyle(host).display !== 'none'
+      && (!isMobile || host.classList.contains('mobile-active') || document.body.classList.contains('mobile-tab-plan'));
     const staleVisibleHost = isMobile
       && document.body.classList.contains('rec-mode')
       && host?.id === 'tecPlannerView'

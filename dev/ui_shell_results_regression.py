@@ -105,15 +105,15 @@ async () => {
 
   if (typeof setMobilePlanView === 'function') setMobilePlanView('plan');
   await new Promise(r => setTimeout(r, 100));
-  const planStillVisible = vis(planId) !== 'none';
+  const planExclusive = vis(planId) !== 'none' && vis('resultsPanel') === 'none';
 
   if (typeof setMobilePlanView === 'function') setMobilePlanView('results');
   await new Promise(r => setTimeout(r, 100));
-  const stackedAfterResults = vis('resultsPanel') !== 'none' && vis(planId) !== 'none';
+  const resultsExclusive = vis('resultsPanel') !== 'none' && vis(planId) === 'none';
 
-  if (typeof setMobilePlanView === 'function') setMobilePlanView('plan');
-  await new Promise(r => setTimeout(r, 50));
-  const stackedAfterPlan = resultsPanel?.classList.contains('has-results')
+  if (typeof setMobilePlanView === 'function') setMobilePlanView('stack');
+  await new Promise(r => setTimeout(r, 100));
+  const stackedAfterStack = resultsPanel?.classList.contains('has-results')
     ? vis('resultsPanel') !== 'none' && vis(planId) !== 'none'
     : vis(planId) !== 'none';
 
@@ -121,11 +121,11 @@ async () => {
     planId,
     hasResultsBefore,
     validInitialState,
-    planStillVisible,
-    stackedAfterResults,
-    stackedAfterPlan,
+    planExclusive,
+    resultsExclusive,
+    stackedAfterStack,
     inactiveHidden: vis(plannerAlgo === 'rec' ? 'tecPlannerView' : 'recPlannerView') === 'none',
-    ok: validInitialState && planStillVisible && stackedAfterResults && stackedAfterPlan,
+    ok: validInitialState && planExclusive && resultsExclusive && stackedAfterStack,
   };
 }
 """

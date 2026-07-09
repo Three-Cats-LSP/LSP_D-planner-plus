@@ -891,6 +891,16 @@ function initNativeModalBackHandler() {
     window._lspModalBackHooked = true;
     App.addListener('backButton', function() {
       if (handleNativeBackForModals()) return;
+      if (typeof isMobileTab === 'function') {
+        if (isMobileTab('results')) {
+          if (typeof setMobileTab === 'function') setMobileTab('plan');
+          return;
+        }
+        if (isMobileTab('tools') || isMobileTab('settings')) {
+          if (typeof setMobileTab === 'function') setMobileTab('plan');
+          return;
+        }
+      }
       App.exitApp();
     });
   } catch (e) {}

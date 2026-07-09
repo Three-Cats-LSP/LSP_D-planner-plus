@@ -10,6 +10,8 @@
   var isAndroidWebView = /Android/i.test(ua) && (/; wv\)/.test(ua) || /Capacitor/i.test(ua));
   if (isAndroidWebView || (window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform())) {
     document.documentElement.classList.add('android-webview', 'capacitor-native');
+    var vp = document.querySelector('meta[name="viewport"]');
+    if (vp) vp.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
   }
 })();
 </script>
@@ -37,6 +39,7 @@
 <link href="lsp-dplanner-controls.css" rel="stylesheet"/>
 <!-- AUDIT-UNIT:UI-CSS-RESULTS -->
 <link href="lsp-dplanner-results.css" rel="stylesheet"/>
+<link href="lsp-dplanner-mobile-shell.css" rel="stylesheet"/>
 
 <!-- jsPDF: vendored locally — defer so app startup is not blocked on CDN -->
 <!-- App version (single source of truth — also importScripts'd by sw.js) -->
@@ -104,7 +107,7 @@
 <!-- LSP-EXTRACT-END:planner-shell -->
 <script defer src="vendor/jspdf.umd.min.js"></script>
 </head>
-<body>
+<body class="mobile-theme-console">
 <!-- Bubbles (PADI mode) -->
 <div class="bubbles" id="bubbles"></div>
 <div class="app">
@@ -142,6 +145,7 @@
 </div>
 </div>
 </header>
+<main class="app-content" id="appContent">
 <!-- MAIN NAV — Rec · Bühlmann · VPM · Tools · Settings -->
 <div class="main-nav-bar visible" id="mainNavBar">
 <button class="main-nav-btn" id="navBtnRec" onclick="setMainNav('rec',this)">REC<span class="algo-sub">NDL · PADI table</span></button>
@@ -163,6 +167,11 @@
 </div>
 <!-- PLANNER TWO-COLUMN VIEW -->
 <div class="planner-main visible" id="plannerView">
+<div class="mobile-algo-chips" id="mobileAlgoChips" aria-label="Algorithm">
+<button type="button" class="mobile-algo-chip" id="mobChipRec" onclick="setMainNav('rec',this)">REC</button>
+<button type="button" class="mobile-algo-chip active" id="mobChipBuh" onclick="setMainNav('buh',this)">Bühlmann</button>
+<button type="button" class="mobile-algo-chip" id="mobChipVpm" onclick="setMainNav('vpm',this)">VPM</button>
+</div>
 <section class="v3-panel v4-shell mobile-active planner-mode-view" id="recPlannerView" aria-label="Recreational dive parameters">
 <div class="panel-header-row">
 <div class="panel-title-wrap">
@@ -2331,7 +2340,7 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 <div class="stat"><div class="stat-val y">1.4 bar</div><div class="stat-lbl">ppO₂ Limit</div></div>
 </div>
 </div>
-<div style="margin-top:24px; padding-top:24px; border-top: 1px solid var(--border); text-align:center;">
+<div class="app-footer-promo" style="margin-top:24px; padding-top:24px; border-top: 1px solid var(--border); text-align:center;">
 <div class="card-title">Links</div>
 <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;">
 <a href="https://threecats-lsp.com" onmouseout="this.style.borderColor='var(--border-hi)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" rel="noopener noreferrer" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;transition:border-color 0.2s,color 0.2s;" target="_blank"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Three Cats LSP · Diver's Toolkit</span></a>
@@ -2411,6 +2420,13 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 </div>
 <p id="mainVersionLabel" style="color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;margin-top:6px;letter-spacing:1px;opacity:0.5;"></p>
 </div>
+</main>
+<nav class="app-bottom-nav" id="appBottomNav" aria-label="Main navigation">
+<button type="button" class="nav-item active" id="mobNavPlan" data-tab="plan" onclick="setMobileTab('plan')"><span class="nav-icon" aria-hidden="true">◎</span><span>Plan</span></button>
+<button type="button" class="nav-item" id="mobNavResults" data-tab="results" onclick="setMobileTab('results')" disabled aria-disabled="true"><span class="nav-icon" aria-hidden="true">▣</span><span>Results</span></button>
+<button type="button" class="nav-item" id="mobNavTools" data-tab="tools" onclick="setMobileTab('tools')"><span class="nav-icon" aria-hidden="true">⧉</span><span>Tools</span></button>
+<button type="button" class="nav-item" id="mobNavSettings" data-tab="settings" onclick="setMobileTab('settings')"><span class="nav-icon" aria-hidden="true">⚙</span><span>Settings</span></button>
+</nav>
 </div><!-- /app -->
 <script>
 // AUDIT-UNIT:UI-RUNTIME-BOOTSTRAP

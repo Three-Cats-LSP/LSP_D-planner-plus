@@ -32,6 +32,7 @@ function _clearResultSummaryStrip() {
   if (strip) strip.innerHTML = '';
   if (chips) chips.innerHTML = '';
   document.getElementById('resultsPanel')?.classList.remove('has-results');
+  if (typeof syncMobileResultsNav === 'function') syncMobileResultsNav();
 }
 function _splitMetricValUnit(raw, defaultUnit) {
   const s = String(raw ?? '—').trim();
@@ -111,6 +112,7 @@ function _renderResultSummaryStrip(data) {
   });
   _hideResultEmptyState();
   if (panel) panel.classList.add('has-results');
+  if (typeof syncMobileResultsNav === 'function') syncMobileResultsNav();
 }
 function _onPlanResultsReady() {
   if (plannerAlgo !== 'rec') {
@@ -119,10 +121,61 @@ function _onPlanResultsReady() {
     const decoRes = document.getElementById('decoResult');
     if (decoRes) decoRes.style.display = 'block';
   }
+  if (typeof isMobileShell === 'function' && isMobileShell() && typeof setMobileTab === 'function') {
+    setMobileTab('results');
+    return;
+  }
   setMobilePlanView('stack');
 }
+function _syncMobileActivePanels(mode) {
+  if (typeof isMobileShell === 'function' ? !isMobileShell() : !window.matchMedia('(max-width: 767px)').matches) return;
+  const rec = document.getElementById('recPlannerView');
+  const tec = document.getElementById('tecPlannerView');
+  const results = document.getElementById('resultsPanel');
+  const activePlan = plannerAlgo === 'rec' ? rec : tec;
+  if (mode === 'stack') {
+    rec?.classList.toggle('mobile-active', activePlan === rec);
+    tec?.classList.toggle('mobile-active', activePlan === tec);
+    results?.classList.add('mobile-active');
+    return;
+  }
+  if (mode === 'results') {
+    rec?.classList.remove('mobile-active');
+    tec?.classList.remove('mobile-active');
+    results?.classList.add('mobile-active');
+    return;
+  }
+  rec?.classList.toggle('mobile-active', activePlan === rec);
+  tec?.classList.toggle('mobile-active', activePlan === tec);
+  results?.classList.remove('mobile-active');
+}
+window._syncMobileActivePanels = _syncMobileActivePanels;
 function setMobilePlanView(view) {
-  if (!window.matchMedia('(max-width: 640px)').matches) return;
+  if (typeof isMobileShell === 'function' ? !isMobileShell() : !window.matchMedia('(max-width: 767px)').matches) return;
+  if (view === 'stack') {
+    if (typeof setMobileTab === 'function' && typeof isMobileShell === 'function' && isMobileShell()) {
+      setMobileTab('plan', { skipNavMode: true, force: true });
+    }
+    document.body.classList.add('mobile-view-stack');
+    _syncMobileActivePanels('stack');
+    return;
+  }
+  document.body.classList.remove('mobile-view-stack');
+  if (typeof isMobileShell === 'function' && isMobileShell() && typeof setMobileTab === 'function') {
+    if (view === 'results') {
+      const hasResults = document.getElementById('resultsPanel')?.classList.contains('has-results');
+      if (hasResults) {
+        _syncMobileActivePanels('results');
+        setMobileTab('results', { skipNavMode: true, force: true });
+      }
+      return;
+    }
+    if (view === 'plan') {
+      _syncMobileActivePanels('plan');
+      setMobileTab('plan', { skipNavMode: true, force: true });
+      return;
+    }
+  }
   const rec = document.getElementById('recPlannerView');
   const tec = document.getElementById('tecPlannerView');
   const results = document.getElementById('resultsPanel');

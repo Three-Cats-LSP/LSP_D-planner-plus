@@ -11,6 +11,112 @@ let vpmVariant = (() => {
   } catch (e) { return 'VPMB'; }
 })();
 
+let mobileTab = 'plan';
+
+function isMobileShell() {
+  return window.matchMedia('(max-width: 767px)').matches;
+}
+
+function getMobileTab() {
+  return mobileTab;
+}
+
+function isMobileTab(tab) {
+  return isMobileShell() && mobileTab === tab;
+}
+
+function syncMobileResultsNav() {
+  const btn = document.getElementById('mobNavResults');
+  const hasResults = document.getElementById('resultsPanel')?.classList.contains('has-results');
+  if (!btn) return;
+  btn.disabled = !hasResults;
+  btn.setAttribute('aria-disabled', hasResults ? 'false' : 'true');
+}
+
+function _syncMobileAlgoChips(section) {
+  const map = { rec: 'mobChipRec', buh: 'mobChipBuh', vpm: 'mobChipVpm' };
+  document.querySelectorAll('#mobileAlgoChips .mobile-algo-chip').forEach(b => b.classList.remove('active'));
+  const id = map[section];
+  if (id) document.getElementById(id)?.classList.add('active');
+}
+window._syncMobileAlgoChips = _syncMobileAlgoChips;
+
+function _highlightMobileBottomNav(tab) {
+  document.querySelectorAll('#appBottomNav .nav-item').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tab);
+  });
+}
+
+function _applyMobileTabClass(tab) {
+  document.body.classList.remove('mobile-tab-plan', 'mobile-tab-results', 'mobile-tab-tools', 'mobile-tab-settings');
+  if (isMobileShell()) document.body.classList.add('mobile-tab-' + tab);
+}
+
+function setMobileTab(tab, opts) {
+  opts = opts || {};
+  if (!isMobileShell()) return;
+  if (tab !== 'plan' && tab !== 'results' && tab !== 'tools' && tab !== 'settings') return;
+  if (tab === 'results') {
+    const hasResults = document.getElementById('resultsPanel')?.classList.contains('has-results');
+    if (!hasResults) return;
+  }
+  if (tab === mobileTab && !opts.force) return;
+
+  mobileTab = tab;
+  _applyMobileTabClass(tab);
+  _highlightMobileBottomNav(tab);
+
+  if (!opts.skipNavMode) {
+    if (tab === 'plan' || tab === 'results') {
+      if (navMode !== 'planner') setNavMode('planner', { skipMobileTab: true });
+    } else if (tab === 'tools') {
+      if (navMode !== 'tools') setNavMode('tools', { skipMobileTab: true });
+    } else if (tab === 'settings') {
+      if (navMode !== 'settings') setNavMode('settings', { skipMobileTab: true });
+    }
+  }
+  if (tab === 'plan' || tab === 'results') {
+    document.body.classList.remove('mobile-view-stack');
+    if (typeof window._syncMobileActivePanels === 'function') {
+      window._syncMobileActivePanels(tab === 'results' ? 'results' : 'plan');
+    }
+  }
+}
+
+function _clearMobileShellState() {
+  mobileTab = 'plan';
+  document.body.classList.remove('mobile-tab-plan', 'mobile-tab-results', 'mobile-tab-tools', 'mobile-tab-settings');
+  document.querySelectorAll('#appBottomNav .nav-item').forEach(btn => btn.classList.remove('active'));
+}
+
+function _initMobileShell() {
+  if (window._mobileShellBootstrapDone) return;
+  window._mobileShellBootstrapDone = true;
+
+  const onResize = () => {
+    if (isMobileShell()) {
+      _applyMobileTabClass(mobileTab);
+      _highlightMobileBottomNav(mobileTab);
+      syncMobileResultsNav();
+    } else {
+      _clearMobileShellState();
+      if (typeof _initMobilePlanView === 'function') _initMobilePlanView();
+    }
+  };
+
+  window.addEventListener('resize', onResize);
+  if (isMobileShell()) {
+    setMobileTab('plan', { force: true });
+    syncMobileResultsNav();
+  }
+}
+
+window.isMobileShell = isMobileShell;
+window.isMobileTab = isMobileTab;
+window.getMobileTab = getMobileTab;
+window.setMobileTab = setMobileTab;
+window.syncMobileResultsNav = syncMobileResultsNav;
+
 function _syncVpmModeUI(model) {
   const m = model === 'VPMB_GFS' ? 'VPMB_GFS' : 'VPMB';
   const toggle = document.getElementById('vpmModeToggle');
@@ -41,17 +147,34 @@ function _highlightMainNav(section) {
   document.querySelectorAll('#mainNavBar .main-nav-btn').forEach(b => b.classList.remove('active'));
   const id = map[section];
   if (id) document.getElementById(id)?.classList.add('active');
+  if (section === 'rec' || section === 'buh' || section === 'vpm') _syncMobileAlgoChips(section);
 }
 
 function setMainNav(section, btn) {
   if (btn) {
     document.querySelectorAll('#mainNavBar .main-nav-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    if (btn.classList.contains('mobile-algo-chip')) {
+      document.querySelectorAll('#mobileAlgoChips .mobile-algo-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const deskMap = { mobChipRec: 'navBtnRec', mobChipBuh: 'navBtnBuh', mobChipVpm: 'navBtnVpm' };
+      const deskId = deskMap[btn.id];
+      if (deskId) document.getElementById(deskId)?.classList.add('active');
+    }
   } else {
     _highlightMainNav(section);
   }
-  if (section === 'tools') { setNavMode('tools'); return; }
-  if (section === 'settings') { setNavMode('settings'); return; }
+  if (section === 'tools') {
+    if (isMobileShell()) setMobileTab('tools');
+    else setNavMode('tools');
+    return;
+  }
+  if (section === 'settings') {
+    if (isMobileShell()) setMobileTab('settings');
+    else setNavMode('settings');
+    return;
+  }
+  if (isMobileShell() && mobileTab !== 'plan' && mobileTab !== 'results') setMobileTab('plan', { skipNavMode: true });
   const returningFromAux = navMode === 'tools' || navMode === 'settings';
   const targetModel = section === 'rec'
     ? 'rec'
@@ -71,7 +194,8 @@ function setMainNav(section, btn) {
   else if (section === 'vpm') setPlannerAlgo(vpmVariant, btn || document.getElementById('navBtnVpm'));
 }
 
-function setNavMode(mode) {
+function setNavMode(mode, opts) {
+  opts = opts || {};
   if (mode === 'ref') {
     toggleReference();
     return;
@@ -84,6 +208,11 @@ function setNavMode(mode) {
   document.getElementById('toolsBar')?.classList.toggle('visible', mode === 'tools');
   document.body.classList.toggle('algo-tools', mode === 'tools');
   syncEnvRowDisplay?.();
+  if (!opts.skipMobileTab && isMobileShell()) {
+    if (mode === 'planner' && mobileTab !== 'results') setMobileTab('plan', { skipNavMode: true, force: true });
+    else if (mode === 'tools') setMobileTab('tools', { skipNavMode: true, force: true });
+    else if (mode === 'settings') setMobileTab('settings', { skipNavMode: true, force: true });
+  }
   if (mode === 'settings') {
     _highlightMainNav('settings');
     document.getElementById('algoLabel').textContent = 'SETTINGS';
@@ -196,4 +325,5 @@ function initV3Layout() {
   _syncDepthBtSteppers();
   _updatePlanPanelSections();
   _ensureMobilePlanViewBootstrap();
+  _initMobileShell();
 }
