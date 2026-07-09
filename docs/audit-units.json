@@ -1972,7 +1972,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "981c7f61621cd9387d04a073657ccb152d797a6b65af3b913e90a21b8cbdbc11",
+      "fingerprint": "2faa9ba5f3e2910bb8659197da96405d5dc9a5e9bef13361df05457ba17693f0",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2032,7 +2032,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "2c642bdafdc5d4a964e1750727840c51f9a0da8c3d47096299ed3621bef880db",
+      "fingerprint": "7b5a72876b9394884186d53199b5d120de1ceaa10142fc76a9c32ffa32992058",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2069,7 +2069,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a41d0c5341062ace7195139ce68955a0e7b085d841525b876a3b40c224b47bc2",
+      "fingerprint": "388914fdeee3b6b7af82a5e16408837848c0f194c18e2c69d8dae0ba35421930",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2180,7 +2180,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "be8613057c14ff6249f4a83a891b4494709f1d9c477662a46cce214d8d0a81fd",
+      "fingerprint": "7ef54915ead99213a8d434577770d2b09f5217a17d0e9c05c2c8c44822b489fc",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3200,7 +3200,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "befcfb3983338cb0d2776aeb12a892e70bc689174d9c2a7a869440a253ed29ad",
+      "fingerprint": "9bc8ce03781e23087217b044500c48be2499479b09ddf5671611612219b32e6b",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3257,7 +3257,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f05c78e14e9568a3d6857832b4f471744a0e02b7078a2158a404c35d52025d5e",
+      "fingerprint": "6f534865e9e5e296c73314283025d73572c9f09c230133e2ad7195892bd19bad",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3358,7 +3358,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a10525e8893197ead2e8e50b3ad252b9e7d1561c9d71d9cc2f85cb35ce81c158",
+      "fingerprint": "f1235d3c7dbfefb334333429feabd4be99e6067b366930a3a47f7f2616df8c5c",
       "last_read_fingerprint": null,
       "audit_issue": 168,
       "evidence": [],
@@ -6317,7 +6317,7 @@
     },
     {
       "cycle": "R41",
-      "max_new_application_lines": 1016,
+      "max_new_application_lines": 1017,
       "application_units": [
         "UI-CSS-RESULTS"
       ],

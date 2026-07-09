@@ -237,9 +237,9 @@
       "unit_id": "UI-MARKUP-MODALS",
       "path": "ui/markup-modals.html",
       "start_line": 1,
-      "end_line": 347,
-      "line_count": 347,
-      "content_fingerprint": "be8613057c14ff6249f4a83a891b4494709f1d9c477662a46cce214d8d0a81fd",
+      "end_line": 330,
+      "line_count": 330,
+      "content_fingerprint": "7ef54915ead99213a8d434577770d2b09f5217a17d0e9c05c2c8c44822b489fc",
       "review_session": "cursor/seven-lens-cycle-04-modals-audit",
       "verification_session": "cursor/seven-lens-cycle-04-modals-verify",
       "lens_results": {
