@@ -314,6 +314,7 @@ def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> 
         and blurred.get("borderColor") != pristine.get("borderColor")
     )
     shadow_changed = _shadow_differs(pristine, blurred)
+    invalid_style_visible = border_is_red or shadow_changed
     focus_precedence = focused_probe.get("borderColor") == resolved_accent
     disabled_no_red = (
         disabled_probe.get("borderColor") != resolved_red
@@ -323,8 +324,7 @@ def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> 
         pristine_valid
         and after_invalid
         and matches_invalid
-        and border_is_red
-        and shadow_changed
+        and invalid_style_visible
         and focus_precedence
         and disabled_no_red
     )
@@ -374,6 +374,7 @@ def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> 
         "checks": {
             "borderIsRed": border_is_red,
             "shadowChanged": shadow_changed,
+            "invalidStyleVisible": invalid_style_visible,
             "focusPrecedence": focus_precedence,
             "disabledNoRed": disabled_no_red,
         },

@@ -233,7 +233,7 @@
 | TEST-SEVEN-LENS-CYCLE05-EXPORT-FOCUS-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-05-export-focus.json:1` | 65 | P0 | IN_PROGRESS | - |
 | TEST-UI-CSS-REGRESSION | test_infrastructure | `dev/ui_css_regression.py:1` | 285 | P0 | IN_PROGRESS | REG-76, REG-77, REG-78, REG-79, REG-80, REG-81 |
 | TEST-SEVEN-LENS-CYCLE06-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-06-controls.json:1` | 251 | P0 | IN_PROGRESS | - |
-| TEST-UI-CONTROLS-CSS-REGRESSION | test_infrastructure | `dev/ui_controls_css_regression.py:1` | 550 | P0 | IN_PROGRESS | REG-82, REG-83, REG-84, REG-85, REG-86, REG-87, REG-88 |
+| TEST-UI-CONTROLS-CSS-REGRESSION | test_infrastructure | `dev/ui_controls_css_regression.py:1` | 551 | P0 | IN_PROGRESS | REG-82, REG-83, REG-84, REG-85, REG-86, REG-87, REG-88 |
 | TEST-C06-PRE-CONTROLS-REGRESSION | test_infrastructure | `dev/c06_pre_controls_regression.py:1` | 47 | P0 | IN_PROGRESS | REG-82, REG-83 |
 | TEST-SEVEN-LENS-CYCLE07-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-07-results.json:1` | 526 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-CYCLE08-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-08-shell-results.json:1` | 994 | P0 | IN_PROGRESS | - |
