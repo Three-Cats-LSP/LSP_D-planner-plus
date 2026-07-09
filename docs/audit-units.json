@@ -853,7 +853,10 @@
       "resolution_commit": "437bbf6",
       "evidence_cases": [
         "REG-69"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C02-M-03",
@@ -870,7 +873,10 @@
       "resolution_commit": "437bbf6",
       "evidence_cases": [
         "REG-63"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C02-M-04",
@@ -887,7 +893,10 @@
       "resolution_commit": "437bbf6",
       "evidence_cases": [
         "REG-70"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C02-M-05",
@@ -903,7 +912,10 @@
       "resolution_commit": "437bbf6",
       "evidence_cases": [
         "REG-62"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C02-M-06",
@@ -919,7 +931,10 @@
       "resolution_commit": "27b661c",
       "evidence_cases": [
         "COV-01"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C03-H-02",
@@ -934,7 +949,10 @@
       "resolution_commit": "437bbf6",
       "evidence_cases": [
         "REG-64"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C03-M-02",
@@ -952,7 +970,10 @@
       "evidence_cases": [
         "REG-64",
         "REG-65"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C03-L-02",
@@ -967,7 +988,10 @@
       "resolution_commit": "437bbf6",
       "evidence_cases": [
         "REG-64"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C04-H-02",
@@ -988,7 +1012,10 @@
         "REG-72",
         "REG-73",
         "REG-74"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C04-H-03",
@@ -1005,7 +1032,10 @@
       "resolution_commit": "81a46ae",
       "evidence_cases": [
         "COV-01"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C04-M-03",
@@ -1023,7 +1053,10 @@
       "evidence_cases": [
         "REG-71",
         "REG-72"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C04-M-04",
@@ -1041,7 +1074,10 @@
       "resolution_commit": "81a46ae",
       "evidence_cases": [
         "COV-01"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C04-H-04",
@@ -1058,7 +1094,10 @@
       "resolution_commit": "81a46ae",
       "evidence_cases": [
         "COV-01"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C04-M-05",
@@ -1074,7 +1113,10 @@
       "resolution_commit": "28086c4",
       "evidence_cases": [
         "REG-75"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C04-H-05",
@@ -1092,7 +1134,10 @@
       "evidence_cases": [
         "REG-71",
         "REG-72"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "ISSUE-133-ROLLUP",
@@ -1297,7 +1342,10 @@
       "resolution_commit": "c40b71a",
       "evidence_cases": [
         "REG-76"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C05-M-02",
@@ -1312,7 +1360,10 @@
       "resolution_commit": "c40b71a",
       "evidence_cases": [
         "REG-77"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C05-L-01",
@@ -1327,7 +1378,10 @@
       "resolution_commit": "c40b71a",
       "evidence_cases": [
         "REG-78"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C05-L-02",
@@ -1342,7 +1396,10 @@
       "resolution_commit": "c40b71a",
       "evidence_cases": [
         "REG-79"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C05-L-03",
@@ -1357,7 +1414,10 @@
       "resolution_commit": "c40b71a",
       "evidence_cases": [
         "REG-80"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C05-L-04",
@@ -1372,7 +1432,10 @@
       "resolution_commit": "c40b71a",
       "evidence_cases": [
         "REG-81"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C06-M-01",
@@ -1387,7 +1450,10 @@
       "resolution_commit": "7470b4e",
       "evidence_cases": [
         "REG-82"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C06-M-02",
@@ -1402,7 +1468,10 @@
       "resolution_commit": "7470b4e",
       "evidence_cases": [
         "REG-83"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C06-L-01",
@@ -1417,7 +1486,10 @@
       "resolution_commit": "7470b4e",
       "evidence_cases": [
         "REG-84"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C06-L-02",
@@ -1432,7 +1504,10 @@
       "resolution_commit": "7470b4e",
       "evidence_cases": [
         "REG-85"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C06-L-03",
@@ -1447,7 +1522,10 @@
       "resolution_commit": "7470b4e",
       "evidence_cases": [
         "REG-86"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C06-L-04",
@@ -1462,7 +1540,10 @@
       "resolution_commit": "7d403f4",
       "evidence_cases": [
         "REG-87"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C06-L-05",
@@ -1477,7 +1558,10 @@
       "resolution_commit": "7470b4e",
       "evidence_cases": [
         "REG-88"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C07-M-01",
@@ -1492,7 +1576,10 @@
       "resolution_commit": "1b26dd1",
       "evidence_cases": [
         "REG-89"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C07-M-02",
@@ -1507,7 +1594,10 @@
       "resolution_commit": "1b26dd1",
       "evidence_cases": [
         "REG-90"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C07-L-01",
@@ -1522,7 +1612,10 @@
       "resolution_commit": "1b26dd1",
       "evidence_cases": [
         "REG-91"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C07-L-02",
@@ -1537,7 +1630,10 @@
       "resolution_commit": "1b26dd1",
       "evidence_cases": [
         "REG-92"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C07-L-03",
@@ -1552,7 +1648,10 @@
       "resolution_commit": "1b26dd1",
       "evidence_cases": [
         "REG-93"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C07-L-04",
@@ -1567,7 +1666,10 @@
       "resolution_commit": "1b26dd1",
       "evidence_cases": [
         "REG-94"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C08-H-01",
@@ -1583,7 +1685,10 @@
       "evidence_cases": [
         "REG-95"
       ],
-      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9"
+      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9",
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C08-H-02",
@@ -1598,7 +1703,10 @@
       "evidence_cases": [
         "REG-96"
       ],
-      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9"
+      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9",
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C08-M-01",
@@ -1613,7 +1721,10 @@
       "evidence_cases": [
         "REG-97"
       ],
-      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9"
+      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9",
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C08-L-01",
@@ -1628,7 +1739,10 @@
       "evidence_cases": [
         "REG-98"
       ],
-      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9"
+      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9",
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C08-L-02",
@@ -1643,7 +1757,10 @@
       "evidence_cases": [
         "REG-99"
       ],
-      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9"
+      "resolution_commit": "9240e20bf3116eff0cc4e83ec90a9e0da351bad9",
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C08-M-02",
@@ -1658,7 +1775,10 @@
       "evidence_cases": [
         "REG-105"
       ],
-      "resolution_commit": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a"
+      "resolution_commit": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a",
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C08-M-03",
@@ -1673,7 +1793,10 @@
       "evidence_cases": [
         "REG-106"
       ],
-      "resolution_commit": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a"
+      "resolution_commit": "566babb6dcd79940b77bbcf91ab5ff6b3f50dc8a",
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C08-M-04",
@@ -1688,7 +1811,10 @@
       "evidence_cases": [
         "REG-107"
       ],
-      "resolution_commit": "8e437a1fc38bd4bf50c280a38aa323f2372214d5"
+      "resolution_commit": "8e437a1fc38bd4bf50c280a38aa323f2372214d5",
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C03-H-01",
@@ -1703,7 +1829,10 @@
       "resolution_commit": "00732b5",
       "evidence_cases": [
         "REG-64"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C03-M-01",
@@ -1718,7 +1847,10 @@
       "resolution_commit": "00732b5",
       "evidence_cases": [
         "REG-65"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C03-L-01",
@@ -1733,7 +1865,10 @@
       "resolution_commit": "00732b5",
       "evidence_cases": [
         "COV-01"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C04-H-01",
@@ -1748,7 +1883,10 @@
       "resolution_commit": "00732b5",
       "evidence_cases": [
         "REG-66"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C04-M-01",
@@ -1763,7 +1901,10 @@
       "resolution_commit": "00732b5",
       "evidence_cases": [
         "REG-67"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C04-M-02",
@@ -1778,7 +1919,10 @@
       "resolution_commit": "00732b5",
       "evidence_cases": [
         "REG-68"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C04-L-01",
@@ -1793,7 +1937,10 @@
       "resolution_commit": "00732b5",
       "evidence_cases": [
         "COV-01"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     },
     {
       "id": "SL-C04-L-02",
@@ -1808,7 +1955,10 @@
       "resolution_commit": "00732b5",
       "evidence_cases": [
         "COV-01"
-      ]
+      ],
+      "archived": true,
+      "active": false,
+      "archive_reason": "Frozen pre-V4 Seven-Lens history; V4 risk-first audit is the active release authority."
     }
   ],
   "units": [
@@ -4238,7 +4388,7 @@
       "evidence": [],
       "issue": "Audit environment hardening after fd80511",
       "regression_cases": [],
-      "fingerprint": "c86af91100c019de875eb2ed6830c4a4190bf5a13ed05aaecaa5377722fe39f6",
+      "fingerprint": "2f74177833e747bcfbfa68901d7453fcc0a030da5eae2977f5dce327c141351b",
       "last_read_fingerprint": null
     },
     {
@@ -4949,20 +5099,14 @@
       "path": "tools/audit/cli.py",
       "layer": "tooling",
       "priority": "P0",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "80b87a7cb9a9055ea9613bda1ebb4f802b7cad3fada6b7cd5f4bb208bb8fb58e",
-      "last_read_fingerprint": "80b87a7cb9a9055ea9613bda1ebb4f802b7cad3fada6b7cd5f4bb208bb8fb58e",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01"
-      ],
+      "fingerprint": "e365fa5e59f57843a3ccacf74f2285d8a18352296c05ff4a3a55cead0ebae832",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Ground-up audit architecture"
     },
     {
@@ -6588,10 +6732,7 @@
         "{python}",
         "dev/ui_css_regression.py"
       ],
-      "profiles": [
-        "ci",
-        "release"
-      ],
+      "profiles": [],
       "timeout_seconds": 180,
       "case_ids": [
         "SL-C05-GF-ROW-MODE-ISOLATION",
@@ -6600,7 +6741,9 @@
         "SL-C05-CSS-DEAD-GF-BTN",
         "SL-C05-CSS-DEAD-ALGO-SWITCHER",
         "SL-C05-CSS-DEAD-THEME-TOGGLE"
-      ]
+      ],
+      "archived": true,
+      "archive_reason": "Superseded by V4 risk-first visual/runner contracts; retained for manual historical reproduction only."
     },
     {
       "id": "SUITE-UI-CONTROLS-CSS-REGRESSION",
@@ -6608,10 +6751,7 @@
         "{python}",
         "dev/ui_controls_css_regression.py"
       ],
-      "profiles": [
-        "ci",
-        "release"
-      ],
+      "profiles": [],
       "timeout_seconds": 180,
       "case_ids": [
         "SL-C06-SEG-FOCUS-VISIBLE",
@@ -6621,7 +6761,9 @@
         "SL-C06-CSS-DEAD-BTN-CALC",
         "SL-C06-FIELD-INVALID-STATE",
         "SL-C06-REDUCED-MOTION"
-      ]
+      ],
+      "archived": true,
+      "archive_reason": "Superseded by V4 risk-first visual/runner contracts; retained for manual historical reproduction only."
     },
     {
       "id": "SUITE-UI-RESULTS-CSS-REGRESSION",
@@ -6629,10 +6771,7 @@
         "{python}",
         "dev/ui_results_css_regression.py"
       ],
-      "profiles": [
-        "ci",
-        "release"
-      ],
+      "profiles": [],
       "timeout_seconds": 240,
       "case_ids": [
         "SL-C07-CHIP-YELLOW-DISTINCT",
@@ -6641,7 +6780,9 @@
         "SL-C07-CSS-DEAD-ALGO-SWITCHER",
         "SL-C07-REDUCED-MOTION",
         "SL-C07-PRINT-RESULTS"
-      ]
+      ],
+      "archived": true,
+      "archive_reason": "Superseded by V4 risk-first visual/runner contracts; retained for manual historical reproduction only."
     },
     {
       "id": "SUITE-UI-SHELL-RESULTS-REGRESSION",
@@ -6649,10 +6790,7 @@
         "{python}",
         "dev/ui_shell_results_regression.py"
       ],
-      "profiles": [
-        "ci",
-        "release"
-      ],
+      "profiles": [],
       "timeout_seconds": 300,
       "case_ids": [
         "SL-C08-MOBILE-PANEL-EXCLUSIVE",
@@ -6660,7 +6798,9 @@
         "SL-C08-INVALID-TEC-CLEARS-STALE",
         "SL-C08-DEAD-RESULT-TAB-PREFIX",
         "SL-C08-SINGLE-MOBILE-INIT"
-      ]
+      ],
+      "archived": true,
+      "archive_reason": "Superseded by V4 risk-first visual/runner contracts; retained for manual historical reproduction only."
     },
     {
       "id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
@@ -7540,7 +7680,8 @@
     "record_roots": [
       "docs/seven-lens-records/",
       "docs/seven-lens-reports/"
-    ]
+    ],
+    "active_release_policy": "SL-Cxx findings and Cycle 5-8 CSS/browser suites are archived evidence only. V4 Rxx units and current suite contracts are release authority."
   },
   "v4_design_contracts": [
     "Schedule table columns and mobile geometry remain readable without clipped values.",

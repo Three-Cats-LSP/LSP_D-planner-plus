@@ -259,6 +259,8 @@ def validate_registry(
             )
 
     for finding in registry.get("findings", []):
+        if finding.get("archived") or finding.get("active") is False:
+            continue
         severity = finding.get("severity")
         if severity not in VALID_SEVERITIES:
             errors.append(f"finding {finding.get('id')}: invalid severity")

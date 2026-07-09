@@ -88,6 +88,8 @@ def invalid_closed_findings(
     evidence = registry.get("evidence_catalog", {})
     invalid = []
     for finding in registry.get("findings", []):
+        if finding.get("archived") or finding.get("active") is False:
+            continue
         if finding.get("status") != "CLOSED":
             continue
         bad = []
