@@ -376,7 +376,7 @@
       "start_line": 501,
       "end_line": 1000,
       "line_count": 500,
-      "content_fingerprint": "1d742d6fd3ea6ff7868d71ce6ff210482fae24f89f25d56ec92d7f05b4b8ed85",
+      "content_fingerprint": "848f5bf79e785046f2a8cf93240c444b0051b3171b1a694dcf5ca13378c2b000",
       "review_session": "C07-B",
       "verification_session": "C09-DEP-DECO-CARD-SLATE-B",
       "lens_results": {
@@ -1459,10 +1459,10 @@
       "part_id": "UI-CSS-RESULTS",
       "unit_id": "UI-CSS-RESULTS",
       "path": "lsp-dplanner-results.css",
-      "content_fingerprint": "2f09bdf51fb1e10836f0ba4cb56758a0eb477be14acc45822ae940dae4e1ef41",
+      "content_fingerprint": "44c232d19751365bfa3e1f9b34563416536712adb513cefff1c257a6ca868b5d",
       "part_fingerprints": {
         "UI-CSS-RESULTS-P01": "0f3ffbe3af96d5049afa5d41423fc4552546f041b2e99b65b2e18b4ecd9ea5b6",
-        "UI-CSS-RESULTS-P02": "1d742d6fd3ea6ff7868d71ce6ff210482fae24f89f25d56ec92d7f05b4b8ed85",
+        "UI-CSS-RESULTS-P02": "848f5bf79e785046f2a8cf93240c444b0051b3171b1a694dcf5ca13378c2b000",
         "UI-CSS-RESULTS-P03": "fe8a1c7579c2a92c1e63e8292cf2501e125fb07ae02ef383120adf68d41e37f0"
       },
       "boundaries": {
@@ -1470,7 +1470,7 @@
         "UI-CSS-RESULTS-P02": "lines 501-1000",
         "UI-CSS-RESULTS-P03": "lines 1001-1004"
       },
-      "trigger": "critical.zip proposed gas-card colors applied: critical/low gas is amber, no-gas/no-go remains red.",
+      "trigger": "critical.zip proposed gas-card colors and typography applied: critical/low gas is orange, no-gas/no-go remains red, remaining values stay strong.",
       "review_scope": "Gas consumption color-tier CSS and visual guard only; schedule, graph, and renderer behavior unchanged.",
       "result": "NO_NEW_FINDING",
       "verified_at": "2026-07-09T00:00:00Z",

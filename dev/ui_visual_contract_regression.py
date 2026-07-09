@@ -788,6 +788,10 @@ async () => {
     criticalCardColor: criticalProbe ? getComputedStyle(criticalProbe).borderTopColor.replace(/\s+/g, '').toLowerCase() : '',
     noGasCardColor: noGasCard ? getComputedStyle(noGasCard).borderTopColor.replace(/\s+/g, '').toLowerCase() : '',
     noGasStatusColor: noGasCard ? getComputedStyle(noGasCard).getPropertyValue('--gas-status').trim().toLowerCase() : '',
+    remainingTextColor: document.querySelector('.gas-usage-remaining') ? getComputedStyle(document.querySelector('.gas-usage-remaining')).color.replace(/\s+/g, '').toLowerCase() : '',
+    remainingParenColor: document.querySelector('.gas-usage-remaining span') ? getComputedStyle(document.querySelector('.gas-usage-remaining span')).color.replace(/\s+/g, '').toLowerCase() : '',
+    remainingFontWeight: document.querySelector('.gas-usage-remaining') ? getComputedStyle(document.querySelector('.gas-usage-remaining')).fontWeight : '',
+    remainingParenFontWeight: document.querySelector('.gas-usage-remaining span') ? getComputedStyle(document.querySelector('.gas-usage-remaining span')).fontWeight : '',
     checks,
     overflow,
     bodyScrollWidth: document.documentElement.scrollWidth,
@@ -2049,7 +2053,10 @@ def main() -> int:
         and mobile_warning_details.get("cardWarningColor") in ("rgb(255,49,49)", "rgb(255,59,48)")
         and mobile_warning_details.get("noGasCardColor") in ("rgb(255,49,49)", "rgb(220,38,38)")
         and mobile_warning_details.get("noGasStatusColor") in ("#dc2626", "rgb(220,38,38)")
-        and mobile_warning_details.get("criticalCardColor") in ("rgb(245,158,11)",)
+        and mobile_warning_details.get("criticalCardColor") in ("rgb(232,89,12)",)
+        and mobile_warning_details.get("remainingTextColor") == mobile_warning_details.get("remainingParenColor")
+        and int(mobile_warning_details.get("remainingFontWeight") or 0) >= 700
+        and int(mobile_warning_details.get("remainingParenFontWeight") or 0) >= 700
         and not mobile_warning_details.get("console_errors")
     )
     results["SL-C09-VPM-MODE-TOGGLE"] = bool(
