@@ -10,7 +10,7 @@
 | Layer | Total | Unread | In progress | Read | Verified |
 |---|---:|---:|---:|---:|---:|
 | build_config | 2 | 0 | 1 | 0 | 1 |
-| ci | 7 | 0 | 2 | 1 | 4 |
+| ci | 7 | 0 | 4 | 1 | 2 |
 | deploy_config | 1 | 0 | 0 | 0 | 1 |
 | engine | 6 | 0 | 0 | 0 | 6 |
 | engine_reference | 1 | 0 | 0 | 0 | 1 |
@@ -28,7 +28,7 @@
 | web_markup | 7 | 0 | 5 | 0 | 2 |
 | web_runtime | 24 | 0 | 18 | 0 | 6 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **207** | **0** | **97** | **3** | **107** |
+| **Total** | **207** | **0** | **99** | **3** | **105** |
 
 ## Units
 
@@ -191,9 +191,9 @@
 | TOOL-VENDOR | tooling | `tools/vendor_offline_assets.py:1` | 173 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-VERIFY-ASSETS | tooling | `tools/verify_site_assets.py:1` | 132 | P2 | VERIFIED | COV-01, PARITY-01 |
 | CI-AUDIT | ci | `.github/workflows/audit.yml:1` | 146 | P1 | IN_PROGRESS | - |
-| CI-APK | ci | `.github/workflows/build-apk.yml:1` | 161 | P1 | VERIFIED | ANDROID-01 |
+| CI-APK | ci | `.github/workflows/build-apk.yml:1` | 171 | P1 | IN_PROGRESS | - |
 | CI-MAIN | ci | `.github/workflows/ci.yml:1` | 202 | P1 | IN_PROGRESS | - |
-| CI-DEPLOY | ci | `.github/workflows/deploy.yml:1` | 128 | P1 | VERIFIED | COV-01, EXT-07 |
+| CI-DEPLOY | ci | `.github/workflows/deploy.yml:1` | 138 | P1 | IN_PROGRESS | - |
 | CI-DEPLOY-DEV-PREVIEW | ci | `.github/workflows/deploy-dev-preview.yml:1` | 75 | P2 | READ | - |
 | CI-NOTIFY | ci | `.github/workflows/notify-site.yml:1` | 50 | P2 | VERIFIED | COV-01 |
 | CI-OFFLINE-ZIP | ci | `.github/workflows/build-offline-zip.yml:1` | 119 | P2 | VERIFIED | COV-01 |
