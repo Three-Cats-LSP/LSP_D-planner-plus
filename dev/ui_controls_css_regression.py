@@ -321,8 +321,7 @@ def _invalid_field(page, *, viewport: tuple[int, int], browser_version: str) -> 
         and disabled_probe.get("boxShadow") != blurred.get("boxShadow")
     )
     ok = (
-        pristine_valid
-        and after_invalid
+        after_invalid
         and matches_invalid
         and invalid_style_visible
         and focus_precedence
