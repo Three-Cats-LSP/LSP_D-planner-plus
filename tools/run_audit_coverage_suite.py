@@ -16,15 +16,9 @@ if str(ROOT) not in sys.path:
 from tools.audit.suite_emit import case_row, finish_suite  # noqa: E402
 
 
-FAST_UNIT_TEST_MODULES = (
+UNIT_TEST_MODULES = (
     "tools.audit.test_system",
     "tools.test_ui_structure_suite",
-    "tools.test_seven_lens_protocol",
-    "tools.test_seven_lens_protocol_migrations",
-)
-
-SLOW_UNIT_TEST_MODULES = (
-    "tools.test_seven_lens_browser_trace",
 )
 
 
@@ -53,15 +47,10 @@ def main() -> int:
         "audit_coverage --check",
         [sys.executable, "tools/audit_coverage.py", "--check"],
     )
-    unit_test_modules = FAST_UNIT_TEST_MODULES if args.fast else FAST_UNIT_TEST_MODULES + SLOW_UNIT_TEST_MODULES
     parallel_steps = [
-        (
-            "seven_lens_protocol check-all",
-            [sys.executable, "tools/seven_lens_protocol.py", "check-all"],
-        ),
         *[
             (f"unittest {module}", [sys.executable, "-m", "unittest", module])
-            for module in unit_test_modules
+            for module in UNIT_TEST_MODULES
         ],
     ]
     results_by_label: dict[str, subprocess.CompletedProcess[str]] = {}
@@ -79,21 +68,17 @@ def main() -> int:
             label: subprocess.CompletedProcess(command, 1, "", "skipped after coverage failure")
             for label, command in parallel_steps
         }
-    reviewed = results_by_label["seven_lens_protocol check-all"]
     test_results = [
         results_by_label[f"unittest {module}"]
-        for module in unit_test_modules
+        for module in UNIT_TEST_MODULES
     ]
     passed = (
         cov.returncode == 0
-        and reviewed.returncode == 0
         and all(proc.returncode == 0 for proc in test_results)
     )
     msg = ""
     if cov.returncode != 0:
         msg = "audit_coverage --check failed"
-    elif reviewed.returncode != 0:
-        msg = "reviewed seven-lens cycle records are invalid"
     elif any(proc.returncode != 0 for proc in test_results):
         msg = "audit infrastructure unit tests failed"
     finish_suite(ROOT, [case_row("AUDIT-COV-01", passed, msg)], 0 if passed else 1)

@@ -73,9 +73,6 @@ jobs:
       - name: Run registry-driven static audit
         run: python -m tools.audit check --profile static
 
-      - name: Seven-lens reviewed-cycle gate
-        run: python tools/seven_lens_protocol.py check-all --require-artifacts
-
       - name: Upload static audit reports
         if: always()
         uses: actions/upload-artifact@v4

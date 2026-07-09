@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Cross-unit visual contracts for the technical planner and results shell."""
 from __future__ import annotations
 
@@ -27,9 +27,9 @@ CASE_IDS = (
     "SL-VIS-DESKTOP-TWO-COLUMN-LAYOUT",
     "SL-VIS-DECO-BANNER-GAS-LABELS",
     "SL-VIS-SWITCH-ROW-THEME-PARITY",
-    "SL-C08-MOBILE-NAV-TILE-GRID",
-    "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT",
-    "SL-C08-NO-REDUNDANT-BOTTOM-NAV",
+    "V4-UI-VISUAL-MOBILE-NAV-TILE-GRID",
+    "V4-UI-VISUAL-OPERATIONAL-GAS-LABEL-FORMAT",
+    "V4-UI-VISUAL-MOBILE-BOTTOM-TAB-SHELL",
     "SL-C09-GAS-SWITCH-TERMINOLOGY",
     "SL-C09-MOBILE-WARNING-WRAP",
     "SL-C09-VPM-MODE-TOGGLE",
@@ -1135,12 +1135,16 @@ async () => {
     return getComputedStyle(el).display;
   };
   const width = window.innerWidth;
-  const mobile = width <= 640;
+  const mobile = width <= 720;
 
   const bottomNav = document.getElementById('bottomNav');
   const bottomNavPresent = !!bottomNav;
   const bottomNavVisible = !!(bottomNav && getComputedStyle(bottomNav).display !== 'none');
   const bottomNavHeight = bottomNav?.getBoundingClientRect().height || 0;
+  const appBottomNav = document.getElementById('appBottomNav');
+  const appBottomNavPresent = !!appBottomNav;
+  const appBottomNavVisible = !!(appBottomNav && getComputedStyle(appBottomNav).display !== 'none');
+  const appBottomNavHeight = appBottomNav?.getBoundingClientRect().height || 0;
 
   const bnavButtons = document.querySelectorAll('.bnav-btn').length;
   const duplicateControls = {
@@ -1219,9 +1223,17 @@ async () => {
     window._zhlHeadless = prevHeadless;
   }
   const onResults = vis('resultsPanel') !== 'none';
-  document.getElementById('navBtnBuh')?.click();
-  await new Promise(r => setTimeout(r, 120));
-  const backToPlanner = vis('tecPlannerView') !== 'none' && vis('resultsPanel') !== 'none';
+  if (mobile && typeof setMobileTab === 'function') {
+    setMobileTab('results', { skipNavMode: true, force: true });
+    await new Promise(r => setTimeout(r, 120));
+    navChecks.mobileResults = vis('resultsPanel') !== 'none';
+    setMobileTab('plan', { skipNavMode: true, force: true });
+    await new Promise(r => setTimeout(r, 120));
+  } else {
+    document.getElementById('navBtnBuh')?.click();
+    await new Promise(r => setTimeout(r, 120));
+  }
+  const backToPlanner = vis('tecPlannerView') !== 'none';
 
   const desktopNavCount = width > 640
     ? document.querySelectorAll('#mainNavBar .main-nav-btn').length
@@ -1233,7 +1245,9 @@ async () => {
     && !cssHasBottomNav
     && Object.values(navChecks).every(Boolean)
     && (mobile ? backToPlanner : true)
-    && (mobile ? !bottomNavVisible && bottomNavHeight < 1 && appPaddingBottom < 64 : desktopNavCount === 5)
+    && (mobile
+      ? appBottomNavPresent && appBottomNavVisible && appBottomNavHeight >= 48
+      : desktopNavCount === 5 && (!appBottomNavVisible || appBottomNavHeight < 1))
     && bottomGap < 8;
 
   return {
@@ -1242,6 +1256,9 @@ async () => {
     bottomNavPresent,
     bottomNavVisible,
     bottomNavHeight,
+    appBottomNavPresent,
+    appBottomNavVisible,
+    appBottomNavHeight,
     duplicateControls,
     bnavButtons,
     cssHasBottomNav,
@@ -1727,6 +1744,8 @@ async () => {
   const resultsPanel = document.getElementById('resultsPanel');
   if (decoResult) decoResult.style.display = 'block';
   if (resultsPanel) resultsPanel.classList.add('has-results');
+  if (typeof setMobileTab === 'function') setMobileTab('results');
+  if (typeof setMobilePlanView === 'function') setMobilePlanView('results');
   await wait(50);
   const tbody = document.getElementById('decoTableBody');
   const table = tbody?.closest('table');
@@ -1831,7 +1850,7 @@ def main() -> int:
     )
     results["SL-VIS-DESKTOP-TWO-COLUMN-LAYOUT"] = all(
         bool(c["layout"] and c["layout"]["sideBySide"])
-        for key, c in details.items() if not key.endswith("-light") and int(key.split("x", 1)[0]) > 640
+        for key, c in details.items() if not key.endswith("-light") and int(key.split("x", 1)[0]) >= 1024
     )
     results["SL-VIS-DECO-BANNER-GAS-LABELS"] = all(
         c["generated"]
@@ -2021,7 +2040,7 @@ def main() -> int:
         and not capture["console_errors"]
         for capture in nav_details.values()
     )
-    results["SL-C08-MOBILE-NAV-TILE-GRID"] = nav_ok
+    results["V4-UI-VISUAL-MOBILE-NAV-TILE-GRID"] = nav_ok
 
     gas_ok = (
         gas_details.get("generated")
@@ -2031,7 +2050,7 @@ def main() -> int:
         and not gas_details.get("forbiddenHits")
         and not gas_details.get("console_errors")
     )
-    results["SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"] = bool(gas_ok)
+    results["V4-UI-VISUAL-OPERATIONAL-GAS-LABEL-FORMAT"] = bool(gas_ok)
 
     results["SL-C09-GAS-SWITCH-TERMINOLOGY"] = bool(
         gas_details.get("generated")
@@ -2046,7 +2065,7 @@ def main() -> int:
         and not capture.get("console_errors")
         for capture in bottom_nav_details.values()
     )
-    results["SL-C08-NO-REDUNDANT-BOTTOM-NAV"] = bottom_nav_ok
+    results["V4-UI-VISUAL-MOBILE-BOTTOM-TAB-SHELL"] = bottom_nav_ok
 
     results["SL-C09-MOBILE-WARNING-WRAP"] = bool(
         mobile_warning_details.get("ok")

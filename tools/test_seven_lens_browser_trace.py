@@ -563,7 +563,7 @@ class SuiteOrderRegressionTests(unittest.TestCase):
                     str(ROOT / "tools/seven_lens_browser_trace.py"),
                     "--spec", str(spec),
                     "--output", str(trace_out),
-                    "--case-id", "SL-C08-NAV-PRESERVES-RESULTS",
+                    "--case-id", "V4-UI-SHELL-NAV-PRESERVES-RESULTS",
                 ],
                 cwd=ROOT, capture_output=True, text=True,
             )
@@ -572,13 +572,13 @@ class SuiteOrderRegressionTests(unittest.TestCase):
                 [
                     sys.executable,
                     str(ROOT / "dev/ui_shell_results_regression.py"),
-                    "--case-id", "SL-C08-NAV-PRESERVES-RESULTS",
+                    "--case-id", "V4-UI-SHELL-NAV-PRESERVES-RESULTS",
                 ],
                 cwd=ROOT, capture_output=True, text=True,
             )
             self.assertEqual(shell_proc.returncode, 0, shell_proc.stdout + shell_proc.stderr)
-            self.assertIn("[SL-C08-NAV-PRESERVES-RESULTS]", shell_proc.stdout)
-            self.assertNotIn("✗ [SL-C08-NAV-PRESERVES-RESULTS]", shell_proc.stdout)
+            self.assertIn("[V4-UI-SHELL-NAV-PRESERVES-RESULTS]", shell_proc.stdout)
+            self.assertNotIn("✗ [V4-UI-SHELL-NAV-PRESERVES-RESULTS]", shell_proc.stdout)
         finally:
             trace_out.unlink(missing_ok=True)
 
@@ -590,7 +590,7 @@ class SuiteOrderRegressionTests(unittest.TestCase):
                 [
                     sys.executable,
                     str(ROOT / "dev/ui_shell_results_regression.py"),
-                    "--case-id", "SL-C08-NAV-PRESERVES-RESULTS",
+                    "--case-id", "V4-UI-SHELL-NAV-PRESERVES-RESULTS",
                 ],
                 cwd=ROOT, capture_output=True, text=True,
             )
@@ -601,7 +601,7 @@ class SuiteOrderRegressionTests(unittest.TestCase):
                     str(ROOT / "tools/seven_lens_browser_trace.py"),
                     "--spec", str(spec),
                     "--output", str(trace_out),
-                    "--case-id", "SL-C08-NAV-PRESERVES-RESULTS",
+                    "--case-id", "V4-UI-SHELL-NAV-PRESERVES-RESULTS",
                 ],
                 cwd=ROOT, capture_output=True, text=True,
             )

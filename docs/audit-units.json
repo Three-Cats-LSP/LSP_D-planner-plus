@@ -658,23 +658,23 @@
     },
     "REG-95": {
       "suite_id": "SUITE-UI-SHELL-RESULTS-REGRESSION",
-      "case_id": "SL-C08-MOBILE-PANEL-EXCLUSIVE"
+      "case_id": "V4-UI-SHELL-MOBILE-PANEL-EXCLUSIVE"
     },
     "REG-96": {
       "suite_id": "SUITE-UI-SHELL-RESULTS-REGRESSION",
-      "case_id": "SL-C08-NAV-PRESERVES-RESULTS"
+      "case_id": "V4-UI-SHELL-NAV-PRESERVES-RESULTS"
     },
     "REG-97": {
       "suite_id": "SUITE-UI-SHELL-RESULTS-REGRESSION",
-      "case_id": "SL-C08-INVALID-TEC-CLEARS-STALE"
+      "case_id": "V4-UI-SHELL-INVALID-TEC-CLEARS-STALE"
     },
     "REG-98": {
       "suite_id": "SUITE-UI-SHELL-RESULTS-REGRESSION",
-      "case_id": "SL-C08-DEAD-RESULT-TAB-PREFIX"
+      "case_id": "V4-UI-SHELL-DEAD-RESULT-TAB-PREFIX"
     },
     "REG-99": {
       "suite_id": "SUITE-UI-SHELL-RESULTS-REGRESSION",
-      "case_id": "SL-C08-SINGLE-MOBILE-INIT"
+      "case_id": "V4-UI-SHELL-SINGLE-MOBILE-INIT"
     },
     "REG-100": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
@@ -698,15 +698,15 @@
     },
     "REG-105": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
-      "case_id": "SL-C08-MOBILE-NAV-TILE-GRID"
+      "case_id": "V4-UI-VISUAL-MOBILE-NAV-TILE-GRID"
     },
     "REG-106": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
-      "case_id": "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT"
+      "case_id": "V4-UI-VISUAL-OPERATIONAL-GAS-LABEL-FORMAT"
     },
     "REG-107": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
-      "case_id": "SL-C08-NO-REDUNDANT-BOTTOM-NAV"
+      "case_id": "V4-UI-VISUAL-MOBILE-BOTTOM-TAB-SHELL"
     },
     "REG-108": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
@@ -4523,7 +4523,7 @@
       "evidence": [],
       "issue": "GitHub #140 M-3 coverage + audit self-tests",
       "regression_cases": [],
-      "fingerprint": "6e4ab298cdea65755090b592c7126a040dde784be57b0f1bef2564c1534217d9",
+      "fingerprint": "46095fadb26278669c8df8d7af5076b224d29afba0592d4ec01d4bf29363d465",
       "last_read_fingerprint": null
     },
     {
@@ -4628,7 +4628,7 @@
       "evidence": [],
       "issue": "Seven-lens browser trace assertion tests",
       "regression_cases": [],
-      "fingerprint": "6f58af04e8f22a3a1a5e21307a33fc581d86f341ac08010b5e55207dadcb6e0c",
+      "fingerprint": "6140b4bac76d0ba538d88c9185687582b106c0bcca056427217c8745252fcdf7",
       "last_read_fingerprint": null
     },
     {
@@ -4946,7 +4946,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1bea406afb224572d8781d748559403aa5fb04d91848e9996f983bb7e263bb43",
+      "fingerprint": "eac0f27cdefb029104d308597c7e55cb8e9123f073ae83999b4ab72de99dcb99",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -4978,7 +4978,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3a1ad97f39f53ff9c960e3a31e984252d1910d0decbaf59ca4cc4bed50a81e4c",
+      "fingerprint": "b6df15eb88b059c47fe6b1fc53adedeaa0b0616bb655be71c98523ce7fa7d1e7",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5812,7 +5812,7 @@
         "REG-98",
         "REG-99"
       ],
-      "fingerprint": "2233f3b7a8c6bd4daec3c21c24878e70b616911a78f9e48b4ca70696ceb97003",
+      "fingerprint": "ef29f368facb1c7aba829f5959663c7bf4bda83da90b03096b10261d6115ab49",
       "last_read_fingerprint": null
     },
     {
@@ -5870,7 +5870,7 @@
         "REG-137",
         "REG-138"
       ],
-      "fingerprint": "4dc7ac6bf96f14874babf7f1a776e2d384c9ee8117ec9ad61668b369bcc84ad3",
+      "fingerprint": "6bc31721a5c52a9880178ad19f138378a813c752a50bffe46b74befb716a84d8",
       "last_read_fingerprint": null
     },
     {
@@ -6792,11 +6792,11 @@
       "profiles": [],
       "timeout_seconds": 300,
       "case_ids": [
-        "SL-C08-MOBILE-PANEL-EXCLUSIVE",
-        "SL-C08-NAV-PRESERVES-RESULTS",
-        "SL-C08-INVALID-TEC-CLEARS-STALE",
-        "SL-C08-DEAD-RESULT-TAB-PREFIX",
-        "SL-C08-SINGLE-MOBILE-INIT"
+        "V4-UI-SHELL-MOBILE-PANEL-EXCLUSIVE",
+        "V4-UI-SHELL-NAV-PRESERVES-RESULTS",
+        "V4-UI-SHELL-INVALID-TEC-CLEARS-STALE",
+        "V4-UI-SHELL-DEAD-RESULT-TAB-PREFIX",
+        "V4-UI-SHELL-SINGLE-MOBILE-INIT"
       ],
       "archived": true,
       "archive_reason": "Superseded by V4 risk-first visual/runner contracts; retained for manual historical reproduction only."
@@ -6818,9 +6818,9 @@
         "SL-VIS-DESKTOP-TWO-COLUMN-LAYOUT",
         "SL-VIS-DECO-BANNER-GAS-LABELS",
         "SL-VIS-SWITCH-ROW-THEME-PARITY",
-        "SL-C08-MOBILE-NAV-TILE-GRID",
-        "SL-C08-OPERATIONAL-GAS-LABEL-FORMAT",
-        "SL-C08-NO-REDUNDANT-BOTTOM-NAV",
+        "V4-UI-VISUAL-MOBILE-NAV-TILE-GRID",
+        "V4-UI-VISUAL-OPERATIONAL-GAS-LABEL-FORMAT",
+        "V4-UI-VISUAL-MOBILE-BOTTOM-TAB-SHELL",
         "SL-C09-GAS-SWITCH-TERMINOLOGY",
         "SL-C09-MOBILE-WARNING-WRAP",
         "SL-C09-VPM-MODE-TOGGLE",

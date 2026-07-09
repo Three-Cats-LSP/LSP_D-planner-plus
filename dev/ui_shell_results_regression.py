@@ -23,11 +23,11 @@ from test_http import serve_www  # noqa: E402
 from tools.audit.suite_emit import case_row, finish_suite  # noqa: E402
 
 CASE_IDS = (
-    "SL-C08-MOBILE-PANEL-EXCLUSIVE",
-    "SL-C08-NAV-PRESERVES-RESULTS",
-    "SL-C08-INVALID-TEC-CLEARS-STALE",
-    "SL-C08-DEAD-RESULT-TAB-PREFIX",
-    "SL-C08-SINGLE-MOBILE-INIT",
+    "V4-UI-SHELL-MOBILE-PANEL-EXCLUSIVE",
+    "V4-UI-SHELL-NAV-PRESERVES-RESULTS",
+    "V4-UI-SHELL-INVALID-TEC-CLEARS-STALE",
+    "V4-UI-SHELL-DEAD-RESULT-TAB-PREFIX",
+    "V4-UI-SHELL-SINGLE-MOBILE-INIT",
 )
 
 CAPTURE_RESTORE_JS = CAPTURE_PROBE_STATE_JS
@@ -389,11 +389,11 @@ def run_cases(page, viewport: tuple[int, int], *, run_behavioral: bool = True) -
     }
     mobile_ok = bool(mobile.get("ok")) if viewport[0] <= 640 else True
     nav_ok = bool(nav.get("ok")) and bool(settings.get("ok")) if run_behavioral and viewport == (1280, 800) else True
-    out["SL-C08-MOBILE-PANEL-EXCLUSIVE"] = mobile_ok
-    out["SL-C08-NAV-PRESERVES-RESULTS"] = nav_ok if run_behavioral and viewport == (1280, 800) else True
-    out["SL-C08-INVALID-TEC-CLEARS-STALE"] = bool(invalid.get("ok")) if run_behavioral and viewport == (1280, 800) else True
-    out["SL-C08-DEAD-RESULT-TAB-PREFIX"] = bool(tabs.get("ok")) if run_behavioral and viewport == (1280, 800) else True
-    out["SL-C08-SINGLE-MOBILE-INIT"] = bool(init.get("ok")) if run_behavioral and viewport == (1280, 800) else True
+    out["V4-UI-SHELL-MOBILE-PANEL-EXCLUSIVE"] = mobile_ok
+    out["V4-UI-SHELL-NAV-PRESERVES-RESULTS"] = nav_ok if run_behavioral and viewport == (1280, 800) else True
+    out["V4-UI-SHELL-INVALID-TEC-CLEARS-STALE"] = bool(invalid.get("ok")) if run_behavioral and viewport == (1280, 800) else True
+    out["V4-UI-SHELL-DEAD-RESULT-TAB-PREFIX"] = bool(tabs.get("ok")) if run_behavioral and viewport == (1280, 800) else True
+    out["V4-UI-SHELL-SINGLE-MOBILE-INIT"] = bool(init.get("ok")) if run_behavioral and viewport == (1280, 800) else True
     if not state_restored and run_behavioral and viewport == (1280, 800):
         for case_id in CASE_IDS:
             out[case_id] = False
@@ -436,7 +436,7 @@ def main() -> int:
         return 2
 
     print("=" * 60)
-    print("Cycle 08 — UI-SHELL-RESULTS behavioral regression")
+    print("V4 UI-SHELL-RESULTS behavioral regression")
     print("=" * 60)
 
     results: dict[str, bool] = {case_id: True for case_id in selected_cases}
@@ -446,33 +446,33 @@ def main() -> int:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
 
-            if any(case_id != "SL-C08-MOBILE-PANEL-EXCLUSIVE" for case_id in selected_cases):
+            if any(case_id != "V4-UI-SHELL-MOBILE-PANEL-EXCLUSIVE" for case_id in selected_cases):
                 desktop = _run_viewport(browser, base_url, (1280, 800))
                 detail["1280x800"] = desktop.pop("_detail")
                 for case_id, ok in desktop.items():
                     if case_id in results:
                         results[case_id] = results[case_id] and bool(ok)
 
-            if "SL-C08-MOBILE-PANEL-EXCLUSIVE" in selected_cases:
+            if "V4-UI-SHELL-MOBILE-PANEL-EXCLUSIVE" in selected_cases:
                 portrait = _run_viewport(browser, base_url, (375, 667), run_behavioral=False)
                 detail["375x667"] = portrait.pop("_detail")
-                results["SL-C08-MOBILE-PANEL-EXCLUSIVE"] = (
-                    results["SL-C08-MOBILE-PANEL-EXCLUSIVE"]
-                    and bool(portrait.get("SL-C08-MOBILE-PANEL-EXCLUSIVE"))
+                results["V4-UI-SHELL-MOBILE-PANEL-EXCLUSIVE"] = (
+                    results["V4-UI-SHELL-MOBILE-PANEL-EXCLUSIVE"]
+                    and bool(portrait.get("V4-UI-SHELL-MOBILE-PANEL-EXCLUSIVE"))
                 )
 
                 landscape = _run_viewport(browser, base_url, (667, 375), run_behavioral=False)
                 detail["667x375"] = landscape.pop("_detail")
-                results["SL-C08-MOBILE-PANEL-EXCLUSIVE"] = (
-                    results["SL-C08-MOBILE-PANEL-EXCLUSIVE"]
-                    and bool(landscape.get("SL-C08-MOBILE-PANEL-EXCLUSIVE"))
+                results["V4-UI-SHELL-MOBILE-PANEL-EXCLUSIVE"] = (
+                    results["V4-UI-SHELL-MOBILE-PANEL-EXCLUSIVE"]
+                    and bool(landscape.get("V4-UI-SHELL-MOBILE-PANEL-EXCLUSIVE"))
                 )
 
             browser.close()
 
     rows = [case_row(case_id, results[case_id]) for case_id in selected_cases]
     for case_id in selected_cases:
-        print(f"  {'✓' if results[case_id] else '✗'} [{case_id}]")
+        print(f"  {'PASS' if results[case_id] else 'FAIL'} [{case_id}]")
     code = 0 if all(results.values()) else 1
     out = ROOT / "dev" / "ui_shell_results_regression_results.json"
     out.write_text(json.dumps({"results": results, "detail": detail}, indent=2), encoding="utf-8")
