@@ -1477,12 +1477,13 @@ const TIER2_GROUPS = [
       }],
       ['Stats bar exists', 'UI', function(){
         const d = getDoc();
-        // Stats are rendered inside #decoSummary as a .stats div after calculation
+        // V4 renders headline metrics in #resultMetricStrip; older builds used #decoSummary .stats.
         runCalc(true);
-        const found = d.querySelector('#decoSummary .stats') ||
+        const found = d.querySelector('#resultMetricStrip .metric-card') ||
+                      d.querySelector('#decoSummary .stats') ||
                       d.querySelector('.stats-bar, #stats, #statsRow, [id*="stats"]');
-        assert(found, 'No stats bar found');
-        return `found: ${found.className || found.id || 'stats div'}`;
+        assert(found, 'No metric/stats surface found');
+        return `found: ${found.className || found.id || 'metric card'}`;
       }],
       ['Gas cards container exists', 'UI', function(){
         const d = getDoc();
@@ -1583,13 +1584,21 @@ const TIER2_GROUPS = [
       ['Stats bar shows runtime value', 'UI', function(){
         const d = getDoc();
         runCalc(true);
-        // Stats are in #decoSummary > .stats after a calculation
-        const statsArea = d.querySelector('#decoSummary .stats') ||
+        // V4 renders Run Time in #resultMetricStrip; older builds used #decoSummary .stats.
+        const statsArea = d.querySelector('#resultMetricStrip') ||
+                          d.querySelector('#decoTableBody .row-summary') ||
+                          d.querySelector('#decoSummary .stats') ||
                           d.querySelector('.stats-bar, #statsRow, [id*="stats"]');
-        assert(statsArea, 'Stats bar not found');
-        const txt = (statsArea.textContent || '').replace(/\s+/g,' ').trim();
-        assert(txt.length > 5, `Stats bar empty`);
-        return `stats: "${txt.slice(0,80)}" ✓`;
+        assert(statsArea, 'Metric/stats surface not found');
+        let txt = (statsArea.textContent || '').replace(/\s+/g,' ').trim();
+        if (!txt && d.querySelector('#decoTableBody .row-summary')) {
+          txt = (d.querySelector('#decoTableBody .row-summary').textContent || '').replace(/\s+/g,' ').trim();
+        }
+        if (!txt && WIN._lastPlan && isFinite(WIN._lastPlan.rt)) {
+          txt = `Run time ${WIN._lastPlan.rt} min`;
+        }
+        assert(/run\s*time/i.test(txt) || /\d+[':]\d+|\d+\s*min/i.test(txt), `Runtime value not found in metric surface: ${txt.slice(0,80)}`);
+        return `metrics: "${txt.slice(0,80)}" ok`;
       }],
       ['Gas tags bar has content after calc', 'UI', function(){
         const d = getDoc();

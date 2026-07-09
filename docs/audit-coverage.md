@@ -146,10 +146,10 @@
 | TEST-MAIN | test_infrastructure | `tests.html:1` | 848 | P2 | VERIFIED | COV-01 |
 | TEST-EXTENDED | test_infrastructure | `tests-extended.html:1` | 1312 | P2 | VERIFIED | COV-01 |
 | TEST-MASSIVE | test_infrastructure | `tests-massive.html:1` | 4119 | P2 | IN_PROGRESS | - |
-| TEST-MASSIVE-MAIN | test_infrastructure | `tests-massive-main.html:1` | 3344 | P2 | IN_PROGRESS | - |
+| TEST-MASSIVE-MAIN | test_infrastructure | `tests-massive-main.html:1` | 3353 | P2 | IN_PROGRESS | - |
 | TEST-VERIFY | test_infrastructure | `tests-verify.html:1` | 936 | P2 | VERIFIED | COV-01 |
 | TEST-PSCR-OTU-CNS | test_infrastructure | `tests-pscr-otu-cns.html:1` | 574 | P1 | VERIFIED | COV-01 |
-| TEST-CCR-DIFF-HTML | test_infrastructure | `tests-ccr-differential.html:1` | 409 | P1 | IN_PROGRESS | - |
+| TEST-CCR-DIFF-HTML | test_infrastructure | `tests-ccr-differential.html:1` | 498 | P1 | IN_PROGRESS | - |
 | TEST-NATIVE-FIXTURE | test_infrastructure | `dev/fixtures/native-select.html:1` | 18 | P2 | VERIFIED | COV-01 |
 | TEST-CAP-FIXTURE | test_infrastructure | `dev/fixtures/capacitor-bridge.html:1` | 30 | P2 | VERIFIED | COV-01 |
 | TEST-ANDROID-UNIT | test_infrastructure | `android/app/src/test/java/com/getcapacitor/myapp/ExampleUnitTest.java:1` | 18 | P3 | VERIFIED | ANDROID-01, COV-01 |

@@ -18,6 +18,38 @@
 
   .pass { color:#26d07c; } .fail { color:#ff4757; } .warn { color:#ffd32a; } .inc { color:#a78bfa; }
 
+  .summary-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; max-width:960px; margin:16px 0; }
+
+  .summary-card { border:1px solid #263244; border-radius:8px; background:#111827; padding:12px; }
+
+  .summary-card strong { display:block; font-size:20px; color:#e4e8f0; margin-bottom:4px; }
+
+  .summary-card span { color:#8ea0b8; text-transform:uppercase; letter-spacing:.08em; font-size:10px; }
+
+  table { border-collapse:collapse; width:100%; max-width:1200px; margin-top:14px; background:#0f1522; border:1px solid #263244; border-radius:8px; overflow:hidden; }
+
+  th, td { border-bottom:1px solid #263244; padding:8px 10px; text-align:left; vertical-align:top; }
+
+  th { color:#8ea0b8; text-transform:uppercase; letter-spacing:.08em; font-size:10px; background:#121b2a; }
+
+  tr:last-child td { border-bottom:0; }
+
+  .pill { display:inline-block; border-radius:999px; padding:2px 7px; font-weight:700; }
+
+  .pill-pass { background:#123524; color:#26d07c; }
+
+  .pill-inc { background:#2d2547; color:#a78bfa; }
+
+  .pill-fail { background:#3c1620; color:#ff4757; }
+
+  details { margin-top:18px; max-width:1200px; }
+
+  summary { cursor:pointer; color:#8ea0b8; }
+
+  pre { white-space:pre-wrap; max-height:420px; overflow:auto; border:1px solid #263244; border-radius:8px; padding:12px; background:#080c14; }
+
+  #app-frame { display:none; }
+
 </style>
 
 </head>
@@ -28,7 +60,12 @@
 
 <div id="status">Waiting…</div>
 
-<pre id="log"></pre>
+<div id="results"></div>
+
+<details>
+  <summary>Raw JSON details</summary>
+  <pre id="log"></pre>
+</details>
 
 <iframe id="app-frame"></iframe>
 
@@ -162,6 +199,56 @@ function isPartialCoverageEngine(config, engine) {
 
   return partial.indexOf(engine) >= 0;
 
+}
+
+
+
+function escapeHtml(value) {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+
+
+function scenarioStatus(row) {
+  if (row.error || row.integrity === 'FAIL') return 'FAIL';
+  const comparisons = row.comparisons || [];
+  if (comparisons.some(c => c.classification === 'LSP_SUSPECT')) return 'FAIL';
+  if (comparisons.some(c => c.classification === 'INCONCLUSIVE')) return 'INCONCLUSIVE';
+  if (comparisons.some(c => c.classification === 'EXPECTED_DIFFERENCE')) return 'EXPECTED';
+  return 'PASS';
+}
+
+
+
+function renderSummary(summary) {
+  const resultsEl = document.getElementById('results');
+  if (!resultsEl) return;
+  const rows = (summary.rows || []).filter(r => r.scenarioId && r.scenarioId !== '_effectiveness');
+  const tableRows = rows.map(row => {
+    const status = scenarioStatus(row);
+    const pillClass = status === 'PASS' || status === 'EXPECTED' ? 'pill-pass' : status === 'INCONCLUSIVE' ? 'pill-inc' : 'pill-fail';
+    const comps = (row.comparisons || []).map(c => `${escapeHtml(c.engine)}: ${escapeHtml(c.classification)}`).join('<br>');
+    const meta = row.lsp && row.lsp.summary
+      ? `RT ${escapeHtml(row.lsp.summary.runtimeMin)} min · First ${escapeHtml(row.lsp.summary.firstStopDepthM)} m · CNS ${escapeHtml(row.lsp.summary.cnsPercent)}`
+      : '';
+    return `<tr><td>${escapeHtml(row.scenarioId)}</td><td>${escapeHtml(row.description || '')}</td><td><span class="pill ${pillClass}">${escapeHtml(status)}</span></td><td>${meta}</td><td>${comps || escapeHtml(row.error || '')}</td></tr>`;
+  }).join('');
+  resultsEl.innerHTML = `
+    <div class="summary-grid">
+      <div class="summary-card"><strong>${escapeHtml(summary.scenarios)}</strong><span>Scenarios</span></div>
+      <div class="summary-card"><strong>${escapeHtml(summary.failures)}</strong><span>Failures</span></div>
+      <div class="summary-card"><strong>${escapeHtml(summary.inconclusive)}</strong><span>Inconclusive</span></div>
+      <div class="summary-card"><strong>${escapeHtml(summary.appVersion)}</strong><span>App Version</span></div>
+    </div>
+    <table>
+      <thead><tr><th>Scenario</th><th>Description</th><th>Status</th><th>LSP Summary</th><th>Comparisons</th></tr></thead>
+      <tbody>${tableRows}</tbody>
+    </table>
+  `;
 }
 
 
@@ -369,6 +456,8 @@ async function runAll() {
   };
 
 
+
+  renderSummary(summary);
 
   logEl.textContent = JSON.stringify(summary, null, 2);
 
