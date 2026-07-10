@@ -857,18 +857,21 @@ body.light-theme #gasWarningBanner.gas-warning-banner { background: #fff0f0; bor
 .settings-version-label { order: 3; flex: 0 0 100%; text-align: center; }
 .settings-app-links { order: 2; flex: 0 0 100%; }
 .app-shell-footer-links { display: none !important; }
-.settings-app-links { margin-top: 0; padding-top: 12px; border-top: 1px solid var(--border); }
-.settings-app-links-title { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-.settings-app-link-list { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 7px; }
-.settings-app-link-list a { display: flex; align-items: center; gap: 8px; min-height: 38px; padding: 8px 10px; border: 1px solid var(--border-hi); border-radius: 8px; background: var(--surface); color: var(--text); text-decoration: none; font-family: var(--font-mono); font-size: 11px; }
-.settings-app-link-icon { width: 22px; height: 22px; border-radius: 6px; border: 1px solid var(--border-hi); object-fit: contain; flex-shrink: 0; }
+.settings-app-links { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 0; padding-top: 12px; border-top: 1px solid var(--border); }
+.settings-app-links-title { display: none; }
+.settings-app-link-list { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; }
+.settings-app-link-list a { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 999px; background: transparent; color: var(--muted); text-decoration: none; transition: color 0.18s ease, transform 0.18s ease; }
+.settings-app-link-list a:hover { color: var(--accent); transform: translateY(-1px); }
+.settings-app-link-icon { width: 32px; height: 32px; border-radius: 8px; border: 0; object-fit: contain; flex-shrink: 0; }
 .settings-app-link-glyph { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; flex: 0 0 22px; border-radius: 6px; border: 1px solid var(--border-hi); background: var(--surface-2); color: var(--accent); font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0; }
-.settings-app-link-svg { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; flex: 0 0 22px; border-radius: 6px; border: 1px solid var(--border-hi); background: var(--surface-2); color: var(--accent); }
-.settings-app-link-svg svg { width: 15px; height: 15px; fill: currentColor; display: block; }
+.settings-app-link-svg { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex: 0 0 32px; border-radius: 8px; border: 0; background: transparent; color: currentColor; }
+.settings-app-link-svg svg { width: 30px; height: 30px; fill: currentColor; display: block; }
 .settings-app-link-svg--instagram { color: #d92e7f; }
 .settings-app-link-svg--thingiverse { color: #2456ff; }
-.settings-app-link-list a:hover { color: var(--accent); border-color: var(--accent); }
-.settings-app-link-list .settings-donate-link { grid-column: 1 / -1; justify-content: center; border-color: rgba(0, 112, 186, 0.45); color: #0070ba; }
+.settings-donate-row { display: flex; justify-content: center; width: 100%; }
+.settings-donate-link { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 38px; padding: 8px 18px; border: 1px solid rgba(0, 112, 186, 0.45); border-radius: 999px; background: color-mix(in oklab, #0070ba 8%, var(--surface)); color: #0070ba; text-decoration: none; font-family: var(--font-mono); font-size: 11px; font-weight: 700; }
+.settings-donate-link:hover { border-color: #0070ba; background: color-mix(in oklab, #0070ba 14%, var(--surface)); }
+.settings-paypal-icon { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 5px; background: #0070ba; color: #fff; font-family: Arial, sans-serif; font-size: 14px; font-weight: 800; font-style: italic; }
 .vpm-mode-row { display: none; align-items: center; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; padding: var(--space-2) 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .vpm-mode-row.visible { display: flex; }
 
@@ -880,7 +883,7 @@ body.light-theme #gasWarningBanner.gas-warning-banner { background: #fff0f0; bor
   .settings-field-row input { justify-self: start; max-width: 100%; }
   .settings-version-label,
   .settings-app-links { flex-basis: auto; width: 100%; }
-  .settings-app-link-list { grid-template-columns: 1fr; }
+  .settings-app-link-list { gap: 8px; }
 }
 
 .header-actions { display: flex; align-items: center; gap: 10px; padding-right: 14px; flex-shrink: 0; margin-left: auto; }

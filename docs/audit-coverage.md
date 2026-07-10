@@ -34,24 +34,24 @@
 
 | Unit | Layer | Source | Lines | Priority | Status | Evidence |
 |---|---|---|---:|---|---|---|
-| UI-BOOT | web_runtime | `index.html:2` | 2450 | P2 | IN_PROGRESS | - |
-| UI-RUNTIME-BOOTSTRAP | web_runtime | `index.html:2452` | 218 | P1 | IN_PROGRESS | - |
-| UI-ALGORITHM-SETTINGS | web_runtime | `index.html:2670` | 293 | P1 | IN_PROGRESS | - |
-| UI-UNIT-HELPERS | web_runtime | `index.html:2963` | 442 | P1 | IN_PROGRESS | - |
-| UI-PLOT-INIT | web_runtime | `index.html:3405` | 493 | P2 | IN_PROGRESS | - |
-| UI-TOOLS-TISSUES | web_runtime | `index.html:3898` | 353 | P2 | IN_PROGRESS | - |
-| UI-TOOLS-EXPOSURE | web_runtime | `index.html:4251` | 233 | P1 | IN_PROGRESS | - |
-| UI-SETTINGS | web_runtime | `index.html:4484` | 386 | P1 | IN_PROGRESS | - |
-| UI-PROFILE-PRESETS | web_runtime | `index.html:4870` | 508 | P2 | IN_PROGRESS | - |
-| UI-CONFIG-PRESETS | web_runtime | `index.html:5378` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
-| UI-APP-INIT | web_runtime | `index.html:5563` | 172 | P1 | IN_PROGRESS | - |
-| UI-PWA-LIFECYCLE | pwa | `index.html:5735` | 84 | P1 | IN_PROGRESS | - |
+| UI-BOOT | web_runtime | `index.html:2` | 2452 | P2 | IN_PROGRESS | - |
+| UI-RUNTIME-BOOTSTRAP | web_runtime | `index.html:2454` | 218 | P1 | IN_PROGRESS | - |
+| UI-ALGORITHM-SETTINGS | web_runtime | `index.html:2672` | 293 | P1 | IN_PROGRESS | - |
+| UI-UNIT-HELPERS | web_runtime | `index.html:2965` | 442 | P1 | IN_PROGRESS | - |
+| UI-PLOT-INIT | web_runtime | `index.html:3407` | 493 | P2 | IN_PROGRESS | - |
+| UI-TOOLS-TISSUES | web_runtime | `index.html:3900` | 353 | P2 | IN_PROGRESS | - |
+| UI-TOOLS-EXPOSURE | web_runtime | `index.html:4253` | 233 | P1 | IN_PROGRESS | - |
+| UI-SETTINGS | web_runtime | `index.html:4486` | 386 | P1 | IN_PROGRESS | - |
+| UI-PROFILE-PRESETS | web_runtime | `index.html:4872` | 508 | P2 | IN_PROGRESS | - |
+| UI-CONFIG-PRESETS | web_runtime | `index.html:5380` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
+| UI-APP-INIT | web_runtime | `index.html:5565` | 172 | P1 | IN_PROGRESS | - |
+| UI-PWA-LIFECYCLE | pwa | `index.html:5737` | 84 | P1 | IN_PROGRESS | - |
 | UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 422 | P2 | IN_PROGRESS | - |
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 338 | P2 | IN_PROGRESS | - |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 548 | P2 | IN_PROGRESS | - |
-| UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 1041 | P1 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
+| UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 1044 | P1 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
 | UI-CSS-MOBILE-SHELL | web_css | `lsp-dplanner-mobile-shell.css:1` | 689 | P2 | IN_PROGRESS | - |
-| UI-MARKUP-HEADER | web_markup | `ui/markup-header.html:1` | 785 | P2 | IN_PROGRESS | - |
+| UI-MARKUP-HEADER | web_markup | `ui/markup-header.html:1` | 787 | P2 | IN_PROGRESS | - |
 | UI-MARKUP-REC-PLANNER | web_markup | `ui/markup-rec-planner.html:1` | 73 | P1 | IN_PROGRESS | - |
 | UI-MARKUP-TEC-PLANNER | web_markup | `ui/markup-tec-planner.html:1` | 560 | P1 | IN_PROGRESS | - |
 | UI-REC-PLANNER | ui_core | `rec-planner.js:1` | 9 | P1 | IN_PROGRESS | - |

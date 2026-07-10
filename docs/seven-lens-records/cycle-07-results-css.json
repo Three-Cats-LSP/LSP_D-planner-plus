@@ -376,7 +376,7 @@
       "start_line": 501,
       "end_line": 1000,
       "line_count": 500,
-      "content_fingerprint": "e5ec506e70e70c206ec2987bcf91c931ebfbe366d074ab6ab085a7138d180963",
+      "content_fingerprint": "0955012bddf79b6f29d908d1b3b1406b163da47d5ed7321e371b03a8a4f9b6a2",
       "review_session": "C07-B",
       "verification_session": "C09-DEP-DECO-CARD-SLATE-B",
       "lens_results": {
@@ -453,9 +453,9 @@
       "unit_id": "UI-CSS-RESULTS",
       "path": "lsp-dplanner-results.css",
       "start_line": 1001,
-      "end_line": 1041,
-      "line_count": 41,
-      "content_fingerprint": "aa95dc4b12cc51578e03e28f4dc6d29de172612f85b07f7a11981766dca37f4a",
+      "end_line": 1044,
+      "line_count": 44,
+      "content_fingerprint": "6f63a9fbae08e051c316be4ea3d6ba000df4960c32b700c61bc5c2153251ea95",
       "review_session": "C07-DEP-GAS-CARD-COLORS-C",
       "verification_session": "C09-DEP-GAS-CARD-COLORS-C",
       "lens_results": {

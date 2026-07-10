@@ -1972,7 +1972,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "2cccbd30fa382585404d260a85cd1c60ebc6741b8ec799efcca382c4644a36fb",
+      "fingerprint": "c2e5e34068b2b2c3798aef0085e8c4dbfc383b1970b4340f15d8779660e2e9c4",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2032,7 +2032,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c005dd20e45a79ba2f0ad62b74a750637f4a2c06f4e3a257ab6b81e85c127aca",
+      "fingerprint": "a40f13747c5604a296b8da766b6c5499d24429c280fd1723f232a07d7a77fb7e",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2069,7 +2069,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "15e9e6a3d1b4febb71cac257c410a8af2fe5c881c97c3267b4fe31b29b22814d",
+      "fingerprint": "a78bd52a51adc0ee8aafc566efb5b781801027b30aeabf2480fe622de9a826a1",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -6214,12 +6214,12 @@
     },
     {
       "cycle": "R34",
-      "max_new_application_lines": 785,
+      "max_new_application_lines": 787,
       "application_units": [
         "UI-MARKUP-HEADER"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R34: Header markup risk-first READ; current lines: 785; sessions: 2",
+      "acceptance": "V4 R34: Header markup risk-first READ; current lines: 787; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6285,12 +6285,12 @@
     },
     {
       "cycle": "R41",
-      "max_new_application_lines": 1041,
+      "max_new_application_lines": 1044,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1041; sessions: 2",
+      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1044; sessions: 2",
       "min_review_sessions": 2
     },
     {
