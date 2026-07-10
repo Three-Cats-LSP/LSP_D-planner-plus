@@ -1427,12 +1427,12 @@ function runPlanner() {
     }
 
     const gasStatHtml = `<div class="stat"><div class="stat-val ${ppO2Ok?'g':'r'}">${pO2.toFixed(2)}</div><div class="stat-lbl">ppO₂ (bar)</div></div>`;
-    const modInfoHtml = `<div class="alert info" style="margin-top:12px;"><span>💡</span><div>MOD for ${gasLabel} @ ${modPpo2.toFixed(1)} bar ppO₂: <strong>${isMetric ? modM+' m' : modFt+' ft'}</strong></div></div>`;
+    const modInfoHtml = `<div class="alert info result-inline-hint"><span>💡</span><div>MOD for ${gasLabel} @ ${modPpo2.toFixed(1)} bar ppO₂: <strong>${isMetric ? modM+' m' : modFt+' ft'}</strong></div></div>`;
     const tableRef = isNitrox ? `PADI Nitrox ${gasLabel}` : 'PADI Air';
 
     html = `<div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <div class="card-title" style="margin:0;">Rec Results · ${dDisp} / ${bt} min · ${gasLabel}</div>
+        <div class="card-title" style="margin:0;">Dive Profile</div>
         <div class="export-row">
           <button class="btn-export" onclick="copyDiveProfile('planner')" title="Copy to clipboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
           <button class="btn-export" onclick="exportTXT('planner')" title="Download .txt"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg></button>
@@ -1453,7 +1453,6 @@ function runPlanner() {
       ${!beyondMOD && ndl > 0 && !btOk ? '<div class="alert" style="margin-top:12px;background:#FF4433;border-color:#cc2200;color:#fff;font-weight:700;"><span>⚠</span><div><strong>NDL EXCEEDED.</strong> Not permitted for recreational diving. Reduce bottom time.</div></div>' : ''}
       ${!beyondMOD && btOk && pct>=80 ? '<div class="alert" style="margin-top:12px;background:#ffff00;border-color:#cccc00;color:#111;font-weight:700;"><span>⚡</span><div><strong>APPROACHING LIMIT.</strong> 80%+ NDL used. Monitor closely and ascend conservatively.</div></div>' : ''}
       ${!beyondMOD && btOk && pct<80 ? '<div class="alert ok" style="margin-top:12px;"><span>✓</span><div><strong>WITHIN LIMITS.</strong> '+rem+' minutes remaining. Good safety margin.</div></div>' : ''}
-      ${modInfoHtml}
       ${safetyStopHTML(stopDepthM, stopFt, stopDurMin)}
     </div>`;
 
@@ -1521,6 +1520,8 @@ function runPlanner() {
     decoTime: '0',
     cns: '—',
     firstStop: stopDisp,
+    hintHtml: algo === 'padi' ? modInfoHtml : '',
+    profileChip: `${dDisp} / ${bt} min`,
     surfaceGF: summarySurfGF,
     otu: '—',
     tts: '—',

@@ -3081,11 +3081,11 @@ const TIER3_GROUPS = [
         assert(d.getElementById('tool-gastable'), 'tool-gastable not found');
         return 'found âœ“';
       }],
-      ['tool-avgdepth button present in Tools nav', 'SCN', function(){
+      ['tool-avgdepth button absent from Tools nav', 'SCN', function(){
         const d = getDoc();
         const btn = d.getElementById('tool-avgdepth');
-        assert(btn, 'tool-avgdepth not found');
-        return 'tool-avgdepth found in Tools nav';
+        assert(!btn, 'tool-avgdepth should not be duplicated in Tools nav');
+        return 'tool-avgdepth absent from Tools nav';
       }],
       ['switchTool function exists on WIN', 'SCN', function(){
         assert(typeof WIN.switchTool === 'function', 'switchTool not found');
@@ -3387,14 +3387,14 @@ const TIER3_GROUPS = [
         assert(typeof WIN.calcAvgDepth === 'function', 'calcAvgDepth not found');
         return 'found âœ“';
       }],
-      ['#avgdepth content is mounted inside Tools', 'SCN', function(){
+      ['#avgdepth content is mounted inside Rec results', 'SCN', function(){
         const d = getDoc();
         const panel = d.getElementById('avgdepth');
         assert(panel, '#avgdepth panel not found');
-        const toolPanel = d.getElementById('tool-panel-avgdepth');
-        assert(toolPanel, 'tool-panel-avgdepth not found');
-        assert(toolPanel.contains(panel), '#avgdepth not mounted into tool-panel-avgdepth');
-        return '#avgdepth mounted in Tools';
+        const resultPanel = d.getElementById('resultTab-avgdepth');
+        assert(resultPanel, 'resultTab-avgdepth not found');
+        assert(resultPanel.contains(panel), '#avgdepth not mounted into resultTab-avgdepth');
+        return '#avgdepth mounted in Rec results';
       }],
       ['avgMaxSlider + avgAvgSlider exist inside #avgdepth', 'SCN', function(){
         const d = getDoc();

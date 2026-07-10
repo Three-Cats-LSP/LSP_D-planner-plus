@@ -1250,9 +1250,13 @@ async () => {
   const mobileToolKeys = Array.from(document.querySelectorAll('#mobileToolsList .mobile-tool-row')).map(row => row.dataset.tool);
   const desktopToolKeys = Array.from(document.querySelectorAll('#toolsBar .tools-bar-btn'))
     .map(btn => (btn.id || '').replace(/^tool-/, ''));
-  const movedRecToolsPresent = ['surfint', 'avgdepth', 'ndlref'].every(key => mobileToolKeys.includes(key))
-    && ['surfint', 'avgdepth', 'ndlref'].every(key => desktopToolKeys.includes(key))
-    && ['surfint', 'avgdepth', 'ndlref'].every(key => !!document.getElementById('tool-panel-' + key));
+  const movedRecToolsPresent = ['surfint', 'ndlref'].every(key => mobileToolKeys.includes(key))
+    && ['surfint', 'ndlref'].every(key => desktopToolKeys.includes(key))
+    && ['surfint', 'ndlref'].every(key => !!document.getElementById('tool-panel-' + key))
+    && !mobileToolKeys.includes('avgdepth')
+    && !desktopToolKeys.includes('avgdepth')
+    && recBottomLabels.includes('Avg Depth')
+    && !!document.getElementById('resultTab-avgdepth');
   const mobileToolsPanelHiddenOnList = mobile
     ? getComputedStyle(document.getElementById('toolsPanelMount')).display === 'none'
     : true;
@@ -1338,7 +1342,7 @@ async () => {
     && (mobile
       ? appBottomNavPresent
         && appBottomNavHeight >= 48
-        && JSON.stringify(recBottomLabels) === JSON.stringify(['Dive', 'Multi Dive'])
+        && JSON.stringify(recBottomLabels) === JSON.stringify(['Dive', 'Avg Depth', 'Multi Dive'])
         && JSON.stringify(tecBottomLabels) === JSON.stringify(['Plan', 'Profile', 'Contingency', 'Tissues'])
         && !appBottomHasGhostIcons
         && appBottomPlanEnabled
@@ -1350,7 +1354,7 @@ async () => {
         && settingsLinkCount >= 8
         && referenceLinksVisible
         && mobileToolsListVisible
-        && mobileToolRows >= 11
+        && mobileToolRows >= 10
         && movedRecToolsPresent
         && mobileToolsPanelHiddenOnList
         && mobileToolDetailVisible

@@ -32,9 +32,8 @@ function syncMobileResultsNav() {
   const configs = recMode
     ? [
         ['dive', 'Dive'],
+        ['avgdepth', 'Avg Depth'],
         ['multi', 'Multi Dive'],
-        [null, ''],
-        [null, ''],
         [null, ''],
       ]
     : [
@@ -132,7 +131,7 @@ function setMobileTab(tab, opts) {
 function setMobileResultTab(name) {
   if (!isMobileShell()) return;
   const allowed = plannerAlgo === 'rec'
-    ? ['dive', 'multi']
+    ? ['dive', 'avgdepth', 'multi']
     : ['profile', 'contingency', 'tissue'];
   if (!allowed.includes(name)) return;
   const hasResults = document.getElementById('resultsPanel')?.classList.contains('has-results');
@@ -147,7 +146,7 @@ function setMobileResultTab(name) {
 
 function _setMobileResultTabActive(name) {
   const allowed = plannerAlgo === 'rec'
-    ? ['dive', 'multi']
+    ? ['dive', 'avgdepth', 'multi']
     : ['profile', 'contingency', 'tissue'];
   if (!allowed.includes(name)) return;
   mobileResultTab = name;
@@ -353,12 +352,12 @@ function initV3Layout() {
     if (profileHint) fullGraphMount.appendChild(profileHint);
   }
   moveToTab('plannerResult', 'dive');
+  moveToTab('avgdepth', 'avgdepth');
   const multiPanel = document.getElementById('multi');
   if (multiPanel) moveChildren(multiPanel, document.getElementById('resultTab-multi'), []);
 
   const toolMounts = {
     surfint: document.getElementById('tool-panel-surfint'),
-    avgdepth: document.getElementById('tool-panel-avgdepth'),
     ndlref: document.getElementById('tool-panel-ndlref'),
   };
   Object.entries(toolMounts).forEach(([id, mount]) => {

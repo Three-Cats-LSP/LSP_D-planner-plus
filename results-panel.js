@@ -28,8 +28,10 @@ function buildScheduleLegendHtml() {
 }
 function _clearResultSummaryStrip() {
   const strip = document.getElementById('resultMetricStrip');
+  const hint = document.getElementById('resultHintRow');
   const chips = document.getElementById('resultChipRow');
   if (strip) strip.innerHTML = '';
+  if (hint) hint.innerHTML = '';
   if (chips) chips.innerHTML = '';
   document.getElementById('resultsPanel')?.classList.remove('has-results');
   if (typeof syncMobileResultsNav === 'function') syncMobileResultsNav();
@@ -90,12 +92,19 @@ function renderMetricCards({ runTime, decoTime, cns, firstStop, unit, mode }) {
       <span class="metric-lbl">First Stop</span>
     </div>`;
 }
-function renderChipRow({ surfGF, otu, tts, decozone, unit, mode }) {
+function renderHintRow({ hintHtml, mode }) {
+  const row = document.getElementById('resultHintRow');
+  if (!row) return;
+  row.innerHTML = hintHtml || '';
+  row.style.display = hintHtml ? '' : 'none';
+  row.classList.toggle('result-hint-row--rec', mode === 'rec');
+}
+function renderChipRow({ surfGF, otu, tts, decozone, unit, mode, profileChip }) {
   const row = document.getElementById('resultChipRow');
   if (!row) return;
   if (mode === 'rec') {
-    row.innerHTML = '';
-    row.style.display = 'none';
+    row.innerHTML = profileChip ? `<span class="chip chip-rec-profile">${profileChip}</span>` : '';
+    row.style.display = profileChip ? '' : 'none';
     return;
   }
   row.style.display = '';
@@ -123,6 +132,10 @@ function _renderResultSummaryStrip(data) {
     unit,
     mode,
   });
+  renderHintRow({
+    hintHtml: data.hintHtml,
+    mode,
+  });
   renderChipRow({
     surfGF: data.surfaceGF,
     otu: data.otu,
@@ -130,6 +143,7 @@ function _renderResultSummaryStrip(data) {
     decozone: data.decozone,
     unit,
     mode,
+    profileChip: data.profileChip,
   });
   _hideResultEmptyState();
   if (panel) panel.classList.add('has-results');
@@ -342,7 +356,7 @@ function _updateGasWarningBannerFromCard(gasEl) {
 function switchResultTab(name, btn) {
   const isRec = plannerAlgo === 'rec';
   const panes = isRec
-    ? ['dive','multi']
+    ? ['dive','avgdepth','multi']
     : ['profile','contingency','tissue'];
   const nav = isRec ? document.getElementById('recResultTabs') : document.getElementById('tecResultTabs');
   const panel = document.getElementById('resultsPanel');
@@ -355,6 +369,7 @@ function switchResultTab(name, btn) {
     window._setMobileResultTabActive?.(name);
   }
   if (name === 'multi') buildDiveBlocks?.();
+  if (name === 'avgdepth') setTimeout(() => { calcAvgDepth?.(); }, 50);
   if (name === 'profile') setTimeout(() => { drawDecoProfileFull?.(); }, 50);
   if (name === 'tissue') {
     const card = document.getElementById('tissueLoadCard');

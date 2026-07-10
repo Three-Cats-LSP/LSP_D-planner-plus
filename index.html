@@ -166,7 +166,6 @@
 <div class="tools-bar" id="toolsBar">
 <button class="tools-bar-btn active" id="tool-converter" onclick="switchTool('converter',this)">Unit Converter</button>
 <button class="tools-bar-btn" id="tool-surfint" onclick="switchTool('surfint',this)">Surface Interval</button>
-<button class="tools-bar-btn" id="tool-avgdepth" onclick="switchTool('avgdepth',this)">Avg Depth</button>
 <button class="tools-bar-btn" id="tool-mod" onclick="switchTool('mod',this)">MOD</button>
 <button class="tools-bar-btn" id="tool-bestmix" onclick="switchTool('bestmix',this)">Best Mix</button>
 <button class="tools-bar-btn" id="tool-endcalc" onclick="switchTool('endcalc',this)">END Calc</button>
@@ -823,6 +822,7 @@
 <div class="result-tabs-slot" id="resultsTabNavSlot">
 <div class="result-tabs-nav" id="recResultTabs" style="display:none;">
 <button class="result-tab-btn active" data-tab="dive" onclick="switchResultTab('dive',this)">Dive</button>
+<button class="result-tab-btn" data-tab="avgdepth" onclick="switchResultTab('avgdepth',this)">Avg Depth</button>
 <button class="result-tab-btn" data-tab="multi" onclick="switchResultTab('multi',this)">Multi Dive</button>
 </div>
 <div class="result-tabs-nav" id="tecResultTabs">
@@ -831,11 +831,13 @@
 <button class="result-tab-btn" data-tab="tissue" onclick="switchResultTab('tissue',this)">Tissues</button>
 </div>
 </div>
+<div class="result-hint-row" id="resultHintRow"></div>
 <div class="metric-grid" id="resultMetricStrip"></div>
 <div class="chip-row" id="resultChipRow"></div>
 <div id="gasWarningBanner" class="gas-warning-banner" style="display:none;" role="alert"></div>
 <div id="recResultsPanel" class="planner-results-view">
 <div class="result-tab-pane" id="resultTab-dive"></div>
+<div class="result-tab-pane" id="resultTab-avgdepth"></div>
 <div class="result-tab-pane" id="resultTab-multi"></div>
 </div>
 <div id="tecResultsPanel" class="planner-results-view visible">
@@ -1079,7 +1081,6 @@
 <div class="mobile-tools-list" id="mobileToolsList" aria-label="Tools list">
 <button type="button" class="mobile-tool-row" data-tool="converter" onclick="switchTool('converter')"><span class="mobile-tool-icon">&#8644;</span><span><strong>Unit Converter</strong><small>Bar &middot; L &middot; m &middot; C</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
 <button type="button" class="mobile-tool-row" data-tool="surfint" onclick="switchTool('surfint')"><span class="mobile-tool-icon">&#8635;</span><span><strong>Surface Interval</strong><small>Bühlmann off-gassing</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
-<button type="button" class="mobile-tool-row" data-tool="avgdepth" onclick="switchTool('avgdepth')"><span class="mobile-tool-icon">&#8960;</span><span><strong>Average Depth</strong><small>Planning converter</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
 <button type="button" class="mobile-tool-row" data-tool="mod" onclick="switchTool('mod')"><span class="mobile-tool-icon">&#8597;</span><span><strong>MOD</strong><small>Max op. depth</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
 <button type="button" class="mobile-tool-row" data-tool="bestmix" onclick="switchTool('bestmix')"><span class="mobile-tool-icon">&#9671;</span><span><strong>Best Mix</strong><small>O2 % for depth</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
 <button type="button" class="mobile-tool-row" data-tool="endcalc" onclick="switchTool('endcalc')"><span class="mobile-tool-icon">&#9729;</span><span><strong>END Calc</strong><small>Narcotic depth</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
@@ -4037,7 +4038,7 @@ window.showMobileToolsList = showMobileToolsList;
 
 // Init tools on tab open
 function switchTool(name, btn) {
-  ['bestmix','mod','endcalc','eadtable','gastable','surfint','avgdepth','ndlref','converter','cns','knowledge'].forEach(t => {
+  ['bestmix','mod','endcalc','eadtable','gastable','surfint','ndlref','converter','cns','knowledge'].forEach(t => {
     const panel = document.getElementById('tool-panel-' + t);
     const tab = document.getElementById('tool-' + t);
     if (panel) panel.style.display = t === name ? 'block' : 'none';
@@ -4069,7 +4070,6 @@ function switchTool(name, btn) {
     document.querySelectorAll('#tool-panel-surfint .lsp-slider').forEach(s => updateSliderFill(s));
     calcSurfInt();
   }
-  if (name === 'avgdepth')  calcAvgDepth();
   if (name === 'ndlref')    renderNDLTable?.();
   if (name === 'converter') initConverter();
   if (name === 'cns')       calcCNS();
