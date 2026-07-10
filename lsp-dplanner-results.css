@@ -468,6 +468,7 @@ body.light-theme .mode-btn:hover img, body.light-theme .mode-btn.active img { op
 #resultsPanel.has-results #resultChipRow { display: flex; }
 #resultsScratch { display: none; }
 #resultsPanel #tableViewToggle { display: none; }
+#resultsPanel .result-tabs-slot { display: flex; flex-direction: column; }
 #resultsPanel .result-tabs-nav { display: flex; gap: 2px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 4px; overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap; margin-bottom: var(--space-2); }
 #resultsPanel .result-tabs-nav::-webkit-scrollbar { display: none; }
 #resultsPanel .result-tab-btn { flex-shrink: 0; padding: 7px 14px; border: 1px solid transparent; background: transparent; color: var(--text-faint); font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; border-radius: var(--radius-md); }
@@ -844,14 +845,14 @@ body.light-theme #gasWarningBanner.gas-warning-banner { background: #fff0f0; bor
 
 .tools-page-wrap { display: none; flex-direction: column; gap: var(--space-4); }
 .tools-page-wrap.visible { display: flex; }
-.settings-page-wrap { display: none; flex-direction: column; gap: var(--space-4); max-width: 720px; }
+.settings-page-wrap { display: none; flex-direction: column; gap: var(--space-4); max-width: 980px; }
 .settings-page-wrap.visible { display: flex; }
-.settings-panel-body { display: grid; grid-template-columns: repeat(4, minmax(0, max-content)); align-items: end; gap: var(--space-4) var(--space-5); }
+.settings-panel-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 320px); align-items: start; gap: var(--space-5) var(--space-6); }
 .settings-field-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0; }
-.settings-version-label,
-.settings-app-links { grid-column: 1 / -1; }
+.settings-version-label { grid-column: 1; }
+.settings-app-links { grid-column: 2; grid-row: 1 / span 6; }
 .app-shell-footer-links { display: none !important; }
-.settings-app-links { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+.settings-app-links { margin-top: 0; padding-top: 12px; border-top: 1px solid var(--border); }
 .settings-app-links-title { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
 .settings-app-link-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 7px; }
 .settings-app-link-list a { display: flex; align-items: center; min-height: 38px; padding: 8px 10px; border: 1px solid var(--border-hi); border-radius: 8px; background: var(--surface); color: var(--text); text-decoration: none; font-family: var(--font-mono); font-size: 11px; }
@@ -863,6 +864,8 @@ body.light-theme #gasWarningBanner.gas-warning-banner { background: #fff0f0; bor
 
 @media (max-width: 767px) {
   .settings-panel-body { grid-template-columns: 1fr; align-items: stretch; }
+  .settings-version-label,
+  .settings-app-links { grid-column: 1; grid-row: auto; }
 }
 
 .header-actions { display: flex; align-items: center; gap: 10px; padding-right: 14px; flex-shrink: 0; margin-left: auto; }

@@ -1972,7 +1972,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "37a7e2712abd49c116a9a3b54c8a9702a5b7f4a1bc858efced1a851a5034436f",
+      "fingerprint": "2228448fd812d55ce0584a53b1de09ef90efb22565819b2f2f3295d964a526fb",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2032,7 +2032,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "39c0d85d61a7fe485e6fc6954169c6f8ac9148fa909279d607aedff78094deb5",
+      "fingerprint": "20099578d41dba387d3953e26c0541d061f48cf3b8513f481dbc1fe4436cd819",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2069,7 +2069,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "dd1773c4536dbfd150d2c4a178e0c481ed35f9c1636cdef78ca0bcde246b9e88",
+      "fingerprint": "166c8ce1128e2ca2d8c60510e98fa55bd9715e9021ba53e952faca29b6fb55a2",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2603,7 +2603,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-TISSUES"
       },
-      "fingerprint": "56d9cea56e704d2be136fdceb6ccf77773b78f8f893df97a60eab090e3042e31",
+      "fingerprint": "80add6cdee29ff073c0a6738dd63791b5c5226d276f5f3c58da813839170778b",
       "last_read_fingerprint": null,
       "audit_issue": 156,
       "evidence": [],
@@ -5838,7 +5838,7 @@
         "REG-137",
         "REG-138"
       ],
-      "fingerprint": "8496c6e626d695b9f18afc580537c4037564dd427ef5fecf2693f2d0606cb086",
+      "fingerprint": "a0945a7be09f67ac511d9bb824c825054c8b0d92541c8d8f51efc072541653d9",
       "last_read_fingerprint": null
     },
     {
@@ -6214,12 +6214,12 @@
     },
     {
       "cycle": "R34",
-      "max_new_application_lines": 783,
+      "max_new_application_lines": 784,
       "application_units": [
         "UI-MARKUP-HEADER"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R34: Header markup risk-first READ; current lines: 755; sessions: 2",
+      "acceptance": "V4 R34: Header markup risk-first READ; current lines: 784; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6285,12 +6285,12 @@
     },
     {
       "cycle": "R41",
-      "max_new_application_lines": 1023,
+      "max_new_application_lines": 1026,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1023; sessions: 2",
+      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1026; sessions: 2",
       "min_review_sessions": 2
     },
     {

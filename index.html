@@ -164,16 +164,16 @@
 </div>
 <!-- TOOLS SUB-NAV (visible in Tools mode) -->
 <div class="tools-bar" id="toolsBar">
-<button class="tools-bar-btn active" id="tool-bestmix" onclick="switchTool('bestmix',this)">Best Mix</button>
+<button class="tools-bar-btn active" id="tool-converter" onclick="switchTool('converter',this)">Unit Converter</button>
+<button class="tools-bar-btn" id="tool-surfint" onclick="switchTool('surfint',this)">Surface Interval</button>
+<button class="tools-bar-btn" id="tool-avgdepth" onclick="switchTool('avgdepth',this)">Avg Depth</button>
 <button class="tools-bar-btn" id="tool-mod" onclick="switchTool('mod',this)">MOD</button>
+<button class="tools-bar-btn" id="tool-bestmix" onclick="switchTool('bestmix',this)">Best Mix</button>
 <button class="tools-bar-btn" id="tool-endcalc" onclick="switchTool('endcalc',this)">END Calc</button>
 <button class="tools-bar-btn" id="tool-eadtable" onclick="switchTool('eadtable',this)">EAD Table</button>
 <button class="tools-bar-btn" id="tool-gastable" onclick="switchTool('gastable',this)">Gas Table</button>
-<button class="tools-bar-btn" id="tool-surfint" onclick="switchTool('surfint',this)">Surface Interval</button>
-<button class="tools-bar-btn" id="tool-avgdepth" onclick="switchTool('avgdepth',this)">Avg Depth</button>
-<button class="tools-bar-btn" id="tool-ndlref" onclick="switchTool('ndlref',this)">NDL Table</button>
-<button class="tools-bar-btn" id="tool-converter" onclick="switchTool('converter',this)">Unit Converter</button>
 <button class="tools-bar-btn" id="tool-cns" onclick="switchTool('cns',this)">CNS O₂</button>
+<button class="tools-bar-btn" id="tool-ndlref" onclick="switchTool('ndlref',this)">NDL Table</button>
 <button class="tools-bar-btn" id="tool-knowledge" onclick="switchTool('knowledge',this)">Knowledge</button>
 </div>
 <!-- PLANNER TWO-COLUMN VIEW -->
@@ -820,23 +820,25 @@
 <section class="v3-panel results-panel mobile-active" id="resultsPanel" aria-label="Results">
 <div class="results-panel-label">Results</div>
 <div class="result-empty-state" id="resultEmptyState">Configure your dive parameters and press <strong>Generate schedule</strong> to see metrics, profile, and deco table here.</div>
-<div class="metric-grid" id="resultMetricStrip"></div>
-<div class="chip-row" id="resultChipRow"></div>
-<div id="gasWarningBanner" class="gas-warning-banner" style="display:none;" role="alert"></div>
-<div id="recResultsPanel" class="planner-results-view">
+<div class="result-tabs-slot" id="resultsTabNavSlot">
 <div class="result-tabs-nav" id="recResultTabs" style="display:none;">
 <button class="result-tab-btn active" data-tab="dive" onclick="switchResultTab('dive',this)">Dive</button>
 <button class="result-tab-btn" data-tab="multi" onclick="switchResultTab('multi',this)">Multi Dive</button>
 </div>
-<div class="result-tab-pane" id="resultTab-dive"></div>
-<div class="result-tab-pane" id="resultTab-multi"></div>
-</div>
-<div id="tecResultsPanel" class="planner-results-view visible">
 <div class="result-tabs-nav" id="tecResultTabs">
 <button class="result-tab-btn active" data-tab="profile" onclick="switchResultTab('profile',this)">Dive Profile</button>
 <button class="result-tab-btn" data-tab="contingency" onclick="switchResultTab('contingency',this)">Contingency Plans</button>
 <button class="result-tab-btn" data-tab="tissue" onclick="switchResultTab('tissue',this)">Tissues</button>
 </div>
+</div>
+<div class="metric-grid" id="resultMetricStrip"></div>
+<div class="chip-row" id="resultChipRow"></div>
+<div id="gasWarningBanner" class="gas-warning-banner" style="display:none;" role="alert"></div>
+<div id="recResultsPanel" class="planner-results-view">
+<div class="result-tab-pane" id="resultTab-dive"></div>
+<div class="result-tab-pane" id="resultTab-multi"></div>
+</div>
+<div id="tecResultsPanel" class="planner-results-view visible">
 <div class="result-tab-pane active" id="resultTab-profile">
 <div class="results-section-head" id="profileSectionHead">
 <span class="results-section-label">Dive Profile</span>
@@ -1075,16 +1077,16 @@
 <!-- TOOLS FULL PAGE -->
 <div class="tools-page-wrap v4-shell mobile-tool-list" id="toolsPageWrap">
 <div class="mobile-tools-list" id="mobileToolsList" aria-label="Tools list">
+<button type="button" class="mobile-tool-row" data-tool="converter" onclick="switchTool('converter')"><span class="mobile-tool-icon">&#8644;</span><span><strong>Unit Converter</strong><small>Bar &middot; L &middot; m &middot; C</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+<button type="button" class="mobile-tool-row" data-tool="surfint" onclick="switchTool('surfint')"><span class="mobile-tool-icon">&#8635;</span><span><strong>Surface Interval</strong><small>Bühlmann off-gassing</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+<button type="button" class="mobile-tool-row" data-tool="avgdepth" onclick="switchTool('avgdepth')"><span class="mobile-tool-icon">&#8960;</span><span><strong>Average Depth</strong><small>Planning converter</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
 <button type="button" class="mobile-tool-row" data-tool="mod" onclick="switchTool('mod')"><span class="mobile-tool-icon">&#8597;</span><span><strong>MOD</strong><small>Max op. depth</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
 <button type="button" class="mobile-tool-row" data-tool="bestmix" onclick="switchTool('bestmix')"><span class="mobile-tool-icon">&#9671;</span><span><strong>Best Mix</strong><small>O2 % for depth</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
 <button type="button" class="mobile-tool-row" data-tool="endcalc" onclick="switchTool('endcalc')"><span class="mobile-tool-icon">&#9729;</span><span><strong>END Calc</strong><small>Narcotic depth</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
 <button type="button" class="mobile-tool-row" data-tool="eadtable" onclick="switchTool('eadtable')"><span class="mobile-tool-icon">&#8776;</span><span><strong>EAD Table</strong><small>Air equivalent</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
 <button type="button" class="mobile-tool-row" data-tool="gastable" onclick="switchTool('gastable')"><span class="mobile-tool-icon">&#9635;</span><span><strong>Gas Table</strong><small>MOD &amp; MND</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
-<button type="button" class="mobile-tool-row" data-tool="surfint" onclick="switchTool('surfint')"><span class="mobile-tool-icon">&#8635;</span><span><strong>Surface Interval</strong><small>Bühlmann off-gassing</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
-<button type="button" class="mobile-tool-row" data-tool="avgdepth" onclick="switchTool('avgdepth')"><span class="mobile-tool-icon">&#8960;</span><span><strong>Average Depth</strong><small>Planning converter</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
-<button type="button" class="mobile-tool-row" data-tool="ndlref" onclick="switchTool('ndlref')"><span class="mobile-tool-icon">NDL</span><span><strong>NDL Table</strong><small>Air, EAN32, EAN36</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
-<button type="button" class="mobile-tool-row" data-tool="converter" onclick="switchTool('converter')"><span class="mobile-tool-icon">&#8644;</span><span><strong>Unit Converter</strong><small>Bar &middot; L &middot; m &middot; C</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
 <button type="button" class="mobile-tool-row" data-tool="cns" onclick="switchTool('cns')"><span class="mobile-tool-icon">&#9762;</span><span><strong>CNS O2</strong><small>Toxicity limits</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+<button type="button" class="mobile-tool-row" data-tool="ndlref" onclick="switchTool('ndlref')"><span class="mobile-tool-icon">NDL</span><span><strong>NDL Table</strong><small>Air, EAN32, EAN36</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
 <button type="button" class="mobile-tool-row" data-tool="knowledge" onclick="switchTool('knowledge')"><span class="mobile-tool-icon">&#9776;</span><span><strong>Knowledge</strong><small>References &amp; docs</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
 </div>
 <div class="mobile-tool-detail-bar" id="mobileToolDetailBar">
@@ -4235,7 +4237,7 @@ function convertWeight(from) {
 
 function initTools() {
   document.querySelectorAll('#toolsPanelMount .lsp-slider, #toolsPanel .lsp-slider').forEach(s => updateSliderFill(s));
-  switchTool('bestmix', document.getElementById('tool-bestmix'));
+  switchTool('converter', document.getElementById('tool-converter'));
 }
 
 // ── Messenger-safe format: ascent schedule only, no column padding ──

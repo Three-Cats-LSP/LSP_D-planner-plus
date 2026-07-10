@@ -219,7 +219,8 @@ CAPTURE_JS = r"""
   const bottomTissueRect = bottomTissueTab?.getBoundingClientRect();
   const tabsRect = resultTabsNav?.getBoundingClientRect();
   const bottomTabsRect = document.getElementById('appBottomNav')?.getBoundingClientRect();
-  const activeResultPane = document.querySelector('#tecResultTabs ~ .result-tab-pane.active');
+  const metricStripRect = document.getElementById('resultMetricStrip')?.getBoundingClientRect();
+  const activeResultPane = document.querySelector('#tecResultsPanel .result-tab-pane.active');
   const activePaneRect = activeResultPane?.getBoundingClientRect();
   const fullGraphCard = document.getElementById('fullDiveGraphCard');
   const fullGraphBody = fullGraphCard?.querySelector('.card-collapsible-body');
@@ -305,8 +306,10 @@ CAPTURE_JS = r"""
       withinNav: bottomTissueRect.left >= bottomTabsRect.left - 1 && bottomTissueRect.right <= bottomTabsRect.right + 1,
     } : null,
     resultTabsGap: tabsRect && activePaneRect ? {
-      gap: activePaneRect.top - tabsRect.bottom,
+      gap: (metricStripRect || activePaneRect).top - tabsRect.bottom,
       tabsBottom: tabsRect.bottom,
+      metricTop: metricStripRect ? metricStripRect.top : null,
+      metricBeforePane: metricStripRect ? metricStripRect.bottom <= activePaneRect.top : true,
       paneTop: activePaneRect.top,
     } : null,
     summaryChips: {
@@ -2079,6 +2082,7 @@ def main() -> int:
         c["generated"]
         and c["resultTabsGap"]
         and c["resultTabsGap"]["gap"] >= 6
+        and c["resultTabsGap"].get("metricBeforePane", True)
         for c in captures
     )
     results["SL-C09-HIGH-CNS-DECO-ALERT"] = bool(
