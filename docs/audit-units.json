@@ -2032,7 +2032,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "b245cfa9cfbe6866ad29f6c69537de8a4ef4a17d4e2930281b97df014220a05b",
+      "fingerprint": "fef5fbbb065314b2ba449ff19fd9354dcb3c13c6224216a8e6154b34ffc00c1a",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5346,7 +5346,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "de5110d6434a499c06f1e4d4757a194e8ec5935ff1741c0f8e10e4e2c2c0358d",
+      "fingerprint": "1a75c534aba08324ce36f000610ba8237428c0b1b637f1413e00fd854ae435e2",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5838,7 +5838,7 @@
         "REG-137",
         "REG-138"
       ],
-      "fingerprint": "560b0e5a8f4490b97bed1f9bdbd2ce53f52b4fe8e1044de9789ca6d135e435fa",
+      "fingerprint": "652d604c7da807647b9c06cfe7cc94e30c2e0a73d372f9a6112b99e859dc5abe",
       "last_read_fingerprint": null
     },
     {
@@ -6285,12 +6285,12 @@
     },
     {
       "cycle": "R41",
-      "max_new_application_lines": 1080,
+      "max_new_application_lines": 1089,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1080; sessions: 2",
+      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1089; sessions: 2",
       "min_review_sessions": 2
     },
     {

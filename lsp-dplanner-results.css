@@ -601,6 +601,7 @@ body.light-theme #resultsPanel .chip-yellow { background: var(--yellow-dim) !imp
   padding:2px 8px 3px;
   border-radius:999px;
   background:#ff4433;
+  border:1px solid #ff4433;
   color:#fff;
 }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-title--narcotic .gas-usage-mix,
@@ -1035,7 +1036,15 @@ body:not(.light-theme) .theme-pill-moon { color: var(--theme-moon-on-thumb); }
 #gfPresetsMount #gfCustomRow { margin-top: var(--space-2); width: 100%; flex-wrap: wrap; align-items: center; gap: 4px; display: none; }
 #gfPresetsMount #gfCustomRow.is-open { display: flex !important; }
 .hidden-v3 { display: none !important; }
-@media (max-width: 600px) { .metric-grid { grid-template-columns: repeat(2, 1fr); } .mode-btn { padding: 6px 8px; font-size: 10px; } }
+@media (max-width: 600px) {
+ .metric-grid { grid-template-columns: repeat(2, 1fr); }
+ #resultsPanel .metric-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+ #resultsPanel .metric-card { min-width: 0; padding: 8px 6px; border-radius: var(--radius-md); }
+ #resultsPanel .metric-val { font-size: 15px; line-height: 1.05; white-space: nowrap; }
+ #resultsPanel .metric-val .unit { font-size: 9px; margin-left: 1px; }
+ #resultsPanel .metric-lbl { font-size: 7px; letter-spacing: 0.06em; line-height: 1.05; }
+ .mode-btn { padding: 6px 8px; font-size: 10px; }
+}
 
 @media (prefers-reduced-motion: reduce) {
  .lsp-slider::-webkit-slider-thumb,

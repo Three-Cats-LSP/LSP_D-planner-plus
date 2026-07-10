@@ -99,7 +99,7 @@ function renderHintRow({ hintHtml, mode }) {
   row.style.display = hintHtml ? '' : 'none';
   row.classList.toggle('result-hint-row--rec', mode === 'rec');
 }
-function renderChipRow({ surfGF, otu, tts, decozone, unit, mode, profileChip }) {
+function renderChipRow({ surfGF, otu, decozone, unit, mode, profileChip }) {
   const row = document.getElementById('resultChipRow');
   if (!row) return;
   if (mode === 'rec') {
@@ -117,7 +117,6 @@ function renderChipRow({ surfGF, otu, tts, decozone, unit, mode, profileChip }) 
   row.innerHTML = `
     <span class="chip ${gfColor}"><span class="chip-dot"></span>Surf GF ${surfGF || '—'}</span>
     <span class="chip ${otuColor}"><span class="chip-dot"></span>OTU ${otu || '—'}</span>
-    <span class="chip chip-info"><span class="chip-dot"></span>TTS ${tts || '—'}</span>
     ${dzRaw && dzRaw !== '—' ? `<span class="chip chip-deco"><span class="chip-dot"></span>Decozone ${dzRaw}${/m|ft/i.test(dzRaw) ? '' : dzUnit}</span>` : ''}`;
 }
 function _renderResultSummaryStrip(data) {
@@ -156,7 +155,6 @@ function _renderResultSummaryStrip(data) {
   renderChipRow({
     surfGF: data.surfaceGF,
     otu: data.otu,
-    tts: data.tts,
     decozone: data.decozone,
     unit,
     mode,

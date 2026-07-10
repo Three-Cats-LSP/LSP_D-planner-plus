@@ -329,9 +329,8 @@ function buildPlanInfoRowHtml(o, phase) {
   const firstStopColor = (o.decoStop && o.decoStop !== '—' && o.decoStop !== '-') ? 'var(--red)' : 'var(--text)';
   const innerHtml = `<div class="deco-totals-inner">
       ${planInfoTipIconHtml()}
-      <span class="summary-stat"><span>Run time:</span> <span style="color:#2563eb">${o.runTime}</span></span> &nbsp;
-      <span class="summary-stat"><span>TTS:</span> <span>${o.tts}</span></span> &nbsp;
-      <span class="summary-stat">Deco time: <span style="color:${decoColor}">${o.decoTime}</span></span> &nbsp;
+      <span class="summary-stat"><span>RT:</span> <span style="color:#2563eb">${o.runTime}</span></span> &nbsp;
+      <span class="summary-stat">Deco: <span style="color:${decoColor}">${o.decoTime}</span></span> &nbsp;
       <span class="summary-stat">CNS: <span style="color:${o.cnsColor}">${o.cns}</span></span> &nbsp;
       <span class="summary-stat">OTU: <span style="color:${o.otuColor || 'var(--text)'}">${o.otu}</span></span> &nbsp;
       <span class="summary-stat">PrT: <span style="color:${o.prtColor}" title="${o.prtTitle || ''}">${o.prt}</span></span> &nbsp;
