@@ -50,13 +50,25 @@ function _cnsMetricColor(cnsNum) {
   if (cnsNum >= 50) return 'metric-val--cns-caution';
   return 'metric-val--cns-safe';
 }
-function renderMetricCards({ runTime, decoTime, cns, firstStop, unit }) {
+function renderMetricCards({ runTime, decoTime, cns, firstStop, unit, mode }) {
   const strip = document.getElementById('resultMetricStrip');
   if (!strip) return;
   const rt = _splitMetricValUnit(runTime, 'min');
+  const fs = _splitMetricValUnit(firstStop, unit || 'm');
+  if (mode === 'rec') {
+    strip.innerHTML = `
+    <div class="metric-card metric-card--rec-runtime">
+      <span class="metric-val metric-val--runtime">${rt.val}<span class="unit">${rt.unit}</span></span>
+      <span class="metric-lbl">Run Time</span>
+    </div>
+    <div class="metric-card metric-card--rec-safety">
+      <span class="metric-val">${fs.val}<span class="unit">${fs.unit}</span></span>
+      <span class="metric-lbl">Safety Stop</span>
+    </div>`;
+    return;
+  }
   const dt = _splitMetricValUnit(decoTime, 'min');
   const cnsParts = _splitMetricValUnit(String(cns || '').replace('%', ''), '%');
-  const fs = _splitMetricValUnit(firstStop, unit || 'm');
   const cnsNum = _parseChipNum(cns);
   const cnsClass = _cnsMetricColor(cnsNum);
   const firstStopClass = fs.val === '—' || fs.val === '-' ? '' : 'metric-val--deco';
@@ -78,9 +90,15 @@ function renderMetricCards({ runTime, decoTime, cns, firstStop, unit }) {
       <span class="metric-lbl">First Stop</span>
     </div>`;
 }
-function renderChipRow({ surfGF, otu, tts, decozone, unit }) {
+function renderChipRow({ surfGF, otu, tts, decozone, unit, mode }) {
   const row = document.getElementById('resultChipRow');
   if (!row) return;
+  if (mode === 'rec') {
+    row.innerHTML = '';
+    row.style.display = 'none';
+    return;
+  }
+  row.style.display = '';
   const surfNum = _parseChipNum(surfGF);
   const gfColor = surfNum == null ? 'chip-yellow' : (surfNum > 85 ? 'chip-red' : surfNum > 75 ? 'chip-orange' : 'chip-green');
   const otuNum = _parseChipNum(otu);
@@ -96,12 +114,14 @@ function renderChipRow({ surfGF, otu, tts, decozone, unit }) {
 function _renderResultSummaryStrip(data) {
   const panel = document.getElementById('resultsPanel');
   const unit = units === 'imperial' ? 'ft' : 'm';
+  const mode = data.mode || (plannerAlgo === 'rec' ? 'rec' : 'tec');
   renderMetricCards({
     runTime: data.runTime,
     decoTime: data.decoTime,
     cns: data.cns,
     firstStop: data.firstStop,
     unit,
+    mode,
   });
   renderChipRow({
     surfGF: data.surfaceGF,
@@ -109,6 +129,7 @@ function _renderResultSummaryStrip(data) {
     tts: data.tts,
     decozone: data.decozone,
     unit,
+    mode,
   });
   _hideResultEmptyState();
   if (panel) panel.classList.add('has-results');
@@ -120,6 +141,7 @@ function _onPlanResultsReady() {
     if (graphCard) { graphCard.style.display = 'block'; graphCard.classList.add('card-open'); }
     const decoRes = document.getElementById('decoResult');
     if (decoRes) decoRes.style.display = 'block';
+    setTimeout(() => { drawDecoProfileFull?.(); }, 80);
   }
   if (typeof isMobileShell === 'function' && isMobileShell() && typeof setMobileTab === 'function') {
     setMobileTab('results');
@@ -320,7 +342,7 @@ function _updateGasWarningBannerFromCard(gasEl) {
 function switchResultTab(name, btn) {
   const isRec = plannerAlgo === 'rec';
   const panes = isRec
-    ? ['dive','surfint','avgdepth','multi','ndlref']
+    ? ['dive','multi']
     : ['profile','contingency','tissue'];
   const nav = isRec ? document.getElementById('recResultTabs') : document.getElementById('tecResultTabs');
   const panel = document.getElementById('resultsPanel');
@@ -329,25 +351,9 @@ function switchResultTab(name, btn) {
     const el = panel?.querySelector('#resultTab-' + p);
     if (el) el.classList.toggle('active', p === name);
   });
-  if (!isRec && typeof isMobileShell === 'function' && isMobileShell()) {
+  if (typeof isMobileShell === 'function' && isMobileShell()) {
     window._setMobileResultTabActive?.(name);
   }
-  if (name === 'avgdepth') setTimeout(calcAvgDepth, 50);
-  if (name === 'surfint') {
-    const c = document.getElementById('mainSurfIntContainer');
-    if (c && !c.querySelector('#mainSiBody')) {
-      renderSurfIntPanel('mainSurfIntContainer', 'mainSi', null, null);
-      const body = document.getElementById('mainSiBody');
-      const caret = document.getElementById('mainSiCaret');
-      if (body) body.style.display = 'block';
-      if (caret) caret.textContent = '▴';
-      setTimeout(() => {
-        document.querySelectorAll('#mainSiBody .lsp-slider').forEach(s => updateSliderFill(s));
-        calcSurfInt('mainSi');
-      }, 50);
-    }
-  }
-  if (name === 'ndlref') renderNDLTable?.();
   if (name === 'multi') buildDiveBlocks?.();
   if (name === 'profile') setTimeout(() => { drawDecoProfileFull?.(); }, 50);
   if (name === 'tissue') {

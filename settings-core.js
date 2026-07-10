@@ -594,7 +594,7 @@ function _showPlannerView(view) {
     const gfHead = document.getElementById('tissueGfSectionHead');
     if (gfHead) gfHead.style.display = 'none';
   }
-  document.querySelectorAll('#resultsPanel #resultTab-dive, #resultsPanel #resultTab-surfint, #resultsPanel #resultTab-avgdepth, #resultsPanel #resultTab-multi, #resultsPanel #resultTab-ndlref').forEach(p => {
+  document.querySelectorAll('#resultsPanel #resultTab-dive, #resultsPanel #resultTab-multi').forEach(p => {
     p.classList.remove('active');
   });
   document.querySelectorAll('#resultsPanel #resultTab-profile, #resultsPanel #resultTab-contingency, #resultsPanel #resultTab-tissue').forEach(p => {

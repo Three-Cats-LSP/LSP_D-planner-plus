@@ -167,9 +167,9 @@
       "unit_id": "UI-MARKUP-REC-PLANNER",
       "path": "ui/markup-rec-planner.html",
       "start_line": 1,
-      "end_line": 75,
-      "line_count": 75,
-      "content_fingerprint": "16104a418fc2a7ae1562eccb0245fa3a7f69ea9272b71da1b75611f1801f1912",
+      "end_line": 73,
+      "line_count": 73,
+      "content_fingerprint": "8f63e4480e2932373338214ba8b1661baddafc216e35636667f5564af967d5e2",
       "review_session": "cursor/seven-lens-cycle-002-audit",
       "verification_session": "cursor/seven-lens-cycle-002-verify",
       "lens_results": {

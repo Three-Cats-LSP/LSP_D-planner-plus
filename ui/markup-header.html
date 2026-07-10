@@ -123,6 +123,9 @@
 <button class="tools-bar-btn" id="tool-endcalc" onclick="switchTool('endcalc',this)">END Calc</button>
 <button class="tools-bar-btn" id="tool-eadtable" onclick="switchTool('eadtable',this)">EAD Table</button>
 <button class="tools-bar-btn" id="tool-gastable" onclick="switchTool('gastable',this)">Gas Table</button>
+<button class="tools-bar-btn" id="tool-surfint" onclick="switchTool('surfint',this)">Surface Interval</button>
+<button class="tools-bar-btn" id="tool-avgdepth" onclick="switchTool('avgdepth',this)">Avg Depth</button>
+<button class="tools-bar-btn" id="tool-ndlref" onclick="switchTool('ndlref',this)">NDL Table</button>
 <button class="tools-bar-btn" id="tool-converter" onclick="switchTool('converter',this)">Unit Converter</button>
 <button class="tools-bar-btn" id="tool-cns" onclick="switchTool('cns',this)">CNS O₂</button>
 <button class="tools-bar-btn" id="tool-knowledge" onclick="switchTool('knowledge',this)">Knowledge</button>
@@ -144,16 +147,10 @@ __ASSEMBLE_TEC_PLANNER__
 <div id="recResultsPanel" class="planner-results-view">
 <div class="result-tabs-nav" id="recResultTabs" style="display:none;">
 <button class="result-tab-btn active" data-tab="dive" onclick="switchResultTab('dive',this)">Dive</button>
-<button class="result-tab-btn" data-tab="surfint" onclick="switchResultTab('surfint',this)">Surf Int</button>
-<button class="result-tab-btn" data-tab="avgdepth" onclick="switchResultTab('avgdepth',this)">Avg Depth</button>
 <button class="result-tab-btn" data-tab="multi" onclick="switchResultTab('multi',this)">Multi Dive</button>
-<button class="result-tab-btn" data-tab="ndlref" onclick="switchResultTab('ndlref',this)">NDL Table</button>
 </div>
 <div class="result-tab-pane" id="resultTab-dive"></div>
-<div class="result-tab-pane" id="resultTab-surfint"></div>
-<div class="result-tab-pane" id="resultTab-avgdepth"></div>
 <div class="result-tab-pane" id="resultTab-multi"></div>
-<div class="result-tab-pane" id="resultTab-ndlref"></div>
 </div>
 <div id="tecResultsPanel" class="planner-results-view visible">
 <div class="result-tabs-nav" id="tecResultTabs">
@@ -404,6 +401,9 @@ __ASSEMBLE_TEC_PLANNER__
 <button type="button" class="mobile-tool-row" data-tool="endcalc" onclick="switchTool('endcalc')"><span class="mobile-tool-icon">&#9729;</span><span><strong>END Calc</strong><small>Narcotic depth</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
 <button type="button" class="mobile-tool-row" data-tool="eadtable" onclick="switchTool('eadtable')"><span class="mobile-tool-icon">&#8776;</span><span><strong>EAD Table</strong><small>Air equivalent</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
 <button type="button" class="mobile-tool-row" data-tool="gastable" onclick="switchTool('gastable')"><span class="mobile-tool-icon">&#9635;</span><span><strong>Gas Table</strong><small>MOD &amp; MND</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+<button type="button" class="mobile-tool-row" data-tool="surfint" onclick="switchTool('surfint')"><span class="mobile-tool-icon">&#8635;</span><span><strong>Surface Interval</strong><small>Bühlmann off-gassing</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+<button type="button" class="mobile-tool-row" data-tool="avgdepth" onclick="switchTool('avgdepth')"><span class="mobile-tool-icon">&#8960;</span><span><strong>Average Depth</strong><small>Planning converter</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
+<button type="button" class="mobile-tool-row" data-tool="ndlref" onclick="switchTool('ndlref')"><span class="mobile-tool-icon">NDL</span><span><strong>NDL Table</strong><small>Air, EAN32, EAN36</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
 <button type="button" class="mobile-tool-row" data-tool="converter" onclick="switchTool('converter')"><span class="mobile-tool-icon">&#8644;</span><span><strong>Unit Converter</strong><small>Bar &middot; L &middot; m &middot; C</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
 <button type="button" class="mobile-tool-row" data-tool="cns" onclick="switchTool('cns')"><span class="mobile-tool-icon">&#9762;</span><span><strong>CNS O2</strong><small>Toxicity limits</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
 <button type="button" class="mobile-tool-row" data-tool="knowledge" onclick="switchTool('knowledge')"><span class="mobile-tool-icon">&#9776;</span><span><strong>Knowledge</strong><small>References &amp; docs</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>

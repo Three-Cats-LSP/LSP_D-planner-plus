@@ -1155,7 +1155,7 @@ async () => {
   const appBottomNavVisible = !!(appBottomNav && getComputedStyle(appBottomNav).display !== 'none');
   const appBottomNavHeight = appBottomNav?.getBoundingClientRect().height || 0;
   const appBottomLabels = appBottomNav
-    ? Array.from(appBottomNav.querySelectorAll('.nav-item')).map(btn => btn.textContent.trim())
+    ? Array.from(appBottomNav.querySelectorAll('.nav-item:not([hidden])')).map(btn => btn.textContent.trim())
     : [];
   const appBottomHasGhostIcons = appBottomNav ? /\b(DP|CP|TS)\b/.test(appBottomNav.textContent || '') : false;
   const appBottomPlanEnabled = !!document.querySelector('#appBottomNav [data-tab="plan"]:not(:disabled)');
@@ -1220,10 +1220,16 @@ async () => {
   document.getElementById('navBtnRec')?.click();
   await new Promise(r => setTimeout(r, 120));
   navChecks.rec = vis('plannerView') !== 'none';
+  const recBottomLabels = appBottomNav
+    ? Array.from(appBottomNav.querySelectorAll('.nav-item:not([hidden])')).map(btn => btn.textContent.trim())
+    : [];
 
   document.getElementById('navBtnBuh')?.click();
   await new Promise(r => setTimeout(r, 120));
   navChecks.buh = vis('tecPlannerView') !== 'none';
+  const tecBottomLabels = appBottomNav
+    ? Array.from(appBottomNav.querySelectorAll('.nav-item:not([hidden])')).map(btn => btn.textContent.trim())
+    : [];
 
   document.getElementById('navBtnVpm')?.click();
   await new Promise(r => setTimeout(r, 120));
@@ -1233,10 +1239,17 @@ async () => {
   await new Promise(r => setTimeout(r, 120));
   navChecks.tools = document.getElementById('toolsPageWrap')?.classList.contains('visible') === true;
   sampleChips('tools');
+  const toolsBottomHidden = !appBottomNav || getComputedStyle(appBottomNav).display === 'none';
   const mobileToolsListVisible = mobile
     ? getComputedStyle(document.getElementById('mobileToolsList')).display !== 'none'
     : true;
   const mobileToolRows = document.querySelectorAll('#mobileToolsList .mobile-tool-row').length;
+  const mobileToolKeys = Array.from(document.querySelectorAll('#mobileToolsList .mobile-tool-row')).map(row => row.dataset.tool);
+  const desktopToolKeys = Array.from(document.querySelectorAll('#toolsBar .tools-bar-btn'))
+    .map(btn => (btn.id || '').replace(/^tool-/, ''));
+  const movedRecToolsPresent = ['surfint', 'avgdepth', 'ndlref'].every(key => mobileToolKeys.includes(key))
+    && ['surfint', 'avgdepth', 'ndlref'].every(key => desktopToolKeys.includes(key))
+    && ['surfint', 'avgdepth', 'ndlref'].every(key => !!document.getElementById('tool-panel-' + key));
   const mobileToolsPanelHiddenOnList = mobile
     ? getComputedStyle(document.getElementById('toolsPanelMount')).display === 'none'
     : true;
@@ -1264,6 +1277,7 @@ async () => {
   await new Promise(r => setTimeout(r, 120));
   navChecks.settings = document.getElementById('settingsPageWrap')?.classList.contains('visible') === true;
   sampleChips('settings');
+  const settingsBottomHidden = !appBottomNav || getComputedStyle(appBottomNav).display === 'none';
   const settingsLinkCount = document.querySelectorAll('.settings-app-link-list a').length;
 
   document.getElementById('navRef')?.click();
@@ -1320,18 +1334,21 @@ async () => {
     && (mobile ? backToPlanner : true)
     && (mobile
       ? appBottomNavPresent
-        && appBottomNavVisible
         && appBottomNavHeight >= 48
-        && JSON.stringify(appBottomLabels) === JSON.stringify(['Plan', 'Profile', 'Contingency', 'Tissues'])
+        && JSON.stringify(recBottomLabels) === JSON.stringify(['Dive', 'Multi Dive'])
+        && JSON.stringify(tecBottomLabels) === JSON.stringify(['Plan', 'Profile', 'Contingency', 'Tissues'])
         && !appBottomHasGhostIcons
         && appBottomPlanEnabled
+        && toolsBottomHidden
+        && settingsBottomHidden
         && !mainVersionVisible
         && headerRefCompact
         && appShellFooterHidden
         && settingsLinkCount >= 8
         && referenceLinksVisible
         && mobileToolsListVisible
-        && mobileToolRows >= 8
+        && mobileToolRows >= 11
+        && movedRecToolsPresent
         && mobileToolsPanelHiddenOnList
         && mobileToolDetailVisible
         && mobileToolTitle === 'MOD'
@@ -1352,6 +1369,8 @@ async () => {
     appBottomNavVisible,
     appBottomNavHeight,
     appBottomLabels,
+    recBottomLabels,
+    tecBottomLabels,
     appBottomHasGhostIcons,
     appBottomPlanEnabled,
     mainVersionVisible,
@@ -1361,6 +1380,11 @@ async () => {
     referenceLinksVisible,
     mobileToolsListVisible,
     mobileToolRows,
+    mobileToolKeys,
+    desktopToolKeys,
+    movedRecToolsPresent,
+    toolsBottomHidden,
+    settingsBottomHidden,
     mobileToolsPanelHiddenOnList,
     mobileToolDetailVisible,
     mobileToolTitle,

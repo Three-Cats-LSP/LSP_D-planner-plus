@@ -514,19 +514,9 @@ ENGINE_SUITE_JS = r"""
 
   // ── E10f: issue #121 trimix UI + dynamic deco card persistence ───────────
   out.sections.issue121 = (() => {
-    const mixEl = document.getElementById('gasMix');
-    const o2Field = document.getElementById('plannerTrimixO2Field');
-    const heField = document.getElementById('plannerTrimixHeField');
-    if (!mixEl || !o2Field || !heField || typeof appSettings === 'undefined') return { ok: false };
-    const syncHasToggle = String(appSettings._syncUiAfterRestore).includes('toggleCustomO2');
-    const prevMix = mixEl.value;
-    mixEl.value = 'trimix';
-    toggleCustomO2?.();
-    const trimixVisible = o2Field.style.display !== 'none' && heField.style.display !== 'none';
+    if (typeof appSettings === 'undefined') return { ok: false };
     if (typeof restoreDecoGasCardLayout !== 'function') {
-      mixEl.value = prevMix;
-      toggleCustomO2?.();
-      return { syncHasToggle, trimixVisible, ok: false };
+      return { ok: false };
     }
     const prevStore = localStorage.getItem('lspDiveSettings_v6');
     const prevHeadless = window._zhlHeadless;
@@ -536,11 +526,9 @@ ENGINE_SUITE_JS = r"""
     const dg5 = document.getElementById('dg5Mix');
     if (!dg3 || !dg5) {
       window._zhlHeadless = prevHeadless;
-      mixEl.value = prevMix;
-      toggleCustomO2?.();
       if (prevStore != null) localStorage.setItem('lspDiveSettings_v6', prevStore);
       else localStorage.removeItem('lspDiveSettings_v6');
-      return { syncHasToggle, trimixVisible, ok: false };
+      return { ok: false };
     }
     dg3.value = 'ean50';
     dg5.value = 'trimix';
@@ -562,18 +550,14 @@ ENGINE_SUITE_JS = r"""
       && document.getElementById('dg5Mix')?.value === 'trimix'
       && String(document.getElementById('dg5TrimixO2')?.value) === '18';
     window._zhlHeadless = prevHeadless;
-    mixEl.value = prevMix;
-    toggleCustomO2?.();
     if (prevStore != null) localStorage.setItem('lspDiveSettings_v6', prevStore);
     else localStorage.removeItem('lspDiveSettings_v6');
     return {
-      syncHasToggle,
-      trimixVisible,
       cardsOk,
       valuesOk,
       layoutOk,
       restoredOk,
-      ok: syncHasToggle && trimixVisible && cardsOk && valuesOk && layoutOk && restoredOk,
+      ok: cardsOk && valuesOk && layoutOk && restoredOk,
     };
   })();
 

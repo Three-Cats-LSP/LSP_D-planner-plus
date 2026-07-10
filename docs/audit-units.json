@@ -1972,7 +1972,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "2faa9ba5f3e2910bb8659197da96405d5dc9a5e9bef13361df05457ba17693f0",
+      "fingerprint": "37a7e2712abd49c116a9a3b54c8a9702a5b7f4a1bc858efced1a851a5034436f",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2032,7 +2032,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "7b5a72876b9394884186d53199b5d120de1ceaa10142fc76a9c32ffa32992058",
+      "fingerprint": "39c0d85d61a7fe485e6fc6954169c6f8ac9148fa909279d607aedff78094deb5",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2054,7 +2054,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3e4f44d933511ad86b36a344114c37ae2d9a72f526599991edafb8f28cc31b3b",
+      "fingerprint": "291436fcd78658bb17a84cd1e916ef22cef45552cb67348deb758dac7d456500",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2069,7 +2069,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "388914fdeee3b6b7af82a5e16408837848c0f194c18e2c69d8dae0ba35421930",
+      "fingerprint": "dd1773c4536dbfd150d2c4a178e0c481ed35f9c1636cdef78ca0bcde246b9e88",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2084,7 +2084,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "16104a418fc2a7ae1562eccb0245fa3a7f69ea9272b71da1b75611f1801f1912",
+      "fingerprint": "8f63e4480e2932373338214ba8b1661baddafc216e35636667f5564af967d5e2",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2155,20 +2155,14 @@
       "path": "ui/markup-tools.html",
       "layer": "web_markup",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "848597e92f10f1494b5100e0fcde9099f7832325d7881ca77b0f2067989c4c9a",
-      "last_read_fingerprint": "848597e92f10f1494b5100e0fcde9099f7832325d7881ca77b0f2067989c4c9a",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-ASSEMBLE-MARKUP",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-04",
-        "COV-01"
-      ],
+      "fingerprint": "ef86859ca3b8648f1d8078d76306b2605d91465c416f457b34345f25bc79f3b8",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified \u00e2\u20ac\u201d UI-MARKUP-TOOLS"
     },
     {
@@ -2180,7 +2174,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "7ef54915ead99213a8d434577770d2b09f5217a17d0e9c05c2c8c44822b489fc",
+      "fingerprint": "206da86a26d858e2899b0508dcf5e0a036ae5d63a5fed4c3ce67230382234c56",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2191,21 +2185,15 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-RUNTIME-BOOTSTRAP"
       },
-      "fingerprint": "822569ba7547b9b50c20e33058d9c85c4b53f8edc7019b7952fc17958e5e3f3d",
-      "last_read_fingerprint": "822569ba7547b9b50c20e33058d9c85c4b53f8edc7019b7952fc17958e5e3f3d",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-05",
-        "COV-01"
-      ],
+      "fingerprint": "2bc3e6615d8aae5761356df9f7531a0adacf91786c2d2be39ac8170e137672a7",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "audit_issue": 162,
       "issue": "Audit issue #162"
     },
@@ -2236,7 +2224,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MODE-STATE"
       },
-      "fingerprint": "ca84ba7e24840812d3f86f220cbda9a40d677d918412c9036e0f177927a62601",
+      "fingerprint": "63bbf24d9f03ead7a2d15b374bafb94ebd2cd6630d6c78cd8a2c03891eb27d51",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2296,23 +2284,15 @@
       "path": "schedule-runner-core.js",
       "layer": "web_runtime",
       "priority": "P0",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-DELEGATES"
       },
-      "fingerprint": "2624b1e14c8a6260d1ced80646d82af33d1d0eef852e695f55e85eab38228b8f",
-      "last_read_fingerprint": "2624b1e14c8a6260d1ced80646d82af33d1d0eef852e695f55e85eab38228b8f",
-      "evidence": [
-        "SUITE-ISSUE-141/ISSUE141-M1-PSCR-BYPASS",
-        "SUITE-ISSUE-141/ISSUE141-L2-TRIMIX-NULL",
-        "SUITE-ISSUE-141/ISSUE141-L1-RESOLVE-SAC"
-      ],
-      "regression_cases": [
-        "REG-15",
-        "REG-16",
-        "REG-18"
-      ],
+      "fingerprint": "b7892dee0b58ba6b4853f6c21bfc910127107951788f93ee84b2653128bd4772",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "GitHub #141 L-2 getN2Frac trimix null",
       "audit_issue": 161
     },
@@ -2343,7 +2323,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-DECO-PHYSICS"
       },
-      "fingerprint": "f9aab80eb8014b6094f03ff910b94af8647a07628e5c999ab6c8ce1ae0f62d93",
+      "fingerprint": "615a500785eddfb91f73f6d092bf02b44ba4d6cd0b4d456578ebb830eb9d5d1a",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2486,7 +2466,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-ENGINE"
       },
-      "fingerprint": "9791e2baac0d6e38fdaa4d11e6a20e214a79d0df861e3307076a336b9efa66b0",
+      "fingerprint": "33240b51101f36e45e65b1ae65445b1b5f4cd4f4972ced870e87a47141386bd6",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2623,7 +2603,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-TISSUES"
       },
-      "fingerprint": "cdeb072ebd99588f8c30f22f464b176e130c55a79ed3e84b7ae96354f0f0b815",
+      "fingerprint": "56d9cea56e704d2be136fdceb6ccf77773b78f8f893df97a60eab090e3042e31",
       "last_read_fingerprint": null,
       "audit_issue": 156,
       "evidence": [],
@@ -3154,20 +3134,14 @@
       "path": "download.html",
       "layer": "web_runtime",
       "priority": "P3",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "db834ff6d219547c2d811761946d9dd127888e952d823869c029d3173c199b70",
-      "last_read_fingerprint": "db834ff6d219547c2d811761946d9dd127888e952d823869c029d3173c199b70",
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-PAGES-ASSETS",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-07",
-        "COV-01"
-      ],
+      "fingerprint": "84b623b22113381e8c695931b6b8a5a2ebdd86a3d9060c1b04b0ca23232cc874",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified \u00e2\u20ac\u201d APP-DOWNLOAD"
     },
     {
@@ -3200,7 +3174,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "9bc8ce03781e23087217b044500c48be2499479b09ddf5671611612219b32e6b",
+      "fingerprint": "e4ee511afee101a245ad7f2f58931e47d58811b2d8caaabcce237d08e009cdcd",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3630,7 +3604,7 @@
       "evidence": [],
       "issue": "GitHub #133\u00e2\u20ac\u201c#138 audit regressions and Cycle 31\u00e2\u20ac\u201c34 verification",
       "regression_cases": [],
-      "fingerprint": "9655c84ff5a51471152da4f043a947d5ef6cef55e1039b8603abc20dc61112fa",
+      "fingerprint": "45ea6e570dcc843d814faa15f6b09285afa98bf3b45434d55c011308e6a221f1",
       "last_read_fingerprint": null,
       "audit_issue": 169
     },
@@ -4145,7 +4119,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "af66d7855524c97a5dffdc4a88371d4fde79cb2207120b7b897ca683ab8880ea",
+      "fingerprint": "5fe97415633d037cd4dd5520ec45bb48a4e1599296934e869dd2c19fef742c36",
       "last_read_fingerprint": null,
       "regression_cases": [],
       "evidence": [],
@@ -4868,7 +4842,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f632205834c67938809bee83c3fd32dfd3b7b0761e30f617e3c6de6cbddfd7d3",
+      "fingerprint": "94f12f50c0a7c3669e1445784b85ac9469773583247462146e7aa24dccc01a0d",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5354,7 +5328,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "0b6656e2982d4ac93dd68ed0f840461e5a144ceaffb8dc321121ae9837f31559",
+      "fingerprint": "aef32b6452a0fec25153c2a12fe666509678f825b4f4bbec3904aecccd357027",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5372,7 +5346,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c0b376943fdd8f76a4a4580a06ef8886c36314917b318be545143e55d3bd625d",
+      "fingerprint": "881b61f1e2a8d0c92135931527973c94dd1ed4ee3cd2d499b78139a53e69ee04",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5864,7 +5838,7 @@
         "REG-137",
         "REG-138"
       ],
-      "fingerprint": "6b5904a55d33dddda0c95d17f2a629a8163499eec2fc423a332226fcf62e5b2e",
+      "fingerprint": "8496c6e626d695b9f18afc580537c4037564dd427ef5fecf2693f2d0606cb086",
       "last_read_fingerprint": null
     },
     {
@@ -5947,7 +5921,7 @@
     },
     {
       "cycle": "R07",
-      "max_new_application_lines": 605,
+      "max_new_application_lines": 630,
       "application_units": [
         "UI-DECO-PHYSICS",
         "UI-SCHEDULE-INPUTS"
@@ -5955,12 +5929,12 @@
       "engine_reverification": [
         "ENG-ZHL-CCR"
       ],
-      "acceptance": "V4 R07: Deco physics and schedule inputs risk-first READ; current lines: 605; sessions: 2",
+      "acceptance": "V4 R07: Deco physics and schedule inputs risk-first READ; current lines: 630; sessions: 2",
       "min_review_sessions": 2
     },
     {
       "cycle": "R08",
-      "max_new_application_lines": 511,
+      "max_new_application_lines": 515,
       "application_units": [
         "UI-ZHL-DELEGATES",
         "UI-CCR-DELEGATES"
@@ -5968,7 +5942,7 @@
       "engine_reverification": [
         "ENG-ZHL-SCHEDULE"
       ],
-      "acceptance": "V4 R08: ZHL/CCR delegate thin layer risk-first READ; current lines: 511; sessions: 1"
+      "acceptance": "V4 R08: ZHL/CCR delegate thin layer risk-first READ; current lines: 515; sessions: 1"
     },
     {
       "cycle": "R09",
@@ -6181,24 +6155,24 @@
     },
     {
       "cycle": "R29",
-      "max_new_application_lines": 895,
+      "max_new_application_lines": 904,
       "application_units": [
         "UI-TOOLS-TISSUES",
         "UI-TOOLS-EXPOSURE",
         "UI-TOOLS-GF"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R29: Tools tissues/exposure/GF risk-first READ; current lines: 860; sessions: 2",
+      "acceptance": "V4 R29: Tools tissues/exposure/GF risk-first READ; current lines: 904; sessions: 2",
       "min_review_sessions": 2
     },
     {
       "cycle": "R30",
-      "max_new_application_lines": 119,
+      "max_new_application_lines": 120,
       "application_units": [
         "APP-DOWNLOAD"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R30: Download page risk-first READ; current lines: 119; sessions: 1"
+      "acceptance": "V4 R30: Download page risk-first READ; current lines: 120; sessions: 1"
     },
     {
       "cycle": "R31",
@@ -6311,23 +6285,23 @@
     },
     {
       "cycle": "R41",
-      "max_new_application_lines": 1017,
+      "max_new_application_lines": 1023,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1009; sessions: 2",
+      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1023; sessions: 2",
       "min_review_sessions": 2
     },
     {
       "cycle": "R42",
-      "max_new_application_lines": 717,
+      "max_new_application_lines": 773,
       "application_units": [
         "UI-PLANNER-SHELL",
         "UI-RESULTS-PANEL"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R42: Planner shell and results panel design-lock READ; current lines: 716; sessions: 2",
+      "acceptance": "V4 R42: Planner shell and results panel design-lock READ; current lines: 773; sessions: 2",
       "min_review_sessions": 2
     }
   ],

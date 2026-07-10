@@ -73,7 +73,8 @@
 
     function setupDownload(version, apkUrl) {
       const APK_FILE = 'LSP_D-planner-plus-v' + version + '.apk';
-      const APK_URL = apkUrl || APK_FILE;
+      const RELEASE_PAGE = 'https://github.com/Three-Cats-LSP/LSP_D-planner-plus/releases/latest';
+      const APK_URL = apkUrl && /\.apk(?:[?#].*)?$/i.test(apkUrl) ? apkUrl : APK_FILE;
       btn.href = APK_URL;
       btn.download = APK_FILE;
 
@@ -100,8 +101,8 @@
             status.textContent = 'Download started.';
           })
           .catch(() => {
-            window.location.href = APK_URL;
-            status.textContent = 'Opening direct link…';
+            window.location.href = RELEASE_PAGE;
+            status.textContent = 'Opening release page...';
           })
           .finally(() => {
             btn.style.opacity = '1';

@@ -804,8 +804,12 @@ function saturate(tissues, depthM, t, fN2, fHe) { _syncZhlBundleEnv(); return Zh
 function toggleCustomO2() {
   const gasMixEl = document.getElementById('gasMix');
   if (!gasMixEl) return;
+  let mix = gasMixEl.value;
+  if (typeof plannerAlgo !== 'undefined' && plannerAlgo === 'rec' && !['air', 'ean32', 'ean36'].includes(mix)) {
+    gasMixEl.value = 'air';
+    mix = 'air';
+  }
   if (typeof algo !== 'undefined' && algo === 'padi') return;
-  const mix = gasMixEl.value;
   const customField = document.getElementById('customO2Field');
   if (customField) customField.style.display = mix === 'custom' ? 'block' : 'none';
   const showTrimix = mix === 'trimix';
@@ -1398,6 +1402,30 @@ function runPlanner() {
     const ppO2Ok = pO2 <= modPpo2;
     const btOk = ndl > 0 && bt <= ndl && !beyondMOD;
 
+    if (beyondMOD || ndl === 0 || !btOk) {
+      const blockMessage = beyondMOD
+        ? `<strong>BEYOND MOD.</strong> ${dDisp} exceeds ${gasLabel} MOD of ${isMetric ? modM+' m' : modFt+' ft'} at ${modPpo2.toFixed(1)} bar ppO₂. Use Air or a lower O₂ mix, or reduce depth.`
+        : ndl === 0
+          ? `<strong>BEYOND TABLE.</strong> ${dDisp} exceeds the PADI recreational table maximum (${isMetric ? PADI_TABLE_MAX_M+' m' : PADI_TABLE_MAX_FT+' ft'}).`
+          : `<strong>NDL EXCEEDED.</strong> ${bt} min exceeds the ${ndl} min no-decompression limit. Reduce bottom time by ${bt - ndl} min.`;
+      const plannerResult = document.getElementById('plannerResult');
+      if (plannerResult) {
+        plannerResult.innerHTML = `<div class="card rec-block-card">
+          <div class="card-title" style="margin:0 0 10px;">REC Plan Blocked</div>
+          <div class="alert dang" style="margin:0;"><span>⚠</span><div>${blockMessage}</div></div>
+        </div>`;
+        plannerResult.style.display = 'block';
+      }
+      _renderResultSummaryStrip({
+        mode: 'rec',
+        runTime: String(bt),
+        firstStop: 'Blocked',
+      });
+      _onPlanResultsReady();
+      renderSurfIntPanel('recSurfIntContainer', 'recSi', depthM, bt);
+      return;
+    }
+
     const gasStatHtml = `<div class="stat"><div class="stat-val ${ppO2Ok?'g':'r'}">${pO2.toFixed(2)}</div><div class="stat-lbl">ppO₂ (bar)</div></div>`;
     const modInfoHtml = `<div class="alert info" style="margin-top:12px;"><span>💡</span><div>MOD for ${gasLabel} @ ${modPpo2.toFixed(1)} bar ppO₂: <strong>${isMetric ? modM+' m' : modFt+' ft'}</strong></div></div>`;
     const tableRef = isNitrox ? `PADI Nitrox ${gasLabel}` : 'PADI Air';
@@ -1488,6 +1516,7 @@ function runPlanner() {
 
   const stopDisp = isMetric ? `${stopDepthM}m` : `${stopFt}ft`;
   _renderResultSummaryStrip({
+    mode: 'rec',
     runTime: String(bt),
     decoTime: '0',
     cns: '—',
@@ -3295,4 +3324,3 @@ function computePlanExposureTotals(plan, settings, defaultFO2, defaultFHe, surfP
   return { totalOTU: Math.round(otu.val), totalCNS: parseFloat((cnsFrac.val * 100).toFixed(1)) };
 }
 if (typeof window !== 'undefined') window.computePlanExposureTotals = computePlanExposureTotals;
-

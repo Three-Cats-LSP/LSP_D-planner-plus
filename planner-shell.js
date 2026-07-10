@@ -28,7 +28,39 @@ function isMobileTab(tab) {
 
 function syncMobileResultsNav() {
   const hasResults = document.getElementById('resultsPanel')?.classList.contains('has-results');
-  document.querySelectorAll('#appBottomNav [data-result-tab]').forEach(btn => {
+  const recMode = typeof plannerAlgo !== 'undefined' && plannerAlgo === 'rec';
+  const configs = recMode
+    ? [
+        ['dive', 'Dive'],
+        ['multi', 'Multi Dive'],
+        [null, ''],
+        [null, ''],
+        [null, ''],
+      ]
+    : [
+        ['plan', 'Plan'],
+        ['profile', 'Profile'],
+        ['contingency', 'Contingency'],
+        ['tissue', 'Tissues'],
+        [null, ''],
+      ];
+  document.querySelectorAll('#appBottomNav .nav-item').forEach((btn, idx) => {
+    const cfg = configs[idx] || [null, ''];
+    const tab = cfg[0];
+    const label = cfg[1];
+    btn.hidden = !tab;
+    btn.dataset.tab = '';
+    btn.dataset.resultTab = '';
+    if (tab === 'plan') btn.dataset.tab = 'plan';
+    else if (tab) btn.dataset.resultTab = tab;
+    const span = btn.querySelector('span');
+    if (span) span.textContent = label;
+    btn.onclick = tab === 'plan'
+      ? () => setMobileTab('plan')
+      : () => setMobileResultTab(tab);
+  });
+  document.querySelectorAll('#appBottomNav .nav-item').forEach(btn => {
+    if (btn.hidden) return;
     btn.disabled = !hasResults;
     btn.setAttribute('aria-disabled', hasResults ? 'false' : 'true');
   });
@@ -51,6 +83,10 @@ window._syncMobileAlgoChips = _syncMobileAlgoChips;
 function _highlightMobileBottomNav(tab) {
   const hasResults = document.getElementById('resultsPanel')?.classList.contains('has-results');
   document.querySelectorAll('#appBottomNav .nav-item').forEach(btn => {
+    if (btn.hidden) {
+      btn.classList.remove('active');
+      return;
+    }
     const isPlan = tab === 'plan' && btn.dataset.tab === 'plan';
     const isResult = !!hasResults && tab === 'results' && btn.dataset.resultTab === mobileResultTab;
     btn.classList.toggle('active', isPlan || isResult);
@@ -95,18 +131,25 @@ function setMobileTab(tab, opts) {
 
 function setMobileResultTab(name) {
   if (!isMobileShell()) return;
-  if (name !== 'profile' && name !== 'contingency' && name !== 'tissue') return;
+  const allowed = plannerAlgo === 'rec'
+    ? ['dive', 'multi']
+    : ['profile', 'contingency', 'tissue'];
+  if (!allowed.includes(name)) return;
   const hasResults = document.getElementById('resultsPanel')?.classList.contains('has-results');
   if (!hasResults) return;
   mobileResultTab = name;
   if (mobileTab !== 'results') setMobileTab('results', { skipNavMode: true, force: true });
-  const btn = document.querySelector(`#tecResultTabs [data-tab="${name}"]`);
+  const tabHost = plannerAlgo === 'rec' ? 'recResultTabs' : 'tecResultTabs';
+  const btn = document.querySelector(`#${tabHost} [data-tab="${name}"]`);
   if (typeof switchResultTab === 'function') switchResultTab(name, btn);
   _highlightMobileBottomNav('results');
 }
 
 function _setMobileResultTabActive(name) {
-  if (name !== 'profile' && name !== 'contingency' && name !== 'tissue') return;
+  const allowed = plannerAlgo === 'rec'
+    ? ['dive', 'multi']
+    : ['profile', 'contingency', 'tissue'];
+  if (!allowed.includes(name)) return;
   mobileResultTab = name;
   _highlightMobileBottomNav(mobileTab);
 }
@@ -310,14 +353,21 @@ function initV3Layout() {
     if (profileHint) fullGraphMount.appendChild(profileHint);
   }
   moveToTab('plannerResult', 'dive');
-  const surfPanel = document.getElementById('surfint');
-  if (surfPanel) moveChildren(surfPanel, document.getElementById('resultTab-surfint'), []);
-  const avgPanel = document.getElementById('avgdepth');
-  if (avgPanel) moveChildren(avgPanel, document.getElementById('resultTab-avgdepth'), []);
   const multiPanel = document.getElementById('multi');
   if (multiPanel) moveChildren(multiPanel, document.getElementById('resultTab-multi'), []);
-  const ndlPanel = document.getElementById('ndlref');
-  if (ndlPanel) moveChildren(ndlPanel, document.getElementById('resultTab-ndlref'), []);
+
+  const toolMounts = {
+    surfint: document.getElementById('tool-panel-surfint'),
+    avgdepth: document.getElementById('tool-panel-avgdepth'),
+    ndlref: document.getElementById('tool-panel-ndlref'),
+  };
+  Object.entries(toolMounts).forEach(([id, mount]) => {
+    const panel = document.getElementById(id);
+    if (panel && mount) {
+      moveChildren(panel, mount, []);
+      panel.remove();
+    }
+  });
 
   const cnsPanel = document.getElementById('cns');
   const cnsMount = document.getElementById('tool-panel-cns');

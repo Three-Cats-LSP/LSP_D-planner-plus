@@ -107,6 +107,16 @@
     padding: var(--space-2) var(--space-3) calc(64px + env(safe-area-inset-bottom, 0px));
   }
 
+  body.mobile-tab-tools .app-bottom-nav,
+  body.mobile-tab-settings .app-bottom-nav {
+    display: none !important;
+  }
+
+  body.mobile-tab-tools .app-content,
+  body.mobile-tab-settings .app-content {
+    padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
+  }
+
   /* Hide desktop top nav on mobile — algo chips replace REC/Bühlmann/VPM */
   #mainNavBar {
     display: none !important;
@@ -444,6 +454,7 @@
     display: flex !important;
   }
 
+  #recResultTabs,
   #tecResultTabs {
     display: none !important;
   }
