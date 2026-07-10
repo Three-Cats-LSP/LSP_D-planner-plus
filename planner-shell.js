@@ -364,16 +364,14 @@ function initV3Layout() {
   Object.entries(toolMounts).forEach(([id, mount]) => {
     const panel = document.getElementById(id);
     if (panel && mount) {
-      moveChildren(panel, mount, []);
-      panel.remove();
+      mount.appendChild(panel);
     }
   });
 
   const cnsPanel = document.getElementById('cns');
   const cnsMount = document.getElementById('tool-panel-cns');
   if (cnsPanel && cnsMount) {
-    moveChildren(cnsPanel, cnsMount, []);
-    cnsPanel.remove();
+    cnsMount.appendChild(cnsPanel);
   }
 
   // Modals inside .legacy-panels are suppressed by display:none — move to body

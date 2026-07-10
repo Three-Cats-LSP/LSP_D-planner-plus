@@ -214,7 +214,7 @@
 | TOOL-AUDIT-V2-WORKSPACE-PY | tooling | `tools/audit/workspace.py:1` | 89 | P0 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-AUDIT-V2-AUDIT-LEGACY-MIGRATION-JSON | tooling | `docs/audit-legacy-migration.json:1` | 37671 | P0 | IN_PROGRESS | - |
 | TOOL-AUDIT-V2-TEST_SYSTEM-PY | tooling | `tools/audit/test_system.py:1` | 206 | P0 | IN_PROGRESS | - |
-| UI-PLANNER-SHELL | ui_shell | `planner-shell.js:1` | 400 | P1 | IN_PROGRESS | REG-96, REG-99 |
+| UI-PLANNER-SHELL | ui_shell | `planner-shell.js:1` | 398 | P1 | IN_PROGRESS | REG-96, REG-99 |
 | UI-RESULTS-PANEL | ui_shell | `results-panel.js:1` | 373 | P1 | IN_PROGRESS | COV-01, PARITY-01, EXT-02, REG-01, REG-95, REG-97, REG-98 |
 | TOOL-V3-ASSEMBLE_UI_HTML-PY | tooling | `tools/assemble_ui_html.py:1` | 181 | P2 | IN_PROGRESS | - |
 | TOOL-V3-EXTRACT_UI_CSS-PY | tooling | `tools/extract_ui_css.py:1` | 139 | P2 | IN_PROGRESS | - |

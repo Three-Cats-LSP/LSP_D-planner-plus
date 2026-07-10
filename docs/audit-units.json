@@ -5328,7 +5328,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "aef32b6452a0fec25153c2a12fe666509678f825b4f4bbec3904aecccd357027",
+      "fingerprint": "dcf43274f5db78b197075c237d104a00fe41aa468c9ee60341d7645dc212e88b",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [

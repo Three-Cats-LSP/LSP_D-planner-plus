@@ -347,9 +347,9 @@
       "unit_id": "UI-PLANNER-SHELL",
       "path": "planner-shell.js",
       "start_line": 1,
-      "end_line": 400,
-      "line_count": 400,
-      "content_fingerprint": "aef32b6452a0fec25153c2a12fe666509678f825b4f4bbec3904aecccd357027",
+      "end_line": 398,
+      "line_count": 398,
+      "content_fingerprint": "dcf43274f5db78b197075c237d104a00fe41aa468c9ee60341d7645dc212e88b",
       "review_session": "C08-A",
       "verification_session": "C08-V-B",
       "lens_results": {
