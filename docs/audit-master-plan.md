@@ -64,7 +64,7 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R15 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 679 | - | V4 R15: Surface interval and gas table cores risk-first READ; current lines: 679; sessions: 2 |
 | R16 | UI-GAS-INPUTS, UI-GAS-CARDS | 507 | ENG-ZHL-GAS | V4 R16: Gas input/card UI risk-first READ; current lines: 507; sessions: 1 |
 | R17 | APP-GAS-PLAN | 546 | - | V4 R17: Gas plan core risk-first READ; current lines: 546; sessions: 1 |
-| R18 | APP-CONTINGENCY | 592 | - | V4 R18: Contingency core risk-first READ; current lines: 594; sessions: 1 |
+| R18 | APP-CONTINGENCY | 591 | - | V4 R18: Contingency core risk-first READ; current lines: 594; sessions: 1 |
 | R19 | UI-VPM-RENDER, UI-ZHL-RESULTS | 968 | - | V4 R19: VPM/ZHL results rendering risk-first READ; current lines: 968; sessions: 2 |
 | R20 | APP-EXPORT | 3287 | - | V4 R20: Export text/PDF risk-first READ; current lines: 3287; sessions: 6 |
 | R21 | UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 632 | - | V4 R21: Plot render and waypoint graph risk-first READ; current lines: 632; sessions: 2 |
@@ -87,7 +87,7 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R38 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 605 | - | V4 R38: Tools and modal markup risk-first READ; current lines: 612; sessions: 2 |
 | R39 | UI-CSS-FOUNDATION, UI-CSS-MODES | 760 | - | V4 R39: Foundation and mode CSS risk-first READ; current lines: 760; sessions: 2 |
 | R40 | UI-CSS-CONTROLS | 548 | - | V4 R40: Controls CSS risk-first READ; current lines: 548; sessions: 1 |
-| R41 | UI-CSS-RESULTS | 1099 | - | V4 R41: Results CSS risk-first design-lock READ; current lines: 1099; sessions: 2 |
+| R41 | UI-CSS-RESULTS | 1110 | - | V4 R41: Results CSS risk-first design-lock READ; current lines: 1110; sessions: 2 |
 | R42 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 820 | - | V4 R42: Planner shell and results panel design-lock READ; current lines: 822; sessions: 2 |
 
 ## Definition of Done

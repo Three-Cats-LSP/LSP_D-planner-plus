@@ -567,7 +567,7 @@ function calcContingency() {
     const cnsPctEm = totalCNS ? parseFloat(totalCNS) : 0;
     let cnsAlert = '';
     if (cnsPctEm >= 80) {
-      cnsAlert = `<div class="alert" style="margin-top:8px;background:#ffff00;border-color:#cccc00;color:#111;font-weight:700;"><span>☢</span><div><strong>HIGH CNS%.</strong> Emergency CNS oxygen load ${cnsPctEm.toFixed(0)}% exceeds 80%. Extreme caution.</div></div>`;
+      cnsAlert = `<div class="alert cns-warn"><span>☢</span><div><strong>HIGH CNS%.</strong> Emergency CNS oxygen load ${cnsPctEm.toFixed(0)}% exceeds 80%. Extreme caution.</div></div>`;
     }
     emAlerts.innerHTML = modAlert + gasSwitchAlert + cnsAlert;
     window._lastContingency.emAlertsHtml = emAlerts.innerHTML;
@@ -587,6 +587,5 @@ function calcContingency() {
   }
 }
 // Redirected to unified exportTXT — kept for backward compat
-
 
 

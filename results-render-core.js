@@ -830,7 +830,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   const alertsContainer = document.getElementById('decoAlerts');
   if (alertsContainer) {
     const cnsAlert = result.totalCNS != null && result.totalCNS >= 80
-      ? `<div class="alert" style="margin-top:8px;background:#ffff00;border-color:#cccc00;color:#111;font-weight:700;"><span>☢</span><div><strong>HIGH CNS%.</strong> CNS oxygen load ${result.totalCNS.toFixed(0)}% exceeds 80%. Reduce deco gas ppO₂, switch depth, or bottom time.</div></div>`
+      ? `<div class="alert cns-warn"><span>☢</span><div><strong>HIGH CNS%.</strong> CNS oxygen load ${result.totalCNS.toFixed(0)}% exceeds 80%. Reduce deco gas ppO₂, switch depth, or bottom time.</div></div>`
       : '';
     renderDecoAlerts(alertsContainer, cnsAlert);
   }
@@ -1231,7 +1231,7 @@ function renderZhlScheduleResults(ctx) {
   if (decoAlertsEl && !_contingencyRunning) {
     const cnsPctNum = totalCNSfrac * 100;
     const cnsAlert = cnsPctNum >= 80
-      ? `<div class="alert" style="margin-top:8px;background:#ffff00;border-color:#cccc00;color:#111;font-weight:700;"><span>☢</span><div><strong>HIGH CNS%.</strong> CNS oxygen load ${cnsPctNum.toFixed(0)}% exceeds 80%. Reduce deco gas ppO₂, switch depth, or bottom time.</div></div>`
+      ? `<div class="alert cns-warn"><span>☢</span><div><strong>HIGH CNS%.</strong> CNS oxygen load ${cnsPctNum.toFixed(0)}% exceeds 80%. Reduce deco gas ppO₂, switch depth, or bottom time.</div></div>`
       : '';
     renderDecoAlerts(decoAlertsEl, cnsAlert);
   }

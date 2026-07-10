@@ -693,6 +693,14 @@ body.light-theme #resultsPanel .gas-pill.travel-gas { background: #f0f4ff; color
 #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn { background:#ff4433; border:1px solid var(--narcotic-banner-border, rgba(255,255,255,0.92)); color:#fff; font-weight:700; }
 #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn * { color:#fff !important; }
 #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn .tip-icon { color:#fff !important; opacity:0.85; }
+#resultsPanel .alert.cns-warn {
+  margin-top:8px;
+  background:#ffff00;
+  border:1px solid rgba(148,160,172,0.72);
+  color:#111;
+  font-weight:700;
+}
+#resultsPanel .alert.cns-warn * { color:#111; }
 #resultsPanel .deco-params { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); line-height: 1.6; }
 #resultsPanel .deco-params span { color: var(--text); font-weight: 600; }
 body.light-theme #resultsPanel #decoAlerts .alert.deco,
@@ -708,6 +716,9 @@ body.light-theme #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn {
   background: #ff4433;
   --narcotic-banner-border:#111;
   color: #111 !important;
+}
+body.light-theme #resultsPanel .alert.cns-warn {
+  border-color:#111;
 }
 body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--critical,
 body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--critical * { color:#E8590C !important; }
