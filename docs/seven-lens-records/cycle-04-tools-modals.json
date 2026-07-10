@@ -166,9 +166,9 @@
       "unit_id": "UI-MARKUP-TOOLS",
       "path": "ui/markup-tools.html",
       "start_line": 1,
-      "end_line": 273,
-      "line_count": 273,
-      "content_fingerprint": "ef86859ca3b8648f1d8078d76306b2605d91465c416f457b34345f25bc79f3b8",
+      "end_line": 274,
+      "line_count": 274,
+      "content_fingerprint": "359d57c7764d102007107be61d8560be40005d93184c9800e3e502dc7615a164",
       "review_session": "cursor/seven-lens-cycle-04-tools-audit",
       "verification_session": "cursor/seven-lens-cycle-04-tools-modals-verify",
       "lens_results": {

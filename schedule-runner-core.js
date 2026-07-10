@@ -1444,11 +1444,10 @@ function runPlanner() {
           <button class="btn-export" onclick="exportTXT('planner')" title="Download .txt"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg></button>
         </div>
       </div>
-      <div class="chip-row" style="display:flex;margin:0 0 12px;"><span class="chip chip-rec-profile">${dDisp} / ${bt} min</span></div>
       <div class="stats rec-profile-stats" style="grid-template-columns:repeat(5,1fr);margin-top:4px;margin-bottom:4px;">
         <div class="stat"><div class="stat-val u10">${isMetric ? rawD : Math.round(depthM * 3.28084)}<span class="unit">${isMetric ? 'm' : 'ft'}</span></div><div class="stat-lbl">Depth</div></div>
         <div class="stat"><div class="stat-val ${btOk?'g':'r'}">${bt}</div><div class="stat-lbl">BT Time</div></div>
-        <div class="stat"><div class="stat-val ${rem===0?'r':rem<10?'o':'g'}">${rem}</div><div class="stat-lbl">No NDL</div></div>
+        <div class="stat"><div class="stat-val ${rem===0?'r':rem<10?'o':'g'}">${rem}<span class="unit">min</span></div><div class="stat-lbl">No NDL</div></div>
         <div class="stat"><div class="stat-val" style="font-size:22px;"><span class="group-badge">${group}</span></div><div class="stat-lbl">Press. Group</div></div>
         ${gasStatHtml}
       </div>

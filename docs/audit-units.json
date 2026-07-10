@@ -1972,7 +1972,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "552d95ae3b01cf6ea57e91d2cbf6ac53bea5a29e731bcbea74cfdfc449549760",
+      "fingerprint": "8bda81d7db302ce7ed12e1c6953b500f9fedf5fb338d3534f672e6ad0f096be1",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2032,7 +2032,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "d13a30399a01020e0d3660b58109e8c0933ea05a3c96b58d47ad400d94fc4d1e",
+      "fingerprint": "a2cc99ad244f72d1cb11ea4f2e42b17b06ad7ec0633ffaccfce0655af3472ec5",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2054,7 +2054,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "9a4211343961e0b5a41c295f3f6589b0a42c9068291ef3e302d4f197524b29de",
+      "fingerprint": "a0925cf4a106100537118c6ba589db73be00ad8a39eee1e6d6f6cf1712c8bda1",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2069,7 +2069,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "2eb3aa38fbed2ce93ed195ce80cf3f6ff294718e216d05d996c93012885dbf27",
+      "fingerprint": "8ce295a74d7cfaa9c7a0c7afc32a0ae9a9230aeb6e2176067d8c76d23dc0e68b",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2159,7 +2159,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "ef86859ca3b8648f1d8078d76306b2605d91465c416f457b34345f25bc79f3b8",
+      "fingerprint": "359d57c7764d102007107be61d8560be40005d93184c9800e3e502dc7615a164",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2323,7 +2323,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-DECO-PHYSICS"
       },
-      "fingerprint": "9348b2fcccc2a243bde0a164d6b6f59c0005d2a290280ac980aba6c02ec84f78",
+      "fingerprint": "7c9a3ff885503150b80af4d74806aa99534e806b863047b81aeda278b5535d7c",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3011,7 +3011,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "72844570c65265066f35d91f8bada2145e9a149d56a5c568ea6d6c28900b0f1d",
+      "fingerprint": "e95d5f40013c8c3351838f3a9b342081ed275155ba30e6503ee670d8e5c9a4df",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -6064,12 +6064,12 @@
     },
     {
       "cycle": "R20",
-      "max_new_application_lines": 3269,
+      "max_new_application_lines": 3285,
       "application_units": [
         "APP-EXPORT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R20: Export text/PDF risk-first READ; current lines: 3269; sessions: 6",
+      "acceptance": "V4 R20: Export text/PDF risk-first READ; current lines: 3285; sessions: 6",
       "min_review_sessions": 6
     },
     {
@@ -6285,12 +6285,12 @@
     },
     {
       "cycle": "R41",
-      "max_new_application_lines": 1051,
+      "max_new_application_lines": 1052,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1051; sessions: 2",
+      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1052; sessions: 2",
       "min_review_sessions": 2
     },
     {

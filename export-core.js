@@ -660,6 +660,20 @@ function _pdfDrawSwitchRow(doc, y, layout, tr, cleanFn) {
   doc.setTextColor(0, 0, 0);
 }
 
+function getNarcoticGasWarningTarget() {
+  const data = buildDecoPlanHeaderData();
+  const isLoop = isCcrOnLoopProfile({ circuit: data.circuit, bailout: data.ccrBailout });
+  const role = isLoop ? 'Loop' : (data.circuit === 'CCR' || data.circuit === 'pSCR') ? 'Diluent' : 'Bottom';
+  const label = isLoop
+    ? loopMixLabelFor(data.bottomGasShort, { circuit: data.circuit, bailout: data.ccrBailout })
+    : data.bottomGasShort;
+  return {
+    label,
+    role,
+    displayName: `${label} ${role}`,
+  };
+}
+
 function buildDecoSummaryAlerts(hasDeco, endM, noDecoNote, hitSafetyGuard) {
   const decoAlertHtml = hasDeco
     ? '<div class="alert deco"><span>⚠</span><div><strong>DECOMPRESSION DIVE.</strong> Do not skip mandatory stops. Switch gas at optimal depth according to the deco schedule. Verify ppO₂ before each switch.</div></div>'
@@ -668,20 +682,22 @@ function buildDecoSummaryAlerts(hasDeco, endM, noDecoNote, hitSafetyGuard) {
     ? '<div class="alert dang"><span>⚠</span><div><strong>DECO CALCULATION LIMIT.</strong> Decompression obligation exceeds the calculation limit — plan may be incomplete.</div></div>'
     : '';
   const narcTip = '<span class="tip-icon" onclick="showTip(_narcoticTipTitle,_narcoticTipText)"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"/><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" fill="none"/><circle cx="5.5" cy="7.4" r="0.55" fill="currentColor"/></svg></span>';
+  const narcoticTarget = getNarcoticGasWarningTarget();
   const narcAlertHtml = endM > 40
-    ? `<div class="alert narcotic-warn"><span>⚠</span><div><strong>HIGH NARCOTIC DEPTH.</strong> END exceeds 40 m equivalent. Consider a less narcotic gas mix.${narcTip}</div></div>`
+    ? `<div class="alert narcotic-warn" data-narcotic-gas-label="${_escHtmlPre(narcoticTarget.label)}" data-narcotic-gas-role="${_escHtmlPre(narcoticTarget.role)}"><span>⚠</span><div><strong>HIGH NARCOTIC DEPTH.</strong> ${_escHtmlPre(narcoticTarget.displayName)} END exceeds 40 m equivalent. Consider a less narcotic gas mix.${narcTip}</div></div>`
     : endM > 30
-      ? `<div class="alert narcotic-warn"><span>⚠</span><div><strong>NARCOTIC DEPTH WARNING.</strong> END exceeds 30 m equivalent. Consider a less narcotic gas mix.${narcTip}</div></div>`
+      ? `<div class="alert narcotic-warn" data-narcotic-gas-label="${_escHtmlPre(narcoticTarget.label)}" data-narcotic-gas-role="${_escHtmlPre(narcoticTarget.role)}"><span>⚠</span><div><strong>NARCOTIC DEPTH WARNING.</strong> ${_escHtmlPre(narcoticTarget.displayName)} END exceeds 30 m equivalent. Consider a less narcotic gas mix.${narcTip}</div></div>`
       : '';
-  return { decoAlertHtml, narcAlertHtml, safetyGuardHtml };
+  return { decoAlertHtml, narcAlertHtml, safetyGuardHtml, narcoticTarget: narcAlertHtml ? narcoticTarget : null };
 }
 
 function updateDecoSummaryHtml(hasDeco, endM, noDecoNote, hitSafetyGuard) {
   const el = document.getElementById('decoSummary');
   if (!el) return;
-  const { decoAlertHtml, narcAlertHtml, safetyGuardHtml } = buildDecoSummaryAlerts(hasDeco, endM, noDecoNote, hitSafetyGuard);
+  const { decoAlertHtml, narcAlertHtml, safetyGuardHtml, narcoticTarget } = buildDecoSummaryAlerts(hasDeco, endM, noDecoNote, hitSafetyGuard);
   _pendingDecoAlerts = (decoAlertHtml || '') + (safetyGuardHtml || '');
   _pendingDecoAlertsNarcotic = narcAlertHtml || '';
+  window._lastNarcoticGasTarget = narcoticTarget;
   el.innerHTML = renderDecoPlanHeaderHtml(buildDecoPlanHeaderData(), { hasDeco });
   scheduleDecoScheduleStackSync();
 }

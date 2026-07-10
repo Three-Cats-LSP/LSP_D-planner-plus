@@ -96,6 +96,9 @@ https://deco.hhssoftware.com/decompression.org/Maiken/vpm_programs.html
 Open source  Subsurface planner
 https://github.com/subsurface/subsurface
 
+Recreational NDL, safety stops, decompression stops, emergency decompression, and nitrox overview
+https://bluetrend.media/en/you-have-to-know-no-decompression-dive/
+
 
 --- DiveKit (MultiDeco cross-validation, June 2026) ---
 

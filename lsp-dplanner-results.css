@@ -589,6 +589,7 @@ body.light-theme #resultsPanel .chip-yellow { background: var(--yellow-dim) !imp
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-title { display:flex; align-items:baseline; gap:7px; min-width:0; flex-wrap:wrap; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-mix { font-family:var(--font-mono); font-size:13px; font-weight:800; color:var(--gas-status); letter-spacing:0.02em; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-role { font-family:var(--font-mono); font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; }
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-role--narcotic { color:#ff4433 !important; font-weight:900; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-remaining { font-family:var(--font-mono); font-size:13px; font-weight:800; color:#fff; text-align:right; white-space:nowrap; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-remaining span { color:#fff; font-weight:800; font-size:13px; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-measure,
@@ -857,9 +858,9 @@ body.light-theme #gasWarningBanner.gas-warning-banner { background: #fff0f0; bor
 
 .tools-page-wrap { display: none; flex-direction: column; gap: var(--space-4); }
 .tools-page-wrap.visible { display: flex; }
-.settings-page-wrap { display: none; flex-direction: column; gap: var(--space-4); max-width: 980px; }
+.settings-page-wrap { display: none; flex-direction: column; gap: var(--space-4); width: 100%; max-width: none; }
 .settings-page-wrap.visible { display: flex; }
-.settings-panel-body { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-4) var(--space-5); }
+.settings-panel-body { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: center; gap: var(--space-4) var(--space-5); }
 .settings-field-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0; }
 .settings-version-label { order: 3; flex: 0 0 100%; text-align: center; }
 .settings-app-links { order: 2; flex: 0 0 100%; }

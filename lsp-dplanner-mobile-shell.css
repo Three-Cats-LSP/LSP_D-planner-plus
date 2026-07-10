@@ -602,23 +602,27 @@
   }
 
   .settings-app-link-list {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 7px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
   }
 
   .settings-app-link-list a {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    min-height: 38px;
-    padding: 8px 10px;
-    border: 1px solid var(--border-hi);
-    border-radius: 8px;
-    background: var(--surface);
-    color: var(--text);
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    min-height: 40px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--muted);
     text-decoration: none;
-    font-family: var(--font-mono);
-    font-size: 11px;
   }
 
   .settings-app-link-list .settings-donate-link {
