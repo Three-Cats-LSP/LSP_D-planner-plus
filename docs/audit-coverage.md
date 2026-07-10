@@ -49,7 +49,7 @@
 | UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 422 | P2 | IN_PROGRESS | - |
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 338 | P2 | IN_PROGRESS | - |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 548 | P2 | IN_PROGRESS | - |
-| UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 1036 | P1 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
+| UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 1037 | P1 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
 | UI-CSS-MOBILE-SHELL | web_css | `lsp-dplanner-mobile-shell.css:1` | 689 | P2 | IN_PROGRESS | - |
 | UI-MARKUP-HEADER | web_markup | `ui/markup-header.html:1` | 785 | P2 | IN_PROGRESS | - |
 | UI-MARKUP-REC-PLANNER | web_markup | `ui/markup-rec-planner.html:1` | 73 | P1 | IN_PROGRESS | - |
@@ -64,21 +64,21 @@
 | UI-UNIT-SWITCHING | web_runtime | `schedule-runner-core.js:414` | 372 | P1 | IN_PROGRESS | - |
 | UI-ZHL-DELEGATES | web_runtime | `schedule-runner-core.js:786` | 145 | P0 | IN_PROGRESS | - |
 | UI-CCR-DELEGATES | web_runtime | `schedule-runner-core.js:931` | 370 | P0 | IN_PROGRESS | - |
-| UI-DECO-PHYSICS | web_runtime | `schedule-runner-core.js:1301` | 259 | P0 | IN_PROGRESS | - |
-| UI-SCHEDULE-INPUTS | web_runtime | `schedule-runner-core.js:1560` | 373 | P0 | IN_PROGRESS | - |
-| UI-SETTINGS-CONTROLS | web_runtime | `schedule-runner-core.js:1933` | 428 | P1 | IN_PROGRESS | - |
-| UI-VPM-RUNNER | web_runtime | `schedule-runner-core.js:2361` | 491 | P0 | IN_PROGRESS | REG-131, REG-132, REG-133, REG-134, REG-136, REG-138 |
-| UI-ZHL-RUNNER-SETUP | web_runtime | `schedule-runner-core.js:2852` | 144 | P0 | IN_PROGRESS | - |
-| UI-ZHL-RUNNER-ENGINE | web_runtime | `schedule-runner-core.js:2996` | 333 | P0 | IN_PROGRESS | REG-132, REG-134, REG-137 |
+| UI-DECO-PHYSICS | web_runtime | `schedule-runner-core.js:1301` | 264 | P0 | IN_PROGRESS | - |
+| UI-SCHEDULE-INPUTS | web_runtime | `schedule-runner-core.js:1565` | 373 | P0 | IN_PROGRESS | - |
+| UI-SETTINGS-CONTROLS | web_runtime | `schedule-runner-core.js:1938` | 428 | P1 | IN_PROGRESS | - |
+| UI-VPM-RUNNER | web_runtime | `schedule-runner-core.js:2366` | 491 | P0 | IN_PROGRESS | REG-131, REG-132, REG-133, REG-134, REG-136, REG-138 |
+| UI-ZHL-RUNNER-SETUP | web_runtime | `schedule-runner-core.js:2857` | 144 | P0 | IN_PROGRESS | - |
+| UI-ZHL-RUNNER-ENGINE | web_runtime | `schedule-runner-core.js:3001` | 325 | P0 | IN_PROGRESS | REG-132, REG-134, REG-137 |
 | UI-VPM-RENDER | ui_core | `results-render-core.js:331` | 504 | P1 | IN_PROGRESS | - |
 | UI-ZHL-RESULTS | ui_core | `results-render-core.js:835` | 464 | P1 | IN_PROGRESS | - |
 | UI-GAS-INPUTS | ui_core | `gas-cards-core.js:15` | 223 | P1 | IN_PROGRESS | - |
 | UI-GAS-CARDS | ui_core | `gas-cards-core.js:238` | 284 | P1 | IN_PROGRESS | - |
 | UI-ZHL-HEADLESS-HELPERS | web_runtime | `zhl-headless-adapter.js:23` | 194 | P1 | VERIFIED | EXT-05, COV-01 |
 | UI-ZHL-HEADLESS-ENGINE | web_runtime | `zhl-headless-adapter.js:217` | 91 | P0 | VERIFIED | EXT-05, COV-01 |
-| UI-PLOT-RENDER | ui_core | `plot-core.js:109` | 431 | P2 | IN_PROGRESS | - |
-| UI-PLOT-WAYPOINTS | ui_core | `plot-core.js:540` | 201 | P2 | IN_PROGRESS | REG-138 |
-| UI-TOOLS-PROFILE | ui_core | `plot-core.js:741` | 262 | P2 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
+| UI-PLOT-RENDER | ui_core | `plot-core.js:139` | 431 | P2 | IN_PROGRESS | - |
+| UI-PLOT-WAYPOINTS | ui_core | `plot-core.js:570` | 201 | P2 | IN_PROGRESS | REG-138 |
+| UI-TOOLS-PROFILE | ui_core | `plot-core.js:771` | 262 | P2 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
 | UI-TOOLS-GF | web_runtime | `gf-curve-core.js:1` | 317 | P2 | IN_PROGRESS | - |
 | ENG-ZHL-PHYSICS | engine | `zhl-physics-core.js:1` | 189 | P1 | VERIFIED | REG-01, REG-22, REG-23 |
 | ENG-ZHL-GAS | engine | `zhl-gas-core.js:1` | 184 | P1 | VERIFIED | REG-10, REG-11, REG-12, REG-13, REG-14 |
@@ -215,7 +215,7 @@
 | TOOL-AUDIT-V2-AUDIT-LEGACY-MIGRATION-JSON | tooling | `docs/audit-legacy-migration.json:1` | 37671 | P0 | IN_PROGRESS | - |
 | TOOL-AUDIT-V2-TEST_SYSTEM-PY | tooling | `tools/audit/test_system.py:1` | 206 | P0 | IN_PROGRESS | - |
 | UI-PLANNER-SHELL | ui_shell | `planner-shell.js:1` | 397 | P1 | IN_PROGRESS | REG-96, REG-99 |
-| UI-RESULTS-PANEL | ui_shell | `results-panel.js:1` | 403 | P1 | IN_PROGRESS | COV-01, PARITY-01, EXT-02, REG-01, REG-95, REG-97, REG-98 |
+| UI-RESULTS-PANEL | ui_shell | `results-panel.js:1` | 408 | P1 | IN_PROGRESS | COV-01, PARITY-01, EXT-02, REG-01, REG-95, REG-97, REG-98 |
 | TOOL-V3-ASSEMBLE_UI_HTML-PY | tooling | `tools/assemble_ui_html.py:1` | 181 | P2 | IN_PROGRESS | - |
 | TOOL-V3-EXTRACT_UI_CSS-PY | tooling | `tools/extract_ui_css.py:1` | 139 | P2 | IN_PROGRESS | - |
 | TOOL-V3-MIGRATE_V3-PY | tooling | `tools/audit/migrate_v3.py:1` | 410 | P2 | IN_PROGRESS | - |

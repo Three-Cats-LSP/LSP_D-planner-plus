@@ -859,11 +859,12 @@ body.light-theme #gasWarningBanner.gas-warning-banner { background: #fff0f0; bor
 .app-shell-footer-links { display: none !important; }
 .settings-app-links { margin-top: 0; padding-top: 12px; border-top: 1px solid var(--border); }
 .settings-app-links-title { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-.settings-app-link-list { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 7px; }
-.settings-app-link-list a { display: flex; align-items: center; min-height: 38px; padding: 8px 10px; border: 1px solid var(--border-hi); border-radius: 8px; background: var(--surface); color: var(--text); text-decoration: none; font-family: var(--font-mono); font-size: 11px; }
-.settings-app-link-icon { width: 22px; height: 22px; margin-right: 8px; border-radius: 6px; border: 1px solid var(--border-hi); object-fit: contain; flex-shrink: 0; }
+.settings-app-link-list { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 7px; }
+.settings-app-link-list a { display: flex; align-items: center; gap: 8px; min-height: 38px; padding: 8px 10px; border: 1px solid var(--border-hi); border-radius: 8px; background: var(--surface); color: var(--text); text-decoration: none; font-family: var(--font-mono); font-size: 11px; }
+.settings-app-link-icon { width: 22px; height: 22px; border-radius: 6px; border: 1px solid var(--border-hi); object-fit: contain; flex-shrink: 0; }
+.settings-app-link-glyph { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; flex: 0 0 22px; border-radius: 6px; border: 1px solid var(--border-hi); background: var(--surface-2); color: var(--accent); font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0; }
 .settings-app-link-list a:hover { color: var(--accent); border-color: var(--accent); }
-.settings-app-link-list .settings-donate-link { border-color: rgba(0, 112, 186, 0.45); color: #0070ba; }
+.settings-app-link-list .settings-donate-link { grid-column: 1 / -1; justify-content: center; border-color: rgba(0, 112, 186, 0.45); color: #0070ba; }
 .vpm-mode-row { display: none; align-items: center; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; padding: var(--space-2) 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .vpm-mode-row.visible { display: flex; }
 

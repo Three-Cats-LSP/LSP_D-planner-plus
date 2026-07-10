@@ -551,7 +551,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
   if (_fdgcVPM) _fdgcVPM.style.display = 'block';
   _syncGraphsSectionHeads?.();
   const vpmScheduleGen = window._decoScheduleSeq;
-  setTimeout(() => { if (!isStaleDecoScheduleGen(vpmScheduleGen)) { drawDecoProfileFull(); } }, 100);
+  scheduleDecoProfileFullDraw?.(() => isStaleDecoScheduleGen(vpmScheduleGen));
 
   // Gas Consumption — compute from rendered table rows
   const gasConsVPM = {};

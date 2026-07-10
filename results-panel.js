@@ -155,7 +155,7 @@ function _onPlanResultsReady() {
     if (graphCard) { graphCard.style.display = 'block'; graphCard.classList.add('card-open'); }
     const decoRes = document.getElementById('decoResult');
     if (decoRes) decoRes.style.display = 'block';
-    setTimeout(() => { drawDecoProfileFull?.(); }, 80);
+    scheduleDecoProfileFullDraw?.();
   }
   if (typeof isMobileShell === 'function' && isMobileShell() && typeof setMobileTab === 'function') {
     setMobileTab('results');
@@ -362,6 +362,11 @@ function _mountRecAvgDepthPane() {
     target.appendChild(source.firstElementChild);
   }
 }
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', _mountRecAvgDepthPane, { once: true });
+} else {
+  _mountRecAvgDepthPane();
+}
 function switchResultTab(name, btn) {
   const isRec = plannerAlgo === 'rec';
   const panes = isRec
@@ -385,7 +390,7 @@ function switchResultTab(name, btn) {
       calcAvgDepth?.();
     }, 50);
   }
-  if (name === 'profile') setTimeout(() => { drawDecoProfileFull?.(); }, 50);
+  if (name === 'profile') scheduleDecoProfileFullDraw?.();
   if (name === 'tissue') {
     const card = document.getElementById('tissueLoadCard');
     const inner = document.getElementById('tissueLoadInnerCard');
@@ -398,6 +403,6 @@ function switchResultTab(name, btn) {
       if (tissues?.length) updateTissueViz?.(tissues, mGF?.high ?? 85);
       renderTissueLoadChart?.();
     }
-    setTimeout(() => { _syncGfCurveCardVisibility?.(); drawGFCurve?.(); attachGFCurveInteraction?.(); }, 50);
+    setTimeout(() => { _syncGfCurveCardVisibility?.(); scheduleGfCurveDraw?.(); }, 50);
   }
 }

@@ -53,9 +53,9 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R04 | ENG-VPM | 2106 | - | V4 R04: VPM canonical core risk-first READ; current lines: 2106; sessions: 4 |
 | R05 | ENG-VPM-REFERENCE | 2574 | - | V4 R05: VPM reference implementation risk-first READ; current lines: 2574; sessions: 5 |
 | R06 | ENG-RDP | 101 | - | V4 R06: PADI RDP engine risk-first READ; current lines: 101; sessions: 1 |
-| R07 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 632 | ENG-ZHL-CCR | V4 R07: Deco physics and schedule inputs risk-first READ; current lines: 632; sessions: 2 |
+| R07 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 637 | ENG-ZHL-CCR | V4 R07: Deco physics and schedule inputs risk-first READ; current lines: 637; sessions: 2 |
 | R08 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 515 | ENG-ZHL-SCHEDULE | V4 R08: ZHL/CCR delegate thin layer risk-first READ; current lines: 515; sessions: 1 |
-| R09 | UI-ZHL-RUNNER-SETUP, UI-ZHL-RUNNER-ENGINE | 477 | ENG-ZHL-SCHEDULE | V4 R09: ZHL runner setup and engine invocation risk-first READ; current lines: 478; sessions: 1 |
+| R09 | UI-ZHL-RUNNER-SETUP, UI-ZHL-RUNNER-ENGINE | 469 | ENG-ZHL-SCHEDULE | V4 R09: ZHL runner setup and engine invocation risk-first READ; current lines: 478; sessions: 1 |
 | R10 | UI-ZHL-HEADLESS-HELPERS, UI-ZHL-HEADLESS-ENGINE | 285 | - | V4 R10: Headless ZHL path risk-first READ; current lines: 588; sessions: 1 |
 | R11 | UI-VPM-RUNNER | 491 | ENG-VPM | V4 R11: VPM runner risk-first READ; current lines: 491; sessions: 1 |
 | R12 | APP-ZHL-WORKER, APP-ZHL-WORKER-BRIDGE | 159 | - | V4 R12: ZHL schedule worker and bridge risk-first READ; current lines: 159; sessions: 1 |
@@ -87,8 +87,8 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R38 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 604 | - | V4 R38: Tools and modal markup risk-first READ; current lines: 612; sessions: 2 |
 | R39 | UI-CSS-FOUNDATION, UI-CSS-MODES | 760 | - | V4 R39: Foundation and mode CSS risk-first READ; current lines: 760; sessions: 2 |
 | R40 | UI-CSS-CONTROLS | 548 | - | V4 R40: Controls CSS risk-first READ; current lines: 548; sessions: 1 |
-| R41 | UI-CSS-RESULTS | 1036 | - | V4 R41: Results CSS risk-first design-lock READ; current lines: 1036; sessions: 2 |
-| R42 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 800 | - | V4 R42: Planner shell and results panel design-lock READ; current lines: 800; sessions: 2 |
+| R41 | UI-CSS-RESULTS | 1037 | - | V4 R41: Results CSS risk-first design-lock READ; current lines: 1037; sessions: 2 |
+| R42 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 805 | - | V4 R42: Planner shell and results panel design-lock READ; current lines: 805; sessions: 2 |
 
 ## Definition of Done
 

@@ -1972,7 +1972,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "51a6e35f00703b13096af49f970d03514abbab8d7f271fbf3c06fd46acecebfa",
+      "fingerprint": "520a74ea076297a7afc5fe4086d6bcd4b9f396f06f07f1dc8ef190b4e00de7b4",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2032,7 +2032,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "64c727da64d98da6a0c1e38d043f754eec31dc575a5c9105cda13ad0723d2653",
+      "fingerprint": "5049017bff643024547d490ef0cdc5802db6c553c51d3ab27a241eff30e392fb",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2069,7 +2069,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a7bd27e163728d6e308fe3e8115711085daf48b54047eebacf8b87554ed4dfd4",
+      "fingerprint": "59d1ff6c7f49fa6b613f46ca8b3ea0fb4f5fa29de9cd5638c2f8e15d60e41fde",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2323,7 +2323,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-DECO-PHYSICS"
       },
-      "fingerprint": "30451c528fa2cb72ac856653f97b1c8cf8bdaf5b1ab2efa8ba910fc55435a77b",
+      "fingerprint": "49fce8e23dcbe1ba16f19f864b0439a9b8f23c6b3680495f07f761daa946fb5d",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2398,7 +2398,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RENDER"
       },
-      "fingerprint": "aa8a93d4ca74464681dde305e9b75444bf935ef5aa1ddc5690a8cb8de9eb5f5e",
+      "fingerprint": "829d8a4361570ea93c4a16ea4f5ff913221d9075f1b9660df3eed7b58c8ef501",
       "last_read_fingerprint": null,
       "audit_issue": 147,
       "evidence": [],
@@ -2466,7 +2466,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RUNNER-ENGINE"
       },
-      "fingerprint": "33240b51101f36e45e65b1ae65445b1b5f4cd4f4972ced870e87a47141386bd6",
+      "fingerprint": "3d0303536480299fc9ab8a57d7822ddd61bb0600e7902d234d294d3f223afd0a",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -3174,7 +3174,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "e4ee511afee101a245ad7f2f58931e47d58811b2d8caaabcce237d08e009cdcd",
+      "fingerprint": "f64a98851192c472159ea61eae380113e09701446342d0732dfb90c133a5748f",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3231,7 +3231,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "6f534865e9e5e296c73314283025d73572c9f09c230133e2ad7195892bd19bad",
+      "fingerprint": "aff0f54104c450fd75aaef20248b132d1da824efe5cbd9b06176ca636b7dfcdd",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3332,7 +3332,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f1235d3c7dbfefb334333429feabd4be99e6067b366930a3a47f7f2616df8c5c",
+      "fingerprint": "021dbb442175bcaab9f89434e222ce0649d0ae515bad13a5cb9d386a411016d7",
       "last_read_fingerprint": null,
       "audit_issue": 168,
       "evidence": [],
@@ -5346,7 +5346,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "93388a897065e45e83ada04425f0790c39b5db632fb8b565e4ac56940e231aad",
+      "fingerprint": "12469856a9212c284d91c06f618a95ceab45772866797a48cfcff8c057fcee9c",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5921,7 +5921,7 @@
     },
     {
       "cycle": "R07",
-      "max_new_application_lines": 632,
+      "max_new_application_lines": 637,
       "application_units": [
         "UI-DECO-PHYSICS",
         "UI-SCHEDULE-INPUTS"
@@ -5929,7 +5929,7 @@
       "engine_reverification": [
         "ENG-ZHL-CCR"
       ],
-      "acceptance": "V4 R07: Deco physics and schedule inputs risk-first READ; current lines: 632; sessions: 2",
+      "acceptance": "V4 R07: Deco physics and schedule inputs risk-first READ; current lines: 637; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6285,23 +6285,23 @@
     },
     {
       "cycle": "R41",
-      "max_new_application_lines": 1036,
+      "max_new_application_lines": 1037,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1036; sessions: 2",
+      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1037; sessions: 2",
       "min_review_sessions": 2
     },
     {
       "cycle": "R42",
-      "max_new_application_lines": 800,
+      "max_new_application_lines": 805,
       "application_units": [
         "UI-PLANNER-SHELL",
         "UI-RESULTS-PANEL"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R42: Planner shell and results panel design-lock READ; current lines: 800; sessions: 2",
+      "acceptance": "V4 R42: Planner shell and results panel design-lock READ; current lines: 805; sessions: 2",
       "min_review_sessions": 2
     }
   ],

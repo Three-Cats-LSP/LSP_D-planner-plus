@@ -8,7 +8,7 @@ It runs in the browser, installs as a PWA, works offline after first load, and i
 - Android APK: https://threecats-lsp.com/d-planner-plus/download.html
 - Official release: https://github.com/Three-Cats-LSP/LSP_D-planner-plus/releases/latest
 - Toolkit hub: https://threecats-lsp.com
-- Current version: 3.0.1
+- Current version: 3.0.2
 - License: MIT
 
 ## Safety Notice
@@ -27,7 +27,7 @@ Always verify plans independently, analyze gases, confirm MOD and ppO2 limits, c
 
 ## What Changed Since 2.5
 
-Version 3.0.1 is the first post-2.5 milestone release after a major UI, engine, audit, and release-hardening overhaul.
+Version 3.0.2 is the first post-2.5 milestone release after a major UI, engine, audit, and release-hardening overhaul.
 
 Highlights:
 
@@ -41,7 +41,7 @@ Highlights:
 - Main dive graph moved into the Dive Profile flow; Graphs tab removed; Tissues tab simplified.
 - Better mobile navigation and compact planner cards.
 - Stronger MOD, gas-label, schedule-table, graph, contingency, export, and browser visual contracts.
-- Release gates, Android APK build, offline ZIP build, and GitHub Pages deploy are green for 3.0.1.
+- Release gates, Android APK build, offline ZIP build, and GitHub Pages deploy are green for 3.0.2.
 
 ## Algorithms And Modes
 
@@ -245,7 +245,7 @@ npm run cap:open
 
 ## Test And Audit Gates
 
-The 3.0.1 release uses a simplified risk-first audit workflow. Older Seven-Lens cycle records are preserved as historical evidence, but active development uses the newer V4 risk-first records and focused regression contracts.
+The 3.0.2 release uses a simplified risk-first audit workflow. Older Seven-Lens cycle records are preserved as historical evidence, but active development uses the newer V4 risk-first records and focused regression contracts.
 
 Primary local gates:
 

@@ -1384,12 +1384,18 @@ function runPlanner() {
 
   let html = '';
   let summarySurfGF = '—';
-  let resultHintHtml = '';
+  const recFO2 = Math.max(0, 1 - fN2 - fHe);
+  const recGasLabel = mix === 'ean32' ? '32/00' : mix === 'ean36' ? '36/00' : 'Air';
+  const recModM = nitroxMOD(recFO2, modPpo2);
+  const recModFt = recModM !== null ? Math.floor(recModM * 3.28084) : null;
+  let resultHintHtml = recModM !== null
+    ? `<div class="alert info result-inline-hint"><span>💡</span><div>MOD for ${recGasLabel} @ ${modPpo2.toFixed(1)} bar ppO₂: <strong>${isMetric ? recModM+' m' : recModFt+' ft'}</strong></div></div>`
+    : '';
 
   if (algo === 'padi') {
     const fO2 = PadiEngine.recMixFO2(mix);
     const isNitrox = mix !== 'air';
-    const gasLabel = mix === 'ean32' ? '32/00' : mix === 'ean36' ? '36/00' : 'Air';
+    const gasLabel = recGasLabel;
     const pO2  = parseFloat((depthBar(depthM) * fO2).toFixed(2));
     const ndl = padiNDL(depthM, mix);
     const rem = ndl > 0 ? Math.max(0, ndl - bt) : 0;
@@ -1397,7 +1403,7 @@ function runPlanner() {
     const pct = ndl > 0 ? Math.min(100, Math.round((bt / ndl) * 100)) : 100;
     summarySurfGF = `${pct}%`;
     const bc  = pct>=100?'var(--red)':pct>=80?'var(--orange)':pct>=65?'var(--yellow)':'var(--green)';
-    const modM = nitroxMOD(fO2, modPpo2);
+    const modM = recModM;
     const modFt = modM !== null ? Math.floor(modM * 3.28084) : null;
     const beyondMOD = depthM > modM;
     const ppO2Ok = pO2 <= modPpo2;
@@ -1428,7 +1434,6 @@ function runPlanner() {
     }
 
     const gasStatHtml = `<div class="stat"><div class="stat-val ${ppO2Ok?'g':'r'}">${pO2.toFixed(2)}</div><div class="stat-lbl">ppO₂ (bar)</div></div>`;
-    resultHintHtml = `<div class="alert info result-inline-hint"><span>💡</span><div>MOD for ${gasLabel} @ ${modPpo2.toFixed(1)} bar ppO₂: <strong>${isMetric ? modM+' m' : modFt+' ft'}</strong></div></div>`;
     const tableRef = isNitrox ? `PADI Nitrox ${gasLabel}` : 'PADI Air';
 
     html = `<div class="card">
@@ -1512,7 +1517,7 @@ function runPlanner() {
 
   document.getElementById('plannerResult').innerHTML = html;
   document.getElementById('plannerResult').style.display = 'block';
-  setTimeout(drawPlannerProfile, 30);
+  schedulePlannerProfileDraw?.();
 
   const stopDisp = isMetric ? `${stopDepthM}m` : `${stopFt}ft`;
   _renderResultSummaryStrip({
@@ -3164,16 +3169,8 @@ function runDecoSchedule() {
     const _fdgc = document.getElementById('fullDiveGraphCard'); if (_fdgc) _fdgc.style.display = 'block';
     buildContingencyButtons();
     { const _cr = document.getElementById('contingencyResult'); if (_cr) _cr.style.display = 'none'; }
-    setTimeout(() => {
-      if (isStaleDecoScheduleGen(scheduleGen)) return;
-      setTimeout(() => { if (!isStaleDecoScheduleGen(scheduleGen)) { drawDecoProfileFull(); } }, 50);
-    }, 100);
-    setTimeout(() => {
-      if (!isStaleDecoScheduleGen(scheduleGen)) {
-        drawGFCurve();
-        attachGFCurveInteraction();
-      }
-    }, 250);
+    scheduleDecoProfileFullDraw?.(() => isStaleDecoScheduleGen(scheduleGen));
+    scheduleGfCurveDraw?.(() => isStaleDecoScheduleGen(scheduleGen));
     // Surface Interval panel (collapsed) — pre-fill Dive 1 from this dive
     renderSurfIntPanel('tecSurfIntContainer', 'tecSi', depthM, bt);
     if (!_contingencyRunning) renderTissueLoadChart();

@@ -27,6 +27,36 @@ function setupHiDPI(canvas) {
 // ── Graph zoom/pan state ─────────────────────────────────────────────────
 const _graphZoom = {}; // canvasId → { tMin, tMax, dMin, dMax }
 
+const _profileDrawQueue = {};
+
+function scheduleProfileDraw(key, drawFn, isStale) {
+  if (typeof drawFn !== 'function') return;
+  if (_profileDrawQueue[key]) cancelAnimationFrame(_profileDrawQueue[key]);
+  _profileDrawQueue[key] = requestAnimationFrame(() => {
+    _profileDrawQueue[key] = requestAnimationFrame(() => {
+      delete _profileDrawQueue[key];
+      if (typeof isStale === 'function' && isStale()) return;
+      drawFn();
+    });
+  });
+}
+
+function schedulePlannerProfileDraw() {
+  scheduleProfileDraw('planner-profile', () => drawPlannerProfile());
+}
+
+function scheduleDecoProfileFullDraw(isStale) {
+  scheduleProfileDraw('deco-profile-full', () => drawDecoProfileFull(), isStale);
+}
+
+function scheduleGfCurveDraw(isStale) {
+  scheduleProfileDraw('gf-curve', () => {
+    if (typeof isStale === 'function' && isStale()) return;
+    drawGFCurve?.();
+    attachGFCurveInteraction?.();
+  });
+}
+
 function _graphZoomReset(canvasId) {
   delete _graphZoom[canvasId];
 }
