@@ -1384,6 +1384,7 @@ function runPlanner() {
 
   let html = '';
   let summarySurfGF = '—';
+  let resultHintHtml = '';
 
   if (algo === 'padi') {
     const fO2 = PadiEngine.recMixFO2(mix);
@@ -1427,7 +1428,7 @@ function runPlanner() {
     }
 
     const gasStatHtml = `<div class="stat"><div class="stat-val ${ppO2Ok?'g':'r'}">${pO2.toFixed(2)}</div><div class="stat-lbl">ppO₂ (bar)</div></div>`;
-    const modInfoHtml = `<div class="alert info result-inline-hint"><span>💡</span><div>MOD for ${gasLabel} @ ${modPpo2.toFixed(1)} bar ppO₂: <strong>${isMetric ? modM+' m' : modFt+' ft'}</strong></div></div>`;
+    resultHintHtml = `<div class="alert info result-inline-hint"><span>💡</span><div>MOD for ${gasLabel} @ ${modPpo2.toFixed(1)} bar ppO₂: <strong>${isMetric ? modM+' m' : modFt+' ft'}</strong></div></div>`;
     const tableRef = isNitrox ? `PADI Nitrox ${gasLabel}` : 'PADI Air';
 
     html = `<div class="card">
@@ -1520,7 +1521,7 @@ function runPlanner() {
     decoTime: '0',
     cns: '—',
     firstStop: stopDisp,
-    hintHtml: algo === 'padi' ? modInfoHtml : '',
+    hintHtml: resultHintHtml,
     profileChip: `${dDisp} / ${bt} min`,
     surfaceGF: summarySurfGF,
     otu: '—',

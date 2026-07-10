@@ -1972,7 +1972,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "cf4c21df7a734b723acced1e0e0ce1d1b74dade8de4708c0f80984fd01c5d0fe",
+      "fingerprint": "51a6e35f00703b13096af49f970d03514abbab8d7f271fbf3c06fd46acecebfa",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2054,7 +2054,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "291436fcd78658bb17a84cd1e916ef22cef45552cb67348deb758dac7d456500",
+      "fingerprint": "25f875e541ef14c2406a06b890610f72f2bb7909582b7b193d3e628c88b83b9d",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2323,7 +2323,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-DECO-PHYSICS"
       },
-      "fingerprint": "6ffdf140136eb1f6eafc3a77a00422a7f0e848dfd0bac1c7ae5ad14fd94d6421",
+      "fingerprint": "30451c528fa2cb72ac856653f97b1c8cf8bdaf5b1ab2efa8ba910fc55435a77b",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5346,7 +5346,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "fa5a016295ac8bd74b33e219d168cb9287c5dd6d16ff95e9c93e90d760a5c188",
+      "fingerprint": "93388a897065e45e83ada04425f0790c39b5db632fb8b565e4ac56940e231aad",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5838,7 +5838,7 @@
         "REG-137",
         "REG-138"
       ],
-      "fingerprint": "c1967665ba61b4fc07a0fe3872d57620309ce0a85a38d3ced8873024ac71c4b2",
+      "fingerprint": "b4ddaa1496e4e3446d9a5835424ac3a7943e0f106a885046ab01a1da8d1c85e9",
       "last_read_fingerprint": null
     },
     {
@@ -5921,7 +5921,7 @@
     },
     {
       "cycle": "R07",
-      "max_new_application_lines": 631,
+      "max_new_application_lines": 632,
       "application_units": [
         "UI-DECO-PHYSICS",
         "UI-SCHEDULE-INPUTS"
@@ -5929,7 +5929,7 @@
       "engine_reverification": [
         "ENG-ZHL-CCR"
       ],
-      "acceptance": "V4 R07: Deco physics and schedule inputs risk-first READ; current lines: 631; sessions: 2",
+      "acceptance": "V4 R07: Deco physics and schedule inputs risk-first READ; current lines: 632; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6295,13 +6295,13 @@
     },
     {
       "cycle": "R42",
-      "max_new_application_lines": 785,
+      "max_new_application_lines": 800,
       "application_units": [
         "UI-PLANNER-SHELL",
         "UI-RESULTS-PANEL"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R42: Planner shell and results panel design-lock READ; current lines: 785; sessions: 2",
+      "acceptance": "V4 R42: Planner shell and results panel design-lock READ; current lines: 800; sessions: 2",
       "min_review_sessions": 2
     }
   ],

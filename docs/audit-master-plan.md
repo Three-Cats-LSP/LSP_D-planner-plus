@@ -53,7 +53,7 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R04 | ENG-VPM | 2106 | - | V4 R04: VPM canonical core risk-first READ; current lines: 2106; sessions: 4 |
 | R05 | ENG-VPM-REFERENCE | 2574 | - | V4 R05: VPM reference implementation risk-first READ; current lines: 2574; sessions: 5 |
 | R06 | ENG-RDP | 101 | - | V4 R06: PADI RDP engine risk-first READ; current lines: 101; sessions: 1 |
-| R07 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 631 | ENG-ZHL-CCR | V4 R07: Deco physics and schedule inputs risk-first READ; current lines: 631; sessions: 2 |
+| R07 | UI-DECO-PHYSICS, UI-SCHEDULE-INPUTS | 632 | ENG-ZHL-CCR | V4 R07: Deco physics and schedule inputs risk-first READ; current lines: 632; sessions: 2 |
 | R08 | UI-ZHL-DELEGATES, UI-CCR-DELEGATES | 515 | ENG-ZHL-SCHEDULE | V4 R08: ZHL/CCR delegate thin layer risk-first READ; current lines: 515; sessions: 1 |
 | R09 | UI-ZHL-RUNNER-SETUP, UI-ZHL-RUNNER-ENGINE | 477 | ENG-ZHL-SCHEDULE | V4 R09: ZHL runner setup and engine invocation risk-first READ; current lines: 478; sessions: 1 |
 | R10 | UI-ZHL-HEADLESS-HELPERS, UI-ZHL-HEADLESS-ENGINE | 285 | - | V4 R10: Headless ZHL path risk-first READ; current lines: 588; sessions: 1 |
@@ -70,7 +70,7 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R21 | UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 632 | - | V4 R21: Plot render and waypoint graph risk-first READ; current lines: 632; sessions: 2 |
 | R22 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 755 | - | V4 R22: Profile tool and plot init risk-first READ; current lines: 755; sessions: 2 |
 | R23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 390 | - | V4 R23: Runtime bootstrap and app init risk-first READ; current lines: 390; sessions: 1 |
-| R24 | UI-BOOT | 2449 | - | V4 R24: index.html shell boot region risk-first READ; current lines: 2414; sessions: 5 |
+| R24 | UI-BOOT | 2450 | - | V4 R24: index.html shell boot region risk-first READ; current lines: 2414; sessions: 5 |
 | R25 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 429 | - | V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 428; sessions: 1 |
 | R26 | APP-CAPACITOR-BRIDGE, APP-ANDROID-SELECT | 548 | - | V4 R26: Capacitor and Android bridge risk-first READ; current lines: 548; sessions: 1 |
 | R27 | UI-PROFILE-PRESETS | 508 | - | V4 R27: Dive profile presets risk-first READ; current lines: 508; sessions: 1 |
@@ -88,7 +88,7 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R39 | UI-CSS-FOUNDATION, UI-CSS-MODES | 760 | - | V4 R39: Foundation and mode CSS risk-first READ; current lines: 760; sessions: 2 |
 | R40 | UI-CSS-CONTROLS | 548 | - | V4 R40: Controls CSS risk-first READ; current lines: 548; sessions: 1 |
 | R41 | UI-CSS-RESULTS | 1036 | - | V4 R41: Results CSS risk-first design-lock READ; current lines: 1036; sessions: 2 |
-| R42 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 785 | - | V4 R42: Planner shell and results panel design-lock READ; current lines: 785; sessions: 2 |
+| R42 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 800 | - | V4 R42: Planner shell and results panel design-lock READ; current lines: 800; sessions: 2 |
 
 ## Definition of Done
 

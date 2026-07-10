@@ -22,8 +22,8 @@
     bottom: 0;
     z-index: 200;
     align-items: stretch;
-    justify-content: space-around;
-    gap: 0;
+    justify-content: center;
+    gap: 4px;
     min-height: 56px;
     padding-bottom: env(safe-area-inset-bottom, 0px);
     background: var(--surface);
@@ -32,7 +32,7 @@
   }
 
   .app-bottom-nav .nav-item {
-    flex: 1 1 0;
+    flex: 0 1 108px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -40,6 +40,7 @@
     gap: 0;
     min-height: 48px;
     min-width: 48px;
+    max-width: 118px;
     padding: 6px 4px;
     border: none;
     border-radius: 10px;
@@ -54,6 +55,10 @@
     cursor: pointer;
     transition: color var(--transition), background var(--transition);
     -webkit-tap-highlight-color: transparent;
+  }
+
+  .app-bottom-nav .nav-item[hidden] {
+    display: none !important;
   }
 
   .app-bottom-nav .nav-item > span {

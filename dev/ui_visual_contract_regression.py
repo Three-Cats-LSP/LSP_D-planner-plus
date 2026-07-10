@@ -1160,6 +1160,23 @@ async () => {
   const appBottomLabels = appBottomNav
     ? Array.from(appBottomNav.querySelectorAll('.nav-item:not([hidden])')).map(btn => btn.textContent.trim())
     : [];
+  const appBottomHiddenItemsVisible = appBottomNav
+    ? Array.from(appBottomNav.querySelectorAll('.nav-item[hidden]')).some(btn => getComputedStyle(btn).display !== 'none')
+    : false;
+  const appBottomGroupGeometry = () => {
+    if (!appBottomNav) return { centerError: 999, left: 0, right: 0 };
+    const navRect = appBottomNav.getBoundingClientRect();
+    const buttons = Array.from(appBottomNav.querySelectorAll('.nav-item:not([hidden])'))
+      .filter(btn => getComputedStyle(btn).display !== 'none');
+    if (!buttons.length) return { centerError: 999, left: 0, right: 0 };
+    const first = buttons[0].getBoundingClientRect();
+    const last = buttons[buttons.length - 1].getBoundingClientRect();
+    return {
+      centerError: Math.abs(((first.left + last.right) / 2) - ((navRect.left + navRect.right) / 2)),
+      left: Math.round(first.left),
+      right: Math.round(last.right),
+    };
+  };
   const appBottomHasGhostIcons = appBottomNav ? /\b(DP|CP|TS)\b/.test(appBottomNav.textContent || '') : false;
   const appBottomPlanEnabled = !!document.querySelector('#appBottomNav [data-tab="plan"]:not(:disabled)');
   const mainVersion = document.getElementById('mainVersionLabel');
@@ -1226,6 +1243,7 @@ async () => {
   const recBottomLabels = appBottomNav
     ? Array.from(appBottomNav.querySelectorAll('.nav-item:not([hidden])')).map(btn => btn.textContent.trim())
     : [];
+  const recBottomGeometry = appBottomGroupGeometry();
 
   document.getElementById('navBtnBuh')?.click();
   await new Promise(r => setTimeout(r, 120));
@@ -1233,6 +1251,7 @@ async () => {
   const tecBottomLabels = appBottomNav
     ? Array.from(appBottomNav.querySelectorAll('.nav-item:not([hidden])')).map(btn => btn.textContent.trim())
     : [];
+  const tecBottomGeometry = appBottomGroupGeometry();
 
   document.getElementById('navBtnVpm')?.click();
   await new Promise(r => setTimeout(r, 120));
@@ -1344,6 +1363,9 @@ async () => {
         && appBottomNavHeight >= 48
         && JSON.stringify(recBottomLabels) === JSON.stringify(['Dive', 'Avg Depth', 'Multi Dive'])
         && JSON.stringify(tecBottomLabels) === JSON.stringify(['Plan', 'Profile', 'Contingency', 'Tissues'])
+        && !appBottomHiddenItemsVisible
+        && recBottomGeometry.centerError <= 4
+        && tecBottomGeometry.centerError <= 4
         && !appBottomHasGhostIcons
         && appBottomPlanEnabled
         && toolsBottomHidden
@@ -1378,6 +1400,9 @@ async () => {
     appBottomLabels,
     recBottomLabels,
     tecBottomLabels,
+    appBottomHiddenItemsVisible,
+    recBottomGeometry,
+    tecBottomGeometry,
     appBottomHasGhostIcons,
     appBottomPlanEnabled,
     mainVersionVisible,

@@ -353,6 +353,15 @@ function _updateGasWarningBannerFromCard(gasEl) {
   // the global top banner; that creates duplicate warnings above the tabs.
   _setGasWarningBanner('');
 }
+function _mountRecAvgDepthPane() {
+  const source = document.getElementById('avgdepth');
+  const target = document.getElementById('resultTab-avgdepth');
+  if (!source || !target) return;
+  if (target.querySelector('#avgMaxSlider')) return;
+  while (source.firstElementChild) {
+    target.appendChild(source.firstElementChild);
+  }
+}
 function switchResultTab(name, btn) {
   const isRec = plannerAlgo === 'rec';
   const panes = isRec
@@ -369,7 +378,13 @@ function switchResultTab(name, btn) {
     window._setMobileResultTabActive?.(name);
   }
   if (name === 'multi') buildDiveBlocks?.();
-  if (name === 'avgdepth') setTimeout(() => { calcAvgDepth?.(); }, 50);
+  if (name === 'avgdepth') {
+    _mountRecAvgDepthPane();
+    setTimeout(() => {
+      document.querySelectorAll('#resultTab-avgdepth .lsp-slider').forEach(s => updateSliderFill?.(s));
+      calcAvgDepth?.();
+    }, 50);
+  }
   if (name === 'profile') setTimeout(() => { drawDecoProfileFull?.(); }, 50);
   if (name === 'tissue') {
     const card = document.getElementById('tissueLoadCard');
