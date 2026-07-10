@@ -2032,7 +2032,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "5998ce956acc2a5c8e987551c4e69055463c97ae816a7ddb051832fdee54015e",
+      "fingerprint": "4467a26e675405f6a826e50d594d7176914bb634aa8b72c01687abc7c213c939",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [

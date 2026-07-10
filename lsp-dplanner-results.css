@@ -601,12 +601,12 @@ body.light-theme #resultsPanel .chip-yellow { background: var(--yellow-dim) !imp
   padding:2px 8px 3px;
   border-radius:999px;
   background:#ff4433;
-  border:1px solid rgba(255,255,255,0.92);
+  border:2px solid var(--narcotic-chip-border, rgba(255,255,255,0.92));
   color:#fff;
 }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-title--narcotic .gas-usage-mix,
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-title--narcotic .gas-usage-role {
-  color:inherit !important;
+  color:inherit;
 }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-role--narcotic {
   font-weight:900;
@@ -714,11 +714,11 @@ body.light-theme #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn * 
   color: #111 !important;
 }
 body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-title--narcotic {
-  border-color: #111;
-  color:#111 !important;
+  --narcotic-chip-border:#111;
+  color:#111;
 }
 body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-role--narcotic {
-  color:#111 !important;
+  color:#111;
 }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas .gas-usage-inline-warning,
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas .gas-usage-inline-warning * { color:#FF3B30 !important; }
