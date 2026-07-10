@@ -87,7 +87,7 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R38 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 604 | - | V4 R38: Tools and modal markup risk-first READ; current lines: 612; sessions: 2 |
 | R39 | UI-CSS-FOUNDATION, UI-CSS-MODES | 760 | - | V4 R39: Foundation and mode CSS risk-first READ; current lines: 760; sessions: 2 |
 | R40 | UI-CSS-CONTROLS | 548 | - | V4 R40: Controls CSS risk-first READ; current lines: 548; sessions: 1 |
-| R41 | UI-CSS-RESULTS | 1037 | - | V4 R41: Results CSS risk-first design-lock READ; current lines: 1037; sessions: 2 |
+| R41 | UI-CSS-RESULTS | 1041 | - | V4 R41: Results CSS risk-first design-lock READ; current lines: 1041; sessions: 2 |
 | R42 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 805 | - | V4 R42: Planner shell and results panel design-lock READ; current lines: 805; sessions: 2 |
 
 ## Definition of Done
