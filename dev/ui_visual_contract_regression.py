@@ -1305,6 +1305,7 @@ async () => {
   sampleChips('settings');
   const settingsBottomHidden = !appBottomNav || getComputedStyle(appBottomNav).display === 'none';
   const settingsLinkCount = document.querySelectorAll('.settings-app-link-list a').length;
+  const settingsDonateCount = document.querySelectorAll('.settings-donate-link').length;
 
   document.getElementById('navRef')?.click();
   await new Promise(r => setTimeout(r, 120));
@@ -1361,7 +1362,7 @@ async () => {
     && (mobile
       ? appBottomNavPresent
         && appBottomNavHeight >= 48
-        && JSON.stringify(recBottomLabels) === JSON.stringify(['Dive', 'Avg Depth', 'Multi Dive'])
+        && JSON.stringify(recBottomLabels) === JSON.stringify(['Plan', 'Profile', 'Avg Depth', 'Multi Dive'])
         && JSON.stringify(tecBottomLabels) === JSON.stringify(['Plan', 'Profile', 'Contingency', 'Tissues'])
         && !appBottomHiddenItemsVisible
         && recBottomGeometry.centerError <= 4
@@ -1373,7 +1374,8 @@ async () => {
         && !mainVersionVisible
         && headerRefCompact
         && appShellFooterHidden
-        && settingsLinkCount >= 8
+        && settingsLinkCount >= 7
+        && settingsDonateCount >= 1
         && referenceLinksVisible
         && mobileToolsListVisible
         && mobileToolRows >= 10
@@ -1409,6 +1411,7 @@ async () => {
     headerRefCompact,
     appShellFooterHidden,
     settingsLinkCount,
+    settingsDonateCount,
     referenceLinksVisible,
     mobileToolsListVisible,
     mobileToolRows,

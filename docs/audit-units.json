@@ -1972,7 +1972,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "c2e5e34068b2b2c3798aef0085e8c4dbfc383b1970b4340f15d8779660e2e9c4",
+      "fingerprint": "552d95ae3b01cf6ea57e91d2cbf6ac53bea5a29e731bcbea74cfdfc449549760",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2032,7 +2032,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a40f13747c5604a296b8da766b6c5499d24429c280fd1723f232a07d7a77fb7e",
+      "fingerprint": "d13a30399a01020e0d3660b58109e8c0933ea05a3c96b58d47ad400d94fc4d1e",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2054,7 +2054,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "25f875e541ef14c2406a06b890610f72f2bb7909582b7b193d3e628c88b83b9d",
+      "fingerprint": "9a4211343961e0b5a41c295f3f6589b0a42c9068291ef3e302d4f197524b29de",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2069,7 +2069,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a78bd52a51adc0ee8aafc566efb5b781801027b30aeabf2480fe622de9a826a1",
+      "fingerprint": "2eb3aa38fbed2ce93ed195ce80cf3f6ff294718e216d05d996c93012885dbf27",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2323,7 +2323,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-DECO-PHYSICS"
       },
-      "fingerprint": "49fce8e23dcbe1ba16f19f864b0439a9b8f23c6b3680495f07f761daa946fb5d",
+      "fingerprint": "9348b2fcccc2a243bde0a164d6b6f59c0005d2a290280ac980aba6c02ec84f78",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2603,7 +2603,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-TISSUES"
       },
-      "fingerprint": "3816d06c7e1a4f7c6c8f56990632c0e9321c98fd9cd0fab604918866ee61302e",
+      "fingerprint": "a53c3779ea761bd42d8b95bb3052d7c162543408f7720a84ec488c43023eb14a",
       "last_read_fingerprint": null,
       "audit_issue": 156,
       "evidence": [],
@@ -5328,7 +5328,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "56e81c1fd6d9b7a0ea09d5b491413ab07350649f6022c084ec4952254e0a2aa5",
+      "fingerprint": "6916ba6d85f731652b51bc5f538a29f6112e9a6083d68f8ce0df979f95dc7f69",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5346,7 +5346,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "12469856a9212c284d91c06f618a95ceab45772866797a48cfcff8c057fcee9c",
+      "fingerprint": "de5110d6434a499c06f1e4d4757a194e8ec5935ff1741c0f8e10e4e2c2c0358d",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5838,7 +5838,7 @@
         "REG-137",
         "REG-138"
       ],
-      "fingerprint": "b4ddaa1496e4e3446d9a5835424ac3a7943e0f106a885046ab01a1da8d1c85e9",
+      "fingerprint": "560b0e5a8f4490b97bed1f9bdbd2ce53f52b4fe8e1044de9789ca6d135e435fa",
       "last_read_fingerprint": null
     },
     {
@@ -5921,7 +5921,7 @@
     },
     {
       "cycle": "R07",
-      "max_new_application_lines": 637,
+      "max_new_application_lines": 640,
       "application_units": [
         "UI-DECO-PHYSICS",
         "UI-SCHEDULE-INPUTS"
@@ -5929,7 +5929,7 @@
       "engine_reverification": [
         "ENG-ZHL-CCR"
       ],
-      "acceptance": "V4 R07: Deco physics and schedule inputs risk-first READ; current lines: 637; sessions: 2",
+      "acceptance": "V4 R07: Deco physics and schedule inputs risk-first READ; current lines: 640; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6155,14 +6155,14 @@
     },
     {
       "cycle": "R29",
-      "max_new_application_lines": 904,
+      "max_new_application_lines": 922,
       "application_units": [
         "UI-TOOLS-TISSUES",
         "UI-TOOLS-EXPOSURE",
         "UI-TOOLS-GF"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R29: Tools tissues/exposure/GF risk-first READ; current lines: 904; sessions: 2",
+      "acceptance": "V4 R29: Tools tissues/exposure/GF risk-first READ; current lines: 922; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6285,23 +6285,23 @@
     },
     {
       "cycle": "R41",
-      "max_new_application_lines": 1044,
+      "max_new_application_lines": 1051,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1044; sessions: 2",
+      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1051; sessions: 2",
       "min_review_sessions": 2
     },
     {
       "cycle": "R42",
-      "max_new_application_lines": 805,
+      "max_new_application_lines": 822,
       "application_units": [
         "UI-PLANNER-SHELL",
         "UI-RESULTS-PANEL"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R42: Planner shell and results panel design-lock READ; current lines: 805; sessions: 2",
+      "acceptance": "V4 R42: Planner shell and results panel design-lock READ; current lines: 822; sessions: 2",
       "min_review_sessions": 2
     }
   ],

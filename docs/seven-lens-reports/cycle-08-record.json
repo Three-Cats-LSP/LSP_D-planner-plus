@@ -349,7 +349,7 @@
       "start_line": 1,
       "end_line": 397,
       "line_count": 397,
-      "content_fingerprint": "56e81c1fd6d9b7a0ea09d5b491413ab07350649f6022c084ec4952254e0a2aa5",
+      "content_fingerprint": "6916ba6d85f731652b51bc5f538a29f6112e9a6083d68f8ce0df979f95dc7f69",
       "review_session": "C08-A",
       "verification_session": "C08-V-B",
       "lens_results": {
@@ -425,9 +425,9 @@
       "unit_id": "UI-RESULTS-PANEL",
       "path": "results-panel.js",
       "start_line": 1,
-      "end_line": 408,
-      "line_count": 408,
-      "content_fingerprint": "12469856a9212c284d91c06f618a95ceab45772866797a48cfcff8c057fcee9c",
+      "end_line": 425,
+      "line_count": 425,
+      "content_fingerprint": "de5110d6434a499c06f1e4d4757a194e8ec5935ff1741c0f8e10e4e2c2c0358d",
       "review_session": "C08-B",
       "verification_session": "C09-DEP-WARNING-BANNER-HTML",
       "lens_results": {

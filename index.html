@@ -1094,7 +1094,7 @@
 <button type="button" class="mobile-tool-row" data-tool="knowledge" onclick="switchTool('knowledge')"><span class="mobile-tool-icon">&#9776;</span><span><strong>Knowledge</strong><small>References &amp; docs</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
 </div>
 <div class="mobile-tool-detail-bar" id="mobileToolDetailBar">
-<button type="button" class="mobile-tool-back" onclick="showMobileToolsList()">&lsaquo; Back</button>
+<button type="button" class="mobile-tool-back" id="mobileToolBack" onclick="showMobileToolsList()">&lsaquo; Back</button>
 <span id="mobileToolTitle">Tools</span>
 </div>
 <div id="toolsPanelMount"></div>
@@ -1193,7 +1193,7 @@
 <div class="stats" id="avgDepthStats" style="grid-template-columns:repeat(2,1fr);margin-top:8px;">
 <div class="stat"><div class="stat-val u10" id="avgPlanDepth">—</div><div class="stat-lbl">Recommended Planning Depth</div></div>
 <div class="stat"><div class="stat-val u6" id="avgRatio">—</div><div class="stat-lbl">Avg / Max ratio</div></div>
-<div class="stat"><div class="stat-val" id="avgPlanDepthFt" style="color:var(--muted);font-size:18px;">—</div><div class="stat-lbl">Planning Depth (ft)</div></div>
+<div class="stat"><div class="stat-val" id="avgPlanDepthFt" style="color:var(--muted);font-size:18px;">—</div><div class="stat-lbl" id="avgPlanDepthAltLbl">Planning Depth</div></div>
 <div class="stat"><div class="stat-val" id="avgConservatism" style="font-size:14px;">—</div><div class="stat-lbl">Profile Classification</div></div>
 </div>
 <div class="info-box" id="avgDepthAdvice" style="margin-top:16px;border-left:3px solid var(--accent);"></div>
@@ -4041,11 +4041,29 @@ window.showMobileToolsList = showMobileToolsList;
 
 // Init tools on tab open
 function switchTool(name, btn) {
+  const lazyMountedPanels = {
+    cns: 'cns',
+    ndlref: 'ndlref',
+    surfint: 'surfint',
+  };
+  const lazyPanelId = lazyMountedPanels[name];
+  const lazyPanel = lazyPanelId ? document.getElementById(lazyPanelId) : null;
+  const lazyMount = document.getElementById('tool-panel-' + name);
+  if (lazyPanel && lazyMount && !lazyMount.contains(lazyPanel)) {
+    lazyMount.appendChild(lazyPanel);
+  }
   ['bestmix','mod','endcalc','eadtable','gastable','surfint','ndlref','converter','cns','knowledge'].forEach(t => {
     const panel = document.getElementById('tool-panel-' + t);
     const tab = document.getElementById('tool-' + t);
     if (panel) panel.style.display = t === name ? 'block' : 'none';
     if (tab) tab.classList.toggle('active', t === name);
+  });
+  ['cns','ndlref','surfint'].forEach(t => {
+    const mounted = document.getElementById(t);
+    if (mounted && document.getElementById('tool-panel-' + t)?.contains(mounted)) {
+      mounted.style.display = t === name ? 'block' : 'none';
+      mounted.classList.toggle('active', t === name);
+    }
   });
   document.querySelectorAll('#toolsBar .tools-bar-btn').forEach(b => {
     b.classList.toggle('active', b.id === 'tool-' + name);
@@ -4097,10 +4115,11 @@ function calcAvgDepth() {
 
   document.getElementById('avgMaxDisplay').textContent  = Math.round(maxM * conv) + ' ' + du;
   document.getElementById('avgAvgDisplay').textContent  = Math.round(avgM * conv) + ' ' + du;
-  document.getElementById('avgPlanDepth').textContent   = Math.round(planM * conv) + ' ' + du;
-  document.getElementById('avgPlanDepthFt').textContent = units === 'metric'
-    ? Math.round(planM * 3.28084) + ' ft'
-    : Math.round(planM / 3.28084) + ' m';
+  const planDisplay = Math.round(planM * conv) + ' ' + du;
+  document.getElementById('avgPlanDepth').textContent   = planDisplay;
+  document.getElementById('avgPlanDepthFt').textContent = planDisplay;
+  const altLbl = document.getElementById('avgPlanDepthAltLbl');
+  if (altLbl) altLbl.textContent = units === 'metric' ? 'Planning Depth (m)' : 'Planning Depth (ft)';
   document.getElementById('avgRatio').textContent       = (ratio * 100).toFixed(0) + '%';
 
   // Profile classification

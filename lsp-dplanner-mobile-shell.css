@@ -425,20 +425,36 @@
     display: none;
     width: 100%;
     align-items: center;
+    grid-template-columns: minmax(64px, 1fr) auto minmax(64px, 1fr);
     gap: 10px;
     margin: 0 0 12px;
     color: var(--text);
     font-weight: 800;
   }
+  body.mobile-tab-tools #toolsPageWrap.mobile-tool-detail .mobile-tool-detail-bar {
+    display: grid;
+  }
+
+  #mobileToolTitle {
+    grid-column: 2;
+    justify-self: center;
+    text-align: center;
+    font-size: 17px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
 
   .mobile-tool-back {
+    grid-column: 1;
+    justify-self: start;
     min-height: 36px;
     padding: 0;
     border: 0;
     background: transparent;
-    color: var(--accent);
+    color: var(--muted);
     font: inherit;
-    font-weight: 900;
+    font-size: 12px;
+    font-weight: 700;
   }
 
   body.mobile-tab-settings #plannerView,

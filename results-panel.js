@@ -124,6 +124,23 @@ function _renderResultSummaryStrip(data) {
   const panel = document.getElementById('resultsPanel');
   const unit = units === 'imperial' ? 'ft' : 'm';
   const mode = data.mode || (plannerAlgo === 'rec' ? 'rec' : 'tec');
+  if (mode === 'rec') {
+    const strip = document.getElementById('resultMetricStrip');
+    const hint = document.getElementById('resultHintRow');
+    const chips = document.getElementById('resultChipRow');
+    if (strip) strip.innerHTML = '';
+    if (hint) {
+      hint.innerHTML = '';
+      hint.style.display = 'none';
+    }
+    if (chips) {
+      chips.innerHTML = '';
+      chips.style.display = 'none';
+    }
+    panel?.classList.add('has-results');
+    if (typeof syncMobileResultsNav === 'function') syncMobileResultsNav();
+    return;
+  }
   renderMetricCards({
     runTime: data.runTime,
     decoTime: data.decoTime,

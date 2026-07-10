@@ -414,7 +414,7 @@ __ASSEMBLE_TEC_PLANNER__
 <button type="button" class="mobile-tool-row" data-tool="knowledge" onclick="switchTool('knowledge')"><span class="mobile-tool-icon">&#9776;</span><span><strong>Knowledge</strong><small>References &amp; docs</small></span><span class="mobile-tool-chevron">&rsaquo;</span></button>
 </div>
 <div class="mobile-tool-detail-bar" id="mobileToolDetailBar">
-<button type="button" class="mobile-tool-back" onclick="showMobileToolsList()">&lsaquo; Back</button>
+<button type="button" class="mobile-tool-back" id="mobileToolBack" onclick="showMobileToolsList()">&lsaquo; Back</button>
 <span id="mobileToolTitle">Tools</span>
 </div>
 <div id="toolsPanelMount"></div>
@@ -513,7 +513,7 @@ __ASSEMBLE_TEC_PLANNER__
 <div class="stats" id="avgDepthStats" style="grid-template-columns:repeat(2,1fr);margin-top:8px;">
 <div class="stat"><div class="stat-val u10" id="avgPlanDepth">—</div><div class="stat-lbl">Recommended Planning Depth</div></div>
 <div class="stat"><div class="stat-val u6" id="avgRatio">—</div><div class="stat-lbl">Avg / Max ratio</div></div>
-<div class="stat"><div class="stat-val" id="avgPlanDepthFt" style="color:var(--muted);font-size:18px;">—</div><div class="stat-lbl">Planning Depth (ft)</div></div>
+<div class="stat"><div class="stat-val" id="avgPlanDepthFt" style="color:var(--muted);font-size:18px;">—</div><div class="stat-lbl" id="avgPlanDepthAltLbl">Planning Depth</div></div>
 <div class="stat"><div class="stat-val" id="avgConservatism" style="font-size:14px;">—</div><div class="stat-lbl">Profile Classification</div></div>
 </div>
 <div class="info-box" id="avgDepthAdvice" style="margin-top:16px;border-left:3px solid var(--accent);"></div>

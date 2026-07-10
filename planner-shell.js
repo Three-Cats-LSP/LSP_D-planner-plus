@@ -31,10 +31,10 @@ function syncMobileResultsNav() {
   const recMode = typeof plannerAlgo !== 'undefined' && plannerAlgo === 'rec';
   const configs = recMode
     ? [
-        ['dive', 'Dive'],
+        ['plan', 'Plan'],
+        ['dive', 'Profile'],
         ['avgdepth', 'Avg Depth'],
         ['multi', 'Multi Dive'],
-        [null, ''],
       ]
     : [
         ['plan', 'Plan'],

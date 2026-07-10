@@ -468,6 +468,11 @@ body.light-theme .mode-btn:hover img, body.light-theme .mode-btn.active img { op
 #resultsPanel.has-results #resultMetricStrip { display: grid; }
 #resultsPanel.has-results #resultHintRow { display: flex; }
 #resultsPanel.has-results #resultChipRow { display: flex; }
+#resultsPanel.has-results #resultMetricStrip:empty,
+#resultsPanel.has-results #resultHintRow:empty,
+#resultsPanel.has-results #resultChipRow:empty { display: none !important; }
+.rec-card-hint-row { margin-top: 12px; }
+.rec-card-hint-row .alert { margin: 0; width: 100%; }
 #resultsScratch { display: none; }
 #resultsPanel #tableViewToggle { display: none; }
 #resultsPanel .result-tabs-slot { display: flex; flex-direction: column; }
@@ -846,6 +851,8 @@ body.light-theme #gasWarningBanner.gas-warning-banner { background: #fff0f0; bor
   #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) { padding-left: var(--space-2); padding-right: var(--space-2); }
   #resultsPanel .result-tabs-nav { flex-wrap: wrap; overflow-x: visible; }
   #resultsPanel .result-tab-btn { flex: 1 1 calc(50% - 2px); min-width: 0; padding: 7px 8px; text-align: center; font-size: 9px; letter-spacing: 0.045em; }
+  #resultsPanel .rec-profile-stats { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  #resultsPanel .rec-profile-stats .stat:first-child { grid-column: span 2; }
 }
 
 .tools-page-wrap { display: none; flex-direction: column; gap: var(--space-4); }

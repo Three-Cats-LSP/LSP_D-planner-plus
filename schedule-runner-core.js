@@ -1444,16 +1444,19 @@ function runPlanner() {
           <button class="btn-export" onclick="exportTXT('planner')" title="Download .txt"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg></button>
         </div>
       </div>
-      <div class="stats" style="grid-template-columns:repeat(4,1fr);margin-top:4px;margin-bottom:4px;">
-        <div class="stat"><div class="stat-val ${btOk?'g':'r'}">${bt}</div><div class="stat-lbl">Your BT</div></div>
-        <div class="stat"><div class="stat-val ${rem===0?'r':rem<10?'o':'g'}">${rem}</div><div class="stat-lbl">Remaining</div></div>
-        <div class="stat"><div class="stat-val" style="font-size:22px;"><span class="group-badge">${group}</span></div><div class="stat-lbl">Press. Group (est.)</div></div>
+      <div class="chip-row" style="display:flex;margin:0 0 12px;"><span class="chip chip-rec-profile">${dDisp} / ${bt} min</span></div>
+      <div class="stats rec-profile-stats" style="grid-template-columns:repeat(5,1fr);margin-top:4px;margin-bottom:4px;">
+        <div class="stat"><div class="stat-val u10">${isMetric ? rawD : Math.round(depthM * 3.28084)}<span class="unit">${isMetric ? 'm' : 'ft'}</span></div><div class="stat-lbl">Depth</div></div>
+        <div class="stat"><div class="stat-val ${btOk?'g':'r'}">${bt}</div><div class="stat-lbl">BT Time</div></div>
+        <div class="stat"><div class="stat-val ${rem===0?'r':rem<10?'o':'g'}">${rem}</div><div class="stat-lbl">No NDL</div></div>
+        <div class="stat"><div class="stat-val" style="font-size:22px;"><span class="group-badge">${group}</span></div><div class="stat-lbl">Press. Group</div></div>
         ${gasStatHtml}
       </div>
       <div style="margin-top:14px;">
         <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:5px;letter-spacing:1px;"><span>NDL USAGE · ${tableRef}</span><span>${pct}%</span></div>
         <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${bc};"></div></div>
       </div>
+      ${resultHintHtml ? `<div class="rec-card-hint-row">${resultHintHtml}</div>` : ''}
       ${beyondMOD ? `<div class="alert dang" style="margin-top:12px;"><span>⚠</span><div><strong>BEYOND MOD.</strong> ${dDisp} exceeds ${gasLabel} MOD of ${isMetric ? modM+' m' : modFt+' ft'} at ${modPpo2.toFixed(1)} bar ppO₂. CNS oxygen toxicity risk — use a lower O₂ mix or reduce depth.</div></div>` : ''}
       ${!beyondMOD && ndl === 0 ? `<div class="alert dang" style="margin-top:12px;"><span>⚠</span><div><strong>BEYOND TABLE.</strong> ${dDisp} exceeds the PADI recreational table maximum (${isMetric ? PADI_TABLE_MAX_M+' m' : PADI_TABLE_MAX_FT+' ft'}).</div></div>` : ''}
       ${!beyondMOD && ndl > 0 && !btOk ? '<div class="alert" style="margin-top:12px;background:#FF4433;border-color:#cc2200;color:#fff;font-weight:700;"><span>⚠</span><div><strong>NDL EXCEEDED.</strong> Not permitted for recreational diving. Reduce bottom time.</div></div>' : ''}
