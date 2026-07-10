@@ -110,9 +110,11 @@ Recalculated from live source via `audit_coverage.resolve_units()` at HEAD. Regi
 | **Cycles reviewed** | 42 / 42 |
 | **CRITICAL** | 0 |
 | **HIGH** | 0 |
-| **MEDIUM** | 4 |
-| **LOW** | 6 |
-| **Audit-system (non-app)** | 3 |
+| **MEDIUM** | 12 |
+| **LOW** | 14 |
+| **Audit-system (non-app)** | 4 |
+
+Deep line-by-line supplements from completed specialist passes: [R20 export](84e03e1b-8e03-42a8-a556-f5cd999e1943), [R23–R26 runtime/native](ccaf95e7-7a08-40dc-bd31-c55086c8b715). Other parallel cycle agents failed on billing and did not contribute additional findings beyond the primary continuous pass.
 
 ### Top safety-critical observations
 
@@ -121,21 +123,24 @@ No new CRITICAL or HIGH safety bugs found. Engine regression (177/177), release 
 ### Top UI/design observations
 
 - **On-screen schedule totals:** RT / Deco labels correct; TTS not rendered in visible totals row (`buildPlanInfoRowHtml`, L332–339).
-- **Export/copy/PDF surfaces:** TTS still emitted in summary blocks and column headers — design-contract gap for exported artifacts.
+- **Export TTS:** Contract-allowed in summaries/exports (`docs/cursor-seven-lens-audit-workflow.md`); not a defect.
+- **PDF totals label:** PDF uses `Run:` while on-screen/txt use `RT:` — real label drift (V4-R20-MEDIUM-01).
+- **Native viewport lockdown:** Head script mutates viewport meta before the tag exists — pinch-zoom lock never applies (V4-R24-MEDIUM-01).
 - **Gas consumption tiers:** Functional ok/caution/critical/nogas colors present; contract wording uses "low" but code uses `caution`.
 
 ### Likely false positives
 
 - **V4-R41-L-02** (orphan `.col-tts` CSS): May be defensive styling if legacy rows still carry class; no visible TTS column in current thead.
-- **V4-R35-L-01** (EAN in gas `<select>` options): Input labels only; schedule/contingency rendering uses `getGasLabel` OO/HH format — regression `SCHEDULE-CANONICAL-GAS-LABELS` passes.
+- **V4-R20-MEDIUM-02** (shortMix EAN regex missing in one copy): No live path currently emits bare `EANxx` without `%`.
+- **V4-R25-MEDIUM-02** (SW network-first scope): May be intentional narrow safety-critical boundary.
 
 ### Recommended fix order
 
-1. Refresh R-cycle registry acceptance strings (especially R10).
-2. Align export/slate/PDF summary labels with RT/Deco contract (remove or hide TTS).
-3. Register `app-version.js` or fold into an existing unit.
-4. Run `sync-reviewed-boundaries --write` for SL-C07 seven-lens artifacts.
-5. Remove dead `injectTtsCells` and orphan TTS CSS if confirmed unused.
+1. Fix native viewport meta order (V4-R24-MEDIUM-01).
+2. Align PDF totals label to `RT:` (V4-R20-MEDIUM-01); reuse shared summary helpers.
+3. Persist iOS A2HS banner dismissal (V4-R25-MEDIUM-01).
+4. Refresh R-cycle registry acceptance strings (especially R10) + SL-C07 boundary sync.
+5. Register `app-version.js`; remove dead `injectTtsCells` / Cordova `deviceready` fallback.
 
 ---
 
@@ -143,18 +148,34 @@ No new CRITICAL or HIGH safety bugs found. Engine regression (177/177), release 
 
 | ID | Severity | R cycle | Unit | File:line | Summary | Evidence | Real/FP | Recommended next action |
 |---|---|---|---|---|---|---|---|---|
-| V4-AUDIT-M-01 | MEDIUM | — | Registry | `docs/audit-units.json` cycles R09–R42 | 9 R-cycle `max_new_application_lines` / acceptance strings stale vs live source | Recalc: R10 588→285 (-303), R09 -9, R18 -3, R24 -9, R25 -6, R35 -2, R36 -2, R38 -14, R42 -2 | Real | Run report-only registry refresh (`audit_coverage.py --write-docs` or equivalent) without touching app code |
+| V4-AUDIT-M-01 | MEDIUM | — | Registry | `docs/audit-units.json` cycles R09–R42 | 9 R-cycle `max_new_application_lines` / acceptance strings stale vs live source | Recalc: R10 588→285 (-303), R09 -9, R18 -3, R24 -9, R25 -6, R35 -2, R36 -2, R38 -14, R42 -2 | Real | Run report-only registry refresh without touching app code |
 | V4-AUDIT-M-02 | MEDIUM | R41 | UI-CSS-RESULTS | `lsp-dplanner-results.css` + SL-C07 records | `check-all --require-artifacts` BLOCKED: SL-C07 P02/P03 stale fingerprints; coverage ends L1089, file is L1110 | Gate output: `SEVEN-LENS REVIEWED-CYCLE GATE: BLOCKED` | Real | `python tools/seven_lens_protocol.py sync-reviewed-boundaries --write` in fixer pass |
 | V4-AUDIT-M-03 | MEDIUM | R33 | — | `app-version.js` | Runtime-loaded version source unregistered in audit registry | `index.html` L49 loads `app-version.js`; unregistered candidate scan | Real | Add APP-VERSION unit or attach to UI-BOOT/APP-PACKAGE boundary |
-| V4-R20-M-01 | MEDIUM | R20 | APP-EXPORT | `export-core.js` L25–29, L362, L382, L494, L609, L2240, L2694, L2856 | Export txt/PDF/slate summaries and table headers still include **TTS** while on-screen schedule totals use RT/Deco only | `formatExportSummaryBlock`: ``RT: … TTS: … Deco: …``; PDF headers include TTS column | Real | Strip TTS from export column headers and summary lines; add export regression asserting RT/Deco-only totals |
-| V4-R07-L-01 | LOW | R07 | UI-SCHEDULE-INPUTS | `schedule-runner-core.js` L388–409 | `injectTtsCells()` defined but never called (dead code) | Repo-wide grep: only definition, no call sites | Real (dead code) | Remove function or wire behind feature flag; confirm no dynamic injection path |
-| V4-R41-L-01 | LOW | R41 | UI-CSS-RESULTS | `results-render-core.js` L206–210; `lsp-dplanner-results.css` L584–587 | Gas status uses `caution` not `low`; no `.gas-usage-card--low` class | `_gasUsageStatus` returns ok/caution/critical/nogas | Unclear (naming) | Rename caution→low in code/CSS or update design contract doc |
-| V4-R41-L-02 | LOW | R41 | UI-CSS-RESULTS | `lsp-dplanner-results.css` L786 | `.col-tts` styling exists but schedule thead has no TTS column | `ui/markup-header.html` L195: Phase, Depth, Stop, Run, Mix, ppO₂, CNS, EAD | Possible FP | Remove orphan CSS after confirming no runtime injection |
-| V4-R24-L-01 | LOW | R24 | UI-BOOT | `index.html` L3058, L3083–3087 | Legacy comments/TTS references remain in boot inline script region | PLAN_INFO_TIP mentions TTS; comment references injectTtsCells | Real (doc/debt) | Update tooltips/comments to RT/Deco terminology |
-| V4-R34-L-01 | LOW | R34 | UI-MARKUP-HEADER | `ui/markup-header.html` L721 | Algorithm tip text still discusses TTS conservatism comparisons | Tooltip string in markup-header | Real (copy) | Reword tips to RT or "ascent+deco time" where user-visible |
-| V4-R37-L-01 | LOW | R37 | UI-MARKUP-CONSUMPTION | `ui/markup-consumption.html` L377 | Info box references TTS in VPM conservatism copy | Static markup | Real (copy) | Align help copy with RT/Deco contract |
-| V4-R42-L-01 | LOW | R42 | UI-RESULTS-PANEL | `results-render-core.js` L1262 | Comment example still says `'EAN 50'` | Comment only; live labels use getGasLabel | FP (comment) | Update comment to `50/00` or `100%` example |
-| V4-R10-L-01 | LOW | R10 | UI-ZHL-HEADLESS | `docs/audit-units.json` R10 acceptance | Registry implies 588-line / multi-session headless review; live adapter is 285 lines | R10 recalc drift -303 | Real (metadata) | Fix with V4-AUDIT-M-01 registry refresh |
+| V4-AUDIT-L-01 | LOW | — | Process | — | Several parallel cycle agents failed (billing); R16–R19/R21–R22/R27–R42 deep supplements incomplete | Subagent error: unpaid invoice | Real (process) | Re-run failed cycle deep-dives after billing restored if needed |
+| V4-R24-MEDIUM-01 | MEDIUM | R24 | UI-BOOT | `index.html` L6–18 | Native viewport-lockdown script runs before `<meta name="viewport">`; pinch-zoom lock never applies | Script L7–17 queries meta; meta declared L18 — always null | Real | Move meta above script, or create meta if missing; add Playwright assert |
+| V4-R20-MEDIUM-01 | MEDIUM | R20 | APP-EXPORT | `export-core.js` L494, L2240, L2856, L2917 | PDF totals use `Run:` while on-screen/txt use `RT:` | PDF templates vs `formatExportSummaryBlock` / `buildPlanInfoRowHtml` | Real | Reuse shared summary helpers; assert PDF emits `RT:` |
+| V4-R25-MEDIUM-01 | MEDIUM | R25 | UI-PWA-LIFECYCLE | `index.html` L5824–5836 | iOS A2HS banner has no dismissal persistence; reappears every load | Close only `.remove()`; APK banner uses `localStorage` DISMISS_KEY | Real | Mirror APK dismiss key pattern |
+| V4-R23-MEDIUM-01 | MEDIUM | R23 | UI-RUNTIME-BOOTSTRAP | `index.html` L2467–2471 | `deviceready` fallback for hiding APK icon is dead (Cordova event never fired) | Repo-wide grep: only registration, no dispatcher | Real (narrow) | Drop Cordova branch; use same classList/UA path as head detection |
+| V4-R26-MEDIUM-01 | MEDIUM | R26 | APP-ANDROID-SELECT | `android-select-picker.js` L147–170, L185–241 | Replacement select button lacks accessible name; sheet options lack `aria-selected` | `aria-haspopup` set; no `aria-label`; selected only via CSS class | Real | Set `aria-label` from `titleForSelect`; set `aria-selected` on options |
+| V4-R20-MEDIUM-02 | MEDIUM | R20 | APP-EXPORT | `export-core.js` L1444–1453 | One duplicated `shortMix` copy missing EAN-specific regex | Other copies have EAN + `%` regexes; this copy only `%` | Possible FP (no live bare EAN path) | Delete in-file copies; call canonical `shortMixLabel()` |
+| V4-R20-MEDIUM-03 | MEDIUM | R20 | APP-EXPORT | `export-core.js` L801 | Gas OK/TIGHT margin hardcodes `1.10` instead of `GP_ONEWAY_MARGIN` | PDF path uses `GP_ONEWAY_MARGIN`; txt path literal | Real (drift risk) | Replace literal with `GP_ONEWAY_MARGIN` |
+| V4-R20-MEDIUM-04 | MEDIUM | R20 | APP-EXPORT | `export-core.js` L2249–2254, L2927–2935 | PDF CNS highlight sniffs inline CSS color strings | Matches `results-render-core.js` style literals today | Fragility | Prefer `data-cnstier` attribute over style sniffing |
+| V4-R25-MEDIUM-02 | MEDIUM | R25 | APP-SERVICE-WORKER | `sw.js` L24–34 vs L70–99 | `isSafetyCriticalEngineAsset()` omits schedule/contingency/results modules still in precache | Network-first only for engine cores/bundles | Possible FP | Broaden matcher or document intentional narrow scope |
+| V4-R07-L-01 | LOW | R07 | UI-SCHEDULE-INPUTS | `schedule-runner-core.js` L388–409 | `injectTtsCells()` defined but never called (dead code) | Repo-wide grep: only definition | Real (dead code) | Remove function |
+| V4-R20-LOW-05 | LOW | R20 | APP-EXPORT | `export-core.js` L2684–2715 | Dead `if(false){...}` emergency PDF block | Compile-time-false guard; live path is `exportContingencyPDF` | Real (dead) | Delete block |
+| V4-R20-LOW-06 | LOW | R20 | APP-EXPORT | `export-core.js` L4–7 vs L700–702 | Header understates globals written (`_pendingDecoAlerts`, `_lastNarcoticGasTarget`) | Consumers in settings-core / results-render-core | Real (doc) | Update header comment |
+| V4-R20-LOW-07 | LOW | R20 | APP-EXPORT | `dev/ui_visual_contract_regression.py` L596–598 | EAN sweep calls nonexistent `buildContingencyText` | Repo-wide: function absent; contingency export never scanned | Real (coverage) | Call `buildExportText('contingency')` / `buildMessengerText` |
+| V4-R23-LOW-01 | LOW | R23 | UI-APP-INIT | `index.html` L5618–5639 | No regression for engine-load timeout/error banner | `playwright_boot.py` waits for ready only | Coverage gap | Force timeout path; assert banner + disabled calc |
+| V4-R24-LOW-01 | LOW | R24 | UI-BOOT | `index.html` L2–2454 | UI-BOOT unit subsumes nested markup/CSS units (~97% static markup) | Nested AUDIT-UNIT markers inside range | Process | Tighten UI-BOOT boundary to head scripts only |
+| V4-R25-LOW-01 | LOW | R25 | UI-PWA-LIFECYCLE | `index.html` L5781–5787 | First `controllerchange` reload may discard in-progress input | Unconditional reload on first SW claim | Informational | Gate reload if prior controller existed |
+| V4-R26-LOW-01 | LOW | R26 | APP-ANDROID-SELECT | `android-select-picker.js` L115–183, L228–241 | No cleanup if wrapped select removed while sheet open | Observer watches select internals only | Possible FP | Close sheet when open select disconnects |
+| V4-R41-L-01 | LOW | R41 | UI-CSS-RESULTS | `results-render-core.js` L206–210; CSS L584–587 | Gas status uses `caution` not `low`; no `.gas-usage-card--low` | `_gasUsageStatus` returns ok/caution/critical/nogas | Unclear (naming) | Rename or update contract doc |
+| V4-R41-L-02 | LOW | R41 | UI-CSS-RESULTS | `lsp-dplanner-results.css` L786 | `.col-tts` styling exists but schedule thead has no TTS column | Markup thead: no TTS | Possible FP | Remove orphan CSS after confirming unused |
+| V4-R24-L-01 | LOW | R24 | UI-BOOT | `index.html` L3058, L3083–3087 | Legacy TTS comments/tooltips in boot region | PLAN_INFO_TIP mentions TTS | Real (copy) | Update tip copy |
+| V4-R34-L-01 | LOW | R34 | UI-MARKUP-HEADER | `ui/markup-header.html` L721 | Algorithm tip still discusses TTS | Tooltip string | Real (copy) | Reword tips |
+| V4-R37-L-01 | LOW | R37 | UI-MARKUP-CONSUMPTION | `ui/markup-consumption.html` L377 | Info box references TTS | Static markup | Real (copy) | Align help copy |
+| V4-R42-L-01 | LOW | R42 | UI-RESULTS-PANEL | `results-render-core.js` L1262 | Comment example still says `'EAN 50'` | Comment only | FP (comment) | Update comment |
+| V4-R10-L-01 | LOW | R10 | UI-ZHL-HEADLESS | `docs/audit-units.json` R10 | Registry implies 588-line headless review; live is 285 | R10 drift -303 | Real (metadata) | Fix with V4-AUDIT-M-01 |
 
 ---
 
@@ -288,10 +309,10 @@ No new CRITICAL or HIGH safety bugs found. Engine regression (177/177), release 
 - **Suggested regressions:** SL-C09-HIGH-CNS-DECO-ALERT, SL-VIS-GAS-CONSUMPTION-BARS
 
 #### R20 — APP-EXPORT
-- **Scope:** `export-core.js` L1–3287 (6 sessions)
-- **Findings:** V4-R20-M-01 (TTS in export surfaces)
-- **Notes:** SUITE-EXPORT passes but does not assert RT/Deco-only summary labels.
-- **Suggested regressions:** Add export summary label contract case
+- **Scope:** `export-core.js` L1–3287 (6 sessions; full deep read)
+- **Findings:** V4-R20-MEDIUM-01 (PDF `Run:` vs `RT:`), V4-R20-MEDIUM-02 (shortMix drift), V4-R20-MEDIUM-03 (`1.10` literal), V4-R20-MEDIUM-04 (CNS style sniff), V4-R20-LOW-05/06/07
+- **Notes:** TTS in export summaries is **contract-allowed**. No numeric safety miscalc found. SUITE-EXPORT passes.
+- **Suggested regressions:** PDF `RT:` label assert; fix contingency EAN sweep to call real builders
 
 #### R21 — UI-PLOT-RENDER, UI-PLOT-WAYPOINTS
 - **Scope:** `plot-core.js` L139–770
@@ -310,23 +331,23 @@ No new CRITICAL or HIGH safety bugs found. Engine regression (177/177), release 
 
 #### R23 — UI-RUNTIME-BOOTSTRAP, UI-APP-INIT
 - **Scope:** `index.html` L2455–2672, L5585–5756
-- **Findings:** NO FINDINGS
-- **Notes:** Script load order verified AUD-HTML-002.
+- **Findings:** V4-R23-MEDIUM-01 (`deviceready` dead fallback), V4-R23-LOW-01 (engine error banner untested)
+- **Notes:** Script load order verified AUD-HTML-002. APK update check path intact.
 
 #### R24 — UI-BOOT
-- **Scope:** `index.html` L2–2454 (5 sessions)
-- **Findings:** V4-R24-L-01 (legacy TTS comments/tooltips)
-- **Notes:** Extracted markup mirrors in `ui/` partials; assemble verify OK.
+- **Scope:** `index.html` L2–2454 (5 sessions, full deep read)
+- **Findings:** V4-R24-MEDIUM-01 (viewport meta order bug), V4-R24-LOW-01 (unit boundary sprawl), V4-R24-L-01 (TTS tip copy)
+- **Notes:** Extracted markup mirrors in `ui/` partials; assemble verify OK. `app-version.js` CACHE_VERSION derivation verified PASS.
 
 #### R25 — APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST
 - **Scope:** `sw.js`, `manifest.json`, `index.html` L5757–5840
-- **Findings:** NO FINDINGS
-- **Notes:** SUITE-SW-LIFECYCLE pass; install handler claim order verified.
+- **Findings:** V4-R25-MEDIUM-01 (iOS banner dismiss), V4-R25-MEDIUM-02 (network-first scope), V4-R25-LOW-01 (first-activation reload)
+- **Notes:** SUITE-SW-LIFECYCLE pass; `CACHE_VERSION` from `APP_VERSION` via `importScripts` consistent.
 
 #### R26 — APP-CAPACITOR-BRIDGE, APP-ANDROID-SELECT
 - **Scope:** `capacitor-bridge.js`, `android-select-picker.js`
-- **Findings:** NO FINDINGS
-- **Notes:** SUITE-NATIVE + SUITE-ANDROID pass at release.
+- **Findings:** V4-R26-MEDIUM-01 (a11y name/`aria-selected`), V4-R26-LOW-01 (orphaned sheet on select removal)
+- **Notes:** Capacitor bridge download intercept: NO FINDINGS at HIGH/MEDIUM. SUITE-NATIVE + SUITE-ANDROID pass.
 
 ---
 
@@ -417,8 +438,8 @@ No new CRITICAL or HIGH safety bugs found. Engine regression (177/177), release 
 | Contract | Verdict | Evidence |
 |---|---|---|
 | Deco schedule columns and mobile geometry | **PASS** | `ui/markup-header.html` L195; `lsp-dplanner-results.css` L760–855; SL-C09-SCHEDULE-COLUMN-GEOMETRY |
-| No visible TTS chip; no visible TTS in schedule totals | **PASS** | `buildPlanInfoRowHtml` L332–339 shows RT/Deco only; thead has no TTS column |
-| Schedule total labels: RT, Deco | **PASS** (on-screen) / **FAIL** (export) | On-screen PASS; export FAIL — V4-R20-M-01 |
+| No visible TTS chip; no visible TTS in schedule totals | **PASS** | On-screen totals omit TTS; thead has no TTS column. Export TTS is contract-allowed. |
+| Schedule total labels: RT, Deco | **PASS** (on-screen/txt) / **FAIL** (PDF) | PDF uses `Run:` — V4-R20-MEDIUM-01 |
 | Gas consumption bars and inline warnings | **PASS** | SL-VIS-GAS-CONSUMPTION-BARS, SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS |
 | Low/critical/no-gas color distinction | **UNCLEAR** | Colors distinct (caution/critical/nogas) but no `low` tier name — V4-R41-L-01 |
 | Narcotic gas chip border and banner borders light/dark | **PASS** | `.gas-usage-card--narcotic`, `.alert.narcotic-warn` light-theme rules L708–735 |
@@ -445,7 +466,7 @@ No new CRITICAL or HIGH safety bugs found. Engine regression (177/177), release 
 | **CNS / OTU** | Segment accumulators in results renderer; HIGH CNS >80% banners in main and contingency paths. |
 | **Gas labels** | Engine and UI use Air / NN/HH / 100%; `shortMixLabel` converts legacy EAN strings defensively. |
 | **Contingency** | Scratch table body replan; gas loss + extended BT; emergency RT/Deco caption; MOD warning on deeper scenario. |
-| **Export** | Functionally correct but **TTS leakage** in textual/PDF exports (V4-R20-M-01). |
+| **Export** | Numerics match on-screen. PDF `Run:` vs `RT:` label drift (V4-R20-MEDIUM-01). TTS in exports is contract-allowed. |
 
 ---
 
@@ -492,19 +513,26 @@ No new CRITICAL or HIGH safety bugs found. Engine regression (177/177), release 
 None identified in this pass. Continue monitoring CCR differential and engine full suite on every engine touch.
 
 ### 2. Fix confirmed app regressions
-- **V4-R20-M-01:** Remove TTS from export txt/PDF/slate summaries and column headers; keep RT/Deco aligned with on-screen totals.
+- **V4-R24-MEDIUM-01:** Fix viewport meta order so native pinch-zoom lockdown applies.
+- **V4-R20-MEDIUM-01:** PDF totals should emit `RT:` (reuse shared summary helpers).
+- **V4-R25-MEDIUM-01:** Persist iOS A2HS banner dismissal.
+- **V4-R23-MEDIUM-01 / V4-R26-MEDIUM-01:** Drop dead `deviceready` path; add select-picker a11y name/`aria-selected`.
 
 ### 3. Add focused regressions
-- Export summary asserts `RT:` and `Deco:` present, `TTS:` absent in user-facing export strings.
+- Viewport meta content contains `user-scalable=no` under Android WebView UA.
+- PDF summary asserts `RT:` present (not `Run:`).
+- Fix contingency EAN sweep to call real export builders (V4-R20-LOW-07).
 - Optional: rename or document `caution` ↔ `low` gas tier.
 
 ### 4. Audit-system cleanup
 - **V4-AUDIT-M-01:** Refresh R-cycle acceptance strings (priority R10, R38, R09).
 - **V4-AUDIT-M-02:** Sync SL-C07 reviewed boundaries for `lsp-dplanner-results.css` L1110.
 - **V4-AUDIT-M-03:** Register `app-version.js`.
+- Re-run failed parallel deep-dives if billing restored (V4-AUDIT-L-01).
 
 ### 5. Nice-to-have polish
-- Remove dead `injectTtsCells` (V4-R07-L-01) and orphan `.col-tts` CSS (V4-R41-L-02).
+- Remove dead `injectTtsCells`, `if(false)` emergency PDF block, orphan `.col-tts` CSS.
+- Deduplicate `shortMix` / gas-margin literals in export-core.
 - Update TTS references in tooltips/help copy (V4-R24-L-01, V4-R34-L-01, V4-R37-L-01).
 
 ---
