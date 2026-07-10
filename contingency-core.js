@@ -335,7 +335,7 @@ function buildContingencyButtons() {
   gases.forEach(g => {
     const btn = document.createElement('button');
     btn.id = 'contGas-' + g.id;
-    btn.textContent = 'Lose ' + g.name;
+    btn.textContent = g.name;
     btn.className = 'cont-gas-btn';
     btn.style.cssText = 'padding:8px 14px;background:rgba(255,71,87,0.08);color:var(--muted);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:11px;font-weight:600;';
     btn.onclick = () => selectContGas(String(g.id), gases);
@@ -345,7 +345,7 @@ function buildContingencyButtons() {
   if (gases.length >= 2) {
     const btn = document.createElement('button');
     btn.id = 'contGas-both';
-    btn.textContent = gases.length > 2 ? 'Lose All' : 'Lose Both';
+    btn.textContent = gases.length > 2 ? 'All' : 'Both';
     btn.className = 'cont-gas-btn';
     btn.style.cssText = 'padding:8px 14px;background:rgba(255,71,87,0.08);color:var(--muted);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;';
     btn.onclick = () => selectContGas('both', gases);
@@ -587,8 +587,6 @@ function calcContingency() {
   }
 }
 // Redirected to unified exportTXT — kept for backward compat
-
-
 
 
 

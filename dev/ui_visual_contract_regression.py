@@ -951,7 +951,7 @@ async () => {
       selectedAfterCalc,
       picked: lossBtn?.id || '',
       labelsCanonical: afterGasButtons.concat(beforeGasButtons).every(btn => !/\bEAN\s*\d+\b|\bEAN\d+\b/i.test(btn.text))
-        && afterGasButtons.some(btn => /Lose\s+50\/00/i.test(btn.text)),
+        && afterGasButtons.some(btn => /^50\/00$/i.test(btn.text)),
       scenarioCanonical: !/\bEAN\s*\d+\b|\bEAN\d+\b/i.test(document.getElementById('contingencyResult')?.textContent || ''),
       emergencyGasVisible,
       emergencyGasCardCount: emergencyGasCards.length,
