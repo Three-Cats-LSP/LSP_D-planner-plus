@@ -2032,7 +2032,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "fef5fbbb065314b2ba449ff19fd9354dcb3c13c6224216a8e6154b34ffc00c1a",
+      "fingerprint": "5998ce956acc2a5c8e987551c4e69055463c97ae816a7ddb051832fdee54015e",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -6285,12 +6285,12 @@
     },
     {
       "cycle": "R41",
-      "max_new_application_lines": 1089,
+      "max_new_application_lines": 1090,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1089; sessions: 2",
+      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1090; sessions: 2",
       "min_review_sessions": 2
     },
     {
