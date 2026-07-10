@@ -34,12 +34,6 @@
         "reason": "Generated from vpm-engine-core.js"
       },
       {
-        "pattern": "app-version.js",
-        "generator": "python tools/update_sw_version.py",
-        "check": "python audit.py",
-        "reason": "Generated version constant"
-      },
-      {
         "pattern": "package-lock.json",
         "generator": "npm install --package-lock-only",
         "check": "npm ci --ignore-scripts",
@@ -1972,7 +1966,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "8bda81d7db302ce7ed12e1c6953b500f9fedf5fb338d3534f672e6ad0f096be1",
+      "fingerprint": "8042d16f089869365ce954aa4028f708ee95daacc2de8b1a8b46354de7f3baf3",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2190,7 +2184,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-RUNTIME-BOOTSTRAP"
       },
-      "fingerprint": "2bc3e6615d8aae5761356df9f7531a0adacf91786c2d2be39ac8170e137672a7",
+      "fingerprint": "19a3c15faf97ac93fcce4569f2f6a315bef72ace0c17a102b69a135e2ce14a1b",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2754,7 +2748,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PWA-LIFECYCLE"
       },
-      "fingerprint": "255f82c28c0802d66199080187b9a7526297e68b9c5701b69f71027cc848dde2",
+      "fingerprint": "d891f8bed308845f47cfc819f84bc4dc27e662056eb710d4fc529a718315f571",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2949,20 +2943,14 @@
       "path": "android-select-picker.js",
       "layer": "native_bridge",
       "priority": "P1",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "56fe8ea5113d5a66992ffff19610eaeefdee32b69a8c5c9aa8eb0f3c78246d58",
-      "last_read_fingerprint": "56fe8ea5113d5a66992ffff19610eaeefdee32b69a8c5c9aa8eb0f3c78246d58",
-      "evidence": [
-        "SUITE-ANDROID/android-compile",
-        "SUITE-SW-LIFECYCLE/SW-NETWORK-FIRST-ENGINE"
-      ],
-      "regression_cases": [
-        "ANDROID-01",
-        "REG-45"
-      ],
+      "fingerprint": "d21a410a41529993006111c1ea9e614d4cbfd1233fe2be810b276cc3f46f6176",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 full audit verified \u00e2\u20ac\u201d APP-ANDROID-SELECT"
     },
     {
@@ -3011,7 +2999,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "85ad81aa77e282293aa3f6eeb80163763d048ed7cdc2302401498426e1b244fc",
+      "fingerprint": "b34a4505b2587e5129e50e522f8ab4ce70cb9ba0bd211bde1e54cf27bf5be934",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3167,6 +3155,21 @@
     },
     {
       "id": "APP-VERSION",
+      "path": "app-version.js",
+      "layer": "release_config",
+      "priority": "P2",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "f8b57afd17943728b5e2f920869f7adbcded7d676b91cbbbaa0281bd0fd1cf26",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "V4-AUDIT-M-03: register runtime app-version.js source of truth"
+    },
+    {
+      "id": "APP-VERSION-JSON",
       "path": "version.json",
       "layer": "release_config",
       "priority": "P2",
@@ -3178,7 +3181,7 @@
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
-      "issue": "V3 full audit verified \u00e2\u20ac\u201d APP-VERSION"
+      "issue": "Release version.json metadata (split from APP-VERSION)"
     },
     {
       "id": "APP-CAPACITOR-CONFIG",
@@ -3883,18 +3886,14 @@
       "path": "dev/run_native_regression.py",
       "layer": "test_infrastructure",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "63d1608bcfffc49bf37d4d997d785bdec150013dcce94c306f340827a9dfa233",
-      "last_read_fingerprint": "63d1608bcfffc49bf37d4d997d785bdec150013dcce94c306f340827a9dfa233",
-      "regression_cases": [
-        "ANDROID-01"
-      ],
-      "evidence": [
-        "SUITE-ANDROID/android-compile"
-      ],
+      "fingerprint": "ef71d4ddbe56d495ac4eb5847dea4471885d76d6d6f5adc3a9d98da1a16b0a39",
+      "last_read_fingerprint": null,
+      "regression_cases": [],
+      "evidence": [],
       "issue": "V3 full audit verified \u00e2\u20ac\u201d TEST-NATIVE-RUNNER"
     },
     {
@@ -4388,6 +4387,21 @@
         "COV-01"
       ],
       "issue": "V3 full audit verified \u00e2\u20ac\u201d TOOL-AUDIT-COVERAGE-TEST"
+    },
+    {
+      "id": "TOOL-V4-CURSOR-FULL-7-FIXES-TEST",
+      "path": "tools/test_v4_cursor_full_7_fixes.py",
+      "layer": "test_infrastructure",
+      "priority": "P2",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "0357d0c90d26236997761ac04e32b873f9b6ae5a7d5f92bbf2a347f46ee6f12b",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "V4 cursor_full_7 fixer static regressions"
     },
     {
       "id": "TOOL-BUILD-PAGES",
@@ -5946,7 +5960,7 @@
     },
     {
       "cycle": "R09",
-      "max_new_application_lines": 478,
+      "max_new_application_lines": 469,
       "application_units": [
         "UI-ZHL-RUNNER-SETUP",
         "UI-ZHL-RUNNER-ENGINE"
@@ -5954,17 +5968,17 @@
       "engine_reverification": [
         "ENG-ZHL-SCHEDULE"
       ],
-      "acceptance": "V4 R09: ZHL runner setup and engine invocation risk-first READ; current lines: 478; sessions: 1"
+      "acceptance": "V4 R09: ZHL runner setup and engine invocation risk-first READ; current lines: 469; sessions: 1"
     },
     {
       "cycle": "R10",
-      "max_new_application_lines": 588,
+      "max_new_application_lines": 285,
       "application_units": [
         "UI-ZHL-HEADLESS-HELPERS",
         "UI-ZHL-HEADLESS-ENGINE"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R10: Headless ZHL path risk-first READ; current lines: 588; sessions: 1"
+      "acceptance": "V4 R10: Headless ZHL path risk-first READ; current lines: 285; sessions: 1"
     },
     {
       "cycle": "R11",
@@ -6044,12 +6058,12 @@
     },
     {
       "cycle": "R18",
-      "max_new_application_lines": 594,
+      "max_new_application_lines": 591,
       "application_units": [
         "APP-CONTINGENCY"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R18: Contingency core risk-first READ; current lines: 594; sessions: 1"
+      "acceptance": "V4 R18: Contingency core risk-first READ; current lines: 591; sessions: 1"
     },
     {
       "cycle": "R19",
@@ -6096,44 +6110,44 @@
     },
     {
       "cycle": "R23",
-      "max_new_application_lines": 390,
+      "max_new_application_lines": 395,
       "application_units": [
         "UI-RUNTIME-BOOTSTRAP",
         "UI-APP-INIT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R23: Runtime bootstrap and app init risk-first READ; current lines: 390; sessions: 1"
+      "acceptance": "V4 R23: Runtime bootstrap and app init risk-first READ; current lines: 395; sessions: 1"
     },
     {
       "cycle": "R24",
-      "max_new_application_lines": 2462,
+      "max_new_application_lines": 2458,
       "application_units": [
         "UI-BOOT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R24: index.html shell boot region risk-first READ; current lines: 2414; sessions: 5",
+      "acceptance": "V4 R24: index.html shell boot region risk-first READ; current lines: 2458; sessions: 5",
       "min_review_sessions": 5
     },
     {
       "cycle": "R25",
-      "max_new_application_lines": 435,
+      "max_new_application_lines": 433,
       "application_units": [
         "APP-SERVICE-WORKER",
         "UI-PWA-LIFECYCLE",
         "APP-MANIFEST"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 428; sessions: 1"
+      "acceptance": "V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 433; sessions: 1"
     },
     {
       "cycle": "R26",
-      "max_new_application_lines": 548,
+      "max_new_application_lines": 555,
       "application_units": [
         "APP-CAPACITOR-BRIDGE",
         "APP-ANDROID-SELECT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R26: Capacitor and Android bridge risk-first READ; current lines: 548; sessions: 1"
+      "acceptance": "V4 R26: Capacitor and Android bridge risk-first READ; current lines: 555; sessions: 1"
     },
     {
       "cycle": "R27",
@@ -6224,23 +6238,23 @@
     },
     {
       "cycle": "R35",
-      "max_new_application_lines": 84,
+      "max_new_application_lines": 82,
       "application_units": [
         "UI-MARKUP-REC-PLANNER",
         "UI-REC-PLANNER"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R35: REC planner markup and runner risk-first READ; current lines: 84; sessions: 1"
+      "acceptance": "V4 R35: REC planner markup and runner risk-first READ; current lines: 82; sessions: 1"
     },
     {
       "cycle": "R36",
-      "max_new_application_lines": 681,
+      "max_new_application_lines": 679,
       "application_units": [
         "UI-MARKUP-TEC-PLANNER",
         "UI-PLANNER-INPUTS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R36: TEC planner markup and planner input ownership risk-first READ; current lines: 681; sessions: 2",
+      "acceptance": "V4 R36: TEC planner markup and planner input ownership risk-first READ; current lines: 679; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6254,13 +6268,13 @@
     },
     {
       "cycle": "R38",
-      "max_new_application_lines": 619,
+      "max_new_application_lines": 605,
       "application_units": [
         "UI-MARKUP-TOOLS",
         "UI-MARKUP-MODALS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R38: Tools and modal markup risk-first READ; current lines: 612; sessions: 2",
+      "acceptance": "V4 R38: Tools and modal markup risk-first READ; current lines: 605; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6295,13 +6309,13 @@
     },
     {
       "cycle": "R42",
-      "max_new_application_lines": 822,
+      "max_new_application_lines": 820,
       "application_units": [
         "UI-PLANNER-SHELL",
         "UI-RESULTS-PANEL"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R42: Planner shell and results panel design-lock READ; current lines: 822; sessions: 2",
+      "acceptance": "V4 R42: Planner shell and results panel design-lock READ; current lines: 820; sessions: 2",
       "min_review_sessions": 2
     }
   ],

@@ -151,7 +151,12 @@
         item.type = 'button';
         item.className = 'lsp-android-select-item';
         item.setAttribute('role', 'option');
-        if (index === sel.selectedIndex) item.classList.add('is-selected');
+        if (index === sel.selectedIndex) {
+          item.classList.add('is-selected');
+          item.setAttribute('aria-selected', 'true');
+        } else {
+          item.setAttribute('aria-selected', 'false');
+        }
         item.textContent = opt.textContent || opt.label || opt.value;
         if (opt.disabled) {
           item.disabled = true;
@@ -195,9 +200,11 @@
     btn.type = 'button';
     btn.className = 'lsp-android-select-btn' + (sel.className ? (' ' + sel.className) : '');
     btn.setAttribute('aria-haspopup', 'listbox');
+    btn.setAttribute('aria-label', titleForSelect(sel));
 
     function syncBtn() {
       btn.textContent = labelForSelect(sel);
+      btn.setAttribute('aria-label', titleForSelect(sel));
       btn.disabled = !!sel.disabled;
       btn.classList.toggle('is-disabled', !!sel.disabled);
     }

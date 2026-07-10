@@ -2237,7 +2237,7 @@ async function exportPDF(opts) {
       y+=5; return;
     }
     if(phase==='totals'){
-      const t = `Run: ${planSumPdf.runTime}  TTS: ${planSumPdf.tts}  Deco: ${planSumPdf.decoTime}  CNS: ${planSumPdf.cns}  OTU: ${planSumPdf.otu}  PrT: ${planSumPdf.prt}  Surf GF: ${planSumPdf.surfGF||'-'}  Decozone: ${planSumPdf.decozone}  First deco: ${planSumPdf.decoStop}`;
+      const t = `RT: ${planSumPdf.runTime}  TTS: ${planSumPdf.tts}  Deco: ${planSumPdf.decoTime}  CNS: ${planSumPdf.cns}  OTU: ${planSumPdf.otu}  PrT: ${planSumPdf.prt}  Surf GF: ${planSumPdf.surfGF||'-'}  Decozone: ${planSumPdf.decozone}  First deco: ${planSumPdf.decoStop}`;
       const tLines = doc.splitTextToSize(cleanPDF(t), tblCw - 4);
       const tH = 4.2 * tLines.length + 1.5;
       checkY(tH);
@@ -2691,7 +2691,7 @@ async function exportPDF(opts) {
     doc.setFontSize(11);doc.setFont('DejaVuSans','bold');doc.setTextColor(180,30,30);
     doc.text('EMERGENCY PLAN: '+cc.label,ML+3,y+6);
     doc.setFontSize(8);doc.setFont('DejaVuSans','normal');doc.setTextColor(100,0,0);
-    doc.text(`Run: ${cc.lastRunFmt||cc.lastRun+"'00\""} | TTS: ${cc.tts||'—'} | Deco: ${cc.decoTimeFmt||cc.decoTime+"'00\""} | CNS: ${cc.totalCNS||'—'} | OTU: ${cc.totalOTU||'—'} | PrT: ${cc.totalPrT||'—'} | Decozone: ${cc.decozoneDisp||formatDecoZoneStart(cc.decoZoneStart)} | First deco: ${cc.decoStop||'—'}`,ML+3,y+11);
+    doc.text(`RT: ${cc.lastRunFmt||cc.lastRun+"'00\""} | TTS: ${cc.tts||'—'} | Deco: ${cc.decoTimeFmt||cc.decoTime+"'00\""} | CNS: ${cc.totalCNS||'—'} | OTU: ${cc.totalOTU||'—'} | PrT: ${cc.totalPrT||'—'} | Decozone: ${cc.decozoneDisp||formatDecoZoneStart(cc.decoZoneStart)} | First deco: ${cc.decoStop||'—'}`,ML+3,y+11);
     doc.setTextColor(150,0,0);doc.text(cc.msg||'',ML+3,y+15.5);
     doc.setTextColor(0,0,0);y+=22;
     sectionTitle('EMERGENCY ASCENT SCHEDULE', cc.label);
@@ -2853,7 +2853,7 @@ async function exportContingencyPDF(opts) {
   doc.setFontSize(10); doc.setFont('DejaVuSans','bold'); doc.setTextColor(180,30,30);
   doc.text('⚠ ' + cleanPDF(c.label), ML+3, y+6);
   doc.setFontSize(8); doc.setFont('DejaVuSans','normal'); doc.setTextColor(100,0,0);
-  doc.text(`Run: ${c.lastRunFmt||c.lastRun+"'00\""} | TTS: ${c.tts||'--'} | Deco: ${c.decoTimeFmt||c.decoTime+"'00\""} | CNS: ${c.totalCNS||'--'} | OTU: ${c.totalOTU||'--'} | PrT: ${c.totalPrT||'--'} | Decozone: ${c.decozoneDisp||formatDecoZoneStart(c.decoZoneStart)} | First deco: ${c.decoStop||'--'}`, ML+3, y+10.5);
+  doc.text(`RT: ${c.lastRunFmt||c.lastRun+"'00\""} | TTS: ${c.tts||'--'} | Deco: ${c.decoTimeFmt||c.decoTime+"'00\""} | CNS: ${c.totalCNS||'--'} | OTU: ${c.totalOTU||'--'} | PrT: ${c.totalPrT||'--'} | Decozone: ${c.decozoneDisp||formatDecoZoneStart(c.decoZoneStart)} | First deco: ${c.decoStop||'--'}`, ML+3, y+10.5);
   doc.setTextColor(150,0,0); doc.text(cleanPDF(c.msg||''), ML+3, y+14.5);
   doc.setTextColor(0,0,0); y+=19;
 
@@ -2914,7 +2914,7 @@ async function exportContingencyPDF(opts) {
         y+=5; return;
       }
       if(phase==='totals'){
-        const t = `Run: ${emSumPdf.runTime}  TTS: ${emSumPdf.tts}  Deco: ${emSumPdf.decoTime}  CNS: ${emSumPdf.cns}  OTU: ${emSumPdf.otu}  PrT: ${emSumPdf.prt}  Surf GF: ${emSumPdf.surfGF||'-'}  Decozone: ${emSumPdf.decozone}  First deco: ${emSumPdf.decoStop}`;
+        const t = `RT: ${emSumPdf.runTime}  TTS: ${emSumPdf.tts}  Deco: ${emSumPdf.decoTime}  CNS: ${emSumPdf.cns}  OTU: ${emSumPdf.otu}  PrT: ${emSumPdf.prt}  Surf GF: ${emSumPdf.surfGF||'-'}  Decozone: ${emSumPdf.decozone}  First deco: ${emSumPdf.decoStop}`;
         const tLines = doc.splitTextToSize(cleanPDF(t), tblCw - 4);
         const tH = 4.2 * tLines.length + 1.5;
         checkY(tH);

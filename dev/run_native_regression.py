@@ -34,6 +34,8 @@ async () => {
   }
 
   assert(btn.textContent.trim() === 'Air', 'initial button label is Air');
+  assert(btn.getAttribute('aria-label') === 'Bottom gas', 'button has accessible name from field label');
+  assert(btn.getAttribute('aria-haspopup') === 'listbox', 'button exposes listbox popup');
   sel.value = 'ean32';
   assert(btn.textContent.trim() === 'EAN32', 'value setter syncs button (issue #22)');
 
@@ -57,6 +59,7 @@ async () => {
   const algoBtn = field2.querySelector('.lsp-android-select-btn');
   const algoSel = field2.querySelector('select');
   assert(!!algoBtn, 'dynamically added select is wrapped');
+  assert(algoBtn.getAttribute('aria-label') === 'Algo', 'dynamic select button has accessible name');
   algoSel.value = 'vpm';
   assert(algoBtn.textContent.trim() === 'VPM', 'dynamic select value setter syncs');
   algoSel.options[1].textContent = 'VPM-B';
@@ -71,6 +74,10 @@ async () => {
   const items = sheet.querySelectorAll('.lsp-android-select-item');
   assert(items.length === 2, 'disabled unselected option omitted from sheet');
   assert(!sheet.textContent.includes('EAN50'), 'disabled option not offered in sheet');
+  const selected = sheet.querySelector('.lsp-android-select-item.is-selected');
+  assert(!!selected && selected.getAttribute('aria-selected') === 'true', 'selected option has aria-selected true');
+  const unselected = Array.from(items).filter(el => !el.classList.contains('is-selected'));
+  assert(unselected.every(el => el.getAttribute('aria-selected') === 'false'), 'unselected options have aria-selected false');
 
   sel.options[1].disabled = true;
   await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));

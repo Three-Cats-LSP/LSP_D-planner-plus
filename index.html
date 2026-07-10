@@ -4,6 +4,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <script>
 (function () {
   var ua = navigator.userAgent || '';
@@ -11,11 +12,15 @@
   if (isAndroidWebView || (window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform())) {
     document.documentElement.classList.add('android-webview', 'capacitor-native');
     var vp = document.querySelector('meta[name="viewport"]');
-    if (vp) vp.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+    if (!vp) {
+      vp = document.createElement('meta');
+      vp.setAttribute('name', 'viewport');
+      document.head.insertBefore(vp, document.head.firstChild);
+    }
+    vp.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
   }
 })();
 </script>
-<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <title>LSP D-Planner+</title>
 <!-- PWA -->
 <link href="manifest.json" rel="manifest"/>
@@ -2463,11 +2468,16 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
     var el = document.getElementById('apkDownloadIcon');
     if (el) el.style.display = 'none';
   }
-  // Primary: userAgent flag injected by MainActivity
-  if (window.Capacitor && window.Capacitor.isNativePlatform()) {
+  // Capacitor native / Android WebView class from head lockdown script
+  try {
+    if (window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) {
+      hideApkIcons();
+      return;
+    }
+  } catch (e) {}
+  if (document.documentElement.classList.contains('capacitor-native') ||
+      document.documentElement.classList.contains('android-webview')) {
     hideApkIcons();
-  } else {
-    document.addEventListener('deviceready', hideApkIcons);
   }
 })();
 
@@ -5822,15 +5832,19 @@ window.addEventListener('load', function() {
   });
 
   // iOS Safari — manual instructions (no beforeinstallprompt support)
-  if (/iphone|ipad|ipod/i.test(navigator.userAgent) && !navigator.standalone) {
+  const IOS_A2HS_DISMISS_KEY = 'lspIosA2hsDismissed';
+  let iosA2hsDismissed = false;
+  try { iosA2hsDismissed = localStorage.getItem(IOS_A2HS_DISMISS_KEY) === '1'; } catch (e) {}
+  if (/iphone|ipad|ipod/i.test(navigator.userAgent) && !navigator.standalone && !iosA2hsDismissed) {
     setTimeout(() => {
+      if (document.getElementById('pwaBanner')) return;
       const b = document.createElement('div');
       b.id = 'pwaBanner';
       b.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border-hi);border-radius:12px;padding:14px 20px;display:flex;align-items:center;gap:12px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,0.6);font-family:Outfit,sans-serif;max-width:340px;width:90%;';
       b.innerHTML = '<span style="font-size:24px;">\uD83E\uDD3F</span>'
         + '<div style="flex:1;"><div style="color:var(--text);font-weight:600;font-size:13px;">Install on iPhone / iPad</div>'
         + '<div style="color:var(--muted);font-size:11px;margin-top:3px;">Tap <strong style="color:var(--accent);">Share \u2191</strong> then <strong style="color:var(--accent);">Add to Home Screen</strong></div></div>'
-        + '<button onclick="this.parentNode.remove()" style="background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:0;line-height:1;">&times;</button>';
+        + '<button type="button" aria-label="Dismiss" onclick="try{localStorage.setItem(\'lspIosA2hsDismissed\',\'1\')}catch(e){}this.parentNode.remove()" style="background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:0;line-height:1;">&times;</button>';
       document.body.appendChild(b);
     }, 2500);
   }
