@@ -66,7 +66,7 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R17 | APP-GAS-PLAN | 546 | - | V4 R17: Gas plan core risk-first READ; current lines: 546; sessions: 1 |
 | R18 | APP-CONTINGENCY | 591 | - | V4 R18: Contingency core risk-first READ; current lines: 591; sessions: 1 |
 | R19 | UI-VPM-RENDER, UI-ZHL-RESULTS | 968 | - | V4 R19: VPM/ZHL results rendering risk-first READ; current lines: 968; sessions: 2 |
-| R20 | APP-EXPORT | 3312 | - | V4 R20: Export text/PDF risk-first READ; current lines: 3312; sessions: 6 |
+| R20 | APP-EXPORT | 3352 | - | V4 R20: Export text/PDF risk-first READ; current lines: 3352; sessions: 6 |
 | R21 | UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 632 | - | V4 R21: Plot render and waypoint graph risk-first READ; current lines: 632; sessions: 2 |
 | R22 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 755 | - | V4 R22: Profile tool and plot init risk-first READ; current lines: 755; sessions: 2 |
 | R23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 395 | - | V4 R23: Runtime bootstrap and app init risk-first READ; current lines: 395; sessions: 1 |

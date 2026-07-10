@@ -682,7 +682,7 @@ body.light-theme #resultsPanel .deco-plan-card { background: #f3f4f6; border-col
 #resultsPanel .gas-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: var(--space-2); }
 #resultsPanel .gas-pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 16px; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; border: 2px solid; white-space: nowrap; }
 #resultsPanel .gas-pill.bottom-gas { background: #fff; border-color: #4169E1; color: #111; }
-#resultsPanel .gas-pill.deco1, #resultsPanel .gas-pill.deco2, #resultsPanel .gas-pill.deco-gas { background: var(--gas-switch-label-bg); border-color: var(--gas-switch-label-text); color: var(--gas-switch-label-text); }
+#resultsPanel .gas-pill.deco1, #resultsPanel .gas-pill.deco2, #resultsPanel .gas-pill.deco-gas { background: #d6ff00; border-color: #16a34a; color: #166534; }
 #resultsPanel .gas-pill.travel-gas { background: #fff; border-color: var(--gas-travel); color: #111; }
 body.light-theme #resultsPanel .gas-pill.bottom-gas { background: #f0f4ff; }
 body.light-theme #resultsPanel .gas-pill.travel-gas { background: #f0f4ff; color: #111; border-color: var(--gas-travel); }

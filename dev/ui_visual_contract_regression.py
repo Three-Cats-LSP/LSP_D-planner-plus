@@ -204,6 +204,8 @@ CAPTURE_JS = r"""
   const expectedBg = resolveColor(root.getPropertyValue('--gas-switch-label-bg'));
   const expectedSwitch = expectedBg;
   const expectedText = resolveColor(root.getPropertyValue('--gas-switch-label-text'));
+  const expectedDecoPillBg = resolveColor('#d6ff00');
+  const expectedDecoPillText = resolveColor('#166534');
   const decoDotColors = decoDots.map(el => rgb(style(el, 'backgroundColor')));
   const decoPills = pills.filter(el => el.classList.contains('deco1') || el.classList.contains('deco2'));
   const graphWps = Array.isArray(window._plannerWaypoints) ? window._plannerWaypoints : [];
@@ -263,6 +265,8 @@ CAPTURE_JS = r"""
     titleHasEmoji: /[\u{1F535}\u{1F7E1}\u{1F7E0}\u{1F7E2}]/u.test(title?.textContent || ''),
     expectedBg,
     expectedText,
+    expectedDecoPillBg,
+    expectedDecoPillText,
     decoDotColors,
     pillTexts: pills.map(el => el.textContent.trim()),
     decoPillBackgrounds: decoPills.map(el => rgb(style(el, 'backgroundColor'))),
@@ -2023,8 +2027,8 @@ def main() -> int:
         and any(text.startswith("Bottom: ") for text in c["pillTexts"])
         and any(text.startswith("Deco 1: ") and " @ " in text for text in c["pillTexts"])
         and bool(c["decoPillBackgrounds"])
-        and all(color == c["expectedBg"] for color in c["decoPillBackgrounds"])
-        and all(color == c["expectedText"] for color in c["decoPillColors"])
+        and all(color == c["expectedDecoPillBg"] for color in c["decoPillBackgrounds"])
+        and all(color == c["expectedDecoPillText"] for color in c["decoPillColors"])
         and c["decoPlanCardStyle"]
         and c["hazardAlertStyle"]
         and c["decoPlanCardStyle"]["background"] != c["hazardAlertStyle"]["background"]

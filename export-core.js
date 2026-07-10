@@ -519,7 +519,7 @@ function drawDecoPlanBannerPdf(doc, y, layout, data, planSum, hasDeco) {
   if ((data.bottomGas || '').includes('He:')) metaLines.push(cleanPDF(data.bottomGas));
 
   const sumLine = planSum ? cleanPDF(
-    `RT ${planSum.runTime} ? Deco ${planSum.decoTime} ? CNS ${planSum.cns} ? OTU ${planSum.otu} ? PrT ${planSum.prt} ? Surf GF ${planSum.surfGF || '-'} ? Decozone ${planSum.decozone} ? First deco ${planSum.decoStop}`
+    `RT ${planSum.runTime} | Deco ${planSum.decoTime} | CNS ${planSum.cns} | OTU ${planSum.otu} | PrT ${planSum.prt} | Surf GF ${planSum.surfGF || '-'} | Decozone ${planSum.decozone} | First deco ${planSum.decoStop}`
   ) : '';
 
   const chipH = 5.5;
@@ -772,7 +772,13 @@ function _pdfDrawGasUsageCards(doc, y, layout, gasConsumed, options) {
     const status = _pdfGasStatus(row, threshold);
     const style = _pdfGasStatusStyle(status);
     const warning = _pdfPlainGasWarning(row, threshold, status);
-    const cardH = warning ? 24 : 19;
+    doc.setFont('DejaVuSans', 'bold');
+    doc.setFontSize(6.8);
+    const warnLines = warning
+      ? doc.splitTextToSize(`\u26A0 ${cleanPDF(warning)}`, CW - 10).filter((line) => String(line).trim())
+      : [];
+    const warningH = warnLines.length ? warnLines.length * 3.4 + 1.5 : 0;
+    const cardH = 21 + warningH;
     checkY(cardH + 2);
     doc.setFillColor(...style.bg);
     doc.setDrawColor(...style.border);
@@ -786,25 +792,24 @@ function _pdfDrawGasUsageCards(doc, y, layout, gasConsumed, options) {
     doc.setFont('DejaVuSans', 'bold');
     doc.setFontSize(8);
     doc.setTextColor(...style.text);
-    doc.text(cleanPDF(row.label || ''), ML + 4, y + 5.2);
+    const labelText = cleanPDF(row.label || '');
+    doc.text(labelText, ML + 4, y + 5.2);
     doc.setFont('DejaVuSans', 'normal');
     doc.setFontSize(5.8);
     doc.setTextColor(...PDF_V3.muted);
-    doc.text(cleanPDF(role), ML + 4 + doc.getTextWidth(cleanPDF(row.label || '')) + 2, y + 5.2);
+    doc.text(cleanPDF(role), ML + 4 + doc.getTextWidth(labelText) + 2.5, y + 5.2);
 
     doc.setFont('DejaVuSans', 'bold');
     doc.setFontSize(8);
     doc.setTextColor(...PDF_V3.text);
     doc.text(`${_pdfGasVolText(row.remainingTotalL)} (${_pdfGasPresText(row.remainingBar)})`, ML + CW - 4, y + 5.2, { align: 'right' });
 
-    let barY = y + 9;
-    if (warning) {
+    let barY = y + 10 + warningH;
+    if (warnLines.length) {
       doc.setFont('DejaVuSans', 'bold');
       doc.setFontSize(6.8);
       doc.setTextColor(...style.text);
-      const warnLines = doc.splitTextToSize(`⚠ ${cleanPDF(warning)}`, CW - 10);
-      warnLines.slice(0, 2).forEach((line, i) => doc.text(line, ML + 4, y + 9 + i * 3.2));
-      barY = y + 14.5;
+      warnLines.forEach((line, i) => doc.text(line, ML + 4, y + 9 + i * 3.4));
     }
 
     doc.setFont('DejaVuSans', 'normal');
@@ -2082,6 +2087,36 @@ function drawGraphLegend(doc, y, ML, CW, checkY, legendRows) {
     return y+4;
   }
 
+function drawGfCurveColorLegend(doc, y, ML, CW, checkY) {
+  checkY(8);
+  doc.setFontSize(7);
+  doc.setFont('DejaVuSans', 'normal');
+  let x = ML;
+  const cy = y + 3.5;
+
+  doc.setDrawColor(...PDF_V3.accent);
+  doc.setLineWidth(0.6);
+  doc.line(x, cy, x + 8, cy);
+  doc.setTextColor(...PDF_V3.muted);
+  doc.text('GF Ceiling line', x + 10, cy + 1);
+  x += 40;
+
+  doc.setDrawColor(...PDF_V3.green);
+  doc.line(x, cy, x + 8, cy);
+  doc.text('Actual ascent', x + 10, cy + 1);
+  x += 36;
+
+  doc.setFillColor(...PDF_V3.red);
+  doc.circle(x + 3, cy, 1.3, 'F');
+  doc.setTextColor(...PDF_V3.muted);
+  doc.text('Deco Stop', x + 8, cy + 1);
+
+  doc.setTextColor(0, 0, 0);
+  doc.setDrawColor(0, 0, 0);
+  doc.setLineWidth(0.2);
+  return y + 7;
+}
+
 function buildProfileLegendRowsFromWaypoints() {
   const wps = window._plannerWaypoints || window._decoWaypoints || [];
   const rows = [];
@@ -2450,6 +2485,9 @@ async function exportPDF(opts) {
   // DECO SLATE section — compact waterproof-slate format (same as SLATE modal)
   const _pdfSlate = buildSlateText();
   if (_incSlate && _pdfSlate) {
+    drawFooter();
+    doc.addPage();
+    drawHeader();
     checkY(14); sectionTitle('DECO SLATE','Compact waterproof-slate format');
     const _slLines = _pdfSlate.split('\n').slice(1); // drop title line (already in section header)
     doc.setFontSize(7.5); doc.setFont('DejaVuSans','normal'); doc.setTextColor(20,20,20);
@@ -2509,6 +2547,7 @@ async function exportPDF(opts) {
       checkY(60); sectionTitle('GRADIENT FACTOR CURVE',`GF Low ${mGF.low}%  GF High ${mGF.high}%`);
       const _gcCap=_canvasToDataURLForPDF(gc,CW); const gd=_gcCap.dataURL; const gh=CW*gc.height/gc.width;
       doc.addImage(gd,'PNG',ML,y,CW,gh); y+=gh+4;
+      y = drawGfCurveColorLegend(doc, y, ML, CW, checkY);
       // GF curve legend — same numbered stops as web view
       const gfLegEl=document.getElementById('gfCurveLegend');
       const gfRows=gfLegEl?Array.from(gfLegEl.querySelectorAll('tbody tr')):[];
@@ -3018,6 +3057,7 @@ async function exportContingencyPDF(opts) {
       sectionTitle('GRADIENT FACTOR CURVE',`GF Low ${mGF.low}%  GF High ${mGF.high}%`);
       const _gc2Capture=_canvasToDataURLForPDF(gc2,CW); const gd2=_gc2Capture.dataURL; const gh2=CW*gc2.height/gc2.width;
       doc.addImage(gd2,'PNG',ML,y,CW,gh2); y+=gh2+4;
+      y = drawGfCurveColorLegend(doc, y, ML, CW, checkY);
       const gfLegEl2=document.getElementById('gfCurveLegend');
       const gfRows2=gfLegEl2?Array.from(gfLegEl2.querySelectorAll('tbody tr')):[];
       if(gfRows2.length){
