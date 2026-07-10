@@ -601,7 +601,7 @@ body.light-theme #resultsPanel .chip-yellow { background: var(--yellow-dim) !imp
   padding:2px 8px 3px;
   border-radius:999px;
   background:#ff4433;
-  border:2px solid var(--narcotic-chip-border, rgba(255,255,255,0.92));
+  border:1px solid var(--narcotic-chip-border, rgba(255,255,255,0.92));
   color:#fff;
 }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-title--narcotic .gas-usage-mix,
