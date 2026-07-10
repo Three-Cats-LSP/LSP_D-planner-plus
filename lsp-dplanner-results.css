@@ -659,6 +659,15 @@ body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumpt
 #resultsPanel #decoAlertsNarcotic .alert > * { min-width: 0; overflow-wrap: anywhere; }
 #resultsPanel #decoAlerts .alert:first-child,
 #resultsPanel #decoAlertsNarcotic .alert:first-child { margin-top: 0; }
+#resultsPanel #decoAlerts .alert.deco,
+#resultsPanel #decoAlertsNarcotic .alert.deco,
+#resultsPanel #decoAlerts .alert.narcotic-warn,
+#resultsPanel #decoAlertsNarcotic .alert.narcotic-warn {
+  background:#ff4433;
+  border:1px solid var(--narcotic-banner-border, rgba(255,255,255,0.92));
+  color:#fff;
+  font-weight:700;
+}
 #resultsPanel .deco-plan-caption { margin: var(--space-2) var(--space-4) 0; }
 #resultsPanel .deco-plan-card { padding: 12px 14px; background: rgba(148,160,172,0.08); border: 1px solid rgba(148,160,172,0.45); border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.55; color: var(--text); }
 body.light-theme #resultsPanel .deco-plan-card { background: #f3f4f6; border-color: #94a0ac; }
@@ -681,7 +690,7 @@ body.light-theme #resultsPanel .gas-pill.travel-gas { background: #f0f4ff; color
 #resultsPanel .gas-consumption-narcotic { margin: 0 0 var(--space-2); }
 #resultsPanel .gas-consumption-narcotic .alert { display: flex; align-items: flex-start; gap: var(--space-2); width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); font-size: 12px; line-height: 1.45; margin: 0; white-space: normal; overflow-wrap: anywhere; word-break: normal; }
 #resultsPanel .gas-consumption-narcotic .alert > * { min-width: 0; overflow-wrap: anywhere; }
-#resultsPanel .gas-consumption-narcotic .alert.narcotic-warn { background:#ff4433; border:1px solid #ff4433; color:#fff; font-weight:700; }
+#resultsPanel .gas-consumption-narcotic .alert.narcotic-warn { background:#ff4433; border:1px solid var(--narcotic-banner-border, rgba(255,255,255,0.92)); color:#fff; font-weight:700; }
 #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn * { color:#fff !important; }
 #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn .tip-icon { color:#fff !important; opacity:0.85; }
 #resultsPanel .deco-params { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); line-height: 1.6; }
@@ -691,13 +700,13 @@ body.light-theme #resultsPanel #decoAlertsNarcotic .alert.deco,
 body.light-theme #resultsPanel #decoAlerts .alert.narcotic-warn,
 body.light-theme #resultsPanel #decoAlertsNarcotic .alert.narcotic-warn {
   background: #ff4433;
-  border: 1px solid #111;
+  border: 1px solid var(--narcotic-banner-border, #111);
   color: #111;
   font-weight: 700;
 }
 body.light-theme #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn {
   background: #ff4433;
-  border: 1px solid #111;
+  --narcotic-banner-border:#111;
   color: #111 !important;
 }
 body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--critical,
