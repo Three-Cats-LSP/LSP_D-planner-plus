@@ -31,6 +31,34 @@ const EXPORT_SCHEDULE_LAYOUTS = {
   },
 };
 
+const PDF_V3 = {
+  text: [17, 24, 39],
+  muted: [92, 105, 125],
+  faint: [148, 163, 184],
+  surface: [255, 255, 255],
+  surface2: [248, 250, 252],
+  surface3: [241, 245, 249],
+  border: [203, 213, 225],
+  borderHi: [148, 163, 184],
+  accent: [0, 152, 184],
+  cyanSoft: [224, 247, 252],
+  red: [255, 68, 51],
+  redDark: [17, 17, 17],
+  redSoft: [255, 228, 226],
+  orange: [232, 89, 12],
+  orangeSoft: [255, 243, 234],
+  yellow: [255, 191, 0],
+  yellowSoft: [255, 251, 225],
+  green: [22, 163, 74],
+  greenSoft: [236, 253, 245],
+  blue: [37, 99, 235],
+  blueSoft: [239, 246, 255],
+};
+
+function _pdfRgb(arr) {
+  return Array.isArray(arr) ? arr : [0, 0, 0];
+}
+
 function ascentScheduleRule() {
   return '-'.repeat(EXPORT_SECTION_RULE_WIDTH);
 }
@@ -55,17 +83,17 @@ function collectAlertPlainLines(ids) {
 
 function _pdfAlertStyle(txt) {
   const t = String(txt || '').toUpperCase();
-  if (t.includes('CNS')) return { bg: [255, 255, 0], tx: [17, 17, 17], border: [180, 180, 0] };
+  if (t.includes('CNS')) return { bg: [255, 255, 0], tx: PDF_V3.text, border: PDF_V3.redDark };
   if (t.includes('INSUFFICIENT') || t.includes('BEYOND MOD') || t.includes('LIMIT')) {
-    return { bg: [255, 230, 230], tx: [120, 0, 0], border: [180, 30, 30] };
+    return { bg: PDF_V3.redSoft, tx: [204, 0, 0], border: [204, 0, 0] };
   }
   if (t.includes('GAS SWITCH') || t.includes('LOADED')) {
-    return { bg: [255, 248, 220], tx: [100, 60, 0], border: [200, 150, 50] };
+    return { bg: PDF_V3.yellowSoft, tx: [120, 80, 0], border: PDF_V3.yellow };
   }
   if (t.includes('NARCOTIC') || t.includes('NDL') || t.includes('DECOMPRESSION')) {
-    return { bg: [255, 68, 51], tx: [255, 255, 255], border: [200, 50, 30] };
+    return { bg: PDF_V3.red, tx: PDF_V3.redDark, border: PDF_V3.redDark };
   }
-  return { bg: [255, 68, 51], tx: [255, 255, 255], border: [200, 50, 30] };
+  return { bg: PDF_V3.red, tx: PDF_V3.redDark, border: PDF_V3.redDark };
 }
 
 function formatExportAlertText(plainText) {
@@ -98,12 +126,12 @@ function formatExportAlertText(plainText) {
 function _pdfAlertStyleFromEl(el, txt) {
   const cls = el && el.classList;
   if (cls) {
-    if (cls.contains('dang')) return { bg: [255, 230, 230], tx: [120, 0, 0], border: [180, 30, 30] };
-    if (cls.contains('warn')) return { bg: [255, 248, 220], tx: [100, 60, 0], border: [200, 150, 50] };
+    if (cls.contains('dang')) return { bg: PDF_V3.redSoft, tx: [204, 0, 0], border: [204, 0, 0] };
+    if (cls.contains('warn')) return { bg: PDF_V3.yellowSoft, tx: PDF_V3.text, border: PDF_V3.redDark };
     if (cls.contains('deco') || cls.contains('narcotic-warn')) {
-      return { bg: [255, 68, 51], tx: [255, 255, 255], border: [200, 50, 30] };
+      return { bg: PDF_V3.red, tx: PDF_V3.redDark, border: PDF_V3.redDark };
     }
-    if (cls.contains('ok')) return { bg: [230, 245, 230], tx: [20, 100, 40], border: [30, 140, 60] };
+    if (cls.contains('ok')) return { bg: PDF_V3.greenSoft, tx: PDF_V3.green, border: PDF_V3.green };
   }
   return _pdfAlertStyle(txt);
 }
@@ -438,10 +466,10 @@ function renderDecoPlanHeaderHtml(data, opts) {
 
 function _pdfChipColors(kind) {
   switch (kind) {
-    case 'travel': return { fill: [255, 248, 240], border: [255, 153, 0], lbl: [153, 85, 0], txt: [30, 30, 30] };
-    case 'bottom': return { fill: [240, 244, 255], border: [65, 105, 225], lbl: [65, 105, 225], txt: [17, 17, 17] };
-    case 'o2':     return { fill: [236, 254, 255], border: [0, 153, 204], lbl: [0, 120, 160], txt: [17, 17, 17] };
-    default:       return { fill: [255, 251, 235], border: [212, 160, 23], lbl: [140, 100, 0], txt: [30, 30, 30] };
+    case 'travel': return { fill: [255, 251, 235], border: [245, 158, 11], lbl: [180, 83, 9], txt: PDF_V3.text };
+    case 'bottom': return { fill: [255, 255, 255], border: [37, 99, 235], lbl: [30, 64, 175], txt: PDF_V3.text };
+    case 'o2':     return { fill: [214, 255, 0], border: [22, 163, 74], lbl: [22, 101, 52], txt: PDF_V3.text };
+    default:       return { fill: [214, 255, 0], border: [22, 163, 74], lbl: [22, 101, 52], txt: PDF_V3.text };
   }
 }
 
@@ -454,28 +482,28 @@ function drawDecoPlanBannerPdf(doc, y, layout, data, planSum, hasDeco) {
   const boxW = CW;
   const textX = boxX + padX + 6;
   const textW = boxW - padX * 2 - 6;
-  const titleColor = hasDeco ? [255, 68, 51] : [38, 208, 124];
-  const boxFill = hasDeco ? [255, 245, 244] : [240, 255, 244];
-  const boxBorder = hasDeco ? [204, 68, 51] : [34, 136, 85];
+  const titleColor = hasDeco ? PDF_V3.red : PDF_V3.green;
+  const boxFill = hasDeco ? [255, 245, 245] : PDF_V3.greenSoft;
+  const boxBorder = hasDeco ? PDF_V3.red : PDF_V3.green;
 
   const chips = [];
   const isCcr = data.circuit === 'CCR' || data.circuit === 'pSCR';
   const onLoop = isCcrOnLoopProfile({ circuit: data.circuit, bailout: data.ccrBailout });
-  if (data.travelGas) chips.push({ kind: 'travel', lbl: 'TRAVEL', val: `${data.travelGas.gas} @ ${data.travelGas.depth}` });
+  if (data.travelGas) chips.push({ kind: 'travel', lbl: 'Travel:', val: `${data.travelGas.gas} @ ${data.travelGas.depth}` });
   if (onLoop) {
     chips.push({
       kind: 'bottom',
-      lbl: 'LOOP',
+      lbl: 'Loop:',
       val: cleanPDF(loopMixLabelFor(data.bottomGasShort, { circuit: data.circuit, bailout: data.ccrBailout })),
     });
   } else {
-    chips.push({ kind: 'bottom', lbl: isCcr ? 'DILUENT' : 'BOTTOM', val: cleanPDF(data.bottomGasShort) });
+    chips.push({ kind: 'bottom', lbl: isCcr ? 'Diluent:' : 'Bottom:', val: cleanPDF(data.bottomGasShort) });
   }
   if (!onLoop) {
-    const decoLbl = isCcr ? 'BAILOUT' : 'DECO';
+    const decoLbl = isCcr ? 'Bailout' : 'Deco';
     data.decoGases.forEach((g, i) => chips.push({
       kind: /^100/i.test(g.gas) ? 'o2' : 'deco',
-      lbl: `${decoLbl} ${i + 1}`,
+      lbl: `${decoLbl} ${i + 1}:`,
       val: `${g.gas} @ ${g.depth}`,
     }));
   }
@@ -491,7 +519,7 @@ function drawDecoPlanBannerPdf(doc, y, layout, data, planSum, hasDeco) {
   if ((data.bottomGas || '').includes('He:')) metaLines.push(cleanPDF(data.bottomGas));
 
   const sumLine = planSum ? cleanPDF(
-    `Run ${planSum.runTime} · TTS ${planSum.tts} · Deco ${planSum.decoTime} · CNS ${planSum.cns} · OTU ${planSum.otu} · PrT ${planSum.prt} · Surf GF ${planSum.surfGF || '-'} · Decozone ${planSum.decozone} · First deco ${planSum.decoStop}`
+    `RT ${planSum.runTime} ? Deco ${planSum.decoTime} ? CNS ${planSum.cns} ? OTU ${planSum.otu} ? PrT ${planSum.prt} ? Surf GF ${planSum.surfGF || '-'} ? Decozone ${planSum.decozone} ? First deco ${planSum.decoStop}`
   ) : '';
 
   const chipH = 5.5;
@@ -599,24 +627,26 @@ const _PDF_PHASE_PAD = 1.5;
 function _pdfDecoTableLayout(ml, cw, pad = _PDF_TBL_PAD) {
   const tblMl = ml + pad;
   const tblCw = cw - pad * 2;
-  const pct = [5, 14, 9, 12, 9, 9, 11, 11];
+  const pct = [7, 12, 11, 15, 15, 13, 13, 14];
   const sum = pct.reduce((a, b) => a + b, 0);
   const colW = pct.map(p => tblCw * p / sum);
   const colX = [tblMl];
   for (let i = 0; i < colW.length - 1; i++) colX.push(colX[i] + colW[i]);
   return {
     colW, colX, tblMl, tblCw,
-    headers: ['Phase', 'Depth', 'Stop', 'Mix', 'Run', 'TTS', 'PPO2', 'EAD'],
+    headers: ['', 'Depth', 'Stop', 'Run', 'Mix', 'PPO2', 'CNS', 'EAD'],
   };
 }
 
 function _pdfDrawDecoTableHeader(doc, y, layout, bgRgb) {
   const { colW, colX, headers, tblMl, tblCw } = layout;
-  doc.setFillColor(...bgRgb);
+  const bg = bgRgb || PDF_V3.surface3;
+  const darkBg = bg.reduce((a, b) => a + b, 0) < 420;
+  doc.setFillColor(...bg);
   doc.rect(tblMl, y, tblCw, 6, 'F');
   doc.setFontSize(7);
   doc.setFont('DejaVuSans', 'bold');
-  doc.setTextColor(255, 255, 255);
+  doc.setTextColor(...(darkBg ? [255, 255, 255] : PDF_V3.faint));
   headers.forEach((h, i) => {
     if (i === 0) doc.text(h, colX[0] + _PDF_PHASE_PAD, y + 4, { align: 'left' });
     else doc.text(h, colX[i] + colW[i] / 2, y + 4, { align: 'center' });
@@ -643,21 +673,167 @@ function _pdfDrawDecoTableCells(doc, y, layout, cells, txColor) {
 /** Gas-switch row — gold fill only (no border), aligned to columns. */
 function _pdfDrawSwitchRow(doc, y, layout, tr, cleanFn) {
   const clean = cleanFn || (s => (s || '').trim());
-  const { colW, colX, tblMl, tblCw } = layout;
-  const tds = Array.from(tr.querySelectorAll('td'));
-  const depthTxt = clean(tds[1]?.textContent || '');
-  const mixTxt = clean(tds[3]?.textContent || '');
+  const { colW, colX } = layout;
+  const depthTxt = clean(tr.querySelector('td[data-label="Depth"]')?.textContent || '');
+  const mixTxt = clean(tr.querySelector('td[data-label="Mix"]')?.textContent || '');
   const ppo2Txt = clean(tr.querySelector('td[data-label="PPO2"]')?.textContent || '');
-  doc.setFillColor(255, 248, 220);
-  doc.rect(tblMl, y, tblCw, 5, 'F');
   doc.setFontSize(7);
   doc.setFont('DejaVuSans', 'bold');
-  doc.setTextColor(140, 100, 0);
-  _pdfDrawDecoPhaseLabel(doc, y, layout, '>>');
+  doc.setTextColor(...PDF_V3.yellow);
+  _pdfDrawDecoPhaseLabel(doc, y, layout, '⇄');
   if (depthTxt) doc.text(depthTxt, colX[1] + colW[1] / 2, y + 3.5, { align: 'center', maxWidth: colW[1] - 1 });
-  if (mixTxt) doc.text(mixTxt, colX[3] + colW[3] / 2, y + 3.5, { align: 'center', maxWidth: colW[3] - 1 });
-  if (ppo2Txt) doc.text(ppo2Txt, colX[6] + colW[6] / 2, y + 3.5, { align: 'center' });
+  if (mixTxt) doc.text(mixTxt, colX[4] + colW[4] / 2, y + 3.5, { align: 'center', maxWidth: colW[4] - 1 });
+  if (ppo2Txt) doc.text(ppo2Txt, colX[5] + colW[5] / 2, y + 3.5, { align: 'center' });
   doc.setTextColor(0, 0, 0);
+}
+
+function _pdfGasVolText(litres) {
+  const volU = typeof lspVolUnit === 'function' ? lspVolUnit(true) : (units === 'imperial' ? 'ft3' : 'L');
+  if (typeof gpVolDisp === 'function') return `${gpVolDisp(litres)}${volU}`;
+  if (!Number.isFinite(litres)) return `0${volU}`;
+  return `${Math.round(litres)}${volU}`;
+}
+
+function _pdfGasPresText(bar) {
+  const presU = units === 'imperial' ? 'psi' : 'bar';
+  if (typeof gpPresDisp === 'function') return `${gpPresDisp(bar)}${presU}`;
+  if (!Number.isFinite(bar)) return `0${presU}`;
+  return `${Math.round(bar)}${presU}`;
+}
+
+function _pdfGasUsageRows(gasConsumed) {
+  if (typeof _buildGasUsageModel === 'function') return _buildGasUsageModel(gasConsumed || {});
+  if (window._lastGasPlan && Array.isArray(window._lastGasPlan.rows)) {
+    return window._lastGasPlan.rows.map((r) => {
+      const totalL = Number(r.totalL) || 0;
+      const usedL = Number(r.reqL) || 0;
+      const sizeL = Number(r.sizeL) || 12;
+      const fillBar = Number(r.fillBar) || (sizeL ? totalL / sizeL : 0);
+      const remainingTotalL = Math.max(0, totalL - usedL);
+      return {
+        label: r.label,
+        role: r.kind === 'bottom' ? 'Bottom' : 'Deco',
+        displayName: r.label,
+        totalL,
+        usedL,
+        remainingTotalL,
+        fillBar,
+        usedBar: sizeL ? usedL / sizeL : 0,
+        remainingBar: sizeL ? remainingTotalL / sizeL : 0,
+        remainingPercent: totalL ? remainingTotalL / totalL * 100 : 0,
+        remainingPercentOfTotal: totalL ? remainingTotalL / totalL * 100 : 0,
+        shortfallL: Math.max(0, usedL - totalL),
+        turnPressureBar: r.turnBar,
+      };
+    });
+  }
+  return [];
+}
+
+function _pdfGasStatus(row, threshold) {
+  if (typeof _gasUsageStatus === 'function') return _gasUsageStatus(row, threshold);
+  if (!(row.totalL > 0) || row.shortfallL > 0) return 'nogas';
+  if (row.remainingPercent < threshold) return 'critical';
+  if (row.remainingPercent <= 50) return 'caution';
+  return 'ok';
+}
+
+function _pdfGasStatusStyle(status) {
+  if (status === 'nogas') return { bg: PDF_V3.redSoft, border: [255, 49, 49], accent: [220, 38, 38], text: [255, 49, 49] };
+  if (status === 'critical') return { bg: PDF_V3.orangeSoft, border: PDF_V3.orange, accent: PDF_V3.orange, text: PDF_V3.orange };
+  if (status === 'caution') return { bg: [255, 251, 235], border: PDF_V3.yellow, accent: [245, 158, 11], text: [180, 83, 9] };
+  return { bg: PDF_V3.surface, border: PDF_V3.border, accent: PDF_V3.green, text: PDF_V3.green };
+}
+
+function _pdfPlainGasWarning(row, threshold, status) {
+  if (status !== 'critical' && status !== 'nogas') return '';
+  if (!(row.totalL > 0)) return `No gas supply: ${row.displayName || row.label} has no configured cylinder supply`;
+  if (row.shortfallL > 0) return `No gas supply: ${row.displayName || row.label} needs ${_pdfGasVolText(row.usedL)}, cylinder has ${_pdfGasVolText(row.totalL)}`;
+  return `Critical: ${row.displayName || row.label} below ${threshold}% remaining`;
+}
+
+function _pdfDrawGasUsageCards(doc, y, layout, gasConsumed, options) {
+  const { ML, CW, checkY, cleanPDF, sectionTitle } = layout;
+  const title = options?.title || 'GAS CONSUMPTION';
+  const threshold = typeof getGasLowThresholdPct === 'function' ? getGasLowThresholdPct() : 20;
+  const rows = _pdfGasUsageRows(gasConsumed).filter(r => r && r.label);
+  if (!rows.length) return y;
+  const sacUnit = typeof lspSacUnit === 'function' ? lspSacUnit() : (units === 'imperial' ? 'ft3/min' : 'L/min');
+  const sacBot = document.getElementById('sacBottom')?.value || '';
+  const sacDec = document.getElementById('sacDeco')?.value || '';
+  sectionTitle(title, `Low gas ${threshold}%  ·  SAC bottom: ${sacBot} ${sacUnit}  deco: ${sacDec} ${sacUnit}`);
+
+  const narcoticSource = options?.includeNarcotic ? document.getElementById('decoAlertsNarcotic') : null;
+  if (narcoticSource && narcoticSource.querySelector('.alert')) {
+    y = drawPdfAlertBanners(doc, y, { ML, CW, checkY, cleanPDF }, Array.from(narcoticSource.querySelectorAll('.alert')));
+  }
+
+  rows.forEach((row) => {
+    const status = _pdfGasStatus(row, threshold);
+    const style = _pdfGasStatusStyle(status);
+    const warning = _pdfPlainGasWarning(row, threshold, status);
+    const cardH = warning ? 24 : 19;
+    checkY(cardH + 2);
+    doc.setFillColor(...style.bg);
+    doc.setDrawColor(...style.border);
+    doc.setLineWidth(status === 'ok' || status === 'caution' ? 0.25 : 0.45);
+    doc.roundedRect(ML, y, CW, cardH, 1.8, 1.8, 'FD');
+    doc.setDrawColor(...style.accent);
+    doc.setLineWidth(1.1);
+    doc.line(ML, y + 1.5, ML, y + cardH - 1.5);
+
+    const role = String(row.role || '').toUpperCase();
+    doc.setFont('DejaVuSans', 'bold');
+    doc.setFontSize(8);
+    doc.setTextColor(...style.text);
+    doc.text(cleanPDF(row.label || ''), ML + 4, y + 5.2);
+    doc.setFont('DejaVuSans', 'normal');
+    doc.setFontSize(5.8);
+    doc.setTextColor(...PDF_V3.muted);
+    doc.text(cleanPDF(role), ML + 4 + doc.getTextWidth(cleanPDF(row.label || '')) + 2, y + 5.2);
+
+    doc.setFont('DejaVuSans', 'bold');
+    doc.setFontSize(8);
+    doc.setTextColor(...PDF_V3.text);
+    doc.text(`${_pdfGasVolText(row.remainingTotalL)} (${_pdfGasPresText(row.remainingBar)})`, ML + CW - 4, y + 5.2, { align: 'right' });
+
+    let barY = y + 9;
+    if (warning) {
+      doc.setFont('DejaVuSans', 'bold');
+      doc.setFontSize(6.8);
+      doc.setTextColor(...style.text);
+      const warnLines = doc.splitTextToSize(`⚠ ${cleanPDF(warning)}`, CW - 10);
+      warnLines.slice(0, 2).forEach((line, i) => doc.text(line, ML + 4, y + 9 + i * 3.2));
+      barY = y + 14.5;
+    }
+
+    doc.setFont('DejaVuSans', 'normal');
+    doc.setFontSize(5.6);
+    doc.setTextColor(...PDF_V3.faint);
+    doc.text('0', ML + 4, barY - 1.5);
+    doc.text(`${_pdfGasVolText(row.totalL)} (${_pdfGasPresText(row.fillBar)})`, ML + CW - 4, barY - 1.5, { align: 'right' });
+
+    const trackX = ML + 4;
+    const trackW = CW - 8;
+    const remainingPct = Math.max(0, Math.min(100, Number(row.remainingPercentOfTotal) || 0));
+    doc.setFillColor(226, 232, 240);
+    doc.roundedRect(trackX, barY, trackW, 2.2, 0.8, 0.8, 'F');
+    doc.setFillColor(...style.accent);
+    doc.roundedRect(trackX, barY, trackW * remainingPct / 100, 2.2, 0.8, 0.8, 'F');
+
+    doc.setFont('DejaVuSans', 'normal');
+    doc.setFontSize(6);
+    doc.setTextColor(...PDF_V3.muted);
+    doc.text(`Used: ${_pdfGasVolText(row.usedL)} (${_pdfGasPresText(row.usedBar)})`, ML + 4, y + cardH - 3.2);
+    if (Number.isFinite(row.turnPressureBar)) {
+      doc.text(`Turn Pressure: ${_pdfGasPresText(row.turnPressureBar)}`, ML + CW - 4, y + cardH - 3.2, { align: 'right' });
+    }
+    y += cardH + 2;
+  });
+  doc.setTextColor(0, 0, 0);
+  doc.setDrawColor(0, 0, 0);
+  doc.setLineWidth(0.2);
+  return y + 2;
 }
 
 function getNarcoticGasWarningTarget() {
@@ -1880,8 +2056,8 @@ function drawGraphLegend(doc, y, ML, CW, checkY, legendRows) {
     if (!rows.length) return y;
     checkY(rows.length * 5 + 10);
     // Header
-    doc.setFillColor(240,244,255); doc.rect(ML,y,CW,5.5,'F');
-    doc.setFontSize(6.5); doc.setFont('DejaVuSans','bold'); doc.setTextColor(80,80,120);
+    doc.setFillColor(...PDF_V3.surface3); doc.rect(ML,y,CW,5.5,'F');
+    doc.setFontSize(6.5); doc.setFont('DejaVuSans','bold'); doc.setTextColor(...PDF_V3.faint);
     const cw=[8,80,30,24]; const cx=[ML,ML+8,ML+88,ML+118];
     ['#','Stop','Run','ppO2'].forEach((h,i)=>doc.text(h,cx[i]+(i>0?cw[i]/2:cw[0]/2),y+3.8,{align:i===0?'center':'center'}));
     doc.setTextColor(0,0,0); y+=5.5;
@@ -1892,13 +2068,14 @@ function drawGraphLegend(doc, y, ML, CW, checkY, legendRows) {
       const run = norm.run || '';
       const ppo = norm.ppo2 || norm.ppo || '';
       const ppoV=parseFloat(ppo)||0;
-      const tc=ppoV>=1.6?[200,0,0]:ppoV>=1.4?[180,100,0]:[60,120,60];
-      ri%2===0?doc.setFillColor(248,249,255):doc.setFillColor(255,255,255);
+      const isSwitch = norm.kind === 'gasswitch' || num === '⇄';
+      const tc=isSwitch?PDF_V3.yellow:ppoV>=1.6?PDF_V3.red:ppoV>=1.4?PDF_V3.orange:PDF_V3.muted;
+      ri%2===0?doc.setFillColor(...PDF_V3.surface2):doc.setFillColor(...PDF_V3.surface);
       doc.rect(ML,y,CW,5,'F');
       doc.setFontSize(6.5); doc.setFont('DejaVuSans','normal');
-      doc.setTextColor(180,0,0); doc.text(num,cx[0]+cw[0]/2,y+3.5,{align:'center'});
-      doc.setTextColor(60,60,60); doc.text(stop,cx[1]+2,y+3.5);
-      doc.setTextColor(80,80,80); doc.text(run,cx[2]+cw[2],y+3.5,{align:'right'});
+      doc.setTextColor(...(isSwitch ? PDF_V3.yellow : PDF_V3.red)); doc.text(num,cx[0]+cw[0]/2,y+3.5,{align:'center'});
+      doc.setTextColor(...(isSwitch ? PDF_V3.yellow : PDF_V3.text)); doc.text(stop,cx[1]+2,y+3.5);
+      doc.setTextColor(...PDF_V3.muted); doc.text(run,cx[2]+cw[2],y+3.5,{align:'right'});
       doc.setTextColor(...tc); doc.text(ppo,cx[3]+cw[3],y+3.5,{align:'right'});
       doc.setTextColor(0,0,0); y+=5;
     });
@@ -1914,6 +2091,7 @@ function buildProfileLegendRowsFromWaypoints() {
       const gas = String(wp.gasLabel || '').replace(/\s+/g, ' ').trim();
       const depthTxt = wp.depthLabel || (wp.depth != null ? `${wp.depth}m` : '');
       rows.push({
+        kind: 'gasswitch',
         num: '⇄',
         stop: `${depthTxt}${gas ? ' · ' + gas : ''}`,
         run: `${Math.round(wp.t * 10) / 10} min`,
@@ -2156,7 +2334,7 @@ async function exportPDF(opts) {
   const cleanPDF = cleanPdfText;
   function checkY(n) { if(y+n>PH-MB){ drawFooter(); doc.addPage(); y=MT; drawHeader(); } }
   function drawHeader() {
-    doc.setFillColor(0,85,170); doc.rect(0,0,PW,8,'F');
+    doc.setFillColor(...PDF_V3.accent); doc.rect(0,0,PW,8,'F');
     doc.setFontSize(8); doc.setFont('DejaVuSans','bold'); doc.setTextColor(255,255,255);
     doc.text(exportBrandWithCircuit(), ML, 5.5);
     doc.setFont('DejaVuSans','normal');
@@ -2167,8 +2345,8 @@ async function exportPDF(opts) {
     doc.setTextColor(0,0,0); y=MT;
   }
   function drawFooter() {
-    doc.setFillColor(248,249,255); doc.rect(0,PH-6,PW,6,'F');
-    doc.setFontSize(7); doc.setTextColor(100,100,120); doc.setFont('DejaVuSans','normal');
+    doc.setFillColor(...PDF_V3.surface2); doc.rect(0,PH-6,PW,6,'F');
+    doc.setFontSize(7); doc.setTextColor(...PDF_V3.muted); doc.setFont('DejaVuSans','normal');
     doc.text('Planning Aid Only — Not a substitute for training, certification, or a dive computer · @threecats_lsp', ML, PH-2);
     doc.text(`${dateStr} ${timeStr}`, PW-MR, PH-2,{align:'right'});
     doc.setTextColor(0,0,0);
@@ -2183,9 +2361,9 @@ async function exportPDF(opts) {
     }
     const subH = subLines.length ? 3.8 + subLines.length * 3.6 : 0;
     const boxH = (sub ? 5 + subH : 5);
-    doc.setFillColor(232,240,255); doc.rect(ML-2,y,CW+4,boxH,'F');
-    doc.setDrawColor(0,85,170); doc.setLineWidth(0.8); doc.line(ML-2,y,ML-2,y+boxH);
-    doc.setFontSize(8); doc.setFont('DejaVuSans','bold'); doc.setTextColor(0,85,170);
+    doc.setFillColor(...PDF_V3.cyanSoft); doc.rect(ML-2,y,CW+4,boxH,'F');
+    doc.setDrawColor(...PDF_V3.accent); doc.setLineWidth(0.8); doc.line(ML-2,y,ML-2,y+boxH);
+    doc.setFontSize(8); doc.setFont('DejaVuSans','bold'); doc.setTextColor(...PDF_V3.accent);
     doc.text(cleanPDF(title), ML+1, y+4.8);
     if(subLines.length){
       doc.setFont('DejaVuSans','normal'); doc.setFontSize(7); doc.setTextColor(80,80,100);
@@ -2202,7 +2380,7 @@ async function exportPDF(opts) {
     return true;
   })();
   y = drawDecoPlanBannerPdf(doc, y, { ML, CW, checkY, cleanPDF }, _pdfHdr, planSumPdf, _hasDecoPdf);
-  y = drawPdfAlertBanners(doc, y, { ML, CW, checkY, cleanPDF });
+  y = drawPdfAlertBanners(doc, y, { ML, CW, checkY, cleanPDF }, Array.from(document.querySelectorAll('#decoAlerts .alert')));
   y += 3;
 
   const _dRate  = document.getElementById('descentRate')?.value || '22';
@@ -2226,7 +2404,7 @@ async function exportPDF(opts) {
   const _pdfTbl = _pdfDecoTableLayout(ML, CW);
   const { colW, colX, tblMl, tblCw } = _pdfTbl;
   checkY(7);
-  _pdfDrawDecoTableHeader(doc, y, _pdfTbl, [0, 85, 170]);
+  _pdfDrawDecoTableHeader(doc, y, _pdfTbl, PDF_V3.surface3);
   y += 6;
   document.querySelectorAll('#decoTableBody tr').forEach((tr,rowI)=>{
     const phase=tr.dataset.phase; if(!phase) return;
@@ -2237,12 +2415,12 @@ async function exportPDF(opts) {
       y+=5; return;
     }
     if(phase==='totals'){
-      const t = `RT: ${planSumPdf.runTime}  TTS: ${planSumPdf.tts}  Deco: ${planSumPdf.decoTime}  CNS: ${planSumPdf.cns}  OTU: ${planSumPdf.otu}  PrT: ${planSumPdf.prt}  Surf GF: ${planSumPdf.surfGF||'-'}  Decozone: ${planSumPdf.decozone}  First deco: ${planSumPdf.decoStop}`;
+      const t = `RT: ${planSumPdf.runTime}  Deco: ${planSumPdf.decoTime}  CNS: ${planSumPdf.cns}  OTU: ${planSumPdf.otu}  PrT: ${planSumPdf.prt}  Surf GF: ${planSumPdf.surfGF||'-'}  Decozone: ${planSumPdf.decozone}  First deco: ${planSumPdf.decoStop}`;
       const tLines = doc.splitTextToSize(cleanPDF(t), tblCw - 4);
       const tH = 4.2 * tLines.length + 1.5;
       checkY(tH);
-      doc.setFillColor(240,244,255); doc.rect(tblMl,y,tblCw,tH,'F');
-      doc.setFontSize(7); doc.setFont('DejaVuSans','bold'); doc.setTextColor(0,60,130);
+      doc.setFillColor(...PDF_V3.cyanSoft); doc.rect(tblMl,y,tblCw,tH,'F');
+      doc.setFontSize(7); doc.setFont('DejaVuSans','bold'); doc.setTextColor(...PDF_V3.text);
       tLines.forEach((line, li) => doc.text(line, tblMl+2, y + 3.8 + li * 4.2));
       doc.setTextColor(0,0,0); y+=tH; return;
     }
@@ -2252,20 +2430,20 @@ async function exportPDF(opts) {
     const hi80=hasCnsHi && (sa.includes('rgba(255,255,0')||sa.includes('255,255,0,0.25'));
     if(hi100) doc.setFillColor(255,255,0);
     else if(hi80) doc.setFillColor(255,252,180);
-    else if(rowI%2===0) doc.setFillColor(248,249,255);
-    else doc.setFillColor(255,255,255);
+    else if(rowI%2===0) doc.setFillColor(...PDF_V3.surface2);
+    else doc.setFillColor(...PDF_V3.surface);
     doc.rect(tblMl,y,tblCw,5,'F');
     const isDeco=phase==='deco',isAsc=phase==='ascent',isBtm=phase==='bottom',isSafe=phase==='safety',isDes=phase==='descent';
     const txC=(hi100||hi80)?[150,0,0]:isDeco?[180,0,0]:isAsc?[30,130,60]:isBtm?[0,60,160]:isSafe?[20,140,50]:[160,50,50];
-    const icon=isDeco?'Stp':isAsc?'Asc':isBtm?'Lvl':isSafe?'Stp':isDes?'Des':'---';
+    const icon=isDeco?'●':isAsc?'↑':isBtm?'●':isSafe?'●':isDes?'↓':'';
     doc.setFontSize(7); doc.setFont('DejaVuSans','normal');
     doc.setTextColor(...txC); _pdfDrawDecoPhaseLabel(doc, y, _pdfTbl, icon);
     _pdfDrawDecoTableCells(doc, y, _pdfTbl, c.slice(1, 9), txC);
     y+=5;
   });
   y+=3; checkY(7); doc.setFontSize(7); doc.setFont('DejaVuSans','normal');
-  const leg=['Des = Descent','Lvl = Bottom','Asc = Ascent','Stp = Deco/Safety Stop','>> = Gas Switch'];
-  const lc=[[80,80,80],[80,80,80],[80,80,80],[80,80,80],[80,80,80],[100,0,150]];
+  const leg=['↓ Descent','● Bottom','↑ Ascent','● Deco Stop','● Safety Stop','⇄ Gas Switch'];
+  const lc=[[255,68,51],[0,152,184],[22,163,74],[220,38,38],[22,163,74],[255,191,0]];
   let lx=tblMl; leg.forEach((l,i)=>{doc.setTextColor(...lc[i]);doc.text(l,lx,y+3.5);lx+=doc.getTextWidth(l)+5;});
   doc.setTextColor(0,0,0); y+=8;
 
@@ -2295,144 +2473,16 @@ async function exportPDF(opts) {
 
   const gasConsEl=document.getElementById('gasConsumptionSummary');
   if(_incGas&&gasConsEl&&gasConsEl.style.display!=='none'){
-    calcGasPlan();
-    const _gpPDF=window._lastGasPlan;
-    if(_gpPDF&&_gpPDF.rows&&_gpPDF.rows.length){
+    if (window._lastGasConsumed) {
       doc.addPage(); drawHeader();
-      const sacBot=document.getElementById('sacBottom')?.value||'20';
-      const sacDec=document.getElementById('sacDeco')?.value||'15';
-      const pdfPresU=units==='imperial'?'psi':'bar';
-      const pdfRuleName=_gpPDF.rule==='half'?'Half Tank':'Thirds';
-      sectionTitle('GAS CONSUMPTION',`${pdfRuleName} rule  •  SAC bottom: ${sacBot} ${_pdfSacUnit}  deco: ${sacDec} ${_pdfSacUnit}`);
-
-      // ── Table header ──────────────────────────────────────────────────────
-      // Column widths (sum = CW ~170mm)
-      const gc={
-        gas:   28, vol: 24, thirds: 20, turn: 24,
-        suf:   46, margin: 28
-      };
-      const gx={
-        gas: ML,
-        vol: ML+gc.gas,
-        thirds: ML+gc.gas+gc.vol,
-        turn: ML+gc.gas+gc.vol+gc.thirds,
-        suf:  ML+gc.gas+gc.vol+gc.thirds+gc.turn,
-        margin: ML+gc.gas+gc.vol+gc.thirds+gc.turn+gc.suf
-      };
-      const hdrs=['GAS','TOTAL VOL','THIRDS','TURN PRESS','SUFFICIENT','MARGIN'];
-      const hkeys=['gas','vol','thirds','turn','suf','margin'];
-      const ROW_H=6.5, HDR_H=6;
-
-      checkY(HDR_H + _gpPDF.rows.length*(ROW_H+1) + 20);
-
-      // Header background
-      doc.setFillColor(30,40,60);
-      doc.rect(ML, y, Object.values(gc).reduce((a,b)=>a+b,0), HDR_H, 'F');
-      doc.setFontSize(6); doc.setFont('DejaVuSans','bold'); doc.setTextColor(0,200,255);
-      hdrs.forEach((h,i)=>{
-        const k=hkeys[i];
-        doc.text(h, gx[k]+gc[k]/2, y+4, {align:'center'});
-      });
-      y += HDR_H;
-
-      // ── Data rows ──────────────────────────────────────────────────────────
-      const ruleTxt = _gpPDF.rule==='half'?'1/2':'1/3';
-
-      _gpPDF.rows.forEach((r, ri)=>{
-        // Alternate row background
-        ri%2===0 ? doc.setFillColor(245,247,252) : doc.setFillColor(255,255,255);
-        doc.rect(ML, y, Object.values(gc).reduce((a,b)=>a+b,0), ROW_H, 'F');
-
-        const lbl = cleanPDF(r.label);
-        const isBottom = r.kind === 'bottom';
-        const insufficient = isBottom ? (r.shortL!=null && r.shortL>0) : (r.reqL!=null && r.totalL < r.reqL);
-
-        // ── GAS cell ──
-        doc.setFontSize(7); doc.setFont('DejaVuSans','bold');
-        doc.setTextColor(insufficient ? 180 : 40, insufficient ? 0 : 40, insufficient ? 0 : 40);
-        doc.text(lbl, gx.gas+1, y+4.2);
-
-        // ── TOTAL VOL ──
-        const volCol = insufficient ? [180,0,0] : [0,120,60];
-        doc.setFont('DejaVuSans','normal'); doc.setFontSize(6.5);
-        doc.setTextColor(...volCol);
-        doc.text(gpVolWithUnit(r.totalL), gx.vol+gc.vol/2, y+4.2, {align:'center'});
-
-        // ── THIRDS (bottom only) ──
-        if(isBottom && r.portionL!=null){
-          doc.setTextColor(100,100,100);
-          doc.text(gpVolWithUnit(r.portionL), gx.thirds+gc.thirds/2, y+4.2, {align:'center'});
-        } else {
-          doc.setTextColor(160,160,160);
-          doc.text('—', gx.thirds+gc.thirds/2, y+4.2, {align:'center'});
-        }
-
-        // ── TURN PRESS (bottom only) ──
-        if(isBottom && r.turnBar!=null && !insufficient){
-          doc.setTextColor(0,150,200);
-          doc.text(`${gpPresDisp(r.turnBar)} ${pdfPresU}`, gx.turn+gc.turn/2, y+4.2, {align:'center'});
-        } else if(isBottom){
-          doc.setTextColor(160,160,160);
-          doc.text('—', gx.turn+gc.turn/2, y+4.2, {align:'center'});
-        } else {
-          doc.setTextColor(160,160,160);
-          doc.text('one-way', gx.turn+gc.turn/2, y+4.2, {align:'center'});
-        }
-
-        // ── SUFFICIENT ──
-        if(isBottom){
-          if(insufficient){
-            doc.setFont('DejaVuSans','bold'); doc.setTextColor(180,0,0);
-            doc.text(`SHORT ${gpVolWithUnit(r.shortL)}`, gx.suf+1, y+2.8);
-            if(r.maxBTmin!=null){
-              doc.setFont('DejaVuSans','normal'); doc.setFontSize(5.5); doc.setTextColor(140,0,0);
-              doc.text(`BT→${r.maxBTmin}min, turn ${gpPresDisp(r.maxTurnBar)}${pdfPresU}`, gx.suf+1, y+5.8);
-            }
-          } else {
-            doc.setFont('DejaVuSans','normal'); doc.setTextColor(0,130,60);
-            doc.text(`turn ${gpPresDisp(r.turnBar)}${pdfPresU}  OK ${gpVolWithUnit(r.reqL)}`, gx.suf+1, y+4.2);
-          }
-        } else {
-          if(r.reqL==null){
-            doc.setFont('DejaVuSans','normal'); doc.setTextColor(160,160,160);
-            doc.text('run plan first', gx.suf+1, y+4.2);
-          } else {
-            const stat3sym = r.totalL>=r.reqL*1.10?'✓':r.totalL>=r.reqL?'⚠':'✗';
-            const stat3txt = r.totalL>=r.reqL*1.10?' OK':r.totalL>=r.reqL?' TIGHT':' SHORT';
-            const tc3 = r.totalL>=r.reqL*1.10?[0,130,60]:r.totalL>=r.reqL?[180,80,0]:[180,0,0];
-            doc.setFont('DejaVuSans','bold'); doc.setTextColor(...tc3);
-            doc.text(stat3sym+stat3txt, gx.suf+1, y+2.8);
-            doc.setFont('DejaVuSans','normal'); doc.setFontSize(5.5); doc.setTextColor(100,100,100);
-            doc.text(`need ${gpVolWithUnit(r.reqL)}`, gx.suf+1, y+5.8);
-          }
-        }
-
-        // ── MARGIN ──
-        doc.setFontSize(6.5);
-        if(isBottom && r.reqL!=null){
-          const mg = r.totalL - r.reqL;
-          const mgCol = mg >= 0 ? [0,130,60] : [180,0,0];
-          doc.setFont('DejaVuSans','bold'); doc.setTextColor(...mgCol);
-          doc.text(`${mg>=0?'+':''}${gpVolWithUnit(mg)}`, gx.margin+gc.margin/2, y+4.2, {align:'center'});
-        } else if(!isBottom && r.reqL!=null){
-          const mg3 = r.totalL - r.reqL;
-          const mgCol3 = mg3 >= 0 ? [0,130,60] : [180,0,0];
-          doc.setFont('DejaVuSans','bold'); doc.setTextColor(...mgCol3);
-          doc.text(`${mg3>=0?'+':''}${gpVolWithUnit(mg3)}`, gx.margin+gc.margin/2, y+4.2, {align:'center'});
-        } else {
-          doc.setTextColor(160,160,160);
-          doc.text('—', gx.margin+gc.margin/2, y+4.2, {align:'center'});
-        }
-
-        // Row border
-        doc.setDrawColor(210,215,225); doc.setFont('DejaVuSans','normal'); doc.setFontSize(7);
-        doc.line(ML, y+ROW_H, ML+Object.values(gc).reduce((a,b)=>a+b,0), y+ROW_H);
-        y += ROW_H;
+      y = _pdfDrawGasUsageCards(doc, y, { ML, CW, checkY, cleanPDF, sectionTitle }, window._lastGasConsumed, {
+        title: 'GAS CONSUMPTION',
+        includeNarcotic: true,
       });
       const reserveNote = typeof gpSafetyReserveNoteText === 'function' ? gpSafetyReserveNoteText() : '';
       if (reserveNote) {
         checkY(5);
-        doc.setFontSize(7); doc.setFont('DejaVuSans','normal'); doc.setTextColor(90, 90, 110);
+        doc.setFontSize(7); doc.setFont('DejaVuSans','normal'); doc.setTextColor(...PDF_V3.muted);
         doc.text(cleanPDF(reserveNote), ML, y + 3.5);
         y += 5;
       }
@@ -2833,13 +2883,13 @@ async function exportContingencyPDF(opts) {
   }
   function sectionTitle(title, sub) {
     checkY(sub ? 14 : 12);
-    doc.setFillColor(255,240,240); doc.rect(ML-2,y,CW+4,sub?9:7,'F');
-    doc.setDrawColor(180,30,30); doc.setLineWidth(0.8); doc.line(ML-2,y,ML-2,y+(sub?9:7));
-    doc.setFontSize(8); doc.setFont('DejaVuSans','bold'); doc.setTextColor(180,30,30);
+    doc.setFillColor(...PDF_V3.cyanSoft); doc.rect(ML-2,y,CW+4,sub?9:7,'F');
+    doc.setDrawColor(...PDF_V3.accent); doc.setLineWidth(0.8); doc.line(ML-2,y,ML-2,y+(sub?9:7));
+    doc.setFontSize(8); doc.setFont('DejaVuSans','bold'); doc.setTextColor(...PDF_V3.accent);
     doc.text(cleanPDF(title), ML+1, y+4.8);
     if(sub){
       const subClean = cleanPDF(sub);
-      doc.setFont('DejaVuSans','normal'); doc.setFontSize(7); doc.setTextColor(120,60,60);
+      doc.setFont('DejaVuSans','normal'); doc.setFontSize(7); doc.setTextColor(...PDF_V3.muted);
       doc.text(subClean, ML+1, y+8.2);
     }
     doc.setTextColor(0,0,0); doc.setDrawColor(0,0,0); doc.setLineWidth(0.2); y+=(sub?11:9);
@@ -2853,44 +2903,19 @@ async function exportContingencyPDF(opts) {
   doc.setFontSize(10); doc.setFont('DejaVuSans','bold'); doc.setTextColor(180,30,30);
   doc.text('⚠ ' + cleanPDF(c.label), ML+3, y+6);
   doc.setFontSize(8); doc.setFont('DejaVuSans','normal'); doc.setTextColor(100,0,0);
-  doc.text(`RT: ${c.lastRunFmt||c.lastRun+"'00\""} | TTS: ${c.tts||'--'} | Deco: ${c.decoTimeFmt||c.decoTime+"'00\""} | CNS: ${c.totalCNS||'--'} | OTU: ${c.totalOTU||'--'} | PrT: ${c.totalPrT||'--'} | Decozone: ${c.decozoneDisp||formatDecoZoneStart(c.decoZoneStart)} | First deco: ${c.decoStop||'--'}`, ML+3, y+10.5);
+  doc.text(`RT: ${c.lastRunFmt||c.lastRun+"'00\""} | Deco: ${c.decoTimeFmt||c.decoTime+"'00\""} | CNS: ${c.totalCNS||'--'} | OTU: ${c.totalOTU||'--'} | PrT: ${c.totalPrT||'--'} | Decozone: ${c.decozoneDisp||formatDecoZoneStart(c.decoZoneStart)} | First deco: ${c.decoStop||'--'}`, ML+3, y+10.5);
   doc.setTextColor(150,0,0); doc.text(cleanPDF(c.msg||''), ML+3, y+14.5);
   doc.setTextColor(0,0,0); y+=19;
 
   // ── SECTION: Emergency Gas Consumption ──────────────────────────────────
   if (_incGas) {
     const emGasEl = document.getElementById('emergencyGasConsumption');
-    const emGasRows = emGasEl ? Array.from(emGasEl.querySelectorAll('tbody tr')) : [];
-    if (emGasRows.length) {
+    if (emGasEl && emGasEl.style.display !== 'none' && window._contingencyScratchGasConsumed) {
       checkY(10);
-      sectionTitle('EMERGENCY GAS CONSUMPTION','Gas required vs available per cylinder');
-      // Columns: GAS | REQUIRED | AVAILABLE | STATUS
-      const egcW=[30,38,38,76]; const egcX=[ML,ML+30,ML+68,ML+106];
-      doc.setFillColor(180,30,30); doc.rect(ML,y,CW,6,'F');
-      doc.setFontSize(7); doc.setFont('DejaVuSans','bold'); doc.setTextColor(255,255,255);
-      ['GAS','REQUIRED','AVAILABLE','STATUS'].forEach((h,i)=>doc.text(h,egcX[i]+egcW[i]/2,y+4,{align:'center'}));
-      doc.setTextColor(0,0,0); y+=6;
-      emGasRows.forEach((tr,ri)=>{
-        const cells=Array.from(tr.querySelectorAll('td'));
-        const cv=cells.map(td=>cleanPDF(td.textContent.trim()));
-        // Detect insufficient from cell color or text
-        const statusTxt=cv[3]||'';
-        const isShort=statusTxt.includes('short')||statusTxt.includes('\u2717');
-        ri%2===0?doc.setFillColor(255,250,250):doc.setFillColor(255,255,255);
-        doc.rect(ML,y,CW,5.5,'F');
-        doc.setFontSize(7); doc.setFont('DejaVuSans','bold');
-        doc.setTextColor(isShort?180:40,isShort?0:40,isShort?0:40);
-        doc.text(cv[0]||'',egcX[0]+2,y+3.8);
-        doc.setFont('DejaVuSans','normal');
-        doc.setTextColor(80,80,80); doc.text(cv[1]||'',egcX[1]+egcW[1]/2,y+3.8,{align:'center'});
-        doc.setTextColor(80,80,80); doc.text(cv[2]||'',egcX[2]+egcW[2]/2,y+3.8,{align:'center'});
-        // Status — colour-code
-        const stc=isShort?[180,0,0]:[0,130,60];
-        doc.setFont('DejaVuSans','bold'); doc.setTextColor(...stc);
-        doc.text(statusTxt,egcX[3]+egcW[3]/2,y+3.8,{align:'center'});
-        doc.setTextColor(0,0,0); y+=5.5;
+      y = _pdfDrawGasUsageCards(doc, y, { ML, CW, checkY, cleanPDF, sectionTitle }, window._contingencyScratchGasConsumed, {
+        title: 'EMERGENCY GAS CONSUMPTION',
+        includeNarcotic: false,
       });
-      y+=4;
     }
   }
 
@@ -2899,7 +2924,7 @@ async function exportContingencyPDF(opts) {
     sectionTitle('EMERGENCY ASCENT SCHEDULE', cleanPDF(c.label));
     const _emTbl = _pdfDecoTableLayout(ML, CW);
     const { tblMl, tblCw } = _emTbl;
-    _pdfDrawDecoTableHeader(doc, y, _emTbl, [180, 30, 30]);
+    _pdfDrawDecoTableHeader(doc, y, _emTbl, PDF_V3.surface3);
     y += 6;
 
     const emSumPdf = getContingencySummaryExport();
@@ -2914,12 +2939,12 @@ async function exportContingencyPDF(opts) {
         y+=5; return;
       }
       if(phase==='totals'){
-        const t = `RT: ${emSumPdf.runTime}  TTS: ${emSumPdf.tts}  Deco: ${emSumPdf.decoTime}  CNS: ${emSumPdf.cns}  OTU: ${emSumPdf.otu}  PrT: ${emSumPdf.prt}  Surf GF: ${emSumPdf.surfGF||'-'}  Decozone: ${emSumPdf.decozone}  First deco: ${emSumPdf.decoStop}`;
+        const t = `RT: ${emSumPdf.runTime}  Deco: ${emSumPdf.decoTime}  CNS: ${emSumPdf.cns}  OTU: ${emSumPdf.otu}  PrT: ${emSumPdf.prt}  Surf GF: ${emSumPdf.surfGF||'-'}  Decozone: ${emSumPdf.decozone}  First deco: ${emSumPdf.decoStop}`;
         const tLines = doc.splitTextToSize(cleanPDF(t), tblCw - 4);
         const tH = 4.2 * tLines.length + 1.5;
         checkY(tH);
-        doc.setFillColor(255,240,240); doc.rect(tblMl,y,tblCw,tH,'F');
-        doc.setFontSize(7); doc.setFont('DejaVuSans','bold'); doc.setTextColor(150,0,0);
+        doc.setFillColor(...PDF_V3.cyanSoft); doc.rect(tblMl,y,tblCw,tH,'F');
+        doc.setFontSize(7); doc.setFont('DejaVuSans','bold'); doc.setTextColor(...PDF_V3.text);
         tLines.forEach((line, li) => doc.text(line, tblMl+2, y + 3.8 + li * 4.2));
         doc.setTextColor(0,0,0); y+=tH; return;
       }
@@ -2929,22 +2954,22 @@ async function exportContingencyPDF(opts) {
       const hiE80=tr.hasAttribute('data-cnshi')&&(saE.includes('rgba(255,255,0')||saE.includes('255,255,0,0.25'));
       if(hiE100) doc.setFillColor(255,255,0);
       else if(hiE80) doc.setFillColor(255,252,180);
-      else if(rowI%2===0) doc.setFillColor(255,250,250);
-      else doc.setFillColor(255,255,255);
+      else if(rowI%2===0) doc.setFillColor(...PDF_V3.surface2);
+      else doc.setFillColor(...PDF_V3.surface);
       doc.rect(tblMl,y,tblCw,5,'F');
       const txC=(hiE100||hiE80)?[150,0,0]:isDeco?[180,0,0]:isAsc?[30,130,60]:isBtm?[0,60,160]:isSafe?[20,140,50]:[160,50,50];
-      const icon=isDeco?'Stp':isAsc?'Asc':isBtm?'Lvl':isSafe?'Stp':isDes?'Des':'---';
+      const icon=isDeco?'●':isAsc?'↑':isBtm?'●':isSafe?'●':isDes?'↓':'';
       doc.setFontSize(7); doc.setFont('DejaVuSans','normal');
       doc.setTextColor(...txC); _pdfDrawDecoPhaseLabel(doc, y, _emTbl, icon);
-      _pdfDrawDecoTableCells(doc, y, _emTbl, cv.slice(1, 8), txC);
+      _pdfDrawDecoTableCells(doc, y, _emTbl, cv.slice(1, 9), txC);
       doc.setTextColor(0,0,0); y+=5;
     });
     y+=3;
 
     // Legend
     checkY(7); doc.setFontSize(7); doc.setFont('DejaVuSans','normal');
-    const leg=['Des = Descent','Lvl = Bottom','Asc = Ascent','Stp = Deco/Safety Stop','>> = Gas Switch'];
-    const lc=[[160,50,50],[0,100,200],[30,130,60],[180,0,0],[100,0,150]];
+    const leg=['↓ Descent','● Bottom','↑ Ascent','● Deco Stop','⇄ Gas Switch'];
+    const lc=[[255,68,51],[0,152,184],[22,163,74],[220,38,38],[255,191,0]];
     let lx=tblMl; leg.forEach((l,i)=>{doc.setTextColor(...lc[i]);doc.text(l,lx,y+3.5);lx+=doc.getTextWidth(l)+5;});
     doc.setTextColor(0,0,0); y+=8;
 

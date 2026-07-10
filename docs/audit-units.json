@@ -2999,7 +2999,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "b34a4505b2587e5129e50e522f8ab4ce70cb9ba0bd211bde1e54cf27bf5be934",
+      "fingerprint": "f184abe2e5791042fc189acf0f584b21c134d29a18c43a697473533f9e7f26df",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -6078,12 +6078,12 @@
     },
     {
       "cycle": "R20",
-      "max_new_application_lines": 3287,
+      "max_new_application_lines": 3312,
       "application_units": [
         "APP-EXPORT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R20: Export text/PDF risk-first READ; current lines: 3287; sessions: 6",
+      "acceptance": "V4 R20: Export text/PDF risk-first READ; current lines: 3312; sessions: 6",
       "min_review_sessions": 6
     },
     {
