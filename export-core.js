@@ -667,10 +667,12 @@ function getNarcoticGasWarningTarget() {
   const label = isLoop
     ? loopMixLabelFor(data.bottomGasShort, { circuit: data.circuit, bailout: data.ccrBailout })
     : data.bottomGasShort;
+  const gasMixNumber = 1;
   return {
     label,
     role,
-    displayName: `${label} ${role}`,
+    gasMixNumber,
+    displayName: `Gas Mix ${gasMixNumber}: "${label}"`,
   };
 }
 

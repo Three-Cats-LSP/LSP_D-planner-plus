@@ -2032,7 +2032,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a2cc99ad244f72d1cb11ea4f2e42b17b06ad7ec0633ffaccfce0655af3472ec5",
+      "fingerprint": "b245cfa9cfbe6866ad29f6c69537de8a4ef4a17d4e2930281b97df014220a05b",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2323,7 +2323,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-DECO-PHYSICS"
       },
-      "fingerprint": "7c9a3ff885503150b80af4d74806aa99534e806b863047b81aeda278b5535d7c",
+      "fingerprint": "4d1cfb317967d64509e755c111370cd655ea1106ac11a509d8e17a90d976a412",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3011,7 +3011,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "e95d5f40013c8c3351838f3a9b342081ed275155ba30e6503ee670d8e5c9a4df",
+      "fingerprint": "85ad81aa77e282293aa3f6eeb80163763d048ed7cdc2302401498426e1b244fc",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5921,7 +5921,7 @@
     },
     {
       "cycle": "R07",
-      "max_new_application_lines": 640,
+      "max_new_application_lines": 641,
       "application_units": [
         "UI-DECO-PHYSICS",
         "UI-SCHEDULE-INPUTS"
@@ -5929,7 +5929,7 @@
       "engine_reverification": [
         "ENG-ZHL-CCR"
       ],
-      "acceptance": "V4 R07: Deco physics and schedule inputs risk-first READ; current lines: 640; sessions: 2",
+      "acceptance": "V4 R07: Deco physics and schedule inputs risk-first READ; current lines: 641; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6064,12 +6064,12 @@
     },
     {
       "cycle": "R20",
-      "max_new_application_lines": 3285,
+      "max_new_application_lines": 3287,
       "application_units": [
         "APP-EXPORT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R20: Export text/PDF risk-first READ; current lines: 3285; sessions: 6",
+      "acceptance": "V4 R20: Export text/PDF risk-first READ; current lines: 3287; sessions: 6",
       "min_review_sessions": 6
     },
     {
@@ -6285,12 +6285,12 @@
     },
     {
       "cycle": "R41",
-      "max_new_application_lines": 1052,
+      "max_new_application_lines": 1080,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1052; sessions: 2",
+      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1080; sessions: 2",
       "min_review_sessions": 2
     },
     {

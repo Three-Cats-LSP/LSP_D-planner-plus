@@ -589,7 +589,29 @@ body.light-theme #resultsPanel .chip-yellow { background: var(--yellow-dim) !imp
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-title { display:flex; align-items:baseline; gap:7px; min-width:0; flex-wrap:wrap; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-mix { font-family:var(--font-mono); font-size:13px; font-weight:800; color:var(--gas-status); letter-spacing:0.02em; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-role { font-family:var(--font-mono); font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; }
-#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-role--narcotic { color:#ff4433 !important; font-weight:900; }
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--narcotic {
+  border-left-color:#ff4433;
+}
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-title--narcotic {
+  display:inline-flex;
+  align-items:baseline;
+  gap:7px;
+  width:max-content;
+  max-width:100%;
+  padding:2px 8px 3px;
+  border-radius:999px;
+  background:#ff4433;
+  color:#fff;
+}
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-title--narcotic .gas-usage-mix,
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-title--narcotic .gas-usage-role {
+  color:inherit !important;
+}
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-role--narcotic {
+  font-weight:900;
+  letter-spacing:0.02em;
+  text-transform:none;
+}
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-remaining { font-family:var(--font-mono); font-size:13px; font-weight:800; color:#fff; text-align:right; white-space:nowrap; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-remaining span { color:#fff; font-weight:800; font-size:13px; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-measure,
@@ -689,6 +711,12 @@ body.light-theme #resultsPanel #decoAlertsNarcotic .alert.narcotic-warn * {
 }
 body.light-theme #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn * {
   color: #111 !important;
+}
+body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-title--narcotic {
+  color:#111 !important;
+}
+body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-role--narcotic {
+  color:#111 !important;
 }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas .gas-usage-inline-warning,
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas .gas-usage-inline-warning * { color:#FF3B30 !important; }

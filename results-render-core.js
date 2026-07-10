@@ -294,11 +294,12 @@ function renderGasConsumptionBars(container, gasConsumed, options) {
     const cardWarningHtml = cardWarning
       ? `<div class="gas-usage-inline-warning gas-usage-inline-warning--${status}"><span aria-hidden="true">&#9888;</span><div class="gas-warning-copy">${cardWarning}</div></div>`
       : '';
+    const titleClass = isNarcoticTarget ? ' gas-usage-title--narcotic' : '';
     const roleClass = isNarcoticTarget ? ' gas-usage-role--narcotic' : '';
-    const roleText = `${row.role}${isNarcoticTarget ? '*' : ''}`;
+    const roleText = isNarcoticTarget ? String(row.role || '').toLowerCase() : row.role;
     return `<div class="gas-usage-card gas-usage-card--${status}${isNarcoticTarget ? ' gas-usage-card--narcotic' : ''}" data-gas-label="${_gasCardHtml(row.label)}" data-gas-role="${_gasCardHtml(row.role)}" style="--gas-remaining-pct:${row.remainingPercentOfTotal.toFixed(2)}%;">
       <div class="gas-usage-head">
-        <div class="gas-usage-title"><span class="gas-usage-mix">${_gasCardHtml(row.label)}</span><span class="gas-usage-role${roleClass}">${_gasCardHtml(roleText)}</span></div>
+        <div class="gas-usage-title${titleClass}"><span class="gas-usage-mix">${_gasCardHtml(row.label)}</span> <span class="gas-usage-role${roleClass}">${_gasCardHtml(roleText)}</span></div>
         <div class="gas-usage-remaining">${_gasVolHtml(row.remainingTotalL)} <span>(${_gasPresHtml(row.remainingBar)})</span></div>
       </div>
       ${cardWarningHtml}
