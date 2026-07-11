@@ -140,7 +140,7 @@ function drawGFCurve() {
   // Build waypoints: surface(0) → bottom → ascent through stops → surface
   const waypoints = [
     { depth: 0,           gf: gfHigh, label: null },
-    { depth: bottomDepth, gf: gfLow,  label: '🔵 ' + bottomDepth + 'm' },
+    { depth: bottomDepth, gf: gfLow,  label: '🔵 ' + bottomDepth + _gfDu },
   ];
   // Add deco stops (deepest first)
   const decoStops = stops.filter(s => s.type === 'deco').sort((a, b) => b.depth - a.depth);
@@ -148,11 +148,11 @@ function drawGFCurve() {
     const gfAtStop = firstStop > 0
       ? gfLow + (gfHigh - gfLow) * (1 - s.depth / firstStop)
       : gfHigh;
-    waypoints.push({ depth: s.depth, gf: gfAtStop, label: '🔴 ' + s.depth + 'm / ' + s.dur + 'min', isDeco: true });
+    waypoints.push({ depth: s.depth, gf: gfAtStop, label: '🔴 ' + s.depth + _gfDu + ' / ' + s.dur + 'min', isDeco: true });
   });
   // Safety stop
   const safetySt = stops.find(s => s.type === 'safety');
-  if (safetySt) waypoints.push({ depth: safetySt.depth, gf: gfHigh * 0.95, label: '🟢 ' + safetySt.depth + 'm', isSafety: true });
+  if (safetySt) waypoints.push({ depth: safetySt.depth, gf: gfHigh * 0.95, label: '🟢 ' + safetySt.depth + _gfDu, isSafety: true });
   waypoints.push({ depth: 0, gf: gfHigh, label: null });
 
   // Draw profile line

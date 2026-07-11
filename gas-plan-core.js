@@ -27,6 +27,14 @@ if (typeof window !== 'undefined') {
   window.lspSacUnit = lspSacUnit;
 }
 const GP_ONEWAY_MARGIN = 1.10;
+
+/** Shared gas-plan adequacy label for UI table, text export, and Gas Plan PDF. */
+function gasPlanAdequacyStatus(totalL, reqL) {
+  if (reqL == null || !Number.isFinite(reqL) || !Number.isFinite(totalL)) return null;
+  if (totalL >= reqL * GP_ONEWAY_MARGIN) return 'OK';
+  if (totalL >= reqL) return 'TIGHT';
+  return 'INSUFFICIENT';
+}
 let _gasRule = 'thirds';
 
 /** Turn pressure uses bottom-cylinder rule fraction only; pool portionL is for plan cross-check. */
@@ -522,7 +530,7 @@ function buildGasPlanText() {
         L.push('  Required: run deco plan first');
       } else {
         const margin = r.totalL - r.reqL;
-        const status = r.totalL >= r.reqL * GP_ONEWAY_MARGIN ? 'OK' : r.totalL >= r.reqL ? 'TIGHT' : 'INSUFFICIENT';
+        const status = gasPlanAdequacyStatus(r.totalL, r.reqL);
         L.push(`  Need: ${gpVolDisp(r.reqL)}${volU}  Margin: ${gpVolDisp(margin)}${volU}  [${status}]`);
         if (status === 'INSUFFICIENT') L.push('  > Add more gas or reduce deco obligation');
       }

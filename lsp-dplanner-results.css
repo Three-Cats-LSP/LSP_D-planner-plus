@@ -756,11 +756,15 @@ body.light-theme #resultsPanel #decoAlertsNarcotic .alert .tip-icon { color: #cc
 #resultsPanel .deco-table.schedule-table .ph-switch { color: #16a34a; }
 #resultsPanel .deco-table.schedule-table .col-depth { font-weight: 700; font-size: 12px; }
 #resultsPanel .deco-table.schedule-table .col-time { font-variant-numeric: tabular-nums; }
-#resultsPanel .deco-table.schedule-table .col-tts { color: var(--text-faint); font-variant-numeric: tabular-nums; }
 #resultsPanel .deco-table.schedule-table .col-gas { font-weight: 600; text-align: center; }
 #resultsPanel .deco-table.schedule-table .col-ppo2 { font-variant-numeric: tabular-nums; text-align: right; }
 #resultsPanel .deco-table.schedule-table .col-cns { font-variant-numeric: tabular-nums; text-align: right; }
 #resultsPanel .deco-table.schedule-table .col-ead { color: var(--text-faint); text-align: right; }
+#resultsPanel .rec-block-card {
+  border: 1px solid color-mix(in oklab, var(--red) 35%, var(--border));
+  background: color-mix(in oklab, var(--red) 6%, var(--card));
+}
+#resultsPanel .rec-block-card .card-title { color: var(--red); letter-spacing: 0.04em; }
 #resultsPanel .deco-table.schedule-table tr.row-switch { background: transparent; }
 #resultsPanel .deco-table.schedule-table tr.row-switch td { border-bottom: none; }
 #resultsPanel .deco-table.schedule-table tr.row-switch .col-gas { font-weight: 600; }

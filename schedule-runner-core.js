@@ -162,7 +162,7 @@ function getDecoGasSwitches() {
   if (gswRows.length) {
     return gswRows.map(tr => {
       const depthTxt = (tr.querySelector('td[data-label="Depth"]') || tr.querySelectorAll('td')[1])?.textContent?.trim() || '';
-      const mixTxt = (tr.querySelector('td[data-label="Mix"]') || tr.querySelectorAll('td')[3])?.textContent?.trim() || '';
+      const mixTxt = (tr.querySelector('td[data-label="Mix"]') || tr.querySelectorAll('td')[4])?.textContent?.trim() || '';
       const legacy = depthTxt.match(/^(.+?)\s*@\s*(.+)$/i);
       if (legacy) {
         return {
@@ -385,30 +385,6 @@ function formatExportSummaryBlock(p) {
   ];
 }
 
-function injectTtsCells(tbodyId, rtAtBottomEnd) {
-  const tbody = document.getElementById(tbodyId || 'decoTableBody');
-  if (!tbody) return;
-  let finalRun = 0;
-  tbody.querySelectorAll('tr[data-phase]').forEach(tr => {
-    const ph = tr.dataset.phase;
-    if (ph === 'totals' || ph === 'switch') return;
-    const runVal = parseRunMinutes(tr.querySelectorAll('td')[4]?.textContent);  // Run is col 4 (icon|Depth|Stop|Mix|Run)
-    if (runVal > finalRun) finalRun = runVal;
-  });
-  tbody.querySelectorAll('tr[data-phase]').forEach(tr => {
-    const ph = tr.dataset.phase;
-    if (ph === 'switch' || ph === 'totals') return;
-    const tds = tr.querySelectorAll('td');
-    if (tds.length < 4) return;
-    tr.querySelector('td[data-label="TTS"]')?.remove();
-    const runVal = parseRunMinutes(tds[4]?.textContent);
-    const cell = document.createElement('td');
-    cell.setAttribute('data-label', 'TTS');
-    cell.style.cssText = 'color:var(--muted);font-size:11px;text-align:right;';
-    cell.textContent = fmtRowTTS(runVal, rtAtBottomEnd, finalRun);
-    tds[4].insertAdjacentElement('afterend', cell);
-  });
-}
 
 // AUDIT-UNIT:UI-UNIT-SWITCHING
 function setUnits(u, opts) {
@@ -1487,8 +1463,33 @@ function runPlanner() {
     const btOk = bt <= ndl && ceil <= 0;
     const fO2  = Math.max(0, 1 - fN2 - fHe);
     const pO2  = parseFloat((depthBar(depthM) * fO2).toFixed(2));
+    const beyondMOD = pO2 > modPpo2;
+    const ndlExceededNoDeco = !btOk && ceil <= 0;
 
     updateTissueViz(tissues, gfH);
+
+    // Match PADI blocked layout for beyond-MOD / NDL-exceeded (no deco ceiling).
+    if (beyondMOD || ndlExceededNoDeco) {
+      const blockMessage = beyondMOD
+        ? `<strong>BEYOND MOD.</strong> ${dDisp} exceeds ${recGasLabel} MOD of ${isMetric ? recModM+' m' : recModFt+' ft'} at ${modPpo2.toFixed(1)} bar ppO₂. Use a lower O₂ mix or reduce depth.`
+        : `<strong>NDL EXCEEDED.</strong> ${bt} min exceeds the ${ndl} min no-decompression limit. Reduce bottom time by ${Math.max(0, bt - ndl)} min.`;
+      const plannerResult = document.getElementById('plannerResult');
+      if (plannerResult) {
+        plannerResult.innerHTML = `<div class="card rec-block-card">
+          <div class="card-title" style="margin:0 0 10px;">REC Plan Blocked</div>
+          <div class="alert dang" style="margin:0;"><span>⚠</span><div>${blockMessage}</div></div>
+        </div>`;
+        plannerResult.style.display = 'block';
+      }
+      _renderResultSummaryStrip({
+        mode: 'rec',
+        runTime: String(bt),
+        firstStop: 'Blocked',
+      });
+      _onPlanResultsReady();
+      renderSurfIntPanel('recSurfIntContainer', 'recSi', depthM, bt);
+      return;
+    }
 
     html = `<div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
@@ -1510,9 +1511,7 @@ function runPlanner() {
         <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${bc};"></div></div>
       </div>
       ${ceil>0 ? '<div class="alert deco" style="margin-top:12px;"><span>⚠</span><div><strong>DECOMPRESSION REQUIRED.</strong> Deco ceiling at '+Math.ceil(ceil)+' m. See Deco Schedule tab for full profile.</div></div>' : ''}
-      ${!btOk && ceil<=0 ? '<div class="alert" style="margin-top:12px;background:#FF4433;border-color:#cc2200;color:#fff;font-weight:700;"><span>⚠</span><div><strong>NDL EXCEEDED.</strong> Reduce bottom time by '+(bt-ndl)+' min.</div></div>' : ''}
       ${btOk ? '<div class="alert ok" style="margin-top:12px;"><span>✓</span><div><strong>WITHIN NDL.</strong> GF '+gfL+'/'+gfH+'. '+rem+' minutes remaining.</div></div>' : ''}
-      ${pO2>modPpo2 ? `<div class="alert dang"><span>⚠</span><div><strong>ppO₂ EXCEEDS ${modPpo2.toFixed(1)} bar.</strong> CNS oxygen toxicity risk. Use lower O₂ mix or reduce depth.</div></div>` : ''}
       <div style="margin-top:8px;"><div class="alert info" style="margin-bottom:0;"><span>💡</span><div>Tissue saturation chart updated — see <strong>Tissue Sat.</strong> tab.</div></div></div>
       ${safetyStopHTML(stopDepthM, stopFt, stopDurMin)}
     </div>`;

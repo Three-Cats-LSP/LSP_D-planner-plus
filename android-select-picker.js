@@ -116,6 +116,14 @@
     var sheet = document.getElementById('lsp-android-select-sheet');
     if (sheet) sheet.remove();
     document.body.classList.remove('lsp-android-select-open');
+    if (openSheetSelect) {
+      var wrap = openSheetSelect.closest && openSheetSelect.closest('.lsp-android-select-wrap');
+      var btn = wrap && wrap.querySelector('.lsp-android-select-btn');
+      if (btn) {
+        btn.setAttribute('aria-expanded', 'false');
+        btn.removeAttribute('aria-controls');
+      }
+    }
     openSheetSelect = null;
     openSheetSyncBtn = null;
   }
@@ -142,7 +150,15 @@
 
     var list = document.createElement('div');
     list.className = 'lsp-android-select-list';
+    list.id = 'lsp-android-select-listbox';
     list.setAttribute('role', 'listbox');
+
+    var wrap = sel.closest && sel.closest('.lsp-android-select-wrap');
+    var btn = wrap && wrap.querySelector('.lsp-android-select-btn');
+    if (btn) {
+      btn.setAttribute('aria-expanded', 'true');
+      btn.setAttribute('aria-controls', list.id);
+    }
 
     for (var i = 0; i < sel.options.length; i++) {
       (function (opt, index) {
@@ -200,6 +216,7 @@
     btn.type = 'button';
     btn.className = 'lsp-android-select-btn' + (sel.className ? (' ' + sel.className) : '');
     btn.setAttribute('aria-haspopup', 'listbox');
+    btn.setAttribute('aria-expanded', 'false');
     btn.setAttribute('aria-label', titleForSelect(sel));
 
     function syncBtn() {

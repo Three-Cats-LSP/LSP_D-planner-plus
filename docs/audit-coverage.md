@@ -20,7 +20,7 @@
 | pwa | 3 | 0 | 2 | 0 | 1 |
 | release_config | 2 | 0 | 2 | 0 | 0 |
 | test | 1 | 0 | 0 | 1 | 0 |
-| test_infrastructure | 58 | 0 | 30 | 0 | 28 |
+| test_infrastructure | 60 | 0 | 32 | 0 | 28 |
 | tooling | 54 | 0 | 24 | 1 | 29 |
 | ui_core | 16 | 0 | 15 | 0 | 1 |
 | ui_shell | 2 | 0 | 2 | 0 | 0 |
@@ -28,7 +28,7 @@
 | web_markup | 7 | 0 | 7 | 0 | 0 |
 | web_runtime | 24 | 0 | 21 | 0 | 3 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **210** | **0** | **115** | **3** | **92** |
+| **Total** | **212** | **0** | **117** | **3** | **92** |
 
 ## Units
 
@@ -45,11 +45,11 @@
 | UI-PROFILE-PRESETS | web_runtime | `index.html:4901` | 508 | P2 | IN_PROGRESS | - |
 | UI-CONFIG-PRESETS | web_runtime | `index.html:5409` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
 | UI-APP-INIT | web_runtime | `index.html:5594` | 172 | P1 | IN_PROGRESS | - |
-| UI-PWA-LIFECYCLE | pwa | `index.html:5766` | 88 | P1 | IN_PROGRESS | - |
+| UI-PWA-LIFECYCLE | pwa | `index.html:5766` | 92 | P1 | IN_PROGRESS | - |
 | UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 418 | P2 | IN_PROGRESS | - |
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 340 | P2 | IN_PROGRESS | - |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 548 | P2 | IN_PROGRESS | - |
-| UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 1071 | P1 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
+| UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 1075 | P1 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
 | UI-CSS-MOBILE-SHELL | web_css | `lsp-dplanner-mobile-shell.css:1` | 709 | P2 | IN_PROGRESS | - |
 | UI-MARKUP-HEADER | web_markup | `ui/markup-header.html:1` | 786 | P2 | IN_PROGRESS | - |
 | UI-MARKUP-REC-PLANNER | web_markup | `ui/markup-rec-planner.html:1` | 73 | P1 | IN_PROGRESS | - |
@@ -61,17 +61,17 @@
 | UI-MARKUP-MODALS | web_markup | `ui/markup-modals.html:1` | 331 | P2 | IN_PROGRESS | - |
 | UI-ENVIRONMENT | ui_core | `settings-core.js:39` | 380 | P1 | IN_PROGRESS | - |
 | UI-MODE-STATE | ui_core | `settings-core.js:419` | 632 | P2 | IN_PROGRESS | - |
-| UI-UNIT-SWITCHING | web_runtime | `schedule-runner-core.js:413` | 372 | P1 | IN_PROGRESS | - |
-| UI-ZHL-DELEGATES | web_runtime | `schedule-runner-core.js:785` | 145 | P0 | IN_PROGRESS | - |
-| UI-CCR-DELEGATES | web_runtime | `schedule-runner-core.js:930` | 370 | P0 | IN_PROGRESS | - |
-| UI-DECO-PHYSICS | web_runtime | `schedule-runner-core.js:1300` | 268 | P0 | IN_PROGRESS | - |
-| UI-SCHEDULE-INPUTS | web_runtime | `schedule-runner-core.js:1568` | 373 | P0 | IN_PROGRESS | - |
-| UI-SETTINGS-CONTROLS | web_runtime | `schedule-runner-core.js:1941` | 428 | P1 | IN_PROGRESS | - |
-| UI-VPM-RUNNER | web_runtime | `schedule-runner-core.js:2369` | 491 | P0 | IN_PROGRESS | REG-131, REG-132, REG-133, REG-134, REG-136, REG-138 |
-| UI-ZHL-RUNNER-SETUP | web_runtime | `schedule-runner-core.js:2860` | 144 | P0 | IN_PROGRESS | - |
-| UI-ZHL-RUNNER-ENGINE | web_runtime | `schedule-runner-core.js:3004` | 325 | P0 | IN_PROGRESS | REG-132, REG-134, REG-137 |
-| UI-VPM-RENDER | ui_core | `results-render-core.js:338` | 504 | P1 | IN_PROGRESS | - |
-| UI-ZHL-RESULTS | ui_core | `results-render-core.js:842` | 464 | P1 | IN_PROGRESS | - |
+| UI-UNIT-SWITCHING | web_runtime | `schedule-runner-core.js:389` | 372 | P1 | IN_PROGRESS | - |
+| UI-ZHL-DELEGATES | web_runtime | `schedule-runner-core.js:761` | 145 | P0 | IN_PROGRESS | - |
+| UI-CCR-DELEGATES | web_runtime | `schedule-runner-core.js:906` | 370 | P0 | IN_PROGRESS | - |
+| UI-DECO-PHYSICS | web_runtime | `schedule-runner-core.js:1276` | 291 | P0 | IN_PROGRESS | - |
+| UI-SCHEDULE-INPUTS | web_runtime | `schedule-runner-core.js:1567` | 373 | P0 | IN_PROGRESS | - |
+| UI-SETTINGS-CONTROLS | web_runtime | `schedule-runner-core.js:1940` | 428 | P1 | IN_PROGRESS | - |
+| UI-VPM-RUNNER | web_runtime | `schedule-runner-core.js:2368` | 491 | P0 | IN_PROGRESS | REG-131, REG-132, REG-133, REG-134, REG-136, REG-138 |
+| UI-ZHL-RUNNER-SETUP | web_runtime | `schedule-runner-core.js:2859` | 144 | P0 | IN_PROGRESS | - |
+| UI-ZHL-RUNNER-ENGINE | web_runtime | `schedule-runner-core.js:3003` | 325 | P0 | IN_PROGRESS | REG-132, REG-134, REG-137 |
+| UI-VPM-RENDER | ui_core | `results-render-core.js:338` | 505 | P1 | IN_PROGRESS | - |
+| UI-ZHL-RESULTS | ui_core | `results-render-core.js:843` | 464 | P1 | IN_PROGRESS | - |
 | UI-GAS-INPUTS | ui_core | `gas-cards-core.js:15` | 223 | P1 | IN_PROGRESS | - |
 | UI-GAS-CARDS | ui_core | `gas-cards-core.js:238` | 284 | P1 | IN_PROGRESS | - |
 | UI-ZHL-HEADLESS-HELPERS | web_runtime | `zhl-headless-adapter.js:23` | 194 | P1 | VERIFIED | EXT-05, COV-01 |
@@ -87,13 +87,13 @@
 | ENG-VPM | engine | `vpm-engine-core.js:1` | 2106 | P0 | VERIFIED | REG-31, REG-32, REG-33, REG-34, REG-121, REG-126, REG-127 |
 | ENG-VPM-REFERENCE | engine_reference | `vpmb.py:1` | 2574 | P2 | VERIFIED | REG-01, REG-31, REG-128, REG-129 |
 | ENG-RDP | engine | `padi-engine.js:1` | 101 | P1 | VERIFIED | REG-24, REG-25, REG-56, REG-57, REG-130 |
-| APP-ANDROID-SELECT | native_bridge | `android-select-picker.js:1` | 277 | P1 | IN_PROGRESS | - |
+| APP-ANDROID-SELECT | native_bridge | `android-select-picker.js:1` | 294 | P1 | IN_PROGRESS | - |
 | APP-CAPACITOR-BRIDGE | native_bridge | `capacitor-bridge.js:1` | 278 | P1 | VERIFIED | ANDROID-01, REG-45 |
 | APP-CONTINGENCY | ui_core | `contingency-core.js:1` | 591 | P1 | IN_PROGRESS | - |
-| APP-EXPORT | ui_core | `export-core.js:1` | 3447 | P2 | IN_PROGRESS | - |
-| APP-GAS-PLAN | ui_core | `gas-plan-core.js:1` | 546 | P1 | IN_PROGRESS | - |
+| APP-EXPORT | ui_core | `export-core.js:1` | 3394 | P2 | IN_PROGRESS | - |
+| APP-GAS-PLAN | ui_core | `gas-plan-core.js:1` | 554 | P1 | IN_PROGRESS | - |
 | APP-GAS-TABLE | ui_core | `gas-table-core.js:1` | 305 | P2 | IN_PROGRESS | - |
-| APP-SURFACE-INTERVAL | ui_core | `surf-interval-core.js:1` | 374 | P1 | IN_PROGRESS | - |
+| APP-SURFACE-INTERVAL | ui_core | `surf-interval-core.js:1` | 386 | P1 | IN_PROGRESS | - |
 | APP-SERVICE-WORKER | pwa | `sw.js:1` | 304 | P1 | IN_PROGRESS | - |
 | APP-ZHL-WORKER-BRIDGE | worker | `zhl-worker-bridge.js:1` | 136 | P1 | VERIFIED | REG-01, REG-02, REG-03, REG-05 |
 | APP-ZHL-WORKER | worker | `zhl-schedule-worker.js:1` | 23 | P1 | VERIFIED | REG-01, REG-02, REG-03, REG-05 |
@@ -162,7 +162,7 @@
 | TOOL-AUDIT | tooling | `audit.py:1` | 16 | P1 | VERIFIED | COV-01, PARITY-01, REG-01, REG-02, REG-03, REG-05 |
 | TOOL-AUDIT-COVERAGE | tooling | `tools/audit_coverage.py:1` | 480 | P1 | IN_PROGRESS | - |
 | TOOL-AUDIT-COVERAGE-TEST | test_infrastructure | `tools/test_audit_coverage.py:1` | 211 | P1 | VERIFIED | COV-01 |
-| TOOL-V4-CURSOR-FULL-7-FIXES-TEST | test_infrastructure | `tools/test_v4_cursor_full_7_fixes.py:1` | 50 | P2 | IN_PROGRESS | - |
+| TOOL-V4-CURSOR-FULL-7-FIXES-TEST | test_infrastructure | `tools/test_v4_cursor_full_7_fixes.py:1` | 52 | P2 | IN_PROGRESS | - |
 | TOOL-BUILD-PAGES | tooling | `tools/build_pages_site.py:1` | 190 | P2 | IN_PROGRESS | - |
 | TOOL-ASSEMBLE-PAGES-PREVIEW | tooling | `tools/assemble_pages_preview.py:1` | 126 | P2 | READ | - |
 | TEST-ASSEMBLE-PAGES-PREVIEW | test | `tools/test_assemble_pages_preview.py:1` | 48 | P2 | READ | - |
@@ -244,3 +244,5 @@
 | TEST-UI-RESULTS-CSS-REGRESSION | test_infrastructure | `dev/ui_results_css_regression.py:1` | 415 | P0 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
 | TEST-UI-VISUAL-CONTRACT-REGRESSION | test_infrastructure | `dev/ui_visual_contract_regression.py:1` | 2456 | P0 | IN_PROGRESS | REG-100, REG-101, REG-102, REG-103, REG-104, REG-105, REG-106, REG-107, REG-108, REG-109, REG-110, REG-111, REG-131, REG-132, REG-133, REG-134, REG-135, REG-136, REG-137, REG-138 |
 | TEST-C07-PRE-RESULTS-REGRESSION | test_infrastructure | `dev/c07_pre_results_regression.py:1` | 48 | P0 | IN_PROGRESS | REG-89, REG-90 |
+| TOOL-V4-FULL-R-FIXES-TEST | test_infrastructure | `tools/test_v4_full_r_fixes.py:1` | 71 | P2 | IN_PROGRESS | - |
+| TEST-V4-FULL-R-EXPORT-SI | test_infrastructure | `dev/v4_full_r_export_si_regression.py:1` | 266 | P1 | IN_PROGRESS | - |

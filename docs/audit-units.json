@@ -1974,7 +1974,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "4af19859dcda0b5e18a766eba899a7439b1c89f6b93505e3e353fa46a2b01105",
+      "fingerprint": "5cd0249c82078134a820d5fe895d8085b5ded8f4001f87e9524bc6882bec0b3f",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2034,7 +2034,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "dcf0685d9624d849ea7c5b2325a72ee707b4e608572d8cd269b518f4212ea8e7",
+      "fingerprint": "36ad884e87112107455054f5be2fd4e61e879aafb0cb3114b08cacb2986b430c",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2071,7 +2071,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1f3a969b32accd9a081213226955697eb75ec8ba9dd2fc55b4eae6b17f51404f",
+      "fingerprint": "73f18ab148e8954057713720586b9f051ed1f40799aea2ac25f55e1466a9f243",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2146,7 +2146,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "bbc44df62b3231cb2c17cab4e1ade0a47342f9b02e0ff09acb1d526f09441d46",
+      "fingerprint": "998c8638b67d25e86108b32f6eb25893f177f781e9e5df6a0c8dd7ce0d3775df",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2259,7 +2259,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-UNIT-HELPERS"
       },
-      "fingerprint": "16d241ff90d730752fc2db31815b9ee0296739cbeb4ebd3530811f768dadc974",
+      "fingerprint": "abcdeca31ed008253eb77bffe3ce044b7d9d2a1f09029245015fe7dad5c2946a",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2325,7 +2325,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-DECO-PHYSICS"
       },
-      "fingerprint": "4d1cfb317967d64509e755c111370cd655ea1106ac11a509d8e17a90d976a412",
+      "fingerprint": "3662ab73047c76947b14510986bbbd164342e1a95a74e0eea086651029e4502c",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2400,7 +2400,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RENDER"
       },
-      "fingerprint": "c1b876a80babdc9b7f2c3b71c47fd4cb4af382048136c57a31513b1f04c72492",
+      "fingerprint": "1a01cc38242a7537e7f6df403dd23ddf243125528968048cbe8c7174c75b7a03",
       "last_read_fingerprint": null,
       "audit_issue": 147,
       "evidence": [],
@@ -2489,7 +2489,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
-      "fingerprint": "664317035ebbe8e181ef239fe3c495c64cefb2514d69f3613ce85d1075dc04ff",
+      "fingerprint": "eaa99942afdd6e138fb019704938a77dd2ed00b2fed29f04cfd0d5d4f7d14909",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2638,7 +2638,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "957d657969859c153c43b1e312b14fec942a8ee13b9ca83ba738e485249ca1e5",
+      "fingerprint": "15007d4784a8ac7f9bcf0aa0be1044eba6b7fe1abcbca885310db89f5df9d7d8",
       "last_read_fingerprint": null,
       "audit_issue": 157,
       "evidence": [],
@@ -2756,7 +2756,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PWA-LIFECYCLE"
       },
-      "fingerprint": "d891f8bed308845f47cfc819f84bc4dc27e662056eb710d4fc529a718315f571",
+      "fingerprint": "97843c325cd42e72855f9b81e08d88347e8b32af3e054380d6df98f8a53deb80",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2955,7 +2955,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "d21a410a41529993006111c1ea9e614d4cbfd1233fe2be810b276cc3f46f6176",
+      "fingerprint": "7d319383d46ff39799c5206c0c5dd4888332084f8cca653e43c7026688860213",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3007,7 +3007,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "95249fb72f25ea763ca3f0fbf358bd5088f6ab5c05384218dd5bd717bf3a8d71",
+      "fingerprint": "3a4a7b3bcc2db297552ad28311216415ce1d856f762d37b91990c73ca2f0592c",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3023,7 +3023,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "ac884b0e5fe557b98d989c2d03aaf5c958050aa957ff8469031cd2e7e9b8b8c6",
+      "fingerprint": "469daa814a7e0f73e68fbb7095c1fda2d3ec5c67f64e27a1191bc44bc4c2c7ca",
       "last_read_fingerprint": null,
       "evidence": [],
       "issue": "GitHub #140 H-2 / Cycle 5 GP-01\u00ef\u00bf\u00bd06 \u00ef\u00bf\u00bd docs/code-review-2026-06-30.md",
@@ -3053,7 +3053,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "2b0a6880339f3c6d576cecfd092ca8618765ab866a4a945fee8fd1b6497227ad",
+      "fingerprint": "37e18df4e767aa28d08bb5f8394b6f3517de4014fee4f0510b2241157f584328",
       "last_read_fingerprint": null,
       "evidence": [],
       "issue": "GitHub #142 \u00ef\u00bf\u00bd Dive 2 gas override",
@@ -4405,7 +4405,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "0357d0c90d26236997761ac04e32b873f9b6ae5a7d5f92bbf2a347f46ee6f12b",
+      "fingerprint": "ad0b7e1c0812564e5cbb03c1f58b2c8d502b64325c20f69e9275a84519dea247",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5874,6 +5874,36 @@
       ],
       "fingerprint": "a1967ff86474d33a38c3b246cfd37d66c09812da558361a8b830a512876381d6",
       "last_read_fingerprint": null
+    },
+    {
+      "id": "TOOL-V4-FULL-R-FIXES-TEST",
+      "path": "tools/test_v4_full_r_fixes.py",
+      "layer": "test_infrastructure",
+      "priority": "P2",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "db0fcef6d1d5262cb810c01430bfd74381e88a36d766e1bc27d3476bb7558beb",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "V4 cursor_full_R_audit fixer static regressions"
+    },
+    {
+      "id": "TEST-V4-FULL-R-EXPORT-SI",
+      "path": "dev/v4_full_r_export_si_regression.py",
+      "layer": "test_infrastructure",
+      "priority": "P1",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "d74fe988f0dc3d3d5c83515bd3ebffa20920a68f03aba5c4b29fd7f8a2b1e022",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "V4 full-audit messenger Run/Mix + SI imperial regressions"
     }
   ],
   "cycles": [
@@ -5937,7 +5967,7 @@
     },
     {
       "cycle": "R07",
-      "max_new_application_lines": 641,
+      "max_new_application_lines": 664,
       "application_units": [
         "UI-DECO-PHYSICS",
         "UI-SCHEDULE-INPUTS"
@@ -5945,7 +5975,7 @@
       "engine_reverification": [
         "ENG-ZHL-CCR"
       ],
-      "acceptance": "V4 R07: Deco physics and schedule inputs risk-first READ; current lines: 641; sessions: 2",
+      "acceptance": "V4 R07: Deco physics and schedule inputs risk-first READ; current lines: 664; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6028,13 +6058,13 @@
     },
     {
       "cycle": "R15",
-      "max_new_application_lines": 679,
+      "max_new_application_lines": 691,
       "application_units": [
         "APP-SURFACE-INTERVAL",
         "APP-GAS-TABLE"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R15: Surface interval and gas table cores risk-first READ; current lines: 679; sessions: 2",
+      "acceptance": "V4 R15: Surface interval and gas table cores risk-first READ; current lines: 691; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6051,12 +6081,12 @@
     },
     {
       "cycle": "R17",
-      "max_new_application_lines": 546,
+      "max_new_application_lines": 554,
       "application_units": [
         "APP-GAS-PLAN"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R17: Gas plan core risk-first READ; current lines: 546; sessions: 1"
+      "acceptance": "V4 R17: Gas plan core risk-first READ; current lines: 554; sessions: 1"
     },
     {
       "cycle": "R18",
@@ -6069,23 +6099,23 @@
     },
     {
       "cycle": "R19",
-      "max_new_application_lines": 968,
+      "max_new_application_lines": 969,
       "application_units": [
         "UI-VPM-RENDER",
         "UI-ZHL-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R19: VPM/ZHL results rendering risk-first READ; current lines: 968; sessions: 2",
+      "acceptance": "V4 R19: VPM/ZHL results rendering risk-first READ; current lines: 969; sessions: 2",
       "min_review_sessions": 2
     },
     {
       "cycle": "R20",
-      "max_new_application_lines": 3453,
+      "max_new_application_lines": 3394,
       "application_units": [
         "APP-EXPORT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R20: Export text/PDF risk-first READ; current lines: 3453; sessions: 6",
+      "acceptance": "V4 R20: Export text/PDF risk-first READ; current lines: 3394; sessions: 6",
       "min_review_sessions": 6
     },
     {
@@ -6122,34 +6152,34 @@
     },
     {
       "cycle": "R24",
-      "max_new_application_lines": 2458,
+      "max_new_application_lines": 2457,
       "application_units": [
         "UI-BOOT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R24: index.html shell boot region risk-first READ; current lines: 2458; sessions: 5",
+      "acceptance": "V4 R24: index.html shell boot region risk-first READ; current lines: 2457; sessions: 5",
       "min_review_sessions": 5
     },
     {
       "cycle": "R25",
-      "max_new_application_lines": 433,
+      "max_new_application_lines": 437,
       "application_units": [
         "APP-SERVICE-WORKER",
         "UI-PWA-LIFECYCLE",
         "APP-MANIFEST"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 433; sessions: 1"
+      "acceptance": "V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 437; sessions: 1"
     },
     {
       "cycle": "R26",
-      "max_new_application_lines": 555,
+      "max_new_application_lines": 572,
       "application_units": [
         "APP-CAPACITOR-BRIDGE",
         "APP-ANDROID-SELECT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R26: Capacitor and Android bridge risk-first READ; current lines: 555; sessions: 1"
+      "acceptance": "V4 R26: Capacitor and Android bridge risk-first READ; current lines: 572; sessions: 1"
     },
     {
       "cycle": "R27",
@@ -6216,9 +6246,11 @@
     },
     {
       "cycle": "R33",
-      "max_new_application_lines": 40,
+      "max_new_application_lines": 55,
       "application_units": [
-        "APP-PACKAGE"
+        "APP-PACKAGE",
+        "APP-VERSION",
+        "APP-VERSION-JSON"
       ],
       "engine_reverification": [
         "CI-AUDIT",
@@ -6226,16 +6258,16 @@
         "CI-APK",
         "CI-DEPLOY"
       ],
-      "acceptance": "V4 R33: Package manifest and CI workflows risk-first READ; current lines: 40; sessions: 1"
+      "acceptance": "V4 R33: Package manifest and CI workflows risk-first READ; current lines: 55; sessions: 1"
     },
     {
       "cycle": "R34",
-      "max_new_application_lines": 787,
+      "max_new_application_lines": 786,
       "application_units": [
         "UI-MARKUP-HEADER"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R34: Header markup risk-first READ; current lines: 787; sessions: 2",
+      "acceptance": "V4 R34: Header markup risk-first READ; current lines: 786; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6281,13 +6313,13 @@
     },
     {
       "cycle": "R39",
-      "max_new_application_lines": 760,
+      "max_new_application_lines": 758,
       "application_units": [
         "UI-CSS-FOUNDATION",
         "UI-CSS-MODES"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R39: Foundation and mode CSS risk-first READ; current lines: 760; sessions: 2",
+      "acceptance": "V4 R39: Foundation and mode CSS risk-first READ; current lines: 758; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6301,12 +6333,12 @@
     },
     {
       "cycle": "R41",
-      "max_new_application_lines": 1114,
+      "max_new_application_lines": 1075,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1114; sessions: 2",
+      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1075; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6318,6 +6350,16 @@
       ],
       "engine_reverification": [],
       "acceptance": "V4 R42: Planner shell and results panel design-lock READ; current lines: 827; sessions: 2",
+      "min_review_sessions": 2
+    },
+    {
+      "cycle": "R43",
+      "max_new_application_lines": 709,
+      "application_units": [
+        "UI-CSS-MOBILE-SHELL"
+      ],
+      "engine_reverification": [],
+      "acceptance": "V4 R43: Mobile shell CSS risk-first READ; current lines: 709; sessions: 2",
       "min_review_sessions": 2
     }
   ],
@@ -7192,7 +7234,8 @@
         "R39",
         "R40",
         "R41",
-        "R42"
+        "R42",
+        "R43"
       ]
     }
   ],

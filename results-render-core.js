@@ -464,14 +464,15 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
       const capNote = seg.vpmStopCapHit ? ' title="Stop capped at safety limit — ceiling not cleared"' : '';
       // Cumulative CNS row highlight (same logic as Bühlmann, uses _cumCNS stored by VPM engine)
       const cumCnsPctVPM = seg._cumCNS != null ? seg._cumCNS : 0;
+      const cnsTierVPM = seg.vpmStopCapHit ? '' : (cumCnsPctVPM >= 100 ? '100' : cumCnsPctVPM >= 80 ? '80' : '');
       const rowBgVPM = seg.vpmStopCapHit
         ? 'background:rgba(255,140,0,0.15);'
-        : cumCnsPctVPM >= 100
+        : cnsTierVPM === '100'
         ? 'background:#ffff00;color:#111;'
-        : cumCnsPctVPM >= 80
+        : cnsTierVPM === '80'
           ? 'background:rgba(255,255,0,0.25);'
           : '';
-      html += `<tr class="deco-row" data-phase="deco" style="${rowBgVPM}"${capNote} ${rowBgVPM && !seg.vpmStopCapHit ? 'data-cnshi="1"' : ''}>
+      html += `<tr class="deco-row" data-phase="deco" style="${rowBgVPM}"${capNote} ${cnsTierVPM ? `data-cnshi="1" data-cns-tier="${cnsTierVPM}"` : ''}>
         <td><span style="color:${seg.vpmStopCapHit ? 'var(--orange)' : rowBgVPM ? '#b30000' : 'var(--red)'};font-size:13px;">${seg.vpmStopCapHit ? '⚠' : '●'}</span></td>
         <td data-label="Depth" style="color:${seg.vpmStopCapHit ? 'var(--orange)' : rowBgVPM ? '#b30000' : 'var(--red)'};font-weight:600;">${dU ? seg.depth : Math.round(seg.depth * 3.28084)}${du}</td>
         <td data-label="Stop" style="color:${seg.vpmStopCapHit ? 'var(--orange)' : rowBgVPM ? '#b30000' : 'var(--red)'};font-weight:600;">${fmtT(seg.time)}${seg.vpmStopCapHit ? ' ⚠' : ''}</td>
@@ -1105,14 +1106,14 @@ function renderZhlScheduleResults(ctx) {
       totalOTU     += segOTU(pO2Val, stepDur);
       addGas(s.gas, s.depth, stepDur, sacDeco);
       const eadDisp = fmtEAD(s.depth, _sFN2);
-      // Row highlight when cumulative CNS exceeds threshold (like MultiDeco)
       const cumCnsPct = totalCNSfrac * 100;
-      const rowBg = cumCnsPct >= 100
+      const cnsTier = cumCnsPct >= 100 ? '100' : cumCnsPct >= 80 ? '80' : '';
+      const rowBg = cnsTier === '100'
         ? 'background:#ffff00;color:#111;'
-        : cumCnsPct >= 80
+        : cnsTier === '80'
           ? 'background:rgba(255,255,0,0.25);'
           : '';
-      _decoRowBuf += `<tr class="deco-row" data-phase="deco" style="${rowBg}" ${rowBg ? 'data-cnshi="1"' : ''}>
+      _decoRowBuf += `<tr class="deco-row" data-phase="deco" style="${rowBg}" ${cnsTier ? `data-cnshi="1" data-cns-tier="${cnsTier}"` : ''}>
         <td><span style="color:var(--red);">●</span></td>
         <td data-label="Depth">${dU?s.depth+'m':mToFt(s.depth)+'ft'}</td>
         <td data-label="Stop" style="color:${rowBg?'#b30000':'var(--red)'};">${fmtMM(stepDur)}</td>

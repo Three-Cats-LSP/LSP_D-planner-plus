@@ -104,9 +104,21 @@ function calcSurfInt(prefix) {
   const gid = (suffix) => document.getElementById(P + suffix);
   const d1Id = P + 'D1Depth';
   const d2Id = P + 'D2Depth';
-  const d1 = domDepthToM(d1Id);
+  // Results-panel SI sliders (mainSi*/recSi*) always store metric metres via data-depthM.
+  const siDepthToM = (id) => {
+    const el = document.getElementById(id);
+    if (!el) return 0;
+    if (el.dataset.siMetric === '1') {
+      const stamped = parseFloat(el.dataset.depthM);
+      if (Number.isFinite(stamped)) return stamped;
+      const v = parseFloat(el.value);
+      return Number.isFinite(v) ? v : 0;
+    }
+    return typeof domDepthToM === 'function' ? domDepthToM(id) : (parseFloat(el.value) || 0);
+  };
+  const d1 = siDepthToM(d1Id);
   const bt1 = parseFloat(gid('D1BT')?.value) || 25;
-  const d2 = domDepthToM(d2Id);
+  const d2 = siDepthToM(d2Id);
   const bt2 = parseFloat(gid('D2BT')?.value) || 25;
   const gfLow = (parseFloat(gid('GfLow')?.value) || 30) / 100;
   const gfHigh = (typeof mGF !== 'undefined' && Number.isFinite(mGF.high) ? mGF.high : 85) / 100;
@@ -244,7 +256,7 @@ function renderSurfIntPanel(containerId, prefix, preDepthM, preBtMin) {
               <span id="${P}D1DepthDisplay" style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);line-height:1;">${fmtD(d1Init)}</span>
             </div>
             <div class="slider-wrap">
-              <input type="range" id="${P}D1Depth" class="lsp-slider" min="5" max="60" value="${d1Init}" step="1" oninput="updateSliderFill(this);calcSurfInt('${P}')">
+              <input type="range" id="${P}D1Depth" class="lsp-slider" min="5" max="60" value="${d1Init}" step="1" data-si-metric="1" data-depth-m="${d1Init}" oninput="this.dataset.depthM=this.value;updateSliderFill(this);calcSurfInt('${P}')">
             </div>
           </div>
           <div style="flex:1;min-width:150px;margin-bottom:14px;">
@@ -264,7 +276,7 @@ function renderSurfIntPanel(containerId, prefix, preDepthM, preBtMin) {
               <span id="${P}D2DepthDisplay" style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);line-height:1;">${fmtD(d1Init)}</span>
             </div>
             <div class="slider-wrap">
-              <input type="range" id="${P}D2Depth" class="lsp-slider" min="5" max="60" value="${d1Init}" step="1" oninput="updateSliderFill(this);calcSurfInt('${P}')">
+              <input type="range" id="${P}D2Depth" class="lsp-slider" min="5" max="60" value="${d1Init}" step="1" data-si-metric="1" data-depth-m="${d1Init}" oninput="this.dataset.depthM=this.value;updateSliderFill(this);calcSurfInt('${P}')">
             </div>
           </div>
           <div style="flex:1;min-width:150px;margin-bottom:14px;">

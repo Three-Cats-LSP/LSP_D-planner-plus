@@ -1402,7 +1402,7 @@
 </div>
 <!-- Algorithm selection row — moved from header into card -->
 <div id="algoRow" style="display:none;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
-<span class="algo-label-text u1">Algorithm:</span><span class="tip-icon" onclick="showTip('Algorithm Selection','Which decompression algorithm is used to compute deco schedules.\n\nZHL-16C + GF (Bühlmann): tissue-saturation model with Gradient Factors. GF low controls first stop depth; GF high controls surface tissue tolerance. Widely validated, deterministic, matches dive computers.\n\nVPM-B: bubble-mechanics model. Minimises bubble growth by suppressing decompression stops deep, allowing faster ascent with less shallow time. Generally produces shorter total deco on short/shallow dives but may give MORE deco than GF on deep, long trimix dives.\n\nVPM-B+GFS (Gradient Factor Surfacing): VPM-B Bubble Model with Gradient Factor High overlay at shallow stops. Always at least as conservative as VPM-B alone.\n\n⚠ Conservatism order is PROFILE-DEPENDENT:\n• Deep / long trimix: ZHL-16C + GF is usually more conservative (longer TTS).\n• Short / shallow dives: VPM-B may match or exceed GF conservatism.\nThere is no single most-conservative model — compare TTS for your specific dive.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span>
+<span class="algo-label-text u1">Algorithm:</span><span class="tip-icon" onclick="showTip('Algorithm Selection','Which decompression algorithm is used to compute deco schedules.\n\nZHL-16C + GF (Bühlmann): tissue-saturation model with Gradient Factors. GF low controls first stop depth; GF high controls surface tissue tolerance. Widely validated, deterministic, matches dive computers.\n\nVPM-B: bubble-mechanics model. Minimises bubble growth by suppressing decompression stops deep, allowing faster ascent with less shallow time. Generally produces shorter total deco on short/shallow dives but may give MORE deco than GF on deep, long trimix dives.\n\nVPM-B+GFS (Gradient Factor Surfacing): VPM-B Bubble Model with Gradient Factor High overlay at shallow stops. Always at least as conservative as VPM-B alone.\n\n⚠ Conservatism order is PROFILE-DEPENDENT:\n• Deep / long trimix: ZHL-16C + GF is usually more conservative (longer run time).\n• Short / shallow dives: VPM-B may match or exceed GF conservatism.\nThere is no single most-conservative model — compare run time / deco for your specific dive.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span>
 <select class="u7" id="algorithmSelect" onchange="setDecoAlgorithm(this.value)">
 <option selected="" value="ZHLC_GF">Bühlmann ZH-L16C + GF</option>
 <option value="VPMB">VPM-B</option>
@@ -1845,7 +1845,7 @@
 <div class="u21">
 <div class="u18">Algorithm Comparison</div>
 <div class="info-box"><strong>Bühlmann ZH-L16C + GF</strong> — dissolved gas model, tunable via GF Low/High. Every major dive computer uses it. Best for any technical dive where you want predictable, well-understood behaviour.</div>
-<div class="info-box"><strong>VPM-B</strong> — bubble mechanics model (Yount &amp; Hoffman). Tracks microscopic bubble nuclei rather than dissolved gas. Tends to give deeper first stops and shorter shallow stops. Best for divers who prefer a bubble-focused approach.<br/><br/><em>⚠ Conservatism order is profile-dependent:</em> on deep/long trimix dives GF is usually more conservative (longer TTS); on short/shallow dives VPM-B can match or exceed GF. Compare TTS for your specific dive.</div>
+<div class="info-box"><strong>VPM-B</strong> — bubble mechanics model (Yount &amp; Hoffman). Tracks microscopic bubble nuclei rather than dissolved gas. Tends to give deeper first stops and shorter shallow stops. Best for divers who prefer a bubble-focused approach.<br/><br/><em>⚠ Conservatism order is profile-dependent:</em> on deep/long trimix dives GF is usually more conservative (longer run time); on short/shallow dives VPM-B can match or exceed GF. Compare run time / deco for your specific dive.</div>
 <div class="info-box"><strong>VPM-B+GFS</strong> — VPM-B bubble mechanics for deep/mid stops, Bühlmann GF High ceiling at shallow stops. Adds a more conservative surfacing ceiling when pure VPM-B feels too aggressive — shallow stops may be longer, not shorter.</div>
 </div>
 <!-- ── VPM-B Physics ─────────────────────────────────────── -->
@@ -3064,7 +3064,7 @@ function formatDecoZoneStart(depthM) {
   const disp = rounded % 1 === 0 ? String(Math.round(rounded)) : rounded.toFixed(1);
   return dU ? disp + ' m' : mToFt(depthM) + ' ft';
 }
-const PLAN_INFO_TIP = 'Summary metrics for this dive plan:\n\n• Run time — total elapsed from start of descent to surfacing\n• TTS — time to surface: ascent + deco only (excludes descent and bottom time)\n• Deco time — time spent at mandatory deco and safety stops\n• CNS — cumulative central nervous system oxygen toxicity (%)\n• OTU — oxygen tolerance units (daily exposure index)\n• PrT — gauge pressure (bar) × √bottom time — severity index for GF High selection\n• Decozone — depth where tissue inert-gas tension first exceeds ambient (GF-independent)\n• First deco — depth of the first mandatory decompression stop (GF-dependent)\n• Surf GF — surface gradient factor: maximum tissue loading ÷ M-value at surface pressure. Shows how close the leading compartment is to the Bühlmann M-value when you surface. 0% = fully desaturated; 100% = at the raw M-value limit (no GF conservatism). Your GF High sets your intended ceiling — Surf GF shows the actual outcome.';
+const PLAN_INFO_TIP = 'Summary metrics for this dive plan:\n\n• Run time (RT) — total elapsed from start of descent to surfacing\n• Deco time — time spent at mandatory deco and safety stops\n• CNS — cumulative central nervous system oxygen toxicity (%)\n• OTU — oxygen tolerance units (daily exposure index)\n• PrT — gauge pressure (bar) × √bottom time — severity index for GF High selection\n• Decozone — depth where tissue inert-gas tension first exceeds ambient (GF-independent)\n• First deco — depth of the first mandatory decompression stop (GF-dependent)\n• Surf GF — surface gradient factor: maximum tissue loading ÷ M-value at surface pressure. Shows how close the leading compartment is to the Bühlmann M-value when you surface. 0% = fully desaturated; 100% = at the raw M-value limit (no GF conservatism). Your GF High sets your intended ceiling — Surf GF shows the actual resulting loading.\n\nNote: time-to-surface (TTS = ascent + deco only) may appear in text/PDF exports but is not a visible schedule column.';
 
 function formatDecoStopDepth(depthM) {
   return formatDecoZoneStart(depthM);
@@ -5816,7 +5816,11 @@ window.addEventListener('load', function() {
 
   // Install prompt banner (Android Chrome)
   let _pwaPrompt = null;
+  const ANDROID_A2HS_DISMISS_KEY = 'lspAndroidA2hsDismissed';
+  let androidA2hsDismissed = false;
+  try { androidA2hsDismissed = localStorage.getItem(ANDROID_A2HS_DISMISS_KEY) === '1'; } catch (e) {}
   window.addEventListener('beforeinstallprompt', e => {
+    if (androidA2hsDismissed) return;
     e.preventDefault();
     _pwaPrompt = e;
     const banner = document.createElement('div');
@@ -5826,7 +5830,7 @@ window.addEventListener('load', function() {
       + '<div style="flex:1;"><div style="color:var(--text);font-weight:600;font-size:14px;">Install LSP D-Planner+</div>'
       + '<div style="color:var(--muted);font-size:12px;margin-top:2px;">Add to home screen for offline use</div></div>'
       + '<button onclick="_pwaPrompt.prompt();_pwaPrompt.userChoice.then(()=>{_pwaPrompt=null;document.getElementById(\'pwaBanner\').remove();})" style="background:linear-gradient(135deg,var(--accent),var(--accent-hover));border:none;border-radius:8px;padding:8px 14px;color:#001820;font-weight:700;font-size:12px;cursor:pointer;">INSTALL</button>'
-      + '<button onclick="this.parentNode.remove()" style="background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:0;line-height:1;">&times;</button>';
+      + '<button type="button" aria-label="Dismiss" onclick="try{localStorage.setItem(\'lspAndroidA2hsDismissed\',\'1\')}catch(e){}this.parentNode.remove()" style="background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:0;line-height:1;">&times;</button>';
     document.body.appendChild(banner);
   });
 

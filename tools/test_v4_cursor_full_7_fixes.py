@@ -30,7 +30,9 @@ class TestV4CursorFull7Fixes(unittest.TestCase):
         self.assertNotRegex(src, r"`Run:\s*\$\{")
         self.assertNotRegex(src, r"`Run:\s*\$\{c\.")
         self.assertGreaterEqual(src.count("`RT:"), 2)
-        self.assertIn("TTS:", src)
+        # Text ascent schedule still has a TTS column; on-screen schedule does not.
+        self.assertIn("TTS", src)
+        self.assertIn("header: 'Phase Depth Stop  Mix   Run   TTS", src)
 
     def test_ios_a2hs_dismissal_persists(self) -> None:
         html = (ROOT / "index.html").read_text(encoding="utf-8")
