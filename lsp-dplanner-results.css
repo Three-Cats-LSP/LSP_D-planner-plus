@@ -777,15 +777,15 @@ body.light-theme #resultsPanel #decoAlertsNarcotic .alert .tip-icon { color: #cc
 #resultsPanel .legend-item.legend-switch { color: #16a34a; }
 body.light-theme #resultsPanel .deco-table.schedule-table .ph-switch,
 body.light-theme #resultsPanel .legend-item.legend-switch { color: #16a34a; }
-#resultsPanel .deco-table.schedule-table tr[data-phase="descent"] :is(td.phase-cell, td.col-depth, td.col-time.stop) { color: var(--red); }
-#resultsPanel .deco-table.schedule-table tr[data-phase="bottom"] :is(td.phase-cell, td.col-depth, td.col-time.stop) { color: var(--accent); }
-#resultsPanel .deco-table.schedule-table tr[data-phase="ascent"] :is(td.phase-cell, td.col-depth, td.col-time.stop) { color: #FFBF00; }
-#resultsPanel .deco-table.schedule-table tr[data-phase="deco"] :is(td.phase-cell, td.col-depth, td.col-time.stop) { color: var(--red); }
-#resultsPanel .deco-table.schedule-table tr[data-phase="safety"] :is(td.phase-cell, td.col-depth, td.col-time.stop) { color: var(--green); }
-#resultsPanel .deco-table.schedule-table tr[data-phase="surface"] :is(td.phase-cell, td.col-depth, td.col-time.stop) { color: #FFBF00; }
-#resultsPanel .deco-table.schedule-table tr[data-phase="switch"] :is(td.phase-cell, td.col-depth, td.col-time.stop),
-#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] :is(td.phase-cell, td.col-depth, td.col-time.stop) { color: #16a34a; }
-#resultsPanel .deco-table.schedule-table :is(.col-time.run, .col-gas, .col-ppo2, .col-cns, .col-ead) { color: var(--text-faint); }
+#resultsPanel .deco-table.schedule-table tr[data-phase="descent"] :is(td.phase-cell, td.col-depth, td.col-time.stop, td.col-time.run) { color: var(--red); }
+#resultsPanel .deco-table.schedule-table tr[data-phase="bottom"] :is(td.phase-cell, td.col-depth, td.col-time.stop, td.col-time.run) { color: var(--accent); }
+#resultsPanel .deco-table.schedule-table tr[data-phase="ascent"] :is(td.phase-cell, td.col-depth, td.col-time.stop, td.col-time.run) { color: #FFBF00; }
+#resultsPanel .deco-table.schedule-table tr[data-phase="deco"] :is(td.phase-cell, td.col-depth, td.col-time.stop, td.col-time.run) { color: var(--red); }
+#resultsPanel .deco-table.schedule-table tr[data-phase="safety"] :is(td.phase-cell, td.col-depth, td.col-time.stop, td.col-time.run) { color: var(--green); }
+#resultsPanel .deco-table.schedule-table tr[data-phase="surface"] :is(td.phase-cell, td.col-depth, td.col-time.stop, td.col-time.run) { color: #FFBF00; }
+#resultsPanel .deco-table.schedule-table tr[data-phase="switch"] :is(td.phase-cell, td.col-depth, td.col-time.stop, td.col-time.run),
+#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] :is(td.phase-cell, td.col-depth, td.col-time.stop, td.col-time.run) { color: #16a34a; }
+#resultsPanel .deco-table.schedule-table :is(.col-gas, .col-ppo2, .col-cns, .col-ead) { color: var(--text); }
 #resultsPanel .deco-table.schedule-table tr.row-summary td { background: color-mix(in oklab, var(--accent) 4%, transparent); border-top: 1px solid var(--border-hi); border-bottom: 1px solid var(--border); padding: 9px 6px; font-size: 10px; color: var(--text-muted); }
 #resultsPanel .deco-table.schedule-table .summary-stat span { color: var(--text); font-weight: 600; }
 #resultsPanel .schedule-totals { display: flex; flex-wrap: wrap; gap: 4px 18px; padding: 9px 0 0; font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); border-top: 1px solid var(--border-hi); margin-top: var(--space-2); }

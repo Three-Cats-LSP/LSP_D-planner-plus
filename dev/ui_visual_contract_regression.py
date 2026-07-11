@@ -144,10 +144,10 @@ CAPTURE_JS = r"""
   });
   const switchRows = [...document.querySelectorAll('#resultsPanel .schedule-table tr[data-phase="switch"]')];
   const switchPhaseCells = switchRows.flatMap(row =>
-    [...row.querySelectorAll('td.phase-cell, td[data-label="Depth"], td[data-label="Stop"]')]
+    [...row.querySelectorAll('td.phase-cell, td[data-label="Depth"], td[data-label="Stop"], td[data-label="Run"]')]
   );
   const switchNeutralCells = switchRows.flatMap(row =>
-    [...row.querySelectorAll('td[data-label="Run"], td[data-label="Mix"], td[data-label="PPO2"], td[data-label="CNS"], td[data-label="EAD"]')]
+    [...row.querySelectorAll('td[data-label="Mix"], td[data-label="PPO2"], td[data-label="CNS"], td[data-label="EAD"]')]
   );
   const schedule = document.querySelector('#resultsPanel .schedule-table');
   const scheduleWrap = schedule?.closest('.schedule-wrap');
@@ -210,6 +210,7 @@ CAPTURE_JS = r"""
   const expectedBg = resolveColor(root.getPropertyValue('--gas-switch-label-bg'));
   const expectedSwitch = resolveColor('#16a34a');
   const expectedScheduleNeutral = resolveColor(root.getPropertyValue('--text-faint'));
+  const expectedScheduleText = resolveColor(root.getPropertyValue('--text'));
   const expectedText = resolveColor(root.getPropertyValue('--gas-switch-label-text'));
   const expectedDecoPillBg = resolveColor('#d6ff00');
   const expectedDecoPillText = resolveColor('#166534');
@@ -367,13 +368,15 @@ CAPTURE_JS = r"""
       decoPhaseTexts,
       decoPhaseIcons,
       expectedNeutral: expectedScheduleNeutral,
+      expectedText: expectedScheduleText,
       phaseColorRows: nonSummaryRows.map(row => {
         const leftCells = [
           row.querySelector('td.phase-cell'),
           row.querySelector('td[data-label="Depth"]'),
           row.querySelector('td[data-label="Stop"]'),
+          row.querySelector('td[data-label="Run"]'),
         ].filter(Boolean);
-        const rightCells = ['Run', 'Mix', 'PPO2', 'CNS', 'EAD']
+        const rightCells = ['Mix', 'PPO2', 'CNS', 'EAD']
           .map(label => row.querySelector(`td[data-label="${label}"]`))
           .filter(Boolean);
         return {
@@ -2038,7 +2041,7 @@ def main() -> int:
         and all(color == c["expectedBg"] for color in c["decoDotColors"])
         and c["switchRowCount"] >= 1
         and all(color == c["expectedSwitch"] for color in c["switchCellColors"])
-        and all(color == c["scheduleColumns"]["expectedNeutral"] for color in c["switchNeutralCellColors"])
+        and all(color == c["scheduleColumns"]["expectedText"] for color in c["switchNeutralCellColors"])
         for c in captures
     )
     results["SL-VIS-DECO-SCHEDULE-LEGEND-ORDER"] = all(
@@ -2089,7 +2092,7 @@ def main() -> int:
         and bool(c["switchCellColors"])
         and all(color == c["expectedSwitch"] for color in c["switchCellColors"])
         and bool(c["switchNeutralCellColors"])
-        and all(color == c["scheduleColumns"]["expectedNeutral"] for color in c["switchNeutralCellColors"])
+        and all(color == c["scheduleColumns"]["expectedText"] for color in c["switchNeutralCellColors"])
         for c in (dark, light)
     )
     results["SL-VIS-SCHEDULE-PHASE-COLUMN-COLOR-CONTRACT"] = all(
@@ -2099,7 +2102,7 @@ def main() -> int:
             row["leftColors"]
             and len(set(row["leftColors"])) == 1
             and row["rightColors"]
-            and all(color == c["scheduleColumns"]["expectedNeutral"] for color in row["rightColors"])
+            and all(color == c["scheduleColumns"]["expectedText"] for color in row["rightColors"])
             for row in c["scheduleColumns"]["phaseColorRows"]
         )
         for c in captures

@@ -134,9 +134,9 @@ PPO2_JS = r"""
     p.remove();
     return c;
   };
-  const neutral = resolve('var(--text-faint)');
+  const neutral = resolve('var(--text)');
   const rightCells = [
-    ...document.querySelectorAll('#resultsPanel #decoTableBody tr[data-phase]:not(.row-summary) td[data-label="Run"], #resultsPanel #decoTableBody tr[data-phase]:not(.row-summary) td[data-label="Mix"], #resultsPanel #decoTableBody tr[data-phase]:not(.row-summary) td[data-label="PPO2"], #resultsPanel #decoTableBody tr[data-phase]:not(.row-summary) td[data-label="CNS"], #resultsPanel #decoTableBody tr[data-phase]:not(.row-summary) td[data-label="EAD"]')
+    ...document.querySelectorAll('#resultsPanel #decoTableBody tr[data-phase]:not(.row-summary) td[data-label="Mix"], #resultsPanel #decoTableBody tr[data-phase]:not(.row-summary) td[data-label="PPO2"], #resultsPanel #decoTableBody tr[data-phase]:not(.row-summary) td[data-label="CNS"], #resultsPanel #decoTableBody tr[data-phase]:not(.row-summary) td[data-label="EAD"]')
   ];
   const rightColors = rightCells.map(el => getComputedStyle(el).color);
   const okColor = read('#resultsPanel #decoTableBody .col-ppo2.ppo2-ok');
