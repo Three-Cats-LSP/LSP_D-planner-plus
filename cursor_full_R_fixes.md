@@ -41,10 +41,10 @@ Confirmed HIGH release blockers and targeted MEDIUM/LOW findings are fixed with 
 | V4-FULL-R07_L_01 | **Fixed** | Removed dead `injectTtsCells`. |
 | V4-FULL-R20_L_01 | **Fixed** | Empty TTS column leftovers cleaned with injector removal / tip copy. |
 | V4-FULL-R20_L_02 | **Fixed** | Shared `exportShortMix` for export/messenger paths. |
-| V4-FULL-R20_L_03 | **Deferred** | Slate TRT←BT fallback is intentional edge UX; left as-is. |
+| V4-FULL-R20_L_03 | **Fixed** | Slate TRT uses the plan summary / VPM fallback path and no longer substitutes bottom time when RT is missing. |
 | V4-FULL-R20_L_04 | **Fixed** | Text gas SAC uses `lspSacUnit()`. |
 | V4-FULL-R20_L_05 | **Fixed** | Removed dead `if(false){…}` emergency PDF block. |
-| V4-FULL-R20_L_06 | **Deferred** | Slate `addPage()` cosmetic; polish later. |
+| V4-FULL-R20_L_06 | **Fixed** | Slate PDF section page start is conditional, avoiding an unconditional extra page break. |
 | V4-FULL-R20_L_07 | **False positive** | PDF phase-only Mix colors match current web schedule contract. |
 | V4-FULL-R25_L_01 | **Fixed** | Android A2HS dismiss persists (`lspAndroidA2hsDismissed`). |
 | V4-FULL-R26_L_01 | **Fixed** | Android select picker: `aria-expanded` / `aria-controls`. |
@@ -53,7 +53,7 @@ Confirmed HIGH release blockers and targeted MEDIUM/LOW findings are fixed with 
 | V4-FULL-R35_L_01 | **Fixed** | `.rec-block-card` CSS added. |
 | V4-FULL-R37_L_01 | **Fixed** | Consumption help TTS copy updated. |
 | V4-FULL-R41_L_01 | **Fixed** | Orphan `.col-tts` removed. |
-| V4-FULL-R41_L_02 | **Deferred** | `caution` vs “low” naming; no product decision yet. |
+| V4-FULL-R41_L_02 | **Fixed** | Gas-supply middle tier now uses product wording `low` while preserving the orange visual tier. |
 | V4-FULL-R42_L_01 | **Fixed** | `PLAN_INFO_TIP` documents TTS as export-only (also repaired a corrupted string that blocked engine boot). |
 | V4-FULL-R39_L_01 | **False positive** | Neutral Mix coloring is intentional phase-column contract. |
 
@@ -61,12 +61,12 @@ Confirmed HIGH release blockers and targeted MEDIUM/LOW findings are fixed with 
 
 ## Files changed
 
-- `export-core.js` — label-based schedule reads; VPM fallback; CNS tiers; gas status; `exportShortMix`; dead block removed; slate stop rows use helpers
+- `export-core.js` — label-based schedule reads; VPM fallback; CNS tiers; gas status; `exportShortMix`; dead block removed; slate stop rows use helpers; TRT fallback and slate PDF page-start cleanup
 - `surf-interval-core.js` — metric depth stamp for results SI
-- `results-render-core.js` — `data-cns-tier`
+- `results-render-core.js` — `data-cns-tier`; gas low-tier naming
 - `gas-plan-core.js` — `gasPlanAdequacyStatus`
 - `schedule-runner-core.js` — REC block-card parity; remove `injectTtsCells`
-- `lsp-dplanner-results.css` — `.rec-block-card`; drop `.col-tts`
+- `lsp-dplanner-results.css` — `.rec-block-card`; drop `.col-tts`; `.gas-usage-card--low`
 - `index.html` — A2HS persistence; tip copy repair
 - `android-select-picker.js` — a11y attrs
 - `gf-curve-core.js` — imperial depth labels
@@ -85,6 +85,9 @@ Confirmed HIGH release blockers and targeted MEDIUM/LOW findings are fixed with 
 - messenger/export no fragile Run/Mix indexes
 - VPM PDF fallback + CNS tier helpers
 - gas adequacy helper shared
+- slate TRT does not fall back to bottom time
+- slate PDF page break is conditional
+- gas low-tier wording replaces `caution`
 - SI metric stamp
 - REC block-card + no `injectTtsCells`
 - A2HS / select a11y

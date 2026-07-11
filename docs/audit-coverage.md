@@ -90,7 +90,7 @@
 | APP-ANDROID-SELECT | native_bridge | `android-select-picker.js:1` | 294 | P1 | IN_PROGRESS | - |
 | APP-CAPACITOR-BRIDGE | native_bridge | `capacitor-bridge.js:1` | 278 | P1 | VERIFIED | ANDROID-01, REG-45 |
 | APP-CONTINGENCY | ui_core | `contingency-core.js:1` | 591 | P1 | IN_PROGRESS | - |
-| APP-EXPORT | ui_core | `export-core.js:1` | 3394 | P2 | IN_PROGRESS | - |
+| APP-EXPORT | ui_core | `export-core.js:1` | 3402 | P2 | IN_PROGRESS | - |
 | APP-GAS-PLAN | ui_core | `gas-plan-core.js:1` | 554 | P1 | IN_PROGRESS | - |
 | APP-GAS-TABLE | ui_core | `gas-table-core.js:1` | 305 | P2 | IN_PROGRESS | - |
 | APP-SURFACE-INTERVAL | ui_core | `surf-interval-core.js:1` | 386 | P1 | IN_PROGRESS | - |
@@ -244,5 +244,5 @@
 | TEST-UI-RESULTS-CSS-REGRESSION | test_infrastructure | `dev/ui_results_css_regression.py:1` | 415 | P0 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
 | TEST-UI-VISUAL-CONTRACT-REGRESSION | test_infrastructure | `dev/ui_visual_contract_regression.py:1` | 2456 | P0 | IN_PROGRESS | REG-100, REG-101, REG-102, REG-103, REG-104, REG-105, REG-106, REG-107, REG-108, REG-109, REG-110, REG-111, REG-131, REG-132, REG-133, REG-134, REG-135, REG-136, REG-137, REG-138 |
 | TEST-C07-PRE-RESULTS-REGRESSION | test_infrastructure | `dev/c07_pre_results_regression.py:1` | 48 | P0 | IN_PROGRESS | REG-89, REG-90 |
-| TOOL-V4-FULL-R-FIXES-TEST | test_infrastructure | `tools/test_v4_full_r_fixes.py:1` | 71 | P2 | IN_PROGRESS | - |
+| TOOL-V4-FULL-R-FIXES-TEST | test_infrastructure | `tools/test_v4_full_r_fixes.py:1` | 94 | P2 | IN_PROGRESS | - |
 | TEST-V4-FULL-R-EXPORT-SI | test_infrastructure | `dev/v4_full_r_export_si_regression.py:1` | 266 | P1 | IN_PROGRESS | - |

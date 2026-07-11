@@ -206,7 +206,7 @@ function _buildGasUsageModel(gasConsumed) {
 function _gasUsageStatus(row, threshold) {
   if (!(row.totalL > 0) || row.shortfallL > 0) return 'nogas';
   if (row.remainingPercent < threshold) return 'critical';
-  if (row.remainingPercent <= 50) return 'caution';
+  if (row.remainingPercent <= 50) return 'low';
   return 'ok';
 }
 

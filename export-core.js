@@ -734,14 +734,14 @@ function _pdfGasStatus(row, threshold) {
   if (typeof _gasUsageStatus === 'function') return _gasUsageStatus(row, threshold);
   if (!(row.totalL > 0) || row.shortfallL > 0) return 'nogas';
   if (row.remainingPercent < threshold) return 'critical';
-  if (row.remainingPercent <= 50) return 'caution';
+  if (row.remainingPercent <= 50) return 'low';
   return 'ok';
 }
 
 function _pdfGasStatusStyle(status) {
   if (status === 'nogas') return { bg: PDF_V3.redSoft, border: [255, 49, 49], accent: [220, 38, 38], text: [255, 49, 49] };
   if (status === 'critical') return { bg: PDF_V3.orangeSoft, border: PDF_V3.orange, accent: PDF_V3.orange, text: PDF_V3.orange };
-  if (status === 'caution') return { bg: [255, 251, 235], border: PDF_V3.yellow, accent: [245, 158, 11], text: [180, 83, 9] };
+  if (status === 'low') return { bg: [255, 251, 235], border: PDF_V3.yellow, accent: [245, 158, 11], text: [180, 83, 9] };
   return { bg: PDF_V3.surface, border: PDF_V3.border, accent: PDF_V3.green, text: PDF_V3.green };
 }
 
@@ -796,7 +796,7 @@ function _pdfDrawGasUsageCards(doc, y, layout, gasConsumed, options) {
     checkY(cardH + 2);
     doc.setFillColor(...style.bg);
     doc.setDrawColor(...style.border);
-    doc.setLineWidth(status === 'ok' || status === 'caution' ? 0.25 : 0.45);
+    doc.setLineWidth(status === 'ok' || status === 'low' ? 0.25 : 0.45);
     doc.roundedRect(ML, y, CW, cardH, 1.8, 1.8, 'FD');
     doc.setDrawColor(...style.accent);
     doc.setLineWidth(1.1);
@@ -1613,10 +1613,12 @@ function buildSlateText() {
 
   // Footer: TRT/TTS/DECO/CNS/OTU/PrT/Decozone/Deco stop — read from totals row
   const _stotRow = document.querySelector('#decoTableBody tr[data-phase="totals"] td');
-  const _slSum = getPlanSummaryExport(_stotRow);
+  const _slSum = typeof applyVpmPlanSummaryFallback === 'function'
+    ? applyVpmPlanSummaryFallback(getPlanSummaryExport(_stotRow), getPlannerInputEl('decoBT')?.value || '-')
+    : getPlanSummaryExport(_stotRow);
   const slateSum = {
     ..._slSum,
-    runTime: _slSum.runTime === '-' ? `${getPlannerInputEl('decoBT')?.value || '-'}'00"` : _slSum.runTime,
+    runTime: _slSum.runTime,
     decozone: typeof compactExportDepth === 'function' ? compactExportDepth(_slSum.decozone) : _slSum.decozone,
     decoStop: typeof compactExportDepth === 'function' ? compactExportDepth(_slSum.decoStop) : _slSum.decoStop,
   };
@@ -2497,6 +2499,14 @@ async function exportPDF(opts) {
 
   const cleanPDF = cleanPdfText;
   function checkY(n) { if(y+n>PH-MB){ drawFooter(); doc.addPage(); y=MT; drawHeader(); } }
+  function startNewPdfSectionPage() {
+    if (y > MT + 0.5) {
+      drawFooter();
+      doc.addPage();
+      y = MT;
+      drawHeader();
+    }
+  }
   function drawHeader() {
     doc.setFillColor(...PDF_V3.accent); doc.rect(0,0,PW,8,'F');
     doc.setFontSize(8); doc.setFont('DejaVuSans','bold'); doc.setTextColor(255,255,255);
@@ -2610,9 +2620,7 @@ async function exportPDF(opts) {
   // DECO SLATE section — compact waterproof-slate format (same as SLATE modal)
   const _pdfSlate = buildSlateText();
   if (_incSlate && _pdfSlate) {
-    drawFooter();
-    doc.addPage();
-    drawHeader();
+    startNewPdfSectionPage();
     checkY(14); sectionTitle('DECO SLATE','Compact waterproof-slate format');
     const _slLines = _pdfSlate.split('\n').slice(1); // drop title line (already in section header)
     doc.setFontSize(7.5); doc.setFont('DejaVuSans','normal'); doc.setTextColor(20,20,20);

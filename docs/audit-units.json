@@ -2034,7 +2034,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "36ad884e87112107455054f5be2fd4e61e879aafb0cb3114b08cacb2986b430c",
+      "fingerprint": "425561d2036506ac6cadbbf100bb1c38de0bba46275cd4781c20f169c992b6bf",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -3007,7 +3007,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3a4a7b3bcc2db297552ad28311216415ce1d856f762d37b91990c73ca2f0592c",
+      "fingerprint": "cd9a90a36536bf6751b0e4147f5e442a27c74814ebba7d5c7bd7d22391134667",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5884,7 +5884,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "db0fcef6d1d5262cb810c01430bfd74381e88a36d766e1bc27d3476bb7558beb",
+      "fingerprint": "e8e35c4aadd6669345ad85fc6f3df4d7b887d59538b15062ce7b5bf25124ea41",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -6110,12 +6110,12 @@
     },
     {
       "cycle": "R20",
-      "max_new_application_lines": 3394,
+      "max_new_application_lines": 3402,
       "application_units": [
         "APP-EXPORT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R20: Export text/PDF risk-first READ; current lines: 3394; sessions: 6",
+      "acceptance": "V4 R20: Export text/PDF risk-first READ; current lines: 3402; sessions: 6",
       "min_review_sessions": 6
     },
     {

@@ -42,6 +42,29 @@ class TestV4FullRFixes(unittest.TestCase):
         self.assertIn("gasPlanAdequacyStatus(", ex)
         self.assertNotRegex(ex, r"reqL\s*\*\s*1\.10")
 
+    def test_slate_runtime_does_not_fallback_to_bottom_time(self) -> None:
+        src = (ROOT / "export-core.js").read_text(encoding="utf-8")
+        slate = src.split("function buildSlateText", 1)[1].split("function showSlate", 1)[0]
+        self.assertIn("applyVpmPlanSummaryFallback", slate)
+        self.assertNotIn("decoBT')?.value || '-'}'00", slate)
+        self.assertNotRegex(slate, r"runTime:\s*_slSum\.runTime\s*===\s*'-'")
+
+    def test_pdf_slate_page_break_is_conditional(self) -> None:
+        src = (ROOT / "export-core.js").read_text(encoding="utf-8")
+        self.assertIn("function startNewPdfSectionPage()", src)
+        slate_pdf = src.split("const _pdfSlate = buildSlateText();", 1)[1].split("// HIGH CNS% alert", 1)[0]
+        self.assertIn("startNewPdfSectionPage();", slate_pdf)
+        self.assertNotIn("doc.addPage();\n    drawHeader();", slate_pdf)
+
+    def test_gas_supply_middle_tier_uses_low_wording(self) -> None:
+        rr = (ROOT / "results-render-core.js").read_text(encoding="utf-8")
+        css = (ROOT / "lsp-dplanner-results.css").read_text(encoding="utf-8")
+        ex = (ROOT / "export-core.js").read_text(encoding="utf-8")
+        self.assertIn("return 'low';", rr)
+        self.assertIn(".gas-usage-card--low", css)
+        self.assertIn("status === 'low'", ex)
+        self.assertNotIn("gas-usage-card--caution", css)
+
     def test_si_results_panel_metric_stamp(self) -> None:
         src = (ROOT / "surf-interval-core.js").read_text(encoding="utf-8")
         self.assertIn('data-si-metric="1"', src)
