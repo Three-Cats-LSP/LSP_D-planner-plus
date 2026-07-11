@@ -186,8 +186,8 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
   const red     = _lspCssVar('--red', isLight ? '#dc2626' : '#f87171');
   const green   = _lspCssVar('--green', isLight ? '#16a34a' : '#4ade80');
   const orange  = _lspCssVar('--orange', isLight ? '#b45309' : '#fbbf24');
-  const gasSwitchBg = _lspCssVar('--gas-switch-label-bg', '#FFD700');
-  const gasSwitchText = _lspCssVar('--gas-switch-label-text', '#007A33');
+  const gasSwitchBg = '#d6ff00';
+  const gasSwitchText = '#166534';
   const profileLine = accent;
 
   ctx.fillStyle = bg;

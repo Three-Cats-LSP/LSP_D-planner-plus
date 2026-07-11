@@ -2026,7 +2026,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "248dc44d8d17bc1388a45f4ad6e0811ca9e21c39cc44cdec4504c78b0bf516cb",
+      "fingerprint": "6cefcce918898b0d3e20f2f7433ce06a95749e9d3baed7486da992202c979907",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2561,7 +2561,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-RENDER"
       },
-      "fingerprint": "2222f1cd2cd7a91071f5199bb0982d854060a27c6756c4e3854e8e4350d62fd4",
+      "fingerprint": "1803b1613b1399e022dfece85a6a4777582e1dbe2edf162fb0b1138a61e63722",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2999,7 +2999,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "0cca2e7723fc4c3b7265ac1089b28678f9b7c053a3f0a9d8d9e58f2555c24e73",
+      "fingerprint": "9b378b07098b89ea12840d57126357d44c831c47faa0a3f54e20eae2b9676d32",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5852,7 +5852,7 @@
         "REG-137",
         "REG-138"
       ],
-      "fingerprint": "ba9aac4b5c87eea17ad47f5a4982c8bf271f6f16b7e88cd04d1f22b7207e15cc",
+      "fingerprint": "8f73b6a678e0e04781d6cb1a501e01f54d9487ab298cad004f41808e06740f00",
       "last_read_fingerprint": null
     },
     {
@@ -6078,12 +6078,12 @@
     },
     {
       "cycle": "R20",
-      "max_new_application_lines": 3386,
+      "max_new_application_lines": 3453,
       "application_units": [
         "APP-EXPORT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R20: Export text/PDF risk-first READ; current lines: 3386; sessions: 6",
+      "acceptance": "V4 R20: Export text/PDF risk-first READ; current lines: 3453; sessions: 6",
       "min_review_sessions": 6
     },
     {
@@ -6299,12 +6299,12 @@
     },
     {
       "cycle": "R41",
-      "max_new_application_lines": 1110,
+      "max_new_application_lines": 1114,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1110; sessions: 2",
+      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1114; sessions: 2",
       "min_review_sessions": 2
     },
     {
