@@ -136,7 +136,7 @@ jobs:
       - name: Place APK at output location
         run: |
           mkdir -p "Android Apk"
-          APK_NAME="LSP_D-planner-plus-v${{ steps.version.outputs.VERSION }}.apk"
+          APK_NAME="LSP_D-planner-plus.apk"
           rm -f "Android Apk"/LSP_D-planner-plus*.apk
           cp android/app/build/outputs/apk/release/app-release.apk "Android Apk/${APK_NAME}"
           echo "APK_NAME=${APK_NAME}" >> "$GITHUB_ENV"
@@ -165,7 +165,7 @@ jobs:
           git pull --rebase origin main
           git stash pop
           git restore android/ package.json README.md
-          git add version.json
-          git diff --cached --quiet && echo "No version.json changes" && exit 0
+          git add version.json "Android Apk/${APK_NAME}"
+          git diff --cached --quiet && echo "No version/APK changes" && exit 0
           git commit -m "build(android): ${APK_NAME} [skip ci]"
           git push

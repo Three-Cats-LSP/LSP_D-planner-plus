@@ -71,8 +71,8 @@
     const btn = document.getElementById('dlBtn');
     const status = document.getElementById('status');
 
-    function setupDownload(version, apkUrl) {
-      const APK_FILE = 'LSP_D-planner-plus-v' + version + '.apk';
+    function setupDownload(version, apkUrl, apkFileName) {
+      const APK_FILE = apkFileName || 'LSP_D-planner-plus.apk';
       const RELEASE_PAGE = 'https://github.com/Three-Cats-LSP/LSP_D-planner-plus/releases/latest';
       const APK_URL = apkUrl && /\.apk(?:[?#].*)?$/i.test(apkUrl) ? apkUrl : APK_FILE;
       btn.href = APK_URL;
@@ -102,7 +102,7 @@
           })
           .catch(() => {
             window.location.href = RELEASE_PAGE;
-            status.textContent = 'Opening release page...';
+            status.textContent = 'Opening fallback download page...';
           })
           .finally(() => {
             btn.style.opacity = '1';
@@ -113,7 +113,7 @@
 
     fetch('version.json?t=' + Date.now(), { cache: 'no-store' })
       .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-      .then(data => setupDownload(data.version, data.apkUrl))
+      .then(data => setupDownload(data.version, data.apkUrl, data.apkFileName))
       .catch(() => setupDownload(APP_VERSION));
   </script>
 </body>
