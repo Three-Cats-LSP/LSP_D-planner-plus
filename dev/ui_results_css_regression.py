@@ -134,25 +134,23 @@ PPO2_JS = r"""
     p.remove();
     return c;
   };
+  const neutral = resolve('var(--text-faint)');
+  const rightCells = [
+    ...document.querySelectorAll('#resultsPanel #decoTableBody tr[data-phase]:not(.row-summary) td[data-label="Run"], #resultsPanel #decoTableBody tr[data-phase]:not(.row-summary) td[data-label="Mix"], #resultsPanel #decoTableBody tr[data-phase]:not(.row-summary) td[data-label="PPO2"], #resultsPanel #decoTableBody tr[data-phase]:not(.row-summary) td[data-label="CNS"], #resultsPanel #decoTableBody tr[data-phase]:not(.row-summary) td[data-label="EAD"]')
+  ];
+  const rightColors = rightCells.map(el => getComputedStyle(el).color);
   const okColor = read('#resultsPanel #decoTableBody .col-ppo2.ppo2-ok');
   const warnColor = read('#resultsPanel #decoTableBody .col-ppo2.ppo2-warn');
   const critColor = read('#resultsPanel #decoTableBody .col-ppo2.ppo2-crit');
-  const green = resolve('var(--green)');
-  const yellow = resolve('var(--yellow)');
-  const red = resolve('var(--red)');
-  const distinct = !!(okColor && warnColor && critColor)
-    && okColor !== warnColor && warnColor !== critColor && okColor !== critColor;
-  const critRed = critColor === red;
+  const neutralRightColumns = rightCells.length > 0 && rightColors.every(color => color === neutral);
   return {
     okColor,
     warnColor,
     critColor,
-    green,
-    yellow,
-    red,
-    distinct,
-    critRed,
-    ok: distinct && critRed,
+    neutral,
+    rightColors,
+    neutralRightColumns,
+    ok: neutralRightColumns,
     counts: {
       ok: document.querySelectorAll('#resultsPanel #decoTableBody .ppo2-ok').length,
       warn: document.querySelectorAll('#resultsPanel #decoTableBody .ppo2-warn').length,

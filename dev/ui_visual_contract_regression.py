@@ -38,6 +38,7 @@ CASE_IDS = (
     "SL-C09-TRAVEL-GAS-TRIMIX-CARD",
     "SL-C09-CONTINGENCY-COPY-PLAN-CONTEXT",
     "SL-C09-SCHEDULE-COLUMN-GEOMETRY",
+    "SL-VIS-SCHEDULE-PHASE-COLUMN-COLOR-CONTRACT",
     "SL-C09-SWITCH-ROW-BACKGROUND-PARITY",
     "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD",
     "SL-C09-MOBILE-TISSUE-TAB-VISIBLE",
@@ -142,8 +143,11 @@ CAPTURE_JS = r"""
     return track ? track.getBoundingClientRect().width : 0;
   });
   const switchRows = [...document.querySelectorAll('#resultsPanel .schedule-table tr[data-phase="switch"]')];
-  const switchCells = switchRows.flatMap(row =>
-    [...row.querySelectorAll('td:not([data-label="PPO2"])')]
+  const switchPhaseCells = switchRows.flatMap(row =>
+    [...row.querySelectorAll('td.phase-cell, td[data-label="Depth"], td[data-label="Stop"]')]
+  );
+  const switchNeutralCells = switchRows.flatMap(row =>
+    [...row.querySelectorAll('td[data-label="Run"], td[data-label="Mix"], td[data-label="PPO2"], td[data-label="CNS"], td[data-label="EAD"]')]
   );
   const schedule = document.querySelector('#resultsPanel .schedule-table');
   const scheduleWrap = schedule?.closest('.schedule-wrap');
@@ -205,6 +209,7 @@ CAPTURE_JS = r"""
   const results = document.getElementById('resultsPanel')?.getBoundingClientRect();
   const expectedBg = resolveColor(root.getPropertyValue('--gas-switch-label-bg'));
   const expectedSwitch = resolveColor('#16a34a');
+  const expectedScheduleNeutral = resolveColor(root.getPropertyValue('--text-faint'));
   const expectedText = resolveColor(root.getPropertyValue('--gas-switch-label-text'));
   const expectedDecoPillBg = resolveColor('#d6ff00');
   const expectedDecoPillText = resolveColor('#166534');
@@ -244,6 +249,12 @@ CAPTURE_JS = r"""
   const metricCardBackground = rgb(style(document.querySelector('#resultMetricStrip .metric-card'), 'backgroundColor'));
   const runtimeTextColor = rgb(style(document.querySelector('#resultMetricStrip .metric-val--runtime'), 'color'));
   const decoTextColor = rgb(style(document.querySelector('#resultMetricStrip .metric-val--deco'), 'color'));
+  const decozoneTotal = [...document.querySelectorAll('#decoTableBody .summary-stat')]
+    .find(el => /^Decozone:/i.test((el.textContent || '').trim()));
+  const decozoneTotalValue = decozoneTotal?.querySelector('span');
+  const firstDecoTotal = [...document.querySelectorAll('#decoTableBody .summary-stat')]
+    .find(el => /^First deco:/i.test((el.textContent || '').trim()));
+  const firstDecoTotalValue = firstDecoTotal?.querySelector('span');
   const statusGreen = resolveColor(root.getPropertyValue('--status-green'));
   const statusOrange = resolveColor(root.getPropertyValue('--status-orange'));
   const statusRed = resolveColor(root.getPropertyValue('--status-red'));
@@ -277,7 +288,8 @@ CAPTURE_JS = r"""
     hazardAlertStyle,
     hasTravelPill: pills.some(el => el.classList.contains('travel-gas')),
     switchRowCount: switchRows.length,
-    switchCellColors: switchCells.map(el => rgb(style(el, 'color'))),
+    switchCellColors: switchPhaseCells.map(el => rgb(style(el, 'color'))),
+    switchNeutralCellColors: switchNeutralCells.map(el => rgb(style(el, 'color'))),
     switchRowBackgrounds: switchRowBgs,
     scheduleLegendLabels,
     normalRowBackground: normalRowBg,
@@ -326,9 +338,12 @@ CAPTURE_JS = r"""
       decozone: chipSnapshot(chipByLabel('Decozone')),
       metricCardBackground,
       runtimeTextColor,
-      decoTextColor,
-      statusColors: [statusGreen, statusOrange, statusRed],
-    },
+        decoTextColor,
+        decozoneTotalColor: rgb(style(decozoneTotal, 'color')),
+        decozoneValueColor: rgb(style(decozoneTotalValue, 'color')),
+        firstDecoValueColor: rgb(style(firstDecoTotalValue, 'color')),
+        statusColors: [statusGreen, statusOrange, statusRed],
+      },
     scheduleColumns: {
       headerTexts,
       hasTtsHeader: headerTexts.some(text => text.toUpperCase() === 'TTS'),
@@ -351,6 +366,22 @@ CAPTURE_JS = r"""
       clippedCells: clippedScheduleCells,
       decoPhaseTexts,
       decoPhaseIcons,
+      expectedNeutral: expectedScheduleNeutral,
+      phaseColorRows: nonSummaryRows.map(row => {
+        const leftCells = [
+          row.querySelector('td.phase-cell'),
+          row.querySelector('td[data-label="Depth"]'),
+          row.querySelector('td[data-label="Stop"]'),
+        ].filter(Boolean);
+        const rightCells = ['Run', 'Mix', 'PPO2', 'CNS', 'EAD']
+          .map(label => row.querySelector(`td[data-label="${label}"]`))
+          .filter(Boolean);
+        return {
+          phase: row.dataset.phase || '',
+          leftColors: leftCells.map(el => rgb(style(el, 'color'))),
+          rightColors: rightCells.map(el => rgb(style(el, 'color'))),
+        };
+      }),
       decoStopPlainBullets: decoPhaseTexts.some(text => text)
         ? decoPhaseTexts.every(text => text === '\u25cf')
         : decoPhaseIcons.length > 0
@@ -2007,6 +2038,7 @@ def main() -> int:
         and all(color == c["expectedBg"] for color in c["decoDotColors"])
         and c["switchRowCount"] >= 1
         and all(color == c["expectedSwitch"] for color in c["switchCellColors"])
+        and all(color == c["scheduleColumns"]["expectedNeutral"] for color in c["switchNeutralCellColors"])
         for c in captures
     )
     results["SL-VIS-DECO-SCHEDULE-LEGEND-ORDER"] = all(
@@ -2056,7 +2088,21 @@ def main() -> int:
         and c["switchRowCount"] >= 1
         and bool(c["switchCellColors"])
         and all(color == c["expectedSwitch"] for color in c["switchCellColors"])
+        and bool(c["switchNeutralCellColors"])
+        and all(color == c["scheduleColumns"]["expectedNeutral"] for color in c["switchNeutralCellColors"])
         for c in (dark, light)
+    )
+    results["SL-VIS-SCHEDULE-PHASE-COLUMN-COLOR-CONTRACT"] = all(
+        c["generated"]
+        and c["scheduleColumns"]["phaseColorRows"]
+        and all(
+            row["leftColors"]
+            and len(set(row["leftColors"])) == 1
+            and row["rightColors"]
+            and all(color == c["scheduleColumns"]["expectedNeutral"] for color in row["rightColors"])
+            for row in c["scheduleColumns"]["phaseColorRows"]
+        )
+        for c in captures
     )
     results["SL-C09-SWITCH-ROW-BACKGROUND-PARITY"] = all(
         c["generated"]
@@ -2118,6 +2164,8 @@ def main() -> int:
         and c["summaryChips"]["decozone"]
         and c["summaryChips"]["decozone"]["background"] == c["summaryChips"]["metricCardBackground"]
         and c["summaryChips"]["decozone"]["color"] == c["summaryChips"]["decoTextColor"]
+        and c["summaryChips"]["decozoneTotalColor"] != c["summaryChips"]["firstDecoValueColor"]
+        and c["summaryChips"]["decozoneValueColor"] == c["summaryChips"]["firstDecoValueColor"]
         for c in captures
     )
     results["SL-C09-RESULT-TABS-GAP"] = all(

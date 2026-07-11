@@ -270,6 +270,13 @@ function _gasMixClassV3(mix) {
   if (/EAN|50|NITROX|32|36/.test(m)) return 'gas-ean50';
   return 'gas-air';
 }
+function _clearScheduleCellColorV3(cell) {
+  if (!cell) return;
+  cell.style.color = '';
+  cell.querySelectorAll('[style]').forEach(el => {
+    el.style.color = '';
+  });
+}
 function decorateDecoTableForV3() {
   const table = document.querySelector('#decoResult .deco-table');
   const tbody = document.getElementById('decoTableBody');
@@ -310,6 +317,7 @@ function _decorateScheduleCellsByLabel(tr) {
   if (ppo2) ppo2.classList.add('col-ppo2', 'align-r', _ppo2ClassV3(ppo2.textContent));
   if (cns) cns.classList.add('col-cns', 'align-r');
   if (ead) ead.classList.add('col-ead', 'align-r');
+  [tr.cells[0], depth, stop, run, mix, ppo2, cns, ead].forEach(_clearScheduleCellColorV3);
 }
 function _normalizeContingencyPhase(ph) {
   return String(ph || '').replace(/^contingency-/, '');

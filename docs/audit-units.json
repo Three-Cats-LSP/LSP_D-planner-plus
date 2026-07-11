@@ -833,6 +833,10 @@
     "REG-139": {
       "suite_id": "SUITE-ENGINE-VALIDATION",
       "case_id": "ZHL-WORKER-CALC-ERROR-SINGLE-REQUEST"
+    },
+    "REG-141": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-VIS-SCHEDULE-PHASE-COLUMN-COLOR-CONTRACT"
     }
   },
   "findings": [
@@ -2030,7 +2034,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "911ac2cc17e661f66b6b76d10c3b73faec0078a5582bd73491ff9328fd5f1ae8",
+      "fingerprint": "b9dffda4ae4f022908583333397b1540f6048d4da739ac3ef34095139fb44887",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5364,7 +5368,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c0f914c49f857edfe7f06cab078e5345411f9b3031a4562a44dae30ab1c00bd7",
+      "fingerprint": "3dcbf21c6d99a588adec89995075e82ee98e1589010affab183beee2e27d0295",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5814,7 +5818,7 @@
         "REG-93",
         "REG-94"
       ],
-      "fingerprint": "f1cd1e51d22ecfc4d89a04f0e97d801215edad72fd765f7f2192e116be761954",
+      "fingerprint": "a087c765c1c910020e5a7c1918a369224244215c8717b924fff1d9697a43f47e",
       "last_read_fingerprint": null
     },
     {
@@ -5850,7 +5854,7 @@
         "REG-137",
         "REG-138"
       ],
-      "fingerprint": "e2875126618f7c35575565892743f5bc176fb6a15f30c2820660b6c9c02c953b",
+      "fingerprint": "85107020cd0864b94b568303317bc5aea06a7f1c6719775d4099cad08cbe1e32",
       "last_read_fingerprint": null
     },
     {
@@ -6307,13 +6311,13 @@
     },
     {
       "cycle": "R42",
-      "max_new_application_lines": 820,
+      "max_new_application_lines": 827,
       "application_units": [
         "UI-PLANNER-SHELL",
         "UI-RESULTS-PANEL"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R42: Planner shell and results panel design-lock READ; current lines: 820; sessions: 2",
+      "acceptance": "V4 R42: Planner shell and results panel design-lock READ; current lines: 827; sessions: 2",
       "min_review_sessions": 2
     }
   ],
@@ -6809,6 +6813,7 @@
         "SL-C09-TRAVEL-GAS-TRIMIX-CARD",
         "SL-C09-CONTINGENCY-COPY-PLAN-CONTEXT",
         "SL-C09-SCHEDULE-COLUMN-GEOMETRY",
+        "SL-VIS-SCHEDULE-PHASE-COLUMN-COLOR-CONTRACT",
         "SL-C09-SWITCH-ROW-BACKGROUND-PARITY",
         "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD",
         "SL-C09-MOBILE-TISSUE-TAB-VISIBLE",

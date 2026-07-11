@@ -756,21 +756,13 @@ body.light-theme #resultsPanel #decoAlertsNarcotic .alert .tip-icon { color: #cc
 #resultsPanel .deco-table.schedule-table .ph-switch { color: #16a34a; }
 #resultsPanel .deco-table.schedule-table .col-depth { font-weight: 700; font-size: 12px; }
 #resultsPanel .deco-table.schedule-table .col-time { font-variant-numeric: tabular-nums; }
-#resultsPanel .deco-table.schedule-table .col-time.stop { color: var(--text-muted); }
 #resultsPanel .deco-table.schedule-table .col-tts { color: var(--text-faint); font-variant-numeric: tabular-nums; }
 #resultsPanel .deco-table.schedule-table .col-gas { font-weight: 600; text-align: center; }
-#resultsPanel .deco-table.schedule-table .gas-air { color: var(--accent-2, var(--green)); }
-#resultsPanel .deco-table.schedule-table .gas-ean50 { color: var(--yellow); }
-#resultsPanel .deco-table.schedule-table .gas-100 { color: var(--orange); }
 #resultsPanel .deco-table.schedule-table .col-ppo2 { font-variant-numeric: tabular-nums; text-align: right; }
-#resultsPanel .deco-table.schedule-table .col-cns { color: var(--text-faint); font-variant-numeric: tabular-nums; text-align: right; }
-#resultsPanel .deco-table.schedule-table .ppo2-ok { color: var(--green); }
-#resultsPanel .deco-table.schedule-table .ppo2-warn { color: var(--yellow); }
-#resultsPanel .deco-table.schedule-table .ppo2-hi { color: var(--orange); }
-#resultsPanel .deco-table.schedule-table .ppo2-crit { color: var(--red); }
+#resultsPanel .deco-table.schedule-table .col-cns { font-variant-numeric: tabular-nums; text-align: right; }
 #resultsPanel .deco-table.schedule-table .col-ead { color: var(--text-faint); text-align: right; }
 #resultsPanel .deco-table.schedule-table tr.row-switch { background: transparent; }
-#resultsPanel .deco-table.schedule-table tr.row-switch td { color: #16a34a; border-bottom: none; }
+#resultsPanel .deco-table.schedule-table tr.row-switch td { border-bottom: none; }
 #resultsPanel .deco-table.schedule-table tr.row-switch .col-gas { font-weight: 600; }
 /* V4 schedule gas-switch contract: renderer writes data-phase, not row-switch. */
 #resultsPanel .deco-table.schedule-table tr[data-phase="switch"],
@@ -778,30 +770,22 @@ body.light-theme #resultsPanel #decoAlertsNarcotic .alert .tip-icon { color: #cc
 #resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td,
 #resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td { border-bottom: none; }
 #resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td,
-#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td { color: #16a34a; font-size: inherit; border-bottom: none; }
+#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td { font-size: inherit; border-bottom: none; }
 #resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td:first-child,
 #resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td:first-child { text-align: center; }
 #resultsPanel .legend-item.legend-ascent { color: #FFBF00; }
 #resultsPanel .legend-item.legend-switch { color: #16a34a; }
 body.light-theme #resultsPanel .deco-table.schedule-table .ph-switch,
-body.light-theme #resultsPanel .legend-item.legend-switch,
-body.light-theme #resultsPanel .deco-table.schedule-table tr.row-switch td { color: #16a34a; }
-#resultsPanel .deco-table.schedule-table tr[data-phase="descent"] td { color: var(--red); }
-#resultsPanel .deco-table.schedule-table tr[data-phase="bottom"] td { color: var(--accent); }
-#resultsPanel .deco-table.schedule-table tr[data-phase="ascent"] td { color: #FFBF00; }
-#resultsPanel .deco-table.schedule-table tr[data-phase="deco"] td { color: var(--red); }
-#resultsPanel .deco-table.schedule-table tr[data-phase="safety"] td { color: var(--green); }
-#resultsPanel .deco-table.schedule-table tr[data-phase="surface"] td { color: #FFBF00; }
-#resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td,
-#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td { color: #16a34a; }
-#resultsPanel .deco-table.schedule-table tr[data-phase="descent"] td[class] { color: var(--red); }
-#resultsPanel .deco-table.schedule-table tr[data-phase="bottom"] td[class] { color: var(--accent); }
-#resultsPanel .deco-table.schedule-table tr[data-phase="ascent"] td[class] { color: #FFBF00; }
-#resultsPanel .deco-table.schedule-table tr[data-phase="deco"] td[class] { color: var(--red); }
-#resultsPanel .deco-table.schedule-table tr[data-phase="safety"] td[class] { color: var(--green); }
-#resultsPanel .deco-table.schedule-table tr[data-phase="surface"] td[class] { color: #FFBF00; }
-#resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td[class],
-#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td[class] { color: #16a34a; }
+body.light-theme #resultsPanel .legend-item.legend-switch { color: #16a34a; }
+#resultsPanel .deco-table.schedule-table tr[data-phase="descent"] :is(td.phase-cell, td.col-depth, td.col-time.stop) { color: var(--red); }
+#resultsPanel .deco-table.schedule-table tr[data-phase="bottom"] :is(td.phase-cell, td.col-depth, td.col-time.stop) { color: var(--accent); }
+#resultsPanel .deco-table.schedule-table tr[data-phase="ascent"] :is(td.phase-cell, td.col-depth, td.col-time.stop) { color: #FFBF00; }
+#resultsPanel .deco-table.schedule-table tr[data-phase="deco"] :is(td.phase-cell, td.col-depth, td.col-time.stop) { color: var(--red); }
+#resultsPanel .deco-table.schedule-table tr[data-phase="safety"] :is(td.phase-cell, td.col-depth, td.col-time.stop) { color: var(--green); }
+#resultsPanel .deco-table.schedule-table tr[data-phase="surface"] :is(td.phase-cell, td.col-depth, td.col-time.stop) { color: #FFBF00; }
+#resultsPanel .deco-table.schedule-table tr[data-phase="switch"] :is(td.phase-cell, td.col-depth, td.col-time.stop),
+#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] :is(td.phase-cell, td.col-depth, td.col-time.stop) { color: #16a34a; }
+#resultsPanel .deco-table.schedule-table :is(.col-time.run, .col-gas, .col-ppo2, .col-cns, .col-ead) { color: var(--text-faint); }
 #resultsPanel .deco-table.schedule-table tr.row-summary td { background: color-mix(in oklab, var(--accent) 4%, transparent); border-top: 1px solid var(--border-hi); border-bottom: 1px solid var(--border); padding: 9px 6px; font-size: 10px; color: var(--text-muted); }
 #resultsPanel .deco-table.schedule-table .summary-stat span { color: var(--text); font-weight: 600; }
 #resultsPanel .schedule-totals { display: flex; flex-wrap: wrap; gap: 4px 18px; padding: 9px 0 0; font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); border-top: 1px solid var(--border-hi); margin-top: var(--space-2); }

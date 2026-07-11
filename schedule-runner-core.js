@@ -335,7 +335,7 @@ function buildPlanInfoRowHtml(o, phase) {
       <span class="summary-stat">OTU: <span style="color:${o.otuColor || 'var(--text)'}">${o.otu}</span></span> &nbsp;
       <span class="summary-stat">PrT: <span style="color:${o.prtColor}" title="${o.prtTitle || ''}">${o.prt}</span></span> &nbsp;
       <span class="summary-stat">Surf GF: <span style="color:${surfGFColor}" title="Surface gradient factor — tissue load ÷ M-value at surface">${surfGFDisp}</span></span> &nbsp;
-      <span class="summary-stat">Decozone: <span>${o.decozone}</span></span> &nbsp;
+      <span class="summary-stat">Decozone: <span style="color:${firstStopColor}">${o.decozone}</span></span> &nbsp;
       <span class="summary-stat">First deco: <span style="color:${firstStopColor}">${o.decoStop}</span></span>
     </div>`;
   const totalsEl = document.getElementById('decoTotals');
