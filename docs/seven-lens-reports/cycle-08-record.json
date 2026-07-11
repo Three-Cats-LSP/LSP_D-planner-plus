@@ -425,9 +425,9 @@
       "unit_id": "UI-RESULTS-PANEL",
       "path": "results-panel.js",
       "start_line": 1,
-      "end_line": 423,
-      "line_count": 423,
-      "content_fingerprint": "665e3f3dc6008bc9f3b03cd16342c75335c819a0b29cbf72cd882fc2f328bab5",
+      "end_line": 422,
+      "line_count": 422,
+      "content_fingerprint": "c0f914c49f857edfe7f06cab078e5345411f9b3031a4562a44dae30ab1c00bd7",
       "review_session": "C08-B",
       "verification_session": "C09-DEP-WARNING-BANNER-HTML",
       "lens_results": {

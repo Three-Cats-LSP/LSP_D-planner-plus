@@ -679,7 +679,7 @@ function _pdfDrawSwitchRow(doc, y, layout, tr, cleanFn) {
   const ppo2Txt = clean(tr.querySelector('td[data-label="PPO2"]')?.textContent || '');
   doc.setFontSize(7);
   doc.setFont('DejaVuSans', 'bold');
-  doc.setTextColor(214, 255, 0);
+  doc.setTextColor(22, 163, 74);
   _pdfDrawDecoPhaseLabel(doc, y, layout, '⇄');
   if (depthTxt) doc.text(depthTxt, colX[1] + colW[1] / 2, y + 3.5, { align: 'center', maxWidth: colW[1] - 1 });
   if (mixTxt) doc.text(mixTxt, colX[4] + colW[4] / 2, y + 3.5, { align: 'center', maxWidth: colW[4] - 1 });
@@ -816,20 +816,21 @@ function _pdfDrawGasUsageCards(doc, y, layout, gasConsumed, options) {
       const chipText = roleText ? `${labelText} ${roleText}` : labelText;
       doc.setFont('DejaVuSans', 'bold');
       doc.setFontSize(8);
-      const chipW = Math.min(CW * 0.55, Math.max(24, doc.getTextWidth(chipText) + 8));
+      const chipW = Math.min(CW * 0.55, Math.max(22, doc.getTextWidth(chipText) + 5));
       doc.setFillColor(255, 68, 51);
       doc.setDrawColor(17, 17, 17);
       doc.setLineWidth(0.35);
       doc.roundedRect(ML + 4, y + 2.5, chipW, 6.7, 3, 3, 'FD');
       doc.setTextColor(17, 17, 17);
-      doc.text(chipText, ML + 6, y + 7.1);
+      doc.text(chipText, ML + 6.5, y + 7.1);
     } else {
+      const labelW = doc.getTextWidth(labelText);
       doc.text(labelText, ML + 4, y + 5.4);
       if (role) {
         doc.setFont('DejaVuSans', 'normal');
         doc.setFontSize(5.8);
         doc.setTextColor(...PDF_V3.muted);
-        doc.text(cleanPDF(role), ML + 5 + doc.getTextWidth(labelText), y + 5.4);
+        doc.text(cleanPDF(role), ML + 6 + labelW, y + 5.4);
       }
     }
 
@@ -2622,8 +2623,8 @@ async function exportPDF(opts) {
     y+=5;
   });
   y+=3; checkY(7); doc.setFontSize(7); doc.setFont('DejaVuSans','normal');
-  const leg=['↓ Descent','● Bottom','↑ Ascent','● Deco Stop','● Safety Stop','⇄ Gas Switch'];
-  const lc=[[255,68,51],[0,152,184],PDF_V3.yellow,[220,38,38],[22,163,74],PDF_V3.green];
+  const leg=['↓ Descent','● Bottom','↑ Ascent','⇄ Gas Switch','● Deco Stop'];
+  const lc=[[255,68,51],[0,152,184],PDF_V3.yellow,PDF_V3.green,[220,38,38]];
   let lx=tblMl; leg.forEach((l,i)=>{doc.setTextColor(...lc[i]);doc.text(l,lx,y+3.5);lx+=doc.getTextWidth(l)+5;});
   doc.setTextColor(0,0,0); y+=8;
 
@@ -3126,8 +3127,8 @@ async function exportContingencyPDF(opts) {
 
     // Legend
     checkY(7); doc.setFontSize(7); doc.setFont('DejaVuSans','normal');
-    const leg=['↓ Descent','● Bottom','↑ Ascent','● Deco Stop','⇄ Gas Switch'];
-    const lc=[[255,68,51],[0,152,184],PDF_V3.yellow,[220,38,38],PDF_V3.green];
+    const leg=['↓ Descent','● Bottom','↑ Ascent','⇄ Gas Switch','● Deco Stop'];
+    const lc=[[255,68,51],[0,152,184],PDF_V3.yellow,PDF_V3.green,[220,38,38]];
     let lx=tblMl; leg.forEach((l,i)=>{doc.setTextColor(...lc[i]);doc.text(l,lx,y+3.5);lx+=doc.getTextWidth(l)+5;});
     doc.setTextColor(0,0,0); y+=8;
 
