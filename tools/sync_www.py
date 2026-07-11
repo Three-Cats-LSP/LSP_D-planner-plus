@@ -16,10 +16,11 @@ ROOT = Path(__file__).resolve().parents[1]
 WWW = ROOT / "www"
 
 VERSION_JSON_URL_BASE = "https://threecats-lsp.com/d-planner-plus"
-GITHUB_RELEASE_APK_TEMPLATE = (
-    "https://github.com/Three-Cats-LSP/LSP_D-planner-plus/releases/latest/download/"
-    "LSP_D-planner-plus-v{version}.apk"
+DIRECT_APK_URL = (
+    "https://raw.githubusercontent.com/Three-Cats-LSP/LSP_D-planner-plus/"
+    "main/Android%20Apk/LSP_D-planner-plus.apk"
 )
+DIRECT_APK_FILE_NAME = "LSP_D-planner-plus.apk"
 
 # Single files at repo root required for offline app + ZHL engine
 ROOT_FILES = [
@@ -87,8 +88,8 @@ def write_version_json(version: str) -> None:
     payload = {
         "version": version,
         "versionCode": version_to_code(version),
-        "apkUrl": GITHUB_RELEASE_APK_TEMPLATE.format(version=version),
-        "apkFileName": f"LSP_D-planner-plus-v{version}.apk",
+        "apkUrl": DIRECT_APK_URL,
+        "apkFileName": DIRECT_APK_FILE_NAME,
         "downloadPage": f"{VERSION_JSON_URL_BASE}/download.html",
     }
     text = json.dumps(payload, indent=2) + "\n"

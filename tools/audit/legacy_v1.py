@@ -3212,7 +3212,7 @@ if app_ver and os.path.isfile(version_json_path):
         vc = int(parts[0]) * 10000 + int(parts[1]) * 100 + int(parts[2])
         if f'"version": "{app_ver}"' not in vj or f'"versionCode": {vc}' not in vj:
             version_ok = False
-        if f"LSP_D-planner-plus-v{app_ver}.apk" not in vj:
+        if "LSP_D-planner-plus.apk" not in vj:
             version_ok = False
         if '"downloadPage"' not in vj or '"apkUrl"' not in vj:
             version_ok = False
@@ -3281,7 +3281,7 @@ if os.path.isfile(version_json_path):
     with open(version_json_path, encoding="utf-8") as f:
         _vj50 = f.read()
     if '"apkUrl"' in _vj50 and (
-        f"LSP_D-planner-plus-v" in _vj50
+        "Android%20Apk/LSP_D-planner-plus.apk" in _vj50
         or "github.com/Three-Cats-LSP/LSP_D-planner-plus/releases" in _vj50
     ):
         ok("version.json includes apkUrl for direct APK download (issue #50)")
