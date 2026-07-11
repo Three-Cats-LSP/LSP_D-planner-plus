@@ -28,10 +28,10 @@ function drawGFCurve() {
   ctx.clearRect(0, 0, W, H);
 
   const isLight  = document.body.classList.contains('light-theme');
-  const monoFont  = isMobile ? '300 7px "JetBrains Mono",monospace'  : '300 9px "JetBrains Mono",monospace';
-  const labelFont = isMobile ? '300 7px "JetBrains Mono",monospace'  : '500 10px "JetBrains Mono",monospace';
-  const axisFont  = isMobile ? '300 6.5px "Outfit",sans-serif'        : '300 10px "Outfit",sans-serif';
-  const dotRadius = isMobile ? 3 : 5;
+  const monoFont  = isMobile ? '300 7.5px "JetBrains Mono",monospace'  : '300 10px "JetBrains Mono",monospace';
+  const labelFont = isMobile ? '500 8px "JetBrains Mono",monospace'    : '600 11px "JetBrains Mono",monospace';
+  const axisFont  = isMobile ? '300 7px "Outfit",sans-serif'           : '300 10.5px "Outfit",sans-serif';
+  const dotRadius = isMobile ? 3.5 : 5.8;
   const graphBg = _lspCssVar('--surface-2', isLight ? '#f4f6fa' : '#0f1117');
   ctx.fillStyle  = graphBg;
   ctx.fillRect(0, 0, W, H);
@@ -98,7 +98,7 @@ function drawGFCurve() {
   // ── GF Envelope line (dashed): GF Low at firstStop → GF High at surface ──
   ctx.beginPath();
   ctx.strokeStyle = accentColor;
-  ctx.lineWidth = isMobile ? 1.5 : 2;
+  ctx.lineWidth = isMobile ? 1.7 : 2.4;
   ctx.setLineDash([6, 4]);
   if (firstStop > 0) {
     // From bottom to firstStop: vertical line at GF Low
@@ -158,7 +158,7 @@ function drawGFCurve() {
   // Draw profile line
   ctx.beginPath();
   ctx.strokeStyle = greenColor;
-    ctx.lineWidth = isMobile ? 1.5 : 2;
+    ctx.lineWidth = isMobile ? 1.7 : 2.4;
   waypoints.forEach((wp, i) => {
     i === 0 ? ctx.moveTo(toX(wp.gf), toY(wp.depth)) : ctx.lineTo(toX(wp.gf), toY(wp.depth));
   });
@@ -173,7 +173,7 @@ function drawGFCurve() {
     ctx.fillStyle = wp.isDeco ? redColor : wp.isSafety ? greenColor : accentColor;
     ctx.fill();
     ctx.strokeStyle = graphBg;
-    ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.lineWidth = 1.8; ctx.stroke();
     // Dot number
     ctx.fillStyle = graphBg;
     ctx.font = `600 ${isMobile ? 7 : 8}px "JetBrains Mono",monospace`;

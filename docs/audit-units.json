@@ -1966,7 +1966,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "8042d16f089869365ce954aa4028f708ee95daacc2de8b1a8b46354de7f3baf3",
+      "fingerprint": "cce8d876895c157474a47aa4decd4bb6cd52f51b210b7370a62c3a7972b7a092",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2026,7 +2026,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "6cefcce918898b0d3e20f2f7433ce06a95749e9d3baed7486da992202c979907",
+      "fingerprint": "c89d91c35701533d20cff68549ee08d667cde622ac26f5cc353c3bfc2566306e",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2063,7 +2063,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "8ce295a74d7cfaa9c7a0c7afc32a0ae9a9230aeb6e2176067d8c76d23dc0e68b",
+      "fingerprint": "37ffe33f97039d8b5f97d5be36b84cb3484d16e4970c40837021a21ebea37713",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2630,7 +2630,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "13408d9aef21992016d8c92a9b9312784e2d97884f22f6f5e3906397d30a72cb",
+      "fingerprint": "957d657969859c153c43b1e312b14fec942a8ee13b9ca83ba738e485249ca1e5",
       "last_read_fingerprint": null,
       "audit_issue": 157,
       "evidence": [],
@@ -2999,7 +2999,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "9b378b07098b89ea12840d57126357d44c831c47faa0a3f54e20eae2b9676d32",
+      "fingerprint": "c8fc22da2d8c43e6338870918622d0706a6268c65667d9ff8d0345a67efa5089",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5852,7 +5852,7 @@
         "REG-137",
         "REG-138"
       ],
-      "fingerprint": "8f73b6a678e0e04781d6cb1a501e01f54d9487ab298cad004f41808e06740f00",
+      "fingerprint": "79f98b8ca7ae399fe802946393a21d5cde30fc64a1078946a5b0ed53f84b85ae",
       "last_read_fingerprint": null
     },
     {

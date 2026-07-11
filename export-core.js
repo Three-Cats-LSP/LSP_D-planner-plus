@@ -670,26 +670,21 @@ function _pdfDrawDecoTableCells(doc, y, layout, cells, txColor) {
   doc.setTextColor(0, 0, 0);
 }
 
-/** Gas-switch row — deco-chip green fill, aligned to columns. */
+/** Gas-switch row — text-only deco-chip accent, aligned to columns. */
 function _pdfDrawSwitchRow(doc, y, layout, tr, cleanFn) {
   const clean = cleanFn || (s => (s || '').trim());
-  const { colW, colX, tblMl, tblCw } = layout;
+  const { colW, colX } = layout;
   const depthTxt = clean(tr.querySelector('td[data-label="Depth"]')?.textContent || '');
   const mixTxt = clean(tr.querySelector('td[data-label="Mix"]')?.textContent || '');
   const ppo2Txt = clean(tr.querySelector('td[data-label="PPO2"]')?.textContent || '');
-  doc.setFillColor(214, 255, 0);
-  doc.setDrawColor(22, 163, 74);
-  doc.setLineWidth(0.2);
-  doc.rect(tblMl, y, tblCw, 5, 'FD');
   doc.setFontSize(7);
   doc.setFont('DejaVuSans', 'bold');
-  doc.setTextColor(22, 101, 52);
+  doc.setTextColor(214, 255, 0);
   _pdfDrawDecoPhaseLabel(doc, y, layout, '⇄');
   if (depthTxt) doc.text(depthTxt, colX[1] + colW[1] / 2, y + 3.5, { align: 'center', maxWidth: colW[1] - 1 });
   if (mixTxt) doc.text(mixTxt, colX[4] + colW[4] / 2, y + 3.5, { align: 'center', maxWidth: colW[4] - 1 });
   if (ppo2Txt) doc.text(ppo2Txt, colX[5] + colW[5] / 2, y + 3.5, { align: 'center' });
   doc.setTextColor(0, 0, 0);
-  doc.setDrawColor(0, 0, 0);
 }
 
 function _pdfGasVolText(litres) {
@@ -818,26 +813,24 @@ function _pdfDrawGasUsageCards(doc, y, layout, gasConsumed, options) {
     const labelText = cleanPDF(row.label || '');
     if (isNarcoticTarget) {
       const roleText = cleanPDF(String(row.role || '').toLowerCase());
+      const chipText = roleText ? `${labelText} ${roleText}` : labelText;
       doc.setFont('DejaVuSans', 'bold');
       doc.setFontSize(8);
-      const chipW = Math.min(CW * 0.55, Math.max(20, doc.getTextWidth(labelText) + (roleText ? doc.getTextWidth(roleText) : 0) + 10));
+      const chipW = Math.min(CW * 0.55, Math.max(24, doc.getTextWidth(chipText) + 8));
       doc.setFillColor(255, 68, 51);
       doc.setDrawColor(17, 17, 17);
       doc.setLineWidth(0.35);
       doc.roundedRect(ML + 4, y + 2.5, chipW, 6.7, 3, 3, 'FD');
       doc.setTextColor(17, 17, 17);
-      doc.text(labelText, ML + 6, y + 7.1);
-      if (roleText) {
-        doc.setFont('DejaVuSans', 'bold');
-        doc.setFontSize(5.2);
-        doc.text(roleText, ML + 7 + doc.getTextWidth(labelText), y + 7.1);
-      }
+      doc.text(chipText, ML + 6, y + 7.1);
     } else {
       doc.text(labelText, ML + 4, y + 5.4);
-      doc.setFont('DejaVuSans', 'normal');
-      doc.setFontSize(5.8);
-      doc.setTextColor(...PDF_V3.muted);
-      if (role) doc.text(cleanPDF(role), ML + 4, y + 8.3);
+      if (role) {
+        doc.setFont('DejaVuSans', 'normal');
+        doc.setFontSize(5.8);
+        doc.setTextColor(...PDF_V3.muted);
+        doc.text(cleanPDF(role), ML + 5 + doc.getTextWidth(labelText), y + 5.4);
+      }
     }
 
     doc.setFont('DejaVuSans', 'bold');

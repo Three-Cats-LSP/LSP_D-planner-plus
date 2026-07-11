@@ -136,24 +136,22 @@
 .asc-color { color: var(--gas-switch-label-bg) !important; }
 body.light-theme .asc-color { color: #FFBF00 !important; }
 
-/* Gas switch row — same background/border as normal rows */
+/* Gas switch row — normal background, deco-chip accent text, no divider. */
 .deco-table tr[data-phase="switch"] td {
-  background: #d6ff00 !important;
-  color: #166534 !important;
+  color: #d6ff00 !important;
   font-size: 11px !important;
   font-weight: 400 !important;
-  border-top: 1px solid #16a34a !important;
-  border-bottom: 1px solid #16a34a !important;
+  border-bottom: none !important;
 }
 /* Phase icon cell */
 .deco-table tr[data-phase="switch"] td:first-child {
-  color: #166534 !important;
+  color: #d6ff00 !important;
   font-size: 15px !important;
   text-align: center !important;
 }
 /* Depth cell — switch depth only */
 .deco-table tr[data-phase="switch"] td:nth-child(2) {
-  color: #166534 !important;
+  color: #d6ff00 !important;
   font-weight: 600 !important;
   font-size: 11px !important;
   letter-spacing: 0.5px !important;
@@ -161,7 +159,7 @@ body.light-theme .asc-color { color: #FFBF00 !important; }
 }
 /* Mix cell — gas label */
 .deco-table tr[data-phase="switch"] td[data-label="Mix"] {
-  color: #166534 !important;
+  color: #d6ff00 !important;
   font-weight: 600 !important;
   font-size: 11px !important;
   letter-spacing: 0.5px !important;
@@ -169,7 +167,7 @@ body.light-theme .asc-color { color: #FFBF00 !important; }
 }
 /* PPO2 cell */
 .deco-table tr[data-phase="switch"] td[data-label="PPO2"] {
-  color: #166534 !important;
+  color: #d6ff00 !important;
   font-weight: 600 !important;
   text-align: right !important;
 }
@@ -178,9 +176,9 @@ body.light-theme .deco-table tr[data-phase="switch"] td:first-child,
 body.light-theme .deco-table tr[data-phase="switch"] td:nth-child(2),
 body.light-theme .deco-table tr[data-phase="switch"] td[data-label="Mix"],
 body.light-theme .deco-table tr[data-phase="switch"] td[data-label="PPO2"] {
-  color: #166534 !important;
+  color: #d6ff00 !important;
 }
-body.light-theme .switch-legend-icon { color: #16a34a !important; }
+body.light-theme .switch-legend-icon { color: #d6ff00 !important; }
 
 .deco-table tr:hover td { background:rgba(0,200,255,0.04); }
 .deco-table .deco-row td { color:var(--red); font-weight:600; }
@@ -541,7 +539,7 @@ body.light-theme #resultsPanel .chip-yellow { background: var(--yellow-dim) !imp
 #resultsPanel #plannerProfileLegend { display: flex; flex-direction: column; gap: var(--space-2); flex-wrap: nowrap; padding: var(--space-2) 0 var(--space-1); font-family: var(--font-mono); font-size: 9px; color: var(--text-faint); }
 #resultsPanel #plannerProfileLegend .profile-legend-keys { width: 100%; }
 #resultsPanel #plannerProfileLegend .profile-legend-table { margin-top: var(--space-2); }
-#resultsPanel #plannerProfileLegend tr.profile-legend-gasswitch td { color: #166534; }
+#resultsPanel #plannerProfileLegend tr.profile-legend-gasswitch td { color: #d6ff00; }
 #resultsPanel #plannerProfileCanvas-hint { padding: var(--space-1) 0; }
 #resultsPanel #gfCurveInlineCard.card { margin: 0; background: transparent; border: none; box-shadow: none; }
 #resultsPanel #gfCurveInlineCard .card-collapsible-body { padding: 0 var(--space-4) var(--space-3); }
@@ -781,7 +779,7 @@ body.light-theme #resultsPanel #decoAlertsNarcotic .alert .tip-icon { color: #cc
 #resultsPanel .deco-table.schedule-table .ph-bottom { color: var(--accent); }
 #resultsPanel .deco-table.schedule-table .ph-ascent, #resultsPanel .deco-table.schedule-table .ph-surface { color: var(--gas-switch-label-bg); }
 #resultsPanel .deco-table.schedule-table .ph-deco { color: var(--red); }
-#resultsPanel .deco-table.schedule-table .ph-switch { color: #166534; }
+#resultsPanel .deco-table.schedule-table .ph-switch { color: #d6ff00; }
 #resultsPanel .deco-table.schedule-table .col-depth { font-weight: 700; font-size: 12px; }
 #resultsPanel .deco-table.schedule-table .col-time { font-variant-numeric: tabular-nums; }
 #resultsPanel .deco-table.schedule-table .col-time.stop { color: var(--text-muted); }
@@ -797,8 +795,8 @@ body.light-theme #resultsPanel #decoAlertsNarcotic .alert .tip-icon { color: #cc
 #resultsPanel .deco-table.schedule-table .ppo2-hi { color: var(--orange); }
 #resultsPanel .deco-table.schedule-table .ppo2-crit { color: var(--red); }
 #resultsPanel .deco-table.schedule-table .col-ead { color: var(--text-faint); text-align: right; }
-#resultsPanel .deco-table.schedule-table tr.row-switch { background: #d6ff00; }
-#resultsPanel .deco-table.schedule-table tr.row-switch td { background: #d6ff00; color: #166534; border-bottom: 1px solid #16a34a; }
+#resultsPanel .deco-table.schedule-table tr.row-switch { background: transparent; }
+#resultsPanel .deco-table.schedule-table tr.row-switch td { color: #d6ff00; border-bottom: none; }
 #resultsPanel .deco-table.schedule-table tr.row-switch .col-gas { font-weight: 600; }
 #resultsPanel .deco-table.schedule-table tr.row-switch .col-ppo2.ppo2-ok,
 #resultsPanel .deco-table.schedule-table tr.row-switch .col-ppo2.ppo2-warn,
@@ -806,20 +804,20 @@ body.light-theme #resultsPanel #decoAlertsNarcotic .alert .tip-icon { color: #cc
 #resultsPanel .deco-table.schedule-table tr.row-switch .col-ppo2.ppo2-crit { color: inherit; }
 /* V4 schedule gas-switch contract: renderer writes data-phase, not row-switch. */
 #resultsPanel .deco-table.schedule-table tr[data-phase="switch"],
-#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] { background: #d6ff00; }
+#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] { background: transparent; }
 #resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td,
-#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td { background: #d6ff00; }
+#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td { border-bottom: none; }
 #resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td:not([data-label="PPO2"]),
-#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td:not([data-label="PPO2"]) { color: #166534 !important; font-size: inherit !important; border-bottom: 1px solid #16a34a !important; }
+#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td:not([data-label="PPO2"]) { color: #d6ff00 !important; font-size: inherit !important; border-bottom: none !important; }
 #resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td:first-child,
-#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td:first-child { color: #166534 !important; font-size: inherit !important; text-align: center !important; }
+#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td:first-child { color: #d6ff00 !important; font-size: inherit !important; text-align: center !important; }
 #resultsPanel .deco-table.schedule-table tr.deco-row td:not(.col-ppo2),
 #resultsPanel .deco-table.schedule-table tr.safe-row td:not(.col-ppo2),
 #resultsPanel .deco-table.schedule-table tr.asc-row td:not(.col-ppo2) { color: inherit; font-weight: inherit; }
-#resultsPanel .legend-item.legend-switch { color: #166534; }
+#resultsPanel .legend-item.legend-switch { color: #d6ff00; }
 body.light-theme #resultsPanel .deco-table.schedule-table .ph-switch,
 body.light-theme #resultsPanel .legend-item.legend-switch,
-body.light-theme #resultsPanel .deco-table.schedule-table tr.row-switch td { color: #166534 !important; }
+body.light-theme #resultsPanel .deco-table.schedule-table tr.row-switch td { color: #d6ff00 !important; }
 #resultsPanel .deco-table.schedule-table tr.row-descent td:not(.col-ppo2) { color: var(--text-muted); }
 #resultsPanel .deco-table.schedule-table tr.row-descent .col-depth { color: var(--text); }
 #resultsPanel .deco-table.schedule-table tr.row-summary td { background: color-mix(in oklab, var(--accent) 4%, transparent); border-top: 1px solid var(--border-hi); border-bottom: 1px solid var(--border); padding: 9px 6px; font-size: 10px; color: var(--text-muted); }

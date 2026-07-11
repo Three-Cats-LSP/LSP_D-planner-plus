@@ -202,8 +202,7 @@ CAPTURE_JS = r"""
   const planner = document.getElementById('tecPlannerView')?.getBoundingClientRect();
   const results = document.getElementById('resultsPanel')?.getBoundingClientRect();
   const expectedBg = resolveColor(root.getPropertyValue('--gas-switch-label-bg'));
-  const expectedSwitch = resolveColor('#166534');
-  const expectedSwitchRowBg = resolveColor('#d6ff00');
+  const expectedSwitch = resolveColor('#d6ff00');
   const expectedText = resolveColor(root.getPropertyValue('--gas-switch-label-text'));
   const expectedDecoPillBg = resolveColor('#d6ff00');
   const expectedDecoPillText = resolveColor('#166534');
@@ -280,7 +279,6 @@ CAPTURE_JS = r"""
     switchRowBackgrounds: switchRowBgs,
     normalRowBackground: normalRowBg,
     expectedSwitch,
-    expectedSwitchRowBg,
     resultTabs: {
       labels: tabButtons.map(btn => btn.textContent.trim()),
       tabs: tabButtons.map(btn => btn.dataset.tab),
@@ -2056,7 +2054,7 @@ def main() -> int:
         c["generated"]
         and c["switchRowCount"] >= 1
         and bool(c["switchRowBackgrounds"])
-        and all(color == c["expectedSwitchRowBg"] for color in c["switchRowBackgrounds"])
+        and all(color == c["normalRowBackground"] for color in c["switchRowBackgrounds"])
         for c in captures
     )
     results["SL-C09-GRAPH-WAYPOINT-TIME-SPREAD"] = all(
