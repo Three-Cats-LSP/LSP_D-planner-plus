@@ -167,9 +167,9 @@
       "unit_id": "UI-CSS-FOUNDATION",
       "path": "lsp-dplanner-foundation.css",
       "start_line": 1,
-      "end_line": 416,
-      "line_count": 416,
-      "content_fingerprint": "1a0c74038a47dd7f5e9307efdd56eaab9f7425c2253333e7cbc173fcdc8431c1",
+      "end_line": 418,
+      "line_count": 418,
+      "content_fingerprint": "3281f4c898323b1be0c36ae3dbc593ffce2cf887eaa1c1bfec44da2808fac8a0",
       "review_session": "cursor/seven-lens-cycle-05-foundation-audit",
       "verification_session": "RISK-BATCH-33-38-FOUNDATION-CHIP-TOKEN",
       "lens_results": {

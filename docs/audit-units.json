@@ -1989,7 +1989,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1a0c74038a47dd7f5e9307efdd56eaab9f7425c2253333e7cbc173fcdc8431c1",
+      "fingerprint": "3281f4c898323b1be0c36ae3dbc593ffce2cf887eaa1c1bfec44da2808fac8a0",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2034,7 +2034,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "95a006136b1dc8171bab85d6bcfeab57c8e396470a3108c8aaf2537afa967e78",
+      "fingerprint": "dcf0685d9624d849ea7c5b2325a72ee707b4e608572d8cd269b518f4212ea8e7",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -5854,7 +5854,7 @@
         "REG-137",
         "REG-138"
       ],
-      "fingerprint": "82307ae7b1d109f4478b76b7e7bb3722352aa71d61e9f71dcf059e0106c98226",
+      "fingerprint": "add6a6811bb022f15a84f3b7ba9ce4f570e23dda7b2419271a429bccb1314d21",
       "last_read_fingerprint": null
     },
     {

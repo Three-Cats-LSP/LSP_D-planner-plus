@@ -2042,7 +2042,7 @@ def main() -> int:
     results["SL-VIS-GAS-SWITCH-TOKEN-PARITY"] = all(
         c["generated"]
         and bool(c["decoDotColors"])
-        and all(color == c["expectedBg"] for color in c["decoDotColors"])
+        and all(color == c["expectedDecoPillBg"] for color in c["decoDotColors"])
         and c["switchRowCount"] >= 1
         and all(color == c["expectedSwitch"] for color in c["switchCellColors"])
         and all(color == c["scheduleColumns"]["expectedText"] for color in c["switchNeutralCellColors"])
