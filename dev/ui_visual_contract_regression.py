@@ -103,6 +103,10 @@ CAPTURE_JS = r"""
 () => {
   const rgb = value => value.replace(/\s+/g, '').toLowerCase();
   const style = (el, prop) => el ? getComputedStyle(el)[prop] : '';
+  const cellTextColor = el => {
+    const textNode = el?.querySelector('span, b, strong');
+    return rgb(style(textNode || el, 'color'));
+  };
   const resolveColor = value => {
     const probe = document.createElement('span');
     probe.style.color = value;
@@ -289,8 +293,8 @@ CAPTURE_JS = r"""
     hazardAlertStyle,
     hasTravelPill: pills.some(el => el.classList.contains('travel-gas')),
     switchRowCount: switchRows.length,
-    switchCellColors: switchPhaseCells.map(el => rgb(style(el, 'color'))),
-    switchNeutralCellColors: switchNeutralCells.map(el => rgb(style(el, 'color'))),
+    switchCellColors: switchPhaseCells.map(cellTextColor),
+    switchNeutralCellColors: switchNeutralCells.map(cellTextColor),
     switchRowBackgrounds: switchRowBgs,
     scheduleLegendLabels,
     normalRowBackground: normalRowBg,
@@ -381,8 +385,8 @@ CAPTURE_JS = r"""
           .filter(Boolean);
         return {
           phase: row.dataset.phase || '',
-          leftColors: leftCells.map(el => rgb(style(el, 'color'))),
-          rightColors: rightCells.map(el => rgb(style(el, 'color'))),
+          leftColors: leftCells.map(cellTextColor),
+          rightColors: rightCells.map(cellTextColor),
         };
       }),
       decoStopPlainBullets: decoPhaseTexts.some(text => text)

@@ -1989,7 +1989,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "901647d76fc6e88c896ebe64c1a0d62a13a96a517004daa98a83729db20912b5",
+      "fingerprint": "1a0c74038a47dd7f5e9307efdd56eaab9f7425c2253333e7cbc173fcdc8431c1",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5854,7 +5854,7 @@
         "REG-137",
         "REG-138"
       ],
-      "fingerprint": "d2c2d357966b923df3f548271e3e47d76eb43b50813ba7a58caa0c4d8dc10706",
+      "fingerprint": "82307ae7b1d109f4478b76b7e7bb3722352aa71d61e9f71dcf059e0106c98226",
       "last_read_fingerprint": null
     },
     {

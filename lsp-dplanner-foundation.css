@@ -300,9 +300,6 @@ body.light-theme .deco-table tr.gas-tight-row td:first-child { background:#FF443
 body.light-theme .algo-label { color: var(--accent);
 }
 
-/* Keep deco table phase colors in light theme */
-body.light-theme .deco-table tr[data-phase="descent"] td span { color: #cc3333; }
-
 /* Grid lines for Bühlmann mode */
 body.algo-buh::after { content: '';
  position: fixed; inset: 0;
