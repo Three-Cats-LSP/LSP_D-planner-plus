@@ -58,16 +58,16 @@
  box-sizing: border-box;
 }
 .deco-totals-row td {
- padding: 0 !important;
- border-bottom: none !important;
- white-space: normal !important;
+ padding: 0;
+ border-bottom: none;
+ white-space: normal;
  vertical-align: top;
 }
 .deco-table:not(.table-view) tr.deco-totals-row td { max-width: 0; }
 .deco-table.table-view tr.deco-totals-row td {
- max-width: none !important;
- width: 100% !important;
- display: table-cell !important;
+ max-width: none;
+ width: 100%;
+ display: table-cell;
 }
 .deco-table.table-view tr.deco-totals-row .deco-totals-inner {
  font-size: 10px;
@@ -166,26 +166,22 @@ body.light-theme .switch-legend-icon { color: #16a34a; }
 /* ── MOBILE: gas plan + tight warning overrides ── */
 @media (max-width: 600px) {
  /* Gas plan table — responsive */
- .gas-plan-table { width:100% !important; min-width:0 !important; max-width:100% !important; table-layout:fixed !important; font-size:10px !important; }
- .gas-plan-table th { min-width:0 !important; padding:6px 4px !important; font-size:8px !important; white-space:normal !important; word-break:normal !important; overflow-wrap:anywhere !important; line-height:1.2 !important; letter-spacing:0.04em !important; }
- .gas-plan-table td { min-width:0 !important; padding:5px 4px !important; font-size:10px !important; }
+ .gas-plan-table { width:100%; min-width:0; max-width:100%; table-layout:fixed; font-size:10px; }
+ .gas-plan-table th { min-width:0; padding:6px 4px; font-size:8px; white-space:normal; word-break:normal; overflow-wrap:anywhere; line-height:1.2; letter-spacing:0.04em; }
+ .gas-plan-table td { min-width:0; padding:5px 4px; font-size:10px; }
  .gas-plan-table th:nth-child(n),
- .gas-plan-table td:nth-child(n) { min-width:0 !important; max-width:none !important; }
+ .gas-plan-table td:nth-child(n) { min-width:0; max-width:none; }
 
  /* BT banner + tight warning rows */
- .gas-bt-cell { background:#FF4433 !important; color:#fff !important; white-space:normal !important; overflow:visible !important; text-overflow:clip !important; overflow-wrap:anywhere !important; word-break:normal !important; min-width:0 !important; max-width:100% !important; box-sizing:border-box !important; }
- .gas-bt-cell *, .gas-bt-cell strong, .gas-bt-cell span { color:#fff !important; }
- body.light-theme .gas-bt-cell { color:#000 !important; }
- body.light-theme .gas-bt-cell *, body.light-theme .gas-bt-cell strong, body.light-theme .gas-bt-cell span { color:#000 !important; }
+ .gas-bt-cell { background:#FF4433; color:#fff; white-space:normal; overflow:visible; text-overflow:clip; overflow-wrap:anywhere; word-break:normal; min-width:0; max-width:100%; box-sizing:border-box; }
+ .gas-bt-cell strong, .gas-bt-cell span { color:inherit; }
+ body.light-theme .gas-bt-cell { color:#000; }
 
  .deco-table tr.gas-tight-row td,
- .deco-table tr.gas-tight-row td:first-child { background:#FF4433 !important; color:#fff !important; font-weight:600 !important; border-bottom:1px solid var(--border) !important; }
- .deco-table tr.gas-tight-row td span,
- .deco-table tr.gas-tight-row td * { color:#fff !important; }
+ .deco-table tr.gas-tight-row td:first-child { background:#FF4433; color:#fff; font-weight:600; border-bottom:1px solid var(--border); }
+ .deco-table tr.gas-tight-row td span { color:inherit; }
  body.light-theme .deco-table tr.gas-tight-row td,
- body.light-theme .deco-table tr.gas-tight-row td:first-child { background:#FF4433 !important; color:#000 !important; }
- body.light-theme .deco-table tr.gas-tight-row td span,
- body.light-theme .deco-table tr.gas-tight-row td * { color:#000 !important; }
+ body.light-theme .deco-table tr.gas-tight-row td:first-child { background:#FF4433; color:#000; }
 }
 
 /* ── LSP SLIDER ── */
@@ -266,9 +262,9 @@ body.light-theme .switch-legend-icon { color: #16a34a; }
   .stats { grid-template-columns:repeat(2,1fr); }
   .desktop-only { display:none !important; }
   /* Banner: own full-width row, between logo (order:1) and mode (order:3) */
-  #headerBanner { flex:0 0 100% !important; order:2; padding:4px 14px 8px; justify-content:center; }
+  #headerBanner { flex:0 0 100%; order:2; padding:4px 14px 8px; justify-content:center; }
   #headerTopRow > div:first-child { order:1; }
-  #headerTopRow .header-actions { order:3; width:auto; justify-content:flex-end !important; padding:0 !important; }
+  #headerTopRow .header-actions { order:3; width:auto; justify-content:flex-end; padding:0; }
 }
 @media(min-width:641px) { .mobile-only { display:none !important; } }
 @media(max-width:640px) {
@@ -472,8 +468,8 @@ body.light-theme .mode-btn:hover img, body.light-theme .mode-btn.active img { op
 #resultsPanel .metric-val[class*="metric-val--"] .unit { color: inherit; opacity: 0.82; }
 #resultsPanel .chip-green { background: var(--status-green-dim); color: var(--status-green); border-color: color-mix(in oklab, var(--status-green) 30%, transparent); }
 #resultsPanel .chip-orange { background: var(--status-orange-dim); color: var(--status-orange); border-color: color-mix(in oklab, var(--status-orange) 30%, transparent); }
-#resultsPanel .chip-yellow { background: var(--yellow-dim); color: var(--yellow); border-color: color-mix(in oklab, var(--yellow) 30%, transparent); }
-body.light-theme #resultsPanel .chip-yellow { background: var(--yellow-dim) !important; color: var(--yellow) !important; border-color: color-mix(in oklab, var(--yellow) 30%, transparent) !important; }
+#resultsPanel .chip-yellow,
+body.light-theme #resultsPanel .chip-yellow { background: var(--yellow-dim); color: var(--yellow); border-color: color-mix(in oklab, var(--yellow) 30%, transparent); }
 #resultsPanel .chip-red { background: var(--status-red-dim); color: var(--status-red); border-color: color-mix(in oklab, var(--status-red) 30%, transparent); } #resultsPanel .chip-info { background: var(--surface-2); color: #2563eb; border-color: var(--border); } #resultsPanel .chip-deco { background: var(--surface-2); color: var(--status-red); border-color: var(--border); }
 #resultsPanel .chip-rec-profile { background: color-mix(in oklab, var(--accent) 9%, transparent); color: var(--accent); border-color: color-mix(in oklab, var(--accent) 38%, transparent); font-weight: 700; }
 #resultsPanel .metric-lbl { font-size: 9px; letter-spacing: 0.1em; }
@@ -512,7 +508,7 @@ body.light-theme #resultsPanel .chip-yellow { background: var(--yellow-dim) !imp
 #resultsPanel .profile-legend-keys .legend-item { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
 #resultsPanel #fullDiveGraphCard.card { background: transparent; border: none; box-shadow: none; margin: 0; padding: 0; }
 #resultsPanel #fullDiveGraphCard .card-collapsible-body { padding: var(--space-3) var(--space-4) var(--space-2); box-sizing: border-box; max-width: 100%; overflow: hidden; }
-#resultsPanel #plannerProfileCanvas-wrap { margin-top: 0 !important; max-width: 100%; box-sizing: border-box; }
+#resultsPanel #plannerProfileCanvas-wrap { margin-top: 0; max-width: 100%; box-sizing: border-box; }
 #resultsPanel #plannerProfileCanvas-wrap canvas { width: 100%; max-width: 100%; box-sizing: border-box; border-radius: var(--radius-md); background: var(--surface); border: 1px solid var(--border); min-height: 200px; display: block; }
 #resultsPanel #plannerProfileLegend { display: flex; flex-direction: column; gap: var(--space-2); flex-wrap: nowrap; padding: var(--space-2) 0 var(--space-1); font-family: var(--font-mono); font-size: 9px; color: var(--text-faint); }
 #resultsPanel #plannerProfileLegend .profile-legend-keys { width: 100%; }
@@ -554,9 +550,9 @@ body.light-theme #resultsPanel .chip-yellow { background: var(--yellow-dim) !imp
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-threshold-control input { width:48px; min-height:28px; padding:3px 5px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface); color:var(--text); font-family:var(--font-mono); font-size:11px; text-align:right; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning { display:flex; gap:var(--space-2); align-items:flex-start; margin:2px 0 6px; box-sizing:border-box; white-space:normal; overflow-wrap:anywhere; font-family:'Outfit', sans-serif; font-size:12px; font-weight:700; letter-spacing:0; line-height:1.45; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--critical,
-#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--critical * { color:#E8590C !important; }
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--critical :is(.tip-icon, .gas-measure, .gas-unit, strong, span) { color:#E8590C; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--nogas,
-#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--nogas * { color:#FF3B30 !important; }
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--nogas :is(.tip-icon, .gas-measure, .gas-unit, strong, span) { color:#FF3B30; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-consumption-bars { display:flex; flex-direction:column; gap:var(--space-2); }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card { --gas-status:var(--status-green); --gas-track:rgba(148,163,184,0.22); border:1px solid var(--border); border-left:4px solid var(--gas-status); border-radius:var(--radius-md); padding:var(--space-3); background:rgba(255,255,255,0.025); box-shadow:0 1px 0 rgba(255,255,255,0.02) inset; }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--ok { --gas-status:var(--status-green); }
@@ -669,8 +665,8 @@ body.light-theme #resultsPanel .gas-pill.travel-gas { background: #f0f4ff; color
 #resultsPanel .gas-consumption-narcotic .alert { display: flex; align-items: flex-start; gap: var(--space-2); width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); font-size: 12px; line-height: 1.45; margin: 0; white-space: normal; overflow-wrap: anywhere; word-break: normal; }
 #resultsPanel .gas-consumption-narcotic .alert > * { min-width: 0; overflow-wrap: anywhere; }
 #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn { background:#ff4433; border:1px solid var(--narcotic-banner-border, rgba(255,255,255,0.92)); color:#fff; font-weight:700; }
-#resultsPanel .gas-consumption-narcotic .alert.narcotic-warn * { color:#fff !important; }
-#resultsPanel .gas-consumption-narcotic .alert.narcotic-warn .tip-icon { color:#fff !important; opacity:0.85; }
+#resultsPanel .gas-consumption-narcotic .alert.narcotic-warn :is(.tip-icon, strong, span) { color:#fff; }
+#resultsPanel .gas-consumption-narcotic .alert.narcotic-warn .tip-icon { opacity:0.85; }
 #resultsPanel .alert.cns-warn {
   margin-top:8px;
   background:#ffff00;
@@ -693,23 +689,23 @@ body.light-theme #resultsPanel #decoAlertsNarcotic .alert.narcotic-warn {
 body.light-theme #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn {
   background: #ff4433;
   --narcotic-banner-border:#111;
-  color: #111 !important;
+  color: #111;
 }
 body.light-theme #resultsPanel .alert.cns-warn {
   border-color:#111;
 }
 body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--critical,
-body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--critical * { color:#E8590C !important; }
+body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--critical :is(.tip-icon, .gas-measure, .gas-unit, strong, span) { color:#E8590C; }
 body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--nogas,
-body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--nogas * { color:#FF3131 !important; }
+body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning--nogas :is(.tip-icon, .gas-measure, .gas-unit, strong, span) { color:#FF3131; }
 body.light-theme #resultsPanel #decoAlerts .alert.deco *,
 body.light-theme #resultsPanel #decoAlertsNarcotic .alert.deco *,
 body.light-theme #resultsPanel #decoAlerts .alert.narcotic-warn *,
 body.light-theme #resultsPanel #decoAlertsNarcotic .alert.narcotic-warn * {
-  color: #111 !important;
+  color: #111;
 }
 body.light-theme #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn * {
-  color: #111 !important;
+  color: #111;
 }
 body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-title--narcotic {
   --narcotic-chip-border:#111;
@@ -719,10 +715,10 @@ body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumpt
   color:#111;
 }
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas .gas-usage-inline-warning,
-#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas .gas-usage-inline-warning * { color:#FF3B30 !important; }
+#resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas .gas-usage-inline-warning :is(.tip-icon, .gas-measure, .gas-unit, strong, span) { color:#FF3B30; }
 body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas .gas-usage-inline-warning,
-body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas .gas-usage-inline-warning * { color:#FF3131 !important; }
-body.light-theme #resultsPanel #decoAlertsNarcotic .alert .tip-icon { color: #cc0000 !important; opacity: 0.85; }
+body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas .gas-usage-inline-warning :is(.tip-icon, .gas-measure, .gas-unit, strong, span) { color:#FF3131; }
+body.light-theme #resultsPanel #decoAlertsNarcotic .alert .tip-icon { color: #cc0000; opacity: 0.85; }
 #resultsPanel .schedule-wrap { padding: 0 var(--space-4) var(--space-3); overflow-x: auto; display: flex; flex-direction: column; gap: 0; }
 #resultsPanel .schedule-wrap > .deco-table-wrap { margin-bottom: 0; }
 #resultsPanel .deco-table.schedule-table { width: 100%; min-width: 520px; table-layout: fixed; margin-top: 0; font-size: 11px; }
@@ -882,7 +878,7 @@ body.light-theme #gasWarningBanner.gas-warning-banner { background: #fff0f0; bor
   #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) { padding-left: var(--space-2); padding-right: var(--space-2); }
   #resultsPanel .result-tabs-nav { flex-wrap: wrap; overflow-x: visible; }
   #resultsPanel .result-tab-btn { flex: 1 1 calc(50% - 2px); min-width: 0; padding: 7px 8px; text-align: center; font-size: 9px; letter-spacing: 0.045em; }
-  #resultsPanel .rec-profile-stats { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  #resultsPanel .rec-profile-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   #resultsPanel .rec-profile-stats .stat:first-child { grid-column: span 2; }
 }
 
@@ -998,7 +994,7 @@ body:not(.light-theme) .theme-pill-moon { color: var(--theme-moon-on-thumb); }
   border: 1px solid var(--border-hi);
   border-radius: var(--radius-lg);
   /* Match .algo-bar-btn vertical rhythm (10px) */
-  padding: 10px var(--space-2) !important;
+  padding: 10px var(--space-2);
 }
 #headerTopRow .brand-lockup {
   display: flex;
@@ -1058,6 +1054,7 @@ body:not(.light-theme) .theme-pill-moon { color: var(--theme-moon-on-thumb); }
 }
 
 @media print {
+ /* Allowed !important: print/PDF capture must override live tab/mobile state for a complete export page. */
  #resultsPanel { overflow: visible !important; break-inside: avoid; }
  #resultsPanel .result-tabs-nav,
  #resultsPanel .deco-contingency-calc,

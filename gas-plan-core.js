@@ -387,41 +387,41 @@ function calcGasPlan() {
             : '';
           html += `<tr>
             <td class="gas-plan-gas-cell">${gpGasNameHtml(r)}</td>
-            <td style="color:var(--red) !important;font-weight:700;">${gpVolWithUnit(r.totalL)}</td>
+            <td style="color:var(--red);font-weight:700;">${gpVolWithUnit(r.totalL)}</td>
             <td style="color:var(--muted);font-size:10px;">${gpVolWithUnit(r.portionL || 0)} <span style="color:var(--muted);">(${ruleTxt})</span></td>
             <td style="color:var(--muted);">—</td>
-            <td><span style="color:var(--red) !important;font-weight:700;">✗ short</span><br><span style="color:var(--muted);font-size:10px;">need ${gpVolWithUnit(r.reqL)}</span></td>
-            <td style="color:var(--red) !important;font-weight:700;">−${gpVolWithUnit(r.shortL)}</td>
+            <td><span style="color:var(--red);font-weight:700;">✗ short</span><br><span style="color:var(--muted);font-size:10px;">need ${gpVolWithUnit(r.reqL)}</span></td>
+            <td style="color:var(--red);font-weight:700;">−${gpVolWithUnit(r.shortL)}</td>
           </tr>`;
           if (btSuggest) html += `<tr class="gas-bt-row"><td colspan="6" class="gas-bt-cell">⚠ ${btSuggest} — or use a larger cylinder.</td></tr>`;
         } else {
           // Sufficient — normal turn pressure row with plan check
           const botVolColor = Number.isFinite(r.reqL)
-            ? (r.totalL >= r.reqL * GP_ONEWAY_MARGIN ? 'color:var(--green) !important;font-weight:700;'
-              : r.totalL >= r.reqL ? 'color:var(--yellow) !important;font-weight:700;'
-              : 'color:var(--red) !important;font-weight:700;')
+            ? (r.totalL >= r.reqL * GP_ONEWAY_MARGIN ? 'color:var(--green);font-weight:700;'
+              : r.totalL >= r.reqL ? 'color:var(--yellow);font-weight:700;'
+              : 'color:var(--red);font-weight:700;')
             : '';
           const botMarginVal = Number.isFinite(r.reqL) ? r.totalL - r.reqL : null;
           const botMargin = botMarginVal != null
             ? `${botMarginVal >= 0 ? '+' : '−'}${gpVolDisp(Math.abs(botMarginVal))}${volU}`
             : '—';
           const botMarginCol = !Number.isFinite(r.reqL) ? 'color:var(--muted);'
-            : r.totalL < r.reqL ? 'color:var(--red) !important;font-weight:700;'
-            : r.totalL < r.reqL * GP_ONEWAY_MARGIN ? 'color:var(--yellow) !important;font-weight:700;'
-            : 'color:var(--green) !important;font-weight:700;';
+            : r.totalL < r.reqL ? 'color:var(--red);font-weight:700;'
+            : r.totalL < r.reqL * GP_ONEWAY_MARGIN ? 'color:var(--yellow);font-weight:700;'
+            : 'color:var(--green);font-weight:700;';
           const botSuffNote = Number.isFinite(r.reqL)
             ? (r.totalL >= r.reqL * GP_ONEWAY_MARGIN
-              ? `<br><span style="color:var(--green) !important;font-size:10px;">✓ ${gpVolWithUnit(r.reqL)} needed</span>`
+              ? `<br><span style="color:var(--green);font-size:10px;">✓ ${gpVolWithUnit(r.reqL)} needed</span>`
               : r.totalL >= r.reqL
-                ? `<br><span style="color:var(--yellow) !important;font-size:10px;">⚠ tight — ${gpVolWithUnit(r.reqL)} needed</span>`
+                ? `<br><span style="color:var(--yellow);font-size:10px;">⚠ tight — ${gpVolWithUnit(r.reqL)} needed</span>`
                 : '')
-            : (r.reqL != null ? '<br><span style="color:var(--orange) !important;font-size:10px;">Invalid gas</span>' : '');
+            : (r.reqL != null ? '<br><span style="color:var(--orange);font-size:10px;">Invalid gas</span>' : '');
           html += `<tr class="${Number.isFinite(r.reqL) && r.totalL >= r.reqL && r.totalL < r.reqL * GP_ONEWAY_MARGIN ? 'gas-tight-row' : ''}">
             <td class="gas-plan-gas-cell">${gpGasNameHtml(r)}</td>
             <td style="${botVolColor}">${gpVolWithUnit(r.totalL)}</td>
             <td>${gpVolWithUnit(r.portionL)} <span style="color:var(--muted);">(${ruleTxt})</span></td>
-            <td style="color:var(--accent) !important;font-weight:700;">${gpPresDisp(r.turnBar)} ${presU}</td>
-            <td><span style="color:var(--accent) !important;font-weight:700;">⟳ turn</span>${botSuffNote}</td>
+            <td style="color:var(--accent);font-weight:700;">${gpPresDisp(r.turnBar)} ${presU}</td>
+            <td><span style="color:var(--accent);font-weight:700;">⟳ turn</span>${botSuffNote}</td>
             <td style="${botMarginCol}">${botMargin}</td>
           </tr>`;
         }
@@ -431,16 +431,16 @@ function calcGasPlan() {
           suffCell = '<span style="color:var(--muted);">run plan</span>';
           statusCol = 'var(--muted)';
         } else if (!Number.isFinite(r.reqL)) {
-          suffCell = '<span style="color:var(--orange) !important;font-weight:700;">invalid gas</span>';
+          suffCell = '<span style="color:var(--orange);font-weight:700;">invalid gas</span>';
           statusCol = 'var(--orange)';
         } else if (r.totalL >= r.reqL * GP_ONEWAY_MARGIN) {
-          suffCell = '<span style="color:var(--green) !important;font-weight:700;">✓ ok</span><br><span style="color:var(--muted);font-size:10px;">req ' + gpVolWithUnit(r.reqL) + '</span>';
+          suffCell = '<span style="color:var(--green);font-weight:700;">✓ ok</span><br><span style="color:var(--muted);font-size:10px;">req ' + gpVolWithUnit(r.reqL) + '</span>';
           statusCol = 'var(--green)';
         } else if (r.totalL >= r.reqL) {
           suffCell = '<span>⚠ tight</span><br><span style="color:var(--muted);font-size:10px;">req ' + gpVolWithUnit(r.reqL) + '</span>';
           statusCol = '#FF4433';
         } else {
-          suffCell = '<span style="color:var(--red) !important;font-weight:700;">✗ short</span><br><span style="color:var(--muted);font-size:10px;">req ' + gpVolWithUnit(r.reqL) + '</span>';
+          suffCell = '<span style="color:var(--red);font-weight:700;">✗ short</span><br><span style="color:var(--muted);font-size:10px;">req ' + gpVolWithUnit(r.reqL) + '</span>';
           statusCol = 'var(--red)';
         }
         const isTight = r.reqL != null && r.totalL >= r.reqL && r.totalL < r.reqL * GP_ONEWAY_MARGIN;
@@ -451,11 +451,11 @@ function calcGasPlan() {
         const marginCol = marginL == null ? 'var(--muted)' : marginL < 0 ? 'var(--red)' : isTight ? '#FF4433' : 'var(--green)';
         html += `<tr class="${isTight ? 'gas-tight-row' : ''}">
           <td class="gas-plan-gas-cell">${gpGasNameHtml(r)}</td>
-          <td style="${isTight ? '' : 'color:' + statusCol + ' !important;'}font-weight:700;">${gpVolWithUnit(r.totalL)}</td>
+          <td style="${isTight ? '' : 'color:' + statusCol + ';'}font-weight:700;">${gpVolWithUnit(r.totalL)}</td>
           <td style="color:var(--muted);">—</td>
           <td style="color:var(--muted);">one-way</td>
           <td>${suffCell}</td>
-          <td style="color:${marginCol} !important;font-weight:700;">${marginDisp}</td>
+          <td style="color:${marginCol};font-weight:700;">${marginDisp}</td>
         </tr>`;
       }
     });

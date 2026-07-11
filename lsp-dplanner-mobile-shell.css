@@ -134,7 +134,7 @@
     justify-content: space-between;
     flex-wrap: nowrap;
     gap: 8px;
-    padding: 8px 10px !important;
+    padding: 8px 10px;
     border-radius: 0;
     border-left: none;
     border-right: none;
@@ -144,7 +144,7 @@
   #headerTopRow .brand-lockup {
     flex: 1 1 auto;
     min-width: 0;
-    padding-left: 0 !important;
+    padding-left: 0;
   }
 
   #headerTopRow .brand-text p {
@@ -156,13 +156,13 @@
   }
 
   #headerTopRow .header-actions {
-    display: inline-flex !important;
+    display: inline-flex;
     order: 2;
-    width: auto !important;
+    width: auto;
     margin-left: 0;
-    padding: 0 !important;
+    padding: 0;
     gap: 8px;
-    justify-content: flex-end !important;
+    justify-content: flex-end;
     flex: 0 0 auto;
   }
 
@@ -235,7 +235,7 @@
     display: block;
   }
 
-  /* Tab-driven visibility */
+  /* Allowed !important: mobile tab state is the shell owner for planner/results/tools/settings visibility. */
   body.mobile-tab-plan #plannerView {
     display: block !important;
   }

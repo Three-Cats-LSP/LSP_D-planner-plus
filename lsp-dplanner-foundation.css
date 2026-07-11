@@ -192,50 +192,50 @@ html.capacitor-native .lsp-modal-overlay--pad20 {
 body::before { display: none; }
 body.light-theme::before { display: none; }
 
-/* Force dark text in light theme */
-body.light-theme { color: #000000 !important;
+/* Light theme uses tokens first; component selectors own exceptions. */
+body.light-theme { color: #000000;
 }
 
-body.light-theme h1, body.light-theme h2, body.light-theme h3, body.light-theme h4, body.light-theme h5, body.light-theme h6 { color: #000000 !important;
+body.light-theme h1, body.light-theme h2, body.light-theme h3, body.light-theme h4, body.light-theme h5, body.light-theme h6 { color: #000000;
 }
 
-body.light-theme button:not(.gen-btn):not(.btn-calc), body.light-theme input, body.light-theme textarea, body.light-theme select { color: #000000 !important;
+body.light-theme button:not(.gen-btn):not(.btn-calc), body.light-theme input, body.light-theme textarea, body.light-theme select { color: #000000;
 }
-body.light-theme .switch-depth-display { color: var(--text) !important;
+body.light-theme .switch-depth-display { color: var(--text);
 }
 
 body.light-theme .legacy-panels .text,
 body.light-theme .legacy-panels p,
 body.light-theme .legacy-panels span,
-body.light-theme .legacy-panels div { color: #1a1a1a !important; }
+body.light-theme .legacy-panels div { color: #1a1a1a; }
 body.light-theme .app { color: var(--text); }
 
 /* V3 component color restoration in light theme */
-body.light-theme .metric-val:not(.metric-val--runtime):not(.metric-val--deco):not(.metric-val--cns-safe):not(.metric-val--cns-caution):not(.metric-val--cns-warn) { color: var(--text) !important; }
-body.light-theme #resultsPanel .metric-val.metric-val--runtime { color: #2563eb !important; }
-body.light-theme #resultsPanel .metric-val.metric-val--deco { color: var(--status-red) !important; }
-body.light-theme #resultsPanel .metric-val.metric-val--cns-safe { color: var(--status-green) !important; }
-body.light-theme #resultsPanel .metric-val.metric-val--cns-caution { color: var(--status-orange) !important; }
-body.light-theme #resultsPanel .metric-val.metric-val--cns-warn { color: var(--status-red) !important; }
-body.light-theme .chip-green            { color: var(--status-green) !important; }
-body.light-theme .chip-orange           { color: var(--status-orange) !important; }
-body.light-theme .chip-yellow           { color: var(--yellow) !important; }
-body.light-theme .chip-red              { color: var(--status-red) !important; }
-body.light-theme .algo-bar-btn.active   { color: var(--accent) !important; }
-body.light-theme .algo-sub              { color: var(--text-faint) !important; }
-body.light-theme .results-section-label { color: var(--accent) !important; }
-body.light-theme .gas-warning-banner    { color: #cc0000 !important; }
-body.light-theme .gas-warning-banner *  { color: inherit !important; }
-body.light-theme .stepper-val           { color: var(--text) !important; }
-body.light-theme .result-tab-btn.active { color: var(--accent) !important; }
-body.light-theme .gf-preset-btn.active  { color: var(--accent) !important; }
-body.light-theme .cons-btn.active       { color: var(--accent) !important; }
+body.light-theme .metric-val:not(.metric-val--runtime):not(.metric-val--deco):not(.metric-val--cns-safe):not(.metric-val--cns-caution):not(.metric-val--cns-warn) { color: var(--text); }
+body.light-theme #resultsPanel .metric-val.metric-val--runtime { color: #2563eb; }
+body.light-theme #resultsPanel .metric-val.metric-val--deco { color: var(--status-red); }
+body.light-theme #resultsPanel .metric-val.metric-val--cns-safe { color: var(--status-green); }
+body.light-theme #resultsPanel .metric-val.metric-val--cns-caution { color: var(--status-orange); }
+body.light-theme #resultsPanel .metric-val.metric-val--cns-warn { color: var(--status-red); }
+body.light-theme .chip-green            { color: var(--status-green); }
+body.light-theme .chip-orange           { color: var(--status-orange); }
+body.light-theme .chip-yellow           { color: var(--yellow); }
+body.light-theme .chip-red              { color: var(--status-red); }
+body.light-theme .algo-bar-btn.active   { color: var(--accent); }
+body.light-theme .algo-sub              { color: var(--text-faint); }
+body.light-theme .results-section-label { color: var(--accent); }
+body.light-theme .gas-warning-banner    { color: #cc0000; }
+body.light-theme .gas-warning-banner :is(.tip-icon, strong, span) { color: inherit; }
+body.light-theme .stepper-val           { color: var(--text); }
+body.light-theme .result-tab-btn.active { color: var(--accent); }
+body.light-theme .gf-preset-btn.active  { color: var(--accent); }
+body.light-theme .cons-btn.active       { color: var(--accent); }
 
 /* Restore alert colors overridden by broad div rule above */
-body.light-theme .dang, body.light-theme .dang * { color:#cc0000 !important; }
-body.light-theme .warn, body.light-theme .warn * { color:#884400 !important; }
-body.light-theme .ok, body.light-theme .ok * { color:#116622 !important; }
-body.light-theme .info, body.light-theme .info * { color:#0077aa !important; }
+body.light-theme .dang, body.light-theme .dang :is(.tip-icon, strong, span) { color:#cc0000; }
+body.light-theme .warn, body.light-theme .warn :is(.tip-icon, strong, span) { color:#884400; }
+body.light-theme .ok, body.light-theme .ok :is(.tip-icon, strong, span) { color:#116622; }
+body.light-theme .info, body.light-theme .info :is(.tip-icon, strong, span) { color:#0077aa; }
 
 /* Native APK update banner — theme-aware (light-theme * rule would break dark inline colors) */
 #apkUpdateBanner {
@@ -244,9 +244,9 @@ body.light-theme .info, body.light-theme .info * { color:#0077aa !important; }
   left: 0;
   right: 0;
   z-index: 99998;
-  background: var(--surface) !important;
-  border-bottom: 1px solid var(--border-hi) !important;
-  color: var(--text) !important;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border-hi);
+  color: var(--text);
   padding: 10px 14px;
   display: flex;
   align-items: center;
@@ -258,12 +258,12 @@ body.light-theme .info, body.light-theme .info * { color:#0077aa !important; }
 }
 #apkUpdateBanner span,
 #apkUpdateBanner strong {
-  color: var(--text) !important;
+  color: var(--text);
 }
 #apkUpdateBanner #apkUpdateDownloadBtn {
-  background: var(--accent) !important;
-  border: none !important;
-  color: #fff !important;
+  background: var(--accent);
+  border: none;
+  color: #fff;
   border-radius: 6px;
   padding: 6px 14px;
   cursor: pointer;
@@ -272,9 +272,9 @@ body.light-theme .info, body.light-theme .info * { color:#0077aa !important; }
   flex-shrink: 0;
 }
 #apkUpdateBanner #apkUpdateDismissBtn {
-  background: none !important;
-  border: 1px solid var(--border-hi) !important;
-  color: var(--accent) !important;
+  background: none;
+  border: 1px solid var(--border-hi);
+  color: var(--accent);
   border-radius: 6px;
   padding: 4px 10px;
   cursor: pointer;
@@ -284,27 +284,24 @@ body.light-theme .info, body.light-theme .info * { color:#0077aa !important; }
 }
 
 /* Gas consumption — BT suggestion banner row */
-.gas-bt-cell { background:#FF4433 !important; color:#fff !important; font-weight:700; font-size:11px; padding:6px 10px; border-bottom:1px solid var(--border) !important; }
-.gas-bt-cell span, .gas-bt-cell strong, .gas-bt-cell * { color:#fff !important; }
-body.light-theme .gas-bt-cell { color:#000 !important; }
-body.light-theme .gas-bt-cell span, body.light-theme .gas-bt-cell strong, body.light-theme .gas-bt-cell * { color:#000 !important; }
+.gas-bt-cell { background:#FF4433; color:#fff; font-weight:700; font-size:11px; padding:6px 10px; border-bottom:1px solid var(--border); }
+.gas-bt-cell span, .gas-bt-cell strong { color:inherit; }
+body.light-theme .gas-bt-cell { color:#000; }
 
 /* Gas consumption — tight warning row */
 body .deco-table tr.gas-tight-row td,
-body .deco-table tr.gas-tight-row td:first-child { background:#FF4433 !important; color:#fff !important; font-weight:600 !important; border-bottom:1px solid var(--border) !important; }
+body .deco-table tr.gas-tight-row td:first-child { background:#FF4433; color:#fff; font-weight:600; border-bottom:1px solid var(--border); }
 body .deco-table tr.gas-tight-row td span,
-body .deco-table tr.gas-tight-row td * { color:#fff !important; }
+body .deco-table tr.gas-tight-row td strong { color:inherit; }
 body.light-theme .deco-table tr.gas-tight-row td,
-body.light-theme .deco-table tr.gas-tight-row td:first-child { background:#FF4433 !important; color:#000 !important; }
-body.light-theme .deco-table tr.gas-tight-row td span,
-body.light-theme .deco-table tr.gas-tight-row td * { color:#000 !important; }
+body.light-theme .deco-table tr.gas-tight-row td:first-child { background:#FF4433; color:#000; }
 
 /* algo-label in light theme — use dark blue, cyan is invisible on white */
-body.light-theme .algo-label { color: var(--accent) !important;
+body.light-theme .algo-label { color: var(--accent);
 }
 
 /* Keep deco table phase colors in light theme */
-body.light-theme .deco-table tr[data-phase="descent"] td span { color: #cc3333 !important; }
+body.light-theme .deco-table tr[data-phase="descent"] td span { color: #cc3333; }
 
 /* Grid lines for Bühlmann mode */
 body.algo-buh::after { content: '';
@@ -377,16 +374,16 @@ header { display: flex;
 }
 
 /* Custom GF dropdown styling */
-#gfLowInput, #gfHighInput { background: var(--bg-alt) !important;
- border: 1px solid var(--border) !important;
- color: var(--text) !important;
+#gfLowInput, #gfHighInput { background: var(--bg-alt);
+ border: 1px solid var(--border);
+ color: var(--text);
  transition: all 0.2s;
  cursor: pointer;
 }
 
-#ccrBailoutGfLow, #ccrBailoutGfHigh { background: var(--bg-alt) !important;
- border: 1px solid var(--border) !important;
- color: var(--text) !important;
+#ccrBailoutGfLow, #ccrBailoutGfHigh { background: var(--bg-alt);
+ border: 1px solid var(--border);
+ color: var(--text);
  transition: all 0.2s;
  cursor: pointer;
  min-width: 58px;
@@ -402,8 +399,8 @@ header { display: flex;
 .ccr-adv-gf-pair { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
 .ccr-adv-gf-pair .algo-label-text { font-size: 12px; }
 
-#gfLowInput:focus, #gfHighInput:focus { border-color: var(--accent) !important;
- background: var(--card) !important;
+#gfLowInput:focus, #gfHighInput:focus { border-color: var(--accent);
+ background: var(--card);
 }
 
 /* REC mode - gray out GF settings to show as inactive */

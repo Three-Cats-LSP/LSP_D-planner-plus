@@ -21,14 +21,14 @@
 | release_config | 2 | 0 | 2 | 0 | 0 |
 | test | 1 | 0 | 0 | 1 | 0 |
 | test_infrastructure | 58 | 0 | 30 | 0 | 28 |
-| tooling | 54 | 0 | 23 | 1 | 30 |
+| tooling | 54 | 0 | 24 | 1 | 29 |
 | ui_core | 16 | 0 | 15 | 0 | 1 |
 | ui_shell | 2 | 0 | 2 | 0 | 0 |
 | web_css | 5 | 0 | 5 | 0 | 0 |
 | web_markup | 7 | 0 | 7 | 0 | 0 |
 | web_runtime | 24 | 0 | 21 | 0 | 3 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **210** | **0** | **114** | **3** | **93** |
+| **Total** | **210** | **0** | **115** | **3** | **92** |
 
 ## Units
 
@@ -46,10 +46,10 @@
 | UI-CONFIG-PRESETS | web_runtime | `index.html:5409` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
 | UI-APP-INIT | web_runtime | `index.html:5594` | 172 | P1 | IN_PROGRESS | - |
 | UI-PWA-LIFECYCLE | pwa | `index.html:5766` | 88 | P1 | IN_PROGRESS | - |
-| UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 422 | P2 | IN_PROGRESS | - |
-| UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 338 | P2 | IN_PROGRESS | - |
+| UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 419 | P2 | IN_PROGRESS | - |
+| UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 340 | P2 | IN_PROGRESS | - |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 548 | P2 | IN_PROGRESS | - |
-| UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 1090 | P1 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
+| UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 1087 | P1 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
 | UI-CSS-MOBILE-SHELL | web_css | `lsp-dplanner-mobile-shell.css:1` | 709 | P2 | IN_PROGRESS | - |
 | UI-MARKUP-HEADER | web_markup | `ui/markup-header.html:1` | 786 | P2 | IN_PROGRESS | - |
 | UI-MARKUP-REC-PLANNER | web_markup | `ui/markup-rec-planner.html:1` | 73 | P1 | IN_PROGRESS | - |
@@ -224,7 +224,7 @@
 | TOOL-V3-RUN_UI_STRUCTURE_SUITE-PY | tooling | `tools/run_ui_structure_suite.py:1` | 94 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-V3-UI_ASSETS-PY | tooling | `tools/ui_assets.py:1` | 60 | P2 | IN_PROGRESS | - |
 | TOOL-V3-VERIFY_SW_ASSETS-PY | tooling | `tools/verify_sw_assets.py:1` | 59 | P2 | VERIFIED | COV-01, PARITY-01 |
-| TOOL-V3-TEST_UI_STRUCTURE_SUITE-PY | tooling | `tools/test_ui_structure_suite.py:1` | 29 | P2 | VERIFIED | COV-01, PARITY-01 |
+| TOOL-V3-TEST_UI_STRUCTURE_SUITE-PY | tooling | `tools/test_ui_structure_suite.py:1` | 98 | P2 | IN_PROGRESS | - |
 | TOOL-V3-RESET-CYCLES-V3-PY | tooling | `tools/audit/reset_cycles_v3.py:1` | 219 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-V3-RUN-V3-AUTOMATION-PY | tooling | `tools/audit/run_v3_automation.py:1` | 217 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-V3-RUN-V3-UNITS-AUTOMATION-PY | tooling | `tools/audit/run_v3_units_automation.py:1` | 334 | P2 | VERIFIED | COV-01, PARITY-01 |

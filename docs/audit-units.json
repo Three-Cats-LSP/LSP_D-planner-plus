@@ -1985,7 +1985,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "38b27207abdc8022bff985ad449fc3a4e616f060c5c5fa96f1a9c42bbb32402e",
+      "fingerprint": "901647d76fc6e88c896ebe64c1a0d62a13a96a517004daa98a83729db20912b5",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2000,7 +2000,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "6d911804be64d352c6d0d74a4db18bb61887de96456f8f4dd3ac59e205f7b096",
+      "fingerprint": "ba64f43e3f739afb95492fc8deed028008812c1394ae9958bd092c9020a42e13",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2015,7 +2015,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c73d117c9a07a4a402857a60be7e2bb249582481dad62b3c8ae5fd66b2af5d97",
+      "fingerprint": "8a0a89e5218f51a7036ac505b4b57d5da63278cf214ecdb9bebac29ce2437a83",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2030,7 +2030,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "5564bbe414a806dd478535a6e1f08bf3f0eac53e0afb6ddc44ab30578f041866",
+      "fingerprint": "911ac2cc17e661f66b6b76d10c3b73faec0078a5582bd73491ff9328fd5f1ae8",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2052,7 +2052,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a0925cf4a106100537118c6ba589db73be00ad8a39eee1e6d6f6cf1712c8bda1",
+      "fingerprint": "72e33b4fe5865bce8d8c16dbe9db706f01aa4bfa5143f38b70ebee65a856e494",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2396,7 +2396,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-VPM-RENDER"
       },
-      "fingerprint": "090b25835b1aa795310f6e0daec0efcda02d1c86a39f66861c768427aebebf3b",
+      "fingerprint": "c1b876a80babdc9b7f2c3b71c47fd4cb4af382048136c57a31513b1f04c72492",
       "last_read_fingerprint": null,
       "audit_issue": 147,
       "evidence": [],
@@ -2485,7 +2485,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-ZHL-RESULTS"
       },
-      "fingerprint": "723c7631b6af83a92989502bf5b9fd03632459ef42edaa262ad4ac02f0c777bb",
+      "fingerprint": "664317035ebbe8e181ef239fe3c495c64cefb2514d69f3613ce85d1075dc04ff",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3019,7 +3019,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "b912fc88ae3741e244c120231637f0c674832f2283da1e9a53ad8caf084fca02",
+      "fingerprint": "ac884b0e5fe557b98d989c2d03aaf5c958050aa957ff8469031cd2e7e9b8b8c6",
       "last_read_fingerprint": null,
       "evidence": [],
       "issue": "GitHub #140 H-2 / Cycle 5 GP-01\u00ef\u00bf\u00bd06 \u00ef\u00bf\u00bd docs/code-review-2026-06-30.md",
@@ -5485,20 +5485,14 @@
       "path": "tools/test_ui_structure_suite.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "cd10bb70a9aa5107712ae18c5b4ff5a1c03d5295f467480a6bd6d44400cb276b",
-      "last_read_fingerprint": "cd10bb70a9aa5107712ae18c5b4ff5a1c03d5295f467480a6bd6d44400cb276b",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01"
-      ],
+      "fingerprint": "3a68635f874150118e3d98b7965d52a873e88e5d7e705b19ef008c489d303b0b",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Audit V3 environment"
     },
     {

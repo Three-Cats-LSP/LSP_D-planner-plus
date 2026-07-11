@@ -467,7 +467,7 @@ function renderVPMResults(result, settings, depthM, bt, bottomO2pct, bottomHePct
       const rowBgVPM = seg.vpmStopCapHit
         ? 'background:rgba(255,140,0,0.15);'
         : cumCnsPctVPM >= 100
-        ? 'background:#ffff00;color:#111 !important;'
+        ? 'background:#ffff00;color:#111;'
         : cumCnsPctVPM >= 80
           ? 'background:rgba(255,255,0,0.25);'
           : '';
@@ -1108,7 +1108,7 @@ function renderZhlScheduleResults(ctx) {
       // Row highlight when cumulative CNS exceeds threshold (like MultiDeco)
       const cumCnsPct = totalCNSfrac * 100;
       const rowBg = cumCnsPct >= 100
-        ? 'background:#ffff00;color:#111 !important;'
+        ? 'background:#ffff00;color:#111;'
         : cumCnsPct >= 80
           ? 'background:rgba(255,255,0,0.25);'
           : '';

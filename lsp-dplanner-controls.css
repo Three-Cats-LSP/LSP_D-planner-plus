@@ -164,7 +164,7 @@
  box-shadow: 0 0 0 2px rgba(255,68,51,0.12);
 }
 
-/* Android WebView/Capacitor: native <select> picker is broken — use android-select-picker.js */
+/* Allowed !important: Android WebView/Capacitor native <select> is visually hidden behind android-select-picker.js. */
 html.android-webview .lsp-android-select-native,
 html.capacitor-native .lsp-android-select-native {
  position: absolute !important;
@@ -275,10 +275,10 @@ body.lsp-android-select-open { overflow: hidden; }
 .gen-btn {
  display: flex; align-items: center; justify-content: center; gap: var(--space-2);
  width: 100%; padding: var(--space-3) var(--space-4); border-radius: var(--radius-lg);
- background-color: var(--accent) !important;
- background-image: none !important;
- color: var(--btn-primary-text) !important;
- -webkit-text-fill-color: var(--btn-primary-text) !important;
+ background-color: var(--accent);
+ background-image: none;
+ color: var(--btn-primary-text);
+ -webkit-text-fill-color: var(--btn-primary-text);
  font-family: var(--font-body); font-size: var(--text-sm); font-weight: 700;
  border: none; cursor: pointer; transition: background-color var(--transition), color var(--transition), box-shadow var(--transition), transform var(--transition);
  margin-top: auto; box-shadow: 0 0 20px var(--accent-glow);
@@ -286,9 +286,9 @@ body.lsp-android-select-open { overflow: hidden; }
  -webkit-appearance: none; appearance: none;
 }
 .gen-btn:hover {
- background-color: var(--accent-hover) !important;
- color: var(--btn-primary-text) !important;
- -webkit-text-fill-color: var(--btn-primary-text) !important;
+ background-color: var(--accent-hover);
+ color: var(--btn-primary-text);
+ -webkit-text-fill-color: var(--btn-primary-text);
  transform: translateY(-1px); box-shadow: 0 4px 16px var(--accent-glow);
 }
 .gen-btn:active { transform: translateY(0); }
@@ -442,7 +442,7 @@ body.light-theme .dpb-chip--o2     { background: #e8faff; }
 .alert span { flex-shrink: 0; }
 .ok { background:rgba(38,208,124,0.07); border-color:rgba(38,208,124,0.22); color:#70f0aa; }
 .warn { background:rgba(255,183,3,0.07); border-color:rgba(255,183,3,0.22); color:#ffcc40; }
-.dang { background:rgba(255,68,51,0.18); border:1px solid #ff4433; color:#fff !important; font-weight:600; }
+.dang { background:rgba(255,68,51,0.18); border:1px solid #ff4433; color:#fff; font-weight:600; }
 .info { background:rgba(0,200,255,0.06); border-color:rgba(0,200,255,0.2); color:#60d8ff; }
 .deco { background:#ff4433; border:1px solid #ff4433; color:#fff; font-weight:700; }
 .alert.narcotic-warn { background:#ff4433; border:1px solid #ff4433; color:#fff; font-weight:700; }
@@ -456,9 +456,9 @@ body.light-theme .alert.narcotic-warn {
  font-weight:700;
 }
 body.light-theme .deco *,
-body.light-theme .alert.narcotic-warn * { color:#111 !important; }
-body.light-theme .alert.narcotic-warn .tip-icon { color:#111 !important; opacity:0.85; }
-body.light-theme .dang { background:#fff0f0; border:1px solid #cc0000; color:#cc0000 !important; font-weight:600; }
+body.light-theme .alert.narcotic-warn :is(.tip-icon, strong, span) { color:#111; }
+body.light-theme .alert.narcotic-warn .tip-icon { opacity:0.85; }
+body.light-theme .dang { background:#fff0f0; border:1px solid #cc0000; color:#cc0000; font-weight:600; }
 body.light-theme .warn { background:#fff8e6; border-color:#cc7700; color:#884400; }
 body.light-theme .ok { background:#f0fff4; border-color:#116622; color:#116622; }
 

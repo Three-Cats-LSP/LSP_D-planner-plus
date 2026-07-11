@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v4-risk-first-reset`
-**Units:** 210 total; 0 unread; 114 in progress; 3 read; 93 verified.
+**Units:** 210 total; 0 unread; 115 in progress; 3 read; 92 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -85,9 +85,9 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R36 | UI-MARKUP-TEC-PLANNER, UI-PLANNER-INPUTS | 679 | - | V4 R36: TEC planner markup and planner input ownership risk-first READ; current lines: 679; sessions: 2 |
 | R37 | UI-MARKUP-CONSUMPTION | 381 | - | V4 R37: Consumption markup risk-first READ; current lines: 381; sessions: 1 |
 | R38 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 605 | - | V4 R38: Tools and modal markup risk-first READ; current lines: 605; sessions: 2 |
-| R39 | UI-CSS-FOUNDATION, UI-CSS-MODES | 760 | - | V4 R39: Foundation and mode CSS risk-first READ; current lines: 760; sessions: 2 |
+| R39 | UI-CSS-FOUNDATION, UI-CSS-MODES | 759 | - | V4 R39: Foundation and mode CSS risk-first READ; current lines: 760; sessions: 2 |
 | R40 | UI-CSS-CONTROLS | 548 | - | V4 R40: Controls CSS risk-first READ; current lines: 548; sessions: 1 |
-| R41 | UI-CSS-RESULTS | 1090 | - | V4 R41: Results CSS risk-first design-lock READ; current lines: 1114; sessions: 2 |
+| R41 | UI-CSS-RESULTS | 1087 | - | V4 R41: Results CSS risk-first design-lock READ; current lines: 1114; sessions: 2 |
 | R42 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 819 | - | V4 R42: Planner shell and results panel design-lock READ; current lines: 820; sessions: 2 |
 
 ## Definition of Done

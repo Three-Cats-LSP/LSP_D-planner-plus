@@ -1,4 +1,5 @@
 /* AUDIT-UNIT:UI-CSS-MODES */
+/* Allowed !important: mode locks must beat generic field/button styles without leaving disabled controls clickable. */
 /* Tools mode - gray out only Water and GF, keep Training/REF bright */
 body.algo-tools #waterRow { opacity: 0.4 !important;
  pointer-events: none !important;
@@ -155,10 +156,10 @@ body.light-theme .algo-btn-icon.active img { opacity: 1;
  cursor: pointer;
 }
 
-#gfLowInput:focus, #gfHighInput:focus { border-color: var(--accent) !important;
- color: var(--accent) !important;
- background: rgba(0, 200, 255, 0.08) !important;
- box-shadow: 0 2px 8px rgba(0, 200, 255, 0.15) !important;
+#gfLowInput:focus, #gfHighInput:focus { border-color: var(--accent);
+ color: var(--accent);
+ background: rgba(0, 200, 255, 0.08);
+ box-shadow: 0 2px 8px rgba(0, 200, 255, 0.15);
 }
 
 .header-warn { font-family: 'JetBrains Mono', monospace;
@@ -246,16 +247,16 @@ body.light-theme .algo-btn-icon.active img { opacity: 1;
 .btn-export svg { display:block; }
 
 /* Reset button — vivid red in both themes */
-.btn-reset-red { border-color: var(--red) !important;
- color: var(--red) !important;
+.btn-reset-red { border-color: var(--red);
+ color: var(--red);
 }
-.btn-reset-red:hover { background: rgba(255,49,49,0.12) !important;
+.btn-reset-red:hover { background: rgba(255,49,49,0.12);
 }
-body.light-theme .btn-reset-red { border-color: #FF3131 !important;
- color: #FF3131 !important;
- background: rgba(255,49,49,0.06) !important;
+body.light-theme .btn-reset-red { border-color: #FF3131;
+ color: #FF3131;
+ background: rgba(255,49,49,0.06);
 }
-body.light-theme .btn-reset-red:hover { background: rgba(255,49,49,0.15) !important;
+body.light-theme .btn-reset-red:hover { background: rgba(255,49,49,0.15);
 }
 .export-row { display: flex;
  gap: 8px;
@@ -263,6 +264,7 @@ body.light-theme .btn-reset-red:hover { background: rgba(255,49,49,0.15) !import
  align-items: center;
 }
 
+/* Allowed !important: algorithm-owned panel visibility must win until legacy panels are fully removed. */
 /* Bühlmann-only tabs hidden in PADI mode */
 .buh-only { display: none !important; }
 body.algo-buh .buh-only { display: flex !important; }
