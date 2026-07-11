@@ -115,7 +115,9 @@ Confirmed HIGH release blockers and targeted MEDIUM/LOW findings are fixed with 
 | `python tools/seven_lens_protocol.py check-all --require-artifacts` | PASS |
 | `python -m tools.audit check --profile static` | PASS |
 | `python -m tools.audit run --profile ci` | Suites PASS; overall FAIL only for dirty workspace (`tracked status lines changed`) before commit |
-| `python -m tools.audit run --profile release` | Run after commit/push |
+| `python -m tools.audit run --profile release` | PASS (clean tree after commit) |
+| `git push origin main` | PASS (`80d9f9f`) |
+| GitHub Actions (`main` @ `80d9f9f`) | All success: CI, Build Offline ZIP, Deploy Pages, Android APK, Notify Site |
 
 ---
 
