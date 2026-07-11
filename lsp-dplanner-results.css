@@ -133,52 +133,30 @@
 .deco-table th:nth-child(8), .deco-table td:nth-child(8) { text-align:right; }
 /* Gas switch rows always left-aligned */
 /* Ascent row depth/run/arrow — visible green, not pale */
-.asc-color { color: var(--gas-switch-label-bg) !important; }
-body.light-theme .asc-color { color: #FFBF00 !important; }
+.asc-color { color: #FFBF00; }
 
 /* Gas switch row — normal background, deco-chip accent text, no divider. */
 .deco-table tr[data-phase="switch"] td {
-  color: #16a34a !important;
-  font-size: 11px !important;
-  font-weight: 400 !important;
-  border-bottom: none !important;
+  color: #16a34a;
 }
 /* Phase icon cell */
 .deco-table tr[data-phase="switch"] td:first-child {
-  color: #16a34a !important;
-  font-size: 15px !important;
-  text-align: center !important;
+  color: #16a34a;
 }
 /* Depth cell — switch depth only */
 .deco-table tr[data-phase="switch"] td:nth-child(2) {
-  color: #16a34a !important;
-  font-weight: 600 !important;
-  font-size: 11px !important;
-  letter-spacing: 0.5px !important;
-  text-align: right !important;
+  color: #16a34a;
 }
 /* Mix cell — gas label */
 .deco-table tr[data-phase="switch"] td[data-label="Mix"] {
-  color: #16a34a !important;
-  font-weight: 600 !important;
-  font-size: 11px !important;
-  letter-spacing: 0.5px !important;
-  text-align: center !important;
+  color: #16a34a;
 }
 /* PPO2 cell */
 .deco-table tr[data-phase="switch"] td[data-label="PPO2"] {
-  color: #16a34a !important;
-  font-weight: 600 !important;
-  text-align: right !important;
+  color: #16a34a;
 }
 
-body.light-theme .deco-table tr[data-phase="switch"] td:first-child,
-body.light-theme .deco-table tr[data-phase="switch"] td:nth-child(2),
-body.light-theme .deco-table tr[data-phase="switch"] td[data-label="Mix"],
-body.light-theme .deco-table tr[data-phase="switch"] td[data-label="PPO2"] {
-  color: #16a34a !important;
-}
-body.light-theme .switch-legend-icon { color: #16a34a !important; }
+body.light-theme .switch-legend-icon { color: #16a34a; }
 
 .deco-table tr:hover td { background:rgba(0,200,255,0.04); }
 .deco-table .deco-row td { color:var(--red); font-weight:600; }
@@ -798,38 +776,37 @@ body.light-theme #resultsPanel #decoAlertsNarcotic .alert .tip-icon { color: #cc
 #resultsPanel .deco-table.schedule-table tr.row-switch { background: transparent; }
 #resultsPanel .deco-table.schedule-table tr.row-switch td { color: #16a34a; border-bottom: none; }
 #resultsPanel .deco-table.schedule-table tr.row-switch .col-gas { font-weight: 600; }
-#resultsPanel .deco-table.schedule-table tr.row-switch .col-ppo2.ppo2-ok,
-#resultsPanel .deco-table.schedule-table tr.row-switch .col-ppo2.ppo2-warn,
-#resultsPanel .deco-table.schedule-table tr.row-switch .col-ppo2.ppo2-hi,
-#resultsPanel .deco-table.schedule-table tr.row-switch .col-ppo2.ppo2-crit { color: inherit; }
 /* V4 schedule gas-switch contract: renderer writes data-phase, not row-switch. */
 #resultsPanel .deco-table.schedule-table tr[data-phase="switch"],
 #resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] { background: transparent; }
 #resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td,
 #resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td { border-bottom: none; }
-#resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td:not([data-label="PPO2"]),
-#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td:not([data-label="PPO2"]) { color: #16a34a !important; font-size: inherit !important; border-bottom: none !important; }
+#resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td,
+#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td { color: #16a34a; font-size: inherit; border-bottom: none; }
 #resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td:first-child,
-#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td:first-child { color: #16a34a !important; font-size: inherit !important; text-align: center !important; }
-#resultsPanel .deco-table.schedule-table tr.deco-row td:not(.col-ppo2),
-#resultsPanel .deco-table.schedule-table tr.safe-row td:not(.col-ppo2),
-#resultsPanel .deco-table.schedule-table tr.asc-row td:not(.col-ppo2) { color: inherit; font-weight: inherit; }
+#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td:first-child { text-align: center; }
 #resultsPanel .legend-item.legend-ascent { color: #FFBF00; }
 #resultsPanel .legend-item.legend-switch { color: #16a34a; }
 body.light-theme #resultsPanel .deco-table.schedule-table .ph-switch,
 body.light-theme #resultsPanel .legend-item.legend-switch,
-body.light-theme #resultsPanel .deco-table.schedule-table tr.row-switch td { color: #16a34a !important; }
-#resultsPanel .deco-table.schedule-table tr.row-descent td:not(.col-ppo2) { color: var(--text-muted); }
-#resultsPanel .deco-table.schedule-table tr.row-descent .col-depth { color: var(--text); }
+body.light-theme #resultsPanel .deco-table.schedule-table tr.row-switch td { color: #16a34a; }
+#resultsPanel .deco-table.schedule-table tr[data-phase="descent"] td { color: var(--red); }
+#resultsPanel .deco-table.schedule-table tr[data-phase="bottom"] td { color: var(--accent); }
+#resultsPanel .deco-table.schedule-table tr[data-phase="ascent"] td { color: #FFBF00; }
+#resultsPanel .deco-table.schedule-table tr[data-phase="deco"] td { color: var(--red); }
+#resultsPanel .deco-table.schedule-table tr[data-phase="safety"] td { color: var(--green); }
+#resultsPanel .deco-table.schedule-table tr[data-phase="surface"] td { color: #FFBF00; }
+#resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td,
+#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td { color: #16a34a; }
+#resultsPanel .deco-table.schedule-table tr[data-phase="descent"] td[class] { color: var(--red); }
+#resultsPanel .deco-table.schedule-table tr[data-phase="bottom"] td[class] { color: var(--accent); }
+#resultsPanel .deco-table.schedule-table tr[data-phase="ascent"] td[class] { color: #FFBF00; }
+#resultsPanel .deco-table.schedule-table tr[data-phase="deco"] td[class] { color: var(--red); }
+#resultsPanel .deco-table.schedule-table tr[data-phase="safety"] td[class] { color: var(--green); }
+#resultsPanel .deco-table.schedule-table tr[data-phase="surface"] td[class] { color: #FFBF00; }
+#resultsPanel .deco-table.schedule-table tr[data-phase="switch"] td[class],
+#resultsPanel .deco-table.schedule-table tr[data-phase^="contingency-switch"] td[class] { color: #16a34a; }
 #resultsPanel .deco-table.schedule-table tr.row-summary td { background: color-mix(in oklab, var(--accent) 4%, transparent); border-top: 1px solid var(--border-hi); border-bottom: 1px solid var(--border); padding: 9px 6px; font-size: 10px; color: var(--text-muted); }
-#resultsPanel .deco-table.schedule-table td.col-ppo2.ppo2-ok { color: var(--green) !important; }
-#resultsPanel .deco-table.schedule-table td.col-ppo2.ppo2-warn { color: var(--yellow) !important; }
-#resultsPanel .deco-table.schedule-table td.col-ppo2.ppo2-hi { color: var(--orange) !important; }
-#resultsPanel .deco-table.schedule-table td.col-ppo2.ppo2-crit { color: var(--red) !important; }
-body.light-theme #resultsPanel .deco-table.schedule-table td.col-ppo2.ppo2-ok { color: var(--green) !important; }
-body.light-theme #resultsPanel .deco-table.schedule-table td.col-ppo2.ppo2-warn { color: var(--yellow) !important; }
-body.light-theme #resultsPanel .deco-table.schedule-table td.col-ppo2.ppo2-hi { color: var(--orange) !important; }
-body.light-theme #resultsPanel .deco-table.schedule-table td.col-ppo2.ppo2-crit { color: var(--red) !important; }
 #resultsPanel .deco-table.schedule-table .summary-stat span { color: var(--text); font-weight: 600; }
 #resultsPanel .schedule-totals { display: flex; flex-wrap: wrap; gap: 4px 18px; padding: 9px 0 0; font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); border-top: 1px solid var(--border-hi); margin-top: var(--space-2); }
 #resultsPanel .schedule-totals .stat strong { color: var(--text); font-weight: 600; }

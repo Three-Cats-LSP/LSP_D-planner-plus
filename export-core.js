@@ -519,7 +519,7 @@ function drawDecoPlanBannerPdf(doc, y, layout, data, planSum, hasDeco) {
   if ((data.bottomGas || '').includes('He:')) metaLines.push(cleanPDF(data.bottomGas));
 
   const sumLine = planSum ? cleanPDF(
-    `RT ${planSum.runTime} | Deco ${planSum.decoTime} | CNS ${planSum.cns} | OTU ${planSum.otu} | PrT ${planSum.prt} | Surf GF ${planSum.surfGF || '-'} | Decozone ${planSum.decozone} | First deco ${planSum.decoStop}`
+    `RT ${planSum.runTime} · Deco ${planSum.decoTime} · CNS ${planSum.cns} · OTU ${planSum.otu} · PrT ${planSum.prt} · Surf GF ${planSum.surfGF || '-'} · Decozone ${planSum.decozone} · First deco ${planSum.decoStop}`
   ) : '';
 
   const chipH = 5.5;
@@ -2033,7 +2033,7 @@ function cleanPdfText(s) {
   s = String(s);
   s = s.replace(/[\u2080-\u2089]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x2050));
   s = s.replace(/[\u00B2\u00B3\u00B9]/g, c => ({ '\u00B2': '2', '\u00B3': '3', '\u00B9': '1' }[c] || c));
-  s = s.replace(/\u00B7|\u2022|\u2027/g, '*').replace(/\u2014/g, '--').replace(/\u2013/g, '-')
+  s = s.replace(/\u2022|\u2027/g, '*').replace(/\u2014/g, '--').replace(/\u2013/g, '-')
     .replace(/\u2018|\u2019/g, "'").replace(/\u201C|\u201D/g, '"');
   s = s.replace(/[\u2600-\u269F\u26A1-\u26FF\u2700-\u2712\u2714-\u2716\u2718-\u27FF\u2B00-\u2BFF\u2300-\u23FF\uFE0F]/g, '');
   s = s.replace(/[^\x20-\x7E\xA0-\u024F\u2190-\u2193\u2713\u2717\u26A0]/g, '');
@@ -2615,7 +2615,7 @@ async function exportPDF(opts) {
     else doc.setFillColor(...PDF_V3.surface);
     doc.rect(tblMl,y,tblCw,5,'F');
     const isDeco=phase==='deco',isAsc=phase==='ascent',isBtm=phase==='bottom',isSafe=phase==='safety',isDes=phase==='descent';
-    const txC=(hi100||hi80)?[150,0,0]:isDeco?[180,0,0]:isAsc?PDF_V3.yellow:isBtm?[0,60,160]:isSafe?[20,140,50]:[160,50,50];
+    const txC=(hi100||hi80)?[150,0,0]:isDeco?[220,38,38]:isAsc?PDF_V3.yellow:isBtm?[0,152,184]:isSafe?[20,140,50]:isDes?[255,68,51]:PDF_V3.text;
     const icon=isDeco?'●':isAsc?'↑':isBtm?'●':isSafe?'●':isDes?'↓':'';
     doc.setFontSize(7); doc.setFont('DejaVuSans','normal');
     doc.setTextColor(...txC); _pdfDrawDecoPhaseLabel(doc, y, _pdfTbl, icon);
@@ -3116,7 +3116,7 @@ async function exportContingencyPDF(opts) {
       else if(rowI%2===0) doc.setFillColor(...PDF_V3.surface2);
       else doc.setFillColor(...PDF_V3.surface);
       doc.rect(tblMl,y,tblCw,5,'F');
-      const txC=(hiE100||hiE80)?[150,0,0]:isDeco?[180,0,0]:isAsc?PDF_V3.yellow:isBtm?[0,60,160]:isSafe?[20,140,50]:[160,50,50];
+      const txC=(hiE100||hiE80)?[150,0,0]:isDeco?[220,38,38]:isAsc?PDF_V3.yellow:isBtm?[0,152,184]:isSafe?[20,140,50]:isDes?[255,68,51]:PDF_V3.text;
       const icon=isDeco?'●':isAsc?'↑':isBtm?'●':isSafe?'●':isDes?'↓':'';
       doc.setFontSize(7); doc.setFont('DejaVuSans','normal');
       doc.setTextColor(...txC); _pdfDrawDecoPhaseLabel(doc, y, _emTbl, icon);

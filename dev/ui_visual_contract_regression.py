@@ -147,6 +147,8 @@ CAPTURE_JS = r"""
   );
   const schedule = document.querySelector('#resultsPanel .schedule-table');
   const scheduleWrap = schedule?.closest('.schedule-wrap');
+  const scheduleLegendLabels = [...document.querySelectorAll('#resultsPanel .deco-table-legend .legend-item')]
+    .map(el => (el.textContent || '').trim().replace(/\s+/g, ' '));
   const firstBodyRow = schedule?.querySelector('tbody tr:not([data-phase="switch"]):not(.row-summary)');
   const firstSwitchRow = schedule?.querySelector('tbody tr[data-phase="switch"]');
   const normalRowBg = rgb(style(firstBodyRow, 'backgroundColor'));
@@ -277,6 +279,7 @@ CAPTURE_JS = r"""
     switchRowCount: switchRows.length,
     switchCellColors: switchCells.map(el => rgb(style(el, 'color'))),
     switchRowBackgrounds: switchRowBgs,
+    scheduleLegendLabels,
     normalRowBackground: normalRowBg,
     expectedSwitch,
     resultTabs: {
@@ -2004,6 +2007,11 @@ def main() -> int:
         and all(color == c["expectedBg"] for color in c["decoDotColors"])
         and c["switchRowCount"] >= 1
         and all(color == c["expectedSwitch"] for color in c["switchCellColors"])
+        for c in captures
+    )
+    results["SL-VIS-DECO-SCHEDULE-LEGEND-ORDER"] = all(
+        c["generated"]
+        and c["scheduleLegendLabels"] == ["Descent", "Bottom", "Ascent", "Gas Switch", "Deco Stop"]
         for c in captures
     )
     results["SL-C09-RESULT-TAB-SIMPLIFICATION"] = all(

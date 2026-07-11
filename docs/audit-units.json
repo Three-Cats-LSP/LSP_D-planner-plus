@@ -826,6 +826,10 @@
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
       "case_id": "SL-C09-VPM-GRAPH-WAYPOINT-MONOTONIC"
     },
+    "REG-140": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "SL-VIS-DECO-SCHEDULE-LEGEND-ORDER"
+    },
     "REG-139": {
       "suite_id": "SUITE-ENGINE-VALIDATION",
       "case_id": "ZHL-WORKER-CALC-ERROR-SINGLE-REQUEST"
@@ -1966,7 +1970,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "cce8d876895c157474a47aa4decd4bb6cd52f51b210b7370a62c3a7972b7a092",
+      "fingerprint": "4af19859dcda0b5e18a766eba899a7439b1c89f6b93505e3e353fa46a2b01105",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2026,7 +2030,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "9e42623065abb4e5a1fa5bffa39cbeefb6d1968a078325b1bb72d8af4a7500fe",
+      "fingerprint": "5564bbe414a806dd478535a6e1f08bf3f0eac53e0afb6ddc44ab30578f041866",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2063,7 +2067,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "37ffe33f97039d8b5f97d5be36b84cb3484d16e4970c40837021a21ebea37713",
+      "fingerprint": "1f3a969b32accd9a081213226955697eb75ec8ba9dd2fc55b4eae6b17f51404f",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2999,7 +3003,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3529598ffb801d712a953786f79021bfaaec1fcac8bc36c4008f43b6957253fa",
+      "fingerprint": "95249fb72f25ea763ca3f0fbf358bd5088f6ab5c05384218dd5bd717bf3a8d71",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5852,7 +5856,7 @@
         "REG-137",
         "REG-138"
       ],
-      "fingerprint": "ba9aac4b5c87eea17ad47f5a4982c8bf271f6f16b7e88cd04d1f22b7207e15cc",
+      "fingerprint": "e2875126618f7c35575565892743f5bc176fb6a15f30c2820660b6c9c02c953b",
       "last_read_fingerprint": null
     },
     {
@@ -6828,7 +6832,8 @@
         "SL-C09-HIGH-CNS-DECO-ALERT",
         "SL-C09-VPM-BEYOND-MOD-BLOCKS",
         "SL-C09-ZHL-BEYOND-MOD-BLOCKS",
-        "SL-C09-VPM-GRAPH-WAYPOINT-MONOTONIC"
+        "SL-C09-VPM-GRAPH-WAYPOINT-MONOTONIC",
+        "SL-VIS-DECO-SCHEDULE-LEGEND-ORDER"
       ]
     }
   ],
