@@ -4952,7 +4952,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "4bf2b0c8a147a36dd54ada0fd915b016c7fc1398874372d8b983536c4b1625ec",
+      "fingerprint": "18c7b75c771b5472b5510600db57b7f487a3b68cec94e88401faf83229403e52",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
