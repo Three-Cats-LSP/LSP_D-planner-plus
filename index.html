@@ -5773,7 +5773,7 @@ window.addEventListener('load', function() {
   // Do NOT unregister workers or delete caches here — a failed new install would leave users offline.
 
   if ('serviceWorker' in navigator && !isAutomatedTestMode() && typeof APP_VERSION !== 'undefined') {
-    window.addEventListener('load', () => {
+    const registerServiceWorker = () => {
       navigator.serviceWorker.register(`sw.js?v=${APP_VERSION}`, { updateViaCache: 'none' })
         .then(r => {
           console.log('[SW] registered, scope:', r.scope);
@@ -5809,7 +5809,12 @@ window.addEventListener('load', function() {
           });
         })
         .catch(e => console.warn('[SW] registration failed:', e));
-    });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', registerServiceWorker, { once: true });
+    } else {
+      registerServiceWorker();
+    }
   } else if ('serviceWorker' in navigator && !isAutomatedTestMode()) {
     console.warn('[SW] APP_VERSION unavailable — skipping service worker registration');
   }

@@ -2756,7 +2756,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PWA-LIFECYCLE"
       },
-      "fingerprint": "97843c325cd42e72855f9b81e08d88347e8b32af3e054380d6df98f8a53deb80",
+      "fingerprint": "a09361413d8c16870b56bcec831f3db770cd0737c6f7633c79667365b30f1b11",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -6162,14 +6162,14 @@
     },
     {
       "cycle": "R25",
-      "max_new_application_lines": 437,
+      "max_new_application_lines": 442,
       "application_units": [
         "APP-SERVICE-WORKER",
         "UI-PWA-LIFECYCLE",
         "APP-MANIFEST"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 437; sessions: 1"
+      "acceptance": "V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 442; sessions: 1"
     },
     {
       "cycle": "R26",

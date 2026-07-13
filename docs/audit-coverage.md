@@ -45,7 +45,7 @@
 | UI-PROFILE-PRESETS | web_runtime | `index.html:4901` | 508 | P2 | IN_PROGRESS | - |
 | UI-CONFIG-PRESETS | web_runtime | `index.html:5409` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
 | UI-APP-INIT | web_runtime | `index.html:5594` | 172 | P1 | IN_PROGRESS | - |
-| UI-PWA-LIFECYCLE | pwa | `index.html:5766` | 92 | P1 | IN_PROGRESS | - |
+| UI-PWA-LIFECYCLE | pwa | `index.html:5766` | 97 | P1 | IN_PROGRESS | - |
 | UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 418 | P2 | IN_PROGRESS | - |
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 340 | P2 | IN_PROGRESS | - |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 548 | P2 | IN_PROGRESS | - |
