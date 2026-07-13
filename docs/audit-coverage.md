@@ -193,7 +193,7 @@
 | TOOL-UPDATE-VERSION | tooling | `tools/update_sw_version.py:1` | 101 | P2 | IN_PROGRESS | - |
 | TOOL-VENDOR | tooling | `tools/vendor_offline_assets.py:1` | 173 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-VERIFY-ASSETS | tooling | `tools/verify_site_assets.py:1` | 132 | P2 | VERIFIED | COV-01, PARITY-01 |
-| CI-AUDIT | ci | `.github/workflows/audit.yml:1` | 143 | P1 | IN_PROGRESS | - |
+| CI-AUDIT | ci | `.github/workflows/audit.yml:1` | 145 | P1 | IN_PROGRESS | - |
 | CI-APK | ci | `.github/workflows/build-apk.yml:1` | 163 | P1 | IN_PROGRESS | - |
 | CI-MAIN | ci | `.github/workflows/ci.yml:1` | 199 | P1 | IN_PROGRESS | - |
 | CI-DEPLOY | ci | `.github/workflows/deploy.yml:1` | 138 | P1 | IN_PROGRESS | - |

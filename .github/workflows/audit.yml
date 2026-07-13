@@ -111,11 +111,13 @@ jobs:
           npx cap sync android
 
       - name: Install Playwright
+        timeout-minutes: 5
         run: |
           sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list /etc/apt/sources.list.d/microsoft-*.list
           sudo apt-get update -q
+          python -m pip install --upgrade pip
           pip install playwright
-          playwright install --with-deps chromium
+          playwright install chromium --with-deps
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
