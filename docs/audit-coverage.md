@@ -46,7 +46,7 @@
 | UI-CONFIG-PRESETS | web_runtime | `index.html:5413` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
 | UI-APP-INIT | web_runtime | `index.html:5598` | 172 | P1 | IN_PROGRESS | - |
 | UI-PWA-LIFECYCLE | pwa | `index.html:5770` | 97 | P1 | IN_PROGRESS | - |
-| UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 418 | P2 | IN_PROGRESS | - |
+| UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 420 | P2 | IN_PROGRESS | - |
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 340 | P2 | IN_PROGRESS | - |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 548 | P2 | IN_PROGRESS | - |
 | UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 1075 | P1 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
@@ -77,9 +77,9 @@
 | UI-ZHL-HEADLESS-HELPERS | web_runtime | `zhl-headless-adapter.js:23` | 194 | P1 | VERIFIED | EXT-05, COV-01 |
 | UI-ZHL-HEADLESS-ENGINE | web_runtime | `zhl-headless-adapter.js:217` | 91 | P0 | VERIFIED | EXT-05, COV-01 |
 | UI-GRAPH-ENGINE | ui_core | `dive-graph-engine.js:1` | 138 | P2 | IN_PROGRESS | - |
-| UI-PLOT-RENDER | ui_core | `plot-core.js:133` | 420 | P2 | IN_PROGRESS | - |
-| UI-PLOT-WAYPOINTS | ui_core | `plot-core.js:553` | 201 | P2 | IN_PROGRESS | REG-138 |
-| UI-TOOLS-PROFILE | ui_core | `plot-core.js:754` | 262 | P2 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
+| UI-PLOT-RENDER | ui_core | `plot-core.js:133` | 422 | P2 | IN_PROGRESS | - |
+| UI-PLOT-WAYPOINTS | ui_core | `plot-core.js:555` | 201 | P2 | IN_PROGRESS | REG-138 |
+| UI-TOOLS-PROFILE | ui_core | `plot-core.js:756` | 262 | P2 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
 | UI-TOOLS-GF | web_runtime | `gf-curve-core.js:1` | 312 | P2 | IN_PROGRESS | - |
 | ENG-ZHL-PHYSICS | engine | `zhl-physics-core.js:1` | 189 | P1 | VERIFIED | REG-01, REG-22, REG-23 |
 | ENG-ZHL-GAS | engine | `zhl-gas-core.js:1` | 184 | P1 | VERIFIED | REG-10, REG-11, REG-12, REG-13, REG-14 |

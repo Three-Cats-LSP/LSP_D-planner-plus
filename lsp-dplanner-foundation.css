@@ -78,6 +78,7 @@
  --status-orange-dim: rgba(245,158,11,0.12);
  --status-red-dim: rgba(248,113,113,0.12);
  --gas-switch: #fbbf24;
+ --gas-switch-guide: #16a34a;
  --gas-switch-dim: rgba(251,191,36,0.12);
  --gas-travel: #ff9900;
  --gas-deco-chip-bg: #d6ff00;
@@ -140,6 +141,7 @@ body.light-theme {
  --status-orange-dim: rgba(245,158,11,0.14);
  --status-red-dim: rgba(239,68,68,0.12);
  --gas-switch: #eab308;
+ --gas-switch-guide: #16a34a;
  --gas-switch-dim: rgba(234,179,8,0.14);
  --gas-travel: #ff9900;
  --gas-deco-chip-bg: #d6ff00;

@@ -175,9 +175,9 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
   const red     = palette?.red ?? _lspCssVar('--red', isLight ? '#dc2626' : '#f87171');
   const green   = palette?.green ?? _lspCssVar('--green', isLight ? '#16a34a' : '#4ade80');
   const orange  = palette?.orange ?? _lspCssVar('--orange', isLight ? '#b45309' : '#fbbf24');
-  const gasSwitchLine = palette?.gasSwitchLine ?? _lspCssVar('--gas-switch', isLight ? '#eab308' : '#fbbf24');
+  const gasSwitchLine = palette?.gasSwitchLine ?? _lspCssVar('--gas-switch-guide', '#16a34a');
   const gasSwitchBg = palette?.gasSwitchBg ?? '#d6ff00';
-  const gasSwitchText = palette?.gasSwitchText ?? '#166534';
+  const gasSwitchText = palette?.gasSwitchText ?? gasSwitchLine;
   const profileLine = accent;
 
   ctx.fillStyle = bg;
@@ -249,17 +249,16 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
   ctx.restore(); // end deco shading clip
   }
 
-  // ── Gas switch guides — full-height dashed lines make switch timing readable. ──
+  // Gas switch guides: full-height dashed lines make switch timing readable.
   function drawGasSwitchFlags() {
     const switchWpsVis = waypoints.filter(wp => wp.type === 'gasswitch' && wp.t >= tMin && wp.t <= tMax);
     switchWpsVis.forEach((wp, si) => {
       const x = toX(wp.t);
       const yDepth = toY(wp.depth || 0);
-      const rawLabel = wp.gasLabel ? '⇄ ' + wp.gasLabel : '⇄ Gas';
-      const maxLen = isMobile ? 10 : 14;
+      const rawLabel = wp.gasLabel || 'Gas';
+      const maxLen = isMobile ? 9 : 14;
       const displayLabel = rawLabel.length > maxLen ? rawLabel.slice(0, maxLen) : rawLabel;
-      const labelY = Math.max(PAD.top + 9, Math.min(PAD.top + PH - 5 - (si % 2) * 12, yDepth + 12));
-      const labelX = Math.max(PAD.left + 2, Math.min(PAD.left + PW - 4, x + 4));
+      const labelY = PAD.top + PH - 5 - (si % 2) * (isMobile ? 9 : 11);
 
       ctx.save();
       ctx.strokeStyle = gasSwitchLine;
@@ -277,10 +276,13 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
       ctx.fillStyle = gasSwitchLine;
       ctx.fill();
       ctx.globalAlpha = 1;
-      ctx.font = `700 ${isMobile ? 6.5 : 8}px "JetBrains Mono",monospace`;
-      ctx.textAlign = labelX > PAD.left + PW - 40 ? 'right' : 'left';
+      ctx.font = `800 ${isMobile ? 7 : 9}px "JetBrains Mono",monospace`;
+      const labelWidth = ctx.measureText(displayLabel).width;
+      const labelX = Math.max(PAD.left + labelWidth / 2 + 2, Math.min(PAD.left + PW - labelWidth / 2 - 2, x));
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
       ctx.fillStyle = gasSwitchText;
-      ctx.fillText(displayLabel, ctx.textAlign === 'right' ? x - 4 : labelX, labelY);
+      ctx.fillText(displayLabel, labelX, labelY);
       ctx.restore();
     });
   }

@@ -1989,7 +1989,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3281f4c898323b1be0c36ae3dbc593ffce2cf887eaa1c1bfec44da2808fac8a0",
+      "fingerprint": "a72b2343629f63e11d205f99c64cf438b8c1eab9bb033fc7d29fcc50d0536b58",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2568,7 +2568,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "39e043d255069cc1a815eb36a89b98d925b1dd1d674c4732a5fedac49e69ad04",
+      "fingerprint": "dad761c76f6b921d5030083e9603ecc5663904212b1683ff1f2d05162b63fa9c",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2585,7 +2585,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-RENDER"
       },
-      "fingerprint": "227d291cd1eff68b092a59fd8558a0ed886948eef64e6d696c19cb834bf52f29",
+      "fingerprint": "1ab0c442bd8a6cff0d227a14b70f03899dc56a03eb378eaa50d2a29368abe7e4",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -6330,13 +6330,13 @@
     },
     {
       "cycle": "R39",
-      "max_new_application_lines": 758,
+      "max_new_application_lines": 760,
       "application_units": [
         "UI-CSS-FOUNDATION",
         "UI-CSS-MODES"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R39: Foundation and mode CSS risk-first READ; current lines: 758; sessions: 2",
+      "acceptance": "V4 R39: Foundation and mode CSS risk-first READ; current lines: 760; sessions: 2",
       "min_review_sessions": 2
     },
     {

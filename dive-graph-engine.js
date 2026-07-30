@@ -34,9 +34,9 @@
       red: cssVar('--red', isLight ? '#dc2626' : '#f87171'),
       green: cssVar('--green', isLight ? '#16a34a' : '#4ade80'),
       orange: cssVar('--orange', isLight ? '#b45309' : '#fbbf24'),
-      gasSwitchLine: cssVar('--gas-switch', isLight ? '#eab308' : '#fbbf24'),
+      gasSwitchLine: cssVar('--gas-switch-guide', '#16a34a'),
       gasSwitchBg: cssVar('--gas-switch-label-bg', '#d6ff00'),
-      gasSwitchText: cssVar('--gas-switch-label-text', isLight ? '#166534' : '#d6ff00'),
+      gasSwitchText: cssVar('--gas-switch-guide', '#16a34a'),
     };
   }
 
