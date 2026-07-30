@@ -33,6 +33,12 @@ function isSafetyCriticalEngineAsset(pathname) {
     || leaf === 'vpm-engine-core.js';
 }
 
+/** Fast-changing UI runtime assets should refresh before falling back to cache. */
+function isFreshRuntimeAsset(pathname) {
+  const leaf = (pathname || '').split('/').pop() || '';
+  return leaf === 'plot-core.js';
+}
+
 async function networkFirstWithCacheFallback(event, request, url) {
   const cacheKey = new Request(url.origin + url.pathname);
   try {
@@ -226,6 +232,7 @@ self.addEventListener('message', event => {
 //   - APK / external URLs: pass through, never intercept
 //   - HTML (index.html, navigation): network-first, cache fallback
 //   - Engine bundles + schedule cores: network-first (safety-critical updates)
+//   - Fast-changing UI runtime files: network-first (fresh graph/tooltips)
 //   - Everything else (JS, CSS, fonts, etc.): cache-first, network fallback
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
@@ -270,7 +277,7 @@ self.addEventListener('fetch', event => {
   }
 
   // Network-first for decompression engine assets — avoid serving stale physics after updates
-  if (isSafetyCriticalEngineAsset(url.pathname)) {
+  if (isSafetyCriticalEngineAsset(url.pathname) || isFreshRuntimeAsset(url.pathname)) {
     event.respondWith(networkFirstWithCacheFallback(event, event.request, url));
     return;
   }

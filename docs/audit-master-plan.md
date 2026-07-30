@@ -71,7 +71,7 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R22 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 858 | - | V4 R22: Profile tool and plot init risk-first READ; current lines: 858; sessions: 2 |
 | R23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 395 | - | V4 R23: Runtime bootstrap and app init risk-first READ; current lines: 395; sessions: 1 |
 | R24 | UI-BOOT | 2461 | - | V4 R24: index.html shell boot region risk-first READ; current lines: 2461; sessions: 5 |
-| R25 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 443 | - | V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 443; sessions: 1 |
+| R25 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 450 | - | V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 450; sessions: 1 |
 | R26 | APP-CAPACITOR-BRIDGE, APP-ANDROID-SELECT | 572 | - | V4 R26: Capacitor and Android bridge risk-first READ; current lines: 572; sessions: 1 |
 | R27 | UI-PROFILE-PRESETS | 508 | - | V4 R27: Dive profile presets risk-first READ; current lines: 508; sessions: 1 |
 | R28 | UI-CONFIG-PRESETS | 185 | - | V4 R28: Advanced config presets risk-first READ; current lines: 185; sessions: 1 |

@@ -95,7 +95,7 @@
 | APP-GAS-PLAN | ui_core | `gas-plan-core.js:1` | 554 | P1 | IN_PROGRESS | - |
 | APP-GAS-TABLE | ui_core | `gas-table-core.js:1` | 305 | P2 | IN_PROGRESS | - |
 | APP-SURFACE-INTERVAL | ui_core | `surf-interval-core.js:1` | 386 | P1 | IN_PROGRESS | - |
-| APP-SERVICE-WORKER | pwa | `sw.js:1` | 305 | P1 | IN_PROGRESS | - |
+| APP-SERVICE-WORKER | pwa | `sw.js:1` | 312 | P1 | IN_PROGRESS | - |
 | APP-ZHL-WORKER-BRIDGE | worker | `zhl-worker-bridge.js:1` | 136 | P1 | VERIFIED | REG-01, REG-02, REG-03, REG-05 |
 | APP-ZHL-WORKER | worker | `zhl-schedule-worker.js:1` | 23 | P1 | VERIFIED | REG-01, REG-02, REG-03, REG-05 |
 | APP-DOWNLOAD | web_runtime | `download.html:1` | 120 | P3 | IN_PROGRESS | - |
