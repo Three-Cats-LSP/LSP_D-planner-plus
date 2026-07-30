@@ -22,13 +22,13 @@
 | test | 1 | 0 | 0 | 1 | 0 |
 | test_infrastructure | 60 | 0 | 32 | 0 | 28 |
 | tooling | 54 | 0 | 24 | 1 | 29 |
-| ui_core | 17 | 0 | 16 | 0 | 1 |
+| ui_core | 17 | 0 | 17 | 0 | 0 |
 | ui_shell | 2 | 0 | 2 | 0 | 0 |
 | web_css | 5 | 0 | 5 | 0 | 0 |
 | web_markup | 7 | 0 | 7 | 0 | 0 |
 | web_runtime | 24 | 0 | 21 | 0 | 3 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **213** | **0** | **118** | **3** | **92** |
+| **Total** | **213** | **0** | **119** | **3** | **91** |
 
 ## Units
 
@@ -79,7 +79,7 @@
 | UI-GRAPH-ENGINE | ui_core | `dive-graph-engine.js:1` | 138 | P2 | IN_PROGRESS | - |
 | UI-PLOT-RENDER | ui_core | `plot-core.js:133` | 422 | P2 | IN_PROGRESS | - |
 | UI-PLOT-WAYPOINTS | ui_core | `plot-core.js:555` | 201 | P2 | IN_PROGRESS | REG-138 |
-| UI-TOOLS-PROFILE | ui_core | `plot-core.js:756` | 262 | P2 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
+| UI-TOOLS-PROFILE | ui_core | `plot-core.js:756` | 279 | P2 | IN_PROGRESS | - |
 | UI-TOOLS-GF | web_runtime | `gf-curve-core.js:1` | 312 | P2 | IN_PROGRESS | - |
 | ENG-ZHL-PHYSICS | engine | `zhl-physics-core.js:1` | 189 | P1 | VERIFIED | REG-01, REG-22, REG-23 |
 | ENG-ZHL-GAS | engine | `zhl-gas-core.js:1` | 184 | P1 | VERIFIED | REG-10, REG-11, REG-12, REG-13, REG-14 |

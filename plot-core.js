@@ -841,9 +841,12 @@ function attachDiveProfileInteraction(canvasId) {
     return { t, depth, gas, ppo2, cns, phase, cx, cy, rect, ceiling };
   }
 
-  function showTooltip(clientX, clientY) {
+  let tooltipPinned = false;
+
+  function showTooltip(clientX, clientY, persist = false) {
     const info = getInfo(clientX, clientY);
     if (!info) { hideTooltip(); return; }
+    if (persist) tooltipPinned = true;
 
     const { t, depth, gas, ppo2, cns, phase, cx, cy, rect, ceiling } = info;
     const du    = units === 'imperial' ? 'ft' : 'm';
@@ -852,12 +855,12 @@ function attachDiveProfileInteraction(canvasId) {
     // Build tooltip
     const phaseLabel = { descent:'Descent', bottom:'Bottom', ascent:'Ascent', deco:'Deco Stop', safety:'Safety Stop', surface:'Surface' };
     let html = `<div style="color:var(--accent);font-size:10px;letter-spacing:1px;margin-bottom:4px;">${phaseLabel[phase] || phase || ''}</div>`;
-    html += `<div>⏱ ${Math.round(t * 10) / 10} min</div>`;
-    html += `<div>⬇ ${dDisp} ${du}</div>`;
-    if (gas) html += `<div>⛽ ${gas.toUpperCase()}</div>`;
+    html += `<div>&#9201; ${Math.round(t * 10) / 10} min</div>`;
+    html += `<div>&#11015; ${dDisp} ${du}</div>`;
+    if (gas) html += `<div>&#9981; ${gas.toUpperCase()}</div>`;
     if (ppo2 != null) {
       const pCol = ppo2 >= 1.6 ? 'var(--red)' : ppo2 >= 1.4 ? 'var(--yellow)' : 'var(--green)';
-      html += `<div style="color:${pCol}">ppO₂ ${ppo2.toFixed(2)}</div>`;
+      html += `<div style="color:${pCol}">ppO&#8322; ${ppo2.toFixed(2)}</div>`;
     }
     if (cns && cns !== '-') {
       const cnsNum = parseFloat(cns);
@@ -866,12 +869,12 @@ function attachDiveProfileInteraction(canvasId) {
     }
     if (ceiling != null && ceiling > 0.5) {
       const ceilDisp = units === 'imperial' ? Math.round(ceiling * 3.28084) : Math.round(ceiling * 10) / 10;
-      html += `<div style="color:var(--red);font-size:10px;">⚠ Ceiling ${ceilDisp} ${du}</div>`;
+      html += `<div style="color:var(--red);font-size:10px;">&#9888; Ceiling ${ceilDisp} ${du}</div>`;
     }
     tooltip.innerHTML = html;
     tooltip.style.display = 'block';
 
-    // Position tooltip — keep inside canvas
+    // Position tooltip - keep inside canvas
     const W = rect.width, H = rect.height;
     let tx = cx + 12, ty = cy - 10;
     if (tx + 160 > W) tx = cx - 160;
@@ -887,7 +890,9 @@ function attachDiveProfileInteraction(canvasId) {
     crossH.style.top     = cy + 'px';
   }
 
-  function hideTooltip() {
+  function hideTooltip(force = false) {
+    if (tooltipPinned && !force) return;
+    if (force) tooltipPinned = false;
     tooltip.style.display  = 'none';
     crossV.style.display   = 'none';
     crossH.style.display   = 'none';
@@ -896,15 +901,16 @@ function attachDiveProfileInteraction(canvasId) {
   if (overlay.dataset.lspProfileBound === '1') return;
   overlay.dataset.lspProfileBound = '1';
 
-  overlay.addEventListener('mousemove', e => showTooltip(e.clientX, e.clientY));
+  overlay.addEventListener('mousemove', e => {
+    if (!tooltipPinned) showTooltip(e.clientX, e.clientY);
+  });
   overlay.addEventListener('mouseleave', hideTooltip);
   overlay.addEventListener('touchmove',  e => {
     e.preventDefault();
-    if (e.touches.length === 1) showTooltip(e.touches[0].clientX, e.touches[0].clientY);
+    if (e.touches.length === 1) showTooltip(e.touches[0].clientX, e.touches[0].clientY, true);
   }, { passive: false });
-  overlay.addEventListener('touchend', hideTooltip);
 
-  // ── Scroll/wheel zoom ──
+  // Scroll/wheel zoom
   overlay.addEventListener('wheel', e => {
     e.preventDefault();
     const data = _graphOpts[canvasId];
@@ -941,6 +947,7 @@ function attachDiveProfileInteraction(canvasId) {
   // ── Double-click: reset zoom ──
   overlay.addEventListener('dblclick', e => {
     e.preventDefault();
+    hideTooltip(true);
     _graphZoomReset(canvasId);
     const data = _graphOpts[canvasId];
     if (data) drawDiveProfile(canvasId, data.waypoints, data.opts);
@@ -948,9 +955,11 @@ function attachDiveProfileInteraction(canvasId) {
 
   // ── Drag to pan ──
   let _dragStart = null;
+  let _dragMoved = false;
   overlay.addEventListener('mousedown', e => {
     if (e.button !== 0) return;
     _dragStart = { x: e.clientX, tMin: (_graphZoom[canvasId]?.tMin ?? 0), tMax: (_graphZoom[canvasId]?.tMax ?? (_graphOpts[canvasId]?.opts?.totalTime || 60)) };
+    _dragMoved = false;
     overlay.style.cursor = 'grabbing';
   });
   overlay.addEventListener('mousemove', e => {
@@ -966,6 +975,7 @@ function attachDiveProfileInteraction(canvasId) {
     const rawMaxDepth  = (data.opts?.maxDepth || 10) * 1.15;
     const zoom = _graphZoom[canvasId] || { dMin: 0, dMax: rawMaxDepth };
     const dx = e.clientX - _dragStart.x;
+    if (Math.abs(dx) > 3) _dragMoved = true;
     const dtPerPx = span / PW;
     let newTMin = _dragStart.tMin - dx * dtPerPx;
     let newTMax = newTMin + span;
@@ -976,6 +986,13 @@ function attachDiveProfileInteraction(canvasId) {
   });
   overlay.addEventListener('mouseup', () => { _dragStart = null; overlay.style.cursor = 'crosshair'; });
   overlay.addEventListener('mouseleave', () => { _dragStart = null; overlay.style.cursor = 'crosshair'; });
+  overlay.addEventListener('click', e => {
+    if (_dragMoved) {
+      _dragMoved = false;
+      return;
+    }
+    showTooltip(e.clientX, e.clientY, true);
+  });
 
   // ── Pinch to zoom (touch) ──
   let _pinchDist = null;

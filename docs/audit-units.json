@@ -2666,26 +2666,16 @@
       "path": "plot-core.js",
       "layer": "ui_core",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-PROFILE"
       },
-      "fingerprint": "42a5050b66e81ae113895b8e689e3bdae69ec036989398b027e0217fd37e7f66",
-      "last_read_fingerprint": "42a5050b66e81ae113895b8e689e3bdae69ec036989398b027e0217fd37e7f66",
+      "fingerprint": "a6e85d2b0ad98b9101cc3a703b54d84e9a1bbfb07bf496f0ba4dbfa4383c7c7a",
+      "last_read_fingerprint": null,
       "audit_issue": 157,
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity",
-        "SUITE-UI-STRUCTURE/UI-EXTRACT-CORES",
-        "SUITE-ENGINE-FULL/AUDIT-REG-01"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01",
-        "EXT-02",
-        "REG-01"
-      ],
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Audit issue #157"
     },
     {
@@ -6148,13 +6138,13 @@
     },
     {
       "cycle": "R22",
-      "max_new_application_lines": 755,
+      "max_new_application_lines": 772,
       "application_units": [
         "UI-TOOLS-PROFILE",
         "UI-PLOT-INIT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R22: Profile tool and plot init risk-first READ; current lines: 755; sessions: 2",
+      "acceptance": "V4 R22: Profile tool and plot init risk-first READ; current lines: 772; sessions: 2",
       "min_review_sessions": 2
     },
     {
