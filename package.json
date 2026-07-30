@@ -1,6 +1,6 @@
 {
   "name": "lsp-d-planner-plus",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "LSP D-Planner+ — unified OC + CCR decompression planning app",
   "private": true,
   "scripts": {
