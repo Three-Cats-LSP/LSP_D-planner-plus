@@ -2034,7 +2034,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "425561d2036506ac6cadbbf100bb1c38de0bba46275cd4781c20f169c992b6bf",
+      "fingerprint": "10430179f8981ab4136dd4412b8ba75c3a781f12b934ff2e2cc1c27e5d9e1c64",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2671,7 +2671,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-PROFILE"
       },
-      "fingerprint": "a6e85d2b0ad98b9101cc3a703b54d84e9a1bbfb07bf496f0ba4dbfa4383c7c7a",
+      "fingerprint": "fdd9a9a64ed71d669e2a5592ff2ec4e72168923e1ec861a348e43f77d115bc9b",
       "last_read_fingerprint": null,
       "audit_issue": 157,
       "evidence": [],
@@ -6138,13 +6138,13 @@
     },
     {
       "cycle": "R22",
-      "max_new_application_lines": 772,
+      "max_new_application_lines": 858,
       "application_units": [
         "UI-TOOLS-PROFILE",
         "UI-PLOT-INIT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R22: Profile tool and plot init risk-first READ; current lines: 772; sessions: 2",
+      "acceptance": "V4 R22: Profile tool and plot init risk-first READ; current lines: 858; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6340,12 +6340,12 @@
     },
     {
       "cycle": "R41",
-      "max_new_application_lines": 1075,
+      "max_new_application_lines": 1078,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1075; sessions: 2",
+      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1078; sessions: 2",
       "min_review_sessions": 2
     },
     {

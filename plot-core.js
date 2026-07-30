@@ -838,39 +838,125 @@ function attachDiveProfileInteraction(canvasId) {
       }
     }
 
-    return { t, depth, gas, ppo2, cns, phase, cx, cy, rect, ceiling };
+    return { t, depth, gas, ppo2, cns, phase, cx, cy, rect, ceiling, totalTime };
   }
 
   let tooltipPinned = false;
+
+  function _profileTooltipEsc(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function _profileTooltipRow(label, value) {
+    return `<div class="profile-tip-row"><span>${_profileTooltipEsc(label)}</span><strong>${_profileTooltipEsc(value)}</strong></div>`;
+  }
+
+  function _profileRoundMin(value) {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return '—';
+    const rounded = Math.round(n * 10) / 10;
+    return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
+  }
+
+  function _profileTotalsForCanvas() {
+    const totals = document.querySelector('#decoTableBody tr.deco-totals-row td[data-run]')
+      || document.querySelector('#decoTableBody tr.row-summary td[data-run]');
+    return {
+      tts: totals?.dataset?.tts || '—',
+      surfGF: totals?.dataset?.surfgf || '—',
+    };
+  }
+
+  function _profileNormalizeGasLabel(label) {
+    return String(label || '')
+      .replace(/\s+/g, '')
+      .replace(/^EAN(\d+)$/i, '$1/00')
+      .toUpperCase();
+  }
+
+  function _profileConsumedLitresForGas(gasLabel) {
+    const gasConsumed = window._lastGasConsumed || {};
+    const target = _profileNormalizeGasLabel(gasLabel);
+    const key = Object.keys(gasConsumed).find(k => _profileNormalizeGasLabel(k) === target);
+    const litres = key ? Number(gasConsumed[key]) : 0;
+    return Number.isFinite(litres) && litres > 0 ? litres : 0;
+  }
+
+  function _profileSizeLForId(id) {
+    if (!id || !document.getElementById(id)) return 0;
+    if (typeof gpSizeL === 'function') {
+      const size = Number(gpSizeL(id));
+      if (Number.isFinite(size) && size > 0) return size;
+    }
+    const raw = Number.parseFloat(document.getElementById(id)?.value);
+    return Number.isFinite(raw) && raw > 0 ? raw : 0;
+  }
+
+  function _profileCylinderSizeLForGas(gasLabel) {
+    const target = _profileNormalizeGasLabel(gasLabel);
+    const candidates = [];
+    try {
+      const bottom = typeof getBottomGasFractions === 'function' ? getBottomGasFractions() : null;
+      if (bottom && typeof getGasLabel === 'function') {
+        candidates.push({ label: getGasLabel(bottom.fO2, bottom.fHe), sizeId: 'cylBot_size' });
+      }
+      if (typeof isTravelGasConfigured === 'function' && isTravelGasConfigured() && typeof getTravelGasInfo === 'function') {
+        const travel = getTravelGasInfo();
+        candidates.push({ label: travel?.label, sizeId: 'cylTravelGas_size' });
+      }
+      if (typeof getAllDecoGasIds === 'function' && typeof getDecoCardFractions === 'function' && typeof getGasLabel === 'function') {
+        getAllDecoGasIds().forEach(idx => {
+          const fracs = getDecoCardFractions(idx);
+          if (fracs && fracs.fO2 > 0) candidates.push({ label: getGasLabel(fracs.fO2, fracs.fHe), sizeId: `cylDg${idx}_size` });
+        });
+      }
+    } catch (_) {}
+    const match = candidates.find(row => row.label && _profileNormalizeGasLabel(row.label) === target);
+    return _profileSizeLForId(match?.sizeId);
+  }
+
+  function _profileConsumedText(gasLabel) {
+    const litres = _profileConsumedLitresForGas(gasLabel);
+    if (!(litres > 0)) return '';
+    const sizeL = _profileCylinderSizeLForGas(gasLabel);
+    const bar = sizeL > 0 ? litres / sizeL : 0;
+    if (units === 'imperial') {
+      const vol = typeof gpVolDisp === 'function' ? gpVolDisp(litres) : Math.round(litres / 28.3168);
+      const pres = typeof gpPresDisp === 'function' ? gpPresDisp(bar) : Math.round(bar * 14.5038);
+      return `${vol} ${typeof lspVolUnit === 'function' ? lspVolUnit() : 'ft³'} / ${pres} psi`;
+    }
+    return `${Math.round(litres)} L / ${Math.round(bar)} bar`;
+  }
 
   function showTooltip(clientX, clientY, persist = false) {
     const info = getInfo(clientX, clientY);
     if (!info) { hideTooltip(); return; }
     if (persist) tooltipPinned = true;
 
-    const { t, depth, gas, ppo2, cns, phase, cx, cy, rect, ceiling } = info;
+    const { t, depth, gas, ppo2, cx, cy, rect, ceiling, totalTime } = info;
     const du    = units === 'imperial' ? 'ft' : 'm';
     const dDisp = units === 'imperial' ? Math.round(depth * 3.28084) : Math.round(depth * 10) / 10;
-
-    // Build tooltip
-    const phaseLabel = { descent:'Descent', bottom:'Bottom', ascent:'Ascent', deco:'Deco Stop', safety:'Safety Stop', surface:'Surface' };
-    let html = `<div style="color:var(--accent);font-size:10px;letter-spacing:1px;margin-bottom:4px;">${phaseLabel[phase] || phase || ''}</div>`;
-    html += `<div>&#9201; ${Math.round(t * 10) / 10} min</div>`;
-    html += `<div>&#11015; ${dDisp} ${du}</div>`;
-    if (gas) html += `<div>&#9981; ${gas.toUpperCase()}</div>`;
-    if (ppo2 != null) {
-      const pCol = ppo2 >= 1.6 ? 'var(--red)' : ppo2 >= 1.4 ? 'var(--yellow)' : 'var(--green)';
-      html += `<div style="color:${pCol}">ppO&#8322; ${ppo2.toFixed(2)}</div>`;
-    }
-    if (cns && cns !== '-') {
-      const cnsNum = parseFloat(cns);
-      const cCol = cnsNum >= 80 ? 'var(--red)' : cnsNum >= 40 ? 'var(--yellow)' : 'var(--muted)';
-      html += `<div style="color:${cCol}">CNS ${cns}</div>`;
-    }
-    if (ceiling != null && ceiling > 0.5) {
-      const ceilDisp = units === 'imperial' ? Math.round(ceiling * 3.28084) : Math.round(ceiling * 10) / 10;
-      html += `<div style="color:var(--red);font-size:10px;">&#9888; Ceiling ${ceilDisp} ${du}</div>`;
-    }
+    const ttsRemaining = Math.max(0, (Number(totalTime) || 0) - t);
+    const ceilDisp = ceiling != null && ceiling > 0.5
+      ? (units === 'imperial' ? Math.round(ceiling * 3.28084) : Math.round(ceiling * 10) / 10)
+      : 0;
+    const totals = _profileTotalsForCanvas();
+    const consumedText = _profileConsumedText(gas);
+    let html = '';
+    html += _profileTooltipRow('RT', `${_profileRoundMin(t)} min`);
+    html += _profileTooltipRow('Depth', `${dDisp} ${du}`);
+    html += _profileTooltipRow('TTS', `${_profileRoundMin(ttsRemaining)} min`);
+    html += _profileTooltipRow('@+5', '— min (+—)');
+    html += _profileTooltipRow('Ceiling', `${ceilDisp} ${du}`);
+    html += _profileTooltipRow('Surf GF', totals.surfGF || '—');
+    html += _profileTooltipRow('Gas', gas ? gas.toUpperCase() : '—');
+    html += _profileTooltipRow('PPO2', ppo2 != null ? ppo2.toFixed(2) : '—');
+    if (consumedText) html += _profileTooltipRow('Consumed', consumedText);
     tooltip.innerHTML = html;
     tooltip.style.display = 'block';
 
@@ -879,7 +965,7 @@ function attachDiveProfileInteraction(canvasId) {
     let tx = cx + 12, ty = cy - 10;
     if (tx + 160 > W) tx = cx - 160;
     if (ty < 0) ty = cy + 12;
-    if (ty + 120 > H) ty = H - 125;
+    if (ty + 170 > H) ty = H - 175;
     tooltip.style.left = tx + 'px';
     tooltip.style.top  = ty + 'px';
 

@@ -68,7 +68,7 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R19 | UI-VPM-RENDER, UI-ZHL-RESULTS | 969 | - | V4 R19: VPM/ZHL results rendering risk-first READ; current lines: 969; sessions: 2 |
 | R20 | APP-EXPORT | 3410 | - | V4 R20: Export text/PDF risk-first READ; current lines: 3410; sessions: 6 |
 | R21 | UI-GRAPH-ENGINE, UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 764 | - | V4 R21: Plot render and waypoint graph risk-first READ; current lines: 764; sessions: 2 |
-| R22 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 772 | - | V4 R22: Profile tool and plot init risk-first READ; current lines: 772; sessions: 2 |
+| R22 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 858 | - | V4 R22: Profile tool and plot init risk-first READ; current lines: 858; sessions: 2 |
 | R23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 395 | - | V4 R23: Runtime bootstrap and app init risk-first READ; current lines: 395; sessions: 1 |
 | R24 | UI-BOOT | 2461 | - | V4 R24: index.html shell boot region risk-first READ; current lines: 2461; sessions: 5 |
 | R25 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 443 | - | V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 443; sessions: 1 |
@@ -87,7 +87,7 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R38 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 605 | - | V4 R38: Tools and modal markup risk-first READ; current lines: 605; sessions: 2 |
 | R39 | UI-CSS-FOUNDATION, UI-CSS-MODES | 760 | - | V4 R39: Foundation and mode CSS risk-first READ; current lines: 760; sessions: 2 |
 | R40 | UI-CSS-CONTROLS | 548 | - | V4 R40: Controls CSS risk-first READ; current lines: 548; sessions: 1 |
-| R41 | UI-CSS-RESULTS | 1075 | - | V4 R41: Results CSS risk-first design-lock READ; current lines: 1075; sessions: 2 |
+| R41 | UI-CSS-RESULTS | 1078 | - | V4 R41: Results CSS risk-first design-lock READ; current lines: 1078; sessions: 2 |
 | R42 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 827 | - | V4 R42: Planner shell and results panel design-lock READ; current lines: 827; sessions: 2 |
 | R43 | UI-CSS-MOBILE-SHELL | 709 | - | V4 R43: Mobile shell CSS risk-first READ; current lines: 709; sessions: 2 |
 

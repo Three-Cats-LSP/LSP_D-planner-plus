@@ -510,6 +510,9 @@ body.light-theme #resultsPanel .chip-yellow { background: var(--yellow-dim); col
 #resultsPanel #fullDiveGraphCard .card-collapsible-body { padding: var(--space-3) var(--space-4) var(--space-2); box-sizing: border-box; max-width: 100%; overflow: hidden; }
 #resultsPanel #plannerProfileCanvas-wrap { margin-top: 0; max-width: 100%; box-sizing: border-box; }
 #resultsPanel #plannerProfileCanvas-wrap canvas { width: 100%; max-width: 100%; box-sizing: border-box; border-radius: var(--radius-md); background: var(--surface); border: 1px solid var(--border); min-height: 200px; display: block; }
+#plannerProfileCanvas-tooltip .profile-tip-row { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; min-width: 150px; line-height: 1.45; }
+#plannerProfileCanvas-tooltip .profile-tip-row span { color: var(--muted); }
+#plannerProfileCanvas-tooltip .profile-tip-row strong { color: var(--text); font-weight: 800; text-align: right; }
 #resultsPanel #plannerProfileLegend { display: flex; flex-direction: column; gap: var(--space-2); flex-wrap: nowrap; padding: var(--space-2) 0 var(--space-1); font-family: var(--font-mono); font-size: 9px; color: var(--text-faint); }
 #resultsPanel #plannerProfileLegend .profile-legend-keys { width: 100%; }
 #resultsPanel #plannerProfileLegend .profile-legend-table { margin-top: var(--space-2); }
