@@ -56,6 +56,19 @@ class TestV4FullRFixes(unittest.TestCase):
         self.assertIn("startNewPdfSectionPage();", slate_pdf)
         self.assertNotIn("doc.addPage();\n    drawHeader();", slate_pdf)
 
+    def test_pdf_canvas_capture_uses_compressed_jpeg(self) -> None:
+        export_src = (ROOT / "export-core.js").read_text(encoding="utf-8")
+        graph_src = (ROOT / "dive-graph-engine.js").read_text(encoding="utf-8")
+        for src in (export_src, graph_src):
+            capture = src.split("function _canvasToDataURLForPDF", 1)[-1] if "_canvasToDataURLForPDF" in src else src.split("function captureCanvasForPDF", 1)[-1]
+            self.assertIn("toDataURL('image/jpeg'", capture)
+            self.assertIn("format: 'JPEG'", capture)
+            self.assertNotIn("toDataURL('image/png'", capture)
+        self.assertIn("_pcCap.format || 'JPEG'", export_src)
+        self.assertIn("_gcCap.format || 'JPEG'", export_src)
+        self.assertNotIn("doc.addImage(id,'PNG'", export_src)
+        self.assertNotIn("doc.addImage(gd,'PNG'", export_src)
+
     def test_gas_supply_middle_tier_uses_low_wording(self) -> None:
         rr = (ROOT / "results-render-core.js").read_text(encoding="utf-8")
         css = (ROOT / "lsp-dplanner-results.css").read_text(encoding="utf-8")

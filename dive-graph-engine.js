@@ -107,7 +107,8 @@
 
   function captureCanvasForPDF(srcCanvas, targetMM, opts) {
     opts = opts || {};
-    const dpi = Number(opts.dpi || 220);
+    const dpi = Number(opts.dpi || 170);
+    const quality = Math.max(0.5, Math.min(0.95, Number(opts.quality || 0.82)));
     const mmPerInch = 25.4;
     const targetPx = Math.max(1, Math.round(targetMM * dpi / mmPerInch));
     const aspect = srcCanvas.height / Math.max(1, srcCanvas.width);
@@ -119,8 +120,10 @@
     const ctx = tmp.getContext('2d');
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, outW, outH);
     ctx.drawImage(srcCanvas, 0, 0, outW, outH);
-    return { dataURL: tmp.toDataURL('image/png'), w: outW, h: outH };
+    return { dataURL: tmp.toDataURL('image/jpeg', quality), format: 'JPEG', w: outW, h: outH };
   }
 
   window.LSPGraphEngine = {

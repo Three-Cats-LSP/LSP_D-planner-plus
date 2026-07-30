@@ -2284,9 +2284,10 @@ function buildProfileLegendRowsFromWaypoints() {
 // (max ~1240 px wide for A4) before calling toDataURL.
 function _canvasToDataURLForPDF(srcCanvas, targetMM) {
   if (window.LSPGraphEngine?.captureCanvasForPDF) {
-    return window.LSPGraphEngine.captureCanvasForPDF(srcCanvas, targetMM, { dpi: 220 });
+    return window.LSPGraphEngine.captureCanvasForPDF(srcCanvas, targetMM, { dpi: 170, quality: 0.82 });
   }
-  const PDF_DPI = 220;
+  const PDF_DPI = 170;
+  const PDF_QUALITY = 0.82;
   const PDF_MM_PER_INCH = 25.4;
   const outW = Math.round(targetMM * PDF_DPI / PDF_MM_PER_INCH);
   const outH = Math.round(outW * srcCanvas.height / Math.max(1, srcCanvas.width));
@@ -2296,8 +2297,10 @@ function _canvasToDataURLForPDF(srcCanvas, targetMM) {
   const ctx = tmp.getContext('2d');
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, outW, outH);
   ctx.drawImage(srcCanvas, 0, 0, outW, outH);
-  return { dataURL: tmp.toDataURL('image/png'), w: outW, h: outH };
+  return { dataURL: tmp.toDataURL('image/jpeg', PDF_QUALITY), format: 'JPEG', w: outW, h: outH };
 }
 let _pdfFontCache = null;
 
@@ -2672,7 +2675,7 @@ async function exportPDF(opts) {
     doc.addPage(); drawHeader();
     sectionTitle('DIVE PROFILE GRAPH',`${depthVal}${du} / ${btVal}min / ${algo} / ${gfStr}`);
     const _pcCap=_canvasToDataURLForPDF(pc,CW); const id=_pcCap.dataURL; const ih=CW*pc.height/pc.width;
-    checkY(ih); doc.addImage(id,'PNG',ML,y,CW,ih); y+=ih+4;
+    checkY(ih); doc.addImage(id, _pcCap.format || 'JPEG', ML, y, CW, ih); y+=ih+4;
     y = drawGraphLegend(doc, y, ML, CW, checkY);
   }
 
@@ -2686,7 +2689,7 @@ async function exportPDF(opts) {
       checkY(78); sectionTitle('GRADIENT FACTOR CURVE',`GF Low ${mGF.low}%  GF High ${mGF.high}%`);
       y = drawGfCurveInfoCards(doc, y, ML, CW, checkY, { low: mGF.low, high: mGF.high, stops: Math.max(0, gfRows.length - 1) });
       const _gcCap=_canvasToDataURLForPDF(gc,CW); const gd=_gcCap.dataURL; const gh=CW*gc.height/gc.width;
-      doc.addImage(gd,'PNG',ML,y,CW,gh); y+=gh+4;
+      doc.addImage(gd, _gcCap.format || 'JPEG', ML, y, CW, gh); y+=gh+4;
       y = drawGfCurveColorLegend(doc, y, ML, CW, checkY);
       y = drawPdfGfStopTable(doc, y, ML, CW, checkY, gfRows);
     }
@@ -3115,7 +3118,7 @@ async function exportContingencyPDF(opts) {
           sectionTitle('EMERGENCY DIVE PROFILE GRAPH', `${depth}${du} / ${bt}min / ${cleanPDF(c.label)}`);
           const _pcCapture = _canvasToDataURLForPDF(pc, CW);
           const imgH = CW * pc.height / pc.width;
-          doc.addImage(_pcCapture.dataURL,'PNG',ML,y,CW,imgH);
+          doc.addImage(_pcCapture.dataURL, _pcCapture.format || 'JPEG', ML, y, CW, imgH);
           y += imgH+4;
           y = drawGraphLegend(doc, y, ML, CW, checkY, buildProfileLegendRowsFromWaypoints());
         }
@@ -3135,7 +3138,7 @@ async function exportContingencyPDF(opts) {
       sectionTitle('GRADIENT FACTOR CURVE',`GF Low ${mGF.low}%  GF High ${mGF.high}%`);
       y = drawGfCurveInfoCards(doc, y, ML, CW, checkY, { low: mGF.low, high: mGF.high, stops: Math.max(0, gfRows2.length - 1) });
       const _gc2Capture=_canvasToDataURLForPDF(gc2,CW); const gd2=_gc2Capture.dataURL; const gh2=CW*gc2.height/gc2.width;
-      doc.addImage(gd2,'PNG',ML,y,CW,gh2); y+=gh2+4;
+      doc.addImage(gd2, _gc2Capture.format || 'JPEG', ML, y, CW, gh2); y+=gh2+4;
       y = drawGfCurveColorLegend(doc, y, ML, CW, checkY);
       y = drawPdfGfStopTable(doc, y, ML, CW, checkY, gfRows2);
     }
