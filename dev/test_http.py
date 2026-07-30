@@ -209,7 +209,7 @@ def serve_www(
 ):
     """Run sync_www.py, stage regression harness files, serve from www/."""
     sync_script = root / "tools" / "sync_www.py"
-    with tempfile.TemporaryDirectory(prefix="lsp-www-") as tmp:
+    with tempfile.TemporaryDirectory(prefix="lsp-www-", ignore_cleanup_errors=True) as tmp:
         serve_dir = Path(tmp) / "www"
         with _sync_www_lock():
             if sync:

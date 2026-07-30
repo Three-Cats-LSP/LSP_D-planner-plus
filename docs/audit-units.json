@@ -1974,7 +1974,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "5cd0249c82078134a820d5fe895d8085b5ded8f4001f87e9524bc6882bec0b3f",
+      "fingerprint": "1699b55df720fa6137356ae93ea13a1978eb657156452b1a2c15049f92627725",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2071,7 +2071,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "73f18ab148e8954057713720586b9f051ed1f40799aea2ac25f55e1466a9f243",
+      "fingerprint": "3d5af217247a3fe6394cace98ac780e35fabfef3a080f324af0ceec8d0465914",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2560,6 +2560,22 @@
       "issue": "Audit issue #154"
     },
     {
+      "id": "UI-GRAPH-ENGINE",
+      "path": "dive-graph-engine.js",
+      "layer": "ui_core",
+      "priority": "P2",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "39e043d255069cc1a815eb36a89b98d925b1dd1d674c4732a5fedac49e69ad04",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "audit_issue": 154,
+      "issue": "V4 graph engine shared renderer"
+    },
+    {
       "id": "UI-PLOT-RENDER",
       "path": "plot-core.js",
       "layer": "ui_core",
@@ -2569,7 +2585,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-RENDER"
       },
-      "fingerprint": "1803b1613b1399e022dfece85a6a4777582e1dbe2edf162fb0b1138a61e63722",
+      "fingerprint": "227d291cd1eff68b092a59fd8558a0ed886948eef64e6d696c19cb834bf52f29",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2638,7 +2654,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "15007d4784a8ac7f9bcf0aa0be1044eba6b7fe1abcbca885310db89f5df9d7d8",
+      "fingerprint": "17bb22f07706c848020b29c99191b1248a854bdd8fcc2e51c959da6f7e00d24a",
       "last_read_fingerprint": null,
       "audit_issue": 157,
       "evidence": [],
@@ -3007,7 +3023,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "cd9a90a36536bf6751b0e4147f5e442a27c74814ebba7d5c7bd7d22391134667",
+      "fingerprint": "ade9dee7718c4cca0e0a2ad66a5c2052e9c14262d94e0c128c34c99036621d59",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3068,7 +3084,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "0e7c05438fbba338987987099b69ff1c50a2e0c202611526d34e7dc03c6c5544",
+      "fingerprint": "3ca6a1e27a9a60fe2bbbffff58ae6ec465c9aa510858bfa2cdaa67a25a5fa38a",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3990,7 +4006,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f350d00177ed28950274490d5d57211f3bc63e89f6099a70426bc21a39270b7b",
+      "fingerprint": "9eaca0a228ff46454e20e69a3895bcdc9902dbcc878290f2f0a08b99f6c0101a",
       "last_read_fingerprint": null,
       "regression_cases": [],
       "evidence": [],
@@ -4420,7 +4436,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "ebaaecd58fac5675e1e817fc0786f225bd80f666b23de33ee40df5fc58a9dbc8",
+      "fingerprint": "1499eb861e182664801f2271aefe49dba5a26214f7be31fb1940e9531d998c56",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -4684,7 +4700,7 @@
       "evidence": [],
       "issue": "GitHub #136 marker-based UI core extraction",
       "regression_cases": [],
-      "fingerprint": "45f36e15d3967f3bc1b82beb5026c5062aefd09ea706ffb27d0ba35df215c352",
+      "fingerprint": "bb6387c9de6a1fa55cbf8771757520507580b070bcebe70bafb5ae92d3863892",
       "last_read_fingerprint": null
     },
     {
@@ -4864,7 +4880,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "d8c27208f117d5064e04eceae84bff533d813cd551217baf81cd345e60f23ecd",
+      "fingerprint": "b38f2660cf1b569cfcb1f010fddcf0e6b49527e4ea0dd948499da6f992a4e58e",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5457,7 +5473,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "d83889d3ff417b1fd3d08bb8ba904ebb110f1ee8a04fdfb97dd21908a18dad0a",
+      "fingerprint": "c5aa5926e93175ebc38109c0ca713e469e05dffc5386fb779294953164995e80",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -6110,23 +6126,24 @@
     },
     {
       "cycle": "R20",
-      "max_new_application_lines": 3402,
+      "max_new_application_lines": 3407,
       "application_units": [
         "APP-EXPORT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R20: Export text/PDF risk-first READ; current lines: 3402; sessions: 6",
+      "acceptance": "V4 R20: Export text/PDF risk-first READ; current lines: 3407; sessions: 6",
       "min_review_sessions": 6
     },
     {
       "cycle": "R21",
-      "max_new_application_lines": 632,
+      "max_new_application_lines": 764,
       "application_units": [
+        "UI-GRAPH-ENGINE",
         "UI-PLOT-RENDER",
         "UI-PLOT-WAYPOINTS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R21: Plot render and waypoint graph risk-first READ; current lines: 632; sessions: 2",
+      "acceptance": "V4 R21: Plot render and waypoint graph risk-first READ; current lines: 764; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6152,24 +6169,24 @@
     },
     {
       "cycle": "R24",
-      "max_new_application_lines": 2457,
+      "max_new_application_lines": 2461,
       "application_units": [
         "UI-BOOT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R24: index.html shell boot region risk-first READ; current lines: 2457; sessions: 5",
+      "acceptance": "V4 R24: index.html shell boot region risk-first READ; current lines: 2461; sessions: 5",
       "min_review_sessions": 5
     },
     {
       "cycle": "R25",
-      "max_new_application_lines": 442,
+      "max_new_application_lines": 443,
       "application_units": [
         "APP-SERVICE-WORKER",
         "UI-PWA-LIFECYCLE",
         "APP-MANIFEST"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 442; sessions: 1"
+      "acceptance": "V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 443; sessions: 1"
     },
     {
       "cycle": "R26",
@@ -6208,7 +6225,7 @@
         "UI-TOOLS-GF"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R29: Tools tissues/exposure/GF risk-first READ; current lines: 922; sessions: 2",
+      "acceptance": "V4 R29: Tools tissues/exposure/GF risk-first READ; current lines: 917; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6262,12 +6279,12 @@
     },
     {
       "cycle": "R34",
-      "max_new_application_lines": 786,
+      "max_new_application_lines": 790,
       "application_units": [
         "UI-MARKUP-HEADER"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R34: Header markup risk-first READ; current lines: 786; sessions: 2",
+      "acceptance": "V4 R34: Header markup risk-first READ; current lines: 790; sessions: 2",
       "min_review_sessions": 2
     },
     {

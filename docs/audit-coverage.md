@@ -22,36 +22,36 @@
 | test | 1 | 0 | 0 | 1 | 0 |
 | test_infrastructure | 60 | 0 | 32 | 0 | 28 |
 | tooling | 54 | 0 | 24 | 1 | 29 |
-| ui_core | 16 | 0 | 15 | 0 | 1 |
+| ui_core | 17 | 0 | 16 | 0 | 1 |
 | ui_shell | 2 | 0 | 2 | 0 | 0 |
 | web_css | 5 | 0 | 5 | 0 | 0 |
 | web_markup | 7 | 0 | 7 | 0 | 0 |
 | web_runtime | 24 | 0 | 21 | 0 | 3 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **212** | **0** | **117** | **3** | **92** |
+| **Total** | **213** | **0** | **118** | **3** | **92** |
 
 ## Units
 
 | Unit | Layer | Source | Lines | Priority | Status | Evidence |
 |---|---|---|---:|---|---|---|
-| UI-BOOT | web_runtime | `index.html:2` | 2457 | P2 | IN_PROGRESS | - |
-| UI-RUNTIME-BOOTSTRAP | web_runtime | `index.html:2459` | 223 | P1 | IN_PROGRESS | - |
-| UI-ALGORITHM-SETTINGS | web_runtime | `index.html:2682` | 293 | P1 | IN_PROGRESS | - |
-| UI-UNIT-HELPERS | web_runtime | `index.html:2975` | 442 | P1 | IN_PROGRESS | - |
-| UI-PLOT-INIT | web_runtime | `index.html:3417` | 493 | P2 | IN_PROGRESS | - |
-| UI-TOOLS-TISSUES | web_runtime | `index.html:3910` | 372 | P2 | IN_PROGRESS | - |
-| UI-TOOLS-EXPOSURE | web_runtime | `index.html:4282` | 233 | P1 | IN_PROGRESS | - |
-| UI-SETTINGS | web_runtime | `index.html:4515` | 386 | P1 | IN_PROGRESS | - |
-| UI-PROFILE-PRESETS | web_runtime | `index.html:4901` | 508 | P2 | IN_PROGRESS | - |
-| UI-CONFIG-PRESETS | web_runtime | `index.html:5409` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
-| UI-APP-INIT | web_runtime | `index.html:5594` | 172 | P1 | IN_PROGRESS | - |
-| UI-PWA-LIFECYCLE | pwa | `index.html:5766` | 97 | P1 | IN_PROGRESS | - |
+| UI-BOOT | web_runtime | `index.html:2` | 2461 | P2 | IN_PROGRESS | - |
+| UI-RUNTIME-BOOTSTRAP | web_runtime | `index.html:2463` | 223 | P1 | IN_PROGRESS | - |
+| UI-ALGORITHM-SETTINGS | web_runtime | `index.html:2686` | 293 | P1 | IN_PROGRESS | - |
+| UI-UNIT-HELPERS | web_runtime | `index.html:2979` | 442 | P1 | IN_PROGRESS | - |
+| UI-PLOT-INIT | web_runtime | `index.html:3421` | 493 | P2 | IN_PROGRESS | - |
+| UI-TOOLS-TISSUES | web_runtime | `index.html:3914` | 372 | P2 | IN_PROGRESS | - |
+| UI-TOOLS-EXPOSURE | web_runtime | `index.html:4286` | 233 | P1 | IN_PROGRESS | - |
+| UI-SETTINGS | web_runtime | `index.html:4519` | 386 | P1 | IN_PROGRESS | - |
+| UI-PROFILE-PRESETS | web_runtime | `index.html:4905` | 508 | P2 | IN_PROGRESS | - |
+| UI-CONFIG-PRESETS | web_runtime | `index.html:5413` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
+| UI-APP-INIT | web_runtime | `index.html:5598` | 172 | P1 | IN_PROGRESS | - |
+| UI-PWA-LIFECYCLE | pwa | `index.html:5770` | 97 | P1 | IN_PROGRESS | - |
 | UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 418 | P2 | IN_PROGRESS | - |
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 340 | P2 | IN_PROGRESS | - |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 548 | P2 | IN_PROGRESS | - |
 | UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 1075 | P1 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
 | UI-CSS-MOBILE-SHELL | web_css | `lsp-dplanner-mobile-shell.css:1` | 709 | P2 | IN_PROGRESS | - |
-| UI-MARKUP-HEADER | web_markup | `ui/markup-header.html:1` | 786 | P2 | IN_PROGRESS | - |
+| UI-MARKUP-HEADER | web_markup | `ui/markup-header.html:1` | 790 | P2 | IN_PROGRESS | - |
 | UI-MARKUP-REC-PLANNER | web_markup | `ui/markup-rec-planner.html:1` | 73 | P1 | IN_PROGRESS | - |
 | UI-MARKUP-TEC-PLANNER | web_markup | `ui/markup-tec-planner.html:1` | 560 | P1 | IN_PROGRESS | - |
 | UI-REC-PLANNER | ui_core | `rec-planner.js:1` | 9 | P1 | IN_PROGRESS | - |
@@ -76,10 +76,11 @@
 | UI-GAS-CARDS | ui_core | `gas-cards-core.js:238` | 284 | P1 | IN_PROGRESS | - |
 | UI-ZHL-HEADLESS-HELPERS | web_runtime | `zhl-headless-adapter.js:23` | 194 | P1 | VERIFIED | EXT-05, COV-01 |
 | UI-ZHL-HEADLESS-ENGINE | web_runtime | `zhl-headless-adapter.js:217` | 91 | P0 | VERIFIED | EXT-05, COV-01 |
-| UI-PLOT-RENDER | ui_core | `plot-core.js:139` | 431 | P2 | IN_PROGRESS | - |
-| UI-PLOT-WAYPOINTS | ui_core | `plot-core.js:570` | 201 | P2 | IN_PROGRESS | REG-138 |
-| UI-TOOLS-PROFILE | ui_core | `plot-core.js:771` | 262 | P2 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
-| UI-TOOLS-GF | web_runtime | `gf-curve-core.js:1` | 317 | P2 | IN_PROGRESS | - |
+| UI-GRAPH-ENGINE | ui_core | `dive-graph-engine.js:1` | 138 | P2 | IN_PROGRESS | - |
+| UI-PLOT-RENDER | ui_core | `plot-core.js:133` | 420 | P2 | IN_PROGRESS | - |
+| UI-PLOT-WAYPOINTS | ui_core | `plot-core.js:553` | 201 | P2 | IN_PROGRESS | REG-138 |
+| UI-TOOLS-PROFILE | ui_core | `plot-core.js:754` | 262 | P2 | VERIFIED | COV-01, PARITY-01, EXT-02, REG-01 |
+| UI-TOOLS-GF | web_runtime | `gf-curve-core.js:1` | 312 | P2 | IN_PROGRESS | - |
 | ENG-ZHL-PHYSICS | engine | `zhl-physics-core.js:1` | 189 | P1 | VERIFIED | REG-01, REG-22, REG-23 |
 | ENG-ZHL-GAS | engine | `zhl-gas-core.js:1` | 184 | P1 | VERIFIED | REG-10, REG-11, REG-12, REG-13, REG-14 |
 | ENG-ZHL-CCR | engine | `zhl-ccr-core.js:1` | 404 | P0 | VERIFIED | REG-06, REG-07, REG-29, REG-42 |
@@ -90,11 +91,11 @@
 | APP-ANDROID-SELECT | native_bridge | `android-select-picker.js:1` | 294 | P1 | IN_PROGRESS | - |
 | APP-CAPACITOR-BRIDGE | native_bridge | `capacitor-bridge.js:1` | 278 | P1 | VERIFIED | ANDROID-01, REG-45 |
 | APP-CONTINGENCY | ui_core | `contingency-core.js:1` | 591 | P1 | IN_PROGRESS | - |
-| APP-EXPORT | ui_core | `export-core.js:1` | 3402 | P2 | IN_PROGRESS | - |
+| APP-EXPORT | ui_core | `export-core.js:1` | 3407 | P2 | IN_PROGRESS | - |
 | APP-GAS-PLAN | ui_core | `gas-plan-core.js:1` | 554 | P1 | IN_PROGRESS | - |
 | APP-GAS-TABLE | ui_core | `gas-table-core.js:1` | 305 | P2 | IN_PROGRESS | - |
 | APP-SURFACE-INTERVAL | ui_core | `surf-interval-core.js:1` | 386 | P1 | IN_PROGRESS | - |
-| APP-SERVICE-WORKER | pwa | `sw.js:1` | 304 | P1 | IN_PROGRESS | - |
+| APP-SERVICE-WORKER | pwa | `sw.js:1` | 305 | P1 | IN_PROGRESS | - |
 | APP-ZHL-WORKER-BRIDGE | worker | `zhl-worker-bridge.js:1` | 136 | P1 | VERIFIED | REG-01, REG-02, REG-03, REG-05 |
 | APP-ZHL-WORKER | worker | `zhl-schedule-worker.js:1` | 23 | P1 | VERIFIED | REG-01, REG-02, REG-03, REG-05 |
 | APP-DOWNLOAD | web_runtime | `download.html:1` | 120 | P3 | IN_PROGRESS | - |
@@ -163,7 +164,7 @@
 | TOOL-AUDIT-COVERAGE | tooling | `tools/audit_coverage.py:1` | 480 | P1 | IN_PROGRESS | - |
 | TOOL-AUDIT-COVERAGE-TEST | test_infrastructure | `tools/test_audit_coverage.py:1` | 211 | P1 | VERIFIED | COV-01 |
 | TOOL-V4-CURSOR-FULL-7-FIXES-TEST | test_infrastructure | `tools/test_v4_cursor_full_7_fixes.py:1` | 52 | P2 | IN_PROGRESS | - |
-| TOOL-BUILD-PAGES | tooling | `tools/build_pages_site.py:1` | 190 | P2 | IN_PROGRESS | - |
+| TOOL-BUILD-PAGES | tooling | `tools/build_pages_site.py:1` | 191 | P2 | IN_PROGRESS | - |
 | TOOL-ASSEMBLE-PAGES-PREVIEW | tooling | `tools/assemble_pages_preview.py:1` | 126 | P2 | READ | - |
 | TEST-ASSEMBLE-PAGES-PREVIEW | test | `tools/test_assemble_pages_preview.py:1` | 48 | P2 | READ | - |
 | TOOL-BUILD-VPM | tooling | `tools/build_vpm_bundle.py:1` | 104 | P1 | VERIFIED | COV-01, PARITY-01 |
@@ -180,7 +181,7 @@
 | TEST-SEVEN-LENS-CYCLE02-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-02-planner.json:1` | 78 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-CYCLE03-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-03-consumption.json:1` | 188 | P0 | IN_PROGRESS | - |
 | TEST-SEVEN-LENS-CYCLE04-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-04-tools-modals.json:1` | 133 | P0 | IN_PROGRESS | - |
-| TOOL-EXTRACT-UI | tooling | `tools/extract_ui_cores.py:1` | 539 | P2 | IN_PROGRESS | - |
+| TOOL-EXTRACT-UI | tooling | `tools/extract_ui_cores.py:1` | 549 | P2 | IN_PROGRESS | - |
 | TOOL-EXTRACT-ZHL | tooling | `tools/extract_zhl_core.py:1` | 124 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-INSERT-ZHL | tooling | `tools/insert_zhl_tier2.py:1` | 223 | P3 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-MERGE-CCR | tooling | `tools/merge_ccr_into_plus.py:1` | 477 | P3 | VERIFIED | COV-01, PARITY-01 |
@@ -189,7 +190,7 @@
 | TOOL-PATCH-TIER3 | tooling | `tools/patch_tier3_index.py:1` | 244 | P3 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-PATCH-VPM | tooling | `tools/patch_vpm_bundle_index.py:1` | 25 | P3 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-PATCH-ZHL | tooling | `tools/patch_zhl_engine.py:1` | 121 | P3 | VERIFIED | COV-01, PARITY-01 |
-| TOOL-SYNC-WWW | tooling | `tools/sync_www.py:1` | 147 | P1 | IN_PROGRESS | - |
+| TOOL-SYNC-WWW | tooling | `tools/sync_www.py:1` | 148 | P1 | IN_PROGRESS | - |
 | TOOL-UPDATE-VERSION | tooling | `tools/update_sw_version.py:1` | 101 | P2 | IN_PROGRESS | - |
 | TOOL-VENDOR | tooling | `tools/vendor_offline_assets.py:1` | 173 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-VERIFY-ASSETS | tooling | `tools/verify_site_assets.py:1` | 132 | P2 | VERIFIED | COV-01, PARITY-01 |
@@ -222,7 +223,7 @@
 | TOOL-V3-EXTRACT_UI_CSS-PY | tooling | `tools/extract_ui_css.py:1` | 139 | P2 | IN_PROGRESS | - |
 | TOOL-V3-MIGRATE_V3-PY | tooling | `tools/audit/migrate_v3.py:1` | 410 | P2 | IN_PROGRESS | - |
 | TOOL-V3-RUN_UI_STRUCTURE_SUITE-PY | tooling | `tools/run_ui_structure_suite.py:1` | 94 | P2 | VERIFIED | COV-01, PARITY-01 |
-| TOOL-V3-UI_ASSETS-PY | tooling | `tools/ui_assets.py:1` | 60 | P2 | IN_PROGRESS | - |
+| TOOL-V3-UI_ASSETS-PY | tooling | `tools/ui_assets.py:1` | 62 | P2 | IN_PROGRESS | - |
 | TOOL-V3-VERIFY_SW_ASSETS-PY | tooling | `tools/verify_sw_assets.py:1` | 59 | P2 | VERIFIED | COV-01, PARITY-01 |
 | TOOL-V3-TEST_UI_STRUCTURE_SUITE-PY | tooling | `tools/test_ui_structure_suite.py:1` | 98 | P2 | IN_PROGRESS | - |
 | TOOL-V3-RESET-CYCLES-V3-PY | tooling | `tools/audit/reset_cycles_v3.py:1` | 219 | P2 | VERIFIED | COV-01, PARITY-01 |

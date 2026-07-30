@@ -2283,18 +2283,19 @@ function buildProfileLegendRowsFromWaypoints() {
 // Fix: re-draw the source canvas onto a 150 DPI print-resolution canvas
 // (max ~1240 px wide for A4) before calling toDataURL.
 function _canvasToDataURLForPDF(srcCanvas, targetMM) {
-  const PDF_DPI = 150; // sufficient for print; 72 DPI is screen
+  if (window.LSPGraphEngine?.captureCanvasForPDF) {
+    return window.LSPGraphEngine.captureCanvasForPDF(srcCanvas, targetMM, { dpi: 220 });
+  }
+  const PDF_DPI = 220;
   const PDF_MM_PER_INCH = 25.4;
-  const targetPx = Math.round(targetMM * PDF_DPI / PDF_MM_PER_INCH);
-  const srcW = srcCanvas.width;
-  const srcH = srcCanvas.height;
-  const scale = Math.min(1, targetPx / srcW); // never upscale
-  const outW = Math.round(srcW * scale);
-  const outH = Math.round(srcH * scale);
+  const outW = Math.round(targetMM * PDF_DPI / PDF_MM_PER_INCH);
+  const outH = Math.round(outW * srcCanvas.height / Math.max(1, srcCanvas.width));
   const tmp = document.createElement('canvas');
-  tmp.width  = outW;
+  tmp.width = outW;
   tmp.height = outH;
   const ctx = tmp.getContext('2d');
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
   ctx.drawImage(srcCanvas, 0, 0, outW, outH);
   return { dataURL: tmp.toDataURL('image/png'), w: outW, h: outH };
 }
@@ -2414,9 +2415,13 @@ function showPDFExportDialog() {
 function _drawForPDF(drawFn) {
   const body = document.body;
   const wasLight = body.classList.contains('light-theme');
+  const previousGraphDpr = window._lspGraphExportDpr;
+  window._lspGraphExportDpr = 2.5;
   if (!wasLight) body.classList.add('light-theme');
   try { drawFn(); } finally {
     if (!wasLight) body.classList.remove('light-theme');
+    if (previousGraphDpr == null) delete window._lspGraphExportDpr;
+    else window._lspGraphExportDpr = previousGraphDpr;
   }
 }
 

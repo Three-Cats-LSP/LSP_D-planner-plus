@@ -13,15 +13,9 @@
 
 // ─── HiDPI canvas setup ─────────────────────────────────────────────────────
 function setupHiDPI(canvas) {
-  const dpr  = window.devicePixelRatio || 1;
-  const rect = canvas.getBoundingClientRect();
-  const w    = rect.width  || canvas.getAttribute('width')  || 700;
-  const h    = rect.height || canvas.getAttribute('height') || 240;
-  canvas.width  = Math.round(w * dpr);
-  canvas.height = Math.round(h * dpr);
-  const ctx = canvas.getContext('2d');
-  ctx.scale(dpr, dpr);
-  return { ctx, W: +w, H: +h };
+  return window.LSPGraphEngine?.setupHiDPI
+    ? window.LSPGraphEngine.setupHiDPI(canvas)
+    : { ctx: canvas.getContext('2d'), W: +canvas.width, H: +canvas.height };
 }
 
 // ── Graph zoom/pan state ─────────────────────────────────────────────────
@@ -143,16 +137,10 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
   const simple = opts?.simple === true && canvasId === 'decoProfileCanvas';
-  const { ctx, W, H } = setupHiDPI(canvas);
+  const engine = window.LSPGraphEngine;
+  const { ctx, W, H } = engine?.setupHiDPI ? engine.setupHiDPI(canvas) : setupHiDPI(canvas);
   const isMobile  = W < 520;
-  const PAD = { top: 10, right: 6, bottom: 28, left: 40 };
-  // Mobile overrides BEFORE PW/PH are computed
-  if (isMobile) {
-    PAD.top    = 6;
-    PAD.right  = 2;
-    PAD.bottom = 14;
-    PAD.left   = 22;
-  }
+  const PAD = engine?.plotPadding ? engine.plotPadding('profile', W, H) : { top: 10, right: 6, bottom: 28, left: 40 };
   const PW = W - PAD.left - PAD.right;
   const PH = H - PAD.top - PAD.bottom;
 
@@ -178,16 +166,18 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
   const haloRadius = isMobile ? 5 : 8;
   // (PAD already set above before PW/PH computation)
 
-  const bg      = _lspCssVar('--surface-2', isLight ? '#f4f6fa' : '#0e0f11');
-  const grid    = isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.08)';
-  const text    = _lspCssVar('--text', isLight ? '#1a202c' : '#e2e8f0');
-  const muted   = _lspCssVar('--text-muted', isLight ? '#4a5568' : '#8892a4');
-  const accent  = _lspCssVar('--accent', isLight ? '#0891b2' : '#22d3ee');
-  const red     = _lspCssVar('--red', isLight ? '#dc2626' : '#f87171');
-  const green   = _lspCssVar('--green', isLight ? '#16a34a' : '#4ade80');
-  const orange  = _lspCssVar('--orange', isLight ? '#b45309' : '#fbbf24');
-  const gasSwitchBg = '#d6ff00';
-  const gasSwitchText = '#166534';
+  const palette = engine?.theme ? engine.theme(isLight) : null;
+  const bg      = palette?.bg ?? _lspCssVar('--surface-2', isLight ? '#f4f6fa' : '#0e0f11');
+  const grid    = palette?.grid ?? (isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.08)');
+  const text    = palette?.text ?? _lspCssVar('--text', isLight ? '#1a202c' : '#e2e8f0');
+  const muted   = palette?.muted ?? _lspCssVar('--text-muted', isLight ? '#4a5568' : '#8892a4');
+  const accent  = palette?.accent ?? _lspCssVar('--accent', isLight ? '#0891b2' : '#22d3ee');
+  const red     = palette?.red ?? _lspCssVar('--red', isLight ? '#dc2626' : '#f87171');
+  const green   = palette?.green ?? _lspCssVar('--green', isLight ? '#16a34a' : '#4ade80');
+  const orange  = palette?.orange ?? _lspCssVar('--orange', isLight ? '#b45309' : '#fbbf24');
+  const gasSwitchLine = palette?.gasSwitchLine ?? _lspCssVar('--gas-switch', isLight ? '#eab308' : '#fbbf24');
+  const gasSwitchBg = palette?.gasSwitchBg ?? '#d6ff00';
+  const gasSwitchText = palette?.gasSwitchText ?? '#166534';
   const profileLine = accent;
 
   ctx.fillStyle = bg;
@@ -259,45 +249,38 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
   ctx.restore(); // end deco shading clip
   }
 
-  // ── Gas switch flags — rendered after profile line so labels stay above the graph ──
+  // ── Gas switch guides — full-height dashed lines make switch timing readable. ──
   function drawGasSwitchFlags() {
     const switchWpsVis = waypoints.filter(wp => wp.type === 'gasswitch' && wp.t >= tMin && wp.t <= tMax);
     switchWpsVis.forEach((wp, si) => {
-      const x = toX(wp.t), yDepth = toY(wp.depth || 0), flagH = isMobile ? 11 : 13;
-      const rawLabel = wp.gasLabel ? '⇄ ' + wp.gasLabel : '⇄';
-      const maxLen = isMobile ? 9 : 12, displayLabel = rawLabel.length > maxLen ? rawLabel.slice(0, maxLen) : rawLabel;
-      const charW = isMobile ? 4.5 : 5.5, flagW = Math.max(22, displayLabel.length * charW + 8);
-
-      // Stagger flags near the top, but keep each one above its graph line where possible.
-      const row = si % 2, preferredTop = PAD.top + row * (flagH + 3) + 1, aboveLineTop = yDepth - flagH - 4;
-      const flagTopY = Math.max(PAD.top + 1, Math.min(preferredTop, aboveLineTop));
+      const x = toX(wp.t);
+      const yDepth = toY(wp.depth || 0);
+      const rawLabel = wp.gasLabel ? '⇄ ' + wp.gasLabel : '⇄ Gas';
+      const maxLen = isMobile ? 10 : 14;
+      const displayLabel = rawLabel.length > maxLen ? rawLabel.slice(0, maxLen) : rawLabel;
+      const labelY = Math.max(PAD.top + 9, Math.min(PAD.top + PH - 5 - (si % 2) * 12, yDepth + 12));
+      const labelX = Math.max(PAD.left + 2, Math.min(PAD.left + PW - 4, x + 4));
 
       ctx.save();
-      ctx.strokeStyle = gasSwitchBg;
-      ctx.lineWidth = 1;
-      ctx.setLineDash([3, 3]);
-      ctx.globalAlpha = 0.7;
+      ctx.strokeStyle = gasSwitchLine;
+      ctx.lineWidth = isMobile ? 1 : 1.2;
+      ctx.setLineDash([4, 4]);
+      ctx.globalAlpha = isLight ? 0.82 : 0.9;
       ctx.beginPath();
-      ctx.moveTo(x, flagTopY + flagH);
-      ctx.lineTo(x, yDepth);
+      ctx.moveTo(x, PAD.top);
+      ctx.lineTo(x, PAD.top + PH);
       ctx.stroke();
       ctx.setLineDash([]);
+
+      ctx.beginPath();
+      ctx.arc(x, yDepth, isMobile ? 2.5 : 3.2, 0, Math.PI * 2);
+      ctx.fillStyle = gasSwitchLine;
+      ctx.fill();
       ctx.globalAlpha = 1;
-      ctx.restore();
-
-      const nearRight = x + flagW + 2 > PAD.left + PW, fx = nearRight ? x - flagW : x + 1;
-
-      ctx.save();
-      ctx.fillStyle = gasSwitchBg;
-      ctx.globalAlpha = 0.98;
-      if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(fx, flagTopY, flagW, flagH, 2); ctx.fill(); }
-      else { ctx.fillRect(fx, flagTopY, flagW, flagH); }
-
+      ctx.font = `700 ${isMobile ? 6.5 : 8}px "JetBrains Mono",monospace`;
+      ctx.textAlign = labelX > PAD.left + PW - 40 ? 'right' : 'left';
       ctx.fillStyle = gasSwitchText;
-      ctx.globalAlpha = 1;
-      ctx.font = `700 ${isMobile ? 6 : 7}px "JetBrains Mono",monospace`;
-      ctx.textAlign = 'left';
-      ctx.fillText(displayLabel, fx + 3, flagTopY + flagH - 3);
+      ctx.fillText(displayLabel, ctx.textAlign === 'right' ? x - 4 : labelX, labelY);
       ctx.restore();
     });
   }

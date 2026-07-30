@@ -51,6 +51,7 @@ ROOT_FILES = [
     "gas-plan-core.js",
     "gas-cards-core.js",
     "export-core.js",
+    "dive-graph-engine.js",
     "plot-core.js",
     "gf-curve-core.js",
     "contingency-core.js",

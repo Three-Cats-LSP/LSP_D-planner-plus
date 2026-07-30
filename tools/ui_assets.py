@@ -32,6 +32,7 @@ PAGES_UI_ASSETS: tuple[str, ...] = (
     "gas-plan-core.js",
     "gas-cards-core.js",
     "export-core.js",
+    "dive-graph-engine.js",
     "plot-core.js",
     "gf-curve-core.js",
     "contingency-core.js",
@@ -55,6 +56,7 @@ SW_REQUIRED_UI_SCRIPTS: tuple[str, ...] = (
     "zhl-headless-adapter.js",
     "planner-shell.js",
     "gas-cards-core.js",
+    "dive-graph-engine.js",
     "plot-core.js",
     "gf-curve-core.js",
 )

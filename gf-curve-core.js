@@ -12,16 +12,10 @@
 function drawGFCurve() {
   const canvas = document.getElementById('gfCurveCanvas');
   if (!canvas) return;
-  const { ctx, W, H } = setupHiDPI(canvas);
+  const engine = window.LSPGraphEngine;
+  const { ctx, W, H } = engine?.setupHiDPI ? engine.setupHiDPI(canvas) : setupHiDPI(canvas);
   const isMobile = W < 520;
-  const PAD = { top: 10, right: 6, bottom: 28, left: 40 };
-  // Mobile overrides BEFORE PW/PH are computed
-  if (isMobile) {
-    PAD.top    = 6;
-    PAD.right  = 2;
-    PAD.bottom = 20;
-    PAD.left   = 30;
-  }
+  const PAD = engine?.plotPadding ? engine.plotPadding('gf', W, H) : { top: 10, right: 6, bottom: 28, left: 40 };
   const PW = W - PAD.left - PAD.right;
   const PH = H - PAD.top - PAD.bottom;
 
@@ -32,16 +26,17 @@ function drawGFCurve() {
   const labelFont = isMobile ? '500 8px "JetBrains Mono",monospace'    : '600 11px "JetBrains Mono",monospace';
   const axisFont  = isMobile ? '300 7px "Outfit",sans-serif'           : '300 10.5px "Outfit",sans-serif';
   const dotRadius = isMobile ? 3.5 : 5.8;
-  const graphBg = _lspCssVar('--surface-2', isLight ? '#f4f6fa' : '#0f1117');
+  const palette = engine?.theme ? engine.theme(isLight) : null;
+  const graphBg = palette?.bg ?? _lspCssVar('--surface-2', isLight ? '#f4f6fa' : '#0f1117');
   ctx.fillStyle  = graphBg;
   ctx.fillRect(0, 0, W, H);
 
-  const textColor   = _lspCssVar('--text', isLight ? '#1a202c' : '#e2e8f0');
-  const gridColor   = isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.08)';
-  const accentColor = _lspCssVar('--accent', isLight ? '#0891b2' : '#22d3ee');
-  const greenColor  = _lspCssVar('--green', isLight ? '#16a34a' : '#4ade80');
-  const redColor    = _lspCssVar('--red', isLight ? '#dc2626' : '#f87171');
-  const orangeColor = _lspCssVar('--orange', isLight ? '#b45309' : '#fbbf24');
+  const textColor   = palette?.text ?? _lspCssVar('--text', isLight ? '#1a202c' : '#e2e8f0');
+  const gridColor   = palette?.grid ?? (isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.08)');
+  const accentColor = palette?.accent ?? _lspCssVar('--accent', isLight ? '#0891b2' : '#22d3ee');
+  const greenColor  = palette?.green ?? _lspCssVar('--green', isLight ? '#16a34a' : '#4ade80');
+  const redColor    = palette?.red ?? _lspCssVar('--red', isLight ? '#dc2626' : '#f87171');
+  const orangeColor = palette?.orange ?? _lspCssVar('--orange', isLight ? '#b45309' : '#fbbf24');
 
   // ── Read deco stops from table (depth in cells[1], stop time cells[2], data-phase) ──
   const stops = [];

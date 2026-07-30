@@ -139,6 +139,16 @@ UI_CORE_BLOCKS: tuple[UiCoreBlock, ...] = (
 """,
     ),
     UiCoreBlock(
+        "dive-graph-engine",
+        "dive-graph-engine.js",
+        """/**
+ * Shared graph rendering primitives for dive-profile and GF graphs.
+ * Loaded by index.html before plot-core and gf-curve-core.
+ * Globals written: window.LSPGraphEngine, setupHiDPI.
+ */
+""",
+    ),
+    UiCoreBlock(
         "plot-core",
         "plot-core.js",
         """/**
