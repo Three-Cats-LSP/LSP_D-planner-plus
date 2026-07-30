@@ -124,7 +124,7 @@ function _renderProfileLegendTableHtml(rows, colors) {
         <td style="padding:5px 6px;color:${row.color};font-weight:600;">${row.num}</td>
         <td style="padding:5px 6px;color:${row.color};">${row.stop}</td>
         <td style="padding:5px 6px;text-align:right;color:var(--muted);">${row.run} min</td>
-        <td style="padding:5px 6px;text-align:right;color:${row.ppo2 != null ? pColor : 'var(--muted)'};">${row.ppo2 != null ? row.ppo2.toFixed(2) : 'â€”'}</td>
+        <td style="padding:5px 6px;text-align:right;color:${row.ppo2 != null ? pColor : 'var(--muted)'};">${row.ppo2 != null ? row.ppo2.toFixed(2) : '—'}</td>
       </tr>`;
     }).join('')}</tbody>
   </table>`;
@@ -870,7 +870,7 @@ function attachDiveProfileInteraction(canvasId) {
 
   function _profileRoundMin(value) {
     const n = Number(value);
-    if (!Number.isFinite(n)) return 'â€”';
+    if (!Number.isFinite(n)) return '—';
     const rounded = Math.round(n * 10) / 10;
     return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
   }
@@ -879,8 +879,8 @@ function attachDiveProfileInteraction(canvasId) {
     const totals = document.querySelector('#decoTableBody tr.deco-totals-row td[data-run]')
       || document.querySelector('#decoTableBody tr.row-summary td[data-run]');
     return {
-      tts: totals?.dataset?.tts || 'â€”',
-      surfGF: totals?.dataset?.surfgf || 'â€”',
+      tts: totals?.dataset?.tts || '—',
+      surfGF: totals?.dataset?.surfgf || '—',
     };
   }
 
@@ -940,7 +940,7 @@ function attachDiveProfileInteraction(canvasId) {
     if (units === 'imperial') {
       const vol = typeof gpVolDisp === 'function' ? gpVolDisp(litres) : Math.round(litres / 28.3168);
       const pres = typeof gpPresDisp === 'function' ? gpPresDisp(bar) : Math.round(bar * 14.5038);
-      return `${vol} ${typeof lspVolUnit === 'function' ? lspVolUnit() : 'ftÂ³'} / ${pres} psi`;
+      return `${vol} ${typeof lspVolUnit === 'function' ? lspVolUnit() : 'ft³'} / ${pres} psi`;
     }
     return `${Math.round(litres)} L / ${Math.round(bar)} bar`;
   }
@@ -964,13 +964,12 @@ function attachDiveProfileInteraction(canvasId) {
     html += _profileTooltipRow('Depth', `${dDisp} ${du}`);
     html += _profileTooltipRow('TTS', `${_profileRoundMin(ttsRemaining)} min`);
     html += _profileTooltipRow('Ceiling', `${ceilDisp} ${du}`);
-    html += _profileTooltipRow('Surf GF', totals.surfGF || 'â€”');
+    html += _profileTooltipRow('Surf GF', totals.surfGF || '—');
     html += _profileTooltipRow('Gas', activeGas ? activeGas.toUpperCase() : '—');
-    html += _profileTooltipRow('PPO2', ppo2 != null ? ppo2.toFixed(2) : 'â€”');
+    html += _profileTooltipRow('PPO2', ppo2 != null ? ppo2.toFixed(2) : '—');
     tooltip.innerHTML = html;
     tooltip.style.display = 'block';
-    const isDecoPhase = phase === 'deco' || phase === 'safety' || ceilDisp > 0;
-    tooltip.style.borderColor = isDecoPhase ? 'var(--red)' : 'var(--accent)';
+    tooltip.style.borderColor = 'var(--accent)';
 
     // Position tooltip - keep inside canvas
     const W = rect.width, H = rect.height;

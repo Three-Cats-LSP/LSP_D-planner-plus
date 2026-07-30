@@ -79,7 +79,7 @@
 | UI-GRAPH-ENGINE | ui_core | `dive-graph-engine.js:1` | 141 | P2 | IN_PROGRESS | - |
 | UI-PLOT-RENDER | ui_core | `plot-core.js:133` | 422 | P2 | IN_PROGRESS | - |
 | UI-PLOT-WAYPOINTS | ui_core | `plot-core.js:555` | 203 | P2 | IN_PROGRESS | REG-138 |
-| UI-TOOLS-PROFILE | ui_core | `plot-core.js:758` | 375 | P2 | IN_PROGRESS | - |
+| UI-TOOLS-PROFILE | ui_core | `plot-core.js:758` | 374 | P2 | IN_PROGRESS | - |
 | UI-TOOLS-GF | web_runtime | `gf-curve-core.js:1` | 312 | P2 | IN_PROGRESS | - |
 | ENG-ZHL-PHYSICS | engine | `zhl-physics-core.js:1` | 189 | P1 | VERIFIED | REG-01, REG-22, REG-23 |
 | ENG-ZHL-GAS | engine | `zhl-gas-core.js:1` | 184 | P1 | VERIFIED | REG-10, REG-11, REG-12, REG-13, REG-14 |

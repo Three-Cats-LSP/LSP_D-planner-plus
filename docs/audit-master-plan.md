@@ -68,7 +68,7 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R19 | UI-VPM-RENDER, UI-ZHL-RESULTS | 969 | - | V4 R19: VPM/ZHL results rendering risk-first READ; current lines: 969; sessions: 2 |
 | R20 | APP-EXPORT | 3410 | - | V4 R20: Export text/PDF risk-first READ; current lines: 3410; sessions: 6 |
 | R21 | UI-GRAPH-ENGINE, UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 766 | - | V4 R21: Plot render and waypoint graph risk-first READ; current lines: 766; sessions: 2 |
-| R22 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 868 | - | V4 R22: Profile tool and plot init risk-first READ; current lines: 868; sessions: 2 |
+| R22 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 867 | - | V4 R22: Profile tool and plot init risk-first READ; current lines: 868; sessions: 2 |
 | R23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 395 | - | V4 R23: Runtime bootstrap and app init risk-first READ; current lines: 395; sessions: 1 |
 | R24 | UI-BOOT | 2461 | - | V4 R24: index.html shell boot region risk-first READ; current lines: 2461; sessions: 5 |
 | R25 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 450 | - | V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 450; sessions: 1 |
