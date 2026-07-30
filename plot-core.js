@@ -1,5 +1,5 @@
-/**
- * Dive profile graph — canvas render, waypoints, zoom/pan interaction.
+﻿/**
+ * Dive profile graph â€” canvas render, waypoints, zoom/pan interaction.
  * Loaded by index.html before main inline script.
  * Globals read: units, document, window._decoGasSegments, window._decoCeilingWps,
  *   _lspCssVar, _syncGraphsSectionHeads, scheduleDecoScheduleStackSync (indirect)
@@ -7,19 +7,19 @@
  *   window._plannerGasColorMap, window._plannerCeilingWps, _graphZoom, _graphOpts
  */
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // DIVE PROFILE GRAPH
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
-// ─── HiDPI canvas setup ─────────────────────────────────────────────────────
+// â”€â”€â”€ HiDPI canvas setup â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function setupHiDPI(canvas) {
   return window.LSPGraphEngine?.setupHiDPI
     ? window.LSPGraphEngine.setupHiDPI(canvas)
     : { ctx: canvas.getContext('2d'), W: +canvas.width, H: +canvas.height };
 }
 
-// ── Graph zoom/pan state ─────────────────────────────────────────────────
-const _graphZoom = {}; // canvasId → { tMin, tMax, dMin, dMax }
+// â”€â”€ Graph zoom/pan state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+const _graphZoom = {}; // canvasId â†’ { tMin, tMax, dMin, dMax }
 
 const _profileDrawQueue = {};
 
@@ -84,8 +84,8 @@ function _buildProfileLegendTableRows(waypoints, colors) {
       const depthTxt = wp.depthLabel || _profileLegendDepthLabel(wp.depth || 0);
       rows.push({
         kind: 'gasswitch',
-        num: '⇄',
-        stop: `${depthTxt}${gas ? ' · ' + gas : ''}`,
+        num: 'â‡„',
+        stop: `${depthTxt}${gas ? ' Â· ' + gas : ''}`,
         run: Math.round(wp.t * 10) / 10,
         ppo2: wp.ppo2,
         color: 'var(--gas-switch)',
@@ -114,7 +114,7 @@ function _renderProfileLegendTableHtml(rows, colors) {
       <th style="padding:5px 6px;text-align:left;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">#</th>
       <th style="padding:5px 6px;text-align:left;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">Stop</th>
       <th style="padding:5px 6px;text-align:right;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">Run</th>
-      <th style="padding:5px 6px;text-align:right;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">ppO₂</th>
+      <th style="padding:5px 6px;text-align:right;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">ppOâ‚‚</th>
     </tr></thead>
     <tbody>${rows.map(row => {
       const pColor = row.ppo2 >= 1.6 ? red : row.ppo2 >= 1.4 ? orange : muted;
@@ -124,7 +124,7 @@ function _renderProfileLegendTableHtml(rows, colors) {
         <td style="padding:5px 6px;color:${row.color};font-weight:600;">${row.num}</td>
         <td style="padding:5px 6px;color:${row.color};">${row.stop}</td>
         <td style="padding:5px 6px;text-align:right;color:var(--muted);">${row.run} min</td>
-        <td style="padding:5px 6px;text-align:right;color:${row.ppo2 != null ? pColor : 'var(--muted)'};">${row.ppo2 != null ? row.ppo2.toFixed(2) : '—'}</td>
+        <td style="padding:5px 6px;text-align:right;color:${row.ppo2 != null ? pColor : 'var(--muted)'};">${row.ppo2 != null ? row.ppo2.toFixed(2) : 'â€”'}</td>
       </tr>`;
     }).join('')}</tbody>
   </table>`;
@@ -150,7 +150,7 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
   const _isMob    = W < 520;
   const rawMaxDepth  = (opts?.maxDepth || 10) * (_isMob ? 1.02 : 1.04);
   const rawTotalTime = opts?.totalTime || 60;
-  // ── Zoom state ──
+  // â”€â”€ Zoom state â”€â”€
   const zoom = _graphZoom[canvasId];
   const tMin = zoom ? zoom.tMin : 0;
   const tMax = zoom ? zoom.tMax : rawTotalTime;
@@ -193,7 +193,7 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
     ctx.clip();
   }
 
-  // ── Grid ──
+  // â”€â”€ Grid â”€â”€
   const depStep = isMobile
     ? (maxDepth > 40 ? 10 : 5)
     : (maxDepth > 80 ? 20 : 10);
@@ -219,13 +219,13 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
     ctx.fillText(t + 'min', x, PAD.top + PH + (isMobile ? 11 : 18));
   }
 
-  // ── Axes ──
+  // â”€â”€ Axes â”€â”€
   ctx.strokeStyle = isLight ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.15)';
   ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(PAD.left, PAD.top); ctx.lineTo(PAD.left, PAD.top + PH); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(PAD.left, PAD.top + PH); ctx.lineTo(PAD.left + PW, PAD.top + PH); ctx.stroke();
 
-  // ── Deco zone shading removed — gas fills + deco staircase are sufficient ──
+  // â”€â”€ Deco zone shading removed â€” gas fills + deco staircase are sufficient â”€â”€
   // (decoStops[0] reference kept for audit)
   if (!simple) {
   ctx.save(); clipToPlot();
@@ -287,7 +287,7 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
     });
   }
 
-  // ── Profile line with per-gas color zones ──
+  // â”€â”€ Profile line with per-gas color zones â”€â”€
   const pathWps = waypoints.filter(wp => wp.type !== 'gasswitch');
   const gasSegs    = (!simple && canvasId === 'decoProfileCanvas') ? window._decoGasSegments
                    : (!simple && canvasId === 'plannerProfileCanvas') ? window._plannerGasSegments : null;
@@ -297,7 +297,7 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
   if (pathWps.length > 1) {
     if (!simple && gasSegs && gasSegs.length >= 1) {
       // Draw per-gas colored segments
-      // Build a map of t → depth from pathWps for interpolation
+      // Build a map of t â†’ depth from pathWps for interpolation
       function depthAtT(t) {
         for (let i = 1; i < pathWps.length; i++) {
           if (pathWps[i].t >= t) {
@@ -309,8 +309,8 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
         return pathWps[pathWps.length-1].depth;
       }
 
-      // ── Draw fills first (all segments), then lines on top ──
-      // Pass 1: fills only — each clipped exactly to its time column, no overlap
+      // â”€â”€ Draw fills first (all segments), then lines on top â”€â”€
+      // Pass 1: fills only â€” each clipped exactly to its time column, no overlap
       gasSegs.forEach((seg, si) => {
         const pts = [];
         pts.push({ t: seg.fromT, depth: depthAtT(seg.fromT) });
@@ -354,7 +354,7 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
         ctx.restore();
       });
 
-      // Pass 2: profile lines — drawn without clip so segment joins are seamless
+      // Pass 2: profile lines â€” drawn without clip so segment joins are seamless
       // Draw one continuous path per gas (no gap at segment boundaries)
       gasSegs.forEach((seg) => {
         const pts = [];
@@ -396,12 +396,12 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
     }
   }
 
-  // ── Deco ceiling line overlay ──
+  // â”€â”€ Deco ceiling line overlay â”€â”€
   if (!simple) {
   const ceilWps = canvasId === 'decoProfileCanvas' ? window._decoCeilingWps
                : canvasId === 'plannerProfileCanvas' ? window._plannerCeilingWps : null;
   if (ceilWps && ceilWps.length > 1) {
-    // Draw only points where ceiling > 0 — no artificial lead point that causes vertical artefacts
+    // Draw only points where ceiling > 0 â€” no artificial lead point that causes vertical artefacts
     const activeCeil = ceilWps.filter(wp => wp.ceil > 0.5); // 0.5m threshold to avoid noise
     if (activeCeil.length > 1) {
       const visCeil = activeCeil.filter(wp => wp.t >= tMin - 0.1 && wp.t <= tMax + 0.1);
@@ -425,7 +425,7 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
   }
   }
 
-  // ── Stop dots with labels ──
+  // â”€â”€ Stop dots with labels â”€â”€
   const usedY = new Map(); // track used y positions per x-column to stagger labels
 
   waypoints.forEach(wp => {
@@ -460,7 +460,7 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
 
     if (!wp.label) return;
 
-    // On mobile: dots only — legend table below has all info, labels are too crowded
+    // On mobile: dots only â€” legend table below has all info, labels are too crowded
     if (isMobile) return;
     // On very tiny screens also skip
     if (W < 280) return;
@@ -470,7 +470,7 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
 
     ctx.font = labelFont;
     const labelW = ctx.measureText(fullLabel).width;
-    const ppTxt   = wp.ppo2 ? 'ppO₂ ' + wp.ppo2.toFixed(1) : '';
+    const ppTxt   = wp.ppo2 ? 'ppOâ‚‚ ' + wp.ppo2.toFixed(1) : '';
     ctx.font = monoFont;
     const ppW     = ppTxt ? ctx.measureText(ppTxt).width : 0;
     ctx.font = labelFont;
@@ -484,18 +484,18 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
     const lAlign = preferLeft ? 'right' : 'left';
     const lx     = preferLeft ? x - 7 : x + 7;
 
-    // ppO₂: opposite side from label; clamp so it never overflows canvas
-    // If label is left → ppO₂ wants right side, but guard against right-edge clip
+    // ppOâ‚‚: opposite side from label; clamp so it never overflows canvas
+    // If label is left â†’ ppOâ‚‚ wants right side, but guard against right-edge clip
     let ppAlign, ppx;
     if (preferLeft) {
-      // label on left → try ppO₂ on right
+      // label on left â†’ try ppOâ‚‚ on right
       if (x + 7 + ppW <= rightEdge) {
         ppAlign = 'left'; ppx = x + 7;
       } else {
         ppAlign = 'right'; ppx = rightEdge - 2; // pin to right edge
       }
     } else {
-      // label on right → try ppO₂ on left
+      // label on right â†’ try ppOâ‚‚ on left
       if (x - 7 - ppW >= PAD.left) {
         ppAlign = 'right'; ppx = x - 7;
       } else {
@@ -503,7 +503,7 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
       }
     }
 
-    // Vertical collision avoidance — bucket by label width for better grouping
+    // Vertical collision avoidance â€” bucket by label width for better grouping
     const labelH = isMobile ? 10 : 12;
     const lKey = Math.round(x / Math.max(labelW + 4, 20));
     if (!usedY.has(lKey)) usedY.set(lKey, []);
@@ -534,11 +534,11 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
 
   drawGasSwitchFlags();
 
-  // ── Axis label ──
+  // â”€â”€ Axis label â”€â”€
   ctx.fillStyle = muted; ctx.font = monoFont; ctx.textAlign = 'right';
   ctx.fillText('0' + _du, PAD.left - 5, PAD.top + 4);
 
-  // ── Mobile legend below graph ──
+  // â”€â”€ Mobile legend below graph â”€â”€
   const legendId = canvasId === 'decoProfileCanvas'
     ? 'decoProfileLegend'
     : canvasId === 'contingencyProfileCanvas'
@@ -551,7 +551,7 @@ function _drawDiveProfileCore(canvasId, waypoints, opts) {
   }
 }
 
-// ─── Build waypoints from Dive Planner (Rec mode) ───────────────────────────
+// â”€â”€â”€ Build waypoints from Dive Planner (Rec mode) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // AUDIT-UNIT:UI-PLOT-WAYPOINTS
 function drawPlannerProfile() {
   const canvas = document.getElementById('plannerProfileCanvas');
@@ -589,7 +589,7 @@ function drawPlannerProfile() {
   canvas.style.display = 'block';
   window._plannerWaypoints = wps;
 
-  // Simple single-gas segment for planner (no deco gas — NDL only)
+  // Simple single-gas segment for planner (no deco gas â€” NDL only)
   const pGasColor = _lspCssVar('--accent', '#22d3ee');
   window._plannerGasSegments = [{ fromT: 0, toT: Math.ceil(totalT), gas: 'AIR', color: pGasColor }];
   window._plannerGasColorMap = { 'AIR': pGasColor };
@@ -602,7 +602,7 @@ function drawPlannerProfile() {
   });
 }
 
-// ─── Build waypoints from Deco Schedule ─────────────────────────────────────
+// â”€â”€â”€ Build waypoints from Deco Schedule â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function _buildDecoProfileWaypoints(tbodyId = 'decoTableBody') {
   const depthVal  = parseFloat(getPlannerInputEl('decoDepth')?.value) || 0;
   const btVal     = parseFloat(getPlannerInputEl('decoBT')?.value)    || 0;
@@ -631,12 +631,14 @@ function _buildDecoProfileWaypoints(tbodyId = 'decoTableBody') {
 
   const wps = [{ t: 0, depth: 0, type: 'surface' }];
   let t = descentT;
-  wps.push({ t, depth: depthVal, type: 'bottom', dot: true, label: fmtDepLbl(depthVal) });
   const bottomRunRow = Array.from(tbody.querySelectorAll('tr[data-phase]'))
     .find(tr => ['bottom', 'level', 'lvl'].includes(phaseOf(tr)));
+  const bottomGas = bottomRunRow ? cellText(bottomRunRow, 'Mix') : null;
+  const bottomPpo2 = bottomRunRow ? parseFloat(cellText(bottomRunRow, 'PPO2')) || null : null;
+  wps.push({ t, depth: depthVal, type: 'bottom', dot: true, label: fmtDepLbl(depthVal), gas: bottomGas, ppo2: bottomPpo2 });
   const renderedBottomRun = bottomRunRow ? parseRunMin(cellText(bottomRunRow, 'Run')) : 0;
   t = renderedBottomRun > 0 ? renderedBottomRun : btVal;
-  wps.push({ t, depth: depthVal, type: 'bottom' });
+  wps.push({ t, depth: depthVal, type: 'bottom', gas: bottomGas, ppo2: bottomPpo2 });
 
   const labelledDepths = new Set();
   tbody.querySelectorAll('tr[data-phase]').forEach(tr => {
@@ -856,9 +858,19 @@ function attachDiveProfileInteraction(canvasId) {
     return `<div class="profile-tip-row"><span>${_profileTooltipEsc(label)}</span><strong>${_profileTooltipEsc(value)}</strong></div>`;
   }
 
+  function _profileGasAtTime(t) {
+    const segments = canvasId === 'plannerProfileCanvas' ? window._plannerGasSegments
+      : canvasId === 'decoProfileCanvas' ? window._decoGasSegments
+      : canvasId === 'contingencyProfileCanvas' ? window._contingencyGasSegments
+      : null;
+    if (!Array.isArray(segments)) return null;
+    const seg = segments.find(s => t >= Number(s.fromT || 0) - 0.001 && t <= Number(s.toT || 0) + 0.001);
+    return seg?.gas || null;
+  }
+
   function _profileRoundMin(value) {
     const n = Number(value);
-    if (!Number.isFinite(n)) return '—';
+    if (!Number.isFinite(n)) return 'â€”';
     const rounded = Math.round(n * 10) / 10;
     return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
   }
@@ -867,8 +879,8 @@ function attachDiveProfileInteraction(canvasId) {
     const totals = document.querySelector('#decoTableBody tr.deco-totals-row td[data-run]')
       || document.querySelector('#decoTableBody tr.row-summary td[data-run]');
     return {
-      tts: totals?.dataset?.tts || '—',
-      surfGF: totals?.dataset?.surfgf || '—',
+      tts: totals?.dataset?.tts || 'â€”',
+      surfGF: totals?.dataset?.surfgf || 'â€”',
     };
   }
 
@@ -928,7 +940,7 @@ function attachDiveProfileInteraction(canvasId) {
     if (units === 'imperial') {
       const vol = typeof gpVolDisp === 'function' ? gpVolDisp(litres) : Math.round(litres / 28.3168);
       const pres = typeof gpPresDisp === 'function' ? gpPresDisp(bar) : Math.round(bar * 14.5038);
-      return `${vol} ${typeof lspVolUnit === 'function' ? lspVolUnit() : 'ft³'} / ${pres} psi`;
+      return `${vol} ${typeof lspVolUnit === 'function' ? lspVolUnit() : 'ftÂ³'} / ${pres} psi`;
     }
     return `${Math.round(litres)} L / ${Math.round(bar)} bar`;
   }
@@ -938,7 +950,7 @@ function attachDiveProfileInteraction(canvasId) {
     if (!info) { hideTooltip(); return; }
     if (persist) tooltipPinned = true;
 
-    const { t, depth, gas, ppo2, cx, cy, rect, ceiling, totalTime } = info;
+    const { t, depth, gas, ppo2, phase, cx, cy, rect, ceiling, totalTime } = info;
     const du    = units === 'imperial' ? 'ft' : 'm';
     const dDisp = units === 'imperial' ? Math.round(depth * 3.28084) : Math.round(depth * 10) / 10;
     const ttsRemaining = Math.max(0, (Number(totalTime) || 0) - t);
@@ -946,19 +958,19 @@ function attachDiveProfileInteraction(canvasId) {
       ? (units === 'imperial' ? Math.round(ceiling * 3.28084) : Math.round(ceiling * 10) / 10)
       : 0;
     const totals = _profileTotalsForCanvas();
-    const consumedText = _profileConsumedText(gas);
+    const activeGas = gas || _profileGasAtTime(t);
     let html = '';
     html += _profileTooltipRow('RT', `${_profileRoundMin(t)} min`);
     html += _profileTooltipRow('Depth', `${dDisp} ${du}`);
     html += _profileTooltipRow('TTS', `${_profileRoundMin(ttsRemaining)} min`);
-    html += _profileTooltipRow('@+5', '— min (+—)');
     html += _profileTooltipRow('Ceiling', `${ceilDisp} ${du}`);
-    html += _profileTooltipRow('Surf GF', totals.surfGF || '—');
-    html += _profileTooltipRow('Gas', gas ? gas.toUpperCase() : '—');
-    html += _profileTooltipRow('PPO2', ppo2 != null ? ppo2.toFixed(2) : '—');
-    if (consumedText) html += _profileTooltipRow('Consumed', consumedText);
+    html += _profileTooltipRow('Surf GF', totals.surfGF || 'â€”');
+    html += _profileTooltipRow('Gas', activeGas ? activeGas.toUpperCase() : '—');
+    html += _profileTooltipRow('PPO2', ppo2 != null ? ppo2.toFixed(2) : 'â€”');
     tooltip.innerHTML = html;
     tooltip.style.display = 'block';
+    const isDecoPhase = phase === 'deco' || phase === 'safety' || ceilDisp > 0;
+    tooltip.style.borderColor = isDecoPhase ? 'var(--red)' : 'var(--accent)';
 
     // Position tooltip - keep inside canvas
     const W = rect.width, H = rect.height;
@@ -1030,7 +1042,7 @@ function attachDiveProfileInteraction(canvasId) {
     drawDiveProfile(canvasId, data.waypoints, data.opts);
   }, { passive: false });
 
-  // ── Double-click: reset zoom ──
+  // â”€â”€ Double-click: reset zoom â”€â”€
   overlay.addEventListener('dblclick', e => {
     e.preventDefault();
     hideTooltip(true);
@@ -1039,7 +1051,7 @@ function attachDiveProfileInteraction(canvasId) {
     if (data) drawDiveProfile(canvasId, data.waypoints, data.opts);
   });
 
-  // ── Drag to pan ──
+  // â”€â”€ Drag to pan â”€â”€
   let _dragStart = null;
   let _dragMoved = false;
   overlay.addEventListener('mousedown', e => {
@@ -1080,7 +1092,7 @@ function attachDiveProfileInteraction(canvasId) {
     showTooltip(e.clientX, e.clientY, true);
   });
 
-  // ── Pinch to zoom (touch) ──
+  // â”€â”€ Pinch to zoom (touch) â”€â”€
   let _pinchDist = null;
   let _pinchZoomStart = null;
   overlay.addEventListener('touchstart', e => {

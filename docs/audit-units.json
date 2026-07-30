@@ -2585,7 +2585,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-RENDER"
       },
-      "fingerprint": "1ab0c442bd8a6cff0d227a14b70f03899dc56a03eb378eaa50d2a29368abe7e4",
+      "fingerprint": "36e265421fd8344e9e3a863e25a09d0633ca1558c1a3617a2bdf8952eaae6f78",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2602,7 +2602,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PLOT-WAYPOINTS"
       },
-      "fingerprint": "5e22d947ee7c813cbe3809d8bcdf5cf4913ee066edbf9ae90f04d260fbc9de4e",
+      "fingerprint": "3da0a0452195b94d30c618dc201bf07d2dabd025ba2ba3d21d4874548bc81f27",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2671,7 +2671,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-TOOLS-PROFILE"
       },
-      "fingerprint": "fdd9a9a64ed71d669e2a5592ff2ec4e72168923e1ec861a348e43f77d115bc9b",
+      "fingerprint": "7e552dd6a7270d287f34471b798fddfe06f0d09f2a7972b6068af5a53c4e23e8",
       "last_read_fingerprint": null,
       "audit_issue": 157,
       "evidence": [],
@@ -6126,25 +6126,25 @@
     },
     {
       "cycle": "R21",
-      "max_new_application_lines": 764,
+      "max_new_application_lines": 766,
       "application_units": [
         "UI-GRAPH-ENGINE",
         "UI-PLOT-RENDER",
         "UI-PLOT-WAYPOINTS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R21: Plot render and waypoint graph risk-first READ; current lines: 764; sessions: 2",
+      "acceptance": "V4 R21: Plot render and waypoint graph risk-first READ; current lines: 766; sessions: 2",
       "min_review_sessions": 2
     },
     {
       "cycle": "R22",
-      "max_new_application_lines": 858,
+      "max_new_application_lines": 868,
       "application_units": [
         "UI-TOOLS-PROFILE",
         "UI-PLOT-INIT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R22: Profile tool and plot init risk-first READ; current lines: 858; sessions: 2",
+      "acceptance": "V4 R22: Profile tool and plot init risk-first READ; current lines: 868; sessions: 2",
       "min_review_sessions": 2
     },
     {
