@@ -326,6 +326,7 @@ MIT. You may use, modify, and distribute this project under the terms of the MIT
 ## Third-Party Assets
 
 - Oxygen icon by Flaticon: https://www.flaticon.com/free-icon/oxygen_6770314
+- Dive Type icon by Flaticon: https://www.flaticon.com/free-icon/dive_6648136
 
 ## Links
 

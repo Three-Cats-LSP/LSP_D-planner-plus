@@ -1979,7 +1979,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "d24d6e5c5ab80e28166fe4bb2cfa0b34e8694a264398fd53c59f71b6fa3bf5b3",
+      "fingerprint": "7e0b3f4d3099ea346784b1700019b81436e1c2ae5d885389c3ac8da101ea9bb9",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2024,7 +2024,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "72478ed8f13d543c479c1d299431060583ef7e4577b64d67705209b9196d4667",
+      "fingerprint": "7b1ab3a0a4b3bf85748d8d0c35ce29bda3e0b501b4b92a2cbab57f0e40f3ad4d",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2106,7 +2106,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "fc9646359c2f8e16c482df1456b50ea99e3d85a21cf96546db927e0b9b987d3e",
+      "fingerprint": "391061b9e601099e058ea3a856ba2a9ad86ce4798053f30569395d8a66e2e0de",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2136,7 +2136,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1287bbe9a56b136acec2004dcd0433002f78dc2d314d58b7bf35791658dc9559",
+      "fingerprint": "3d568f6cd949ac6ecfd851de40823ea16789684f664eaeeb65f901a1c9a54da6",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],

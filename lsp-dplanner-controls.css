@@ -147,11 +147,11 @@
  vertical-align: -2px;
 }
 
-.planner-title-icon--oxygen {
+.planner-title-icon--dive {
  background: currentColor;
  filter: none;
- -webkit-mask: url("vendor/icons/oxygen-6770314.png") center / contain no-repeat;
- mask: url("vendor/icons/oxygen-6770314.png") center / contain no-repeat;
+ -webkit-mask: url("vendor/icons/dive-6648136.png") center / contain no-repeat;
+ mask: url("vendor/icons/dive-6648136.png") center / contain no-repeat;
 }
 
 .planner-section-title {
