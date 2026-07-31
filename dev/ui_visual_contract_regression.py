@@ -292,6 +292,7 @@ CAPTURE_JS = r"""
   const statusRed = resolveColor(root.getPropertyValue('--status-red'));
   const decoPlanCard = document.querySelector('#resultsPanel .deco-plan-card');
   const hazardAlert = document.querySelector('#resultsPanel #decoAlerts .alert.deco, #resultsPanel .gas-consumption-narcotic .alert.narcotic-warn');
+  const narcoticAlert = document.querySelector('#resultsPanel .gas-consumption-narcotic .alert.narcotic-warn');
   const decoPlanCardStyle = decoPlanCard ? {
     background: rgb(style(decoPlanCard, 'backgroundColor')),
     border: rgb(style(decoPlanCard, 'borderTopColor')),
@@ -318,6 +319,8 @@ CAPTURE_JS = r"""
     decoPillColors: decoPills.map(el => rgb(style(el, 'color'))),
     decoPlanCardStyle,
     hazardAlertStyle,
+    hazardAlertText: (hazardAlert?.textContent || '').replace(/\s+/g, ' ').trim(),
+    narcoticAlertText: (narcoticAlert?.textContent || '').replace(/\s+/g, ' ').trim(),
     hasTravelPill: pills.some(el => el.classList.contains('travel-gas')),
     switchRowCount: switchRows.length,
     switchCellColors: switchPhaseCells.map(cellTextColor),
@@ -2107,6 +2110,8 @@ def main() -> int:
         and all(color == c["expectedDecoPillText"] for color in c["decoPillColors"])
         and c["decoPlanCardStyle"]
         and c["hazardAlertStyle"]
+        and 'Gas Mix 1' not in c["narcoticAlertText"]
+        and 'Bottom Gas: "Air"' in c["narcoticAlertText"]
         and c["decoPlanCardStyle"]["background"] != c["hazardAlertStyle"]["background"]
         and c["decoPlanCardStyle"]["border"] != c["hazardAlertStyle"]["border"]
         and c["decoPlanCardStyle"]["titleColor"] == "rgb(255,68,51)"

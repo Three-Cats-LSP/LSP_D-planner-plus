@@ -2141,7 +2141,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "de3b3c3ad12d030b0e2b47336b2ef41ed09bd6c55603d7a0d85e412b22931e50",
+      "fingerprint": "1c5da8b482e8556172a51b38e9780f505f218a81c665df0a4db85954a7ea5322",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2268,7 +2268,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "fe11c09f8178e665eb1671ab064b0a03c11652ed286fb9f5a25a538bb1c6fe74",
+      "fingerprint": "49e02f7f28883ab2d6c78a67c383e6cfc76784511fa686829e27603b6a90540a",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2298,7 +2298,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "bee4d12e48d5f8e42f50dc13b47cef3032d4ac7a8dd7d90e927ffee6505d9780",
+      "fingerprint": "bb1252311081037fb76b2663ab5488663c76dc1e61f48cf1d4b95785b3a70031",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3174,7 +3174,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "47cdce315f22b802a6399d841f0e2366410550e7572cfc9c59c9129c3d3dcac2",
+      "fingerprint": "e7f4085ca829a80b5f67da695757c896aad203bcf4f8319dff281e582dbe3b2d",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -6036,7 +6036,7 @@
         "REG-137",
         "REG-138"
       ],
-      "fingerprint": "84957466332137b22689c948dfb94f1b9a67b082b38db5618b1c8420f0c0fbda",
+      "fingerprint": "3cbbec30a2e56d6e72a46c328620240aa16e77b1c321dddb53792bc114a6d068",
       "last_read_fingerprint": null
     },
     {
@@ -6292,12 +6292,12 @@
     },
     {
       "cycle": "R20",
-      "max_new_application_lines": 3410,
+      "max_new_application_lines": 3409,
       "application_units": [
         "APP-EXPORT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R20: Export text/PDF risk-first READ; current lines: 3410; sessions: 6",
+      "acceptance": "V4 R20: Export text/PDF risk-first READ; current lines: 3409; sessions: 6",
       "min_review_sessions": 6
     },
     {

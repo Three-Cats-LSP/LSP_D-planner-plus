@@ -880,15 +880,14 @@ function getNarcoticGasWarningTarget() {
   const data = buildDecoPlanHeaderData();
   const isLoop = isCcrOnLoopProfile({ circuit: data.circuit, bailout: data.ccrBailout });
   const role = isLoop ? 'Loop' : (data.circuit === 'CCR' || data.circuit === 'pSCR') ? 'Diluent' : 'Bottom';
+  const displayRole = isLoop ? 'Loop Gas' : role === 'Bottom' ? 'Bottom Gas' : role;
   const label = isLoop
     ? loopMixLabelFor(data.bottomGasShort, { circuit: data.circuit, bailout: data.ccrBailout })
     : data.bottomGasShort;
-  const gasMixNumber = 1;
   return {
     label,
     role,
-    gasMixNumber,
-    displayName: `Gas Mix ${gasMixNumber}: "${label}"`,
+    displayName: `${displayRole}: "${label}"`,
   };
 }
 
