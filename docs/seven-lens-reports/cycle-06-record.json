@@ -206,7 +206,7 @@
       "start_line": 1,
       "end_line": 500,
       "line_count": 500,
-      "content_fingerprint": "1725f2fe38a0dfecb362ab409e01e19b7135581575cbca4b92e3ade198105d1c",
+      "content_fingerprint": "75dfeb2452a8a433666973fde7ee24857dfcaf78cbdf7590ae4d9573860facd3",
       "review_session": "C06-A",
       "verification_session": "C09-DEP-WARNING-BANNER-PALETTE",
       "lens_results": {
@@ -285,9 +285,9 @@
       "unit_id": "UI-CSS-CONTROLS",
       "path": "lsp-dplanner-controls.css",
       "start_line": 501,
-      "end_line": 559,
-      "line_count": 59,
-      "content_fingerprint": "9bb31549f9673370df8e9272af4a3dbf1a601f939e2b515e81eb97e2f61cf4ac",
+      "end_line": 579,
+      "line_count": 79,
+      "content_fingerprint": "e93c4f5507a85374a3c45414d43fd0d7312567f5ddfdf0134b82380b305d4052",
       "review_session": "C06-A",
       "verification_session": "C06-V-B",
       "lens_results": {

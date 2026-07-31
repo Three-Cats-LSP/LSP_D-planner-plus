@@ -1979,7 +1979,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "d16d6808091d07256ed85cb33f62456a55f8c75ed39dc391d783706d8c1268b6",
+      "fingerprint": "d24d6e5c5ab80e28166fe4bb2cfa0b34e8694a264398fd53c59f71b6fa3bf5b3",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2024,7 +2024,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "4a933ac548834fc38dbcca7e616f4c0b2b7c90f1144abcab6e0b20bd9a7e06cf",
+      "fingerprint": "72478ed8f13d543c479c1d299431060583ef7e4577b64d67705209b9196d4667",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2039,7 +2039,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "196575de789abe6b61bb3418624718d1a6b9593d4d5e987d67a5b39801386d7f",
+      "fingerprint": "c2503d958ce9f163c04d36edcfd8e151a6a3be1779c01fc324e061bbfda00a2b",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2106,7 +2106,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a8dc56148c8090919f70c2af19b832ff946b7300bbf2fca2ba68f93171237d82",
+      "fingerprint": "fc9646359c2f8e16c482df1456b50ea99e3d85a21cf96546db927e0b9b987d3e",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2136,7 +2136,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f9ad7a32dd950970adc6d838a43ed915fb6bb530bac3b359f1723dc73709b235",
+      "fingerprint": "1287bbe9a56b136acec2004dcd0433002f78dc2d314d58b7bf35791658dc9559",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -6330,21 +6330,21 @@
     },
     {
       "cycle": "R40",
-      "max_new_application_lines": 559,
+      "max_new_application_lines": 579,
       "application_units": [
         "UI-CSS-CONTROLS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R40: Controls CSS risk-first READ; current lines: 559; sessions: 1"
+      "acceptance": "V4 R40: Controls CSS risk-first READ; current lines: 579; sessions: 1"
     },
     {
       "cycle": "R41",
-      "max_new_application_lines": 1078,
+      "max_new_application_lines": 1086,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1078; sessions: 2",
+      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1086; sessions: 2",
       "min_review_sessions": 2
     },
     {

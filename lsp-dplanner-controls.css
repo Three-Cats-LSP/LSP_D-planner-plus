@@ -137,7 +137,7 @@
 .gas-card-grid .switch-depth-display { font-size: 11px; padding: 8px 6px; }
 
 .planner-title-icon {
- display: inline-block;
+ display: inline-flex;
  width: 14px;
  height: 14px;
  flex: 0 0 14px;
@@ -145,6 +145,26 @@
  opacity: 0.9;
  filter: var(--planner-title-icon-filter, none);
  vertical-align: -2px;
+}
+
+.planner-title-icon--oxygen {
+ background: currentColor;
+ filter: none;
+ -webkit-mask: url("vendor/icons/oxygen-6770314.png") center / contain no-repeat;
+ mask: url("vendor/icons/oxygen-6770314.png") center / contain no-repeat;
+}
+
+.planner-section-title {
+ display: flex;
+ align-items: center;
+ gap: 6px;
+ margin-bottom: 10px;
+ color: var(--accent);
+ font-family: var(--font-heading);
+ font-size: 11px;
+ font-weight: 700;
+ letter-spacing: 0.04em;
+ text-transform: uppercase;
 }
 .field select { width: 100%;
  background: var(--surface);
