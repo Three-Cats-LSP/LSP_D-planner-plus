@@ -49,7 +49,7 @@
 | UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 489 | P2 | IN_PROGRESS | - |
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 340 | P2 | IN_PROGRESS | - |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 579 | P2 | IN_PROGRESS | - |
-| UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 1086 | P1 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
+| UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 1095 | P1 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
 | UI-CSS-MOBILE-SHELL | web_css | `lsp-dplanner-mobile-shell.css:1` | 709 | P2 | IN_PROGRESS | - |
 | UI-MARKUP-HEADER | web_markup | `ui/markup-header.html:1` | 800 | P2 | IN_PROGRESS | - |
 | UI-MARKUP-REC-PLANNER | web_markup | `ui/markup-rec-planner.html:1` | 73 | P1 | IN_PROGRESS | - |
@@ -72,8 +72,8 @@
 | UI-ZHL-RUNNER-ENGINE | web_runtime | `schedule-runner-core.js:3003` | 325 | P0 | IN_PROGRESS | REG-132, REG-134, REG-137 |
 | UI-VPM-RENDER | ui_core | `results-render-core.js:338` | 505 | P1 | IN_PROGRESS | - |
 | UI-ZHL-RESULTS | ui_core | `results-render-core.js:843` | 464 | P1 | IN_PROGRESS | - |
-| UI-GAS-INPUTS | ui_core | `gas-cards-core.js:15` | 223 | P1 | IN_PROGRESS | - |
-| UI-GAS-CARDS | ui_core | `gas-cards-core.js:238` | 284 | P1 | IN_PROGRESS | - |
+| UI-GAS-INPUTS | ui_core | `gas-cards-core.js:15` | 222 | P1 | IN_PROGRESS | - |
+| UI-GAS-CARDS | ui_core | `gas-cards-core.js:237` | 283 | P1 | IN_PROGRESS | - |
 | UI-ZHL-HEADLESS-HELPERS | web_runtime | `zhl-headless-adapter.js:23` | 194 | P1 | VERIFIED | EXT-05, COV-01 |
 | UI-ZHL-HEADLESS-ENGINE | web_runtime | `zhl-headless-adapter.js:217` | 91 | P0 | VERIFIED | EXT-05, COV-01 |
 | UI-GRAPH-ENGINE | ui_core | `dive-graph-engine.js:1` | 141 | P2 | IN_PROGRESS | - |

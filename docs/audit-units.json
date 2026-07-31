@@ -1979,7 +1979,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "e7c321597a4dde435622768fb0d0218ca66ac416461860df72b2f5b7f333c931",
+      "fingerprint": "0f6429d5d65965b2efe2213df4f35ce65f11c3a5fbf6f92c72ede138d89816a5",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2039,7 +2039,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c2503d958ce9f163c04d36edcfd8e151a6a3be1779c01fc324e061bbfda00a2b",
+      "fingerprint": "c8efbae673b45bfc7144b0681ae49b2dc074db482b525230d6dcffd5cea45a1a",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2106,7 +2106,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "391061b9e601099e058ea3a856ba2a9ad86ce4798053f30569395d8a66e2e0de",
+      "fingerprint": "0f994c29d0c0185fa9fa2eac73f9445294c566096630d799f1a857c92229dece",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2136,7 +2136,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3d568f6cd949ac6ecfd851de40823ea16789684f664eaeeb65f901a1c9a54da6",
+      "fingerprint": "dce566b5c452c388c3d58b87c3207fa018cbb13fb914c454b6236f59ce1aa539",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2313,7 +2313,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-CCR-DELEGATES"
       },
-      "fingerprint": "076f424784a0798ed4b341443a931365b9bdd085703ad86affeb8f037ea400ed",
+      "fingerprint": "92dc56faafd04af1ef6d1e2249ad4e6c09a66eb04bd016a08a577d10f8098373",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2422,7 +2422,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-INPUTS"
       },
-      "fingerprint": "e3779e9e7e28673b1d8ced099b7188bacad9c34cd787b70adae7a598bee05fdf",
+      "fingerprint": "acf89baa1f4c0f17024325e79893061356e48a39bf13f150609d2c7e83d27c6f",
       "last_read_fingerprint": null,
       "audit_issue": 149,
       "evidence": [],
@@ -2439,7 +2439,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-CARDS"
       },
-      "fingerprint": "67c4b6274c1fe022ab62cd64ea72af50c6588505362ad94a4b313e8d92e90918",
+      "fingerprint": "4309cbefd741ef2a5a8a6ad9c611c40493629b9acf58a3c517ed2e20f619042f",
       "last_read_fingerprint": null,
       "audit_issue": 148,
       "evidence": [],
@@ -6339,12 +6339,12 @@
     },
     {
       "cycle": "R41",
-      "max_new_application_lines": 1086,
+      "max_new_application_lines": 1095,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1086; sessions: 2",
+      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1095; sessions: 2",
       "min_review_sessions": 2
     },
     {

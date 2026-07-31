@@ -1051,7 +1051,7 @@ function updateCcrGasCardLabels() {
   const isCCR = (document.getElementById('circuitSelect')?.value || 'OC') === 'CCR';
   const titleEl = document.getElementById('diluentCardTitle');
   if (titleEl) {
-    titleEl.textContent = ccrUi ? 'DILUENT' : 'GAS MIX 1 — BOTTOM GAS';
+    titleEl.textContent = ccrUi ? 'Diluent' : 'Bottom Gas';
   }
   const dilBailoutRow = document.getElementById('diluentUseAsBailoutRow');
   if (dilBailoutRow) dilBailoutRow.style.display = isCCR ? '' : 'none';

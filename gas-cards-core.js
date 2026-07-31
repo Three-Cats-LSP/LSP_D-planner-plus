@@ -180,12 +180,11 @@ function renumberDecoGasCards() {
   const ccrUi = isCcrGasUiMode();
   document.querySelectorAll('.deco-gas-card').forEach((card, i) => {
     const n = i + 1;
-    const mixNum = n + 1;
     const titleEl = card.querySelector('.dg-card-title');
     if (titleEl) {
       titleEl.textContent = ccrUi
-        ? `BAILOUT MIX ${n}`
-        : `GAS MIX ${mixNum} — DECO GAS ${n} (optional)`;
+        ? `Bailout Mix ${n}`
+        : `Deco Gas ${n}`;
     }
   });
   const btn = document.getElementById('addDecoGasBtn');
@@ -240,9 +239,8 @@ function appendDecoGasCardAtIdx(idx) {
   if (idx <= 2 || idx > _DG_MAX || document.getElementById(`dgCard_${idx}`)) return;
   if (_dgCardCount() >= _DG_MAX) return;
   const n = _dgCardCount() + 1;
-  const mixNum = n + 1;
   const ccrUi = isCcrGasUiMode();
-  const cardTitle = ccrUi ? `BAILOUT MIX ${n}` : `GAS MIX ${mixNum} — DECO GAS ${n} (optional)`;
+  const cardTitle = ccrUi ? `Bailout Mix ${n}` : `Deco Gas ${n}`;
   const dotClass = n <= 1 ? 'gas-dot--deco1' : 'gas-dot--deco2';
   const cylDefaults = defaultDecoCylFieldValues();
 
@@ -253,7 +251,7 @@ function appendDecoGasCardAtIdx(idx) {
 
   card.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;">
-      <div class="gas-card-title-row"><span class="gas-dot ${dotClass}" aria-hidden="true"></span><div class="dg-card-title" style="font-family:var(--font-display);font-size:12px;letter-spacing:2px;color:var(--accent);">${cardTitle}</div></div>
+      <div class="gas-card-title-row"><span class="gas-dot ${dotClass}" aria-hidden="true"></span><div class="dg-card-title">${cardTitle}</div></div>
       <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
         <span class="gas-mod" id="dg${idx}MODDisplay" title="Calculated MOD using selected gas and Max Deco ppO₂">—</span>
         <button onclick="removeDecoGasCard(${idx})" title="Remove this gas"
