@@ -2141,7 +2141,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "1c5da8b482e8556172a51b38e9780f505f218a81c665df0a4db85954a7ea5322",
+      "fingerprint": "379d5d088e6ecffaf1cb2865ad405cdcaf6757d1d061d82a652675a9c0db911a",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2268,7 +2268,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "49e02f7f28883ab2d6c78a67c383e6cfc76784511fa686829e27603b6a90540a",
+      "fingerprint": "ccf787b4ce1d010c96858a882db30bbb07eee87e1f09674a2d4dbf7a146f1de2",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2298,7 +2298,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "bb1252311081037fb76b2663ab5488663c76dc1e61f48cf1d4b95785b3a70031",
+      "fingerprint": "56ee855571c3e641df6a6040366afd4550e03102b1b92545bbe764e877a9f6df",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2475,7 +2475,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-CCR-DELEGATES"
       },
-      "fingerprint": "92dc56faafd04af1ef6d1e2249ad4e6c09a66eb04bd016a08a577d10f8098373",
+      "fingerprint": "9bd700eafd2b8aeb2be55bbaf04083925f7d9dc948746acd093a347ef0fca80b",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3235,7 +3235,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "86e8e1dc849a7ef3448ae438bba434e9a5b22d7f9c623005a1ddf0ac61b178e8",
+      "fingerprint": "a67a435dbacabe1de582a3410671ca82e57a0dcac052933f262b1b935840dd17",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -6036,7 +6036,7 @@
         "REG-137",
         "REG-138"
       ],
-      "fingerprint": "3cbbec30a2e56d6e72a46c328620240aa16e77b1c321dddb53792bc114a6d068",
+      "fingerprint": "e47a2f3e153eeb2da19c3e04847098cf411e1c457ed2da836d27126c164e8130",
       "last_read_fingerprint": null
     },
     {
@@ -6345,14 +6345,14 @@
     },
     {
       "cycle": "R25",
-      "max_new_application_lines": 450,
+      "max_new_application_lines": 453,
       "application_units": [
         "APP-SERVICE-WORKER",
         "UI-PWA-LIFECYCLE",
         "APP-MANIFEST"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 450; sessions: 1"
+      "acceptance": "V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 453; sessions: 1"
     },
     {
       "cycle": "R26",

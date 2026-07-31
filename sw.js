@@ -36,7 +36,10 @@ function isSafetyCriticalEngineAsset(pathname) {
 /** Fast-changing UI runtime assets should refresh before falling back to cache. */
 function isFreshRuntimeAsset(pathname) {
   const leaf = (pathname || '').split('/').pop() || '';
-  return leaf === 'plot-core.js';
+  return leaf === 'plot-core.js'
+    || leaf === 'results-render-core.js'
+    || leaf === 'export-core.js'
+    || leaf === 'schedule-runner-core.js';
 }
 
 async function networkFirstWithCacheFallback(event, request, url) {

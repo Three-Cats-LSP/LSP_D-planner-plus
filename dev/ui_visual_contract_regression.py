@@ -84,25 +84,15 @@ async () => {
   window._zhlHeadless = false;
   setMainNav('buh');
   if (typeof removeDecoGasCard === 'function' && typeof addDecoGasCard === 'function') {
-    removeDecoGasCard(1);
     removeDecoGasCard(2);
     addDecoGasCard();
-    addDecoGasCard();
     const ids = typeof getAllDecoGasIds === 'function' ? getAllDecoGasIds() : [];
-    const first = ids[0], second = ids[1];
-    if (first) {
-      const mix = document.getElementById(`dg${first}Mix`);
-      if (mix) mix.value = 'ean50';
-      const size = document.getElementById(`cylDg${first}_size`);
-      const pres = document.getElementById(`cylDg${first}_pres`);
-      if (size) size.value = '11';
-      if (pres) pres.value = '200';
-    }
-    if (second) {
-      const mix = document.getElementById(`dg${second}Mix`);
+    const last = ids[ids.length - 1];
+    if (last) {
+      const mix = document.getElementById(`dg${last}Mix`);
       if (mix) mix.value = 'o2';
-      const size = document.getElementById(`cylDg${second}_size`);
-      const pres = document.getElementById(`cylDg${second}_pres`);
+      const size = document.getElementById(`cylDg${last}_size`);
+      const pres = document.getElementById(`cylDg${last}_pres`);
       if (size) size.value = '11';
       if (pres) pres.value = '200';
     }
@@ -149,6 +139,7 @@ CAPTURE_JS = r"""
   const decoDots = [...document.querySelectorAll('.deco-gas-card .gas-dot')];
   const pills = [...document.querySelectorAll('#resultsPanel .gas-pills .gas-pill')];
   const gasSummary = document.getElementById('gasConsumptionSummary');
+  const addDecoGasButton = document.getElementById('addDecoGasBtn');
   const gasCards = [...document.querySelectorAll('#gasConsumptionSummary .gas-usage-card')];
   const gasLabels = gasCards.map(el => el.dataset.gasLabel || el.querySelector('.gas-usage-mix')?.textContent?.trim() || '');
   const gasRoles = gasCards.map(el => el.dataset.gasRole || el.querySelector('.gas-usage-role')?.textContent?.trim() || '');
@@ -446,6 +437,7 @@ CAPTURE_JS = r"""
       thresholdValue: document.getElementById('gasLowThresholdPct')?.value || '',
       labels: gasLabels,
       roles: gasRoles,
+      addButtonText: (addDecoGasButton?.textContent || '').trim(),
       forbiddenLabels: gasLabels.filter(text => /EAN\d+/i.test(text)),
       hasAir: gasLabels.includes('Air'),
       hasO2: gasLabels.includes('100%'),
@@ -2236,6 +2228,7 @@ def main() -> int:
         and c["gasConsumptionBars"]["hasAir"]
         and c["gasConsumptionBars"]["hasO2"]
         and c["gasConsumptionBars"]["hasDecoMix"]
+        and c["gasConsumptionBars"]["addButtonText"] == "Add Deco Gas"
         and c["gasConsumptionBars"]["activeDecoRolesRenumbered"]
         and not c["gasConsumptionBars"]["forbiddenLabels"]
         and c["gasConsumptionBars"]["barsPresent"]
