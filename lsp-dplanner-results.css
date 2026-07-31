@@ -88,7 +88,7 @@
  width: min(var(--deco-table-width, 100%), 100%);
  min-width: 0;
  padding: 8px 10px;
- font-family: 'JetBrains Mono', monospace;
+ font-family: var(--font-mono);
  font-size: 11px;
  background: rgba(0,200,255,0.04);
  border-top: 2px solid var(--border-hi);
@@ -100,12 +100,12 @@
  overflow-wrap: anywhere;
 }
 .deco-totals-inner > span { min-width: 0; overflow-wrap: anywhere; }
-.deco-table { table-layout:auto; width:min-content; border-collapse:collapse; font-family:'JetBrains Mono',monospace; font-size:12px; margin-top:10px; }
+.deco-table { table-layout:auto; width:min-content; border-collapse:collapse; font-family:var(--font-mono); font-size:12px; margin-top:10px; }
 .deco-table th { padding:4px 6px; text-align:left; font-size:9px; letter-spacing:1px; text-transform:uppercase; color:var(--accent); border-bottom:1px solid var(--border-hi); background:var(--accent-dim); vertical-align:middle; white-space:nowrap; overflow:hidden; }
 .deco-table td { padding:4px 6px; border-bottom:1px solid var(--border); color:var(--text); vertical-align:middle; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .deco-table th:first-child, .deco-table td:first-child { text-align:center; }
 /* Gas Plan table — standalone, no deco-table inheritance */
-.gas-plan-table { table-layout:auto; width:100%; border-collapse:collapse; font-family:'JetBrains Mono',monospace; font-size:12px; margin-top:10px; }
+.gas-plan-table { table-layout:auto; width:100%; border-collapse:collapse; font-family:var(--font-mono); font-size:12px; margin-top:10px; }
 .gas-plan-table th { padding:6px 6px; text-align:left; font-size:8.5px; letter-spacing:0.04em; text-transform:uppercase; color:var(--accent); border-bottom:1px solid var(--border-hi); background:var(--accent-dim); vertical-align:bottom; white-space:nowrap; word-break:keep-all; overflow-wrap:normal; line-height:1.2; hyphens:none; }
 .gas-plan-table td { padding:5px 6px; text-align:left; border-bottom:1px solid var(--border); color:var(--text); vertical-align:top; line-height:1.25; }
 .gas-plan-table th:nth-child(1), .gas-plan-table td:nth-child(1) { min-width:3.6rem; }
@@ -206,11 +206,11 @@ body.light-theme .switch-legend-icon { color: #16a34a; }
 }
 .slider-ticks { display:flex; justify-content:space-between;
  margin-top:6px; padding:0 2px;
- font-family:'JetBrains Mono',monospace; font-size:9px;
+ font-family:var(--font-mono); font-size:9px;
  color:var(--muted); letter-spacing:0.5px;
 }
 .slider-ticks-abs { position:relative; height:16px; margin-top:6px;
- font-family:'JetBrains Mono',monospace; font-size:9px;
+ font-family:var(--font-mono); font-size:9px;
  color:var(--muted); letter-spacing:0.5px;
 }
 .slider-ticks-abs span { position:absolute; transform:translateX(-50%);
@@ -224,24 +224,24 @@ body.light-theme .switch-legend-icon { color: #16a34a; }
 }
 .conv-field { flex:1; min-width:90px;
 }
-.conv-field label { display:block; font-family:'JetBrains Mono',monospace; font-size:9px;
+.conv-field label { display:block; font-family:var(--font-mono); font-size:9px;
  letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:5px;
 }
 .conv-field input { width:100%; background:var(--surface); border:1px solid var(--border);
  border-radius:8px; padding:10px 12px; color:var(--text);
- font-family:'Bebas Neue',sans-serif; font-size:22px; outline:none;
+ font-family:var(--font-display); font-size:22px; outline:none;
  transition:border-color 0.2s; text-align:center;
 }
 .conv-field input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(0,200,255,0.08); }
 .conv-arrow { color:var(--accent); font-size:18px; flex-shrink:0; margin-top:18px;
 }
 .conv-ref { display:flex; flex-wrap:wrap; gap:12px; margin-top:10px;
- font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted);
+ font-family:var(--font-mono); font-size:10px; color:var(--muted);
  background:var(--card2); padding:8px 12px; border-radius:6px; border:1px solid var(--border);
 }
 
 /* NDL reference table */
-.ndl-table { width:100%; border-collapse:collapse; font-family:'JetBrains Mono',monospace; font-size:12px; }
+.ndl-table { width:100%; border-collapse:collapse; font-family:var(--font-mono); font-size:12px; }
 .ndl-table th { padding:9px 12px; text-align:center; font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--accent); border-bottom:1px solid var(--border-hi); background:rgba(0,200,255,0.06); }
 .ndl-table td { padding:8px 12px; border-bottom:1px solid rgba(0,200,255,0.05); text-align:center; }
 .ndl-table tr:hover td { background:rgba(0,200,255,0.04); }
@@ -254,7 +254,7 @@ body.light-theme .switch-legend-icon { color: #16a34a; }
 .group-badge { display:inline-flex; align-items:center; justify-content:center;
  width:26px; height:26px; border-radius:50%;
  background:rgba(212,175,55,0.15); border:1.5px solid var(--gold);
- color:var(--gold); font-family:'Bebas Neue',sans-serif; font-size:13px;
+ color:var(--gold); font-family:var(--font-display); font-size:13px;
 }
 
 /* ── RESPONSIVE ── */
@@ -279,10 +279,10 @@ body.light-theme .switch-legend-icon { color: #16a34a; }
 .u2{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
 .u3{text-align:left;padding:5px 6px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:400;}
 .u4{margin-bottom:20px;}
-.u5{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--accent);line-height:1;}
+.u5{font-family:var(--font-display);font-size:28px;color:var(--accent);line-height:1;}
 .u6{color:var(--muted);}
-.u7{padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;}
-.u8{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+.u7{padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:var(--font-mono);font-size:11px;cursor:pointer;}
+.u8{font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
 .u9{margin-bottom:12px;}
 .u10{color:var(--accent);}
 .u11{margin-bottom:16px;}
@@ -292,9 +292,9 @@ body.light-theme .switch-legend-icon { color: #16a34a; }
 .u15{color:var(--green);}
 .u16{overflow-x:auto;-webkit-overflow-scrolling:touch;}
 .u17{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);}
-.u18{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--tip);margin-bottom:10px;}
+.u18{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--tip);margin-bottom:10px;}
 .u19{display:none;align-items:center;gap:4px;}
-.u20{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
+.u20{font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
 .u21{margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
 
 /* ═══ V3 LAYOUT & COMPONENTS ═══ */
@@ -618,11 +618,11 @@ body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumpt
 body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-card--nogas { --gas-status:#DC2626; background:#ffe4e2; border-color:#FF3131; border-left-color:#B91C1C; box-shadow:0 0 0 1px rgba(127,29,29,0.10) inset; }
 #resultsPanel .profile-export-actions { margin-left: auto; }
 .results-section-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); padding: var(--space-3) var(--space-4) var(--space-2); flex-wrap: wrap; }
-.results-section-label { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent); }
+.results-section-label { font-family: var(--font-heading); font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent); }
 #resultsPanel .results-section-label,
 #resultsPanel .card-title,
 #resultsPanel #gasConsumptionSummary .card-title,
-#resultsPanel #tissueLoadInnerCard .card-title { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent); }
+#resultsPanel #tissueLoadInnerCard .card-title { font-family: var(--font-heading); font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent); }
 .results-section-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 #resultsPanel #tissueChartToggleBtn,
 #resultsPanel #contingencyJumpBtn { display: none !important; }
@@ -646,18 +646,18 @@ body.light-theme #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumpt
   font-weight:700;
 }
 #resultsPanel .deco-plan-caption { margin: var(--space-2) var(--space-4) 0; }
-#resultsPanel .deco-plan-card { padding: 12px 14px; background: rgba(148,160,172,0.08); border: 1px solid rgba(148,160,172,0.45); border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.55; color: var(--text); }
+#resultsPanel .deco-plan-card { padding: 12px 14px; background: rgba(148,160,172,0.08); border: 1px solid rgba(148,160,172,0.45); border-radius: 8px; font-family: var(--font-mono); font-size: 12px; line-height: 1.55; color: var(--text); }
 body.light-theme #resultsPanel .deco-plan-card { background: #f3f4f6; border-color: #94a0ac; }
 #resultsPanel .deco-plan-top { display: flex; align-items: baseline; gap: var(--space-2); margin-bottom: 6px; flex-wrap: wrap; }
 #resultsPanel .deco-plan-icon { color: #FF4433; font-size: 16px; line-height: 1.1; }
-#resultsPanel .deco-plan-title { font-family: 'Bebas Neue', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #FF4433; line-height: 1.1; }
+#resultsPanel .deco-plan-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #FF4433; line-height: 1.1; }
 #resultsPanel .deco-plan-title .mode-tag { color: #FF4433; }
-#resultsPanel .deco-plan-timestamp { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); margin-left: auto; }
-#resultsPanel .deco-plan-summary { font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: var(--space-2); line-height: 1.45; }
+#resultsPanel .deco-plan-timestamp { font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-left: auto; }
+#resultsPanel .deco-plan-summary { font-family: var(--font-heading); font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: var(--space-2); line-height: 1.45; }
 #resultsPanel .deco-plan-summary strong { color: #FF4433; font-weight: 700; }
-#resultsPanel .deco-plan-summary span { color: var(--muted); font-size: 11px; font-weight: 400; font-family: 'JetBrains Mono', monospace; }
+#resultsPanel .deco-plan-summary span { color: var(--muted); font-size: 11px; font-weight: 400; font-family: var(--font-mono); }
 #resultsPanel .gas-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: var(--space-2); }
-#resultsPanel .gas-pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 16px; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; border: 2px solid; white-space: nowrap; }
+#resultsPanel .gas-pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 16px; font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.04em; border: 2px solid; white-space: nowrap; }
 #resultsPanel .gas-pill.bottom-gas { background: #fff; border-color: #4169E1; color: #111; }
 #resultsPanel .gas-pill.deco1, #resultsPanel .gas-pill.deco2, #resultsPanel .gas-pill.deco-gas { background: var(--gas-deco-chip-bg); border-color: #16a34a; color: #166534; }
 #resultsPanel .gas-pill.travel-gas { background: #fff; border-color: var(--gas-travel); color: #111; }
@@ -678,7 +678,7 @@ body.light-theme #resultsPanel .gas-pill.travel-gas { background: #f0f4ff; color
   font-weight:700;
 }
 #resultsPanel .alert.cns-warn * { color:#111; }
-#resultsPanel .deco-params { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); line-height: 1.6; }
+#resultsPanel .deco-params { font-family: var(--font-mono); font-size: 10px; color: var(--muted); line-height: 1.6; }
 #resultsPanel .deco-params span { color: var(--text); font-weight: 600; }
 body.light-theme #resultsPanel #decoAlerts .alert.deco,
 body.light-theme #resultsPanel #decoAlertsNarcotic .alert.deco,
@@ -847,7 +847,7 @@ body.light-theme #resultsPanel .legend-item.legend-switch { color: #16a34a; }
 .deco-table.tissue-table tr.tissue-sat-caution:hover td { background: color-mix(in oklab, var(--status-orange) 20%, transparent); }
 .deco-table.tissue-table tr.tissue-sat-warn:hover td { background: color-mix(in oklab, var(--status-red) 16%, transparent); }
 
-#gasWarningBanner.gas-warning-banner { display: none; align-items: flex-start; gap: var(--space-2); width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; padding: var(--space-2) var(--space-3); background: #fff0f0; border: 1px solid #cc0000; border-radius: var(--radius-md); color: #cc0000; font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0; line-height: 1.45; margin-top: var(--space-2); white-space: normal; overflow-wrap: anywhere; word-break: normal; }
+#gasWarningBanner.gas-warning-banner { display: none; align-items: flex-start; gap: var(--space-2); width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; padding: var(--space-2) var(--space-3); background: #fff0f0; border: 1px solid #cc0000; border-radius: var(--radius-md); color: #cc0000; font-family: var(--font-heading); font-size: 12px; font-weight: 700; letter-spacing: 0; line-height: 1.45; margin-top: var(--space-2); white-space: normal; overflow-wrap: anywhere; word-break: normal; }
 #gasWarningBanner.gas-warning-banner > span[aria-hidden="true"],
 #resultsPanel :is(#gasConsumptionSummary, #emergencyGasConsumption) .gas-usage-inline-warning > span[aria-hidden="true"] { font-size: 12px; line-height: 1.45; flex-shrink: 0; }
 #gasWarningBanner.gas-warning-banner > * { min-width: 0; overflow-wrap: anywhere; }

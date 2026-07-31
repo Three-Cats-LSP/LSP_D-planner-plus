@@ -103,6 +103,11 @@
         "reason": "Cursor seven-lens audit workflow runbook"
       },
       {
+        "pattern": "font-readability-mockups.html",
+        "kind": "reference",
+        "reason": "Local typography mockup artifact, not shipped as runtime source"
+      },
+      {
         "pattern": "GUE DecPlanner Binary/**",
         "kind": "reference",
         "reason": "Disassembled external reference application"
@@ -1974,7 +1979,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "1699b55df720fa6137356ae93ea13a1978eb657156452b1a2c15049f92627725",
+      "fingerprint": "1a36c1ec8d3d32a5327f69c0e2ff7527671d5bb3c4732f7eb2a28d8518720029",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1989,7 +1994,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a72b2343629f63e11d205f99c64cf438b8c1eab9bb033fc7d29fcc50d0536b58",
+      "fingerprint": "c7974c1f4cd4061f82b8c4cf21ddd8a05848277838935df78ff9171b802146d9",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2004,7 +2009,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "ba64f43e3f739afb95492fc8deed028008812c1394ae9958bd092c9020a42e13",
+      "fingerprint": "907bcb5501478f6cdc4bf20737fd1e043c272974651060e7ec0be5e6ecb01c48",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2019,7 +2024,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "8a0a89e5218f51a7036ac505b4b57d5da63278cf214ecdb9bebac29ce2437a83",
+      "fingerprint": "73775d8bbacdb5b983140240e94888a1cbef798861babd740f1cf5402e1b59be",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2034,7 +2039,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "10430179f8981ab4136dd4412b8ba75c3a781f12b934ff2e2cc1c27e5d9e1c64",
+      "fingerprint": "196575de789abe6b61bb3418624718d1a6b9593d4d5e987d67a5b39801386d7f",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -2071,7 +2076,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3d5af217247a3fe6394cace98ac780e35fabfef3a080f324af0ceec8d0465914",
+      "fingerprint": "6fcd2f45c72fb1c5b0c6502f1a5b0b88d73e05aa3e7963d311b3bf42fe2f9735",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2226,7 +2231,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MODE-STATE"
       },
-      "fingerprint": "63bbf24d9f03ead7a2d15b374bafb94ebd2cd6630d6c78cd8a2c03891eb27d51",
+      "fingerprint": "4c7b88580e8a0d1c8524d1dea48a1fd308b9aae3a62d03bb5804e5252fe2af58",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2688,7 +2693,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SETTINGS"
       },
-      "fingerprint": "3ba8b87be0a1608927808019e8334eb61049814ecd72535b8a669a14c3e4bf85",
+      "fingerprint": "d1a37406a567d5ff58f99b642524607b7d3b65d723551e634521d4988d7fa39a",
       "last_read_fingerprint": null,
       "audit_issue": 158,
       "issue": "Cycle 32 settings restore exception recovery",
@@ -3176,7 +3181,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c7665b4b3f9e0f85d42b7bc05f4bfc18022177e848a01f19cf41a6a9ce6a9c34",
+      "fingerprint": "aa748c87f23acfd79224034cb817fccd5760e2462f03b356896c2fb842f14002",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3191,7 +3196,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "81288c5da0fb325acd4f4a82d8b99821706edd7a628b3042872173eb33b4f660",
+      "fingerprint": "4fcf8cdbd88bf978b7be7fec2ad37aaedc856d6ab953e3eb5613b45b29ed71cc",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3248,7 +3253,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "61bfe154f396b062b9125de88c6777a53a6defb908463dc3f1bdfaf0fee55b4b",
+      "fingerprint": "d901c0146685c5552d2d33643f2ed2dd07064a41e6f4209b4af8b1ba55edb77f",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3349,7 +3354,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f8ca66cc1e2e5f029f9605210fcb5311be795ca4dc0f8003e12366fd5ccdd47a",
+      "fingerprint": "7e39f84d429b7b5c9d57c02b068ce473a35b4094e3dce2bc005ed5b6a3ad07a0",
       "last_read_fingerprint": null,
       "audit_issue": 168,
       "evidence": [],
@@ -6052,15 +6057,15 @@
     },
     {
       "cycle": "R14",
-      "max_new_application_lines": 1200,
+      "max_new_application_lines": 1209,
       "application_units": [
         "UI-SETTINGS",
         "UI-UNIT-HELPERS",
         "UI-UNIT-SWITCHING"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R14: Settings persistence and unit helpers risk-first READ; current lines: 1200; sessions: 2",
-      "min_review_sessions": 2
+      "acceptance": "V4 R14: Settings persistence and unit helpers risk-first READ; current lines: 1209; sessions: 3",
+      "min_review_sessions": 3
     },
     {
       "cycle": "R15",
@@ -6159,12 +6164,12 @@
     },
     {
       "cycle": "R24",
-      "max_new_application_lines": 2461,
+      "max_new_application_lines": 2468,
       "application_units": [
         "UI-BOOT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R24: index.html shell boot region risk-first READ; current lines: 2461; sessions: 5",
+      "acceptance": "V4 R24: index.html shell boot region risk-first READ; current lines: 2468; sessions: 5",
       "min_review_sessions": 5
     },
     {
@@ -6269,12 +6274,12 @@
     },
     {
       "cycle": "R34",
-      "max_new_application_lines": 790,
+      "max_new_application_lines": 797,
       "application_units": [
         "UI-MARKUP-HEADER"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R34: Header markup risk-first READ; current lines: 790; sessions: 2",
+      "acceptance": "V4 R34: Header markup risk-first READ; current lines: 797; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6320,13 +6325,13 @@
     },
     {
       "cycle": "R39",
-      "max_new_application_lines": 760,
+      "max_new_application_lines": 782,
       "application_units": [
         "UI-CSS-FOUNDATION",
         "UI-CSS-MODES"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R39: Foundation and mode CSS risk-first READ; current lines: 760; sessions: 2",
+      "acceptance": "V4 R39: Foundation and mode CSS risk-first READ; current lines: 782; sessions: 2",
       "min_review_sessions": 2
     },
     {

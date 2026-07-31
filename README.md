@@ -8,7 +8,7 @@ It runs in the browser, installs as a PWA, works offline after first load, and i
 - Android APK: https://threecats-lsp.com/d-planner-plus/download.html
 - Official release: https://github.com/Three-Cats-LSP/LSP_D-planner-plus/releases/latest
 - Toolkit hub: https://threecats-lsp.com
-- Current version: 3.1.3
+- Current version: 3.1.4
 - License: MIT
 
 ## Safety Notice

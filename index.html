@@ -1068,6 +1068,13 @@
 <option value="no">No</option>
 </select>
 </div>
+<div id="fontStyleRow" class="settings-field-row">
+<span class="algo-label-text u1">Fonts style:</span>
+<select class="u7" id="fontStyleSelect" onchange="setFontStyle(this.value)">
+<option selected="" value="lsp">LSP</option>
+<option value="dive-computer">Dive Computer</option>
+</select>
+</div>
 <div class="settings-version-label" id="appVersionLabel">Version 2.30.0</div>
 <div class="settings-app-links" aria-label="Application links and support">
 <div class="settings-app-links-title">App Links</div>
@@ -4628,6 +4635,8 @@ var appSettings = {
     values['__plannerAlgo__'] = plannerAlgo || 'ZHLC_GF';
     values['__navMode__'] = navMode || 'planner';
     values['__units__'] = units || 'metric';
+    const fontStyleValue = document.body?.dataset.fontStyle || document.getElementById('fontStyleSelect')?.value || 'lsp';
+    values['__fontStyle__'] = (typeof normalizeFontStyle === 'function') ? normalizeFontStyle(fontStyleValue) : fontStyleValue;
     
     fields.forEach(id => {
       if (id === '__algo__') {
@@ -4696,6 +4705,9 @@ var appSettings = {
       
       if (values['__units__']) {
         units = values['__units__'];
+      }
+      if (values['__fontStyle__'] && typeof applyFontStyle === 'function') {
+        applyFontStyle(values['__fontStyle__'], { skipSave: true });
       }
       if (values.gasMix) window._tecGasMix = values.gasMix;
       if (values['__plannerAlgo__']) plannerAlgo = values['__plannerAlgo__'];
@@ -4850,6 +4862,9 @@ var appSettings = {
     if (values['__units__']) {
       setUnits(values['__units__'], { relabelOnly: true });
     }
+    if (values['__fontStyle__'] && typeof applyFontStyle === 'function') {
+      applyFontStyle(values['__fontStyle__'], { skipSave: true });
+    }
     syncContDepthLabels?.();
     if ((values['__algo__'] || window.algo) === 'padi') syncRecGasMixDisplay();
 
@@ -4886,8 +4901,9 @@ var appSettings = {
         'lspAltitude', 'lspAcclimatized',
         'gfCustomLow', 'gfCustomHigh',
         'lspCcrAdvOpen', 'lspEnvOpen', 'lspAdvancedOpen',
-        'lspUserAdvDefaults', 'decoTableView', 'diveTheme',
+        'lspUserAdvDefaults', 'decoTableView', 'diveTheme', 'lspFontStyle',
       ].forEach(k => localStorage.removeItem(k));
+      if (typeof applyFontStyle === 'function') applyFontStyle('lsp', { skipSave: true });
       console.log('[LSP] ✅ Settings cleared');
     } catch(e) {
       console.warn('[LSP] Clear failed:', e.message);

@@ -206,7 +206,7 @@
       "start_line": 1,
       "end_line": 500,
       "line_count": 500,
-      "content_fingerprint": "e28868ca34abd61a62831c42695b47f3a1900181b2da4b1d94e3efcfc265bc64",
+      "content_fingerprint": "0e5c56eb3ee201ce703638f580891cf20796b38313843816eae8dbb7ad88b195",
       "review_session": "C06-A",
       "verification_session": "C09-DEP-WARNING-BANNER-PALETTE",
       "lens_results": {
@@ -287,7 +287,7 @@
       "start_line": 501,
       "end_line": 548,
       "line_count": 48,
-      "content_fingerprint": "5f46640cb6e0bfa9412acaa82d7e0c6d0bc03a12b5dc2e89a8f5a9d1b3328efe",
+      "content_fingerprint": "38614523211ced392ad27504dedc2d84c961d36b3869a2d571cd1ea5063d200c",
       "review_session": "C06-A",
       "verification_session": "C06-V-B",
       "lens_results": {

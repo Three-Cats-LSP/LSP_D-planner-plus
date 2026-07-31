@@ -949,6 +949,42 @@ function _lspCssVar(name, fallback) {
   return bodyV || rootV || fallback;
 }
 
+const FONT_STYLE_STORAGE_KEY = 'lspFontStyle';
+
+function normalizeFontStyle(value) {
+  return value === 'dive-computer' ? 'dive-computer' : 'lsp';
+}
+
+function applyFontStyle(value, options = {}) {
+  const fontStyle = normalizeFontStyle(value);
+  if (document.body) document.body.dataset.fontStyle = fontStyle;
+  const select = document.getElementById('fontStyleSelect');
+  if (select && select.value !== fontStyle) select.value = fontStyle;
+  try {
+    localStorage.setItem(FONT_STYLE_STORAGE_KEY, fontStyle);
+  } catch(e) {}
+  if (!options.skipSave && typeof appSettings !== 'undefined' && appSettings.save) {
+    setTimeout(() => appSettings.save(false), 0);
+  }
+  return fontStyle;
+}
+
+function setFontStyle(value) {
+  applyFontStyle(value);
+}
+
+function loadFontStylePreference() {
+  let saved = 'lsp';
+  try {
+    saved = localStorage.getItem(FONT_STYLE_STORAGE_KEY) || 'lsp';
+  } catch(e) {}
+  applyFontStyle(saved, { skipSave: true });
+}
+
+window.setFontStyle = setFontStyle;
+window.applyFontStyle = applyFontStyle;
+window.normalizeFontStyle = normalizeFontStyle;
+
 function toggleTheme() {
   const body = document.body;
   const isLight = body.classList.toggle('light-theme');
@@ -996,6 +1032,7 @@ function loadThemePreference() {
   const body = document.body;
   const toggle = document.getElementById('themeToggle');
   const isLight = savedTheme === 'light';
+  loadFontStylePreference();
 
   if (isLight) {
     body.classList.add('light-theme');

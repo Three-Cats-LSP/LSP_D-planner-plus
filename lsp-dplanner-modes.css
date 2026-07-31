@@ -25,7 +25,7 @@ body.algo-tools #gfCustomRow select { opacity: 0.5 !important;
  cursor: not-allowed !important;
 }
 
-.algo-label-text { font-family: 'JetBrains Mono', monospace;
+.algo-label-text { font-family: var(--font-mono);
  font-size: 9px;
  letter-spacing: 2px;
  text-transform: uppercase;
@@ -74,7 +74,7 @@ body.algo-tools #gfCustomRow select { opacity: 0.5 !important;
  border: none;
  background: transparent;
  color: var(--accent);
- font-family: 'JetBrains Mono', monospace;
+ font-family: var(--font-mono);
  font-size: 10px;
  font-weight: 600;
  letter-spacing: 1px;
@@ -125,7 +125,7 @@ body.light-theme .algo-btn-icon.active img { opacity: 1;
  border: 1px solid var(--border);
  background: var(--bg-alt);
  color: var(--muted);
- font-family: 'JetBrains Mono', monospace;
+ font-family: var(--font-mono);
  font-size: 10px;
  font-weight: 700;
  letter-spacing: 0.5px;
@@ -162,7 +162,7 @@ body.light-theme .algo-btn-icon.active img { opacity: 1;
  box-shadow: 0 2px 8px rgba(0, 200, 255, 0.15);
 }
 
-.header-warn { font-family: 'JetBrains Mono', monospace;
+.header-warn { font-family: var(--font-mono);
  font-size: 10px;
  letter-spacing: 1px;
  padding: 6px 12px;
@@ -200,7 +200,7 @@ body.light-theme .algo-btn-icon.active img { opacity: 1;
  border: none;
  background: transparent;
  color: var(--muted);
- font-family: 'JetBrains Mono', monospace;
+ font-family: var(--font-mono);
  font-size: 10px;
  font-weight: 600;
  letter-spacing: 0.8px;
@@ -223,7 +223,7 @@ body.light-theme .algo-btn-icon.active img { opacity: 1;
  border: 1px solid var(--accent);
  border-radius: 6px;
  cursor: pointer;
- font-family: 'JetBrains Mono', monospace;
+ font-family: var(--font-mono);
  font-weight: 600;
  font-size: 12px;
  letter-spacing: 1px;
@@ -295,7 +295,7 @@ body.algo-buh .buh-only { display: flex !important; }
  opacity: 0.2;
 }
 
-.card-title { font-family: 'Outfit', sans-serif;
+.card-title { font-family: var(--font-heading);
  font-size: 11px;
  font-weight: 700;
  letter-spacing: 2.5px;
