@@ -2141,7 +2141,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "379d5d088e6ecffaf1cb2865ad405cdcaf6757d1d061d82a652675a9c0db911a",
+      "fingerprint": "5b733c3c6dac18135c16856a1d7c2dea86bd3c24b8b84bf53d0e18b85ea411a0",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2268,7 +2268,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "ccf787b4ce1d010c96858a882db30bbb07eee87e1f09674a2d4dbf7a146f1de2",
+      "fingerprint": "3fffeb944297d26d5d33f72bf66aced49fba4fbd9d5eb68363873790466d1660",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2298,7 +2298,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "56ee855571c3e641df6a6040366afd4550e03102b1b92545bbe764e877a9f6df",
+      "fingerprint": "aad5564ac4ff37c0e91be3aea75806c7ea9b709b4d567b5f62f5bfb8032055f1",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2475,7 +2475,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-CCR-DELEGATES"
       },
-      "fingerprint": "9bd700eafd2b8aeb2be55bbaf04083925f7d9dc948746acd093a347ef0fca80b",
+      "fingerprint": "4ed50e5ab50bd3d1662f6816d3680aa9e65c9d16f5d1095743b2310d9ecb9b2b",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -6036,7 +6036,7 @@
         "REG-137",
         "REG-138"
       ],
-      "fingerprint": "e47a2f3e153eeb2da19c3e04847098cf411e1c457ed2da836d27126c164e8130",
+      "fingerprint": "f06de2759528f62c78df7cb54ec92a8b91586b95cbd8b135a0c93274f2151069",
       "last_read_fingerprint": null
     },
     {

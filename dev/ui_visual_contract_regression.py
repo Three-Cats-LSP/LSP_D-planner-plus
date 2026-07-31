@@ -2228,7 +2228,7 @@ def main() -> int:
         and c["gasConsumptionBars"]["hasAir"]
         and c["gasConsumptionBars"]["hasO2"]
         and c["gasConsumptionBars"]["hasDecoMix"]
-        and c["gasConsumptionBars"]["addButtonText"] == "Add Deco Gas"
+        and c["gasConsumptionBars"]["addButtonText"] == "ADD DECO GAS"
         and c["gasConsumptionBars"]["activeDecoRolesRenumbered"]
         and not c["gasConsumptionBars"]["forbiddenLabels"]
         and c["gasConsumptionBars"]["barsPresent"]

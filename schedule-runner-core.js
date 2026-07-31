@@ -1066,7 +1066,7 @@ function updateCcrGasCardLabels() {
     travelBtn.style.display = '';
   }
   const addBtn = document.getElementById('addDecoGasBtn');
-  if (addBtn) addBtn.textContent = ccrUi ? 'Add Bailout Mix' : 'Add Deco Gas';
+  if (addBtn) addBtn.textContent = ccrUi ? 'ADD BAILOUT MIX' : 'ADD DECO GAS';
   const gpBotTitle = document.getElementById('gpBotRowTitle');
   if (gpBotTitle) {
     gpBotTitle.textContent = ccrUi ? '🔵 DILUENT CYLINDER' : '🔵 BOTTOM GAS CYLINDER';
