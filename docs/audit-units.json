@@ -1979,7 +1979,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "1a8d5387187990598248b20980b6e156802a576da86b2a2b1f7310605c0c1975",
+      "fingerprint": "d16d6808091d07256ed85cb33f62456a55f8c75ed39dc391d783706d8c1268b6",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1994,7 +1994,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c7974c1f4cd4061f82b8c4cf21ddd8a05848277838935df78ff9171b802146d9",
+      "fingerprint": "d0133b1e778c25eaeb042be4cbe189653de1e40c22f3c12ef13996355b9dedec",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2024,7 +2024,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "93fe5b68bd0f4094b04a88c4ea672a06c1f45ff8dcc4dafe872caf5f658f81d5",
+      "fingerprint": "4a933ac548834fc38dbcca7e616f4c0b2b7c90f1144abcab6e0b20bd9a7e06cf",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2106,7 +2106,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "b2df3a38a6dc51971e59fd2768838d6085b4ea5acc76e630047fe629545c6b86",
+      "fingerprint": "a8dc56148c8090919f70c2af19b832ff946b7300bbf2fca2ba68f93171237d82",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2136,7 +2136,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "bd107c4c484670b3c6bd5681599b460cf6eb2bbbf64bd226016babbffcc61d93",
+      "fingerprint": "f9ad7a32dd950970adc6d838a43ed915fb6bb530bac3b359f1723dc73709b235",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -6319,13 +6319,13 @@
     },
     {
       "cycle": "R39",
-      "max_new_application_lines": 782,
+      "max_new_application_lines": 784,
       "application_units": [
         "UI-CSS-FOUNDATION",
         "UI-CSS-MODES"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R39: Foundation and mode CSS risk-first READ; current lines: 782; sessions: 2",
+      "acceptance": "V4 R39: Foundation and mode CSS risk-first READ; current lines: 784; sessions: 2",
       "min_review_sessions": 2
     },
     {

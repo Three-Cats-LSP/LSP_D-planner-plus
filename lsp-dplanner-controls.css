@@ -141,10 +141,10 @@
  width: 14px;
  height: 14px;
  flex: 0 0 14px;
- background: currentColor;
+ object-fit: contain;
+ opacity: 0.9;
+ filter: var(--planner-title-icon-filter, none);
  vertical-align: -2px;
- -webkit-mask: url("vendor/icons/oxygen-6770314.png") center / contain no-repeat;
- mask: url("vendor/icons/oxygen-6770314.png") center / contain no-repeat;
 }
 .field select { width: 100%;
  background: var(--surface);

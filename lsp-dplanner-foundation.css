@@ -86,6 +86,7 @@
  --gas-deco-chip-bg: #d6ff00;
  --gas-switch-label-bg: #FFD700;
  --gas-switch-label-text: #007A33;
+ --planner-title-icon-filter: invert(72%) sepia(49%) saturate(1032%) hue-rotate(144deg) brightness(98%) contrast(91%);
 }
 
 body[data-font-style="lsp"] {
@@ -169,6 +170,7 @@ body.light-theme {
  --gas-deco-chip-bg: #d6ff00;
  --gas-switch-label-bg: #FFD700;
  --gas-switch-label-text: #007A33;
+ --planner-title-icon-filter: invert(38%) sepia(88%) saturate(1184%) hue-rotate(153deg) brightness(88%) contrast(94%);
 }
 
 /* body.algo-buh: do not redefine --accent as var(--accent) — that circular ref invalidates the token on body and all descendants */

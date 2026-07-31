@@ -46,7 +46,7 @@
 | UI-CONFIG-PRESETS | web_runtime | `index.html:5429` | 185 | P2 | IN_PROGRESS | - |
 | UI-APP-INIT | web_runtime | `index.html:5614` | 172 | P1 | IN_PROGRESS | - |
 | UI-PWA-LIFECYCLE | pwa | `index.html:5786` | 97 | P1 | IN_PROGRESS | - |
-| UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 442 | P2 | IN_PROGRESS | - |
+| UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 444 | P2 | IN_PROGRESS | - |
 | UI-CSS-MODES | web_css | `lsp-dplanner-modes.css:1` | 340 | P2 | IN_PROGRESS | - |
 | UI-CSS-CONTROLS | web_css | `lsp-dplanner-controls.css:1` | 559 | P2 | IN_PROGRESS | - |
 | UI-CSS-RESULTS | web_css | `lsp-dplanner-results.css:1` | 1078 | P1 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
