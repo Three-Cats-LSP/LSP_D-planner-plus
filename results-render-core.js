@@ -135,12 +135,14 @@ function _configuredGasCylinders() {
     });
   }
 
+  let activeDecoOrdinal = 0;
   getAllDecoGasIds().forEach(idx => {
     const fracs = getDecoCardFractions(idx);
     if (!fracs || !(fracs.fO2 > 0)) return;
+    activeDecoOrdinal += 1;
     rows.push({
       key: `deco${idx}`,
-      role: `Deco ${idx}`,
+      role: `Deco ${activeDecoOrdinal}`,
       label: getGasLabel(fracs.fO2, fracs.fHe),
       sizeId: `cylDg${idx}_size`,
       fillId: `cylDg${idx}_pres`,

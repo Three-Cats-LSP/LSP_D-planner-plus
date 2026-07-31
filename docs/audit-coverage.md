@@ -70,8 +70,8 @@
 | UI-VPM-RUNNER | web_runtime | `schedule-runner-core.js:2368` | 491 | P0 | IN_PROGRESS | REG-131, REG-132, REG-133, REG-134, REG-136, REG-138 |
 | UI-ZHL-RUNNER-SETUP | web_runtime | `schedule-runner-core.js:2859` | 144 | P0 | IN_PROGRESS | - |
 | UI-ZHL-RUNNER-ENGINE | web_runtime | `schedule-runner-core.js:3003` | 325 | P0 | IN_PROGRESS | REG-132, REG-134, REG-137 |
-| UI-VPM-RENDER | ui_core | `results-render-core.js:338` | 505 | P1 | IN_PROGRESS | - |
-| UI-ZHL-RESULTS | ui_core | `results-render-core.js:843` | 464 | P1 | IN_PROGRESS | - |
+| UI-VPM-RENDER | ui_core | `results-render-core.js:340` | 505 | P1 | IN_PROGRESS | - |
+| UI-ZHL-RESULTS | ui_core | `results-render-core.js:845` | 464 | P1 | IN_PROGRESS | - |
 | UI-GAS-INPUTS | ui_core | `gas-cards-core.js:15` | 222 | P1 | IN_PROGRESS | - |
 | UI-GAS-CARDS | ui_core | `gas-cards-core.js:237` | 283 | P1 | IN_PROGRESS | - |
 | UI-ZHL-HEADLESS-HELPERS | web_runtime | `zhl-headless-adapter.js:23` | 194 | P1 | VERIFIED | EXT-05, COV-01 |
@@ -244,7 +244,7 @@
 | TEST-SEVEN-LENS-CYCLE08-TRACE | test_infrastructure | `docs/seven-lens-traces/cycle-08-shell-results.json:1` | 994 | P0 | IN_PROGRESS | - |
 | TEST-UI-SHELL-RESULTS-REGRESSION | test_infrastructure | `dev/ui_shell_results_regression.py:1` | 485 | P0 | IN_PROGRESS | REG-95, REG-96, REG-97, REG-98, REG-99 |
 | TEST-UI-RESULTS-CSS-REGRESSION | test_infrastructure | `dev/ui_results_css_regression.py:1` | 415 | P0 | IN_PROGRESS | REG-89, REG-90, REG-91, REG-92, REG-93, REG-94 |
-| TEST-UI-VISUAL-CONTRACT-REGRESSION | test_infrastructure | `dev/ui_visual_contract_regression.py:1` | 2456 | P0 | IN_PROGRESS | REG-100, REG-101, REG-102, REG-103, REG-104, REG-105, REG-106, REG-107, REG-108, REG-109, REG-110, REG-111, REG-131, REG-132, REG-133, REG-134, REG-135, REG-136, REG-137, REG-138 |
+| TEST-UI-VISUAL-CONTRACT-REGRESSION | test_infrastructure | `dev/ui_visual_contract_regression.py:1` | 2486 | P0 | IN_PROGRESS | REG-100, REG-101, REG-102, REG-103, REG-104, REG-105, REG-106, REG-107, REG-108, REG-109, REG-110, REG-111, REG-131, REG-132, REG-133, REG-134, REG-135, REG-136, REG-137, REG-138 |
 | TEST-C07-PRE-RESULTS-REGRESSION | test_infrastructure | `dev/c07_pre_results_regression.py:1` | 48 | P0 | IN_PROGRESS | REG-89, REG-90 |
 | TOOL-V4-FULL-R-FIXES-TEST | test_infrastructure | `tools/test_v4_full_r_fixes.py:1` | 107 | P2 | IN_PROGRESS | - |
 | TEST-V4-FULL-R-EXPORT-SI | test_infrastructure | `dev/v4_full_r_export_si_regression.py:1` | 266 | P1 | IN_PROGRESS | - |

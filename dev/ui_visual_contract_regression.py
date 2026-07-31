@@ -83,6 +83,32 @@ GENERATE_JS = r"""
 async () => {
   window._zhlHeadless = false;
   setMainNav('buh');
+  if (typeof removeDecoGasCard === 'function' && typeof addDecoGasCard === 'function') {
+    removeDecoGasCard(1);
+    removeDecoGasCard(2);
+    addDecoGasCard();
+    addDecoGasCard();
+    const ids = typeof getAllDecoGasIds === 'function' ? getAllDecoGasIds() : [];
+    const first = ids[0], second = ids[1];
+    if (first) {
+      const mix = document.getElementById(`dg${first}Mix`);
+      if (mix) mix.value = 'ean50';
+      const size = document.getElementById(`cylDg${first}_size`);
+      const pres = document.getElementById(`cylDg${first}_pres`);
+      if (size) size.value = '11';
+      if (pres) pres.value = '200';
+    }
+    if (second) {
+      const mix = document.getElementById(`dg${second}Mix`);
+      if (mix) mix.value = 'o2';
+      const size = document.getElementById(`cylDg${second}_size`);
+      const pres = document.getElementById(`cylDg${second}_pres`);
+      if (size) size.value = '11';
+      if (pres) pres.value = '200';
+    }
+    if (typeof renumberDecoGasCards === 'function') renumberDecoGasCards();
+    if (typeof updateGasMODDisplays === 'function') updateGasMODDisplays();
+  }
   const depth = document.getElementById('tecDepth');
   const bt = document.getElementById('tecBT');
   if (depth) depth.value = '40';
@@ -125,6 +151,7 @@ CAPTURE_JS = r"""
   const gasSummary = document.getElementById('gasConsumptionSummary');
   const gasCards = [...document.querySelectorAll('#gasConsumptionSummary .gas-usage-card')];
   const gasLabels = gasCards.map(el => el.dataset.gasLabel || el.querySelector('.gas-usage-mix')?.textContent?.trim() || '');
+  const gasRoles = gasCards.map(el => el.dataset.gasRole || el.querySelector('.gas-usage-role')?.textContent?.trim() || '');
   const gasFooters = gasCards.map(el => el.querySelector('.gas-usage-foot')?.textContent?.trim() || '');
   const gasRemaining = gasCards.map(el => el.querySelector('.gas-usage-remaining')?.textContent?.trim() || '');
   const gasScales = gasCards.map(el => el.querySelector('.gas-usage-scale')?.textContent?.trim() || '');
@@ -415,10 +442,12 @@ CAPTURE_JS = r"""
       tableCount: document.querySelectorAll('#gasConsumptionSummary table.gas-plan-table').length,
       thresholdValue: document.getElementById('gasLowThresholdPct')?.value || '',
       labels: gasLabels,
+      roles: gasRoles,
       forbiddenLabels: gasLabels.filter(text => /EAN\d+/i.test(text)),
       hasAir: gasLabels.includes('Air'),
       hasO2: gasLabels.includes('100%'),
       hasDecoMix: gasLabels.some(text => /^\d{2}\/\d{2}$/.test(text)),
+      activeDecoRolesRenumbered: gasRoles.includes('Deco 1') && gasRoles.includes('Deco 2') && !gasRoles.some(text => /^Deco [3-9]\b/.test(text)),
       footerTexts: gasFooters,
       remainingTexts: gasRemaining,
       scaleTexts: gasScales,
@@ -2202,6 +2231,7 @@ def main() -> int:
         and c["gasConsumptionBars"]["hasAir"]
         and c["gasConsumptionBars"]["hasO2"]
         and c["gasConsumptionBars"]["hasDecoMix"]
+        and c["gasConsumptionBars"]["activeDecoRolesRenumbered"]
         and not c["gasConsumptionBars"]["forbiddenLabels"]
         and c["gasConsumptionBars"]["barsPresent"]
         and c["gasConsumptionBars"]["remainingBarModel"]
