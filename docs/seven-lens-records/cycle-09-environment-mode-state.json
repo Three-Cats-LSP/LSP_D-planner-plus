@@ -463,7 +463,7 @@
       "start_line": 419,
       "end_line": 918,
       "line_count": 500,
-      "content_fingerprint": "45a5f95339534b7a337822342300d4e7eb12e14b0de3471df384a8095a825282",
+      "content_fingerprint": "23ae640df034113aff69fc34b36f802c48fe8affe72abce9e2d167d1251ac5d8",
       "review_session": "C09-B-MODE-STATE-1",
       "verification_session": "C09-V-B-MODE-STATE-1",
       "lens_results": {
@@ -546,7 +546,7 @@
       "start_line": 919,
       "end_line": 1094,
       "line_count": 176,
-      "content_fingerprint": "5ddb856869ffc6ee393dda42b5db3cf2387062f2e64553ba28e20ace48c53793",
+      "content_fingerprint": "72aad9f371ef32fcf7260ec92daac3d6d0839a31cef8ea1eee9f52104448b0b2",
       "review_session": "C09-C-MODE-STATE-2",
       "verification_session": "C09-V-C-MODE-STATE-2",
       "lens_results": {

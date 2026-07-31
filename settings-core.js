@@ -914,7 +914,7 @@ function showTip(title, text) {
   if (!titleEl || !bodyEl || !m) return;
   titleEl.textContent = title;
   bodyEl.textContent = text;
-  m.style.display = 'block';
+  m.style.display = 'flex';
   bodyEl.scrollTop = 0;
 }
 function closeTip() {
@@ -926,7 +926,7 @@ window.closeTip = closeTip;
 
 function showGasRuleInfo() {
   const m = document.getElementById('gasRuleModal');
-  m.style.display = 'block';
+  if (m) m.style.display = 'flex';
 }
 function closeGasRuleInfo() {
   document.getElementById('gasRuleModal').style.display = 'none';

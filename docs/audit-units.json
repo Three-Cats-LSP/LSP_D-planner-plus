@@ -1979,7 +1979,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "0f6429d5d65965b2efe2213df4f35ce65f11c3a5fbf6f92c72ede138d89816a5",
+      "fingerprint": "1729d2c06f6ae04c1440149626b7019457844438f726fba56c0e708d239f9407",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2181,7 +2181,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "949bfd8e55a7ff0b17c890595f5249bc4c4241e7c6b06654a3f27dc60c29e0f6",
+      "fingerprint": "d7e60d3b11c2a1d87b5bf91be64ed3a75d85f20847f1f81cbc61362430359649",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2231,7 +2231,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MODE-STATE"
       },
-      "fingerprint": "739afc504496f10af80f94c4214099a3cf0397369bc8a096e5914d01370374b8",
+      "fingerprint": "0c61e3c7f23d1f67d2344adbc4375f1c532df3974ca2489188e46194f47b5aff",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
