@@ -1994,7 +1994,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "d0133b1e778c25eaeb042be4cbe189653de1e40c22f3c12ef13996355b9dedec",
+      "fingerprint": "6280b89d4f229cc72d9fb08d4b9d37bcabcc77a61245326f14d9943daa2d2ee2",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -6319,13 +6319,13 @@
     },
     {
       "cycle": "R39",
-      "max_new_application_lines": 784,
+      "max_new_application_lines": 790,
       "application_units": [
         "UI-CSS-FOUNDATION",
         "UI-CSS-MODES"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R39: Foundation and mode CSS risk-first READ; current lines: 784; sessions: 2",
+      "acceptance": "V4 R39: Foundation and mode CSS risk-first READ; current lines: 790; sessions: 2",
       "min_review_sessions": 2
     },
     {

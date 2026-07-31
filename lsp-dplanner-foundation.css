@@ -109,6 +109,12 @@ body[data-font-style="dive-computer"] {
  --text-num: clamp(1.45rem, 1.1rem + 0.8vw, 2.1rem);
 }
 
+#headerTopRow {
+ --font-mono: 'JetBrains Mono', monospace;
+ --font-display: 'Bebas Neue', sans-serif;
+ --font-heading: 'Outfit', sans-serif;
+}
+
 /* LIGHT THEME */
 body.light-theme {
  --bg: #f0f4f8;
