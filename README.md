@@ -323,6 +323,10 @@ Development continues in LSP D-Planner+ only. Older editions are archived:
 
 MIT. You may use, modify, and distribute this project under the terms of the MIT license.
 
+## Third-Party Assets
+
+- Oxygen icon by Flaticon: https://www.flaticon.com/free-icon/oxygen_6770314
+
 ## Links
 
 - Three Cats LSP: https://threecats-lsp.com
