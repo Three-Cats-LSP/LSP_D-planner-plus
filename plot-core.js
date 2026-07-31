@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Dive profile graph â€” canvas render, waypoints, zoom/pan interaction.
  * Loaded by index.html before main inline script.
  * Globals read: units, document, window._decoGasSegments, window._decoCeilingWps,
@@ -109,7 +109,7 @@ function _buildProfileLegendTableRows(waypoints, colors) {
 
 function _renderProfileLegendTableHtml(rows, colors) {
   const { red, orange, muted } = colors;
-  return `<table class="profile-legend-table" style="width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:11px;margin-top:8px;">
+  return `<table class="profile-legend-table" style="width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:11px;margin-top:8px;">
     <thead><tr style="border-bottom:1px solid var(--border);">
       <th style="padding:5px 6px;text-align:left;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">#</th>
       <th style="padding:5px 6px;text-align:left;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">Stop</th>

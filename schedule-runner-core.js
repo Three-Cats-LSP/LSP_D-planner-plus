@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Schedule runner core — VPM/ZHL UI orchestration, visible schedule table contract,
  * and plan exposure totals. Loaded after results-render-core and before planner-shell.
  */
@@ -1432,7 +1432,7 @@ function runPlanner() {
       </div>
       ${resultHintHtml ? `<div class="rec-card-hint-row">${resultHintHtml}</div>` : ''}
       <div style="margin-top:14px;">
-        <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:5px;letter-spacing:1px;"><span>NDL USAGE · ${tableRef}</span><span>${pct}%</span></div>
+        <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-bottom:5px;letter-spacing:1px;"><span>NDL USAGE · ${tableRef}</span><span>${pct}%</span></div>
         <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${bc};"></div></div>
       </div>
       ${beyondMOD ? `<div class="alert dang" style="margin-top:12px;"><span>⚠</span><div><strong>BEYOND MOD.</strong> ${dDisp} exceeds ${gasLabel} MOD of ${isMetric ? modM+' m' : modFt+' ft'} at ${modPpo2.toFixed(1)} bar ppO₂. CNS oxygen toxicity risk — use a lower O₂ mix or reduce depth.</div></div>` : ''}
@@ -1507,7 +1507,7 @@ function runPlanner() {
         <div class="stat"><div class="stat-val ${pO2>modPpo2?'r':'g'}">${pO2.toFixed(1)}</div><div class="stat-lbl">ppO₂</div></div>
       </div>
       <div style="margin-top:14px;">
-        <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:5px;letter-spacing:1px;"><span>NDL USAGE</span><span>${pct}%</span></div>
+        <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-bottom:5px;letter-spacing:1px;"><span>NDL USAGE</span><span>${pct}%</span></div>
         <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${bc};"></div></div>
       </div>
       ${ceil>0 ? '<div class="alert deco" style="margin-top:12px;"><span>⚠</span><div><strong>DECOMPRESSION REQUIRED.</strong> Deco ceiling at '+Math.ceil(ceil)+' m. See Deco Schedule tab for full profile.</div></div>' : ''}
@@ -1551,13 +1551,13 @@ function safetyStopHTML(depthM, depthFt, dur) {
       ? `${depthDisp} deep stop: recommended for dives below 30 m. Follow with a standard 3 m stop before surfacing.`
       : `${depthDisp} safety stop. Ascend at max ${rateDisp} and hold for ${dur} min.`;
   return `<div style="background:rgba(38,208,124,0.06);border:1px solid rgba(38,208,124,0.2);border-radius:10px;padding:14px;margin-top:14px;">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;color:var(--green);margin-bottom:10px;">SAFETY STOP</div>
+    <div style="font-family:var(--font-display);font-size:13px;letter-spacing:3px;color:var(--green);margin-bottom:10px;">SAFETY STOP</div>
     <div class="stats" style="margin-top:0;">
       <div class="stat" style="padding:10px;"><div class="stat-val g" style="font-size:22px;">${depthDisp}</div><div class="stat-lbl">Safety Stop Depth</div></div>
       <div class="stat" style="padding:10px;"><div class="stat-val g" style="font-size:22px;">${dur}</div><div class="stat-lbl">Duration (min)</div></div>
       <div class="stat" style="padding:10px;"><div class="stat-val g" style="font-size:22px;">${rateDisp}</div><div class="stat-lbl">Max Ascent</div></div>
     </div>
-    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:10px;line-height:1.5;">${desc}</div>
+    <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:10px;line-height:1.5;">${desc}</div>
   </div>`;
 }
 
@@ -1657,11 +1657,11 @@ function updateTissueViz(tissues, gfH) {
     const row = document.createElement('div');
     row.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:5px;';
     row.innerHTML = `
-      <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);min-width:24px;text-align:right;">${i+1}</span>
+      <span style="font-family:var(--font-mono);font-size:9px;color:var(--muted);min-width:24px;text-align:right;">${i+1}</span>
       <div style="flex:1;background:var(--bg-alt);border-radius:3px;height:12px;overflow:hidden;">
         <div style="width:${pct}%;height:100%;background:${col};border-radius:3px;transition:width 0.3s;"></div>
       </div>
-      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:${col};min-width:36px;text-align:right;">${pct}%</span>`;
+      <span style="font-family:var(--font-mono);font-size:10px;color:${col};min-width:36px;text-align:right;">${pct}%</span>`;
     grid.appendChild(row);
 
     if (tbody) tbody.innerHTML += `<tr class="tissue-sat-${sat.level}">

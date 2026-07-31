@@ -188,7 +188,7 @@ function drawGFCurve() {
   if (gfLegendEl) {
     if (isMobile && gfStops.length) {
       gfLegendEl.style.display = 'block';
-      gfLegendEl.innerHTML = `<table style="width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:11px;margin:0;">
+      gfLegendEl.innerHTML = `<table style="width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:11px;margin:0;">
         <thead><tr style="border-bottom:1px solid var(--border);">
           <th style="padding:4px 6px;text-align:left;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">#</th>
           <th style="padding:4px 6px;text-align:left;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;">Stop</th>

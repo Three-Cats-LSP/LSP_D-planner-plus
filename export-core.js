@@ -1988,7 +1988,7 @@ function showToast(msg, id, isError) {
   if (!toast) {
     toast = document.createElement('div');
     toast.id = 'toast-' + id;
-    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:10px 22px;border-radius:20px;font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:700;letter-spacing:1px;z-index:9999;transition:opacity 0.4s;pointer-events:none;max-width:min(90vw,480px);text-align:center;';
+    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:10px 22px;border-radius:20px;font-family:var(--font-mono);font-size:13px;font-weight:700;letter-spacing:1px;z-index:9999;transition:opacity 0.4s;pointer-events:none;max-width:min(90vw,480px);text-align:center;';
     document.body.appendChild(toast);
   }
   toast.style.background = isError ? 'var(--red)' : 'var(--accent)';
@@ -2393,7 +2393,7 @@ function showPDFExportDialog() {
     </label>`).join('');
 
   box.innerHTML = `
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--accent,#00d9ff);margin-bottom:16px;">PDF EXPORT</div>
+    <div style="font-family:var(--font-display);font-size:18px;letter-spacing:2px;color:var(--accent,#00d9ff);margin-bottom:16px;">PDF EXPORT</div>
     <div style="font-size:11px;color:var(--muted,#8890b0);margin-bottom:14px;letter-spacing:0.5px;">SELECT SECTIONS TO INCLUDE</div>
     <div style="margin-bottom:18px;">${rows}</div>
     <div style="display:flex;gap:10px;justify-content:flex-end;">
@@ -2920,7 +2920,7 @@ function showContingencyPDFDialog() {
     </label>`).join('');
 
   box.innerHTML = `
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#ff4040;margin-bottom:16px;">[!] EMERGENCY PDF EXPORT</div>
+    <div style="font-family:var(--font-display);font-size:18px;letter-spacing:2px;color:#ff4040;margin-bottom:16px;">[!] EMERGENCY PDF EXPORT</div>
     <div style="font-size:11px;color:var(--muted,#8890b0);margin-bottom:14px;letter-spacing:0.5px;">SELECT SECTIONS TO INCLUDE</div>
     <div style="margin-bottom:18px;">${rows}</div>
     <div style="display:flex;gap:10px;justify-content:flex-end;">

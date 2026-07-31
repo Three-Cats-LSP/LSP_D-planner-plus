@@ -175,7 +175,7 @@
 </div><!-- end advancedSettingsSection -->
 <!-- Gas Mix 1 — Bottom Gas -->
 <div id="ccrFieldsRow" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:10px;">
-<div style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--accent);margin-bottom:10px;">🔄 DIVE TYPE</div>
+<div style="font-family:var(--font-display);font-size:12px;letter-spacing:2px;color:var(--accent);margin-bottom:10px;">🔄 DIVE TYPE</div>
 <div class="form-grid u0">
 <div class="field circuit-mode-field">
 <label>Circuit</label>
@@ -207,7 +207,7 @@
 </button>
 <div id="ccrAdvSettingsBody" style="display:none;margin-top:8px;">
 <div id="ccrSettingsGroup" style="display:none;">
-<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);">CCR Settings</div>
+<div style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);">CCR Settings</div>
 <div class="adv-stack">
 <div class="adv-row" id="ccrSpDescentRow" style="display:none;">
 <label>SP descent (bar) <span class="tip-icon" onclick="showTip('SP Descent','Partial pressure of O₂ maintained in the loop during descent. A lower setpoint reduces O₂ uptake before reaching bottom depth.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
@@ -248,7 +248,7 @@
 </div>
 </div>
 <div id="ccrBailoutSettingsGroup" style="display:none;margin-top:12px;">
-<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);">Bailout Settings <span class="tip-icon" onclick="showTip('Bailout Gradient Factors','Gradient factors applied when Bailout mode is ON — the planner switches to open-circuit deco using these GF values instead of the main plan GF.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></div>
+<div style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);">Bailout Settings <span class="tip-icon" onclick="showTip('Bailout Gradient Factors','Gradient factors applied when Bailout mode is ON — the planner switches to open-circuit deco using these GF values instead of the main plan GF.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></div>
 <div class="ccr-adv-gf-pair">
 <span class="algo-label-text u1">Low:</span>
 <select class="u7 ccr-bo-gf-select" id="ccrBailoutGfLow">
@@ -269,7 +269,7 @@
 </div>
 <div id="diluentGasCard" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:10px;">
 <div class="gas-card-top">
-<div class="gas-card-title-row"><span class="gas-dot gas-dot--bottom" aria-hidden="true"></span><div id="diluentCardTitle" style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--accent);">GAS MIX 1 — BOTTOM GAS</div></div>
+<div class="gas-card-title-row"><span class="gas-dot gas-dot--bottom" aria-hidden="true"></span><div id="diluentCardTitle" style="font-family:var(--font-display);font-size:12px;letter-spacing:2px;color:var(--accent);">GAS MIX 1 — BOTTOM GAS</div></div>
 <span class="gas-mod" id="botMODDisplay" title="Calculated MOD using selected Bottom Gas and Max Bottom ppO₂">—</span>
 </div>
 <div class="gas-card-grid u0">
@@ -310,7 +310,7 @@
 <!-- Travel Gas Card -->
 <div id="travelGasCard" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:8px;display:none;">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;">
-<div class="gas-card-title-row"><span class="gas-dot gas-dot--travel" aria-hidden="true"></span><div class="dg-card-title gas-card-title--travel" style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--gas-travel);">TRAVEL GAS — DESCENT / ASCENT TRANSIT</div></div>
+<div class="gas-card-title-row"><span class="gas-dot gas-dot--travel" aria-hidden="true"></span><div class="dg-card-title gas-card-title--travel" style="font-family:var(--font-display);font-size:12px;letter-spacing:2px;color:var(--gas-travel);">TRAVEL GAS — DESCENT / ASCENT TRANSIT</div></div>
 <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
 <span class="gas-mod" id="travelGasMODDisplay" title="Calculated travel gas MOD using Bottom ppO₂ limit">—</span>
 <button onclick="removeTravelGas()" onmouseout="this.style.color='var(--muted)'" onmouseover="this.style.color='var(--red)'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 4px;" title="Remove travel gas">×</button>
@@ -348,12 +348,12 @@
 </div>
 <input id="cylTravelGas_reserve" type="hidden" value="50"/>
 </div>
-<div style="margin-top:10px;font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;">
+<div style="margin-top:10px;font-size:11px;color:var(--muted);font-family:var(--font-mono);">
         Breathed from surface → switch depth on descent, and from bottom gas MOD → first deco gas on ascent.
       </div>
 </div>
 <!-- Add Travel Gas button -->
-<button id="addTravelGasBtn" onclick="addTravelGas()" onmouseout="this.style.opacity='0.7'" onmouseover="this.style.opacity='1'" style="margin-top:8px;width:100%;padding:9px;background:none;border:1px dashed #ff9f43;border-radius:8px;color:#ff9f43;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;transition:all 0.2s;opacity:0.7;" title="Add a travel gas — breathed from surface to switch depth on descent, and above bottom gas MOD on ascent. Prevents O₂ toxicity in shallow water with high-O₂ bottom mixes.">
+<button id="addTravelGasBtn" onclick="addTravelGas()" onmouseout="this.style.opacity='0.7'" onmouseover="this.style.opacity='1'" style="margin-top:8px;width:100%;padding:9px;background:none;border:1px dashed #ff9f43;border-radius:8px;color:#ff9f43;font-family:var(--font-mono);font-size:11px;letter-spacing:1px;cursor:pointer;transition:all 0.2s;opacity:0.7;" title="Add a travel gas — breathed from surface to switch depth on descent, and above bottom gas MOD on ascent. Prevents O₂ toxicity in shallow water with high-O₂ bottom mixes.">
       + ADD TRAVEL GAS
     </button>
 <!-- Dynamic deco / bailout gas cards container -->
@@ -362,7 +362,7 @@
 <!-- Gas Mix 2 — Deco Gas 1 / Bailout Mix 1 -->
 <div class="deco-gas-card" id="dgCard_1" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:8px;">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;">
-<div class="gas-card-title-row"><span class="gas-dot gas-dot--deco1" aria-hidden="true"></span><div class="dg-card-title" style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--accent);">GAS MIX 2 — DECO GAS 1 (optional)</div></div>
+<div class="gas-card-title-row"><span class="gas-dot gas-dot--deco1" aria-hidden="true"></span><div class="dg-card-title" style="font-family:var(--font-display);font-size:12px;letter-spacing:2px;color:var(--accent);">GAS MIX 2 — DECO GAS 1 (optional)</div></div>
 <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
 <span class="gas-mod" id="dg1MODDisplay" title="Calculated MOD using selected gas and Max Deco ppO₂">—</span>
 <button onclick="removeDecoGasCard(1)" onmouseout="this.style.color='var(--muted)'" onmouseover="this.style.color='var(--red)'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 4px;" title="Remove this gas">✕</button>
@@ -404,7 +404,7 @@
 <!-- Gas Mix 3 — Deco Gas 2 -->
 <div class="deco-gas-card" id="dgCard_2" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:8px;">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;">
-<div class="gas-card-title-row"><span class="gas-dot gas-dot--deco2" aria-hidden="true"></span><div class="dg-card-title" style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--accent);">GAS MIX 3 — DECO GAS 2 (optional)</div></div>
+<div class="gas-card-title-row"><span class="gas-dot gas-dot--deco2" aria-hidden="true"></span><div class="dg-card-title" style="font-family:var(--font-display);font-size:12px;letter-spacing:2px;color:var(--accent);">GAS MIX 3 — DECO GAS 2 (optional)</div></div>
 <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
 <span class="gas-mod" id="dg2MODDisplay" title="Calculated MOD using selected gas and Max Deco ppO₂">—</span>
 <button onclick="removeDecoGasCard(2)" onmouseout="this.style.color='var(--muted)'" onmouseover="this.style.color='var(--red)'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 4px;" title="Remove this gas">✕</button>
@@ -445,7 +445,7 @@
 </div>
 </div>
 <!-- Add Gas Mix / Bailout Mix button -->
-<button id="addDecoGasBtn" onclick="addDecoGasCard()" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" style="margin-top:10px;width:100%;padding:9px;background:none;border:1px dashed var(--border);border-radius:8px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;transition:all 0.2s;">
+<button id="addDecoGasBtn" onclick="addDecoGasCard()" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" style="margin-top:10px;width:100%;padding:9px;background:none;border:1px dashed var(--border);border-radius:8px;color:var(--muted);font-family:var(--font-mono);font-size:11px;letter-spacing:1px;cursor:pointer;transition:all 0.2s;">
       + ADD GAS MIX
     </button>
 </div>
@@ -453,7 +453,7 @@
 <button class="gen-btn btn-calc" onclick="runDecoSchedule()" style="margin-top:8px;margin-bottom:0;">▶ Generate schedule</button>
 <!-- Feature B: VPM Repetitive Dive panel — hidden until first VPM result available -->
 <div id="vpmRepRow" style="display:none;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px;padding:10px 12px;background:var(--card2);border:1px solid var(--border);border-radius:8px;">
-<label style="display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);cursor:pointer;">
+<label style="display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;color:var(--text);cursor:pointer;">
 <input id="vpmRepMode" onchange="updateVpmRepUI()" style="width:14px;height:14px;accent-color:var(--accent);cursor:pointer;" type="checkbox"/>
 <span>Repetitive VPM Dive</span>
 <span class="tip-icon" onclick="showTip('Repetitive VPM Dive','Carries both tissue gas pressures AND bubble state (adjusted critical radii) from the previous VPM dive.\n\nTissue loading: N₂/He off-gasses during surface interval (Haldane).\n\nBubble state: compressed nuclei partially regenerate toward altitude-adjusted initial radii during surface interval (REGEN_TIME = 14 days), then carry into this dive — producing correct VPM repetitive dive behaviour.\n\nNote: only available for VPM-B and VPM-B+GFS models.')">
@@ -461,16 +461,16 @@
 </span>
 </label>
 <div id="vpmRepSIRow" style="display:none;align-items:center;gap:6px;">
-<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">Surface interval:</span>
-<input id="vpmSurfaceInterval" max="10080" min="0" step="5" style="width:60px;padding:3px 6px;border-radius:5px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;" type="number" value="60"/>
-<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">min</span>
+<span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">Surface interval:</span>
+<input id="vpmSurfaceInterval" max="10080" min="0" step="5" style="width:60px;padding:3px 6px;border-radius:5px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:var(--font-mono);font-size:11px;" type="number" value="60"/>
+<span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">min</span>
 </div>
-<button onclick="clearVpmRepState()" style="padding:3px 10px;background:none;border:1px solid var(--border);border-radius:5px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;cursor:pointer;letter-spacing:0.5px;" title="Clear saved dive state">× CLEAR</button>
-<span id="vpmRepLabel" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);"></span>
+<button onclick="clearVpmRepState()" style="padding:3px 10px;background:none;border:1px solid var(--border);border-radius:5px;color:var(--muted);font-family:var(--font-mono);font-size:10px;cursor:pointer;letter-spacing:0.5px;" title="Clear saved dive state">× CLEAR</button>
+<span id="vpmRepLabel" style="font-family:var(--font-mono);font-size:10px;color:var(--accent);"></span>
 </div>
 <!-- Feature B: Bühlmann repetitive dive panel — hidden until first ZHL result available -->
 <div id="zhlRepRow" style="display:none;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px;padding:10px 12px;background:var(--card2);border:1px solid var(--border);border-radius:8px;">
-<label style="display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);cursor:pointer;">
+<label style="display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;color:var(--text);cursor:pointer;">
 <input id="zhlRepMode" onchange="updateZhlRepUI()" style="width:14px;height:14px;accent-color:var(--accent);cursor:pointer;" type="checkbox"/>
 <span>Repetitive Bühlmann Dive</span>
 <span class="tip-icon" onclick="showTip('Repetitive Bühlmann Dive','Carries end-of-dive tissue loading (N₂/He) from the previous Bühlmann schedule.\n\nDuring the surface interval, tissues off-gas using Haldane kinetics before the next dive begins.\n\nEnable after generating a Bühlmann schedule, then set surface interval minutes.')">
@@ -478,12 +478,12 @@
 </span>
 </label>
 <div id="zhlRepSIRow" style="display:none;align-items:center;gap:6px;">
-<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">Surface interval:</span>
-<input id="zhlSurfaceInterval" max="10080" min="0" step="5" style="width:60px;padding:3px 6px;border-radius:5px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;" type="number" value="60"/>
-<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">min</span>
+<span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">Surface interval:</span>
+<input id="zhlSurfaceInterval" max="10080" min="0" step="5" style="width:60px;padding:3px 6px;border-radius:5px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:var(--font-mono);font-size:11px;" type="number" value="60"/>
+<span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">min</span>
 </div>
-<button onclick="clearZhlRepState()" style="padding:3px 10px;background:none;border:1px solid var(--border);border-radius:5px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;cursor:pointer;letter-spacing:0.5px;" title="Clear saved dive state">× CLEAR</button>
-<span id="zhlRepLabel" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);"></span>
+<button onclick="clearZhlRepState()" style="padding:3px 10px;background:none;border:1px solid var(--border);border-radius:5px;color:var(--muted);font-family:var(--font-mono);font-size:10px;cursor:pointer;letter-spacing:0.5px;" title="Clear saved dive state">× CLEAR</button>
+<span id="zhlRepLabel" style="font-family:var(--font-mono);font-size:10px;color:var(--accent);"></span>
 </div>
 
 <!-- ── Gas Consumption ── -->

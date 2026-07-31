@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v4-risk-first-reset`
-**Units:** 213 total; 0 unread; 119 in progress; 3 read; 91 verified.
+**Units:** 213 total; 0 unread; 120 in progress; 3 read; 90 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules

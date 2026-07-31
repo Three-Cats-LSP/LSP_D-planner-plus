@@ -326,7 +326,7 @@ function buildContingencyButtons() {
   noneBtn.id = 'contGas-none';
   noneBtn.textContent = 'None';
   noneBtn.className = 'cont-gas-btn';
-  noneBtn.style.cssText = 'padding:8px 14px;background:rgba(0,200,255,0.1);color:var(--accent);border:1px solid var(--accent);border-radius:6px;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:11px;font-weight:600;';
+  noneBtn.style.cssText = 'padding:8px 14px;background:rgba(0,200,255,0.1);color:var(--accent);border:1px solid var(--accent);border-radius:6px;cursor:pointer;font-family:var(--font-mono);font-size:11px;font-weight:600;';
   noneBtn.onclick = () => selectContGas('none', gases);
   btns.appendChild(noneBtn);
 
@@ -337,7 +337,7 @@ function buildContingencyButtons() {
     btn.id = 'contGas-' + g.id;
     btn.textContent = g.name;
     btn.className = 'cont-gas-btn';
-    btn.style.cssText = 'padding:8px 14px;background:rgba(255,71,87,0.08);color:var(--muted);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:11px;font-weight:600;';
+    btn.style.cssText = 'padding:8px 14px;background:rgba(255,71,87,0.08);color:var(--muted);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:var(--font-mono);font-size:11px;font-weight:600;';
     btn.onclick = () => selectContGas(String(g.id), gases);
     btns.appendChild(btn);
   });
@@ -347,7 +347,7 @@ function buildContingencyButtons() {
     btn.id = 'contGas-both';
     btn.textContent = gases.length > 2 ? 'All' : 'Both';
     btn.className = 'cont-gas-btn';
-    btn.style.cssText = 'padding:8px 14px;background:rgba(255,71,87,0.08);color:var(--muted);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;';
+    btn.style.cssText = 'padding:8px 14px;background:rgba(255,71,87,0.08);color:var(--muted);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:var(--font-mono);font-size:11px;font-weight:700;';
     btn.onclick = () => selectContGas('both', gases);
     btns.appendChild(btn);
   }

@@ -253,7 +253,7 @@ function appendDecoGasCardAtIdx(idx) {
 
   card.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;">
-      <div class="gas-card-title-row"><span class="gas-dot ${dotClass}" aria-hidden="true"></span><div class="dg-card-title" style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--accent);">${cardTitle}</div></div>
+      <div class="gas-card-title-row"><span class="gas-dot ${dotClass}" aria-hidden="true"></span><div class="dg-card-title" style="font-family:var(--font-display);font-size:12px;letter-spacing:2px;color:var(--accent);">${cardTitle}</div></div>
       <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
         <span class="gas-mod" id="dg${idx}MODDisplay" title="Calculated MOD using selected gas and Max Deco ppO₂">—</span>
         <button onclick="removeDecoGasCard(${idx})" title="Remove this gas"

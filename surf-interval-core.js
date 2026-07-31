@@ -217,11 +217,11 @@ function calcSurfInt(prefix) {
       const pct = Math.max(0, Math.min(120, Math.round((tension / tolTension[i]) * 100)));
       const barCol = pct >= 100 ? 'var(--red)' : pct >= 85 ? 'var(--yellow)' : 'var(--green)';
       chart.innerHTML += `<div style="display:flex;align-items:center;gap:8px;">
-        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);width:42px;flex-shrink:0;">C${i+1}</span>
+        <span style="font-family:var(--font-mono);font-size:9px;color:var(--muted);width:42px;flex-shrink:0;">C${i+1}</span>
         <div style="flex:1;background:var(--card2);border-radius:3px;height:12px;overflow:hidden;">
           <div style="width:${Math.min(100,pct)}%;height:100%;background:${barCol};"></div>
         </div>
-        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:${barCol};width:38px;text-align:right;flex-shrink:0;">${pct}%</span>
+        <span style="font-family:var(--font-mono);font-size:9px;color:${barCol};width:38px;text-align:right;flex-shrink:0;">${pct}%</span>
       </div>`;
     });
   }
@@ -244,7 +244,7 @@ function renderSurfIntPanel(containerId, prefix, preDepthM, preBtMin) {
   c.innerHTML = `
     <div class="card" style="margin-top:16px;padding:0;overflow:hidden;">
       <button type="button" onclick="toggleSurfIntPanel('${P}')" id="${P}Toggle"
-        style="width:100%;display:flex;justify-content:space-between;align-items:center;background:var(--card2);border:none;border-radius:10px;padding:12px 16px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;letter-spacing:0.5px;">
+        style="width:100%;display:flex;justify-content:space-between;align-items:center;background:var(--card2);border:none;border-radius:10px;padding:12px 16px;cursor:pointer;color:var(--text);font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.5px;">
         <span>Surface Interval</span><span id="${P}Caret" style="color:var(--accent);">▾</span>
       </button>
       <div id="${P}Body" style="display:none;padding:14px 16px;">
@@ -252,8 +252,8 @@ function renderSurfIntPanel(containerId, prefix, preDepthM, preBtMin) {
         <div style="display:flex;gap:16px;flex-wrap:wrap;">
           <div style="flex:1;min-width:150px;margin-bottom:14px;">
             <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
-              <label style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">Dive 1 Depth</label>
-              <span id="${P}D1DepthDisplay" style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);line-height:1;">${fmtD(d1Init)}</span>
+              <label style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">Dive 1 Depth</label>
+              <span id="${P}D1DepthDisplay" style="font-family:var(--font-display);font-size:22px;color:var(--accent);line-height:1;">${fmtD(d1Init)}</span>
             </div>
             <div class="slider-wrap">
               <input type="range" id="${P}D1Depth" class="lsp-slider" min="5" max="60" value="${d1Init}" step="1" data-si-metric="1" data-depth-m="${d1Init}" oninput="this.dataset.depthM=this.value;updateSliderFill(this);calcSurfInt('${P}')">
@@ -261,8 +261,8 @@ function renderSurfIntPanel(containerId, prefix, preDepthM, preBtMin) {
           </div>
           <div style="flex:1;min-width:150px;margin-bottom:14px;">
             <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
-              <label style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">Dive 1 Bottom Time</label>
-              <span id="${P}D1BTDisplay" style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);line-height:1;">${btInit} min</span>
+              <label style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">Dive 1 Bottom Time</label>
+              <span id="${P}D1BTDisplay" style="font-family:var(--font-display);font-size:22px;color:var(--accent);line-height:1;">${btInit} min</span>
             </div>
             <div class="slider-wrap">
               <input type="range" id="${P}D1BT" class="lsp-slider" min="5" max="120" value="${btInit}" step="1" oninput="updateSliderFill(this);calcSurfInt('${P}')">
@@ -272,8 +272,8 @@ function renderSurfIntPanel(containerId, prefix, preDepthM, preBtMin) {
         <div style="display:flex;gap:16px;flex-wrap:wrap;">
           <div style="flex:1;min-width:150px;margin-bottom:14px;">
             <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
-              <label style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">Dive 2 Planned Depth</label>
-              <span id="${P}D2DepthDisplay" style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);line-height:1;">${fmtD(d1Init)}</span>
+              <label style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">Dive 2 Planned Depth</label>
+              <span id="${P}D2DepthDisplay" style="font-family:var(--font-display);font-size:22px;color:var(--accent);line-height:1;">${fmtD(d1Init)}</span>
             </div>
             <div class="slider-wrap">
               <input type="range" id="${P}D2Depth" class="lsp-slider" min="5" max="60" value="${d1Init}" step="1" data-si-metric="1" data-depth-m="${d1Init}" oninput="this.dataset.depthM=this.value;updateSliderFill(this);calcSurfInt('${P}')">
@@ -281,8 +281,8 @@ function renderSurfIntPanel(containerId, prefix, preDepthM, preBtMin) {
           </div>
           <div style="flex:1;min-width:150px;margin-bottom:14px;">
             <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
-              <label style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">Dive 2 Bottom Time</label>
-              <span id="${P}D2BTDisplay" style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);line-height:1;">${btInit} min</span>
+              <label style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">Dive 2 Bottom Time</label>
+              <span id="${P}D2BTDisplay" style="font-family:var(--font-display);font-size:22px;color:var(--accent);line-height:1;">${btInit} min</span>
             </div>
             <div class="slider-wrap">
               <input type="range" id="${P}D2BT" class="lsp-slider" min="5" max="120" value="${btInit}" step="1" oninput="updateSliderFill(this);calcSurfInt('${P}')">
@@ -290,8 +290,8 @@ function renderSurfIntPanel(containerId, prefix, preDepthM, preBtMin) {
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:6px;margin-bottom:14px;">
-          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">GF Lo:</span>
-          <select id="${P}GfLow" onchange="calcSurfInt('${P}');if(typeof appSettings!=='undefined')appSettings.save(false)" style="padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;">
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">GF Lo:</span>
+          <select id="${P}GfLow" onchange="calcSurfInt('${P}');if(typeof appSettings!=='undefined')appSettings.save(false)" style="padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:var(--font-mono);font-size:11px;cursor:pointer;">
             <option value="20">20</option><option value="25">25</option><option value="30" selected>30</option>
             <option value="35">35</option><option value="40">40</option><option value="45">45</option><option value="50">50</option>
           </select>
@@ -329,7 +329,7 @@ function renderSurfIntPanel(containerId, prefix, preDepthM, preBtMin) {
               </div>
             </div>
             <div id="${P}D2GasErr"
-              style="display:none;margin-top:6px;font-family:'JetBrains Mono',monospace;
+              style="display:none;margin-top:6px;font-family:var(--font-mono);
                      font-size:10px;color:var(--red);">
             </div>
           </div>
@@ -341,7 +341,7 @@ function renderSurfIntPanel(containerId, prefix, preDepthM, preBtMin) {
         </div>
         <div id="${P}ReverseWarn" style="display:none;margin-top:12px;" class="info-box"></div>
         <div style="margin-top:14px;">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Tissue Loading at Recommended SI</div>
+          <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Tissue Loading at Recommended SI</div>
           <div id="${P}TissueChart" style="display:flex;flex-direction:column;gap:3px;"></div>
         </div>
       </div>

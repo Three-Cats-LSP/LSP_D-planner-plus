@@ -1979,7 +1979,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "1a36c1ec8d3d32a5327f69c0e2ff7527671d5bb3c4732f7eb2a28d8518720029",
+      "fingerprint": "8b14f5b1c24b97ff18e8817666e14897c40f6a9322d5a8ea744a0b690ef9f1c1",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2076,7 +2076,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "6fcd2f45c72fb1c5b0c6502f1a5b0b88d73e05aa3e7963d311b3bf42fe2f9735",
+      "fingerprint": "6380bf7a2889f8adb64eb6478cc7a3c1bcdf4a0a316f4902191b2a98ac667e13",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2106,7 +2106,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c6022dbc12f009677e8d5b1d2e5471e3a4739fc8c0f58f5f3e73717389207caf",
+      "fingerprint": "74d2cc27c0b63632c065ce27759e3c68be8860ff2cfcfce9d7e920d01255fe56",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2136,7 +2136,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "2a8d4f1d85fd646a2d473260d6dcea747b6ba8589ac83534e50615f7dd33329e",
+      "fingerprint": "433aaddf6920685865a66d30773d1a4eb672a85e05053e8fc7c54c26109c2091",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2151,7 +2151,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "998c8638b67d25e86108b32f6eb25893f177f781e9e5df6a0c8dd7ce0d3775df",
+      "fingerprint": "2cc60e5a05e268c8d95a19ee0971f82388eb7221f0dd1d9ce7054a1c936f31ed",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2166,7 +2166,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "359d57c7764d102007107be61d8560be40005d93184c9800e3e502dc7615a164",
+      "fingerprint": "7d0d0334cbd09f2713de625863f60690cc16ec6fa8888f8adddf8105a3febc19",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2181,7 +2181,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "206da86a26d858e2899b0508dcf5e0a036ae5d63a5fed4c3ce67230382234c56",
+      "fingerprint": "949bfd8e55a7ff0b17c890595f5249bc4c4241e7c6b06654a3f27dc60c29e0f6",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2264,7 +2264,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-UNIT-HELPERS"
       },
-      "fingerprint": "abcdeca31ed008253eb77bffe3ce044b7d9d2a1f09029245015fe7dad5c2946a",
+      "fingerprint": "d72ec623776009f437c67d5a96a00d838b384f3cd9d77b5cb8f7d488ff9d3328",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2330,7 +2330,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-DECO-PHYSICS"
       },
-      "fingerprint": "3662ab73047c76947b14510986bbbd164342e1a95a74e0eea086651029e4502c",
+      "fingerprint": "d1b56b1ce511e7e899c66107074bd41ba60c04c31f89e033bb86810f8a334d89",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2347,7 +2347,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-SCHEDULE-INPUTS"
       },
-      "fingerprint": "9ad2837eec1e2696c39fbb8d8f4f44e1eef0b21adcaf390d776d3c41922b7501",
+      "fingerprint": "b633c18d6e4ccc16cf54d2b27667670dcdd2d76fdb664393859e77fe9c7d48f3",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2439,7 +2439,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-GAS-CARDS"
       },
-      "fingerprint": "181021565433151a2ab41a296e30405a1277e0a0f69915b20bc7cb5e913f9376",
+      "fingerprint": "67c4b6274c1fe022ab62cd64ea72af50c6588505362ad94a4b313e8d92e90918",
       "last_read_fingerprint": null,
       "audit_issue": 148,
       "evidence": [],
@@ -2659,7 +2659,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "17bb22f07706c848020b29c99191b1248a854bdd8fcc2e51c959da6f7e00d24a",
+      "fingerprint": "9c1e248e93480f74204a4d2aa1ed8b4acdffd026968b703ed583f623b1dbf588",
       "last_read_fingerprint": null,
       "audit_issue": 157,
       "evidence": [],
@@ -2710,7 +2710,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PROFILE-PRESETS"
       },
-      "fingerprint": "40018c03692f3f5994b7fecb3d487e7cbee00a2a61d25339a09a1a04ac4fc4d9",
+      "fingerprint": "d9a23a3a331a531c8523355321b914cba3d19db3fc81194e9595a62aa4c3c85a",
       "last_read_fingerprint": null,
       "audit_issue": 159,
       "evidence": [],
@@ -2722,22 +2722,16 @@
       "path": "index.html",
       "layer": "web_runtime",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-CONFIG-PRESETS"
       },
-      "fingerprint": "05982c3a58fed7315dd80536a2e722710a512b361e498c9e10969fe2b96ade76",
-      "last_read_fingerprint": "05982c3a58fed7315dd80536a2e722710a512b361e498c9e10969fe2b96ade76",
+      "fingerprint": "81734082d4bb86c9f0dd26789d863eeeaa8a997a93518a6b4c68093004a505ab",
+      "last_read_fingerprint": null,
       "audit_issue": 159,
-      "evidence": [
-        "SUITE-UI-STRUCTURE/UI-SCRIPT-ORDER",
-        "SUITE-COVERAGE/AUDIT-COV-01"
-      ],
-      "regression_cases": [
-        "EXT-05",
-        "COV-01"
-      ],
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Audit issue #159"
     },
     {
@@ -3002,7 +2996,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "40a0973a4ef9a05cef4e62db8d8921eb4bd89e5749a7a20dd70bcc345f01190d",
+      "fingerprint": "80ea3ff7c578c9f89865762a0bed5bae79eb5fd0fc52e8f0da943797f13ccc70",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3018,7 +3012,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "b6f82b5522a2ecc94c25ff72dcd44cb31b2c3564e56c9ec6f2c0fc7a9a1656db",
+      "fingerprint": "47cdce315f22b802a6399d841f0e2366410550e7572cfc9c59c9129c3d3dcac2",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3064,7 +3058,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "37e18df4e767aa28d08bb5f8394b6f3517de4014fee4f0510b2241157f584328",
+      "fingerprint": "b3dd7902b7ef28a69f6987322f5bd73c674a229a8584ed7c7ec5b8616e94beda",
       "last_read_fingerprint": null,
       "evidence": [],
       "issue": "GitHub #142 \u00ef\u00bf\u00bd Dive 2 gas override",

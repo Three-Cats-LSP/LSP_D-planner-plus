@@ -26,9 +26,9 @@
 | ui_shell | 2 | 0 | 2 | 0 | 0 |
 | web_css | 5 | 0 | 5 | 0 | 0 |
 | web_markup | 7 | 0 | 7 | 0 | 0 |
-| web_runtime | 24 | 0 | 21 | 0 | 3 |
+| web_runtime | 24 | 0 | 22 | 0 | 2 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **213** | **0** | **119** | **3** | **91** |
+| **Total** | **213** | **0** | **120** | **3** | **90** |
 
 ## Units
 
@@ -43,7 +43,7 @@
 | UI-TOOLS-EXPOSURE | web_runtime | `index.html:4293` | 233 | P1 | IN_PROGRESS | - |
 | UI-SETTINGS | web_runtime | `index.html:4526` | 395 | P1 | IN_PROGRESS | - |
 | UI-PROFILE-PRESETS | web_runtime | `index.html:4921` | 508 | P2 | IN_PROGRESS | - |
-| UI-CONFIG-PRESETS | web_runtime | `index.html:5429` | 185 | P2 | VERIFIED | EXT-05, COV-01 |
+| UI-CONFIG-PRESETS | web_runtime | `index.html:5429` | 185 | P2 | IN_PROGRESS | - |
 | UI-APP-INIT | web_runtime | `index.html:5614` | 172 | P1 | IN_PROGRESS | - |
 | UI-PWA-LIFECYCLE | pwa | `index.html:5786` | 97 | P1 | IN_PROGRESS | - |
 | UI-CSS-FOUNDATION | web_css | `lsp-dplanner-foundation.css:1` | 442 | P2 | IN_PROGRESS | - |

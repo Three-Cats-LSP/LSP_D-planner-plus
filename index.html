@@ -501,7 +501,7 @@
 </div><!-- end advancedSettingsSection -->
 <!-- Gas Mix 1 — Bottom Gas -->
 <div id="ccrFieldsRow" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:10px;">
-<div style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--accent);margin-bottom:10px;">🔄 DIVE TYPE</div>
+<div style="font-family:var(--font-display);font-size:12px;letter-spacing:2px;color:var(--accent);margin-bottom:10px;">🔄 DIVE TYPE</div>
 <div class="form-grid u0">
 <div class="field circuit-mode-field">
 <label>Circuit</label>
@@ -533,7 +533,7 @@
 </button>
 <div id="ccrAdvSettingsBody" style="display:none;margin-top:8px;">
 <div id="ccrSettingsGroup" style="display:none;">
-<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);">CCR Settings</div>
+<div style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);">CCR Settings</div>
 <div class="adv-stack">
 <div class="adv-row" id="ccrSpDescentRow" style="display:none;">
 <label>SP descent (bar) <span class="tip-icon" onclick="showTip('SP Descent','Partial pressure of O₂ maintained in the loop during descent. A lower setpoint reduces O₂ uptake before reaching bottom depth.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></label>
@@ -574,7 +574,7 @@
 </div>
 </div>
 <div id="ccrBailoutSettingsGroup" style="display:none;margin-top:12px;">
-<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);">Bailout Settings <span class="tip-icon" onclick="showTip('Bailout Gradient Factors','Gradient factors applied when Bailout mode is ON — the planner switches to open-circuit deco using these GF values instead of the main plan GF.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></div>
+<div style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);">Bailout Settings <span class="tip-icon" onclick="showTip('Bailout Gradient Factors','Gradient factors applied when Bailout mode is ON — the planner switches to open-circuit deco using these GF values instead of the main plan GF.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></div>
 <div class="ccr-adv-gf-pair">
 <span class="algo-label-text u1">Low:</span>
 <select class="u7 ccr-bo-gf-select" id="ccrBailoutGfLow">
@@ -595,7 +595,7 @@
 </div>
 <div id="diluentGasCard" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:10px;">
 <div class="gas-card-top">
-<div class="gas-card-title-row"><span class="gas-dot gas-dot--bottom" aria-hidden="true"></span><div id="diluentCardTitle" style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--accent);">GAS MIX 1 — BOTTOM GAS</div></div>
+<div class="gas-card-title-row"><span class="gas-dot gas-dot--bottom" aria-hidden="true"></span><div id="diluentCardTitle" style="font-family:var(--font-display);font-size:12px;letter-spacing:2px;color:var(--accent);">GAS MIX 1 — BOTTOM GAS</div></div>
 <span class="gas-mod" id="botMODDisplay" title="Calculated MOD using selected Bottom Gas and Max Bottom ppO₂">—</span>
 </div>
 <div class="gas-card-grid u0">
@@ -636,7 +636,7 @@
 <!-- Travel Gas Card -->
 <div id="travelGasCard" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:8px;display:none;">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;">
-<div class="gas-card-title-row"><span class="gas-dot gas-dot--travel" aria-hidden="true"></span><div class="dg-card-title gas-card-title--travel" style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--gas-travel);">TRAVEL GAS — DESCENT / ASCENT TRANSIT</div></div>
+<div class="gas-card-title-row"><span class="gas-dot gas-dot--travel" aria-hidden="true"></span><div class="dg-card-title gas-card-title--travel" style="font-family:var(--font-display);font-size:12px;letter-spacing:2px;color:var(--gas-travel);">TRAVEL GAS — DESCENT / ASCENT TRANSIT</div></div>
 <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
 <span class="gas-mod" id="travelGasMODDisplay" title="Calculated travel gas MOD using Bottom ppO₂ limit">—</span>
 <button onclick="removeTravelGas()" onmouseout="this.style.color='var(--muted)'" onmouseover="this.style.color='var(--red)'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 4px;" title="Remove travel gas">×</button>
@@ -683,12 +683,12 @@
 </div>
 <input id="cylTravelGas_reserve" type="hidden" value="50"/>
 </div>
-<div style="margin-top:10px;font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;">
+<div style="margin-top:10px;font-size:11px;color:var(--muted);font-family:var(--font-mono);">
         Breathed from surface → switch depth on descent, and from bottom gas MOD → first deco gas on ascent.
       </div>
 </div>
 <!-- Add Travel Gas button -->
-<button id="addTravelGasBtn" onclick="addTravelGas()" onmouseout="this.style.opacity='0.7'" onmouseover="this.style.opacity='1'" style="margin-top:8px;width:100%;padding:9px;background:none;border:1px dashed #ff9f43;border-radius:8px;color:#ff9f43;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;transition:all 0.2s;opacity:0.7;" title="Add a travel gas — breathed from surface to switch depth on descent, and above bottom gas MOD on ascent. Prevents O₂ toxicity in shallow water with high-O₂ bottom mixes.">
+<button id="addTravelGasBtn" onclick="addTravelGas()" onmouseout="this.style.opacity='0.7'" onmouseover="this.style.opacity='1'" style="margin-top:8px;width:100%;padding:9px;background:none;border:1px dashed #ff9f43;border-radius:8px;color:#ff9f43;font-family:var(--font-mono);font-size:11px;letter-spacing:1px;cursor:pointer;transition:all 0.2s;opacity:0.7;" title="Add a travel gas — breathed from surface to switch depth on descent, and above bottom gas MOD on ascent. Prevents O₂ toxicity in shallow water with high-O₂ bottom mixes.">
       + ADD TRAVEL GAS
     </button>
 <!-- Dynamic deco / bailout gas cards container -->
@@ -697,7 +697,7 @@
 <!-- Gas Mix 2 — Deco Gas 1 / Bailout Mix 1 -->
 <div class="deco-gas-card" id="dgCard_1" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:8px;">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;">
-<div class="gas-card-title-row"><span class="gas-dot gas-dot--deco1" aria-hidden="true"></span><div class="dg-card-title" style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--accent);">GAS MIX 2 — DECO GAS 1 (optional)</div></div>
+<div class="gas-card-title-row"><span class="gas-dot gas-dot--deco1" aria-hidden="true"></span><div class="dg-card-title" style="font-family:var(--font-display);font-size:12px;letter-spacing:2px;color:var(--accent);">GAS MIX 2 — DECO GAS 1 (optional)</div></div>
 <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
 <span class="gas-mod" id="dg1MODDisplay" title="Calculated MOD using selected gas and Max Deco ppO₂">—</span>
 <button onclick="removeDecoGasCard(1)" onmouseout="this.style.color='var(--muted)'" onmouseover="this.style.color='var(--red)'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 4px;" title="Remove this gas">✕</button>
@@ -739,7 +739,7 @@
 <!-- Gas Mix 3 — Deco Gas 2 -->
 <div class="deco-gas-card" id="dgCard_2" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:8px;">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;">
-<div class="gas-card-title-row"><span class="gas-dot gas-dot--deco2" aria-hidden="true"></span><div class="dg-card-title" style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--accent);">GAS MIX 3 — DECO GAS 2 (optional)</div></div>
+<div class="gas-card-title-row"><span class="gas-dot gas-dot--deco2" aria-hidden="true"></span><div class="dg-card-title" style="font-family:var(--font-display);font-size:12px;letter-spacing:2px;color:var(--accent);">GAS MIX 3 — DECO GAS 2 (optional)</div></div>
 <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
 <span class="gas-mod" id="dg2MODDisplay" title="Calculated MOD using selected gas and Max Deco ppO₂">—</span>
 <button onclick="removeDecoGasCard(2)" onmouseout="this.style.color='var(--muted)'" onmouseover="this.style.color='var(--red)'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 4px;" title="Remove this gas">✕</button>
@@ -780,7 +780,7 @@
 </div>
 </div>
 <!-- Add Gas Mix / Bailout Mix button -->
-<button id="addDecoGasBtn" onclick="addDecoGasCard()" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" style="margin-top:10px;width:100%;padding:9px;background:none;border:1px dashed var(--border);border-radius:8px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;transition:all 0.2s;">
+<button id="addDecoGasBtn" onclick="addDecoGasCard()" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" style="margin-top:10px;width:100%;padding:9px;background:none;border:1px dashed var(--border);border-radius:8px;color:var(--muted);font-family:var(--font-mono);font-size:11px;letter-spacing:1px;cursor:pointer;transition:all 0.2s;">
       + ADD GAS MIX
     </button>
 </div>
@@ -789,7 +789,7 @@
 
 <!-- Feature B: VPM Repetitive Dive panel — hidden until first VPM result available -->
 <div id="vpmRepRow" style="display:none;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px;padding:10px 12px;background:var(--card2);border:1px solid var(--border);border-radius:8px;">
-<label style="display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);cursor:pointer;">
+<label style="display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;color:var(--text);cursor:pointer;">
 <input id="vpmRepMode" onchange="updateVpmRepUI()" style="width:14px;height:14px;accent-color:var(--accent);cursor:pointer;" type="checkbox"/>
 <span>Repetitive VPM Dive</span>
 <span class="tip-icon" onclick="showTip('Repetitive VPM Dive','Carries both tissue gas pressures AND bubble state (adjusted critical radii) from the previous VPM dive.\n\nTissue loading: N₂/He off-gasses during surface interval (Haldane).\n\nBubble state: compressed nuclei partially regenerate toward altitude-adjusted initial radii during surface interval (REGEN_TIME = 14 days), then carry into this dive — producing correct VPM repetitive dive behaviour.\n\nNote: only available for VPM-B and VPM-B+GFS models.')">
@@ -797,16 +797,16 @@
 </span>
 </label>
 <div id="vpmRepSIRow" style="display:none;align-items:center;gap:6px;">
-<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">Surface interval:</span>
-<input id="vpmSurfaceInterval" max="10080" min="0" step="5" style="width:60px;padding:3px 6px;border-radius:5px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;" type="number" value="60"/>
-<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">min</span>
+<span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">Surface interval:</span>
+<input id="vpmSurfaceInterval" max="10080" min="0" step="5" style="width:60px;padding:3px 6px;border-radius:5px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:var(--font-mono);font-size:11px;" type="number" value="60"/>
+<span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">min</span>
 </div>
-<button onclick="clearVpmRepState()" style="padding:3px 10px;background:none;border:1px solid var(--border);border-radius:5px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;cursor:pointer;letter-spacing:0.5px;" title="Clear saved dive state">× CLEAR</button>
-<span id="vpmRepLabel" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);"></span>
+<button onclick="clearVpmRepState()" style="padding:3px 10px;background:none;border:1px solid var(--border);border-radius:5px;color:var(--muted);font-family:var(--font-mono);font-size:10px;cursor:pointer;letter-spacing:0.5px;" title="Clear saved dive state">× CLEAR</button>
+<span id="vpmRepLabel" style="font-family:var(--font-mono);font-size:10px;color:var(--accent);"></span>
 </div>
 <!-- Feature B: Bühlmann repetitive dive panel — hidden until first ZHL result available -->
 <div id="zhlRepRow" style="display:none;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px;padding:10px 12px;background:var(--card2);border:1px solid var(--border);border-radius:8px;">
-<label style="display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);cursor:pointer;">
+<label style="display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;color:var(--text);cursor:pointer;">
 <input id="zhlRepMode" onchange="updateZhlRepUI()" style="width:14px;height:14px;accent-color:var(--accent);cursor:pointer;" type="checkbox"/>
 <span>Repetitive Bühlmann Dive</span>
 <span class="tip-icon" onclick="showTip('Repetitive Bühlmann Dive','Carries end-of-dive tissue loading (N₂/He) from the previous Bühlmann schedule.\n\nDuring the surface interval, tissues off-gas using Haldane kinetics before the next dive begins.\n\nEnable after generating a Bühlmann schedule, then set surface interval minutes.')">
@@ -814,12 +814,12 @@
 </span>
 </label>
 <div id="zhlRepSIRow" style="display:none;align-items:center;gap:6px;">
-<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">Surface interval:</span>
-<input id="zhlSurfaceInterval" max="10080" min="0" step="5" style="width:60px;padding:3px 6px;border-radius:5px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;" type="number" value="60"/>
-<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">min</span>
+<span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">Surface interval:</span>
+<input id="zhlSurfaceInterval" max="10080" min="0" step="5" style="width:60px;padding:3px 6px;border-radius:5px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:var(--font-mono);font-size:11px;" type="number" value="60"/>
+<span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">min</span>
 </div>
-<button onclick="clearZhlRepState()" style="padding:3px 10px;background:none;border:1px solid var(--border);border-radius:5px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;cursor:pointer;letter-spacing:0.5px;" title="Clear saved dive state">× CLEAR</button>
-<span id="zhlRepLabel" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);"></span>
+<button onclick="clearZhlRepState()" style="padding:3px 10px;background:none;border:1px solid var(--border);border-radius:5px;color:var(--muted);font-family:var(--font-mono);font-size:10px;cursor:pointer;letter-spacing:0.5px;" title="Clear saved dive state">× CLEAR</button>
+<span id="zhlRepLabel" style="font-family:var(--font-mono);font-size:10px;color:var(--accent);"></span>
 </div>
 </section>
 
@@ -858,7 +858,7 @@
 <button class="btn-export" onclick="copyDiveProfile('deco')" title="Copy to clipboard"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
 <button class="btn-export" onclick="showSlate()" title="Deco slate (waterproof format)"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><rect height="18" rx="2" width="18" x="3" y="3"></rect><line x1="7" x2="17" y1="8" y2="8"></line><line x1="7" x2="17" y1="12" y2="12"></line><line x1="7" x2="13" y1="16" y2="16"></line></svg></button>
 <button class="btn-export" onclick="exportTXT('deco')" title="Download .txt"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line><line x1="10" x2="8" y1="9" y2="9"></line></svg></button>
-<button class="btn-export" onclick="showPDFExportDialog()" title="Export PDF"><span style="display:inline-block;width:16px;height:16px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0px;line-height:16px;text-align:center;overflow:visible;white-space:nowrap;">PDF</span></button>
+<button class="btn-export" onclick="showPDFExportDialog()" title="Export PDF"><span style="display:inline-block;width:16px;height:16px;font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:0px;line-height:16px;text-align:center;overflow:visible;white-space:nowrap;">PDF</span></button>
 </div>
 </div>
 <div id="decoResult" class="results-v3-card" style="display:none;">
@@ -905,33 +905,33 @@
 <button class="btn-export" onclick="copyDiveProfile('contingency')" title="Copy to clipboard"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
 <button class="btn-export" onclick="showContingencySlate()" title="Emergency slate (waterproof format)"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><rect height="18" rx="2" width="18" x="3" y="3"></rect><line x1="7" x2="17" y1="8" y2="8"></line><line x1="7" x2="17" y1="12" y2="12"></line><line x1="7" x2="13" y1="16" y2="16"></line></svg></button>
 <button class="btn-export" onclick="exportTXT('contingency')" title="Download .txt"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line><line x1="10" x2="8" y1="9" y2="9"></line></svg></button>
-<button class="btn-export" onclick="showContingencyPDFDialog()" title="Export PDF"><span style="display:inline-block;width:16px;height:16px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0px;line-height:16px;text-align:center;overflow:visible;white-space:nowrap;">PDF</span></button>
+<button class="btn-export" onclick="showContingencyPDFDialog()" title="Export PDF"><span style="display:inline-block;width:16px;height:16px;font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:0px;line-height:16px;text-align:center;overflow:visible;white-space:nowrap;">PDF</span></button>
 </div>
 </div>
 <div class="contingency-setup-body">
 <div class="info-box">Select a gas loss scenario and/or extended bottom time to calculate a combined emergency plan.</div>
 <!-- Gas Loss -->
 <div class="u11">
-<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">🚨 Gas Loss</div>
+<div style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">🚨 Gas Loss</div>
 <div id="gasLossButtons" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
 </div>
 <!-- Extended Bottom Time -->
 <div class="u11">
-<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">⏱️ Extended Bottom Time</div>
+<div style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">⏱️ Extended Bottom Time</div>
 <div style="display:flex;gap:8px;flex-wrap:wrap;">
-<button class="cont-bt-btn active" id="contBT0" onclick="selectContBT(0)" style="padding:8px 14px;background:rgba(0,200,255,0.1);color:var(--accent);border:1px solid var(--accent);border-radius:6px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;">+0 min</button>
-<button class="cont-bt-btn" id="contBT3" onclick="selectContBT(3)" style="padding:8px 14px;background:rgba(255,183,3,0.08);color:var(--muted);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;">+3 min</button>
-<button class="cont-bt-btn" id="contBT5" onclick="selectContBT(5)" style="padding:8px 14px;background:rgba(255,183,3,0.08);color:var(--muted);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;">+5 min</button>
-<button class="cont-bt-btn" id="contBT10" onclick="selectContBT(10)" style="padding:8px 14px;background:rgba(255,183,3,0.08);color:var(--muted);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;">+10 min</button>
+<button class="cont-bt-btn active" id="contBT0" onclick="selectContBT(0)" style="padding:8px 14px;background:rgba(0,200,255,0.1);color:var(--accent);border:1px solid var(--accent);border-radius:6px;cursor:pointer;font-family:var(--font-mono);font-size:11px;font-weight:600;">+0 min</button>
+<button class="cont-bt-btn" id="contBT3" onclick="selectContBT(3)" style="padding:8px 14px;background:rgba(255,183,3,0.08);color:var(--muted);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:var(--font-mono);font-size:11px;font-weight:600;">+3 min</button>
+<button class="cont-bt-btn" id="contBT5" onclick="selectContBT(5)" style="padding:8px 14px;background:rgba(255,183,3,0.08);color:var(--muted);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:var(--font-mono);font-size:11px;font-weight:600;">+5 min</button>
+<button class="cont-bt-btn" id="contBT10" onclick="selectContBT(10)" style="padding:8px 14px;background:rgba(255,183,3,0.08);color:var(--muted);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:var(--font-mono);font-size:11px;font-weight:600;">+10 min</button>
 </div>
 </div>
 <!-- Went Deeper -->
 <div class="u11">
-<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">🔽 Went Deeper</div>
+<div style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">🔽 Went Deeper</div>
 <div style="display:flex;gap:8px;flex-wrap:wrap;">
-<button class="cont-depth-btn active" id="contDepth0" onclick="selectContDepth(0)" style="padding:8px 14px;background:rgba(0,200,255,0.1);color:var(--accent);border:1px solid var(--accent);border-radius:6px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;">+0 m</button>
-<button class="cont-depth-btn" id="contDepth3" onclick="selectContDepth(3)" style="padding:8px 14px;background:rgba(255,71,87,0.08);color:var(--muted);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;">+3 m</button>
-<button class="cont-depth-btn" id="contDepth5" onclick="selectContDepth(5)" style="padding:8px 14px;background:rgba(255,71,87,0.08);color:var(--muted);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;">+5 m</button>
+<button class="cont-depth-btn active" id="contDepth0" onclick="selectContDepth(0)" style="padding:8px 14px;background:rgba(0,200,255,0.1);color:var(--accent);border:1px solid var(--accent);border-radius:6px;cursor:pointer;font-family:var(--font-mono);font-size:11px;font-weight:600;">+0 m</button>
+<button class="cont-depth-btn" id="contDepth3" onclick="selectContDepth(3)" style="padding:8px 14px;background:rgba(255,71,87,0.08);color:var(--muted);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:var(--font-mono);font-size:11px;font-weight:600;">+3 m</button>
+<button class="cont-depth-btn" id="contDepth5" onclick="selectContDepth(5)" style="padding:8px 14px;background:rgba(255,71,87,0.08);color:var(--muted);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:var(--font-mono);font-size:11px;font-weight:600;">+5 m</button>
 </div>
 </div>
 <!-- Calculate Button -->
@@ -960,7 +960,7 @@
 <div id="gfCurveCanvas-wrap" style="position:relative;width:100%;">
 <canvas height="320" id="gfCurveCanvas" style="width:100%;height:auto;aspect-ratio:900/320;border-radius:10px;background:var(--card2);border:1px solid var(--border);display:block;" width="900"></canvas>
 <div id="gfCurveCanvas-overlay" style="position:absolute;top:0;left:0;right:0;bottom:0;border-radius:10px;cursor:crosshair;"></div>
-<div id="gfCurveCanvas-tooltip" style="display:none;position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--accent);border-radius:6px;padding:7px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);white-space:nowrap;z-index:10;box-shadow:0 4px 16px rgba(0,0,0,0.4);"></div>
+<div id="gfCurveCanvas-tooltip" style="display:none;position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--accent);border-radius:6px;padding:7px 10px;font-family:var(--font-mono);font-size:11px;color:var(--text);white-space:nowrap;z-index:10;box-shadow:0 4px 16px rgba(0,0,0,0.4);"></div>
 <div id="gfCurveCanvas-crosshair-v" style="display:none;position:absolute;top:0;bottom:0;width:1px;background:rgba(0,217,255,0.5);pointer-events:none;"></div>
 <div id="gfCurveCanvas-crosshair-h" style="display:none;position:absolute;left:0;right:0;height:1px;background:rgba(0,217,255,0.3);pointer-events:none;"></div>
 </div>
@@ -983,13 +983,13 @@
 <div class="card-collapsible-body">
 <!-- Section 1: surface saturation bars (end-of-dive snapshot) -->
 <div class="u11">
-<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px;">Surface Saturation — End of Dive<span class="tip-icon" onclick="showTip('Surface Saturation — End of Dive','Snapshot of all 16 tissue compartments at the moment you surface after completing the deco schedule.\n\nEach bar = tissue tension ÷ GF-adjusted M-value at surface pressure.\n\nGF High is applied here — this is the same limit your deco algorithm used to decide when you could surface. A bar at 100% means that compartment is exactly at its allowed ceiling; above 100% would mean the algorithm needed a longer or deeper stop (should not happen in a valid plan).\n\nUses trimix-weighted a/b values when helium is present.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></div>
+<div style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px;">Surface Saturation — End of Dive<span class="tip-icon" onclick="showTip('Surface Saturation — End of Dive','Snapshot of all 16 tissue compartments at the moment you surface after completing the deco schedule.\n\nEach bar = tissue tension ÷ GF-adjusted M-value at surface pressure.\n\nGF High is applied here — this is the same limit your deco algorithm used to decide when you could surface. A bar at 100% means that compartment is exactly at its allowed ceiling; above 100% would mean the algorithm needed a longer or deeper stop (should not happen in a valid plan).\n\nUses trimix-weighted a/b values when helium is present.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></div>
 <div class="info-box" style="margin-top:0;margin-bottom:10px;">All 16 compartments at surfacing. Bars show saturation vs GF-adjusted M-value at surface pressure.</div>
 <div id="tissueGrid" style="padding:4px 0;"></div>
 </div>
 <!-- Section 2: detailed table with exact bar values -->
 <div class="u11">
-<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px;">Compartment Detail<span class="tip-icon" onclick="showTip('Compartment Detail','Detailed table of the end-of-dive tissue snapshot — same data as the surface saturation bars but with exact numerical values.\n\nColumns:\n # — compartment number (1 = fastest, 16 = slowest)\n Half-time — N₂ half-time in minutes. Faster compartments load and offgas quickly (relevant on short dives); slower compartments dominate on long or repetitive dives.\n N₂ Load (bar) — total inert gas tension (N₂ + He) in that compartment at surfacing. Shows combined partial pressure; trimix dives display N₂ and He contributions separately.\n M-value (bar) — GF-adjusted maximum tolerated tension at surface pressure. The algorithm will not surface you above this limit.\n Sat % — N₂ load ÷ M-value × 100. The controlling compartment (highest %) determined your last stop.\n Status — OK &lt; 50% / LOADED 50–79% / HIGH ≥ 80%')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></div>
+<div style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px;">Compartment Detail<span class="tip-icon" onclick="showTip('Compartment Detail','Detailed table of the end-of-dive tissue snapshot — same data as the surface saturation bars but with exact numerical values.\n\nColumns:\n # — compartment number (1 = fastest, 16 = slowest)\n Half-time — N₂ half-time in minutes. Faster compartments load and offgas quickly (relevant on short dives); slower compartments dominate on long or repetitive dives.\n N₂ Load (bar) — total inert gas tension (N₂ + He) in that compartment at surfacing. Shows combined partial pressure; trimix dives display N₂ and He contributions separately.\n M-value (bar) — GF-adjusted maximum tolerated tension at surface pressure. The algorithm will not surface you above this limit.\n Sat % — N₂ load ÷ M-value × 100. The controlling compartment (highest %) determined your last stop.\n Status — OK &lt; 50% / LOADED 50–79% / HIGH ≥ 80%')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></div>
 <div class="u16">
 <table class="deco-table tissue-table table-view">
 <thead><tr><th>#</th><th>Half-time</th><th>N₂ Load (bar)</th><th>M-value (bar)</th><th>Sat %</th><th>Status</th></tr></thead>
@@ -999,7 +999,7 @@
 </div>
 <!-- Section 3: per-stop saturation chart through the ascent -->
 <div>
-<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px;">Per-Stop Saturation — Ascent Profile<span class="tip-icon" onclick="showTip('Per-Stop Saturation — Ascent Profile','Shows tissue saturation at each deco stop through the entire ascent, not just at the surface.\n\nLayout:\n Columns = each deco stop, labelled with depth and stop time\n Rows = all 16 tissue compartments\n Each bar = tissue tension ÷ GF-adjusted M-value at that stop depth\n\nAt each stop, the M-value ceiling is calculated at the ambient pressure of that depth (not surface pressure), so the absolute bar value of the M-value increases with depth — this is why bars near the surface may appear higher than at deeper stops even with less total gas load.\n\nWhat to look for:\n Deep stops — which fast compartments (C1–C4) are controlling? High loading here means the algorithm placed a stop to protect fast tissue.\n Shallow stops — slow compartments (C10–C16) typically dominate here. These are the ones that keep you at 6 m and 3 m longest.\n GF-adjusted limits — uses GF High interpolated linearly from GF Low at first stop to GF High at surface.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></div>
+<div style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px;">Per-Stop Saturation — Ascent Profile<span class="tip-icon" onclick="showTip('Per-Stop Saturation — Ascent Profile','Shows tissue saturation at each deco stop through the entire ascent, not just at the surface.\n\nLayout:\n Columns = each deco stop, labelled with depth and stop time\n Rows = all 16 tissue compartments\n Each bar = tissue tension ÷ GF-adjusted M-value at that stop depth\n\nAt each stop, the M-value ceiling is calculated at the ambient pressure of that depth (not surface pressure), so the absolute bar value of the M-value increases with depth — this is why bars near the surface may appear higher than at deeper stops even with less total gas load.\n\nWhat to look for:\n Deep stops — which fast compartments (C1–C4) are controlling? High loading here means the algorithm placed a stop to protect fast tissue.\n Shallow stops — slow compartments (C10–C16) typically dominate here. These are the ones that keep you at 6 m and 3 m longest.\n GF-adjusted limits — uses GF High interpolated linearly from GF Low at first stop to GF High at surface.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"></circle><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"></path><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"></circle></svg></span></div>
 <div class="info-box" style="margin-top:0;margin-bottom:10px;">Saturation at each deco stop depth. Columns = stops (depth / time), rows = compartments. Bars relative to GF-adjusted M-value at that stop depth. Trimix-weighted a/b values applied.</div>
 <div id="tissueLoadChart"></div>
 </div>
@@ -1037,7 +1037,7 @@
 <option value="custom">Custom</option>
 </select>
 <div class="u19" id="waterCustomRow">
-<input id="waterCustomInput" max="1100" min="900" onchange="applyCustomWaterDensity('waterCustomInput')" oninput="applyCustomWaterDensity('waterCustomInput')" step="1" style="width:58px;padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;" type="number" value="1025"/>
+<input id="waterCustomInput" max="1100" min="900" onchange="applyCustomWaterDensity('waterCustomInput')" oninput="applyCustomWaterDensity('waterCustomInput')" step="1" style="width:58px;padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:var(--font-mono);font-size:11px;" type="number" value="1025"/>
 <span class="algo-label-text u1">kg/m³</span>
 </div>
 </div>
@@ -1055,7 +1055,7 @@
 <option value="custom">Custom…</option>
 </select>
 <div class="u19" id="altitudeCustomRow">
-<input id="altitudeCustomInput" max="5000" min="0" onchange="applyCustomAltitude()" oninput="applyCustomAltitude()" step="50" style="width:62px;padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;" type="number" value="0"/>
+<input id="altitudeCustomInput" max="5000" min="0" onchange="applyCustomAltitude()" oninput="applyCustomAltitude()" step="50" style="width:62px;padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:var(--font-mono);font-size:11px;" type="number" value="0"/>
 <span class="algo-label-text u1" id="altitudeCustomUnit">m</span>
 </div>
 <span id="altitudePressureDisplay" style="color:var(--muted);font-size:10px;"></span>
@@ -1131,11 +1131,11 @@
 <div id="plannerProfileCanvas-wrap" style="display:none;position:relative;width:100%;margin-top:16px;">
 <canvas height="420" id="plannerProfileCanvas" style="width:100%;height:auto;aspect-ratio:700/420;border-radius:10px;background:var(--card2);border:1px solid var(--border);display:block;" width="700"></canvas>
 <div id="plannerProfileCanvas-overlay" style="position:absolute;top:0;left:0;right:0;bottom:0;border-radius:10px;cursor:crosshair;"></div>
-<div id="plannerProfileCanvas-tooltip" style="display:none;position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--accent);border-radius:6px;padding:7px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);white-space:nowrap;z-index:10;box-shadow:0 4px 16px rgba(0,0,0,0.4);"></div>
+<div id="plannerProfileCanvas-tooltip" style="display:none;position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--accent);border-radius:6px;padding:7px 10px;font-family:var(--font-mono);font-size:11px;color:var(--text);white-space:nowrap;z-index:10;box-shadow:0 4px 16px rgba(0,0,0,0.4);"></div>
 <div id="plannerProfileCanvas-crosshair-v" style="display:none;position:absolute;top:0;bottom:0;width:1px;background:rgba(0,217,255,0.5);pointer-events:none;"></div>
 <div id="plannerProfileCanvas-crosshair-h" style="display:none;position:absolute;left:0;right:0;height:1px;background:rgba(0,217,255,0.3);pointer-events:none;"></div>
 </div>
-<div id="plannerProfileCanvas-hint" style="display:none;width:100%;text-align:right;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);opacity:0.55;margin:3px 0 2px 0;letter-spacing:0.3px;box-sizing:border-box;padding-right:2px;"><span style="opacity:0.7;">Hint:</span> scroll·zoom   drag·pan   dbl-click·reset</div>
+<div id="plannerProfileCanvas-hint" style="display:none;width:100%;text-align:right;font-family:var(--font-mono);font-size:9px;color:var(--muted);opacity:0.55;margin:3px 0 2px 0;letter-spacing:0.3px;box-sizing:border-box;padding-right:2px;"><span style="opacity:0.7;">Hint:</span> scroll·zoom   drag·pan   dbl-click·reset</div>
 <div id="plannerProfileLegend" style="display:none;margin-top:4px;"></div>
 <div id="recSurfIntContainer" style="display:block;"></div>
 </div>
@@ -1166,12 +1166,12 @@
 </table>
 </div>
 <div style="display:flex; gap:14px; margin-top:12px; flex-wrap:wrap;">
-<div style="display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);"><div style="width:10px;height:10px;border-radius:2px;background:rgba(38,208,124,0.5);"></div>Safe</div>
-<div style="display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);"><div style="width:10px;height:10px;border-radius:2px;background:rgba(255,183,3,0.4);"></div>Caution</div>
-<div style="display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);"><div style="width:10px;height:10px;border-radius:2px;background:rgba(255,71,87,0.4);"></div>Deep / Tech</div>
-<div style="display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);"><span style="color:var(--red);font-weight:700;">—</span> Beyond MOD at 1.4 bar ppO₂</div>
+<div style="display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;color:var(--muted);"><div style="width:10px;height:10px;border-radius:2px;background:rgba(38,208,124,0.5);"></div>Safe</div>
+<div style="display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;color:var(--muted);"><div style="width:10px;height:10px;border-radius:2px;background:rgba(255,183,3,0.4);"></div>Caution</div>
+<div style="display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;color:var(--muted);"><div style="width:10px;height:10px;border-radius:2px;background:rgba(255,71,87,0.4);"></div>Deep / Tech</div>
+<div style="display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;color:var(--muted);"><span style="color:var(--red);font-weight:700;">—</span> Beyond MOD at 1.4 bar ppO₂</div>
 </div>
-<div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:8px;line-height:1.6;">
+<div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-top:8px;line-height:1.6;">
       EAN 32 MOD: 33 m (110 ft) · EAN 36 MOD: 28 m (92 ft) · at ppO₂ 1.4 bar
     </div>
 </div>
@@ -1219,7 +1219,7 @@
 <!-- Current dive status -->
 <div class="card" id="bmtCurrentCard">
 <div class="card-title">Current Dive — Narcotic Depth</div>
-<div id="bmtNoPlan" style="color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px;">
+<div id="bmtNoPlan" style="color:var(--muted);font-family:var(--font-mono);font-size:12px;">
       Run a Deco Schedule plan first to populate dive data.
     </div>
 <div id="bmtPlanData" style="display:none;">
@@ -1279,7 +1279,7 @@
 </div>
 <div id="bmtMixAlert" style="margin-top:4px;"></div>
 </div>
-<div id="bmtNeedDepth" style="color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px;display:none;">
+<div id="bmtNeedDepth" style="color:var(--muted);font-family:var(--font-mono);font-size:12px;display:none;">
       No depth set — configure a dive on the Deco Schedule tab first.
     </div>
 </div>
@@ -1291,7 +1291,7 @@
 </div>
 <p style="color:var(--muted);font-size:11px;margin-bottom:12px;">Pre-calculated optimal O₂% for each depth using ppO₂ limit set below. Best mix maximises bottom time while staying within safe oxygen exposure. MOD is the maximum operating depth for that mix.</p>
 <div class="u16">
-<table id="bmtRefTable" style="width:100%;border-collapse:collapse;font-size:12px;font-family:'JetBrains Mono',monospace;">
+<table id="bmtRefTable" style="width:100%;border-collapse:collapse;font-size:12px;font-family:var(--font-mono);">
 <thead>
 <tr style="border-bottom:1px solid var(--border);">
 <th class="u3">Depth</th>
@@ -1326,7 +1326,7 @@
 </div>
 <!-- Bottom gas cylinder -->
 <div style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:8px;">
-<div id="gpBotRowTitle" style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--accent);margin-bottom:10px;">🔵 BOTTOM GAS CYLINDER</div>
+<div id="gpBotRowTitle" style="font-family:var(--font-display);font-size:12px;letter-spacing:2px;color:var(--accent);margin-bottom:10px;">🔵 BOTTOM GAS CYLINDER</div>
 <div class="form-grid u0">
 <div class="field"><label id="gpBot_size_lbl">Size (L)</label><input id="gpBot_size" max="30" min="1" oninput="calcGasPlan()" placeholder="12" step="0.5" type="number" value="12"/></div>
 <div class="field"><label id="gpBot_fill_lbl">Fill bar</label><input id="gpBot_fill" max="300" min="0" oninput="calcGasPlan()" placeholder="200" step="10" type="number" value="200"/></div>
@@ -1335,7 +1335,7 @@
 </div>
 <!-- Travel gas cylinder -->
 <div id="gpTravelRow" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:8px;display:none;">
-<div style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:#ff9f43;margin-bottom:10px;">🟠 TRAVEL GAS CYLINDER</div>
+<div style="font-family:var(--font-display);font-size:12px;letter-spacing:2px;color:#ff9f43;margin-bottom:10px;">🟠 TRAVEL GAS CYLINDER</div>
 <div class="form-grid u0">
 <div class="field"><label id="gpTravel_size_lbl">Size (L)</label><input id="gpTravel_size" max="30" min="1" oninput="calcGasPlan()" placeholder="11" step="0.5" type="number" value="11"/></div>
 <div class="field"><label id="gpTravel_fill_lbl">Fill bar</label><input id="gpTravel_fill" max="300" min="0" oninput="calcGasPlan()" placeholder="200" step="10" type="number" value="200"/></div>
@@ -1344,7 +1344,7 @@
 </div>
 <!-- Deco gas 1 cylinder -->
 <div id="gpDg1Row" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:8px;display:none;">
-<div style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--green);margin-bottom:10px;">🟢 DECO GAS 1 CYLINDER</div>
+<div style="font-family:var(--font-display);font-size:12px;letter-spacing:2px;color:var(--green);margin-bottom:10px;">🟢 DECO GAS 1 CYLINDER</div>
 <div class="form-grid u0">
 <div class="field"><label id="gpDg1_size_lbl">Size (L)</label><input id="gpDg1_size" max="30" min="1" oninput="calcGasPlan()" placeholder="11" step="0.5" type="number" value="11"/></div>
 <div class="field"><label id="gpDg1_fill_lbl">Fill bar</label><input id="gpDg1_fill" max="300" min="0" oninput="calcGasPlan()" placeholder="200" step="10" type="number" value="200"/></div>
@@ -1353,14 +1353,14 @@
 </div>
 <!-- Deco gas 2 cylinder -->
 <div id="gpDg2Row" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:8px;display:none;">
-<div style="font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--green);margin-bottom:10px;">🟢 DECO GAS 2 CYLINDER</div>
+<div style="font-family:var(--font-display);font-size:12px;letter-spacing:2px;color:var(--green);margin-bottom:10px;">🟢 DECO GAS 2 CYLINDER</div>
 <div class="form-grid u0">
 <div class="field"><label id="gpDg2_size_lbl">Size (L)</label><input id="gpDg2_size" max="30" min="1" oninput="calcGasPlan()" placeholder="11" step="0.5" type="number" value="11"/></div>
 <div class="field"><label id="gpDg2_fill_lbl">Fill bar</label><input id="gpDg2_fill" max="300" min="0" oninput="calcGasPlan()" placeholder="200" step="10" type="number" value="200"/></div>
 <div class="field"><label id="gpDg2_reserve_lbl">Reserve bar</label><input id="gpDg2_reserve" max="300" min="0" oninput="calcGasPlan()" placeholder="50" step="10" type="number" value="50"/></div>
 </div>
 </div>
-<div style="margin-top:10px;font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;">
+<div style="margin-top:10px;font-size:11px;color:var(--muted);font-family:var(--font-mono);">
       Deco / travel cylinders appear when those gases are configured on the Deco Schedule tab. Run a deco plan there first to populate one-way gas requirements.
     </div>
 </div>
@@ -1376,7 +1376,7 @@
 <tbody id="gpResultBody"></tbody>
 </table>
 </div>
-<div id="gpResultNote" style="margin-top:10px;font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;"></div>
+<div id="gpResultNote" style="margin-top:10px;font-size:11px;color:var(--muted);font-family:var(--font-mono);"></div>
 </div>
 <!-- Card 3: Export -->
 <div class="card">
@@ -1385,7 +1385,7 @@
 <div style="display:flex;gap:6px;">
 <button class="btn-export" onclick="copyGasPlan()" title="Copy to clipboard"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
 <button class="btn-export" onclick="exportTXT('gasplan')" title="Download .txt"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line><line x1="10" x2="8" y1="9" y2="9"></line></svg></button>
-<button class="btn-export" onclick="buildGasPlanPDF()" title="Export PDF"><span style="display:inline-block;width:16px;height:16px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0px;line-height:16px;text-align:center;overflow:visible;white-space:nowrap;">PDF</span></button>
+<button class="btn-export" onclick="buildGasPlanPDF()" title="Export PDF"><span style="display:inline-block;width:16px;height:16px;font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:0px;line-height:16px;text-align:center;overflow:visible;white-space:nowrap;">PDF</span></button>
 </div>
 </div>
 </div>
@@ -1506,7 +1506,7 @@
 <p style="color:var(--muted);font-size:12px;margin-bottom:16px;">Tracks Central Nervous System (CNS) O₂ toxicity based on ppO₂ and exposure time. NOAA limits: keep CNS below 80% per dive, 100% per day.</p>
 <!-- ── Last Dive OTU/CNS Carry ── -->
 <div style="background:rgba(0,200,255,0.04);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:14px;">
-<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Prior Dive O₂ Load Carry <span class="tip-icon" onclick="showTip('Prior Dive O₂ Load Carry','OTU accumulates all day (NOAA daily limit: 300 OTU). CNS decays with a 90-minute half-life between dives.\n\nEnter how long ago your last dive ended and the OTU/CNS from that dive. LSP will carry the remaining OTU and decayed CNS into the current plan.\n\nDay-boundary rule: if the last dive ended more than 24 hours ago, OTU resets to 0. CNS always decays exponentially regardless of day boundary.\n\nThe carry values appear in the deco plan footer as accumulated CNS and OTU.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"/><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"/><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"/></svg></span></div>
+<div style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Prior Dive O₂ Load Carry <span class="tip-icon" onclick="showTip('Prior Dive O₂ Load Carry','OTU accumulates all day (NOAA daily limit: 300 OTU). CNS decays with a 90-minute half-life between dives.\n\nEnter how long ago your last dive ended and the OTU/CNS from that dive. LSP will carry the remaining OTU and decayed CNS into the current plan.\n\nDay-boundary rule: if the last dive ended more than 24 hours ago, OTU resets to 0. CNS always decays exponentially regardless of day boundary.\n\nThe carry values appear in the deco plan footer as accumulated CNS and OTU.')"><svg fill="none" height="11" viewbox="0 0 11 11" width="11" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="5" stroke="currentColor" stroke-width="1.1"/><path d="M4.1 3.8 Q4.1 2.4 5.5 2.4 Q6.9 2.4 6.9 3.7 Q6.9 4.6 5.5 5.3 L5.5 6.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.1"/><circle cx="5.5" cy="7.4" fill="currentColor" r="0.55"/></svg></span></div>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:8px;align-items:end;margin-bottom:8px;">
 <div class="field" style="margin:0;">
 <label style="font-size:10px;">Days ago</label>
@@ -1529,7 +1529,7 @@
 <input id="priorDiveCNS" max="200" min="0" oninput="updatePriorDiveCarry()" step="0.1" style="font-size:12px;" type="number" value="0"/>
 </div>
 </div>
-<div id="priorDiveCarryResult" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);"></div>
+<div id="priorDiveCarryResult" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);"></div>
 </div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
 <div class="field">
@@ -1558,7 +1558,7 @@
 <!-- CNS bar -->
 <div class="u4">
 <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px;">
-<span style="font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase;">CNS% — Single Dive</span>
+<span style="font-family:var(--font-mono);letter-spacing:1px;text-transform:uppercase;">CNS% — Single Dive</span>
 <span id="cnsSingleLabel">—</span>
 </div>
 <div style="height:14px;background:var(--dim);border-radius:7px;overflow:hidden;border:1px solid var(--border);">
@@ -1570,7 +1570,7 @@
 </div>
 <div class="u4">
 <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px;">
-<span style="font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase;">CNS% — Daily Total</span>
+<span style="font-family:var(--font-mono);letter-spacing:1px;text-transform:uppercase;">CNS% — Daily Total</span>
 <span id="cnsDailyLabel">—</span>
 </div>
 <div style="height:14px;background:var(--dim);border-radius:7px;overflow:hidden;border:1px solid var(--border);">
@@ -1651,7 +1651,7 @@
 </div>
 <p style="color:var(--muted);font-size:11px;margin-bottom:12px;">Maximum Operating Depth for common nitrox mixes at ppO₂ 1.4 bar (working) and 1.6 bar (deco). The row matching your O₂% slider is highlighted.</p>
 <div class="u16">
-<table style="width:100%;border-collapse:collapse;font-size:12px;font-family:'JetBrains Mono',monospace;">
+<table style="width:100%;border-collapse:collapse;font-size:12px;font-family:var(--font-mono);">
 <thead>
 <tr style="border-bottom:1px solid var(--border);">
 <th class="u3">Mix</th>
@@ -1707,7 +1707,7 @@
 </div>
 <p style="color:var(--muted);font-size:11px;margin-bottom:12px;">Pre-calculated optimal O₂% for each depth using the ppO₂ limit set below. MOD is the maximum operating depth for that mix. EAD is the equivalent air depth.</p>
 <div class="u16">
-<table style="width:100%;border-collapse:collapse;font-size:12px;font-family:'JetBrains Mono',monospace;">
+<table style="width:100%;border-collapse:collapse;font-size:12px;font-family:var(--font-mono);">
 <thead>
 <tr style="border-bottom:1px solid var(--border);">
 <th class="u3">Depth</th>
@@ -1771,8 +1771,8 @@
 <div class="u20">Depth — Metres · Feet</div>
 <div class="u4">
 <div class="u2">
-<span id="conv-depth-m-lbl" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--accent);">30 m</span>
-<span id="conv-depth-ft-lbl" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--muted);">98 ft</span>
+<span id="conv-depth-m-lbl" style="font-family:var(--font-display);font-size:28px;color:var(--accent);">30 m</span>
+<span id="conv-depth-ft-lbl" style="font-family:var(--font-display);font-size:28px;color:var(--muted);">98 ft</span>
 </div>
 <div class="slider-wrap">
 <input class="lsp-slider" id="conv-depth-slider" max="100" min="1" oninput="updateSliderFill(this);convertDepthSlider(this.value)" step="1" type="range" value="30"/>
@@ -1790,8 +1790,8 @@
 <div class="u20">Temperature — Celsius · Fahrenheit</div>
 <div class="u4">
 <div class="u2">
-<span id="conv-temp-c-lbl" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--accent);">20°C</span>
-<span id="conv-temp-f-lbl" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--muted);">68°F</span>
+<span id="conv-temp-c-lbl" style="font-family:var(--font-display);font-size:28px;color:var(--accent);">20°C</span>
+<span id="conv-temp-f-lbl" style="font-family:var(--font-display);font-size:28px;color:var(--muted);">68°F</span>
 </div>
 <div class="slider-wrap">
 <input class="lsp-slider" id="conv-temp-slider" max="40" min="-10" oninput="updateSliderFill(this);convertTempSlider(this.value)" step="1" type="range" value="20"/>
@@ -1813,8 +1813,8 @@
 <div class="u20">Weight — Kilograms · Pounds</div>
 <div class="u4">
 <div class="u2">
-<span id="conv-kg-lbl" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--accent);">8 kg</span>
-<span id="conv-lbs-lbl" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--muted);">17.6 lbs</span>
+<span id="conv-kg-lbl" style="font-family:var(--font-display);font-size:28px;color:var(--accent);">8 kg</span>
+<span id="conv-lbs-lbl" style="font-family:var(--font-display);font-size:28px;color:var(--muted);">17.6 lbs</span>
 </div>
 <div class="slider-wrap">
 <input class="lsp-slider" id="conv-weight-slider" max="30" min="1" oninput="updateSliderFill(this);convertWeightSlider(this.value)" step="0.5" type="range" value="8"/>
@@ -1886,7 +1886,7 @@
 <div class="u18">LSP D-Planner+ Documentation</div>
 <div style="font-size:12px;line-height:1.8;color:var(--text);">
 <div style="margin-bottom:10px;">Full technical documentation, algorithm notes, and knowledge base PDF available in the open-source repository.</div>
-<a href="https://github.com/Three-Cats-LSP/LSP_D-planner-plus" onmouseout="this.style.borderColor='var(--border-hi)';this.style.color='var(--text)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;padding:8px 14px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;color:var(--text);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;transition:border-color 0.2s,color 0.2s;" target="_blank">
+<a href="https://github.com/Three-Cats-LSP/LSP_D-planner-plus" onmouseout="this.style.borderColor='var(--border-hi)';this.style.color='var(--text)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;padding:8px 14px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;color:var(--text);text-decoration:none;font-family:var(--font-mono);font-size:11px;transition:border-color 0.2s,color 0.2s;" target="_blank">
 <svg fill="currentColor" height="16" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.165 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.603-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"></path></svg>
             GitHub · Three-Cats-LSP/LSP_D-planner-plus
           </a>
@@ -1896,7 +1896,7 @@
 <div class="u21">
 <div class="u18">Support Development</div>
 <div style="font-size:12px;line-height:1.8;color:var(--text);margin-bottom:12px;">LSP D-Planner+ is free and open-source. If it helps your diving, consider supporting its continued development.</div>
-<a href="https://paypal.me/ThreeCatsLSP" onmouseout="this.style.borderColor='rgba(0,112,186,0.4)';this.style.background='linear-gradient(135deg,rgba(0,112,186,0.12),rgba(0,145,220,0.16))'" onmouseover="this.style.borderColor='#0070ba';this.style.background='rgba(0,112,186,0.22)'" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;padding:9px 16px;background:linear-gradient(135deg,rgba(0,112,186,0.12),rgba(0,145,220,0.16));border:1px solid rgba(0,112,186,0.4);border-radius:8px;color:var(--text);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;transition:border-color 0.2s,background 0.2s;" target="_blank">
+<a href="https://paypal.me/ThreeCatsLSP" onmouseout="this.style.borderColor='rgba(0,112,186,0.4)';this.style.background='linear-gradient(135deg,rgba(0,112,186,0.12),rgba(0,145,220,0.16))'" onmouseover="this.style.borderColor='#0070ba';this.style.background='rgba(0,112,186,0.22)'" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;padding:9px 16px;background:linear-gradient(135deg,rgba(0,112,186,0.12),rgba(0,145,220,0.16));border:1px solid rgba(0,112,186,0.4);border-radius:8px;color:var(--text);text-decoration:none;font-family:var(--font-mono);font-size:11px;transition:border-color 0.2s,background 0.2s;" target="_blank">
 <svg fill="none" height="16" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.828L8.293 21H12.5c.524 0 .968-.381 1.05-.9l.437-2.786h1.8c3.476 0 5.893-1.408 6.656-5.49.343-1.818.044-3.145-.22-4.907z" fill="#009cde"></path><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106z" fill="#003087" opacity="0.8"></path></svg>
           Donate via PayPal
         </a>
@@ -1984,7 +1984,7 @@
 </div>
 <p style="color:var(--muted);font-size:11px;margin-bottom:12px;">EAD for EAN 22–40 at common recreational depths. Use EAD with standard air NDL tables when diving nitrox. Values computed live using your current unit setting.</p>
 <div class="u16">
-<table id="eadRefTable" style="width:100%;border-collapse:collapse;font-size:11px;font-family:'JetBrains Mono',monospace;">
+<table id="eadRefTable" style="width:100%;border-collapse:collapse;font-size:11px;font-family:var(--font-mono);">
 <!-- filled by renderEADTable() -->
 </table>
 </div>
@@ -2097,14 +2097,14 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 </div>
 </div>
 <div id="siD2GasErr"
-  style="display:none;margin-top:6px;font-family:'JetBrains Mono',monospace;
+  style="display:none;margin-top:6px;font-family:var(--font-mono);
          font-size:10px;color:var(--red);">
 </div>
 </div>
 </div>
 <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:18px;">
 <div style="display:flex;align-items:center;gap:6px;">
-<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">GF Lo:</span>
+<span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">GF Lo:</span>
 <select class="u7" id="siGfLow" onchange="calcSurfInt();appSettings.save()">
 <option value="20">20</option>
 <option value="25">25</option>
@@ -2123,7 +2123,7 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 </div>
 <div class="info-box" id="siReverseWarn" style="display:none;margin-top:14px;"></div>
 <div style="margin-top:18px;">
-<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Tissue Loading at Recommended SI</div>
+<div style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Tissue Loading at Recommended SI</div>
 <div id="siTissueChart" style="display:flex;flex-direction:column;gap:3px;"></div>
 </div>
 <div class="info-box" style="margin-top:16px;border-left:3px solid var(--accent);">This is a planning guide only — always use a dive computer. Assumes air dives, instantaneous surfacing, and surface off-gassing on air at the current altitude.</div>
@@ -2139,7 +2139,7 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 <div id="gasRuleModal" class="lsp-modal-overlay" onclick="if(event.target===this)closeGasRuleInfo()" style="display:none;z-index:9500;background:rgba(0,0,0,0.72);">
 <div style="max-width:460px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:12px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);margin:12px auto;">
 <div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;">⛽ Gas Management Rules</div>
-<div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);line-height:1.8;">
+<div style="font-family:var(--font-mono);font-size:11px;color:var(--text);line-height:1.8;">
 <div style="font-weight:700;color:var(--accent);margin-bottom:4px;letter-spacing:1px;">RULE OF THIRDS (Thirds)</div>
 <div class="u9">The standard tec diving gas rule. Divide your bottom gas into three equal thirds:
         <div style="margin:8px 0 4px 12px;">• <span class="u10">1st third</span> — used on the way out / descent</div>
@@ -2161,33 +2161,33 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 <span style="color:var(--green);font-weight:700;">✓ OK</span> — &gt;10% margin above requirement.
       </div>
 </div>
-<button type="button" onclick="closeGasRuleInfo()" style="margin-top:16px;width:100%;padding:10px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.5px;">Close</button>
+<button type="button" onclick="closeGasRuleInfo()" style="margin-top:16px;width:100%;padding:10px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:0.5px;">Close</button>
 </div>
 </div>
 <div id="tipModal" class="lsp-modal-overlay" onclick="if(event.target===this)closeTip()" style="display:none;z-index:9500;background:rgba(0,0,0,0.72);">
 <div style="max-width:420px;width:100%;margin:12px auto;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:16px 18px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
 <div id="tipModalTitle" style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;"></div>
-<div id="tipModalBody" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text);line-height:1.7;white-space:pre-wrap;max-height:min(60vh,480px);overflow-y:auto;-webkit-overflow-scrolling:touch;"></div>
-<button type="button" onclick="closeTip()" style="margin-top:14px;width:100%;padding:10px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.5px;">Close</button>
+<div id="tipModalBody" style="font-family:var(--font-mono);font-size:12px;color:var(--text);line-height:1.7;white-space:pre-wrap;max-height:min(60vh,480px);overflow-y:auto;-webkit-overflow-scrolling:touch;"></div>
+<button type="button" onclick="closeTip()" style="margin-top:14px;width:100%;padding:10px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:0.5px;">Close</button>
 </div>
 </div>
 <div id="slateModal" class="lsp-modal-overlay lsp-modal-overlay--pad20 lsp-modal-centered" onclick="if(event.target===this)closeSlate()" style="display:none;z-index:9550;background:rgba(0,0,0,0.72);">
 <div style="max-width:420px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
 <div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Deco Slate</div>
-<pre id="slateModalBody" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text);line-height:1.5;white-space:pre;overflow-x:auto;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;padding:12px;margin:0;"></pre>
+<pre id="slateModalBody" style="font-family:var(--font-mono);font-size:12px;color:var(--text);line-height:1.5;white-space:pre;overflow-x:auto;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;padding:12px;margin:0;"></pre>
 <div style="display:flex;gap:10px;margin-top:14px;">
-<button onclick="copySlate()" style="flex:1;padding:8px;background:var(--accent);border:1px solid var(--accent);border-radius:6px;cursor:pointer;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.5px;">⧉ Copy</button>
-<button onclick="closeSlate()" style="flex:1;padding:8px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.5px;">✕ Close</button>
+<button onclick="copySlate()" style="flex:1;padding:8px;background:var(--accent);border:1px solid var(--accent);border-radius:6px;cursor:pointer;color:#fff;font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:0.5px;">⧉ Copy</button>
+<button onclick="closeSlate()" style="flex:1;padding:8px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:var(--font-mono);font-size:11px;letter-spacing:0.5px;">✕ Close</button>
 </div>
 </div>
 </div>
 <div id="copyModal" class="lsp-modal-overlay lsp-modal-overlay--pad20 lsp-modal-centered" onclick="if(event.target===this)closeCopyModal()" style="display:none;z-index:9550;background:rgba(0,0,0,0.72);">
 <div style="max-width:480px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
 <div id="copyModalTitle" style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Copy Plan</div>
-<pre id="copyModalBody" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);line-height:1.5;white-space:pre;overflow-x:auto;overflow-y:auto;max-height:60vh;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;padding:12px;margin:0;"></pre>
+<pre id="copyModalBody" style="font-family:var(--font-mono);font-size:11px;color:var(--text);line-height:1.5;white-space:pre;overflow-x:auto;overflow-y:auto;max-height:60vh;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;padding:12px;margin:0;"></pre>
 <div style="display:flex;gap:10px;margin-top:14px;">
-<button onclick="copyCopyModal()" style="flex:1;padding:8px;background:var(--accent);border:1px solid var(--accent);border-radius:6px;cursor:pointer;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.5px;">⧉ Copy</button>
-<button onclick="closeCopyModal()" style="flex:1;padding:8px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.5px;">✕ Close</button>
+<button onclick="copyCopyModal()" style="flex:1;padding:8px;background:var(--accent);border:1px solid var(--accent);border-radius:6px;cursor:pointer;color:#fff;font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:0.5px;">⧉ Copy</button>
+<button onclick="closeCopyModal()" style="flex:1;padding:8px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:var(--font-mono);font-size:11px;letter-spacing:0.5px;">✕ Close</button>
 </div>
 </div>
 </div>
@@ -2196,7 +2196,7 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 <div style="max-width:400px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
 <div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);">Dive Profiles</div>
-<span id="profilePresetCount" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);"></span>
+<span id="profilePresetCount" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);"></span>
 </div>
 <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">Saves depth, BT, bottom gas, travel gas and deco mixes. Load to switch between planned dives.</div>
 <div id="profilePresetList" style="max-height:280px;overflow-y:auto;"></div>
@@ -2211,7 +2211,7 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 <div style="max-width:420px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
 <div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);">Advanced Configs</div>
-<span id="configPresetCount" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);"></span>
+<span id="configPresetCount" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);"></span>
 </div>
 <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">Saves advanced settings only — rates, narcosis, water vapor, stop rounding, etc. Load to switch between dive profiles.</div>
 <div id="configPresetList" style="max-height:280px;overflow-y:auto;"></div>
@@ -2225,21 +2225,21 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 <div style="max-width:460px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:18px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
 <div style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);">Dive Presets</div>
-<span id="presetCount" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);"></span>
+<span id="presetCount" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);"></span>
 </div>
-<button id="newPresetBtn" onclick="saveNewPreset()" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" style="width:100%;padding:9px;background:none;border:1px dashed var(--border);border-radius:8px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;margin-bottom:12px;transition:all 0.2s;">
+<button id="newPresetBtn" onclick="saveNewPreset()" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" style="width:100%;padding:9px;background:none;border:1px dashed var(--border);border-radius:8px;color:var(--muted);font-family:var(--font-mono);font-size:11px;letter-spacing:1px;cursor:pointer;margin-bottom:12px;transition:all 0.2s;">
       + NEW PRESET
     </button>
-<div id="presetList" style="max-height:300px;overflow-y:auto;font-family:'JetBrains Mono',monospace;font-size:11px;"></div>
-<button onclick="closePresetModal()" style="margin-top:14px;width:100%;padding:8px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.5px;">✕ Close</button>
+<div id="presetList" style="max-height:300px;overflow-y:auto;font-family:var(--font-mono);font-size:11px;"></div>
+<button onclick="closePresetModal()" style="margin-top:14px;width:100%;padding:8px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:var(--font-mono);font-size:11px;letter-spacing:0.5px;">✕ Close</button>
 </div>
 </div>
 <div id="confirmModal" class="lsp-modal-overlay lsp-modal-overlay--pad20 lsp-modal-centered" onclick="if(event.target===this)closeConfirmModal(false)" style="display:none;z-index:9600;background:rgba(0,0,0,0.72);">
 <div style="max-width:340px;width:100%;background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:22px 20px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
 <div id="confirmModalMsg" style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;color:var(--text);margin-bottom:20px;text-align:center;line-height:1.5;"></div>
 <div style="display:flex;gap:10px;">
-<button id="confirmModalCancel" onclick="closeConfirmModal(false)" style="flex:1;padding:9px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.5px;">CANCEL</button>
-<button id="confirmModalOk" onclick="closeConfirmModal(true)" style="flex:1;padding:9px;background:var(--accent);border:1px solid var(--accent);border-radius:6px;cursor:pointer;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.5px;">OK</button>
+<button id="confirmModalCancel" onclick="closeConfirmModal(false)" style="flex:1;padding:9px;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--text);font-family:var(--font-mono);font-size:11px;letter-spacing:0.5px;">CANCEL</button>
+<button id="confirmModalOk" onclick="closeConfirmModal(true)" style="flex:1;padding:9px;background:var(--accent);border:1px solid var(--accent);border-radius:6px;cursor:pointer;color:#fff;font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:0.5px;">OK</button>
 </div>
 </div>
 </div>
@@ -2247,7 +2247,7 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 <div style="max-width:680px;margin:0 auto;position:relative;">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
 <div style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);">⚙ Settings Guide</div>
-<button onclick="document.getElementById('settingsHelpModal').style.display='none'" style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 14px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;">✕ Close</button>
+<button onclick="document.getElementById('settingsHelpModal').style.display='none'" style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 14px;cursor:pointer;color:var(--text);font-family:var(--font-mono);font-size:11px;">✕ Close</button>
 </div>
 <div class="card u9" style="margin-bottom:12px;">
 <div class="card-title u0" style="margin-bottom:6px;">About Decompression Schedule</div>
@@ -2290,7 +2290,7 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 <div class="card-title" style="color:#ff9900;">🟠 Travel Gas</div>
 <div class="info-box"><strong>Definition:</strong> A travel gas (also called a back-gas or transit gas) is a breathing mix used from the surface to the depth where the bottom gas MOD is reached on descent, and again on ascent when you rise above the bottom gas MOD until the first deco gas switch. It prevents O₂ toxicity at shallower depths when the bottom mix has a high O₂ fraction.</div>
 <div class="info-box"><strong>When you need it:</strong> Any time your bottom gas ppO₂ exceeds the configured limit in shallow water. Common scenario: EAN32 as bottom gas on a 40 m dive — EAN32 hits 1.4 bar ppO₂ at ~33 m, so you need a travel gas (e.g. AIR or a custom mix) for the surface-to-33 m segment.</div>
-<div class="info-box"><strong>Switch depth — Auto:</strong> Calculated as the MOD of the travel gas at the configured ppO₂ Bottom limit. This is where the travel gas itself reaches its limit — the planner switches you to bottom gas exactly there. Formula: <code style="font-family:'JetBrains Mono',monospace;">depth = (ppO₂_limit / fO₂_travel − P_surface) / 0.099</code></div>
+<div class="info-box"><strong>Switch depth — Auto:</strong> Calculated as the MOD of the travel gas at the configured ppO₂ Bottom limit. This is where the travel gas itself reaches its limit — the planner switches you to bottom gas exactly there. Formula: <code style="font-family:var(--font-mono);">depth = (ppO₂_limit / fO₂_travel − P_surface) / 0.099</code></div>
 <div class="info-box"><strong>Switch depth — Manual:</strong> Diver-specified. Useful when coordinating with a buddy, aligning with a site landmark, or when using a hypoxic travel gas that has a minimum safe depth.</div>
 <div class="info-box"><strong>Table output:</strong> When a travel gas is active, the descent in the deco table splits into two rows: travel gas (orange) surface → switch depth, then bottom gas (blue) switch depth → bottom. On ascent, a travel gas segment also appears above the bottom gas MOD. Gas consumption is tracked separately per gas.</div>
 <div class="info-box"><strong>Cylinder fields:</strong> Travel gas cylinder size (L) and pressure (bar) — included in the gas consumption summary alongside bottom and deco gases.</div>
@@ -2323,7 +2323,7 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 <div class="info-box"><strong>GF High ≤ 80:</strong> Based on Howie et al. (2017, PLoS ONE) — at the 0.1% serious DCS criterion for no-stop dives, ZHL-16C iterative matching gives GF High = 80. For decompression dives, GF High must <em>decrease</em> as dive severity increases (see PrT below). GF High 85–95 exceeds the validated safety margin for any non-trivial dive.</div>
 <div class="info-box"><strong>Belgian military study (PMC10735712):</strong> Bühlmann ZHL-16C + GF replicated in Python and optimised against USN and DCIEM tables (both considered acceptably safe). Result: <strong>GF Low = 100, GF High ≥ 75</strong> best matches validated tables. Conclusion: lower GF Low (deep stops) is not necessarily safer — shallower-biased profiles with GF Lo=100 matched real-world validated tables most closely.</div>
 <div class="info-box"><strong>PrT — Pressure×Root-Time severity index:</strong><br/>
-<code style="font-family:'JetBrains Mono',monospace;font-size:12px;">PrT = P_rel (bar) × √T (min)</code><br/>
+<code style="font-family:var(--font-mono);font-size:12px;">PrT = P_rel (bar) × √T (min)</code><br/>
         where P_rel = gauge pressure at depth (bar) = depth × BAR_PER_METRE (10.000 bar/m salt, 10.330 fresh, 10.080 EN13319), T = bottom time (min).<br/>
          • PrT &lt; 15: recreational — GF High 80–90 is appropriate<br/>
          • PrT 15–25: moderate deco — GF High 75–80<br/>
@@ -2336,7 +2336,7 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 </div><!-- /legacy-panels -->
 </div><!-- /app -->
 <div id="warningModal" class="lsp-modal-overlay lsp-modal-overlay--pad20" style="display:none;z-index:9100;background:rgba(0,0,0,0.82);">
-<div style="max-width:640px;margin:24px auto;background:var(--surface);border-radius:12px;border:2px solid #cc0000;padding:28px 28px 24px;font-family:'JetBrains Mono',monospace;">
+<div style="max-width:640px;margin:24px auto;background:var(--surface);border-radius:12px;border:2px solid #cc0000;padding:28px 28px 24px;font-family:var(--font-mono);">
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
 <div style="display:flex;align-items:center;gap:10px;">
 <span style="font-size:24px;">⚠</span>
@@ -2350,7 +2350,7 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 <p style="margin:0;color:rgba(255,150,80,0.85);font-size:11px;">In no event will the program authors be liable for any indirect, punitive, special, incidental or consequential damages however they may arise and even if program authors have been previously advised of the possibility of such damages.</p>
 </div>
 <div style="text-align:center;margin-top:18px;">
-<button onclick="toggleWarningModal()" onmouseout="this.style.background='rgba(204,0,0,0.08)'" onmouseover="this.style.background='rgba(204,0,0,0.18)'" style="background:rgba(204,0,0,0.08);border:2px solid #cc0000;border-radius:8px;padding:10px 32px;cursor:pointer;color:#cc0000;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.5px;transition:all 0.2s;">I UNDERSTAND — CLOSE</button>
+<button onclick="toggleWarningModal()" onmouseout="this.style.background='rgba(204,0,0,0.08)'" onmouseover="this.style.background='rgba(204,0,0,0.18)'" style="background:rgba(204,0,0,0.08);border:2px solid #cc0000;border-radius:8px;padding:10px 32px;cursor:pointer;color:#cc0000;font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:0.5px;transition:all 0.2s;">I UNDERSTAND — CLOSE</button>
 </div>
 </div>
 </div>
@@ -2358,7 +2358,7 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 <div style="max-width:700px;margin:0 auto;position:relative;">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
 <div style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);">📖 Reference</div>
-<button onclick="toggleReference()" aria-label="Close" style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 14px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;">X</button>
+<button onclick="toggleReference()" aria-label="Close" style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 14px;cursor:pointer;color:var(--text);font-family:var(--font-mono);font-size:11px;">X</button>
 </div>
 <!-- DISCLAIMER — shown first, always visible -->
 <div class="card" style="border-left:4px solid var(--red);margin-bottom:16px;">
@@ -2398,17 +2398,17 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 <div class="reference-links-block" style="margin-top:24px; padding-top:24px; border-top: 1px solid var(--border); text-align:center;">
 <div class="card-title">Links</div>
 <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;">
-<a href="https://threecats-lsp.com" onmouseout="this.style.borderColor='var(--border-hi)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" rel="noopener noreferrer" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;transition:border-color 0.2s,color 0.2s;" target="_blank"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Three Cats LSP · Diver's Toolkit</span></a>
-<a href="https://github.com/Three-Cats-LSP/LSP_D-planner-plus" onmouseout="this.style.borderColor='var(--border-hi)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" rel="noopener noreferrer" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;transition:border-color 0.2s,color 0.2s;" target="_blank">
+<a href="https://threecats-lsp.com" onmouseout="this.style.borderColor='var(--border-hi)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" rel="noopener noreferrer" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;color:var(--muted);text-decoration:none;font-family:var(--font-mono);font-size:11px;transition:border-color 0.2s,color 0.2s;" target="_blank"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Three Cats LSP · Diver's Toolkit</span></a>
+<a href="https://github.com/Three-Cats-LSP/LSP_D-planner-plus" onmouseout="this.style.borderColor='var(--border-hi)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" rel="noopener noreferrer" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;color:var(--muted);text-decoration:none;font-family:var(--font-mono);font-size:11px;transition:border-color 0.2s,color 0.2s;" target="_blank">
 <svg fill="currentColor" height="16" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.165 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.603-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"></path></svg>
           LSP D-Planner+ · Open Source on GitHub
         </a>
-<a href="https://threecats-lsp.com/d-planner-plus/download.html" onmouseout="this.style.borderColor='var(--border-hi)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" rel="noopener noreferrer" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;transition:border-color 0.2s,color 0.2s;" target="_blank"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">LSP D-Planner+ · Download Android APK</span></a>
-<a href="https://www.thingiverse.com/Roman_Markovtsev/designs" onmouseout="this.style.borderColor='var(--border-hi)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" rel="noopener noreferrer" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;transition:border-color 0.2s,color 0.2s;" target="_blank"><img alt="Thingiverse" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHIAAAByCAMAAAC4A3VPAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABpUExURStS/gAAADBY/yhY/zBQ/yhQ/yxT/yxT/ipT/ipR/ixT/itT/ixS/itS/v////H1//L0/8rU/8rT/73J/73J/rzJ/6++/6++/qKz/pWp/5Wo/oid/nuT/nuS/m2I/mB9/lNz/kZo/jld/g0+l6gAAAAOdFJOU/8AICAgIK+vr7C/v+/vniJZ+QAAAKhJREFUeNrt2ckNwjAARNFxFpbENmELO4T0XyQV2DJI9gH938DTnEem6a3KtaqMGquiuUoLFa5X8ZyIiIjo26ZHht6KtfMZ2kJCQkJCQkJCQkLmJZ9jpP3Ghxpj3fR755B4UK6uIfIECQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQn5d6QrT3ZK7xi+ftNbq02fOflgL6Vma5l2qaTmyxAmh/ucBna1+QBeIOmb8eOcqAAAAABJRU5ErkJggg==" style="width:16px;height:16px;object-fit:contain;border-radius:2px;flex-shrink:0;"/><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">My Designs · Thingiverse</span></a>
-<a href="https://www.instagram.com/threecats_lsp" onmouseout="this.style.borderColor='var(--border-hi)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='#d92e7f';this.style.color='#d92e7f'" rel="noopener noreferrer" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;transition:border-color 0.2s,color 0.2s;" target="_blank">
+<a href="https://threecats-lsp.com/d-planner-plus/download.html" onmouseout="this.style.borderColor='var(--border-hi)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" rel="noopener noreferrer" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;color:var(--muted);text-decoration:none;font-family:var(--font-mono);font-size:11px;transition:border-color 0.2s,color 0.2s;" target="_blank"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">LSP D-Planner+ · Download Android APK</span></a>
+<a href="https://www.thingiverse.com/Roman_Markovtsev/designs" onmouseout="this.style.borderColor='var(--border-hi)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" rel="noopener noreferrer" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;color:var(--muted);text-decoration:none;font-family:var(--font-mono);font-size:11px;transition:border-color 0.2s,color 0.2s;" target="_blank"><img alt="Thingiverse" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHIAAAByCAMAAAC4A3VPAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABpUExURStS/gAAADBY/yhY/zBQ/yhQ/yxT/yxT/ipT/ipR/ixT/itT/ixS/itS/v////H1//L0/8rU/8rT/73J/73J/rzJ/6++/6++/qKz/pWp/5Wo/oid/nuT/nuS/m2I/mB9/lNz/kZo/jld/g0+l6gAAAAOdFJOU/8AICAgIK+vr7C/v+/vniJZ+QAAAKhJREFUeNrt2ckNwjAARNFxFpbENmELO4T0XyQV2DJI9gH938DTnEem6a3KtaqMGquiuUoLFa5X8ZyIiIjo26ZHht6KtfMZ2kJCQkJCQkJCQkLmJZ9jpP3Ghxpj3fR755B4UK6uIfIECQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQn5d6QrT3ZK7xi+ftNbq02fOflgL6Vma5l2qaTmyxAmh/ucBna1+QBeIOmb8eOcqAAAAABJRU5ErkJggg==" style="width:16px;height:16px;object-fit:contain;border-radius:2px;flex-shrink:0;"/><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">My Designs · Thingiverse</span></a>
+<a href="https://www.instagram.com/threecats_lsp" onmouseout="this.style.borderColor='var(--border-hi)';this.style.color='var(--muted)'" onmouseover="this.style.borderColor='#d92e7f';this.style.color='#d92e7f'" rel="noopener noreferrer" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:var(--surface);border:1px solid var(--border-hi);border-radius:8px;color:var(--muted);text-decoration:none;font-family:var(--font-mono);font-size:11px;transition:border-color 0.2s,color 0.2s;" target="_blank">
 <svg fill="none" height="16" viewbox="0 0 50 50" width="16" xmlns="http://www.w3.org/2000/svg"><defs><lineargradient id="igAbout" x1="0%" x2="100%" y1="100%" y2="0%"><stop offset="0%" style="stop-color:#feda75"></stop><stop offset="5%" style="stop-color:#fa7e1e"></stop><stop offset="45%" style="stop-color:#d92e7f"></stop><stop offset="60%" style="stop-color:#9b36b7"></stop><stop offset="90%" style="stop-color:#515bd4"></stop></lineargradient></defs><rect fill="none" height="40" rx="10" stroke="url(#igAbout)" stroke-width="2.5" width="40" x="5" y="5"></rect><circle cx="25" cy="25" fill="none" r="8" stroke="url(#igAbout)" stroke-width="2"></circle><circle cx="36" cy="13" fill="url(#igAbout)" r="2"></circle></svg>
 <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Follow @threecats_lsp on Instagram</span></a>
-<a href="https://paypal.me/ThreeCatsLSP" onmouseout="this.style.borderColor='rgba(0,112,186,0.4)';this.style.color='var(--muted)';this.style.background='linear-gradient(135deg,rgba(0,112,186,0.12),rgba(0,145,220,0.16))'" onmouseover="this.style.borderColor='#0070ba';this.style.color='#0070ba';this.style.background='rgba(0,112,186,0.22)'" rel="noopener noreferrer" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:linear-gradient(135deg,rgba(0,112,186,0.12),rgba(0,145,220,0.16));border:1px solid rgba(0,112,186,0.4);border-radius:8px;color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;transition:border-color 0.2s,color 0.2s,background 0.2s;" target="_blank">
+<a href="https://paypal.me/ThreeCatsLSP" onmouseout="this.style.borderColor='rgba(0,112,186,0.4)';this.style.color='var(--muted)';this.style.background='linear-gradient(135deg,rgba(0,112,186,0.12),rgba(0,145,220,0.16))'" onmouseover="this.style.borderColor='#0070ba';this.style.color='#0070ba';this.style.background='rgba(0,112,186,0.22)'" rel="noopener noreferrer" style="display:flex;align-items:center;gap:9px;padding:9px 16px;background:linear-gradient(135deg,rgba(0,112,186,0.12),rgba(0,145,220,0.16));border:1px solid rgba(0,112,186,0.4);border-radius:8px;color:var(--muted);text-decoration:none;font-family:var(--font-mono);font-size:11px;transition:border-color 0.2s,color 0.2s,background 0.2s;" target="_blank">
 <svg fill="none" height="16" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.828L8.293 21H12.5c.524 0 .968-.381 1.05-.9l.437-2.786h1.8c3.476 0 5.893-1.408 6.656-5.49.343-1.818.044-3.145-.22-4.907z" fill="#009cde"></path><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106z" fill="#003087" opacity="0.8"></path></svg>
           Support Development · Donate via PayPal
         </a></div>
@@ -2450,12 +2450,12 @@ Set O₂% to override — e.g. switch to EAN32 after a trimix Dive 1.
 </a>
 </div>
 <div style="margin-top:10px;display:flex;align-items:center;justify-content:center;">
-<a href="https://paypal.me/ThreeCatsLSP" onmouseout="this.style.borderColor='rgba(0,112,186,0.35)';this.style.color='var(--muted)';this.style.opacity='0.7'" onmouseover="this.style.borderColor='#0070ba';this.style.color='#0070ba';this.style.opacity='1'" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:transparent;border:1px solid rgba(0,112,186,0.35);border-radius:20px;color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.5px;transition:border-color 0.2s,color 0.2s,opacity 0.2s;opacity:0.7;" target="_blank">
+<a href="https://paypal.me/ThreeCatsLSP" onmouseout="this.style.borderColor='rgba(0,112,186,0.35)';this.style.color='var(--muted)';this.style.opacity='0.7'" onmouseover="this.style.borderColor='#0070ba';this.style.color='#0070ba';this.style.opacity='1'" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:transparent;border:1px solid rgba(0,112,186,0.35);border-radius:20px;color:var(--muted);text-decoration:none;font-family:var(--font-mono);font-size:10px;letter-spacing:0.5px;transition:border-color 0.2s,color 0.2s,opacity 0.2s;opacity:0.7;" target="_blank">
 <svg fill="none" height="13" viewbox="0 0 24 24" width="13" xmlns="http://www.w3.org/2000/svg"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.828L8.293 21H12.5c.524 0 .968-.381 1.05-.9l.437-2.786h1.8c3.476 0 5.893-1.408 6.656-5.49.343-1.818.044-3.145-.22-4.907z" fill="currentColor" opacity="0.7"></path></svg>
       If you find this useful, consider a donation to support development
     </a>
 </div>
-<p id="mainVersionLabel" style="color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;margin-top:6px;letter-spacing:1px;opacity:0.5;"></p>
+<p id="mainVersionLabel" style="color:var(--muted);font-family:var(--font-mono);font-size:10px;margin-top:6px;letter-spacing:1px;opacity:0.5;"></p>
 </div>
 </main>
 <nav class="app-bottom-nav" id="appBottomNav" aria-label="Main and results navigation">
@@ -3181,7 +3181,7 @@ function buildDiveBlocks() {
         <div class="si-inner">
           <label>Surface Interval</label>
           <input type="number" id="mSI${i}" value="${dSIs[i] || '60'}" min="10" max="1440" step="10">
-          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">min</span>
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">min</span>
         </div>
         <div class="si-line"></div>
       </div>`;
@@ -3228,15 +3228,15 @@ function buildUnifiedPlan() {
     const bv = defBT[i] || 30;
     html += `
     <div style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:2px;position:relative;" id="udp-dive-${i}">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;">
+      <div style="font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;">
         Dive ${i+1}
       </div>
 
       <!-- Depth slider -->
       <div style="margin-bottom:14px;">
         <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;">
-          <label style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">Depth</label>
-          <span id="udp-d${i}-disp" style="font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1;color:var(--text);">${dv} ${du}</span>
+          <label style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">Depth</label>
+          <span id="udp-d${i}-disp" style="font-family:var(--font-display);font-size:22px;line-height:1;color:var(--text);">${dv} ${du}</span>
         </div>
         <div class="slider-wrap">
           <input type="range" id="udp-d${i}" class="lsp-slider" min="5" max="45" value="${dv}" step="1"
@@ -3248,8 +3248,8 @@ function buildUnifiedPlan() {
       <!-- Bottom time slider -->
       <div style="margin-bottom:10px;">
         <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;">
-          <label style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">BT Time</label>
-          <span id="udp-bt${i}-disp" style="font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1;color:var(--text);">${bv} min</span>
+          <label style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);">BT Time</label>
+          <span id="udp-bt${i}-disp" style="font-family:var(--font-display);font-size:22px;line-height:1;color:var(--text);">${bv} min</span>
         </div>
         <div class="slider-wrap">
           <input type="range" id="udp-bt${i}" class="lsp-slider" min="5" max="90" value="${bv}" step="1"
@@ -3273,11 +3273,11 @@ function buildUnifiedPlan() {
     <div class="si-connector" style="margin-bottom:2px;">
       <div class="si-line"></div>
       <div style="text-align:center;padding:8px;">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Surface Interval</div>
+        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Surface Interval</div>
         <div style="display:flex;align-items:center;gap:8px;justify-content:center;">
           <input type="range" id="udp-si${i}" class="lsp-slider" min="10" max="240" value="60" step="5"
             style="width:180px;" oninput="updateSliderFill(this);runUnifiedPlan()">
-          <span id="udp-si${i}-disp" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent);min-width:65px;">60 min</span>
+          <span id="udp-si${i}-disp" style="font-family:var(--font-display);font-size:20px;color:var(--accent);min-width:65px;">60 min</span>
         </div>
       </div>
       <div class="si-line"></div>
@@ -5347,7 +5347,7 @@ function _renderConfigPresetModal() {
   if (!list) return;
 
   // Built-in app presets header
-  let html = `<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">📐 App Reference Presets</div>`;
+  let html = `<div style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">📐 App Reference Presets</div>`;
   html += LSP_APP_PRESETS.map((p, i) => `
     <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid var(--border);border-radius:8px;margin-bottom:5px;background:rgba(0,200,255,0.03);">
       <div style="flex:1;min-width:0;">
@@ -5359,7 +5359,7 @@ function _renderConfigPresetModal() {
 
   // User presets section
   if (presets.length) {
-    html += `<div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin:10px 0 6px;">👤 My Saved Configs</div>`;
+    html += `<div style="font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin:10px 0 6px;">👤 My Saved Configs</div>`;
     html += presets.map((p, i) => `
       <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;background:var(--bg-alt);">
         <div style="flex:1;min-width:0;">
@@ -5370,7 +5370,7 @@ function _renderConfigPresetModal() {
         <button onclick="deleteConfigPreset(${i})" style="padding:5px 10px;background:none;border:1px solid var(--border);border-radius:6px;color:var(--red);font-family:inherit;font-size:10px;cursor:pointer;">Del</button>
       </div>`).join('');
   } else {
-    html += `<div style="color:var(--muted);text-align:center;padding:10px 0;font-size:11px;font-family:'JetBrains Mono',monospace;">No saved configs yet — save your current settings above.</div>`;
+    html += `<div style="color:var(--muted);text-align:center;padding:10px 0;font-size:11px;font-family:var(--font-mono);">No saved configs yet — save your current settings above.</div>`;
   }
   list.innerHTML = html;
 }
@@ -5530,8 +5530,8 @@ function renderPresetList() {
         <div style="color:var(--text);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtmlText(p.name)}</div>
         <div style="color:var(--muted);font-size:9px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtmlText(p.summary || '')}</div>
       </div>
-      <button onclick="loadPreset(${i})" style="padding:6px 10px;background:var(--accent);border:none;border-radius:6px;color:#fff;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;cursor:pointer;flex-shrink:0;">Load</button>
-      <button onclick="deletePreset(${i})" style="padding:6px 10px;background:none;border:1px solid var(--border);border-radius:6px;color:var(--red);font-family:'JetBrains Mono',monospace;font-size:10px;cursor:pointer;flex-shrink:0;">Del</button>
+      <button onclick="loadPreset(${i})" style="padding:6px 10px;background:var(--accent);border:none;border-radius:6px;color:#fff;font-family:var(--font-mono);font-size:10px;font-weight:700;cursor:pointer;flex-shrink:0;">Load</button>
+      <button onclick="deletePreset(${i})" style="padding:6px 10px;background:none;border:1px solid var(--border);border-radius:6px;color:var(--red);font-family:var(--font-mono);font-size:10px;cursor:pointer;flex-shrink:0;">Del</button>
     </div>`).join('');
 }
 
