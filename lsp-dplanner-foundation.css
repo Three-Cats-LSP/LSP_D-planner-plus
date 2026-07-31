@@ -109,6 +109,45 @@ body[data-font-style="dive-computer"] {
  --text-num: clamp(1.45rem, 1.1rem + 0.8vw, 2.1rem);
 }
 
+body[data-font-style="modern-instrument"] {
+ --font-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+ --font-mono: 'JetBrains Mono', 'Consolas', 'Roboto Mono', ui-monospace, monospace;
+ --font-display: 'Outfit', 'Inter', system-ui, sans-serif;
+ --font-heading: 'Outfit', 'Inter', system-ui, sans-serif;
+ --text-xs: clamp(0.74rem, 0.69rem + 0.18vw, 0.84rem);
+ --text-sm: clamp(0.8rem, 0.74rem + 0.2vw, 0.92rem);
+ --text-base: clamp(0.91rem, 0.84rem + 0.18vw, 1rem);
+ --text-lg: clamp(1.02rem, 0.94rem + 0.28vw, 1.16rem);
+ --text-xl: clamp(1.18rem, 1.02rem + 0.42vw, 1.42rem);
+ --text-num: clamp(1.55rem, 1.16rem + 0.86vw, 2.2rem);
+}
+
+body[data-font-style="soft-pro"] {
+ --font-body: 'Outfit', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+ --font-mono: 'JetBrains Mono', 'Consolas', 'Roboto Mono', ui-monospace, monospace;
+ --font-display: 'Outfit', 'Inter', system-ui, sans-serif;
+ --font-heading: 'Outfit', 'Inter', system-ui, sans-serif;
+ --text-xs: clamp(0.76rem, 0.71rem + 0.2vw, 0.88rem);
+ --text-sm: clamp(0.84rem, 0.78rem + 0.22vw, 0.96rem);
+ --text-base: clamp(0.94rem, 0.88rem + 0.22vw, 1.05rem);
+ --text-lg: clamp(1.06rem, 0.98rem + 0.3vw, 1.22rem);
+ --text-xl: clamp(1.24rem, 1.08rem + 0.45vw, 1.5rem);
+ --text-num: clamp(1.58rem, 1.2rem + 0.86vw, 2.25rem);
+}
+
+body[data-font-style="hyperlegible"] {
+ --font-body: 'Atkinson Hyperlegible', 'Segoe UI', 'Inter', Arial, sans-serif;
+ --font-mono: 'Consolas', 'JetBrains Mono', 'Roboto Mono', ui-monospace, monospace;
+ --font-display: 'Atkinson Hyperlegible', 'Segoe UI', 'Inter', Arial, sans-serif;
+ --font-heading: 'Atkinson Hyperlegible', 'Segoe UI', 'Inter', Arial, sans-serif;
+ --text-xs: clamp(0.78rem, 0.72rem + 0.22vw, 0.9rem);
+ --text-sm: clamp(0.86rem, 0.8rem + 0.24vw, 1rem);
+ --text-base: clamp(0.96rem, 0.9rem + 0.24vw, 1.08rem);
+ --text-lg: clamp(1.08rem, 1rem + 0.32vw, 1.26rem);
+ --text-xl: clamp(1.24rem, 1.08rem + 0.48vw, 1.56rem);
+ --text-num: clamp(1.5rem, 1.12rem + 0.78vw, 2.12rem);
+}
+
 #headerTopRow {
  --font-mono: 'JetBrains Mono', monospace;
  --font-display: 'Bebas Neue', sans-serif;

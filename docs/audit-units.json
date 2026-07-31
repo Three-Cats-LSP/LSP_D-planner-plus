@@ -1979,7 +1979,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "7e0b3f4d3099ea346784b1700019b81436e1c2ae5d885389c3ac8da101ea9bb9",
+      "fingerprint": "e7c321597a4dde435622768fb0d0218ca66ac416461860df72b2f5b7f333c931",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -1994,7 +1994,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "6280b89d4f229cc72d9fb08d4b9d37bcabcc77a61245326f14d9943daa2d2ee2",
+      "fingerprint": "839e3e4f6d821055fae67811fb04e73b17ab7be872bd2854a8348ae3e486e6a0",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2076,7 +2076,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "6380bf7a2889f8adb64eb6478cc7a3c1bcdf4a0a316f4902191b2a98ac667e13",
+      "fingerprint": "7bfe314cc4480336924ef70f49e538cef457bc4c203430ae27cdc9c5bc80743d",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2231,7 +2231,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-MODE-STATE"
       },
-      "fingerprint": "4c7b88580e8a0d1c8524d1dea48a1fd308b9aae3a62d03bb5804e5252fe2af58",
+      "fingerprint": "739afc504496f10af80f94c4214099a3cf0397369bc8a096e5914d01370374b8",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -6158,12 +6158,12 @@
     },
     {
       "cycle": "R24",
-      "max_new_application_lines": 2468,
+      "max_new_application_lines": 2471,
       "application_units": [
         "UI-BOOT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R24: index.html shell boot region risk-first READ; current lines: 2468; sessions: 5",
+      "acceptance": "V4 R24: index.html shell boot region risk-first READ; current lines: 2471; sessions: 5",
       "min_review_sessions": 5
     },
     {
@@ -6268,12 +6268,12 @@
     },
     {
       "cycle": "R34",
-      "max_new_application_lines": 797,
+      "max_new_application_lines": 800,
       "application_units": [
         "UI-MARKUP-HEADER"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R34: Header markup risk-first READ; current lines: 797; sessions: 2",
+      "acceptance": "V4 R34: Header markup risk-first READ; current lines: 800; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6319,13 +6319,13 @@
     },
     {
       "cycle": "R39",
-      "max_new_application_lines": 790,
+      "max_new_application_lines": 829,
       "application_units": [
         "UI-CSS-FOUNDATION",
         "UI-CSS-MODES"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R39: Foundation and mode CSS risk-first READ; current lines: 790; sessions: 2",
+      "acceptance": "V4 R39: Foundation and mode CSS risk-first READ; current lines: 829; sessions: 2",
       "min_review_sessions": 2
     },
     {

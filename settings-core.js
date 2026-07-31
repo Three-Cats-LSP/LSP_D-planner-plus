@@ -950,9 +950,16 @@ function _lspCssVar(name, fallback) {
 }
 
 const FONT_STYLE_STORAGE_KEY = 'lspFontStyle';
+const FONT_STYLE_VALUES = new Set([
+  'lsp',
+  'dive-computer',
+  'modern-instrument',
+  'soft-pro',
+  'hyperlegible'
+]);
 
 function normalizeFontStyle(value) {
-  return value === 'dive-computer' ? 'dive-computer' : 'lsp';
+  return FONT_STYLE_VALUES.has(value) ? value : 'lsp';
 }
 
 function applyFontStyle(value, options = {}) {

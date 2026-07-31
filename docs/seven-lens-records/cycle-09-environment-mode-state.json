@@ -544,9 +544,9 @@
       "unit_id": "UI-MODE-STATE",
       "path": "settings-core.js",
       "start_line": 919,
-      "end_line": 1087,
-      "line_count": 169,
-      "content_fingerprint": "80fddbc7a1fbe547f601edf5c56f889c0f7d70c21d53e62e1e303d03999e7c70",
+      "end_line": 1094,
+      "line_count": 176,
+      "content_fingerprint": "5ddb856869ffc6ee393dda42b5db3cf2387062f2e64553ba28e20ace48c53793",
       "review_session": "C09-C-MODE-STATE-2",
       "verification_session": "C09-V-C-MODE-STATE-2",
       "lens_results": {
