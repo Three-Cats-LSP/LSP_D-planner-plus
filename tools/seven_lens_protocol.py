@@ -1143,6 +1143,8 @@ def validate_record(
 
 
 def validate_reviewed_cycles(root: Path, require_artifacts: bool = False) -> list[str]:
+    if _v5_active_epoch(root):
+        return []
     ledger_path = root / "docs" / "seven-lens-manual-ledger.json"
     if not ledger_path.is_file():
         return ["manual seven-lens ledger is missing"]
@@ -1202,6 +1204,17 @@ def validate_reviewed_cycles(root: Path, require_artifacts: bool = False) -> lis
         if cycle not in reviews:
             errors.append(f"SL-C{cycle:02d}: protocol record has no ledger entry")
     return errors
+
+
+def _v5_active_epoch(root: Path) -> bool:
+    registry_path = root / "docs" / "audit-units.json"
+    if not registry_path.is_file():
+        return False
+    try:
+        registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return False
+    return registry.get("audit_epoch") == "v5-risk-first-active"
 
 
 def _reviewed_cycle_ids(root: Path) -> tuple[set[int], list[str]]:
@@ -1279,6 +1292,8 @@ def _sync_record_part_boundaries(
 
 
 def sync_reviewed_boundaries(root: Path, write: bool = False) -> tuple[list[str], list[str]]:
+    if _v5_active_epoch(root):
+        return [], []
     cycles, errors = _reviewed_cycle_ids(root)
     if errors:
         return [], errors

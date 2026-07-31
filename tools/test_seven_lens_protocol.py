@@ -334,6 +334,46 @@ class SevenLensProtocolTests(unittest.TestCase):
             errors = validate_reviewed_cycles(self.root)
         self.assertTrue(any("schema 4 or 5" in error for error in errors))
 
+    def test_v5_epoch_does_not_reinterpret_frozen_legacy_records(self):
+        docs = self.root / "docs"
+        records = docs / "seven-lens-records"
+        records.mkdir(parents=True)
+        (docs / "audit-units.json").write_text(json.dumps({
+            "audit_epoch": "v5-risk-first-active",
+            "frozen_history": {"policy": "archive-only"},
+        }), encoding="utf-8")
+        (docs / "seven-lens-manual-ledger.json").write_text(json.dumps({
+            "reviews": [{
+                "cycle_id": "SL-C200", "unit_id": "UNIT",
+                "review_status": "SEVEN_LENS_REVIEWED",
+                "verification_status": "PASSED",
+                "verified_source_commit": "abcdef2", "findings_open": [],
+            }],
+        }), encoding="utf-8")
+        broken = copy.deepcopy(self.record)
+        broken["schema_version"] = 1
+        broken["parts"][0]["content_fingerprint"] = "0" * 64
+        (records / "cycle-200-tec-planner.json").write_text(json.dumps(broken), encoding="utf-8")
+        self.assertEqual([], validate_reviewed_cycles(self.root, require_artifacts=True))
+
+    def test_v5_epoch_boundary_sync_ignores_frozen_legacy_records(self):
+        docs = self.root / "docs"
+        records = docs / "seven-lens-records"
+        records.mkdir(parents=True)
+        (docs / "audit-units.json").write_text(json.dumps({
+            "audit_epoch": "v5-risk-first-active",
+            "frozen_history": {"policy": "archive-only"},
+        }), encoding="utf-8")
+        (docs / "seven-lens-manual-ledger.json").write_text(json.dumps({
+            "reviews": [{
+                "cycle_id": "SL-C200", "unit_id": "UNIT",
+                "review_status": "SEVEN_LENS_REVIEWED",
+            }],
+        }), encoding="utf-8")
+        (records / "cycle-200-tec-planner.json").write_text(json.dumps(self.record), encoding="utf-8")
+        with patch("tools.seven_lens_protocol._resolved_registry", return_value=({}, self.resolved)):
+            self.assertEqual(([], []), sync_reviewed_boundaries(self.root, write=True))
+
     def test_real_closure_rejects_non_current_schema(self):
         with patch("tools.seven_lens_protocol._resolved_registry", return_value=({}, self.resolved)):
             errors = validate_record(self.root, self.record, "close", check_git=False)
