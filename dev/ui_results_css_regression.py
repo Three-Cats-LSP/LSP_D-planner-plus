@@ -21,12 +21,12 @@ from test_http import serve_www  # noqa: E402
 from tools.audit.suite_emit import case_row, finish_suite  # noqa: E402
 
 CASE_IDS = (
-    "SL-C07-CHIP-YELLOW-DISTINCT",
-    "SL-C07-PPO2-SEVERITY-COLORS",
-    "SL-C07-CSS-DEAD-LEGACY-CARDS",
-    "SL-C07-CSS-DEAD-ALGO-SWITCHER",
-    "SL-C07-REDUCED-MOTION",
-    "SL-C07-PRINT-RESULTS",
+    "V5-CSS-CHIP-YELLOW-DISTINCT",
+    "V5-CSS-PPO2-SEVERITY-COLORS",
+    "V5-CSS-DEAD-LEGACY-CARDS",
+    "V5-CSS-RESULTS-DEAD-ALGO-SWITCHER",
+    "V5-CSS-RESULTS-REDUCED-MOTION",
+    "V5-CSS-PRINT-RESULTS",
 )
 
 STATE_HASH_JS = r"""
@@ -321,12 +321,12 @@ def run_cases(
             "after_hash": after_hash,
         },
     }
-    out["SL-C07-CHIP-YELLOW-DISTINCT"] = bool(chip.get("ok")) if run_behavioral else True
-    out["SL-C07-PPO2-SEVERITY-COLORS"] = bool(ppo2.get("ok")) if run_behavioral else True
-    out["SL-C07-CSS-DEAD-LEGACY-CARDS"] = bool(dead.get("deadLegacyOk"))
-    out["SL-C07-CSS-DEAD-ALGO-SWITCHER"] = bool(dead.get("deadAlgoOk"))
-    out["SL-C07-REDUCED-MOTION"] = bool(reduced.get("ok"))
-    out["SL-C07-PRINT-RESULTS"] = bool(print_probe.get("ok"))
+    out["V5-CSS-CHIP-YELLOW-DISTINCT"] = bool(chip.get("ok")) if run_behavioral else True
+    out["V5-CSS-PPO2-SEVERITY-COLORS"] = bool(ppo2.get("ok")) if run_behavioral else True
+    out["V5-CSS-DEAD-LEGACY-CARDS"] = bool(dead.get("deadLegacyOk"))
+    out["V5-CSS-RESULTS-DEAD-ALGO-SWITCHER"] = bool(dead.get("deadAlgoOk"))
+    out["V5-CSS-RESULTS-REDUCED-MOTION"] = bool(reduced.get("ok"))
+    out["V5-CSS-PRINT-RESULTS"] = bool(print_probe.get("ok"))
     if not state_restored:
         out["_detail"]["state_restored"] = False
     return out
@@ -387,9 +387,9 @@ def main() -> int:
             detail["667x375"] = landscape.pop("_detail")
             for case_id, ok in landscape.items():
                 if case_id in (
-                    "SL-C07-CHIP-YELLOW-DISTINCT",
-                    "SL-C07-PPO2-SEVERITY-COLORS",
-                    "SL-C07-PRINT-RESULTS",
+                    "V5-CSS-CHIP-YELLOW-DISTINCT",
+                    "V5-CSS-PPO2-SEVERITY-COLORS",
+                    "V5-CSS-PRINT-RESULTS",
                 ):
                     continue
                 results[case_id] = results[case_id] and bool(ok)
@@ -401,7 +401,7 @@ def main() -> int:
         print(f"  {'✓' if results[case_id] else '✗'} [{case_id}]")
         if not results[case_id]:
             for vp, d in detail.items():
-                if case_id == "SL-C07-PRINT-RESULTS" and d.get("print"):
+                if case_id == "V5-CSS-PRINT-RESULTS" and d.get("print"):
                     print(f"    {vp} print: {json.dumps(d['print'], indent=2)}")
     code = 0 if all(results.values()) else 1
     finish_suite(ROOT, rows, code)

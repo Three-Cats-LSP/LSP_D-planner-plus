@@ -21,13 +21,13 @@ from test_http import serve_www  # noqa: E402
 from tools.audit.suite_emit import case_row, finish_suite  # noqa: E402
 
 CASE_IDS = (
-    "SL-C06-SEG-FOCUS-VISIBLE",
-    "SL-C06-GAS-NUM-TOUCH-TARGET",
-    "SL-C06-CSS-DEAD-SI-INNER",
-    "SL-C06-CSS-DEAD-T-COL",
-    "SL-C06-CSS-DEAD-BTN-CALC",
-    "SL-C06-FIELD-INVALID-STATE",
-    "SL-C06-REDUCED-MOTION",
+    "V5-CSS-SEG-FOCUS-VISIBLE",
+    "V5-CSS-GAS-NUM-TOUCH-TARGET",
+    "V5-CSS-DEAD-SI-INNER",
+    "V5-CSS-DEAD-T-COL",
+    "V5-CSS-DEAD-BTN-CALC",
+    "V5-CSS-FIELD-INVALID-STATE",
+    "V5-CSS-REDUCED-MOTION",
 )
 
 STATE_HASH_JS = r"""
@@ -478,14 +478,14 @@ def run_cases(
         },
     }
     if seg_focus:
-        out["SL-C06-SEG-FOCUS-VISIBLE"] = seg_ok
+        out["V5-CSS-SEG-FOCUS-VISIBLE"] = seg_ok
     if mobile_touch:
-        out["SL-C06-GAS-NUM-TOUCH-TARGET"] = touch_ok
-    out["SL-C06-CSS-DEAD-SI-INNER"] = bool(dead.get("deadSiInnerOk"))
-    out["SL-C06-CSS-DEAD-T-COL"] = bool(dead.get("deadTColOk"))
-    out["SL-C06-CSS-DEAD-BTN-CALC"] = bool(dead.get("deadBtnCalcOk"))
-    out["SL-C06-FIELD-INVALID-STATE"] = bool(invalid.get("ok"))
-    out["SL-C06-REDUCED-MOTION"] = bool(reduced.get("ok"))
+        out["V5-CSS-GAS-NUM-TOUCH-TARGET"] = touch_ok
+    out["V5-CSS-DEAD-SI-INNER"] = bool(dead.get("deadSiInnerOk"))
+    out["V5-CSS-DEAD-T-COL"] = bool(dead.get("deadTColOk"))
+    out["V5-CSS-DEAD-BTN-CALC"] = bool(dead.get("deadBtnCalcOk"))
+    out["V5-CSS-FIELD-INVALID-STATE"] = bool(invalid.get("ok"))
+    out["V5-CSS-REDUCED-MOTION"] = bool(reduced.get("ok"))
     if not state_restored:
         for case_id in CASE_IDS:
             if case_id in out:
@@ -540,12 +540,12 @@ def main() -> int:
     rows = [case_row(case_id, results[case_id]) for case_id in CASE_IDS]
     for case_id in CASE_IDS:
         print(f"  {'✓' if results[case_id] else '✗'} [{case_id}]")
-        if case_id == "SL-C06-FIELD-INVALID-STATE" and not results[case_id]:
+        if case_id == "V5-CSS-FIELD-INVALID-STATE" and not results[case_id]:
             diagnostics = {
                 viewport: detail.get(viewport, {}).get("invalid")
                 for viewport in detail
             }
-            print("SL-C06-FIELD-INVALID-STATE diagnostic:")
+            print("V5-CSS-FIELD-INVALID-STATE diagnostic:")
             print(json.dumps(diagnostics, indent=2))
     code = 0 if all(results.values()) else 1
     finish_suite(ROOT, rows, code)

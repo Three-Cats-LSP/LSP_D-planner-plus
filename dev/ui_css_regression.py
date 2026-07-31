@@ -21,12 +21,12 @@ from test_http import serve_www  # noqa: E402
 from tools.audit.suite_emit import case_row, finish_suite  # noqa: E402
 
 CASE_IDS = (
-    "SL-C05-GF-ROW-MODE-ISOLATION",
-    "SL-C05-EXPORT-FOCUS-VISIBLE",
-    "SL-C05-CSS-DEAD-BRAND-ICON",
-    "SL-C05-CSS-DEAD-GF-BTN",
-    "SL-C05-CSS-DEAD-ALGO-SWITCHER",
-    "SL-C05-CSS-DEAD-THEME-TOGGLE",
+    "V5-CSS-GF-ROW-MODE-ISOLATION",
+    "V5-CSS-EXPORT-FOCUS-VISIBLE",
+    "V5-CSS-DEAD-BRAND-ICON",
+    "V5-CSS-DEAD-GF-BTN",
+    "V5-CSS-DEAD-ALGO-SWITCHER",
+    "V5-CSS-DEAD-THEME-TOGGLE",
 )
 
 GF_JS = r"""
@@ -230,12 +230,12 @@ def run_cases(page, viewport: tuple[int, int]) -> dict[str, bool]:
 
     dead = page.evaluate(DEAD_JS)
     return {
-        "SL-C05-GF-ROW-MODE-ISOLATION": gf_ok,
-        "SL-C05-EXPORT-FOCUS-VISIBLE": focus_ok,
-        "SL-C05-CSS-DEAD-BRAND-ICON": bool(dead.get("deadBrandOk")),
-        "SL-C05-CSS-DEAD-GF-BTN": bool(dead.get("deadGfBtnOk")),
-        "SL-C05-CSS-DEAD-ALGO-SWITCHER": bool(dead.get("deadAlgoSwitcherOk")),
-        "SL-C05-CSS-DEAD-THEME-TOGGLE": bool(dead.get("deadThemeToggleOk")),
+        "V5-CSS-GF-ROW-MODE-ISOLATION": gf_ok,
+        "V5-CSS-EXPORT-FOCUS-VISIBLE": focus_ok,
+        "V5-CSS-DEAD-BRAND-ICON": bool(dead.get("deadBrandOk")),
+        "V5-CSS-DEAD-GF-BTN": bool(dead.get("deadGfBtnOk")),
+        "V5-CSS-DEAD-ALGO-SWITCHER": bool(dead.get("deadAlgoSwitcherOk")),
+        "V5-CSS-DEAD-THEME-TOGGLE": bool(dead.get("deadThemeToggleOk")),
         "_detail": {"gf_a": gf_a, "gf_b": gf_b, "focus": focus, "dead": dead, "viewport": viewport},
     }
 

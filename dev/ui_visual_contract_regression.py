@@ -30,27 +30,27 @@ CASE_IDS = (
     "V4-UI-VISUAL-MOBILE-NAV-TILE-GRID",
     "V4-UI-VISUAL-OPERATIONAL-GAS-LABEL-FORMAT",
     "V4-UI-VISUAL-MOBILE-BOTTOM-TAB-SHELL",
-    "SL-C09-GAS-SWITCH-TERMINOLOGY",
-    "SL-C09-MOBILE-WARNING-WRAP",
-    "SL-C09-VPM-MODE-TOGGLE",
-    "SL-C09-VPM-CONTINGENCY-GAS-LOSS-STABLE",
-    "SL-C09-VPM-BEYOND-MOD-BLOCKS",
-    "SL-C09-TRAVEL-GAS-TRIMIX-CARD",
-    "SL-C09-CONTINGENCY-COPY-PLAN-CONTEXT",
-    "SL-C09-SCHEDULE-COLUMN-GEOMETRY",
+    "V5-RESULTS-GAS-SWITCH-TERMINOLOGY",
+    "V5-SHELL-MOBILE-WARNING-WRAP",
+    "V5-SHELL-VPM-MODE-TOGGLE",
+    "V5-RESULTS-VPM-CONTINGENCY-GAS-LOSS-STABLE",
+    "V5-RESULTS-VPM-BEYOND-MOD-BLOCKS",
+    "V5-RESULTS-TRAVEL-GAS-TRIMIX-CARD",
+    "V5-RESULTS-CONTINGENCY-COPY-PLAN-CONTEXT",
+    "V5-RESULTS-SCHEDULE-COLUMN-GEOMETRY",
     "SL-VIS-SCHEDULE-PHASE-COLUMN-COLOR-CONTRACT",
-    "SL-C09-SWITCH-ROW-BACKGROUND-PARITY",
-    "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD",
-    "SL-C09-MOBILE-TISSUE-TAB-VISIBLE",
-    "SL-C09-SUMMARY-CHIP-PALETTE",
-    "SL-C09-RESULT-TABS-GAP",
-    "SL-C09-HIGH-CNS-DECO-ALERT",
+    "V5-RESULTS-SWITCH-ROW-BACKGROUND-PARITY",
+    "V5-RESULTS-GRAPH-WAYPOINT-TIME-SPREAD",
+    "V5-SHELL-MOBILE-TISSUE-TAB-VISIBLE",
+    "V5-RESULTS-SUMMARY-CHIP-PALETTE",
+    "V5-SHELL-RESULT-TABS-GAP",
+    "V5-RESULTS-HIGH-CNS-DECO-ALERT",
     "SL-VIS-GAS-CONSUMPTION-BARS",
     "SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS",
     "SL-VIS-CONTINGENCY-MAIN-DECO-LAYOUT",
     "SL-VIS-GAS-CONSUMPTION-VOLUME-FIRST-UNITS",
-    "SL-C09-ZHL-BEYOND-MOD-BLOCKS",
-    "SL-C09-VPM-GRAPH-WAYPOINT-MONOTONIC",
+    "V5-RESULTS-ZHL-BEYOND-MOD-BLOCKS",
+    "V5-RESULTS-VPM-GRAPH-WAYPOINT-MONOTONIC",
     "SL-BATCH2-VPM-ERROR-COLSPAN",
     "SCHEDULE-ERROR-ROW-COLUMN-CONTRACT",
     "VPM-INVALID-ERROR-ROW-GEOMETRY",
@@ -2053,7 +2053,7 @@ def main() -> int:
         and c["scheduleLegendLabels"] == ["Descent", "Bottom", "Ascent", "Gas Switch", "Deco Stop"]
         for c in captures
     )
-    results["SL-C09-RESULT-TAB-SIMPLIFICATION"] = all(
+    results["V5-SHELL-RESULT-TAB-SIMPLIFICATION"] = all(
         c["generated"]
         and c["resultTabs"]["tabs"] == ["profile", "contingency", "tissue"]
         and c["resultTabs"]["labels"] == ["Dive Profile", "Contingency Plans", "Tissues"]
@@ -2111,21 +2111,21 @@ def main() -> int:
         )
         for c in captures
     )
-    results["SL-C09-SWITCH-ROW-BACKGROUND-PARITY"] = all(
+    results["V5-RESULTS-SWITCH-ROW-BACKGROUND-PARITY"] = all(
         c["generated"]
         and c["switchRowCount"] >= 1
         and bool(c["switchRowBackgrounds"])
         and all(color == c["normalRowBackground"] for color in c["switchRowBackgrounds"])
         for c in captures
     )
-    results["SL-C09-GRAPH-WAYPOINT-TIME-SPREAD"] = all(
+    results["V5-RESULTS-GRAPH-WAYPOINT-TIME-SPREAD"] = all(
         c["generated"]
         and c["graphWaypoints"]["count"] >= 5
         and c["graphWaypoints"]["uniqueCount"] >= 5
         and (c["graphWaypoints"]["maxTime"] - c["graphWaypoints"]["minTime"]) >= 15
         for c in captures
     )
-    results["SL-C09-VPM-GRAPH-WAYPOINT-MONOTONIC"] = bool(
+    results["V5-RESULTS-VPM-GRAPH-WAYPOINT-MONOTONIC"] = bool(
         vpm_graph_details.get("rowCount", 0) >= 6
         and vpm_graph_details.get("waypointCount", 0) >= 6
         and vpm_graph_details.get("firstStopRun", 0) >= 25
@@ -2133,7 +2133,7 @@ def main() -> int:
         and not vpm_graph_details.get("backwards")
         and not vpm_graph_details.get("console_errors")
     )
-    results["SL-C09-MOBILE-TISSUE-TAB-VISIBLE"] = all(
+    results["V5-SHELL-MOBILE-TISSUE-TAB-VISIBLE"] = all(
         c["generated"]
         and c["mobileBottomTissueTab"]
         and "Tissues" in c["mobileBottomTissueTab"]["text"]
@@ -2141,7 +2141,7 @@ def main() -> int:
         and c["mobileBottomTissueTab"]["withinNav"]
         for key, c in details.items() if int(key.split("x", 1)[0]) <= 640
     )
-    results["SL-C09-SCHEDULE-COLUMN-GEOMETRY"] = all(
+    results["V5-RESULTS-SCHEDULE-COLUMN-GEOMETRY"] = all(
         c["generated"]
         and c["scheduleColumns"]["tableLayout"] == "fixed"
         and c["scheduleColumns"]["headerTexts"][:4] == ["Depth", "Stop", "Run", "Mix"]
@@ -2161,7 +2161,7 @@ def main() -> int:
         and not c["scheduleColumns"]["clippedCells"]
         for c in captures
     )
-    results["SL-C09-SUMMARY-CHIP-PALETTE"] = all(
+    results["V5-RESULTS-SUMMARY-CHIP-PALETTE"] = all(
         c["generated"]
         and c["summaryChips"]["surfGF"]
         and c["summaryChips"]["surfGF"]["color"] in c["summaryChips"]["statusColors"]
@@ -2175,14 +2175,14 @@ def main() -> int:
         and c["summaryChips"]["decozoneValueColor"] == c["summaryChips"]["firstDecoValueColor"]
         for c in captures
     )
-    results["SL-C09-RESULT-TABS-GAP"] = all(
+    results["V5-SHELL-RESULT-TABS-GAP"] = all(
         c["generated"]
         and c["resultTabsGap"]
         and c["resultTabsGap"]["gap"] >= 6
         and c["resultTabsGap"].get("metricBeforePane", True)
         for c in captures
     )
-    results["SL-C09-HIGH-CNS-DECO-ALERT"] = bool(
+    results["V5-RESULTS-HIGH-CNS-DECO-ALERT"] = bool(
         high_cns_details.get("generated")
         and "HIGH CNS%." in high_cns_details.get("alertText", "")
         and high_cns_details.get("alertBackground") in ("rgb(255, 255, 0)", "rgb(255,255,0)")
@@ -2247,7 +2247,7 @@ def main() -> int:
         and contingency_gas_details.get("bailoutDuplicateCount") == 0
         and not contingency_gas_details.get("console_errors")
     )
-    results["SL-C09-CONTINGENCY-COPY-PLAN-CONTEXT"] = bool(
+    results["V5-RESULTS-CONTINGENCY-COPY-PLAN-CONTEXT"] = bool(
         contingency_gas_details.get("generated")
         and contingency_gas_details.get("copyHasPlanContext")
         and not contingency_gas_details.get("console_errors")
@@ -2284,7 +2284,7 @@ def main() -> int:
     )
     results["V4-UI-VISUAL-OPERATIONAL-GAS-LABEL-FORMAT"] = bool(gas_ok)
 
-    results["SL-C09-GAS-SWITCH-TERMINOLOGY"] = bool(
+    results["V5-RESULTS-GAS-SWITCH-TERMINOLOGY"] = bool(
         gas_details.get("generated")
         and gas_details.get("terminologyOk")
         and not gas_details.get("gasChangeTextHits")
@@ -2299,7 +2299,7 @@ def main() -> int:
     )
     results["V4-UI-VISUAL-MOBILE-BOTTOM-TAB-SHELL"] = bottom_nav_ok
 
-    results["SL-C09-MOBILE-WARNING-WRAP"] = bool(
+    results["V5-SHELL-MOBILE-WARNING-WRAP"] = bool(
         mobile_warning_details.get("ok")
         and mobile_warning_details.get("topGasBannerHidden")
         and not mobile_warning_details.get("warningText")
@@ -2318,17 +2318,17 @@ def main() -> int:
         and mobile_warning_details.get("usedTextColor") != mobile_warning_details.get("remainingTextColor")
         and not mobile_warning_details.get("console_errors")
     )
-    results["SL-C09-VPM-MODE-TOGGLE"] = bool(
+    results["V5-SHELL-VPM-MODE-TOGGLE"] = bool(
         vpm_details.get("ok")
         and not vpm_details.get("console_errors")
     )
-    results["SL-C09-VPM-CONTINGENCY-GAS-LOSS-STABLE"] = bool(
+    results["V5-RESULTS-VPM-CONTINGENCY-GAS-LOSS-STABLE"] = bool(
         vpm_details.get("vpmContingencyGas", {}).get("ok")
         and vpm_details.get("vpmContingencyGas", {}).get("labelsCanonical")
         and vpm_details.get("vpmContingencyGas", {}).get("scenarioCanonical")
         and not vpm_details.get("console_errors")
     )
-    results["SL-C09-VPM-BEYOND-MOD-BLOCKS"] = bool(
+    results["V5-RESULTS-VPM-BEYOND-MOD-BLOCKS"] = bool(
         vpm_beyond_mod_details.get("errorRowCount") == 0
         and vpm_beyond_mod_details.get("colspan") is None
         and vpm_beyond_mod_details.get("expected") == 8
@@ -2346,7 +2346,7 @@ def main() -> int:
         and vpm_beyond_mod_details.get("hasRunnerHelper")
         and not vpm_beyond_mod_details.get("console_errors")
     )
-    results["SL-C09-ZHL-BEYOND-MOD-BLOCKS"] = bool(
+    results["V5-RESULTS-ZHL-BEYOND-MOD-BLOCKS"] = bool(
         zhl_beyond_mod_details.get("errorRowCount") == 0
         and zhl_beyond_mod_details.get("colspan") is None
         and zhl_beyond_mod_details.get("expected") == 8
@@ -2365,7 +2365,7 @@ def main() -> int:
         and not zhl_beyond_mod_details.get("console_errors")
     )
     travel_trimix = gas_details.get("travelTrimix", {})
-    results["SL-C09-TRAVEL-GAS-TRIMIX-CARD"] = bool(
+    results["V5-RESULTS-TRAVEL-GAS-TRIMIX-CARD"] = bool(
         travel_trimix.get("optionExists")
         and travel_trimix.get("cardVisible")
         and travel_trimix.get("customHidden")

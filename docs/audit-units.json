@@ -477,75 +477,129 @@
     },
     "REG-58": {
       "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "SL-C01-DEPTH-SYNC"
+      "case_id": "V5-TOOLS-DEPTH-SYNC",
+      "legacy_aliases": [
+        "SL-C01-DEPTH-SYNC"
+      ]
     },
     "REG-59": {
       "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "SL-C01-PRESET-SYNC"
+      "case_id": "V5-TOOLS-PRESET-SYNC",
+      "legacy_aliases": [
+        "SL-C01-PRESET-SYNC"
+      ]
     },
     "REG-60": {
       "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "SL-C01-SETTINGS-RESTORE"
+      "case_id": "V5-TOOLS-SETTINGS-RESTORE",
+      "legacy_aliases": [
+        "SL-C01-SETTINGS-RESTORE"
+      ]
     },
     "REG-61": {
       "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "SL-C01-ALTITUDE-UNIT-CONSTRAINTS"
+      "case_id": "V5-TOOLS-ALTITUDE-UNIT-CONSTRAINTS",
+      "legacy_aliases": [
+        "SL-C01-ALTITUDE-UNIT-CONSTRAINTS"
+      ]
     },
     "REG-62": {
       "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "SL-C02-MIN-DECO-UNITS"
+      "case_id": "V5-TOOLS-MIN-DECO-UNITS",
+      "legacy_aliases": [
+        "SL-C02-MIN-DECO-UNITS"
+      ]
     },
     "REG-63": {
       "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "SL-C02-TRAVEL-DEPTH-CONSTRAINTS"
+      "case_id": "V5-TOOLS-TRAVEL-DEPTH-CONSTRAINTS",
+      "legacy_aliases": [
+        "SL-C02-TRAVEL-DEPTH-CONSTRAINTS"
+      ]
     },
     "REG-64": {
       "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "SL-C03-BEST-MIX-DEPTH-UNITS"
+      "case_id": "V5-TOOLS-BEST-MIX-DEPTH-UNITS",
+      "legacy_aliases": [
+        "SL-C03-BEST-MIX-DEPTH-UNITS"
+      ]
     },
     "REG-65": {
       "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "SL-C03-CNS-DEPTH-UNITS"
+      "case_id": "V5-TOOLS-CNS-DEPTH-UNITS",
+      "legacy_aliases": [
+        "SL-C03-CNS-DEPTH-UNITS"
+      ]
     },
     "REG-66": {
       "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "SL-C04-END-DEPTH-UNITS"
+      "case_id": "V5-TOOLS-END-DEPTH-UNITS",
+      "legacy_aliases": [
+        "SL-C04-END-DEPTH-UNITS"
+      ]
     },
     "REG-67": {
       "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "SL-C04-SI-DEPTH-UNITS"
+      "case_id": "V5-TOOLS-SI-DEPTH-UNITS",
+      "legacy_aliases": [
+        "SL-C04-SI-DEPTH-UNITS"
+      ]
     },
     "REG-68": {
       "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "SL-C04-CONFIRM-BACKDROP"
+      "case_id": "V5-TOOLS-CONFIRM-BACKDROP",
+      "legacy_aliases": [
+        "SL-C04-CONFIRM-BACKDROP"
+      ]
     },
     "REG-69": {
       "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS"
+      "case_id": "V5-TOOLS-CYLINDER-PHYSICAL-CONSTRAINTS",
+      "legacy_aliases": [
+        "SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS"
+      ]
     },
     "REG-70": {
       "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "SL-C02-UNIT-ROUNDTRIP-IMMUTABLE"
+      "case_id": "V5-TOOLS-UNIT-ROUNDTRIP-IMMUTABLE",
+      "legacy_aliases": [
+        "SL-C02-UNIT-ROUNDTRIP-IMMUTABLE"
+      ]
     },
     "REG-71": {
       "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH"
+      "case_id": "V5-TOOLS-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
+      "legacy_aliases": [
+        "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH"
+      ]
     },
     "REG-72": {
       "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH"
+      "case_id": "V5-TOOLS-CYLINDER-SIZE-EDIT-AFTER-SWITCH",
+      "legacy_aliases": [
+        "SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH"
+      ]
     },
     "REG-73": {
       "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH"
+      "case_id": "V5-TOOLS-BEST-MIX-EDIT-AFTER-SWITCH",
+      "legacy_aliases": [
+        "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH"
+      ]
     },
     "REG-74": {
       "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "SL-C03-CNS-EDIT-AFTER-SWITCH"
+      "case_id": "V5-TOOLS-CNS-EDIT-AFTER-SWITCH",
+      "legacy_aliases": [
+        "SL-C03-CNS-EDIT-AFTER-SWITCH"
+      ]
     },
     "REG-75": {
       "suite_id": "SUITE-ENGINE-FULL",
-      "case_id": "SL-C04-DYNAMIC-DECO-CYL-IMPERIAL"
+      "case_id": "V5-TOOLS-DYNAMIC-DECO-CYL-IMPERIAL",
+      "legacy_aliases": [
+        "SL-C04-DYNAMIC-DECO-CYL-IMPERIAL"
+      ]
     },
     "ANDROID-01": {
       "suite_id": "SUITE-ANDROID",
@@ -581,79 +635,136 @@
     },
     "REG-76": {
       "suite_id": "SUITE-UI-CSS-REGRESSION",
-      "case_id": "SL-C05-GF-ROW-MODE-ISOLATION"
+      "case_id": "V5-CSS-GF-ROW-MODE-ISOLATION",
+      "legacy_aliases": [
+        "SL-C05-GF-ROW-MODE-ISOLATION"
+      ]
     },
     "REG-77": {
       "suite_id": "SUITE-UI-CSS-REGRESSION",
-      "case_id": "SL-C05-EXPORT-FOCUS-VISIBLE"
+      "case_id": "V5-CSS-EXPORT-FOCUS-VISIBLE",
+      "legacy_aliases": [
+        "SL-C05-EXPORT-FOCUS-VISIBLE"
+      ]
     },
     "REG-78": {
       "suite_id": "SUITE-UI-CSS-REGRESSION",
-      "case_id": "SL-C05-CSS-DEAD-BRAND-ICON"
+      "case_id": "V5-CSS-DEAD-BRAND-ICON",
+      "legacy_aliases": [
+        "SL-C05-CSS-DEAD-BRAND-ICON"
+      ]
     },
     "REG-79": {
       "suite_id": "SUITE-UI-CSS-REGRESSION",
-      "case_id": "SL-C05-CSS-DEAD-GF-BTN"
+      "case_id": "V5-CSS-DEAD-GF-BTN",
+      "legacy_aliases": [
+        "SL-C05-CSS-DEAD-GF-BTN"
+      ]
     },
     "REG-80": {
       "suite_id": "SUITE-UI-CSS-REGRESSION",
-      "case_id": "SL-C05-CSS-DEAD-ALGO-SWITCHER"
+      "case_id": "V5-CSS-DEAD-ALGO-SWITCHER",
+      "legacy_aliases": [
+        "SL-C05-CSS-DEAD-ALGO-SWITCHER"
+      ]
     },
     "REG-81": {
       "suite_id": "SUITE-UI-CSS-REGRESSION",
-      "case_id": "SL-C05-CSS-DEAD-THEME-TOGGLE"
+      "case_id": "V5-CSS-DEAD-THEME-TOGGLE",
+      "legacy_aliases": [
+        "SL-C05-CSS-DEAD-THEME-TOGGLE"
+      ]
     },
     "REG-82": {
       "suite_id": "SUITE-UI-CONTROLS-CSS-REGRESSION",
-      "case_id": "SL-C06-SEG-FOCUS-VISIBLE"
+      "case_id": "V5-CSS-SEG-FOCUS-VISIBLE",
+      "legacy_aliases": [
+        "SL-C06-SEG-FOCUS-VISIBLE"
+      ]
     },
     "REG-83": {
       "suite_id": "SUITE-UI-CONTROLS-CSS-REGRESSION",
-      "case_id": "SL-C06-GAS-NUM-TOUCH-TARGET"
+      "case_id": "V5-CSS-GAS-NUM-TOUCH-TARGET",
+      "legacy_aliases": [
+        "SL-C06-GAS-NUM-TOUCH-TARGET"
+      ]
     },
     "REG-84": {
       "suite_id": "SUITE-UI-CONTROLS-CSS-REGRESSION",
-      "case_id": "SL-C06-CSS-DEAD-SI-INNER"
+      "case_id": "V5-CSS-DEAD-SI-INNER",
+      "legacy_aliases": [
+        "SL-C06-CSS-DEAD-SI-INNER"
+      ]
     },
     "REG-85": {
       "suite_id": "SUITE-UI-CONTROLS-CSS-REGRESSION",
-      "case_id": "SL-C06-CSS-DEAD-T-COL"
+      "case_id": "V5-CSS-DEAD-T-COL",
+      "legacy_aliases": [
+        "SL-C06-CSS-DEAD-T-COL"
+      ]
     },
     "REG-86": {
       "suite_id": "SUITE-UI-CONTROLS-CSS-REGRESSION",
-      "case_id": "SL-C06-CSS-DEAD-BTN-CALC"
+      "case_id": "V5-CSS-DEAD-BTN-CALC",
+      "legacy_aliases": [
+        "SL-C06-CSS-DEAD-BTN-CALC"
+      ]
     },
     "REG-87": {
       "suite_id": "SUITE-UI-CONTROLS-CSS-REGRESSION",
-      "case_id": "SL-C06-FIELD-INVALID-STATE"
+      "case_id": "V5-CSS-FIELD-INVALID-STATE",
+      "legacy_aliases": [
+        "SL-C06-FIELD-INVALID-STATE"
+      ]
     },
     "REG-88": {
       "suite_id": "SUITE-UI-CONTROLS-CSS-REGRESSION",
-      "case_id": "SL-C06-REDUCED-MOTION"
+      "case_id": "V5-CSS-REDUCED-MOTION",
+      "legacy_aliases": [
+        "SL-C06-REDUCED-MOTION"
+      ]
     },
     "REG-89": {
       "suite_id": "SUITE-UI-RESULTS-CSS-REGRESSION",
-      "case_id": "SL-C07-CHIP-YELLOW-DISTINCT"
+      "case_id": "V5-CSS-CHIP-YELLOW-DISTINCT",
+      "legacy_aliases": [
+        "SL-C07-CHIP-YELLOW-DISTINCT"
+      ]
     },
     "REG-90": {
       "suite_id": "SUITE-UI-RESULTS-CSS-REGRESSION",
-      "case_id": "SL-C07-PPO2-SEVERITY-COLORS"
+      "case_id": "V5-CSS-PPO2-SEVERITY-COLORS",
+      "legacy_aliases": [
+        "SL-C07-PPO2-SEVERITY-COLORS"
+      ]
     },
     "REG-91": {
       "suite_id": "SUITE-UI-RESULTS-CSS-REGRESSION",
-      "case_id": "SL-C07-CSS-DEAD-LEGACY-CARDS"
+      "case_id": "V5-CSS-DEAD-LEGACY-CARDS",
+      "legacy_aliases": [
+        "SL-C07-CSS-DEAD-LEGACY-CARDS"
+      ]
     },
     "REG-92": {
       "suite_id": "SUITE-UI-RESULTS-CSS-REGRESSION",
-      "case_id": "SL-C07-CSS-DEAD-ALGO-SWITCHER"
+      "case_id": "V5-CSS-RESULTS-DEAD-ALGO-SWITCHER",
+      "legacy_aliases": [
+        "SL-C07-CSS-DEAD-ALGO-SWITCHER"
+      ]
     },
     "REG-93": {
       "suite_id": "SUITE-UI-RESULTS-CSS-REGRESSION",
-      "case_id": "SL-C07-REDUCED-MOTION"
+      "case_id": "V5-CSS-RESULTS-REDUCED-MOTION",
+      "legacy_aliases": [
+        "SL-C07-REDUCED-MOTION"
+      ]
     },
     "REG-94": {
       "suite_id": "SUITE-UI-RESULTS-CSS-REGRESSION",
-      "case_id": "SL-C07-PRINT-RESULTS"
+      "case_id": "V5-CSS-PRINT-RESULTS",
+      "legacy_aliases": [
+        "SL-C07-PRINT-RESULTS"
+      ]
     },
     "REG-95": {
       "suite_id": "SUITE-UI-SHELL-RESULTS-REGRESSION",
@@ -709,19 +820,31 @@
     },
     "REG-108": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
-      "case_id": "SL-C09-GAS-SWITCH-TERMINOLOGY"
+      "case_id": "V5-RESULTS-GAS-SWITCH-TERMINOLOGY",
+      "legacy_aliases": [
+        "SL-C09-GAS-SWITCH-TERMINOLOGY"
+      ]
     },
     "REG-109": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
-      "case_id": "SL-C09-MOBILE-WARNING-WRAP"
+      "case_id": "V5-SHELL-MOBILE-WARNING-WRAP",
+      "legacy_aliases": [
+        "SL-C09-MOBILE-WARNING-WRAP"
+      ]
     },
     "REG-110": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
-      "case_id": "SL-C09-VPM-MODE-TOGGLE"
+      "case_id": "V5-SHELL-VPM-MODE-TOGGLE",
+      "legacy_aliases": [
+        "SL-C09-VPM-MODE-TOGGLE"
+      ]
     },
     "REG-111": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
-      "case_id": "SL-C09-SCHEDULE-COLUMN-GEOMETRY"
+      "case_id": "V5-RESULTS-SCHEDULE-COLUMN-GEOMETRY",
+      "legacy_aliases": [
+        "SL-C09-SCHEDULE-COLUMN-GEOMETRY"
+      ]
     },
     "REG-112": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
@@ -729,15 +852,24 @@
     },
     "REG-113": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
-      "case_id": "SL-C09-SWITCH-ROW-BACKGROUND-PARITY"
+      "case_id": "V5-RESULTS-SWITCH-ROW-BACKGROUND-PARITY",
+      "legacy_aliases": [
+        "SL-C09-SWITCH-ROW-BACKGROUND-PARITY"
+      ]
     },
     "REG-114": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
-      "case_id": "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD"
+      "case_id": "V5-RESULTS-GRAPH-WAYPOINT-TIME-SPREAD",
+      "legacy_aliases": [
+        "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD"
+      ]
     },
     "REG-115": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
-      "case_id": "SL-C09-MOBILE-TISSUE-TAB-VISIBLE"
+      "case_id": "V5-SHELL-MOBILE-TISSUE-TAB-VISIBLE",
+      "legacy_aliases": [
+        "SL-C09-MOBILE-TISSUE-TAB-VISIBLE"
+      ]
     },
     "REG-116": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
@@ -749,15 +881,24 @@
     },
     "REG-118": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
-      "case_id": "SL-C09-VPM-CONTINGENCY-GAS-LOSS-STABLE"
+      "case_id": "V5-RESULTS-VPM-CONTINGENCY-GAS-LOSS-STABLE",
+      "legacy_aliases": [
+        "SL-C09-VPM-CONTINGENCY-GAS-LOSS-STABLE"
+      ]
     },
     "REG-119": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
-      "case_id": "SL-C09-TRAVEL-GAS-TRIMIX-CARD"
+      "case_id": "V5-RESULTS-TRAVEL-GAS-TRIMIX-CARD",
+      "legacy_aliases": [
+        "SL-C09-TRAVEL-GAS-TRIMIX-CARD"
+      ]
     },
     "REG-120": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
-      "case_id": "SL-C09-CONTINGENCY-COPY-PLAN-CONTEXT"
+      "case_id": "V5-RESULTS-CONTINGENCY-COPY-PLAN-CONTEXT",
+      "legacy_aliases": [
+        "SL-C09-CONTINGENCY-COPY-PLAN-CONTEXT"
+      ]
     },
     "REG-121": {
       "suite_id": "SUITE-ENGINE-FULL",
@@ -765,15 +906,24 @@
     },
     "REG-122": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
-      "case_id": "SL-C09-RESULT-TAB-SIMPLIFICATION"
+      "case_id": "V5-SHELL-RESULT-TAB-SIMPLIFICATION",
+      "legacy_aliases": [
+        "SL-C09-RESULT-TAB-SIMPLIFICATION"
+      ]
     },
     "REG-123": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
-      "case_id": "SL-C09-RESULT-TABS-GAP"
+      "case_id": "V5-SHELL-RESULT-TABS-GAP",
+      "legacy_aliases": [
+        "SL-C09-RESULT-TABS-GAP"
+      ]
     },
     "REG-124": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
-      "case_id": "SL-C09-SUMMARY-CHIP-PALETTE"
+      "case_id": "V5-RESULTS-SUMMARY-CHIP-PALETTE",
+      "legacy_aliases": [
+        "SL-C09-SUMMARY-CHIP-PALETTE"
+      ]
     },
     "REG-125": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
@@ -817,19 +967,31 @@
     },
     "REG-135": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
-      "case_id": "SL-C09-HIGH-CNS-DECO-ALERT"
+      "case_id": "V5-RESULTS-HIGH-CNS-DECO-ALERT",
+      "legacy_aliases": [
+        "SL-C09-HIGH-CNS-DECO-ALERT"
+      ]
     },
     "REG-136": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
-      "case_id": "SL-C09-VPM-BEYOND-MOD-BLOCKS"
+      "case_id": "V5-RESULTS-VPM-BEYOND-MOD-BLOCKS",
+      "legacy_aliases": [
+        "SL-C09-VPM-BEYOND-MOD-BLOCKS"
+      ]
     },
     "REG-137": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
-      "case_id": "SL-C09-ZHL-BEYOND-MOD-BLOCKS"
+      "case_id": "V5-RESULTS-ZHL-BEYOND-MOD-BLOCKS",
+      "legacy_aliases": [
+        "SL-C09-ZHL-BEYOND-MOD-BLOCKS"
+      ]
     },
     "REG-138": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
-      "case_id": "SL-C09-VPM-GRAPH-WAYPOINT-MONOTONIC"
+      "case_id": "V5-RESULTS-VPM-GRAPH-WAYPOINT-MONOTONIC",
+      "legacy_aliases": [
+        "SL-C09-VPM-GRAPH-WAYPOINT-MONOTONIC"
+      ]
     },
     "REG-140": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
@@ -3620,7 +3782,7 @@
       "evidence": [],
       "issue": "GitHub #133\u00e2\u20ac\u201c#138 audit regressions and Cycle 31\u00e2\u20ac\u201c34 verification",
       "regression_cases": [],
-      "fingerprint": "45ea6e570dcc843d814faa15f6b09285afa98bf3b45434d55c011308e6a221f1",
+      "fingerprint": "813aa7ca3d72cb68eabfc3a0609a3b74026f86d6175b682fa729e6cf7c77cd6d",
       "last_read_fingerprint": null,
       "audit_issue": 169
     },
@@ -4381,6 +4543,21 @@
       "regression_cases": [],
       "fingerprint": "2f74177833e747bcfbfa68901d7453fcc0a030da5eae2977f5dce327c141351b",
       "last_read_fingerprint": null
+    },
+    {
+      "id": "TOOL-V5-AUDIT-RECALC",
+      "path": "tools/v5_audit_recalc.py",
+      "layer": "tooling",
+      "priority": "P1",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "33a05e9fd9d82feabbd501b1976be8c90b5c40dc9d7e1cd51c5b3576a9f39edf",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "V5 audit epoch recalculation and pre-R legacy migration guard"
     },
     {
       "id": "TOOL-AUDIT-COVERAGE-TEST",
@@ -5694,7 +5871,7 @@
         "REG-80",
         "REG-81"
       ],
-      "fingerprint": "bbc21e32455a2f4afd74c9fd44ec6b395d30ee4ccbd9a63430f543a6b5457800",
+      "fingerprint": "4e08d2245426e767d4ce10de5e46bb2439add5b4a632966c03418031a5897d89",
       "last_read_fingerprint": null
     },
     {
@@ -5732,7 +5909,7 @@
         "REG-87",
         "REG-88"
       ],
-      "fingerprint": "b2ac7d8a9a1ec1fda9f9526bf296cd8c1e3c92bee0a288eebf319181614dac4a",
+      "fingerprint": "c0b959be4c9f050a7309b653894fc001ab05384a1617f289a2f0e73aa909e28b",
       "last_read_fingerprint": null
     },
     {
@@ -5823,7 +6000,7 @@
         "REG-93",
         "REG-94"
       ],
-      "fingerprint": "94c2f2f50bfb869998e2790f6b045853788ca52322fcbc497ad73af9529fc123",
+      "fingerprint": "dae75cc611a47774bfc87cc974105bf56474ec09c9bdd1f01324898aede38167",
       "last_read_fingerprint": null
     },
     {
@@ -5859,7 +6036,7 @@
         "REG-137",
         "REG-138"
       ],
-      "fingerprint": "add6a6811bb022f15a84f3b7ba9ce4f570e23dda7b2419271a429bccb1314d21",
+      "fingerprint": "081c507dad7065c493df90482d2b85fbca1f6423c0e326e17d9c099844084758",
       "last_read_fingerprint": null
     },
     {
@@ -6074,7 +6251,7 @@
     },
     {
       "cycle": "R16",
-      "max_new_application_lines": 507,
+      "max_new_application_lines": 505,
       "application_units": [
         "UI-GAS-INPUTS",
         "UI-GAS-CARDS"
@@ -6082,7 +6259,7 @@
       "engine_reverification": [
         "ENG-ZHL-GAS"
       ],
-      "acceptance": "V4 R16: Gas input/card UI risk-first READ; current lines: 507; sessions: 1"
+      "acceptance": "V4 R16: Gas input/card UI risk-first READ; current lines: 505; sessions: 1"
     },
     {
       "cycle": "R17",
@@ -6137,13 +6314,13 @@
     },
     {
       "cycle": "R22",
-      "max_new_application_lines": 868,
+      "max_new_application_lines": 867,
       "application_units": [
         "UI-TOOLS-PROFILE",
         "UI-PLOT-INIT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R22: Profile tool and plot init risk-first READ; current lines: 868; sessions: 2",
+      "acceptance": "V4 R22: Profile tool and plot init risk-first READ; current lines: 867; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6207,7 +6384,7 @@
     },
     {
       "cycle": "R29",
-      "max_new_application_lines": 922,
+      "max_new_application_lines": 917,
       "application_units": [
         "UI-TOOLS-TISSUES",
         "UI-TOOLS-EXPOSURE",
@@ -6519,24 +6696,24 @@
         "CYCLE36-VPM-GAS-LABELS",
         "ENG-RDP-PURE-MIXES",
         "ENG-RDP-CUSTOM-FALLBACK",
-        "SL-C01-DEPTH-SYNC",
-        "SL-C01-PRESET-SYNC",
-        "SL-C01-SETTINGS-RESTORE",
-        "SL-C01-ALTITUDE-UNIT-CONSTRAINTS",
-        "SL-C02-MIN-DECO-UNITS",
-        "SL-C02-TRAVEL-DEPTH-CONSTRAINTS",
-        "SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS",
-        "SL-C02-UNIT-ROUNDTRIP-IMMUTABLE",
-        "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
-        "SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH",
-        "SL-C03-BEST-MIX-DEPTH-UNITS",
-        "SL-C03-CNS-DEPTH-UNITS",
-        "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
-        "SL-C03-CNS-EDIT-AFTER-SWITCH",
-        "SL-C04-END-DEPTH-UNITS",
-        "SL-C04-SI-DEPTH-UNITS",
-        "SL-C04-CONFIRM-BACKDROP",
-        "SL-C04-DYNAMIC-DECO-CYL-IMPERIAL"
+        "V5-TOOLS-DEPTH-SYNC",
+        "V5-TOOLS-PRESET-SYNC",
+        "V5-TOOLS-SETTINGS-RESTORE",
+        "V5-TOOLS-ALTITUDE-UNIT-CONSTRAINTS",
+        "V5-TOOLS-MIN-DECO-UNITS",
+        "V5-TOOLS-TRAVEL-DEPTH-CONSTRAINTS",
+        "V5-TOOLS-CYLINDER-PHYSICAL-CONSTRAINTS",
+        "V5-TOOLS-UNIT-ROUNDTRIP-IMMUTABLE",
+        "V5-TOOLS-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
+        "V5-TOOLS-CYLINDER-SIZE-EDIT-AFTER-SWITCH",
+        "V5-TOOLS-BEST-MIX-DEPTH-UNITS",
+        "V5-TOOLS-CNS-DEPTH-UNITS",
+        "V5-TOOLS-BEST-MIX-EDIT-AFTER-SWITCH",
+        "V5-TOOLS-CNS-EDIT-AFTER-SWITCH",
+        "V5-TOOLS-END-DEPTH-UNITS",
+        "V5-TOOLS-SI-DEPTH-UNITS",
+        "V5-TOOLS-CONFIRM-BACKDROP",
+        "V5-TOOLS-DYNAMIC-DECO-CYL-IMPERIAL"
       ]
     },
     {
@@ -6767,12 +6944,12 @@
       "profiles": [],
       "timeout_seconds": 180,
       "case_ids": [
-        "SL-C05-GF-ROW-MODE-ISOLATION",
-        "SL-C05-EXPORT-FOCUS-VISIBLE",
-        "SL-C05-CSS-DEAD-BRAND-ICON",
-        "SL-C05-CSS-DEAD-GF-BTN",
-        "SL-C05-CSS-DEAD-ALGO-SWITCHER",
-        "SL-C05-CSS-DEAD-THEME-TOGGLE"
+        "V5-CSS-GF-ROW-MODE-ISOLATION",
+        "V5-CSS-EXPORT-FOCUS-VISIBLE",
+        "V5-CSS-DEAD-BRAND-ICON",
+        "V5-CSS-DEAD-GF-BTN",
+        "V5-CSS-DEAD-ALGO-SWITCHER",
+        "V5-CSS-DEAD-THEME-TOGGLE"
       ],
       "archived": true,
       "archive_reason": "Superseded by V4 risk-first visual/runner contracts; retained for manual historical reproduction only."
@@ -6786,13 +6963,13 @@
       "profiles": [],
       "timeout_seconds": 180,
       "case_ids": [
-        "SL-C06-SEG-FOCUS-VISIBLE",
-        "SL-C06-GAS-NUM-TOUCH-TARGET",
-        "SL-C06-CSS-DEAD-SI-INNER",
-        "SL-C06-CSS-DEAD-T-COL",
-        "SL-C06-CSS-DEAD-BTN-CALC",
-        "SL-C06-FIELD-INVALID-STATE",
-        "SL-C06-REDUCED-MOTION"
+        "V5-CSS-SEG-FOCUS-VISIBLE",
+        "V5-CSS-GAS-NUM-TOUCH-TARGET",
+        "V5-CSS-DEAD-SI-INNER",
+        "V5-CSS-DEAD-T-COL",
+        "V5-CSS-DEAD-BTN-CALC",
+        "V5-CSS-FIELD-INVALID-STATE",
+        "V5-CSS-REDUCED-MOTION"
       ],
       "archived": true,
       "archive_reason": "Superseded by V4 risk-first visual/runner contracts; retained for manual historical reproduction only."
@@ -6806,12 +6983,12 @@
       "profiles": [],
       "timeout_seconds": 240,
       "case_ids": [
-        "SL-C07-CHIP-YELLOW-DISTINCT",
-        "SL-C07-PPO2-SEVERITY-COLORS",
-        "SL-C07-CSS-DEAD-LEGACY-CARDS",
-        "SL-C07-CSS-DEAD-ALGO-SWITCHER",
-        "SL-C07-REDUCED-MOTION",
-        "SL-C07-PRINT-RESULTS"
+        "V5-CSS-CHIP-YELLOW-DISTINCT",
+        "V5-CSS-PPO2-SEVERITY-COLORS",
+        "V5-CSS-DEAD-LEGACY-CARDS",
+        "V5-CSS-RESULTS-DEAD-ALGO-SWITCHER",
+        "V5-CSS-RESULTS-REDUCED-MOTION",
+        "V5-CSS-PRINT-RESULTS"
       ],
       "archived": true,
       "archive_reason": "Superseded by V4 risk-first visual/runner contracts; retained for manual historical reproduction only."
@@ -6854,32 +7031,32 @@
         "V4-UI-VISUAL-MOBILE-NAV-TILE-GRID",
         "V4-UI-VISUAL-OPERATIONAL-GAS-LABEL-FORMAT",
         "V4-UI-VISUAL-MOBILE-BOTTOM-TAB-SHELL",
-        "SL-C09-GAS-SWITCH-TERMINOLOGY",
-        "SL-C09-MOBILE-WARNING-WRAP",
-        "SL-C09-VPM-MODE-TOGGLE",
-        "SL-C09-VPM-CONTINGENCY-GAS-LOSS-STABLE",
-        "SL-C09-TRAVEL-GAS-TRIMIX-CARD",
-        "SL-C09-CONTINGENCY-COPY-PLAN-CONTEXT",
-        "SL-C09-SCHEDULE-COLUMN-GEOMETRY",
+        "V5-RESULTS-GAS-SWITCH-TERMINOLOGY",
+        "V5-SHELL-MOBILE-WARNING-WRAP",
+        "V5-SHELL-VPM-MODE-TOGGLE",
+        "V5-RESULTS-VPM-CONTINGENCY-GAS-LOSS-STABLE",
+        "V5-RESULTS-TRAVEL-GAS-TRIMIX-CARD",
+        "V5-RESULTS-CONTINGENCY-COPY-PLAN-CONTEXT",
+        "V5-RESULTS-SCHEDULE-COLUMN-GEOMETRY",
         "SL-VIS-SCHEDULE-PHASE-COLUMN-COLOR-CONTRACT",
-        "SL-C09-SWITCH-ROW-BACKGROUND-PARITY",
-        "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD",
-        "SL-C09-MOBILE-TISSUE-TAB-VISIBLE",
+        "V5-RESULTS-SWITCH-ROW-BACKGROUND-PARITY",
+        "V5-RESULTS-GRAPH-WAYPOINT-TIME-SPREAD",
+        "V5-SHELL-MOBILE-TISSUE-TAB-VISIBLE",
         "SL-VIS-GAS-CONSUMPTION-BARS",
         "SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS",
         "SL-VIS-GAS-CONSUMPTION-VOLUME-FIRST-UNITS",
-        "SL-C09-RESULT-TAB-SIMPLIFICATION",
-        "SL-C09-RESULT-TABS-GAP",
-        "SL-C09-SUMMARY-CHIP-PALETTE",
+        "V5-SHELL-RESULT-TAB-SIMPLIFICATION",
+        "V5-SHELL-RESULT-TABS-GAP",
+        "V5-RESULTS-SUMMARY-CHIP-PALETTE",
         "SL-VIS-CONTINGENCY-MAIN-DECO-LAYOUT",
         "SL-BATCH2-VPM-ERROR-COLSPAN",
         "SCHEDULE-ERROR-ROW-COLUMN-CONTRACT",
         "VPM-INVALID-ERROR-ROW-GEOMETRY",
         "SCHEDULE-CANONICAL-GAS-LABELS",
-        "SL-C09-HIGH-CNS-DECO-ALERT",
-        "SL-C09-VPM-BEYOND-MOD-BLOCKS",
-        "SL-C09-ZHL-BEYOND-MOD-BLOCKS",
-        "SL-C09-VPM-GRAPH-WAYPOINT-MONOTONIC",
+        "V5-RESULTS-HIGH-CNS-DECO-ALERT",
+        "V5-RESULTS-VPM-BEYOND-MOD-BLOCKS",
+        "V5-RESULTS-ZHL-BEYOND-MOD-BLOCKS",
+        "V5-RESULTS-VPM-GRAPH-WAYPOINT-MONOTONIC",
         "SL-VIS-DECO-SCHEDULE-LEGEND-ORDER"
       ]
     }
@@ -7157,7 +7334,7 @@
     "native": "Capacitor Android bridge",
     "ci": "GitHub Actions workflows"
   },
-  "audit_epoch": "v4-risk-first-reset",
+  "audit_epoch": "v5-risk-first-active",
   "risk_first_execution_order": [
     {
       "group": 1,
@@ -7246,8 +7423,8 @@
     }
   ],
   "frozen_history": {
-    "policy": "V3 cycles and records are archived historical evidence. V4 active review uses Rxx cycles; historical records are not reinterpreted by new V4 closure rules.",
-    "frozen_from_epoch": "v3-full-reset",
+    "policy": "Pre-R Cycle 1-9/200 closure records and evidence are archived historical evidence. V5 active review uses Rxx cycles and V5 case IDs; historical records are not reinterpreted for current line-boundary drift.",
+    "frozen_from_epoch": "v4-risk-first-reset",
     "archived_cycle_count": 44,
     "archived_cycles": [
       {
@@ -7717,7 +7894,233 @@
       "docs/seven-lens-records/",
       "docs/seven-lens-reports/"
     ],
-    "active_release_policy": "SL-Cxx findings and Cycle 5-8 CSS/browser suites are archived evidence only. V4 Rxx units and current suite contracts are release authority."
+    "active_release_policy": "SL-Cxx findings and Cycle 5-8 CSS/browser suites are archived evidence only. V4 Rxx units and current suite contracts are release authority.",
+    "active_epoch": "v5-risk-first-active",
+    "archive_only_paths": [
+      "docs/seven-lens-records/cycle-*.json",
+      "docs/seven-lens-reports/cycle-*.json",
+      "docs/seven-lens-traces/cycle-*.json",
+      "dev/seven-lens-evidence-c*.json",
+      "dev/seven-lens-browser-trace-cycle*.json"
+    ],
+    "promoted_case_aliases": [
+      {
+        "legacy": "SL-C01-ALTITUDE-UNIT-CONSTRAINTS",
+        "v5": "V5-TOOLS-ALTITUDE-UNIT-CONSTRAINTS"
+      },
+      {
+        "legacy": "SL-C01-DEPTH-SYNC",
+        "v5": "V5-TOOLS-DEPTH-SYNC"
+      },
+      {
+        "legacy": "SL-C01-PRESET-SYNC",
+        "v5": "V5-TOOLS-PRESET-SYNC"
+      },
+      {
+        "legacy": "SL-C01-SETTINGS-RESTORE",
+        "v5": "V5-TOOLS-SETTINGS-RESTORE"
+      },
+      {
+        "legacy": "SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS",
+        "v5": "V5-TOOLS-CYLINDER-PHYSICAL-CONSTRAINTS"
+      },
+      {
+        "legacy": "SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH",
+        "v5": "V5-TOOLS-CYLINDER-SIZE-EDIT-AFTER-SWITCH"
+      },
+      {
+        "legacy": "SL-C02-MIN-DECO-UNITS",
+        "v5": "V5-TOOLS-MIN-DECO-UNITS"
+      },
+      {
+        "legacy": "SL-C02-TRAVEL-DEPTH-CONSTRAINTS",
+        "v5": "V5-TOOLS-TRAVEL-DEPTH-CONSTRAINTS"
+      },
+      {
+        "legacy": "SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH",
+        "v5": "V5-TOOLS-TRAVEL-DEPTH-EDIT-AFTER-SWITCH"
+      },
+      {
+        "legacy": "SL-C02-UNIT-ROUNDTRIP-IMMUTABLE",
+        "v5": "V5-TOOLS-UNIT-ROUNDTRIP-IMMUTABLE"
+      },
+      {
+        "legacy": "SL-C03-BEST-MIX-DEPTH-UNITS",
+        "v5": "V5-TOOLS-BEST-MIX-DEPTH-UNITS"
+      },
+      {
+        "legacy": "SL-C03-BEST-MIX-EDIT-AFTER-SWITCH",
+        "v5": "V5-TOOLS-BEST-MIX-EDIT-AFTER-SWITCH"
+      },
+      {
+        "legacy": "SL-C03-CNS-DEPTH-UNITS",
+        "v5": "V5-TOOLS-CNS-DEPTH-UNITS"
+      },
+      {
+        "legacy": "SL-C03-CNS-EDIT-AFTER-SWITCH",
+        "v5": "V5-TOOLS-CNS-EDIT-AFTER-SWITCH"
+      },
+      {
+        "legacy": "SL-C04-CONFIRM-BACKDROP",
+        "v5": "V5-TOOLS-CONFIRM-BACKDROP"
+      },
+      {
+        "legacy": "SL-C04-DYNAMIC-DECO-CYL-IMPERIAL",
+        "v5": "V5-TOOLS-DYNAMIC-DECO-CYL-IMPERIAL"
+      },
+      {
+        "legacy": "SL-C04-END-DEPTH-UNITS",
+        "v5": "V5-TOOLS-END-DEPTH-UNITS"
+      },
+      {
+        "legacy": "SL-C04-SI-DEPTH-UNITS",
+        "v5": "V5-TOOLS-SI-DEPTH-UNITS"
+      },
+      {
+        "legacy": "SL-C05-CSS-DEAD-ALGO-SWITCHER",
+        "v5": "V5-CSS-DEAD-ALGO-SWITCHER"
+      },
+      {
+        "legacy": "SL-C05-CSS-DEAD-BRAND-ICON",
+        "v5": "V5-CSS-DEAD-BRAND-ICON"
+      },
+      {
+        "legacy": "SL-C05-CSS-DEAD-GF-BTN",
+        "v5": "V5-CSS-DEAD-GF-BTN"
+      },
+      {
+        "legacy": "SL-C05-CSS-DEAD-THEME-TOGGLE",
+        "v5": "V5-CSS-DEAD-THEME-TOGGLE"
+      },
+      {
+        "legacy": "SL-C05-EXPORT-FOCUS-VISIBLE",
+        "v5": "V5-CSS-EXPORT-FOCUS-VISIBLE"
+      },
+      {
+        "legacy": "SL-C05-GF-ROW-MODE-ISOLATION",
+        "v5": "V5-CSS-GF-ROW-MODE-ISOLATION"
+      },
+      {
+        "legacy": "SL-C06-CSS-DEAD-BTN-CALC",
+        "v5": "V5-CSS-DEAD-BTN-CALC"
+      },
+      {
+        "legacy": "SL-C06-CSS-DEAD-SI-INNER",
+        "v5": "V5-CSS-DEAD-SI-INNER"
+      },
+      {
+        "legacy": "SL-C06-CSS-DEAD-T-COL",
+        "v5": "V5-CSS-DEAD-T-COL"
+      },
+      {
+        "legacy": "SL-C06-FIELD-INVALID-STATE",
+        "v5": "V5-CSS-FIELD-INVALID-STATE"
+      },
+      {
+        "legacy": "SL-C06-GAS-NUM-TOUCH-TARGET",
+        "v5": "V5-CSS-GAS-NUM-TOUCH-TARGET"
+      },
+      {
+        "legacy": "SL-C06-REDUCED-MOTION",
+        "v5": "V5-CSS-REDUCED-MOTION"
+      },
+      {
+        "legacy": "SL-C06-SEG-FOCUS-VISIBLE",
+        "v5": "V5-CSS-SEG-FOCUS-VISIBLE"
+      },
+      {
+        "legacy": "SL-C07-CHIP-YELLOW-DISTINCT",
+        "v5": "V5-CSS-CHIP-YELLOW-DISTINCT"
+      },
+      {
+        "legacy": "SL-C07-CSS-DEAD-ALGO-SWITCHER",
+        "v5": "V5-CSS-RESULTS-DEAD-ALGO-SWITCHER"
+      },
+      {
+        "legacy": "SL-C07-CSS-DEAD-LEGACY-CARDS",
+        "v5": "V5-CSS-DEAD-LEGACY-CARDS"
+      },
+      {
+        "legacy": "SL-C07-PPO2-SEVERITY-COLORS",
+        "v5": "V5-CSS-PPO2-SEVERITY-COLORS"
+      },
+      {
+        "legacy": "SL-C07-PRINT-RESULTS",
+        "v5": "V5-CSS-PRINT-RESULTS"
+      },
+      {
+        "legacy": "SL-C07-REDUCED-MOTION",
+        "v5": "V5-CSS-RESULTS-REDUCED-MOTION"
+      },
+      {
+        "legacy": "SL-C09-CONTINGENCY-COPY-PLAN-CONTEXT",
+        "v5": "V5-RESULTS-CONTINGENCY-COPY-PLAN-CONTEXT"
+      },
+      {
+        "legacy": "SL-C09-GAS-SWITCH-TERMINOLOGY",
+        "v5": "V5-RESULTS-GAS-SWITCH-TERMINOLOGY"
+      },
+      {
+        "legacy": "SL-C09-GRAPH-WAYPOINT-TIME-SPREAD",
+        "v5": "V5-RESULTS-GRAPH-WAYPOINT-TIME-SPREAD"
+      },
+      {
+        "legacy": "SL-C09-HIGH-CNS-DECO-ALERT",
+        "v5": "V5-RESULTS-HIGH-CNS-DECO-ALERT"
+      },
+      {
+        "legacy": "SL-C09-MOBILE-TISSUE-TAB-VISIBLE",
+        "v5": "V5-SHELL-MOBILE-TISSUE-TAB-VISIBLE"
+      },
+      {
+        "legacy": "SL-C09-MOBILE-WARNING-WRAP",
+        "v5": "V5-SHELL-MOBILE-WARNING-WRAP"
+      },
+      {
+        "legacy": "SL-C09-RESULT-TAB-SIMPLIFICATION",
+        "v5": "V5-SHELL-RESULT-TAB-SIMPLIFICATION"
+      },
+      {
+        "legacy": "SL-C09-RESULT-TABS-GAP",
+        "v5": "V5-SHELL-RESULT-TABS-GAP"
+      },
+      {
+        "legacy": "SL-C09-SCHEDULE-COLUMN-GEOMETRY",
+        "v5": "V5-RESULTS-SCHEDULE-COLUMN-GEOMETRY"
+      },
+      {
+        "legacy": "SL-C09-SUMMARY-CHIP-PALETTE",
+        "v5": "V5-RESULTS-SUMMARY-CHIP-PALETTE"
+      },
+      {
+        "legacy": "SL-C09-SWITCH-ROW-BACKGROUND-PARITY",
+        "v5": "V5-RESULTS-SWITCH-ROW-BACKGROUND-PARITY"
+      },
+      {
+        "legacy": "SL-C09-TRAVEL-GAS-TRIMIX-CARD",
+        "v5": "V5-RESULTS-TRAVEL-GAS-TRIMIX-CARD"
+      },
+      {
+        "legacy": "SL-C09-VPM-BEYOND-MOD-BLOCKS",
+        "v5": "V5-RESULTS-VPM-BEYOND-MOD-BLOCKS"
+      },
+      {
+        "legacy": "SL-C09-VPM-CONTINGENCY-GAS-LOSS-STABLE",
+        "v5": "V5-RESULTS-VPM-CONTINGENCY-GAS-LOSS-STABLE"
+      },
+      {
+        "legacy": "SL-C09-VPM-GRAPH-WAYPOINT-MONOTONIC",
+        "v5": "V5-RESULTS-VPM-GRAPH-WAYPOINT-MONOTONIC"
+      },
+      {
+        "legacy": "SL-C09-VPM-MODE-TOGGLE",
+        "v5": "V5-SHELL-VPM-MODE-TOGGLE"
+      },
+      {
+        "legacy": "SL-C09-ZHL-BEYOND-MOD-BLOCKS",
+        "v5": "V5-RESULTS-ZHL-BEYOND-MOD-BLOCKS"
+      }
+    ]
   },
   "v4_design_contracts": [
     "Schedule table columns and mobile geometry remain readable without clipped values.",
@@ -7728,5 +8131,17 @@
     "Dive graphs keep sane waypoint placement and graph bounds.",
     "Tissues tab remains visible and tissue scale remains color-graded.",
     "Visible schedule/contingency gas labels use Air, 100%, or OO/HH; never EAN*."
-  ]
+  ],
+  "v5_case_alias_policy": {
+    "active_case_ids": "Active regression suites emit V5/R-era IDs only.",
+    "legacy_aliases": "Old SL-Cxx IDs are retained only as searchable aliases on promoted evidence catalog rows and in frozen historical artifacts.",
+    "frozen_history": "Pre-R records are archive-only and are not reinterpreted for current source line boundaries."
+  },
+  "v5_pre_r_migration": {
+    "status": "active",
+    "promoted_case_count": 54,
+    "report": "docs/seven-lens-reports/v5-pre-r-legacy-migration.md",
+    "recalc_command": "python tools/v5_audit_recalc.py --write",
+    "check_command": "python tools/v5_audit_recalc.py --check"
+  }
 }

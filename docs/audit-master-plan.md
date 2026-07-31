@@ -3,8 +3,8 @@
 > V4 risk-first reset schedule. Policy, unit metadata, frozen history, and active R-cycle order live in `docs/audit-units.json`.
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
-**Epoch:** `v4-risk-first-reset`
-**Units:** 213 total; 0 unread; 120 in progress; 3 read; 90 verified.
+**Epoch:** `v5-risk-first-active`
+**Units:** 214 total; 0 unread; 121 in progress; 3 read; 90 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -62,13 +62,13 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R13 | UI-ALGORITHM-SETTINGS, UI-SETTINGS-CONTROLS | 721 | - | V4 R13: Algorithm and settings controls risk-first READ; current lines: 721; sessions: 2 |
 | R14 | UI-SETTINGS, UI-UNIT-HELPERS, UI-UNIT-SWITCHING | 1209 | - | V4 R14: Settings persistence and unit helpers risk-first READ; current lines: 1209; sessions: 3 |
 | R15 | APP-SURFACE-INTERVAL, APP-GAS-TABLE | 691 | - | V4 R15: Surface interval and gas table cores risk-first READ; current lines: 691; sessions: 2 |
-| R16 | UI-GAS-INPUTS, UI-GAS-CARDS | 505 | ENG-ZHL-GAS | V4 R16: Gas input/card UI risk-first READ; current lines: 507; sessions: 1 |
+| R16 | UI-GAS-INPUTS, UI-GAS-CARDS | 505 | ENG-ZHL-GAS | V4 R16: Gas input/card UI risk-first READ; current lines: 505; sessions: 1 |
 | R17 | APP-GAS-PLAN | 554 | - | V4 R17: Gas plan core risk-first READ; current lines: 554; sessions: 1 |
 | R18 | APP-CONTINGENCY | 591 | - | V4 R18: Contingency core risk-first READ; current lines: 591; sessions: 1 |
 | R19 | UI-VPM-RENDER, UI-ZHL-RESULTS | 969 | - | V4 R19: VPM/ZHL results rendering risk-first READ; current lines: 969; sessions: 2 |
 | R20 | APP-EXPORT | 3410 | - | V4 R20: Export text/PDF risk-first READ; current lines: 3410; sessions: 6 |
 | R21 | UI-GRAPH-ENGINE, UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 766 | - | V4 R21: Plot render and waypoint graph risk-first READ; current lines: 766; sessions: 2 |
-| R22 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 867 | - | V4 R22: Profile tool and plot init risk-first READ; current lines: 868; sessions: 2 |
+| R22 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 867 | - | V4 R22: Profile tool and plot init risk-first READ; current lines: 867; sessions: 2 |
 | R23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 395 | - | V4 R23: Runtime bootstrap and app init risk-first READ; current lines: 395; sessions: 1 |
 | R24 | UI-BOOT | 2471 | - | V4 R24: index.html shell boot region risk-first READ; current lines: 2471; sessions: 5 |
 | R25 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 450 | - | V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 450; sessions: 1 |

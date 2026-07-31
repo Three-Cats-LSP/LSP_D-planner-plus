@@ -21,14 +21,14 @@
 | release_config | 2 | 0 | 2 | 0 | 0 |
 | test | 1 | 0 | 0 | 1 | 0 |
 | test_infrastructure | 60 | 0 | 32 | 0 | 28 |
-| tooling | 54 | 0 | 24 | 1 | 29 |
+| tooling | 55 | 0 | 25 | 1 | 29 |
 | ui_core | 17 | 0 | 17 | 0 | 0 |
 | ui_shell | 2 | 0 | 2 | 0 | 0 |
 | web_css | 5 | 0 | 5 | 0 | 0 |
 | web_markup | 7 | 0 | 7 | 0 | 0 |
 | web_runtime | 24 | 0 | 22 | 0 | 2 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **213** | **0** | **120** | **3** | **90** |
+| **Total** | **214** | **0** | **121** | **3** | **90** |
 
 ## Units
 
@@ -162,6 +162,7 @@
 | TEST-CCR-DIFF-LIB-JS | test_infrastructure | `tests/ccr-differential/lib/ccrdiff.js:1` | 418 | P1 | VERIFIED | COV-01 |
 | TOOL-AUDIT | tooling | `audit.py:1` | 16 | P1 | VERIFIED | COV-01, PARITY-01, REG-01, REG-02, REG-03, REG-05 |
 | TOOL-AUDIT-COVERAGE | tooling | `tools/audit_coverage.py:1` | 480 | P1 | IN_PROGRESS | - |
+| TOOL-V5-AUDIT-RECALC | tooling | `tools/v5_audit_recalc.py:1` | 228 | P1 | IN_PROGRESS | - |
 | TOOL-AUDIT-COVERAGE-TEST | test_infrastructure | `tools/test_audit_coverage.py:1` | 211 | P1 | VERIFIED | COV-01 |
 | TOOL-V4-CURSOR-FULL-7-FIXES-TEST | test_infrastructure | `tools/test_v4_cursor_full_7_fixes.py:1` | 52 | P2 | IN_PROGRESS | - |
 | TOOL-BUILD-PAGES | tooling | `tools/build_pages_site.py:1` | 191 | P2 | IN_PROGRESS | - |

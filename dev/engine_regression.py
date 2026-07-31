@@ -2621,29 +2621,29 @@ def run_suite(page) -> dict:
     assert_true(erdp.get("pureMixesOk"), "[ENG-RDP-PURE-MIXES] Air/EAN32/EAN36 NDL tables at 18 m", str(erdp))
     assert_true(erdp.get("customFallbackOk"), "[ENG-RDP-CUSTOM-FALLBACK] non-standard mixes fall back to air table", str(erdp))
     sl01 = s.get("sevenLensCycle01", {})
-    assert_true(sl01.get("depthStepperSyncOk"), "[SL-C01-DEPTH-SYNC] tecDepth/tecBT input events sync stepper labels", str(sl01))
-    assert_true(sl01.get("loadPresetSyncOk"), "[SL-C01-PRESET-SYNC] loadProfilePreset syncs depth/bt mirrors and stepper", str(sl01))
-    assert_true(sl01.get("settingsRestoreSyncOk"), "[SL-C01-SETTINGS-RESTORE] settings restore syncs depth/bt mirrors and stepper", str(sl01))
-    assert_true(sl01.get("altitudeUnitConstraintsOk"), "[SL-C01-ALTITUDE-UNIT-CONSTRAINTS] custom altitude max/step follow display units", str(sl01))
+    assert_true(sl01.get("depthStepperSyncOk"), "[V5-TOOLS-DEPTH-SYNC] tecDepth/tecBT input events sync stepper labels", str(sl01))
+    assert_true(sl01.get("loadPresetSyncOk"), "[V5-TOOLS-PRESET-SYNC] loadProfilePreset syncs depth/bt mirrors and stepper", str(sl01))
+    assert_true(sl01.get("settingsRestoreSyncOk"), "[V5-TOOLS-SETTINGS-RESTORE] settings restore syncs depth/bt mirrors and stepper", str(sl01))
+    assert_true(sl01.get("altitudeUnitConstraintsOk"), "[V5-TOOLS-ALTITUDE-UNIT-CONSTRAINTS] custom altitude max/step follow display units", str(sl01))
     sl02 = s.get("sevenLensCycle02", {})
-    assert_true(sl02.get("minDecoUnitsOk"), "[SL-C02-MIN-DECO-UNITS] min deco profile enforces imperial stop depths", str(sl02))
-    assert_true(sl02.get("travelDepthConstraintsOk"), "[SL-C02-TRAVEL-DEPTH-CONSTRAINTS] travel manual depth max follows display units", str(sl02))
-    assert_true(sl02.get("cylinderPhysicalConstraintsOk"), "[SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS] imperial cylinder size min/max/step are physical", str(sl02))
-    assert_true(sl02.get("unitRoundtripImmutableOk"), "[SL-C02-UNIT-ROUNDTRIP-IMMUTABLE] metric round-trip preserves stamped depth/volume", str(sl02))
-    assert_true(sl02.get("travelDepthEditAfterSwitchOk"), "[SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH] travel manual depth edit reaches consumer after imperial switch", str(sl02))
-    assert_true(sl02.get("cylinderSizeEditAfterSwitchOk"), "[SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH] cylinder size edit reaches consumer after imperial switch", str(sl02))
-    assert_true(sl02.get("dynamicDecoCylImperialOk"), "[SL-C04-DYNAMIC-DECO-CYL-IMPERIAL] dynamic imperial deco cylinder starts valid", str(sl02))
+    assert_true(sl02.get("minDecoUnitsOk"), "[V5-TOOLS-MIN-DECO-UNITS] min deco profile enforces imperial stop depths", str(sl02))
+    assert_true(sl02.get("travelDepthConstraintsOk"), "[V5-TOOLS-TRAVEL-DEPTH-CONSTRAINTS] travel manual depth max follows display units", str(sl02))
+    assert_true(sl02.get("cylinderPhysicalConstraintsOk"), "[V5-TOOLS-CYLINDER-PHYSICAL-CONSTRAINTS] imperial cylinder size min/max/step are physical", str(sl02))
+    assert_true(sl02.get("unitRoundtripImmutableOk"), "[V5-TOOLS-UNIT-ROUNDTRIP-IMMUTABLE] metric round-trip preserves stamped depth/volume", str(sl02))
+    assert_true(sl02.get("travelDepthEditAfterSwitchOk"), "[V5-TOOLS-TRAVEL-DEPTH-EDIT-AFTER-SWITCH] travel manual depth edit reaches consumer after imperial switch", str(sl02))
+    assert_true(sl02.get("cylinderSizeEditAfterSwitchOk"), "[V5-TOOLS-CYLINDER-SIZE-EDIT-AFTER-SWITCH] cylinder size edit reaches consumer after imperial switch", str(sl02))
+    assert_true(sl02.get("dynamicDecoCylImperialOk"), "[V5-TOOLS-DYNAMIC-DECO-CYL-IMPERIAL] dynamic imperial deco cylinder starts valid", str(sl02))
     iso = s.get("modeRecTecIsolation", {})
     assert_true(iso.get("ok"), "[SL-MODE-REC-TEC-ISOLATION] REC and TECH depth/BT stay independent across mode switches", str(iso))
     sl03 = s.get("sevenLensCycle03", {})
-    assert_true(sl03.get("bestMixDepthUnitsOk"), "[SL-C03-BEST-MIX-DEPTH-UNITS] best mix O2% invariant across equivalent metric/imperial depth", str(sl03))
-    assert_true(sl03.get("cnsDepthUnitsOk"), "[SL-C03-CNS-DEPTH-UNITS] CNS ppO2 invariant across equivalent metric/imperial depth", str(sl03))
-    assert_true(sl03.get("bestMixEditAfterSwitchOk"), "[SL-C03-BEST-MIX-EDIT-AFTER-SWITCH] best mix depth edit reaches consumer after imperial switch", str(sl03))
-    assert_true(sl03.get("cnsEditAfterSwitchOk"), "[SL-C03-CNS-EDIT-AFTER-SWITCH] CNS depth edit reaches consumer after imperial switch", str(sl03))
+    assert_true(sl03.get("bestMixDepthUnitsOk"), "[V5-TOOLS-BEST-MIX-DEPTH-UNITS] best mix O2% invariant across equivalent metric/imperial depth", str(sl03))
+    assert_true(sl03.get("cnsDepthUnitsOk"), "[V5-TOOLS-CNS-DEPTH-UNITS] CNS ppO2 invariant across equivalent metric/imperial depth", str(sl03))
+    assert_true(sl03.get("bestMixEditAfterSwitchOk"), "[V5-TOOLS-BEST-MIX-EDIT-AFTER-SWITCH] best mix depth edit reaches consumer after imperial switch", str(sl03))
+    assert_true(sl03.get("cnsEditAfterSwitchOk"), "[V5-TOOLS-CNS-EDIT-AFTER-SWITCH] CNS depth edit reaches consumer after imperial switch", str(sl03))
     sl04 = s.get("sevenLensCycle04", {})
-    assert_true(sl04.get("endDepthUnitsOk"), "[SL-C04-END-DEPTH-UNITS] END abs pressure invariant across equivalent metric/imperial depth", str(sl04))
-    assert_true(sl04.get("siDepthUnitsOk"), "[SL-C04-SI-DEPTH-UNITS] surface interval result invariant across equivalent metric/imperial depth", str(sl04))
-    assert_true(sl04.get("confirmBackdropOk"), "[SL-C04-CONFIRM-BACKDROP] confirm modal dismisses on backdrop click", str(sl04))
+    assert_true(sl04.get("endDepthUnitsOk"), "[V5-TOOLS-END-DEPTH-UNITS] END abs pressure invariant across equivalent metric/imperial depth", str(sl04))
+    assert_true(sl04.get("siDepthUnitsOk"), "[V5-TOOLS-SI-DEPTH-UNITS] surface interval result invariant across equivalent metric/imperial depth", str(sl04))
+    assert_true(sl04.get("confirmBackdropOk"), "[V5-TOOLS-CONFIRM-BACKDROP] confirm modal dismisses on backdrop click", str(sl04))
     assert_true(erdp.get("normalizeOk"), "[ENG-RDP-CUSTOM-FALLBACK] normalizeRecMix restricts to standard gases", str(erdp))
     assert_true(erdp.get("recGasUiOk"), "[ENG-RDP-CUSTOM-FALLBACK] Rec mode hides custom gas option", str(erdp))
     sw_install = (ROOT / "sw.js").read_text(encoding="utf-8")
@@ -2742,24 +2742,24 @@ def _audit_case_rows():
         case_row("CYCLE36-VPM-GAS-LABELS", case_ok("CYCLE36-VPM-GAS-LABELS")),
         case_row("ENG-RDP-PURE-MIXES", case_ok("ENG-RDP-PURE-MIXES")),
         case_row("ENG-RDP-CUSTOM-FALLBACK", case_ok("ENG-RDP-CUSTOM-FALLBACK")),
-        case_row("SL-C01-DEPTH-SYNC", case_ok("SL-C01-DEPTH-SYNC")),
-        case_row("SL-C01-PRESET-SYNC", case_ok("SL-C01-PRESET-SYNC")),
-        case_row("SL-C01-SETTINGS-RESTORE", case_ok("SL-C01-SETTINGS-RESTORE")),
-        case_row("SL-C01-ALTITUDE-UNIT-CONSTRAINTS", case_ok("SL-C01-ALTITUDE-UNIT-CONSTRAINTS")),
-        case_row("SL-C02-MIN-DECO-UNITS", case_ok("SL-C02-MIN-DECO-UNITS")),
-        case_row("SL-C02-TRAVEL-DEPTH-CONSTRAINTS", case_ok("SL-C02-TRAVEL-DEPTH-CONSTRAINTS")),
-        case_row("SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS", case_ok("SL-C02-CYLINDER-PHYSICAL-CONSTRAINTS")),
-        case_row("SL-C02-UNIT-ROUNDTRIP-IMMUTABLE", case_ok("SL-C02-UNIT-ROUNDTRIP-IMMUTABLE")),
-        case_row("SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH", case_ok("SL-C02-TRAVEL-DEPTH-EDIT-AFTER-SWITCH")),
-        case_row("SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH", case_ok("SL-C02-CYLINDER-SIZE-EDIT-AFTER-SWITCH")),
-        case_row("SL-C04-DYNAMIC-DECO-CYL-IMPERIAL", case_ok("SL-C04-DYNAMIC-DECO-CYL-IMPERIAL")),
-        case_row("SL-C03-BEST-MIX-DEPTH-UNITS", case_ok("SL-C03-BEST-MIX-DEPTH-UNITS")),
-        case_row("SL-C03-CNS-DEPTH-UNITS", case_ok("SL-C03-CNS-DEPTH-UNITS")),
-        case_row("SL-C03-BEST-MIX-EDIT-AFTER-SWITCH", case_ok("SL-C03-BEST-MIX-EDIT-AFTER-SWITCH")),
-        case_row("SL-C03-CNS-EDIT-AFTER-SWITCH", case_ok("SL-C03-CNS-EDIT-AFTER-SWITCH")),
-        case_row("SL-C04-END-DEPTH-UNITS", case_ok("SL-C04-END-DEPTH-UNITS")),
-        case_row("SL-C04-SI-DEPTH-UNITS", case_ok("SL-C04-SI-DEPTH-UNITS")),
-        case_row("SL-C04-CONFIRM-BACKDROP", case_ok("SL-C04-CONFIRM-BACKDROP")),
+        case_row("V5-TOOLS-DEPTH-SYNC", case_ok("V5-TOOLS-DEPTH-SYNC")),
+        case_row("V5-TOOLS-PRESET-SYNC", case_ok("V5-TOOLS-PRESET-SYNC")),
+        case_row("V5-TOOLS-SETTINGS-RESTORE", case_ok("V5-TOOLS-SETTINGS-RESTORE")),
+        case_row("V5-TOOLS-ALTITUDE-UNIT-CONSTRAINTS", case_ok("V5-TOOLS-ALTITUDE-UNIT-CONSTRAINTS")),
+        case_row("V5-TOOLS-MIN-DECO-UNITS", case_ok("V5-TOOLS-MIN-DECO-UNITS")),
+        case_row("V5-TOOLS-TRAVEL-DEPTH-CONSTRAINTS", case_ok("V5-TOOLS-TRAVEL-DEPTH-CONSTRAINTS")),
+        case_row("V5-TOOLS-CYLINDER-PHYSICAL-CONSTRAINTS", case_ok("V5-TOOLS-CYLINDER-PHYSICAL-CONSTRAINTS")),
+        case_row("V5-TOOLS-UNIT-ROUNDTRIP-IMMUTABLE", case_ok("V5-TOOLS-UNIT-ROUNDTRIP-IMMUTABLE")),
+        case_row("V5-TOOLS-TRAVEL-DEPTH-EDIT-AFTER-SWITCH", case_ok("V5-TOOLS-TRAVEL-DEPTH-EDIT-AFTER-SWITCH")),
+        case_row("V5-TOOLS-CYLINDER-SIZE-EDIT-AFTER-SWITCH", case_ok("V5-TOOLS-CYLINDER-SIZE-EDIT-AFTER-SWITCH")),
+        case_row("V5-TOOLS-DYNAMIC-DECO-CYL-IMPERIAL", case_ok("V5-TOOLS-DYNAMIC-DECO-CYL-IMPERIAL")),
+        case_row("V5-TOOLS-BEST-MIX-DEPTH-UNITS", case_ok("V5-TOOLS-BEST-MIX-DEPTH-UNITS")),
+        case_row("V5-TOOLS-CNS-DEPTH-UNITS", case_ok("V5-TOOLS-CNS-DEPTH-UNITS")),
+        case_row("V5-TOOLS-BEST-MIX-EDIT-AFTER-SWITCH", case_ok("V5-TOOLS-BEST-MIX-EDIT-AFTER-SWITCH")),
+        case_row("V5-TOOLS-CNS-EDIT-AFTER-SWITCH", case_ok("V5-TOOLS-CNS-EDIT-AFTER-SWITCH")),
+        case_row("V5-TOOLS-END-DEPTH-UNITS", case_ok("V5-TOOLS-END-DEPTH-UNITS")),
+        case_row("V5-TOOLS-SI-DEPTH-UNITS", case_ok("V5-TOOLS-SI-DEPTH-UNITS")),
+        case_row("V5-TOOLS-CONFIRM-BACKDROP", case_ok("V5-TOOLS-CONFIRM-BACKDROP")),
     ]
 
 
