@@ -70,7 +70,7 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R21 | UI-GRAPH-ENGINE, UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 766 | - | V4 R21: Plot render and waypoint graph risk-first READ; current lines: 766; sessions: 2 |
 | R22 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 867 | - | V4 R22: Profile tool and plot init risk-first READ; current lines: 867; sessions: 2 |
 | R23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 395 | - | V4 R23: Runtime bootstrap and app init risk-first READ; current lines: 395; sessions: 1 |
-| R24 | UI-BOOT | 2471 | - | V4 R24: index.html shell boot region risk-first READ; current lines: 2471; sessions: 5 |
+| R24 | UI-BOOT | 2470 | - | V4 R24: index.html shell boot region risk-first READ; current lines: 2470; sessions: 5 |
 | R25 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 453 | - | V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 453; sessions: 1 |
 | R26 | APP-CAPACITOR-BRIDGE, APP-ANDROID-SELECT | 572 | - | V4 R26: Capacitor and Android bridge risk-first READ; current lines: 572; sessions: 1 |
 | R27 | UI-PROFILE-PRESETS | 508 | - | V4 R27: Dive profile presets risk-first READ; current lines: 508; sessions: 1 |
@@ -82,7 +82,7 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R33 | APP-PACKAGE, APP-VERSION, APP-VERSION-JSON | 55 | CI-AUDIT, CI-MAIN, CI-APK, CI-DEPLOY | V4 R33: Package manifest and CI workflows risk-first READ; current lines: 55; sessions: 1 |
 | R34 | UI-MARKUP-HEADER | 800 | - | V4 R34: Header markup risk-first READ; current lines: 800; sessions: 2 |
 | R35 | UI-MARKUP-REC-PLANNER, UI-REC-PLANNER | 82 | - | V4 R35: REC planner markup and runner risk-first READ; current lines: 82; sessions: 1 |
-| R36 | UI-MARKUP-TEC-PLANNER, UI-PLANNER-INPUTS | 679 | - | V4 R36: TEC planner markup and planner input ownership risk-first READ; current lines: 679; sessions: 2 |
+| R36 | UI-MARKUP-TEC-PLANNER, UI-PLANNER-INPUTS | 678 | - | V4 R36: TEC planner markup and planner input ownership risk-first READ; current lines: 678; sessions: 2 |
 | R37 | UI-MARKUP-CONSUMPTION | 381 | - | V4 R37: Consumption markup risk-first READ; current lines: 381; sessions: 1 |
 | R38 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 605 | - | V4 R38: Tools and modal markup risk-first READ; current lines: 605; sessions: 2 |
 | R39 | UI-CSS-FOUNDATION, UI-CSS-MODES | 829 | - | V4 R39: Foundation and mode CSS risk-first READ; current lines: 829; sessions: 2 |

@@ -2141,7 +2141,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "5b733c3c6dac18135c16856a1d7c2dea86bd3c24b8b84bf53d0e18b85ea411a0",
+      "fingerprint": "c78690481a265b8bc7f4f06abf15dd4834ad9b6ba0654385616cbe9004c97210",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2268,7 +2268,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3fffeb944297d26d5d33f72bf66aced49fba4fbd9d5eb68363873790466d1660",
+      "fingerprint": "3c9f6292a6b8273f23b2bee23e929e30e77ac9b576c30dab1663c99d979a6cbe",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2298,7 +2298,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "aad5564ac4ff37c0e91be3aea75806c7ea9b709b4d567b5f62f5bfb8032055f1",
+      "fingerprint": "719ae606dbd154a2b1e5b2e10b996fbb10940b8285cb11d4e42907dd5bb09d8d",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -6335,12 +6335,12 @@
     },
     {
       "cycle": "R24",
-      "max_new_application_lines": 2471,
+      "max_new_application_lines": 2470,
       "application_units": [
         "UI-BOOT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R24: index.html shell boot region risk-first READ; current lines: 2471; sessions: 5",
+      "acceptance": "V4 R24: index.html shell boot region risk-first READ; current lines: 2470; sessions: 5",
       "min_review_sessions": 5
     },
     {
@@ -6465,13 +6465,13 @@
     },
     {
       "cycle": "R36",
-      "max_new_application_lines": 679,
+      "max_new_application_lines": 678,
       "application_units": [
         "UI-MARKUP-TEC-PLANNER",
         "UI-PLANNER-INPUTS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R36: TEC planner markup and planner input ownership risk-first READ; current lines: 679; sessions: 2",
+      "acceptance": "V4 R36: TEC planner markup and planner input ownership risk-first READ; current lines: 678; sessions: 2",
       "min_review_sessions": 2
     },
     {
