@@ -1004,6 +1004,10 @@
     "REG-141": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
       "case_id": "SL-VIS-SCHEDULE-PHASE-COLUMN-COLOR-CONTRACT"
+    },
+    "REG-142": {
+      "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
+      "case_id": "V5-RESULTS-SAME-BOTTOM-TRAVEL-GAS-NOTICE"
     }
   },
   "findings": [
@@ -2201,7 +2205,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c8efbae673b45bfc7144b0681ae49b2dc074db482b525230d6dcffd5cea45a1a",
+      "fingerprint": "871ca2d3bad0ecc90733df4e2e34e0dfc90c61f009878fee3475d4e11b22f1f6",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [
@@ -6036,7 +6040,7 @@
         "REG-137",
         "REG-138"
       ],
-      "fingerprint": "f06de2759528f62c78df7cb54ec92a8b91586b95cbd8b135a0c93274f2151069",
+      "fingerprint": "8b1c71ab6060906c1fe903b56dc7954325fa3b92be20ddbc6e589f519145af4c",
       "last_read_fingerprint": null
     },
     {
@@ -6516,12 +6520,12 @@
     },
     {
       "cycle": "R41",
-      "max_new_application_lines": 1095,
+      "max_new_application_lines": 1111,
       "application_units": [
         "UI-CSS-RESULTS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1095; sessions: 2",
+      "acceptance": "V4 R41: Results CSS risk-first design-lock READ; current lines: 1111; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -7049,6 +7053,7 @@
         "V5-SHELL-RESULT-TABS-GAP",
         "V5-RESULTS-SUMMARY-CHIP-PALETTE",
         "SL-VIS-CONTINGENCY-MAIN-DECO-LAYOUT",
+        "V5-RESULTS-SAME-BOTTOM-TRAVEL-GAS-NOTICE",
         "SL-BATCH2-VPM-ERROR-COLSPAN",
         "SCHEDULE-ERROR-ROW-COLUMN-CONTRACT",
         "VPM-INVALID-ERROR-ROW-GEOMETRY",

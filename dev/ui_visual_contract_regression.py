@@ -46,6 +46,7 @@ CASE_IDS = (
     "V5-SHELL-RESULT-TABS-GAP",
     "V5-RESULTS-HIGH-CNS-DECO-ALERT",
     "SL-VIS-GAS-CONSUMPTION-BARS",
+    "V5-RESULTS-SAME-BOTTOM-TRAVEL-GAS-NOTICE",
     "SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS",
     "SL-VIS-CONTINGENCY-MAIN-DECO-LAYOUT",
     "SL-VIS-GAS-CONSUMPTION-VOLUME-FIRST-UNITS",
@@ -472,6 +473,50 @@ CAPTURE_JS = r"""
       resultsTop: results.top,
       sideBySide: results.left >= planner.right - 1 && Math.abs(results.top - planner.top) <= 2,
     } : null,
+  };
+}
+"""
+
+SAME_BOTTOM_TRAVEL_JS = r"""
+async () => {
+  window._zhlHeadless = false;
+  setMainNav('buh');
+  if (typeof addTravelGas === 'function') addTravelGas();
+  const setVal = (id, value) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value = value;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  };
+  setVal('tecDepth', '40');
+  setVal('tecBT', '30');
+  setVal('gasMix', 'air');
+  setVal('travelGasMix', 'air');
+  setVal('cylBot_size', '24');
+  setVal('cylBot_pres', '200');
+  setVal('cylTravelGas_size', '12');
+  setVal('cylTravelGas_pres', '200');
+  if (typeof _syncTecDepthBtSteppers === 'function') _syncTecDepthBtSteppers();
+  if (typeof updateTravelGasMOD === 'function') updateTravelGasMOD();
+  if (typeof updateGasMODDisplays === 'function') updateGasMODDisplays();
+  document.getElementById('tecGenerateBtn')?.click();
+  for (let i = 0; i < 40; i++) {
+    await new Promise(resolve => setTimeout(resolve, 250));
+    if (document.querySelectorAll('#gasConsumptionSummary .gas-usage-card').length >= 4
+        && document.querySelector('#gasConsumptionSummary [data-gas-combined-notice="bottom-travel"]')) break;
+  }
+  const cards = [...document.querySelectorAll('#gasConsumptionSummary .gas-usage-card')];
+  const notice = document.querySelector('#gasConsumptionSummary [data-gas-combined-notice="bottom-travel"]');
+  return {
+    generated: document.querySelectorAll('#decoTableBody tr').length >= 5,
+    noticeText: (notice?.textContent || '').trim().replace(/\s+/g, ' '),
+    noticeVisible: !!notice && getComputedStyle(notice).display !== 'none' && notice.getBoundingClientRect().height > 0,
+    cardCount: cards.length,
+    labels: cards.map(el => el.dataset.gasLabel || ''),
+    roles: cards.map(el => el.dataset.gasRole || ''),
+    remaining: cards.map(el => el.querySelector('.gas-usage-remaining')?.textContent?.trim() || ''),
+    footers: cards.map(el => el.querySelector('.gas-usage-foot')?.textContent?.trim() || ''),
   };
 }
 """
@@ -1575,6 +1620,22 @@ async () => {
         context.close()
 
 
+def _capture_same_bottom_travel_gas(browser, base_url: str) -> dict:
+    context = browser.new_context(viewport={"width": 1280, "height": 800})
+    page = context.new_page()
+    page.set_default_timeout(120_000)
+    errors: list[str] = []
+    page.on("pageerror", lambda exc: errors.append(str(exc)))
+    page.on("console", lambda msg: errors.append(msg.text) if msg.type == "error" else None)
+    try:
+        boot_app_page(page, base_url)
+        details = page.evaluate(SAME_BOTTOM_TRAVEL_JS)
+        details["console_errors"] = errors
+        return details
+    finally:
+        context.close()
+
+
 def _capture_nav(browser, base_url: str, viewport: tuple[int, int], light: bool) -> dict:
     context = browser.new_context(viewport={"width": viewport[0], "height": viewport[1]})
     page = context.new_page()
@@ -2048,6 +2109,7 @@ def main() -> int:
             zhl_beyond_mod_details = _capture_zhl_beyond_mod(browser, base_url)
             vpm_graph_details = _capture_vpm_graph_waypoints(browser, base_url)
             high_cns_details = _capture_high_cns_alert(browser, base_url)
+            same_bottom_travel_details = _capture_same_bottom_travel_gas(browser, base_url)
             schedule_error_details = {
                 f"{width}x{height}": _capture_schedule_error_contract(browser, base_url, (width, height))
                 for width, height in ((1280, 800), (375, 667))
@@ -2242,6 +2304,18 @@ def main() -> int:
         and not c["gasConsumptionBars"]["hasTurnPressColumn"]
         and c["gasConsumptionBars"]["sufficientLeftBorderOnly"]
         for c in captures
+    )
+    results["V5-RESULTS-SAME-BOTTOM-TRAVEL-GAS-NOTICE"] = bool(
+        same_bottom_travel_details.get("generated")
+        and same_bottom_travel_details.get("noticeVisible")
+        and "Air" in same_bottom_travel_details.get("noticeText", "")
+        and "Bottom Gas" in same_bottom_travel_details.get("noticeText", "")
+        and "Travel Gas" in same_bottom_travel_details.get("noticeText", "")
+        and "calculated together" in same_bottom_travel_details.get("noticeText", "")
+        and same_bottom_travel_details.get("labels", []).count("Air") >= 2
+        and "Bottom" in same_bottom_travel_details.get("roles", [])
+        and "Travel" in same_bottom_travel_details.get("roles", [])
+        and not same_bottom_travel_details.get("console_errors")
     )
     results["SL-VIS-CONTINGENCY-GAS-CONSUMPTION-BARS"] = bool(
         contingency_gas_details.get("generated")
@@ -2474,6 +2548,7 @@ def main() -> int:
             "schedule_error": schedule_error_details,
             "contingency_gas": contingency_gas_details,
             "gas_units": gas_units_details,
+            "same_bottom_travel_gas": same_bottom_travel_details,
         }, indent=2))
 
     rows = [case_row(case_id, passed) for case_id, passed in results.items()]

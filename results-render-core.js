@@ -271,6 +271,18 @@ function _gasWarningMessageForRow(row, threshold) {
   return `Critical: ${_gasCardHtml(row.displayName)} below <strong class="gas-measure">${threshold}<span class="gas-unit">%</span></strong> remaining`;
 }
 
+function _sameBottomTravelMixNotice(rows) {
+  const bottom = rows.find(row => row.key === 'bottom');
+  const travel = rows.find(row => row.key === 'travel');
+  if (!bottom || !travel) return '';
+  if (String(bottom.label || '').toLowerCase() !== String(travel.label || '').toLowerCase()) return '';
+  const label = _gasCardHtml(bottom.label || 'gas');
+  return `<div class="gas-consumption-combined-notice" data-gas-combined-notice="bottom-travel">
+    <span aria-hidden="true">&#9432;</span>
+    <div><strong>${label}</strong> is configured as both Bottom Gas and Travel Gas, so consumption is calculated together across both cylinders. Use a different travel gas if this is not intentional.</div>
+  </div>`;
+}
+
 function renderGasConsumptionBars(container, gasConsumed, options) {
   if (!container) return;
   const title = options?.title || 'Gas Consumption';
@@ -328,6 +340,7 @@ function renderGasConsumptionBars(container, gasConsumed, options) {
           <span>%</span>
         </label>
       </div>
+      ${_sameBottomTravelMixNotice(rows)}
       ${gasCardNarcoticHtml}
       <div class="gas-consumption-bars">${rowHtml}</div>
       <div class="gas-consumption-note">SAC bottom: ${_gasCardHtml(sacBottom)} ${_gasCardHtml(sacUnit)} &middot; deco: ${_gasCardHtml(sacDeco)} ${_gasCardHtml(sacUnit)}</div>
