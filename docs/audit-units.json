@@ -2157,7 +2157,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "7eaf6c9d268c35754cfebf14e25e8a274ca06250298e0cff7cc8f33bf3412d80",
+      "fingerprint": "579d63bbce98b0bb0b45de867ea510b1346b30ef396cf132d8d117ea68ed1d71",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2254,7 +2254,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "b051255ae7457076bf271464dde8edcbafff24ecd91ba7b5e3322d2831b10663",
+      "fingerprint": "f7548a5dc5b1491f50df2817ebd62385a2302030594d70e881679d10c3ce1ae2",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2359,7 +2359,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "d7e60d3b11c2a1d87b5bf91be64ed3a75d85f20847f1f81cbc61362430359649",
+      "fingerprint": "605b94f1f25075f695dde7b1fd960477c38d166f4933104bd5caa98d7b6ca224",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -6324,12 +6324,12 @@
     },
     {
       "cycle": "R24",
-      "max_new_application_lines": 2471,
+      "max_new_application_lines": 2475,
       "application_units": [
         "UI-BOOT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R24: index.html shell boot region risk-first READ; current lines: 2471; sessions: 5",
+      "acceptance": "V4 R24: index.html shell boot region risk-first READ; current lines: 2475; sessions: 5",
       "min_review_sessions": 5
     },
     {
@@ -6433,12 +6433,12 @@
     },
     {
       "cycle": "R34",
-      "max_new_application_lines": 801,
+      "max_new_application_lines": 802,
       "application_units": [
         "UI-MARKUP-HEADER"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R34: Header markup risk-first READ; current lines: 801; sessions: 2",
+      "acceptance": "V4 R34: Header markup risk-first READ; current lines: 802; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6473,13 +6473,13 @@
     },
     {
       "cycle": "R38",
-      "max_new_application_lines": 605,
+      "max_new_application_lines": 608,
       "application_units": [
         "UI-MARKUP-TOOLS",
         "UI-MARKUP-MODALS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R38: Tools and modal markup risk-first READ; current lines: 605; sessions: 2",
+      "acceptance": "V4 R38: Tools and modal markup risk-first READ; current lines: 608; sessions: 2",
       "min_review_sessions": 2
     },
     {

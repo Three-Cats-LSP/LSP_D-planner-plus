@@ -5,5 +5,5 @@
  */
 (function (g) {
   'use strict';
-  g.APP_BUILD_ID = '9460aee08eb0';
+  g.APP_BUILD_ID = '8f82353ecfd0';
 })(typeof self !== 'undefined' ? self : globalThis);
