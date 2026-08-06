@@ -1,8 +1,10 @@
 .nojekyll
 android-select-picker.js
+app-build.js
 app-version.js
 capacitor-bridge.js
 contingency-core.js
+dive-graph-engine.js
 download.html
 export-core.js
 gas-cards-core.js
@@ -127,7 +129,10 @@ vendor/fonts/tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2
 vendor/fonts/tDbV2o-flEEny0FZhsfKu5WU4xD_OwG_TA.woff2
 vendor/icons/FLATICON-ATTRIBUTION.txt
 vendor/icons/computer-14545985.png
+vendor/icons/dive-6648136-mask.png
+vendor/icons/dive-6648136.png
 vendor/icons/giw-icon-192.png
+vendor/icons/oxygen-6770314.png
 vendor/icons/settings-2099058.png
 vendor/icons/tools-1424252.png
 vendor/jspdf.umd.min.js

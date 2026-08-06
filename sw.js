@@ -1,9 +1,10 @@
 // LSP D-Planner — Service Worker
 // Network-first for HTML (always fresh), cache-first for static assets.
-// CACHE_VERSION is derived from app-version.js (same source as index.html APP_VERSION).
+// CACHE_VERSION is derived from APP_VERSION + generated APP_BUILD_ID.
 
 importScripts('app-version.js');
-const CACHE_VERSION = 'lsp-dplanner-plus-v' + APP_VERSION;
+importScripts('app-build.js');
+const CACHE_VERSION = 'lsp-dplanner-plus-v' + APP_VERSION + '-' + APP_BUILD_ID;
 
 // These URL patterns are never cached — always fetched live or passed through
 function shouldNeverCache(url) {
@@ -79,6 +80,7 @@ const OFFLINE_INDEX = APP_BASE + 'index.html';
 const REQUIRED_PRECACHE = [
   OFFLINE_INDEX,
   APP_BASE + 'app-version.js',
+  APP_BASE + 'app-build.js',
   APP_BASE + 'lsp-dplanner-foundation.css',
   APP_BASE + 'lsp-dplanner-modes.css',
   APP_BASE + 'lsp-dplanner-controls.css',

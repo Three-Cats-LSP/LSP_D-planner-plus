@@ -17,6 +17,7 @@ UI_SHELL_SCRIPTS: tuple[str, ...] = ("planner-shell.js", "results-panel.js")
 
 RUNTIME_HEAD_SCRIPTS: tuple[str, ...] = (
     "app-version.js",
+    "app-build.js",
     "capacitor-bridge.js",
     "zhl-engine-bundle.js",
     "padi-engine.js",

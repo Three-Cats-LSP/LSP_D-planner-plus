@@ -931,8 +931,9 @@ if os.path.isfile(sw_path_early):
     with open(sw_path_early, encoding="utf-8") as f:
         sw_early = f.read()
     if ("importScripts('app-version.js')" in sw_early and
-            "const CACHE_VERSION = 'lsp-dplanner-plus-v' + APP_VERSION" in sw_early):
-        ok("sw.js CACHE_VERSION derived from app-version.js APP_VERSION")
+            "importScripts('app-build.js')" in sw_early and
+            "const CACHE_VERSION = 'lsp-dplanner-plus-v' + APP_VERSION + '-' + APP_BUILD_ID" in sw_early):
+        ok("sw.js CACHE_VERSION derived from APP_VERSION and APP_BUILD_ID")
     else:
         fail("sw.js must importScripts app-version.js and derive CACHE_VERSION")
     if "isSafetyCriticalEngineAsset" in sw_early and "networkFirstWithCacheFallback" in sw_early:
@@ -3188,7 +3189,9 @@ else:
 if os.path.isfile(sw_path):
     with open(sw_path, encoding="utf-8") as f:
         sw = f.read()
-    if "importScripts('app-version.js')" not in sw or "lsp-dplanner-plus-v' + APP_VERSION" not in sw:
+    if ("importScripts('app-version.js')" not in sw
+            or "importScripts('app-build.js')" not in sw
+            or "lsp-dplanner-plus-v' + APP_VERSION + '-' + APP_BUILD_ID" not in sw):
         version_ok = False
     if "version.json" not in sw:
         version_ok = False
@@ -5549,8 +5552,10 @@ else:
 if os.path.isfile(sw_path):
     with open(sw_path, encoding="utf-8") as f:
         _sw107 = f.read()
-    if "importScripts('app-version.js')" in _sw107 and "lsp-dplanner-plus-v' + APP_VERSION" in _sw107:
-        ok("sw.js CACHE_VERSION derived from APP_VERSION (issue #107)")
+    if ("importScripts('app-version.js')" in _sw107
+            and "importScripts('app-build.js')" in _sw107
+            and "lsp-dplanner-plus-v' + APP_VERSION + '-' + APP_BUILD_ID" in _sw107):
+        ok("sw.js CACHE_VERSION derived from APP_VERSION + APP_BUILD_ID (issue #107)")
     else:
         fail("sw.js CACHE_VERSION hardcoded or not tied to APP_VERSION (issue #107)")
 else:

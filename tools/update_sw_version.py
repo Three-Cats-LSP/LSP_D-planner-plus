@@ -26,14 +26,18 @@ def verify_sw_derives_cache(version: str) -> None:
     sw = SW.read_text(encoding="utf-8")
     if "importScripts('app-version.js')" not in sw:
         raise SystemExit("sw.js must importScripts('app-version.js')")
-    if "const CACHE_VERSION = 'lsp-dplanner-plus-v' + APP_VERSION" not in sw:
-        raise SystemExit("sw.js must derive CACHE_VERSION from APP_VERSION")
+    if "importScripts('app-build.js')" not in sw:
+        raise SystemExit("sw.js must importScripts('app-build.js')")
+    if "const CACHE_VERSION = 'lsp-dplanner-plus-v' + APP_VERSION + '-' + APP_BUILD_ID" not in sw:
+        raise SystemExit("sw.js must derive CACHE_VERSION from APP_VERSION and APP_BUILD_ID")
 
 
 def verify_index_loads_version_js() -> None:
     html = INDEX.read_text(encoding="utf-8")
     if 'src="app-version.js"' not in html and "src='app-version.js'" not in html:
         raise SystemExit("index.html must load app-version.js")
+    if 'src="app-build.js"' not in html and "src='app-build.js'" not in html:
+        raise SystemExit("index.html must load app-build.js")
     if re.search(r"const APP_VERSION\s*=\s*'", html):
         raise SystemExit("index.html must not duplicate APP_VERSION; use app-version.js")
 
@@ -94,7 +98,7 @@ def main() -> None:
     if changed:
         print(f"Synced {', '.join(changed)} to {version}")
     else:
-        print(f"Version {version} aligned (app-version.js, README.md, sw.js, package.json, build.gradle)")
+        print(f"Version {version} aligned (app-version.js, app-build.js, README.md, sw.js, package.json, build.gradle)")
 
 
 if __name__ == "__main__":

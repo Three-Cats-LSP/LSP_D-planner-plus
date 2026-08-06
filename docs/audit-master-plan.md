@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v5-risk-first-active`
-**Units:** 214 total; 0 unread; 121 in progress; 3 read; 90 verified.
+**Units:** 215 total; 0 unread; 126 in progress; 1 read; 88 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -70,8 +70,8 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R21 | UI-GRAPH-ENGINE, UI-PLOT-RENDER, UI-PLOT-WAYPOINTS | 766 | - | V4 R21: Plot render and waypoint graph risk-first READ; current lines: 766; sessions: 2 |
 | R22 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 867 | - | V4 R22: Profile tool and plot init risk-first READ; current lines: 867; sessions: 2 |
 | R23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 395 | - | V4 R23: Runtime bootstrap and app init risk-first READ; current lines: 395; sessions: 1 |
-| R24 | UI-BOOT | 2470 | - | V4 R24: index.html shell boot region risk-first READ; current lines: 2470; sessions: 5 |
-| R25 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 453 | - | V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 453; sessions: 1 |
+| R24 | UI-BOOT | 2471 | - | V4 R24: index.html shell boot region risk-first READ; current lines: 2471; sessions: 5 |
+| R25 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 456 | - | V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 456; sessions: 1 |
 | R26 | APP-CAPACITOR-BRIDGE, APP-ANDROID-SELECT | 572 | - | V4 R26: Capacitor and Android bridge risk-first READ; current lines: 572; sessions: 1 |
 | R27 | UI-PROFILE-PRESETS | 508 | - | V4 R27: Dive profile presets risk-first READ; current lines: 508; sessions: 1 |
 | R28 | UI-CONFIG-PRESETS | 185 | - | V4 R28: Advanced config presets risk-first READ; current lines: 185; sessions: 1 |
@@ -79,8 +79,8 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R30 | APP-DOWNLOAD | 120 | - | V4 R30: Download page risk-first READ; current lines: 120; sessions: 1 |
 | R31 | - | 0 | TEST-ENGINE-REGRESSION, TEST-ENGINE-VALIDATION, TEST-GAS-CORE-REGRESSION | V4 R31: Engine and gas regression harnesses re-verified; no application-source review; current lines: 0; no application-source review |
 | R32 | - | 0 | TEST-RUN-ALL, TEST-SW-LIFECYCLE, TEST-CCR-VALIDATION, TEST-CCR-DIFF-RUNNER, TEST-PSCR-E2E | V4 R32: Full regression umbrella and release-tier test paths re-verified; no application-source review; current lines: 0; no application-source review |
-| R33 | APP-PACKAGE, APP-VERSION, APP-VERSION-JSON | 55 | CI-AUDIT, CI-MAIN, CI-APK, CI-DEPLOY | V4 R33: Package manifest and CI workflows risk-first READ; current lines: 55; sessions: 1 |
-| R34 | UI-MARKUP-HEADER | 800 | - | V4 R34: Header markup risk-first READ; current lines: 800; sessions: 2 |
+| R33 | APP-PACKAGE, APP-VERSION, APP-BUILD, APP-VERSION-JSON | 65 | CI-AUDIT, CI-MAIN, CI-APK, CI-DEPLOY | V4 R33: Package manifest and CI workflows risk-first READ; current lines: 65; sessions: 1 |
+| R34 | UI-MARKUP-HEADER | 801 | - | V4 R34: Header markup risk-first READ; current lines: 801; sessions: 2 |
 | R35 | UI-MARKUP-REC-PLANNER, UI-REC-PLANNER | 82 | - | V4 R35: REC planner markup and runner risk-first READ; current lines: 82; sessions: 1 |
 | R36 | UI-MARKUP-TEC-PLANNER, UI-PLANNER-INPUTS | 678 | - | V4 R36: TEC planner markup and planner input ownership risk-first READ; current lines: 678; sessions: 2 |
 | R37 | UI-MARKUP-CONSUMPTION | 381 | - | V4 R37: Consumption markup risk-first READ; current lines: 381; sessions: 1 |

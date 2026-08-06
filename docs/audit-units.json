@@ -2145,7 +2145,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-BOOT"
       },
-      "fingerprint": "c78690481a265b8bc7f4f06abf15dd4834ad9b6ba0654385616cbe9004c97210",
+      "fingerprint": "7eaf6c9d268c35754cfebf14e25e8a274ca06250298e0cff7cc8f33bf3412d80",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2242,7 +2242,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "7bfe314cc4480336924ef70f49e538cef457bc4c203430ae27cdc9c5bc80743d",
+      "fingerprint": "b051255ae7457076bf271464dde8edcbafff24ecd91ba7b5e3322d2831b10663",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -2927,7 +2927,7 @@
         "type": "marker",
         "marker": "AUDIT-UNIT:UI-PWA-LIFECYCLE"
       },
-      "fingerprint": "a09361413d8c16870b56bcec831f3db770cd0737c6f7633c79667365b30f1b11",
+      "fingerprint": "49e817aab15c43e8f0ff51bc94b1b3e619852ff09075bc7fa83e0e63671d963b",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3239,7 +3239,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "a67a435dbacabe1de582a3410671ca82e57a0dcac052933f262b1b935840dd17",
+      "fingerprint": "f45c7e66bcd892dd735f59e1a3fd6b0433eb94026c418f0a315afde872778387",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3348,6 +3348,21 @@
       "issue": "V4-AUDIT-M-03: register runtime app-version.js source of truth"
     },
     {
+      "id": "APP-BUILD",
+      "path": "app-build.js",
+      "layer": "release_config",
+      "priority": "P2",
+      "status": "IN_PROGRESS",
+      "boundary": {
+        "type": "whole_file"
+      },
+      "fingerprint": "55c6a4b870891d47872502b4fa8656503691a559b155a8ca2b52dd74a625b228",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
+      "issue": "Generated runtime build fingerprint for service-worker cache freshness"
+    },
+    {
       "id": "APP-VERSION-JSON",
       "path": "version.json",
       "layer": "release_config",
@@ -3356,7 +3371,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c5165f11ae34bcee129f8fc48ff7d2b40146f5b7a127aaad4d2a8a12b6c18909",
+      "fingerprint": "d71fbd73479148ef7cab22e794174e2c0ff90583346e611398559445b214ffa6",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -4606,7 +4621,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "1499eb861e182664801f2271aefe49dba5a26214f7be31fb1940e9531d998c56",
+      "fingerprint": "e1d826bd95c26cad0ca218e0931e28cc3e452483094886d6d163163e0bca04c2",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -4617,12 +4632,12 @@
       "path": "tools/assemble_pages_preview.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "cada1f7dad2f659ccd61bed1d92ea356c3c21bc1cd3c647492e6f131703af39a",
-      "last_read_fingerprint": "cada1f7dad2f659ccd61bed1d92ea356c3c21bc1cd3c647492e6f131703af39a",
+      "fingerprint": "5c495a00bef53aaaad24d30c0a4aaff4b50ac8d3ae99c2376670851980cef335",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
       "issue": "Development Pages preview implementation review"
@@ -4632,12 +4647,12 @@
       "path": "tools/test_assemble_pages_preview.py",
       "layer": "test",
       "priority": "P2",
-      "status": "READ",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c563edfa898e04db4155a31ae6d36f4160a575131eff6251cf0f4b8c59c3f0be",
-      "last_read_fingerprint": "c563edfa898e04db4155a31ae6d36f4160a575131eff6251cf0f4b8c59c3f0be",
+      "fingerprint": "5dbbfc092f4b589a5d25b356441dc7dae1871210511bae96607ccef41bfbe7e3",
+      "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
       "issue": "Development Pages preview implementation review"
@@ -5050,7 +5065,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "b38f2660cf1b569cfcb1f010fddcf0e6b49527e4ea0dd948499da6f992a4e58e",
+      "fingerprint": "b34432e0230e3eb0c7d52c1efa4b3ccf6a13dd4bd56ca4b5af6e99145157f87e",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5065,7 +5080,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "41431391fb74db6e5fd4f6f2df92317e37a90380ffa639b38c39d6317e33021f",
+      "fingerprint": "50abe383127a52594e88d9d044cc1b9f64e08bd1c535573a247d58dedb181b4f",
       "last_read_fingerprint": null,
       "regression_cases": [],
       "evidence": [],
@@ -5299,7 +5314,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "79adc6edda5073f115ac9eb5cf5f17a52695b9492a9d5415924478394067a116",
+      "fingerprint": "9c6c346d1988a447e7eaac5c2e09137db19fa8aeb90c89fc27207964fd8b332a",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5506,7 +5521,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "8f6bcf4f0a34ab9248fb6cdcc0d77d63d991c7faba66d2e0b0139d6d898cf72c",
+      "fingerprint": "60229a2ad689fb4fdae28b7ec6bf733506bd1b0ffc421444eba981645c32446d",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5643,7 +5658,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c5aa5926e93175ebc38109c0ca713e469e05dffc5386fb779294953164995e80",
+      "fingerprint": "028805b7db7c358f13bb4df69dc9cb91f5228e77316487a8c2bb97ec63f53d42",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -5654,20 +5669,14 @@
       "path": "tools/verify_sw_assets.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "2871d7d8f42356678ebfcd3b5f047ef557e6a81da32fb09d3e15bf2d7aeb4b0f",
-      "last_read_fingerprint": "2871d7d8f42356678ebfcd3b5f047ef557e6a81da32fb09d3e15bf2d7aeb4b0f",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01"
-      ],
+      "fingerprint": "4926c191b18cdcb232f7a37106d9aa5171aed36db8bbae1351608f86b8286c34",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "Audit V3 environment"
     },
     {
@@ -5753,20 +5762,14 @@
       "path": "tools/audit/migrate_legacy_cutover.py",
       "layer": "tooling",
       "priority": "P2",
-      "status": "VERIFIED",
+      "status": "IN_PROGRESS",
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "fd2daabb2bc4d087fa5e078f91284862224d3bdd5fa345b18e972bbd4f5d930f",
-      "last_read_fingerprint": "fd2daabb2bc4d087fa5e078f91284862224d3bdd5fa345b18e972bbd4f5d930f",
-      "evidence": [
-        "SUITE-COVERAGE/AUDIT-COV-01",
-        "SUITE-PARITY/canonical-generated-parity"
-      ],
-      "regression_cases": [
-        "COV-01",
-        "PARITY-01"
-      ],
+      "fingerprint": "422a7403ed2c3ed63ecfb5ce83b54f4c1a451965c7493e9600439a0a8ea6b07a",
+      "last_read_fingerprint": null,
+      "evidence": [],
+      "regression_cases": [],
       "issue": "V3 release and legacy cutover automation"
     },
     {
@@ -6339,24 +6342,24 @@
     },
     {
       "cycle": "R24",
-      "max_new_application_lines": 2470,
+      "max_new_application_lines": 2471,
       "application_units": [
         "UI-BOOT"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R24: index.html shell boot region risk-first READ; current lines: 2470; sessions: 5",
+      "acceptance": "V4 R24: index.html shell boot region risk-first READ; current lines: 2471; sessions: 5",
       "min_review_sessions": 5
     },
     {
       "cycle": "R25",
-      "max_new_application_lines": 453,
+      "max_new_application_lines": 456,
       "application_units": [
         "APP-SERVICE-WORKER",
         "UI-PWA-LIFECYCLE",
         "APP-MANIFEST"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 453; sessions: 1"
+      "acceptance": "V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 456; sessions: 1"
     },
     {
       "cycle": "R26",
@@ -6433,10 +6436,11 @@
     },
     {
       "cycle": "R33",
-      "max_new_application_lines": 55,
+      "max_new_application_lines": 65,
       "application_units": [
         "APP-PACKAGE",
         "APP-VERSION",
+        "APP-BUILD",
         "APP-VERSION-JSON"
       ],
       "engine_reverification": [
@@ -6445,16 +6449,16 @@
         "CI-APK",
         "CI-DEPLOY"
       ],
-      "acceptance": "V4 R33: Package manifest and CI workflows risk-first READ; current lines: 55; sessions: 1"
+      "acceptance": "V4 R33: Package manifest and CI workflows risk-first READ; current lines: 65; sessions: 1"
     },
     {
       "cycle": "R34",
-      "max_new_application_lines": 800,
+      "max_new_application_lines": 801,
       "application_units": [
         "UI-MARKUP-HEADER"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R34: Header markup risk-first READ; current lines: 800; sessions: 2",
+      "acceptance": "V4 R34: Header markup risk-first READ; current lines: 801; sessions: 2",
       "min_review_sessions": 2
     },
     {

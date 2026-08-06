@@ -19,7 +19,7 @@ class AssemblePagesPreviewTests(unittest.TestCase):
             encoding="utf-8",
         )
         (built / "sw.js").write_text(
-            "const CACHE_VERSION = 'lsp-dplanner-plus-v' + APP_VERSION;\n"
+            "const CACHE_VERSION = 'lsp-dplanner-plus-v' + APP_VERSION + '-' + APP_BUILD_ID;\n"
             "const APP_BASE = getAppBasePath();\n",
             encoding="utf-8",
         )

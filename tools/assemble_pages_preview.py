@@ -10,7 +10,7 @@ from urllib.parse import urlsplit
 
 
 ASSET_RE = re.compile(r'''(?:src|href)=["']([^"']+)["']''', re.IGNORECASE)
-CACHE_DECLARATION = "const CACHE_VERSION = 'lsp-dplanner-plus-v' + APP_VERSION;"
+CACHE_DECLARATION = "const CACHE_VERSION = 'lsp-dplanner-plus-v' + APP_VERSION + '-' + APP_BUILD_ID;"
 APP_BASE_DECLARATION = "const APP_BASE = getAppBasePath();"
 
 
@@ -49,7 +49,7 @@ def _patch_preview(preview: Path, commit: str) -> None:
         raise SystemExit("Service-worker preview patch anchors are missing")
     sw = sw.replace(
         CACHE_DECLARATION,
-        "const CACHE_VERSION = 'lsp-dplanner-plus-dev-v' + APP_VERSION;",
+        "const CACHE_VERSION = 'lsp-dplanner-plus-dev-v' + APP_VERSION + '-' + APP_BUILD_ID;",
         1,
     ).replace(
         APP_BASE_DECLARATION,

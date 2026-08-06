@@ -27,6 +27,7 @@ ROOT_FILES = [
     "download.html",
     "version.json",
     "app-version.js",
+    "app-build.js",
     "capacitor-bridge.js",
     "android-select-picker.js",
     "manifest.json",
@@ -134,13 +135,14 @@ def _build_pages_lock(timeout_s: float = 180.0):
 def build_pages_site() -> Path:
     from assemble_ui_html import verify_partials
     from update_sw_version import main as verify_app_version
-    from sync_www import parse_app_version, write_version_json
+    from sync_www import parse_app_version, write_app_build_js, write_version_json
 
     with _build_pages_lock():
         verify_partials()
-        verify_app_version()
         app_version = parse_app_version((ROOT / "app-version.js").read_text(encoding="utf-8"))
+        write_app_build_js()
         write_version_json(app_version)
+        verify_app_version()
 
         if OUT.exists():
             shutil.rmtree(OUT)

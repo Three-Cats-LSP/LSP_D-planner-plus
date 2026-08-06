@@ -52,6 +52,7 @@
 <!-- App version (single source of truth — also importScripts'd by sw.js) -->
 <!-- AUDIT-UNIT:UI-MARKUP-HEADER -->
 <script src="app-version.js"></script>
+<script src="app-build.js"></script>
 <script src="capacitor-bridge.js"></script>
 <script src="zhl-engine-bundle.js"></script>
 <script src="padi-engine.js"></script>
@@ -5796,7 +5797,8 @@ window.addEventListener('load', function() {
 
   if ('serviceWorker' in navigator && !isAutomatedTestMode() && typeof APP_VERSION !== 'undefined') {
     const registerServiceWorker = () => {
-      navigator.serviceWorker.register(`sw.js?v=${APP_VERSION}`, { updateViaCache: 'none' })
+      const swBuildId = (typeof APP_BUILD_ID !== 'undefined' && APP_BUILD_ID) ? APP_BUILD_ID : APP_VERSION;
+      navigator.serviceWorker.register(`sw.js?v=${APP_VERSION}-${swBuildId}`, { updateViaCache: 'none' })
         .then(r => {
           console.log('[SW] registered, scope:', r.scope);
           r.update();

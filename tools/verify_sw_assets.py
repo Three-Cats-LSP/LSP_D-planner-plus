@@ -7,6 +7,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 from tools.ui_assets import UI_CORE_SCRIPTS, UI_CSS_FILES  # noqa: E402
 
 INDEX = ROOT / "index.html"

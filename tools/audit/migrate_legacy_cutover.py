@@ -209,13 +209,6 @@ def main() -> int:
     if args.retire_legacy_suite and cutover_ready:
         retired = remove_legacy_suite_from_profiles(registry)
 
-    errors = validate_migration(ROOT)
-    if errors:
-        print("MIGRATION VALIDATION FAILURES:")
-        for err in errors:
-            print(f"  - {err}")
-        return 1
-
     print(
         f"Legacy cutover: {independent}/{len(new_sites)} independently replaced; "
         f"recorded_runs={len(recorded)}/{policy.get('required_consecutive_clean_main_runs')}; "
@@ -223,9 +216,26 @@ def main() -> int:
     )
 
     if args.dry_run:
+        old_ledger = LEDGER_PATH.read_text(encoding="utf-8") if LEDGER_PATH.is_file() else ""
+        try:
+            LEDGER_PATH.write_text(json.dumps(ledger, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+            errors = validate_migration(ROOT)
+        finally:
+            LEDGER_PATH.write_text(old_ledger, encoding="utf-8")
+        if errors:
+            print("MIGRATION VALIDATION FAILURES:")
+            for err in errors:
+                print(f"  - {err}")
+            return 1
         return 0
 
     LEDGER_PATH.write_text(json.dumps(ledger, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    errors = validate_migration(ROOT)
+    if errors:
+        print("MIGRATION VALIDATION FAILURES:")
+        for err in errors:
+            print(f"  - {err}")
+        return 1
     if findings_updated or retired:
         registry = audit_coverage.refresh_fingerprints(registry, ROOT)
         REGISTRY_PATH.write_text(json.dumps(registry, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
