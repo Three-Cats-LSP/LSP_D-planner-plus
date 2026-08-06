@@ -74,6 +74,18 @@
         "generator": "npm run cap:sync",
         "check": "npm run cap:sync",
         "reason": "Capacitor-generated settings fragment"
+      },
+      {
+        "pattern": "app-build.js",
+        "generator": "python tools/sync_www.py",
+        "check": "python tools/verify_sw_assets.py",
+        "reason": "Generated runtime build fingerprint for service-worker cache freshness"
+      },
+      {
+        "pattern": "version.json",
+        "generator": "python tools/sync_www.py",
+        "check": "python tools/verify_sw_assets.py",
+        "reason": "Generated version/update metadata that carries APP_VERSION and APP_BUILD_ID"
       }
     ],
     "excluded": [
@@ -3348,36 +3360,6 @@
       "issue": "V4-AUDIT-M-03: register runtime app-version.js source of truth"
     },
     {
-      "id": "APP-BUILD",
-      "path": "app-build.js",
-      "layer": "release_config",
-      "priority": "P2",
-      "status": "IN_PROGRESS",
-      "boundary": {
-        "type": "whole_file"
-      },
-      "fingerprint": "55c6a4b870891d47872502b4fa8656503691a559b155a8ca2b52dd74a625b228",
-      "last_read_fingerprint": null,
-      "evidence": [],
-      "regression_cases": [],
-      "issue": "Generated runtime build fingerprint for service-worker cache freshness"
-    },
-    {
-      "id": "APP-VERSION-JSON",
-      "path": "version.json",
-      "layer": "release_config",
-      "priority": "P2",
-      "status": "IN_PROGRESS",
-      "boundary": {
-        "type": "whole_file"
-      },
-      "fingerprint": "d71fbd73479148ef7cab22e794174e2c0ff90583346e611398559445b214ffa6",
-      "last_read_fingerprint": null,
-      "evidence": [],
-      "regression_cases": [],
-      "issue": "Release version.json metadata (split from APP-VERSION)"
-    },
-    {
       "id": "APP-CAPACITOR-CONFIG",
       "path": "capacitor.config.json",
       "layer": "native_config",
@@ -6436,12 +6418,10 @@
     },
     {
       "cycle": "R33",
-      "max_new_application_lines": 65,
+      "max_new_application_lines": 48,
       "application_units": [
         "APP-PACKAGE",
-        "APP-VERSION",
-        "APP-BUILD",
-        "APP-VERSION-JSON"
+        "APP-VERSION"
       ],
       "engine_reverification": [
         "CI-AUDIT",
@@ -6449,7 +6429,7 @@
         "CI-APK",
         "CI-DEPLOY"
       ],
-      "acceptance": "V4 R33: Package manifest and CI workflows risk-first READ; current lines: 65; sessions: 1"
+      "acceptance": "V4 R33: Package manifest and CI workflows risk-first READ; current lines: 48; sessions: 1"
     },
     {
       "cycle": "R34",

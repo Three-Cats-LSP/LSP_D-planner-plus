@@ -4,7 +4,7 @@
 
 **Baseline:** `2f4843b3d4032c07c95a08fa9407130c681998b0`
 **Epoch:** `v5-risk-first-active`
-**Units:** 215 total; 0 unread; 126 in progress; 1 read; 88 verified.
+**Units:** 213 total; 0 unread; 124 in progress; 1 read; 88 verified.
 **Gate:** `python -m tools.audit check --profile static`
 
 ## Operating Rules
@@ -79,7 +79,7 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R30 | APP-DOWNLOAD | 120 | - | V4 R30: Download page risk-first READ; current lines: 120; sessions: 1 |
 | R31 | - | 0 | TEST-ENGINE-REGRESSION, TEST-ENGINE-VALIDATION, TEST-GAS-CORE-REGRESSION | V4 R31: Engine and gas regression harnesses re-verified; no application-source review; current lines: 0; no application-source review |
 | R32 | - | 0 | TEST-RUN-ALL, TEST-SW-LIFECYCLE, TEST-CCR-VALIDATION, TEST-CCR-DIFF-RUNNER, TEST-PSCR-E2E | V4 R32: Full regression umbrella and release-tier test paths re-verified; no application-source review; current lines: 0; no application-source review |
-| R33 | APP-PACKAGE, APP-VERSION, APP-BUILD, APP-VERSION-JSON | 65 | CI-AUDIT, CI-MAIN, CI-APK, CI-DEPLOY | V4 R33: Package manifest and CI workflows risk-first READ; current lines: 65; sessions: 1 |
+| R33 | APP-PACKAGE, APP-VERSION | 48 | CI-AUDIT, CI-MAIN, CI-APK, CI-DEPLOY | V4 R33: Package manifest and CI workflows risk-first READ; current lines: 48; sessions: 1 |
 | R34 | UI-MARKUP-HEADER | 801 | - | V4 R34: Header markup risk-first READ; current lines: 801; sessions: 2 |
 | R35 | UI-MARKUP-REC-PLANNER, UI-REC-PLANNER | 82 | - | V4 R35: REC planner markup and runner risk-first READ; current lines: 82; sessions: 1 |
 | R36 | UI-MARKUP-TEC-PLANNER, UI-PLANNER-INPUTS | 678 | - | V4 R36: TEC planner markup and planner input ownership risk-first READ; current lines: 678; sessions: 2 |

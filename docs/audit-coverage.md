@@ -18,7 +18,7 @@
 | native_bridge | 2 | 0 | 1 | 0 | 1 |
 | native_config | 1 | 0 | 0 | 0 | 1 |
 | pwa | 3 | 0 | 2 | 0 | 1 |
-| release_config | 3 | 0 | 3 | 0 | 0 |
+| release_config | 1 | 0 | 1 | 0 | 0 |
 | test | 1 | 0 | 1 | 0 | 0 |
 | test_infrastructure | 60 | 0 | 32 | 0 | 28 |
 | tooling | 55 | 0 | 28 | 0 | 27 |
@@ -28,7 +28,7 @@
 | web_markup | 7 | 0 | 7 | 0 | 0 |
 | web_runtime | 24 | 0 | 22 | 0 | 2 |
 | worker | 2 | 0 | 0 | 0 | 2 |
-| **Total** | **215** | **0** | **126** | **1** | **88** |
+| **Total** | **213** | **0** | **124** | **1** | **88** |
 
 ## Units
 
@@ -101,8 +101,6 @@
 | APP-DOWNLOAD | web_runtime | `download.html:1` | 120 | P3 | IN_PROGRESS | - |
 | APP-MANIFEST | pwa | `manifest.json:1` | 41 | P2 | VERIFIED | REG-45, EXT-08 |
 | APP-VERSION | release_config | `app-version.js:1` | 8 | P2 | IN_PROGRESS | - |
-| APP-BUILD | release_config | `app-build.js:1` | 9 | P2 | IN_PROGRESS | - |
-| APP-VERSION-JSON | release_config | `version.json:1` | 8 | P2 | IN_PROGRESS | - |
 | APP-CAPACITOR-CONFIG | native_config | `capacitor.config.json:1` | 14 | P1 | VERIFIED | ANDROID-01, COV-01 |
 | APP-CLOUDFLARE-CONFIG | deploy_config | `wrangler.jsonc:1` | 14 | P2 | VERIFIED | COV-01, EXT-07 |
 | APP-PACKAGE | build_config | `package.json:1` | 40 | P1 | IN_PROGRESS | - |
