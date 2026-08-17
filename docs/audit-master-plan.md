@@ -48,7 +48,7 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | Cycle | Application units | New lines | Engine re-verification | Acceptance |
 |---:|---|---:|---|---|
 | R01 | ENG-ZHL-PHYSICS, ENG-ZHL-GAS | 373 | - | V4 R01: ZHL physics and gas canonical cores risk-first READ; current lines: 373; sessions: 1 |
-| R02 | ENG-ZHL-SCHEDULE | 657 | - | V4 R02: ZHL schedule canonical core risk-first READ; current lines: 657; sessions: 2 |
+| R02 | ENG-ZHL-SCHEDULE | 661 | - | V4 R02: ZHL schedule canonical core risk-first READ; current lines: 661; sessions: 2 |
 | R03 | ENG-ZHL-CCR | 404 | - | V4 R03: ZHL CCR canonical core risk-first READ; current lines: 404; sessions: 1 |
 | R04 | ENG-VPM | 2106 | - | V4 R04: VPM canonical core risk-first READ; current lines: 2106; sessions: 4 |
 | R05 | ENG-VPM-REFERENCE | 2574 | - | V4 R05: VPM reference implementation risk-first READ; current lines: 2574; sessions: 5 |

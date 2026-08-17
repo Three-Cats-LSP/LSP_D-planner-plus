@@ -86,6 +86,23 @@ ENGINE_SUITE_JS = r"""
     trimixZhl: zhl(lv(60, 20, 18, 45), []),
     trimixVpm: vpm(lv(60, 20, 18, 45), [], {}, 'VPMB'),
   };
+  const shallowLastStop = zhl(lv(15, 50, 21, 0), [], {
+    gfLo: 40, gfHi: 85, lastStop: 6, stepSize: 3, minStopTime: 2,
+    descentRate: 18, ascentRate: 9, decoAscentRate: 9, surfaceAscentRate: 6,
+    wholeMinStops: true, decoTransitMode: 'multideco', shallowGradient: false,
+    minDecoProfile: { enabled: false, m9: 1, m6: 3, isMetric: true },
+  });
+  const shallowStops = shallowLastStop.stops || [];
+  out.sections.shallowLastStop = {
+    result: shallowLastStop,
+    ok: fin(shallowLastStop)
+      && shallowStops.length === 1
+      && shallowStops[0].depth === 6
+      && shallowStops[0].time >= 0.9
+      && shallowStops[0].time <= 2.1
+      && shallowLastStop.totalRuntime >= 52
+      && shallowLastStop.totalRuntime <= 54,
+  };
   const vpmLabelPlan = vpm(air40, [{ depth: 21, o2: 50, he: 0 }, { depth: 6, o2: 100, he: 0 }], {}, 'VPMB');
   const vpmGasLabels = [...new Set((vpmLabelPlan.plan || []).map(s => s.gas).filter(Boolean))];
   out.sections.vpmGasLabels = {
@@ -2379,6 +2396,13 @@ def run_suite(page) -> dict:
             str(r)[:120],
         )
 
+    shallow = s.get("shallowLastStop", {})
+    assert_true(
+        shallow.get("ok"),
+        "[V5-ZHL-SHALLOW-LAST-STOP] 15m/50min GF40/85 clears a 6m stop without stale GF Low",
+        str(shallow.get("result"))[:500],
+    )
+
     w = s["water"]
     assert_true(fin(w["salt"]) and fin(w["fresh"]) and fin(w["en13319"]) and fin(w["custom"]),
                 "VPM waterType 0/1/2/3 all produce schedules")
@@ -2760,6 +2784,7 @@ def _audit_case_rows():
         case_row("V5-TOOLS-END-DEPTH-UNITS", case_ok("V5-TOOLS-END-DEPTH-UNITS")),
         case_row("V5-TOOLS-SI-DEPTH-UNITS", case_ok("V5-TOOLS-SI-DEPTH-UNITS")),
         case_row("V5-TOOLS-CONFIRM-BACKDROP", case_ok("V5-TOOLS-CONFIRM-BACKDROP")),
+        case_row("V5-ZHL-SHALLOW-LAST-STOP", case_ok("V5-ZHL-SHALLOW-LAST-STOP")),
     ]
 
 

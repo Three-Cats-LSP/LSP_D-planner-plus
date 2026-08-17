@@ -1109,7 +1109,7 @@ function runZhlScheduleCore(params) {
     // Use nextStop exactly — ceiling must be strictly below the next stop.
     const phaseNextStop = (_zhlAscentFloor > 0) ? Math.max(_zhlAscentFloor, nextStop) : nextStop;
     const ceilTarget = (phaseNextStop < lastStop) ? 0 : phaseNextStop;
-    const gfForClear = gfAt((phaseNextStop < lastStop) ? 0 : phaseNextStop);
+    let gfForClear = gfAt((phaseNextStop < lastStop) ? 0 : phaseNextStop);
 
     const isFirstDecoStop = (firstDecoDepth === null);
     // Step resolution: first deco stop uses fine (10-sec) resolution, matching
@@ -1140,6 +1140,10 @@ function runZhlScheduleCore(params) {
         firstStopDepth  = cur;   // anchor GF line at real first stop
         carriedFirstStopDepth = cur;
         minStopZoneDepth = cur;  // enable min-stop enforcement from here down
+        // When the first required stop is already the final stop, clearance
+        // is to the surface. Do not reuse the pre-anchor GF Low value: the
+        // newly anchored line reaches GF High at the surface.
+        if (phaseNextStop < lastStop) gfForClear = gfAt(0);
       }
       decoZoneEntered = true;
       // Capture RT before ceiling loop — ApexDeco snaps the arrival RT to next minute

@@ -1020,6 +1020,10 @@
     "REG-142": {
       "suite_id": "SUITE-UI-VISUAL-CONTRACT-REGRESSION",
       "case_id": "V5-RESULTS-SAME-BOTTOM-TRAVEL-GAS-NOTICE"
+    },
+    "REG-143": {
+      "suite_id": "SUITE-ENGINE-FULL",
+      "case_id": "V5-ZHL-SHALLOW-LAST-STOP"
     }
   },
   "findings": [
@@ -3031,17 +3035,19 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "b640142a6ca98c10f9a93550b140ff50b0d4ea4a8e34413d92088e427f2fab02",
-      "last_read_fingerprint": "b640142a6ca98c10f9a93550b140ff50b0d4ea4a8e34413d92088e427f2fab02",
+      "fingerprint": "3ae9bfc5cfba7704c060ac7ca944c5ffeeef8803bebb3b584a243c54721b0fbd",
+      "last_read_fingerprint": "3ae9bfc5cfba7704c060ac7ca944c5ffeeef8803bebb3b584a243c54721b0fbd",
       "evidence": [
         "SUITE-ENGINE-FULL/ZHL-ML-CONT-GAS",
         "SUITE-ENGINE-FULL/ZHL-ML-ASCENT-RATE",
-        "SUITE-ENGINE-FULL/CYCLE35-WHOLE-MIN-STOPS-EFFECT"
+        "SUITE-ENGINE-FULL/CYCLE35-WHOLE-MIN-STOPS-EFFECT",
+        "SUITE-ENGINE-FULL/V5-ZHL-SHALLOW-LAST-STOP"
       ],
       "regression_cases": [
         "REG-22",
         "REG-23",
-        "REG-62"
+        "REG-62",
+        "REG-143"
       ],
       "issue": "Cycle 35: imperial O2 switch depth + wholeMinStops API parity via bundle builder"
     },
@@ -3780,10 +3786,14 @@
       "boundary": {
         "type": "whole_file"
       },
-      "evidence": [],
+      "evidence": [
+        "SUITE-ENGINE-FULL/V5-ZHL-SHALLOW-LAST-STOP"
+      ],
       "issue": "GitHub #133\u00e2\u20ac\u201c#138 audit regressions and Cycle 31\u00e2\u20ac\u201c34 verification",
-      "regression_cases": [],
-      "fingerprint": "813aa7ca3d72cb68eabfc3a0609a3b74026f86d6175b682fa729e6cf7c77cd6d",
+      "regression_cases": [
+        "REG-143"
+      ],
+      "fingerprint": "63d5fd033d87c19a20ce7068b4a82a0095c9ca6ec4defd2dcf095424fcd3491f",
       "last_read_fingerprint": null,
       "audit_issue": 169
     },
@@ -6090,12 +6100,12 @@
     },
     {
       "cycle": "R02",
-      "max_new_application_lines": 657,
+      "max_new_application_lines": 661,
       "application_units": [
         "ENG-ZHL-SCHEDULE"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R02: ZHL schedule canonical core risk-first READ; current lines: 657; sessions: 2",
+      "acceptance": "V4 R02: ZHL schedule canonical core risk-first READ; current lines: 661; sessions: 2",
       "min_review_sessions": 2
     },
     {
@@ -6701,7 +6711,8 @@
         "V5-TOOLS-END-DEPTH-UNITS",
         "V5-TOOLS-SI-DEPTH-UNITS",
         "V5-TOOLS-CONFIRM-BACKDROP",
-        "V5-TOOLS-DYNAMIC-DECO-CYL-IMPERIAL"
+        "V5-TOOLS-DYNAMIC-DECO-CYL-IMPERIAL",
+        "V5-ZHL-SHALLOW-LAST-STOP"
       ]
     },
     {

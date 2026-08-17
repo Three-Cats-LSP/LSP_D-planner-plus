@@ -84,7 +84,7 @@
 | ENG-ZHL-PHYSICS | engine | `zhl-physics-core.js:1` | 189 | P1 | VERIFIED | REG-01, REG-22, REG-23 |
 | ENG-ZHL-GAS | engine | `zhl-gas-core.js:1` | 184 | P1 | VERIFIED | REG-10, REG-11, REG-12, REG-13, REG-14 |
 | ENG-ZHL-CCR | engine | `zhl-ccr-core.js:1` | 404 | P0 | VERIFIED | REG-06, REG-07, REG-29, REG-42 |
-| ENG-ZHL-SCHEDULE | engine | `zhl-schedule-core.js:1` | 657 | P0 | VERIFIED | REG-22, REG-23, REG-62 |
+| ENG-ZHL-SCHEDULE | engine | `zhl-schedule-core.js:1` | 661 | P0 | VERIFIED | REG-22, REG-23, REG-62, REG-143 |
 | ENG-VPM | engine | `vpm-engine-core.js:1` | 2106 | P0 | VERIFIED | REG-31, REG-32, REG-33, REG-34, REG-121, REG-126, REG-127 |
 | ENG-VPM-REFERENCE | engine_reference | `vpmb.py:1` | 2574 | P2 | VERIFIED | REG-01, REG-31, REG-128, REG-129 |
 | ENG-RDP | engine | `padi-engine.js:1` | 101 | P1 | VERIFIED | REG-24, REG-25, REG-56, REG-57, REG-130 |
@@ -121,7 +121,7 @@
 | NATIVE-DRAWABLE-FG | native_android | `android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml:1` | 34 | P3 | VERIFIED | ANDROID-01, COV-01 |
 | NATIVE-ICON | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml:1` | 5 | P3 | VERIFIED | ANDROID-01, COV-01 |
 | NATIVE-ICON-ROUND | native_android | `android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml:1` | 5 | P3 | VERIFIED | ANDROID-01, COV-01 |
-| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 2771 | P1 | IN_PROGRESS | - |
+| TEST-ENGINE-REGRESSION | test_infrastructure | `dev/engine_regression.py:1` | 2796 | P1 | IN_PROGRESS | REG-143 |
 | TEST-VPM-DIRECT-HOST | test_infrastructure | `dev/vpm_direct_host.js:1` | 161 | P0 | VERIFIED | REG-126, REG-127 |
 | TEST-VPM-DIRECT-REGRESSION | test_infrastructure | `dev/vpm_direct_regression.js:1` | 125 | P0 | VERIFIED | REG-126, REG-127, REG-128, REG-129, REG-130 |
 | TEST-ISSUE-140-REGRESSION | test_infrastructure | `dev/issue140_regression.py:1` | 99 | P1 | VERIFIED | REG-08, REG-09 |
