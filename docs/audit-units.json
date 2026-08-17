@@ -3359,7 +3359,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "2fe1eea0fa2a49feb5d28db708c9f75ed35c18795e548c2c98efd9f6aa82ad2d",
+      "fingerprint": "2acf197ba59ec2f745f046cbf430c995242624218e204e03c4b4e0d7693f17aa",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3416,7 +3416,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "57bd899687478ae5ad5106ecc3030bf9403d2dccd0173614bdb46cdb528bd48c",
+      "fingerprint": "3d4ee0d298533f9f9a2c2abb2c8b99dd497cb913c5c3e1dfff164eb7534a89d5",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3517,7 +3517,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "6fbe00623de59b0e7307379cb93c203a923772236ac8565f18bcb9b9c61f03d6",
+      "fingerprint": "c83e0657353c4a085928f7d5d801f9ea2196840f13cb71d43b76a08211e27625",
       "last_read_fingerprint": null,
       "audit_issue": 168,
       "evidence": [],
