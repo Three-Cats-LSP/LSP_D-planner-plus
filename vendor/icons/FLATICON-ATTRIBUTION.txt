@@ -4,3 +4,4 @@ Mode-row and planner icon assets (LSP D-Planner+):
 - settings-2099058.png - Settings icon by https://www.flaticon.com/free-icon/settings_2099058
 - dive-6648136.png - Dive Mode icon by https://www.flaticon.com/free-icon/dive_6648136
 - dive-6648136-mask.png - white silhouette mask derived from dive-6648136.png
+- regulator-1835546.png - Regulator icon by Magnific: https://www.flaticon.com/free-icon/regulator_1835546

@@ -133,6 +133,7 @@ vendor/icons/dive-6648136-mask.png
 vendor/icons/dive-6648136.png
 vendor/icons/giw-icon-192.png
 vendor/icons/oxygen-6770314.png
+vendor/icons/regulator-1835546.png
 vendor/icons/settings-2099058.png
 vendor/icons/tools-1424252.png
 vendor/jspdf.umd.min.js

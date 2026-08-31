@@ -130,6 +130,7 @@ const OPTIONAL_PRECACHE = [
   APP_BASE + 'vendor/fonts/tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2',
   APP_BASE + 'vendor/fonts/tDbV2o-flEEny0FZhsfKu5WU4xD_OwG_TA.woff2',
   APP_BASE + 'vendor/icons/giw-icon-192.png',
+  APP_BASE + 'vendor/icons/regulator-1835546.png',
   APP_BASE + 'vendor/icons/computer-14545985.png',
   APP_BASE + 'vendor/icons/tools-1424252.png',
   APP_BASE + 'vendor/icons/settings-2099058.png',

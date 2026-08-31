@@ -2206,7 +2206,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "41ccdf42e2f7f9fb8abbb80e4f727835102a5e4500d8c5339dcf00be50fd7296",
+      "fingerprint": "a93725e6e8da6cac6db937766e55f486996cbcc0e8b76a6b4d7ef8a547fbdec2",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3257,7 +3257,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "f45c7e66bcd892dd735f59e1a3fd6b0433eb94026c418f0a315afde872778387",
+      "fingerprint": "c0db402f5781bc45370914785b69975a0f64663a98d61dafe91e40cccd7e2ed7",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3359,7 +3359,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "2acf197ba59ec2f745f046cbf430c995242624218e204e03c4b4e0d7693f17aa",
+      "fingerprint": "d72ce8e1e48b12690ae45612369e78360b86bfab88895f9c2a86391643b102a8",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3416,7 +3416,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "3d4ee0d298533f9f9a2c2abb2c8b99dd497cb913c5c3e1dfff164eb7534a89d5",
+      "fingerprint": "a99ceb91bc02eaa1d9bb461b7bcd01165145c3cdbbd9a7c7364837518bd89225",
       "last_read_fingerprint": null,
       "evidence": [],
       "regression_cases": [],
@@ -3517,7 +3517,7 @@
       "boundary": {
         "type": "whole_file"
       },
-      "fingerprint": "c83e0657353c4a085928f7d5d801f9ea2196840f13cb71d43b76a08211e27625",
+      "fingerprint": "eb8d2d2e0e0df16ee89ba32cc0d47e37e90bbabe136dc50f116ef9b7a51621b5",
       "last_read_fingerprint": null,
       "audit_issue": 168,
       "evidence": [],
@@ -6344,14 +6344,14 @@
     },
     {
       "cycle": "R25",
-      "max_new_application_lines": 456,
+      "max_new_application_lines": 457,
       "application_units": [
         "APP-SERVICE-WORKER",
         "UI-PWA-LIFECYCLE",
         "APP-MANIFEST"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 456; sessions: 1"
+      "acceptance": "V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 457; sessions: 1"
     },
     {
       "cycle": "R26",
@@ -6505,12 +6505,12 @@
     },
     {
       "cycle": "R40",
-      "max_new_application_lines": 579,
+      "max_new_application_lines": 584,
       "application_units": [
         "UI-CSS-CONTROLS"
       ],
       "engine_reverification": [],
-      "acceptance": "V4 R40: Controls CSS risk-first READ; current lines: 579; sessions: 1"
+      "acceptance": "V4 R40: Controls CSS risk-first READ; current lines: 584; sessions: 1"
     },
     {
       "cycle": "R41",

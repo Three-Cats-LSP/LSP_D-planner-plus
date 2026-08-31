@@ -71,7 +71,7 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R22 | UI-TOOLS-PROFILE, UI-PLOT-INIT | 867 | - | V4 R22: Profile tool and plot init risk-first READ; current lines: 867; sessions: 2 |
 | R23 | UI-RUNTIME-BOOTSTRAP, UI-APP-INIT | 395 | - | V4 R23: Runtime bootstrap and app init risk-first READ; current lines: 395; sessions: 1 |
 | R24 | UI-BOOT | 2475 | - | V4 R24: index.html shell boot region risk-first READ; current lines: 2475; sessions: 5 |
-| R25 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 456 | - | V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 456; sessions: 1 |
+| R25 | APP-SERVICE-WORKER, UI-PWA-LIFECYCLE, APP-MANIFEST | 457 | - | V4 R25: PWA/service-worker lifecycle risk-first READ; current lines: 457; sessions: 1 |
 | R26 | APP-CAPACITOR-BRIDGE, APP-ANDROID-SELECT | 572 | - | V4 R26: Capacitor and Android bridge risk-first READ; current lines: 572; sessions: 1 |
 | R27 | UI-PROFILE-PRESETS | 508 | - | V4 R27: Dive profile presets risk-first READ; current lines: 508; sessions: 1 |
 | R28 | UI-CONFIG-PRESETS | 185 | - | V4 R28: Advanced config presets risk-first READ; current lines: 185; sessions: 1 |
@@ -86,7 +86,7 @@ Run the first unfinished `Rxx` cycle in this table. The cycle table below is the
 | R37 | UI-MARKUP-CONSUMPTION | 381 | - | V4 R37: Consumption markup risk-first READ; current lines: 381; sessions: 1 |
 | R38 | UI-MARKUP-TOOLS, UI-MARKUP-MODALS | 608 | - | V4 R38: Tools and modal markup risk-first READ; current lines: 608; sessions: 2 |
 | R39 | UI-CSS-FOUNDATION, UI-CSS-MODES | 829 | - | V4 R39: Foundation and mode CSS risk-first READ; current lines: 829; sessions: 2 |
-| R40 | UI-CSS-CONTROLS | 579 | - | V4 R40: Controls CSS risk-first READ; current lines: 579; sessions: 1 |
+| R40 | UI-CSS-CONTROLS | 584 | - | V4 R40: Controls CSS risk-first READ; current lines: 584; sessions: 1 |
 | R41 | UI-CSS-RESULTS | 1121 | - | V4 R41: Results CSS risk-first design-lock READ; current lines: 1121; sessions: 2 |
 | R42 | UI-PLANNER-SHELL, UI-RESULTS-PANEL | 827 | - | V4 R42: Planner shell and results panel design-lock READ; current lines: 827; sessions: 2 |
 | R43 | UI-CSS-MOBILE-SHELL | 709 | - | V4 R43: Mobile shell CSS risk-first READ; current lines: 709; sessions: 2 |
